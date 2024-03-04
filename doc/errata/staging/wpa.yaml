@@ -4,17 +4,15 @@ version: [5, 6]
 scope: ucs_5.0-0-errata5.0-6
 src: wpa
 fix: 2:2.7+git20190128+0c1e29f-6+deb10u4A~5.0.6.202403041401
-desc: |+
+desc: |
  This update addresses the following issue:
- 2:2.7+git20190128+0c1e29f-6+deb10u4 (Tue, 27 Feb 2024 13:44:35 +0000)
- * Non-maintainer upload by the Debian LTS team.
  * CVE-2023-52160: Prevent a potential authentication bypass vulnerability in
    the PEAP protocol implementation. For an attack to have been successful,
-   wpa_supplicant must have been configured to not verify the network's TLS
-   certificate during Phase 1 of the authentication cycle; a eap_peap_decrypt
-   vulnerability could have been used to skip Phase 2 authentication by
-   sending an EAP-TLV Success packet instead of starting Phase 2.
-
+   `wpa_supplicant` must have been configured to not verify the network's TLS
+   certificate during Phase 1 of the authentication cycle; a
+   `eap_peap_decrypt` vulnerability could have been used to skip Phase 2
+   authentication by sending an EAP-TLV Success packet instead of starting
+   Phase 2.
 bug: [57108]
 cve:
 - CVE-2023-52160
