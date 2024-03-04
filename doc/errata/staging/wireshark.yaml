@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: wireshark
+fix: 2.6.20-0+deb9u7
+desc: |
+ This update addresses the following issues:
+ 2.6.20-0+deb9u7 (Thu, 29 Feb 2024 23:20:23 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2023-4511: BT SDP dissector infinite loop
+ * CVE-2023-4513: BT SDP dissector memory leak
+ * CVE-2023-6175: NetScreen file parser crash
+ * CVE-2024-0208: GVCP dissector crash
+bug: [57107]
+cve:
+- CVE-2023-4511
+- CVE-2023-4513
+- CVE-2023-6175
+- CVE-2024-0208
