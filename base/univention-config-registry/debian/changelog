@@ -1,6 +1,7 @@
-univention-config-registry (15.0.11-1) UNRELEASED; urgency=medium
+univention-config-registry (15.0.11-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
+  * Bug #56911: Fix Interfaces(ReadOnlyConfigRegistry())
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 07 Dec 2023 19:17:21 +0100
 

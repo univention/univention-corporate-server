@@ -42,7 +42,7 @@ from functools import wraps
 from ipaddress import IPv4Address, IPv4Interface, IPv6Address, IPv6Interface
 from sys import maxsize
 
-from univention.config_registry.backend import ConfigRegistry
+from univention.config_registry.backend import ConfigRegistry, ReadOnlyConfigRegistry
 
 
 try:
@@ -249,7 +249,7 @@ class Interfaces(object):
         if ucr is None:
             ucr = ConfigRegistry()
             ucr.load()
-        if isinstance(ucr, ConfigRegistry):
+        if isinstance(ucr, ReadOnlyConfigRegistry):
             ucr = VengefulConfigRegistry(ucr)
 
         self.primary = ucr.get('interfaces/primary', 'eth0')
