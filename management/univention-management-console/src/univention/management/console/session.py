@@ -62,6 +62,7 @@ except ImportError:
 moduleManager = ModuleManager()
 categoryManager = CategoryManager()
 _session_timeout = ucr.get_int('umc/http/session/timeout', 300)
+_session_timeout_anonymous = ucr.get_int('umc/http/anonymous-session/timeout', 300)
 
 
 class User(object):
@@ -257,7 +258,7 @@ class Session(object):
 
     def reset_timeout(self):
         self.disconnect_timer()
-        self.user.session_end_time = monotonic() + _session_timeout
+        self.user.session_end_time = monotonic() + (_session_timeout if self.user.authenticated else _session_timeout_anonymous)
         ioloop = tornado.ioloop.IOLoop.current()
         when = int(self.session_end_time - monotonic())
         CORE.debug('reset_timeout(): new session expiration in %s seconds' % (when,))
