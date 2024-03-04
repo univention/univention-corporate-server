@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.25-15) unstable; urgency=low
+
+  * Bug #50385: Fix escaping of DNS names and lables
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 04 Mar 2024 14:30:19 +0100
+
 univention-directory-manager-modules (15.0.25-14) unstable; urgency=medium
 
   * Bug #57102: don't run blocklist-clean-expired cron  job unless

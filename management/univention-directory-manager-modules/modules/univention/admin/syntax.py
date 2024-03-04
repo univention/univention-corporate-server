@@ -52,7 +52,7 @@ import zlib
 from io import BytesIO
 from logging import getLogger
 from typing import (  # noqa: F401
-    TYPE_CHECKING, Any, Callable, List, Optional, Pattern, Sequence, Set, Tuple, Type, Union,
+    TYPE_CHECKING, Any, Callable, Iterator, List, Optional, Pattern, Sequence, Set, Tuple, Type, Union,
 )
 
 import ldap
@@ -76,7 +76,7 @@ from univention.uldap import getMachineConnection
 try:  # Python >= 3.9
     import zoneinfo
 except ImportError:
-    zoneinfo = None
+    zoneinfo = None  # type: ignore[assignment]
     import pytz
 
 if TYPE_CHECKING:
@@ -1203,10 +1203,10 @@ class DebianPackageVersion(string):
     def parse(self, value):
         m = self.invalid_chars_regex.search(value)
         if m is not None:
-            raise univention.admin.uexceptions.valueError(_('Invalid character in debian package version: %s') % m.group())
+            raise univention.admin.uexceptions.valueError(_('Invalid character in Debian package version: %s') % m.group())
         p = value.find(':')
         if p != -1 and not value[:p].isdigit():
-            raise univention.admin.uexceptions.valueError(_('Non-integer epoch in debian package version: %s') % str(value[:p]))
+            raise univention.admin.uexceptions.valueError(_('Non-integer epoch in Debian package version: %s') % str(value[:p]))
 
         return value
 
@@ -3074,17 +3074,38 @@ class reverseLookupZoneName(simple):
 
 
 class dnsName(simple):
-    """
+    r"""
     :rfc:`1123`: a '.' separated FQDN
+
+    >>> dnsName.parse('a')
+    'a'
+    >>> dnsName.parse('a.')
+    'a.'
+    >>> dnsName.parse(r'a\.b.')
+    'a\\.b.'
+    >>> dnsName.parse('@')
+    '\\@'
+    >>> dnsName.parse(' ')
+    '\\032'
 
     >>> dnsName.parse('') # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
     valueError: Missing value!
+    >>> dnsName.parse('\\') # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+    ...
+    valueError: Invalid escape sequence: '\\'.
 
     A host name (label) can be up to 63 characters
 
+    >>> dnsName.parse('0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
+    '0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
     >>> dnsName.parse('0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz') # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+    ...
+    valueError: Labels must be between 1 and 63 characters long!
+    >>> dnsName.parse(''.join(r'\%03d' % c for c in range(255) if c not in {46, 92})) # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
     valueError: Labels must be between 1 and 63 characters long!
@@ -3093,8 +3114,10 @@ class dnsName(simple):
     ...
     valueError: Labels must be between 1 and 63 characters long!
 
-    A full domain name is limited to 253 octets (including the separators).
+    A full domain name is limited to 253 octets (255 - trailing NUL - trailing ROOT)
 
+    >>> dnsName.parse('a.' * 127) == 'a.' * 127
+    True
     >>> dnsName.parse('a.' * 128) # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
@@ -3102,19 +3125,50 @@ class dnsName(simple):
     """
 
     min_length = 1
-    max_length = 253
 
     @classmethod
-    def parse(self, text):
+    def parse(cls, text):
         if not text:
             raise univention.admin.uexceptions.valueError(_("Missing value!"))
         assert isinstance(text, six.string_types)
-        if not 1 <= len(text) <= 253:
+        labels = list(cls._split(text))
+        rel, root = (labels[:-1], labels) if labels[-1] == "" else (labels, labels + [""])
+
+        if not 1 <= len(".".join(root)) <= 254:
             raise univention.admin.uexceptions.valueError(_("Full domain name must be between 1 and 253 characters long!"))
-        labels = (text[:-1] if text.endswith('.') else text).split('.')
-        if not all(1 <= len(label) <= 63 for label in labels):
+        if not all(1 <= len(label) <= 63 for label in rel):
             raise univention.admin.uexceptions.valueError(_("Labels must be between 1 and 63 characters long!"))
-        return text
+        return ".".join(cls._escape(label) for label in labels)
+
+    @classmethod
+    def _split(cls, text):  # type: (str) -> Iterator[str]
+        label = ""
+        for i, t in enumerate(cls._RE_UNESCAPE.split(text)):
+            if i % 2:
+                label += chr(int(t)) if t.isdigit() else t
+                continue
+            elif '\\' in t:
+                raise univention.admin.uexceptions.valueError(_("Invalid escape sequence: %r") % (t,))
+            while True:
+                chunk, sep, t = t.partition(".")
+                label += chunk
+                if not sep:
+                    break
+                yield label
+                label = ""
+        yield label
+
+    _RE_UNESCAPE = re.compile(r"\\([01][0-9][0-9]|2[0-4][0-9]|25[0-5]|[^0-9])")
+
+    # https://gitlab.isc.org/isc-projects/bind9/-/blob/main/lib/dns/name.c /dns_name_totext/
+    @classmethod
+    def _escape(cls, label):  # type: (str) -> str
+        return "".join(
+            "\\" + c if c in cls._ESCAPED else c if "\x20" < c < "\x7f" else "\\%03d" % ord(c)
+            for c in label
+        )
+
+    _ESCAPED = '"().;\\@$'
 
 
 # UNUSED:

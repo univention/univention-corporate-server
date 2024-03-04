@@ -15,4 +15,5 @@ desc: |
  * Adjusted DNS object handling to fix compatibility with the UDM REST API.
  * The cron job for deleting expired block list entries now runs
    only if block lists are activated.
-bug: [57046, 57089, 7735, 28496, 55555, 57102]
+ * Fix escaping of DNS labels and names.
+bug: [57046, 57089, 7735, 28496, 55555, 57102, 50385]

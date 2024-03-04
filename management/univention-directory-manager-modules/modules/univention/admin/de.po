@@ -165,7 +165,7 @@ msgstr "Unter dem primären Monitor"
 #: modules/univention/admin/types.py:401
 #, python-format
 msgid "Binary data have invalid encoding (expected: %s)."
-msgstr ""
+msgstr "Binärdaten haben falsche Kodierung (erwartet: %s)."
 
 #: modules/univention/admin/syntax.py:6633
 msgid "Black"
@@ -564,7 +564,7 @@ msgstr "Ungültige UCS-Version: %s"
 
 #: modules/univention/admin/syntax.py:1205
 #, python-format
-msgid "Invalid character in debian package version: %s"
+msgid "Invalid character in Debian package version: %s"
 msgstr "Ungültiges Zeichen in der Debian-Paketversion: %s"
 
 #: modules/univention/admin/syntax.py:4751
@@ -668,6 +668,11 @@ msgstr "LDAP-Filter"
 #: modules/univention/admin/syntax.py:3115
 msgid "Labels must be between 1 and 63 characters long!"
 msgstr "Domänennamen müssen zwischen 1 und 63 Zeichen lang sein!"
+
+#: modules/univention/admin/syntax.py:3148
+#, python-format
+msgid "Invalid escape sequence: %r"
+msgstr "Ungültige Escape-Sequenz: %r"
 
 #: modules/univention/admin/syntax.py:6159
 #: modules/univention/admin/syntax.py:6167
@@ -887,7 +892,7 @@ msgstr "Die Eigenschaft existiert nicht."
 
 #: modules/univention/admin/syntax.py:1208
 #, python-format
-msgid "Non-integer epoch in debian package version: %s"
+msgid "Non-integer epoch in Debian package version: %s"
 msgstr "Die Epoche der Debian-Paketversion ist keine Zahl: %s"
 
 #: modules/univention/admin/syntax.py:1542
