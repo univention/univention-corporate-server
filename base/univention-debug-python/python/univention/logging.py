@@ -290,7 +290,10 @@ class Logger(logging.Logger):
         self.univention_debug_handler.setLevel(self.level)
 
     def getEffectiveLevel(self):
-        return self.univention_debug_handler.getLevel()
+        current_level = self.univention_debug_handler.getLevel()
+        if self.univention_debug_handler.level != current_level:
+            self.univention_debug_handler.level = current_level
+        return current_level
 
     def set_log_pid(self, log_pid):
         self._formatter.log_pid = log_pid

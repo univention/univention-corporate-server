@@ -1,3 +1,9 @@
+univention-debug-python (12.0.3-10) unstable; urgency=medium
+
+  * Bug #56970: set level to upstream handler
+
+ -- Florian Best <best@univention.de>  Tue, 05 Mar 2024 09:43:46 +0100
+
 univention-debug-python (12.0.3-9) unstable; urgency=medium
 
   * Bug #56970: detect correct univention-debug log level if univention.debug
