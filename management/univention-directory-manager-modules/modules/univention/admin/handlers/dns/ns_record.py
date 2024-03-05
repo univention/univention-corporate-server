@@ -32,13 +32,13 @@
 
 """|UDM| module for |DNS| Name Server records"""
 
-import six
-
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
-from univention.admin.handlers.dns import Attr, is_dns, is_not_handled_by_other_module_than, is_zone  # noqa: F401
+from univention.admin.handlers.dns import (  # noqa: F401
+    Attr, DNSBase, is_dns, is_not_handled_by_other_module_than, is_zone,
+)
 from univention.admin.layout import Group, Tab
 
 
@@ -102,60 +102,20 @@ mapping.register('nameserver', 'nSRecord', encoding='ASCII')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 
 
-class object(univention.admin.handlers.simpleLdap):
+class object(DNSBase):
     module = module
 
-    def _updateZone(self):
-        if self.update_zone:
-            self.superordinate.open()
-            self.superordinate.modify()
-
-    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[], update_zone=True):
-        self.update_zone = update_zone
-        univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
-
-    def _ldap_addlist(self):
-        return super(object, self)._ldap_addlist() + [
-            (self.superordinate.mapping.mapName('zone'), self.superordinate.mapping.mapValue('zone', self.superordinate['zone'])),
-        ]
-
-    def _ldap_post_create(self):
-        super(object, self)._ldap_post_create()
-        self._updateZone()
-
-    def _ldap_post_modify(self):
-        super(object, self)._ldap_post_modify()
-        if self.hasChanged(self.descriptions.keys()):
-            self._updateZone()
-
-    def _ldap_post_remove(self):
-        super(object, self)._ldap_post_remove()
-        self._updateZone()
+    @classmethod
+    def unmapped_lookup_filter(cls):
+        return univention.admin.filter.conjunction('&', [
+            univention.admin.filter.expression('objectClass', 'dNSZone'),
+            univention.admin.filter.expression('nSRecord', '*', escape=False),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sOARecord', '*', escape=False)]),
+        ])
 
 
-def lookup_filter(filter_s=None, superordinate=None):
-    lookup_filter_obj = univention.admin.filter.conjunction('&', [
-        univention.admin.filter.expression('objectClass', 'dNSZone'),
-        univention.admin.filter.expression('nSRecord', '*', escape=False),
-        univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sOARecord', '*', escape=False)]),
-    ])
-
-    if superordinate:
-        parent = superordinate.mapping.mapValueDecoded('zone', superordinate['zone'])
-        lookup_filter_obj.expressions.append(
-            univention.admin.filter.expression('zoneName', parent, escape=True),
-        )
-
-    lookup_filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
-    return lookup_filter_obj
-
-
-def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
-    filter = lookup_filter(filter_s, superordinate)
-    res = []
-    for dn, attrs in lo.search(six.text_type(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response):
-        res.append(object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs))
-    return res
+lookup = object.lookup
+lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool

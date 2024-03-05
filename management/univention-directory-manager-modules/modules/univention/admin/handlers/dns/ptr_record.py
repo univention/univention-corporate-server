@@ -39,7 +39,7 @@ import univention.admin
 import univention.admin.handlers
 import univention.admin.localization
 from univention.admin.filter import conjunction, expression
-from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6, Attr, is_dns  # noqa: F401
+from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6, Attr, DNSBase, is_dns  # noqa: F401
 from univention.admin.layout import Group, Tab
 
 
@@ -166,7 +166,7 @@ def calc_rev(ip, subnet):
         return '.'.join(reversed(host4[prefix:]))
 
 
-class object(univention.admin.handlers.simpleLdap):
+class object(DNSBase):
     module = module
 
     def description(self):
@@ -199,36 +199,9 @@ class object(univention.admin.handlers.simpleLdap):
                 raise univention.admin.uexceptions.InvalidDNS_Information(_('Reverse zone and IP address are incompatible.'))
         super(object, self).ready()
 
-    def _updateZone(self):
-        if self.update_zone:
-            self.superordinate.open()
-            self.superordinate.modify()
-
-    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[], update_zone=True):
-        self.update_zone = update_zone
-        univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
-
-    def _ldap_addlist(self):
-        return super(object, self)._ldap_addlist() + [
-            (self.superordinate.mapping.mapName('subnet'), self.superordinate.mapping.mapValue('subnet', self.superordinate['subnet'])),
-        ]
-
-    def _ldap_post_modify(self):
-        super(object, self)._ldap_post_modify()
-        if self.hasChanged(self.descriptions.keys()):
-            self._updateZone()
-
-    def _ldap_post_create(self):
-        super(object, self)._ldap_post_create()
-        self._updateZone()
-
-    def _ldap_post_remove(self):
-        super(object, self)._ldap_post_remove()
-        self._updateZone()
-
     @classmethod
     def lookup_filter_superordinate(cls, filter, superordinate):
-        filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValueDecoded('subnet', superordinate['subnet']), escape=True))
+        super(object, cls).lookup_filter_superordinate(filter, superordinate)
         filter = rewrite_rev(filter, superordinate.info['subnet'])
         return filter
 

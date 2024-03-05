@@ -41,7 +41,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
-from univention.admin.handlers.dns import Attr, is_dns, stripDot  # noqa: F401
+from univention.admin.handlers.dns import Attr, DNSBase, is_dns, stripDot  # noqa: F401
 from univention.admin.layout import Group, Tab
 
 
@@ -106,36 +106,8 @@ mapping.register('cname', 'cNAMERecord', None, univention.admin.mapping.ListToSt
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 
 
-class object(univention.admin.handlers.simpleLdap):
+class object(DNSBase):
     module = module
-
-    def _updateZone(self):
-        if self.update_zone:
-            self.superordinate.open()
-            self.superordinate.modify()
-
-    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[], update_zone=True):
-        self.update_zone = update_zone
-        univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
-
-    def _ldap_addlist(self):
-        al = super(object, self)._ldap_addlist()
-        return al + [
-            (self.superordinate.mapping.mapName('zone'), self.superordinate.mapping.mapValue('zone', self.superordinate['zone'])),
-        ]
-
-    def _ldap_post_create(self):
-        super(object, self)._ldap_post_create()
-        self._updateZone()
-
-    def _ldap_post_modify(self):
-        super(object, self)._ldap_post_modify()
-        if self.hasChanged(self.descriptions.keys()):
-            self._updateZone()
-
-    def _ldap_post_remove(self):
-        super(object, self)._ldap_post_remove()
-        self._updateZone()
 
     @classmethod
     def unmapped_lookup_filter(cls):
@@ -143,11 +115,6 @@ class object(univention.admin.handlers.simpleLdap):
             univention.admin.filter.expression('objectClass', 'dNSZone'),
             univention.admin.filter.expression('cNAMERecord', '*', escape=False),
         ])
-
-    @classmethod
-    def lookup_filter_superordinate(cls, filter, superordinate):
-        filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValueDecoded('zone', superordinate['zone']), escape=True))
-        return filter
 
 
 lookup = object.lookup

@@ -39,7 +39,7 @@ import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
 from univention.admin.handlers.dns import (  # noqa: F401
-    Attr, has_any, is_dns, is_not_handled_by_other_module_than, is_zone,
+    Attr, DNSBase, has_any, is_dns, is_not_handled_by_other_module_than, is_zone,
 )
 from univention.admin.layout import Group, Tab
 
@@ -148,22 +148,8 @@ mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInter
 mapping.registerUnmapping('a', unmapIPAddresses, encoding='ASCII')
 
 
-class object(univention.admin.handlers.simpleLdap):
+class object(DNSBase):
     module = module
-
-    def _updateZone(self):
-        if self.update_zone:
-            self.superordinate.open()
-            self.superordinate.modify()
-
-    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[], update_zone=True):
-        self.update_zone = update_zone
-        univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
-
-    def _ldap_addlist(self):
-        return super(object, self)._ldap_addlist() + [
-            (self.superordinate.mapping.mapName('zone'), self.superordinate.mapping.mapValue('zone', self.superordinate['zone'])),
-        ]
 
     def _ldap_modlist(self):  # IPv6
         ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
@@ -195,19 +181,6 @@ class object(univention.admin.handlers.simpleLdap):
             ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord))
         return ml
 
-    def _ldap_post_create(self):
-        super(object, self)._ldap_post_create()
-        self._updateZone()
-
-    def _ldap_post_modify(self):
-        super(object, self)._ldap_post_modify()
-        if self.hasChanged(self.descriptions.keys()):
-            self._updateZone()
-
-    def _ldap_post_remove(self):
-        super(object, self)._ldap_post_remove()
-        self._updateZone()
-
     @classmethod
     def unmapped_lookup_filter(cls):
         return univention.admin.filter.conjunction('&', [
@@ -220,11 +193,6 @@ class object(univention.admin.handlers.simpleLdap):
                 univention.admin.filter.expression('univentionObjectType', module, escape=True),  # host record without any record
             ]),
         ])
-
-    @classmethod
-    def lookup_filter_superordinate(cls, filter, superordinate):
-        filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValueDecoded('zone', superordinate['zone']), escape=True))
-        return filter
 
     @classmethod
     def rewrite_filter(cls, filter, mapping):

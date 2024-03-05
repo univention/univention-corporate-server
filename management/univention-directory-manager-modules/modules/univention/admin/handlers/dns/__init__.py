@@ -32,11 +32,14 @@
 
 """|UDM| module for |DNS| records"""
 
-from typing import Dict, List, Tuple  # noqa: F401
+from typing import Any, Dict, List, Text, Tuple  # noqa: F401
 
 import six
+from ldap.dn import str2dn
 
-import univention.admin.handlers as udm_handlers  # noqa: F401
+import univention.admin.filter as udm_filter
+import univention.admin.handlers as udm_handlers
+import univention.admin.uldap
 
 
 __path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore
@@ -77,6 +80,69 @@ def is_not_handled_by_other_module_than(attr, module):  # type: (Attr, str) -> b
     return mod in attr.get('univentionObjectType', [mod])
 
 
+class DNSBase(udm_handlers.simpleLdap):
+
+    def __init__(
+        self,
+        co,  # type: None
+        lo,  # type: univention.admin.uldap.access
+        position,  # type: univention.admin.uldap.position | None
+        dn=u'',  # type: Text
+        superordinate=None,  # type: udm_handlers.simpleLdap | None
+        attributes=None,  # type: udm_handlers._Attributes | None
+        update_zone=True,  # type: bool
+    ):  # type: (...) -> None
+        self.update_zone = update_zone
+        univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
+
+    def _updateZone(self):
+        # type: () -> None
+        if self.update_zone:
+            assert self.superordinate is not None
+            self.superordinate.open()
+            self.superordinate.modify()
+
+    def _ldap_post_create(self):
+        # type: () -> None
+        super(DNSBase, self)._ldap_post_create()
+        self._updateZone()
+
+    def _ldap_post_modify(self):
+        # type: () -> None
+        super(DNSBase, self)._ldap_post_modify()
+        if self.hasChanged(self.descriptions.keys()):
+            self._updateZone()
+
+    def _ldap_post_remove(self):
+        # type: () -> None
+        super(DNSBase, self)._ldap_post_remove()
+        self._updateZone()
+
+    @staticmethod
+    def _zone(superordinate):
+        # type: (udm_handlers.simpleLdap) -> str
+        """Extract DNS zone name from DN of superordinate."""
+        dn = superordinate.dn
+        for rdn in str2dn(dn):
+            for k, v, _t in rdn:
+                if k.lower() == "zonename":
+                    return v
+        raise ValueError(dn)
+
+    def _ldap_addlist(self):
+        # type: () -> List[Tuple[Text, Any]]
+        assert self.superordinate is not None
+        zone = self._zone(self.superordinate)
+        return super(DNSBase, self)._ldap_addlist() + [("zoneName", zone.encode("ASCII"))]
+
+    @classmethod
+    def lookup_filter_superordinate(cls, filter, superordinate):
+        # type: (udm_filter.conjunction, udm_handlers.simpleLdap) -> udm_filter.conjunction
+        filter.expressions.append(udm_filter.expression('zoneName', cls._zone(superordinate), escape=True))
+        return filter
+
+
+# UNUSED:
 def makeContactPerson(obj, arg):
     # type: (udm_handlers.simpleLdap, object) -> str
     """Create contact Email-address for domain."""
