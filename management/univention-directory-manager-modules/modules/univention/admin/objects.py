@@ -35,7 +35,7 @@
 from __future__ import absolute_import
 
 from logging import getLogger
-from typing import Any, Dict, List, Optional, Tuple, Union  # noqa: F401
+from typing import Any  # noqa: F401
 
 import ldap
 
@@ -46,7 +46,7 @@ log = getLogger('ADMIN')
 
 
 def module(object):
-    # type: (univention.admin.handlers.simpleLdap) -> Optional[str]
+    # type: (univention.admin.handlers.simpleLdap) -> str | None
     """
     Return handler name for |UDM| object.
 
@@ -57,7 +57,7 @@ def module(object):
 
 
 def get_superordinate(module, co, lo, dn):
-    # type: (univention.admin.modules.UdmModule, None, univention.admin.uldap.access, str) -> Optional[univention.admin.handlers.simpleLdap]
+    # type: (univention.admin.modules.UdmModule, None, univention.admin.uldap.access, str) -> univention.admin.handlers.simpleLdap | None
     """
     Searches for the superordinate object for the given DN.
 
@@ -81,7 +81,7 @@ def get_superordinate(module, co, lo, dn):
 
 
 def get(module, co, lo, position, dn='', attr=None, superordinate=None, attributes=None):
-    # type: (univention.admin.modules.UdmModule, None, univention.admin.uldap.access, univention.admin.uldap.position, str, Optional[Dict[str, List[Any]]], Optional[Any], Optional[Any]) -> Optional[univention.admin.handlers.simpleLdap]
+    # type: (univention.admin.modules.UdmModule, None, univention.admin.uldap.access, univention.admin.uldap.position, str, dict[str, list[Any]] | None, Any | None, Any | None) -> univention.admin.handlers.simpleLdap | None
     """
     Return object of module while trying to create objects of
     superordinate modules as well.
@@ -157,7 +157,7 @@ def description(object):
 
 
 def shadow(lo, module, object, position):
-    # type: (univention.admin.uldap.access, univention.admin.modules.UdmModule, univention.admin.handlers.simpleLdap, univention.admin.uldap.position) -> Union[Tuple[univention.admin.handlers.simpleLdap, univention.admin.modules.UdmModule], Tuple[None, None]]
+    # type: (univention.admin.uldap.access, univention.admin.modules.UdmModule, univention.admin.handlers.simpleLdap, univention.admin.uldap.position) -> tuple[univention.admin.handlers.simpleLdap, univention.admin.modules.UdmModule] | tuple[None, None]
     """
     If object is a container, return object and module the container
     shadows (that is usually the one that is subordinate in the LDAP tree).
@@ -186,7 +186,7 @@ def shadow(lo, module, object, position):
 
 
 def dn(object):
-    # type: (univention.admin.handlers.simpleLdap) -> Optional[str]
+    # type: (univention.admin.handlers.simpleLdap) -> str | None
     """
     Return the |DN| of the object.
 
@@ -197,7 +197,7 @@ def dn(object):
 
 
 def ocToType(oc):
-    # type: (str) -> Optional[str]
+    # type: (str) -> str | None
     """
     Return the |UDM| module capabale of handling the given |LDAP| objectClass.
 
@@ -241,7 +241,7 @@ def emptyAttribute(object, key):
 
 
 def getPolicyReference(object, policy_type):
-    # type: (univention.admin.handlers.simpleLdap, str) -> Optional[univention.admin.handlers.simplePolicy]
+    # type: (univention.admin.handlers.simpleLdap, str) -> univention.admin.handlers.simplePolicy | None
     """
     Return the policy of the requested type.
 

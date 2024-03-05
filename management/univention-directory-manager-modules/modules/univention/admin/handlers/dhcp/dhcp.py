@@ -32,6 +32,8 @@
 
 """|UDM| for all |DHCP| objects"""
 
+from typing import TYPE_CHECKING
+
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dhcp.host
@@ -43,6 +45,11 @@ import univention.admin.handlers.dhcp.sharedsubnet
 import univention.admin.handlers.dhcp.subnet
 import univention.admin.localization
 from univention.admin.layout import Tab
+
+
+if TYPE_CHECKING:
+    import univention.admin
+    import univention.admin.uldap
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
@@ -59,7 +66,7 @@ object_name_plural = _('DHCP services')
 long_description = _('Manage the Domain Host Configuration Protocol service.')
 operations = ['search']
 virtual = True
-options = {}
+options = {}  # type: dict[str, univention.admin.option]
 property_descriptions = {
     'name': univention.admin.property(
         short_description=_('Name'),
@@ -81,6 +88,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+    # type: (None, univention.admin.uldap.access, str, str, univention.admin.handlers.simpleLdap | None, str, bool, bool, int, int) -> list[univention.admin.handlers.simpleLdap]
     ret = []
     if superordinate:
         ret += univention.admin.handlers.dhcp.host.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
@@ -95,4 +103,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 
 
 def identify(dn, attr, canonical=False):
+    # type: (str, univention.admin.handlers._Attributes, bool) -> None
     pass

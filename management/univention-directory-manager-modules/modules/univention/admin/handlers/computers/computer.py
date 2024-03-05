@@ -32,11 +32,18 @@
 
 """|UDM| module for all computer objects"""
 
+from typing import TYPE_CHECKING  # noqa: F401
+
 import univention.admin.handlers
 import univention.admin.handlers.computers
 import univention.admin.localization
 import univention.admin.mapping
 import univention.admin.syntax
+
+
+if TYPE_CHECKING:
+    import univention.admin
+    import univention.admin.uldap
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
@@ -54,8 +61,7 @@ object_name_plural = _('Computers')
 long_description = ''
 operations = ['search']
 virtual = True
-options = {
-}
+options = {}  # type: dict[str, univention.admin.option]
 property_descriptions = {
     'name': univention.admin.property(
         short_description=_('Name'),
@@ -119,6 +125,7 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def open(self):
+        # type: () -> None
         super(object, self).open()
         if 'name' in self.info and 'domain' in self.info:
             # in syntax.py IComputer_FQDN key and label are '%(name)s.%(domain)s' for
@@ -129,6 +136,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+    # type: (None, univention.admin.uldap.access, str, str, univention.admin.handlers.simpleLdap | None, str, bool, bool, int, int) -> list[univention.admin.handlers.simpleLdap]
     res = []
     for computer in univention.admin.handlers.computers.computers:
         res.extend(computer.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit))
@@ -136,4 +144,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 
 
 def identify(dn, attr, canonical=False):
+    # type: (str, univention.admin.handlers._Attributes, bool) -> None
     pass

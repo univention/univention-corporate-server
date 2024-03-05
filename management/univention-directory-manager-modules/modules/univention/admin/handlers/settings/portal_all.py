@@ -75,13 +75,16 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-    res = []
+    # type: (None, univention.admin.uldap.access, str, str, univention.admin.handlers.simpleLdap | None, str, bool, bool, int, int) -> list[univention.admin.handlers.simpleLdap]
+    res = []  # type: list[univention.admin.handlers.simpleLdap]
     for child in childmodules:
         portal_module = univention.admin.modules.get(child)
+        assert portal_module is not None
         res.extend(portal_module.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit))
 
     return res
 
 
 def identify(dn, attr, canonical=False):
+    # type: (str, univention.admin.handlers._Attributes, bool) -> None
     pass

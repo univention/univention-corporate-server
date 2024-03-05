@@ -37,7 +37,7 @@ from __future__ import absolute_import
 import base64
 import inspect
 from logging import getLogger
-from typing import Any, Callable, Dict, Iterable, List, Text, Tuple, TypeVar, Union  # noqa: F401
+from typing import Any, Callable, Iterable, Tuple, TypeVar  # noqa: F401
 
 import univention.admin.uexceptions
 from univention.admin import localization
@@ -61,14 +61,14 @@ except NameError:
 
 
 def MapToBytes(udm_value, encoding=()):
-    # type: (List[Text] | Tuple[Text, ...] | Text, _Encoding) -> List[bytes] | bytes
+    # type: (list[str] | tuple[str, ...] | str, _Encoding) -> list[bytes] | bytes
     if isinstance(udm_value, (list, tuple)):
         return [MapToBytes(udm_val, encoding=encoding) for udm_val in udm_value]
     return unicode(udm_value).encode(*encoding)
 
 
 def UnmapToUnicode(ldap_value, encoding=()):
-    # type: (List[bytes] | Tuple[bytes, ...] | bytes, _Encoding) -> List[Text] | Text
+    # type: (list[bytes] | tuple[bytes, ...] | bytes, _Encoding) -> list[str] | str
     if isinstance(ldap_value, (list, tuple)):
         return [UnmapToUnicode(ldap_val, encoding=encoding) for ldap_val in ldap_value]
     return ldap_value.decode(*encoding)
@@ -117,7 +117,7 @@ def StringToLower(string):
 
 
 def ListUniq(list):
-    # type: (List[_E]) -> List[_E]
+    # type: (list[_E]) -> list[_E]
     """
     Return list of unique items.
 
@@ -127,7 +127,7 @@ def ListUniq(list):
     >>> ListUniq(['1', '1', '2'])
     ['1', '2']
     """
-    result = []  # type: List[_E]
+    result = []  # type: list[_E]
     if list:
         for element in list:
             if element not in result:
@@ -136,7 +136,7 @@ def ListUniq(list):
 
 
 def ListToString(value, encoding=()):
-    # type: (List[bytes], _Encoding) -> str
+    # type: (list[bytes], _Encoding) -> str
     """
     Return first element from list.
     This is right mapping for single-valued properties, as |LDAP| always returns lists of values.
@@ -156,7 +156,7 @@ def ListToString(value, encoding=()):
 
 
 def ListToIntToString(list_):
-    # type: (List[bytes]) -> str
+    # type: (list[bytes]) -> str
     """
     Return first element from list if it is an integer.
 
@@ -179,7 +179,7 @@ def ListToIntToString(list_):
 
 
 def ListToLowerString(list):
-    # type: (List[bytes]) -> str
+    # type: (list[bytes]) -> str
     """
     Return first element from list lower-cased.
 
@@ -195,7 +195,7 @@ def ListToLowerString(list):
 
 
 def ListToLowerList(list):
-    # type: (List[str]) -> List[str]
+    # type: (list[str]) -> list[str]
     """
     Return the list with all elements converted to lower-case.
 
@@ -209,7 +209,7 @@ def ListToLowerList(list):
 
 
 def ListToLowerListUniq(list):
-    # type: (List[str]) -> List[str]
+    # type: (list[str]) -> list[str]
     """
     Return the list with all elements converted to lower-case and duplicates removed.
 
@@ -228,7 +228,7 @@ def nothing(a):
 
 
 def IgnoreNone(value, encoding=()):
-    # type: (str, _Encoding) -> Union[None, bytes]
+    # type: (str, _Encoding) -> bytes | None
     """
     Return the value if it is not the string `None`.
 
@@ -245,7 +245,7 @@ def IgnoreNone(value, encoding=()):
 
 
 def _stringToInt(value):
-    # type: (Union[bytes, str]) -> int
+    # type: (bytes | str) -> int
     """
     Try to convert string into integer.
 
@@ -264,7 +264,7 @@ def _stringToInt(value):
 
 
 def unmapUNIX_TimeInterval(seconds):
-    # type: (Union[List[bytes], Tuple[bytes], bytes]) -> List[Text]
+    # type: (list[bytes] | tuple[bytes] | bytes) -> list[str]
     """
     Map number of seconds to a human understandable time interval.
 
@@ -299,7 +299,7 @@ def unmapUNIX_TimeInterval(seconds):
 
 
 def mapUNIX_TimeInterval(value):
-    # type: (Union[List[str], Tuple[str], Tuple[str, str], str]) -> bytes
+    # type: (list[str] | tuple[str] | tuple[str, str] | str) -> bytes
     """
     Unmap a human understandable time interval back to number of seconds.
 
@@ -331,7 +331,7 @@ def mapUNIX_TimeInterval(value):
 
 
 def unmapBase64(value):
-    # type: (Union[List[bytes], Tuple[bytes, ...], bytes]) -> Union[List[str], str]
+    # type: (list[bytes] | tuple[bytes, ...] | bytes) -> list[str] | str
     """
     Convert binary data (as found in |LDAP|) to Base64 encoded |UDM| property value(s).
 
@@ -359,8 +359,8 @@ def unmapBase64(value):
 
 
 def mapBase64(value):
-    # type: (Union[List[str], str]) -> Union[List[bytes], bytes]
-    # @overload (List[str]) -> List[bytes]
+    # type: (list[str] | str) -> list[bytes] | bytes
+    # @overload (list[str]) -> list[bytes]
     # @overload (str) -> bytes
     """
     Convert Base64 encoded |UDM| property values to binary data (for storage in |LDAP|).
@@ -392,7 +392,7 @@ def mapBase64(value):
 
 
 def BooleanListToString(list, encoding=()):
-    # type: (List[bytes], _Encoding) -> str
+    # type: (list[bytes], _Encoding) -> str
     """
     Convert |LDAP| boolean to |UDM|.
 
@@ -437,11 +437,11 @@ class mapping(object):
 
     def __init__(self):
         # type: () -> None
-        self._map = {}  # type: Dict[str, Tuple[str, Callable[[Any], Any] | None]]
-        self._unmap = {}  # type: Dict[str, Tuple[str, Callable[[Any], Any] | None]]
-        self._unmap_func = {}  # type: Dict[str, Callable[[Any], Any]]
-        self._map_encoding = {}  # type: Dict[str, Tuple[str, str]]
-        self._unmap_encoding = {}  # type: Dict[str, Tuple[str, str]]
+        self._map = {}  # type: dict[str, tuple[str, Callable[[Any], Any] | None]]
+        self._unmap = {}  # type: dict[str, tuple[str, Callable[[Any], Any] | None]]
+        self._unmap_func = {}  # type: dict[str, Callable[[Any], Any]]
+        self._map_encoding = {}  # type: dict[str, tuple[str, str]]
+        self._unmap_encoding = {}  # type: dict[str, tuple[str, str]]
 
     def register(
         self,
@@ -624,7 +624,7 @@ class mapping(object):
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Invalid encoding for %s') % (unmap_name,))
 
     def unmapValues(self, oldattr):
-        # type: (Dict[str, Any]) -> Dict[str, Any]
+        # type: (dict[str, Any]) -> dict[str, Any]
         """Unmaps |LDAP| attribute values to |UDM| property values."""
         info = mapDict(self, oldattr)
         for key, func in self._unmap_func.items():
@@ -676,7 +676,7 @@ def mapCmp(mapping, key, old, new):
 
 
 def mapDict(mapping, old):
-    # type: (mapping, Dict[str, Any]) -> Dict[str, Any]
+    # type: (mapping, dict[str, Any]) -> dict[str, Any]
     """
     Convert dictionary mapping LDAP_attriute_name to LDAP_value to a (partial)
     dictionary mapping UDM_property_name to UDM_value.
@@ -701,7 +701,7 @@ def mapDict(mapping, old):
 
 
 def mapList(mapping, old):  # UNUSED
-    # type: (mapping, List[Any] | None) -> List[Any]
+    # type: (mapping, list[Any] | None) -> list[Any]
     """
     Convert list of LDAP attribute names to list of UDM property names.
 
@@ -727,7 +727,7 @@ def mapList(mapping, old):  # UNUSED
 
 
 def mapDiff(mapping, diff):
-    # type: (mapping, Iterable[Tuple[str, Any, Any]]) -> List[Tuple[str, Any, Any]]
+    # type: (mapping, Iterable[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
     """
     Convert mod-list of UDM property names/values to mod-list of LDAP attribute names/values.
 
@@ -759,7 +759,7 @@ def mapDiff(mapping, diff):
 
 
 def mapDiffAl(mapping, diff):  # UNUSED
-    # type: (mapping, Iterable[Tuple[str, Any, Any]]) -> List[Tuple[str, Any]]
+    # type: (mapping, Iterable[tuple[str, Any, Any]]) -> list[tuple[str, Any]]
     """
     Convert mod-list of UDM property names/values to add-list of LDAP attribute names/values.
 

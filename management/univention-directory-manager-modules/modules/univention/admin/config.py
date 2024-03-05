@@ -39,7 +39,6 @@
 from __future__ import absolute_import
 
 from types import ModuleType  # noqa: F401
-from typing import Optional, Union  # noqa: F401
 
 import six
 
@@ -82,7 +81,7 @@ class config(object):
 
 
 def getDefaultContainer(lo, module):
-    # type: (univention.admin.uldap.access, Union[ModuleType, str]) -> Optional[str]
+    # type: (univention.admin.uldap.access, ModuleType | str) -> str | None
     """
     Return any random default container for a UDM module.
 
@@ -101,7 +100,7 @@ def getDefaultContainer(lo, module):
 
 
 def getDefaultValue(lo, name, position=None):
-    # type: (univention.admin.uldap.access, str, univention.admin.uldap.position) -> Optional[str]
+    # type: (univention.admin.uldap.access, str, univention.admin.uldap.position) -> str | None
     """
     Return the default value for a UDM module.
 

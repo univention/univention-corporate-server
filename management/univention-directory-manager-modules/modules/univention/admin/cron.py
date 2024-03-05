@@ -34,11 +34,11 @@
 
 from __future__ import absolute_import
 
-from typing import Mapping, Sequence, Union  # noqa: F401
+from typing import Mapping, Sequence  # noqa: F401
 
 
 def month_map(month):
-    # type: (str) -> Union[str, int, None]
+    # type: (str) -> str | int | None
     """
     Map English month name to 1-based numeric month-in-year.
 
@@ -60,7 +60,7 @@ def month_map(month):
 
 
 def weekday_map(weekday):
-    # type: (str) -> Union[str, int, None]
+    # type: (str) -> str | int | None
     """
     Map English day-of-week name to numeric value 1-7.
 
@@ -81,7 +81,7 @@ def weekday_map(weekday):
 
 
 def month_reverse_map(month):
-    # type: (Union[str, int]) -> Union[str, None]
+    # type: (str | int) -> str | None
     """
     Map 1-based numeric month-in-year to English month name.
 
@@ -102,7 +102,7 @@ def month_reverse_map(month):
 
 
 def weekday_reverse_map(weekday):
-    # type: (Union[str, int]) -> Union[str, None]
+    # type: (str | int) -> str | None
     """
     Map numeric day-of-week value 1-7 to English name.
 

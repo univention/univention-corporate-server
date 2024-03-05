@@ -37,7 +37,6 @@ from __future__ import absolute_import
 import hashlib
 import re
 from logging import getLogger
-from typing import List, Optional, Tuple  # noqa: F401
 
 import bcrypt
 import heimdal
@@ -52,7 +51,7 @@ RE_PASSWORD_SCHEME = re.compile(r'^{(\w+)}(!?)(.*)', re.I)
 
 
 def crypt(password, method_id=None, salt=None):
-    # type: (str, Optional[str], Optional[str]) -> str
+    # type: (str, str | None, str | None) -> str
     """
     Return crypt hash.
 
@@ -112,7 +111,7 @@ def bcrypt_hash(password):
 
 
 def ntlm(password):
-    # type: (str) -> Tuple[str, str]
+    # type: (str) -> tuple[str, str]
     """
     Return tuple with NT and LanMan hash.
 
@@ -130,7 +129,7 @@ def ntlm(password):
 
 
 def krb5_asn1(principal, password, krb5_context=None):
-    # type: (str, str, Optional[heimdal.context]) -> List[bytes]
+    # type: (str, str, heimdal.context | None) -> list[bytes]
     """
     Generate Kerberos password hashes.
 

@@ -33,6 +33,7 @@
 """|UDM| module for |DNS| aliases (CNAME)"""
 
 import re
+from typing import Match  # noqa: F401
 
 import six
 from ldap.filter import filter_format
@@ -41,7 +42,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
-from univention.admin.handlers.dns import Attr, DNSBase, is_dns, stripDot  # noqa: F401
+from univention.admin.handlers.dns import DNSBase, is_dns, stripDot  # noqa: F401
 from univention.admin.layout import Group, Tab
 
 
@@ -111,6 +112,7 @@ class object(DNSBase):
 
     @classmethod
     def unmapped_lookup_filter(cls):
+        # type: () -> univention.admin.filter.conjunction
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'dNSZone'),
             univention.admin.filter.expression('cNAMERecord', '*', escape=False),
@@ -121,7 +123,8 @@ lookup = object.lookup
 lookup_filter = object.lookup_filter
 
 
-def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool
+def identify(dn, attr, canonical=False):
+    # type: (str, univention.admin.handlers._Attributes, bool) -> bool
     return bool(
         attr.get('cNAMERecord')
         and is_dns(attr),
@@ -129,9 +132,11 @@ def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool
 
 
 def lookup_alias_filter(lo, filter_s):
+    # type: (univention.admin.uldap.access, str) -> str
     alias_pattern = re.compile(r'(?:^|\()dnsAlias=([^)]+)($|\))', flags=re.I)
 
     def _replace_alias_filter(match):
+        # type: (Match[str]) -> str
         alias_filter = object.lookup_filter('name=%s' % match.group(1), lo)
         alias_filter_s = six.text_type(alias_filter)
         alias_base = six.text_type(lo.base)  # standard dns container might be a better choice

@@ -149,6 +149,7 @@ class object(univention.admin.handlers.simpleLdap):
         return {'module': self.module, 'nameWithMailDomain': self.description()}
 
     def _post_unmap(self, oldinfo, oldattr):
+        # type: (univention.admin.handlers._Properties, univention.admin.handlers._Attributes) -> univention.admin.handlers._Properties
         cn = oldattr.get('cn', [b''])[0].decode('UTF-8')
         if cn:
             oldinfo['name'], oldinfo['mailDomain'] = cn.split('@', 1)

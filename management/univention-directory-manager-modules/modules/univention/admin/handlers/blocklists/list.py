@@ -112,6 +112,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     @classmethod
     def identify(cls, dn, attr, canonical=False):
+        # type: (str, univention.admin.handlers._Attributes, bool) -> bool
         return b'univentionBlocklist' in attr.get('objectClass', [])
 
 

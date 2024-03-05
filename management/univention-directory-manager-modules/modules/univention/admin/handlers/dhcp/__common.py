@@ -34,7 +34,7 @@
 
 import sys
 from ipaddress import IPv4Address, IPv4Network
-from typing import Iterable, List, Sequence, Tuple  # noqa: F401
+from typing import Iterable, Sequence, Tuple  # noqa: F401
 
 import univention.admin.localization
 import univention.admin.uexceptions as uex
@@ -79,12 +79,12 @@ _mappings = (
 
 
 def rangeMap(value, encoding=()):
-    # type: (Iterable[List[str]], Tuple[str, ...]) -> List[bytes]
+    # type: (Iterable[list[str]], tuple[str, ...]) -> list[bytes]
     return [u' '.join(x).encode(*encoding) for x in value]
 
 
 def rangeUnmap(value, encoding=()):
-    # type: (Iterable[bytes], Tuple[str, ...]) -> List[List[str]]
+    # type: (Iterable[bytes], tuple[str, ...]) -> list[list[str]]
     return [x.decode(*encoding).split() for x in value]
 
 
@@ -129,7 +129,7 @@ def check_range_overlap(ranges):  # type: (Sequence[Range]) -> None
     ...
     rangesOverlapping: 192.0.2.0-192.0.2.127; 192.0.2.0-192.0.2.255
     """
-    prev = []  # type: List[Range]
+    prev = []  # type: list[Range]
     for r1 in ranges:
         (s1, e1) = r1
         assert s1 <= e1  # already checked by syntax.IPv4_AddressRange

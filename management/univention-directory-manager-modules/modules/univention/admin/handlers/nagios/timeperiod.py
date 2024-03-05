@@ -167,6 +167,7 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def _post_unmap(self, info, values):
+        # type: (univention.admin.handlers._Properties, univention.admin.handlers._Attributes) -> univention.admin.handlers._Properties
         value = values.get('univentionNagiosTimeperiod', [b''])[0].decode('ASCII')
         if value:
             for wday, period in zip(_WDAYS, value.split('#', 6)):

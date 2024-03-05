@@ -33,7 +33,7 @@
 """|UDM| allocators to allocate and lock resources for |LDAP| object creation."""
 
 from logging import getLogger
-from typing import Dict, Optional, Sequence, overload  # noqa: F401
+from typing import Sequence, overload  # noqa: F401
 
 import ldap
 from ldap.filter import filter_format
@@ -70,7 +70,7 @@ _type2attr = {
     'groupName': 'cn',
     'cn-uid-position': 'cn',  # ['cn', 'uid', 'ou'],
     'univentionObjectIdentifier': 'univentionObjectIdentifier',
-}  # type: Dict[_Types, str]
+}  # type: dict[_Types, str]
 _type2scope = {
     'uidNumber': 'base',
     'gidNumber': 'base',
@@ -85,7 +85,7 @@ _type2scope = {
     'groupName': 'domain',
     'cn-uid-position': 'one',
     'univentionObjectIdentifier': 'domain',
-}  # type: Dict[_Types, _Scopes]
+}  # type: dict[_Types, _Scopes]
 
 
 def requestUserSid(
@@ -131,7 +131,7 @@ def acquireRange(
     position,  # type: univention.admin.uldap.position
     atype,  # type: _Types
     attr,  # type: str
-    ranges,  # type: Sequence[Dict[str, int]]
+    ranges,  # type: Sequence[dict[str, int]]
     scope='base',  # type: _Scopes
 ):  # type: (...) -> str
     log.debug('ALLOCATE: Start allocation for type = %r', atype)
@@ -255,7 +255,7 @@ def request(
     lo,  # type: univention.admin.uldap.access
     position,  # type: univention.admin.uldap.position
     type,  # type: _TypesUidGid
-    value=None,  # type: Optional[str]
+    value=None,  # type: str | None
 ):  # type: (...) -> str
     pass
 
@@ -274,7 +274,7 @@ def request(
     lo,  # type: univention.admin.uldap.access
     position,  # type: univention.admin.uldap.position
     type,  # type: _Types
-    value=None,  # type: Optional[str]
+    value=None,  # type: str | None
 ):  # type: (...) -> str
     if type in ('uidNumber', 'gidNumber'):
         return acquireRange(lo, position, type, _type2attr[type], [{'first': 1000, 'last': 55000}, {'first': 65536, 'last': 1000000}], scope=_type2scope[type])

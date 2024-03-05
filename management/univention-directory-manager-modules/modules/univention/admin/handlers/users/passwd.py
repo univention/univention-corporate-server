@@ -32,6 +32,8 @@
 
 """|UDM| module for password part of the user"""
 
+from typing import TYPE_CHECKING
+
 import univention.admin
 import univention.admin.filter
 import univention.admin.handlers
@@ -40,6 +42,11 @@ import univention.admin.localization
 import univention.admin.uexceptions
 import univention.admin.uldap
 from univention.admin.layout import Tab
+
+
+if TYPE_CHECKING:
+    import univention.admin
+    import univention.admin.uldap
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.users')
@@ -53,7 +60,7 @@ short_description = _('User: Password')
 object_name = _('Password')
 object_name_plural = _('Passwords')
 long_description = ''
-options = {}
+options = {}  # type: dict[str, univention.admin.option]
 property_descriptions = {
     'username': univention.admin.property(
         short_description=_('User name'),
@@ -82,5 +89,6 @@ object = univention.admin.handlers.users.user.object
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+    # type: (None, univention.admin.uldap.access,str, str, univention.admin.handlers.simpleLdap | None, str, bool, bool, int, int) -> list[univention.admin.handlers.simpleLdap]
     dn = lo.whoami()
     return [user for user in univention.admin.handlers.users.user.lookup(co, lo, filter_s, base, superordinate, scope=scope, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit) if lo.compare_dn(dn, user.dn)]

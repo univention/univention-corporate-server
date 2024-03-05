@@ -123,6 +123,7 @@ class object(univention.admin.handlers.simplePolicy):
     module = module
 
     def _post_unmap(self, info, oldattr):
+        # type: (univention.admin.handlers._Properties, univention.admin.handlers._Attributes) -> univention.admin.handlers._Properties
         info['registry'] = sorted(
             [self._ucr_unhexlify(attr_name), ldap_value[0].decode('UTF-8').strip()]
             for attr_name, ldap_value in oldattr.items()

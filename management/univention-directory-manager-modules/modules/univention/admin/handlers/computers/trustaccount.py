@@ -32,6 +32,8 @@
 
 """|UDM| module for the trust accounts"""
 
+from typing import Any  # noqa: F401
+
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
@@ -103,6 +105,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
     module = module
 
     def open(self):
+        # type: () -> None
         super(object, self).open()
         self.pki_open()
 
@@ -115,6 +118,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         self.save()
 
     def getMachineSid(self, lo, position, uidNum, rid=None):
+        # type: (univention.admin.uldap.access, univention.admin.uldap.position, str, str | None) -> str
         # if rid is given, use it regardless of s4 connector
         if rid:
             searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
@@ -134,6 +138,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
                         num = str(int(num) + 1)
 
     def _ldap_addlist(self):
+        # type: () -> list[tuple[str, Any]]
         acctFlags = univention.admin.samba.acctFlags(flags={'I': 1})
 
         al = super(object, self)._ldap_addlist()
@@ -148,6 +153,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return al
 
     def _ldap_pre_modify(self):
+        # type: () -> None
         super(object, self)._ldap_pre_modify()
         if self.hasChanged('password'):
             if not self['password']:
@@ -158,6 +164,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
                 self.modifypassword = 1
 
     def _ldap_modlist(self):
+        # type: () -> list[tuple[str, Any, Any]]
         ml = super(object, self)._ldap_modlist()
 
         if self.hasChanged('name') and self['name']:
@@ -175,6 +182,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _ldap_pre_remove(self):
+        # type: () -> None
         super(object, self)._ldap_pre_remove()
         if self.oldattr.get('uid'):
             self.alloc.append(('uid', self.oldattr['uid'][0].decode('UTF-8')))
@@ -200,4 +208,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 
 
 def identify(dn, attr, canonical=False):
+    # type: (str, univention.admin.handlers._Attributes, bool) -> bool
     return b'sambaSamAccount' in attr.get('objectClass', []) and b'[I          ]' in attr.get('sambaAcctFlags', [])

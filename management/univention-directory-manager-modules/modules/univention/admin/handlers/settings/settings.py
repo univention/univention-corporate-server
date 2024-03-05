@@ -32,6 +32,8 @@
 
 """|UDM| module for all setting objects"""
 
+from typing import TYPE_CHECKING
+
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.settings.default
@@ -39,6 +41,11 @@ import univention.admin.handlers.settings.directory
 import univention.admin.handlers.settings.license
 import univention.admin.handlers.settings.usertemplate
 import univention.admin.localization
+
+
+if TYPE_CHECKING:
+    import univention.admin
+    import univention.admin.uldap
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
@@ -53,9 +60,8 @@ object_name_plural = _('Preferences')
 long_description = ''
 operations = ['search']
 virtual = True
-options = {}
-property_descriptions = {
-}
+options = {}  # type: dict[str, univention.admin.option]
+property_descriptions = {}  # type: dict[str, univention.admin.property]
 
 mapping = univention.admin.mapping.mapping()
 
@@ -65,6 +71,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+    # type: (None, univention.admin.uldap.access, str, str, univention.admin.handlers.simpleLdap | None, str, bool, bool, int, int) -> list[univention.admin.handlers.simpleLdap]
     return [
         obj
         for mod in (univention.admin.handlers.settings.directory, univention.admin.handlers.settings.default, univention.admin.handlers.settings.usertemplate, univention.admin.handlers.settings.license)
@@ -73,4 +80,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 
 
 def identify(dn, attr, canonical=False):
+    # type: (str, univention.admin.handlers._Attributes, bool) -> None
     pass

@@ -171,6 +171,7 @@ class object(univention.admin.handlers.simpleLdap):
                 raise univention.admin.uexceptions.valueInvalidSyntax(_('packageversion: Version must not be lower than the current one.'), property='packageversion')
 
     def _post_unmap(self, info, values):
+        # type: (univention.admin.handlers._Properties, univention.admin.handlers._Attributes) -> univention.admin.handlers._Properties
         info['messagecatalog'] = []
         messagecatalog_ldap_attribute = "univentionMessageCatalog"
         messagecatalog_ldap_attribute_and_tag_prefix = "%s;entry-lang-" % (messagecatalog_ldap_attribute,)

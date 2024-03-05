@@ -32,7 +32,7 @@
 
 """|UDM| module for |DNS| records"""
 
-from typing import Any, Dict, List, Text, Tuple  # noqa: F401
+from typing import Any  # noqa: F401
 
 import six
 from ldap.dn import str2dn
@@ -46,35 +46,34 @@ __path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore
 
 ARPA_IP4 = '.in-addr.arpa'
 ARPA_IP6 = '.ip6.arpa'
-Attr = Dict[str, List[bytes]]
 
 
-def is_dns(attr):  # type: (Attr) -> bool
+def is_dns(attr):  # type: (udm_handlers._Attributes) -> bool
     """Are the given LDAP attributes a DNS entry?"""
     return b'dNSZone' in attr.get('objectClass', [])
 
 
-def is_zone(attr):  # type: (Attr) -> bool
+def is_zone(attr):  # type: (udm_handlers._Attributes) -> bool
     """Are the given LDAP attributes a DNS zone entry?"""
     return bool(attr.get("sOARecord"))
 
 
-def is_reverse_zone(attr):  # type: (Attr) -> bool
+def is_reverse_zone(attr):  # type: (udm_handlers._Attributes) -> bool
     """Are the given LDAP attributes a DNS entry in a forward zone?"""
     return attr["zoneName"][0].decode("ASCII").endswith((ARPA_IP4, ARPA_IP6))
 
 
-def is_forward_zone(attr):  # type: (Attr) -> bool
+def is_forward_zone(attr):  # type: (udm_handlers._Attributes) -> bool
     """Are the given LDAP attributes a DNS entry in a reverse zone?"""
     return not is_reverse_zone(attr)
 
 
-def has_any(attr, *attrs):  # type: (Attr, *str) -> bool
+def has_any(attr, *attrs):  # type: (udm_handlers._Attributes, *str) -> bool
     """Are any of the named LDAP attributes present?"""
     return any(attr.get(a) for a in attrs)
 
 
-def is_not_handled_by_other_module_than(attr, module):  # type: (Attr, str) -> bool
+def is_not_handled_by_other_module_than(attr, module):  # type: (udm_handlers._Attributes, str) -> bool
     """Are the given LDAP attributes handled by the specified UDM module?"""
     mod = module.encode('ASCII')
     return mod in attr.get('univentionObjectType', [mod])
@@ -87,7 +86,7 @@ class DNSBase(udm_handlers.simpleLdap):
         co,  # type: None
         lo,  # type: univention.admin.uldap.access
         position,  # type: univention.admin.uldap.position | None
-        dn=u'',  # type: Text
+        dn=u'',  # type: str
         superordinate=None,  # type: udm_handlers.simpleLdap | None
         attributes=None,  # type: udm_handlers._Attributes | None
         update_zone=True,  # type: bool
@@ -130,7 +129,7 @@ class DNSBase(udm_handlers.simpleLdap):
         raise ValueError(dn)
 
     def _ldap_addlist(self):
-        # type: () -> List[Tuple[Text, Any]]
+        # type: () -> list[tuple[str, Any]]
         assert self.superordinate is not None
         zone = self._zone(self.superordinate)
         return super(DNSBase, self)._ldap_addlist() + [("zoneName", zone.encode("ASCII"))]
@@ -197,7 +196,7 @@ def escapeSOAemail(email):
 
 
 def stripDot(old, encoding=()):
-    # type: (List[str] | str | None, Tuple[str, ...]) -> str | None
+    # type: (list[str] | str | None, tuple[str, ...]) -> str | None
     """
     >>> stripDot(['example.com.', 'example.com'])
     ['example.com', 'example.com']

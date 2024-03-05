@@ -36,7 +36,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
-from univention.admin.handlers.dns import Attr, DNSBase, is_dns  # noqa: F401
+from univention.admin.handlers.dns import DNSBase, is_dns  # noqa: F401
 from univention.admin.layout import Group, Tab
 
 
@@ -95,6 +95,7 @@ layout = [
 
 
 def unmapName(old, encoding=()):
+    # type: (list[bytes], univention.admin.handlers._Encoding) -> list[str]
     items = old[0].decode(*encoding).split(u'.', 2)
     items[0] = items[0][1:]
     items[1] = items[1][1:]
@@ -102,6 +103,7 @@ def unmapName(old, encoding=()):
 
 
 def mapName(old, encoding=()):
+    # type: (list[str], univention.admin.handlers._Encoding) -> bytes
     if len(old) == 1:
         return old[0].encode(*encoding)
     if len(old) == 3 and old[2]:
@@ -110,6 +112,7 @@ def mapName(old, encoding=()):
 
 
 def unmapLocation(old, encoding=()):
+    # type: (list[bytes], univention.admin.handlers._Encoding) -> list[list[str]]
     return [
         i.decode(*encoding).split(u' ', 3)
         for i in old
@@ -117,6 +120,7 @@ def unmapLocation(old, encoding=()):
 
 
 def mapLocation(old, encoding=()):
+    # type: (list[list[str]], univention.admin.handlers._Encoding) -> list[bytes]
     return [
         u' '.join(i).encode(*encoding)
         for i in old
@@ -134,6 +138,7 @@ class object(DNSBase):
 
     @classmethod
     def unmapped_lookup_filter(cls):
+        # type: () -> univention.admin.filter.conjunction
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'dNSZone'),
             univention.admin.filter.expression('sRVRecord', '*', escape=False),
@@ -144,7 +149,8 @@ lookup = object.lookup
 lookup_filter = object.lookup_filter
 
 
-def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool
+def identify(dn, attr, canonical=False):
+    # type: (str, univention.admin.handlers._Attributes, bool) -> bool
     return bool(
         attr.get('sRVRecord')
         and is_dns(attr),

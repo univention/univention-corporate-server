@@ -32,6 +32,8 @@
 
 """|UDM| module for all mail objects"""
 
+from typing import TYPE_CHECKING
+
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.mail.domain
@@ -39,6 +41,11 @@ import univention.admin.handlers.mail.folder
 import univention.admin.handlers.mail.lists
 import univention.admin.localization
 from univention.admin.layout import Tab
+
+
+if TYPE_CHECKING:
+    import univention.admin
+    import univention.admin.uldap
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.mail')
@@ -55,7 +62,7 @@ long_description = ''
 operations = ['search']
 childmodules = ["mail/folder", "mail/domain", "mail/lists"]
 virtual = True
-options = {}
+options = {}  # type: dict[str, univention.admin.option]
 property_descriptions = {
     'name': univention.admin.property(
         short_description=_('Name'),
@@ -76,6 +83,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+    # type: (None, univention.admin.uldap.access, str, str, univention.admin.handlers.simpleLdap | None, str, bool, bool, int, int) -> list[univention.admin.handlers.simpleLdap]
     ret = []
     ret += univention.admin.handlers.mail.domain.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
     ret += univention.admin.handlers.mail.folder.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
@@ -84,4 +92,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 
 
 def identify(dn, attr, canonical=False):
+    # type: (str, univention.admin.handlers._Attributes, bool) -> None
     pass

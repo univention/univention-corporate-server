@@ -35,6 +35,7 @@
 from __future__ import absolute_import
 
 from logging import getLogger
+from typing import Any  # noqa: F401
 
 import univention.admin
 import univention.admin.filter
@@ -397,14 +398,14 @@ class object(univention.admin.handlers.simpleLdap):
             self.acquire_unique_dn()
 
     def _ldap_modlist(self):
-        # type: () -> list
+        # type: () -> list[tuple[str, Any, Any]]
         ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
         ml = self._modlist_display_name(ml)
         ml = self._modlist_univention_person(ml)
         return ml
 
     def _modlist_display_name(self, ml):
-        # type: (list) -> list
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         # update displayName automatically if no custom value has been entered by the user and the name changed
         if self.info.get('displayName') == self.oldinfo.get('displayName') and (self.info.get('firstname') != self.oldinfo.get('firstname') or self.info.get('lastname') != self.oldinfo.get('lastname')):
             prop_displayName = self.descriptions['displayName']
@@ -417,7 +418,7 @@ class object(univention.admin.handlers.simpleLdap):
         return ml
 
     def _modlist_univention_person(self, ml):
-        # type: (list) -> list
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         univention_person_property_names = ('birthday', 'country')
         if any(self.hasChanged(ikey) for ikey in univention_person_property_names):
             if any(self[ikey] for ikey in univention_person_property_names):
@@ -475,7 +476,7 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=False):
-    # type: (str, dict, bool) -> bool
+    # type: (str, univention.admin.handlers._Attributes, bool) -> bool
     # FIXME is this if block needed? copy pasted from users/user
     if b'0' in attr.get('uidNumber', []) or b'$' in attr.get('uid', [b''])[0] or b'univentionHost' in attr.get('objectClass', []) or b'functional' in attr.get('univentionObjectFlag', []):
         return False

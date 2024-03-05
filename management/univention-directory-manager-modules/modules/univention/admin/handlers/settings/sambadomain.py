@@ -46,6 +46,7 @@ _ = translation.translate
 
 
 def logonToChangePWMap(val):
+    # type: (str) -> bytes
     """
     'User must logon to change PW' behaves like an integer (at least
     to us), but must be stored as either 0 (allow) or 2 (disallow)
@@ -59,6 +60,7 @@ def logonToChangePWMap(val):
 
 
 def logonToChangePWUnmap(val):
+    # type: (list[bytes]) -> str
     if (val[0] == b"2"):
         return u"1"
     else:
@@ -234,6 +236,7 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def open(self):
+        # type: () -> None
         univention.admin.handlers.simpleLdap.open(self)
         if self.dn:
             # map domain domainPwdProperties bitfield to individual password attributes
@@ -246,14 +249,17 @@ class object(univention.admin.handlers.simpleLdap):
                 self['domainPasswordStoreCleartext'] = '1'
 
     def _ldap_pre_create(self):
+        # type: () -> None
         super(object, self)._ldap_pre_create()
         self.__update_password_properties()
 
     def _ldap_pre_modify(self):
+        # type: () -> None
         super(object, self)._ldap_pre_modify()
         self.__update_password_properties()
 
     def __update_password_properties(self):
+        # type: () -> None
         # DOMAIN_PASSWORD_COMPLEX 1 domainPasswordComplex -> univentionSamba4pwdProperties
         # DOMAIN_PASSWORD_NO_ANON_CHANGE 2 -> logonToChangePW -> sambaLogonToChgPwd
         # DOMAIN_PASSWORD_NO_CLEAR_CHANGE 4
@@ -286,6 +292,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     @classmethod
     def unmapped_lookup_filter(cls):
+        # type: () -> univention.admin.filter.conjunction
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'sambaDomain'),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionDomain')]),
@@ -297,4 +304,5 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=False):
+    # type: (str, univention.admin.handlers._Attributes, bool) -> bool
     return b'sambaDomain' in attr.get('objectClass', []) and b'univentionDomain' not in attr.get('objectClass', [])

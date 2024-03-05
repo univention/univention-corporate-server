@@ -34,7 +34,6 @@
 
 import re
 from logging import getLogger
-from typing import List, Tuple  # noqa: F401
 
 from ldap.filter import filter_format
 
@@ -173,11 +172,11 @@ layout = [
 ]
 
 
-_AVAILABLE_PRINTER_SCHEMAS = []  # type: List[str]
+_AVAILABLE_PRINTER_SCHEMAS = []  # type: list[str]
 
 
 def unmapPrinterURI(value, encoding=()):
-    # type: (List[bytes], Tuple[str, ...]) -> Tuple[str, str]
+    # type: (list[bytes], tuple[str, ...]) -> tuple[str, str]
     if not value:
         return (u'', u'')
     schema = u''
@@ -193,7 +192,7 @@ def unmapPrinterURI(value, encoding=()):
 
 
 def mapPrinterURI(value, encoding=()):
-    # type: (List[str], Tuple[str, ...]) -> bytes
+    # type: (list[str], tuple[str, ...]) -> bytes
     return u''.join(value).encode(*encoding)
 
 

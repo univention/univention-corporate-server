@@ -32,7 +32,7 @@
 
 """|UDM| policy utilities"""
 
-from typing import Any, Dict, Tuple  # noqa: F401
+from typing import Any  # noqa: F401
 
 import univention.admin.localization
 import univention.admin.syntax
@@ -63,7 +63,7 @@ def policy_object_tab():
 
 
 def requiredObjectClassesProperty(**kwargs):
-    # type: (**Any) -> Tuple[str, univention.admin.property]
+    # type: (**Any) -> tuple[str, univention.admin.property]
     pargs = {
         "short_description": _('Required object class'),
         "long_description": '',
@@ -75,7 +75,7 @@ def requiredObjectClassesProperty(**kwargs):
 
 
 def prohibitedObjectClassesProperty(**kwargs):
-    # type: (**Any) -> Tuple[str, univention.admin.property]
+    # type: (**Any) -> tuple[str, univention.admin.property]
     pargs = {
         "short_description": _('Excluded object class'),
         "long_description": '',
@@ -87,7 +87,7 @@ def prohibitedObjectClassesProperty(**kwargs):
 
 
 def fixedAttributesProperty(**kwargs):
-    # type: (**Any) -> Tuple[str, univention.admin.property]
+    # type: (**Any) -> tuple[str, univention.admin.property]
     pargs = {
         "short_description": _('Fixed attribute'),
         "long_description": '',
@@ -98,7 +98,7 @@ def fixedAttributesProperty(**kwargs):
 
 
 def emptyAttributesProperty(**kwargs):
-    # type: (**Any) -> Tuple[str, univention.admin.property]
+    # type: (**Any) -> tuple[str, univention.admin.property]
     pargs = {
         "short_description": _('Empty attribute'),
         "long_description": '',
@@ -109,7 +109,7 @@ def emptyAttributesProperty(**kwargs):
 
 
 def ldapFilterProperty(**kwargs):
-    # type: (**Any) -> Tuple[str, univention.admin.property]
+    # type: (**Any) -> tuple[str, univention.admin.property]
     pargs = {
         "short_description": _('LDAP filter'),
         "long_description": _('This policy applies only to objects which matches this LDAP filter.'),

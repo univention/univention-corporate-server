@@ -32,7 +32,7 @@
 """|UDM| functions to parse, modify and create |LDAP| style search filters"""
 
 import re
-from typing import Callable, Iterator, List, Match, Optional, Sequence, TypeVar, Union  # noqa: F401
+from typing import Callable, Iterator, Match, Sequence, TypeVar  # noqa: F401
 
 import six
 from ldap.filter import filter_format
@@ -49,7 +49,7 @@ class conjunction(object):
     OPS = frozenset({'&', '|', '!'})
 
     def __init__(self, type, expressions):
-        # type: (str, List[Union[conjunction, expression]]) -> None
+        # type: (str, list[conjunction | expression]) -> None
         """
         Create LDAP filter conjunction or disjunction.
 
@@ -118,7 +118,7 @@ class conjunction(object):
         return '%s(%r, %r)' % (self.__class__.__name__, self.type, self.expressions)
 
     def append_unmapped_filter_string(self, filter_s, rewrite_function, mapping):
-        # type: (Optional[str], Callable[[expression, Optional[T]], None], T) -> None
+        # type: (str | None, Callable[[expression, T | None], None], T) -> None
         if filter_s:
             filter_p = parse(filter_s)
             walk(filter_p, rewrite_function, arg=mapping)
@@ -220,7 +220,7 @@ class expression(object):
 
 
 def parse(filter_s, begin=0, end=-1):
-    # type: (Union[conjunction, expression, str], int, int) -> Union[conjunction, expression]
+    # type: (conjunction | expression | str, int, int) -> conjunction | expression
     r"""
     Parse LDAP filter string.
 
@@ -290,7 +290,7 @@ def parse(filter_s, begin=0, end=-1):
 
 
 def walk(filter_p, expression_walk_function=None, conjunction_walk_function=None, arg=None):
-    # type: (Union[conjunction, expression], Optional[Callable[[expression, Optional[T]], None]], Optional[Callable[[conjunction, Optional[T]], None]], Optional[T]) -> None
+    # type: (conjunction | expression, Callable[[expression, T | None], None] | None, Callable[[conjunction, T | None], None] | None, T | None) -> None
     """
     Walk LDAP filter expression tree.
 

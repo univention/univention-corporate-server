@@ -32,6 +32,8 @@
 
 """|UDM| module for the IP clients"""
 
+from typing import TYPE_CHECKING, Any  # noqa: F401
+
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
@@ -44,6 +46,12 @@ import univention.admin.uldap
 from univention.admin import nagios
 from univention.admin.certificate import PKIIntegration, pki_option, pki_properties, pki_tab, register_pki_mapping
 from univention.admin.layout import Group, Tab
+
+
+if TYPE_CHECKING:
+    import ldap.controls  # noqa: F401
+
+    import univention.admin.handlers.dns.alias
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
@@ -194,11 +202,20 @@ nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, opti
 class object(univention.admin.handlers.simpleComputer, nagios.Support, PKIIntegration):
     module = module
 
-    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
+    def __init__(
+        self,
+        co,  # type: None
+        lo,  # type: univention.admin.uldap.access
+        position,  # type: univention.admin.uldap.position | None
+        dn=u'',  # type: str
+        superordinate=None,  # type: univention.admin.handlers.simpleLdap | None
+        attributes=None,  # type: univention.admin.handlers._Attributes | None
+    ):  # type: (...) -> None
         univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)
         nagios.Support.__init__(self)
 
     def open(self):
+        # type: () -> None
         self.pki_open()
         univention.admin.handlers.simpleComputer.open(self)
         self.nagios_open()
@@ -209,41 +226,50 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support, PKIIntegr
         self.save()
 
     def _ldap_pre_create(self):
+        # type: () -> None
         super(object, self)._ldap_pre_create()
         self.nagios_ldap_pre_create()
 
     def _ldap_addlist(self):
+        # type: () -> list[tuple[str, Any]]
         al = super(object, self)._ldap_addlist()
         return al + [('objectClass', [b'top', b'univentionHost', b'univentionClient', b'person'])]
 
     def _ldap_post_create(self):
+        # type: () -> None
         univention.admin.handlers.simpleComputer._ldap_post_create(self)
         self.nagios_ldap_post_create()
 
     def _ldap_post_remove(self):
+        # type: () -> None
         self.nagios_ldap_post_remove()
         univention.admin.handlers.simpleComputer._ldap_post_remove(self)
 
     def _ldap_post_modify(self):
+        # type: () -> None
         univention.admin.handlers.simpleComputer._ldap_post_modify(self)
         self.nagios_ldap_post_modify()
 
     def _ldap_pre_modify(self):
+        # type: () -> None
         univention.admin.handlers.simpleComputer._ldap_pre_modify(self)
         self.nagios_ldap_pre_modify()
 
     def _ldap_modlist(self):
+        # type: () -> list[tuple[str, Any, Any]]
         ml = univention.admin.handlers.simpleComputer._ldap_modlist(self)
         self.nagios_ldap_modlist(ml)
         return ml
 
     def cleanup(self):
+        # type: () -> None
         self.open()
         self.nagios_cleanup()
         univention.admin.handlers.simpleComputer.cleanup(self)
 
 
 def rewrite(filter, mapping):
+    # type: (univention.admin.filter.expression, univention.admin.mapping.mapping) -> None
     if filter.variable == 'ip':
         filter.variable = 'aRecord'
     else:
@@ -251,6 +277,7 @@ def rewrite(filter, mapping):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
+    # type: (None, univention.admin.uldap.access, str, str, univention.admin.handlers.simpleLdap | None, str, bool, bool, int, int, list[ldap.controls.LDAPControl] | None, dict | None) -> list[univention.admin.handlers.simpleLdap]
     res = []
     filter_s = univention.admin.filter.replace_fqdn_filter(filter_s)
     filter_s = univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
@@ -271,4 +298,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 
 
 def identify(dn, attr, canonical=False):
+    # type: (str, univention.admin.handlers._Attributes, bool) -> bool
     return b'univentionHost' in attr.get('objectClass', []) and b'univentionClient' in attr.get('objectClass', []) and b'posixAccount' not in attr.get('objectClass', [])

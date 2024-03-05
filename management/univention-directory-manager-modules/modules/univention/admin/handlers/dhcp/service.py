@@ -87,13 +87,22 @@ add_dhcp_options(__name__)
 class object(DHCPBase):
     module = module
 
-    def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
+    def __init__(
+        self,
+        co,  # type: None
+        lo,  # type: univention.admin.uldap.access
+        position,  # type: univention.admin.uldap.position | None
+        dn=u'',  # type: str
+        superordinate=None,  # type: univention.admin.handlers.simpleLdap | None
+        attributes=None,  # type: univention.admin.handlers._Attributes | None
+    ):  # type: (...) -> None
         univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
         if not self.dn and not self.position:
             raise univention.admin.uexceptions.insufficientInformation(_('Neither DN nor position given.'))
 
     @staticmethod
     def unmapped_lookup_filter():
+        # type: () -> univention.admin.filter.conjunction
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.conjunction('|', [
                 univention.admin.filter.expression('objectClass', 'dhcpService'),
@@ -103,6 +112,7 @@ class object(DHCPBase):
 
 
 def identify(dn, attr):
+    # type: (str, univention.admin.handlers._Attributes) -> bool
     return b'dhcpService' in attr.get('objectClass', []) \
         or b'univentionDhcpService' in attr.get('objectClass', [])
 

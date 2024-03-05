@@ -35,7 +35,7 @@
 import hashlib
 import re
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional  # noqa: F401
+from typing import TYPE_CHECKING, Any, Iterable  # noqa: F401
 
 import ldap
 from dateutil.relativedelta import relativedelta
@@ -68,7 +68,7 @@ def hash_blocklist_value(value):  # type: (bytes) -> str
 
 
 def parse_timedelta(timedelta_string):
-    # type: (str) -> Optional[relativedelta]
+    # type: (str) -> relativedelta | None
     """
     Parse time delta.
 
@@ -83,7 +83,7 @@ def parse_timedelta(timedelta_string):
 
 @univention.admin._ldap_cache(ttl=120)
 def get_blocklist_config(lo):
-    # type: (univention.admin.uldap.access) -> Dict
+    # type: (univention.admin.uldap.access) -> dict
     config = {}
     try:
         for blist in univention.admin.handlers.blocklists.list.lookup(None, lo, 'entryUUID=*', base=BLOCKLIST_BASE, scope='one'):
@@ -98,7 +98,7 @@ def get_blocklist_config(lo):
 
 
 def get_blocking_udm_properties(udm_obj):
-    # type: (univention.admin.handlers.simpleLdap) -> Dict
+    # type: (univention.admin.handlers.simpleLdap) -> dict
     config = get_blocklist_config(udm_obj.lo_machine_primary)
     return config.get(udm_obj.module, {})
 
@@ -118,7 +118,7 @@ def blocklist_enabled(udm_obj):
 
 
 def get_blocklist_values_from_udm_property(udm_property_value, udm_property_name):
-    # type: (Any, str) -> List[Any]
+    # type: (Any, str) -> list[Any]
     if isinstance(udm_property_value, (str, unicode)):
         return [udm_property_value]
     if not isinstance(udm_property_value, list) or not all(isinstance(mem, (str, unicode)) for mem in udm_property_value):
@@ -127,7 +127,7 @@ def get_blocklist_values_from_udm_property(udm_property_value, udm_property_name
 
 
 def create_blocklistentry(udm_obj):
-    # type: (univention.admin.handlers.simpleLdap) -> List
+    # type: (univention.admin.handlers.simpleLdap) -> list
     if not blocklist_enabled(udm_obj):
         return []
     blocklist_entries = []

@@ -32,12 +32,18 @@
 
 """|UDM| module for all |blocklist| objects"""
 
+from typing import TYPE_CHECKING, Any  # noqa: F401
 
 import univention.admin.blocklist
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 from univention.admin.layout import Tab
+
+
+if TYPE_CHECKING:
+    import univention.admin
+    import univention.admin.uldap
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.blocklists')
@@ -54,7 +60,7 @@ long_description = _('Manage the blocklists')
 operations = ['search']
 childmodules = ['blocklists/list']
 virtual = True
-options = {}
+options = {}  # type: dict[str, univention.admin.option]
 property_descriptions = {
     'name': univention.admin.property(
         short_description=_('Name'),
@@ -75,6 +81,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+    # type: (None, univention.admin.uldap.access, str, str, univention.admin.handlers.simpleLdap | None, str, bool, bool, int, int) -> list[univention.admin.handlers.simpleLdap]
     ret = []
     blocklistentry_filter = None
     blocklist_filter = None
@@ -87,4 +94,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 
 
 def identify(dn, attr, canonical=False):
+    # type: (str, univention.admin.handlers._Attributes, bool) -> None
     pass

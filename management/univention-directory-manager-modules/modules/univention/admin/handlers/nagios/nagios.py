@@ -33,11 +33,18 @@
 
 """|UDM| module for all nagios settings"""
 
+from typing import TYPE_CHECKING
+
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.nagios.service
 import univention.admin.handlers.nagios.timeperiod
 import univention.admin.localization
+
+
+if TYPE_CHECKING:
+    import univention.admin
+    import univention.admin.uldap
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.nagios')
@@ -56,7 +63,7 @@ object_name_plural = _('Nagios objects')
 long_description = ''
 operations = ['search']
 virtual = True
-options = {}
+options = {}  # type: dict[str, univention.admin.option]
 
 property_descriptions = {
     'name': univention.admin.property(
@@ -79,8 +86,10 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+    # type: (None, univention.admin.uldap.access, str, str, univention.admin.handlers.simpleLdap | None, str, bool, bool, int, int) -> list[univention.admin.handlers.simpleLdap]
     return univention.admin.handlers.nagios.service.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.nagios.timeperiod.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 
 
 def identify(dn, attr, canonical=False):
+    # type: (str, univention.admin.handlers._Attributes, bool) -> None
     pass

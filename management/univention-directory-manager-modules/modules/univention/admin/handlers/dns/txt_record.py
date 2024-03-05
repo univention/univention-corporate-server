@@ -37,7 +37,7 @@ import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
 from univention.admin.handlers.dns import (  # noqa: F401
-    ARPA_IP4, ARPA_IP6, Attr, DNSBase, has_any, is_dns, is_forward_zone, is_not_handled_by_other_module_than, is_zone,
+    ARPA_IP4, ARPA_IP6, DNSBase, has_any, is_dns, is_forward_zone, is_not_handled_by_other_module_than, is_zone,
 )
 from univention.admin.layout import Group, Tab
 
@@ -108,6 +108,7 @@ class object(DNSBase):
 
     @classmethod
     def unmapped_lookup_filter(cls):
+        # type: () -> univention.admin.filter.conjunction
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'dNSZone'),
             univention.admin.filter.expression('tXTRecord', '*', escape=False),
@@ -126,7 +127,8 @@ lookup = object.lookup
 lookup_filter = object.lookup_filter
 
 
-def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool
+def identify(dn, attr, canonical=False):
+    # type: (str, univention.admin.handlers._Attributes, bool) -> bool
     return bool(
         attr.get('tXTRecord')
         and is_dns(attr)

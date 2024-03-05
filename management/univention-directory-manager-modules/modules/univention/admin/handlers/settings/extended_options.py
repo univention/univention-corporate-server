@@ -33,6 +33,7 @@
 """|UDM| module for extended options"""
 
 from logging import getLogger
+from typing import Any  # noqa: F401
 
 import univention.admin.filter
 import univention.admin.handlers
@@ -157,6 +158,7 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def open(self):
+        # type: () -> None
         """Load and parse translations."""
         univention.admin.handlers.simpleLdap.open(self)
 
@@ -173,6 +175,7 @@ class object(univention.admin.handlers.simpleLdap):
         self.save()
 
     def _ldap_modlist(self):
+        # type: () -> list[tuple[str, Any, Any]]
         """Save translations."""
         ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 

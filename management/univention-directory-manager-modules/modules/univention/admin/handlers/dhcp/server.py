@@ -32,6 +32,8 @@
 
 """|UDM| module for |DHCP| servers"""
 
+from typing import Any  # noqa: F401
+
 from ldap.filter import filter_format
 
 import univention.admin.filter
@@ -89,6 +91,7 @@ class object(DHCPBase):
     module = module
 
     def _ldap_addlist(self):
+        # type: () -> list[tuple[str, Any]]
         searchBase = self.position.getDomain()
         if self.lo.searchDn(base=searchBase, filter=filter_format('(&(objectClass=dhcpServer)(cn=%s))', [self.info['server']])):
             raise univention.admin.uexceptions.dhcpServerAlreadyUsed(self.info['server'])
@@ -99,6 +102,7 @@ class object(DHCPBase):
         ]
 
     def _ldap_post_move(self, olddn):
+        # type: (str) -> None
         """edit dhcpServiceDN"""
         super(object, self)._ldap_post_move(olddn)
         oldServiceDN = self.lo.getAttr(self.dn, 'dhcpServiceDN')
@@ -109,6 +113,7 @@ class object(DHCPBase):
 
     @classmethod
     def lookup_filter_superordinate(cls, filter, superordinate):
+        # type: (univention.admin.filter.conjunction, univention.admin.handlers.simpleLdap) -> univention.admin.filter.conjunction
         filter.expressions.append(univention.admin.filter.expression('dhcpServiceDN', superordinate.dn, escape=True))
         return filter
 

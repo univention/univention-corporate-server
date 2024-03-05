@@ -39,9 +39,7 @@ import re
 import sys
 import time
 from logging import getLogger
-from typing import (  # noqa: F401
-    TYPE_CHECKING, Any, Callable, Container, Iterable, List, Match, Optional, Tuple, Type, Union,
-)
+from typing import TYPE_CHECKING, Any, Callable, Container, Iterable, Match, Type  # noqa: F401
 
 import six
 import unidecode
@@ -130,10 +128,10 @@ def pattern_replace(pattern, object):
     Replaces patterns like `<attribute:command,...>[range]` with values
     of the specified UDM attribute.
     """
-    global_commands = []  # type: List[str]
+    global_commands = []  # type: list[str]
 
     def modify_text(text, commands):
-        # type: (str, List[str]) -> str
+        # type: (str, list[str]) -> str
         # apply all string commands
         for iCmd in commands:
             if iCmd == 'lower':
@@ -218,18 +216,18 @@ class property:
             self,
             short_description='',  # type: str
             long_description='',  # type: str
-            syntax=None,  # type: Union[Type, Any]
+            syntax=None,  # type: Type | Any
             module_search=None,  # type: None
             multivalue=False,  # type: bool
             one_only=False,  # type: bool
             parent=None,  # type: None
-            options=[],  # type: List[str]
-            license=[],  # type: List[str]
+            options=[],  # type: list[str]
+            license=[],  # type: list[str]
             required=False,  # type: bool
             may_change=True,  # type: bool
             identifies=False,  # type: bool
             unique=False,  # type: bool
-            default=None,  # type: Union[None, bool, int, str, List[str], Tuple[Any, List[str]], Tuple[Callable, List[str], Any]]
+            default=None,  # type: bool | int | str | list[str] | tuple[Any, list[str]] | tuple[Callable, list[str], Any] | None
             prevent_umc_default_popup=False,  # type: bool
             dontsearch=False,  # type: bool
             show_in_lists=True,  # type: bool
@@ -240,9 +238,9 @@ class property:
             include_in_default_search=False,  # type: bool
             nonempty_is_default=False,  # type: bool
             readonly_when_synced=False,  # type: bool
-            size=None,  # type: Optional[str]
+            size=None,  # type: str | None
             copyable=False,  # type: bool
-            type_class=None,  # type: Optional[Type[TypeHint]]
+            type_class=None,  # type: Type[TypeHint] | None
     ):  # type: (...) -> None
         """
         |UDM| property.
@@ -299,7 +297,7 @@ class property:
         self.editable = editable
         self.configObjectPosition = configObjectPosition
         self.configAttributeName = configAttributeName
-        self.templates = []  # type: List  # univention.admin.handlers.simpleLdap
+        self.templates = []  # type: list  # univention.admin.handlers.simpleLdap
         self.include_in_default_search = include_in_default_search
         self.threshold = int(configRegistry.get('directory/manager/web/sizelimit', '2000') or 2000)
         self.nonempty_is_default = nonempty_is_default
@@ -309,7 +307,7 @@ class property:
         self.type_class = type_class
 
     def new(self):
-        # type: () -> Union[List[str], None]
+        # type: () -> list[str] | None
         return [] if self.multivalue else None
 
     def _replace(self, res, object):
@@ -317,7 +315,7 @@ class property:
 
     def default(self, object):
         # type: (univention.admin.handlers.simpleLdap) -> Any
-        base_default = copy.copy(self.base_default)  # type: Union[None, bool, int, str, List[str], Tuple[Any, List[str]], Tuple[Callable, List[str], Any]]
+        base_default = copy.copy(self.base_default)  # type: bool | int | str | list[str] | tuple[Any, list[str]] | tuple[Callable, list[str], Any] | None
         if not object.set_defaults:
             return [] if self.multivalue else ''
 
@@ -397,7 +395,7 @@ class option(object):
     """|UDM| option to make properties conditional."""
 
     def __init__(self, short_description='', long_description='', default=0, editable=False, disabled=False, objectClasses=None, is_app_option=False):
-        # type: (str, str, int, bool, bool, Optional[Iterable[str]], bool) -> None
+        # type: (str, str, int, bool, bool, Iterable[str] | None, bool) -> None
         self.short_description = short_description
         self.long_description = long_description
         self.default = default
@@ -416,7 +414,7 @@ class option(object):
 
 
 def ucr_overwrite_layout(module, ucr_property, tab):
-    # type: (Any, str, Tab) -> Optional[bool]
+    # type: (Any, str, Tab) -> bool | None
     """Overwrite the advanced setting in the layout"""
     desc = tab['name']
     if hasattr(tab['name'], 'data'):
@@ -609,7 +607,7 @@ if six.PY2:  # deprecated, use layout.Group instead
 class policiesGroup:
 
     def __init__(self, id, short_description=None, long_description='', members=[]):
-        # type: (Any, Optional[str], str, Any) -> None
+        # type: (Any, str | None, str, Any) -> None
         self.id = id
         if short_description is None:
             self.short_description = id

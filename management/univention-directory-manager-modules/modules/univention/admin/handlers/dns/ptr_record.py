@@ -39,7 +39,7 @@ import univention.admin
 import univention.admin.handlers
 import univention.admin.localization
 from univention.admin.filter import conjunction, expression
-from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6, Attr, DNSBase, is_dns  # noqa: F401
+from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6, DNSBase, is_dns  # noqa: F401
 from univention.admin.layout import Group, Tab
 
 
@@ -201,12 +201,14 @@ class object(DNSBase):
 
     @classmethod
     def lookup_filter_superordinate(cls, filter, superordinate):
+        # type: (univention.admin.filter.conjunction, univention.admin.handlers.simpleLdap) -> univention.admin.filter.conjunction
         super(object, cls).lookup_filter_superordinate(filter, superordinate)
         filter = rewrite_rev(filter, superordinate.info['subnet'])
         return filter
 
     @classmethod
     def unmapped_lookup_filter(cls):
+        # type: () -> univention.admin.filter.conjunction
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'dNSZone'),
             univention.admin.filter.expression('pTRRecord', '*', escape=False),
@@ -267,7 +269,8 @@ lookup = object.lookup
 lookup_filter = object.lookup_filter
 
 
-def identify(dn, attr):  # type: (str, Attr) -> bool
+def identify(dn, attr):
+    # type: (str, univention.admin.handlers._Attributes) -> bool
     return bool(
         attr.get('pTRRecord')
         and is_dns(attr),

@@ -269,30 +269,36 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def open(self):
+        # type: () -> None
         super(object, self).open()
         if self.exists():
             self['portalComputers'] = self.lo.searchDn(filter=filter_format('(&(objectClass=univentionPortalComputer)(univentionComputerPortal=%s))', [self.dn]))
         self.save()
 
     def _ldap_pre_create(self):
+        # type: () -> None
         super(object, self)._ldap_pre_create()
         self.__update_deprecated_property__portal_entries_order__of__self()
 
     def _ldap_pre_modify(self):
+        # type: () -> None
         super(object, self)._ldap_pre_modify()
         self.__update_deprecated_property__portal_entries_order__of__self()
 
     def _ldap_post_create(self):
+        # type: () -> None
         super(object, self)._ldap_post_create()
         self.__update_portal_computers()
         self.__update_deprecated_property__portal__of__portal_entry()
 
     def _ldap_post_modify(self):
+        # type: () -> None
         super(object, self)._ldap_post_modify()
         self.__update_portal_computers()
         self.__update_deprecated_property__portal__of__portal_entry()
 
     def __update_deprecated_property__portal_entries_order__of__self(self):
+        # type: () -> None
         # Use the order of the settings/portal_entry objects in the 'content' property
         # for the deprecated 'portalEntriesOrder' property.
         # Be aware that 'portalEntriesOrder' will not get updated if
@@ -315,6 +321,7 @@ class object(univention.admin.handlers.simpleLdap):
             self['portalEntriesOrder'] = new_order_no_duplicates
 
     def __update_portal_computers(self):
+        # type: () -> None
         if self.exists():
             # case coming from _ldap_post_modify
             old_portal_computers = self.oldinfo.get('portalComputers', [])
@@ -356,6 +363,7 @@ class object(univention.admin.handlers.simpleLdap):
                 compobj.modify()
 
     def __update_deprecated_property__portal__of__portal_entry(self):
+        # type: () -> None
         # Remove this portal from the 'portal' property of settings/portal_entry objects
         # if they were removed from the 'content' property.
         # Add this portal if they were added to 'content'.
@@ -401,6 +409,7 @@ class object(univention.admin.handlers.simpleLdap):
                     entry_obj.modify()
 
     def _ldap_post_remove(self):
+        # type: () -> None
         super(object, self)._ldap_post_remove()
         for obj in univention.admin.modules.lookup('settings/portal_entry', None, self.lo, scope='sub', filter=filter_format('portal=%s', [self.dn])):
             obj.open()
@@ -408,6 +417,7 @@ class object(univention.admin.handlers.simpleLdap):
             obj.modify()
 
     def _ldap_post_move(self, olddn):
+        # type: (str) -> None
         super(object, self)._ldap_post_move(olddn)
         for obj in univention.admin.modules.lookup('settings/portal_entry', None, self.lo, scope='sub', filter=filter_format('portal=%s', [olddn])):
             obj.open()

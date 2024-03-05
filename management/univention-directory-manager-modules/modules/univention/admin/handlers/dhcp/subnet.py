@@ -112,6 +112,7 @@ class object(DHCPBaseSubnet):
 
     @staticmethod
     def unmapped_lookup_filter():
+        # type: () -> univention.admin.filter.conjunction
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'univentionDhcpSubnet'),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionDhcpSharedSubnet')]),
@@ -119,6 +120,7 @@ class object(DHCPBaseSubnet):
 
 
 def identify(dn, attr):
+    # type: (str, univention.admin.handlers._Attributes) -> bool
     return b'univentionDhcpSubnet' in attr.get('objectClass', []) and b'univentionDhcpSharedSubnet' not in attr.get('objectClass', [])
 
 

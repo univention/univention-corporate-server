@@ -40,7 +40,7 @@ import importlib
 import locale
 import os
 from logging import getLogger
-from typing import Any, Dict, List, Optional, Set, Text, Union, overload  # noqa: F401
+from typing import Any, Text, Union, overload  # noqa: F401
 
 import ldap
 import six
@@ -63,37 +63,38 @@ try:
     class UdmModule(Protocol):
         module = ''  # type: str
         childs = False  # type: bool
-        operations = []  # type: List[str]
+        childmodules = []  # type: list[str]
+        operations = []  # type: list[str]
         short_description = ''  # type: str
         object_name = ''  # type: str
         object_name_plural = ''  # type: str
         long_description = ''  # type: str
-        options = {}  # type: Dict[str, univention.admin.option]
-        property_descriptions = {}  # type: Dict[str, univention.admin.property]
-        default_property_descriptions = {}  # type: Dict[str, univention.admin.property]
-        policy_apply_to = []  # type: List[str]
+        options = {}  # type: dict[str, univention.admin.option]
+        property_descriptions = {}  # type: dict[str, univention.admin.property]
+        default_property_descriptions = {}  # type: dict[str, univention.admin.property]
+        policy_apply_to = []  # type: list[str]
         policy_position_dn_prefix = ''  # type: str
         policy_oc = ''  # type: str
         docleanup = False  # type: bool
-        layout = []  # type: List[Tab]
+        layout = []  # type: list[Tab]
         mapping = None  # type: univention.admin.mapping.mapping
         initialized = False  # type: bool
-        extended_attribute_tabnames = []  # type: List[str]
-        extended_udm_attributes = []  # type: List[univention.admin.extended_attribute]
+        extended_attribute_tabnames = []  # type: list[str]
+        extended_udm_attributes = []  # type: list[univention.admin.extended_attribute]
 
         class object:
             def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):
-                # type: (None, univention.admin.uldap.access, univention.admin.uldap.position, Text, Optional[univention.admin.handlers.simpleLdap], Optional[univention.admin.handlers._Attributes]) -> None
+                # type: (None, univention.admin.uldap.access, univention.admin.uldap.position, Text, univention.admin.handlers.simpleLdap | None, univention.admin.handlers._Attributes | None) -> None
                 pass
 
         @staticmethod
         def identify(dn, attr):
-            # type: (str, Dict[str, List[Any]]) -> bool
+            # type: (str, dict[str, list[Any]]) -> bool
             pass
 
         @staticmethod
         def lookup(co, lo, filter='', base='', superordinate=None, scope='base+one', unique=False, required=False, timeout=-1, sizelimit=0):
-            # type: (None, univention.admin.uldap.access, str, str, Any, str, bool, bool, int, int) -> List[Any]
+            # type: (None, univention.admin.uldap.access, str, str, Any, str, bool, bool, int, int) -> list[Any]
             pass
 
         @staticmethod
@@ -110,15 +111,15 @@ log = getLogger('ADMIN')
 translation = localization.translation('univention/admin')
 _ = translation.translate
 
-modules = {}  # type: Dict[str, UdmModule]
+modules = {}  # type: dict[str, UdmModule]
 """Mapping from module name to Python module."""
-_superordinates = set()  # type: Set[str]
+_superordinates = set()  # type: set[str]
 """List of all module names (strings) that are _superordinates."""
-containers = []  # type: List[UdmModule]
+containers = []  # type: list[UdmModule]
 
 
 @univention.admin._ldap_cache(ttl=3600)
-def _ldap_operational_attribute_names(lo):  # type: (univention.admin.uldap.access) -> Set[str]
+def _ldap_operational_attribute_names(lo):  # type: (univention.admin.uldap.access) -> set[str]
     schema = lo.get_schema()
     attrs = [schema.get_obj(ldap.schema.models.AttributeType, x) for x in schema.listall(ldap.schema.models.AttributeType)]
     usages = [ldap.schema.models.AttributeUsage[o] for o in ('directoryoperation', 'dsaoperation', 'distributedoperation')]
@@ -129,15 +130,15 @@ def update():
     # type: () -> None
     """Scan file system and update internal list of |UDM| handler modules."""
     global modules, _superordinates
-    _modules = {}  # type: Dict[str, UdmModule]
-    superordinates = set()  # type: Set[str]
+    _modules = {}  # type: dict[str, UdmModule]
+    superordinates = set()  # type: set[str]
 
     # since last update(), syntax.d and hooks.d may have changed (Bug #31154)
     univention.admin.syntax.import_syntax_files()
     univention.admin.hook.import_hook_files()
 
     def _walk(root, dir, files):
-        # type: (str, str, List[str]) -> None
+        # type: (str, str, list[str]) -> None
         for file in files:
             if not file.endswith('.py') or file.startswith('__'):
                 continue
@@ -174,12 +175,12 @@ def get(module):
 
 @overload
 def get(module):
-    # type: (str) -> Optional[UdmModule]
+    # type: (str) -> UdmModule | None
     pass
 
 
 def get(module):
-    # type: (UdmName) -> Optional[UdmModule]
+    # type: (UdmName) -> UdmModule | None
     """
     Get |UDM| module.
 
@@ -202,12 +203,12 @@ def get_module(module):
 
 @overload
 def get_module(module):
-    # type: (str) -> Optional[UdmModule]
+    # type: (str) -> UdmModule | None
     pass
 
 
 def get_module(module):
-    # type: (UdmName) -> Optional[UdmModule]
+    # type: (UdmName) -> UdmModule | None
     """
     interim function, must only be used by `univention-directory-manager-modules`!
 
@@ -223,7 +224,7 @@ def get_module(module):
 
 
 def init(lo, position, module, template_object=None, force_reload=False):
-    # type: (univention.admin.uldap.access, univention.admin.uldap.position, UdmModule, Optional[univention.admin.handlers.simpleLdap], bool) -> None
+    # type: (univention.admin.uldap.access, univention.admin.uldap.position, UdmModule, univention.admin.handlers.simpleLdap | None, bool) -> None
     """
     Initialize |UDM| handler module.
 
@@ -338,7 +339,7 @@ class EA_Layout(dict):
 
     @property
     def overwrite(self):
-        # type: () -> Optional[str]
+        # type: () -> str | None
         return self.get('overwrite', None)
 
     @property
@@ -401,8 +402,8 @@ def update_extended_attributes(lo, module, position):
         module.extended_attribute_tabnames = []
 
     # append UDM extended attributes
-    properties4tabs = {}  # type: Dict[str, List[EA_Layout]]
-    overwriteTabList = []  # type: List[str]
+    properties4tabs = {}  # type: dict[str, list[EA_Layout]]
+    overwriteTabList = []  # type: list[str]
     module.extended_udm_attributes = []
 
     module_filter = filter_format('(univentionUDMPropertyModule=%s)', [name(module)])
@@ -517,7 +518,7 @@ def update_extended_attributes(lo, module, position):
             # in the first generation of extended attributes of version 2
             # this field was a position defining the attribute to
             # overwrite. now it is the name of the attribute to overwrite
-            overwriteProp = attrs.get('univentionUDMPropertyLayoutOverwritePosition', [b''])[0].decode('UTF-8', 'replace')  # type: Optional[str]
+            overwriteProp = attrs.get('univentionUDMPropertyLayoutOverwritePosition', [b''])[0].decode('UTF-8', 'replace')  # type: str | None
             if overwriteProp == '0':
                 overwriteProp = None
             deleteObjectClass = (attrs.get('univentionUDMPropertyDeleteObjectClass', [b'0'])[0].upper() in [b'1', b'TRUE'])
@@ -679,7 +680,7 @@ def update_extended_attributes(lo, module, position):
 
 
 def identify(dn, attr, module_name='', canonical=0, module_base=None):
-    # type: (str, Dict[str, List[Any]], str, int, Optional[str]) -> List[UdmModule]
+    # type: (str, dict[str, list[Any]], str, int, str | None) -> list[UdmModule]
     """
     Return list of |UDM| handlers capable of handling the given |LDAP| object.
 
@@ -711,7 +712,7 @@ def identify(dn, attr, module_name='', canonical=0, module_base=None):
 
 
 def identifyOne(dn, attr, type=''):
-    # type: (str, Dict[str, List[Any]], str) -> Optional[UdmModule]
+    # type: (str, dict[str, list[Any]], str) -> UdmModule | None
     """
     Return the |UDM| handler capable of handling the given |LDAP| object.
 
@@ -728,7 +729,7 @@ def identifyOne(dn, attr, type=''):
 
 
 def recognize(module_name, dn, attr):
-    # type: (str, str, Dict[str, List[Any]]) -> bool
+    # type: (str, str, dict[str, list[Any]]) -> bool
     module = get(module_name)
     if not hasattr(module, 'identify'):
         return False
@@ -744,7 +745,7 @@ def name(module):
 
 
 def superordinate_names(module_name):
-    # type: (UdmName) -> List[str]
+    # type: (UdmName) -> list[str]
     """Return name of superordinate module."""
     module = get(module_name)
     names = getattr(module, 'superordinate', [])
@@ -754,7 +755,7 @@ def superordinate_names(module_name):
 
 
 def superordinate_name(module_name):
-    # type: (UdmName) -> Optional[str]
+    # type: (UdmName) -> str | None
     """
     Return name of first superordinate module.
 
@@ -777,13 +778,13 @@ def superordinate(module):
 
 
 def superordinates(module):
-    # type: (UdmName) -> List[Optional[UdmModule]]
+    # type: (UdmName) -> list[UdmModule | None]
     """Return instance of superordinate module."""
     return [get(x) for x in superordinate_names(module)]
 
 
 def subordinates(module):
-    # type: (UdmName) -> List[UdmModule]
+    # type: (UdmName) -> list[UdmModule]
     """
     Return list of instances of subordinate modules.
 
@@ -794,7 +795,7 @@ def subordinates(module):
 
 
 def find_superordinate(dn, co, lo):
-    # type: (str, None, univention.admin.uldap.access) -> Optional[UdmModule]
+    # type: (str, None, univention.admin.uldap.access) -> UdmModule | None
     """
     For a given |DN|, search in the |LDAP| path whether this LDAP object is
     below an object that is a superordinate or is a superordinate itself.
@@ -815,7 +816,7 @@ def find_superordinate(dn, co, lo):
 
 
 def layout(module_name, object=None):
-    # type: (UdmName, Any) -> List[Tab]
+    # type: (UdmName, Any) -> list[Tab]
     """return layout of properties"""
     module = get(module_name)
     defining_layout = None
@@ -870,14 +871,14 @@ def layout(module_name, object=None):
 
 
 def options(module_name):
-    # type: (UdmName) -> Dict[str, Any]
+    # type: (UdmName) -> dict[str, Any]
     """return options available for module"""
     module = get(module_name)
     return getattr(module, 'options', {})
 
 
 def attributes(module_name):
-    # type: (UdmName) -> List[Dict[str, str]]
+    # type: (UdmName) -> list[dict[str, str]]
     """
     Return attributes for module.
 
@@ -956,7 +957,7 @@ def virtual(module_name):
 
 
 def lookup(module_name, co, lo, filter='', base='', superordinate=None, scope='base+one', unique=False, required=False, timeout=-1, sizelimit=0):
-    # type: (UdmName, None, univention.admin.uldap.access, str, str, Any, str, bool, bool, int, int) -> List[Any]
+    # type: (UdmName, None, univention.admin.uldap.access, str, str, Any, str, bool, bool, int, int) -> list[Any]
     """
     Return objects of module that match the given criteria.
 
@@ -1040,7 +1041,7 @@ def supports(module_name, operation):
 
 
 def objectType(co, lo, dn, attr=None, modules=[], module_base=None):
-    # type: (None, univention.admin.uldap.access, str, Optional[Dict[str, List[bytes]]], List[UdmModule], Optional[str]) -> List[str]
+    # type: (None, univention.admin.uldap.access, str, univention.admin.handlers._Attributes | None, list[UdmModule], str | None) -> list[str]
     if not dn:
         return []
     if attr is None:
@@ -1058,8 +1059,8 @@ def objectType(co, lo, dn, attr=None, modules=[], module_base=None):
 
 
 def objectShadowType(co, lo, dn, attr=None, modules=[]):
-    # type: (None, univention.admin.uldap.access, str, Optional[Dict[str, List[bytes]]], List[UdmModule]) -> List[Any]
-    # FIXME: This returns a nested List[...List[str]] for containers!
+    # type: (None, univention.admin.uldap.access, str, univention.admin.handlers._Attributes | None, list[UdmModule]) -> list[Any]
+    # FIXME: This returns a nested list[...list[str]] for containers!
     return [
         objectShadowType(co, lo, lo.parentDn(dn)) if otype and otype.startswith('container/') else otype
         for otype in objectType(co, lo, dn, attr, modules)
@@ -1067,7 +1068,7 @@ def objectShadowType(co, lo, dn, attr=None, modules=[]):
 
 
 def findObject(co, lo, dn, type, attr=None, module_base=None):
-    # type: (None, univention.admin.uldap.access, str, UdmModule, Optional[Dict[str, List[bytes]]], Optional[str]) -> Optional[Any]
+    # type: (None, univention.admin.uldap.access, str, UdmModule, univention.admin.handlers._Attributes | None, str | None) -> Any | None
     if attr is None:
         attr = lo.get(dn)
         if not attr:
@@ -1112,8 +1113,8 @@ def policiesGroup(module_name):
 
 
 def policies():
-    # type: () -> List[univention.admin.policiesGroup]
-    res = {}  # type: Dict[str, List[str]]
+    # type: () -> list[univention.admin.policiesGroup]
+    res = {}  # type: dict[str, list[str]]
     for mod in modules.values():
         if not isPolicy(mod):
             continue
@@ -1126,7 +1127,7 @@ def policies():
 
 
 def policyTypes(module_name):
-    # type: (str) -> List[str]
+    # type: (str) -> list[str]
     """
     Returns a list of policy types applying to the given module.
 
@@ -1162,7 +1163,7 @@ def policyPositionDnPrefix(module_name):
 
 
 def defaultContainers(module):
-    # type: (univention.admin.handlers.simpleLdap) -> List[str]
+    # type: (univention.admin.handlers.simpleLdap) -> list[str]
     """
     Checks for the attribute default_containers that should contain a
     list of RDNs of default containers.
@@ -1175,7 +1176,7 @@ def defaultContainers(module):
 
 
 def childModules(module_name):
-    # type: (UdmName) -> List[str]
+    # type: (UdmName) -> list[str]
     """
     Return child modules if module is a super module.
 
@@ -1187,7 +1188,7 @@ def childModules(module_name):
 
 
 def _get_translation(locale, attrs, name, defaultname, default=u''):
-    # type: (Optional[str], Any, str, str, str) -> str
+    # type: (str | None, Any, str, str, str) -> str
     if locale:
         locale = locale.replace(u'_', u'-').lower()
         if name % (locale,) in attrs:

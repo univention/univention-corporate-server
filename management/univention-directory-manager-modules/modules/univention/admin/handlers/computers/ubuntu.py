@@ -276,14 +276,17 @@ class object(ComputerObject):
     SAMBA_ACCOUNT_FLAG = 'W'
 
     def check_required_options(self):
+        # type: () -> None
         if not set(self.options) & {'posix', 'kerberos'}:
             raise univention.admin.uexceptions.invalidOptions(_('At least posix or kerberos is required.'))
 
     def link(self):
+        # type: () -> None
         pass
 
     @classmethod
     def lookup_filter(cls, filter_s=None, lo=None):
+        # type: (str | None, univention.admin.uldap.access | None) -> univention.admin.filter.conjunction
         con = super(object, cls).lookup_filter(filter_s, lo)
         con.expressions.append(univention.admin.filter.conjunction('|', [
             univention.admin.filter.expression('objectClass', 'posixAccount'),
@@ -300,4 +303,5 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=False):
+    # type: (str, univention.admin.handlers._Attributes, bool) -> bool
     return b'univentionHost' in attr.get('objectClass', []) and b'univentionUbuntuClient' in attr.get('objectClass', []) and (b'posixAccount' in attr.get('objectClass', []) or (b'krb5KDCEntry' in attr.get('objectClass', []) and b'krb5Principal' in attr.get('objectClass', [])))

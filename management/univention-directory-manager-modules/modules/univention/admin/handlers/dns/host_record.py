@@ -33,13 +33,14 @@
 """|UDM| module for |DNS| host records"""
 
 import ipaddress
+from typing import Any  # noqa: F401
 
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
 from univention.admin.handlers.dns import (  # noqa: F401
-    Attr, DNSBase, has_any, is_dns, is_not_handled_by_other_module_than, is_zone,
+    DNSBase, has_any, is_dns, is_not_handled_by_other_module_than, is_zone,
 )
 from univention.admin.layout import Group, Tab
 
@@ -118,6 +119,7 @@ layout = [
 
 
 def unmapMX(old, encoding=()):
+    # type: (list[bytes], univention.admin.handlers._Encoding) -> list[list[str]]
     return [
         i.decode(*encoding).split(u' ', 1)
         for i in old
@@ -125,6 +127,7 @@ def unmapMX(old, encoding=()):
 
 
 def mapMX(old, encoding=()):
+    # type: (list[list[str]], univention.admin.handlers._Encoding) -> list[bytes]
     return [
         u' '.join(i).encode(*encoding)
         for i in old
@@ -132,7 +135,8 @@ def mapMX(old, encoding=()):
 
 
 def unmapIPAddresses(values, encoding=()):
-    records = []
+    # type: (dict[str, list[bytes]], univention.admin.handlers._Encoding) -> list[str]
+    records = []  # type: list[str]
     if 'aRecord' in values:
         records += (x.decode(*encoding) for x in values['aRecord'])
     if 'aAAARecord' in values:
@@ -152,6 +156,7 @@ class object(DNSBase):
     module = module
 
     def _ldap_modlist(self):  # IPv6
+        # type: () -> list[tuple[str, Any, Any]]
         ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
         oldAddresses = self.oldinfo.get('a')
         newAddresses = self.info.get('a')
@@ -174,15 +179,16 @@ class object(DNSBase):
                         newARecord.append(address.encode('ASCII'))
 
             # explode all IPv6 addresses and remove duplicates
-            newAaaaRecord = {ipaddress.IPv6Address(u'%s' % (x,)).exploded for x in newAaaaRecord}
-            newAaaaRecord = [x.encode('ASCII') for x in newAaaaRecord]
+            unique = {ipaddress.IPv6Address(u'%s' % (x,)).exploded for x in newAaaaRecord}
+            values = [x.encode('ASCII') for x in unique]
 
             ml.append(('aRecord', oldARecord, newARecord))
-            ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord))
+            ml.append(('aAAARecord', oldAaaaRecord, values))
         return ml
 
     @classmethod
     def unmapped_lookup_filter(cls):
+        # type: () -> univention.admin.filter.conjunction
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'dNSZone'),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sOARecord', '*', escape=False)]),
@@ -196,6 +202,7 @@ class object(DNSBase):
 
     @classmethod
     def rewrite_filter(cls, filter, mapping):
+        # type: (univention.admin.filter.expression, univention.admin.mapping.mapping) -> None
         if filter.variable == 'a':
             filter.transform_to_conjunction(univention.admin.filter.conjunction('|', [
                 univention.admin.filter.expression('aRecord', filter.value, escape=False),
@@ -209,7 +216,8 @@ lookup = object.lookup
 lookup_filter = object.lookup_filter
 
 
-def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> bool
+def identify(dn, attr, canonical=False):
+    # type: (str, univention.admin.handlers._Attributes, bool) -> bool
     return bool(
         is_dns(attr)
         and not is_zone(attr)

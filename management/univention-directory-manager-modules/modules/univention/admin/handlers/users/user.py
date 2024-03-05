@@ -43,7 +43,7 @@ import time
 import warnings
 from datetime import datetime
 from logging import getLogger
-from typing import Dict, Iterable, List, Sequence  # noqa: F401
+from typing import Any, Iterable, Sequence  # noqa: F401
 
 import ldap
 import passlib.hash
@@ -726,7 +726,7 @@ def sambaWorkstationsMap(workstations, encoding=()):  # type: (Sequence[str], Se
     return u','.join(workstations).encode(*encoding)
 
 
-def sambaWorkstationsUnmap(workstations, encoding=()):  # type: (Sequence[bytes], Sequence[str]) -> List[str]
+def sambaWorkstationsUnmap(workstations, encoding=()):  # type: (Sequence[bytes], Sequence[str]) -> list[str]
     return workstations[0].decode(*encoding).split(u',')
 
 
@@ -755,7 +755,7 @@ def logonHoursMap(logontimes):  # type: (Sequence[int]) -> bytes | None
     return ret.encode('ASCII')
 
 
-def logonHoursUnmap(logontimes):  # type: (List[bytes]) -> List[int]
+def logonHoursUnmap(logontimes):  # type: (list[bytes]) -> list[int]
     """
     Convert hex-string to an array of bits set.
     >>> logonHoursUnmap([b"000000000000000000000000000000000000000000"])
@@ -782,7 +782,7 @@ def GMTOffset():  # type: () -> int
     return time.timezone // 3600
 
 
-def mapHomePostalAddress(old, encoding=()):  # type: (Sequence[str], Sequence[str]) -> List[bytes]
+def mapHomePostalAddress(old, encoding=()):  # type: (Sequence[str], Sequence[str]) -> list[bytes]
     """
     Map address to LDAP encoding.
 
@@ -795,7 +795,7 @@ def mapHomePostalAddress(old, encoding=()):  # type: (Sequence[str], Sequence[st
     return new
 
 
-def unmapHomePostalAddress(old, encoding=()):  # type: (Sequence[bytes], Sequence[str]) -> List[List[str]]
+def unmapHomePostalAddress(old, encoding=()):  # type: (Sequence[bytes], Sequence[str]) -> list[list[str]]
     """
     Expand LDAP encoded address.
     >>> unmapHomePostalAddress([b'foo'])
@@ -812,11 +812,11 @@ def unmapHomePostalAddress(old, encoding=()):  # type: (Sequence[bytes], Sequenc
     return new
 
 
-def unmapUserExpiry(oldattr):  # type: (Dict[str, List[bytes]]) -> str | None
+def unmapUserExpiry(oldattr):  # type: (dict[str, list[bytes]]) -> str | None
     return unmapKrb5ValidEndToUserexpiry(oldattr) or unmapSambaKickoffTimeToUserexpiry(oldattr) or unmapShadowExpireToUserexpiry(oldattr)
 
 
-def unmapShadowExpireToUserexpiry(oldattr):  # type: (Dict[str, List[bytes]]) -> str | None
+def unmapShadowExpireToUserexpiry(oldattr):  # type: (dict[str, list[bytes]]) -> str | None
     # The shadowLastChange attribute is the amount of days between 1/1/1970 up to the day that password was modified,
     # shadowMax is the number of days a password is valid. So the password expires on 1/1/1970 + shadowLastChange + shadowMax.
     # shadowExpire contains the absolute date to expire the account.
@@ -829,14 +829,14 @@ def unmapShadowExpireToUserexpiry(oldattr):  # type: (Dict[str, List[bytes]]) ->
             return date
 
 
-def unmapKrb5ValidEndToUserexpiry(oldattr):  # type: (Dict[str, List[bytes]]) -> str | None
+def unmapKrb5ValidEndToUserexpiry(oldattr):  # type: (dict[str, list[bytes]]) -> str | None
     if 'krb5ValidEnd' in oldattr:
         krb5validend = oldattr['krb5ValidEnd'][0].decode('ASCII')
         log.debug('krb5validend is: %s', krb5validend)
         return "%s-%s-%s" % (krb5validend[0:4], krb5validend[4:6], krb5validend[6:8])
 
 
-def unmapSambaKickoffTimeToUserexpiry(oldattr):  # type: (Dict[str, List[bytes]]) -> str | None
+def unmapSambaKickoffTimeToUserexpiry(oldattr):  # type: (dict[str, list[bytes]]) -> str | None
     if 'sambaKickoffTime' in oldattr:
         log.debug('sambaKickoffTime is: %s', oldattr['sambaKickoffTime'][0].decode('ASCII'))
         return time.strftime("%Y-%m-%d", time.gmtime(long(oldattr['sambaKickoffTime'][0]) + (3600 * 24)))
@@ -854,7 +854,7 @@ def _mapUserExpiryToSambaKickoffTime(userexpiry):  # type: (str) -> str
     return u"%d" % long(time.mktime(time.strptime(userexpiry, "%Y-%m-%d")))
 
 
-def unmapPasswordExpiry(oldattr):  # type: (Dict[str, List[bytes]]) -> str
+def unmapPasswordExpiry(oldattr):  # type: (dict[str, list[bytes]]) -> str
     if oldattr.get('shadowLastChange') and oldattr.get('shadowMax'):
         shadow_max = int(oldattr['shadowMax'][0])
         shadow_last_change = 0
@@ -865,7 +865,7 @@ def unmapPasswordExpiry(oldattr):  # type: (Dict[str, List[bytes]]) -> str
         return posixDaysToDate(shadow_last_change + shadow_max)
 
 
-def unmapDisabled(oldattr):  # type: (Dict[str, List[bytes]]) -> str
+def unmapDisabled(oldattr):  # type: (dict[str, list[bytes]]) -> str
     if all([
             unmapSambaDisabled(oldattr),
             unmapKerberosDisabled(oldattr),
@@ -875,7 +875,7 @@ def unmapDisabled(oldattr):  # type: (Dict[str, List[bytes]]) -> str
     return '0'
 
 
-def inconsistentDisabledState(oldattr):  # type: (Dict[str, List[bytes]]) -> bool
+def inconsistentDisabledState(oldattr):  # type: (dict[str, list[bytes]]) -> bool
     disabled = [
         unmapSambaDisabled(oldattr),
         unmapKerberosDisabled(oldattr),
@@ -885,7 +885,7 @@ def inconsistentDisabledState(oldattr):  # type: (Dict[str, List[bytes]]) -> boo
     return len(set(map(bool, disabled))) > 1
 
 
-def unmapSambaDisabled(oldattr):  # type: (Dict[str, List[bytes]]) -> bool
+def unmapSambaDisabled(oldattr):  # type: (dict[str, list[bytes]]) -> bool
     flags = oldattr.get('sambaAcctFlags', None)
     if flags:
         acctFlags = univention.admin.samba.acctFlags(flags[0].decode('ASCII'))
@@ -896,7 +896,7 @@ def unmapSambaDisabled(oldattr):  # type: (Dict[str, List[bytes]]) -> bool
     return False
 
 
-def unmapKerberosDisabled(oldattr):  # type: (Dict[str, List[bytes]]) -> bool
+def unmapKerberosDisabled(oldattr):  # type: (dict[str, list[bytes]]) -> bool
     try:
         kdcflags = int(oldattr.get('krb5KDCFlags', [b'0'])[0])
     except ValueError:
@@ -904,7 +904,7 @@ def unmapKerberosDisabled(oldattr):  # type: (Dict[str, List[bytes]]) -> bool
     return kdcflags & (1 << 7) == (1 << 7)
 
 
-def unmapPosixDisabled(oldattr):  # type: (Dict[str, List[bytes]]) -> bool
+def unmapPosixDisabled(oldattr):  # type: (dict[str, list[bytes]]) -> bool
     try:
         shadowExpire = int(oldattr['shadowExpire'][0])
     except (KeyError, ValueError):
@@ -912,22 +912,22 @@ def unmapPosixDisabled(oldattr):  # type: (Dict[str, List[bytes]]) -> bool
     return shadowExpire == 1 or shadowExpire < int(time.time() / 3600 / 24)
 
 
-def unmapLocked(oldattr):  # type: (Dict[str, List[bytes]]) -> str
+def unmapLocked(oldattr):  # type: (dict[str, list[bytes]]) -> str
     if isSambaLocked(oldattr) or isKerberosLocked(oldattr):  # or isLDAPLocked(oldattr)
         return '1'
     return '0'
 
 
-def inconsistentLockedState(oldattr):  # type: (Dict[str, List[bytes]]) -> int
+def inconsistentLockedState(oldattr):  # type: (dict[str, list[bytes]]) -> int
     return isSambaLocked(oldattr) ^ isKerberosLocked(oldattr)
 
 
-def isPosixLocked(oldattr):  # type: (Dict[str, List[bytes]]) -> bool
+def isPosixLocked(oldattr):  # type: (dict[str, list[bytes]]) -> bool
     userPassword = oldattr.get('userPassword', [b''])[0].decode('ASCII')
     return userPassword and univention.admin.password.is_locked(userPassword)
 
 
-def isSambaLocked(oldattr):  # type: (Dict[str, List[bytes]]) -> bool
+def isSambaLocked(oldattr):  # type: (dict[str, list[bytes]]) -> bool
     flags = oldattr.get('sambaAcctFlags', None)
     if flags:
         acctFlags = univention.admin.samba.acctFlags(flags[0].decode('ASCII'))
@@ -938,7 +938,7 @@ def isSambaLocked(oldattr):  # type: (Dict[str, List[bytes]]) -> bool
     return False
 
 
-def isKerberosLocked(oldattr):  # type: (Dict[str, List[bytes]]) -> bool
+def isKerberosLocked(oldattr):  # type: (dict[str, list[bytes]]) -> bool
     flags = oldattr.get('krb5KDCFlags', [b'0'])[0]
     try:
         state = 1 << 17
@@ -947,17 +947,17 @@ def isKerberosLocked(oldattr):  # type: (Dict[str, List[bytes]]) -> bool
         return False
 
 
-def isLDAPLocked(oldattr):  # type: (Dict[str, List[bytes]]) -> bool
+def isLDAPLocked(oldattr):  # type: (dict[str, list[bytes]]) -> bool
     return bool(oldattr.get('pwdAccountLockedTime', [b''])[0])
 
 
-def unmapSambaRid(oldattr):  # type: (Dict[str, List[bytes]]) -> str
+def unmapSambaRid(oldattr):  # type: (dict[str, list[bytes]]) -> str
     sid = oldattr.get('sambaSID', [b''])[0]
     pos = sid.rfind(b'-')
     return sid[pos + 1:].decode('ASCII')
 
 
-def mapKeyAndValue(old, encoding=()):  # type: (Sequence[str], Sequence[str]) -> List[bytes]
+def mapKeyAndValue(old, encoding=()):  # type: (Sequence[str], Sequence[str]) -> list[bytes]
     """
     Map (key, value) list to key=value list.
 
@@ -967,7 +967,7 @@ def mapKeyAndValue(old, encoding=()):  # type: (Sequence[str], Sequence[str]) ->
     return [u'='.join(entry).encode(*encoding) for entry in old]
 
 
-def unmapKeyAndValue(old, encoding=()):  # type: (Sequence[bytes], Sequence[str]) -> List[List[str]]
+def unmapKeyAndValue(old, encoding=()):  # type: (Sequence[bytes], Sequence[str]) -> list[list[str]]
     """
     Map (key=value) list to (key, value) list.
 
@@ -977,7 +977,7 @@ def unmapKeyAndValue(old, encoding=()):  # type: (Sequence[bytes], Sequence[str]
     return [entry.decode(*encoding).split(u'=', 1) for entry in old]
 
 
-def mapWindowsFiletime(old, encoding=()):  # type: (str, Sequence[str]) -> List[bytes]
+def mapWindowsFiletime(old, encoding=()):  # type: (str, Sequence[str]) -> list[bytes]
     if old:
         if old == "0":
             return [old.encode(*encoding)]
@@ -1013,14 +1013,14 @@ def datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple):  #
     return pytz.timezone(tz).localize(native_dt)
 
 
-def mapDateTimeTimezoneTupleToUTCDateTimeString(local_datetimetimezone_tuple, encoding=()):  # type: (Sequence[str], Sequence[str]) -> List[bytes]
+def mapDateTimeTimezoneTupleToUTCDateTimeString(local_datetimetimezone_tuple, encoding=()):  # type: (Sequence[str], Sequence[str]) -> list[bytes]
     if local_datetimetimezone_tuple and all(local_datetimetimezone_tuple):
         dt = datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple)
         return [dt.astimezone(utc).strftime("%Y%m%d%H%M%SZ").encode(*encoding)]
     return []
 
 
-def unmapUTCDateTimeToLocaltime(attribute_value, encoding=()):  # type: (Sequence[bytes], Sequence[str]) -> List[str]
+def unmapUTCDateTimeToLocaltime(attribute_value, encoding=()):  # type: (Sequence[bytes], Sequence[str]) -> list[str]
     if attribute_value and attribute_value[0]:
         generalizedtime = attribute_value[0].decode(*encoding)
         try:
@@ -1118,7 +1118,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         position,  # type: univention.admin.uldap.position
         dn=u'',  # type: str
         superordinate=None,  # type: univention.admin.handlers.simpleLdap | None
-        attributes=None,  # type: Dict[str, bytes | List[bytes]] | None
+        attributes=None,  # type: dict[str, bytes | list[bytes]] | None
     ):  # type: (...) -> None
         self.__groups_loaded = True
         self.password_length = 8
@@ -1144,6 +1144,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
                 self.options.append(opt)
 
     def _post_unmap(self, info, values):
+        # type: (univention.admin.handlers._Properties, univention.admin.handlers._Attributes) -> univention.admin.handlers._Properties
         info = super(object, self)._post_unmap(info, values)
         if configRegistry.is_true('directory/manager/user/group-memberships-via-memberof', True):
             info['groups'] = [x.decode('UTF-8') for x in values.get('memberOf', [])]
@@ -1503,7 +1504,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         self._simulate_legacy_options()
 
     def _ldap_addlist(self):
-        # type: () -> List
+        # type: () -> list[tuple[str, Any]]
         al = super(object, self)._ldap_addlist()
 
         # Kerberos
@@ -1544,7 +1545,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
             self._check_uid_gid_uniqueness()
 
     def _ldap_modlist(self):
-        # type: () -> List
+        # type: () -> list[tuple[str, Any, Any]]
         ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
         ml = self._modlist_pwd_account_locked_time(ml)
@@ -1577,7 +1578,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_samba_privileges(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         if self.hasChanged('sambaPrivileges'):
             # add univentionSambaPrivileges objectclass
             if self['sambaPrivileges'] and b'univentionSambaPrivileges' not in self.oldattr.get('objectClass', []):
@@ -1585,7 +1586,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_cn(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         cnAtts = configRegistry.get('directory/manager/usercn/attributes', "<firstname> <lastname>")
         prop = univention.admin.property()
         old_cn = self.oldattr.get('cn', [b''])[0]
@@ -1597,7 +1598,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_gecos(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         if self.hasChanged(['firstname', 'lastname']):
             prop = self.descriptions['gecos']
             old_gecos = self.oldattr.get('gecos', [b''])[0]
@@ -1610,7 +1611,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_display_name(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         # update displayName automatically if no custom value has been entered by the user and the name changed
         if self.info.get('displayName') == self.oldinfo.get('displayName') and (self.info.get('firstname') != self.oldinfo.get('firstname') or self.info.get('lastname') != self.oldinfo.get('lastname')):
             prop_displayName = self.descriptions['displayName']
@@ -1623,14 +1624,14 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_krb_principal(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         if not self.exists() or self.hasChanged('username'):
             ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5_principal().encode('utf-8')]))  # TODO: decide to let krb5_principal return bytestring?!
         return ml
 
     # If you change anything here, please also check users/ldap.py
     def _check_password_history(self, ml, pwhistoryPolicy):
-        # type: (List, univention.admin.password.PasswortHistoryPolicy) -> List
+        # type: (list[tuple[str, Any, Any]], univention.admin.password.PasswortHistoryPolicy) -> list[tuple[str, Any, Any]]
         if self.exists() and not self.hasChanged('password'):
             return ml
 
@@ -1667,7 +1668,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
                 raise univention.admin.uexceptions.pwQuality(str(exc))
 
     def _modlist_samba_password(self, ml, pwhistoryPolicy):
-        # type: (List, univention.admin.password.PasswortHistoryPolicy) -> List
+        # type: (list[tuple[str, Any, Any]], univention.admin.password.PasswortHistoryPolicy) -> list[tuple[str, Any, Any]]
         if self.exists() and not self.hasChanged('password'):
             return ml
 
@@ -1678,7 +1679,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_kerberos_password(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         if self.exists() and not self.hasChanged('password'):
             return ml
 
@@ -1689,7 +1690,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_password_expiry(self, ml, pwhistoryPolicy):
-        # type: (List, univention.admin.password.PasswortHistoryPolicy) -> List
+        # type: (list[tuple[str, Any, Any]], univention.admin.password.PasswortHistoryPolicy) -> list[tuple[str, Any, Any]]
         pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '1'
         unset_pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '0'
 
@@ -1739,7 +1740,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_krb5kdc_flags(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         """
         Set the krb5KDCFlags.
         default = 1 << 6 | 1 << 5 | 1 << 4 | 1 << 3 | 1 << 2 | 1 << 1 = 126
@@ -1788,7 +1789,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     # If you change anything here, please also check users/ldap.py
     def _modlist_posix_password(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         if not self.exists() or self.hasChanged(['disabled', 'password']):
             old_password = self.oldattr.get('userPassword', [b''])[0].decode('ASCII')
             password = self['password']
@@ -1808,7 +1809,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_pwd_account_locked_time(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         # remove pwdAccountLockedTime during unlocking
         if self.hasChanged('locked') and self['locked'] == '0':
             pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [b''])[0]
@@ -1817,7 +1818,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_samba_bad_pw_count(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         if self.hasChanged('locked') and self['locked'] == '0':
             # reset bad pw count
             ml.append(('sambaBadPasswordCount', self.oldattr.get('sambaBadPasswordCount', [b''])[0], b"0"))
@@ -1825,7 +1826,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_samba_kickoff_time(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         if self.hasChanged('userexpiry'):
             sambaKickoffTime = b''
             if self['userexpiry']:
@@ -1837,7 +1838,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_krb5_valid_end(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         if self.hasChanged('userexpiry'):
             krb5ValidEnd = u''
             if self['userexpiry']:
@@ -1853,7 +1854,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_shadow_expire(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         if self.hasChanged('disabled') or self.hasChanged('userexpiry'):
             if self['disabled'] == '1' and self.hasChanged('disabled') and not self.hasChanged('userexpiry'):
                 shadowExpire = u'1'
@@ -1871,7 +1872,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_mail_forward(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         if self['mailForwardAddress'] and not self['mailPrimaryAddress']:
             raise univention.admin.uexceptions.missingInformation(_('Primary e-mail address must be set, if messages should be forwarded for it.'))
         if self.get('mailForwardCopyToSelf') == '1' and not self['mailPrimaryAddress']:
@@ -1903,14 +1904,14 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_univention_person(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         # make sure that univentionPerson is set as objectClass when needed
         if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday', 'serviceSpecificPassword', 'country')) and b'univentionPerson' not in self.oldattr.get('objectClass', []):
             ml.append(('objectClass', b'', b'univentionPerson'))  # TODO: check if exists already
         return ml
 
     def _modlist_home_share(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         if self.hasChanged('homeShare') or self.hasChanged('homeSharePath'):
             if self['homeShare']:
                 share_mod = univention.admin.modules.get('shares/share')
@@ -1947,7 +1948,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_samba_sid(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         if not self.exists() or self.hasChanged('sambaRID'):
             sid = self.__generate_user_sid(self['uidNumber'])
             sid = sid.encode('ASCII')
@@ -1955,7 +1956,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_primary_group(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         if not self.exists() or self.hasChanged('primaryGroup'):
             # Posix
             ml.append(('gidNumber', self.oldattr.get('gidNumber', [b'']), [self.get_gid_for_primary_group().encode('ASCII')]))
@@ -1964,7 +1965,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_sambaAcctFlags(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         if self.exists() and not self.hasChanged(['disabled', 'locked']):
             return ml
 
@@ -1989,7 +1990,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_service_specific_password(self, ml):
-        # type: (List) -> List
+        # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         new_password = self.info.get('serviceSpecificPassword', None)
         if new_password:
             service = new_password.get('service', None)
@@ -2092,7 +2093,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     @classmethod
     def _ldap_attributes(cls):
-        # type: () -> List[str]
+        # type: () -> list[str]
         return super(object, cls)._ldap_attributes() + ['pwdAccountLockedTime', 'memberOf']
 
     @classmethod
@@ -2166,7 +2167,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     @classmethod
     def identify(cls, dn, attr, canonical=False):
-        # type: (str, Dict[str, List[bytes]], bool) -> bool
+        # type: (str, univention.admin.handlers._Attributes, bool) -> bool
         if b'0' in attr.get('uidNumber', []) or b'$' in attr.get('uid', [b''])[0] or b'univentionHost' in attr.get('objectClass', []) or b'functional' in attr.get('univentionObjectFlag', []):
             return False
         required_ocs = {b'posixAccount', b'shadowAccount', b'sambaSamAccount', b'person', b'krb5KDCEntry', b'krb5Principal'}

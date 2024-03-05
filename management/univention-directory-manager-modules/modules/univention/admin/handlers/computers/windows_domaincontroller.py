@@ -295,6 +295,7 @@ class object(ComputerObject):
 
     @classmethod
     def lookup_filter(cls, filter_s=None, lo=None):
+        # type: (str | None, univention.admin.uldap.access | None) -> univention.admin.filter.conjunction
         con = super(object, cls).lookup_filter(filter_s, lo)
         con.expressions.append(univention.admin.filter.expression('univentionServerRole', 'windows_domaincontroller'))
         return con

@@ -32,6 +32,8 @@
 
 """|UDM| module for all |DNS| objects"""
 
+from typing import TYPE_CHECKING
+
 import six
 
 import univention.admin.filter
@@ -45,8 +47,12 @@ import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.dns.srv_record
 import univention.admin.handlers.dns.txt_record
 import univention.admin.localization
-from univention.admin.handlers.dns import Attr  # noqa: F401
 from univention.admin.layout import Tab
+
+
+if TYPE_CHECKING:
+    import univention.admin
+    import univention.admin.uldap
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dns')
@@ -63,7 +69,7 @@ long_description = _('Manage the Domain Name System.')
 operations = ['search']
 childmodules = ['dns/forward_zone', 'dns/reverse_zone']
 virtual = True
-options = {}
+options = {}  # type: dict[str, univention.admin.option]
 property_descriptions = {
     'name': univention.admin.property(
         short_description=_('Name'),
@@ -83,6 +89,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def rewrite(filter_s, **args):
+    # type: (str, str) -> str
     if not filter_s:
         return filter_s
     filter_p = univention.admin.filter.parse(filter_s)
@@ -94,10 +101,11 @@ def rewrite(filter_s, **args):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
+    # type: (None, univention.admin.uldap.access, str, str, univention.admin.handlers.simpleLdap | None, str, bool, bool, int, int) -> list[univention.admin.handlers.simpleLdap]
     ptr_filter = rewrite(filter_s, name='address')
     fw_zone_filter = rewrite(filter_s, name='zone')
     rv_zone_filter = rewrite(filter_s, name='subnet')
-    ret = []
+    ret = []  # type: list[univention.admin.handlers.simpleLdap]
     if superordinate:
         if superordinate.module == "dns/forward_zone":
             ret += univention.admin.handlers.dns.host_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
@@ -114,5 +122,6 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
     return ret
 
 
-def identify(dn, attr, canonical=False):  # type: (str, Attr, bool) -> None
+def identify(dn, attr, canonical=False):
+    # type: (str, univention.admin.handlers._Attributes, bool) -> None
     pass
