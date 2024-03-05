@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.25-19) unstable; urgency=low
+
+  * Bug #50385: Restart UDM REST API
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 05 Mar 2024 10:24:03 +0100
+
 univention-directory-manager-modules (15.0.25-18) unstable; urgency=low
 
   * Bug #57098: make StartTLS configurable in univention.uldap
