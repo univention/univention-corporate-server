@@ -637,7 +637,6 @@ def dn_list_property_encoder_for(udm_module_name):
             `auto` if auto-detection should be done. Auto-detection requires one
             additional LDAP-query per object (still lazy though)!
     :return: subclass of DnListPropertyEncoder
-    :rtype: type(DnListPropertyEncoder)
     """
     if udm_module_name not in __dn_list_property_encoder_class_cache:
         cls_name = str('DnListPropertyEncoder{}').format(_classify_name(udm_module_name))
@@ -657,7 +656,6 @@ def dn_property_encoder_for(udm_module_name):
             `auto` if auto-detection should be done. Auto-detection requires one
             additional LDAP-query per object (still lazy though)!
     :return: subclass of DnPropertyEncoder
-    :rtype: type(DnPropertyEncoder)
     """
     if udm_module_name not in __dn_property_encoder_class_cache:
         cls_name = str('DnPropertyEncoder{}').format(_classify_name(udm_module_name))

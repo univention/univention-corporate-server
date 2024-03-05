@@ -103,6 +103,7 @@ mapping.register('ptr_record', 'pTRRecord', encoding='ASCII')
 
 
 def ipv6(string):
+    # type: (str) -> str
     """
     >>> ipv6('0123456789abcdef0123456789abcdef')
     '0123:4567:89ab:cdef:0123:4567:89ab:cdef'
@@ -112,6 +113,7 @@ def ipv6(string):
 
 
 def calc_ip(rev, subnet):
+    # type: (str, str) -> ipaddress.IPv4Address | ipaddress.IPv6Address
     """
     >>> calc_ip(rev='8.0.0.0.7.0.0.0.6.0.0.0.5.0.0.0.4.0.0', subnet='0001:0002:0003:0').exploded
     '0001:0002:0003:0004:0005:0006:0007:0008'
@@ -122,16 +124,16 @@ def calc_ip(rev, subnet):
     parts.reverse()
     if ':' in subnet:
         string = ''.join(subnet.split(':') + parts)
-        ip = ipaddress.IPv6Address(u'%s' % (ipv6(string),))
+        return ipaddress.IPv6Address(u'%s' % (ipv6(string),))
     else:
         octets = subnet.split('.') + parts
         assert len(octets) == 4, octets
         addr = '.'.join(octets)
-        ip = ipaddress.IPv4Address(u'%s' % (addr,))
-    return ip
+        return ipaddress.IPv4Address(u'%s' % (addr,))
 
 
 def calc_rev(ip, subnet):
+    # type: (str, str) -> str
     """
     >>> calc_rev(ip='1.2.3.4', subnet='1.2')
     '4.3'
@@ -145,26 +147,30 @@ def calc_rev(ip, subnet):
         prefix = len(string)
         assert 1 <= prefix < 32
         string += '0' * (32 - prefix)
-        net = ipaddress.IPv6Network(u'%s/%d' % (ipv6(string), 4 * prefix), strict=False)
-        addr = ipaddress.IPv6Address(u'%s' % (ip,))
-        host = ''.join(addr.exploded.split(':'))
+        net6 = ipaddress.IPv6Network(u'%s/%d' % (ipv6(string), 4 * prefix), strict=False)
+        addr6 = ipaddress.IPv6Address(u'%s' % (ip,))
+        if addr6 not in net6:
+            raise ValueError()
+        host6 = ''.join(addr6.exploded.split(':'))
+        return '.'.join(reversed(host6[prefix:]))
     else:
         octets = subnet.split('.')
         prefix = len(octets)
         assert 1 <= prefix < 4
         octets += ['0'] * (4 - prefix)
-        net = ipaddress.IPv4Network(u'%s/%d' % ('.'.join(octets), 8 * prefix), strict=False)
-        addr = ipaddress.IPv4Address(u'%s' % (ip,))
-        host = addr.exploded.split('.')
-    if addr not in net:
-        raise ValueError()
-    return '.'.join(reversed(host[prefix:]))
+        net4 = ipaddress.IPv4Network(u'%s/%d' % ('.'.join(octets), 8 * prefix), strict=False)
+        addr4 = ipaddress.IPv4Address(u'%s' % (ip,))
+        if addr4 not in net4:
+            raise ValueError()
+        host4 = addr4.exploded.split('.')
+        return '.'.join(reversed(host4[prefix:]))
 
 
 class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def description(self):
+        # type: () -> str
         try:
             if self.superordinate:
                 return calc_ip(self.info['address'] or '', self.superordinate.info['subnet'] or '').compressed
@@ -173,6 +179,7 @@ class object(univention.admin.handlers.simpleLdap):
         return super(object, self).description()
 
     def open(self):
+        # type: () -> None
         super(object, self).open()
         try:
             self.info['ip'] = calc_ip(self.info['address'], self.superordinate.info['subnet']).compressed
@@ -181,6 +188,7 @@ class object(univention.admin.handlers.simpleLdap):
             log.warning('Failed to parse dn=%s: (%s)', self.dn, ex)
 
     def ready(self):
+        # type: () -> None
         old_ip = self.oldinfo.get('ip')
         new_ip = self.info.get('ip')
         if old_ip != new_ip:
@@ -233,6 +241,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 def rewrite_rev(filter, subnet):
+    # type: (conjunction | expression, str) -> conjunction | expression
     """
     Rewrite LDAP filter expression and convert (ip) -> (zone,reversed)
 
@@ -271,7 +280,7 @@ def rewrite_rev(filter, subnet):
             octets = subnet.split('.')
             prefix = len(octets)
             assert 1 <= prefix < 4
-            addr = filter.value.split('.')
+            addr = filter.value.split('.')  # type: ignore[assignment]
             suffix = ARPA_IP4
         addr_net, addr_host = ('.'.join(reversed(_)) for _ in (addr[:prefix], addr[prefix:]))
         filter = conjunction('&', [

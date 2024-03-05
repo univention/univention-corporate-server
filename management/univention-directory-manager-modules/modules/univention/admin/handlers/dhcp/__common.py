@@ -34,7 +34,7 @@
 
 import sys
 from ipaddress import IPv4Address, IPv4Network
-from typing import List, Sequence, Tuple  # noqa: F401
+from typing import Iterable, List, Sequence, Tuple  # noqa: F401
 
 import univention.admin.localization
 import univention.admin.uexceptions as uex
@@ -79,14 +79,17 @@ _mappings = (
 
 
 def rangeMap(value, encoding=()):
+    # type: (Iterable[List[str]], Tuple[str, ...]) -> List[bytes]
     return [u' '.join(x).encode(*encoding) for x in value]
 
 
 def rangeUnmap(value, encoding=()):
+    # type: (Iterable[bytes], Tuple[str, ...]) -> List[List[str]]
     return [x.decode(*encoding).split() for x in value]
 
 
 def add_dhcp_options(module_name):
+    # type: (str) -> None
     module = sys.modules[module_name]
 
     options = module.options
@@ -191,6 +194,7 @@ class DHCPBase(simpleLdap):
 
 class DHCPBaseSubnet(DHCPBase):
     def ready(self):
+        # type: () -> None
         super(DHCPBaseSubnet, self).ready()
 
         try:

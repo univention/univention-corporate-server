@@ -49,7 +49,7 @@ class conjunction(object):
     OPS = frozenset({'&', '|', '!'})
 
     def __init__(self, type, expressions):
-        # type: (str, Sequence[Union[conjunction, expression]]) -> None
+        # type: (str, List[Union[conjunction, expression]]) -> None
         """
         Create LDAP filter conjunction or disjunction.
 

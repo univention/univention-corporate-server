@@ -288,6 +288,7 @@ class AgingCache(object):
         return type._the_instance
 
     def __init__(self):
+        # type: () -> None
         if '_ready' not in dir(self):
             self._ready = True
             self.timeout = 300
@@ -327,6 +328,7 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def open(self):
+        # type: () -> None
         univention.admin.handlers.simpleLdap.open(self)
 
         try:
@@ -445,6 +447,7 @@ class object(univention.admin.handlers.simpleLdap):
         return bool(ml)
 
     def _check_uid_gid_uniqueness(self):
+        # type: () -> None
         if not configRegistry.is_true("directory/manager/uid_gid/uniqueness", True):
             return
         if "posix" in self.options or "samba" in self.options:
@@ -454,6 +457,7 @@ class object(univention.admin.handlers.simpleLdap):
                 raise univention.admin.uexceptions.gidNumberAlreadyUsedAsUidNumber(repr(self["gidNumber"]))
 
     def _ldap_pre_ready(self):
+        # type: () -> None
         super(object, self)._ldap_pre_ready()
 
         # get lock for name
@@ -471,6 +475,7 @@ class object(univention.admin.handlers.simpleLdap):
                 raise univention.admin.uexceptions.mailAddressUsed(self['mailAddress'])
 
     def _ldap_pre_create(self):
+        # type: () -> None
         super(object, self)._ldap_pre_create()
 
         if self['gidNumber']:
@@ -488,6 +493,7 @@ class object(univention.admin.handlers.simpleLdap):
         self._check_uid_gid_uniqueness()
 
     def _ldap_pre_modify(self):
+        # type: () -> None
         super(object, self)._ldap_pre_modify()
         self.check_for_group_recursion()
         self.check_ad_group_type_change()
@@ -497,6 +503,7 @@ class object(univention.admin.handlers.simpleLdap):
             self._check_uid_gid_uniqueness()
 
     def _ldap_addlist(self):
+        # type: () -> list
         al = super(object, self)._ldap_addlist()
 
         if 'posix' not in self.options:
@@ -505,6 +512,7 @@ class object(univention.admin.handlers.simpleLdap):
         return al
 
     def _ldap_modlist(self):
+        # type: () -> list
         ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
         self._samba_sid = None
@@ -579,10 +587,12 @@ class object(univention.admin.handlers.simpleLdap):
         return ml
 
     def _ldap_post_create(self):
+        # type: () -> None
         super(object, self)._ldap_post_create()
         self.__update_membership()
 
     def _ldap_post_modify(self):
+        # type: () -> None
         super(object, self)._ldap_post_modify()
         self.__update_membership()
         old_sid = self.oldattr.get('sambaSID', [b''])[0].decode('ASCII')
@@ -591,6 +601,7 @@ class object(univention.admin.handlers.simpleLdap):
                 self.lo.modify(dn, [('sambaPrimaryGroupSID', attr.get('sambaPrimaryGroupSID', []), [self._samba_sid.encode('ASCII')])])
 
     def _ldap_pre_remove(self):
+        # type: () -> None
         super(object, self)._ldap_pre_remove()
         self.open()
         # is this group in mentioned in settings/default?
@@ -622,6 +633,7 @@ class object(univention.admin.handlers.simpleLdap):
             self.alloc.append(('mailPrimaryAddress', self.oldattr['mailPrimaryAddress'][0].decode('UTF-8')))
 
     def _ldap_post_remove(self):
+        # type: () -> None
         super(object, self)._ldap_post_remove()
         for group in self.info.get('memberOf', []):
             if isinstance(group, list):
@@ -635,6 +647,7 @@ class object(univention.admin.handlers.simpleLdap):
             self.__set_membership_attributes(group, members, newmembers)
 
     def _ldap_post_move(self, olddn):
+        # type: (str) -> None
         super(object, self)._ldap_post_move(olddn)
         settings_module = univention.admin.modules.get('settings/default')
         settings_object = univention.admin.objects.get(settings_module, None, self.lo, position='', dn='cn=default,cn=univention,%s' % self.lo.base)
@@ -657,7 +670,7 @@ class object(univention.admin.handlers.simpleLdap):
             self.__set_membership_attributes(group, members, newmembers)
 
     def __update_membership(self):
-
+        # type: () -> None
         if self.exists():
             old_groups = self.oldinfo.get('memberOf', [])
             old_name = self.oldinfo.get('name', '')
@@ -733,6 +746,7 @@ class object(univention.admin.handlers.simpleLdap):
         return [x for x in members if x.lower() != dn_lower]
 
     def check_for_group_recursion(self):
+        # type: () -> None
         # perform check only if membership of groups has changed
         if not self.hasChanged('memberOf') and not self.hasChanged('nestedGroup'):
             return
@@ -802,30 +816,35 @@ class object(univention.admin.handlers.simpleLdap):
             self._check_group_childs_for_recursion(grp_module, grpdn2childgrpdns, childgrp.lower(), new_parents)
 
     def __is_groupType_universal(self, adGroupType):
+        # type: (bytes) -> int
         try:
             return int(adGroupType) & 0x8
         except ValueError:
             return False
 
     def __is_groupType_global(self, adGroupType):
+        # type: (bytes) -> int
         try:
             return int(adGroupType) & 0x2
         except ValueError:
             return False
 
     def __is_groupType_domain_local(self, adGroupType):
+        # type: (bytes) -> int
         try:
             return int(adGroupType) & 0x4
         except ValueError:
             return False
 
     def __is_groupType_local(self, adGroupType):
+        # type: (bytes) -> int
         try:
             return int(adGroupType) & 0x1
         except ValueError:
             return False
 
     def _is_global_member(self):
+        # type: () -> bool
         searchResult = self.lo.search(base=self.position.getDomain(), filter=filter_format('(uniqueMember=%s)', [self.dn]), attr=['univentionGroupType'])
         for (_dn, attr) in searchResult:
             groupType = attr.get('univentionGroupType', [None])[0]
@@ -834,6 +853,7 @@ class object(univention.admin.handlers.simpleLdap):
         return False
 
     def _has_domain_local_member(self):
+        # type: () -> bool
         for member_dn in [x.decode('UTF-8') for x in self.oldattr.get('uniqueMember', [])]:
             searchResult = self.lo.getAttr(member_dn, 'univentionGroupType')
             if searchResult and self.__is_groupType_domain_local(searchResult[0]):
@@ -841,6 +861,7 @@ class object(univention.admin.handlers.simpleLdap):
         return False
 
     def _has_universal_member(self):
+        # type: () -> bool
         for member_dn in [x.decode('UTF-8') for x in self.oldattr.get('uniqueMember', [])]:
             searchResult = self.lo.getAttr(member_dn, 'univentionGroupType')
             if searchResult and self.__is_groupType_universal(searchResult[0]):
@@ -848,6 +869,7 @@ class object(univention.admin.handlers.simpleLdap):
         return False
 
     def check_ad_group_type_change(self):
+        # type: () -> None
         if not self.hasChanged('adGroupType'):
             return
 

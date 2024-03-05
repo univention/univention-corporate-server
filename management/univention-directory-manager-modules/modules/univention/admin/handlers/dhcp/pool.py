@@ -141,6 +141,7 @@ class object(DHCPBase):
     permits_dhcp2udm = {value: key for (key, value) in permits_udm2dhcp.items()}
 
     def open(self):
+        # type: () -> None
         univention.admin.handlers.simpleLdap.open(self)
 
         for i in [x.decode('UTF-8') for x in self.oldattr.get('dhcpPermitList', [])]:
@@ -152,6 +153,7 @@ class object(DHCPBase):
         self.save()
 
     def ready(self):
+        # type: () -> None
         super(object, self).ready()
         # Use ipaddress.IPv4Interface().network to be liberal with subnet notation
         subnet = ipaddress.IPv4Interface(u'%(subnet)s/%(subnetmask)s' % self.superordinate.info).network

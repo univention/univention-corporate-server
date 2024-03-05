@@ -165,12 +165,14 @@ layout = [
 
 
 def unmapLocked(oldattr):
+    # type: (dict) -> str
     if isLDAPLocked(oldattr):
         return u'1'
     return u'0'
 
 
 def isLDAPLocked(oldattr):
+    # type: (dict) -> bool
     return bool(oldattr.get('pwdAccountLockedTime', [b''])[0])
 
 
@@ -190,6 +192,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
     password_length = 8
 
     def open(self):
+        # type: () -> None
         super(object, self).open()
         self.pki_open()
         if self.exists():
@@ -197,6 +200,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         self.save()
 
     def _ldap_pre_ready(self):
+        # type: () -> None
         super(object, self)._ldap_pre_ready()
 
         if not self.exists() or self.hasChanged('username'):
@@ -210,6 +214,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
                 raise univention.admin.uexceptions.uidAlreadyUsed(self['username'])
 
     def _ldap_pre_rename(self, newdn):
+        # type: (str) -> None
         super(object, self)._ldap_pre_rename(newdn)
         try:
             self.move(newdn)
@@ -217,6 +222,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
             univention.admin.allocators.release(self.lo, self.position, 'uid', self['username'])
 
     def _ldap_modlist(self):
+        # type: () -> list
         ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
         ml = self._modlist_lastname(ml)
@@ -233,6 +239,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     # If you change anything here, please also check users/user.py
     def _modlist_posix_password(self, ml):
+        # type: (list) -> list
         if not self.exists() or self.hasChanged(['disabled', 'password']):
             old_password = self.oldattr.get('userPassword', [b''])[0].decode('ASCII')
             password = self['password']
@@ -252,6 +259,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_lastname(self, ml):
+        # type: (list) -> list
         if not self.exists() and not self['lastname']:
             prop = self.descriptions['lastname']
             sn = prop._replace(prop.base_default, self)
@@ -259,6 +267,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_cn(self, ml):
+        # type: (list) -> list
         if not self.exists() and not self['name']:
             prop = self.descriptions['name']
             cn = prop._replace(prop.base_default, self)
@@ -266,6 +275,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         return ml
 
     def _modlist_pwd_account_locked_time(self, ml):
+        # type: (list) -> list
         # remove pwdAccountLockedTime during unlocking
         if self.hasChanged('locked') and self['locked'] == u'0':
             pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [b''])[0]
@@ -275,6 +285,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     # If you change anything here, please also check users/user.py
     def _check_password_history(self, ml, pwhistoryPolicy):
+        # type: (list, univention.admin.password.PasswortHistoryPolicy) -> list
         if not self.hasChanged('password'):
             return ml
 
@@ -293,6 +304,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     # If you change anything here, please also check users/user.py
     def _check_password_complexity(self, pwhistoryPolicy):
+        # type: (univention.admin.password.PasswortHistoryPolicy) -> None
         if not self.hasChanged('password'):
             return
         if self['overridePWLength'] == u'1':
@@ -311,10 +323,12 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
                 raise univention.admin.uexceptions.pwQuality(str(exc))
 
     def _ldap_post_remove(self):
+        # type: () -> None
         self.alloc.append(('uid', self.oldattr['uid'][0].decode('UTF-8')))
         super(object, self)._ldap_post_remove()
 
     def _move(self, newdn, modify_childs=True, ignore_license=False):
+        # type: (str, bool, bool) -> str
         olddn = self.dn
         tmpdn = u'cn=%s-subtree,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(self['username']), self.lo.base)
         al = [('objectClass', [b'top', b'organizationalRole']), ('cn', [b'%s-subtree' % self['username'].encode('UTF-8')])]
@@ -355,6 +369,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     @classmethod
     def unmapped_lookup_filter(cls):
+        # type: () -> univention.admin.filter.conjunction
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'simpleSecurityObject'),
             univention.admin.filter.expression('objectClass', 'uidObject'),
@@ -366,6 +381,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     @classmethod
     def _ldap_attributes(cls):
+        # type: () -> list[str]
         return super(object, cls)._ldap_attributes() + ['pwdAccountLockedTime']
 
 
@@ -374,6 +390,7 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn, attr, canonical=False):
+    # type: (str, dict, bool) -> bool
     if b'0' in attr.get('uidNumber', []) or b'$' in attr.get('uid', [b''])[0] or b'univentionHost' in attr.get('objectClass', []):
         return False
 

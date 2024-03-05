@@ -77,7 +77,6 @@ class Plugins(object):
         Iterator for registered `Plugin` subclasses.
 
         :return: `Plugin` subclass
-        :rtype: type
         """
         self.load()
         for plugin in self._plugins:

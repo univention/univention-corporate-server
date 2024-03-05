@@ -96,6 +96,11 @@ try:
             # type: (None, univention.admin.uldap.access, str, str, Any, str, bool, bool, int, int) -> List[Any]
             pass
 
+        @staticmethod
+        def lookup_filter(filter_s=None, lo=None):
+            # type: (str | None, univention.admin.uldap.access | None) -> univention.admin.filter.conjunction
+            pass
+
     UdmName = Union[UdmModule, str]
 except ImportError:
     pass

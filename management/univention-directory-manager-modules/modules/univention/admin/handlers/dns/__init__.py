@@ -32,9 +32,11 @@
 
 """|UDM| module for |DNS| records"""
 
-from typing import Dict, List
+from typing import Dict, List, Tuple  # noqa: F401
 
 import six
+
+import univention.admin.handlers as udm_handlers  # noqa: F401
 
 
 __path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore
@@ -76,12 +78,14 @@ def is_not_handled_by_other_module_than(attr, module):  # type: (Attr, str) -> b
 
 
 def makeContactPerson(obj, arg):
+    # type: (udm_handlers.simpleLdap, object) -> str
     """Create contact Email-address for domain."""
     domain = obj.position.getDomain()
     return 'root@%s.' % (domain.replace('dc=', '').replace(',', '.'),)
 
 
 def unescapeSOAemail(email):
+    # type: (str) -> str
     r"""
     Un-escape Email-address from DNS SOA record.
     >>> unescapeSOAemail(r'first\.last.domain.tld')
@@ -107,6 +111,7 @@ def unescapeSOAemail(email):
 
 
 def escapeSOAemail(email):
+    # type: (str) -> str
     r"""
     Escape Email-address for DNS SOA record.
     >>> escapeSOAemail('first.last@domain.tld')
@@ -126,6 +131,7 @@ def escapeSOAemail(email):
 
 
 def stripDot(old, encoding=()):
+    # type: (List[str] | str | None, Tuple[str, ...]) -> str | None
     """
     >>> stripDot(['example.com.', 'example.com'])
     ['example.com', 'example.com']

@@ -54,9 +54,7 @@ def get_file_type(filename_or_file):
     Handles both magic libraries.
 
     :param filename_or_file: filename or open file
-    :type filename_or_file: str or file
     :return: mime_type and encoding of `filename_or_file`
-    :rtype: FileType
     """
     if hasattr(filename_or_file, 'seek'):
         f = cast(BinaryIO, filename_or_file)

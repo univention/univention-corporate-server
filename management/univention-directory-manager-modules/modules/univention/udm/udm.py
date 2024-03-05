@@ -146,8 +146,6 @@ class UDM(object):
         :param connection: Any connection object (e.g., univention.admin.uldap.access)
         :param int api_version: load only UDM modules that support the
                 specified version, can be set later using :py:meth:`version()`.
-        :return: None
-        :rtype: None
         """
         self.connection = connection
         self._api_version = None  # type: Optional[int]
@@ -161,7 +159,6 @@ class UDM(object):
         Use a cn=admin connection.
 
         :return: a :py:class:`univention.udm.udm.UDM` instance
-        :rtype: univention.udm.udm.UDM
         :raises univention.udm.exceptions.ConnectionError: Non-Primary systems, server down, etc.
         """
         from .connections import LDAP_connection
@@ -178,7 +175,6 @@ class UDM(object):
             a Replica, this would be the local slapd, on a Managed Node, this would
             be locally configured in UCR). Else, connect directly to the Primary
         :return: a :py:class:`univention.udm.udm.UDM` instance
-        :rtype: univention.udm.udm.UDM
         :raises univention.udm.exceptions.ConnectionError: File permissions, server down, etc.
         """
         from .connections import LDAP_connection
@@ -206,7 +202,6 @@ class UDM(object):
         :param str server: optional LDAP server address as FQDN
         :param int port: optional LDAP server port
         :return: a :py:class:`univention.udm.udm.UDM` instance
-        :rtype: univention.udm.udm.UDM
         :raises univention.udm.exceptions.ConnectionError: Invalid credentials, server down, etc.
         """
         from .connections import LDAP_connection
@@ -225,7 +220,6 @@ class UDM(object):
         :param int api_version: load only UDM modules that support the
                 specified version
         :return: self (the :py:class:`univention.udm.udm.UDM` instance)
-        :rtype: univention.udm.udm.UDM
         :raises univention.udm.exceptions.ApiVersionMustNotChange: if called twice
         """
         if not isinstance(api_version, int):
@@ -244,7 +238,6 @@ class UDM(object):
 
         :param str name: UDM module name (e.g. `users/user`)
         :return: object of a subclass of :py:class:`BaseModule`
-        :rtype: BaseModule
         :raises univention.udm.exceptions.ApiVersionNotSupported: if the Python module for `name` could not be loaded
         :raises univention.udm.exceptions.NoApiVersionSet: if the API version has not been set
         """
@@ -276,7 +269,6 @@ class UDM(object):
 
         :param str dn: DN of the object to load
         :return: object of a subclass of :py:class:`BaseObject`
-        :rtype: BaseObject
         :raises univention.udm.exceptions.NoApiVersionSet: if the API version has not been set
         :raises univention.udm.exceptions.NoObject: if no object is found at `dn`
         :raises univention.udm.exceptions.ImportError: if the Python module for ``univentionObjectType``

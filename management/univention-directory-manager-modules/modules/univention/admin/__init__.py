@@ -55,6 +55,7 @@ from univention.admin._ucr import configRegistry
 log = getLogger('ADMIN')
 
 if TYPE_CHECKING:
+    import univention.admin.handlers
     from univention.admin.layout import Tab  # noqa: F401
     from univention.admin.types import TypeHint  # noqa: F401
 
@@ -315,6 +316,7 @@ class property:
         return pattern_replace(copy.copy(res), object)
 
     def default(self, object):
+        # type: (univention.admin.handlers.simpleLdap) -> Any
         base_default = copy.copy(self.base_default)  # type: Union[None, bool, int, str, List[str], Tuple[Any, List[str]], Tuple[Callable, List[str], Any]]
         if not object.set_defaults:
             return [] if self.multivalue else ''

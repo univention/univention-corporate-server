@@ -35,7 +35,7 @@
 
 import re
 from logging import getLogger
-from typing import List  # noqa: F401
+from typing import Dict, List, Tuple  # noqa: F401
 
 import ldap
 from ldap.filter import filter_format
@@ -242,6 +242,7 @@ class object(univention.admin.handlers.simpleLdap):
     }
 
     def _post_unmap(self, info, values):
+        # type: (Dict, Dict) -> Dict
         value = values.get('univentionNagiosNotificationOptions', [b''])[0]
         if value:
             options = value.split(b',')  # type: List[bytes]
@@ -251,10 +252,11 @@ class object(univention.admin.handlers.simpleLdap):
         return info
 
     def open(self):
+        # type: () -> None
         super(object, self).open()
         _re = re.compile(r'^([^.]+)\.(.+?)$')
         # convert host FQDN to host DN
-        hostlist = []
+        hostlist = []  # type: List[str]
         hosts = self.oldattr.get('univentionNagiosHostname', [])
         for host in [x.decode('UTF-8') for x in hosts]:
             # split into relDomainName and zoneName
@@ -274,19 +276,20 @@ class object(univention.admin.handlers.simpleLdap):
                     # find dn of host that is related to given aRecords
                     res = self.lo.search(filter=filter)
                     if res:
-                        hostlist.append(res[0][0])  # type: List[str]
+                        hostlist.append(res[0][0])
 
         self['assignedHosts'] = hostlist
 
         self.save()
 
     def _ldap_modlist(self):
+        # type: () -> List[Tuple]
         ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
-        options = []
+        options = []  # type: List[bytes]
         for key, value in self.OPTION_BITS.items():
             if self[key] == '1':
-                options.append(value)  # type: List[bytes]
+                options.append(value)
 
         # univentionNagiosNotificationOptions is required in LDAP schema
         if not options:

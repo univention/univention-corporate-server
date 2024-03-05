@@ -140,7 +140,6 @@ class BaseObject(object):
         Refresh object from LDAP.
 
         :return: self
-        :rtype: BaseObject
         """
         raise NotImplementedError()
 
@@ -150,7 +149,6 @@ class BaseObject(object):
         Save object to LDAP.
 
         :return: self
-        :rtype: BaseObject
         :raises univention.udm.exceptions.MoveError: when a move operation fails
         """
         raise NotImplementedError()
@@ -162,7 +160,6 @@ class BaseObject(object):
 
         :param bool remove_childs: if there are UDM objects below this objects DN, recursively remove
                 them before removing this object
-        :return: None
         """
         raise NotImplementedError()
 
@@ -224,7 +221,6 @@ class BaseModuleMetadata(object):
 
         :param str filter_s: optional LDAP filter expression
         :return: an LDAP filter string
-        :rtype: str
         """
         raise NotImplementedError()
 
@@ -236,7 +232,6 @@ class BaseModuleMetadata(object):
 
         :return: a namedtuple containing two mappings: a) from UDM property to
                 LDAP attribute and b) from LDAP attribute to UDM property
-        :rtype: LdapMapping
         """
         raise NotImplementedError()
 
@@ -306,15 +301,13 @@ class BaseModule(with_metaclass(ModuleMeta)):
         return '{}({!r})'.format(self.__class__.__name__, self.name)
 
     def new(self, superordinate=None):
-        # type: (Optional[Union[str, BaseObject]]) -> BaseObject
+        # type: (Union[str, BaseObject, None]) -> BaseObject
         """
         Create a new, unsaved :py:class:`BaseObject` object.
 
         :param superordinate: DN or UDM object this one references as its
                 superordinate (required by some modules)
-        :type superordinate: str or GenericObject
         :return: a new, unsaved BaseObject object
-        :rtype: BaseObject
         """
         raise NotImplementedError()
 
@@ -325,7 +318,6 @@ class BaseModule(with_metaclass(ModuleMeta)):
 
         :param str dn: |DN| of the object to load.
         :return: an existing :py:class:`BaseObject` instance.
-        :rtype: BaseObject
         :raises univention.udm.exceptions.NoObject: if no object is found at `dn`
         :raises univention.udm.exceptions.WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
         """
@@ -341,7 +333,6 @@ class BaseModule(with_metaclass(ModuleMeta)):
         :param str id: ID of the object to load (e.g. username (uid) for users/user,
                 name (cn) for groups/group etc.)
         :return: an existing :py:class:`BaseObject` object.
-        :rtype: BaseObject
         :raises univention.udm.exceptions.NoObject: if no object is found with ID `id`
         :raises univention.udm.exceptions.MultipleObjects: if more than one object is found with ID `id`
         """
@@ -366,6 +357,5 @@ class BaseModule(with_metaclass(ModuleMeta)):
         :param str scope: |LDAP| search scope, e.g. `base` or `sub` or `one`.
         :param int sizelimit: |LDAP| size limit for searched results.
         :return: iterator of :py:class:`BaseObject` objects
-        :rtype: Iterator(BaseObject)
         """
         raise NotImplementedError()

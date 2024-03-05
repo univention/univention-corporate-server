@@ -37,6 +37,7 @@ from __future__ import absolute_import
 import base64
 import inspect
 from logging import getLogger
+from typing import Any, Callable, Dict, Iterable, List, Text, Tuple, TypeVar, Union  # noqa: F401
 
 import univention.admin.uexceptions
 from univention.admin import localization
@@ -48,27 +49,26 @@ translation = localization.translation('univention/admin')
 
 _ = translation.translate
 
-try:
-    from typing import List, Text, Tuple, TypeVar, Union  # noqa: F401
-    _E = TypeVar('_E')  # noqa: PYI018
-except ImportError:
-    pass
+_E = TypeVar('_E')  # noqa: PYI018
+_Encoding = Tuple[str, ...]
 
-getfullargspec = getattr(inspect, 'getfullargspec', getattr(inspect, 'getargspec', None))
+getfullargspec = getattr(inspect, 'getfullargspec', getattr(inspect, 'getargspec'))  # noqa: B009
 
 try:
-    unicode  # noqa: B018
+    unicode  # type: ignore[used-before-def] # noqa: B018
 except NameError:
     unicode = str
 
 
 def MapToBytes(udm_value, encoding=()):
+    # type: (List[Text] | Tuple[Text, ...] | Text, _Encoding) -> List[bytes] | bytes
     if isinstance(udm_value, (list, tuple)):
         return [MapToBytes(udm_val, encoding=encoding) for udm_val in udm_value]
     return unicode(udm_value).encode(*encoding)
 
 
 def UnmapToUnicode(ldap_value, encoding=()):
+    # type: (List[bytes] | Tuple[bytes, ...] | bytes, _Encoding) -> List[Text] | Text
     if isinstance(ldap_value, (list, tuple)):
         return [UnmapToUnicode(ldap_val, encoding=encoding) for ldap_val in ldap_value]
     return ldap_value.decode(*encoding)
@@ -136,7 +136,7 @@ def ListUniq(list):
 
 
 def ListToString(value, encoding=()):
-    # type: (List[bytes]) -> str
+    # type: (List[bytes], _Encoding) -> str
     """
     Return first element from list.
     This is right mapping for single-valued properties, as |LDAP| always returns lists of values.
@@ -223,11 +223,12 @@ def ListToLowerListUniq(list):
 
 
 def nothing(a):
+    # type: (object) -> None
     """'Do nothing' mapping returning `None`."""
 
 
 def IgnoreNone(value, encoding=()):
-    # type: (str) -> Union[None, bytes]
+    # type: (str, _Encoding) -> Union[None, bytes]
     """
     Return the value if it is not the string `None`.
 
@@ -262,12 +263,12 @@ def _stringToInt(value):
         return 0
 
 
-def unmapUNIX_TimeInterval(value):
+def unmapUNIX_TimeInterval(seconds):
     # type: (Union[List[bytes], Tuple[bytes], bytes]) -> List[Text]
     """
     Map number of seconds to a human understandable time interval.
 
-    :param value: number of seconds
+    :param seconds: number of seconds
     :returns: a 2-tuple (value, unit)
 
     >>> unmapUNIX_TimeInterval(['0'])  # doctest: +ALLOW_UNICODE
@@ -281,9 +282,9 @@ def unmapUNIX_TimeInterval(value):
     >>> unmapUNIX_TimeInterval('86400')  # doctest: +ALLOW_UNICODE
     ['1', 'days']
     """
-    if isinstance(value, (list, tuple)):
-        value = value[0]
-    value = _stringToInt(value)
+    if isinstance(seconds, (list, tuple)):
+        seconds = seconds[0]
+    value = _stringToInt(seconds)
     unit = u'seconds'
     if value % 60 == 0:
         value //= 60
@@ -298,7 +299,7 @@ def unmapUNIX_TimeInterval(value):
 
 
 def mapUNIX_TimeInterval(value):
-    # type: (Union[List[str], Tuple[str], str]) -> bytes
+    # type: (Union[List[str], Tuple[str], Tuple[str, str], str]) -> bytes
     """
     Unmap a human understandable time interval back to number of seconds.
 
@@ -319,17 +320,18 @@ def mapUNIX_TimeInterval(value):
         if len(value) > 1:
             unit = value[1]
         value = value[0]
-    value = _stringToInt(value)
+    val = _stringToInt(value)
     if unit == u'days':
-        value *= 24 * 60 * 60
+        val *= 24 * 60 * 60
     elif unit == u'hours':
-        value *= 60 * 60
+        val *= 60 * 60
     elif unit == u'minutes':
-        value *= 60
-    return unicode(value).encode('ASCII')
+        val *= 60
+    return unicode(val).encode('ASCII')
 
 
 def unmapBase64(value):
+    # type: (Union[List[bytes], Tuple[bytes, ...], bytes]) -> Union[List[str], str]
     """
     Convert binary data (as found in |LDAP|) to Base64 encoded |UDM| property value(s).
 
@@ -390,7 +392,7 @@ def mapBase64(value):
 
 
 def BooleanListToString(list, encoding=()):
-    # type: (List[bytes]) -> str
+    # type: (List[bytes], _Encoding) -> str
     """
     Convert |LDAP| boolean to |UDM|.
 
@@ -409,7 +411,7 @@ def BooleanListToString(list, encoding=()):
 
 
 def BooleanUnMap(value, encoding=()):
-    # type: (str) -> bytes
+    # type: (str, _Encoding) -> bytes
     """
     Convert |UDM| boolean to |LDAP|.
 
@@ -434,13 +436,22 @@ class mapping(object):
     """Map |LDAP| attribute names and values to |UDM| property names and values and back."""
 
     def __init__(self):
-        self._map = {}
-        self._unmap = {}
-        self._unmap_func = {}
-        self._map_encoding = {}
-        self._unmap_encoding = {}
+        # type: () -> None
+        self._map = {}  # type: Dict[str, Tuple[str, Callable[[Any], Any] | None]]
+        self._unmap = {}  # type: Dict[str, Tuple[str, Callable[[Any], Any] | None]]
+        self._unmap_func = {}  # type: Dict[str, Callable[[Any], Any]]
+        self._map_encoding = {}  # type: Dict[str, Tuple[str, str]]
+        self._unmap_encoding = {}  # type: Dict[str, Tuple[str, str]]
 
-    def register(self, map_name, unmap_name, map_value=None, unmap_value=None, encoding='UTF-8', encoding_errors='strict'):
+    def register(
+        self,
+        map_name,  # type: str
+        unmap_name,  # type: str
+        map_value=None,  # type: Callable[[Any], Any] | None
+        unmap_value=None,  # type: Callable[[Any], Any] | None
+        encoding='UTF-8',  # type: str
+        encoding_errors='strict',  # type: str
+    ):  # type: (...) -> None
         """
         Register a new mapping.
 
@@ -470,7 +481,13 @@ class mapping(object):
             self._unmap.pop(unmap_name, None)
             self._unmap_encoding.pop(unmap_name, None)
 
-    def registerUnmapping(self, unmap_name, unmap_value, encoding='UTF-8', encoding_errors='strict'):
+    def registerUnmapping(
+        self,
+        unmap_name,  # type: str
+        unmap_value,  # type: Callable[[Any], Any]
+        encoding='UTF-8',  # type: str
+        encoding_errors='strict',  # type: str
+    ):  # type: (...) -> None
         """
         Register a new unmapping from |LDAP| to |UDM|.
 
@@ -481,6 +498,7 @@ class mapping(object):
         self._unmap_encoding[unmap_name] = (encoding, encoding_errors)
 
     def mapName(self, map_name):
+        # type: (str) -> str
         """
         Map |UDM| property name to |LDAP| attribute name.
 
@@ -494,6 +512,7 @@ class mapping(object):
         return self._map.get(map_name, [''])[0]
 
     def unmapName(self, unmap_name):
+        # type: (str) -> str
         """
         Map |LDAP| attribute name to |UDM| property name.
 
@@ -506,7 +525,12 @@ class mapping(object):
         """
         return self._unmap.get(unmap_name, [''])[0]
 
-    def mapValue(self, map_name, value, encoding_errors=None):
+    def mapValue(
+        self,
+        map_name,  # type: str
+        value,  # type: Any
+        encoding_errors=None,
+    ):  # type: (...) -> bytes
         """
         Map |UDM| property value to |LDAP| attribute value.
 
@@ -552,7 +576,12 @@ class mapping(object):
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Invalid encoding for %s') % (map_name,))
         return value
 
-    def mapValueDecoded(self, map_name, value, encoding_errors=None):
+    def mapValueDecoded(
+        self,
+        map_name,  # type: str
+        value,  # type: Any
+        encoding_errors=None,
+    ):  # type: (...) -> Any
         encoding, errors = self.getEncoding(map_name)
         errors = encoding_errors or errors
         value = self.mapValue(map_name, value, encoding_errors=errors)
@@ -564,6 +593,7 @@ class mapping(object):
         return value
 
     def unmapValue(self, unmap_name, value):
+        # type: (str, Any) -> Any
         """
         Map |LDAP| attribute value to |UDM| property value.
 
@@ -594,6 +624,7 @@ class mapping(object):
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Invalid encoding for %s') % (unmap_name,))
 
     def unmapValues(self, oldattr):
+        # type: (Dict[str, Any]) -> Dict[str, Any]
         """Unmaps |LDAP| attribute values to |UDM| property values."""
         info = mapDict(self, oldattr)
         for key, func in self._unmap_func.items():
@@ -604,16 +635,20 @@ class mapping(object):
         return info
 
     def shouldMap(self, map_name):
+        # type: (str) -> bool
         return not isinstance(self._map[map_name][1], dontMap)
 
     def shouldUnmap(self, unmap_name):
+        # type: (str) -> bool
         return not isinstance(self._unmap[unmap_name][1], dontMap)
 
     def getEncoding(self, map_name):
+        # type: (str) -> _Encoding
         return self._map_encoding.get(map_name, self._unmap_encoding.get(map_name, ()))
 
 
 def mapCmp(mapping, key, old, new):
+    # type: (mapping, str, Any, Any) -> bool
     """
     Compare old and new for equality (mapping back to LDAP value if possible).
 
@@ -641,6 +676,7 @@ def mapCmp(mapping, key, old, new):
 
 
 def mapDict(mapping, old):
+    # type: (mapping, Dict[str, Any]) -> Dict[str, Any]
     """
     Convert dictionary mapping LDAP_attriute_name to LDAP_value to a (partial)
     dictionary mapping UDM_property_name to UDM_value.
@@ -665,6 +701,7 @@ def mapDict(mapping, old):
 
 
 def mapList(mapping, old):  # UNUSED
+    # type: (mapping, List[Any] | None) -> List[Any]
     """
     Convert list of LDAP attribute names to list of UDM property names.
 
@@ -690,6 +727,7 @@ def mapList(mapping, old):  # UNUSED
 
 
 def mapDiff(mapping, diff):
+    # type: (mapping, Iterable[Tuple[str, Any, Any]]) -> List[Tuple[str, Any, Any]]
     """
     Convert mod-list of UDM property names/values to mod-list of LDAP attribute names/values.
 
@@ -721,6 +759,7 @@ def mapDiff(mapping, diff):
 
 
 def mapDiffAl(mapping, diff):  # UNUSED
+    # type: (mapping, Iterable[Tuple[str, Any, Any]]) -> List[Tuple[str, Any]]
     """
     Convert mod-list of UDM property names/values to add-list of LDAP attribute names/values.
 
@@ -748,6 +787,7 @@ def mapDiffAl(mapping, diff):  # UNUSED
 
 
 def mapRewrite(filter, mapping):
+    # type: (univention.admin.filter.expression, mapping) -> None
     """
     Re-write UDM property name/value in UDM filter expression to LDAP attribute name/value.
 

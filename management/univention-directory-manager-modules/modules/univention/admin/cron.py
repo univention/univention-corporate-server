@@ -123,7 +123,7 @@ def weekday_reverse_map(weekday):
 
 
 def cron_create(cronlist):
-    # type: (Mapping[str, Sequence[Union[str, int]]]) -> str
+    # type: (Mapping[str, Sequence[str]]) -> str
     """
     Create a crontab time string.
 
@@ -134,7 +134,7 @@ def cron_create(cronlist):
 
     >>> cron_create(dict(minute=[], hour=[], day=[], month=[], weekday=[]))
     '* * * * * '
-    >>> cron_create(dict(minute=[0], hour=[1], day=[2], month=['March'], weekday=['Thursday']))
+    >>> cron_create(dict(minute=['0'], hour=['1'], day=['2'], month=['March'], weekday=['Thursday']))
     '0 1 2 3 4 '
     >>> cron_create(dict(minute=['all'], hour=['all'], day=['all'], month=['all'], weekday=['all']))
     '0,5,10,15,20,25,30,35,40,45,50,55 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31 1,2,3,4,5,6,7,8,9,10,11,12 1,2,3,4,5,6,7 '

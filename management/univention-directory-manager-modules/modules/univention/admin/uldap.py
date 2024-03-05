@@ -133,7 +133,6 @@ def getBaseDN(host='localhost', port=None, uri=None):
     :param int port: The TCP port number of the LDAP server.
     :param str uri: A complete LDAP URI.
     :returns: The distinguished name of the LDAP root.
-    :rtype: str
     """
     if not uri:
         if not port:
@@ -151,15 +150,13 @@ def getBaseDN(host='localhost', port=None, uri=None):
 
 
 def getAdminConnection(start_tls=None, decode_ignorelist=[]):
-    # type: (int, List[str]) -> Tuple[univention.admin.uldap.access, univention.admin.uldap.position]
+    # type: (int | None, List[str]) -> Tuple[univention.admin.uldap.access, univention.admin.uldap.position]
     """
     Open a LDAP connection using the admin credentials.
 
     :param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
     :param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
-    :type decode_ignorelist: list[str]
     :return: A 2-tuple (LDAP-access, LDAP-position)
-    :rtype: tuple[univention.admin.uldap.access, univention.admin.uldap.position]
     """
     lo = univention.uldap.getAdminConnection(start_tls, decode_ignorelist=decode_ignorelist)
     pos = position(lo.base)
@@ -167,16 +164,14 @@ def getAdminConnection(start_tls=None, decode_ignorelist=[]):
 
 
 def getMachineConnection(start_tls=None, decode_ignorelist=[], ldap_master=True):
-    # type: (int, List[str], bool) -> Tuple[univention.admin.uldap.access, univention.admin.uldap.position]
+    # type: (int | None, List[str], bool) -> Tuple[univention.admin.uldap.access, univention.admin.uldap.position]
     """
     Open a LDAP connection using the machine credentials.
 
     :param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
     :param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
-    :type decode_ignorelist: list[str]
     :param bool ldap_master: Open a connection to the Primary if True, to the preferred LDAP server otherwise.
     :return: A 2-tuple (LDAP-access, LDAP-position)
-    :rtype: tuple[univention.admin.uldap.access, univention.admin.uldap.position]
     """
     lo = univention.uldap.getMachineConnection(start_tls, decode_ignorelist=decode_ignorelist, ldap_master=ldap_master)
     pos = position(lo.base)
@@ -190,7 +185,6 @@ def _err2str(err):
 
     :param Exception err: An exception instance.
     :returns: A concatenated string formatted from the exception
-    :rtype: str
     """
     msgs = []
     for iarg in err.args:
@@ -224,7 +218,6 @@ class domain(object):
         Return the name of the Kerberos realms.
 
         :returns: The name of the Kerberos realm.
-        :rtype: str
         """
         if 'krb5RealmName' not in self.domain:
             return None
@@ -280,7 +273,6 @@ class position(object):
         Return the distinguished name.
 
         :returns: The absolute DN.
-        :rtype: str
         """
         return ldap.dn.dn2str(ldap.dn.str2dn(self.__pos) + ldap.dn.str2dn(self.__base))
 
@@ -304,7 +296,6 @@ class position(object):
         Return the distinguished name relative to the LDAP base.
 
         :returns: The relative DN.
-        :rtype: str
         """
         return ldap.dn.explode_rdn(self.getDn())[0]
 
@@ -314,7 +305,6 @@ class position(object):
         Return the LDAP base DN.
 
         :returns: The distinguished name of the LDAP base.
-        :rtype: str
         """
         return self.__base
 
@@ -324,7 +314,6 @@ class position(object):
         Check if the position equals the LDAP base DN.
 
         :returns: True if the position equals the base DN, False otherwise.
-        :rtype: bool
         """
         return access.compare_dn(self.getDn(), self.getBase())
 
@@ -334,7 +323,6 @@ class position(object):
         Return the distinguished name of the domain part of the position.
 
         :returns: The distinguished name.
-        :rtype: str
         """
         if not self.__indomain or self.getDn() == self.getBase():
             return self.getBase()
@@ -351,7 +339,6 @@ class position(object):
         Return the distinguished name of the configuration container.
 
         :returns: The distinguished name.
-        :rtype: str
         """
         return u'cn=univention,' + self.getDomain()
 
@@ -361,7 +348,6 @@ class position(object):
         Check if the position equals the domain DN.
 
         :returns: True if the position equals the domain DN, False otherwise.
-        :rtype: bool
         """
         return self.getDn() == self.getDomain()
 
@@ -371,7 +357,6 @@ class position(object):
         Return the login domain name.
 
         :returns: The login domain name.
-        :rtype: str
         """
         return self.__loginDomain
 
@@ -381,7 +366,6 @@ class position(object):
         Switch position to parent container.
 
         :returns: False if already at the Base, True otherwise.
-        :rtype: bool
         """
         if self.isBase():
             return False
@@ -399,7 +383,6 @@ class access(object):
         Return the distinguished name of the account.
 
         :returns: The distinguished name of the account (or `None` with |SAML|).
-        :rtype: str
         """
         return self.lo.binddn
 
@@ -410,7 +393,6 @@ class access(object):
         Return the user password or credentials.
 
         :returns: The user password or credentials.
-        :rtype: str
         """
         return self.lo.bindpw
 
@@ -421,7 +403,6 @@ class access(object):
         Return the host name of the LDAP server.
 
         :returns: the host name of the LDAP server.
-        :rtype: str
         """
         return self.lo.host
 
@@ -432,7 +413,6 @@ class access(object):
         Return the TCP port number of the LDAP server.
 
         :returns: the TCP port number of the LDAP server.
-        :rtype: int
         """
         return self.lo.port
 
@@ -443,7 +423,6 @@ class access(object):
         Return the LDAP base of the LDAP server.
 
         :returns: the LDAP base of the LDAP server.
-        :rtype: str
         """
         return self.lo.base
 
@@ -588,7 +567,6 @@ class access(object):
         Return the distinguished name of the authenticated user.
 
         :returns: The distinguished name.
-        :rtype: str
         """
         return self.lo.whoami()
 
@@ -613,7 +591,6 @@ class access(object):
         Retrieve |LDAP| schema information from |LDAP| server.
 
         :returns: The |LDAP| schema.
-        :rtype: ldap.schema.subentry.SubSchema
         """
         return self.lo.get_schema()
 
@@ -626,7 +603,6 @@ class access(object):
         :param str a: The first distinguished name.
         :param str b: A second distinguished name.
         :returns: True if the DNs are the same, False otherwise.
-        :rtype: bool
         """
         return univention.uldap.access.compare_dn(a, b)
 
@@ -640,7 +616,6 @@ class access(object):
         :param bool required: Raise an exception instead of returning an empty dictionary.
         :param bool exceptions: Ignore.
         :returns: A dictionary mapping the requested attributes to a list of their values.
-        :rtype: dict[str, list[str]]
         :raises ldap.NO_SUCH_OBJECT: If the LDAP object is not accessible.
         """
         return self.lo.get(dn, attr, required)
@@ -655,7 +630,6 @@ class access(object):
         :param bool required: Raise an exception instead of returning an empty dictionary.
         :param bool exceptions: Ignore.
         :returns: A list of values.
-        :rtype: list[bytes]
         :raises ldap.NO_SUCH_OBJECT: If the LDAP object is not accessible.
         """
         return self.lo.getAttr(dn, attr, required)
@@ -669,16 +643,13 @@ class access(object):
         :param str base: the starting point for the search.
         :param str scope: Specify the scope of the search to be one of `base`, `base+one`, `one`, `sub`, or `domain` to specify a base object, base plus one-level, one-level, subtree, or children search.
         :param attr: The list of attributes to fetch.
-        :type attr: list[str]
         :param bool unique: Raise an exception if more than one object matches.
         :param bool required: Raise an exception instead of returning an empty dictionary.
         :param int timeout: wait at most `timeout` seconds for a search to complete. `-1` for no limit.
         :param int sizelimit: retrieve at most `sizelimit` entries for a search. `0` for no limit.
         :param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
-        :type serverctrls: list[ldap.controls.LDAPControl]
         :param dict response: An optional dictionary to receive the server controls of the result.
         :returns: A list of 2-tuples (dn, values) for each LDAP object, where values is a dictionary mapping attribute names to a list of values.
-        :rtype: list[tuple[str, dict[str, list[str]]]]
         :raises univention.admin.uexceptions.noObject: Indicates the target object cannot be found.
         :raises univention.admin.uexceptions.insufficientInformation: Indicates that the matching rule specified in the search filter does not match a rule defined for the attribute's syntax.
         :raises univention.admin.uexceptions.ldapTimeout: Indicates that the time limit of the LDAP client was exceeded while waiting for a result.
@@ -717,10 +688,8 @@ class access(object):
         :param int timeout: wait at most timeout seconds for a search to complete. `-1` for no limit.
         :param int sizelimit: retrieve at most sizelimit entries for a search. `0` for no limit.
         :param serverctrls: a list of :py:class:`ldap.controls.LDAPControl` instances sent to the server along with the LDAP request.
-        :type serverctrls: list[ldap.controls.LDAPControl]
         :param dict response: An optional dictionary to receive the server controls of the result.
         :returns: A list of distinguished names.
-        :rtype: list[str]
         :raises univention.admin.uexceptions.noObject: Indicates the target object cannot be found.
         :raises univention.admin.uexceptions.insufficientInformation: Indicates that the matching rule specified in the search filter does not match a rule defined for the attribute's syntax.
         :raises univention.admin.uexceptions.ldapTimeout: Indicates that the time limit of the LDAP client was exceeded while waiting for a result.
@@ -771,7 +740,6 @@ class access(object):
         :param bool exceptions: Raise the low level exception instead of the wrapping UDM exceptions.
         :param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
         :param bool ignore_license: Ignore license check if True.
-        :type serverctrls: list[ldap.controls.LDAPControl]
         :param dict response: An optional dictionary to receive the server controls of the result.
         :raises univention.admin.uexceptions.licenseDisableModify: if the UCS licence prohibits any modificcation
         :raises univention.admin.uexceptions.objectExists: if the LDAP object already exists.
@@ -810,10 +778,8 @@ class access(object):
         :param bool exceptions: Raise the low level exception instead of the wrapping UDM exceptions.
         :param bool ignore_license: Ignore license check if True.
         :param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
-        :type serverctrls: list[ldap.controls.LDAPControl]
         :param dict response: An optional dictionary to receive the server controls of the result.
         :returns: The distinguished name.
-        :rtype: str
         """
         self._validateLicense()
         if not self.allow_modify and not ignore_license:
@@ -841,13 +807,12 @@ class access(object):
         """
         Rename a LDAP object.
 
-        :param str dn: The old distinguished name of the object to rename.
-        :param str newdn: The new distinguished name of the object to rename.
-        :param int move_childs: Also rename the sub children. Must be `0` always as `1` is not implemented.
-        :param bool ignore_license: Ignore license check if True.
+        :param dn: The old distinguished name of the object to rename.
+        :param newdn: The new distinguished name of the object to rename.
+        :param move_childs: Also rename the sub children. Must be `0` always as `1` is not implemented.
+        :param ignore_license: Ignore license check if True.
         :param serverctrls: a list of ldap.controls.LDAPControl instances sent to the server along with the LDAP request
-        :type serverctrls: list[ldap.controls.LDAPControl]
-        :param dict response: An optional dictionary to receive the server controls of the result.
+        :param response: An optional dictionary to receive the server controls of the result.
         """
         if move_childs != 0:
             raise univention.admin.uexceptions.noObject(_("Moving children is not supported."))
@@ -910,7 +875,6 @@ class access(object):
 
         :param str dn: The distinguished name.
         :return: The parent distinguished name or None if the LDAP base is reached.
-        :rtype: str or None
         """
         return self.lo.parentDn(dn)
 
@@ -922,6 +886,5 @@ class access(object):
         :param str dn: The distinguished name.
         :param bool notypes: Return only the component's attribute values if True. Also the attribute types if False.
         :return: A list of relative distinguished names.
-        :rtype: list[str]
         """
         return self.lo.explodeDn(dn, notypes)

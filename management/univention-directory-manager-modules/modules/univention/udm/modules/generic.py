@@ -145,7 +145,7 @@ class GenericObject(BaseObject):
         """
         super(GenericObject, self).__init__()
         self._udm_module = None  # type: Optional[GenericModule]
-        self._lo = None  # type: Optional[univention.admin.handlers.simpleLdap]
+        self._lo = None  # type: Optional[univention.admin.uldap.access]
         self._orig_udm_object = None  # type: Optional[univention.admin.handlers.simpleLdap]
         self._old_position = ''
         self._fresh = True
@@ -157,7 +157,6 @@ class GenericObject(BaseObject):
         Refresh object from LDAP.
 
         :return: self
-        :rtype: GenericObject
         :raises univention.udm.exceptions.NotYetSavedError: if object does not yet exist (has no dn)
         """
         assert self._udm_module is not None
@@ -176,7 +175,6 @@ class GenericObject(BaseObject):
         Save object to LDAP.
 
         :return: self
-        :rtype: GenericObject
         :raises univention.udm.exceptions.MoveError: when a move operation fails
         """
         assert self._udm_module is not None
@@ -249,7 +247,6 @@ class GenericObject(BaseObject):
 
         :param bool remove_childs: if there are UDM objects below this objects DN, recursively remove
                 them before removing this object
-        :return: None
         :raises univention.udm.exceptions.NotYetSavedError: if object does not yet exist (has no dn)
         :raises univention.udm.exceptions.DeletedError: if the operation fails
         """
@@ -278,8 +275,6 @@ class GenericObject(BaseObject):
         """
         Copy UDM property values from low-level UDM object to `props`
         container as well as its `policies` and `options`.
-
-        :return: None
         """
         assert self._udm_module is not None
         assert self._orig_udm_object is not None
@@ -353,8 +348,6 @@ class GenericObject(BaseObject):
         """
         Copy UDM property values from `props` container to low-level UDM
         object.
-
-        :return: None
         """
         assert self._udm_module is not None
         assert self._orig_udm_object is not None
@@ -436,10 +429,8 @@ class GenericObject(BaseObject):
         arguments.
 
         :param encoder_class: a subclass of BaseEncoder
-        :type encoder_class: type(BaseEncoder)
         :param kwargs: named arguments to pass to __init__ when instantiating encoder object
         :return: either a class object or an instance, depending on the class variable :py:attr:`static`
-        :rtype: BaseEncoder or type(BaseEncoder)
         """
         if encoder_class.static:
             # don't create an object if not necessary
@@ -500,7 +491,6 @@ class GenericModuleMetadata(BaseModuleMetadata):
 
         :param str filter_s: optional LDAP filter expression
         :return: an LDAP filter string
-        :rtype: str
         """
         assert self._udm_module is not None
         return str(self._udm_module._orig_udm_module.lookup_filter(filter_s, self._udm_module.connection))
@@ -512,7 +502,6 @@ class GenericModuleMetadata(BaseModuleMetadata):
         UDM properties to LDAP attributes mapping and vice versa.
 
         :return: a namedtuple containing two mappings: a) from UDM property to LDAP attribute and b) from LDAP attribute to UDM property
-        :rtype: LdapMapping
         """
         assert self._udm_module is not None
         return LdapMapping(
@@ -552,7 +541,7 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
 
     _udm_object_class = GenericObject  # type: Type[GenericObject]
     _udm_module_meta_class = GenericModuleMetadata  # type: Type[GenericModuleMetadata]
-    _udm_module_cache = {}  # type: Dict[Tuple[str, str, str, str], univention.admin.handlers.simpleLdap]
+    _udm_module_cache = {}  # type: Dict[Tuple[str, str, str, str], univention.admin.modules.UdmModule]
     _default_containers = {}  # type: Dict[str, Dict[str, Any]]
 
     class Meta:
@@ -565,15 +554,13 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         self._orig_udm_module = self._get_orig_udm_module()
 
     def new(self, superordinate=None):
-        # type: (Optional[Union[str, GenericObject]]) -> GenericObject
+        # type: (Union[str, GenericObject, None]) -> GenericObject
         """
         Create a new, unsaved GenericObject object.
 
         :param superordinate: DN or UDM object this one references as its
                 superordinate (required by some modules)
-        :type superordinate: str or GenericObject
         :return: a new, unsaved GenericObject object
-        :rtype: GenericObject
         """
         return self._load_obj('', superordinate)
 
@@ -584,7 +571,6 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
 
         :param str dn: DN of the object to load
         :return: an existing GenericObject object
-        :rtype: GenericObject
         :raises univention.udm.exceptions.NoObject: if no object is found at `dn`
         :raises univention.udm.exceptions.WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
         """
@@ -601,7 +587,6 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         :param str scope: depth to search
         :param int sizelimit: LDAP size limit for searched results.
         :return: generator to iterate over GenericObject objects
-        :rtype: Iterator(GenericObject)
         """
         try:
             try:
@@ -634,7 +619,6 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
 
         :param str dn: the DN
         :return: whether `dn` exists
-        :rtype: bool
         """
         try:
             self.connection.searchDn(base=dn, scope='base')
@@ -649,7 +633,6 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         Get default containers for all modules.
 
         :return: a dictionary with lists of DNs
-        :rtype: dict(str, list(str))
         """
         if not self._default_containers:
             # DEFAULT_CONTAINERS_DN must exist, or we'll run into an infinite recursion
@@ -669,7 +652,6 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         Get default containers for this UDM module.
 
         :return: list of container DNs
-        :rtype: list(str)
         """
         module_contailers = [
             '{},{}'.format(dc, getattr(self._orig_udm_module.object, 'ldap_base', ucr['ldap/base']))
@@ -686,12 +668,11 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         return module_contailers
 
     def _get_orig_udm_module(self):
-        # type: () -> univention.admin.handlers.simpleLdap
+        # type: () -> univention.admin.modules.UdmModule
         """
         Load a UDM module, initializing it if required.
 
         :return: a UDM module
-        :rtype: univention.admin.handlers.simpleLdap
         """
         # While univention.admin.modules already implements a modules cache we
         # cannot know if update() or init() are required. So we'll also cache.
@@ -711,7 +692,7 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         return self._udm_module_cache[key]
 
     def _get_orig_udm_object(self, dn, superordinate=None):
-        # type: (str, Optional[Union[str, GenericObject]]) -> univention.admin.handlers.simpleLdap
+        # type: (str, Union[str, GenericObject, None]) -> univention.admin.handlers.simpleLdap
         """
         Retrieve UDM object from LDAP.
 
@@ -721,11 +702,9 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         :param str dn: the DN of the object to load
         :param superordinate: DN or UDM object this one references as its
                 superordinate (required by some modules)
-        :type superordinate: str or GenericObject
         :param univention.admin.handlers.simpleLdap orig_udm_object: original
                 UDM object instance, if unset one will be created from `dn`
         :return: UDM object
-        :rtype: univention.admin.handlers.simpleLdap
         :raises univention.udm.exceptions.NoObject: if no object is found at `dn`
         :raises univention.udm.exceptions.WrongObjectType: if the object found at `dn` is not of type :py:attr:`self.name`
         """
@@ -760,18 +739,16 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         return obj
 
     def _load_obj(self, dn, superordinate=None, orig_udm_object=None):
-        # type: (str, Optional[Union[str, GenericObject]], Optional[univention.admin.handlers.simpleLdap]) -> GenericObject
+        # type: (str, Union[str, GenericObject, None], Optional[univention.admin.handlers.simpleLdap]) -> GenericObject
         """
         GenericObject factory.
 
         :param str dn: the DN of the UDM object to load, if '' a new one
         :param superordinate: DN or UDM object this one references as its
                 superordinate (required by some modules)
-        :type superordinate: str or GenericObject
         :param univention.admin.handlers.simpleLdap orig_udm_object: original
                 UDM object instance, if unset one will be created from `dn`
         :return: a GenericObject
-        :rtype: GenericObject
         :raises univention.udm.exceptions.NoObject: if no object is found at `dn`
         :raises univention.udm.exceptions.ValueError: if `orig_udm_object` is not a
                 :py:class:`univention.admin.handlers.simpleLdap` instance
@@ -798,8 +775,6 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         UDM module name.
 
         :param orig_udm_obj: original UDM object
-        :type orig_udm_obj: univention.admin.handlers.simpleLdap
-        :return: None
         :raises univention.udm.exceptions.WrongObjectType: if ``univentionObjectType`` of the LDAP object
                 does not match the UDM module name
         """

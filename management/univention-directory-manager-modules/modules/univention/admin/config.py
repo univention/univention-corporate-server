@@ -88,11 +88,9 @@ def getDefaultContainer(lo, module):
 
     .. deprecated:: UCS 4.4
 
-    :param univention.admin.uldap.access lo: A LDAP connection object.
+    :param lo: A LDAP connection object.
     :param module: The name of a UDM module.
-    :type module: str or a :py:class:`univention.admin.handlers.simpleLdap` instance.
     :returns: A distinguished name.
-    :rtype: str
     """
     if module == 'dns/':
         module = 'dns/dns'
@@ -111,7 +109,6 @@ def getDefaultValue(lo, name, position=None):
     :param str name: The name of a property.
     :param univention.admin.uldap.position position: A UDM position specifying the LDAP base container.
     :returns: The default value.
-    :rtype: str
     """
     if name == 'group':
         att = 'univentionDefaultGroup'
