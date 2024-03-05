@@ -17,7 +17,20 @@ attributetype ( 1.3.6.1.4.1.10176.1003.4 NAME 'univentionSourceIAM'
 	EQUALITY caseExactMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
 
+attributetype ( 1.3.6.1.4.1.10176.1003.5 NAME 'univentionGuardianRoles'
+        DESC 'Roles of objects with the Guardian'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.1003.6 NAME 'univentionGuardianMemberRoles'
+        DESC 'Roles of objects with the Guardian'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
 objectclass ( 1.3.6.1.4.1.10176.1003 NAME 'univentionObject'
 	AUXILIARY
 	MUST ( univentionObjectType )
-	MAY ( univentionObjectFlag $ univentionObjectIdentifier $ univentionSourceIAM ) )
+	MAY ( univentionObjectFlag $ univentionObjectIdentifier $ univentionSourceIAM $ univentionGuardianRoles $ univentionGuardianMemberRoles)
+	)

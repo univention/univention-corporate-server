@@ -65,6 +65,7 @@ import univention.admin.uldap
 import univention.password
 from univention.admin import configRegistry
 from univention.admin.certificate import PKIIntegration, pki_option, pki_properties, pki_tab, register_pki_mapping
+from univention.admin.guardian_roles import register_role_mapping, role_layout, role_properties
 from univention.admin.layout import Group, Tab
 from univention.lib.s4 import rids_for_well_known_security_identifiers
 
@@ -587,17 +588,9 @@ property_descriptions = dict({
         may_change=False,
         dontsearch=True,
     ),
-    'guardianInheritedRole': univention.admin.property(
-        short_description=_('Roles used by Guardian for access permissions. Inherited by group membership'),
-        long_description=_('Roles used by Guardian for access permissions. Inherited by group membership'),
-        syntax=univention.admin.syntax.string,
-        may_change=False,
-        multivalue=True,
-        dontsearch=True,
-        show_in_lists=False,
-        cli_enabled=False,
-    ),
 }, **pki_properties())
+
+property_descriptions.update(role_properties())
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
@@ -688,6 +681,8 @@ layout = [
     ]),
     pki_tab(),
 ]
+
+layout.append(role_layout())
 
 
 @univention.admin._ldap_cache(ttl=10, cache_none=False)
@@ -1094,6 +1089,7 @@ mapping.registerUnmapping('disabled', unmapDisabled)
 mapping.registerUnmapping('locked', unmapLocked)
 mapping.register('password', 'userPassword', univention.admin.mapping.dontMap(), univention.admin.mapping.ListToString)
 register_pki_mapping(mapping)
+register_role_mapping(mapping)
 
 default_property_descriptions = copy.deepcopy(property_descriptions)  # for later reset of descriptions
 
