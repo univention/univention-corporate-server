@@ -58,8 +58,8 @@ msgstr ""
 "Bindestriche und Punkte erlaubt."
 
 #: modules/univention/admin/syntax.py:2215
-msgid "A path must begin with \"/\"!"
-msgstr "Eine Pfadangabe muss mit \"/\" beginnen."
+msgid "Path must begin with \"/\"!"
+msgstr "Die Pfadangabe muss mit \"/\" beginnen."
 
 #: modules/univention/admin/syntax.py:3056
 msgid ""
@@ -1061,8 +1061,8 @@ msgstr "Fehler in der Passwort-Richtlinie: "
 
 #: modules/univention/admin/syntax.py:2218
 #, python-format
-msgid "Path may not start with \"%s\" !"
-msgstr "Pfadname darf nicht mit \"%s\" beginnen!"
+msgid "Path must not start with \"/%s\" !"
+msgstr "Pfadangabe darf nicht mit \"/%s\" beginnen!"
 
 #: modules/univention/admin/uexceptions.py:102
 msgid "Permission denied."
@@ -1744,8 +1744,8 @@ msgid "Value may not change."
 msgstr "Der Wert darf nicht verändert werden."
 
 #: modules/univention/admin/syntax.py:2210
-msgid "Value may not contain double quotes (\")!"
-msgstr "Der Wert darf kein Anführungszeichen (\") enthalten!"
+msgid "Path may not contain double quotes (\")!"
+msgstr "Die Pfadangabe darf kein Anführungszeichen (\") enthalten!"
 
 #: modules/univention/admin/syntax.py:6353
 msgid ""

@@ -1252,15 +1252,14 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
             res = univention.admin.modules.lookup(univention.admin.modules.get('shares/share'), None, self.lo, filter=filter_, scope='domain')
             if len(res) == 1:
                 self['homeShare'] = res[0].dn
-                relpath = path.replace(sharepath, u'')
-                if relpath and relpath[0] == u'/':
-                    relpath = relpath[1:]
-                self['homeSharePath'] = relpath
+                # Py3.9+: self['homeSharePath'] = path.removeprefix(sharepath).lstrip("/")
+                assert path.startswith(sharepath)
+                self['homeSharePath'] = path[len(sharepath):].lstrip("/")
                 break
             elif len(res) > 1:
                 break
             elif not res:
-                sharepath = os.path.split(sharepath)[0]
+                sharepath = os.path.dirname(sharepath)
 
     def _unmapUnlockTime(self):  # type: () -> None
         self.info['unlockTime'] = ''

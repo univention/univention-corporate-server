@@ -2209,18 +2209,19 @@ class sharePath(simple):
     valueError:
     """
 
-    regex = re.compile('^([^"])+$')
-    error_message = _('Value may not contain double quotes (")!')
+    regex = re.compile(r'^/[^"]+$')
+    error_message = _('Path may not contain double quotes (")!')
 
     @classmethod
     def parse(self, text):
-        if not text[0] == '/':
-            raise univention.admin.uexceptions.valueInvalidSyntax(_('A path must begin with "/"!'))
-        for path in ["tmp", "root", "proc", "dev", "sys"]:
-            if re.match("(^/%s$)|(^/%s/)" % (path, path), os.path.realpath(text)):
-                raise univention.admin.uexceptions.valueError(_('Path may not start with "%s" !') % path)
+        # type: (str) -> str
+        if not text.startswith('/'):
+            raise univention.admin.uexceptions.valueInvalidSyntax(_('Path must begin with "/"!'))
+        first, _sep, _tail = text.lstrip("/").partition("/")
+        if first in {"dev", "proc", "root", "sys", "tmp"}:
+            raise univention.admin.uexceptions.valueError(_('Path must not start with "/%s" !') % first)
 
-        return super(sharePath, self).parse(text)
+        return os.path.normpath(super(sharePath, self).parse(text))
 
 
 class passwd(simple):
