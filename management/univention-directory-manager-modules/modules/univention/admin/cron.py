@@ -146,41 +146,41 @@ def cron_create(cronlist):
             if not cronlist[key]:
                 string += '* '
                 continue
-            for i in range(len(cronlist[key])):
+            for i, cron in enumerate(cronlist[key]):
                 if i > 0:
                     string += ','
                 if key == 'month':
-                    if cronlist[key][i] == 'all':
+                    if cron == 'all':
                         string += '1,2,3,4,5,6,7,8,9,10,11,12'
                     else:
-                        string += '%s' % month_map(cronlist[key][i])
+                        string += '%s' % month_map(cron)
                 elif key == 'weekday':
-                    if cronlist[key][i] == 'all':
+                    if cron == 'all':
                         string += '1,2,3,4,5,6,7'
                     else:
-                        string += '%s' % weekday_map(cronlist[key][i])
+                        string += '%s' % weekday_map(cron)
                 elif key == 'day':
                     # note: removed since only values from 1-31 are allowed for days in cron
-                    # if cronlist[key][i] == '00':
+                    # if cron == '00':
                     #     string+='0'
-                    if cronlist[key][i] == 'all':
+                    if cron == 'all':
                         string += '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31'
                     else:
-                        string += '%s' % cronlist[key][i]
+                        string += '%s' % cron
                 elif key == 'hour':
-                    if cronlist[key][i] == '00':
+                    if cron == '00':
                         string += '0'
-                    elif cronlist[key][i] == 'all':
+                    elif cron == 'all':
                         string += '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23'
                     else:
-                        string += '%s' % cronlist[key][i]
+                        string += '%s' % cron
                 elif key == 'minute':
-                    if cronlist[key][i] == '00':
+                    if cron == '00':
                         string += '0'
-                    elif cronlist[key][i] == 'all':
+                    elif cron == 'all':
                         string += '0,5,10,15,20,25,30,35,40,45,50,55'
                     else:
-                        string += '%s' % cronlist[key][i]
+                        string += '%s' % cron
         string += ' '
     return string
 

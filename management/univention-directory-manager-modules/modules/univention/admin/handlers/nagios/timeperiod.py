@@ -56,6 +56,8 @@ object_name_plural = _('Nagios time periods')
 long_description = ''
 operations = ['search', 'edit', 'add', 'remove']
 
+_WDAYS = ("periodMonday", "periodTuesday", "periodWednesday", "periodThursday", "periodFriday", "periodSaturday", "periodSunday")
+
 
 class syntax_timeperiod(univention.admin.syntax.simple):
     name = 'timeperiod'
@@ -167,14 +169,8 @@ class object(univention.admin.handlers.simpleLdap):
     def _post_unmap(self, info, values):
         value = values.get('univentionNagiosTimeperiod', [b''])[0].decode('ASCII')
         if value:
-            periods = value.split('#', 6)
-            info['periodMonday'] = periods[0]
-            info['periodTuesday'] = periods[1]
-            info['periodWednesday'] = periods[2]
-            info['periodThursday'] = periods[3]
-            info['periodFriday'] = periods[4]
-            info['periodSaturday'] = periods[5]
-            info['periodSunday'] = periods[6]
+            for wday, period in zip(_WDAYS, value.split('#', 6)):
+                info[wday] = period
         return info
 
     def _ldap_modlist(self):
@@ -182,11 +178,10 @@ class object(univention.admin.handlers.simpleLdap):
 
         # timeperiod list for one weekday is hash separated - only usage of [0-9:-] is allowed
         # those lists are concatenated with hashes as delimiter
-        periodslist = [self['periodMonday'], self['periodTuesday'], self['periodWednesday'], self['periodThursday'], self['periodFriday'], self['periodSaturday'], self['periodSunday']]
-        for i in range(len(periodslist)):
-            if periodslist[i] is None:
-                periodslist[i] = ''
-        newperiods = '#'.join(periodslist)
+        newperiods = "#".join(
+            self[wday] or ""
+            for wday in _WDAYS
+        )
 
         ml.append(('univentionNagiosTimeperiod', self.oldattr.get('univentionNagiosTimeperiod', []), [newperiods.encode('ASCII')]))
 
