@@ -46,6 +46,7 @@ import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.uldap
 from univention.admin import configRegistry
+from univention.admin.guardian_roles import member_role_layout, member_role_properties, register_member_role_mapping
 from univention.admin.layout import Group, Tab
 from univention.admin.uldap import DN
 
@@ -222,6 +223,8 @@ property_descriptions = {
     ),
 }
 
+property_descriptions.update(member_role_properties())
+
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('Group account'), layout=[
@@ -255,6 +258,8 @@ layout = [
     Tab('Apps'),  # not translated!
 ]
 
+layout.append(member_role_layout())
+
 
 def unmapSambaRid(oldattr):
     sid = oldattr.get('sambaSID', [b''])[0].decode('ASCII')
@@ -276,6 +281,7 @@ mapping.register('allowedEmailGroups', 'univentionAllowedEmailGroups')
 mapping.registerUnmapping('sambaRID', unmapSambaRid)
 mapping.register('univentionObjectIdentifier', 'univentionObjectIdentifier', None, univention.admin.mapping.ListToString)
 mapping.register('univentionSourceIAM', 'univentionSourceIAM', None, univention.admin.mapping.ListToString)
+register_member_role_mapping(mapping)
 
 
 class AgingCache(object):

@@ -1,3 +1,9 @@
+univention-ldap (17.0.7) unstable; urgency=medium
+
+  * Bug #57110: Add schema for guardian roles
+
+ -- Felix Botner <botner@univention.de>  Mon, 18 Mar 2024 18:35:02 +0100
+
 univention-ldap (17.0.6) unstable; urgency=medium
 
   * Issue #1682: openLDAP bdb->mdb migration

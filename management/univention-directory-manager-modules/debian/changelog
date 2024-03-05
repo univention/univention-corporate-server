@@ -1,3 +1,19 @@
+univention-directory-manager-modules (16.0.15) unstable; urgency=medium
+
+  * Bug #57110: Add guardian role attributes
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 18 Mar 2024 18:35:02 +0100
+
+univention-directory-manager-modules (16.0.15) unstable; urgency=medium
+
+  [ Philipp Hahn ]
+  * Bug #57118 UCS 5.0-7 version bump
+
+  [ Florian Best ]
+  * Bug #57146: restore Python 2.7 compatibility
+
+ -- Florian Best <best@univention.de>  Mon, 18 Mar 2024 18:35:02 +0100
+
 univention-directory-manager-modules (16.0.14) unstable; urgency=medium
 
   * Bug #TODO: Add guardianInheritedRole

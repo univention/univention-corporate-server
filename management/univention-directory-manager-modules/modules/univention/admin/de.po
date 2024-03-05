@@ -12,6 +12,50 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: guardian_roles.py:54
+msgid ""
+"Guardian role strings must be lowercase ASCII alphanumeric with hyphens and "
+"underscores, in the format 'app:namespace:role' or 'app:namespace:role&app:"
+"namespace:context'!"
+msgstr ""
+"Guardian Rollenstrings dürfen ausschließlich aus alphanumerischen ASCII-Kleinbuchstaben "
+"mit Bindestrichen und Unterstrichen im Format „app:namespace:role“ oder "
+"„app:namespace:role&app:namespace:context“ bestehen!"
+
+#: guardian_roles.py:62
+msgid ""
+"Roles used by Guardian for access permissions, these roles are passed to the "
+"members of this group"
+msgstr ""
+"Diese Rollenstrings werden an Mitglieder dieser Gruppe vererbt."
+
+#: guardian_roles.py:63 guardian_roles.py:74
+msgid ""
+"Lowercase ASCII alphanumeric string with underscores or dashes, in the "
+"format 'app:namespace:role' or 'app:namespace:role&app:namespace:context'"
+msgstr ""
+"ASCII alphanumerischer Text in Kleinschrift mit Unter- und Bindestrichen "
+"im Format 'app:namespace:role' oder 'app:namespace:role&app:namespace:context'"
+
+#: guardian_roles.py:73
+msgid "Roles used by Guardian for access permissions"
+msgstr "Rollen für die Authorisierung dieses Objekts"
+
+#: guardian_roles.py:79 guardian_roles.py:80
+msgid ""
+"Roles used by Guardian for access permissions. Inherited by group membership"
+msgstr ""
+"Rollen für die Authorisierung dieses Objekts, geerbt über Gruppenmitgliedschaft."
+
+#: guardian_roles.py:101 guardian_roles.py:112
+msgid "Guardian"
+msgstr "Guardian"
+
+#: guardian_roles.py:102 guardian_roles.py:113
+msgid "Manage roles that are used for authorization"
+msgstr "Verwaltung von Rollen zur Authorisierung"
+
+
 #: blocklist.py:143
 #, python-format
 msgid "The value \"%(value)s\" is blocked for the property \"%(prop)s\"."
