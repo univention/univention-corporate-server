@@ -3,9 +3,11 @@ release: "5.0"
 version: [6]
 scope: ucs_5.0-0-errata5.0-6
 src: univention-pkgdb
-fix: 13.0.5-1
+fix: 13.0.5-2
 desc: |
  This update addresses the following issues:
  * The dependency on `py3dns` has been replaced by `dnspython` to support
    EDNS, which is required for virtual machines on AWS-EC2 and OpenStack.
-bug: [56911]
+ * The StartTLS operation mode is now configurable via the UCR variable
+   `directory/manager/starttls`. This is required in a Kubernetes environment.
+bug: [56911, 57098]

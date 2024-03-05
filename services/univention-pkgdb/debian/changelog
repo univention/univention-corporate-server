@@ -1,3 +1,9 @@
+univention-pkgdb (13.0.5-2) unstable; urgency=medium
+
+  * Bug #57098: make StartTLS configurable in univention.uldap
+
+ -- Maximilian Janßen <janssen@univention.de>  Tue, 5 Mar 2024 11:30:50 +0100
+
 univention-pkgdb (13.0.5-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
