@@ -289,6 +289,12 @@ class Logger(logging.Logger):
         super(Logger, self).setLevel(level)
         self.univention_debug_handler.setLevel(self.level)
 
+    def isEnabledFor(self, level):
+        # we need to overwrite the method because something might have
+        # called `ud.set_level()` without using this logging interface.
+        # prevent the cache from giving wrong results
+        return level >= self.getEffectiveLevel()
+
     def getEffectiveLevel(self):
         current_level = self.univention_debug_handler.getLevel()
         if self.univention_debug_handler.level != current_level:
