@@ -63,7 +63,7 @@ def _connect_ucs(configRegistry, binddn, bindpwdfile):
         port = 7389
 
     try:
-        lo = univention.admin.uldap.access(host=host, port=port, base=configRegistry['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=2, follow_referral=True)
+        lo = univention.admin.uldap.access(host=host, port=port, base=configRegistry['ldap/base'], binddn=binddn, bindpw=bindpw, follow_referral=True)
     except univention.admin.uexceptions.authFail:
         print('Authentication failed')
         sys.exit(1)

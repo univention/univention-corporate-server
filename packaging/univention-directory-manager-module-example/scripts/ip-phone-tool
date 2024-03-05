@@ -85,7 +85,7 @@ class ipphonetool(object):
 
         try:
             self.lo = univention.admin.uldap.access(
-                host=ldap_master, base=self.ldap_base, binddn=binddn, bindpw=bindpw, start_tls=2,
+                host=ldap_master, base=self.ldap_base, binddn=binddn, bindpw=bindpw,
             )
         except Exception as e:
             ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % (e,))

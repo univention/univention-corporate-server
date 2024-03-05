@@ -3,7 +3,7 @@ release: "5.0"
 version: [6]
 scope: ucs_5.0-0-errata5.0-6
 src: univention-s4-connector
-fix: 14.0.16-4
+fix: 14.0.16-5
 desc: |
  This update addresses the following issues:
  * Group member DNs with containing special characters
@@ -11,4 +11,6 @@ desc: |
    ways. When comparing them, this has not been taken
    into consideration, leading to rejects and tracebacks
    in the log file. This has been fixed.
-bug: [57072]
+ * The StartTLS operation mode is now configurable via the UCR variable
+   `directory/manager/starttls`. This is required in a Kubernetes environment.
+bug: [57072, 57098]
