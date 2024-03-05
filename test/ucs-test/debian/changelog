@@ -1,3 +1,9 @@
+ucs-test (10.0.20-48) unstable; urgency=medium
+
+  * Bug #57072: Make tests cope with mixed case ldap base in udm group members
+
+ -- Arvid <requate@univention.de>  Tue, 05 Mar 2024 15:43:09 +0100
+
 ucs-test (10.0.20-47) unstable; urgency=medium
 
   * Bug #57100: added tests
