@@ -1,3 +1,9 @@
+ucs-test (10.0.20-49) unstable; urgency=low
+
+  * Bug #50385: Rename univention.admin.modules.{get_modules -> _get}
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Mar 2024 18:25:11 +0100
+
 ucs-test (10.0.20-48) unstable; urgency=medium
 
   * Bug #57072: Make tests cope with mixed case ldap base in udm group members
@@ -9,7 +15,6 @@ ucs-test (10.0.20-47) unstable; urgency=medium
   * Bug #57100: added tests
 
  -- Felix Botner <botner@univention.de>  Mon, 04 Mar 2024 15:48:19 +0100
-
 
 ucs-test (10.0.20-46) unstable; urgency=medium
 

@@ -94,13 +94,13 @@ def getDefaultContainer(lo, module):
     if module == 'dns/':
         module = 'dns/dns'
     try:
-        return univention.admin.modules.get(module).object.get_default_containers(lo)[0]
+        return univention.admin.modules._get(module).object.get_default_containers(lo)[0]
     except IndexError:
         return None
 
 
 def getDefaultValue(lo, name, position=None):
-    # type: (univention.admin.uldap.access, str, univention.admin.uldap.position) -> str | None
+    # type: (univention.admin.uldap.access, str, univention.admin.uldap.position | None) -> str | None
     """
     Return the default value for a UDM module.
 

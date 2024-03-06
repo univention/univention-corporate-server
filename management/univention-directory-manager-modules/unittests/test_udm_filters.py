@@ -254,7 +254,7 @@ def test_udm_filter(module, property, udm_filter, expected_filter):
 
 def check_expected_filter(module, property, udm_filter, expected_filter):
     expected_filter = BASE_FILTERS[module] % expected_filter
-    mod = univention.admin.modules.get(module)
+    mod = univention.admin.modules._get(module)
     mod.property_descriptions[property]
     actual_filter = mod.lookup_filter(udm_filter, None)
     assert expected_filter == str(actual_filter)

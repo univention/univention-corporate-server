@@ -73,7 +73,7 @@ def get_superordinate(module, co, lo, dn):
             attr = lo.get(dn)
             modules = {univention.admin.modules.name(x) for x in univention.admin.modules.identify(dn, attr)} & super_modules
             if modules:
-                super_module = univention.admin.modules.get(list(modules)[0])  # noqa: RUF015
+                super_module = univention.admin.modules._get(list(modules)[0])  # noqa: RUF015
                 return get(super_module, co, lo, None, dn)
             dn = lo.parentDn(dn)
 
@@ -137,7 +137,7 @@ def default(module, co, lo, position):
     :param position: |UDM| position instance.
     :returns: An initialized |UDM| object.
     """
-    module = univention.admin.modules.get(module)
+    module = univention.admin.modules._get(module)
     object = module.object(co, lo, position)
     for name, property in module.property_descriptions.items():
         default = property.default(object)
@@ -290,7 +290,7 @@ def replacePolicyReference(object, policy_type, new_reference):
     """
     # FIXME: Move this to handlers.simpleLdap?
 
-    module = univention.admin.modules.get(policy_type)
+    module = univention.admin.modules._get(policy_type)
     if not univention.admin.modules.recognize(module, new_reference, object.lo.get(new_reference)):
         log.debug('replacePolicyReference: error.')
         return
@@ -310,8 +310,9 @@ def restorePolicyReference(object, policy_type):
     :param policy_type: Name of the |UDM| policy to lookup.
     """
     # FIXME: Move this to handlers.simpleLdap?
-    module = univention.admin.modules.get(policy_type)
-    if not module:
+    try:
+        module = univention.admin.modules._get(policy_type)
+    except LookupError:
         return
 
     removePolicyReference(object, policy_type)
@@ -337,7 +338,7 @@ def wantsCleanup(object):
     wantsCleanup = False
 
     object_module = module(object)
-    object_module = univention.admin.modules.get(object_module)
+    object_module = univention.admin.modules._get(object_module)
     if hasattr(object_module, 'docleanup'):
         wantsCleanup = object_module.docleanup
 

@@ -369,7 +369,7 @@ class UCSTestUDM:
 
     def create_with_defaults(self, modulename: str, **kwargs: Any) -> Tuple[str, dict]:
         """Create any object with as maximum as possible prefilled random default values"""
-        module = univention.admin.modules.get_module(modulename)
+        module = univention.admin.modules._get(modulename)
         # TODO: cache objects
 
         if 'position' not in kwargs and not modulename.startswith('settings/portal'):

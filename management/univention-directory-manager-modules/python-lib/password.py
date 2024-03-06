@@ -60,7 +60,7 @@ def change(username, password):  # type: (str, str) -> None
     except Exception:
         lo, pos = univention.admin.uldap.getMachineConnection()
 
-    module = univention.admin.modules.get('users/user')
+    module = univention.admin.modules._get('users/user')
 
     univention.admin.modules.init(lo, pos, module)
 

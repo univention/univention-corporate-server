@@ -52,6 +52,7 @@ Depends:
  python3-selenium,
  python3-typing-extensions,
  python3-univention,
+ python3-univention-directory-manager (>= 15.0.25-23),
  python3-yaml,
  ucs-test-modules-all | ucs-test-module,
  univention-config,

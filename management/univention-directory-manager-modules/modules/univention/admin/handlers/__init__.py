@@ -240,7 +240,7 @@ class simpleLdap(object):
             log.warning('univention.admin.modules.update() was not called')
             univention.admin.modules.update()
 
-        m = univention.admin.modules.get(self.module)
+        m = univention.admin.modules._get(self.module)
         if not hasattr(self, 'mapping'):
             self.mapping = getattr(m, 'mapping', None)  # type: univention.admin.mapping.mapping | None
 
@@ -1030,7 +1030,7 @@ class simpleLdap(object):
             log.exception("cancel() failed:")
 
     def _falsy_boolean_extended_attributes(self, info):  # type: (_Properties) -> _Properties
-        m = univention.admin.modules.get(self.module)
+        m = univention.admin.modules._get(self.module)
         for prop in getattr(m, 'extended_udm_attributes', []):
             if prop.syntax == 'boolean' and not info.get(prop.name):
                 info[prop.name] = u'0'
@@ -1108,8 +1108,7 @@ class simpleLdap(object):
         :param dict changes: A list of changes.
         :returns: The (modified) list of changes.
         """
-        m = univention.admin.modules.get(module.module)
-        assert m is not None
+        m = univention.admin.modules._get(module.module)
         attrs = getattr(m, 'extended_udm_attributes', None)
         if attrs:
             for prop in attrs:
@@ -1334,7 +1333,7 @@ class simpleLdap(object):
                 log.exception("Post-create: cancel() failed:")
             try:
                 if self._exists:  # add succeeded but _ldap_post_create failed!
-                    obj = univention.admin.objects.get(univention.admin.modules.get(self.module), None, self.lo, self.position, self.dn)
+                    obj = univention.admin.objects.get(univention.admin.modules._get(self.module), None, self.lo, self.position, self.dn)
                     obj.open()
                     obj.remove()
             except Exception:
@@ -1348,7 +1347,7 @@ class simpleLdap(object):
 
     def _ldap_object_classes_add(self, al):
         # type: (list[tuple[str, Any]]) -> list[tuple[str, Any]]
-        m = univention.admin.modules.get(self.module)
+        m = univention.admin.modules._get(self.module)
         # evaluate extended attributes
         ocs = set()  # type: set[str]
         for prop in getattr(m, 'extended_udm_attributes', []):
@@ -1446,7 +1445,7 @@ class simpleLdap(object):
 
     def _fix_app_options(self):  # type: () -> None
         # for objects with objectClass=appObject and appObjectActivated=0 we must set appObjectActivated=1
-        for option, opt in getattr(univention.admin.modules.get(self.module), 'options', {}).items():
+        for option, opt in getattr(univention.admin.modules._get(self.module), 'options', {}).items():
             if not opt.is_app_option or not self.option_toggled(option) or option not in self.options:
                 continue
             for pname, prop in self.descriptions.items():
@@ -1455,7 +1454,7 @@ class simpleLdap(object):
 
     def _ldap_object_classes(self, ml):  # type: (list[tuple]) -> list[tuple]
         """Detects the attributes changed in the given modlist, calculates the changes of the object class and appends it to the modlist."""
-        m = univention.admin.modules.get(self.module)
+        m = univention.admin.modules._get(self.module)
 
         def lowerset(vals):
             # type: (Iterable[str]) -> set[str]
@@ -1647,7 +1646,7 @@ class simpleLdap(object):
         pathlist = []
 
         log.debug("loadPolicyObject: policy_type: %s", policy_type)
-        policy_module = univention.admin.modules.get(policy_type)
+        policy_module = univention.admin.modules._get(policy_type)
 
         # overwrite property descriptions
         univention.admin.ucr_overwrite_properties(policy_module, self.lo)
@@ -1829,8 +1828,8 @@ class simpleLdap(object):
 
         :param univention.admin.uldap.access lo: UDM LDAP access object.
         """
-        containers = univention.admin.modules.defaultContainers(univention.admin.modules.get_module(cls.module))
-        settings_directory = univention.admin.modules.get_module('settings/directory')
+        containers = univention.admin.modules.defaultContainers(univention.admin.modules._get(cls.module))
+        settings_directory = univention.admin.modules._get('settings/directory')
         try:
             default_containers = settings_directory.lookup(None, lo, '', required=True)[0]
         except univention.admin.uexceptions.noObject:
@@ -1908,7 +1907,7 @@ class simpleLdap(object):
         filter_p = cls.unmapped_lookup_filter()
         # there are instances where the lookup/lookup_filter method of an module handler is called before
         # univention.admin.modules.update() was performed. (e.g. management/univention-directory-manager-modules/univention-dnsedit)
-        module = univention.admin.modules.get_module(cls.module)
+        module = univention.admin.modules._get(cls.module)
         filter_p.append_unmapped_filter_string(filter_s, cls.rewrite_filter, module.mapping)
         return filter_p
 
@@ -1958,7 +1957,7 @@ class simpleLdap(object):
             return
 
         # management/univention-management-console/src/univention/management/console/acl.py does not call univention.admin.modules.update()
-        mod = univention.admin.modules.get_module(cls.module)
+        mod = univention.admin.modules._get(cls.module)
         property_ = mod.property_descriptions.get(key)
 
         # map options to corresponding objectClass

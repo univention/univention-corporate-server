@@ -103,7 +103,7 @@ def main():
 
     univention.admin.modules.update()
     lo, position = get_ldap_connection(basedn)
-    grp_module = univention.admin.modules.get('groups/group')
+    grp_module = univention.admin.modules._get('groups/group')
     univention.admin.modules.init(lo, position, grp_module)
 
     recursionCnt = 0

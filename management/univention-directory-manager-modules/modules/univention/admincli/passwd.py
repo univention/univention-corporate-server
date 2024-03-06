@@ -103,7 +103,7 @@ def doit(arglist):
         dn = lo.searchDn(filter=filter_format(u'(&(uid=%s)(|(objectClass=posixAccount)(objectClass=sambaSamAccount)(objectClass=person)))', [user]), base=baseDN, unique=True)
         position = univention.admin.uldap.position(baseDN)
 
-        module = univention.admin.modules.get('users/user')
+        module = univention.admin.modules._get('users/user')
         univention.admin.modules.init(lo, position, module)
 
         object = univention.admin.objects.get(module, None, lo, position=position, dn=dn[0])
@@ -138,7 +138,7 @@ def doit(arglist):
             lo = univention.admin.uldap.access(lo=univention.uldap.getRootDnConnection())
             dn = lo.searchDn(filter=filter_format(u'(&(uid=%s)(|(objectClass=posixAccount)(objectClass=sambaSamAccount)(objectClass=person)))', [user]), base=baseDN, unique=True)
             position = univention.admin.uldap.position(baseDN)
-            module = univention.admin.modules.get('users/user')
+            module = univention.admin.modules._get('users/user')
             univention.admin.modules.init(lo, position, module)
 
             object = univention.admin.objects.get(module, None, lo, position=position, dn=dn[0])

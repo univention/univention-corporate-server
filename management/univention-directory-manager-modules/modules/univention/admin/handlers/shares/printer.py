@@ -223,7 +223,7 @@ class object(univention.admin.handlers.simpleLdap):
     ):  # type: (...) -> None
         # find the printer uris
         if not _AVAILABLE_PRINTER_SCHEMAS:
-            printer_uris = univention.admin.modules.get('settings/printeruri').lookup(co, lo, '')
+            printer_uris = univention.admin.modules._get('settings/printeruri').lookup(co, lo, '')
             for uri in printer_uris:
                 _AVAILABLE_PRINTER_SCHEMAS.extend(uri['printeruri'])
 
@@ -234,7 +234,7 @@ class object(univention.admin.handlers.simpleLdap):
         # find the producer
         univention.admin.handlers.simpleLdap.open(self)
         if self['model']:
-            models = univention.admin.modules.get('settings/printermodel').lookup(None, self.lo, filter_format('printerModel="%s*', [self['model']]))
+            models = univention.admin.modules._get('settings/printermodel').lookup(None, self.lo, filter_format('printerModel="%s*', [self['model']]))
             log.debug("printermodel: %s", models)
             if not models or len(models) > 1:
                 self['producer'] = []
@@ -280,7 +280,7 @@ class object(univention.admin.handlers.simpleLdap):
                     if len(member_list['univentionPrinterGroupMember']) < 2:
                         raise univention.admin.uexceptions.emptyPrinterGroup(_('%(name)s is the last member of the printer group %(group)s. ') % {'name': self.info['name'], 'group': member_list['cn'][0].decode('UTF-8')})
 
-        printergroup_module = univention.admin.modules.get('shares/printergroup')
+        printergroup_module = univention.admin.modules._get('shares/printergroup')
         for rm_dn in rm_attrib:
             printergroup_object = univention.admin.objects.get(printergroup_module, None, self.lo, position='', dn=rm_dn)
             printergroup_object.open()

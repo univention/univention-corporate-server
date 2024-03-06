@@ -543,8 +543,9 @@ def _doit(
 
     log.debug("using %s account", binddn)
 
-    module = univention.admin.modules.get(module_name)
-    if not module:
+    try:
+        module = univention.admin.modules._get(module_name)
+    except LookupError:
         print("unknown module %s." % module_name, file=stderr)
         print("", file=stderr)
         list_available_modules(stderr)
@@ -569,7 +570,7 @@ def _doit(
 
     # initialise modules
     if module_name == 'settings/usertemplate':
-        univention.admin.modules.init(lo, position, univention.admin.modules.get('users/user'))
+        univention.admin.modules.init(lo, position, univention.admin.modules._get('users/user'))
     univention.admin.modules.init(lo, position, module)
 
     information = module_information(module)
@@ -998,8 +999,8 @@ class CLI(object):
                     print('', file=self.stdout)
 
                     if module_name == 'dhcp/host':
-                        subnet_module = univention.admin.modules.get('dhcp/subnet')
-                        # TODO: sharedsubnet_module = univention.admin.modules.get('dhcp/sharedsubnet')
+                        subnet_module = univention.admin.modules._get('dhcp/subnet')
+                        # TODO: sharedsubnet_module = univention.admin.modules._get('dhcp/sharedsubnet')
                         ips = object['fixedaddress']
                         for ip in ips:
                             ip_ = IPv4Address(u"%s" % (ip,))

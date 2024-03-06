@@ -226,7 +226,7 @@ class object(univention.admin.handlers.simpleLdap):
     def _remove_self_from_portal(self, portal_obj):
         if isinstance(portal_obj, six.string_types):
             try:
-                portal_mod = univention.admin.modules.get('settings/portal')
+                portal_mod = univention.admin.modules._get('settings/portal')
                 portal_obj = univention.admin.objects.get(portal_mod, None, self.lo, position='', dn=portal_obj)
             except univention.admin.uexceptions.noObject:
                 # If a settings/portal objects gets removed it removes itself from the 'portal' property of all
@@ -249,7 +249,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _add_self_to_portal(self, portal_obj):
         if isinstance(portal_obj, six.string_types):
-            portal_mod = univention.admin.modules.get('settings/portal')
+            portal_mod = univention.admin.modules._get('settings/portal')
             portal_obj = univention.admin.objects.get(portal_mod, None, self.lo, position='', dn=portal_obj)
 
         portal_obj.open()
@@ -265,7 +265,7 @@ class object(univention.admin.handlers.simpleLdap):
             new_content = [[portal_category_dn, [self.dn]]] + old_content
         if new_content != old_content:
             try:
-                portal_category_mod = univention.admin.modules.get('settings/portal_category')
+                portal_category_mod = univention.admin.modules._get('settings/portal_category')
                 univention.admin.objects.get(portal_category_mod, None, self.lo, position='', dn=portal_category_dn)
             except univention.admin.uexceptions.noObject:
                 # if the settings/portal_category object for the category string does not exist anymore create it

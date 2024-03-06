@@ -131,6 +131,7 @@ Depends:
  ${python3:Depends},
 Breaks:
  python3-univention-directory-manager (<< 15.0.19-1),
+ ucs-test-framework (<< 10.0.20-49),
 Replaces:
  python3-univention-directory-manager (<< 15.0.19-1),
 Description: UCS - Modules for administration tools

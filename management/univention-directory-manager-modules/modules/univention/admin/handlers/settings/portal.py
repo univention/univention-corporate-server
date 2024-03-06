@@ -336,7 +336,7 @@ class object(univention.admin.handlers.simpleLdap):
                 try:
                     compobj = univention.admin.modules.lookup('computers/computer', None, self.lo, scope='base', base=computer)[0]
                     # initialize module of the computer obj for extended attributes
-                    compmod = univention.admin.modules.get(compobj.module)
+                    compmod = univention.admin.modules._get(compobj.module)
                     if not compmod.initialized:
                         univention.admin.modules.init(self.lo, self.position, compmod)
                         compobj = univention.admin.modules.lookup('computers/computer', None, self.lo, scope='base', base=computer)[0]
@@ -352,7 +352,7 @@ class object(univention.admin.handlers.simpleLdap):
                 try:
                     compobj = univention.admin.modules.lookup('computers/computer', None, self.lo, scope='base', base=computer)[0]
                     # initialize module of the computer obj for extended attributes
-                    compmod = univention.admin.modules.get(compobj.module)
+                    compmod = univention.admin.modules._get(compobj.module)
                     if not compmod.initialized:
                         univention.admin.modules.init(self.lo, self.position, compmod)
                         compobj = univention.admin.modules.lookup('computers/computer', None, self.lo, scope='base', base=computer)[0]
@@ -371,7 +371,7 @@ class object(univention.admin.handlers.simpleLdap):
         if not self.hasChanged('content'):
             return
 
-        portal_entry_mod = univention.admin.modules.get('settings/portal_entry')
+        portal_entry_mod = univention.admin.modules._get('settings/portal_entry')
 
         old_content = self.oldinfo.get('content', [])
         old_entries = [entry for category, entries in old_content for entry in entries]

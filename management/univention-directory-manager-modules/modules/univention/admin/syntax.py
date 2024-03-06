@@ -853,8 +853,9 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
                 return result
 
             for udm_module in cls.udm_modules:
-                module = univention.admin.modules.get(udm_module)
-                if not module:
+                try:
+                    module = univention.admin.modules._get(udm_module)
+                except LookupError:
                     continue
                 filter_s = cls._create_ldap_filter(options, module)
                 if filter_s is not None:
@@ -862,8 +863,9 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
                     choices.extend(map_choices(objs))
         else:
             for udm_module in cls.udm_modules:
-                module = univention.admin.modules.get(udm_module)
-                if not module:
+                try:
+                    module = univention.admin.modules._get(udm_module)
+                except LookupError:
                     continue
                 filter_s = cls._create_ldap_filter(options, module)
                 if filter_s is not None:
@@ -996,8 +998,9 @@ class UDM_Attribute(ISyntax, _UDMObjectOrAttribute):
                 return _choices
             return [(x, x) for x in values]
 
-        module = univention.admin.modules.get(cls.udm_module)
-        if not module:
+        try:
+            module = univention.admin.modules._get(cls.udm_module)
+        except LookupError:
             return []
 
         log.debug('Found syntax %s with udm_module property', cls.name)
@@ -5873,7 +5876,7 @@ class allModuleOptions(combobox):
         return cls.sort_choices([
             (key, opt.short_description)
             for module in modules
-            for key, opt in getattr(univention.admin.modules.get(module), 'options', {}).items()
+            for key, opt in getattr(univention.admin.modules._get(module), 'options', {}).items()
             if key != 'default'
         ])
 

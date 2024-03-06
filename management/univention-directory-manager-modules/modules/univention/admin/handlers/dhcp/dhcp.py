@@ -89,11 +89,10 @@ class object(univention.admin.handlers.simpleLdap):
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
     # type: (None, univention.admin.uldap.access, str, str, univention.admin.handlers.simpleLdap | None, str, bool, bool, int, int) -> list[univention.admin.handlers.simpleLdap]
-    sup = univention.admin.modules.get(superordinate.module) if superordinate else None
+    sup = univention.admin.modules._get(superordinate.module) if superordinate else None
     res = []  # type: list[univention.admin.handlers.simpleLdap]
     for childmodule in (sup.childmodules if sup else childmodules):
-        mod = univention.admin.modules.get(childmodule)
-        assert mod is not None
+        mod = univention.admin.modules._get(childmodule)
         res += mod.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
     return res
 

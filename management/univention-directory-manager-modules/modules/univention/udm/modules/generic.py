@@ -680,8 +680,9 @@ class GenericModule(with_metaclass(GenericModuleMeta, BaseModule)):
         if key not in self._udm_module_cache:
             if self.name not in [k[3] for k in self._udm_module_cache.keys()]:
                 univention.admin.modules.update()
-            udm_module = univention.admin.modules.get(self.name)
-            if not udm_module:
+            try:
+                udm_module = univention.admin.modules._get(self.name)
+            except LookupError:
                 raise UnknownModuleType(
                     msg='UDM module {!r} does not exist.'.format(self.name),
                     module_name=self.name,

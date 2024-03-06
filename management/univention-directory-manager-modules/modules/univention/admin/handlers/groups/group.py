@@ -649,7 +649,7 @@ class object(univention.admin.handlers.simpleLdap):
     def _ldap_post_move(self, olddn):
         # type: (str) -> None
         super(object, self)._ldap_post_move(olddn)
-        settings_module = univention.admin.modules.get('settings/default')
+        settings_module = univention.admin.modules._get('settings/default')
         settings_object = univention.admin.objects.get(settings_module, None, self.lo, position='', dn='cn=default,cn=univention,%s' % self.lo.base)
         settings_object.open()
         for attr in ['defaultGroup', 'defaultMemberServerGroup', 'defaultClientGroup', 'defaultDomainControllerMBGroup', 'defaultDomainControllerGroup', 'defaultComputerGroup']:
@@ -756,7 +756,7 @@ class object(univention.admin.handlers.simpleLdap):
             return
 
         grpdn2childgrpdns = {}
-        grp_module = univention.admin.modules.get('groups/group')
+        grp_module = univention.admin.modules._get('groups/group')
 
         cn = self.info.get('name', 'UNKNOWN')
 

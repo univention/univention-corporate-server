@@ -3,7 +3,7 @@ release: "5.0"
 version: [6]
 scope: ucs_5.0-0-errata5.0-6
 src: univention-directory-manager-modules
-fix: 15.0.25-22
+fix: 15.0.25-23
 desc: |
  This update addresses the following issues:
  * The Univention Configuration Registry Policy UDM module now has an

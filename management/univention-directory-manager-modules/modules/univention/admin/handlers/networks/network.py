@@ -222,7 +222,7 @@ class object(univention.admin.handlers.simpleLdap):
     def _ldap_post_remove(self):
         super(object, self)._ldap_post_remove()
         filter_ = univention.admin.filter.expression('univentionNetworkLink', self.dn, escape=True)
-        for computer in univention.admin.modules.get('computers/computer').lookup(None, self.lo, filter_s=filter_):
+        for computer in univention.admin.modules._get('computers/computer').lookup(None, self.lo, filter_s=filter_):
             try:
                 self.lo.modify(computer.dn, [('univentionNetworkLink', self.dn.encode('UTF-8'), b'')])
             except (univention.admin.uexceptions.base, ldap.LDAPError):

@@ -84,7 +84,7 @@ class object(univention.admin.handlers.users.user.object):
         if lo:
             dn = lo.whoami()
             filter_p = univention.admin.filter.parse(filter_format('(&(entryDN=%s))', [dn]))
-            module = univention.admin.modules.get_module(cls.module)
+            module = univention.admin.modules._get(cls.module)
             filter_p.append_unmapped_filter_string(filter_s, cls.rewrite_filter, module.mapping)
             return filter_p
         return super(object, cls).lookup_filter(filter_s, lo)

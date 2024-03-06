@@ -358,7 +358,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
     def lookup_filter(cls, filter_s=None, lo=None):
         # type: (str | None, univention.admin.uldap.access | None) -> univention.admin.filter.conjunction
         lookup_filter_obj = cls.unmapped_lookup_filter()
-        module = univention.admin.modules.get_module(cls.module)
+        module = univention.admin.modules._get(cls.module)
         # ATTENTION: has its own rewrite function.
         lookup_filter_obj.append_unmapped_filter_string(filter_s, functools.partial(cls.rewrite_filter, lo=lo), module.mapping)
         return lookup_filter_obj

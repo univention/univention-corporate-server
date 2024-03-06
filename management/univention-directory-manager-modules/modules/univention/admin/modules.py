@@ -195,32 +195,20 @@ def get(module):
     return module  # type: ignore[return-value]
 
 
-@overload
-def get_module(module):
-    # type: (UdmModule) -> UdmModule
-    pass
-
-
-@overload
-def get_module(module):
-    # type: (str) -> UdmModule | None
-    pass
-
-
-def get_module(module):
-    # type: (UdmName) -> UdmModule | None
+def _get(module):
+    # type: (UdmModule | str) -> UdmModule
     """
-    interim function, must only be used by `univention-directory-manager-modules`!
-
-    .. deprecated :: UCS 4.4
+    Internal function to lazy-load and get |UDM| module.
 
     :param module: either the name (str) of a module or the module itself.
-    :returns: the module or `None` if no module exists with the requested name.
+    :returns: the module
+    :raises KeyError: if no module exists with the requested name.
     """
     if not modules:
-        log.warning('univention.admin.modules.update() was not called')
         update()
-    return get(module)
+    if isinstance(module, str):
+        return modules[module]
+    return module
 
 
 def init(lo, position, module, template_object=None, force_reload=False):
@@ -242,7 +230,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
         if module.module == 'users/user':
             # users/self inherits from users/user leading to errors when not reloading it as well
             # TODO: remove when droppng Python2.7 support and all super(object, self) calls have been replaced with super()
-            reload_module(univention.admin.modules.get('users/self'))  # type: ignore
+            reload_module(univention.admin.modules._get('users/self'))  # type: ignore
     # reset property descriptions to defaults if possible
     if hasattr(module, 'default_property_descriptions'):
         module.property_descriptions = copy.deepcopy(module.default_property_descriptions)

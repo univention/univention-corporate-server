@@ -78,8 +78,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
     # type: (None, univention.admin.uldap.access, str, str, univention.admin.handlers.simpleLdap | None, str, bool, bool, int, int) -> list[univention.admin.handlers.simpleLdap]
     res = []  # type: list[univention.admin.handlers.simpleLdap]
     for child in childmodules:
-        mod = univention.admin.modules.get(child)
-        assert mod is not None
+        mod = univention.admin.modules._get(child)
         res += mod.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
     return res
 

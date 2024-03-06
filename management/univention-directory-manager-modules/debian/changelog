@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.25-23) unstable; urgency=low
+
+  * Bug #50385: Support NS records in DNS reverse zones
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Mar 2024 18:23:48 +0100
+
 univention-directory-manager-modules (15.0.25-22) unstable; urgency=low
 
   * Bug #50385: Support NS records in DNS reverse zones

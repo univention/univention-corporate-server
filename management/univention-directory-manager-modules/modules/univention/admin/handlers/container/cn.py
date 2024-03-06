@@ -231,7 +231,7 @@ class object(univention.admin.handlers.simpleLdap):
     def _ldap_post_move(self, olddn):
         # type: (str) -> None
         super(object, self)._ldap_post_move(olddn)
-        settings_module = univention.admin.modules.get('settings/directory')
+        settings_module = univention.admin.modules._get('settings/directory')
         settings_object = univention.admin.objects.get(settings_module, None, self.lo, position='', dn=self.default_dn)
         settings_object.open()
         needs_modify = False

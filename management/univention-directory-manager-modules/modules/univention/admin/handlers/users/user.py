@@ -699,7 +699,7 @@ def get_primary_group_dn(lo, gid_number):  # type: (univention.admin.uldap.acces
 
 def check_prohibited_username(lo, username):  # type: (univention.admin.uldap.access, str) -> None
     """check if the username is allowed"""
-    module = univention.admin.modules.get('settings/prohibited_username')
+    module = univention.admin.modules._get('settings/prohibited_username')
     for prohibited_object in (module.lookup(None, lo, u'') or []):
         if username in prohibited_object['usernames']:
             raise univention.admin.uexceptions.prohibitedUsername(username)
@@ -1250,7 +1250,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
                     univention.admin.filter.expression('univentionSharePath', u'%s/' % (sharepath.rstrip(u'/')), escape=True),
                 ]),
             ])
-            res = univention.admin.modules.lookup(univention.admin.modules.get('shares/share'), None, self.lo, filter=filter_, scope='domain')
+            res = univention.admin.modules.lookup(univention.admin.modules._get('shares/share'), None, self.lo, filter=filter_, scope='domain')
             if len(res) == 1:
                 self['homeShare'] = res[0].dn
                 # Py3.9+: self['homeSharePath'] = path.removeprefix(sharepath).lstrip("/")
@@ -1353,7 +1353,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
             for group in new_groups:
                 self.__rewrite_member_uid(group)
 
-        group_mod = univention.admin.modules.get('groups/group')
+        group_mod = univention.admin.modules._get('groups/group')
 
         log.debug('users/user: check groups in old_groups')
         for group in old_groups:
@@ -1401,7 +1401,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
         if configRegistry.is_true("directory/manager/user/primarygroup/update", True):
             new_uid = self.info.get('username')
-            group_mod = univention.admin.modules.get('groups/group')
+            group_mod = univention.admin.modules._get('groups/group')
             grpobj = group_mod.object(None, self.lo, self.position, self['primaryGroup'])
             grpobj.fast_member_add([self.dn], [new_uid])
             log.debug('users/user: adding to new primaryGroup %s (uid=%s)', self['primaryGroup'], new_uid)
@@ -1914,7 +1914,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         if self.hasChanged('homeShare') or self.hasChanged('homeSharePath'):
             if self['homeShare']:
-                share_mod = univention.admin.modules.get('shares/share')
+                share_mod = univention.admin.modules._get('shares/share')
                 try:
                     share = share_mod.object(None, self.lo, self.position, self['homeShare'])
                     share.open()
@@ -2012,7 +2012,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         super(object, self)._ldap_post_remove()
 
         for group in self.oldinfo.get('groups', []):
-            groupObject = univention.admin.objects.get(univention.admin.modules.get('groups/group'), self.co, self.lo, self.position, group)
+            groupObject = univention.admin.objects.get(univention.admin.modules._get('groups/group'), self.co, self.lo, self.position, group)
             groupObject.fast_member_remove([self.dn], [x.decode('UTF-8') for x in self.oldattr.get('uid', [])], ignore_license=True)
 
     def _move(self, newdn, modify_childs=True, ignore_license=False):
