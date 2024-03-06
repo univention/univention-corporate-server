@@ -50,10 +50,7 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 module = 'computers/computer'
-childmodules = []
-for computer in univention.admin.handlers.computers.computers:
-    childmodules.append(computer.module)
-
+childmodules = [computer.module for computer in univention.admin.handlers.computers.computers]
 childs = False
 short_description = _('Computer')
 object_name = _('Computer')
@@ -137,9 +134,9 @@ class object(univention.admin.handlers.simpleLdap):
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
     # type: (None, univention.admin.uldap.access, str, str, univention.admin.handlers.simpleLdap | None, str, bool, bool, int, int) -> list[univention.admin.handlers.simpleLdap]
-    res = []
+    res = []  # type: list[univention.admin.handlers.simpleLdap]
     for computer in univention.admin.handlers.computers.computers:
-        res.extend(computer.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit))
+        res += computer.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
     return res
 
 

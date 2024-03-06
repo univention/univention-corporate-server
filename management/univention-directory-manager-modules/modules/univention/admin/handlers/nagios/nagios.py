@@ -37,8 +37,6 @@ from typing import TYPE_CHECKING
 
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.handlers.nagios.service
-import univention.admin.handlers.nagios.timeperiod
 import univention.admin.localization
 
 
@@ -87,7 +85,12 @@ class object(univention.admin.handlers.simpleLdap):
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
     # type: (None, univention.admin.uldap.access, str, str, univention.admin.handlers.simpleLdap | None, str, bool, bool, int, int) -> list[univention.admin.handlers.simpleLdap]
-    return univention.admin.handlers.nagios.service.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.nagios.timeperiod.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+    res = []  # type: list[univention.admin.handlers.simpleLdap]
+    for childmodule in childmodules:
+        mod = univention.admin.modules.get(childmodule)
+        assert mod is not None
+        res += mod.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+    return res
 
 
 def identify(dn, attr, canonical=False):

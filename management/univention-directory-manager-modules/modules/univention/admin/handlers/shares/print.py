@@ -36,8 +36,6 @@ from typing import TYPE_CHECKING
 
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.handlers.shares.printer
-import univention.admin.handlers.shares.printergroup
 import univention.admin.localization
 
 
@@ -94,9 +92,11 @@ class object(univention.admin.handlers.simpleLdap):
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
     # type: (None, univention.admin.uldap.access,str, str, univention.admin.handlers.simpleLdap | None, str, bool, bool, int, int) -> list[univention.admin.handlers.simpleLdap]
-    res = []
-    for module in (univention.admin.handlers.shares.printer, univention.admin.handlers.shares.printergroup):
-        res.extend(module.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit))
+    res = []  # type: list[univention.admin.handlers.simpleLdap]
+    for child in childmodules:
+        mod = univention.admin.modules.get(child)
+        assert mod is not None
+        res += mod.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
     return res
 
 

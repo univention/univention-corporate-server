@@ -38,14 +38,6 @@ import six
 
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.handlers.dns.alias
-import univention.admin.handlers.dns.forward_zone
-import univention.admin.handlers.dns.host_record
-import univention.admin.handlers.dns.ns_record
-import univention.admin.handlers.dns.ptr_record
-import univention.admin.handlers.dns.reverse_zone
-import univention.admin.handlers.dns.srv_record
-import univention.admin.handlers.dns.txt_record
 import univention.admin.localization
 from univention.admin.layout import Tab
 
@@ -100,26 +92,28 @@ def rewrite(filter_s, **args):
     return six.text_type(filter_p)
 
 
+MAP_SEARCH = {
+    "dns/forward_zone": "zone",
+    "dns/reverse_zone": "subnet",
+    "dns/ptr_record.py": "address",
+}
+
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
     # type: (None, univention.admin.uldap.access, str, str, univention.admin.handlers.simpleLdap | None, str, bool, bool, int, int) -> list[univention.admin.handlers.simpleLdap]
-    ptr_filter = rewrite(filter_s, name='address')
-    fw_zone_filter = rewrite(filter_s, name='zone')
-    rv_zone_filter = rewrite(filter_s, name='subnet')
-    ret = []  # type: list[univention.admin.handlers.simpleLdap]
-    if superordinate:
-        if superordinate.module == "dns/forward_zone":
-            ret += univention.admin.handlers.dns.host_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
-            ret += univention.admin.handlers.dns.alias.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
-            ret += univention.admin.handlers.dns.srv_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
-            ret += univention.admin.handlers.dns.txt_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+    sup = univention.admin.modules.get(superordinate.module) if superordinate else None
+    res = []  # type: list[univention.admin.handlers.simpleLdap]
+    for childmodule in (sup.childmodules if sup else childmodules):
+        mod = univention.admin.modules.get(childmodule)
+        assert mod is not None
+        try:
+            attr = MAP_SEARCH[childmodule]
+        except LookupError:
+            fltr = filter_s
         else:
-            ret += univention.admin.handlers.dns.ptr_record.lookup(co, lo, ptr_filter, base, superordinate, scope, unique, required, timeout, sizelimit)
-        ret += univention.admin.handlers.dns.ns_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
-    else:
-        ret += univention.admin.handlers.dns.forward_zone.lookup(co, lo, fw_zone_filter, base, superordinate, scope, unique, required, timeout, sizelimit)
-        ret += univention.admin.handlers.dns.reverse_zone.lookup(co, lo, rv_zone_filter, base, superordinate, scope, unique, required, timeout, sizelimit)
-
-    return ret
+            fltr = rewrite(filter_s, name=attr)
+        res += mod.lookup(co, lo, fltr, base, superordinate, scope, unique, required, timeout, sizelimit)
+    return res
 
 
 def identify(dn, attr, canonical=False):

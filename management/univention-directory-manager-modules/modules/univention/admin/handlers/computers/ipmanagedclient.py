@@ -278,7 +278,6 @@ def rewrite(filter, mapping):
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
     # type: (None, univention.admin.uldap.access, str, str, univention.admin.handlers.simpleLdap | None, str, bool, bool, int, int, list[ldap.controls.LDAPControl] | None, dict | None) -> list[univention.admin.handlers.simpleLdap]
-    res = []
     filter_s = univention.admin.filter.replace_fqdn_filter(filter_s)
     filter_s = univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
     filter = univention.admin.filter.conjunction('&', [
@@ -292,8 +291,10 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
         univention.admin.filter.walk(filter_p, rewrite, arg=mapping)
         filter.expressions.append(filter_p)
 
-    for dn, attrs in lo.search(str(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response):
-        res.append(object(co, lo, None, dn, attributes=attrs))
+    res = [
+        object(co, lo, None, dn, attributes=attrs)
+        for dn, attrs in lo.search(str(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response)
+    ]  # type: list[univention.admin.handlers.simpleLdap]
     return res
 
 

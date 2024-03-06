@@ -79,11 +79,9 @@ class object(univention.admin.handlers.simpleLdap):
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
     # type: (None, univention.admin.uldap.access, str, str, univention.admin.handlers.simpleLdap | None, str, bool, bool, int, int) -> list[univention.admin.handlers.simpleLdap]
-    res = []
+    res = []  # type: list[univention.admin.handlers.simpleLdap]
     for pol in univention.admin.handlers.policies.policies:
-        r = pol.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
-        res.extend(r)
-
+        res += pol.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
     return res
 
 
