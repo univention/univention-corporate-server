@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-# shellcheck disable=SC2015
+# shellcheck disable=SC2015,SC2317
 
 set -x
 
@@ -876,36 +876,32 @@ assert_packages () {
 
 assert_package_version () {
 	# Make version strings comparable
-    function ver { printf "%03d%03d%03d%03d" $(echo "$1" | tr '.' ' '); }
-	local package=$1
-	local min_version=$2
-    local get_newest=$3
-	local version=$(dpkg -s $package | grep -Po "(?<=Version: )([0-9]|\.)*(?=\s|$)")
+	local package="${1:?}" min_version="${2:?}" get_newest="${3:-false}" version
+	version="$(dpkg-query -W -f '${Version}' "$package")"
 	# Check if current version is newer than minimum required version
-	if  [ $(ver $version) -lt $(ver $min_version) ];
-    then
-        echo "Found version $version of $package installed, which is lower than $min_version."
-        if ! $get_newest -eq true ;
-        then
-            return 1
-        else
-            echo "Switching to test-appcenter now."
-            switch_to_test_app_center
-            add_ucsschool_dev_repo
-			upgrade_to_latest
-            univention-install -y $package
-            version=$(dpkg -s $package | grep -Po "(?<=Version: )([0-9]|\.)*(?=\s|$)")
-            echo "Installed new version of $package: $version."
-			# Checking if version is sufficient after installation of newer version
-			if  [ $(ver $version) -lt $(ver $min_version) ]; then
-				echo "Newest available version is still lower than specified minimum version $min_version."
-				return 1
-			fi
-        fi
-    else
-        echo "Wanted version already installed."
+	if dpkg --compare-versions "$version" lt "$min_version"
+	then
+		echo "Found version $version of $package installed, which is lower than $min_version."
+		"$get_newest" ||
+			return 1
+
+		echo "Switching to test-appcenter now."
+		switch_to_test_app_center
+		add_ucsschool_dev_repo
+		upgrade_to_latest
+		univention-install -y "$package"
+		version="$(dpkg-query -W -f '${Version}' "$package")"
+		echo "Installed new version of $package: $version."
+		# Checking if version is sufficient after installation of newer version
+		if dpkg --compare-versions "$version" lt "$min_version"
+		then
+			echo "Newest available version is still lower than specified minimum version $min_version."
+			return 1
+		fi
+	else
+		echo "Wanted version already installed."
 	fi
-    return 0
+	return 0
 }
 
 
@@ -1172,7 +1168,7 @@ assert_admember_mode () {
 
 # start a local firefox and open umc portal page
 start_portal_in_local_firefox () {
-	systemctl stop  univention-welcome-screen.service
+	systemctl stop univention-welcome-screen.service
 	install_with_unmaintained --no-install-recommends univention-x-core univention-mozilla-firefox openbox
 	X &
 	DISPLAY=:0 openbox --config-file /etc/xdg/openbox/rc_no_shortcuts.xml &
