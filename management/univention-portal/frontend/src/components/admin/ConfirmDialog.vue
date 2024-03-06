@@ -47,12 +47,14 @@
         </button>
         <button
           type="button"
+          class="secondary"
           @click.prevent="finish('remove')"
         >
           {{ DELETE }}
         </button>
         <button
           type="button"
+          class="secondary"
           @click.prevent="finish('unlink')"
         >
           {{ REMOVE }}

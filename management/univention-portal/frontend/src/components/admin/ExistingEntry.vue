@@ -59,6 +59,7 @@
       </main>
       <footer>
         <button
+          class="secondary"
           type="button"
           @click.prevent="cancel"
         >

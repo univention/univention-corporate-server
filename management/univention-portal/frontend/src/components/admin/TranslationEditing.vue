@@ -41,6 +41,7 @@
       <footer>
         <button
           type="button"
+          class="secondary"
           @click.prevent="cancel"
         >
           {{ CANCEL }}

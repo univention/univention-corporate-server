@@ -115,6 +115,11 @@ export default defineComponent({
     background-color: transparent
     cursor: pointer
     box-sizing: border-box
+    transition: scale 0.1s ease
+
+    &:hover
+      scale: 1.06
+      transition: scale 0.1s ease
 
     &:focus
       border-color: var(--color-focus)

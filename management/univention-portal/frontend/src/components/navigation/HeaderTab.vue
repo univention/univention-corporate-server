@@ -193,10 +193,15 @@ export default defineComponent({
     text-overflow: ellipsis
     white-space: nowrap
     min-width: 2.5rem
+    font-weight: var(--font-weight-bold)
 
   &__close-button
     position: relative
     z-index: 10
+    border-radius: var(--border-radius-interactable)
+    margin-right: 2px
+    &:hover
+      background-color: var(--bgc-inputfield-on-container)
 
   &__clickable
     &:before

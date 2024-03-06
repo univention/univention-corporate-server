@@ -67,7 +67,7 @@
         v-else
         id="loginButton"
         ref="loginButton"
-        class="portal-sidenavigation__link portal-sidenavigation__login"
+        class="primary portal-sidenavigation__link portal-sidenavigation__login"
         @click="login"
         @keydown.enter="login"
         @keydown.esc="closeNavigation"
@@ -165,7 +165,7 @@
     <button
       v-if="userState.mayEditPortal"
       ref="editModeButton"
-      class="portal-sidenavigation__link portal-sidenavigation__edit-mode"
+      class="primary portal-sidenavigation__link portal-sidenavigation__edit-mode"
       data-test="openEditmodeButton"
       @click="startEditMode"
       @keydown.esc="closeNavigation"
@@ -322,22 +322,12 @@ $userRow = 6rem
   flex-direction: column
 
   &__link
-    padding: 1em 0 1em 0
-    cursor: pointer
-    height: 36px
     position: relative
     left: 5%
+    width: fit-content
     margin-top: var(--layout-spacing-unit)
     margin-bottom: calc(2*var(--layout-spacing-unit))
-    width: fit-content
-    font-size: var(--font-size-4)
-    color: var(--font-color-contrast-high)
-    font-weight: 600
-    text-transform: uppercase
-    font-family: 'Open Sans'
-    background-color: rgba(0,0,0,0)
     border: 0.2rem solid rgba(0,0,0,0)
-    transition: unset
 
     &:focus-visible
       border: 0.2rem solid var(--color-focus);
@@ -435,18 +425,13 @@ $userRow = 6rem
       background-color: var(--bgc-user-menu-item-hover)
 
   &__edit-mode
-    background-color: var(--button-primary-bgc)
-    border-radius: var(--border-radius-interactable)
-    width: 6.5rem
+    width: fit-content
 
     span
       margin: 0.2rem
 
     &:focus-visible span
       margin: 0
-
-    &:hover
-      background-color: var(--button-primary-bgc-hover)
 
   &__fade-left-right,
   &__fade-right-left

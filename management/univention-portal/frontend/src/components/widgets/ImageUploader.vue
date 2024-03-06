@@ -78,6 +78,7 @@
       >
       <button
         ref="uploadButton"
+        class="secondary"
         type="button"
         :tabindex="tabindex"
         :data-test="`imageUploadButton--${extraLabel}`"
@@ -93,6 +94,7 @@
       </button>
       <button
         type="button"
+        class="secondary"
         :tabindex="tabindex"
         :disabled="!modelValue"
         :data-test="`imageRemoveButton--${extraLabel}`"

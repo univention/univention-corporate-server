@@ -38,7 +38,7 @@
       <button
         id="tile-add-modal-button-create-entry"
         tabindex="0"
-        class="tile-add-modal-button"
+        class="secondary tile-add-modal-button"
         @click="openModal('createEntry')"
       >
         {{ CREATE_NEW_ENTRY }}
@@ -46,7 +46,7 @@
       <button
         id="tile-add-modal-button-existing-entry"
         tabindex="0"
-        class="tile-add-modal-button"
+        class="secondary tile-add-modal-button"
         @click="openModal('addEntry')"
       >
         {{ CREATE_EXISTING_ENTRY }}
@@ -55,7 +55,7 @@
         v-if="!forFolder"
         id="tile-add-modal-button-create-folder"
         tabindex="0"
-        class="tile-add-modal-button"
+        class="secondary tile-add-modal-button"
         @click="openModal('createFolder')"
       >
         {{ CREATE_NEW_FOLDER }}
@@ -64,7 +64,7 @@
         v-if="!forFolder"
         id="tile-add-modal-button-existing-folder"
         tabindex="0"
-        class="tile-add-modal-button"
+        class="secondary tile-add-modal-button"
         @click="openModal('addFolder')"
       >
         {{ CREATE_EXISTING_FOLDER }}

@@ -49,7 +49,7 @@
       <icon-button
         :id="`locale-input__icon--${i18nLabel}`"
         icon="globe"
-        class="locale-input__button"
+        class="secondary locale-input__button"
         :has-button-style="true"
         :aria-label-prop="TRANSLATE_TEXT_INPUT"
         :tabindex="tabindex"

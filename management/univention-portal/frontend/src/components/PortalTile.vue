@@ -415,12 +415,11 @@ export default defineComponent({
       border-color: var(--color-focus)
 
     &--with-scaling-hover
-      scale: 1.0
-      transition: scale 0.2s ease
+      transition: scale 0.1s ease
 
       &:hover
-        scale: 1.1
-        transition: scale 0.2s ease
+        scale: 1.06
+        transition: scale 0.1s ease
 
     &--dragged-line
       border: 3px solid pink

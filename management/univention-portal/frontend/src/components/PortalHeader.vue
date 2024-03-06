@@ -55,7 +55,7 @@ License with the Debian GNU/Linux or Univention distribution in file
 
     <button
       v-if="editMode"
-      class="portal-header__edit-mode-label"
+      class="primary portal-header__edit-mode-label"
       :style="inEditModeAndSideNavopenPositioningAdjustment"
       :aria-label="STOP_EDIT_PORTAL"
       @click="stopEditMode"
@@ -297,25 +297,12 @@ export default defineComponent({
     white-space: nowrap
     position: absolute
     top: calc(var(--layout-height-header) + var(--layout-spacing-unit))
-    display: flex
-    min-width: 120px
     right: calc(50% - 75px)
-    background-color: var(--button-bgc)
     text-transform: initial
-    font-weight: 600
-    align-items: center
-    justify-content: center
-    padding-left: calc(var(--button-size) / 2)
-    transition: background-color 0.1s ease-in
-    border-radius: var(--button-border-radius)
 
     //@media only screen and (max-width: 884px) //special mediaquery, since opened sidenav can cause layout irritaions
     //  top: calc(var(--layout-height-header) - 62%)
     //  transition: top 0.1s ease-in;
-
-    &:hover
-      background-color: var(--bgc-content-container)
-      transition: background-color 0.1s ease-in
 
 #header-button-copy
     display: none
