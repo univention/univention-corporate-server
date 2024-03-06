@@ -46,6 +46,7 @@ import univention.admin.password
 import univention.admin.syntax
 import univention.admin.uexceptions
 from univention.admin.certificate import PKIIntegration, pki_option, pki_properties, pki_tab, register_pki_mapping
+from univention.admin.guardian_roles import GuardianBase, register_role_mapping, role_layout, role_properties
 from univention.admin.handlers.users.user import check_prohibited_username
 from univention.admin.layout import Group, Tab
 
@@ -150,6 +151,8 @@ property_descriptions = dict({
     ),
 }, **pki_properties())
 
+property_descriptions.update(role_properties())
+
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('User account'), layout=[
@@ -162,6 +165,8 @@ layout = [
     ]),
     pki_tab(),
 ]
+
+layout.append(role_layout())
 
 
 def unmapLocked(oldattr):
@@ -184,9 +189,10 @@ mapping.register('description', 'description', None, univention.admin.mapping.Li
 mapping.register('password', 'userPassword', univention.admin.mapping.dontMap(), univention.admin.mapping.ListToString)
 mapping.registerUnmapping('locked', unmapLocked)
 register_pki_mapping(mapping)
+register_role_mapping(mapping)
 
 
-class object(univention.admin.handlers.simpleLdap, PKIIntegration):
+class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase):
     module = module
 
     password_length = 8

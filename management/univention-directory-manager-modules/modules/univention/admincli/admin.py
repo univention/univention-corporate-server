@@ -131,6 +131,7 @@ def usage(stream):  # type: (IO[str]) -> None
     print('', file=stream)
     print('list options:', file=stream)
     print('  --%-30s %s' % ('filter', 'Lookup filter e.g. foo=bar'), file=stream)
+    print('  --%-30s %s' % ('properties', 'object properties to list'), file=stream)
     print('  --%-30s %s' % ('position', 'Search underneath of position in tree'), file=stream)
     print('  --%-30s %s' % ('policies', 'List policy-based settings:'), file=stream)
     print('    %-30s %s' % ('', '0:short, 1:long (with policy-DN)'), file=stream)
@@ -434,7 +435,7 @@ def _doit(
     remove_referring = False
     recursive = True
     # parse options
-    longopts = ['position=', 'dn=', 'set=', 'append=', 'remove=', 'superordinate=', 'option=', 'append-option=', 'remove-option=', 'filter=', 'tls=', 'ignore_exists', 'ignore_not_exists', 'logfile=', 'policies=', 'binddn=', 'bindpwd=', 'bindpwdfile=', 'policy-reference=', 'policy-dereference=', 'remove_referring', 'recursive']
+    longopts = ['position=', 'dn=', 'set=', 'append=', 'remove=', 'superordinate=', 'option=', 'append-option=', 'remove-option=', 'filter=', 'tls=', 'ignore_exists', 'ignore_not_exists', 'logfile=', 'policies=', 'binddn=', 'bindpwd=', 'bindpwdfile=', 'policy-reference=', 'policy-dereference=', 'remove_referring', 'recursive', 'properties=']
     try:
         opts, args = getopt.getopt(arglist[3:], '', longopts)
     except getopt.error as msg:
@@ -467,6 +468,7 @@ def _doit(
     remove = {}  # type: Dict[str, List[str]]
     policy_reference = []  # type: List[str]
     policy_dereference = []  # type: List[str]
+    properties = []  # type: List[str]
     for opt, val in opts:
         if opt == '--position':
             position_dn = val
@@ -646,6 +648,11 @@ def _doit(
             remove_referring = True
         elif opt == '--recursive':
             recursive = True
+        elif opt == '--properties':
+            properties.append(val)
+
+    if not properties:
+        properties = ['*']
 
     cli = CLI(module_name, module, dn, lo, position, superordinate, stdout=stdout, stderr=stderr)
     if action in ('create', 'new'):
@@ -657,7 +664,7 @@ def _doit(
     elif action in ('remove', 'delete'):
         cli.remove(remove_referring=remove_referring, recursive=recursive, ignore_not_exists=ignore_not_exists, filter=filter)
     elif action in ('list', 'lookup'):
-        cli.list(list_policies, filter, superordinate_dn, policyOptions, policies_with_DN)
+        cli.list(list_policies, filter, superordinate_dn, policyOptions, policies_with_DN, properties)
     else:
         print("Unknown or no action defined", file=stderr)
         print('', file=stderr)
@@ -958,6 +965,7 @@ class CLI:
         superordinate_dn,  # type: str
         policyOptions,  # type: List[str]
         policies_with_DN,  # type: bool
+        properties,  # type: List[str]
     ):  # type: (...) -> None
         if not univention.admin.modules.supports(module_name, 'search'):
             raise OperationFailed('Search %s not allowed' % module_name)
@@ -969,9 +977,15 @@ class CLI:
                 print('DN: %s' % univention.admin.objects.dn(object), file=self.stdout)
                 if not univention.admin.modules.virtual(module_name):
                     object.open()
+                    for key in object.keys():
+                        if module.property_descriptions[key].lazy_loading_fn and key in properties:
+                            module.property_descriptions[key].lazy_load(object)
                     for key, value in sorted(object.items()):
                         if not module.property_descriptions[key].show_in_lists:
                             continue
+                        if key not in properties and '*' not in properties:
+                            continue
+
                         s = module.property_descriptions[key].syntax
                         if module.property_descriptions[key].multivalue:
                             for v in value:

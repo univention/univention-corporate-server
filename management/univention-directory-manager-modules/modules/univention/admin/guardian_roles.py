@@ -31,6 +31,9 @@
 
 import re
 from logging import getLogger
+from typing import List, Optional  # noqa: F401
+
+from ldap.filter import filter_format
 
 import univention.admin
 import univention.admin.localization
@@ -117,3 +120,60 @@ def role_layout():
             'guardianInheritedRoles'
         ],
     )
+
+
+@univention.admin._ldap_cache(ttl=60)
+def get_group_role(lo, dn):  # type: (univention.admin.uldap.access, str) -> list[str]
+    res = lo.get(dn, attr=['univentionGuardianMemberRoles'])
+    return [x.decode('UTF-8') for x in res.get('univentionGuardianMemberRoles', [])]
+
+
+@univention.admin._ldap_cache(ttl=60)
+def search_group_uniqueMembers(lo, dn):  # type: (univention.admin.uldap.access, str) -> List[str]
+    return lo.searchDn(filter_format('(&(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [dn]))
+
+
+def get_nested_groups(lo, groups, recursion_list=None):  # type: (univention.admin.uldap.access, List[str], Optional[List[str]]) -> List[str]
+    all_groups = []
+    if recursion_list is None:
+        recursion_list = []
+    for group in groups:
+        if group not in all_groups:
+            all_groups.append(group)
+        for dn in search_group_uniqueMembers(lo, group):
+            if dn not in recursion_list:
+                recursion_list.append(dn)
+                all_groups += get_nested_groups(lo, [dn], recursion_list)
+    return all_groups
+
+
+# TODO
+# naive approach to get role strings for groups by searching the LDAP
+def load_roles(lo, groups, nested_groups=False):  # type: (univention.admin.uldap.access, List[str], bool) -> List[str]
+    roles = []
+    if nested_groups:
+        groups = get_nested_groups(lo, groups)
+    for group in groups:
+        roles += get_group_role(lo, group)
+    # this is slower in my tests
+    #  import concurrent.futures
+    #  import multiprocessing.pool
+    #  THREAD_POOL_SIZE = multiprocessing.cpu_count()
+    #  with concurrent.futures.ThreadPoolExecutor(max_workers=THREAD_POOL_SIZE) as executor:
+    #      futures = []
+    #      for group in groups:
+    #          futures.append(
+    #              executor.submit(
+    #                  get_group_role, lo, group
+    #              )
+    #          )
+    #      for future in concurrent.futures.as_completed(futures):
+    #          roles += future.result()
+    return list(set(roles))
+
+
+class GuardianBase(object):
+    def open_guardian(self, nested_groups=False):  # type: (bool) -> None
+        if self.exists():
+            self.info['guardianInheritedRoles'] = load_roles(self.lo, self['groups'] + [self['primaryGroup']], nested_groups=nested_groups)
+            self.save()

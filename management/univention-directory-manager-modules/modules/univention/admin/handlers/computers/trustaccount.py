@@ -43,6 +43,7 @@ import univention.admin.password
 import univention.admin.syntax
 import univention.admin.uexceptions
 from univention.admin.certificate import PKIIntegration, pki_option, pki_properties, pki_tab, register_pki_mapping
+from univention.admin.guardian_roles import register_role_mapping, role_layout, role_properties
 from univention.admin.layout import Group, Tab
 
 
@@ -84,6 +85,8 @@ property_descriptions = dict({
     ),
 }, **pki_properties())
 
+property_descriptions.update(role_properties())
+
 layout = [
     Tab(_('General'), _('Basic values'), layout=[
         Group(_('Trust account'), layout=[
@@ -94,10 +97,13 @@ layout = [
     pki_tab(),
 ]
 
+layout.append(role_layout())
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 register_pki_mapping(mapping)
+register_role_mapping(mapping)
 
 
 class object(univention.admin.handlers.simpleLdap, PKIIntegration):

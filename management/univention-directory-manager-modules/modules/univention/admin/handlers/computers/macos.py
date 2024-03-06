@@ -37,6 +37,7 @@ import univention.admin.mapping
 import univention.admin.syntax
 from univention.admin import nagios
 from univention.admin.certificate import pki_option, pki_properties, pki_tab, register_pki_mapping
+from univention.admin.guardian_roles import register_role_mapping, role_layout, role_properties
 from univention.admin.handlers.computers.__base import ComputerObject
 from univention.admin.layout import Group, Tab
 
@@ -215,6 +216,8 @@ property_descriptions = dict({
     ),
 }, **pki_properties())
 
+property_descriptions.update(role_properties())
+
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
         Group(_('Computer account'), layout=[
@@ -251,6 +254,8 @@ layout = [
     pki_tab(),
 ]
 
+layout.append(role_layout())
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
@@ -263,6 +268,7 @@ mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToStr
 mapping.register('operatingSystem', 'univentionOperatingSystem', None, univention.admin.mapping.ListToString)
 mapping.register('operatingSystemVersion', 'univentionOperatingSystemVersion', None, univention.admin.mapping.ListToString)
 register_pki_mapping(mapping)
+register_role_mapping(mapping)
 
 # add Nagios extension
 nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
