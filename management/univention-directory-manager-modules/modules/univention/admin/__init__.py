@@ -620,14 +620,18 @@ class policiesGroup:
 def _ldap_cache(ttl=10, cache_none=True):
     def _decorator(func):
         func._cache = {}
+        func._last_called = None
 
         def _decorated(lo, *args):
             cache = func._cache
             key = tuple([id(lo)] + list(args))
             now = time.time()
-            for cache_key, cache_val in list(cache.items()):
-                if cache_val['expire'] < now:
-                    cache.pop(cache_key)
+
+            if func._last_called and (now - func._last_called) > ttl:
+                for cache_key, cache_val in list(cache.items()):
+                    if cache_val['expire'] < now:
+                        cache.pop(cache_key)
+            func._last_called = now
 
             if key not in cache or cache[key]['expire'] < now:
                 value = {'value': func(lo, *args), 'expire': time.time() + ttl}
@@ -635,7 +639,14 @@ def _ldap_cache(ttl=10, cache_none=True):
                     return
                 cache[key] = value
             return cache[key]['value']
+
+        def cache_clear():
+            func._cache = {}
+
+        _decorated.cache_clear = cache_clear
+
         return _decorated
+
     return _decorator
 
 
