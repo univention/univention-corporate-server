@@ -104,9 +104,9 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
             ret += univention.admin.handlers.dns.alias.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
             ret += univention.admin.handlers.dns.srv_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
             ret += univention.admin.handlers.dns.txt_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
-            ret += univention.admin.handlers.dns.ns_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
         else:
             ret += univention.admin.handlers.dns.ptr_record.lookup(co, lo, ptr_filter, base, superordinate, scope, unique, required, timeout, sizelimit)
+        ret += univention.admin.handlers.dns.ns_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
     else:
         ret += univention.admin.handlers.dns.forward_zone.lookup(co, lo, fw_zone_filter, base, superordinate, scope, unique, required, timeout, sizelimit)
         ret += univention.admin.handlers.dns.reverse_zone.lookup(co, lo, rv_zone_filter, base, superordinate, scope, unique, required, timeout, sizelimit)
