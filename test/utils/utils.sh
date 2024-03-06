@@ -453,24 +453,21 @@ install_with_unmaintained () {
 }
 
 install_docker_app_from_branch () {
-  local app_name="$1"
-  local custom_docker_image="$2"
-  local app_settings="${*:3}"
-  printf '%s' univention > /tmp/univention
-  if [ -n "$custom_docker_image" ]; then
-    univention-install --yes univention-appcenter-dev
-    univention-app dev-set "$app_name" "DockerImage=$custom_docker_image"
-  fi
-  cmd="univention-app install $app_name --noninteractive --username Administrator --pwdfile /tmp/univention"
-  if [ -n "$app_settings" ]; then
-    $cmd --set $app_settings
-  else
-    $cmd
-  fi
-  container_name="appcenter/apps/$app_name/container"
-  container="$(ucr get "$container_name")"
-  commit="$(docker inspect --format='{{.Config.Labels.commit}}' "$container")"
-  echo "Docker image built from commit: '$commit'"
+	local app_name="${1:?}"
+	local custom_docker_image="${2:-}"
+	shift
+	shift
+	printf '%s' univention > /tmp/univention
+	if [ -n "$custom_docker_image" ]; then
+		univention-install --yes univention-appcenter-dev
+		univention-app dev-set "$app_name" "DockerImage=$custom_docker_image"
+	fi
+	declare -a cmd=(univention-app install "$app_name" --noninteractive --username Administrator --pwdfile /tmp/univention)
+	"${cmd[@]}" ${1:+--set $@}
+	container_name="appcenter/apps/$app_name/container"
+	container="$(ucr get "$container_name")"
+	commit="$(docker inspect --format='{{.Config.Labels.commit}}' "$container")"
+	echo "Docker image built from commit: '$commit'"
 }
 
 wait_for_repo_server () {
@@ -522,9 +519,9 @@ install_apps_test_packages () {
 	ucr set repository/online/unmaintained=yes
 	for app in "$@"
 	do
-		if [ -n "$(univention-app get $app DockerImage)" ]; then
+		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
 			univention-app shell "$app" apt-get download "ucs-test-$app" &&
-			dpkg -i "/var/lib/docker/overlay/$(ucr get appcenter/apps/$app/container)/merged/ucs-test-${app}_"*.deb &&
+			dpkg -i "/var/lib/docker/overlay/$(ucr get "appcenter/apps/$app/container")/merged/ucs-test-${app}_"*.deb &&
 			univention-install -f --yes || rv=$?
 		else
 			univention-install --yes "ucs-test-$app" || rv=$?
