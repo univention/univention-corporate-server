@@ -54,6 +54,7 @@ import univention.admin.uexceptions
 import univention.admin.uldap
 from univention.admin import nagios
 from univention.admin.certificate import PKIIntegration
+from univention.admin.guardian_roles import GuardianBase
 
 
 log = getLogger('ADMIN')
@@ -62,7 +63,7 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 
-class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, PKIIntegration):
+class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, PKIIntegration, GuardianBase):
     """|UDM| module for generic computer objects."""
 
     CONFIG_NAME = None  # type: str

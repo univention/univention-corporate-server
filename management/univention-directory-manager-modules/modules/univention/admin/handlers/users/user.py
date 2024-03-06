@@ -66,7 +66,7 @@ import univention.admin.uldap
 import univention.password
 from univention.admin import configRegistry
 from univention.admin.certificate import PKIIntegration, pki_option, pki_properties, pki_tab, register_pki_mapping
-from univention.admin.guardian_roles import register_role_mapping, role_layout, role_properties
+from univention.admin.guardian_roles import GuardianBase, register_role_mapping, role_layout, role_properties
 from univention.admin.layout import Group, Tab
 from univention.lib.s4 import rids_for_well_known_security_identifiers
 
@@ -1097,7 +1097,7 @@ default_property_descriptions = copy.deepcopy(property_descriptions)  # for late
 _sentinel = builtins.object()
 
 
-class object(univention.admin.handlers.simpleLdap, PKIIntegration):
+class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase):
     module = module
 
     use_performant_ldap_search_filter = True
@@ -1150,6 +1150,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
             self._unmap_automount_information()
             self._unmapUnlockTime()
             self._unmap_gid_number()
+            self.info['guardianInheritedRoles'] = load_roles(self.lo, set(self.info['groups'] + [self.info['primaryGroup']]))
         self.save()
         # self.save() must not be called after this point in self.open()
         # otherwise self.__primary_group doesn't add a new user to the
