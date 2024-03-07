@@ -276,6 +276,7 @@ Reverse proxy
    * ``/univention/auth``
    * ``/univention/logout``
    * ``/univention/saml/.*`` as regular expression
+   * ``/univention/oidc/.*`` as regular expression
    * ``/univention/command/.*`` as regular expression
    * ``/univention/upload/.*`` as regular expression
    * ``/univention/get/.*`` as regular expression
