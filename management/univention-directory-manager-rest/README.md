@@ -242,9 +242,9 @@ The gateway and server are using the [Tornado Web Framework](https://github.com/
 The split in gateway and server component realize the multi-language support.
 
 ### Code
-The gateway is defined in `src/univention/admin/rest/server/__init__.py`.
-The server is defined in `src/univention/admin/rest/__main__.py`.
-All HTTP resources are currently defined in `src/univention/admin/rest/module.py`.
+The gateway is defined in [server/\_\_init\_\_.py](src/univention/admin/rest/server/__init__.py).
+The server is defined in [\_\_main\_\_.py](src/univention/admin/rest/__main__.py).
+All HTTP resources are currently defined in [module.py](src/univention/admin/rest/module.py).
 
 The `module.py` it too large and should be splitted into multiple smaller modules.
 Additionally the implementation relies on the UDM UMC module implementation.

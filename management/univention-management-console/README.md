@@ -1,14 +1,126 @@
 # Univention Management Console
 
-# Known issues regarding memory consumption
+The Univention Management Console (UMC) Server is a JSON based, RPC like, un-stateless session based, modular web service,
+serving as backend for the Dojo based UMC user interface as well as parts of the Portal, Self-Service and other small web UIs.
+
+## Architecture
+
+The architecture of UMC is described from a high level perspective in the [architecture documentation](https://docs.software-univention.de/architecture/latest/en/services/umc.html).
+Further development information can be obtained in the [developer reference](https://docs.software-univention.de/developer-reference/latest/en/umc/index.html).
+
+### Code
+The code for the following functionality is defined in:
+* The UMC server, application containing the URL routes: [server.py](src/univention/management/console/server.py)
+* The UMC module process server: [modserver.py](src/univention/management/console/modserver.py)
+* The base class for resources / request handler: [resource.py](src/univention/management/console/resource.py)
+* All internal core resources: [resources.py](src/univention/management/console/resources.py)
+* Session handling: [session.py](src/univention/management/console/session.py)
+* SAML: [saml.py](src/univention/management/console/saml.py)
+* OpenID-Connect: [oidc.py](src/univention/management/console/oidc.py)
+* Authentication and authorization: [pam.py](src/univention/management/console/pam.py), [auth.py](src/univention/management/console/auth.py), [acl.py](src/univention/management/console/acl.py)
+* Handling of UMC module and category XML definition: [module.py](src/univention/management/console/module.py), [category.py](src/univention/management/console/category.py)
+* `Base` class where all UMC modules must inherit from as `Instance` class: [base.py](src/univention/management/console/base.py)
+
+### Core HTTP endpoints
+
+The UMC-Server provides some core HTTP endpoints, other endpoints are served by module processes.
+The core endpoints are for example:
+* authentication via form based plaintext credentials
+* authentication via SAML assertion
+* authentication via OIDC access token
+* logout for plain, SAML and OIDC
+* setting of a new password while providing the current password
+* session information retrieval
+* retrieval of most likely IP address of the client, used by UCS@school
+* session renewal (drop current module processes), e.g. used after an app installation
+* listing of available modules
+* listing of available categories
+* uploading of files and getting a base64 representation of that file for further use in Javascript, e.g. previewing as new user photo jpeg
+* Command and Upload handler for forwarding requests to UMC module processes
+* retrieval of meta information about the domain and system, like cookie banner, SSL validity dates, system UCS version or license, etc. The information differ based on the login state to prevent information disclosure.
+* retrieval of various or all UCR variable as authenticated user, (yes, every user in the domain can read the whole UCR!)
+* retrieval of UCS version and SSL validity state
+* retrieval of all UMC hosts in the domain
+* retrieval of user preferenes like favorites
+* setting of user preferenes like favorites
+
+### Modularity via module processes
+The UMC-Servers functionality can be extended by adding modules to it.
+Modules consist of a Python module, a Javascript module and a XML file describing the module.
+
+Modules have a unique ID and serve the requests for `/univention/command/$moduleid/.*` and `/univention/upload/$moduleid/.*`.
+
+For each session (logged in user) and each module an own linux process is started, which serves a HTTP server via a UNIX socket.
+This is very memory consuming (at least 30 MB per process) and bad practice. Many modules wouldn't need this as they are designed stateless.
+A experimental untested flag to prevent this exists, via a flag `<module singleton="1" …>` flag in the XML definition.
+Especially modules with `allow_anonymous="true"` like the self service should use this, as they should be already independent of any session and these modules allow unauthenticated access, opening the way up for denial of service.
+
+Module processes are terminating themself after 10 minutes of inactivity, configurable via `umc/module/timeout`.
+
+### Authentication
+Authentication can be done via providing the credentials via the form based `/univention/login/` to `/univention/auth/`.
+This is additionally the officially used API for service to service communication, e.g. by `univention.lib.umc`.
+Login via SAML is provided by `/univention/saml/`, via OIDC is provided by `/univention/oidc/`.
+The UMC-Server can additionally be accessed via HTTP Basic authentication and HTTP Bearer authentication.
+All of the authentication mechanism will create a cookie based session. The cookie is not necessary for HTTP based authentication but is still given.
+
+Authentication is realized via the `univention-management-console` PAM stack, which defines:
+1. authentication for local users via `pam_unix`, UDM users or computers via `pam_krb` and `users/ldap` users via `pam_ldap`.
+2. account management (checks for disabled accounts, expired passwords, locked accounts) is done via the same above modules.
+3. password changes are done for local users via `pam_unix` and for UDM accounts via `pam_krb5`, which ensures that all password hashes keep in sync. The password complexity requirements are at least ensured via `pam_cracklib`, `UDM` and `pam_krb5`.
+
+#### Sessions
+The session lifetime depends on the authentication mechanism.
+Plain logins have a 8 hours lifetime, configurable via `umc/http/session/timeout`.
+SAML logins have a 5 minutes lifetime, configurable via `umc/saml/assertion-lifetime`.
+OIDC logins have a 5 minutes lifetime, configurable via `umc/oidc/access-token/lifespan`.
+
+#### Session storage in memory
+All sessions are stored in memory and not in some external database like `sqlite`, `redis`, etc.
+Therefore login states are lost after a restart of the UMC server.
+To prevent session loss during a UCS upgrade via UMC we are preventing the restart of the service during upgrades.
+
+### Authorization
+All authenticated users are granted access to all internal core resources.
+Access to module processes is handled via `Policy: UMC` UDM policies, which reference `Settings: UMC operation set` UDM modules, defining the allowed UMC commands / requests paths, flavors, options.
+The UMC policies can be assigned to the user object, computer object or a group containing the user or computer. Policies assigned to the container are not evaluated.
+ACLs for local users like `root` or `__systemsetup__` are not stored in LDAP but in the local cache files managed by `/usr/sbin/univention-management-console-acls`.
+
+### Detection of https for constructing redirect URIs
+UMC-Server and Portal sit behind a Apache gateway, which stores the information about HTTPS of the original connection in the request header `X-UMC-HTTPS`.
+This is e.g. used to construct the correct redirection URLs.
+
+### Enabling of multiprocessing
+Multiprocessing can be activated via
+```bash
+ucr set umc/http/processes=0
+systemctl daemon-reload
+systemctl restart apache2 univention-management-console-server
+```
+by specifying a number of forked processes (or `0` for based on the number of CPUs).
+
+UMC doesn't use native multiprocessing but starts multiple UMC server processes via `systemd` and load balances via Apache with sticky sessions between them.
+That is unfortunately necessary because of the module processes, which communicate via UNIX sockets instead of TCP sockets, which doesn't allow multiple connections.
+Enhancing this could improve scaling very much.
+
+### Known issues regarding performance or memory consumption
+
+Production environments should read and perform steps from our [performance documentation](https://docs.software-univention.de/ext-performance/latest/en/).
 
 * Authentication and password changes happen in a thread pool, configurable via `umc/http/maxthreads` defaulting to 35.
 * UMC module processes take at minimum 30 MB RAM. One module process is created per module per session (user).
 * The default session timeout for plain logins (not SAML or OIDC) is 28800 seconds / 8 hours (`umc/http/session/timeout`) and refreshes itself by that time at every request.
-  This holds the session open for 8 hours of inactivity. Many opened sessions will cause many unfreeable memory.
-* Apache performance settings are configurable via `apache2/max-request-workers`, `apache2/maxclients`, `apache2/min-spare-servers`, `apache2/max-spare-servers`.
+  This holds the session open for 8 hours of inactivity. Many opened sessions will cause a lot of unfreeable memory.
+* Apache performance settings are configurable via `apache2/server-limit`, `apache2/max-request-workers`, ~`apache2/maxclients`~, `apache2/start-servers`, `apache2/min-spare-servers`, `apache2/max-spare-servers`.
+* UMC performance settings are configurable via `umc/http/processes`, `umc/http/maxthreads`, `umc/http/requestqueuesize`.
 
-# Debugging UMC-Server or module processes
+### Debugging UMC-Server or module processes
+
+The loglevel can be set via UCR:
+```bash
+ucr set umc/{module,server}/debug/level=4
+```
+Afterwards a service restart or reload is necessary.
 
 The UMC server can be started in foreground, even with starting module processes in foreground:
 
@@ -16,9 +128,9 @@ The UMC server can be started in foreground, even with starting module processes
 univention-management-console-server -d4 -L /dev/stdout --no-daemonize-module-processes
 ```
 
-breakpoint in `pdb` help to analyze problems, e.g. in module processes or in the server itself.
+A breakpoint with `pdb` helps to analyze problems, e.g. in module processes or in the server itself.
 
-## Analyzing memory leaks
+#### Analyzing memory leaks
 
 Print the amount of objects to the logfile:
 ```bash
@@ -29,8 +141,8 @@ pkill -SIGUSR2 -f univention-management-console-server
 
 Watch memory usage continuously:
 ```bash
-PID="$(pgrep -f univention-management-console-server)"
-while sleep 2; do grep RssAnon "/proc/$PID/status"; done
+PIDS="$(pgrep -f univention-management-console-server)"
+while sleep 2; do for PID in $PIDS; do grep RssAnon "/proc/$PID/status"; done; done
 ```
 
 Attach to a running UMC server process and analyze local variables, etc:
@@ -51,6 +163,12 @@ objgraph.show_most_common_types(limit=20)
 obj = objgraph.by_type('univention.management.console.session.Session')[-1]
 objgraph.show_backrefs([obj], max_depth=10)
 ```
+
+Other resources:
+[diagnosing memory leaks in python](https://chase-seibert.github.io/blog/2013/08/03/diagnosing-memory-leaks-python.html)
+[Heapy](https://guppy-pe.sourceforge.net/#Heapy)
+[gdb-heap](https://github.com/rogerhu/gdb-heap)
+[meliae](https://launchpad.net/meliae) e.g. required for `pyrasite-memory-viewer`
 
 ## OAuth 2.0 Authorization in UCS and OIDC Authentication in UMC
 
