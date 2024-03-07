@@ -42,7 +42,6 @@ from __future__ import absolute_import, print_function
 import mimetypes
 import sys
 import time
-import weakref
 
 import ldap
 import ldap.sasl
@@ -180,14 +179,8 @@ class Request(Message):
     def get_user_ldap_connection(self, no_cache=False, **kwargs):
         if not self.user_dn:
             return  # local user (probably root)
-
-        wheakself = weakref.ref(self)
-
-        def bind_user_connection(lo):
-            return wheakself().bind_user_connection(lo)
-
         try:
-            lo, _po = get_user_connection(bind=bind_user_connection, write=kwargs.pop('write', False), follow_referral=True, no_cache=no_cache, **kwargs)
+            lo, _po = get_user_connection(bind=self.bind_user_connection, write=kwargs.pop('write', False), follow_referral=True, no_cache=no_cache, **kwargs)
             if not no_cache:
                 self._user_connections.add(lo)
             return lo

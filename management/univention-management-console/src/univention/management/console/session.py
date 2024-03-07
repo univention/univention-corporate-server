@@ -35,7 +35,6 @@ import asyncio
 import errno
 import functools
 import traceback
-import weakref
 
 import ldap
 import tornado.gen
@@ -87,7 +86,7 @@ class User(object):
 class Session(object):
     """A interface to session data"""
 
-    __slots__ = ('_', '__weakref__', '_active_requests', '_timeout_id', 'acls', 'oidc', 'processes', 'saml', 'session_id', 'user')
+    __slots__ = ('_', '_active_requests', '_timeout_id', 'acls', 'oidc', 'processes', 'saml', 'session_id', 'user')
     __auth = AuthHandler()
     sessions = {}
 
@@ -300,7 +299,7 @@ class IACLs(object):
         return self.__acls
 
     def __init__(self, session):
-        self.session = weakref.ref(session)
+        self.session = session
         self.__acls = None
         self.__permitted_commands = None
 
@@ -319,11 +318,11 @@ class IACLs(object):
         self.get_permitted_commands(moduleManager)
 
     def _get_acls(self):
-        if not self.session().user.authenticated:
+        if not self.session.user.authenticated:
             # We need to set empty ACL's for unauthenticated requests
             return ACLs()
         else:
-            return LDAP_ACLs(self.session().user.username, ucr['ldap/base'])
+            return LDAP_ACLs(self.session.user.username, ucr['ldap/base'])
 
     def is_command_allowed(self, command, options, flavor):
         if not isinstance(options, dict):
@@ -373,24 +372,15 @@ class Processes(object):
     singletons = {}
 
     def __init__(self, session):
-        self.session = weakref.ref(session)
-        self._acls = session.acls
+        self.session = session
         self.__processes = {}
 
-    @property
-    def acls(self):  # workaround for circular reference memory leak
-        sess = self.session()
-        if sess is not None:
-            if self._acls is not sess.acls:
-                self._acls = sess.acls
-        return self._acls
-
     def processes(self, module_name):
-        return self.singletons if self.acls.is_module_singleton(module_name) else self.__processes
+        return self.singletons if self.session.acls.is_module_singleton(module_name) else self.__processes
 
     def get_process(self, module_name, accepted_language, no_daemonize_module_processes=False):
         from .resources import ModuleProcess, ModuleProxy
-        proxy_address = self.acls.get_module_proxy_address(module_name)
+        proxy_address = self.session.acls.get_module_proxy_address(module_name)
         if proxy_address:
             return ModuleProxy(proxy_address)
 
@@ -400,7 +390,7 @@ class Processes(object):
             try:
                 mod_proc = ModuleProcess(module_name, debug=MODULE_DEBUG_LEVEL, locale=accepted_language, no_daemonize_module_processes=no_daemonize_module_processes)
             except EnvironmentError as exc:
-                _ = self.session()._
+                _ = self.session._
                 message = _('Could not open the module. %s Please try again later.') % {
                     errno.ENOMEM: _('There is not enough memory available on the server.'),
                     errno.EMFILE: _('There are too many opened files on the server.'),
