@@ -11,3 +11,6 @@ desc: |
  * Fixed migration script LDAP filter to only process user objects.
  * The fetchmailrc listener now writes atomically to /etc/fetchmailrc.
 bug: [56521, 57090, 56587]
+erratum: 977
+announced: 2024-03-07
+support: core
