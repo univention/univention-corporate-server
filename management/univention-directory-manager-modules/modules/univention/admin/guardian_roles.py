@@ -85,8 +85,9 @@ def role_properties():
             may_change=False,
             multivalue=True,
             dontsearch=True,
-            show_in_lists=False,
+            show_in_lists=True,
             cli_enabled=False,
+            lazy_loading_fn='open_guardian',
         ),
     }
 

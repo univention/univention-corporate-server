@@ -385,6 +385,8 @@ class _OpenAPIBase:
             },
             'objects.get.query.hidden': {
             },
+            'objects.get.query.opened': {
+            },
             'objects.get.query.superordinate': {
             },
             'objects.get.query.properties': {
@@ -396,6 +398,8 @@ class _OpenAPIBase:
             'objects.get.query.dir': {
             },
             'objects.get.query.by': {
+            },
+            'object.get.query.properties': {
             },
             'object.delete.query.cleanup': {
             },
@@ -789,7 +793,10 @@ class _OpenAPIBase:
             openapi_paths[object_path]["get"] = {
                 "operationId": f"udm:{name}/object",
                 "summary": docstring('object', 'get', module),
-                "parameters": [] + global_parameters,
+                "parameters": [
+                    {'$ref': '#/components/parameters/object.get.query.properties'},
+                    # {'$ref': '#/components/parameters/object.get.query.copy'},
+                ] + global_parameters,
                 "responses": global_responses({
                     "200": {
                         '$ref': '#/components/responses/object.%s.get.response.success' % (_openapi_quote(model_name),),

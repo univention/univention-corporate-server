@@ -235,6 +235,7 @@ class property:
             size=None,  # type: str | None
             copyable=False,  # type: bool
             type_class=None,  # type: Type[TypeHint] | None
+            lazy_loading_fn=None,  # type: str | None
     ):  # type: (...) -> None
         """
         |UDM| property.
@@ -266,6 +267,7 @@ class property:
         :param size: The |UMC| widget size; one of :py:data:`univention.admin.syntax.SIZES`.
         :param copyable: With `True` the property is copied when the object is cloned; with `False` the new object will use the default value.
         :param type_class: An optional Typing class which overwrites the syntax class specific type.
+        :param lazy_loading_fn: An optional function name that implements loading additional expensive properties if requested.
         """
         self.short_description = short_description
         self.long_description = long_description
@@ -299,6 +301,7 @@ class property:
         self.size = size
         self.copyable = copyable
         self.type_class = type_class
+        self.lazy_loading_fn = lazy_loading_fn
 
     def new(self):
         # type: () -> list[str] | None
@@ -383,6 +386,10 @@ class property:
         if not self.options:
             return True
         return bool(set(self.options).intersection(set(options)))
+
+    def lazy_load(self, obj):
+        if self.lazy_loading_fn:
+            getattr(obj, self.lazy_loading_fn)()
 
 
 class option(object):
