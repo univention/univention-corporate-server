@@ -10,3 +10,6 @@ desc: |
    `directory/manager/starttls`. This is required in a Kubernetes environment.
  * An unused dependency on `py3dns` has been removed.
 bug: [57098, 56911]
+erratum: 983
+announced: 2024-03-07
+support: core
