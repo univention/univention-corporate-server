@@ -11,3 +11,6 @@ desc: |
    samba restarts. The script stopping the processes has
    been made more robust.
 bug: [56914]
+erratum: 975
+announced: 2024-03-07
+support: core
