@@ -10,3 +10,6 @@ desc: |
    has been changed to `str`, so that the validation in UCR strict type
    setting mode passes.
 bug: [56520]
+erratum: 979
+announced: 2024-03-07
+support: core
