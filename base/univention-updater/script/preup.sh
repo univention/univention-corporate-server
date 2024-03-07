@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck disable=SC2317
+
 export DEBIAN_FRONTEND=noninteractive
 
 UPDATE_NEXT_VERSION="$1"
@@ -160,7 +162,8 @@ for pkg in $preups; do
 done
 
 # Bug #56232: Enable the support for numeric user ID's if it is required
-if [ "$server_role" = "domaincontroller_master" ] && dpkg --compare-versions $1 eq "5.1"; then
+if [ "${server_role:-}" = "domaincontroller_master" ] && dpkg --compare-versions "$1" eq "5.1"
+then
 	echo "Checking for usernames and groups with legacy format. This can take a few minutes..."
 
 	echo "Checking usernames..."
@@ -168,7 +171,7 @@ if [ "$server_role" = "domaincontroller_master" ] && dpkg --compare-versions $1 
 		echo "Legacy username format required. Creating policy..."
 
 		udm policies/registry create \
-			--position "cn=config-registry,cn=policies,$ldap_base" \
+			--position "cn=config-registry,cn=policies,${ldap_base:?}" \
 			--set name=enable-legacy-username-format \
 			--set registry="directory/manager/user/enable-legacy-username-format true"
 

@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+# shellcheck disable=SC2317
+
 export DEBIAN_FRONTEND=noninteractive
 
 UPDATER_LOG="/var/log/univention/updater.log"

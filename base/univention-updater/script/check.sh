@@ -30,7 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-# shellcheck disable=SC2154
+# shellcheck disable=SC2154,SC2317
+#
 UPDATER_LOG="/var/log/univention/updater.log"
 ###CHECKS_ONLY###
 if [ -z "${UPDATE_NEXT_VERSION:-}" ]
@@ -44,6 +45,7 @@ VERSION="50"
 VERSION_NAME="5.0"
 MIN_VERSION="4.4-9"
 
+# shellcheck disable=SC2034
 updateLogDir="/var/univention-backup/update-to-${UPDATE_NEXT_VERSION:-$VERSION}"
 
 tmp="$(mktemp)"
