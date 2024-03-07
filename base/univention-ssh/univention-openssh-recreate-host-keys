@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 #
 # Univention SSH
 #  Create new OpenSSH hosts keys
@@ -33,38 +33,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-die () {
-	echo "For $typ: $*." >&2
-	echo "Continuing..."
-	continue
-}
+set -e -u
 
 dir="/var/univention-backup/ssh-$(date '+%F_%T')"
 echo "Storing backup copy in ${dir}..."
-mkdir -p "$dir"
+install -m 0700 -d "$dir"
 find /etc/ssh -maxdepth 1 -name 'ssh_host*_key*' -execdir mv -t "$dir" -n -v {} +
 
 echo "Recreating SSH host keys..."
 ucr search --brief --non-empty '^sshd/HostKey/[^/]+$' |
-while IFS=': ' read key bits
+while IFS=': ' read -r key bits
 do
 	typ="${key#sshd/HostKey/}"
-	case "$bits" in
-	""|0) echo " skipping $typ" ; continue ;;
-	esac
-
 	filename="/etc/ssh/ssh_host_${typ}_key"
-	case "$typ" in
-	rsa1) filename='/etc/ssh/ssh_host_key'; [ "$bits" -ge 768 ] || die "minimum 768" ;;
-	dsa) [ "$bits" -eq 1024 ] || die "only 1024" ;;
-	ed25519) [ -z "$bits" ] || die "ignored" ;;
-	rsa) [ "$bits" -ge 768 ] || die "minimum 768" ;;
-	ecdsa) [ "$bits" -eq 256 ] || [ "$bits" -eq 384 ] || [ "$bits" -eq 521 ] || die "only 256, 384 or 521" ;;
-	*) echo "Unknown type: '$typ'" >&2 ; continue ;;
-	esac
-
-	echo " generating new host key: $typ..."
 	ssh-keygen -q -f "$filename" -N '' -t "$typ" -b "$bits"
 done
 
-ssh-keygen -A
+exec ssh-keygen -A
