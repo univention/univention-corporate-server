@@ -11,6 +11,8 @@
 	  Stylus might compile without error but the result will probably be not what you expect.
 
 
+
+
 # Development of dojo based web interfaces
 
 An UCS system provides several web interfaces that are build with the
@@ -21,13 +23,13 @@ These web interfaces are:
 - /univention/login - The login page for all web interfaces of an UCS system.
 - /univention/management - The [UMC - Univention Management Console](https://docs.software-univention.de/architecture/5.0/en/services/umc.html#).
 - /univention/server-overview - A web interface, showing all UCS systems of the domain.
-- /univention/setup - The web based configuration wizard while installing an UCS system. 
+- /univention/setup - The web based configuration wizard while installing an UCS system.
 
 This document explains how to develop for these dojo based web interfaces.
 
 ## Getting an UCS system
 
-For development you need a running UCS system. 
+For development you need a running UCS system.
 See the [Development environment](https://univention.gitpages.knut.univention.de/internal/dev-handbook/dev-env.html)
 section in "Handbook for Univention Development Department" on how to create a UCS system.
 
@@ -89,7 +91,7 @@ our JavaScript library on top of Dojo Toolkit.
 
 ```html
 <head>
-	<!-- [...] ommited some tags <meta>, <title>, favicon [...] -->	
+	<!-- [...] ommited some tags <meta>, <title>, favicon [...] -->
 
 	<!-- CSS for univention-web -->
 	<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>

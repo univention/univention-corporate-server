@@ -19,6 +19,7 @@ The definition and usage of these variables has multiple purposes
 
 The following sections explain the CSS variables:
 
+
 ## --cursor-disabled
 
 Intended for `cursor` property.
@@ -37,10 +38,10 @@ Defines value for `border-radius` property of interactable elements.
 Used for things like:
 
 - input elements (e.g. TextBox, Select etc.)
-  
+
   ![TextBox](style_images/border-radius-interactable--textbox.png)
 
-- buttons	
+- buttons
 
   ![TextBox](style_images/border-radius-interactable--button.png)
 
@@ -157,7 +158,7 @@ Used for the `height` property of text boxes and selects.
 
 Intended for `border-color` or `outline` property.
 
-Color for outline of focused elements. Should be highly visible. 
+Color for outline of focused elements. Should be highly visible.
 
 ### --color-accent
 
@@ -171,7 +172,7 @@ At the moment only used to highlight selected or activated elements:
 
 ![](style_images/color-accent--grid.png)
 
-- Active state of toggle buttons 
+- Active state of toggle buttons
 
 (At the moment UMC and portal have different styles)
 
@@ -189,7 +190,7 @@ At the moment only used to highlight selected or activated elements:
 
 Intended for `background-color` and `border-color` properties.
 
-Expects text on this color to be readable. See TODO 
+Expects text on this color to be readable. See TODO
 
 Defines the background color for the whole page.
 Is also used as alternating background color for
@@ -206,7 +207,7 @@ Is also used as color for separator lines.
 
 Intended for `background-color` and `border-color` properties.
 
-Expects text on this color to be readable. See TODO 
+Expects text on this color to be readable. See TODO
 
 Defines background color for elements that contain other elements
 and sit on the body.
@@ -531,7 +532,7 @@ The rightmost button should always be either the close button for the module, if
 of the module, or a back button, if we are on a subpage of the module.
 
 - Initial page of "Groups" module
-  
+
   ![](style_images/modules-header-close.png)
 
 - Subpage of "Groups" module
