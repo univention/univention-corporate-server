@@ -65,5 +65,5 @@ def get_ldap_connection(type_, auth_type, binddn, bindpw):
     uri = ucr.get(f'directory/manager/rest/ldap-connection/{type_}/uri', default_uri)
     start_tls = ucr.get_int('directory/manager/rest/ldap-connection/user-read/start-tls', 2)
     if auth_type == 'Bearer':
-        return get_connection(bind=lambda lo: lo.bind_oauthbearer(binddn, bindpw), binddn=None, bindpw=None, host=None, port=None, base=ucr['ldap/base'], start_tls=start_tls, uri=uri)
+        return get_connection(bind=lambda lo: lo.bind_oauthbearer(binddn, bindpw), bindhash=hash((binddn, bindpw)), binddn=None, bindpw=None, host=None, port=None, base=ucr['ldap/base'], start_tls=start_tls, uri=uri)
     return get_connection(bind=None, binddn=binddn, bindpw=bindpw, host=None, port=None, base=ucr['ldap/base'], start_tls=start_tls, uri=uri)
