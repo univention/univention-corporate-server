@@ -83,7 +83,7 @@ class LDAP(object):
         return self.connection(func, bind, host, port, base, loarg, poarg, no_cache, **kwargs)
 
     def connection(self, func=None, bind=None, host=None, port=None, base=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
-        hash_ = ('connection', no_cache, bind, host, port, base, tuple(kwargs.items()))
+        hash_ = ('connection', no_cache, kwargs.pop('bindhash', hash(bind)), host, port, base, tuple(kwargs.items()))
 
         def connection():
             lo = _access(host=host, port=port, base=base, **kwargs)

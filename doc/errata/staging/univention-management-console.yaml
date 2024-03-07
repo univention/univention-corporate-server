@@ -7,4 +7,5 @@ fix: 12.0.33-1
 desc: |
  This update addresses the following issues:
  * A memory leak in the UMC server has been fixed.
-bug: [57104]
+ * A LDAP connection leak in the UMC server has been fixed.
+bug: [57104, 57113]
