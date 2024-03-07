@@ -10,3 +10,6 @@ desc: |
    configurable via UCR variables. This is a requirement to run the self
    service in a containerized environment.
 bug: [57061]
+erratum: 981
+announced: 2024-03-07
+support: core
