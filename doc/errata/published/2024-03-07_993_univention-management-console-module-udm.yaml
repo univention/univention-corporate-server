@@ -12,3 +12,6 @@ desc: |
  * The error handling when superordinate objects don't exist has been
    repaired.
 bug: [57046, 55555]
+erratum: 993
+announced: 2024-03-07
+support: core
