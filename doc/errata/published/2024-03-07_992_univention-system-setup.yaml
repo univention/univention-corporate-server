@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * A incompatibility with newer versions of dnspython has been fixed.
 bug: [56911]
+erratum: 992
+announced: 2024-03-07
+support: core
