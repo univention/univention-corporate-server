@@ -13,3 +13,6 @@ desc: |
  * The listener module writing the BIND9 configuration files now ignores DNS
    zone files with invalid file names.
 bug: [50385, 57013]
+erratum: 985
+announced: 2024-03-07
+support: core
