@@ -156,7 +156,11 @@ def _create_socket(socket_path: str = default_socket_path) -> socket.socket:
         # connect to already running server
         sock.connect(socket_path)
     except OSError:
-        fork_server(sock, socket_path)
+        try:
+            fork_server(sock, socket_path)
+        except OSError:
+            sock.close()
+            raise
     return sock
 
 
@@ -177,8 +181,6 @@ def main() -> None:
     try:
         sock = _create_socket()
     except OSError:
-        # try once again
-        sock.close()
         sock = _re_create_socket()
 
     cmdfile = os.path.basename(sys.argv[0])
