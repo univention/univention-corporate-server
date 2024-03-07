@@ -1,0 +1,39 @@
+/* this file must NOT contain leading or trailing whilespaces !!! */
+
+#include <debian-installer+kernel>
+#include <forcd1>
+
+/* Univention System Setup */
+univention-system-setup
+univention-system-setup-boot
+firefox-esr-l10n-de
+xinit
+xorg
+xserver-xorg-input-all
+xserver-xorg-video-all
+
+/* Kernel Packages */
+firmware-linux
+/* add the list of firmware packages here too if required */
+#ifdef FORCE_FIRMWARE
+#    include <firmware>
+#endif
+
+/* UEFI */
+grub-efi
+efibootmgr
+shim-signed
+grub-efi-amd64-signed
+
+/* Role Packages */
+univention-server-master
+univention-server-backup
+univention-server-slave
+univention-server-member
+univention-container-role-common
+/* AD Member Mode */
+univention-ad-connector
+univention-samba
+
+/* Translation Packages */
+univention-l10n-fr
