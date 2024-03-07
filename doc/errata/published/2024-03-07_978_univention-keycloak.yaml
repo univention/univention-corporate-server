@@ -11,3 +11,6 @@ desc: |
  * The standard configuration for keycloak has been changed to allow
    machine accounts to login.
 bug: [57001, 57100]
+erratum: 978
+announced: 2024-03-07
+support: core
