@@ -32,7 +32,11 @@
 
 from __future__ import unicode_literals
 
-from typing import Collection, Optional  # noqa: F401
+
+try:
+    from typing import Collection, Optional  # noqa: F401
+except ImportError:
+    pass  # Python 2.7 🤮
 
 
 class UdmError(Exception):

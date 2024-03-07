@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.25-24) unstable; urgency=low
+
+  * Bug #50385: Restore Python2.7 backward compatibility
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Mar 2024 11:07:48 +0100
+
 univention-directory-manager-modules (15.0.25-23) unstable; urgency=low
 
   * Bug #50385: Support NS records in DNS reverse zones
