@@ -1,3 +1,9 @@
+univention-directory-manager-module-example (9.0.3-1) UNRELEASED; urgency=medium
+
+  * Bug #57118 UCS 5.0-7 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Mar 2024 15:51:53 +0100
+
 univention-directory-manager-module-example (9.0.2-2) unstable; urgency=medium
 
   * Bug #57098: make StartTLS configurable in univention.uldap

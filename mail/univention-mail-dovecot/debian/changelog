@@ -1,3 +1,9 @@
+univention-mail-dovecot (6.0.9-1) UNRELEASED; urgency=medium
+
+  * Bug #57118 UCS 5.0-7 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Mar 2024 15:51:48 +0100
+
 univention-mail-dovecot (6.0.8-2) unstable; urgency=medium
 
   * Bug #56520: Change type of UCRV mail/dovecot/logging/auth_verbose_passwords

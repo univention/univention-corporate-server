@@ -1,3 +1,9 @@
+univention-python (13.0.6-1) UNRELEASED; urgency=medium
+
+  * Bug #57118 UCS 5.0-7 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Mar 2024 15:51:51 +0100
+
 univention-python (13.0.5-4) unstable; urgency=medium
 
   * Bug #56911: Remove unused dependency on `py3dns`

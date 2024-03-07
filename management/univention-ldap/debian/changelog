@@ -1,3 +1,9 @@
+univention-ldap (16.0.15-1) UNRELEASED; urgency=medium
+
+  * Bug #57118 UCS 5.0-7 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Mar 2024 15:51:47 +0100
+
 univention-ldap (16.0.14-5) unstable; urgency=medium
 
   * Bug #57038: Add schema and internal database for univention blocklist entries

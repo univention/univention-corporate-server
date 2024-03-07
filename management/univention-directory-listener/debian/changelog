@@ -1,3 +1,9 @@
+univention-directory-listener (14.0.10-1) UNRELEASED; urgency=medium
+
+  * Bug #57118 UCS 5.0-7 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Mar 2024 15:51:45 +0100
+
 univention-directory-listener (14.0.9-2) unstable; urgency=medium
 
   * Bug #57024: retry in case notifier doesn't answer.

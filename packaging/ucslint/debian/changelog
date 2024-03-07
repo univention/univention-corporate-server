@@ -1,3 +1,9 @@
+ucslint (9.0.5-1) UNRELEASED; urgency=medium
+
+  * Bug #57118 UCS 5.0-7 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Mar 2024 15:51:53 +0100
+
 ucslint (9.0.4-2) unstable; urgency=medium
 
   * Bug #55668: add basis to execute ucslint with pre-commit

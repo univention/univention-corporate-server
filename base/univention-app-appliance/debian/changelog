@@ -1,3 +1,9 @@
+univention-app-appliance (4.0.4-1) UNRELEASED; urgency=medium
+
+  * Bug #57118 UCS 5.0-7 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Mar 2024 15:51:50 +0100
+
 univention-app-appliance (4.0.3-1) UNRELEASED; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump

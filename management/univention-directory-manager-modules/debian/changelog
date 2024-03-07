@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.26-1) UNRELEASED; urgency=medium
+
+  * Bug #57118 UCS 5.0-7 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Mar 2024 15:51:47 +0100
+
 univention-directory-manager-modules (15.0.25-25) unstable; urgency=low
 
   * Bug #50385: Fix UDM CLI server start

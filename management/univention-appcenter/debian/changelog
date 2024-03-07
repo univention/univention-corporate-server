@@ -1,3 +1,9 @@
+univention-appcenter (9.0.11-1) UNRELEASED; urgency=medium
+
+  * Bug #57118 UCS 5.0-7 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Mar 2024 15:51:48 +0100
+
 univention-appcenter (9.0.10-1) unstable; urgency=medium
 
   [ Philipp Hahn ]

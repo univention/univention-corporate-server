@@ -1,3 +1,9 @@
+ucs-test-tools (9.0.3-1) UNRELEASED; urgency=medium
+
+  * Bug #57118 UCS 5.0-7 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Mar 2024 15:51:56 +0100
+
 ucs-test-tools (9.0.2-1) UNRELEASED; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
