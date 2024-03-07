@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * Fix traceback when `Interfaces()` is used with `ReadOnlyConfigRegistry()`.
 bug: [56911]
+erratum: 989
+announced: 2024-03-07
+support: core
