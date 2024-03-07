@@ -9,3 +9,6 @@ desc: |
  * The detection of the correct log level has been repaired in case
    `univention.debug` was not initialized via `univention.logging`.
 bug: [57101]
+erratum: 976
+announced: 2024-03-07
+support: core
