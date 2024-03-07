@@ -155,7 +155,7 @@ require([
 ], function(declare, _WidgetBase) {
     MyWidget = declare("MyWidget", [_WidgetBase], {
         someString: 'some string',
-      
+
         _setSomeStringAttr: function(someString) {
             this.domNode.innerText = someString;
             // important!  Call `this._set('someString', value)` with the final value or
@@ -181,7 +181,7 @@ If a property has a setter function defined, and you just assign a value to the 
 the setter will not be called.
 
 ```js
-// This will NOT cause `_setSomeStringAttr` to be called and the widget probably won't work as expected.  
+// This will NOT cause `_setSomeStringAttr` to be called and the widget probably won't work as expected.
 w.someString = 'foo';
 ```
 
@@ -195,15 +195,15 @@ require([
     'put-selector/put',
 ], function(declare, _WidgetBase, put) {
     MyWidget = declare("MyWidget", [_WidgetBase], {
-      
+
         buildRendering: function() {
             this.inherited(arguments);
-          
+
             this.imgNode = put(this.domNode, 'img');
         },
-        
+
         img: '/path',
-      
+
         _setImgAttr: { node: 'imgNode', type: 'attribute', attribute: 'src' },
     });
 });
@@ -225,23 +225,23 @@ require([
     'put-selector/put'
 ], function(declare, lang, _WidgetBase, on, put) {
     MyWidget = declare("MyWidget", [_WidgetBase], {
-        
+
         someArray: null,
-      
+
         someNumber: 0,
-      
+
         constructor: function() {
             console.log('Lifecycle function: "constructor"');
-          
+
             // Here you can initialize properties with values.
             // This is important for properties that hold reference types.
             this.array = [1, 2];
         },
-      
+
         postMixInProperties: function() {
           console.log('Lifecycle function: "postMixInProperties"');
           this.inherited(arguments);
-          
+
           // When creating a widget instance, the caller can provide
           // values for properties:
           //
@@ -254,16 +254,16 @@ require([
           //
           this.someNumber = Math.max(this.someNumber, 42);
         },
-        
+
         buildRendering: function() {
             console.log('Lifecycle function: "buildRendering"');
             this.inherited(arguments);
-            
+
             // In this function you can create the DOM node for this
             // widget.
             //
             // The root node is called `domNode` which is created in `_WidgetBase`.
-            
+
             this.counterNode = put(this.domNode, 'div', this.someNumber);
         },
 
@@ -272,23 +272,23 @@ require([
         // all `_setXXXAttr` functions are called.
         _setSomeNumberAttr: function(someNumber) {
             console.log("_setSomeNumberAttr(): ", someNumber);
-          
+
             this.counterNode.innerText = this.someNumber;
             this._set('someNumber', someNumber);
         },
-      
+
         postCreate: function() {
             console.log('Lifecycle function: "postCreate"');
             this.inherited(arguments);
-            
+
             // In this function the DOM node is rendered and
             // you can use this function to setup behaviour of the widget.
-          
+
             // e.g. adding listeners
             on(this.domNode, 'click', lang.hitch(this, function() {
                 this.set('someNumber', this.someNumber + 1);
             }));
-            
+
             // Note that at this point the DOM node is not attached to the DOM yet
             // so sizing related functionality can't be done here.
             console.log("The size of this widget: ", this.domNode.getBoundingClientRect());
@@ -318,11 +318,11 @@ require([
 ], function(declare, _WidgetBase, Text) {
     MyWidget = declare("MyWidget", [_WidgetBase], {
         sharedArray: [],
-      
+
         localArray: null,
-      
+
         primitive: 'some initial string',
-      
+
         constructor: function() {
             this.localArray = [];
         }
