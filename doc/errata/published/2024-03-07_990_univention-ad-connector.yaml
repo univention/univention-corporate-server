@@ -14,3 +14,6 @@ desc: |
  * The StartTLS operation mode is now configurable via the UCR variable
    `directory/manager/starttls`. This is required in a Kubernetes environment.
 bug: [57072, 57098]
+erratum: 990
+announced: 2024-03-07
+support: core
