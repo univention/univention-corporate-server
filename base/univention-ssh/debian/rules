@@ -33,7 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-version := $(shell dpkg-parsechangelog | sed -ne 's/Version: //p')
+version := $(shell dpkg-parsechangelog -SVersion)
 
 %:
 	dh $@ --with ucr

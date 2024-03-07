@@ -34,247 +34,282 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
+from __future__ import annotations, print_function
 
 import os
 import shlex
 import signal
 import sys
 import time
+from contextlib import contextmanager
 from textwrap import dedent
-
-
-def display_help(out=sys.stdout):
-    """Display help text."""
-    if cmd == 'univention-ssh':
-        text = '''
-        %(cmd)s: internal managing tool for UCS clients
-        Copyright (c) 2001-2024 Univention GmbH, Germany
-
-        Syntax:
-          %(cmd)s [-timeout <seconds>] [--no-split] <pwd_file> [ssh-options] [user@]<host> <command> [<arguments>...]
-          %(cmd)s [--help] [--version]
-
-        Parameters:
-          pwd_file                         file containing the password
-          options                          optional options to %(cmd)s
-          ssh-options                      additional options to ssh
-          user                             user to log in as on the remote system
-          host                             name or ip address of the remote system
-          command                          command to be executed on remote system
-          arguments                        additional arguments to remote command
-
-        Options:
-          -timeout SECONDS:                Specify a timeout in seconds, after
-                                           which the ssh connection is forcefully terminated.
-          --no-split:                      don't word-split command
-          -h | --help | -?:                print this usage message
-          --version:                       print version information
-
-        Description:
-          %(cmd)s is an internal command to use SSH with plain text password
-          authentication, which is used to execute commands on remote computer systems,
-          e.g. %(cmd)s /tmp/pwd root@192.168.0.31 ls -la /
-        '''
-    elif cmd == 'univention-scp':
-        text = '''
-        %(cmd)s: internal managing tool for UCS clients
-        Copyright (c) 2001-2024 Univention GmbH, Germany
-
-        Syntax:
-          %(cmd)s [-timeout <seconds>] [--no-split] <pwd_file> [scp-options] files [user@]host:[path]
-          %(cmd)s [--help] [--version]
-
-        Parameters:
-          pwd_file                         file containing the password
-          scp-options                      additional options to scp
-          files                            source files or directories
-          user                             user to log in as on the remote system
-          host                             name or ip address of the remote system
-          path                             destination on the remote system
-
-        Options:
-          -timeout SECONDS:                Specify a timeout in seconds, after
-                                           which the ssh connection is forcefully terminated.
-          --no-split:                      don't word-split command
-          -h | --help | -?:                print this usage message
-          --version:                       print version information
-
-        Description:
-          %(cmd)s is an internal command to use SCP with plain text password
-          authentication, which is used to copy files from/to remote computer systems,
-          e.g. %(cmd)s /tmp/pwd file.txt root@192.168.0.31:
-        '''
-    else:
-        text = '''
-        %(cmd)s: internal managing tool for UCS clients
-        Copyright (c) 2001-2024 Univention GmbH, Germany
-
-        Syntax:
-          %(cmd)s [-timeout <seconds>] [--no-split] <pwd_file> [rsync-options] files [user@]host:[path]
-          %(cmd)s [--help] [--version]
-
-        Parameters:
-          pwd_file                         file containing the password
-          rsync-options                    additional options to rsync
-          files                            source files or directories
-          user                             user to log in as on the remote system
-          host                             name or ip address of the remote system
-          path                             destination on the remote system
-
-        Options:
-          -timeout SECONDS:                Specify a timeout in seconds, after
-                                           which the ssh connection is forcefully terminated.
-          --no-split:                      don't word-split command
-          -h | --help | -?:                print this usage message
-          --version:                       print version information
-
-        Description:
-          %(cmd)s is an internal command to use RSYNC with plain text password
-          authentication, which is used to copy files from/to remote computer systems,
-          e.g. %(cmd)s /tmp/pwd file.txt root@192.168.0.31:
-        '''
-    print(dedent(text % {'cmd': cmd}).strip("\n"), file=out)
-
-
-def display_version(out=sys.stdout):
-    """Display program name and version string."""
-    print('%s @@package_version@@' % (cmd,), file=out)
+from types import FrameType
+from typing import IO, Iterator, NoReturn
 
 
 UNIVENTION_SSH_ASKPASS_HELPER = '/usr/lib/univention-ssh/univention-ssh-askpass'
 UNIVENTION_SSH_ASKPASS_ENV = 'UNIVENTION_SSH_ASKPASS'
 
-try:
-    program = sys.argv.pop(0)
-    if program == UNIVENTION_SSH_ASKPASS_HELPER:
+
+class Base:
+    BIN: str
+    CMD: list[str]
+    HELP = """
+    %(bin)s: internal managing tool for UCS clients
+    Copyright (c) 2001-2024 Univention GmbH, Germany
+
+    Syntax:
+      %(bin)s [-timeout <seconds>] [--no-split] <pwd_file> %(syntax)s
+      %(bin)s [--help] [--version]
+
+    Parameters:
+      pwd_file                         file containing the password%(param)s
+
+    Options:
+      -timeout SECONDS:                Specify a timeout in seconds, after
+                                       which the ssh connection is forcefully terminated.
+      --no-split:                      don't word-split command
+      -h | --help | -?:                print this usage message
+      --version:                       print version information
+
+    Description:%(desc)s
+    """
+    SYNTAX: str
+    PARAM: str
+    DESC: str
+    SSH_ARGS: list[str] = ['-o', 'StrictHostKeyChecking=no', '-o', 'ControlPath=none']
+
+    def display_help(self, out: IO[str] = sys.stdout) -> NoReturn:
+        """Display help text."""
+        print(
+            dedent(
+                self.HELP % {
+                    'bin': self.BIN,
+                    'syntax': self.SYNTAX,
+                    'param': self.PARAM.rstrip(),
+                    'desc': self.DESC.rstrip(),
+                }
+            ) % {'bin': self.BIN},
+            file=out,
+        )
+        sys.exit(0)
+
+    def display_version(self, out: IO[str] = sys.stdout) -> NoReturn:
+        """Display program name and version string."""
+        print(f'{self.BIN} @@package_version@@', file=out)
+        sys.exit(0)
+
+    def __init__(self) -> None:
+        split = True
+        self.timeout = 3600
+
+        while True:
+            try:
+                arg = sys.argv.pop(0)
+            except IndexError:
+                sys.exit("Missing argument")
+
+            if arg == '--version':
+                self.display_version()
+            elif arg in {'-?', '--help', '-h'}:
+                self.display_help()
+            elif arg == '-timeout':
+                try:
+                    arg = sys.argv.pop(0)
+                    self.timeout = int(arg)
+                except IndexError:
+                    sys.exit("Missing -timeout argument")
+                except ValueError:
+                    sys.exit(f"Invalid -timeout argument: {arg!r}")
+            elif arg == '--no-split':
+                split = False
+            elif arg.startswith('-'):
+                sys.exit(f"Unknown argument: {arg!r}")
+            else:
+                try:
+                    with open(arg) as pw_filehandle:
+                        self.password = pw_filehandle.readline().rstrip('\n')
+                except OSError:
+                    sys.exit(f'Failed to read password file {arg!r}')
+                break
+
+        if split:
+            sys.argv = shlex.split(' '.join(sys.argv))
+
+        # Restore dfault UNIX signal handler for silent termination
+        signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+
+        self.run()
+
+    def run(self) -> NoReturn:
+        pid = os.fork()
+        if pid < 0:
+            sys.exit('Failed to fork child process')
+        elif pid == 0:  # child
+            self.child()
+        else:  # parent
+            self.parent(pid)
+        # the buck stops here: fatal error
+        sys.exit(1)
+
+    def child(self) -> NoReturn:
+        # the password for the grandchild
+        os.environ[UNIVENTION_SSH_ASKPASS_ENV] = self.password
+        # path to self
+        os.environ['SSH_ASKPASS'] = UNIVENTION_SSH_ASKPASS_HELPER
+        # DISPLAY must be non-empty
+        if 'DISPLAY' not in os.environ:
+            os.environ['DISPLAY'] = ':99'
+
+        # create new session to force ssh to call SSH_ASKPASS
+        os.setsid()
+
+        command = self.CMD + sys.argv
+        os.execvp(command[0], command)  # noqa: S606
+        sys.exit(f"Failed to exec {' '.join(command)}")
+
+    def setup_fds(self) -> None:
+        # re-open stdin, stdout, stderr
+        for dst in range(3):
+            stc = os.open(os.devnull, os.O_WRONLY if dst else os.O_RDONLY)
+            if stc != dst:
+                os.dup2(stc, dst)
+
+        # close all file descriptors
+        os.closerange(3, 1 + max(int(fd) for fd in os.listdir("/proc/self/fd")))
+
+    @contextmanager
+    def setup_timeout(self) -> Iterator[None]:
+        # setup timeout
+        def handler(signum: int, frame: FrameType | None) -> None:
+            raise TimeoutError()
+
+        sig_alrm = signal.signal(signal.SIGALRM, handler)  # alarm
+        signal.signal(signal.SIGHUP, handler)  # hang up
+        signal.signal(signal.SIGINT, handler)  # interrupt
+        signal.signal(signal.SIGTERM, handler)  # terminate
+        signal.signal(signal.SIGSEGV, handler)  # memory corrupt
+
+        signal.alarm(self.timeout)
+
+        yield
+
+        signal.signal(signal.SIGALRM, sig_alrm)
+
+    def parent(self, pid: int) -> None:
+        self.setup_fds()
+        with self.setup_timeout():
+            try:
+                cpid, status = os.waitpid(pid, 0)
+                if os.WIFEXITED(status):
+                    rc = os.WEXITSTATUS(status)
+                    sys.exit(rc)
+                elif os.WIFSIGNALED(status):
+                    sig = os.WTERMSIG(status)
+                    current_pid = os.getpid()
+                    os.kill(current_pid, sig)
+            except (OSError, TimeoutError):
+                print('Signal.', file=sys.stderr)
+                os.kill(pid, signal.SIGTERM)
+                cpid, status = os.waitpid(pid, os.WNOHANG)
+                if (cpid, status) == (0, 0):
+                    time.sleep(1)
+                    os.kill(pid, signal.SIGKILL)
+                    cpid, status = os.waitpid(pid, 0)
+
+
+class SSH(Base):
+    BIN = "univention-ssh"
+    CMD = ['ssh'] + Base.SSH_ARGS
+    SYNTAX = "[ssh-options] [user@]<host> <command> [<arguments>...]"
+    PARAM = """
+      options                          optional options to %(bin)s
+      ssh-options                      additional options to ssh
+      user                             user to log in as on the remote system
+      host                             name or ip address of the remote system
+      command                          command to be executed on remote system
+      arguments                        additional arguments to remote command
+    """
+    DESC = """
+      %(bin)s is an internal command to use SSH with plain text password
+      authentication, which is used to execute commands on remote computer systems,
+      e.g. %(bin)s /tmp/pwd root@192.168.0.31 ls -la /
+    """
+
+
+class SCP(Base):
+    BIN = "univention-scp"
+    CMD = ['scp'] + Base.SSH_ARGS
+    SYNTAX = "[scp-options] files [user@]host:[path]"
+    PARAM = """
+      scp-options                      additional options to scp
+      files                            source files or directories
+      user                             user to log in as on the remote system
+      host                             name or ip address of the remote system
+      path                             destination on the remote system
+    """
+    DESC = """
+      %(bin)s is an internal command to use SCP with plain text password
+      authentication, which is used to copy files from/to remote computer systems,
+      e.g. %(bin)s /tmp/pwd file.txt root@192.168.0.31:
+    """
+
+
+class RSYNC(Base):
+    BIN = "univention-rsync"
+    CMD = ['rsync', '-e', ' '.join(SSH.CMD)]
+    SYNTAX = "[rsync-options] files [user@]host:[path]"
+    PARAM = """
+      rsync-options                    additional options to rsync
+      files                            source files or directories
+      user                             user to log in as on the remote system
+      host                             name or ip address of the remote system
+      path                             destination on the remote system
+    """
+    DESC = """
+      %(bin)s is an internal command to use RSYNC with plain text password
+      authentication, which is used to copy files from/to remote computer systems,
+      e.g. %(bin)s /tmp/pwd file.txt root@192.168.0.31:
+    """
+
+    def __init__(self) -> None:
+        super().__init__()
+
+        i = 1
+        while i < len(sys.argv):
+            arg = sys.argv[i]
+            if arg in ('-e', '--rsh'):
+                print('Overwriting %s option' % (arg,), file=sys.stderr)
+                del sys.argv[i:i + 2]
+            elif arg.startswith('--rsh='):
+                print('Overwriting --rsh option', file=sys.stderr)
+                del sys.argv[i]
+            else:
+                i += 1
+
+
+class _Helper(Base):
+    BIN = "univention-ssh-askpass"
+    CMD = []
+    HELP = ""
+
+    def __init__(self) -> None:
         try:
-            print(os.environ[UNIVENTION_SSH_ASKPASS_ENV], end="")
+            sys.stdout.write(os.environ[UNIVENTION_SSH_ASKPASS_ENV])
             sys.exit(0)
         except KeyError:
             sys.exit(1)
-    cmd = os.path.basename(program)
-    split = True
-    timeout = 3600
 
-    while True:
-        arg = sys.argv.pop(0)
-        if arg == '--version':
-            display_version()
-            sys.exit(0)
-        elif arg in ('-?', '--help', '-h'):
-            display_help()
-            sys.exit(0)
-        elif arg == '-timeout':
-            arg = sys.argv.pop(0)
-            timeout = int(arg)
-        elif arg == '--no-split':
-            split = False
-        elif arg.startswith('-'):
-            raise IndexError()
-        else:
-            pw_filename = arg
-            with open(arg) as pw_filehandle:
-                password = pw_filehandle.readline().rstrip('\n')
 
-            command = {
-                'univention-ssh': ['ssh', '-o', 'StrictHostKeyChecking=no', '-o', 'ControlPath=none'],
-                'univention-scp': ['scp', '-o', 'StrictHostKeyChecking=no', '-o', 'ControlPath=none'],
-                'univention-ssh-rsync': ['rsync', '-e', 'ssh -o StrictHostKeyChecking=no -o ControlPath=none'],
-            }[cmd]
-            if split:
-                sys.argv = shlex.split(' '.join(sys.argv))
-            if cmd == 'univention-ssh-rsync':
-                i = 1
-                while i < len(sys.argv):
-                    arg = sys.argv[i]
-                    if arg in ('-e', '--rsh'):
-                        print('Overwriting %s option' % (arg,), file=sys.stderr)
-                        del sys.argv[i:i + 2]
-                    elif arg.startswith('--rsh='):
-                        print('Overwriting --rsh option', file=sys.stderr)
-                        del sys.argv[i]
-                    else:
-                        i += 1
-            command += sys.argv
+def main() -> None:
+    program = sys.argv.pop(0)
+    for cmd in Base.__subclasses__():
+        if cmd.BIN == os.path.basename(program):
+            break
+    else:
+        sys.exit(f"Unknown command {program}")
+    cmd()
 
-            pid = os.fork()
-            if pid < 0:
-                print('Failed to fork child process', file=sys.stderr)
-            elif pid == 0:  # child
-                # the password for the grandchild
-                os.environ[UNIVENTION_SSH_ASKPASS_ENV] = password
-                # path to self
-                os.environ['SSH_ASKPASS'] = UNIVENTION_SSH_ASKPASS_HELPER
-                # DISPLAY must be non-empty
-                if 'DISPLAY' not in os.environ:
-                    os.environ['DISPLAY'] = ':99'
 
-                # create new session to force ssh to call SSH_ASKPASS
-                os.setsid()
-
-                os.execvp(command[0], command)  # noqa: S606
-
-                print('Failed to exec %s' % (' '.join(command),), file=sys.stderr)
-            else:  # parent
-                # close all file descriptors
-                max_fd = os.sysconf('SC_OPEN_MAX')
-                if hasattr(os, 'closerange'):
-                    os.closerange(0, max_fd)
-                else:
-                    for fd in range(max_fd):
-                        try:
-                            os.close(fd)
-                        except OSError:
-                            pass
-                # re-open stdin, stdout, stderr
-                for target_fd in range(3):
-                    mode = [os.O_RDONLY, os.O_WRONLY, os.O_WRONLY][target_fd]
-                    fd = os.open(os.devnull, mode)
-                    if fd != target_fd:
-                        os.dup2(fd, target_fd)
-                        os.close(fd)
-
-                try:
-                    # setup timeout
-                    def handler(signum, frame):
-                        raise TimeoutError()
-                    sig_alrm = signal.signal(signal.SIGALRM, handler)  # alarm
-                    signal.signal(signal.SIGHUP, handler)  # hang up
-                    signal.signal(signal.SIGINT, handler)  # interrupt
-                    signal.signal(signal.SIGTERM, handler)  # terminate
-                    signal.signal(signal.SIGSEGV, handler)  # memory corrupt
-
-                    signal.alarm(timeout)
-
-                    # wait for child and pass its exit status / signal
-                    cpid, status = os.waitpid(pid, 0)
-
-                    # restore SIGALRM
-                    signal.signal(signal.SIGALRM, sig_alrm)
-
-                    if os.WIFEXITED(status):
-                        rc = os.WEXITSTATUS(status)
-                        sys.exit(rc)
-                    elif os.WIFSIGNALED(status):
-                        sig = os.WTERMSIG(status)
-                        current_pid = os.getpid()
-                        os.kill(current_pid, sig)
-                except (OSError, TimeoutError):
-                    print('Signal.', file=sys.stderr)
-                    os.kill(pid, signal.SIGTERM)
-                    cpid, status = os.waitpid(pid, os.WNOHANG)
-                    if (cpid, status) == (0, 0):
-                        time.sleep(1)
-                        os.kill(pid, signal.SIGKILL)
-                        cpid, status = os.waitpid(pid, 0)
-            # the buck stops here: fatal error
-            sys.exit(1)
-except KeyError:
-    print('Unknown command %s' % (cmd,), file=sys.stderr)
-except IndexError:
-    display_help(sys.stderr)
-except IOError:
-    print('Failed to read password from %s' % (pw_filename,), file=sys.stderr)
-
-sys.exit(2)
+if __name__ == "__main__":
+    main()
