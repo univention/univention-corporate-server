@@ -16,3 +16,6 @@ desc: |
    then were not able to answer them and returned a failure instead, leading
    to all kind of application errors.
 bug: [56911]
+erratum: 988
+announced: 2024-03-07
+support: core
