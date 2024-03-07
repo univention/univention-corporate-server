@@ -40,6 +40,7 @@ The API of the Python objects representing the messages are based on the class :
 import mimetypes
 import sys
 import time
+import weakref
 from typing import Any
 
 import ldap
@@ -57,6 +58,19 @@ UmcpBody = dict | str | bytes
 MIMETYPE_JSON = 'application/json'
 
 __all__ = ('Request', 'Response')
+
+
+class _bind_user_connection:
+    """wrapper to prevent reference leak"""
+
+    def __init__(self, weakself):
+        self.weakself = weakself
+
+    def __call__(self, lo):
+        return self.weakself().bind_user_connection(lo)
+
+    def __hash__(self):
+        return self.weakself().__hash__()
 
 
 class Message:
@@ -168,8 +182,9 @@ class Request(Message):
     def get_user_ldap_connection(self, no_cache=False, **kwargs):
         if not self.user_dn:
             return  # local user (probably root)
+
         try:
-            lo, _po = get_user_connection(bind=self.bind_user_connection, write=kwargs.pop('write', False), follow_referral=True, no_cache=no_cache, **kwargs)
+            lo, _po = get_user_connection(bind=_bind_user_connection(weakref.ref(self)), bindhash=hash((self.auth_type, self.username, self.password)), write=kwargs.pop('write', False), follow_referral=True, no_cache=no_cache, **kwargs)
             if not no_cache:
                 self._user_connections.add(lo)
             return lo
