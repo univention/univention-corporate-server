@@ -390,41 +390,41 @@ class Module(Client):
         resp = self.client.resolve_relation(self.relations, 'create-form', template=data)
         return Object.from_data(self.udm, resp)
 
-    def get(self, dn: str) -> Object | None:
+    def get(self, dn: str, properties: list[str] | None = None) -> Object | None:
         # TODO: use a link relation instead of a search
-        for obj in self._search_closed(position=dn, scope='base'):
+        for obj in self._search_closed(position=dn, scope='base', properties=properties):
             return obj.open()
         raise NotFound(404, 'Wrong object type!?', None)  # FIXME: object exists but is of different module. should be fixed on the server.
 
-    def get_by_entry_uuid(self, uuid: str) -> Object | None:
+    def get_by_entry_uuid(self, uuid: str, properties: list[str] | None = None) -> Object | None:
         # TODO: use a link relation instead of a search
         # return self.udm.get_by_uuid(uuid)
-        for obj in self._search_closed(filter={'entryUUID': uuid}, scope='base'):
+        for obj in self._search_closed(filter={'entryUUID': uuid}, scope='base', properties=properties):
             return obj.open()
         raise NotFound(404, 'Wrong object type!?', None)  # FIXME: object exists but is of different module. should be fixed on the server.
 
-    def get_by_id(self, dn: str) -> Object | None:
+    def get_by_id(self, dn: str, properties: list[str] | None = None) -> Object | None:
         # TODO: Needed?
         raise NotImplementedError()
 
-    def search(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, opened: bool = False) -> Iterator[Any]:
+    def search(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, opened: bool = False, properties: list[str] | None = None) -> Iterator[Any]:
         if opened:
-            return self._search_opened(filter, position, scope, hidden, superordinate)
+            return self._search_opened(filter, position, scope, hidden, superordinate, properties)
         else:
-            return self._search_closed(filter, position, scope, hidden, superordinate)
+            return self._search_closed(filter, position, scope, hidden, superordinate, properties)
 
-    def _search_opened(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None) -> Iterator[Object]:
-        for obj in self._search(filter, position, scope, hidden, superordinate, True):
+    def _search_opened(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, properties: list[str] | None = None) -> Iterator[Object]:
+        for obj in self._search(filter, position, scope, hidden, superordinate, True, properties):
             yield Object.from_data(self.udm, obj)  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
 
-    def _search_closed(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None) -> Iterator[ShallowObject]:
-        for obj in self._search(filter, position, scope, hidden, superordinate, False):
+    def _search_closed(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, properties: list[str] | None = None) -> Iterator[ShallowObject]:
+        for obj in self._search(filter, position, scope, hidden, superordinate, False, properties):
             objself = self.client.get_relation(obj, 'self')
             uri = objself['href']
             dn = objself['name']
             yield ShallowObject(self.udm, dn, uri)
 
-    def _search(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, opened: bool = False) -> Iterator[Any]:
+    def _search(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, opened: bool = False, properties: list[str] | None = None) -> Iterator[Any]:
         data = {
             'position': position,
             'scope': scope,
@@ -438,7 +438,10 @@ class Module(Client):
         if superordinate:
             data['superordinate'] = superordinate
         if not opened:
-            data['properties'] = 'dn'
+            data['opened'] = '0'
+            data['properties'] = ['dn']
+        if properties:
+            data['properties'] = properties
         self.load_relations()
         entries = self.client.resolve_relation(self.relations, 'search', template=data)
         yield from self.client.resolve_relations(entries, 'udm:object')

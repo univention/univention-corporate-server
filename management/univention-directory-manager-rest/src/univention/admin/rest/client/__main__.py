@@ -304,7 +304,7 @@ class CLIClient:
     def _list_objects(self, args):
         module = self.get_module(args.object_type)
 
-        for entry in module.search(args.filter, args.position, opened=True, superordinate=args.superordinate):
+        for entry in module.search(args.filter, args.position, opened=True, superordinate=args.superordinate, properties=args.properties):
             self.print_line('')
             self.print_line('DN', entry.dn)
             self.print_line('URL', entry.uri)
@@ -315,8 +315,6 @@ class CLIClient:
                 print('Policies:', json.dumps(entry.policies, indent=4, ensure_ascii=False))
                 continue
             for key, value in sorted(entry.properties.items()):
-                if args.properties and key not in args.properties:
-                    continue
                 if isinstance(value, list):
                     for item in value:
                         if isinstance(item, str | bytes | int | float):

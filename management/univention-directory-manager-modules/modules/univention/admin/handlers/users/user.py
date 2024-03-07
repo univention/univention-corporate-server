@@ -1149,7 +1149,6 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
             self._unmap_automount_information()
             self._unmapUnlockTime()
             self._unmap_gid_number()
-            self.info['guardianInheritedRoles'] = load_roles(self.lo, set(self.info['groups'] + [self.info['primaryGroup']]))
         self.save()
         # self.save() must not be called after this point in self.open()
         # otherwise self.__primary_group doesn't add a new user to the

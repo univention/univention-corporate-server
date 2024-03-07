@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Copyright 2024 Univention GmbH
 #
 # https://www.univention.de/
@@ -31,7 +29,6 @@
 
 import re
 from logging import getLogger
-from typing import List, Optional  # noqa: F401
 
 from ldap.filter import filter_format
 
@@ -51,11 +48,11 @@ _ = translation.translate
 # TODO move to univention.admin.syntax
 class GuardianRole(simple):
     regex = re.compile(
-        r"^([a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_]+)(&[a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_]+)?$"
+        r"^([a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_]+)(&[a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_]+)?$",
     )
     error_message = _(
         "Guardian role strings must be lowercase ASCII alphanumeric with hyphens and underscores, "
-        "in the format 'app:namespace:role' or 'app:namespace:role&app:namespace:context'!"
+        "in the format 'app:namespace:role' or 'app:namespace:role&app:namespace:context'!",
     )
 
 
@@ -66,7 +63,7 @@ def member_role_properties():
             long_description=_("Lowercase ASCII alphanumeric string with underscores or dashes, in the format 'app:namespace:role' or 'app:namespace:role&app:namespace:context'"),
             syntax=GuardianRole,
             multivalue=True,
-        )
+        ),
     }
 
 
@@ -85,8 +82,9 @@ def role_properties():
             may_change=False,
             multivalue=True,
             dontsearch=True,
-            show_in_lists=False,
+            show_in_lists=True,
             cli_enabled=False,
+            lazy_loading_fn='open_guardian',
         ),
     }
 
@@ -117,23 +115,23 @@ def role_layout():
         advanced=True,
         layout=[
             'guardianRoles',
-            'guardianInheritedRoles'
+            'guardianInheritedRoles',
         ],
     )
 
 
 @univention.admin._ldap_cache(ttl=60)
-def get_group_role(lo, dn):  # type: (univention.admin.uldap.access, str) -> list[str]
+def get_group_role(lo: univention.admin.uldap.access, dn: str) -> list[str]:
     res = lo.get(dn, attr=['univentionGuardianMemberRoles'])
     return [x.decode('UTF-8') for x in res.get('univentionGuardianMemberRoles', [])]
 
 
 @univention.admin._ldap_cache(ttl=60)
-def search_group_uniqueMembers(lo, dn):  # type: (univention.admin.uldap.access, str) -> List[str]
+def search_group_uniqueMembers(lo: univention.admin.uldap.access, dn: str) -> list[str]:
     return lo.searchDn(filter_format('(&(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [dn]))
 
 
-def get_nested_groups(lo, groups, recursion_list=None):  # type: (univention.admin.uldap.access, List[str], Optional[List[str]]) -> List[str]
+def get_nested_groups(lo: univention.admin.uldap.access, groups: list[str], recursion_list: list[str] | None = None) -> list[str]:
     all_groups = []
     if recursion_list is None:
         recursion_list = []
@@ -149,7 +147,7 @@ def get_nested_groups(lo, groups, recursion_list=None):  # type: (univention.adm
 
 # TODO
 # naive approach to get role strings for groups by searching the LDAP
-def load_roles(lo, groups, nested_groups=False):  # type: (univention.admin.uldap.access, List[str], bool) -> List[str]
+def load_roles(lo: univention.admin.uldap.access, groups: list[str], nested_groups: bool = False) -> list[str]:
     roles = []
     if nested_groups:
         groups = get_nested_groups(lo, groups)
@@ -172,7 +170,7 @@ def load_roles(lo, groups, nested_groups=False):  # type: (univention.admin.ulda
     return list(set(roles))
 
 
-class GuardianBase(object):
+class GuardianBase:
     def open_guardian(self, nested_groups=False):  # type: (bool) -> None
         if self.exists():
             self.info['guardianInheritedRoles'] = load_roles(self.lo, self['groups'] + [self['primaryGroup']], nested_groups=nested_groups)

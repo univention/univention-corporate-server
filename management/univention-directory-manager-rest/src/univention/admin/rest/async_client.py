@@ -423,43 +423,43 @@ class Module(Client):
         resp = await self.client.resolve_relation(self.relations, 'create-form', template=data)
         return Object.from_data(self.udm, resp)
 
-    async def get(self, dn: str) -> Object | None:
+    async def get(self, dn: str, properties: list[str] | None = None) -> Object | None:
         # TODO: use a link relation instead of a search
-        async for obj in self._search_closed(position=dn, scope='base'):
+        async for obj in self._search_closed(position=dn, scope='base', properties=properties):
             return await obj.open()
         raise NotFound(404, 'Wrong object type!?', None)  # FIXME: object exists but is of different module. should be fixed on the server.
 
-    async def get_by_entry_uuid(self, uuid: str) -> Object | None:
+    async def get_by_entry_uuid(self, uuid: str, properties: list[str] | None = None) -> Object | None:
         # TODO: use a link relation instead of a search
         # return self.udm.get_by_uuid(uuid)
-        async for obj in self._search_closed(filter={'entryUUID': uuid}, scope='base'):
+        async for obj in self._search_closed(filter={'entryUUID': uuid}, scope='base', properties=properties):
             return await obj.open()
         raise NotFound(404, 'Wrong object type!?', None)  # FIXME: object exists but is of different module. should be fixed on the server.
 
-    async def get_by_id(self, dn: str) -> Object | None:  # pragma: no cover
+    async def get_by_id(self, dn: str, properties: list[str] | None = None) -> Object | None:  # pragma: no cover
         # TODO: Needed?
         raise NotImplementedError()
 
-    async def search(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, opened: bool = False) -> AsyncIterator[Any]:
+    async def search(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, opened: bool = False, properties: list[str] | None = None) -> AsyncIterator[Any]:
         if opened:
-            async for entry in aiter(self._search_opened(filter, position, scope, hidden, superordinate)):
+            async for entry in aiter(self._search_opened(filter, position, scope, hidden, superordinate, properties)):
                 yield entry
         else:
-            async for entry in aiter(self._search_closed(filter, position, scope, hidden, superordinate)):
+            async for entry in aiter(self._search_closed(filter, position, scope, hidden, superordinate, properties)):
                 yield entry
 
-    async def _search_opened(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None) -> AsyncIterator[Object]:
-        async for obj in self._search(filter, position, scope, hidden, superordinate, True):
+    async def _search_opened(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, properties: list[str] | None = None) -> AsyncIterator[Object]:
+        async for obj in self._search(filter, position, scope, hidden, superordinate, True, properties):
             yield Object.from_data(self.udm, obj)  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
 
-    async def _search_closed(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None) -> AsyncIterator[ShallowObject]:
-        async for obj in self._search(filter, position, scope, hidden, superordinate, False):
+    async def _search_closed(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, properties: list[str] | None = None) -> AsyncIterator[ShallowObject]:
+        async for obj in self._search(filter, position, scope, hidden, superordinate, False, properties):
             objself = self.client.get_relation(obj, 'self')
             uri = objself['href']
             dn = objself['name']
             yield ShallowObject(self.udm, dn, uri)
 
-    async def _search(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, opened: bool = False) -> AsyncIterator[Any]:
+    async def _search(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, opened: bool = False, properties: list[str] | None = None) -> AsyncIterator[Any]:
         data = {
             'position': position,
             'scope': scope,
@@ -473,7 +473,10 @@ class Module(Client):
         if superordinate:
             data['superordinate'] = superordinate
         if not opened:
-            data['properties'] = 'dn'
+            data['opened'] = '0'
+            data['properties'] = ['dn']
+        if properties:
+            data['properties'] = properties
         await self.load_relations()
         entries = await self.client.resolve_relation(self.relations, 'search', template=data)
         async for entry in self.client.resolve_relations(entries, 'udm:object'):

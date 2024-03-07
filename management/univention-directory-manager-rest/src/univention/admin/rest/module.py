@@ -1345,6 +1345,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         ),
         scope: str = Query(ChoicesSanitizer(choices=['sub', 'one', 'base', 'base+one'], default='sub'), description="The LDAP search scope (sub, base, one)."),
         hidden: bool = Query(BoolSanitizer(default=True), description="Include hidden/system objects in the response.", example=True),
+        opened: bool = Query(BoolSanitizer(default=True), description="Wheather to open the object in case certain properties are requested.", example=True),
         properties: list[str] = Query(
             ListSanitizer(StringSanitizer(), required=False, default=['*'], allow_none=True, min_elements=0),
             style="form",
@@ -1411,25 +1412,28 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         objects = []
         if search:  # TODO: check if searching is allowed
             try:
-                objects, last_page = await self.search(module, position, ldap_filter, superordinate, scope, hidden, items_per_page, page, by, reverse)
+                objects, last_page = await self.search(module, position, ldap_filter, superordinate, scope, hidden, items_per_page, page, by, reverse, opened)
             except ObjectDoesNotExist as exc:
                 self.raise_sanitization_error('position', str(exc), type='query')
             except SuperordinateDoesNotExist as exc:
                 self.raise_sanitization_error('superordinate', str(exc), type='query')
+
+        if opened and properties == ['dn']:  # backwards compatibility with older clients
+            opened = False
+        props = [_prop for _prop in properties if _prop not in ('dn')] if not opened else properties
+        if not opened:
+            properties = ['dn']
 
         for obj in objects or []:
             if obj is None:
                 continue
             objmodule = UDM_Module(obj.module, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 
-            if '*' in properties:
-                # TODO: i think we need error handling here, because between receiving the object and opening it, it or refernced objects might be removed.
-                # best would be if lookup() would support opening because that already does error handling.
-                obj.open()
-
-            entry = Object.get_representation(objmodule, obj, properties, self.ldap_connection)
-            entry['uri'] = self.abspath(obj.module, quote_dn(obj.dn))
-            self.add_link(entry, 'self', entry['uri'], name=entry['dn'], title=entry['id'], dont_set_http_header=True)
+            entry = Object.get_representation(objmodule, obj, properties, self.ldap_connection, opened=opened)
+            uri = entry['uri'] = self.abspath(obj.module, quote_dn(obj.dn))
+            if not opened and props and props != ['*']:
+                uri = uri + f"?{urlencode({'properties': props}, True)}"
+            self.add_link(entry, 'self', uri, name=entry['dn'], title=entry['id'], dont_set_http_header=True)
             self.add_resource(result, 'udm:object', entry)
 
         if items_per_page:
@@ -1493,7 +1497,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         self.add_caching(public=False, no_cache=True, no_store=True, max_age=1, must_revalidate=True)
         self.content_negotiation(result)
 
-    async def search(self, module, container, ldap_filter, superordinate, scope, hidden, items_per_page, page, by, reverse):
+    async def search(self, module, container, ldap_filter, superordinate, scope, hidden, items_per_page, page, by, reverse, opened):
         ctrls = {}
         serverctrls = []
         hashed = (self.request.user_dn, module.name, container or None, ldap_filter or None, superordinate or None, scope or None, hidden or None, items_per_page or None, by or None, reverse or None)
@@ -1513,6 +1517,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         ucr['directory/manager/web/sizelimit'] = ucr.get('ldap/sizelimit', '400000')
         last_page = page
         for _i in range(current_page, page or 1):
+            # TODO: if we want to improve performance one day for `opened == False` pass `simple=True`
             objects = await self.pool_submit(module.search, container, superordinate=superordinate, filter=ldap_filter, scope=scope, hidden=hidden, serverctrls=serverctrls, response=ctrls)
             for control in ctrls.get('ctrls', []):
                 if control.controlType == SimplePagedResultsControl.controlType:
@@ -1523,6 +1528,10 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         else:
             shared_memory.search_sessions[hashed] = {'last_cookie': page_ctrl.cookie, 'page': page}
             last_page = 0
+        # TODO: move into module.search(opened=True) and then into object.lookup()! because that does error handling.
+        if opened and objects:
+            for obj in objects:
+                obj.open()
         return (objects, last_page)
 
     def get_html(self, response):
@@ -1629,7 +1638,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         self.add_link(result, 'self', self.urljoin(''), name=module.name, title=module.object_name_plural)
         self.add_link(result, 'describedby', self.urljoin(''), title=_('%s module') % (module.name,), method='OPTIONS')
         if 'search' in module.operations:
-            searchfields = ['position', 'query*', 'filter', 'scope', 'hidden', 'properties']
+            searchfields = ['position', 'query*', 'filter', 'scope', 'hidden', 'properties*', 'opened']
             if superordinate_names(module):
                 searchfields.append('superordinate')
             if module.supports_pagination:
@@ -1707,13 +1716,29 @@ class ObjectsMove(Resource):
 class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
     """Get, modify, create, remove, rename or move an UDM object"""
 
-    async def get(self, object_type, dn):
+    @sanitize
+    async def get(
+        self,
+        object_type: str,
+        dn: str,
+        properties: list[str] = Query(
+            ListSanitizer(StringSanitizer(), required=False, default=['*'], allow_none=True, min_elements=0),
+            style="form",
+            explode=True,
+            description="The properties which should be returned, if not given all properties are returned.",
+            examples={
+                'no restrictions': {'value': None},
+                'only small subset': {'value': ['username', 'firstname', 'lastname']},
+            },
+        ),
+        copy: bool = Query(BoolSanitizer(default=False), description="**Experimental**: Might be used in the future for copying.", example=False),  # TODO: move into own resource: ./copy
+    ):
         """
         Get a representation of the {module.object_name} object with all its properties, policies, options, metadata and references.
         Includes also instructions how to modify, remove or move the object.
         """
         dn = unquote_dn(dn)
-        copy = bool(self.get_query_argument('copy', None))  # TODO: move into own resource: ./copy
+        properties = properties[:]
 
         if object_type == 'users/self' and not self.ldap_connection.compare_dn(dn, self.request.user_dn):
             raise HTTPError(403)
@@ -1733,7 +1758,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         props = {}
         props.update(self._options(object_type, obj.dn))
         props['uri'] = self.abspath(obj.module, quote_dn(obj.dn))
-        props.update(self.get_representation(module, obj, ['*'], self.ldap_connection, copy))
+        props.update(self.get_representation(module, obj, properties, self.ldap_connection, copy))
         for reference in module.get_references(obj):
             # TODO: add a reference for the "position" object?!
             if reference['module'] != 'udm':
@@ -1799,7 +1824,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         return props
 
     @classmethod
-    def get_representation(cls, module, obj, properties, ldap_connection, copy=False, add=False):
+    def get_representation(cls, module, obj, properties, ldap_connection, copy=False, add=False, opened=True):
         def _remove_uncopyable_properties(obj):
             if not copy:
                 return
@@ -1815,6 +1840,15 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
 
         values = {}
         if properties:
+            if opened and not obj._open and ('*' in properties or any(prop not in obj.info for prop in properties)):
+                # TODO: i think we need error handling here, because between receiving the object and opening it, it or referenced objects might be removed.
+                # best would be if lookup() would support opening because that already does error handling.
+                obj.open()
+
+            for key in obj.descriptions:
+                if key in properties and obj.has_property(key) and obj.descriptions[key].lazy_loading_fn:
+                    obj.descriptions[key].lazy_load(obj)
+
             if '*' not in properties:
                 values = {key: value for (key, value) in obj.info.items() if (key in properties) and obj.descriptions[key].show_in_lists}
             else:
@@ -1846,7 +1880,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         props['properties'] = values
         props['options'] = {opt['id']: opt['value'] for opt in module.get_options(udm_object=obj)}
         props['policies'] = {}
-        if '*' in properties or add:
+        if opened and ('*' in properties or add):
             for policy in module.policies:
                 props['policies'].setdefault(policy['objectType'], [])
             for policy in obj.policies:
@@ -1859,11 +1893,14 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
             props['uuid'] = obj.entry_uuid
         # TODO: objectFlag is available for every module. remove the extended attribute and always map it.
         # alternative: add some other meta information to this object, e.g. is_hidden_object: True, is_synced_from_active_directory: True, ...
-        if '*' in properties or 'objectFlag' in properties:
+        if opened and ('*' in properties or 'objectFlag' in properties):
             props['properties'].setdefault('objectFlag', [x.decode('utf-8', 'replace') for x in obj.oldattr.get('univentionObjectFlag', [])])
         if copy or add:
             props.pop('dn', None)
             props.pop('id', None)
+        if not opened:
+            props.pop('policies', None)
+            props.pop('options', None)
         return props
 
     @sanitize
