@@ -6,7 +6,7 @@
 Release notes for the installation and update of Univention Corporate Server (UCS) |release|
 ############################################################################################
 
-Publication date of UCS |release|: 2023-12-12
+Publication date of UCS |release|: 2024-03-12
 
 .. _relnotes-highlights:
 
@@ -14,20 +14,22 @@ Publication date of UCS |release|: 2023-12-12
 Release highlights
 ******************
 
-With |UCSUCS| 5.0-6, the sixth patchlevel release for |UCSUCS| (UCS) 5.0 is
+With |UCSUCS| 5.0-7, the seventh patchlevel release for |UCSUCS| (UCS) 5.0 is
 available. It provides several feature improvements and extensions, new
 properties as well as various improvements and bug fixes. Here is an overview of
 the most important changes:
 
-* The |UCSUMC| diagnostics module has seen several improvements.
+* The new feature ``blocklist`` allows denying the use of certain values in LDAP.
 
-* |UCSUCS| has seen many internal changes to prepare the update to |UCSUCS| 5.2.
+* The robustness of |UCSUDL| and |UCSS4C| has been improved, especially during the initial domain join.
 
-* The backup mechanism for Samba related files has been improved.
+* |UCSUDM| support for DNS has been improved.
 
-* UCS 5.0-6 includes various security updates, for example for
-  :program:`PostgreSQL`, :program:`OpenJDK-11`, :program:`GRUB2`
-  and :program:`Python3.7`.
+* |UCSUCS| has been prepared for better Kubernetes integration.
+
+* UCS 5.0-7 includes various security updates, for example for
+  :program:`BIND9`, :program:`MariaDB`, :program:`OpenJDK-11`, :program:`OpenSSH`, :program:`Postfix`
+  and the :program:`Linux` kernel.
 
 .. _relnotes-update:
 
@@ -181,10 +183,10 @@ and run it on the UCS system.
 .. code-block:: console
 
    # download
-   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-6{.gpg,}
+   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-7{.gpg,}
 
    # verify and run script
-   $ apt-key verify pre-update-checks-5.0-6{.gpg,} && bash pre-update-checks-5.0-6
+   $ apt-key verify pre-update-checks-5.0-7{.gpg,} && bash pre-update-checks-5.0-7
 
    ...
 
@@ -267,8 +269,8 @@ Users running older browsers may experience display or performance issues.
 Changelog
 *********
 
-You find the changes since UCS 5.0-5 in
-:external+uv-changelog-5.0-6:doc:`index`.
+You find the changes since UCS 5.0-6 in
+:external+uv-changelog-5.0-7:doc:`index`.
 
 .. _biblio:
 
