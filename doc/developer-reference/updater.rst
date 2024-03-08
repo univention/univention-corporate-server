@@ -28,7 +28,7 @@ Separate repositories
 UCS releases are provided either through ISO images or through online
 repositories. For each major, minor and patchlevel release there is a separate
 online repository. They are automatically added to the files in
-:file:`/etc/apt/sources.list.d/` depending on the |UCSUCRV|\ s
+:file:`/etc/apt/sources.list.d/` depending on the |UCSUCRVs|
 :envvar:`version/version` and :envvar:`version/patchlevel`, which are managed by
 the updater.
 
@@ -40,10 +40,10 @@ incrementally.
 
 Therefore, the updater will include the repositories of a new release in a file
 called :file:`/etc/apt/sources.list.d/00_ucs_temporary_installation.list` and
-then do the updates. Only at the end of a successful update are the |UCSUCRV|\ s
+then do the updates. Only at the end of a successful update are the |UCSUCRVs|
 updated.
 
-Additional components can be added as separate repositories using |UCSUCRV|\ s
+Additional components can be added as separate repositories using |UCSUCRVs|
 :samp:`repository/online/component/…`, which are described in
 :ref:`chap-repo-add` and manual. Setting the variable :samp:`…/version` can be
 used to mark a component as required (for certain UCS versions), which blocks an
@@ -52,7 +52,7 @@ upgrade until the component is available for the specific release(es).
 If configured and enabled, components are considered required if the variable
 :samp:`…/version` is unset or set to ``current``.
 
-As an alternative a fixed list of :samp:`{$major}.{$minor}` releases can be used
+As an alternative a fixed list of :samp:`{major}.{minor}` releases can be used
 to include the component only for a sub-set of releases: such a component is
 only used locally if the listed component versions include the current version,
 for example a ``5.0 5.1 5.2`` component will not be used on a ``5.4`` system.
@@ -145,7 +145,7 @@ which order with which arguments.
 
 #. Perform the update
 
-#. Set the release related |UCSUCRV|\ s to the new version
+#. Set the release related |UCSUCRVs| to the new version
 
 #. Execute :command:`component-postup.sh pre $version`
 

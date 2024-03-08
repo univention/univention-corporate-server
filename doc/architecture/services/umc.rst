@@ -272,14 +272,14 @@ Reverse proxy
    The *Reverse proxy* redirects the following URI paths to the *UMC web
    server*:
 
-   * ``/univention/set/.*`` as regular expression
+   * :regexp:`/univention/set/.*` as regular expression
    * ``/univention/auth``
    * ``/univention/logout``
-   * ``/univention/saml/.*`` as regular expression
-   * ``/univention/oidc/.*`` as regular expression
-   * ``/univention/command/.*`` as regular expression
-   * ``/univention/upload/.*`` as regular expression
-   * ``/univention/get/.*`` as regular expression
+   * :regexp:`/univention/saml/.*` as regular expression
+   * :regexp:`/univention/oidc/.*` as regular expression
+   * :regexp:`/univention/command/.*` as regular expression
+   * :regexp:`/univention/upload/.*` as regular expression
+   * :regexp:`/univention/get/.*` as regular expression
 
 .. index:: ! umc; server
    single: technology; tornado

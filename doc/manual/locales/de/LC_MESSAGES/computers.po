@@ -631,13 +631,13 @@ msgstr "Der auszuführende Befehl"
 msgid ""
 "The time specifications can be set in different ways. One can specify a "
 "specific minute/hour/etc. or run an action every minute/hour/etc. with a "
-"``*``. Intervals can also be defined, for example ``*/2`` as a minute "
+"``*``. Intervals can also be defined, for example :samp:`*/2` as a minute "
 "specification runs an action every two minutes."
 msgstr ""
 "Die Zeitangaben können dabei in verschiedenen Formaten vorgenommen "
 "werden. Es kann entweder eine konkrete Minute oder Stunde vorgegeben "
 "werden oder mit einem ``*`` eine Aktion zu jeder Minute oder Stunde "
-"ausgeführt werden. Es können auch Intervalle definiert werden, ``*/2`` "
+"ausgeführt werden. Es können auch Intervalle definiert werden, :samp:`*/2` "
 "führt als Minutenangabe beispielsweise dazu, dass eine Aktion jede zweite"
 " Minute ausgeführt wird."
 
@@ -773,8 +773,8 @@ msgid "Variable"
 msgstr "Variable"
 
 #: ../../computers/basic-system-services.rst:400
-msgid "``nscd /hosts/size``"
-msgstr "``nscd /hosts/size``"
+msgid ":envvar:`nscd/hosts/size`"
+msgstr ":envvar:`nscd/hosts/size`"
 
 #: ../../computers/basic-system-services.rst:401
 #: ../../computers/basic-system-services.rst:404
@@ -782,8 +782,8 @@ msgid "``6007``"
 msgstr "``6007``"
 
 #: ../../computers/basic-system-services.rst:403
-msgid "``nscd/passwd/size``"
-msgstr "``nscd/passwd/size``"
+msgid ":envvar:`nscd/passwd/size`"
+msgstr ":envvar:`nscd/passwd/size`"
 
 #: ../../computers/basic-system-services.rst:406
 msgid ""

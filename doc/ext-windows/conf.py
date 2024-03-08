@@ -28,7 +28,7 @@ project = 'Univention Corporate Server - Extended Windows integration documentat
 copyright = f'2021-{date.today().year}, Univention GmbH'
 author = ''
 
-version = "5.0"
+version = "5.1"
 # The full version, including alpha/beta/rc tags
 release = version
 

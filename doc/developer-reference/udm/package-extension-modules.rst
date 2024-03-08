@@ -42,7 +42,7 @@ create these objects (see :ref:`join-libraries-shell`).
    The filename the UDM module data should be written to by the
    listening servers. The filename may contain path elements and should
    conform to the name of the UDM module (e.g.
-   ``newapp/someobject.py``).
+   :file:`newapp/someobject.py`).
 
 ``messagecatalog`` (optional)
    Multi-valued property to supply message translation files (syntax:

@@ -180,7 +180,7 @@ non-LDAP-aware local services.
    Listener/Notifier mechanism
 
 On startup the listener connects to the notifier and opens a persistent TCP
-connection to port ``6669``. The host can be configured through several |UCSUCRV|\ s:
+connection to port ``6669``. The host can be configured through several |UCSUCRVs|:
 
 * If :envvar:`notifier/server` is explicitly set, only that named host is used.
   In addition, the |UCSUCRV| :envvar:`notifier/server/port` can be used to

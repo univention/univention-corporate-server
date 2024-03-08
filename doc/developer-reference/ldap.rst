@@ -216,15 +216,15 @@ The credentials for different UCS domain accounts are stored in plain-text files
 on some UCS systems. The files are named :file:`/etc/{*}.secret`. They are owned
 by the user ``root`` and allow read-access for different groups.
 
-:file:`/etc/ldap.secret` for :samp:`cn=admin,{$ldap_base}`
+:file:`/etc/ldap.secret` for :samp:`cn=admin,{ldap_base}`
    This account has full write access to all LDAP entries. The file is
    only available on |UCSPRIMARYDN| and |UCSBACKUPDN| systems and is owned
    by the group ``DC Backup Hosts``.
 
-:file:`/etc/machine.secret` for :samp:`{$ldap_hostdn}`
+:file:`/etc/machine.secret` for :envvar:`ldap/hostdn`
    Each host uses its account to get at least read-access to LDAP. Directory
    Nodes, for example Domain controllers, in the container
-   :samp:`cn=dc,cn=computers,{$ldap_base}` get additional rights to access LDAP
+   :samp:`cn=dc,cn=computers,{ldap_base}` get additional rights to access LDAP
    attributes. The file is available on all joined system roles and is readable
    only by the local ``root`` user and group.
 

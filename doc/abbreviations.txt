@@ -3,16 +3,37 @@
 .. SPDX-License-Identifier: AGPL-3.0-only
 
 .. |ACL| replace:: :abbr:`ACL (access control list)`
+.. |API| replace:: :abbr:`API (application programming interface)`
 .. |APT| replace:: :abbr:`APT (advanced package tool)`
 .. |CA| replace:: :abbr:`CA (certificate authority)`
+.. |CLI| replace:: :abbr:`CLI (command line interface)`
+.. |DNS| replace:: :abbr:`DNS (Domain Name System)`
+.. |EDNS| replace:: :abbr:`EDNS (Extended Domain Name System)`
+.. |GSSAPI| replace:: :abbr:`GSS (Generic Security Service Application Program Interface)`
+.. |GSS| replace:: :abbr:`GSS (Generic Security Service)`
+.. |HTML| replace:: :abbr:`HTTP (Hyper-Text Markup Language)`
+.. |HTTP| replace:: :abbr:`HTTP (Hyper-Text Transfer Protocol)`
+.. |IDP| replace:: :abbr:`IDP (Identity Provider)`
+.. |IDSP| replace:: :abbr:`IDP (Identity Service Provider)`
 .. |IPC| replace:: :abbr:`IPC (interprocess-communication)`
 .. |ISV| replace:: :abbr:`ISV (independent software vendor)`
 .. |IT| replace:: :abbr:`IT (information technology)`
+.. |JSON| replace:: :abbr:`JSON (JavaScript Object Notation)`
+.. |LDAP| replace:: :abbr:`LDAP (Lightweight Directory Access Protocol)`
+.. |NTLM| replace:: :abbr:`NTLM (Windows New Technology LAN Manager)`
+.. |OIDC| replace:: :abbr:`OIDC (OpenID Connect)`
+.. |OSI| replace:: :abbr:`OSI (Open Systems Interconnection)`
 .. |PAM| replace:: :abbr:`PAM (pluggable authentication module)`
 .. |RDBMS| replace:: :abbr:`RDBMS (relational database management system)`
+.. |REST| replace:: :abbr:`REST (Representational State Transfer)`
 .. |SAML| replace:: :abbr:`SAML (Secure Authentication Markup Language)`
+.. |SASL| replace:: :abbr:`SASL (Simple Authentication and Security Layer)`
+.. |SSL| replace:: :abbr:`SSL (Secure Socket Layer)`
+.. |SSO| replace:: :abbr:`SSO (Single Sign-on)`
 .. |TLS| replace:: :abbr:`TLS (Transport Layer Security)`
 .. |UCR| replace:: :abbr:`UCR (Univention Configuration Registry)`
 .. |UCS| replace:: :abbr:`UCS (Univention Corporate Server)`
 .. |UDM| replace:: :abbr:`UDM (Univention Directory Manager)`
 .. |UMC| replace:: :abbr:`UMC (Univention Management Console)`
+.. |URI| replace:: :abbr:`URI (Uniform Resource Identifier)`
+.. |URL| replace:: :abbr:`URL (Uniform Resource Location)`

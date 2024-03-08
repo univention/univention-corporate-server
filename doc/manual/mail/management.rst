@@ -208,8 +208,8 @@ Shared IMAP folder - General tab
        The name displayed in the IMAP client differs depending on if an email
        address is configured (see field *Email address*) or not. If no
        email address is configured, the IMAP folder will be displayed in the
-       client as ``name@domain/INBOX``. If an email address is configured, it
-       will be ``shared/name@domain``.
+       client as :samp:`{name}@{domain}/INBOX`. If an email address is configured, it
+       will be :samp:`shared/{name}@{domain}`.
 
    * - Mail domain (*)
      - Every shared IMAP folder is assigned to a mail domain. The management of
@@ -310,11 +310,11 @@ text:
 * When the mail server package is installed, a subject and two warning messages
   are automatically configured:
 
-  * ``mail/dovecot/quota/warning/subject`` is set to ``Quota-Warning``
+  * :envvar:`mail/dovecot/quota/warning/subject` is set to ``Quota-Warning``
 
-  * ``mail/dovecot/quota/warning/text/80`` is set to ``Your mailbox has
+  * :envvar:`mail/dovecot/quota/warning/text/80` is set to ``Your mailbox has
     filled up to over $PERCENT%.``
 
-  * ``mail/dovecot/quota/warning/text/95`` is set to ``Attention: Your
+  * :envvar:`mail/dovecot/quota/warning/text/95` is set to ``Attention: Your
     mailbox has already filled up to over $PERCENT%. Please delete some messages
     or contact the administrator.``

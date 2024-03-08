@@ -74,7 +74,7 @@ and *unmaintained* software. While UCS 5 no longer uses this distinction.
 Integrate with |UCSUCR|
 =======================
 
-The following |UCSUCRV|\ s can be used to register a repository component.
+The following |UCSUCRVs| can be used to register a repository component.
 It is also possible to activate further functions here which cannot be
 configured through the UMC module.
 :samp:`{NAME}` stands for the component's name:

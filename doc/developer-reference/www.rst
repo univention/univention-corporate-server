@@ -17,7 +17,7 @@ Web services
 Extending the overview page
 ===========================
 
-When users open ``http://localhost/`` or :samp:`http://{hostname}/` in a
+When users open :samp:`http://localhost/` or :samp:`http://{hostname}/` in a
 browser, they are redirected to the UCS overview page.
 
 Depending on the preferred language negotiated by the web browser the user is

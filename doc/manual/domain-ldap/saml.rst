@@ -66,7 +66,7 @@ Microsoft Internet Explorer; Microsoft Edge
 
 The Kerberos authentication can be restricted to certain IP subnets by setting
 the |UCSUCRV| :envvar:`saml/idp/negotiate/filter-subnets` for example to
-``127.0.0.0/16,192.168.0.0/16``. This is especially useful to prevent a pop up
+:samp:`127.0.0.0/16,192.168.0.0/16`. This is especially useful to prevent a pop up
 login box being shown for clients which are not part of the UCS domain.
 
 .. _domain-saml-sso-login:
@@ -212,11 +212,11 @@ different URIs as Identity Provider endpoints.
 
 The default endpoint is :samp:`https://ucs-sso.{[Domain
 name]}/simplesamlphp/saml2/idp/metadata.php`. Further entries can be created by
-setting |UCSUCRV|\ s in the form
+setting |UCSUCRVs| in the form
 :envvar:`saml/idp/entityID/supplement/[identifier]` to ``true`` on all servers
 which serve the UCS Identity Provider. Typically that will be the |UCSPRIMARYDN|
 and all |UCSBACKUPDN|\ s. The :program:`apache2` service must then be reloaded.
 
 For example, to set up another entry under the URI :samp:`https://ucs-sso.{[Domain
 name]}/simplesamlphp/{[secondIDP]}/saml2/idp/metadata.php``, the |UCSUCRV|
-``saml/idp/entityID/supplement/secondIDP=true`` must be set.
+:envvar:`saml/idp/entityID/supplement/secondIDP`\ ``=true`` must be set.

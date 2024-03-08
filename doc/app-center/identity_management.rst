@@ -115,7 +115,7 @@ How the mechanism works
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 The JSON files are created in the directory
-:file:`/var/lib/univention-appcenter/apps/$appid/data/listener/`. As soon as
+:file:`/var/lib/univention-appcenter/apps/{appid}/data/listener/`. As soon as
 any attribute of the watched object types is changed a JSON file is
 created in the directory. The script is called in a defined and
 configurable interval by the App Center, if at least one JSON file has
@@ -130,7 +130,7 @@ delete the JSON file.
    as custom configuration in the app metadata, the listener uses version ``2``.
 
    Univention recommends to use ``ListenerUDMVersion`` 2, because it uses the
-   UDM REST API representation.
+   |UCSREST| representation.
 
    .. rubric:: Configuration in App Provider Portal
 
@@ -146,7 +146,7 @@ delete the JSON file.
 
 All files are JSON with one dictionary and the following content. You find
 logging information about the listener in
-:file:`/var/log/univention/listener_modules/$appid.log`.
+:file:`/var/log/univention/listener_modules/{appid}.log`.
 
 ``id``
    A unique identifier for the object holding the value of
@@ -166,7 +166,7 @@ logging information about the listener in
 
    .. tab:: ``ListenerUDMVersion`` 2
 
-      The listener passes the data in the UDM REST API representation to the
+      The listener passes the data in the |UCSREST| representation to the
       ``object`` dictionary.
 
       For example, refer to
