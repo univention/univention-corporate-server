@@ -4,38 +4,41 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-only
 
-mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
-mkfile_dir := $(dir $(mkfile_path))
-DIRS := $(dir $(wildcard */Makefile))
-PO_DIRS := $(dir $(wildcard */locales))
+DIRS := $(patsubst %/,%,$(dir $(wildcard */Makefile)))
+PO_DIRS := $(patsubst %/,%,$(dir $(foreach d,$(DIRS),$(wildcard $(d)/locales))))
+
+export SPHINXINTL_LANGUAGE ?= de
+export SPHINXOPTS ?= -q -W --keep-going
+
+dir_root := $(shell git rev-parse --show-toplevel)
+dir_git := $(shell git rev-parse --git-common-dir)
+dir_doc := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+
 USER_ID := $(shell id -u)
-TARGET_LANG ?= de
-SPHINXOPTS ?= "-q -W --keep-going"
 DOCKER_REGISTRY := docker-registry.knut.univention.de
 SPHINX_DOCKER_BASE = $(DOCKER_REGISTRY)/knut/sphinx-base:latest
 SPHINX_DOCKER_FULL = $(DOCKER_REGISTRY)/sphinx:latest
-DOCKER_USER_CMD := docker run --rm -v "$(mkfile_dir)..:/project" -w /project/doc --network=host -u "$(USER_ID)"
-DOCKER_CMD := docker run --rm -v "$(mkfile_dir)..:/project" -w /project/doc --network=host
+SPHINX_DOCKER = $(SPHINX_DOCKER_BASE)
+DOCKER_CMD := docker run --rm -v "$(dir_root):$(dir_root)" -v "$(dir_git):$(dir_git):ro" -w "$(dir_doc)" --network=host -e SPHINXINTL_LANGUAGE -e SPHINXOPTS -e HOME=/tmp -u "$(USER_ID)"
+Q ?= @
+unexport CDPATH
 
-# Uses the default Sphinx environment in a Docker image to run the needed tools for Sphinx.
-# Use this make target, when you want to update all po files in the documentation.
-update-po:
-	$(DOCKER_USER_CMD) $(SPHINX_DOCKER_BASE) make -e TARGET_L="$(TARGET_LANG)" update-po-nodocker
+.PHONY: update-po stat-po
+update-po stat-po:
+	${Q}$(DOCKER_CMD) $(SPHINX_DOCKER) $(MAKE) $@-nodocker
 
-# Loop over all documents and update the PO files. Requires an environment with the Sphinx toolchain.
+.PHONY: update-po-nodocker
 update-po-nodocker:
-	set -e; for d in $(PO_DIRS); do d="$$d" sh -c 'cd "$$d" && make -e SPHINXOPTS="-q" gettext && sphinx-intl update -p _build/gettext -l "$(TARGET_L)"'; done
+	${Q}set -e; for d in $(PO_DIRS); do ( cd "$$d" && $(MAKE) -e SPHINXOPTS=-q gettext && sphinx-intl update -p _build/gettext; ); done
 
-stat-po:
-	$(DOCKER_USER_CMD) $(SPHINX_DOCKER_BASE) make -e TARGET_L="$(TARGET_LANG)" stat-po-nodocker
-
+.PHONY: stat-po-nodocker
 stat-po-nodocker:
-	set -e; for d in $(PO_DIRS); do d="$$d" sh -c 'cd "$$d" && echo "doc/$$d:" && sphinx-intl stat -l "$(TARGET_L)"'; done
+	${Q}set -e; for d in $(PO_DIRS); do ( cd "$$d" && echo "doc/$$d:" && sphinx-intl stat; ); done
 
-latexpdf:
-	$(DOCKER_CMD) $(SPHINX_DOCKER_FULL) /bin/bash -c 'for d in $(DIRS);do make -C "$$d" -e SPHINXOPTS="$(SPHINXOPTS)" "$@"; done'
+.PHONY: latexpdf
+latexpdf: SPHINX_DOCKER=$(SPHINX_DOCKER_FULL)
 
 %:
-	$(DOCKER_USER_CMD) $(SPHINX_DOCKER_BASE) /bin/bash -c 'for d in $(DIRS);do make -C "$$d" -e SPHINXOPTS="$(SPHINXOPTS)" "$@";done'
+	${Q}$(DOCKER_CMD) $(SPHINX_DOCKER) /bin/sh -c 'for d in $(DIRS); do $(MAKE) -C "$$d" "$@"; done'
 
 # vim:set bkc=auto:
