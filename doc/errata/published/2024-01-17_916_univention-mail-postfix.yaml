@@ -6,8 +6,8 @@ src: univention-mail-postfix
 fix: 14.0.7-1
 desc: |
  This update addresses the following issues:
- * Applies a short-term fix for SMTP smuggling in postfix (CVE-2023-51764).
-   The postfix settings `discard_ehlo_keywords` and `data_restrictions` are
+ * Applies a short-term fix for SMTP smuggling in Postfix (CVE-2023-51764).
+   The Postfix settings `discard_ehlo_keywords` and `data_restrictions` are
    therefore now available as UCR variables.
 bug: [56957]
 cve:
