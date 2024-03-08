@@ -15,6 +15,7 @@ import ldap
 import tornado.gen
 from ldap.filter import filter_format
 
+import univention.admin.handlers.users.user as udm_user
 import univention.admin.uexceptions as udm_errors
 from univention.management.console.session_dict import SessionDict
 
@@ -22,11 +23,12 @@ from .acl import ACLs, LDAP_ACLs
 from .auth import AuthHandler
 from .category import Manager as CategoryManager
 from .config import MODULE_DEBUG_LEVEL, ucr
-from .error import ServiceUnavailable
+from .error import ServiceUnavailable, UMC_Error
 from .ldap import get_machine_connection, reset_cache as reset_ldap_connection_cache
 from .log import CORE
 from .message import Request
 from .module import Manager as ModuleManager
+from .pam import AuthenticationFailed, PasswordChangeFailed, PasswordExpired
 
 
 try:
@@ -131,13 +133,54 @@ class Session:
         return result
 
     async def change_password(self, args):
-        from .server import pool
-        pam = self.__auth.get_handler(args['locale'])
         username = args['username']
-        password = args['password']
-        new_password = args['new_password']
-        future = pool.submit(self.__auth.change_password, pam, username, password, new_password)
-        await asyncio.wrap_future(future)
+        locale = args['locale']
+        language = locale.split('_', 1)[0]
+        new_password = args.pop('new_password')
+
+        from .server import pool
+
+        pam = self.__auth.get_handler(locale)
+        try:
+            future = pool.submit(self.__auth.authenticate, pam, args)
+            result = await asyncio.wrap_future(future)
+            authenticated = bool(result)
+            CORE.info('Authentication for %s: %s', username, result)
+        except PasswordExpired as exc:
+            CORE.warning('Password for user %s is expired: %s', username, exc)
+            authenticated = True
+        except AuthenticationFailed as exc:
+            CORE.error('Authentication failed: %s', exc)
+            authenticated = False
+
+        if not authenticated:
+            message = pam._('The entered password does not match the current one.')
+            raise PasswordChangeFailed(message)
+
+        CORE.info('Setting new password for user: %s', username)
+        lo = get_machine_connection(write=True)[0]
+        if lo:
+            user_dn = lo.searchDn(filter_format('(&(uid=%s)(objectClass=person))', (username,)))[0]
+            CORE.info('User dn: %s', user_dn)
+            user = udm_user.object(None, lo, None, user_dn)
+            user.open()
+            user['password'] = new_password
+            user['pwdChangeNextLogin'] = '0'
+            try:
+                user.modify()
+            except (udm_errors.pwToShort, udm_errors.pwQuality) as exc:
+                password_complexity_message = ucr.get('umc/login/password-complexity-message/%s' % (language,), ucr.get('umc/login/password-complexity-message/en', exc))
+                raise UMC_Error(password_complexity_message)
+            except udm_errors.pwalreadyused as exc:
+                raise UMC_Error(exc.message)
+            except Exception as exc:
+                CORE.exception('udm_set_password(): failed to set password')
+                raise PasswordChangeFailed(str(exc))
+            else:
+                CORE.info('User modify succeeded!')
+        else:
+            raise PasswordChangeFailed('LDAP connection failed')
+
         self.set_credentials(username, new_password, None)
 
     def set_credentials(self, username, password, auth_type, object_id=None, roles=None, federated_account=False):
