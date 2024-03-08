@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -vv --tb=native
 ## desc: Test appcenter hooks
 ## tags: [docker]
 ## exposure: dangerous
@@ -9,7 +9,9 @@ import os
 import stat
 import sys
 
-from dockertest import Appcenter, get_app_name, tiny_app
+import pytest
+
+from dockertest import tiny_app
 
 
 class AssertionFailed(Exception):
@@ -159,21 +161,18 @@ def verify_test_results_and_exit():
                     " but it was not there." % (action, file_result)), 2)
 
 
-if __name__ == '__main__':
+@pytest.mark.exposure('dangerous')
+def test_app_install_update_remove_hooks(appcenter, app_name):
     """
     This test tests three hook directories: install, update and remove. Each of
     these actions should then execute its hook scripts and if that works a
     resulting log file contains their script file names.
     """
-
-    app_name = get_app_name()  # returns an arbitrary app
-
     setup(app_name)
 
-    with Appcenter() as appcenter:
-        app = app_install(appcenter, app_name)
-        app = app_upgrade(appcenter, app_name)
-        app_remove(app)
+    app = app_install(appcenter, app_name)
+    app = app_upgrade(appcenter, app_name)
+    app_remove(app)
 
     verify_test_results_and_exit()
 

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv --tb=native
 ## desc: Test docker compose
 ## tags: [docker]
 ## exposure: dangerous
@@ -7,9 +7,10 @@
 
 import subprocess
 
+import pytest
 from ruamel import yaml
 
-from dockertest import App, Appcenter, get_app_name
+from dockertest import App, get_app_name
 
 
 DOCKER_COMPOSE = '''
@@ -45,62 +46,62 @@ Description = Just a test
 InitialValue = This is a test
 '''
 
-if __name__ == '__main__':
-    with Appcenter() as appcenter:
 
-        name = get_app_name()
-        setup = '#!/bin/sh'
-        store_data = '#!/bin/sh'
+@pytest.mark.exposure('dangerous')
+def test_docker_compose(appcenter):
+    name = get_app_name()
+    setup = '#!/bin/sh'
+    store_data = '#!/bin/sh'
 
-        alpine_checksum = 'f80194ae2e0c'
+    alpine_checksum = 'f80194ae2e0c'
+    images = subprocess.check_output(['docker', 'images'], text=True)
+    if alpine_checksum in images:
+        print('CAUTION. Checksum already found in docker images... Lets see...')
+        subprocess.call(['docker', 'ps', '-a'])
+    app = App(name=name, version='1', build_package=False, call_join_scripts=False)
+    try:
+        app.set_ini_parameter(
+            DockerMainService='test1',
+        )
+        app.add_script(compose=DOCKER_COMPOSE.format(image='docker-test.software-univention.de/alpine:3.5'))
+        app.add_script(settings=SETTINGS)
+        app.add_script(setup=setup)
+        app.add_script(store_data=store_data)
+        app.add_to_local_appcenter()
+        appcenter.update()
+        app.install()
+        app.verify()
         images = subprocess.check_output(['docker', 'images'], text=True)
-        if alpine_checksum in images:
-            print('CAUTION. Checksum already found in docker images... Lets see...')
-            subprocess.call(['docker', 'ps', '-a'])
-        app = App(name=name, version='1', build_package=False, call_join_scripts=False)
-        try:
-            app.set_ini_parameter(
-                DockerMainService='test1',
-            )
-            app.add_script(compose=DOCKER_COMPOSE.format(image='docker-test.software-univention.de/alpine:3.5'))
-            app.add_script(settings=SETTINGS)
-            app.add_script(setup=setup)
-            app.add_script(store_data=store_data)
-            app.add_to_local_appcenter()
-            appcenter.update()
-            app.install()
-            app.verify()
-            images = subprocess.check_output(['docker', 'images'], text=True)
-            assert alpine_checksum in images, images
-            app.execute_command_in_container('touch /var/lib/univention-appcenter/apps/%s/data/test1.txt' % name)
+        assert alpine_checksum in images, images
+        app.execute_command_in_container(f'touch /var/lib/univention-appcenter/apps/{name}/data/test1.txt')
 
-            app = App(name=name, version='2', build_package=False, call_join_scripts=False)
-            app.set_ini_parameter(
-                DockerMainService='test1',
-            )
-            app.add_script(compose=DOCKER_COMPOSE.format(image='docker-test.software-univention.de/alpine:3.7'))
-            app.add_script(setup=setup)
-            app.add_script(store_data=store_data)
-            app.add_to_local_appcenter()
-            appcenter.update()
-            app.upgrade()
-            app.verify()
-            images = subprocess.check_output(['docker', 'images'], text=True)
-            assert alpine_checksum not in images, images
-            app.execute_command_in_container('ls /var/lib/univention-appcenter/apps/%s/data/test1.txt' % name)
-            image = subprocess.check_output(['docker', 'inspect', app.container_id, '--format={{.Config.Image}}'], text=True).strip()
-            assert image == 'docker-test.software-univention.de/alpine:3.7'
-            from univention.config_registry import ConfigRegistry
-            ucr = ConfigRegistry()
-            ucr.load()
-            network = ucr.get('appcenter/apps/' + name + '/ip')
-            assert network == '172.16.1.0/24', network
-            yml_file = '/var/lib/univention-appcenter/apps/' + name + '/compose/docker-compose.yml'
-            content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
-            assert content['networks']['appcenter_net']['ipam']['config'][0]['subnet'] == '172.16.1.0/24'
-            assert content['services']['test1']['networks']['appcenter_net']['ipv4_address'] == '172.16.1.2'
-            assert content['services']['test2']['networks']['appcenter_net']['ipv4_address'] == '172.16.1.3'
-            assert content['services']['test2']['environment']['TEST_KEY'] == 'This is a test', content['services']['test2']['environment']
-        finally:
-            app.uninstall()
-            app.remove()
+        app = App(name=name, version='2', build_package=False, call_join_scripts=False)
+        app.set_ini_parameter(
+            DockerMainService='test1',
+        )
+        app.add_script(compose=DOCKER_COMPOSE.format(image='docker-test.software-univention.de/alpine:3.7'))
+        app.add_script(setup=setup)
+        app.add_script(store_data=store_data)
+        app.add_to_local_appcenter()
+        appcenter.update()
+        app.upgrade()
+        app.verify()
+        images = subprocess.check_output(['docker', 'images'], text=True)
+        assert alpine_checksum not in images, images
+        app.execute_command_in_container(f'ls /var/lib/univention-appcenter/apps/{name}/data/test1.txt')
+        image = subprocess.check_output(['docker', 'inspect', app.container_id, '--format={{.Config.Image}}'], text=True).strip()
+        assert image == 'docker-test.software-univention.de/alpine:3.7'
+        from univention.config_registry import ConfigRegistry
+        ucr = ConfigRegistry()
+        ucr.load()
+        network = ucr.get('appcenter/apps/' + name + '/ip')
+        assert network == '172.16.1.0/24', network
+        yml_file = f'/var/lib/univention-appcenter/apps/{name}/compose/docker-compose.yml'
+        content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
+        assert content['networks']['appcenter_net']['ipam']['config'][0]['subnet'] == '172.16.1.0/24'
+        assert content['services']['test1']['networks']['appcenter_net']['ipv4_address'] == '172.16.1.2'
+        assert content['services']['test2']['networks']['appcenter_net']['ipv4_address'] == '172.16.1.3'
+        assert content['services']['test2']['environment']['TEST_KEY'] == 'This is a test', content['services']['test2']['environment']
+    finally:
+        app.uninstall()
+        app.remove()

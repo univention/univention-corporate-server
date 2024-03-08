@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -vv --tb=native
 ## desc: Test appcenter listener/converter
 ## tags: [docker]
 ## exposure: dangerous
@@ -14,9 +14,9 @@ import subprocess
 import time
 from typing import Any
 
-import univention.testing.udm as udm_test
+import pytest
 
-from dockertest import App, Appcenter
+from dockertest import App
 
 
 APP_NAME = 'my-listener-test-app'
@@ -53,57 +53,56 @@ def get_attr(obj_type: str, dn: str, attr: str) -> Any | None:
     return None
 
 
-def test_listener() -> None:
-    with udm_test.UCSTestUDM() as udm:
-        # create
-        u1 = udm.create_user(username='litest1')
-        u2 = udm.create_user(username='litest2')
-        u3 = udm.create_user(username='litest3')
-        g1 = udm.create_group(name='ligroup1')
-        g2 = udm.create_group(name='ligroup2')
-        time.sleep(LISTENER_TIMEOUT)
-        assert user_exists(u1[0])
-        assert user_exists(u2[0])
-        assert user_exists(u3[0])
-        assert group_exists(g1[0])
-        assert group_exists(g2[0])
-        # modify
-        udm.modify_object('users/user', dn=u1[0], description='abcde')
-        udm.modify_object('users/user', dn=u2[0], description='xyz')
-        udm.modify_object('users/user', dn=u3[0], description='öäü????ßßßß!')
-        udm.modify_object('groups/group', dn=g1[0], description='lkjalkhlÄÖ#üäööäö')
-        udm.modify_object('groups/group', dn=g2[0], users=u1[0])
-        time.sleep(LISTENER_TIMEOUT)
-        assert get_attr('users/user', u1[0], 'description') == 'abcde'
-        assert get_attr('users/user', u2[0], 'description') == 'xyz'
-        assert get_attr('users/user', u3[0], 'description') == 'öäü????ßßßß!'
-        assert get_attr('users/user', u1[0], 'description')
-        assert get_attr('users/user', u1[0], 'disabled') is False
-        assert get_attr('users/user', u1[0], 'displayName')
-        assert get_attr('users/user', u1[0], 'gidNumber')
-        assert get_attr('users/user', u1[0], 'groups')
-        assert get_attr('users/user', u1[0], 'lastname')
-        assert get_attr('users/user', u1[0], 'sambaRID')
-        assert get_attr('groups/group', g1[0], 'description') == 'lkjalkhlÄÖ#üäööäö'
-        assert get_attr('groups/group', g2[0], 'users') == [u1[0]]
-        assert get_attr('groups/group', g2[0], 'users')
-        assert get_attr('groups/group', g2[0], 'gidNumber')
-        assert get_attr('groups/group', g2[0], 'name')
-        assert get_attr('groups/group', g2[0], 'sambaRID')
-        # remove
-        udm.remove_object('users/user', dn=u1[0])
-        udm.remove_object('users/user', dn=u2[0])
-        udm.remove_object('users/user', dn=u3[0])
-        udm.remove_object('groups/group', dn=g1[0])
-        udm.remove_object('groups/group', dn=g2[0])
-        time.sleep(LISTENER_TIMEOUT)
-        assert not user_exists(u1[0])
-        assert not user_exists(u2[0])
-        assert not user_exists(u3[0])
-        assert not group_exists(g1[0])
-        assert not group_exists(g2[0])
-        # listener dir should be empty at this point
-        assert not glob.glob(os.path.join(LISTENER_DIR, '*.json'))
+def run_listener_tests(udm) -> None:
+    # create
+    u1 = udm.create_user(username='litest1')
+    u2 = udm.create_user(username='litest2')
+    u3 = udm.create_user(username='litest3')
+    g1 = udm.create_group(name='ligroup1')
+    g2 = udm.create_group(name='ligroup2')
+    time.sleep(LISTENER_TIMEOUT)
+    assert user_exists(u1[0])
+    assert user_exists(u2[0])
+    assert user_exists(u3[0])
+    assert group_exists(g1[0])
+    assert group_exists(g2[0])
+    # modify
+    udm.modify_object('users/user', dn=u1[0], description='abcde')
+    udm.modify_object('users/user', dn=u2[0], description='xyz')
+    udm.modify_object('users/user', dn=u3[0], description='öäü????ßßßß!')
+    udm.modify_object('groups/group', dn=g1[0], description='lkjalkhlÄÖ#üäööäö')
+    udm.modify_object('groups/group', dn=g2[0], users=u1[0])
+    time.sleep(LISTENER_TIMEOUT)
+    assert get_attr('users/user', u1[0], 'description') == 'abcde'
+    assert get_attr('users/user', u2[0], 'description') == 'xyz'
+    assert get_attr('users/user', u3[0], 'description') == 'öäü????ßßßß!'
+    assert get_attr('users/user', u1[0], 'description')
+    assert get_attr('users/user', u1[0], 'disabled') is False
+    assert get_attr('users/user', u1[0], 'displayName')
+    assert get_attr('users/user', u1[0], 'gidNumber')
+    assert get_attr('users/user', u1[0], 'groups')
+    assert get_attr('users/user', u1[0], 'lastname')
+    assert get_attr('users/user', u1[0], 'sambaRID')
+    assert get_attr('groups/group', g1[0], 'description') == 'lkjalkhlÄÖ#üäööäö'
+    assert get_attr('groups/group', g2[0], 'users') == [u1[0]]
+    assert get_attr('groups/group', g2[0], 'users')
+    assert get_attr('groups/group', g2[0], 'gidNumber')
+    assert get_attr('groups/group', g2[0], 'name')
+    assert get_attr('groups/group', g2[0], 'sambaRID')
+    # remove
+    udm.remove_object('users/user', dn=u1[0])
+    udm.remove_object('users/user', dn=u2[0])
+    udm.remove_object('users/user', dn=u3[0])
+    udm.remove_object('groups/group', dn=g1[0])
+    udm.remove_object('groups/group', dn=g2[0])
+    time.sleep(LISTENER_TIMEOUT)
+    assert not user_exists(u1[0])
+    assert not user_exists(u2[0])
+    assert not user_exists(u3[0])
+    assert not group_exists(g1[0])
+    assert not group_exists(g2[0])
+    # listener dir should be empty at this point
+    assert not glob.glob(os.path.join(LISTENER_DIR, '*.json'))
 
 
 def get_pid_for_name(name: str) -> str | None:
@@ -122,7 +121,8 @@ def systemd_service_enabled(service: str) -> bool:
     return subprocess.call(['systemctl', '--quiet', 'is-enabled', service]) == 0
 
 
-if __name__ == '__main__':
+@pytest.mark.exposure('dangerous')
+def test_app_listener_integration(appcenter, udm):
     name = APP_NAME
     systemd_service = f'univention-appcenter-listener-converter@{name}.service'
 
@@ -170,67 +170,66 @@ for i in sorted(glob.glob(os.path.join(DATA_DIR, '*.json'))):
     os.remove(i)
 '''
 
-    with Appcenter() as appcenter:
-        app = App(name=name, version='1', build_package=False, call_join_scripts=False)
-        app.set_ini_parameter(
-            DockerImage=DOCKER_IMAGE_OLD,
-            DockerScriptSetup='/setup',
-            DockerScriptStoreData='/store_data',
-            DockerScriptInit='/bin/sh',
-            ListenerUdmModules='users/user, groups/group',
-        )
-        app.add_script(
-            setup=setup,
-            store_data=store_data,
-            preinst=preinst,
-            listener_trigger=listener_trigger,
-        )
-        app.add_to_local_appcenter()
-        appcenter.update()
-        app.install()
-        appcenter.apps.append(app)
-        app.verify()
+    app = App(name=name, version='1', build_package=False, call_join_scripts=False)
+    app.set_ini_parameter(
+        DockerImage=DOCKER_IMAGE_OLD,
+        DockerScriptSetup='/setup',
+        DockerScriptStoreData='/store_data',
+        DockerScriptInit='/bin/sh',
+        ListenerUdmModules='users/user, groups/group',
+    )
+    app.add_script(
+        setup=setup,
+        store_data=store_data,
+        preinst=preinst,
+        listener_trigger=listener_trigger,
+    )
+    app.add_to_local_appcenter()
+    appcenter.update()
+    app.install()
+    appcenter.apps.append(app)
+    app.verify()
 
-        subprocess.check_call(['docker', 'image', 'inspect', DOCKER_IMAGE_OLD])
+    subprocess.check_call(['docker', 'image', 'inspect', DOCKER_IMAGE_OLD])
 
-        very_old_con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
-        time.sleep(10)
-        with open('/var/lib/univention-directory-listener/handlers/%s' % name) as f:
-            status = f.readline()
-            assert status == '3'
-        test_listener()
+    very_old_con_pid = get_pid_for_name(f'univention-appcenter-listener-converter {name}')
+    time.sleep(10)
+    with open(f'/var/lib/univention-directory-listener/handlers/{name}') as f:
+        status = f.readline()
+        assert status == '3'
+    run_listener_tests(udm)
 
-        # check listener/converter restart during update
-        old_li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
-        old_con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
-        assert very_old_con_pid == old_con_pid  # should be the same until now
-        app = App(name=name, version='2', build_package=False, call_join_scripts=False)
-        app.set_ini_parameter(
-            DockerImage=DOCKER_IMAGE_NEW,
-            DockerScriptSetup='/setup',
-            DockerScriptStoreData='/store_data',
-            DockerScriptInit='/bin/sh',
-            ListenerUdmModules='users/user, groups/group',
-        )
-        app.add_script(
-            setup=setup,
-            store_data=store_data,
-            preinst=preinst,
-            listener_trigger=listener_trigger,
-        )
-        app.add_to_local_appcenter()
-        appcenter.update()
-        app.upgrade()
-        app.verify()
+    # check listener/converter restart during update
+    old_li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
+    old_con_pid = get_pid_for_name(f'univention-appcenter-listener-converter {name}')
+    assert very_old_con_pid == old_con_pid  # should be the same until now
+    app = App(name=name, version='2', build_package=False, call_join_scripts=False)
+    app.set_ini_parameter(
+        DockerImage=DOCKER_IMAGE_NEW,
+        DockerScriptSetup='/setup',
+        DockerScriptStoreData='/store_data',
+        DockerScriptInit='/bin/sh',
+        ListenerUdmModules='users/user, groups/group',
+    )
+    app.add_script(
+        setup=setup,
+        store_data=store_data,
+        preinst=preinst,
+        listener_trigger=listener_trigger,
+    )
+    app.add_to_local_appcenter()
+    appcenter.update()
+    app.upgrade()
+    app.verify()
 
-        li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
-        con_pid = get_pid_for_name('univention-appcenter-listener-converter %s' % name)
-        assert old_li_pid == li_pid  # app update does not require listener restart
-        assert old_con_pid != con_pid
+    li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
+    con_pid = get_pid_for_name(f'univention-appcenter-listener-converter {name}')
+    assert old_li_pid == li_pid  # app update does not require listener restart
+    assert old_con_pid != con_pid
 
-        # check handler file/listener restart during remove
-        app.uninstall()
-        new_li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
-        assert not systemd_service_enabled(systemd_service)
-        assert not os.path.isfile('/var/lib/univention-directory-listener/handlers/%s' % name)
-        assert li_pid != new_li_pid
+    # check handler file/listener restart during remove
+    app.uninstall()
+    new_li_pid = get_pid_for_name(' /usr/sbin/univention-directory-listener')
+    assert not systemd_service_enabled(systemd_service)
+    assert not os.path.isfile(f'/var/lib/univention-directory-listener/handlers/{name}')
+    assert li_pid != new_li_pid
