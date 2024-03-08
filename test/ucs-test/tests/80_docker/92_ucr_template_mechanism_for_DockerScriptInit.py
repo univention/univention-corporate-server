@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vv --tb=native
 ## desc: Test ucr template mechanism for Docker apps
 ## tags: [docker]
 ## exposure: dangerous
@@ -8,10 +8,12 @@
 import json
 import subprocess
 
+import pytest
+
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.utils import fail
 
-from dockertest import Appcenter, get_app_name, get_app_version, tiny_app
+from dockertest import tiny_app
 
 
 def check_docker_arg_against_ucrv(container_id, ucrv):
@@ -22,10 +24,11 @@ def check_docker_arg_against_ucrv(container_id, ucrv):
         fail(f'\nThe container argument is not equal to the ucr variable it is checked against.\nDocker container argument: {first_arg}\nUCRV: {ucrv}\n')
 
 
-if __name__ == '__main__':
-    with Appcenter() as appcenter, UCSTestConfigRegistry() as ucr:
+@pytest.mark.exposure('dangerous')
+def test_ucr_template_mechanism_for_docker_script_init(appcenter, app_name, app_version):
+    with UCSTestConfigRegistry() as ucr:
         ucr.load()
-        app = tiny_app(get_app_name(), get_app_version())
+        app = tiny_app(app_name, app_version)
         try:
             app.set_ini_parameter(
                 DockerScriptSetup='/tmp/setup',
