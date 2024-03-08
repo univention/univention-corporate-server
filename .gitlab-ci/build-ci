@@ -53,6 +53,9 @@ doc_job () { # <extends> [<suffix> [<language>]]
         echo '  needs:'
         echo "    - job: build manual $language html"
         echo '    - job: build changelog en html'
+        echo '  before_script:'
+        echo '    - apt-get update && apt-get install -qq --assume-yes --no-install-recommends tree'
+        echo '    - tree $CI_PROJECT_DIR/doc'
     fi
     echo '  rules:'
     echo '    - if: "$CI_COMMIT_MESSAGE =~ /skip-doc/ || $pipeline =~ /skip-doc/"'
