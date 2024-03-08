@@ -6,7 +6,7 @@ src: univention-debug-python
 fix: 12.0.3-5
 desc: |
  This update addresses the following issues:
- * A new python module `univention.logging` has been introduced which provides
+ * A new Python module `univention.logging` has been introduced which provides
    a `python-logging` handler for `univention.debug`. It allows software
    components to use the `logging` interface of Python while logging into a
    `univention.debug` stream.
