@@ -1,4 +1,4 @@
-univention-saml (8.0.2) unstable; urgency=medium
+univention-saml (8.0.11) unstable; urgency=medium
 
   * Bug #56765: Remove univention-saml
 
