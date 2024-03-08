@@ -22,12 +22,60 @@ doc_job () { # <extends> [<suffix> [<language>]]
     fi
     [ -n "${3+empty}" ] && echo "    language: $3"
     echo "  extends: ${1:?extends}"
+    if [ "${pkg}" = "app-center" ]
+    then
+        echo '  needs:'
+        echo "    - job: build manual $language html"
+        echo "    - job: build developer-reference en html"
+    fi
+    if [ "${pkg}" = "architecture" ]
+    then
+        echo '  needs:'
+        echo "    - job: build manual $language html"
+        echo "    - job: build app-center en html"
+        echo "    - job: build developer-reference en html"
+    fi
+    if [ "${pkg}" = "developer-reference" ]
+    then
+        echo '  needs:'
+        echo "    - job: build manual $language html"
+        echo '  before_script:'
+        echo '    - make -C "doc/app-center" -e FORCE_COLOR="TRUE" -e SPHINXOPTS="-v -D language='$language'" -e BUILDDIR="_build/$language" html'
+        echo '    - make -C "doc/architecture" -e FORCE_COLOR="TRUE" -e SPHINXOPTS="-v -D language='$language'" -e BUILDDIR="_build/$language" html'
+    fi
+    if [ "${pkg}" = "manual" ]
+    then
+        echo '  before_script:'
+        echo '    - make -C "doc/developer-reference" -e FORCE_COLOR="TRUE" -e SPHINXOPTS="-v" -e BUILDDIR="_build/en" html'
+    fi
+    if [ "${pkg}" = "release-notes" ]
+    then
+        echo '  needs:'
+        echo "    - job: build manual $language html"
+        echo '    - job: build changelog en html'
+    fi
     echo '  rules:'
     echo '    - if: "$CI_COMMIT_MESSAGE =~ /skip-doc/ || $pipeline =~ /skip-doc/"'
     echo '      when: never'
     echo '    - if: "$CI_COMMIT_MESSAGE =~ /force-doc/ || $pipeline =~ /force-doc/"'
     echo '    - changes:'
     echo "      - ${path}/**/*"
+    if [ "${pkg}" = "manual" ] && [ "${2}" = "html" ]
+    then
+        echo '      - doc/app-center/**/*'
+        echo '      - doc/architecture/**/*'
+        echo '      - doc/developer-reference/**/*'
+        echo '      - doc/release-notes/**/*'
+    fi
+    if [ "${pkg}" = "developer-reference" ] && [ "${2}" = "html" ]
+    then
+        echo '      - doc/app-center/**/*'
+        echo '      - doc/architecture/**/*'
+    fi
+    if [ "${pkg}" = "app-center" ] && [ "${2}" = "html" ]
+    then
+        echo '      - doc/architecture/**/*'
+    fi
 }
 
 document_paths () {
