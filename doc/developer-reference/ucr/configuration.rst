@@ -508,7 +508,7 @@ For each service a section of the following structure is defined:
 
 ``[``\ :samp:`{service-name}`\ ``]``; ``name=``\ :samp:`{service-name}` (optional)
    For each daemon one section needs to be created. The service-name
-   should match the name of the init-script in :file:/etc/init.d/`. If the name differs, it
+   should match the name of the init-script in :file:`/etc/init.d/`. If the name differs, it
    can be overwritten by the ``name=`` property.
 
 ``description[``\ :samp:`{language}`\ ``]`` (required)
