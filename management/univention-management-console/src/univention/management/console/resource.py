@@ -186,6 +186,7 @@ class Resource(RequestHandler):
         return default
 
     def suffixed_cookie_name(self, name):
+        return name
         _host, _, port = self.request.headers.get('Host', '').partition(':')
         if port:
             try:
