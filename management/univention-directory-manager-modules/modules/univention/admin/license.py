@@ -189,7 +189,7 @@ class License:
         self.__selected = False
 
     def _load_license_via_c_module(self, module):
-        return univention.license.select(module)
+        return 0
 
     def _load_license_via_python(self, module, lo):
         # Try to set the version even if the license load was not successful
