@@ -83,7 +83,7 @@ The command downloads the Sphinx Docker image and updates the PO files for
 all documents with the translation.
 
 The default language for the update is German. To update the translation for
-another language, for example French, run `make -C doc -e LANGUAGE="fr"
+another language, for example French, run `make -C doc -e SPHINXINTL_LANGUAGE="fr"
 update-po`.
 
 Other translation related targets are the following:
