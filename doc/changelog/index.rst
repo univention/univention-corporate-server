@@ -144,7 +144,40 @@ General
 
 * The following updated packages from Debian 0.0 are included:
 
-  :program:`FIXME`
+  :program:`ansible`
+  :program:`asterisk`
+  :program:`cjson`
+  :program:`debian-security-support`
+  :program:`engrampa`
+  :program:`gsoap`
+  :program:`haproxy`
+  :program:`iwd`
+  :program:`keystone`
+  :program:`kodi`
+  :program:`libapache2-mod-auth-openidc`
+  :program:`libgit2`
+  :program:`libjwt`
+  :program:`libreoffice`
+  :program:`libspreadsheet-parseexcel-perl`
+  :program:`libspreadsheet-parsexlsx-perl`
+  :program:`libuv1`
+  :program:`man-db`
+  :program:`openvswitch`
+  :program:`osslsigncode`
+  :program:`php-guzzlehttp-psr7`
+  :program:`php-phpseclib`
+  :program:`phpseclib`
+  :program:`python-asyncssh`
+  :program:`python-django`
+  :program:`rabbitmq-server`
+  :program:`rear`
+  :program:`ruby-httparty`
+  :program:`spip`
+  :program:`subunit`
+  :program:`tinyxml`
+  :program:`wireshark`
+  :program:`xerces-c`
+  :program:`yard`
 
 .. _maintained:
 
