@@ -114,7 +114,7 @@ UDM hooks
    .. TODO Add when hooks are ready: For more information, refer to :ref:`services-hooks`.
 
 The second abstraction layer in :numref:`architecture-model-udm` uses the *UDM
-Python library* and offers *UDM in UMC*, |UCSUHRA|, the *UDM CLI daemon*, the
+Python library* and offers *UDM in UMC*, |UCSREST|, the *UDM CLI daemon*, the
 *UCS\@school library*, and the *UDM Simple API*.
 
 .. index::
@@ -130,9 +130,9 @@ UDM in UMC
    pair: udm http rest api; udm
    single: model; udm http rest api
 
-|UCSUHRA|
-   Provides the |UCSUHRA| interface to |UDM| as a separate service. |UDM|
-   offers HTTP access through the |UCSUHRA| to use |UDM| through a
+|UCSREST|
+   Provides the |UCSREST| interface to |UDM| as a separate service. |UDM|
+   offers HTTP access through the |UCSREST| to use |UDM| through a
    remote interface.
 
    .. TODO Add when rest api is ready: For more information about the architecture, refer to :ref:`services-rest-api`.
@@ -225,7 +225,7 @@ The following services in UCS need UDM:
 
 * :ref:`services-ucs-portal`
 
-Following the chain, *UDM in UMC* and |UCSUHRA| wouldn't work without
+Following the chain, *UDM in UMC* and |UCSREST| wouldn't work without
 |UDM| either. From the items mentioned in :ref:`services-udm-architecture` and
 :numref:`architecture-model-udm`, |UDM| needs the following to work properly:
 

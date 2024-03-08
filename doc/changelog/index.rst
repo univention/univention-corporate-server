@@ -262,24 +262,24 @@ Univention Management Console
 Univention Management Console web interface
 ===========================================
 
-* For enhanced automated testing the |UCSUHRA| now handles requests with
+* For enhanced automated testing the |UCSREST| now handles requests with
   mime type :mimetype:`application/json-patch+json` (:uv:bug:`55555`).
 
-* The |UCSUHRA| now supports authentication via the ``Bearer`` authentication
+* The |UCSREST| now supports authentication via the ``Bearer`` authentication
   scheme (:uv:bug:`49006`).
 
-* |UCSUHRA| now supports a different LDAP base for each |UCSUDM| module. This is a
+* |UCSREST| now supports a different LDAP base for each |UCSUDM| module. This is a
   requirement for the blocklist feature (:uv:bug:`57039`).
 
-* After log rotating log files of the |UCSUHRA|, the service is reloaded so
+* After log rotating log files of the |UCSREST|, the service is reloaded so
   that it logs into the new files (:uv:bug:`54338`).
 
 * All |UCSUDM| log lines are now prefixed with the request ID. This can be disabled
   via the |UCSUCRV| :envvar:`directory/manager/rest/debug/prefix-with-request-id`
   (:uv:bug:`56970`).
 
-* For containerized environments, the |UCSUHRA| OpenAPI Schema user
-  interface is now exposed via the |UCSUHRA| server as well
+* For containerized environments, the |UCSREST| OpenAPI Schema user
+  interface is now exposed via the |UCSREST| server as well
   (:uv:bug:`57058`).
 
 * The replacement of the fallback |UCSUMC| logger has been adjusted to use
@@ -353,7 +353,7 @@ Univention App Center
 * Fix a potential infinite loop in handling Samba logon hour syntax
   (:uv:bug:`28496`).
 
-* Adjusted DNS object handling to fix compatibility with the |UCSUHRA|
+* Adjusted DNS object handling to fix compatibility with the |UCSREST|
   (:uv:bug:`55555`).
 
 * The cron job for deleting expired block list entries now runs only if block
@@ -369,7 +369,7 @@ Univention App Center
 
 * The log messages of |UCSUDM| are now logged via the Python :py:mod:`logging` interface,
   which is configured to still log to the :py:mod:`univention.debug` log stream. This
-  is a prerequisite for prefixing log lines with the request ID in the |UCSUHRA| (:uv:bug:`56970`).
+  is a prerequisite for prefixing log lines with the request ID in the |UCSREST| (:uv:bug:`56970`).
 
 * The :py:mod:`uldap` library now supports the |SASL| binding mechanism ``OAUTHBEARER``
   (:uv:bug:`49006`).
@@ -455,7 +455,7 @@ Univention base libraries
 * The log messages of :py:mod:`uldap` are now logged via the Python :py:mod:`logging`
   interface, which is configured to still log to the :py:mod:`univention.debug` log
   stream. This is a prerequisite for prefixing log lines with the request ID
-  in the |UCSUHRA| (:uv:bug:`56970`).
+  in the |UCSREST| (:uv:bug:`56970`).
 
 * The new LDAP database ``cn=internal`` has been added to store blocklist entries
   (:uv:bug:`57038`).
@@ -463,7 +463,7 @@ Univention base libraries
 * The LDAP server has been extended with the ``OAUTHBEARER`` |SASL| mechanism,
   which is disabled by default (:uv:bug:`49006`).
 
-* A memory leak in the |UCSUHRA| has been fixed, which was caused by not
+* A memory leak in the |UCSREST| has been fixed, which was caused by not
   discarding unused weak references in the :py:class:`univention.lib.i18n.Translation`
   (:uv:bug:`56420`).
 

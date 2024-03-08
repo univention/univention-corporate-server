@@ -4,10 +4,10 @@
 
 .. _udm-rest-api:
 
-|UCSUHRA|
+|UCSREST|
 =========
 
-UCS provides a |UCSUHRA| which can be used to inspect, modify, create and
+UCS provides a |UCSREST| which can be used to inspect, modify, create and
 delete UDM objects through HTTP requests.
 
 The API is accessible from :samp:`https://{FQHN}/univention/udm/`.
@@ -122,7 +122,7 @@ To enable it, use the following steps:
    enable it by setting
    :envvar:`directory/manager/rest/debug-mode-enabled` to ``true``.
 
-#. Restart the |UCSUHRA| with this command:
+#. Restart the |UCSREST| with this command:
 
    .. code-block:: console
 
@@ -135,7 +135,7 @@ To enable it, use the following steps:
 API clients
 -----------
 
-The following API clients implemented in Python exist for the |UCSUHRA|:
+The following API clients implemented in Python exist for the |UCSREST|:
 
 * :program:`python3-univention-directory-mananger-rest-client`:
 
@@ -143,7 +143,7 @@ The following API clients implemented in Python exist for the |UCSUHRA|:
   You can use it the following way:
 
   .. code-block:: python
-     :caption: Example for using Python |UCSUHRA| client
+     :caption: Example for using Python |UCSREST| client
 
 
      from univention.admin.rest.client import UDM
@@ -184,7 +184,7 @@ The following API clients implemented in Python exist for the |UCSUHRA|:
      # 7. remove
      obj.delete()
 
-* Python |UCSUHRA| Client:
+* Python |UCSREST| Client:
 
   * `Package at PyPI <https://pypi.org/project/udm-rest-client/>`_
   * :external+python-udm-rest-client:doc:`Documentation <index>`
@@ -543,9 +543,9 @@ above, to ensure the deletion is conditional.
 API Error Codes
 ---------------
 
-The |UCSUHRA| can respond to requests with the following error codes. The list is not exhaustive:
+The |UCSREST| can respond to requests with the following error codes. The list is not exhaustive:
 
-.. list-table:: |UCSUHRA| error codes
+.. list-table:: |UCSREST| error codes
    :header-rows: 1
    :widths: 1 3 8
 

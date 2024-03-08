@@ -525,13 +525,13 @@ number of CPU cores in the system.
 
 .. _udm-rest-api:
 
-|UCSUHRA| performance scaling
+|UCSREST| performance scaling
 =============================
 
-A single |UCSUHRA| instance does not use multiple CPU cores by design,
+A single |UCSREST| instance does not use multiple CPU cores by design,
 therefore it can be beneficial to start multiple instances. By setting the
 |UCSUCRV| :envvar:`directory/manager/rest/processes` the number of processes can
-be increased. Afterwards the |UCSUHRA| needs to be restarted:
+be increased. Afterwards the |UCSREST| needs to be restarted:
 
 .. code-block:: console
 

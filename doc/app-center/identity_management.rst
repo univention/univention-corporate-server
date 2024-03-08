@@ -130,7 +130,7 @@ delete the JSON file.
    as custom configuration in the app metadata, the listener uses version ``2``.
 
    Univention recommends to use ``ListenerUDMVersion`` 2, because it uses the
-   |UCSUHRA| representation.
+   |UCSREST| representation.
 
    .. rubric:: Configuration in App Provider Portal
 
@@ -166,7 +166,7 @@ logging information about the listener in
 
    .. tab:: ``ListenerUDMVersion`` 2
 
-      The listener passes the data in the |UCSUHRA| representation to the
+      The listener passes the data in the |UCSREST| representation to the
       ``object`` dictionary.
 
       For example, refer to

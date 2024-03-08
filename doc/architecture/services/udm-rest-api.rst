@@ -4,10 +4,10 @@
 
 .. _services-udm-rest-api:
 
-|UCSUHRA|
+|UCSREST|
 =========
 
-This section describes the technical architecture for the |UCSUHRA|, a
+This section describes the technical architecture for the |UCSREST|, a
 |JSON| |HTTP| interface to interact with *Univention Directory Manager*. It follows
 a *RESTful* architecture, adheres to |REST| principles and provides an *OpenAPI*
 schema.
@@ -18,7 +18,7 @@ For a general overview about |UDM|, see :ref:`component-management-system` and
 For information about how to use the |API| as a developer,
 see :ref:`uv-dev-ref:udm-rest-api` in :cite:t:`developer-reference`.
 
-You find the source code for |UCSUHRA| at
+You find the source code for |UCSREST| at
 :uv:src:`management/univention-directory-manager-rest/`.
 
 .. tip::
@@ -29,7 +29,7 @@ You find the source code for |UCSUHRA| at
    concepts in the :ref:`notation-archimate-application-layer` and the
    :ref:`notation-archimate-relationships` in the appendix.
 
-:numref:`services-udm-http-rest-api-context` shows the relation of |UCSUHRA|
+:numref:`services-udm-http-rest-api-context` shows the relation of |UCSREST|
 down the line from the |UCS| *Product components* with the
 :ref:`component-management-system`, and its :ref:`component-domain-management`
 implemented by *Univention Directory Manager (UDM)*.
@@ -39,7 +39,7 @@ implemented by *Univention Directory Manager (UDM)*.
 .. figure:: /images/udm-rest-api-context.*
    :width: 200px
 
-   |UCSUHRA| as part of |UDM| in the domain management
+   |UCSREST| as part of |UDM| in the domain management
 
 The *Univention Corporate Server* application component has *Product components*
 services assigned to it. *Product components* are an abstract container for the
@@ -47,7 +47,7 @@ main product building blocks, see :ref:`product-components`. *Product
 components* consist of the *UCS Management system* and other application
 services. *UCS Management System* application service consists of the *Domain
 Management* application service and others. |UCSUDM| (UDM)
-application service serves the application services *Domain management* and |UCSUHRA|.
+application service serves the application services *Domain management* and |UCSREST|.
 
 .. hint::
 
@@ -60,14 +60,14 @@ Architecture
 ------------
 
 :numref:`services-udm-http-rest-api-overview` provides an overview of the
-architecture of |UCSUHRA|.
+architecture of |UCSREST|.
 
 .. _services-udm-http-rest-api-nested:
 
 .. figure:: /images/udm-rest-api-nested.*
    :width: 700px
 
-   |UCSUHRA| overview in a nested view
+   |UCSREST| overview in a nested view
 
 .. index::
    pair: tornado; udm http rest api
@@ -75,35 +75,35 @@ architecture of |UCSUHRA|.
 
 The main building blocks are the following concepts:
 
-|UCSUHRA| application component
-   The central part of the |UCSUHRA| is the application component that
+|UCSREST| application component
+   The central part of the |UCSREST| is the application component that
    contains the respective application services for communication with the
    outside world, the server, and the gateway.
 
    The package :program:`univention-directory-manager-rest` provides this
    application component and all the pieces outlined later.
 
-|UCSUHRA| application service
-   The application service that the |UCSUHRA| explicitly exposes. It's
+|UCSREST| application service
+   The application service that the |UCSREST| explicitly exposes. It's
    an abstraction of the other application processes that realize it.
 
-*Gateway* for |UCSUHRA| application process
-   |UCSUHRA| launches one *Gateway* process. It forwards each request
-   from the *Reverse Proxy* to the appropriate *Server* for |UCSUHRA| process
+*Gateway* for |UCSREST| application process
+   |UCSREST| launches one *Gateway* process. It forwards each request
+   from the *Reverse Proxy* to the appropriate *Server* for |UCSREST| process
    with the required locale.
 
-*Server* for |UCSUHRA| application process
-   *Server* for |UCSUHRA| is a dedicated server process for each
+*Server* for |UCSREST| application process
+   *Server* for |UCSREST| is a dedicated server process for each
    configured natural language. It serves the content accordingly.
 
 *Reverse proxy* application service
    The *Reverse proxy* functions as gateway. It adds HTTP security headers and
-   forwards HTTP requests to the *Gateway* for |UCSUHRA| service. It
-   also handles errors in case the *Server* for |UCSUHRA| is
+   forwards HTTP requests to the *Gateway* for |UCSREST| service. It
+   also handles errors in case the *Server* for |UCSREST| is
    unreachable. It's part of the web server on |UCS|.
 
 *HTTP JSON interface* application interface
-   |UCSUHRA| can answer requests in the ``HAL+JSON`` format.
+   |UCSREST| can answer requests in the ``HAL+JSON`` format.
 
    Hypertext Application Language (HAL) provides hypermedia controls to navigate
    the API efficiently and independently.
@@ -123,18 +123,18 @@ non-nested view with some more concepts around the reverse proxy. It also adds
 the technology layer with :term:`Tornado`, :term:`Apache HTTP server` and
 :term:`Apache module mod_proxy`.
 
-*Tornado* implements the server and the gateway application process for the |UCSUHRA|. As other services also use *Apache HTTP server*, so does the
-|UCSUHRA|.
+*Tornado* implements the server and the gateway application process for the |UCSREST|. As other services also use *Apache HTTP server*, so does the
+|UCSREST|.
 
 .. _services-udm-http-rest-api-overview:
 
 .. figure:: /images/udm-rest-api-overview.*
 
-   |UCSUHRA| and its relation to the web server
+   |UCSREST| and its relation to the web server
 
-You can see in :numref:`services-udm-http-rest-api-overview`, that the |UCSUHRA| application services is an abstraction for the application processes
-*Gateway* for |UCSUHRA| and *Server* for |UCSUHRA|. All three
-concepts are assigned to the |UCSUHRA| application component.
+You can see in :numref:`services-udm-http-rest-api-overview`, that the |UCSREST| application services is an abstraction for the application processes
+*Gateway* for |UCSREST| and *Server* for |UCSREST|. All three
+concepts are assigned to the |UCSREST| application component.
 
 .. _services-udm-rest-api-flow:
 
@@ -143,7 +143,7 @@ Request flow
 
 :numref:`services-umd-http-rest-api-flow` shows the abstract flow of a request
 through the different concepts to the data store in the domain database *LDAP
-directory*. The flow emphasizes the dependency of the |UCSUHRA| to |UDM|. For
+directory*. The flow emphasizes the dependency of the |UCSREST| to |UDM|. For
 more information about the UDM architecture and how *UDM Python library* relates
 to it, see :ref:`services-udm-architecture`.
 
@@ -152,15 +152,15 @@ to it, see :ref:`services-udm-architecture`.
 .. figure:: /images/udm-rest-api-flow.*
    :width: 450px
 
-   Request flow for |UCSUHRA|
+   Request flow for |UCSREST|
 
 .. _services-udm-rest-api-capability:
 
 Capabilities
 ------------
 
-|UCSUHRA| provides capabilities as shown in
-:numref:`services-umd-http-rest-api-capability`. Different concepts of the |UCSUHRA| realize different capabilities, so that all of them serve a dedicated
+|UCSREST| provides capabilities as shown in
+:numref:`services-umd-http-rest-api-capability`. Different concepts of the |UCSREST| realize different capabilities, so that all of them serve a dedicated
 purpose.
 
 .. _services-umd-http-rest-api-capability:
@@ -168,7 +168,7 @@ purpose.
 .. figure:: /images/udm-rest-api-capabilities.*
    :width: 600px
 
-   |UCSUHRA| capabilities
+   |UCSREST| capabilities
 
 .. hint::
 
@@ -180,7 +180,7 @@ purpose.
    different meaning.
 
 OpenAPI schema
-   The *OpenAPI schema* provides the definition of the |UCSUHRA| in a
+   The *OpenAPI schema* provides the definition of the |UCSREST| in a
    programming language agnostic manner. It uses the OpenAPI specification and
    helps to transfer the knowledge about the API from the API provider to the
    API consumer.
@@ -190,9 +190,9 @@ RESTful architecture
 
 Multi-Language support
    The :ref:`component-management-system` supports multiple languages, such as
-   English and German. |UCSUHRA| belongs to the UCS management system
+   English and German. |UCSREST| belongs to the UCS management system
    and therefore supports the same set of languages. Language support is
-   important for |UCSUHRA| to provide localized messages to the client
+   important for |UCSREST| to provide localized messages to the client
    and the user.
 
 .. seealso::
@@ -206,7 +206,7 @@ Multi-Language support
 RESTful architecture
 --------------------
 
-The |UCSUHRA| adheres to the *RESTful* architecture as defined in
+The |UCSREST| adheres to the *RESTful* architecture as defined in
 :cite:t:`fielding-rest`. The term *REST* stands for **Re**\ presentation **S**\
 :spelling:ignore:`tate` **T**\ :spelling:ignore:`ransfer` and includes six
 architectural and four interface constraints that make a service *RESTful*.
@@ -369,7 +369,7 @@ The four interface constraints are the following:
 Dependencies
 ------------
 
-You can resolve the other detailed dependencies with the package manager. |UCSUHRA| depends on the following elements:
+You can resolve the other detailed dependencies with the package manager. |UCSREST| depends on the following elements:
 
 * :ref:`services-udm`
 * :ref:`services-umc` for providing the components for the caching of LDAP
@@ -382,7 +382,7 @@ You can resolve the other detailed dependencies with the package manager. |UCSUH
 
 * :term:`Tornado`
 
-The following :ref:`server roles <concept-role>` need |UCSUHRA|:
+The following :ref:`server roles <concept-role>` need |UCSREST|:
 
 * UCS Primary Directory Node
 * UCS Backup Directory Node
