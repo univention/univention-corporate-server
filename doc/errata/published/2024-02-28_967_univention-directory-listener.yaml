@@ -15,7 +15,7 @@ desc: |
    this case, which is similar to what we already did for the connection
    to the LDAP server.
    There is a new UCR variable `listener/notifier/retries` with default 30.
-   There is an exponential backoff algorithm to delay the retries and
+   There is an exponential back-off algorithm to delay the retries and
    log messages are generated showing what is going on.
 bug: [57024]
 erratum: 967
