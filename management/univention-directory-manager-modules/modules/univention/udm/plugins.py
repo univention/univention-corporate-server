@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -41,12 +40,12 @@ class Plugin(type):
 
     def __new__(mcs, name, bases, attrs):
         # type: (Type[Plugin], str, Tuple[type, ...], Dict[str, Any]) -> Plugin
-        new_cls = cast(Plugin, super(Plugin, mcs).__new__(mcs, name, bases, attrs))
+        new_cls = cast(Plugin, super().__new__(mcs, name, bases, attrs))
         Plugins.add_plugin(new_cls)
         return new_cls
 
 
-class Plugins(object):
+class Plugins:
     """Register `Plugin` subclasses and iterate over them."""
 
     _plugins = []  # type: List[Plugin]
@@ -94,5 +93,5 @@ class Plugins(object):
         path = os.path.join(base_module_dir, '*.py')
         for pymodule in glob(path):
             pymodule_name = os.path.basename(pymodule)[:-3]  # without .py
-            importlib.import_module('{}.{}'.format(self.python_path, pymodule_name))
+            importlib.import_module(f'{self.python_path}.{pymodule_name}')
         self._imported[self.python_path] = True

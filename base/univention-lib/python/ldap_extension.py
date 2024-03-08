@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -91,7 +90,7 @@ def _verify_handler_message_container(lo, position):
     cn_module = udm_modules.get('container/cn')
     udm_modules.init(lo, position, cn_module)
     try:
-        cn_object = cn_module.object(None, lo, position, dn='cn=handler_messages,{}'.format(position_dn))
+        cn_object = cn_module.object(None, lo, position, dn=f'cn=handler_messages,{position_dn}')
     except udm_errors.noObject:
         position.setDn(position_dn)
         cn_object = cn_module.object(None, lo, position)
@@ -106,7 +105,7 @@ def _get_handler_message_object(lo, position, handler_name, create=False):
     udm_modules.update()
     data_module = udm_modules.get('settings/data')
     udm_modules.init(lo, position, data_module)
-    data_object_dn = 'cn={},{}'.format(escape_dn_chars(handler_name), position_dn)
+    data_object_dn = f'cn={escape_dn_chars(handler_name)},{position_dn}'
     try:
         data_object = data_module.object(None, lo, position, dn=data_object_dn)
     except udm_errors.noObject:
@@ -124,7 +123,7 @@ def set_handler_message(name, dn, msg):
     # type: (str, str, str) -> None
     # currently only on Primary Directory Node
     if listener.configRegistry.get('server/role') in ('domaincontroller_master',):
-        ud.debug(ud.LISTENER, ud.INFO, 'set_handler_message for {}'.format(name))
+        ud.debug(ud.LISTENER, ud.INFO, f'set_handler_message for {name}')
         setuid = os.geteuid() != 0
         if setuid:
             listener.setuid(0)
@@ -164,16 +163,16 @@ def get_handler_message(name, binddn, bindpw):
         udm_modules.update()
         data_module = udm_modules.get('settings/data')
         udm_modules.init(lo, position, data_module)
-        data_object_dn = 'cn={},{}'.format(escape_dn_chars(name), position_dn)
+        data_object_dn = f'cn={escape_dn_chars(name)},{position_dn}'
         try:
             data_object = data_module.object(None, lo, position, dn=data_object_dn)
             data_object.open()
             if data_object.get('data', False):
                 msg = json.loads(bz2.decompress(base64.b64decode(data_object['data'])))
         except udm_errors.noObject:
-            msg = {"err": 'No object {} found'.format(data_object_dn)}
+            msg = {"err": f'No object {data_object_dn} found'}
     except Exception as err:
-        msg = {"err": 'Error get_handler_message for handler {}: {}'.format(name, err)}
+        msg = {"err": f'Error get_handler_message for handler {name}: {err}'}
     return msg
 
 
@@ -208,11 +207,7 @@ class UniventionLDAPExtension(metaclass=ABCMeta):
     @classmethod
     def create_base_container(cls, ucr, udm_passthrough_options):
         # type: (ConfigRegistry, List[str]) -> int
-        cmd = ["univention-directory-manager", "container/cn", "create"] + udm_passthrough_options + [
-            "--ignore_exists",
-            "--set", "name=%s" % cls.target_container_name,
-            "--position", "cn=univention,%s" % ucr['ldap/base'],
-        ]
+        cmd = ['univention-directory-manager', 'container/cn', 'create', *udm_passthrough_options, '--ignore_exists', '--set', 'name=%s' % cls.target_container_name, '--position', 'cn=univention,%s' % ucr['ldap/base']]
         return subprocess.call(cmd)
 
     def is_local_active(self):
@@ -256,9 +251,7 @@ class UniventionLDAPExtension(metaclass=ABCMeta):
 
     def udm_find_object(self):
         # type: () -> Tuple[int, str]
-        cmd = ["univention-directory-manager", self.udm_module_name, "list"] + self.udm_passthrough_options + [
-            "--filter", filter_format("name=%s", [self.objectname]),
-        ]
+        cmd = ['univention-directory-manager', self.udm_module_name, 'list', *self.udm_passthrough_options, '--filter', filter_format('name=%s', [self.objectname])]
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
         stdout, _ = p.communicate()
         return (p.returncode, stdout.decode('UTF-8', 'replace'))
@@ -334,9 +327,9 @@ class UniventionLDAPExtension(metaclass=ABCMeta):
         ]
 
         if self.udm_module_name == "settings/data":
-            common_udm_options.extend(["--set", "data_type={}".format(options.data_type)])
+            common_udm_options.extend(["--set", f"data_type={options.data_type}"])
             for meta in options.data_meta:
-                common_udm_options.extend(["--set", "meta={}".format(meta)])
+                common_udm_options.extend(["--set", f"meta={meta}"])
 
         if self.udm_module_name != "settings/ldapschema":
             if options.ucsversionstart:
@@ -387,10 +380,7 @@ class UniventionLDAPExtension(metaclass=ABCMeta):
         rc, self.object_dn, stdout = self.udm_find_object_dn()
         if not self.object_dn:
 
-            cmd = ["univention-directory-manager", self.udm_module_name, "create"] + self.udm_passthrough_options + [
-                "--set", "name=%s" % self.objectname,
-                "--position", self.target_container_dn,
-            ] + common_udm_options + active_change_udm_options
+            cmd = ['univention-directory-manager', self.udm_module_name, 'create', *self.udm_passthrough_options, '--set', 'name=%s' % self.objectname, '--position', self.target_container_dn, *common_udm_options, *active_change_udm_options]
             p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             out, _ = p.communicate()
             stdout = out.decode('UTF-8', 'replace')
@@ -403,10 +393,7 @@ class UniventionLDAPExtension(metaclass=ABCMeta):
 
                 appidentifier = os.environ.get('UNIVENTION_APP_IDENTIFIER')
                 if appidentifier:
-                    cmd = ["univention-directory-manager", self.udm_module_name, "modify"] + self.udm_passthrough_options + [
-                        "--set", "appidentifier=%s" % (appidentifier,),
-                        "--dn", new_object_dn,
-                    ]
+                    cmd = ['univention-directory-manager', self.udm_module_name, 'modify', *self.udm_passthrough_options, '--set', 'appidentifier=%s' % (appidentifier,), '--dn', new_object_dn]
                     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
                     out, _ = p.communicate()
                     stdout = out.decode('UTF-8', 'replace')
@@ -466,9 +453,7 @@ class UniventionLDAPExtension(metaclass=ABCMeta):
                 print("INFO: No change of core data of object %s." % (self.objectname,), file=sys.stderr)
                 active_change_udm_options = []
 
-            cmd = ["univention-directory-manager", self.udm_module_name, "modify"] + self.udm_passthrough_options + [
-                "--dn", self.object_dn,
-            ] + common_udm_options + active_change_udm_options
+            cmd = ['univention-directory-manager', self.udm_module_name, 'modify', *self.udm_passthrough_options, '--dn', self.object_dn, *common_udm_options, *active_change_udm_options]
             p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             out, _ = p.communicate()
             stdout = out.decode('UTF-8', 'replace')
@@ -479,10 +464,7 @@ class UniventionLDAPExtension(metaclass=ABCMeta):
 
             appidentifier = os.environ.get('UNIVENTION_APP_IDENTIFIER')
             if appidentifier:
-                cmd = ["univention-directory-manager", self.udm_module_name, "modify"] + self.udm_passthrough_options + [
-                    "--append", "appidentifier=%s" % (appidentifier,),
-                    "--dn", self.object_dn,
-                ]
+                cmd = ['univention-directory-manager', self.udm_module_name, 'modify', *self.udm_passthrough_options, '--append', 'appidentifier=%s' % (appidentifier,), '--dn', self.object_dn]
                 p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
                 out, _ = p.communicate()
                 stdout = out.decode('UTF-8', 'replace')
@@ -525,9 +507,7 @@ class UniventionLDAPExtension(metaclass=ABCMeta):
                 print("INFO: The object %s is still registered by the following apps: %s" % (objectname, apps), file=sys.stderr)
                 sys.exit(2)
 
-        cmd = ["univention-directory-manager", self.udm_module_name, "delete"] + self.udm_passthrough_options + [
-            "--dn", object_dn,
-        ]
+        cmd = ['univention-directory-manager', self.udm_module_name, 'delete', *self.udm_passthrough_options, '--dn', object_dn]
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         out, _ = p.communicate()
         stdout = out.decode('UTF-8', 'replace')
@@ -561,14 +541,14 @@ class UniventionLDAPExtension(metaclass=ABCMeta):
                 ud.debug(ud.LISTENER, ud.ERROR, 'Error accessing UDM: %s' % (e,))
                 if handler_name:
                     for object_dn in self._todo_list:
-                        set_handler_message(handler_name, object_dn, 'Error accessing UDM: {}'.format(e))
+                        set_handler_message(handler_name, object_dn, f'Error accessing UDM: {e}')
 
 
 class UniventionLDAPExtensionWithListenerHandler(UniventionLDAPExtension, metaclass=ABCMeta):
 
     def __init__(self, ucr):
         # type: (ConfigRegistry) -> None
-        super(UniventionLDAPExtensionWithListenerHandler, self).__init__(ucr)
+        super().__init__(ucr)
         self._do_reload = False
         self.ucr_template_dir = '/etc/univention/templates'
         self.ucr_slapd_conf_subfile_dir = '%s/files/etc/ldap/slapd.conf.d' % self.ucr_template_dir
@@ -636,7 +616,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
                 new_object_data = bz2.decompress(new['univentionLDAPSchemaData'][0])
             except TypeError:
                 ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing data of object %s.' % (name, dn))
-                set_handler_message(name, dn, 'Error uncompressing data of object {}.'.format(dn))
+                set_handler_message(name, dn, f'Error uncompressing data of object {dn}.')
                 return
 
             try:
@@ -678,7 +658,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
                         f.write(new_object_data)
                 except OSError:
                     ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing file %s.' % (name, new_filename))
-                    set_handler_message(name, dn, 'Error writing file {}.'.format(new_filename))
+                    set_handler_message(name, dn, f'Error writing file {new_filename}.')
                     return
 
                 ucr = ConfigRegistry()
@@ -695,7 +675,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
                 stdout = out.decode('UTF-8', 'replace')
                 if p.returncode != 0:
                     ud.debug(ud.LISTENER, ud.ERROR, '%s: validation failed (%s):\n%s.' % (name, p.returncode, stdout))
-                    set_handler_message(name, dn, 'slaptest validation failed {} {}'.format(stdout, p.returncode))
+                    set_handler_message(name, dn, f'slaptest validation failed {stdout} {p.returncode}')
                     # Revert changes
                     ud.debug(ud.LISTENER, ud.ERROR, '%s: Removing new file %s.' % (name, new_filename))
                     os.unlink(new_filename)
@@ -733,7 +713,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
                         shutil.move(old_filename, backup_filename)
                     except OSError:
                         ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old file %s, leaving it untouched.' % (name, old_filename))
-                        set_handler_message(name, dn, 'Error renaming old file {}, leaving it untouched.'.format(old_filename))
+                        set_handler_message(name, dn, f'Error renaming old file {old_filename}, leaving it untouched.')
                         os.close(backup_fd)
                         return
 
@@ -750,7 +730,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
                     stdout = out.decode('UTF-8', 'replace')
                     if p.returncode != 0:
                         ud.debug(ud.LISTENER, ud.ERROR, '%s: validation failed (%s):\n%s.' % (name, p.returncode, stdout))
-                        set_handler_message(name, dn, 'slaptest validation failed {} {}'.format(stdout, p.returncode))
+                        set_handler_message(name, dn, f'slaptest validation failed {stdout} {p.returncode}')
                         ud.debug(ud.LISTENER, ud.WARN, '%s: Restoring %s.' % (name, old_filename))
                         # Revert changes
                         try:
@@ -857,7 +837,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                 new_object_data = bz2.decompress(new['univentionLDAPACLData'][0])
             except TypeError:
                 ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing data of object %s.' % (name, dn))
-                set_handler_message(name, dn, 'Error uncompressing data of object {}.'.format(dn))
+                set_handler_message(name, dn, f'Error uncompressing data of object {dn}.')
                 return
 
             new_basename = new['univentionLDAPACLFilename'][0].decode('UTF-8')
@@ -927,7 +907,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                         f.write(new_object_data)
                 except OSError:
                     ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing file %s.' % (name, new_filename))
-                    set_handler_message(name, dn, 'Error writing file {}.'.format(new_filename))
+                    set_handler_message(name, dn, f'Error writing file {new_filename}.')
                     return
 
                 # plus backlink file
@@ -938,7 +918,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                         f.write("%s\n" % dn)
                 except OSError:
                     ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing backlink file %s.' % (name, new_backlink_filename))
-                    set_handler_message(name, dn, 'Error writing backlink file {}.'.format(new_backlink_filename))
+                    set_handler_message(name, dn, f'Error writing backlink file {new_backlink_filename}.')
                     return
 
                 # and UCR registration
@@ -949,7 +929,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                         f.write("Type: multifile\nMultifile: etc/ldap/slapd.conf\n\nType: subfile\nMultifile: etc/ldap/slapd.conf\nSubfile: etc/ldap/slapd.conf.d/%s\n" % new_basename)
                 except OSError:
                     ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing UCR info file %s.' % (name, new_ucrinfo_filename))
-                    set_handler_message(name, dn, 'Error writing UCR info file {}.'.format(new_ucrinfo_filename))
+                    set_handler_message(name, dn, f'Error writing UCR info file {new_ucrinfo_filename}.')
                     return
 
                 # Commit to slapd.conf
@@ -966,7 +946,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
                 stdout = out.decode('UTF-8', 'replace')
                 if p.returncode != 0:
                     ud.debug(ud.LISTENER, ud.ERROR, '%s: slapd.conf validation failed:\n%s.' % (name, stdout))
-                    set_handler_message(name, dn, 'slaptest validation failed {} {}'.format(stdout, p.returncode))
+                    set_handler_message(name, dn, f'slaptest validation failed {stdout} {p.returncode}')
                     # Revert changes
                     ud.debug(ud.LISTENER, ud.ERROR, '%s: Removing new file %s.' % (name, new_filename))
                     os.unlink(new_filename)
@@ -1082,7 +1062,7 @@ class UniventionUDMExtension(UniventionLDAPExtension, metaclass=ABCMeta):
 
     def wait_for_activation(self, timeout=180):
         # type: (int) -> bool
-        if not super(UniventionUDMExtension, self).wait_for_activation(timeout):
+        if not super().wait_for_activation(timeout):
             return False
 
         target_filepath = self.target_filepath
@@ -1141,7 +1121,7 @@ class UniventionUDMModule(UniventionUDMExtension):
 
     def wait_for_activation(self, timeout=180):
         # type: (int) -> bool
-        if not super(UniventionUDMModule, self).wait_for_activation(timeout):
+        if not super().wait_for_activation(timeout):
             return False
 
         timeout = 60
@@ -1205,7 +1185,7 @@ def option_validate_gnu_message_catalogfile(option, opt, value):
 
 
 class UCSOption(Option):
-    TYPES = Option.TYPES + ("existing_filename", "ucs_version")
+    TYPES = (*Option.TYPES, 'existing_filename', 'ucs_version')
     TYPE_CHECKER = copy(Option.TYPE_CHECKER)
     TYPE_CHECKER["existing_filename"] = option_validate_existing_filename
     TYPE_CHECKER["ucs_version"] = option_validate_ucs_version

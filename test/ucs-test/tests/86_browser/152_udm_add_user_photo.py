@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
-# -*- coding: utf-8 -*-
 ## desc: Test adding, changing and removing a photo for a user
 ## packages:
 ##  - univention-management-console-module-udm

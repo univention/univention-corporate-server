@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -361,7 +360,7 @@ class object(univention.admin.handlers.simpleLdap):
         dn = self._ldap_dn()
         if self.exists():
             rdn = self.lo.explodeDn(dn)[0]
-            dn = u'%s,%s' % (rdn, self.lo.parentDn(self.dn))
+            dn = '%s,%s' % (rdn, self.lo.parentDn(self.dn))
         return dn
 
     def unique_dn(self):
@@ -377,17 +376,17 @@ class object(univention.admin.handlers.simpleLdap):
     def acquire_unique_dn(self):
         # type: () -> str
         nonce = 1
-        cn = u'%s %s %d' % (self['firstname'] or '', self['lastname'], nonce)
+        cn = '%s %s %d' % (self['firstname'] or '', self['lastname'], nonce)
         self['cn'] = cn.strip()
         while not self.unique_dn():
             nonce += 1
-            cn = u'%s %s %d' % (self['firstname'] or '', self['lastname'], nonce)
+            cn = '%s %s %d' % (self['firstname'] or '', self['lastname'], nonce)
             self['cn'] = cn.strip()
         return self.get_candidate_dn()
 
     def _ldap_pre_ready(self):
         # type: () -> None
-        super(object, self)._ldap_pre_ready()
+        super()._ldap_pre_ready()
 
         if not self.exists() or self.hasChanged(('firstname', 'lastname')):
             self.acquire_unique_dn()

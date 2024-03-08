@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -60,7 +59,7 @@ class ComplexHandler(ListenerModuleHandler):
         # The log level for messages that go to
         # :file:`/var/log/univention/listener_modules/my_listener_module.log` is set
         # with the UCR variable `listener/module/my_listener_module/debug/level`.
-        super(ComplexHandler, self).__init__(listener_configuration, *args, **kwargs)
+        super().__init__(listener_configuration, *args, **kwargs)
         self.logger.info('ComplexHandler.__init__()')
         self.logger.debug('DEBUG level message')
         self.logger.info('INFO level message')
@@ -91,19 +90,19 @@ class ComplexHandler(ListenerModuleHandler):
         # The error handler will *not* return here. After all this is an unhandled exception.
 
     def initialize(self) -> None:
-        super(ComplexHandler, self).initialize()
+        super().initialize()
         self.logger.info('ComplexHandler.initialize()')
 
     def clean(self) -> None:
-        super(ComplexHandler, self).clean()
+        super().clean()
         self.logger.info('ComplexHandler.clean()')
 
     def pre_run(self) -> None:
-        super(ComplexHandler, self).pre_run()
+        super().pre_run()
         self.logger.info('ComplexHandler.pre_run()')
 
     def post_run(self) -> None:
-        super(ComplexHandler, self).post_run()
+        super().post_run()
         self.logger.info('ComplexHandler.post_run()')
 
     def error_handler(

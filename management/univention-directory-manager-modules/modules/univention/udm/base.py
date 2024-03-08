@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -49,7 +48,7 @@ from .plugins import Plugin
 LdapMapping = NamedTuple('LdapMapping', [('ldap2udm', Mapping[str, str]), ('udm2ldap', Mapping[str, str])])
 
 
-class BaseObjectProperties(object):
+class BaseObjectProperties:
     """Container for |UDM| properties."""
 
     def __init__(self, udm_obj):
@@ -75,7 +74,7 @@ class BaseObjectProperties(object):
         return memo[id_self]
 
 
-class BaseObject(object):
+class BaseObject:
     r"""
     Base class for |UDM| object classes.
 
@@ -162,7 +161,7 @@ class BaseObject(object):
         raise NotImplementedError()
 
 
-class BaseModuleMetadata(object):
+class BaseModuleMetadata:
     """Base class for UDM module meta data."""
 
     auto_open = True
@@ -181,7 +180,7 @@ class BaseModuleMetadata(object):
         # type: () -> str
         return '{}({})'.format(
             self.__class__.__name__,
-            ', '.join('{}={!r}'.format(k, v) for k, v in self.__dict__.items() if not str(k).startswith('_')),
+            ', '.join(f'{k}={v!r}' for k, v in self.__dict__.items() if not str(k).startswith('_')),
         )
 
     def instance(self, udm_module, api_version):
@@ -244,7 +243,7 @@ class ModuleMeta(Plugin):
         # type: (Type[ModuleMeta], str, Tuple[type, ...], Dict[str, Any]) -> ModuleMeta
         meta = attrs.pop('Meta', None)
         new_cls_meta = mcs.udm_meta_class(meta)
-        new_cls = cast(ModuleMeta, super(ModuleMeta, mcs).__new__(mcs, name, bases, attrs))
+        new_cls = cast(ModuleMeta, super().__new__(mcs, name, bases, attrs))
         new_cls.meta = new_cls_meta
         return new_cls
 
@@ -296,7 +295,7 @@ class BaseModule(metaclass=ModuleMeta):
 
     def __repr__(self):
         # type: () -> str
-        return '{}({!r})'.format(self.__class__.__name__, self.name)
+        return f'{self.__class__.__name__}({self.name!r})'
 
     def new(self, superordinate=None):
         # type: (Union[str, BaseObject, None]) -> BaseObject
@@ -334,14 +333,13 @@ class BaseModule(metaclass=ModuleMeta):
         :raises univention.udm.exceptions.NoObject: if no object is found with ID `id`
         :raises univention.udm.exceptions.MultipleObjects: if more than one object is found with ID `id`
         """
-        filter_s = filter_format('{}=%s'.format(self.meta.identifying_property), (id,))
+        filter_s = filter_format(f'{self.meta.identifying_property}=%s', (id,))
         res = list(self.search(filter_s))
         if not res:
-            raise NoObject('No object found for {!r}.'.format(filter_s), module_name=self.name)
+            raise NoObject(f'No object found for {filter_s!r}.', module_name=self.name)
         elif len(res) > 1:
             raise MultipleObjects(
-                'Searching in module {!r} with identifying_property {!r} (filter: {!r}) returned {} objects.'.format(
-                    self.name, self.meta.identifying_property, filter_s, len(res)), module_name=self.name)
+                f'Searching in module {self.name!r} with identifying_property {self.meta.identifying_property!r} (filter: {filter_s!r}) returned {len(res)} objects.', module_name=self.name)
         return res[0]
 
     def search(self, filter_s='', base='', scope='sub', sizelimit=0):

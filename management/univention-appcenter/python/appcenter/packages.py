@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -139,7 +138,7 @@ def wait_for_dpkg_lock(timeout=120):
     package_logger.debug('Trying to get a lock for %s...' % lock_file_string)
     first = True
     while first or timeout > 0:
-        returncode = call_process(['fuser'] + lock_files).returncode
+        returncode = call_process(['fuser', *lock_files]).returncode
         if returncode == 0:
             if first:
                 package_logger.info('Could not lock %s. Is another process using it? Waiting up to %s seconds' % (lock_file_string, timeout))
@@ -170,7 +169,7 @@ def _apt_get(action, pkgs):
     env = os.environ.copy()
     env['DEBIAN_FRONTEND'] = 'noninteractive'
     apt_args = _apt_args()
-    ret = call_process(['/usr/bin/apt-get'] + apt_args + [action] + pkgs, logger=package_logger, env=env).returncode == 0
+    ret = call_process(['/usr/bin/apt-get', *apt_args, action, *pkgs], logger=package_logger, env=env).returncode == 0
     reload_package_manager()
     return ret
 
@@ -179,7 +178,7 @@ def _apt_get_dry_run(action, pkgs):
     # type: (str, List[str]) -> Dict[str, List[str]]
     apt_args = _apt_args()
     logger = LogCatcher(package_logger)
-    success = call_process(['/usr/bin/apt-get'] + apt_args + [action, '-s'] + pkgs, logger=logger).returncode == 0
+    success = call_process(['/usr/bin/apt-get', *apt_args, action, '-s', *pkgs], logger=logger).returncode == 0
     install, remove, broken = [], [], []
     install_regex = re.compile(r'^(Inst) ([^ ]*?) \((.*?) ')
     upgrade_remove_regex = re.compile(r'^(Remv|Inst) ([^ ]*?) \[(.*?)\]')
@@ -240,5 +239,5 @@ def update_packages():
 
 def mark_packages_as_manually_installed(pkgs):
     # type: (List[str]) -> None
-    call_process(['/usr/bin/apt-mark', 'manual'] + pkgs, logger=package_logger)
+    call_process(['/usr/bin/apt-mark', 'manual', *pkgs], logger=package_logger)
     reload_package_manager()

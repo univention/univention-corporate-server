@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  module: software management
@@ -83,7 +82,7 @@ from .util import ComponentManager, create_url, install_opener, scheme_is_http, 
 _ = umc.Translation('univention-management-console-module-appcenter').translate
 
 
-class NoneCandidate(object):
+class NoneCandidate:
     """
     Mock object if package has no candidate
     (may happen without network connection)
@@ -96,7 +95,7 @@ class NoneCandidate(object):
 
 class UMCProgressHandler(logging.Handler):
     def __init__(self, progress):
-        super(UMCProgressHandler, self).__init__()
+        super().__init__()
         self.progress = progress
 
     def emit(self, record):
@@ -109,7 +108,7 @@ class UMCProgressHandler(logging.Handler):
 
 class ProgressInfoHandler(logging.Handler):
     def __init__(self, package_manager):
-        super(ProgressInfoHandler, self).__init__()
+        super().__init__()
         self.state = package_manager.progress_state
 
     def emit(self, record):
@@ -198,7 +197,7 @@ class Instance(umcm.Base, ProgressMixin):
 
     def error_handling(self, etype, exc, etraceback):
         error_handling(etype, exc, etraceback)
-        return super(Instance, self).error_handling(exc, etype, etraceback)
+        return super().error_handling(exc, etype, etraceback)
 
     @simple_response
     def version(self, version=None):

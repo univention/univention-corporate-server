@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -258,7 +257,7 @@ layout = [
 
 def unmapSambaRid(oldattr):
     sid = oldattr.get('sambaSID', [b''])[0].decode('ASCII')
-    sid, has_rid, rid = sid.rpartition(u'-')
+    sid, has_rid, rid = sid.rpartition('-')
     if has_rid and rid.isdigit():
         return rid
 
@@ -278,7 +277,7 @@ mapping.register('univentionObjectIdentifier', 'univentionObjectIdentifier', Non
 mapping.register('univentionSourceIAM', 'univentionSourceIAM', None, univention.admin.mapping.ListToString)
 
 
-class AgingCache(object):
+class AgingCache:
 
     def __new__(type, *args, **kwargs):
         # Falls es noch keine Instanz dieser Klasse gibt, wird eine erstellt und in _the_instance abgelegt.
@@ -458,7 +457,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_ready(self):
         # type: () -> None
-        super(object, self)._ldap_pre_ready()
+        super()._ldap_pre_ready()
 
         # get lock for name
         if self['name'] and (not self.exists() or self.hasChanged('name') and self['name'].lower() != self.oldinfo['name'].lower()):
@@ -476,7 +475,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_create(self):
         # type: () -> None
-        super(object, self)._ldap_pre_create()
+        super()._ldap_pre_create()
 
         if self['gidNumber']:
             univention.admin.allocators.acquireUnique(self.lo, self.position, 'gidNumber', self['gidNumber'], 'gidNumber', scope='base')
@@ -494,7 +493,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_modify(self):
         # type: () -> None
-        super(object, self)._ldap_pre_modify()
+        super()._ldap_pre_modify()
         self.check_for_group_recursion()
         self.check_ad_group_type_change()
 
@@ -504,7 +503,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_addlist(self):
         # type: () -> list
-        al = super(object, self)._ldap_addlist()
+        al = super()._ldap_addlist()
 
         if 'posix' not in self.options:
             al.append(('objectClass', b'organizationalRole'))  # any STRUCTURAL class with 'cn'
@@ -588,12 +587,12 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_post_create(self):
         # type: () -> None
-        super(object, self)._ldap_post_create()
+        super()._ldap_post_create()
         self.__update_membership()
 
     def _ldap_post_modify(self):
         # type: () -> None
-        super(object, self)._ldap_post_modify()
+        super()._ldap_post_modify()
         self.__update_membership()
         old_sid = self.oldattr.get('sambaSID', [b''])[0].decode('ASCII')
         if self._samba_sid and self._samba_sid != old_sid:
@@ -602,7 +601,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_remove(self):
         # type: () -> None
-        super(object, self)._ldap_pre_remove()
+        super()._ldap_pre_remove()
         self.open()
         # is this group in mentioned in settings/default?
         try:
@@ -634,7 +633,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_post_remove(self):
         # type: () -> None
-        super(object, self)._ldap_post_remove()
+        super()._ldap_post_remove()
         for group in self.info.get('memberOf', []):
             if isinstance(group, list):
                 group = group[0]
@@ -648,7 +647,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_post_move(self, olddn):
         # type: (str) -> None
-        super(object, self)._ldap_post_move(olddn)
+        super()._ldap_post_move(olddn)
         settings_module = univention.admin.modules._get('settings/default')
         settings_object = univention.admin.objects.get(settings_module, None, self.lo, position='', dn='cn=default,cn=univention,%s' % self.lo.base)
         settings_object.open()
@@ -799,7 +798,7 @@ class object(univention.admin.handlers.simpleLdap):
         else:
             childs = grpdn2childgrpdns[dn]
 
-        new_parents = parents + [dn]
+        new_parents = [*parents, dn]
         for childgrp in childs:
             if childgrp.lower() in new_parents:
                 dnCircle = new_parents[new_parents.index(childgrp.lower()):] + [childgrp.lower()]
@@ -918,10 +917,10 @@ class object(univention.admin.handlers.simpleLdap):
         searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
         new_groupType = self.info.get('adGroupType', 0)
         if self.__is_groupType_local(new_groupType):
-            sid = u'S-1-5-32-' + self['sambaRID']
+            sid = 'S-1-5-32-' + self['sambaRID']
         else:
             domainsid = searchResult[0][1]['sambaSID'][0].decode('ASCII')
-            sid = domainsid + u'-' + rid
+            sid = domainsid + '-' + rid
         try:
             return self.request_lock('sid', sid)
         except univention.admin.uexceptions.noLock:
@@ -936,7 +935,7 @@ class object(univention.admin.handlers.simpleLdap):
         elif self.s4connector_present and not self.__is_groupType_local(new_groupType):
             # In this case Samba 4 must create the SID, the s4 connector will sync the
             # new sambaSID back from Samba 4.
-            return u'S-1-4-%s' % (gidNum,)
+            return 'S-1-4-%s' % (gidNum,)
 
         num = gidNum
         generateDomainLocalSid = self.__is_groupType_local(new_groupType)

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  appcenter logging module
@@ -75,7 +74,7 @@ class RangeFilter(logging.Filter):
     """
 
     def __init__(self, min_level=None, max_level=None):
-        super(RangeFilter, self).__init__()
+        super().__init__()
         self.min_level = min_level
         self.max_level = max_level
 
@@ -107,7 +106,7 @@ class UMCHandler(logging.Handler):
                 MODULE.error(msg)
 
 
-class StreamReader(object):
+class StreamReader:
 
     def __init__(self, logger, level):
         self.logger = logger
@@ -121,7 +120,7 @@ class StreamReader(object):
         pass
 
 
-class LogCatcher(object):
+class LogCatcher:
 
     def __init__(self, logger=None):
         self._original_name = None
@@ -251,7 +250,7 @@ class ShortNameFormatter(logging.Formatter):
         record.short_name = record.name
         if record.short_name.startswith('%s.' % self.shorten):
             record.short_name = record.short_name[len(self.shorten) + 1:]
-        return super(ShortNameFormatter, self).format(record)
+        return super().format(record)
 
 
 def get_logfile_logger(name):

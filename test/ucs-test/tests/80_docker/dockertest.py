@@ -303,9 +303,9 @@ class App:
                 set_vars.append('%s=%s' % (key, value))
         cmd = ['univention-app', 'configure', '%s=%s' % (self.app_name, self.app_version)]
         if set_vars:
-            cmd.extend(['--set'] + set_vars)
+            cmd.extend(['--set', *set_vars])
         if unset_vars:
-            cmd.extend(['--unset'] + unset_vars)
+            cmd.extend(['--unset', *unset_vars])
         error_handling_call(cmd, exc=UCSTest_DockerApp_ConfigureFailed)
 
     def install_via_umc(self):

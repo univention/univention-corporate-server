@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -54,7 +53,7 @@ def names(count: int) -> Iterator[str]:
     yield from ('nscd%04x' % index for index in range(count))
 
 
-class MassCreate(object):
+class MassCreate:
     """Mass create users and groups."""
 
     def __init__(self, count: int) -> None:
@@ -101,7 +100,7 @@ class MassCreate(object):
 
         return dn
 
-    def user(self, name: str, groups: List[str]) -> str:
+    def user(self, name: str, groups: list[str]) -> str:
         """Create user, which is itself member in groups."""
         gdn = ["cn=%s,%s" % (escape_dn_chars(group), self.gp.getDn()) for group in groups]
         u = self.uu.object(co=None, lo=self.access, position=self.up)
@@ -129,11 +128,11 @@ class MassCreate(object):
 
         return dn
 
-    def group_members(self, name: str, uniqueMember: List[str] = [], memberUid: List[str] = []) -> str:
+    def group_members(self, name: str, uniqueMember: list[str] = [], memberUid: list[str] = []) -> str:
         """Set members of group."""
         dn = "cn=%s,%s" % (escape_dn_chars(name), self.gp.getDn())
 
-        ml: List[Tuple[object, str, object]] = []
+        ml: list[tuple[object, str, object]] = []
         if uniqueMember:
             data = [_.encode('utf8') for _ in uniqueMember]
             ml.append((ldap.MOD_ADD, 'uniqueMember', data))
@@ -161,14 +160,14 @@ class MassCreate(object):
 
         return dn
 
-    def create(self, groups: List[str]) -> None:
+    def create(self, groups: list[str]) -> None:
         """Create hierarchy of groups and users."""
         for group in groups:
             self.group(group)
         self.group('nscd_all')
 
-        uniqueMember: List[str] = []
-        memberUid: List[str] = []
+        uniqueMember: list[str] = []
+        memberUid: list[str] = []
 
         for name in names(self.count):
             if name.endswith('000'):
@@ -181,7 +180,7 @@ class MassCreate(object):
             user_name = name
             if self.suffix:
                 user_name += choice(self.suffix)
-            dn = self.user(user_name, [name[:-2], name[:-1]] + groups)
+            dn = self.user(user_name, [name[:-2], name[:-1], *groups])
             uniqueMember.append(dn)
             memberUid.append(name)
 

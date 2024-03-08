@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  baseconfig module: Modifies udm portals/entry and portals/category on UCR changes
@@ -53,7 +52,7 @@ log_to_logfile()
 portal_logger = get_base_logger().getChild('portalentries')
 
 
-class _Link(object):
+class _Link:
     def __init__(self, protocol=None, host=None, port=None, path=None, full=None):
         self.protocol = protocol
         self.host = host

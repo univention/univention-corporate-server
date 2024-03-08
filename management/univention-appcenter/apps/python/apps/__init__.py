@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  module: software management
@@ -67,4 +66,4 @@ class Instance(umcm.Base):
 
     def error_handling(self, etype, exc, etraceback):
         error_handling(etype, exc, etraceback)
-        return super(Instance, self).error_handling(exc, etype, etraceback)
+        return super().error_handling(exc, etype, etraceback)

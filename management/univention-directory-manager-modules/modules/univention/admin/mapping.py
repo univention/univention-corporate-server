@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -144,7 +143,7 @@ def ListToString(value, encoding=()):
     if value:
         return UnmapToUnicode(value, encoding)[0]
     else:
-        return u''
+        return ''
 
 
 def ListToIntToString(list_):
@@ -231,7 +230,7 @@ def IgnoreNone(value, encoding=()):
     b'1'
     >>> IgnoreNone('None')
     """
-    if value != u'None':
+    if value != 'None':
         return value.encode(*encoding)
     return None  # FIXME
 
@@ -277,16 +276,16 @@ def unmapUNIX_TimeInterval(seconds):
     if isinstance(seconds, (list, tuple)):
         seconds = seconds[0]
     value = _stringToInt(seconds)
-    unit = u'seconds'
+    unit = 'seconds'
     if value % 60 == 0:
         value //= 60
-        unit = u'minutes'
+        unit = 'minutes'
         if value % 60 == 0:
             value //= 60
-            unit = u'hours'
+            unit = 'hours'
             if value % 24 == 0:
                 value //= 24
-                unit = u'days'
+                unit = 'days'
     return [str(value), unit]
 
 
@@ -313,11 +312,11 @@ def mapUNIX_TimeInterval(value):
             unit = value[1]
         value = value[0]
     val = _stringToInt(value)
-    if unit == u'days':
+    if unit == 'days':
         val *= 24 * 60 * 60
-    elif unit == u'hours':
+    elif unit == 'hours':
         val *= 60 * 60
-    elif unit == u'minutes':
+    elif unit == 'minutes':
         val *= 60
     return str(val).encode('ASCII')
 
@@ -397,8 +396,8 @@ def BooleanListToString(list, encoding=()):
     '1'
     """
     v = ListToString(list, encoding=encoding)
-    if v == u'0':
-        return u''
+    if v == '0':
+        return ''
     return v
 
 
@@ -415,16 +414,16 @@ def BooleanUnMap(value, encoding=()):
     >>> BooleanUnMap('1')
     b'1'
     """
-    if value == u'0':
+    if value == '0':
         return b''
     return value.encode(*encoding)
 
 
-class dontMap(object):
+class dontMap:
     """'Do nothing' mapping."""
 
 
-class mapping(object):
+class mapping:
     """Map |LDAP| attribute names and values to |UDM| property names and values and back."""
 
     def __init__(self):

@@ -28,7 +28,7 @@ class PasswordChangeError(Exception):
     pass
 
 
-class UMCTester(object):
+class UMCTester:
 
     def test_umc(self):
         try:

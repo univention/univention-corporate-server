@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Directory Reports
 #  token classes
@@ -34,7 +33,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
-class Token(object):
+class Token:
 
     def __init__(self, name=None, attrs={}, data=None):
         self.name = name

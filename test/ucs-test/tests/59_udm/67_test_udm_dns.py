@@ -719,7 +719,7 @@ class Test_DNSPointerRecord:
 
         ptr_records = [uts.random_dns_record(), uts.random_dns_record()]
         udm.modify_object('dns/ptr_record', dn=ptr, superordinate=reverse_zone, append={'ptr_record': ptr_records}, wait_for=True)
-        utils.verify_ldap_object(ptr, {'pTRRecord': ptr_records + [ptr_record]})
+        utils.verify_ldap_object(ptr, {'pTRRecord': [*ptr_records, ptr_record]})
 
     @pytest.mark.parametrize('ip', [
         uts.random_subnet(),

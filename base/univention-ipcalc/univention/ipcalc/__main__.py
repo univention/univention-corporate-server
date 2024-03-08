@@ -68,7 +68,7 @@ def parse_options(args=None):
     opt = parser.parse_args(args)
 
     try:
-        opt.network = ipaddress.ip_interface(u'%s/%s' % (opt.address, opt.netmask))
+        opt.network = ipaddress.ip_interface('%s/%s' % (opt.address, opt.netmask))
     except ValueError as ex:
         parser.error("Invalid --netmask: %s" % (ex,))
 

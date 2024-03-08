@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -39,7 +38,7 @@ from univention.ldap_cache.log import debug
 DB_DIRECTORY = '/usr/share/univention-group-membership-cache/caches'
 
 
-class Caches(object):
+class Caches:
     def __init__(self, db_directory=DB_DIRECTORY):
         # type: (str) -> None
         self._directory = db_directory
@@ -78,7 +77,7 @@ class Caches(object):
         raise NotImplementedError()
 
 
-class Shard(object):
+class Shard:
     ldap_filter = None  # type: Optional[str]
     db_name = None  # type: Optional[str]
     single_value = False
@@ -132,7 +131,7 @@ class Shard(object):
         raise ValueError(self.key)
 
 
-class LdapCache(object):
+class LdapCache:
     def __init__(self, name, single_value, reverse):
         # type: (str, bool, bool) -> None
         self.name = name

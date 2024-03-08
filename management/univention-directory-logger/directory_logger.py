@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Directory Listener
 #  listener script for directory transaction logging
@@ -44,7 +43,6 @@ import re
 import subprocess
 import syslog
 import time
-from typing import Dict, List, Tuple
 
 import univention.debug as ud
 
@@ -76,7 +74,7 @@ SAFE_STRING_RE = re.compile(r'^(?:\000|\n|\r| |:|<)|[\000\n\r\200-\377]+|[ ]+$'.
 DELLOG_FILE_LINE_NUMBERS = 5
 
 
-def ldapEntry2string(entry: Dict[str, List[bytes]]) -> str:
+def ldapEntry2string(entry: dict[str, list[bytes]]) -> str:
     # TODO: we don't know the encoding of the attribute, therefore every non-ASCII value must be base64
     return ''.join(
         '%s:: %s\n' % (key, base64.standard_b64encode(value).decode('ASCII'))
@@ -96,7 +94,7 @@ def ldapTime2string(timestamp: str) -> str:
     return time.strftime(timestampfmt, timestruct)
 
 
-def filterOutUnchangedAttributes(old_copy: Dict[str, List[bytes]], new_copy: Dict[str, List[bytes]]) -> None:
+def filterOutUnchangedAttributes(old_copy: dict[str, list[bytes]], new_copy: dict[str, list[bytes]]) -> None:
     for key in list(old_copy):
         if key not in new_copy:
             continue
@@ -126,7 +124,7 @@ def _parse_dellog_file(pathname: str) -> None:
             raise ValueError('Expected 5 lines, but received %d' % len(lines))
 
 
-def process_dellog(dn: str) -> Tuple[str, str, str, str]:
+def process_dellog(dn: str) -> tuple[str, str, str, str]:
     dellog = configRegistry['ldap/logging/dellogdir']
 
     dellist = sorted(os.listdir(dellog))
@@ -177,7 +175,7 @@ def prefix_record(record: str, identifier: int) -> str:
     return '\n'.join('ID %s: %s' % (identifier, line) for line in record.splitlines()) + '\n'
 
 
-def handler(dn: str, new_copy: Dict[str, List[bytes]], old_copy: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new_copy: dict[str, list[bytes]], old_copy: dict[str, list[bytes]]) -> None:
     if not configRegistry.is_true('ldap/logging'):
         return
 

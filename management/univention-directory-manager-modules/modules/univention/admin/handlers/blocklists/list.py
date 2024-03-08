@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -93,11 +92,11 @@ layout = [
 
 
 def mapBlockingProperty(vals, encoding=()):
-    return [u' '.join(val).encode(*encoding) for val in vals]
+    return [' '.join(val).encode(*encoding) for val in vals]
 
 
 def unmapBlockingProperty(vals, encoding=()):
-    return [val.decode(*encoding).split(u' ', 1) for val in vals]
+    return [val.decode(*encoding).split(' ', 1) for val in vals]
 
 
 mapping = univention.admin.mapping.mapping()

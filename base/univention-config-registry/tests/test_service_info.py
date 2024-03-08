@@ -34,7 +34,7 @@ def maxs(mins):
     return mins
 
 
-class TestService(object):
+class TestService:
 
     @pytest.fixture()
     def popen(self, mocker):
@@ -86,7 +86,7 @@ class TestService(object):
 
     def test_status_error(self, maxs, popen):
         popen.side_effect = EnvironmentError
-        assert maxs.status() == u""
+        assert maxs.status() == ""
 
     @pytest.mark.parametrize("field", ["systemd", "name"])
     @pytest.mark.parametrize("name", ["name", "name.service"])
@@ -107,7 +107,7 @@ class TestService(object):
             mins._change_state("action")
 
 
-class TestPidOf(object):
+class TestPidOf:
 
     def test_basic(self, mocker, tmpdir):
         docker_pid = tmpdir.join("docker.pid")
@@ -124,7 +124,7 @@ class TestPidOf(object):
         assert usi.pidof("XXX", 42) == []
 
 
-class TestServiceInfo(object):
+class TestServiceInfo:
 
     @pytest.fixture(autouse=True)
     def setup0(self, tmpdir, monkeypatch):

@@ -48,7 +48,7 @@ def log(mockopen):
     mockopen.write("/var/log/univention/repository.log", b"")
 
 
-class TestUniventionMirror(object):
+class TestUniventionMirror:
     """Unit test for univention.updater.mirror"""
 
     def test_config_repository(self, ucr, m):
@@ -171,7 +171,7 @@ class TestUniventionMirror(object):
         write_releases_json.assert_called_once_with()
 
 
-class TestFilter(object):
+class TestFilter:
     """Unit test for univention.updater.mirror.filter_releases_json"""
 
     RELEASES = json.loads(gen_releases([(5, 0, 0), (5, 0, 1), (5, 0, 2)]))

@@ -64,7 +64,7 @@ class LicenseServer:
         ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
         ssl_context.load_cert_chain(
             certfile=f'{self.cert_basedir}cert.pem',
-            keyfile=f'{self.cert_basedir}private.key'
+            keyfile=f'{self.cert_basedir}private.key',
         )
 
         HTTPHandlerClass.protocol_version = Protocol

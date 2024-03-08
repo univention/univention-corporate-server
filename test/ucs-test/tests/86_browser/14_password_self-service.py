@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
-# -*- coding: utf-8 -*-
 ## desc: test password reset via self service app
 ## packages:
 ##  - univention-mail-server
@@ -41,7 +40,7 @@ class UmcPasswordSelfServiceError(Exception):
     pass
 
 
-class User(object):
+class User:
 
     def __init__(self, username, password='univention', mail=None):
         self.name = username
@@ -49,7 +48,7 @@ class User(object):
         self.mail = mail
 
 
-class UMCTester(object):
+class UMCTester:
 
     def test_umc(self):
         self.enable_mail_receiving()

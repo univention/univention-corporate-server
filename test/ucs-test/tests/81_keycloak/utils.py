@@ -32,15 +32,20 @@ from __future__ import annotations
 
 import subprocess
 import time
-from types import SimpleNamespace
+from typing import TYPE_CHECKING
 
 import requests
-from keycloak import KeycloakAdmin
-from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+
+
+if TYPE_CHECKING:
+    from types import SimpleNamespace
+
+    from keycloak import KeycloakAdmin
+    from selenium.webdriver.chrome.webdriver import WebDriver
+    from selenium.webdriver.remote.webelement import WebElement
 
 
 def host_is_alive(host: str) -> bool:

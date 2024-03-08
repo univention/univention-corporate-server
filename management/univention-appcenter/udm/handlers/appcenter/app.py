@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Directory Manager Modules
 #  directory manager module for App Metadata

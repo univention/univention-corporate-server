@@ -39,7 +39,7 @@ from univention.config_registry import ConfigRegistry
 from univention.config_registry.interfaces import Interfaces
 
 
-class ChangeSet(object):
+class ChangeSet:
 
     def __init__(self, ucr: ConfigRegistry, profile: Dict[str, str], options):
         self.ucr = ucr

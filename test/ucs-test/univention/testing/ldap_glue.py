@@ -198,10 +198,7 @@ class LDAPConnection:
     def set_attribute_with_provision_ctrl(self, dn, key, value):
         LDB_CONTROL_PROVISION_OID = '1.3.6.1.4.1.7165.4.3.16'
         DSDB_CONTROL_REPLICATED_UPDATE_OID = '1.3.6.1.4.1.7165.4.3.3'
-        ctrls = [
-            LDAPControl(LDB_CONTROL_PROVISION_OID, criticality=0),
-            LDAPControl(DSDB_CONTROL_REPLICATED_UPDATE_OID, criticality=0),
-        ] + self.serverctrls_for_add_and_modify
+        ctrls = [LDAPControl(LDB_CONTROL_PROVISION_OID, criticality=0), LDAPControl(DSDB_CONTROL_REPLICATED_UPDATE_OID, criticality=0), *self.serverctrls_for_add_and_modify]
         print(f'Replace {key!r}={value!r} at {dn!r} (with provision control)', file=sys.stderr)
         self.lo.modify_ext_s(dn, [(ldap.MOD_REPLACE, key, value)], serverctrls=ctrls)
 
@@ -306,7 +303,7 @@ class ADConnection(LDAPConnection):
         exploded = ldap.dn.str2dn(dn)
         new_rdn = [("cn", name, ldap.AVA_STRING)] if name else exploded[0]
         new_position = ldap.dn.str2dn(position) if position else exploded[1:]
-        new_dn = ldap.dn.dn2str([new_rdn] + new_position)
+        new_dn = ldap.dn.dn2str([new_rdn, *new_position])
         self.move(dn, new_dn)
         return new_dn
 

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention System Setup
 # cleanup script to shut down the local browser in the appliance scenario

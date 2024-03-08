@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Copyright 2022-2024 Univention GmbH
 #
@@ -229,7 +228,7 @@ def basicConfig(
     univention_debug_categories=None,
     do_exit=True,
     delay_init=False,  # until first use
-    **kwargs  # ,
+    **kwargs,  # ,
 ):
     """
     Do basic configuration for the logging system.
@@ -276,7 +275,7 @@ class Logger(logging.Logger):
         self.univention_debug_handler = handler = DebugHandler(self.univention_debug_category, **kwargs)
         if level == logging.NOTSET:
             level = handler.getLevel()
-        super(Logger, self).__init__(name, level=level)
+        super().__init__(name, level=level)
         self.propagate = False
         self._formatter = LevelDependentFormatter(log_pid=log_pid)
         handler.setFormatter(self._formatter)
@@ -284,7 +283,7 @@ class Logger(logging.Logger):
         self.addHandler(handler)
 
     def setLevel(self, level):
-        super(Logger, self).setLevel(level)
+        super().setLevel(level)
         self.univention_debug_handler.setLevel(self.level)
 
     def isEnabledFor(self, level):
@@ -316,7 +315,7 @@ class Logger(logging.Logger):
         self.univention_debug_handler.setLevel(level)
 
     def __repr__(self):
-        msg = super(Logger, self).__repr__()
+        msg = super().__repr__()
         return '<univention.logging.%s' % (msg[1:],)
 
 
@@ -325,7 +324,7 @@ class LevelDependentFormatter(logging.Formatter):
 
     def __init__(self, datefmt=None, log_pid=False):
         self._style = None
-        super(LevelDependentFormatter, self).__init__(None, datefmt=datefmt)
+        super().__init__(None, datefmt=datefmt)
         self.log_pid = log_pid
         self._level_to_format_mapping = _LEVEL_TO_FORMAT_MAPPING.copy()
 
@@ -351,7 +350,7 @@ class LevelDependentFormatter(logging.Formatter):
         self._fmt = fmt
         if self._style is not None:
             self._style._fmt = self._fmt
-        return super(LevelDependentFormatter, self).format(record)
+        return super().format(record)
 
 
 class DebugHandler(logging.Handler):
@@ -365,7 +364,7 @@ class DebugHandler(logging.Handler):
         self._init_args = ('stderr', ud.NO_FLUSH, ud.NO_FUNCTION)
         if auto_init and not delay_init:
             self.init(*self._init_args)
-        super(DebugHandler, self).__init__(level)
+        super().__init__(level)
 
     def emit(self, record):
         if self.auto_init and self.delay_init:
@@ -394,7 +393,7 @@ class DebugHandler(logging.Handler):
         ud.set_level(self._category, level)
 
     def close(self):
-        super(DebugHandler, self).close()
+        super().close()
         if self.do_exit:
             ud.exit()
 
@@ -405,7 +404,7 @@ class DebugHandler(logging.Handler):
         return _map_ud_to_level(self.get_ud_level())
 
     def setLevel(self, level):
-        super(DebugHandler, self).setLevel(level)
+        super().setLevel(level)
         ud.set_level(self._category, _map_level_to_ud(self.level))
 
     def __repr__(self):

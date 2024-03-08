@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -92,7 +91,7 @@ class object(DHCPBase):
         co,  # type: None
         lo,  # type: univention.admin.uldap.access
         position,  # type: univention.admin.uldap.position | None
-        dn=u'',  # type: str
+        dn='',  # type: str
         superordinate=None,  # type: univention.admin.handlers.simpleLdap | None
         attributes=None,  # type: univention.admin.handlers._Attributes | None
     ):  # type: (...) -> None

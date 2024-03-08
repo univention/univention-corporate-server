@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -45,7 +44,7 @@ def logrotate_ucr(mock_ucr):
     return mock_ucr
 
 
-class TestLogrotateConfig(object):
+class TestLogrotateConfig:
     def test_empty(self, ucrLogrotate, mock_ucr):
         settings = ucrLogrotate.getLogrotateConfig("my-service", mock_ucr)
         assert settings["compress"] == "compress"

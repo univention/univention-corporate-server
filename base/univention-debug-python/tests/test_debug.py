@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Copyright 2024 Univention GmbH
 #
@@ -142,13 +141,13 @@ def test_reopen(parse, tmplog):
 
 
 def test_unicode(parse, tmplog):
-    ud.debug(ud.MAIN, ud.ERROR, u'\u2603' if sys.getdefaultencoding() != 'ascii' else u'\u2603'.encode())
+    ud.debug(ud.MAIN, ud.ERROR, '\u2603' if sys.getdefaultencoding() != 'ascii' else '\u2603'.encode())
     ud.exit()
 
     output = tmplog.read()
     for ((c_type, c_groups), (e_type, e_groups)) in zip(parse(output), [
             ('init', {}),
-            ('msg', {'msg': '\xe2\x98\x83' if sys.version_info.major < 3 else u'\u2603'}),
+            ('msg', {'msg': '\xe2\x98\x83' if sys.version_info.major < 3 else '\u2603'}),
             ('exit', {}),
     ]):
         assert c_type == e_type

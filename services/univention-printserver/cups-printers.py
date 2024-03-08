@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Print Server
 #  listener module: management of CUPS printers
@@ -39,7 +38,6 @@ import os
 import shlex
 import subprocess
 import time
-from typing import Dict, List
 
 from ldap.dn import str2dn
 
@@ -102,13 +100,13 @@ def _join_basedir_filename(basedir: str, filename: str) -> str:
     return _filename
 
 
-def lpadmin(args: List[str]) -> None:
+def lpadmin(args: list[str]) -> None:
     quoted_args = [shlex.quote(x) for x in args]
 
     # Show this info message by default
     ud.debug(ud.LISTENER, ud.WARN, "cups-printers: info: univention-lpadmin %s" % ' '.join(quoted_args))
 
-    rc = listener.run('/usr/sbin/univention-lpadmin', ['univention-lpadmin'] + args, uid=0)
+    rc = listener.run('/usr/sbin/univention-lpadmin', ['univention-lpadmin', *args], uid=0)
     if rc != 0:
         ud.debug(ud.LISTENER, ud.ERROR, "cups-printers: Failed to execute the univention-lpadmin command. Please check the cups state.")
         filename = os.path.join('/var/cache/univention-printserver/', '%f.sh' % time.time())
@@ -118,7 +116,7 @@ def lpadmin(args: List[str]) -> None:
             fd.write('/usr/sbin/univention-lpadmin %s\n' % (' '.join(quoted_args),))
 
 
-def filter_match(object: Dict[str, List[bytes]]) -> bool:
+def filter_match(object: dict[str, list[bytes]]) -> bool:
     fqdn = ('%s.%s' % (hostname, domainname)).lower()
     return any(host.decode('ASCII').lower() in (ip.lower(), fqdn) for host in object.get('univentionPrinterSpoolHost', ()))
 
@@ -138,7 +136,7 @@ def testparm_is_true(smbconf: str, sectionname: str, varname: str) -> bool:
     return testpram_output.lower() in ('yes', 'true', '1', 'on')
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     need_to_reload_samba = False
     need_to_reload_cups = False
     printer_is_group = False

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Nagios
 #  listener module: update configuration of local Nagios client
@@ -38,7 +37,6 @@ from __future__ import annotations
 import os
 import re
 import stat
-from typing import Dict, List
 
 import univention.debug as ud
 
@@ -53,7 +51,7 @@ __confdir = '/etc/nagios/nrpe.univention.d/'
 __pluginconfdir = '/etc/nagios-plugins/config/'
 
 __pluginconfdirstat = 0.0
-__pluginconfig: Dict[str, str] = {}
+__pluginconfig: dict[str, str] = {}
 
 
 def readPluginConfig() -> None:
@@ -77,7 +75,7 @@ def readPluginConfig() -> None:
                         ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: read configline for plugin %r ==> %r' % (mcmdname.group(1), mcmdline.group(1)))
 
 
-def replaceArguments(cmdline: str, args: List[str]) -> str:
+def replaceArguments(cmdline: str, args: list[str]) -> str:
     for i in range(9):
         if i < len(args):
             cmdline = re.sub(r'\$ARG%d\$' % (i + 1), args[i], cmdline)
@@ -86,7 +84,7 @@ def replaceArguments(cmdline: str, args: List[str]) -> str:
     return cmdline
 
 
-def writeConfig(fqdn: str, new: Dict[str, List[bytes]]) -> None:
+def writeConfig(fqdn: str, new: dict[str, list[bytes]]) -> None:
     readPluginConfig()
 
     name = new['cn'][0].decode('UTF-8')
@@ -122,7 +120,7 @@ def removeConfig(name: str) -> None:
             os.unlink(filename)
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     # ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: IN dn=%r' % (dn,))
     # ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: IN old=%r' % (old,))
     # ud.debug(ud.LISTENER, ud.INFO, 'NAGIOS-CLIENT: IN new=%r' % (new,))

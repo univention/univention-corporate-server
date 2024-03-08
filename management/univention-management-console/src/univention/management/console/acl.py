@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  UMC ACL implementation
@@ -121,7 +120,7 @@ class Rule(dict):  # noqa: PLW1641
         return self.fromUser == other.fromUser and self.host == other.host and self.command == other.command and self.flavor == other.flavor and self.options == other.options
 
 
-class ACLs(object):
+class ACLs:
     """
     Provides methods to determine the access rights of users to
     specific UMC commands. It defines a cache for ACLs, a parser for
@@ -359,7 +358,7 @@ class LDAP_ACLs(ACLs):
         ACLs.__init__(self, ldap_base)
 
     def reload(self, lo=None):
-        super(LDAP_ACLs, self).reload()
+        super().reload()
 
         if lo:
             self._read_from_ldap(lo)

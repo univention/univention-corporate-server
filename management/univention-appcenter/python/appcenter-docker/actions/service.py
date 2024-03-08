@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app module for starting/stopping an app
@@ -120,7 +119,7 @@ class Status(Service):
     def get_init(cls, app):
         if app.plugin_of:
             app = Apps().find(app.plugin_of)
-        return super(Status, cls).get_init(app)
+        return super().get_init(app)
 
     def main(self, args):
         if args.app.uses_docker_compose():

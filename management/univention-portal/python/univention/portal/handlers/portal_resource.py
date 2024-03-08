@@ -48,7 +48,7 @@ class PortalResource(tornado.web.RequestHandler):
     def write_error(self, status_code, **kwargs):
         if "exc_info" in kwargs:
             get_logger("server").exception("Error during service")
-        return super(PortalResource, self).write_error(status_code, **kwargs)
+        return super().write_error(status_code, **kwargs)
 
     def find_portal(self):
         best_score = 0

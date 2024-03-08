@@ -18,7 +18,7 @@ def lval0():
     return obj
 
 
-class TestLocalizedValue(object):
+class TestLocalizedValue:
     """Unit test for univention.info_tools.LocalizedValue"""
 
     def test_basic(self, lval0):
@@ -65,7 +65,7 @@ def ldict0():
     return obj
 
 
-class TestLocalizedDictionary(object):
+class TestLocalizedDictionary:
     """Unit test for univention.info_tools.LocalizedDictionary"""
 
     def test_basic(self, ldict0):
@@ -181,7 +181,7 @@ def ldict():
     return ldict
 
 
-class TestSetLanguage(object):
+class TestSetLanguage:
     """Unit test for univention.info_tools.set_language()."""
 
     def test_global(self, lval, ldict):
@@ -200,7 +200,7 @@ class TestSetLanguage(object):
         assert ldict['val'] == 'baz'
 
 
-class TestUnicodeConfig(object):
+class TestUnicodeConfig:
 
     @pytest.fixture()
     def cfg(self):

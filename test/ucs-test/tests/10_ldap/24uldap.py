@@ -164,7 +164,7 @@ class TestMachineConnection(TestCase):
             with FakeUcr({'server/role': 'memberserver', 'ldap/server/name': 'does.not.exist', 'ldap/server/addition': ' '.join(alt_servers)}):
                 ucr_fake = ConfigRegistry()
                 ucr_fake.load()
-                possible_servers = [ucr_fake.get('ldap/server/name')] + alt_servers
+                possible_servers = [ucr_fake.get('ldap/server/name'), *alt_servers]
                 used_servers = []
                 n = 10
                 min_servers = 3
@@ -187,7 +187,7 @@ class TestMachineConnection(TestCase):
         with FakeUcr({'ldap/server/name': '255.255.255.255', 'ldap/server/addition': ' '.join(alt_servers)}):
             ucr_fake = ConfigRegistry()
             ucr_fake.load()
-            possible_servers = [ucr_fake.get('ldap/server/name')] + alt_servers
+            possible_servers = [ucr_fake.get('ldap/server/name'), *alt_servers]
             used_servers = []
             n = 10
             for _ in range(n):

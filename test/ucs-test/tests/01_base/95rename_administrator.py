@@ -145,7 +145,7 @@ def test_rename_domain_users():
             print('\n##################################################################')
             print('Cleanup')
             print('##################################################################\n')
-            subprocess.call(['udm-test', 'users/user', 'modify', '--dn=%s' % (new_admin_dn), '--set', 'username=%s' % (old_admin_name), '--binddn=%s' % (new_admin_dn), '--bindpwd=univention'] + credentials)
+            subprocess.call(['udm-test', 'users/user', 'modify', '--dn=%s' % new_admin_dn, '--set', 'username=%s' % old_admin_name, '--binddn=%s' % new_admin_dn, '--bindpwd=univention', *credentials])
 
             # wait until renaming and UCR Variable is set back again
             utils.wait_for_replication_and_postrun()

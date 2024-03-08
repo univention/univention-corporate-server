@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -178,9 +177,9 @@ _AVAILABLE_PRINTER_SCHEMAS = []  # type: list[str]
 def unmapPrinterURI(value, encoding=()):
     # type: (list[bytes], tuple[str, ...]) -> tuple[str, str]
     if not value:
-        return (u'', u'')
-    schema = u''
-    dest = u''
+        return ('', '')
+    schema = ''
+    dest = ''
     uri = value[0].decode(*encoding)
     for sch in _AVAILABLE_PRINTER_SCHEMAS:
         if uri.startswith(sch):
@@ -193,7 +192,7 @@ def unmapPrinterURI(value, encoding=()):
 
 def mapPrinterURI(value, encoding=()):
     # type: (list[str], tuple[str, ...]) -> bytes
-    return u''.join(value).encode(*encoding)
+    return ''.join(value).encode(*encoding)
 
 
 mapping = univention.admin.mapping.mapping()
@@ -245,7 +244,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_ready(self):
         # type: () -> None
-        super(object, self)._ldap_pre_ready()
+        super()._ldap_pre_ready()
         if (not self.exists() or self.hasChanged('uri')) and self['uri']:
             self._sanitize_uri()
 
@@ -270,7 +269,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_remove(self):  # check for last member in printerclass
         # type: () -> None
-        super(object, self)._ldap_pre_remove()
+        super()._ldap_pre_remove()
         printergroups_filter = '(&(objectClass=univentionPrinterGroup)(|%s))' % (''.join(filter_format('(univentionPrinterSpoolHost=%s)', [x]) for x in self.info['spoolHost']))
         rm_attrib = []
         for pg_dn, member_list in self.lo.search(filter=printergroups_filter, attr=['univentionPrinterGroupMember', 'cn']):

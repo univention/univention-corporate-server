@@ -32,8 +32,6 @@ Otherwise the test would be flaky.
 """
 from __future__ import annotations
 
-from typing import List
-
 import pytest
 
 from univention.config_registry import ucr
@@ -80,7 +78,7 @@ class TestCases:
     base_group = 'cn=groups,%(ldap/base)s' % ucr
     dn_domain_users = 'cn=%s,%s' % (custom_groupname('Domain Users', ucr), base_group)
 
-    def print_attributes(self, udm, dn_list: List[str], msg: str | None = None) -> None:
+    def print_attributes(self, udm, dn_list: list[str], msg: str | None = None) -> None:
         """
         Prints the DN and the values of the attributes memberOf and uniqueMember for all given
         DNs in dn_list. If msg is specified, a small header line is printed.

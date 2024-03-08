@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  Database integration
@@ -79,7 +78,7 @@ class DatabaseInfoError(DatabaseError):
     pass
 
 
-class DatabaseConnector(object):
+class DatabaseConnector:
 
     def __init__(self, app):
         self.app = app
@@ -93,11 +92,11 @@ class DatabaseConnector(object):
     def get_db_host(self):
         bip = ucr_get('docker/daemon/default/opts/bip', '172.17.42.1/16')
         try:
-            IPv4Network(u'%s' % (bip,), False)
+            IPv4Network('%s' % (bip,), False)
         except AddressValueError:
             raise DatabaseInfoError('Could not find DB host for %r' % bip)
         else:
-            ip_address = IPv4Address(u'%s' % (bip.split('/', 1)[0],))
+            ip_address = IPv4Address('%s' % (bip.split('/', 1)[0],))
             return str(ip_address)
 
     def get_db_name(self):
@@ -278,7 +277,7 @@ class PostgreSQL(DatabaseConnector):
 class MySQL(DatabaseConnector):
 
     def __init__(self, app):
-        super(MySQL, self).__init__(app)
+        super().__init__(app)
         self._connection = None
         self._cursor = None
 

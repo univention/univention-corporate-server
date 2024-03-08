@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  Decorators for functions in UMC 2.0 modules
@@ -205,7 +204,7 @@ def sanitize_args(sanitizer, name, args):
         raise UnprocessableEntity(str(exc), result=exc.result())
 
 
-class SimpleThread(object):
+class SimpleThread:
     """
     A simple class to start a thread and getting notified when the
     thread is finished. Meaning this class helps to handle threads that
@@ -603,7 +602,7 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False, 
     return _response
 
 
-class RequestOptionsIterator(object):
+class RequestOptionsIterator:
 
     def __init__(self, everything, names, single_values):
         self.everything = everything
@@ -778,7 +777,7 @@ def file_upload(function):
     return _response
 
 
-class reloading_ucr(object):
+class reloading_ucr:
 
     _last_reload = {}
 

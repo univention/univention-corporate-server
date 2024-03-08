@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -43,7 +42,7 @@ import univention.admin.modules
 import univention.admin.uldap
 
 
-class config(object):
+class config:
     """
     |UDM| configuration object.
 

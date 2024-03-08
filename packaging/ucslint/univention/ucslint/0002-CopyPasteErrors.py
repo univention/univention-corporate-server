@@ -32,10 +32,13 @@ from __future__ import annotations
 
 import re
 from itertools import chain
-from pathlib import Path
-from typing import Iterable
+from typing import TYPE_CHECKING, Iterable
 
 import univention.ucslint.base as uub
+
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 # 1) check if strings like "dc=univention,dc=qa" appear in debian/* and conffiles/*

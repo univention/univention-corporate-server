@@ -14,7 +14,7 @@ from univention.management.console.modules.setup.netconf import SkipPhase
 from univention.management.console.modules.setup.netconf.common import AddressMap
 
 
-class Mapping(object):
+class Mapping:
 
     def __init__(self, ipv4_changes: Dict[IPv4Interface, IPv4Interface]) -> None:
         self.mapping = {
@@ -47,7 +47,7 @@ class PhaseRewritePxe(AddressMap):
     dirname = "/var/lib/univention-client-boot/pxelinux.cfg"
 
     def check(self) -> None:
-        super(PhaseRewritePxe, self).check()
+        super().check()
         if not os.path.exists(self.dirname):
             raise SkipPhase("No '%s'" % (self.dirname,))
         if not any(self.ipv4_changes().values()):

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app module for running commands in an app env
@@ -83,4 +82,4 @@ class Shell(UniventionAppAction, DockerActionMixin):
         if not app_is_running(args.app):
             raise ShellAppNotRunning(args.app)
         self.debug('Calling %s' % commands[0])
-        return subprocess.call(docker_exec + [container_id] + commands)
+        return subprocess.call([*docker_exec, container_id, *commands])

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -38,10 +37,13 @@ import sys
 from contextlib import contextmanager
 from errno import EEXIST, ENOENT, ESRCH
 from time import monotonic, sleep
-from types import TracebackType
-from typing import Type
+from typing import TYPE_CHECKING
 
 from .errors import UpdaterException
+
+
+if TYPE_CHECKING:
+    from types import TracebackType
 
 
 try:
@@ -72,7 +74,7 @@ class LockingError(UpdaterException):
         )
 
 
-class UpdaterLock(object):
+class UpdaterLock:
     """Context wrapper for updater-lock :file:`/var/lock/univention-updater`."""
 
     def __init__(self, timeout: int = 0) -> None:
@@ -87,7 +89,7 @@ class UpdaterLock(object):
             print(ex, file=sys.stderr)
             sys.exit(5)
 
-    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
+    def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         if not self.updater_lock_release():
             print('WARNING: updater-lock already released!', file=sys.stderr)
 

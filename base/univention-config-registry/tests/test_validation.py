@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# vim:set fileencoding=utf-8:
 # SPDX-FileCopyrightText: 2022-2024 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 

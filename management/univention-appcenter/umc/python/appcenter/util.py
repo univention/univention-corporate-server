@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  module: software management
@@ -136,7 +135,7 @@ class HTTPSConnection(http.client.HTTPSConnection):
         ssl_context.check_hostname = True
         ssl_context.verify_mode = ssl.CERT_REQUIRED
         ssl_context.load_verify_locations("/etc/ssl/certs/ca-certificates.crt")
-        super(HTTPSConnection, self).__init__(*args, context=ssl_context, **kwargs)
+        super().__init__(*args, context=ssl_context, **kwargs)
 
 
 class HTTPSHandler(urllib.request.HTTPSHandler):
@@ -199,7 +198,7 @@ def component_current(component_id, ucr):
     return ucr.get('%s/%s/version' % (COMPONENT_BASE, component_id)) == 'current'
 
 
-class Changes(object):
+class Changes:
 
     def __init__(self, ucr):
         self.ucr = ucr
@@ -287,7 +286,7 @@ def set_save_commit_load(ucr):
         changes.commit()
 
 
-class ComponentManager(object):
+class ComponentManager:
 
     def __init__(self, ucr, updater):
         self.ucr = ucr

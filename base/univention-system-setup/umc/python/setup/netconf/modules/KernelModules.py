@@ -57,5 +57,5 @@ class PhaseKernelModules(Executable):
 
     def load_modules(self, modules: Set[str]) -> None:
         if modules:
-            cmd = [self.executable] + list(modules)
+            cmd = [self.executable, *list(modules)]
             self.call(cmd)

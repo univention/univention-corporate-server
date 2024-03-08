@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -121,7 +120,7 @@ layout = [
 def unmapMX(old, encoding=()):
     # type: (list[bytes], univention.admin.handlers._Encoding) -> list[list[str]]
     return [
-        i.decode(*encoding).split(u' ', 1)
+        i.decode(*encoding).split(' ', 1)
         for i in old
     ]
 
@@ -129,7 +128,7 @@ def unmapMX(old, encoding=()):
 def mapMX(old, encoding=()):
     # type: (list[list[str]], univention.admin.handlers._Encoding) -> list[bytes]
     return [
-        u' '.join(i).encode(*encoding)
+        ' '.join(i).encode(*encoding)
         for i in old
     ]
 
@@ -167,19 +166,19 @@ class object(DNSBase):
         if oldAddresses != newAddresses:
             if oldAddresses:
                 for address in oldAddresses:
-                    if u':' in address:  # IPv6
+                    if ':' in address:  # IPv6
                         oldAaaaRecord.append(address.encode('ASCII'))
                     else:
                         oldARecord.append(address.encode('ASCII'))
             if newAddresses:
                 for address in newAddresses:
-                    if u':' in address:  # IPv6
+                    if ':' in address:  # IPv6
                         newAaaaRecord.append(address)
                     else:
                         newARecord.append(address.encode('ASCII'))
 
             # explode all IPv6 addresses and remove duplicates
-            unique = {ipaddress.IPv6Address(u'%s' % (x,)).exploded for x in newAaaaRecord}
+            unique = {ipaddress.IPv6Address('%s' % (x,)).exploded for x in newAaaaRecord}
             values = [x.encode('ASCII') for x in unique]
 
             ml.append(('aRecord', oldARecord, newARecord))
@@ -209,7 +208,7 @@ class object(DNSBase):
                 univention.admin.filter.expression('aAAARecord', filter.value, escape=False),
             ]))
         else:
-            return super(object, cls).rewrite_filter(filter, mapping)
+            return super().rewrite_filter(filter, mapping)
 
 
 lookup = object.lookup

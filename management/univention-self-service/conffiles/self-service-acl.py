@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # self-servic-acl
 #  config registry module to update self-service ACLs

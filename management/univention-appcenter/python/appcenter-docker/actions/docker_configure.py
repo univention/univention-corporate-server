@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app module for configuring an app
@@ -53,12 +52,12 @@ class NoDatabaseFound(Exception):
 
 class Configure(Configure, DockerActionMixin):
     def setup_parser(self, parser):
-        super(Configure, self).setup_parser(parser)
+        super().setup_parser(parser)
         parser.add_argument('--autostart', help='Sets the autostart mode for the app: yes=App starts when the host starts; manually=App starts when manually started; no=App will never start', choices=['yes', 'manually', 'no'])
 
     def _set_config(self, app, set_vars, args):
         self._set_autostart(app, args.autostart)
-        super(Configure, self)._set_config(app, set_vars, args)
+        super()._set_config(app, set_vars, args)
 
     def _set_autostart(self, app, autostart):
         if not app.docker:
@@ -72,7 +71,7 @@ class Configure(Configure, DockerActionMixin):
 
     def _set_config_via_tool(self, app, set_vars):
         if not app.docker:
-            return super(Configure, self)._set_config_via_tool(app, set_vars)
+            return super()._set_config_via_tool(app, set_vars)
         if not app_is_running(app):
             self.warn('Cannot write settings while %s is not running' % app)
             return
@@ -132,7 +131,7 @@ class Configure(Configure, DockerActionMixin):
             _ucr.save()
 
     def _run_configure_script(self, app, action):
-        success = super(Configure, self)._run_configure_script(app, action)
+        success = super()._run_configure_script(app, action)
         ucr_load()  # Bug #53761 - maybe configure_host reinitialized the app, resulting in a new ucrv for the container
         if success is not False and app.docker and app_is_running(app):
             success = self._execute_container_script(app, 'configure', credentials=False, cmd_args=[action])

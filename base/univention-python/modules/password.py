@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -55,7 +54,7 @@ class CheckFailed(Exception):
     pass
 
 
-class Check(object):
+class Check:
 
     def __init__(self, lo, username=None):
         self.ConfigRegistry = ucr.ConfigRegistry()

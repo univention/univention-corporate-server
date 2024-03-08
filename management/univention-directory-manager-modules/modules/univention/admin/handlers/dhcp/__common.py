@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -80,7 +79,7 @@ _mappings = (
 
 def rangeMap(value, encoding=()):
     # type: (Iterable[list[str]], tuple[str, ...]) -> list[bytes]
-    return [u' '.join(x).encode(*encoding) for x in value]
+    return [' '.join(x).encode(*encoding) for x in value]
 
 
 def rangeUnmap(value, encoding=()):
@@ -195,14 +194,14 @@ class DHCPBase(simpleLdap):
 class DHCPBaseSubnet(DHCPBase):
     def ready(self):
         # type: () -> None
-        super(DHCPBaseSubnet, self).ready()
+        super().ready()
 
         try:
-            subnet = IPv4Network(u'%(subnet)s/%(subnetmask)s' % self.info)
+            subnet = IPv4Network('%(subnet)s/%(subnetmask)s' % self.info)
         except ValueError:
             raise uex.valueError(_('The subnet mask does not match the subnet.'), property='subnetmask')
 
         if self.hasChanged('range') or not self.exists():
-            ranges = [tuple(IPv4Address(u'%s' % (ip,)) for ip in range_) for range_ in self['range']]
+            ranges = [tuple(IPv4Address('%s' % (ip,)) for ip in range_) for range_ in self['range']]
             check_range_overlap(ranges)
             check_range_subnet(subnet, ranges)

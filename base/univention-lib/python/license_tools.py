@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -72,8 +71,8 @@ def is_CSP_license(lo=None):
 
     now = datetime.date.today()
     enddate = attrs.get('univentionLicenseEndDate', [b'01.01.1970'])[0].decode('ASCII', 'replace')
-    if enddate != u"unlimited":
-        (day, month, year) = enddate.split(u'.', 2)
+    if enddate != "unlimited":
+        (day, month, year) = enddate.split('.', 2)
         then = datetime.date(int(year), int(month), int(day))
         if now > then:
             raise LicenseExpired('endDate = %s' % (enddate,))

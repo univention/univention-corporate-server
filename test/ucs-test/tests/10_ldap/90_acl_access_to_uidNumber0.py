@@ -51,7 +51,7 @@ class HackingAttemptAdd(HackingAttempt):
         for basedn, ml in super().modlists(basedn):
             for attr in ['cn', 'krb5PrincipalName', 'SAMLServiceProviderIdentifier', 'sambaDomainName', 'dc', 'univentionAppID', 'relativeDomainName', 'uid', 'ou', 'zoneName', 'univentionVirtualMachineUUID']:
                 if any(x[0] == attr for x in ml):
-                    yield (f'{attr}={self.uid},{basedn}', ml + [('uid', b'', self.uid.encode("UTF-8")), ('cn', b'', self.uid.encode("UTF-8"))])
+                    yield (f'{attr}={self.uid},{basedn}', [*ml, ('uid', b'', self.uid.encode('UTF-8')), ('cn', b'', self.uid.encode('UTF-8'))])
 
 
 class Hacking:

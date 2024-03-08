@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -54,7 +53,7 @@ _ = translation.translate
 explodeDn = univention.uldap.explodeDn
 
 
-class DN(object):
+class DN:
     """A |LDAP| Distinguished Name."""
 
     def __init__(self, dn):
@@ -196,7 +195,7 @@ def _err2str(err):
     return '. '.join(msgs)
 
 
-class domain(object):
+class domain:
     """A |UDM| domain name."""
 
     def __init__(self, lo, position):
@@ -221,13 +220,13 @@ class domain(object):
         return self.domain['krb5RealmName'][0].decode('ASCII')
 
 
-class position(object):
+class position:
     """
     The position of a |LDAP| container.
     Supports relative distinguished names.
     """
 
-    def __init__(self, base, loginDomain=u''):
+    def __init__(self, base, loginDomain=''):
         # type: (str, str) -> None
         """
         :param str base: The base distinguished name.
@@ -238,7 +237,7 @@ class position(object):
 
         self.__loginDomain = loginDomain or base
         self.__base = base
-        self.__pos = u""
+        self.__pos = ""
         self.__indomain = False
 
     def setBase(self, base):
@@ -337,7 +336,7 @@ class position(object):
 
         :returns: The distinguished name.
         """
-        return u'cn=univention,' + self.getDomain()
+        return 'cn=univention,' + self.getDomain()
 
     def isDomain(self):
         # type: () -> bool
@@ -370,7 +369,7 @@ class position(object):
         return True
 
 
-class access(object):
+class access:
     """A |UDM| class to access a |LDAP| server."""
 
     @property
@@ -432,9 +431,9 @@ class access(object):
         self,
         host='localhost',  # type: str
         port=None,  # type: int | None
-        base=u'',  # type: str
-        binddn=u'',  # type: str
-        bindpw=u'',  # type: str
+        base='',  # type: str
+        binddn='',  # type: str
+        bindpw='',  # type: str
         start_tls=None,  # type: int | None
         lo=None,  # type: univention.uldap.access | None
         follow_referral=False,  # type: bool
@@ -631,7 +630,7 @@ class access(object):
         """
         return self.lo.getAttr(dn, attr, required)
 
-    def search(self, filter=u'(objectClass=*)', base=u'', scope=u'sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
+    def search(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
         # type: (str, str, str, list[str], bool, bool, int, int, list[ldap.controls.LDAPControl] | None, dict[str, ldap.controls.LDAPControl] | None) -> list[tuple[str, dict[str, list[bytes]]]]
         """
         Perform LDAP search and return values.
@@ -672,7 +671,7 @@ class access(object):
         except ldap.LDAPError as msg:
             raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
-    def searchDn(self, filter=u'(objectClass=*)', base=u'', scope=u'sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
+    def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
         # type: (str, str, str, bool, bool, int, int, list[ldap.controls.LDAPControl] | None, dict[str, ldap.controls.LDAPControl] | None) -> list[str]
         """
         Perform LDAP search and return distinguished names only.

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -34,16 +33,13 @@
 
 from typing import TYPE_CHECKING  # noqa: F401
 
+import univention.admin
 import univention.admin.handlers
 import univention.admin.handlers.computers
 import univention.admin.localization
 import univention.admin.mapping
 import univention.admin.syntax
-
-
-if TYPE_CHECKING:
-    import univention.admin
-    import univention.admin.uldap
+import univention.admin.uldap
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
@@ -123,7 +119,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def open(self):
         # type: () -> None
-        super(object, self).open()
+        super().open()
         if 'name' in self.info and 'domain' in self.info:
             # in syntax.py IComputer_FQDN key and label are '%(name)s.%(domain)s' for
             #   performance reasons. These statements and this fqdn over here have to

@@ -8,12 +8,11 @@ import json
 import os
 from itertools import groupby
 from operator import itemgetter
-from typing import List, Tuple
 
 from univention.lib.ucs import UCS_Version
 
 
-def gen_releases(path: str, releases: List[Tuple[int, int, int]]) -> None:
+def gen_releases(path: str, releases: list[tuple[int, int, int]]) -> None:
     """Generate a `ucs-releases.json` string from a list of given releases"""
     data = {
         "releases": [

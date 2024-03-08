@@ -18,7 +18,7 @@ from univention import ipcalc
     ("170.85.204.51/255.255.255.0", "170.85.204", "170.85.204", "51"),
     ("170.85.204.51/255.255.255.255", "170.85.204.51", "170.85.204", "51"),
 ])
-class TestIPv4(object):
+class TestIPv4:
     def test_network(self, ip, net, rev, ptr):
         assert ipcalc.calculate_ipv4_network(ipcalc.IPv4Interface(ip)) == net
 
@@ -37,7 +37,7 @@ class TestIPv4(object):
     ("0000:1111:2222:3333:4444:5555:6666:7777/112", "0000:1111:2222:3333:4444:5555:6666", "0000:1111:2222:3333:4444:5555:6666", "7.7.7.7"),
     ("0000:1111:2222:3333:4444:5555:6666:7777/128", "0000:1111:2222:3333:4444:5555:6666:7777", "0000:1111:2222:3333:4444:5555:6666:777", "7"),
 ])
-class TestIPv6(object):
+class TestIPv6:
     def test_network(self, ip, net, rev, ptr):
         assert ipcalc.calculate_ipv6_network(ipcalc.IPv6Interface(ip)) == net
 

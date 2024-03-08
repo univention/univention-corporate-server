@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  appcenter docker glue
@@ -74,7 +73,7 @@ DOCKER_READ_USER_CRED = {
 class DockerImageVerificationFailedChecksum(Exception):
     def __init__(self, appcenter_hash, manifest_hash):
         reason = 'Manifest checksum mismatch: %r != %r' % (appcenter_hash, manifest_hash)
-        super(DockerImageVerificationFailedChecksum, self).__init__(reason)
+        super().__init__(reason)
 
 
 class DockerInspectCallFailed(Exception):
@@ -97,10 +96,10 @@ def inspect_with_retry(container, retries=3):
         try:
             return inspect(container)
         except Exception as e:
-            _logger.warning('Inspect for container {} failed: {}'.format(container, e))
+            _logger.warning(f'Inspect for container {container} failed: {e}')
             exc = e
             time.sleep(5)
-    raise DockerInspectCallFailed('Inspect for container {} failed after {} retries: {}'.format(container, retries, exc))
+    raise DockerInspectCallFailed(f'Inspect for container {container} failed after {retries} retries: {exc}')
 
 
 def login(hub, with_license):
@@ -150,7 +149,7 @@ def execute_with_output(container, args, tty=None):
         tty = sys.stdin.isatty()
     if tty:
         docker_exec.append('-it')
-    args = docker_exec + [container] + args
+    args = [*docker_exec, container, *args]
     out = check_output(args)
     return out.decode('utf-8')
 
@@ -163,7 +162,7 @@ def execute_with_process(container, args, logger=None, tty=None):
         tty = sys.stdin.isatty()
     if tty:
         docker_exec.append('-it')
-    args = docker_exec + [container] + args
+    args = [*docker_exec, container, *args]
     return call_process(args, logger)
 
 
@@ -183,13 +182,13 @@ def create(image, command, hostname=None, ports=None, volumes=None, env_file=Non
     _args.append(image)
     if command:
         _args.extend(command)
-    args = ['docker', 'create'] + _args
+    args = ['docker', 'create', *_args]
     return call_process2(args)
 
 
 def rmi(*images):
     _logger.debug('Removing image: %s' % ', '.join(images))
-    return call(['docker', 'rmi'] + list(images))
+    return call(['docker', 'rmi', *list(images)])
 
 
 def rm(container):
@@ -227,7 +226,7 @@ def docker_cp(src, dest, logger=None, followlink=False):
     return call_process2(args, logger=logger)
 
 
-class Docker(object):
+class Docker:
 
     def __init__(self, app, logger=None):
         self.app = app
@@ -433,13 +432,13 @@ class Docker(object):
         if network and '/' in network:
             _logger.debug('Found %s' % network)
             try:
-                network = IPv4Network(u'%s' % (network,), False)
+                network = IPv4Network('%s' % (network,), False)
             except ValueError as exc:
                 _logger.warning('Error using the network %s: %s' % (network, exc))
                 return None
             else:
                 return network
-        docker0_net = IPv4Network(u'%s' % (ucr_get('appcenter/docker/compose/network', '172.16.1.1/16'),), False)
+        docker0_net = IPv4Network('%s' % (ucr_get('appcenter/docker/compose/network', '172.16.1.1/16'),), False)
         gateway, netmask = docker0_net.exploded.split('/', 1)  # '172.16.1.1', '16'
         used_docker_networks = []
         for _app in Apps().get_all_apps():  # TODO: find container not managed by the App Center?
@@ -447,7 +446,7 @@ class Docker(object):
                 continue
             ip = ucr_get(_app.ucr_ip_key)
             try:
-                app_network = IPv4Network(u'%s' % (ip,), False)
+                app_network = IPv4Network('%s' % (ip,), False)
             except ValueError:
                 continue
             else:
@@ -458,7 +457,7 @@ class Docker(object):
             return None
         for network in docker0_net.subnets(prefixlen_diff):  # 172.16.1.1/24, 172.16.2.1/24, ..., 172.16.255.1/24
             _logger.debug('Testing %s' % network)
-            if IPv4Address(u'%s' % (gateway,)) in network:
+            if IPv4Address('%s' % (gateway,)) in network:
                 _logger.debug('Refusing due to "main subnet"')
                 continue
             if any(app_network.overlaps(network) for app_network in used_docker_networks):
@@ -562,7 +561,7 @@ class MultiDocker(Docker):
             container_def['environment'] = {}
         if isinstance(container_def['environment'], list):
             for key, val in env.items():
-                container_def['environment'].append('{}={}'.format(key, val))
+                container_def['environment'].append(f'{key}={val}')
         else:
             container_def['environment'].update(env)
         for app_id, container_port, host_port in app_ports():
@@ -583,8 +582,8 @@ class MultiDocker(Docker):
             content['services'][service_name]['ports'] = []
             for container_port, host_port in ports.items():
                 if prots.get(container_port):
-                    container_port = '{}/{}'.format(container_port, prots[container_port])
-                content['services'][service_name]['ports'].append('{}:{}'.format(host_port, container_port))
+                    container_port = f'{container_port}/{prots[container_port]}'
+                content['services'][service_name]['ports'].append(f'{host_port}:{container_port}')
 
         if self.env_file_created and self.app.docker_inject_env_file is not None:
             for service_name, service in content['services'].items():
@@ -602,7 +601,7 @@ class MultiDocker(Docker):
     def _setup_env(self, env=None):
         if os.path.exists(self.app.get_cache_file('env')) and self.app.docker_inject_env_file:
             mkdir(self.app.get_compose_dir())
-            env_file_name = '{}.env'.format(self.app.id)
+            env_file_name = f'{self.app.id}.env'
             env_file = os.path.join(self.app.get_compose_dir(), env_file_name)
             # remove old env file
             try:
@@ -636,27 +635,27 @@ class MultiDocker(Docker):
                     ps = check_output(['docker-compose', '-p', self.app.id, 'ps', '-q'], cwd=self.app.get_compose_dir())
                     break
                 except Exception as e:
-                    _logger.warning('docker-compose ps for app {} failed: {}'.format(self.app.id, e))
+                    _logger.warning(f'docker-compose ps for app {self.app.id} failed: {e}')
                     time.sleep(5)
             for container_id in ps.splitlines():
                 container_id = container_id.decode('utf-8')
                 try:
                     container_inspect = inspect_with_retry(container_id)
                 except DockerInspectCallFailed as e:
-                    _logger.warning('Fail: {}'.format(e))
+                    _logger.warning(f'Fail: {e}')
                     break
                 container_name = container_inspect['Name']
-                if '_{}_'.format(service_name) in container_name:
+                if f'_{service_name}_' in container_name:
                     return container_inspect['Id']
         # default
         if name is None:
-            name = '{}_{}_1'.format(self.app.id, service_name)
+            name = f'{self.app.id}_{service_name}_1'
         # get containert id
         try:
             insp = inspect_with_retry(name)
             return insp['Id']
         except DockerInspectCallFailed as e:
-            _logger.warning('Fail: {}'.format(e))
+            _logger.warning(f'Fail: {e}')
         return None
 
     def _get_main_service_container_id(self):

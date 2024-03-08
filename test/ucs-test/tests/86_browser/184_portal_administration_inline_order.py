@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
-# -*- coding: utf-8 -*-
 ## desc: Test changing the order of portal categories/entries from within the portal
 ## roles:
 ##  - domaincontroller_master
@@ -27,7 +26,7 @@ logger = logging.getLogger(__name__)
 _ = Translation('ucs-test-selenium').translate
 
 
-class UMCTester(object):
+class UMCTester:
 
     def test_umc(self):
         try:
@@ -38,7 +37,7 @@ class UMCTester(object):
 
     def init(self):
         logger.info('Creating dummy portal entries and categories')
-        self.entry_a_1_dname = "entry_a_1__{}".format(uts.random_string())
+        self.entry_a_1_dname = f"entry_a_1__{uts.random_string()}"
         entry_a_1_dn = self.udm_test.create_object(
             'portals/entry',
             name=self.entry_a_1_dname,
@@ -46,7 +45,7 @@ class UMCTester(object):
             description=['en_US foo'],
             link=['en_US foo'],
         )
-        self.entry_a_2_dname = "entry_a_2__{}".format(uts.random_string())
+        self.entry_a_2_dname = f"entry_a_2__{uts.random_string()}"
         entry_a_2_dn = self.udm_test.create_object(
             'portals/entry',
             name=self.entry_a_2_dname,
@@ -54,14 +53,14 @@ class UMCTester(object):
             description=['en_US foo'],
             link=['en_US foo'],
         )
-        self.cat_a_dname = "category_a__{}".format(uts.random_string())
+        self.cat_a_dname = f"category_a__{uts.random_string()}"
         cat_a_dn = self.udm_test.create_object(
             'portals/category',
             name=self.cat_a_dname,
             displayName=['en_US ' + self.cat_a_dname],
             entries=[entry_a_1_dn, entry_a_2_dn],
         )
-        self.entry_b_dname = "entry_b__{}".format(uts.random_string())
+        self.entry_b_dname = f"entry_b__{uts.random_string()}"
         entry_b_dn = self.udm_test.create_object(
             'portals/entry',
             name=self.entry_b_dname,
@@ -69,7 +68,7 @@ class UMCTester(object):
             description=['en_US foo'],
             link=['en_US foo'],
         )
-        self.cat_b_dname = "category_b__{}".format(uts.random_string())
+        self.cat_b_dname = f"category_b__{uts.random_string()}"
         cat_b_dn = self.udm_test.create_object(
             'portals/category',
             name=self.cat_b_dname,

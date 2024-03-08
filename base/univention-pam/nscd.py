@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention nscd Updater
 #  Univention Listener Module
@@ -36,8 +35,6 @@
 
 from __future__ import annotations
 
-from typing import Dict, List
-
 import univention.debug as ud
 from univention.config_registry import ConfigRegistry
 
@@ -50,7 +47,7 @@ filter = '(objectClass=univentionGroup)'
 attributes = ['uniqueMember', 'cn']
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     pass
 
 

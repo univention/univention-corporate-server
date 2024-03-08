@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app module for installing an app
@@ -46,12 +45,12 @@ from univention.appcenter.ucr import ucr_get, ucr_save
 class Install(Install, DockerActionMixin):
 
     def setup_parser(self, parser):
-        super(Install, self).setup_parser(parser)
+        super().setup_parser(parser)
         parser.add_argument('--do-not-pull-image', action='store_false', dest='pull_image', help='Do not pull the image of a Docker App. Instead, the image is assumed to be already in place')
 
     def _install_app(self, app, args):
         if not app.docker:
-            return super(Install, self)._install_app(app, args)
+            return super()._install_app(app, args)
         else:
             if app.plugin_of:
                 return self._install_app_in_existing_container(app, args)
@@ -71,7 +70,7 @@ class Install(Install, DockerActionMixin):
             return True
 
     def _do_it(self, app, args):
-        ret = super(Install, self)._do_it(app, args)
+        ret = super()._do_it(app, args)
         if app.docker:
             ucr_save({'appcenter/prudence/docker/%s' % app.id: None})
         return ret
@@ -98,5 +97,5 @@ class Install(Install, DockerActionMixin):
 
     def dry_run(self, app, args):
         if not app.docker:
-            return super(Install, self).dry_run(app, args)
+            return super().dry_run(app, args)
         self.log('%s is a Docker App. No sane dry run is implemented' % app)

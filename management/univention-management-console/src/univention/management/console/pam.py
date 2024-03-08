@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #
@@ -78,7 +77,7 @@ class AuthenticationInformationMissing(AuthenticationError):
 
     def __init__(self, message, missing_prompts):  # type: (str, Any) -> None
         self.missing_prompts = missing_prompts
-        super(AuthenticationInformationMissing, self).__init__(message)
+        super().__init__(message)
 
 
 class AccountExpired(AuthenticationError):
@@ -93,7 +92,7 @@ class PasswordChangeFailed(AuthenticationError):
     pass
 
 
-class PamAuth(object):
+class PamAuth:
 
     _known_errors = {
         'Make sure the kerberos service is functioning or inform an Administrator.': [

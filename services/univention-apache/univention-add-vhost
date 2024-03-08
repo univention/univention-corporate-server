@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -126,7 +125,7 @@ def main(fqdn, port, aliases, conffile, binddn, bindpwdfile, ssl, cert, private_
 
     ucr.load()
 
-    for host in [fqdn] + list(aliases):
+    for host in [fqdn, *list(aliases)]:
         if remove:
             ns = f"apache2/vhosts/{fqdn}"
             if not any(key.startswith(ns) for key in ucr.keys()):

@@ -57,7 +57,7 @@ description = _('No errors found.')
 run_descr = ['This can be checked by running: samba-tool drs showrepl']
 
 
-class DRSUAPI(object):
+class DRSUAPI:
     def __init__(self, dc=None) -> None:
         (self.load_param, self.credentials) = self.samba_credentials()
         self.server = dc or self.netcmd_dnsname(self.load_param)
@@ -107,7 +107,7 @@ class DRSUAPI(object):
 
 class ReplicationProblem(Exception):
     def __init__(self, neighbour, estring) -> None:
-        super(ReplicationProblem, self).__init__(neighbour)
+        super().__init__(neighbour)
         self.neighbour = neighbour
         self.estring = estring
 

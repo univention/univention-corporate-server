@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Send a token to a user using a text message service.
 #
@@ -62,7 +61,7 @@ _ = Translation('univention-self-service-passwordreset-umc').translate
 class SendSMS(UniventionSelfServiceTokenEmitter):
 
     def __init__(self, *args, **kwargs):
-        super(SendSMS, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.cmd = self.ucr.get("umc/self-service/passwordreset/sms/command", "").split()
         if not self.cmd:

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -44,7 +43,7 @@ from univention.ldap_cache.cache.backend import Caches, LdapCache, Shard
 class LmdbCaches(Caches):
     def __init__(self, *args, **kwargs):
         # type: (*Any, **Any) -> None
-        super(LmdbCaches, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.env = lmdb.open(self._directory, 2 ** 32 - 1, max_dbs=128)
         self._fix_permissions(self._directory)
 

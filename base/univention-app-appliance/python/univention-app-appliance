@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -60,12 +59,7 @@ def _branding_resources_base_url(app_id: str, ucs_version: str) -> str:
     server = UCR.get('repository/app_center/server')
     if '://' in server:
         protocol = ''
-    return '{protocol}{server}/meta-inf/{version}/{app}'.format(
-        protocol=protocol,
-        server=server,
-        version=ucs_version,
-        app=app_id,
-    )
+    return f'{protocol}{server}/meta-inf/{ucs_version}/{app_id}'
 
 
 def _download_resource(app: App, resource: str, dest_path: str) -> None:
@@ -75,9 +69,7 @@ def _download_resource(app: App, resource: str, dest_path: str) -> None:
         shutil.copy2(cached_file_name, dest_path)
         print_status('Successfully copied %s from cache' % resource)
         return
-    resource_url = "{app_url}/{res_name}".format(
-        app_url=_branding_resources_base_url(app.id, app.ucs_version),
-        res_name=resource)
+    resource_url = f"{_branding_resources_base_url(app.id, app.ucs_version)}/{resource}"
     try:
         req = requests.head(resource_url, timeout=5)
         if req.status_code < 400:

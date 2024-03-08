@@ -257,9 +257,7 @@ def create_ad_user(username, password, **kwargs):
     new_position = 'cn=users,%s' % configRegistry.get('connector/ad/ldap/base')
     con_user_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(tcommon.to_unicode(username)), new_position)
 
-    udm_user_dn = ldap.dn.dn2str([
-        [("uid", to_unicode(username), ldap.AVA_STRING)],
-        [("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(configRegistry.get('ldap/base')))
+    udm_user_dn = ldap.dn.dn2str([[('uid', to_unicode(username), ldap.AVA_STRING)], [('CN', 'users', ldap.AVA_STRING)], *ldap.dn.str2dn(configRegistry.get('ldap/base'))])
     adconnector.wait_for_sync()
     return (con_user_dn, udm_user_dn)
 

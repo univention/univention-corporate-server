@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention RADIUS
 #
@@ -96,7 +95,7 @@ class UserDeactivatedError(NetworkAccessError):
     pass
 
 
-class NetworkAccess(object):
+class NetworkAccess:
 
     def __init__(self, username, stationId, loglevel=None, logfile=None):  # type: (str, str, Optional[int], Optional[str]) -> None
         self.username = parse_username(username)

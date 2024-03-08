@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Directory Replication
 #  listener module for Directory replication
@@ -52,7 +51,7 @@ import sys
 import time
 from email.mime.text import MIMEText
 from errno import ENOENT
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 import ldap
 import ldap.schema
@@ -102,7 +101,7 @@ ud.debug(ud.LISTENER, ud.ALL, 'replication: EXCLUDE_ATTRIBUTES=%r' % (EXCLUDE_AT
 BUILTIN_OIDS = {line.strip() for line in open("/usr/share/univention-ldap/oid_skip")}
 
 
-class LDIFObject(object):
+class LDIFObject:
 
     def __init__(self, filename: str) -> None:
         self.fp = open(filename, 'ab')
@@ -150,7 +149,7 @@ class LDIFObject(object):
     def __end_section(self) -> None:
         self.fp.write(b'-\n')
 
-    def add_s(self, dn: str, al: List[Tuple[str, Any]]) -> None:
+    def add_s(self, dn: str, al: list[tuple[str, Any]]) -> None:
         self.__new_entry(dn)
         self.__print_attribute('changetype', b'add')
         for attr, vals in al:
@@ -158,7 +157,7 @@ class LDIFObject(object):
                 self.__print_attribute(attr, val)
         self.__end_entry()
 
-    def modify_s(self, dn: str, ml: List[Tuple[int, str, Any]]) -> None:
+    def modify_s(self, dn: str, ml: list[tuple[int, str, Any]]) -> None:
         self.__new_entry(dn)
         self.__print_attribute('changetype', b'modify')
         for ldap_op, attr, vals in ml:
@@ -222,12 +221,12 @@ def connect(ldif: bool = False) -> ldap.ldapobject:
     return connection
 
 
-def addlist(new: Dict[str, List[bytes]]) -> List[Tuple[str, List[bytes]]]:
+def addlist(new: dict[str, list[bytes]]) -> list[tuple[str, list[bytes]]]:
     return [kv for kv in new.items() if kv[0].lower() not in EXCLUDE_ATTRIBUTES]
 
 
-def modlist(old: Dict[str, List[bytes]], new: Dict[str, List[bytes]]) -> List[Tuple[int, str, List[bytes]]]:
-    ml: List[Tuple[int, str, List[bytes]]] = []
+def modlist(old: dict[str, list[bytes]], new: dict[str, list[bytes]]) -> list[tuple[int, str, list[bytes]]]:
+    ml: list[tuple[int, str, list[bytes]]] = []
     for key, values in new.items():
         if key.lower() in EXCLUDE_ATTRIBUTES:
             continue
@@ -262,7 +261,7 @@ def modlist(old: Dict[str, List[bytes]], new: Dict[str, List[bytes]]) -> List[Tu
     return ml
 
 
-def subschema_oids_with_sup(subschema: ldap.schema.subentry.SubSchema, ldap_type: ldap.schema.SchemaElement, oid: str, result: List[str]) -> None:
+def subschema_oids_with_sup(subschema: ldap.schema.subentry.SubSchema, ldap_type: ldap.schema.SchemaElement, oid: str, result: list[str]) -> None:
     if oid in BUILTIN_OIDS or oid in result:
         return
 
@@ -273,14 +272,14 @@ def subschema_oids_with_sup(subschema: ldap.schema.subentry.SubSchema, ldap_type
     result.append(oid)
 
 
-def subschema_sort(subschema: ldap.schema.subentry.SubSchema, ldap_type: ldap.schema.SchemaElement) -> List[str]:
-    result: List[str] = []
+def subschema_sort(subschema: ldap.schema.subentry.SubSchema, ldap_type: ldap.schema.SchemaElement) -> list[str]:
+    result: list[str] = []
     for oid in subschema.listall(ldap_type):
         subschema_oids_with_sup(subschema, ldap_type, oid, result)
     return result
 
 
-def update_schema(attr: Dict[str, List[bytes]]) -> None:
+def update_schema(attr: dict[str, list[bytes]]) -> None:
     def _insert_linebreak(obj: str) -> str:
         # Bug 46743: Ensure lines are not longer than 2000 characters or slapd fails to start
         max_length = 2000
@@ -326,7 +325,7 @@ def update_schema(attr: Dict[str, List[bytes]]) -> None:
     init_slapd('restart')
 
 
-def getOldValues(ldapconn: ldap.ldapobject, dn: str) -> Dict[str, List[bytes]]:
+def getOldValues(ldapconn: ldap.ldapobject, dn: str) -> dict[str, list[bytes]]:
     """
     get "old" from local ldap server
     "ldapconn": connection to local ldap server
@@ -387,7 +386,7 @@ def _remove_file(pathname: str) -> None:
             ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to remove %s: %s' % (pathname, ex))
 
 
-def _add_object_from_new(lo: ldap.ldapobject, dn: str, new: Dict[str, List[bytes]]) -> None:
+def _add_object_from_new(lo: ldap.ldapobject, dn: str, new: dict[str, list[bytes]]) -> None:
     al = addlist(new)
     try:
         lo.add_s(dn, al)
@@ -395,7 +394,7 @@ def _add_object_from_new(lo: ldap.ldapobject, dn: str, new: Dict[str, List[bytes
         log_ldap(ud.ERROR, 'object class violation while adding', ex, dn=dn)
 
 
-def _modify_object_from_old_and_new(lo: ldap.ldapobject, dn: str, old: Dict[str, List[bytes]], new: Dict[str, List[bytes]]) -> None:
+def _modify_object_from_old_and_new(lo: ldap.ldapobject, dn: str, old: dict[str, list[bytes]], new: dict[str, list[bytes]]) -> None:
     ml = modlist(old, new)
     if ml:
         ud.debug(ud.LISTENER, ud.ALL, 'replication: modify: %s' % dn)
@@ -447,7 +446,7 @@ def check_file_system_space() -> None:
     listener.run('/usr/bin/systemctl', ['systemctl', 'stop', 'univention-directory-listener'], uid=0, wait=True)
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], listener_old: Dict[str, List[bytes]], operation: str) -> Any:
+def handler(dn: str, new: dict[str, list[bytes]], listener_old: dict[str, list[bytes]], operation: str) -> Any:
     global reconnect
     if not slave:
         return 1

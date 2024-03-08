@@ -49,7 +49,7 @@ def test_populate_file_and_resync(udm, ucr, fqdn):
             }, append={
                 'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1',
                                     f'"{fqdn}" "IMAP" "{remote_username + "1" }" "{password}" 1 1',
-                                    f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1']
+                                    f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1'],
             })
 
     time.sleep(5)

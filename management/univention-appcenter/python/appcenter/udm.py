@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app wrapper for udm functions
@@ -50,7 +49,7 @@ from univention.uldap import access as base_access
 _initialized = set()
 
 
-class FakeApp(object):
+class FakeApp:
 
     def __init__(self, id, version):
         self.id = id
@@ -168,7 +167,7 @@ def get_read_connection(userdn, password):
     return lo, pos
 
 
-class ApplicationLDAPObject(object):
+class ApplicationLDAPObject:
 
     def __init__(self, app, lo, pos, create_if_not_exists=False):
         self._localhost = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))

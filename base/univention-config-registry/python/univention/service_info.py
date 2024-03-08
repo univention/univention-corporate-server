@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
 #  Service information: read information about registered Config Registry
@@ -108,7 +107,7 @@ class Service(uit.LocalizedDictionary):
         try:
             return self.__change_state('status')[1]
         except OSError:
-            return u''
+            return ''
 
     def _change_state(self, action):
         # type: (str) -> bool
@@ -212,7 +211,7 @@ def pidof(name, docker='/var/run/docker.pid'):
     return list(result)
 
 
-class ServiceInfo(object):
+class ServiceInfo:
     BASE_DIR = '/etc/univention/service.info'
     SERVICES = 'services'
     CUSTOMIZED = '_customized'

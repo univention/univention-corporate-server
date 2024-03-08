@@ -12,7 +12,7 @@ import socket
 import sqlite3
 import subprocess
 import time
-from typing import Any, Dict, Iterator, List
+from typing import Any, Iterator
 
 import ldap
 import ldb
@@ -48,7 +48,7 @@ def password_policy(complexity: bool = False, minimum_password_age: int = 0, max
         subprocess.call(['samba-tool', 'domain', 'passwordsettings', 'set', '--min-pwd-age', min_pwd_age, '--max-pwd-age', max_pwd_age, '--complexity', pwd_complexity])
 
 
-def wait_for_drs_replication(ldap_filter: str, attrs: List[str] | str | None = None, base: str | None = None, scope: int = ldb.SCOPE_SUBTREE, lp: LoadParm | None = None, timeout: int = 360, delta_t: int = 1, verbose: bool = True, should_exist: bool = True, controls: List[str] | None = None) -> None:
+def wait_for_drs_replication(ldap_filter: str, attrs: list[str] | str | None = None, base: str | None = None, scope: int = ldb.SCOPE_SUBTREE, lp: LoadParm | None = None, timeout: int = 360, delta_t: int = 1, verbose: bool = True, should_exist: bool = True, controls: list[str] | None = None) -> None:
     if not package_installed('univention-samba4'):
         if package_installed('univention-samba'):
             time.sleep(15)
@@ -168,7 +168,7 @@ def force_drs_replication(source_dc: str | None = None, destination_dc: str | No
 
 
 def _ldap_replication_complete(verbose: bool = True) -> bool:
-    kwargs: Dict[str, Any] = {}
+    kwargs: dict[str, Any] = {}
     if not verbose:
         kwargs = {'stdout': open('/dev/null', 'w'), 'stderr': subprocess.STDOUT}
     return subprocess.call('/usr/lib/nagios/plugins/check_univention_replication', **kwargs) == 0
@@ -240,7 +240,7 @@ def wait_for_s4connector(timeout: int = 360, delta_t: int = 1, s4cooldown_t: int
     raise WaitForS4ConnectorTimeout()
 
 
-def append_dot(verify_list: List[str]) -> List[str]:
+def append_dot(verify_list: list[str]) -> list[str]:
     """The S4-Connector appends dots to various dns records. Helper function to adjust a list."""
     if not package_installed('univention-s4-connector'):
         return verify_list

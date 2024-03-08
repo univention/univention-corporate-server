@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Admin Diary
 # Listener module to set up Admin Diary configuration
@@ -36,7 +35,6 @@
 from __future__ import annotations
 
 import subprocess
-from typing import Dict, List
 
 from univention.config_registry import ConfigRegistry, handler_set
 
@@ -50,7 +48,7 @@ attributes = ['univentionService']
 service_name = b"Admin Diary Backend"
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     listener.setuid(0)
     try:
         change = False
@@ -64,11 +62,11 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
             ucr = ConfigRegistry()
             ucr.load()
-            old_ucr_value = ucr.get('admin/diary/backend', u'')
+            old_ucr_value = ucr.get('admin/diary/backend', '')
             fqdn_set = set(old_ucr_value.split())
             fqdn_set.add(fqdn.decode('utf-8'))
-            new_ucr_value = u' '.join(fqdn_set)
-            handler_set([u'admin/diary/backend=%s' % (new_ucr_value,)])
+            new_ucr_value = ' '.join(fqdn_set)
+            handler_set(['admin/diary/backend=%s' % (new_ucr_value,)])
             change = True
         elif old_has_service:
             try:
@@ -78,11 +76,11 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
 
             ucr = ConfigRegistry()
             ucr.load()
-            old_ucr_value = ucr.get('admin/diary/backend', u'')
+            old_ucr_value = ucr.get('admin/diary/backend', '')
             fqdn_set = set(old_ucr_value.split())
             fqdn_set.discard(fqdn.decode('UTF-8'))
-            new_ucr_value = u' '.join(fqdn_set)
-            handler_set([u'admin/diary/backend=%s' % (new_ucr_value,)])
+            new_ucr_value = ' '.join(fqdn_set)
+            handler_set(['admin/diary/backend=%s' % (new_ucr_value,)])
             change = True
 
         if change:

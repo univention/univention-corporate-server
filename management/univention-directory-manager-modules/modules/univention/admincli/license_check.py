@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -171,7 +170,7 @@ def check_license(lo, dn, list_dns, expired):  # type: (univention.admin.uldap.a
         now = datetime.date.today()
         then = lo.get(dn)['univentionLicenseEndDate'][0].decode('UTF-8')
         if then != 'unlimited':
-            (day, month, year) = then.split(u'.')
+            (day, month, year) = then.split('.')
             then_ = datetime.date(int(year), int(month), int(day))
             if now > then_:
                 out.append('Has expired on: %s                  -- EXPIRED' % then_)

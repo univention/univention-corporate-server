@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  module: AD connector
@@ -226,15 +225,15 @@ class Instance(Base, ProgressMixin):
                 if isinstance(val, bool):
                     val = 'yes' if val else 'no'
                 MODULE.info('Setting %s=%s' % (ucrkey, val))
-                univention.config_registry.handler_set([u'%s=%s' % (ucrkey, val)])
+                univention.config_registry.handler_set(['%s=%s' % (ucrkey, val)])
 
         ucr.load()
         if ucr.get('connector/ad/ldap/ldaps'):
             MODULE.info('Unsetting connector/ad/ldap/ldaps')
-            univention.config_registry.handler_unset([u'connector/ad/ldap/ldaps'])
+            univention.config_registry.handler_unset(['connector/ad/ldap/ldaps'])
         if ucr.get('connector/ad/ldap/port') == '636':
             MODULE.info('Setting ldap port to 389')
-            univention.config_registry.handler_set([u'connector/ad/ldap/port=389'])
+            univention.config_registry.handler_set(['connector/ad/ldap/port=389'])
 
         if request.options.get('LDAP_Password') not in (None, '', DO_NOT_CHANGE_PWD):
             fn = ucr.get('connector/ad/ldap/bindpw', FN_BINDPW)
@@ -243,7 +242,7 @@ class Instance(Base, ProgressMixin):
                     fd.write(request.options.get('LDAP_Password'))
                 os.chmod(fn, 0o600)
                 os.chown(fn, 0, 0)
-                univention.config_registry.handler_set([u'connector/ad/ldap/bindpw=%s' % fn])
+                univention.config_registry.handler_set(['connector/ad/ldap/bindpw=%s' % fn])
             except Exception as e:
                 MODULE.info('Saving bind password failed (filename=%(fn)s ; exception=%(exception)s)' % {'fn': fn, 'exception': str(e.__class__)})
                 self.finished(request.id, {'success': False, 'message': _('Saving bind password failed (filename=%(fn)s ; exception=%(exception)s)') % {'fn': fn, 'exception': str(e.__class__)}})
@@ -255,7 +254,7 @@ class Instance(Base, ProgressMixin):
             return
 
         # enter a static host entry such that the AD server's FQDN can be resolved
-        univention.config_registry.handler_set([u'hosts/static/%(Host_IP)s=%(LDAP_Host)s' % request.options])
+        univention.config_registry.handler_set(['hosts/static/%(Host_IP)s=%(LDAP_Host)s' % request.options])
 
         # check for SSL support on AD side
         if admember.server_supports_ssl(server=request.options.get('LDAP_Host')):
@@ -268,7 +267,7 @@ class Instance(Base, ProgressMixin):
         # UCR variables are set, and now we can try to guess the language of
         # the AD domain
         ad_lang = guess_ad_domain_language()
-        univention.config_registry.handler_set([u'connector/ad/mapping/group/language=%s' % ad_lang])
+        univention.config_registry.handler_set(['connector/ad/mapping/group/language=%s' % ad_lang])
 
         self.finished(request.id, {'success': True, 'message': _('Active Directory connection settings have been saved.')})
 
@@ -561,7 +560,7 @@ class Instance(Base, ProgressMixin):
     def _enable_ssl_and_test_connection(self, certificate_fname=None):
         with ucr_rollback(ucr, ['connector/ad/ldap/ssl', 'connector/ad/ldap/certificate']):
             if certificate_fname:
-                univention.config_registry.handler_set([u'connector/ad/ldap/certificate=%s' % certificate_fname])
+                univention.config_registry.handler_set(['connector/ad/ldap/certificate=%s' % certificate_fname])
             server = ucr.get('connector/ad/ldap/host')
             if server:
                 success = False

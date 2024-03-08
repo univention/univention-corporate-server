@@ -37,7 +37,7 @@ from __future__ import annotations
 import pprint
 import sys
 from html.parser import HTMLParser
-from typing import Any, Iterable, Tuple
+from typing import Any, Iterable
 
 import requests
 
@@ -92,21 +92,21 @@ class SamlLoginError(Exception):
 
 
 class GetHtmlTagValue(HTMLParser):
-    def __init__(self, tag: str, condition: Tuple[str, str], value_name: str) -> None:
+    def __init__(self, tag: str, condition: tuple[str, str], value_name: str) -> None:
         self.tag = tag
         self.condition = condition
         self.value_name = value_name
         self.value: str | None = None
         super().__init__()
 
-    def handle_starttag(self, tag: str, attrs: Iterable[Tuple[str, str | None]]) -> None:
+    def handle_starttag(self, tag: str, attrs: Iterable[tuple[str, str | None]]) -> None:
         if tag == self.tag and self.condition in attrs:
             for attr in attrs:
                 if attr[0] == self.value_name:
                     self.value = attr[1]
 
 
-def get_html_tag_value(page: str, tag: str, condition: Tuple[str, str], value_name: str) -> str:
+def get_html_tag_value(page: str, tag: str, condition: tuple[str, str], value_name: str) -> str:
     htmlParser = GetHtmlTagValue(tag, condition, value_name)
     htmlParser.feed(page)
     htmlParser.close()

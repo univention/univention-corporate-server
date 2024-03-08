@@ -103,10 +103,7 @@ class PasswordType:
 
     @classmethod
     def password_not_conforming_to_mspolicy_with_username(cls):
-        return cls.password_not_conforming_to_mspolicy() + [
-            Password.startswith_username,
-            Password.contains_username,
-        ]
+        return [*cls.password_not_conforming_to_mspolicy(), Password.startswith_username, Password.contains_username]
 
     @classmethod
     def password_conforming_to_cracklib(cls):

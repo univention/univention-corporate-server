@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
 #  computer object helper functions
@@ -116,5 +115,5 @@ def windowscomputer_sync_s4_to_ucs_check_rename(s4connector, key, sync_object):
     ud.debug(ud.LDAP, ud.PROCESS, "con_check_rename: Renaming client from %s to %s" % (ucs_uid, sAMAccountName))
     ucs_admin_object = univention.admin.objects.get(s4connector.modules['windowscomputer'], co='', lo=s4connector.lo, position='', dn=sync_object['dn'])
     ucs_admin_object.open()
-    ucs_admin_object['name'] = sAMAccountName.decode('UTF-8').rstrip(u'$')
+    ucs_admin_object['name'] = sAMAccountName.decode('UTF-8').rstrip('$')
     ucs_admin_object.modify()

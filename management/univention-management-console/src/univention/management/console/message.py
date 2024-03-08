@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #
@@ -60,7 +59,7 @@ MIMETYPE_JSON = 'application/json'
 __all__ = ('Request', 'Response')
 
 
-class Message(object):
+class Message:
     """
     Represents a wrapper for a HTTP message.
 
@@ -75,7 +74,7 @@ class Message(object):
     RESPONSE, REQUEST = range(2)
     __counter = 0
 
-    def __init__(self, type=REQUEST, command=u'', mime_type=MIMETYPE_JSON, data=None, arguments=None, options=None):
+    def __init__(self, type=REQUEST, command='', mime_type=MIMETYPE_JSON, data=None, arguments=None, options=None):
         # type: (RequestType, str, str, bytes, List[str], Dict[str, Any]) -> None
         self.id = None  # type: Optional[str]
         if mime_type == MIMETYPE_JSON:
@@ -95,7 +94,7 @@ class Message(object):
     def generate_id(cls):
         # type: () -> str
         # cut off 'L' for long
-        generated_id = u'%lu-%d' % (int(time.time() * 100000), Message.__counter)
+        generated_id = '%lu-%d' % (int(time.time() * 100000), Message.__counter)
         Message.__counter += 1
         return generated_id
 

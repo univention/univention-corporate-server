@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 #  main configuration registry classes
 #
@@ -185,14 +184,14 @@ def run_script(script, arg, changes):
     :param changes: Dictionary of changed UCR variables, mapping UCR variable names to 2-tuple (old-value, new-value).
     """
     diff = [
-        u'%s@%%@%s@%%@%s\n' % (key, old, new)
+        '%s@%%@%s@%%@%s\n' % (key, old, new)
         for (key, (old, new)) in changes.items()
         if old and new
     ]
 
     cmd = script + " " + arg
     proc = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, close_fds=True)
-    proc.communicate(u''.join(diff).encode('UTF-8'))
+    proc.communicate(''.join(diff).encode('UTF-8'))
 
 
 def run_module(modpath, fn, ucr, changes):
@@ -240,7 +239,7 @@ def warning_string(prefix='# ', srcfiles=set()):
     return "\n".join(res)
 
 
-class ConfigHandler(object):
+class ConfigHandler:
     """Base class of all config handlers."""
 
     variables = set()  # type: Set[str]
@@ -259,7 +258,7 @@ class ConfigHandlerDiverting(ConfigHandler):
 
     def __init__(self, to_file):
         # type: (str) -> None
-        super(ConfigHandlerDiverting, self).__init__()
+        super().__init__()
         self.to_file = os.path.join('/', to_file)
         self.user = None  # type: Optional[int]
         self.group = None  # type: Optional[int]
@@ -375,7 +374,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 
     def __init__(self, dummy_from_file, to_file):
         # type: (str, str) -> None
-        super(ConfigHandlerMultifile, self).__init__(to_file)
+        super().__init__(to_file)
         self.variables = set()  # type: Set[str]
         self.from_files = set()  # type: Set[str]
         self.dummy_from_file = dummy_from_file
@@ -477,7 +476,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
         # type: () -> None
         """Prepare file for diversion."""
         if self.need_divert():
-            super(ConfigHandlerMultifile, self).install_divert()
+            super().install_divert()
 
     def uninstall_divert(self):
         # type: () -> bool
@@ -488,7 +487,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
         """
         if self.need_divert():
             return False
-        return super(ConfigHandlerMultifile, self).uninstall_divert()
+        return super().uninstall_divert()
 
 
 class ConfigHandlerFile(ConfigHandlerDiverting):
@@ -501,7 +500,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 
     def __init__(self, from_file, to_file):
         # type: (str, str) -> None
-        super(ConfigHandlerFile, self).__init__(to_file)
+        super().__init__(to_file)
         self.from_file = from_file
 
     def __call__(self, args):
@@ -567,7 +566,7 @@ class ConfigHandlerScript(ConfigHandler):
 
     def __init__(self, script):
         # type: (str) -> None
-        super(ConfigHandlerScript, self).__init__()
+        super().__init__()
         self.script = script
 
     def __hash__(self):
@@ -604,7 +603,7 @@ class ConfigHandlerModule(ConfigHandler):
 
     def __init__(self, module):
         # type: (str) -> None
-        super(ConfigHandlerModule, self).__init__()
+        super().__init__()
         self.module = module
 
     def __hash__(self):

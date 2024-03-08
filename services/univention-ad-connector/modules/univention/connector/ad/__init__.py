@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention AD Connector
 #  Basic class for the AD connector part
@@ -170,8 +169,8 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
     """
     object = copy.deepcopy(given_object)
 
-    samaccountname = u''
-    dn_attr_val = u''
+    samaccountname = ''
+    dn_attr_val = ''
 
     if object['dn'] is not None:
         if 'sAMAccountName' in object['attributes']:
@@ -278,7 +277,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
                 # search for object with this dn in ucs, needed if it lies in a different container
                 ucsdn = ''
                 ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: samaccountname is: %r" % (samaccountname,))
-                ucsdn_filter = format_escaped(u'(&(objectclass={0!e})({1}={2!e}))', ocucs, ucsattrib, samaccountname)
+                ucsdn_filter = format_escaped('(&(objectclass={0!e})({1}={2!e}))', ocucs, ucsattrib, samaccountname)
                 ucsdn_result = connector.search_ucs(filter=ucsdn_filter, base=connector.lo.base, scope='sub', attr=['objectClass'])
                 if ucsdn_result and len(ucsdn_result) > 0 and ucsdn_result[0] and len(ucsdn_result[0]) > 0:
                     ucsdn = ucsdn_result[0][0]
@@ -307,7 +306,7 @@ def user_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject):
     connector is an instance of univention.connector.ad, given_object an object-dict,
     dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
     """
-    return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'user', u'samAccountName', u'posixAccount', 'uid', u'user')
+    return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'user', 'samAccountName', 'posixAccount', 'uid', 'user')
 
 
 def group_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject):
@@ -316,7 +315,7 @@ def group_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject):
     connector is an instance of univention.connector.ad, given_object an object-dict,
     dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
     """
-    return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'group', u'cn', u'posixGroup', 'cn', u'group')
+    return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'group', 'cn', 'posixGroup', 'cn', 'group')
 
 
 def windowscomputer_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject):
@@ -325,7 +324,7 @@ def windowscomputer_dn_mapping(connector, given_object, dn_mapping_stored, isUCS
     connector is an instance of univention.connector.ad, given_object an object-dict,
     dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
     """
-    return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'windowscomputer', u'samAccountName', u'posixAccount', 'uid', u'computer', 'cn')
+    return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'windowscomputer', 'samAccountName', 'posixAccount', 'uid', 'computer', 'cn')
 
 
 def decode_sid(value):
@@ -357,7 +356,7 @@ class LDAPEscapeFormatter(string.Formatter):
             if isinstance(value, bytes):
                 raise TypeError('Filter must be string, not bytes: %r' % (value,))
             return escape_filter_chars(str(value))
-        return super(LDAPEscapeFormatter, self).convert_field(value, conversion)
+        return super().convert_field(value, conversion)
 
 
 def format_escaped(format_string, *args, **kwargs):
@@ -534,7 +533,7 @@ class ad(univention.connector.ucs):
         ud.debug(ud.LDAP, ud.PROCESS, 'Internal group membership cache was created')
 
     def init_ldap_connections(self):
-        super(ad, self).init_ldap_connections()
+        super().init_ldap_connections()
 
         self.open_ad()
         self.ad_sid = decode_sid(self.ad_search_ext_s(self.ad_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'])[0][1]['objectSid'][0])

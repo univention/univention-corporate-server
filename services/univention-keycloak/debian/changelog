@@ -1,3 +1,9 @@
+univention-keycloak (3.0.4) unstable; urgency=medium
+
+  * Bug #56604: drop Python 2 compatibility
+
+ -- Florian Best <best@univention.de>  Fri, 08 Mar 2024 02:13:37 +0100
+
 univention-keycloak (3.0.3) unstable; urgency=medium
 
   * Bug #56928: adjust to API changes

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -34,7 +33,6 @@
 from __future__ import annotations
 
 import subprocess
-from typing import Dict, List
 
 import univention.debug as ud
 
@@ -45,7 +43,7 @@ description = 'Tell portal server to refresh when something important changed'
 filter = '(|(univentionObjectType=portals/portal)(univentionObjectType=portals/category)(univentionObjectType=portals/entry)(univentionObjectType=portals/folder)(univentionObjectType=portals/announcement))'
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     listener.setuid(0)
     try:
         attrs = new if new else old

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -221,7 +220,7 @@ def test_owncloud_with_portal_login(chrome, users):
 
         # make sure, that the app tiles are already loaded, then click...
         portal_wait_for_tiles(chrome)
-        chrome.click_portal_tile(u"ownCloud")
+        chrome.click_portal_tile("ownCloud")
         wait_for_page_fully_loaded(chrome.driver)
         highlight_this_part(chrome, test_name + "-before_click_sso_button")
 
@@ -254,7 +253,7 @@ def test_owncloud_with_openid_login(chrome, users):
         portal_goto(chrome)
         # make sure, that the app tiles are already loaded, then click...
         portal_wait_for_tiles(chrome)
-        chrome.click_portal_tile(u"ownCloud")
+        chrome.click_portal_tile("ownCloud")
         wait_for_page_fully_loaded(chrome.driver)
 
         # in owncloud: click the button under "alternative logins", called
@@ -289,7 +288,7 @@ def test_owncloud_with_owncloud_login(chrome, users):
         portal_goto(chrome)
         # make sure, that the app tiles are already loaded, then click...
         portal_wait_for_tiles(chrome)
-        chrome.click_portal_tile(u"ownCloud")
+        chrome.click_portal_tile("ownCloud")
         wait_for_page_fully_loaded(chrome.driver)
 
         owncloud_login(chrome, user)
@@ -390,8 +389,8 @@ try:
     test_lib = importlib.import_module(ucs_test_lib)
 except ImportError:
     print(
-        "Could not import `{}`. Either try to set $UCS_TEST_LIB to the path "
-        "of `apptest` or copy apptest into `PYTHONPATH`.".format(test_lib))
+        f"Could not import `{test_lib}`. Either try to set $UCS_TEST_LIB to the path "
+        "of `apptest` or copy apptest into `PYTHONPATH`.")
     sys.exit(1)
 
 if __name__ == '__main__':

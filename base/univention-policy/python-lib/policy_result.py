@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Common Python Library
 #
@@ -40,7 +39,7 @@ from subprocess import PIPE, Popen
 class PolicyResultFailed(Exception):
 
     def __init__(self, message, returncode):
-        super(PolicyResultFailed, self).__init__(message)
+        super().__init__(message)
         self.returncode = returncode
 
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -97,10 +96,10 @@ def mapDriverList(udm_value, encoding=()):
     # type: (list[str], univention.admin.handlers._Encoding) -> list[bytes]
     def q(s):
         # type: (str) -> str
-        return s.replace(u'"', u'\\"')
+        return s.replace('"', '\\"')
     ldap_attr_list = []
     for x in udm_value:
-        value = u'"%s" "%s"' % (q(x[0]), q(x[1]))
+        value = '"%s" "%s"' % (q(x[0]), q(x[1]))
         ldap_attr_list.append(value.encode(*encoding))
     return ldap_attr_list
 
@@ -119,7 +118,7 @@ class object(univention.admin.handlers.simpleLdap):
         if filter.variable == 'printmodel':
             filter.variable = 'printerModel'
         else:
-            super(object, cls).rewrite_filter(filter, mapping)
+            super().rewrite_filter(filter, mapping)
 
 
 lookup = object.lookup

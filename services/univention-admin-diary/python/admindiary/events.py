@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -34,7 +33,7 @@
 from typing import Dict, List, Optional  # noqa: F401
 
 
-class DiaryEvent(object):
+class DiaryEvent:
     _all_events = {}  # type: Dict[str, DiaryEvent]
 
     @classmethod
@@ -57,34 +56,34 @@ class DiaryEvent(object):
         self._all_events[self.name] = self
 
 
-APP_INSTALL_START = DiaryEvent(u'APP_INSTALL_START', {u'en': u'Installation of {name} {version} started', u'de': u'Installation von {name} {version} wurde gestartet'}, args=[u'name', u'version'], icon=u'software')
-APP_INSTALL_SUCCESS = DiaryEvent(u'APP_INSTALL_SUCCESS', {u'en': u'Installation of {name} {version} was successful', u'de': u'Die Installation von {name} {version} war erfolgreich'}, args=[u'name', u'version'], icon=u'software')
-APP_INSTALL_FAILURE = DiaryEvent(u'APP_INSTALL_FAILURE', {u'en': u'Installation of {name} {version} failed. Error {error_code}', u'de': u'Die Installation von {name} {version} schlug fehl. Fehler {error_code}'}, args=[u'name', u'version', u'error_code'], tags=[u'error'], icon=u'software')
+APP_INSTALL_START = DiaryEvent('APP_INSTALL_START', {'en': 'Installation of {name} {version} started', 'de': 'Installation von {name} {version} wurde gestartet'}, args=['name', 'version'], icon='software')
+APP_INSTALL_SUCCESS = DiaryEvent('APP_INSTALL_SUCCESS', {'en': 'Installation of {name} {version} was successful', 'de': 'Die Installation von {name} {version} war erfolgreich'}, args=['name', 'version'], icon='software')
+APP_INSTALL_FAILURE = DiaryEvent('APP_INSTALL_FAILURE', {'en': 'Installation of {name} {version} failed. Error {error_code}', 'de': 'Die Installation von {name} {version} schlug fehl. Fehler {error_code}'}, args=['name', 'version', 'error_code'], tags=['error'], icon='software')
 
-APP_UPGRADE_START = DiaryEvent(u'APP_UPGRADE_START', {u'en': u'Upgrade of {name} {version} started', u'de': u'Aktualisierung von {name} {version} wurde gestartet'}, args=[u'name', u'version'], icon=u'software')
-APP_UPGRADE_SUCCESS = DiaryEvent(u'APP_UPGRADE_SUCCESS', {u'en': u'Upgrade to {name} {version} was successful', u'de': u'Die Aktualisierung auf {name} {version} war erfolgreich'}, args=[u'name', u'version'], icon=u'software')
-APP_UPGRADE_FAILURE = DiaryEvent(u'APP_UPGRADE_FAILURE', {u'en': u'Upgrade of {name} {version} failed. Error {error_code}', u'de': u'Die Aktualisierung von {name} {version} schlug fehl. Fehler {error_code}'}, args=[u'name', u'version', u'error_code'], tags=[u'error'], icon=u'software')
+APP_UPGRADE_START = DiaryEvent('APP_UPGRADE_START', {'en': 'Upgrade of {name} {version} started', 'de': 'Aktualisierung von {name} {version} wurde gestartet'}, args=['name', 'version'], icon='software')
+APP_UPGRADE_SUCCESS = DiaryEvent('APP_UPGRADE_SUCCESS', {'en': 'Upgrade to {name} {version} was successful', 'de': 'Die Aktualisierung auf {name} {version} war erfolgreich'}, args=['name', 'version'], icon='software')
+APP_UPGRADE_FAILURE = DiaryEvent('APP_UPGRADE_FAILURE', {'en': 'Upgrade of {name} {version} failed. Error {error_code}', 'de': 'Die Aktualisierung von {name} {version} schlug fehl. Fehler {error_code}'}, args=['name', 'version', 'error_code'], tags=['error'], icon='software')
 
-APP_REMOVE_START = DiaryEvent(u'APP_REMOVE_START', {u'en': u'Removal of {name} {version} started', u'de': u'Deinstallation von {name} {version} wurde gestartet'}, args=[u'name', u'version'], icon=u'software')
-APP_REMOVE_SUCCESS = DiaryEvent(u'APP_REMOVE_SUCCESS', {u'en': u'Removal of {name} {version} was successful', u'de': u'Die Deinstallation von {name} {version} war erfolgreich'}, args=[u'name', u'version'], icon=u'software')
-APP_REMOVE_FAILURE = DiaryEvent(u'APP_REMOVE_FAILURE', {u'en': u'Removal of {name} {version} failed. Error {error_code}', u'de': u'Die Deinstallation von {name} {version} schlug fehl. Fehler {error_code}'}, args=[u'name', u'version', u'error_code'], tags=[u'error'], icon=u'software')
+APP_REMOVE_START = DiaryEvent('APP_REMOVE_START', {'en': 'Removal of {name} {version} started', 'de': 'Deinstallation von {name} {version} wurde gestartet'}, args=['name', 'version'], icon='software')
+APP_REMOVE_SUCCESS = DiaryEvent('APP_REMOVE_SUCCESS', {'en': 'Removal of {name} {version} was successful', 'de': 'Die Deinstallation von {name} {version} war erfolgreich'}, args=['name', 'version'], icon='software')
+APP_REMOVE_FAILURE = DiaryEvent('APP_REMOVE_FAILURE', {'en': 'Removal of {name} {version} failed. Error {error_code}', 'de': 'Die Deinstallation von {name} {version} schlug fehl. Fehler {error_code}'}, args=['name', 'version', 'error_code'], tags=['error'], icon='software')
 
-SERVER_PASSWORD_CHANGED = DiaryEvent(u'SERVER_PASSWORD_CHANGED', {u'en': u'Machine account password of {hostname} changed successfully', u'de': u'Maschinenpasswort von {hostname} erfolgreich geändert'}, args=[u'hostname'], icon=u'devices')
-SERVER_PASSWORD_CHANGED_FAILED = DiaryEvent(u'SERVER_PASSWORD_CHANGED_FAILED', {u'en': u'Machine account password change of {hostname} failed', u'de': u'Änderung des Maschinenpassworts von {hostname} fehlgeschlagen'}, args=[u'hostname'], tags=[u'error'], icon=u'devices')
+SERVER_PASSWORD_CHANGED = DiaryEvent('SERVER_PASSWORD_CHANGED', {'en': 'Machine account password of {hostname} changed successfully', 'de': 'Maschinenpasswort von {hostname} erfolgreich geändert'}, args=['hostname'], icon='devices')
+SERVER_PASSWORD_CHANGED_FAILED = DiaryEvent('SERVER_PASSWORD_CHANGED_FAILED', {'en': 'Machine account password change of {hostname} failed', 'de': 'Änderung des Maschinenpassworts von {hostname} fehlgeschlagen'}, args=['hostname'], tags=['error'], icon='devices')
 
-UPDATE_STARTED = DiaryEvent(u'UPDATE_STARTED', {u'en': u'Started to update {hostname}', u'de': u'Aktualisierung von {hostname} begonnen'}, args=[u'hostname'], icon=u'software')
-UPDATE_FINISHED_SUCCESS = DiaryEvent(u'UPDATE_FINISHED_SUCCESS', {u'en': u'Successfully updated {hostname} to {version}', u'de': u'Aktualisierung von {hostname} auf {version} erfolgreich abgeschlossen'}, args=[u'hostname', u'version'], icon=u'software')
-UPDATE_FINISHED_FAILURE = DiaryEvent(u'UPDATE_FINISHED_FAILURE', {u'en': u'Failed to update {hostname}', u'de': u'Aktualisierung von {hostname} fehlgeschlagen'}, args=[u'hostname'], tags=[u'error'], icon=u'software')
+UPDATE_STARTED = DiaryEvent('UPDATE_STARTED', {'en': 'Started to update {hostname}', 'de': 'Aktualisierung von {hostname} begonnen'}, args=['hostname'], icon='software')
+UPDATE_FINISHED_SUCCESS = DiaryEvent('UPDATE_FINISHED_SUCCESS', {'en': 'Successfully updated {hostname} to {version}', 'de': 'Aktualisierung von {hostname} auf {version} erfolgreich abgeschlossen'}, args=['hostname', 'version'], icon='software')
+UPDATE_FINISHED_FAILURE = DiaryEvent('UPDATE_FINISHED_FAILURE', {'en': 'Failed to update {hostname}', 'de': 'Aktualisierung von {hostname} fehlgeschlagen'}, args=['hostname'], tags=['error'], icon='software')
 
-JOIN_STARTED = DiaryEvent(u'JOIN_STARTED', {u'en': u'Started to join {hostname} into the domain', u'de': u'Domänenbeitritt von {hostname} begonnen'}, args=[u'hostname'], icon=u'domain')
-JOIN_FINISHED_SUCCESS = DiaryEvent(u'JOIN_FINISHED_SUCCESS', {u'en': u'Successfully joined {hostname}', u'de': u'{hostname} erfolgreich der Domäne beigetreten'}, args=[u'hostname'], icon=u'domain')
-JOIN_FINISHED_FAILURE = DiaryEvent(u'JOIN_FINISHED_FAILURE', {u'en': u'Failed to join {hostname}', u'de': u'Domänenbeitritt von {hostname} fehlgeschlagen'}, args=[u'hostname'], tags=[u'error'], icon=u'domain')
-JOIN_SCRIPT_FAILED = DiaryEvent(u'JOIN_SCRIPT_FAILED', {u'en': u'Running Joinscript {joinscript} failed', u'de': u'Ausführung des Joinscripts {joinscript} fehlgeschlagen'}, args=[u'joinscript'], tags=[u'error'], icon=u'domain')
+JOIN_STARTED = DiaryEvent('JOIN_STARTED', {'en': 'Started to join {hostname} into the domain', 'de': 'Domänenbeitritt von {hostname} begonnen'}, args=['hostname'], icon='domain')
+JOIN_FINISHED_SUCCESS = DiaryEvent('JOIN_FINISHED_SUCCESS', {'en': 'Successfully joined {hostname}', 'de': '{hostname} erfolgreich der Domäne beigetreten'}, args=['hostname'], icon='domain')
+JOIN_FINISHED_FAILURE = DiaryEvent('JOIN_FINISHED_FAILURE', {'en': 'Failed to join {hostname}', 'de': 'Domänenbeitritt von {hostname} fehlgeschlagen'}, args=['hostname'], tags=['error'], icon='domain')
+JOIN_SCRIPT_FAILED = DiaryEvent('JOIN_SCRIPT_FAILED', {'en': 'Running Joinscript {joinscript} failed', 'de': 'Ausführung des Joinscripts {joinscript} fehlgeschlagen'}, args=['joinscript'], tags=['error'], icon='domain')
 
-UDM_GENERIC_CREATED = DiaryEvent(u'UDM_GENERIC_CREATED', {u'en': u'{module} object {id} created', u'de': u'{module}-Objekt {id} angelegt'}, args=[u'module', u'id'], icon=u'domain')
-UDM_GENERIC_MODIFIED = DiaryEvent(u'UDM_GENERIC_MODIFIED', {u'en': u'{module} object {id} modified', u'de': u'{module}-Objekt {id} bearbeitet'}, args=[u'module', u'id'], icon=u'domain')
-UDM_GENERIC_MOVED = DiaryEvent(u'UDM_GENERIC_MOVED', {u'en': u'{module} object {id} moved to {position}', u'de': u'{module}-Objekt {id} verschoben nach {position}'}, args=[u'module', u'id', u'position'], icon=u'domain')
-UDM_GENERIC_REMOVED = DiaryEvent(u'UDM_GENERIC_REMOVED', {u'en': u'{module} object {id} removed', u'de': u'{module}-Objekt {id} gelöscht'}, args=[u'module', u'id'], icon=u'domain')
+UDM_GENERIC_CREATED = DiaryEvent('UDM_GENERIC_CREATED', {'en': '{module} object {id} created', 'de': '{module}-Objekt {id} angelegt'}, args=['module', 'id'], icon='domain')
+UDM_GENERIC_MODIFIED = DiaryEvent('UDM_GENERIC_MODIFIED', {'en': '{module} object {id} modified', 'de': '{module}-Objekt {id} bearbeitet'}, args=['module', 'id'], icon='domain')
+UDM_GENERIC_MOVED = DiaryEvent('UDM_GENERIC_MOVED', {'en': '{module} object {id} moved to {position}', 'de': '{module}-Objekt {id} verschoben nach {position}'}, args=['module', 'id', 'position'], icon='domain')
+UDM_GENERIC_REMOVED = DiaryEvent('UDM_GENERIC_REMOVED', {'en': '{module} object {id} removed', 'de': '{module}-Objekt {id} gelöscht'}, args=['module', 'id'], icon='domain')
 
 UDM_APPCENTER_APP_CREATED = DiaryEvent('UDM_APPCENTER_APP_CREATED', {'en': 'App Metadata {id} created', 'de': 'App-Metadaten {id} angelegt'}, args=['id'], icon='domain')
 UDM_APPCENTER_APP_MODIFIED = DiaryEvent('UDM_APPCENTER_APP_MODIFIED', {'en': 'App Metadata {id} modified', 'de': 'App-Metadaten {id} bearbeitet'}, args=['id'], icon='domain')

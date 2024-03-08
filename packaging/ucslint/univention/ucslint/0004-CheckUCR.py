@@ -171,7 +171,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_FUNC_CUSTOM_USER = re.compile(r'(?: univention\.lib\.misc\. | ^\s* from \s+ univention\.lib\.misc \s+ import \s+ (?:\(.*?)? ) \b custom_username \b', re.MULTILINE | re.VERBOSE)
     RE_FUNC_CUSTOM_GROUP = re.compile(r'(?: univention\.lib\.misc\. | ^\s* from \s+ univention\.lib\.misc \s+ import \s+ (?:\(.*?)? ) \b custom_groupname \b', re.MULTILINE | re.VERBOSE)
 
-    def check_conffiles(self, paths: List[Path]) -> dict[Path, Any]:
+    def check_conffiles(self, paths: list[Path]) -> dict[Path, Any]:
         """Analyze UCR templates below :file:`conffiles/`."""
         conffiles: dict[Path, dict[str, Any]] = {}
 

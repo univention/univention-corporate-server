@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
 #  Univention Directory Listener script for the s4 connector
@@ -41,7 +40,6 @@ import pickle  # noqa: S403
 import shutil
 import subprocess
 import time
-from typing import Dict, List, Tuple
 
 import univention.debug as ud
 
@@ -67,7 +65,7 @@ if listener.configRegistry.get('connector/listener/additionalbasenames'):
             ud.debug(ud.LISTENER, ud.WARN, "s4-connector: additional config basename %s given, but %s/s4/listener/dir not set; ignore basename." % (configbasename, configbasename))
 
 
-def _save_old_object(directory: str, dn: str, old: Dict[str, List[bytes]] | None) -> None:
+def _save_old_object(directory: str, dn: str, old: dict[str, list[bytes]] | None) -> None:
     filename = os.path.join(directory, 'tmp', 'old_dn')
 
     with open(filename, 'wb+') as fd:
@@ -77,7 +75,7 @@ def _save_old_object(directory: str, dn: str, old: Dict[str, List[bytes]] | None
         p.clear_memo()
 
 
-def _load_old_object(directory: str) -> Tuple[str, Dict[str, List[bytes]]]:
+def _load_old_object(directory: str) -> tuple[str, dict[str, list[bytes]]]:
     with open(os.path.join(directory, 'tmp', 'old_dn'), 'rb') as fd:
         p = pickle.Unpickler(fd)
         (old_dn, old_object) = p.load()
@@ -85,7 +83,7 @@ def _load_old_object(directory: str) -> Tuple[str, Dict[str, List[bytes]]]:
     return (old_dn, old_object)
 
 
-def _dump_changes_to_file_and_check_file(directory: str, dn: str, new: Dict[str, List[bytes]] | None, old: Dict[str, List[bytes]] | None, old_dn: str | None) -> None:
+def _dump_changes_to_file_and_check_file(directory: str, dn: str, new: dict[str, list[bytes]] | None, old: dict[str, list[bytes]] | None, old_dn: str | None) -> None:
     ob = (dn, new, old, old_dn)
 
     tmpdir = os.path.join(directory, 'tmp')
@@ -118,7 +116,7 @@ def _restart_connector() -> None:
         listener.unsetuid()
 
 
-def handler(dn: str, new: Dict[str, List[bytes]] | None, old: Dict[str, List[bytes]] | None, command: str) -> None:
+def handler(dn: str, new: dict[str, list[bytes]] | None, old: dict[str, list[bytes]] | None, command: str) -> None:
     global connector_needs_restart
 
     if _is_module_disabled():
@@ -140,7 +138,7 @@ def handler(dn: str, new: Dict[str, List[bytes]] | None, old: Dict[str, List[byt
                 os.makedirs(os.path.join(directory, 'tmp'))
 
             old_dn = None
-            old_object: Dict[str, List[bytes]] = {}
+            old_object: dict[str, list[bytes]] = {}
 
             if os.path.exists(os.path.join(directory, 'tmp', 'old_dn')):
                 (old_dn, old_object) = _load_old_object(directory)

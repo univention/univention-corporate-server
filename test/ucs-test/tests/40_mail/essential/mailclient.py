@@ -7,7 +7,6 @@ from __future__ import annotations
 import email
 import imaplib
 import time
-from typing import Dict
 
 import univention.testing.strings as uts
 
@@ -101,7 +100,7 @@ class BaseMailClient:
                     result[i] = item
         return result
 
-    def get_acl(self, mailbox: str) -> Dict[str, Dict[str, str]]:
+    def get_acl(self, mailbox: str) -> dict[str, dict[str, str]]:
         """
         get the exact acls from getacl
 
@@ -172,8 +171,7 @@ class BaseMailClient:
                 set2 = set() if set2 is None else set(set2)
 
                 if not (who in current.get(mailbox).keys() or set1 == set2):
-                    raise WrongAcls('\nExpected = {}\nCurrent = {}\n'.format(
-                        expected_acls.get(mailbox).get(who), current.get(mailbox).get(who)))
+                    raise WrongAcls(f'\nExpected = {expected_acls.get(mailbox).get(who)}\nCurrent = {current.get(mailbox).get(who)}\n')
 
     def check_lookup(self, mailbox_owner, expected_result):
         """

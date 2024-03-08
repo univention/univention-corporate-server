@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app base module for registering an app
@@ -72,7 +71,7 @@ class Register(CredentialsAction):
     help = 'Registers an app'
 
     def setup_parser(self, parser):
-        super(Register, self).setup_parser(parser)
+        super().setup_parser(parser)
         parser.add_argument('--component', dest='register_task', action='append_const', const='component', help='Adding the component to the list of available repositories')
         parser.add_argument('--files', dest='register_task', action='append_const', const='files', help='Creating shared directories; copying files from App Center server')
         parser.add_argument('--host', dest='register_task', action='append_const', const='host', help='Creating a computer object for the app (docker apps only)')
@@ -243,11 +242,11 @@ class Register(CredentialsAction):
                             self.warn('A newer version of %s has already been registered. Skipping...' % schema_file)
                         else:
                             msg = get_handler_message('ldap_extension', userdn, self._get_password(args, ask=False))
-                            raise RegisterSchemaFailed('activation failed: {} {}'.format(msg, exc.code))
+                            raise RegisterSchemaFailed(f'activation failed: {msg} {exc.code}')
                     else:
                         if not schema_obj.wait_for_activation():
                             msg = get_handler_message('ldap_extension', userdn, self._get_password(args, ask=False))
-                            raise RegisterSchemaFileFailed('activation failed: {} {}'.format(msg, schema_file))
+                            raise RegisterSchemaFileFailed(f'activation failed: {msg} {schema_file}')
                     finally:
                         if 'UNIVENTION_APP_IDENTIFIER' in os.environ:
                             del os.environ['UNIVENTION_APP_IDENTIFIER']

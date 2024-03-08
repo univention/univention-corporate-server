@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -130,7 +129,7 @@ class object(univention.admin.handlers.simpleLdap):
     @classmethod
     def rewrite_filter(cls, filter, mapping):
         # type: (univention.admin.filter.expression, univention.admin.mapping.mapping) -> None
-        super(object, cls).rewrite_filter(filter, mapping)
+        super().rewrite_filter(filter, mapping)
         if filter.variable == 'cn':
             filter.value = univention.admin.blocklist.hash_blocklist_value(filter.value.encode('UTF-8'))
 
@@ -142,7 +141,7 @@ class object(univention.admin.handlers.simpleLdap):
     def _ldap_pre_create(self):
         # type: () -> None
         self['value'] = univention.admin.blocklist.hash_blocklist_value(self['value'].encode('UTF-8'))
-        super(object, self)._ldap_pre_create()
+        super()._ldap_pre_create()
 
 
 lookup_filter = object.lookup_filter

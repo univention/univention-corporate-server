@@ -34,7 +34,7 @@ def check_status(app):
             utils.fail('ERROR: Container not running!')
         if app.docker_image and app.docker_image.startswith('docker.software-univention.de/ucs-appbox-amd64:'):
             print('    Within container, checking packages', ', '.join(app.default_packages))
-            output = subprocess.check_output(['univention-app', 'shell', app.id, 'dpkg', '-s'] + app.default_packages, stderr=subprocess.STDOUT).decode('utf-8')
+            output = subprocess.check_output(['univention-app', 'shell', app.id, 'dpkg', '-s', *app.default_packages], stderr=subprocess.STDOUT).decode('utf-8')
             for line in output.splitlines():
                 if line.startswith('Status: ') and line != 'Status: install ok installed':
                     print(output)
@@ -46,7 +46,7 @@ def check_status(app):
         if ucr_get('server/role') in ['domaincontroller_master', 'domaincontroller_backup']:
             packages.extend(app.default_packages_master)
         print('    Checking packages', ', '.join(packages))
-        output = subprocess.check_output(['dpkg', '-s'] + packages, stderr=subprocess.STDOUT).decode('utf-8')
+        output = subprocess.check_output(['dpkg', '-s', *packages], stderr=subprocess.STDOUT).decode('utf-8')
         for line in output.splitlines():
             if line.startswith('Status: ') and line != 'Status: install ok installed':
                 print(output)

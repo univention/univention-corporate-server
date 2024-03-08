@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -69,11 +68,11 @@ class object(univention.admin.handlers.users.user.object):
         co,  # type: None
         lo,  # type: univention.admin.uldap.access
         position,  # type: univention.admin.uldap.position | None
-        dn=u'',  # type: str
+        dn='',  # type: str
         superordinate=None,  # type: univention.admin.handlers.simpleLdap | None
         attributes=None,  # type: univention.admin.handlers._Attributes | None
     ):  # type: (...) -> None
-        super(object, self).__init__(co, lo, position, dn=dn, superordinate=superordinate, attributes=attributes)
+        super().__init__(co, lo, position, dn=dn, superordinate=superordinate, attributes=attributes)
         if self._exists and (not self.lo.compare_dn(self.dn, self.lo.whoami()) or not univention.admin.modules.recognize('users/user', self.dn, self.oldattr)):
             raise univention.admin.uexceptions.wrongObjectType('%s is not recognized as %s.' % (self.dn, self.module))
 
@@ -86,7 +85,7 @@ class object(univention.admin.handlers.users.user.object):
             module = univention.admin.modules._get(cls.module)
             filter_p.append_unmapped_filter_string(filter_s, cls.rewrite_filter, module.mapping)
             return filter_p
-        return super(object, cls).lookup_filter(filter_s, lo)
+        return super().lookup_filter(filter_s, lo)
 
     @classmethod
     def lookup(

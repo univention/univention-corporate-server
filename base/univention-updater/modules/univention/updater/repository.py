@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -46,7 +45,7 @@ from univention.lib.ucs import UCS_Version  # noqa: F401
 ARCHITECTURES = {'amd64', 'all'}
 
 
-class TeeFile(object):
+class TeeFile:
     """
     Writes the given string to several files at once. Could by used
     with the print statement
@@ -94,7 +93,7 @@ def copy_package_files(source_dir: str, dest_dir: str) -> None:
         src = os.path.join(source_dir, filename)
         if not os.path.isfile(src):
             continue
-        if filename.endswith('.deb') or filename.endswith('.udeb'):
+        if filename.endswith(('.deb', '.udeb')):
             try:
                 arch = filename.rsplit('_', 1)[-1].split('.', 1)[0]  # partman-btrfs_10.3.201403242318_all.udeb
             except (TypeError, ValueError):

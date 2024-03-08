@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention AD takeover script
 #  Migrates an AD server to the local UCS Samba 4 DC
@@ -110,7 +109,7 @@ DEVNULL = open(os.devnull, 'w')
 _ = Translation('univention-management-console-module-adtakeover').translate
 
 
-class Progress(object):
+class Progress:
     """
     Progress information. reset() and error() are set by the UMC module.
     progress.warning can be used when something went wrong which is not
@@ -427,7 +426,7 @@ def set_status_done():
     return state.set_done()
 
 
-class AD_Takeover_State(object):
+class AD_Takeover_State:
 
     def __init__(self):
         self.statefile = os.path.join(SAMBA_PRIVATE_DIR, ".adtakeover")
@@ -538,7 +537,7 @@ def sysvol_info():
     }
 
 
-class UCS_License_detection(object):
+class UCS_License_detection:
 
     def __init__(self, ucr):
         self.ucr = ucr
@@ -630,7 +629,7 @@ class UCS_License_detection(object):
             raise LicenseInsufficient(error_msg)
 
 
-class AD_Connection(object):
+class AD_Connection:
 
     def __init__(self, hostname_or_ip, lp=None):
 
@@ -806,7 +805,7 @@ class AD_Connection(object):
         return self.domain_info
 
 
-class AD_Takeover(object):
+class AD_Takeover:
 
     def __init__(self, ucr, ad_connection):
         self.ucr = ucr
@@ -1496,7 +1495,7 @@ class AD_Takeover(object):
         subprocess.call(["samba-tool", "ntacl", "sysvolreset"], stdout=DEVNULL, stderr=DEVNULL)
 
 
-class AD_Takeover_Finalize(object):
+class AD_Takeover_Finalize:
 
     def __init__(self, ucr):
         self.lp = LoadParm()
@@ -1982,7 +1981,7 @@ def check_gpo_presence():
 # HELPER FUNCTIONS: ###########################
 
 
-class Timer(object):
+class Timer:
 
     def __init__(self):
         self.timetable = []
@@ -2018,7 +2017,7 @@ class Timer(object):
 
 def determine_IP_version(address):
     try:
-        ip_version = ipaddress.ip_address(u'%s' % (address,)).version
+        ip_version = ipaddress.ip_address('%s' % (address,)).version
     except ValueError:
         ip_version = None
 
@@ -2073,7 +2072,7 @@ def lookup_adds_dc(hostname_or_ip=None, realm=None, ucr=None):
     ip_address = None
     if hostname_or_ip:
         try:
-            ipaddress.ip_address(u'%s' % (hostname_or_ip,))
+            ipaddress.ip_address('%s' % (hostname_or_ip,))
             ip_address = hostname_or_ip
         except ValueError:
             pass
@@ -2277,7 +2276,7 @@ def check_samba4_started():
         log.debug("Number of Samba 4 processes after %s start/restart attempts: %s" % (attempt, stdout))
 
 
-class UserRenameHandler(object):
+class UserRenameHandler:
     """Provides methods for renaming users in UDM"""
 
     def __init__(self, lo):
@@ -2314,7 +2313,7 @@ class UserRenameHandler(object):
             self.udm_rename_ucs_user(userdn, ad_object_name)
 
 
-class GroupRenameHandler(object):
+class GroupRenameHandler:
     """Provides methods for renaming groups in UDM"""
 
     _SETTINGS_DEFAULT_UDM_PROPERTIES = (
@@ -2548,7 +2547,7 @@ def sync_position_s4_to_ucs(ucr, udm_type, ucs_object_dn, s4_object_dn):
 
 def parse_unc(unc):  # fixed function from samba/netcmd/gpo.py
     """Parse UNC string into a hostname, a service, and a filepath"""
-    if not (unc.startswith('\\\\') or unc.startswith('//')):
+    if not (unc.startswith(("\\\\", "//"))):
         raise ValueError(_("UNC doesn't start with \\\\ or //"))
     tmp = unc[2:].split('/', 2)
     if len(tmp) == 3:

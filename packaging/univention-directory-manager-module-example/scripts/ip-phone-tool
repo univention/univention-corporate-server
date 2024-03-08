@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -55,7 +54,7 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 
-class ipphonetool(object):
+class ipphonetool:
     """
     Simple example demonstrating how to implement and how to use custom Univention Directory Manager modules.
     This is an example tool to manage IP phones.
@@ -70,7 +69,7 @@ class ipphonetool(object):
         ldap_master = ucr.get('ldap/master', '')
         self.ldap_base = ucr.get('ldap/base', '')
         if not options.binddn:
-            binddn = ','.join(('cn=admin', self.ldap_base))
+            binddn = f'cn=admin,{self.ldap_base}'
             server_role = ucr.get('server/role', '')
             if server_role in ('domaincontroller_master', 'domaincontroller_backup'):
                 try:

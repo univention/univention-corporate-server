@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  logging module for UMC

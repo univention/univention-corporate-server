@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app modules
@@ -92,7 +91,7 @@ class StoreAppAction(Action):
 class UniventionAppActionMeta(type):
 
     def __new__(mcs, name, bases, attrs):
-        new_cls = super(UniventionAppActionMeta, mcs).__new__(mcs, name, bases, attrs)
+        new_cls = super().__new__(mcs, name, bases, attrs)
         if hasattr(new_cls, 'main') and new_cls.main is not None:
             _ACTIONS[new_cls.get_action_name()] = new_cls
             new_cls.logger = new_cls.parent_logger.getChild(new_cls.get_action_name())
@@ -227,7 +226,7 @@ class UniventionAppAction(metaclass=UniventionAppActionMeta):
         if not os.path.exists(_script):
             self.debug('%s does not exist' % _script)
             return None
-        subprocess_args = [_script] + list(args)
+        subprocess_args = [_script, *list(args)]
         for key, value in kwargs.items():
             if value is None or value is False:
                 continue

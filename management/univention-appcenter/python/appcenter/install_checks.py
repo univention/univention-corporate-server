@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app module for uninstalling an app
@@ -55,7 +54,7 @@ _REQUIREMENTS = {}
 
 class RequirementMetaClass(UniventionMetaClass):
     def __new__(mcs, name, bases, attrs):
-        new_cls = super(RequirementMetaClass, mcs).__new__(mcs, name, bases, attrs)
+        new_cls = super().__new__(mcs, name, bases, attrs)
         if new_cls.__doc__:
             _REQUIREMENTS[new_cls.get_name()] = new_cls
         return new_cls
@@ -159,12 +158,12 @@ class MultiRequirement(Requirement):
         pass
 
 
-class HardRequirement(object):
+class HardRequirement:
     def is_error(self):
         return True
 
 
-class SoftRequirement(object):
+class SoftRequirement:
     def is_error(self):
         return False
 

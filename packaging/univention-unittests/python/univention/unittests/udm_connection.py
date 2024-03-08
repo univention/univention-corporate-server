@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -43,7 +42,7 @@ def get_domain():
 
 
 class MockedAccess(MagicMock):
-    def search(self, filter=u'(objectClass=*)', base=u'', scope=u'sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
+    def search(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
         if base is None:
             base = get_domain()
         res = []
@@ -64,7 +63,7 @@ class MockedAccess(MagicMock):
             res.append(result)
         return res
 
-    def searchDn(self, filter=u'(objectClass=*)', base=u'', scope=u'sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
+    def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
         res = []
         for dn, _attrs in self.search(filter, base):
             res.append(dn)
@@ -90,7 +89,7 @@ class MockedAccess(MagicMock):
             return obj.attrs.get(attr)
 
 
-class MockedPosition(object):
+class MockedPosition:
     def __init__(self):
         self.dn = get_domain()
 

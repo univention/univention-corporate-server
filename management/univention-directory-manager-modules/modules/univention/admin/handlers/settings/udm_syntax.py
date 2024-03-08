@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -161,7 +160,7 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def _ldap_pre_modify(self):
-        super(object, self)._ldap_pre_modify()
+        super()._ldap_pre_modify()
         diff_keys = [key for key in self.info.keys() if self.info.get(key) != self.oldinfo.get(key) and key not in ('active', 'appidentifier')]
         if not diff_keys:  # check for trivial change
             return
@@ -190,7 +189,7 @@ class object(univention.admin.handlers.simpleLdap):
                 old_dict = dict(old_value)
                 new_dict = dict(new_value)
                 for language_tag, old_mo_data_base64 in old_dict.items():
-                    ldap_attribute = ''.join((messagecatalog_ldap_attribute_and_tag_prefix, language_tag))
+                    ldap_attribute = f'{messagecatalog_ldap_attribute_and_tag_prefix}{language_tag}'
                     new_mo_data_base64 = new_dict.get(language_tag)
                     if not new_mo_data_base64:  # property value has been removed
                         old_mo_data_binary = univention.admin.mapping.mapBase64(old_mo_data_base64)
@@ -201,7 +200,7 @@ class object(univention.admin.handlers.simpleLdap):
                             new_mo_data_binary = univention.admin.mapping.mapBase64(new_mo_data_base64)
                             modlist.append((ldap_attribute, old_mo_data_binary, new_mo_data_binary))
                 for language_tag, new_mo_data_base64 in new_dict.items():
-                    ldap_attribute = ''.join((messagecatalog_ldap_attribute_and_tag_prefix, language_tag))
+                    ldap_attribute = f'{messagecatalog_ldap_attribute_and_tag_prefix}{language_tag}'
                     if not old_dict.get(language_tag):  # property value has been added
                         new_mo_data_binary = univention.admin.mapping.mapBase64(new_mo_data_base64)
                         modlist.append((ldap_attribute, None, new_mo_data_binary))

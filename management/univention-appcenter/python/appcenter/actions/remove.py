@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app module for uninstalling an app
@@ -89,7 +88,7 @@ class Remove(InstallRemoveUpgrade):
         return write_event(APP_REMOVE_FAILURE, {'name': app.name, 'version': app.version, 'error_code': str(status)}, username=self._get_username(args), context_id=context_id)
 
     def _call_action_hooks(self, directory):
-        super(Remove, self)._run_parts(directory)
+        super()._run_parts(directory)
 
     def needs_credentials(self, app):
         if os.path.exists(app.get_cache_file(self.prescript_ext)):

@@ -43,12 +43,12 @@ class Plugin(type):
     """Meta class for plugins."""
 
     def __new__(mcs, name, bases, attrs):
-        new_cls = super(Plugin, mcs).__new__(mcs, name, bases, attrs)
+        new_cls = super().__new__(mcs, name, bases, attrs)
         Plugins.add_plugin(new_cls)
         return new_cls
 
 
-class Plugins(object):
+class Plugins:
     """Register `Plugin` subclasses and iterate over them."""
 
     _plugins = []  # type: List[Plugin]

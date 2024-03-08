@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app module for managing apps in the domain
@@ -90,7 +89,7 @@ class Domain(CredentialsAction):
         return ret
 
     def manage(self, login, pwdfile, logger, *args):
-        process_args = ['/usr/sbin/univention-ssh', pwdfile, login, 'univention-app'] + list(args)
+        process_args = ['/usr/sbin/univention-ssh', pwdfile, login, 'univention-app', *list(args)]
         call_process(process_args, logger=logger)
         return logger
 

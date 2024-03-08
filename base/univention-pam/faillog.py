@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention PAM
 #  Listener module for faillog
@@ -36,8 +35,6 @@
 
 from __future__ import annotations
 
-from typing import Dict, List
-
 import univention.debug as ud
 from univention.admin.handlers.users.user import unmapLocked
 
@@ -48,11 +45,11 @@ description = 'The listener module resets the faillog count'
 filter = '(objectClass=shadowAccount)'
 
 
-def __login_is_locked(attrs: Dict[str, List[bytes]]) -> bool:
+def __login_is_locked(attrs: dict[str, list[bytes]]) -> bool:
     return unmapLocked(attrs) == '1'
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     if new and old and __login_is_locked(old) and not __login_is_locked(new):
         # reset local bad password count
         ud.debug(ud.LISTENER, ud.PROCESS, 'Reset faillog for user %s' % new['uid'][0].decode('UTF-8'))

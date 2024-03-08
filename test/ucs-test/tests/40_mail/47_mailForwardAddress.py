@@ -145,7 +145,7 @@ def test_mail_forward(mail_copy_to_self):
                     'univentionMailHomeServer': [user.mailHomeServer],
                     'mailPrimaryAddress': [user.mailPrimaryAddress],
                     'mailAlternativeAddress': user.mailAlternativeAddress,
-                    'mailForwardAddress': user.mailForwardAddress + [user.mailPrimaryAddress],
+                    'mailForwardAddress': [*user.mailForwardAddress, user.mailPrimaryAddress],
                 },
                 strict=True)
 

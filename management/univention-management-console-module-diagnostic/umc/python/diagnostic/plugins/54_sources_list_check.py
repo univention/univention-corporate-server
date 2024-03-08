@@ -68,7 +68,7 @@ actions = {
 
 class TracebackFound(Exception):
     def __init__(self, path: str, exception: str) -> None:
-        super(TracebackFound, self).__init__(path, exception)
+        super().__init__(path, exception)
         self.path = path
         self.exception = exception
 

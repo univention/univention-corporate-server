@@ -36,7 +36,7 @@ from __future__ import annotations
 
 import json
 from argparse import ArgumentParser, FileType
-from typing import Any, Dict
+from typing import Any
 
 import _util
 
@@ -48,7 +48,7 @@ def main() -> None:
     opt = parser.parse_args()
 
     print('generating country data...')
-    country_data: Dict[str, Dict[str, Any]] = {}
+    country_data: dict[str, dict[str, Any]] = {}
 
     country_default_lang = _util.get_country_default_language()
     for icountry, ilang in country_default_lang.items():
@@ -60,7 +60,7 @@ def main() -> None:
 
     country_code_to_geonameid_map = _util.get_country_code_to_geonameid_map()
     country_geonameids = list(country_code_to_geonameid_map.values())
-    for ilocale in opt.locales + ['']:
+    for ilocale in [*opt.locales, ""]:
         print('loading data for locale %s' % ilocale)
         country_names = _util.get_localized_names(country_geonameids, ilocale)
         for icode, iid in country_code_to_geonameid_map.items():

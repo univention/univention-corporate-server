@@ -35,7 +35,7 @@ def category():
     return c
 
 
-class TestVariable(object):
+class TestVariable:
 
     def test_unreg(self):
         v = ucri.Variable(registered=False)
@@ -55,7 +55,7 @@ class TestVariable(object):
         assert variable.check() == []
 
 
-class TestCategory(object):
+class TestCategory:
 
     def test_incomplete(self):
         c = ucri.Category()
@@ -71,7 +71,7 @@ class TestCategory(object):
         assert category.check() == []
 
 
-class TestConfigRegistryInfo(object):
+class TestConfigRegistryInfo:
 
     @pytest.fixture(autouse=True)
     def setup0(self, tmpdir, monkeypatch):

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -207,7 +206,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_create(self):
         # type: () -> None
-        super(object, self)._ldap_pre_create()
+        super()._ldap_pre_create()
         if configRegistry.is_false('directory/manager/child/cn/ou', True) and not self.lo.compare_dn(self.position.getDn(), configRegistry.get('ldap/base')):
             # it is possible to have a basedn with cn=foo
             # in this case it is allowed to create a ou
@@ -217,7 +216,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_post_create(self):
         # type: () -> None
-        super(object, self)._ldap_post_create()
+        super()._ldap_post_create()
         changes = []
 
         dn_bytes = self.dn.encode('UTF-8')
@@ -236,12 +235,12 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_rename(self, newdn):
         # type: (str) -> None
-        super(object, self)._ldap_pre_rename(newdn)
+        super()._ldap_pre_rename(newdn)
         self.move(newdn)
 
     def _ldap_post_move(self, olddn):
         # type: (str) -> None
-        super(object, self)._ldap_post_move(olddn)
+        super()._ldap_post_move(olddn)
         settings_module = univention.admin.modules._get('settings/directory')
         settings_object = univention.admin.objects.get(settings_module, None, self.lo, position='', dn=self.default_dn)
         settings_object.open()
@@ -253,7 +252,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_post_modify(self):
         # type: () -> None
-        super(object, self)._ldap_post_modify()
+        super()._ldap_post_modify()
         changes = []
 
         dn_bytes = self.dn.encode('UTF-8')
@@ -268,7 +267,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_remove(self):
         # type: () -> None
-        super(object, self)._ldap_pre_remove()
+        super()._ldap_pre_remove()
         changes = []
 
         self.open()

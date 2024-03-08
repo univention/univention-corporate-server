@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -89,7 +88,7 @@ def addPropertiesMappingOptionsAndLayout(new_property, new_mapping, new_options,
         new_options[key] = value
 
 
-class Support(object):
+class Support:
 
     def __init__(self):
         self.nagiosRemoveFromServices = False
@@ -161,16 +160,16 @@ class Support(object):
 
         if 'nagios' in self.old_options:
             if self.hasChanged('name') and self.hasChanged('domain'):
-                oldfqdn = u'%s.%s' % (self.oldinfo['name'], self.oldinfo['domain'])
-                newfqdn = u'%s.%s' % (self['name'], self['domain'])
+                oldfqdn = '%s.%s' % (self.oldinfo['name'], self.oldinfo['domain'])
+                newfqdn = '%s.%s' % (self['name'], self['domain'])
                 self.__change_fqdn(oldfqdn, newfqdn)
             elif self.hasChanged('name'):
-                oldfqdn = u'%s.%s' % (self.oldinfo['name'], self['domain'])
-                newfqdn = u'%s.%s' % (self['name'], self['domain'])
+                oldfqdn = '%s.%s' % (self.oldinfo['name'], self['domain'])
+                newfqdn = '%s.%s' % (self['name'], self['domain'])
                 self.__change_fqdn(oldfqdn, newfqdn)
             elif self.hasChanged('domain'):
-                oldfqdn = u'%s.%s' % (self.oldinfo['name'], self.oldinfo['domain'])
-                newfqdn = u'%s.%s' % (self['name'], self['domain'])
+                oldfqdn = '%s.%s' % (self.oldinfo['name'], self.oldinfo['domain'])
+                newfqdn = '%s.%s' % (self['name'], self['domain'])
                 self.__change_fqdn(oldfqdn, newfqdn)
 
         fqdn = '%s.%s' % (self['name'], configRegistry.get("domainname"))

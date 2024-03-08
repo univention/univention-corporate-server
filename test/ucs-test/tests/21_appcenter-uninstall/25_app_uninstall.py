@@ -38,7 +38,7 @@ def check_status(app):
             packages = app.default_packages_master
             if packages:
                 try:
-                    output = subprocess.check_output(['dpkg', '-s'] + packages, stderr=subprocess.STDOUT).decode('utf-8')
+                    output = subprocess.check_output(['dpkg', '-s', *packages], stderr=subprocess.STDOUT).decode('utf-8')
                 except subprocess.CalledProcessError:
                     utils.fail('ERROR: MasterPackages are not installed!')
                 else:

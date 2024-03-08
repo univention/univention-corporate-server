@@ -106,7 +106,7 @@ def test_cookie_banner(keycloak_adm_login, admin_account, ucr, keycloak_config):
             'umc/cookie-banner/title/de=de-DE title',
             'umc/cookie-banner/text/en=en-US text',
             'umc/cookie-banner/title/en=en-US title',
-        ]
+        ],
     )
     # check that the login does not work
     with pytest.raises(ElementClickInterceptedException):
@@ -146,7 +146,7 @@ def test_cookie_banner_no_banner_with_cookie_domains(keycloak_adm_login, admin_a
             'umc/cookie-banner/text/en=en-US text',
             'umc/cookie-banner/title/en=en-US title',
             'umc/cookie-banner/domains=does.not.exists',
-        ]
+        ],
     )
     keycloak_adm_login(admin_account.username, admin_account.bindpw)
 
@@ -165,7 +165,7 @@ def test_cookie_banner_domains(keycloak_adm_login, admin_account, ucr, keycloak_
             'umc/cookie-banner/text/en=en-US text',
             'umc/cookie-banner/title/en=en-US title',
             f'umc/cookie-banner/domains=does.not.exist,{domain.lower()}',
-        ]
+        ],
     )
     driver = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
     button = wait_for_class(driver, 'cookie-banner-button')
@@ -191,7 +191,7 @@ def test_login_page_with_cookie_banner_no_element_is_tabbable(keycloak_adm_login
             'umc/cookie-banner/title/de=de-DE title',
             'umc/cookie-banner/text/en=en-US text',
             'umc/cookie-banner/title/en=en-US title',
-        ]
+        ],
     )
     driver = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
     lang = get_language(driver, german=True)

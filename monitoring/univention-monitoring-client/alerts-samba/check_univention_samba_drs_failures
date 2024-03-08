@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Monitoring Plugin samba drs repl
 #
@@ -44,7 +43,7 @@ from univention.config_registry import ucr
 from univention.monitoring import Alert
 
 
-class _CheckSambaDrsRepl(object):
+class _CheckSambaDrsRepl:
 
     def __init__(self):
         self.lp = LoadParm()

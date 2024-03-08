@@ -1,5 +1,4 @@
 #!/usr/bin/python3 -u
-# -*- coding: utf-8 -*-
 #
 # Univention openldap ntlm squid authenticator
 #
@@ -69,7 +68,6 @@ import struct
 import subprocess
 import sys
 import time
-from typing import Dict, List, Tuple
 
 import passlib.crypto.des
 from ldap.filter import filter_format
@@ -127,7 +125,7 @@ NTLM_TYPE2_FLAGS = (
 )
 
 
-def dumpNegotiateFlags(NegotiateFlags: int) -> List[str]:
+def dumpNegotiateFlags(NegotiateFlags: int) -> list[str]:
     flags = []
 
     if NegotiateFlags & NTLM_NegotiateUnicode:
@@ -205,7 +203,7 @@ def debug(msg: str) -> None:
             fh.write("%s - %s\n" % (time.time(), msg))
 
 
-def parseNtlmTypeThree(data: bytes) -> Tuple[str, str, str, bytes, bytes, int]:
+def parseNtlmTypeThree(data: bytes) -> tuple[str, str, str, bytes, bytes, int]:
     data = data.replace(b"KK ", b"", 1)
     data = base64.b64decode(data)
     # signature = data[0:8]
@@ -422,7 +420,7 @@ def parseNtlmTypeTwo(msg: bytes) -> None:
     print(signature)
 
 
-def createNtlmTypeTwo() -> Tuple[str, bytes]:
+def createNtlmTypeTwo() -> tuple[str, bytes]:
     challenge = "".join(random.sample(string.printable + "0123456789", 8)).encode('ASCII')
 
     domain = cr.get("windows/domain", "").upper()
@@ -577,7 +575,7 @@ if __name__ == '__main__':
 
     cr = univention.config_registry.ConfigRegistry()
     cr.load()
-    users: Dict[str, Tuple[bytes, float, bytes]] = {}
+    users: dict[str, tuple[bytes, float, bytes]] = {}
     challenge = b""
 
     # open pipe to squid_kerb_auth for kerberos stuff

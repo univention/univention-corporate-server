@@ -1,5 +1,4 @@
 #!/usr/bin/python2.7
-# -*- coding: utf-8 -*-
 #
 # Python VNC automate
 #
@@ -66,7 +65,7 @@ QEMU = '/usr/bin/kvm'
 LOCAL = '127.0.0.1'  # TODO: IPv6
 
 
-class VirtualMachine(object):
+class VirtualMachine:
 
     def __init__(self, name, server, iso_image=None, disks=1, interfaces=1):
         self.__created = False
@@ -101,14 +100,14 @@ class VirtualMachine(object):
         dom.undefine()
 
 
-class TestXml(object):
+class TestXml:
     pass
 
 
 class TestVolume(TestXml):
 
     def __init__(self, fname):
-        super(TestVolume, self).__init__()
+        super().__init__()
         if fname.startswith('/'):
             self.pool_path = fname
         else:
@@ -136,7 +135,7 @@ class TestVolume(TestXml):
 
 class TestDisk(TestVolume):
     def __init__(self, fname, boot_order_index, capacity=14):
-        super(TestDisk, self).__init__(fname)
+        super().__init__(fname)
         self.logger = getLogger('test.disk')
         self.capacity = capacity
         self.suffix = "qcow2"
@@ -179,7 +178,7 @@ class TestDisk(TestVolume):
 
 class TestIso(TestVolume):
     def __init__(self, fname, boot_order_index):
-        super(TestIso, self).__init__(fname)
+        super().__init__(fname)
         self.logger = getLogger('test.cdrom')
         self.suffix = "iso"
         self.boot_order_index = boot_order_index
@@ -198,7 +197,7 @@ class TestIso(TestVolume):
 
 class TestInterface(TestXml):
     def __init__(self):
-        super(TestInterface, self).__init__()
+        super().__init__()
         self.mac = "52:54:00:%02x:%02x:%02x" % (
             random.randint(0, 255), random.randint(0, 255),
             random.randint(0, 255),
@@ -216,7 +215,7 @@ class TestInterface(TestXml):
 
 class TestDomain(TestXml):
     def __init__(self, iname):
-        super(TestDomain, self).__init__()
+        super().__init__()
         self.logger = getLogger('test.domain')
         self.iname = iname
         self.memory = 1024
@@ -291,7 +290,7 @@ class TestDomain(TestXml):
         return text
 
 
-class VmCreator(object):
+class VmCreator:
 
     def __init__(self, args=None):
         self.logger = getLogger('test')

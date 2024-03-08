@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  module: manages Univention Config Registry variables
@@ -74,7 +73,7 @@ class UCRKeySanitizer(StringSanitizer):
         :param further_arguments: List of further arguments
         :return: sanitized value or None if an Error is raised
         """
-        value = super(UCRKeySanitizer, self)._sanitize(value, name, further_arguments)
+        value = super()._sanitize(value, name, further_arguments)
         b = StringIO()
         if not validate_key(value, b):
             error_message = b.getvalue()

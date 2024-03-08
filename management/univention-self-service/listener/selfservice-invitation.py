@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention LDAP
 #
@@ -36,7 +35,6 @@
 from __future__ import annotations
 
 import os
-from typing import Dict, List
 
 import univention.debug as ud
 
@@ -51,7 +49,7 @@ modrdn = '1'
 cache_dir = '/var/cache/univention-directory-listener/selfservice-invitation'
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]], command: str) -> None:
     if not listener.configRegistry.is_true('umc/self-service/invitation/enabled', True):
         return
 

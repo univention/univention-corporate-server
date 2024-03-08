@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -61,7 +60,7 @@ class base(Exception):
                 continue
             msg = str(msg)
             # avoid duplicate messages
-            if all(_strip(msg) not in arg for arg in args + [self.message]):
+            if all(_strip(msg) not in arg for arg in [*args, self.message]):
                 args.append(msg)
 
         # make sure that a ':' is printed if further information follows
@@ -78,7 +77,7 @@ class objectExists(base):
     message = _('Object exists.')
 
     def __init__(self, *args, **kwargs):
-        super(objectExists, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.dn = self.args[0] if self.args else None
 
 
@@ -86,7 +85,7 @@ class noObject(base):
     message = _('No such object.')
 
     def __init__(self, *args, **kwargs):
-        super(noObject, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.dn = self.args[0] if self.args else None
 
 
@@ -99,7 +98,7 @@ class ldapError(base):
 
     def __init__(self, *args, **kwargs):
         self.original_exception = kwargs.pop('original_exception', None)
-        super(ldapError, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 class ldapTimeout(base):
@@ -115,7 +114,7 @@ class insufficientInformation(base):
 
     def __init__(self, *args, **kwargs):
         self.missing_properties = kwargs.pop('missing_properties', None)
-        super(insufficientInformation, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 class noSuperordinate(insufficientInformation):
@@ -130,7 +129,7 @@ class valueError(base):
 
     def __init__(self, *args, **kwargs):
         self.property = kwargs.pop('property', None)
-        super(valueError, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 class valueMayNotChange(valueError):

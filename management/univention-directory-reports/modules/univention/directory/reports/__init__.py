@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Directory Reports
 #  module for creating reports about any kind of Univention Admin object

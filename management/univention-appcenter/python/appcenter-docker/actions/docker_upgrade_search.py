@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app module for searching for available upgrading
@@ -43,7 +42,7 @@ from univention.appcenter.actions.upgrade_search import UpgradeSearch
 class UpgradeSearch(UpgradeSearch, DockerActionMixin):
 
     def _check_for_upgrades(self, app):
-        upgrade_available = super(UpgradeSearch, self)._check_for_upgrades(app)
+        upgrade_available = super()._check_for_upgrades(app)
         docker = self._get_docker(app)
         if not docker:
             return upgrade_available

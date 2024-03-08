@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Quota
 #  Dump Quota settings into a cache directory
@@ -38,7 +37,6 @@ from __future__ import annotations
 
 import os
 import pickle  # noqa: S403
-from typing import Dict, List, Tuple
 
 import ldap
 from ldap.filter import filter_format
@@ -64,7 +62,7 @@ SHARE_CACHE_DIR = '/var/cache/univention-quota/'
 SHARE_CACHE_TODO_DIR = '/var/cache/univention-quota/todo'
 
 
-def _dump_share_and_policy_result(dn: str, share_object: Dict[str, List[bytes]], policy_result: Dict[str, List[bytes]]) -> None:
+def _dump_share_and_policy_result(dn: str, share_object: dict[str, list[bytes]], policy_result: dict[str, list[bytes]]) -> None:
     filename = os.path.join(SHARE_CACHE_DIR, dn)
 
     with open(filename, 'wb+') as fd:
@@ -74,7 +72,7 @@ def _dump_share_and_policy_result(dn: str, share_object: Dict[str, List[bytes]],
         p.clear_memo()
 
 
-def _read_share_and_policy_result(dn: str) -> Tuple[Dict[str, List[bytes]] | None, Dict[str, List[bytes]] | None]:
+def _read_share_and_policy_result(dn: str) -> tuple[dict[str, list[bytes]] | None, dict[str, list[bytes]] | None]:
     filename = os.path.join(SHARE_CACHE_DIR, dn)
 
     if not os.path.exists(filename):
@@ -93,7 +91,7 @@ def _remove_cache_for_share(dn: str) -> None:
         os.remove(filename)
 
 
-def _is_share(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> bool:
+def _is_share(new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> bool:
     if new and b'univentionShare' in new['objectClass']:
         return True
     if old and b'univentionShare' in old['objectClass']:
@@ -101,7 +99,7 @@ def _is_share(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> bool:
     return False
 
 
-def _is_quota_policy(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> bool:
+def _is_quota_policy(new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> bool:
     if new and b'univentionPolicyShareUserQuota' in new['objectClass']:
         return True
     if old and b'univentionPolicyShareUserQuota' in old['objectClass']:
@@ -109,7 +107,7 @@ def _is_quota_policy(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
     return False
 
 
-def _is_container(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> bool:
+def _is_container(new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> bool:
     for oc in [b'organizationalRole', b'organizationalUnit', b'univentionBase']:
         if new and oc in new['objectClass']:
             return True
@@ -127,7 +125,7 @@ def _get_ldap_connection() -> univention.uldap.access:
     return connection
 
 
-def _is_container_change_relevant(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> bool:
+def _is_container_change_relevant(new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> bool:
     new_reference = new.get('univentionPolicyReference', []) if new else []
     old_reference = old.get('univentionPolicyReference', []) if old else []
 
@@ -156,7 +154,7 @@ def _get_fqdn() -> str:
     return '%(hostname)s.%(domainname)s' % listener.configRegistry
 
 
-def _is_share_used_on_this_server(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> bool:
+def _is_share_used_on_this_server(new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> bool:
     fqdn = _get_fqdn().encode('ASCII')
     if new and fqdn in new['univentionShareHost']:
         return True
@@ -179,8 +177,8 @@ def _add_share_to_dn_list(dn: str) -> None:
     open(filename, 'w').close()
 
 
-def _get_all_quota_references(dn: str) -> List[Tuple[str, Dict[str, List[bytes]]]]:
-    references: List[Tuple[str, Dict[str, List[bytes]]]] = []
+def _get_all_quota_references(dn: str) -> list[tuple[str, dict[str, list[bytes]]]]:
+    references: list[tuple[str, dict[str, list[bytes]]]] = []
     lo = _get_ldap_connection()
     for ddn, attr in lo.search(filter=filter_format('(univentionPolicyReference=%s)', [dn])):
         references.append((ddn, attr))
@@ -188,7 +186,7 @@ def _get_all_quota_references(dn: str) -> List[Tuple[str, Dict[str, List[bytes]]
     return references
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     ud.debug(ud.LISTENER, ud.INFO, 'Run handler for dn: %r' % dn)
     listener.setuid(0)
     try:

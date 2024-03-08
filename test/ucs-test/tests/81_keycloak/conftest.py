@@ -33,7 +33,7 @@ from __future__ import annotations
 import os
 import time
 from types import SimpleNamespace
-from typing import Callable, Iterator
+from typing import TYPE_CHECKING, Callable, Iterator
 
 import pytest
 from keycloak import KeycloakAdmin, KeycloakOpenID
@@ -52,7 +52,10 @@ from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import UCSTestDomainAdminCredentials, get_ldap_connection, wait_for_listener_replication
 from univention.udm import UDM
 from univention.udm.binary_props import Base64Bzip2BinaryProperty
-from univention.udm.modules.settings_data import SettingsDataObject
+
+
+if TYPE_CHECKING:
+    from univention.udm.modules.settings_data import SettingsDataObject
 
 
 # don't use the ucs-test ucr fixture (UCSTestConfigRegistry)
@@ -142,13 +145,13 @@ def upgrade_status_obj(ucr_proper) -> SettingsDataObject:
     obj.save()
 
 
-class UnverfiedUser(object):
+class UnverfiedUser:
     def __init__(self, udm: UCSTestUDM, password: str = 'univention'):
         self.ldap = get_ldap_connection(primary=True)
         self.password = password
         self.dn, self.username = udm.create_user(password=password)
         changes = [
-            ('objectClass', [b''], self.ldap.get(self.dn).get('objectClass') + [b'univentionPasswordSelfService']),
+            ('objectClass', [b''], [*self.ldap.get(self.dn).get('objectClass'), b'univentionPasswordSelfService']),
             ('univentionPasswordSelfServiceEmail', [''], [b'root@localhost']),
             ('univentionPasswordRecoveryEmailVerified', [''], [b'FALSE']),
             ('univentionRegisteredThroughSelfService', [''], [b'TRUE']),

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -72,7 +71,7 @@ def merge_po_file_trees(source_tree, target_tree):
     # remove deleted
     for obsolete_po in pos_delete_upstream:
         obsolete_po = os.path.join(target_tree, obsolete_po)
-        os.rename(obsolete_po, '{}.obsolete'.format(obsolete_po))
+        os.rename(obsolete_po, f'{obsolete_po}.obsolete')
     # add new
     for new_po in new_pos:
         new_po_path = os.path.join(target_tree, new_po)
@@ -101,7 +100,7 @@ def parse_args():
     args.upstream = os.path.abspath(args.upstream)
     for dir in (args.translation, args.upstream):
         if not os.path.isdir(dir):
-            sys.exit("Error: {} is not a directory or doesn't exist. Exiting.".format(dir))
+            sys.exit(f"Error: {dir} is not a directory or doesn't exist. Exiting.")
 
     return args
 
@@ -120,7 +119,7 @@ end with two character language code, e.g. univention-l10n-fr. Exiting.""")
     if not os.path.isfile(os.path.join(args.translation, 'all_targets.mk')):
         try:
             deb_dir = os.path.join(args.translation, 'debian')
-            os.remove(os.path.join(deb_dir, 'univention-ucs-translation-{}.install'.format(lang_code)))
+            os.remove(os.path.join(deb_dir, f'univention-ucs-translation-{lang_code}.install'))
             tlh.template_file(deb_dir, "rules")
             tlh.template_file(args.translation, "Makefile")
         except Exception:
@@ -129,7 +128,7 @@ end with two character language code, e.g. univention-l10n-fr. Exiting.""")
     # generate {lang}_tomerge
     dh_umc.LANGUAGES = (lang_code, )
     modules_upstream = tlh.find_base_translation_modules(args.upstream)
-    output_dir = os.path.join(args.translation, '{}_merge'.format(lang_code))
+    output_dir = os.path.join(args.translation, f'{lang_code}_merge')
     modules = []
     for module_attrs in modules_upstream:
         module = tlh.UMCModuleTranslation.from_source_package(module_attrs, lang_code)

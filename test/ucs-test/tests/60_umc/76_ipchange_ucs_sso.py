@@ -65,6 +65,6 @@ if __name__ == '__main__':
 
             utils.wait_for_replication()
             utils.verify_ldap_object(computer, {'aRecord': [new_ip]}, strict=True)
-            utils.verify_ldap_object(ucs_sso_dn, {'aRecord': ips + [new_ip]}, strict=True)
+            utils.verify_ldap_object(ucs_sso_dn, {'aRecord': [*ips, new_ip]}, strict=True)
         finally:
             lo.modify(ucs_sso_dn, [('aRecord', lo.get(ucs_sso_dn).get('aRecord'), ips)])

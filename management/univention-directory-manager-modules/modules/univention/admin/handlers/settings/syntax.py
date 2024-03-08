@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -161,8 +160,8 @@ class object(univention.admin.handlers.simpleLdap):
             # initialize items
             self['attribute'] = []
             self['ldapattribute'] = []
-            self['value'] = u''
-            self['ldapvalue'] = u''
+            self['value'] = ''
+            self['ldapvalue'] = ''
 
             # split ldap attribute value into two parts and add them to separate dir manager widgets
             for item in self.oldattr.get('univentionSyntaxLDAPAttribute', []):
@@ -174,7 +173,7 @@ class object(univention.admin.handlers.simpleLdap):
             # set attribute name of value that shall be written to LDAP
             # WARNING: drop down box is only used if string is not set
             val = self.oldattr.get('univentionSyntaxLDAPValue', [b''])[0].decode('ASCII')
-            if val and u':' in val:
+            if val and ':' in val:
                 self['value'] = val
             else:
                 self['ldapvalue'] = val
@@ -183,10 +182,10 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_create(self):
         self.__check()
-        super(object, self)._ldap_pre_create()
+        super()._ldap_pre_create()
 
     def _ldap_pre_modify(self):
-        super(object, self)._ldap_pre_modify()
+        super()._ldap_pre_modify()
         self.__check()
 
     def _ldap_modlist(self):

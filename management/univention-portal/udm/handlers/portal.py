@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -159,22 +158,22 @@ layout = [
 
 
 def mapTranslationValue(vals, encoding=()):
-    return [u' '.join(val).encode(*encoding) for val in vals]
+    return [' '.join(val).encode(*encoding) for val in vals]
 
 
 def unmapTranslationValue(vals, encoding=()):
-    return [val.decode(*encoding).split(u' ', 1) for val in vals]
+    return [val.decode(*encoding).split(' ', 1) for val in vals]
 
 
 def mapOrdered(ldap_values, encoding=()):
     # ldap stores multi value fields unordered by default
     # you can change this by putting X-ORDERED 'VALUES' in your schema file
     # but then you literally get [b'{0}foo', b'{1}bar']
-    return [u'{{{}}}{}'.format(i, value).encode(*encoding) for i, value in enumerate(ldap_values)]
+    return [f'{{{i}}}{value}'.encode(*encoding) for i, value in enumerate(ldap_values)]
 
 
 def unmapOrdered(udm_values, encoding=()):
-    return [_[1] for _ in sorted((re.match(u'^{(\\d+)}(.*)', value.decode(*encoding)).groups() for value in udm_values), key=lambda n: int(n[0]))]
+    return [_[1] for _ in sorted((re.match('^{(\\d+)}(.*)', value.decode(*encoding)).groups() for value in udm_values), key=lambda n: int(n[0]))]
 
 
 mapping = univention.admin.mapping.mapping()

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 # Listener module to set save all UMC service providers in UCR
@@ -37,7 +36,6 @@ from __future__ import annotations
 
 import os
 import subprocess
-from typing import Dict, List
 
 import univention.debug as ud
 from univention.config_registry import handler_set, handler_unset
@@ -53,7 +51,7 @@ attributes = ['univentionService', 'cn', 'associatedDomain']
 __changed_trusted_sp = False
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     global __changed_trusted_sp
     listener.setuid(0)
     try:

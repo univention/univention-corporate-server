@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -187,12 +186,12 @@ layout = [
 
 def mapMX(old, encoding=()):
     # type: (list[list[str]], univention.admin.handlers._Encoding) -> list[bytes]
-    return [u' '.join(entry).encode(*encoding) for entry in old]
+    return [' '.join(entry).encode(*encoding) for entry in old]
 
 
 def unmapMX(old, encoding=()):
     # type: (list[bytes], univention.admin.handlers._Encoding) -> list[list[str]]
-    return [entry.decode(*encoding).split(u' ', 1) for entry in old]
+    return [entry.decode(*encoding).split(' ', 1) for entry in old]
 
 
 mapping = univention.admin.mapping.mapping()
@@ -211,7 +210,7 @@ class object(univention.admin.handlers.simpleLdap):
         co,  # type: None
         lo,  # type: univention.admin.uldap.access
         position,  # type: univention.admin.uldap.position | None
-        dn=u'',  # type: str
+        dn='',  # type: str
         superordinate=None,  # type: univention.admin.handlers.simpleLdap | None
         attributes=None,  # type: univention.admin.handlers._Attributes | None
     ):  # type: (...) -> None
@@ -221,7 +220,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _post_unmap(self, info, values):
         # type: (univention.admin.handlers._Properties, univention.admin.handlers._Attributes) -> univention.admin.handlers._Properties
-        info = super(object, self)._post_unmap(info, values)
+        info = super()._post_unmap(info, values)
         info['a'] = []
         if 'aRecord' in values:
             info['a'] += (x.decode('ASCII') for x in values['aRecord'])
@@ -246,9 +245,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_addlist(self):
         # type: () -> list[tuple[str, Any]]
-        return super(object, self)._ldap_addlist() + [
-            ('relativeDomainName', [b'@']),
-        ]
+        return [*super()._ldap_addlist(), ('relativeDomainName', [b'@'])]
 
     def _ldap_modlist(self):
         # type: () -> list[tuple[str, Any, Any]]
@@ -282,7 +279,7 @@ class object(univention.admin.handlers.simpleLdap):
             if newAddresses:
                 for address in newAddresses:
                     if ':' in address:  # IPv6
-                        newAaaaRecord.append(ipaddress.IPv6Address(u'%s' % (address,)).exploded.encode('ASCII'))
+                        newAaaaRecord.append(ipaddress.IPv6Address('%s' % (address,)).exploded.encode('ASCII'))
                     else:
                         newARecord.append(address.encode('ASCII'))
             ml.append(('aRecord', oldARecord, newARecord))
@@ -291,7 +288,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_modify(self):
         # type: () -> None
-        super(object, self)._ldap_pre_modify()
+        super()._ldap_pre_modify()
         # update SOA record
         if not self.hasChanged('serial'):
             self['serial'] = str(int(self['serial']) + 1)

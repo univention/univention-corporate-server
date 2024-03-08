@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
-# -*- coding: utf-8 -*-
 ## desc: Test uploading new license
 ## roles:
 ##  - domaincontroller_master

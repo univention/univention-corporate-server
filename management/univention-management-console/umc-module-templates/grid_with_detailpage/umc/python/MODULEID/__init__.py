@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console module:
 #   MODULEDESC
@@ -71,7 +70,7 @@ class Instance(Base):
 
     def init(self):
         # this initialization method is called when the module process is created
-        super(Instance, self).init()
+        super().init()
 
     def colors(self, request):
         """Returns a list of all existing colors."""

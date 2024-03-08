@@ -42,7 +42,7 @@ from html.parser import HTMLParser
 from http.client import HTTPException, HTTPResponse, HTTPSConnection
 from os import path
 from sys import exit
-from typing import Any, Dict, Iterable, Tuple
+from typing import Any, Iterable
 from urllib.parse import urlencode
 
 
@@ -60,7 +60,7 @@ class ShopParser(HTMLParser):
     def error(self, message):
         self.log.error("Failed parsing HTML: %s", message)
 
-    def handle_starttag(self, tag: str, attrs: Iterable[Tuple[str, str | None]]) -> None:
+    def handle_starttag(self, tag: str, attrs: Iterable[tuple[str, str | None]]) -> None:
         """
         Method is called every time a new start tag is found in the
         html feed. When the link tag with 'orders/' attribute is
@@ -98,7 +98,7 @@ class TestLicenseClient:
         self.cookie = ''
         self.license_shop = 'testing'
 
-        self.license_params: Dict[str, Any] = {
+        self.license_params: dict[str, Any] = {
             "kundeUnternehmen": "Univention",
             "kundeEmail": "umc-test@univention.de",
             "BaseDN": "",
@@ -192,7 +192,7 @@ class TestLicenseClient:
         # reading the response to avoid 'ResponseNotReady' exception later:
         response.read()
 
-    def make_post_request(self, url: str, body: str, headers: Dict[str, str]) -> HTTPResponse:
+    def make_post_request(self, url: str, body: str, headers: dict[str, str]) -> HTTPResponse:
         """
         Makes a POST request with the given 'url', 'body', 'headers' and
         returns the response
@@ -206,7 +206,7 @@ class TestLicenseClient:
             self.log.exception("An HTTP Exception occurred while making '%s' POST request: '%s'", url, exc)
             exit(1)
 
-    def make_get_request(self, url: str, headers: Dict[str, str]) -> HTTPResponse:
+    def make_get_request(self, url: str, headers: dict[str, str]) -> HTTPResponse:
         """
         Makes a GET request with the given 'url', 'headers' and
         returns the response
@@ -285,7 +285,7 @@ class TestLicenseClient:
             self.log.exception("The 'EndDate' for the license has a wrong format, supported format is 'dd.mm.yyyy': %r", exc)
             exit(1)
 
-    def update_with_parsed_args(self, args: Dict[str, Any]) -> None:
+    def update_with_parsed_args(self, args: dict[str, Any]) -> None:
         """
         Updates the loglevel and license filename settings if given
         among the parsed arguments. Merges parsed data with default

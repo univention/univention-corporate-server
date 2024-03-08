@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Mail Dovecot - shared code for listeners
 #
@@ -69,7 +68,7 @@ glocal_acl_pattern1 = re.compile(r'(?P<folder>[^ ]+) "(?P<id>.+)" (?P<acl>\w+)')
 glocal_acl_pattern2 = re.compile(r'(?P<folder>[^ ]+) (?P<id>.+) (?P<acl>\w+)')
 
 
-class DovecotFolderAclEntry(object):  # noqa: PLW1641
+class DovecotFolderAclEntry:  # noqa: PLW1641
     def __init__(self, folder_name, identifier, acl):  # type: (str, str, str) -> None
         self.folder_name = folder_name
         self.identifier = identifier
@@ -101,7 +100,7 @@ class DovecotFolderAclEntry(object):  # noqa: PLW1641
             raise ValueError(f"Line {line!r} doesn't match ACL pattern.")
 
 
-class DovecotGlobalAclFile(object):
+class DovecotGlobalAclFile:
     dovemail_gid = grp.getgrnam('dovemail').gr_gid
 
     def __init__(self, listener):  # type: (Any) -> None
@@ -162,7 +161,7 @@ class DovecotGlobalAclFile(object):
 class DovecotSharedFolderListener(DovecotListener):
 
     def __init__(self, *args, **kwargs):
-        super(DovecotSharedFolderListener, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.modules = ["mail/folder"]
         self.acl_key = "univentionMailACL"
         self.global_acls = DovecotGlobalAclFile(self.listener)

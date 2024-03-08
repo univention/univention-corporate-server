@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Python native Univention debugging library.
 
@@ -129,7 +128,7 @@ class _Formatter(logging.Formatter):
     def format(self, record):
         if record.name.startswith('ud2.'):
             record.name = record.name.split('.', 1)[-1]
-        return super(_Formatter, self).format(record)
+        return super().format(record)
 
 
 _logfilename = None
@@ -285,7 +284,7 @@ def debug(category, level, message, utf8=True):
         _flush()
 
 
-class function(object):
+class function:
     """
     Log function call begin and end.
 

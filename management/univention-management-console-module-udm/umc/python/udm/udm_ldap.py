@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  module: manages UDM modules
@@ -108,14 +107,14 @@ class UMCError(UMC_Error):
         self._is_master = ucr.get('server/role') == 'domaincontroller_master'
         self._updates_available = ucr.is_true('update/available')
         self._fqdn = '%(hostname)s.%(domainname)s' % ucr
-        super(UMCError, self).__init__('\n'.join(self._error_msg()), **kwargs)
+        super().__init__('\n'.join(self._error_msg()), **kwargs)
 
     def _error_msg(self):
         # return a generator or a list of strings which are concatenated by a newline
         yield ''
 
 
-class AppAttributes(object):
+class AppAttributes:
     FNAME = '/var/lib/univention-appcenter/attributes/mapping.json'
     _cache = None
 
@@ -260,7 +259,7 @@ class UserWithoutDN(UMCError):
 
     def __init__(self, username):
         self._username = username
-        super(UserWithoutDN, self).__init__()
+        super().__init__()
 
     def _error_msg(self):
         yield _('The LDAP DN of the user %s could not be determined.') % (self._username,)
@@ -280,7 +279,7 @@ class UserWithoutDN(UMCError):
 class LDAP_AuthenticationFailed(UMCError):
 
     def __init__(self):
-        super(LDAP_AuthenticationFailed, self).__init__(status=401)
+        super().__init__(status=401)
 
     def _error_msg(self):
         yield _('Authentication failed')
@@ -290,7 +289,7 @@ class ObjectDoesNotExist(UMCError):
 
     def __init__(self, ldap_dn):
         self.ldap_dn = ldap_dn
-        super(ObjectDoesNotExist, self).__init__()
+        super().__init__()
 
     @LDAP_Connection
     def _ldap_object_exists(self, ldap_connection=None, ldap_position=None):
@@ -328,7 +327,7 @@ class NoIpLeft(UMCError):
             self.network_name = udm.uldap.explodeDn(ldap_dn, True)[0]
         except IndexError:
             self.network_name = ldap_dn
-        super(NoIpLeft, self).__init__()
+        super().__init__()
 
     def _error_msg(self):
         yield _('Failed to automatically assign an IP address.')
@@ -339,13 +338,13 @@ class NoIpLeft(UMCError):
 class SearchTimeoutError(UMC_Error):
 
     def __init__(self):
-        super(SearchTimeoutError, self).__init__(_('The query you have entered timed out. Please narrow down your search by specifying more query parameters'))
+        super().__init__(_('The query you have entered timed out. Please narrow down your search by specifying more query parameters'))
 
 
 class SearchLimitReached(UMC_Error):
 
     def __init__(self):
-        super(SearchLimitReached, self).__init__(_('The query you have entered yields too many matching entries. Please narrow down your search by specifying more query parameters. The current size limit of %s can be configured with the UCR variable directory/manager/web/sizelimit.') % ucr.get('directory/manager/web/sizelimit', '2000'))
+        super().__init__(_('The query you have entered yields too many matching entries. Please narrow down your search by specifying more query parameters. The current size limit of %s can be configured with the UCR variable directory/manager/web/sizelimit.') % ucr.get('directory/manager/web/sizelimit', '2000'))
 
 
 class UDM_Error(Exception):
@@ -389,7 +388,7 @@ class UDM_ModuleCache(dict):
 _module_cache = UDM_ModuleCache()
 
 
-class UDM_Module(object):
+class UDM_Module:
     """Wraps UDM modules to provide a simple access to the properties and functions"""
 
     def __init__(self, module, force_reload=False, ldap_connection=None, ldap_position=None):

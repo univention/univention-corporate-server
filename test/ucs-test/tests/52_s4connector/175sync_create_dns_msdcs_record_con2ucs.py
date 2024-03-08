@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
     domainname = dnstests.ucr["domainname"]
     hostname = dnstests.ucr["hostname"]
-    fqdn = ".".join((hostname, domainname))
+    fqdn = f'{hostname}.{domainname}'
     location = "0 100 389 %s." % fqdn
     forward_zone_dn = "zoneName=%s,cn=dns,%s" % (domainname, dnstests.ucr["ldap/base"])
 

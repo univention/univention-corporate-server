@@ -33,10 +33,15 @@
 # <https://www.gnu.org/licenses/>.
 
 
-from playwright.sync_api import Page
+
+from typing import TYPE_CHECKING
 
 from univention.lib.i18n import Translation
 from univention.testing.browser.lib import UMCBrowserTest
+
+
+if TYPE_CHECKING:
+    from playwright.sync_api import Page
 
 
 _ = Translation('ucs-test-framework').translate

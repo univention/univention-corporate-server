@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -41,7 +40,7 @@ def pytest_addoption(parser):
 
 def import_lib_module(request, name):
     use_installed = request.config.getoption('--installed-lib')
-    return import_module(name, 'python/', 'univention.lib.{}'.format(name), use_installed=use_installed)
+    return import_module(name, 'python/', f'univention.lib.{name}', use_installed=use_installed)
 
 
 @pytest.fixture(scope='session')

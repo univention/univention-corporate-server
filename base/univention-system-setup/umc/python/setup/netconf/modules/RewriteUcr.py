@@ -24,7 +24,7 @@ class PhaseRewriteUcr(AddressMap):
     priority = 95
 
     def check(self) -> None:
-        super(PhaseRewriteUcr, self).check()
+        super().check()
         if self.old_primary is None:
             raise SkipPhase('No old primary IP')
 

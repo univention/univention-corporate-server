@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 # Univention Configuration Registry Module to rewrite SAML SP configuration for UMC

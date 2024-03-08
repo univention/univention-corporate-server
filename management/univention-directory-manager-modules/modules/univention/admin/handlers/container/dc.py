@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -169,7 +168,7 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
-        super(object, self).__init__(co, lo, position, dn, superordinate, attributes)
+        super().__init__(co, lo, position, dn, superordinate, attributes)
         if not self.info.get('name'):
             self.info['name'] = self.oldattr.get('l', self.oldattr.get('o', self.oldattr.get('c', self.oldattr.get('ou', self.oldattr.get('dc', [b''])))))[0].decode('UTF-8')
             self.save()

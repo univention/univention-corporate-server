@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
 #  sid sync
@@ -59,7 +58,7 @@ def sid_to_s4_mapping(s4connector, key, object):
     if sambaSID[0].startswith(b'S-'):
         new_objectSid_ndr = ndr_pack(security.dom_sid(sambaSID[0].decode('ASCII')))
     else:
-        new_objectSid_ndr = ndr_pack(security.dom_sid(u'%s-%s' % (s4connector.s4_sid, sambaSID[0].decode('ASCII'))))
+        new_objectSid_ndr = ndr_pack(security.dom_sid('%s-%s' % (s4connector.s4_sid, sambaSID[0].decode('ASCII'))))
 
     return [new_objectSid_ndr]
 
@@ -155,9 +154,9 @@ def sid_to_ucs(s4connector, key, s4_object):
         s4_ocs = s4_object['attributes'].get('objectClass', [])
         ucs_ocs = ucs_attributes.get('objectClass')
         if b'user' in s4_ocs and b'sambaSamAccount' not in ucs_ocs:
-            ml.append(('objectClass', ucs_ocs, ucs_ocs + [b'sambaSamAccount']))
+            ml.append(('objectClass', ucs_ocs, [*ucs_ocs, b"sambaSamAccount"]))
         if b'group' in s4_ocs and b'sambaGroupMapping' not in ucs_ocs:
-            ml.append(('objectClass', ucs_ocs, ucs_ocs + [b'sambaGroupMapping']))
+            ml.append(('objectClass', ucs_ocs, [*ucs_ocs, b"sambaGroupMapping"]))
     if ml:
         ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: modlist = %r' % (ml,))
         s4connector.lo.lo.modify(ucs_dn, ml)

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -78,7 +77,7 @@ if configRegistry.is_true('ad/member'):
     managedclient_exclude_objectflags.append('synced')
 
 
-class License(object):
+class License:
     (ACCOUNT, CLIENT, DESKTOP, GROUPWARE) = range(4)
     (USERS, SERVERS, MANAGEDCLIENTS, CORPORATECLIENTS, VIRTUALDESKTOPUSERS, VIRTUALDESKTOPCLIENTS) = range(6)
 

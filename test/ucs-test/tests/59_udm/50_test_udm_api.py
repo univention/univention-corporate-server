@@ -309,8 +309,7 @@ class TestUdmGenericVariousModules(TestCase):
             sup_modules = [sup_modules]
         for sup_module in sup_modules:
             for obj in self.udm.get(sup_module).search():
-                print('Using {!r} object at {!r} as superordinate for model of {!r} object.'.format(
-                    sup_module, obj.dn, mod.name))
+                print(f'Using {sup_module!r} object at {obj.dn!r} as superordinate for model of {mod.name!r} object.')
                 return mod.new(obj)
         raise exc_thrown.with_traceback(None)
 

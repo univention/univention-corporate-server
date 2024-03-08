@@ -39,7 +39,7 @@ def log(mockopen):
     mockopen.write("/var/log/univention/updater.log", b"")
 
 
-class TestUniventionUpdater(object):
+class TestUniventionUpdater:
     """Unit test for univention.updater.tools"""
 
     def test_config_repository(self, ucr, u):
@@ -308,7 +308,7 @@ class TestUniventionUpdater(object):
             next(gen)
 
 
-class TestComponents(object):
+class TestComponents:
 
     def test_get_components(self, ucr, u):
         """Test enabled components."""

@@ -102,7 +102,7 @@ def test_saml_client_user_attribute_mapper(keycloak_administrator_connection):
             'xyz',
             '--user-attribute',
             'xyz',
-        ]
+        ],
     )
     # get
     mappers = json.loads(
@@ -114,8 +114,8 @@ def test_saml_client_user_attribute_mapper(keycloak_administrator_connection):
                 client,
                 '--all',
                 '--json',
-            ]
-        )
+            ],
+        ),
     )
     mapper = next(x for x in mappers if x['name'] == name)
     assert mapper['protocol'] == 'saml'

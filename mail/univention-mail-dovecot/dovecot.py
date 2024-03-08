@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Mail Dovecot - listener module: add/edit/remove mailboxes
 #
@@ -38,7 +37,6 @@ from __future__ import annotations
 
 import os
 import pickle  # noqa: S403
-from typing import Dict, List
 
 from univention.mail.dovecot import DovecotListener
 
@@ -98,7 +96,7 @@ class DovecotUserListener(DovecotListener):
             listener.unsetuid()
 
 
-def load_old(old: Dict[str, List[bytes]]) -> Dict[str, List[bytes]]:
+def load_old(old: dict[str, list[bytes]]) -> dict[str, list[bytes]]:
     if os.path.exists(DOVECOT_OLD_PICKLE):
         with open(DOVECOT_OLD_PICKLE, "rb") as fd:
             p = pickle.Unpickler(fd)
@@ -109,7 +107,7 @@ def load_old(old: Dict[str, List[bytes]]) -> Dict[str, List[bytes]]:
         return old
 
 
-def save_old(old: Dict[str, List[bytes]]) -> None:
+def save_old(old: dict[str, list[bytes]]) -> None:
     with open(DOVECOT_OLD_PICKLE, "wb+") as fd:
         os.chmod(DOVECOT_OLD_PICKLE, 0o600)
         p = pickle.Pickler(fd)
@@ -117,7 +115,7 @@ def save_old(old: Dict[str, List[bytes]]) -> None:
         p.clear_memo()
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]], command: str) -> None:
     if command == 'r':
         save_old(old)
         # flush auth cache in case of modrdn: the cached PAM entry would

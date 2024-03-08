@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Directory Reports
 #  creates a report document
@@ -54,7 +53,7 @@ from univention.lib.i18n import Translation
 _ = Translation('univention-directory-reports').translate
 
 
-class Document(object):
+class Document:
     (TYPE_LATEX, TYPE_CSV, TYPE_RML, TYPE_UNKNOWN) = range(4)
 
     @classmethod

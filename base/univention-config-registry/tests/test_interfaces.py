@@ -29,7 +29,7 @@ def test_VengefulConfigRegistry():
     assert ucr["key"] == "value"
 
 
-class Test_Iface(object):
+class Test_Iface:
     """Test implementation."""
 
     def test_basic(self):
@@ -53,9 +53,9 @@ class Test_Iface(object):
         assert i.order == 42
         assert i.type == 'static'
         assert i.start
-        assert IPv4Address(u'1.2.3.0') == i.network
-        assert IPv4Address(u'1.2.3.255') == i.broadcast
-        assert IPv4Interface(u'1.2.3.4/24') == i.ipv4_address()
+        assert IPv4Address('1.2.3.0') == i.network
+        assert IPv4Address('1.2.3.255') == i.broadcast
+        assert IPv4Interface('1.2.3.4/24') == i.ipv4_address()
         assert i.ipv6_address() is None
         assert ['1', '2'] == list(i.options)
         assert ['net 192.168.0.0 netmask 255.255.255.128', 'host 192.168.0.240'] == list(i.routes)
@@ -100,12 +100,12 @@ class Test_Iface(object):
         })
         assert i.name == 'NAME'
         assert i.ipv4_address() is None
-        assert IPv6Interface(u'1:2:3:4:5:6:7:8/64') == i.ipv6_address()
-        assert IPv6Interface(u'1:2:3:4:5:6:7:8/64') == i.ipv6_address('default')
-        assert IPv6Interface(u'2:3:4:5:6:7:8:9/80') == i.ipv6_address('other')
+        assert IPv6Interface('1:2:3:4:5:6:7:8/64') == i.ipv6_address()
+        assert IPv6Interface('1:2:3:4:5:6:7:8/64') == i.ipv6_address('default')
+        assert IPv6Interface('2:3:4:5:6:7:8:9/80') == i.ipv6_address('other')
 
 
-class TestInterfaces(object):
+class TestInterfaces:
     """Test implementation."""
 
     def test_empty(self):
@@ -129,8 +129,8 @@ class TestInterfaces(object):
         })
         assert ['eth0'] == [s.name for _n, s in t.ipv4_interfaces]
         assert [] == [s.name for s, _n in t.ipv6_interfaces]
-        assert IPv4Interface(u'1.2.3.4/24') == t.get_default_ip_address()
-        assert IPv4Interface(u'1.2.3.4/24') == t.get_default_ipv4_address()
+        assert IPv4Interface('1.2.3.4/24') == t.get_default_ip_address()
+        assert IPv4Interface('1.2.3.4/24') == t.get_default_ipv4_address()
         assert t.get_default_ipv6_address() is None
 
     def test_incomplete_addr(self):
@@ -181,8 +181,8 @@ class TestInterfaces(object):
         })
         assert ['eth0', 'eth1'] == [s.name for _n, s in t.ipv4_interfaces]
         assert [] == [s.name for s, _n in t.ipv6_interfaces]
-        assert IPv4Interface(u'1.2.3.4/24') == t.get_default_ip_address()
-        assert IPv4Interface(u'1.2.3.4/24') == t.get_default_ipv4_address()
+        assert IPv4Interface('1.2.3.4/24') == t.get_default_ip_address()
+        assert IPv4Interface('1.2.3.4/24') == t.get_default_ipv4_address()
         assert t.get_default_ipv6_address() is None
 
     def test_ipv6_multi(self):
@@ -195,9 +195,9 @@ class TestInterfaces(object):
         })
         assert [] == [s.name for _n, s in t.ipv4_interfaces]
         assert ['eth0', 'eth1'] == [s.name for s, _n in t.ipv6_interfaces]
-        assert IPv6Interface(u'1:2:3:4:5:6:7:8/64') == t.get_default_ip_address()
+        assert IPv6Interface('1:2:3:4:5:6:7:8/64') == t.get_default_ip_address()
         assert t.get_default_ipv4_address() is None
-        assert IPv6Interface(u'1:2:3:4:5:6:7:8/64') == t.get_default_ipv6_address()
+        assert IPv6Interface('1:2:3:4:5:6:7:8/64') == t.get_default_ipv6_address()
 
     def test_dual(self):
         """Test dual stack interface."""
@@ -209,9 +209,9 @@ class TestInterfaces(object):
         })
         assert ['eth0'] == [s.name for _n, s in t.ipv4_interfaces]
         assert ['eth0'] == [s.name for s, _n in t.ipv6_interfaces]
-        assert IPv4Interface(u'2.3.4.5/24') == t.get_default_ip_address()
-        assert IPv4Interface(u'2.3.4.5/24') == t.get_default_ipv4_address()
-        assert IPv6Interface(u'1:2:3:4:5:6:7:8/64') == t.get_default_ipv6_address()
+        assert IPv4Interface('2.3.4.5/24') == t.get_default_ip_address()
+        assert IPv4Interface('2.3.4.5/24') == t.get_default_ipv4_address()
+        assert IPv6Interface('1:2:3:4:5:6:7:8/64') == t.get_default_ipv6_address()
 
     def test_ipv6_disjunct(self):
         """Test disjunct IPv4 IPv6 interfaces."""
@@ -223,9 +223,9 @@ class TestInterfaces(object):
         })
         assert ['eth0'] == [s.name for _n, s in t.ipv4_interfaces]
         assert ['eth1'] == [s.name for s, _n in t.ipv6_interfaces]
-        assert IPv4Interface(u'2.3.4.5/24') == t.get_default_ip_address()
-        assert IPv4Interface(u'2.3.4.5/24') == t.get_default_ipv4_address()
-        assert IPv6Interface(u'1:2:3:4:5:6:7:8/64') == t.get_default_ipv6_address()
+        assert IPv4Interface('2.3.4.5/24') == t.get_default_ip_address()
+        assert IPv4Interface('2.3.4.5/24') == t.get_default_ipv4_address()
+        assert IPv6Interface('1:2:3:4:5:6:7:8/64') == t.get_default_ipv6_address()
 
     def test_ipv4_order(self):
         """Test IPv4 ordering."""
@@ -240,8 +240,8 @@ class TestInterfaces(object):
         })
         assert ['eth2', 'eth0', 'eth1'] == [s.name for _n, s in t.ipv4_interfaces]
         assert [] == [s.name for s, _n in t.ipv6_interfaces]
-        assert IPv4Interface(u'1.2.3.4/24') == t.get_default_ip_address()
-        assert IPv4Interface(u'1.2.3.4/24') == t.get_default_ipv4_address()
+        assert IPv4Interface('1.2.3.4/24') == t.get_default_ip_address()
+        assert IPv4Interface('1.2.3.4/24') == t.get_default_ipv4_address()
         assert t.get_default_ipv6_address() is None
 
     def test_ipv6_order(self):
@@ -257,9 +257,9 @@ class TestInterfaces(object):
         })
         assert [] == [s.name for _n, s in t.ipv4_interfaces]
         assert ['eth2', 'eth0', 'eth1'] == [s.name for s, _n in t.ipv6_interfaces]
-        assert IPv6Interface(u'1:2:3:4:5:6:7:8/64') == t.get_default_ip_address()
+        assert IPv6Interface('1:2:3:4:5:6:7:8/64') == t.get_default_ip_address()
         assert t.get_default_ipv4_address() is None
-        assert IPv6Interface(u'1:2:3:4:5:6:7:8/64') == t.get_default_ipv6_address()
+        assert IPv6Interface('1:2:3:4:5:6:7:8/64') == t.get_default_ipv6_address()
 
     def test_ipv6_order_multi(self):
         """Test multiple IPv6 ordering."""
@@ -286,9 +286,9 @@ class TestInterfaces(object):
             ('eth1', 'a'),
             ('eth0', 'foo')] == \
             [(s.name, n) for s, n in t.ipv6_interfaces]
-        assert IPv6Interface(u'2:3:4:5:6:7:8:9/72') == t.get_default_ip_address()
+        assert IPv6Interface('2:3:4:5:6:7:8:9/72') == t.get_default_ip_address()
         assert t.get_default_ipv4_address() is None
-        assert IPv6Interface(u'2:3:4:5:6:7:8:9/72') == t.get_default_ipv6_address()
+        assert IPv6Interface('2:3:4:5:6:7:8:9/72') == t.get_default_ipv6_address()
 
     def test_order_mixed(self):
         """Test multiple IPv6 ordering."""
@@ -306,8 +306,8 @@ class TestInterfaces(object):
             'interfaces/primary': 'br0',
         })
         assert t.primary == 'br0'
-        assert IPv4Address(u'1.2.3.4') == t.ipv4_gateway
-        assert IPv6Address(u'1:2:3:4:5:6:7:8') == t.ipv6_gateway
+        assert IPv4Address('1.2.3.4') == t.ipv4_gateway
+        assert IPv6Address('1:2:3:4:5:6:7:8') == t.ipv6_gateway
         assert t.ipv6_gateway_zone_index is None
 
     def test_v6llgw(self):
@@ -315,7 +315,7 @@ class TestInterfaces(object):
         t = Interfaces(ucr={
             'ipv6/gateway': 'fe80::1%eth0',
         })
-        assert IPv6Address(u'fe80::1') == t.ipv6_gateway
+        assert IPv6Address('fe80::1') == t.ipv6_gateway
         assert t.ipv6_gateway_zone_index == 'eth0'
 
     def test_non_vengeful(self):
@@ -326,7 +326,7 @@ class TestInterfaces(object):
             self.fail('Failed to create Interfaces(None)')
 
 
-class TestDecorator(object):
+class TestDecorator:
     """Test forgiving decorator."""
 
     @forgiving()
@@ -386,7 +386,7 @@ class TestDecorator(object):
         assert self.error_multi() == 42
 
 
-class TestSort(object):
+class TestSort:
     """Rest alphanumeric sorting."""
 
     def test_all_num(self):

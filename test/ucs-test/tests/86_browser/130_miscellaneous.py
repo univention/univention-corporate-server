@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
-# -*- coding: utf-8 -*-
 ## desc: test language switch, logout, module visibility, process timeout
 ## packages:
 ##  - univention-management-console-module-ucr
@@ -15,7 +14,6 @@ from __future__ import annotations
 
 import re
 import time
-from typing import Set
 
 import psutil
 import pytest
@@ -115,7 +113,7 @@ def test_module_visibility_for_regular_user(umc_browser_test: UMCBrowserTest, ud
 
     umc_browser_test.login(username, skip_xhr_check=True)
 
-    allowed_modules: Set[str] = {
+    allowed_modules: set[str] = {
         _('Univention Configuration Registry'),
         _('Process overview'),
     }

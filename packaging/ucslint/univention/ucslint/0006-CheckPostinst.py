@@ -30,10 +30,13 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Any, Iterable
+from typing import TYPE_CHECKING, Any, Iterable
 
 import univention.ucslint.base as uub
+
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):

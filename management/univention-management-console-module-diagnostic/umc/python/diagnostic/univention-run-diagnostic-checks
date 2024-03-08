@@ -41,7 +41,7 @@ from univention.config_registry import ucr
 from univention.lib.umc import Client, Unauthorized
 
 
-class CLIClient(object):
+class CLIClient:
 
     @classmethod
     def main(cls) -> int:
@@ -80,7 +80,7 @@ class CLIClient(object):
         skip_checks = set(args.skip_checks)
 
         if args.list or 'list' in args.checks:
-            print("\n\t".join(['Available checks:'] + sorted(plugins)))
+            print("\n\t".join(['Available checks:', *sorted(plugins)]))
             sys.exit(0)
 
         missing_checks = sorted(checks - plugins)

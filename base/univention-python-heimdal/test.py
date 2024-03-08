@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -73,7 +72,7 @@ TYPES = {
 }
 REALM = 'EXAMPLE.COM'
 USERNAME = 'Administrator'
-USER = '{}@{}'.format(USERNAME, REALM)
+USER = f'{USERNAME}@{REALM}'
 ENCSTR = "des-cbc-md5"
 ENCINT = 3
 KVNO = 0
@@ -256,7 +255,7 @@ class TestCreds(unittest.TestCase):
         (enctype, kvno, name) = self.creds.parse()
         assert enctype in TYPES
         self.assertInstance(kvno, int)
-        assert name == 'krbtgt/{0}@{0}'.format(REALM)
+        assert name == f'krbtgt/{REALM}@{REALM}'
 
     @unittest.skip('WIP')
     def test_change_password(self):
@@ -318,7 +317,7 @@ class TestKeytab(unittest.TestCase):
 
 
 class TestSalt(unittest.TestCase):
-    VALUE = '{}{}'.format(REALM, USERNAME)
+    VALUE = f'{REALM}{USERNAME}'
 
     def setUp(self):
         self.context = heimdal.context()

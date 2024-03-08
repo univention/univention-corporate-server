@@ -107,7 +107,7 @@ class IndexEntry(Structure):
     _pack_ = 1
 
 
-class Index(object):
+class Index:
     """
     Index to efficiently lookup transactions in the translog file.
     :file:`/var/lib/univention-ldap/notify/transaction.index`
@@ -230,7 +230,7 @@ class Index(object):
                 raise
 
 
-class Translog(object):
+class Translog:
     """
     Transactions log file.
     :file:`/var/lib/univention-ldap/notify/transaction`
@@ -642,7 +642,7 @@ def lookup_ldap(opt):
                     log.critical("ldap_search(%s): %s", dn, ex.args[0]["desc"])
                     raise Abort()
             ((dn, attrs),) = result
-            print('tid={0[reqSession][0]} dn={0[reqDN][0]} command={0[reqType][0]}'.format(attrs))
+            print(f'tid={attrs["reqSession"][0]} dn={attrs["reqDN"][0]} command={attrs["reqType"][0]}')
 
 
 def add_transaction(opt, ld, rec):
@@ -732,7 +732,7 @@ def stopped(opt, services):
         return
 
     log.info("Stopping %s", services)
-    cmd = ('systemctl', 'stop') + services
+    cmd = ("systemctl", "stop", *services)
     call(cmd)
 
     try:
@@ -741,7 +741,7 @@ def stopped(opt, services):
         raise
     else:
         log.info("Starting %s", services)
-        cmd = ('systemctl', 'start') + services
+        cmd = ("systemctl", "start", *services)
         call(cmd)
 
 
@@ -783,7 +783,7 @@ def rewrite(filename):
         rename(new, cur)
 
 
-class CheckGeneric(object):
+class CheckGeneric:
     """Check transaction file for consistency."""
 
     def __init__(self, opt, filename):

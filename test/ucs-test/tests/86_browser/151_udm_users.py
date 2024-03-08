@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
-# -*- coding: utf-8 -*-
 ## desc: Various test for UDM users/user
 ## packages:
 ##  - univention-management-console-module-udm

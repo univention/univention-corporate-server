@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  Utility functions
@@ -115,10 +114,10 @@ def read_ini_file(filename, parser_class=RawConfigParser):
 
 def docker_bridge_network_conflict():
     # type: () -> bool
-    docker0_net = ipaddress.IPv4Network(u'%s' % (ucr_get('docker/daemon/default/opts/bip', '172.17.42.1/16'),), False)
+    docker0_net = ipaddress.IPv4Network('%s' % (ucr_get('docker/daemon/default/opts/bip', '172.17.42.1/16'),), False)
     for _name, iface in interfaces.Interfaces().ipv4_interfaces:
         if 'address' in iface and 'netmask' in iface:
-            my_net = ipaddress.IPv4Network(u'%s/%s' % (iface['address'], iface['netmask']), False)
+            my_net = ipaddress.IPv4Network('%s/%s' % (iface['address'], iface['netmask']), False)
             if my_net.overlaps(docker0_net):
                 return True
     return False
@@ -362,7 +361,7 @@ class HTTPSConnection(http.client.HTTPSConnection):
         ssl_context.check_hostname = True
         ssl_context.verify_mode = ssl.CERT_REQUIRED
         ssl_context.load_verify_locations("/etc/ssl/certs/ca-certificates.crt")
-        super(HTTPSConnection, self).__init__(*args, context=ssl_context, **kwargs)
+        super().__init__(*args, context=ssl_context, **kwargs)
 
 
 class HTTPSHandler(urllib.request.HTTPSHandler):

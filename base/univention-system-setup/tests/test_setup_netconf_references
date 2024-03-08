@@ -18,7 +18,7 @@ from univention.management.console.modules.setup.netconf import ChangeSet  # noq
 from univention.management.console.modules.setup.netconf.modules import LdapReferences  # noqa: E402
 
 
-class DummyOption(object):
+class DummyOption:
 
     def __init__(self):
         self.no_act = True

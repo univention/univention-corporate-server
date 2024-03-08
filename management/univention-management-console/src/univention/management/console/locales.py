@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  i18n utils
@@ -67,7 +66,7 @@ _ = obj.translate
 '''
 
 
-class I18N(object):
+class I18N:
     """
     Provides a translation function for a given language and translation domain.
 

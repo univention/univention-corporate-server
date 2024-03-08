@@ -19,12 +19,12 @@ class PhaseSaveOldApplianceAddress(AddressChange):
     priority = 1
 
     def check(self) -> None:
-        super(PhaseSaveOldApplianceAddress, self).check()
+        super().check()
         if not self.changeset.options.appliance_mode:
             raise SkipPhase("Save only in appliance-mode")
 
     def pre(self) -> None:
-        super(PhaseSaveOldApplianceAddress, self).pre()
+        super().pre()
         new_ipv4s = {iface.ip for iface in self.changeset.new_ipv4s}
         for name, iface in self.changeset.old_interfaces.ipv4_interfaces:
             if ':' in name:

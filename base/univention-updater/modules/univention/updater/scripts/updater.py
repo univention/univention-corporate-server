@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -42,7 +41,7 @@ from datetime import datetime
 from errno import ENOENT
 from subprocess import DEVNULL, call
 from textwrap import dedent, wrap
-from typing import IO, Dict, Iterable, Literal, NoReturn, Sequence, Tuple
+from typing import IO, Iterable, Literal, NoReturn, Sequence
 
 
 try:
@@ -81,7 +80,7 @@ fd_log: IO[str] = sys.stderr
 stdout_orig = sys.stdout
 nostdout = False
 
-updater_status: Dict[str, str] = {}
+updater_status: dict[str, str] = {}
 
 RE_APT = re.compile(
     r"""
@@ -146,7 +145,7 @@ def update_status(**kwargs: str) -> None:
         dprint('Warning: cannot update status: %s' % (ex,))
 
 
-def get_status() -> Dict[str, str]:
+def get_status() -> dict[str, str]:
     """
     Read Updater status from file.
 
@@ -155,7 +154,7 @@ def get_status() -> Dict[str, str]:
     .. seealso::
         :py:func:`update_status`
     """
-    status: Dict[str, str] = {}
+    status: dict[str, str] = {}
     try:
         with open(FN_STATUS) as fd:
             for line in fd:
@@ -187,12 +186,12 @@ def add_temporary_sources_list(temporary_sources_list: Iterable[str]) -> None:
             print(entry, file=fp)
 
 
-def update_available(opt: Namespace, ucr: ConfigRegistry) -> Tuple[UniventionUpdater, UCS_Version | None]:
+def update_available(opt: Namespace, ucr: ConfigRegistry) -> tuple[UniventionUpdater, UCS_Version | None]:
     """
     Checks if there is an update available.
     Returns the next version, or None if up-to-date, or throws an UpdateError if the next version can not be identified.
     """
-    log('--->DBG:update_available(mode={.mode})'.format(opt))
+    log(f'--->DBG:update_available(mode={opt.mode})')
 
     if opt.mode == 'local':
         return update_local(opt, ucr)
@@ -202,7 +201,7 @@ def update_available(opt: Namespace, ucr: ConfigRegistry) -> Tuple[UniventionUpd
         raise ValueError(opt.mode)
 
 
-def update_local(opt: Namespace, ucr: ConfigRegistry) -> Tuple[UniventionUpdater, UCS_Version | None]:
+def update_local(opt: Namespace, ucr: ConfigRegistry) -> tuple[UniventionUpdater, UCS_Version | None]:
     dprint('Checking local repository')
     updater = LocalUpdater()
     try:
@@ -217,7 +216,7 @@ def update_local(opt: Namespace, ucr: ConfigRegistry) -> Tuple[UniventionUpdater
     return updater, nextversion
 
 
-def update_net(opt: Namespace, ucr: ConfigRegistry) -> Tuple[UniventionUpdater, UCS_Version | None]:
+def update_net(opt: Namespace, ucr: ConfigRegistry) -> tuple[UniventionUpdater, UCS_Version | None]:
     dprint('Checking network repository')
     try:
         updater = UniventionUpdater()
@@ -310,7 +309,7 @@ def check(opt: Namespace, ucr: ConfigRegistry) -> bool:
     return False
 
 
-def find(opt: Namespace, ucr: ConfigRegistry) -> Tuple[UniventionUpdater, UCS_Version] | None:
+def find(opt: Namespace, ucr: ConfigRegistry) -> tuple[UniventionUpdater, UCS_Version] | None:
     lastversion = '%(version/version)s-%(version/patchlevel)s' % ucr
     log('**** Starting univention-updater %s with parameter=%s' % (lastversion, sys.argv))
 
@@ -399,8 +398,8 @@ def run(opt: Namespace, ucr: ConfigRegistry, updater: UniventionUpdater, nextver
                 # Bug #23202: After an update of Python ucr.handler_set() may not work any more
                 cmd = [
                     'univention-config-registry', 'set',
-                    'version/version={}'.format(nextversion.FORMAT % nextversion),
-                    'version/patchlevel={.patchlevel}'.format(nextversion),
+                    f'version/version={nextversion.FORMAT % nextversion}',
+                    f'version/patchlevel={nextversion.patchlevel}',
                 ]
                 call(cmd, stdout=fd_log, stderr=fd_log)
 
@@ -451,14 +450,10 @@ def main() -> None:
                         os.execv(sys.argv[0], sys.argv)  # noqa: S606
             except VerificationError as ex:
                 msg = '\n'.join([
-                    "Update aborted due to verification error:",
-                    "%s" % (ex,),
-                ] + wrap(dedent(
-                    """\
-                    This can and should only be disabled temporarily
-                    using the UCR variable 'repository/online/verify'.
-                    """,
-                )))
+                    "Update aborted due to verification error:", "%s" % (ex,), *wrap(
+                        dedent("                    This can and should only be disabled temporarily\n                    using the UCR variable 'repository/online/verify'.\n                    "),
+                    ),
+                ])
                 raise UpdateError(msg, errorsource='SETTINGS')
             except ConfigurationError as e:
                 msg = 'Update aborted due to configuration error: %s' % e

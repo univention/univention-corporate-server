@@ -61,7 +61,7 @@ run_descr = [_('The migration status can be checked by executing: pg_lsclusters 
 
 
 def warning(msg: str) -> Warning:
-    text = "\n".join([msg, description])
+    text = f'{msg}\n{description}'
     MODULE.error(text)
     return Warning(text, links=links)
 

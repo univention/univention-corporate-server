@@ -417,7 +417,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
                 error_summary = ''
                 if isinstance(message, dict):
                     for k, v in message.items():
-                        error_summary += _append_error(k, v, list(location) + [k], formatter)
+                        error_summary += _append_error(k, v, [*list(location), k], formatter)
                 else:
                     error_summary += formatter % (key, message)
                     self.add_resource(response, 'udm:error', {
@@ -791,7 +791,7 @@ class SubObjectTypes(Resource):
 
     def module_definition(self, modules):
         mods = [UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position) for name in modules]
-        result = {'entries': [{'id': '', 'label': _('All types')}, {'id': 'containers', 'label': _('All containers')}] + sorted([{'id': mod.name, 'label': mod.title} for mod in mods], key=lambda x: x['label'].lower())}
+        result = {'entries': [{'id': '', 'label': _('All types')}, {'id': 'containers', 'label': _('All containers')}, *sorted([{'id': mod.name, 'label': mod.title} for mod in mods], key=lambda x: x['label'].lower())]}
         # TODO: just add embedded resource?
         # 'object_name': mod.object_name,
         # 'object_name_plural': mod.object_name_plural,
@@ -2219,7 +2219,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
                 self.add_resource(result, 'udm:warning', {'message': 'cannot append %s to %s, value exists' % (value, property_name)})
                 return
             if prop.multivalue:
-                value = current_values + [value]
+                value = [*current_values, value]
             elif op == 'add':
                 self.add_resource(result, 'udm:warning', {'message': 'appending to a single value property (%s) is not supported.' % (property_name,)})
                 return
@@ -2686,7 +2686,7 @@ class DefaultContainers(Resource):
         self.add_link(result, 'udm:object-module', self.urljoin('../'), title=self.get_parent_object_type(module).object_name_plural)
         # self.add_link(result, 'type', self.urljoin('.'), title=module.object_name)
         self.add_link(result, 'up', self.urljoin('.'), title=module.object_name)
-        result['default-containers'] = [('', _('All containers'))] + sorted(((x, ldap_dn2path(x)) for x in module.get_default_containers()), key=lambda x: x[1].lower())
+        result['default-containers'] = [('', _('All containers')), *sorted(((x, ldap_dn2path(x)) for x in module.get_default_containers()), key=lambda x: x[1].lower())]
 
         self.add_caching(public=True, must_revalidate=True)
         self.content_negotiation(result)
@@ -2799,7 +2799,7 @@ class PolicyResultBase(Resource):
             # * [new; w/pol; inherit]
             # * [new; w/pol; set_pol]
             # -> old + temporary policy are both (virtually) set at the parent container
-            faked_policy_reference = obj.policies + [policy_dn]
+            faked_policy_reference = [*obj.policies, policy_dn]
         else:
             # cases:
             # * [new; w/o_pol; inherit]

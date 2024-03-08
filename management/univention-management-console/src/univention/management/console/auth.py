@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  authentication mechanisms
@@ -50,7 +49,7 @@ from univention.management.console.pam import (
 )
 
 
-class AuthenticationResult(object):
+class AuthenticationResult:
 
     def __init__(self, result, locale):  # type: (Union[BaseException, Dict[str, str]], Optional[str]) -> None
         self.credentials = None
@@ -85,7 +84,7 @@ class AuthenticationResult(object):
     __nonzero__ = __bool__  # Python 2
 
 
-class AuthHandler(object):
+class AuthHandler:
 
     def get_handler(self, locale):
         # PAM MUST be initialized outside of a thread. Otherwise it segfaults e.g. with pam_saml.so.

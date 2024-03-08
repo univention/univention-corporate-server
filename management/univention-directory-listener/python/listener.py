@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Directory Listener
 #  listener script
@@ -122,7 +121,7 @@ def run(exe, argv, uid=-1, wait=True):  # type: (str, List[Union[str, str]], int
     return rc
 
 
-class SetUID(object):
+class SetUID:
     """
     Temporarily change effective UID to given user.
 

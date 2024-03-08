@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -145,7 +144,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def open(self):
         # type: () -> None
-        super(object, self).open()
+        super().open()
         _re = re.compile(r'^([^.]+)\.(.+?)$')
         # convert host FQDN to host DN
         hostlist = []  # type: list[str]

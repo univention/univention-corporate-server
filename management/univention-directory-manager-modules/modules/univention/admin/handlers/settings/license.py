@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -286,7 +285,7 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
-        super(object, self).__init__(co, lo, position, dn, superordinate, attributes)
+        super().__init__(co, lo, position, dn, superordinate, attributes)
         if self.oldattr.get('univentionLicenseVersion', []) == [b'2']:
             self.options.append('Version 2')
         else:

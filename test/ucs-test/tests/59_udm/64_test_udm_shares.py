@@ -317,7 +317,7 @@ def test_create_fileshare_and_connect_via_samba(udm, ucr):
         pytest.skip('Samba 4 not installed')
     delay = 1
     time.sleep(delay)
-    cmd = ['smbclient', '//localhost/%s' % properties['sambaName'], '-U', '%'.join([admin_name, password]), '-c', 'showconnect']
+    cmd = ['smbclient', '//localhost/%s' % properties['sambaName'], '-U', f'{admin_name}%{password}', '-c', 'showconnect']
     print('\nRunning: %s' % ' '.join(cmd))
     p = subprocess.Popen(cmd, close_fds=True)
     p.wait()

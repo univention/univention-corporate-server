@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 """Univention Configuration Registry command line implementation."""
 #  main configuration registry classes
 #
@@ -116,7 +114,7 @@ def replog(ucr, var, old_value, value=None):
         if old_value is None:
             old_value = "[Previously undefined]"
 
-        log = u'%s: %s %s%s old:%s\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), method, scope_arg, varvalue, old_value)
+        log = '%s: %s %s%s old:%s\n' % (time.strftime("%Y-%m-%d %H:%M:%S"), method, scope_arg, varvalue, old_value)
         try:
             if not os.path.isfile(REPLOG_FILE):
                 os.close(os.open(REPLOG_FILE, os.O_CREAT, 0o640))
@@ -578,7 +576,7 @@ def handler_help(args, opts={}, out=sys.stdout):
     :param args: Command line arguments.
     :param opts: Command line options.
     """
-    print(u'''
+    print('''
 univention-config-registry: base configuration for UCS
 copyright (c) 2001-2024 Univention GmbH, Germany
 

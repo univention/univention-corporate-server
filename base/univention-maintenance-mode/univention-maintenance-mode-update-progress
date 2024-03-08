@@ -63,7 +63,7 @@ def read_progress():
     return ret
 
 
-class UpdaterStatus(object):
+class UpdaterStatus:
     def __init__(self):
         self.target_version = None
         with open('/var/lib/univention-updater/univention-updater.status') as fd:

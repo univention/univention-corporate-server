@@ -7,7 +7,7 @@
 from vminstall.utils import copy_through_ssh, execute_through_ssh
 
 
-class TestDudleInstallation(object):
+class TestDudleInstallation:
 
     def test_install_dudle(self, role, ip_address, master_ip, password):
         self.ip = ip_address

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
 #  UDM module for MS GPOs

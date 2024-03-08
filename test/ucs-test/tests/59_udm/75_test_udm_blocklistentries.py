@@ -31,7 +31,7 @@ def blocklist_list(random_string, udm, enable_blocklists):
         'blockingProperties': [
             'users/user mailPrimaryAddress',
             'groups/group mailAddress',
-        ]
+        ],
     }
     dn = udm.create_object('blocklists/list', **data)
     return SimpleNamespace(cn=name, dn=dn)
@@ -118,7 +118,7 @@ def test_multivalue_property_create(ucr, udm, enable_blocklists):
         'blockingProperties': [
             'users/user description',
             'users/user postOfficeBox',
-        ]
+        ],
     }
     bl_dn = udm.create_object('blocklists/list', **data)
     udm.stop_cli_server()
@@ -146,7 +146,7 @@ def test_multivalue_property_modify(ucr, udm, mail_domain_name, enable_blocklist
             'users/user e-mail',
             'users/user mailPrimaryAddress',
             'groups/group mailAddress',
-        ]
+        ],
     }
     bl_dn = udm.create_object('blocklists/list', **data)
     udm.stop_cli_server()
@@ -204,7 +204,7 @@ def test_clean_expired_entries(ucr, udm, mail_domain_name, enable_blocklists):
         'blockingProperties': [
             'users/user mailPrimaryAddress',
             'groups/group mailAddress',
-        ]
+        ],
     }
     bl_dn = udm.create_object('blocklists/list', **data)
     udm.stop_cli_server()
@@ -213,7 +213,7 @@ def test_clean_expired_entries(ucr, udm, mail_domain_name, enable_blocklists):
     expired_entry_data = {
         'value': expired_ble_name,
         'originUniventionObjectIdentifier': '9521d08e-6cf6-103b-9a74-edbd30d12cd6',
-        'blockedUntil': datetime.strftime(current_time + timedelta(days=-2), '%Y%m%d%H%M%SZ')
+        'blockedUntil': datetime.strftime(current_time + timedelta(days=-2), '%Y%m%d%H%M%SZ'),
 
     }
     expired_ble_dn = udm.create_object('blocklists/entry', superordinate=bl_dn, **expired_entry_data)
@@ -223,7 +223,7 @@ def test_clean_expired_entries(ucr, udm, mail_domain_name, enable_blocklists):
     entry_data = {
         'value': ble_name,
         'originUniventionObjectIdentifier': '9521d08e-6cf6-103b-9a74-edbd30d12cd6',
-        'blockedUntil': datetime.strftime(current_time + timedelta(days=20), '%Y%m%d%H%M%SZ')
+        'blockedUntil': datetime.strftime(current_time + timedelta(days=20), '%Y%m%d%H%M%SZ'),
 
     }
     ble_dn = udm.create_object('blocklists/entry', superordinate=bl_dn, **entry_data)

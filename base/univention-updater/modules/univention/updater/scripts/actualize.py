@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -41,7 +40,7 @@ import subprocess
 import sys
 import time
 from argparse import ArgumentParser, Namespace
-from typing import Any, List, Literal, NoReturn, Sequence
+from typing import Any, Literal, NoReturn, Sequence
 
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 from univention.lib.policy_result import PolicyResultFailed, policy_result
@@ -65,7 +64,7 @@ configRegistry.load()
 ldap_hostdn = configRegistry.get('ldap/hostdn')
 
 
-class Tee(object):
+class Tee:
     """
     Writes the given string to several files at once. Could by used
     with the print statement
@@ -78,7 +77,7 @@ class Tee(object):
 
     def call(self, command: Sequence[str], **kwargs: Any) -> int:
         p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kwargs)
-        tee_command = ['tee', '-a'] + list(self.files)
+        tee_command = ["tee", "-a", *list(self.files)]
         if self.stdout:
             if self.filter:
                 tee = subprocess.Popen(tee_command, stdin=p.stdout, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -139,7 +138,7 @@ def check(configRegistry: ConfigRegistry, dist_upgrade: bool = False) -> bool:
     ))
 
 
-def getPackageList(configRegistry: ConfigRegistry, job: _JOB) -> List[str]:
+def getPackageList(configRegistry: ConfigRegistry, job: _JOB) -> list[str]:
     """
     Get a list of packages to remove or add, depending on the value of job.
 
@@ -217,13 +216,13 @@ def run(opt: Namespace) -> int:
             for package in rem_packages:
                 # check if the package exists
                 with apt_lock():
-                    res = subprocess.call(shlex.split(cmd_show) + [package], stdout=logfile, stderr=logfile)
+                    res = subprocess.call([*shlex.split(cmd_show), package], stdout=logfile, stderr=logfile)
                 if res == 0:
                     print("Removing packages: %s" % package)
                     with apt_lock():
                         res = subprocess.call(shlex.split(cmd_config), stdout=logfile, stderr=logfile)
                         if not res:
-                            res = subprocess.call(shlex.split(cmd_remove) + [package], stdout=logfile, stderr=logfile)
+                            res = subprocess.call([*shlex.split(cmd_remove), package], stdout=logfile, stderr=logfile)
                 else:
                     print("The package %s doesn't exist." % package)
                     res = 0
@@ -234,13 +233,13 @@ def run(opt: Namespace) -> int:
             add_packages = getPackageList(configRegistry, 'add')
             for package in add_packages:
                 with apt_lock():
-                    res = subprocess.call(shlex.split(cmd_show) + [package], stdout=logfile, stderr=logfile)
+                    res = subprocess.call([*shlex.split(cmd_show), package], stdout=logfile, stderr=logfile)
                 if res == 0:
                     print("Installing packages: %s" % package)
                     with apt_lock():
                         res = subprocess.call(shlex.split(cmd_config), stdout=logfile, stderr=logfile)
                         if not res:
-                            res = subprocess.call(shlex.split(cmd_install) + [package], stdout=logfile, stderr=logfile)
+                            res = subprocess.call([*shlex.split(cmd_install), package], stdout=logfile, stderr=logfile)
                 else:
                     print("The package %s doesn't exist." % package)
                     res = 0

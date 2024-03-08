@@ -32,10 +32,13 @@ from __future__ import annotations
 
 import re
 from itertools import chain
-from pathlib import Path
-from typing import Any, Iterable, Iterator
+from typing import TYPE_CHECKING, Any, Iterable, Iterator
 
 import univention.ucslint.base as uub
+
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 def levenshtein(word: str, distance: int = 1, subst: str = '.') -> Iterator[str]:

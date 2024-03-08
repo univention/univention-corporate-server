@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console module:
 #   Testscript for umc sanitizer
@@ -117,7 +116,7 @@ class Instance(Base):
         return '%r' % (value,)
 
     _mapping = {
-        u'foo': 'bar',
+        'foo': 'bar',
         b'bar': 1,
         'baz': [],
     }

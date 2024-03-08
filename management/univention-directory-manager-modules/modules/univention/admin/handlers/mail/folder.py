@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -178,7 +177,7 @@ class object(univention.admin.handlers.simpleLdap):
         return 'cn=%s,%s' % (ldap.dn.escape_dn_chars(name), self.position.getDn())
 
     def _ldap_addlist(self):
-        al = super(object, self)._ldap_addlist()
+        al = super()._ldap_addlist()
 
         if self['mailPrimaryAddress']:
             value = 'univentioninternalpostuser+shared/%s@%s' % (self['name'].lower(), self['mailDomain'].lower())
@@ -254,7 +253,7 @@ class object(univention.admin.handlers.simpleLdap):
         return ml
 
     def _ldap_pre_remove(self):
-        super(object, self)._ldap_pre_remove()
+        super()._ldap_pre_remove()
         if self.oldattr.get('mailPrimaryAddress'):
             self.alloc.append(('mailPrimaryAddress', self.oldattr['mailPrimaryAddress'][0].decode('UTF-8')))
 

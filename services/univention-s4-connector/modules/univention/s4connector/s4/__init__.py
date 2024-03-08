@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
 #  Basic class for the AD connector part
@@ -197,8 +196,8 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
     """
     object = copy.deepcopy(given_object)
 
-    samaccountname = u''
-    dn_attr_val = u''
+    samaccountname = ''
+    dn_attr_val = ''
 
     if object['dn'] is not None:
         if 'sAMAccountName' in object['attributes']:
@@ -226,7 +225,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
             t_dn = object.get('dn')
             if t_dn:
                 (_rdn_attribute, rdn_value, _flags) = str2dn(t_dn)[0][0]
-                t_samaccount = u''
+                t_samaccount = ''
                 if object.get('attributes'):
                     t_samaccount = object['attributes'].get('sAMAccountName', [b''])[0].decode('UTF-8')
                 if rdn_value.lower() == t_samaccount.lower():
@@ -274,7 +273,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
                 alternative_samaccountnames = []
                 for ucsval, conval in connector.property[propertyname].mapping_table.get(propertyattrib, []):
                     if value.lower() == ucsval.lower():
-                        if ucsval == u"Printer-Admins":  # Also look for the original name (Bug #42675#c1)
+                        if ucsval == "Printer-Admins":  # Also look for the original name (Bug #42675#c1)
                             alternative_samaccountnames.append(ucsval)
                         value = conval
                         ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: map %s according to mapping-table" % (propertyattrib,))
@@ -288,12 +287,12 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
                 else:
                     alternative_samaccountnames.append(value)
                     samaccountname_filter_parts = [format_escaped('(samaccountname={0!e})', x) for x in alternative_samaccountnames]
-                    filter_parts_ad.append(u'(|{})'.format(''.join(samaccountname_filter_parts)))
+                    filter_parts_ad.append('(|{})'.format(''.join(samaccountname_filter_parts)))
 
                 if dn_attr and dn_attr_val:
                     # also look for dn attr (needed to detect modrdn)
                     filter_parts_ad.append(format_escaped('({0}={1!e})', dn_attr, dn_attr_val))
-                filter_ad = u'(&{})'.format(''.join(filter_parts_ad))
+                filter_ad = '(&{})'.format(''.join(filter_parts_ad))
                 ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: search in ad for %s" % filter_ad)
                 result = connector.s4_search_ext_s(connector.lo_s4.base, ldap.SCOPE_SUBTREE, filter_ad, ['sAMAccountName'])
 
@@ -341,7 +340,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
                 # search for object with this dn in ucs, needed if it lies in a different container
                 ucsdn = ''
                 ud.debug(ud.LDAP, ud.ALL, "samaccount_dn_mapping: samaccountname is: %r" % (samaccountname,))
-                ucsdn_filter = format_escaped(u'(&(objectclass={0!e})({1}={2!e}))', ocucs, ucsattrib, samaccountname)
+                ucsdn_filter = format_escaped('(&(objectclass={0!e})({1}={2!e}))', ocucs, ucsattrib, samaccountname)
                 ucsdn_result = connector.search_ucs(filter=ucsdn_filter, base=connector.lo.base, scope='sub', attr=['objectClass'])
                 if ucsdn_result and len(ucsdn_result) > 0 and ucsdn_result[0] and len(ucsdn_result[0]) > 0:
                     ucsdn = ucsdn_result[0][0]
@@ -369,7 +368,7 @@ def user_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject):
     connector is an instance of univention.s4connector.s4, given_object an object-dict,
     dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
     """
-    return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'user', u'samAccountName', u'posixAccount', 'uid', u'user')
+    return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'user', 'samAccountName', 'posixAccount', 'uid', 'user')
 
 
 def group_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject):
@@ -378,7 +377,7 @@ def group_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject):
     connector is an instance of univention.s4connector.s4, given_object an object-dict,
     dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
     """
-    return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'group', u'cn', u'posixGroup', 'cn', u'group')
+    return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'group', 'cn', 'posixGroup', 'cn', 'group')
 
 
 def windowscomputer_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject):
@@ -387,7 +386,7 @@ def windowscomputer_dn_mapping(connector, given_object, dn_mapping_stored, isUCS
     s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
     dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
     """
-    return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'windowscomputer', u'samAccountName', u'posixAccount', 'uid', u'computer', 'cn')
+    return samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject, 'windowscomputer', 'samAccountName', 'posixAccount', 'uid', 'computer', 'cn')
 
 
 def dc_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
@@ -396,7 +395,7 @@ def dc_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
     s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
     dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
     """
-    return samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'dc', u'samAccountName', u'posixAccount', 'uid', u'computer', 'cn')
+    return samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'dc', 'samAccountName', 'posixAccount', 'uid', 'computer', 'cn')
 
 
 def decode_sid(value):
@@ -469,7 +468,7 @@ class LDAPEscapeFormatter(string.Formatter):
             if isinstance(value, bytes):
                 raise TypeError('Filter must be string, not bytes: %r' % (value,))
             return escape_filter_chars(str(value))
-        return super(LDAPEscapeFormatter, self).convert_field(value, conversion)
+        return super().convert_field(value, conversion)
 
 
 def format_escaped(format_string, *args, **kwargs):
@@ -616,7 +615,7 @@ class s4(univention.s4connector.ucs):
         self.group_members_cache_con = {}
 
     def init_ldap_connections(self):
-        super(s4, self).init_ldap_connections()
+        super().init_ldap_connections()
 
         self.open_s4()
         self.s4_sid = decode_sid(self.s4_search_ext_s(self.s4_ldap_base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'])[0][1]['objectSid'][0])
@@ -2069,7 +2068,7 @@ class s4(univention.s4connector.ucs):
                     sambaSID = object['attributes'].get('sambaSID', [b''])[0]
                     if not (sAMAccountName and sambaSID):
                         raise  # unknown situation, raise original traceback
-                    filter_s4 = format_escaped(u'(&(sAMAccountName={0!e})(objectSid={1!e})(isDeleted=TRUE))', sAMAccountName.decode('UTF-8'), sambaSID.decode('UTF-8'))
+                    filter_s4 = format_escaped('(&(sAMAccountName={0!e})(objectSid={1!e})(isDeleted=TRUE))', sAMAccountName.decode('UTF-8'), sambaSID.decode('UTF-8'))
                     ud.debug(ud.LDAP, ud.PROCESS, "sync_from_ucs: error during add, searching for conflicting deleted object in S4")
                     ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: search filter: %s" % filter_s4)
                     result = self.s4_search_ext_s(self.lo_s4.base, ldap.SCOPE_SUBTREE, filter_s4, ['dn'], serverctrls=[LDAPControl(

@@ -1,5 +1,4 @@
 #!/usr/bin/pytest-3
-# -*- coding: utf-8 -*-
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -36,7 +35,7 @@ import sys
 import pytest
 
 
-class UMCTestRequest(object):
+class UMCTestRequest:
     _requests = {}
 
     def __init__(self, options):

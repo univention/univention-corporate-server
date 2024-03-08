@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
-# -*- coding: utf-8 -*-
 ## desc: Test changing Appearance Font color from within the portal
 ## roles:
 ##  - domaincontroller_master
@@ -31,7 +30,7 @@ class ChangeFontColorError(Exception):
     pass
 
 
-class UMCTester(object):
+class UMCTester:
 
     def test_umc(self):
         try:

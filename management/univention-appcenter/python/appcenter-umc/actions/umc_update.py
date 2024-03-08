@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app module for updating the list of available apps
@@ -60,7 +59,7 @@ FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit
 class Update(Update):
 
     def _update_local_files(self):
-        super(Update, self)._update_local_files()
+        super()._update_local_files()
 
         self.debug('Updating app icon files in UMC directory...')
 
@@ -75,8 +74,8 @@ class Update(Update):
                 self._update_svg_file(_app.logo_detail_page_name, _app.get_cache_file('logodetailpage'))
 
     def _get_conffiles(self):
-        conffiles = super(Update, self)._get_conffiles()
-        return conffiles + ['/usr/share/univention-management-console/modules/apps.xml', '/usr/share/univention-management-console/i18n/de/apps.mo']
+        conffiles = super()._get_conffiles()
+        return [*conffiles, '/usr/share/univention-management-console/modules/apps.xml', '/usr/share/univention-management-console/i18n/de/apps.mo']
 
     def _update_svg_file(self, _dest_file, src_file):
         if not _dest_file:

@@ -285,7 +285,7 @@ class HTML:
                     'hx-swap': 'outerHTML',
                     # 'hx-get': self._append_query(field['data-dynamic'], f'selected={quote(value)}'),
                     'hx-get': field['data-dynamic'],
-                    'hx-vals': json.dumps({'selected': value, 'required': field.get('required', ''), 'name': field.get('name', '')})  # caution: allowing freely added values like name=javascript: is a security risk
+                    'hx-vals': json.dumps({'selected': value, 'required': field.get('required', ''), 'name': field.get('name', '')}),  # caution: allowing freely added values like name=javascript: is a security risk
                 })
 
             element = ET.Element(field.get('element', 'input'), name=name, value=str(value), **elemattrs)

@@ -14,7 +14,7 @@ import subprocess
 import sys
 from datetime import datetime, timedelta
 from time import sleep
-from typing import Iterator, List, Sequence, Tuple
+from typing import Iterator, Sequence
 
 from univention.config_registry import ucr
 from univention.testing import utils
@@ -39,7 +39,7 @@ def remove_samba_warnings(input_str: str) -> str:
     return input_str.replace('NOTE: Service IPC$ is flagged unavailable.', '').strip()
 
 
-def create_and_run_process(cmd: Sequence[str]) -> Tuple[str, str]:
+def create_and_run_process(cmd: Sequence[str]) -> tuple[str, str]:
     """
     Create a process as a Popen instance with a given 'cmd'
     and 'communicates' with it. Returns (stdout, stderr).
@@ -48,7 +48,7 @@ def create_and_run_process(cmd: Sequence[str]) -> Tuple[str, str]:
     return remove_samba_warnings(proc.stdout), remove_samba_warnings(proc.stderr)
 
 
-def try_to_authenticate(password: str) -> Tuple[str, str]:
+def try_to_authenticate(password: str) -> tuple[str, str]:
     """
     Authenticate 'test_username' user with given 'password'
     using smbclient and execute an 'ls'. Returns (stdout, stderr).
@@ -191,7 +191,7 @@ def main() -> None:
         create_delete_test_user(True)
 
         set_lockout_settings(LOCKOUT_DURATION, LOCKOUT_THRESHOLD)
-        hist: List[str] = []
+        hist: list[str] = []
         hist += dump_pwpolicy()
 
         print("# Twiddling thumbs for 30s")  # Why?

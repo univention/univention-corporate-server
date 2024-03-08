@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  module: system setup
@@ -46,7 +45,7 @@ import subprocess
 import threading
 import time
 import traceback
-from typing import Any, Dict, List
+from typing import Any
 
 import lxml.etree
 import psutil
@@ -121,7 +120,7 @@ class Instance(Base, ProgressMixin):
         util.get_city_data()
         util.get_country_data()
 
-    def _get_localized_label(self, label_dict: Dict[str, str]) -> str:
+    def _get_localized_label(self, label_dict: dict[str, str]) -> str:
         return label_dict.get(self.locale.language, '') or label_dict.get('en', '') or label_dict.get('', '')
 
     def ping(self, request):
@@ -360,7 +359,7 @@ class Instance(Base, ProgressMixin):
         return progress_info(state, finished=self._finishedResult)
 
     @simple_response(with_flavor=True)
-    def validate(self, values: Dict | None = None, flavor: str | None = None):
+    def validate(self, values: dict | None = None, flavor: str | None = None):
         '''
         Validate the specified values given in the dict as option named "values".
         Return a dict (with variable names as key) of dicts with the structure:
@@ -458,7 +457,7 @@ class Instance(Base, ProgressMixin):
                 _check(ikey, lambda x, maxlenth=maxlenth: len(x) <= maxlenth, _('The following value is too long, only %(max)s characters allowed: %(name)s') % {'max': maxlenth, 'name': labels[ikey]})
 
         for ikey in ('ssl/country', 'ssl/state', 'ssl/locality', 'ssl/organization', 'ssl/organizationalunit', 'ssl/email', 'ssl/common'):
-            for table in (stringprep.in_table_c21_c22, stringprep.in_table_a1, stringprep.in_table_c8, stringprep.in_table_c3, stringprep.in_table_c4, stringprep.in_table_c5, lambda c: c == u'\ufffd'):
+            for table in (stringprep.in_table_c21_c22, stringprep.in_table_a1, stringprep.in_table_c8, stringprep.in_table_c3, stringprep.in_table_c4, stringprep.in_table_c5, lambda c: c == '\ufffd'):
                 _check(ikey, lambda x, table=table: not any(map(table, x)), _('The value for %s contains invalid characters.') % (labels[ikey],))
 
         _check('ssl/country', lambda x: len(x) == 2, _('Country must be a country code consisting of 2 characters.'))
@@ -701,7 +700,7 @@ class Instance(Base, ProgressMixin):
 
     @sanitize(pattern=StringSanitizer(), max_results=IntegerSanitizer(minimum=1, default=5))
     @simple_response
-    def find_city(self, pattern: str, max_results: int) -> List | None:
+    def find_city(self, pattern: str, max_results: int) -> list | None:
         pattern = pattern.lower()
         MODULE.info('pattern: %s' % pattern)
         if not pattern:
@@ -760,11 +759,11 @@ class Instance(Base, ProgressMixin):
         return matches
 
     @simple_response
-    def apps_query(self) -> List[Dict[str, Any]]:
+    def apps_query(self) -> list[dict[str, Any]]:
         return util.get_apps(True)
 
     @simple_response
-    def check_domain(self, role: str, nameserver: str) -> Dict[str, Any]:
+    def check_domain(self, role: str, nameserver: str) -> dict[str, Any]:
         result = {}
         if role == 'ad':
             try:
@@ -793,7 +792,7 @@ class Instance(Base, ProgressMixin):
         return result
 
     @simple_response
-    def check_domain_join_information(self, domain_check_role: str, role: str, dns: str, nameserver: str, address: str, username: str, password: str) -> Dict[str, str]:
+    def check_domain_join_information(self, domain_check_role: str, role: str, dns: str, nameserver: str, address: str, username: str, password: str) -> dict[str, str]:
         result = {}
         if domain_check_role == 'ad':
             domain = util.check_credentials_ad(nameserver, address, username, password)
@@ -817,7 +816,7 @@ class Instance(Base, ProgressMixin):
         return check_for_school_domain(hostname, address, username, password)
 
     @simple_response
-    def check_repository_accessibility(self) -> List[str]:
+    def check_repository_accessibility(self) -> list[str]:
         return get_unreachable_repository_servers()
 
     @simple_response

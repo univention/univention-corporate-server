@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -106,7 +105,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
                     raise univention.admin.uexceptions.primaryGroup()
             if 'samba' in self.options:
                 sid = self.oldattr.get('sambaSID', [b''])[0].decode('ASCII')
-                pos = sid.rfind(u'-')
+                pos = sid.rfind('-')
                 self.info['sambaRID'] = sid[pos + 1:]
 
         self.modifypassword = 0
@@ -125,14 +124,14 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
 
     def _ldap_pre_create(self):
         # type: () -> None
-        super(ComputerObject, self)._ldap_pre_create()
+        super()._ldap_pre_create()
         if not self['password']:
             self['password'] = self.oldattr.get('password', [b''])[0].decode('ASCII')
             self.modifypassword = 0
 
     def _ldap_addlist(self):
         # type: () -> list[tuple[str, Any]]
-        al = super(ComputerObject, self)._ldap_addlist()
+        al = super()._ldap_addlist()
         self.check_required_options()
         if 'kerberos' in self.options:
             domain = univention.admin.uldap.domain(self.lo, self.position)
@@ -185,12 +184,12 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
         # type: () -> None
         if 'posix' in self.options:
             univention.admin.handlers.simpleComputer.primary_group(self)
-        super(ComputerObject, self)._ldap_post_create()
+        super()._ldap_post_create()
         self.nagios_ldap_post_create()
 
     def _ldap_pre_remove(self):
         # type: () -> None
-        super(ComputerObject, self)._ldap_pre_remove()
+        super()._ldap_pre_remove()
         self.open()
         if 'posix' in self.old_options and self.oldattr.get('uidNumber'):
             self.alloc.append(('uidNumber', self.oldattr['uidNumber'][0].decode('ASCII')))
@@ -199,7 +198,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
 
     def _ldap_post_remove(self):
         # type: () -> None
-        super(ComputerObject, self)._ldap_post_remove()
+        super()._ldap_post_remove()
 
         # for group in univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn])):
         #    group.open()
@@ -329,7 +328,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
     @classmethod
     def unmapped_lookup_filter(cls):
         # type: () -> univention.admin.filter.conjunction
-        filter_p = super(ComputerObject, cls).unmapped_lookup_filter()
+        filter_p = super().unmapped_lookup_filter()
         if cls.SERVER_ROLE and cls.SERVER_ROLE != 'member':
             filter_p.expressions.append(univention.admin.filter.expression('univentionServerRole', cls.SERVER_ROLE, escape=True))
         return filter_p
@@ -352,7 +351,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
         elif filter.variable == 'fqdn':
             filter.transform_to_conjunction(univention.admin.filter.parse(univention.admin.filter.replace_fqdn_filter(str(filter))))
         else:
-            super(ComputerObject, cls).rewrite_filter(filter, mapping)
+            super().rewrite_filter(filter, mapping)
 
     @classmethod
     def lookup_filter(cls, filter_s=None, lo=None):
@@ -368,4 +367,4 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
         # type: (str, univention.admin.handlers._Attributes, bool) -> bool
         if cls.SERVER_ROLE and cls.SERVER_ROLE != 'member' and cls.SERVER_ROLE not in [x.decode('UTF-8') for x in attr.get('univentionServerRole', [])]:
             return False
-        return super(ComputerObject, cls).identify(dn, attr, canonical)
+        return super().identify(dn, attr, canonical)

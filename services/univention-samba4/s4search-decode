@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
 #
@@ -53,7 +52,7 @@ from samba.ndr import ndr_print, ndr_unpack
 krb5_context = None
 
 
-class Krb5Context(object):
+class Krb5Context:
     def __init__(self):
         self.ctx = heimdal.context()
         self.etypes = self.ctx.get_permitted_enctypes()
@@ -175,7 +174,7 @@ def decode_accountExpires(value):
             traceback.print_exc()
 
 
-class decode_lastDate(object):
+class decode_lastDate:
 
     def __init__(self, attrname):
         self.attrname = attrname
@@ -206,7 +205,7 @@ def decode_pwdLastSet(value):
             traceback.print_exc()
 
 
-class decode_drsblob(object):
+class decode_drsblob:
 
     def __init__(self, blobtype):
         self.blobtype = blobtype

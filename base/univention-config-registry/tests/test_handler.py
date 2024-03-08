@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# vim:set fileencoding=utf-8:
 # pylint: disable-msg=C0103,E0611,R0904
 # SPDX-FileCopyrightText: 2014-2024 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
@@ -85,7 +84,7 @@ def test_run_module(funcname, mocker):
     pytest.param("# ", set(), "# Warning: ", id="#"),
     pytest.param(";", set(), ";Warnung: ", id=";"),
     pytest.param("// ", {"tmpl"}, "// \ttmpl\n", id="//"),
-    pytest.param(";", {u"Dom\u00e4ne"}, u";\tDom\u00e4ne\n", id="unicode"),
+    pytest.param(";", {"Dom\u00e4ne"}, ";\tDom\u00e4ne\n", id="unicode"),
 ])
 def test_warning_string(prefix, srcfiles, expected):
     assert expected in ucrh.warning_string(prefix, srcfiles=srcfiles)
@@ -96,7 +95,7 @@ def test_ConfigHandler():
         ucrh.ConfigHandler()(({}, {}))
 
 
-class TestConfigHandlerDiverting(object):
+class TestConfigHandlerDiverting:
 
     @pytest.fixture()
     def hdivert(self):

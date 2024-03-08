@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -100,8 +99,8 @@ layout = [
 def unmapHWAddress(old, encoding=()):
     log.debug('host.py: unmapHWAddress: old: %s', old)
     if not old:
-        return [u'', u'']
-    return old[0].decode(*encoding).split(u' ')
+        return ['', '']
+    return old[0].decode(*encoding).split(' ')
 
 
 def mapHWAddress(old, encoding=()):
@@ -110,7 +109,7 @@ def mapHWAddress(old, encoding=()):
         return b''
     else:
         if len(old) > 1:
-            value = u'%s %s' % (old[0], old[1])
+            value = '%s %s' % (old[0], old[1])
             return value.encode(*encoding)
         else:
             return old.encode(*encoding)

@@ -144,7 +144,7 @@ def loginOneRequest(client, host, user, timeout=30):
         client.cookies.clear()
 
 
-class TestData(object):
+class TestData:
 
     def __init__(self):
         self.user_cache = Index(USER_CACHE_PATH)

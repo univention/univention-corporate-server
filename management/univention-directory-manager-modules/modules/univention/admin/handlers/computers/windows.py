@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -295,7 +294,7 @@ class object(ComputerObject):
         if self.hasChanged('ntCompatibility') and self['ntCompatibility'] == '1':
             self['password'] = self['name'].replace('$', '').lower()
             self.modifypassword = 1
-        return super(object, self)._ldap_modlist()
+        return super()._ldap_modlist()
 
     def link(self):
         # type: () -> None
@@ -304,7 +303,7 @@ class object(ComputerObject):
     @classmethod
     def lookup_filter(cls, filter_s=None, lo=None):
         # type: (str | None, univention.admin.uldap.access | None) -> univention.admin.filter.conjunction
-        con = super(object, cls).lookup_filter(filter_s, lo)
+        con = super().lookup_filter(filter_s, lo)
         con.expressions.append(univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionServerRole', 'windows_domaincontroller')]))
         return con
 

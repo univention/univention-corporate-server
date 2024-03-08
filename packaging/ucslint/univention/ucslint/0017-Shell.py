@@ -33,11 +33,14 @@
 from __future__ import annotations
 
 import re
-from pathlib import Path
-from typing import Iterable
+from typing import TYPE_CHECKING, Iterable
 
 import univention.ucslint.base as uub
 from univention.ucslint.common import RE_HASHBANG_SHELL
+
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):

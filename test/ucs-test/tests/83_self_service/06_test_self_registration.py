@@ -233,9 +233,9 @@ def test_usertemplate_ucr_var_not_existing(umc_client, ucr, get_registration_inf
     with pytest.raises(HTTPError) as excinfo:
         umc_client.umc_command('passwordreset/create_self_registered_account', info['data'])
     msg = (
-        'The user template "{}" set by the "umc/self-service/account-registration/usertemplate" UCR variable does not exist. '
+        f'The user template "{usertemplate_dn}" set by the "umc/self-service/account-registration/usertemplate" UCR variable does not exist. '
         'A user account can not be created. Please contact your system administrator.'
-    ).format(usertemplate_dn)
+    )
     assert excinfo.value.message == msg
 
 

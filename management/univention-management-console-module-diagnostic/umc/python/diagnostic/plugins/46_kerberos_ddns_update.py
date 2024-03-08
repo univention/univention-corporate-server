@@ -53,7 +53,7 @@ class UpdateError(Exception):
 
 class KinitError(UpdateError):
     def __init__(self, principal: str, keytab: Optional[str], password_file: Optional[str]) -> None:
-        super(KinitError, self).__init__(principal, keytab, password_file)
+        super().__init__(principal, keytab, password_file)
         self.principal = principal
         self.keytab = keytab
         self.password_file = password_file
@@ -68,7 +68,7 @@ class KinitError(UpdateError):
 
 class NSUpdateError(UpdateError):
     def __init__(self, details: str, domainname: str) -> None:
-        super(NSUpdateError, self).__init__(details, domainname)
+        super().__init__(details, domainname)
         self.details = details
         self.domainname = domainname
 

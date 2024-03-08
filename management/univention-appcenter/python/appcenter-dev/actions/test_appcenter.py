@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app module for running an app specific test file
@@ -71,7 +70,7 @@ class DevTest(UniventionAppAction):
     def _run_file(self, app, fname, args):
         if os.path.exists(fname):
             self.log('Running %s with additional args %r' % (fname, args))
-            return call_process([fname] + args, self.logger).returncode
+            return call_process([fname, *args], self.logger).returncode
 
     def main(self, args):
         self.log('Testing %s' % args.app)

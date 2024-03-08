@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -40,7 +39,7 @@ import re
 import shutil
 from functools import reduce
 from tempfile import NamedTemporaryFile
-from typing import Dict, Iterable, List
+from typing import Iterable
 
 import univention.debug as ud
 
@@ -64,7 +63,7 @@ REpassword = re.compile("^poll .*? there with password '(.*?)' is '[^']+' here")
 
 
 def _split_file(fetch_list, new_line):
-    if new_line.startswith('set') or new_line.startswith('#'):
+    if new_line.startswith(('set', '#')):
         fetch_list.append(new_line)
     elif fetch_list:
         if UID_REGEX.search(fetch_list[-1]) or fetch_list[-1].startswith('set'):
@@ -74,7 +73,7 @@ def _split_file(fetch_list, new_line):
     return fetch_list
 
 
-def load_rc(ofile: str) -> List[str] | None:
+def load_rc(ofile: str) -> list[str] | None:
     """open an textfile with setuid(0) for root-action"""
     rc = None
     listener.setuid(0)
@@ -100,7 +99,7 @@ def write_rc(flist: Iterable[str], wfile: str) -> None:
     listener.unsetuid()
 
 
-def objdelete(dlist: Iterable[str], old: Dict[str, List[bytes]]) -> List[str]:
+def objdelete(dlist: Iterable[str], old: dict[str, list[bytes]]) -> list[str]:
     """delete an object in filerepresenting-list if old settings are found"""
     if old.get('uid'):
         return [line for line in dlist if not re.search("#UID='%s'[ \t]*$" % re.escape(old['uid'][0].decode('UTF-8')), line)]
@@ -110,7 +109,7 @@ def objdelete(dlist: Iterable[str], old: Dict[str, List[bytes]]) -> List[str]:
 
 
 # Bug 55882: Compatibility with old attributes.
-def objappend(flist: List[str], new: Dict[str, List[bytes]], password: str | None = None):
+def objappend(flist: list[str], new: dict[str, list[bytes]], password: str | None = None):
     """add new entry"""
     if details_complete(new, password):
         flag_ssl = 'ssl' if new.get('univentionFetchmailUseSSL', [b''])[0] == b'1' else ''
@@ -145,20 +144,20 @@ def get_pw_from_rc(lines: Iterable[str], uid: int) -> str | None:
 
 
 # Bug 55882: Compatibility with old attributes.
-def details_complete(obj: Dict[str, List[bytes]] | None, password: str | None):
+def details_complete(obj: dict[str, list[bytes]] | None, password: str | None):
     if not obj or not password:
         return False
     attrlist = ['mailPrimaryAddress', 'univentionFetchmailServer', 'univentionFetchmailProtocol', 'univentionFetchmailAddress']
     return all(obj.get(attr, [b''])[0] for attr in attrlist)
 
 
-def is_fetchmail_user(obj: Dict[str, List[bytes]] | None):
+def is_fetchmail_user(obj: dict[str, list[bytes]] | None):
     if not obj:
         return False
     return bool(obj.get('mailPrimaryAddress', [b''])[0])
 
 
-def objappend_single(flist: List[str], new: Dict[str, List[bytes]], password: str | None = None) -> None:
+def objappend_single(flist: list[str], new: dict[str, list[bytes]], password: str | None = None) -> None:
     """add user's single fetchmail entries to flist"""
     # Bug 55882: Compatibility with old attributes.
     objappend(flist, new, password)
@@ -181,7 +180,7 @@ def objappend_single(flist: List[str], new: Dict[str, List[bytes]], password: st
         flist.append(f"poll '{server}' with proto {protocol} auth password user '{username}' there with password '{passwd}' is '{mail_address}' here {flag_keep} {flag_ssl} #UID='{uid}'\n")
 
 
-def objappend_multi(flist: List[str], new: Dict[str, List[bytes]], password: str | None = None) -> None:
+def objappend_multi(flist: list[str], new: dict[str, list[bytes]], password: str | None = None) -> None:
     """add user's multi fetchmail entries to flist"""
     value = new.get('univentionFetchmailMulti', [])
     if not is_fetchmail_user(new):
@@ -210,11 +209,11 @@ def objappend_multi(flist: List[str], new: Dict[str, List[bytes]], password: str
     user '{username}' there with password '{passwd}' is * here {flag_keep} {flag_ssl} #UID='{uid}'\n""")
 
 
-def change_required(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> bool:
+def change_required(new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> bool:
     return any(old.get(attr, []) != new.get(attr, []) for attr in ('univentionFetchmailSingle', 'univentionFetchmailMulti', 'uid', 'mailPrimaryAddress'))
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]], command: str) -> None:
     if os.path.exists(FETCHMAIL_OLD_PICKLE):
         with open(FETCHMAIL_OLD_PICKLE, 'rb') as fd:
             p = pickle.Unpickler(fd)

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention System Setup
 # cleanup script called after the appliance wizard setup

@@ -21,7 +21,7 @@ class PhaseLdapSamba(AddressMap, LdapChange):
     priority = 44
 
     def __init__(self, changeset: ChangeSet) -> None:
-        super(PhaseLdapSamba, self).__init__(changeset)
+        super().__init__(changeset)
         modules.update()
 
     def post(self) -> None:

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  module: password reset service
@@ -199,7 +198,7 @@ class ConnectionLimitReached(UMC_Error):
     status = 503
 
     def __init__(self, seconds):
-        super(ConnectionLimitReached, self).__init__(_("The allowed maximum number of connections to the server has been reached. Please retry in {}.").format(seconds))
+        super().__init__(_("The allowed maximum number of connections to the server has been reached. Please retry in {}.").format(seconds))
 
 
 class ServiceForbidden(UMC_Error):
@@ -207,14 +206,14 @@ class ServiceForbidden(UMC_Error):
     status = 403
 
     def __init__(self):
-        super(ServiceForbidden, self).__init__(_("Either username or password is incorrect or you are not allowed to use this service."))
+        super().__init__(_("Either username or password is incorrect or you are not allowed to use this service."))
 
 
 class TokenNotFound(UMC_Error):
     status = 400
 
     def __init__(self):
-        super(TokenNotFound, self).__init__(
+        super().__init__(
             _("The token you supplied is either expired or invalid. Please request a new one."))
 
 
@@ -222,7 +221,7 @@ class NoMethodsAvailable(UMC_Error):
     status = 403
 
     def __init__(self):
-        super(NoMethodsAvailable, self).__init__(_('No contact information is stored for this user. Resetting the password is not possible.'))
+        super().__init__(_('No contact information is stored for this user. Resetting the password is not possible.'))
 
 
 class TokenSendMessage(UMC_Error):
@@ -1040,8 +1039,7 @@ class Instance(Base):
         try:
             self._call_send_msg_plugin(username, method, address, token, user_properties)
         except Exception:
-            MODULE.error("send_token(): Error sending token with via '{method}' to '{username}'.".format(
-                method=method, username=username))
+            MODULE.error(f"send_token(): Error sending token with via '{method}' to '{username}'.")
             self.db.delete_tokens(username=username)
             raise
         return True

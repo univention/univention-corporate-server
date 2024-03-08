@@ -35,11 +35,15 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from playwright.sync_api import Locator, Page, expect
 
 from univention.lib.i18n import Translation
-from univention.testing.browser.lib import UMCBrowserTest
+
+
+if TYPE_CHECKING:
+    from univention.testing.browser.lib import UMCBrowserTest
 
 
 _ = Translation('ucs-test-framework').translate
@@ -122,7 +126,7 @@ class DetailsView:
         remove_button.click()
 
 
-class GenericUDMModule(object):
+class GenericUDMModule:
     """
     The GenericUmcModule is the base class for a bunch of UMC Modules which are all structured similarly
     This class provides a bunch of methods for functionality that is similar/common in the modules.

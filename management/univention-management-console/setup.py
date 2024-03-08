@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  Python setup
@@ -88,7 +87,7 @@ class BuildI18N(Command):
 
 
 class Build(build_py):
-    sub_commands = build_py.sub_commands + [('build_i18n', None)]
+    sub_commands = [*build_py.sub_commands, ('build_i18n', None)]
 
     def run(self):
         build_py.run(self)

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -368,16 +367,16 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
-        super(object, self).__init__(co, lo, position, dn, superordinate, attributes=attributes)
+        super().__init__(co, lo, position, dn, superordinate, attributes=attributes)
         univention.admin.syntax.optionsUsersUser.update_choices()  # woraround: somehow init() didn't do it
         self.options.extend(self['_options'])
 
     def _ldap_object_classes(self, ml):
-        ml = super(object, self)._ldap_object_classes(ml)
+        ml = super()._ldap_object_classes(ml)
         return self.filter_object_classes(ml)
 
     def _ldap_object_classes_add(self, al):
-        al = super(object, self)._ldap_object_classes_add(al)
+        al = super()._ldap_object_classes_add(al)
         return self.filter_object_classes(al)
 
     @classmethod
@@ -398,19 +397,19 @@ class object(univention.admin.handlers.simpleLdap):
                     elif len(x) == 3:
                         yield (x[0], x[1], None)
                 elif isinstance(x[-1], (list, tuple)):
-                    yield tuple(list(x[:-1]) + [[z for z in x[-1] if z not in BLACKLISTED_OBJECT_CLASSES]])
+                    yield (*list(x[:-1]), [z for z in x[-1] if z not in BLACKLISTED_OBJECT_CLASSES])
                 else:
                     yield x
 
         return list(_iter_ml())
 
     def _ldap_pre_modify(self):
-        super(object, self)._ldap_pre_modify()
+        super()._ldap_pre_modify()
         self['_options'].extend(self.options)
         self['_options'] = list(set(self['_options']) - {'default'})
 
     def _ldap_pre_create(self):
-        super(object, self)._ldap_pre_create()
+        super()._ldap_pre_create()
         self['_options'].extend(self.options)
         self['_options'] = list(set(self['_options']) - {'default'})
 

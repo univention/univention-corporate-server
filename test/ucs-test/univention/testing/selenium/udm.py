@@ -35,7 +35,7 @@
 from __future__ import annotations
 
 import time
-from typing import Any, Dict, Mapping
+from typing import Any, Mapping
 
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
@@ -291,7 +291,7 @@ class Users(UDMBase):
             lastname: str | None = None,
             username: str | None = None,
             password: str = 'univention',
-    ) -> Dict[str, str]:
+    ) -> dict[str, str]:
         if username is None:
             username = uts.random_string()
         if lastname is None:

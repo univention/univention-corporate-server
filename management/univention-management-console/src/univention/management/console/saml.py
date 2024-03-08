@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -67,7 +66,7 @@ _ = NullTranslation('univention-management-console-frontend').translate
 SERVICE_UNAVAILABLE = 503
 
 
-class SAMLUser(object):
+class SAMLUser:
     """SAML specific user information"""
 
     __slots__ = ('message', 'name_id', 'session_end_time', 'username')
@@ -75,7 +74,7 @@ class SAMLUser(object):
     def __init__(self, response, message):
         self.name_id = encode_name_id(response.name_id)
         self.message = message
-        self.username = u''.join(response.ava['uid'])
+        self.username = ''.join(response.ava['uid'])
         self.session_end_time = 0
         if response.not_on_or_after:
             self.session_end_time = int(monotonic() + (response.not_on_or_after - time.time()))
@@ -94,7 +93,7 @@ class SamlError(HTTPError):
         def _decorator(func):
             def _decorated(self, *args, **kwargs):
                 message = func(self, *args, **kwargs) or ()
-                super(SamlError, self).__init__(status, message)
+                super().__init__(status, message)
                 if "Passive authentication not supported." not in message:
                     # "Passive authentication not supported." just means an active login is required. That is expected and needs no logging. It still needs to be raised though.
                     CORE.warn('SamlError: %s %s' % (status, message))
@@ -400,7 +399,7 @@ class SamlACS(SAMLResource):
 
     def http_response(self, binding, http_args):
         """Converts the HTTP arguments from pysaml2 into the tornado response."""
-        body = u''.join(http_args["data"])
+        body = ''.join(http_args["data"])
         for key, value in http_args["headers"]:
             self.set_header(key, value)
 

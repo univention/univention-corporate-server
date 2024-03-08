@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
-# -*- coding: utf-8 -*-
 ## desc: test various functionality of the LDAP directory UMC Module
 ## packages:
 ##  - univention-management-console-module-udm

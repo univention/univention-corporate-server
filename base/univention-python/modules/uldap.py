@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Python
 #  LDAP access
@@ -216,7 +215,7 @@ def _fix_reconnect_handling(func):
     return _decorated
 
 
-class access(object):
+class access:
     """
     The low-level class to access a LDAP server.
 
@@ -351,7 +350,7 @@ class access(object):
         :rtype: str
         """
         dn = self.lo.whoami_s()
-        return re.sub(u'^dn:', u'', dn)
+        return re.sub('^dn:', '', dn)
 
     def _reconnect(self):
         # type: () -> None

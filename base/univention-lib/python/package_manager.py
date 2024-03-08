@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -82,7 +81,7 @@ class LockError(Exception):
     """
 
 
-class ProgressState(object):
+class ProgressState:
     """
     Track |APT| progress and report.
 
@@ -211,7 +210,7 @@ class FetchProgress(apt.progress.base.AcquireProgress):
 
     def __init__(self, progress_state):
         # type: (ProgressState) -> None
-        super(FetchProgress, self).__init__()
+        super().__init__()
         self.progress_state = progress_state
 
     def _info(self, msg, *args):
@@ -272,7 +271,7 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 
     def __init__(self, progress_state):
         # type: (ProgressState) -> None
-        super(DpkgProgress, self).__init__()
+        super().__init__()
         self.progress_state = progress_state
 
     def fork(self):
@@ -389,7 +388,7 @@ class _PackageManagerLoggerHandler(Handler):
 
     def __init__(self, info_handler, step_handler, error_handler):
         # type: (Optional[Callable[..., None]], Optional[Callable[..., None]], Optional[Callable[..., None]]) -> None
-        super(_PackageManagerLoggerHandler, self).__init__()
+        super().__init__()
         self.info_handler = info_handler
         self.step_handler = step_handler
         self.error_handler = error_handler
@@ -410,7 +409,7 @@ class _PackageManagerLoggerHandler(Handler):
             self.info_handler(record.msg)
 
 
-class PackageManager(object):
+class PackageManager:
     """
     High-level package manager for |UCS|.
 

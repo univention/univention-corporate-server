@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -168,8 +167,8 @@ layout = [
 def unmapLocked(oldattr):
     # type: (univention.admin.handlers._Attributes) -> str
     if isLDAPLocked(oldattr):
-        return u'1'
-    return u'0'
+        return '1'
+    return '0'
 
 
 def isLDAPLocked(oldattr):
@@ -194,15 +193,15 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     def open(self):
         # type: () -> None
-        super(object, self).open()
+        super().open()
         self.pki_open()
         if self.exists():
-            self.info['disabled'] = u'1' if univention.admin.password.is_locked(self['password']) else u'0'
+            self.info['disabled'] = '1' if univention.admin.password.is_locked(self['password']) else '0'
         self.save()
 
     def _ldap_pre_ready(self):
         # type: () -> None
-        super(object, self)._ldap_pre_ready()
+        super()._ldap_pre_ready()
 
         if not self.exists() or self.hasChanged('username'):
             check_prohibited_username(self.lo, self['username'])
@@ -216,7 +215,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     def _ldap_pre_rename(self, newdn):
         # type: (str) -> None
-        super(object, self)._ldap_pre_rename(newdn)
+        super()._ldap_pre_rename(newdn)
         try:
             self.move(newdn)
         finally:
@@ -254,7 +253,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
                 password = old_password
 
             password_hash = univention.admin.password.lock_password(password)
-            if self['disabled'] != u'1':
+            if self['disabled'] != '1':
                 password_hash = univention.admin.password.unlock_password(password_hash)
             ml.append(('userPassword', old_password.encode('ASCII'), password_hash.encode('ASCII')))
         return ml
@@ -278,7 +277,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
     def _modlist_pwd_account_locked_time(self, ml):
         # type: (list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]
         # remove pwdAccountLockedTime during unlocking
-        if self.hasChanged('locked') and self['locked'] == u'0':
+        if self.hasChanged('locked') and self['locked'] == '0':
             pwdAccountLockedTime = self.oldattr.get('pwdAccountLockedTime', [b''])[0]
             if pwdAccountLockedTime:
                 ml.append(('pwdAccountLockedTime', pwdAccountLockedTime, b''))
@@ -293,7 +292,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         pwhistory = self.oldattr.get('pwhistory', [b''])[0].decode('ASCII')
 
         if univention.admin.password.password_already_used(self['password'], pwhistory):
-            if self['overridePWHistory'] == u'1':
+            if self['overridePWHistory'] == '1':
                 return ml
             raise univention.admin.uexceptions.pwalreadyused()
 
@@ -308,7 +307,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         # type: (univention.admin.password.PasswortHistoryPolicy) -> None
         if not self.hasChanged('password'):
             return
-        if self['overridePWLength'] == u'1':
+        if self['overridePWLength'] == '1':
             return
 
         password_minlength = max(0, pwhistoryPolicy.pwhistoryPasswordLength) or self.password_length
@@ -326,12 +325,12 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
     def _ldap_post_remove(self):
         # type: () -> None
         self.alloc.append(('uid', self.oldattr['uid'][0].decode('UTF-8')))
-        super(object, self)._ldap_post_remove()
+        super()._ldap_post_remove()
 
     def _move(self, newdn, modify_childs=True, ignore_license=False):
         # type: (str, bool, bool) -> str
         olddn = self.dn
-        tmpdn = u'cn=%s-subtree,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(self['username']), self.lo.base)
+        tmpdn = 'cn=%s-subtree,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(self['username']), self.lo.base)
         al = [('objectClass', [b'top', b'organizationalRole']), ('cn', [b'%s-subtree' % self['username'].encode('UTF-8')])]
         subelements = self.lo.search(base=self.dn, scope='one', attr=['objectClass'])  # FIXME: identify may fail, but users will raise decode-exception
         if subelements:
@@ -349,7 +348,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
                 # stop moving and reraise
                 raise
         try:
-            dn = super(object, self)._move(newdn, modify_childs, ignore_license)
+            dn = super()._move(newdn, modify_childs, ignore_license)
         except Exception:
             # self couldn't be moved
             # move back subelements and reraise
@@ -363,7 +362,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
                 # subelements couldn't be moved to self
                 # subelements were already moved back to temporary position
                 # move back self, move back subelements to self and reraise
-                super(object, self)._move(olddn, modify_childs, ignore_license)
+                super()._move(olddn, modify_childs, ignore_license)
                 self.move_subelements(tmpdn, olddn, subelements, ignore_license)
                 raise
         return dn
@@ -383,7 +382,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
     @classmethod
     def _ldap_attributes(cls):
         # type: () -> list[str]
-        return super(object, cls)._ldap_attributes() + ['pwdAccountLockedTime']
+        return [*super()._ldap_attributes(), 'pwdAccountLockedTime']
 
 
 lookup = object.lookup

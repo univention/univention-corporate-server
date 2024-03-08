@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -91,7 +90,7 @@ def unmap_fetchmail(value):
     return entries
 
 
-class Converter(object):
+class Converter:
     def __init__(self):
         self.ucr = ConfigRegistry()
         self.ucr.load()
@@ -159,7 +158,7 @@ class Converter(object):
         for dn, attrs in self.access.search(
             filter=ldap_filter,
             attr=['uid', 'univentionFetchmailAddress', 'univentionFetchmailServer', 'univentionFetchmailProtocol', 'univentionFetchmailPasswd', 'univentionFetchmailKeepMailOnServer', 'univentionFetchmailUseSSL', 'univentionFetchmailSingle'],
-            base=ldap_base
+            base=ldap_base,
         ):
             uid = attrs['uid'][0].decode('UTF-8')
             server = attrs.get('univentionFetchmailServer', [])

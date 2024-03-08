@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention System Setup
 #  software installation script
@@ -42,7 +41,7 @@ class SoftwareScript(AptScript):
     brutal_apt_options = False
 
     def up(self) -> None:
-        super(SoftwareScript, self).up()
+        super().up()
 
         # get this scripts configuration options
         self.packages_remove = self.profile.get_list('packages_remove')

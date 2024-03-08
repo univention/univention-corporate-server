@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console documentation build configuration file, created by
 # sphinx-quickstart on Wed Jun 13 14:44:25 2012.
@@ -44,7 +43,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Univention Management Console'
+project = 'Univention Management Console'
 copyright = f'2012-{date.today().year}, Univention GmbH'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -182,7 +181,7 @@ htmlhelp_basename = 'UniventionManagementConsoledoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ('index', 'UniventionManagementConsole.tex', u'Univention Management Console Documentation', u'Univention GmbH', 'manual'),
+    ('index', 'UniventionManagementConsole.tex', 'Univention Management Console Documentation', 'Univention GmbH', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -214,18 +213,18 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'univentionmanagementconsole', u'Univention Management Console Documentation',
-     [u'Univention GmbH'], 1),
+    ('index', 'univentionmanagementconsole', 'Univention Management Console Documentation',
+     ['Univention GmbH'], 1),
 ]
 
 
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u'Univention Management Console'
-epub_author = u'Univention GmbH'
-epub_publisher = u'Univention GmbH'
-epub_copyright = u'2012-2021, Univention GmbH'
+epub_title = 'Univention Management Console'
+epub_author = 'Univention GmbH'
+epub_publisher = 'Univention GmbH'
+epub_copyright = '2012-2021, Univention GmbH'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.

@@ -819,4 +819,4 @@ class PatchDocument:
         })
 
     def expand_path(self, path_segments):
-        return '/'.join(path.replace('~', '~0').replace('/', '~1') for path in [''] + path_segments)
+        return '/'.join(path.replace('~', '~0').replace('/', '~1') for path in ['', *path_segments])

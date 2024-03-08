@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Send a token to a user by email.
 #
@@ -50,7 +49,7 @@ _ = Translation('univention-self-service-passwordreset-umc').translate
 class VerifyEmail(UniventionSelfServiceTokenEmitter):
 
     def __init__(self, *args, **kwargs):
-        super(VerifyEmail, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.server = self.ucr.get("umc/self-service/account-verification/email/server", "localhost")
 
     @staticmethod

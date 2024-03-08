@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  quota module: handles partition related commands
@@ -46,7 +45,7 @@ from univention.management.console.modules.quota import df, tools
 _ = umc.Translation('univention-management-console-module-quota').translate
 
 
-class Commands(object):
+class Commands:
 
     def partitions_query(self, request):
         result = []

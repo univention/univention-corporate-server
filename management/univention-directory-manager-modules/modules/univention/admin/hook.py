@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -70,7 +69,7 @@ def import_hook_files():
                     log.exception('admin.hook.import_hook_files: loading %r failed', fn)
 
 
-class simpleHook(object):
+class simpleHook:
     """Base class for a |UDM| hook performing logging."""
 
     type = 'simpleHook'

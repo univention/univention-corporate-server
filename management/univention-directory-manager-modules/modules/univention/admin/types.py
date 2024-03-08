@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -53,7 +52,7 @@ _ = translation.translate
 _Types = Union[Type[object], Sequence[Type[object]]]
 
 
-class TypeHint(object):
+class TypeHint:
     _python_types = object  # type: _Types
 
     @property
@@ -355,7 +354,7 @@ class DistinguishedNameType(StringType):
     _minimum = 3
 
     def encode_value(self, value):
-        value = super(DistinguishedNameType, self).encode_value(value)
+        value = super().encode_value(value)
         try:
             return ldap.dn.dn2str(ldap.dn.str2dn(value))
         except ldap.DECODING_ERROR:
@@ -486,7 +485,7 @@ class DateTimeType(StringType):
         return self.syntax.from_datetime(value)
 
     def _to_json_type(self, value):  # type: (datetime.datetime) -> str
-        return u' '.join((value.date().isoformat(), value.time().replace(microsecond=0).isoformat()))
+        return ' '.join((value.date().isoformat(), value.time().replace(microsecond=0).isoformat()))
 
     def _from_json_type(self, value):  # type: (str) -> datetime.datetime
         try:
@@ -511,7 +510,7 @@ class ListType(ArrayType):
             item_type.type_check(item)
 
     def openapi_definition(self):
-        definition = super(ListType, self).openapi_definition()
+        definition = super().openapi_definition()
         definition['items'] = self.item_type(self.property, self.property_name).get_openapi_definition()
         definition['minItems'] = self._minimum
         definition['maxItems'] = self._maximum
@@ -536,7 +535,7 @@ class SetType(ListType):
         # disallow duplicates without re-arranging the order
         # This should prevent that we run into "Type or value exists: attributename: value #0 provided more than once" errors
         # we can't do it completely because equality is defined in the LDAP server schema (e.g. DN syntax: 'dc = foo' equals 'dc=foo' equals 'DC=Foo')
-        value = super(SetType, self).encode_value(value)
+        value = super().encode_value(value)
         if len(value) != len(set(value)):
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Duplicated entries.'))
         return value
@@ -575,7 +574,7 @@ class ListOfItems(ArrayType):
         ]
 
     def openapi_definition(self):
-        definition = super(ListOfItems, self).openapi_definition()
+        definition = super().openapi_definition()
         definition['minItems'] = self._minimum
         definition['maxItems'] = self._maximum
         definition['uniqueItems'] = self._openapi_unique
@@ -608,7 +607,7 @@ class DictionaryType(TypeHint):
         return self.syntax.fromdict(value)
 
     def openapi_definition(self):
-        definition = super(DictionaryType, self).openapi_definition()
+        definition = super().openapi_definition()
         definition['additionalProperties'] = True
         definition['minProperties'] = self._minimum
         definition['maxProperties'] = self._maximum
@@ -642,7 +641,7 @@ class SambaLogonHours(ListType):
     _weekdays = ('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat')
 
     def decode_value(self, value):
-        return ['{} {}-{}'.format(self._weekdays[v // 24], v % 24, v % 24 + 1) for v in value]
+        return [f'{self._weekdays[v // 24]} {v % 24}-{v % 24 + 1}' for v in value]
 
     def encode_value(self, value):
         try:
@@ -662,8 +661,8 @@ class AppcenterTranslation(KeyValueDictionaryType):
         return {k.lstrip('[').rstrip(']'): v for k, v in value}
 
     def encode_value(self, value):
-        value = ['[{}] {}'.format(k, v) for k, v in value.items()]
-        return super(AppcenterTranslation, self).encode_value(value)
+        value = [f'[{k}] {v}' for k, v in value.items()]
+        return super().encode_value(value)
 
 
 class UnixTimeinterval(IntegerType):

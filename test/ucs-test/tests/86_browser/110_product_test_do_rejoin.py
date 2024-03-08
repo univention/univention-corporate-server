@@ -22,7 +22,7 @@ class PasswordChangeError(Exception):
     pass
 
 
-class UMCTester(object):
+class UMCTester:
 
     def test_umc(self):
         self.save_status_file()

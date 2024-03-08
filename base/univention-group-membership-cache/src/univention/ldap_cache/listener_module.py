@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -42,7 +41,7 @@ class LdapCacheHandler(ListenerModuleHandler):
     def __init__(self, *args, **kwargs):
         # type: (*Any, **Any) -> None
         self._counter = 0
-        super(LdapCacheHandler, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         cache_logger = getLogger('univention.ldap_cache')
         cache_logger.setLevel(self.logger.level)
         for handler in self.logger.handlers:

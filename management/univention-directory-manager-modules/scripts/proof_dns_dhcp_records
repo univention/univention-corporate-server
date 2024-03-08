@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -78,10 +77,10 @@ def main():
         if "aRecord" in comp[1]:
             relative_domain_name = comp[1]['relativeDomainName'][0].decode('utf-8')
             zone_name = comp[1]['zoneName'][0].decode('utf-8')
-            allRecords[relative_domain_name + u"." + zone_name] = comp
+            allRecords[relative_domain_name + "." + zone_name] = comp
             match_cmp_rec = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, filter_format('(&(objectClass=univentionHost)(aRecord=%s))', (comp[1]["aRecord"][0].decode('utf-8'),)), [])
             if len(match_cmp_rec) == 0:
-                deadEndRecords[relative_domain_name + u"." + zone_name] = comp
+                deadEndRecords[relative_domain_name + "." + zone_name] = comp
                 print("\t%s" % comp[0])
     print()
 

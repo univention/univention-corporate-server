@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -49,7 +48,7 @@ class _SharedMemory(managers.SyncManager):
 
     def dict(self):
         if self.started:
-            return super(_SharedMemory, self).dict()
+            return super().dict()
         return {}
 
     def namespace(self):
@@ -61,7 +60,7 @@ class _SharedMemory(managers.SyncManager):
         self.started = True
         setproctitle(proctitle + '   # multiprocessing manager')
         try:
-            super(_SharedMemory, self).start(*args, **kwargs)
+            super().start(*args, **kwargs)
         finally:
             setproctitle(proctitle)
 

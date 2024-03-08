@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  JSON helper classes, locale stuff etc.
@@ -35,7 +34,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
-class JSON_Object(object):
+class JSON_Object:
     """
     Converts Python object into JSON compatible data
     structures. Types like lists, tuples and dictionary are converted

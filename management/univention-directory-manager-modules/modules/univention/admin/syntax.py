@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -156,7 +155,7 @@ def is_syntax(syntax_obj, syntax_type):
     return isinstance(syntax_obj, type) and issubclass(syntax_obj, syntax_type) or isinstance(syntax_obj, syntax_type)
 
 
-class ClassProperty(object):
+class ClassProperty:
     """A decorator that can be used to define read-only class properties."""
 
     def __init__(self, getter):
@@ -170,7 +169,7 @@ SIZES = ('OneThird', 'Half', 'TwoThirds', 'One', 'FourThirds', 'OneAndAHalf', 'F
 """Widget sizes. UDM uses a two-column layout and by default any widget uses one column. Widgets can also be configured to span (partly) both columns."""
 
 
-class ISyntax(object):
+class ISyntax:
     """
     Base class for all syntax classes.
 
@@ -452,7 +451,7 @@ class select(ISyntax):
                 }
             return _default_widget_options(self)
 
-        return super(select, self).get_widget_choices_options(udm_property)
+        return super().get_widget_choices_options(udm_property)
 
 
 class combobox(select):
@@ -467,7 +466,7 @@ class combobox(select):
 
     @classmethod
     def parse(cls, text):
-        return super(combobox, cls).parse(text) or text
+        return super().parse(text) or text
 
 
 class MultiSelect(ISyntax):
@@ -640,7 +639,7 @@ class complex(ISyntax):
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Malformed syntax %r: %s') % (value, exc))
 
 
-class _UDMObjectOrAttribute(object):
+class _UDMObjectOrAttribute:
 
     @classmethod
     def _append_hidden_filter(cls, module, ret):
@@ -1674,7 +1673,7 @@ class integerOrEmpty(integer):
     def parse(self, text):
         if not text and text != 0:
             return
-        return super(integerOrEmpty, self).parse(text)
+        return super().parse(text)
 
 
 class boolean(simple):
@@ -1730,7 +1729,7 @@ class boolean(simple):
     def parse(self, text):
         if isinstance(text, bool):
             return '1' if text else '0'
-        return super(boolean, self).parse(text)
+        return super().parse(text)
 
     @classmethod
     def get_object_property_filter(cls, object_property, object_property_value, allow_asterisks=True):
@@ -2059,7 +2058,7 @@ class uid(simple):
     @classmethod
     def parse(cls, text):
         _check_legacy_username_format(text)
-        return super(uid, cls).parse(text)
+        return super().parse(text)
 
 
 class uid_umlauts(simple):
@@ -2096,7 +2095,7 @@ class uid_umlauts(simple):
     def parse(self, text):
         if isinstance(text, bytes):
             text = text.decode('UTF-8')
-        if u" " in text:
+        if " " in text:
             raise univention.admin.uexceptions.valueError(_("Spaces are not allowed in the username!"))
 
         _check_legacy_username_format(text)
@@ -2160,7 +2159,7 @@ class gid(simple):
 
     min_length = 1   # TODO: not enforced here
     max_length = 32  # TODO: not enforced here
-    regex = re.compile(u"(?u)^\\w([\\w -.’]*\\w)?$")
+    regex = re.compile("(?u)^\\w([\\w -.’]*\\w)?$")
     # FIXME: The " -." in "[\w -.]" matches the ASCII character range(ord(' '),  ord('.')+1) == range(32, 47)
     error_message = _(
         "A group name must start and end with a letter, number or underscore. In between additionally spaces, dashes "
@@ -2171,7 +2170,7 @@ class gid(simple):
     def parse(cls, text):
         if configRegistry.is_false("directory/manager/group/enable-legacy-cn-format") and text.strip().isdigit():
             raise univention.admin.uexceptions.valueError(_("Group names must not consist only of numbers!"))
-        return super(gid, cls).parse(text)
+        return super().parse(text)
 
 
 class sharePath(simple):
@@ -2209,7 +2208,7 @@ class sharePath(simple):
         if first in {"dev", "proc", "root", "sys", "tmp"}:
             raise univention.admin.uexceptions.valueError(_('Path must not start with "/%s" !') % first)
 
-        return os.path.normpath(super(sharePath, self).parse(text))
+        return os.path.normpath(super().parse(text))
 
 
 class passwd(simple):
@@ -2324,7 +2323,7 @@ class ipv4Address(simple):
     @classmethod
     def parse(self, text):
         try:
-            return str(ipaddress.IPv4Address(u'%s' % (text,)))
+            return str(ipaddress.IPv4Address('%s' % (text,)))
         except ValueError:
             raise univention.admin.uexceptions.valueError(_("Not a valid IP address!"))
 
@@ -2347,7 +2346,7 @@ class ipAddress(simple):
     @classmethod
     def parse(self, text):
         try:
-            return str(ipaddress.ip_address(u'%s' % (text,)))
+            return str(ipaddress.ip_address('%s' % (text,)))
         except ValueError:
             raise univention.admin.uexceptions.valueError(_("Not a valid IP address!"))
 
@@ -2377,7 +2376,7 @@ class hostOrIP(simple):
     @classmethod
     def ipAddress(self, text):
         try:
-            ipaddress.ip_address(u'%s' % (text,))
+            ipaddress.ip_address('%s' % (text,))
             return True
         except ValueError:
             return False
@@ -2418,7 +2417,7 @@ class v4netmask(simple):
 
     @classmethod
     def netmaskBits(self, dotted):
-        return ipaddress.IPv4Network(u'0.0.0.0/%s' % (dotted,), strict=False).prefixlen
+        return ipaddress.IPv4Network('0.0.0.0/%s' % (dotted,), strict=False).prefixlen
 
     @classmethod
     def parse(self, text):
@@ -2454,7 +2453,7 @@ class netmask(simple):
         if text.isdigit() and int(text) > 0 and int(text) < max(ipaddress.IPV4LENGTH, ipaddress.IPV6LENGTH):
             return str(int(text))
         try:
-            return str(ipaddress.IPv4Network(u'0.0.0.0/%s' % (text, ), strict=False).prefixlen)
+            return str(ipaddress.IPv4Network('0.0.0.0/%s' % (text, ), strict=False).prefixlen)
         except ValueError:
             pass
         raise univention.admin.uexceptions.valueError(_("Not a valid netmask!"))
@@ -2476,7 +2475,7 @@ class ipnetwork(simple):
     def parse(self, text):
         try:
             # FIXME: missing return
-            ipaddress.ip_network(u'%s' % (text,), strict=False)
+            ipaddress.ip_network('%s' % (text,), strict=False)
         except ValueError:
             raise univention.admin.uexceptions.valueError(_("Not a valid network!"))
 
@@ -2515,14 +2514,14 @@ class IP_AddressRange(complex):
 
     @classmethod
     def parse(self, texts):
-        p = super(IP_AddressRange, self).parse(texts)
+        p = super().parse(texts)
         try:
             first, last = p
         except ValueError:
             # FIXME: this will never happen as complex.parse() expects exactly two arguments
             return p
         try:
-            if ipaddress.ip_address(u'%s' % (first,)) > ipaddress.ip_address(u'%s' % (last,)):
+            if ipaddress.ip_address('%s' % (first,)) > ipaddress.ip_address('%s' % (last,)):
                 raise univention.admin.uexceptions.valueInvalidSyntax(_("Illegal range"))
         except TypeError:
             raise univention.admin.uexceptions.valueError(_("Not a valid IP address!"))
@@ -2774,7 +2773,7 @@ class emailAddressValidDomain(UDM_Objects, emailAddress):
 
     @classmethod
     def parse(self, text):
-        text = super(emailAddressValidDomain, self).parse(text)
+        text = super().parse(text)
         return emailAddress.parse(text)
 
     @classmethod
@@ -3104,7 +3103,7 @@ class dnsName(simple):
             raise univention.admin.uexceptions.valueError(_("Missing value!"))
         assert isinstance(text, str)
         labels = list(cls._split(text))
-        rel, root = (labels[:-1], labels) if labels[-1] == "" else (labels, labels + [""])
+        rel, root = (labels[:-1], labels) if labels[-1] == "" else (labels, [*labels, ''])
 
         if not 1 <= len(".".join(root)) <= 254:
             raise univention.admin.uexceptions.valueError(_("Full domain name must be between 1 and 253 characters long!"))
@@ -3184,7 +3183,7 @@ class dnsHostname(dnsName):
 
     @classmethod
     def parse(self, text):
-        text = super(dnsHostname, self).parse(text)
+        text = super().parse(text)
         if self.NUMERIC.match(text):
             raise univention.admin.uexceptions.valueError(_("Full name must not be all numeric!"))
         labels = (text[:-1] if text.endswith('.') else text).split('.')
@@ -3197,7 +3196,7 @@ class dnsHostname(dnsName):
 
 
 class dnsName_umlauts(simple):
-    u"""
+    """
     >>> dnsName_umlauts.parse(u'ä') == u'ä'
     True
     >>> dnsName_umlauts.parse('a_0-A')
@@ -3417,7 +3416,7 @@ class UNIX_TimeInterval(complex):
 
     @classmethod
     def parse(cls, texts):
-        return super(UNIX_TimeInterval, cls).parse(texts)
+        return super().parse(texts)
 
     @classmethod
     def from_integer(cls, value):
@@ -3442,7 +3441,7 @@ class UNIX_BoundedTimeInterval(UNIX_TimeInterval):
 
     @classmethod
     def parse(cls, texts):
-        parsed = super(UNIX_BoundedTimeInterval, cls).parse(texts)
+        parsed = super().parse(texts)
         if parsed[0] is None:
             return [None, None]
 
@@ -3582,7 +3581,7 @@ class PackagesRemove(Packages):
 
     @classmethod
     def parse(cls, text):
-        text = super(PackagesRemove, cls).parse(text)
+        text = super().parse(text)
         if text in ['wget', 'screen', 'openssh-client', 'nmap', 'lsof', 'file']:
             # Bug #36711: don't allow to remove packages which would uninstall univention-server-master
             raise univention.admin.uexceptions.valueError(_('The package "%s" can not be removed as it would uninstall necessary components.') % (text,))
@@ -4289,7 +4288,7 @@ class GroupDN(UDM_Objects):
 
     def get_widget_choices_options(self, udm_property):
         opts = _default_widget_options(self)
-        opts.update(super(GroupDN, self).get_widget_choices_options(udm_property))
+        opts.update(super().get_widget_choices_options(udm_property))
         return opts
 
 
@@ -4538,7 +4537,7 @@ class network(UDM_Objects):
     empty_value = True
 
     def get_widget_choices_options(self, udm_property):
-        opts = super(network, self).get_widget_choices_options(udm_property)
+        opts = super().get_widget_choices_options(udm_property)
         opts['onChange'] = 'javascript:umc/modules/udm/callbacks:setNetwork'
         return opts
 
@@ -4560,7 +4559,7 @@ class IP_AddressListEmpty(IP_AddressList):
 
     @classmethod
     def parse(cls, text):
-        return super(IP_AddressListEmpty, cls).parse(text) if text else ''
+        return super().parse(text) if text else ''
 
 
 class MAC_AddressList(MAC_Address, select):
@@ -4716,7 +4715,7 @@ class dhcpEntry(complex):
             ip, mac = text[1:]
         except (IndexError, ValueError):
             pass
-        return super(dhcpEntry, cls).parse([service, ip, mac])
+        return super().parse([service, ip, mac])
 
 
 class DHCP_Option(complex):
@@ -5550,7 +5549,7 @@ class SambaLogonHours(MultiSelect):
             else:
                 value = [int(x) for x in shlex.split(value)]
 
-        return super(SambaLogonHours, self).parse(value)
+        return super().parse(value)
 
     @classmethod
     def tostring(self, value):
@@ -5805,10 +5804,7 @@ class timeSpec(select):
         for minute in range(0, 60, 15)
         for _time in ('%02d:%02d' % (hour, minute),)
     ]
-    choices = [
-        ('', _('No Reboot')),
-        ('now', _('Immediately')),
-    ] + _times
+    choices = [('', _('No Reboot')), ('now', _('Immediately')), *_times]
 
 
 class optionsUsersUser(select):
@@ -5961,7 +5957,7 @@ class LDAP_Search(select):
                 'base': base,
                 'value': value,
             })
-        return super(LDAP_Search, cls).__new__(type(cls.__name__, (cls,), props))
+        return super().__new__(type(cls.__name__, (cls,), props))
 
     @classmethod
     def parse(self, text):
@@ -6231,7 +6227,7 @@ class disabled(boolean):
             text = '0'
         elif text in ('all', 'windows', 'kerberos', 'posix', 'windows_posix', 'windows_kerberos', 'posix_kerberos'):
             text = '1'
-        return super(disabled, cls).parse(text)
+        return super().parse(text)
 
 
 class locked(boolean):
@@ -6266,7 +6262,7 @@ class locked(boolean):
             text = '1'
         elif text == 'none':
             text = '0'
-        return super(locked, cls).parse(text)
+        return super().parse(text)
 
 
 # printing stuff
@@ -6640,255 +6636,255 @@ class Country(select):
         _iso_3166 = iso_3166.translate
 
         choices = [
-            ('AD', _iso_3166(u'Andorra')),
-            ('AE', _iso_3166(u'United Arab Emirates')),
-            ('AF', _iso_3166(u'Afghanistan')),
-            ('AG', _iso_3166(u'Antigua and Barbuda')),
-            ('AI', _iso_3166(u'Anguilla')),
-            ('AL', _iso_3166(u'Albania')),
-            ('AM', _iso_3166(u'Armenia')),
-            ('AO', _iso_3166(u'Angola')),
-            ('AQ', _iso_3166(u'Antarctica')),
-            ('AR', _iso_3166(u'Argentina')),
-            ('AS', _iso_3166(u'American Samoa')),
-            ('AT', _iso_3166(u'Austria')),
-            ('AU', _iso_3166(u'Australia')),
-            ('AW', _iso_3166(u'Aruba')),
-            ('AX', _iso_3166(u'Åland Islands')),
-            ('AZ', _iso_3166(u'Azerbaijan')),
-            ('BA', _iso_3166(u'Bosnia and Herzegovina')),
-            ('BB', _iso_3166(u'Barbados')),
-            ('BD', _iso_3166(u'Bangladesh')),
-            ('BE', _iso_3166(u'Belgium')),
-            ('BF', _iso_3166(u'Burkina Faso')),
-            ('BG', _iso_3166(u'Bulgaria')),
-            ('BH', _iso_3166(u'Bahrain')),
-            ('BI', _iso_3166(u'Burundi')),
-            ('BJ', _iso_3166(u'Benin')),
-            ('BL', _iso_3166(u'Saint Barthélemy')),
-            ('BM', _iso_3166(u'Bermuda')),
-            ('BN', _iso_3166(u'Brunei Darussalam')),
-            ('BO', _iso_3166(u'Bolivia, Plurinational State of')),
-            ('BQ', _iso_3166(u'Bonaire, Sint Eustatius and Saba')),
-            ('BR', _iso_3166(u'Brazil')),
-            ('BS', _iso_3166(u'Bahamas')),
-            ('BT', _iso_3166(u'Bhutan')),
-            ('BV', _iso_3166(u'Bouvet Island')),
-            ('BW', _iso_3166(u'Botswana')),
-            ('BY', _iso_3166(u'Belarus')),
-            ('BZ', _iso_3166(u'Belize')),
-            ('CA', _iso_3166(u'Canada')),
-            ('CC', _iso_3166(u'Cocos (Keeling) Islands')),
-            ('CD', _iso_3166(u'Congo, The Democratic Republic of the')),
-            ('CF', _iso_3166(u'Central African Republic')),
-            ('CG', _iso_3166(u'Congo')),
-            ('CH', _iso_3166(u'Switzerland')),
-            ('CI', _iso_3166(u"Côte d'Ivoire")),
-            ('CK', _iso_3166(u'Cook Islands')),
-            ('CL', _iso_3166(u'Chile')),
-            ('CM', _iso_3166(u'Cameroon')),
-            ('CN', _iso_3166(u'China')),
-            ('CO', _iso_3166(u'Colombia')),
-            ('CR', _iso_3166(u'Costa Rica')),
-            ('CU', _iso_3166(u'Cuba')),
-            ('CV', _iso_3166(u'Cabo Verde')),
-            ('CW', _iso_3166(u'Curaçao')),
-            ('CX', _iso_3166(u'Christmas Island')),
-            ('CY', _iso_3166(u'Cyprus')),
-            ('CZ', _iso_3166(u'Czechia')),
-            ('DE', _iso_3166(u'Germany')),
-            ('DJ', _iso_3166(u'Djibouti')),
-            ('DK', _iso_3166(u'Denmark')),
-            ('DM', _iso_3166(u'Dominica')),
-            ('DO', _iso_3166(u'Dominican Republic')),
-            ('DZ', _iso_3166(u'Algeria')),
-            ('EC', _iso_3166(u'Ecuador')),
-            ('EE', _iso_3166(u'Estonia')),
-            ('EG', _iso_3166(u'Egypt')),
-            ('EH', _iso_3166(u'Western Sahara')),
-            ('ER', _iso_3166(u'Eritrea')),
-            ('ES', _iso_3166(u'Spain')),
-            ('ET', _iso_3166(u'Ethiopia')),
-            ('FI', _iso_3166(u'Finland')),
-            ('FJ', _iso_3166(u'Fiji')),
-            ('FK', _iso_3166(u'Falkland Islands (Malvinas)')),
-            ('FM', _iso_3166(u'Micronesia, Federated States of')),
-            ('FO', _iso_3166(u'Faroe Islands')),
-            ('FR', _iso_3166(u'France')),
-            ('GA', _iso_3166(u'Gabon')),
-            ('GB', _iso_3166(u'United Kingdom')),
-            ('GD', _iso_3166(u'Grenada')),
-            ('GE', _iso_3166(u'Georgia')),
-            ('GF', _iso_3166(u'French Guiana')),
-            ('GG', _iso_3166(u'Guernsey')),
-            ('GH', _iso_3166(u'Ghana')),
-            ('GI', _iso_3166(u'Gibraltar')),
-            ('GL', _iso_3166(u'Greenland')),
-            ('GM', _iso_3166(u'Gambia')),
-            ('GN', _iso_3166(u'Guinea')),
-            ('GP', _iso_3166(u'Guadeloupe')),
-            ('GQ', _iso_3166(u'Equatorial Guinea')),
-            ('GR', _iso_3166(u'Greece')),
-            ('GS', _iso_3166(u'South Georgia and the South Sandwich Islands')),
-            ('GT', _iso_3166(u'Guatemala')),
-            ('GU', _iso_3166(u'Guam')),
-            ('GW', _iso_3166(u'Guinea-Bissau')),
-            ('GY', _iso_3166(u'Guyana')),
-            ('HK', _iso_3166(u'Hong Kong')),
-            ('HM', _iso_3166(u'Heard Island and McDonald Islands')),
-            ('HN', _iso_3166(u'Honduras')),
-            ('HR', _iso_3166(u'Croatia')),
-            ('HT', _iso_3166(u'Haiti')),
-            ('HU', _iso_3166(u'Hungary')),
-            ('ID', _iso_3166(u'Indonesia')),
-            ('IE', _iso_3166(u'Ireland')),
-            ('IL', _iso_3166(u'Israel')),
-            ('IM', _iso_3166(u'Isle of Man')),
-            ('IN', _iso_3166(u'India')),
-            ('IO', _iso_3166(u'British Indian Ocean Territory')),
-            ('IQ', _iso_3166(u'Iraq')),
-            ('IR', _iso_3166(u'Iran, Islamic Republic of')),
-            ('IS', _iso_3166(u'Iceland')),
-            ('IT', _iso_3166(u'Italy')),
-            ('JE', _iso_3166(u'Jersey')),
-            ('JM', _iso_3166(u'Jamaica')),
-            ('JO', _iso_3166(u'Jordan')),
-            ('JP', _iso_3166(u'Japan')),
-            ('KE', _iso_3166(u'Kenya')),
-            ('KG', _iso_3166(u'Kyrgyzstan')),
-            ('KH', _iso_3166(u'Cambodia')),
-            ('KI', _iso_3166(u'Kiribati')),
-            ('KM', _iso_3166(u'Comoros')),
-            ('KN', _iso_3166(u'Saint Kitts and Nevis')),
-            ('KP', _iso_3166(u"Korea, Democratic People's Republic of")),
-            ('KR', _iso_3166(u'Korea, Republic of')),
-            ('KW', _iso_3166(u'Kuwait')),
-            ('KY', _iso_3166(u'Cayman Islands')),
-            ('KZ', _iso_3166(u'Kazakhstan')),
-            ('LA', _iso_3166(u"Lao People's Democratic Republic")),
-            ('LB', _iso_3166(u'Lebanon')),
-            ('LC', _iso_3166(u'Saint Lucia')),
-            ('LI', _iso_3166(u'Liechtenstein')),
-            ('LK', _iso_3166(u'Sri Lanka')),
-            ('LR', _iso_3166(u'Liberia')),
-            ('LS', _iso_3166(u'Lesotho')),
-            ('LT', _iso_3166(u'Lithuania')),
-            ('LU', _iso_3166(u'Luxembourg')),
-            ('LV', _iso_3166(u'Latvia')),
-            ('LY', _iso_3166(u'Libya')),
-            ('MA', _iso_3166(u'Morocco')),
-            ('MC', _iso_3166(u'Monaco')),
-            ('MD', _iso_3166(u'Moldova, Republic of')),
-            ('ME', _iso_3166(u'Montenegro')),
-            ('MF', _iso_3166(u'Saint Martin (French part)')),
-            ('MG', _iso_3166(u'Madagascar')),
-            ('MH', _iso_3166(u'Marshall Islands')),
-            ('MK', _iso_3166(u'North Macedonia')),
-            ('ML', _iso_3166(u'Mali')),
-            ('MM', _iso_3166(u'Myanmar')),
-            ('MN', _iso_3166(u'Mongolia')),
-            ('MO', _iso_3166(u'Macao')),
-            ('MP', _iso_3166(u'Northern Mariana Islands')),
-            ('MQ', _iso_3166(u'Martinique')),
-            ('MR', _iso_3166(u'Mauritania')),
-            ('MS', _iso_3166(u'Montserrat')),
-            ('MT', _iso_3166(u'Malta')),
-            ('MU', _iso_3166(u'Mauritius')),
-            ('MV', _iso_3166(u'Maldives')),
-            ('MW', _iso_3166(u'Malawi')),
-            ('MX', _iso_3166(u'Mexico')),
-            ('MY', _iso_3166(u'Malaysia')),
-            ('MZ', _iso_3166(u'Mozambique')),
-            ('NA', _iso_3166(u'Namibia')),
-            ('NC', _iso_3166(u'New Caledonia')),
-            ('NE', _iso_3166(u'Niger')),
-            ('NF', _iso_3166(u'Norfolk Island')),
-            ('NG', _iso_3166(u'Nigeria')),
-            ('NI', _iso_3166(u'Nicaragua')),
-            ('NL', _iso_3166(u'Netherlands')),
-            ('NO', _iso_3166(u'Norway')),
-            ('NP', _iso_3166(u'Nepal')),
-            ('NR', _iso_3166(u'Nauru')),
-            ('NU', _iso_3166(u'Niue')),
-            ('NZ', _iso_3166(u'New Zealand')),
-            ('OM', _iso_3166(u'Oman')),
-            ('PA', _iso_3166(u'Panama')),
-            ('PE', _iso_3166(u'Peru')),
-            ('PF', _iso_3166(u'French Polynesia')),
-            ('PG', _iso_3166(u'Papua New Guinea')),
-            ('PH', _iso_3166(u'Philippines')),
-            ('PK', _iso_3166(u'Pakistan')),
-            ('PL', _iso_3166(u'Poland')),
-            ('PM', _iso_3166(u'Saint Pierre and Miquelon')),
-            ('PN', _iso_3166(u'Pitcairn')),
-            ('PR', _iso_3166(u'Puerto Rico')),
-            ('PS', _iso_3166(u'Palestine, State of')),
-            ('PT', _iso_3166(u'Portugal')),
-            ('PW', _iso_3166(u'Palau')),
-            ('PY', _iso_3166(u'Paraguay')),
-            ('QA', _iso_3166(u'Qatar')),
-            ('RE', _iso_3166(u'Réunion')),
-            ('RO', _iso_3166(u'Romania')),
-            ('RS', _iso_3166(u'Serbia')),
-            ('RU', _iso_3166(u'Russian Federation')),
-            ('RW', _iso_3166(u'Rwanda')),
-            ('SA', _iso_3166(u'Saudi Arabia')),
-            ('SB', _iso_3166(u'Solomon Islands')),
-            ('SC', _iso_3166(u'Seychelles')),
-            ('SD', _iso_3166(u'Sudan')),
-            ('SE', _iso_3166(u'Sweden')),
-            ('SG', _iso_3166(u'Singapore')),
-            ('SH', _iso_3166(u'Saint Helena, Ascension and Tristan da Cunha')),
-            ('SI', _iso_3166(u'Slovenia')),
-            ('SJ', _iso_3166(u'Svalbard and Jan Mayen')),
-            ('SK', _iso_3166(u'Slovakia')),
-            ('SL', _iso_3166(u'Sierra Leone')),
-            ('SM', _iso_3166(u'San Marino')),
-            ('SN', _iso_3166(u'Senegal')),
-            ('SO', _iso_3166(u'Somalia')),
-            ('SR', _iso_3166(u'Suriname')),
-            ('SS', _iso_3166(u'South Sudan')),
-            ('ST', _iso_3166(u'Sao Tome and Principe')),
-            ('SV', _iso_3166(u'El Salvador')),
-            ('SX', _iso_3166(u'Sint Maarten (Dutch part)')),
-            ('SY', _iso_3166(u'Syrian Arab Republic')),
-            ('SZ', _iso_3166(u'Eswatini')),
-            ('TC', _iso_3166(u'Turks and Caicos Islands')),
-            ('TD', _iso_3166(u'Chad')),
-            ('TF', _iso_3166(u'French Southern Territories')),
-            ('TG', _iso_3166(u'Togo')),
-            ('TH', _iso_3166(u'Thailand')),
-            ('TJ', _iso_3166(u'Tajikistan')),
-            ('TK', _iso_3166(u'Tokelau')),
-            ('TL', _iso_3166(u'Timor-Leste')),
-            ('TM', _iso_3166(u'Turkmenistan')),
-            ('TN', _iso_3166(u'Tunisia')),
-            ('TO', _iso_3166(u'Tonga')),
-            ('TR', _iso_3166(u'Türkiye')),
-            ('TT', _iso_3166(u'Trinidad and Tobago')),
-            ('TV', _iso_3166(u'Tuvalu')),
-            ('TW', _iso_3166(u'Taiwan, Province of China')),
-            ('TZ', _iso_3166(u'Tanzania, United Republic of')),
-            ('UA', _iso_3166(u'Ukraine')),
-            ('UG', _iso_3166(u'Uganda')),
-            ('UM', _iso_3166(u'United States Minor Outlying Islands')),
-            ('US', _iso_3166(u'United States')),
-            ('UY', _iso_3166(u'Uruguay')),
-            ('UZ', _iso_3166(u'Uzbekistan')),
-            ('VA', _iso_3166(u'Holy See (Vatican City State)')),
-            ('VC', _iso_3166(u'Saint Vincent and the Grenadines')),
-            ('VE', _iso_3166(u'Venezuela, Bolivarian Republic of')),
-            ('VG', _iso_3166(u'Virgin Islands, British')),
-            ('VI', _iso_3166(u'Virgin Islands, U.S.')),
-            ('VN', _iso_3166(u'Viet Nam')),
-            ('VU', _iso_3166(u'Vanuatu')),
-            ('WF', _iso_3166(u'Wallis and Futuna')),
-            ('WS', _iso_3166(u'Samoa')),
-            ('YE', _iso_3166(u'Yemen')),
-            ('YT', _iso_3166(u'Mayotte')),
-            ('ZA', _iso_3166(u'South Africa')),
-            ('ZM', _iso_3166(u'Zambia')),
-            ('ZW', _iso_3166(u'Zimbabwe')),
+            ('AD', _iso_3166('Andorra')),
+            ('AE', _iso_3166('United Arab Emirates')),
+            ('AF', _iso_3166('Afghanistan')),
+            ('AG', _iso_3166('Antigua and Barbuda')),
+            ('AI', _iso_3166('Anguilla')),
+            ('AL', _iso_3166('Albania')),
+            ('AM', _iso_3166('Armenia')),
+            ('AO', _iso_3166('Angola')),
+            ('AQ', _iso_3166('Antarctica')),
+            ('AR', _iso_3166('Argentina')),
+            ('AS', _iso_3166('American Samoa')),
+            ('AT', _iso_3166('Austria')),
+            ('AU', _iso_3166('Australia')),
+            ('AW', _iso_3166('Aruba')),
+            ('AX', _iso_3166('Åland Islands')),
+            ('AZ', _iso_3166('Azerbaijan')),
+            ('BA', _iso_3166('Bosnia and Herzegovina')),
+            ('BB', _iso_3166('Barbados')),
+            ('BD', _iso_3166('Bangladesh')),
+            ('BE', _iso_3166('Belgium')),
+            ('BF', _iso_3166('Burkina Faso')),
+            ('BG', _iso_3166('Bulgaria')),
+            ('BH', _iso_3166('Bahrain')),
+            ('BI', _iso_3166('Burundi')),
+            ('BJ', _iso_3166('Benin')),
+            ('BL', _iso_3166('Saint Barthélemy')),
+            ('BM', _iso_3166('Bermuda')),
+            ('BN', _iso_3166('Brunei Darussalam')),
+            ('BO', _iso_3166('Bolivia, Plurinational State of')),
+            ('BQ', _iso_3166('Bonaire, Sint Eustatius and Saba')),
+            ('BR', _iso_3166('Brazil')),
+            ('BS', _iso_3166('Bahamas')),
+            ('BT', _iso_3166('Bhutan')),
+            ('BV', _iso_3166('Bouvet Island')),
+            ('BW', _iso_3166('Botswana')),
+            ('BY', _iso_3166('Belarus')),
+            ('BZ', _iso_3166('Belize')),
+            ('CA', _iso_3166('Canada')),
+            ('CC', _iso_3166('Cocos (Keeling) Islands')),
+            ('CD', _iso_3166('Congo, The Democratic Republic of the')),
+            ('CF', _iso_3166('Central African Republic')),
+            ('CG', _iso_3166('Congo')),
+            ('CH', _iso_3166('Switzerland')),
+            ('CI', _iso_3166("Côte d'Ivoire")),
+            ('CK', _iso_3166('Cook Islands')),
+            ('CL', _iso_3166('Chile')),
+            ('CM', _iso_3166('Cameroon')),
+            ('CN', _iso_3166('China')),
+            ('CO', _iso_3166('Colombia')),
+            ('CR', _iso_3166('Costa Rica')),
+            ('CU', _iso_3166('Cuba')),
+            ('CV', _iso_3166('Cabo Verde')),
+            ('CW', _iso_3166('Curaçao')),
+            ('CX', _iso_3166('Christmas Island')),
+            ('CY', _iso_3166('Cyprus')),
+            ('CZ', _iso_3166('Czechia')),
+            ('DE', _iso_3166('Germany')),
+            ('DJ', _iso_3166('Djibouti')),
+            ('DK', _iso_3166('Denmark')),
+            ('DM', _iso_3166('Dominica')),
+            ('DO', _iso_3166('Dominican Republic')),
+            ('DZ', _iso_3166('Algeria')),
+            ('EC', _iso_3166('Ecuador')),
+            ('EE', _iso_3166('Estonia')),
+            ('EG', _iso_3166('Egypt')),
+            ('EH', _iso_3166('Western Sahara')),
+            ('ER', _iso_3166('Eritrea')),
+            ('ES', _iso_3166('Spain')),
+            ('ET', _iso_3166('Ethiopia')),
+            ('FI', _iso_3166('Finland')),
+            ('FJ', _iso_3166('Fiji')),
+            ('FK', _iso_3166('Falkland Islands (Malvinas)')),
+            ('FM', _iso_3166('Micronesia, Federated States of')),
+            ('FO', _iso_3166('Faroe Islands')),
+            ('FR', _iso_3166('France')),
+            ('GA', _iso_3166('Gabon')),
+            ('GB', _iso_3166('United Kingdom')),
+            ('GD', _iso_3166('Grenada')),
+            ('GE', _iso_3166('Georgia')),
+            ('GF', _iso_3166('French Guiana')),
+            ('GG', _iso_3166('Guernsey')),
+            ('GH', _iso_3166('Ghana')),
+            ('GI', _iso_3166('Gibraltar')),
+            ('GL', _iso_3166('Greenland')),
+            ('GM', _iso_3166('Gambia')),
+            ('GN', _iso_3166('Guinea')),
+            ('GP', _iso_3166('Guadeloupe')),
+            ('GQ', _iso_3166('Equatorial Guinea')),
+            ('GR', _iso_3166('Greece')),
+            ('GS', _iso_3166('South Georgia and the South Sandwich Islands')),
+            ('GT', _iso_3166('Guatemala')),
+            ('GU', _iso_3166('Guam')),
+            ('GW', _iso_3166('Guinea-Bissau')),
+            ('GY', _iso_3166('Guyana')),
+            ('HK', _iso_3166('Hong Kong')),
+            ('HM', _iso_3166('Heard Island and McDonald Islands')),
+            ('HN', _iso_3166('Honduras')),
+            ('HR', _iso_3166('Croatia')),
+            ('HT', _iso_3166('Haiti')),
+            ('HU', _iso_3166('Hungary')),
+            ('ID', _iso_3166('Indonesia')),
+            ('IE', _iso_3166('Ireland')),
+            ('IL', _iso_3166('Israel')),
+            ('IM', _iso_3166('Isle of Man')),
+            ('IN', _iso_3166('India')),
+            ('IO', _iso_3166('British Indian Ocean Territory')),
+            ('IQ', _iso_3166('Iraq')),
+            ('IR', _iso_3166('Iran, Islamic Republic of')),
+            ('IS', _iso_3166('Iceland')),
+            ('IT', _iso_3166('Italy')),
+            ('JE', _iso_3166('Jersey')),
+            ('JM', _iso_3166('Jamaica')),
+            ('JO', _iso_3166('Jordan')),
+            ('JP', _iso_3166('Japan')),
+            ('KE', _iso_3166('Kenya')),
+            ('KG', _iso_3166('Kyrgyzstan')),
+            ('KH', _iso_3166('Cambodia')),
+            ('KI', _iso_3166('Kiribati')),
+            ('KM', _iso_3166('Comoros')),
+            ('KN', _iso_3166('Saint Kitts and Nevis')),
+            ('KP', _iso_3166("Korea, Democratic People's Republic of")),
+            ('KR', _iso_3166('Korea, Republic of')),
+            ('KW', _iso_3166('Kuwait')),
+            ('KY', _iso_3166('Cayman Islands')),
+            ('KZ', _iso_3166('Kazakhstan')),
+            ('LA', _iso_3166("Lao People's Democratic Republic")),
+            ('LB', _iso_3166('Lebanon')),
+            ('LC', _iso_3166('Saint Lucia')),
+            ('LI', _iso_3166('Liechtenstein')),
+            ('LK', _iso_3166('Sri Lanka')),
+            ('LR', _iso_3166('Liberia')),
+            ('LS', _iso_3166('Lesotho')),
+            ('LT', _iso_3166('Lithuania')),
+            ('LU', _iso_3166('Luxembourg')),
+            ('LV', _iso_3166('Latvia')),
+            ('LY', _iso_3166('Libya')),
+            ('MA', _iso_3166('Morocco')),
+            ('MC', _iso_3166('Monaco')),
+            ('MD', _iso_3166('Moldova, Republic of')),
+            ('ME', _iso_3166('Montenegro')),
+            ('MF', _iso_3166('Saint Martin (French part)')),
+            ('MG', _iso_3166('Madagascar')),
+            ('MH', _iso_3166('Marshall Islands')),
+            ('MK', _iso_3166('North Macedonia')),
+            ('ML', _iso_3166('Mali')),
+            ('MM', _iso_3166('Myanmar')),
+            ('MN', _iso_3166('Mongolia')),
+            ('MO', _iso_3166('Macao')),
+            ('MP', _iso_3166('Northern Mariana Islands')),
+            ('MQ', _iso_3166('Martinique')),
+            ('MR', _iso_3166('Mauritania')),
+            ('MS', _iso_3166('Montserrat')),
+            ('MT', _iso_3166('Malta')),
+            ('MU', _iso_3166('Mauritius')),
+            ('MV', _iso_3166('Maldives')),
+            ('MW', _iso_3166('Malawi')),
+            ('MX', _iso_3166('Mexico')),
+            ('MY', _iso_3166('Malaysia')),
+            ('MZ', _iso_3166('Mozambique')),
+            ('NA', _iso_3166('Namibia')),
+            ('NC', _iso_3166('New Caledonia')),
+            ('NE', _iso_3166('Niger')),
+            ('NF', _iso_3166('Norfolk Island')),
+            ('NG', _iso_3166('Nigeria')),
+            ('NI', _iso_3166('Nicaragua')),
+            ('NL', _iso_3166('Netherlands')),
+            ('NO', _iso_3166('Norway')),
+            ('NP', _iso_3166('Nepal')),
+            ('NR', _iso_3166('Nauru')),
+            ('NU', _iso_3166('Niue')),
+            ('NZ', _iso_3166('New Zealand')),
+            ('OM', _iso_3166('Oman')),
+            ('PA', _iso_3166('Panama')),
+            ('PE', _iso_3166('Peru')),
+            ('PF', _iso_3166('French Polynesia')),
+            ('PG', _iso_3166('Papua New Guinea')),
+            ('PH', _iso_3166('Philippines')),
+            ('PK', _iso_3166('Pakistan')),
+            ('PL', _iso_3166('Poland')),
+            ('PM', _iso_3166('Saint Pierre and Miquelon')),
+            ('PN', _iso_3166('Pitcairn')),
+            ('PR', _iso_3166('Puerto Rico')),
+            ('PS', _iso_3166('Palestine, State of')),
+            ('PT', _iso_3166('Portugal')),
+            ('PW', _iso_3166('Palau')),
+            ('PY', _iso_3166('Paraguay')),
+            ('QA', _iso_3166('Qatar')),
+            ('RE', _iso_3166('Réunion')),
+            ('RO', _iso_3166('Romania')),
+            ('RS', _iso_3166('Serbia')),
+            ('RU', _iso_3166('Russian Federation')),
+            ('RW', _iso_3166('Rwanda')),
+            ('SA', _iso_3166('Saudi Arabia')),
+            ('SB', _iso_3166('Solomon Islands')),
+            ('SC', _iso_3166('Seychelles')),
+            ('SD', _iso_3166('Sudan')),
+            ('SE', _iso_3166('Sweden')),
+            ('SG', _iso_3166('Singapore')),
+            ('SH', _iso_3166('Saint Helena, Ascension and Tristan da Cunha')),
+            ('SI', _iso_3166('Slovenia')),
+            ('SJ', _iso_3166('Svalbard and Jan Mayen')),
+            ('SK', _iso_3166('Slovakia')),
+            ('SL', _iso_3166('Sierra Leone')),
+            ('SM', _iso_3166('San Marino')),
+            ('SN', _iso_3166('Senegal')),
+            ('SO', _iso_3166('Somalia')),
+            ('SR', _iso_3166('Suriname')),
+            ('SS', _iso_3166('South Sudan')),
+            ('ST', _iso_3166('Sao Tome and Principe')),
+            ('SV', _iso_3166('El Salvador')),
+            ('SX', _iso_3166('Sint Maarten (Dutch part)')),
+            ('SY', _iso_3166('Syrian Arab Republic')),
+            ('SZ', _iso_3166('Eswatini')),
+            ('TC', _iso_3166('Turks and Caicos Islands')),
+            ('TD', _iso_3166('Chad')),
+            ('TF', _iso_3166('French Southern Territories')),
+            ('TG', _iso_3166('Togo')),
+            ('TH', _iso_3166('Thailand')),
+            ('TJ', _iso_3166('Tajikistan')),
+            ('TK', _iso_3166('Tokelau')),
+            ('TL', _iso_3166('Timor-Leste')),
+            ('TM', _iso_3166('Turkmenistan')),
+            ('TN', _iso_3166('Tunisia')),
+            ('TO', _iso_3166('Tonga')),
+            ('TR', _iso_3166('Türkiye')),
+            ('TT', _iso_3166('Trinidad and Tobago')),
+            ('TV', _iso_3166('Tuvalu')),
+            ('TW', _iso_3166('Taiwan, Province of China')),
+            ('TZ', _iso_3166('Tanzania, United Republic of')),
+            ('UA', _iso_3166('Ukraine')),
+            ('UG', _iso_3166('Uganda')),
+            ('UM', _iso_3166('United States Minor Outlying Islands')),
+            ('US', _iso_3166('United States')),
+            ('UY', _iso_3166('Uruguay')),
+            ('UZ', _iso_3166('Uzbekistan')),
+            ('VA', _iso_3166('Holy See (Vatican City State)')),
+            ('VC', _iso_3166('Saint Vincent and the Grenadines')),
+            ('VE', _iso_3166('Venezuela, Bolivarian Republic of')),
+            ('VG', _iso_3166('Virgin Islands, British')),
+            ('VI', _iso_3166('Virgin Islands, U.S.')),
+            ('VN', _iso_3166('Viet Nam')),
+            ('VU', _iso_3166('Vanuatu')),
+            ('WF', _iso_3166('Wallis and Futuna')),
+            ('WS', _iso_3166('Samoa')),
+            ('YE', _iso_3166('Yemen')),
+            ('YT', _iso_3166('Mayotte')),
+            ('ZA', _iso_3166('South Africa')),
+            ('ZM', _iso_3166('Zambia')),
+            ('ZW', _iso_3166('Zimbabwe')),
         ]
         cls.choices = cls.sort_choices(choices)
 
@@ -7046,7 +7042,7 @@ class _EscapedDict(dict):
 
     def __init__(self, _dict):
         self._dict = _dict
-        super(_EscapedDict, self).__init__()
+        super().__init__()
 
     def __contains__(self, key):
         return key in self._dict

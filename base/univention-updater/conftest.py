@@ -98,7 +98,7 @@ def http(mocker):
     return extra
 
 
-class MockPopen(object):
+class MockPopen:
     """Mockup for :py:class:`subprocess.Popen`."""
 
     mock_commands: List[Sequence[str]] = []
@@ -120,7 +120,7 @@ class MockPopen(object):
                     content = fd_script.read(1024)
             except (OSError, UnicodeDecodeError) as ex:
                 content = ex
-            MockPopen.mock_commands.append(tuple(cmd) + (content,))
+            MockPopen.mock_commands.append((*tuple(cmd), content))
 
     def __enter__(self):
         return self
@@ -162,7 +162,7 @@ def mockpopen(monkeypatch):
     MockPopen.mock_reset()
 
 
-class MockFileManager(object):
+class MockFileManager:
     """Mockup for :py:func:`open()`"""
 
     def __init__(self, tmpdir: Any) -> None:
@@ -188,7 +188,7 @@ class MockFileManager(object):
         # a+ | end | pos  | end FIXME
         binary = "b" in mode
         if "w" in mode or (("r+" in mode or "a" in mode) and not buf):
-            self.files[name] = buf = self._new(name, b"" if binary else u"")
+            self.files[name] = buf = self._new(name, b"" if binary else "")
         elif "r" in mode and not buf:
             return self._open(name, mode, buffering, **options)
 

@@ -22,8 +22,7 @@ def check_login_lookup(host, mail, password, expected_result):
     An exception is thrown if the result of either the login or the lookup
     was not expected.
     """
-    print('check_login_lookup() host={!r} mail={!r} password={!r} expected_result={!r}'.format(
-        host, mail, password, expected_result))
+    print(f'check_login_lookup() host={host!r} mail={mail!r} password={password!r} expected_result={expected_result!r}')
     imap = MailClient_SSL(host)
     if not mail:
         mail = '""'  # no IMAP quoting since Python 3: https://github.com/python/cpython/issues/98241
@@ -177,8 +176,7 @@ def main():
                     set={
                         'ip': ip,
                         'name': new_host,
-                        'dnsEntryZoneForward': 'zoneName={},cn=dns,{} {}'.format(
-                            domain, basedn, ip),
+                        'dnsEntryZoneForward': f'zoneName={domain},cn=dns,{basedn} {ip}',
                     },
                     position='cn=computers,%s' % basedn,
                 )
@@ -213,8 +211,7 @@ def main():
                     set={
                         'ip': ip,
                         'name': new_host,
-                        'dnsEntryZoneForward': 'zoneName={},cn=dns,{} {}'.format(
-                            domain, basedn, ip),
+                        'dnsEntryZoneForward': f'zoneName={domain},cn=dns,{basedn} {ip}',
                     },
                     position='cn=computers,%s' % basedn,
                 )
@@ -249,8 +246,7 @@ def main():
                     set={
                         'ip': ip,
                         'name': new_host,
-                        'dnsEntryZoneForward': 'zoneName={},cn=dns,{} {}'.format(
-                            domain, basedn, ip),
+                        'dnsEntryZoneForward': f'zoneName={domain},cn=dns,{basedn} {ip}',
                     },
                     position='cn=computers,%s' % basedn,
                 )

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention NFS
 #  listener module: create users home share path on share
@@ -38,7 +37,6 @@ from __future__ import annotations
 
 import os
 import stat
-from typing import Dict, List
 
 import univention.debug as ud
 
@@ -55,7 +53,7 @@ filter = "(&(objectClass=posixAccount)(automountInformation=*))"
 attributes = ["uid", "automountInformation", "gidNumber", "uidNumber"]
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     if not listener.configRegistry.is_true("nfs/create/homesharepath"):
         return
 

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Heimdal
 #  generating keytab entries
@@ -39,7 +38,7 @@ from __future__ import annotations
 import os
 import time
 from subprocess import call
-from typing import Any, Dict, List
+from typing import Any
 
 import ldap.dn
 
@@ -90,7 +89,7 @@ def clean() -> None:
         listener.unsetuid()
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> Any:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> Any:
     # don't do anything here if this system is joined as a Samba/AD DC
     if samba4_role.upper() in ('DC', 'RODC'):
         return

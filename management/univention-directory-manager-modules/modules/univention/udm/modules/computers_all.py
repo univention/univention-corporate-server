@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -91,14 +90,14 @@ class ComputersMemberModule(ComputersAllModule):
 
     def _get_default_object_positions(self):
         # type: () -> List[str]
-        ret = super(ComputersMemberModule, self)._get_default_object_positions()
+        ret = super()._get_default_object_positions()
         if len(ret) == 4 and \
-                'cn=computers,{}'.format(self.connection.base) in ret and \
-                'cn=memberserver,cn=computers,{}'.format(self.connection.base) in ret and \
-                'cn=dc,cn=computers,{}'.format(self.connection.base) in ret and \
+                f'cn=computers,{self.connection.base}' in ret and \
+                f'cn=memberserver,cn=computers,{self.connection.base}' in ret and \
+                f'cn=dc,cn=computers,{self.connection.base}' in ret and \
                 self.connection.base in ret:
-            ret.remove('cn=memberserver,cn=computers,{}'.format(self.connection.base))
-            ret.insert(0, 'cn=memberserver,cn=computers,{}'.format(self.connection.base))
+            ret.remove(f'cn=memberserver,cn=computers,{self.connection.base}')
+            ret.insert(0, f'cn=memberserver,cn=computers,{self.connection.base}')
         return ret
 
     class Meta:

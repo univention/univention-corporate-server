@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 #  main configuration registry classes
 #
@@ -77,8 +76,8 @@ def exception_occured(out=sys.stderr):
 
     :param out: Output stream for message.
     """
-    print(u'E: your request could not be fulfilled', file=out)
-    print(u'try `univention-config-registry --help` for more information', file=out)
+    print('E: your request could not be fulfilled', file=out)
+    print('try `univention-config-registry --help` for more information', file=out)
     sys.exit(1)
 
 
@@ -99,7 +98,7 @@ else:
     _MM = MutableMapping
 
 
-class BooleanConfigRegistry(object):
+class BooleanConfigRegistry:
     """Mixin class for boolean operations."""
 
     TRUE = frozenset({'yes', 'true', '1', 'enable', 'enabled', 'on'})
@@ -201,7 +200,7 @@ class ReadOnlyConfigRegistry(_M, BooleanConfigRegistry):
 
     def __init__(self, filename=""):
         # type: (str) -> None
-        super(ReadOnlyConfigRegistry, self).__init__()
+        super().__init__()
         custom = os.getenv('UNIVENTION_BASECONF') or filename
         self.autoload = Load.MANUAL
 
@@ -441,7 +440,7 @@ class ConfigRegistry(ReadOnlyConfigRegistry, _MM):
 
     def __init__(self, filename="", write_registry=ReadOnlyConfigRegistry.NORMAL):
         # type: (str, int) -> None
-        super(ConfigRegistry, self).__init__(filename)
+        super().__init__(filename)
         custom = os.getenv('UNIVENTION_BASECONF') or filename
         self.scope = self.CUSTOM if custom else write_registry
         for reg in self.LAYER_PRIORITIES:
@@ -677,7 +676,7 @@ class _ConfigRegistry(dict):
         """
         with open(filename, 'w', encoding='utf-8') as fd:
             # write data to file
-            fd.write(u'# univention_ base.conf\n\n')
+            fd.write('# univention_ base.conf\n\n')
             fd.write(self.__unicode__())
             # flush (meta)data
             fd.flush()

@@ -12,7 +12,7 @@ import pytest
 from univention.config_registry.backend import ConfigRegistry  # noqa: E402
 
 
-class DummyLock(object):
+class DummyLock:
 
     def __enter__(self):
         pass
@@ -22,7 +22,7 @@ class DummyLock(object):
 
 
 @pytest.mark.slow()
-class TestConfigRegistry(object):
+class TestConfigRegistry:
     """Unit test for univention.config_registry.backend.ConfigRegistry"""
 
     def test_threading(self):

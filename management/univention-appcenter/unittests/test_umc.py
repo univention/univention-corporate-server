@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -61,7 +60,7 @@ def assert_called_with(mock, *argss):
             assert call_arg == assert_arg
 
 
-class TestRiot(object):
+class TestRiot:
     def test_resolve(self, mocked_ucr_appcenter, custom_apps_umc, appcenter_umc_instance, umc_request):
         umc_request.options = {'apps': ['riot'], 'action': 'install'}
         appcenter_umc_instance.resolve(umc_request)
@@ -100,7 +99,7 @@ class TestRiot(object):
         assert_called_with(mock, [(custom_apps_umc.find('riot'), 'install', settings, ANYTHING), {}])
 
 
-class TestKopano(object):
+class TestKopano:
     def test_resolve(self, mocked_ucr_appcenter, custom_apps_umc, appcenter_umc_instance, umc_request):
         umc_request.options = {'apps': ['kopano-webapp'], 'action': 'install'}
         appcenter_umc_instance.resolve(umc_request)
@@ -141,7 +140,7 @@ class TestKopano(object):
         assert_called_with(mock2, [(host, custom_apps_umc.find('kopano-core'), 'install', True, {}, ANYTHING), {}])
 
 
-class TestUCSSchool(object):
+class TestUCSSchool:
     def test_resolve(self, mocked_ucr_appcenter, custom_apps_umc, appcenter_umc_instance, umc_request):
         umc_request.options = {'apps': ['ucsschool-kelvin-rest-api', 'ucsschool'], 'action': 'install'}
         appcenter_umc_instance.resolve(umc_request)

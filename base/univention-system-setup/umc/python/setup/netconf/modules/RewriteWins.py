@@ -18,7 +18,7 @@ class PhaseRewriteWins(AddressMap):
     filename = "/var/lib/samba/wins.dat"
 
     def check(self) -> None:
-        super(PhaseRewriteWins, self).check()
+        super().check()
         if not os.path.exists(self.filename):
             raise SkipPhase("No wins.dat")
 
@@ -29,7 +29,7 @@ class PhaseRewriteWins(AddressMap):
                 try:
                     name, ttl, address, flags = line.split(None, 3)
                     new_ip = self.ip_mapping[address]
-                    line = ' '.join((name, ttl, new_ip, flags))
+                    line = f"{name} {ttl} {new_ip} {flags}"
                 except (TypeError, ValueError, KeyError):
                     pass
                 write_wins.write(line)

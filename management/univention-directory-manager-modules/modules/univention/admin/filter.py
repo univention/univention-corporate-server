@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -42,7 +41,7 @@ import univention.admin.uexceptions
 T = TypeVar("T")
 
 
-class conjunction(object):
+class conjunction:
     """LDAP filter conjunction (`&`) or disjunction (`|`)."""
 
     OPS = frozenset({'&', '|', '!'})
@@ -124,7 +123,7 @@ class conjunction(object):
             self.expressions.append(filter_p)
 
 
-class expression(object):
+class expression:
     """LDAP filter expression."""
 
     OPS = frozenset({'=', '>=', '<=', '~=', '=*'} | {'>', '<', '!='})

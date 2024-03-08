@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Create Keytab Script
 #  Tool to create a keytab from a known password

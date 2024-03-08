@@ -87,7 +87,7 @@ class Test_DNSResolve:
         }
         udm.create_object('dns/reverse_zone', position=pos, **reverse_zone_properties)
         zoneName = '.'.join(
-            list(reversed(subnet)) + ['in-addr', 'arpa', ''],
+            [*list(reversed(subnet)), 'in-addr', 'arpa', ''],
         )
         utils.wait_for_replication_and_postrun()
         answers = resolve_dns_entry(zoneName, 'SOA')
@@ -102,7 +102,7 @@ class Test_DNSResolve:
         })
         udm.create_object('dns/reverse_zone', position=pos, **reverse_zone_properties)
         zoneName = '.'.join(
-            list(reversed([nibble for block in subnet for nibble in block])) + ['ip6', 'arpa', ''],
+            [*list(reversed([nibble for block in subnet for nibble in block])), 'ip6', 'arpa', ''],
         )
         utils.wait_for_replication_and_postrun()
         answers = resolve_dns_entry(zoneName, 'SOA')
@@ -280,7 +280,7 @@ class Test_DNSResolve:
         utils.wait_for_replication_and_postrun()
 
         zoneName = '.'.join(
-            list(reversed(ipv4)) + ['in-addr', 'arpa', ''],
+            [*list(reversed(ipv4)), 'in-addr', 'arpa', ''],
         )
         answers = resolve_dns_entry(zoneName, 'PTR')
         answer = [rdata.to_text() for rdata in answers]
@@ -298,7 +298,7 @@ class Test_DNSResolve:
         udm.create_object('dns/ptr_record', address=addr, superordinate=reverse_zone, ptr_record=ptr_record)
 
         zoneName = '.'.join(
-            list(reversed([nibble for block in ipv6 for nibble in block])) + ['ip6', 'arpa', ''],
+            [*list(reversed([nibble for block in ipv6 for nibble in block])), 'ip6', 'arpa', ''],
         )
         utils.wait_for_replication_and_postrun()
         answers = resolve_dns_entry(zoneName, 'PTR')
@@ -339,8 +339,8 @@ class Test_DNSResolve:
         forward_zone = "zoneName=%(domainname)s,cn=dns,%(ldap/base)s" % ucr
 
         zonename = uts.random_name()
-        nameserver1 = ".".join([uts.random_name(), partentzone])
-        nameserver2 = ".".join([uts.random_name(), partentzone])
+        nameserver1 = f'{uts.random_name()}.{partentzone}'
+        nameserver2 = f'{uts.random_name()}.{partentzone}'
         nameservers = [nameserver1, nameserver2]
 
         record_properties = {

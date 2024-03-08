@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Mail Stack
 #  listener module: mail domain configuration
@@ -37,7 +36,6 @@
 from __future__ import annotations
 
 import re
-from typing import Dict, List
 
 import univention.config_registry
 import univention.debug
@@ -49,7 +47,7 @@ description = 'update mail/hosteddomains'
 filter = '(objectClass=univentionMailDomainname)'
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     configRegistry = univention.config_registry.ConfigRegistry()
     configRegistry.load()
 
@@ -68,7 +66,7 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -
     if old_hosteddomains != hosteddomains:
         try:
             listener.setuid(0)
-            univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "hosteddomains: %s" % u'mail/hosteddomains=%s' % ' '.join(hosteddomains))
-            univention.config_registry.handler_set([u'mail/hosteddomains=%s' % ' '.join(hosteddomains)])
+            univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "hosteddomains: %s" % 'mail/hosteddomains=%s' % ' '.join(hosteddomains))
+            univention.config_registry.handler_set(['mail/hosteddomains=%s' % ' '.join(hosteddomains)])
         finally:
             listener.unsetuid()

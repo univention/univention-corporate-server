@@ -32,10 +32,13 @@
 from __future__ import annotations
 
 import re
-from pathlib import Path
-from typing import Iterable
+from typing import TYPE_CHECKING, Iterable
 
 import univention.ucslint.base as uub
+
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
@@ -59,7 +62,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         IGNORE_FILES = ('changelog', 'README')
         self.check_files(
             set(uub.FilteredDirWalkGenerator(path, ignore_suffixes=IGNORE_SUFFIXES, ignore_files=IGNORE_FILES))
-            | set(uub.FilteredDirWalkGenerator(path / 'debian', suffixes=('.univention-baseconfig',)))
+            | set(uub.FilteredDirWalkGenerator(path / 'debian', suffixes=('.univention-baseconfig',))),
         )
 
     def check_files(self, paths: Iterable[Path]) -> None:

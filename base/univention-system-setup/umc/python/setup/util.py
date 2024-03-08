@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -52,7 +51,7 @@ import tempfile
 import time
 import traceback
 from contextlib import contextmanager
-from typing import IO, Any, Container, Dict, Iterator, List, Mapping, Pattern, Set
+from typing import IO, Any, Container, Iterator, Mapping, Pattern
 
 import dns.exception
 import dns.resolver
@@ -139,7 +138,7 @@ def is_system_joined() -> bool:
     return os.path.exists('/var/univention-join/joined')
 
 
-def load_values(lang: str | None = None) -> Dict[str, str]:
+def load_values(lang: str | None = None) -> dict[str, str]:
     ucr.load()
     values = {ikey: ucr[ikey] if ucr[ikey] else ucr[ikey] for ikey in UCR_VARIABLES}
 
@@ -182,7 +181,7 @@ def load_values(lang: str | None = None) -> Dict[str, str]:
     return values
 
 
-def auto_complete_values_for_join(newValues: Dict[str, str], current_locale: Locale | None = None) -> Dict[str, str]:
+def auto_complete_values_for_join(newValues: dict[str, str], current_locale: Locale | None = None) -> dict[str, str]:
     # try to automatically determine the domain, except on a dcmaster
     if newValues['server/role'] != 'domaincontroller_master' and not newValues.get('domainname'):
         ucr.load()
@@ -227,7 +226,7 @@ def auto_complete_values_for_join(newValues: Dict[str, str], current_locale: Loc
 
     # add lists with all packages that should be removed/installed on the system
     if selectedComponents:
-        currentComponents: Set[str] = set()
+        currentComponents: set[str] = set()
         for iapp in get_apps():
             if iapp['is_installed']:
                 for ipackages in (iapp['default_packages'], iapp['default_packages_master']):
@@ -267,7 +266,7 @@ def auto_complete_values_for_join(newValues: Dict[str, str], current_locale: Loc
         newValues['locale'] = newValues.get('locale/default', '')
     forcedLocales = ['en_US.UTF-8:UTF-8', 'de_DE.UTF-8:UTF-8']  # we need en_US and de_DE locale as default language
     if current_locale:
-        forcedLocales.append('{}:{}'.format(current_locale, current_locale.codeset))
+        forcedLocales.append(f'{current_locale}:{current_locale.codeset}')
     for ilocale in forcedLocales:
         if ilocale not in newValues['locale']:
             newValues['locale'] = '%s %s' % (newValues['locale'], ilocale)
@@ -275,7 +274,7 @@ def auto_complete_values_for_join(newValues: Dict[str, str], current_locale: Loc
     return newValues
 
 
-def pre_save(newValues: Dict[str, str]) -> None:
+def pre_save(newValues: dict[str, str]) -> None:
     """Modify the final dict before saving it to the profile file."""
     # network interfaces
     from univention.management.console.modules.setup.network import Interfaces
@@ -286,7 +285,7 @@ def pre_save(newValues: Dict[str, str]) -> None:
         newValues.update({key: value or '' for key, value in interfaces.to_ucr().items()})
 
 
-def write_profile(values: Dict[str, str]) -> None:
+def write_profile(values: dict[str, str]) -> None:
     pre_save(values)
     old_umask = os.umask(0o177)
     try:
@@ -322,7 +321,7 @@ def run_networkscrips(demo_mode: bool = False) -> None:
             try:
                 # appliance-mode for temporary saving the old ip address
                 # network-only for not restarting all those services (time consuming!)
-                p = subprocess.Popen([scriptpath] + script_parameters, stdout=f, stderr=subprocess.STDOUT)
+                p = subprocess.Popen([scriptpath, *script_parameters], stdout=f, stderr=subprocess.STDOUT)
                 MODULE.info("Running script '%s': pid=%d" % (scriptpath, p.pid))
                 p.wait()
             except OSError as ex:
@@ -336,7 +335,7 @@ def run_networkscrips(demo_mode: bool = False) -> None:
 
 
 @contextmanager
-def written_profile(values: Dict[str, str]) -> Iterator[None]:
+def written_profile(values: dict[str, str]) -> Iterator[None]:
     write_profile(values)
     try:
         yield
@@ -344,7 +343,7 @@ def written_profile(values: Dict[str, str]) -> Iterator[None]:
         os.remove(PATH_PROFILE)
 
 
-class ProgressState(object):  # noqa: PLW1641
+class ProgressState:  # noqa: PLW1641
 
     def __init__(self) -> None:
         self.reset()
@@ -358,7 +357,7 @@ class ProgressState(object):  # noqa: PLW1641
         self.steps = 1
         self.step = 0.0
         self.max = 100
-        self.errors: List[str] = []
+        self.errors: list[str] = []
         self.critical = False
 
     @property
@@ -376,7 +375,7 @@ class ProgressState(object):  # noqa: PLW1641
     __nonzero__ = __bool__
 
 
-class ProgressParser(object):
+class ProgressParser:
     # regular expressions
     NAME = re.compile('^__NAME__: *(?P<key>[^ ]*) (?P<name>.*)\n$')
     MSG = re.compile('^__MSG__: *(?P<message>.*)\n$')
@@ -514,7 +513,7 @@ def sorted_files_in_subdirs(directory: str, allowed_subdirs: Container[str] | No
                 yield os.path.join(path, filename)
 
 
-def run_scripts(progressParser: ProgressParser, restartServer: bool = False, allowed_subdirs: Container[str] | None = None, lang: str = 'C', args: List[str] = []) -> None:
+def run_scripts(progressParser: ProgressParser, restartServer: bool = False, allowed_subdirs: Container[str] | None = None, lang: str = 'C', args: list[str] = []) -> None:
     # write header before executing scripts
     f = open(LOG_FILE, 'a')
     f.write('\n\n=== RUNNING SETUP SCRIPTS (%s) ===\n\n' % timestamp())
@@ -535,7 +534,7 @@ def run_scripts(progressParser: ProgressParser, restartServer: bool = False, all
 
     for scriptpath in sorted_files_in_subdirs(PATH_SETUP_SCRIPTS, allowed_subdirs):
         # launch script
-        icmd = [scriptpath] + args
+        icmd = [scriptpath, *args]
         f.write('== script: %s\n' % icmd)
         try:
             p = subprocess.Popen(icmd, stdout=f, stderr=subprocess.STDOUT, env={
@@ -593,7 +592,7 @@ def _temporary_password_file(password: str) -> Iterator[str]:
         os.remove(PATH_PASSWORD_FILE)
 
 
-def run_joinscript(progressParser: ProgressParser, values: Dict[str, str], _username: str, password: str, dcname: str | None = None, lang: str = 'C') -> None:
+def run_joinscript(progressParser: ProgressParser, values: dict[str, str], _username: str, password: str, dcname: str | None = None, lang: str = 'C') -> None:
     # write header before executing join script
     f = open(LOG_FILE, 'a')
     f.write('\n\n=== RUNNING SETUP JOIN SCRIPT (%s) ===\n\n' % timestamp())
@@ -646,11 +645,11 @@ def run_joinscript(progressParser: ProgressParser, values: Dict[str, str], _user
             username = reg.sub('_', _username)
 
             # run join scripts without the cleanup scripts
-            runit(cmd + ['--dcaccount', username, '--password_file', password_file, '--run_cleanup_as_atjob'])
+            runit([*cmd, '--dcaccount', username, '--password_file', password_file, '--run_cleanup_as_atjob'])
 
     else:
         # run join scripts without the cleanup scripts
-        runit(cmd + ['--run_cleanup_as_atjob'])
+        runit([*cmd, '--run_cleanup_as_atjob'])
 
     f.write('\n=== DONE (%s) ===\n\n' % timestamp())
     f.close()
@@ -692,13 +691,13 @@ def create_status_file() -> None:
         status_file.write('"setup-scripts"')
 
 
-def detect_interfaces() -> List[Dict[str, str | None]]:
+def detect_interfaces() -> list[dict[str, str | None]]:
     """
     Function to detect network interfaces in local sysfs.
     The loopback interface "lo" will be filtered out.
     Returns a list of dicts with the entries 'name' and 'mac'.
     """
-    interfaces: List[Dict[str, str | None]] = []
+    interfaces: list[dict[str, str | None]] = []
 
     if not os.path.exists(PATH_SYS_CLASS_NET):
         return interfaces
@@ -726,7 +725,7 @@ def detect_interfaces() -> List[Dict[str, str | None]]:
     return interfaces
 
 
-def dhclient(interface: str, timeout: float = 10.0) -> Dict[str, str]:
+def dhclient(interface: str, timeout: float = 10.0) -> dict[str, str]:
     """
     perform DHCP request for specified interface. If successful, returns a dict
     similar to the following::
@@ -768,7 +767,7 @@ def dhclient(interface: str, timeout: float = 10.0) -> Dict[str, str]:
     return dhcp
 
 
-def get_apps(no_cache: bool = False) -> List[Dict[str, Any]]:
+def get_apps(no_cache: bool = False) -> list[dict[str, Any]]:
     if no_cache:
         AppCache().clear_cache()
     get = get_action('get')
@@ -783,7 +782,7 @@ def is_proxy(proxy: str) -> bool:
 
 def is_ipaddr(addr: str) -> bool:
     try:
-        ipaddress.ip_address(u'%s' % (addr,))
+        ipaddress.ip_address('%s' % (addr,))
     except ValueError:
         return False
     return True
@@ -791,7 +790,7 @@ def is_ipaddr(addr: str) -> bool:
 
 def is_ipv4addr(addr: str) -> bool:
     try:
-        ipaddress.IPv4Address(u'%s' % (addr,))
+        ipaddress.IPv4Address('%s' % (addr,))
     except ValueError:
         return False
     return True
@@ -799,7 +798,7 @@ def is_ipv4addr(addr: str) -> bool:
 
 def is_ipv4netmask(addr_netmask: str) -> bool:
     try:
-        ipaddress.IPv4Network(u'%s' % (addr_netmask,), False)
+        ipaddress.IPv4Network('%s' % (addr_netmask,), False)
     except (ValueError, ipaddress.NetmaskValueError, ipaddress.AddressValueError):
         return False
     return True
@@ -807,7 +806,7 @@ def is_ipv4netmask(addr_netmask: str) -> bool:
 
 def is_ipv6addr(addr: str) -> bool:
     try:
-        ipaddress.IPv6Address(u'%s' % (addr,))
+        ipaddress.IPv6Address('%s' % (addr,))
     except ValueError:
         return False
     return True
@@ -815,7 +814,7 @@ def is_ipv6addr(addr: str) -> bool:
 
 def is_ipv6netmask(addr_netmask: str) -> bool:
     try:
-        ipaddress.IPv6Network(u'%s' % (addr_netmask,), False)
+        ipaddress.IPv6Network('%s' % (addr_netmask,), False)
     except (ValueError, ipaddress.NetmaskValueError, ipaddress.AddressValueError):
         return False
     return True
@@ -1013,7 +1012,7 @@ def get_fqdn(nameserver: str) -> str | None:
     return None
 
 
-def get_available_locales(pattern: Pattern[str], category: str = 'language_en') -> List[Dict[str, str]] | None:
+def get_available_locales(pattern: Pattern[str], category: str = 'language_en') -> list[dict[str, str]] | None:
     """Return a list of all available locales."""
     try:
         fsupported = open('/usr/share/i18n/SUPPORTED')
@@ -1105,7 +1104,7 @@ def get_country_data() -> Any:
     return _country_data
 
 
-def get_random_nameserver(country: Mapping[str, Any]) -> Dict[str, str | None]:
+def get_random_nameserver(country: Mapping[str, Any]) -> dict[str, str | None]:
     ipv4_servers = country.get('ipv4') or country.get('ipv4_erroneous') or [None]
     ipv6_servers = country.get('ipv6') or country.get('ipv6_erroneous') or [None]
     return {

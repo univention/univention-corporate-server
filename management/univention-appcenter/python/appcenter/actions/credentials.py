@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app module for actions needing credentials
@@ -57,7 +56,7 @@ from univention.appcenter.udm import get_admin_connection, get_connection, get_m
 class CredentialsAction(UniventionAppAction):
 
     def __init__(self):
-        super(CredentialsAction, self).__init__()
+        super().__init__()
         self._username = None
         self._userdn = None
         self._password = None

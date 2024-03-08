@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Package Database
 #  listener module
@@ -37,7 +36,6 @@ from __future__ import annotations
 
 import os
 import subprocess
-from typing import Dict, List
 
 import univention.debug as ud
 
@@ -52,7 +50,7 @@ ADD_DIR = '/var/lib/univention-pkgdb/add'
 DELETE_DIR = '/var/lib/univention-pkgdb/delete'
 
 
-def exec_pkgdb(args: List[str]) -> int:
+def exec_pkgdb(args: list[str]) -> int:
     ud.debug(ud.LISTENER, ud.INFO, "exec_pkgdb args=%s" % args)
 
     with SetUID(0):
@@ -82,7 +80,7 @@ def del_system(sysname: str) -> int:
     return retcode
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     ud.debug(ud.LISTENER, ud.INFO, "pkgdb handler dn=%s" % (dn))
 
     with SetUID(0):

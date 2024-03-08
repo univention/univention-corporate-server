@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -119,7 +118,7 @@ class ModuleHandler(logging.Handler):
     def __init__(self, level=logging.NOTSET, udebug_facility=ud.LISTENER):
         # type: (int, int) -> None
         self._udebug_facility = udebug_facility
-        super(ModuleHandler, self).__init__(level)
+        super().__init__(level)
 
     def emit(self, record):
         # type: (logging.LogRecord) -> None

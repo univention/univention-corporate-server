@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Directory Reports
 #  write an interpreted token structure to a file
@@ -50,7 +49,7 @@ __all__ = ['cache_object', 'connect', 'connected', 'get_object', 'identify', 'se
 _admin = None
 
 TEX_ESCAPE = {
-    u'€': 'EUR',
+    '€': 'EUR',
     '"': "''",
     '\\': '\\textbackslash{}',
     '&': '\\&',
@@ -62,13 +61,13 @@ TEX_ESCAPE = {
     '~': '\\textasciitilde{}',
     '^': '\\^{\\,}',
     '$': '\\$',
-    u'°': '$^{\\circ}$',
-    u'´': '',
+    '°': '$^{\\circ}$',
+    '´': '',
 }
 
 
 def texClean(str):
-    u"""
+    """
     Escape string for use in LaTeX.
 
     >>> texClean('Test')
@@ -86,7 +85,7 @@ def texClean(str):
     return esc
 
 
-class AdminConnection(object):
+class AdminConnection:
 
     def __init__(self, userdn=None, password=None, host='localhost', base=None, start_tls=2, access=None, format=None):
         self._cached = {}

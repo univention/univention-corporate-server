@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  quota module: modify quota settings
@@ -89,7 +88,7 @@ def repquota(partition):
 
     # -C == do not try to resolve all users at once
     # -v == verbose
-    cmd = ['/usr/sbin/repquota', '-C', '-v', partition] + args
+    cmd = ['/usr/sbin/repquota', '-C', '-v', partition, *args]
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     stdout, _stderr = proc.communicate()
     return (stdout, proc.returncode)

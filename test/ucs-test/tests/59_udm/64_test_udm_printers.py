@@ -172,7 +172,7 @@ def test_create_printer_and_check_printing_works(ucr, udm):
     if smb_server:
         delay = 1
         time.sleep(delay)
-        cmd = ['smbclient', '//localhost/%s' % properties['sambaName'], '-U', '%'.join([admin_name, password]), '-c', 'print /etc/hosts']
+        cmd = ['smbclient', '//localhost/%s' % properties['sambaName'], '-U', f'{admin_name}%{password}', '-c', 'print /etc/hosts']
         print('\nRunning: %s' % ' '.join(cmd))
         p = subprocess.Popen(cmd, close_fds=True)
         p.wait()
@@ -279,13 +279,13 @@ def test_check_ppd():
             desc = printerModel.split('"')[3]
             if desc.startswith('deprecated (only available'):
                 continue
-            if model.endswith('.ppd') or model.endswith('.ppd.gz'):
+            if model.endswith(('.ppd', '.ppd.gz')):
                 model = model.split('/')[-1]
                 ldap_printer.append(model)
 
     for _root, _dirs, files in os.walk('/usr/share/ppd/'):
         for file_ in files:
-            if file_.endswith('.ppd') or file_.endswith('ppd.gz'):
+            if file_.endswith(('.ppd', 'ppd.gz')):
                 printer_files.append(file_)
 
     for line in subprocess.check_output(['/usr/lib/cups/driver/foomatic-db-compressed-ppds', 'list']).decode('UTF-8', 'replace').splitlines():

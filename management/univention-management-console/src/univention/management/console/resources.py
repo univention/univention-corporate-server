@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  session handling
@@ -103,7 +102,7 @@ class CouldNotConnect(Exception):
     pass
 
 
-class _ModuleConnection(object):
+class _ModuleConnection:
 
     def __init__(self):
         self._client = tornado.httpclient.AsyncHTTPClient(force_instance=True)
@@ -189,7 +188,7 @@ class ModuleProcess(_ModuleConnection):
     """
 
     def __init__(self, module, debug='0', locale=None, no_daemonize_module_processes=False):
-        super(ModuleProcess, self).__init__()
+        super().__init__()
         self.name = module
         self.socket = '%s.socket' % (('/run/univention-management-console/%u-%s-%lu-%s' % (os.getpid(), module.replace('/', ''), int(time.time() * 1000), uuid.uuid4()))[:85],)
         args = ['/usr/bin/python3', MODULE_COMMAND, '-m', module, '-s', self.socket, '-d', str(debug)]
@@ -381,7 +380,7 @@ class Nothing(Resource):
     requires_authentication = False
 
     async def prepare(self, *args, **kwargs):
-        await super(Nothing, self).prepare(*args, **kwargs)
+        await super().prepare(*args, **kwargs)
         raise NotFound()
 
 
@@ -419,10 +418,10 @@ class GetIPAddress(Resource):
 
     @property
     def addresses(self):
-        addresses = self.request.headers.get('X-Forwarded-For', self.request.remote_ip).split(',') + [self.request.remote_ip]
+        addresses = [*self.request.headers.get('X-Forwarded-For', self.request.remote_ip).split(','), self.request.remote_ip]
         addresses = {ip_address(x.decode('ASCII', 'ignore').strip() if isinstance(x, bytes) else x.strip()) for x in addresses}
-        addresses.discard(ip_address(u'::1'))
-        addresses.discard(ip_address(u'127.0.0.1'))
+        addresses.discard(ip_address('::1'))
+        addresses.discard(ip_address('127.0.0.1'))
         return tuple(address.exploded for address in addresses)
 
     post = get
@@ -490,7 +489,7 @@ class Modules(Resource):
     requires_authentication = False
 
     async def prepare(self):
-        await super(Modules, self).prepare()
+        await super().prepare()
         self.i18n = I18N_Manager()
         self.i18n['umc-core'] = I18N()
         self.i18n.set_locale(self.locale.code)
@@ -572,7 +571,7 @@ class Modules(Resource):
             CORE.warn('Failed to retrieve user preferences: %s' % (exc,))
             return {}
         preferences = (val.decode('utf-8', 'replace') for val in preferences)
-        return dict(val.split(u'=', 1) if u'=' in val else (val, u'') for val in preferences)
+        return dict(val.split('=', 1) if '=' in val else (val, '') for val in preferences)
 
     post = get
 
@@ -583,7 +582,7 @@ class Categories(Resource):
     requires_authentication = False
 
     async def prepare(self):
-        await super(Categories, self).prepare()
+        await super().prepare()
         self.i18n = I18N_Manager()
         self.i18n['umc-core'] = I18N()
         self.i18n.set_locale(self.locale.code)
@@ -632,7 +631,7 @@ class Command(Resource):
     requires_authentication = False
 
     async def prepare(self, *args, **kwargs):
-        await super(Command, self).prepare(*args, **kwargs)
+        await super().prepare(*args, **kwargs)
         self.future = None
         self.process = None
         self._request_id = Message.generate_id()
@@ -645,7 +644,7 @@ class Command(Resource):
         return Unauthorized(self._("For using this module a login is required."))
 
     def on_connection_close(self):
-        super(Command, self).on_connection_close()
+        super().on_connection_close()
         CORE.warn('Connection was aborted by the client!')
         self._remove_active_request()
         if self.future is not None:
@@ -662,7 +661,7 @@ class Command(Resource):
         tornado.ioloop.IOLoop.current().add_future(fut, cb)
 
     def on_finish(self):
-        super(Command, self).on_finish()
+        super().on_finish()
         self._remove_active_request()
 
     def _remove_active_request(self):
@@ -1032,7 +1031,7 @@ class UserPreferences(Resource):
             CORE.warn('Failed to retrieve user preferences: %s' % (exc,))
             return {}
         preferences = (val.decode('utf-8', 'replace') for val in preferences)
-        return dict(val.split(u'=', 1) if u'=' in val else (val, u'') for val in preferences)
+        return dict(val.split('=', 1) if '=' in val else (val, '') for val in preferences)
 
 
 class SetUserPreferences(UserPreferences):

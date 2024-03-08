@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -664,7 +663,7 @@ def _doit(
         raise OperationFailed()
 
 
-class CLI(object):
+class CLI:
 
     def __init__(
         self,
@@ -998,9 +997,9 @@ class CLI(object):
                         # TODO: sharedsubnet_module = univention.admin.modules._get('dhcp/sharedsubnet')
                         ips = object['fixedaddress']
                         for ip in ips:
-                            ip_ = IPv4Address(u"%s" % (ip,))
+                            ip_ = IPv4Address("%s" % (ip,))
                             for subnet in univention.admin.modules.lookup(subnet_module, None, lo, scope='sub', superordinate=superordinate, base=superordinate_dn, filter=''):
-                                if ip_ in IPv4Network(u"%(subnet)s/%(subnetmask)s" % subnet, strict=False):
+                                if ip_ in IPv4Network("%(subnet)s/%(subnetmask)s" % subnet, strict=False):
                                     print("  Subnet-based Settings:", file=self.stdout)
                                     ddict = get_policy(subnet.dn, self.stdout, policyOptions, policies_with_DN)
                                     print('', file=self.stdout)

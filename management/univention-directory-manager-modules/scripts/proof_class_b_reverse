@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -60,12 +59,12 @@ def main():
     for computerdn, attrs in computers:
         print('DN: %s' % computerdn)
         if 'aRecord' in attrs:
-            entry = attrs['aRecord'][0].decode('utf-8').split(u'.')[2:4]
-            for reverse in lo.search_s('cn=dns,%s' % baseDN, ldap.SCOPE_SUBTREE, filter_format('(&(relativeDomainName=%s)(pTRRecord=%s*))', (u'.'.join(entry), ldap.dn.str2dn(computerdn)[0][0][1]))):
+            entry = attrs['aRecord'][0].decode('utf-8').split('.')[2:4]
+            for reverse in lo.search_s('cn=dns,%s' % baseDN, ldap.SCOPE_SUBTREE, filter_format('(&(relativeDomainName=%s)(pTRRecord=%s*))', ('.'.join(entry), ldap.dn.str2dn(computerdn)[0][0][1]))):
                 print('Wrong DNS Reverse Entry for %s: %s' % (computerdn, reverse[0]))
                 entry.reverse()
-                entry = u'.'.join(entry)
-                lo.modrdn_s(reverse[0], u'relativeDomainName=%s' % entry)
+                entry = '.'.join(entry)
+                lo.modrdn_s(reverse[0], 'relativeDomainName=%s' % entry)
                 break
 
 

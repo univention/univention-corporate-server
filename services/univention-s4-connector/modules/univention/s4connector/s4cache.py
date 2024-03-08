@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
 #  s4 cache
@@ -45,7 +44,7 @@ def _encode_base64(val):
     return base64.b64encode(val).decode('ASCII')
 
 
-class EntryDiff(object):
+class EntryDiff:
 
     def __init__(self, old, new):
         self.old = old
@@ -68,7 +67,7 @@ class EntryDiff(object):
         return {o for o in self.intersect if set(self.old[o]) != set(self.new[o])}
 
 
-class S4Cache(object):
+class S4Cache:
     """
     Local cache for the current Samba 4 state of the s4connector.
     With this cache the connector has the possibility to create

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -47,7 +46,7 @@ if TYPE_CHECKING:
 listener.configRegistry.load()
 
 
-class ListenerModuleConfiguration(object):
+class ListenerModuleConfiguration:
     """
     Interface class for accessing the configuration and code of a listener
     module.

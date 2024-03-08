@@ -82,7 +82,7 @@ def blocklist_setup(random_string, udm):
             'users/user mobileTelephoneNumber',
             'users/user pagerTelephoneNumber',
             'users/user homePostalAddress',
-        ]
+        ],
     }
     udm.create_object('blocklists/list', **data)
 

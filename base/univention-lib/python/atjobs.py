@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -96,7 +95,7 @@ def add(cmd, execTime=None, comments={}):
                 value = value.decode('utf-8')
             except UnicodeDecodeError:
                 value = value.decode('latin-1')
-        return (u'%s' % (value,)).encode('unicode_escape').decode('ASCII')
+        return ('%s' % (value,)).encode('unicode_escape').decode('ASCII')
 
     # add comments
     if comments:
@@ -255,7 +254,7 @@ def _parseJob(string):
     return AtJob(nr, owner, execTime, isRunning)
 
 
-class AtJob(object):
+class AtJob:
     """
     This class is an abstract representation of an at-job. Do not initiate
     the class directly, but use the methods provided in this module.

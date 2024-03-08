@@ -30,7 +30,7 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
     executable = "/usr/share/univention-directory-manager-tools/univention-dnsedit"
 
     def __init__(self, changeset: ChangeSet) -> None:
-        super(PhaseLdapSelf, self).__init__(changeset)
+        super().__init__(changeset)
         self.module = None
 
     def post(self) -> None:

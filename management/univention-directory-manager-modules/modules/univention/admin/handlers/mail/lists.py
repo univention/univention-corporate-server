@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -129,7 +128,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_ready(self):
         # type: () -> None
-        super(object, self)._ldap_pre_ready()
+        super()._ldap_pre_ready()
         if not self.exists() or self.hasChanged('mailAddress'):
             try:
                 if self['mailAddress'] and self['mailAddress'].lower() != self.oldinfo.get('mailAddress', '').lower():
@@ -139,7 +138,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_remove(self):
         # type: () -> None
-        super(object, self)._ldap_pre_remove()
+        super()._ldap_pre_remove()
         if self.oldattr.get('mailPrimaryAddress'):
             self.alloc.append(('mailPrimaryAddress', self.oldattr['mailPrimaryAddress'][0].decode('UTF-8')))
 

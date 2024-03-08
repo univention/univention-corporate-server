@@ -24,16 +24,12 @@ if __name__ == '__main__':
 
     domainname = dnstests.ucr["domainname"]
     hostname = dnstests.ucr["hostname"]
-    fqdn = ".".join((hostname, domainname))
+    fqdn = f'{hostname}.{domainname}'
     location = "0 100 389 %s." % fqdn
 
     account = utils.UCSTestDomainAdminCredentials()
 
-    cmd = [
-        "/usr/share/univention-directory-manager-tools/univention-dnsedit",
-        "--binddn=%s" % (account.binddn,), "--bindpwd=%s" % (account.bindpw,),
-        "--ignore-exists", domainname, "add", "srv", s4_RR_val, "msdcs",
-    ] + location.split(" ")
+    cmd = ['/usr/share/univention-directory-manager-tools/univention-dnsedit', '--binddn=%s' % (account.binddn,), '--bindpwd=%s' % (account.bindpw,), '--ignore-exists', domainname, 'add', 'srv', s4_RR_val, 'msdcs', *location.split(' ')]
     print(" ".join(cmd))
     p = subprocess.Popen(cmd)
     p.wait()
@@ -43,7 +39,7 @@ if __name__ == '__main__':
 
     test_relativeDomainName = "_%s._msdcs" % s4_RR_val
     test_srv_record_dn = "relativeDomainName=%s,%s" % (test_relativeDomainName, forward_zone_dn)
-    test_fqdn = ".".join((test_relativeDomainName, domainname))
+    test_fqdn = f'{test_relativeDomainName}.{domainname}'
 
     dnstests.check_ldap_object(test_srv_record_dn, 'Service Record', 'sRVRecord', location)
     s4connector.wait_for_sync(30)

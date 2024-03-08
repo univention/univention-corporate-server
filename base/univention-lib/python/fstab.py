@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -150,7 +149,7 @@ class File(list):
         return Entry(*fields, comment=rem)  # type: ignore
 
 
-class Entry(object):
+class Entry:
     """
     Mount table entry of :manpage:`fstab(5)`.
 

@@ -69,7 +69,7 @@ class MailboxNotExistentError(ACLError):
 
 class ACLIdentifierError(Exception):
     def __init__(self, identifier: str) -> None:
-        super(ACLIdentifierError, self).__init__(identifier)
+        super().__init__(identifier)
         self.identifier = identifier
 
 
@@ -81,7 +81,7 @@ class DuplicateIdentifierACLError(ACLIdentifierError):
 
 class ACLDifferenceError(ACLIdentifierError):
     def __init__(self, identifier: str, udm_right, actual_right) -> None:
-        super(ACLDifferenceError, self).__init__(identifier)
+        super().__init__(identifier)
         self.udm_right = udm_right
         self.actual_right = actual_right
 
@@ -98,7 +98,7 @@ class GroupACLError(ACLDifferenceError):
         return msg.format(id=self.identifier, udm=self.udm_right, imap=self.actual_right)
 
 
-class MailFolder(object):
+class MailFolder:
     def __init__(self, udm_folder: simpleLdap) -> None:
         self.dn = udm_folder.dn
         self.name = udm_folder.get('name')
@@ -124,7 +124,7 @@ class MailFolder(object):
             yield cls(instance)
 
 
-class ACL(object):
+class ACL:
     RIGHTS = ('all', 'write', 'append', 'post', 'read', 'none')
 
     def __init__(self, user_acl: Dict[str, str], group_acl: Dict[str, str]):

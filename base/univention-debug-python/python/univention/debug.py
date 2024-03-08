@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Debug
 #  debug.py
@@ -74,7 +73,7 @@ def debug(category, level, message, utf8=True):
     _debug.debug(category, level, message)
 
 
-class function(object):
+class function:
     """
     Log function call begin and end.
 

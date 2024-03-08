@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -36,7 +35,7 @@ from os.path import dirname
 import pytest
 
 
-class TestLocale(object):
+class TestLocale:
     @pytest.mark.parametrize("spec,language,territory,codeset,modifier", [
         (None, "", "", "", ""),
         ("de_DE.UTF-8@euro", "de", "DE", "UTF-8", "euro"),
@@ -84,7 +83,7 @@ class TestLocale(object):
         assert str(locale) == txt
 
 
-class TestNullTranslation(object):
+class TestNullTranslation:
     @pytest.mark.parametrize("args,domain", [
         ((None,), None),
         (("univention",), "univention"),
@@ -97,7 +96,7 @@ class TestNullTranslation(object):
         assert translation.locale is None
 
 
-class TestTranslation(object):
+class TestTranslation:
     @pytest.mark.parametrize("spec,domain,language", [
         (None, None, "C"),
         ("univention", "univention", "C"),

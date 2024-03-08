@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -60,7 +59,7 @@ class GdbmCache(LdapCache):
     def __init__(self, *args, **kwargs):
         # type: (*Any, **Any) -> None
         self.fail_count = 0
-        super(GdbmCache, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         log('%s - Recreating!', self.name)
 
     def _fix_permissions(self):

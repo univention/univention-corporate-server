@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  Exception classes
@@ -99,7 +98,7 @@ class Abort(Exception):
 class AbortWithDetails(Abort):
     def __init__(self, *args, **kwargs):
         self._exc_details = kwargs
-        super(AbortWithDetails, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def get_exc_details(self):
         if self._exc_details:

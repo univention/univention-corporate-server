@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Samba
 #  this script creates samba configurations from ucr values
@@ -132,7 +131,7 @@ class Printer(Restrictions):
         self['smbname'] = name
 
 
-class ShareConfiguration(object):
+class ShareConfiguration:
     SHARES_DIR = '/etc/samba/local.config.d'
     SHARES_UDM_DIR = '/etc/samba/shares.conf.d'
     PRINTERS_UDM_DIR = '/etc/samba/printers.conf.d'

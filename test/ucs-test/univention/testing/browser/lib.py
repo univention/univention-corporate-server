@@ -40,7 +40,6 @@ import subprocess
 import time
 import urllib.parse
 from enum import Enum
-from typing import List
 
 from playwright.sync_api import Page, expect
 
@@ -110,7 +109,7 @@ class Interactions:
         expect(checkbox).to_be_visible(timeout=10 * 1000)
         checkbox.click()
 
-    def open_modules(self, modules: List[str], limit: int | None = None, start_at: int | None = None):
+    def open_modules(self, modules: list[str], limit: int | None = None, start_at: int | None = None):
         """
         This method will open all modules given by `modules`.
         It does this by searching for the module in the UMC, clicking on it and then clicking the close button
@@ -139,7 +138,7 @@ class Interactions:
         self.open_module(_(module_name))
         self.page.get_by_role('button', name=_('Close')).click()
 
-    def get_available_modules(self) -> List[str]:
+    def get_available_modules(self) -> list[str]:
         self.page.locator('.umcModuleSearchToggleButton').click()
         logger.info('Clicked the search button')
         self.page.locator('.umcModuleSearch input.dijitInputInner').type('*')
@@ -234,7 +233,7 @@ class UMCBrowserTest(Interactions):
                     'name': 'UMCLang',
                     'value': lang,
                     'url': f"https://{ucr.get('ldap/master')}/univention",
-                }
+                },
             )
 
         self.page.context.add_cookies(cookies)

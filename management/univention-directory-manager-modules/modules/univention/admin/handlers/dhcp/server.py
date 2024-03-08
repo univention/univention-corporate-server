@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -96,15 +95,13 @@ class object(DHCPBase):
         if self.lo.searchDn(base=searchBase, filter=filter_format('(&(objectClass=dhcpServer)(cn=%s))', [self.info['server']])):
             raise univention.admin.uexceptions.dhcpServerAlreadyUsed(self.info['server'])
 
-        al = super(object, self)._ldap_addlist()
-        return al + [
-            ('dhcpServiceDN', self.superordinate.dn.encode('UTF-8')),
-        ]
+        al = super()._ldap_addlist()
+        return [*al, ('dhcpServiceDN', self.superordinate.dn.encode('UTF-8'))]
 
     def _ldap_post_move(self, olddn):
         # type: (str) -> None
         """edit dhcpServiceDN"""
-        super(object, self)._ldap_post_move(olddn)
+        super()._ldap_post_move(olddn)
         oldServiceDN = self.lo.getAttr(self.dn, 'dhcpServiceDN')
         module = univention.admin.modules.identifyOne(self.position.getDn(), self.lo.get(self.position.getDn()))
         obj = univention.admin.objects.get(module, None, self.lo, self.position, dn=self.position.getDn())

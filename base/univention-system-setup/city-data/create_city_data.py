@@ -51,7 +51,7 @@ def main() -> None:
     for iid, icity in city_data.items():
         icity['id'] = iid
 
-    for ilocale in opt.locales + ['']:
+    for ilocale in [*opt.locales, ""]:
         print('loading data for locale %s' % ilocale)
         city_names = _util.get_localized_names(city_geonameids, ilocale)
         for iid, ilabel in city_names.items():

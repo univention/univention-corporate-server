@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
 #  control the password sync communication with the s4 password service
@@ -50,7 +49,7 @@ import univention.s4connector.s4
 from univention.s4connector.s4 import format_escaped
 
 
-class Krb5Context(object):
+class Krb5Context:
     def __init__(self):
         self.ctx = heimdal.context()
         self.etypes = self.ctx.get_permitted_enctypes()
@@ -432,7 +431,7 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, 
         package_names.append('Kerberos')
 
     if package_names:
-        krb_blob_Packages = u'\0'.join(package_names).encode('utf-16le')
+        krb_blob_Packages = '\0'.join(package_names).encode('utf-16le')
         cred_PackagesBlob_data = binascii.hexlify(krb_blob_Packages).upper()
         cred_PackagesBlob_name = "Packages"
         cred_PackagesBlob = drsblobs.supplementalCredentialsPackage()
@@ -852,7 +851,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
                     expiryInterval = int(pwhistoryPolicy['expiryInterval'])
                 except (TypeError, ValueError):
                     # expiryInterval is empty or no legal int-string
-                    pwhistoryPolicy['expiryInterval'] = u''
+                    pwhistoryPolicy['expiryInterval'] = ''
                     expiryInterval = -1
 
                 ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: password expiryInterval for %s is %s" % (ucs_object['dn'], expiryInterval))

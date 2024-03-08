@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  module server process implementation
@@ -100,7 +99,7 @@ class _Skip(Exception):
     pass
 
 
-class ModuleServer(object):
+class ModuleServer:
     """
     Implements an UMC module server
 
@@ -127,11 +126,15 @@ class ModuleServer(object):
     def __enter__(self):
         tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console')
         routes = self.__handler.tornado_routes if self.__handler else []
-        application = Application(routes + [
-            (r'^/exit', Exit),
-            (r'^/univention/(?:command|upload)/(.*)', Handler, {'server': self, 'handler': self.__handler}),
-            (r'^/cancel', Cancel, {'handler': self.__handler}),
-        ], serve_traceback=ucr.is_true('umc/http/show_tracebacks', True))
+        application = Application(
+            [
+                *routes,
+                ('^/exit', Exit),
+                ('^/univention/(?:command|upload)/(.*)', Handler, {'server': self, 'handler': self.__handler}),
+                ('^/cancel', Cancel, {'handler': self.__handler}),
+            ],
+            serve_traceback=ucr.is_true('umc/http/show_tracebacks', True),
+        )
 
         signal.signal(signal.SIGALRM, self.signal_handler_alarm)
         signal.signal(signal.SIGTERM, self.signal_handler_stop)
@@ -292,12 +295,12 @@ class Handler(RequestHandler):
         self.ioloop = tornado.ioloop.IOLoop.current()
 
     def on_connection_close(self):
-        super(Handler, self).on_connection_close()
+        super().on_connection_close()
         MODULE.warn('Connection was aborted by the client!')
         self._remove_active_request()
 
     def on_finish(self):
-        super(Handler, self).on_finish()
+        super().on_finish()
         self._remove_active_request()
 
     def _remove_active_request(self):
@@ -439,13 +442,13 @@ class Handler(RequestHandler):
         if not credentials:
             return
         try:
-            scheme, credentials = credentials.split(u' ', 1)
+            scheme, credentials = credentials.split(' ', 1)
         except ValueError:
             raise HTTPError(400)
-        if scheme.lower() != u'basic':
+        if scheme.lower() != 'basic':
             return
         try:
-            username, password = base64.b64decode(credentials.encode('utf-8')).decode('latin-1').split(u':', 1)
+            username, password = base64.b64decode(credentials.encode('utf-8')).decode('latin-1').split(':', 1)
         except ValueError:
             raise HTTPError(400)
         return username, password
@@ -455,7 +458,7 @@ class Handler(RequestHandler):
         if not hasattr(self.request, 'umcp_message'):
             if status_code >= 500:
                 kwargs['exc_info'] = exc_info
-            return super(Handler, self).write_error(status_code, **kwargs)
+            return super().write_error(status_code, **kwargs)
 
         msg = self.request.umcp_message
         exc_info = exc_info or (None, None, None)

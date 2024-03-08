@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app module for installing an app
@@ -65,7 +64,7 @@ class Install(InstallRemoveUpgrade):
     post_readme = 'readme_post_install'
 
     def setup_parser(self, parser):
-        super(Install, self).setup_parser(parser)
+        super().setup_parser(parser)
         parser.add_argument('--do-not-revert', action='store_false', dest='revert', help='Do not revert the installation when it fails. May leave the system in an undesired state')
         parser.add_argument('--only-master-packages', action='store_true', help='Install only Primary Node packages')
         parser.add_argument('--do-not-install-master-packages-remotely', action='store_false', dest='install_master_packages_remotely', help='Do not install Primary Node packages on Primary or Backup Directory Node systems')
@@ -106,7 +105,7 @@ class Install(InstallRemoveUpgrade):
         return args.only_master_packages
 
     def _call_action_hooks(self, directory):
-        super(Install, self)._run_parts(directory)
+        super()._run_parts(directory)
 
     def _do_it(self, app, args):
         if self._install_only_master_packages(args):
@@ -207,7 +206,7 @@ class Install(InstallRemoveUpgrade):
 
     def do_it_once(self, app, args):
         try:
-            return super(Install, self).do_it_once(app, args)
+            return super().do_it_once(app, args)
         finally:
             if app.is_installed() and app.id in args.autoinstalled:
                 ucr_save({app.ucr_autoinstalled_key: 'yes'})

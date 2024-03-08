@@ -1,5 +1,4 @@
 #!/usr/bin/python2.7
-# -*- coding: utf-8 -*-
 #
 # Python VNC automate
 #
@@ -34,7 +33,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
-class Config(object):
+class Config:
     # All information that is relevant for an UCS-installation is stored
     # in here.
     # E.g.: IP address of the VM, DNS server, additional apps to install,

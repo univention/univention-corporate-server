@@ -181,7 +181,7 @@ class EmptyResponse(KerberosException):
     pass
 
 
-class Principal(object):
+class Principal:
 
     def __init__(self, name: str, realm: str, princ_type: base.Asn1ItemBase) -> None:
         self.type = princ_type
@@ -344,7 +344,7 @@ def run(_umc_instance: Instance, retest: bool = False) -> None:
             local_included = False
             for interface in configRegistry.get('samba/interfaces', '').split():
                 try:
-                    addr = ipaddress.ip_address(u'%s' % (interface,))
+                    addr = ipaddress.ip_address('%s' % (interface,))
                 except ValueError:
                     local_included |= interface == 'lo'
                 else:

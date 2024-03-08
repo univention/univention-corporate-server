@@ -47,12 +47,12 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Fetchmail attributes were not migrated')
 description = '\n'.join([
-    _('Not all old LDAP fetchmail configurations have been migrated or incomplete configurations remain in some objects.')
+    _('Not all old LDAP fetchmail configurations have been migrated or incomplete configurations remain in some objects.'),
 ])
 
 description_non_master = '\n'.join([
     _("It is not possible to automatically fix the problem when 'univention-fetchmail' is running on a non-master server."),
-    _("Run the script '/usr/share/univention-fetchmail/migrate-fetchmail.py --binddn $DN --bindpwdfile $PWDFILE' to migrate the complete configurations.")
+    _("Run the script '/usr/share/univention-fetchmail/migrate-fetchmail.py --binddn $DN --bindpwdfile $PWDFILE' to migrate the complete configurations."),
 ])
 
 run_descr = ['Checks if deprecated LDAP fetchmail attributes still exist. Full configurations can be migrated to the new attributes.']
@@ -94,7 +94,7 @@ def output(ret, role):
         result += "\n"
         buttons = [{
             'action': 'migrate_configurations',
-            'label': _('Migrate configurations')
+            'label': _('Migrate configurations'),
         }]
 
     if incomplete:

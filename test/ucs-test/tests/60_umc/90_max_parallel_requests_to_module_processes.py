@@ -37,7 +37,7 @@ def test_max_parallel_requests_to_module_processes(Client):
     client.umc_command('ucstest/sleep', {'seconds': 1})
     client.umc_command('sysinfo/general')
     process_sleep = Process(target=pool_runner, args=(
-        lambda: client.umc_command('ucstest/sleep', {'seconds': 10}).data, )
+        lambda: client.umc_command('ucstest/sleep', {'seconds': 10}).data, ),
     )
     process_sleep.start()
     try:

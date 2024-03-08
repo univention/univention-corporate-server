@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  session handling
@@ -63,7 +62,7 @@ categoryManager = CategoryManager()
 _session_timeout = ucr.get_int('umc/http/session/timeout', 300)
 
 
-class User(object):
+class User:
     """Information about the authenticated user"""
 
     __slots__ = ('_locale', 'auth_type', 'authenticated', 'ip', 'password', 'session_end_time', 'user_dn', 'username')
@@ -83,7 +82,7 @@ class User(object):
         return '<User(authenticated=%r name=%r ip=%r dn=%r auth_type=%r session_end_time=%r password="keep dreaming :-P")>' % (self.authenticated, self.username, self.ip, self.user_dn, self.auth_type, self.session_end_time)
 
 
-class Session(object):
+class Session:
     """A interface to session data"""
 
     __slots__ = ('_', '_active_requests', '_timeout_id', 'acls', 'oidc', 'processes', 'saml', 'session_id', 'user')
@@ -289,7 +288,7 @@ class Session(object):
         return '<Session id=%r %s processes=%r>' % (self.session_id, self.user, self.processes)
 
 
-class IACLs(object):
+class IACLs:
     """Interface for UMC-ACL information"""
 
     @property
@@ -366,7 +365,7 @@ class IACLs(object):
         return '<ACLs from-ldap=%r>' % (isinstance(self.__acls, LDAP_ACLs),)
 
 
-class Processes(object):
+class Processes:
     """Interface for module processes"""
 
     singletons = {}

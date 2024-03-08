@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
 #  LockingDB
@@ -40,7 +39,7 @@ import sqlite3
 import univention.debug2 as ud
 
 
-class LockingDB(object):
+class LockingDB:
     """
     A local database which includes the list of objects
     which are currently locked. That means the

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -47,7 +46,7 @@ from .exceptions import ConnectionError
 _T = TypeVar("_T")  # noqa: PYI018
 
 
-class LDAP_connection(object):
+class LDAP_connection:
     """Caching LDAP connection factory."""
 
     _ucr = None  # type: univention.config_registry.ConfigRegistry  # noqa: PYI026

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention AD Connector
 #  Resync object from OpenLDAP to AD
@@ -47,7 +46,7 @@ import univention.uldap
 from univention.config_registry import ConfigRegistry
 
 
-class UCSResync(object):
+class UCSResync:
 
     def __init__(self, ldap_master=False):
         self.configRegistry = ConfigRegistry()

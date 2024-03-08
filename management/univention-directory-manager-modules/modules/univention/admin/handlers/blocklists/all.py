@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -34,16 +33,13 @@
 
 from typing import TYPE_CHECKING, Any  # noqa: F401
 
+import univention.admin
 import univention.admin.blocklist
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
+import univention.admin.uldap
 from univention.admin.layout import Tab
-
-
-if TYPE_CHECKING:
-    import univention.admin
-    import univention.admin.uldap
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.blocklists')

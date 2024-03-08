@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 """Debhelper compatible routines."""
 #
 # Like what you see? Join us!

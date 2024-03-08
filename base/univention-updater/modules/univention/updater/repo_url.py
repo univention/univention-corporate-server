@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -34,16 +33,18 @@
 from __future__ import annotations
 
 from copy import copy
-from typing import TypeVar, overload
+from typing import TYPE_CHECKING, TypeVar, overload
 from urllib.parse import quote, urlsplit
 
-from univention.config_registry import ConfigRegistry
+
+if TYPE_CHECKING:
+    from univention.config_registry import ConfigRegistry
 
 
 _T = TypeVar("_T")  # noqa: PYI018
 
 
-class UcsRepoUrl(object):  # noqa: PLW1641
+class UcsRepoUrl:  # noqa: PLW1641
     """UCS repository server base URL."""
 
     DEFAULT = 'https://updates.software-univention.de/'
@@ -146,7 +147,7 @@ class UcsRepoUrl(object):  # noqa: PLW1641
         >>> UcsRepoUrl({'_/server': 'https://user:pass@hostname'}, '_').public()
         'https://hostname/'
         """
-        return '{0.scheme}://{0.hostname}{0._port}{0._path}'.format(self)
+        return f'{self.scheme}://{self.hostname}{self._port}{self._path}'
 
     def private(self) -> str:
         """
@@ -161,7 +162,7 @@ class UcsRepoUrl(object):  # noqa: PLW1641
         >>> UcsRepoUrl({'_/server': 'https://user:pass@hostname'}, '_').private()
         'https://user:pass@hostname/'
         """
-        return '{0.scheme}://{0.cred}{0.hostname}{0._port}{0._path}'.format(self)
+        return f'{self.scheme}://{self.cred}{self.hostname}{self._port}{self._path}'
 
     def __repr__(self) -> str:
         """

@@ -16,13 +16,16 @@ from __future__ import annotations
 import re
 import subprocess
 import time
-from typing import Tuple
+from typing import TYPE_CHECKING
 
 import pytest
 
 from univention.lib.i18n import Translation
 from univention.testing.browser import logger
-from univention.testing.browser.lib import UMCBrowserTest
+
+
+if TYPE_CHECKING:
+    from univention.testing.browser.lib import UMCBrowserTest
 
 
 _ = Translation('ucs-test-browser').translate
@@ -53,7 +56,7 @@ def test_open_fd_after_login(umc_browser_test: UMCBrowserTest, udm, try_wrong_pw
     assert ret < 3, f'More than 2 sockets in CLOSE_WAIT after UMC login:\n{open_sockets}'
 
 
-def count_fhs(state: str | None = None) -> Tuple[str, int]:
+def count_fhs(state: str | None = None) -> tuple[str, int]:
     state_str = f'state {state}' if state is not None else ''
     ret = subprocess.run(
         f'ss -tp {state_str} dport 7389 | grep pid=$(pidof -x univention-management-console-server)',

@@ -22,7 +22,7 @@ from functools import reduce
 from operator import and_, or_
 from subprocess import PIPE, Popen, call
 from time import monotonic
-from typing import IO, Any, Dict, Iterable, Iterator, List, Sequence, Set, Tuple, TypeVar, cast
+from typing import IO, Any, Iterable, Iterator, Sequence, TypeVar, cast
 
 import apt
 import retrying
@@ -54,7 +54,7 @@ ILLEGAL_XML_UNICHR = (
 RE_ILLEGAL_XML = re.compile('[%s]' % ''.join(f'{chr(low)}-{chr(high)}' for (low, high) in ILLEGAL_XML_UNICHR if low < sys.maxunicode))
 
 
-def checked_set(values: Iterable[T] | None) -> Set[T]:
+def checked_set(values: Iterable[T] | None) -> set[T]:
     if not isinstance(values, (list, tuple, set, frozenset)):
         raise TypeError('"%r" not a list or tuple' % values)
     return set(values)
@@ -78,11 +78,11 @@ class TestEnvironment:
         self._load_ucr()
         self._load_join()
         self._load_apt()
-        self._local_apps: List[str] | None = None
+        self._local_apps: list[str] | None = None
 
         if interactive:
-            self.tags_required: Set[str] | None = None
-            self.tags_prohibited: Set[str] | None = None
+            self.tags_required: set[str] | None = None
+            self.tags_prohibited: set[str] | None = None
         else:
             self.tags_required = set()
             self.tags_prohibited = {'SKIP', 'WIP'}
@@ -91,7 +91,7 @@ class TestEnvironment:
 
     @property
     @retrying.retry(wait_fixed=3000, stop_max_attempt_number=3)
-    def local_apps(self) -> List[str]:
+    def local_apps(self) -> list[str]:
         """Lazy load locally installed apps."""
         logging.getLogger('univention.appcenter').setLevel(TestEnvironment.logger.getEffectiveLevel())
         if self._local_apps is None:
@@ -163,7 +163,7 @@ class TestEnvironment:
         print('tags_prohibited: %s' % (' '.join(self.tags_prohibited or set()) or '-',), file=stream)
         print('timeout: %d' % (self.timeout,), file=stream)
 
-    def tag(self, require: Set[str] = set(), ignore: Set[str] = set(), prohibit: Set[str] = set()) -> None:
+    def tag(self, require: set[str] = set(), ignore: set[str] = set(), prohibit: set[str] = set()) -> None:
         """Update required, ignored, prohibited tags."""
         if self.tags_required is not None:
             self.tags_required -= set(ignore)
@@ -234,7 +234,7 @@ class Check:
         """Check if precondition to run test is met."""
         raise NotImplementedError()
 
-    def pytest_args(self, environment: TestEnvironment) -> List[str]:
+    def pytest_args(self, environment: TestEnvironment) -> list[str]:
         return []
 
 
@@ -244,7 +244,7 @@ class CheckExecutable(Check):
     def __init__(self, filename: str) -> None:
         super().__init__()
         self.filename = filename
-        self.executable_args: List[str] = []
+        self.executable_args: list[str] = []
 
     def check(self, _environment: TestEnvironment) -> Iterator[Verdict]:
         """Check environment for required executable."""
@@ -272,7 +272,7 @@ class CheckVersion(Check):
 
     STATES = frozenset(('found', 'fixed', 'skip', 'run'))
 
-    def __init__(self, versions: Dict[str, str]) -> None:
+    def __init__(self, versions: dict[str, str]) -> None:
         super().__init__()
         self.versions = versions
         self.state = 'run'
@@ -316,7 +316,7 @@ class CheckTags(Check):
             else:
                 yield Verdict(Verdict.ERROR, 'De-selected by tag: %s' % (' '.join(environment.tags_required),), Reason.ROLE_MISMATCH)
 
-    def pytest_args(self, environment: TestEnvironment) -> List[str]:
+    def pytest_args(self, environment: TestEnvironment) -> list[str]:
         args = []
         for tag in self.tags:
             args.extend(['--ucs-test-default-tags', tag])
@@ -406,7 +406,7 @@ class CheckJoin(Check):
 class CheckComponents(Check):
     """Check for required / prohibited components."""
 
-    def __init__(self, components: Dict[str, str]) -> None:
+    def __init__(self, components: dict[str, str]) -> None:
         super().__init__()
         self.components = components
 
@@ -497,7 +497,7 @@ class CheckExposure(Check):
         else:
             yield Verdict(Verdict.INFO, f'Safe enough: {self.exposure} <= {environment.exposure}')
 
-    def pytest_args(self, environment: TestEnvironment) -> List[str]:
+    def pytest_args(self, environment: TestEnvironment) -> list[str]:
         args = []
         args.extend(['--ucs-test-exposure', environment.exposure.lower()])
         if self.exposure:
@@ -516,10 +516,10 @@ class TestCase:
         self.uid = os.path.sep.join(filename.rsplit(os.path.sep, 2)[-2:])
 
         self.exe: CheckExecutable | None = None
-        self.args: List[str] = []
+        self.args: list[str] = []
         self.description: str | None = None
-        self.bugs: Set[str] = set()
-        self.otrs: Set[str] = set()
+        self.bugs: set[str] = set()
+        self.otrs: set[str] = set()
         self.timeout: int | None = None
         self.is_pytest: bool = False
         self.external_junit: str | None = None
@@ -538,7 +538,7 @@ class TestCase:
 
         return self
 
-    def load_meta(self) -> Dict[str, Any]:
+    def load_meta(self) -> dict[str, Any]:
         TestCase.logger.info('Loading test %s', self.filename)
 
         with open(self.filename, 'rb') as tc_file:
@@ -565,7 +565,7 @@ class TestCase:
 
         return header
 
-    def parse_meta(self, header: Dict[str, Any]) -> None:
+    def parse_meta(self, header: dict[str, Any]) -> None:
         try:
             self.description = header.get('desc', '').strip()
             self.bugs = checked_set(header.get('bugs', []))
@@ -596,7 +596,7 @@ class TestCase:
 
         self.is_pytest = PytestRunner.is_pytest(self)
 
-    def check(self, environment: TestEnvironment) -> List[Verdict]:
+    def check(self, environment: TestEnvironment) -> list[Verdict]:
         """Check if the test case should run."""
         TestCase.logger.info(f'Checking test {self.filename}')
         if self.timeout is None:
@@ -613,8 +613,8 @@ class TestCase:
         conditions += list(self.exposure.check(environment))
         return conditions
 
-    def pytest_check(self, environment: TestEnvironment) -> List[str]:
-        args: List[str] = []
+    def pytest_check(self, environment: TestEnvironment) -> list[str]:
+        args: list[str] = []
         args += self.exe.pytest_args(environment) if self.exe else "No exectable"
         args += self.versions.pytest_args(environment)
         args += self.tags.pytest_args(environment)
@@ -630,7 +630,7 @@ class TestCase:
         assert proc.stdout is not None
         assert proc.stderr is not None
         rfd, wfd = os.pipe2(os.O_NONBLOCK | os.O_CLOEXEC)
-        channels: Dict[int, Tuple[IO[str], List, str, IO[str], str, bytearray]] = {
+        channels: dict[int, tuple[IO[str], list, str, IO[str], str, bytearray]] = {
             proc.stdout.fileno(): (proc.stdout, [], 'stdout', stdout, '[]', bytearray()),
             proc.stderr.fileno(): (proc.stderr, [], 'stderr', stderr, '()', bytearray()),
             rfd: (open(rfd), [], "child", stderr, "{}", bytearray()),
@@ -689,7 +689,7 @@ class TestCase:
                         del buf[0:match.end()]
 
                     now = datetime.now().isoformat(' ')
-                    entry = b'%s %s\n' % ('{1[0]}{0}{1[1]}'.format(now, paren).encode('ascii'), line.rstrip(b'\r\n'))
+                    entry = b'%s %s\n' % (f'{paren[0]}{now}{paren[1]}'.encode('ascii'), line.rstrip(b'\r\n'))
                     log.append(entry)
                     combined.append(entry)
 
@@ -711,7 +711,7 @@ class TestCase:
 
         TestCase._attach(result, 'stdout', combined)
 
-    def _terminate_proc(self, proc: Popen) -> Iterator[Tuple[bool, float]]:
+    def _terminate_proc(self, proc: Popen) -> Iterator[tuple[bool, float]]:
         yield False, self.timeout or float("inf")
         try:
             for i in range(8):  # 2^8 * 100ms = 25.5s
@@ -767,7 +767,7 @@ class TestCase:
         base = os.path.basename(self.filename)
         dirname = os.path.dirname(self.filename)
         assert self.exe is not None
-        cmd = [self.exe.filename] + self.exe.executable_args + [base] + self.args
+        cmd = [self.exe.filename, *self.exe.executable_args, base, *self.args]
 
         if self.is_pytest:
             cmd = PytestRunner.extend_command(self, cmd)
@@ -853,7 +853,7 @@ class TestResult:
         self.result = -1
         self.reason = Reason.UNKNOWN
         self.duration = 0.0
-        self.artifacts: Dict[str, Tuple[str, Any]] = {}
+        self.artifacts: dict[str, tuple[str, Any]] = {}
         self.condition: bool | None = None
         self.is_pytest = False
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -122,7 +121,7 @@ if TYPE_CHECKING:
 _MODULES_PATH = 'univention.udm.modules'
 
 
-class UDM(object):
+class UDM:
     """
     Dynamic factory for creating :py:class:`BaseModule` objects::
 

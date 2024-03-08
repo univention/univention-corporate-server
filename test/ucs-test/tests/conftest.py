@@ -8,12 +8,15 @@ from __future__ import annotations
 
 import subprocess
 import time
-from typing import Callable, Iterator, Type
+from typing import TYPE_CHECKING, Callable, Iterator
 
 import pytest
 
-import univention.lib.umc
 from univention.testing import selenium as _sel, strings, ucr as _ucr, udm as _udm, umc, utils
+
+
+if TYPE_CHECKING:
+    import univention.lib.umc
 
 
 pytest_plugins = ["univention.testing.conftest"]
@@ -92,7 +95,7 @@ def selenium() -> Iterator[_sel.UMCSeleniumTest]:
 
 
 @pytest.fixture(scope='session')
-def Client() -> Type[umc.Client]:
+def Client() -> type[umc.Client]:
     """Session scoped client factory to access UMC."""
     return umc.Client
 

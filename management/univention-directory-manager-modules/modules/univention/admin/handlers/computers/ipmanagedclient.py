@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -36,6 +35,7 @@ from typing import TYPE_CHECKING, Any  # noqa: F401
 
 import univention.admin.filter
 import univention.admin.handlers
+import univention.admin.handlers.dns.alias
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.networks.network
@@ -50,8 +50,6 @@ from univention.admin.layout import Group, Tab
 
 if TYPE_CHECKING:
     import ldap.controls  # noqa: F401
-
-    import univention.admin.handlers.dns.alias
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
@@ -207,7 +205,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support, PKIIntegr
         co,  # type: None
         lo,  # type: univention.admin.uldap.access
         position,  # type: univention.admin.uldap.position | None
-        dn=u'',  # type: str
+        dn='',  # type: str
         superordinate=None,  # type: univention.admin.handlers.simpleLdap | None
         attributes=None,  # type: univention.admin.handlers._Attributes | None
     ):  # type: (...) -> None
@@ -227,13 +225,13 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support, PKIIntegr
 
     def _ldap_pre_create(self):
         # type: () -> None
-        super(object, self)._ldap_pre_create()
+        super()._ldap_pre_create()
         self.nagios_ldap_pre_create()
 
     def _ldap_addlist(self):
         # type: () -> list[tuple[str, Any]]
-        al = super(object, self)._ldap_addlist()
-        return al + [('objectClass', [b'top', b'univentionHost', b'univentionClient', b'person'])]
+        al = super()._ldap_addlist()
+        return [*al, ('objectClass', [b'top', b'univentionHost', b'univentionClient', b'person'])]
 
     def _ldap_post_create(self):
         # type: () -> None

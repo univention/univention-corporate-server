@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
-# -*- coding: utf-8 -*-
 ## desc: Reboot the server! Must be skipped!
 ## roles-not:
 ##  - basesystem

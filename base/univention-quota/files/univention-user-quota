@@ -97,7 +97,7 @@ def get_shares():
     return shares
 
 
-class Mountpoints(object):
+class Mountpoints:
 
     def __init__(self, user, shares):
         self.mountpoints_with_quota = {}

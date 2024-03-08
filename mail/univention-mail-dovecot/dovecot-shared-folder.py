@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Mail Dovecot - listener module: manages shared folders
 #
@@ -118,8 +117,6 @@
 
 from __future__ import annotations
 
-from typing import Dict, List
-
 from univention.mail.dovecot_shared_folder import DovecotSharedFolderListener
 
 import listener
@@ -133,7 +130,7 @@ description = 'Create shared folders for Dovecot'
 filter = '(objectClass=univentionMailSharedFolder)'
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     # ignore object, if this local system is not affected
 
     new_mail_home_server = new.get('univentionMailHomeServer', [b''])[0].decode('UTF-8').lower()

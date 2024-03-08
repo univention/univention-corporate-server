@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  module: manages UDM modules
@@ -155,7 +154,7 @@ class PropertySearchSanitizer(SearchSanitizer):
                 self.add_asterisks = False
                 value = prop.syntax.sanitize_property_search_value(value)
         try:
-            return super(PropertySearchSanitizer, self)._sanitize(value, name, further_arguments)
+            return super()._sanitize(value, name, further_arguments)
         finally:
             self.add_asterisks, self.use_asterisks = add_asterisks, use_asterisks
 
@@ -170,7 +169,7 @@ class Instance(Base, ProgressMixin):
         install_opener(ucr)
 
     def prepare(self, request):
-        super(Instance, self).prepare(request)
+        super().prepare(request)
         if not request.user_dn:
             raise UserWithoutDN(request.username)
 
@@ -187,11 +186,11 @@ class Instance(Base, ProgressMixin):
         self.modules_with_childs = container_modules()
 
     def set_locale(self, _locale):
-        super(Instance, self).set_locale(_locale)
+        super().set_locale(_locale)
         locale.setlocale(locale.LC_TIME, _locale)
 
     def error_handling(self, etype, exc, etraceback):
-        super(Instance, self).error_handling(etype, exc, etraceback)
+        super().error_handling(etype, exc, etraceback)
         if isinstance(exc, (udm_errors.authFail, INVALID_CREDENTIALS)):
             MODULE.warn('Authentication failed: %s' % (exc,))
             raise LDAP_AuthenticationFailed()
@@ -324,7 +323,7 @@ class Instance(Base, ProgressMixin):
 
             # Replace non-breaking space with a normal space
             # https://forge.univention.org/bugzilla/show_bug.cgi?id=30098
-            lic = lic.replace(u'\xa0', " ")
+            lic = lic.replace('\xa0', " ")
 
             lic_file = tempfile.NamedTemporaryFile(delete=False)
             lic_file.write(lic.encode('UTF-8'))

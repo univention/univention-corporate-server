@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -328,7 +327,7 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
         raise connectionFailed(msg)
 
     user_sid = decode_sid(res[0][1]["objectSid"][0])
-    admin_sid = u"%s-%d" % (domain_sid, DOMAIN_RID_ADMINISTRATOR)
+    admin_sid = "%s-%d" % (domain_sid, DOMAIN_RID_ADMINISTRATOR)
     admins_sid = "%s-%d" % (domain_sid, DOMAIN_RID_ADMINS)
     admin_sid = security.dom_sid(admin_sid)
     admins_sid = security.dom_sid(admins_sid)
@@ -651,16 +650,16 @@ def enable_ssl():
     # type: () -> None
     ud.debug(ud.MODULE, ud.PROCESS, "Enable connector SSL")
     univention.config_registry.handler_set([
-        u'connector/ad/ldap/ssl=yes',
-        u'ldap/sasl/secprops/maxssf=128',
+        'connector/ad/ldap/ssl=yes',
+        'ldap/sasl/secprops/maxssf=128',
     ])
 
 
 def disable_ssl():
     # type: () -> None
     ud.debug(ud.MODULE, ud.PROCESS, "Disable connector SSL")
-    univention.config_registry.handler_set([u'connector/ad/ldap/ssl=no'])
-    univention.config_registry.handler_unset([u'ldap/sasl/secprops/maxssf'])
+    univention.config_registry.handler_set(['connector/ad/ldap/ssl=no'])
+    univention.config_registry.handler_unset(['ldap/sasl/secprops/maxssf'])
 
 
 def _add_service_to_localhost(service):
@@ -783,7 +782,7 @@ def lookup_adds_dc(ad_server="", ucr=None, check_dns=True):
 
     # get ip addresses
     try:
-        ipaddress.ip_address(u'%s' % (ad_server,))
+        ipaddress.ip_address('%s' % (ad_server,))
         ips.append(ad_server)
     except ValueError:
         dig_sources_ucr = []
@@ -801,7 +800,7 @@ def lookup_adds_dc(ad_server="", ucr=None, check_dns=True):
                 ud.debug(ud.MODULE, ud.PROCESS, "stdout: %s" % stdout)
                 ud.debug(ud.MODULE, ud.PROCESS, "stderr: %s" % stderr)
                 if p1.returncode == 0:
-                    for i in stdout.split(u'\n'):
+                    for i in stdout.split('\n'):
                         if i:
                             ips.append(i)
                 if ips:
@@ -870,7 +869,7 @@ def lookup_adds_dc(ad_server="", ucr=None, check_dns=True):
 def set_timeserver(timeserver, ucr=None):
     # type: (str, Optional[ConfigRegistry]) -> None
     ud.debug(ud.MODULE, ud.PROCESS, "Setting timeserver to %s" % timeserver)
-    univention.config_registry.handler_set([u'timeserver=%s' % (timeserver,)])
+    univention.config_registry.handler_set(['timeserver=%s' % (timeserver,)])
     restart_service("ntp")
 
 
@@ -990,19 +989,19 @@ def set_nameserver(server_ips, ucr=None):
         ucr.load()
     count = 1
     for server_ip in server_ips:
-        var = u'nameserver%d' % count
+        var = 'nameserver%d' % count
         val = ucr.get(var)
         if val is not None:
-            previous_ucr_set.append(u'%s=%s' % (var, val))
+            previous_ucr_set.append('%s=%s' % (var, val))
         else:
-            previous_ucr_unset.append(u'%s' % (var,))
-        univention.config_registry.handler_set([u'%s=%s' % (var, server_ip)])
+            previous_ucr_unset.append('%s' % (var,))
+        univention.config_registry.handler_set(['%s=%s' % (var, server_ip)])
         count += 1
     for i in range(count, 4):
-        var = u'nameserver%s' % i
+        var = 'nameserver%s' % i
         val = ucr.get(var)
         if val is not None:
-            previous_ucr_set.append(u'%s=%s' % (var, val))
+            previous_ucr_set.append('%s=%s' % (var, val))
             univention.config_registry.handler_unset([var])
     return (previous_ucr_set, previous_ucr_unset)
 
@@ -1023,7 +1022,7 @@ def rename_well_known_sid_objects(username, password, ucr=None):
     res = lo.search(filter=filter_format("(&(sambaSID=%s)(objectClass=sambaGroupMapping))", [domain_admins_sid]), attr=["cn"], unique=True)
     if not res or "cn" not in res[0][1]:
         ud.debug(ud.MODULE, ud.ERROR, "Lookup of group name for Domain Admins sid failed")
-        domain_admins_name = u"Domain Admins"  # sensible guess
+        domain_admins_name = "Domain Admins"  # sensible guess
     else:
         domain_admins_name = res[0][1]["cn"][0].decode('UTF-8')
 
@@ -1047,7 +1046,7 @@ def rename_well_known_sid_objects(username, password, ucr=None):
     res = lo.search(filter=filter_format("(&(sambaSID=%s)(objectClass=sambaGroupMapping))", [domain_admins_sid]), attr=["cn"], unique=True)
     if not res or "cn" not in res[0][1]:
         ud.debug(ud.MODULE, ud.ERROR, "Lookup of new group name for Domain Admins sid failed")
-        new_domain_admins_name = u"Domain Admins"
+        new_domain_admins_name = "Domain Admins"
     else:
         new_domain_admins_name = res[0][1]["cn"][0].decode('UTF-8')
 
@@ -1126,16 +1125,16 @@ def prepare_dns_reverse_settings(ad_domain_info, ucr=None):
 
     ad_server_name = ad_domain_info['DC DNS Name']
     ip = socket.gethostbyname(ad_server_name)
-    ucr_key = u'hosts/static/%s' % (ip,)
-    ucr_set = [u'%s=%s' % (ucr_key, ad_server_name)]
+    ucr_key = 'hosts/static/%s' % (ip,)
+    ucr_set = ['%s=%s' % (ucr_key, ad_server_name)]
 
     for setting in ucr_set:
         var = setting.split("=", 1)[0]
         old_val = ucr.get(var)
         if old_val is not None:
-            previous_ucr_set.append(u'%s=%s' % (var, old_val))
+            previous_ucr_set.append('%s=%s' % (var, old_val))
         else:
-            previous_ucr_unset.append(u'%s' % (var,))
+            previous_ucr_unset.append('%s' % (var,))
 
     ud.debug(ud.MODULE, ud.PROCESS, "Setting UCR variables: %s" % ucr_set)
     univention.config_registry.handler_set(ucr_set)
@@ -1155,32 +1154,32 @@ def prepare_kerberos_ucr_settings(realm=None, ucr=None):
     previous_ucr_unset = []
 
     ucr_set = [
-        u'kerberos/defaults/dns_lookup_kdc=true',
+        'kerberos/defaults/dns_lookup_kdc=true',
     ]
     if realm and realm != ucr.get('kerberos/realm'):
-        ucr_set.append(u'kerberos/realm=%s' % realm)
+        ucr_set.append('kerberos/realm=%s' % realm)
 
     for setting in ucr_set:
         var = setting.split("=", 1)[0]
         old_val = ucr.get(var)
         if old_val is not None:
-            previous_ucr_set.append(u'%s=%s' % (var, old_val))
+            previous_ucr_set.append('%s=%s' % (var, old_val))
         else:
-            previous_ucr_unset.append(u'%s' % (var,))
+            previous_ucr_unset.append('%s' % (var,))
 
     ud.debug(ud.MODULE, ud.PROCESS, "Setting UCR variables: %s" % ucr_set)
     univention.config_registry.handler_set(ucr_set)
 
     ucr_unset = [
-        u'kerberos/kdc',
-        u'kerberos/kpasswdserver',
-        u'kerberos/adminserver',
+        'kerberos/kdc',
+        'kerberos/kpasswdserver',
+        'kerberos/adminserver',
     ]
 
     for var in ucr_unset:
         val = ucr.get(var)
         if val is not None:
-            previous_ucr_set.append(u'%s=%s' % (var, val))
+            previous_ucr_set.append('%s=%s' % (var, val))
 
     ud.debug(ud.MODULE, ud.PROCESS, "Unsetting UCR variables: %s" % ucr_unset)
     univention.config_registry.handler_unset(ucr_unset)
@@ -1201,15 +1200,15 @@ def prepare_ucr_settings():
     # Show warnings in UMC
     # Change displayed name of users from "username" to "displayName" (as in AD)
     ucr_set = [
-        u'ad/member=true',
-        u'connector/ad/mapping/user/password/kinit=true',
-        u'directory/manager/web/modules/users/user/display=displayName',
-        u'nameserver/external=true',
-        u'connector/ad/mapping/group/primarymail=true',
-        u'connector/ad/mapping/user/primarymail=true',
+        'ad/member=true',
+        'connector/ad/mapping/user/password/kinit=true',
+        'directory/manager/web/modules/users/user/display=displayName',
+        'nameserver/external=true',
+        'connector/ad/mapping/group/primarymail=true',
+        'connector/ad/mapping/user/primarymail=true',
     ]
     modules = ('computers/computer', 'groups/group', 'users/user', 'dns/dns')
-    ucr_set += [u'directory/manager/web/modules/%s/show/adnotification=true' % (module,) for module in modules]
+    ucr_set += ['directory/manager/web/modules/%s/show/adnotification=true' % (module,) for module in modules]
 
     ud.debug(ud.MODULE, ud.PROCESS, "Setting UCR variables: %s" % ucr_set)
     univention.config_registry.handler_set(ucr_set)
@@ -1223,17 +1222,17 @@ def revert_ucr_settings():
 
     # TODO something else?
     ucr_unset = [
-        u'ad/member',
-        u'directory/manager/web/modules/users/user/display',
-        u'kerberos/defaults/dns_lookup_kdc',
+        'ad/member',
+        'directory/manager/web/modules/users/user/display',
+        'kerberos/defaults/dns_lookup_kdc',
     ]
     modules = ('computers/computer', 'groups/group', 'users/user', 'dns/dns')
-    ucr_unset += [u'directory/manager/web/modules/%s/show/adnotification' % (module,) for module in modules]
+    ucr_unset += ['directory/manager/web/modules/%s/show/adnotification' % (module,) for module in modules]
     ud.debug(ud.MODULE, ud.PROCESS, "Unsetting UCR variables: %s" % ucr_unset)
     univention.config_registry.handler_unset(ucr_unset)
 
     ucr_set = [
-        u'nameserver/external=false',
+        'nameserver/external=false',
     ]
     ud.debug(ud.MODULE, ud.PROCESS, "Setting UCR variables: %s" % ucr_set)
     univention.config_registry.handler_set(ucr_set)
@@ -1249,13 +1248,13 @@ def prepare_connector_settings(username, password, ad_domain_info, ucr=None):
 
     binddn = '%(hostname)s$' % ucr
     ucr_set = [
-        u'connector/ad/ldap/host=%s' % ad_domain_info["DC DNS Name"],
-        u'connector/ad/ldap/base=%s' % ad_domain_info["LDAP Base"],
-        u'connector/ad/ldap/binddn=%s' % binddn,
-        u'connector/ad/ldap/bindpw=/etc/machine.secret',
-        u'connector/ad/ldap/kerberos=true',
-        u'connector/ad/mapping/syncmode=read',
-        u'connector/ad/mapping/user/ignorelist=krbtgt,root,pcpatch',
+        'connector/ad/ldap/host=%s' % ad_domain_info["DC DNS Name"],
+        'connector/ad/ldap/base=%s' % ad_domain_info["LDAP Base"],
+        'connector/ad/ldap/binddn=%s' % binddn,
+        'connector/ad/ldap/bindpw=/etc/machine.secret',
+        'connector/ad/ldap/kerberos=true',
+        'connector/ad/mapping/syncmode=read',
+        'connector/ad/mapping/user/ignorelist=krbtgt,root,pcpatch',
     ]
     ud.debug(ud.MODULE, ud.PROCESS, "Setting UCR variables: %s" % ucr_set)
     univention.config_registry.handler_set(ucr_set)
@@ -1267,13 +1266,13 @@ def revert_connector_settings(ucr=None):
 
     # TODO something else?
     ucr_unset = [
-        u'connector/ad/ldap/host',
-        u'connector/ad/ldap/base',
-        u'connector/ad/ldap/binddn',
-        u'connector/ad/ldap/bindpw',
-        u'connector/ad/ldap/kerberos',
-        u'connector/ad/mapping/syncmode',
-        u'connector/ad/mapping/user/ignorelist',
+        'connector/ad/ldap/host',
+        'connector/ad/ldap/base',
+        'connector/ad/ldap/binddn',
+        'connector/ad/ldap/bindpw',
+        'connector/ad/ldap/kerberos',
+        'connector/ad/mapping/syncmode',
+        'connector/ad/mapping/user/ignorelist',
     ]
     ud.debug(ud.MODULE, ud.PROCESS, "Unsetting UCR variables: %s" % ucr_unset)
     univention.config_registry.handler_unset(ucr_unset)
@@ -1283,14 +1282,14 @@ def disable_local_samba4():
     # type: () -> None
     ud.debug(ud.MODULE, ud.PROCESS, "Disable local samba4")
     stop_service("samba")
-    univention.config_registry.handler_set([u'samba4/autostart=false'])
+    univention.config_registry.handler_set(['samba4/autostart=false'])
 
 
 def disable_local_heimdal():
     # type: () -> None
     ud.debug(ud.MODULE, ud.PROCESS, "Disable local heimdal")
     stop_service("heimdal-kdc")
-    univention.config_registry.handler_set([u'kerberos/autostart=false'])
+    univention.config_registry.handler_set(['kerberos/autostart=false'])
 
 
 def run_samba_join_script(username, password, ucr=None):
@@ -1529,7 +1528,7 @@ def set_nameserver_from_ucs_master(ucr=None):
         value = get_ucr_variable_from_ucs(ucr.get('hostname'), ucr.get('ldap/master'), var)
         if value:
             ud.debug(ud.MODULE, ud.PROCESS, "Setting %s=%s" % (var, value))
-            univention.config_registry.handler_set([u'%s=%s' % (var, value)])
+            univention.config_registry.handler_set(['%s=%s' % (var, value)])
 
 
 def configure_ad_member(ad_server_ip, username, password):

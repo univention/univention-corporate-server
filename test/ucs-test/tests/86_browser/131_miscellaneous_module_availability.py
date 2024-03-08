@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
-# -*- coding: utf-8 -*-
 ## desc: |
 ##  Test if all expected modules are available for 'root' and 'administrator'
 ##  users, with different join-states.

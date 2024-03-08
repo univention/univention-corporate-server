@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  .settings file for Apps
@@ -73,7 +72,7 @@ class Setting(TypedIniSectionObject):
     def get_class(cls, name):
         if name and not name.endswith('Setting'):
             name = '%sSetting' % name
-        return super(Setting, cls).get_class(name)
+        return super().get_class(name)
 
     def is_outside(self, app):
         # for Non-Docker Apps, Docker Apps when called from inside, Settings specified for 'outside'
@@ -158,7 +157,7 @@ class StringSetting(Setting):
 
 class IntSetting(Setting):
     def sanitize_value(self, app, value):
-        super(IntSetting, self).sanitize_value(app, value)
+        super().sanitize_value(app, value)
         if value is not None:
             try:
                 return int(value)
@@ -168,7 +167,7 @@ class IntSetting(Setting):
 
 class BoolSetting(Setting):
     def sanitize_value(self, app, value):
-        super(BoolSetting, self).sanitize_value(app, value)
+        super().sanitize_value(app, value)
         if isinstance(value, bool):
             return value
         return ucr_is_true(self.name, value=value)
@@ -182,7 +181,7 @@ class ListSetting(Setting):
     values = IniSectionListAttribute()
 
     def sanitize_value(self, app, value):
-        super(ListSetting, self).sanitize_value(app, value)
+        super().sanitize_value(app, value)
         if value not in self.values:
             raise SettingValueError('%s: %r is not a valid option' % (self.name, value))
         return value
@@ -266,7 +265,7 @@ class PasswordSetting(Setting):
 
 class PasswordFileSetting(FileSetting, PasswordSetting):
     def _touch_file(self, filename):
-        super(PasswordFileSetting, self)._touch_file(filename)
+        super()._touch_file(filename)
         os.chmod(filename, 0o600)
 
 

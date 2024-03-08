@@ -135,7 +135,7 @@ def test_junk_license(udm_license_module):
 class UDMLicenseManagement(UDMModule):
 
     def __init__(self):
-        super(UDMLicenseManagement, self).__init__()
+        super().__init__()
         self.LicenseClient = None
         self.ldap_base = self.ucr.get('ldap/base')
         self.license_dn = "cn=admin,cn=license,cn=univention," + self.ldap_base

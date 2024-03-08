@@ -57,7 +57,7 @@ def check_labels(page: Page, labels: Dict[str, str], retries=3):
                 assert found_label is not None, f'A label with the text {label_display} has not been found.'
                 expect(found_label).to_be_visible()
                 expect(found_label, f"Expected locator to have tag {label_tag}--\\d\\d, but found {found_label.get_attribute('for')}").to_have_attribute(
-                    'for', re.compile(rf'{label_tag}--\d\d')
+                    'for', re.compile(rf'{label_tag}--\d\d'),
                 )
                 return
             except AssertionError:

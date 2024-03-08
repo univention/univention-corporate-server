@@ -366,7 +366,7 @@ def test_group_different_case(udm):
             for key, dn in members.items():
                 dn = str2dn(dn)
                 rdn = dn.pop(0)
-                rdn = [tuple([transform(str(rdn[0][0]))] + list(rdn[0][1:]))]
+                rdn = [(transform(str(rdn[0][0])), *list(rdn[0][1:]))]
                 dn.insert(0, rdn)
                 result[key] = [dn2str(dn)]
             variants.append(result)

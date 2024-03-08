@@ -63,7 +63,7 @@ class DoesNotExist(CheckError):
 
 class OwnerMismatch(CheckError):
     def __init__(self, filename: str, expected_owner: Tuple[str, str], actual_owner: Tuple[str, str]) -> None:
-        super(OwnerMismatch, self).__init__(filename)
+        super().__init__(filename)
         self.expected_owner = expected_owner
         self.actual_owner = actual_owner
 
@@ -74,7 +74,7 @@ class OwnerMismatch(CheckError):
 
 class PermissionMismatch(CheckError):
     def __init__(self, filename: str, actual_mode: int, expected_mode: int) -> None:
-        super(PermissionMismatch, self).__init__(filename)
+        super().__init__(filename)
         self.actual_mode = actual_mode
         self.expected_mode = expected_mode
 

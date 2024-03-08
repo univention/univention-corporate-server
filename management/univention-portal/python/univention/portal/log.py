@@ -44,7 +44,7 @@ class ShortNameFormatter(logging.Formatter):
         record.short_name = record.name
         if record.short_name.startswith("%s." % self.shorten):
             record.short_name = record.short_name[len(self.shorten) + 1:]
-        return super(ShortNameFormatter, self).format(record)
+        return super().format(record)
 
 
 def setup_logger(logfile="/var/log/univention/portal.log", stream=True):

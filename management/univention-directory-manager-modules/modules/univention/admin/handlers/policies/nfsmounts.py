@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -111,11 +110,11 @@ layout = [
 
 
 def unmapMounts(old, encoding=()):
-    return [x.decode(*encoding).split(u' ') for x in old]
+    return [x.decode(*encoding).split(' ') for x in old]
 
 
 def mapMounts(old, encoding=()):
-    return [u' '.join(x).encode(*encoding) for x in old]
+    return [' '.join(x).encode(*encoding) for x in old]
 
 
 mapping = univention.admin.mapping.mapping()

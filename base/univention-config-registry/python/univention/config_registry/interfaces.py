@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Common Python Library
 #
@@ -161,26 +160,26 @@ class _Iface(dict):
     def network(self):
         # type: () -> IPv4Address
         """Return network address."""
-        return IPv4Address(u'%(network)s' % self)
+        return IPv4Address('%(network)s' % self)
 
     @property  # type: ignore
     @forgiving_addr
     def broadcast(self):
         # type: () -> IPv4Address
         """Return broadcast address."""
-        return IPv4Address(u'%(broadcast)s' % self)
+        return IPv4Address('%(broadcast)s' % self)
 
     @forgiving_addr
     def ipv4_address(self):
         # type: () -> IPv4Interface
         """Return IPv4 address."""
-        return IPv4Interface(u'%(address)s/%(netmask)s' % self)
+        return IPv4Interface('%(address)s/%(netmask)s' % self)
 
     @forgiving_addr
     def ipv6_address(self, name='default'):
         # type: (str) -> IPv6Interface
         """Return IPv6 address."""
-        key = u'%%(ipv6/%s/address)s/%%(ipv6/%s/prefix)s' % (name, name)
+        key = '%%(ipv6/%s/address)s/%%(ipv6/%s/prefix)s' % (name, name)
         return IPv6Interface(key % self)
 
     @property
@@ -190,7 +189,7 @@ class _Iface(dict):
         for k, v in sorted(self.items()):
             if not k.startswith('route/'):
                 continue
-            if v.startswith('host ') or v.startswith('net '):
+            if v.startswith(('host ', 'net ')):
                 yield v
 
     @property
@@ -237,7 +236,7 @@ class VengefulConfigRegistry(ConfigRegistry):
         raise KeyError(key)
 
 
-class Interfaces(object):
+class Interfaces:
     """
     Handle network interfaces configured by UCR.
 
@@ -254,7 +253,7 @@ class Interfaces(object):
 
         self.primary = ucr.get('interfaces/primary', 'eth0')
         try:
-            self.ipv4_gateway = IPv4Address(u"%(gateway)s" % ucr)  # type: Union[IPv4Address, None, bool]
+            self.ipv4_gateway = IPv4Address("%(gateway)s" % ucr)  # type: Union[IPv4Address, None, bool]
         except KeyError:
             self.ipv4_gateway = None
         except ValueError:
@@ -267,7 +266,7 @@ class Interfaces(object):
             parts = ucr['ipv6/gateway'].rsplit('%', 1)
             gateway = parts.pop(0)
             zone_index = parts[0] if parts else None
-            self.ipv6_gateway = IPv6Address(u"%s" % (gateway,))  # type: Union[IPv6Address, None, bool]
+            self.ipv6_gateway = IPv6Address("%s" % (gateway,))  # type: Union[IPv6Address, None, bool]
             self.ipv6_gateway_zone_index = zone_index
         except KeyError:
             self.ipv6_gateway = None

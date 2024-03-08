@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
 #  Convert S4 DN to base64 objectGuid as used in s4cache.sqlite

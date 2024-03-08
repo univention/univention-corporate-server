@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -39,7 +38,7 @@ from univention.listener import ListenerModuleHandler
 
 class ListenerModuleTemplate(ListenerModuleHandler):
 
-    class Configuration(object):
+    class Configuration:
         name = 'unique_name'
         description = 'listener module description'
         ldap_filter = '(&(objectClass=inetOrgPerson)(uid=example))'

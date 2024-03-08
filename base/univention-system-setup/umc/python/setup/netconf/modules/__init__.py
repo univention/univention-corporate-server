@@ -39,7 +39,7 @@ from typing import Any, List
 from univention.management.console.modules.setup.netconf import ChangeSet, Phase, SkipPhase
 
 
-class RunPhases(object):
+class RunPhases:
     """
     Handle modules for network configuration.
     <http://lkubuntu.wordpress.com/2012/10/02/writing-a-python-plugin-api/>

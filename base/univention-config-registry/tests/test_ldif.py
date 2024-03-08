@@ -25,13 +25,13 @@ def idfn(val):
 
 
 def test_ldif_decode(dst):
-    ul.ldif_decode(StringIO(u"dn: cn=foo\ncn:: Zm9v\n"), dst)
+    ul.ldif_decode(StringIO("dn: cn=foo\ncn:: Zm9v\n"), dst)
     assert dst.getvalue() == b"dn: cn=foo\ncn: foo\n"
 
 
 @pytest.mark.parametrize("line,out", [
-    (u"dn: foo\n", b"dn: foo\n"),
-    (u"dn:: Zm9v\n", b"dn: foo\n"),
+    ("dn: foo\n", b"dn: foo\n"),
+    ("dn:: Zm9v\n", b"dn: foo\n"),
 ], ids=idfn)
 def test_decode(line, out):
     assert b"".join(ul.decode(StringIO(line))) == out
@@ -47,7 +47,7 @@ def test_decode64(line, out):
 
 
 def test_ldif_unwrap(dst):
-    ul.ldif_unwrap(StringIO(u"dn: cn=foo\n bar\n"), dst)
+    ul.ldif_unwrap(StringIO("dn: cn=foo\n bar\n"), dst)
     assert dst.getvalue() == b"dn: cn=foobar\n"
 
 
@@ -63,5 +63,5 @@ def test_unwrap(lines, out):
 
 
 def test_ldif_normalize(dst):
-    ul.ldif_normalize(StringIO(u"dn: cn=foo\n bar\ncn:: Zm9v\n\tYmFy"), dst)
+    ul.ldif_normalize(StringIO("dn: cn=foo\n bar\ncn:: Zm9v\n\tYmFy"), dst)
     assert dst.getvalue() == b"dn: cn=foobar\ncn: foobar\n"

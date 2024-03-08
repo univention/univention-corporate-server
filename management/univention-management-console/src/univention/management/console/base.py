@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  Base class for UMC 2.0 command handlers
@@ -135,7 +134,7 @@ class Base(Translation):
     """The base class for UMC modules"""
 
     def __init__(self, domain='univention-management-console'):
-        super(Base, self).__init__(domain)
+        super().__init__(domain)
         self.__current_language = None
         self._current_request = None
         self.__requests = {}
@@ -277,8 +276,8 @@ class Base(Translation):
             self.update_language(re.sub(';.*', '', lang.replace('-', '_')) for lang in accepted_locales)
 
     def security_checks(self, request, function):
-        if request.http_method not in (u'POST', u'PUT', u'DELETE') and not getattr(function, 'allow_get', False):
-            status = 405 if request.http_method in (u'GET', u'HEAD') else 501
+        if request.http_method not in ('POST', 'PUT', 'DELETE') and not getattr(function, 'allow_get', False):
+            status = 405 if request.http_method in ('GET', 'HEAD') else 501
             raise UMC_Error(self._('The requested HTTP method is not allowed on this resource.'), status=status, headers={'Allow': 'POST'})
 
         if getattr(function, 'xsrf_protection', True) and request.cookies.get('UMCSessionId') != request.headers.get('X-Xsrf-Protection'.title()):
@@ -374,7 +373,7 @@ class Base(Translation):
             status = _MODULE_ERR_COMMAND_FAILED
             reason = None
             if etraceback is None:  # Bug #47114: thread.exc_info doesn't contain a traceback object anymore
-                tb_str = ''.join(['Traceback (most recent call last):\n'] + trace + traceback.format_exception_only(*sys.exc_info()[:2]))
+                tb_str = ''.join(['Traceback (most recent call last):\n', *trace, *traceback.format_exception_only(*sys.exc_info()[:2])])
             else:
                 tb_str = traceback.format_exc()
             if isinstance(tb_str, bytes):  # Python 2

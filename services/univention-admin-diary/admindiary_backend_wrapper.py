@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -50,7 +49,7 @@ from univention.admindiary.backend import get_client
 get_logger = partial(get_logger, 'backend')
 
 
-class RsyslogTransport(object):
+class RsyslogTransport:
     def __init__(self, syslogtag):
         ints = Word(nums)
         # timestamp

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -43,6 +42,7 @@ from typing import TYPE_CHECKING, Any, Callable, Container, Iterable, Match, Typ
 import unidecode
 from ldap.filter import filter_format
 
+import univention.admin.handlers
 import univention.config_registry
 import univention.logging  # noqa: F401
 from univention.admin._ucr import configRegistry
@@ -51,7 +51,6 @@ from univention.admin._ucr import configRegistry
 log = getLogger('ADMIN')
 
 if TYPE_CHECKING:
-    import univention.admin.handlers
     from univention.admin.layout import Tab  # noqa: F401
     from univention.admin.types import TypeHint  # noqa: F401
 
@@ -145,7 +144,7 @@ def pattern_replace(pattern, object):
                     whitelist = whitelist.decode('UTF-8')
                 if isinstance(text, bytes):
                     text = text.decode('UTF-8')
-                text = u''.join([c for c in text if (c.isalnum() or c in whitelist)])
+                text = ''.join([c for c in text if (c.isalnum() or c in whitelist)])
             elif iCmd in ('trim', 'strip'):
                 text = text.strip()
         return text
@@ -195,15 +194,15 @@ def pattern_replace(pattern, object):
 
 class property:
     UMLAUTS = {
-        u'Ä': u'Ae',
-        u'Ö': u'Oe',
-        u'Ü': u'Ue',
-        u'ä': u'ae',
-        u'ö': u'oe',
-        u'ü': u'ue',
-        u'Þ': u'P',
-        u'ð': u'o',
-        u'þ': u'p',
+        'Ä': 'Ae',
+        'Ö': 'Oe',
+        'Ü': 'Ue',
+        'ä': 'ae',
+        'ö': 'oe',
+        'ü': 'ue',
+        'Þ': 'P',
+        'ð': 'o',
+        'þ': 'p',
     }
 
     def __init__(
@@ -385,7 +384,7 @@ class property:
         return bool(set(self.options).intersection(set(options)))
 
 
-class option(object):
+class option:
     """|UDM| option to make properties conditional."""
 
     def __init__(self, short_description='', long_description='', default=0, editable=False, disabled=False, objectClasses=None, is_app_option=False):
@@ -492,7 +491,7 @@ def ucr_overwrite_module_layout(module):
     module.layout = layout
 
 
-class extended_attribute(object):
+class extended_attribute:
     """Extended attributes extend |UDM| and |UMC| with additional properties defined in |LDAP|."""
 
     def __init__(self, name, objClass, ldapMapping, deleteObjClass=False, syntax='string', hook=None):
@@ -530,7 +529,7 @@ def _ldap_cache(ttl=10, cache_none=True):
 
         def _decorated(lo, *args):
             cache = func._cache
-            key = tuple([id(lo)] + list(args))
+            key = (id(lo), *list(args))
             now = time.time()
             for cache_key, cache_val in list(cache.items()):
                 if cache_val['expire'] < now:

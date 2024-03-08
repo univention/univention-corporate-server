@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  self.logger: handle DB storage of tokens
@@ -54,7 +53,7 @@ class MultipleTokensInDB(Exception):
     pass
 
 
-class TokenDB(object):
+class TokenDB:
 
     def __init__(self, logger):
         self.logger = logger
@@ -78,7 +77,7 @@ class TokenDB(object):
 
     def delete_tokens(self, **kwargs):
         sql = "DELETE FROM tokens WHERE "
-        sql += " AND ".join(["{0}=%({0})s".format(key) for key in kwargs.keys()])
+        sql += " AND ".join([f"{key}=%({key})s" for key in kwargs.keys()])
         cur = self.conn.cursor()
         cur.execute(sql, kwargs)
         self.conn.commit()
@@ -86,7 +85,7 @@ class TokenDB(object):
 
     def get_all(self, **kwargs):
         sql = "SELECT * FROM tokens WHERE "
-        sql += " AND ".join(["{0}=%({0})s".format(key) for key in kwargs.keys()])
+        sql += " AND ".join([f"{key}=%({key})s" for key in kwargs.keys()])
         cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cur.execute(sql, kwargs)
         rows = cur.fetchall()

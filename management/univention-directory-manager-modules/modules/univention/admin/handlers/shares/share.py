@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -561,11 +560,11 @@ def stringToBool(value):
 
 
 def mapKeyAndValue(old):
-    return [u' = '.join(entry).encode('UTF-8') for entry in old]
+    return [' = '.join(entry).encode('UTF-8') for entry in old]
 
 
 def unmapKeyAndValue(old):
-    return [entry.decode('UTF-8').split(u' = ', 1) for entry in old]
+    return [entry.decode('UTF-8').split(' = ', 1) for entry in old]
 
 
 def unmap_samba_user_groups(value, encoding=()):
@@ -610,11 +609,11 @@ def map_samba_user_groups(value, encoding=()):
 
 
 def unmap_vfs_objects(value, encoding=()):
-    return [v for entry in value for v in entry.decode(*encoding).split(u' ')]
+    return [v for entry in value for v in entry.decode(*encoding).split(' ')]
 
 
 def map_vfs_objects(value, encoding=()):
-    return u' '.join(value).encode('UTF-8')
+    return ' '.join(value).encode('UTF-8')
 
 
 mapping = univention.admin.mapping.mapping()
@@ -700,7 +699,7 @@ class object(univention.admin.handlers.simpleLdap):
             if re.match("^/%s$|^/%s/" % (dir, dir), self['path']):
                 raise univention.admin.uexceptions.invalidOperation(_('It is not valid to set %s as a share.') % self['path'])
 
-        return super(object, self)._ldap_addlist()
+        return super()._ldap_addlist()
 
     def _ldap_modlist(self):
         ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
@@ -708,7 +707,7 @@ class object(univention.admin.handlers.simpleLdap):
         return ml
 
     def _ldap_pre_remove(self):
-        super(object, self)._ldap_pre_remove()
+        super()._ldap_pre_remove()
         if not self.options:
             self.open()
         if 'nfs' in self.options:

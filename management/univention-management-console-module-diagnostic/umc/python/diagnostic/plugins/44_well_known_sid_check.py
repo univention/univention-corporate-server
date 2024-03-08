@@ -71,7 +71,7 @@ class SIDNotFound(CheckError):
 
 class SIDMismatch(CheckError):
     def __init__(self, sid: str, actual_sid: str, expected_name: str) -> None:
-        super(SIDMismatch, self).__init__(sid, expected_name)
+        super().__init__(sid, expected_name)
         self.actual_sid = actual_sid
 
     def __str__(self) -> str:
@@ -81,7 +81,7 @@ class SIDMismatch(CheckError):
 
 class NameMismatch(CheckError):
     def __init__(self, sid: str, expected_name: str, actual_name: str) -> None:
-        super(NameMismatch, self).__init__(sid, expected_name)
+        super().__init__(sid, expected_name)
         self.actual_name = actual_name
 
     def __str__(self) -> str:
@@ -89,7 +89,7 @@ class NameMismatch(CheckError):
         return msg.format(sid=self.sid, actual=self.actual_name, expected=self.expected_name)
 
 
-class LDAPConnection(object):
+class LDAPConnection:
     def __init__(self) -> None:
         self._connection = univention.uldap.getMachineConnection()
 

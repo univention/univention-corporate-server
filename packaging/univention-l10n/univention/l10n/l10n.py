@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -90,27 +89,27 @@ class UMCModuleTranslation(umc.UMC_Module):
     def __init__(self, attrs, target_language):
         # type: (Dict[str, Any], str) -> None
         attrs['target_language'] = target_language
-        super(UMCModuleTranslation, self).__init__(attrs)
+        super().__init__(attrs)
 
     @property
     def python_po_files(self):
         # type: () -> Iterator[str]
-        for path in super(UMCModuleTranslation, self).python_po_files:
-            if os.path.isfile(os.path.join(self['abs_path_to_src_pkg'], os.path.dirname(path), '{}.po'.format(REFERENCE_LANG))):
+        for path in super().python_po_files:
+            if os.path.isfile(os.path.join(self['abs_path_to_src_pkg'], os.path.dirname(path), f'{REFERENCE_LANG}.po')):
                 yield path
 
     @property
     def js_po_files(self):
         # type: () -> Iterator[str]
-        for path in super(UMCModuleTranslation, self).js_po_files:
-            if os.path.isfile(os.path.join(self['abs_path_to_src_pkg'], os.path.dirname(path), '{}.po'.format(REFERENCE_LANG))):
+        for path in super().js_po_files:
+            if os.path.isfile(os.path.join(self['abs_path_to_src_pkg'], os.path.dirname(path), f'{REFERENCE_LANG}.po')):
                 yield path
 
     @property
     def xml_po_files(self):
         # type: () -> Iterator[Tuple[str, str]]
-        for lang, path in super(UMCModuleTranslation, self).xml_po_files:
-            if os.path.isfile(os.path.join(self['abs_path_to_src_pkg'], os.path.dirname(path), '{}.po'.format(REFERENCE_LANG))):
+        for lang, path in super().xml_po_files:
+            if os.path.isfile(os.path.join(self['abs_path_to_src_pkg'], os.path.dirname(path), f'{REFERENCE_LANG}.po')):
                 yield lang, path
 
     def python_mo_destinations(self):
@@ -176,7 +175,7 @@ class UMCModuleTranslation(umc.UMC_Module):
         attrs = cls._read_module_attributes_from_source_package(module)
         for required in (umc.MODULE, umc.PYTHON, umc.DEFINITION, umc.JAVASCRIPT):
             if required not in attrs:
-                raise AttributeError('UMC module definition incomplete. key {} is missing a value.'.format(required))
+                raise AttributeError(f'UMC module definition incomplete. key {required} is missing a value.')
         return cls(attrs, target_language)
 
 
@@ -210,7 +209,7 @@ class SpecialCase:
             self.new_po_path = self.po_path.format(lang=target_language)
         else:
             self.po_subdir = self.po_subdir.format(lang=target_language)  # type: str
-            self.new_po_path = os.path.join(self.po_subdir, '{}.po'.format(target_language))
+            self.new_po_path = os.path.join(self.po_subdir, f'{target_language}.po')
 
         self.destination = self.destination.format(lang=target_language)  # type: str
         self.path_to_definition = path_to_definition
@@ -225,9 +224,9 @@ class SpecialCase:
         regexs = []  # type: List[Pattern[str]]
         for pattern in [os.path.join(src_pkg_path, pattern) for pattern in self.input_files]:
             try:
-                regexs.append(re.compile(r'{}$'.format(pattern)))
+                regexs.append(re.compile(rf'{pattern}$'))
             except re.error:
-                sys.exit("Invalid input_files statement in: {}. Value must be valid regular expression.".format(self.path_to_definition))
+                sys.exit(f"Invalid input_files statement in: {self.path_to_definition}. Value must be valid regular expression.")
 
         matched = [
             path
@@ -259,9 +258,9 @@ class SpecialCase:
     def create_po_template(self, output_path=os.path.curdir):
         # type: (str) -> str
         base, _ext = os.path.splitext(os.path.join(output_path, self.new_po_path))
-        pot_path = '{}.pot'.format(base)
+        pot_path = f'{base}.pot'
         message_catalogs.create_empty_po(self.binary_package_name, pot_path)
-        partial_pot_path = '{}.pot.partial'.format(base)
+        partial_pot_path = f'{base}.pot.partial'
         for sfs in self.get_source_file_sets():
             sfs.process_po(partial_pot_path)
             message_catalogs.concatenate_po(partial_pot_path, pot_path)
@@ -355,8 +354,8 @@ def write_makefile(all_modules, special_cases, new_package_dir, target_language)
 
     def _append_to_target_lists(mo_destination, po_file):
         # type: (str, str) -> None
-        mo_targets_list.append('$(DESTDIR)/{}'.format(mo_destination))
-        target_prerequisite.append('$(DESTDIR)/{}: {}'.format(mo_destination, po_file))
+        mo_targets_list.append(f'$(DESTDIR)/{mo_destination}')
+        target_prerequisite.append(f'$(DESTDIR)/{mo_destination}: {po_file}')
 
     for module in all_modules:
         if not module.get('core'):
@@ -381,7 +380,7 @@ def translate_special_case(special_case, source_dir, output_dir):
     # type: (SpecialCase, str, str) -> None
     path_src_pkg = os.path.join(source_dir, special_case.package_dir)
     if not os.path.isdir(path_src_pkg):
-        print("Warning: Path defined under 'package_dir' not found. Please check the definitions in the *.univention-l10n file in {}".format(special_case.package_dir))
+        print(f"Warning: Path defined under 'package_dir' not found. Please check the definitions in the *.univention-l10n file in {special_case.package_dir}")
         return
     new_po_path = os.path.join(output_dir, special_case.package_dir, special_case.new_po_path)
     make_parent_dir(new_po_path)
@@ -396,7 +395,7 @@ def read_special_case_definition(definition_path, source_tree_path, target_langu
         try:
             sc_definitions = json.load(fd)
         except ValueError:
-            sys.exit('Error: Invalid syntax in {}. File must be valid JSON.'.format(definition_path))
+            sys.exit(f'Error: Invalid syntax in {definition_path}. File must be valid JSON.')
         for scdef in sc_definitions:
             yield SpecialCase(scdef, source_tree_path, definition_path, target_language)
 

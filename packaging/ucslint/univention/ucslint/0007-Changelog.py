@@ -32,12 +32,15 @@ from __future__ import annotations
 
 import re
 from email.utils import mktime_tz, parsedate_tz
-from pathlib import Path
-from typing import Iterable
+from typing import TYPE_CHECKING, Iterable
 
 from debian.changelog import Changelog, ChangelogParseError
 
 import univention.ucslint.base as uub
+
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 REticket = re.compile(

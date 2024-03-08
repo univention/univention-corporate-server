@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  Mixins for UMC 2.0 modules
@@ -54,7 +53,7 @@ from univention.management.console.modules.decorators import simple_response
 _ = Translation('univention-management-console').translate
 
 
-class Progress(object):
+class Progress:
     """
     Class to keep track of the progress during execution of a function.
     Used internally.
@@ -121,7 +120,7 @@ class Progress(object):
         return ret
 
 
-class ProgressMixin(object):
+class ProgressMixin:
     """
     Mixin to provide two new functions:
 

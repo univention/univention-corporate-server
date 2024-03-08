@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -78,7 +77,7 @@ class UdmModule(Protocol):
     extended_udm_attributes = []  # type: list[univention.admin.extended_attribute]
 
     class object:
-        def __init__(self, co, lo, position, dn=u'', superordinate=None, attributes=None):
+        def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
             # type: (None, univention.admin.uldap.access, univention.admin.uldap.position, str, univention.admin.handlers.simpleLdap | None, univention.admin.handlers._Attributes | None) -> None
             pass
 
@@ -1169,13 +1168,13 @@ def childModules(module_name):
     return list(getattr(module, 'childmodules', []))
 
 
-def _get_translation(locale, attrs, name, defaultname, default=u''):
+def _get_translation(locale, attrs, name, defaultname, default=''):
     # type: (str | None, Any, str, str, str) -> str
     if locale:
-        locale = locale.replace(u'_', u'-').lower()
+        locale = locale.replace('_', '-').lower()
         if name % (locale,) in attrs:
             return attrs[name % (locale,)][0].decode('UTF-8', 'replace')
-        locale = locale.split(u'-', 1)[0]
+        locale = locale.split('-', 1)[0]
         name_short_lang = name % (locale,)
         if name_short_lang in attrs:
             return attrs[name_short_lang][0].decode('UTF-8', 'replace')

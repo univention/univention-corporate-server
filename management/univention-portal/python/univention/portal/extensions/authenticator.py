@@ -45,7 +45,7 @@ from univention.portal.log import get_logger
 from univention.portal.user import User
 
 
-class Session(object):
+class Session:
     def __init__(self, nonce):
         self.nonce = nonce
         self.user = None
@@ -164,7 +164,7 @@ class UMCAndSecretAuthenticator(UMCAuthenticator):
     """Authenticate with a private secret and become any user (god mode)"""
 
     async def get_user(self, request):
-        user = await super(UMCAndSecretAuthenticator, self).get_user(request)
+        user = await super().get_user(request)
         if user and user.username:
             return user
 

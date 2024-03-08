@@ -11,17 +11,23 @@ import base64
 import json
 import os
 import uuid
-from types import SimpleNamespace
+from typing import TYPE_CHECKING
 
 import pytest
-from keycloak import KeycloakAdmin
 from keycloak.exceptions import KeycloakDeleteError, KeycloakError, KeycloakGetError
-from selenium.webdriver.chrome.webdriver import WebDriver
 from utils import get_portal_tile, keycloak_login, run_command, wait_for_id
 
-from univention.config_registry.backend import ConfigRegistry
 from univention.udm import UDM
-from univention.udm.modules.users_user import UsersUserObject
+
+
+if TYPE_CHECKING:
+    from types import SimpleNamespace
+
+    from keycloak import KeycloakAdmin
+    from selenium.webdriver.chrome.webdriver import WebDriver
+
+    from univention.config_registry.backend import ConfigRegistry
+    from univention.udm.modules.users_user import UsersUserObject
 
 
 def get_realm_payload(realm: str, locales_format: str, default_locale: str, keycloak_url: str) -> dict:
@@ -268,7 +274,7 @@ def _create_idp(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRegistry, k
     domain = ucr['domainname']
     config_ua = {
         'config': {
-            'udm_endpoint': 'http://{}.{}/univention/udm'.format(hostname, domain),
+            'udm_endpoint': f'http://{hostname}.{domain}/univention/udm',
             'udm_user': 'Administrator',
             'udm_password': 'univention',
         },

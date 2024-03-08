@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -145,7 +144,7 @@ class object(DHCPBase):
         univention.admin.handlers.simpleLdap.open(self)
 
         for i in [x.decode('UTF-8') for x in self.oldattr.get('dhcpPermitList', [])]:
-            permit, name = i.split(u' ', 1)
+            permit, name = i.split(' ', 1)
             if name in self.permits_dhcp2udm:
                 prop = self.permits_dhcp2udm[name]
                 self[prop] = permit
@@ -154,12 +153,12 @@ class object(DHCPBase):
 
     def ready(self):
         # type: () -> None
-        super(object, self).ready()
+        super().ready()
         # Use ipaddress.IPv4Interface().network to be liberal with subnet notation
-        subnet = ipaddress.IPv4Interface(u'%(subnet)s/%(subnetmask)s' % self.superordinate.info).network
+        subnet = ipaddress.IPv4Interface('%(subnet)s/%(subnetmask)s' % self.superordinate.info).network
         for addresses in self.info['range']:
             for addr in addresses:
-                if ipaddress.IPv4Address(u'%s' % (addr,)) not in subnet:
+                if ipaddress.IPv4Address('%s' % (addr,)) not in subnet:
                     raise univention.admin.uexceptions.rangeNotInNetwork(addr)
 
     def _ldap_modlist(self):
@@ -171,12 +170,12 @@ class object(DHCPBase):
             for prop, value in self.permits_udm2dhcp.items():
                 try:
                     permit = self.oldinfo[prop]
-                    new.remove(u' '.join((permit, value)).encode('UTF-8'))
+                    new.remove(f'{permit} {value}'.encode())
                 except LookupError:
                     pass
                 try:
                     permit = self.info[prop]
-                    new.append(u' '.join((permit, value)).encode('UTF-8'))
+                    new.append(f'{permit} {value}'.encode())
                 except LookupError:
                     pass
 
@@ -191,7 +190,7 @@ class object(DHCPBase):
             filter.value = '%s %s' % (filter.value.strip('*'), cls.permits_udm2dhcp[filter.variable])
             filter.variable = 'dhcpPermitList'
         else:
-            super(object, cls).rewrite_filter(filter, mapping)
+            super().rewrite_filter(filter, mapping)
 
 
 lookup_filter = object.lookup_filter

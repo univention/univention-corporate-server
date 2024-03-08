@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
 #  UDM module for MS GPOs
@@ -190,7 +189,7 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def _ldap_dn(self):
-        dn = ldap.dn.str2dn(super(object, self)._ldap_dn())
+        dn = ldap.dn.str2dn(super()._ldap_dn())
         dn[0] = [('cn', dn[0][0][1], dn[0][0][2])]
         return ldap.dn.dn2str(dn)
 

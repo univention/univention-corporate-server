@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -218,7 +217,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def open(self):
         """Open the LDAP object"""
-        super(object, self).open()
+        super().open()
         # In this method, the properties of the object in self.info can be pre-initialized dynamically.
         # The dictionary self.info can be addressed indirectly, that is, for example, using self['active'] = 1
         # 'self' behaves like a special dictionary
@@ -230,34 +229,34 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_create(self):
         """Called before the LDAP object is created."""
-        return super(object, self)._ldap_pre_create()
+        return super()._ldap_pre_create()
 
     def _ldap_post_create(self):
         """Called after the object has been created."""
-        return super(object, self)._ldap_post_create()
+        return super()._ldap_post_create()
 
     def _ldap_pre_modify(self):
         """Called before the object is modified."""
-        return super(object, self)._ldap_pre_modify()
+        return super()._ldap_pre_modify()
 
     def _ldap_post_modify(self):
         """Called after the object has been modified."""
-        return super(object, self)._ldap_post_modify()
+        return super()._ldap_post_modify()
 
     def _ldap_pre_remove(self):
         """Called before the object is deleted."""
-        return super(object, self)._ldap_pre_remove()
+        return super()._ldap_pre_remove()
 
     def _ldap_post_remove(self):
         """Called after the object has been deleted."""
-        return super(object, self)._ldap_post_remove()
+        return super()._ldap_post_remove()
 
     def _ldap_modlist(self):
         """
         This function can be defined. The inherited method with the same name from 'simpleLdap'
         creates an LDAP modlist from the difference between self.oldinfo and self.info.
         """
-        ml = super(object, self)._ldap_modlist()
+        ml = super()._ldap_modlist()
         # here further adjustments of the modlist are possible
         return ml
 

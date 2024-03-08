@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -155,7 +154,7 @@ def mapKeyAndValue(old, encoding=()):
     >>> mapKeyAndValue([("a", "b")])
     [b'a=b']
     """
-    return [u'='.join(entry).encode(*encoding) for entry in old]
+    return ['='.join(entry).encode(*encoding) for entry in old]
 
 
 def unmapKeyAndValue(old, encoding=()):
@@ -165,7 +164,7 @@ def unmapKeyAndValue(old, encoding=()):
     >>> unmapKeyAndValue([b"a=b"])
     [['a', 'b']]
     """
-    return [entry.decode(*encoding).split(u'=', 1) for entry in old]
+    return [entry.decode(*encoding).split('=', 1) for entry in old]
 
 
 mapping = univention.admin.mapping.mapping()

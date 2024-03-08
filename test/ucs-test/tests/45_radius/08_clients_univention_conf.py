@@ -98,12 +98,12 @@ def main():
                 print('*** checking /etc/freeradius/3.0/clients.univention.conf')
                 with open('/etc/freeradius/3.0/clients.univention.conf') as fd:
                     content = fd.read()
-                    print((
+                    print(
                         'Content of /etc/freeradius/3.0/clients.univention.conf\n'
                         '##############################\n'
-                        '{}\n'
-                        '##############################'
-                    ).format(content))
+                        f'{content}\n'
+                        '##############################',
+                    )
                     content = re.sub(r'\s+', ' ', content)
 
                 def in_content(content, name, txt):

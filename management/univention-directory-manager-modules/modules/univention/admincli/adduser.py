@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -78,12 +77,12 @@ def nscd_invalidate(table):  # type: (str) -> None
 def get_user_object(user, position, lo):  # type: (str, univention.admin.uldap.position, univention.admin.uldap.access) -> Union[univention.admin.modules.UdmModule, str]
     try:
         # user Account
-        return univention.admin.modules.lookup(univention.admin.handlers.users.user, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(username=%s)', [user]), required=True, unique=True)[0]
+        return univention.admin.modules.lookup(univention.admin.handlers.users.user, None, lo, scope='domain', base=position.getDn(), filter=filter_format('(username=%s)', [user]), required=True, unique=True)[0]
     except Exception:
         # machine Account
         for handler in [univention.admin.handlers.computers.windows, univention.admin.handlers.computers.domaincontroller_master, univention.admin.handlers.computers.domaincontroller_slave, univention.admin.handlers.computers.domaincontroller_backup, univention.admin.handlers.computers.memberserver]:
             try:
-                return univention.admin.modules.lookup(handler, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(uid=%s)', [user]), required=True, unique=True)[0]
+                return univention.admin.modules.lookup(handler, None, lo, scope='domain', base=position.getDn(), filter=filter_format('(uid=%s)', [user]), required=True, unique=True)[0]
             except Exception:  # noqa: S112
                 continue
     return 'ERROR: account not found, nothing modified'
@@ -167,7 +166,7 @@ def doit(arglist):
         return out
 
     if action == 'adduser':
-        out.append(status(u'Adding user %s' % (user,)))
+        out.append(status('Adding user %s' % (user,)))
         object = univention.admin.handlers.users.user.object(None, lo, position=position)
         object.open()
         object['username'] = user
@@ -178,14 +177,14 @@ def doit(arglist):
         nscd_invalidate('passwd')
 
     elif action == 'deluser':
-        out.append(status(u'Removing user %s' % (user,)))
-        object = univention.admin.modules.lookup(univention.admin.handlers.users.user, None, lo, scope='domain', base=position.getDomain(), filter=filter_format(u'(username=%s)', [user]), required=True, unique=True)[0]
+        out.append(status('Removing user %s' % (user,)))
+        object = univention.admin.modules.lookup(univention.admin.handlers.users.user, None, lo, scope='domain', base=position.getDomain(), filter=filter_format('(username=%s)', [user]), required=True, unique=True)[0]
         object.open()
         object.remove()
         nscd_invalidate('passwd')
 
     elif action == 'addgroup':
-        out.append(status(u'Adding group %s' % (group,)))
+        out.append(status('Adding group %s' % (group,)))
         object = univention.admin.handlers.groups.group.object(None, lo, position=position)
         object.open()
         object.options = ['posix']
@@ -194,18 +193,18 @@ def doit(arglist):
         nscd_invalidate('group')
 
     elif action == 'delgroup':
-        out.append(status(u'Removing group %s' % (group,)))
-        object = univention.admin.modules.lookup(univention.admin.handlers.groups.group, None, lo, scope='domain', base=position.getDomain(), filter=filter_format(u'(name=%s)', [group]), required=True, unique=True)[0]
+        out.append(status('Removing group %s' % (group,)))
+        object = univention.admin.modules.lookup(univention.admin.handlers.groups.group, None, lo, scope='domain', base=position.getDomain(), filter=filter_format('(name=%s)', [group]), required=True, unique=True)[0]
         object.open()
         object.remove()
         nscd_invalidate('group')
 
     elif action == 'addusertogroup':
         if group in configRegistry.get('samba/addusertogroup/filter/group', '').split(','):
-            out.append(status(u'addusertogroup: filter protects group "%s"' % (group,)))
+            out.append(status('addusertogroup: filter protects group "%s"' % (group,)))
             return out
-        out.append(status(u'Adding user %s to group %s' % (user, group)))
-        groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(name=%s)', [group]), required=True, unique=True)[0]
+        out.append(status('Adding user %s to group %s' % (user, group)))
+        groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, None, lo, scope='domain', base=position.getDn(), filter=filter_format('(name=%s)', [group]), required=True, unique=True)[0]
         groupobject.open()
         userobject = get_user_object(user, position, lo)
         if isinstance(userobject, str):
@@ -221,8 +220,8 @@ def doit(arglist):
             nscd_invalidate('group')
 
     elif action == 'deluserfromgroup':
-        out.append(status(u'Removing user %s from group %s' % (user, group)))
-        groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(name=%s)', [group]), required=True, unique=True)[0]
+        out.append(status('Removing user %s from group %s' % (user, group)))
+        groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, None, lo, scope='domain', base=position.getDn(), filter=filter_format('(name=%s)', [group]), required=True, unique=True)[0]
         groupobject.open()
 
         userobject = get_user_object(user, position, lo)
@@ -237,7 +236,7 @@ def doit(arglist):
             nscd_invalidate('group')
 
     elif action == 'addmachine':
-        out.append(status(u'Adding machine %s' % (machine,)))
+        out.append(status('Adding machine %s' % (machine,)))
         object = univention.admin.handlers.computers.windows.object(None, lo, position=position)
         object.open()
         object.options = ['posix']
@@ -248,16 +247,16 @@ def doit(arglist):
         nscd_invalidate('passwd')
 
     elif action == 'delmachine':
-        out.append(status(u'Removing machine %s' % (machine,)))
-        object = univention.admin.modules.lookup(univention.admin.handlers.computers.windows, None, lo, scope='domain', base=position.getDomain(), filter=filter_format(u'(name=%s)', [machine]), required=True, unique=True)[0]
+        out.append(status('Removing machine %s' % (machine,)))
+        object = univention.admin.modules.lookup(univention.admin.handlers.computers.windows, None, lo, scope='domain', base=position.getDomain(), filter=filter_format('(name=%s)', [machine]), required=True, unique=True)[0]
         object.open()
         object.remove()
         nscd_invalidate('hosts')
 
     elif action == 'setprimarygroup':
-        out.append(status(u'Set primary group %s for user %s' % (group, user)))
+        out.append(status('Set primary group %s for user %s' % (group, user)))
         try:
-            groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, None, lo, scope='domain', base=position.getDn(), filter=filter_format(u'(name=%s)', [group]), required=True, unique=True)[0]
+            groupobject = univention.admin.modules.lookup(univention.admin.handlers.groups.group, None, lo, scope='domain', base=position.getDn(), filter=filter_format('(name=%s)', [group]), required=True, unique=True)[0]
         except Exception:
             out.append('ERROR: group not found, nothing modified')
             return out

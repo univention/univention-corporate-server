@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention System Setup
 # appliance hook script called at the end of appliance wizard setup

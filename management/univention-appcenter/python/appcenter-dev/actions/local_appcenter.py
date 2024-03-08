@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app module for setting up one's own app center
@@ -89,7 +88,7 @@ class DevUseTestAppcenter(UniventionAppAction):
     help = 'Uses the Apps in the Test App Center. Used for testing Apps not yet published.'
 
     def setup_parser(self, parser):
-        super(DevUseTestAppcenter, self).setup_parser(parser)
+        super().setup_parser(parser)
         host_group = parser.add_mutually_exclusive_group()
         host_group.add_argument('--appcenter-host', default='appcenter-test.software-univention.de', help='The hostname of the new App Center. Default: %(default)s')
         revert_group = parser.add_mutually_exclusive_group()
@@ -169,7 +168,7 @@ class LocalAppcenterAction(UniventionAppAction):
             return True
 
 
-class FileInfo(object):
+class FileInfo:
 
     def __init__(self, app, name, url, filename):
         self.name = name
@@ -180,7 +179,7 @@ class FileInfo(object):
         self.archive_filename = '%s.%s' % (app.name, name)
 
 
-class AppcenterApp(object):
+class AppcenterApp:
 
     def __init__(self, name, id, ucs_version, meta_inf_dir, components_dir, server):
         self.name = name
@@ -309,7 +308,7 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
     help = 'In order to work correctly as an App Center server, certain cache files need to be present for clients to download. These are (re)generated automatically by this function'
 
     def setup_parser(self, parser):
-        super(DevRegenerateMetaInf, self).setup_parser(parser)
+        super().setup_parser(parser)
         parser.add_argument('--appcenter-host', default=default_server(), help='The hostname of the new App Center. Default: %(default)s')
 
     @classmethod
@@ -357,7 +356,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
     help = 'To be called after dev-setup-local-appcenter! Puts meta data (like ini file) and packages in the correct directories. Generates other meta files for the App Center to work'
 
     def setup_parser(self, parser):
-        super(DevPopulateAppcenter, self).setup_parser(parser)
+        super().setup_parser(parser)
         version = ucr_get('version/version')
         arch = subprocess.check_output(['uname', '-m']).strip()
         parser.add_argument('--new', action='store_true', help='Add a completely new (or a new version of an existing) app in the local App Center')
@@ -462,7 +461,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
         try:
             old_debs = glob('*.*deb')
             subprocess.call(['apt-get', 'update'])
-            subprocess.call(['apt-get', 'download'] + args.unmaintained)
+            subprocess.call(['apt-get', 'download', *args.unmaintained])
             new_debs = glob('*.*deb')
             for deb in new_debs:
                 if deb not in old_debs:
@@ -664,7 +663,7 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
         interfaces = Interfaces(ucr_instance())
         ip_address = interfaces.get_default_ip_address()
         default_ip_address = ip_address.ip if ip_address else '127.0.0.1'
-        super(DevSetupLocalAppcenter, self).setup_parser(parser)
+        super().setup_parser(parser)
         parser.add_argument('--appcenter-host', default=default_ip_address, help='The hostname of the new App Center. Default: %(default)s')
         parser.add_argument('--revert', action='store_true', help='Reverts the changes of a previous dev-setup-local-appcenter')
 

@@ -40,8 +40,7 @@ import logging
 import os
 import subprocess
 import time
-from types import TracebackType
-from typing import Type
+from typing import TYPE_CHECKING
 
 import selenium.common.exceptions as selenium_exceptions
 from PIL import Image
@@ -56,6 +55,10 @@ from univention.testing import utils
 from univention.testing.selenium.checks_and_waits import ChecksAndWaits
 from univention.testing.selenium.interactions import Interactions
 from univention.testing.selenium.utils import expand_path
+
+
+if TYPE_CHECKING:
+    from types import TracebackType
 
 
 logger = logging.getLogger(__name__)
@@ -134,7 +137,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         self.set_viewport_size(1200, 800)
         return self
 
-    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
+    def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         try:
             if exc_type:
                 logger.error(f'Exception: {exc_type} {exc_value}')

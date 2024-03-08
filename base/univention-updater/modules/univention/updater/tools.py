@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -49,7 +48,7 @@ import urllib.error
 import urllib.request
 from http import client as httplib
 from tempfile import TemporaryDirectory
-from typing import Any, Dict, Iterable, Iterator, List, Literal, Set, Tuple, Type, TypeVar
+from typing import Any, Iterable, Iterator, Literal, TypeVar
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.ucs import UCS_Version
@@ -122,7 +121,7 @@ class _UCSRepo(UCS_Version):  # noqa: PLW1641
 
     def __init__(self, release: UCS_Version | None = None, **kwargs: Any) -> None:
         if release:
-            super(_UCSRepo, self).__init__(release)
+            super().__init__(release)
         for (k, v) in kwargs.items():
             if isinstance(v, str) and '%(' in v:
                 self.__dict__[k] = _UCSRepo._substitution(v, self.__dict__)
@@ -155,7 +154,7 @@ class _UCSRepo(UCS_Version):  # noqa: PLW1641
                     i = 0
                 format = format[:i]
 
-    class _substitution(object):
+    class _substitution:
         """
         Helper to print dynamically substituted variable.
 
@@ -221,7 +220,7 @@ class UCSRepoPool5(_UCSRepo):
         kwargs.setdefault('version', UCS_Version.FORMAT)
         kwargs.setdefault('patch', UCS_Version.FULLFORMAT)
         kwargs.setdefault('errata', False)
-        super(UCSRepoPool5, self).__init__(release, **kwargs)
+        super().__init__(release, **kwargs)
 
     @property
     def _suite(self) -> str:
@@ -282,7 +281,7 @@ class UCSRepoPool(_UCSRepo):
     def __init__(self, **kw: Any) -> None:
         kw.setdefault('version', UCS_Version.FORMAT)
         kw.setdefault('patch', UCS_Version.FULLFORMAT)
-        super(UCSRepoPool, self).__init__(**kw)
+        super().__init__(**kw)
 
     def deb(self, server: _UCSServer, type: str = "deb") -> str:
         """
@@ -298,7 +297,7 @@ class UCSRepoPool(_UCSRepo):
         'deb https://updates.software-univention.de/2.3/maintained/ 2.3-1/amd64/'
         """
         fmt = "%(version)s/%(part)s/ %(patch)s/%(arch)s/"
-        return "%s %s%s" % (type, server, super(UCSRepoPool, self)._format(fmt))
+        return "%s %s%s" % (type, server, super()._format(fmt))
 
     def path(self, filename: str | None = None) -> str:
         """
@@ -318,7 +317,7 @@ class UCSRepoPool(_UCSRepo):
         '2.3/maintained/2.3-1/amd64/Packages.gz'
         """
         fmt = "%(version)s/%(part)s/%(patch)s/%(arch)s/" + (filename or 'Packages.gz')
-        return super(UCSRepoPool, self)._format(fmt)
+        return super()._format(fmt)
 
     def clean(self, server: _UCSServer) -> str:
         """
@@ -329,7 +328,7 @@ class UCSRepoPool(_UCSRepo):
         :rtype: str
         """
         fmt = "%(version)s/%(part)s/%(patch)s/"  # %(arch)s/
-        return "clean %s%s" % (server, super(UCSRepoPool, self)._format(fmt))
+        return "clean %s%s" % (server, super()._format(fmt))
 
 
 class UCSRepoPoolNoArch(_UCSRepo):
@@ -340,7 +339,7 @@ class UCSRepoPoolNoArch(_UCSRepo):
     def __init__(self, **kw: Any) -> None:
         kw.setdefault('version', UCS_Version.FORMAT)
         kw.setdefault('patch', UCS_Version.FULLFORMAT)
-        super(UCSRepoPoolNoArch, self).__init__(**kw)
+        super().__init__(**kw)
 
     def deb(self, server: _UCSServer, type: str = "deb") -> str:
         """
@@ -356,7 +355,7 @@ class UCSRepoPoolNoArch(_UCSRepo):
         'deb https://updates.software-univention.de/2.3/maintained/component/comp/ ./'
         """
         fmt = "%(version)s/%(part)s/%(patch)s/ ./"
-        return "%s %s%s" % (type, server, super(UCSRepoPoolNoArch, self)._format(fmt))
+        return "%s %s%s" % (type, server, super()._format(fmt))
 
     def path(self, filename: str | None = None) -> str:
         """
@@ -376,7 +375,7 @@ class UCSRepoPoolNoArch(_UCSRepo):
         '2.3/maintained/component/comp/Packages.gz'
         """
         fmt = "%(version)s/%(part)s/%(patch)s/" + (filename or 'Packages.gz')
-        return super(UCSRepoPoolNoArch, self)._format(fmt)
+        return super()._format(fmt)
 
     def clean(self, server: _UCSServer) -> str:
         """
@@ -387,10 +386,10 @@ class UCSRepoPoolNoArch(_UCSRepo):
         :rtype: str
         """
         fmt = "%(version)s/%(part)s/%(patch)s/"
-        return "clean %s%s" % (server, super(UCSRepoPoolNoArch, self)._format(fmt))
+        return "clean %s%s" % (server, super()._format(fmt))
 
 
-class _UCSServer(object):  # noqa: PLW1641
+class _UCSServer:  # noqa: PLW1641
     """Abstrace base class to access UCS compatible update server."""
 
     @classmethod
@@ -411,7 +410,7 @@ class _UCSServer(object):  # noqa: PLW1641
         """
         raise NotImplementedError()
 
-    def access(self, repo: _UCSRepo | None, filename: str | None = None, get: bool = False) -> Tuple[int, int, bytes]:
+    def access(self, repo: _UCSRepo | None, filename: str | None = None, get: bool = False) -> tuple[int, int, bytes]:
         """
         Access URI and optionally get data.
 
@@ -454,7 +453,7 @@ class UCSHttpServer(_UCSServer):
     class HTTPHeadHandler(urllib.request.BaseHandler):
         """Handle fallback from HEAD to GET if unimplemented."""
 
-        def http_error_501(self, req: urllib.request.Request, fp: Any, code: int, msg: str, headers: Dict) -> Any:  # httplib.NOT_IMPLEMENTED
+        def http_error_501(self, req: urllib.request.Request, fp: Any, code: int, msg: str, headers: dict) -> Any:  # httplib.NOT_IMPLEMENTED
             m = req.get_method()
             if m == 'HEAD' == UCSHttpServer.http_method:
                 ud.debug(ud.NETWORK, ud.INFO, "HEAD not implemented at %s, switching to GET." % req)
@@ -485,7 +484,7 @@ class UCSHttpServer(_UCSServer):
     proxy_handler = urllib.request.ProxyHandler()
     # No need for ProxyBasicAuthHandler, since ProxyHandler parses netloc for @
     opener = urllib.request.build_opener(head_handler, auth_handler, proxy_handler)
-    failed_hosts: Set[str] = set()
+    failed_hosts: set[str] = set()
 
     @property
     def prefix(self) -> str:
@@ -507,7 +506,7 @@ class UCSHttpServer(_UCSServer):
         """
         uuid = ucr.get('uuid/license', UUID_NULL)
 
-        groups: Dict[str, Dict[str, str]] = {}
+        groups: dict[str, dict[str, str]] = {}
         for key, value in ucr.items():
             match = RE_CREDENTIALS.match(key)
             if match:
@@ -563,7 +562,7 @@ class UCSHttpServer(_UCSServer):
         """
         return (self.baseurl + rel).public()
 
-    def access(self, repo: _UCSRepo | None, filename: str | None = None, get: bool = False) -> Tuple[int, int, bytes]:
+    def access(self, repo: _UCSRepo | None, filename: str | None = None, get: bool = False) -> tuple[int, int, bytes]:
         """
         Access URI and optionally get data.
 
@@ -731,7 +730,7 @@ class UCSLocalServer(_UCSServer):
         uri += str(rel).lstrip('/')
         return uri
 
-    def access(self, repo: _UCSRepo | None, filename: str | None = None, get: bool = False) -> Tuple[int, int, bytes]:
+    def access(self, repo: _UCSRepo | None, filename: str | None = None, get: bool = False) -> tuple[int, int, bytes]:
         """
         Access URI and optionally get data.
 
@@ -765,7 +764,7 @@ class UCSLocalServer(_UCSServer):
         raise DownloadError(uri, -1)
 
 
-class Component(object):
+class Component:
     FN_APTSOURCES = '/etc/apt/sources.list.d/20_ucs-online-component.list'
     UCRV = "repository/online/component/{}/{}"
     AVAILABLE = 'available'
@@ -800,7 +799,7 @@ class Component(object):
         return hash(self.name)
 
     def __str__(self) -> str:
-        return "Component({.name})".format(self)
+        return f"Component({self.name})"
 
     def ucrv(self, key: str = "") -> str:
         return "/".join(filter(None, ("repository", "online", "component", self.name, key)))
@@ -813,11 +812,11 @@ class Component(object):
 
     __nonzero__ = __bool__
 
-    def _versions(self, start: UCS_Version | None = None, end: UCS_Version | None = None) -> Set[UCS_Version]:
+    def _versions(self, start: UCS_Version | None = None, end: UCS_Version | None = None) -> set[UCS_Version]:
         version = self["version"]
         versions = set(RE_SPLIT_MULTI.split(version))
         return {
-            UCS_Version(ver.mm + (0,))
+            UCS_Version((*ver.mm, 0))
             for ver, _data in self.updater.get_releases(start, end)
             if {ver.FORMAT % ver, "current", ""} & versions
         }
@@ -829,7 +828,7 @@ class Component(object):
         return bool(versions & {"current"})
 
     @property
-    def default_packages(self) -> Set[str]:
+    def default_packages(self) -> set[str]:
         """
         Returns a set of (meta) package names to be installed for this component.
 
@@ -1002,7 +1001,7 @@ class Component(object):
                 raise
         return server
 
-    def versions(self, start: UCS_Version, end: UCS_Version, for_mirror_list: bool = False) -> Iterator[Tuple[UCSHttpServer, _UCSRepo]]:
+    def versions(self, start: UCS_Version, end: UCS_Version, for_mirror_list: bool = False) -> Iterator[tuple[UCSHttpServer, _UCSRepo]]:
         """
         Iterate component versions.
 
@@ -1028,7 +1027,7 @@ class Component(object):
         end: UCS_Version,
         clean: bool = False,
         for_mirror_list: bool = False,
-        failed: Set[Tuple[Component, str]] | None = None,
+        failed: set[tuple[Component, str]] | None = None,
     ) -> Iterator[str]:
         """
         Return list of Debian repository statements for requested component.
@@ -1103,9 +1102,9 @@ class Component(object):
             comp_file.close()
 
     @property
-    def layout(self) -> Type[_UCSRepo]:
+    def layout(self) -> type[_UCSRepo]:
         value = self["layout"]
-        layouts: Dict[str, Type[_UCSRepo]] = {
+        layouts: dict[str, type[_UCSRepo]] = {
             "": UCSRepoPool,
             "arch": UCSRepoPool,
             "flat": UCSRepoPoolNoArch,
@@ -1116,12 +1115,12 @@ class Component(object):
             raise ValueError(value)
 
     @property
-    def _parts(self) -> List[str]:
+    def _parts(self) -> list[str]:
         parts = ["maintained"] + ["unmaintained"][:self.updater.configRegistry.is_true(self.ucrv('unmaintained'))]
         return ['%s/component' % (part,) for part in parts]
 
 
-class UniventionUpdater(object):
+class UniventionUpdater:
     """Handle UCS package repositories."""
 
     def __init__(self, check_access: bool = True) -> None:
@@ -1178,7 +1177,7 @@ class UniventionUpdater(object):
         if not self.online_repository:
             self.log.info('Disabled')
             self.server: _UCSServer = UCSLocalServer('')
-            self.releases: Dict[str, Any] = {"error": "offline"}
+            self.releases: dict[str, Any] = {"error": "offline"}
             return
 
         # generate user agent string
@@ -1222,7 +1221,7 @@ class UniventionUpdater(object):
             ud.debug(ud.NETWORK, ud.ERROR, 'Querying maintenance information failed: %s' % (exc,))
             self.releases = {"error": str(exc)}
 
-    def get_releases(self, start: UCS_Version | None = None, end: UCS_Version | None = None) -> Iterator[Tuple[UCS_Version, Dict[str, Any]]]:
+    def get_releases(self, start: UCS_Version | None = None, end: UCS_Version | None = None) -> Iterator[tuple[UCS_Version, dict[str, Any]]]:
         """
         Return UCS releases in range.
 
@@ -1263,7 +1262,7 @@ class UniventionUpdater(object):
 
         self.log.info('Found version %s', ver)
 
-        failed: Set[Tuple[Component, str]] = set()
+        failed: set[tuple[Component, str]] = set()
         for component in components:
             self.log.info('Checking for component %s', component.name)
             any(component.repositories(ver, ver, failed=failed if component.current else set()))
@@ -1279,7 +1278,7 @@ class UniventionUpdater(object):
         self.log.info('Going for version %s', ver)
         return ver
 
-    def get_all_available_release_updates(self, ucs_version: UCS_Version | None = None) -> Tuple[List[UCS_Version], Set[str] | None]:
+    def get_all_available_release_updates(self, ucs_version: UCS_Version | None = None) -> tuple[list[UCS_Version], set[str] | None]:
         """
         Returns a list of all available release updates - the function takes required components into account
         and stops if a required component is missing
@@ -1292,7 +1291,7 @@ class UniventionUpdater(object):
         ucs_version = ucs_version or self.current_version
         components = self.get_components(only_current=True)
 
-        result: List[UCS_Version] = []
+        result: list[UCS_Version] = []
         while ucs_version:
             try:
                 ucs_version = self.get_next_version(ucs_version, components, errorsto='exception')
@@ -1320,7 +1319,7 @@ class UniventionUpdater(object):
         components = self.get_components(only_current=True)
         return self.get_next_version(UCS_Version(ucs_version), components, errorsto)
 
-    def release_update_temporary_sources_list(self, version: UCS_Version) -> List[str]:
+    def release_update_temporary_sources_list(self, version: UCS_Version) -> list[str]:
         """
         Return list of Debian repository statements for the release update including all enabled components.
 
@@ -1341,7 +1340,7 @@ class UniventionUpdater(object):
     def component(self, name: str) -> Component:
         return Component(self, name)
 
-    def get_components(self, only_localmirror_enabled: bool = False, all: bool = False, only_current: bool = False) -> Set[Component]:
+    def get_components(self, only_localmirror_enabled: bool = False, all: bool = False, only_current: bool = False) -> set[Component]:
         """
         Retrieve all (enabled) components from registry as set().
         By default, only "enabled" components will be returned (repository/online/component/%s=$TRUE).
@@ -1370,7 +1369,7 @@ class UniventionUpdater(object):
                 components.add(comp)
         return components
 
-    def component_update_get_packages(self) -> Tuple[List[Tuple[str, str]], List[Tuple[str, str, str]], List[Tuple[str, str]]]:
+    def component_update_get_packages(self) -> tuple[list[tuple[str, str]], list[tuple[str, str, str]], list[tuple[str, str]]]:
         """
         Return tuple with list of (new, upgradeable, removed) packages.
 
@@ -1405,9 +1404,9 @@ class UniventionUpdater(object):
         if proc.returncode == 100:
             raise UnmetDependencyError(stderr)
 
-        new_packages: List[Tuple[str, str]] = []
-        upgraded_packages: List[Tuple[str, str, str]] = []
-        removed_packages: List[Tuple[str, str]] = []
+        new_packages: list[tuple[str, str]] = []
+        upgraded_packages: list[tuple[str, str, str]] = []
+        removed_packages: list[tuple[str, str]] = []
         for line in stdout.splitlines():
             line_split = line.split(' ')
             if line.startswith('Inst '):
@@ -1466,8 +1465,8 @@ class UniventionUpdater(object):
         if clean:
             clean = self.configRegistry.is_true('online/repository/clean', False)
 
-        result: List[str] = []
-        failed: Set[Tuple[Component, str]] = set()
+        result: list[str] = []
+        failed: set[tuple[Component, str]] = set()
         for comp in sorted(self.get_components(only_localmirror_enabled=for_mirror_list)):
             result += comp.repositories(start, end, clean=clean, for_mirror_list=for_mirror_list, failed=failed)
         result += ["# Component %s: %s" % (comp.name, ex) for comp, ex in failed]
@@ -1495,7 +1494,7 @@ class UniventionUpdater(object):
         )
 
     @staticmethod
-    def call_sh_files(scripts: Iterable[Tuple[_UCSServer, _UCSRepo, str | None, str, bytes]], logname: str, *args: str) -> Iterator[Tuple[str, str]]:
+    def call_sh_files(scripts: Iterable[tuple[_UCSServer, _UCSRepo, str | None, str, bytes]], logname: str, *args: str) -> Iterator[tuple[str, str]]:
         """
         Get pre- and postup.sh files and call them in the right order::
 
@@ -1532,8 +1531,8 @@ class UniventionUpdater(object):
 
         # download scripts
         yield "update", "pre"
-        main: Dict[str, List[Tuple[str, str]]] = {'preup': [], 'postup': []}
-        comp: Dict[str, List[Tuple[str, str]]] = {'preup': [], 'postup': []}
+        main: dict[str, list[tuple[str, str]]] = {'preup': [], 'postup': []}
+        comp: dict[str, list[tuple[str, str]]] = {'preup': [], 'postup': []}
         # save scripts to temporary files
         with TemporaryDirectory() as tempdir:
             for server, struct, phase, path, data in scripts:
@@ -1596,7 +1595,7 @@ class UniventionUpdater(object):
         # clean up
         yield "update", "post"
 
-    def get_sh_files(self, start: UCS_Version, end: UCS_Version, mirror: bool = False) -> Iterator[Tuple[_UCSServer, _UCSRepo, str | None, str, bytes]]:
+    def get_sh_files(self, start: UCS_Version, end: UCS_Version, mirror: bool = False) -> Iterator[tuple[_UCSServer, _UCSRepo, str | None, str, bytes]]:
         """
         Return all preup- and postup-scripts of repositories.
 
@@ -1608,7 +1607,7 @@ class UniventionUpdater(object):
 
         See :py:meth:`call_sh_files` for an example.
         """
-        def all_repos() -> Iterator[Tuple[_UCSServer, _UCSRepo, bool]]:
+        def all_repos() -> Iterator[tuple[_UCSServer, _UCSRepo, bool]]:
             self.log.info('Searching releases [%s..%s]', start, end)
             for ver, _data in self.get_releases(start, end):
                 yield self.server, UCSRepoPool5(release=ver, prefix=self.server), True

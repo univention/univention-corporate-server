@@ -1,5 +1,4 @@
 #!/usr/bin/pytest-3
-# vim:set fileencoding=utf-8:
 # SPDX-FileCopyrightText: 2014-2024 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
@@ -20,8 +19,8 @@ def out():
 
 @pytest.mark.parametrize("text,out", [
     ("str", "str"),
-    (u"unicode", "unicode"),
-    (u"Tür", "T?r"),
+    ("unicode", "unicode"),
+    ("Tür", "T?r"),
 ])
 def test_asciify(text, out):
     assert ucrm.asciify(text) == out
@@ -47,12 +46,12 @@ def test_key_shell_escape_error():
         ucrm.key_shell_escape("")
 
 
-@pytest.mark.parametrize("key", list(u"""[]\r\n!"#$%'()+,;<=>?\\`{}""") + [u": "])
+@pytest.mark.parametrize("key", [*list("[]\r\n!\"#$%'()+,;<=>?\\`{}"), ": "])
 def test_validate_key_invalid(key, out):
     assert not ucrm.validate_key(key, out)
 
 
-@pytest.mark.parametrize("key", list(u"""ÄäÖöÜüß"""))
+@pytest.mark.parametrize("key", list("""ÄäÖöÜüß"""))
 def test_validate_key_valid(key, out):
     assert ucrm.validate_key(key, out)
 

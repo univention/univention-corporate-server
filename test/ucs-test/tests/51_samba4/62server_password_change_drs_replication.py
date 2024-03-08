@@ -32,7 +32,7 @@ with UCSTestConfigRegistry() as ucr_test:
     if os.path.isfile('/etc/machine.secret.old'):
         with open('/etc/machine.secret.old') as f:
             for line in f:
-                if line.startswith(today) or line.startswith(yesterday):
+                if line.startswith((today, yesterday)):
                     changed_password = True
                     print('A server password change has already been executed within the last two days.\nNot executing it again.\n')
                     break

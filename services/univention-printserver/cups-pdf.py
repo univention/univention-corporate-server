@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Print Server
 #  listener module: management of CUPS printers
@@ -35,8 +34,6 @@
 
 from __future__ import annotations
 
-from typing import Dict, List
-
 import univention.config_registry
 import univention.debug as ud
 
@@ -53,7 +50,7 @@ sharename = "pdfPrinterShare"
 # the pdf pseudo printer is changed
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     if new.get('cn', [b''])[0].decode('UTF-8') == sharename and new.get('univentionSharePath') and new.get('univentionShareHost'):
         path = new['univentionSharePath'][0].decode('UTF-8')
         server = new['univentionShareHost'][0].decode('ASCII')

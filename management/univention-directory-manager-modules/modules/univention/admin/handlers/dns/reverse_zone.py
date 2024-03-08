@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -163,10 +162,10 @@ def mapSubnet(subnet, encoding=()):
     >>> mapSubnet('1.2.3')
     '3.2.1.in-addr.arpa'
     """
-    if u':' in subnet:  # IPv6
-        subnet = u'%s%s' % (u'.'.join(subnet.replace(u':', u'')[::-1]), ARPA_IP6)
+    if ':' in subnet:  # IPv6
+        subnet = '%s%s' % ('.'.join(subnet.replace(':', '')[::-1]), ARPA_IP6)
     else:
-        subnet = u'%s%s' % (u'.'.join(subnet.split(u'.')[::-1]), ARPA_IP4)
+        subnet = '%s%s' % ('.'.join(subnet.split('.')[::-1]), ARPA_IP4)
     return subnet.encode(*encoding)
 
 
@@ -185,13 +184,13 @@ def unmapSubnet(zone, encoding=()):
     zone = zone.decode(*encoding)
     if zone.endswith(ARPA_IP6):  # IPv6
         zone = zone[:-len(ARPA_IP6)]
-        zone = zone.split(u'.')[::-1]
-        return u':'.join([u''.join(zone[i:i + 4]) for i in range(0, len(zone), 4)])
+        zone = zone.split('.')[::-1]
+        return ':'.join([''.join(zone[i:i + 4]) for i in range(0, len(zone), 4)])
     elif zone.endswith(ARPA_IP4):  # IPv4
         zone = zone[:-len(ARPA_IP4)]
-        q = zone.split(u'.')
+        q = zone.split('.')
         q.reverse()
-        return u'.'.join(q)
+        return '.'.join(q)
     else:
         raise ValueError('Neither an IPv4 nor an IPv6 reverse address')
 
@@ -210,7 +209,7 @@ class object(univention.admin.handlers.simpleLdap):
         co,  # type: None
         lo,  # type: univention.admin.uldap.access
         position,  # type: univention.admin.uldap.position | None
-        dn=u'',  # type: str
+        dn='',  # type: str
         superordinate=None,  # type: univention.admin.handlers.simpleLdap | None
         attributes=None,  # type: univention.admin.handlers._Attributes | None
     ):  # type: (...) -> None
@@ -252,16 +251,14 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_modify(self):
         # type: () -> None
-        super(object, self)._ldap_pre_modify()
+        super()._ldap_pre_modify()
         # update SOA record
         if not self.hasChanged('serial'):
             self['serial'] = str(int(self['serial']) + 1)
 
     def _ldap_addlist(self):
         # type: () -> list[tuple[str, Any]]
-        return super(object, self)._ldap_addlist() + [
-            ('relativeDomainName', [b'@']),
-        ]
+        return [*super()._ldap_addlist(), ('relativeDomainName', [b'@'])]
 
     # FIXME: there should be general solution; subnet is just a naming
     # attribute (though calculated from rdn)

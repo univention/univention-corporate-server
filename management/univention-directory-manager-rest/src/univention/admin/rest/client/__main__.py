@@ -100,7 +100,7 @@ class CLIClient:
             password,
             bearer_token=args.bearertoken,
             user_agent=args.user_agent,
-            language=args.language
+            language=args.language,
         )
 
     def get_modules(self):

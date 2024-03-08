@@ -59,7 +59,7 @@ import subprocess
 import sys
 import time
 from inspect import getfullargspec
-from typing import Any, Dict, Iterable, List, Mapping, Sequence, Tuple
+from typing import Any, Iterable, Mapping, Sequence
 
 import ldap
 import ldap.filter
@@ -150,7 +150,7 @@ class UCSTestUDM:
         'computers/ipmanagedclient')
 
     # map identifying UDM module or rdn-attribute to samba4 rdn attribute
-    def ad_object_identifying_filter(self, modulename: str, dn: str) -> Dict[str, str] | None:
+    def ad_object_identifying_filter(self, modulename: str, dn: str) -> dict[str, str] | None:
         udm_mainmodule, udm_submodule = modulename.split('/', 1)
         objname = ldap.dn.str2dn(dn)[0][0][1]
 
@@ -250,7 +250,7 @@ class UCSTestUDM:
             self._env['LANG'] = '%s.UTF-8' % (language.replace('-', '_'),)
 
     @classmethod
-    def _build_udm_cmdline(cls, modulename: str, action: str, kwargs: Dict[str, Any]) -> List[str]:
+    def _build_udm_cmdline(cls, modulename: str, action: str, kwargs: dict[str, Any]) -> list[str]:
         """
         Pass modulename, action (create, modify, delete) and a bunch of keyword arguments
         to _build_udm_cmdline to build a command for UDM CLI.
@@ -356,7 +356,7 @@ class UCSTestUDM:
 
         # find DN of freshly created object and add it to cleanup list
         for line in stdout.splitlines():  # :pylint: disable-msg=E1103
-            if line.startswith('Object created: ') or line.startswith('Object exists: '):
+            if line.startswith(('Object created: ', 'Object exists: ')):
                 dn = line.split(': ', 1)[-1]
                 if not line.startswith('Object exists: '):
                     self._cleanup.setdefault(modulename, []).append(dn)
@@ -367,7 +367,7 @@ class UCSTestUDM:
         self.wait_for(modulename, dn, wait_for_replication, everything=wait_for)
         return dn
 
-    def create_with_defaults(self, modulename: str, **kwargs: Any) -> Tuple[str, dict]:
+    def create_with_defaults(self, modulename: str, **kwargs: Any) -> tuple[str, dict]:
         """Create any object with as maximum as possible prefilled random default values"""
         module = univention.admin.modules._get(modulename)
         # TODO: cache objects
@@ -881,7 +881,7 @@ class UCSTestUDM:
 
     def wait_for(self, modulename: str, dn: str, wait_for_replication: bool = True, wait_for_drs_replication: bool = False, wait_for_s4connector: bool = False, everything: bool = False) -> None:
         # the order of the conditions is imporant
-        conditions: List[Tuple[utils.ReplicationType, bool]] = []
+        conditions: list[tuple[utils.ReplicationType, bool]] = []
         if wait_for_replication:
             conditions.append((utils.ReplicationType.LISTENER, wait_for_replication))
 
@@ -907,7 +907,7 @@ class UCSTestUDM:
 
         return utils.wait_for(conditions, verbose=False)
 
-    def create_user(self, wait_for_replication: bool = True, check_for_drs_replication: bool = True, wait_for: bool = True, **kwargs: Any) -> Tuple[str, str]:  # :pylint: disable-msg=W0613
+    def create_user(self, wait_for_replication: bool = True, check_for_drs_replication: bool = True, wait_for: bool = True, **kwargs: Any) -> tuple[str, str]:  # :pylint: disable-msg=W0613
         """
         Creates a user via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
         have to exactly match UDM property names (case-sensitive!). Some properties have default values:
@@ -929,7 +929,7 @@ class UCSTestUDM:
 
         return (self.create_object('users/user', wait_for_replication, check_for_drs_replication, wait_for=wait_for, **attr), attr['username'])
 
-    def create_ldap_user(self, wait_for_replication: bool = True, check_for_drs_replication: bool = False, **kwargs: Any) -> Tuple[str, str]:  # :pylint: disable-msg=W0613
+    def create_ldap_user(self, wait_for_replication: bool = True, check_for_drs_replication: bool = False, **kwargs: Any) -> tuple[str, str]:  # :pylint: disable-msg=W0613
         # check_for_drs_replication=False -> ldap users are not replicated to s4
         attr = self._set_module_default_attr(kwargs, (
             ('position', 'cn=users,%s' % self.LDAP_BASE),
@@ -948,7 +948,7 @@ class UCSTestUDM:
         }
         self.remove_object('users/user', wait_for_replication, **kwargs)
 
-    def create_group(self, wait_for_replication: bool = True, check_for_drs_replication: bool = True, **kwargs: Any) -> Tuple[str, str]:  # :pylint: disable-msg=W0613
+    def create_group(self, wait_for_replication: bool = True, check_for_drs_replication: bool = True, **kwargs: Any) -> tuple[str, str]:  # :pylint: disable-msg=W0613
         """
         Creates a group via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
         have to exactly match UDM property names (case-sensitive!). Some properties have default values:
@@ -985,7 +985,7 @@ class UCSTestUDM:
         if ad_ldap_search_args:
             wait_for_drs_replication(should_exist=False, verbose=verbose, timeout=20, **ad_ldap_search_args)
 
-    def list_objects(self, modulename: str, **kwargs: Any) -> List[Tuple[str, Dict[str, Any]]]:
+    def list_objects(self, modulename: str, **kwargs: Any) -> list[tuple[str, dict[str, Any]]]:
         cmd = self._build_udm_cmdline(modulename, 'list', kwargs)
         print(f'Listing {modulename} objects {_prettify_cmd(cmd)}')
         returncode, stdout, stderr = self._execute_udm(cmd)
@@ -993,9 +993,9 @@ class UCSTestUDM:
         if returncode:
             raise UCSTestUDM_ListUDMObjectFailed(returncode, stdout, stderr)
 
-        objects: List[Tuple[str, Dict[str, Any]]] = []
+        objects: list[tuple[str, dict[str, Any]]] = []
         dn = None
-        attrs: Dict[str, Any] = {}
+        attrs: dict[str, Any] = {}
         pattr = None
         pvalue = None
         pdn = None
@@ -1138,7 +1138,7 @@ class UDM(UCSTestUDM):
 
     PATH_UDM_CLI_CLIENT_WRAPPED = '/usr/sbin/udm-test-rest'
 
-    def list_objects_json(self, modulename: str, **kwargs: Any) -> List[Tuple[str, Dict[str, Any]]]:
+    def list_objects_json(self, modulename: str, **kwargs: Any) -> list[tuple[str, dict[str, Any]]]:
         kwargs['as_json'] = True
         cmd = self._build_udm_cmdline(modulename, 'list', kwargs)
         print(f'Listing {modulename} objects {_prettify_cmd(cmd)}')

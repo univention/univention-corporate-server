@@ -411,7 +411,7 @@ class Test_UDMExtensionsJoinscript:
     @pytest.mark.exposure('dangerous')
     def test_register_with_special_name_and_verify_all(self):
         """Register and verify all UDM extension in one step"""
-        objectname = "/".join([random_name(), random_name()])  # slash reqired for 'module'
+        objectname = f'{random_name()}/{random_name()}'  # slash reqired for 'module'
         package_name = get_package_name()
         package_version = get_package_version()
         # extension_name = get_extension_name(extension_type)

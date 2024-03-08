@@ -37,7 +37,7 @@ from __future__ import annotations
 import json
 import logging
 import time
-from typing import Any, List
+from typing import Any
 
 import selenium.common.exceptions as selenium_exceptions
 from selenium import webdriver
@@ -256,7 +256,7 @@ class Interactions:
             )
         return elems[0]
 
-    def get_all_enabled_elements(self, xpath: str) -> List[Any]:
+    def get_all_enabled_elements(self, xpath: str) -> list[Any]:
         elems = self.driver.find_elements(By.XPATH, xpath)
         try:
             return [

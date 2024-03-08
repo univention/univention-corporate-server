@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Print Server
 #  helper script: prints out a list of UDM commands to create
@@ -83,7 +82,7 @@ def check_dir(commands):
     for dirname, _dirs, files in os.walk('/usr/share/ppd/'):
         for filename in files:
             filename = os.path.join(dirname, filename)
-            if os.path.isfile(filename) and (filename.endswith('.ppd') or filename.endswith('.ppd.gz')):
+            if os.path.isfile(filename) and (filename.endswith(('.ppd', '.ppd.gz'))):
                 rel_path = filename[len('/usr/share/ppd/'):]
                 manu, nick = get_ppd_infos(filename)
                 if not manu or not nick:

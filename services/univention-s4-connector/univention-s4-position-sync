@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
 #  List all rejected objects
@@ -65,7 +64,7 @@ def user_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
     s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
     dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
     """
-    return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'user', u'samAccountName', u'posixAccount', 'uid', None)
+    return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'user', 'samAccountName', 'posixAccount', 'uid', None)
 
 
 def group_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
@@ -74,7 +73,7 @@ def group_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
     s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
     dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
     """
-    return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'group', u'cn', u'posixGroup', 'cn', None)
+    return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'group', 'cn', 'posixGroup', 'cn', None)
 
 
 def windowscomputer_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
@@ -83,7 +82,7 @@ def windowscomputer_dn_mapping(s4connector, given_object, dn_mapping_stored, isU
     s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
     dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
     """
-    return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'windowscomputer', u'samAccountName', u'posixAccount', 'uid', None)
+    return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'windowscomputer', 'samAccountName', 'posixAccount', 'uid', None)
 
 
 def dc_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
@@ -92,7 +91,7 @@ def dc_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
     s4connector is an instance of univention.s4connector.s4, given_object an object-dict,
     dn_mapping_stored a list of dn-types which are already mapped because they were stored in the config-file
     """
-    return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'dc', u'samAccountName', u'posixAccount', 'uid', None)
+    return univention.s4connector.s4.samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'dc', 'samAccountName', 'posixAccount', 'uid', None)
 
 
 overload_dn_mapping_function = {

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Mail Dovecot - shared code for listeners
 #
@@ -55,7 +54,7 @@ import univention.debug as ud
 default_sieve_script = "/var/lib/dovecot/sieve/default.sieve"
 
 
-class DovecotListener(object):
+class DovecotListener:
 
     def __init__(self, listener, name):
         # type: (str) -> None

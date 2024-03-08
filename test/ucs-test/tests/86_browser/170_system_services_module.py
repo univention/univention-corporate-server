@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
-# -*- coding: utf-8 -*-
 ## desc: Test the 'System services' module
 ## packages:
 ##  - univention-management-console-module-services
@@ -29,7 +28,7 @@ class UmcError(Exception):
     pass
 
 
-class UMCTester(object):
+class UMCTester:
 
     def search(self, search_value):
         self.selenium.enter_input('pattern', search_value)

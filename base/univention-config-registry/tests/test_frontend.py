@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# vim:set fileencoding=utf-8:
 # SPDX-FileCopyrightText: 2014-2024 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
@@ -103,7 +102,7 @@ def test_UnknownKeyException():
     assert str(ucrfe.UnknownKeyException("key")) == 'W: Unknown key: "key"'
 
 
-class TestReplog(object):
+class TestReplog:
 
     @pytest.fixture()
     def replog(self, monkeypatch, tmpdir, ucr0):
@@ -118,28 +117,28 @@ class TestReplog(object):
         return ucr0
 
     def test_replog_new(self, replog, ucrr):
-        ucrfe.replog(ucrr, u"key", None, u"new")
-        assert u": set key=new old:[Previously undefined]\n" in replog.read()
+        ucrfe.replog(ucrr, "key", None, "new")
+        assert ": set key=new old:[Previously undefined]\n" in replog.read()
 
     def test_replog_set(self, replog, ucrr):
-        ucrfe.replog(ucrr, u"key", u"old", u"new")
-        assert u": set key=new old:old\n" in replog.read()
+        ucrfe.replog(ucrr, "key", "old", "new")
+        assert ": set key=new old:old\n" in replog.read()
 
     def test_replog_unset(self, replog, ucrr):
-        ucrfe.replog(ucrr, u"key", u"old")
-        assert u": unset 'key' old:old\n" in replog.read()
+        ucrfe.replog(ucrr, "key", "old")
+        assert ": unset 'key' old:old\n" in replog.read()
 
     def test_replog_error(self, monkeypatch, tmpdir, ucrr):
         log = tmpdir / "dir" / "replog"
         monkeypatch.setattr(ucrfe, "REPLOG_FILE", str(log))
         with pytest.raises(SystemExit) as exc_info:
-            ucrfe.replog(ucrr, u"key", u"old")
+            ucrfe.replog(ucrr, "key", "old")
 
         assert exc_info.value.code != 0
 
     def test_replog_bytes(self, replog, ucrr):
         ucrfe.replog(ucrr, "key", "old", "new")
-        assert u": set key=new old:old\n" in replog.read()
+        assert ": set key=new old:old\n" in replog.read()
 
 
 @pytest.mark.parametrize("opt,scope", [
@@ -154,7 +153,7 @@ def test_ucr_from_opts(opt, scope, mocker):
     ucr.assert_called_once_with(write_registry=getattr(ucr, scope))
 
 
-class TestHandler(object):
+class TestHandler:
 
     CHANGES = {"new": "val", "foo": "foo", "bar": "bar", "baz": None}
     CHANGED = {
@@ -409,7 +408,7 @@ class TestHandler(object):
         assert err == 'W: Unknown key: "key"\n'
 
 
-class TestInfo(object):
+class TestInfo:
 
     def test_unset(self):
         with pytest.raises(ucrfe.UnknownKeyException):
@@ -487,7 +486,7 @@ def test_registry_variable_default_values(ucrf, rinfo, run, mocker):
     run.assert_called_once_with(ucrf, {"key": (None, "default")}, mocker.ANY)
 
 
-class TestMain(object):
+class TestMain:
 
     @pytest.fixture(autouse=True)
     def reset(self):

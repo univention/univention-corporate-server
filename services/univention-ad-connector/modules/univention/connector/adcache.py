@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention AD Connector
 #  ad cache
@@ -45,7 +44,7 @@ def _encode_base64(val):
     return base64.b64encode(val).decode('ASCII')
 
 
-class EntryDiff(object):
+class EntryDiff:
 
     def __init__(self, old, new):
         self.old = old
@@ -68,7 +67,7 @@ class EntryDiff(object):
         return {o for o in self.intersect if set(self.old[o]) != set(self.new[o])}
 
 
-class ADCache(object):
+class ADCache:
     """
     Local cache for the current AD state of the adconnector.
     With this cache the connector has the possibility to create

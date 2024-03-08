@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Software-Monitor
 #  listener module that watches the availability of the software monitor service
@@ -35,7 +34,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, List
+from typing import Any
 
 import univention.config_registry as ucr
 import univention.debug as ud
@@ -49,10 +48,10 @@ description = 'watches the availability of the software monitor service'
 filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))'
 attributes = ['univentionService']
 
-ldap_info: Dict[str, Any] = {}
+ldap_info: dict[str, Any] = {}
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     if new and b'Software Monitor' in new.get('univentionService', ()):
         with SetUID(0):
             ucr.handler_set(('pkgdb/scan=yes', ))

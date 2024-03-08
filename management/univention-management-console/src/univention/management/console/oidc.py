@@ -55,7 +55,7 @@ from univention.management.console.session import Session
 from univention.management.console.shared_memory import shared_memory
 
 
-class OIDCUser(object):
+class OIDCUser:
     """OIDC tokens of the authenticated user."""
 
     __slots__ = ('access_token', 'claims', 'id_token', 'refresh_token', 'session_refresh_future', 'username')
@@ -84,7 +84,7 @@ class OIDCResource(OAuth2Mixin, Resource):
     requires_authentication = False
 
     async def prepare(self):
-        await super(OIDCResource, self).prepare()
+        await super().prepare()
         state = shared_memory.pkce.get(self.get_query_argument('state', ''), {})
         self.set_settings(state.get('iss', self.get_query_argument('iss', self.application.settings['default_authorization_server'])))
 

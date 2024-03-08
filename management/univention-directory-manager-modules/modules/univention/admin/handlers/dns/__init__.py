@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -85,7 +84,7 @@ class DNSBase(udm_handlers.simpleLdap):
         co,  # type: None
         lo,  # type: univention.admin.uldap.access
         position,  # type: univention.admin.uldap.position | None
-        dn=u'',  # type: str
+        dn='',  # type: str
         superordinate=None,  # type: udm_handlers.simpleLdap | None
         attributes=None,  # type: udm_handlers._Attributes | None
         update_zone=True,  # type: bool
@@ -102,18 +101,18 @@ class DNSBase(udm_handlers.simpleLdap):
 
     def _ldap_post_create(self):
         # type: () -> None
-        super(DNSBase, self)._ldap_post_create()
+        super()._ldap_post_create()
         self._updateZone()
 
     def _ldap_post_modify(self):
         # type: () -> None
-        super(DNSBase, self)._ldap_post_modify()
+        super()._ldap_post_modify()
         if self.hasChanged(self.descriptions.keys()):
             self._updateZone()
 
     def _ldap_post_remove(self):
         # type: () -> None
-        super(DNSBase, self)._ldap_post_remove()
+        super()._ldap_post_remove()
         self._updateZone()
 
     @staticmethod
@@ -131,7 +130,7 @@ class DNSBase(udm_handlers.simpleLdap):
         # type: () -> list[tuple[str, Any]]
         assert self.superordinate is not None
         zone = self._zone(self.superordinate)
-        return super(DNSBase, self)._ldap_addlist() + [("zoneName", zone.encode("ASCII"))]
+        return [*super()._ldap_addlist(), ('zoneName', zone.encode('ASCII'))]
 
     @classmethod
     def lookup_filter_superordinate(cls, filter, superordinate):

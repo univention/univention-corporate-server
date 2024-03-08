@@ -40,7 +40,7 @@ from univention.portal.log import get_logger
 def make_app(portal_definitions):
     portals = {}
     for name, portal_definition in portal_definitions.items():
-        get_logger("server").info("Building portal {}".format(name))
+        get_logger("server").info(f"Building portal {name}")
         portals[name] = make_portal(portal_definition)
 
     routes = build_routes(portals)

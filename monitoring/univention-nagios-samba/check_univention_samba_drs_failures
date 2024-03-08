@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Nagios Plugin samba drs repl
 #
@@ -50,7 +49,7 @@ NAGIOS_STATE_CRITICAL = 2
 NAGIOS_STATE_UNKNOWN = 3
 
 
-class CheckSambaDrsRepl(object):
+class CheckSambaDrsRepl:
 
     def __init__(self):
         self.lp = LoadParm()

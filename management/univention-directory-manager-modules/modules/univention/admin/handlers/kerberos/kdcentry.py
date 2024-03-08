@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -162,10 +161,10 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_create(self):
         self._set_principal()
-        super(object, self)._ldap_pre_create()
+        super()._ldap_pre_create()
 
     def _ldap_dn(self):
-        dn = ldap.dn.str2dn(super(object, self)._ldap_dn())
+        dn = ldap.dn.str2dn(super()._ldap_dn())
         dn[0] = [('krb5PrincipalName', self.krb5PrincipalName, dn[0][0][2])]
         return ldap.dn.dn2str(dn)
 

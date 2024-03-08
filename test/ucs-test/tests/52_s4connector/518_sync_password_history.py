@@ -60,9 +60,7 @@ def create_s4_user(username, password, **kwargs):
     new_position = 'cn=users,%s' % configRegistry.get('connector/s4/ldap/base')
     con_user_dn = f'cn={ldap.dn.escape_dn_chars(tcommon.to_unicode(username))},{new_position}'
 
-    udm_user_dn = ldap.dn.dn2str([
-        [("uid", to_unicode(username), ldap.AVA_STRING)],
-        [("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(configRegistry.get('ldap/base')))
+    udm_user_dn = ldap.dn.dn2str([[('uid', to_unicode(username), ldap.AVA_STRING)], [('CN', 'users', ldap.AVA_STRING)], *ldap.dn.str2dn(configRegistry.get('ldap/base'))])
     s4connector.wait_for_sync()
     return (con_user_dn, udm_user_dn)
 

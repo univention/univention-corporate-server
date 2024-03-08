@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Directory Reports
 #  analyse a tokenized list and perform the tasks
@@ -50,7 +49,7 @@ translation = univention.admin.localization.translation('univention-directory-re
 _ = translation.translate
 
 
-class Interpreter(object):
+class Interpreter:
 
     def __init__(self, base_object, tokens):
         self._base_object = base_object

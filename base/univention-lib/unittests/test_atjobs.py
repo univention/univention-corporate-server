@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -93,4 +92,4 @@ def test_remove(atjobs):
 def test_running(atjobs):
     j = atjobs.add('sleep 10')
     j = atjobs.load(j.nr, extended=True)
-    assert str(j) == 'Job #{} (running)'.format(j.nr)
+    assert str(j) == f'Job #{j.nr} (running)'

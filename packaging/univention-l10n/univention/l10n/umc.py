@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 """
@@ -412,7 +411,7 @@ def create_mo_file(po_file, mo_file=''):
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     out, _err = proc.communicate()
     if out:
-        raise Error(u"Error: '{}' contains 'fuzzy' translations:\n{}".format(po_file, out.decode('utf-8', 'replace')))
+        raise Error("Error: '{}' contains 'fuzzy' translations:\n{}".format(po_file, out.decode('utf-8', 'replace')))
 
     make_parent_dir(mo_file)
 

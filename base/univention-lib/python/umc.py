@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -89,7 +88,7 @@ class ConnectionError(Exception):
 
     def __init__(self, msg, reason=None):
         # type: (str, Exception) -> None
-        super(ConnectionError, self).__init__(msg, reason)
+        super().__init__(msg, reason)
         self.reason = reason
 
 
@@ -141,7 +140,7 @@ class HTTPError(Exception, metaclass=_HTTPType):
 
     def __new__(cls, request, response, hostname):
         err = cls.codes.get(response.status, cls)
-        return super(HTTPError, cls).__new__(err, request, response, hostname)  # type: ignore
+        return super().__new__(err, request, response, hostname)  # type: ignore
 
     def __init__(self, request, response, hostname):
         self.request = request
@@ -252,7 +251,7 @@ class ServiceUnavailable(HTTPError):
     code = 503
 
 
-class Request(object):
+class Request:
     """
     The |HTTP| request.
 
@@ -282,7 +281,7 @@ class Request(object):
         return self.data
 
 
-class Response(object):
+class Response:
     """
     The |HTTP| response.
 
@@ -374,7 +373,7 @@ class Response(object):
         return cls(response.status, response.reason, data, response.getheaders(), response)
 
 
-class Client(object):
+class Client:
     """
     A client capable to speak with a |UMC| server.
 

@@ -21,7 +21,7 @@ class PhaseLdapSSO(AddressMap, LdapChange):
     priority = 49
 
     def __init__(self, changeset: ChangeSet) -> None:
-        super(PhaseLdapSSO, self).__init__(changeset)
+        super().__init__(changeset)
         modules.update()
 
     def post(self) -> None:

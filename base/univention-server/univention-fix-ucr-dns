@@ -39,7 +39,7 @@ from ipaddress import IPv4Address, IPv6Address, ip_address
 from logging import DEBUG, ERROR, INFO, WARNING, basicConfig, getLogger
 from os import environ
 from subprocess import CalledProcessError, check_call, check_output
-from typing import Dict, List, Optional, Union
+from typing import Dict, Optional, Union
 
 import dns.exception
 import dns.flags
@@ -206,7 +206,7 @@ def get_nameservers_cli(nameservers: DictAddr2Str) -> bool:
     return need_fixing
 
 
-def get_forwarders(forwarders: DictAddr2Str, ucr: Dict[str, str]) -> bool:
+def get_forwarders(forwarders: DictAddr2Str, ucr: dict[str, str]) -> bool:
     """
     Get currently configured externnal DNS servers from UCR.
 
@@ -236,7 +236,7 @@ def get_forwarders(forwarders: DictAddr2Str, ucr: Dict[str, str]) -> bool:
     return need_fixing
 
 
-def get_nameservers_ucr(nameservers: DictAddr2Str, ucr: Dict[str, str]) -> bool:
+def get_nameservers_ucr(nameservers: DictAddr2Str, ucr: dict[str, str]) -> bool:
     """
     Get currently configured internal DNS servers from UCR.
 
@@ -318,7 +318,7 @@ def either_or(nameservers: DictAddr2Str, forwarders: DictAddr2Str) -> bool:
     return need_fixing
 
 
-def add_self(nameservers: DictAddr2Str, ucr: Dict[str, str], own_ip: IPAddress | None = None) -> None:
+def add_self(nameservers: DictAddr2Str, ucr: dict[str, str], own_ip: IPAddress | None = None) -> None:
     """
     Add self as internal DNS server (on DCs).
 
@@ -453,7 +453,7 @@ def move_nameservers(forwarders: DictAddr2Str, nameservers: DictAddr2Str) -> Non
     forwarders.clear()
 
 
-def update_ucr(ucr: Dict[str, str], nameservers: DictAddr2Str, forwarders: DictAddr2Str) -> None:
+def update_ucr(ucr: dict[str, str], nameservers: DictAddr2Str, forwarders: DictAddr2Str) -> None:
     """
     Update internal and external DNS servers in UCR settings.
 
@@ -464,9 +464,9 @@ def update_ucr(ucr: Dict[str, str], nameservers: DictAddr2Str, forwarders: DictA
     log = getLogger(__name__).getChild('ucr')
     new_ucr_settings = {}
 
-    def update(names: List[str], input_values: DictAddr2Str, typ: str) -> None:
+    def update(names: list[str], input_values: DictAddr2Str, typ: str) -> None:
         log.debug('%s=%r', typ, list(input_values))
-        values: List[str | None] = [str(val) for val in input_values]
+        values: list[str | None] = [str(val) for val in input_values]
         diff = len(names) - len(values)
         if diff > 0:
             values += [None] * diff

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Admin Diary
 #  CLI Tool adding diary entry into Rsyslog to be added to the DB - eventually

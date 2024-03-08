@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app mixin for dockerized actions
@@ -57,7 +56,7 @@ from univention.appcenter.utils import mkdir  # get_locale
 BACKUP_DIR = '/var/lib/univention-appcenter/backups'
 
 
-class DockerActionMixin(object):
+class DockerActionMixin:
 
     @classmethod
     def _get_docker(cls, app):

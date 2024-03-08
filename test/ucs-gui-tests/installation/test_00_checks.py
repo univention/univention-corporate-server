@@ -9,7 +9,7 @@ import os
 from vminstall.utils import copy_through_ssh, execute_through_ssh
 
 
-class Test00Checks(object):
+class Test00Checks:
 
     def test_run_checks(self, ip_address, password):
         this_dir, _ = os.path.split(__file__)

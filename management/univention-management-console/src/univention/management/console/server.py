@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  UMC server
@@ -79,7 +78,7 @@ class Application(TApplication):
 
     def __init__(self, **settings):
         tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console')
-        super(Application, self).__init__([
+        super().__init__([
             url(r'/', Index, name='index'),
             (r'/auth/?', Auth),
             (r'/upload/?', Upload),
@@ -125,7 +124,7 @@ def tornado_log_reopen():
                 handler.doRollover()
 
 
-class Server(object):
+class Server:
     """univention-management-console-server"""
 
     def __init__(self):

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
 #  Basic class for the UCS connector part
@@ -143,7 +142,7 @@ def compare_lowercase(val1, val2):
 # helper classes
 
 
-class configdb(object):
+class configdb:
 
     def __init__(self, filename):
         self.filename = filename
@@ -264,7 +263,7 @@ class configdb(object):
                 self._dbcon = lite.connect(self.filename)
 
 
-class RFC4514_dn(object):
+class RFC4514_dn:
     special_dn_chars = '"+,;<=>'
     pattern = '|'.join('(%s)' % re.escape(ldap.dn.escape_dn_chars(s)) for s in special_dn_chars)
     match = re.compile(pattern)
@@ -282,7 +281,7 @@ class RFC4514_dn(object):
         return cls.match.sub(cls.replace, dn)
 
 
-class Mapping(object):
+class Mapping:
 
     def __init__(self, mapping):
         self.mapping = mapping
@@ -298,7 +297,7 @@ class Mapping(object):
         return pprint.pformat(self.mapping, indent=4, width=250)
 
 
-class attribute(object):
+class attribute:
     """
     A mapping attribute description
 
@@ -381,7 +380,7 @@ class attribute(object):
         return 'univention.s4connector.attribute(**%s)' % (pprint.pformat(dict(self.__dict__), indent=4, width=250),)
 
 
-class property(object):
+class property:
 
     def __init__(
             self,
@@ -485,7 +484,7 @@ class property(object):
         return 'univention.s4connector.property(**%s)' % (pprint.pformat(dict(self.__dict__), indent=4, width=250),)
 
 
-class ucs(object):
+class ucs:
 
     def __init__(self, CONFIGBASENAME, _property, configRegistry, listener_dir, logfilename, debug_level):
 

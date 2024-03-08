@@ -14,6 +14,6 @@ class PhaseFlushOldAddresses(Phase):
     priority = 55
 
     def pre(self) -> None:
-        super(PhaseFlushOldAddresses, self).pre()
+        super().pre()
         for _name, iface in self.changeset.old_interfaces.all_interfaces:
             self.call(["ip", "addr", "flush", iface.name])

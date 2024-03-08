@@ -61,12 +61,7 @@ def main():
         # Previously umc had a segfault here
         saml_session.login_with_new_session_at_IdP()
     except samltest.SamlError as exc:
-        expected_error = '\\n'.join([
-            "The SAML authentication failed. This might be a temporary problem. Please login again.",
-            "Further information can be found in the following logfiles:",
-            "* /var/log/univention/management-console-web-server.log",
-            "* /var/log/univention/management-console-server.log",
-        ])
+        expected_error = 'The SAML authentication failed. This might be a temporary problem. Please login again.\\nFurther information can be found in the following logfiles:\\n* /var/log/univention/management-console-web-server.log\\n* /var/log/univention/management-console-server.log'
         if expected_error not in str(exc):
             utils.fail(str(exc))
     reload_idp_metadata()

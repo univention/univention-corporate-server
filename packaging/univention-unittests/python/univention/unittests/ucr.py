@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -35,7 +34,7 @@
 import pytest
 
 
-class TestUCR(object):
+class TestUCR:
     def __init__(self):
         self.items = {}
 

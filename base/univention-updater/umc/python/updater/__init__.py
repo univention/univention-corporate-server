@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  module: updater
@@ -42,8 +41,7 @@ from os import getpid, stat
 from shlex import quote
 from time import time
 from traceback import format_exc
-from types import ModuleType
-from typing import Any, Callable, Dict, Iterable, List, Tuple, Union
+from typing import TYPE_CHECKING, Any, Callable, Dict, Iterable, List, Tuple, Union
 
 import psutil
 from apt import Cache
@@ -59,6 +57,10 @@ from univention.management.console.modules.sanitizers import (
 )
 from univention.updater.errors import RequiredComponentError
 from univention.updater.tools import UniventionUpdater
+
+
+if TYPE_CHECKING:
+    from types import ModuleType
 
 
 _ = Translation('univention-management-console-module-updater').translate
@@ -88,7 +90,7 @@ INSTALLERS = {
 }
 
 
-class Watched_File(object):
+class Watched_File:
     """
     A class that takes a file name and watches changes to this file.
     We don't use any advanced technologies (FAM, inotify etc.) but
@@ -148,7 +150,7 @@ class Watched_File(object):
         return self._last_returned_stamp
 
 
-class Watched_Files(object):
+class Watched_Files:
     """Convenience class to monitor more than one file at a time."""
 
     def __init__(self, files: Iterable[str], count: int = 2) -> None:
@@ -418,7 +420,7 @@ class Instance(Base):
         return self.__which_job_is_running()
 
     @sanitize(
-        job=ChoicesSanitizer(list(INSTALLERS) + [''], required=True),
+        job=ChoicesSanitizer([*list(INSTALLERS), ''], required=True),
         count=IntegerSanitizer(default=0),
     )
     @simple_response

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app module for configuring an app
@@ -49,7 +48,7 @@ class UpdateCertificates(UniventionAppAction):
     help = 'Update certificates for an app'
 
     def setup_parser(self, parser):
-        super(UpdateCertificates, self).setup_parser(parser)
+        super().setup_parser(parser)
         parser.add_argument('apps', nargs='*', action=StoreAppAction, help='The ID of app for which the certificates should be updated (all locally installed if none given)')
 
     def update_certificates(self, app):
@@ -60,7 +59,7 @@ class UpdateCertificates(UniventionAppAction):
             args.apps = Apps().get_all_locally_installed_apps()
         self.logfile_logger = get_logfile_logger('update-certificates')
         for app in args.apps:
-            self.log('updating certificates for {}'.format(app))
+            self.log(f'updating certificates for {app}')
             self.update_certificates(app)
 
     def _run_update_certificates_script(self, app):

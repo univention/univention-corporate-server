@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -208,7 +207,7 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
     def _ldap_dn(self):
-        dn = ldap.dn.str2dn(super(object, self)._ldap_dn())
+        dn = ldap.dn.str2dn(super()._ldap_dn())
         return '%s,cn=univention,%s' % (ldap.dn.dn2str(dn[0]), self.position.getDomain())
 
 

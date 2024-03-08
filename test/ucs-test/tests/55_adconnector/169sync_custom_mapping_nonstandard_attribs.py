@@ -62,7 +62,7 @@ class TestADCustomMappings(unittest.TestCase):
             "        )\n"
             "    ad_mapping['user'].position_mapping=[('cn=users,{ldap_base}', '{target_position}')]\n"
             "    return ad_mapping\n".format(
-                attribute=self.attribute, target_attribute=self.target_attribute, ldap_base=ucr["ldap/base"], target_position=self.target_position
+                attribute=self.attribute, target_attribute=self.target_attribute, ldap_base=ucr["ldap/base"], target_position=self.target_position,
             )
         )
 
@@ -159,8 +159,8 @@ class TestADCustomMappings(unittest.TestCase):
 
         # check the value from the mapping
         assert self.adc.get_attribute(ad_user_dn, self.target_attribute) == [test_string.encode("UTF-8")]
-        assert self.adc.get_attribute(ad_user_dn, "employeeNumber") == ["42".encode("UTF-8")]
-        assert self.adc.get_attribute(ad_user_dn, "displayName") == ["test uuuuuuser".encode("UTF-8")]
+        assert self.adc.get_attribute(ad_user_dn, "employeeNumber") == [b"42"]
+        assert self.adc.get_attribute(ad_user_dn, "displayName") == [b"test uuuuuuser"]
 
 
 if __name__ == "__main__":

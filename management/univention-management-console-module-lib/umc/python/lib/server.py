@@ -50,7 +50,7 @@ CMD_ENABLE_EXEC_WITH_RESTART = '/usr/share/univention-updater/enable-apache2-umc
 CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
 
 
-class Server(object):
+class Server:
 
     def restart_isNeeded(self, request):
         """

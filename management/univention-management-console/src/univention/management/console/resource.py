@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Copyright 2022-2024 Univention GmbH
 #
@@ -75,7 +74,7 @@ class Resource(RequestHandler):
         self.set_header('Server', 'UMC-Server/1.0')
 
     async def prepare(self):
-        super(Resource, self).prepare()
+        super().prepare()
         self._proxy_uri()
         self.request.content_negotiation_lang = 'json'
         self.decode_request_arguments()
@@ -124,7 +123,7 @@ class Resource(RequestHandler):
         return self.sessionidhash()
 
     def sessionidhash(self):
-        session = u'%s%s%s%s' % (self.request.headers.get('Authorization', ''), self.request.headers.get('Accept-Language', ''), self.get_ip_address(), self.sessionidhash.salt)
+        session = '%s%s%s%s' % (self.request.headers.get('Authorization', ''), self.request.headers.get('Accept-Language', ''), self.get_ip_address(), self.sessionidhash.salt)
         return hashlib.sha256(session.encode('UTF-8')).hexdigest()[:36]
         # TODO: the following is more secure (real random) but also much slower
         # return binascii.hexlify(hashlib.pbkdf2_hmac('sha256', session, self.sessionidhash.salt, 100000))[:36]
@@ -218,17 +217,17 @@ class Resource(RequestHandler):
         if sessionid in Session.sessions:
             return
         try:
-            scheme, credentials = credentials.split(u' ', 1)
+            scheme, credentials = credentials.split(' ', 1)
         except ValueError:
             raise BadRequest('invalid Authorization')
-        if scheme.lower() == u'basic':
+        if scheme.lower() == 'basic':
             await self.basic_authorization(credentials)
-        elif scheme.lower() == u'bearer':
+        elif scheme.lower() == 'bearer':
             await self.bearer_authorization(credentials)
 
     async def basic_authorization(self, credentials):
         try:
-            username, password = base64.b64decode(credentials.encode('utf-8')).decode('latin-1').split(u':', 1)
+            username, password = base64.b64decode(credentials.encode('utf-8')).decode('latin-1').split(':', 1)
         except ValueError:
             raise BadRequest('invalid Authorization')
 
@@ -340,7 +339,7 @@ class Resource(RequestHandler):
 
     def _write_error(self, status_code, exc_info=None, **kwargs):
         if not exc_info:
-            return super(Resource, self).write_error(status_code, **kwargs)
+            return super().write_error(status_code, **kwargs)
 
         exc = exc_info[1]
         if isinstance(exc, (HTTPError, UMC_Error)):

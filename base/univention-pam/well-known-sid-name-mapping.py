@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention custom user and group name mapping
 #  listener module: mapping custom user and group names for well known sids
@@ -39,7 +38,6 @@ from __future__ import annotations
 import os
 import os.path
 import pickle  # noqa: S403
-from typing import Dict, List
 
 import univention.config_registry
 import univention.debug as ud
@@ -69,7 +67,7 @@ def sidToName(sid: str) -> str | None:
     return None
 
 
-def checkAndSet(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> str | None:
+def checkAndSet(new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> str | None:
     obj = new or old
     if not obj:
         return
@@ -138,7 +136,7 @@ def checkAndSet(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> str
             listener.unsetuid()
 
 
-def no_relevant_change(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> bool:
+def no_relevant_change(new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> bool:
     assert new
     assert old
 
@@ -156,7 +154,7 @@ def no_relevant_change(new: Dict[str, List[bytes]], old: Dict[str, List[bytes]])
     return (set(old_name) == set(new_name)) and (set(old_sid) == set(new_sid))
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]], command: str) -> None:
     if ucr.is_false("listener/module/wellknownsidnamemapping", False):
         ud.debug(ud.LISTENER, ud.INFO, '%s: deactivated by listener/module/wellknownsidnamemapping' % (name,))
         return

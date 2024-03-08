@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -205,7 +204,7 @@ class Arg(Base):
     entry = relationship('Entry')
 
 
-class Client(object):
+class Client:
     def __init__(self, version, session):
         # type: (int, sqlalchemy.Session) -> None
         self.version = version
@@ -330,10 +329,10 @@ class Client(object):
             # form filters array
             filters = [
                 or_(
-                    Entry.message.ilike('%{}%'.format(pat)),
+                    Entry.message.ilike(f'%{pat}%'),
                     and_(
                         EventMessage.locale == locale,
-                        EventMessage.message.ilike('%{}%'.format(pat)),
+                        EventMessage.message.ilike(f'%{pat}%'),
                     ),
                     Entry.args.any(Arg.value == pat),
                 )

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  LDAP Connection Cache
@@ -67,7 +66,7 @@ from univention.uldap import getBackupConnection as _getBackupConnection
 __all__ = ('admin_connection', 'connection', 'get_admin_connection', 'get_connection', 'get_machine_connection', 'get_user_connection', 'machine_connection', 'user_connection')
 
 
-class LDAP(object):
+class LDAP:
 
     _LDAP_CONNECTION = 'ldap_connection'
     _LDAP_POSITION = 'ldap_position'

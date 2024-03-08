@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app module for updating the list of available apps
@@ -41,5 +40,5 @@ from univention.appcenter.actions.update import Update
 
 class Update(Update):
     def _get_conffiles(self):
-        conffiles = super(Update, self)._get_conffiles()
-        return conffiles + ['/etc/apache2/sites-available/000-default.conf', '/etc/apache2/sites-available/default-ssl.conf']
+        conffiles = super()._get_conffiles()
+        return [*conffiles, '/etc/apache2/sites-available/000-default.conf', '/etc/apache2/sites-available/default-ssl.conf']

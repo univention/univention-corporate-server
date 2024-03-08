@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Samba
 #  listener module: manages samba share configuration
@@ -41,7 +40,6 @@ import os
 import pickle  # noqa: S403
 import re
 import subprocess
-from typing import Dict, List
 from urllib.parse import quote
 
 import univention.debug as ud
@@ -74,7 +72,7 @@ def _validate_smb_share_name(name: str) -> bool:
     return True
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]], command: str) -> None:
     configRegistry.load()
     interfaces = Interfaces(configRegistry)
 

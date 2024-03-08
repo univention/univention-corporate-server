@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app module for upgrading an app
@@ -52,7 +51,7 @@ class Upgrade(Install):
     post_readme = 'readme_post_update'
 
     def __init__(self):
-        super(Upgrade, self).__init__()
+        super().__init__()
         # original_app: The App installed when the whole action started
         # old_app: The current App installed when trying to upgrade
         #   - should be the same most of the time. But Docker Apps may upgrade
@@ -89,7 +88,7 @@ class Upgrade(Install):
 
     def do_it_once(self, app, args):
         self.old_app = self.original_app = Apps().find(app.id)
-        return super(Upgrade, self).do_it_once(app, args)
+        return super().do_it_once(app, args)
 
     def _write_start_event(self, app, args):
         return write_event(APP_UPGRADE_START, {'name': app.name, 'version': self.old_app.version}, username=self._get_username(args))
@@ -101,10 +100,10 @@ class Upgrade(Install):
         return write_event(APP_UPGRADE_FAILURE, {'name': app.name, 'version': self.old_app.version, 'error_code': str(status)}, username=self._get_username(args), context_id=context_id)
 
     def _call_action_hooks(self, directory):
-        super(Upgrade, self)._run_parts(directory)
+        super()._run_parts(directory)
 
     def needs_credentials(self, app):
-        needs_credentials = super(Upgrade, self).needs_credentials(app)
+        needs_credentials = super().needs_credentials(app)
         if needs_credentials:
             return True
         if app.docker and app.docker_script_update_packages:
@@ -124,14 +123,14 @@ class Upgrade(Install):
     def _show_license(self, app, args):
         old_app = Apps().find(app.id)
         if app.license_agreement != old_app.license_agreement:
-            return super(Upgrade, self)._show_license(app, args)
+            return super()._show_license(app, args)
 
     def _call_prescript(self, app, args):
-        return super(Upgrade, self)._call_prescript(app, args, old_version=self.old_app.version)
+        return super()._call_prescript(app, args, old_version=self.old_app.version)
 
     def _send_information(self, app, status, value=None):
         if app > self.original_app:
-            super(Upgrade, self)._send_information(app, status, value)
+            super()._send_information(app, status, value)
 
     def _install_packages(self, packages):
         return install_packages(packages) and dist_upgrade()

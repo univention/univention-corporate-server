@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  Metaclass
@@ -36,7 +35,7 @@
 #
 
 
-class UniventionMetaInfo(object):
+class UniventionMetaInfo:
     pop = False
     save_as_list = False
     save_as_dict = False
@@ -90,7 +89,7 @@ class UniventionMetaClass(type):
                         attrs.setdefault(inheritance_name, []).extend(inheritance_value)
                     inheritance_info.add(inheritance_name)
         attrs['_univention_meta_inheritance'] = inheritance_info
-        new_cls = super(UniventionMetaClass, mcs).__new__(mcs, name, bases, attrs)
+        new_cls = super().__new__(mcs, name, bases, attrs)
         for meta_info_name, meta_info in meta_infos:
             meta_info.contribute_to_class(new_cls, meta_info_name)
         return new_cls

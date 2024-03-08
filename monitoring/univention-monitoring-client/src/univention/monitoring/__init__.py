@@ -47,7 +47,7 @@ from univention.config_registry import ucr
 NODE_EXPORTER_DIR = '/var/lib/prometheus/node-exporter/'
 
 
-class Alert(object):
+class Alert:
     """Execute alert plugin"""
 
     def __init__(self, args):

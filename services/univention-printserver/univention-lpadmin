@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Print Server
 #  wrapper script for lpadmin
@@ -58,7 +57,7 @@ for path in ['/usr/sbin/accept', '/usr/sbin/cupsaccept']:
         acceptexec = path
 
 if '-h' not in args:
-    args = args + ['-h', 'localhost']
+    args = [*args, '-h', 'localhost']
 
 # read machine password
 with open('/etc/machine.secret') as fd:

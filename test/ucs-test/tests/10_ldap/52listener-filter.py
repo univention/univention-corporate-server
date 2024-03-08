@@ -17,13 +17,16 @@ from subprocess import Popen
 from sys import exit
 from tempfile import mkdtemp
 from time import sleep
-from types import TracebackType
-from typing import Dict, List, Type
+from typing import TYPE_CHECKING
 
 from univention.config_registry.frontend import handler_set
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import verify_ldap_object
+
+
+if TYPE_CHECKING:
+    from types import TracebackType
 
 
 MODULE = 'container/ou'
@@ -66,14 +69,14 @@ class Environment:
                     line = 'TMPDIR = %r\n' % (self.tmpdir,)
                 target.write(line)
 
-    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
+    def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         rmtree(self.tmpdir, ignore_errors=True)
         self.tmpdir = None
 
 
 class Listener:
 
-    def __init__(self, ucr: Dict[str, str], env: Environment) -> None:
+    def __init__(self, ucr: dict[str, str], env: Environment) -> None:
         self.ucr = ucr
         self.env = env
         self.proc = None
@@ -94,10 +97,7 @@ class Listener:
         return self
 
     def init_listener(self) -> None:
-        cmd = self.cmd + [
-            '-d', '2',
-            '-i',
-        ]
+        cmd = [*self.cmd, '-d', '2', '-i']
         proc = Popen(cmd, close_fds=True)
         print('I: %d = %r' % (proc.pid, cmd))
         ret = proc.wait()
@@ -106,15 +106,12 @@ class Listener:
             exit(ret)
 
     def run_listener(self) -> Listener:
-        cmd = self.cmd + [
-            '-d', '4',
-            '-F',
-        ]
+        cmd = [*self.cmd, '-d', '4', '-F']
         self.proc = Popen(cmd, close_fds=True)
         print('I: %d = %r' % (self.proc.pid, cmd))
         return self
 
-    def __exit__(self, exc_type: Type[Exception] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:  # noqa: PYI036
+    def __exit__(self, exc_type: type[Exception] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:  # noqa: PYI036
         if not exc_type:
             self.wait_transactions()
         self.kill_listener()
@@ -196,7 +193,7 @@ def main() -> None:
     exit(1 if error else 0)
 
 
-def unexpected_transactions(env: Environment, ucr: Dict[str, str]) -> bool:
+def unexpected_transactions(env: Environment, ucr: dict[str, str]) -> bool:
     found_add = False
     found_modify = False
     found_other = False
@@ -219,7 +216,7 @@ def unexpected_transactions(env: Environment, ucr: Dict[str, str]) -> bool:
     return found_other or not found_add or not found_modify
 
 
-def is_not_in_cache(env: Environment, ucr: Dict[str, str]) -> bool:
+def is_not_in_cache(env: Environment, ucr: dict[str, str]) -> bool:
     error = False
 
     dn = 'dn: ou=%s,%s' % (UNIQUE, ucr['ldap/base'])
@@ -246,7 +243,7 @@ def is_not_in_cache(env: Environment, ucr: Dict[str, str]) -> bool:
     return error
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], cmd: str = '') -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]], cmd: str = '') -> None:
     with open(join(TMPDIR, UNIQUE), 'a') as log:
         print(repr((dn, bool(new), bool(old), cmd)), file=log)
 

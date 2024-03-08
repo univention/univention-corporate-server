@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Monitoring
 #  listener module: update configuration of prometheus alert manager

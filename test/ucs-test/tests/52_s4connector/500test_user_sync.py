@@ -51,9 +51,7 @@ def test_user_sync_from_udm_to_s4_with_rename(user_class, sync_mode):
         s4connector.wait_for_sync()
 
         s4.verify_object(s4_user_dn, None)
-        s4_user_dn = ldap.dn.dn2str([
-            [("CN", tcommon.to_unicode(udm_user.rename.get("username")), ldap.AVA_STRING)],
-            [("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(s4.adldapbase))
+        s4_user_dn = ldap.dn.dn2str([[("CN", tcommon.to_unicode(udm_user.rename.get("username")), ldap.AVA_STRING)], [("CN", "users", ldap.AVA_STRING)], *ldap.dn.str2dn(s4.adldapbase)])
         s4.verify_object(s4_user_dn, tcommon.map_udm_user_to_con(udm_user.rename))
 
         delete_udm_user(udm, s4, udm_user_dn, s4_user_dn, s4connector.wait_for_sync)
@@ -73,9 +71,7 @@ def test_user_sync_from_udm_to_s4_with_move(user_class, sync_mode):
 
         s4connector.wait_for_sync()
         s4.verify_object(s4_user_dn, None)
-        s4_user_dn = ldap.dn.dn2str([
-            [("CN", tcommon.to_unicode(udm_user.basic.get("username")), ldap.AVA_STRING)],
-            [("CN", udm_user.container, ldap.AVA_STRING)]] + ldap.dn.str2dn(s4.adldapbase))
+        s4_user_dn = ldap.dn.dn2str([[("CN", tcommon.to_unicode(udm_user.basic.get("username")), ldap.AVA_STRING)], [("CN", udm_user.container, ldap.AVA_STRING)], *ldap.dn.str2dn(s4.adldapbase)])
         s4.verify_object(s4_user_dn, tcommon.map_udm_user_to_con(udm_user.basic))
 
         delete_udm_user(udm, s4, udm_user_dn, s4_user_dn, s4connector.wait_for_sync)
@@ -111,9 +107,7 @@ def test_user_sync_from_s4_to_udm_with_rename(user_class, sync_mode):
         s4connector.wait_for_sync()
 
         tcommon.verify_udm_object("users/user", udm_user_dn, None)
-        udm_user_dn = ldap.dn.dn2str([
-            [("uid", tcommon.to_unicode(udm_user.rename.get("username")), ldap.AVA_STRING)],
-            [("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(tcommon.configRegistry['ldap/base']))
+        udm_user_dn = ldap.dn.dn2str([[("uid", tcommon.to_unicode(udm_user.rename.get("username")), ldap.AVA_STRING)], [("CN", "users", ldap.AVA_STRING)], *ldap.dn.str2dn(tcommon.configRegistry["ldap/base"])])
         tcommon.verify_udm_object("users/user", udm_user_dn, udm_user.rename)
 
         delete_con_user(s4, s4_user_dn, udm_user_dn, s4connector.wait_for_sync)
@@ -134,9 +128,7 @@ def test_user_sync_from_s4_to_udm_with_move(user_class, sync_mode):
         s4connector.wait_for_sync()
 
         tcommon.verify_udm_object("users/user", udm_user_dn, None)
-        udm_user_dn = ldap.dn.dn2str([
-            [("uid", tcommon.to_unicode(udm_user.basic.get("username")), ldap.AVA_STRING)],
-            [("CN", udm_user.container, ldap.AVA_STRING)]] + ldap.dn.str2dn(tcommon.configRegistry['ldap/base']))
+        udm_user_dn = ldap.dn.dn2str([[("uid", tcommon.to_unicode(udm_user.basic.get("username")), ldap.AVA_STRING)], [("CN", udm_user.container, ldap.AVA_STRING)], *ldap.dn.str2dn(tcommon.configRegistry["ldap/base"])])
         tcommon.verify_udm_object("users/user", udm_user_dn, udm_user.basic)
 
         delete_con_user(s4, s4_user_dn, udm_user_dn, s4connector.wait_for_sync)

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -32,8 +31,8 @@
 
 """|UDM| for all |DHCP| objects"""
 
-from typing import TYPE_CHECKING
 
+import univention.admin
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dhcp.host
@@ -44,12 +43,8 @@ import univention.admin.handlers.dhcp.shared
 import univention.admin.handlers.dhcp.sharedsubnet
 import univention.admin.handlers.dhcp.subnet
 import univention.admin.localization
+import univention.admin.uldap
 from univention.admin.layout import Tab
-
-
-if TYPE_CHECKING:
-    import univention.admin
-    import univention.admin.uldap
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')

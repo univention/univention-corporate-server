@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -54,7 +53,7 @@ __dn_list_property_encoder_class_cache = {}
 __dn_property_encoder_class_cache = {}
 
 
-class BaseEncoder(object):
+class BaseEncoder:
     static = False  # whether to create an instance or use a class/static method
 
     def __init__(self, property_name=None, *args, **kwargs):
@@ -63,7 +62,7 @@ class BaseEncoder(object):
 
     def __repr__(self):
         # type: () -> str
-        return '{}({})'.format(self.__class__.__name__, self.property_name)
+        return f'{self.__class__.__name__}({self.property_name})'
 
     def encode(self, value=None):
         # type: (Optional[Any]) -> Optional[Any]
@@ -205,7 +204,7 @@ class MultiLanguageTextAppcenterPropertyEncoder(BaseEncoder):
     def encode(value=None):
         # type: (Optional[Dict[str, str]]) -> Optional[List[str]]
         if value:
-            return ['[{}] {}'.format(k, v) for k, v in value.items()]
+            return [f'[{k}] {v}' for k, v in value.items()]
         else:
             return value
 
@@ -240,7 +239,7 @@ class SambaLogonHoursPropertyEncoder(BaseEncoder):
     def decode(cls, value=None):
         # type: (Optional[List[int]]) -> Optional[List[str]]
         if value:
-            return ['{} {}-{}'.format(cls._weekdays[dow], hour, hour + 1) for dow, hour in (divmod(v, 24) for v in value)]
+            return [f'{cls._weekdays[dow]} {hour}-{hour + 1}' for dow, hour in (divmod(v, 24) for v in value)]
         else:
             return value
 
@@ -310,7 +309,7 @@ class StringIntPropertyEncoder(BaseEncoder):
             try:
                 return int(value)
             except ValueError:
-                raise valueInvalidSyntax('Value of {!r} must be an int (is {!r}).'.format(self.property_name, value)).with_traceback(sys.exc_info()[2])
+                raise valueInvalidSyntax(f'Value of {self.property_name!r} must be an int (is {value!r}).').with_traceback(sys.exc_info()[2])
 
     @staticmethod
     def encode(value=None):
@@ -372,7 +371,7 @@ class DnListPropertyEncoder(BaseEncoder):
         # type: (Optional[str], Optional[Any], Optional[int], *Any, **Any) -> None
         assert connection is not None, 'Argument "connection" must not be None.'
         assert api_version is not None, 'Argument "api_version" must not be None.'
-        super(DnListPropertyEncoder, self).__init__(property_name, *args, **kwargs)
+        super().__init__(property_name, *args, **kwargs)
         self._udm = UDM(connection, api_version)
 
     def _list_of_dns_to_list_of_udm_objects(self, value):
@@ -398,7 +397,7 @@ class DnListPropertyEncoder(BaseEncoder):
         # type: (Optional[List[str]]) -> Optional[List[str]]
         if value is None:
             value = []
-        assert hasattr(value, '__iter__'), 'Value is not iterable: {!r}'.format(value)
+        assert hasattr(value, '__iter__'), f'Value is not iterable: {value!r}'
         new_list = self.DnsList(value)
         new_list.objs = self.MyProxy(lambda: self._list_of_dns_to_list_of_udm_objects(value))
         return new_list
@@ -425,7 +424,7 @@ class PoliciesEncoder(BaseEncoder):
         # type: (Optional[str], Optional[Any], Optional[int], Optional[str], *Any, **Any) -> None
         assert connection is not None, 'Argument "connection" must not be None.'
         assert api_version is not None, 'Argument "api_version" must not be None.'
-        super(PoliciesEncoder, self).__init__(property_name, *args, **kwargs)
+        super().__init__(property_name, *args, **kwargs)
         self._udm = UDM(connection, api_version)
         self.module_name = module_name
 
@@ -466,7 +465,7 @@ class CnameListPropertyEncoder(DnListPropertyEncoder):
 
     def _list_of_dns_to_list_of_udm_objects(self, value):
         udm_module = self.udm.get(self.udm_module_name)
-        return [list(udm_module.search('relativeDomainName={}'.format(cname)))[0] for cname in value]  # noqa: RUF015
+        return [list(udm_module.search(f'relativeDomainName={cname}'))[0] for cname in value]  # noqa: RUF015
 
 
 class DnsEntryZoneAliasListPropertyEncoder(DnListPropertyEncoder):
@@ -481,7 +480,7 @@ class DnsEntryZoneAliasListPropertyEncoder(DnListPropertyEncoder):
 
     def _list_of_dns_to_list_of_udm_objects(self, value):
         udm_module = self.udm.get(self.udm_module_name)
-        return [udm_module.get('relativeDomainName={},{}'.format(v[2], v[1])) for v in value]
+        return [udm_module.get(f'relativeDomainName={v[2]},{v[1]}') for v in value]
 
 
 class DnsEntryZoneForwardListMultiplePropertyEncoder(DnListPropertyEncoder):
@@ -578,7 +577,7 @@ class DnPropertyEncoder(BaseEncoder):
         # type: (str, Any, Optional[int], *Any, **Any) -> None
         assert connection is not None, 'Argument "connection" must not be None.'
         assert api_version is not None, 'Argument "api_version" must not be None.'
-        super(DnPropertyEncoder, self).__init__(property_name, *args, **kwargs)
+        super().__init__(property_name, *args, **kwargs)
         self._udm = UDM(connection, api_version)
 
     def _dn_to_udm_object(self, value):
@@ -622,7 +621,7 @@ class DnPropertyEncoder(BaseEncoder):
 def _classify_name(name):
     # type: (str) -> str
     mod_parts = name.split('/')
-    return ''.join('{}{}'.format(mp[0].upper(), mp[1:]) for mp in mod_parts)
+    return ''.join(f'{mp[0].upper()}{mp[1:]}' for mp in mod_parts)
 
 
 def dn_list_property_encoder_for(udm_module_name):
@@ -637,7 +636,7 @@ def dn_list_property_encoder_for(udm_module_name):
     :return: subclass of DnListPropertyEncoder
     """
     if udm_module_name not in __dn_list_property_encoder_class_cache:
-        cls_name = 'DnListPropertyEncoder{}'.format(_classify_name(udm_module_name))
+        cls_name = f'DnListPropertyEncoder{_classify_name(udm_module_name)}'
         specific_encoder_cls = type(cls_name, (DnListPropertyEncoder,), {})
         specific_encoder_cls.udm_module_name = udm_module_name  # type: ignore[attr-defined]
         __dn_list_property_encoder_class_cache[udm_module_name] = specific_encoder_cls
@@ -656,7 +655,7 @@ def dn_property_encoder_for(udm_module_name):
     :return: subclass of DnPropertyEncoder
     """
     if udm_module_name not in __dn_property_encoder_class_cache:
-        cls_name = 'DnPropertyEncoder{}'.format(_classify_name(udm_module_name))
+        cls_name = f'DnPropertyEncoder{_classify_name(udm_module_name)}'
         specific_encoder_cls = type(cls_name, (DnPropertyEncoder,), {})
         specific_encoder_cls.udm_module_name = udm_module_name  # type: ignore[attr-defined]
         __dn_property_encoder_class_cache[udm_module_name] = specific_encoder_cls

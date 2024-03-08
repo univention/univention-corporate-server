@@ -38,8 +38,11 @@ import pwd
 import subprocess
 import sys
 import time
-from types import TracebackType
-from typing import Set, Type
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from types import TracebackType
 
 
 class MailSinkGuard:
@@ -54,7 +57,7 @@ class MailSinkGuard:
     """
 
     def __init__(self) -> None:
-        self.mail_sinks: Set[MailSink] = set()
+        self.mail_sinks: set[MailSink] = set()
 
     def add(self, sink: MailSink) -> None:
         self.mail_sinks.add(sink)
@@ -62,7 +65,7 @@ class MailSinkGuard:
     def __enter__(self) -> MailSinkGuard:  # FIXME Py3.9: Self
         return self
 
-    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, etraceback: TracebackType | None) -> None:
+    def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, etraceback: TracebackType | None) -> None:
         for mail_sink in self.mail_sinks:
             mail_sink.stop()
 
@@ -99,7 +102,7 @@ class MailSink:
         self.start()
         return self
 
-    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, etraceback: TracebackType | None) -> None:
+    def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, etraceback: TracebackType | None) -> None:
         self.stop()
 
     def start(self) -> None:

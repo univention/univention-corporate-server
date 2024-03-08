@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention NFS
 #  listener module: update configuration of local NFS shares
@@ -40,7 +39,6 @@ import operator
 import os
 import pickle  # noqa: S403
 import re
-from typing import Dict, List
 
 import univention.debug as ud
 import univention.lib.listenerSharePath
@@ -65,7 +63,7 @@ __comment_pattern = re.compile('^"*/.*#[ \t]*LDAP:[ \t]*(.*)')
 tmpFile = '/var/cache/univention-directory-listener/nfs-shares.oldObject'
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]], command: str) -> None:
     # create tmp dir
     tmpDir = os.path.dirname(tmpFile)
     listener.setuid(0)
@@ -149,7 +147,7 @@ def _read(keep=lambda match: True):
         return [line.strip() for line in fp if keep(__comment_pattern.match(line))]
 
 
-def _write(lines: List[str]) -> None:
+def _write(lines: list[str]) -> None:
     listener.setuid(0)
     try:
         ud.debug(ud.LISTENER, ud.PROCESS, 'Writing /etc/exports with %d lines' % (len(lines),))

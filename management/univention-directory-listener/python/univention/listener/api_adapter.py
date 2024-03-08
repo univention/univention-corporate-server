@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -40,7 +39,7 @@ if TYPE_CHECKING:
     from .handler_configuration import ListenerModuleConfiguration  # noqa: F401
 
 
-class ListenerModuleAdapter(object):
+class ListenerModuleAdapter:
     """
     Adapter to convert the :py:mod:`univention.listener.listener_module interface` to
     the existing listener module interface.

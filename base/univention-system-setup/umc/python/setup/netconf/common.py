@@ -51,11 +51,11 @@ class RestartService(Executable, metaclass=ABCMeta):
         return os.path.join(self.PREFIX, self.service)
 
     def pre(self) -> None:
-        super(RestartService, self).pre()
+        super().pre()
         self.call(["systemctl", "stop", self.service])
 
     def post(self) -> None:
-        super(RestartService, self).pre()
+        super().pre()
         self.call(["systemctl", "start", self.service])
 
 
@@ -63,7 +63,7 @@ class AddressMap(AddressChange, metaclass=ABCMeta):
     """Helper to provide a mapping from old addresses to new addresses."""
 
     def __init__(self, changeset: ChangeSet) -> None:
-        super(AddressMap, self).__init__(changeset)
+        super().__init__(changeset)
         self.old_primary, self.new_primary = (
             iface.get_default_ip_address()
             for iface in (
@@ -122,7 +122,7 @@ class LdapChange(AddressChange, Ldap, metaclass=ABCMeta):
     """Helper to provide access to LDAP through UDM."""
 
     def __init__(self, changeset: ChangeSet) -> None:
-        super(LdapChange, self).__init__(changeset)
+        super().__init__(changeset)
         self.ldap = None
         self.position = None
 
@@ -152,7 +152,7 @@ def convert_udm_subnet_to_ipv4_network(subnet: str) -> IPv4Network:
     prefix_length = 8 * count
     octets += ["0"] * (4 - count)
     address = '.'.join(octets)
-    return IPv4Network(u"%s/%d" % (address, prefix_length), False)
+    return IPv4Network("%s/%d" % (address, prefix_length), False)
 
 
 def convert_udm_subnet_to_ipv6_network(subnet: str) -> IPv6Network:
@@ -163,4 +163,4 @@ def convert_udm_subnet_to_ipv6_network(subnet: str) -> IPv6Network:
     address = subnet
     if count <= 28:
         address += "::"
-    return IPv6Network(u"%s/%d" % (address, prefix_length), False)
+    return IPv6Network("%s/%d" % (address, prefix_length), False)

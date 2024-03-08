@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app wrapper for udm's settings/extended_attributes
@@ -60,7 +59,7 @@ class Attribute(UniventionMetaInfo):
 
     def __init__(self, default_value=None):
         self.default_value = default_value
-        super(Attribute, self).__init__()
+        super().__init__()
 
     def ldap_name(self):
         return self.name.upper().replace('_', '-')
@@ -94,7 +93,7 @@ class DescAttribute(StringAttribute):
         return 'DESC'
 
     def escape_value(self, value):
-        return super(DescAttribute, self).escape_value(value or 'Attribute created by the App Center integration for Extended Attributes')
+        return super().escape_value(value or 'Attribute created by the App Center integration for Extended Attributes')
 
 
 class BooleanAttribute(Attribute):
@@ -204,7 +203,7 @@ class ExtendedAttribute(SchemaObject):
         if 'options' in kwargs:
             kwargs['options'] = re.split(r'\s*,\s*', kwargs.get('options', []))
         kwargs.setdefault('options', [])
-        super(ExtendedAttribute, self).__init__(app, **kwargs)
+        super().__init__(app, **kwargs)
         if self.syntax == 'Boolean':
             self._syntax = '1.3.6.1.4.1.1466.115.121.1.7'
             self._equality = 'booleanMatch'
@@ -247,7 +246,7 @@ class ExtendedOption(SchemaObject):
         kwargs.setdefault('position', 'cn=%s,cn=custom attributes,cn=univention' % escape_dn_chars(app.id))
         kwargs.setdefault('description', app.name)
         kwargs['module'] = re.split(r'\s*,\s*', kwargs.get('module', 'users/user'))
-        super(ExtendedOption, self).__init__(app, **kwargs)
+        super().__init__(app, **kwargs)
 
     @property
     def icon(self):
@@ -270,7 +269,7 @@ class ObjectClass(SchemaObject):
 
     def __init__(self, app, **kwargs):
         kwargs.setdefault('option_name', kwargs['name'])
-        super(ObjectClass, self).__init__(app, **kwargs)
+        super().__init__(app, **kwargs)
 
 
 def get_extended_attributes(app):

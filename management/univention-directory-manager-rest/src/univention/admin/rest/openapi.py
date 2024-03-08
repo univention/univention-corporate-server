@@ -734,7 +734,9 @@ class _OpenAPIBase:
                         {'$ref': '#/components/parameters/objects.get.query.query'},
                         {'$ref': '#/components/parameters/objects.get.query.hidden'},
                         {'$ref': '#/components/parameters/objects.get.query.properties'},
-                    ] + pagination_parameters + global_parameters,
+                        *pagination_parameters,
+                        *global_parameters,
+                    ],
                     "responses": global_responses({
                         200: {
                             '$ref': '#/components/responses/objects.%s.get.response.success' % (_openapi_quote(model_name),),
@@ -759,7 +761,8 @@ class _OpenAPIBase:
                         {'$ref': '#/components/parameters/template.get.query.position'},
                         {'$ref': '#/components/parameters/template.get.query.superordinate'},
                         {'$ref': '#/components/parameters/template.get.query.template'},
-                    ] + global_parameters,
+                        *global_parameters,
+                    ],
                     "responses": global_responses({
                         200: {
                             '$ref': '#/components/responses/template.%s.get.response.success' % (_openapi_quote(model_name),),
@@ -778,7 +781,7 @@ class _OpenAPIBase:
                     "requestBody": {
                         "$ref": schema_request_body,
                     },
-                    "parameters": [] + global_parameters,
+                    "parameters": [*global_parameters],
                     "responses": global_responses({
                         201: {
                             '$ref': '#/components/responses/objects.post.response.created',
@@ -789,7 +792,7 @@ class _OpenAPIBase:
             openapi_paths[object_path]["get"] = {
                 "operationId": f"udm:{name}/object",
                 "summary": docstring('object', 'get', module),
-                "parameters": [] + global_parameters,
+                "parameters": [*global_parameters],
                 "responses": global_responses({
                     "200": {
                         '$ref': '#/components/responses/object.%s.get.response.success' % (_openapi_quote(model_name),),
@@ -818,7 +821,8 @@ class _OpenAPIBase:
                         {'$ref': '#/components/parameters/object.delete.query.recursive'},
                         {'$ref': '#/components/parameters/if-match'},
                         {'$ref': '#/components/parameters/if-unmodified-since'},
-                    ] + global_parameters,
+                        *global_parameters,
+                    ],
                     "responses": global_responses({
                         "204": {
                             '$ref': '#/components/responses/object.delete.response.nocontent',
@@ -839,7 +843,8 @@ class _OpenAPIBase:
                     "parameters": [
                         {'$ref': '#/components/parameters/if-match'},
                         {'$ref': '#/components/parameters/if-unmodified-since'},
-                    ] + global_parameters,
+                        *global_parameters,
+                    ],
                     "callbacks": {
                         'move-progress': {
                             '$ref': '#/components/callbacks/moveProgress',
@@ -870,7 +875,8 @@ class _OpenAPIBase:
                     "parameters": [
                         {'$ref': '#/components/parameters/if-match'},
                         {'$ref': '#/components/parameters/if-unmodified-since'},
-                    ] + global_parameters,
+                        *global_parameters,
+                    ],
                     "responses": global_responses({
                         "204": {
                             '$ref': '#/components/responses/object.patch.response.nocontent',

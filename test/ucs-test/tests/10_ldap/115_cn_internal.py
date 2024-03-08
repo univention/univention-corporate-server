@@ -153,7 +153,7 @@ def test_syncrepl_simple(random_string):
     # create on primary
     for i in range(objects):
         dn = f'cn={cn}-{i},{BASE}'
-        lo_primary.add(dn, [('cn', f'{cn}-{i}'.encode('UTF-8')), ('objectClass', b'organizationalRole')])
+        lo_primary.add(dn, [('cn', f'{cn}-{i}'.encode()), ('objectClass', b'organizationalRole')])
 
     # check on backup (just the last object)
     for i in range(30):

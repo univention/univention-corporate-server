@@ -46,7 +46,7 @@ RE_UNDEFINED = re.compile(
 )
 
 
-class LdapIndex(object):
+class LdapIndex:
 
     def main(self):
         with ConfigRegistry() as ucr:

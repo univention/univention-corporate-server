@@ -164,7 +164,7 @@ class Gateway(tornado.web.RequestHandler):
                 locales.append((parts[0], quality))
         locales = [lang[0].replace('-', '_') for lang in sorted(locales + list(defaults.items()), key=lambda x: x[1], reverse=True)]
 
-        for locale in locales + ['en_US', 'de_DE']:
+        for locale in [*locales, "en_US", "de_DE"]:
             locale = '%s_%s' % self.get_locale(locale)
             if locale in self.SOCKETS:
                 return locale.replace('_', '-'), self.SOCKETS[locale]

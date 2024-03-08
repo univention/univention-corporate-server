@@ -567,7 +567,7 @@ def list_extensions():
             print("")
 
 
-class SomeObj(object):
+class SomeObj:
     def __init__(self, klass_name: str, args, kwargs):
         self.klass_name = klass_name
         self.args = args

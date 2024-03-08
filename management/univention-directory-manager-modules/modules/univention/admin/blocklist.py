@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -40,15 +39,12 @@ from typing import TYPE_CHECKING, Any, Iterable  # noqa: F401
 import ldap
 from dateutil.relativedelta import relativedelta
 
+import univention.admin.handlers
+import univention.admin.handlers.blocklists.list
+import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.uldap
 from univention.admin import configRegistry
-
-
-if TYPE_CHECKING:
-    import univention.admin.handlers
-    import univention.admin.handlers.blocklists.list
-    import univention.admin.modules
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers')

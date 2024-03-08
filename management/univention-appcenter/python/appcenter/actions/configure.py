@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app module for configuring an app
@@ -140,6 +139,6 @@ class Configure(UniventionAppAction):
 
 class PatchedHelpFormatter(HelpFormatter):
     def _format_usage(self, *args, **kwargs):
-        usage = super(PatchedHelpFormatter, self)._format_usage(*args, **kwargs)
+        usage = super()._format_usage(*args, **kwargs)
 
         return usage.replace(' app\n\n', ' ').replace('[-h]', '[-h] app').rstrip()

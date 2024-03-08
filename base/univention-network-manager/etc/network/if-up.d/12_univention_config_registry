@@ -59,7 +59,7 @@ if configRegistry.get('interfaces/%s/type' % iface) != 'dhcp':
 inf = netifaces.ifaddresses(iface).get(netifaces.AF_INET)[0]
 try:
     newip = inf.get('addr')
-    ip = ipaddress.IPv4Network(u'%(addr)s/%(netmask)s' % inf, False)
+    ip = ipaddress.IPv4Network('%(addr)s/%(netmask)s' % inf, False)
 except KeyError:
     sys.exit(0)
 inf['address'] = str(newip)

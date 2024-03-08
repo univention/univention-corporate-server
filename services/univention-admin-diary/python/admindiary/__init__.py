@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -63,7 +62,7 @@ class _ShortNameFormatter(logging.Formatter):
         record.short_name = record.name
         if record.short_name.startswith('%s.' % self.shorten):
             record.short_name = record.short_name[len(self.shorten) + 1:]
-        return super(_ShortNameFormatter, self).format(record)
+        return super().format(record)
 
 
 def _setup_logger():
@@ -101,7 +100,7 @@ def get_logger(name):
     return logger
 
 
-class DiaryEntry(object):
+class DiaryEntry:
     def __init__(self, username, message, args, tags, context_id, event_name):
         # type: (str, str, Dict[str, str], List[str], str, str) -> None
         self.username = username

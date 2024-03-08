@@ -103,8 +103,8 @@ def run(_umc_instance: Instance, url: str = 'http://www.univention.de/', connect
         elif code == 0:
             MODULE.error(traceback.format_exc())
 
-        MODULE.error('\n'.join([description, msg]))
-        raise Critical('\n'.join([description, msg]))
+        MODULE.error(f'{description}\n{msg}')
+        raise Critical(f'{description}\n{msg}')
     else:
         # page = buf.getvalue()
         # MODULE.info(page[:100])

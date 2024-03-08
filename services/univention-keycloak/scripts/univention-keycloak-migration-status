@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Keycloak
 #
@@ -87,7 +86,7 @@ def migration_complete(opt):
             "\nto Keycloak."
             "\n\nThis migration has not happend yet!"
             "\n\nThe following old SimpleSAMLphp/Kopano Konnect objects have been found:\n",
-            file=sys.stderr
+            file=sys.stderr,
         )
         for dn, obj in sso_obj:
             print(f"\t* {dn}", file=sys.stderr)
@@ -97,7 +96,7 @@ def migration_complete(opt):
             "\nand the Keycloak migration guide:"
             f"\n\t{guide_url}"
             "\nfor how to migrate your domain to Keycloak.",
-            file=sys.stderr
+            file=sys.stderr,
         )
         if opt.delete:
             print(

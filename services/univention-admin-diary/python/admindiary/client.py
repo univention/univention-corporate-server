@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -62,7 +61,7 @@ def exceptionlogging(f):
     return wrapper  # type: ignore
 
 
-class RsyslogEmitter(object):
+class RsyslogEmitter:
     def __init__(self):
         # type: () -> None
         self.handler = None  # type: Optional[SysLogHandler]

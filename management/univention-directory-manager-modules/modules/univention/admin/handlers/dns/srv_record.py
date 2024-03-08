@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -96,7 +95,7 @@ layout = [
 
 def unmapName(old, encoding=()):
     # type: (list[bytes], univention.admin.handlers._Encoding) -> list[str]
-    items = old[0].decode(*encoding).split(u'.', 2)
+    items = old[0].decode(*encoding).split('.', 2)
     items[0] = items[0][1:]
     items[1] = items[1][1:]
     return items
@@ -107,14 +106,14 @@ def mapName(old, encoding=()):
     if len(old) == 1:
         return old[0].encode(*encoding)
     if len(old) == 3 and old[2]:
-        return u'_{}._{}.{}'.format(*old).encode(*encoding)
-    return u'_{}._{}'.format(*old[:2]).encode(*encoding)
+        return '_{}._{}.{}'.format(*old).encode(*encoding)
+    return '_{}._{}'.format(*old[:2]).encode(*encoding)
 
 
 def unmapLocation(old, encoding=()):
     # type: (list[bytes], univention.admin.handlers._Encoding) -> list[list[str]]
     return [
-        i.decode(*encoding).split(u' ', 3)
+        i.decode(*encoding).split(' ', 3)
         for i in old
     ]
 
@@ -122,7 +121,7 @@ def unmapLocation(old, encoding=()):
 def mapLocation(old, encoding=()):
     # type: (list[list[str]], univention.admin.handlers._Encoding) -> list[bytes]
     return [
-        u' '.join(i).encode(*encoding)
+        ' '.join(i).encode(*encoding)
         for i in old
     ]
 

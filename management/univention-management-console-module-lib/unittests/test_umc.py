@@ -1,5 +1,4 @@
 #!/usr/bin/pytest-3
-# -*- coding: utf-8 -*-
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -39,7 +38,7 @@ from univention.unittests.umc import import_umc_module, umc_requests
 umc_lib = import_umc_module('lib')
 
 
-class TestUMCModule(object):
+class TestUMCModule:
 
     def test_restart_isNeeded(self, instance, umc_request):
         instance.restart_isNeeded(umc_request)

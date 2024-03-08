@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  quota module: provides size information about a hard drive partition
@@ -39,7 +38,7 @@
 import os
 
 
-class DeviceInfo(object):
+class DeviceInfo:
 
     def __init__(self, path):
         self.path = path

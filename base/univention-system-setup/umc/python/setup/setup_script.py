@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -110,7 +109,7 @@ class Profile(dict):
         return value.split(split_by) if value else []
 
 
-class TransactionalUcr(object):
+class TransactionalUcr:
 
     def __init__(self) -> None:
         self.ucr = ConfigRegistry()
@@ -163,7 +162,7 @@ class TransactionalUcr(object):
             self.commit()
 
 
-class SetupScript(object):
+class SetupScript:
     """
     Baseclass for all Python-based Setup-Scripts.
 
@@ -377,7 +376,7 @@ class _PackageManagerLoggerHandlerWithoutProcess(_PackageManagerLoggerHandler):
     def emit(self, record: logging.LogRecord) -> None:
         if record.name == 'packagemanager.dpkg.process':
             return
-        super(_PackageManagerLoggerHandlerWithoutProcess, self).emit(record)
+        super().emit(record)
 
 
 class AptScript(SetupScript):

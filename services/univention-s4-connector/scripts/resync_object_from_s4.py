@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
 #  Resync object from S4 to OpenLDAP
@@ -54,7 +53,7 @@ class GuidNotFound(BaseException):
     pass
 
 
-class S4Resync(object):
+class S4Resync:
 
     def __init__(self):
         self.configRegistry = ConfigRegistry()

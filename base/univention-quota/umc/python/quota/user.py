@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  quota module: show quota information for a user
@@ -52,10 +51,10 @@ class LimitSanitizer(IntegerSanitizer):
     def _sanitize(self, value, name, further_arguments):
         if not value:
             return self.default
-        return super(LimitSanitizer, self)._sanitize(value, name, further_arguments)
+        return super()._sanitize(value, name, further_arguments)
 
 
-class Commands(object):
+class Commands:
 
     @sanitize(
         partitionDevice=StringSanitizer(required=True),

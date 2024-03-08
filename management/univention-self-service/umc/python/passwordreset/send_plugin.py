@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Password Self Service frontend base class
 #
@@ -39,7 +38,7 @@ from univention.lib.i18n import Translation
 _ = Translation('univention-self-service-passwordreset-umc').translate
 
 
-class UniventionSelfServiceTokenEmitter(object):
+class UniventionSelfServiceTokenEmitter:
     """base class"""
 
     def __init__(self, log):

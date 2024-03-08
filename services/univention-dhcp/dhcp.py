@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention DHCP
 #  listener module
@@ -35,8 +34,6 @@
 
 from __future__ import annotations
 
-from typing import Dict, List
-
 import univention.debug as ud
 
 from listener import configRegistry as ucr, run
@@ -62,7 +59,7 @@ filter = (
 )
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     pass
 
 

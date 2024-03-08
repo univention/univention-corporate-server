@@ -52,7 +52,7 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 class Problem(Exception):
 
     def __init__(self, description: str = "", **kwargs: Any) -> None:
-        super(Problem, self).__init__(description)
+        super().__init__(description)
         self.kwargs = kwargs
         kwargs['type'] = self.__class__.__name__.lower()
         if description:
@@ -103,7 +103,7 @@ class Instance(Base, ProgressMixin):
         return plug.execute(self, **args)
 
     def new_progress(self, *args: Any, **kwargs: Any) -> Any:
-        progress = super(Instance, self).new_progress(*args, **kwargs)
+        progress = super().new_progress(*args, **kwargs)
         progress.retry_after = 600
         return progress
 
@@ -138,8 +138,8 @@ class Instance(Base, ProgressMixin):
         return iter(self.modules.values())
 
 
-class Plugin(object):
-    u"""
+class Plugin:
+    """
     A wrapper for a Python module underneath of "univention.management.console.modules.diagnostic.plugins".
 
     These Python modules (plugins) may have the following properties:
@@ -220,17 +220,17 @@ class Plugin(object):
 
     @property
     def title(self) -> str:
-        u"""A title for the problem"""
+        """A title for the problem"""
         return getattr(self.module, 'title', '')
 
     @property
     def description(self) -> str:
-        u"""A description of the problem and how to solve it"""
+        """A description of the problem and how to solve it"""
         return getattr(self.module, 'description', '')
 
     @property
     def buttons(self) -> List[Dict[str, str]]:
-        u"""Buttons which are displayed e.g. to automatically solve the problem"""
+        """Buttons which are displayed e.g. to automatically solve the problem"""
         return list(getattr(self.module, 'buttons', []))
 
     @property
@@ -239,7 +239,7 @@ class Plugin(object):
 
     @property
     def umc_modules(self) -> List[Dict[str, Any]]:
-        u"""
+        """
         References to UMC modules which can help solving the problem.
         (module, flavor, properties)
         """
@@ -247,7 +247,7 @@ class Plugin(object):
 
     @property
     def links(self) -> List[Dict[str, str]]:
-        u"""
+        """
         Links to e.g. related SDB articles
         (url, link_name)
         """

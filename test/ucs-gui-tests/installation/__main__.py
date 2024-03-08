@@ -1,5 +1,4 @@
 #!/usr/bin/python2.7
-# -*- coding: utf-8 -*-
 #
 # UCS Installer Tests
 #
@@ -43,7 +42,7 @@ import ConfigParser
 from vminstall import create_virtual_machine
 
 
-class InstallerTests(object):
+class InstallerTests:
 
     def __init__(self, args):
         self.args = args
@@ -72,7 +71,7 @@ class InstallerTests(object):
             _vm, installer = foo.pop()
             self.password = installer.vm_config.password
             self.write_config()
-            subprocess.call(['py.test', '--junitxml', self.args.junitxml] + self.args.tests)
+            subprocess.call(['py.test', '--junitxml', self.args.junitxml, *self.args.tests])
 
         subprocess.call(['tar', '--remove-files', '-zcf', 'screen_dumps.tar.gz', 'screen_dumps'])
         if self.args.role not in ('master', 'basesystem'):

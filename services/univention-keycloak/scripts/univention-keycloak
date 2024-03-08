@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Keycloak
 #
@@ -45,7 +44,7 @@ from enum import Enum
 from os.path import exists
 from ssl import DER_cert_to_PEM_cert
 from subprocess import PIPE, Popen
-from typing import Dict
+from typing import TYPE_CHECKING
 from urllib.parse import quote, urljoin
 
 import requests
@@ -57,13 +56,16 @@ from ldap.dn import explode_rdn
 from ldap.filter import filter_format
 
 
+if TYPE_CHECKING:
+    from univention.udm.modules.settings_data import SettingsDataObject
+
+
 try:
     from univention.appcenter.app import LooseVersion
     from univention.appcenter.app_cache import Apps
     from univention.config_registry import ucr
     from univention.udm import UDM
     from univention.udm.binary_props import Base64Bzip2BinaryProperty
-    from univention.udm.modules.settings_data import SettingsDataObject
     IS_UCS = True
 except ImportError:
     ucr = {}
@@ -307,13 +309,13 @@ class ExtType(Enum):
 Ext = namedtuple("Ext", ["type", "alias", "name"])
 
 
-class ExtService(object):
+class ExtService:
 
     def __init__(self, kc_admin: KeycloakAdmin):
         self._kc_admin = kc_admin
 
     @classmethod
-    def extensions(cls) -> Dict[str, Ext]:
+    def extensions(cls) -> dict[str, Ext]:
         return {
             "password": Ext(ExtType.ACTION, "UNIVENTION_UPDATE_PASSWORD", "Univention update password"),
             "self-service": Ext(ExtType.ACTION, "UNIVENTION_SELF_SERVICE", "Univention self service checks"),
@@ -553,10 +555,10 @@ def _create_proxy_realm_oidc_client(session: UniventionKeycloakAdmin) -> str:
         "alwaysDisplayInConsole": False,
         "clientAuthenticatorType": "client-secret",
         "redirectUris": [
-            "https://*"
+            "https://*",
         ],
         "webOrigins": [
-            ""
+            "",
         ],
         "notBefore": 0,
         "bearerOnly": False,
@@ -581,8 +583,8 @@ def _create_proxy_realm_oidc_client(session: UniventionKeycloakAdmin) -> str:
                     "id.token.claim": "true",
                     "access.token.claim": "true",
                     "claim.name": "uid",
-                    "jsonType.label": "String"
-                }
+                    "jsonType.label": "String",
+                },
             },
             {
                 "name": "entryUUID",
@@ -595,10 +597,10 @@ def _create_proxy_realm_oidc_client(session: UniventionKeycloakAdmin) -> str:
                     "id.token.claim": "true",
                     "access.token.claim": "true",
                     "claim.name": "entryUUID",
-                    "jsonType.label": "String"
-                }
-            }
-        ]
+                    "jsonType.label": "String",
+                },
+            },
+        ],
     }
     session.create_client(payload=payload, skip_exists=True)
     secret = next(x["secret"] for x in session.get_clients() if x.get("clientId") == name)
@@ -650,8 +652,8 @@ def _create_proxy_realm(session: UniventionKeycloakAdmin, name: str, secret: str
                     "logoutUrl": f"{default_realm}/protocol/openid-connect/logout",
                     "clientSecret": secret,
                     "syncMode": "FORCE",
-                }
-            }
+                },
+            },
         ],
         "identityProviderMappers": [
             {
@@ -661,8 +663,8 @@ def _create_proxy_realm(session: UniventionKeycloakAdmin, name: str, secret: str
                 "config": {
                     "syncMode": "FORCE",
                     "claim": "uid",
-                    "user.attribute": "uid"
-                }
+                    "user.attribute": "uid",
+                },
             },
             {
                 "name": "entryUUID",
@@ -671,9 +673,9 @@ def _create_proxy_realm(session: UniventionKeycloakAdmin, name: str, secret: str
                 "config": {
                     "syncMode": "FORCE",
                     "claim": "entryUUID",
-                    "user.attribute": "entryUUID"
-                }
-            }
+                    "user.attribute": "entryUUID",
+                },
+            },
         ],
     }
     session.create_realm(payload=payload, skip_exists=True)
@@ -686,7 +688,7 @@ def _create_proxy_realm_azure_client(session: UniventionKeycloakAdmin) -> None:
         "enabled": True,
         "alwaysDisplayInConsole": False,
         "redirectUris": [
-            "https://login.microsoftonline.com/login.srf"
+            "https://login.microsoftonline.com/login.srf",
         ],
         "webOrigins": [],
         "notBefore": 0,
@@ -729,8 +731,8 @@ def _create_proxy_realm_azure_client(session: UniventionKeycloakAdmin) -> None:
                 "consentRequired": False,
                 "config": {
                     "user.attribute": "entryUUID",
-                    "mapper.nameid.format": "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent"
-                }
+                    "mapper.nameid.format": "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+                },
             },
             {
                 "name": "userid_mapper",
@@ -741,9 +743,9 @@ def _create_proxy_realm_azure_client(session: UniventionKeycloakAdmin) -> None:
                     "attribute.nameformat": "Basic",
                     "user.attribute": "uid",
                     "friendly.name": "uid",
-                    "attribute.name": "uid"
-                }
-            }
+                    "attribute.name": "uid",
+                },
+            },
         ],
     }
     session.create_client(payload=payload, skip_exists=True)
@@ -995,7 +997,7 @@ def create_oidc_client(opt):
 
     # build urls
     server_url = f"https://{opt.host_fqdn}"
-    valid_redirect_urls = [opt.app_url, server_url] + opt.redirect_uri if opt.redirect_uri else [opt.app_url, server_url]
+    valid_redirect_urls = [opt.app_url, server_url, *opt.redirect_uri] if opt.redirect_uri else [opt.app_url, server_url]
 
     # authentication flow
     authentication_flow_binding_overrides = {}
@@ -1116,19 +1118,8 @@ def create_oidc_client(opt):
                 },
             },
         ],
-        "defaultClientScopes": [
-            "web-origins",
-            "acr",
-            "profile",
-            "roles",
-            "email",
-        ] + opt.default_scopes,
-        "optionalClientScopes": [
-            "address",
-            "phone",
-            "offline_access",
-            "microprofile-jwt",
-        ] + opt.optional_scopes,
+        "defaultClientScopes": ["web-origins", "acr", "profile", "roles", "email", *opt.default_scopes],
+        "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt", *opt.optional_scopes],
         "access": {
             "view": True,
             "configure": True,
@@ -3052,9 +3043,9 @@ def init_keycloak_ucs(opt):
         filter_format(
             "(|(memberOf=%s)(memberOf=%s))", [
                 f"cn=Domain Admins,cn=groups,{opt.ldap_base}",
-                f"cn=DC Backup Hosts,cn=groups,{opt.ldap_base}"
-            ]
-        )
+                f"cn=DC Backup Hosts,cn=groups,{opt.ldap_base}",
+            ],
+        ),
     ]
 
     # find existing ldap provider or just create if none exists

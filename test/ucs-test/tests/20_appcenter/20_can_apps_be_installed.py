@@ -50,7 +50,7 @@ with UCSTestConfigRegistry():
                 register.call(apps=[app], register_task=['component'], do_it=True)
                 _apt_get_update()
             packages = _packages_to_install(app)
-            cmd = ['/usr/bin/apt-get', 'install', '-s'] + packages
+            cmd = ['/usr/bin/apt-get', 'install', '-s', *packages]
             print('Executing the command: %s' % cmd)
             p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1, close_fds=True)
             (stdoutdata, stderrdata) = p.communicate()

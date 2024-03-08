@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright 2022-2024 Univention GmbH
 #
@@ -301,7 +300,7 @@ load_certificate.ATTR = {
 }
 
 
-class PKIIntegration(object):
+class PKIIntegration:
 
     def pki_open(self):
         if self.exists():

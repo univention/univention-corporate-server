@@ -82,7 +82,7 @@ def install_app(app, set_vars=None):
 
 @contextmanager
 def add_custom_settings(app, custom_settings_content):
-    custom_settings_file = "/var/lib/univention-appcenter/apps/{}/custom.settings".format(app.id)
+    custom_settings_file = f"/var/lib/univention-appcenter/apps/{app.id}/custom.settings"
     with open(custom_settings_file, "w") as f:
         f.write(custom_settings_content)
     try:
@@ -227,12 +227,12 @@ Scope = inside, outside
 
 
 @pytest.mark.parametrize('content_custom', [
-    '''[test1/setting]
+    f'''[test1/setting]
 Type = String
 Description = My Description
 InitialValue = Default: @%@hostname@%@
 Scope = {scope}
-'''.format(scope=scope) for scope in ('inside, outside', 'outside', 'inside')
+''' for scope in ('inside, outside', 'outside', 'inside')
 ])
 def test_string_custom_setting_docker(installed_apache_docker_app, content_custom):
     content = '''[test/setting]
@@ -245,7 +245,7 @@ Scope = inside, outside
         app, settings = fresh_settings(content, installed_apache_docker_app, 2)
         setting1, setting2 = settings
         for c, setting in [(content, setting1), (content_custom, setting2)]:
-            assert repr(setting) == "StringSetting(name='{}')".format(setting.name)
+            assert repr(setting) == f"StringSetting(name='{setting.name}')"
             assert setting.is_inside(app) is ("inside" in c)
             assert setting.is_outside(app) is ("outside" in c)
             ucr_var_name = re.search('@%@(.*?)@%@', c).group(1)

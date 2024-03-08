@@ -81,7 +81,7 @@ def test_invalid_users_do_not_break_udm(random_username, lo, wait_for_replicatio
             }
             ocs = []
             al = []
-            for option in options + ['default']:
+            for option in [*options, 'default']:
                 ocs.extend(mapping[option]['objectClass'])
                 al.extend([(key, (val % defaults).encode('UTF-8')) for key, val in mapping[option].items() if key not in ['objectClass', 'userPassword', 'krb5Key']])
             al.append(('objectClass', ocs))

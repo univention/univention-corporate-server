@@ -61,10 +61,10 @@ for i in range(number_of_groups):
     if i and not i % 200:
         new_members = all_users
     if i and not i % 550:
-        new_members = new_members + [all_groups[i - 1], all_groups[i - 2], all_groups[i - 3]]
+        new_members = [*new_members, all_groups[i - 1], all_groups[i - 2], all_groups[i - 3]]
         nested_group = True
     if i and not i % 880:
-        new_members = new_members + [has_nested_group[:1][0]]
+        new_members = [*new_members, has_nested_group[:1][0]]
         nested_group = True
     if not group:
         group = groups.object(None, lo, position)

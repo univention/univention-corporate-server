@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -32,7 +31,6 @@
 
 """|UDM| module for password part of the user"""
 
-from typing import TYPE_CHECKING
 
 import univention.admin
 import univention.admin.filter
@@ -42,11 +40,6 @@ import univention.admin.localization
 import univention.admin.uexceptions
 import univention.admin.uldap
 from univention.admin.layout import Tab
-
-
-if TYPE_CHECKING:
-    import univention.admin
-    import univention.admin.uldap
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.users')

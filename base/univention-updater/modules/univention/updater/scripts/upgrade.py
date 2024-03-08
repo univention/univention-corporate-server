@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -42,7 +41,7 @@ import sys
 import time
 import traceback
 from argparse import ArgumentParser, FileType, Namespace
-from typing import Iterable, List, NoReturn, Tuple
+from typing import Iterable, NoReturn
 
 from univention.admindiary.client import write_event
 from univention.admindiary.events import UPDATE_FINISHED_FAILURE, UPDATE_FINISHED_SUCCESS, UPDATE_STARTED
@@ -128,7 +127,7 @@ def readcontinue(msg: str) -> bool:
             return False
 
 
-def _package_list(new_packages: Iterable[Tuple[str, ...]]) -> str:
+def _package_list(new_packages: Iterable[tuple[str, ...]]) -> str:
     """Return comma separated list of packages."""
     return ",".join(p[0] for p in new_packages)
 
@@ -176,7 +175,7 @@ def do_release_update(options: Namespace, checkForUpdates: bool, silent: bool) -
         params.append('--ignoressh')
     if options.ignoreterm:
         params.append('--ignoreterm')
-    retcode = subprocess.call(['/usr/share/univention-updater/univention-updater', 'net', '--updateto', '%s' % (version_next)] + params, env=os.environ)
+    retcode = subprocess.call(['/usr/share/univention-updater/univention-updater', 'net', '--updateto', '%s' % version_next, *params], env=os.environ)
     if retcode:
         dprint(silent, 'exitcode of univention-updater: %s' % retcode, debug=True)
         dprint(silent, 'ERROR: update failed. Please check /var/log/univention/updater.log\n')
@@ -321,7 +320,7 @@ def do_app_updates(options: Namespace, checkForUpdates: bool, silent: bool) -> b
     return not success  # pending updates
 
 
-def parse_args(argv: List[str] | None = None) -> Namespace:
+def parse_args(argv: list[str] | None = None) -> Namespace:
     parser = ArgumentParser(description=__doc__)
     parser.add_argument(
         "--updateto",
@@ -463,7 +462,7 @@ def do_update(options: Namespace) -> None:
 
 def do_exec() -> NoReturn:
     # The updater/UCR/libs might have been replaced - re-execute!
-    cmd = sys.argv + ['--setucr']
+    cmd = [*sys.argv, '--setucr']
     print("execv(%r)" % (cmd,), file=logfd)
     os.execv(sys.argv[0], cmd)  # noqa: S606
 

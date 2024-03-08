@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
 #  dns helper functions
@@ -64,7 +63,7 @@ from univention.s4connector.s4.dc import _unixTimeInverval2seconds
 class PTRRecord(dnsp.DnssrvRpcRecord):
 
     def __init__(self, ptr, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
-        super(PTRRecord, self).__init__()
+        super().__init__()
         self.wType = dnsp.DNS_TYPE_PTR
         self.rank = rank
         self.dwSerial = serial
@@ -75,7 +74,7 @@ class PTRRecord(dnsp.DnssrvRpcRecord):
 class MXRecord(dnsp.DnssrvRpcRecord):
 
     def __init__(self, name, priority, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
-        super(MXRecord, self).__init__()
+        super().__init__()
         self.wType = dnsp.DNS_TYPE_MX
         self.rank = rank
         self.dwSerial = serial
@@ -96,17 +95,17 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
     obj = copy.deepcopy(given_object)
 
     propertyname = 'dns'
-    propertyattrib = u'relativeDomainName'  # using LDAP name here, for simplicity
+    propertyattrib = 'relativeDomainName'  # using LDAP name here, for simplicity
     ol_oc_filter = '(objectClass=dNSZone)'  # all OpenLDAP DNS records match
     ol_RR_attr = 'relativeDomainName'
-    s4_RR_filter = u'(objectClass=dnsNode)'  # This also matches the DC=@ SOA object
+    s4_RR_filter = '(objectClass=dnsNode)'  # This also matches the DC=@ SOA object
     s4_RR_attr = 'dc'  # Note: the S4 attribute itself is lowercase
 
     if obj['dn'] is not None:
         try:
             s4_RR_val = [_value for _key, _value in obj['attributes'].items() if s4_RR_attr.lower() == _key.lower()][0][0].decode('UTf-8')  # noqa: RUF015
         except (KeyError, IndexError):
-            s4_RR_val = u''
+            s4_RR_val = ''
 
     def dn_premapped(given_object, dn_key, dn_mapping_stored):
         if (dn_key not in dn_mapping_stored) or (not given_object[dn_key]):
@@ -197,7 +196,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 
                         if result:
                             # We only need the SOA dn here
-                            s4dn_utf16_le = ldap.dn.dn2str([[('DC', '@', ldap.AVA_STRING)]] + str2dn(result[0][0]))
+                            s4dn_utf16_le = ldap.dn.dn2str([[('DC', '@', ldap.AVA_STRING)], *str2dn(result[0][0])])
                             break
                 else:
                     # identify position by parent zone name
@@ -262,9 +261,9 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
                     else:
                         # Ok, it's a new object without existing parent zone in S4 (probably this object itself is a soa/zone), so propose an S4 DN for it:
                         default_dn = s4connector.property['dns'].con_default_dn
-                        zone_dn = ldap.dn.dn2str([[('DC', ol_zone_name, ldap.AVA_STRING)]] + str2dn(default_dn))
+                        zone_dn = ldap.dn.dn2str([[('DC', ol_zone_name, ldap.AVA_STRING)], *str2dn(default_dn)])
 
-                    newdn = ldap.dn.dn2str([[('DC', relativeDomainName, ldap.AVA_STRING)]] + str2dn(zone_dn))
+                    newdn = ldap.dn.dn2str([[('DC', relativeDomainName, ldap.AVA_STRING)], *str2dn(zone_dn)])
 
             else:
                 # get the object to read the s4_RR_attr in S4 and use it as name
@@ -370,7 +369,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
                         # Hmm, is it ok to map it to the same as '@'?
                         newdn = zone_dn
                     else:
-                        newdn = ldap.dn.dn2str([[('relativeDomainName', s4_RR_val, ldap.AVA_STRING)]] + str2dn(zone_dn))
+                        newdn = ldap.dn.dn2str([[('relativeDomainName', s4_RR_val, ldap.AVA_STRING)], *str2dn(zone_dn)])
 
                     if not (dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in obj)):
                         # Case: "moved" (?)
@@ -390,7 +389,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
 
 def __get_zone_dn(s4connector, zone_name):
     default_dn = s4connector.property['dns'].ucs_default_dn
-    return ldap.dn.dn2str([[('zoneName', zone_name, ldap.AVA_STRING)]] + str2dn(default_dn))
+    return ldap.dn.dn2str([[('zoneName', zone_name, ldap.AVA_STRING)], *str2dn(default_dn)])
 
 
 def __append_dot(string):
@@ -668,7 +667,7 @@ def __get_s4_msdcs_soa(s4connector, zoneName):
         return
 
     # We need the SOA here
-    msdcs_soa_dn = ldap.dn.dn2str([[('DC', '@', ldap.AVA_STRING)]] + str2dn(resultlist[0][0]))
+    msdcs_soa_dn = ldap.dn.dn2str([[('DC', '@', ldap.AVA_STRING)], *str2dn(resultlist[0][0])])
     ud.debug(ud.LDAP, ud.INFO, "__get_s4_msdcs_soa: search DC=@ for _msdcs in S4")
     resultlist = s4connector._s4__search_s4(
         msdcs_soa_dn,

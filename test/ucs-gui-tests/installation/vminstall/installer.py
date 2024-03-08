@@ -1,5 +1,4 @@
 #!/usr/bin/python2.7
-# -*- coding: utf-8 -*-
 #
 # Python VNC automate
 #
@@ -44,7 +43,7 @@ from vncautomate import VNCConnection, init_logger
 from vncautomate.cli import add_config_options_to_parser, get_config_from_args
 
 
-class Installer(object):
+class Installer:
 
     def __init__(self, args=None, role='master', language='en'):
         init_logger('info')

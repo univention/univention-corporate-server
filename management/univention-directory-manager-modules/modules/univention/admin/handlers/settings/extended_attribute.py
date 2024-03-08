@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -344,7 +343,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_create(self):
         # type: () -> None
-        super(object, self)._ldap_pre_create()
+        super()._ldap_pre_create()
 
         if 'users/user' in self['module'] and self['valueRequired'] == '1' and not self.info.get('default'):
             raise univention.admin.uexceptions.valueRequired(_('Extending the users module is only possible if a default value for a required value is given.'), property='default')

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Samba
 #  listener module: manage idmap
@@ -38,7 +37,7 @@ from __future__ import annotations
 
 import os
 import time
-from typing import IO, Dict, List
+from typing import IO
 
 import ldb
 from samba.auth import system_session
@@ -261,7 +260,7 @@ def initialize() -> None:
         listener.unsetuid()
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], operation: str) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]], operation: str) -> None:
     idmap = open_idmap()
     if new:
         try:
@@ -361,7 +360,7 @@ if __name__ == '__main__':
         def __init__(self, input: IO[bytes]) -> None:
             LDIFParser.__init__(self, input)
 
-        def handle(self, dn: str, entry: Dict[str, List[bytes]]) -> None:
+        def handle(self, dn: str, entry: dict[str, list[bytes]]) -> None:
             handler(dn, entry, {}, 'a')
 
     parser = ListenerHandler(io.BytesIO(stdout))

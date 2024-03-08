@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention LDAP
 #
@@ -37,7 +36,7 @@ from __future__ import annotations
 
 import argparse
 import sys
-from typing import Iterable, List, NoReturn
+from typing import Iterable, NoReturn
 
 import ldap
 
@@ -59,7 +58,7 @@ def warning(msg: str) -> None:
     print('Warning: %s' % (msg,), file=sys.stderr)
 
 
-def get_ldap_connections() -> List[univention.admin.uldap.access]:
+def get_ldap_connections() -> list[univention.admin.uldap.access]:
     udm = UDM.machine().version(2)
     connections = []
     modules = ['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave']
@@ -88,7 +87,7 @@ def get_users(binddn: str | None = None, bindpwdfile: str | None = None, only_th
     return users
 
 
-def get_youngest_timestamp(user: univention.udm.modules.users_user.UsersUserObject, connections: List[univention.admin.uldap.access]) -> str | None:
+def get_youngest_timestamp(user: univention.udm.modules.users_user.UsersUserObject, connections: list[univention.admin.uldap.access]) -> str | None:
     timestamps = [timestamp.decode('ASCII') for lo in connections for timestamp in lo.getAttr(user.dn, 'authTimestamp')]
     timestamps = sorted(timestamps)
     return timestamps[-1] if len(timestamps) else None
@@ -144,7 +143,7 @@ def main(args: argparse.Namespace) -> None:
     update_users(args.binddn, args.bindpwdfile, args.user)
 
 
-def parse_args(args: List[str] | None = None) -> argparse.Namespace:
+def parse_args(args: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Save the youngest "authTimestamp" attribute of an user, from all reachable LDAP servers, into the "lastbind" extended attribute of the user. The "authTimestamp" attribute is set on a successful bind to an LDAP server when the "ldap/overlay/lastbind" UCR variable is set.')
     parser.add_argument("--user", help='Update the "lastbind" extended attribute of the given user. Can be either a DN or just the uid.')
     parser.add_argument("--allusers", action="store_true", help='Update the "lastbind" extended attribute of all users.')

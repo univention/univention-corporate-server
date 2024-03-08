@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  module: system usage statistics
@@ -94,7 +93,7 @@ def get_master_dns_lookup() -> Dict:
 class HostSanitizer(StringSanitizer):
 
     def _sanitize(self, value: str, name: str, further_args: List[str]) -> str:
-        value = super(HostSanitizer, self)._sanitize(value, name, further_args)
+        value = super()._sanitize(value, name, further_args)
         try:
             return socket.getfqdn(value)
         except socket.gaierror:
@@ -102,7 +101,7 @@ class HostSanitizer(StringSanitizer):
             self.raise_validation_error(_('The entered FQDN is not a valid value'))
 
 
-class Progress(object):
+class Progress:
 
     def __init__(self, max_steps=100):
         self.reset(max_steps)
@@ -190,7 +189,7 @@ def run_join_scripts(
 
         if scripts:
             # if scripts are provided only execute them instead of running all join scripts
-            cmd += ['--run-scripts'] + scripts
+            cmd += ['--run-scripts', *scripts]
         else:
             # we need the number of join scripts for the progressbar
             scripts = os.listdir(INSTDIR)
@@ -229,7 +228,7 @@ def run(
             if matches:
                 message = matches.groupdict().get('message')
                 error_handler(_("The system join process could not be completed:<br/><br/><i>%s</i><br/><br/> More details can be found in the log file <i>/var/log/univention/join.log</i>.<br/>Please retry after resolving any conflicting issues.") % message)
-                if message.startswith('ssh-login for') or message.startswith('binddn for'):
+                if message.startswith(('ssh-login for', 'binddn for')):
                     # invalid credentials or non existent user
                     # do a critical error, the script will stop here
                     critical_handler(True)

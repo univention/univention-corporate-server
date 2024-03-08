@@ -15,11 +15,11 @@ class PhaseRestartAllInterfaces(Phase):
     priority = 50
 
     def pre(self) -> None:
-        super(PhaseRestartAllInterfaces, self).pre()
+        super().pre()
         self.call(["ifdown", "--all", "--exclude", "lo"])
 
     def post(self) -> None:
-        super(PhaseRestartAllInterfaces, self).post()
+        super().post()
         self.call(["ifup", "--all"])
 
     def _stop_old_interfaces(self, config: Interfaces) -> None:  # FIXME: unused
@@ -30,7 +30,7 @@ class PhaseRestartAllInterfaces(Phase):
         ]
         if interfaces:
             interfaces.reverse()
-            self.call(["ifdown"] + interfaces)
+            self.call(["ifdown", *interfaces])
 
     def _start_new_interfaces(self, config: Interfaces) -> None:  # FIXME: unused
         interfaces = [
@@ -39,7 +39,7 @@ class PhaseRestartAllInterfaces(Phase):
             if self._is_auto(iface)
         ]
         if interfaces:
-            self.call(["ifup"] + interfaces)
+            self.call(["ifup", *interfaces])
 
     @staticmethod
     def _is_auto(iface: _Iface) -> bool:

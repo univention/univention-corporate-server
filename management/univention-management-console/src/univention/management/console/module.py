@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  next generation of UMC modules
@@ -305,7 +304,7 @@ class XML_Definition(ET.ElementTree):
 
     @property
     def keywords(self):
-        return KEYWORD_PATTERN.split(self.findtext('keywords', '')) + [self.name]
+        return [*KEYWORD_PATTERN.split(self.findtext('keywords', '')), self.name]
 
     @property
     def id(self):
@@ -356,7 +355,7 @@ class XML_Definition(ET.ElementTree):
                 deactivated=(elem.get('deactivated', 'no').lower() in ('yes', 'true', '1')),
                 translationId=self.translationId,
                 description=elem.findtext('description'),
-                keywords=re.split(KEYWORD_PATTERN, elem.findtext('keywords', '')) + [name],
+                keywords=[*re.split(KEYWORD_PATTERN, elem.findtext('keywords', '')), name],
                 priority=priority,
                 categories=categories,
                 required_commands=[cmd.get('name') for cmd in elem.findall('requiredCommands/requiredCommand')],

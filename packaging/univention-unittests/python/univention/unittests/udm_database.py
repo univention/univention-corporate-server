@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -35,14 +34,14 @@
 from collections import OrderedDict
 
 
-class LDAPObject(object):
+class LDAPObject:
     def __init__(self, dn, attrs):
         self.dn = dn
         self.attrs = attrs
         self.changed = {}
 
     def __repr__(self):
-        return 'Object({!r}, {!r})'.format(self.dn, self.attrs)
+        return f'Object({self.dn!r}, {self.attrs!r})'
 
 
 def make_obj(obj):
@@ -67,7 +66,7 @@ def parse_ldif(ldif):
     return ret
 
 
-class Database(object):
+class Database:
     def __init__(self):
         self.objs = OrderedDict()
 
@@ -81,7 +80,7 @@ class Database(object):
         yield from self.objs.values()
 
     def __repr__(self):
-        return 'Database({!r})'.format(self.objs)
+        return f'Database({self.objs!r})'
 
     def __getitem__(self, dn):
         return self.objs[dn].attrs

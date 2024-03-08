@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -167,7 +166,7 @@ class object(univention.admin.handlers.simplePolicy):
             if key in cron:
                 self[key] = []
                 for value in cron[key]:
-                    if value != u'*':
+                    if value != '*':
                         univention.admin.handlers.simplePolicy.__getitem__(self, key).append(value)
 
     def __getitem__(self, key):

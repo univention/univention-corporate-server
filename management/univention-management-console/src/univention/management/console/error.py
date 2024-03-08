@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  Exception classes for UMC modules
@@ -57,7 +56,7 @@ class UMC_Error(HTTPError):
         self.traceback = traceback
         if isinstance(status, int):
             self.status = status
-        super(UMC_Error, self).__init__(self.status, message, reason=reason)
+        super().__init__(self.status, message, reason=reason)
 
     def __str__(self):
         return self.msg
@@ -116,7 +115,7 @@ class PasswordRequired(Unauthorized):
 
     def __init__(self):
         message = _('This action requires you to supply your password.')
-        super(PasswordRequired, self).__init__(message, self.status, {'password_required': True})
+        super().__init__(message, self.status, {'password_required': True})
 
 
 class LDAP_ServerDown(UMC_Error):
@@ -127,7 +126,7 @@ class LDAP_ServerDown(UMC_Error):
         self._updates_available = ucr.is_true('update/available')
         self._fqdn = '%(hostname)s.%(domainname)s' % ucr
         message = '\n'.join(self._error_msg())
-        super(LDAP_ServerDown, self).__init__(message, status=503, reason='LDAP Service Unavailable')
+        super().__init__(message, status=503, reason='LDAP Service Unavailable')
 
     def _error_msg(self):
         yield _('Cannot connect to the LDAP service.')
@@ -150,7 +149,7 @@ class LDAP_ConnectionFailed(LDAP_ServerDown):
 
     def __init__(self, exc):
         self.exc = exc
-        super(LDAP_ConnectionFailed, self).__init__()
+        super().__init__()
 
     def _error_msg(self):
         yield _('Cannot connect to the LDAP service.')
@@ -170,4 +169,4 @@ class OpenIDProvideUnavailable(ServiceUnavailable):
 
     def __init__(self, *args, **kwargs):
         kwargs['reason'] = 'OpenID-Provider Unavailable'
-        super(OpenIDProvideUnavailable, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright 2022-2024 Univention GmbH
 #
@@ -43,7 +42,7 @@ import univention.config_registry_info as cri
 from univention.config_registry.backend import BooleanConfigRegistry
 
 
-class BaseValidator(object):
+class BaseValidator:
     """Base class for |UCR| type validators."""
 
     NAME = ""
@@ -159,7 +158,7 @@ class IPv4Address(BaseValidator):
 
     def validate(self, value):
         # type: (str) -> object
-        return ipaddress.IPv4Address(u"%s" % value)  # FIXME: remove Python 2.7 unicoding
+        return ipaddress.IPv4Address("%s" % value)  # FIXME: remove Python 2.7 unicoding
 
 
 class IPv6Address(BaseValidator):
@@ -169,7 +168,7 @@ class IPv6Address(BaseValidator):
 
     def validate(self, value):
         # type: (str) -> object
-        return ipaddress.IPv6Address(u"%s" % value)  # FIXME: remove Python 2.7 unicoding
+        return ipaddress.IPv6Address("%s" % value)  # FIXME: remove Python 2.7 unicoding
 
 
 class IPAddress(BaseValidator):
@@ -179,7 +178,7 @@ class IPAddress(BaseValidator):
 
     def validate(self, value):
         # type: (str) -> object
-        return ipaddress.ip_address(u"%s" % value)  # FIXME: remove Python 2.7 unicoding
+        return ipaddress.ip_address("%s" % value)  # FIXME: remove Python 2.7 unicoding
 
 
 class Integer(BaseValidator):
@@ -396,7 +395,7 @@ class Cron(BaseValidator):
                 raise ValueError("step={step!r} not in range [{low_}-{high}]".format(low_=low or 1, **locals()))
 
 
-class Type(object):
+class Type:
     """
     Basic |UCR| type validation class.
 

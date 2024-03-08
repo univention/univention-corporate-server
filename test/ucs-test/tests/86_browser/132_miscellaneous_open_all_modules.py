@@ -1,5 +1,4 @@
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
-# -*- coding: utf-8 -*-
 ## desc: |
 ##  Test if all available modules can be opened and closed without a problem.
 ## roles-not:

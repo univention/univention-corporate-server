@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -35,7 +34,7 @@ import string
 from collections import OrderedDict
 
 
-class acctFlags(object):
+class acctFlags:
 
     def __init__(self, flagstring=None, flags=None, fallbackflags=None):
         if flags is not None:

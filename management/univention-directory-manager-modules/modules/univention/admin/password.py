@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -321,11 +320,11 @@ def password_already_used(password, pwhistory):
     return False
 
 
-class PasswortHistoryPolicy(object):
+class PasswortHistoryPolicy:
     """Policy for handling history of password hashes."""
 
     def __init__(self, pwhistoryPolicy):
-        super(PasswortHistoryPolicy, self).__init__()
+        super().__init__()
         self.pwhistoryPolicy = pwhistoryPolicy
         self.pwhistoryLength = None
         self.pwhistoryPasswordLength = 0

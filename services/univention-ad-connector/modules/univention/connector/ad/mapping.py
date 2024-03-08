@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention AD Connector
 #  this file defines the mapping between AD and UCS
@@ -376,10 +375,10 @@ def create_mapping(configbasename='connector'):
             },
             mapping_table={
                 'cn': [
-                    (u'Domain Users', u'Domänen-Benutzer'),
-                    (u'Domain Admins', u'Domänen-Admins'),
-                    (u'Windows Hosts', u'Domänencomputer'),
-                    (u'Domain Guests', u'Domänen-Gäste'),
+                    ('Domain Users', 'Domänen-Benutzer'),
+                    ('Domain Admins', 'Domänen-Admins'),
+                    ('Windows Hosts', 'Domänencomputer'),
+                    ('Domain Guests', 'Domänen-Gäste'),
                 ],
             },
         ),

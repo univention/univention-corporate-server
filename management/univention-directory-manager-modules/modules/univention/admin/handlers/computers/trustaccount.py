@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -106,7 +105,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     def open(self):
         # type: () -> None
-        super(object, self).open()
+        super().open()
         self.pki_open()
 
         self.options = ['samba']  # FIXME/TODO
@@ -141,7 +140,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         # type: () -> list[tuple[str, Any]]
         acctFlags = univention.admin.samba.acctFlags(flags={'I': 1})
 
-        al = super(object, self)._ldap_addlist()
+        al = super()._ldap_addlist()
         ocs = [b'top', b'person', b'sambaSamAccount']
 
         al.append(('sambaSID', [self.getMachineSid(self.lo, self.position, self.request_lock('uidNumber')).encode('ASCII')]))
@@ -154,7 +153,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     def _ldap_pre_modify(self):
         # type: () -> None
-        super(object, self)._ldap_pre_modify()
+        super()._ldap_pre_modify()
         if self.hasChanged('password'):
             if not self['password']:
                 self.modifypassword = 0
@@ -165,7 +164,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     def _ldap_modlist(self):
         # type: () -> list[tuple[str, Any, Any]]
-        ml = super(object, self)._ldap_modlist()
+        ml = super()._ldap_modlist()
 
         if self.hasChanged('name') and self['name']:
             requested_uid = "%s$" % self['name']
@@ -183,7 +182,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
     def _ldap_pre_remove(self):
         # type: () -> None
-        super(object, self)._ldap_pre_remove()
+        super()._ldap_pre_remove()
         if self.oldattr.get('uid'):
             self.alloc.append(('uid', self.oldattr['uid'][0].decode('UTF-8')))
         if self.oldattr.get('sambaSID'):

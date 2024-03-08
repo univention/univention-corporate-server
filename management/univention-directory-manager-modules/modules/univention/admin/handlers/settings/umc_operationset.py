@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -114,13 +113,13 @@ layout = [
 
 def mapUMC_CommandPattern(udm_value, encoding=()):
     # type: (list[list[str]], univention.admin.handlers._Encoding) -> list[bytes]
-    return [u':'.join(x).encode(*encoding) for x in udm_value]
+    return [':'.join(x).encode(*encoding) for x in udm_value]
 
 
 def unmapUMC_CommandPattern(ldap_value, encoding=()):
     # type: (list[bytes], univention.admin.handlers._Encoding) -> list[tuple[str, str]]
     return [
-        val.decode(*encoding).partition(u":")[::2]
+        val.decode(*encoding).partition(":")[::2]
         for val in ldap_value
     ]
 

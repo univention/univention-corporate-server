@@ -41,13 +41,16 @@ import time
 import traceback
 from enum import IntEnum
 from itertools import chain
-from types import TracebackType
-from typing import IO, Any, Callable, Dict, Iterable, List, Mapping, NoReturn, Sequence, Tuple, Type, TypeVar
+from typing import IO, TYPE_CHECKING, Any, Callable, Iterable, Mapping, NoReturn, Sequence, TypeVar
 
 import ldap
 
 from univention import uldap
 from univention.config_registry import ConfigRegistry
+
+
+if TYPE_CHECKING:
+    from types import TracebackType
 
 
 try:
@@ -149,7 +152,7 @@ def get_ldap_connection(admin_uldap: bool = False, primary: bool = False) -> acc
     raise ldap.SERVER_DOWN()
 
 
-def retry_on_error(func: Callable[..., _T], exceptions: Tuple[Type[Exception], ...] = (Exception,), retry_count: int = 20, delay: float = 10) -> _T:
+def retry_on_error(func: Callable[..., _T], exceptions: tuple[type[Exception], ...] = (Exception,), retry_count: int = 20, delay: float = 10) -> _T:
     """
     This function calls the given function `func`.
     If one of the specified `exceptions` is caught, `func` is called again until
@@ -186,8 +189,8 @@ def verify_ldap_object(
         delay: float = 10,
         primary: bool = False,
         pre_check: Callable[..., None] | None = None,
-        pre_check_kwargs: Dict[str, Any] | None = None,
-        not_expected_attr: Dict[str, str] | None = None,
+        pre_check_kwargs: dict[str, Any] | None = None,
+        not_expected_attr: dict[str, str] | None = None,
 ) -> None:
     """
     Verify [non]existence and attributes of LDAP object.
@@ -232,7 +235,7 @@ def __verify_ldap_object(
         strict: bool = True,
         should_exist: bool = True,
         primary: bool = False,
-        not_expected_attr: Dict[str, str] | None = None,
+        not_expected_attr: dict[str, str] | None = None,
 ) -> None:
     if expected_attr is None:
         expected_attr = {}
@@ -369,7 +372,7 @@ class AutomaticListenerRestart:
     def __enter__(self) -> AutomaticListenerRestart:  # FIXME Py3.9: Self
         return self
 
-    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
+    def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         restart_listener()
 
 
@@ -410,7 +413,7 @@ class AutoCallCommand:
             subprocess.call(self.enter_cmd, stdout=self.pipe_stdout, stderr=self.pipe_stderr)
         return self
 
-    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
+    def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         if self.exit_cmd:
             subprocess.call(self.exit_cmd, stdout=self.pipe_stdout, stderr=self.pipe_stderr)
 
@@ -440,13 +443,13 @@ class FollowLogfile:
         """
         assert isinstance(always, bool)
         self.always = always
-        self.logfile_pos: Dict[str, int] = dict.fromkeys(logfiles, 0)
+        self.logfile_pos: dict[str, int] = dict.fromkeys(logfiles, 0)
 
     def __enter__(self) -> FollowLogfile:  # FIXME Py3.9: Self
         self.logfile_pos.update((logfile, os.path.getsize(logfile)) for logfile in self.logfile_pos)
         return self
 
-    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
+    def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         if self.always or exc_type:
             for logfile, pos in self.logfile_pos.items():
                 with open(logfile) as log:
@@ -467,7 +470,7 @@ class ReplicationType(IntEnum):
 def wait_for_replication_from_master_openldap_to_local_samba(replication_postrun: bool = False, ldap_filter: str | None = None, verbose: bool = True) -> None:
     """Wait for all kind of replications"""
     # the order matters!
-    conditions: List[Tuple[ReplicationType, Any]] = [(ReplicationType.LISTENER, 'postrun' if replication_postrun else True)]
+    conditions: list[tuple[ReplicationType, Any]] = [(ReplicationType.LISTENER, 'postrun' if replication_postrun else True)]
     ucr = UCR
     ucr.load()
     if ucr.get('samba4/ldap/base'):
@@ -494,7 +497,7 @@ def wait_for_replication_from_local_samba_to_local_openldap(replication_postrun:
     wait_for(conditions, verbose=True)
 
 
-def wait_for(conditions: List[Tuple[ReplicationType, Any]] | None = None, verbose: bool = True) -> None:
+def wait_for(conditions: list[tuple[ReplicationType, Any]] | None = None, verbose: bool = True) -> None:
     """Wait for all kind of replications"""
     for replicationtype, detail in conditions or []:
         if replicationtype == ReplicationType.LISTENER:

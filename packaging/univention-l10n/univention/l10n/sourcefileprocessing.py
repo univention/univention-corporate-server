@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Generate gettext Portable Objects and message catalogs (gettext MO and a
 Univention specific JSON-based format) from multiple source files by file type.
@@ -53,7 +52,7 @@ class UnsupportedSourceType(Exception):
     pass
 
 
-class SourceFileSet(object):
+class SourceFileSet:
 
     def __init__(self, src_pkg_path, binary_pkg_name, files):
         # type: (str, str, Iterable[str]) -> None
@@ -96,21 +95,21 @@ class SourceFilesShell(SourceFilesXgettext):
 
     def _create_po_template(self, pot_path):
         # type: (str) -> None
-        super(SourceFilesShell, self)._create_po_file('Shell', pot_path)
+        super()._create_po_file('Shell', pot_path)
 
 
 class SourceFilesPython(SourceFilesXgettext):
 
     def _create_po_template(self, pot_path):
         # type: (str) -> None
-        super(SourceFilesPython, self)._create_po_file('Python', pot_path)
+        super()._create_po_file('Python', pot_path)
 
 
 class SourceFilesJavaScript(SourceFilesXgettext):
 
     def _create_po_template(self, pot_path):
         # type: (str) -> None
-        super(SourceFilesJavaScript, self)._create_po_file('JavaScript', pot_path)
+        super()._create_po_file('JavaScript', pot_path)
 
     def _compile(self, po_path, json_output_path):
         # type: (str, str) -> None
@@ -157,7 +156,7 @@ class SourceFilesHTML(SourceFileSet):
         umc.po_to_json(po_path, json_output_path)
 
 
-class SourceFileSetCreator(object):
+class SourceFileSetCreator:
 
     process_by_type = {
         'text/x-shellscript': SourceFilesShell,

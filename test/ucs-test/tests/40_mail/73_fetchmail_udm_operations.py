@@ -10,7 +10,7 @@ from __future__ import annotations
 import re
 import time
 from functools import reduce
-from typing import Iterable, List
+from typing import Iterable
 
 import ldap
 import pytest
@@ -51,7 +51,7 @@ UID_REGEX = re.compile("#UID='(.+)'[ \t]*$")
 
 
 def _split_file(fetch_list, new_line):
-    if new_line.startswith('set') or new_line.startswith('#'):
+    if new_line.startswith(('set', '#')):
         fetch_list.append(new_line)
     elif fetch_list:
         if UID_REGEX.search(fetch_list[-1]) or fetch_list[-1].startswith('set'):
@@ -61,7 +61,7 @@ def _split_file(fetch_list, new_line):
     return fetch_list
 
 
-def load_rc(ofile: str) -> List[str] | None:
+def load_rc(ofile: str) -> list[str] | None:
     """open an textfile with setuid(0) for root-action"""
     rc = None
     try:
@@ -72,7 +72,7 @@ def load_rc(ofile: str) -> List[str] | None:
     return rc
 
 
-def objfind(dlist: Iterable[str], uid: str) -> List[str]:
+def objfind(dlist: Iterable[str], uid: str) -> list[str]:
     return [line for line in dlist if re.search("#UID='%s'[ \t]*$" % re.escape(uid), line)]
 
 
@@ -103,7 +103,7 @@ def check_entry(config, mailserver, remote_username, password, mail_addr, uid):
         'username': remote_username,
         'password': password,
         'mail': mail_addr,
-        'uid': uid
+        'uid': uid,
     } == parse_fetchmailrc(config)
 
 
@@ -114,7 +114,7 @@ def test_create_single_drop_configuration(udm, ucr, fqdn, user_addr):
         set={
             'mailHomeServer': fqdn,
             'mailPrimaryAddress': user_addr,
-            'FetchMailSingle': f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1'
+            'FetchMailSingle': f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1',
         })
 
     time.sleep(3)
@@ -132,7 +132,7 @@ def test_create_multi_drop_configuration(udm, ucr, fqdn, user_addr):
         set={
             'mailHomeServer': fqdn,
             'mailPrimaryAddress': user_addr,
-            'FetchMailMulti': f'"{fqdn}" "IMAP" "{remote_username}" "{password}" "" "" "Envelope-To" 1 1'
+            'FetchMailMulti': f'"{fqdn}" "IMAP" "{remote_username}" "{password}" "" "" "Envelope-To" 1 1',
         })
 
     time.sleep(3)
@@ -153,7 +153,7 @@ def test_single_drop_configuration_removal(udm, ucr, fqdn, user_addr):
         }, append={
             'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1',
                                 f'"{fqdn}" "IMAP" "{remote_username + "1" }" "{password}" 1 1',
-                                f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1']
+                                f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1'],
         })
 
     time.sleep(3)
@@ -164,7 +164,7 @@ def test_single_drop_configuration_removal(udm, ucr, fqdn, user_addr):
 
     # Remove only one configuration
     udm.modify_object('users/user', dn=user_dn, remove={
-        'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username + "1"}" "{password}" 1 1']
+        'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username + "1"}" "{password}" 1 1'],
     })
 
     time.sleep(3)
@@ -176,7 +176,7 @@ def test_single_drop_configuration_removal(udm, ucr, fqdn, user_addr):
     # Remove remaining configurations (Bug #56426)
     udm.modify_object('users/user', dn=user_dn, remove={
         'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1',
-                            f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1']
+                            f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1'],
     })
 
     time.sleep(3)
@@ -195,7 +195,7 @@ def test_multi_drop_configuration_removal(udm, ucr, fqdn, user_addr):
         }, append={
             'FetchMailMulti': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" "" "" "Envelope-To" 1 1',
                                f'"{fqdn}" "IMAP" "{remote_username + "1"}" "{password}" "" "" "Envelope-To" 1 1',
-                               f'"{fqdn}" "IMAP" "{remote_username + "2"}" "{password}" "" "" "Envelope-To" 1 1']
+                               f'"{fqdn}" "IMAP" "{remote_username + "2"}" "{password}" "" "" "Envelope-To" 1 1'],
         })
 
     time.sleep(3)
@@ -206,7 +206,7 @@ def test_multi_drop_configuration_removal(udm, ucr, fqdn, user_addr):
 
     # Remove only one configuration
     udm.modify_object('users/user', dn=user_dn, remove={
-        'FetchMailMulti': [f'"{fqdn}" "IMAP" "{remote_username + "1"}" "{password}" "" "" "Envelope-To" 1 1']
+        'FetchMailMulti': [f'"{fqdn}" "IMAP" "{remote_username + "1"}" "{password}" "" "" "Envelope-To" 1 1'],
     })
 
     time.sleep(3)
@@ -218,7 +218,7 @@ def test_multi_drop_configuration_removal(udm, ucr, fqdn, user_addr):
     # Remove remaining configurations (Bug #56426)
     udm.modify_object('users/user', dn=user_dn, remove={
         'FetchMailMulti': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" "" "" "Envelope-To" 1 1',
-                           f'"{fqdn}" "IMAP" "{remote_username + "2"}" "{password}" "" "" "Envelope-To" 1 1']
+                           f'"{fqdn}" "IMAP" "{remote_username + "2"}" "{password}" "" "" "Envelope-To" 1 1'],
     })
 
     time.sleep(3)
@@ -251,7 +251,7 @@ def test_remove_mailPrimaryAddress(udm, ucr, fqdn, user_addr):
         }, append={
             'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1',
                                 f'"{fqdn}" "IMAP" "{remote_username + "1" }" "{password}" 1 1',
-                                f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1']
+                                f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1'],
         })
 
     time.sleep(3)
@@ -261,7 +261,7 @@ def test_remove_mailPrimaryAddress(udm, ucr, fqdn, user_addr):
     assert len(res) == 3
 
     udm.modify_object('users/user', dn=user_dn, isOxUser="Not", remove={
-        'mailPrimaryAddress': [user_addr]
+        'mailPrimaryAddress': [user_addr],
     })
 
     time.sleep(3)
@@ -279,7 +279,7 @@ def test_create_user_without_mailPrimaryAddress(udm, ucr, fqdn, user_addr):
         }, append={
             'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1',
                                 f'"{fqdn}" "IMAP" "{remote_username + "1" }" "{password}" 1 1',
-                                f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1']
+                                f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1'],
         })
 
     time.sleep(3)
@@ -299,7 +299,7 @@ def test_modify_mailPrimaryAddress(udm, ucr, fqdn, user_addr):
         }, append={
             'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1',
                                 f'"{fqdn}" "IMAP" "{remote_username + "1" }" "{password}" 1 1',
-                                f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1']
+                                f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1'],
         })
 
     time.sleep(3)
@@ -328,7 +328,7 @@ def test_modify_uid(udm, ucr, fqdn, user_addr):
         }, append={
             'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1',
                                 f'"{fqdn}" "IMAP" "{remote_username + "1" }" "{password}" 1 1',
-                                f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1']
+                                f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1'],
         })
 
     time.sleep(3)
@@ -356,7 +356,7 @@ def test_remove_user(udm, ucr, fqdn, user_addr):
         }, append={
             'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1',
                                 f'"{fqdn}" "IMAP" "{remote_username + "1" }" "{password}" 1 1',
-                                f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1']
+                                f'"{fqdn}" "IMAP" "{remote_username + "2" }" "{password}" 1 1'],
         })
 
     time.sleep(3)
@@ -384,7 +384,7 @@ def test_modify_configuration(udm, ucr, fqdn, user_addr):
             'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username}" "{password}" 1 1',
                                 f'"{fqdn}" "IMAP" "{remote_username + "1"}" "{password}" 1 1',
                                 f'"{fqdn}" "IMAP" "{remote_username + "2"}" "{password}" 1 1'],
-            'FetchMailMulti': [f'"{fqdn}" "IMAP" "{remote_username + "3"}" "{password}" "" "" "Envelope-To" 1 1']
+            'FetchMailMulti': [f'"{fqdn}" "IMAP" "{remote_username + "3"}" "{password}" "" "" "Envelope-To" 1 1'],
         })
 
     time.sleep(3)
@@ -400,7 +400,7 @@ def test_modify_configuration(udm, ucr, fqdn, user_addr):
                          f'"{fqdn}" "IMAP" "{remote_username + "5"}" "{password}" 1 1',
                          f'"{fqdn}" "IMAP" "{remote_username + "2"}" "{password}" 1 1'],
         remove={
-            'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username + "1"}" "{password}" 1 1']
+            'FetchMailSingle': [f'"{fqdn}" "IMAP" "{remote_username + "1"}" "{password}" 1 1'],
         })
 
     time.sleep(3)

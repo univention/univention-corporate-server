@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  Sanitizer Classes used in decorator
@@ -150,7 +149,7 @@ class MultiValidationError(ValidationError):
         return {name: e.result() for name, e in self.validation_errors.items()}
 
 
-class Sanitizer(object):
+class Sanitizer:
     r"""
     Base class of all sanitizers.
 
@@ -285,7 +284,7 @@ class DictSanitizer(Sanitizer):
     def __init__(self, sanitizers, allow_other_keys=True, default_sanitizer=None, **kwargs):
         # type: (Dict[str, Sanitizer], bool, Sanitizer, **Any) -> None
         self._copy_value = kwargs.pop('_copy_value', True)
-        super(DictSanitizer, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.sanitizers = sanitizers
         self.default_sanitizer = default_sanitizer
         self.allow_other_keys = allow_other_keys
@@ -337,7 +336,7 @@ class ListSanitizer(Sanitizer):
 
     def __init__(self, sanitizer=None, min_elements=None, max_elements=None, **kwargs):
         # type: (Optional[Sanitizer], Optional[int], Optional[int], **Any) -> None
-        super(ListSanitizer, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.sanitizer = sanitizer
         self.min_elements = min_elements
         self.max_elements = max_elements
@@ -403,7 +402,7 @@ class IntegerSanitizer(Sanitizer):
 
     def __init__(self, minimum=None, maximum=None, minimum_strict=None, maximum_strict=None, **kwargs):
         # type: (Optional[int], Optional[int], bool, bool, **Any) -> None
-        super(IntegerSanitizer, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.minimum = minimum
         self.maximum = maximum
         self.minimum_strict = minimum_strict
@@ -486,7 +485,7 @@ class SearchSanitizer(Sanitizer):
         else:
             self.add_asterisks = kwargs.get('add_asterisks', False)
             self.max_number_of_asterisks = kwargs.get('max_number_of_asterisks', None)
-        super(SearchSanitizer, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def _escape_and_return(self, value):
         # type: (str) -> str
@@ -560,7 +559,7 @@ class PatternSanitizer(SearchSanitizer):
         if isinstance(default, str):
             default = re.compile(default)
         kwargs['default'] = default
-        super(PatternSanitizer, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.ignore_case = ignore_case
         self.multiline = multiline
 
@@ -610,7 +609,7 @@ class StringSanitizer(Sanitizer):
 
     def __init__(self, regex_pattern=None, re_flags=0, minimum=None, maximum=None, **kwargs):
         # type: (Union[None, Pattern[str], str], int, Optional[int], Optional[int], **Any) -> None
-        super(StringSanitizer, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         if isinstance(regex_pattern, str):
             regex_pattern = re.compile(regex_pattern, flags=re_flags)
         self.minimum = minimum
@@ -656,7 +655,7 @@ class DNSanitizer(StringSanitizer):
 
     def _sanitize(self, value, name, further_args):
         # type: (Any, str, Mapping[str, object]) -> object
-        value = super(DNSanitizer, self)._sanitize(value, name, further_args)
+        value = super()._sanitize(value, name, further_args)
         try:
             ldap.dn.str2dn(value)
         except ldap.DECODING_ERROR:
@@ -673,7 +672,7 @@ class EmailSanitizer(StringSanitizer):
 
     def __init__(self, **kwargs):
         # type: (**Any) -> None
-        super(EmailSanitizer, self).__init__(r'.@.', **kwargs)
+        super().__init__(r'.@.', **kwargs)
 
 
 class ChoicesSanitizer(Sanitizer):
@@ -686,7 +685,7 @@ class ChoicesSanitizer(Sanitizer):
 
     def __init__(self, choices, **kwargs):
         # type: (Iterable[str], **Any) -> None
-        super(ChoicesSanitizer, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         # makes sure to have an iterable and unifies errors msg
         # because list has a different representation than tuple
         self.choices = list(choices)
@@ -720,12 +719,12 @@ class MappingSanitizer(ChoicesSanitizer):
         except Exception:
             # but who knows...
             choices = list(mapping.keys())
-        super(MappingSanitizer, self).__init__(choices, **kwargs)
+        super().__init__(choices, **kwargs)
         self.mapping = mapping
 
     def _sanitize(self, value, name, further_args):
         # type: (Any, str, Mapping[str, object]) -> object
-        value = super(MappingSanitizer, self)._sanitize(value, name, further_args)
+        value = super()._sanitize(value, name, further_args)
         return self.mapping[value]
 
 

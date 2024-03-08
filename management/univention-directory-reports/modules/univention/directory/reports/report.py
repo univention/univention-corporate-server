@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Directory Reports
 #
@@ -44,7 +43,7 @@ from univention.lib.i18n import Translation
 _ = Translation('univention-directory-reports').translate
 
 
-class Report(object):
+class Report:
 
     def __init__(self, lo, config=None):
         self.lo = lo

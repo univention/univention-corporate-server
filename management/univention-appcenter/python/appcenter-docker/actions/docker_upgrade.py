@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  univention-app module for upgrading an app
@@ -52,19 +51,19 @@ from univention.appcenter.ucr import ucr_get, ucr_save
 class Upgrade(Upgrade, Install, DockerActionMixin):
 
     def setup_parser(self, parser):
-        super(Upgrade, self).setup_parser(parser)
+        super().setup_parser(parser)
         parser.add_argument('--do-not-pull-image', action='store_false', dest='pull_image', help='Do not pull the image of a Docker App. Instead, the image is assumed to be already in place')
         parser.add_argument('--do-not-backup', action='store_false', dest='backup', help='For docker apps, do not save a backup container')
         parser.add_argument('--do-not-remove-image', action='store_false', dest='remove_image', help='For docker apps, do not remove the leftover image after the upgrade')
 
     def __init__(self):
-        super(Upgrade, self).__init__()
+        super().__init__()
         self._had_image_upgrade = False
         self._last_mode = None
 
     def _app_too_old(self, current_app, specified_app):
         if not current_app.docker:
-            return super(Upgrade, self)._app_too_old(current_app, specified_app)
+            return super()._app_too_old(current_app, specified_app)
         if current_app > specified_app:
             self.fatal('The app you specified is older than the currently installed app')
             return True
@@ -114,7 +113,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 
     def _do_it(self, app, args):
         if not app.docker:
-            return super(Upgrade, self)._do_it(app, args)
+            return super()._do_it(app, args)
         mode, detail = self._docker_upgrade_mode(app)
         if mode:
             self.log('Upgrading %s (%r)' % (mode, detail))
@@ -237,5 +236,5 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 
     def dry_run(self, app, args):
         if not app.docker:
-            return super(Upgrade, self).dry_run(app, args)
+            return super().dry_run(app, args)
         self.log('%s is a Docker App. No sane dry run is implemented' % app)

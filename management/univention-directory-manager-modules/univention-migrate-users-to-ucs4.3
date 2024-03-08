@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -64,7 +63,7 @@ if ucr.get('server/role') != 'domaincontroller_master':
 lo, po = univention.admin.uldap.getAdminConnection()
 
 
-class Migration(object):
+class Migration:
 
     def __init__(self) -> None:
         self.exceptions = []  # type: List[Tuple[str, List[Tuple[str, Union[bytes, List[bytes]], Union[bytes, List[bytes]]]], Exception]]
@@ -120,7 +119,7 @@ class Migration(object):
         self.alloc = []  # type: List[Tuple[str, str]]
 
         # use the users/user filter from UCS 4.2 but remove "(!(univentionObjectFlag=functional))" because we have the "uid=sys-idp-user" account
-        default_user_filter = u'(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(objectClass=inetOrgPerson))(!(uidNumber=0))(!(uid=*$)))'
+        default_user_filter = '(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(objectClass=inetOrgPerson))(!(uidNumber=0))(!(uid=*$)))'
         user_filter = ucr.get('update43/udm/migration/user/filter', default_user_filter)
         for dn, user in lo.search(user_filter):
             ocs = {x.decode('UTF-8') for x in user['objectClass']}
@@ -180,7 +179,7 @@ class Migration(object):
                 if default_cn in cn_list:
                     new_cn_list = [cn for cn in cn_list if cn != default_cn]
                     new_cn_list.append(new_cn)
-                    ml.append(('cn', cn_list + [new_cn], new_cn_list))
+                    ml.append(('cn', [*cn_list, new_cn], new_cn_list))
                 ml.append(('univentionObjectType', b'users/user', b'users/contact'))
                 self.modify(newdn, ml)
                 # TODO: are there users without univentionObjectType? then we need error handling here!
@@ -255,11 +254,11 @@ class Migration(object):
             sambaNTPassword = user.get('sambaNTPassword', [None])[0]
 
             serverctrls = None
-            ocs_to_add = {u'posixAccount', u'shadowAccount', u'sambaSamAccount', u'krb5Principal', u'krb5KDCEntry', u'univentionMail', u'inetOrgPerson', u'organizationalPerson'} - ocs
+            ocs_to_add = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'inetOrgPerson', 'organizationalPerson'} - ocs
             ocs_to_remove = set()  # type: Set[str]
             if ocs_to_add:
                 ml.append(('objectClass', [x.encode('UTF-8') for x in ocs_to_remove], [x.encode('UTF-8') for x in ocs_to_add]))
-            if ocs_to_add & {u'inetOrgPerson', u'organizationalPerson'}:
+            if ocs_to_add & {'inetOrgPerson', 'organizationalPerson'}:
                 serverctrls = [ldap.controls.simple.RelaxRulesControl()]
 
             if not has_kerberos_principal and not has_kerberos_kdcentry:
@@ -430,7 +429,7 @@ class Migration(object):
         if self.s4connector_present:
             # In this case Samba 4 must create the SID, the s4 connector will sync the
             # new sambaSID back from Samba 4.
-            return u'S-1-4-%s' % uidNumber
+            return 'S-1-4-%s' % uidNumber
 
         sid = None  # type: Optional[str]
         num = uidNumber
@@ -444,7 +443,7 @@ class Migration(object):
 
     def __allocate_rid(self, rid: str) -> str:
         domainsid = lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])[0][1]['sambaSID'][0].decode('UTF-8')
-        sid = domainsid + u'-' + rid
+        sid = domainsid + '-' + rid
         try:
             userSid = self.allocate('sid', sid)
             self.alloc.append(('sid', userSid))
@@ -456,7 +455,7 @@ class Migration(object):
         if self.s4connector_present:
             # In this case Samba 4 must create the SID, the s4 connector will sync the
             # new sambaSID back from Samba 4.
-            return u'S-1-4-%s' % gidNum
+            return 'S-1-4-%s' % gidNum
 
         sid = None  # type: Optional[str]
         num = gidNum

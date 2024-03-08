@@ -137,11 +137,11 @@ class PortalReloaderUDM(MtimeBasedLazyFileReloader):
     """
 
     def __init__(self, portal_dn, cache_file):
-        super(PortalReloaderUDM, self).__init__(cache_file)
+        super().__init__(cache_file)
         self._portal_dn = portal_dn
 
     def _check_reason(self, reason, content=None):
-        if super(PortalReloaderUDM, self)._check_reason(reason, content):
+        if super()._check_reason(reason, content):
             return True
         if reason is None:
             return False
@@ -349,10 +349,10 @@ class GroupsReloaderLDAP(MtimeBasedLazyFileReloader):
     """
 
     def __init__(self, ldap_uri, binddn, password_file, ldap_base, cache_file):
-        super(GroupsReloaderLDAP, self).__init__(cache_file)
+        super().__init__(cache_file)
 
     def _check_reason(self, reason, content=None):
-        if super(GroupsReloaderLDAP, self)._check_reason(reason, content):
+        if super()._check_reason(reason, content):
             return True
         if reason is None:
             return False

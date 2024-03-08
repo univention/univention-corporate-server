@@ -25,7 +25,7 @@ class PhaseLdapNetwork(LdapChange):
     priority = 44
 
     def check(self) -> None:
-        super(PhaseLdapNetwork, self).check()
+        super().check()
         self._check_role()
         self._check_network()
 

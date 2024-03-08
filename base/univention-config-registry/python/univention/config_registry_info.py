@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
 #  Config Registry information: read information about registered Config Registry
@@ -96,7 +95,7 @@ class Category(uit.LocalizedDictionary):
         return missing
 
 
-class ConfigRegistryInfo(object):
+class ConfigRegistryInfo:
     """UCR variable and category descriptions."""
 
     BASE_DIR = '/etc/univention/registry.info'

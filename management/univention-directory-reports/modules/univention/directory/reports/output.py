@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Directory Reports
 #  write an interpreted token structure to a file
@@ -39,7 +38,7 @@ import os
 from .tokens import AttributeToken, DateToken, PolicyToken, QueryToken, ResolveToken, TextToken
 
 
-class Output(object):
+class Output:
 
     def __init__(self, tokens, filename=None, fd=None):
         self._tokens = tokens

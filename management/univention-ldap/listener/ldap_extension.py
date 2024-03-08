@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention LDAP
 """listener script for ldap schema extensions."""
@@ -38,7 +37,6 @@ from __future__ import annotations
 
 import os
 import subprocess
-from typing import Dict, List
 
 import univention.debug as ud
 from univention.lib import ldap_extension
@@ -54,7 +52,7 @@ schema_handler = ldap_extension.UniventionLDAPSchema(listener.configRegistry)
 acl_handler = ldap_extension.UniventionLDAPACL(listener.configRegistry)
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     """Handle LDAP schema extensions on Primary and Backup"""
     if new:
         ocs = new.get('objectClass', [])

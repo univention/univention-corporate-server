@@ -37,7 +37,7 @@ import operator
 import os
 import re
 import sys
-from typing import Any, Callable, Dict, Iterable, List, Tuple
+from typing import Any, Callable, Iterable
 
 
 __all__ = [
@@ -92,14 +92,14 @@ def strip_indent(text: str) -> str:
     return '\n'.join(line[indent:] for line in lines)
 
 
-def get_sections() -> Dict[str, str]:
+def get_sections() -> dict[str, str]:
     """Return dictionary section-name -> section-directory."""
     section_dirs = os.listdir(TEST_BASE)
     sections = {dirname[3:]: TEST_BASE + os.path.sep + dirname for dirname in section_dirs if RE_SECTION.match(dirname)}
     return sections
 
 
-def get_tests(sections: Iterable[str]) -> Dict[str, List[str]]:
+def get_tests(sections: Iterable[str]) -> dict[str, list[str]]:
     """Return dictionary of section -> [filenames]."""
     result = {}
     logger = logging.getLogger('test.find')
@@ -199,7 +199,7 @@ class UCSVersion:  # pylint: disable-msg=R0903  # noqa: PLW1641
     RE_VERSION = re.compile(r"^(<|<<|<=|=|==|>=|>|>>)?([1-9][0-9]*)\.([0-9]+)(?:-([0-9]*)(?:-([0-9]+))?)?$")
 
     @classmethod
-    def _parse(cls, ver: str, default_op: str = '=') -> Tuple[Callable[[Any, Any], Any], Tuple[int, int, int, int]]:
+    def _parse(cls, ver: str, default_op: str = '=') -> tuple[Callable[[Any, Any], Any], tuple[int, int, int, int]]:
         """
         Parse UCS-version range and return two-tuple (operator, version)
         >>> UCSVersion._parse('11.22')  # doctest: +ELLIPSIS
@@ -229,7 +229,7 @@ class UCSVersion:  # pylint: disable-msg=R0903  # noqa: PLW1641
         if not match:
             raise ValueError(f'Version does not match: "{ver}"')
         rel = match.group(1) or default_op
-        parts: Tuple[int, int, int, int] = tuple(int(_) if _ else INF for _ in match.groups()[1:])  # type: ignore
+        parts: tuple[int, int, int, int] = tuple(int(_) if _ else INF for _ in match.groups()[1:])  # type: ignore
         if rel in ('<', '<<'):
             return (operator.lt, parts)
         if rel in ('<=',):
@@ -242,7 +242,7 @@ class UCSVersion:  # pylint: disable-msg=R0903  # noqa: PLW1641
             return (operator.gt, parts)
         raise ValueError(f'Unknown version match: "{ver}"')
 
-    def __init__(self, ver: str | Tuple[int, int, int, int]) -> None:
+    def __init__(self, ver: str | tuple[int, int, int, int]) -> None:
         if isinstance(ver, str):
             self.rel, self.ver = self._parse(ver)
         elif isinstance(ver, tuple):

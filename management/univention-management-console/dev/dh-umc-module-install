@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 """
@@ -49,7 +48,7 @@ import univention.debhelper as dh_ucs
 import univention.l10n.umc as dh_umc
 
 
-class Module(object):
+class Module:
 
     @property
     def core(self):

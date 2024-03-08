@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -100,7 +99,7 @@ def doit(arglist):
             pwd = pwd.decode('utf-8')
 
     try:
-        dn = lo.searchDn(filter=filter_format(u'(&(uid=%s)(|(objectClass=posixAccount)(objectClass=sambaSamAccount)(objectClass=person)))', [user]), base=baseDN, unique=True)
+        dn = lo.searchDn(filter=filter_format('(&(uid=%s)(|(objectClass=posixAccount)(objectClass=sambaSamAccount)(objectClass=person)))', [user]), base=baseDN, unique=True)
         position = univention.admin.uldap.position(baseDN)
 
         module = univention.admin.modules._get('users/user')
@@ -136,7 +135,7 @@ def doit(arglist):
         # check for local ldap server connection
         if configRegistry.is_true('ldap/replication/preferredpassword') and configRegistry.get('ldap/server/type') == 'slave' and os.path.exists('/etc/ldap/rootpw.conf'):
             lo = univention.admin.uldap.access(lo=univention.uldap.getRootDnConnection())
-            dn = lo.searchDn(filter=filter_format(u'(&(uid=%s)(|(objectClass=posixAccount)(objectClass=sambaSamAccount)(objectClass=person)))', [user]), base=baseDN, unique=True)
+            dn = lo.searchDn(filter=filter_format('(&(uid=%s)(|(objectClass=posixAccount)(objectClass=sambaSamAccount)(objectClass=person)))', [user]), base=baseDN, unique=True)
             position = univention.admin.uldap.position(baseDN)
             module = univention.admin.modules._get('users/user')
             univention.admin.modules.init(lo, position, module)

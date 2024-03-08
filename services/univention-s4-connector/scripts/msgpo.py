@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention S4 Connector
 #  Upgrade script for gPLink
@@ -118,7 +117,7 @@ def write_to_ucs(lo, configRegistry, s4_result, only_override_empty=False, bindd
                 if only_override_empty and attributes.get('msGPOLink'):
                     continue
                 if b'msGPO' not in attributes.get('objectClass'):
-                    ml.append(('objectClass', attributes.get('objectClass'), attributes.get('objectClass') + [b'msGPO']))
+                    ml.append(('objectClass', attributes.get('objectClass'), [*attributes.get('objectClass'), b'msGPO']))
                 ml.append(('msGPOLink', attributes.get('msGPOLink'), s4_result[s4_dn]))
             if ml:
                 lo.modify(ucs_dn, ml)

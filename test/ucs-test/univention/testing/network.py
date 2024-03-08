@@ -46,10 +46,13 @@ from __future__ import annotations
 import copy
 import re
 import subprocess
-from types import TracebackType
-from typing import List, Literal, Mapping, Tuple, Type
+from typing import TYPE_CHECKING, Literal, Mapping
 
 import univention.config_registry
+
+
+if TYPE_CHECKING:
+    from types import TracebackType
 
 
 class UCSTestNetwork(Exception):
@@ -128,7 +131,7 @@ class NetworkRedirector:
         else:
             raise UCSTestNetworkCannotDetermineExternalAddress
         self.used_by_with_statement = False
-        self.cleanup_rules: List[Tuple[Literal["loop"], str, str] | Tuple[Literal["redirection"], str, int, int, str]] = []
+        self.cleanup_rules: list[tuple[Literal["loop"], str, str] | tuple[Literal["redirection"], str, int, int, str]] = []
         # [ ('loop', 'addr1', 'addr2'), ('redirection', 'remoteaddr', remoteport, localport), ... ]
 
     def __enter__(self) -> NetworkRedirector:  # FIXME Py3.9: Self
@@ -136,7 +139,7 @@ class NetworkRedirector:
         self.used_by_with_statement = True
         return self
 
-    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
+    def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         print('*** Leaving with-statement of NetworkRedirector()')
         self.revert_network_settings()
 
@@ -148,7 +151,7 @@ class NetworkRedirector:
             elif entry[0] == 'redirection':
                 self.remove_redirection(entry[1], entry[2], entry[3], entry[4], ignore_errors=True)
 
-    def run_commands(self, cmdlist: List[List[str]], argdict: Mapping[str, object], ignore_errors: bool = False) -> None:
+    def run_commands(self, cmdlist: list[list[str]], argdict: Mapping[str, object], ignore_errors: bool = False) -> None:
         """
         Start all commands in cmdlist and replace formatstrings with arguments in argdict.
 
@@ -212,7 +215,7 @@ class NetworkRedirector:
         if not self.used_by_with_statement:
             raise UCSTestNetworkNoWithStatement
 
-        entry: Tuple[Literal["redirection"], str, int, int, str] = ('redirection', remote_addr, remote_port, local_port, family)
+        entry: tuple[Literal["redirection"], str, int, int, str] = ('redirection', remote_addr, remote_port, local_port, family)
         if entry not in self.cleanup_rules:
             self.cleanup_rules.append(entry)
             args = {

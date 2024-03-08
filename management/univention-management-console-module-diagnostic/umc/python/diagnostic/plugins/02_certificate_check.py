@@ -64,13 +64,13 @@ WARNING_PERIOD = datetime.timedelta(days=50)
 
 class CertificateWarning(Exception):
     def __init__(self, path: str) -> None:
-        super(CertificateWarning, self).__init__(path)
+        super().__init__(path)
         self.path = path
 
 
 class CertificateWillExpire(CertificateWarning):
     def __init__(self, path: str, remaining) -> None:
-        super(CertificateWillExpire, self).__init__(path)
+        super().__init__(path)
         self.remaining = remaining
 
     def __str__(self) -> str:
@@ -97,7 +97,7 @@ class CertificateExpired(CertificateError):
 
 class CertificateInvalid(CertificateError):
     def __init__(self, path: str, message: str) -> None:
-        super(CertificateInvalid, self).__init__(path)
+        super().__init__(path)
         self.message = message
 
     def __str__(self) -> str:
@@ -110,14 +110,14 @@ class CertificateInvalid(CertificateError):
 
 class CertificateMalformed(CertificateError):
     def __init__(self, path: str) -> None:
-        super(CertificateMalformed, self).__init__(path)
+        super().__init__(path)
 
     def __str__(self) -> str:
         msg = _('Found malformed certificate {path!r}.')
         return msg.format(path=self.path)
 
 
-class CertificateVerifier(object):
+class CertificateVerifier:
     def __init__(self, root_cert_path: str, crl_path: str) -> None:
         self.root_cert_path = root_cert_path
         self.crl_path = crl_path

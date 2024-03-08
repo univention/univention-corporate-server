@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 # Univention Configuration Registry Module to create systemd services for multiprocessing
@@ -58,4 +57,4 @@ def handler(ucr, changes):
 
     if processes > 1:
         for i in range(processes):
-            subprocess.call(['systemctl', 'enable', 'univention-management-console-server@{}'.format(i + start_port)])
+            subprocess.call(['systemctl', 'enable', f'univention-management-console-server@{i + start_port}'])

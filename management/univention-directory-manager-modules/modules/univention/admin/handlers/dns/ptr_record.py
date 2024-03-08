@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -124,12 +123,12 @@ def calc_ip(rev, subnet):
     parts.reverse()
     if ':' in subnet:
         string = ''.join(subnet.split(':') + parts)
-        return ipaddress.IPv6Address(u'%s' % (ipv6(string),))
+        return ipaddress.IPv6Address('%s' % (ipv6(string),))
     else:
         octets = subnet.split('.') + parts
         assert len(octets) == 4, octets
         addr = '.'.join(octets)
-        return ipaddress.IPv4Address(u'%s' % (addr,))
+        return ipaddress.IPv4Address('%s' % (addr,))
 
 
 def calc_rev(ip, subnet):
@@ -147,8 +146,8 @@ def calc_rev(ip, subnet):
         prefix = len(string)
         assert 1 <= prefix < 32
         string += '0' * (32 - prefix)
-        net6 = ipaddress.IPv6Network(u'%s/%d' % (ipv6(string), 4 * prefix), strict=False)
-        addr6 = ipaddress.IPv6Address(u'%s' % (ip,))
+        net6 = ipaddress.IPv6Network('%s/%d' % (ipv6(string), 4 * prefix), strict=False)
+        addr6 = ipaddress.IPv6Address('%s' % (ip,))
         if addr6 not in net6:
             raise ValueError()
         host6 = ''.join(addr6.exploded.split(':'))
@@ -158,8 +157,8 @@ def calc_rev(ip, subnet):
         prefix = len(octets)
         assert 1 <= prefix < 4
         octets += ['0'] * (4 - prefix)
-        net4 = ipaddress.IPv4Network(u'%s/%d' % ('.'.join(octets), 8 * prefix), strict=False)
-        addr4 = ipaddress.IPv4Address(u'%s' % (ip,))
+        net4 = ipaddress.IPv4Network('%s/%d' % ('.'.join(octets), 8 * prefix), strict=False)
+        addr4 = ipaddress.IPv4Address('%s' % (ip,))
         if addr4 not in net4:
             raise ValueError()
         host4 = addr4.exploded.split('.')
@@ -176,11 +175,11 @@ class object(DNSBase):
                 return calc_ip(self.info['address'] or '', self.superordinate.info['subnet'] or '').compressed
         except (LookupError, ValueError, AssertionError) as ex:
             log.warning('Failed to parse dn=%s: (%s)', self.dn, ex)
-        return super(object, self).description()
+        return super().description()
 
     def open(self):
         # type: () -> None
-        super(object, self).open()
+        super().open()
         try:
             self.info['ip'] = calc_ip(self.info['address'], self.superordinate.info['subnet']).compressed
             self.save()
@@ -197,12 +196,12 @@ class object(DNSBase):
             except (LookupError, ValueError, AssertionError) as ex:
                 log.warning('Failed to handle address: dn=%s addr=%r (%s)', self.dn, new_ip, ex)
                 raise univention.admin.uexceptions.InvalidDNS_Information(_('Reverse zone and IP address are incompatible.'))
-        super(object, self).ready()
+        super().ready()
 
     @classmethod
     def lookup_filter_superordinate(cls, filter, superordinate):
         # type: (univention.admin.filter.conjunction, univention.admin.handlers.simpleLdap) -> univention.admin.filter.conjunction
-        super(object, cls).lookup_filter_superordinate(filter, superordinate)
+        super().lookup_filter_superordinate(filter, superordinate)
         filter = rewrite_rev(filter, superordinate.info['subnet'])
         return filter
 

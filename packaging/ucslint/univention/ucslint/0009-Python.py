@@ -31,11 +31,14 @@
 from __future__ import annotations
 
 import re
-from pathlib import Path
-from typing import Iterable
+from typing import TYPE_CHECKING, Iterable
 
 import univention.ucslint.base as uub
 from univention.ucslint.python import RE_LENIENT, Python36 as PythonVer, python_files
+
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):

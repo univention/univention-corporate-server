@@ -35,7 +35,7 @@ class PhaseLdapReferences(AddressMap, LdapChange):
     )
 
     def __init__(self, changeset: ChangeSet) -> None:
-        super(PhaseLdapReferences, self).__init__(changeset)
+        super().__init__(changeset)
         modules.update()
 
     def post(self) -> None:

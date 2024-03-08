@@ -83,7 +83,7 @@ class CnameAsNameServer(ZoneError):
         return msg.format(ns=self.nameserver.nameserver())
 
 
-class Zone(object):
+class Zone:
     def __init__(self, udm_zone: simpleLdap, domainname: str) -> None:
         self.udm_zone = udm_zone
         self.domainname = domainname
@@ -122,7 +122,7 @@ class Zone(object):
         return (text, link)
 
 
-class NameServer(object):
+class NameServer:
     def __init__(self, zone: Zone, nameserver: str) -> None:
         self.zone = zone
         self._nameserver = nameserver
@@ -155,7 +155,7 @@ class NameServer(object):
         return '(|{})'.format(''.join(expressions))
 
 
-class UDM(object):
+class UDM:
 
     def __init__(self) -> None:
         univention.admin.modules.update()

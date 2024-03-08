@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -44,7 +43,7 @@ class I18N_Error(Exception):
     """Error in Internationalization."""
 
 
-class Locale(object):
+class Locale:
     """
     Represents a locale specification and provides simple access to
     language, territory, codeset and modifier.
@@ -117,7 +116,7 @@ class Locale(object):
         return text
 
 
-class NullTranslation(object):
+class NullTranslation:
     """
     Dummy translation.
 

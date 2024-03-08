@@ -68,7 +68,7 @@ class Squid(Alert):
                 auth.extend(['-e', '407'])
                 break
 
-        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_http', '-I', '127.0.0.1', '-p', port, '-u', 'http://127.0.0.1'] + auth)
+        rc, output = self.exec_command(['/usr/lib/nagios/plugins/check_http', '-I', '127.0.0.1', '-p', port, '-u', 'http://127.0.0.1', *auth])
         self.write_metric('univention_squid_reachable', 1 if rc == 0 else 0)
         self.log.debug(output)
 

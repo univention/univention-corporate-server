@@ -42,7 +42,7 @@ def test_scope_names(layer, name):
     assert backend.SCOPE[val] == name
 
 
-class TestConfigRegistry(object):
+class TestConfigRegistry:
     """Unit test for :py:class:`univention.config_registry.backend.ConfigRegistry`"""
 
     def test_normal(self, tmpdir):
@@ -392,7 +392,7 @@ class TestConfigRegistry(object):
         assert str(ucr0) == "foo: bar"
 
 
-class TestInternal(object):
+class TestInternal:
     """Unit test for py:class:`univention.config_registry.backend._ConfigRegistry`"""
 
     def test_load_backup(self, tmpdir):
@@ -438,7 +438,7 @@ class TestInternal(object):
         assert not os.path.isfile(os.path.devnull)
 
 
-class TestDefault(object):
+class TestDefault:
     def test_default(self, ucr0, tmpdir):
         ucr0._registry[ucr0.DEFAULTS]["key"] = "val"
         assert ucr0["key"] == "val"

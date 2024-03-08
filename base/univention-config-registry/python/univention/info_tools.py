@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Configuration Registry
 #  dictionary class for localized keys

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
@@ -13,7 +12,7 @@ import os
 from argparse import ArgumentParser
 from tempfile import gettempdir
 from time import sleep
-from typing import Any, Dict
+from typing import Any
 
 from requests import get
 
@@ -24,7 +23,7 @@ from univention.appcenter.utils import call_process, get_local_fqdn
 from univention.config_registry import ucr
 
 
-class Apps(object):
+class Apps:
 
     def __init__(self) -> None:
         parser = ArgumentParser(description=__doc__)
@@ -42,7 +41,7 @@ class Apps(object):
         self.client: univention.lib.umc.Client | None = None
         print(self.options)
 
-    def umc(self, path: str, data: Dict[str, Any]) -> Dict[str, Any]:
+    def umc(self, path: str, data: dict[str, Any]) -> dict[str, Any]:
         print(f'-> invoke {path} with options {data}')
         if self.client is None:
             self.client = univention.lib.umc.Client(username=self.options.username, password=self.options.password)
@@ -53,7 +52,7 @@ class Apps(object):
         print(f'<- {result}')
         return result
 
-    def wait(self, result: Dict[str, Any], app: str) -> None:
+    def wait(self, result: dict[str, Any], app: str) -> None:
         pid = result['id']
         path = 'appcenter/progress'
         data = {"progress_id": pid}
@@ -111,9 +110,9 @@ class Apps(object):
             if unlink_pwd_file:
                 os.unlink(pwd_file)
 
-    def make_args(self, action: str, app: str, version: str | None = None) -> Dict[str, Any]:
+    def make_args(self, action: str, app: str, version: str | None = None) -> dict[str, Any]:
         host = get_local_fqdn()
-        settings: Dict[str, Any] = {}
+        settings: dict[str, Any] = {}
         return {
             "action": action,
             "auto_installed": [],

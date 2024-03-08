@@ -46,7 +46,7 @@ class AddressChange(Phase, metaclass=ABCMeta):
     """Check for at least one removed or added address."""
 
     def check(self) -> None:
-        super(AddressChange, self).check()
+        super().check()
         old_ipv4s = {_.ip for _ in self.changeset.old_ipv4s}
         new_ipv4s = {_.ip for _ in self.changeset.new_ipv4s}
         old_ipv6s = {_.ip for _ in self.changeset.old_ipv6s}
@@ -59,7 +59,7 @@ class Server(Phase, metaclass=ABCMeta):
     """Check server role for being a UCS server."""
 
     def check(self) -> None:
-        super(Server, self).check()
+        super().check()
         role = self.changeset.ucr.get("server/role")
         if role not in (
                 "domaincontroller_master",
@@ -76,7 +76,7 @@ class Executable(Phase, metaclass=ABCMeta):
     executable = ""
 
     def check(self) -> None:
-        super(Executable, self).check()
+        super().check()
         if not os.path.exists(self.executable):
             raise SkipPhase("Missing executable %s" % (self.executable,))
 
@@ -103,7 +103,7 @@ class NotNetworkOnly(Phase, metaclass=ABCMeta):
     """Skip when not in network only mode."""
 
     def check(self) -> None:
-        super(NotNetworkOnly, self).check()
+        super().check()
         if self.changeset.options.network_only:
             raise SkipPhase("Network only mode")
 
@@ -116,7 +116,7 @@ class Ldap(Phase, metaclass=ABCMeta):
     available = None
 
     def check(self) -> None:
-        super(Ldap, self).check()
+        super().check()
         if self.available is None:
             self.load_state()
         if not self.available:

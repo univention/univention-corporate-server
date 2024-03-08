@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -34,7 +33,7 @@
 from univention.portal import config
 
 
-class User(object):
+class User:
     def __init__(self, username, display_name, groups, headers):
         self.username = username
         self.display_name = display_name

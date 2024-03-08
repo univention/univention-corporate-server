@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -45,7 +44,7 @@ import univention.admin.uldap
 import univention.config_registry
 
 
-class UpdatePrinterModels(object):
+class UpdatePrinterModels:
 
     def __init__(self, options):
         self.options = options

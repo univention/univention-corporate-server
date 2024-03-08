@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  Tools for reading ini files
@@ -140,7 +139,7 @@ class IniSectionBooleanAttribute(IniSectionAttribute):
 
 class IniSectionListAttribute(IniSectionAttribute):
     def __init__(self, required=False, default=[], localisable=False, choices=None):
-        super(IniSectionListAttribute, self).__init__(required, default, localisable, choices)
+        super().__init__(required, default, localisable, choices)
 
     def parse(self, value):
         '''
@@ -212,7 +211,7 @@ class TypedIniSectionObjectMetaClass(UniventionMetaClass):
                 mcs._add_class_type(name, _base, klass)
 
     def __new__(mcs, name, bases, attrs):
-        new_cls = super(TypedIniSectionObjectMetaClass, mcs).__new__(mcs, name, bases, attrs)
+        new_cls = super().__new__(mcs, name, bases, attrs)
         new_cls._class_types = {}
         for base in bases:
             mcs._add_class_type(name, base, new_cls)

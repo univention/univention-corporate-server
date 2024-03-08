@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -41,7 +40,7 @@ class UdmError(Exception):
     def __init__(self, msg=None, dn=None, module_name=None):
         # type: (Optional[str], Optional[str], Optional[str]) -> None
         msg = msg or self.msg
-        super(UdmError, self).__init__(msg)
+        super().__init__(msg)
         self.dn = dn
         self.module_name = module_name
 
@@ -64,9 +63,8 @@ class ApiVersionNotSupported(UdmError):
         requested_version=None,  # type: Optional[int]
     ):  # type: (...) -> None
         self.requested_version = requested_version
-        msg = msg or 'Module {!r} is not supported in API version {!r}.'.format(
-            module_name, requested_version)
-        super(ApiVersionNotSupported, self).__init__(msg, module_name=module_name)
+        msg = msg or f'Module {module_name!r} is not supported in API version {requested_version!r}.'
+        super().__init__(msg, module_name=module_name)
 
 
 class CreateError(UdmError):
@@ -76,8 +74,8 @@ class CreateError(UdmError):
 class DeletedError(UdmError):
     def __init__(self, msg=None, dn=None, module_name=None):
         # type: (Optional[str], Optional[str], Optional[str]) -> None
-        msg = msg or 'Object{} has already been deleted.'.format(' {!r}'.format(dn) if dn else '')
-        super(DeletedError, self).__init__(msg, dn, module_name)
+        msg = msg or 'Object{} has already been deleted.'.format(f' {dn!r}' if dn else '')
+        super().__init__(msg, dn, module_name)
 
 
 class DeleteError(UdmError):
@@ -85,8 +83,8 @@ class DeleteError(UdmError):
 
     def __init__(self, msg=None, dn=None, module_name=None):
         # type: (Optional[str], Optional[str], Optional[str]) -> None
-        msg = msg or 'Object{} could not be deleted.'.format(' {!r}'.format(dn) if dn else '')
-        super(DeleteError, self).__init__(msg, dn, module_name)
+        msg = msg or 'Object{} could not be deleted.'.format(f' {dn!r}' if dn else '')
+        super().__init__(msg, dn, module_name)
 
 
 class NotYetSavedError(UdmError):
@@ -120,8 +118,8 @@ class NoObject(UdmError):
 
     def __init__(self, msg=None, dn=None, module_name=None):
         # type: (Optional[str], Optional[str], Optional[str]) -> None
-        msg = msg or 'No object found at DN {!r}.'.format(dn)
-        super(NoObject, self).__init__(msg, dn, module_name)
+        msg = msg or f'No object found at DN {dn!r}.'
+        super().__init__(msg, dn, module_name)
 
 
 class NoSuperordinate(UdmError):
@@ -131,7 +129,7 @@ class NoSuperordinate(UdmError):
         # type: (Optional[str], Optional[str], Optional[str], Optional[Collection[str]]) -> None
         msg = msg or 'No superordinate was supplied, but one of type{} {} is required to create/save a {} object.'.format(
             's' if len(superordinate_types or ()) > 1 else '', ', '.join(superordinate_types or ()), module_name)
-        super(NoSuperordinate, self).__init__(msg, dn, module_name)
+        super().__init__(msg, dn, module_name)
 
 
 class SearchLimitReached(UdmError):
@@ -144,7 +142,7 @@ class SearchLimitReached(UdmError):
         )
         self.search_filter = search_filter
         self.sizelimit = sizelimit
-        super(SearchLimitReached, self).__init__(msg, dn, module_name)
+        super().__init__(msg, dn, module_name)
 
 
 class MultipleObjects(UdmError):
@@ -159,8 +157,8 @@ class UnknownModuleType(UdmError):
 
     def __init__(self, msg=None, dn=None, module_name=None):
         # type: (Optional[str], Optional[str], Optional[str]) -> None
-        msg = msg or 'No or empty attribute "univentionObjectType" found at DN {!r}.'.format(dn)
-        super(UnknownModuleType, self).__init__(msg, dn, module_name)
+        msg = msg or f'No or empty attribute "univentionObjectType" found at DN {dn!r}.'
+        super().__init__(msg, dn, module_name)
 
 
 class UnknownProperty(UdmError):
@@ -178,5 +176,5 @@ class WrongObjectType(UdmError):
 
     def __init__(self, msg=None, dn=None, module_name=None, univention_object_type=None):
         # type: (Optional[str], Optional[str], Optional[str], Optional[str]) -> None
-        msg = msg or 'Wrong UDM module: {!r} is not a {!r}, but a {!r}.'.format(dn, module_name, univention_object_type)
-        super(WrongObjectType, self).__init__(msg, dn, module_name)
+        msg = msg or f'Wrong UDM module: {dn!r} is not a {module_name!r}, but a {univention_object_type!r}.'
+        super().__init__(msg, dn, module_name)

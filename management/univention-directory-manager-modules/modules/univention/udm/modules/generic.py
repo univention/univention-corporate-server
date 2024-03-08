@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -81,7 +80,7 @@ class GenericObjectProperties(BaseObjectProperties):
 
     def __init__(self, udm_obj):
         # type: (BaseObject) -> None
-        super(GenericObjectProperties, self).__init__(udm_obj)
+        super().__init__(udm_obj)
         for encoder_class in self._encoders.values():
             assert hasattr(encoder_class, 'decode')
             assert hasattr(encoder_class, 'encode')
@@ -90,11 +89,11 @@ class GenericObjectProperties(BaseObjectProperties):
         # type: (str, Any) -> None
         if not str(key).startswith('_') and key not in self._udm_obj._orig_udm_object:
             raise UnknownProperty(
-                'Unknown property {!r} for UDM module {!r}.'.format(key, self._udm_obj._udm_module.name),
+                f'Unknown property {key!r} for UDM module {self._udm_obj._udm_module.name!r}.',
                 dn=self._udm_obj.dn,
                 module_name=self._udm_obj._udm_module.name,
             )
-        super(GenericObjectProperties, self).__setattr__(key, value)
+        super().__setattr__(key, value)
 
 
 class GenericObject(BaseObject):
@@ -139,7 +138,7 @@ class GenericObject(BaseObject):
         :py:meth:`GenericModule.get()`, :py:meth:`GenericModule.new()` or
         :py:meth:`GenericModule.search()`.
         """
-        super(GenericObject, self).__init__()
+        super().__init__()
         self._udm_module = None  # type: Optional[GenericModule]
         self._lo = None  # type: Optional[univention.admin.uldap.access]
         self._orig_udm_object = None  # type: Optional[univention.admin.handlers.simpleLdap]
@@ -157,7 +156,7 @@ class GenericObject(BaseObject):
         """
         assert self._udm_module is not None
         if self._deleted:
-            raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._udm_module.name)
+            raise DeletedError(f'{self} has been deleted.', dn=self.dn, module_name=self._udm_module.name)
         if not self.dn or not self._orig_udm_object:
             raise NotYetSavedError(module_name=self._udm_module.name)
         self._orig_udm_object = self._udm_module._get_orig_udm_object(self.dn)
@@ -175,7 +174,7 @@ class GenericObject(BaseObject):
         """
         assert self._udm_module is not None
         if self._deleted:
-            raise DeletedError('{} has been deleted.'.format(self), dn=self.dn, module_name=self._udm_module.name)
+            raise DeletedError(f'{self} has been deleted.', dn=self.dn, module_name=self._udm_module.name)
         if not self._fresh:
             logging.getLogger('ADMIN').warning('Saving stale UDM object instance')
         self._copy_to_udm_obj()
@@ -190,14 +189,12 @@ class GenericObject(BaseObject):
                     self.dn = self._orig_udm_object.move(new_dn)
                 except univention.admin.uexceptions.invalidOperation as exc:
                     raise MoveError(
-                        'Moving {!r} object is not supported ({}).'.format(self._udm_module.name, exc),
+                        f'Moving {self._udm_module.name!r} object is not supported ({exc}).',
                         dn=self.dn, module_name=self._udm_module.name,
                     ).with_traceback(sys.exc_info()[2])
                 except (univention.admin.uexceptions.base, ldap.error) as exc:
                     raise MoveError(
-                        'Error moving {!r} object from {!r} to {!r}: {}'.format(
-                            self._udm_module.name, self.dn, self.position, exc,
-                        ), dn=self.dn, module_name=self._udm_module.name,
+                        f'Error moving {self._udm_module.name!r} object from {self.dn!r} to {self.position!r}: {exc}', dn=self.dn, module_name=self._udm_module.name,
                     ).with_traceback(sys.exc_info()[2])
                 assert self.dn == self._orig_udm_object.dn
                 self.position = self._lo.parentDn(self.dn)
@@ -207,9 +204,7 @@ class GenericObject(BaseObject):
                 self.dn = self._orig_udm_object.modify()
             except univention.admin.uexceptions.base as exc:
                 raise ModifyError(
-                    'Error saving {!r} object at {!r}: {}'.format(
-                        self._udm_module.name, self.dn, exc,
-                    ), dn=self.dn, module_name=self._udm_module.name,
+                    f'Error saving {self._udm_module.name!r} object at {self.dn!r}: {exc}', dn=self.dn, module_name=self._udm_module.name,
                 ).with_traceback(sys.exc_info()[2])
             logging.getLogger('ADMIN').info('Modified %r object %r', self._udm_module.name, self.dn)
         else:
@@ -217,15 +212,11 @@ class GenericObject(BaseObject):
                 self.dn = self._orig_udm_object.create()
             except ldap.INVALID_DN_SYNTAX as exc:
                 raise CreateError(
-                    'Error creating {!r} object: {}'.format(
-                        self._udm_module.name, exc,
-                    ), module_name=self._udm_module.name,
+                    f'Error creating {self._udm_module.name!r} object: {exc}', module_name=self._udm_module.name,
                 ).with_traceback(sys.exc_info()[2])
             except univention.admin.uexceptions.base as exc:
                 raise CreateError(
-                    'Error creating {!r} object: {}'.format(
-                        self._udm_module.name, exc,
-                    ), module_name=self._udm_module.name,
+                    f'Error creating {self._udm_module.name!r} object: {exc}', module_name=self._udm_module.name,
                 ).with_traceback(sys.exc_info()[2])
             logging.getLogger('ADMIN').info('Created %r object %r', self._udm_module.name, self.dn)
 
@@ -248,7 +239,7 @@ class GenericObject(BaseObject):
         """
         assert self._udm_module is not None
         if self._deleted:
-            logging.getLogger('ADMIN').warning('{} has already been deleted'.format(self))
+            logging.getLogger('ADMIN').warning(f'{self} has already been deleted')
             return
         if not self.dn or not self._orig_udm_object:
             raise NotYetSavedError()
@@ -256,9 +247,7 @@ class GenericObject(BaseObject):
             self._orig_udm_object.remove(remove_childs=remove_childs)
         except univention.admin.uexceptions.base as exc:
             raise DeleteError(
-                'Error deleting {!r} object {!r}: {}'.format(
-                    self._udm_module.name, self.dn, exc,
-                ), dn=self.dn, module_name=self._udm_module.name,
+                f'Error deleting {self._udm_module.name!r} object {self.dn!r}: {exc}', dn=self.dn, module_name=self._udm_module.name,
             )
         if univention.admin.objects.wantsCleanup(self._orig_udm_object):
             univention.admin.objects.performCleanup(self._orig_udm_object)
@@ -356,7 +345,7 @@ class GenericObject(BaseObject):
         keys = list(self._orig_udm_object.keys())
         if 'ip' in keys and 'network' in keys:
             keys.remove('ip')  # restore broken behavior of Python 2.7 to make test 59_udm/59_udm_api_computers pass; Bug #25163
-            keys = ['ip'] + keys
+            keys = ['ip', *keys]
         for k in keys:
             # workaround Bug #47971: _orig_udm_object.items() changes object
             v = self._orig_udm_object.get(k)
@@ -388,7 +377,7 @@ class GenericObject(BaseObject):
             elif isinstance(self.superordinate, DnPropertyEncoder.DnStr):
                 self._orig_udm_object.superordinate = self.superordinate.obj._orig_udm_object
             else:
-                msg = 'Unkown type {!r} in "superordinate" of {!r}.'.format(type(self.superordinate), self)
+                msg = f'Unkown type {type(self.superordinate)!r} in "superordinate" of {self!r}.'
                 logging.getLogger('ADMIN').error('%s', msg)
                 raise ValueError(msg)
 
@@ -444,14 +433,14 @@ class GenericObject(BaseObject):
                 elif arg == 'api_version':
                     kwargs['api_version'] = self._udm_module.meta.used_api_version
                 else:
-                    raise TypeError('Unknown argument {!r} for {}.__init__.'.format(arg, encoder_class.__class__.__name__))
+                    raise TypeError(f'Unknown argument {arg!r} for {encoder_class.__class__.__name__}.__init__.')
             return encoder_class(**kwargs)
 
 
 class GenericModuleMetadata(BaseModuleMetadata):
     def __init__(self, meta):
         # type: (GenericModule.Meta) -> None
-        super(GenericModuleMetadata, self).__init__(meta)
+        super().__init__(meta)
         self.default_positions_property = None
         if hasattr(meta, 'default_positions_property'):
             self.default_positions_property = meta.default_positions_property
@@ -546,7 +535,7 @@ class GenericModule(BaseModule, metaclass=GenericModuleMeta):
 
     def __init__(self, name, connection, api_version):
         # type: (str, Any, int) -> None
-        super(GenericModule, self).__init__(name, connection, api_version)
+        super().__init__(name, connection, api_version)
         self._orig_udm_module = self._get_orig_udm_module()
 
     def new(self, superordinate=None):
@@ -680,7 +669,7 @@ class GenericModule(BaseModule, metaclass=GenericModuleMeta):
                 udm_module = univention.admin.modules._get(self.name)
             except LookupError:
                 raise UnknownModuleType(
-                    msg='UDM module {!r} does not exist.'.format(self.name),
+                    msg=f'UDM module {self.name!r} does not exist.',
                     module_name=self.name,
                 )
             po = univention.admin.uldap.position(self.connection.base)
@@ -728,7 +717,7 @@ class GenericModule(BaseModule, metaclass=GenericModuleMeta):
             raise NoObject(dn=dn, module_name=self.name).with_traceback(sys.exc_info()[2])
         except univention.admin.uexceptions.base as exc:
             raise UdmError(
-                'Error loading UDM object at DN {!r}: {}'.format(dn, exc), dn=dn, module_name=self.name,
+                f'Error loading UDM object at DN {dn!r}: {exc}', dn=dn, module_name=self.name,
             ).with_traceback(sys.exc_info()[2])
         self._verify_univention_object_type(obj)
         if self.meta.auto_open:

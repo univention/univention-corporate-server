@@ -181,32 +181,32 @@ class TestPortal:
                 "allowedGroups": [],
                 "anonymous": True,
                 "description": {
-                    "de_DE": u"Zeigt eine \xdcbersicht aller UCS Server in der Dom\xe4ne",
-                    "en_US": u"Provide an overview of all UCS server in the domain",
-                    "fr_FR": u"Vue d'ensemble de tous les serveurs UCS du domaine",
+                    "de_DE": "Zeigt eine \xdcbersicht aller UCS Server in der Dom\xe4ne",
+                    "en_US": "Provide an overview of all UCS server in the domain",
+                    "fr_FR": "Vue d'ensemble de tous les serveurs UCS du domaine",
                 },
                 "dn": "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
                 "in_portal": True,
                 "linkTarget": "useportaldefault",
                 "links": ["/univention/server-overview/"],
                 "icon_url": "/univention/portal/icons/entries/server-overview.svg",
-                "name": {"de_DE": u"Server\xfcbersicht", "en_US": u"Server overview", "fr_FR": u"Vue d'ensemble de serveurs"},
+                "name": {"de_DE": "Server\xfcbersicht", "en_US": "Server overview", "fr_FR": "Vue d'ensemble de serveurs"},
             },
             {
                 "activated": True,
                 "allowedGroups": [],
                 "anonymous": True,
                 "description": {
-                    "de_DE": u"Univention Management Console zur Ver\xadwal\xadtung der UCS-Dom\xe4ne und des lokalen Systems",
-                    "en_US": u"Univention Management Console for admin\xadis\xadtra\xadting the UCS domain and the local system",
-                    "fr_FR": u"Console de gestion Univention pour admin\xadis\xadtrer le domaine UCS et le syst\xe8me local",
+                    "de_DE": "Univention Management Console zur Ver\xadwal\xadtung der UCS-Dom\xe4ne und des lokalen Systems",
+                    "en_US": "Univention Management Console for admin\xadis\xadtra\xadting the UCS domain and the local system",
+                    "fr_FR": "Console de gestion Univention pour admin\xadis\xadtrer le domaine UCS et le syst\xe8me local",
                 },
                 "dn": "cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
                 "in_portal": True,
                 "linkTarget": "useportaldefault",
                 "links": ["/univention/management/"],
                 "icon_url": "/univention/portal/icons/entries/umc-domain.svg",
-                "name": {"de_DE": u"System- und Dom\xe4neneinstellungen", "en_US": u"System and domain settings", "fr_FR": u"R\xe9glages du syst\xe8me et du domaine"},
+                "name": {"de_DE": "System- und Dom\xe4neneinstellungen", "en_US": "System and domain settings", "fr_FR": "R\xe9glages du syst\xe8me et du domaine"},
             },
             {
                 "activated": True,
@@ -247,9 +247,9 @@ class TestPortal:
         content = standard_portal.get_categories(content)
         expected_content = [
             {
-                "display_name": {"de_DE": u"Verwaltung", "en_US": u"Administration"},
-                "dn": u"cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
-                "entries": ["cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", u"cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
+                "display_name": {"de_DE": "Verwaltung", "en_US": "Administration"},
+                "dn": "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
+                "entries": ["cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
             },
         ]
         assert content == expected_content
@@ -261,20 +261,20 @@ class TestPortal:
         expected_content = {
             "anonymousEmpty": [],
             "autoLayoutCategories": False,
-            "categories": [u"cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
+            "categories": ["cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
             "content": [
                 [
-                    u"cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
-                    [u"cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", u"cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", u"cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
+                    "cn=domain-admin,cn=category,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
+                    ["cn=umc-domain,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=server-overview,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de", "cn=univentionblog,cn=entry,cn=portals,cn=univention,dc=intranet,dc=example,dc=de"],
                 ],
             ],
-            "defaultLinkTarget": u"embedded",
-            "dn": u"cn=domain,cn=portal,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
+            "defaultLinkTarget": "embedded",
+            "dn": "cn=domain,cn=portal,cn=portals,cn=univention,dc=intranet,dc=example,dc=de",
             "in_portal": True,
             "ensureLogin": False,
-            "fontColor": u"black",
+            "fontColor": "black",
             "logo": None,
-            "name": {u"de_DE": u"Univention Portal", u"en_US": u"Univention Portal", u"fr_FR": u"Portail Univention"},
+            "name": {"de_DE": "Univention Portal", "en_US": "Univention Portal", "fr_FR": "Portail Univention"},
             "showApps": False,
         }
         assert content == expected_content

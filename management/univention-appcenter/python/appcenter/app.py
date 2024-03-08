@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention App Center
 #  Application class
@@ -232,7 +231,7 @@ class Requirement(UniventionMetaInfo):
         return method(**kwargs)
 
     def contribute_to_class(self, klass, name):
-        super(Requirement, self).contribute_to_class(klass, name)
+        super().contribute_to_class(klass, name)
         setattr(klass, name, self.func)
 
 
@@ -249,7 +248,7 @@ class AppAttribute(UniventionMetaInfo):
     auto_set_name = True
 
     def __init__(self, required=False, default=None, regex=None, choices=None, localisable=False, localisable_by_file=None, strict=True):
-        super(AppAttribute, self).__init__()
+        super().__init__()
         self.regex = regex
         self.default = default
         self.required = required
@@ -346,7 +345,7 @@ class AppUCSVersionAttribute(AppAttribute):
 class AppBooleanAttribute(AppAttribute):
 
     def test_type(self, value, instance_type):
-        super(AppBooleanAttribute, self).test_type(value, bool)
+        super().test_type(value, bool)
 
     def parse(self, value):
         if value in [True, False]:
@@ -361,7 +360,7 @@ class AppBooleanAttribute(AppAttribute):
 class AppIntAttribute(AppAttribute):
 
     def test_type(self, value, instance_type):
-        super(AppIntAttribute, self).test_type(value, int)
+        super().test_type(value, int)
 
     def parse(self, value):
         if value is not None:
@@ -384,19 +383,19 @@ class AppListAttribute(AppAttribute):
             raise ValueError('Value required')
 
     def test_type(self, value, instance_type):
-        super(AppListAttribute, self).test_type(value, list)
+        super().test_type(value, list)
 
     def test_choices(self, value):
         if not value:
             return
         for val in value:
-            super(AppListAttribute, self).test_choices(val)
+            super().test_choices(val)
 
     def test_regex(self, regex, value):
         if not value:
             return
         for val in value:
-            super(AppListAttribute, self).test_regex(regex, val)
+            super().test_regex(regex, val)
 
 
 class AppFromFileAttribute(AppAttribute):
@@ -411,7 +410,7 @@ class AppFromFileAttribute(AppAttribute):
         setattr(app, self.name, [value.to_dict() for value in values])
 
     def contribute_to_class(self, klass, name):
-        super(AppFromFileAttribute, self).contribute_to_class(klass, name)
+        super().contribute_to_class(klass, name)
 
         def _get_objects_fn(_self):
             cache_name = '_%s_cache' % name
@@ -420,7 +419,7 @@ class AppFromFileAttribute(AppAttribute):
                 if name == "settings":
                     custom_settings_file = os.path.join(DATA_DIR, _self.id, 'custom.settings')
                     if os.path.isfile(custom_settings_file):
-                        app_logger.debug("custom settings {} file found".format(custom_settings_file))
+                        app_logger.debug(f"custom settings {custom_settings_file} file found")
                         app_attributes += self.klass.all_from_file(custom_settings_file, _self.get_locale())
                 setattr(_self, cache_name, app_attributes)
             return getattr(_self, cache_name)
@@ -470,7 +469,7 @@ class AppLocalisedListAttribute(AppListAttribute):
         return value
 
     def get_value(self, component_id, ini_parser, meta_parser, locale):
-        value = super(AppLocalisedListAttribute, self).get_value(component_id, ini_parser, meta_parser, locale)
+        value = super().get_value(component_id, ini_parser, meta_parser, locale)
         if self.localisable_by_file and locale:
             for i, val in enumerate(value):
                 value[i] = self._translate(self.localisable_by_file, locale, val)
@@ -490,7 +489,7 @@ class AppAttributeOrFalseOrNone(AppBooleanAttribute):
     def __init__(self, required=False, default=None, regex=None, choices=None, localisable=False, localisable_by_file=None, strict=True):
         choices = (choices or [])[:]
         choices.extend([None, False])
-        super(AppAttributeOrFalseOrNone, self).__init__(required, default, regex, choices, localisable, localisable_by_file, strict)
+        super().__init__(required, default, regex, choices, localisable, localisable_by_file, strict)
 
     def parse(self, value):
         if value == 'False':
@@ -522,7 +521,7 @@ class AppFileAttribute(AppAttribute):
 
     def __init__(self, required=False, default=None, regex=None, choices=None, localisable=True):
         # localisable=True !
-        super(AppFileAttribute, self).__init__(required, default, regex, choices, localisable)
+        super().__init__(required, default, regex, choices, localisable)
 
     def get_value(self, component_id, ini_parser, meta_parser, locale):
         return None
@@ -565,13 +564,13 @@ class AppDockerScriptAttribute(AppAttribute):
 
     def set_name(self, name):
         self.default = os.path.join(CONTAINER_SCRIPTS_PATH, name[14:])
-        super(AppDockerScriptAttribute, self).set_name(name)
+        super().set_name(name)
 
 
 class AppMetaClass(UniventionMetaClass):
 
     def __new__(mcs, name, bases, attrs):
-        new_cls = super(AppMetaClass, mcs).__new__(mcs, name, bases, attrs)
+        new_cls = super().__new__(mcs, name, bases, attrs)
         # cleanup attrs
         offset = 0
         for i, attr in enumerate(new_cls._attrs[:]):
@@ -1169,7 +1168,7 @@ class App(metaclass=AppMetaClass):  # noqa: PLW1641
             return image
 
     def get_docker_images(self):
-        return [self.docker_image] + self.docker_allowed_images
+        return [self.docker_image, *self.docker_allowed_images]
 
     def has_local_web_interface(self):
         if self.web_interface:
@@ -1412,7 +1411,7 @@ class App(metaclass=AppMetaClass):  # noqa: PLW1641
             return []
         thumbnails = []
         for ithumb in self.thumbnails:
-            if ithumb.startswith('http://') or ithumb.startswith('https://'):
+            if ithumb.startswith(('http://', 'https://')):
                 # item is already a full URI
                 thumbnails.append(ithumb)
                 continue

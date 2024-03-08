@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -97,7 +96,7 @@ def match_password_complexity(cfg, password):
     return stats['forbidden'] == 0 and cfg['min_length'] <= len(password)
 
 
-class TestPasswordConfigDefaults(object):
+class TestPasswordConfigDefaults:
     """Test all cases of no-scoped defaults"""
 
     def test_digit_count(self, password_config_default):
@@ -119,7 +118,7 @@ class TestPasswordConfigDefaults(object):
         assert password_config_default['forbidden'] == '0Ol1I'
 
 
-class TestScopedPasswordConfigDefaults(object):
+class TestScopedPasswordConfigDefaults:
     """Test all cases of radius 'scope' defaults"""
 
     def test_radius_digit_count(self, password_radius_config):
@@ -141,7 +140,7 @@ class TestScopedPasswordConfigDefaults(object):
         assert password_radius_config['forbidden'] == '0Ol1I'
 
 
-class TestScopedPasswordConfigFallback(object):
+class TestScopedPasswordConfigFallback:
     """Set radius 'scoped' variables to None and check will they fallback to no-scoped defaults"""
 
     scope = 'radius'
@@ -171,7 +170,7 @@ class TestScopedPasswordConfigFallback(object):
         assert cfg['forbidden'] == '0Ol1I'
 
 
-class TestScopedPasswordConfigCustomizing(object):
+class TestScopedPasswordConfigCustomizing:
     """Set radius 'scoped' variables explicitely and checks value"""
 
     scope = 'radius'
@@ -207,7 +206,7 @@ class TestScopedPasswordConfigCustomizing(object):
         assert cfg['forbidden'] == ''
 
 
-class TestPasswordConfigDigitCount(object):
+class TestPasswordConfigDigitCount:
 
     def test_none(self):
         with pytest.raises(TypeError):
@@ -234,7 +233,7 @@ class TestPasswordConfigDigitCount(object):
         assert (password_stats(cfg, pwd)['digits'] >= digit_count)
 
 
-class TestPasswordConfigLowerCaseCount(object):
+class TestPasswordConfigLowerCaseCount:
 
     def test_none(self):
         with pytest.raises(TypeError):
@@ -261,7 +260,7 @@ class TestPasswordConfigLowerCaseCount(object):
         assert (password_stats(cfg, pwd)['lower'] >= lowercase_count)
 
 
-class TestPasswordConfigSpecialCharacterCount(object):
+class TestPasswordConfigSpecialCharacterCount:
 
     def test_none(self):
         with pytest.raises(TypeError):
@@ -293,7 +292,7 @@ class TestPasswordConfigSpecialCharacterCount(object):
         assert (password_stats(cfg, pwd)['other'] >= special_count)
 
 
-class TestPasswordConfigUpperCaseCount(object):
+class TestPasswordConfigUpperCaseCount:
 
     def test_none(self):
         with pytest.raises(TypeError):
@@ -320,7 +319,7 @@ class TestPasswordConfigUpperCaseCount(object):
         assert (password_stats(cfg, pwd)['upper'] >= uppercase_count)
 
 
-class TestPasswordConfigExhaustedAvailableCharacterPool(object):
+class TestPasswordConfigExhaustedAvailableCharacterPool:
 
     def test_exhausted_digits_pool(self):
         with pytest.raises(ValueError, match="There are 1 digits requested but digits pool is empty"):
@@ -353,7 +352,7 @@ class TestPasswordConfigExhaustedAvailableCharacterPool(object):
             univention_password.generate_password(**cfg)
 
 
-class TestRandomPasswordGenerator(object):
+class TestRandomPasswordGenerator:
     iter_count = 100
 
     def test_all_digits(self):

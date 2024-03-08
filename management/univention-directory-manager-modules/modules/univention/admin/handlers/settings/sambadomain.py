@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -62,9 +61,9 @@ def logonToChangePWMap(val):
 def logonToChangePWUnmap(val):
     # type: (list[bytes]) -> str
     if (val[0] == b"2"):
-        return u"1"
+        return "1"
     else:
-        return u"2"
+        return "2"
 
 
 module = 'settings/sambadomain'
@@ -250,12 +249,12 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_pre_create(self):
         # type: () -> None
-        super(object, self)._ldap_pre_create()
+        super()._ldap_pre_create()
         self.__update_password_properties()
 
     def _ldap_pre_modify(self):
         # type: () -> None
-        super(object, self)._ldap_pre_modify()
+        super()._ldap_pre_modify()
         self.__update_password_properties()
 
     def __update_password_properties(self):

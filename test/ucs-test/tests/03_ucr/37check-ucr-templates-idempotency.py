@@ -25,7 +25,7 @@ ucr.load()
 VERSIONS = (3, 3)
 BASE_DIR = "/etc/univention/templates/files/"
 
-ALLOWED_DIFFERENCES = [
+ALLOWED_DIFFERENCES = [  # noqa: RUF005
     '/etc/univention/templates/files/usr/share/univention-management-console/meta.json',
     '/etc/univention/templates/files/usr/share/univention-portal/apps.json',
     '/etc/univention/templates/files/etc/aliases',

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Univention Directory Reports
 #  splits a text into tokens
@@ -42,7 +41,7 @@ from .tokens import (
 )
 
 
-class Parser(object):
+class Parser:
 
     REGEX_OPEN = re.compile('<@(?P<tag>[^/][^ ]+)( +(?P<attrs>([a-z-0-9]+="[^"]*" *)*)|)@>')
     REGEX_CLOSE = re.compile('<@/(?P<tag>[^ ]+) *@>')

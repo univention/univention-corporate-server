@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Univention Heimdal
 #  listener script for generating keytab for Managed Nodes
@@ -39,7 +38,6 @@ from __future__ import annotations
 import os
 import pwd
 from subprocess import call
-from typing import Dict, List
 
 import univention.debug as ud
 
@@ -60,7 +58,7 @@ filter = (
 )
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     if not new.get('krb5Key'):
         return
 

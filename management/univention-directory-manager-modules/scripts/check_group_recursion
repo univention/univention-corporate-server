@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -54,7 +53,7 @@ class groupRecursionDetected(univention.admin.uexceptions.base):
     message = 'circular group recursion detected'
 
     def __init__(self, recursionlist):
-        super(groupRecursionDetected, self).__init__()
+        super().__init__()
         self.recursionlist = recursionlist
 
 
@@ -74,7 +73,7 @@ def checkChilds(grp_module, dn, parents, verbose=False, exception=False):
     else:
         childs = grp2childgrps[dn]
 
-    new_parents = parents + [dn.lower()]
+    new_parents = [*parents, dn.lower()]
     for childgrp in childs:
         if verbose:
             print('%s+--> %s' % ('|    ' * (len(parents) + 1), childgrp))
