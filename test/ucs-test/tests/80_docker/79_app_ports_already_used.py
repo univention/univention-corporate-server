@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -vv --tb=native
 ## desc: Check the App installation if the next free port is already used
 ## tags: [docker]
 ## exposure: dangerous
@@ -7,10 +7,11 @@
 
 import os
 import socket
+import pytest
 
 from univention.testing.utils import get_ldap_connection
 
-from dockertest import Appcenter, tiny_app_apache
+from dockertest import tiny_app_apache
 
 
 def _open_port(port):
@@ -21,39 +22,39 @@ def _open_port(port):
         print(f'Bind failed. Error Code : {msg} {msg.errno} {os.strerror(msg.errno)}')
         return
     s.listen(10)
-    print('Opened socket on port %d' % port)
+    print(f'Opened socket on port {port}')
     return s
 
 
-if __name__ == '__main__':
+@pytest.mark.exposure('dangerous')
+def test_app_ports_already_used(appcenter):
     sockets = [_open_port(i) for i in range(40000, 40100)]
 
-    with Appcenter() as appcenter:
-        app = tiny_app_apache()
+    app = tiny_app_apache()
 
-        try:
-            app.set_ini_parameter(
-                WebInterface='/%s' % app.app_name,
-                WebInterfacePortHTTP='80',
-                WebInterfacePortHTTPS='443',
-                AutoModProxy='True',
-            )
-            app.add_to_local_appcenter()
+    try:
+        app.set_ini_parameter(
+            WebInterface=f'/{app.app_name}',
+            WebInterfacePortHTTP='80',
+            WebInterfacePortHTTPS='443',
+            AutoModProxy='True',
+        )
+        app.add_to_local_appcenter()
 
-            appcenter.update()
+        appcenter.update()
 
-            app.install()
+        app.install()
 
-            app.verify(joined=False)
+        app.verify(joined=False)
 
-            app.configure_tinyapp_modproxy()
-            app.verify_basic_modproxy_settings_tinyapp()
+        app.configure_tinyapp_modproxy()
+        app.verify_basic_modproxy_settings_tinyapp()
 
-            lo = get_ldap_connection()
-            print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app.app_name[:5], unique=True, required=True))
-        finally:
-            app.uninstall()
-            app.remove()
+        lo = get_ldap_connection()
+        print(lo.searchDn(filter=f'(&(cn={app.app_name[:5]}-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))', unique=True, required=True))
+    finally:
+        app.uninstall()
+        app.remove()
 
     for s in sockets:
         if not s:

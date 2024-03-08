@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -vv --tb=native
 ## desc: Create and install a simple docker app without a Debian package (plain container app)
 ## tags: [docker]
 ## exposure: dangerous
@@ -7,33 +7,34 @@
 
 from univention.testing.utils import get_ldap_connection
 
-from dockertest import Appcenter, tiny_app_apache
+from dockertest import tiny_app_apache
+
+import pytest
 
 
-if __name__ == '__main__':
+@pytest.mark.exposure('dangerous')
+def test_app_without_package(appcenter):
+    try:
+        app = tiny_app_apache()
+        app.set_ini_parameter(
+            WebInterface=f'/{app.app_name}',
+            WebInterfacePortHTTP='80',
+            WebInterfacePortHTTPS='443',
+            AutoModProxy='True',
+        )
+        app.add_to_local_appcenter()
 
-    with Appcenter() as appcenter:
-        try:
-            app = tiny_app_apache()
-            app.set_ini_parameter(
-                WebInterface='/%s' % app.app_name,
-                WebInterfacePortHTTP='80',
-                WebInterfacePortHTTPS='443',
-                AutoModProxy='True',
-            )
-            app.add_to_local_appcenter()
+        appcenter.update()
 
-            appcenter.update()
+        app.install()
 
-            app.install()
+        app.verify(joined=False)
 
-            app.verify(joined=False)
+        app.configure_tinyapp_modproxy()
+        app.verify_basic_modproxy_settings_tinyapp()
 
-            app.configure_tinyapp_modproxy()
-            app.verify_basic_modproxy_settings_tinyapp()
-
-            lo = get_ldap_connection()
-            print(lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))' % app.app_name[:5], unique=True, required=True))
-        finally:
-            app.uninstall()
-            app.remove()
+        lo = get_ldap_connection()
+        print(lo.searchDn(filter=f'(&(cn={app.app_name[:5]}-*)(objectClass=univentionMemberServer)(!(aRecord=*))(!(macAddress=*)))', unique=True, required=True))
+    finally:
+        app.uninstall()
+        app.remove()

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -vv --tb=native
 ## desc: Check App installation through proxy
 ## tags: [docker]
 ## exposure: dangerous
@@ -14,46 +14,34 @@ from dockertest import (
     docker_image_is_present, docker_login, pull_docker_image, remove_docker_image, restart_docker, tiny_app,
 )
 
+import pytest
 
-class TestCase:
 
-    def __init__(self):
-        self.ucr = UCSTestConfigRegistry()
-        self.ucr.load()
+@pytest.mark.exposure('dangerous')
+def test_docker_pull_via_proxy_http():
+    ucr = UCSTestConfigRegistry()
+    ucr.load()
 
-        self.imgname = tiny_app().ini['DockerImage']
+    imgname = tiny_app().ini['DockerImage']
 
-        if not self.ucr.get('proxy/http'):
-            handler_set(['proxy/http=http://127.0.0.1:3128'])
-            restart_docker()
-            self.ucr_changed = True
-        else:
-            self.ucr_changed = False
+    if not ucr.get('proxy/http'):
+        handler_set(['proxy/http=http://127.0.0.1:3128'])
+        restart_docker()
+        ucr_changed = True
+    else:
+        ucr_changed = False
 
-    def run(self):
-        if docker_image_is_present(self.imgname):
-            remove_docker_image(self.imgname)
+    try:
+        if docker_image_is_present(imgname):
+            remove_docker_image(imgname)
 
         docker_login()
-        pull_docker_image(self.imgname)
-        if not docker_image_is_present(self.imgname):
+        pull_docker_image(imgname)
+
+        if not docker_image_is_present(imgname):
             fail('The container could not be downloaded.')
-
-    def cleanup(self):
-        remove_docker_image(self.imgname)
-        if self.ucr_changed:
-            self.ucr.revert_to_original_registry()
+    finally:
+        remove_docker_image(imgname)
+        if ucr_changed:
+            ucr.revert_to_original_registry()
             restart_docker()
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        if exc_type:
-            print(f'Cleanup after exception: {exc_type} {exc_value}')
-        self.cleanup()
-
-
-if __name__ == '__main__':
-    with TestCase() as tc:
-        tc.run()

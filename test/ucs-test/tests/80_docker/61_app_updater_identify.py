@@ -7,7 +7,10 @@
 
 from dockertest import tiny_app
 
+import pytest
 
+
+@pytest.mark.exposure('dangerous')
 def test_app_updater_identify(appcenter):
     app = tiny_app()
 
@@ -21,7 +24,7 @@ def test_app_updater_identify(appcenter):
         app.verify(joined=False)
 
         identify = app.execute_command_in_container("env | sed -rne 's/UPDATER_IDENTIFY=//p'")
-        print('Identify: %s' % identify)
+        print(f'Identify: {identify}')
         assert identify.strip() == 'Docker App'
     finally:
         app.uninstall()

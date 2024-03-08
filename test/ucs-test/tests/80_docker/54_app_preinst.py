@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s -vv --tb=native
 ## desc: Check the preinst script
 ## tags: [docker]
 ## exposure: dangerous
@@ -8,15 +8,17 @@
 import subprocess
 
 from dockertest import (
-    Appcenter, UCSTest_DockerApp_InstallationFailed, UCSTest_DockerApp_VerifyFailed, get_app_name, get_app_version,
+    UCSTest_DockerApp_InstallationFailed, UCSTest_DockerApp_VerifyFailed, get_app_name, get_app_version,
     tiny_app,
 )
 
+import pytest
 
-def create_app(fail_in_preinst):
-    app_name = get_app_name()
-    app_version = get_app_version()
 
+
+@pytest.mark.exposure('dangerous')
+@pytest.mark.parametrize("fail_in_preinst", [False, True])
+def test_create_app(appcenter, fail_in_preinst, app_name, app_version):
     app = tiny_app(app_name, app_version)
     try:
         app.add_script(preinst='''#!/bin/bash
@@ -42,16 +44,10 @@ exit %(exit_code)d
             if fail_in_preinst:
                 raise ValueError('Should not have been installed!')
             else:
-                output = subprocess.check_output('univention-app shell %s env' % app_name, shell=True, text=True)
+                output = subprocess.check_output(f'univention-app shell {app_name} env', shell=True, text=True)
                 if 'FOO=bar' not in output or 'repository_app_center_server=my.server' not in output:
                     raise ValueError('Setting docker/params does not work')
 
     finally:
         app.uninstall()
         app.remove()
-
-
-if __name__ == '__main__':
-    with Appcenter() as appcenter:
-        create_app(fail_in_preinst=False)
-        create_app(fail_in_preinst=True)
