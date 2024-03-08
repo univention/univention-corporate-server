@@ -7,7 +7,7 @@ fix: 14.0.16-3
 desc: |
  This update addresses the following issues:
  * Initial join could take a long time in cases where customers
-   have a lot of DNS records in Samba/AD. The joinscript now
+   have a lot of DNS records in Samba/AD. The join script now
    prioritizes objects (DNS zones etc) that are essential for
    operation of Samba/AD. This improves usability during initial
    joins and rejoins.
