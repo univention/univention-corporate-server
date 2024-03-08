@@ -305,7 +305,7 @@ example, but others must be completed using an editor.
    Since for this example the program should be invoked automatically during
    package installation, this file needs to be created. In addition to just
    invoking the program shipped with the package itself, it also shows how
-   |UCSUCRV|\ s can be set. For more information, see :ref:`ucr-usage-shell`.
+   |UCSUCRVs| can be set. For more information, see :ref:`ucr-usage-shell`.
 
    .. code-block:: shell
 

@@ -39,7 +39,7 @@ Proxy requests from computers in the proxy server's local network are answered
 directly and not forwarded to the parent proxy. If additional networks should be
 excluded from forwarding to the parent proxy, these can be specified via the
 |UCSUCRV| :envvar:`squid/parent/directnetworks`. When doing so, the CIDR
-notation must be used (e.g. ``192.0.2.0``/``24``); several networks should be
+notation must be used (e.g. :samp:`192.0.2.0/24`); several networks should be
 separated by blank spaces.
 
 .. _proxy-transparent:

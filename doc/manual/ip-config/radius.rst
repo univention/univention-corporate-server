@@ -76,7 +76,7 @@ set to ``true`` on the :guilabel:`Self Service Backend`.
    The page in the Self Service to get a RADIUS specific password
 
 The parameters used to generate the passwords can be adjusted. On a
-|UCSPRIMARYDN| some |UCSUCRV|\ s have to be set:
+|UCSPRIMARYDN| some |UCSUCRVs| have to be set:
 
 .. code-block:: console
 

@@ -117,7 +117,7 @@ UCS web interface
 *****************
 
 The web interface of an installed UCS system is directly available via its IP
-address (``https://server_ip`` or ``http://server_ip``, HTTPS is
+address (:samp:`https://{server_ip}` or :samp:`http://{server_ip}`, HTTPS is
 recommended). By default, a portal page is configured on the
 |UCSPRIMARYDN| where all applications are listed that are installed in the
 domain. For all other system roles, the start site consists of an

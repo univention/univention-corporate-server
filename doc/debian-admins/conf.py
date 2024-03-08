@@ -21,8 +21,8 @@ from datetime import date
 
 # -- Project information -----------------------------------------------------
 
-version = "5.0"
-release = "5.0-6"
+version = "5.1"
+release = "5.1-0"
 project = f"UCS {version} for Debian and Ubuntu Administrators"
 copyright = f'2023-{date.today().year}, Univention GmbH'
 author = 'Univention GmbH'

@@ -59,4 +59,4 @@ To build the documentation with the make target interface known from the other U
 
 The ``check`` target runs the checks *linkcheck* and *spelling*. The
 ``install`` target builds the HTML files and PDF file. The HTML files and the
-PDF for publishing can the be found in ``../public/html``.
+PDF for publishing can the be found in :file:`../public/html/`.

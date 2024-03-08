@@ -294,23 +294,23 @@ domain and the name of the domain the computer should join.
    * - Name
      - Function
 
-   * - ``server/role``
+   * - :envvar:`server/role`
      - The system role. You may choose from ``domaincontroller_master`` (for
        |UCSPRIMARYDN|), ``domaincontroller_backup`` (for |UCSBACKUPDN|),
        ``domaincontroller_slave`` (for |UCSREPLICADN|) and ``memberserver`` (for
        |UCSMANAGEDNODE|). The properties of the system roles are described in
        the domain services chapter of the :cite:t:`ucs-manual`.
 
-   * - ``hostname``
+   * - :envvar:`hostname`
      - The computer name. The name must only contain the letters ``a`` to ``z``
        in lowercase, the figures ``0`` to ``9`` and hyphens. Although underscore
        are allowed as well, they should not be used as they are not supported
        everywhere. The name must begin with a letter.
 
-   * - ``domainname``
+   * - :envvar:`domainname`
      - The name of the DNS domain in which the computer is joined.
 
-   * - ``windows/domain``
+   * - :envvar:`windows/domain`
      - The name of the NetBIOS domain used by Samba. This variable should only
        by defined for the system role |UCSPRIMARYDN|.
 
@@ -318,7 +318,7 @@ domain and the name of the domain the computer should join.
      - Localization packages to be installed (locales). If more than one locale
        is specified, the locales are separated by blank spaces.
 
-   * - ``locale/default``
+   * - :envvar:`locale/default`
      - The standard locale for the computer, e.g. ``en_GB.UTF-8:UTF-8``. More
        information on system locales can be found at :cite:t:`locales`.
 
@@ -355,7 +355,7 @@ supported for security reasons.
        the UCS domain in the course of the installation. If this parameter is
        set to ``false``, the automatic domain join is deactivated.
 
-   * - ``ldap/base``
+   * - :envvar:`ldap/base`
      - The base DN of the LDAP domain. In general, the base DN
        ``dc=example,dc=com`` is used in a domain ``example.com``. This variable
        is only evaluated on the system role |UCSPRIMARYDN|.
@@ -374,7 +374,7 @@ can be found in Chapter *Network configuration* of the :cite:t:`ucs-manual`.
 The settings for network cards must be performed completely. It is not possible
 to leave individual settings blank. For example, if there is no IP address for
 the device ``eth0`` in the profile, in addition to the IP address, the
-``interfaces/eth0/netmask`` will also be requested.
+:envvar:`interfaces/eth0/netmask` will also be requested.
 
 .. list-table:: Profile variables - Network configuration
    :header-rows: 1
@@ -432,26 +432,26 @@ the device ``eth0`` in the profile, in addition to the IP address, the
        :samp:`interfaces/eth{N}/ip6` and :samp:`interfaces/eth{N}/prefix6` (see
        there).
 
-   * - ``nameserver1``,
-       ``nameserver2``,
-       ``nameserver3``
+   * - :envvar:`nameserver1`,
+       :envvar:`nameserver2`,
+       :envvar:`nameserver3`
      - The IP address of the name server which should perform the name
        resolution. It is possible to specify up to three name servers.
 
-   * - ``dns/forwarder1``,
-       ``dns/forwarder2``,
-       ``dns/forwarder3``
+   * - :envvar:`dns/forwarder1`,
+       :envvar:`dns/forwarder2`,
+       :envvar:`dns/forwarder3`
      - The IP address of the name server intended to serve as the forwarder for
        a locally installed DNS service. It is possible to specify up to three
        forwarders.
 
-   * - ``proxy/http``
+   * - :envvar:`proxy/http`
      - The URL of a proxy server to be used when accessing the internet. The
        specified URL is adopted in the |UCSUCR| variables :envvar:`proxy/http`
        and :envvar:`proxy/ftp`. This setting is only required if packages are to
        be installed which download additional packages from external web
        servers; e.g., the installation program for the Flash plugin. Example:
-       ``proxy/http="http://proxy.example.com:8080"``
+       :samp:`proxy/http="http://proxy.example.com:8080"`
 
 .. _variables-software:
 
@@ -493,25 +493,25 @@ for the certificate.
    * - Name
      - Function
 
-   * - ``ssl/country``
+   * - :envvar:`ssl/country`
      - The ISO country code of the certification body appearing in the
        certificate (root CA), specified with two capital letters.
 
-   * - ``ssl/state``
+   * - :envvar:`ssl/state`
      - The region, county or province that appears in the certificate of the
        root CA.
 
-   * - ``ssl/locality``
+   * - :envvar:`ssl/locality`
      - Place appearing in the certificate of the root CA.
 
-   * - ``ssl/organization``
+   * - :envvar:`ssl/organization`
      - Name of the organization that appears in the certificate of the root CA.
 
-   * - ``ssl/organizationalunit``
+   * - :envvar:`ssl/organizationalunit`
      - Name of the organizational unit or department of the organization that
        appears in the certificate of the root CA.
 
-   * - ``ssl/email``
+   * - :envvar:`ssl/email`
      - Email address that appears in the certificate of the root CA.
 
 .. _netinstaller:
@@ -544,7 +544,7 @@ services and servers:
    *PXE server*. The boot loader scans the server for the client configuration
    file in :file:`pxelinux.cfg/`. The referenced Linux kernel (:file:`linux`)
    and initial RAM disk file (:file:`initrd.gz`) are then downloaded. Those
-   names can be changed through the |UCSUCRV|\ s :envvar:`pxe/installer/kernel`
+   names can be changed through the |UCSUCRVs| :envvar:`pxe/installer/kernel`
    and :envvar:`pxe/installer/initrd`.
 
    .. note::

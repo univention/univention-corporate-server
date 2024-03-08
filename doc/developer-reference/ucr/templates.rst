@@ -28,7 +28,7 @@ following kinds of markers:
    unset, an empty string is used.
 
    :command:`ucr` scans all ``file``\ s and ``subfile``\ s on registration. All
-   |UCSUCRV|\ s used in ``@%@`` are automatically extracted and registered for
+   |UCSUCRVs| used in ``@%@`` are automatically extracted and registered for
    triggering the template mechanism. They don't need to be explicitly
    enumerated with ``Variables:`` statements in the file
    :file:`debian/{package}.univention-config-registry`.
@@ -40,7 +40,7 @@ following kinds of markers:
    instance of ``ConfigRegistry``. Each section is evaluated separately, so no
    state is kept between different Python sections.
 
-   All |UCSUCRV|\ s used in a ``@!@`` Python section must be manually matched by
+   All |UCSUCRVs| used in a ``@!@`` Python section must be manually matched by
    a ``Variables:`` statement in the
    :file:`debian/{package}.univention-config-registry` file. Otherwise the file
    is not updated on changes of the UCR variable.

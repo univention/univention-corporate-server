@@ -215,10 +215,10 @@ empty for the same path.
 For example:
 
 Host
-   ``/var/lib/app_etc``
+   :file:`/var/lib/app_etc`
 
 Docker container
-   ``/etc/app``
+   :file:`/etc/app`
 
 .. _create-app-with-docker-web-interface:
 
@@ -304,7 +304,7 @@ Environment
 
 Docker images usually receive environment variables when the container
 is started. The App Center supports to pass static configuration options
-to the container. Variables parameterized by |UCSUCRV|\ s are also
+to the container. Variables parameterized by |UCSUCRVs| are also
 supported. An environment file can look like the following example:
 
 .. code-block:: ini
@@ -363,7 +363,7 @@ LDAP server should be passed to a container via its environment variables.
 
 The example above is an excerpt from a Docker compose file where
 environment variables are defined for a service. The values of the
-variables are set to the values of the given UCR variable. ``$appid``
+variables are set to the values of the given UCR variable. :samp:`{appid}`
 needs to be replaced manually by you app id. UCR variables are enclosed
 by ``@%@``. Please mind the double quotes in the example.
 
@@ -411,8 +411,8 @@ changes:
 
 3. The App Center adds two standard volumes for the main service, as
    they are also included in Single Container Apps. These are the
-   ``/var/lib/univention-appcenter/apps/$appid/data`` and
-   ``/var/lib/univention-appcenter/apps/$appid/conf`` directories on the
+   :file:`/var/lib/univention-appcenter/apps/{appid}/data/` and
+   :file:`/var/lib/univention-appcenter/apps/{appid}/conf/` directories on the
    UCS host. If volumes are defined in the App Provider Portal in the
    App Configuration, these are also supplemented in
    ``docker-compose.yml`` by the App Center for the main service.
@@ -442,13 +442,13 @@ changes:
 
 7. Furthermore, in the main service, as in Single Container Apps, all
    UCR variables defined on UCS are available under
-   ``/etc/univention/base.conf``, as well as the password for the
-   so-called machine account under ``/etc/machine.secret``.
+   :file:`/etc/univention/base.conf`, as well as the password for the
+   so-called machine account under :file:`/etc/machine.secret`.
 
 As a result, Docker Compose starts a configuration on the UCS system
 that no longer matches 100% of the App Provider's input. The modified
 ``docker-compose.yml`` can be found at
-``/var/lib/univention-appcenter/apps/$appid/compose/docker-compose.yml``.
+:file:`/var/lib/univention-appcenter/apps/{appid}/compose/docker-compose.yml`.
 
 .. _ucr-template:
 

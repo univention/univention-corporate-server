@@ -99,7 +99,7 @@ adaptation to personal needs is possible.
 
 With the |UCSUCRV| :envvar:`office365/attributes/anonymize`, a comma-separated
 list of LDAP attributes can be configured that are created in the Azure Active
-Directory but filled with random values. The |UCSUCRV|\ s
+Directory but filled with random values. The |UCSUCRVs|
 :envvar:`office365/attributes/static/.*` allows the filling of attributes on the
 Microsoft side with a predefined value.
 
@@ -108,12 +108,12 @@ comma separated list of LDAP attributes that should not be synchronized even
 when they appear in :envvar:`office365/attributes/sync` or
 :envvar:`office365/attributes/anonymize`.
 
-The |UCSUCRV|\ s :envvar:`office365/attributes/mapping/.*` define a mapping of
+The |UCSUCRVs| :envvar:`office365/attributes/mapping/.*` define a mapping of
 UCS LDAP attributes to Azure Attributes. Usually these variables don't need to
 be changed. The synchronization of the groups of Microsoft 365 user can be
 enabled with the |UCSUCRV| :envvar:`office365/groups/sync`.
 
-Changes to |UCSUCRV|\ s are implemented only after restarting the |UCSUDL|.
+Changes to |UCSUCRVs| are implemented only after restarting the |UCSUDL|.
 
 .. _idmcloud-o365-teams:
 

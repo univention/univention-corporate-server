@@ -69,7 +69,7 @@ changes to the same attributes in UCS.
 If the Google Apps property is removed from a user, the user will be deleted
 from the G Suite domain accordingly.
 
-The |UCSUCRV| :envvar:`google-apps/attributes/mapping/.*` is used to configure
+The |UCSUCRVs| :envvar:`google-apps/attributes/mapping/.*` is used to configure
 which LDAP attributes (e.g. first name, last name, etc.) of a user account are
 synchronized. The |UCSUCRV| and its values reflect the nested data structure of
 the G Suite user accounts. The names that follow the percentage sign in the
@@ -89,7 +89,7 @@ are configured via :envvar:`google-apps/attributes/mapping/.*` or
 The synchronization of Google Apps for Work user groups can be enabled with the
 |UCSUCRV| :envvar:`google-apps/groups/sync`.
 
-Changes to |UCSUCRV| are implemented after restarting the |UCSUDL|.
+Changes to |UCSUCRVs| are implemented after restarting the |UCSUDL|.
 
 .. _idmcloud-gsuite-debug:
 

@@ -6,7 +6,6 @@
 .. |UCSAPPC| replace:: Univention App Center
 .. |UCSBACKUPDN| replace:: Backup Directory Node
 .. |UCSMANAGEDNODE| replace:: Managed Node
-.. |UCSPRIMARYDN_e| replace:: *Primary Directory Node*
 .. |UCSPRIMARYDN| replace:: Primary Directory Node
 .. |UCSREPLICADN| replace:: Replica Directory Node
 .. |UCSS4C| replace:: Univention S4 connector
@@ -18,8 +17,9 @@
 .. |UCSUDL| replace:: Univention Directory Listener
 .. |UCSUDM| replace:: Univention Directory Manager
 .. |UCSUDN| replace:: Univention Directory Notifier
-.. |UCSUDN_e| replace:: *Univention Directory Notifier*
 .. |UCSUMC| replace:: Univention Management Console
 .. |UCSUMS| replace:: UCS Management System
 .. |UCSUSS| replace:: Univention System Setup
 .. |UCSWEB| replace:: UCS web interface
+.. |UCSREST| replace:: UDM HTTP REST API
+.. |k8s| replace:: Kubernetes

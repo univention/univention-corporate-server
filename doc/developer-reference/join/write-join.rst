@@ -228,7 +228,7 @@ used by the join script itself.
       This function parses the status file and exits the shell script, if a
       record is found with a version greater or equal to value of the
       environment variable :envvar:`VERSION`. The name of the join
-      script is derived from :envvar:`$0`.
+      script is derived from ``$0``.
 
    joinscript_save_current_version
       This function appends a new record to the end of the status file

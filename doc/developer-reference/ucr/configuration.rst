@@ -367,7 +367,7 @@ For each variable a section of the following structure is defined:
    the section must match the variable name.
 
    To describe multiple variables with a common prefix and/or suffix, the
-   regular expression ``.*`` can be used to match any sequence of characters.
+   regular expression :regexp:`.*` can be used to match any sequence of characters.
    This is the only supported regular expression!
 
 ``Description[``\ :samp:`{language}`\ ``]`` (required)
@@ -508,7 +508,7 @@ For each service a section of the following structure is defined:
 
 ``[``\ :samp:`{service-name}`\ ``]``; ``name=``\ :samp:`{service-name}` (optional)
    For each daemon one section needs to be created. The service-name
-   should match the name of the init-script in ``/etc/init.d/``. If the name differs, it
+   should match the name of the init-script in :file:/etc/init.d/`. If the name differs, it
    can be overwritten by the ``name=`` property.
 
 ``description[``\ :samp:`{language}`\ ``]`` (required)
@@ -532,7 +532,7 @@ For each service a section of the following structure is defined:
    name of the service plus the suffix ``.service``.
 
 ``init_script`` (optional)
-   The name of the legacy init script below ``/etc/init.d/``. This defaults to
+   The name of the legacy init script below :file:`/etc/init.d/`. This defaults to
    the name of the service. This option should not be used any more in favor of
    :program:`systemd`.
 

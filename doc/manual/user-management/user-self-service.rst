@@ -38,7 +38,7 @@ their lost password by requesting a token to be sent to a previously registered
 contact email address. The token has to be entered on the dedicated password
 reset web page.
 
-The following |UCSUCRV|\ s can be used to activate or deactivate individual
+The following |UCSUCRVs| can be used to activate or deactivate individual
 features of the password management.
 
 .. envvar:: umc/self-service/passwordreset/backend/enabled
@@ -85,7 +85,7 @@ himself. The user then can do this using the :program:`Self Service` app.
 
    User profile self-service
 
-For this the following |UCSUCRV|\ s must be configured:
+For this the following |UCSUCRVs| must be configured:
 
 
 
@@ -173,7 +173,7 @@ Account creation
    Account registration
 
 Aspects about the *Create an account* page and the account creation
-itself can be configured with the following |UCSUCRV|\ s. These |UCSUCRV|\ s
+itself can be configured with the following |UCSUCRVs|. These |UCSUCRVs|
 have to be set on the systems that is defined as :program:`Self Service Backend`
 via the |UCSUCRV| :envvar:`self-service/backend-server`, since
 requests regarding these variables are forwarded to the Self Service
@@ -223,7 +223,7 @@ sent.
    Sending the verification email
 
 Aspects about the *verification email* and the verification token can be
-configured with the following |UCSUCRV|\ s. These |UCSUCRV|\ s have to be set on
+configured with the following |UCSUCRVs|. These |UCSUCRVs| have to be set on
 the :program:`Self Service Backend` that is defined via the |UCSUCRV|
 :envvar:`self-service/backend-server`, since requests regarding these variables
 are forwarded to the :program:`Self Service Backend`.
@@ -294,12 +294,12 @@ needs to be set on the |UCSPRIMARYDN| and all |UCSBACKUPDN|\ s. The setting
 has no effect on accounts created by an administrator.
 
 The message on the SSO login page for unverified, self registered
-accounts, can be set with the |UCSUCRV|\ s
+accounts, can be set with the |UCSUCRVs|
 :envvar:`saml/idp/selfservice/account-verification/error-title`
 and
 :envvar:`saml/idp/selfservice/account-verification/error-descr`. A localized
 message can be configured by adding a *locale* like ``en`` to the variable, for
-example ``saml/idp/selfservice/account-verification/error-title/en``.
+example :samp:`saml/idp/selfservice/account-verification/error-title/{en}`.
 
 If the :program:`Keycloak` app is used as identity provider
 see :ref:`uv-keycloak-ref:app-settings` in the :cite:t:`ucs-keycloak-doc`
@@ -322,7 +322,7 @@ the user will be set to ``TRUE`` and the ``DeregistrationTimestamp`` attribute
 of the user will be set to the current time in the `GeneralizedTime LDAP syntax
 <ldap-generalized-time_>`_. If the user has a ``PasswordRecoveryEmail`` set they
 will receive a notification email which can be configured with the following
-|UCSUCRV|\ s.
+|UCSUCRVs|.
 
 .. envvar:: umc/self-service/account-deregistration/email/sender_address
 

@@ -174,8 +174,8 @@ Join script functions
    Adds a domain wide user to the LDAP directory that is not a real Domain User
    and offers an authentication account. It can be used as bind user for the app
    to connect to the LDAP directory. The password will be stored on the Docker
-   Host at :file:`/etc/$APP.secret`. The DN will be
-   ``uid=$APP-systemuser,cn=users,$ldap_base``.
+   Host at :file:`/etc/{APP}.secret`. The DN will be
+   :samp:`uid={APP}-systemuser,cn=users,{ldap_base}`.
 
    .. code:: sh
 
@@ -281,7 +281,7 @@ Script called before uninstalling to verify that App may be removed
 
 The :file:`prerm` script is executed on the UCS host system. Its purpose is
 to check the prerequisites to uninstall an app or abort if they are
-not met. For example, the ``prerm`` may fail if other software still depends
+not met. For example, the :file:`prerm` may fail if other software still depends
 on it. Any exit code other than ``0`` will result in cancellation of the
 uninstall process. The given parameters are the LDAP bind DN of the
 Administrator account and its password, the version of the app that
@@ -324,7 +324,7 @@ with a new container or if the app is uninstalled. The script is not
 required if all the data is stored outside of the container for example
 in a database or a mapped volume. It's executed inside the Docker
 container and it should copy the relevant data to
-:file:`/var/lib/univention-appcenter/apps/$APPID/data/`. Afterwards, the
+:file:`/var/lib/univention-appcenter/apps/{APPID}/data/`. Afterwards, the
 data can be restored by one of the ``restore_data*`` scripts. The
 parameters are the *appid*, the app version and a filename for error
 logging.
@@ -393,7 +393,7 @@ container or if the app is uninstalled. It isn't required if all the
 data is stored outside the container for example in a database or a
 mapped volume. The script is executed inside the Docker container and it
 should copy the relevant data to
-:file:`/var/lib/univention-appcenter/apps/$APPID/data/`. Afterwards, the
+:file:`/var/lib/univention-appcenter/apps/{APPID}/data/`. Afterwards, the
 data can be restored by one of the ``restore_data*`` scripts when they
 are executed in the new container.
 
@@ -668,7 +668,7 @@ in the UCS manual.
 Apps may need access to the UCS certificate infrastructure or need to be
 aware of changes to the certificates. The |UCSAPPC|
 provides a simple way to manage certificates inside an app. The script
-``update-certificates`` is executed on the UCS host automatically during the
+:command:`update-certificates` is executed on the UCS host automatically during the
 installation and upgrade of apps (but can also be executed manually) and
 provides apps a simple way to gain access to certificates and to react
 to changes to certificates.
@@ -684,20 +684,20 @@ to changes to certificates.
 What happens with ``update-certificates``?
 
 * The UCS root CA certificate is copied to
-  ``/usr/local/share/ca*certificates/ucs.crt`` inside the container.
+  :file:`/usr/local/share/ca-certificates/ucs.crt` inside the container.
 
 * update-ca-certificates is executed in the Docker container, if it
   exists, to update the CA certificate list.
 
 * The UCS root CA certificate is copied to
-  ``/etc/univention/ssl/ucsCA/CAcert.pem`` inside the container.
+  :file:`/etc/univention/ssl/ucsCA/CAcert.pem` inside the container.
 
 * The Docker host UCS certificate is copied to
-  ``/etc/univention/ssl/docker*host-certificate/{cert.perm,private.key}``
+  :file:`/etc/univention/ssl/docker-host-certificate/{\\cert.perm,private.key\\}`
   and
-  ``/etc/univention/ssl/$FQDN_DOCKER_HOST/{cert.perm,private.key}``.
+  :file:`/etc/univention/ssl/{FQDN_DOCKER_HOST}/\\{cert.perm,private.key\\}`.
 
-Every app can define a ``update_certificates`` script. In the app provider
+Every app can define a :file:`update_certificates` script. In the app provider
 portal it can be added on the tab :guilabel:`Advanced` in the section *Certificates*.
 
 Example:
@@ -950,7 +950,7 @@ opened for TCP and UDP:
 
    $ systemctl try-restart univention-firewall
 
-Please also add corresponding ``ucr unset`` commands in the unjoin
+Please also add corresponding :command:`ucr unset` commands in the unjoin
 script so that the firewall rules will be removed when the app is
 removed from the system (section :ref:`Unjoin
 script <uninstallation-unjoin>`).

@@ -28,7 +28,7 @@ project = 'Univention Corporate Server - Manual for users and administrators'
 copyright = f'2023-{date.today().year}, Univention GmbH'
 author = ''
 
-version = "5.0"
+version = "5.1"
 # The full version, including alpha/beta/rc tags
 release = version
 

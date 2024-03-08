@@ -72,6 +72,7 @@ rst_epilog = """
 .. include:: /links.txt
 
 .. include:: /../abbreviations.txt
+.. include:: /../substitutions.txt
 """
 
 rediraffe_redirects = "redirects.txt"

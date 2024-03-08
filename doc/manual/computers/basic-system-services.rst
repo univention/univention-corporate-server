@@ -332,7 +332,7 @@ A cron job is defined in a line, which is composed of a total of seven columns:
 
 The time specifications can be set in different ways. One can specify a specific
 minute/hour/etc. or run an action every minute/hour/etc. with a ``*``. Intervals
-can also be defined, for example ``*/2`` as a minute specification runs an
+can also be defined, for example :samp:`*/2` as a minute specification runs an
 action every two minutes.
 
 Example:
@@ -397,10 +397,10 @@ the variables:
    * - Variable
      - Default size of the hash table
 
-   * - ``nscd /hosts/size``
+   * - :envvar:`nscd/hosts/size`
      -  ``6007``
 
-   * - ``nscd/passwd/size``
+   * - :envvar:`nscd/passwd/size`
      - ``6007``
 
 With very big caches it may be necessary to increase the size of the cache
