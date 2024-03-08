@@ -255,7 +255,7 @@ seconds. The interval for the cron update is configured in Cron syntax
 :envvar:`nss/group/cachefile/invalidate_interval`. This listener
 module can be activated/deactivated via the |UCSUCRV|
 :envvar:`nss/group/cachefile/invalidate_on_changes`
-(``true/false``).
+(``true``/``false``).
 
 When the group cache file is being generated, the script can verify
 whether the group members are still present in the LDAP directory. If

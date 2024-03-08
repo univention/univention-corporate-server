@@ -189,7 +189,7 @@ This package (and several others) provides shell libraries in
 
 :file:`/usr/share/univention-lib/ucr.sh`
    This file is provided by the package :program:`univention-config`. It
-   contains some helpers to handle boolean |UCSUCRV|\ s and handle UCR files on
+   contains some helpers to handle boolean |UCSUCRVs| and handle UCR files on
    package removal. See :ref:`ucr-usage-shell` for further details.
 
 :file:`/usr/share/univention-lib/umc.sh`
@@ -250,7 +250,7 @@ This package provides several Python libraries located in the module
 
 :program:`univention.lib.ucrLogrotate`
    This module provides some helper functions internally used for parsing the
-   |UCSUCRV|\ s related to :manpage:`logrotate.8`.
+   |UCSUCRVs| related to :manpage:`logrotate.8`.
 
 :program:`univention.lib.ucs`
    This module provides the class ``UCS_Version`` to more easily handle UCS
@@ -269,7 +269,7 @@ Login access control
 ====================
 
 Access control to services can be configured for individual services by setting
-certain |UCSUCRV|\ s. Setting :samp:`auth/{SERVICE}/restrict` to ``true``
+certain |UCSUCRVs|. Setting :samp:`auth/{SERVICE}/restrict` to ``true``
 enables access control for that service. This will include the file
 :file:`/etc/security/access-{SERVICE}.conf`, which contains the list of allowed
 users and groups permitted to login to the service. Users and groups can be
@@ -333,7 +333,7 @@ The following values need to be filled in:
    package is accepted by a rule which is discarded by a later rule, then the
    rule for discarding the package does not become valid).
 
-Filter rules can optionally be described by setting additional |UCSUCRV|\ s. For
+Filter rules can optionally be described by setting additional |UCSUCRVs|. For
 each rule and language, an additional variable suffixed by :samp:`/{language}`
 can be used to add a descriptive text.
 

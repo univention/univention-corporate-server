@@ -359,13 +359,13 @@ system. As a general rule of thumb these should not be higher than the machines
 CPU cores. Good throughput values had resulted in tests with the following
 combinations:
 
-* Automatically detect available CPU cores: ``umc/http/processes=0``
+* Automatically detect available CPU cores: :envvar:`umc/http/processes`\ ``=0``
 
-* 6 CPU cores: ``umc/http/processes=3``
+* 6 CPU cores: :envvar:`umc/http/processes`\ ``=3``
 
-* 16 CPU cores: ``umc/http/processes=15``
+* 16 CPU cores: :envvar:`umc/http/processes`\ ``=15``
 
-* 32 CPU cores: ``umc/http/processes=25``
+* 32 CPU cores: :envvar:`umc/http/processes`\ ``=25``
 
 Note that the number of Apache processes may also need to be increased for the
 customization to take effect.
@@ -408,10 +408,10 @@ with the role |UCSPRIMARYDN| or |UCSBACKUPDN| by executing the following command
 
    $ ucr set umc/saml/assertion-lifetime=3600
    $ cd /usr/share/univention-management-console/saml/
-   $ ./update_metadata --binddn $USERDN --bindpwdfile $FILENAME
+   $ ./update_metadata --binddn "$USERDN" --bindpwdfile "$FILENAME"
 
-:samp:`$USERDN` has to be replaced with a valid DN of a user, that is member of the
-group ``Domain Admins`` and the file specified by :samp:`$FILENAME` has to contain
+``$USERDN`` has to be replaced with a valid DN of a user, that is member of the
+group ``Domain Admins`` and the file specified by ``$FILENAME`` has to contain
 the corresponding password of that user.
 
 It should be noted that increasing the lifetime has security implications that
@@ -449,7 +449,7 @@ depletion and denial-of-service problems in multi-user environments. Because of
 that the number of allowed file objects is limited by default.
 
 The maximum number of open files can be configured on a per-user or per-group
-basis. The default for all users can be set through the following |UCSUCRV|\ s:
+basis. The default for all users can be set through the following |UCSUCRVs|:
 
 :samp:`security/limits/user/{default}/hard/nofile`
    The hard limit defines the upper limit a user can assign to a
@@ -525,13 +525,13 @@ number of CPU cores in the system.
 
 .. _udm-rest-api:
 
-UDM REST API performance scaling
-================================
+|UCSUHRA| performance scaling
+=============================
 
-A single |UCSUDM| REST API instance does not use multiple CPU cores by design,
+A single |UCSUHRA| instance does not use multiple CPU cores by design,
 therefore it can be beneficial to start multiple instances. By setting the
 |UCSUCRV| :envvar:`directory/manager/rest/processes` the number of processes can
-be increased. Afterwards the |UCSUDM| REST API needs to be restarted:
+be increased. Afterwards the |UCSUHRA| needs to be restarted:
 
 .. code-block:: console
 
@@ -539,7 +539,7 @@ be increased. Afterwards the |UCSUDM| REST API needs to be restarted:
 
 The number of instances to configure depends on the workload and the server
 system. As a general rule of thumb these should not be higher than the machines
-CPU cores. With ``directory/manager/rest/processes=0`` all available CPU cores
+CPU cores. With :envvar:`directory/manager/rest/processes`\ ``=0`` all available CPU cores
 are used.
 
 .. _biblio:

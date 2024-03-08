@@ -149,8 +149,8 @@ Source code: :uv:src:`doc/developer-reference/ucr/hosts/`
 
 :file:`conffiles/etc/hosts.allow.d/50dynamic``; :file:`conffiles/etc/hosts.deny.d/50dynamic`
    A second file fragment, which uses Python code to insert access control
-   entries configured through the |UCSUCRV|\ s ``hosts/allow/`` and
-   ``hosts/deny/``.
+   entries configured through the |UCSUCRVs| :envvar:`hosts/allow/` and
+   :envvar:`hosts/deny/`.
 
    .. code-block::
 
@@ -192,7 +192,7 @@ Source code: :uv:src:`doc/developer-reference/ucr/hosts/`
       Variables: ^hosts/deny/.*
 
 :file:`debian/hosts.univention-config-registry-variables`
-   The file describes the newly defined |UCSUCRV|\ s.
+   The file describes the newly defined |UCSUCRVs|.
 
    .. code-block:: ini
 

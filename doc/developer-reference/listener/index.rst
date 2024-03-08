@@ -19,7 +19,7 @@ Univention Directory Listener/Notifier mechanism:
 * The |UCSUDL| service runs on all UCS systems.
 
 * On the |UCSPRIMARYDN| (and possibly existing |UCSBACKUPDN| systems) the
-  |UCSUDN_e| service monitors changes in the LDAP directory and makes the
+  |UCSUDN| service monitors changes in the LDAP directory and makes the
   selected changes available to the |UCSUDL| services on all UCS systems joined
   into the domain.
 

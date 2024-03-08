@@ -75,7 +75,7 @@ invoked directly from shell. The most commonly used functions are:
 
 
 :command:`ucr shell` :samp:`[ {key} ...]`
-   Export some or all |UCSUCRV|\ s in a shell compatible manner as environment
+   Export some or all |UCSUCRVs| in a shell compatible manner as environment
    variables. All shell-incompatible characters in variable names are
    substituted by underscores (``_``).
 
@@ -96,7 +96,7 @@ invoked directly from shell. The most commonly used functions are:
 
    .. warning::
 
-      Be careful with shell quoting, since several |UCSUCRV|\ s contain shell
+      Be careful with shell quoting, since several |UCSUCRVs| contain shell
       meta characters. Use :command:`eval "$(ucr shell)"`.
 
 .. note::

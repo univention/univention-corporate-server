@@ -357,7 +357,7 @@ steps:
 
 Create a new UCS domain
    In the first mode, *Create a new UCS domain*, the first system in a new UCS
-   domain is configured: a UCS system with the |UCSPRIMARYDN_e| system role. In
+   domain is configured: a UCS system with the |UCSPRIMARYDN| system role. In
    the following configuration steps, the information required for setting up a
    new directory service, authentication service and DNS server are requested. A
    UCS domain can consist of one single or several UCS systems. Additional UCS
@@ -506,7 +506,7 @@ shown. The system roles are described within the following section.
    single: hostname; Join existing UCS domain
 
 In a UCS domain, systems can be installed in different *system roles*. The first
-system in a UCS domain is always installed with the |UCSPRIMARYDN_e| system role.
+system in a UCS domain is always installed with the |UCSPRIMARYDN| system role.
 Additional UCS systems can join the domain at a later point in time and can be
 configured with one of the following system roles.
 

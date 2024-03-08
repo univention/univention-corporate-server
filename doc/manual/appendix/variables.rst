@@ -2,11 +2,11 @@
 ..
 .. SPDX-License-Identifier: AGPL-3.0-only
 
-************
-|UCSUCRV|\ s
-************
+**********
+|UCSUCRVs|
+**********
 
-This appendix lists the |UCSUCRV|\ s mentioned in the document.
+This appendix lists the |UCSUCRVs| mentioned in the document.
 
 .. envvar:: auth/faillog
 
@@ -1253,7 +1253,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
    Allows to restrict the Kerberos authentication at the SAML identity provider
    to certain IP subnetworks in the `CIDR notation
    <w-classless-inter-domain-routing_>`_, for example
-   ``127.0.0.0/16,192.168.0.0/16``. For more information, see
+   :samp:`127.0.0.0/16,192.168.0.0/16`. For more information, see
    :ref:`domain-saml`.
 
 .. envvar:: saml/idp/selfservice/account-verification/error-descr
@@ -1320,7 +1320,7 @@ This appendix lists the |UCSUCRV|\ s mentioned in the document.
 
    Configures additional networks to allow access to the Squid web proxy.
    Separate the entries with blank spaces and use the CIDR notation, for example
-   ``192.0.2.0/24``. For more information, see
+   :samp:`192.0.2.0/24`. For more information, see
    :ref:`ip-config-restriction-of-access-to-permitted-networks`.
 
 .. envvar:: squid/basicauth

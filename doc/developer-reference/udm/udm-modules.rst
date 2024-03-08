@@ -824,7 +824,7 @@ The Python module must be copied to the
 :file:`/usr/lib/python3/dist-packages/univention/admin/handlers/` directory for
 the |UCSUDM| to find it. In this directory a subdirectory has to be created
 corresponding to the first part of the module name. For example, if the module
-name is ``test/ip-phone``, the directory should be named :file:`test/`. The
+name is :file:`test/ip-phone`, the directory should be named :file:`test/`. The
 Python module must then be copied to this directory. Ideally, a UDM module is
 integrated into a separate Debian package.
 
@@ -849,7 +849,7 @@ The latest version of the sample code can be found at
 :uv:src:`packaging/univention-directory-manager-module-example/`.
 
 It contains a source package in Debian format from which two binary packages are
-created during package building through ``./debian/rules binary``: A schema
+created during package building through :command:`./debian/rules binary`: A schema
 package that needs to be installed on the master and the package containing the
 UDM module itself. The sample code also includes a script
 :command:`ip-phone-tool`, which exemplifies the use of the UDM Python API in a

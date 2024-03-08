@@ -63,7 +63,7 @@ to the following recommendations for the definition of usernames:
   characters.
 
 The recommendation results in the following regular expression:
-``^[a-z][a-z0-9-]{2,18}[a-z0-9]$``.
+:regexp:`^[a-z][a-z0-9-]{2,18}[a-z0-9]$`.
 
 Besides the recommendation, usernames also contain underscores (``_``) and upper
 case ASCII letters in practice. Consider the recommendation as a guideline and

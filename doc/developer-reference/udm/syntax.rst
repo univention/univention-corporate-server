@@ -65,7 +65,7 @@ restrictive or lenient value checking. The latter case might require a change to
 the LDAP schema, since :command:`slapd` also checks the provided values for
 correctness.
 
-The syntax of UDM properties can be overwritten by using |UCSUCRV|\ s. For each
+The syntax of UDM properties can be overwritten by using |UCSUCRVs|. For each
 module and each property the variable
 :samp:`directory/manager/web/modules/{module}/properties/{property}/syntax`
 can be set to the name of a syntax class. For example

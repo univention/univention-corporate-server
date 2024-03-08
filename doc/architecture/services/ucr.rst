@@ -160,10 +160,10 @@ System configuration files
    and safe for restart.
 
    Exceptions to this behavior exist. For example, changes to UCR variables
-   starting with ``interfaces/`` trigger a restart of the networking service,
+   starting with :envvar:`interfaces/` trigger a restart of the networking service,
    unless you set UCR variable :envvar:`interfaces/restart/auto` to ``no``. Also,
    the Docker service restarts when UCR variables starting with
-   ``proxy/*`` change.
+   :envvar:`proxy/*` change.
 
    .. caution::
 

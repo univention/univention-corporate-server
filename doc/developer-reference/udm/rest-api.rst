@@ -4,10 +4,10 @@
 
 .. _udm-rest-api:
 
-UDM REST API
-============
+|UCSUHRA|
+=========
 
-UCS provides a REST API which can be used to inspect, modify, create and
+UCS provides a |UCSUHRA| which can be used to inspect, modify, create and
 delete UDM objects through HTTP requests.
 
 The API is accessible from :samp:`https://{FQHN}/univention/udm/`.
@@ -24,7 +24,7 @@ Authentication
 --------------
 
 To use the API you have to authenticate with a user account which is a member of
-an authorized group. The group authorization is managed through the |UCSUCRV|\ s
+an authorized group. The group authorization is managed through the |UCSUCRVs|
 :envvar:`directory/manager/rest/authorized-groups/<group-name>`.
 
 You can authenticate through the following ways:
@@ -122,7 +122,7 @@ To enable it, use the following steps:
    enable it by setting
    :envvar:`directory/manager/rest/debug-mode-enabled` to ``true``.
 
-#. Restart the UDM REST API with this command:
+#. Restart the |UCSUHRA| with this command:
 
    .. code-block:: console
 
@@ -135,7 +135,7 @@ To enable it, use the following steps:
 API clients
 -----------
 
-The following API clients implemented in Python exist for the UDM REST API:
+The following API clients implemented in Python exist for the |UCSUHRA|:
 
 * :program:`python3-univention-directory-mananger-rest-client`:
 
@@ -143,7 +143,7 @@ The following API clients implemented in Python exist for the UDM REST API:
   You can use it the following way:
 
   .. code-block:: python
-     :caption: Example for using Python UDM REST API client
+     :caption: Example for using Python |UCSUHRA| client
 
 
      from univention.admin.rest.client import UDM
@@ -184,7 +184,7 @@ The following API clients implemented in Python exist for the UDM REST API:
      # 7. remove
      obj.delete()
 
-* Python UDM REST Client:
+* Python |UCSUHRA| Client:
 
   * `Package at PyPI <https://pypi.org/project/udm-rest-client/>`_
   * :external+python-udm-rest-client:doc:`Documentation <index>`
@@ -543,9 +543,9 @@ above, to ensure the deletion is conditional.
 API Error Codes
 ---------------
 
-The UDM REST API can respond to requests with the following error codes. The list is not exhaustive:
+The |UCSUHRA| can respond to requests with the following error codes. The list is not exhaustive:
 
-.. list-table:: UDM REST API error codes
+.. list-table:: |UCSUHRA| error codes
    :header-rows: 1
    :widths: 1 3 8
 

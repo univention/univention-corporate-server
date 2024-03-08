@@ -22,7 +22,7 @@ from datetime import date
 # -- Project information -----------------------------------------------------
 
 version = "5.0"
-release = "5.0-6"
+release = "5.0-7"
 project = f"Univention Corporate Server {version} Architecture"
 copyright = f'{date.today().year}, Univention GmbH'
 author = 'Univention GmbH'
@@ -72,6 +72,7 @@ rst_epilog = """
 .. include:: /links.txt
 
 .. include:: /../abbreviations.txt
+.. include:: /../substitutions.txt
 """
 
 rediraffe_redirects = "redirects.txt"

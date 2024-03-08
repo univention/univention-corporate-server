@@ -4,8 +4,8 @@
 
 .. _services-udm:
 
-Univention Directory Manager (UDM)
-==================================
+|UCSUDM| (UDM)
+==============
 
 This section describes the technical details for |UDM|. For a general overview
 about the UCS management system and the role of |UDM|, see
@@ -114,7 +114,7 @@ UDM hooks
    .. TODO Add when hooks are ready: For more information, refer to :ref:`services-hooks`.
 
 The second abstraction layer in :numref:`architecture-model-udm` uses the *UDM
-Python library* and offers *UDM in UMC*, *UDM HTTP REST API*, the *UDM CLI daemon*, the
+Python library* and offers *UDM in UMC*, |UCSUHRA|, the *UDM CLI daemon*, the
 *UCS\@school library*, and the *UDM Simple API*.
 
 .. index::
@@ -130,9 +130,9 @@ UDM in UMC
    pair: udm http rest api; udm
    single: model; udm http rest api
 
-UDM HTTP REST API
-   Provides the HTTP REST API interface to |UDM| as a separate service. |UDM|
-   offers HTTP access through the UDM HTTP REST API to use |UDM| through a
+|UCSUHRA|
+   Provides the |UCSUHRA| interface to |UDM| as a separate service. |UDM|
+   offers HTTP access through the |UCSUHRA| to use |UDM| through a
    remote interface.
 
    .. TODO Add when rest api is ready: For more information about the architecture, refer to :ref:`services-rest-api`.
@@ -225,7 +225,7 @@ The following services in UCS need UDM:
 
 * :ref:`services-ucs-portal`
 
-Following the chain, *UDM in UMC* and *UDM HTTP REST API* wouldn't work without
+Following the chain, *UDM in UMC* and |UCSUHRA| wouldn't work without
 |UDM| either. From the items mentioned in :ref:`services-udm-architecture` and
 :numref:`architecture-model-udm`, |UDM| needs the following to work properly:
 

@@ -23,7 +23,7 @@ the hashing method for setting or changing user password.
 
 In addition, the :program:`bcrypt` cost factor and the
 :program:`bcrypt` variant can be configured via the
-|UCSUCRV|\ s :envvar:`password/hashing/bcrypt/cost_factor` (default
+|UCSUCRVs| :envvar:`password/hashing/bcrypt/cost_factor` (default
 ``12``) and :envvar:`password/hashing/bcrypt/prefix` (default ``2b``).
 
 .. caution::

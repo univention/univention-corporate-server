@@ -349,7 +349,7 @@ format. They can only be read by the ``root`` user. The Samba 4 files are stored
 the directory :file:`/var/univention-backup/samba/`.
 
 The |UCSUCRV| :envvar:`backup/clean/max_age` can be used to define how long old
-backup files are kept (e.g. ``backup/clean/max_age=365``, all files older than
+backup files are kept (e.g. :envvar:`backup/clean/max_age`\ ``=365``, all files older than
 ``365`` days are automatically deleted). For new installations (from UCS 4.4-7
 on) the default for this variable is ``365`` (days). If the variable is not set,
 no backup files are deleted.

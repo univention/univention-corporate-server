@@ -54,7 +54,7 @@ To adopt the changes in :program:`Postfix`, complete the following commands:
    :program:`Postfix` configuration option ``smtp_tls_security_level`` to
    ``encrypt``.
 
-   |UCSUCS| sets this option automatically, if the |UCSUCRV|\ s
+   |UCSUCS| sets this option automatically, if the |UCSUCRVs|
    :envvar:`mail/relayhost` and :envvar:`mail/relayauth` have the value ``yes``
    and if :envvar:`mail/postfix/tls/client/level` doesn't have the value
    ``none``.
@@ -375,7 +375,7 @@ To display the total amount of open connections, run:
 
    $ doveadm who -1 | wc -l
 
-The |UCSUCRV|\ s :envvar:`mail/dovecot/limits`\ ``/*`` can be set to modify the
+The |UCSUCRVs| :envvar:`mail/dovecot/limits`\ ``/*`` can be set to modify the
 limits. The process of adapting those variables is only semi automatic, because
 of their complex interaction. For the meaning of each variable refer to `Dovecot
 documentation: Service configuration <dovecot-services_>`_.
@@ -384,7 +384,7 @@ Dovecot uses separate processes for login and to access emails. The limits for
 these can be configured separately. The maximum number of concurrent connections
 to a service and the maximum number of processes for a service is also
 configured separately. Setting
-``mail/dovecot/limits/default_client_limit = 3000`` changes the limit
+:envvar:`mail/dovecot/limits/default_client_limit`\ ``=3000`` changes the limit
 for the maximum number of concurrent connections to the IMAP and POP3 services
 but does not change the maximum number of processes allowed to run. With the
 |UCSUCS| default settings Dovecot runs in "High-security mode": each connection
