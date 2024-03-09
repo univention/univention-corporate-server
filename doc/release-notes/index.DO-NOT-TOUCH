@@ -6,7 +6,7 @@
 Release notes for the installation and update of Univention Corporate Server (UCS) |release|
 ############################################################################################
 
-Publication date of UCS |release|: 2024-03-12
+Publication date of UCS |release|: 2024-xx-xx
 
 .. _relnotes-highlights:
 
@@ -14,22 +14,12 @@ Publication date of UCS |release|: 2024-03-12
 Release highlights
 ******************
 
-With |UCSUCS| 5.0-7, the seventh patchlevel release for |UCSUCS| (UCS) 5.0 is
+With |UCSUCS| 5.1-0, the first minor release for |UCSUCS| (UCS) is
 available. It provides several feature improvements and extensions, new
 properties as well as various improvements and bug fixes. Here is an overview of
 the most important changes:
 
-* The new feature ``blocklist`` allows denying the use of certain values in LDAP.
-
-* The robustness of |UCSUDL| and |UCSS4C| has been improved, especially during the initial domain join.
-
-* |UCSUDM| support for DNS has been improved.
-
-* |UCSUCS| has been prepared for better Kubernetes integration.
-
-* UCS 5.0-7 includes various security updates, for example for
-  :program:`BIND9`, :program:`MariaDB`, :program:`OpenJDK-11`, :program:`OpenSSH`, :program:`Postfix`
-  and the :program:`Linux` kernel.
+* FIXME
 
 .. _relnotes-update:
 
@@ -269,8 +259,8 @@ Users running older browsers may experience display or performance issues.
 Changelog
 *********
 
-You find the changes since UCS 5.0-6 in
-:external+uv-changelog-5.0-7:doc:`index`.
+You find the changes since UCS 5.0-7 in
+:external+uv-changelog-5.1-0:doc:`index`.
 
 .. _biblio:
 

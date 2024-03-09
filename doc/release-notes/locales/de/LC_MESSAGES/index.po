@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 msgid ""
 msgstr ""
-"Project-Id-Version: UCS 5.0 Release Notes 5.0\n"
+"Project-Id-Version: UCS 5.1 Release Notes 5.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-07 17:45+0100\n"
 "PO-Revision-Date: 2024-07-03 11:09+0100\n"
@@ -24,8 +24,8 @@ msgstr ""
 "Corporate Server (UCS) |release|"
 
 #: ../../index.rst:9
-msgid "Publication date of UCS |release|: 2024-03-12"
-msgstr "Veröffentlichungsdatum von UCS |release|: 2024-03-12"
+msgid "Publication date of UCS |release|: 2024-xx-xx"
+msgstr "Veröffentlichungsdatum von UCS |release|: 2024-xx-xx"
 
 #: ../../index.rst:15
 msgid "Release highlights"
@@ -33,46 +33,21 @@ msgstr "Release-Highlights"
 
 #: ../../index.rst:17
 msgid ""
-"With |UCSUCS| 5.0-7, the seventh patchlevel release for |UCSUCS| (UCS) 5.0 "
+"With |UCSUCS| 5.1-0, the first minor release for |UCSUCS| (UCS) "
 "is available. It provides several feature improvements and extensions, new "
 "properties as well as various improvements and bug fixes. Here is an "
 "overview of the most important changes:"
 msgstr ""
-"Mit |UCSUCS| 5.0-7 steht das siebte Patchlevel-Update für |UCSUCS| (UCS) 5.0 "
+"Mit |UCSUCS| 5.1-0 steht das erste Minor Release für |UCSUCS| (UCS) "
 "zur Verfügung. Es umfasst Funktionserweiterungen und Verbesserungen, neue "
 "Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen. Die "
 "wichtigsten Änderungen im Überblick:"
 
 #: ../../index.rst:22
 msgid ""
-"The new feature ``blocklist`` allows denying the use of certain values in LDAP."
+"FIXME"
 msgstr ""
-"Die neue Funktion ``blocklist`` erlaubt es, die Verwendung von bestimmten Werten in LDAP zu unterbinden."
-
-#: ../../index.rst:24
-msgid ""
-"The robustness of |UCSUDL| and |UCSS4C| has been improved, especially during "
-"the initial domain join."
-msgstr ""
-"Die Zuverlässigkeit von |UCSUDL| und |UCSS4C| wurden verbessert, insbesondere während dem initialen Domänenbeitritt."
-
-#: ../../index.rst:26
-msgid "|UCSUDM| support for DNS has been improved."
-msgstr "Die Unterstützung von DNS in |UCSUDM| wurde verbessert."
-
-#: ../../index.rst:28
-msgid "|UCSUCS| has been prepared for better Kubernetes integration."
-msgstr "Die Integration von |UCSUCS| mit Kubernetes wurde verbessert."
-
-#: ../../index.rst:30
-msgid ""
-"UCS 5.0-7 includes various security updates, for example for :program:"
-"`BIND9`, :program:`MariaDB`, :program:`OpenJDK-11`, :program:`OpenSSH`, :"
-"program:`Postfix` and the :program:`Linux` kernel."
-msgstr ""
-"UCS 5.0-7 integriert diverse Security Updates, zum Beispiel für :program:"
-"`BIND9`, :program:`MariaDB`, :program:`OpenJDK-11`, :program:`OpenSSH`, :"
-"program:`Postfix` und den :program:`Linux` Kernel."
+"Baustelle"
 
 #: ../../index.rst:38
 msgid "Notes about the update"

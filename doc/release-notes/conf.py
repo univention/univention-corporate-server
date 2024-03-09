@@ -59,7 +59,7 @@ suppress_warnings = ['git.too_shallow']
 intersphinx_mapping = {
     "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", ("../manual/_build/html/objects.inv", None)),
     "uv-ext-windows": ("https://docs.software-univention.de/ext-windows/5.0/en", ("../ext-windows/_build/html/objects.inv", None)),
-    "uv-changelog-5.0-7": ("https://docs.software-univention.de/changelog/5.0-7/en", ("../changelog/_build/html/objects.inv", None)),
+    "uv-changelog-5.1-0": ("https://docs.software-univention.de/changelog/5.1-0/en", ("../changelog/_build/html/objects.inv", None)),
 }
 
 bibtex_bibfiles = ["../bibliography.bib"]
