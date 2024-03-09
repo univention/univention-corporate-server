@@ -129,7 +129,7 @@ class MultiValidationError(ValidationError):
         # type: () -> int
         """Cumulative number of errors found"""
         num = 0
-        for v in self.validation_errors.values():
+        for _k, v in self.validation_errors.items():
             num += v.number_of_errors()
         return num
 
@@ -158,7 +158,7 @@ class Sanitizer(object):
     For reasons of extensibility and for ease of subclassing, the
     parameters are \**kwargs. But only the following are meaningful:
 
-    :param list further_arguments: names of arguments that should be
+    :param str further_arguments: names of arguments that should be
             passed along with the actual argument in order to return something
             reasonable. Default: *None*
     :param bool required: if the argument is required. Default: *False*
@@ -730,4 +730,4 @@ class MappingSanitizer(ChoicesSanitizer):
         return self.mapping[value]
 
 
-__all__ = ['BooleanSanitizer', 'ChoicesSanitizer', 'DNSanitizer', 'DictSanitizer', 'EmailSanitizer', 'IntegerSanitizer', 'LDAPSearchSanitizer', 'ListSanitizer', 'MappingSanitizer', 'MultiValidationError', 'PatternSanitizer', 'Sanitizer', 'SearchSanitizer', 'StringSanitizer', 'UnformattedValidationError', 'ValidationError']
+__all__ = ['UnformattedValidationError', 'ValidationError', 'MultiValidationError', 'Sanitizer', 'DictSanitizer', 'ListSanitizer', 'BooleanSanitizer', 'IntegerSanitizer', 'SearchSanitizer', 'LDAPSearchSanitizer', 'PatternSanitizer', 'StringSanitizer', 'DNSanitizer', 'EmailSanitizer', 'ChoicesSanitizer', 'MappingSanitizer']

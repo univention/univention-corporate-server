@@ -117,7 +117,7 @@ def valid_metadata(saml_idp):
 def download_idp_metadata(metadata):
     idp = str(urlparse(metadata).netloc)
     filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
-    for i in range(60):
+    for i in range(0, 60):
         print('Try to download idp metadata (%s/60)' % (i + 1))
         rc = call([
             '/usr/bin/curl',
@@ -144,7 +144,7 @@ def rewrite_sasl_configuration():
 
 def reload_webserver():
     try:
-        call(['systemctl', 'reload', 'univention-management-console-server'])
+        call(['systemctl', 'reload', 'univention-management-console-web-server'])
     except (IOError, OSError):
         pass
 

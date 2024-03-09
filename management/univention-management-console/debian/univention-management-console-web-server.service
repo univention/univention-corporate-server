@@ -1,10 +1,13 @@
 [Unit]
-Description=Obsolete Univention Management Console Web Server
+Description=Univention Management Console Web Server
+After=network.target remote-fs.target univention-management-console-server.service
+Before=apache2.service
 
 [Service]
-Type=oneshot
-ExecStart=echo "Deprecated. Use systemctl start univention-management-console-server"
-ExecStop=echo "Deprecated. Use systemctl stop univention-management-console-server"
+Type=notify
+UMask=0077
+ExecStart=/usr/sbin/univention-management-console-web-server
+ExecReload=/bin/kill -SIGUSR1 $MAINPID
 User=root
 Group=root
 

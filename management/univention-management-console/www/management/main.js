@@ -44,7 +44,6 @@ define([
 	"dojo/Evented",
 	"dojo/Deferred",
 	"dojo/promise/all",
-	"dojo/query",
 	"dojo/cookie",
 	"dojo/topic",
 	"dojo/io-query",
@@ -82,7 +81,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!management",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseWin, onDebounce, on, aspect, has, Evented, Deferred, all, query, cookie, topic,
+], function(declare, lang, kernel, array, baseWin, onDebounce, on, aspect, has, Evented, Deferred, all, cookie, topic,
 		ioQuery, Memory, Observable, dom, domClass, domConstruct, put, dojoHash, styles, entities, gfx, tools, login,
 		dialog, NotificationSnackbar, store, Tooltip, StackContainer, menu, MenuButton,	TabController, LiveSearch,
 		GalleryPane, ContainerWidget, Page, Form, Button, ToggleButton, Text, ConfirmDialog, NotificationsButton,
@@ -1304,10 +1303,7 @@ define([
 			}
 
 			// set window title
-			window.document.title = tools.status('title') || lang.replace('{0} - {1}', [tools.status('fqdn'), window.document.title]);
-			if (tools.status('favicon')) {
-			    (query('link[rel="shortcut icon"]')[0] || query('link[rel="icon"]')[0] || {}).href = tools.status('favicon');
-			}
+			window.document.title = lang.replace('{0} - {1}', [tools.status('fqdn'), window.document.title]);
 
 			// setup menus
 			this._header.setupGui();

@@ -1,12 +1,13 @@
-#!/bin/sh
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 #
-# Univention Management Console Web Server
-#  preinst script for the debian package
+# Univention Management Console
+#  version information for the UMC protocol
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2023-2024 Univention GmbH
+# Copyright 2007-2024 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -33,10 +34,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-#DEBHELPER#
+major_number = 2
+minor_number = 0
+revision_number = 0
+extension = ''
 
-if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt-nl 12.0.21-2; then
-	systemctl stop univention-management-console-web-server
-fi
-
-exit 0
+#: Defines the protocol version
+VERSION = "%d.%d.%d%s" % (major_number, minor_number, revision_number, extension)

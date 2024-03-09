@@ -71,7 +71,7 @@ class Instance(Base):
 
     def init(self):
         # this initialization method is called when the module process is created
-        super(Instance, self).init()
+        pass
 
     def colors(self, request):
         """Returns a list of all existing colors."""
@@ -95,7 +95,7 @@ class Instance(Base):
         MODULE.info('MODULEID.query: options: %r' % (request.options,))
         color = request.options.get('color', 'None')
         pattern = request.options.get('name', '')
-        result = [x for x in Instance.entries if (color in ('None', x['color'])) and x['name'].find(pattern) >= 0]
+        result = [x for x in Instance.entries if (color == 'None' or color == x['color']) and x['name'].find(pattern) >= 0]
         MODULE.info('MODULEID.query: results: %r' % (result,))
         self.finished(request.id, result)
 

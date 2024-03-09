@@ -2,7 +2,6 @@
 Description=Univention Management Console Server
 After=network.target remote-fs.target
 Wants=slapd.service
-Before=apache2.service
 
 [Service]
 Type=notify
@@ -16,4 +15,3 @@ Group=root
 
 [Install]
 WantedBy=multi-user.target
-#Alias=univention-management-console-web-server.service

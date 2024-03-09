@@ -1,9 +1,3 @@
-# Like what you see? Join us!
-# https://www.univention.com/about-us/careers/vacancies/
-#
-# SPDX-FileCopyrightText: 2024 Univention GmbH
-# SPDX-License-Identifier: AGPL-3.0-only
-
 # http://pysaml2.readthedocs.org/en/latest/howto/config.html
 import glob
 import os.path
@@ -61,12 +55,10 @@ else:
     addresses = [fqdn]
     addresses.extend([y['address'] for x, y in i.all_interfaces if y and y.get('address')])
 
-schemes = tuple(scheme.strip() for scheme in ucr.get('umc/saml/schemes', 'https, http').split(','))
-bases = ['%s://%s/univention/saml' % (scheme, addr) for addr in addresses for scheme in schemes]
+bases = ['%s://%s/univention/saml' % (scheme, addr) for addr in addresses for scheme in ('https', 'http')]
 CONFIG = {
     "entityid": "https://%s/univention/saml/metadata" % (fqdn,),
     "name_form": NAME_FORMAT_URI,
-    "name": "UMC at %s" % (fqdn,),
     "description": "Univention Management Console at %s" % (fqdn,),
     "service": {
         "sp": {

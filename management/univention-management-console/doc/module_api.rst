@@ -2,11 +2,6 @@
 UMC modules
 ===========
 
-.. automodule:: univention.management.console.base
-	:members:
-	:undoc-members:
-	:show-inheritance:
-
 .. automodule:: univention.management.console.modules
 	:members:
 	:undoc-members:
@@ -23,11 +18,6 @@ UMC modules
 	:show-inheritance:
 
 .. automodule:: univention.management.console.modules.mixins
-	:members:
-	:undoc-members:
-	:show-inheritance:
-
-.. automodule:: univention.management.console.error
 	:members:
 	:undoc-members:
 	:show-inheritance:

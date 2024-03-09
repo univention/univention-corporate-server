@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
-#  Python setup
+#  Python distutils setup
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -38,12 +38,13 @@ from __future__ import print_function
 
 import os
 import subprocess
+from distutils import cmd
+from distutils.command.build import build
+from distutils.core import setup
 from email.utils import parseaddr
 
 from debian.changelog import Changelog
 from debian.deb822 import Deb822
-from setuptools import Command, setup
-from setuptools.command.build_py import build_py
 
 
 dch = Changelog(open('debian/changelog'))
@@ -51,7 +52,7 @@ dsc = Deb822(open('debian/control'))
 realname, email_address = parseaddr(dsc['Maintainer'])
 
 
-class BuildI18N(Command):
+class BuildI18N(cmd.Command):
     description = 'Compile .po files into .mo files'
 
     def initialize_options(self):
@@ -88,11 +89,11 @@ class BuildI18N(Command):
                 data_files.append(('share/locale/%s/LC_MESSAGES' % lang, (dest, )))
 
 
-class Build(build_py):
-    sub_commands = build_py.sub_commands + [('build_i18n', None)]
+class Build(build):
+    sub_commands = build.sub_commands + [('build_i18n', None)]
 
     def run(self):
-        build_py.run(self)
+        build.run(self)
 
 
 def all_xml_files_in(dir):
@@ -102,13 +103,9 @@ def all_xml_files_in(dir):
 setup(
     package_dir={'': 'src'},
     packages=['univention', 'univention.management', 'univention.management.console', 'univention.management.console.protocol', 'univention.management.console.modules'],
-    scripts=['scripts/univention-management-console-module', 'scripts/univention-management-console-client', 'scripts/univention-management-console-acls'],
-    entry_points={
-        'console_scripts': ['univention-management-console-server = univention.management.console.server:main'],
-    },
+    scripts=['scripts/univention-management-console-server', 'scripts/univention-management-console-module', 'scripts/univention-management-console-client', 'scripts/univention-management-console-acls'],
     data_files=[('share/univention-management-console/categories', all_xml_files_in('data/categories'))],
-    cmdclass={'build_py': Build, 'build_i18n': BuildI18N},
-    test_suite='',
+    cmdclass={'build': Build, 'build_i18n': BuildI18N},
 
     name=dch.package,
     version=dch.version.full_version,

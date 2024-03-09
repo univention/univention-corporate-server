@@ -38,7 +38,7 @@ from __future__ import print_function
 
 import json
 import os
-import pickle  # noqa: S403
+import pickle
 import sys
 from argparse import ArgumentParser
 
@@ -75,7 +75,7 @@ if os.path.isfile(filename) and operation in ('show', 'allow', 'remove', 'upgrad
         if six.PY2:
             try:
                 with open(filename) as fd:
-                    acls = pickle.load(fd)  # noqa: S301
+                    acls = pickle.load(fd)
                 print('loaded pickle file', filename)
             except Exception:
                 acls = []

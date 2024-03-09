@@ -71,7 +71,7 @@ import itertools
 import json
 import operator
 import os
-import pickle  # noqa: S403
+import pickle
 import traceback
 from fnmatch import fnmatch
 
@@ -89,7 +89,7 @@ from .config import ucr
 from .log import ACL
 
 
-class Rule(dict):  # noqa: PLW1641
+class Rule(dict):
     """
     A simple class representing one ACL rule in a form that can be
     simply serialized.
@@ -142,14 +142,13 @@ class ACLs(object):
 
     def __init__(self, ldap_base=None, acls=None):
         self.__ldap_base = ldap_base
-        self.acls = []
-        if acls:
+        # the main acl dict
+        if acls is None:
+            self.acls = []
+        else:
             self.acls = [Rule(x) for x in acls]
 
-    def reload(self):
-        self.acls = []
-
-    def _expand_hostlist(self, lo, hostlist):
+    def _expand_hostlist(self, hostlist):
         hosts = []
         if self.__ldap_base is None:
             self.__ldap_base = ucr.get('ldap/base', None)
@@ -163,7 +162,7 @@ class ACLs(object):
             elif host.startswith('service:'):
                 service = host[len('service:'):]
                 for role in ACLs._systemroles:
-                    servers = role.lookup(None, lo, filter_format('univentionService=%s', [service]), base=self.__ldap_base)
+                    servers = role.lookup(None, self.lo, filter_format('univentionService=%s', [service]), base=self.__ldap_base)
                     for server in servers:
                         if 'name' in server:
                             hosts.append(server['name'])
@@ -189,8 +188,8 @@ class ACLs(object):
                     options[elem.strip()] = None
         return command, options
 
-    def _append(self, lo, fromUser, ldap_object):
-        for host in self._expand_hostlist(lo, ldap_object.get('umcOperationSetHost', [b'*'])):
+    def _append(self, fromUser, ldap_object):
+        for host in self._expand_hostlist(ldap_object.get('umcOperationSetHost', [b'*'])):
             flavor = ldap_object.get('umcOperationSetFlavor', [b'*'])
             for command in ldap_object.get('umcOperationSetCommand', b''):
                 command, options = self.__parse_command(command.decode('utf-8'))
@@ -287,8 +286,8 @@ class ACLs(object):
 
         :param str command: the command to check access for
         :param str hostname: FQDN of the host
-        :param dict options: the command options given in the HTTP request
-        :param str flavor: the flavor given in the HTTP request
+        :param dict options: the command options given in the UMCP request
+        :param str flavor: the flavor given in the UMCP request
         :rtype: bool
         """
         if not hostname:
@@ -303,12 +302,12 @@ class ACLs(object):
 
     def _dump(self):
         """Dumps the ACLs for the user"""
-        ACL.debug('Allowed UMC operations:')
-        ACL.debug(' %-5s | %-20s | %-15s | %-20s | %-20s' % ('User', 'Host', 'Flavor', 'Command', 'Options'))
-        ACL.debug('******************************************************************************')
+        ACL.info('Allowed UMC operations:')
+        ACL.info(' %-5s | %-20s | %-15s | %-20s | %-20s' % ('User', 'Host', 'Flavor', 'Command', 'Options'))
+        ACL.info('******************************************************************************')
         for rule in self.acls:
-            ACL.debug(' %-5s | %-20s | %-15s | %-20s | %-20s' % (rule.fromUser, rule.host, rule.flavor, rule.command, rule.options))
-        ACL.debug('')
+            ACL.info(' %-5s | %-20s | %-15s | %-20s | %-20s' % (rule.fromUser, rule.host, rule.flavor, rule.command, rule.options))
+        ACL.info('')
 
     def _read_from_file(self, username):
         filename = os.path.join(ACLs.CACHE_DIR, username.replace('/', ''))
@@ -321,7 +320,7 @@ class ACLs(object):
                 if six.PY3:
                     raise
                 with open(filename) as fd:
-                    acls = pickle.load(fd)  # noqa: S301
+                    acls = pickle.load(fd)
             else:
                 acls = [Rule(x) for x in acls]
         except EnvironmentError as exc:
@@ -364,15 +363,13 @@ class LDAP_ACLs(ACLs):
     FROM_USER = True
     FROM_GROUP = False
 
-    def __init__(self, username, ldap_base):
-        self.username = username
+    def __init__(self, lo, username, ldap_base):
         ACLs.__init__(self, ldap_base)
+        self.lo = lo
+        self.username = username
 
-    def reload(self, lo=None):
-        super(LDAP_ACLs, self).reload()
-
-        if lo:
-            self._read_from_ldap(lo)
+        if self.lo:
+            self._read_from_ldap()
             self._write_to_file(self.username)
         else:
             # read ACLs from file
@@ -380,16 +377,16 @@ class LDAP_ACLs(ACLs):
 
         self._dump()
 
-    def _get_policy_for_dn(self, lo, dn):
-        policy = lo.getPolicies(dn, policies=[], attrs={}, result={}, fixedattrs={})
+    def _get_policy_for_dn(self, dn):
+        policy = self.lo.getPolicies(dn, policies=[], attrs={}, result={}, fixedattrs={})
 
         return policy.get('umcPolicy', None)
 
-    def _read_from_ldap(self, lo):
+    def _read_from_ldap(self):
         # TODO: check for fixed attributes
         try:
-            userdn = lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [self.username]), unique=True)[0]
-            policy = self._get_policy_for_dn(lo, userdn)
+            userdn = self.lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [self.username]), unique=True)[0]
+            policy = self._get_policy_for_dn(userdn)
         except (udm_errors.base, ldap.LDAPError, IndexError) as exc:
             if not isinstance(exc, IndexError):
                 ACL.warn('Error reading credentials from LDAP for user %s: %s' % (self.username, traceback.format_exc()))
@@ -399,16 +396,16 @@ class LDAP_ACLs(ACLs):
 
         if policy and 'umcPolicyGrantedOperationSet' in policy:
             for value in policy['umcPolicyGrantedOperationSet']['value']:
-                self._append(lo, LDAP_ACLs.FROM_USER, lo.get(value.decode('UTF-8')))
+                self._append(LDAP_ACLs.FROM_USER, self.lo.get(value.decode('UTF-8')))
 
         # TODO: check for nested groups
-        groupDNs = lo.searchDn(filter=filter_format('uniqueMember=%s', [userdn]))
+        groupDNs = self.lo.searchDn(filter=filter_format('uniqueMember=%s', [userdn]))
 
         for gDN in groupDNs:
-            policy = self._get_policy_for_dn(lo, gDN)
+            policy = self._get_policy_for_dn(gDN)
             if policy and 'umcPolicyGrantedOperationSet' in policy:
                 for value in policy['umcPolicyGrantedOperationSet']['value']:
-                    self._append(lo, LDAP_ACLs.FROM_GROUP, lo.get(value.decode('UTF-8')))
+                    self._append(LDAP_ACLs.FROM_GROUP, self.lo.get(value.decode('UTF-8')))
 
         # make the ACLs unique
         self.acls.sort(key=operator.itemgetter('fromUser', 'host', 'command', 'flavor'))

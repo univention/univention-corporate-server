@@ -36,8 +36,6 @@
 
 from __future__ import absolute_import
 
-from tornado.web import HTTPError
-
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 
@@ -45,26 +43,21 @@ from univention.management.console.config import ucr
 _ = Translation('univention.management.console').translate
 
 
-class UMC_Error(HTTPError):
+class UMC_Error(Exception):
     status = 400
     msg = None
     include_traceback = False
 
     def __init__(self, message=None, status=None, result=None, headers=None, traceback=None, reason=None):
         message = message or self.msg
+        super(UMC_Error, self).__init__(message)
         self.msg = message
         self.result = result
         self.headers = headers
         self.traceback = traceback
         if isinstance(status, int):
             self.status = status
-        super(UMC_Error, self).__init__(self.status, message, reason=reason)
-
-    def __str__(self):
-        return self.msg
-
-    def __repr__(self):
-        return HTTPError.__str__(self)
+        self.reason = reason
 
 
 class BadRequest(UMC_Error):
@@ -165,10 +158,3 @@ class LDAP_ConnectionFailed(LDAP_ServerDown):
         yield ' * ' + _('Restart the LDAP service on the Primary Directory Node either via "service slapd restart" on command line or with the UMC module "System services"')
         if self._updates_available:
             yield ' * ' + _('Install the latest software updates')
-
-
-class OpenIDProvideUnavailable(ServiceUnavailable):
-
-    def __init__(self, *args, **kwargs):
-        kwargs['reason'] = 'OpenID-Provider Unavailable'
-        super(OpenIDProvideUnavailable, self).__init__(*args, **kwargs)

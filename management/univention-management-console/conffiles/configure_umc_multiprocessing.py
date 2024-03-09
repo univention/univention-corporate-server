@@ -50,7 +50,7 @@ def handler(ucr, changes):
     except ValueError:
         pass
 
-    systemd_target_dir = '/etc/systemd/system/univention-management-console-server-multiprocessing.target.wants/'
+    systemd_target_dir = '/etc/systemd/system/univention-management-console-web-server-multiprocessing.target.wants/'
 
     if os.path.isdir(systemd_target_dir):
         for service in os.listdir(systemd_target_dir):
@@ -58,4 +58,4 @@ def handler(ucr, changes):
 
     if processes > 1:
         for i in range(processes):
-            subprocess.call(['systemctl', 'enable', 'univention-management-console-server@{}'.format(i + start_port)])
+            subprocess.call(['systemctl', 'enable', 'univention-management-console-web-server@{}'.format(i + start_port)])

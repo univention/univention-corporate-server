@@ -19,6 +19,20 @@ Type=uint
 Categories=management-umc
 Default=64
 
+[umc/server/dispatch-interval]
+Description[de]=Definiert das reguläre Interval für die Abarbeitung wiederkehrender Aufgaben im UMC-Server in Millisekunden.
+Description[en]=Defined the regular interval for the processing of recurring tasks in the UMC server in milliseconds.
+Type=uint
+Categories=management-umc
+Default=100
+
+[umc/server/processes]
+Description[de]=Definiert die Anzahl an UMC-Server Prozessen, die parallel gestartet werden.
+Description[en]=Defined the number of UMC-Server processes, which are started in parallel.
+Type=uint
+Categories=management-umc
+Default=1
+
 [umc/module/debug/level]
 Description[de]=Der Detailgrad der Logmeldungen in /var/log/univention/management-console-module-*. Mögliche Werte: 0-4/99 (0: nur Fehlermeldungen bis 4: alle Debugausgaben, mit 99 werden auch sensible Daten wie Klartext-Passwörter protokolliert).
 Description[en]=The verbosity of log messages in /var/log/univention/management-console-module-*. Possible values: 0-4/99 (0: only error messages to 4: all debug statements, with = 99 sensitive data like cleartext passwords is logged as well).
@@ -44,13 +58,6 @@ Description[de]=Diese Variable speichert die gültigen Service Provider. Dieser 
 Description[en]=This variable stores the valid service provider. This value is generated automatically and should not be modified.
 Type=str
 Categories=management-umc
-
-[umc/saml/schemes]
-Description[de]=Definiert die gültigen URI-Schemata (https, http), die in den SAML Service-Provider Metadaten als gültige URIs verwendet werden.
-Description[en]=Defines the active URI schemes (https, http), which are used in the SAML service provider metadata as valid URIs.
-Type=str
-Categories=management-umc
-Default=https, http
 
 [auth/umc/addon/.*]
 Description[de]=Diese Variable aktiviert in der PAM Konfiguration weitere Authentifizierungsmethoden.
@@ -148,50 +155,8 @@ Description[en]=Defines the cookie name which is set by the cookie banner when a
 Type=str
 Categories=management-umc
 
-[umc/cookie-banner/domains]
-Description[de]=Eine durch Komma getrennte Liste an Domänennamen, auf denen der Cookie-Banner angezeigt wird. Eine leere Liste zeigt den Banner immer im Portal und während des Logins an. Die Domäne wird durch "Endsuche" gefunden und dann auch so für den Cookie genutzt. Beispiel: "domain.de" funktioniert dann für "portal.domain.de" und "sso.domain.de" - und beide Seiten teilen sich dann sogar das Cookie, sodass es nur einmal akzeptiert werden muss.
-Description[en]=A comma separated list of domain names where the cookie banner should be shown. An empty list will show it always on portal and login. The domain name is sought via "end string search" and then used for the cookie. Example: "domain.com" matches "portal.domain.com" and "sso.domain.com" - and both sites will share that cookie so that a user only needs to confirm once.
-Type=list
-Categories=management-umc
-
 [umc/cookie-banner/.*/.*]
 Description[de]=Definiert den lokalisierten Text für die Cookie-Banner Texte. Platzhalter sind "text" und "title" (z.B.: umc/cookie-banner/text/de).
 Description[en]=Defines the localized text for the cookie banner texts. Placeholders are "text" and "title" (e.g.: umc/cookie-banner/text/en).
 Type=str
 Categories=management-umc
-
-[umc/oidc/default-op]
-Description[de]=Definiert den standard OpenID Provider UCR identifier. Experimentell: Diese Funktion wird derzeit nicht unterstützt.
-Description[en]=Defines the standard OpenID Provider UCR identifier. Experimental: This feature is currently not supported.
-Type=str
-Categories=management-umc,oidc
-
-[umc/oidc/.*/issuer]
-Description[de]=Definiert den OpenID Provider Issuer dieses Relying Party Eintrags.
-Description[en]=Defines the OpenID provider issuer of this relying party entry.
-Type=str
-Categories=management-umc,oidc
-
-[umc/oidc/.*/client-id]
-Description[de]=Definiert die Client ID dieses Relying Party Eintrags.
-Description[en]=Defines the Client ID of this relying party entry.
-Type=str
-Categories=management-umc,oidc
-
-[umc/oidc/.*/client-secret-file]
-Description[de]=Definiert den Dateipfad zum Client-Secret dieses Relying Party Eintrags.
-Description[en]=Defines the file path to the client secret of this relying party entry.
-Type=str
-Categories=management-umc,oidc
-
-[umc/oidc/.*/openid-configuration]
-Description[de]=Definiert den Dateipfad zur OpenID Provider openid-configuration Definition dieses Relying Party Eintrags.
-Description[en]=Defines the file path to the OpenID Provider openid-configuration definition of this relying party entry.
-Type=str
-Categories=management-umc,oidc
-
-[umc/oidc/.*/openid-certs]
-Description[de]=Definiert den Dateipfad zu den OpenID Provider Zertifikaten im JWKS-Format dieses Relying Party Eintrags.
-Description[en]=Defines the file path to the OpenID Provider certificates in JWKS format of this relying party entry.
-Type=str
-Categories=management-umc,oidc

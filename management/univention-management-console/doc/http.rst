@@ -1,8 +1,11 @@
-==========
-UMC server
-==========
+==============
+UMC web server
+==============
 
-With the new generation of UMC there is also an HTTP server available.
+With the new generation of UMC there is also an HTTP server available
+that can be used to access the UMC server. The web server is implemented
+as a frontend to the UMC server and translates HTTP requests to
+UMCP commands.
 
 --------
 Examples
@@ -19,7 +22,7 @@ Authentication request
 
 ::
 
-	{"options": {"username": "root", "password": "univention"}}
+	{"options":{"username":"root","password":"univention"}}
 
 Request: search for users
 =========================

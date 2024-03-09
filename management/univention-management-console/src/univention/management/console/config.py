@@ -51,13 +51,18 @@ ucr.load()
 
 
 def get_int(variable, default):
-    return ucr.get_int(variable, default)
+    try:
+        return int(ucr.get(variable, default))
+    except (ValueError, TypeError):
+        return default
 
 
-SERVER_DEBUG_LEVEL = ucr.get_int('umc/server/debug/level', 2)
-SERVER_MAX_CONNECTIONS = ucr.get_int('umc/server/max-connections', 100)
+SERVER_DEBUG_LEVEL = get_int('umc/server/debug/level', 2)
+SERVER_MAX_CONNECTIONS = get_int('umc/server/max-connections', 100)
 
 MODULE_COMMAND = '/usr/sbin/univention-management-console-module'
 
-MODULE_DEBUG_LEVEL = ucr.get_int('umc/module/debug/level', 2)
-MODULE_INACTIVITY_TIMER = ucr.get_int('umc/module/timeout', 600) * 1000
+MODULE_DEBUG_LEVEL = get_int('umc/module/debug/level', 2)
+MODULE_INACTIVITY_TIMER = get_int('umc/module/timeout', 600) * 1000
+
+SERVER_CONNECTION_TIMEOUT = get_int('umc/server/connection-timeout', 30)

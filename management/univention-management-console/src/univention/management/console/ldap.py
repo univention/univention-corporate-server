@@ -1,38 +1,3 @@
-# -*- coding: utf-8 -*-
-#
-# Univention Management Console
-#  LDAP Connection Cache
-#
-# Like what you see? Join us!
-# https://www.univention.com/about-us/careers/vacancies/
-#
-# Copyright 2015-2024 Univention GmbH
-#
-# https://www.univention.de/
-#
-# All rights reserved.
-#
-# The source code of this program is made available
-# under the terms of the GNU Affero General Public License version 3
-# (GNU AGPL V3) as published by the Free Software Foundation.
-#
-# Binary versions of this program provided by Univention to you as
-# well as other copyrighted, protected or trademarked materials like
-# Logos, graphics, fonts, specific documentations and configurations,
-# cryptographic keys etc. are subject to a license agreement between
-# you and Univention and not subject to the GNU AGPL V3.
-#
-# In the case you use this program under the terms of the GNU AGPL V3,
-# the program is provided in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License with the Debian GNU/Linux or Univention distribution in file
-# /usr/share/common-licenses/AGPL-3; if not, see
-# <https://www.gnu.org/licenses/>.
-
 """
 Decorators for common ldap functionality.
 Example usage::
@@ -61,11 +26,14 @@ from univention.admin.uldap import (
     access as _access, getAdminConnection as _getAdminConnection, getMachineConnection as _getMachineConnection,
     position as _position,
 )
-from univention.management.console.config import ucr
+from univention.config_registry import ConfigRegistry
 from univention.uldap import getBackupConnection as _getBackupConnection
 
 
-__all__ = ('admin_connection', 'connection', 'get_admin_connection', 'get_connection', 'get_machine_connection', 'get_user_connection', 'machine_connection', 'user_connection')
+_ucr = ConfigRegistry()
+_ucr.load()
+
+__all__ = ('connection', 'get_connection', 'user_connection', 'get_user_connection', 'machine_connection', 'get_machine_connection', 'admin_connection', 'get_admin_connection')
 
 
 class LDAP(object):
@@ -77,9 +45,9 @@ class LDAP(object):
         self.__ldap_connections = {}
 
     def user_connection(self, func=None, bind=None, write=True, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
-        host = ucr.get('ldap/master' if write else 'ldap/server/name')
-        port = ucr.get_int('ldap/master/port' if write else 'ldap/server/port', 7389)
-        base = ucr.get('ldap/base')
+        host = _ucr.get('ldap/master' if write else 'ldap/server/name')
+        port = int(_ucr.get('ldap/master/port' if write else 'ldap/server/port', '7389'))
+        base = _ucr.get('ldap/base')
         return self.connection(func, bind, host, port, base, loarg, poarg, no_cache, **kwargs)
 
     def connection(self, func=None, bind=None, host=None, port=None, base=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):

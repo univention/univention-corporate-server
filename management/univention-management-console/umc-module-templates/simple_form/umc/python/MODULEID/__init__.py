@@ -37,11 +37,13 @@ import email.charset
 import smtplib
 from email.mime.nonmultipart import MIMENonMultipart
 
+import notifier
+
 from univention.lib.i18n import Translation
 from univention.management.console.base import Base
 from univention.management.console.log import MODULE
-# from univention.management.console.config import ucr
-from univention.management.console.modules.decorators import sanitize, simple_response
+#from univention.management.console.config import ucr
+from univention.management.console.modules.decorators import sanitize
 from univention.management.console.modules.sanitizers import StringSanitizer
 
 
@@ -54,12 +56,12 @@ class Instance(Base):
         # this initialization method is called when the
         # module process is started and the configuration from the
         # UMC server is completed
-        super(Instance, self).init()
+        pass
 
     def configuration(self, request):
         """Returns a directionary of initial values for the form."""
         self.finished(request.id, {
-            'sender': request.username + '@example.com',
+            'sender': self.username + '@example.com',
             'subject': 'Test mail from PACKAGENAME',
             'recipient': 'test@example.com',
         })
@@ -70,9 +72,8 @@ class Instance(Base):
         subject=StringSanitizer(required=True),
         message=StringSanitizer(required=True),
     )
-    @simple_response
-    def send(self, sender, recipient, subject, message):
-        def _send_thread(self, request):
+    def send(self, request):
+        def _send_thread(sender, recipient, subject, message):
             MODULE.info('sending mail: thread running')
 
             msg = MIMENonMultipart('text', 'plain', charset='utf-8')
@@ -89,5 +90,14 @@ class Instance(Base):
             server.quit()
             return True
 
+        func = notifier.Callback(
+            _send_thread,
+            request.options['sender'],
+            request.options['recipient'],
+            request.options['subject'],
+            request.options['message'],
+        )
         MODULE.info('sending mail: starting thread')
-        return _send_thread
+        cb = notifier.Callback(self.thread_finished_callback, request)
+        thread = notifier.threads.Simple('mailing', func, cb)
+        thread.run()
