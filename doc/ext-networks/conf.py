@@ -28,7 +28,7 @@ project = 'Univention Corporate Server - Extended IP and network management docu
 copyright = f'2021-{date.today().year}, Univention GmbH'
 author = ''
 
-version = "5.1"
+version = "5.2"
 # The full version, including alpha/beta/rc tags
 release = version
 

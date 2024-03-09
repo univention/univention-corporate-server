@@ -21,8 +21,8 @@ from datetime import date
 
 # -- Project information -----------------------------------------------------
 
-version = "5.1"
-release = "5.1-0"
+version = "5.2"
+release = "5.2-0"
 project = f"UCS {version} for Debian and Ubuntu Administrators"
 copyright = f'2023-{date.today().year}, Univention GmbH'
 author = 'Univention GmbH'
@@ -44,10 +44,10 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", ("../manual/_build/html/objects.inv", None)),
-    "uv-architecture": ("https://docs.software-univention.de/architecture/5.0/en", ("../architecture/_build/html/objects.inv", None)),
+    "uv-manual": ("https://docs.software-univention.de/manual/5.2/en", ("../manual/_build/html/objects.inv", None)),
+    "uv-architecture": ("https://docs.software-univention.de/architecture/5.2/en", ("../architecture/_build/html/objects.inv", None)),
     "uv-navigation": ("https://docs.software-univention.de/n/en", None),
-    "python": ("https://docs.python.org/3.7/", None),
+    "python": ("https://docs.python.org/3.11/", None),
 }
 
 bibtex_bibfiles = ["../bibliography.bib"]

@@ -28,7 +28,7 @@ project = 'Univention Corporate Server - Manual for users and administrators'
 copyright = f'2023-{date.today().year}, Univention GmbH'
 author = ''
 
-version = "5.1"
+version = "5.2"
 # The full version, including alpha/beta/rc tags
 release = version
 
@@ -57,7 +57,7 @@ extensions = [
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
-    "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.0/en", ("../developer-reference/_build/html/objects.inv", None)),
+    "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.2/en", ("../developer-reference/_build/html/objects.inv", None)),
     "uv-keycloak-ref": ("https://docs.software-univention.de/keycloak-app/latest", None),
     "uv-ox-connector-app": ("https://docs.software-univention.de/ox-connector-app/latest", None),
 }

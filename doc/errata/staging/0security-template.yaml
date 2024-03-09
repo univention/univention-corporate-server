@@ -1,7 +1,7 @@
 product: ucs
-release: "5.0"
-version: [6, 7]
-scope: ucs_5.0-0-errata5.0-7
+release: "5.2"
+version: [0]
+scope: ucs_5.2-0-errata5.2-0
 src: 
 fix: 
 desc: |

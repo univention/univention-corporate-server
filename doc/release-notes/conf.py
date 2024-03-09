@@ -25,9 +25,9 @@ from datetime import date
 # -- Project information -----------------------------------------------------
 
 # The full version, including alpha/beta/rc tags
-release = "5.1-0"
+release = "5.2-0"
 
-version = "5.1"
+version = "5.2"
 
 project = f'UCS {release} Release Notes'
 copyright = f'2023-{date.today().year}, Univention GmbH'
@@ -57,9 +57,9 @@ extensions = [
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
-    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", ("../manual/_build/html/objects.inv", None)),
-    "uv-ext-windows": ("https://docs.software-univention.de/ext-windows/5.0/en", ("../ext-windows/_build/html/objects.inv", None)),
-    "uv-changelog-5.0-7": ("https://docs.software-univention.de/changelog/5.0-7/en", ("../changelog/_build/html/objects.inv", None)),
+    "uv-manual": ("https://docs.software-univention.de/manual/5.2/en", ("../manual/_build/html/objects.inv", None)),
+    "uv-ext-windows": ("https://docs.software-univention.de/ext-windows/5.2/en", ("../ext-windows/_build/html/objects.inv", None)),
+    "uv-changelog-5.2-0": ("https://docs.software-univention.de/changelog/5.2-0/en", ("../changelog/_build/html/objects.inv", None)),
 }
 
 bibtex_bibfiles = ["../bibliography.bib"]
@@ -178,9 +178,9 @@ def adapt_settings_to_translation(app, config):
 """
 
         config.intersphinx_mapping = {
-            "uv-manual": ("https://docs.software-univention.de/manual/5.0/de", ("../manual/build/html/objects.inv", None)),
-            "uv-ext-windows": ("https://docs.software-univention.de/ext-windows/5.0/en", ("../ext-windows/build/html/objects.inv", None)),
-            "uv-changelog-5.0-6": ("https://docs.software-univention.de/changelog/5.0-6/en", ("../changelog/_build/html/objects.inv", None)),
+            "uv-manual": ("https://docs.software-univention.de/manual/5.2/de", ("../manual/build/html/objects.inv", None)),
+            "uv-ext-windows": ("https://docs.software-univention.de/ext-windows/5.2/en", ("../ext-windows/build/html/objects.inv", None)),
+            "uv-changelog-5.2-0": ("https://docs.software-univention.de/changelog/5.2-0/en", ("../changelog/_build/html/objects.inv", None)),
         }
         config.bibtex_bibfiles = ["../bibliography-de.bib"]
 

@@ -29,7 +29,7 @@ project = 'Scenarios for Univention Corporate Server'
 copyright = f'2021-{date.today().year}, Univention GmbH'
 author = ''
 
-version = "5.1"
+version = "5.2"
 # The full version, including alpha/beta/rc tags
 release = version
 
@@ -57,8 +57,8 @@ extensions = [
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
-    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", ("../manual/_build/html/objects.inv", None)),
-    "uv-handbuch": ("https://docs.software-univention.de/manual/5.0/de", ("../manual/_build/html/objects.inv", None)),
+    "uv-manual": ("https://docs.software-univention.de/manual/5.2/en", ("../manual/_build/html/objects.inv", None)),
+    "uv-handbuch": ("https://docs.software-univention.de/manual/5.2/de", ("../manual/_build/html/objects.inv", None)),
 }
 
 bibtex_bibfiles = ["../bibliography.bib"]

@@ -27,7 +27,7 @@ project = 'Quick start guide for Univention Corporate Server'
 copyright = f'2021-{date.today().year}, Univention GmbH'
 author = ''
 
-version = "5.1"
+version = "5.2"
 # The full version, including alpha/beta/rc tags
 release = version
 
@@ -115,9 +115,9 @@ figure_language_filename = "{root}-{language}{ext}"
 univention_use_doc_base = True
 
 intersphinx_mapping = {
-    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", ("../manual/_build/html/objects.inv", None)),
-    "uv-ext-domain": ("https://docs.software-univention.de/ext-domain/5.0/en/", ("../ext-domain/_build/html/objects.inv", None)),
-    "uv-ext-inst": ("https://docs.software-univention.de/ext-installation/5.0/en/", ("../ext-installation/_build/html/objects.inv", None)),
+    "uv-manual": ("https://docs.software-univention.de/manual/5.2/en", ("../manual/_build/html/objects.inv", None)),
+    "uv-ext-domain": ("https://docs.software-univention.de/ext-domain/5.2/en/", ("../ext-domain/_build/html/objects.inv", None)),
+    "uv-ext-inst": ("https://docs.software-univention.de/ext-installation/5.2/en/", ("../ext-installation/_build/html/objects.inv", None)),
 }
 
 # See Univention Sphinx Extension for its options.
@@ -134,7 +134,7 @@ def fix_title_translation(app, config):
         config.html_title = config.project
         config.tokenizer_lang = "de_DE"
         config.intersphinx_mapping["uv-manual"] = (
-            "https://docs.software-univention.de/manual/5.0/de", ("../manual/_build/html/objects.inv", None),
+            "https://docs.software-univention.de/manual/5.2/de", ("../manual/_build/html/objects.inv", None),
         )
 
 

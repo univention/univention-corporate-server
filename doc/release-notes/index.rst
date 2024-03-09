@@ -6,7 +6,7 @@
 Release notes for the installation and update of Univention Corporate Server (UCS) |release|
 ############################################################################################
 
-Publication date of UCS |release|: 2024-03-12
+Publication date of UCS |release|: 2024-FIXME
 
 .. _relnotes-highlights:
 
@@ -14,22 +14,25 @@ Publication date of UCS |release|: 2024-03-12
 Release highlights
 ******************
 
-With |UCSUCS| 5.0-7, the seventh patchlevel release for |UCSUCS| (UCS) 5.0 is
+With |UCSUCS| 5.2-0, the second minor release for |UCSUCS| (UCS) is
 available. It provides several feature improvements and extensions, new
 properties as well as various improvements and bug fixes. Here is an overview of
 the most important changes:
 
-* The new feature ``blocklist`` allows denying the use of certain values in LDAP.
+* Keycloak replaces SimpleSAMLPHP.
 
-* The robustness of |UCSUDL| and |UCSS4C| has been improved, especially during the initial domain join.
+* No support for mixed UCS 4.x / UCS 5.x environments.
 
-* |UCSUDM| support for DNS has been improved.
+* Update from Python 3.7 to Python 3.11.
+  No more support for Python 2.
 
-* |UCSUCS| has been prepared for better Kubernetes integration.
+* FIXME
 
-* UCS 5.0-7 includes various security updates, for example for
-  :program:`BIND9`, :program:`MariaDB`, :program:`OpenJDK-11`, :program:`OpenSSH`, :program:`Postfix`
-  and the :program:`Linux` kernel.
+
+UCS 5.2 is based on Debian 12 Bookworm.
+As UCS 5.0 was based on Debian 10 Buster, there exists the intermediate UCS 5.1 based on Debian 11 Bullseye.
+This is only required for updating and should never be used in production.
+**No support!**
 
 .. _relnotes-update:
 
@@ -43,7 +46,7 @@ test environment before the actual update. The test environment must be
 identical to the production environment.
 
 Depending on the system performance, network connection, and installed software,
-the update can take anywhere from 20 minutes to several hours. For large
+the update can take anywhere from FIXME minutes to several hours. For large
 environments, consult :cite:t:`ucs-performance-guide`.
 
 .. _relnotes-sequence:
@@ -60,14 +63,6 @@ to all the remaining LDAP servers of the UCS domain. As changes to the LDAP
 schema can occur during release updates, the |UCSPRIMARYDN| must always be the
 first system to be updated during a release update.
 
-.. _relnotes-32bit:
-
-UCS only available for 64 bit
-=============================
-
-UCS 5 is only provided for the x86 64 bit architecture (*amd64*). Existing 32
-bit UCS systems can't update to UCS 5.
-
 .. _relnotes-bootloader:
 
 ********************************************************
@@ -83,40 +78,6 @@ fact that UCS can't boot (anymore) after the installation of or an update to UCS
 5.0. A subsequent installation of Debian results in UCS 5.0 not being able to
 boot. For more information, refer to :uv:kb:`17768`.
 
-.. _relnotes-localrepo:
-
-************************
-Local package repository
-************************
-
-This section is relevant for environments with a :external+uv-manual:ref:`local
-repository <software-create-repo>`. The installed (major) version of UCS
-determines which packages a local repository provides. A repository running on a
-UCS server with version 4.x only provides packages up to UCS 4.x, a repository
-server running on UCS 5 only provides packages for UCS 5 and newer versions.
-
-To upgrade systems to UCS 5 in an environment with a local repository, consider
-the following options. First, you need to set up a local UCS 5 repository
-server.
-
-* Install a new UCS 5 system as a |UCSPRIMARYDN| from the DVD or from a
-  virtualized base image. Then :external+uv-manual:ref:`setup a local repository
-  on this system <software-create-repo>` as described in :cite:t:`ucs-manual`.
-
-* Install a new UCS 5 system with the system role |UCSBACKUPDN|, |UCSREPLICADN|
-  or |UCSMANAGEDNODE| from the DVD or from a virtualized base image. In system
-  setup, select that the system doesn't join a domain. Then
-  :external+uv-manual:ref:`set up a local repository on this system
-  <software-create-repo>` as described in :cite:t:`ucs-manual`. After you
-  updated the |UCSPRIMARYDN| used in the domain to UCS 5, the UCS 5 repository
-  server can join the domain through :command:`univention-join`.
-
-To upgrade a system in the domain to UCS 5, first update the server to the
-latest package level available for UCS 4.x. Then switch the repository server
-used by the system to the local UCS 5 repository by changing the |UCSUCRV|
-:external+uv-manual:envvar:`repository/online/server`. You can now upgrade the
-system to UCS 5 through the |UCSUMC| or through the command line.
-
 .. _relnotes-prepare:
 
 *********************
@@ -125,13 +86,13 @@ Preparation of update
 
 This section provides more information you need to consider before you update.
 
-.. _relnotes-python-37-compatibility:
+.. _relnotes-python-311-compatibility:
 
-Python 3.7 compatibility
+Python 3.11 compatibility
 ========================
 
 Before you update, verify manually crafted Python code for compatibility with
-Python 3.7 and adjust it accordingly. This includes |UCSUCR| templates
+Python 3.11 and adjust it accordingly. This includes |UCSUCR| templates
 containing Python code. Customized AD-Connector mapping templates are an example
 for this. See also the :cite:t:`developer-reference` for advice.
 
@@ -142,7 +103,7 @@ AD Connector mapping
 
 When you operate multiple instances of the :program:`AD Connector` as described
 in :ref:`uv-ext-windows:ad-multiple`, you need to adjust the mapping configuration and ensure
-Python 3.7 compatibility before the update. :uv:kb:`17754` describes the steps.
+Python 3.11 compatibility before the update. :uv:kb:`17754` describes the steps.
 
 .. _relnotes-sufficient-disc-space:
 
@@ -150,8 +111,8 @@ Sufficient disk space
 =====================
 
 Also verify that you have sufficient disk space available for the update. A
-standard installation requires a minimum of 6-10 GB of disk space. The update
-requires approximately 1-2 GB additional disk space to download and install the
+standard installation requires a minimum of FIXME GB of disk space. The update
+requires approximately FIXME GB additional disk space to download and install the
 packages, depending on the size of the existing installation.
 
 .. _relnotes-console-for-update:
@@ -183,10 +144,10 @@ and run it on the UCS system.
 .. code-block:: console
 
    # download
-   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-7{.gpg,}
+   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.2-0{.gpg,}
 
    # verify and run script
-   $ apt-key verify pre-update-checks-5.0-7{.gpg,} && bash pre-update-checks-5.0-7
+   $ apt-key verify pre-update-checks-5.2-0{.gpg,} && bash pre-update-checks-5.2-0
 
    ...
 
@@ -253,13 +214,13 @@ Recommended browsers for the access to |UCSUMC|
 interface. Your web browser needs to permit cookies. |UCSUMC| requires one of
 the following browsers:
 
-* Chrome as of version 85
+* Chrome as of version FIXME
 
-* Firefox as of version 78
+* Firefox as of version FIXME
 
-* Safari and Safari Mobile as of version 13
+* Safari and Safari Mobile as of version FIXME
 
-* Microsoft Edge as of version 88
+* Microsoft Edge as of version FIXME
 
 Users running older browsers may experience display or performance issues.
 
@@ -269,8 +230,8 @@ Users running older browsers may experience display or performance issues.
 Changelog
 *********
 
-You find the changes since UCS 5.0-6 in
-:external+uv-changelog-5.0-7:doc:`index`.
+You find the changes since UCS 5.0-7 in
+:external+uv-changelog-5.2-0:doc:`index`.
 
 .. _biblio:
 
