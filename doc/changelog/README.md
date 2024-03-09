@@ -36,17 +36,7 @@ the UCS 5.2-3 patch level release version.
 
 1. Extract the changes from the errata YAML files and create a reST document:
    ```sh
-   root="$(git rev-parse --show-toplevel)"
-   git="$(git rev-parse --absolute-git-dir)"
-   docker run \
-      --network=host \
-      --rm -ti \
-      -u "$UID" \
-      -v "$root:$root" \
-      -v "$git:$git" \
-      -w "$root/doc/changelog" \
-      docker-registry.knut.univention.de/knut/sphinx-base \
-      make changelog
+   make -C .. DIRS=changelog changelog
    ```
 
 1. Replace the `index.rst` file with the content from the generated reST
