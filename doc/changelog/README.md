@@ -24,29 +24,19 @@ uses the custom builder [Univention Sphinx
 Changelog](https://git.knut.univention.de/univention/documentation/univention_sphinx_changelog).
 
 The following example illustrates the procedure in detail on the example for
-the UCS 5.0-6 patch level release version.
+the UCS 5.0-7 patch level release version.
 
 1. Update configuration settings in `conf.py`:
 
-   * Set `univention_changelog_previous_release` to `"5.0-5"`.
+   * Set `univention_changelog_previous_release` to `"5.0-6"`.
 
-   * Set `release` to `5.0-6`.
+   * Set `release` to `5.0-7`.
 
    * Keep `version` at `5.0`.
 
 1. Extract the changes from the errata YAML files and create a reST document:
    ```sh
-   root="$(git rev-parse --show-toplevel)"
-   git="$(git rev-parse --absolute-git-dir)"
-   docker run \
-      --network=host \
-      --rm -ti \
-      -u "$UID" \
-      -v "$root:$root" \
-      -v "$git:$git" \
-      -w "$root/doc/changelog" \
-      docker-registry.knut.univention.de/knut/sphinx-base \
-      make changelog
+   make -C .. DIRS=changelog changelog
    ```
 
 1. Replace the `index.rst` file with the content from the generated reST

@@ -109,7 +109,7 @@ git_last_updated_timezone = 'Europe/Berlin'
 numfig = True
 
 linkcheck_ignore = [
-    "https://github.com/univention/univention-corporate-server/blob/5.0-6/base/univention-config-registry/python/univention/config_registry/misc.py",
+    "https://github.com/univention/univention-corporate-server/blob/5.0-7/base/univention-config-registry/python/univention/config_registry/misc.py",
 ]
 
 # Warnings may come up by sphinx-last-updated-by-git. Shall be suppressed to
