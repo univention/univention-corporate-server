@@ -173,10 +173,10 @@ and run it on the UCS system.
 .. code-block:: console
 
    # download
-   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-7{.gpg,}
+   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.1-0{.gpg,}
 
    # verify and run script
-   $ apt-key verify pre-update-checks-5.0-7{.gpg,} && bash pre-update-checks-5.0-7
+   $ apt-key verify pre-update-checks-5.1-0{.gpg,} && bash pre-update-checks-5.1-0
 
    ...
 
