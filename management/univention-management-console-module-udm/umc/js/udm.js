@@ -189,9 +189,6 @@ define([
 		// reference to the last item in the navigation on which a context menu has been opened
 		_navContextItem: null,
 
-		// base of the ldap objects
-		_ldapBase: '',
-
 		// a dict of variable -> value entries for relevant UCR variables
 		_ucr: null,
 
@@ -245,10 +242,7 @@ define([
 				deferred.resolve(ucr);
 				return deferred;
 			}
-			return tools.ucr(['directory/manager/web*', 'ldap/base', 'ad/member', 'directory/manager/blocklist/enabled']).then(lang.hitch(this, function(ucr) {
-				if (! this._ldapBase) {
-					this._ldapBase = ucr['ldap/base'];
-				}
+			return tools.ucr(['directory/manager/web*', 'ldap/base', 'ad/member']).then(lang.hitch(this, function(ucr) {
 				this._ucr = lang.setObject('umc.modules.udm.ucr', ucr);
 			}));
 		},
@@ -325,7 +319,6 @@ define([
 					metaInfo: moduleCache.getMetaInfo(),
 					ucr: this._loadUCRVariables()
 				}).then(lang.hitch(this, function(results) {
-					this._ldapBase = results.metaInfo.ldap_base;
 					this._reports = results.reports;
 					this._default_columns = results.columns;
 					this.renderSearchPage(results.containers, results.metaInfo);
@@ -405,26 +398,13 @@ define([
 
 		_ldapDN2TreePath: function(ldapDN) {
 			var path = [];
-			while (ldapDN != this._ldapBase) {
+			while (ldapDN != this._ucr[ 'ldap/base' ]) {
 				path.unshift(ldapDN);
 				ldapDN = ldapDN.slice(ldapDN.indexOf(',') + 1);
 			}
 			path.unshift(ldapDN);
 
 			return path;
-		},
-		_checkModuleUCRDisabled: function() {
-		        var ucrVar = {
-				'blocklists/all'   : 'directory/manager/blocklist/enabled'
-			}[this.moduleFlavor];
-			var enabled = tools.isTrue(this._ucr[ucrVar]);
-			var warningText = {
-				'blocklists/all'   : _('Blocklists are not enabled. To enable this functionality, set the UCR variable "%s" to "true" on each Domain Controller in the domain.', ucrVar)
-			}[this.moduleFlavor];
-
-			if (warningText && !enabled) {
-				this.addWarning(warningText);
-			}
 		},
 
 		_checkMissingApp: function() {
@@ -580,7 +560,6 @@ define([
 			this.addChild(this._searchPage);
 			this._checkMissingApp();
 			this._loadUCRVariables().then(lang.hitch(this, '_preloadDetailPage'));
-			this._checkModuleUCRDisabled();
 			if (this.moduleFlavor === 'users/user') {
 				_loadGridViewPreference().then(lang.hitch(this, function(view) {
 					this._setGridView(view);
@@ -831,7 +810,7 @@ define([
 				});
 			}
 
-			// the navigation needs a slightly modified store that uses the UMC query
+			// the navigation needs a slightly modified store that uses the UMCP query
 			// function 'udm/nav/object/query'
 			var _store = this.moduleStore;
 			if ('navigation' == this.moduleFlavor) {
@@ -1557,7 +1536,7 @@ define([
 					});
 				}, this);
 
-				// send UMC command to move the objects
+				// send UMCP command to move the objects
 				this._progressBar.reset();
 				var moveOperation = this.umcpProgressCommand(this._progressBar, 'udm/move', params).then(
 					lang.hitch(this, function(result) {
@@ -2027,7 +2006,7 @@ define([
 				moduleFlavor: this.moduleFlavor,
 				objectType: objectType,
 				operation: operation,
-				ldapBase: this._ldapBase,
+				ldapBase: this._ucr['ldap/base'],
 				ldapName: ldapName,
 				newObjectOptions: newObjOptions,
 				moduleWidget: this,

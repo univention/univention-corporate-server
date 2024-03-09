@@ -1,8 +1,12 @@
-univention-management-console-module-udm (10.0.10-1) UNRELEASED; urgency=medium
+univention-management-console-module-udm (10.1.10-2) unstable; urgency=medium
 
+  [ Philipp Hahn ]
   * Bug #57118 UCS 5.0-7 version bump
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Mar 2024 15:51:45 +0100
+  [ Florian Best ]
+  *
+
+ -- Florian Best <best@univention.de>  Sat, 09 Mar 2024 13:31:08 +0100
 
 univention-management-console-module-udm (10.0.9-5) unstable; urgency=medium
 

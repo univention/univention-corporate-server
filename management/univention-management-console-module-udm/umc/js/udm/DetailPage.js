@@ -508,7 +508,6 @@ define([
 					var ipolicyType = ipolicy.objectType;
 					var iproperties = props.result;
 					var ilayout = results[i + 1].result;
-					var isMultivaluePolicy = ipolicy.multivalue;
 					var newLayout = [];
 
 					// we only need to show the general properties of the policy... the "advanced"
@@ -599,11 +598,10 @@ define([
 					// to a particular policy
 					newProperties.push({
 						type: PolicyInput,
-						max: isMultivaluePolicy ? Infinity : 1,
 						name: '$policy$',
 						label: _('Select policy configuration'),
 						description: _('Select policies that should be directly linked to the current LDAP object'),
-						onChange: lang.hitch(this, '_updatePolicy', ipolicyType, isMultivaluePolicy),
+						onChange: lang.hitch(this, '_updatePolicy', ipolicyType),
 						subtypes: [{
 							type: ComboBox,
 							dynamicValues: lang.hitch(this, '_queryPolicies', ipolicyType),
@@ -624,7 +622,7 @@ define([
 							description: _('Edit policy'),
 							'class': 'ucsIconButton ucsButton--textfieldAligned',
 							callback: lang.hitch(this, function(dn) {
-								this._openPolicy(ipolicyType, dn, isMultivaluePolicy);
+								this._openPolicy(ipolicyType, dn);
 							})
 						}]
 					});
@@ -634,7 +632,7 @@ define([
 						iconClass: 'plus',
 						'class': 'umcMultiInputAddButton ucsTextButton',
 						label: _('Create new policy'),
-						callback: lang.hitch(this, '_openPolicy', ipolicyType, undefined, isMultivaluePolicy)
+						callback: lang.hitch(this, '_openPolicy', ipolicyType, undefined)
 					}];
 					newLayout.unshift(['$policy$']);
 
@@ -1493,7 +1491,7 @@ define([
 			return deferred;
 		},
 
-		_updatePolicy: function(policyType, isMultivaluePolicy, policyDNs) {
+		_updatePolicy: function(policyType, policyDNs) {
 			// make sure the given policyType exists
 			if (!(policyType in this._policyWidgets)) {
 				return;
@@ -1515,15 +1513,14 @@ define([
 
 					var _editLabelFunc = lang.hitch(this, function(label, dn) {
 						return lang.replace('{label} (<a href="javascript:void(0)" ' +
-								'onclick=\'require("dijit/registry").byId("{id}")._openPolicy("{type}", "{dn}", {isMultivaluePolicy})\' ' +
+								'onclick=\'require("dijit/registry").byId("{id}")._openPolicy("{type}", "{dn}")\' ' +
 								'title="{title}: {dn}">{edit}</a>)', {
 							label: label,
 							id: this.id,
 							type: policyType,
 							dn: dn,
 							title: _('Click to edit the inherited properties of the policy'),
-							edit: _('edit'),
-							isMultivaluePolicy: isMultivaluePolicy
+							edit: _('edit')
 						});
 					});
 
@@ -1588,7 +1585,7 @@ define([
 			}));
 		},
 
-		_openPolicy: function(policyType, policyDN, isMultivaluePolicy) {
+		_openPolicy: function(policyType, policyDN) {
 			var props = {
 				onObjectSaved: lang.hitch(this, function(dn, policyType) {
 					// a new policy was created and should be linked to the current object
@@ -1623,17 +1620,12 @@ define([
 						}
 					}
 					all(valuesLoaded).then(lang.hitch(this, function() {
-						if (isMultivaluePolicy && !updatePolicy) {
-							policyMultiInput.set('value', policyMultiInput.value.concat(value))
-						} else {
-							policyMultiInput.set('value', value);
-						}
-
+						policyMultiInput.set('value', value);
 						if (updatePolicy) {
 							// we need a manual refresh in case the DN did not change since
 							// the policy might have been edited and therefore its values
 							// need to be reloaded
-							this._updatePolicy(policyType, isMultivaluePolicy, value);
+							this._updatePolicy(policyType, value);
 						}
 					}));
 				}),

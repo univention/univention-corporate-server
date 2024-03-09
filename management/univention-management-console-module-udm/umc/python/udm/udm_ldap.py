@@ -39,7 +39,6 @@ import functools
 import gc
 import inspect
 import locale
-import operator
 import re
 import sys
 import threading
@@ -61,9 +60,10 @@ import univention.admin.syntax as udm_syntax
 import univention.admin.uexceptions as udm_errors
 from univention.management.console import Translation
 from univention.management.console.config import ucr
-from univention.management.console.error import UMC_Error
 from univention.management.console.ldap import get_user_connection, user_connection
 from univention.management.console.log import MODULE
+from univention.management.console.modules import UMC_Error
+from univention.management.console.protocol.definitions import BAD_REQUEST_UNAUTH
 
 
 _ = Translation('univention-management-console-module-udm').translate
@@ -184,7 +184,7 @@ class AppAttributes(object):
     @classmethod
     def attributes_for_module(cls, module):
         ret = []
-        for option_def in cls.data_for_module(module).values():
+        for _option_name, option_def in cls.data_for_module(module).items():
             ret.extend(option_def['attributes'])
         return ret
 
@@ -283,7 +283,7 @@ class UserWithoutDN(UMCError):
 class LDAP_AuthenticationFailed(UMCError):
 
     def __init__(self):
-        super(LDAP_AuthenticationFailed, self).__init__(status=401)
+        super(LDAP_AuthenticationFailed, self).__init__(status=BAD_REQUEST_UNAUTH)
 
     def _error_msg(self):
         yield _('Authentication failed')
@@ -405,14 +405,14 @@ class UDM_Module(object):
         if force_reload:
             AppAttributes._cache = None
 
-    def get_ldap_connection(self, base=None):
+    def get_ldap_connection(self):
         if get_bind_function():
             try:
-                self.ldap_connection, _po = get_user_connection(bind=get_bind_function(), write=True)
+                self.ldap_connection, po = get_user_connection(bind=get_bind_function(), write=True)
             except (LDAPError, udm_errors.ldapError):
-                self.ldap_connection, _po = get_user_connection(bind=get_bind_function(), write=True)
+                self.ldap_connection, po = get_user_connection(bind=get_bind_function(), write=True)
             self.ldap_position = udm.uldap.position(self.ldap_connection.base)
-        return self.ldap_connection, udm.uldap.position(base if base else self.ldap_connection.base)
+        return self.ldap_connection, udm.uldap.position(self.ldap_connection.base)
 
     def load(self, module=None, template_object=None, force_reload=False):
         """
@@ -464,12 +464,8 @@ class UDM_Module(object):
         # case, however, this should be fixed correctly.
         # This workaround has been documented as Bug #25163.
         def _tmp_cmp(i):
-            if i[0] == 'mac':  # must be set before network, dhcpEntryZone
+            if i[0] == 'network':
                 return ("\x00", i[1])
-            if i[0] == 'network':  # must be set before ip, dhcpEntryZone, dnsEntryZoneForward, dnsEntryZoneReverse
-                return ("\x01", i[1])
-            if i[0] in ('ip', 'mac'):  # must be set before dnsEntryZoneReverse, dnsEntryZoneForward
-                return ("\x02", i[1])
             return i
 
         password_properties = self.password_properties
@@ -515,7 +511,7 @@ class UDM_Module(object):
 
     def create(self, ldap_object, container=None, superordinate=None):
         """Creates a LDAP object"""
-        ldap_connection, ldap_position = self.get_ldap_connection(base=self.module.object.ldap_base)
+        ldap_connection, ldap_position = self.get_ldap_connection()
         if superordinate == 'None':
             superordinate = None
         if container:
@@ -559,7 +555,7 @@ class UDM_Module(object):
                 obj.options = options
                 del ldap_object['$options$']
             if '$policies$' in ldap_object:
-                obj.policies = reduce(operator.add, ldap_object['$policies$'].values(), [])
+                obj.policies = reduce(lambda x, y: x + y, ldap_object['$policies$'].values(), [])
                 del ldap_object['$policies$']
 
             self._map_properties(obj, ldap_object)
@@ -638,7 +634,7 @@ class UDM_Module(object):
                 del ldap_object['$options$']
             MODULE.info('Modifying LDAP object %s' % obj.dn)
             if '$policies$' in ldap_object:
-                obj.policies = reduce(operator.add, ldap_object['$policies$'].values(), [])
+                obj.policies = reduce(lambda x, y: x + y, ldap_object['$policies$'].values(), [])
                 del ldap_object['$policies$']
 
             self._map_properties(obj, ldap_object)
@@ -707,7 +703,7 @@ class UDM_Module(object):
 
     def get(self, ldap_dn=None, superordinate=None, attributes=[]):
         """Retrieves details for a given LDAP object"""
-        ldap_connection, _ldap_position = self.get_ldap_connection()
+        ldap_connection, ldap_position = self.get_ldap_connection()
         try:
             if ldap_dn is not None:
                 if superordinate is None:
@@ -721,7 +717,7 @@ class UDM_Module(object):
             raise
         except udm_errors.base as exc:
             MODULE.info('Failed to retrieve LDAP object: %s' % (exc,))
-            if isinstance(exc, udm_errors.noObject) and superordinate and not ldap_connection.get(superordinate.dn):
+            if isinstance(exc, udm_errors.noObject) and superordinate and not ldap_connection.get(superordinate):
                 raise SuperordinateDoesNotExist(superordinate)
             UDM_Error(exc).reraise()
         return obj
@@ -767,13 +763,6 @@ class UDM_Module(object):
     def title(self):
         """Descriptive name of the UDM module"""
         return getattr(self.module, 'short_description', getattr(self.module, 'module', ''))
-
-    @property
-    def ldap_base(self):
-        """Default LDAP base of the UDM module"""
-        if hasattr(self.module, 'object'):
-            return getattr(self.module.object, 'ldap_base', ucr.get('ldap/base'))
-        return ucr.get('ldap/base')
 
     @property
     def description(self):
@@ -859,6 +848,8 @@ class UDM_Module(object):
             description = self.property_description(obj, description_property_name)
         if not description:
             description = udm_objects.description(obj)
+        if description and description.isdigit():
+            description = int(description)
         return description
 
     def property_description(self, obj, key):
@@ -879,7 +870,7 @@ class UDM_Module(object):
 
     def get_layout(self, ldap_dn=None):
         """Layout information"""
-        ldap_connection, _ldap_position = self.get_ldap_connection()
+        ldap_connection, ldap_position = self.get_ldap_connection()
         layout = getattr(self.module, 'layout', [])
         if ldap_dn is not None:
             mod = get_module(None, ldap_dn, ldap_connection)
@@ -994,7 +985,7 @@ class UDM_Module(object):
                 # E.g. users/user mailHomeServer; see Bug #33329, Bug #42903
 
                 try:
-                    item['default'] = [x['id'] for x in read_syntax_choices(_get_syntax(prop.syntax.name), ldap_connection=ldap_connection, ldap_position=ldap_position) if x['id']][0]  # noqa: RUF015
+                    item['default'] = [x['id'] for x in read_syntax_choices(_get_syntax(prop.syntax.name), ldap_connection=ldap_connection, ldap_position=ldap_position) if x['id']][0]
                 except IndexError:
                     pass
 
@@ -1051,26 +1042,22 @@ class UDM_Module(object):
         return getattr(self.module, 'template', None)
 
     def get_default_container(self):
-        _ldap_connection, ldap_position = self.get_ldap_connection()
+        ldap_connection, ldap_position = self.get_ldap_connection()
         # TODO: move code below into UDM!
         if hasattr(self.module, 'policy_position_dn_prefix'):
             return '%s,cn=policies,%s' % (self.module.policy_position_dn_prefix, ldap_position.getBase())
 
         defaults = self.get_default_containers()
-        return defaults[0] if defaults else self.module.object.ldap_base
+        return defaults[0] if defaults else ldap_position.getBase()
 
     def get_default_containers(self):
         """List of LDAP DNs of default containers"""
-        ldap_connection, _ldap_position = self.get_ldap_connection()
+        ldap_connection, ldap_position = self.get_ldap_connection()
         return self.module.object.get_default_containers(ldap_connection)
 
     @property
     def superordinate_names(self):
         return udm_modules.superordinate_names(self.module)
-
-    @property
-    def is_policy_multivalue(self):
-        return getattr(self.module, 'multivalue_policy', False)
 
     @property
     def policies(self):
@@ -1088,12 +1075,12 @@ class UDM_Module(object):
         policies = []
         for policy in policyTypes:
             module = UDM_Module(policy, ldap_connection=ldap_connection, ldap_position=ldap_position)
-            policies.append({'objectType': policy, 'label': module.title, 'description': module.description, 'multivalue': module.is_policy_multivalue})
+            policies.append({'objectType': policy, 'label': module.title, 'description': module.description})
 
         return policies
 
     def get_policy_references(self, dn):
-        ldap_connection, _ldap_position = self.get_ldap_connection()
+        ldap_connection, ldap_position = self.get_ldap_connection()
         references = []
         if self.is_policy_module():  # TODO: move into the handlers/policies/*.py
             search_filter = filter_format("(&(objectClass=univentionPolicyReference)(univentionPolicyReference=%s))", (dn,))
@@ -1138,7 +1125,7 @@ class UDM_Module(object):
         if self.name.startswith('dns/'):
             return 'dns/dns'
         ldap_connection, ldap_position = self.get_ldap_connection()
-        base, _name = split_module_name(self.name)
+        base, name = split_module_name(self.name)
         for module in [x for x in udm_modules.modules.keys() if x.startswith(base)]:
             mod = UDM_Module(module, ldap_connection=ldap_connection, ldap_position=ldap_position)
             children = getattr(mod.module, 'childmodules', [])
@@ -1196,13 +1183,13 @@ def split_module_name(module_name):
     return (None, None)
 
 
-def ldap_dn2path(ldap_dn, include_rdn=True, ldap_base=None):
+def ldap_dn2path(ldap_dn, include_rdn=True):
     """
     Returns a path representation of an LDAP DN. If include_rdn is
     false just the container of the given object is returned in a path
     representation
     """
-    ldap_base = ldap_base or ucr.get('ldap/base')
+    ldap_base = ucr.get('ldap/base')
     if not ldap_base or not ldap_dn.lower().endswith(ldap_base.lower()):
         return ldap_dn
     rel_path = ldap_dn[:-(1 + len(ldap_base))]
@@ -1227,7 +1214,7 @@ def _get_module(flavor, ldap_dn, attributes=None, ldap_connection=None, ldap_pos
     if flavor is None or flavor == 'navigation':
         base = None
     else:
-        base, _name = split_module_name(flavor)
+        base, name = split_module_name(flavor)
     modules = udm_modules.objectType(None, ldap_connection, ldap_dn, attributes, module_base=base)
 
     if not modules:
