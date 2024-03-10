@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import asyncio
 import base64
 import json
 import os
@@ -231,7 +232,7 @@ class SamlACS(SAMLResource):
     post = get
 
     async def attribute_consuming_service(self, binding, message, relay_state):
-        response = self.parse_authn_response(message, binding)
+        response = await self.parse_authn_response(message, binding)
         saml = SAMLUser(response, message)
 
         await self.pam_saml_authentication(saml)
@@ -247,7 +248,7 @@ class SamlACS(SAMLResource):
     async def attribute_consuming_service_iframe(self, binding, message, relay_state):
         self.request.headers['Accept'] = 'application/json'  # enforce JSON response in case of errors
         self.request.headers['X-Iframe-Response'] = 'true'  # enforce textarea wrapping
-        response = self.parse_authn_response(message, binding)
+        response = await self.parse_authn_response(message, binding)
         saml = SAMLUser(response, message)
 
         await self.pam_saml_authentication(saml)
@@ -316,9 +317,11 @@ class SamlACS(SAMLResource):
 
         return binding, message, relay_state
 
-    def parse_authn_response(self, message, binding):
+    async def parse_authn_response(self, message, binding):
+        from .server import pool
         try:
-            response = self.sp.parse_authn_request_response(message, binding, self.outstanding_queries)
+            future = pool.submit(self.sp.parse_authn_request_response, message, binding, self.outstanding_queries)
+            response = await asyncio.wrap_future(future)
         except (UnknownPrincipal, UnsupportedBinding, VerificationError, UnsolicitedResponse, StatusError, MissingKey, SignatureError):
             raise SamlError(self._).from_exception(*sys.exc_info())
         if response is None:
