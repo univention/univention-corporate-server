@@ -111,8 +111,8 @@ Production environments should read and perform steps from our [performance docu
 * UMC module processes take at minimum 30 MB RAM. One module process is created per module per session (user).
 * The default session timeout for plain logins (not SAML or OIDC) is 28800 seconds / 8 hours (`umc/http/session/timeout`) and refreshes itself by that time at every request.
   This holds the session open for 8 hours of inactivity. Many opened sessions will cause a lot of unfreeable memory.
-* Apache performance settings are configurable via `apache2/max-request-workers`, `apache2/maxclients`, `apache2/min-spare-servers`, `apache2/max-spare-servers`.
-* UMC performance settings are configurable via `umc/http/maxthreads`, `umc/http/requestqueuesize`, `umc/http/processes`.
+* Apache performance settings are configurable via `apache2/server-limit`, `apache2/max-request-workers`, ~`apache2/maxclients`~, `apache2/start-servers`, `apache2/min-spare-servers`, `apache2/max-spare-servers`.
+* UMC performance settings are configurable via `umc/http/processes`, `umc/http/maxthreads`, `umc/http/requestqueuesize`.
 
 ### Debugging UMC-Server or module processes
 
@@ -141,8 +141,8 @@ pkill -SIGUSR2 -f univention-management-console-server
 
 Watch memory usage continuously:
 ```bash
-PID="$(pgrep -f univention-management-console-server)"
-while sleep 2; do grep RssAnon "/proc/$PID/status"; done
+PIDS="$(pgrep -f univention-management-console-server)"
+while sleep 2; do for PID in $PIDS; do grep RssAnon "/proc/$PID/status"; done; done
 ```
 
 Attach to a running UMC server process and analyze local variables, etc:
