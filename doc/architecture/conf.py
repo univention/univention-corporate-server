@@ -47,9 +47,9 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", ("../manual/_build/html/objects.inv", None)),
-    "uv-dev-ref": (f"https://docs.software-univention.de/developer-reference/{version}/en", ("../developer-reference/_build/html/objects.inv", None)),
-    "uv-app-center": (f"https://docs.software-univention.de/app-center/{version}/en", ("../app-center/_build/html/objects.inv", None)),
+    "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", ("../manual/_build/en/html/objects.inv", "../manual/_build/html/objects.inv", None)),
+    "uv-dev-ref": (f"https://docs.software-univention.de/developer-reference/{version}/en", ("../developer-reference/_build/en/html/objects.inv", "../developer-reference/_build/html/objects.inv", None)),
+    "uv-app-center": (f"https://docs.software-univention.de/app-center/{version}/en", ("../app-center/_build/en/html/objects.inv", "../app-center/_build/html/objects.inv", None)),
     "uv-ucs-python-api": ("https://docs.software-univention.de/ucs-python-api", None),
 }
 
