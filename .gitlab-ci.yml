@@ -54,12 +54,6 @@ prepare aptly:
   script:
     - "$CI_PROJECT_DIR/.gitlab-ci/aptly-create || :"
     - $CI_PROJECT_DIR/.gitlab-ci/aptly-publish
-    - |
-      printf '{"apt":[{"git":{"label":"deb [trusted=yes] %s git main","url":"%s"}}]}' "$APT/$CI_COMMIT_REF_SLUG/" "$APT/$CI_COMMIT_REF_SLUG/" >apt.json
-  artifacts:
-    reports:
-      annotations:
-        apt.json
   environment:
     name: $CI_COMMIT_REF_NAME
     url: $APT/$CI_COMMIT_REF_SLUG/
