@@ -24,7 +24,7 @@ issue () {
 	fi
 }
 
-find . -type f -exec grep -P '^## (?!desc|bugs|otrs|versions|tags|roles|roles-not|apps|apps-not|join|components|packages|exposure|timeout)[a-z-]+:' {} + >"$tmp" || :
+find . -type f -exec grep -P '^## (?!desc|bugs|env|otrs|versions|tags|roles|roles-not|apps|apps-not|join|components|packages|exposure|timeout)[a-z-]+:' {} + >"$tmp" || :
 issue "Unknown ucs-test tag"
 
 find . -type f ! -name '*.py' ! -name '*.pyc' -exec grep '^source\>' {} + >"$tmp" || :
@@ -61,7 +61,7 @@ from univention.testing.internal import get_sections, get_tests
 from os.path import basename, splitext
 sections = get_sections()
 tests = get_tests(sections)
-python = ("py.test", "pytest", "python", "selenium", "playwright")
+python = ("py.test", "pytest", "python", "selenium", "playwright", "locust", "locust-docker")
 for tests in tests.values():
     for fname in tests:
         name, ext = splitext(basename(fname))
