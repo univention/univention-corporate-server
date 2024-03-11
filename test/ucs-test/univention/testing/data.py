@@ -527,6 +527,7 @@ class TestCase:
         self.timeout: int | None = None
         self.is_pytest: bool = False
         self.external_junit: str | None = None
+        self.environment: dict = {}
 
     def load(self) -> TestCase:
         """Load test case from stream."""
@@ -587,6 +588,7 @@ class TestCase:
             self.packages = CheckPackages(header.get('packages', []), header.get('packages-not', []))
             self.exposure = CheckExposure(header.get('exposure', 'dangerous'))
             self.external_junit = header.get('external-junit', '').strip()
+            self.environment = {k: str(v) for k, v in header.get('env', {}).items()}
             try:
                 self.timeout = int(header['timeout'])
             except LookupError:
@@ -779,12 +781,9 @@ class TestCase:
 
         time_start = datetime.now()
 
-        print('\n*** BEGIN *** %r ***' % (
-            cmd,), file=result.environment.log)
-        print('*** %s *** %s ***' % (
-            self.uid, self.description), file=result.environment.log)
-        print('*** START TIME: %s ***' % (
-            time_start.strftime("%Y-%m-%d %H:%M:%S")), file=result.environment.log)
+        print('\n*** BEGIN *** %r ***' % (cmd,), file=result.environment.log)
+        print('*** %s *** %s ***' % (self.uid, self.description), file=result.environment.log)
+        print('*** START TIME: %s ***' % (time_start.strftime("%Y-%m-%d %H:%M:%S")), file=result.environment.log)
         result.environment.log.flush()
 
         # Protect wrapper from Ctrl-C as long as test case is running
@@ -808,6 +807,7 @@ class TestCase:
                         shell=False, stdout=PIPE, stderr=PIPE,
                         close_fds=True, cwd=dirname,
                         preexec_fn=os.setsid,  # noqa: PLW1509
+                        env=dict(os.environ, **self.environment),
                     )
                     to_stdout, to_stderr = sys.stdout, sys.stderr
                 else:
@@ -817,6 +817,7 @@ class TestCase:
                             shell=False, stdin=devnull,
                             stdout=PIPE, stderr=PIPE, close_fds=True,
                             cwd=dirname, preexec_fn=prepare_child,  # noqa: PLW1509
+                            env=dict(os.environ, **self.environment),
                         )
                     to_stdout = to_stderr = result.environment.log
 
@@ -834,12 +835,9 @@ class TestCase:
         time_end = datetime.now()
         time_delta = time_end - time_start
 
-        print('*** END TIME: %s ***' % (
-            time_end.strftime("%Y-%m-%d %H:%M:%S")), file=result.environment.log)
-        print('*** TEST DURATION (H:MM:SS.ms): %s ***' % (
-            time_delta), file=result.environment.log)
-        print('*** END *** %d ***' % (
-            result.result,), file=result.environment.log)
+        print('*** END TIME: %s ***' % (time_end.strftime("%Y-%m-%d %H:%M:%S")), file=result.environment.log)
+        print('*** TEST DURATION (H:MM:SS.ms): %s ***' % (time_delta), file=result.environment.log)
+        print('*** END *** %d ***' % (result.result,), file=result.environment.log)
         result.environment.log.flush()
 
         result.duration = time_delta.total_seconds() * 1000

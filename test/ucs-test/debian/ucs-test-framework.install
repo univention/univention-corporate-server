@@ -1,8 +1,11 @@
 bin/ldiff	usr/bin/
+bin/locust	usr/share/ucs-test/
+bin/locust-docker	usr/share/ucs-test/
 bin/playwright	usr/share/ucs-test/
 bin/runner	usr/share/ucs-test/
 bin/ucs-test	usr/sbin/
 bin/udm-test	usr/sbin/
 bin/udm-test-rest	usr/sbin/
+locust/*	usr/share/ucs-test-locust/
 tests/conftest.py	usr/share/ucs-test/
 tests/pytest.ini	usr/share/ucs-test/

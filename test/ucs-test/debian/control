@@ -317,6 +317,22 @@ Provides:
 Description: Test scripts for UMC
  This package includes some scripts for testing UMC
 
+Package: ucs-test-umc-performance
+Architecture: all
+Recommends:
+ ucs-test-framework,
+Depends:
+ curl,
+ python3-bs4,
+ python3-lxml,
+ python3-pytest,
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
+Description: Test scripts for UMC performance measuring
+ This package includes some scripts for testing UMC performance
+
 Package: ucs-test-umc-module
 Architecture: all
 Recommends:

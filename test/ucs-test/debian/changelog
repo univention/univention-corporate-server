@@ -1,3 +1,9 @@
+ucs-test (12.0.19) unstable; urgency=medium
+
+  * Bug #57113: add performance tests for UMC
+
+ -- Florian Best <best@univention.de>  Mon, 18 Mar 2024 12:45:47 +0100
+
 ucs-test (12.0.18) unstable; urgency=medium
 
   * Bug #56765: Adjust keycloak tests for case ignoring of CSP

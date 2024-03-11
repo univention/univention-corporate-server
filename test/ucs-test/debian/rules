@@ -44,6 +44,7 @@ COMMA := ,
 override_dh_install:
 	dh_install --sourcedir=$(CURDIR) -Xde.po
 	touch debian/ucs-test-udm/usr/lib/python3/dist-packages/univention/admin/handlers/tests/__init__.py
+	tar -xvzf debian/ucs-test-umc-performance/usr/share/ucs-test/91_umc-performance/hars.tar.gz -C debian/ucs-test-umc-performance/usr/share/ucs-test/91_umc-performance/
 
 override_dh_auto_test:
 	./lint
