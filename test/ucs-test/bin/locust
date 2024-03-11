@@ -1,0 +1,6 @@
+#!/bin/sh
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+exec prlimit -n100000:100000 locust --headless --scale worker=12 --host "https://%(ucr get ldap/master)" -f "$@"
+#   -t 10m -u 200 --spawn-rate 4 \
+#    --csv loginPrimaryAndBackup --html loginPrimaryAndBackup.html

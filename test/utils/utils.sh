@@ -691,6 +691,24 @@ run_appcenter_uninstall_tests () {
 	run_tests -s appcenter-uninstall "$@"
 }
 
+umc_performance_settings () {
+	ucr set umc/http/processes=$(nproc) \
+		apache2/server-limit=5003 \
+		apache2/max-request-workers=5003 \
+		apache2/min-spare-servers=20 \
+		apache2/max-spare-servers=40 # \
+		# umc/http/maxthreads=200 \
+		# umc/http/requestqueuesize=200
+	systemctl restart univention-management-console-server apache2
+}
+
+run_umc_performance_tests () {
+	univention-install -y libffi-dev python3-pip
+	pip3 install locust diskcache  # TODO: install via Debian in UCS 5.2
+	# run_tests -s checks -s umc-performance -s end "$@"
+	run_tests -s umc-performance -s end "$@"
+}
+
 run_admember_tests () {
 	ad_member_fix_udm_rest_api
 	run_tests -p skip_admember -p docker "$@"
