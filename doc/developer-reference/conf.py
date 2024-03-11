@@ -64,9 +64,9 @@ bibtex_default_style = "unsrt"
 bibtex_reference_style = "label"
 
 intersphinx_mapping = {
-    "uv-architecture": (f"https://docs.software-univention.de/architecture/{version}/en/", ("../architecture/_build/html/objects.inv", None)),
-    "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", ("../manual/_build/html/objects.inv", None)),
-    "uv-app-center": (f"https://docs.software-univention.de/app-center/{version}/en/", ("../app-center/_build/html/objects.inv", None)),
+    "uv-architecture": (f"https://docs.software-univention.de/architecture/{version}/en/", ("../architecture/_build/en/html/objects.inv", "../architecture/_build/html/objects.inv", None)),
+    "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", ("../manual/_build/en/html/objects.inv", "../manual/_build/html/objects.inv", None)),
+    "uv-app-center": (f"https://docs.software-univention.de/app-center/{version}/en/", ("../app-center/_build/en/html/objects.inv", "../app-center/_build/html/objects.inv", None)),
     "python": ("https://docs.python.org/3.9/", ("/usr/share/doc/python3/html/objects.inv", None)),
     "python-general": ("https://docs.python.org/3/", ("/usr/share/doc/python3/html/objects.inv", None)),
     "python-udm-rest-client": ("https://udm-rest-client.readthedocs.io/en/latest/", None),
