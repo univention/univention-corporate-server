@@ -39,10 +39,9 @@ import subprocess
 
 
 def handler(ucr, changes):
-    try:
-        processes = int(ucr.get('umc/http/processes', 1))
-    except ValueError:
-        processes = 1
+    processes = ucr.get_int('umc/http/processes', 1)
+    if processes == 0:
+        processes = os.cpu_count()
 
     start_port = 18200
     try:
