@@ -946,9 +946,11 @@ define([
 			//		The following properties may be given:
 			//		* username, password: if both values are given, the UMC tries to directly
 			//		  with these credentials.
-			//		* overview (Boolean): Specifies whether or not the overview of available modules
+			//		* overview (Boolean): Specifies whether the overview of available modules
 			//		  and the search is displayed or not. (detault: true)
-			//		* menu (Boolean): Specifies whether or not the hamburger menu is displayed. (default: true)
+			//		* menu (Boolean): Specifies whether the hamburger menu is displayed. (default: true)
+            //		* header: Can be set to 'try-hide'. When UMC modules are opened in an iframe this
+            //        property is used to apply special behavior to the UMC header.
 
 			// username will be overridden by final authenticated username
 			tools.status('username', props.username || tools.status('username'));

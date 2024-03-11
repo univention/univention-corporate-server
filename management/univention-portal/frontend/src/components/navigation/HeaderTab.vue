@@ -153,7 +153,6 @@ export default defineComponent({
   align-items: center
   z-index: 1
   background-color: transparent
-  transition: background-color var(--portal-transition-duration)
   flex-basis: auto
   flex-grow: 1
   max-width: 15rem
@@ -165,11 +164,12 @@ export default defineComponent({
     align-items: center
     height: 40px
     margin-right: 4px
-    background-color: var(--bgc-user-menu-item-hover)
+    background-color: var(--bgc-header-tab)
     border-radius: var(--border-radius-interactable)
+    transition: background-color var(--portal-transition-duration)
 
     &:hover
-      background-color: var(--portal-tab-background)
+      background-color: var(--bgc-header-tab-active)
 
   &__logo-wrapper
     background-color: var(--bgc-apptile-default)
@@ -196,6 +196,7 @@ export default defineComponent({
     font-weight: var(--font-weight-bold)
 
   &__close-button
+    scale: 80%
     position: relative
     z-index: 10
     border-radius: var(--border-radius-interactable)
@@ -234,5 +235,5 @@ export default defineComponent({
       box-sizing: border-box
       border-radius: var(--border-radius-interactable)
       z-index: -1
-      background-color: var(--portal-tab-background)
+      background-color: var(--bgc-header-tab-active)
 </style>

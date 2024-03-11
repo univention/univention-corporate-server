@@ -321,7 +321,7 @@ export default defineComponent({
   cursor: pointer
 
   &__name
-    font-weight: 700
+    font-weight: var(--font-weight-bold)
     text-align: center
     width: 100%
     word-wrap: break-word

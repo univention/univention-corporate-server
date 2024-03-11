@@ -443,7 +443,7 @@ export default defineComponent({
     max-height: 80%
 
   &__name
-    font-weight: 700
+    font-weight: var(--font-weight-bold)
     text-align: center
     word-wrap: break-word
     hyphens: auto

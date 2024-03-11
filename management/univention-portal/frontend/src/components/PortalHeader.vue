@@ -293,16 +293,9 @@ export default defineComponent({
     align-items: center;
 
   &__edit-mode-label
-    cursor: pointer
-    white-space: nowrap
     position: absolute
     top: calc(var(--layout-height-header) + var(--layout-spacing-unit))
     right: calc(50% - 75px)
-    text-transform: initial
-
-    //@media only screen and (max-width: 884px) //special mediaquery, since opened sidenav can cause layout irritaions
-    //  top: calc(var(--layout-height-header) - 62%)
-    //  transition: top 0.1s ease-in;
 
 #header-button-copy
     display: none

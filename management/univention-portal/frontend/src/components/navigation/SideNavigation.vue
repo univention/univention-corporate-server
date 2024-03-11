@@ -47,10 +47,10 @@
           <div class="portal-sidenavigation--username">
             {{ userState.displayName }}
           </div>
-          <div
+          <button
             id="loginButton"
             ref="loginButton"
-            class="portal-sidenavigation__logout-link"
+            class="secondary portal-sidenavigation__logout-link"
             tabindex="0"
             role="button"
             @click="logout"
@@ -60,7 +60,7 @@
             <span>
               {{ LOGOUT }}
             </span>
-          </div>
+          </button>
         </div>
       </div>
       <button
@@ -323,7 +323,7 @@ $userRow = 6rem
 
   &__link
     position: relative
-    left: 5%
+    left: calc(2*var(--layout-spacing-unit))
     width: fit-content
     margin-top: var(--layout-spacing-unit)
     margin-bottom: calc(2*var(--layout-spacing-unit))
@@ -336,7 +336,6 @@ $userRow = 6rem
   &__user-row
     display: flex
     height: $userRow
-    font-weight: var(--font-weight-bold)
 
   &__user-icon
     position: relative
@@ -372,27 +371,14 @@ $userRow = 6rem
     font-weight: bold
 
   &__logout-link
-    cursor: pointer
-    background-color: rgba(0,0,0,0)
-    color: var(--font-color-contrast-high)
-    font-size: var(--font-size-4)
-    border-bottom: 0.2rem solid rgba(0,0,0,0);
-    font-weight: normal
-    width: min-content
-
-    &:hover
-      text-decoration: underline
+    scale: 75%
+    margin-left: -0.875rem
 
     &:focus-visible span
       text-decoration: none
 
   &__login
-    width: 5rem
     margin-top: calc(2*var(--layout-spacing-unit))
-    background-color: var(--button-primary-bgc)
-
-    &:hover
-      background-color: var(--button-primary-bgc-hover)
 
     span
         margin: 0.2rem
@@ -417,6 +403,7 @@ $userRow = 6rem
 
   &__menu-subItem
     margin-left: 0
+    transition: background-color var(--portal-transition-duration)
     &--parent
       text-transform: uppercase
       padding-left: 4rem
@@ -471,6 +458,6 @@ $userRow = 6rem
     width: 90%
     height: 2px
     position: relative
-    left: 5%
+    left: calc(2*var(--layout-spacing-unit))
     margin-bottom: 8px
 </style>

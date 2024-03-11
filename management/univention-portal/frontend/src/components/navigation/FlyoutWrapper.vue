@@ -61,7 +61,7 @@ export default defineComponent({
   background-color: var(--bgc-content-container)
   transform: translate3d(110%, 0, 0)
   transition: transform cubic-bezier(0, 0, 0.2, 1) 0.15s
-  border-radius: 0.25rem 0 0 0.25rem
+  border-radius: 0.5rem 0 0 0.5rem
 
   &--isVisible
     transform: translate3d(0, 0, 0) scale(1, 1)
