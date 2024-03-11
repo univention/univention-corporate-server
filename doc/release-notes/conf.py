@@ -57,7 +57,7 @@ extensions = [
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
-    "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", ("../manual/_build/enhtml/objects.inv", "../manual/_build/html/objects.inv", None)),
+    "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", ("../manual/_build/en/html/objects.inv", "../manual/_build/html/objects.inv", None)),
     "uv-ext-windows": (f"https://docs.software-univention.de/ext-windows/{version}/en", ("../ext-windows/_build/en/html/objects.inv", "../ext-windows/_build/html/objects.inv", None)),
     f"uv-changelog-{release}": (f"https://docs.software-univention.de/changelog/{release}/en", ("../changelog/_build/en/html/objects.inv", "../changelog/_build/html/objects.inv", None)),
 }
