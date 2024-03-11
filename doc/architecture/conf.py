@@ -47,9 +47,9 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", ("../manual/_build/html/objects.inv", None)),
-    "uv-dev-ref": ("https://docs.software-univention.de/developer-reference/5.0/en", ("../developer-reference/_build/html/objects.inv", None)),
-    "uv-app-center": ("https://docs.software-univention.de/app-center/5.0/en", ("../app-center/_build/html/objects.inv", None)),
+    "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", ("../manual/_build/html/objects.inv", None)),
+    "uv-dev-ref": (f"https://docs.software-univention.de/developer-reference/{version}/en", ("../developer-reference/_build/html/objects.inv", None)),
+    "uv-app-center": (f"https://docs.software-univention.de/app-center/{version}/en", ("../app-center/_build/html/objects.inv", None)),
     "uv-ucs-python-api": ("https://docs.software-univention.de/ucs-python-api", None),
 }
 
@@ -109,7 +109,7 @@ git_last_updated_timezone = 'Europe/Berlin'
 numfig = True
 
 linkcheck_ignore = [
-    "https://github.com/univention/univention-corporate-server/blob/5.0-7/base/univention-config-registry/python/univention/config_registry/misc.py",
+    f"https://github.com/univention/univention-corporate-server/blob/{release}/base/univention-config-registry/python/univention/config_registry/misc.py",
 ]
 
 # Warnings may come up by sphinx-last-updated-by-git. Shall be suppressed to

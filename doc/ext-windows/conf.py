@@ -135,7 +135,7 @@ latex_elements = {
 univention_use_doc_base = True
 
 intersphinx_mapping = {
-    "uv-manual": ("https://docs.software-univention.de/manual/5.0/en", ("../manual/_build/html/objects.inv", None)),
+    "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", ("../manual/_build/html/objects.inv", None)),
 }
 
 # See Univention Sphinx Extension for its options.
