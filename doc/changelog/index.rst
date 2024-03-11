@@ -149,6 +149,7 @@ General
   :program:`cjson`
   :program:`debian-security-support`
   :program:`engrampa`
+  :program:`fontforge`
   :program:`gsoap`
   :program:`haproxy`
   :program:`iwd`
@@ -176,6 +177,7 @@ General
   :program:`subunit`
   :program:`tinyxml`
   :program:`wireshark`
+  :program:`wordpress`
   :program:`xerces-c`
   :program:`yard`
 
