@@ -50,14 +50,10 @@ extensions = [
     "sphinx_sitemap",
     "sphinx_copybutton",
     "sphinxcontrib.bibtex",
-    "sphinx.ext.intersphinx",
 ]
 
 # Warnings may come up by sphinx-last-updated-by-git. Suppress such warnings for all jobs.
 suppress_warnings = ['git.too_shallow']
-
-intersphinx_mapping = {
-}
 
 bibtex_bibfiles = ["../bibliography.bib"]
 bibtex_encoding = "utf-8"
