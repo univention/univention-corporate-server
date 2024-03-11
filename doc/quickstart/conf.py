@@ -115,9 +115,9 @@ figure_language_filename = "{root}-{language}{ext}"
 univention_use_doc_base = True
 
 intersphinx_mapping = {
-    "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", ("../manual/_build/html/objects.inv", None)),
-    "uv-ext-domain": (f"https://docs.software-univention.de/ext-domain/{version}/en/", ("../ext-domain/_build/html/objects.inv", None)),
-    "uv-ext-inst": (f"https://docs.software-univention.de/ext-installation/{version}/en/", ("../ext-installation/_build/html/objects.inv", None)),
+    "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", ("../manual/_build/en/html/objects.inv", "../manual/_build/html/objects.inv", None)),
+    "uv-ext-domain": (f"https://docs.software-univention.de/ext-domain/{version}/en/", ("../ext-domain/_build/en/html/objects.inv", "../ext-domain/_build/html/objects.inv", None)),
+    "uv-ext-inst": (f"https://docs.software-univention.de/ext-installation/{version}/en/", ("../ext-installation/_build/en/html/objects.inv", "../ext-installation/_build/html/objects.inv", None)),
 }
 
 # See Univention Sphinx Extension for its options.
@@ -134,7 +134,7 @@ def fix_title_translation(app, config):
         config.html_title = config.project
         config.tokenizer_lang = "de_DE"
         config.intersphinx_mapping["uv-manual"] = (
-            f"https://docs.software-univention.de/manual/{version}/de", ("../manual/_build/html/objects.inv", None),
+            f"https://docs.software-univention.de/manual/{version}/de", ("../manual/_build/de/html/objects.inv", "../manual/_build/html/objects.inv", None),
         )
 
 

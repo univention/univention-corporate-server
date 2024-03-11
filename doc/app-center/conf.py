@@ -54,8 +54,8 @@ extensions = [
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
-    "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", ("../manual/_build/html/objects.inv", None)),
-    "uv-dev-ref": (f"https://docs.software-univention.de/developer-reference/{version}/en", ("../developer-reference/_build/html/objects.inv", None)),
+    "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", ("../manual/_build/en/html/objects.inv", "../manual/_build/html/objects.inv", None)),
+    "uv-dev-ref": (f"https://docs.software-univention.de/developer-reference/{version}/en", ("../developer-reference/_build/en/html/objects.inv", "../developer-reference/_build/html/objects.inv", None)),
 }
 
 copybutton_prompt_text = r"\$ "
