@@ -133,7 +133,7 @@ export default defineComponent({
 
 .slide-enter-active,
 .slide-leave-active {
-  transition: transform 0.15s ease;
+  transition: transform var(--portal-transition-duration) ease
 }
 
 .slide-enter-from,

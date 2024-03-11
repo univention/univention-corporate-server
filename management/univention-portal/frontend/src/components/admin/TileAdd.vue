@@ -115,16 +115,15 @@ export default defineComponent({
     background-color: transparent
     cursor: pointer
     box-sizing: border-box
-    transition: scale 0.1s ease
+    transition: scale var(--portal-transition-duration) ease
 
     &:hover
-      scale: 1.06
-      transition: scale 0.1s ease
+      scale: 1.08
 
-    &:focus
+    &:focus-visible
       border-color: var(--color-focus)
 
-    &:focus, &:hover
+    &:focus-visible, &:hover
       background-color: transparent
 
     svg

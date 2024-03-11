@@ -415,11 +415,10 @@ export default defineComponent({
       border-color: var(--color-focus)
 
     &--with-scaling-hover
-      transition: scale 0.1s ease
+      transition: scale var(--portal-transition-duration) ease
 
       &:hover
-        scale: 1.06
-        transition: scale 0.1s ease
+        scale: 1.08
 
     &--dragged-line
       border: 3px solid pink
@@ -443,7 +442,7 @@ export default defineComponent({
     max-height: 80%
 
   &__name
-    font-weight: 700
+    font-weight: var(--font-weight-bold)
     text-align: center
     word-wrap: break-word
     hyphens: auto

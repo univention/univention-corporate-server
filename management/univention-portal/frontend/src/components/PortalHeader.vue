@@ -30,9 +30,8 @@ License with the Debian GNU/Linux or Univention distribution in file
   <region
     id="portal-header"
     role="banner"
-    :class="{ 'portal-header__tabs-overflow': tabsOverflow}"
+    :class="{ 'portal-header__tabs-overflow': tabsOverflow || editMode}"
     class="portal-header"
-    :style="SideNavopenExtraPadding"
   >
     <portal-title />
 
@@ -56,7 +55,6 @@ License with the Debian GNU/Linux or Univention distribution in file
     <button
       v-if="editMode"
       class="primary portal-header__edit-mode-label"
-      :style="inEditModeAndSideNavopenPositioningAdjustment"
       :aria-label="STOP_EDIT_PORTAL"
       @click="stopEditMode"
     >
@@ -210,12 +208,6 @@ export default defineComponent({
     MENU(): string {
       return _('Menu');
     },
-    SideNavopenExtraPadding(): string {
-      return this.activeButton === 'settings' || this.activeButton === 'bell' ? `padding-right: calc(2 * var(--layout-spacing-unit) + ${this.scrollbarWidth}px)` : '';
-    },
-    inEditModeAndSideNavopenPositioningAdjustment(): string {
-      return this.activeButton === 'settings' ? `right: calc(50% - 75px + ${this.scrollbarWidth / 2}px)` : '';
-    },
   },
   watch: {
     numTabs(): void {
@@ -293,16 +285,16 @@ export default defineComponent({
     align-items: center;
 
   &__edit-mode-label
-    cursor: pointer
-    white-space: nowrap
     position: absolute
     top: calc(var(--layout-height-header) + var(--layout-spacing-unit))
-    right: calc(50% - 75px)
-    text-transform: initial
+    left: 50%
+    transform: translate(-50%, 0%)
+    white-space: nowrap
+    transition: top var(--portal-transition-duration) ease
 
-    //@media only screen and (max-width: 884px) //special mediaquery, since opened sidenav can cause layout irritaions
-    //  top: calc(var(--layout-height-header) - 62%)
-    //  transition: top 0.1s ease-in;
+    @media only screen and (max-width: 884px)
+      top: 1.5rem
+      transform: translate(-50%, -50%)
 
 #header-button-copy
     display: none

@@ -154,9 +154,14 @@ export default defineComponent({
   display: flex
   align-items: center
   position:relative
-  margin: 2px 0
+  margin: var(--layout-spacing-unit-small) 0
+  padding: var(--layout-spacing-unit)
   border-radius: var(--border-radius-interactable)
   width: 20rem
+  transition: background-color var(--portal-transition-duration) ease
+
+  &:hover:not(&--active)
+    background-color: var(--bgc-user-menu-item-hover)
 
   @media $mqSmartphone
     max-width: 100%
@@ -175,11 +180,9 @@ export default defineComponent({
     align-items: center
     cursor: pointer
     border: 2px solid transparent
-    padding: var(--layout-spacing-unit)
-    padding-left: 0
     width: 100%
 
-    &:focus
+    &:focus-visible
       outline: 0
 
       &:before
@@ -203,7 +206,7 @@ export default defineComponent({
   &__logo-wrapper
     background-color: var(--bgc-apptile-default)
     border-radius: var(--border-radius-apptile)
-    height: calc(var(--portal-header-height) * var(--portal-header-icon-scale))
+    height: var(--button-size)
     width: @height
     min-width: @height
     display: flex
