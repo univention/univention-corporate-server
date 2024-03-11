@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  master:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ${PWD}:/mnt/locust
+    environment:
+      - LOCUST_LOCUSTFILE=/mnt/locust/${LOCUST_LOCUSTFILE}
+      - LOCUST_USER_CLASSES=${LOCUST_USER_CLASSES}
+      - LOCUST_HOST=${LOCUST_HOST:-localhost}
+      - LOCUST_USERS=${LOCUST_USERS:-10}
+      - LOCUST_SPAWN_RATE=${LOCUST_SPAWN_RATE:-5}
+      - LOCUST_RUN_TIME=${LOCUST_RUN_TIME:1m}
+      - LOCUST_HEADLESS=1
+      - LOCUST_MODE_MASTER=1
+      - LOCUST_EXPECT_WORKERS=${LOCUST_EXPECT_WORKERS:-12}
+      - LOCUST_EXPECT_WORKERS_MAX_WAIT=20
+      - LOCUST_CSV=/mnt/locust/${LOCUST_USER_CLASSES}
+      - LOCUST_CSV_FULL_HISTORY=1
+      - LOCUST_PRINT_STATS=${LOCUST_PRINT_STATS:-0}
+      - LOCUST_ONLY_SUMMARY=${LOCUST_ONLY_SUMMARY:-1}
+      - LOCUST_HTML=/mnt/locust/${LOCUST_USER_CLASSES}.html
+      - LOCUST_SKIP_LOG_SETUP=0
+      - LOCUST_LOGLEVEL=${LOCUST_LOGLEVEL:-INFO}
+      - LOCUST_LOGFILE=/mnt/locust/${LOCUST_USER_CLASSES}.log
+      - LOCUST_EXIT_CODE_ON_ERROR=1
+      - LOCUST_STOP_TIMEOUT=5s
+    extra_hosts:
+      - "${HOST1}:${IP1}"
+      - "${HOST2}:${IP2}"
+      - "${HOST3}:${IP3}"
+  worker:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    volumes:
+      - ${PWD}:/mnt/locust
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - LOCUST_LOCUSTFILE=/mnt/locust/${LOCUST_LOCUSTFILE}
+      - LOCUST_USER_CLASSES=${LOCUST_USER_CLASSES}
+      - LOCUST_MODE_WORKER=1
+      - LOCUST_MASTER_NODE_HOST=${LOCUST_MASTER_NODE_HOST:-master}
+      - LOCUST_PRINT_STATS=0
+      - LOCUST_ONLY_SUMMARY=1
+      - LOCUST_LOGLEVEL=INFO
+      - LOCUST_LOGFILE=/mnt/locust/${LOCUST_USER_CLASSES}.log
+      - LOCUST_EXIT_CODE_ON_ERROR=1
+      - LOCUST_STOP_TIMEOUT=5s
+    extra_hosts:
+      - "${HOST1}:${IP1}"
+      - "${HOST2}:${IP2}"
+      - "${HOST3}:${IP3}"

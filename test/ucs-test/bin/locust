@@ -1,0 +1,16 @@
+#!/bin/bash
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+filename="$1"
+shift
+host="https://$(ucr get ldap/master)"
+
+for i in {1..12}; do
+   export WORKER_NUMBER="$i"
+   prlimit -n100000:100000 locust -f "$filename" --worker &
+done
+
+# TODO: --processes 12 is not available in this older locust version
+#exec prlimit -n100000:100000 locust --headless --processes 12 --host "$host" "$@" -f "$filename"
+exec prlimit -n100000:100000 locust --headless --expect-workers 12 --host "$host" "$@" -f "$filename" --master

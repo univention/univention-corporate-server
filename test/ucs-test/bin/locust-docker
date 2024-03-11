@@ -1,0 +1,35 @@
+#!/bin/bash
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+set -e -o pipefail
+
+. /usr/share/univention-lib/base.sh
+
+eval "$(ucr shell hostname domainname ldap/master ucs/server/sso/fqdn keycloak/server/sso/fqdn)"
+
+kc_server_sso_fqdn="${keycloak_server_sso_fqdn:-ucs-sso-ng.$domainname}"
+ucs_sso_fqdn="${ucs_server_sso_fqdn:-ucs-sso.$domainname}"
+host="https://$ldap_master"
+locust_workers="$(ucr get ucs-test/locust/workers)"
+
+export KEYCLOAK_FQDN="$kc_server_sso_fqdn"
+export SSP_FQDN="$ucs_sso_fqdn"
+export LOCUST_LOCUSTFILE="$1"
+export LOCUST_USER_CLASSES="${@: -1}"
+export LOCUST_HOST="$host"
+export LOCUST_EXPECT_WORKERS="${locust_workers:-12}"
+
+ip="$(dig +short "@$ldap_master" "$ldap_master" | head -1)"
+export HOST1="${ldap_master}"
+export IP1="$ip"
+
+ip2="$(dig +short "@$ldap_master" "$ucs_sso_fqdn" | head -1)"
+export HOST2="$ucs_sso_fqdn"
+export IP2="$ip2"
+
+ip3="$(dig +short "@$ldap_master" "$kc_server_sso_fqdn" | head -1)"
+export HOST3="$kc_server_sso_fqdn"
+export IP3="$ip3"
+
+exec docker-compose -f /usr/share/ucs-test-locust/docker-compose.yml up --build --scale worker="${locust_workers:-12}"
