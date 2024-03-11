@@ -321,7 +321,7 @@ export default defineComponent({
   cursor: pointer
 
   &__name
-    font-weight: 700
+    font-weight: var(--font-weight-bold)
     text-align: center
     width: 100%
     word-wrap: break-word
@@ -329,6 +329,8 @@ export default defineComponent({
 
   &__in-modal
     cursor: default
+    width: calc(3*var(--app-tile-side-length))
+    max-width: @width
 
     .portal-tile__root-element
       align-items: flex-start!important;
@@ -338,7 +340,7 @@ export default defineComponent({
 
     .portal-folder__name
       font-size: var(--font-size-1)
-      width: unset
+      width: 100%
 
     > .portal-tile
 

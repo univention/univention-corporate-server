@@ -92,6 +92,11 @@ export default defineComponent({
   padding: var(--layout-spacing-unit)
   background-color: transparent
 
+  &:not(.tile-add__button):not(.icon-button--admin)
+    border-radius: var(--border-radius-interactable)
+    &:hover
+      background-color: var(--portal-tab-close-button-hover)
+
   &--button-style
     background-color: var(--button-bgc)
     border-radius: var(--button-border-radius)

@@ -200,7 +200,14 @@ textarea
 
 // --------------
 // global classes
-.body--has-modal
+.body--lock-scrollbar
+  position: fixed
+  overflow-y: scroll
+  bottom: 0
+  left: 0
+  right: 0
+
+.body--hide-scrollbar
   overflow: hidden
 
 .portal-reset
@@ -238,12 +245,11 @@ textarea
     justify-content: center
     box-sizing: border-box
     padding: 0
-    transition: scale 0.1s ease
+    transition: scale var(--portal-transition-duration) ease
 
     &:hover
       background-color: var(--button-bgc-hover)
       scale: 1.2
-      transition: scale 0.1s ease
 
   &--default-cursor,
   &--default-cursor:hover

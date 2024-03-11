@@ -36,6 +36,9 @@
     >
       {{ PORTAL_SETTINGS }}
     </h2>
+    <div
+      class="divider"
+    />
     <my-form
       ref="form"
       v-model="formValues"
@@ -44,7 +47,13 @@
                {
                  'edit-mode-side-navigation__form--unfocusable': !isFocusable
                }]"
+    />
+    <div
+      class="save-button-wrapper"
     >
+      <div
+        class="divider"
+      />
       <button
         class="primary edit-mode-side-navigation__save-button"
         data-test="editModeSideNavigation--Save"
@@ -59,7 +68,7 @@
           {{ SAVE }}
         </span>
       </button>
-    </my-form>
+    </div>
   </nav>
 </template>
 
@@ -138,20 +147,6 @@ export default defineComponent({
       },
     };
   },
-  watch: {
-    'formValues.logo': function () {
-      this.$store.dispatch('portalData/setPortalLogo', this.formValues.logo);
-    },
-    'formValues.displayName': {
-      handler() {
-        this.$store.dispatch('portalData/setPortalName', this.formValues.displayName);
-      },
-      deep: true,
-    },
-    'formValues.background': function () {
-      this.$store.dispatch('portalData/setPortalBackground', this.formValues.background);
-    },
-  },
   computed: {
     ...mapGetters({
       portalDn: 'portalData/getPortalDn',
@@ -181,6 +176,20 @@ export default defineComponent({
     },
     isFocusable(): boolean {
       return !this.getModalState('secondLevelModal');
+    },
+  },
+  watch: {
+    'formValues.logo': function () {
+      this.$store.dispatch('portalData/setPortalLogo', this.formValues.logo);
+    },
+    'formValues.displayName': {
+      handler() {
+        this.$store.dispatch('portalData/setPortalName', this.formValues.displayName);
+      },
+      deep: true,
+    },
+    'formValues.background': function () {
+      this.$store.dispatch('portalData/setPortalBackground', this.formValues.background);
     },
   },
   updated() {
@@ -261,11 +270,15 @@ export default defineComponent({
 .edit-mode-side-navigation
   &__headline
     padding: 0 calc(2 * var(--layout-spacing-unit))
-    margin-bottom: 0
+    margin-bottom: calc(2 * var(--layout-spacing-unit))
   &__form
     height: auto
     overflow: auto
     padding: calc(2 * var(--layout-spacing-unit))
+    padding-top: 0
+
+    .form-element:first-child
+      margin-top: 0
 
     &--unfocusable
       overflow: hidden
@@ -278,5 +291,12 @@ export default defineComponent({
     .image-upload:first-child label
       margin-top: 0
   &__save-button
-    margin-top: calc(2 * var(--layout-spacing-unit))
+    margin: calc(2 * var(--layout-spacing-unit))
+
+.save-button-wrapper
+    position: fixed
+    bottom: 0
+    background-color: var(--bgc-content-container)
+    width: 100%
+    border-radius: 0 0 0 0.5rem
 </style>

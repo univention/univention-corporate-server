@@ -236,7 +236,7 @@ export default defineComponent({
 .portal-iframes
   position: fixed
   top: var(--portal-header-height)
-  border: 0 solid var(--portal-tab-background)
+  border: 0 solid var(--portal-iframe-border)
   border-top-width: 0.1rem
   right: 0
   bottom: 0
@@ -244,11 +244,11 @@ export default defineComponent({
 
 @keyframes fadeIn
   from
-    opacity: 0%
+    opacity: 0
     scale: 80%
 
   to
-    opacity: 100%
+    opacity: 1
     scale: 100%
 
 .tile-animation .portal-tile__box

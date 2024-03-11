@@ -119,10 +119,23 @@ const modal: PortalModule<ModalState> = {
       state[modalLevel].modalReject();
     },
     ENABLE_BODY_SCROLLING(): void {
-      document.body.classList.remove('body--has-modal');
+      document.body.classList.remove('body--lock-scrollbar');
+      document.body.classList.remove('body--hide-scrollbar');
+      const top = document.body.style.top;
+      const v = parseInt(top.substring(0, top.length - 2), 10);
+      document.body.style.top = '';
+      window.requestAnimationFrame(() => {
+        window.scrollTo(0, -v);
+      });
     },
     DISABLE_BODY_SCROLLING(): void {
-      document.body.classList.add('body--has-modal');
+      if (document.body.scrollHeight > window.innerHeight) {
+        const scrollY = window.scrollY;
+        document.body.classList.add('body--lock-scrollbar');
+        document.body.style.top = `-${scrollY}px`;
+      } else {
+        document.body.classList.add('body--hide-scrollbar');
+      }
     },
   },
 
