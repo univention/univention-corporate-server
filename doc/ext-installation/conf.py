@@ -46,7 +46,6 @@ extensions = [
     "univention_sphinx_extension",
     "sphinxcontrib.spelling",
     "sphinx_last_updated_by_git",
-    "sphinx.ext.intersphinx",
     "sphinx_sitemap",
     "sphinx_copybutton",
     "sphinxcontrib.bibtex",
@@ -130,9 +129,6 @@ latex_elements = {
 }
 
 univention_use_doc_base = True
-
-intersphinx_mapping = {
-}
 
 # See Univention Sphinx Extension for its options.
 # https://git.knut.univention.de/univention/documentation/univention_sphinx_extension
