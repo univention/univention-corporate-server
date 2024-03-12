@@ -25,7 +25,7 @@ repos:
         additional_dependencies: ["ruff==0.3.2"]
         stages: [ manual ]
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v4.5.0
     hooks:
     - id: check-added-large-files
     - id: check-json
@@ -57,7 +57,7 @@ repos:
                 |[.]svg$\
                "
   - repo: https://github.com/pre-commit/pygrep-hooks
-    rev: v1.9.0
+    rev: v1.10.0
     hooks:
     - id: python-check-blanket-noqa
     - id: python-no-eval
@@ -70,7 +70,7 @@ repos:
     - id: rst-directive-colons
     - id: rst-inline-touching-normal
   - repo: https://github.com/pycqa/flake8
-    rev: '5.0.4'
+    rev: '7.0.0'
     hooks:
     - id: flake8
       exclude: "^oidc/python-keycloak/\
@@ -86,9 +86,17 @@ repos:
   - repo: https://git.knut.univention.de/univention/dist/pre-commit-ucs.git
     rev: v1.4.0
     hooks:
-      - id: ucs-erratum
       - id: missing-executable-flag-for-python-file
       - id: missing-executable-flag-for-shell-file
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.28.0
+    hooks:
+      - id: check-gitlab-ci
+      - id: check-jsonschema
+        alias: check-jsonschema-releases
+        name: "Check errata file"
+        files: ^doc/errata/staging/[^0].*[.]yaml$
+        args: ["--schemafile", "https://git.knut.univention.de/univention/dist/repo-ng/-/raw/master/doc/erratum.schema.json?ref_type=heads"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: 'v0.3.2'
     hooks:
@@ -139,7 +147,7 @@ repos:
                   |^packaging/ucslint/testframework/\
                  "
   - repo: https://github.com/pycqa/isort
-    rev: 5.11.5
+    rev: 5.13.2
     hooks:
       - id: isort
         entry: isort -c
@@ -158,7 +166,7 @@ repos:
                   |^packaging/ucslint/testframework/\
                  "
   - repo: https://github.com/pre-commit/mirrors-autopep8
-    rev: v2.0.1
+    rev: v2.0.4
     hooks:
     -   id: autopep8
         args: ["-d"]
