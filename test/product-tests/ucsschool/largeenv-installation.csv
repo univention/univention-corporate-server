@@ -5,8 +5,6 @@
  ldap/base=""dc=autotestpti,dc=test""
  root_password=""univention""
  locale/default=""de_DE.UTF-8:UTF-8""
- packages_install=""univention-samba4 univention-s4-connector""
- packages_remove=""""
  server/role=""domaincontroller_master""";" . utils.sh && basic_setup
  . utils.sh && rotate_logfiles
  ucr set ldap/database/mdb/envflags=nosync connector/s4/retryrejected=2
@@ -16,9 +14,10 @@
  . utils.sh && assert_version ""[ENV:TARGET_VERSION]""
 # convert generic image into master
  . utils.sh && run_setup_join
+ . utils.sh && import_license
+ . utils.sh && packages_install univention-samba4 univention-s4-connector
  . utils.sh && do_reboot
  . utils.sh && wait_for_reboot
- . utils.sh && import_license
  . utils.sh && assert_join
  . utils.sh && assert_packages univention-server-master
 ";;" . utils.sh && switch_to_test_app_center
@@ -45,8 +44,6 @@
  server/role=""domaincontroller_backup""
  root_password=univention
  locale/default=""de_DE.UTF-8:UTF-8""
- packages_install=""univention-samba4 univention-s4-connector""
- packages_remove=""""
  nameserver=[ptimaster_IP]
 ";" . utils.sh && basic_setup
  . utils.sh && rotate_logfiles
@@ -61,6 +58,7 @@
  . utils.sh && assert_join
  . utils.sh && assert_packages univention-server-backup
 ";" . utils.sh && switch_to_test_app_center";". utils.sh && run_join_scripts
+ . utils.sh && packages_install univention-samba4 univention-s4-connector
  . utils.sh && assert_packages univention-server-slave";;;;". utils.sh && run_minimal_tests
  . utils.sh && prepare_results
  LOCAL utils/utils-local.sh fetch-results [SELF_IP] [SELF]
@@ -78,8 +76,6 @@
  server/role=""domaincontroller_backup""
  root_password=univention
  locale/default=""de_DE.UTF-8:UTF-8""
- packages_install=""univention-samba4 univention-s4-connector""
- packages_remove=""""
  nameserver=[ptimaster_IP]
 ";" . utils.sh && basic_setup
  . utils.sh && rotate_logfiles
@@ -89,6 +85,7 @@
  . utils.sh && jenkins_updates && touch UCS_UPDATED
  . utils.sh && assert_version ""[ENV:TARGET_VERSION]""
 ";;" . utils.sh && switch_to_test_app_center";;;;". utils.sh && run_setup_join_on_non_master
+ . utils.sh && packages_install univention-samba4 univention-s4-connector
  . utils.sh && do_reboot
  . utils.sh && wait_for_reboot
  . utils.sh && assert_join
@@ -110,8 +107,6 @@
  server/role=""domaincontroller_slave""
  root_password=univention
  locale/default=""de_DE.UTF-8:UTF-8""
- packages_install=""univention-samba4 univention-s4-connector""
- packages_remove=""""
  nameserver=[ptimaster_IP]";" . utils.sh && basic_setup
  . utils.sh && rotate_logfiles
  ucr set ldap/database/mdb/envflags=nosync connector/s4/retryrejected=2
@@ -120,6 +115,7 @@
  . utils.sh && jenkins_updates && touch UCS_UPDATED
  . utils.sh && assert_version ""[ENV:TARGET_VERSION]""
 ";". utils.sh && run_setup_join_on_non_master
+ . utils.sh && packages_install univention-samba4 univention-s4-connector
  . utils.sh && do_reboot
  . utils.sh && wait_for_reboot
  . utils.sh && assert_join
@@ -142,8 +138,6 @@
  server/role=""domaincontroller_slave""
  root_password=univention
  locale/default=""de_DE.UTF-8:UTF-8""
- packages_install=""univention-samba4 univention-s4-connector""
- packages_remove=""""
  nameserver=[ptimaster_IP]";" . utils.sh && basic_setup
  . utils.sh && rotate_logfiles
  ucr set ldap/database/mdb/envflags=nosync connector/s4/retryrejected=2
@@ -152,6 +146,7 @@
  . utils.sh && jenkins_updates && touch UCS_UPDATED
  . utils.sh && assert_version ""[ENV:TARGET_VERSION]""
 ";;" . utils.sh && switch_to_test_app_center";;;;". utils.sh && run_setup_join_on_non_master
+ . utils.sh && packages_install univention-samba4 univention-s4-connector
  . utils.sh && do_reboot
  . utils.sh && wait_for_reboot
  . utils.sh && assert_join
@@ -173,8 +168,6 @@
  server/role=""domaincontroller_slave""
  root_password=univention
  locale/default=""de_DE.UTF-8:UTF-8""
- packages_install=""univention-samba4 univention-s4-connector""
- packages_remove=""""
  nameserver=[ptimaster_IP]";" . utils.sh && basic_setup
  . utils.sh && rotate_logfiles
  ucr set ldap/database/mdb/envflags=nosync connector/s4/retryrejected=2
@@ -183,6 +176,7 @@
  . utils.sh && jenkins_updates && touch UCS_UPDATED
  . utils.sh && assert_version ""[ENV:TARGET_VERSION]""
 ";;" . utils.sh && switch_to_test_app_center";;;". utils.sh && run_setup_join_on_non_master
+ . utils.sh && packages_install univention-samba4 univention-s4-connector
  . utils.sh && do_reboot
  . utils.sh && wait_for_reboot
  . utils.sh && assert_join
@@ -204,8 +198,6 @@
  server/role=""domaincontroller_slave""
  root_password=univention
  locale/default=""de_DE.UTF-8:UTF-8""
- packages_install=""univention-samba4 univention-s4-connector""
- packages_remove=""""
  nameserver=[ptimaster_IP]";" . utils.sh && basic_setup
  . utils.sh && rotate_logfiles
  ucr set ldap/database/mdb/envflags=nosync connector/s4/retryrejected=2
@@ -214,6 +206,7 @@
  . utils.sh && jenkins_updates && touch UCS_UPDATED
  . utils.sh && assert_version ""[ENV:TARGET_VERSION]""
 ";;" . utils.sh && switch_to_test_app_center";;;". utils.sh && run_setup_join_on_non_master
+ . utils.sh && packages_install univention-samba4 univention-s4-connector
  . utils.sh && do_reboot
  . utils.sh && wait_for_reboot
  . utils.sh && assert_join
@@ -235,8 +228,6 @@
  server/role=""domaincontroller_slave""
  root_password=univention
  locale/default=""de_DE.UTF-8:UTF-8""
- packages_install=""univention-samba4 univention-s4-connector""
- packages_remove=""""
  nameserver=[ptimaster_IP]";" . utils.sh && basic_setup
  . utils.sh && rotate_logfiles
  ucr set ldap/database/mdb/envflags=nosync connector/s4/retryrejected=2
@@ -245,6 +236,7 @@
  . utils.sh && jenkins_updates && touch UCS_UPDATED
  . utils.sh && assert_version ""[ENV:TARGET_VERSION]""
 ";;" . utils.sh && switch_to_test_app_center";;;". utils.sh && run_setup_join_on_non_master
+ . utils.sh && packages_install univention-samba4 univention-s4-connector
  . utils.sh && do_reboot
  . utils.sh && wait_for_reboot
  . utils.sh && assert_join

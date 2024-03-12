@@ -383,6 +383,48 @@ switch_to_test_app_center () {
 	return $rv
 }
 
+packages_install () {  # [pkgs...]
+	# DEPRECATED: use `univention-app install` and `univention-install`
+	local rv=0
+	declare -a apps=() pkgs=() extra=()
+	while [ $# -ge 1 ]
+	do
+		case "$1" in
+		univention-ad-connector) apps+=(adconnector) ;;
+		univention-management-console-module-adtakeover) apps+=(adtakeover) ;;
+		univention-printserver) apps+=(cups) ;;
+		cups) extra+=("cups/$1") ;;
+		univention-dhcp) apps+=(dhcp-server) ;;
+		univention-mail-server) apps+=(mailserver) ;;
+		univention-spamassassin|univention-antivir-mail) extra+=("mailserver/$1") ;;
+		univention-pkgdb) apps+=(pkgdb) ;;
+		univention-radius) apps+=(radius) ;;
+		univention-s4-connector) apps+=(samba4) ;;
+		univention-samba4) extra=("samba4/$1") ;;
+		univention-self-service-master) apps+=(self-service-backend) ;;
+		univention-self-service) apps+=(self-service) ;;
+		univention-squid) apps+=(squid) ;;
+		univention-admin-diary-backend) apps+=(admindiary-backend) ;;
+		*) pkgs+=("$1") ;;
+		esac
+		shift
+	done
+	set -- "${extra[@]}"
+	while [ $# -ge 1 ]
+	do
+		local app=
+		for app in "${apps[@]}"
+		do
+			[ "${1%%/*}" = "$app" ] && break
+		done
+		[ "${1%%/*}" = "$app" ] || pkgs+=("${1#*/}")
+		shift
+	done
+	[ -z "${apps[*]}" ] || univention-app install --noninteractive "${apps[@]}" || rv=$?
+	[ -z "${pkgs[*]}" ] || univention-install --yes "${pkgs[@]}" || rv=$?
+	return "$rv"
+}
+
 switch_components_to_test_app_center () {
 	ucr search --brief --value appcenter.software-univention.de |
 		grep 'repository/online/component/.*/server' |
@@ -1203,7 +1245,7 @@ postgres_update () {
 	systemctl start postgresql.service
 	[ -e "/var/lib/postgresql/$new/main" ] && mv "/var/lib/postgresql/$new/main" "/var/lib/postgresql/$new/main.old"
 	pg_upgradecluster "$old" main
-	DEBIAN_FRONTEND='noninteractive' univention-install --yes "univention-postgresql-$new"
+	univention-install --yes "univention-postgresql-$new"
 	ucr commit "/etc/postgresql/$new/main/"*
 	chown -R postgres:postgres "/var/lib/postgresql/$new"
 	[ ! -e /etc/postgresql/11/main/conf.d/ ] && mkdir /etc/postgresql/11/main/conf.d/ && chown postgres:postgres /etc/postgresql/11/main/conf.d/

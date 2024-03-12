@@ -18,6 +18,6 @@ fi
 
 cfg="scenarios/autotest-203-ucsschool-multiserver-s4.cfg"
 if [ "${Config}" = "s4-all-components" ] ; then
-	sed -i -re '/^ packages_install/s/"$/ univention-mail-server univention-dhcp univention-printserver cups univention-squid bsd-mailx univention-spamassassin univention-antivir-mail"/' "$cfg"
+	sed -i -re '/ packages_install/s/$/ univention-mail-server univention-dhcp univention-printserver cups univention-squid bsd-mailx univention-spamassassin univention-antivir-mail/' "$cfg"
 fi
 exec "${0%/*}/start-test.sh" "$cfg"

@@ -113,7 +113,6 @@ d-i ucr/system/setup/boot/start string false
 #
 # Univention System Setup profile
 #
-univention-system-setup-boot uss/components string
 univention-system-setup-boot uss/packages_install string
 univention-system-setup-boot uss/packages_remove string
 # Choices: domaincontroller_master domaincontroller_backup domaincontroller_slave memberserver base

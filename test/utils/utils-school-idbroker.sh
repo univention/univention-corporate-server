@@ -371,7 +371,7 @@ prepare_jump_host () {
 	apt-get -q update
 	hostname jumphost
 	ucr set repository/online=true
-	DEBIAN_FRONTEND=noninteractive univention-install -y id-broker-performance-tests
+	univention-install -y id-broker-performance-tests
 	echo 'root soft nofile 10240' >> /etc/security/limits.conf
 	echo 'root hard nofile 10240' >> /etc/security/limits.conf
 	echo "fs.file-max=1048576" > /etc/sysctl.d/99-file-max.conf
