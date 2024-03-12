@@ -1,5 +1,6 @@
 univention-policy (11.0.4-1) unstable; urgency=medium
 
+  * Bug #57159: Respect ldap/server/port in univention-policy
   * Bug #57158: Respect directory/manager/starttls in univention-policy
   * Bug #57118 UCS 5.0-7 version bump
 
