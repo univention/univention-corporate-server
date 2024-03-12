@@ -18,9 +18,9 @@ print('   by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" read' % (gr
 
 if configRegistry['ldap/hostdn']:
     print('   by dn.base="%s" read' % configRegistry['ldap/hostdn'])
-@!@   by * none
+print('   by * none')
+print('')
 
-@!@
 if configRegistry.get('ldap/hostdn'):
     print('# Bug #54140: There are systems with a large amount (>50000) of DNS-Zone objects,')
     print('# the following access directive provides a faster access for services which have to')
@@ -28,4 +28,11 @@ if configRegistry.get('ldap/hostdn'):
     print('access to dn.children="cn=dns,%s" filter="(objectClass=dNSZone)"' % configRegistry['ldap/base'])
     print('    by dn="%s" read' % configRegistry['ldap/hostdn'])
     print('    by * +0 break')
+    print('')
+
+print('access to attrs=univentionGuardianRoles,univentionGuardianMemberRoles')
+print('    by group/univentionGroup/uniqueMember="cn=UDM-API-enabled-machines,cn=groups,%s" read' % ldap_base)
+print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" read' % (groups_default_domainadmins, ldap_base))
+print('    by * none')
+print('')
 @!@
