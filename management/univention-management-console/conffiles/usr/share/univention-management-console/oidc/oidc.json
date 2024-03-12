@@ -28,7 +28,7 @@ for oidcname, oidcconfig in rawconfig.items():
             pass
         with open(client_secret_file) as fd:
             pass
-    except EnvironmentError:
+    except OSError:
         continue
     config[oidcname] = {
         "client_id": client_id,

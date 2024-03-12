@@ -20,7 +20,7 @@ try:
             if m:
                 data['email'] = m.group('email')
                 break
-except IOError:
+except OSError:
     pass
 
 print(json.dumps(data, indent=2))

@@ -11,6 +11,6 @@ try:
             for line in fd:
                 print(line.rstrip())
         print('# --- end of {} ---\n'.format(filename))
-except (IOError, OSError) as exc:
+except OSError as exc:
     print('\n# ERROR including {}: {}\n'.format(filename, exc))
 @!@

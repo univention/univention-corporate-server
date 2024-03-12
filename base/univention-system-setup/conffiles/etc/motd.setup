@@ -74,7 +74,7 @@ def query_ec2(key):  # type: (str) -> Optional[str]
         result = urlopen(url, timeout=2)  # noqa: S310
         value = result.read().decode('UTF-8').strip()
         return value
-    except (URLError, socket.error, socket.timeout):
+    except (URLError, OSError):
         return None
 
 
@@ -89,7 +89,7 @@ def get_ip_address(ifname):  # type: (str) -> Optional[str]
                 struct.pack('256s', ifname.encode('ASCII')[:15]),
             )[20:24],
         )
-    except IOError:
+    except OSError:
         addr = None
     finally:
         sock.close()
