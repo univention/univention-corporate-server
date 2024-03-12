@@ -59,7 +59,7 @@ from univention.config_registry.handler import run_filter
 if six.PY2:
     from io import open
 
-    def overload(f):  # type ignore
+    def overload(f):  # type: ignore
         pass
 try:
     from types import TracebackType  # noqa: F401
