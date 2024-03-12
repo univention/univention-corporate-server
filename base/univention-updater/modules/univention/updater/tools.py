@@ -48,7 +48,7 @@ import urllib.error
 import urllib.request
 from http import client as httplib
 from tempfile import TemporaryDirectory
-from typing import Any, Iterable, Iterator, Literal, TypeVar
+from typing import TYPE_CHECKING, Any, Literal, TypeVar
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.ucs import UCS_Version
@@ -65,6 +65,10 @@ from .errors import (
     RequiredComponentError, UnmetDependencyError, VerificationError,
 )
 from .repo_url import UcsRepoUrl
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable, Iterator
 
 
 try:

@@ -38,7 +38,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 from univention.admin import configRegistry
-from univention.admin.handlers.dns import (  # noqa: F401
+from univention.admin.handlers.dns import (
     ARPA_IP4, ARPA_IP6, escapeSOAemail, is_dns, is_forward_zone, is_zone, stripDot, unescapeSOAemail,
 )
 from univention.admin.layout import Group, Tab

@@ -33,8 +33,10 @@
 import os.path
 import traceback
 from collections import OrderedDict
+from collections.abc import Callable, Iterator
 from os import listdir
-from typing import Any, Callable, Dict, Iterator, List, Match, Optional, Pattern
+from re import Match, Pattern
+from typing import Any
 
 from univention.config_registry import ucr
 from univention.lib.i18n import Translation
@@ -85,7 +87,7 @@ class Instance(Base, ProgressMixin):
     PLUGIN_DIR = os.path.dirname(plugins.__file__)
 
     def init(self) -> None:
-        self.modules: Dict[str, "Plugin"] = {}
+        self.modules: dict[str, "Plugin"] = {}
         self.load()
 
     @sanitize(
@@ -109,7 +111,7 @@ class Instance(Base, ProgressMixin):
 
     @sanitize(pattern=PatternSanitizer(default='.*'))
     @simple_response
-    def query(self, pattern: Pattern[str]) -> List[Dict[str, Any]]:
+    def query(self, pattern: Pattern[str]) -> list[dict[str, Any]]:
         return [plugin.dict for plugin in self if plugin.match(pattern)]
 
     @property
@@ -229,16 +231,16 @@ class Plugin:
         return getattr(self.module, 'description', '')
 
     @property
-    def buttons(self) -> List[Dict[str, str]]:
+    def buttons(self) -> list[dict[str, str]]:
         """Buttons which are displayed e.g. to automatically solve the problem"""
         return list(getattr(self.module, 'buttons', []))
 
     @property
-    def run_descr(self) -> List[str]:
+    def run_descr(self) -> list[str]:
         return list(getattr(self.module, 'run_descr', []))
 
     @property
-    def umc_modules(self) -> List[Dict[str, Any]]:
+    def umc_modules(self) -> list[dict[str, Any]]:
         """
         References to UMC modules which can help solving the problem.
         (module, flavor, properties)
@@ -246,7 +248,7 @@ class Plugin:
         return getattr(self.module, 'umc_modules', [])
 
     @property
-    def links(self) -> List[Dict[str, str]]:
+    def links(self) -> list[dict[str, str]]:
         """
         Links to e.g. related SDB articles
         (url, link_name)
@@ -254,7 +256,7 @@ class Plugin:
         return getattr(self.module, 'links', [])
 
     @property
-    def actions(self) -> Dict[str, Callable[[Instance], Optional[Dict[str, Any]]]]:
+    def actions(self) -> dict[str, Callable[[Instance], dict[str, Any] | None]]:
         return getattr(self.module, 'actions', {})
 
     def __init__(self, plugin: str) -> None:
@@ -268,9 +270,9 @@ class Plugin:
             level=0,
         )
 
-    def execute(self, umc_module: Instance, action=None, **kwargs: Any) -> Dict[str, Any]:
+    def execute(self, umc_module: Instance, action=None, **kwargs: Any) -> dict[str, Any]:
         success = True
-        errors: Dict[str, Any] = {}
+        errors: dict[str, Any] = {}
         execute = self.actions.get(action, self.module.run)
         try:
             try:
@@ -285,7 +287,7 @@ class Plugin:
             success = False
             errors.update(exc.kwargs)
 
-        result: Dict[str, Any] = {
+        result: dict[str, Any] = {
             "success": success,
             "type": 'success',
         }
@@ -294,14 +296,14 @@ class Plugin:
         result.setdefault('buttons', []).insert(0, {'label': _('Test again')})
         return result
 
-    def match(self, pattern: Pattern[str]) -> Optional[Match]:
+    def match(self, pattern: Pattern[str]) -> Match | None:
         return pattern.match(self.title) or pattern.match(self.description)
 
     def __str__(self) -> str:
         return '%s' % (self.plugin,)
 
     @property
-    def dict(self) -> Dict[str, Any]:
+    def dict(self) -> dict[str, Any]:
         return {
             "id": str(self),
             "plugin": str(self),

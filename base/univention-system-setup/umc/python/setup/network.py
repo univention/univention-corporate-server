@@ -39,12 +39,16 @@ from __future__ import annotations
 
 import ipaddress
 import re
-from typing import Any, Dict, Mapping, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
 from univention.management.console.modules.setup.util import detect_interfaces
+
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping
 
 
 _TD = TypeVar("_TD", bound="Device", covariant=True)  # noqa: PLC0105
@@ -89,7 +93,7 @@ class IP6Set(set):
         return set.__contains__(self, ipaddress.IPv6Address('%s' % (ip,)))
 
 
-class Interfaces(Dict[str, "Device"]):
+class Interfaces(dict[str, "Device"]):
     """All network interfaces"""
 
     def __init__(self) -> None:
@@ -170,7 +174,7 @@ class Interfaces(Dict[str, "Device"]):
                     all_ip6s.add(address)
 
     def set_device_order(self) -> None:
-        if not any(isinstance(device, (VLAN, Bridge, Bond)) for device in self.values()):
+        if not any(isinstance(device, VLAN | Bridge | Bond) for device in self.values()):
             # no VLAN, Bridge or Bond devices
             # we don't need to set the device order
             return

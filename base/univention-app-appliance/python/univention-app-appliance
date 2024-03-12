@@ -39,7 +39,6 @@ import shutil
 from argparse import ArgumentParser, Namespace
 from glob import glob
 from subprocess import call
-from typing import Dict
 
 import requests
 
@@ -89,9 +88,9 @@ def print_status(message: str) -> None:
 
 
 def cache_portal(app: App) -> None:
-    app_props: Dict[str, str] = get_app_style_properties(app)
+    app_props: dict[str, str] = get_app_style_properties(app)
     app_de: App = app.get_app_cache_obj().copy(locale='de').find_by_component_id(app.component_id)
-    app_props_de: Dict[str, str] = get_app_style_properties(app_de)
+    app_props_de: dict[str, str] = get_app_style_properties(app_de)
     app_cache_dir: str = get_cache_dir_name(app)
     if not os.path.exists(app_cache_dir):
         os.mkdir(app_cache_dir)

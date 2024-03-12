@@ -33,8 +33,9 @@
 import glob
 import socket
 from base64 import b64decode
+from collections.abc import Callable, Iterator
 from subprocess import call
-from typing import Any, Callable, Dict, Iterator, List, Tuple
+from typing import Any
 
 import requests
 from cryptography import x509
@@ -73,10 +74,10 @@ def run(_umc_instance: Instance, rerun: bool = False) -> None:
 
 
 def run_keycloak(_umc_instance: Instance, sso_fqdn: str, rerun: bool = False) -> None:
-    problems: List[str] = []
-    buttons: List[Dict[str, str]] = []
-    links: List[Dict[str, str]] = []
-    umc_modules: List[Dict[str, str]] = []
+    problems: list[str] = []
+    buttons: list[dict[str, str]] = []
+    links: list[dict[str, str]] = []
+    umc_modules: list[dict[str, str]] = []
 
     idp = False
     for problem in test_identity_provider_certificate_keycloak(sso_fqdn):
@@ -193,10 +194,10 @@ def test_identity_provider_certificate_keycloak(sso_fqdn: str) -> Iterator[Probl
 
 
 def run_simplesamlphp(_umc_instance: Instance, sso_fqdn: str, rerun: bool = False) -> None:
-    problems: List[str] = []
-    buttons: List[Dict[str, str]] = []
-    links: List[Dict[str, str]] = []
-    umc_modules: List[Dict[str, str]] = []
+    problems: list[str] = []
+    buttons: list[dict[str, str]] = []
+    links: list[dict[str, str]] = []
+    umc_modules: list[dict[str, str]] = []
 
     idp = False
     for problem in test_identity_provider_certificate(sso_fqdn):
@@ -416,10 +417,10 @@ def test_service_provider_certificate() -> Iterator[Problem]:
             )
 
 
-def dns_link(dn: str) -> Tuple[str, Dict[str, Any]]:
+def dns_link(dn: str) -> tuple[str, dict[str, Any]]:
     """Create UMC UDM link for DN."""
     link = "udm:saml/serviceprovider"
-    umcm: Dict[str, Any] = {
+    umcm: dict[str, Any] = {
         "module": "udm",
         "flavor": "saml/serviceprovider",
         "props": {
@@ -438,7 +439,7 @@ def fix_sp(umc: Instance) -> None:
     return run(umc, rerun=True)
 
 
-actions: Dict[str, Callable[[Instance], None]] = {
+actions: dict[str, Callable[[Instance], None]] = {
     "fix_idp": fix_idp,
     "fix_sp": fix_sp,
 }

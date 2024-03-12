@@ -40,15 +40,8 @@ import univention.l10n as tlh
 import univention.l10n.umc as dh_umc
 
 
-try:
-    from typing import List, Set, Tuple  # noqa: F401
-except ImportError:
-    pass
-
-
-def _get_po_files_from_dir(directory, return_relative_path=False):
-    # type: (str, bool) -> List[str]
-    po_files = []  # type: List[str]
+def _get_po_files_from_dir(directory: str, return_relative_path: bool = False) -> list[str]:
+    po_files: list[str] = []
     for parent, _dirs, files in os.walk(directory):
         for po_file in files:
             if not po_file.endswith('.po'):
@@ -61,8 +54,7 @@ def _get_po_files_from_dir(directory, return_relative_path=False):
     return po_files
 
 
-def merge_po_file_trees(source_tree, target_tree):
-    # type: (str, str) -> Tuple[Set[str], Set[str]]
+def merge_po_file_trees(source_tree: str, target_tree: str) -> tuple[set[str], set[str]]:
     upstream_pos = _get_po_files_from_dir(source_tree, return_relative_path=True)
     translated_pos = _get_po_files_from_dir(target_tree, return_relative_path=True)
 
@@ -89,8 +81,7 @@ def merge_po_file_trees(source_tree, target_tree):
     return pos_delete_upstream, new_pos
 
 
-def parse_args():
-    # type: () -> argparse.Namespace
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Merge upstream changes in translation files to existing translation source package.")
     parser.add_argument('upstream', type=str, help="Source from upstream containing changes")
     parser.add_argument('translation', type=str, help="Translation source package as merge target.")
@@ -105,8 +96,7 @@ def parse_args():
     return args
 
 
-def main():
-    # type: () -> None
+def main() -> None:
     args = parse_args()
 
     match = re.match(r'.*-([a-zA-Z]{2})', os.path.basename(args.translation))
@@ -136,7 +126,7 @@ end with two character language code, e.g. univention-l10n-fr. Exiting.""")
         tlh.update_package_translation_files(module, output_dir)
 
     # special cases, e.g. univention-management-console-frontend
-    special_cases = []  # type: List[tlh.SpecialCase]
+    special_cases: list[tlh.SpecialCase] = []
     try:
         special_cases = tlh.get_special_cases_from_checkout(args.upstream, lang_code)
     except tlh.NoSpecialCaseDefintionsFound:

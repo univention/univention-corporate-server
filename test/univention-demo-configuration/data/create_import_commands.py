@@ -35,7 +35,6 @@
 
 import csv
 from os.path import dirname, join
-from typing import Dict
 
 
 CWD = dirname(__file__)
@@ -73,7 +72,7 @@ NAGIOS_OPTIONS = ' '.join(
 )
 
 
-def importRow(row: Dict[str, str]) -> None:
+def importRow(row: dict[str, str]) -> None:
     """Import one row containing a user definition"""
     row["LDAPBASE"] = LDAPBASE
     row["DOMAIN"] = DOMAIN

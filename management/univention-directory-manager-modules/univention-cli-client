@@ -40,7 +40,7 @@ import socket
 import stat
 import sys
 import time
-from typing import Sequence
+from collections.abc import Sequence
 
 from univention.config_registry import ucr
 

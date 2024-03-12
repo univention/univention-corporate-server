@@ -9,7 +9,7 @@ from threading import Lock, Thread
 
 import pytest
 
-from univention.config_registry.backend import ConfigRegistry  # noqa: E402
+from univention.config_registry.backend import ConfigRegistry
 
 
 class DummyLock:

@@ -32,7 +32,7 @@
 
 import os
 from abc import ABCMeta
-from typing import Iterator, Set
+from collections.abc import Iterator
 
 from ldap import LDAPError
 from ldap.filter import filter_format
@@ -85,11 +85,11 @@ class Dhcp(Phase, metaclass=ABCMeta):
     """Check for interfaces using DHCP."""
 
     @property
-    def old_dhcps(self) -> Set[str]:
+    def old_dhcps(self) -> set[str]:
         return set(self._find_dhcp_interfaces(self.changeset.old_interfaces))
 
     @property
-    def new_dhcps(self) -> Set[str]:
+    def new_dhcps(self) -> set[str]:
         return set(self._find_dhcp_interfaces(self.changeset.new_interfaces))
 
     @staticmethod

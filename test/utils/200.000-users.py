@@ -5,7 +5,6 @@
 # SPDX-FileCopyrightText: 2024 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from typing import Dict, List
 
 from univention.admin import modules, uldap
 from univention.config_registry import ucr
@@ -27,9 +26,9 @@ modules.init(lo, position, users)
 groups = modules.get('groups/group')
 modules.init(lo, position, groups)
 
-all_users: List[str] = []
-all_groups: List[str] = []
-group_member: Dict[int, List[str]] = {}
+all_users: list[str] = []
+all_groups: list[str] = []
+group_member: dict[int, list[str]] = {}
 
 position.setDn('cn=users,%s' % (base,))
 for i in range(number_of_users):
@@ -52,7 +51,7 @@ for i in range(number_of_users):
     all_users.append(dn)
 
 position.setDn('cn=groups,%s' % (base,))
-has_nested_group: List[str] = []
+has_nested_group: list[str] = []
 for i in range(number_of_groups):
     name = "%s%s" % (groupname, i)
     group = groups.lookup(None, lo, "cn=%s" % name)

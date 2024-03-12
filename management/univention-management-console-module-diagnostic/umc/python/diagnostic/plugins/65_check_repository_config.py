@@ -35,7 +35,7 @@ username, password, port, prefix or path.
 
 import re
 from collections import defaultdict
-from typing import Dict, List, Pattern, Tuple
+from re import Pattern
 
 import univention.config_registry_info as cri
 from univention.config_registry import handler_set as ucr_set, handler_unset as ucr_unset, ucr_live as ucr
@@ -46,7 +46,7 @@ from univention.management.console.modules.diagnostic import MODULE, Instance, P
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
-umc_modules: List[Dict[str, str]] = [
+umc_modules: list[dict[str, str]] = [
     {
         "module": "appcenter",
         "flavor": "components",
@@ -72,7 +72,7 @@ DEPRECATED_VARS = ['prefix', 'username', 'password', 'port']
 DEPRECATED_GEN = [f'{ONLINE_BASE}/{dep}' for dep in DEPRECATED_VARS]
 RE_KEY = re.compile(f'{COMPONENT_BASE}/([^/]+)/({"|".join(DEPRECATED_VARS)})')
 
-cleanup_vars: List[Tuple[str, str]] = []
+cleanup_vars: list[tuple[str, str]] = []
 
 
 def run_cleanup_deprecated(umc_instance: Instance) -> None:
@@ -85,7 +85,7 @@ def run_cleanup_deprecated(umc_instance: Instance) -> None:
         component = match.group(1) if match else "$$BASE"
         sorted_vars[component].append((name, value))
     for var_list in sorted_vars.values():
-        values: Dict[str, str] = dict.fromkeys(DEPRECATED_VARS, "")
+        values: dict[str, str] = dict.fromkeys(DEPRECATED_VARS, "")
         for name, value in var_list:
             base, _dummy, key = name.rpartition("/")
             if key not in DEPRECATED_VARS:
@@ -115,7 +115,7 @@ def _repo_relevant(name: str, reg: Pattern) -> bool:
 
 
 def run(_umc_instance: Instance) -> None:
-    error_descriptions: List[str] = []
+    error_descriptions: list[str] = []
 
     buttons = [{
         'action': 'run_cleanup_deprecated',

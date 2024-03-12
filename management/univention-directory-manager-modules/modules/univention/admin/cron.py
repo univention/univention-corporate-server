@@ -32,7 +32,7 @@
 """|UDM| functions for creating crontab entries."""
 
 
-from typing import Mapping, Sequence  # noqa: F401
+from collections.abc import Mapping, Sequence  # noqa: F401
 
 
 def month_map(month):

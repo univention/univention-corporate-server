@@ -42,9 +42,9 @@ import sys
 import tempfile
 import time
 from collections import namedtuple
+from collections.abc import Callable, Iterable  # noqa: F401
 from datetime import datetime, timedelta
 from shlex import quote
-from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union  # noqa: F401
 
 import dns.resolver
 import ldap

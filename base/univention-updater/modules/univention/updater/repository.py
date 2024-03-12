@@ -35,10 +35,10 @@ import os
 import shutil
 import subprocess
 import sys
-from typing import IO, List
+from typing import IO
 
 from univention.config_registry import ucr
-from univention.lib.ucs import UCS_Version  # noqa: F401
+from univention.lib.ucs import UCS_Version
 
 
 # constants
@@ -51,7 +51,7 @@ class TeeFile:
     with the print statement
     """
 
-    def __init__(self, fds: List[IO[str]] = []) -> None:
+    def __init__(self, fds: list[IO[str]] = []) -> None:
         """
         Register multiple file descriptors, to which the data is written.
 

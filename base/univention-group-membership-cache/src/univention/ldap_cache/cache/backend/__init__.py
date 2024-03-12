@@ -30,7 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from typing import Any, Dict, Iterator, List, Mapping, Optional, Sequence, Tuple, Type, Union  # noqa: F401
+from collections.abc import Iterator, Mapping, Sequence
+from typing import Any
 
 from univention.ldap_cache.log import debug
 
@@ -39,17 +40,14 @@ DB_DIRECTORY = '/usr/share/univention-group-membership-cache/caches'
 
 
 class Caches:
-    def __init__(self, db_directory=DB_DIRECTORY):
-        # type: (str) -> None
+    def __init__(self, db_directory: str = DB_DIRECTORY) -> None:
         self._directory = db_directory
-        self._caches = {}  # type: Dict[str, Any]
+        self._caches: dict[str, Any] = {}
 
-    def __iter__(self):
-        # type: () -> Iterator[Tuple[str, Any]]
+    def __iter__(self) -> Iterator[tuple[str, Any]]:
         yield from self._caches.items()
 
-    def get_shards_for_query(self, query):
-        # type: (str) -> List[Shard]
+    def get_shards_for_query(self, query: str) -> list['Shard']:
         ret = []
         for cache in self._caches.values():
             for shard in cache.shards:
@@ -57,12 +55,10 @@ class Caches:
                     ret.append(shard)
         return ret
 
-    def get_sub_cache(self, name):
-        # type: (str) -> Any
+    def get_sub_cache(self, name: str) -> Any:
         return self._caches.get(name)
 
-    def add(self, klass):
-        # type: (Type) -> None
+    def add(self, klass: type) -> None:
         if not klass.ldap_filter or not klass.value:
             return
         debug('Adding %r', klass)
@@ -72,26 +68,23 @@ class Caches:
             cache = self._add_sub_cache(name, klass.single_value, klass.reverse)
         cache.add_shard(klass)
 
-    def _add_sub_cache(self, name, single_value, reverse):
-        # type: (str, bool, bool) -> Any
+    def _add_sub_cache(self, name: str, single_value: bool, reverse: bool) -> Any:
         raise NotImplementedError()
 
 
 class Shard:
-    ldap_filter = None  # type: Optional[str]
-    db_name = None  # type: Optional[str]
+    ldap_filter: str | None = None
+    db_name: str | None = None
     single_value = False
     key = 'entryUUID'
-    value = None  # type: Optional[str]
-    attributes = []  # type: List[str]
+    value: str | None = None
+    attributes: list[str] = []
     reverse = False
 
-    def __init__(self, cache):
-        # type: (Any) -> None
+    def __init__(self, cache: Any) -> None:
         self._cache = cache
 
-    def rm_object(self, obj):
-        # type: (Tuple[str, Mapping[str, Sequence[bytes]]]) -> None
+    def rm_object(self, obj: tuple[str, Mapping[str, Sequence[bytes]]]) -> None:
         try:
             key = self.get_key(obj)
         except ValueError:
@@ -100,8 +93,7 @@ class Shard:
         debug('Removing %s', key)
         self._cache.delete(key, values)
 
-    def add_object(self, obj):
-        # type: (Tuple[str, Mapping[str, Sequence[bytes]]]) -> None
+    def add_object(self, obj: tuple[str, Mapping[str, Sequence[bytes]]]) -> None:
         try:
             key = self.get_key(obj)
         except ValueError:
@@ -113,18 +105,15 @@ class Shard:
         else:
             self._cache.delete(key, [])
 
-    def _get_from_object(self, obj, attr):
-        # type: (Tuple[str, Mapping[str, Sequence[bytes]]], str) -> Sequence[Any]
+    def _get_from_object(self, obj: tuple[str, Mapping[str, Sequence[bytes]]], attr: str) -> Sequence[Any]:
         if attr == 'dn':
             return [obj[0]]
         return obj[1].get(attr, [])
 
-    def get_values(self, obj):
-        # type: (Tuple[str, Mapping[str, Sequence[bytes]]]) -> Any
+    def get_values(self, obj: tuple[str, Mapping[str, Sequence[bytes]]]) -> Any:
         return _s(self._get_from_object(obj, self.value))
 
-    def get_key(self, obj):
-        # type: (Tuple[str, Mapping[str, Sequence[bytes]]]) -> Any
+    def get_key(self, obj: tuple[str, Mapping[str, Sequence[bytes]]]) -> Any:
         values = self._get_from_object(obj, self.key)
         if values:
             return _s(values[0]).lower()
@@ -132,22 +121,19 @@ class Shard:
 
 
 class LdapCache:
-    def __init__(self, name, single_value, reverse):
-        # type: (str, bool, bool) -> None
+    def __init__(self, name: str, single_value: bool, reverse: bool) -> None:
         self.name = name
         self.single_value = single_value
         self.reverse = reverse
-        self.shards = []  # type: List[Shard]
+        self.shards: list[Shard] = []
 
-    def add_shard(self, shard_class):
-        # type: (Type[Shard]) -> None
+    def add_shard(self, shard_class: type[Shard]) -> None:
         self.shards.append(shard_class(self))
 
 
-def _s(input):
-    # type: (Any) -> Any
-    if isinstance(input, (list, tuple)):
-        res = []  # type: Any
+def _s(input: Any) -> Any:
+    if isinstance(input, list | tuple):
+        res: Any = []
         for n in input:
             if isinstance(n, bytes):
                 res.append(n.decode('utf-8'))

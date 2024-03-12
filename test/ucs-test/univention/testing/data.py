@@ -22,7 +22,7 @@ from functools import reduce
 from operator import and_, or_
 from subprocess import PIPE, Popen, call
 from time import monotonic
-from typing import IO, Any, Iterable, Iterator, Sequence, TypeVar, cast
+from typing import IO, TYPE_CHECKING, Any, TypeVar, cast
 
 import apt
 import retrying
@@ -34,6 +34,10 @@ from univention.testing.codes import Reason
 from univention.testing.errors import TestError
 from univention.testing.internal import UCSVersion
 from univention.testing.pytest import PytestRunner
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable, Iterator, Sequence
 
 
 __all__ = ['TestCase', 'TestEnvironment', 'TestFormatInterface', 'TestResult']
@@ -55,7 +59,7 @@ RE_ILLEGAL_XML = re.compile('[%s]' % ''.join(f'{chr(low)}-{chr(high)}' for (low,
 
 
 def checked_set(values: Iterable[T] | None) -> set[T]:
-    if not isinstance(values, (list, tuple, set, frozenset)):
+    if not isinstance(values, list | tuple | set | frozenset):
         raise TypeError('"%r" not a list or tuple' % values)
     return set(values)
 

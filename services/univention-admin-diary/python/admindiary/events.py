@@ -30,24 +30,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from typing import Dict, List, Optional  # noqa: F401
+from __future__ import annotations
 
 
 class DiaryEvent:
-    _all_events = {}  # type: Dict[str, DiaryEvent]
+    _all_events: dict[str, DiaryEvent] = {}
 
     @classmethod
-    def get(cls, name):
-        # type: (str) -> Optional[DiaryEvent]
+    def get(cls, name: str) -> DiaryEvent | None:
         return cls._all_events.get(name)
 
     @classmethod
-    def names(cls):
-        # type: () -> List[str]
+    def names(cls) -> list[str]:
         return sorted(cls._all_events.keys())
 
-    def __init__(self, name, message, args=None, tags=None, icon=None):
-        # type: (str, Dict[str, str], Optional[Dict[str, str]], Optional[List[str]], Optional[str]) -> None
+    def __init__(self, name: str, message: dict[str, str], args: dict[str, str] | None = None, tags: list[str] | None = None, icon: str | None = None) -> None:
         self.name = name
         self.message = message
         self.args = args or {}

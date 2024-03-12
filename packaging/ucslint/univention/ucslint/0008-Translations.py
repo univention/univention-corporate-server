@@ -32,10 +32,14 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import Iterable
+from typing import TYPE_CHECKING
 
 import univention.ucslint.base as uub
 from univention.ucslint.python import MATCHED_LENIENT as MATCHED_STRING, _or, python_files
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 
 # 1) check if translation strings are correct; detect something like  _('foo %s bar' % var)  ==> _('foo %s bar') % var

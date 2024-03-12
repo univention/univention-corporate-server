@@ -39,7 +39,6 @@ import re
 import sys
 import syslog
 import traceback
-from typing import Dict
 
 from ldap.filter import filter_format
 
@@ -76,7 +75,7 @@ def debug(msg, *args):
             syslog.syslog(syslog.LOG_DEBUG, msg)
 
 
-def listfilter(attrib: Dict[str, str]) -> str:
+def listfilter(attrib: dict[str, str]) -> str:
     sender = attrib.get("sasl_username") if check_sasl_username else attrib.get("sender")
     recipient = attrib.get("recipient")
 
@@ -185,7 +184,7 @@ def mail2username(mail: str) -> str:
 
 
 if __name__ == "__main__":
-    attr: Dict[str, str] = {}
+    attr: dict[str, str] = {}
 
     # testing
     if options.test:

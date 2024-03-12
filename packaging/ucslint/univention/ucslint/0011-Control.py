@@ -32,10 +32,14 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import Iterable
+from typing import TYPE_CHECKING
 
 import univention.ucslint.base as uub
 from univention.ucslint.common import RE_DEBIAN_CHANGELOG
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 
 RE_DEP = re.compile(

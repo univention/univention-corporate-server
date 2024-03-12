@@ -31,15 +31,10 @@
 # <https://www.gnu.org/licenses/>.
 
 import re
+from collections.abc import Callable, Iterator
 from datetime import datetime
 
 import pytest
-
-
-try:
-    from typing import Callable, Dict, Iterator, Tuple  # noqa: F401
-except ImportError:
-    pass
 
 
 RE = re.compile(
@@ -80,14 +75,12 @@ CATEGORY = [
 
 
 @pytest.fixture()
-def parse():
-    # type: () -> Iterator[Callable[[str], Iterator[Tuple[str, Dict[str, str]]]]]
+def parse() -> Iterator[Callable[[str], Iterator[tuple[str, dict[str, str]]]]]:
     """Setup parser."""
     now = datetime.now()
     start = now.replace(microsecond=now.microsecond - now.microsecond % 1000)
 
-    def f(text):
-        # type: (str) -> Iterator[Tuple[str, Dict[str, str]]]
+    def f(text: str) -> Iterator[tuple[str, dict[str, str]]]:
         """
         Parse line into componets.
 

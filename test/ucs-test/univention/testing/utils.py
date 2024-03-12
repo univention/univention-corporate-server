@@ -41,7 +41,7 @@ import time
 import traceback
 from enum import IntEnum
 from itertools import chain
-from typing import IO, TYPE_CHECKING, Any, Callable, Iterable, Mapping, NoReturn, Sequence, TypeVar
+from typing import IO, TYPE_CHECKING, Any, NoReturn, TypeVar
 
 import ldap
 
@@ -50,6 +50,7 @@ from univention.config_registry import ConfigRegistry
 
 
 if TYPE_CHECKING:
+    from collections.abc import Callable, Iterable, Mapping, Sequence
     from types import TracebackType
 
 
@@ -65,7 +66,7 @@ SLAPD_INIT_SCRIPT = '/etc/init.d/slapd'
 UCR = ConfigRegistry()
 
 
-_T = TypeVar("_T")  # noqa: PYI018
+_T = TypeVar("_T")
 
 
 class LDAPError(Exception):

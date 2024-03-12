@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from typing import Callable, Dict, Iterator, List
+from collections.abc import Callable, Iterator
 
 import psutil
 
@@ -49,7 +49,7 @@ run_descr = ['Checks if enough free disk space is available']
 
 
 def is_valid_mount_point(disk_parition) -> bool:
-    conditions: List[Callable[..., bool]] = [
+    conditions: list[Callable[..., bool]] = [
         lambda dp: dp.mountpoint != "/var/lib/docker/overlay",
         lambda dp: "iso" not in dp.fstype,
         lambda dp: (dp.device.startswith("/dev/loop") and "ro" not in dp.opts),
@@ -65,7 +65,7 @@ def mount_points() -> Iterator[str]:
             yield dp.mountpoint
 
 
-def high_disk_usage() -> Dict[str, float]:
+def high_disk_usage() -> dict[str, float]:
     high = ((mp, psutil.disk_usage(mp).percent) for mp in mount_points())
     return {mp: pc for (mp, pc) in high if pc > DISK_USAGE_THRESHOLD}
 

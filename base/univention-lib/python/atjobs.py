@@ -44,7 +44,7 @@ import datetime
 import locale
 import re
 import subprocess
-from typing import Dict, List, Mapping, Optional, Union  # noqa: F401
+from collections.abc import Mapping  # noqa: F401
 
 
 __all__ = ['AtJob', 'add', 'list', 'load', 'remove', 'reschedule']
@@ -73,7 +73,7 @@ def add(cmd, execTime=None, comments={}):
     :returns: The created job or `None`.
     :rtype: AtJob or None
     """
-    if isinstance(execTime, (int, float)):
+    if isinstance(execTime, int | float):
         start = datetime.datetime.fromtimestamp(execTime)  # type: Optional[datetime.datetime]
     else:
         start = execTime

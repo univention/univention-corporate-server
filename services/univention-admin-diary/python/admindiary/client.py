@@ -33,10 +33,11 @@
 import logging
 import os
 import uuid
+from collections.abc import Callable
 from functools import partial, wraps
 from getpass import getuser
 from logging.handlers import SysLogHandler
-from typing import Any, Callable, Dict, List, Optional, TypeVar  # noqa: F401
+from typing import Any, TypeVar
 
 from univention.admindiary import DiaryEntry, get_events_to_reject, get_logger
 from univention.admindiary.events import DiaryEvent

@@ -38,9 +38,10 @@ import getopt
 import os
 import subprocess
 import sys
+from collections.abc import Sequence  # noqa: F401
 from ipaddress import IPv4Address, IPv4Network
 from logging import getLogger
-from typing import IO, Any, Dict, List, Optional, Sequence, Tuple, TypeVar, Union, overload  # noqa: F401
+from typing import TypeVar, overload
 
 
 try:
@@ -1027,7 +1028,7 @@ class CLI:
 
 
 @overload
-def get_policy(  # noqa: E704
+def get_policy(
     dn,  # type: str
     stream,  # type: IO[str]
     policyOptions=None,  # type: Optional[Sequence[str]]
@@ -1037,7 +1038,7 @@ def get_policy(  # noqa: E704
 
 
 @overload
-def get_policy(  # noqa: E704
+def get_policy(
     dn,  # type: str
     stream,  # type: IO[str]
     policyOptions,  # type: Optional[Sequence[str]]

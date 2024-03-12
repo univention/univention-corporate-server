@@ -35,13 +35,14 @@
 
 import importlib.util
 import os
+from collections.abc import Callable, Iterable
 from datetime import datetime
 from hashlib import md5
 from os import getpid, stat
 from shlex import quote
 from time import time
 from traceback import format_exc
-from typing import TYPE_CHECKING, Any, Callable, Dict, Iterable, List, Tuple, Union
+from typing import TYPE_CHECKING, Any
 
 import psutil
 from apt import Cache
@@ -187,14 +188,14 @@ class Instance(Base):
             MODULE.error("init() ERROR: %s" % (exc,))
 
     @simple_response
-    def query_maintenance_information(self) -> Dict[str, Any]:
+    def query_maintenance_information(self) -> dict[str, Any]:
         ret = self._maintenance_information()
         ret.update(self._last_update())
         return ret
 
-    def _last_update(self) -> Dict[str, Any]:
+    def _last_update(self) -> dict[str, Any]:
         status_file = '/var/lib/univention-updater/univention-updater.status'
-        ret: Dict[str, Any] = {'last_update_failed': False, 'last_update_version': None}
+        ret: dict[str, Any] = {'last_update_failed': False, 'last_update_version': None}
         try:
             fstat = stat(status_file)
             mtime = datetime.fromtimestamp(fstat.st_mtime)
@@ -203,7 +204,7 @@ class Instance(Base):
                 return ret
 
             with open(status_file) as fd:
-                info: Dict[str, str] = dict(
+                info: dict[str, str] = dict(
                     line.strip().split('=', 1)  # type: ignore
                     for line in fd
                 )
@@ -216,7 +217,7 @@ class Instance(Base):
 
         return ret
 
-    def _maintenance_information(self) -> Dict[str, Any]:
+    def _maintenance_information(self) -> dict[str, Any]:
         default = {'show_warning': False}
         if not self.uu:
             return default
@@ -242,7 +243,7 @@ class Instance(Base):
         return default
 
     @simple_response
-    def query_releases(self) -> List[Dict[str, str]]:
+    def query_releases(self) -> list[dict[str, str]]:
         """
         Returns a list of system releases suitable for the
         corresponding ComboBox
@@ -287,7 +288,7 @@ class Instance(Base):
         return result
 
     @simple_response
-    def updates_check(self) -> Dict[str, List[Tuple[str, str]]]:
+    def updates_check(self) -> dict[str, list[tuple[str, str]]]:
         """
         Returns the list of packages to be updated/installed
         by a dist-upgrade.
@@ -343,7 +344,7 @@ class Instance(Base):
 
     def status(self, request) -> None:  # TODO: remove unneeded things
         """One call for all single-value variables."""
-        result: Dict[str, Any] = {}
+        result: dict[str, Any] = {}
         ucr.load()
 
         try:
@@ -424,7 +425,7 @@ class Instance(Base):
         count=IntegerSanitizer(default=0),
     )
     @simple_response
-    def updater_log_file(self, job: str, count: int) -> Union[None, float, List[str]]:
+    def updater_log_file(self, job: str, count: int) -> None | float | list[str]:
         """
         returns the content of the log file associated with
         the job.
@@ -457,7 +458,7 @@ class Instance(Base):
         count += self._logfile_start_line
         return self._logview(fname, -count)
 
-    def _logview(self, fname: str, count: int) -> List[str]:
+    def _logview(self, fname: str, count: int) -> list[str]:
         """
         Contains all functions needed to view or 'tail' an arbitrary text file.
 
@@ -484,9 +485,9 @@ class Instance(Base):
         job=ChoicesSanitizer(INSTALLERS, required=True),
     )
     @simple_response
-    def updater_job_status(self, job: str) -> Dict[str, Any]:  # TODO: remove this completely
+    def updater_job_status(self, job: str) -> dict[str, Any]:  # TODO: remove this completely
         """Returns the status of the current/last update even if the job is not running anymore."""
-        result: Dict[str, Any] = {}
+        result: dict[str, Any] = {}
         try:
             with open(INSTALLERS[job]['statusfile']) as fd:
                 for line in fd:
@@ -504,7 +505,7 @@ class Instance(Base):
         detail=StringSanitizer(r'^[A-Za-z0-9\.\- ]*$'),
     )
     @simple_response
-    def run_installer(self, job: str, detail: str = '') -> Dict[str, int]:
+    def run_installer(self, job: str, detail: str = '') -> dict[str, int]:
         """
         This is the function that invokes any kind of installer. Arguments accepted:
 
@@ -625,8 +626,8 @@ class HookManager:
         :param module_dir: path to directory that contains Python modules with hook functions
         :param raise_exceptions: if `False`, all exceptions while loading Python modules will be dropped and all exceptions while calling hooks will be caught and returned in result list
         """
-        self.__loaded_modules: Dict[str, ModuleType] = {}
-        self.__registered_hooks: Dict[str, List[Callable[..., Any]]] = {}
+        self.__loaded_modules: dict[str, ModuleType] = {}
+        self.__registered_hooks: dict[str, list[Callable[..., Any]]] = {}
         self.__module_dir = module_dir
         self.__raise_exceptions = raise_exceptions
         self.__load_hooks()
@@ -675,7 +676,7 @@ class HookManager:
         """returns a list of hook names that have been defined by loaded Python modules."""
         return self.__registered_hooks.keys()
 
-    def call_hook(self, name: str, *args: Any, **kwargs: Any) -> List[Any]:
+    def call_hook(self, name: str, *args: Any, **kwargs: Any) -> list[Any]:
         """
         All additional arguments are passed to hook methods.
         If `self.__raise_exceptions` is `False`, all exceptions while calling hooks will be caught and returned in result list.

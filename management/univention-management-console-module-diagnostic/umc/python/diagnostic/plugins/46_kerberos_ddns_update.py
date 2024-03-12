@@ -32,7 +32,7 @@
 
 import contextlib
 import subprocess
-from typing import Iterator, Optional
+from collections.abc import Iterator
 
 import univention.lib.admember
 from univention.config_registry import ucr_live as config_registry
@@ -52,7 +52,7 @@ class UpdateError(Exception):
 
 
 class KinitError(UpdateError):
-    def __init__(self, principal: str, keytab: Optional[str], password_file: Optional[str]) -> None:
+    def __init__(self, principal: str, keytab: str | None, password_file: str | None) -> None:
         super().__init__(principal, keytab, password_file)
         self.principal = principal
         self.keytab = keytab
@@ -78,7 +78,7 @@ class NSUpdateError(UpdateError):
 
 
 @contextlib.contextmanager
-def kinit(principal: str, keytab: Optional[str] = None, password_file: Optional[str] = None) -> Iterator[None]:
+def kinit(principal: str, keytab: str | None = None, password_file: str | None = None) -> Iterator[None]:
     auth = '--keytab={tab}' if keytab else '--password-file={file}'
     cmd = ('kinit', auth.format(tab=keytab, file=password_file), principal)
     MODULE.process('Running: %s' % (' '.join(cmd)))
@@ -103,7 +103,7 @@ def nsupdate(server: str, domainname: str) -> None:
         raise NSUpdateError(server, domainname)
 
 
-def get_dns_server(active_services: str) -> Optional[str]:
+def get_dns_server(active_services: str) -> str | None:
     if config_registry.is_true('ad/member'):
         ad_domain_info = univention.lib.admember.lookup_adds_dc()
         server = ad_domain_info.get('DC IP')

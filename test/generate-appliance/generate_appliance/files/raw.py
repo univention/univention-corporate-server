@@ -5,7 +5,7 @@
 # https://www.univention.com/about-us/careers/vacancies/
 
 from pathlib import Path
-from typing import IO, Any, Tuple
+from typing import IO, Any
 
 from . import BaseImage
 
@@ -19,7 +19,7 @@ class Raw(BaseImage):
         self._path = Path(inputfile.name)
 
     @BaseImage.hashed
-    def hash(self) -> Tuple[Any, ...]:
+    def hash(self) -> tuple[Any, ...]:
         return (Raw, self._inputfile)
 
     def _create(self, path: Path) -> None:

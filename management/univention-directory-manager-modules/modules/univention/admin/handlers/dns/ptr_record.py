@@ -38,7 +38,7 @@ import univention.admin
 import univention.admin.handlers
 import univention.admin.localization
 from univention.admin.filter import conjunction, expression
-from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6, DNSBase, is_dns  # noqa: F401
+from univention.admin.handlers.dns import ARPA_IP4, ARPA_IP6, DNSBase, is_dns
 from univention.admin.layout import Group, Tab
 
 

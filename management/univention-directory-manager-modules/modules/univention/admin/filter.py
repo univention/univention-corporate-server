@@ -31,7 +31,8 @@
 """|UDM| functions to parse, modify and create |LDAP| style search filters"""
 
 import re
-from typing import Callable, Iterator, Match, Sequence, TypeVar  # noqa: F401
+from collections.abc import Callable, Iterator, Sequence  # noqa: F401
+from typing import TypeVar
 
 from ldap.filter import filter_format
 

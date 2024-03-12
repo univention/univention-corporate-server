@@ -62,6 +62,7 @@ import subprocess
 import sys
 import warnings
 import xml.etree.ElementTree as ET  # noqa: S405
+from collections.abc import Iterable, Iterator
 from email.utils import formatdate
 
 import polib
@@ -70,11 +71,6 @@ from debian.deb822 import Deb822, Packages
 from .helper import Error, call, make_parent_dir
 from .message_catalogs import merge_po
 
-
-try:
-    from typing import Iterable, Iterator, List, Optional, Tuple, Union  # noqa: F401
-except ImportError:
-    pass
 
 MODULE = 'Module'
 PYTHON = 'Python'
@@ -108,14 +104,12 @@ class UMC_Module(dict):
                 self[key] = self[key][0]
 
     @property
-    def package(self):
-        # type: () -> str
+    def package(self) -> str:
         """Return the name of the Debian binary package."""
         return self['package']
 
     @property
-    def python_path(self):
-        # type: () -> Optional[str]
+    def python_path(self) -> str | None:
         """Return path to Python UMC directory."""
         try:
             return '%(Python)s/%(Module)s/' % self
@@ -123,8 +117,7 @@ class UMC_Module(dict):
             return None
 
     @property
-    def js_path(self):
-        # type: () -> Optional[str]
+    def js_path(self) -> str | None:
         """Return path to JavaScript UMC directory."""
         try:
             return '%(Javascript)s/' % self
@@ -132,16 +125,14 @@ class UMC_Module(dict):
             return None
 
     @property
-    def js_module_file(self):
-        # type: () -> Optional[str]
+    def js_module_file(self) -> str | None:
         """Return path to main JavaScript file."""
         try:
             return '%(Javascript)s/%(Module)s.js' % self
         except KeyError:
             return None
 
-    def _iter_files(self, base, suffix):
-        # type: (Optional[str], str) -> Iterator[str]
+    def _iter_files(self, base: str | None, suffix: str) -> Iterator[str]:
         """Iterate over all files below base ending with suffix."""
         if base is None:
             return
@@ -155,50 +146,42 @@ class UMC_Module(dict):
                     yield os.path.join(dirname, ifile)
 
     @property
-    def js_files(self):
-        # type: () -> Iterator[str]
+    def js_files(self) -> Iterator[str]:
         """Iterate over all JavaScript UMC files."""
         return self._iter_files(self.js_path, '.js')
 
     @property
-    def html_files(self):
-        # type: () -> Iterator[str]
+    def html_files(self) -> Iterator[str]:
         """Iterate over all JavaScript HTML files."""
         return self._iter_files(self.js_path, '.html')
 
     @property
-    def css_files(self):
-        # type: () -> Iterator[str]
+    def css_files(self) -> Iterator[str]:
         """Iterate over all Javascript CSS files."""
         return self._iter_files(self.js_path, '.css')
 
     @property
-    def module_name(self):
-        # type: () -> Optional[str]
+    def module_name(self) -> str | None:
         """Return the name of the UMC module."""
         return self.__getitem__(MODULE)
 
     @property
-    def xml_definition(self):
-        # type: () -> Optional[str]
+    def xml_definition(self) -> str | None:
         """Return the path to the XML UMC definition."""
         return self.get(DEFINITION)
 
     @property
-    def xml_categories(self):
-        # type: () -> Optional[str]
+    def xml_categories(self) -> str | None:
         """Return the path to the XML file defining categories."""
         return self.get(CATEGORY)
 
     @property
-    def python_files(self):
-        # type: () -> Iterator[str]
+    def python_files(self) -> Iterator[str]:
         """Iterate over all Python UMC files."""
         return self._iter_files(self.python_path, '.py')
 
     @property
-    def python_po_files(self):
-        # type: () -> Iterator[str]
+    def python_po_files(self) -> Iterator[str]:
         """Iterate over all Python UMC message catalogs."""
         try:
             path = '%(Python)s/%(Module)s/' % self
@@ -208,8 +191,7 @@ class UMC_Module(dict):
             yield os.path.join(path, '%s.po' % lang)
 
     @property
-    def js_po_files(self):
-        # type: () -> Iterator[str]
+    def js_po_files(self) -> Iterator[str]:
         """Iterate over all JavaScript UMC message catalogs."""
         path = self.get(JAVASCRIPT)
         if not path:  # might be an empty string
@@ -218,8 +200,7 @@ class UMC_Module(dict):
             yield os.path.join(path, '%s.po' % lang)
 
     @property
-    def xml_po_files(self):
-        # type: () -> Iterator[Tuple[str, str]]
+    def xml_po_files(self) -> Iterator[tuple[str, str]]:
         """Iterate over all XML UMC message catalogs."""
         if self.xml_definition is None:
             return
@@ -229,14 +210,12 @@ class UMC_Module(dict):
             yield (lang, path)
 
     @property
-    def icons(self):
-        # type: () -> Optional[str]
+    def icons(self) -> str | None:
         """Return path to UMC icon directory."""
         return self.get(ICONS)
 
 
-def read_modules(package, core=False):
-    # type: (str, bool) -> List[UMC_Module]
+def read_modules(package: str, core: bool = False) -> list[UMC_Module]:
     """
     Read |UMC| module definition from :file:`debian/<package>.umc-modules`.
 
@@ -244,7 +223,7 @@ def read_modules(package, core=False):
     :param core: Import as core-module, e.g. the ones shipped with |UDM| itself.
     :returns: List of |UMC| module definitions.
     """
-    modules = []  # type: List[UMC_Module]
+    modules: list[UMC_Module] = []
 
     file_umc_module = os.path.join('debian/', package + '.umc-modules')
     file_control = os.path.join('debian/control')
@@ -280,8 +259,7 @@ def read_modules(package, core=False):
     return modules
 
 
-def module_xml2po(module, po_file, language, template=False):
-    # type: (UMC_Module, str, str, bool) -> None
+def module_xml2po(module: UMC_Module, po_file: str, language: str, template: bool = False) -> None:
     """
     Create a PO file the |XML| definition of an |UMC| module.
 
@@ -334,8 +312,7 @@ def module_xml2po(module, po_file, language, template=False):
         os.unlink(pot_file)
 
 
-def create_po_file(po_file, package, files, language='python', template=False):
-    # type: (str, str, Union[str, Iterable[str]], str, bool) -> None
+def create_po_file(po_file: str, package: str, files: str | Iterable[str], language: str = 'python', template: bool = False) -> None:
     """
     Create a PO file for a defined set of files.
 
@@ -380,8 +357,7 @@ def create_po_file(po_file, package, files, language='python', template=False):
         os.unlink(pot_file)
 
 
-def merge_po_file(po_file, pot_file):
-    # type: (str, str) -> None
+def merge_po_file(po_file: str, pot_file: str) -> None:
     """
     Merge :file:`.po` file with new :file:`.pot` file.
 
@@ -394,8 +370,7 @@ def merge_po_file(po_file, pot_file):
         call('cp', pot_file, po_file)
 
 
-def create_mo_file(po_file, mo_file=''):
-    # type: (str, str) -> None
+def create_mo_file(po_file: str, mo_file: str = '') -> None:
     """
     Compile textual message catalog (`.po`) to binary message catalog (`.mo`).
 
@@ -421,8 +396,7 @@ def create_mo_file(po_file, mo_file=''):
     )
 
 
-def create_json_file(po_file):
-    # type: (str) -> None
+def create_json_file(po_file: str) -> None:
     """
     Compile textual message catalog (`.po`) to |JSON| message catalog.
 
@@ -479,8 +453,7 @@ def create_json_file(po_file):
         json.dump(data, fd)
 
 
-def po_to_json(po_path, json_output_path):
-    # type: (str, str) -> None
+def po_to_json(po_path: str, json_output_path: str) -> None:
     """
     Convert translation file to `JSON` file.
 

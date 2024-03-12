@@ -11,13 +11,14 @@ import builtins
 import subprocess
 import urllib.parse
 import urllib.response
+from collections.abc import Sequence
 from io import BytesIO, StringIO, TextIOWrapper
 from os.path import abspath, dirname, join
-from typing import IO, Any, Dict, List, Sequence, Union
+from typing import IO, Any
 
 import pytest
 
-import univention.updater.tools as U  # noqa: E402
+import univention.updater.tools as U
 from univention.config_registry import ConfigRegistry
 
 
@@ -101,7 +102,7 @@ def http(mocker):
 class MockPopen:
     """Mockup for :py:class:`subprocess.Popen`."""
 
-    mock_commands: List[Sequence[str]] = []
+    mock_commands: list[Sequence[str]] = []
     mock_stdout = b''
     mock_stderr = b''
 
@@ -166,7 +167,7 @@ class MockFileManager:
     """Mockup for :py:func:`open()`"""
 
     def __init__(self, tmpdir: Any) -> None:
-        self.files: Dict[str, Union[StringIO, BytesIO, Exception]] = {}
+        self.files: dict[str, StringIO | BytesIO | Exception] = {}
         self._open = builtins.open
         self._tmpdir = tmpdir
 
@@ -201,8 +202,8 @@ class MockFileManager:
 
         return TextIOWrapper(buf, "utf-8") if isinstance(buf, BytesIO) and not binary else buf
 
-    def _new(self, name: str, data: Union[bytes, str] = b"") -> Union[StringIO, BytesIO]:
-        buf: Union[StringIO, BytesIO] = BytesIO(data) if isinstance(data, bytes) else StringIO(data)
+    def _new(self, name: str, data: bytes | str = b"") -> StringIO | BytesIO:
+        buf: StringIO | BytesIO = BytesIO(data) if isinstance(data, bytes) else StringIO(data)
         buf.name = name
         buf.close = lambda: None
         buf.fileno = lambda: -1

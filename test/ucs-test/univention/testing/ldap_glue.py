@@ -51,7 +51,7 @@ def to_bytes(value):
 
 
 def get_first(value):
-    if isinstance(value, (list, tuple)):
+    if isinstance(value, list | tuple):
         return value[0]
     return value
 
@@ -188,7 +188,7 @@ class LDAPConnection:
 
     def set_attributes(self, dn, **attributes):
         old_attributes = self.get(dn, attr=attributes.keys())
-        attributes = {name: [attr] if not isinstance(attr, (list, tuple)) else attr for name, attr in attributes.items()}
+        attributes = {name: [attr] if not isinstance(attr, list | tuple) else attr for name, attr in attributes.items()}
         ldif = modlist.modifyModlist(old_attributes, attributes)
         comp_dn = dn
         if ldif:
@@ -394,7 +394,7 @@ class ADConnection(LDAPConnection):
             ad_object = self.get(dn)
             for (key, value) in expected_attributes.items():
                 ad_value = {tcommon.to_unicode(x).lower() for x in ad_object.get(key, [])}
-                expected = set((tcommon.to_unicode(v).lower() for v in value) if isinstance(value, (list, tuple)) else (tcommon.to_unicode(value).lower(),))
+                expected = set((tcommon.to_unicode(v).lower() for v in value) if isinstance(value, list | tuple) else (tcommon.to_unicode(value).lower(),))
                 if not expected.issubset(ad_value):
                     try:
                         ad_value = {tcommon.normalize_dn(dn) for dn in ad_value}

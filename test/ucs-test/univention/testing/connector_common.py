@@ -228,7 +228,7 @@ def map_udm_user_to_con(user):
         "pagerTelephoneNumber": "pager",
         "sambaUserWorkstations": "userWorkstations"}
     # return {mapping[key]: value for (key, value) in user.items() if key in mapping}
-    return {mapping[key]: ([value] if not isinstance(value, (list, tuple)) else value) for (key, value) in user.items() if key in mapping}
+    return {mapping[key]: ([value] if not isinstance(value, list | tuple) else value) for (key, value) in user.items() if key in mapping}
 
 
 def map_udm_group_to_con(group):
@@ -240,7 +240,7 @@ def map_udm_group_to_con(group):
     """
     mapping = {"name": "sAMAccountName", "description": "description"}
     # return {mapping[key]: value for (key, value) in group.items() if key in mapping}
-    return {mapping[key]: ([value] if not isinstance(value, (list, tuple)) else value) for (key, value) in group.items() if key in mapping}
+    return {mapping[key]: ([value] if not isinstance(value, list | tuple) else value) for (key, value) in group.items() if key in mapping}
 
 
 def create_udm_user(udm, con, user, wait_for_sync, verify=True):

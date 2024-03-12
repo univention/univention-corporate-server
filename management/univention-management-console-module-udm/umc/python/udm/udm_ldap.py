@@ -194,7 +194,7 @@ class AppAttributes:
     def _flatten(cls, attrs):
         ret = []
         for sublist in attrs:
-            if isinstance(sublist, (list, tuple)):
+            if isinstance(sublist, list | tuple):
                 ret.extend(cls._flatten(sublist))
             else:
                 ret.append(sublist)
@@ -212,7 +212,7 @@ class AppAttributes:
                 cls._filter_attrs(_layout, attrs_to_remove)
         elif isinstance(layout, list):
             for _layout in layout:
-                if isinstance(_layout, (dict, list)):
+                if isinstance(_layout, dict | list):
                     cls._filter_attrs(_layout, attrs_to_remove)
             for attr in attrs_to_remove:
                 try:
@@ -480,7 +480,7 @@ class UDM_Module:
                 raise UMC_Error(_('Property %s not found') % property_name)
 
             # check each element if 'value' is a list
-            if isinstance(value, (tuple, list)) and property_obj.multivalue:
+            if isinstance(value, tuple | list) and property_obj.multivalue:
                 if not value and not property_obj.required:
                     MODULE.info('Setting of property ignored (is empty)')
                     if property_name in obj.info:
@@ -959,8 +959,8 @@ class UDM_Module:
 
             # default value
             if prop.base_default is not None:
-                if isinstance(prop.base_default, (list, tuple)):
-                    if prop.multivalue and prop.base_default and isinstance(prop.base_default[0], (list, tuple)):
+                if isinstance(prop.base_default, list | tuple):
+                    if prop.multivalue and prop.base_default and isinstance(prop.base_default[0], list | tuple):
                         item['default'] = prop.base_default
                     else:
                         item['default'] = prop.base_default[0]
@@ -1118,7 +1118,7 @@ class UDM_Module:
             if isinstance(syntax, udm_syntax.UDM_Objects) and syntax.key == 'dn' and len(syntax.udm_modules) == 1:
                 object_type = syntax.udm_modules[0]
                 dns = obj[key]
-                if not isinstance(dns, (list, tuple)):
+                if not isinstance(dns, list | tuple):
                     dns = [dns]
                 for dn in dns:
                     references.append({'module': 'udm', 'property': key, 'flavor': 'navigation', 'objectType': object_type, 'id': dn, 'label': '%s: %s: %s' % (key, object_type, dn), 'icon': 'udm-%s' % object_type.replace('/', '-')})

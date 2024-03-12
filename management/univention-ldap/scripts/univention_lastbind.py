@@ -36,7 +36,7 @@ from __future__ import annotations
 
 import argparse
 import sys
-from typing import Iterable, NoReturn
+from typing import TYPE_CHECKING, NoReturn
 
 import ldap
 
@@ -44,6 +44,10 @@ import univention.admin.uldap
 import univention.udm.exceptions
 from univention.config_registry import ConfigRegistry
 from univention.udm import UDM
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 
 class ScriptError(Exception):

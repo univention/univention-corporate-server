@@ -34,7 +34,6 @@
 import os
 from argparse import ArgumentParser, Namespace
 from base64 import b64encode
-from typing import Dict, List, Optional
 
 from univention.config_registry import ucr
 from univention.udm import UDM, NoObject
@@ -48,7 +47,7 @@ categories = udm.get('portals/category')
 entries = udm.get('portals/entry')
 
 
-def create_self_service_portal(args: Namespace, categories: List[str]) -> None:
+def create_self_service_portal(args: Namespace, categories: list[str]) -> None:
     try:
         portal = portals.get_by_id('self-service')
         print('Found', portal.dn)
@@ -67,7 +66,7 @@ def create_self_service_portal(args: Namespace, categories: List[str]) -> None:
     print('Saved', portal.dn)
 
 
-def create_self_service_category(args: Namespace, name: str, display_name: Dict[str, str], entries: List[str]) -> str:
+def create_self_service_category(args: Namespace, name: str, display_name: dict[str, str], entries: list[str]) -> str:
     try:
         category = categories.get_by_id(name)
         print('Found', category.dn)
@@ -85,7 +84,7 @@ def create_self_service_category(args: Namespace, name: str, display_name: Dict[
     return category.dn
 
 
-def create_self_service_entry(args: Namespace, name: str, page: str, ucr_name: str, anonymous: bool, display_name: Dict[str, str], description: Optional[Dict[str, str]] = None) -> str:
+def create_self_service_entry(args: Namespace, name: str, page: str, ucr_name: str, anonymous: bool, display_name: dict[str, str], description: dict[str, str] | None = None) -> str:
     try:
         entry = entries.get_by_id(name)
         print('Found', entry.dn)

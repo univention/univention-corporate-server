@@ -38,20 +38,13 @@ import univention.l10n as tlh
 import univention.l10n.umc as dh_umc
 
 
-try:
-    from typing import List  # noqa: F401
-except ImportError:
-    pass
-
-
 NO_SC_WARNING = '''WARNING: The given directory doesn't seem to be the checkout
 of a Univention source repository or the provided checkout is to old. This tool
 works for source trees of UCS 4.1-3, UCS@school 4.1r2 and later releases.
 The translation will be incomplete.'''
 
 
-def parse_args():
-    # type: () -> Namespace
+def parse_args() -> Namespace:
     epilog = '''Example: %(prog) -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
     parser = ArgumentParser(epilog=epilog, description=__doc__)
     parser.add_argument('-s', '--source', dest='source_dir', required=True, help='UCS source dir from which translation files are gathered, e.g. an UCS git base dir')
@@ -70,21 +63,20 @@ def parse_args():
     return options
 
 
-def main():
-    # type: () -> None
+def main() -> None:
     options = parse_args()
 
     # find all module files and move them to a language specific directory
     base_translation_modules = tlh.find_base_translation_modules(options.source_dir)
     dh_umc.LANGUAGES = (options.target_language, )
-    all_modules = []  # type: List[tlh.UMCModuleTranslation]
+    all_modules: list[tlh.UMCModuleTranslation] = []
     output_dir = os.path.join(os.getcwd(), options.target_language)
     for module_attrs in base_translation_modules:
         module = tlh.UMCModuleTranslation.from_source_package(module_attrs, options.target_language)
         all_modules.append(module)
         tlh.update_package_translation_files(module, output_dir)
 
-    special_cases = []  # type: List[tlh.SpecialCase]
+    special_cases: list[tlh.SpecialCase] = []
     try:
         special_cases = tlh.get_special_cases_from_checkout(options.source_dir, options.target_language)
     except tlh.NoSpecialCaseDefintionsFound:

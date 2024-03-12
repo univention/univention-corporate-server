@@ -33,6 +33,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from typing import Any
+
 import univention.config_registry
 from univention.management.console import Translation
 from univention.management.console.base import Base, UMC_Error
@@ -46,14 +48,11 @@ from univention.service_info import ServiceError, ServiceInfo
 _ = Translation('univention-management-console-module-services').translate
 
 
-from typing import Any, Dict, List  # noqa: E402
-
-
 class Instance(Base):
 
     @sanitize(pattern=PatternSanitizer(default='.*'))
     @simple_response
-    def query(self, pattern: str) -> List[Dict]:
+    def query(self, pattern: str) -> list[dict]:
         ucr.load()
         srvs = ServiceInfo()
 
@@ -93,7 +92,7 @@ class Instance(Base):
     def restart(self, request) -> None:
         return self._change_services(request.options, 'restart')
 
-    def _change_services(self, services: List[str], action: str) -> Dict:
+    def _change_services(self, services: list[str], action: str) -> dict:
         error_messages = []
         srvs = ServiceInfo()
         for srv in services:

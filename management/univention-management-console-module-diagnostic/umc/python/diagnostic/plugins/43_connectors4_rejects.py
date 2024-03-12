@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from typing import Iterator, Tuple
+from collections.abc import Iterator
 
 import univention.uldap
 from univention.config_registry import ucr_live as configRegistry
@@ -70,13 +70,13 @@ def get_s4_connector(configbasename: str = 'connector'):
         return s4
 
 
-def get_ucs_rejected(s4) -> Iterator[Tuple[str, str, str]]:
+def get_ucs_rejected(s4) -> Iterator[tuple[str, str, str]]:
     for (filename, dn) in s4.list_rejected_ucs():
         s4_dn = s4.get_dn_by_ucs(dn)
         yield (filename, dn.strip(), s4_dn.strip())
 
 
-def get_s4_rejected(s4) -> Iterator[Tuple[object, str, str]]:
+def get_s4_rejected(s4) -> Iterator[tuple[object, str, str]]:
     for (s4_id, dn) in s4.list_rejected():
         ucs_dn = s4.get_dn_by_con(dn)
         yield (s4_id, dn.strip(), ucs_dn.strip())

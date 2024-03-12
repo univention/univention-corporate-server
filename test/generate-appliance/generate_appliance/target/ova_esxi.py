@@ -6,15 +6,18 @@
 
 from argparse import Namespace
 from logging import getLogger
-from typing import List, Tuple, Union, cast  # noqa: F401
+from typing import TYPE_CHECKING, cast
 
 import lxml.builder
 
-from ..files import File  # noqa: F401
 from ..files.raw import Raw
 from ..files.tar import Tar
 from ..files.vmdk import Vmdk
 from . import ANNOTATION, LICENSE, TargetFile
+
+
+if TYPE_CHECKING:
+    from ..files import File
 
 
 log = getLogger(__name__)
@@ -352,10 +355,10 @@ class OVA_ESXi(TargetFile):
 
         vmdk = Vmdk(image, adapter_type="lsilogic", hwversion="7", subformat="streamOptimized")
         descriptor = create_ovf_descriptor_esxi(image_name, vmdk, options)
-        files = [
+        files: list[tuple[str, File | bytes]] = [
             (descriptor_name, descriptor),
             (image_name, vmdk),
-        ]  # type: List[Tuple[str, Union[File, bytes]]]
+        ]
         ova = Tar(files)
         ova.path().rename(archive_name)
         log.info('Generated "%s" appliance as\n  %s', self, archive_name)

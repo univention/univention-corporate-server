@@ -7,9 +7,9 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import json
+from collections.abc import Iterable
 from itertools import groupby
 from operator import itemgetter
-from typing import Iterable, Tuple
 
 
 # from ../conftest.py
@@ -20,7 +20,7 @@ DATA = b'x' * 100  # univention.updater.tools.MIN_GZIP
 RJSON = '/ucs-releases.json'
 
 
-def gen_releases(releases: Iterable[Tuple[int, int, int]] = [], major: int = MAJOR, minor: int = MINOR, patches: Iterable[int] = range(PATCH + 1)) -> bytes:
+def gen_releases(releases: Iterable[tuple[int, int, int]] = [], major: int = MAJOR, minor: int = MINOR, patches: Iterable[int] = range(PATCH + 1)) -> bytes:
     """
     Generate a `ucs-releases.json` string from a list of given releases.
 
@@ -44,11 +44,11 @@ def gen_releases(releases: Iterable[Tuple[int, int, int]] = [], major: int = MAJ
                             {
                                 "patchlevel": patchlevel,
                                 "status": "maintained",
-                            } for major, minor, patchlevel in patchelevels  # noqa: F812
+                            } for major, minor, patchlevel in patchelevels
                         ],
-                    } for minor, patchelevels in groupby(minors, key=itemgetter(1))  # noqa: F812
+                    } for minor, patchelevels in groupby(minors, key=itemgetter(1))
                 ],
-            } for major, minors in groupby(releases, key=itemgetter(0))  # noqa: F812
+            } for major, minors in groupby(releases, key=itemgetter(0))
         ],
     }
     return json.dumps(data).encode('UTF-8')

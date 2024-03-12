@@ -32,8 +32,6 @@
 r"""Module and object for all `computers/\*` UDM modules."""
 
 
-from typing import List  # noqa: F401
-
 from ..encoders import (
     CnameListPropertyEncoder, DnsEntryZoneAliasListPropertyEncoder, DnsEntryZoneForwardListMultiplePropertyEncoder,
     DnsEntryZoneReverseListMultiplePropertyEncoder, StringIntBooleanPropertyEncoder, StringIntPropertyEncoder,
@@ -88,8 +86,7 @@ class ComputersDCModule(ComputersAllModule):
 class ComputersMemberModule(ComputersAllModule):
     """ComputersAllObject factory with an adjusted default position"""
 
-    def _get_default_object_positions(self):
-        # type: () -> List[str]
+    def _get_default_object_positions(self) -> list[str]:
         ret = super()._get_default_object_positions()
         if len(ret) == 4 and \
                 f'cn=computers,{self.connection.base}' in ret and \

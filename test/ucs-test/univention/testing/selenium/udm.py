@@ -35,7 +35,7 @@
 from __future__ import annotations
 
 import time
-from typing import Any, Mapping
+from typing import TYPE_CHECKING, Any
 
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
@@ -45,6 +45,10 @@ from selenium.webdriver.common.keys import Keys
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 from univention.admin import localization
+
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping
 
 
 translator = localization.translation('ucs-test-framework')

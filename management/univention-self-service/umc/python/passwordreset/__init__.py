@@ -44,7 +44,7 @@ from email.mime.nonmultipart import MIMENonMultipart
 from email.utils import formatdate
 from functools import wraps
 from subprocess import PIPE, STDOUT, Popen
-from typing import Any, Dict, List
+from typing import Any
 
 import atexit
 import pylibmc
@@ -516,7 +516,7 @@ class Instance(Base):
 
             isValid = True
             message = ''
-            if prop.multivalue and isinstance(value, (tuple, list)):
+            if prop.multivalue and isinstance(value, tuple | list):
                 isValid = []
                 message = []
                 for ival in value:
@@ -684,7 +684,7 @@ class Instance(Base):
         try:
             new_user.create()
         except univention.admin.uexceptions.base as exc:
-            password_complexity_message = self._get_password_complexity_message() if isinstance(exc, (udm_errors.pwToShort, udm_errors.pwQuality)) else ''
+            password_complexity_message = self._get_password_complexity_message() if isinstance(exc, udm_errors.pwToShort | udm_errors.pwQuality) else ''
             MODULE.error('create_self_registered_account(): could not create user: %s' % (exc,))
             return {
                 'success': False,
@@ -996,7 +996,7 @@ class Instance(Base):
 
     @forward_to_master
     @simple_response
-    def get_reset_methods(self) -> List[Dict[str, Any]]:
+    def get_reset_methods(self) -> list[dict[str, Any]]:
         if ucr.is_false('umc/self-service/passwordreset/backend/enabled'):
             msg = _('The password reset was disabled via the Univention Configuration Registry.')
             MODULE.error(f'get_reset_methods(): {msg}')

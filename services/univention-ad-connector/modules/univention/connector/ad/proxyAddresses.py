@@ -64,7 +64,7 @@ def equal(values1, values2):
     ud.debug(ud.LDAP, ud.ALL, "proxyAddesses: values2: %r" % (values2,))
     values_normalized = []
     for values in (values1, values2):
-        if not isinstance(values, (list, tuple)):
+        if not isinstance(values, list | tuple):
             values = [values]
         values_normalized.append(
             [v for v in map(valid_mailaddress, values) if v],

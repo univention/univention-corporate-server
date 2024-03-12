@@ -6,10 +6,10 @@
 
 import stat
 import tarfile
+from collections.abc import Sequence
 from io import BytesIO
 from logging import getLogger
 from pathlib import Path
-from typing import IO, Sequence, Tuple, Union  # noqa: F401
 
 from . import File
 from .archive import Archive
@@ -21,7 +21,7 @@ log = getLogger(__name__)
 class Tar(Archive):
     SUFFIX = ".tar"
 
-    def __init__(self, file_list: Sequence[Tuple[str, Union[File, bytes]]], fileformat: int = tarfile.USTAR_FORMAT) -> None:
+    def __init__(self, file_list: Sequence[tuple[str, File | bytes]], fileformat: int = tarfile.USTAR_FORMAT) -> None:
         Archive.__init__(self, file_list)
         self._format = fileformat
 

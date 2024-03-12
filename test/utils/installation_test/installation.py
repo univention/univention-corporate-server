@@ -13,7 +13,6 @@ import time
 from argparse import ArgumentParser, Namespace
 from contextlib import suppress
 from datetime import datetime
-from typing import Dict, List, Optional, Tuple
 
 from helper import trace_calls, verbose
 from twisted.internet import reactor
@@ -134,10 +133,10 @@ class VNCInstallation:
         self.timeout = 120
         self.setup_finish_sleep = 900
         self.translations = self.load_translation(self.args.language)
-        self._client: Optional[ThreadedVNCClientProxy] = None
+        self._client: ThreadedVNCClientProxy | None = None
         self._stopping = False
 
-    def load_translation(self, language: str) -> Dict[str, str]:
+    def load_translation(self, language: str) -> dict[str, str]:
         return {}
 
     def translate(self, text: str) -> str:
@@ -221,7 +220,7 @@ class VNCInstallation:
         translated = self.translate(text)
         timeout = self.timeout * (timeout >= 0) + abs(timeout)
         self.client.timeout = timeout + 5
-        result: List[Tuple[int, int]] = []
+        result: list[tuple[int, int]] = []
         self.client.waitForText(translated, timeout, wait, result)
         if not result:
             raise VNCDoException()

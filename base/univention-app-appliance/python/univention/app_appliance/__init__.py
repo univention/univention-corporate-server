@@ -37,7 +37,6 @@ import codecs
 import json
 import os
 import struct
-from typing import Dict
 
 from univention.appcenter import app, app_cache
 
@@ -115,7 +114,7 @@ def get_cache_dir_name(app: app.App) -> str:
     return app_cache_dir
 
 
-def get_app_style_properties(app: app.App) -> Dict[str, str]:
+def get_app_style_properties(app: app.App) -> dict[str, str]:
     local_cache_name = 'app_props' if app.get_locale() == 'en' else 'app_props_de'
     try:
         with open(os.path.join(get_cache_dir_name(app), local_cache_name)) as fd:

@@ -43,7 +43,7 @@ import socket
 import subprocess
 import tempfile
 import traceback
-from typing import Any, Callable, Dict, List, Union  # noqa: F401
+from collections.abc import Callable
 
 import apt_pkg
 import dns.exception
@@ -64,7 +64,7 @@ CMD_DISABLE_EXEC = ['/usr/share/univention-updater/disable-apache2-umc']
 RE_HOSTNAME = re.compile(r'^[a-z]([a-z0-9-]*[a-z0-9])*(\.([a-z0-9]([a-z0-9-]*[a-z0-9])*[.])*[a-z0-9]([a-z0-9-]*[a-z0-9])*)?$')
 
 
-def get_master_dns_lookup() -> Dict:
+def get_master_dns_lookup() -> dict:
     # DNS lookup for the Primary Directory Node entry
     msg = None
     fqdn = None
@@ -92,7 +92,7 @@ def get_master_dns_lookup() -> Dict:
 
 class HostSanitizer(StringSanitizer):
 
-    def _sanitize(self, value: str, name: str, further_args: List[str]) -> str:
+    def _sanitize(self, value: str, name: str, further_args: list[str]) -> str:
         value = super()._sanitize(value, name, further_args)
         try:
             return socket.getfqdn(value)
@@ -115,7 +115,7 @@ class Progress:
         self.errors = []
         self.critical = False
 
-    def poll(self) -> Dict:
+    def poll(self) -> dict:
         return {
             "finished": self.finished,
             "steps": 100 * float(self.steps) / self.max_steps,
@@ -149,7 +149,7 @@ class Progress:
         self.steps += steps
 
 
-def _dummyFunc(*args: List) -> None:
+def _dummyFunc(*args: list) -> None:
     """dummy function that does nothing"""
 
 
@@ -173,7 +173,7 @@ def system_join(
 
 
 def run_join_scripts(
-        scripts: List, force: bool, username: str, password: str, info_handler: Callable = _dummyFunc,
+        scripts: list, force: bool, username: str, password: str, info_handler: Callable = _dummyFunc,
         error_handler: Callable = _dummyFunc, critical_handler: Callable = _dummyFunc,
         step_handler: Callable = _dummyFunc, component_handler: Callable = _dummyFunc) -> None:
     with tempfile.NamedTemporaryFile() as passwordFile:
@@ -200,7 +200,7 @@ def run_join_scripts(
 
 
 def run(
-        cmd: List, steps_per_script: float, info_handler: Callable = _dummyFunc, error_handler: Callable = _dummyFunc,
+        cmd: list, steps_per_script: float, info_handler: Callable = _dummyFunc, error_handler: Callable = _dummyFunc,
         critical_handler: Callable = _dummyFunc, step_handler: Callable = _dummyFunc, component_handler: Callable = _dummyFunc) -> None:
     # disable restart of UMC server/web-server
     MODULE.info('disabling restart of UMC server/web-server')
@@ -338,7 +338,7 @@ class Instance(Base):
             return False
 
     @simple_response
-    def query(self) -> List[str]:
+    def query(self) -> list[str]:
         """collects status about join scripts"""
         # unjoined system?
         if not self._joined:
@@ -384,7 +384,7 @@ class Instance(Base):
         return self._joined
 
     @simple_response
-    def progress(self) -> Dict:
+    def progress(self) -> dict:
         return self.progress_state.poll()
 
     @simple_response
@@ -424,7 +424,7 @@ class Instance(Base):
     # TODO __finalize__?
 
     @simple_response
-    def logview(self) -> List[str]:
+    def logview(self) -> list[str]:
         """Returns the last 2MB of the join.log file"""
         with open(LOGFILE, 'rb') as fd:
             size = 2097152
@@ -467,7 +467,7 @@ class Instance(Base):
                 critical_handler=self.progress_state.critical_handler,
             )
 
-        def _finished(thread, result: Union[None, BaseException]) -> None:
+        def _finished(thread, result: None | BaseException) -> None:
             MODULE.info('Finished joining')
             self._unlock()
             self.progress_state.info = _('finished...')
@@ -518,7 +518,7 @@ class Instance(Base):
                 critical_handler=self.progress_state.critical_handler,
             )
 
-        def _finished(thread, result: Union[None, BaseException]) -> None:
+        def _finished(thread, result: None | BaseException) -> None:
             MODULE.info('Finished running join scripts')
             self._unlock()
             self.progress_state.info = _('finished...')

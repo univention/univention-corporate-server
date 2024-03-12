@@ -7,7 +7,6 @@
 ## tags: [skip_admember]
 
 import contextlib
-from typing import Dict, List
 
 import pytest
 
@@ -37,7 +36,7 @@ REASON_MINIMUM_AGE = 'Changing password failed. The minimum password age is not 
 REASON_TOO_SIMILAR = 'Changing password failed. The password is too similar to the old one.'
 
 # TODO: add a lot more unimplemented tests!
-reasons: Dict[str, List[str]] = {
+reasons: dict[str, list[str]] = {
     REASON_TOO_SHORT: ['Test', 'ana', 'a1z'],
     REASON_TOO_SIMPLE: ['123456789'],
     REASON_PALINDROME: [],  # none work: ['Tattarrattat', 'Rotavator', 'Malayalam', 'Deleveled', 'Racecar', 'Detartrated'],

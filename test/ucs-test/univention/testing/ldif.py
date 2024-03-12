@@ -23,10 +23,14 @@ import sys
 import time
 import unicodedata
 from optparse import SUPPRESS_HELP, OptionGroup, OptionParser, Values
-from typing import Any, Dict, Iterable, Iterator, List, Literal, NoReturn
+from typing import TYPE_CHECKING, Any, Literal, NoReturn
 
 
-Entry = Dict[str, List[str]]
+if TYPE_CHECKING:
+    from collections.abc import Iterable, Iterator
+
+
+Entry = dict[str, list[str]]
 
 USAGE = 'usage: %prog [option] <LDIF1> [[option] <LDIF2>]'
 DESCRIPTION = '''

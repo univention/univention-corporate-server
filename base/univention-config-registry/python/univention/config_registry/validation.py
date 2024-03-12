@@ -35,7 +35,8 @@ Checks validity of type definitions and type compatibility of values to be set.
 import ipaddress
 import json
 import re
-from typing import Container, Dict, Iterator, Optional, Pattern, Type as _Type, Union, cast  # noqa: F401
+from collections.abc import Container, Iterator  # noqa: F401
+from typing import cast
 from urllib.parse import urlsplit
 
 import univention.config_registry_info as cri
@@ -197,8 +198,8 @@ class Integer(BaseValidator):
         # type: (Dict[str, str]) -> None
         self._min = None  # type: Optional[int]
         self._max = None  # type: Optional[int]
-        self.min = cast(Optional[int], attrs.get('min', self.MIN))
-        self.max = cast(Optional[int], attrs.get('max', self.MAX))
+        self.min = cast(int | None, attrs.get('min', self.MIN))
+        self.max = cast(int | None, attrs.get('max', self.MAX))
 
     @property
     def min(self):

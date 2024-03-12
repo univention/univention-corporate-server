@@ -45,9 +45,10 @@ import sys
 import time
 import traceback
 import zlib
+from collections.abc import Callable, Iterator, Sequence  # noqa: F401
 from io import BytesIO
 from logging import getLogger
-from typing import TYPE_CHECKING, Any, Callable, Iterator, Pattern, Sequence, Type  # noqa: F401
+from typing import TYPE_CHECKING
 
 import ldap
 import ldap.dn
@@ -893,7 +894,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
         # sort choices before inserting / appending some special items
         choices = cls.sort_choices(choices)
 
-        if isinstance(cls.static_values, (tuple, list)):
+        if isinstance(cls.static_values, tuple | list):
             for value in cls.static_values:
                 choices.insert(0, value)
         if cls.empty_value:
@@ -972,7 +973,7 @@ class UDM_Attribute(ISyntax, _UDMObjectOrAttribute):
                 # if the ldap schema is not installed
                 # and thus no 'printmodel' attribute is known.
                 return []
-            if not isinstance(values, (list, tuple)):  # single value
+            if not isinstance(values, list | tuple):  # single value
                 values = [values]
             if cls.is_complex:
                 return [(x[cls.key_index], x[cls.label_index]) for x in values]
@@ -1004,7 +1005,7 @@ class UDM_Attribute(ISyntax, _UDMObjectOrAttribute):
         # sort choices before inserting / appending some special items
         choices = cls.sort_choices(choices)
 
-        if isinstance(cls.static_values, (tuple, list)):
+        if isinstance(cls.static_values, tuple | list):
             for value in cls.static_values:
                 choices.insert(0, value)
         if cls.empty_value:

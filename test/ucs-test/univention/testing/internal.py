@@ -37,7 +37,11 @@ import operator
 import os
 import re
 import sys
-from typing import Any, Callable, Iterable
+from typing import TYPE_CHECKING, Any
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Iterable
 
 
 __all__ = [

@@ -21,7 +21,7 @@ import time
 from contextlib import contextmanager
 from http.client import HTTPConnection
 from shlex import quote
-from typing import TYPE_CHECKING, Callable, Iterator, Sequence
+from typing import TYPE_CHECKING
 from urllib.parse import urlparse
 
 import requests
@@ -31,6 +31,7 @@ from univention.testing import ucr as _ucr
 
 
 if TYPE_CHECKING:
+    from collections.abc import Callable, Iterator, Sequence
     from types import TracebackType
 
 

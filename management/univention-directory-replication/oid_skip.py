@@ -12,11 +12,11 @@ Please keep the lines sorted by OID.
 """
 
 import sys
+from collections.abc import Iterator
 from pathlib import Path
 from subprocess import Popen
 from tempfile import NamedTemporaryFile
 from time import sleep
-from typing import Dict, Iterator, Set, Tuple
 
 import ldap
 import ldap.schema
@@ -29,11 +29,11 @@ EXP = '1.3.6.1.4.1.4203.666.11.1.'
 ENTRY_DN = ("1.3.6.1.4.1.4203.666.1.33", "1.3.6.1.1.20")
 
 
-def s2t(oid: str) -> Tuple[int, ...]:
+def s2t(oid: str) -> tuple[int, ...]:
     return tuple(int(i) for i in oid.split("."))
 
 
-def dump_schema() -> Iterator[Tuple[Tuple[int, ...], str, str]]:
+def dump_schema() -> Iterator[tuple[tuple[int, ...], str, str]]:
     for _ in range(10):
         try:
             _dn, schema = ldap.schema.subentry.urlfetch(URI)
@@ -71,7 +71,7 @@ def walk_modules() -> Iterator[str]:
 
 
 def main() -> None:
-    schema: Dict[Tuple[int, ...], Tuple[str, str, Set[str]]] = {}
+    schema: dict[tuple[int, ...], tuple[str, str, set[str]]] = {}
 
     for i, mod in enumerate(walk_modules()):
         if sys.stderr.isatty():

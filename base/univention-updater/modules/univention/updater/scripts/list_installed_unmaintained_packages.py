@@ -36,7 +36,7 @@ from argparse import ArgumentParser, FileType, Namespace
 from os import get_terminal_size
 from sys import exit, stdout
 from textwrap import TextWrapper
-from typing import IO, Set, Tuple
+from typing import IO
 
 import apt
 
@@ -63,13 +63,13 @@ def parse_args() -> Namespace:
     return parser.parse_args()
 
 
-def get_unmaintained_packages(maintained: IO[str]) -> Set[str]:
+def get_unmaintained_packages(maintained: IO[str]) -> set[str]:
     installed_packages, installed_from_maintained_repo = get_installed_packages()
     maintained_packages = get_maintained_packages(maintained)
     return installed_packages - maintained_packages - installed_from_maintained_repo
 
 
-def get_installed_packages() -> Tuple[Set[str], Set[str]]:
+def get_installed_packages() -> tuple[set[str], set[str]]:
     cache = apt.Cache()
     installed_packages = set()
     from_maintained_repo = set()
@@ -86,18 +86,18 @@ def get_installed_packages() -> Tuple[Set[str], Set[str]]:
     return installed_packages, from_maintained_repo
 
 
-def get_maintained_packages(maintained: IO[str]) -> Set[str]:
+def get_maintained_packages(maintained: IO[str]) -> set[str]:
     return {line.strip() for line in maintained}
 
 
-def print_packages(packages: Set[str]) -> None:
+def print_packages(packages: set[str]) -> None:
     if packages:
         print_unmaintained_packages(packages)
     else:
         print_all_maintained()
 
 
-def print_unmaintained_packages(packages: Set[str]) -> None:
+def print_unmaintained_packages(packages: set[str]) -> None:
     print('The following packages are unmaintained:')
     print_wrapped(' '.join(sorted(packages)))
 

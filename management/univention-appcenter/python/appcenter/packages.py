@@ -39,9 +39,9 @@ import fcntl
 import os
 import re
 import time
+from collections.abc import Iterable, Iterator  # noqa: F401
 from contextlib import contextmanager
 from logging import Handler, LogRecord  # noqa: F401
-from typing import Dict, Iterable, Iterator, List  # noqa: F401
 
 from univention.appcenter.log import LogCatcher, get_base_logger
 from univention.appcenter.utils import call_process

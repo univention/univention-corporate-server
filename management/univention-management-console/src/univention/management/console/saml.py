@@ -89,7 +89,7 @@ class SamlError(HTTPError):
     def __init__(self, _=_):
         self._ = _
 
-    def error(func=None, status=400):  # noqa: N805
+    def error(func=None, status=400):
         def _decorator(func):
             def _decorated(self, *args, **kwargs):
                 message = func(self, *args, **kwargs) or ()

@@ -45,9 +45,13 @@ from fnmatch import fnmatch
 from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 from types import ModuleType
-from typing import IO, Container, Dict
+from typing import IO, TYPE_CHECKING
 
 import univention.ucslint.base as uub
+
+
+if TYPE_CHECKING:
+    from collections.abc import Container
 
 
 try:
@@ -68,7 +72,7 @@ RE_OVERRIDE = re.compile(
     $''', re.VERBOSE)
 
 
-Plugins = Dict[str, ModuleType]
+Plugins = dict[str, ModuleType]
 
 
 def load_plugins(opt: Namespace) -> Plugins:

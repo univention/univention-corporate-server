@@ -37,9 +37,13 @@ from configparser import (
     DuplicateOptionError, DuplicateSectionError, MissingSectionHeaderError, ParsingError, RawConfigParser,
 )
 from pathlib import Path
-from typing import Any, Dict, Iterable, Iterator, List
+from typing import TYPE_CHECKING, Any
 
 import univention.ucslint.base as uub
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable, Iterator
 
 
 # Check 4
@@ -57,7 +61,7 @@ import univention.ucslint.base as uub
 #
 # TODO / FIXME
 # - 0004-29: Different (conflicting) packages might provide the same Multifile with different definitions (e.g. univention-samba/etc/smb.conf)
-UcrInfo = Dict[str, List[str]]
+UcrInfo = dict[str, list[str]]
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):

@@ -8,7 +8,7 @@
 import shlex
 import subprocess
 import traceback
-from typing import Any, Dict, List
+from typing import Any
 
 from packaging.version import Version
 
@@ -51,8 +51,8 @@ def set_role_and_check_if_join_will_work(role: str, master_fqdn: str, admin_user
             univention.config_registry.handler_unset(['server/role'])
 
 
-def receive_domaincontroller_master_information(dns: str, nameserver: str, address: str, username: str, password: str) -> Dict[str, Any]:
-    result: Dict[str, Any] = {}
+def receive_domaincontroller_master_information(dns: str, nameserver: str, address: str, username: str, password: str) -> dict[str, Any]:
+    result: dict[str, Any] = {}
     result['domain'] = check_credentials_nonmaster(dns, nameserver, address, username, password)
     check_domain_has_activated_license(address, username, password)
     check_domain_is_higher_or_equal_version(address, username, password)
@@ -113,7 +113,7 @@ def check_domain_is_higher_or_equal_version(address: str, username: str, passwor
             raise UMC_Error(_('The UCS version of the domain you are trying to join ({}) is lower than the local one ({}). This constellation is not supported.').format(master_ucs_version, nonmaster_ucs_version))
 
 
-def check_for_school_domain(hostname: str, address: str, username: str, password: str) -> Dict[str, Any]:
+def check_for_school_domain(hostname: str, address: str, username: str, password: str) -> dict[str, Any]:
     MODULE.process('univention-join:school: check_for_school_domain(%r, %r, %r, %r)' % (hostname, address, username, '$PASSWORD'))
     is_school_multiserver_domain = check_is_school_multiserver_domain(address, username, password)
     if is_school_multiserver_domain:
@@ -169,7 +169,7 @@ def check_is_school_multiserver_domain(address: str, username: str, password: st
     return is_school_multiserver_domain
 
 
-def get_server_school_roles(hostname: str, address: str, username: str, password: str) -> List[str]:
+def get_server_school_roles(hostname: str, address: str, username: str, password: str) -> list[str]:
     MODULE.process('univention-join:school: get_server_school_roles(%r, %r, %r, %r)' % (hostname, address, username, '$PASSWORD'))
     school_roles = []
     with _temporary_password_file(password) as password_file:

@@ -32,7 +32,7 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import TYPE_CHECKING, Iterable, Iterator
+from typing import TYPE_CHECKING
 
 
 try:
@@ -44,6 +44,8 @@ import univention.ucslint.base as uub
 
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable, Iterator
+
     from apt.package import Version
 
 

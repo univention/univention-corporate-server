@@ -60,8 +60,9 @@ import sys
 import time
 import traceback
 import types
+from collections.abc import Callable  # noqa: F401
 from threading import Lock, Thread
-from typing import Any, Callable, Dict, Generic, List, Optional, Tuple, Type, TypeVar, Union  # noqa: F401
+from typing import TypeVar
 
 import tornado
 
@@ -576,7 +577,7 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False, 
             if progress is True:
                 progress_title = None
             else:
-                if isinstance(progress, (list, tuple)):
+                if isinstance(progress, list | tuple):
                     progress_title, progress_msg = progress
                 else:
                     progress_title, progress_msg = progress, None

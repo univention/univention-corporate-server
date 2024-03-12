@@ -35,7 +35,6 @@
 import codecs
 import logging
 import os
-from typing import Dict, List, Optional, Tuple  # noqa: F401
 
 from ldap import SERVER_DOWN
 from ldap.filter import filter_format
@@ -51,19 +50,16 @@ SAMBA_ACCOUNT_FLAG_LOCKED = 'L'
 DISALLOWED_SAMBA_ACCOUNT_FLAGS = frozenset((SAMBA_ACCOUNT_FLAG_DISABLED, SAMBA_ACCOUNT_FLAG_LOCKED))
 
 
-def convert_network_access_attr(attributes):
-    # type: (Dict[str, List[bytes]]) -> bool
+def convert_network_access_attr(attributes: dict[str, list[bytes]]) -> bool:
     return b'1' in attributes.get('univentionNetworkAccess', [])
 
 
-def convert_ucs_debuglevel(ucs_debuglevel):
-    # type: (int) -> int
+def convert_ucs_debuglevel(ucs_debuglevel: int) -> int:
     logging_debuglevel = [logging.ERROR, logging.WARNING, logging.INFO, logging.INFO, logging.DEBUG][max(0, min(4, ucs_debuglevel))]
     return logging_debuglevel
 
 
-def get_ldapConnection():
-    # type: () -> univention.uldap.access
+def get_ldapConnection() -> univention.uldap.access:
     try:
         # try ldap/server/name, then each of ldap/server/addition
         return univention.uldap.getMachineConnection(ldap_master=False, reconnect=False, secret_file='/etc/freeradius.secret')
@@ -74,8 +70,7 @@ def get_ldapConnection():
 
 class NetworkAccessError(Exception):
 
-    def __init__(self, msg):
-        # type: (str) -> None
+    def __init__(self, msg: str) -> None:
         self.msg = msg
 
 
@@ -97,7 +92,7 @@ class UserDeactivatedError(NetworkAccessError):
 
 class NetworkAccess:
 
-    def __init__(self, username, stationId, loglevel=None, logfile=None):  # type: (str, str, Optional[int], Optional[str]) -> None
+    def __init__(self, username: str, stationId: str, loglevel: int | None = None, logfile: str | None = None) -> None:
         self.username = parse_username(username)
         self.mac_address = decode_stationId(stationId)
         self.ldapConnection = get_ldapConnection()
@@ -109,7 +104,7 @@ class NetworkAccess:
         self.logger.debug('Given username: %r', username)
         self.logger.debug('Given stationId: %r', stationId)
 
-    def _setup_logger(self, loglevel, logfile):  # type: (Optional[int], Optional[str]) -> None
+    def _setup_logger(self, loglevel: int | None, logfile: str | None) -> None:
         if loglevel is not None:
             ucs_debuglevel = loglevel
         else:
@@ -121,7 +116,7 @@ class NetworkAccess:
         self.logger = logging.getLogger('radius-ntlm')
         self.logger.setLevel(debuglevel)
         if logfile is not None:
-            log_handler = logging.FileHandler(logfile)  # type: logging.Handler
+            log_handler: logging.Handler = logging.FileHandler(logfile)
             log_formatter = logging.Formatter(f'%(asctime)s - %(name)s - %(levelname)10s: [pid={os.getpid()}; user={self.username}; mac={self.mac_address}] %(message)s')
         else:
             log_handler = logging.StreamHandler()
@@ -130,16 +125,14 @@ class NetworkAccess:
         self.logger.addHandler(log_handler)
         # self.logger.info("Loglevel set to: %s", ucs_debuglevel)
 
-    def build_access_dict(self, ldap_result):
-        # type: (List[Tuple[str, Dict[str, List[bytes]]]]) -> Dict[str, bool]
+    def build_access_dict(self, ldap_result: list[tuple[str, dict[str, list[bytes]]]]) -> dict[str, bool]:
         access_dict = {
             dn: convert_network_access_attr(attributes)
             for (dn, attributes) in ldap_result
         }
         return access_dict
 
-    def get_user_network_access(self, uid):
-        # type: (str) -> Dict[str, bool]
+    def get_user_network_access(self, uid: str) -> dict[str, bool]:
         users = self.ldapConnection.search(filter=filter_format('(uid=%s)', (uid, )), attr=['univentionNetworkAccess'])
         if not users:
             users = self.ldapConnection.search(filter=filter_format('(mailPrimaryAddress=%s)', (uid, )), attr=['univentionNetworkAccess'])
@@ -147,18 +140,15 @@ class NetworkAccess:
             users = self.ldapConnection.search(filter=filter_format('(macAddress=%s)', (uid,)), attr=['univentionNetworkAccess'])
         return self.build_access_dict(users)
 
-    def get_station_network_access(self, mac_address):
-        # type: (str) -> Dict[str, bool]
+    def get_station_network_access(self, mac_address: str) -> dict[str, bool]:
         stations = self.ldapConnection.search(filter=filter_format('(macAddress=%s)', (mac_address, )), attr=['univentionNetworkAccess'])
         return self.build_access_dict(stations)
 
-    def get_groups_network_access(self, dn):
-        # type: (str) -> Dict[str, bool]
+    def get_groups_network_access(self, dn: str) -> dict[str, bool]:
         groups = self.ldapConnection.search(filter=filter_format('(uniqueMember=%s)', (dn, )), attr=['univentionNetworkAccess'])
         return self.build_access_dict(groups)
 
-    def evaluate_ldap_network_access(self, access, level=''):
-        # type: (Dict[str, bool], str) -> bool
+    def evaluate_ldap_network_access(self, access: dict[str, bool], level: str = '') -> bool:
         short_circuit = not self.logger.isEnabledFor(logging.DEBUG)
         policy = any(access.values())
         if short_circuit and policy:
@@ -172,14 +162,12 @@ class NetworkAccess:
                     break
         return policy
 
-    def check_proxy_filter_policy(self):
-        # type: () -> bool
+    def check_proxy_filter_policy(self) -> bool:
         """Dummy function for UCS@school"""
         self.logger.debug('UCS@school RADIUS support is not installed')
         return False
 
-    def check_network_access(self):
-        # type: () -> bool
+    def check_network_access(self) -> bool:
         result = self.get_user_network_access(self.username)
         if not result:
             self.logger.info('Login attempt with unknown username')
@@ -192,8 +180,7 @@ class NetworkAccess:
             self.logger.info('Login attempt denied by LDAP settings')
         return policy
 
-    def check_station_whitelist(self):
-        # type: () -> bool
+    def check_station_whitelist(self) -> bool:
         if not self.whitelisting:
             self.logger.debug('MAC filtering is disabled by radius/mac/whitelisting.')
             return True
@@ -212,8 +199,7 @@ class NetworkAccess:
             self.logger.info('Login attempt denied by LDAP settings')
         return policy
 
-    def getNTPasswordHash(self):
-        # type: () -> bytes
+    def getNTPasswordHash(self) -> bytes:
         "stationId may be not supplied to the program"
         if not (self.check_proxy_filter_policy() or self.check_network_access()):
             raise UserNotAllowedError('User is not allowed to authenticate via RADIUS')

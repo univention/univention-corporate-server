@@ -31,8 +31,9 @@
 
 import importlib
 import os.path
+from collections.abc import Iterable, Iterator  # noqa: F401
 from glob import glob
-from typing import Any, Dict, Iterable, Iterator, List, Tuple, Type, cast  # noqa: F401
+from typing import cast
 
 
 class Plugin(type):

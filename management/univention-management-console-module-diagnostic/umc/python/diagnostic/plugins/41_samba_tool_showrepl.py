@@ -31,7 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
-from typing import Iterator, Tuple
+from collections.abc import Iterator
 
 import ldap
 
@@ -73,7 +73,7 @@ class DRSUAPI:
         return lp.get('netbios name').lower() + "." + lp.get('realm').lower()
 
     @staticmethod
-    def samba_credentials() -> Tuple:
+    def samba_credentials() -> tuple:
         load_param = samba.param.LoadParm()
         load_param.set("debug level", "0")
         if os.getenv("SMB_CONF_PATH") is not None:
@@ -86,13 +86,13 @@ class DRSUAPI:
             credentials.set_machine_account(load_param)
         return (load_param, credentials)
 
-    def _replica_info(self, info_type) -> Tuple:
+    def _replica_info(self, info_type) -> tuple:
         req1 = drsuapi.DsReplicaGetInfoRequest1()
         req1.info_type = info_type
         (info_type, info) = self.drsuapi.DsReplicaGetInfo(self.handle, 1, req1)
         return (info_type, info)
 
-    def neighbours(self) -> Iterator[Tuple]:
+    def neighbours(self) -> Iterator[tuple]:
         for replica_info_direction in (drsuapi.DRSUAPI_DS_REPLICA_INFO_NEIGHBORS, drsuapi.DRSUAPI_DS_REPLICA_INFO_REPSTO):
             (_info_type, info) = self._replica_info(replica_info_direction)
             for neighbour in info.array:

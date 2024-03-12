@@ -68,8 +68,8 @@ class Output:
         for token in tokens:
             if isinstance(token, TextToken):
                 self._fd.write(str(token.data))
-            elif isinstance(token, (ResolveToken, QueryToken)):
+            elif isinstance(token, ResolveToken | QueryToken):
                 if len(token):
                     self.write(token)
-            elif isinstance(token, (DateToken, AttributeToken, PolicyToken)):
+            elif isinstance(token, DateToken | AttributeToken | PolicyToken):
                 self._fd.write(token.value)

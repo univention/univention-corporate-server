@@ -33,18 +33,13 @@
 
 import re
 import sys
+from collections.abc import Callable, Iterator
 from datetime import datetime
 from logging import DEBUG
 
 import pytest
 
 import univention.debug2 as ud
-
-
-try:
-    from typing import Callable, Dict, Iterator, Tuple  # noqa: F401
-except ImportError:
-    pass
 
 
 RE = re.compile(
@@ -83,14 +78,12 @@ CATEGORY = [
 
 
 @pytest.fixture()
-def parse():
-    # type: () -> Iterator[Callable[[str], Iterator[Tuple[str, Dict[str, str]]]]]
+def parse() -> Iterator[Callable[[str], Iterator[tuple[str, dict[str, str]]]]]:
     """Setup parser."""
     now = datetime.now()
     start = now.replace(microsecond=now.microsecond - now.microsecond % 1000)
 
-    def f(text):
-        # type: (str) -> Iterator[Tuple[str, Dict[str, str]]]
+    def f(text: str) -> Iterator[tuple[str, dict[str, str]]]:
         """
         Parse line into componets.
 
@@ -157,7 +150,7 @@ def test_file(parse, tmplog):
 @pytest.mark.parametrize('function,expected', [(ud.FUNCTION, ['init', 'begin', 'end', 'exit']), (ud.NO_FUNCTION, ['init', 'exit'])])
 def test_function(function, expected, parse, tmplog):
     def f():
-        _d = ud.function('f')  # noqa: F841
+        _d = ud.function('f')
         _d  # noqa: B018
 
     ud.set_function(function)

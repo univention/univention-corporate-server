@@ -39,11 +39,15 @@ import re
 import shutil
 from functools import reduce
 from tempfile import NamedTemporaryFile
-from typing import Iterable
+from typing import TYPE_CHECKING
 
 import univention.debug as ud
 
 import listener
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 
 description = 'write user-configuration to fetchmailrc'

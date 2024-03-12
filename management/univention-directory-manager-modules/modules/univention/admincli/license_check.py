@@ -35,7 +35,7 @@
 import datetime
 import getopt
 import traceback
-from typing import Callable, Dict, List, Optional, Tuple  # noqa: F401
+from collections.abc import Callable  # noqa: F401
 
 from ldap.filter import filter_format
 

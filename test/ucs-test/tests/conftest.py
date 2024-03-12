@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import subprocess
 import time
-from typing import TYPE_CHECKING, Callable, Iterator
+from typing import TYPE_CHECKING
 
 import pytest
 
@@ -16,6 +16,8 @@ from univention.testing import selenium as _sel, strings, ucr as _ucr, udm as _u
 
 
 if TYPE_CHECKING:
+    from collections.abc import Callable, Iterator
+
     import univention.lib.umc
 
 

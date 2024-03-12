@@ -9,11 +9,12 @@ import linecache
 import logging
 import sys
 import time
+from collections.abc import Callable, Mapping, Sequence
 from functools import wraps
 from os.path import samefile
 from string import Formatter
 from types import FrameType
-from typing import Any, Callable, Mapping, Optional, Sequence, Union
+from typing import Any
 
 
 COLORS = {
@@ -29,7 +30,7 @@ COLORS = {
 
 
 class VerboseFormatter(Formatter):
-    def get_value(self, key: Union[int, str], args: Sequence[Any], kwargs: Mapping[str, Any]) -> Any:
+    def get_value(self, key: int | str, args: Sequence[Any], kwargs: Mapping[str, Any]) -> Any:
         try:
             return super().get_value(key, args, kwargs)
         except (IndexError, KeyError):
@@ -73,7 +74,7 @@ def verbose(msg, fmt="", formatter=VerboseFormatter()):  # type: (str, str, Form
     return decorator
 
 
-def trace_calls(frame: FrameType, event: str, arg: Any) -> Optional[Callable]:
+def trace_calls(frame: FrameType, event: str, arg: Any) -> Callable | None:
     log = logging.getLogger(__name__)
 
     co = frame.f_code

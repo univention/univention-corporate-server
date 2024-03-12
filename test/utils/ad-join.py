@@ -37,7 +37,7 @@ from subprocess import run
 from sys import exit
 from time import sleep
 from types import SimpleNamespace
-from typing import Any, Dict
+from typing import Any
 
 import ldap
 from ldap.dn import dn2str, escape_dn_chars, str2dn
@@ -138,7 +138,7 @@ def join_read_mode() -> None:
     progress_data = {'progress_id': progress_id}
 
     print('=== AD-JOIN STARTED ===')
-    status: Dict[str, Any] = {'finished': False}
+    status: dict[str, Any] = {'finished': False}
     while not status['finished']:
         # FIXME: this might loop forever?
         status = client.umc_command('adconnector/admember/progress', progress_data).result

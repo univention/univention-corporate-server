@@ -8,7 +8,6 @@
 import random
 from html.parser import HTMLParser
 from types import SimpleNamespace
-from typing import List
 
 from bs4 import BeautifulSoup
 from diskcache import Index
@@ -158,11 +157,11 @@ class TestData:
         assert self.group_list
 
     @property
-    def users(self) -> List[str]:
+    def users(self) -> list[str]:
         return self.user_list
 
     @property
-    def groups(self) -> List[str]:
+    def groups(self) -> list[str]:
         return self.group_list
 
     def user(self, username: str) -> SimpleNamespace:
@@ -171,7 +170,7 @@ class TestData:
     def random_user(self) -> SimpleNamespace:
         return SimpleNamespace(**self.user_cache[random.choice(self.user_list)])
 
-    def random_users(self, k: int = 10) -> List[SimpleNamespace]:
+    def random_users(self, k: int = 10) -> list[SimpleNamespace]:
         return [
             SimpleNamespace(**self.user_cache[user])
             for user in random.sample(self.user_list, k=k)
@@ -192,7 +191,7 @@ class TestData:
     def random_group(self) -> SimpleNamespace:
         return SimpleNamespace(**self.group_cache[random.choice(self.group_list)])
 
-    def random_groups(self, k: int = 10) -> List[SimpleNamespace]:
+    def random_groups(self, k: int = 10) -> list[SimpleNamespace]:
         return [
             SimpleNamespace(**self.group_cache[group])
             for group in random.sample(self.group_list, k=k)

@@ -32,10 +32,10 @@
 
 import json
 import os
+from collections.abc import Iterator  # noqa: F401
 from contextlib import contextmanager
 from dbm import gnu as gdbm
 from pwd import getpwnam
-from typing import Any, Dict, Iterator, List, Optional, Tuple  # noqa: F401
 
 from univention.ldap_cache.cache.backend import Caches, LdapCache, Shard, _s
 from univention.ldap_cache.log import debug, log

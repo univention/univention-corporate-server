@@ -41,7 +41,7 @@ import inspect
 import logging
 import operator
 import sys
-from typing import Any, Dict, Iterable, Iterator, List, Optional, Tuple, Type, TypeVar, Union  # noqa: F401
+from collections.abc import Iterable, Iterator  # noqa: F401
 
 import ldap
 from ldap.dn import dn2str, str2dn

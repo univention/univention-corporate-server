@@ -30,8 +30,8 @@
 # <https://www.gnu.org/licenses/>.
 
 import subprocess
+from collections.abc import Generator, Iterator
 from pathlib import Path
-from typing import Dict, Generator, Iterator
 
 import pytest
 from playwright.sync_api import BrowserContext, BrowserType, Page, expect
@@ -57,7 +57,7 @@ def suppress_notifications():
     handler_unset(['umc/web/hooks/suppress_umc_notifications'])
 
 
-phase_report_key = pytest.StashKey[Dict[str, pytest.CollectReport]]()
+phase_report_key = pytest.StashKey[dict[str, pytest.CollectReport]]()
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
@@ -150,8 +150,8 @@ def setup_browser_context(context, start_tracing=True):
 @pytest.fixture(scope='module')
 def context_module_scope(
     browser_type: BrowserType,
-    ucs_browser_type_launch_args: Dict,
-    ucs_browser_context_args: Dict,
+    ucs_browser_type_launch_args: dict,
+    ucs_browser_context_args: dict,
 ):
     browser = browser_type.launch(**ucs_browser_type_launch_args)
     return browser.new_context(**ucs_browser_context_args)
@@ -171,8 +171,8 @@ def umc_browser_test_module(
 @pytest.fixture()
 def umc_browser_test(
     browser_type: BrowserType,
-    ucs_browser_type_launch_args: Dict,
-    ucs_browser_context_args: Dict,
+    ucs_browser_type_launch_args: dict,
+    ucs_browser_context_args: dict,
     request: pytest.FixtureRequest,
     kill_module_processes,
     ucr,

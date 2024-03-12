@@ -31,9 +31,10 @@
 
 """Univention Directory Notifier Transaction log admin commmand"""
 
+from __future__ import annotations
 
+from argparse import Namespace  # noqa: F401
 from argparse import ArgumentParser, ArgumentTypeError
-from collections import namedtuple
 from contextlib import contextmanager
 from ctypes import Structure, c_bool, c_ulong, sizeof
 from errno import ENOENT
@@ -44,6 +45,7 @@ from os.path import exists
 from subprocess import call
 from sys import exit, stderr
 from time import strftime, time
+from typing import IO, TYPE_CHECKING, Any, NamedTuple
 
 import ldap
 from ldap.controls import SimplePagedResultsControl
@@ -54,13 +56,11 @@ from ldap.modlist import addModlist
 from univention.config_registry import ConfigRegistry
 
 
-try:
-    from argparse import Namespace  # noqa: F401
+if TYPE_CHECKING:
+    from collections.abc import Iterator
     from types import TracebackType  # noqa: F401
-    from typing import IO, Any, Dict, Iterator, List, NamedTuple, Optional, Tuple, Type  # noqa: F401
-    Transaction = NamedTuple("Transaction", [("tid", int), ("dn", str), ("command", str)])
-except ImportError:
-    Transaction = namedtuple("Transaction", ["tid", "dn", "command"])  # type: ignore
+
+Transaction = NamedTuple("Transaction", [("tid", int), ("dn", str), ("command", str)])
 
 LOG_FORMAT = "%(asctime)-15s:%(levelname)s:%(message)s"
 BSIZE = 4096
@@ -70,10 +70,10 @@ HELP_FIX = 'See <https://help.univention.com/t/problem-umc-diagnostic-module-com
 SLD = 'slapd.service'
 UDN = 'univention-directory-notifier.service'
 UDL = 'univention-directory-listener.service'
-SERVICES = {
+SERVICES: dict[str, tuple[str, ...]] = {
     'domaincontroller_master': (SLD, UDN, UDL),
     'domaincontroller_backup': (UDL, SLD, UDN),
-}  # type: Dict[str, Tuple[str, ...]]
+}
 
 
 class IndexHeader(Structure):
@@ -113,16 +113,14 @@ class Index:
     :file:`/var/lib/univention-ldap/notify/transaction.index`
     """
 
-    def __init__(self, filename):
-        # type: (str) -> None
+    def __init__(self, filename: str) -> None:
         self.filename = filename + ".index"
         self.log = getLogger(__name__).getChild("Index")
-        self.index = None  # type: Optional[IO[bytes]]
+        self.index: IO[bytes] | None = None
         self.size = 0
         self.count = 0
 
-    def __enter__(self):
-        # type: () -> Index
+    def __enter__(self) -> Index:
         try:
             self.index = index = open(self.filename, 'rb')
 
@@ -154,13 +152,11 @@ class Index:
 
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
-        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
+    def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         assert self.index
         self.index.close()
 
-    def __getitem__(self, tid):
-        # type: (int) -> IndexEntry
+    def __getitem__(self, tid: int) -> IndexEntry:
         """
         Return index entry for given transaction.
 
@@ -181,8 +177,7 @@ class Index:
 
         return entry
 
-    def __setitem__(self, tid, offset):
-        # type: (int, int) -> None
+    def __setitem__(self, tid: int, offset: int) -> None:
         """
         Set index entry for given transaction.
 
@@ -204,8 +199,7 @@ class Index:
         self.index.write(data)
         self.log.debug("Transaction %d is %s and at position %d", tid, entry.valid, entry.offset)
 
-    def seek(self, tid):
-        # type: (int) -> None
+    def seek(self, tid: int) -> None:
         """
         Seek to given transaction id.
 
@@ -218,8 +212,7 @@ class Index:
         self.log.debug("Looking up transaction %d at position %d in index", tid, pos)
         self.index.seek(pos, SEEK_SET)
 
-    def remove(self):
-        # type: () -> None
+    def remove(self) -> None:
         """Remove `.index` file."""
         self.log.info('Removing %s ...', self.filename)
         try:
@@ -236,27 +229,24 @@ class Translog:
     :file:`/var/lib/univention-ldap/notify/transaction`
     """
 
-    def __init__(self, filename, index=None):
-        # type: (str, Optional[Index]) -> None
+    def __init__(self, filename: str, index: Index | None = None) -> None:
         self.filename = filename
-        self.index = index or Index(filename).__enter__()  # type: Index
+        self.index: Index = index or Index(filename).__enter__()
         self.log = getLogger(__name__).getChild("Log")
-        self.translog = None  # type: Optional[IO[str]]
+        self.translog: IO[str] | None = None
         self.size = 0
         self.first = 0
         self.last = 0
 
     @property
-    def count(self):
-        # type: () -> int
+    def count(self) -> int:
         """Return count of transactions."""
         if self.last == 0:
             return 0
         return self.last - self.first + 1
 
     @staticmethod
-    def parse_line(line):
-        # type: (str) -> Transaction
+    def parse_line(line: str) -> Transaction:
         """
         Parse line from transaction line.
 
@@ -269,12 +259,10 @@ class Translog:
         return Transaction(int(tid), dn, command)
 
     @staticmethod
-    def format_line(rec):
-        # type: (Transaction) -> str
+    def format_line(rec: Transaction) -> str:
         return '%d %s %s\n' % rec
 
-    def __enter__(self):
-        # type: () -> Translog
+    def __enter__(self) -> Translog:
         self.translog = translog = open(self.filename)
 
         stat = fstat(translog.fileno())
@@ -308,13 +296,11 @@ class Translog:
 
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
-        # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
+    def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         assert self.translog
         self.translog.close()
 
-    def __getitem__(self, tid):
-        # type: (int) -> Transaction
+    def __getitem__(self, tid: int) -> Transaction:
         """
         Return given transaction.
 
@@ -337,8 +323,7 @@ class Translog:
 
         return rec
 
-    def __iter__(self):
-        # type: () -> Iterator[Transaction]
+    def __iter__(self) -> Iterator[Transaction]:
         """Iterate over all transactions."""
         assert self.translog
         for line in self.translog:
@@ -346,8 +331,7 @@ class Translog:
             rec = self.parse_line(line)
             yield rec
 
-    def seek(self, tid):
-        # type: (int) -> int
+    def seek(self, tid: int) -> int:
         """
         Seek to given transaction id.
 
@@ -368,8 +352,7 @@ class Translog:
         self.translog.seek(pos, SEEK_SET)
         return pos
 
-    def read(self, offset):
-        # type: (int) -> Transaction
+    def read(self, offset: int) -> Transaction:
         """
         Read next transaction after given offset.
 
@@ -405,8 +388,7 @@ class DryRun(Exception):
     """Abort dry-run mode."""
 
 
-def main():
-    # type: () -> int
+def main() -> int:
     """Work with transaction log in LDAP server."""
     opt = parse_args()
 
@@ -419,8 +401,7 @@ def main():
 
 
 @contextmanager
-def ldapi(opt):
-    # type: (Namespace) -> Iterator[ReconnectLDAPObject]
+def ldapi(opt: Namespace) -> Iterator[ReconnectLDAPObject]:
     """
     Return local LDAP connection.
 
@@ -447,8 +428,7 @@ def ldapi(opt):
     ld.unbind_ext_s()
 
 
-def import_all(opt):
-    # type: (Namespace) -> None
+def import_all(opt: Namespace) -> None:
     """
     Load transaction from file into LDAP server.
 
@@ -488,7 +468,7 @@ def import_all(opt):
         if opt.index and index.count:
             log.info("Processing transactions %d .. %d", start, end)
             translog.seek(start)
-            lead = []  # type: List[Transaction]
+            lead: list[Transaction] = []
         else:
             offset = min(p_offset, s_offset)
             log.info("Processing transaction from offset %d .. %d", offset, end)
@@ -514,8 +494,7 @@ def import_all(opt):
                     t_last = t_now
 
 
-def load_single(opt):
-    # type: (Namespace) -> None
+def load_single(opt: Namespace) -> None:
     """
     Load given transactions into LDAP server.
 
@@ -531,8 +510,7 @@ def load_single(opt):
             add_transaction(opt, ld, rec)
 
 
-def show_stat(opt):
-    # type: (Namespace) -> None
+def show_stat(opt: Namespace) -> None:
     """
     Show statistics
 
@@ -563,8 +541,7 @@ def show_stat(opt):
     print("Ldap.okay: %s" % ('yes' if last == tid else 'no',))
 
 
-def dump_index(opt):
-    # type: (Namespace) -> None
+def dump_index(opt: Namespace) -> None:
     """
     Dump transaction index
 
@@ -581,8 +558,7 @@ def dump_index(opt):
             print('%8d[%c]: %d' % (tid, 'x' if rec.valid else ' ', rec.offset))  # noqa: PLE1307
 
 
-def reindex(opt):
-    # type: (Namespace) -> None
+def reindex(opt: Namespace) -> None:
     """
     Re-build transaction index
 
@@ -604,8 +580,7 @@ def reindex(opt):
                 pos += len(line.encode())
 
 
-def lookup(opt):
-    # type: (Namespace) -> None
+def lookup(opt: Namespace) -> None:
     """
     Lookup transactions.
 
@@ -616,8 +591,7 @@ def lookup(opt):
             print(translog[tid])
 
 
-def lookup_ldap(opt):
-    # type: (Namespace) -> None
+def lookup_ldap(opt: Namespace) -> None:
     """
     Check transactions.
 
@@ -638,8 +612,7 @@ def lookup_ldap(opt):
             print(f'tid={attrs["reqSession"][0]} dn={attrs["reqDN"][0]} command={attrs["reqType"][0]}')
 
 
-def add_transaction(opt, ld, rec):
-    # type: (Namespace, ReconnectLDAPObject, Transaction) -> None
+def add_transaction(opt: Namespace, ld: ReconnectLDAPObject, rec: Transaction) -> None:
     """
     Load single transaction into LDAP server.
 
@@ -672,8 +645,7 @@ def add_transaction(opt, ld, rec):
         raise Abort()
 
 
-def check(opt):
-    # type: (Namespace) -> None
+def check(opt: Namespace) -> None:
     """
     Check transaction files for consistency.
 
@@ -710,8 +682,7 @@ def check(opt):
 
 
 @contextmanager
-def stopped(opt, services):
-    # type: (Namespace, Tuple[str, ...]) -> Iterator
+def stopped(opt: Namespace, services: tuple[str, ...]) -> Iterator:
     """
     Stop services while in context.
 
@@ -739,8 +710,7 @@ def stopped(opt, services):
 
 
 @contextmanager
-def rewrite(filename):
-    # type: (str) -> Iterator[str]
+def rewrite(filename: str) -> Iterator[str]:
     """
     Return name of temporary file to replace given file on success.
 
@@ -779,8 +749,7 @@ def rewrite(filename):
 class CheckGeneric:
     """Check transaction file for consistency."""
 
-    def __init__(self, opt, filename):
-        # type: (Namespace, str) -> None
+    def __init__(self, opt: Namespace, filename: str) -> None:
         """
         Check transaction file for consistency.
 
@@ -794,8 +763,7 @@ class CheckGeneric:
         self.first_line = ''
         self.reset()
 
-    def reset(self):
-        # type: () -> None
+    def reset(self) -> None:
         """Reset internal state."""
         self.needs_fixing = False
         self.needs_sort = False
@@ -807,8 +775,7 @@ class CheckGeneric:
         self.last_line = self.first_line
         self.last_tid = self.first_tid
 
-    def error(self, string, *args, **kwargs):
-        # type: (str, *Any, **bool) -> None
+    def error(self, string: str, *args: Any, **kwargs: bool) -> None:
         """
         Flag error in file.
 
@@ -826,8 +793,7 @@ class CheckGeneric:
         self.needs_renum |= kwargs.get('renum', False)
         self.needs_syntax |= kwargs.get('syntax', False)
 
-    def run(self, filename=''):
-        # type: (str) -> None
+    def run(self, filename: str = '') -> None:
         """
         Run check on trasnaction file.
 
@@ -851,8 +817,7 @@ class CheckGeneric:
 
             self.fixit()
 
-    def loop(self, stream):
-        # type: (IO[str]) -> Iterator[Tuple[int, str, Transaction]]
+    def loop(self, stream: IO[str]) -> Iterator[tuple[int, str, Transaction]]:
         """
         Loop over all lines in the stream.
 
@@ -919,8 +884,7 @@ class CheckGeneric:
             finally:
                 self.last_line = line
 
-    def check_transaction(self, rec):
-        # type: (Transaction) -> None
+    def check_transaction(self, rec: Transaction) -> None:
         """
         Check transaction for consistency.
 
@@ -928,13 +892,11 @@ class CheckGeneric:
         """
         raise NotImplementedError()
 
-    def fixit(self):
-        # type: () -> None
+    def fixit(self) -> None:
         """Fix transactions."""
         raise NotImplementedError()
 
-    def fix_syntax(self):
-        # type: () -> None
+    def fix_syntax(self) -> None:
         # TODO: Loop over lines and
         # - strip binary zeros
         # - add missing command in 3rd column
@@ -949,8 +911,7 @@ class CheckGeneric:
         print(HELP_RESET)
         exit(1)
 
-    def fix_sort(self):
-        # type: () -> None
+    def fix_sort(self) -> None:
         """Handle transactions not being sorted strong monotonically increasing."""
         self.log.info('Sorting ...')
         print('- the transactions are not sorted uniquely')
@@ -993,8 +954,7 @@ class CheckGeneric:
             self.remove_index()
         self.log.info('Sorting done')
 
-    def fix_fill(self):
-        # type: () -> None
+    def fix_fill(self) -> None:
         """Handle transactions not being consecutive."""
         self.log.info('Filling holes ...')
         print('- missing transactions in sequence')
@@ -1031,8 +991,7 @@ class CheckGeneric:
             self.remove_index()
         self.log.info('Filling holes done')
 
-    def fix_renumber(self):
-        # type: () -> None
+    def fix_renumber(self) -> None:
         """Handle transactions being out-of-order."""
         self.log.info('Renumbering ...')
         print('- pending transactions are not consecutive')
@@ -1074,8 +1033,7 @@ class CheckGeneric:
             assert not self.needs_renum
         self.log.info('Renumbering done')
 
-    def remove_index(self):
-        # type: () -> None
+    def remove_index(self) -> None:
         """Remove any associated index file."""
         raise NotImplementedError()
 
@@ -1086,8 +1044,7 @@ class CheckTranslog(CheckGeneric):
     :file:`/var/lib/univention-ldap/notify/transaction`
     """
 
-    def check_transaction(self, rec):
-        # type: (Transaction) -> None
+    def check_transaction(self, rec: Transaction) -> None:
         """
         Check committed transaction.
 
@@ -1100,8 +1057,7 @@ class CheckTranslog(CheckGeneric):
         elif self.last_tid + 1 != rec.tid:
             self.error("Hole after %r", self.last_line, fill=True)
 
-    def fixit(self):
-        # type: () -> None
+    def fixit(self) -> None:
         """Fix transactions."""
         if self.needs_syntax:
             self.fix_syntax()
@@ -1110,8 +1066,7 @@ class CheckTranslog(CheckGeneric):
         if self.needs_fill:
             self.fix_fill()
 
-    def remove_index(self):
-        # type: () -> None
+    def remove_index(self) -> None:
         """Remove `.index` file."""
         Index(self.filename).remove()
 
@@ -1122,8 +1077,7 @@ class CheckListener(CheckGeneric):
     :file:`/var/lib/univention-ldap/listener/listener`
     """
 
-    def check_transaction(self, rec):
-        # type: (Transaction) -> None
+    def check_transaction(self, rec: Transaction) -> None:
         """
         Check pending transaction.
 
@@ -1138,21 +1092,18 @@ class CheckListener(CheckGeneric):
         else:
             self.error("Hole after %r", self.last_line, renum=True)
 
-    def fixit(self):
-        # type: () -> None
+    def fixit(self) -> None:
         """Fix transactions."""
         if self.needs_syntax:
             self.fix_syntax()
         if self.needs_renum:
             self.fix_renumber()
 
-    def remove_index(self):
-        # type: () -> None
+    def remove_index(self) -> None:
         """No associated `.index` file to remove."""
 
 
-def check_last(opt, filename, last_tid):
-    # type: (Namespace, str, int) -> None
+def check_last(opt: Namespace, filename: str, last_tid: int) -> None:
     """
     Check last used transactions id.
     :file:`/var/lib/univention-ldap/last_id`
@@ -1186,8 +1137,7 @@ def check_last(opt, filename, last_tid):
             exit(1)
 
 
-def prune(opt):
-    # type: (Namespace) -> None
+def prune(opt: Namespace) -> None:
     """
     Prune old transactions.
 
@@ -1291,8 +1241,7 @@ def prune_ldap(opt):
             page_control.cookie = control.cookie
 
 
-def parse_args(args=None):
-    # type: (List[str]) -> Namespace
+def parse_args(args: list[str] | None = None) -> Namespace:
     """
     Parse command line arguments.
 
@@ -1368,8 +1317,7 @@ def parse_args(args=None):
     return opt
 
 
-def parse_int_pos(string):
-    # type: (str) -> int
+def parse_int_pos(string: str) -> int:
     """
     Parse positive integer string.
 
@@ -1386,8 +1334,7 @@ def parse_int_pos(string):
     raise ArgumentTypeError("Positive integer required")
 
 
-def parse_percent(string):
-    # type: (str) -> float
+def parse_percent(string: str) -> float:
     """
     Parse percentage string.
 
@@ -1404,8 +1351,7 @@ def parse_percent(string):
     return val / 100.0
 
 
-def parse_size(string):
-    # type: (str) -> int
+def parse_size(string: str) -> int:
     """
     Parse size string.
 

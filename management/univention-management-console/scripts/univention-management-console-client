@@ -47,7 +47,7 @@ from univention.lib.umc import Client, ConnectionError, HTTPError, Unauthorized
 
 
 try:
-    from typing import Sequence  # noqa: F401
+    from collections.abc import Sequence  # noqa: F401
 except ImportError:
     pass
 
@@ -139,7 +139,7 @@ class CLIClient:
                 if self.arguments.prettyprint:
                     print('  OPTIONS  : %s' % pprint.pformat(options, indent=2))
                 else:
-                    if isinstance(options, (list, tuple)):
+                    if isinstance(options, list | tuple):
                         print('  OPTIONS  : %s' % ', '.join(str(x) for x in options))
                     else:
                         print('  OPTIONS  : %s' % ' '.join(['%s=%s' % (k, v) for k, v in options.items()]))

@@ -46,10 +46,10 @@ JPG = b'\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x01\x01,\x01,\x00\x00\xff\xdb\x
 try:
     import univention.admin.uexceptions
 except ImportError:
-    import argparse  # noqa: E402
-    import sys  # noqa: E402
+    import argparse
+    import sys
 
-    import univention  # noqa: E402
+    import univention
     univention.admin = argparse.Namespace()
     univention.admin.uexceptions = argparse.Namespace()
     univention.admin.uexceptions.valueError = ValueError

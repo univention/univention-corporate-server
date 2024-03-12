@@ -51,7 +51,8 @@ import tempfile
 import time
 import traceback
 from contextlib import contextmanager
-from typing import IO, Any, Container, Iterator, Mapping, Pattern
+from re import Pattern
+from typing import IO, TYPE_CHECKING, Any
 
 import dns.exception
 import dns.resolver
@@ -68,6 +69,10 @@ from univention.lib.admember import (
 from univention.lib.i18n import Locale, Translation
 from univention.management.console.log import MODULE
 from univention.management.console.modules import UMC_Error
+
+
+if TYPE_CHECKING:
+    from collections.abc import Container, Iterator, Mapping
 
 
 # FIXME: this triggers imports from univention-lib during build time test execution.

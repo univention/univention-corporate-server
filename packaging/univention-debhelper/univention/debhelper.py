@@ -34,7 +34,7 @@
 import os
 import subprocess
 from argparse import ArgumentParser, Namespace  # noqa: F401
-from typing import Dict, List, Optional, Sequence  # noqa: F401
+from collections.abc import Sequence  # noqa: F401
 
 
 def doIt(*argv):

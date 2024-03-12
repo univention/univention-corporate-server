@@ -6,9 +6,10 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import subprocess
+from collections.abc import Iterable, Iterator
 from os import environ
 from shlex import quote
-from typing import Iterable, Iterator, List, Tuple, cast
+from typing import cast
 
 from univention.config_registry import ucr_live as UCR
 from univention.management.console.log import MODULE
@@ -21,7 +22,7 @@ PROXY_MAP = {
 }
 
 
-def get_unreachable_repository_servers() -> List[str]:
+def get_unreachable_repository_servers() -> list[str]:
     """
     Start a process to check the reachability of important servers.
 
@@ -72,7 +73,7 @@ def wait_for_processes_to_finish(processes: Iterable[subprocess.Popen]) -> None:
         process.wait()
 
 
-def log_warnings_about_unreachable_repository_servers(servers_with_curl_processes: Iterable[Tuple[str, subprocess.Popen]]) -> None:
+def log_warnings_about_unreachable_repository_servers(servers_with_curl_processes: Iterable[tuple[str, subprocess.Popen]]) -> None:
     """
     Log a message for all failed processes.
 

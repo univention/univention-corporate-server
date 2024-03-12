@@ -39,7 +39,6 @@ from ipaddress import IPv4Address, IPv6Address, ip_address
 from logging import DEBUG, ERROR, INFO, WARNING, basicConfig, getLogger
 from os import environ
 from subprocess import CalledProcessError, check_call, check_output
-from typing import Dict, Optional, Union
 
 import dns.exception
 import dns.flags
@@ -54,8 +53,8 @@ from univention.config_registry.frontend import ucr_update
 from univention.config_registry.interfaces import Interfaces
 
 
-IPAddress = Union[IPv4Address, IPv6Address]
-DictAddr2Str = Dict[IPAddress, Optional[str]]
+IPAddress = IPv4Address | IPv6Address
+DictAddr2Str = dict[IPAddress, str | None]
 
 UCR_VARS_FWD = [f'dns/forwarder{i}' for i in range(1, 4)]
 UCR_VARS_DNS = [f'nameserver{i}' for i in range(1, 4)]

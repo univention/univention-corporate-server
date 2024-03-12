@@ -29,7 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from typing import Collection, Optional  # noqa: F401
+from collections.abc import Collection  # noqa: F401
 
 
 class UdmError(Exception):

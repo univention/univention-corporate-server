@@ -205,7 +205,7 @@ class TestUniventionUpdater:
         u.run_dist_upgrade()
         cmds = mockpopen.mock_get()
         cmd = cmds[0]
-        if isinstance(cmd, (list, tuple)):
+        if isinstance(cmd, list | tuple):
             cmd = ' '.join(cmd)
         assert ' dist-upgrade' in cmd
 

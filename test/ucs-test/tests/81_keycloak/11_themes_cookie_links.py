@@ -10,7 +10,6 @@ import socket
 import tempfile
 from itertools import product
 from subprocess import CalledProcessError
-from typing import Tuple
 
 import pytest
 import requests
@@ -34,7 +33,7 @@ def check_i_am_keycloak(request, keycloak_config, ucr):
 
 
 @pytest.fixture()
-def login_links(lang: str, link_count: int) -> Tuple[str, int]:
+def login_links(lang: str, link_count: int) -> tuple[str, int]:
     try:
         for i in range(1, link_count + 1):
             run_command(['univention-keycloak', 'login-links', 'set', lang, str(i), f'href{i}', f'desc{i}'])

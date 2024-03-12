@@ -6,8 +6,8 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import os
+from collections.abc import Iterable
 from ipaddress import IPv4Interface, IPv6Interface
-from typing import Iterable, Union
 
 from ldap import LDAPError
 from ldap.filter import escape_filter_chars
@@ -68,7 +68,7 @@ class PhaseLdapSelf(AddressMap, LdapChange, Executable):
         ldap_filter = self._build_address_filter("aAARecord", self.changeset.old_ipv6s)
         return self._search_computer(ldap_filter)
 
-    def _build_address_filter(self, key: str, addresses: Iterable[Union[IPv4Interface, IPv6Interface]]) -> str:
+    def _build_address_filter(self, key: str, addresses: Iterable[IPv4Interface | IPv6Interface]) -> str:
         hostname = self.changeset.ucr["hostname"]
         addr = [
             "(%s=%s)" % (key, escape_filter_chars(str(address.ip)))

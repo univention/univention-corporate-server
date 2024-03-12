@@ -31,8 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from collections.abc import Iterator
 from random import choice, randint
-from typing import Iterator, Tuple
 
 
 STR_NUMERIC = '0123456789'
@@ -152,7 +152,7 @@ def random_date() -> str:
     return '20%02d-%02d-%02d' % (randint(0, 99), randint(1, 12), randint(1, 27))
 
 
-def random_time(range_hour: Tuple[int, int] = (0, 23)) -> str:
+def random_time(range_hour: tuple[int, int] = (0, 23)) -> str:
     return '%02d:%02d:%02d' % (randint(*range_hour), randint(0, 60), randint(0, 60))
 
 

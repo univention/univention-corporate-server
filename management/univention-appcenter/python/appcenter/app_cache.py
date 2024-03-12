@@ -38,12 +38,12 @@
 import os
 import os.path
 import sys
+from collections.abc import Iterable  # noqa: F401
 from configparser import NoSectionError
 from contextlib import contextmanager
 from glob import glob
 from json import dump, load
 from time import sleep
-from typing import Dict, Iterable, List, Optional, Tuple  # noqa: F401
 from urllib.parse import urlsplit
 
 from univention.appcenter.app import App, LooseVersion

@@ -1,3 +1,9 @@
+univention-base-files (11.0.5) unstable; urgency=medium
+
+  * Bug #56604: use Python 3.11 code annotations
+
+ -- Florian Best <best@univention.de>  Wed, 13 Mar 2024 00:46:32 +0100
+
 univention-base-files (11.0.4) unstable; urgency=medium
 
   * Bug #56147: Adapt to OpenSSH 9.2p1-2

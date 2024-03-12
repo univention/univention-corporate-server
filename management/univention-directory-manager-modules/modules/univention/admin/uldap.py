@@ -33,8 +33,8 @@
 
 
 import time
+from collections.abc import Callable  # noqa: F401
 from logging import getLogger
-from typing import Any, Callable  # noqa: F401
 
 import ldap
 

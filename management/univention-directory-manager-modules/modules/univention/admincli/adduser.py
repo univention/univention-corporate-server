@@ -35,8 +35,8 @@
 import getopt
 import os
 import subprocess
+from collections.abc import Iterable, Iterator  # noqa: F401
 from logging import getLogger
-from typing import Iterable, Iterator, List, Union  # noqa: F401
 
 from ldap.filter import filter_format
 

@@ -15,7 +15,7 @@ skip_glob = "venv/*"
 
 [tool.ruff]
 # ruff 0.2.2
-target-version = "py37"
+target-version = "py311"
 
 line-length = 180
 extend-exclude = [

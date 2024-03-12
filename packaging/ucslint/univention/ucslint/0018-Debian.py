@@ -36,12 +36,16 @@ import re
 from itertools import cycle
 from pathlib import Path
 from shlex import split
-from typing import Iterable, Iterator, Set
+from typing import TYPE_CHECKING
 
 from debian.changelog import Changelog, ChangelogParseError  # Version
 
 import univention.ucslint.base as uub
 from univention.ucslint.common import RE_DEBIAN_PACKAGE_VERSION
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable, Iterator
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
@@ -386,7 +390,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_ARG2 = re.compile(r'^("?)\$(?:2|\{2[#%:?+=/-[^}]*\})(\1)$')
 
 
-class Dirs(Set[Path]):
+class Dirs(set[Path]):
     """Set of directories."""
 
     DIRS = frozenset({

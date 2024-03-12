@@ -34,13 +34,12 @@
 # <https://www.gnu.org/licenses/>.
 
 import sys
-from typing import Dict, List, Tuple
 
 from univention.config_registry import ConfigRegistry, handler_set
 from univention.lib.policy_result import PolicyResultFailed, policy_result
 
 
-def query_policy(ldap_hostdn: str) -> Tuple[str, str]:
+def query_policy(ldap_hostdn: str) -> tuple[str, str]:
     """Retrieve updateServer and version from policy."""
     try:
         results, _policies = policy_result(ldap_hostdn)
@@ -53,7 +52,7 @@ def query_policy(ldap_hostdn: str) -> Tuple[str, str]:
     return (server, update)
 
 
-def one(results: Dict[str, List[str]], key: str) -> str:
+def one(results: dict[str, list[str]], key: str) -> str:
     try:
         return results[key][0]
     except LookupError:
@@ -75,7 +74,7 @@ def main() -> None:
     fqdn = '%(hostname)s.%(domainname)s' % ucr
     self_update = '%(version/version)s-%(version/patchlevel)s' % ucr
 
-    ucr_variables: List[str] = []
+    ucr_variables: list[str] = []
 
     new_server, policy_update = query_policy(hostdn)
     policy_update or self_update  # FIXME: not used - should be pass to `univention-repository-update --updateto=`  # noqa: B018

@@ -1,3 +1,9 @@
+univention-l10n (9.0.2) unstable; urgency=medium
+
+  * Bug #56604: use Python 3.11 code annotations
+
+ -- Florian Best <best@univention.de>  Wed, 13 Mar 2024 00:46:33 +0100
+
 univention-l10n (9.0.1) unstable; urgency=medium
 
   * Bug #55706: UCS 5.2-0 version bump

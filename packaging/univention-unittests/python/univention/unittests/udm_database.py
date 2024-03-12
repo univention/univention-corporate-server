@@ -101,7 +101,7 @@ class Database:
         obj = self.objs[dn]
         for attr, _old, new in ml:
             if new:
-                if not isinstance(new, (list, tuple)):
+                if not isinstance(new, list | tuple):
                     new = [new]
                 obj.attrs[attr] = new
             else:

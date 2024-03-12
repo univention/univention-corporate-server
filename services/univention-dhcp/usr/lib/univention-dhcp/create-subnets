@@ -34,8 +34,8 @@
 
 
 from argparse import ArgumentParser, FileType, Namespace
+from collections.abc import Iterator
 from sys import exit, stderr
-from typing import Iterator, Tuple
 
 from ldap.filter import filter_format
 
@@ -77,7 +77,7 @@ def parse_args() -> Namespace:
     return opt
 
 
-def cred(opt: Namespace, ucr: ConfigRegistry) -> Iterator[Tuple[str, str]]:
+def cred(opt: Namespace, ucr: ConfigRegistry) -> Iterator[tuple[str, str]]:
     yield opt.binddn, opt.bindpwd
     yield "cn=admin,%(ldap/base)s" % ucr, open("/etc/ldap.secret").read()
     yield ucr["ldap/hostdn"], open("/etc/machine.secret").read()

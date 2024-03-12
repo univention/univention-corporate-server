@@ -5,12 +5,13 @@
 # https://www.univention.com/about-us/careers/vacancies/
 
 from abc import ABCMeta
+from collections.abc import Callable
 from functools import wraps
 from hashlib import sha256
 from logging import getLogger
 from pathlib import Path
 from tempfile import gettempdir
-from typing import Any, Callable, Optional, TypeVar, cast  # noqa: F401
+from typing import Any, TypeVar, cast
 
 
 F = TypeVar("F", bound=Callable[..., Any])
@@ -26,7 +27,7 @@ class Lazy(metaclass=ABCMeta):
     SUFFIX = ""
 
     def __init__(self) -> None:
-        self._path = None  # type: Optional[Path]
+        self._path: Path | None = None
 
     @staticmethod
     def lazy(fun: F) -> F:

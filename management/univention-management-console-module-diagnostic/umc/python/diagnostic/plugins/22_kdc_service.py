@@ -34,7 +34,8 @@ import ipaddress
 import random
 import socket
 import struct
-from typing import Callable, Iterator, Optional, Tuple, TypeVar
+from collections.abc import Callable, Iterator
+from typing import TypeVar
 
 import dns.exception
 import dns.resolver
@@ -196,7 +197,7 @@ class Principal:
         return name
 
 
-def seq_set(seq: univ.Sequence, name: str, builder: Optional[Callable] = None) -> base.Asn1ItemBase:
+def seq_set(seq: univ.Sequence, name: str, builder: Callable | None = None) -> base.Asn1ItemBase:
     component = seq.setComponentByName(name).getComponentByName(name)
     if builder is not None:
         seq.setComponentByName(name, builder(component))
@@ -297,7 +298,7 @@ def probe_kdc(kdc: str, port: int, protocol: str, target_realm: str, user_name: 
     return True
 
 
-def resolve_kdc_record(protocol: str, domainname: str) -> Iterator[Tuple[str, int, str]]:
+def resolve_kdc_record(protocol: str, domainname: str) -> Iterator[tuple[str, int, str]]:
     kerberos_dns_fqdn = f'_kerberos._{protocol}.{domainname}'
     try:
         result = dns.resolver.query(kerberos_dns_fqdn, 'SRV')

@@ -33,7 +33,6 @@
 
 from argparse import ArgumentParser, Namespace
 from os import uname
-from typing import List, Optional
 
 from apt import Cache
 
@@ -46,7 +45,7 @@ def main() -> None:
     prune(opt)
 
 
-def parse_args(argv: Optional[List[str]] = None) -> Namespace:
+def parse_args(argv: list[str] | None = None) -> Namespace:
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--verbose", "-v", action="count", help="Increase verbosity")
     parser.add_argument("--dry-run", "-n", action="store_true", help="Only show what would be done")

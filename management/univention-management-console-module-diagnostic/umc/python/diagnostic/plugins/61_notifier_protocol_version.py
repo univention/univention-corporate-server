@@ -30,8 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from collections.abc import Callable
 from subprocess import call
-from typing import Callable, Dict, List
 
 from univention.config_registry import handler_set, ucr_live as ucr
 from univention.lib.i18n import Translation
@@ -61,7 +61,7 @@ def run(_umc_instance: Instance) -> None:
     if server_role not in ('domaincontroller_master', 'domaincontroller_backup'):
         return
 
-    problems: List[str] = []
+    problems: list[str] = []
 
     var = "version/version"
     ucs_version = ucr.get(var, "")
@@ -102,7 +102,7 @@ def set_protocol_version(umc: Instance) -> None:
     return run(umc)
 
 
-actions: Dict[str, Callable[[Instance], None]] = {
+actions: dict[str, Callable[[Instance], None]] = {
     "set_protocol_version": set_protocol_version,
 }
 

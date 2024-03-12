@@ -37,9 +37,9 @@
 import os
 import sys
 from argparse import ArgumentParser, Namespace  # noqa: F401
+from collections.abc import Iterator  # noqa: F401
 from hashlib import md5
 from textwrap import dedent
-from typing import Iterator, Optional, Set, Tuple  # noqa: F401
 
 from debian.deb822 import Deb822
 

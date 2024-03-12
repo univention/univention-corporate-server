@@ -36,9 +36,9 @@ import re
 import subprocess
 import sys
 from argparse import SUPPRESS, ArgumentParser, Namespace  # noqa: F401
+from collections.abc import Container, Iterable  # noqa: F401
 from glob import glob
 from hashlib import md5
-from typing import Container, Dict, Iterable, List, Optional, Set, Tuple, Union  # noqa: F401
 
 from univention.ldap_cache.cache import Caches, get_cache  # noqa: F401
 from univention.ldap_cache.cache.shard_config import add_shard_to_config, rm_shard_from_config

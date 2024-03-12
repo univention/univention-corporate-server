@@ -70,7 +70,7 @@ def test_file(parse, tmplog):
 @pytest.mark.parametrize('function,expected', [(ud.FUNCTION, ['init', 'begin', 'end', 'exit']), (ud.NO_FUNCTION, ['init', 'exit'])])
 def test_function(function, expected, parse, tmplog):
     def f():
-        _d = ud.function('f')  # noqa: F841
+        _d = ud.function('f')
         _d  # noqa: B018
 
     ud.set_function(function)

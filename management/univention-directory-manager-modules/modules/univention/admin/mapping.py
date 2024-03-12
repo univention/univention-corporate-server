@@ -34,8 +34,9 @@
 
 import base64
 import inspect
+from collections.abc import Callable, Iterable  # noqa: F401
 from logging import getLogger
-from typing import Any, Callable, Iterable, Tuple, TypeVar  # noqa: F401
+from typing import TypeVar
 
 import univention.admin.uexceptions
 from univention.admin import localization
@@ -48,19 +49,19 @@ translation = localization.translation('univention/admin')
 _ = translation.translate
 
 _E = TypeVar('_E')  # noqa: PYI018
-_Encoding = Tuple[str, ...]
+_Encoding = tuple[str, ...]
 
 
 def MapToBytes(udm_value, encoding=()):
     # type: (list[str] | tuple[str, ...] | str, _Encoding) -> list[bytes] | bytes
-    if isinstance(udm_value, (list, tuple)):
+    if isinstance(udm_value, list | tuple):
         return [MapToBytes(udm_val, encoding=encoding) for udm_val in udm_value]
     return str(udm_value).encode(*encoding)
 
 
 def UnmapToUnicode(ldap_value, encoding=()):
     # type: (list[bytes] | tuple[bytes, ...] | bytes, _Encoding) -> list[str] | str
-    if isinstance(ldap_value, (list, tuple)):
+    if isinstance(ldap_value, list | tuple):
         return [UnmapToUnicode(ldap_val, encoding=encoding) for ldap_val in ldap_value]
     return ldap_value.decode(*encoding)
 
@@ -273,7 +274,7 @@ def unmapUNIX_TimeInterval(seconds):
     >>> unmapUNIX_TimeInterval('86400')  # doctest: +ALLOW_UNICODE
     ['1', 'days']
     """
-    if isinstance(seconds, (list, tuple)):
+    if isinstance(seconds, list | tuple):
         seconds = seconds[0]
     value = _stringToInt(seconds)
     unit = 'seconds'
@@ -307,7 +308,7 @@ def mapUNIX_TimeInterval(value):
     b'60'
     """
     unit = 'seconds'
-    if isinstance(value, (tuple, list)):
+    if isinstance(value, tuple | list):
         if len(value) > 1:
             unit = value[1]
         value = value[0]
@@ -576,7 +577,7 @@ class mapping:
         encoding, errors = self.getEncoding(map_name)
         errors = encoding_errors or errors
         value = self.mapValue(map_name, value, encoding_errors=errors)
-        if isinstance(value, (list, tuple)):
+        if isinstance(value, list | tuple):
             log.warning('mapValueDecoded returns a list for %s. This is probably not wanted?', map_name)
             value = [val.decode(encoding, errors) for val in value]
         else:

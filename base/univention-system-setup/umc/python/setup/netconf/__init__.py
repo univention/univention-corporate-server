@@ -32,8 +32,8 @@
 
 import logging
 import subprocess
+from collections.abc import Sequence
 from ipaddress import IPv4Interface, IPv6Interface
-from typing import Dict, List, Optional, Sequence, Set, Type
 
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.interfaces import Interfaces
@@ -41,25 +41,25 @@ from univention.config_registry.interfaces import Interfaces
 
 class ChangeSet:
 
-    def __init__(self, ucr: ConfigRegistry, profile: Dict[str, str], options):
+    def __init__(self, ucr: ConfigRegistry, profile: dict[str, str], options):
         self.ucr = ucr
         self.profile = profile
         self.options = options
-        self.ucr_changes: Dict[str, Optional[str]] = {}
+        self.ucr_changes: dict[str, str | None] = {}
         self.old_interfaces = Interfaces(ucr)
         self.logger = logging.getLogger("uss.network.change")
 
         self.update_config(self.only_network_config(profile))
 
     @staticmethod
-    def only_network_config(profile: Dict[str, str]) -> Dict[str, Optional[str]]:
-        config: Dict[str, Optional[str]] = {}
+    def only_network_config(profile: dict[str, str]) -> dict[str, str | None]:
+        config: dict[str, str | None] = {}
         for key, value in profile.items():
             if key.startswith("interfaces/"):
                 config[key] = value or None
         return config
 
-    def update_config(self, changes: Dict[str, Optional[str]]) -> None:
+    def update_config(self, changes: dict[str, str | None]) -> None:
         self.ucr_changes.update(changes)
         new_ucr = dict(self.ucr.items())  # Bug #33101
         new_ucr.update(changes)
@@ -70,27 +70,27 @@ class ChangeSet:
         return self.options.no_act
 
     @property
-    def old_names(self) -> Set[str]:
+    def old_names(self) -> set[str]:
         return {name for name, _iface in self.old_interfaces.all_interfaces}
 
     @property
-    def new_names(self) -> Set[str]:
+    def new_names(self) -> set[str]:
         return {name for name, _iface in self.new_interfaces.all_interfaces}
 
     @property
-    def old_ipv4s(self) -> List[IPv4Interface]:
+    def old_ipv4s(self) -> list[IPv4Interface]:
         return [iface.ipv4_address() for _name, iface in self.old_interfaces.ipv4_interfaces]
 
     @property
-    def new_ipv4s(self) -> List[IPv4Interface]:
+    def new_ipv4s(self) -> list[IPv4Interface]:
         return [iface.ipv4_address() for _name, iface in self.new_interfaces.ipv4_interfaces]
 
     @property
-    def old_ipv6s(self) -> List[IPv6Interface]:
+    def old_ipv6s(self) -> list[IPv6Interface]:
         return [iface.ipv6_address(name) for iface, name in self.old_interfaces.ipv6_interfaces]
 
     @property
-    def new_ipv6s(self) -> List[IPv6Interface]:
+    def new_ipv6s(self) -> list[IPv6Interface]:
         return [iface.ipv6_address(name) for iface, name in self.new_interfaces.ipv6_interfaces]
 
 
@@ -148,7 +148,7 @@ class Phase:  # noqa: PLW1641
         return name
 
     @classmethod
-    def _check_valid(cls, other: Type["Phase"]) -> None:
+    def _check_valid(cls, other: type["Phase"]) -> None:
         try:
             if not issubclass(other, cls):
                 raise SkipPhase('Invalid super-class')

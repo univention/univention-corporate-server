@@ -71,7 +71,7 @@ class Restrictions(dict):
         self.ucr = False
 
     def _add(self, key, value):
-        if not isinstance(value, (tuple, list, set)):
+        if not isinstance(value, tuple | list | set):
             value = [value]
         value = ['"%s"' % x if ' ' in x else x for x in value]
         if self[key] is None:

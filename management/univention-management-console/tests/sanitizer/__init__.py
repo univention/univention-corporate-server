@@ -105,7 +105,7 @@ class Instance(Base):
     @simple_response
     @log
     def list(self, value):
-        assert isinstance(value, (list, tuple)), 'No List given'
+        assert isinstance(value, list | tuple), 'No List given'
         return '%r' % (value,)
 
     @sanitize(value=s.ListSanitizer(min_elements=3, max_elements=6, required=True))
@@ -141,7 +141,7 @@ class Instance(Base):
     @simple_response
     @log
     def string(self, value):
-        assert isinstance(value, (str, bytes))
+        assert isinstance(value, str | bytes)
         if not isinstance(value, str):
             # Is it possible that we don't have unicode here?
             try:

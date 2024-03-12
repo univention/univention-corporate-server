@@ -49,7 +49,7 @@ workaround = set()
 
 
 def handler(config_registry, changes):
-    if not isinstance(changes.get('umc/saml/idp-server'), (list, tuple)):
+    if not isinstance(changes.get('umc/saml/idp-server'), list | tuple):
         # workaround for Bug #39444
         print('skipping UCR registration')
         return

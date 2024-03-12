@@ -31,7 +31,8 @@
 
 
 import sys
-from typing import Any, Callable, Dict, Optional, Tuple, TypeVar  # noqa: F401
+from collections.abc import Callable  # noqa: F401
+from typing import TypeVar
 
 import ldap
 from ldap.filter import filter_format
@@ -49,8 +50,8 @@ _T = TypeVar("_T")  # noqa: PYI018
 class LDAP_connection:
     """Caching LDAP connection factory."""
 
-    _ucr = None  # type: univention.config_registry.ConfigRegistry  # noqa: PYI026
-    _connection_admin = None  # type: Optional[univention.admin.uldap.access]  # noqa: PYI026
+    _ucr = None  # type: univention.config_registry.ConfigRegistry
+    _connection_admin = None  # type: Optional[univention.admin.uldap.access]
     _connection_account = {}  # type: Dict[Tuple[str, str, Optional[str], Optional[int], Optional[str]], univention.admin.uldap.access]
 
     @classmethod

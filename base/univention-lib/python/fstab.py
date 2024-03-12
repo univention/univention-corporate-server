@@ -39,7 +39,7 @@ See <http://linux.die.net/include/mntent.h>.
 
 import os
 import re
-from typing import Container, List, Optional, Union  # noqa: F401
+from collections.abc import Container  # noqa: F401
 
 
 class InvalidEntry(Exception):

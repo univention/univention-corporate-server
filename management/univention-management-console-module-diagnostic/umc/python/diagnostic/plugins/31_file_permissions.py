@@ -36,7 +36,7 @@ import os
 import pwd
 import stat
 from collections import namedtuple
-from typing import Iterator, Tuple
+from collections.abc import Iterator
 
 from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation
@@ -62,7 +62,7 @@ class DoesNotExist(CheckError):
 
 
 class OwnerMismatch(CheckError):
-    def __init__(self, filename: str, expected_owner: Tuple[str, str], actual_owner: Tuple[str, str]) -> None:
+    def __init__(self, filename: str, expected_owner: tuple[str, str], actual_owner: tuple[str, str]) -> None:
         super().__init__(filename)
         self.expected_owner = expected_owner
         self.actual_owner = actual_owner
@@ -83,7 +83,7 @@ class PermissionMismatch(CheckError):
         return msg.format(path=self.filename, actual=self.actual_mode, expected=self.expected_mode)
 
 
-def get_actual_owner(uid: int, gid: int) -> Tuple[str, str]:
+def get_actual_owner(uid: int, gid: int) -> tuple[str, str]:
     try:
         name = pwd.getpwuid(uid).pw_name
     except KeyError:

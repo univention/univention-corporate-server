@@ -30,10 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from collections.abc import Callable, Iterable, Iterator  # noqa: F401
 from contextlib import contextmanager
 from datetime import datetime  # noqa: F401
 from functools import partial
-from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional, Set, Tuple  # noqa: F401
 
 import sqlalchemy
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, Sequence, String, Table, Text, and_, func, or_

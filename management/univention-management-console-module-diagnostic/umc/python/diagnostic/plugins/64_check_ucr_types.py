@@ -35,7 +35,6 @@ Check correctness of UCR type definitions and type compatibility
 of all defined variables.
 """
 
-from typing import Dict, List
 
 import univention.config_registry_info as cri
 from univention.config_registry import ucr_live as ucr
@@ -54,7 +53,7 @@ description = "\n".join((
     _("Please investigate them if you experience any problems on this system."),
     _("Use the module {ucr} to correct their values."),
 ))
-umc_modules: List[Dict[str, str]] = [
+umc_modules: list[dict[str, str]] = [
     {
         "module": "ucr",
     },
@@ -67,7 +66,7 @@ def _get_config_registry_info() -> cri.ConfigRegistryInfo:
 
 
 def run(_umc_instance: Instance) -> None:
-    error_descriptions: List[str] = []
+    error_descriptions: list[str] = []
 
     info = _get_config_registry_info()
     ignore = {typ for typ in (typ.strip() for typ in ucr.get("diagnostic/check/64_check_ucr_types/ignore", "").split(",")) if typ}

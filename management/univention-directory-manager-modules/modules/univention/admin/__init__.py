@@ -36,23 +36,23 @@ import copy
 import re
 import sys
 import time
+from collections.abc import Callable, Container, Iterable
 from logging import getLogger
-from typing import TYPE_CHECKING, Any, Callable, Container, Iterable, Match, Type  # noqa: F401
+from re import Match
+from typing import Any
 
 import unidecode
 from ldap.filter import filter_format
 
 import univention.admin.handlers
 import univention.config_registry
-import univention.logging  # noqa: F401
+import univention.logging
 from univention.admin._ucr import configRegistry
+from univention.admin.layout import Tab
+from univention.admin.types import TypeHint
 
 
 log = getLogger('ADMIN')
-
-if TYPE_CHECKING:
-    from univention.admin.layout import Tab  # noqa: F401
-    from univention.admin.types import TypeHint  # noqa: F401
 
 
 __all__ = ('configRegistry', 'extended_attribute', 'hook', 'mapping', 'modules', 'objects', 'option', 'pattern_replace', 'policiesGroup', 'property', 'syntax', 'ucr_overwrite_layout', 'ucr_overwrite_module_layout', 'ucr_overwrite_properties')
@@ -60,8 +60,7 @@ __all__ = ('configRegistry', 'extended_attribute', 'hook', 'mapping', 'modules',
 ucr_property_prefix = 'directory/manager/web/modules/%s/properties/'
 
 
-def ucr_overwrite_properties(module, lo):
-    # type: (Any, univention.admin.uldap.access) -> None
+def ucr_overwrite_properties(module: Any, lo: univention.admin.uldap.access) -> None:
     """Overwrite properties in property_descriptions by UCR variables"""
     ucr_prefix = ucr_property_prefix % module.module
     if not module:
@@ -115,16 +114,14 @@ def ucr_overwrite_properties(module, lo):
             continue
 
 
-def pattern_replace(pattern, object):
-    # type: (str, Any) -> str
+def pattern_replace(pattern: str, object: Any) -> str:
     """
     Replaces patterns like `<attribute:command,...>[range]` with values
     of the specified UDM attribute.
     """
-    global_commands = []  # type: list[str]
+    global_commands: list[str] = []
 
-    def modify_text(text, commands):
-        # type: (str, list[str]) -> str
+    def modify_text(text: str, commands: list[str]) -> str:
         # apply all string commands
         for iCmd in commands:
             if iCmd == 'lower':
@@ -149,8 +146,7 @@ def pattern_replace(pattern, object):
                 text = text.strip()
         return text
 
-    def repl(match):
-        # type: (Match[str]) -> str
+    def repl(match: Match[str]) -> str:
         key = match.group('key')
         ext = match.group('ext')
         strCommands = []
@@ -176,7 +172,7 @@ def pattern_replace(pattern, object):
             # try to apply the indexing instructions, indicated through '[...]'
             if ext:
                 try:
-                    return eval('val%s' % (ext))  # noqa: PGH001, S307
+                    return eval('val%s' % (ext))  # noqa: S307
                 except SyntaxError:
                     return val
             return val
@@ -207,34 +203,34 @@ class property:
 
     def __init__(
             self,
-            short_description='',  # type: str
-            long_description='',  # type: str
-            syntax=None,  # type: Type | Any
-            module_search=None,  # type: None
-            multivalue=False,  # type: bool
-            one_only=False,  # type: bool
-            parent=None,  # type: None
-            options=[],  # type: list[str]
-            license=[],  # type: list[str]
-            required=False,  # type: bool
-            may_change=True,  # type: bool
-            identifies=False,  # type: bool
-            unique=False,  # type: bool
-            default=None,  # type: bool | int | str | list[str] | tuple[Any, list[str]] | tuple[Callable, list[str], Any] | None
-            prevent_umc_default_popup=False,  # type: bool
-            dontsearch=False,  # type: bool
-            show_in_lists=True,  # type: bool
-            cli_enabled=True,  # type: bool
-            editable=True,  # type: bool
-            configObjectPosition=None,  # type: None
-            configAttributeName=None,  # type: None
-            include_in_default_search=False,  # type: bool
-            nonempty_is_default=False,  # type: bool
-            readonly_when_synced=False,  # type: bool
-            size=None,  # type: str | None
-            copyable=False,  # type: bool
-            type_class=None,  # type: Type[TypeHint] | None
-    ):  # type: (...) -> None
+            short_description: str = '',
+            long_description: str = '',
+            syntax: type | Any = None,
+            module_search: None = None,
+            multivalue: bool = False,
+            one_only: bool = False,
+            parent: None = None,
+            options: list[str] = [],
+            license: list[str] = [],
+            required: bool = False,
+            may_change: bool = True,
+            identifies: bool = False,
+            unique: bool = False,
+            default: bool | int | str | list[str] | tuple[Any, list[str]] | tuple[Callable, list[str], Any] | None = None,
+            prevent_umc_default_popup: bool = False,
+            dontsearch: bool = False,
+            show_in_lists: bool = True,
+            cli_enabled: bool = True,
+            editable: bool = True,
+            configObjectPosition: None = None,
+            configAttributeName: None = None,
+            include_in_default_search: bool = False,
+            nonempty_is_default: bool = False,
+            readonly_when_synced: bool = False,
+            size: str | None = None,
+            copyable: bool = False,
+            type_class: type[TypeHint] | None = None,
+    ) -> None:
         """
         |UDM| property.
 
@@ -290,7 +286,7 @@ class property:
         self.editable = editable
         self.configObjectPosition = configObjectPosition
         self.configAttributeName = configAttributeName
-        self.templates = []  # type: list  # univention.admin.handlers.simpleLdap
+        self.templates: list = []  # univention.admin.handlers.simpleLdap
         self.include_in_default_search = include_in_default_search
         self.threshold = int(configRegistry.get('directory/manager/web/sizelimit', '2000') or 2000)
         self.nonempty_is_default = nonempty_is_default
@@ -299,16 +295,14 @@ class property:
         self.copyable = copyable
         self.type_class = type_class
 
-    def new(self):
-        # type: () -> list[str] | None
+    def new(self) -> list[str] | None:
         return [] if self.multivalue else None
 
     def _replace(self, res, object):
         return pattern_replace(copy.copy(res), object)
 
-    def default(self, object):
-        # type: (univention.admin.handlers.simpleLdap) -> Any
-        base_default = copy.copy(self.base_default)  # type: bool | int | str | list[str] | tuple[Any, list[str]] | tuple[Callable, list[str], Any] | None
+    def default(self, object: univention.admin.handlers.simpleLdap) -> Any:
+        base_default: bool | int | str | list[str] | tuple[Any, list[str]] | tuple[Callable, list[str], Any] | None = copy.copy(self.base_default)
         if not object.set_defaults:
             return [] if self.multivalue else ''
 
@@ -321,7 +315,7 @@ class property:
         bd0 = base_default[0]
 
         # we can not import univention.admin.syntax here (recursive import) so we need to find another way to identify a complex syntax
-        if getattr(self.syntax, 'subsyntaxes', None) is not None and isinstance(bd0, (list, tuple)) and not self.multivalue:
+        if getattr(self.syntax, 'subsyntaxes', None) is not None and isinstance(bd0, list | tuple) and not self.multivalue:
             return bd0
 
         if isinstance(bd0, str):
@@ -364,8 +358,7 @@ class property:
             return self.syntax.parse(defaults)
         return defaults
 
-    def check_default(self, object):
-        # type: (Any) -> None
+    def check_default(self, object: Any) -> None:
         defaults = self.default(object)
         try:
             if isinstance(defaults, list):
@@ -377,8 +370,7 @@ class property:
         except univention.admin.uexceptions.valueError:
             raise univention.admin.uexceptions.templateSyntaxError([t['name'] for t in self.templates])
 
-    def matches(self, options):
-        # type: (Iterable[str]) -> bool
+    def matches(self, options: Iterable[str]) -> bool:
         if not self.options:
             return True
         return bool(set(self.options).intersection(set(options)))
@@ -387,8 +379,7 @@ class property:
 class option:
     """|UDM| option to make properties conditional."""
 
-    def __init__(self, short_description='', long_description='', default=0, editable=False, disabled=False, objectClasses=None, is_app_option=False):
-        # type: (str, str, int, bool, bool, Iterable[str] | None, bool) -> None
+    def __init__(self, short_description: str = '', long_description: str = '', default: int = 0, editable: bool = False, disabled: bool = False, objectClasses: Iterable[str] | None = None, is_app_option: bool = False) -> None:
         self.short_description = short_description
         self.long_description = long_description
         self.default = default
@@ -399,15 +390,13 @@ class option:
         if objectClasses:
             self.objectClasses = set(objectClasses)
 
-    def matches(self, objectClasses):
-        # type: (Container[str]) -> bool
+    def matches(self, objectClasses: Container[str]) -> bool:
         if not self.objectClasses:
             return True
         return all(not oc not in objectClasses for oc in self.objectClasses)
 
 
-def ucr_overwrite_layout(module, ucr_property, tab):
-    # type: (Any, str, Tab) -> bool | None
+def ucr_overwrite_layout(module: Any, ucr_property: str, tab: Tab) -> bool | None:
     """Overwrite the advanced setting in the layout"""
     desc = tab['name']
     if hasattr(tab['name'], 'data'):
@@ -417,8 +406,7 @@ def ucr_overwrite_layout(module, ucr_property, tab):
     return configRegistry.is_true('directory/manager/web/modules/%s/layout/%s/%s' % (module, desc, ucr_property), None)
 
 
-def ucr_overwrite_module_layout(module):
-    # type: (Any) -> None
+def ucr_overwrite_module_layout(module: Any) -> None:
     """Overwrite the tab layout through |UCR| variables."""
     log.debug("layout overwrite")
     # there are modules without a layout definition
@@ -494,8 +482,7 @@ def ucr_overwrite_module_layout(module):
 class extended_attribute:
     """Extended attributes extend |UDM| and |UMC| with additional properties defined in |LDAP|."""
 
-    def __init__(self, name, objClass, ldapMapping, deleteObjClass=False, syntax='string', hook=None):
-        # type: (str, str, Any, bool, str, Any) -> None
+    def __init__(self, name: str, objClass: str, ldapMapping: Any, deleteObjClass: bool = False, syntax: str = 'string', hook: Any = None) -> None:
         self.name = name
         self.objClass = objClass
         self.ldapMapping = ldapMapping
@@ -512,8 +499,7 @@ class extended_attribute:
 
 class policiesGroup:
 
-    def __init__(self, id, short_description=None, long_description='', members=[]):
-        # type: (Any, str | None, str, Any) -> None
+    def __init__(self, id: Any, short_description: str | None = None, long_description: str = '', members: Any = []) -> None:
         self.id = id
         if short_description is None:
             self.short_description = id
@@ -546,7 +532,7 @@ def _ldap_cache(ttl=10, cache_none=True):
 
 
 univention.admin = sys.modules[__name__]
-from univention.admin import hook, mapping, modules, objects, syntax  # noqa: F401,E402
+from univention.admin import hook, mapping, modules, objects, syntax  # noqa: E402
 
 
 syntax.import_syntax_files()

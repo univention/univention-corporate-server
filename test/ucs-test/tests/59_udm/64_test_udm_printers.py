@@ -18,7 +18,7 @@ import shlex
 import subprocess
 import sys
 import time
-from typing import Mapping
+from collections.abc import Mapping
 
 import ldap.dn
 import pytest

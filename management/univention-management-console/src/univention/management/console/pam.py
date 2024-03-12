@@ -34,7 +34,7 @@
 
 import re
 import traceback
-from typing import Any, Dict, Iterator, List, Optional, Pattern, Sequence, Tuple, Union  # noqa: F401
+from collections.abc import Iterator, Sequence  # noqa: F401
 
 from PAM import (
     PAM_ACCT_EXPIRED, PAM_AUTH_ERR, PAM_AUTHTOK_ERR, PAM_AUTHTOK_RECOVER_ERR, PAM_CONV, PAM_ERROR_MSG,

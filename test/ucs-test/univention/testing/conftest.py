@@ -34,7 +34,8 @@
 
 """conftest plugin for pytest runner in ucs-test"""
 
-from typing import Callable, TypeVar
+from collections.abc import Callable
+from typing import TypeVar
 
 import pytest
 from _pytest.config import Config

@@ -35,7 +35,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
-from univention.admin.handlers.dns import DNSBase, is_dns, is_not_handled_by_other_module_than, is_zone  # noqa: F401
+from univention.admin.handlers.dns import DNSBase, is_dns, is_not_handled_by_other_module_than, is_zone
 from univention.admin.layout import Group, Tab
 
 

@@ -8,10 +8,11 @@ import os
 import shutil
 import socket
 from argparse import ArgumentParser, Namespace
+from collections.abc import Callable
 from functools import wraps
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from select import select
-from typing import Any, Callable, TypeVar, cast
+from typing import Any, TypeVar, cast
 from urllib.error import HTTPError
 from urllib.parse import quote, unquote, urlsplit, urlunsplit
 from urllib.request import Request, urlopen

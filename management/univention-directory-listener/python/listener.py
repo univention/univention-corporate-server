@@ -33,25 +33,22 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
+from collections.abc import Callable
 from functools import wraps
 from pwd import getpwnam
+from types import TracebackType
+from typing import Any, TypeVar
 
 from univention.config_registry import ConfigRegistry
 
 
-try:
-    from types import TracebackType  # noqa: F401
-    from typing import Any, Callable, List, Optional, Type, TypeVar, Union  # noqa: F401
-
-    _F = TypeVar("_F", bound=Callable[..., Any])  # noqa: PYI018
-except ImportError:
-    pass
+_F = TypeVar("_F", bound=Callable[..., Any])
 
 configRegistry = ConfigRegistry()
 configRegistry.load()
 
 
-def setuid(uid):  # type: (Union[int, str]) -> None
+def setuid(uid: int | str) -> None:
     """
     Set the current process’s effective user id.
     Use :py:func:`unsetuid()` to return to the listeners UID.
@@ -73,7 +70,7 @@ def setuid(uid):  # type: (Union[int, str]) -> None
 __listener_uid = -1
 
 
-def unsetuid():  # type: () -> None
+def unsetuid() -> None:
     """
     Return the current process’s effective user id to the listeners UID.
     Only possible if the current effective user id is `root`.
@@ -89,7 +86,7 @@ def unsetuid():  # type: () -> None
     os.seteuid(__listener_uid)
 
 
-def run(exe, argv, uid=-1, wait=True):  # type: (str, List[Union[str, str]], int, bool) -> int
+def run(exe: str, argv: list[str], uid: int = -1, wait: bool = True) -> int:
     """
     Execute a the program `exe` with arguments `argv` and effective user id
     `uid`.
@@ -128,20 +125,20 @@ class SetUID:
     :param int uid: Numeric user ID. Defaults to `root`.
     """
 
-    def __init__(self, uid=0):  # type: (int) -> None
+    def __init__(self, uid: int = 0) -> None:
         self.uid = uid if os.geteuid() != uid else -1
 
-    def __enter__(self):  # type: () -> None
+    def __enter__(self) -> None:
         if self.uid >= 0:
             setuid(self.uid)
 
-    def __exit__(self, exc_type, exc_value, traceback):  # type: (Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]) -> None
+    def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         if self.uid >= 0:
             unsetuid()
 
-    def __call__(self, f):  # type: (_F) -> Callable[[_F], _F]
+    def __call__(self, f: _F) -> Callable[[_F], _F]:
         @wraps(f)
-        def wrapper(*args, **kwargs):  # type: (*Any, **Any) -> Any
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             with self:
                 return f(*args, **kwargs)
 

@@ -32,15 +32,12 @@
 
 import inspect
 import string
-from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Type  # noqa: F401
+from typing import Any
 
 import listener
 from .exceptions import ListenerModuleConfigurationError
+from .handler import ListenerModuleHandler
 from .handler_logging import get_logger
-
-
-if TYPE_CHECKING:
-    from .handler import ListenerModuleHandler  # noqa: F401
 
 
 listener.configRegistry.load()
@@ -66,15 +63,14 @@ class ListenerModuleConfiguration:
     name = ''                     # (**) name of the listener module
     description = ''              # (*) description of the listener module
     ldap_filter = ''              # (*) LDAP filter, if matched will trigger the listener module
-    listener_module_class = None  # type: Type[ListenerModuleHandler] # (**) class that implements the module
-    attributes = []               # type: List[str] # only trigger module, if any of the listed attributes has changed
+    listener_module_class: type[ListenerModuleHandler] = None  # (**) class that implements the module
+    attributes: list[str] = []  # only trigger module, if any of the listed attributes has changed
     # (*) required
     # (**) will be set automatically by the handlers metaclass
 
-    _mandatory_attributes = ('description', 'ldap_filter', 'listener_module_class')  # type: Tuple[str, ...]
+    _mandatory_attributes: tuple[str, ...] = ('description', 'ldap_filter', 'listener_module_class')
 
-    def __init__(self, *args, **kwargs):
-        # type: (*Any, **Any) -> None
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         _keys = self.get_configuration_keys()
         for k, _v in list(kwargs.items()):
             if k in _keys:
@@ -82,12 +78,10 @@ class ListenerModuleConfiguration:
         self.logger = get_logger(self.get_name())
         self._run_checks()
 
-    def __repr__(self):
-        # type: () -> str
+    def __repr__(self) -> str:
         return f'{self.__class__.__name__}(name={self.get_name()!r})'
 
-    def _run_checks(self):
-        # type: () -> None
+    def _run_checks(self) -> None:
         allowed_name_chars = string.ascii_letters + string.digits + ',.-_'
 
         for attr in self._mandatory_attributes:
@@ -101,8 +95,7 @@ class ListenerModuleConfiguration:
             raise ListenerModuleConfigurationError('Attribute "listener_module_class" must be a class.')
 
     @classmethod
-    def get_configuration_keys(cls):
-        # type: () -> List[str]
+    def get_configuration_keys(cls) -> list[str]:
         """
         List of known configuration keys. Subclasses can expand this to support
         additional attributes.
@@ -118,32 +111,28 @@ class ListenerModuleConfiguration:
             'name',
         ]
 
-    def get_name(self):
-        # type: () -> str
+    def get_name(self) -> str:
         """
         :return: name of module
         :rtype: str
         """
         return self.name
 
-    def get_description(self):
-        # type: () -> str
+    def get_description(self) -> str:
         """
         :return: description string of module
         :rtype: str
         """
         return self.description
 
-    def get_ldap_filter(self):
-        # type: () -> str
+    def get_ldap_filter(self) -> str:
         """
         :return: LDAP filter of module
         :rtype: str
         """
         return self.ldap_filter
 
-    def get_attributes(self):
-        # type: () -> List[str]
+    def get_attributes(self) -> list[str]:
         """
         :return: attributes of matching LDAP objects the module will be notified about if changed
         :rtype: list(str)
@@ -151,8 +140,7 @@ class ListenerModuleConfiguration:
         assert isinstance(self.attributes, list)
         return self.attributes
 
-    def get_priority(self):
-        # type: () -> float
+    def get_priority(self) -> float:
         """
         :return: priority of the handler. Defines the order in which this module is executed inside the listener
         :rtype: float
@@ -160,8 +148,7 @@ class ListenerModuleConfiguration:
         priority = getattr(self, "priority", 50.0)
         return float(priority)
 
-    def get_listener_module_instance(self, *args, **kwargs):
-        # type: (*Any, **Any) -> ListenerModuleHandler
+    def get_listener_module_instance(self, *args: Any, **kwargs: Any) -> ListenerModuleHandler:
         """
         Get an instance of the listener module.
 
@@ -173,8 +160,7 @@ class ListenerModuleConfiguration:
         cls = self.get_listener_module_class()
         return cls(*args, **kwargs)
 
-    def get_listener_module_class(self):
-        # type: () -> Type[ListenerModuleHandler]
+    def get_listener_module_class(self) -> type[ListenerModuleHandler]:
         """
         Get the class to instantiate for a listener module.
 
@@ -183,8 +169,7 @@ class ListenerModuleConfiguration:
         """
         return self.listener_module_class
 
-    def get_active(self):
-        # type: () -> bool
+    def get_active(self) -> bool:
         """
         If this listener module should run. Determined by the value of
         `listener/module/<name>/deactivate`.

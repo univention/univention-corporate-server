@@ -11,13 +11,17 @@
 from __future__ import annotations
 
 import os
-from typing import Iterator
+from typing import TYPE_CHECKING
 
 import pytest
 
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 from univention.testing.utils import package_installed
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 KRB5_PATH = "/etc/krb5.conf"

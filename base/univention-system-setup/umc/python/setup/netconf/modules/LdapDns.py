@@ -5,7 +5,6 @@
 # SPDX-FileCopyrightText: 2024 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from typing import List
 
 from univention import ipcalc
 from univention.management.console.modules.setup.netconf.common import AddressMap
@@ -50,7 +49,7 @@ class PhaseLdapDns(AddressMap, Ldap, Executable):
                 "%(hostname)s.%(domainname)s." % self.changeset.ucr,
             ])
 
-    def _soa(self) -> List[str]:
+    def _soa(self) -> list[str]:
         return [
             "root@%(domainname)s." % self.changeset.ucr,
             "1",

@@ -5,7 +5,8 @@
 # SPDX-FileCopyrightText: 2024 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from typing import Any, Iterator, Tuple
+from collections.abc import Iterator
+from typing import Any
 
 from ldap import LDAPError
 
@@ -50,7 +51,7 @@ class PhaseLdapReferences(AddressMap, LdapChange):
         except (LDAPError, UniventionBaseException) as ex:
             self.logger.warning("Failed LDAP: %s", ex, exc_info=True)
 
-    def _iterate_objects(self) -> Iterator[Tuple[Any, str, int]]:
+    def _iterate_objects(self) -> Iterator[tuple[Any, str, int]]:
         for module_name, udm_property, replace_type in self.referers:
             module = modules.get(module_name)
             if not module:

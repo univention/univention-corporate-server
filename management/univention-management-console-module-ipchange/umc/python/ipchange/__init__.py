@@ -34,7 +34,6 @@
 # <https://www.gnu.org/licenses/>.
 
 import ipaddress
-from typing import Dict, Union
 
 from ldap.filter import filter_format
 
@@ -54,7 +53,7 @@ univention.admin.modules.update()
 class Instance(Base):
 
     @simple_response
-    def change(self, role: str, ip: str, netmask: str, oldip: Union[str, None] = None) -> Dict:
+    def change(self, role: str, ip: str, netmask: str, oldip: str | None = None) -> dict:
         """
         Return a dict with all necessary values for ipchange read from the current
         status of the system.

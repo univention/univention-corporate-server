@@ -51,22 +51,22 @@ _ = umc.Translation('univention-management-console-module-appcenter').translate
 
 
 def error_handling(etype, exc, etraceback):
-    if isinstance(exc, (ConnectionFailedSecretFile,)):
+    if isinstance(exc, ConnectionFailedSecretFile):
         MODULE.error(str(exc))
         error_msg = [_('Cannot connect to the LDAP service.'), _('The server seems to be lacking a proper password file.'), _('Please check the join state of the machine.')]
         raise umcm.UMC_Error('\n'.join(error_msg), status=500)
-    if isinstance(exc, (ConnectionFailedInvalidUserCredentials,)):
+    if isinstance(exc, ConnectionFailedInvalidUserCredentials):
         MODULE.error(str(exc))
         error_msg = [_('Cannot connect to the LDAP service.'), _('The credentials provided were not accepted.'), _('This may be solved by simply logging out and in again.'), _('Maybe your password changed during the session.')]
         raise umcm.UMC_Error('\n'.join(error_msg), status=500)
-    if isinstance(exc, (ConnectionFailedInvalidMachineCredentials,)):
+    if isinstance(exc, ConnectionFailedInvalidMachineCredentials):
         MODULE.error(str(exc))
         error_msg = [_('Cannot connect to the LDAP service.'), _('The credentials provided were not accepted.'), _('This may be solved by simply logging out and in again.'), _('Maybe the machine password changed during the session.')]
         raise umcm.UMC_Error('\n'.join(error_msg), status=500)
-    if isinstance(exc, (ConnectionFailedServerDown,)):
+    if isinstance(exc, ConnectionFailedServerDown):
         MODULE.error(str(exc))
         raise LDAP_ServerDown()
-    if isinstance(exc, (Abort, SystemError)):
+    if isinstance(exc, Abort | SystemError):
         MODULE.error(str(exc))
         raise umcm.UMC_Error(str(exc), status=500)
 

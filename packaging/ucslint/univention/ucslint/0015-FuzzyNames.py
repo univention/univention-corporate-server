@@ -32,12 +32,13 @@ from __future__ import annotations
 
 import re
 from itertools import chain
-from typing import TYPE_CHECKING, Any, Iterable, Iterator
+from typing import TYPE_CHECKING, Any
 
 import univention.ucslint.base as uub
 
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable, Iterator
     from pathlib import Path
 
 

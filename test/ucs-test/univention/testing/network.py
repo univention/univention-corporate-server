@@ -46,12 +46,13 @@ from __future__ import annotations
 import copy
 import re
 import subprocess
-from typing import TYPE_CHECKING, Literal, Mapping
+from typing import TYPE_CHECKING, Literal
 
 import univention.config_registry
 
 
 if TYPE_CHECKING:
+    from collections.abc import Mapping
     from types import TracebackType
 
 

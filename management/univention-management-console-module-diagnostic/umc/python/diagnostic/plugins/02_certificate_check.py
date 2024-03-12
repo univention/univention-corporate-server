@@ -37,7 +37,7 @@ import re
 import shutil
 import subprocess
 import tempfile
-from typing import Iterable, Iterator
+from collections.abc import Iterable, Iterator
 
 import dateutil.tz
 import requests

@@ -32,8 +32,8 @@
 """|UDM| module for the |DHCP| subnet"""
 
 import sys
+from collections.abc import Iterable, Sequence  # noqa: F401
 from ipaddress import IPv4Address, IPv4Network
-from typing import Iterable, Sequence, Tuple  # noqa: F401
 
 import univention.admin.localization
 import univention.admin.uexceptions as uex
@@ -41,7 +41,7 @@ from univention.admin.handlers import simpleLdap
 from univention.admin.layout import Tab
 
 
-Range = Tuple[IPv4Address, IPv4Address]
+Range = tuple[IPv4Address, IPv4Address]
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate

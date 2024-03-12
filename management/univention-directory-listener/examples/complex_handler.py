@@ -31,8 +31,9 @@
 # <https://www.gnu.org/licenses/>.
 
 
+from collections.abc import Mapping, Sequence
 from types import TracebackType
-from typing import Any, List, Mapping, Optional, Sequence, Type
+from typing import Any
 
 from univention.listener import ListenerModuleConfiguration, ListenerModuleHandler
 
@@ -45,7 +46,7 @@ class ComplexHandler(ListenerModuleHandler):
         description = 'a description'
         ldap_filter = '(objectClass=inetOrgPerson)'
 
-        def get_attributes(self) -> List[str]:
+        def get_attributes(self) -> list[str]:
             # do more complicated stuff than just setting the class variable...
             return ['cn']
 
@@ -69,7 +70,7 @@ class ComplexHandler(ListenerModuleHandler):
     def create(self, dn: str, new: Mapping[str, Sequence[bytes]]) -> None:
         self.logger.info('ComplexHandler.create() dn=%r', dn)
 
-    def modify(self, dn: str, old: Mapping[str, Sequence[bytes]], new: Mapping[str, Sequence[bytes]], old_dn: Optional[str]) -> None:
+    def modify(self, dn: str, old: Mapping[str, Sequence[bytes]], new: Mapping[str, Sequence[bytes]], old_dn: str | None) -> None:
         # modify() will be called for both moves and modifies.
         # If `old_dn` is set, a move happened.
         # Both DN an attributes can change during a move.
@@ -111,9 +112,9 @@ class ComplexHandler(ListenerModuleHandler):
             old: Mapping[str, Sequence[bytes]],
             new: Mapping[str, Sequence[bytes]],
             command: str,
-            exc_type: Optional[Type[BaseException]],
-            exc_value: Optional[BaseException],
-            exc_traceback: Optional[TracebackType],
+            exc_type: type[BaseException] | None,
+            exc_value: BaseException | None,
+            exc_traceback: TracebackType | None,
     ) -> None:
         # `exc_type`, `exc_value` and `exc_traceback` can be examined for further
         # information about the exception.

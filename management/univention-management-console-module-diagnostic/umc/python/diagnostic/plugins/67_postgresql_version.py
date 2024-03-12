@@ -32,7 +32,6 @@
 
 import subprocess
 from shutil import which
-from typing import Tuple
 
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Instance, Warning
@@ -66,7 +65,7 @@ def warning(msg: str) -> Warning:
     return Warning(text, links=links)
 
 
-def version_tuple_to_str(version: Tuple[int, ...]) -> str:
+def version_tuple_to_str(version: tuple[int, ...]) -> str:
     return ".".join(str(v) for v in version)
 
 

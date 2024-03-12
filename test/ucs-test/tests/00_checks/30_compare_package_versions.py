@@ -29,7 +29,7 @@ from gzip import open as gzip_open
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from time import sleep
-from typing import Iterable
+from typing import TYPE_CHECKING
 from urllib.error import ContentTooShortError
 from urllib.request import urlopen, urlretrieve
 
@@ -37,6 +37,10 @@ from debian.debian_support import Version
 from lxml.html import fromstring
 
 from univention.testing import utils
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 
 RE_MAJOR_MINOR = re.compile(r'^([1-9][0-9]*.[0-9]+)/?$')

@@ -8,7 +8,6 @@
 ## join: true
 ## exposure: dangerous
 
-from typing import Dict, List
 
 from playwright.sync_api import Page, expect
 
@@ -27,7 +26,7 @@ row_server_overview = [_('Administration'), _('Server overview'), tooltip_server
 row_system_settings = [_('Administration'), _('System settings'), _('Univention Management Console for admin­is­tra­ting the local system')]
 row_portal = [_('Administration'), _('Univention Portal'), _('Central portal web page for the UCS domain')]
 
-expected_entries: Dict[str, List[List[str]]] = {
+expected_entries: dict[str, list[list[str]]] = {
     'domaincontroller_master_single': [
         row_system_and_domain_settings,
     ],
@@ -50,7 +49,7 @@ expected_entries: Dict[str, List[List[str]]] = {
 }
 
 
-def get_entries_for_role(role: str) -> List[List[str]]:
+def get_entries_for_role(role: str) -> list[list[str]]:
     return expected_entries[role]
 
 
@@ -76,7 +75,7 @@ def test_portal_entries_appear_as_expected(umc_browser_test: UMCBrowserTest, ucr
 
 def check_if_expected_entries_are_shown(
     page: Page,
-    entries: List[List[str]],
+    entries: list[list[str]],
 ):
     for entry in entries:
         (header, group, tooltip) = entry

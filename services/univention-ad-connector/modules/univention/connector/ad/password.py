@@ -89,8 +89,8 @@ def mySamEncryptNTLMHash(hash, key):
     Key1 = transformKey(Key1)
     Key2 = key[7:14]
     Key2 = transformKey(Key2)
-    Crypt1 = Cipher(TripleDES(Key1), mode=ECB()).encryptor()  # noqa: S304, S305
-    Crypt2 = Cipher(TripleDES(Key2), mode=ECB()).encryptor()  # noqa: S304, S305
+    Crypt1 = Cipher(TripleDES(Key1), mode=ECB()).encryptor()  # noqa: S305
+    Crypt2 = Cipher(TripleDES(Key2), mode=ECB()).encryptor()  # noqa: S305
     plain1 = Crypt1.update(Block1) + Crypt1.finalize()
     plain2 = Crypt2.update(Block2) + Crypt2.finalize()
     return plain1 + plain2

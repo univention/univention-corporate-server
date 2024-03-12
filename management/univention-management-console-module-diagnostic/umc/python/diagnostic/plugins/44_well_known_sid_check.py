@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from typing import Dict, Iterator, List, Tuple
+from collections.abc import Iterator
 
 import ldap
 
@@ -93,7 +93,7 @@ class LDAPConnection:
     def __init__(self) -> None:
         self._connection = univention.uldap.getMachineConnection()
 
-    def search(self, expression: str, attr: List[str] = []) -> Iterator[Tuple[str, Dict[str, List[bytes]]]]:
+    def search(self, expression: str, attr: list[str] = []) -> Iterator[tuple[str, dict[str, list[bytes]]]]:
         for (dn, attrs) in self._connection.search(expression, attr=attr):
             if dn is not None:
                 yield (dn, attrs)
@@ -121,7 +121,7 @@ class LDAPConnection:
         raise KeyError(name)
 
 
-def all_sids_and_names(domain_sid: str) -> Iterator[Tuple[str, str]]:
+def all_sids_and_names(domain_sid: str) -> Iterator[tuple[str, str]]:
     for (sid, name) in s4.well_known_sids.items():
         if name not in NON_EXISTENT_SIDS:
             yield (sid, name)

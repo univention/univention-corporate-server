@@ -38,7 +38,7 @@ import os
 import subprocess
 import sys
 from os.path import abspath, sep
-from typing import IO, List, Optional, Set, Tuple
+from typing import IO
 
 import ldap
 from ldap.filter import filter_format
@@ -61,7 +61,7 @@ def debug(msg: str, out: IO[str] = sys.stderr) -> None:
         print(msg, file=out)
 
 
-def exit(result: int, message: Optional[str] = None) -> None:
+def exit(result: int, message: str | None = None) -> None:
     """Exit with optional error message."""
     script = os.path.basename(sys.argv[0])
     if message:
@@ -69,7 +69,7 @@ def exit(result: int, message: Optional[str] = None) -> None:
     sys.exit(result)
 
 
-def query_policy(host_dn: str, server: Optional[str] = None, password_file: str = "/etc/machine.secret", verbose: bool = False) -> Set[str]:
+def query_policy(host_dn: str, server: str | None = None, password_file: str = "/etc/machine.secret", verbose: bool = False) -> set[str]:
     """Get NFS shares from LDAP as per policy for dn."""
     debug('Retrieving policy for %s...\n' % (host_dn,))
     try:
@@ -101,7 +101,7 @@ def main() -> None:
     mount(to_mount)
 
 
-def update_fstab(args: argparse.Namespace, simulate: bool) -> Set[str]:
+def update_fstab(args: argparse.Namespace, simulate: bool) -> set[str]:
     """remove all nfs mounts from the fstab"""
     debug("Rewriting /etc/fstab...\n")
     current_fstab = fstab.File('/etc/fstab')
@@ -135,7 +135,7 @@ def update_fstab(args: argparse.Namespace, simulate: bool) -> Set[str]:
     return to_mount
 
 
-def get_nfs_data(nfs_mount: str, entries: List[fstab.Entry]) -> Optional[Tuple[str, str, str]]:
+def get_nfs_data(nfs_mount: str, entries: list[fstab.Entry]) -> tuple[str, str, str] | None:
     fields = nfs_mount.split(' ')  # dn_univentionShareNFS mount_point
     dn = fields[0]
     if not dn:
@@ -221,7 +221,7 @@ def overlap(path_a: str, path_b: str) -> bool:
     )
 
 
-def mount(to_mount: Set[str]) -> None:
+def mount(to_mount: set[str]) -> None:
     """mount new NFS filesystems"""
     for mp in sorted(to_mount):
         if not os.path.exists(mp):

@@ -1,3 +1,9 @@
+univention-directory-notifier (16.0.3) unstable; urgency=medium
+
+  * Bug #56604: use Python 3.11 code annotations
+
+ -- Florian Best <best@univention.de>  Wed, 13 Mar 2024 00:46:34 +0100
+
 univention-directory-notifier (16.0.2) unstable; urgency=medium
 
   * Bug #56793: Replace libnss-ldapd with SSSd

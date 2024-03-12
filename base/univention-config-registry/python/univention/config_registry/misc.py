@@ -37,7 +37,7 @@ import re
 import string  # pylint: disable-msg=W0402
 import sys
 from shlex import quote as escape_value
-from typing import IO, Dict, List  # noqa: F401
+from typing import IO
 
 
 __all__ = [
@@ -51,8 +51,7 @@ __all__ = [
 ]
 
 
-def replace_dict(line, dictionary):
-    # type: (str, Dict[str, str]) -> str
+def replace_dict(line: str, dictionary: dict[str, str]) -> str:
     """
     Map any character from line to its value from dictionary.
 
@@ -62,8 +61,7 @@ def replace_dict(line, dictionary):
     return ''.join(dictionary.get(_, _) for _ in line)
 
 
-def replace_umlaut(line):
-    # type: (str) -> str
+def replace_umlaut(line: str) -> str:
     """
     Replace german umlauts.
 
@@ -84,8 +82,7 @@ UMLAUTS = {  # type: ignore # pylint: disable-msg=W0612
 }
 
 
-def asciify(text):
-    # type: (str) -> str
+def asciify(text: str) -> str:
     """
     Replace any non-ASCII characters.
 
@@ -95,8 +92,7 @@ def asciify(text):
     return text.encode('ascii', 'replace').decode("ascii")
 
 
-def key_shell_escape(line):
-    # type: (str) -> str
+def key_shell_escape(line: str) -> str:
     """
     Escape variable name by substituting shell invalid characters by '_'.
 
@@ -121,8 +117,7 @@ VALID_CHARS = (  # type: ignore # pylint: disable-msg=W0612
     string.ascii_letters + string.digits + '_')
 
 
-def validate_key(key, out=sys.stderr):
-    # type: (str, IO) -> bool
+def validate_key(key: str, out: IO = sys.stderr) -> bool:
     """
     Check if key consists of only shell valid characters.
 
@@ -152,8 +147,7 @@ def validate_key(key, out=sys.stderr):
 INVALID_KEY_CHARS = re.compile('[][\r\n!"#$%&\'()+,;<=>?\\\\`{}§]')
 
 
-def directory_files(directory):
-    # type: (str) -> List[str]
+def directory_files(directory: str) -> list[str]:
     """
     Return a list of all files below the given directory.
 

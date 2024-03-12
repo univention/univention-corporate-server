@@ -35,7 +35,8 @@
 
 import re
 from io import StringIO
-from typing import Pattern
+from re import Pattern
+from typing import Any
 
 import univention.info_tools as uit
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset, validate_key
@@ -52,9 +53,6 @@ from univention.management.console.modules.sanitizers import (
 _ = Translation('univention-management-console-module-ucr').translate
 
 
-from typing import Any, Dict, List, Union  # noqa: E402
-
-
 ONLINE_BASE = 'repository/online'
 COMPONENT_BASE = f'{ONLINE_BASE}/component'
 DEPRECATED_VARS = ['prefix', 'username', 'password', 'unmaintained', 'port']
@@ -64,7 +62,7 @@ RE_KEY = re.compile(f'{COMPONENT_BASE}/([^/]+)/({"|".join(DEPRECATED_VARS)})')
 
 class UCRKeySanitizer(StringSanitizer):
 
-    def _sanitize(self, value: str, name: str, further_arguments: List[Any]) -> Union[str, None]:
+    def _sanitize(self, value: str, name: str, further_arguments: list[Any]) -> str | None:
         """
         sanitizing UCR keys
 
@@ -89,7 +87,7 @@ class Instance(Base):
         # set the language in order to return the correctly localized labels/descriptions
         uit.set_language(self.locale.language)
 
-    def __create_variable_info(self, options: Dict) -> None:
+    def __create_variable_info(self, options: dict) -> None:
         """
         creating variable infos
 
@@ -220,7 +218,7 @@ class Instance(Base):
 
     @sanitize(pattern=PatternSanitizer(default='.*'), key=ChoicesSanitizer(['all', 'key', 'value', 'description'], required=True))
     @simple_response
-    def query(self, pattern: str, key: str, category: Union[List[str], None] = None) -> Dict:
+    def query(self, pattern: str, key: str, category: list[str] | None = None) -> dict:
         """
         Returns a dictionary of configuration registry variables
         found by searching for the (wildcard) expression defined by the

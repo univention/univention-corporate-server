@@ -10,7 +10,6 @@
 ## exposure: dangerous
 
 from pathlib import Path
-from typing import List
 
 from univention.lib.i18n import Translation
 from univention.testing.browser.lib import UMCBrowserTest
@@ -193,7 +192,7 @@ def determine_ucs_role(ucr) -> str:
         raise Exception(f'Test is run on invalid server-role {server_role}')
 
 
-def determine_users_by_join_status() -> List[str]:
+def determine_users_by_join_status() -> list[str]:
     if Path('/var/univention-join/joined').is_file():
         return [ADMIN, ROOT]
     else:

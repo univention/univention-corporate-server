@@ -36,7 +36,7 @@ import datetime
 import logging
 import sys
 import time
-from typing import Any, Callable, Dict, List, Optional, Type, TypeVar  # noqa: F401
+from collections.abc import Callable  # noqa: F401
 
 import lazy_object_proxy
 

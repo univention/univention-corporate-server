@@ -40,7 +40,7 @@ The API of the Python objects representing the messages are based on the class :
 import mimetypes
 import sys
 import time
-from typing import Any, Dict, List, Optional, Union  # noqa: F401
+from typing import Any
 
 import ldap
 import ldap.sasl
@@ -52,7 +52,7 @@ from univention.management.console.log import CORE, PARSER, PROTOCOL
 
 
 RequestType = int
-UmcpBody = Union[dict, str, bytes]
+UmcpBody = dict | str | bytes
 
 MIMETYPE_JSON = 'application/json'
 
@@ -74,11 +74,10 @@ class Message:
     RESPONSE, REQUEST = range(2)
     __counter = 0
 
-    def __init__(self, type=REQUEST, command='', mime_type=MIMETYPE_JSON, data=None, arguments=None, options=None):
-        # type: (RequestType, str, str, bytes, List[str], Dict[str, Any]) -> None
-        self.id = None  # type: Optional[str]
+    def __init__(self, type: RequestType = REQUEST, command: str = '', mime_type: str = MIMETYPE_JSON, data: bytes | None = None, arguments: list[str] | None = None, options: dict[str, Any] | None = None) -> None:
+        self.id: str | None = None
         if mime_type == MIMETYPE_JSON:
-            self.body = {}  # type: UmcpBody
+            self.body: UmcpBody = {}
         else:
             self.body = b''
         self.command = command
@@ -91,19 +90,16 @@ class Message:
         self.http_method = None
 
     @classmethod
-    def generate_id(cls):
-        # type: () -> str
+    def generate_id(cls) -> str:
         # cut off 'L' for long
         generated_id = '%lu-%d' % (int(time.time() * 100000), Message.__counter)
         Message.__counter += 1
         return generated_id
 
-    def _create_id(self):
-        # type: () -> None
+    def _create_id(self) -> None:
         self.id = self.generate_id()
 
-    def recreate_id(self):
-        # type: () -> None
+    def recreate_id(self) -> None:
         """Creates a new unique ID for the message"""
         self._create_id()
 
@@ -155,8 +151,7 @@ class Request(Message):
 
     _user_connections = set()  # prevent garbage collection
 
-    def __init__(self, command, arguments=None, options=None, mime_type=MIMETYPE_JSON):
-        # type: (str, Any, Any, str) -> None
+    def __init__(self, command: str, arguments: Any = None, options: Any = None, mime_type: str = MIMETYPE_JSON) -> None:
         Message.__init__(self, Message.REQUEST, command, arguments=arguments, options=options, mime_type=mime_type)
         self._create_id()
         self.username = None
@@ -222,8 +217,7 @@ class Response(Message):
     frontend to the console daemon
     """
 
-    def __init__(self, request=None, data=None, mime_type=MIMETYPE_JSON):
-        # type: (Request, Any, str) -> None
+    def __init__(self, request: Request = None, data: Any = None, mime_type: str = MIMETYPE_JSON) -> None:
         Message.__init__(self, Message.RESPONSE, mime_type=mime_type)
         if request:
             self.id = request.id
@@ -236,8 +230,7 @@ class Response(Message):
 
     recreate_id = None
 
-    def set_body(self, filename, mimetype=None):
-        # type: (str, Optional[str]) -> None
+    def set_body(self, filename: str, mimetype: str | None = None) -> None:
         """
         Set body of response by guessing the mime type of the given
         file if not specified and adding the content of the file to the body. The mime

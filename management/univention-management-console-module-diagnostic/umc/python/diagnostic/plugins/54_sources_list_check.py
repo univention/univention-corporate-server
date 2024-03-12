@@ -33,7 +33,7 @@
 import glob
 import re
 import subprocess
-from typing import Iterator
+from collections.abc import Iterator
 
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import MODULE, Instance, Warning

@@ -33,12 +33,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from typing import Any, Callable, List, NoReturn, Optional, Tuple
+from typing import TYPE_CHECKING, Any, NoReturn
 
 from univention.admin.license import _license
 from univention.admin.uldap import access, getAdminConnection, position
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 def encode_number(number: int, significant_digits: int = 3) -> str:
@@ -66,8 +70,8 @@ def encode_role(role: str) -> str:
     raise ValueError('Invalid role %r' % (role, ))
 
 
-def encode_additional_info(users: Optional[int] = None, role: Optional[str] = None) -> str:
-    data: List[Tuple[str, Callable[[Any], str], Any]] = [
+def encode_additional_info(users: int | None = None, role: str | None = None) -> str:
+    data: list[tuple[str, Callable[[Any], str], Any]] = [
         ('U', encode_users, users),
         ('R', encode_role, role),
     ]
@@ -78,7 +82,7 @@ def encode_additional_info(users: Optional[int] = None, role: Optional[str] = No
     )
 
 
-def getReadonlyAdminConnection() -> Tuple[access, position]:
+def getReadonlyAdminConnection() -> tuple[access, position]:
     def do_nothing(*a: Any, **kw: Any) -> NoReturn:
         raise AssertionError('readonly connection')
 
@@ -88,10 +92,10 @@ def getReadonlyAdminConnection() -> Tuple[access, position]:
 
 
 def main() -> None:
-    def get_role() -> Optional[str]:
+    def get_role() -> str | None:
         return configRegistry.get('server/role', None)
 
-    def get_users() -> Optional[int]:
+    def get_users() -> int | None:
         if get_role() != 'domaincontroller_master':
             return None
         lo, _ = getReadonlyAdminConnection()

@@ -108,7 +108,7 @@ def module_from_request(func):
 
 def bundled(func):
     def _decoarated(self, request):
-        bundled = isinstance(request.options, (list, tuple))
+        bundled = isinstance(request.options, list | tuple)
         if not bundled:
             ret = func(self, request)
         else:
@@ -149,7 +149,7 @@ class PropertySearchSanitizer(SearchSanitizer):
             # we get True/False as search value.
             # We need to make sure that the sanitizer rewrites this to the
             # correct thruthy/falsy string of the syntax class and not add asterisks.
-            if prop and issubclass(prop.syntax if inspect.isclass(prop.syntax) else type(prop.syntax), (udm_syntax.IStates, udm_syntax.boolean)):
+            if prop and issubclass(prop.syntax if inspect.isclass(prop.syntax) else type(prop.syntax), udm_syntax.IStates | udm_syntax.boolean):
                 self.use_asterisks = False
                 self.add_asterisks = False
                 value = prop.syntax.sanitize_property_search_value(value)
@@ -191,10 +191,10 @@ class Instance(Base, ProgressMixin):
 
     def error_handling(self, etype, exc, etraceback):
         super().error_handling(etype, exc, etraceback)
-        if isinstance(exc, (udm_errors.authFail, INVALID_CREDENTIALS)):
+        if isinstance(exc, udm_errors.authFail | INVALID_CREDENTIALS):
             MODULE.warn('Authentication failed: %s' % (exc,))
             raise LDAP_AuthenticationFailed()
-        if isinstance(exc, (udm_errors.base, LDAPError)):
+        if isinstance(exc, udm_errors.base | LDAPError):
             MODULE.error(''.join(traceback.format_exception(etype, exc, etraceback)))
 
     def require_license(self, lo):
@@ -313,7 +313,7 @@ class Instance(Base, ProgressMixin):
     @LDAP_Connection
     def license_import(self, request, ldap_connection=None, ldap_position=None):
         filename = None
-        if isinstance(request.options, (list, tuple)) and request.options:
+        if isinstance(request.options, list | tuple) and request.options:
             # file upload
             file_upload(lambda s, r: None)(self, request)  # protect against hacking attempts!
             filename = request.options[0]['tmpfile']
@@ -906,7 +906,7 @@ class Instance(Base, ProgressMixin):
                 raise UMC_Error(_('Property %s not found') % property_name)
 
             # check each element if 'value' is a list
-            if isinstance(value, (tuple, list)) and property_obj.multivalue:
+            if isinstance(value, tuple | list) and property_obj.multivalue:
                 subResults = []
                 subDetails = []
                 for ival in value:
@@ -1236,7 +1236,7 @@ class Instance(Base, ProgressMixin):
             infos = copy.copy(policy_obj.polinfo_more)
             for key in infos.keys():
                 if key in policy_obj.polinfo:
-                    if isinstance(infos[key], (tuple, list)):
+                    if isinstance(infos[key], tuple | list):
                         continue
                     infos[key]['value'] = policy_obj.polinfo[key]
 

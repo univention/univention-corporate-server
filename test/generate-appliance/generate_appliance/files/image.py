@@ -10,7 +10,7 @@ from json import loads
 from logging import getLogger
 from pathlib import Path
 from subprocess import check_call, check_output
-from typing import Any, Dict, Tuple  # noqa: F401
+from typing import Any
 
 from . import BaseImage, Lazy
 from .raw import Raw
@@ -21,7 +21,7 @@ log = getLogger(__name__)
 
 class Image(BaseImage, metaclass=ABCMeta):
     FMT = ""
-    OPTIONS = {}  # type: Dict[str, str]
+    OPTIONS: dict[str, str] = {}
 
     def __init__(self, raw: Raw, **kwargs) -> None:
         assert isinstance(raw, Raw)
@@ -30,7 +30,7 @@ class Image(BaseImage, metaclass=ABCMeta):
         BaseImage.__init__(self)
 
     @BaseImage.hashed
-    def hash(self) -> Tuple[Any, ...]:
+    def hash(self) -> tuple[Any, ...]:
         return (self.__class__, self._raw.hash, self.options)
 
     def _create(self, path: Path) -> None:

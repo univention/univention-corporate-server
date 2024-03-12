@@ -11,7 +11,7 @@ from os.path import devnull
 import pytest
 
 import univention.config_registry.interfaces as ucri
-from univention.config_registry.interfaces import Interfaces, _Iface, cmp_alnum, forgiving  # noqa: E402
+from univention.config_registry.interfaces import Interfaces, _Iface, cmp_alnum, forgiving
 
 
 @pytest.fixture(autouse=True)

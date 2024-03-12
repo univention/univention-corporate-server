@@ -46,7 +46,7 @@ from argparse import ArgumentParser, Namespace
 from io import StringIO
 from logging import getLogger
 from select import select
-from typing import IO, List, Optional, Tuple
+from typing import IO
 
 import univention.admincli.adduser
 import univention.admincli.admin
@@ -62,7 +62,7 @@ logfile = ''
 loglevel = 1
 
 
-def recv_fds(sock: socket.socket, msglen: int, maxfds: int) -> Tuple[bytes, List[int]]:
+def recv_fds(sock: socket.socket, msglen: int, maxfds: int) -> tuple[bytes, list[int]]:
     fds = array.array("i")   # Array of ints
     msg, ancdata, _flags, _addr = sock.recvmsg(msglen, socket.CMSG_LEN(maxfds * fds.itemsize))
     for cmsg_level, cmsg_type, cmsg_data in ancdata:
@@ -173,7 +173,7 @@ def server_main(args: Namespace) -> None:
         ud.exit()
 
 
-def doit(sarglist: bytes, conn: socket.socket, stdout: Optional[IO[str]] = None, stderr: Optional[IO[str]] = None) -> None:
+def doit(sarglist: bytes, conn: socket.socket, stdout: IO[str] | None = None, stderr: IO[str] | None = None) -> None:
     """Process single UDM request."""
 
     def send_message(output) -> None:

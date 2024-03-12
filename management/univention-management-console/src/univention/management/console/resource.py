@@ -342,7 +342,7 @@ class Resource(RequestHandler):
             return super().write_error(status_code, **kwargs)
 
         exc = exc_info[1]
-        if isinstance(exc, (HTTPError, UMC_Error)):
+        if isinstance(exc, HTTPError | UMC_Error):
             status = exc.status_code
             reason = exc.reason
             body = exc.result if isinstance(exc, UMC_Error) else None

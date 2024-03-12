@@ -37,9 +37,8 @@ import os
 import shutil
 from shlex import quote
 from subprocess import getstatusoutput
-from typing import Dict, List, Optional  # noqa: F401
 
-from univention.config_registry import ConfigRegistry  # noqa: E402,F401
+from univention.config_registry import ConfigRegistry
 
 
 DEFAULT_FS = "ext2/ext3:ext2:ext3:ext4:xfs:btrfs"
@@ -66,8 +65,7 @@ DIR_BLACKLIST.append("/run")
 DIR_BLACKLIST.append("/srv")
 
 
-def dirIsMountPoint(path):
-    # type: (str) -> Optional[str]
+def dirIsMountPoint(path: str) -> str | None:
     """
     Check if `path` is a mount point.
 
@@ -92,8 +90,7 @@ def dirIsMountPoint(path):
     return None
 
 
-def checkDirFileSystem(path, cr):
-    # type: (str, ConfigRegistry) -> Optional[str]
+def checkDirFileSystem(path: str, cr: ConfigRegistry) -> str | None:
     """
     Check if the given path is of a known file system type.
 
@@ -117,8 +114,7 @@ def checkDirFileSystem(path, cr):
     return "filesystem %s for %s is not on a known filesystem" % (myFs, path)
 
 
-def createOrRename(old, new, cr):
-    # type: (Dict[str, List[bytes]], Dict[str, List[bytes]], ConfigRegistry) -> Optional[str]
+def createOrRename(old: dict[str, list[bytes]], new: dict[str, list[bytes]], cr: ConfigRegistry) -> str | None:
     """
     Create or rename a share.
 
@@ -271,8 +267,7 @@ def createOrRename(old, new, cr):
     return None
 
 
-def is_blacklisted(path, ucr):
-    # type: (str, ConfigRegistry) -> bool
+def is_blacklisted(path: str, ucr: ConfigRegistry) -> bool:
     """
 
     >>> is_blacklisted('/home/', {})

@@ -32,7 +32,8 @@
 
 import itertools as it
 import socket
-from typing import Any, Dict, Iterator, Tuple
+from collections.abc import Iterator
+from typing import Any
 
 import ldap.filter
 
@@ -107,7 +108,7 @@ class Zone:
         for nameserver in self.udm_zone.get('nameserver'):
             yield NameServer(self, nameserver)
 
-    def umc_link(self) -> Tuple[str, Dict[str, Any]]:
+    def umc_link(self) -> tuple[str, dict[str, Any]]:
         text = 'udm:dns/dns'
         link = {
             'module': 'udm',
@@ -142,7 +143,7 @@ class NameServer:
         return not self.is_qualified() or \
             self.nameserver().endswith(self.zone.domainname)
 
-    def _generate_splits(self, fqdn: str) -> Iterator[Tuple[str, str]]:
+    def _generate_splits(self, fqdn: str) -> Iterator[tuple[str, str]]:
         zn = fqdn
         while '.' in zn and zn != self.zone.domainname:
             (rdn, zn) = zn.split('.', 1)

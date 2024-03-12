@@ -40,7 +40,7 @@ import subprocess
 import sys
 import time
 from argparse import ArgumentParser, Namespace
-from typing import Any, Literal, NoReturn, Sequence
+from typing import TYPE_CHECKING, Any, Literal, NoReturn
 
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 from univention.lib.policy_result import PolicyResultFailed, policy_result
@@ -49,6 +49,10 @@ from univention.updater.commands import (
     cmd_upgrade_sim,
 )
 from univention.updater.locking import UpdaterLock, apt_lock
+
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
 
 
 _JOB = Literal["add", "remove"]

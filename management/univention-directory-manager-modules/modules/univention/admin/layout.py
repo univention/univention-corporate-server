@@ -69,7 +69,7 @@ class ILayoutElement(dict):
             if isinstance(item, str) and item == old:
                 new_layout.append(new)
                 replaced = True
-            elif isinstance(item, (tuple, list)):
+            elif isinstance(item, tuple | list):
                 line = []
                 for elem in item:
                     if elem == old:
@@ -97,7 +97,7 @@ class ILayoutElement(dict):
                     continue
                 if isinstance(item, str) and item != field:
                     new_layout.append(item)
-                elif isinstance(item, (tuple, list)):
+                elif isinstance(item, tuple | list):
                     line = []
                     for elem in item:
                         if elem != field:
@@ -118,7 +118,7 @@ class ILayoutElement(dict):
         for item in self.layout:
             if isinstance(item, str) and item == field:
                 return True
-            elif isinstance(item, (tuple, list)):
+            elif isinstance(item, tuple | list):
                 if field in item:
                     return True
             elif isinstance(item, ILayoutElement) and item.exists(field):

@@ -33,7 +33,8 @@
 import json
 import os
 import sys
-from typing import Any, Container, Dict, List, Tuple
+from collections.abc import Container
+from typing import Any
 
 
 def _get_path(filename: str) -> str:
@@ -46,7 +47,7 @@ def _get_path(filename: str) -> str:
     raise RuntimeError('Cannot find data file %s' % filename)
 
 
-def get_country_codes(countryCodeKeyType: int = 2) -> Dict[str, str]:
+def get_country_codes(countryCodeKeyType: int = 2) -> dict[str, str]:
     if countryCodeKeyType == 2:
         idx1 = 0
         idx2 = 1
@@ -66,7 +67,7 @@ def get_country_codes(countryCodeKeyType: int = 2) -> Dict[str, str]:
         return pairs
 
 
-def get_country_code_to_geonameid_map(countryCodeType: int = 2) -> Dict[str, str]:
+def get_country_code_to_geonameid_map(countryCodeType: int = 2) -> dict[str, str]:
     countries = {}
     if countryCodeType == 2:
         countryCodeIndex = 0
@@ -84,7 +85,7 @@ def get_country_code_to_geonameid_map(countryCodeType: int = 2) -> Dict[str, str
     return countries
 
 
-def get_country_default_language(countryCodeType: int = 2) -> Dict[str, str]:
+def get_country_default_language(countryCodeType: int = 2) -> dict[str, str]:
     if countryCodeType == 2:
         countryCodeIndex = 0
     elif countryCodeType == 3:
@@ -111,7 +112,7 @@ def get_country_default_language(countryCodeType: int = 2) -> Dict[str, str]:
     return locales
 
 
-def get_city_geonameid_to_country_code_map() -> Dict[str, str]:
+def get_city_geonameid_to_country_code_map() -> dict[str, str]:
     cities = {}
     with open(_get_path('cities15000.txt')) as infile:
         for line in infile:
@@ -120,7 +121,7 @@ def get_city_geonameid_to_country_code_map() -> Dict[str, str]:
     return cities
 
 
-def get_city_data() -> Dict[str, Dict[str, Any]]:
+def get_city_data() -> dict[str, dict[str, Any]]:
     cities = {}
     with open(_get_path('cities15000.txt')) as infile:
         for line in infile:
@@ -133,9 +134,9 @@ def get_city_data() -> Dict[str, Dict[str, Any]]:
     return cities
 
 
-def get_localized_names(geonameids: Container[str], lang: str) -> Dict[str, str]:
+def get_localized_names(geonameids: Container[str], lang: str) -> dict[str, str]:
     labels = {}
-    label_score: Dict[str, int] = {}
+    label_score: dict[str, int] = {}
     with open(_get_path('alternateNames.txt')) as infile:
         for line in infile:
             parts = line.split('\t')
@@ -154,7 +155,7 @@ def get_localized_names(geonameids: Container[str], lang: str) -> Dict[str, str]
     return labels
 
 
-def get_alternate_names(geonameids: Container[str], *locales: str) -> List[Tuple[str, str]]:
+def get_alternate_names(geonameids: Container[str], *locales: str) -> list[tuple[str, str]]:
     labels = []
     with open(_get_path('alternateNames.txt')) as infile:
         for line in infile:
@@ -169,7 +170,7 @@ def get_alternate_names(geonameids: Container[str], *locales: str) -> List[Tuple
     return labels
 
 
-def get_timezones() -> Dict[str, Dict[str, str]]:
+def get_timezones() -> dict[str, dict[str, str]]:
     with open(_get_path('timeZones.txt')) as infile:
         countries = {}
         for line in infile:
@@ -179,8 +180,8 @@ def get_timezones() -> Dict[str, Dict[str, str]]:
     return countries
 
 
-def get_country_code_to_nameserver_map() -> Dict[str, Dict[str, List[str]]]:
-    mapping: Dict[str, Dict[str, List[str]]] = {}
+def get_country_code_to_nameserver_map() -> dict[str, dict[str, list[str]]]:
+    mapping: dict[str, dict[str, list[str]]] = {}
 
     with open(_get_path('nameservers.json')) as infile:
         for ientry in json.load(infile):

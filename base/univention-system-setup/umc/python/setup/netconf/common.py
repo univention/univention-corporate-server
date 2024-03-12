@@ -33,7 +33,6 @@
 import os
 from abc import ABCMeta
 from ipaddress import IPv4Interface, IPv4Network, IPv6Interface, IPv6Network
-from typing import Dict, Optional, Union
 
 from univention.admin import uldap
 from univention.management.console.modules.setup.netconf import ChangeSet
@@ -74,15 +73,15 @@ class AddressMap(AddressChange, metaclass=ABCMeta):
         self.net_changes = self._map_ip()
         self.ip_mapping = self._get_address_mapping()
 
-    def _map_ip(self) -> Dict[Union[IPv4Interface, IPv6Interface], Union[None, IPv4Interface, IPv6Interface]]:
+    def _map_ip(self) -> dict[IPv4Interface | IPv6Interface, None | IPv4Interface | IPv6Interface]:
         ipv4_changes = self.ipv4_changes()
         ipv6_changes = self.ipv6_changes()
-        net_changes: Dict[Union[IPv4Interface, IPv6Interface], Union[None, IPv4Interface, IPv6Interface]] = {}
+        net_changes: dict[IPv4Interface | IPv6Interface, None | IPv4Interface | IPv6Interface] = {}
         net_changes.update(ipv4_changes)  # type: ignore
         net_changes.update(ipv6_changes)  # type: ignore
         return net_changes
 
-    def ipv4_changes(self) -> Dict[IPv4Interface, Optional[IPv4Interface]]:
+    def ipv4_changes(self) -> dict[IPv4Interface, IPv4Interface | None]:
         ipv4s = {
             name: iface.ipv4_address()
             for name, iface in self.changeset.new_interfaces.ipv4_interfaces
@@ -96,7 +95,7 @@ class AddressMap(AddressChange, metaclass=ABCMeta):
                 mapping[old_addr] = new_addr
         return mapping
 
-    def ipv6_changes(self) -> Dict[IPv6Interface, Optional[IPv6Interface]]:
+    def ipv6_changes(self) -> dict[IPv6Interface, IPv6Interface | None]:
         ipv6s = {
             (iface.name, name): iface.ipv6_address(name)
             for (iface, name) in self.changeset.new_interfaces.ipv6_interfaces
@@ -110,7 +109,7 @@ class AddressMap(AddressChange, metaclass=ABCMeta):
                 mapping[old_addr] = new_addr
         return mapping
 
-    def _get_address_mapping(self) -> Dict[str, Optional[str]]:
+    def _get_address_mapping(self) -> dict[str, str | None]:
         mapping = {
             str(old_ip.ip): str(new_ip.ip) if new_ip else None
             for (old_ip, new_ip) in self.net_changes.items()
@@ -138,7 +137,7 @@ class LdapChange(AddressChange, Ldap, metaclass=ABCMeta):
         self.position = uldap.position(ldap_base)
 
 
-def convert_udm_subnet_to_network(subnet: str) -> Union[IPv4Network, IPv6Network]:
+def convert_udm_subnet_to_network(subnet: str) -> IPv4Network | IPv6Network:
     if ":" in subnet:
         return convert_udm_subnet_to_ipv6_network(subnet)
     else:

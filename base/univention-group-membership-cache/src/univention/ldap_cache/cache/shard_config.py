@@ -31,8 +31,8 @@
 # <https://www.gnu.org/licenses/>.
 
 import json
+from collections.abc import Iterator  # noqa: F401
 from contextlib import contextmanager
-from typing import Any, Iterator, List, Type  # noqa: F401
 
 from univention.ldap_cache.cache import Shard
 from univention.ldap_cache.log import log

@@ -34,14 +34,10 @@
 
 import configparser
 import re
+from typing import TypeVar, overload
 
 
-try:
-    from typing import Dict, Optional, TypeVar, Union, overload  # noqa: F401
-    _VT = TypeVar('_VT')  # noqa: PYI018
-except ImportError:
-    def overload(f):  # type: ignore[misc]
-        pass
+_VT = TypeVar('_VT')
 
 # default locale
 _locale = 'de'
@@ -49,7 +45,7 @@ MYPY = False
 
 
 if MYPY:  # pragma: no cover
-    __LVD = Dict[str, str]
+    __LVD = dict[str, str]
 else:
     __LVD = dict
 
@@ -69,29 +65,25 @@ class LocalizedValue(__LVD):
             self.__default,
         )
 
-    def get(self, locale=None):  # type: ignore
-        # type: (str) -> str
+    def get(self, locale: str | None = None) -> str:  # type: ignore
         if not locale:
             locale = _locale
         if locale in self:
             return self[locale]
         return self.__default
 
-    def set(self, value, locale=None):
-        # type: (str, str | None) -> None
+    def set(self, value: str, locale: str | None = None) -> None:
         self[locale or _locale] = value
 
-    def set_default(self, default):
-        # type: (str) -> None
+    def set_default(self, default: str) -> None:
         self.__default = default
 
-    def get_default(self):
-        # type: () -> str
+    def get_default(self) -> str:
         return self.__default
 
 
 if MYPY:  # pragma: no cover
-    __LD = Dict[str, str]
+    __LD = dict[str, str]
 else:
     __LD = dict
 
@@ -101,12 +93,10 @@ class LocalizedDictionary(__LD):  # noqa: PLW1641
 
     _LOCALE_REGEX = re.compile(r'(?P<key>[a-zA-Z]*)\[(?P<lang>[a-z]*)\]$')
 
-    def __init__(self):
-        # type: () -> None
+    def __init__(self) -> None:
         dict.__init__(self)
 
-    def __setitem__(self, key, value):
-        # type: (str, str) -> None
+    def __setitem__(self, key: str, value: str) -> None:
         key = key.lower()
         matches = LocalizedDictionary._LOCALE_REGEX.match(key)
         # localized value?
@@ -119,10 +109,9 @@ class LocalizedDictionary(__LD):  # noqa: PLW1641
         else:
             val.set_default(value)  # type: ignore
 
-    def __getitem__(self, key):
-        # type: (str) -> str
+    def __getitem__(self, key: str) -> str:
         key = key.lower()
-        lang = None  # type: Optional[str]
+        lang: str | None = None
         matches = LocalizedDictionary._LOCALE_REGEX.match(key)
         # localized value?
         if matches:
@@ -131,25 +120,21 @@ class LocalizedDictionary(__LD):  # noqa: PLW1641
         return dict.__getitem__(self, key).get(lang)  # type: ignore
 
     @overload
-    def get(self, key):  # pragma: no cover
-        # type: (str) -> Optional[str]
+    def get(self, key: str) -> str | None:  # pragma: no cover
         pass
 
-    @overload  # noqa: F811
-    def get(self, key, default):  # noqa: F811 # pragma: no cover
-        # type: (str, _VT) -> Union[str, _VT]
+    @overload
+    def get(self, key: str, default: _VT) -> str | _VT:  # pragma: no cover
         pass
 
-    def get(self, key, default=None):  # noqa: F811
-        # type: (str, _VT | None) -> Union[str, _VT]
+    def get(self, key: str, default: _VT | None = None) -> str | _VT:
         try:
             value = self.__getitem__(key) or default
             return value  # type: ignore
         except KeyError:
             return default  # type: ignore
 
-    def __contains__(self, key):  # type: ignore
-        # type: (str) -> bool
+    def __contains__(self, key: str) -> bool:  # type: ignore
         key = key.lower()
         matches = LocalizedDictionary._LOCALE_REGEX.match(key)
         if matches:
@@ -157,13 +142,12 @@ class LocalizedDictionary(__LD):  # noqa: PLW1641
         return dict.__contains__(self, key)  # type: ignore[operator]
     has_key = __contains__  # type: ignore
 
-    def __normalize_key(self, key):
-        # type: (str) -> Dict[str, str]
+    def __normalize_key(self, key: str) -> dict[str, str]:
         if key not in self:
             return {}
 
         temp = {}
-        variable = dict.__getitem__(self, key)  # type: LocalizedValue # type: ignore
+        variable: LocalizedValue = dict.__getitem__(self, key)  # type: ignore
         for locale, value in variable.items():
             temp['%s[%s]' % (key, locale)] = value
 
@@ -172,17 +156,15 @@ class LocalizedDictionary(__LD):  # noqa: PLW1641
 
         return temp
 
-    def normalize(self, key=None):  # noqa: F811
-        # type: (str | None) -> Dict[str, str]
+    def normalize(self, key: str | None = None) -> dict[str, str]:
         if key:
             return self.__normalize_key(key)
-        temp = {}  # type: Dict[str, str]
+        temp: dict[str, str] = {}
         for key2 in self.keys():
             temp.update(self.__normalize_key(key2))
         return temp
 
-    def get_dict(self, key):
-        # type: (str) -> Dict[str, str]
+    def get_dict(self, key: str) -> dict[str, str]:
         if key not in self:
             return {}
         return dict.__getitem__(self, key)  # type: ignore

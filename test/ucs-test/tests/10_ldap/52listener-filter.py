@@ -45,7 +45,7 @@ class Environment:
         ent = getpwnam(USERID)
         self.uid = ent.pw_uid
 
-    def __enter__(self) -> Environment:  # noqa: PYI034
+    def __enter__(self) -> Environment:
         self.tmpdir = mkdtemp(prefix='ucs-test', dir=TMPDIR)
         print('I: tmpdir=%r' % (self.tmpdir,))
         chown(self.tmpdir, self.uid, -1)
@@ -91,7 +91,7 @@ class Listener:
             '-y', '/etc/machine.secret',
         ]
 
-    def __enter__(self) -> Listener:  # noqa: PYI034
+    def __enter__(self) -> Listener:
         self.init_listener()
         self.run_listener()
         return self
@@ -209,7 +209,7 @@ def unexpected_transactions(env: Environment, ucr: dict[str, str]) -> bool:
             elif line == repr((dn, True, False, 'm')):
                 print('I: Found modify: %s' % (line,))
                 found_modify = True
-            elif eval(line)[0].endswith(dn):  # noqa: PGH001, S307
+            elif eval(line)[0].endswith(dn):  # noqa: S307
                 found_other = True
                 print('E: Found other: %s' % (line,))
 

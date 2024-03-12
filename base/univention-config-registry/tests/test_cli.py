@@ -9,7 +9,7 @@ from copy import deepcopy
 import pytest
 
 import univention.config_registry.frontend as ucrfe
-from univention.config_registry import main  # noqa: E402
+from univention.config_registry import main
 
 
 @pytest.fixture(autouse=True)

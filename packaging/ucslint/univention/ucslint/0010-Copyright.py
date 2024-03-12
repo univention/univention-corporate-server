@@ -33,9 +33,13 @@ from __future__ import annotations
 import re
 import time
 from pathlib import Path
-from typing import Iterable
+from typing import TYPE_CHECKING
 
 import univention.ucslint.base as uub
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 
 RE_SKIP = re.compile(

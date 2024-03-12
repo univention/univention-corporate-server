@@ -34,7 +34,7 @@ import importlib.util
 import logging
 import os
 import sys
-from typing import Any, List
+from typing import Any
 
 from univention.management.console.modules.setup.netconf import ChangeSet, Phase, SkipPhase
 
@@ -46,8 +46,8 @@ class RunPhases:
     """
 
     def __init__(self) -> None:
-        self.classes: List[Any] = []
-        self.phases: List[Phase] = []
+        self.classes: list[Any] = []
+        self.phases: list[Phase] = []
         self.logger = logging.getLogger("uss.network.plug")
 
     def load(self) -> None:

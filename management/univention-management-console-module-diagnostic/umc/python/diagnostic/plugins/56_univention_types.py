@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 from univention.admin.modules import identify, update
 from univention.admin.uldap import access, getAdminConnection
@@ -51,7 +51,7 @@ _UPDATED = False
 UdmModule = Any  # FIXME
 
 
-def udm_objects_without_type(lo: access) -> List[Tuple[str, List[UdmModule], List[bytes]]]:
+def udm_objects_without_type(lo: access) -> list[tuple[str, list[UdmModule], list[bytes]]]:
     global _UPDATED
     if not _UPDATED:
         update()
@@ -78,7 +78,7 @@ def run(_umc_instance: Instance) -> None:
     lo, _pos = getAdminConnection()
     objects = udm_objects_without_type(lo)
     if len(objects):
-        counted_objects: Dict[str, int] = {}
+        counted_objects: dict[str, int] = {}
         details = '\n\n' + _('These objects were found:')
         for _dn, modules, _object_classes in objects:
             for module in modules:

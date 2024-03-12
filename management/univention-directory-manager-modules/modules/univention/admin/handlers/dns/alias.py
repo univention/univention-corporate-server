@@ -32,7 +32,7 @@
 """|UDM| module for |DNS| aliases (CNAME)"""
 
 import re
-from typing import Match  # noqa: F401
+from re import Match  # noqa: F401
 
 from ldap.filter import filter_format
 
@@ -40,7 +40,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
-from univention.admin.handlers.dns import DNSBase, is_dns, stripDot  # noqa: F401
+from univention.admin.handlers.dns import DNSBase, is_dns, stripDot
 from univention.admin.layout import Group, Tab
 
 

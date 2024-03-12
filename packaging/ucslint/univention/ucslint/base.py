@@ -35,7 +35,12 @@ from __future__ import annotations
 import re
 from os import walk
 from pathlib import Path
-from typing import Callable, Dict, Iterable, Iterator, Match, Pattern, Tuple
+from re import Match, Pattern
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Iterable, Iterator
 
 
 try:
@@ -73,7 +78,7 @@ RESULT_INT2STR: dict[int, str] = {
     RESULT_STYLE: 'S',
 }
 
-MsgIds = Dict[str, Tuple[int, str]]
+MsgIds = dict[str, tuple[int, str]]
 
 RE_MSGID = re.compile(r'\d{4}-[BEFNW]?\d+')
 RE_IGNORE = re.compile(rf'\s+ ucslint :? \s* (?: ({RE_MSGID.pattern} (?: [, ]+ {RE_MSGID.pattern})*) \s* )? $', re.VERBOSE)
@@ -280,7 +285,7 @@ class FailedToReadFile(UCSLintException):
         self.fn = fn
 
 
-class DebianControlEntry(Dict[str, str]):
+class DebianControlEntry(dict[str, str]):
     """
     Handle paragraph in Deb822 control file.
 

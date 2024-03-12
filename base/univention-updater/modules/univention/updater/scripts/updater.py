@@ -41,7 +41,7 @@ from datetime import datetime
 from errno import ENOENT
 from subprocess import DEVNULL, call
 from textwrap import dedent, wrap
-from typing import IO, Iterable, Literal, NoReturn, Sequence
+from typing import IO, TYPE_CHECKING, Literal, NoReturn
 
 
 try:
@@ -59,6 +59,10 @@ from univention.updater.errors import (
 )
 from univention.updater.locking import UpdaterLock, apt_lock
 from univention.updater.tools import Component, LocalUpdater, UniventionUpdater  # noqa: F401
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable, Sequence
 
 
 _ESRC = Literal["SETTINGS", "PREPARATION", "PREUP", "UPDATE", "POSTUP"]

@@ -10,7 +10,6 @@
 
 import re
 import time
-from typing import List
 
 from playwright.sync_api import Locator, Page, expect
 
@@ -90,7 +89,7 @@ def check_module_is_visible(page: Page, moduleid: str):
     expect(locator).to_be_visible()
 
 
-def get_default_favorites(ucr) -> List[str]:
+def get_default_favorites(ucr) -> list[str]:
     default_favorites_string = ucr.get('umc/web/favorites/default')
 
     if not utils.package_installed('univention-management-console-module-welcome'):

@@ -38,6 +38,8 @@ import os
 import re
 import sys
 import time
+from collections.abc import Callable, Iterator
+from typing import IO, Any, NoReturn
 
 import univention.config_registry_info as cri
 from univention.config_registry.backend import SCOPE, ConfigRegistry, exception_occured
@@ -46,11 +48,6 @@ from univention.config_registry.handler import ConfigHandlers, run_filter
 from univention.config_registry.misc import escape_value, validate_key
 from univention.config_registry.validation import Type
 
-
-try:
-    from typing import IO, Any, Callable, Dict, Iterator, List, NoReturn, Optional, Tuple  # noqa: F401
-except ImportError:  # pragma: no cover
-    pass
 
 __all__ = [
     'REPLOG_FILE',
@@ -86,8 +83,7 @@ class UnknownKeyException(Exception):
         return 'W: Unknown key: "%s"' % self.args
 
 
-def replog(ucr, var, old_value, value=None):
-    # type: (ConfigRegistry, str, Optional[str], Optional[str]) -> None
+def replog(ucr: ConfigRegistry, var: str, old_value: str | None, value: str | None = None) -> None:
     """
     This function writes a new entry to replication logfile if
     this feature has been enabled.
@@ -126,8 +122,7 @@ def replog(ucr, var, old_value, value=None):
             exception_occured()
 
 
-def handler_set(args, opts={}, quiet=False):
-    # type: (List[str], Dict[str, Any], bool) -> None
+def handler_set(args: list[str], opts: dict[str, Any] = {}, quiet: bool = False) -> None:
     """
     Set config registry variables in args.
     Args is an array of strings 'key=value' or 'key?value'.
@@ -143,7 +138,7 @@ def handler_set(args, opts={}, quiet=False):
     ucr = _ucr_from_opts(opts)
     info = _get_config_registry_info()
     with ucr:
-        changes = {}  # type: Dict[str, Optional[str]]
+        changes: dict[str, str | None] = {}
         for arg in args:
             sep_set = arg.find('=')  # set
             sep_def = arg.find('?')  # set if not already set
@@ -202,8 +197,7 @@ def handler_set(args, opts={}, quiet=False):
     _run_changed(ucr, changed, "" if quiet else 'W: %s is overridden by scope "%s"')
 
 
-def handler_unset(args, opts={}):
-    # type: (List[str], Dict[str, Any]) -> None
+def handler_unset(args: list[str], opts: dict[str, Any] = {}) -> None:
     """
     Unset config registry variables in args.
 
@@ -212,7 +206,7 @@ def handler_unset(args, opts={}):
     """
     ucr = _ucr_from_opts(opts)
     with ucr:
-        changes = {}  # type: Dict[str, Optional[str]]
+        changes: dict[str, str | None] = {}
         for arg in args:
             if arg in ucr._layer:
                 print('Unsetting %s' % arg)
@@ -225,8 +219,7 @@ def handler_unset(args, opts={}):
     _run_changed(ucr, changed, 'W: %s is still set in scope "%s"')
 
 
-def ucr_update(ucr, changes):
-    # type: (ConfigRegistry, Dict[str, Optional[str]]) -> None
+def ucr_update(ucr: ConfigRegistry, changes: dict[str, str | None]) -> None:
     """
     Set or unset the given config registry variables.
 
@@ -238,8 +231,7 @@ def ucr_update(ucr, changes):
     _run_changed(ucr, changed)
 
 
-def _run_changed(ucr, changed, msg=""):
-    # type: (ConfigRegistry, Dict[str, Tuple[Optional[str], Optional[str]]], str) -> None
+def _run_changed(ucr: ConfigRegistry, changed: dict[str, tuple[str | None, str | None]], msg: str = "") -> None:
     """
     Run handlers for changed UCR variables.
 
@@ -247,7 +239,7 @@ def _run_changed(ucr, changed, msg=""):
     :param changed: Mapping from UCR variable name to 2-tuple (old-value, new-value).
     :param msg: Message to be printed when change is shadowed by higher layer. Must contain 2 `%s` placeholders for `key` and `scope-name`.
     """
-    visible = {}  # type: Dict[str, Tuple[Optional[str], Optional[str]]]
+    visible: dict[str, tuple[str | None, str | None]] = {}
     for key, (old_value, new_value) in changed.items():
         replog(ucr, key, old_value, new_value)
 
@@ -268,8 +260,7 @@ def _run_changed(ucr, changed, msg=""):
     handlers(list(visible), (ucr, visible))
 
 
-def _ucr_from_opts(opts):
-    # type: (Dict[str, Any]) -> ConfigRegistry
+def _ucr_from_opts(opts: dict[str, Any]) -> ConfigRegistry:
     """
     Create :py:class:`ConfigRegistry` instance according to requested layer.
 
@@ -288,8 +279,7 @@ def _ucr_from_opts(opts):
     return ucr
 
 
-def handler_dump(args, opts={}):
-    # type: (List[str], Dict[str, Any]) -> Iterator[str]
+def handler_dump(args: list[str], opts: dict[str, Any] = {}) -> Iterator[str]:
     """
     Dump all variables.
 
@@ -301,8 +291,7 @@ def handler_dump(args, opts={}):
     yield from str(ucr).split('\n')
 
 
-def handler_update(args, opts={}):
-    # type: (List[str], Dict[str, Any]) -> None
+def handler_update(args: list[str], opts: dict[str, Any] = {}) -> None:
     """
     Update handlers.
 
@@ -317,8 +306,7 @@ def handler_update(args, opts={}):
     _register_variable_default_values(ucr)
 
 
-def handler_commit(args, opts={}):
-    # type: (List[str], Dict[str, Any]) -> None
+def handler_commit(args: list[str], opts: dict[str, Any] = {}) -> None:
     """
     Commit all registered templated files.
 
@@ -333,8 +321,7 @@ def handler_commit(args, opts={}):
     handlers.commit(ucr, args)
 
 
-def handler_register(args, opts={}):
-    # type: (List[str], Dict[str, Any]) -> None
+def handler_register(args: list[str], opts: dict[str, Any] = {}) -> None:
     """
     Register new `.info` file.
 
@@ -356,8 +343,7 @@ def handler_register(args, opts={}):
     # handlers.commit((ucr, {}))
 
 
-def handler_unregister(args, opts={}):
-    # type: (List[str], Dict[str, Any]) -> None
+def handler_unregister(args: list[str], opts: dict[str, Any] = {}) -> None:
     """
     Unregister old `.info` file.
 
@@ -374,16 +360,14 @@ def handler_unregister(args, opts={}):
     _register_variable_default_values(ucr)
 
 
-def handler_filter(args, opts={}):
-    # type: (List[str], Dict[str, Any]) -> None
+def handler_filter(args: list[str], opts: dict[str, Any] = {}) -> None:
     """Run filter on STDIN to STDOUT."""
     ucr = ConfigRegistry()
     ucr.load()
     sys.stdout.buffer.write(run_filter(sys.stdin.read(), ucr, opts=opts))
 
 
-def handler_search(args, opts={}):
-    # type: (List[str], Dict[str, Any]) -> Iterator[str]
+def handler_search(args: list[str], opts: dict[str, Any] = {}) -> Iterator[str]:
     """
     Search for registry variable.
 
@@ -414,7 +398,7 @@ def handler_search(args, opts={}):
 
     info = _get_config_registry_info()
 
-    category = opts.get('category', None)
+    category = opts.get('category')
     if category and not info.get_category(category):
         print('E: unknown category: "%s"' % (category,), file=sys.stderr)
         sys.exit(1)
@@ -432,7 +416,7 @@ def handler_search(args, opts={}):
     if opts.get('verbose', False):
         details |= _SHOW_CATEGORIES | _SHOW_DESCRIPTION
 
-    all_vars = {}  # type: Dict[str, Tuple[Optional[str], Optional[cri.Variable], Optional[int]]] # key: (value, vinfo, scope)
+    all_vars: dict[str, tuple[str | None, cri.Variable | None, int | None]] = {}  # key: (value, vinfo, scope)
     for key, var in info.get_variables(category).items():
         all_vars[key] = (None, var, None)
     for key, (scope, value) in ucr.items(getscope=True):
@@ -450,15 +434,14 @@ def handler_search(args, opts={}):
             yield variable_info_string(key, value2, vinfo, details=details)
 
     if _SHOW_EMPTY & details and not OPT_FILTERS['shell'][2]:
-        patterns = {}  # type: Dict
+        patterns: dict = {}
         for arg in args or ('',):
             patterns.update(info.describe_search_term(arg))
         for pattern, vinfo in patterns.items():
             yield variable_info_string(pattern, None, vinfo, details=details)
 
 
-def handler_get(args, opts={}):
-    # type: (List[str], Dict[str, Any]) -> Iterator[str]
+def handler_get(args: list[str], opts: dict[str, Any] = {}) -> Iterator[str]:
     """
     Return config registry variable.
 
@@ -477,8 +460,7 @@ def handler_get(args, opts={}):
         yield value
 
 
-def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DESCRIPTION):
-    # type: (str, Optional[str], Optional[cri.Variable], Optional[int], int) -> str
+def variable_info_string(key: str, value: str | None, variable_info: cri.Variable | None, scope: int | None = None, details: int = _SHOW_DESCRIPTION) -> str:
     """
     Format UCR variable key, value, description, scope, categories and default value.
 
@@ -534,8 +516,7 @@ def variable_info_string(key, value, variable_info, scope=None, details=_SHOW_DE
     return '\n'.join(info)
 
 
-def handler_info(args, opts={}):
-    # type: (List[str], Dict[str, Any]) -> Iterator[str]
+def handler_info(args: list[str], opts: dict[str, Any] = {}) -> Iterator[str]:
     """
     Print variable info.
 
@@ -556,8 +537,7 @@ def handler_info(args, opts={}):
             print(ex, file=sys.stderr)
 
 
-def handler_version(args, opts={}):
-    # type: (List[str], Dict[str, Any]) -> NoReturn
+def handler_version(args: list[str], opts: dict[str, Any] = {}) -> NoReturn:
     """
     Print version info.
 
@@ -568,8 +548,7 @@ def handler_version(args, opts={}):
     sys.exit(0)
 
 
-def handler_help(args, opts={}, out=sys.stdout):
-    # type: (List[str], Dict[str, Any], IO) -> None
+def handler_help(args: list[str], opts: dict[str, Any] = {}, out: IO = sys.stdout) -> None:
     """
     Print config registry command line usage.
 
@@ -651,27 +630,24 @@ Description:
     sys.exit(0)
 
 
-def missing_parameter(action):
-    # type: (str) -> NoReturn
+def missing_parameter(action: str) -> NoReturn:
     """Print missing parameter error."""
     print('E: too few arguments for command [%s]' % (action,), file=sys.stderr)
     print('try `univention-config-registry --help` for more information', file=sys.stderr)
     sys.exit(1)
 
 
-def _get_config_registry_info():
-    # type: () -> cri.ConfigRegistryInfo
+def _get_config_registry_info() -> cri.ConfigRegistryInfo:
     cri.set_language('en')
     return cri.ConfigRegistryInfo(install_mode=False)
 
 
-def _register_variable_default_values(ucr):
-    # type: (ConfigRegistry) -> None
+def _register_variable_default_values(ucr: ConfigRegistry) -> None:
     """Create base-default.conf layer containig all default values"""
     info = _get_config_registry_info()
     _ucr = ConfigRegistry(write_registry=ConfigRegistry.DEFAULTS)
     _ucr.load()
-    defaults = {}  # type: Dict[str, Optional[str]]
+    defaults: dict[str, str | None] = {}
     default_variables = info.get_variables()
     for key, variable in default_variables.items():
         value = variable.get('default')
@@ -687,7 +663,7 @@ def _register_variable_default_values(ucr):
     _run_changed(ucr, changed, 'I: %s will be set in scope "%s"')
 
 
-HANDLERS = {
+HANDLERS: dict[str, tuple[Callable[[list[str], dict[str, Any]], Iterator[str] | None], int]] = {
     'set': (handler_set, 1),
     'unset': (handler_unset, 1),
     'dump': (handler_dump, 0),
@@ -699,27 +675,27 @@ HANDLERS = {
     'search': (handler_search, 0),
     'get': (handler_get, 1),
     'info': (handler_info, 1),
-}  # type: Dict[str, Tuple[Callable[[List[str], Dict[str, Any]], Optional[Iterator[str]]], int]]
+}
 
 # action options: each of these options perform an action
-OPT_ACTIONS = {
+OPT_ACTIONS: dict[str, list] = {
     # name: [function, state, (alias list)]
     'help': [handler_help, False, ('-h', '-?')],
     'version': [handler_version, False, ('-v',)],
     'debug': [lambda args: None, False, ()],
-}  # type: Dict[str, List]
+}
 
 # filter options: these options define filter for the output
-OPT_FILTERS = {
+OPT_FILTERS: dict[str, list] = {
     # name: [prio, function, state, (valid actions)]
     'keys-only': [0, filter_keys_only, False, ('dump', 'search')],
     'sort': [10, filter_sort, False, ('dump', 'search', 'info')],
     'shell': [99, filter_shell, False, ('dump', 'search', 'get')],
-}  # type: Dict[str, List]
+}
 
 BOOL, STRING = range(2)
 
-OPT_COMMANDS = {
+OPT_COMMANDS: dict[str, dict[str, Any]] = {
     'set': {
         'force': [BOOL, False],
         'ldap-policy': [BOOL, False],
@@ -744,11 +720,10 @@ OPT_COMMANDS = {
         'encode-utf8': [BOOL, False],
         'disallow-execution': [BOOL, False],
     },
-}  # type: Dict[str, Dict[str, Any]]
+}
 
 
-def main(args):
-    # type: (List[str]) -> int
+def main(args: list[str]) -> int:
     """Run config registry."""
     try:
         # close your eyes ...

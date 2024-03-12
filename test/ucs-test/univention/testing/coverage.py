@@ -13,7 +13,8 @@ import signal
 import subprocess
 import time
 from argparse import ArgumentParser, Namespace, _ArgumentGroup
-from typing import Any, Callable, List
+from collections.abc import Callable
+from typing import Any
 
 import atexit
 
@@ -156,7 +157,7 @@ directory = {directory}
         return coverage_group
 
     @classmethod
-    def is_candidate(cls, argv: List[str]) -> bool:
+    def is_candidate(cls, argv: list[str]) -> bool:
         if os.getuid():
             return False
         exe = os.path.basename(argv[0])
@@ -171,7 +172,7 @@ directory = {directory}
             return False
         return True
 
-    @classmethod  # noqa: C901
+    @classmethod
     def startup(cls) -> None:
         """Startup function which is invoked by every(!) Python process during coverage measurement. If the process is relevant we start measuring coverage."""
         argv = open('/proc/%s/cmdline' % os.getpid()).read().split('\x00')

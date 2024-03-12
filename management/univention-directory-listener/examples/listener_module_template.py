@@ -31,8 +31,6 @@
 # <https://www.gnu.org/licenses/>.
 
 
-from typing import Dict, List, Optional
-
 from univention.listener import ListenerModuleHandler
 
 
@@ -44,20 +42,20 @@ class ListenerModuleTemplate(ListenerModuleHandler):
         ldap_filter = '(&(objectClass=inetOrgPerson)(uid=example))'
         attributes = ['sn', 'givenName']
 
-    def create(self, dn: str, new: Dict[str, List[bytes]]) -> None:
+    def create(self, dn: str, new: dict[str, list[bytes]]) -> None:
         self.logger.debug('dn: %r', dn)
 
     def modify(
             self,
             dn: str,
-            old: Dict[str, List[bytes]],
-            new: Dict[str, List[bytes]],
-            old_dn: Optional[str],
+            old: dict[str, list[bytes]],
+            new: dict[str, list[bytes]],
+            old_dn: str | None,
     ) -> None:
         self.logger.debug('dn: %r', dn)
         if old_dn:
             self.logger.debug('it is (also) a move! old_dn: %r', old_dn)
         self.logger.debug('changed attributes: %r', self.diff(old, new))
 
-    def remove(self, dn: str, old: Dict[str, List[bytes]]) -> None:
+    def remove(self, dn: str, old: dict[str, list[bytes]]) -> None:
         self.logger.debug('dn: %r', dn)

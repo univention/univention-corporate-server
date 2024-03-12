@@ -33,13 +33,14 @@
 from __future__ import annotations
 
 import re
-from typing import TYPE_CHECKING, Iterable
+from typing import TYPE_CHECKING
 
 import univention.ucslint.base as uub
 from univention.ucslint.common import RE_HASHBANG_SHELL
 
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable
     from pathlib import Path
 
 

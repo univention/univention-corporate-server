@@ -36,7 +36,6 @@
 import bz2
 import os
 import subprocess
-from typing import Dict, List, Optional
 
 import apt
 
@@ -76,7 +75,7 @@ class moduleRemovalFailed(Exception):
         Exception.__init__(self, message)
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     """Handle UDM extension modules"""
     if new:
         ocs = new.get('objectClass', [])
@@ -278,12 +277,12 @@ def install_python_file(objectclass: str, target_subdir: str, target_filename: s
     return True
 
 
-def remove_python_file(objectclass: str, target_subdir: str, target_filename: str) -> Optional[bool]:
+def remove_python_file(objectclass: str, target_subdir: str, target_filename: str) -> bool | None:
     """Remove Python module files"""
     return remove_python_files(PYTHON3_DIR, target_subdir, target_filename)
 
 
-def remove_python_files(python_basedir: str, target_subdir: str, target_filename: str) -> Optional[bool]:
+def remove_python_files(python_basedir: str, target_subdir: str, target_filename: str) -> bool | None:
     # input validation
     relative_filename = os.path.join(target_subdir, target_filename)
     if not relative_filename:
@@ -348,7 +347,7 @@ def remove_python_files(python_basedir: str, target_subdir: str, target_filename
         return False
 
 
-def create_python_moduledir(python_basedir: str, target_subdir: str, module_directory: str) -> List[str]:
+def create_python_moduledir(python_basedir: str, target_subdir: str, module_directory: str) -> list[str]:
     """create directory and __init__.py (file or link). Recurse for all parent directories in path module_directory"""
     # input validation
     if not module_directory:
@@ -440,7 +439,7 @@ def cleanup_python_moduledir(python_basedir: str, target_subdir: str, module_dir
         cleanup_python_moduledir(python_basedir, target_subdir, parent_dir)
 
 
-def install_messagecatalog(dn: str, attrs: Dict[str, List[bytes]], objectclass: str) -> None:
+def install_messagecatalog(dn: str, attrs: dict[str, list[bytes]], objectclass: str) -> None:
     translationfile_ldap_attribute = "univentionMessageCatalog"
     translationfile_ldap_attribute_and_tag_prefix = "%s;entry-lang-" % (translationfile_ldap_attribute,)
     if objectclass == 'univentionUDMModule':
@@ -469,7 +468,7 @@ def install_messagecatalog(dn: str, attrs: Dict[str, List[bytes]], objectclass: 
             f.write(mo_data_binary)
 
 
-def remove_messagecatalog(dn: str, attrs: Dict[str, List[bytes]], objectclass: str) -> None:
+def remove_messagecatalog(dn: str, attrs: dict[str, list[bytes]], objectclass: str) -> None:
     translationfile_ldap_attribute = "univentionMessageCatalog"
     translationfile_ldap_attribute_and_tag_prefix = "%s;entry-lang-" % (translationfile_ldap_attribute,)
     if objectclass == 'univentionUDMModule':
@@ -501,7 +500,7 @@ def remove_messagecatalog(dn: str, attrs: Dict[str, List[bytes]], objectclass: s
             ud.debug(ud.LISTENER, ud.INFO, '%s: Warning: %s does not exist.' % (name, filename))
 
 
-def install_umcmessagecatalogs(attrs_new: Dict[str, List[bytes]], attrs_old: Dict[str, List[bytes]]) -> None:
+def install_umcmessagecatalogs(attrs_new: dict[str, list[bytes]], attrs_old: dict[str, list[bytes]]) -> None:
     remove_umcmessagecatalogs(attrs_old)
     umcmessagecatalogs = _umcmessagecatalog_ldap_attributes(attrs_new)
     if not umcmessagecatalogs:
@@ -514,7 +513,7 @@ def install_umcmessagecatalogs(attrs_new: Dict[str, List[bytes]], attrs_old: Dic
             f.write(mo_data_binary)
 
 
-def remove_umcmessagecatalogs(attrs: Dict[str, List[bytes]]) -> None:
+def remove_umcmessagecatalogs(attrs: dict[str, list[bytes]]) -> None:
     umcmessagecatalogs = _umcmessagecatalog_ldap_attributes(attrs)
     if not umcmessagecatalogs:
         return
@@ -528,7 +527,7 @@ def remove_umcmessagecatalogs(attrs: Dict[str, List[bytes]]) -> None:
             os.unlink(filename)
 
 
-def _umcmessagecatalog_ldap_attributes(attrs: Dict[str, List[bytes]]) -> Dict[str, bytes]:
+def _umcmessagecatalog_ldap_attributes(attrs: dict[str, list[bytes]]) -> dict[str, bytes]:
     translationfile_ldap_attribute_and_tag_prefix = "univentionUMCMessageCatalog;entry-"
     umcmessagecatalogs = {}
     for ldap_attribute in attrs:
@@ -544,7 +543,7 @@ def _parse_filename_from_ldap_attr(ldap_filename: str) -> str:
     return safe_path_join(basedir, '%s.mo' % (module_id,))
 
 
-def install_umcregistration(dn: str, attrs: Dict[str, List[bytes]]) -> None:
+def install_umcregistration(dn: str, attrs: dict[str, list[bytes]]) -> None:
     compressed_data = attrs.get('univentionUMCRegistrationData', [None])[0]
     if not compressed_data:
         return
@@ -564,7 +563,7 @@ def install_umcregistration(dn: str, attrs: Dict[str, List[bytes]]) -> None:
         f.write(object_data)
 
 
-def remove_umcregistration(dn: str, attrs: Dict[str, List[bytes]]) -> None:
+def remove_umcregistration(dn: str, attrs: dict[str, list[bytes]]) -> None:
     if not attrs.get('univentionUMCRegistrationData'):
         return
 
@@ -577,7 +576,7 @@ def remove_umcregistration(dn: str, attrs: Dict[str, List[bytes]]) -> None:
         ud.debug(ud.LISTENER, ud.INFO, '%s: Warning: %s does not exist.' % (name, filename))
 
 
-def install_umcicons(dn: str, attrs: Dict[str, List[bytes]]) -> None:
+def install_umcicons(dn: str, attrs: dict[str, list[bytes]]) -> None:
     module_name = attrs.get('cn')[0].decode('UTF-8')
     for object_data in attrs.get('univentionUMCIcon', []):
         (mime_type, compression_mime_type, subdir) = imagecategory_of_buffer(object_data)
@@ -593,7 +592,7 @@ def install_umcicons(dn: str, attrs: Dict[str, List[bytes]]) -> None:
             f.write(object_data)
 
 
-def remove_umcicons(dn: str, attrs: Dict[str, List[bytes]]) -> None:
+def remove_umcicons(dn: str, attrs: dict[str, list[bytes]]) -> None:
     module_name = attrs.get('cn')[0].decode('UTF-8')
     for object_data in attrs.get('univentionUMCIcon', []):
         (mime_type, compression_mime_type, subdir) = imagecategory_of_buffer(object_data)

@@ -31,8 +31,9 @@
 
 """|UDM| allocators to allocate and lock resources for |LDAP| object creation."""
 
+from collections.abc import Sequence  # noqa: F401
 from logging import getLogger
-from typing import Sequence, overload  # noqa: F401
+from typing import overload
 
 import ldap
 from ldap.filter import filter_format
@@ -43,7 +44,7 @@ from univention.admin import configRegistry, localization
 
 
 try:
-    from typing import Literal  # noqa: F401
+    from typing import Literal
     _TypesUidGid = Literal["uidNumber", "gidNumber"]
     _Types = Literal["uidNumber", "gidNumber", "uid", "gid", "sid", "domainSid", "mailPrimaryAddress", "mailAlternativeAddress", "aRecord", "mac", "groupName", "cn-uid-position", "univentionObjectIdentifier"]
     _Scopes = Literal["base", "one", "sub", "domain"]

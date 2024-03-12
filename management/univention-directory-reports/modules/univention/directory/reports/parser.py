@@ -122,7 +122,7 @@ class Parser:
     def tokenize(self):
         token = self.next_token()
         while token:
-            if isinstance(token, (TextToken, AttributeToken, PolicyToken, DateToken)):
+            if isinstance(token, TextToken | AttributeToken | PolicyToken | DateToken):
                 if isinstance(token, TextToken):
                     if token.data == '\n' and len(self._context) and isinstance(self._context[-1], HeaderToken):
                         # ignore line feed after header

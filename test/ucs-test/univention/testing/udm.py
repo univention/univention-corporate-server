@@ -59,7 +59,7 @@ import subprocess
 import sys
 import time
 from inspect import getfullargspec
-from typing import Any, Iterable, Mapping, Sequence
+from typing import TYPE_CHECKING, Any
 
 import ldap
 import ldap.filter
@@ -72,6 +72,10 @@ import univention.testing.strings as uts
 import univention.testing.ucr
 from univention.testing import utils
 from univention.testing.ucs_samba import DRSReplicationFailed, wait_for_drs_replication
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable, Mapping, Sequence
 
 
 class UCSTestUDM_Exception(Exception):
@@ -286,7 +290,7 @@ class UCSTestUDM:
             if arg not in args:
                 continue
             value = args.pop(arg)
-            if not isinstance(value, (list, tuple)):
+            if not isinstance(value, list | tuple):
                 value = (value,)
             for item in value:
                 cmd.extend(['--%s' % arg.replace('_', '-'), item])
@@ -303,7 +307,7 @@ class UCSTestUDM:
             cmd.extend(['--option', option])
 
         for key, value in args.pop('set', {}).items():
-            if isinstance(value, (list, tuple)):
+            if isinstance(value, list | tuple):
                 for item in value:
                     cmd.extend(['--set', f'{key}={item}'])
             else:
@@ -325,7 +329,7 @@ class UCSTestUDM:
 
         # set all other remaining properties
         for key, value in args.items():
-            if isinstance(value, (list, tuple)):
+            if isinstance(value, list | tuple):
                 for item in value:
                     cmd.extend(['--append', f'{key}={item}'])
             elif value:
@@ -1205,9 +1209,9 @@ def verify_udm_object(module: Any, dn: str, expected_properties: Mapping[str, by
         udm_value = udm_object.info.get(key, [])
         if udm_value is None:
             udm_value = []
-        if isinstance(udm_value, (bytes, str)):
+        if isinstance(udm_value, bytes | str):
             udm_value = {udm_value}
-        if not isinstance(value, (tuple, list)):
+        if not isinstance(value, tuple | list):
             value = {value}
         value = {_to_unicode(v).lower() for v in value}
         udm_value = {_to_unicode(v).lower() for v in udm_value}

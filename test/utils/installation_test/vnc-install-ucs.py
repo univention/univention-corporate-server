@@ -9,7 +9,6 @@
 
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 from os.path import dirname, join
-from typing import Dict
 
 from installation import VNCInstallation, build_parser, sleep, verbose
 from yaml import safe_load
@@ -17,7 +16,7 @@ from yaml import safe_load
 
 class UCSInstallation(VNCInstallation):
 
-    def load_translation(self, language: str) -> Dict[str, str]:
+    def load_translation(self, language: str) -> dict[str, str]:
         name = join(dirname(__file__), "languages.yaml")
         with open(name) as fd:
             return {

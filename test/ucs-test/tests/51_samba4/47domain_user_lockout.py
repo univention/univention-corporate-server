@@ -14,12 +14,16 @@ import subprocess
 import sys
 from datetime import datetime, timedelta
 from time import sleep
-from typing import Iterator, Sequence
+from typing import TYPE_CHECKING
 
 from univention.config_registry import ucr
 from univention.testing import utils
 from univention.testing.codes import Reason
 from univention.testing.strings import random_username
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator, Sequence
 
 
 LOCKOUT_DURATION = 1  # duration of lockout in minutes

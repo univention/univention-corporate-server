@@ -34,7 +34,8 @@
 
 
 import logging
-from typing import Any, Callable, Iterable, List
+from collections.abc import Callable, Iterable
+from typing import Any
 
 import selenium.common.exceptions as selenium_exceptions
 from selenium.webdriver.common.by import By
@@ -128,11 +129,11 @@ class ChecksAndWaits:
             check_function, f'wait_until({check_function!r}, timeout={timeout!r})',
         )
 
-    def get_gallery_items(self) -> List[str]:
+    def get_gallery_items(self) -> list[str]:
         items = self.get_all_visible_elements(['//div[contains(concat(" ", normalize-space(@class), " "), " umcGalleryName ")]'])
         return [item.text for item in items]
 
-    def get_all_visible_elements(self, xpaths: Iterable[str]) -> List[Any]:
+    def get_all_visible_elements(self, xpaths: Iterable[str]) -> list[Any]:
         try:
             return [
                 elem

@@ -37,7 +37,7 @@ from __future__ import annotations
 import sys
 from argparse import ArgumentParser, Namespace
 from random import choice
-from typing import Iterator, List, Tuple  # noqa: F401
+from typing import TYPE_CHECKING
 
 import ldap
 from ldap.dn import escape_dn_chars
@@ -47,6 +47,10 @@ import univention.admin.modules
 import univention.admin.objects
 import univention.admin.uldap
 import univention.debug
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 def names(count: int) -> Iterator[str]:

@@ -49,7 +49,6 @@ import uuid
 import xml.etree.ElementTree as ET  # noqa: S405
 import zlib
 from http.client import responses
-from typing import Dict, List, Optional
 from urllib.parse import parse_qs, quote, unquote, urlencode, urljoin, urlparse, urlunparse
 
 import ldap
@@ -353,7 +352,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
         query_string = ''
         if query:
             qs = parse_qs(base.query)
-            qs.update({key: val if isinstance(val, (list, tuple)) else [val] for key, val in query.items()})
+            qs.update({key: val if isinstance(val, list | tuple) else [val] for key, val in query.items()})
             query_string = f'?{urlencode(qs, True)}'
         scheme = base.scheme
         for _scheme in self.request.headers.get_list('X-Forwarded-Proto'):
@@ -383,7 +382,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
             return super().write_error(status_code, exc_info=exc_info, **kwargs)
 
         etype, exc, etraceback = exc_info
-        if isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), (ldap.SERVER_DOWN, ldap.CONNECT_ERROR, ldap.INVALID_CREDENTIALS)):
+        if isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), ldap.SERVER_DOWN | ldap.CONNECT_ERROR | ldap.INVALID_CREDENTIALS):
             exc = exc.original_exception
         if isinstance(exc, ldap.SERVER_DOWN):
             exc = LDAP_ServerDown()
@@ -441,7 +440,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
 
         if status_code >= 500:
             _traceback = None
-            if not isinstance(exc, (UDM_Error, UMC_Error)):
+            if not isinstance(exc, UDM_Error | UMC_Error):
                 _traceback = ''.join(traceback.format_exception(etype, exc, etraceback))
             response['error']['traceback'] = _traceback if self.application.settings.get("serve_traceback", True) else None
 
@@ -597,8 +596,8 @@ class Directory(Resource):
     @sanitize
     async def get(
         self,
-        container: Optional[str] = Query(DNSanitizer(required=False, allow_none=True)),
-        object_type: Optional[str] = Query(StringSanitizer(required=False, allow_none=True)),
+        container: str | None = Query(DNSanitizer(required=False, allow_none=True)),
+        object_type: str | None = Query(StringSanitizer(required=False, allow_none=True)),
     ):
         result = {}
         self.add_link(result, 'self', self.urljoin(''), title=_('LDAP directory'))
@@ -690,7 +689,7 @@ class ObjectTypes(Resource):
     async def get(
         self,
         module_type,
-        superordinate: Optional[str] = Query(DNSanitizer(required=False, allow_none=True)),
+        superordinate: str | None = Query(DNSanitizer(required=False, allow_none=True)),
     ):
         object_type = Modules.mapping.get(module_type)
         if not object_type:
@@ -1170,7 +1169,7 @@ class Report(ReportingBase, Resource):
         self,
         object_type,
         report_type,
-        dn: List[str] = Query(ListSanitizer(DNSanitizer())),
+        dn: list[str] = Query(ListSanitizer(DNSanitizer())),
     ):
         await self.create_report(object_type, report_type, dn)
 
@@ -1327,7 +1326,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
                 },
             },
         ),
-        query: Dict = Query(
+        query: dict = Query(
             DictSanitizer({}, default_sanitizer=LDAPSearchSanitizer(required=False, default='*', add_asterisks=False, use_asterisks=True), key_sanitizer=ObjectPropertySanitizer()),
             description="The values to search for (propertyname and search filter value). Alternatively with `filter` a raw LDAP filter can be given.",
             style="deepObject",
@@ -1346,7 +1345,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
         ),
         scope: str = Query(ChoicesSanitizer(choices=['sub', 'one', 'base', 'base+one'], default='sub'), description="The LDAP search scope (sub, base, one)."),
         hidden: bool = Query(BoolSanitizer(default=True), description="Include hidden/system objects in the response.", example=True),
-        properties: List[str] = Query(
+        properties: list[str] = Query(
             ListSanitizer(StringSanitizer(), required=False, default=['*'], allow_none=True, min_elements=0),
             style="form",
             explode=True,
@@ -1356,7 +1355,7 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
                 'only small subset': {'value': ['username', 'firstname', 'lastname']},
             },
         ),
-        superordinate: Optional[str] = Query(
+        superordinate: str | None = Query(
             DNSanitizer(required=False, default=None, allow_none=True),
             description="The superordinate DN of the objects to find. `position` is sufficient.",
             # example=f"cn=superordinate,{ldap_base}"
@@ -1591,14 +1590,14 @@ class Objects(ConditionalResource, FormBase, ReportingBase, _OpenAPIBase, Resour
     async def post(
         self,
         object_type,
-        representation: Dict = JSONPayload(
+        representation: dict = JSONPayload(
             position=DNSanitizer(required=False, allow_none=True),
             superordinate=DNSanitizer(required=False, allow_none=True),
             options=DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=False),
             policies=DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=False),
             properties=DictSanitizer({}, required=True),
         ),
-        patch_document: List = PatchRepresentation(),
+        patch_document: list = PatchRepresentation(),
     ):
         """Create a new {module.object_name} object"""
         obj = Object(self.application, self.request)
@@ -1664,7 +1663,7 @@ class ObjectsMove(Resource):
         self,
         object_type,
         position: str = Body(DNSanitizer(required=True)),
-        dn: List[str] = Body(ListSanitizer(DNSanitizer(required=True), min_elements=1)),
+        dn: list[str] = Body(ListSanitizer(DNSanitizer(required=True), min_elements=1)),
     ):
         # FIXME: this can only move objects of the same object_type but should move everything
         dns = dn  # TODO: validate: moveable, etc.
@@ -1872,14 +1871,14 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         self,
         object_type,
         dn,
-        representation: Dict = JSONPayload(
+        representation: dict = JSONPayload(
             position=DNSanitizer(required=True),
             superordinate=DNSanitizer(required=False, allow_none=True),
             options=DictSanitizer({}, default_sanitizer=BooleanSanitizer()),
             policies=DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer())),
             properties=DictSanitizer({}, required=True),
         ),
-        patch_document: List = PatchRepresentation(),
+        patch_document: list = PatchRepresentation(),
     ):
         """Modify or move an {module.object_name} object"""
         dn = unquote_dn(dn)
@@ -1931,14 +1930,14 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         self,
         object_type,
         dn,
-        representation: Dict = JSONPayload(
+        representation: dict = JSONPayload(
             position=DNSanitizer(required=False, default=''),
             superordinate=DNSanitizer(required=False, allow_none=True),
             options=DictSanitizer({}, default_sanitizer=BooleanSanitizer(), required=False),
             policies=DictSanitizer({}, default_sanitizer=ListSanitizer(DNSanitizer()), required=False),
             properties=DictSanitizer({}),
         ),
-        patch_document: List = PatchRepresentation(),
+        patch_document: list = PatchRepresentation(),
     ):
         """Modify an {module.object_name} object (moving is currently not possible)"""
         dn = unquote_dn(dn)
@@ -2813,7 +2812,7 @@ class PolicyResultBase(Resource):
         infos = copy.copy(policy_obj.polinfo_more)
         for key, _value in infos.items():
             if key in policy_obj.polinfo:
-                if isinstance(infos[key], (tuple, list)):  # noqa: PLR1733
+                if isinstance(infos[key], tuple | list):  # noqa: PLR1733
                     continue
                 _value['value'] = policy_obj.polinfo[key]
         if policy_dn:

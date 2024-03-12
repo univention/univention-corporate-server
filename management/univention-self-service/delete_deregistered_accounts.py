@@ -34,7 +34,7 @@
 import argparse
 import datetime
 import logging
-from typing import Iterable, List, NoReturn, Optional  # noqa: F401
+from collections.abc import Iterable  # noqa: F401
 
 from ldap.filter import filter_format
 

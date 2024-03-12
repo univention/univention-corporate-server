@@ -42,8 +42,12 @@ from html.parser import HTMLParser
 from http.client import HTTPException, HTTPResponse, HTTPSConnection
 from os import path
 from sys import exit
-from typing import Any, Iterable
+from typing import TYPE_CHECKING, Any
 from urllib.parse import urlencode
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 
 class CredentialsMissing(Exception):

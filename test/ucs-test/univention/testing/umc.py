@@ -37,12 +37,16 @@ from __future__ import annotations
 import pprint
 import sys
 from html.parser import HTMLParser
-from typing import Any, Iterable
+from typing import TYPE_CHECKING, Any
 
 import requests
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.umc import Client as _Client
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 
 class Client(_Client):

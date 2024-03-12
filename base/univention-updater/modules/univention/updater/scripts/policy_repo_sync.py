@@ -34,7 +34,6 @@
 # <https://www.gnu.org/licenses/>.
 import os
 from sys import exit
-from typing import Dict, List
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.policy_result import PolicyResultFailed, policy_result
@@ -54,7 +53,7 @@ def write_cron_job(cron: str) -> None:
         cron_file.write('%s root /usr/sbin/univention-repository-update net >>/var/log/univention/repository.log\n' % cron)
 
 
-def one(results: Dict[str, List[str]], key: str) -> str:
+def one(results: dict[str, list[str]], key: str) -> str:
     try:
         return results[key][0]
     except LookupError:

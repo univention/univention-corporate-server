@@ -11,7 +11,6 @@ import os
 from collections import defaultdict, namedtuple
 from copy import deepcopy
 from subprocess import call
-from typing import List, Tuple
 from unittest import TestCase, main
 
 import pytest
@@ -671,7 +670,7 @@ def simple_udm(ucr) -> UDM:
 
 @pytest.fixture()
 def schedule_delete_udm_obj(simple_udm):
-    objs: List[Tuple[str, str]] = []
+    objs: list[tuple[str, str]] = []
 
     def _func(dn: str, udm_mod: str) -> None:
         objs.append((dn, udm_mod))

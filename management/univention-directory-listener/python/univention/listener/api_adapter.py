@@ -31,7 +31,8 @@
 
 
 import sys
-from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Optional, Sequence, Tuple  # noqa: F401
+from collections.abc import Mapping, Sequence  # noqa: F401
+from typing import TYPE_CHECKING
 
 
 if TYPE_CHECKING:

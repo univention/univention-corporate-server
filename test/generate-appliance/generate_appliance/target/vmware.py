@@ -7,15 +7,18 @@
 import uuid
 from argparse import Namespace
 from logging import getLogger
-from typing import Dict, List, Tuple, Union, cast  # noqa: F401
+from typing import TYPE_CHECKING, cast
 
 import lxml.builder
 
-from ..files import File  # noqa: F401
 from ..files.pkzip import Pkzip
 from ..files.raw import Raw
 from ..files.vmdk import Vmdk
 from . import TargetFile
+
+
+if TYPE_CHECKING:
+    from ..files import File
 
 
 log = getLogger(__name__)
@@ -48,7 +51,7 @@ def create_vmxf(machine_uuid: uuid.UUID, image_name: str) -> bytes:
     return cast(bytes, lxml.etree.tostring(foundry, encoding='UTF-8', xml_declaration=True, pretty_print=True))
 
 
-def encode_vmx_file(vmx: Dict[str, str]) -> bytes:
+def encode_vmx_file(vmx: dict[str, str]) -> bytes:
     output = '.encoding = "UTF-8"\n'
     for key, value, in sorted(vmx.items()):
         output += '%s = "%s"\n' % (key, value)
@@ -149,13 +152,13 @@ class VMware(TargetFile):
         machine_uuid = uuid.uuid4()
         image_uuid = uuid.uuid4()
         vmdk = Vmdk(image)
-        files = [
+        files: list[tuple[str, File | bytes]] = [
             ('%s/' % (options.product,), b""),
             ('%s/%s.vmdk' % (options.product, options.product), vmdk),
             ('%s/%s.vmxf' % (options.product, options.product), create_vmxf(machine_uuid, options.product)),
             ('%s/%s.vmx' % (options.product, options.product), create_vmx(options.product, image_uuid, options)),
             ('%s/%s.vmsd' % (options.product, options.product), b""),
-        ]  # type: List[Tuple[str, Union[File, bytes]]]
+        ]
         pkzip = Pkzip(files)
         pkzip.path().rename(archive_name)
         log.info('Generated "%s" appliance as\n  %s', self, archive_name)

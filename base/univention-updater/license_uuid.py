@@ -34,8 +34,6 @@
 # <https://www.gnu.org/licenses/>.
 
 
-from typing import Dict, List
-
 import univention.config_registry
 
 import listener
@@ -45,7 +43,7 @@ description = 'Dump key id from license to local UCR variable'
 filter = '(&(objectClass=univentionLicense)(cn=admin))'
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
     if new:
         listener.setuid(0)
         try:

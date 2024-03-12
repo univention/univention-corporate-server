@@ -30,8 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from collections.abc import Mapping, Sequence  # noqa: F401
 from logging import getLogger
-from typing import Any, Mapping, Optional, Sequence  # noqa: F401
 
 from univention.ldap_cache.cache import get_cache
 from univention.listener.handler import ListenerModuleHandler

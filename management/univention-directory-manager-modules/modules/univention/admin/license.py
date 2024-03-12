@@ -462,7 +462,7 @@ class License:
             self.licenses[self.version][License.GROUPWARE] = self.__getValue(self.keys[self.version][License.GROUPWARE], 2, 'Groupware Accounts', 'Groupware not found')
             # if no type field is found it must be an old UCS license (<=1.3-0)
             self.types = self.__getValue('univentionLicenseType', ['UCS'], 'License Type', 'Type attribute not found')
-            if not isinstance(self.types, (list, tuple)):
+            if not isinstance(self.types, list | tuple):
                 self.types = [self.types]
             self.types = list(self.types)
             # handle license type "OXAE" the same way as license type "UCS"
@@ -474,12 +474,12 @@ class License:
             self.licenses[self.version][License.MANAGEDCLIENTS] = self.__getValue(self.keys[self.version][License.MANAGEDCLIENTS], None, 'Managed Clients', 'Managed Clients not found')
             self.licenses[self.version][License.CORPORATECLIENTS] = self.__getValue(self.keys[self.version][License.CORPORATECLIENTS], None, 'Corporate Clients', 'Corporate Clients not found')
             self.types = self.__getValue('univentionLicenseProduct', ['Univention Corporate Server'], 'License Product', 'Product attribute not found')
-            if not isinstance(self.types, (list, tuple)):
+            if not isinstance(self.types, list | tuple):
                 self.types = [self.types]
             self.types = list(self.types)
 
         self.oemProductTypes = self.__getValue('univentionLicenseOEMProduct', [], 'License Type', 'univentionLicenseOEMProduct attribute not found')
-        if not isinstance(self.oemProductTypes, (list, tuple)):
+        if not isinstance(self.oemProductTypes, list | tuple):
             self.oemProductTypes = [self.oemProductTypes]
         self.types.extend(self.oemProductTypes)
         self.endDate = self.__getValue('univentionLicenseEndDate', None, 'License end date', 'univentionLicenseEndDate attribute not found')

@@ -268,7 +268,7 @@ class RFC4514_dn:
     pattern = '|'.join('(%s)' % re.escape(ldap.dn.escape_dn_chars(s)) for s in special_dn_chars)
     match = re.compile(pattern)
     substs = [f'\\{ord(s):X}' for s in special_dn_chars]
-    replace = lambda m: RFC4514_dn.substs[m.lastindex - 1]    # noqa: E731
+    replace = lambda m: RFC4514_dn.substs[m.lastindex - 1]  # noqa: E731
 
     @classmethod
     def to_ad(cls, dn):

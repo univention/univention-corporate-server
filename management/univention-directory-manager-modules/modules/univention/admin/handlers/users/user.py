@@ -39,9 +39,9 @@ import os
 import re
 import time
 import warnings
+from collections.abc import Iterable, Sequence  # noqa: F401
 from datetime import datetime
 from logging import getLogger
-from typing import Any, Iterable, Sequence  # noqa: F401
 
 import ldap
 import passlib.hash
@@ -1849,7 +1849,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
             return ml
 
         try:
-            new = [x[2] if isinstance(x[2], (list, tuple)) else [x[2]] for x in ml if x[0] == 'mailForwardAddress' and x[2]][0]  # noqa: RUF015
+            new = [x[2] if isinstance(x[2], list | tuple) else [x[2]] for x in ml if x[0] == 'mailForwardAddress' and x[2]][0]  # noqa: RUF015
         except IndexError:  # mailForwardAddress was not changed, nevertheless we might need to change it
             new = self.mapping.mapValue('mailForwardAddress', self['mailForwardAddress']) or []  # FIXME: mapValue returns b'' instead of [b'']
 

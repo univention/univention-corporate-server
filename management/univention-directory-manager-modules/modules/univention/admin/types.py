@@ -35,8 +35,8 @@
 import datetime
 import inspect
 import time
+from collections.abc import Sequence
 from logging import getLogger
-from typing import Sequence, Type, Union  # noqa: F401
 
 import ldap.dn
 
@@ -49,29 +49,29 @@ log = getLogger('ADMIN')
 translation = localization.translation('univention/admin')
 _ = translation.translate
 
-_Types = Union[Type[object], Sequence[Type[object]]]
+_Types = type[object] | Sequence[type[object]]
 
 
 class TypeHint:
-    _python_types = object  # type: _Types
+    _python_types: _Types = object
 
     @property
     def _json_type(self):
         # in most cases, the Python type is equivalent to the JSON type
         return self._python_types
 
-    _openapi_type = None  # type: str | None
-    _openapi_format = None  # type: str | None
-    _openapi_regex = None  # type: str | None
-    _openapi_example = None  # type: str | None
-    _openapi_readonly = None  # type: bool | None
-    _openapi_writeonly = None  # type: bool | None
+    _openapi_type: str | None = None
+    _openapi_format: str | None = None
+    _openapi_regex: str | None = None
+    _openapi_example: str | None = None
+    _openapi_readonly: bool | None = None
+    _openapi_writeonly: bool | None = None
     _openapi_nullable = True  # everything which can be removed is nullable
 
     _html_element = None
     _html_input_type = None
 
-    _encoding = None  # type: str | None
+    _encoding: str | None = None
     _minimum = float('-inf')
     _maximum = float('inf')
 
@@ -284,7 +284,7 @@ class NoneType(TypeHint):
 
 
 class BooleanType(TypeHint):
-    _python_types = bool  # type: _Types
+    _python_types: _Types = bool
     _openapi_type = 'boolean'
 
     def decode_value(self, value):
@@ -327,7 +327,7 @@ class NumberType(TypeHint):
 
 
 class StringType(TypeHint):
-    _python_types = str  # type: _Types
+    _python_types: _Types = str
     _encoding = 'UTF-8'
     _openapi_type = 'string'
 
@@ -417,10 +417,10 @@ class DateType(StringType):
     def encode_value(self, value):
         return self.syntax.from_datetime(value)
 
-    def _to_json_type(self, value):  # type: (datetime.date) -> str
+    def _to_json_type(self, value: datetime.date) -> str:
         return str(value.isoformat())
 
-    def _from_json_type(self, value):  # type: (str) -> datetime.date
+    def _from_json_type(self, value: str) -> datetime.date:
         try:
             return datetime.date(*time.strptime(value, '%Y-%m-%d')[0:3])
         except ValueError:
@@ -449,10 +449,10 @@ class TimeType(StringType):
     def encode_value(self, value):
         return self.syntax.from_datetime(value)
 
-    def _to_json_type(self, value):  # type: (datetime.time) -> str
+    def _to_json_type(self, value: datetime.time) -> str:
         return str(value.replace(microsecond=0).isoformat())
 
-    def _from_json_type(self, value):  # type: (str) -> datetime.time
+    def _from_json_type(self, value: str) -> datetime.time:
         try:
             return datetime.time(*time.strptime(value, '%H:%M:%S')[3:6])
         except ValueError:
@@ -484,10 +484,10 @@ class DateTimeType(StringType):
     def encode_value(self, value):
         return self.syntax.from_datetime(value)
 
-    def _to_json_type(self, value):  # type: (datetime.datetime) -> str
+    def _to_json_type(self, value: datetime.datetime) -> str:
         return ' '.join((value.date().isoformat(), value.time().replace(microsecond=0).isoformat()))
 
-    def _from_json_type(self, value):  # type: (str) -> datetime.datetime
+    def _from_json_type(self, value: str) -> datetime.datetime:
         try:
             return datetime.datetime(*time.strptime(value, '%Y-%m-%dT%H:%M:%S')[:6])  # FIXME: parse Z at the end
         except ValueError:
@@ -502,7 +502,7 @@ class ArrayType(TypeHint):
 
 
 class ListType(ArrayType):
-    item_type = None  # type: Type[TypeHint] | None # must be set in subclasses
+    item_type: type[TypeHint] | None = None  # must be set in subclasses
 
     def type_check_subitems(self, value):
         item_type = self.item_type(self.property, self.property_name)
@@ -625,8 +625,8 @@ class DictionaryType(TypeHint):
 
 
 class KeyValueDictionaryType(DictionaryType):
-    key_type = None  # type: _Types | None
-    value_type = None  # type: _Types | None
+    key_type: _Types | None = None
+    value_type: _Types | None = None
 
     def openapi_definition(self):
         definition = super(DictionaryType, self).openapi_definition()

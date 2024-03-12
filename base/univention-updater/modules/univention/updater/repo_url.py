@@ -41,7 +41,7 @@ if TYPE_CHECKING:
     from univention.config_registry import ConfigRegistry
 
 
-_T = TypeVar("_T")  # noqa: PYI018
+_T = TypeVar("_T")
 
 
 class UcsRepoUrl:  # noqa: PLW1641

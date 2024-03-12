@@ -7,7 +7,6 @@
 
 import multiprocessing
 import time
-from typing import Dict, List
 
 import concurrent.futures
 
@@ -21,7 +20,7 @@ SEARCH_ATTRS = ["ucsschoolRole"]
 LDAP_WRITE_PARALLELISM = multiprocessing.cpu_count()
 
 
-def update_roles_in_memory(dn: str, attrs: Dict[str, List[bytes]]) -> None:
+def update_roles_in_memory(dn: str, attrs: dict[str, list[bytes]]) -> None:
     for role_b in attrs["ucsschoolRole"][:]:
         role_s = role_b.decode()
         role, _context_type, context = get_role_info(role_s)

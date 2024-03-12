@@ -61,7 +61,7 @@ class JSON_Object:
         return result
 
     def json(self):
-        if isinstance(self, (list, tuple)):
+        if isinstance(self, list | tuple):
             return self._json_list(self)
         elif isinstance(self, dict):
             return self._json_dict(self)

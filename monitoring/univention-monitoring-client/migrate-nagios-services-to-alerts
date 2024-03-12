@@ -34,7 +34,6 @@
 """Migrate Nagios services which are assigned to this host to corresponding monitoring alerts."""
 
 import argparse
-from typing import Dict, Tuple
 
 from ldap.filter import filter_format
 
@@ -43,7 +42,7 @@ from univention.udm import UDM
 from univention.udm.exceptions import NoObject
 
 
-CHECKS: Dict[str, Tuple[str, ...]] = {
+CHECKS: dict[str, tuple[str, ...]] = {
     "UNIVENTION_DISK_ROOT": ("UNIVENTION_DISK_ROOT", "UNIVENTION_DISK_ROOT_WARNING", "UNIVENTION_DISK_ROOT_METRIC_MISSING"),
     "UNIVENTION_DNS": ("UNIVENTION_DNS", "UNIVENTION_DNS_METRIC_MISSING"),
     "UNIVENTION_SWAP": ("UNIVENTION_SWAP", "UNIVENTION_SWAP_WARNING", "UNIVENTION_SWAP_METRIC_MISSING"),

@@ -60,10 +60,10 @@ class Interpreter:
             tokens = self._tokens
         if not base_objects:
             base_objects = [self._base_object]
-        if not isinstance(base_objects, (list, tuple)):
+        if not isinstance(base_objects, list | tuple):
             base_objects = [base_objects]
         for token in tokens:
-            if isinstance(token, (QueryToken, ResolveToken)):
+            if isinstance(token, QueryToken | ResolveToken):
                 if isinstance(token, QueryToken):
                     self.query(token, base_objects[0])
                 else:
@@ -112,7 +112,7 @@ class Interpreter:
             attr = token.attrs.get('dn-attribute', None)
             if attr and base.has_property(attr) and base[attr]:
                 values = base[attr]
-                if not isinstance(values, (list, tuple)):
+                if not isinstance(values, list | tuple):
                     values = [values]
                 for value in values:
                     new_base = admin.get_object(token.attrs['module'], value)
@@ -124,7 +124,7 @@ class Interpreter:
             attr = token.attrs.get('start', None)
             if attr and base.has_property(attr) and base[attr]:
                 admin.get_object(token.attrs['module'], base[attr][0])
-                if not isinstance(base[attr], (list, tuple)):
+                if not isinstance(base[attr], list | tuple):
                     base[attr] = [base[attr]]
                 filter = token.attrs.get('pattern', None)
                 if filter:
@@ -169,7 +169,7 @@ class Interpreter:
         if 'name' in token.attrs:
             if token.attrs['name'] in base.info:
                 value = base.info[token.attrs['name']]
-                if isinstance(value, (list, tuple)):
+                if isinstance(value, list | tuple):
                     if not value or (isinstance(value, str) and value.lower() == 'none'):
                         token.value = token.attrs.get('default', '')
                     else:

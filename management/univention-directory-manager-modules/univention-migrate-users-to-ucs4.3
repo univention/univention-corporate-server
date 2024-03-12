@@ -37,7 +37,6 @@ import calendar
 import pprint
 import sys
 import time
-from typing import Any, List, Optional, Set, Tuple, Union  # noqa: F401
 
 import heimdal
 import ldap
@@ -66,7 +65,7 @@ lo, po = univention.admin.uldap.getAdminConnection()
 class Migration:
 
     def __init__(self) -> None:
-        self.exceptions = []  # type: List[Tuple[str, List[Tuple[str, Union[bytes, List[bytes]], Union[bytes, List[bytes]]]], Exception]]
+        self.exceptions: list[tuple[str, list[tuple[str, bytes | list[bytes], bytes | list[bytes]]], Exception]] = []
         self.modifications = False
         p = argparse.ArgumentParser()
         p.add_argument('--check', action='store_true', help='Makes a dry run by printing out all modifications which would be done.')
@@ -116,7 +115,7 @@ class Migration:
         """
         realm = self.get_kerberos_realm()
         primary_group_gid = self.get_primary_gid_number()
-        self.alloc = []  # type: List[Tuple[str, str]]
+        self.alloc: list[tuple[str, str]] = []
 
         # use the users/user filter from UCS 4.2 but remove "(!(univentionObjectFlag=functional))" because we have the "uid=sys-idp-user" account
         default_user_filter = '(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(objectClass=inetOrgPerson))(!(uidNumber=0))(!(uid=*$)))'
@@ -175,7 +174,7 @@ class Migration:
                 newdn = ldap.dn.dn2str(ldapdn)
                 self.rename(dn, newdn)
 
-                ml = []  # type: List[Tuple[str, Union[bytes, List[bytes]], Union[bytes, List[bytes]]]]
+                ml: list[tuple[str, bytes | list[bytes], bytes | list[bytes]]] = []
                 if default_cn in cn_list:
                     new_cn_list = [cn for cn in cn_list if cn != default_cn]
                     new_cn_list.append(new_cn)
@@ -255,7 +254,7 @@ class Migration:
 
             serverctrls = None
             ocs_to_add = {'posixAccount', 'shadowAccount', 'sambaSamAccount', 'krb5Principal', 'krb5KDCEntry', 'univentionMail', 'inetOrgPerson', 'organizationalPerson'} - ocs
-            ocs_to_remove = set()  # type: Set[str]
+            ocs_to_remove: set[str] = set()
             if ocs_to_add:
                 ml.append(('objectClass', [x.encode('UTF-8') for x in ocs_to_remove], [x.encode('UTF-8') for x in ocs_to_add]))
             if ocs_to_add & {'inetOrgPerson', 'organizationalPerson'}:
@@ -345,7 +344,7 @@ class Migration:
             key += char
         return key
 
-    def arcfour_hmac_md5_to_nt_password(self, ucs_krb5key: List[bytes]) -> Optional[bytes]:
+    def arcfour_hmac_md5_to_nt_password(self, ucs_krb5key: list[bytes]) -> bytes | None:
         for k in ucs_krb5key:
             (keyblock, _salt, _kvno) = heimdal.asn1_decode_key(k)
 
@@ -355,7 +354,7 @@ class Migration:
                 krb5_arcfour_hmac_md5 = keyblock.keyvalue()
                 return binascii.b2a_hex(krb5_arcfour_hmac_md5)
 
-    def modify(self, dn: str, ml: List, serverctrls: Optional[List] = None) -> None:
+    def modify(self, dn: str, ml: list, serverctrls: list | None = None) -> None:
         self.modifications = True
         print('Modifying ', dn)
         pprint.pprint(ml)
@@ -366,7 +365,7 @@ class Migration:
             except ldap.LDAPError as exc:
                 self.exceptions.append((dn, ml, exc))
 
-    def rename(self, dn: str, newdn: str, serverctrls: Optional[List] = None) -> None:
+    def rename(self, dn: str, newdn: str, serverctrls: list | None = None) -> None:
         self.modifications = True
         print('Renaming', dn, 'to', newdn)
         if not self.args.check:
@@ -375,7 +374,7 @@ class Migration:
             except ldap.LDAPError as exc:
                 self.exceptions.append((dn, newdn, exc))
 
-    def allocate(self, name: str, value: Optional[str] = None) -> str:
+    def allocate(self, name: str, value: str | None = None) -> str:
         if name in ('userSid', 'groupSid'):
             if name == 'userSid':
                 value = univention.admin.allocators.requestUserSid(lo, po, value)
@@ -406,7 +405,7 @@ class Migration:
             realm = domain.getKerberosRealm()
         return realm
 
-    def get_sambaMaxPwdAge(self) -> Optional[bytes]:
+    def get_sambaMaxPwdAge(self) -> bytes | None:
         windows_domain = ucr.get('windows/domain')
         if not windows_domain:
             return
@@ -431,7 +430,7 @@ class Migration:
             # new sambaSID back from Samba 4.
             return 'S-1-4-%s' % uidNumber
 
-        sid = None  # type: Optional[str]
+        sid: str | None = None
         num = uidNumber
         while not sid:  # TODO: deadlock forever?
             try:
@@ -457,7 +456,7 @@ class Migration:
             # new sambaSID back from Samba 4.
             return 'S-1-4-%s' % gidNum
 
-        sid = None  # type: Optional[str]
+        sid: str | None = None
         num = gidNum
         while not sid:
             try:

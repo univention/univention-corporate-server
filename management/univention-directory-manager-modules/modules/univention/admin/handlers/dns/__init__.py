@@ -210,4 +210,4 @@ def stripDot(old, encoding=()):
         return [stripDot(_, encoding) for _ in old]
     if old is None:
         return old
-    return old[:-1].encode(*encoding) if isinstance(old, (bytes, str)) and old.endswith('.') else old.encode(*encoding)
+    return old[:-1].encode(*encoding) if isinstance(old, bytes | str) and old.endswith('.') else old.encode(*encoding)

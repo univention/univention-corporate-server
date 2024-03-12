@@ -33,7 +33,7 @@ from __future__ import annotations
 import os
 import time
 from types import SimpleNamespace
-from typing import TYPE_CHECKING, Callable, Iterator
+from typing import TYPE_CHECKING
 
 import pytest
 from keycloak import KeycloakAdmin, KeycloakOpenID
@@ -55,6 +55,8 @@ from univention.udm.binary_props import Base64Bzip2BinaryProperty
 
 
 if TYPE_CHECKING:
+    from collections.abc import Callable, Iterator
+
     from univention.udm.modules.settings_data import SettingsDataObject
 
 

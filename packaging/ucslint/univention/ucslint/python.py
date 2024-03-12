@@ -29,13 +29,14 @@
 # <https://www.gnu.org/licenses/>.
 
 import re
+from collections.abc import Iterator
 from pathlib import Path
-from typing import Iterator, Optional, Pattern
+from re import Pattern
 
 from univention.ucslint.base import FilteredDirWalkGenerator
 
 
-def _or(*disjunct: str, name: Optional[str] = None) -> str:
+def _or(*disjunct: str, name: str | None = None) -> str:
     return r'(?{}{})'.format(':' if name is None else f'P<{name}>', '|'.join(disjunct))
 
 

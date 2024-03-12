@@ -5,8 +5,9 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import time
+from collections.abc import Callable
 from functools import wraps
-from typing import Any, Callable, TypeVar, cast
+from typing import Any, TypeVar, cast
 
 
 DEFAULT_TIMEOUT = 90  # seconds

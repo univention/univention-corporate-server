@@ -8,9 +8,9 @@
 ## exposure: dangerous
 
 import tempfile
+from collections.abc import Generator
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Generator
 
 import pytest
 from playwright.sync_api import expect

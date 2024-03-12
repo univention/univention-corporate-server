@@ -30,8 +30,6 @@
 # <https://www.gnu.org/licenses/>.
 """Univention Updater exceptions."""
 
-from typing import Set
-
 
 class UpdaterException(Exception):
     """
@@ -53,7 +51,7 @@ class RequiredComponentError(UpdaterException):
     :type components: set(str)
     """
 
-    def __init__(self, version: str, components: Set[str]) -> None:
+    def __init__(self, version: str, components: set[str]) -> None:
         self.version = version
         self.components = components
 

@@ -31,7 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import socket
-from typing import Iterator
+from collections.abc import Iterator
 from urllib.parse import urlsplit
 
 from univention.config_registry import ucr_live as configRegistry

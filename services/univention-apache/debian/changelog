@@ -1,3 +1,9 @@
+univention-apache (14.0.4) unstable; urgency=medium
+
+  * Bug #56604: use Python 3.11 code annotations
+
+ -- Florian Best <best@univention.de>  Wed, 13 Mar 2024 00:46:33 +0100
+
 univention-apache (14.0.3) unstable; urgency=medium
 
   * Bug #46120: Removed module check from apache2 ssl and proxy config

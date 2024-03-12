@@ -30,7 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from typing import Dict, List
 
 from univention.admin.uldap import access, getAdminConnection
 from univention.config_registry import ucr_live as ucr
@@ -52,8 +51,8 @@ _WINDOWS_SERVER_ROLES = {
 }
 
 
-def udm_objects_without_ServerRole(lo: access) -> Dict[str, List[str]]:
-    objs: Dict[str, List[str]] = {}
+def udm_objects_without_ServerRole(lo: access) -> dict[str, list[str]]:
+    objs: dict[str, list[str]] = {}
     result = lo.search('(&(objectClass=univentionWindows)(!(univentionServerRole=*)))', attr=['univentionObjectType'])
     if result:
         ldap_base = ucr.get('ldap/base')

@@ -12,7 +12,7 @@ import socket
 import sqlite3
 import subprocess
 import time
-from typing import Any, Iterator
+from typing import TYPE_CHECKING, Any
 
 import ldap
 import ldb
@@ -22,6 +22,10 @@ from samba.samdb import SamDB
 
 from univention import config_registry
 from univention.testing.utils import package_installed
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 class DRSReplicationFailed(Exception):

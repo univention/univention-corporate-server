@@ -34,13 +34,17 @@
 
 from __future__ import annotations
 
-from typing import Iterable
+from typing import TYPE_CHECKING
 
 import tdb
 
 import univention.debug as ud
 
 from listener import SetUID
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 
 SAMBA_PRIVILEGES = {

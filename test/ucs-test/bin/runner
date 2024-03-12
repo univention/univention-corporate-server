@@ -12,11 +12,15 @@ from __future__ import annotations
 import os
 import sys
 from argparse import REMAINDER, ArgumentParser, FileType, Namespace
-from typing import Sequence
+from typing import TYPE_CHECKING
 
 import univention.testing.format
 from univention.testing.data import TestCase, TestEnvironment, TestResult
 from univention.testing.internal import setup_debug, setup_environment
+
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
 
 
 def parse_args(args: Sequence[str] | None = None) -> Namespace:

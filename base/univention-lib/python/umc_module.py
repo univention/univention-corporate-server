@@ -38,7 +38,7 @@ helper functions for MIME type handling.
 import bz2
 import io
 import zlib
-from typing import Any, Callable, Optional, Tuple  # noqa: F401
+from collections.abc import Callable  # noqa: F401
 
 import magic
 from PIL import Image

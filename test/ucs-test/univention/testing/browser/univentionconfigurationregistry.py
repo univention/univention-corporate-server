@@ -35,7 +35,6 @@
 import logging
 import re
 import time
-from typing import Dict
 
 from univention.lib.i18n import Translation
 from univention.testing.browser.lib import UMCBrowserTest
@@ -63,7 +62,7 @@ class UniventionConfigurationRegistry:
         with self.page.expect_response(self.grid_load_url):
             search_box.press('Enter')
 
-    def get_ucr_module_search_results(self, query: str) -> Dict[str, str]:
+    def get_ucr_module_search_results(self, query: str) -> dict[str, str]:
         """
         Perform a search in the UCR Module and return the key + value for each row
 

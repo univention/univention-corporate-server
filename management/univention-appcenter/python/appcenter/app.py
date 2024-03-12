@@ -127,19 +127,19 @@ class LooseVersion:  # noqa: PLW1641
         return f"LooseVersion('{self}')"
 
     def __eq__(self, other: LooseVersion | str) -> bool:
-        return self._compare(LooseVersion(other)) == 0 if isinstance(other, (LooseVersion, str)) else NotImplemented
+        return self._compare(LooseVersion(other)) == 0 if isinstance(other, LooseVersion | str) else NotImplemented
 
     def __lt__(self, other: LooseVersion | str) -> bool:
-        return self._compare(LooseVersion(other)) < 0 if isinstance(other, (LooseVersion, str)) else NotImplemented
+        return self._compare(LooseVersion(other)) < 0 if isinstance(other, LooseVersion | str) else NotImplemented
 
     def __le__(self, other: LooseVersion | str) -> bool:
-        return self._compare(LooseVersion(other)) <= 0 if isinstance(other, (LooseVersion, str)) else NotImplemented
+        return self._compare(LooseVersion(other)) <= 0 if isinstance(other, LooseVersion | str) else NotImplemented
 
     def __gt__(self, other: LooseVersion | str) -> bool:
-        return self._compare(LooseVersion(other)) > 0 if isinstance(other, (LooseVersion, str)) else NotImplemented
+        return self._compare(LooseVersion(other)) > 0 if isinstance(other, LooseVersion | str) else NotImplemented
 
     def __ge__(self, other: LooseVersion | str) -> bool:
-        return self._compare(LooseVersion(other)) >= 0 if isinstance(other, (LooseVersion, str)) else NotImplemented
+        return self._compare(LooseVersion(other)) >= 0 if isinstance(other, LooseVersion | str) else NotImplemented
 
     def _parse(self) -> None:
         """

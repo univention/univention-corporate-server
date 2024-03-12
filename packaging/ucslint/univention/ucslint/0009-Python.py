@@ -31,13 +31,14 @@
 from __future__ import annotations
 
 import re
-from typing import TYPE_CHECKING, Iterable
+from typing import TYPE_CHECKING
 
 import univention.ucslint.base as uub
 from univention.ucslint.python import RE_LENIENT, Python36 as PythonVer, python_files
 
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable
     from pathlib import Path
 
 

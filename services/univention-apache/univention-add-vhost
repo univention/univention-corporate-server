@@ -37,12 +37,6 @@ import subprocess
 import sys
 import time
 
-
-try:
-    from typing import List, Optional  # noqa: F401
-except ImportError:
-    pass
-
 import click
 from dns.resolver import NXDOMAIN, Resolver
 from ldap.dn import escape_dn_chars
@@ -69,8 +63,7 @@ _forward_zones = None
 @click.option('--ca', help="Path to SSL CA.")
 @click.option("--remove", is_flag=True, help="Remove previously created aliases and UCR variables.")
 @click.option("--dont-reload-services", is_flag=True, help="DO NOT reload local services although necessary, i.e., Apache and Bind.")
-def main(fqdn, port, aliases, conffile, binddn, bindpwdfile, ssl, cert, private_key, ca, remove, dont_reload_services):
-    # type: (str, int, List[str], List[str], str, str, bool, str, str, str, bool, bool) -> None
+def main(fqdn: str, port: int, aliases: list[str], conffile: list[str], binddn: str, bindpwdfile: str, ssl: bool, cert: str, private_key: str, ca: str, remove: bool, dont_reload_services: bool) -> None:
     """
     Create an Apache vhost entry (and DNS alias) with hostname
     FQDN on port PORT.
@@ -194,7 +187,7 @@ def resolve_host(hostname, timeout):
         return True
 
 
-def get_wildcard_certificate(udm):  # type: (UDM) -> None
+def get_wildcard_certificate(udm: UDM) -> None:
     service = 'Wildcard Certificate'
     hostobj = udm.obj_by_dn(ucr['ldap/hostdn'])
     services = udm.get('settings/service')
@@ -213,10 +206,10 @@ def get_wildcard_certificate(udm):  # type: (UDM) -> None
     print('')
 
 
-def forward_zones(udm):  # type: (UDM) -> List[BaseObject]
+def forward_zones(udm: UDM) -> list[BaseObject]:
     global _forward_zones
     if not _forward_zones:
-        dns_forward_zone_mod = udm.get("dns/forward_zone")  # type: BaseModule
+        dns_forward_zone_mod: BaseModule = udm.get("dns/forward_zone")
         _forward_zones = sorted(
             dns_forward_zone_mod.search(),
             key=lambda x: len(x.props.zone),
@@ -225,14 +218,14 @@ def forward_zones(udm):  # type: (UDM) -> List[BaseObject]
     return _forward_zones
 
 
-def superordinate_of_fqdn(udm, fqdn):  # type: (UDM, str) -> Optional[BaseObject]
+def superordinate_of_fqdn(udm: UDM, fqdn: str) -> BaseObject | None:
     known_zones = forward_zones(udm)
     for zone in known_zones:
         if fqdn.endswith(zone.props.zone):
             return zone
 
 
-def host_obj(udm, hostname, superordinate):  # type: (UDM, str, BaseObject) -> Optional[BaseObject]
+def host_obj(udm: UDM, hostname: str, superordinate: BaseObject) -> BaseObject | None:
     obj_dn = f"relativeDomainName={escape_dn_chars(hostname)},{superordinate.dn}"
     try:
         return udm.obj_by_dn(obj_dn)
@@ -240,13 +233,13 @@ def host_obj(udm, hostname, superordinate):  # type: (UDM, str, BaseObject) -> O
         pass
 
 
-def create_dns_entry(udm, fqdn, alias_target=None):  # type: (UDM, str, Optional[str]) -> Optional[BaseObject]
+def create_dns_entry(udm: UDM, fqdn: str, alias_target: str | None = None) -> BaseObject | None:
     if not alias_target:
         alias_target = "{hostname}.{domainname}".format(**ucr)
     if fqdn in [alias_target, '*']:
         return False
     click.echo(f"Creating DNS alias for '{fqdn}'...")
-    dns_alias_mod = udm.get("dns/alias")  # type: BaseModule
+    dns_alias_mod: BaseModule = udm.get("dns/alias")
     superordinate = superordinate_of_fqdn(udm, fqdn)
     if not superordinate:
         click.echo(click.style(
@@ -258,7 +251,7 @@ def create_dns_entry(udm, fqdn, alias_target=None):  # type: (UDM, str, Optional
     if host_obj(udm, alias_name, superordinate):
         click.echo(click.style(f"Alias/Host '{fqdn}' exists.", fg="green"))
         return False
-    alias_obj = dns_alias_mod.new(superordinate=superordinate)  # type: BaseObject
+    alias_obj: BaseObject = dns_alias_mod.new(superordinate=superordinate)
     alias_obj.props.name = alias_name
     alias_obj.props.cname = "{}.".format(alias_target.rstrip("."))
     alias_obj.save()
@@ -266,7 +259,7 @@ def create_dns_entry(udm, fqdn, alias_target=None):  # type: (UDM, str, Optional
     return True
 
 
-def remove_dns_entry(udm, fqdn):  # type: (UDM, str) -> None
+def remove_dns_entry(udm: UDM, fqdn: str) -> None:
     alias_target = "{hostname}.{domainname}".format(**ucr)
     if fqdn in [alias_target, '*']:
         return False
@@ -293,8 +286,7 @@ def remove_dns_entry(udm, fqdn):  # type: (UDM, str) -> None
         return False
 
 
-def set_ucr_vars(udm, fqdn, port, ssl, aliases=None, path=None, cert=None, private_key=None, ca=None):
-    # type: (str, str, int, bool, Optional[List[str]], Optional[str], Optional[str], Optional[str], Optional[str]) -> None
+def set_ucr_vars(udm: str, fqdn: str, port: int, ssl: bool, aliases: list[str] | None = None, path: str | None = None, cert: str | None = None, private_key: str | None = None, ca: str | None = None) -> None:
     click.echo("Setting UCR variables for Apache vhost configuration...")
     ucrvs = []
     ns = f"apache2/vhosts/{fqdn}/{port}"

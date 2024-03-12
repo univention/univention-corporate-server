@@ -41,7 +41,7 @@ import sys
 import time
 import traceback
 from argparse import ArgumentParser, FileType, Namespace
-from typing import Iterable, NoReturn
+from typing import TYPE_CHECKING, NoReturn
 
 from univention.admindiary.client import write_event
 from univention.admindiary.events import UPDATE_FINISHED_FAILURE, UPDATE_FINISHED_SUCCESS, UPDATE_STARTED
@@ -50,6 +50,10 @@ from univention.lib.ucs import UCS_Version
 from univention.updater.errors import ConfigurationError
 from univention.updater.locking import UpdaterLock
 from univention.updater.tools import UniventionUpdater
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 
 FN_STATUS = '/var/lib/univention-updater/univention-upgrade.status'

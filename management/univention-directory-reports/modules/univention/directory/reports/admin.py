@@ -184,7 +184,7 @@ class AdminConnection:
         (newkey, newvalue) = self.format_property_real(props, oldkey, oldvalue)
         assert newkey == oldkey
         key = oldkey
-        if isinstance(newvalue, (list, tuple)):  # multivalue => unpack
+        if isinstance(newvalue, list | tuple):  # multivalue => unpack
             for (newv, oldv) in zip(newvalue, oldvalue):
                 if isinstance(oldv, str) and newv != oldv:  # only consider strings, because DNs are always strings
                     if newv not in self.__reverse:
@@ -207,10 +207,10 @@ class AdminConnection:
         if not prop:
             return (key, value)
         else:
-            if isinstance(value, (list, tuple)):
+            if isinstance(value, list | tuple):
                 result = []
                 for v in value:
-                    if isinstance(v, (list, tuple)):
+                    if isinstance(v, list | tuple):
                         for i in v:
                             result.append(self.escape(str(i)))
                     else:

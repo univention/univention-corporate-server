@@ -8,7 +8,7 @@
 import os
 import re
 from ipaddress import IPv4Interface
-from typing import Dict, Match
+from re import Match
 
 from univention.management.console.modules.setup.netconf import SkipPhase
 from univention.management.console.modules.setup.netconf.common import AddressMap
@@ -16,7 +16,7 @@ from univention.management.console.modules.setup.netconf.common import AddressMa
 
 class Mapping:
 
-    def __init__(self, ipv4_changes: Dict[IPv4Interface, IPv4Interface]) -> None:
+    def __init__(self, ipv4_changes: dict[IPv4Interface, IPv4Interface]) -> None:
         self.mapping = {
             str(old_ip.ip): str(new_ip.ip)
             for (old_ip, new_ip) in ipv4_changes.items()

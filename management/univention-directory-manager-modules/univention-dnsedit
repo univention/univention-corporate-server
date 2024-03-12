@@ -38,7 +38,6 @@ import sys
 import time
 from argparse import REMAINDER, ArgumentParser, FileType, Namespace, RawTextHelpFormatter
 from logging import getLogger
-from typing import Optional, Tuple, Union  # noqa: F401
 
 import univention.logging
 
@@ -145,7 +144,7 @@ def parse() -> Namespace:
     return options
 
 
-def bind() -> Tuple[uldap.access, uldap.position]:
+def bind() -> tuple[uldap.access, uldap.position]:
     """Bind to LDAP service."""
     start_tls = 0 if options.stoptls else 2
     timeout = time.time() + options.timeout
@@ -177,7 +176,7 @@ def bind() -> Tuple[uldap.access, uldap.position]:
                 sys.exit(msg)
 
 
-def lookup_zone(zone_name: str) -> Union[forward_zone.object, reverse_zone.object]:
+def lookup_zone(zone_name: str) -> forward_zone.object | reverse_zone.object:
     """Lookup zone and return UDM object."""
     if not options.reverse:
         zones = forward_zone.lookup(co, lo, '(zone=%s)' % (zone_name,), scope='domain', base=position.getDomain(), unique=True)
@@ -398,11 +397,11 @@ def add_zone(contact: str, serial: str, refresh: str, retry: str, expire: str, t
 
 options = Namespace()
 co = None
-lo = None  # type: Optional[uldap.access]
-position = None  # type: Optional[uldap.position]
+lo: uldap.access | None = None
+position: uldap.position | None = None
 lo = position = co = parser = None
 zone_name = ""
-zone = None  # type: Union[None, forward_zone.object, reverse_zone.object]
+zone: None | forward_zone.object | reverse_zone.object = None
 
 
 def main() -> None:

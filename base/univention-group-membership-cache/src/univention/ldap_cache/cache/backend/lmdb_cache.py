@@ -31,9 +31,9 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
+from collections.abc import Iterator  # noqa: F401
 from contextlib import contextmanager
 from pwd import getpwnam
-from typing import Any, Dict, Iterator, List, Optional, Tuple  # noqa: F401
 
 import lmdb
 

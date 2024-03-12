@@ -102,7 +102,7 @@ class HTML:
             params.setdefault('hx-push-url', 'true')
             ET.SubElement(li, "a", href=link, **params).text = params.get('title', link) or link
 
-        if isinstance(response, (list, tuple)):
+        if isinstance(response, list | tuple):
             main.extend(response)
         elif response is not None:
             main.append(response)

@@ -436,7 +436,7 @@ class SanitizerBase:
             self.sanitize_arguments(FalseSanitizer(), _result_func=lambda x: {type: {field: x}}, _fieldname=field)
 
     def raise_sanitization_error(self, field, message, type='body'):
-        fields = field if isinstance(field, (list, tuple)) else (field,)
+        fields = field if isinstance(field, list | tuple) else (field,)
         field = fields[-1]
 
         def _result(x):
