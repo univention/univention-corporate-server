@@ -9,7 +9,6 @@
 ## exposure: dangerous
 
 import http.client as httplib
-import socket
 import ssl
 import subprocess
 import time
@@ -78,7 +77,7 @@ def main():
             if response.status != 502 or response.reason != 'UMC-Server module process connection failed':
                 print(f'ERROR: Unexpected status of response {response.status} {response.reason} (expected 502)')
                 success = False
-        except (socket.timeout, ssl.SSLError):
+        except (TimeoutError, ssl.SSLError):
             print('ERROR: request timed out')
 
     if not success:

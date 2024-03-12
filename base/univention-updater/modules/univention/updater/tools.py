@@ -675,7 +675,7 @@ class UCSHttpServer(_UCSServer):
                 raise ConfigurationError(uri, reason)
             else:  # proxy
                 raise ProxyError(uri, reason)
-        except socket.timeout as ex:
+        except TimeoutError as ex:
             self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), ex, exc_info=True)
             raise ConfigurationError(uri, 'timeout in network connection')
 

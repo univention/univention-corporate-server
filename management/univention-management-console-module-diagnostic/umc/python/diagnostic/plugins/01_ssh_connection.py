@@ -32,7 +32,6 @@
 
 import logging
 import re
-import socket
 
 import paramiko
 
@@ -125,7 +124,7 @@ def run(_umc_instance: Instance) -> None:
         except paramiko.BadAuthenticationType:
             bad[fqdn] = auth_msg + '!'
             auth_failed = True
-        except (paramiko.SSHException, socket.timeout):
+        except (TimeoutError, paramiko.SSHException):
             # ignore if host is not reachable and other ssh errors
             pass
         except Exception as err:
