@@ -96,8 +96,7 @@ echo "$0" >> {file_result}'''
                 os.stat(script_hook_file).st_mode | stat.S_IEXEC)
 
         except Exception as e:
-            print(f"Error with file '{script_hook_file}': {e}",
-            )
+            print(f"Error with file '{script_hook_file}': {e}")
 
 
 def app_install(appcenter, app_name):

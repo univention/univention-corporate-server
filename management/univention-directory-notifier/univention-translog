@@ -510,14 +510,7 @@ def import_all(opt):
                 if t_now - t_last >= 5.0:
                     p_done = float(rec.tid - start) / count
                     t_used = t_now - t_begin
-                    stderr.write('\rprocessed {:d} of {:d} [{:.1f}%] in {:.1f}s, {:d} remaining in {:.1f}s  \r'.format(
-                        rec.tid - start,
-                        count,
-                        p_done * 100.0,
-                        t_used,
-                        end - rec.tid,
-                        t_used / p_done - t_used,
-                    ))
+                    stderr.write(f'\rprocessed {rec.tid - start:d} of {count:d} [{p_done * 100.0:.1f}%] in {t_used:.1f}s, {end - rec.tid:d} remaining in {t_used / p_done - t_used:.1f}s  \r')
                     t_last = t_now
 
 

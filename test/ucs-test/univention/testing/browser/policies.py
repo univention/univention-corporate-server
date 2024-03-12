@@ -33,7 +33,6 @@
 # <https://www.gnu.org/licenses/>.
 
 
-
 from typing import TYPE_CHECKING
 
 from univention.lib.i18n import Translation
