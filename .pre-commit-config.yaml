@@ -6,7 +6,7 @@ exclude: "^packaging/ucslint/testframework/\
          "
 repos:
   - repo: https://git.knut.univention.de/univention/dist/pre-commit-ucr
-    rev: '0.0.10'
+    rev: '0.1.0'
     hooks:
       - id: ucr-flake8
         additional_dependencies: ["flake8==5.0.4"]
