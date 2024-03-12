@@ -57,7 +57,7 @@ univention_ldap_parameters_t* univention_ldap_new(void)
 	/* connection defaults */
 	lp->version = LDAP_VERSION3;
 	lp->authmethod = LDAP_AUTH_SIMPLE;
-	lp->start_tls = 2;
+	lp->start_tls = univention_config_get_int("directory/manager/starttls");
 	return lp;
 }
 
