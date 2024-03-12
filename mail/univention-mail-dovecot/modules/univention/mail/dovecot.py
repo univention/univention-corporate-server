@@ -58,7 +58,7 @@ default_sieve_script = "/var/lib/dovecot/sieve/default.sieve"
 class DovecotListener(object):
 
     def __init__(self, listener, name):
-        # type: (str) -> None
+        # type: (str, str) -> None
         self.listener = listener
         self.name = name
 
@@ -106,7 +106,7 @@ class DovecotListener(object):
             self.log_p("dovecot: Deleting of mailboxes disabled, not removing '%s' (dn '%s')." % (email, dn))
 
     def read_from_ext_proc_as_root(self, cmd, regexp=None, stdin=None, stdout=subprocess.PIPE, stderr=None, stdin_input=None):
-        # type; (Sequence[str], Optional[str], Optional[str], Any, Any, Any) -> str
+        # type: (Sequence[str], Optional[str], Optional[str], Any, Any, Any) -> str
         """
         Wrapper around Popen(), runs external command as root and return its
         output, optionally the first hit of a regexp. May raise an exception.
