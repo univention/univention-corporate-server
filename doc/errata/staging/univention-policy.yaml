@@ -1,0 +1,11 @@
+product: ucs
+release: "5.1"
+version: [0]
+scope: ucs_5.0-0-errata5.1-0
+src: univention-policy
+fix: 12.0.4
+desc: |
+ This update addresses the following issues:
+ * The StartTLS operation mode configured via the UCR variable
+   `directory/manager/starttls` will now be used by univention-policy.
+bug: [57158]
