@@ -226,7 +226,7 @@ class UniventionLDAPExtension(metaclass=ABCMeta):
         return (p.returncode, object_dn)
 
     def is_applicable_for_current_ucs_version(self, ucr):
-        # type (ConfigRegistry) -> bool
+        # type: (ConfigRegistry) -> bool
         current_ucs_version = "%s-%s" % (ucr.get('version/version'), ucr.get('version/patchlevel'))
         if self.options.ucsversionstart and UCS_Version(current_ucs_version) < UCS_Version(self.options.ucsversionstart):
             return False
@@ -568,7 +568,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
     basedir = '/var/lib/univention-ldap/local-schema'
 
     def is_applicable_for_current_ucs_version(self, ucr):
-        # type (ConfigRegistry) -> bool
+        # type: (ConfigRegistry) -> bool
         return True
 
     def handler(self, dn, new, old, name=""):
