@@ -299,7 +299,7 @@ Source code:
 
 
    def _rec(data):
-       # type (Dict[str, List[str]]) -> _Rec
+       # type: (Dict[str, List[str]]) -> _Rec
        """
        Retrieve symbolic, numeric ID and name from user data.
        """
