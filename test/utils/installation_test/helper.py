@@ -41,12 +41,12 @@ class VerboseFormatter(Formatter):
         pass
 
 
-def verbose(msg, fmt="", formatter=VerboseFormatter()):  # type (str, str, Formatter) -> Callabble[[T], T]
+def verbose(msg, fmt="", formatter=VerboseFormatter()):  # type: (str, str, Formatter) -> Callabble[[T], T]
     log = logging.getLogger(__name__)
 
-    def decorator(f):  # type (Callable) -> Callable
+    def decorator(f):  # type: (Callable) -> Callable
         @wraps(f)
-        def wrapper(*args, **kwargs):  # type (*Any, **Any) -> Any
+        def wrapper(*args, **kwargs):  # type: (*Any, **Any) -> Any
             start = time.time()
             log.info(
                 "%(MAGENTA)s%(msg)s%(CYAN)s:%(GREEN)sBEGIN%(RESET)s %(args)s",
