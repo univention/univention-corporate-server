@@ -600,7 +600,7 @@ class Object(Client):
 
     @superordinate.setter
     def superordinate(self, superordinate):
-        # type. (str) -> None
+        # type: (str) -> None
         self.representation['superordinate'] = superordinate
 
     @property
@@ -610,7 +610,7 @@ class Object(Client):
 
     @position.setter
     def position(self, position):
-        # type. (str) -> None
+        # type: (str) -> None
         self.representation['position'] = position
 
     @property
@@ -685,7 +685,7 @@ class Object(Client):
         return self.client.request('DELETE', self.uri, **headers)  # type: ignore # <https://github.com/python/mypy/issues/10008>
 
     def move(self, position, reload=True):
-        # type: (str) -> None
+        # type: (str, bool) -> None
         self.position = position
         self.save(reload=reload)
 
