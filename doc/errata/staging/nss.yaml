@@ -1,0 +1,23 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: nss
+fix: 2:3.26.2-1.1+deb9u7
+desc: |
+ This update addresses the following issues:
+ 2:3.26.2-1.1+deb9u7 (Sun, 10 Mar 2024 15:00:19 +0100)
+ [ Santiago Ruano Rincón ]
+ * Non-maintainer upload by the ELTS team.
+ * Add debian/patches/CVE-2023-4421.patch.
+ * Add debian/salsa-ci.yml using lts-team/pipeline for stretch
+ [ Tobias Frost ]
+ * Backport upstream patch for CVE-2023-5388, Timing attack against RSA
+   decryption..
+ * Backport upstream patch for CVE-2024-0743, Unchecked return value could
+   cause crash.
+bug: [57136]
+cve:
+- CVE-2023-4421
+- CVE-2023-5388
+- CVE-2024-0743
