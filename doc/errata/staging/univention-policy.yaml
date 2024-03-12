@@ -3,9 +3,11 @@ release: "5.0"
 version: [7]
 scope: ucs_5.0-0-errata5.0-7
 src: univention-policy
-fix: 11.0.4-2
+fix: 11.0.4-3
 desc: |
  This update addresses the following issues:
  * The StartTLS operation mode configured via the UCR variable
    `directory/manager/starttls` will now be used by univention-policy.
-bug: [57158]
+ * The LDAP port configured via the UCR variable `ldap/server/port`
+   will now be used by univention-policy.
+bug: [57158, 57159]
