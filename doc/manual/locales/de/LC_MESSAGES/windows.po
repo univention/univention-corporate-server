@@ -1175,8 +1175,8 @@ msgid ":file:`/var/log/univention/connector-ad.log`"
 msgstr ":file:`/var/log/univention/connector-ad.log`"
 
 #: ../../windows/ad-connection.rst:546
-msgid ":file:`/var/log/univention/connector-status.log`"
-msgstr ":file:`/var/log/univention/connector-status.log`"
+msgid ":file:`/var/log/univention/connector-ad-status.log`"
+msgstr ":file:`/var/log/univention/connector-ad-status.log`"
 
 #: ../../windows/ad-connection.rst:551
 msgid "Details on preconfigured synchronization"
