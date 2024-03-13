@@ -31,15 +31,15 @@
 
 """|UDM| basic functionality"""
 
+from __future__ import annotations
 
 import copy
 import re
 import sys
 import time
-from collections.abc import Callable, Container, Iterable
 from logging import getLogger
 from re import Match
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import unidecode
 from ldap.filter import filter_format
@@ -48,8 +48,13 @@ import univention.admin.handlers
 import univention.config_registry
 import univention.logging
 from univention.admin._ucr import configRegistry
-from univention.admin.layout import Tab
-from univention.admin.types import TypeHint
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Container, Iterable
+
+    from univention.admin.layout import Tab
+    from univention.admin.types import TypeHint
 
 
 log = getLogger('ADMIN')

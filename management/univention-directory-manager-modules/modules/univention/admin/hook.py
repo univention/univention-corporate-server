@@ -31,17 +31,19 @@
 
 """|UDM| hook definitions for modifying |LDAP| calls when objects are created, modifier or deleted."""
 
+from __future__ import annotations
+
 import os
 import sys
 import warnings
 from logging import getLogger
 from typing import TYPE_CHECKING, Any
 
-import univention.admin.handlers
 from univention.admin import localization
 
 
 if TYPE_CHECKING:
+    import univention.admin.handlers
     AddList = list[tuple[str, list[str]]]
     _Mod2 = tuple[str, list[str]]
     _Mod3 = tuple[str, list[str], list[str]]
