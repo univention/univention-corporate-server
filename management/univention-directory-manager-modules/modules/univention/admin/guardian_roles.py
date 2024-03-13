@@ -81,6 +81,7 @@ def role_properties():
         'guardianInheritedRoles': univention.admin.property(
             short_description=_('Roles used by Guardian for access permissions. Inherited by group membership'),
             long_description=_('Roles used by Guardian for access permissions. Inherited by group membership'),
+            prevent_umc_default_popup=True,
             syntax=GuardianRole,
             may_change=False,
             multivalue=True,
