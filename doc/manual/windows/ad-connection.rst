@@ -543,7 +543,7 @@ Log files
 
 
    * :file:`/var/log/univention/connector-ad.log`
-   * :file:`/var/log/univention/connector-status.log`
+   * :file:`/var/log/univention/connector-ad-status.log`
 
 .. _ad-connector-details-on-preconfigured-synchronization:
 
