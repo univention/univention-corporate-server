@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.0.6) unstable; urgency=medium
+
+  * Bug #56604: fix another circular import
+
+ -- Florian Best <best@univention.de>  Wed, 13 Mar 2024 21:10:04 +0100
+
 univention-directory-manager-modules (17.0.5) unstable; urgency=medium
 
   * Bug #50385: fix PEP-484 type annotations

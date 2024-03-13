@@ -44,6 +44,7 @@ from typing import TYPE_CHECKING, Any
 import unidecode
 from ldap.filter import filter_format
 
+import univention.admin.localization
 import univention.config_registry
 import univention.logging
 from univention.admin._ucr import configRegistry
@@ -542,6 +543,9 @@ from univention.admin import hook, mapping, modules, objects, syntax  # noqa: E4
 
 syntax.import_syntax_files()
 hook.import_hook_files()
+
+import univention.admin.handlers  # noqa: E402
+
 
 if __name__ == '__main__':
     prop = property('_replace')
