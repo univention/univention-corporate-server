@@ -32,7 +32,6 @@ generate-config:
     name: $BUILD
     entrypoint: [""]
   script:
-    - .gitlab-ci/build-ci
     - >
       deb-builder
       --yaml .gitlab-ci/base.yml
@@ -40,6 +39,11 @@ generate-config:
       --out generated-config-deb.yml
       --skip src:python-notifier
       */*/debian/control
+    - >
+      .gitlab-ci/doc-builder
+      --yaml .gitlab-ci/base.yml
+      --yaml .gitlab-ci/base-doc.yml
+      --out generated-config-doc.yml
   artifacts:
     paths:
       - generated-config-doc.yml
