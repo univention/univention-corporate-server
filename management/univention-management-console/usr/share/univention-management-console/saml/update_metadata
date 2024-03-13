@@ -51,7 +51,8 @@ if not metadata:
 with open('/usr/share/univention-management-console/saml/sp/metadata.xml', 'wb') as fd:
     fd.write(metadata)
 
-entity_id = f'https://{ucr["hostname"]}.{ucr["domainname"]}/univention/saml/metadata'
+fqdn = ucr['umc/saml/sp-server'] if ucr.get('umc/saml/sp-server') else '%(hostname)s.%(domainname)s' % ucr
+entity_id = f'https://{fqdn}/univention/saml/metadata'
 subprocess.check_call([
     'univention-directory-manager', 'saml/serviceprovider', 'modify'] + sys.argv[1:] + [
     '--dn', f'SAMLServiceProviderIdentifier={escape_dn_chars(entity_id)},cn=saml-serviceprovider,cn=univention,{ucr["ldap/base"]}',
@@ -59,7 +60,7 @@ subprocess.check_call([
     '--set', 'serviceProviderMetadata=%s' % (metadata.decode('UTF-8'),),
 ])
 # ignore failure, keycloak might not yet be installed or this is the first time and the entry doesn't yet exists in keycloak (added later by the joinscript)
-subprocess.call([
+ucr.get('keycloak/server/sso/fqdn') and subprocess.call([
     'univention-keycloak',
     'saml/sp',
     'update',
