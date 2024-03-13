@@ -7,27 +7,32 @@ auth_umc_addons = any(
 )
 
 methods = configRegistry.get('auth/methods', '').split(' ')
+krb5_minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
+unix_maximum_uid = int(configRegistry.get('pam/unix/maximum_uid', 2000))
 
 if auth_umc_addons:
     if 'krb5' in methods:
-        print('\
-auth     [success=2 new_authtok_reqd=2 \\\n\
-         default=ignore]   pam_unix.so try_first_pass\n\
-auth     [success=1 new_authtok_reqd=1 \\\n\
-         default=ignore]   pam_krb5.so use_first_pass defer_pwchange')
+        print(f'''
+auth     [success=1 default=ignore]   pam_succeed_if.so uid > {unix_maximum_uid}
+auth     [success=2 new_authtok_reqd=2 \\
+         default=ignore]   pam_unix.so try_first_pass
+auth     [success=1 new_authtok_reqd=1 \\
+         default=ignore]   pam_krb5.so use_first_pass defer_pwchange minimum_uid={krb5_minimum_uid}'''.strip())
     else:
-        print('\
-auth     [success=1 new_authtok_reqd=1 \\\n\
-         default=ignore]   pam_unix.so')
-    print('\
-auth     [success=ok new_authtok_reqd=ok \\\n\
-         default=die]      pam_sss.so use_first_pass')
+        print(f'''
+auth     [success=1 default=ignore]   pam_succeed_if.so uid > {unix_maximum_uid}
+auth     [success=1 new_authtok_reqd=1 \\
+         default=ignore]   pam_unix.so'''.strip())
+    print(f'''
+auth     [success=ok new_authtok_reqd=ok \\
+         default=die]      pam_sss.so use_first_pass'''.strip())
 else:
-    print('\
-auth     sufficient        pam_unix.so try_first_pass')
+    print(f'''
+auth     [success=1 default=ignore]   pam_succeed_if.so uid > {unix_maximum_uid}
+auth     sufficient        pam_unix.so try_first_pass'''.strip())
     if 'krb5' in methods:
-        print('\
-auth     sufficient        pam_krb5.so use_first_pass defer_pwchange')
-    print('\
-auth     sufficient        pam_sss.so use_first_pass')
+        print(f'''
+auth     sufficient        pam_krb5.so use_first_pass defer_pwchange minimum_uid={krb5_minimum_uid}'''.strip())
+    print('''
+auth     sufficient        pam_sss.so use_first_pass'''.strip())
 @!@

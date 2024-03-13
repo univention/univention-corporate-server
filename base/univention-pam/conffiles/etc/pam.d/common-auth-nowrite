@@ -4,23 +4,31 @@ auth     requisite         pam_nologin.so
 @!@
 if configRegistry.is_true('auth/faillog', False):
     if configRegistry.is_true('auth/faillog/lock_global', False):
-        print('\
-auth     [success=1 user_unknown=1 \\\n\
-         default=bad]      pam_faillock.so preauth')
+        print('''
+auth     [success=1 user_unknown=1 \\
+         default=bad]      pam_faillock.so preauth'''.strip())
         print('auth     [default=die]     pam_runasroot.so program=/usr/lib/univention-pam/lock-user')
     else:
         print('auth     required          pam_faillock.so preauth')
-@!@
 
+unix_maximum_uid = int(configRegistry.get('pam/unix/maximum_uid', 2000))
+krb5_minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
+
+pam_unix = f'''
 # local unix authentication; don't cache passwords
+auth     [success=1 default=ignore]   pam_succeed_if.so quiet uid > {unix_maximum_uid}
 auth     sufficient        pam_unix.so
+'''
+print(pam_unix)
 
+comment = '''
 # remote authentication; if a service
 # - isn't aware of the user, proceed with the next service
-@!@
-minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
-pam_krb5 = '''
-auth     sufficient        pam_krb5.so use_first_pass minimum_uid=%d''' % (minimum_uid,)
+'''
+print(comment.strip())
+
+pam_krb5 = f'''
+auth     sufficient        pam_krb5.so use_first_pass minimum_uid={krb5_minimum_uid}'''
 pam_sss = '''
 auth     sufficient        pam_sss.so use_first_pass'''
 pam_winbind = '''

@@ -1,5 +1,7 @@
 @!@
-print('account  [success=1  default=ignore]   pam_succeed_if.so uid > 1000')
+unix_maximum_uid = int(configRegistry.get('pam/unix/maximum_uid', 2000))
+print(f'''
+account  [success=1 default=ignore]   pam_succeed_if.so uid > {unix_maximum_uid}''')
 print('account  sufficient        pam_unix.so')
 methods = configRegistry.get('auth/methods', '').split(' ')
 if 'krb5' in methods:

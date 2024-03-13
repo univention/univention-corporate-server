@@ -3,13 +3,13 @@
 session  required          pam_unix.so
 @!@
 print('%ssession  optional          pam_systemd.so' % ('' if configRegistry.is_true('pam/session/systemd') else '#',))
-minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
+krb5_minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
 methods = [x for x in configRegistry['auth/methods'].split(' ') if x in ['krb5', 'ldap', 'winbind']]
 if 'winbind' in methods:
     print('session  optional          pam_winbind.so')
 if 'krb5' in methods:
     print('session  [default=ignore success=1]   pam_succeed_if.so quiet service = samba')
-    print('session  optional          pam_krb5.so minimum_uid=%d' % (minimum_uid,))
+    print('session  optional          pam_krb5.so minimum_uid=%d' % (krb5_minimum_uid,))
 @!@
 session  required          pam_limits.so
 @!@

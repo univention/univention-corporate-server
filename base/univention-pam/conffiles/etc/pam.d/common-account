@@ -3,21 +3,28 @@
 @!@
 if configRegistry.is_true('auth/faillog', False):
     print('account  required          pam_faillock.so')
-@!@
 
+unix_maximum_uid = int(configRegistry.get('pam/unix/maximum_uid', 2000))
+krb5_minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
+
+pam_unix = f'''
 # local unix authentication; deny access if account is expired
-account [success=done new_authtok_reqd=done \
-        acct_expired=bad \
-        default=ignore]    pam_unix.so
+account  [success=1 default=ignore]   pam_succeed_if.so quiet uid > {unix_maximum_uid}
+account  [success=done new_authtok_reqd=done \\
+         acct_expired=bad \\
+         default=ignore]   pam_unix.so
+'''
+print(pam_unix)
 
+comment = '''
 # remote authentication; if a service
 # - isn't aware of the user, proceed with the next service
-@!@
-minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
+'''
+print(comment.strip())
+
 pam_krb5 = '''
-account  [success=1 \\
-         default=ignore]   pam_succeed_if.so quiet service = samba
-account  <action>        pam_krb5.so minimum_uid=%d''' % (minimum_uid,)
+account  [success=1 default=ignore]   pam_succeed_if.so quiet service = samba
+account  <action>        pam_krb5.so minimum_uid=%d''' % (krb5_minimum_uid,)
 pam_sss = '''
 account  <action>        pam_sss.so'''
 pam_winbind = '''

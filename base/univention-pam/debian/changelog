@@ -1,3 +1,9 @@
+univention-pam (15.0.4) unstable; urgency=medium
+
+  * Bug #56793: New UCR variable pam/unix/maximum_uid
+
+ -- Arvid <requate@univention.de>  Wed, 13 Mar 2024 21:09:04 +0100
+
 univention-pam (15.0.3) unstable; urgency=medium
 
   * Bug #56793: Unify whitespace in pam config a bit
