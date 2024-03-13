@@ -546,6 +546,12 @@ class Instance(Base, ProgressMixin):
                     props['$flags$'] = [x.decode('UTF-8') for x in obj.oldattr.get('univentionObjectFlag', [])]
                     props['$operations$'] = module.operations
                     props['$references$'] = module.get_policy_references(ldap_dn)
+
+                    # show all lazy loading properties in UMC
+                    lazy_loading_props = {key: obj.descriptions[key] for key in obj.descriptions if (obj.has_property(key)) and obj.descriptions[key].lazy_loading_fn}
+                    for prop in lazy_loading_props.values():
+                        prop.lazy_load(obj)
+
                     result.append(props)
                 else:
                     MODULE.process('The LDAP object for the LDAP DN %s could not be found' % ldap_dn)
