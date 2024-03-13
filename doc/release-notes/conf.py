@@ -223,3 +223,4 @@ def setup(app):
         "config-inited",
         adapt_settings_to_translation,
     )
+# dummy
