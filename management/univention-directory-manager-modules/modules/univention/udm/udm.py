@@ -116,7 +116,7 @@ from .plugins import Plugins
 if TYPE_CHECKING:
     import univention.admin.uldap  # noqa: F401
 
-    from ..base import BaseModule, BaseObject  # noqa: F401
+    from .base import BaseModule, BaseObject  # noqa: F401
 
 
 _MODULES_PATH = 'univention.udm.modules'
