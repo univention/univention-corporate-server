@@ -1,4 +1,4 @@
-FROM docker-registry.knut.univention.de/phahn/ucs-debbase:500
+FROM docker-registry.knut.univention.de/phahn/ucs-debbase:520
 ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 WORKDIR /work
