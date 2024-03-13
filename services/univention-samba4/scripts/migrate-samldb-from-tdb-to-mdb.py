@@ -155,7 +155,7 @@ def stopped_samba_and_s4c():
 def sam_ldb_is_using_mdb(lp):
     samdb = open_samdb_raw(lp)
     res = samdb.search(base="@PARTITION", scope=ldb.SCOPE_BASE, attrs=["backendStore"])
-    return (res and "backendStore" in res[0] and str(res[0]["backendStore"]) == "mdb")
+    return res and res[0].get("backendStore", [b''])[0].decode('UTF-8') == "mdb"
 
 
 if __name__ == "__main__":
@@ -180,7 +180,7 @@ if __name__ == "__main__":
         with sam_ldb_backends_from_tdb_to_mdb(lp):
             activate_mdb(lp)
 
-        duration = str(datetime.now() - t0).split('.')[:-1][0]
+        duration = str(datetime.now() - t0).rsplit('.', 1)[0]
         print("INFO: Duration: %s" % duration)
 
         if not args.skip_dbcheck:
