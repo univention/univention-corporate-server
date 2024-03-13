@@ -223,7 +223,7 @@ PAM / Local group cache
 Samba
 =====
 
-* The default database for samba is now ``mdb`` (:uv:bug:`57145`).
+* FIXME (:uv:bug:`99999`)
 
 .. _changelog-win-s4c:
 

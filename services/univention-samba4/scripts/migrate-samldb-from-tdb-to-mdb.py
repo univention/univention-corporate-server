@@ -44,26 +44,12 @@ from contextlib import contextmanager
 from datetime import datetime
 
 import ldb
+import lmdb
 import tdb
 from samba import Ldb
 from samba.auth import system_session
 from samba.param import LoadParm
 
-
-def install_python_lmdb():
-    from univention.config_registry import ConfigRegistry, handler_set
-    ucr = ConfigRegistry()
-    ucr.load()
-    if not ucr.is_true("repository/online/unmaintained"):
-        handler_set(["repository/online/unmaintained=yes"])
-        subprocess.call(("univention-install", "python-lmdb"))
-
-
-try:
-    import lmdb
-except ImportError:
-    install_python_lmdb()
-    import lmdb
 
 # Default the mdb file size for the individual partitions to 8GB
 DEFAULT_BACKEND_SIZE = 8 * 1024**3
