@@ -1,84 +1,8 @@
-univention-directory-manager-modules (17.0.11) unstable; urgency=medium
-
-  * Bug #57110: Add guardian role attributes
-
- -- Julia Bremer <bremer@univention.de>  Tue, 19 Mar 2024 12:43:38 +0100
-
-univention-directory-manager-modules (17.0.11) unstable; urgency=medium
-
-  * Bug #57110: Add guardian role attributes
-
- -- Julia Bremer <bremer@univention.de>  Tue, 19 Mar 2024 12:43:38 +0100
-
-univention-directory-manager-modules (17.0.10) unstable; urgency=medium
-
-  * Bug #TODO: Add guardianInheritedRole
-
- -- Julia Bremer <bremer@univention.de>  Tue, 19 Mar 2024 12:43:38 +0100
-
-univention-directory-manager-modules (17.0.10) UNRELEASED; urgency=medium
-
-  * Bug #57118 UCS 5.0-7 version bump
-
- -- Philipp Hahn <hahn@univention.de>  Tue, 19 Mar 2024 12:43:38 +0100
-
-univention-directory-manager-modules (17.0.10) unstable; urgency=medium
-
-  [ Philipp Hahn ]
-  * Bug #57118 UCS 5.0-7 version bump
-
-  [ Florian Best ]
-  * Bug #57146: restore Python 2.7 compatibility
-
- -- Florian Best <best@univention.de>  Tue, 19 Mar 2024 12:43:38 +0100
-
-univention-directory-manager-modules (17.0.9) unstable; urgency=medium
-
-  * Bug #57110: Add guardian role attributes
-
- -- Julia Bremer <bremer@univention.de>  Tue, 19 Mar 2024 12:43:14 +0100
-
-univention-directory-manager-modules (17.0.9) unstable; urgency=medium
-
-  [ Philipp Hahn ]
-  * Bug #57118 UCS 5.0-7 version bump
-
-  [ Florian Best ]
-  * Bug #57146: restore Python 2.7 compatibility
-
- -- Florian Best <best@univention.de>  Tue, 19 Mar 2024 12:43:14 +0100
-
-univention-directory-manager-modules (17.0.8) unstable; urgency=medium
-
-  [ Philipp Hahn ]
-  * Bug #57118 UCS 5.0-7 version bump
-
-  [ Florian Best ]
-  * Bug #57146: restore Python 2.7 compatibility
-
- -- Florian Best <best@univention.de>  Tue, 19 Mar 2024 12:43:14 +0100
-
 univention-directory-manager-modules (17.0.7) unstable; urgency=medium
 
-  * Bug #TODO: Add guardianInheritedRole
+  * Bug #57110: Add guardian role attributes
 
- -- Julia Bremer <bremer@univention.de>  Tue, 19 Mar 2024 12:42:29 +0100
-
-univention-directory-manager-modules (17.0.7) UNRELEASED; urgency=medium
-
-  * Bug #57118 UCS 5.0-7 version bump
-
- -- Philipp Hahn <hahn@univention.de>  Tue, 19 Mar 2024 12:42:29 +0100
-
-univention-directory-manager-modules (17.0.7) unstable; urgency=medium
-
-  [ Philipp Hahn ]
-  * Bug #57118 UCS 5.0-7 version bump
-
-  [ Florian Best ]
-  * Bug #57146: restore Python 2.7 compatibility
-
- -- Florian Best <best@univention.de>  Tue, 19 Mar 2024 12:42:29 +0100
+ -- Felix Botner <botner@univention.de>  Tue, 19 Mar 2024 14:00:36 +0100
 
 univention-directory-manager-modules (17.0.6) unstable; urgency=medium
 

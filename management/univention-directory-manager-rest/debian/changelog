@@ -4,18 +4,6 @@ univention-directory-manager-rest (12.0.5) unstable; urgency=medium
 
  -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Tue, 19 Mar 2024 12:43:49 +0100
 
-univention-directory-manager-rest (12.0.5) UNRELEASED; urgency=medium
-
-  * Bug #57118 UCS 5.0-7 version bump
-
- -- Philipp Hahn <hahn@univention.de>  Tue, 19 Mar 2024 12:43:49 +0100
-
-univention-directory-manager-rest (12.0.5) unstable; urgency=medium
-
-  * Bug #56735: fix duplicated module packaging
-
- -- Florian Best <best@univention.de>  Tue, 19 Mar 2024 12:43:49 +0100
-
 univention-directory-manager-rest (12.0.4) unstable; urgency=medium
 
   * Bug #56735: fix duplicated module packaging

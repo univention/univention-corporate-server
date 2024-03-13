@@ -27,10 +27,9 @@
 
 """|UDM| guardian roles handling"""
 
+import itertools
 import re
 from logging import getLogger
-
-from ldap.filter import filter_format
 
 import univention.admin
 import univention.admin.localization
@@ -78,6 +77,7 @@ def role_properties():
         'guardianInheritedRoles': univention.admin.property(
             short_description=_('Roles used by Guardian for access permissions. Inherited by group membership'),
             long_description=_('Roles used by Guardian for access permissions. Inherited by group membership'),
+            prevent_umc_default_popup=True,
             syntax=GuardianRole,
             may_change=False,
             multivalue=True,
@@ -126,36 +126,14 @@ def get_group_role(lo: univention.admin.uldap.access, dn: str) -> list[str]:
     return [x.decode('UTF-8') for x in res.get('univentionGuardianMemberRoles', [])]
 
 
-@univention.admin._ldap_cache(ttl=60)
-def search_group_uniqueMembers(lo: univention.admin.uldap.access, dn: str) -> list[str]:
-    return lo.searchDn(filter_format('(&(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [dn]))
-
-
-def get_nested_groups(lo: univention.admin.uldap.access, groups: list[str], recursion_list: list[str] | None = None) -> list[str]:
-    all_groups = []
-    if recursion_list is None:
-        recursion_list = []
-    for group in groups:
-        if group not in all_groups:
-            all_groups.append(group)
-        for dn in search_group_uniqueMembers(lo, group):
-            if dn not in recursion_list:
-                recursion_list.append(dn)
-                all_groups += get_nested_groups(lo, [dn], recursion_list)
-    return all_groups
-
-
 # TODO
 # naive approach to get role strings for groups by searching the LDAP
 def load_roles(lo: univention.admin.uldap.access, groups: list[str]) -> list[str]:
-    roles = []
-    for group in groups:
-        roles += get_group_role(lo, group)
-    return list(set(roles))
+    return list(set(itertools.chain.from_iterable(get_group_role(lo, group) for group in groups)))
 
 
 class GuardianBase:
-    def open_guardian(self):  # type: (bool) -> None
+    def open_guardian(self) -> None:
         if self.exists():
             self.info['guardianInheritedRoles'] = load_roles(self.lo, self['groups'] + [self['primaryGroup']])
             self.save()
