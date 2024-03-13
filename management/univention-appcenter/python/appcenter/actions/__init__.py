@@ -45,16 +45,18 @@ import urllib.error
 from argparse import Action, ArgumentParser, Namespace
 from functools import wraps
 from glob import glob
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.exceptions import Abort, NetworkError
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.utils import call_process, send_information, underscore, verbose_http_error
 
+
 if TYPE_CHECKING:
-    from univention.appcenter.app import App
     from collections.abc import Iterator, Mapping, Sequence
+
+    from univention.appcenter.app import App
 
 
 _ACTIONS = {}

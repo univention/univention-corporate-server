@@ -33,11 +33,12 @@ from __future__ import annotations
 
 import inspect
 import string
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import listener
 from .exceptions import ListenerModuleConfigurationError
 from .handler_logging import get_logger
+
 
 if TYPE_CHECKING:
     from .handler import ListenerModuleHandler

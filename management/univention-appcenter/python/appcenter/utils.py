@@ -53,7 +53,7 @@ from locale import getlocale
 from shlex import quote
 from subprocess import PIPE, STDOUT, Popen, list2cmdline
 from threading import Thread
-from typing import Any, TypeVar, overload, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, TypeVar, overload
 from urllib.parse import urlencode
 from uuid import uuid4
 
@@ -65,10 +65,12 @@ from univention.config_registry import interfaces
 from univention.config_registry.misc import key_shell_escape
 from univention.lib.i18n import Translation
 
+
 if TYPE_CHECKING:
-    from univention.appcenter.app import App
-    from logging import Logger
     from collections.abc import Container, Iterable, Mapping, Sequence
+    from logging import Logger
+
+    from univention.appcenter.app import App
 
 
 _ConfigParser = TypeVar("_ConfigParser", bound=RawConfigParser)
