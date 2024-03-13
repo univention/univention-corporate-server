@@ -11,6 +11,8 @@ default:
 
 variables:
   ucs: 520
+  DOC_TARGET_VERSION: "5.2"
+  CHANGELOG_TARGET_VERSION: "5.2-0"
   GIT_STRATEGY: fetch
   GIT_SUBMODULE_STRATEGY: none
   GIT_DEPTH: "3"
