@@ -103,17 +103,20 @@ The LDAP connection to use must be supplies as an argument to the UDM module fac
         # If it is a username, a machine connection is used to retrieve the DN it belongs to.
 """
 
+from __future__ import annotations
 
 from fnmatch import fnmatch
 from operator import itemgetter
-from typing import Self
+from typing import TYPE_CHECKING, Self
 
-import univention.admin.uldap
-
-from ..base import BaseModule, BaseObject
 from .exceptions import ApiVersionMustNotChange, ApiVersionNotSupported, NoApiVersionSet, NoObject
 from .plugins import Plugins
 
+
+if TYPE_CHECKING:
+    import univention.admin.uldap
+
+    from .base import BaseModule, BaseObject
 
 _MODULES_PATH = 'univention.udm.modules'
 
