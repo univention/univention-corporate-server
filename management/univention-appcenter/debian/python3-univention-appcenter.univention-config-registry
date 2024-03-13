@@ -46,6 +46,7 @@ Variables: docker/daemon/default/opts/bip
 Variables: appcenter/docker/compose/network
 Variables: appcenter/apps/.*/version
 Variables: appcenter/apps/.*/status
+Variables: postgres15/pg_hba/password-encryption
 
 Type: module
 Module: create_portal_entries.py

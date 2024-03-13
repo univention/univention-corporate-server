@@ -1,3 +1,9 @@
+univention-appcenter (11.0.6) unstable; urgency=medium
+
+  * Bug #56540: add missing UCR variable to UCR template definition
+
+ -- Florian Best <best@univention.de>  Wed, 13 Mar 2024 11:25:18 +0100
+
 univention-appcenter (11.0.5) unstable; urgency=medium
 
   * Bug #56604: use __future__ annotations
