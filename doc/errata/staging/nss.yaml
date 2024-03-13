@@ -6,16 +6,19 @@ src: nss
 fix: 2:3.26.2-1.1+deb9u7
 desc: |
  This update addresses the following issues:
- 2:3.26.2-1.1+deb9u7 (Sun, 10 Mar 2024 15:00:19 +0100)
- [ Santiago Ruano Rincón ]
- * Non-maintainer upload by the ELTS team.
- * Add debian/patches/CVE-2023-4421.patch.
- * Add debian/salsa-ci.yml using lts-team/pipeline for stretch
- [ Tobias Frost ]
- * Backport upstream patch for CVE-2023-5388, Timing attack against RSA
-   decryption..
- * Backport upstream patch for CVE-2024-0743, Unchecked return value could
-   cause crash.
+ * CVE-2023-4421: The `NSS` code used for checking `PKCS#1` v1.5 was leaking
+   information useful in mounting Bleichenbacher-like attacks. Both the
+   overall correctness of the padding as well as the length of the encrypted
+   message was leaking through timing side-channel. By sending large number of
+   attacker-selected ciphertexts, the attacker would be able to decrypt a
+   previously intercepted `PKCS#1` v1.5 ciphertext or forge a signature using
+   the victim's key. The issue was fixed by implementing the implicit
+   rejection algorithm, in which the `NSS` returns a deterministic random
+   message in case invalid padding is detected, as proposed in the Marvin
+   Attack paper.
+ * CVE-2023-5388: timing attack against RSA decryption.
+ * CVE-2024-0743: An unchecked return value in TLS handshake code could have
+   caused a potentially exploitable crash.
 bug: [57136]
 cve:
 - CVE-2023-4421
