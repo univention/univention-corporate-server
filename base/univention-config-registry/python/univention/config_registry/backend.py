@@ -44,9 +44,7 @@ from collections.abc import ItemsView, Iterator, Mapping, MutableMapping
 from enum import IntEnum
 from stat import S_ISREG
 from types import TracebackType
-from typing import IO, NoReturn, Self, TypeVar, overload
-
-from typing_extension import Literal
+from typing import IO, Literal, NoReturn, Self, TypeVar, overload
 
 from univention.config_registry.handler import run_filter
 
