@@ -29,16 +29,16 @@ variables:
   extends:
     - .sphinx-doc
   script:
-    - truncate -s 0 "${DOCS_DIR}/${BUILDDIR}/spelling/index.spelling"
-    - make -C "$DOCS_DIR" -e SPHINXOPTS="-v -W --keep-going -w ${BUILDDIR}/build.err -D language='$language'" -k linkcheck spelling html
-    - mkdir -p "out/$DOC_NAME/$DOC_TARGET_VERSION"
-    - mv "${DOCS_DIR}/${BUILDDIR}/html" "out/${DOC_NAME}/${DOC_TARGET_VERSION}/${language}"
+    - 'rm -rf "${DOCS_DIR}/${BUILDDIR}/linkcheck" "${DOCS_DIR}/${BUILDDIR}/spelling" "${DOCS_DIR}/${BUILDDIR}/build.err"'
+    - 'make -C "$DOCS_DIR" -e SPHINXOPTS="-v -W --keep-going -w ${BUILDDIR}/build.err -D language=$language" -k linkcheck spelling html'
+    - 'mkdir -p "out/$DOC_NAME/$DOC_TARGET_VERSION"'
+    - 'mv "${DOCS_DIR}/${BUILDDIR}/html" "out/${DOC_NAME}/${DOC_TARGET_VERSION}/${language}"'
   after_script:
-    - curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "out/${DOC_NAME}/${DOC_TARGET_VERSION}/${language}/objects.inv" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${DOC_NAME}.${language}/${CI_COMMIT_REF_SLUG}/objects.inv"
-    - sphinx2gitlab-code-climate --prefix "$DOCS_DIR" -o gl-ccr-linkcheck.json linkcheck "${DOCS_DIR}/${BUILDDIR}/linkcheck/output.json"
-    - sphinx2gitlab-code-climate --prefix "$DOCS_DIR" -o gl-ccr-spelling.json spelling "${DOCS_DIR}/${BUILDDIR}/spelling/index.spelling"
-    - sphinx2gitlab-code-climate --prefix "$DOCS_DIR" -o gl-ccr-build.json build "${DOCS_DIR}/${BUILDDIR}/build.err"
-    - sphinx2gitlab-code-climate -o gl-code-quality-report.json merge gl-ccr-linkcheck.json gl-ccr-spelling.json gl-ccr-build.json
+    - 'sphinx2gitlab-code-climate --prefix "$DOCS_DIR" -o gl-ccr-linkcheck.json linkcheck "${DOCS_DIR}/${BUILDDIR}/linkcheck/output.json"'
+    - 'sphinx2gitlab-code-climate --prefix "$DOCS_DIR" -o gl-ccr-spelling.json spelling "${DOCS_DIR}/${BUILDDIR}/spelling/index.spelling"'
+    - 'sphinx2gitlab-code-climate --prefix "$DOCS_DIR" -o gl-ccr-build.json build "${DOCS_DIR}/${BUILDDIR}/build.err"'
+    - 'sphinx2gitlab-code-climate -o gl-code-quality-report.json merge gl-ccr-linkcheck.json gl-ccr-spelling.json gl-ccr-build.json'
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "out/${DOC_NAME}/${DOC_TARGET_VERSION}/${language}/objects.inv" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${DOC_NAME}.${language}/${CI_COMMIT_REF_SLUG}/objects.inv" || :'
   artifacts:
     paths:
       - $DOCS_DIR/$BUILDDIR/html
@@ -58,10 +58,11 @@ variables:
 .sphinx-pdf:
   extends:
     - .sphinx-doc
+  image: $SPHINX_FULL
   script:
-    - make -C "$DOCS_DIR" -e SPHINXOPTS="-v -W --keep-going -D language='$language'" latexpdf
-    - mkdir -p "out/$DOC_NAME/$DOC_TARGET_VERSION/$language"
-    - mv "$DOCS_DIR/_build/$language/latex/$DOC_NAME.pdf" "out/$DOC_NAME/$DOC_TARGET_VERSION/$language/"
+    - 'make -C "$DOCS_DIR" -e SPHINXOPTS="-v -W --keep-going -D language=$language" latexpdf'
+    - 'mkdir -p "out/$DOC_NAME/$DOC_TARGET_VERSION/$language"'
+    - 'mv "$DOCS_DIR/_build/$language/latex/$DOC_NAME.pdf" "out/$DOC_NAME/$DOC_TARGET_VERSION/$language/"'
   artifacts:
     paths:
       - $DOCS_DIR/$BUILDDIR/latex
@@ -80,7 +81,7 @@ review:
   tags:
     - omar
   script:
-    - rsync -av --delete out/ "/var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_COMMIT_REF_SLUG"
+    - 'rsync -av --delete out/ "/var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_COMMIT_REF_SLUG"'
   environment:
     name: review/$CI_COMMIT_REF_NAME
     url: http://apt.knut.univention.de/download/docs.$CI_COMMIT_REF_SLUG/
@@ -101,7 +102,7 @@ stop_review:
   tags:
     - omar
   script:
-    - rm -rf "/var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_COMMIT_REF_SLUG"
+    - 'rm -rf "/var/univention/buildsystem2/test_mirror/ftp/download/docs.$CI_COMMIT_REF_SLUG"'
   environment:
     name: review/$CI_COMMIT_REF_NAME
     action: stop
@@ -114,7 +115,7 @@ staging:
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
   script:
-    - rsync -av --delete out/ /var/univention/buildsystem2/test_mirror/ftp/download/docs
+    - 'rsync -av --delete out/ /var/univention/buildsystem2/test_mirror/ftp/download/docs'
   environment:
     name: staging
     url: http://apt.knut.univention.de/download/docs/
