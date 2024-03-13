@@ -38,9 +38,10 @@ from typing import overload
 import ldap
 from ldap.filter import filter_format
 
+import univention.admin.localization
 import univention.admin.locking
 import univention.admin.uexceptions
-from univention.admin import configRegistry, localization
+from univention.admin._ucr import configRegistry
 
 
 try:
@@ -53,7 +54,7 @@ except ImportError:
 
 
 log = getLogger('ADMIN')
-translation = localization.translation('univention/admin')
+translation = univention.admin.localization.translation('univention/admin')
 _ = translation.translate
 
 _type2attr = {

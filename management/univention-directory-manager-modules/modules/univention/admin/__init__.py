@@ -44,7 +44,6 @@ from typing import TYPE_CHECKING, Any
 import unidecode
 from ldap.filter import filter_format
 
-import univention.admin.handlers
 import univention.config_registry
 import univention.logging
 from univention.admin._ucr import configRegistry
@@ -53,6 +52,7 @@ from univention.admin._ucr import configRegistry
 if TYPE_CHECKING:
     from collections.abc import Callable, Container, Iterable
 
+    from univention.admin.handlers import simpleLdap
     from univention.admin.layout import Tab
     from univention.admin.types import TypeHint
 
@@ -291,7 +291,7 @@ class property:
         self.editable = editable
         self.configObjectPosition = configObjectPosition
         self.configAttributeName = configAttributeName
-        self.templates: list = []  # univention.admin.handlers.simpleLdap
+        self.templates: list[simpleLdap] = []
         self.include_in_default_search = include_in_default_search
         self.threshold = int(configRegistry.get('directory/manager/web/sizelimit', '2000') or 2000)
         self.nonempty_is_default = nonempty_is_default
@@ -306,7 +306,7 @@ class property:
     def _replace(self, res, object):
         return pattern_replace(copy.copy(res), object)
 
-    def default(self, object: univention.admin.handlers.simpleLdap) -> Any:
+    def default(self, object: simpleLdap) -> Any:
         base_default: bool | int | str | list[str] | tuple[Any, list[str]] | tuple[Callable, list[str], Any] | None = copy.copy(self.base_default)
         if not object.set_defaults:
             return [] if self.multivalue else ''

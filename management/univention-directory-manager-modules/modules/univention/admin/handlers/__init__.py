@@ -2001,7 +2001,7 @@ class simpleComputer(simpleLdap):
             self.oldinfo['ip'] += ips
             self.info['ip'] += ips
 
-    def getMachineSid(self, lo: univention.uldap.access, position: univention.uldap.position, uidNum: str, rid: str | None = None) -> str:
+    def getMachineSid(self, lo: univention.admin.uldap.access, position: univention.admin.uldap.position, uidNum: str, rid: str | None = None) -> str:
         # if rid is given, use it regardless of s4 connector
         if rid:
             searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])

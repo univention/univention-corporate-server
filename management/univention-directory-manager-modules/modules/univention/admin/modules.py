@@ -32,6 +32,7 @@
 
 """|UDM| access to handler modules."""
 
+from __future__ import annotations
 
 import copy
 import importlib
@@ -39,19 +40,22 @@ import locale
 import os
 from importlib import reload as reload_module
 from logging import getLogger
-from typing import Any, Protocol, overload
+from typing import TYPE_CHECKING, Any, Protocol, overload
 
 import ldap
 from ldap.filter import filter_format
 
 import univention.admin
-import univention.admin.handlers
 import univention.admin.hook
 import univention.admin.syntax
 import univention.admin.uldap
 from univention.admin import localization
 from univention.admin._ucr import configRegistry
 from univention.admin.layout import Group, ILayoutElement, Tab
+
+
+if TYPE_CHECKING:
+    from univention.admin.handlers import _Attributes, simpleLdap
 
 
 class UdmModule(Protocol):
@@ -77,7 +81,7 @@ class UdmModule(Protocol):
     extended_udm_attributes: list[univention.admin.extended_attribute] = []
 
     class object:
-        def __init__(self, co: None, lo: univention.admin.uldap.access, position: univention.admin.uldap.position, dn: str = '', superordinate: univention.admin.handlers.simpleLdap | None = None, attributes: univention.admin.handlers._Attributes | None = None) -> None:
+        def __init__(self, co: None, lo: univention.admin.uldap.access, position: univention.admin.uldap.position, dn: str = '', superordinate: simpleLdap | None = None, attributes: _Attributes | None = None) -> None:
             pass
 
     @staticmethod
@@ -194,7 +198,7 @@ def _get(module: UdmModule | str) -> UdmModule:
     return module
 
 
-def init(lo: univention.admin.uldap.access, position: univention.admin.uldap.position, module: UdmModule, template_object: univention.admin.handlers.simpleLdap | None = None, force_reload: bool = False) -> None:
+def init(lo: univention.admin.uldap.access, position: univention.admin.uldap.position, module: UdmModule, template_object: simpleLdap | None = None, force_reload: bool = False) -> None:
     """
     Initialize |UDM| handler module.
 
@@ -976,7 +980,7 @@ def supports(module_name: str, operation: str) -> bool:
     return operation in module.operations
 
 
-def objectType(co: None, lo: univention.admin.uldap.access, dn: str, attr: univention.admin.handlers._Attributes | None = None, modules: list[UdmModule] = [], module_base: str | None = None) -> list[str]:
+def objectType(co: None, lo: univention.admin.uldap.access, dn: str, attr: _Attributes | None = None, modules: list[UdmModule] = [], module_base: str | None = None) -> list[str]:
     if not dn:
         return []
     if attr is None:
@@ -993,7 +997,7 @@ def objectType(co: None, lo: univention.admin.uldap.access, dn: str, attr: unive
     return [name(mod) for mod in modules]
 
 
-def objectShadowType(co: None, lo: univention.admin.uldap.access, dn: str, attr: univention.admin.handlers._Attributes | None = None, modules: list[UdmModule] = []) -> list[Any]:
+def objectShadowType(co: None, lo: univention.admin.uldap.access, dn: str, attr: _Attributes | None = None, modules: list[UdmModule] = []) -> list[Any]:
     # FIXME: This returns a nested list[...list[str]] for containers!
     return [
         objectShadowType(co, lo, lo.parentDn(dn)) if otype and otype.startswith('container/') else otype
@@ -1001,7 +1005,7 @@ def objectShadowType(co: None, lo: univention.admin.uldap.access, dn: str, attr:
     ]
 
 
-def findObject(co: None, lo: univention.admin.uldap.access, dn: str, type: UdmModule, attr: univention.admin.handlers._Attributes | None = None, module_base: str | None = None) -> Any | None:
+def findObject(co: None, lo: univention.admin.uldap.access, dn: str, type: UdmModule, attr: _Attributes | None = None, module_base: str | None = None) -> Any | None:
     if attr is None:
         attr = lo.get(dn)
         if not attr:
@@ -1090,7 +1094,7 @@ def policyPositionDnPrefix(module_name: UdmName) -> str:
     return policy_position_dn_prefix
 
 
-def defaultContainers(module: univention.admin.handlers.simpleLdap) -> list[str]:
+def defaultContainers(module: simpleLdap) -> list[str]:
     """
     Checks for the attribute default_containers that should contain a
     list of RDNs of default containers.

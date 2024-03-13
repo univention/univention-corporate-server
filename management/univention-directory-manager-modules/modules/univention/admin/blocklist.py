@@ -30,21 +30,26 @@
 
 """|UDM| functions to check and create blocklist entries"""
 
+from __future__ import annotations
 
 import hashlib
 import re
 from collections.abc import Iterable  # noqa: F401
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 import ldap
 from dateutil.relativedelta import relativedelta
 
-import univention.admin.handlers
-import univention.admin.handlers.blocklists.list
-import univention.admin.modules
+import univention.admin.localization
 import univention.admin.uexceptions
 import univention.admin.uldap
-from univention.admin import configRegistry
+from univention.admin._ucr import configRegistry
+
+
+if TYPE_CHECKING:
+    import univention.admin.handlers
+    import univention.admin.handlers.blocklists.list  # noqa: TCH004
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers')
