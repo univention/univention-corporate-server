@@ -29,15 +29,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
 
 import inspect
 import string
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 import listener
 from .exceptions import ListenerModuleConfigurationError
-from .handler import ListenerModuleHandler
 from .handler_logging import get_logger
+
+if TYPE_CHECKING:
+    from .handler import ListenerModuleHandler
 
 
 listener.configRegistry.load()

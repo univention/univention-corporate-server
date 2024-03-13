@@ -32,6 +32,7 @@
 
 """Python function to register |UDM| extensions in |LDAP|."""
 
+from __future__ import annotations
 
 import base64
 import bz2
@@ -48,13 +49,13 @@ import time
 from abc import ABCMeta, abstractmethod, abstractproperty
 from copy import copy
 from optparse import Option, OptionGroup, OptionParser, OptionValueError, Values
+from typing import TYPE_CHECKING
 
 import apt
 from ldap.dn import escape_dn_chars
 from ldap.filter import filter_format
 
 import univention.admin as udm
-import univention.admin.handlers as udm_handlers
 import univention.debug as ud
 from univention.admin import modules as udm_modules, uexceptions as udm_errors, uldap as udm_uldap
 from univention.config_registry import ConfigRegistry, configHandlers
@@ -62,6 +63,8 @@ from univention.lib.ucs import UCS_Version
 from univention.lib.umc_module import MIME_DESCRIPTION
 
 import listener
+if TYPE_CHECKING:
+    import univention.admin.handlers as udm_handlers
 
 
 class BaseDirRestriction(Exception):

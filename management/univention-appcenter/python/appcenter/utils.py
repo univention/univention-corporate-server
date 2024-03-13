@@ -34,6 +34,8 @@
 # <https://www.gnu.org/licenses/>.
 #
 
+from __future__ import annotations
+
 import http.client
 import ipaddress
 import os
@@ -45,26 +47,28 @@ import ssl
 import time
 import urllib.request
 from collections import OrderedDict
-from collections.abc import Container, Iterable, Mapping, Sequence
 from configparser import ParsingError, RawConfigParser
 from hashlib import md5, sha256
 from locale import getlocale
-from logging import Logger
 from shlex import quote
 from subprocess import PIPE, STDOUT, Popen, list2cmdline
 from threading import Thread
-from typing import Any, TypeVar, overload
+from typing import Any, TypeVar, overload, TYPE_CHECKING
 from urllib.parse import urlencode
 from uuid import uuid4
 
 from ldap.filter import filter_format
 
-from univention.appcenter.app import App
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.ucr import ucr_get, ucr_keys
 from univention.config_registry import interfaces
 from univention.config_registry.misc import key_shell_escape
 from univention.lib.i18n import Translation
+
+if TYPE_CHECKING:
+    from univention.appcenter.app import App
+    from logging import Logger
+    from collections.abc import Container, Iterable, Mapping, Sequence
 
 
 _ConfigParser = TypeVar("_ConfigParser", bound=RawConfigParser)

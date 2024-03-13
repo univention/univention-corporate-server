@@ -1,3 +1,9 @@
+univention-lib (11.0.4) unstable; urgency=medium
+
+  * Bug #56604: use __future__ annotations
+
+ -- Florian Best <best@univention.de>  Wed, 13 Mar 2024 11:16:21 +0100
+
 univention-lib (11.0.3) unstable; urgency=medium
 
   * Bug #56604: use Python 3.11 code annotations
