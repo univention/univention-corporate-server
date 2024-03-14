@@ -206,7 +206,7 @@ def _get(module):
     """
     if not modules:
         update()
-    if isinstance(module, str):
+    if isinstance(module, six.string_types):
         return modules[module]
     return module
 
