@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 ## desc: Test univention-keycloak
 ## tags: [keycloak]
 ## roles: [domaincontroller_master, domaincontroller_backup]
