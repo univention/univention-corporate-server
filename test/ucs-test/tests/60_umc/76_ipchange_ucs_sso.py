@@ -6,6 +6,7 @@
 import sys
 
 import atexit
+from ldap.filter import filter_format
 
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
@@ -30,6 +31,7 @@ if __name__ == '__main__':
 
     with udm_test.UCSTestUDM() as udm:
         role = ucr.get('server/role')
+        sso_prefix = ucr.get('keycloak/server/sso/fqdn', 'ucs-sso-ng').split('.', 1)[0]
 
         # Don't create a new Master object
         if role == 'domaincontroller_master':
@@ -49,11 +51,11 @@ if __name__ == '__main__':
         ip = computer_object['aRecord']
         utils.verify_ldap_object(computer, {'aRecord': ip})
 
-        for ucs_sso_dn, ucs_sso_object in lo.search('relativeDomainName=ucs-sso', unique=True, required=True):
+        for ucs_sso_dn, ucs_sso_object in lo.search(filter_format('relativeDomainName=%s', [sso_prefix]), unique=True, required=True):
             ips = ucs_sso_object.get('aRecord')
             break
         else:
-            raise ValueError('no ucs-sso host found.')
+            raise ValueError(f'no {sso_prefix} host found.')
 
         lo.modify(ucs_sso_dn, [('aRecord', ips, ips + ip)])
         try:
