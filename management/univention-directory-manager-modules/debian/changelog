@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.25-26) unstable; urgency=medium
+
+  * Bug #57146: restore Python 2.7 compatibility
+
+ -- Florian Best <best@univention.de>  Thu, 14 Mar 2024 09:06:16 +0100
+
 univention-directory-manager-modules (15.0.25-25) unstable; urgency=low
 
   * Bug #50385: Fix UDM CLI server start
