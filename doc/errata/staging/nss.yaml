@@ -1,0 +1,18 @@
+product: ucs
+release: "5.0"
+version: [5, 6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: nss
+fix: 2:3.42.1-1+deb10u8
+desc: |
+ This update addresses the following issues:
+ 2:3.42.1-1+deb10u8 (Sun, 10 Mar 2024 15:45:51 +0100)
+ * Non-maintainer upload by the LTS Security Team.
+ * Add upstream patch for CVE-2024-0743, integer underflow can lead to
+   potentially exploitable crash.
+ * Add upstream patch for CVE-2023-5388, timing attack against RSA decryption
+   in TLS.
+bug: [57152]
+cve:
+- CVE-2024-0743
+- CVE-2023-5388
