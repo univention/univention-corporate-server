@@ -35,7 +35,7 @@ if __name__ == '__main__':
     with ucr_test.UCSTestConfigRegistry() as ucr:
         hostname = ucr['hostname']
         domain = ucr['domainname']
-        sso_domain = ucr['ucs/server/sso/fqdn']
+        sso_domain = ucr.get('keycloak/server/sso/fqdn', f'ucs-sso-ng.{domain}').lower()
         fqdn = "%s.%s" % (hostname, domain)
 
         check_if_correct_cert_is_served(fqdn, sso_domain, 993, must_fail=True)
