@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: tiff
+fix: 4.1.0+git191117-2~deb10u9
+desc: |
+ This update addresses the following issues:
+ 4.1.0+git191117-2~deb10u9 (Fri, 01 Mar 2024 13:47:02 +0530)
+ * Non-maintainer upload by the Debian LTS Team.
+ * Fix CVE-2023-3576, CVE-2023-52356
+bug: [57151]
+cve:
+- CVE-2023-3576
+- CVE-2023-52356
