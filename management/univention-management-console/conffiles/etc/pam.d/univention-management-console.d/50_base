@@ -23,7 +23,7 @@ auth     [success=1 new_authtok_reqd=1 \\
 auth     [success=1 default=ignore]   pam_succeed_if.so uid > {unix_maximum_uid}
 auth     [success=1 new_authtok_reqd=1 \\
          default=ignore]   pam_unix.so'''.strip())
-    print(f'''
+    print('''
 auth     [success=ok new_authtok_reqd=ok \\
          default=die]      pam_sss.so use_first_pass'''.strip())
 else:

@@ -32,18 +32,16 @@ methods = [x for x in configRegistry['auth/methods'].split(' ') if x in ['krb5',
 # if no other authentication mechanism but unix is active it is required
 predicate = 'required' if not methods else 'sufficient'
 
-pam_unix = f'''
+print(f'''
 # local unix authentication
 auth     [success=1 default=ignore]   pam_succeed_if.so quiet uid > {unix_maximum_uid}
 auth     {predicate: <10}        pam_unix.so
-'''
-print(pam_unix)
+''')
 
-comment = '''
+print('''
 # remote authentication; if a service
 # - is not aware of the user, proceed with the next service
-'''
-print(comment.strip())
+'''.strip())
 
 if 'krb5' in methods:
     last = 'ldap' not in methods and 'winbind' not in methods
