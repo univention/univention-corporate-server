@@ -522,8 +522,7 @@ System services
   (:uv:bug:`56888`).
 
 * Commands to manage proxy realms (supplemental logical |IDP|\ 's in Keycloak that
-  authenticate users on the default |IDP|) have been added to `univention-
-  Keycloak` (:uv:bug:`56884`).
+  authenticate users on the default |IDP|) have been added to :command:`univention-keycloak` (:uv:bug:`56884`).
 
 * The :command:`univention-keycloak` scripts has been extended to support more
   parameters for the ``oidc/rp`` creation (:uv:bug:`49006`).
@@ -594,8 +593,8 @@ Samba
   too often while waiting for the service principal name to appear in the
   Samba/AD SAM directory, possibly causing additional delay. (:uv:bug:`57027`).
 
-* When stopping the samba processes, a process could remain e.g. bound to port
-  135, causing problems for samba restarts. The script stopping the processes
+* When stopping the Samba processes, a process could remain e.g. bound to port
+  135, causing problems for Samba restarts. The script stopping the processes
   has been made more robust (:uv:bug:`56914`).
 
 .. _changelog-win-s4c:
