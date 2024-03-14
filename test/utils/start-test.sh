@@ -6,9 +6,9 @@
 # defaults for release
 release='5.0-7'
 old_release='4.4-9'
-kvm_template_version='5.0-6+e897'
-# AMI: Univention Corporate Server (UCS) 5.0 (official image) rev. 7
-current_ami=ami-09fefd41ed2cea5a4
+kvm_template_version='5.0-7+e993'
+# AMI: Univention Corporate Server (UCS) 5.0 (official image) rev. 8
+current_ami=ami-068c5ee1a47ec4429
 # AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 11
 old_ami=ami-02ad9aab36aadf18a
 
