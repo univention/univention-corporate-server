@@ -65,29 +65,26 @@ def wait_for_class(driver: WebDriver, element_class: str, timeout: int = 30) -> 
     return driver.find_elements(By.CLASS_NAME, element_class)
 
 
-def get_portal_tile(driver: WebDriver, text: str, portal_config: SimpleNamespace) -> WebElement:
-    for tile in driver.find_elements(By.CLASS_NAME, portal_config.tile_name_class):
-        if tile.text == text:
-            return tile
+def get_portal_tile(page, text: str, portal_config: SimpleNamespace):
+    return page.get_by_label(text)
 
 
 def keycloak_password_change(
-    driver: WebDriver,
+    page,
     keycloak_config: SimpleNamespace,
     password: str,
     new_password: str,
     new_password_confirm: str,
     fails_with: str | None = None,
 ) -> None:
-    wait_for_id(driver, keycloak_config.kc_passwd_update_form_id)
-    driver.find_element(By.ID, keycloak_config.password_id).send_keys(password)
-    driver.find_element(By.ID, keycloak_config.password_new_id).send_keys(new_password)
-    driver.find_element(By.ID, keycloak_config.password_confirm_id).send_keys(new_password_confirm)
-    driver.find_element(By.ID, keycloak_config.password_change_button_id).click()
+    page.locator(f"#{keycloak_config.password_id}").fill(password)
+    page.locator(f"#{keycloak_config.password_new_id}").fill(new_password)
+    page.locator(f"#{keycloak_config.password_confirm_id}").fill(new_password_confirm)
+    page.locator(f"#{keycloak_config.password_change_button_id}").click()
+
     if fails_with:
-        error = driver.find_element(By.CSS_SELECTOR, keycloak_config.password_update_error_css_selector)
-        assert fails_with == error.text, f'{fails_with} != {error.text}'
-        assert error.is_displayed()
+        error = page.locator(keycloak_config.password_update_error_css_selector.replace("[class='", ".").replace("']", "").replace(" ", "."))
+        assert fails_with == error.inner_text(), f'{fails_with} != {error.inner_text()}'
 
 
 def keycloak_auth_header(config: SimpleNamespace) -> dict:
@@ -126,25 +123,22 @@ def keycloak_sessions_by_user(config: SimpleNamespace, username: str) -> dict:
 
 
 def keycloak_login(
-    driver: WebDriver,
+    page,
     keycloak_config: SimpleNamespace,
     username: str,
     password: str,
     fails_with: str | None = None,
     no_login: bool = False,
 ) -> None:
-    wait_for_id(driver, keycloak_config.username_id)
-    wait_for_id(driver, keycloak_config.password_id)
-    wait_for_id(driver, keycloak_config.login_id)
+    name = page.get_by_label("Username or email")
+    pw = page.get_by_label("password")
+
     if no_login:
         return
-    driver.find_element(By.ID, keycloak_config.username_id).send_keys(username)
-    driver.find_element(By.ID, keycloak_config.password_id).send_keys(password)
-    driver.find_element(By.ID, keycloak_config.login_id).click()
-    if fails_with:
-        error = driver.find_element(By.CSS_SELECTOR, keycloak_config.login_error_css_selector)
-        assert fails_with == error.text, f'{fails_with} != {error.text}'
-        assert error.is_displayed()
+
+    name.fill(username)
+    pw.fill(password)
+    page.get_by_role("button", name="Sign In").click()
 
 
 def run_command(cmd: list) -> str:

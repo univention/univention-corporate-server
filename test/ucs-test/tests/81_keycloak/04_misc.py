@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 ## desc: Various keycloak tests
 ## tags: [keycloak]
 ## roles: [domaincontroller_master, domaincontroller_backup]
@@ -54,9 +54,8 @@ def test_session_sync(ucr, udm, portal_login_via_keycloak, portal_config, keyclo
     # check portal in check_url
     print(f'check session on {check_url} ({check_ip})')
     driver.get(check_url)
-    wait_for_id(driver, portal_config.categories_id)
     get_portal_tile(driver, portal_config.sso_login_tile_de, portal_config).click()
-    wait_for_id(driver, portal_config.header_menu_id).click()
+    driver.click(f"id='[{portal_config.header_menu_id}]'")
     a = wait_for_class(driver, portal_config.portal_sidenavigation_username_class)[0]
     assert a.text == username
     # check sessions

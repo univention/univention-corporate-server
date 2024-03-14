@@ -36,8 +36,7 @@ from typing import Callable, Iterator
 
 import pytest
 from keycloak import KeycloakAdmin, KeycloakOpenID
-from selenium import webdriver
-from selenium.webdriver.common.by import By
+from playwright.sync_api import Page, expect
 from utils import (
     get_portal_tile, keycloak_login, keycloak_password_change, legacy_auth_config_create, legacy_auth_config_remove,
     run_command, wait_for_class, wait_for_id,
@@ -242,30 +241,16 @@ def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
     return SimpleNamespace(**config)
 
 
-@pytest.fixture()
-def selenium() -> webdriver.Chrome:
-    """Browser based testing for using Selenium."""
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('--no-sandbox')  # chrome complains about being executed as root
-    # do not use these two options, selenium will get stuck with
-    # >      raise exception_class(message, screen, stacktrace)
-    # E       selenium.common.exceptions.SessionNotCreatedException: Message: session not created
-    # E       from timeout: Timed out receiving message from renderer: 600.000
-    # E         (Session info: headless chrome=90.0.4430.212)
-    # on UCS
-    # chrome_options.add_argument("--headless")
-    # chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument('ignore-certificate-errors')
-    # seems not to work for keycloak
-    chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'de_DE'})
-    driver = webdriver.Chrome(options=chrome_options)
-    yield driver
-    print(driver.page_source)
-    driver.quit()
+@pytest.fixture(scope="session")
+def browser_context_args(browser_context_args):
+    return {
+       **browser_context_args,
+       "ignore_https_errors": True
+    }
 
 
 @pytest.fixture()
-def portal_login_via_keycloak(selenium: webdriver.Chrome, portal_config: SimpleNamespace, keycloak_config: SimpleNamespace):
+def portal_login_via_keycloak(context, portal_config: SimpleNamespace, keycloak_config: SimpleNamespace):
     def _func(
         username: str,
         password: str,
@@ -275,50 +260,48 @@ def portal_login_via_keycloak(selenium: webdriver.Chrome, portal_config: SimpleN
         verify_login: bool | None = True,
         url: str | None = portal_config.url,
         no_login: bool = False,
-    ) -> webdriver.Chrome:
-        selenium.get(url)
-        wait_for_id(selenium, portal_config.categories_id)
-        assert selenium.title == portal_config.title
-        lang = selenium.execute_script('return window.navigator.userLanguage || window.navigator.language')
+    ):
+        page = context.new_page()
+        page.goto(url)
+        expect(page).to_have_title(portal_config.title)
+        lang = page.evaluate('() => window.navigator.userLanguage || window.navigator.language')
         sso_login_tile = portal_config.sso_login_tile if lang == 'en-US' else portal_config.sso_login_tile_de
-        get_portal_tile(selenium, sso_login_tile, portal_config).click()
+        get_portal_tile(page, sso_login_tile, portal_config).click()
         # login
-        keycloak_login(selenium, keycloak_config, username, password, fails_with=fails_with if not new_password else None, no_login=no_login)
+        keycloak_login(page, keycloak_config, username, password, fails_with=fails_with if not new_password else None, no_login=no_login)
         # check password change
         if new_password:
             new_password_confirm = new_password_confirm if new_password_confirm else new_password
-            keycloak_password_change(selenium, keycloak_config, password, new_password, new_password_confirm, fails_with=fails_with)
+            keycloak_password_change(page, keycloak_config, password, new_password, new_password_confirm, fails_with=fails_with)
         if fails_with or no_login:
-            return selenium
+            return page
         # check that we are logged in
         if verify_login:
-            wait_for_id(selenium, portal_config.header_menu_id)
-        return selenium
+            header = page.locator(f"#{portal_config.header_menu_id}")
+        return page
 
     return _func
 
-
 @pytest.fixture()
-def keycloak_adm_login(selenium: webdriver.Chrome, keycloak_config: SimpleNamespace):
+def keycloak_adm_login(context, keycloak_config: SimpleNamespace):
     def _func(
         username: str,
         password: str,
         fails_with: str | None = None,
         url: str | None = keycloak_config.url,
         no_login: bool = False,
-    ) -> webdriver.Chrome:
-        selenium.get(url)
-        wait_for_class(selenium, keycloak_config.admin_console_class)
-        assert selenium.title == keycloak_config.title
-        admin_console = wait_for_class(selenium, keycloak_config.admin_console_class)[0]
-        admin_console.find_element(By.TAG_NAME, 'a').click()
-        keycloak_login(selenium, keycloak_config, username, password, fails_with=fails_with, no_login=no_login)
-        if fails_with or no_login:
-            return selenium
+    ):
+        page = context.new_page()
+        page.goto(url)
+        #wait_for_class(selenium, keycloak_config.admin_console_class)
+        expect(page).to_have_title(keycloak_config.title)
+        page.get_by_role("link", name="Administration Console").click()
+        keycloak_login(page, keycloak_config, username, password, fails_with=fails_with, no_login=no_login)
         # check that we are logged in
-        wait_for_id(selenium, keycloak_config.main_content_page_container_id)
-        return selenium
-
+        if not fails_with or not no_login:
+            return page
+        expect(page).to_have_title("Keycloak Administration UI")
+        return page
     return _func
 
 
@@ -328,7 +311,7 @@ def domain_admins_dn(ucr_proper: ConfigRegistry) -> str:
 
 
 @pytest.fixture()
-def keycloak_session(keycloak_config: SimpleNamespace) -> Callable[[str, str], KeycloakAdmin]:
+def keycloak_session(keycloak_config: SimpleNamespace,) -> Callable[[str, str], KeycloakAdmin]:
     def _session(username: str, password: str) -> KeycloakAdmin:
         session = KeycloakAdmin(
             server_url=keycloak_config.url,

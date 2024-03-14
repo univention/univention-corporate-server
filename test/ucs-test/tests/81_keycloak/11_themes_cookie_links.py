@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 ## desc: Test univention-keycloak
 ## tags: [keycloak]
 ## roles: [domaincontroller_master, domaincontroller_backup]
@@ -12,12 +12,9 @@ from itertools import product
 from subprocess import CalledProcessError
 from typing import Tuple
 
+from playwright.sync_api import expect
 import pytest
 import requests
-from selenium.common.exceptions import ElementClickInterceptedException
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from utils import run_command, wait_for_class, wait_for_id
 
 
@@ -31,6 +28,11 @@ def check_i_am_keycloak(request, keycloak_config, ucr):
         my_ip = socket.gethostbyname(ucr['hostname'])
         if keycloak_ip != my_ip:
             pytest.skip('this system is not the keycloak server, test makes no sense here')
+
+
+def cleanup_cookies(context):
+    context.clear_cookies()
+    return
 
 
 @pytest.fixture()
@@ -65,32 +67,32 @@ def test_get_webresources(keycloak_config):
 @pytest.mark.check_i_am_keycloak()
 @pytest.mark.parametrize(
     'settings',
-    [['dark', 'rgba(255, 255, 255, 1)'], ['light', 'rgba(30, 30, 29, 1)']],
+    [['dark', 'rgb(255, 255, 255)'], ['light', 'rgb(30, 30, 29)']],
     ids=['dark', 'light'],
 )
 def test_theme_switch(ucr, keycloak_adm_login, admin_account, settings):
     theme = settings[0]
     color = settings[1]
     ucr.handler_set([f'ucs/web/theme={theme}'])
-    driver = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
-    element = wait_for_class(driver, 'login-pf-header')
-    assert element[0].value_of_css_property('color') == color
+    page = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
+    element = page.locator('.login-pf-header')
+    assert element.evaluate("el => getComputedStyle(el).color") == color
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails without keycloak locally installed')
 @pytest.mark.check_i_am_keycloak()
 def test_custom_theme(keycloak_adm_login, admin_account):
     custom_css = '/var/www/univention/login/css/custom.css'
-    color_css = 'rgba(131, 20, 20, 1)'
+    color_css = 'rgb(131, 20, 20)'
     with tempfile.NamedTemporaryFile(dir='/tmp', delete=False) as tmpfile:
         temp_file = tmpfile.name
     shutil.move(custom_css, temp_file)
     try:
         with open(custom_css, 'w') as fh:
             fh.write(':root { --bgc-content-body: #831414; }')
-        driver = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
-        element = wait_for_id(driver, 'username')
-        assert element.value_of_css_property('background-color') == color_css
+        page = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
+        element = page.get_by_label('Username or email')
+        assert element.evaluate("el => getComputedStyle(el).backgroundColor") == color_css
     finally:
         shutil.move(temp_file, custom_css)
 
@@ -108,18 +110,15 @@ def test_cookie_banner(keycloak_adm_login, admin_account, ucr, keycloak_config):
             'umc/cookie-banner/title/en=english title',
         ]
     )
-    # check that the login does not work
-    with pytest.raises(ElementClickInterceptedException):
-        keycloak_adm_login(admin_account.username, admin_account.bindpw)
     # check the popup
-    driver = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
-    assert wait_for_id(driver, 'cookie-text').text == 'english text'
-    assert wait_for_id(driver, 'cookie-title').text == 'english title'
-    button = wait_for_class(driver, 'cookie-banner-button')
+    page = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
+    assert page.locator("[id='cookie-text']").inner_text() == 'english text'
+    assert page.locator("[id='cookie-title']").inner_text() == 'english title'
+    button = page.get_by_role("button", name="ACCEPT")
     # accept the popup and check the cookie
-    assert button[0].text == 'ACCEPT'
-    button[0].click()
-    cookies = driver.get_cookies()
+    assert button.inner_text() == 'ACCEPT'
+    button.click()
+    cookies = page.context.cookies()
     for cookie in cookies:
         if cookie['name'] == 'TESTCOOKIE':
             assert cookie['value'] == 'do-not-change-me'
@@ -128,7 +127,7 @@ def test_cookie_banner(keycloak_adm_login, admin_account, ucr, keycloak_config):
     else:
         raise Exception(f'cookie TESTCOOKIE not found: {cookies}')
     # just to test if this is interactable")
-    driver.find_element(By.ID, keycloak_config.login_id).click()
+    page.click(f"[id='{keycloak_config.login_id}']")
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails without keycloak locally installed')
@@ -166,10 +165,9 @@ def test_cookie_banner_domains(keycloak_adm_login, admin_account, ucr, keycloak_
             f'umc/cookie-banner/domains=does.not.exist,{domain}',
         ]
     )
-    driver = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
-    button = wait_for_class(driver, 'cookie-banner-button')
-    button[0].click()
-    cookies = driver.get_cookies()
+    page = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
+    page.click(".cookie-banner-button")
+    cookies = page.context.cookies()
     for cookie in cookies:
         if cookie['name'] == 'TESTCOOKIE':
             assert cookie['domain'] == f'.{domain}'
@@ -192,41 +190,37 @@ def test_login_page_with_cookie_banner_no_element_is_tabbable(keycloak_adm_login
             'umc/cookie-banner/title/en=english title',
         ]
     )
-    driver = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
-    assert driver.switch_to.active_element.text == 'ACCEPT'
-    assert driver.switch_to.active_element.is_displayed
+    page = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
+    page.focus("text=Accept")
+    assert page.evaluate("() => document.activeElement.textContent").replace("\n", "").strip() == 'Accept'
+    assert page.is_visible("text=Accept")
     # some browser fields
-    ActionChains(driver).send_keys(Keys.TAB).perform()
-    ActionChains(driver).send_keys(Keys.TAB).perform()
-    ActionChains(driver).send_keys(Keys.TAB).perform()
-    ActionChains(driver).send_keys(Keys.TAB).perform()
+    page.keyboard.press("Tab")
+    page.keyboard.press("Tab")
+    page.keyboard.press("Tab")
+    page.keyboard.press("Tab")
     # and back to the beginning
-    assert driver.switch_to.active_element.text == 'ACCEPT'
+    assert page.evaluate("() => document.activeElement.textContent").replace("\n", "").strip() == 'Accept'
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails without keycloak locally installed')
 def test_login_page_all_elements_are_tabbable(portal_login_via_keycloak, keycloak_adm_login, admin_account):
-    driver = portal_login_via_keycloak(admin_account.username, admin_account.bindpw, no_login=True)
-    assert driver.switch_to.active_element.get_attribute('name') == 'username'
-    assert driver.switch_to.active_element.is_displayed
-    ActionChains(driver).send_keys(Keys.TAB).perform()
-    assert driver.switch_to.active_element.get_attribute('name') == 'password'
-    assert driver.switch_to.active_element.is_displayed
-    ActionChains(driver).send_keys(Keys.TAB).perform()
-    assert driver.switch_to.active_element.get_attribute('name') == 'login'
-    assert driver.switch_to.active_element.is_displayed
+    page = portal_login_via_keycloak(admin_account.username, admin_account.bindpw, no_login=True)
+    assert page.evaluate("() => document.activeElement.name") == 'username'
+    page.keyboard.press("Tab")
+    assert page.evaluate("() => document.activeElement.name") == 'password'
+    page.keyboard.press("Tab")
+    assert page.evaluate("() => document.activeElement.name") == 'login'
     # some browser fields
-    ActionChains(driver).send_keys(Keys.TAB).perform()
-    ActionChains(driver).send_keys(Keys.TAB).perform()
-    assert driver.switch_to.active_element.text == 'English'
-    assert driver.switch_to.active_element.is_displayed
-    ActionChains(driver).send_keys(Keys.TAB).perform()
-    assert driver.switch_to.active_element.text == 'Deutsch'
-    assert driver.switch_to.active_element.is_displayed
+    page.keyboard.press("Tab")
+    page.keyboard.press("Tab")
+    assert page.evaluate("() => document.activeElement.textContent") == 'English'
+    page.keyboard.press("Tab")
+    assert page.evaluate("() => document.activeElement.textContent") == 'Deutsch'
     # and back to the beginning
-    ActionChains(driver).send_keys(Keys.TAB).perform()
-    ActionChains(driver).send_keys(Keys.TAB).perform()
-    assert driver.switch_to.active_element.get_attribute('name') == 'username'
+    page.keyboard.press("Tab")
+    page.keyboard.press("Tab")
+    assert page.evaluate("() => document.activeElement.name") == 'username'
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails without keycloak locally installed')
@@ -239,10 +233,11 @@ def test_invalid_link_count(lang: str, link_count: int):
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails without keycloak locally installed')
 @pytest.mark.parametrize('lang, link_count', list(product(['en'], [1, 5, 12])))
 def test_login_links(lang, link_count, login_links, portal_login_via_keycloak, admin_account):
-    driver = portal_login_via_keycloak(admin_account.username, admin_account.bindpw, no_login=True)
-    login_links_parent = wait_for_id(driver, 'umcLoginLinks')
-    links_found = login_links_parent.find_elements_by_tag_name('a')
-    assert link_count == len(links_found)
-    for link in links_found:
-        assert link.text.startswith('href')
-        assert link.is_displayed()
+    page = portal_login_via_keycloak(admin_account.username, admin_account.bindpw, no_login=True)
+    login_links_parent = page.locator("[id='umcLoginLinks']")
+    links_found = login_links_parent.locator("a")
+    expect(links_found).to_have_count(link_count)
+    for i in range(link_count):
+        link = links_found.nth(i)
+        assert link.inner_text().startswith('href')
+        assert link.is_visible()

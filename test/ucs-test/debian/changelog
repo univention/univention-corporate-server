@@ -1,3 +1,9 @@
+ucs-test (10.0.21-3) unstable; urgency=medium
+
+  * Migrate Keycloak Selenium tests to Playwright
+
+ -- Jonas Franke <info@jonasfranke.xyz>  Fri, 15 Mar 2024 10:40:22 +0100
+
 ucs-test (10.0.21-2) unstable; urgency=medium
 
   * Bug #56735: add missing package dependencies
