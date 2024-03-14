@@ -14,6 +14,6 @@
 .. _univention-app-catalog-recommended: https://www.univention.com/products/app-catalog/?recommended_app=1
 .. _univention-app-catalog: https://www.univention.com/products/app-catalog/
 .. _univention-forum-apps: https://help.univention.com/c/apps/dev/50
-.. _univention-portal-account-request: https://www.univention.com/products/univention-app-center/for-solution-providers/
+.. _univention-portal-account-request: https://www.univention.com/products/for-solution-providers/
 .. _univention-provider-portal-script: https://provider-portal.software-univention.de/appcenter-selfservice/univention-appcenter-control
 .. _univention-provider-portal: https://provider-portal.software-univention.de/univention/management/
