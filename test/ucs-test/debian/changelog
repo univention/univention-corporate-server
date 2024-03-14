@@ -1,3 +1,9 @@
+ucs-test (10.0.21-6) unstable; urgency=medium
+
+  * Migrate Keycloak Selenium tests to Playwright
+
+ -- Jonas Franke <info@jonasfranke.xyz>  Mon, 18 Mar 2024 10:27:57 +0100
+
 ucs-test (10.0.21-5) unstable; urgency=medium
 
   * Migrate Docker tests to pytest

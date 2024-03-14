@@ -1,5 +1,5 @@
 #!/bin/sh
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 exec /usr/share/ucs-test/playwright-venv/bin/pytest \
+REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 exec /usr/share/ucs-test/playwright-venv/bin/pytest \
         -l -vvv --tb=native -s \
         -p base_url \
         -p playwright \

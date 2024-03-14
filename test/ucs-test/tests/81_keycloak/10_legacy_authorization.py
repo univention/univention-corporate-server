@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3 -s -l -vv
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
 ## desc: Test univention-keycloak
 ## tags: [keycloak]
 ## roles: [domaincontroller_master, domaincontroller_backup]
@@ -63,8 +63,8 @@ def test_univention_keycloak_legacy_flow_config(keycloak_administrator_connectio
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
 def test_legacy_authorization_saml(legacy_authorization_setup_saml, keycloak_config, keycloak_administrator_connection, portal_login_via_keycloak):
     # verify logon not possible
-    driver = portal_login_via_keycloak(legacy_authorization_setup_saml.user, 'univention', verify_login=False)
-    assert 'You do not have the needed privileges to access' in driver.page_source
+    page = portal_login_via_keycloak(legacy_authorization_setup_saml.user, 'univention', verify_login=False)
+    assert 'You do not have the needed privileges to access' in page.content()
 
     # add user to group
     udm = UDM.admin().version(2)
