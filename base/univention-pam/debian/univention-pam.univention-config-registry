@@ -68,6 +68,7 @@ File: etc/pam.d/common-account
 Variables: auth/methods
 Variables: auth/faillog
 Variables: pam/krb5/minimum_uid
+Variables: pam/unix/maximum_uid
 
 Type: multifile
 Multifile: etc/pam.d/common-auth
@@ -95,6 +96,7 @@ Multifile: etc/pam.d/common-auth
 Subfile: etc/pam.d/common-auth.d/50univention-pam_general
 Variables: auth/methods
 Variables: pam/krb5/minimum_uid
+Variables: pam/unix/maximum_uid
 
 Type: subfile
 Multifile: etc/pam.d/common-auth
@@ -109,12 +111,14 @@ Variables: auth/faillog/unlock_time
 Variables: auth/faillog/limit
 Variables: auth/faillog/lock_global
 Variables: pam/krb5/minimum_uid
+Variables: pam/unix/maximum_uid
 
 Type: file
 File: etc/pam.d/common-password
 Variables: auth/methods
 Variables: pam/krb5/minimum_uid
 Variables: pam/krb5/ticket_after_pwchange
+Variables: pam/unix/maximum_uid
 
 Type: file
 File: etc/pam.d/chfn

@@ -1,3 +1,9 @@
+univention-mail-dovecot (8.0.5) unstable; urgency=medium
+
+  * Bug #56793: Use UCR variable pam/unix/maximum_uid
+
+ -- Arvid <requate@univention.de>  Thu, 14 Mar 2024 12:26:33 +0100
+
 univention-mail-dovecot (8.0.4) unstable; urgency=medium
 
   * Bug #56604: use Python 3.11 code annotations

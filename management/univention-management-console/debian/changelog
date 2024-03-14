@@ -1,3 +1,9 @@
+univention-management-console (14.0.9) unstable; urgency=medium
+
+  * Bug #56793: Use UCR variable pam/unix/maximum_uid
+
+ -- Arvid <requate@univention.de>  Thu, 19 Mar 2024 11:14:11 +0100
+
 univention-management-console (14.0.8) unstable; urgency=medium
 
   * Bug #57113: fix umc/http/processes=0 evaluation in UCR template
