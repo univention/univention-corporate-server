@@ -1,0 +1,20 @@
+product: ucs
+release: "5.0"
+version: [6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: qemu
+fix: 1:3.1+dfsg-8+deb10u12
+desc: |
+ This update addresses the following issues:
+ 1:3.1+dfsg-8+deb10u12 (Mon, 11 Mar 2024 16:57:08 +0200)
+ * Non-maintainer upload by the LTS Team.
+ * CVE-2023-2861: 9pfs did not prohibit opening special files on the host side
+ * CVE-2023-3354: remote unauthenticated clients could cause denial of service
+   in VNC server
+ * CVE-2023-5088: IDE guest I/O operation addressed to an arbitrary disk
+   offset might get targeted to offset 0 instead
+bug: [57149]
+cve:
+- CVE-2023-2861
+- CVE-2023-3354
+- CVE-2023-5088
