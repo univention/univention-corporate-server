@@ -120,6 +120,7 @@ def file_and_permission_checks() -> Iterator[CheckError]:
     is_primary = configRegistry.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup')
     is_dc = configRegistry.get('server/role').startswith('domaincontroller_')
     (host, domain) = (configRegistry.get('hostname'), configRegistry.get('domainname'))
+    sso_domain = configRegistry.get('keycloak/server/sso/fqdn', f'ucs-sso-ng.{domain.lower()}')
 
     cf_type = namedtuple('cf_type', ('path', 'owner', 'group', 'mode', 'must_exist'))
 
@@ -137,7 +138,7 @@ def file_and_permission_checks() -> Iterator[CheckError]:
         cf_type('/etc/univention/ssl/openssl.cnf', 'root', 'DC Backup Hosts', 0o660, must_exist=is_primary),
         cf_type('/etc/univention/ssl/password', 'root', 'DC Backup Hosts', 0o660, must_exist=is_primary),
         cf_type('/etc/univention/ssl/ucsCA', 'root', 'DC Backup Hosts' if is_dc else 'root', 0o775 if is_dc else 0o755, must_exist=True),
-        cf_type(f'/etc/univention/ssl/ucs-sso-ng.{domain}', 'root', 'DC Backup Hosts', 0o750, must_exist=is_primary),
+        cf_type(f'/etc/univention/ssl/{sso_domain.lower()}', 'root', 'DC Backup Hosts', 0o750, must_exist=is_primary),
         cf_type(f'/etc/univention/ssl/{host}.{domain}', f'{host}$' if is_primary else 'root', 'DC Backup Hosts' if is_dc else 'root', 0o750, must_exist=True),
         cf_type('/var/lib/univention-self-service-passwordreset-umc/memcached.socket', 'self-service-umc', 'nogroup', 0o600, False),
         cf_type('/var/cache/univention-ad-connector', 'root', 'root', 0o755, False),
