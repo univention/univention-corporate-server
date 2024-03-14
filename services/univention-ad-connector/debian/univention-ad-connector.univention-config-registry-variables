@@ -11,8 +11,8 @@ Type=uint
 Categories=service-adcon
 
 [con.*/ad/retryrejected]
-Description[de]=Die Anzahl der Anfragen ohne neue Änderungen, nach der versucht wird, zurückgehaltene Änderungen nachträglich einzuspielen. Dieses Verhalten kann in der Datei /var/log/univention/connector-status.log nachvollzogen werden.
-Description[en]=The number of requests without new changes after which an attempt is made to import retained changes subsequently. This procedure can be monitored in the /var/log/univention/connector-status.log logfile.
+Description[de]=Die Anzahl der Anfragen ohne neue Änderungen, nach der versucht wird, zurückgehaltene Änderungen nachträglich einzuspielen. Dieses Verhalten kann in der Datei /var/log/univention/connector-ad-status.log nachvollzogen werden.
+Description[en]=The number of requests without new changes after which an attempt is made to import retained changes subsequently. This procedure can be monitored in the /var/log/univention/connector-ad-status.log logfile.
 Type=uint
 Default=10
 Categories=service-adcon
