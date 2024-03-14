@@ -695,11 +695,10 @@ Architecture: all
 Depends:
  python3-bs4,
  python3-dnspython,
- python3-pytest-xvfb,
+ python3-playwright-venv,
  python3-requests,
  python3-requests-kerberos,
  ucs-test-libs (= ${source:Version}),
- ucs-test-selenium (= ${source:Version}),
  ${misc:Depends},
 Recommends:
  ucs-test-framework,
