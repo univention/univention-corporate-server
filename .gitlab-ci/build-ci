@@ -44,13 +44,12 @@ merge_one_artifact () {
     echo 'docs-merge-to-one-artifact:'
     echo '  extends: .sphinx-merge-template'
     echo '  rules:'
-    echo '    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
-    echo '      changes:'
-    document_paths
-    echo '    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    echo '    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_REF_PROTECTED'
     echo '      changes:'
     document_paths
     echo '      when: manual'
+    echo '    - changes:'
+    document_paths
 }
 
 create_production_merge_request () {
@@ -60,7 +59,7 @@ create_production_merge_request () {
     echo '  needs:'
     echo '    - job: docs-merge-to-one-artifact'
     echo '  rules:'
-    echo '    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    echo '    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_REF_PROTECTED'
     echo '      changes:'
     document_paths
 }
