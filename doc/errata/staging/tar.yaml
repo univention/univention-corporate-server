@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [5, 6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: tar
+fix: 1.30+dfsg-6+deb10u1
+desc: |
+ This update addresses the following issue:
+ 1.30+dfsg-6+deb10u1 (Sat, 09 Mar 2024 20:25:46 +0200)
+ * Non-maintainer upload by the LTS Team.
+ * CVE-2023-39804: Incorrectly handling of extension attributes in PAX
+   archives
+bug: [57150]
+cve:
+- CVE-2023-39804
