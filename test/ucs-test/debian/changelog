@@ -1,3 +1,10 @@
+ucs-test (11.0.18) unstable; urgency=medium
+
+  * Bug #56054: only load necessary pytest plugins for playwright
+    functionality
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 15 Mar 2024 15:23:02 +0100
+
 ucs-test (11.0.17) unstable; urgency=medium
 
   * Bug #56735: add missing package dependencies
