@@ -800,7 +800,7 @@ class UCSInstallation(VNCInstallation):
         [Zurück] [System konfigurieren]
         """
         self.wait_for_text('confirm_config')
-        self.type('\n')
+        self.type('\n' if self.args.update else ' \n')
         sleep(self.setup_finish_sleep, "FINISH")
 
         """
@@ -862,6 +862,12 @@ def main() -> None:
         "--school-dep",
         choices=["central", "edu", "adm"],
         help="Select UCS@school role",
+    )
+    parser.add_argument(
+        "--no-update",
+        action="store_false",
+        help="Disable installing errata updates at end of USS",
+        dest="update",
     )
 
     group = parser.add_argument_group("Network settings")

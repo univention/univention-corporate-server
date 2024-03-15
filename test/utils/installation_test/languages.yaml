@@ -192,6 +192,10 @@ software_configuration:
 software_configuration_non_master:
   eng: Select UCS software
   deu: Wählen Sie UCS-Software
+do_update:
+  eng: Update system after setup
+  deu: System nach der Einrichtung aktualisieren
+  fra: Mettre à jour le système après l'installation
 confirm_config:
   eng: Confirm configuration
   fra: Confirmer les réglages de configuration
