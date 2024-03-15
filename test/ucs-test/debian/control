@@ -676,6 +676,8 @@ Depends:
  python3-pip,
  python3-pytest,
  python3-pytest-asyncio,
+ python3-univention-directory-manager-rest-async-client,
+ python3-univention-directory-manager-rest-client,
  python3-venv,
  ucs-test-libs (= ${source:Version}),
  ucs-test-udm,
