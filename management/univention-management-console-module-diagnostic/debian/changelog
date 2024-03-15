@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (8.0.10) unstable; urgency=medium
+
+  * Bug #57145: add deprecation warning for samba tdb
+
+ -- Felix Botner <botner@univention.de>  Fri, 15 Mar 2024 15:46:08 +0100
+
 univention-management-console-module-diagnostic (8.0.9) unstable; urgency=medium
 
   * Bug #56765: fix correct path of Keycloak certificates

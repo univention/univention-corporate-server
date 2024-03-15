@@ -430,6 +430,27 @@ msgstr ""
 "In eingehend {nc!r}: Fehler während der DRS Replikation von {source} "
 "({estring})."
 
+#: plugins/42_samba_tdb_deprecated.py:43
+msgid "Checking samba database type"
+msgstr "Prüfe Samba-Datenbank Typ"
+
+#: plugins/42_samba_tdb_deprecated.py:44
+#, python-brace-format
+msgid ""
+"As of UCS {ucs[0]}.{ucs[1]}, samba should use mdb as for its database.\n"
+"The steps to migrate the samba database from tdb to mdb can be found in:"
+msgstr ""
+"Ab UCS {ucs[0]}.{ucs[1]} sollte Samba mit einer Datenbank vom Typ mdb betrieben werden.\n"
+"Die Schritte für die Migration von tdb zu mdb finden Sie hier:"
+
+#: plugins/42_samba_tdb_deprecated.py:51
+msgid "Migrate samba database from tdb to mdb"
+msgstr "Migration der Samba-Datenbank von tdb zu mdb"
+
+#: plugins/42_samba_tdb_deprecated.py:70
+msgid "Deprecated samba database type tdb."
+msgstr "Veralteter Samba-Datenbank Typ tdb."
+
 #: umc/python/diagnostic/plugins/64_check_ucr_types.py:80
 #, python-format
 msgid "Invalid type %(type)r defined for variable %(variable)r."
