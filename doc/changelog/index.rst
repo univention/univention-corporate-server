@@ -142,7 +142,7 @@ General
 
 .. _debian:
 
-* The following updated packages from Debian 0.0 are included:
+* The following updated packages from Debian 10.13 are included:
 
   :program:`ansible`
   :program:`asterisk`
