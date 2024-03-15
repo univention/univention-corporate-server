@@ -1,3 +1,9 @@
+ucs-test (10.0.21-2) unstable; urgency=medium
+
+  * Bug #56735: add missing package dependencies
+
+ -- Florian Best <best@univention.de>  Fri, 15 Mar 2024 08:48:46 +0100
+
 ucs-test (10.0.21-1) unstable; urgency=medium
 
   * Bug #56735: add async client
