@@ -3,5 +3,5 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 exec /usr/share/ucs-test/playwright-venv/bin/py
         -l -vvv --tb=native -s \
         -p base_url \
         -p playwright \
-        -p univention.testing.pytest_unvention_playwright.fixtures \
+        -p univention.testing.pytest_univention_playwright.fixtures \
         "$@"

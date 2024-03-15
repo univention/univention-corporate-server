@@ -1,3 +1,9 @@
+ucs-test (10.0.21-4) unstable; urgency=medium
+
+  * Bug #56054: fix typo in bin/playwright
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 15 Mar 2024 12:26:55 +0100
+
 ucs-test (10.0.21-3) unstable; urgency=medium
 
   * Bug #56054: only load necessary pytest plugins for playwright
