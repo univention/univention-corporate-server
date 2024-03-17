@@ -1,3 +1,9 @@
+ucs-test (12.0.16) unstable; urgency=medium
+
+  * Bug #55715: FIXME: Skip 18proxy-special for now, it breaks all following tests
+
+ -- Julia Bremer <bremer@univention.de>  Sun, 17 Mar 2024 21:26:00 +0100
+
 ucs-test (12.0.15) unstable; urgency=medium
 
   * Bug #56735: add missing package dependencies

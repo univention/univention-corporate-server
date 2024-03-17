@@ -7,7 +7,7 @@
 ##  3. optionally check if the package is installable
 ## bugs: [17691, 18393]
 ## roles-not: [basesystem]
-## tags: [basic, proxy]
+## tags: [basic, proxy, SKIP]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ## exposure: dangerous
