@@ -774,7 +774,17 @@ run_ucsschool_tests () {
 	run_apptests --prohibit=SKIP-UCSSCHOOL "${test_args[@]}"
 }
 
+# run only tests with tag big_environment
+run_tests_big_environment () {
+	_run_tests -r big_environment "$@"
+}
+
+# the default is to run all test without the tags producttest and big_environment
 run_tests () {
+	_run_tests -p producttest -p big_environment "$@"
+}
+
+_run_tests () {
 	if [ -e /DONT_START_UCS_TEST ] ; then
 		echo "-----------------------------------------------------------------------------------"
 		echo "File /DONT_START_UCS_TEST exists - skipping ucs-test!"
@@ -793,7 +803,7 @@ run_tests () {
 	fi
 
 	# shellcheck disable=SC2086
-	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest $GENERATE_COVERAGE_REPORT "$@"
+	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" $GENERATE_COVERAGE_REPORT "$@"
 }
 
 run_tests_with_parameters () {

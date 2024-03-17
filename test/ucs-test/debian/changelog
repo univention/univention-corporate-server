@@ -1,3 +1,9 @@
+ucs-test (10.0.21-9) unstable; urgency=medium
+
+  * Bug #57137: Test UDM REST API for guardianInheritedRoles
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Mon, 18 Mar 2024 17:59:08 +0100
+
 ucs-test (10.0.21-8) unstable; urgency=medium
 
   * Bug #56054: make keycloak playwright tests work

@@ -70,6 +70,8 @@ for i in range(number_of_groups):
         group = groups.object(None, lo, position)
         group.open()
         group["name"] = name
+        role_name = group.props.name.replace(' ', '_').lower()
+        group["guardianMemberRoles"] = ['app:ns:%s_role%s' % (role_name, i) for i in range(3)]
         if new_members:
             group["users"] = new_members
         print('creating group %s' % name)
