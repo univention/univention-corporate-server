@@ -1,3 +1,53 @@
+ucs-test (11.0.24) unstable; urgency=medium
+
+  * Bug #57137: Test UDM REST API for guardianInheritedRoles
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Mon, 18 Mar 2024 18:38:25 +0100
+
+ucs-test (11.0.24) unstable; urgency=medium
+
+  * Bug #56054: make keycloak playwright tests work
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 18 Mar 2024 18:38:25 +0100
+
+ucs-test (11.0.23) unstable; urgency=medium
+
+  * Migrate Keycloak Selenium tests to Playwright
+
+ -- Jonas Franke <info@jonasfranke.xyz>  Mon, 18 Mar 2024 18:38:25 +0100
+
+ucs-test (11.0.23) unstable; urgency=medium
+
+  * Migrate Docker tests to pytest
+
+ -- Jonas Franke <info@jonasfranke.xyz>  Mon, 18 Mar 2024 18:38:25 +0100
+
+ucs-test (11.0.23) unstable; urgency=medium
+
+  * Bug #56054: fix typo in bin/playwright
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 18 Mar 2024 18:38:25 +0100
+
+ucs-test (11.0.23) unstable; urgency=medium
+
+  * Bug #56054: only load necessary pytest plugins for playwright
+    functionality
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 18 Mar 2024 18:38:25 +0100
+
+ucs-test (11.0.23) unstable; urgency=medium
+
+  * Bug #56735: add missing package dependencies
+
+ -- Florian Best <best@univention.de>  Mon, 18 Mar 2024 18:38:25 +0100
+
+ucs-test (11.0.23) unstable; urgency=medium
+
+  * Bug #56735: add async client
+  * Bug #57118 UCS 5.0-7 version bump
+
+ -- Florian Best <best@univention.de>  Mon, 18 Mar 2024 18:38:25 +0100
+
 ucs-test (11.0.22) unstable; urgency=medium
 
   * Bug #56054: make keycloak playwright tests work
