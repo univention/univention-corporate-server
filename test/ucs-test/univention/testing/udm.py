@@ -302,6 +302,9 @@ class UCSTestUDM:
             cmd.extend(['--filter=%s' % (args.pop('filter'),)])
         if action == 'list' and args.pop('as_json', False):
             cmd.append('--as-json')
+        if action == 'list' and 'properties' in args:
+            for prop in args.pop('properties'):
+                cmd.extend(['--properties', prop])
 
         for option in args.pop('options', ()):
             cmd.extend(['--option', option])

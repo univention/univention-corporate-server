@@ -838,7 +838,7 @@ _run_tests () {
 	rm -f /etc/apt/sources.list.d/99ucs-test.list
 
 	# shellcheck disable=SC2086
-	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest $GENERATE_COVERAGE_REPORT "$@"
+	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" $GENERATE_COVERAGE_REPORT "$@"
 }
 
 run_tests_with_parameters () {

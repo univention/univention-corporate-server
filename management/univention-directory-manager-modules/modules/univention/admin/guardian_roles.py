@@ -147,31 +147,15 @@ def get_nested_groups(lo: univention.admin.uldap.access, groups: list[str], recu
 
 # TODO
 # naive approach to get role strings for groups by searching the LDAP
-def load_roles(lo: univention.admin.uldap.access, groups: list[str], nested_groups: bool = False) -> list[str]:
+def load_roles(lo: univention.admin.uldap.access, groups: list[str]) -> list[str]:
     roles = []
-    if nested_groups:
-        groups = get_nested_groups(lo, groups)
     for group in groups:
         roles += get_group_role(lo, group)
-    # this is slower in my tests
-    #  import concurrent.futures
-    #  import multiprocessing.pool
-    #  THREAD_POOL_SIZE = multiprocessing.cpu_count()
-    #  with concurrent.futures.ThreadPoolExecutor(max_workers=THREAD_POOL_SIZE) as executor:
-    #      futures = []
-    #      for group in groups:
-    #          futures.append(
-    #              executor.submit(
-    #                  get_group_role, lo, group
-    #              )
-    #          )
-    #      for future in concurrent.futures.as_completed(futures):
-    #          roles += future.result()
     return list(set(roles))
 
 
 class GuardianBase:
-    def open_guardian(self, nested_groups=False):  # type: (bool) -> None
+    def open_guardian(self):  # type: (bool) -> None
         if self.exists():
-            self.info['guardianInheritedRoles'] = load_roles(self.lo, self['groups'] + [self['primaryGroup']], nested_groups=nested_groups)
+            self.info['guardianInheritedRoles'] = load_roles(self.lo, self['groups'] + [self['primaryGroup']])
             self.save()
