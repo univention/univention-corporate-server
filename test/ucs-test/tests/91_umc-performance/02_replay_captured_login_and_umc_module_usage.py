@@ -54,6 +54,6 @@ class ScenarioManagement(HttpUser):
         if umc_session_id is None:
             return
 
-        logging.info('Created new session with Session: {}'.format(umc_session_id))
+        logging.info(f'Created new session with Session: {umc_session_id}')
         # replay_har("hars/second_scenario_step_2.har", self.client, host=host)
         replay_har('hars/second_scenario_step_3.har', self.client, host=host, session_id=umc_session_id)

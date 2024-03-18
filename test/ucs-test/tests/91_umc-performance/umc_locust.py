@@ -60,5 +60,5 @@ def on_test_start(**kwargs) -> None:
     utils.current_user = utils.start_user
     utils.final_user = users_per_worker * worker_number
     logging.info(
-        '%s', f'Worker {worker_number} of {LOCUST_EXPECT_WORKERS} with {users_per_worker} users from {users_per_worker * (worker_number - 1)} to {users_per_worker * worker_number}'
+        '%s', f'Worker {worker_number} of {LOCUST_EXPECT_WORKERS} with {users_per_worker} users from {users_per_worker * (worker_number - 1)} to {users_per_worker * worker_number}',
     )

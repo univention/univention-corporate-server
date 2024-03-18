@@ -67,7 +67,7 @@ def login_via_saml(client, username=None, password=None, prefix=''):
             {
                 'username': username,
                 'password': password,
-            }
+            },
         )
 
         with client.post(login_link, data=login_params, name=f'{prefix} login 2 POST credentials', catch_response=True, timeout=TIMEOUT) as req3:
