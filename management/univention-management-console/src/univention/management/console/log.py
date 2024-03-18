@@ -88,9 +88,10 @@ def log_init(filename, log_level=2, log_pid=None):
         univention_debug_function=False,
         univention_debug_categories=('MAIN', 'LDAP', 'NETWORK', 'SSL', 'ADMIN', 'MODULE', 'AUTH', 'PARSER', 'LOCALE', 'ACL', 'RESOURCES', 'PROTOCOL'),
     )
-    adm = grp.getgrnam('adm')
-    os.fchown(fd.fileno(), 0, adm.gr_gid)
-    os.fchmod(fd.fileno(), 0o640)
+    if filename not in ('stdout', 'stderr', '/dev/stdout', '/dev/stderr'):
+        adm = grp.getgrnam('adm')
+        os.fchown(fd.fileno(), 0, adm.gr_gid)
+        os.fchmod(fd.fileno(), 0o640)
     CORE.root.removeHandler(fallbackLoggingHandler)
 
     return fd
