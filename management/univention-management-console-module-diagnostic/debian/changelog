@@ -1,6 +1,6 @@
 univention-management-console-module-diagnostic (8.0.10) unstable; urgency=medium
 
-  * Bug #57145: add deprecation warning for samba tdb
+  * Bug #57145: add deprecation warning for Samba tdb
 
  -- Felix Botner <botner@univention.de>  Fri, 15 Mar 2024 15:46:08 +0100
 

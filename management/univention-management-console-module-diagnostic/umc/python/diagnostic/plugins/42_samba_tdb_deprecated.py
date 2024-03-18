@@ -67,7 +67,7 @@ def run(_umc_instance: Instance) -> None:
     if ucr.get('samba4/role', '') not in ['DC', 'RODC']:
         return
     if ucr.get('samba/database/backend/store', '') == 'tdb':
-        raise warning(_("Deprecated samba database type tdb."))
+        raise warning(_("Deprecated Samba database type tdb."))
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #
 # Univention helper script
-#  migrate samba database from tdb to mdb
+#  migrate Samba database from tdb to mdb
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/

@@ -1,1 +1,1 @@
-The default for the samba database is now ``mdb``.
+The default for the Samba database is now ``mdb``.
