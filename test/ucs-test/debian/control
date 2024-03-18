@@ -716,6 +716,7 @@ Description: Test the UDM HTTP API
 Package: ucs-test-keycloak
 Architecture: all
 Depends:
+ chromium,
  python3-bs4,
  python3-dnspython,
  python3-playwright-venv,

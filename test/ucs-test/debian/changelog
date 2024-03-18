@@ -1,3 +1,9 @@
+ucs-test (10.0.21-8) unstable; urgency=medium
+
+  * Bug #56054: make keycloak playwright tests work
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 18 Mar 2024 17:25:42 +0100
+
 ucs-test (10.0.21-7) unstable; urgency=medium
 
   * Bug #57113: add performance tests for UMC
