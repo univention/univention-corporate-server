@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [7]
+scope: ucs_5.0-0-errata5.0-7
+src: univention-management-console-module-udm
+fix: 10.0.10-2
+desc: |
+ This update addresses the following issues:
+ * All lazy loading properties are fetched by the UMC
+   UDM modules
+bug: [57110]
