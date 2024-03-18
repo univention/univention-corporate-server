@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: kde4libs
+fix: 4:4.14.26-2+deb9u1
+desc: |
+ This update addresses the following issue:
+ 4:4.14.26-2+deb9u1 (Sun, 17 Mar 2024 14:26:28 +0530)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2019-14744: Dominik Penner discovered a flaw in how KConfig
+   interpreted shell commands in desktop files and other configuration files.
+   An attacker may trick users into installing specially crafted files which
+   could then be used to execute arbitrary code, e.g. a file manager trying to
+   find out the icon for a file or any application using KConfig. Thus the
+   entire feature of supporting shell commands in KConfig entries has been
+   removed.
+bug: [57161]
+cve:
+- CVE-2019-14744
