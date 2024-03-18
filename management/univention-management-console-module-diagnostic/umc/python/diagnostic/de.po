@@ -431,7 +431,7 @@ msgstr ""
 "({estring})."
 
 #: plugins/42_samba_tdb_deprecated.py:43
-msgid "Checking samba database type"
+msgid "Checking Samba database type"
 msgstr "Prüfe Samba-Datenbank Typ"
 
 #: plugins/42_samba_tdb_deprecated.py:44
