@@ -10,4 +10,5 @@ desc: |
  * A LDAP connection leak in the UMC server has been fixed.
  * The permission and ownership of the UMC log file is now only
    modified if it is not stdout or stderr.
+ * The UMC has been adjusted to fetch all lazy loading properties.
 bug: [57104, 57113, 57154]

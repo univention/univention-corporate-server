@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [7]
+scope: ucs_5.0-0-errata5.0-7
+src: univention-directory-manager-modules
+fix: 15.0.26-4
+desc: |
+ This update addresses the following issues:
+ * UDM has been adjusted to support declaring properties
+   as lazy loading. If a property is lazy loading, it will
+   only be fetched if explicitely requested.
+   The flag `--properties` has been added to UDM CLI
+   to request specific properties.
+bug: [57110]

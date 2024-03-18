@@ -3,8 +3,11 @@ release: "5.0"
 version: [7]
 scope: ucs_5.0-0-errata5.0-7
 src: univention-directory-manager-rest
-fix: 10.0.8-1
+fix: 10.0.8-4
 desc: |
  This update addresses the following issues:
  * An asynchronous UDM REST API client has been added.
+ * A list of properties that should be returned by the REST API
+   can be specified. As a default, all regular properties are returned.
+   Lazy loading properties are only returned if explicitely requested.
 bug: [56735]
