@@ -10,9 +10,7 @@ import socket
 import dns.resolver
 import pytest
 import requests
-from utils import (
-    get_portal_tile, host_is_alive, keycloak_get_request, keycloak_sessions_by_user, run_command, wait_for_class,
-)
+from utils import get_portal_tile, host_is_alive, keycloak_get_request, keycloak_sessions_by_user, run_command
 
 from univention.testing.utils import get_ldap_connection
 
@@ -45,18 +43,19 @@ def test_session_sync(ucr, udm, portal_login_via_keycloak, portal_config, keyclo
     # login on login_host
     username = udm.create_user()[1]
     print(f'login to {login_url} ({login_ip})')
-    driver = portal_login_via_keycloak(username, 'univention', url=login_url)
+    page = portal_login_via_keycloak(username, 'univention', url=login_url)
     # change ucs-sso-ng to check_ip
     ucr.handler_unset([f'hosts/static/{login_ip}'])
     ucr.handler_set([f'hosts/static/{check_ip}={fqdn}'])
     assert socket.gethostbyname(fqdn) == check_ip
     # check portal in check_url
     print(f'check session on {check_url} ({check_ip})')
-    driver.get(check_url)
-    get_portal_tile(driver, portal_config.sso_login_tile_de, portal_config).click()
-    driver.click(f"id='[{portal_config.header_menu_id}]'")
-    a = wait_for_class(driver, portal_config.portal_sidenavigation_username_class)[0]
-    assert a.text == username
+    page.goto(check_url)
+    get_portal_tile(page, portal_config.sso_login_tile_de, portal_config).click()
+    page.locator(f"id='[{portal_config.header_menu_id}]'").click()
+    # a = wait_for_class(driver, portal_config.portal_sidenavigation_username_class)[0]
+    a = page.locator(f'.{portal_config.portal_sidenavigation_username_class}').first
+    assert a.inner_html() == username
     # check sessions
     sessions = keycloak_sessions_by_user(keycloak_config, username)[0]
     assert f'{login_url}/univention/saml/metadata' in sessions['clients'].values()

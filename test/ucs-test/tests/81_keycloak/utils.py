@@ -31,21 +31,22 @@
 from __future__ import annotations
 
 import subprocess
-import time
+from types import SimpleNamespace
 from typing import TYPE_CHECKING
 
 import requests
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
+from keycloak import KeycloakAdmin
+from playwright.sync_api import Page, expect
 
 
 if TYPE_CHECKING:
     from types import SimpleNamespace
 
+
+if TYPE_CHECKING:
+
     from keycloak import KeycloakAdmin
     from selenium.webdriver.chrome.webdriver import WebDriver
-    from selenium.webdriver.remote.webelement import WebElement
 
 
 def host_is_alive(host: str) -> bool:
@@ -53,24 +54,7 @@ def host_is_alive(host: str) -> bool:
     return subprocess.call(command) == 0
 
 
-def wait_for(driver: WebDriver, by: By, element: str, timeout: int = 30) -> None:
-    element_present = EC.presence_of_element_located((by, element))
-    WebDriverWait(driver, timeout).until(element_present)
-    WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((by, element)))
-    time.sleep(1)
-
-
-def wait_for_id(driver: WebDriver, element_id: str, timeout: int = 30) -> WebElement:
-    wait_for(driver, By.ID, element_id, timeout)
-    return driver.find_element(By.ID, element_id)
-
-
-def wait_for_class(driver: WebDriver, element_class: str, timeout: int = 30) -> WebElement:
-    wait_for(driver, By.CLASS_NAME, element_class, timeout)
-    return driver.find_elements(By.CLASS_NAME, element_class)
-
-
-def get_portal_tile(page, text: str, portal_config: SimpleNamespace):
+def get_portal_tile(page: Page, text: str, portal_config: SimpleNamespace):
     return page.get_by_label(text)
 
 
@@ -84,7 +68,7 @@ def get_language(driver: WebDriver, german: bool = False) -> str:
 
 
 def keycloak_password_change(
-    page,
+    page: Page,
     keycloak_config: SimpleNamespace,
     password: str,
     new_password: str,
@@ -137,7 +121,7 @@ def keycloak_sessions_by_user(config: SimpleNamespace, username: str) -> dict:
 
 
 def keycloak_login(
-    page,
+    page: Page,
     keycloak_config: SimpleNamespace,
     username: str,
     password: str,
@@ -145,7 +129,9 @@ def keycloak_login(
     no_login: bool = False,
 ) -> None:
     name = page.get_by_label("Username or email")
+    expect(name, "login form username input not visible").to_be_visible()
     pw = page.get_by_label("password")
+    expect(pw, "password form input not visible").to_be_visible()
 
     if no_login:
         return

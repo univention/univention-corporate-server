@@ -1,3 +1,9 @@
+ucs-test (12.0.21) unstable; urgency=medium
+
+  * Bug #56054: make keycloak playwright tests work
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 18 Mar 2024 17:30:12 +0100
+
 ucs-test (12.0.20) unstable; urgency=medium
 
   * Migrate Keycloak Selenium tests to Playwright

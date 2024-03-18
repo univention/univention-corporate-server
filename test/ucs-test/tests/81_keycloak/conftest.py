@@ -36,7 +36,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 from keycloak import KeycloakAdmin, KeycloakOpenID
-from playwright.sync_api import expect
+from playwright.sync_api import Page, expect
 from utils import (
     get_portal_tile, keycloak_login, keycloak_password_change, legacy_auth_config_create, legacy_auth_config_remove,
     run_command,
@@ -252,16 +252,24 @@ def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
     return SimpleNamespace(**config)
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def browser_context_args(browser_context_args):
+    return {**browser_context_args, 'ignore_https_errors': True}
+
+
+@pytest.fixture(scope='session')
+def browser_type_launch_args(browser_type_launch_args):
     return {
-        **browser_context_args,
-        "ignore_https_errors": True,
+        **browser_type_launch_args,
+        'executable_path': '/usr/bin/chromium',
+        'args': [
+            '--disable-gpu',
+        ],
     }
 
 
 @pytest.fixture()
-def portal_login_via_keycloak(context, portal_config: SimpleNamespace, keycloak_config: SimpleNamespace):
+def portal_login_via_keycloak(page: Page, portal_config: SimpleNamespace, keycloak_config: SimpleNamespace):
     def _func(
         username: str,
         password: str,
@@ -272,7 +280,6 @@ def portal_login_via_keycloak(context, portal_config: SimpleNamespace, keycloak_
         url: str | None = portal_config.url,
         no_login: bool = False,
     ):
-        page = context.new_page()
         page.goto(url)
         expect(page).to_have_title(portal_config.title)
         lang = page.evaluate('() => window.navigator.userLanguage || window.navigator.language')
@@ -288,14 +295,15 @@ def portal_login_via_keycloak(context, portal_config: SimpleNamespace, keycloak_
             return page
         # check that we are logged in
         if verify_login:
-            page.locator(f"#{portal_config.header_menu_id}")
+            header_menu = page.locator(f'#{portal_config.header_menu_id}')
+            expect(header_menu, 'header menu not visible').to_be_visible()
         return page
 
     return _func
 
 
 @pytest.fixture()
-def keycloak_adm_login(context, keycloak_config: SimpleNamespace):
+def keycloak_adm_login(page: Page, keycloak_config: SimpleNamespace):
     def _func(
         username: str,
         password: str,
@@ -303,17 +311,16 @@ def keycloak_adm_login(context, keycloak_config: SimpleNamespace):
         url: str | None = keycloak_config.url,
         no_login: bool = False,
     ):
-        page = context.new_page()
         page.goto(url)
-        # wait_for_class(selenium, keycloak_config.admin_console_class)
         expect(page).to_have_title(keycloak_config.title)
-        page.get_by_role("link", name="Administration Console").click()
+        page.get_by_role('link', name='Administration Console').click()
         keycloak_login(page, keycloak_config, username, password, fails_with=fails_with, no_login=no_login)
         # check that we are logged in
         if not fails_with or not no_login:
             return page
-        expect(page).to_have_title("Keycloak Administration UI")
+        expect(page).to_have_title('Keycloak Administration UI')
         return page
+
     return _func
 
 
@@ -335,6 +342,7 @@ def keycloak_session(keycloak_config: SimpleNamespace) -> Callable[[str, str], K
         )
         session.path = keycloak_config.path
         return session
+
     return _session
 
 
@@ -362,6 +370,7 @@ def keycloak_openid(keycloak_secret: str, keycloak_config: SimpleNamespace) -> K
             realm_name=realm_name,
             client_secret_key=client_secret_key or keycloak_secret,
         )
+
     return _session
 
 
