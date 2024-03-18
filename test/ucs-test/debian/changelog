@@ -1,3 +1,9 @@
+ucs-test (12.0.18) unstable; urgency=medium
+
+  * Bug #56765: Adjust keycloak tests for case ignoring of CSP
+
+ -- Florian Best <best@univention.de>  Mon, 18 Mar 2024 11:23:22 +0100
+
 ucs-test (12.0.17) unstable; urgency=medium
 
   * Migrate Docker tests to pytest
