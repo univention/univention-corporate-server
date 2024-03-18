@@ -9,3 +9,6 @@ desc: |
  * Compatibility with Python 2.7 has been restored, which was broken by
    erratum 991.
 bug: [57146]
+erratum: 994
+announced: 2024-03-18
+support: core
