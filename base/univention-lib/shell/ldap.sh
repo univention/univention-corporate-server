@@ -260,7 +260,7 @@ ucs_parseCredentials () {
 }
 
 #
-# ucs_isServiceUnused cechks whether a service entry is used.
+# ucs_isServiceUnused checks whether a service entry is used.
 # ucs_isServiceUnused <servicename> [<udm-credentials>]
 # e.g.  if ucs_isServiceUnused "DNS" "$@"; then uninstall DNS; fi
 #
@@ -313,6 +313,93 @@ ucs_isServiceUnused () { # <servicename>
 
 	return "$ret"
 }
+
+#
+# ucs_needsKeycloakSetup checks whether the domain supports
+# keycloak or needs service to register to keycloak
+# ucs_needsKeycloakSetup [<udm-credentials>]
+# e.g.  if ucs_needsKeycloakSetup "$@"; then univention-keycloak ...; fi
+#
+ucs_needsKeycloakSetup () {
+	# currently only check if keycloak app has been installed
+	if ucs_isServiceUnused keycloak "$@"; then
+		return 1
+	fi
+	return 0
+}
+
+#
+# ucs_needsSimplesamlphpSetup checks whether the domain supports
+# simplesamlphp and needs service to register to simplesamlphp
+# ucs_needsSimplesamlphpSetup [<udm-credentials>]
+# e.g.  if ucs_needsSimplesamlphpSetup "$@"; then ...; fi
+#
+ucs_needsSimplesamlphpSetup () {
+	# currently only check if primary is not yet 5.2-0
+	if ucs_primaryVersionGreaterEqual 5.2-0 "$@"; then
+		return 1
+	fi
+	return 0
+}
+
+#
+# ucd_primaryVersionGreaterEqual checks whether the UCS version
+# of the primary server is higher or equal to some version
+# ucd_primaryVersionGreaterEqual <ucs_version> [<udm-credentials>]
+# e.g.  if ucs_ucd_primaryVersionGreaterEqual 5.2-0 "$@"; then ...; fi
+#
+ucs_primaryVersionGreaterEqual () {
+	local version="$1"
+        local primary_version primary port tempfile
+	primary="$(/usr/sbin/univention-config-registry get ldap/master)"
+	port="$(/usr/sbin/univention-config-registry get ldap/master/port)"
+
+	if ! shift 1
+	then
+		echo "ucs_primaryVersionGreaterEqual: wrong argument number" >&2
+		return 2
+	fi
+
+	if [ -z "$port" ]
+	then
+		port=7389
+	fi
+
+	ucs_parseCredentials "$@"
+
+	# search always on the Primary Directory Node
+	set -- -H "ldap://$primary:$port"
+
+	# set credentials
+	if [ -n "$binddn" ] && [ -n "$bindpwd" ]
+	then
+		set -- "$@" -D "$binddn" -w "$bindpwd"
+	elif [ -n "$binddn" ] && [ -n "$bindpwdfile" ]
+	then
+		set -- "$@" -D "$binddn" -y "$bindpwdfile"
+	fi
+
+	# create a tempfile to get the real return code of the ldapsearch command,
+	# otherwise we get only the code of the sed command
+	tempfile="$(mktemp)"
+        univention-ldapsearch -LLL '(univentionServerRole=master)' 'univentionOperatingSystemVersion' > "$tempfile" || {
+		rm -f "$tempfile"
+		echo "ucs_primaryVersionGreaterEqual: search failed" >&2
+		return 2
+	}
+
+	primary_version="$(sed -ne "s/univentionOperatingSystemVersion: //p;T;q" "$tempfile")"
+	test -z "$primary_version" && {
+		rm -f "$tempfile"
+		echo "ucs_primaryVersionGreaterEqual: could not find version" >&2
+		return 2
+	}
+	rm -f "$tempfile"
+
+	dpkg --compare-versions "$primary_version" ge "$version"
+	return $?
+}
+
 
 # ucs_registerLDAPExtension writes an LDAP schema or ACL extension to UDM.
 # A listener module then writes it to a persistent place and restarts slapd.
