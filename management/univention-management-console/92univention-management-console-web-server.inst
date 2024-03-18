@@ -36,9 +36,12 @@
 
 ## joinscript api: bindpwdfile
 
+# shellcheck disable=SC2034
 VERSION=7
 
+# shellcheck source=/dev/null
 . /usr/share/univention-join/joinscripthelper.lib
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 
 joinscript_init
@@ -51,6 +54,7 @@ ucr unset \
 	ucs/web/overview/entries/admin/umc/link/de \
 	ucs/web/overview/entries/admin/umc/priority
 
+# shellcheck disable=SC2154
 if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 	ucr unset \
 		ucs/web/overview/entries/admin/umc/label \
@@ -67,31 +71,68 @@ else
 
 fi
 
+# remove in 5.2
+setup_simplesamlphp () {
+	_cleanup_die () {
+		ucr unset umc/saml/idp-server; exit 3
+	}
+	if ! is_ucr_false 'umc/web/sso/enabled'; then
+		rm /usr/share/univention-management-console/saml/idp/*.xml
+		# shellcheck disable=SC2154
+		ucr --debug set umc/saml/idp-server?"https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php" || _cleanup_die
+		# Execute UCR module to download metadata if umc/saml/idp-server has been set via LDAP layer (e.g. for keycloak)
+		python3 /etc/univention/templates/modules/setup_saml_sp.py
+		[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || _cleanup_die
+
+	fi
+}
+
+setup_keycloak () {
+	_cleanup_die () {
+		ucr unset umc/saml/idp-server; exit 3
+	}
+	if ! is_ucr_false 'umc/web/sso/enabled'; then
+		rm /usr/share/univention-management-console/saml/idp/*.xml
+		ucr --debug set umc/saml/idp-server?"$(univention-keycloak get-keycloak-base-url)/realms/ucs/protocol/saml/descriptor" || _cleanup_die
+		# Execute UCR module to download metadata if umc/saml/idp-server has been set via LDAP layer (e.g. for keycloak)
+		python3 /etc/univention/templates/modules/setup_saml_sp.py
+		[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || _cleanup_die
+
+	fi
+}
+
 # SAML
 if [ -n "$umc_saml_sp_server" ]; then
 	fqdn="$umc_saml_sp_server"
 else
+	# shellcheck disable=SC2154
 	fqdn="$hostname.$domainname"
 fi
 
-if [ "$JS_LAST_EXECUTED_VERSION" -ge "5" -a "$JS_LAST_EXECUTED_VERSION" -lt "7" ]; then
-	udm saml/serviceprovider remove "$@" --dn "SAMLServiceProviderIdentifier=https://$fqdn/univention-management-console/saml/metadata,cn=saml-serviceprovider,cn=univention,$ldap_base"
+# remove in 5.2
+if ucs_needsSimplesamlphpSetup; then
+	if [ "$JS_LAST_EXECUTED_VERSION" -ge "5" ] && [ "$JS_LAST_EXECUTED_VERSION" -lt "7" ]; then
+		# shellcheck disable=SC2154
+		udm saml/serviceprovider remove "$@" \
+			--dn "SAMLServiceProviderIdentifier=https://$fqdn/univention-management-console/saml/metadata,cn=saml-serviceprovider,cn=univention,$ldap_base"
+	fi
+	udm saml/serviceprovider create "$@" --ignore_exists --position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
+		--set Identifier="https://$fqdn/univention/saml/metadata" \
+		--set AssertionConsumerService="https://$fqdn/univention/saml/" \
+		--set serviceProviderOrganizationName="Univention Management Console $fqdn" \
+		--set isActivated=TRUE \
+		--set simplesamlAttributes=TRUE \
+		--set attributesNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" \
+		--set assertionLifetime="${umc_saml_assertion_lifetime:-300}" \
+		--append LDAPattributes='uid uid' || die
+	/usr/share/univention-management-console/saml/update_metadata "$@" || die
+	ucr set ucs/server/sso/fqdn?"ucs-sso.$domainname"
+	eval "$(ucr shell ucs/server/sso/fqdn)"
+	setup_simplesamlphp
+else
+	echo "No simplesamlphp setup for this host"
 fi
 
-udm saml/serviceprovider create "$@" --ignore_exists --position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
-	--set Identifier="https://$fqdn/univention/saml/metadata" \
-	--set AssertionConsumerService="https://$fqdn/univention/saml/" \
-	--set serviceProviderOrganizationName="Univention Management Console $fqdn" \
-	--set isActivated=TRUE \
-	--set simplesamlAttributes=TRUE \
-	--set attributesNameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" \
-	--set assertionLifetime="${umc_saml_assertion_lifetime:-300}" \
-	--append LDAPattributes='uid uid' || die
-
-/usr/share/univention-management-console/saml/update_metadata "$@" || die
-
-ucr set ucs/server/sso/fqdn?"ucs-sso.$domainname"
-eval "$(ucr shell ucs/server/sso/fqdn)"
 
 # make a apache restart for the next call:
 systemctl restart apache2
@@ -101,7 +142,7 @@ _setup_oidc () {
 		ucr unset umc/oidc/issuer; exit 3
 	}
 	rm /usr/share/univention-management-console/oidc/*.jwks
-	ucr --debug set umc/oidc/issuer="https://${keycloak_server_sso_fqdn:-ucs-sso-ng.$domainname}${keycloak_server_sso_path:-/}realms/ucs" || _cleanup_oidc_die
+	ucr --debug set umc/oidc/issuer="$(univention-keycloak get-keycloak-base-url)/realms/ucs" || _cleanup_oidc_die
 	[ "$(ls -A /usr/share/univention-management-console/oidc/*.jwks)" ] || _cleanup_oidc_die
 
 	ucr set \
@@ -156,29 +197,20 @@ _setup_oidc () {
 		--default-scopes="openid" \
 		--consent="Allow access to UDM-REST API and OpenLDAP?" \
 		--web-origins="+" \
-		"https://$fqdn_oidc/univention/oidc/" || die
+		"https://$fqdn_oidc/univention/oidc/" || true
 }
 
-if univention-ldapsearch -LLL univentionService=keycloak | grep -q "^dn:"; then
+if ucs_needsKeycloakSetup; then
 	# Register UMC as a Keycloak client, but ignore failure
 	univention-keycloak "$@" saml/sp create \
 		--metadata-url="https://$fqdn/univention/saml/metadata" \
 		--metadata-file="/usr/share/univention-management-console/saml/sp/metadata.xml" || true
-
 	is_ucr_true 'umc/web/oidc/enabled' && _setup_oidc "$@"
+	setup_keycloak
+else
+	echo "Warning: No keycloak setup for this host"
 fi
 
-_cleanup_die () {
-	ucr unset umc/saml/idp-server; exit 3
-}
-if ! is_ucr_false 'umc/web/sso/enabled'; then
-	rm /usr/share/univention-management-console/saml/idp/*.xml
-	ucr --debug set umc/saml/idp-server?"https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php" || _cleanup_die
-	# Execute UCR module to download metadata if umc/saml/idp-server has been set via LDAP layer (e.g. for keycloak)
-	python3 /etc/univention/templates/modules/setup_saml_sp.py
-	[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || _cleanup_die
-
-fi
 
 systemctl restart univention-management-console-server
 /etc/init.d/slapd crestart

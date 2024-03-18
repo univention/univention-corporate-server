@@ -1,3 +1,9 @@
+univention-lib (9.0.18-2) unstable; urgency=medium
+
+  * Bug #57163: add helper to check what kind of saml setup we need
+
+ -- Felix Botner <botner@univention.de>  Mon, 18 Mar 2024 21:18:42 +0100
+
 univention-lib (9.0.18-1) UNRELEASED; urgency=medium
 
   * Bug #57118 UCS 5.0-7 version bump
