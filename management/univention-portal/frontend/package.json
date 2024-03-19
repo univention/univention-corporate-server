@@ -2,7 +2,7 @@
   "dependencies": {
     "@types/lodash.isempty": "^4.4.6",
     "@types/lodash.isequal": "^4.5.5",
-    "axios": "^0.21.1",
+    "axios": "^1.6.0",
     "core-js": "^3.6.5",
     "cypress-axe": "^0.13.0",
     "lodash.isempty": "^4.4.0",
