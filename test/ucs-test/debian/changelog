@@ -1,3 +1,9 @@
+ucs-test (10.0.21-11) unstable; urgency=medium
+
+  * Bug #57137: performance tests
+
+ -- Felix Botner <botner@univention.de>  Tue, 19 Mar 2024 16:54:23 +0100
+
 ucs-test (10.0.21-10) unstable; urgency=medium
 
   * Bug #53538: fix test
