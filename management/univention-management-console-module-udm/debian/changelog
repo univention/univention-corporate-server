@@ -1,3 +1,9 @@
+univention-management-console-module-udm (11.0.7) unstable; urgency=medium
+
+  * Bug #57110: Always fetch lazy loading UDM properties
+
+ -- Felix Botner <botner@univention.de>  Tue, 19 Mar 2024 12:38:58 +0100
+
 univention-management-console-module-udm (11.0.6) unstable; urgency=medium
 
   * Bug #56604: remove workarounds for Python 2 compatibility
