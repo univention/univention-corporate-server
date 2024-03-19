@@ -73,30 +73,24 @@ fi
 
 # remove in 5.2
 setup_simplesamlphp () {
-	_cleanup_die () {
-		ucr unset umc/saml/idp-server; exit 3
-	}
 	if ! is_ucr_false 'umc/web/sso/enabled'; then
 		rm /usr/share/univention-management-console/saml/idp/*.xml
 		# shellcheck disable=SC2154
-		ucr --debug set umc/saml/idp-server?"https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php" || _cleanup_die
+		ucr --debug set umc/saml/idp-server?"https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/idp/metadata.php" || return 1
 		# Execute UCR module to download metadata if umc/saml/idp-server has been set via LDAP layer (e.g. for keycloak)
 		python3 /etc/univention/templates/modules/setup_saml_sp.py
-		[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || _cleanup_die
+		[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || return 1
 
 	fi
 }
 
 setup_keycloak () {
-	_cleanup_die () {
-		ucr unset umc/saml/idp-server; exit 3
-	}
 	if ! is_ucr_false 'umc/web/sso/enabled'; then
 		rm /usr/share/univention-management-console/saml/idp/*.xml
-		ucr --debug set umc/saml/idp-server?"$(univention-keycloak get-keycloak-base-url)/realms/ucs/protocol/saml/descriptor" || _cleanup_die
+		ucr --debug set umc/saml/idp-server?"$(univention-keycloak get-keycloak-base-url)/realms/ucs/protocol/saml/descriptor" || return 1
 		# Execute UCR module to download metadata if umc/saml/idp-server has been set via LDAP layer (e.g. for keycloak)
 		python3 /etc/univention/templates/modules/setup_saml_sp.py
-		[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || _cleanup_die
+		[ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || return 1
 
 	fi
 }
@@ -128,7 +122,10 @@ if ucs_needsSimplesamlphpSetup; then
 	/usr/share/univention-management-console/saml/update_metadata "$@" || die
 	ucr set ucs/server/sso/fqdn?"ucs-sso.$domainname"
 	eval "$(ucr shell ucs/server/sso/fqdn)"
-	setup_simplesamlphp
+	setup_simplesamlphp || {
+		ucr unset umc/saml/idp-server
+		exit 3
+	}
 else
 	echo "No simplesamlphp setup for this host"
 fi
@@ -206,7 +203,10 @@ if ucs_needsKeycloakSetup; then
 		--metadata-url="https://$fqdn/univention/saml/metadata" \
 		--metadata-file="/usr/share/univention-management-console/saml/sp/metadata.xml" || true
 	is_ucr_true 'umc/web/oidc/enabled' && _setup_oidc "$@"
-	setup_keycloak
+	setup_keycloak || {
+		ucr unset umc/saml/idp-server
+		#exit 3  # no error in 5.0
+	}
 else
 	echo "Warning: No keycloak setup for this host"
 fi
