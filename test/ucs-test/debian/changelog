@@ -1,8 +1,8 @@
-ucs-test (11.0.24) unstable; urgency=medium
+ucs-test (11.0.25) unstable; urgency=medium
 
   * Bug #57137: Test UDM REST API for guardianInheritedRoles
 
- -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Mon, 18 Mar 2024 18:38:25 +0100
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Mon, 18 Mar 2024 18:48:25 +0100
 
 ucs-test (11.0.24) unstable; urgency=medium
 
