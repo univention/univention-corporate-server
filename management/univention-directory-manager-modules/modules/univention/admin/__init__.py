@@ -637,7 +637,7 @@ def _ldap_cache(ttl=10, cache_none=True):
             if func._last_called and (now - func._last_called) > ttl:
                 for cache_key, cache_val in list(cache.items()):
                     if cache_val['expire'] < now:
-                        cache.pop(cache_key)
+                        cache.pop(cache_key, True)
             func._last_called = now
 
             if key not in cache or cache[key]['expire'] < now:
