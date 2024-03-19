@@ -29,11 +29,10 @@
 
 """|UDM| guardian roles handling"""
 
+import itertools
 import re
 from logging import getLogger
 from typing import List, Optional  # noqa: F401
-
-from ldap.filter import filter_format
 
 import univention.admin
 import univention.admin.localization
@@ -130,18 +129,10 @@ def get_group_role(lo, dn):  # type: (univention.admin.uldap.access, str) -> lis
     return [x.decode('UTF-8') for x in res.get('univentionGuardianMemberRoles', [])]
 
 
-@univention.admin._ldap_cache(ttl=60)
-def search_group_uniqueMembers(lo, dn):  # type: (univention.admin.uldap.access, str) -> List[str]
-    return lo.searchDn(filter_format('(&(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [dn]))
-
-
 # TODO
 # naive approach to get role strings for groups by searching the LDAP
 def load_roles(lo, groups):  # type: (univention.admin.uldap.access, List[str], bool) -> List[str]
-    roles = []
-    for group in groups:
-        roles += get_group_role(lo, group)
-    return list(set(roles))
+    return list(itertools.chain.from_iterable(get_group_role(lo, group) for group in groups))
 
 
 class GuardianBase(object):

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.26-6) unstable; urgency=medium
+
+  * Bug #57110: Add guardian role attributes
+
+ -- Felix Botner <botner@univention.de>  Tue, 19 Mar 2024 12:06:21 +0100
+
 univention-directory-manager-modules (15.0.26-5) unstable; urgency=medium
 
   * Bug #57110: Add guardian role attributes

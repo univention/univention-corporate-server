@@ -3,7 +3,7 @@ release: "5.0"
 version: [7]
 scope: ucs_5.0-0-errata5.0-7
 src: univention-directory-manager-modules
-fix: 15.0.26-5
+fix: 15.0.26-6
 desc: |
  This update addresses the following issues:
  * UDM has been adjusted to support declaring properties
