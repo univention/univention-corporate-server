@@ -1,3 +1,10 @@
+ucs-test (10.0.21-10) unstable; urgency=medium
+
+  * Bug #53538: fix test
+    80_docker/69_app_install_update_remove_hooks.test_app_install_update_remove_hooks
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 19 Mar 2024 16:11:16 +0100
+
 ucs-test (10.0.21-9) unstable; urgency=medium
 
   * Bug #57137: Test UDM REST API for guardianInheritedRoles

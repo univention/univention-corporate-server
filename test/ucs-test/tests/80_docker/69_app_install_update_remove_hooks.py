@@ -53,7 +53,7 @@ def get_code_position(depth=1, line_length=80, fill_char='.', prefix="# ", color
         return color_start + ("%80s" % '').replace(' ', '=') + color_stop
 
 
-def setup(app_name):
+def hook_setup(app_name):
     """
     the setup creates the necessary script hook folders and places a script in
     each of them with the filename being the action name. The script will
@@ -168,7 +168,7 @@ def test_app_install_update_remove_hooks(appcenter, app_name):
     these actions should then execute its hook scripts and if that works a
     resulting log file contains their script file names.
     """
-    setup(app_name)
+    hook_setup(app_name)
 
     app = app_install(appcenter, app_name)
     app = app_upgrade(appcenter, app_name)
