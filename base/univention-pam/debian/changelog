@@ -1,3 +1,9 @@
+univention-pam (15.0.5) unstable; urgency=medium
+
+  * Bug #56793: Add UCR adjustable logrotate config for sssd
+
+ -- Arvid <requate@univention.de>  Tue, 19 Mar 2024 22:15:15 +0100
+
 univention-pam (15.0.4) unstable; urgency=medium
 
   * Bug #56793: New UCR variable pam/unix/maximum_uid

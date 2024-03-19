@@ -1,0 +1,21 @@
+@%@UCRWARNING=# @%@
+
+@!@
+import univention.lib.ucrLogrotate
+
+name = "sssd"
+settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
+
+print("/var/log/sssd/*.log {")
+
+for setting in sorted(settings):
+    print("\t%s" % (settings[setting],))
+
+if "compress" in settings:
+    print("\tdelaycompress")
+
+print("""\tpostrotate
+\t\tkill -HUP `cat /var/run/sssd.pid` > /dev/null 2>&1 || true
+\tendscript
+}""")
+@!@
