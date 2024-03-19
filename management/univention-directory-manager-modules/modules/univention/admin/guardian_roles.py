@@ -132,7 +132,7 @@ def get_group_role(lo, dn):  # type: (univention.admin.uldap.access, str) -> lis
 # TODO
 # naive approach to get role strings for groups by searching the LDAP
 def load_roles(lo, groups):  # type: (univention.admin.uldap.access, List[str], bool) -> List[str]
-    return list(itertools.chain.from_iterable(get_group_role(lo, group) for group in groups))
+    return list(set(itertools.chain.from_iterable(get_group_role(lo, group) for group in groups)))
 
 
 class GuardianBase(object):
