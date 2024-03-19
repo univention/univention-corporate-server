@@ -135,20 +135,6 @@ def search_group_uniqueMembers(lo, dn):  # type: (univention.admin.uldap.access,
     return lo.searchDn(filter_format('(&(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [dn]))
 
 
-def get_nested_groups(lo, groups, recursion_list=None):  # type: (univention.admin.uldap.access, List[str], Optional[List[str]]) -> List[str]
-    all_groups = []
-    if recursion_list is None:
-        recursion_list = []
-    for group in groups:
-        if group not in all_groups:
-            all_groups.append(group)
-        for dn in search_group_uniqueMembers(lo, group):
-            if dn not in recursion_list:
-                recursion_list.append(dn)
-                all_groups += get_nested_groups(lo, [dn], recursion_list)
-    return all_groups
-
-
 # TODO
 # naive approach to get role strings for groups by searching the LDAP
 def load_roles(lo, groups):  # type: (univention.admin.uldap.access, List[str], bool) -> List[str]
