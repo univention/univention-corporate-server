@@ -6,7 +6,7 @@ src: kde4libs
 fix: 4:4.14.26-2+deb9u1
 desc: |
  This update addresses the following issue:
-  * CVE-2019-14744: Dominik Penner discovered a flaw in how KConfig
+   * CVE-2019-14744: Dominik Penner discovered a flaw in how KConfig
    interpreted shell commands in desktop files and other configuration files.
    An attacker may trick users into installing specially crafted files which
    could then be used to execute arbitrary code, e.g. a file manager trying to
