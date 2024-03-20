@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issues:
  * UDM has been adjusted to support declaring properties
    as lazy loading. If a property is lazy loading, it will
-   only be fetched if explicitely requested.
+   only be fetched if explicitily requested.
    The flag `--properties` has been added to UDM CLI
    to request specific properties.
 bug: [57110]
