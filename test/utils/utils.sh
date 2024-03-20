@@ -706,7 +706,7 @@ run_umc_performance_tests () {
 	# univention-install -y libffi-dev python3-pip
 	# pip3 install locust diskcache  # TODO: install via Debian in UCS 5.2
 	# run_tests -s checks -s umc-performance -s end "$@"
-	run_tests -s umc-performance "$@"
+	_run_tests -s umc-performance "$@"
 }
 
 run_admember_tests () {
