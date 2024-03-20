@@ -10,4 +10,4 @@ desc: |
  * A list of properties that should be returned by the REST API
    can be specified. As a default, all regular properties are returned.
    Lazy loading properties are only returned if explicitely requested.
-bug: [56735]
+bug: [56735, 57110]
