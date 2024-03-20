@@ -11,3 +11,6 @@ desc: |
  * The LDAP port configured via the UCR variable `ldap/server/port`
    will now be used by univention-policy.
 bug: [57158, 57159]
+erratum: 997
+announced: 2024-03-20
+support: core
