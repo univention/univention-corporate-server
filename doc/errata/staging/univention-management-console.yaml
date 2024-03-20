@@ -1,13 +1,13 @@
 product: ucs
 release: "5.0"
-version: [6]
+version: [7]
 scope: ucs_5.0-0-errata5.0-7
 src: univention-management-console
-fix: 12.0.33-2
+fix: 12.0.33-3
 desc: |
  This update addresses the following issues:
  * A memory leak in the UMC server has been fixed.
  * A LDAP connection leak in the UMC server has been fixed.
  * The permission and ownership of the UMC log file is now only
    modified if it is not stdout or stderr.
-bug: [57104, 57113]
+bug: [57104, 57113, 57154]
