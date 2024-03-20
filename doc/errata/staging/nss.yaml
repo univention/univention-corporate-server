@@ -6,12 +6,11 @@ src: nss
 fix: 2:3.42.1-1+deb10u8
 desc: |
  This update addresses the following issues:
- 2:3.42.1-1+deb10u8 (Sun, 10 Mar 2024 15:45:51 +0100)
- * Non-maintainer upload by the LTS Security Team.
- * Add upstream patch for CVE-2024-0743, integer underflow can lead to
-   potentially exploitable crash.
- * Add upstream patch for CVE-2023-5388, timing attack against RSA decryption
-   in TLS.
+ * CVE-2024-0743: An unchecked return value in `TLS` handshake code could have
+   caused a potentially exploitable crash.
+ * CVE-2023-5388: `NSS` was susceptible to a timing side-channel attack when
+   performing `RSA` decryption. This attack could potentially allow an
+   attacker to recover the private data.
 bug: [57152]
 cve:
 - CVE-2024-0743
