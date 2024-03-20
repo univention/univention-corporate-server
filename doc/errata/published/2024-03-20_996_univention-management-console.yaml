@@ -11,3 +11,6 @@ desc: |
  * The permission and ownership of the UMC log file is now only
    modified if it is not stdout or stderr.
 bug: [57104, 57113, 57154]
+erratum: 996
+announced: 2024-03-20
+support: core
