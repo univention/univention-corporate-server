@@ -64,15 +64,12 @@ create_production_merge_request () {
     document_paths
 }
 
-for make in doc/*/Makefile
+for make in doc/*/conf.py
 do
     [ -f "$make" ] || continue
-    path="${make%/Makefile}"
+    path="${make%/conf.py}"
     pkg="${path##*/}"
 
-    # Automatically detect Sphinx or Docbook
-    if [ -f "${path}/conf.py" ] # Use Sphinx's conf.py as hint to Sphinx
-    then
         for l_path in "$path"/locales/* "en"
         do
             language="${l_path##*/}"
@@ -83,10 +80,6 @@ do
             doc_job '.sphinx-spelling' spelling "$language"
             doc_job '.sphinx-warnings' warnings "$language"
         done
-    elif [ -f "${path}/Makefile" ]
-    then
-        doc_job '.doc'
-    fi
 done
 merge_one_artifact
 create_production_merge_request
