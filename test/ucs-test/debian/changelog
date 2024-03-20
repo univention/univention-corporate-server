@@ -1,3 +1,9 @@
+ucs-test (10.0.21-13) unstable; urgency=medium
+
+  * Bug #57113: add jmeter results to UMC performance tests
+
+ -- Felix Botner <botner@univention.de>  Wed, 20 Mar 2024 15:15:15 +0100
+
 ucs-test (10.0.21-12) unstable; urgency=medium
 
   * Bug #57137: performance tests

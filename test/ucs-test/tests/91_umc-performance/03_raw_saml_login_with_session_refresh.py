@@ -18,7 +18,8 @@ from urllib.parse import urlparse
 
 import gevent
 import urllib3
-from locust import HttpUser, constant, run_single_user, task
+from locust import HttpUser, constant, events, run_single_user, task
+from locust_jmeter_listener import JmeterListener
 from utils import TIMEOUT, do_saml_iframe_session_refresh, get_credentials, login_via_saml
 
 
@@ -35,6 +36,11 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # https://github.com/geventhttpclient/geventhttpclient/issues/187
 class SAMLSessionRefresh(HttpUser):
     wait_time = constant(WAIT_MAX)
+
+    @events.init.add_listener
+    def on_init(environment, **_kwargs):
+        environment.stats.use_response_times_cache = True
+        JmeterListener(environment, results_filename='/mnt/locust/jmeter_results_SAMLSessionRefresh.csv')
 
     # @task
     def on_start(self):
