@@ -735,7 +735,7 @@ run_umc_performance_tests () {
 	# univention-install -y libffi-dev python3-pip
 	# pip3 install locust diskcache  # TODO: install via Debian in UCS 5.2
 	# run_tests -s checks -s umc-performance -s end "$@"
-	run_tests -s umc-performance "$@"
+	_run_tests -s umc-performance "$@"
 }
 
 run_admember_tests () {
@@ -803,7 +803,17 @@ run_ucsschool_tests () {
 	run_apptests --prohibit=SKIP-UCSSCHOOL "${test_args[@]}"
 }
 
+# run only tests with tag big_environment
+run_tests_big_environment () {
+	_run_tests -r big_environment "$@"
+}
+
+# the default is to run all test without the tags producttest and big_environment
 run_tests () {
+	_run_tests -p producttest -p big_environment "$@"
+}
+
+_run_tests () {
 	if [ -e /DONT_START_UCS_TEST ] ; then
 		echo "-----------------------------------------------------------------------------------"
 		echo "File /DONT_START_UCS_TEST exists - skipping ucs-test!"
