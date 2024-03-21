@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [7]
+scope: ucs_5.0-0-errata5.0-7
+src: univention-policy
+fix: 11.0.4-2
+desc: |
+ This update addresses the following issues:
+ * The StartTLS and ldap/server/port UCR variables have caused a regression
+   where certain password lengths could not parsed anymore during LDAP
+   bind. This change has been reverted to investigate the problem.
+bug: [57169]
