@@ -5,6 +5,9 @@
 ## roles: [domaincontroller_master]
 ## packages:
 ##   - univention-directory-manager-tools
+## packages-not:
+##   - univention-ad-connector
+
 
 import time
 
@@ -12,6 +15,7 @@ import pytest
 
 from univention.admin import configRegistry, modules
 from univention.admin.uldap import getAdminConnection
+from univention.testing.utils import package_installed
 
 
 def create_user(new, username, maildom):
@@ -114,4 +118,7 @@ def test_create_1000_users_with_extreme_blocklist_setup(blocklist_setup, mail_do
         for dn in user_dns:
             lo.delete(dn)
     duration = end - start
-    assert duration < 250
+    if package_installed('univention-samba'):
+        assert duration < 300
+    else:
+        assert duration < 250

@@ -178,7 +178,10 @@ def test_multivalue_property_modify(ucr, udm, mail_domain_name, enable_blocklist
     # block values
     for value in values:
         udm.modify_object('users/user', dn=user2, mailPrimaryAddress=value)
+    print(subprocess.check_output(['udm', 'blocklists/entry', 'list']))
     udm.remove_object('users/user', dn=user2)
+    print(subprocess.check_output(['udm', 'blocklists/entry', 'list']))
+
     # check is blocked and free
     for value in values:
         with pytest.raises(univention.testing.udm.UCSTestUDM_ModifyUDMObjectFailed):

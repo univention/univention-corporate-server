@@ -1,3 +1,9 @@
+ucs-test (10.0.21-14) unstable; urgency=medium
+
+  * Issue #2154: fix blocklist tests
+
+ -- Felix Botner <botner@univention.de>  Thu, 21 Mar 2024 14:30:00 +0100
+
 ucs-test (10.0.21-13) unstable; urgency=medium
 
   * Bug #57113: add jmeter results to UMC performance tests
