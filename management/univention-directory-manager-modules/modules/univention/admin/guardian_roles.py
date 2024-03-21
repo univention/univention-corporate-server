@@ -124,7 +124,7 @@ def role_layout():
 
 
 @univention.admin._ldap_cache(ttl=60)
-def get_group_role(lo, dn):  # type: (univention.admin.uldap.access, str) -> list[str]
+def get_group_role(lo, dn):  # type: (univention.admin.uldap.access, str) -> List[str]
     res = lo.get(dn, attr=['univentionGuardianMemberRoles'])
     return [x.decode('UTF-8') for x in res.get('univentionGuardianMemberRoles', [])]
 
