@@ -1,3 +1,9 @@
+ucs-test (11.0.26) unstable; urgency=medium
+
+  * Issue #2154: fix blocklist tests
+
+ -- Felix Botner <botner@univention.de>  Thu, 21 Mar 2024 14:33:48 +0100
+
 ucs-test (11.0.25) unstable; urgency=medium
 
   * Bug #57137: Test UDM REST API for guardianInheritedRoles
