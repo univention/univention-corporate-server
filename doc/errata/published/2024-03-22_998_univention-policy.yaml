@@ -11,3 +11,6 @@ desc: |
    bind. This change has been reverted to investigate the problem.
    If you updated to erratum 997, please update this package immediately.
 bug: [57169]
+erratum: 998
+announced: 2024-03-22
+support: core
