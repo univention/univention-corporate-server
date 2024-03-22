@@ -9,4 +9,5 @@ desc: |
  * The StartTLS and ldap/server/port UCR variables have caused a regression
    where certain password lengths could not parsed anymore during LDAP
    bind. This change has been reverted to investigate the problem.
+   If you updated to erratum 997, please update this package immediately.
 bug: [57169]
