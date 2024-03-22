@@ -830,11 +830,16 @@ def s4_dns_node_base_create(s4connector, object, dnsRecords):
     # Create dnsNode object
     dnsNodeDn = object['dn']
     try:
-        old_dnsRecords = s4connector.lo_s4.get(dnsNodeDn, attr=['dnsRecord'], required=True).get('dnsRecord')
+        res = s4connector.lo_s4.get(dnsNodeDn, attr=['dnsRecord', 'dNSTombstoned'], required=True)
     except ldap.NO_SUCH_OBJECT:
         __create_s4_dns_node(s4connector, dnsNodeDn, relativeDomainNames, dnsRecords)
     else:
-        s4connector.lo_s4.modify(dnsNodeDn, [('dnsRecord', old_dnsRecords, dnsRecords)])
+        old_dnsRecords = res.get('dnsRecord')
+        ml = [('dnsRecord', old_dnsRecords, dnsRecords)]
+        old_dNSTombstoned = res.get('dNSTombstoned', [])
+        if b'TRUE' in old_dNSTombstoned:
+            ml.append(('dNSTombstoned', old_dNSTombstoned, [b'FALSE']))
+        s4connector.lo_s4.modify(dnsNodeDn, ml)
 
     return dnsNodeDn
 
