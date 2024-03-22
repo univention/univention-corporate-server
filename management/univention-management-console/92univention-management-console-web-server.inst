@@ -198,6 +198,8 @@ _setup_oidc () {
 }
 
 if ucs_needsKeycloakSetup; then
+	# create metadata xml
+	/usr/share/univention-management-console/saml/update_metadata || true
 	# Register UMC as a Keycloak client, but ignore failure
 	univention-keycloak "$@" saml/sp create \
 		--metadata-url="https://$fqdn/univention/saml/metadata" \
