@@ -87,7 +87,7 @@ def run(_umc_instance: Instance) -> None:
             total_objs += num_objs
             if server_role:
                 fixable_objs += num_objs
-                details += '\n· ' + _('Number of objects that should be marked as "%s": %d') % (server_role, num_objs)
+                details += '\n· ' + _('Number of objects that should be marked as "%(server_role)s": %(num_objs)d') % {'server_role': server_role, 'num_objs': num_objs}
             else:
                 details += '\n· ' + _("Number of unspecific Windows computer objects with inconsistent univentionObjectType: %d (Can't fix this automatically)") % (num_objs,)
     if total_objs:

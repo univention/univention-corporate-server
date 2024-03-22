@@ -1,0 +1,10 @@
+product: ucs
+release: "5.0"
+version: [7]
+scope: ucs_5.0-0-errata5.0-7
+src: univention-management-console-module-diagnostic
+fix: 6.0.8-2
+desc: |
+ This update addresses the following issues:
+ * Add a diagnostic module to monitor the state of app queues.
+bug: [56621]

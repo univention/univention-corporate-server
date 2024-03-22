@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.8-2) unstable; urgency=medium
+
+  * Bug #56621: Monitor state of app queues
+
+ -- Juan Carlos García García <garcia-garcia@univention.de>  Fri, 22 Mar 2024 10:19:00 +0100
+
 univention-management-console-module-diagnostic (6.0.8-1) UNRELEASED; urgency=medium
 
   * Bug #57118 UCS 5.0-7 version bump
