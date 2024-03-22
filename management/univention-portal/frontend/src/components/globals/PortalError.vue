@@ -50,9 +50,6 @@ export default defineComponent({
     },
   },
   computed: {
-    ...mapGetters({
-      errorContentType: 'portalData/errorContentType',
-    }),
     ERROR_MESSAGE(): string {
       if (this.errorType === 404) {
         return _('Page not found');

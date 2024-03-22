@@ -36,4 +36,5 @@ export interface Tab {
     logo: string,
     target: string,
     iframeLink: string
+    id: number;
 }

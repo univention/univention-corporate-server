@@ -34,6 +34,7 @@ import { ActionContext, Commit, Dispatch } from 'vuex';
 import { ModalComponentInterface, ModalProp, ModalLevel } from './modal.models';
 
 export interface ModalState {
+  scrollbarLocked: boolean;
   firstLevelModal: {
     modalVisible: boolean;
     modalComponent: string | null;
@@ -59,6 +60,7 @@ type ModalActionContext = ActionContext<ModalState, RootState>;
 const modal: PortalModule<ModalState> = {
   namespaced: true,
   state: {
+    scrollbarLocked: false,
     firstLevelModal: {
       modalVisible: false,
       modalComponent: null,
@@ -118,7 +120,10 @@ const modal: PortalModule<ModalState> = {
       const modalLevel = payload === 2 ? 'secondLevelModal' : 'firstLevelModal';
       state[modalLevel].modalReject();
     },
-    ENABLE_BODY_SCROLLING(): void {
+    ENABLE_BODY_SCROLLING(state: ModalState): void {
+      if (!state.scrollbarLocked) {
+        return;
+      }
       document.body.classList.remove('body--lock-scrollbar');
       document.body.classList.remove('body--hide-scrollbar');
       const top = document.body.style.top;
@@ -127,8 +132,12 @@ const modal: PortalModule<ModalState> = {
       window.requestAnimationFrame(() => {
         window.scrollTo(0, -v);
       });
+      state.scrollbarLocked = false;
     },
-    DISABLE_BODY_SCROLLING(): void {
+    DISABLE_BODY_SCROLLING(state: ModalState): void {
+      if (state.scrollbarLocked) {
+        return;
+      }
       if (document.body.scrollHeight > window.innerHeight) {
         const scrollY = window.scrollY;
         document.body.classList.add('body--lock-scrollbar');
@@ -136,6 +145,7 @@ const modal: PortalModule<ModalState> = {
       } else {
         document.body.classList.add('body--hide-scrollbar');
       }
+      state.scrollbarLocked = true;
     },
   },
 

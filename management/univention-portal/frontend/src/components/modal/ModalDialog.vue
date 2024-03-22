@@ -53,6 +53,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       <icon-button
         v-if="cancelAllowed"
         icon="x"
+        class="button--flat"
         :aria-label-prop="CANCEL"
         :active-at="[modalLevel]"
         @click="cancel()"
@@ -140,9 +141,15 @@ export default defineComponent({
   @media $mqSmartphone
     max-width: calc(100% - 8 * var(--layout-spacing-unit))
     padding: calc(2 * var(--layout-spacing-unit)) calc(2 * var(--layout-spacing-unit))
-    max-height: 90vh
+    --local-sticky-top: calc(var(--layout-height-header) + var(--layout-spacing-unit))
+    --local-sticky-bottom: var(--layout-spacing-unit)
+    max-height: calc(100vh - (var(--local-sticky-top) + var(--local-sticky-bottom)))
     overflow: auto
     overflow-x: hidden
+    position: sticky !important
+    top: var(--local-sticky-top)
+    bottom: var(--local-sticky-bottom)
+    box-sizing: border-box
 
   form
     width: calc(var(--inputfield-width) + 3rem)

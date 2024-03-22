@@ -31,8 +31,7 @@ License with the Debian GNU/Linux or Univention distribution in file
     class="header-tab__wrapper"
   >
     <tabindex-element
-      :id="`headerTab__${idx}`"
-      :ref="`headerTab__${idx}`"
+      :id="`headerTab__${tabId}`"
       tag="div"
       :active-at="['portal']"
       :hidden="hidden"
@@ -59,11 +58,11 @@ License with the Debian GNU/Linux or Univention distribution in file
       </span>
     </tabindex-element>
     <icon-button
-      :id="`close-tab-${idx}`"
+      :id="`close-tab-${tabId}`"
       icon="x"
       :aria-label-prop="ariaLabelClose"
-      class="header-tab__close-button"
-      :data-test="`close-tab-${idx}`"
+      class="header-tab__close-button button--flat button--icon--tab-style button--icon--tab-style--small"
+      :data-test="`close-tab-${tabId}`"
       :hidden="hidden"
       @click="closeTab"
     />
@@ -84,7 +83,7 @@ export default defineComponent({
     TabindexElement,
   },
   props: {
-    idx: {
+    tabId: {
       type: Number,
       required: true,
     },
@@ -131,15 +130,15 @@ export default defineComponent({
     this.isMounted = true;
     this.$store.dispatch('activity/saveFocus', {
       region: 'portal-header',
-      id: `headerTab__${this.idx}`,
+      id: `headerTab__${this.tabId}`,
     });
   },
   methods: {
     focusTab(): void {
-      this.$store.dispatch('tabs/setActiveTab', this.idx);
+      this.$store.dispatch('tabs/setActiveTab', this.tabId);
     },
     closeTab(): void {
-      this.$store.dispatch('tabs/deleteTab', this.idx);
+      this.$store.dispatch('tabs/deleteTab', this.tabId);
     },
   },
 });
@@ -156,7 +155,7 @@ export default defineComponent({
   flex-basis: auto
   flex-grow: 1
   max-width: 15rem
-  border: 0.2rem solid rgba(0,0,0,0)
+  border: 0.2rem solid transparent
 
   &__wrapper
     display: flex
@@ -172,7 +171,7 @@ export default defineComponent({
       background-color: var(--portal-tab-background-hover)
 
   &__logo-wrapper
-    background-color: var(--portal-tab-background)
+    background-color: var(--bgc-apptile-default)
     border-radius: var(--border-radius-apptile)
     height: calc(var(--portal-header-height) * var(--portal-header-icon-scale))
     width: @height
@@ -196,11 +195,7 @@ export default defineComponent({
     font-weight: var(--font-weight-bold)
 
   &__close-button
-    scale: 80%
-    position: relative
-    z-index: 10
-    border-radius: var(--button-border-radius)
-    margin-right: 2px
+    margin: 0 var(--layout-spacing-unit-small)
 
   &__clickable
     &:before

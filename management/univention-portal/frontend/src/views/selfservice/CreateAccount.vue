@@ -40,7 +40,7 @@
         <button
           type="submit"
           :tabindex="tabindex"
-          class="primary"
+          class="button--primary"
           @click.prevent="submit"
         >
           {{ SUBMIT_LABEL }}

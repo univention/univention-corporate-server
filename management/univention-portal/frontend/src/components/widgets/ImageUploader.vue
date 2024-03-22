@@ -78,7 +78,6 @@
       >
       <button
         ref="uploadButton"
-        class="secondary"
         type="button"
         :tabindex="tabindex"
         :data-test="`imageUploadButton--${extraLabel}`"
@@ -87,14 +86,15 @@
         <portal-icon
           icon="upload"
         />
-        {{ UPLOAD }}
+        <span>
+          {{ UPLOAD }}
+        </span>
         <span class="sr-only sr-only-mobile">
           {{ IMAGE_UPLOAD_STATE }}
         </span>
       </button>
       <button
         type="button"
-        class="secondary"
         :tabindex="tabindex"
         :disabled="!modelValue"
         :data-test="`imageRemoveButton--${extraLabel}`"
@@ -103,7 +103,9 @@
         <portal-icon
           icon="trash"
         />
-        {{ REMOVE }}
+        <span>
+          {{ REMOVE }}
+        </span>
         <span class="sr-only sr-only-mobile">
           {{ extraLabel }}
         </span>

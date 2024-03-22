@@ -29,11 +29,10 @@ License with the Debian GNU/Linux or Univention distribution in file
 <template>
   <tabindex-element
     :id="id"
-    ref="icon-button"
     :active-at="activeAt"
     :aria-label="ariaLabelProp"
-    :class="{'icon-button--button-style': hasButtonStyle}"
-    class="icon-button"
+    :class="{'button--icon--inputfield-sized': hasButtonStyle}"
+    class="button--icon"
     tag="button"
     type="button"
     @click.prevent.stop="$emit('click')"
@@ -83,27 +82,3 @@ export default defineComponent({
   emits: ['click'],
 });
 </script>
-
-<style lang="stylus">
-.icon-button
-  position: relative
-  width: var(--button-size)
-  border-radius: var(--border-radius-circles)
-  padding: var(--layout-spacing-unit)
-  background-color: transparent
-
-  &:not(.tile-add__button):not(.icon-button--admin)
-    border-radius: var(--border-radius-interactable)
-    &:hover
-      background-color: var(--portal-tab-close-button-hover)
-
-  &--button-style
-    background-color: var(--button-bgc)
-    border-radius: var(--button-border-radius)
-    border: 0.1rem solid transparent
-    height: var(--inputfield-size)
-    width: @height
-    display: flex
-    align-items: center
-    justify-content: center
-</style>

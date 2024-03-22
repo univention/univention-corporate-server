@@ -176,7 +176,6 @@ export default defineComponent({
       portalCategories: 'portalData/portalCategories',
       portalFolders: 'portalData/portalFolders',
       activityLevel: 'activity/level',
-      availableLocales: 'locale/getAvailableLocales',
     }),
     formWidgetsComputed(): any {
       return this.formWidgets.map((widget) => {

@@ -49,32 +49,26 @@
           </div>
           <button
             id="loginButton"
-            ref="loginButton"
-            class="secondary portal-sidenavigation__logout-link"
+            class="portal-sidenavigation__logout-link"
             tabindex="0"
             role="button"
             @click="logout"
             @keydown.enter="logout"
             @keydown.esc="closeNavigation"
           >
-            <span>
-              {{ LOGOUT }}
-            </span>
+            {{ LOGOUT }}
           </button>
         </div>
       </div>
       <button
         v-else
         id="loginButton"
-        ref="loginButton"
-        class="primary portal-sidenavigation__link portal-sidenavigation__login"
+        class="button--primary portal-sidenavigation__link portal-sidenavigation__login"
         @click="login"
         @keydown.enter="login"
         @keydown.esc="closeNavigation"
       >
-        <span>
-          {{ LOGIN }}
-        </span>
+        {{ LOGIN }}
       </button>
     </div>
     <div
@@ -166,7 +160,7 @@
     <button
       v-if="userState.mayEditPortal"
       ref="editModeButton"
-      class="primary portal-sidenavigation__link portal-sidenavigation__edit-mode"
+      class="button--primary portal-sidenavigation__link"
       data-test="openEditmodeButton"
       @click="startEditMode"
       @keydown.esc="closeNavigation"
@@ -224,9 +218,7 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       menuLinks: 'menu/getMenu',
-      editMode: 'portalData/editMode',
       userState: 'user/userState',
-      meta: 'metaData/getMeta',
     }),
     LOGOUT(): string {
       return _('Logout');
@@ -328,14 +320,9 @@ $userRow = 6rem
   &__link
     position: relative
     left: calc(2*var(--layout-spacing-unit))
-    width: fit-content
     margin-top: var(--layout-spacing-unit)
     margin-bottom: calc(2*var(--layout-spacing-unit))
-    border: 0.2rem solid rgba(0,0,0,0)
-
-    &:focus-visible
-      border: 0.2rem solid var(--color-focus);
-      outline: 0
+    align-self: flex-start
 
   &__user-row
     display: flex
@@ -416,15 +403,6 @@ $userRow = 6rem
     &:hover
       background-color: var(--bgc-user-menu-item-hover)
 
-  &__edit-mode
-    width: fit-content
-
-    span
-      margin: 0.2rem
-
-    &:focus-visible span
-      margin: 0
-
   &__fade-left-right,
   &__fade-right-left
     animation-duration: 250ms
@@ -459,10 +437,13 @@ $userRow = 6rem
 }
 
 .divider
-    background-color: var(--bgc-user-menu-item-hover)
-    width: 90%
-    height: 2px
-    position: relative
-    left: calc(2*var(--layout-spacing-unit))
-    margin-bottom: 8px
+  flex: 0 0 auto
+  background-color: var(--bgc-user-menu-item-hover)
+  width: 90%
+  height: 2px
+  position: relative
+  left: calc(2*var(--layout-spacing-unit))
+  margin-bottom: var(--layout-spacing-unit)
+  &--bottom
+    margin-top: var(--layout-spacing-unit)
 </style>

@@ -34,47 +34,52 @@ import { PortalModule } from '@/store/root.models';
 import { Tab } from './tabs.models';
 
 export interface TabState {
-  activeTabIndex: number;
+  activeTabId: number;
   tabs: Tab[];
   scrollPosition: number;
 }
 
+let nextId = 1;
 const tabs: PortalModule<TabState> = {
   namespaced: true,
   state: {
-    activeTabIndex: 0,
+    activeTabId: 0,
     tabs: [],
     scrollPosition: 0,
   },
 
   mutations: {
-    ACTIVE_TAB(state:TabState, index: number): void {
-      state.activeTabIndex = index;
+    ACTIVE_TAB(state: TabState, id: number): void {
+      state.activeTabId = id;
     },
-    ADD_TAB(state:TabState, tab: Tab): void {
-      let index = -1;
+    ADD_TAB(state: TabState, tab: Tab): void {
+      let alreadyExistingTabIndex = -1;
       if (tab.target) {
-        index = state.tabs.findIndex((stateTab) => stateTab.target === tab.target);
+        alreadyExistingTabIndex = state.tabs.findIndex((stateTab) => stateTab.target === tab.target);
       } else {
-        index = state.tabs.findIndex((stateTab) => stateTab.tabLabel === tab.tabLabel);
+        alreadyExistingTabIndex = state.tabs.findIndex((stateTab) => stateTab.tabLabel === tab.tabLabel);
       }
-      if (index === -1) {
+      if (alreadyExistingTabIndex === -1) {
+        tab.id = nextId;
+        nextId += 1;
         state.tabs.push(tab);
-        state.activeTabIndex = state.tabs.length;
+        state.activeTabId = tab.id;
       } else {
-        state.tabs[index] = tab;
-        state.activeTabIndex = index + 1;
+        tab.id = state.tabs[alreadyExistingTabIndex].id;
+        state.tabs[alreadyExistingTabIndex] = tab;
+        state.activeTabId = tab.id;
       }
     },
-    DELETE_TAB(state:TabState, index: number): void {
-      state.tabs.splice(index - 1, 1);
-      if (state.activeTabIndex === index) {
-        state.activeTabIndex = 0;
-      } else if (state.activeTabIndex > index) {
-        state.activeTabIndex -= 1;
+    DELETE_TAB(state: TabState, id: number): void {
+      const tabIndex = state.tabs.findIndex((stateTab) => stateTab.id === id);
+      if (tabIndex !== -1) {
+        state.tabs.splice(tabIndex, 1);
+      }
+      if (state.activeTabId === id) {
+        state.activeTabId = 0;
       }
     },
-    SAVE_SCROLL_POSITION(state:TabState, scrollPosition: number): void {
+    SAVE_SCROLL_POSITION(state: TabState, scrollPosition: number): void {
       state.scrollPosition = scrollPosition;
     },
   },
@@ -82,28 +87,28 @@ const tabs: PortalModule<TabState> = {
   getters: {
     allTabs: (state) => state.tabs,
     numTabs: (state) => state.tabs.length,
-    activeTabIndex: (state) => state.activeTabIndex,
+    activeTabId: (state) => state.activeTabId,
     savedScrollPosition: (state) => state.scrollPosition,
   },
 
   actions: {
-    setActiveTab({ getters, commit, dispatch }: { getters: any, commit: Commit, dispatch: Dispatch }, index: number): void {
-      if (getters.activeTabIndex === index) {
+    setActiveTab({ getters, commit, dispatch }: { getters: any, commit: Commit, dispatch: Dispatch }, id: number): void {
+      if (getters.activeTabId === id) {
         return;
       }
       dispatch('navigation/setActiveButton', '', { root: true });
       dispatch('modal/hideAndClearModal', undefined, { root: true });
-      if (index > 0) {
+      if (id > 0) {
         commit('SAVE_SCROLL_POSITION', window.scrollY);
       }
-      commit('ACTIVE_TAB', index);
+      commit('ACTIVE_TAB', id);
     },
     addTab({ commit }: { commit: Commit }, tab: Tab): void {
       commit('SAVE_SCROLL_POSITION', window.scrollY);
       commit('ADD_TAB', tab);
     },
-    deleteTab({ commit }: { commit: Commit}, index: number): void {
-      commit('DELETE_TAB', index);
+    deleteTab({ commit }: { commit: Commit}, id: number): void {
+      commit('DELETE_TAB', id);
     },
   },
 };

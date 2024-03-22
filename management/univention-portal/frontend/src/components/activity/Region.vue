@@ -67,7 +67,6 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       inDragnDropMode: 'dragndrop/inDragnDropMode',
-      activityLevel: 'activity/level',
       activityRegion: 'activity/region',
       focus: 'activity/focus',
     }),

@@ -41,6 +41,7 @@
     />
     <my-form
       ref="form"
+      id="editModeSideNavigationForm"
       v-model="formValues"
       :widgets="formWidgetsWithTabindex"
       :class="['edit-mode-side-navigation__form',
@@ -52,12 +53,13 @@
       class="save-button-wrapper"
     >
       <div
-        class="divider"
+        class="divider divider--bottom"
       />
       <button
-        class="primary edit-mode-side-navigation__save-button"
+        class="button--primary edit-mode-side-navigation__save-button"
         data-test="editModeSideNavigation--Save"
         type="submit"
+        form="editModeSideNavigationForm"
         :tabindex="tabindex"
         @click.prevent="onSave"
       >
@@ -292,11 +294,4 @@ export default defineComponent({
       margin-top: 0
   &__save-button
     margin: calc(2 * var(--layout-spacing-unit))
-
-.save-button-wrapper
-    position: fixed
-    bottom: 0
-    background-color: var(--bgc-content-container)
-    width: 100%
-    border-radius: 0 0 0 0.5rem
 </style>

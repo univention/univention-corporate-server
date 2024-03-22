@@ -77,7 +77,6 @@ export default defineComponent({
       portalLogo: 'portalData/portalLogo',
       portalName: 'portalData/portalName',
       savedScrollPosition: 'tabs/savedScrollPosition',
-      activeButton: 'navigation/getActiveButton',
     }),
     SHOW_PORTAL(): string {
       return _('Show portal');

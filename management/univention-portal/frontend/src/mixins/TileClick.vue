@@ -115,6 +115,7 @@ const tileClickMixin = {
         logo: this.pathToLogo,
         iframeLink: this.link,
         target: this.target,
+        id: -1,
       };
       this.$store.dispatch('navigation/setActiveButton', '');
       this.$store.dispatch('tabs/addTab', tab);

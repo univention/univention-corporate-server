@@ -63,13 +63,12 @@
       <footer>
         <button
           type="button"
-          class="secondary"
           @click.prevent="cancel"
         >
           {{ CANCEL }}
         </button>
         <button
-          class="primary"
+          class="button--primary"
           type="submit"
           @click.prevent="finish"
         >

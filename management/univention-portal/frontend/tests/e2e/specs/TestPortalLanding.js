@@ -39,7 +39,7 @@ beforeEach(() => {
   cy.intercept('GET', 'de.json', { fixture: 'de.json' });
   cy.intercept('GET', 'languages.json', { fixture: 'languages.json' });
   cy.visit('/');
-  cy.get('main.cookie-banner + footer button.primary').click();
+  cy.get('main.cookie-banner + footer button.button--primary').click();
 });
 
 describe('Test Portal Landing', () => {

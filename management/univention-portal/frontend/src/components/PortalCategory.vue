@@ -41,7 +41,7 @@
       <icon-button
         v-if="editMode && !virtual && showEditButtonWhileDragging"
         icon="edit-2"
-        class="portal-category__edit-button icon-button--admin"
+        class="button--icon--circle button--icon--edit-mode button--shadow"
         :aria-label-prop="EDIT_CATEGORY"
         @click="editCategory"
       />
@@ -49,7 +49,7 @@
         v-if="editMode && !virtual && !isTouchDevice && showMoveButtonWhileDragging"
         :id="`${layoutId}-move-button`"
         icon="move"
-        class="portal-category__edit-button icon-button--admin"
+        class="button--icon--circle button--icon--edit-mode button--shadow"
         :aria-label-prop="MOVE_CATEGORY"
         @click="dragKeyboardClick"
         @keydown.esc="dragend"
@@ -164,9 +164,6 @@ export default defineComponent({
     },
   },
   computed: {
-    ...mapGetters({
-      searchQuery: 'search/searchQuery',
-    }),
     isTouchDevice(): boolean {
       return 'ontouchstart' in document.documentElement;
     },
@@ -218,12 +215,10 @@ export default defineComponent({
     &--editmode
       display: block
 
-  &__edit-button
-    padding 0
-
   &__title
     height: var(--button-size)
     display: inline-flex
+    gap: var(--layout-spacing-unit)
     align-items: center
     margin-top: 0
     margin-bottom: calc(3 * var(--layout-spacing-unit))

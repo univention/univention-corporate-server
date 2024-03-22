@@ -655,18 +655,15 @@ define([
 				return;
 			}
 
-			if (tools.status().numOfNotifications > 0) {
-				this.set('class', 'umcHeader umcHeader--umc');
-				this.notificationsButton.show();
-			} else if (tools.status().numOfNotifications === 0) {
-				this.notificationsButton.hide();
+			var hasNotifications = tools.status('numOfNotifications') > 0;
+			domClass.toggle(this.notificationsButton.domNode, 'dijitDisplayNone', !hasNotifications);
+			if (!hasNotifications) {
 				this.notificationsButton.set('checked', false);
-				if (tools.status('numOfTabs') === 0) {
-					this.set('class', 'umcHeader umcHeader--umc umcHeader--hidden');
-				} else if (tools.status('numOfTabs') > 0) {
-					this.set('class', 'umcHeader umcHeader--umc');
-				}
 			}
+
+			var hasTabs = tools.status('numOfTabs') > 0;
+			var hideHeader = !hasNotifications && !hasTabs;
+			domClass.toggle(this.domNode, 'umcHeader--hidden', hideHeader);
 		},
 
 		mobileTabsView: false,
@@ -1005,9 +1002,9 @@ define([
 				this.setupTouchDevices();
 			}
 
-            if (_headerTryHide) {
-                domClass.add(baseWin.body(), 'umcHeaderTryHide');
-            }
+			if (_headerTryHide) {
+				domClass.add(baseWin.body(), 'umcHeaderTryHide');
+			}
 
 			// set up fundamental layout parts...
 
@@ -1032,17 +1029,14 @@ define([
 			});
 
 			// the header
-			var umcHeaderClass = 'umcHeader umcHeader--umc';
-			if (_headerTryHide) {
-				umcHeaderClass = 'umcHeader umcHeader--umc umcHeader--hidden';
-			}
 			this._header = new UmcHeader({
 				id: 'umcHeader',
-				'class': umcHeaderClass,
+				'class': 'umcHeader umcHeader--umc',
 				_tabController: this._tabController,
 				_tabContainer: this._tabContainer,
 				switchToOverview: lang.hitch(this, 'switchToOverview')
 			});
+			domClass.toggle(this._header.domNode, 'umcHeader--hidden', _headerTryHide);
 
 			this.registerTabSwitchHandling();
 
@@ -1349,7 +1343,7 @@ define([
 			// set window title
 			window.document.title = tools.status('title') || lang.replace('{0} - {1}', [tools.status('fqdn'), window.document.title]);
 			if (tools.status('favicon')) {
-			    (query('link[rel="shortcut icon"]')[0] || query('link[rel="icon"]')[0] || {}).href = tools.status('favicon');
+				(query('link[rel="shortcut icon"]')[0] || query('link[rel="icon"]')[0] || {}).href = tools.status('favicon');
 			}
 
 			// setup menus

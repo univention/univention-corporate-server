@@ -22,6 +22,8 @@ input,button,select,optgroup,textarea
   line-height: inherit
 
 button
+  position: relative
+  box-sizing: border-box
   padding: 0 calc(2 * var(--layout-spacing-unit))
   height: var(--button-size)
   color: var(--font-color-contrast-high)
@@ -31,43 +33,73 @@ button
   border: 0.2rem solid transparent
   border-radius: var(--button-border-radius)
   background-color: var(--button-bgc)
-  transition: opacity var(--portal-transition-duration)
   cursor: pointer
-  transition: background-color var(--portal-transition-duration)
+  transition: var(--button-bgc-transition)
   display: flex
   align-items: center
   justify-content: center
-
   @media $mqSmartphone
     padding: 0 calc(1 * var(--layout-spacing-unit))
     font-size: var(--button-font-size-mobile)
-
   svg:not(:only-child)
     margin-right: var(--layout-spacing-unit-small)
+  &:focus-visible
+    border-color: var(--color-focus)
+    outline: 0
+
+  &:hover
+    background-color: var(--button-bgc-hover)
+
+  &.button--primary
+    background-color: var(--button-primary-bgc)
+    &:hover
+      background-color: var(--button-primary-bgc-hover)
+  &.button--shadow
+    box-shadow: var(--box-shadow)
+  &.button--flat
+    background-color: transparent
+    &:hover
+      background-color: var(--button-bgc-hover)
+    &--outline-style
+      transition: border-color var(--portal-transition-duration)
+      &:hover
+        background-color: transparent
+        border-color: var(--focus-color)
+  &.button--icon
+    width: var(--button-size)
+    padding: 0
+    &--circle
+      border-radius: var(--border-radius-circles)
+    &--inputfield-sized
+      height: var(--inputfield-size)
+      width: @height
+    &--edit-mode
+      transition: scale var(--portal-transition-duration) ease, var(--button-bgc-transition)
+      &:hover
+        scale: 1.2
+    &--header-style
+      &:hover
+        background-color: transparent
+        svg
+          color: var(--color-accent)
+    &--tab-style
+      position: relative
+      z-index: 10
+      flex: 0 0 auto
+      &--small
+        width: calc(3 * var(--layout-spacing-unit))
+        height: @width
+      &:hover
+        background-color: var(--portal-tab-close-button-hover) !important
 
   &[disabled]
     background-color: var(--button-bgc-disabled)
     color: var(--font-color-contrast-middle)
     cursor: var(--cursor-disabled)
-
     svg
       color: var(--font-color-contrast-middle)
-
-  &:focus-visible
-    border-color: var(--color-focus)
-    outline: 0
-
-  &.primary
-    background-color: var(--button-primary-bgc)
-
     &:hover
-      background-color: var(--button-primary-bgc-hover)
-
-  &.secondary
-    background-color: var(--button-bgc)
-
-    &:hover
-      background-color: var(--button-bgc-hover)
+      background-color: var(--button-bgc-disabled)
 
 h2
   font-size: var(--font-size-2)
@@ -133,6 +165,8 @@ input, select, textarea
       left: 5px;
       margin: auto;
       background: var(--color-accent)
+select
+  padding-right: calc(3 * var(--layout-spacing-unit)) !important
 
 fieldset
   border: 0
@@ -142,7 +176,7 @@ select
   cursor: pointer
   appearance: none
   position: relative
-  background-image: var(--select-arrow)
+  background-image: var(--portal-select-arrow)
   background-repeat: no-repeat
   background-size: 1rem
   background-position: 98% center
@@ -169,7 +203,6 @@ input[type=checkbox]
   margin-left: 0
   border: 2px solid var(--font-color-contrast-low)
   border-radius: 2px
-  background-color: var(--bgc-inputfield-on-container)
   cursor: pointer
   appearance: none
   &:focus,
@@ -227,34 +260,6 @@ textarea
 .fade-enter,
 .fade-leave-to
   opacity: 0
-
-.icon-button
-  &--admin
-    user-select: none
-    margin-right: var(--layout-spacing-unit)
-
-    background-color: var(--button-bgc)
-    background-size: 1em
-    background-repeat: no-repeat
-    background-position: center
-    border-radius: 50%
-    box-shadow: var(--box-shadow)
-    border: 0.2rem solid transparent
-    display: inline-flex
-    align-items: center
-    justify-content: center
-    box-sizing: border-box
-    padding: 0
-    transition: scale var(--portal-transition-duration) ease
-
-    &:hover
-      background-color: var(--button-bgc-hover)
-      scale: 1.2
-
-  &--default-cursor,
-  &--default-cursor:hover
-    cursor: default !important
-
 
 .sr-only
   position: absolute
