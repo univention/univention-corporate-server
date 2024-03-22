@@ -1,3 +1,9 @@
+ucs-test (12.0.25) unstable; urgency=medium
+
+  * Bug #57113: refactor performance test
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 22 Mar 2024 11:05:51 +0100
+
 ucs-test (12.0.24) unstable; urgency=medium
 
   * Issue #2154: fix blocklist tests

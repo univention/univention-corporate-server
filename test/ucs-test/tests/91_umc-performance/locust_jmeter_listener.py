@@ -32,9 +32,9 @@ class JmeterListener:
     def __init__(
         self,
         env,
-        testplan="testplanname",
-        field_delimiter=",",
-        timestamp_format="%Y/%m/%d %H:%M:%S",
+        testplan='testplanname',
+        field_delimiter=',',
+        timestamp_format='%Y/%m/%d %H:%M:%S',
         flush_size=100,
         results_filename=None,
     ):
@@ -54,34 +54,34 @@ class JmeterListener:
             self.results_filename = f"results_{datetime.fromtimestamp(time()).strftime('%Y_%m_%d_%H_%M_%S')}.csv"
             self.results_filename = os.path.join(
                 os.path.dirname(env.parsed_options.csv_prefix),
-                "jmeter",
-                f"results_{os.path.basename(env.parsed_options.csv_prefix)}.csv",
+                'jmeter',
+                f'results_{os.path.basename(env.parsed_options.csv_prefix)}.csv',
             )
         else:
             self.results_filename = results_filename
 
         # fields set by default in jmeter
         self.csv_headers = [
-            "timeStamp",
-            "elapsed",
-            "label",
-            "responseCode",
-            "responseMessage",
-            "threadName",
-            "dataType",
-            "success",
-            "failureMessage",
-            "bytes",
-            "sentBytes",
-            "grpThreads",
-            "allThreads",
-            "Latency",
-            "IdleTime",
-            "Connect",
+            'timeStamp',
+            'elapsed',
+            'label',
+            'responseCode',
+            'responseMessage',
+            'threadName',
+            'dataType',
+            'success',
+            'failureMessage',
+            'bytes',
+            'sentBytes',
+            'grpThreads',
+            'allThreads',
+            'Latency',
+            'IdleTime',
+            'Connect',
         ]
 
         self.user_count = 0
-        self.testplan = ""
+        self.testplan = ''
         events = self.env.events
         if self.is_worker_runner:
             events.report_to_master.add_listener(self._report_to_master)
@@ -96,7 +96,7 @@ class JmeterListener:
         filename = Path(self.results_filename)
         filename.parent.mkdir(exist_ok=True, parents=True)
         filename.touch(exist_ok=True)
-        results_file = open(filename, "w")
+        results_file = open(filename, 'w')
         self.cvs_writer = csv.writer(results_file, delimiter=self.field_delimiter, quotechar='"')
         self.cvs_writer.writerow(self.csv_headers)
         results_file.flush()
@@ -113,17 +113,17 @@ class JmeterListener:
 
     def add_result(self, success, _request_type, name, response_time, response_length, exception, **kw):
         timestamp = datetime.fromtimestamp(time()).strftime(self.timestamp_format)
-        response_message = "OK" if success == "true" else "KO"
+        response_message = 'OK' if success == 'true' else 'KO'
         # check to see if the additional fields have been populated. If not, set to a default value
-        status_code = kw.get("status_code", "0")
+        status_code = kw.get('status_code', '0')
         thread_name = self.testplan
-        data_type = kw.get("data_type", "unknown")
-        bytes_sent = kw.get("bytes_sent", "0")
+        data_type = kw.get('data_type', 'unknown')
+        bytes_sent = kw.get('bytes_sent', '0')
         group_threads = str(self.runner.user_count)
         all_threads = str(self.runner.user_count)
-        latency = kw.get("latency", "0")
-        idle_time = kw.get("idle_time", "0")
-        connect = kw.get("connect", "0")
+        latency = kw.get('latency', '0')
+        idle_time = kw.get('idle_time', '0')
+        connect = kw.get('connect', '0')
         row = [
             timestamp,
             str(round(response_time)),
@@ -147,13 +147,13 @@ class JmeterListener:
             self._flush_to_log()
 
     def _request(self, request_type, name, response_time, response_length, exception, **kw):
-        self.add_result("false" if exception else "true", request_type, name, response_time, response_length, str(exception), **kw)
+        self.add_result('false' if exception else 'true', request_type, name, response_time, response_length, str(exception), **kw)
 
     def _report_to_master(self, data, **kwargs):
-        data["csv_results"] = self.csv_results
+        data['csv_results'] = self.csv_results
         self.csv_results = []
 
     def _worker_report(self, data, **kwargs):
-        self.csv_results += data["csv_results"]
+        self.csv_results += data['csv_results']
         if len(self.csv_results) >= self.flush_size:
             self._flush_to_log()

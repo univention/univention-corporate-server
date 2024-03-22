@@ -5,49 +5,42 @@
 ## tags: [producttest]
 ## env:
 ##   LOCUST_SPAWN_RATE: "10"
-##   LOCUST_RUN_TIME: "15m"
+##   LOCUST_RUN_TIME: "20m"
 ##   LOCUST_USERS: "5000"
 ##   LOCUST_USER_CLASSES: SAMLSessionRefresh
 ##   USE_KEYCLOAK: "1"
-##   WAIT_MIN: "180"
-##   WAIT_MAX: "300"
+##   WAIT_MAX: "180"
+##   REQUEST_TIMEOUT: "120"
+from __future__ import annotations
 
 import logging
 import os
 from urllib.parse import urlparse
 
 import gevent
-import urllib3
-from locust import HttpUser, constant, events, run_single_user, task
+from locust import FastHttpUser, constant, events, run_single_user, task
 from locust_jmeter_listener import JmeterListener
 from utils import TIMEOUT, do_saml_iframe_session_refresh, get_credentials, login_via_saml
 
 
-USE_TASK = os.environ.get('USE_TASK', '0') == '1'
-WAIT_MIN = int(os.environ.get('WAIT_MIN', '180'))
-WAIT_MAX = int(os.environ.get('WAIT_MAX', '300'))
-
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+WAIT_MAX = int(os.environ.get('WAIT_MAX', '120'))
 
 
-# TODO: use FastHttpUser instead of HttpUser
-# https://docs.locust.io/en/stable/increase-performance.html
-# currently this is not possible due to an issue in geventhttpclient
-# https://github.com/geventhttpclient/geventhttpclient/issues/187
-class SAMLSessionRefresh(HttpUser):
+class SAMLSessionRefresh(FastHttpUser):
     wait_time = constant(WAIT_MAX)
+    network_timeout = TIMEOUT
+    connection_timeout = TIMEOUT
+    insecure = True
 
     @events.init.add_listener
     def on_init(environment, **_kwargs):
         environment.stats.use_response_times_cache = True
         JmeterListener(environment, results_filename='/mnt/locust/jmeter_results_SAMLSessionRefresh.csv')
 
-    # @task
     def on_start(self):
-        self.client.verify = False
         self.username, self.password = get_credentials()
-        if USE_TASK:
-            return
+
+        next_path = ''
 
         # 1. GET /
         with self.client.get('/', allow_redirects=False, timeout=TIMEOUT, catch_response=True, name='01 /') as resp:
@@ -55,19 +48,19 @@ class SAMLSessionRefresh(HttpUser):
                 resp.failure(f'Expected 302: {resp.status_code}')
                 return
 
-            # 2. GET /univention/
             next_path = urlparse(resp.headers['Location']).path
-            with self.client.get(next_path, allow_redirects=False, timeout=TIMEOUT, catch_response=True, name='02 /univention') as resp:
-                if resp.status_code != 302:
-                    resp.failure(f'Expected 302: {resp.status_code}')
-                    return
+        # 2. GET /univention/
+        with self.client.get(next_path, allow_redirects=False, timeout=TIMEOUT, catch_response=True, name='02 /univention') as resp:
+            if resp.status_code != 302:
+                resp.failure(f'Expected 302: {resp.status_code}')
+                return
 
-                # 3. GET /univention/portal/
-                next_path = urlparse(resp.headers['Location']).path
-                with self.client.get(next_path, allow_redirects=False, timeout=TIMEOUT, catch_response=True, name='03 /univention/portal') as resp:
-                    if resp.status_code != 200:
-                        resp.failure(f'Expected 200: {resp.status_code}')
-                        return
+            next_path = urlparse(resp.headers['Location']).path
+        # 3. GET /univention/portal/
+        with self.client.get(next_path, allow_redirects=False, timeout=TIMEOUT, catch_response=True, name='03 /univention/portal') as resp:
+            if resp.status_code != 200:
+                resp.failure(f'Expected 200: {resp.status_code}')
+                return
 
         # 4. GET /univention/get/session-info
         with self.client.get('/univention/get/session-info', allow_redirects=False, timeout=TIMEOUT, catch_response=True, name='04 /univention/get/session-info') as resp:
@@ -114,7 +107,7 @@ class SAMLSessionRefresh(HttpUser):
         # 15. GET /univention/saml/iframe
         umc_session_id = do_saml_iframe_session_refresh(self.client, prefix='10')
         if umc_session_id is None:
-            logging.info('Login failed')
+            logging.info('Session refresh failed')
             return
 
         # 16. GET /univention/get/session-info
@@ -124,11 +117,8 @@ class SAMLSessionRefresh(HttpUser):
                 return
 
     @task
-    def login(self):
+    def dummy(self):
         pass
-
-    def on_stop(self):
-        self.client.close()
 
 
 if __name__ == '__main__':

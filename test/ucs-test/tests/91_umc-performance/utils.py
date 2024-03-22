@@ -13,20 +13,11 @@ from bs4 import BeautifulSoup
 log = logging.getLogger(__name__)
 
 
-try:
-    from univention.config_registry import ucr
-
-    KEYCLOAK_FQDN = ucr.get('keycloak/server/sso/fqdn', 'ucs-sso-ng.%s' % ucr['domainname'])
-    SSP_FQDN = ucr.get('ucs/server/sso/fqdn', 'ucs-sso.%s' % ucr.get('domainname'))
-except ImportError:
-    KEYCLOAK_FQDN = os.environ.get('KEYCLOAK_FQDN')
-    SSP_FQDN = os.environ.get('SSP_FQDN')
-
 USE_KEYCLOAK = os.environ.get('USE_KEYCLOAK', '1') == '1'
 current_user = 0
 start_user = 0
 final_user = 5000
-TIMEOUT = 60
+TIMEOUT = int(os.environ.get('REQUEST_TIMEOUT', '60'))
 
 entry = '/univention/saml/'
 session_cookie_name = 'UMCSessionId'
@@ -54,34 +45,34 @@ def login_via_saml(client, username=None, password=None, prefix=''):
             return None
 
         kerberos_redirect_url = get_kerberos_redirect(req1.text)
-        keycloak_request = req1
+        idp_login_site = req1
 
-        if kerberos_redirect_url:
-            with client.get(kerberos_redirect_url, timeout=TIMEOUT, catch_response=True, name=f'{prefix} kerberos redirect page') as krb_redir:
-                keycloak_request = krb_redir
+    if kerberos_redirect_url:
+        with client.get(kerberos_redirect_url, timeout=TIMEOUT, catch_response=True, name=f'{prefix} kerberos redirect page') as krb_redir:
+            idp_login_site = krb_redir
 
-        login_link, login_params = get_login_params(keycloak_request)
-        if username is None or password is None:
-            username, password = get_credentials()
-        login_params.update(
-            {
-                'username': username,
-                'password': password,
-            },
-        )
+    login_link, login_params = get_login_params(idp_login_site)
+    if username is None or password is None:
+        username, password = get_credentials()
+    login_params.update(
+        {
+            'username': username,
+            'password': password,
+        },
+    )
 
-        with client.post(login_link, data=login_params, name=f'{prefix} login 2 POST credentials', catch_response=True, timeout=TIMEOUT) as req3:
-            if not (200 <= req3.status_code <= 399):
-                return None
-            if req3.text is None or len(req3.text) == 0:
-                req3.failure('UCS: got no data')
-                return None
-            error_responses = ['Nutzername oder Passwort falsch', 'Invalid username or password', 'Incorrect username or password']
-            if any(msg in req3.text for msg in error_responses):
-                req3.failure('UCS: wrong username or password')
-                return None
+    with client.post(login_link, data=login_params, name=f'{prefix} login 2 POST credentials', catch_response=True, timeout=TIMEOUT) as req3:
+        if not (200 <= req3.status_code <= 399):
+            return None
+        if req3.text is None or len(req3.text) == 0:
+            req3.failure('UCS: got no data')
+            return None
+        error_responses = ['Nutzername oder Passwort falsch', 'Invalid username or password', 'Incorrect username or password']
+        if any(msg in req3.text for msg in error_responses):
+            req3.failure('UCS: wrong username or password')
+            return None
 
-            return do_saml_login_at_umc(client, req3, name=f'{prefix} login 3 {entry} POST saml response')
+        return do_saml_login_at_umc(client, req3, name=f'{prefix} login 3 {entry} POST saml response')
 
 
 def do_saml_iframe_session_refresh(client, prefix=''):
@@ -93,12 +84,12 @@ def do_saml_iframe_session_refresh(client, prefix=''):
             req1.failure('UCS: got no location')
             return None
         location = req1.headers['Location']
-        with client.get(location, allow_redirects=True, timeout=TIMEOUT, catch_response=True, name=f'{prefix} iframe 2 {urlparse(location).path}') as req2:
-            if req2.status_code != 200:
-                req2.failure(f'Expected 200: {req2.status_code}')
-                return None
+    with client.get(location, allow_redirects=True, timeout=TIMEOUT, catch_response=True, name=f'{prefix} iframe 2 {urlparse(location).path}') as req2:
+        if req2.status_code != 200:
+            req2.failure(f'Expected 200: {req2.status_code}')
+            return None
 
-            return do_saml_login_at_umc(client, req2, name=f'{prefix} iframe 3 {entry} POST SAML response')
+        return do_saml_login_at_umc(client, req2, name=f'{prefix} iframe 3 {entry} POST SAML response')
 
 
 def do_saml_login_at_umc(client, req, **kwargs):
@@ -108,34 +99,35 @@ def do_saml_login_at_umc(client, req, **kwargs):
         log.warning('%r', req.text)
         req.failure('UCS: Got no RelayState/SAMLResponse')
         return None
-    # url = urlparse(soup.select_one("form")["action"]).path
+
     with client.post(entry, data={'SAMLResponse': saml_response, 'RelayState': relay_state}, timeout=TIMEOUT, allow_redirects=True, catch_response=True, **kwargs) as req3:
         if req3.status_code != 200:
             req3.failure(f'Expected 200: {req3.status_code}')
             return None
-        try:  # iframe
-            return client.cookies.get(session_cookie_name)
-            # return next((cookie.value for cookie in client.cookiejar if cookie.name == session_cookie_name), None)
-        except IndexError:  # no iframe
+
+        cookie = next((cookie.value for cookie in client.cookiejar if cookie.name == session_cookie_name), None)
+        if not cookie:
             req3.failure(f'UCS: got no cookie for {session_cookie_name}')
+        return cookie
 
 
 def get_login_params(req):
     soup = BeautifulSoup(req.text, features='lxml')
     login_params = {}
-    if USE_KEYCLOAK:
-        login_link = soup.select_one('form[id="kc-form-login"]')['action']
-    else:
-        try:
+    try:
+        if USE_KEYCLOAK:
+            login_link = soup.select_one('form[id="kc-form-login"]')['action']
+            return login_link, login_params
+        else:
             auth_state = soup.select_one('input[name="AuthState"]')['value']
-        except TypeError:
-            log.warning('Got no AuthState: %s', req.url)
-            log.warning('%r', req.text)
-            req.failure('UCS: Got no AuthState')
-            return None, None
-        login_params['AuthState'] = auth_state
-        # login_params["submit"] = "Anmelden"
-        login_link = req.url  # SimpleSAMLphp has "?" as url, so the URL is the same
+            login_params['AuthState'] = auth_state
+            # login_params["submit"] = "Anmelden"
+            login_link = req.url  # SimpleSAMLphp has "?" as url, so the URL is the same
+    except TypeError:
+        log.warning('Got no AuthState or kc-form-login form: %s', req.url)
+        log.warning('%r', req.text)
+        req.failure('UCS: Got no AuthState or kc-form-login form')
+        return None, None
     return login_link, login_params
 
 
