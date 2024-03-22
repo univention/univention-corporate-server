@@ -15,6 +15,7 @@ import univention.testing.strings as uts
 import univention.testing.udm
 from univention.admin.blocklist import hash_blocklist_value
 from univention.admin.uldap import getMachineConnection
+from univention.testing.utils import wait_for_listener_replication_and_postrun
 
 
 @pytest.fixture()
@@ -178,8 +179,10 @@ def test_multivalue_property_modify(ucr, udm, mail_domain_name, enable_blocklist
     # block values
     for value in values:
         udm.modify_object('users/user', dn=user2, mailPrimaryAddress=value)
+        wait_for_listener_replication_and_postrun()
     print(subprocess.check_output(['udm', 'blocklists/entry', 'list']))
     udm.remove_object('users/user', dn=user2)
+    wait_for_listener_replication_and_postrun()
     print(subprocess.check_output(['udm', 'blocklists/entry', 'list']))
 
     # check is blocked and free
@@ -190,7 +193,9 @@ def test_multivalue_property_modify(ucr, udm, mail_domain_name, enable_blocklist
     # block values again
     for value in values:
         udm.modify_object('groups/group', dn=group, mailAddress=value)
+        wait_for_listener_replication_and_postrun()
     udm.remove_object('groups/group', dn=group)
+    wait_for_listener_replication_and_postrun()
     # check is blocked
     for value in values:
         check_blocklistentry_exists(value, bl_dn)
