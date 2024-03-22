@@ -1519,6 +1519,20 @@ msgstr "https://tools.ietf.org/html/rfc1123#section-2"
 msgid "migrate LDAP data"
 msgstr "Migriere LDAP daten"
 
+#: umc/python/diagnostic/plugins/67_check_app_listener_queue.py:49
+msgid "Check apps listener queue status"
+msgstr "Überprüfe Status der App-Listener-Queue"
+
+#: umc/python/diagnostic/plugins/67_check_app_listener_queue.py:50
+msgid "Check apps listener queue status."
+msgstr "Überprüfe Status der App-Listener-Queue"
+
+#: umc/python/diagnostic/plugins/67_check_app_listener_queue.py:67
+#, python-format
+msgid "%(name)s app listener has %(length)d unprocessed files."
+msgstr "%(name)s App-Listener hat %(length)d unverarbeitete Dateien."
+
+
 #: umc/python/diagnostic/plugins/43_connectors4_rejects.py:113
 #: umc/python/diagnostic/plugins/43_connectors4_rejects.py:120
 msgid "not found"
