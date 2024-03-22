@@ -76,7 +76,6 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
-      metaData: 'metaData/getMeta',
       initialLoadDone: 'getInitialLoadDone',
     }),
   },

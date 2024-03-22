@@ -43,7 +43,6 @@
       >
         <button
           type="button"
-          class="secondary"
           :tabindex="tabindex"
           @click.prevent="openConfirmationDialog"
         >
@@ -53,14 +52,13 @@
       <footer>
         <button
           type="button"
-          class="secondary"
           :tabindex="tabindex"
           @click.prevent="cancel"
         >
           {{ CANCEL }}
         </button>
         <button
-          class="primary"
+          class="button--primary"
           type="submit"
           :tabindex="tabindex"
           @click.prevent="submit"

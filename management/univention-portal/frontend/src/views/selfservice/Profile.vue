@@ -77,7 +77,7 @@
           ref="saveButton"
           type="submit"
           :tabindex="tabindex"
-          class="primary"
+          class="button--primary"
           @click.prevent="onSave"
         >
           {{ SAVE }}

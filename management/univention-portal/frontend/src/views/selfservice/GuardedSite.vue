@@ -41,7 +41,7 @@
         <button
           type="submit"
           :tabindex="tabindex"
-          :class="{'primary' : loaded}"
+          :class="{'button--primary' : loaded}"
           @click.prevent="submit"
         >
           {{ SUBMIT_LABEL }}
@@ -144,7 +144,6 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
-      metaData: 'metaData/getMeta',
       userState: 'user/userState',
       activityLevel: 'activity/level',
     }),

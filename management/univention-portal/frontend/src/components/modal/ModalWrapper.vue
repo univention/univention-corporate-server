@@ -112,6 +112,8 @@ export default defineComponent({
       display: flex
       align-items: center
       justify-content: center
+      &:not(.modal-wrapper--selfservice)
+        flex-direction: column
 
       &> *
         position: relative
@@ -138,5 +140,4 @@ export default defineComponent({
 .modalWrapperFade-enter-from .flyout-wrapper,
 .modalWrapperFade-leave-to .flyout-wrapper
   transform: translate3d(110%, 0, 0)
-
 </style>

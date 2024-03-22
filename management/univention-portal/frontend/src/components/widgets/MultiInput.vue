@@ -252,7 +252,7 @@ $groupingStyle
       clip: rect(0,0,0,0)
       border: 0
 
-    .icon-button
+    .button--icon
       flex: 0 0 auto
 
     .multi-input__row__elem

@@ -39,14 +39,13 @@ License with the Debian GNU/Linux or Univention distribution in file
       <footer>
         <button
           type="button"
-          class="secondary"
           @click.prevent="cancel"
         >
           {{ CANCEL }}
         </button>
         <button
           type="submit"
-          class="primary"
+          class="button--primary"
           @click.prevent="finish"
         >
           {{ CHANGE_PASSWORD }}

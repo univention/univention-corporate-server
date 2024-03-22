@@ -24,7 +24,6 @@
           <button
             ref="cancelButon"
             type="button"
-            class="secondary"
             @click="cancel"
           >
             {{ CANCEL }}

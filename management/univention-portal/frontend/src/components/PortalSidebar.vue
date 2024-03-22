@@ -98,11 +98,8 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
-      portalName: 'portalData/portalName',
       activeButton: 'navigation/getActiveButton',
-      activeTabIndex: 'tabs/activeTabIndex',
       menuItems: 'menu/getMenu',
-      tabs: 'tabs/allTabs',
     }),
     activeNotificationButton(): boolean {
       return this.activeButton === 'bell';

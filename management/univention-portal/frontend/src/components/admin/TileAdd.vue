@@ -106,6 +106,7 @@ export default defineComponent({
   border: 0; // TODO: Remove when weird servercaching is fixed
 
   &__button
+    box-shadow: var(--box-shadow)
     margin: 0 0 calc(2 * var(--layout-spacing-unit)) 0
     min-width: var(--app-tile-side-length)
     width: var(--app-tile-side-length)

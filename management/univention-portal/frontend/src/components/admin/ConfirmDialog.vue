@@ -40,21 +40,19 @@
         <button
           ref="cancel"
           type="submit"
-          class="primary"
+          class="button--primary"
           @click.prevent="cancel"
         >
           {{ CANCEL }}
         </button>
         <button
           type="button"
-          class="secondary"
           @click.prevent="finish('remove')"
         >
           {{ DELETE }}
         </button>
         <button
           type="button"
-          class="secondary"
           @click.prevent="finish('unlink')"
         >
           {{ REMOVE }}

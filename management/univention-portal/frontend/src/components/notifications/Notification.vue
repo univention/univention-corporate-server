@@ -46,7 +46,7 @@ License with the Debian GNU/Linux or Univention distribution in file
       </div>
       <icon-button
         :id="`close-notification-${token}`"
-        class="notification__closing-button"
+        class="notification__closing-button button--flat button--flat--outline-style button--icon--circle"
         tabindex="0"
         icon="x"
         :aria-label-prop="DISMISS_NOTIFICATION"
@@ -199,7 +199,6 @@ export default defineComponent({
   border-radius: var(--border-radius-notification)
   margin-bottom: calc(2 * var(--layout-spacing-unit))
   padding: var(--layout-spacing-unit)
-  padding-bottom: var(--layout-spacing-unit)
   padding-left: calc(3 * var(--layout-spacing-unit))
 
   &.notification__dismissing
@@ -207,6 +206,8 @@ export default defineComponent({
       stroke-dashoffset: 283
       transition: stroke-dashoffset linear var(--closing-duration)
 
+  &__closing-button
+    transition: none !important
   &__closing-button:hover, &__closing-button:focus
     .notification__closing-svg
       display: none
@@ -226,17 +227,9 @@ export default defineComponent({
       stroke-linecap: round
       stroke-dasharray: 283
       stroke-dashoffset: 0
-      stroke-width: 0.2rem
+      stroke-width: 0.5rem
       transform-origin: 50% 50%
       transform: scale(1, -1) rotate(90deg)
-
-  .icon-button
-    border: 0.1rem solid transparent
-    align-self: flex-start;
-
-    &:hover, &:focus, &:active
-      background-color: transparent
-      border-color: var(--color-focus)
 
   &--default
     background-color: var(--bgc-popup)

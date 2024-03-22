@@ -50,7 +50,6 @@
           id="multi-select-add-more-button"
           ref="addButton"
           type="button"
-          class="secondary"
           :tabindex="tabindex"
           data-test="multi-select-add-more-button"
           @click.prevent="add"
@@ -67,7 +66,6 @@
         </button>
         <button
           type="button"
-          class="secondary"
           :disabled="!elementsSelected || modelValue.length === 0"
           :tabindex="tabindex"
           data-test="multi-select-remove-button"

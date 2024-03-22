@@ -89,7 +89,7 @@
           v-if="!minified && editMode && showEditButtonWhileDragging"
           icon="edit-2"
           :active-at="activeAtEdit"
-          class="icon-button--admin"
+          class="button--icon--circle button--icon--edit-mode button--shadow"
           :aria-label-prop="EDIT_ENTRY"
           @click="editTile"
         />
@@ -99,7 +99,7 @@
           ref="mover"
           icon="move"
           :active-at="activeAtEdit"
-          class="icon-button--admin"
+          class="button--icon--circle button--icon--edit-mode button--shadow"
           :aria-label-prop="MOVE_ENTRY"
           role="button"
           @click="dragKeyboardClick"
@@ -115,7 +115,7 @@
     <icon-button
       v-if="!minified && isTouchDevice && !editMode"
       icon="info"
-      class="portal-tile__info-button icon-button--admin"
+      class="portal-tile__info-button button--icon--circle"
       :aria-label-prop="SHOW_TOOLTIP"
       @click="toolTipTouchHandler()"
     />
@@ -450,12 +450,14 @@ export default defineComponent({
   &__info-button,
   &__icon-bar
     position: absolute
-    top: -0.75em
-    right: -0.75em
+    top: calc(-3 * var(--layout-spacing-unit-small))
     z-index: $zindex-1
-
-    &--in-modal
-      position relative
+    display: flex
+    gap: var(--layout-spacing-unit)
+  &__icon-bar
+    right: calc(-1 * var(--layout-spacing-unit-small))
+  &__info-button
+    right: calc(-2 * var(--layout-spacing-unit-small))
 
   &__info-button
     font-size: var(--font-size-2)

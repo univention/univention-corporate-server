@@ -34,7 +34,6 @@ License with the Debian GNU/Linux or Univention distribution in file
     @keyup.esc.stop="emptyActiveButton"
   >
     <div
-      :class="'header-button__inner'"
       role="presentation"
     >
       <tabindex-element
@@ -44,7 +43,7 @@ License with the Debian GNU/Linux or Univention distribution in file
         :active-at="['portal', `header-${icon}`]"
         :aria-expanded="isActiveButton"
         :aria-label="ariaLabel"
-        :class="['header-button__button', hoverClass]"
+        class="button--icon button--icon--circle button--icon--header-style button--flat "
       >
         <portal-icon
           :icon="icon"
@@ -90,10 +89,6 @@ export default defineComponent({
       type: Number,
       default: null,
     },
-    hoverClass: {
-      type: String,
-      default: '',
-    },
   },
   computed: {
     isActiveButton(): boolean {
@@ -135,61 +130,10 @@ export default defineComponent({
 
 <style lang="stylus">
 .header-button
-  --font-size-button-icon: var(--font-size-2)
   margin: 0 var(--layout-spacing-unit-small)
-  --bgc: transparent
-  --bgc-state: transparent
-  box-shadow: none
-  border-radius: var(--button-icon-border-radius)
-  height: calc(4.5 * var(--layout-spacing-unit))
-  width: @height
 
   &--is-active
       z-index:1000
-
-      svg
-        color: var(--color-accent)
-
-  &__inner
-    border: none
-    border-radius: inherit
-    display: flex
-    align-items: center
-    justify-content: center
-    transition: var(--button-bgc-transition)
-    background-color: var(--bgc-state)
-    transition: opacity var(--portal-transition-duration)
-    font-size: var(--button-font-size)
-    width: inherit
-    height: inherit
-
-  &__button
-    position: relative
-    font-size: var(--font-size-3)
-    background: none
-    border: none
-    color: white
-    display: flex
-    align-items: center
-    justify-content: center
-    background-color: transparent
-    border: 0.2rem solid rgba(0,0,0,0)
-    padding: var(--layout-spacing-unit)
-    width: inherit
-    height: inherit
-    border-radius: var(--border-radius-circles)
-
-    &:hover,
-    &:focus-visible
-      border-radius: 100%
-
-    &:focus-visible
-      border: 0.2rem solid var(--color-focus)
-      outline: none
-
-    &:hover
-      cursor: pointer
-
       svg
         color: var(--color-accent)
 

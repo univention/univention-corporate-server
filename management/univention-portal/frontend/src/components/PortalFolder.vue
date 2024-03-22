@@ -113,7 +113,7 @@
       <icon-button
         v-if="editMode && !inModal && showEditButtonWhileDragging"
         icon="edit-2"
-        class="portal-folder__edit-button icon-button--admin"
+        class="button--icon--circle button--icon--edit-mode button--shadow"
         :aria-label-prop="EDIT_FOLDER"
         @click="editFolder"
       />
@@ -122,7 +122,7 @@
         :id="`${layoutId}-move-button`"
         ref="mover"
         icon="move"
-        class="portal-tile__edit-button icon-button--admin"
+        class="button--icon--circle button--icon--edit-mode button--shadow"
         :aria-label-prop="MOVE_FOLDER"
         @click="dragKeyboardClick"
         @keydown.esc="dragend"
@@ -196,7 +196,6 @@ export default defineComponent({
     ...mapGetters({
       lastDir: 'dragndrop/getLastDir',
       searchQuery: 'search/searchQuery',
-
     }),
     activeAt(): string[] {
       if (this.editMode) {

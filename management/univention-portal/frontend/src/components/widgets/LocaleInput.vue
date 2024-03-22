@@ -49,7 +49,7 @@
       <icon-button
         :id="`locale-input__icon--${i18nLabel}`"
         icon="globe"
-        class="secondary locale-input__button"
+        class="locale-input__button"
         :has-button-style="true"
         :aria-label-prop="TRANSLATE_TEXT_INPUT"
         :tabindex="tabindex"
@@ -113,9 +113,6 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   computed: {
-    ...mapGetters({
-      locales: 'locale/getAvailableLocales',
-    }),
     TRANSLATE_TEXT_INPUT(): string {
       return _('Edit Translations');
     },

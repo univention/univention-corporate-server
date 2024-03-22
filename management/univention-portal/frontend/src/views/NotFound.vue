@@ -80,15 +80,9 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
-      portalFinalLayout: 'portalData/portalFinalLayout',
-      errorContentType: 'portalData/errorContentType',
-      tabs: 'tabs/allTabs',
-      activeTabIndex: 'tabs/activeTabIndex',
       editMode: 'portalData/editMode',
       tooltip: 'tooltip/tooltip',
-      metaData: 'metaData/getMeta',
       getModalState: 'modal/getModalState',
-      userState: 'user/userState',
     }),
     ADD_CATEGORY(): string {
       return _('Add category');
@@ -118,15 +112,6 @@ export default defineComponent({
 
   @media $mqSmartphone
     padding: calc(4 * var(--layout-spacing-unit)) calc(4 * var(--layout-spacing-unit));
-
-  &__add
-    margin-top: -50px;
-
-  &__add-button
-    vertical-align: top
-
-    svg
-      vertical-align: top
 
   &__title
     display: inline-block
