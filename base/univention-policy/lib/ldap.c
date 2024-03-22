@@ -57,7 +57,7 @@ univention_ldap_parameters_t* univention_ldap_new(void)
 	/* connection defaults */
 	lp->version = LDAP_VERSION3;
 	lp->authmethod = LDAP_AUTH_SIMPLE;
-	lp->start_tls = 2;
+	lp->start_tls = univention_config_get_int("directory/manager/starttls");
 	return lp;
 }
 
@@ -186,7 +186,7 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 		}
 	}
 	if (lp->port == 0 && lp->uri == NULL) {
-		lp->port = 7389;
+		lp->port = univention_config_get_int("ldap/server/port");
 	}
 	if (lp->base == NULL) {
 		lp->base = univention_config_get_string("ldap/base");

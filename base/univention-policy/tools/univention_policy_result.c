@@ -95,6 +95,11 @@ static char* read_password_file(char* filename)
 		}
 		buffer_pos+= count;
 	}
+	if (buffer[buffer_pos - 1] == '\n') {
+		buffer[buffer_pos - 1] = '\0';
+	} else {
+		buffer[buffer_pos] = '\0';
+	}
 	while (close(fd) == -1) {
 		if (errno == EINTR) { /* the call was interrupted by a signal handler */
 			continue; /* try again */

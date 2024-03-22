@@ -1,3 +1,10 @@
+univention-policy (11.0.4-3) unstable; urgency=medium
+
+  * Bug #57173: Respect ldap/server/port directory/manager/starttls in univention-policy
+  * Bug #57173: null terminate password string
+
+ -- Felix Botner <botner@univention.de>  Fri, 22 Mar 2024 14:08:51 +0100
+
 univention-policy (11.0.4-2) unstable; urgency=medium
 
   * Bug #57169: Revert UCR changes, they break univention-policy-result
