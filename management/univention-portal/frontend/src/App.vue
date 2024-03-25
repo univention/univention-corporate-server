@@ -114,7 +114,7 @@ export default defineComponent({
   ::-webkit-scrollbar
     width: 0.25rem
   ::-webkit-scrollbar-track
-    background: transparent
+    background: var(--portal-scrollbar-background)
   ::-webkit-scrollbar-thumb
     background: var(--font-color-contrast-low)
     border-radius: 2rem

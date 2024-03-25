@@ -45,12 +45,10 @@
       <footer>
         <button
           ref="acceptButton"
-          class="primary"
+          class="button--primary"
           @click.stop="setCookies()"
         >
-          <span>
-            {{ ACCEPT }}
-          </span>
+          {{ ACCEPT }}
         </button>
       </footer>
     </modal-dialog>

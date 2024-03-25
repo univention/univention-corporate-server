@@ -77,7 +77,7 @@ export default defineComponent({
       portalLogo: 'portalData/portalLogo',
       portalName: 'portalData/portalName',
       savedScrollPosition: 'tabs/savedScrollPosition',
-      activeButton: 'navigation/getActiveButton',
+      activeTabId: 'tabs/activeTabId',
     }),
     SHOW_PORTAL(): string {
       return _('Show portal');
@@ -88,10 +88,14 @@ export default defineComponent({
   },
   methods: {
     goHome(): void {
-      this.$store.dispatch('tabs/setActiveTab', 0);
-      setTimeout(() => {
-        window.scrollTo(0, this.savedScrollPosition);
-      }, 10);
+      if (this.activeTabId !== 0) {
+        this.$store.dispatch('tabs/setActiveTab', 0);
+        window.requestAnimationFrame(() => {
+          window.scrollTo(0, this.savedScrollPosition);
+        });
+      } else {
+        window.scrollTo(0, 0);
+      }
       this.$store.dispatch('navigation/setActiveButton', '');
     },
   },
@@ -100,12 +104,15 @@ export default defineComponent({
 </script>
 <style lang="stylus">
 .portal-title
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
+  flex: 0 0 auto
+  display: flex
+  align-items: center
+  cursor: pointer
   padding: 0px 10px
   border: 0.2rem solid rgba(0,0,0,0)
+  border-radius: var(--border-radius-interactable)
+  box-sizing: border-box
+  height: 100%
 
   &:focus-visible
     border: 0.2rem solid var(--color-focus)
@@ -113,7 +120,6 @@ export default defineComponent({
 
   &__image
     height: 100%
-    width: calc(var(--portal-header-height) * var(--portal-header-icon-scale))
 
   &__portal-home-icon
     display: none
@@ -126,7 +132,7 @@ export default defineComponent({
         height: @width
 
   &__portal-name
-    font-size: var(--font-size-2);
+    font-size: var(--font-size-2)
     white-space: nowrap
     padding-left: var(--layout-spacing-unit)
 </style>

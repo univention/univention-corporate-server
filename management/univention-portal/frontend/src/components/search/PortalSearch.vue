@@ -77,8 +77,6 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       activeButton: 'navigation/getActiveButton',
-      modalState: 'modal/modalState',
-      searchQuery: 'search/searchQuery',
     }),
     SEARCH(): string {
       return _('search');

@@ -70,13 +70,12 @@
       <footer>
         <button
           type="button"
-          class="secondary"
           @click.prevent="cancel"
         >
           <portal-icon
             icon="x"
           />
-          {{ CANCEL }}
+          <span>{{ CANCEL }}</span>
         </button>
         <button
           type="button"
@@ -85,7 +84,7 @@
           <portal-icon
             icon="check"
           />
-          {{ ADD }}
+          <span>{{ ADD }}</span>
         </button>
       </footer>
     </form>

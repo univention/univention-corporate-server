@@ -76,7 +76,7 @@ License with the Debian GNU/Linux or Univention distribution in file
           </template>
           <icon-button
             icon="x"
-            class="portal-tooltip__close-icon"
+            class="portal-tooltip__close-icon button--flat"
             data-test="portal-tooltip-close-icon"
             :aria-label-prop="CLOSE_TOOLTIP"
             @click="closeToolTip()"
@@ -350,9 +350,8 @@ export default defineComponent({
 
   &__close-icon
     display: none
-
     @media $mqSmartphone
-      display: block
+      display: flex
       margin-left: auto
 
   &__arrow

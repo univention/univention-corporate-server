@@ -30,9 +30,11 @@ License with the Debian GNU/Linux or Univention distribution in file
   <region
     id="portal-header"
     role="banner"
-    :class="{ 'portal-header__tabs-overflow': tabsOverflow}"
+    :class="{
+      'portal-header--tabs-overflow': tabsOverflow,
+      'portal-header--edit-mode': editMode,
+    }"
     class="portal-header"
-    :style="SideNavopenExtraPadding"
   >
     <portal-title />
 
@@ -42,26 +44,35 @@ License with the Debian GNU/Linux or Univention distribution in file
       data-test="header-tabs"
     >
       <header-tab
-        v-for="(item, index) in tabs"
-        :key="index"
-        :idx="index + 1"
-        :tab-label="item.tabLabel"
-        :is-active="activeTabIndex == index + 1"
-        :background-color="item.backgroundColor"
-        :logo="item.logo"
+        v-for="tab in tabs"
+        :key="tab.id"
+        :tab-id="tab.id"
+        :tab-label="tab.tabLabel"
+        :is-active="activeTabId === tab.id"
+        :background-color="tab.backgroundColor"
+        :logo="tab.logo"
         :hidden="tabsOverflow"
       />
     </div>
 
-    <button
+    <div
       v-if="editMode"
-      class="primary portal-header__edit-mode-label"
-      :style="inEditModeAndSideNavopenPositioningAdjustment"
-      :aria-label="STOP_EDIT_PORTAL"
-      @click="stopEditMode"
+      class="edit-mode-wrapper"
     >
-      {{ EDIT_MODE }}
-    </button>
+      <div class="edit-mode-wrapper-divider"></div>
+      <tabindex-element
+        id="exit-edit-mode-button"
+        class="button--primary button--shadow"
+        :active-at="['portal']"
+        :aria-label="STOP_EDIT_PORTAL"
+        tag="button"
+        type="button"
+        @click="stopEditMode"
+      >
+        {{ EDIT_MODE }}
+      </tabindex-element>
+      <div class="edit-mode-wrapper-divider edit-mode-wrapper-divider-right"></div>
+    </div>
     <div
       v-if="editMode"
       class="portal-header__right"
@@ -121,7 +132,10 @@ License with the Debian GNU/Linux or Univention distribution in file
     </template>
   </region>
   <choose-tabs v-if="activeButton === 'copy'" />
-  <div id="announcement-container">
+  <div
+    v-if="activeTabId === 0 && !editMode"
+    id="announcement-container"
+  >
     <announcement
       v-for="announcement in portalAnnouncements"
       :key="announcement.name"
@@ -147,17 +161,17 @@ import ChooseTabs from '@/components/ChooseTabs.vue';
 import PortalTitle from '@/components/header/PortalTitle.vue';
 import IconButton from '@/components/globals/IconButton.vue';
 
-import getScrollbarWidth from '@/jsHelper/getScrollbar';
 import Announcement from '@/components/widgets/Announcement.vue';
+import TabindexElement from '@/components/activity/TabindexElement.vue';
 
 interface PortalHeaderData {
   tabsOverflow: boolean,
-  scrollbarWidth: number,
 }
 
 export default defineComponent({
   name: 'PortalHeader',
   components: {
+    TabindexElement,
     Announcement,
     HeaderButton,
     HeaderTab,
@@ -170,14 +184,11 @@ export default defineComponent({
   data(): PortalHeaderData {
     return {
       tabsOverflow: false,
-      scrollbarWidth: 0,
     };
   },
   computed: {
     ...mapGetters({
-      portalLogo: 'portalData/portalLogo',
-      portalName: 'portalData/portalName',
-      activeTabIndex: 'tabs/activeTabIndex',
+      activeTabId: 'tabs/activeTabId',
       tabs: 'tabs/allTabs',
       savedScrollPosition: 'tabs/savedScrollPosition',
       numTabs: 'tabs/numTabs',
@@ -210,12 +221,6 @@ export default defineComponent({
     MENU(): string {
       return _('Menu');
     },
-    SideNavopenExtraPadding(): string {
-      return this.activeButton === 'settings' || this.activeButton === 'bell' ? `padding-right: calc(2 * var(--layout-spacing-unit) + ${this.scrollbarWidth}px)` : '';
-    },
-    inEditModeAndSideNavopenPositioningAdjustment(): string {
-      return this.activeButton === 'settings' ? `right: calc(50% - 75px + ${this.scrollbarWidth / 2}px)` : '';
-    },
   },
   watch: {
     numTabs(): void {
@@ -225,7 +230,6 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.scrollbarWidth = getScrollbarWidth();
     this.$nextTick(() => {
       window.addEventListener('resize', this.updateOverflow);
     });
@@ -249,16 +253,10 @@ export default defineComponent({
         name: 'ChooseTabs',
       });
     },
-    goHome(): void {
-      this.$store.dispatch('tabs/setActiveTab', 0);
-      setTimeout(() => {
-        window.scrollTo(0, this.savedScrollPosition);
-      }, 10);
-      this.$store.dispatch('navigation/setActiveButton', '');
-    },
     stopEditMode(): void {
       this.$store.dispatch('portalData/setEditMode', false);
       this.$store.dispatch('navigation/setActiveButton', '');
+      window.requestAnimationFrame(() => { window.scrollTo(0, 0); });
     },
   },
 });
@@ -292,34 +290,50 @@ export default defineComponent({
     display: flex;
     align-items: center;
 
-  &__edit-mode-label
-    cursor: pointer
-    white-space: nowrap
-    position: absolute
-    top: calc(var(--layout-height-header) + var(--layout-spacing-unit))
-    right: calc(50% - 75px)
-    text-transform: initial
-
-    //@media only screen and (max-width: 884px) //special mediaquery, since opened sidenav can cause layout irritaions
-    //  top: calc(var(--layout-height-header) - 62%)
-    //  transition: top 0.1s ease-in;
+.edit-mode-wrapper
+  position: fixed
+  left: 0
+  top: calc(var(--layout-height-header) + var(--layout-spacing-unit))
+  right: 0
+  pointer-events: none
+  display: flex
+  gap: var(--layout-spacing-unit)
+  flex: 1 0 auto
+  align-items: center
+  &-divider
+    flex: 1 1 0
+    &-right
+      min-width: 23rem
+  button
+    pointer-events: all
+@media $mqSmartphone
+  .edit-mode-wrapper
+    position: relative
+    top: 0
+    &-divider-right
+      min-width: auto
 
 #header-button-copy
     display: none
 
-.portal-header__tabs-overflow
-  .portal-header
-    &__tabs
+.portal-header
+  &--tabs-overflow
+    .portal-header__tabs
       visibility: hidden
-  #header-button-copy
+    #header-button-copy
       display: flex
+  &--edit-mode
+    .portal-header__tabs
+      display: none
 
 #announcement-container
   display: flex
-  padding: 0.5rem
+  padding: var(--layout-spacing-unit)
   flex-direction: column
-  gap: 0.5rem
+  gap: var(--layout-spacing-unit)
   position: relative
+  &:empty
+    display: none
 
 #announcement-container:has(.announcement:not(.announcement--sticky)) .announcement--sticky
   .announcement__closeWrapper

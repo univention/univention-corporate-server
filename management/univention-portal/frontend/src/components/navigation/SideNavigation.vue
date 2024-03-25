@@ -47,9 +47,8 @@
           <div class="portal-sidenavigation--username">
             {{ userState.displayName }}
           </div>
-          <div
+          <button
             id="loginButton"
-            ref="loginButton"
             class="portal-sidenavigation__logout-link"
             tabindex="0"
             role="button"
@@ -57,24 +56,19 @@
             @keydown.enter="logout"
             @keydown.esc="closeNavigation"
           >
-            <span>
-              {{ LOGOUT }}
-            </span>
-          </div>
+            {{ LOGOUT }}
+          </button>
         </div>
       </div>
       <button
         v-else
         id="loginButton"
-        ref="loginButton"
-        class="primary portal-sidenavigation__link portal-sidenavigation__login"
+        class="button--primary portal-sidenavigation__link portal-sidenavigation__login"
         @click="login"
         @keydown.enter="login"
         @keydown.esc="closeNavigation"
       >
-        <span>
-          {{ LOGIN }}
-        </span>
+        {{ LOGIN }}
       </button>
     </div>
     <div
@@ -160,12 +154,13 @@
       </div>
     </div>
     <div
+      v-if="userState.username"
       class="divider"
     />
     <button
       v-if="userState.mayEditPortal"
       ref="editModeButton"
-      class="primary portal-sidenavigation__link portal-sidenavigation__edit-mode"
+      class="button--primary portal-sidenavigation__link"
       data-test="openEditmodeButton"
       @click="startEditMode"
       @keydown.esc="closeNavigation"
@@ -223,9 +218,7 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       menuLinks: 'menu/getMenu',
-      editMode: 'portalData/editMode',
       userState: 'user/userState',
-      meta: 'metaData/getMeta',
     }),
     LOGOUT(): string {
       return _('Logout');
@@ -242,6 +235,9 @@ export default defineComponent({
     CHANGE_LANGUAGE(): string {
       return _('Change language');
     },
+  },
+  created() {
+    this.$store.dispatch('modal/disableBodyScrolling');
   },
   mounted(): void {
     this.$store.dispatch('activity/setRegion', 'portal-sidenavigation');
@@ -278,6 +274,7 @@ export default defineComponent({
       (this.$refs.editModeButton as HTMLElement).blur();
       this.$store.dispatch('navigation/setActiveButton', '');
       this.$store.dispatch('tabs/setActiveTab', 0);
+      window.requestAnimationFrame(() => { window.scrollTo(0, 0); });
     },
     setFadeClass(): string {
       let ret = '';
@@ -323,27 +320,21 @@ $userRow = 6rem
 
   &__link
     position: relative
-    left: 5%
-    width: fit-content
+    left: calc(2*var(--layout-spacing-unit))
     margin-top: var(--layout-spacing-unit)
     margin-bottom: calc(2*var(--layout-spacing-unit))
-    border: 0.2rem solid rgba(0,0,0,0)
-
-    &:focus-visible
-      border: 0.2rem solid var(--color-focus);
-      outline: 0
+    align-self: flex-start
 
   &__user-row
     display: flex
     height: $userRow
-    font-weight: var(--font-weight-bold)
 
   &__user-icon
     position: relative
     overflow: hidden;
     border-radius: var(--border-radius-apptile)
     margin: 1rem
-    border: 1px solid var(--portal-tab-background)
+    border: 1px solid var(--portal-sidenav-user-icon)
     width: 3rem
     height: @width
     margin: 24px 12px 24px 20px
@@ -354,7 +345,7 @@ $userRow = 6rem
       height: 3rem
       width: @height
       border-radius: var(--border-radius-circles)
-      color: var(--portal-tab-background)
+      color: var(--portal-sidenav-user-icon)
       margin: 0
 
   &__user-text-content
@@ -370,29 +361,17 @@ $userRow = 6rem
 
   &--username
     font-weight: bold
+    font-size: var(--font-size-html)
 
   &__logout-link
-    cursor: pointer
-    background-color: rgba(0,0,0,0)
-    color: var(--font-color-contrast-high)
-    font-size: var(--font-size-4)
-    border-bottom: 0.2rem solid rgba(0,0,0,0);
-    font-weight: normal
-    width: min-content
-
-    &:hover
-      text-decoration: underline
+    scale: 85%
+    margin-left: -0.5rem
 
     &:focus-visible span
       text-decoration: none
 
   &__login
-    width: 5rem
     margin-top: calc(2*var(--layout-spacing-unit))
-    background-color: var(--button-primary-bgc)
-
-    &:hover
-      background-color: var(--button-primary-bgc-hover)
 
     span
         margin: 0.2rem
@@ -417,21 +396,13 @@ $userRow = 6rem
 
   &__menu-subItem
     margin-left: 0
+    transition: background-color var(--portal-transition-duration)
     &--parent
       text-transform: uppercase
       padding-left: 4rem
       margin-bottom: 1rem
     &:hover
       background-color: var(--bgc-user-menu-item-hover)
-
-  &__edit-mode
-    width: fit-content
-
-    span
-      margin: 0.2rem
-
-    &:focus-visible span
-      margin: 0
 
   &__fade-left-right,
   &__fade-right-left
@@ -467,10 +438,13 @@ $userRow = 6rem
 }
 
 .divider
-    background-color: var(--bgc-user-menu-item-hover)
-    width: 90%
-    height: 2px
-    position: relative
-    left: 5%
-    margin-bottom: 8px
+  flex: 0 0 auto
+  background-color: var(--bgc-user-menu-item-hover)
+  width: 90%
+  height: 2px
+  position: relative
+  left: calc(2*var(--layout-spacing-unit))
+  margin-bottom: var(--layout-spacing-unit)
+  &--bottom
+    margin-top: var(--layout-spacing-unit)
 </style>

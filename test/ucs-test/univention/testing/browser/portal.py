@@ -105,7 +105,7 @@ class UCSPortalEditMode:
         self.page.get_by_label(_('Internal name *')).fill(internal_name)
 
         self.fill_localization_dialog(name, 'Name')
-        self.page.get_by_role('button', name=_('Save')).click()
+        self.page.get_by_role('dialog', name='Add category').get_by_role('button', name='Save').click()
 
         expect(self.page.get_by_text(_('Category successfully added'))).to_be_visible()
 
@@ -122,7 +122,7 @@ class UCSPortalEditMode:
 
         self.page.locator('[data-test="localeInput--Links"]').fill(link)
 
-        self.page.get_by_role('button', name=_('Save')).click()
+        self.page.get_by_role('dialog', name='Create a new Entry').get_by_role('button', name='Save').click()
 
         expect(self.page.get_by_text(_('Entry successfully added'))).to_be_visible()
 
@@ -134,7 +134,7 @@ class UCSPortalEditMode:
         self.page.get_by_label(_('Internal name *')).fill(internal_name)
 
         self.fill_localization_dialog(name, 'Name')
-        self.page.get_by_role('button', name=_('Save')).click()
+        self.page.get_by_role('dialog', name='Create a new folder').get_by_role('button', name='Save').click()
 
         expect(self.page.get_by_text('Folder successfully added')).to_be_visible()
 

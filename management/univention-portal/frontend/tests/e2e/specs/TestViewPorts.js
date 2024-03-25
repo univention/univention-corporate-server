@@ -44,7 +44,7 @@ describe('Logo', () => {
         cy.viewport(size, orientation);
 
         cy.visit('/');
-        cy.get('main.cookie-banner + footer button.primary').click();
+        cy.get('main.cookie-banner + footer button.button--primary').click();
         // reactivate after fix
         // cy.get('[data-test="navigationbutton"]').should('be.visible');
       });

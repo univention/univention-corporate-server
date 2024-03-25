@@ -655,18 +655,15 @@ define([
 				return;
 			}
 
-			if (tools.status().numOfNotifications > 0) {
-				this.set('class', 'umcHeader umcHeader--umc');
-				this.notificationsButton.show();
-			} else if (tools.status().numOfNotifications === 0) {
-				this.notificationsButton.hide();
+			var hasNotifications = tools.status('numOfNotifications') > 0;
+			domClass.toggle(this.notificationsButton.domNode, 'dijitDisplayNone', !hasNotifications);
+			if (!hasNotifications) {
 				this.notificationsButton.set('checked', false);
-				if (tools.status('numOfTabs') === 0) {
-					this.set('class', 'umcHeader umcHeader--umc umcHeader--hidden');
-				} else if (tools.status('numOfTabs') > 0) {
-					this.set('class', 'umcHeader umcHeader--umc');
-				}
 			}
+
+			var hasTabs = tools.status('numOfTabs') > 0;
+			var hideHeader = !hasNotifications && !hasTabs;
+			domClass.toggle(this.domNode, 'umcHeader--hidden', hideHeader);
 		},
 
 		mobileTabsView: false,
@@ -946,9 +943,11 @@ define([
 			//		The following properties may be given:
 			//		* username, password: if both values are given, the UMC tries to directly
 			//		  with these credentials.
-			//		* overview (Boolean): Specifies whether or not the overview of available modules
+			//		* overview (Boolean): Specifies whether the overview of available modules
 			//		  and the search is displayed or not. (detault: true)
-			//		* menu (Boolean): Specifies whether or not the hamburger menu is displayed. (default: true)
+			//		* menu (Boolean): Specifies whether the hamburger menu is displayed. (default: true)
+			//		* header: Can be set to 'try-hide'. When UMC modules are opened in an iframe this
+			//		  property is used to apply special behavior to the UMC header.
 
 			// username will be overridden by final authenticated username
 			tools.status('username', props.username || tools.status('username'));
@@ -1003,9 +1002,9 @@ define([
 				this.setupTouchDevices();
 			}
 
-            if (_headerTryHide) {
-                domClass.add(baseWin.body(), 'umcHeaderTryHide');
-            }
+			if (_headerTryHide) {
+				domClass.add(baseWin.body(), 'umcHeaderTryHide');
+			}
 
 			// set up fundamental layout parts...
 
@@ -1030,17 +1029,14 @@ define([
 			});
 
 			// the header
-			var umcHeaderClass = 'umcHeader umcHeader--umc';
-			if (_headerTryHide) {
-				umcHeaderClass = 'umcHeader umcHeader--umc umcHeader--hidden';
-			}
 			this._header = new UmcHeader({
 				id: 'umcHeader',
-				'class': umcHeaderClass,
+				'class': 'umcHeader umcHeader--umc',
 				_tabController: this._tabController,
 				_tabContainer: this._tabContainer,
 				switchToOverview: lang.hitch(this, 'switchToOverview')
 			});
+			domClass.toggle(this._header.domNode, 'umcHeader--hidden', _headerTryHide);
 
 			this.registerTabSwitchHandling();
 
@@ -1347,7 +1343,7 @@ define([
 			// set window title
 			window.document.title = tools.status('title') || lang.replace('{0} - {1}', [tools.status('fqdn'), window.document.title]);
 			if (tools.status('favicon')) {
-			    (query('link[rel="shortcut icon"]')[0] || query('link[rel="icon"]')[0] || {}).href = tools.status('favicon');
+				(query('link[rel="shortcut icon"]')[0] || query('link[rel="icon"]')[0] || {}).href = tools.status('favicon');
 			}
 
 			// setup menus

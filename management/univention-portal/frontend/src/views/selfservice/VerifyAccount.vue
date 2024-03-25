@@ -40,7 +40,7 @@
           v-if="formValues.username && formValues.token"
           type="submit"
           :tabindex="tabindex"
-          class="primary"
+          class="button--primary"
           @click.prevent="verifyAccount"
         >
           {{ VERIFY_ACCOUNT }}

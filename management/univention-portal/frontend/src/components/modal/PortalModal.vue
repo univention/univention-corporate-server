@@ -91,7 +91,6 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
-      modalState: 'modal/getModalState',
       modalComponent: 'modal/getModalComponent',
       modalProps: 'modal/getModalProps',
       modalStubborn: 'modal/getModalStubborn',

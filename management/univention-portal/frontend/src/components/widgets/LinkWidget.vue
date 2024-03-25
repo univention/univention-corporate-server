@@ -61,7 +61,7 @@
       </div>
       <div
         v-if="modelValueData.length > 1"
-        class="link-widget__remove modal-admin__button"
+        class="link-widget__remove"
       >
         <icon-button
           icon="trash"
@@ -73,21 +73,20 @@
         />
       </div>
     </div>
-    <div class="modal-admin__button">
-      <button
-        ref="addButton"
-        type="button"
-        class="modal-admin__button--inner"
-        data-test="add-field"
-        :tabindex="tabindex"
-        @click.prevent="addField()"
-      >
-        <portal-icon
-          icon="plus"
-        />
+    <button
+      ref="addButton"
+      type="button"
+      data-test="add-field"
+      :tabindex="tabindex"
+      @click.prevent="addField()"
+    >
+      <portal-icon
+        icon="plus"
+      />
+      <span>
         {{ ADD_LINK }}
-      </button>
-    </div>
+      </span>
+    </button>
   </div>
 </template>
 
@@ -208,6 +207,7 @@ export { LocaleAndValue };
     flex: 0 0 auto
 
   &__input
+    flex: 1 1 auto
     margin-left: var(--layout-spacing-unit)
     margin-right: var(--layout-spacing-unit)
 

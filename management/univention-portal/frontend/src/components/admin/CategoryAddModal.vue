@@ -38,7 +38,7 @@
       <button
         id="category-add-modal-button-create-category"
         tabindex="0"
-        class="secondary tile-add-modal-button"
+        class="tile-add-modal-button"
         @click="openModal('createCategory')"
       >
         {{ ADD_NEW_CATEGORY }}
@@ -46,7 +46,7 @@
       <button
         id="category-add-modal-button-existing-category"
         tabindex="0"
-        class="secondary tile-add-modal-button"
+        class="tile-add-modal-button"
         @click="openModal('addCategory')"
       >
         {{ ADD_EXISTING_CATEGORY }}

@@ -98,11 +98,8 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
-      portalName: 'portalData/portalName',
       activeButton: 'navigation/getActiveButton',
-      activeTabIndex: 'tabs/activeTabIndex',
       menuItems: 'menu/getMenu',
-      tabs: 'tabs/allTabs',
     }),
     activeNotificationButton(): boolean {
       return this.activeButton === 'bell';
@@ -133,7 +130,7 @@ export default defineComponent({
 
 .slide-enter-active,
 .slide-leave-active {
-  transition: transform 0.15s ease;
+  transition: transform var(--portal-transition-duration) ease
 }
 
 .slide-enter-from,

@@ -29,7 +29,11 @@
 <template>
   <div
     ref="portal"
-    class="portal tile-animation"
+    class="portal"
+    :class="{
+      'portal--play-tile-animation': playTileAnimation,
+      'portal--edit-mode': editMode,
+    }"
   >
     <screen-reader-announcer />
     <portal-background />
@@ -40,7 +44,7 @@
     />
     <region
       v-if="!errorContentType"
-      v-show="!activeTabIndex"
+      v-show="!activeTabId"
       id="portalCategories"
       :aria-role="portalRole"
       class="portal-categories"
@@ -64,30 +68,32 @@
 
       <h2
         v-if="editMode"
-        class="portal-categories__title"
+        class="portal-category__title"
       >
         <icon-button
           icon="plus"
-          class="portal-categories__add-button icon-button--admin"
+          class="button--icon--circle button--icon--edit-mode button--shadow"
           :aria-label-prop="ADD_CATEGORY"
           @click="addCategory"
         />
-        {{ ADD_CATEGORY }}
+        <span>
+          {{ ADD_CATEGORY }}
+        </span>
       </h2>
     </region>
 
     <div
-      v-show="activeTabIndex"
+      v-show="activeTabId"
       class="portal-iframes"
       data-test="portal-iframes"
     >
       <portal-iframe
-        v-for="(item, index) in tabs"
-        :key="index"
-        :link="item.iframeLink"
-        :is-active="activeTabIndex === index + 1"
-        :tab-id="index"
-        :title="item.tabLabel"
+        v-for="tab in tabs"
+        :key="tab.id"
+        :link="tab.iframeLink"
+        :is-active="activeTabId === tab.id"
+        :tab-id="tab.id"
+        :title="tab.tabLabel"
       />
     </div>
 
@@ -143,18 +149,21 @@ export default defineComponent({
     ScreenReaderAnnouncer,
     PortalError,
   },
+  data(): {playTileAnimation: boolean} {
+    return {
+      playTileAnimation: true,
+    };
+  },
   computed: {
     ...mapGetters({
       portalFinalLayoutFiltered: 'portalData/portalFinalLayoutFiltered',
       portalLoaded: 'portalData/loaded',
       errorContentType: 'portalData/errorContentType',
       tabs: 'tabs/allTabs',
-      activeTabIndex: 'tabs/activeTabIndex',
+      activeTabId: 'tabs/activeTabId',
       editMode: 'portalData/editMode',
       tooltip: 'tooltip/tooltip',
-      metaData: 'metaData/getMeta',
       inFolderModal: 'modal/inFolderModal',
-      userState: 'user/userState',
     }),
     ADD_CATEGORY(): string {
       return _('Add category');
@@ -171,13 +180,7 @@ export default defineComponent({
   },
   mounted() {
     const portal = this.$refs.portal as HTMLDivElement;
-    function removeAnimation(event: AnimationEvent) {
-      if (event.animationName === 'fadeIn') {
-        portal.classList.remove('tile-animation');
-        portal.removeEventListener('animationend', removeAnimation);
-      }
-    }
-    portal.addEventListener('animationend', removeAnimation);
+    portal.addEventListener('animationend', this.removeAnimation);
   },
   methods: {
     addCategory() {
@@ -185,6 +188,13 @@ export default defineComponent({
         name: 'CategoryAddModal',
       });
       this.$store.dispatch('activity/setRegion', 'category-add-modal');
+    },
+    removeAnimation(event: AnimationEvent) {
+      const portal = this.$refs.portal as HTMLDivElement;
+      if (event.animationName === 'fadeIn') {
+        this.playTileAnimation = false;
+        portal.removeEventListener('animationend', this.removeAnimation);
+      }
     },
   },
 });
@@ -197,20 +207,6 @@ export default defineComponent({
 
   @media $mqSmartphone
     padding: calc(4 * var(--layout-spacing-unit)) calc(4 * var(--layout-spacing-unit));
-
-  &__add
-    margin-top: -50px;
-
-  &__add-button
-    vertical-align: top
-
-    svg
-      vertical-align: top
-
-  &__title
-    display: inline-block
-    margin-top: 0
-    margin-bottom: calc(6 * var(--layout-spacing-unit))
 
   &__menu-wrapper
     width: 100%
@@ -233,10 +229,13 @@ export default defineComponent({
     right: 15px
     margin-top: 2px
 
+.portal--edit-mode .portal-categories
+  padding-top: calc(6 * var(--layout-spacing-unit))
+
 .portal-iframes
   position: fixed
   top: var(--portal-header-height)
-  border: 0 solid var(--portal-tab-background)
+  border: 0 solid var(--portal-iframe-border)
   border-top-width: 0.1rem
   right: 0
   bottom: 0
@@ -244,14 +243,14 @@ export default defineComponent({
 
 @keyframes fadeIn
   from
-    opacity: 0%
+    opacity: 0
     scale: 80%
 
   to
-    opacity: 100%
+    opacity: 1
     scale: 100%
 
-.tile-animation .portal-tile__box
+.portal--play-tile-animation .portal-tile__box
   animation: fadeIn
   animation-duration: 0.25s
 </style>

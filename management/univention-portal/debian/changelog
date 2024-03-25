@@ -1,3 +1,9 @@
+univention-portal (6.0.6) unstable; urgency=medium
+
+  * Bug #57083: add QA feedback to the latest portal style changes
+
+ -- Christian Castens <castens@univention.de>  Fri, 15 Mar 2024 15:35:00 +0100
+
 univention-portal (6.0.5) unstable; urgency=medium
 
   * Bug #56604: use Python 3.11 code annotations

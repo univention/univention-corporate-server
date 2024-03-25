@@ -39,17 +39,17 @@ License with the Debian GNU/Linux or Univention distribution in file
       >
         <div
           v-for="(tab, index) in tabs"
-          :key="index"
+          :key="tab.id"
           class="choose-tab"
-          :class="{'choose-tab--active': isActiveTab(index)}"
+          :class="{'choose-tab--active': activeTabId === tab.id}"
         >
           <div
-            :id="`choose-tab__button--${index + 1}`"
-            :ref="activeTab === 0 && index === 0 || activeTab === index + 1 ? 'currentTab' : ''"
+            :id="`choose-tab__button--${tab.id}`"
+            :ref="(activeTabId === 0 && index === 0) || activeTabId === tab.id ? 'currentTab' : ''"
             class="choose-tab__button"
             tabindex="0"
-            @click.prevent="gotoTab(index)"
-            @keydown.enter.prevent="gotoTab(index)"
+            @click.prevent="gotoTab(tab.id)"
+            @keydown.enter.prevent="gotoTab(tab.id)"
           >
             <div
               class="choose-tab__logo-wrapper"
@@ -64,7 +64,7 @@ License with the Debian GNU/Linux or Univention distribution in file
             </div>
             {{ tab.tabLabel }}
             <span
-              v-if="isActiveTab(index)"
+              v-if="activeTabId === tab.id"
               class="sr-only sr-only-mobile"
             >
               {{ ACTIVE }}
@@ -72,10 +72,11 @@ License with the Debian GNU/Linux or Univention distribution in file
           </div>
           <icon-button
             icon="x"
+            class="button--flat button--icon--tab-style"
             :active-at="['modal']"
             :aria-label-prop="ariaLabelCloseTab(tab.tabLabel)"
-            :data-test="`chooseTabCloseButton--${index + 1}`"
-            @click="closeTab(index)"
+            :data-test="`chooseTabCloseButton--${tab.id}`"
+            @click="closeTab(tab.id)"
           />
         </div>
       </modal-dialog>
@@ -102,7 +103,7 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       tabs: 'tabs/allTabs',
-      activeTab: 'tabs/activeTabIndex',
+      activeTabId: 'tabs/activeTabId',
     }),
     CHOOSE_TAB(): string {
       return _('Choose a tab');
@@ -112,8 +113,8 @@ export default defineComponent({
     },
   },
   watch: {
-    activeTab(newIdx: number) {
-      if (newIdx === 0) {
+    activeTabId(newId: number) {
+      if (newId === 0) {
         this.cancel();
       }
     },
@@ -130,21 +131,18 @@ export default defineComponent({
     ariaLabelCloseTab(tabLabel: string): string {
       return `${tabLabel} ${_('Close')}`;
     },
-    closeTab(index: number) {
-      this.$store.dispatch('tabs/deleteTab', index + 1);
+    closeTab(id: number) {
+      this.$store.dispatch('tabs/deleteTab', id);
       if (this.tabs.length === 0) {
         this.$store.dispatch('navigation/setActiveButton', '');
       }
     },
-    gotoTab(index: number) {
-      this.$store.dispatch('tabs/setActiveTab', index + 1);
+    gotoTab(id: number) {
+      this.$store.dispatch('tabs/setActiveTab', id);
       this.cancel();
     },
     cancel() {
       this.$store.dispatch('navigation/setActiveButton', '');
-    },
-    isActiveTab(index: number): boolean {
-      return this.activeTab === index + 1;
     },
   },
 });
@@ -154,9 +152,15 @@ export default defineComponent({
   display: flex
   align-items: center
   position:relative
-  margin: 2px 0
+  margin: var(--layout-spacing-unit-small) 0
+  padding: var(--layout-spacing-unit)
   border-radius: var(--border-radius-interactable)
   width: 20rem
+  transition: background-color var(--portal-transition-duration) ease
+  background: var(--portal-tab-background)
+
+  &:hover
+    background-color: var(--portal-tab-background-hover)
 
   @media $mqSmartphone
     max-width: 100%
@@ -165,25 +169,21 @@ export default defineComponent({
     margin-top: 0.2rem
 
   &--active
-    background-color: var(--bgc-apptile-default)
-
-    & ^[0]__logo-wrapper
-      background-color: none
+    background-color: var(--portal-tab-background-active)
 
   &__button
     display: flex
     align-items: center
     cursor: pointer
     border: 2px solid transparent
-    padding: var(--layout-spacing-unit)
-    padding-left: 0
     width: 100%
 
-    &:focus
+    &:focus-visible
       outline: 0
 
       &:before
         border-color: var(--color-focus)
+        border-radius: var(--button-border-radius)
 
     &:before
       content: ''
@@ -192,7 +192,7 @@ export default defineComponent({
       position: absolute
       left: 0
       right: 0
-      border: 2px solid transparent
+      border: 0.2rem solid transparent
 
   &__img
     width: 80%
@@ -203,7 +203,7 @@ export default defineComponent({
   &__logo-wrapper
     background-color: var(--bgc-apptile-default)
     border-radius: var(--border-radius-apptile)
-    height: calc(var(--portal-header-height) * var(--portal-header-icon-scale))
+    height: var(--button-size)
     width: @height
     min-width: @height
     display: flex
@@ -211,6 +211,6 @@ export default defineComponent({
     justify-content: center
     margin: 0 var(--layout-spacing-unit) 0 0
 
-  .icon-button
+  .button--icon
     margin-left: var(--layout-spacing-unit)
 </style>
