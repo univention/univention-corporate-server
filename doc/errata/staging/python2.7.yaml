@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: python2.7
+fix: 2.7.13-2+deb9u9
+desc: |
+ This update addresses the following issue:
+ 2.7.13-2+deb9u9 (Sun, 24 Mar 2024 20:10:37 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2024-0450: quoted-overlap zipbomb DoS
+bug: [57182]
+cve:
+- CVE-2024-0450
