@@ -40,6 +40,7 @@
 
 a2ensite univention-udm.conf
 service apache2 reload
+create_logfile /var/log/univention/directory-manager-rest.log "root:adm" 640
 
 call_joinscript 22univention-directory-manager-rest.inst
 
