@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: postgresql-9.6
+fix: 9.6.24-0+deb9u6
+desc: |
+ This update addresses the following issue:
+
+ Debian update 9.6.24-0+deb9u6
+ 9.6.24-0+deb9u6 (Mon, 18 Mar 2024 22:21:00 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2024-0985: REFRESH MATERIALIZED VIEW CONCURRENTLY privilege escalation
+bug: [57186]
+cve:
+- CVE-2024-0985
