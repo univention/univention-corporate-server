@@ -6,10 +6,17 @@ src: python3.7
 fix: 3.7.3-2+deb10u7
 desc: |
  This update addresses the following issues:
- 3.7.3-2+deb10u7 (Sat, 23 Mar 2024 18:12:05 +0200)
- * Non-maintainer upload by the LTS Team.
- * CVE-2023-6597: tempfile.TemporaryDirectory failure to remove dir
- * CVE-2024-0450: quoted-overlap zipbomb DoS
+ * CVE-2023-6597: An issue was found in the `CPython`
+   `tempfile.TemporaryDirectory` class. The `tempfile.TemporaryDirectory`
+   class would dereference symlinks during cleanup of `permissions-related`
+   errors. This means users which can run privileged programs are potentially
+   able to modify permissions of files referenced by symlinks in some
+   circumstances.
+ * CVE-2024-0450: An issue was found in the `CPython` `zipfile` module The
+   zipfile module is vulnerable to `quoted-overlap` `zip-bombs` which exploit
+   the zip format to create a `zip-bomb` with a high compression ratio. The
+   fixed versions of `CPython` makes the `zipfile` module reject zip archives
+   which overlap entries in the archive.
 bug: [57177]
 cve:
 - CVE-2023-6597
