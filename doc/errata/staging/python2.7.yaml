@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: python2.7
+fix: 2.7.16-2+deb10u4
+desc: |
+ This update addresses the following issue:
+ 2.7.16-2+deb10u4 (Sat, 23 Mar 2024 20:55:36 +0200)
+ * Non-maintainer upload by the LTS Team.
+ * CVE-2024-0450: quoted-overlap zipbomb DoS
+bug: [57178]
+cve:
+- CVE-2024-0450
