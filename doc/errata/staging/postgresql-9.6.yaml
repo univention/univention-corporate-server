@@ -5,12 +5,16 @@ scope: ucs_4.4-0-errata4.4-9
 src: postgresql-9.6
 fix: 9.6.24-0+deb9u6
 desc: |
- This update addresses the following issue:
-
- Debian update 9.6.24-0+deb9u6
- 9.6.24-0+deb9u6 (Mon, 18 Mar 2024 22:21:00 +0200)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2024-0985: REFRESH MATERIALIZED VIEW CONCURRENTLY privilege escalation
+ This update addresses the following issue: * CVE-2024-0985: Late privilege
+   drop in `REFRESH MATERIALIZED VIEW CONCURRENTLY` in PostgreSQL allows an
+   object creator to execute arbitrary `SQL` functions as the command issuer.
+   The command intends to run `SQL` functions as the owner of the
+   materialized view, enabling safe refresh of untrusted materialized views.
+   The victim is a superuser or member of one of the attacker's roles. The
+   attack requires luring the victim into running `REFRESH MATERIALIZED VIEW
+   CONCURRENTLY` on the attacker's materialized view. As part of exploiting
+   this vulnerability, the attacker creates functions that use `CREATE RULE`
+   to convert the internally-built temporary table to a view.
 bug: [57186]
 cve:
 - CVE-2024-0985
