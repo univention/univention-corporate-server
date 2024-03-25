@@ -5,10 +5,12 @@ scope: ucs_4.4-0-errata4.4-9
 src: python2.7
 fix: 2.7.13-2+deb9u9
 desc: |
- This update addresses the following issue:
- 2.7.13-2+deb9u9 (Sun, 24 Mar 2024 20:10:37 +0200)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2024-0450: quoted-overlap zipbomb DoS
+ This update addresses the following issue: * CVE-2024-0450: An issue was
+   found in the `CPython` `zipfile` module. The zipfile module is vulnerable
+   to `quoted-overlap` zip-bombs which exploit the zip format to create a
+   `zip-bomb` with a high compression ratio. The fixed versions of `CPython`
+   makes the zipfile module reject zip archives which overlap entries in the
+   archive.
 bug: [57182]
 cve:
 - CVE-2024-0450
