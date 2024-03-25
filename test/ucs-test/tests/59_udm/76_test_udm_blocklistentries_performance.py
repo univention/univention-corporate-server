@@ -118,7 +118,7 @@ def test_create_1000_users_with_extreme_blocklist_setup(blocklist_setup, mail_do
         for dn in user_dns:
             lo.delete(dn)
     duration = end - start
-    if package_installed('univention-samba'):
+    if package_installed('univention-samba4'):
         assert duration < 300
     else:
         assert duration < 250
