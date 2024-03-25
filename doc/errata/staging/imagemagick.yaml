@@ -6,9 +6,8 @@ src: imagemagick
 fix: 8:6.9.10.23+dfsg-2.1+deb10u7
 desc: |
  This update addresses the following issue:
- 8:6.9.10.23+dfsg-2.1+deb10u7 (Sun, 17 Mar 2024 15:34:05 +0000)
- * Fix CVE-2022-48541: A memory leak allows remote attackers to perform a
-   denial of service via the "identify -help" command.
+ * CVE-2022-48541: A memory leak allows remote attackers to perform a
+   denial of service via the `identify -help` command.
 bug: [57176]
 cve:
 - CVE-2022-48541
