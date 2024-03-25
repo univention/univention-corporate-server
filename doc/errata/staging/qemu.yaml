@@ -6,16 +6,37 @@ src: qemu
 fix: 1:2.8+dfsg-6+deb9u19A~4.4.9.202403251158
 desc: |
  This update addresses the following issues:
- 1:2.8+dfsg-6+deb9u19 (Sun, 24 Mar 2024 16:35:42 +0200)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2020-14394: infinite loop in the USB xHCI controller emulation
- * CVE-2023-0330: reentrancy issues in the LSI controller
- * CVE-2023-2861: 9pfs did not prohibit opening special files on the host side
- * CVE-2023-3180: heap buffer overflow in the virtual crypto device
- * CVE-2023-3354: remote unauthenticated clients could cause denial of service
-   in VNC server
- * CVE-2023-5088: IDE guest I/O operation addressed to an arbitrary disk
-   offset might get targeted to offset 0 instead
+ * CVE-2023-2861: A flaw was found in the `9p passthrough filesystem`
+   (`9pfs`) implementation in `QEMU`. The `9pfs` server did not prohibit
+   opening special files on the host side, potentially allowing a malicious
+   client to escape from the exported `9p` tree by creating and opening a
+   device file in the shared folder.
+ * CVE-2023-3354: A flaw was found in the `QEMU` built-in `VNC` server.
+   When a client connects to the `VNC` server, `QEMU` checks whether the
+   current number of connections crosses a certain threshold and if so,
+   cleans up the previous connection. If the previous connection happens to
+   be in the handshake phase and fails, `QEMU` cleans up the connection
+   again, resulting in a `NULL` pointer dereference issue. This could allow a
+   remote unauthenticated client to cause a denial of service.
+ * CVE-2023-5088: A bug in `QEMU` could cause a guest I/O operation
+   otherwise addressed to an arbitrary disk offset to be targeted to offset 0
+   instead (potentially overwriting the VM's boot code). This could be used,
+   for example, by `L2` guests with a virtual disk (`vdiskL2`) stored on a
+   virtual disk of an `L1` (`vdiskL1`) hypervisor to read and/or write data
+   to `LBA` 0 of `vdiskL1`, potentially gaining control of `L1` at its next
+   reboot.
+ * CVE-2020-14394: An infinite loop flaw was found in the USB `xHCI`
+   controller emulation of `QEMU` while computing the length of the Transfer
+   Request Block (`TRB`) Ring. This flaw allows a privileged guest user to
+   hang the `QEMU` process on the host, resulting in a denial of service.
+ * CVE-2023-0330: A vulnerability in the `lsi53c895a` device affects the
+   latest version of `qemu`. A `DMA-MMIO` reentrancy problem may lead to
+   memory corruption bugs like stack overflow or `use-after-free`.
+ * CVE-2023-3180: A flaw was found in the `QEMU` virtual `crypto` device
+   while handling data encryption/decryption requests in
+   `virtio_crypto_handle_sym_req`. There is no check for the value of
+   `src_len` and `dst_len` in `virtio_crypto_sym_op_helper`, potentially
+   leading to a heap buffer overflow when the two values differ.
 bug: [57183]
 cve:
 - CVE-2020-14394
