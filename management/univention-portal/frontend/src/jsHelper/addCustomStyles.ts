@@ -29,41 +29,16 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
-import { createApp } from 'vue';
-import App from '@/App.vue';
-import { store } from '@/store';
-import { router } from '@/router';
-import localize from '@/plugins/localize';
-import VueDOMPurifyHTML from 'vue-dompurify-html';
 
-import '@/assets/styles/style.styl';
-import addCustomStyles from '@/jsHelper/addCustomStyles';
+// This function is necessary to make sure that the custom.css overrides all the other styles without the use of import.
+export default function addCustomStyles(): void {
+  const themeCss = document.createElement('link');
+  themeCss.rel = 'stylesheet';
+  themeCss.href = process.env.VUE_APP_THEME_PATH || '/univention/theme.css';
+  document.head.appendChild(themeCss);
 
-addCustomStyles();
-
-declare global {
-    interface Window {
-        store: any;
-    }
+  const customCss = document.createElement('link');
+  customCss.rel = 'stylesheet';
+  customCss.href = './css/custom.css';
+  document.head.appendChild(customCss);
 }
-window.store = store;
-
-const app = createApp(App)
-  .use(localize)
-  .use(router)
-  .use(store)
-  .use(VueDOMPurifyHTML, {
-    hooks: {
-      afterSanitizeAttributes: (currentNode) => {
-        // Do something with the node
-        // set all elements owning target to target=_blank
-        if ('target' in currentNode) {
-          currentNode.setAttribute('target', '_blank');
-          currentNode.setAttribute('rel', 'noopener');
-        }
-      },
-    },
-  });
-
-const vm = app.mount('#app');
-export default vm;

@@ -31,10 +31,10 @@
  */
 
 export interface Tab {
-    tabLabel: string,
-    backgroundColor: string,
-    logo: string,
-    target: string,
-    iframeLink: string
+    tabLabel: string;
+    backgroundColor: string;
+    logo: string;
+    target: string;
+    iframeLink: string;
     id: number;
 }

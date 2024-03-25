@@ -1,3 +1,9 @@
+ucs-test (12.0.28) unstable; urgency=medium
+
+  * Bug #57083: fix 86_browser/185_portal_administration_inline_creation.py
+
+ -- Christian Castens <castens@univention.de>  Mon, 25 Mar 2024 13:11:28 +0100
+
 ucs-test (12.0.27) unstable; urgency=medium
 
   * Issue #2154: fix blocklist tests
