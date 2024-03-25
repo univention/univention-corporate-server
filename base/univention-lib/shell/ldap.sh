@@ -345,7 +345,7 @@ ucs_needsSimplesamlphpSetup () {
 #
 # ucd_primaryVersionGreaterEqual checks whether the UCS version
 # of the primary server is higher or equal to some version
-# ucd_primaryVersionGreaterEqual <ucs_version> [<udm-credentials>]
+# ucs_primaryVersionGreaterEqual <ucs_version> [<udm-credentials>]
 # e.g.  if ucs_ucd_primaryVersionGreaterEqual 5.2-0 "$@"; then ...; fi
 #
 ucs_primaryVersionGreaterEqual () {
