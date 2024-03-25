@@ -1,0 +1,19 @@
+product: ucs
+release: "5.0"
+version: [6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: pillow
+fix: 5.4.1-2+deb10u5
+desc: |
+ This update addresses the following issues:
+ 5.4.1-2+deb10u5 (Thu, 21 Mar 2024 12:20:25 +0800)
+ * Non-maintainer upload by the LTS Security Team.
+ * Backport follow-up fix for CVE-2022-22817, upstream commit c930be075.
+ * Mark d/rules with .NOTPARALLEL for an implicit -j1.
+ * Backport upstream fix for CVE-2021-23437.
+ * Backport upstream fix for CVE-2023-44271.
+bug: [57180]
+cve:
+- CVE-2022-22817
+- CVE-2021-23437
+- CVE-2023-44271
