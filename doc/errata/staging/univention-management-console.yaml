@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issues:
  * The UMC SAML client is now updated in Keycloak on changes,
    e.g. when changing `umc/saml/assertion-lifetime`.
-bug: [57143]
+ * The joinscript no longer creates a simpleSAMLPHP
+   SAML client if the UCS primary is at least on verion 5.2.
+bug: [57143, 57163]
