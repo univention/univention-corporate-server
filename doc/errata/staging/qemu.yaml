@@ -1,0 +1,26 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: qemu
+fix: 1:2.8+dfsg-6+deb9u19A~4.4.9.202403251158
+desc: |
+ This update addresses the following issues:
+ 1:2.8+dfsg-6+deb9u19 (Sun, 24 Mar 2024 16:35:42 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2020-14394: infinite loop in the USB xHCI controller emulation
+ * CVE-2023-0330: reentrancy issues in the LSI controller
+ * CVE-2023-2861: 9pfs did not prohibit opening special files on the host side
+ * CVE-2023-3180: heap buffer overflow in the virtual crypto device
+ * CVE-2023-3354: remote unauthenticated clients could cause denial of service
+   in VNC server
+ * CVE-2023-5088: IDE guest I/O operation addressed to an arbitrary disk
+   offset might get targeted to offset 0 instead
+bug: [57183]
+cve:
+- CVE-2020-14394
+- CVE-2023-0330
+- CVE-2023-2861
+- CVE-2023-3180
+- CVE-2023-3354
+- CVE-2023-5088
