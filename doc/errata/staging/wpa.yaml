@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: wpa
+fix: 2:2.4-1+deb9u10A~4.4.9.202403251158
+desc: |
+ This update addresses the following issue:
+ 2:2.4-1+deb9u10 (Tue, 19 Mar 2024 23:24:50 +0000)
+ * Non-maintainer upload by the ELTS Team.
+ * Add salsa CI
+ * Fix CVE-2023-52160: The implementation of PEAP in wpa_supplicant allows
+   authentication bypass. For a successful attack, wpa_supplicant must be
+   configured to not verify the network's TLS certificate during Phase 1
+   authentication, and an eap_peap_decrypt vulnerability can then be abused to
+   skip Phase 2 authentication. This allows an adversary to impersonate
+   Enterprise Wi-Fi networks.
+bug: [57181]
+cve:
+- CVE-2023-52160
