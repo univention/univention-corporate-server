@@ -1,0 +1,17 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libnet-cidr-lite-perl
+fix: 0.21-1.A~4.4.9.202403251158
+desc: |
+ This update addresses the following issue:
+
+ Debian update 0.21-1+deb9u1
+ 0.21-1+deb9u1 (Sat, 23 Mar 2024 12:03:02 +0100)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2021-47154 don't allow bypass of access control that is based on IP
+   addresses
+bug: [57184]
+cve:
+- CVE-2021-47154
