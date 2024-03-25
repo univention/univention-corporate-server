@@ -146,14 +146,14 @@ describe('ImageUploader.vue', () => {
 
   test('if "Select File"-Button is rendered', async () => {
     const uploadButton = await wrapper.find(`[data-test="imageUploadButton--${imageUploadProps.extraLabel}"]`);
-    expect(uploadButton.text()).toBe(`Upload ${wrapper.vm.IMAGE_UPLOAD_STATE}`);
+    expect(uploadButton.text()).toBe(`Upload${wrapper.vm.IMAGE_UPLOAD_STATE}`);
   });
 
   test('if "Remove"-Button is rendered and working as expected', async () => {
     const removeButton = await wrapper.find(`[data-test="imageRemoveButton--${imageUploadProps.extraLabel}"]`);
 
     // We expect the following text from the removeButton: "Remove "
-    expect(removeButton.text()).toBe(`Remove ${imageUploadProps.extraLabel}`);
+    expect(removeButton.text()).toBe(`Remove${imageUploadProps.extraLabel}`);
     // since there in no file uploaded, the remove button should be disabled
     expect(removeButton.attributes('disabled')).toBe('');
 
