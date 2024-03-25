@@ -274,6 +274,7 @@ export default defineComponent({
       (this.$refs.editModeButton as HTMLElement).blur();
       this.$store.dispatch('navigation/setActiveButton', '');
       this.$store.dispatch('tabs/setActiveTab', 0);
+      window.requestAnimationFrame(() => { window.scrollTo(0, 0); });
     },
     setFadeClass(): string {
       let ret = '';

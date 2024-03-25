@@ -77,6 +77,7 @@ export default defineComponent({
       portalLogo: 'portalData/portalLogo',
       portalName: 'portalData/portalName',
       savedScrollPosition: 'tabs/savedScrollPosition',
+      activeTabId: 'tabs/activeTabId',
     }),
     SHOW_PORTAL(): string {
       return _('Show portal');
@@ -87,10 +88,14 @@ export default defineComponent({
   },
   methods: {
     goHome(): void {
-      this.$store.dispatch('tabs/setActiveTab', 0);
-      setTimeout(() => {
-        window.scrollTo(0, this.savedScrollPosition);
-      }, 10);
+      if (this.activeTabId !== 0) {
+        this.$store.dispatch('tabs/setActiveTab', 0);
+        window.requestAnimationFrame(() => {
+          window.scrollTo(0, this.savedScrollPosition);
+        });
+      } else {
+        window.scrollTo(0, 0);
+      }
       this.$store.dispatch('navigation/setActiveButton', '');
     },
   },

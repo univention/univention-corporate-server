@@ -253,16 +253,10 @@ export default defineComponent({
         name: 'ChooseTabs',
       });
     },
-    goHome(): void {
-      this.$store.dispatch('tabs/setActiveTab', 0);
-      setTimeout(() => {
-        window.scrollTo(0, this.savedScrollPosition);
-      }, 10);
-      this.$store.dispatch('navigation/setActiveButton', '');
-    },
     stopEditMode(): void {
       this.$store.dispatch('portalData/setEditMode', false);
       this.$store.dispatch('navigation/setActiveButton', '');
+      window.requestAnimationFrame(() => { window.scrollTo(0, 0); });
     },
   },
 });

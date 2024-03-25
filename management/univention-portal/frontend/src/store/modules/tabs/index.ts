@@ -39,7 +39,7 @@ export interface TabState {
   scrollPosition: number;
 }
 
-let nextId = 1;
+let nextId = 1; // 0 is reserved for portal overview
 const tabs: PortalModule<TabState> = {
   namespaced: true,
   state: {
@@ -79,8 +79,10 @@ const tabs: PortalModule<TabState> = {
         state.activeTabId = 0;
       }
     },
-    SAVE_SCROLL_POSITION(state: TabState, scrollPosition: number): void {
-      state.scrollPosition = scrollPosition;
+    SAVE_SCROLL_POSITION(state: TabState): void {
+      if (state.activeTabId === 0) {
+        state.scrollPosition = window.scrollY;
+      }
     },
   },
 
@@ -98,13 +100,11 @@ const tabs: PortalModule<TabState> = {
       }
       dispatch('navigation/setActiveButton', '', { root: true });
       dispatch('modal/hideAndClearModal', undefined, { root: true });
-      if (id > 0) {
-        commit('SAVE_SCROLL_POSITION', window.scrollY);
-      }
+      commit('SAVE_SCROLL_POSITION');
       commit('ACTIVE_TAB', id);
     },
     addTab({ commit }: { commit: Commit }, tab: Tab): void {
-      commit('SAVE_SCROLL_POSITION', window.scrollY);
+      commit('SAVE_SCROLL_POSITION');
       commit('ADD_TAB', tab);
     },
     deleteTab({ commit }: { commit: Commit}, id: number): void {
