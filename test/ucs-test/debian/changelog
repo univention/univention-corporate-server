@@ -1,3 +1,9 @@
+ucs-test (11.0.28) unstable; urgency=medium
+
+  * Issue #2154: fix blocklist tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 25 Mar 2024 09:45:28 +0100
+
 ucs-test (11.0.27) unstable; urgency=medium
 
   * Issue #2154: fix blocklist tests
