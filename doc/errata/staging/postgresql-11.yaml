@@ -6,9 +6,16 @@ src: postgresql-11
 fix: 11.22-0+deb10u2
 desc: |
  This update addresses the following issue:
- 11.22-0+deb10u2 (Mon, 18 Mar 2024 14:39:21 +0200)
- * Non-maintainer upload by the LTS Team.
- * CVE-2024-0985: REFRESH MATERIALIZED VIEW CONCURRENTLY privilege escalation
+ * CVE-2024-0985: Late privilege drop in `REFRESH MATERIALIZED VIEW
+   CONCURRENTLY` in PostgreSQL allows an object creator to execute arbitrary
+   `SQL` functions as the command issuer. The command intends to run `SQL`
+   functions as the owner of the materialized view, enabling safe refresh of
+   untrusted materialized views. The victim is a superuser or member of one
+   of the attacker's roles. The attack requires luring the victim into
+   running `REFRESH MATERIALIZED VIEW CONCURRENTLY` on the attacker's
+   materialized view. As part of exploiting this vulnerability, the attacker
+   creates functions that use `CREATE RULE` to convert the internally-built
+   temporary table to a view.
 bug: [57175]
 cve:
 - CVE-2024-0985
