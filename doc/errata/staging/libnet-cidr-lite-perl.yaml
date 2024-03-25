@@ -1,0 +1,17 @@
+product: ucs
+release: "5.0"
+version: [6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: libnet-cidr-lite-perl
+fix: 0.21-2+debu10u1
+desc: |
+ This update addresses the following issue:
+
+ Debian update 0.21-2+debu10u1
+ 0.21-2+debu10u1 (Sat, 23 Mar 2024 12:03:02 +0100)
+ * Non-maintainer upload by the LTS Team.
+ * CVE-2021-47154 don't allow bypass of access control that is based on IP
+   addresses
+bug: [57179]
+cve:
+- CVE-2021-47154
