@@ -6,13 +6,20 @@ src: pillow
 fix: 4.0.0-4+deb9u5
 desc: |
  This update addresses the following issues:
- 4.0.0-4+deb9u5 (Tue, 19 Mar 2024 13:01:24 +0800)
- * Non-maintainer upload by the Extended LTS Team.
- * Backport follow-up fix for CVE-2022-22817, upstream commit c930be075.
- * Backport upstream fix for CVE-2023-23437.
- * Backport upstream fix for CVE-2023-44271.
- * Backport upstream fix for CVE-2023-50447.
- * Mark d/rules with .NOTPARALLEL for an implicit -j1.
+ * CVE-2022-22817: `PIL.ImageMath.eval` in `Pillow` before `9.0.0` allows
+   evaluation of arbitrary expressions, such as ones that use the Python
+   `exec` method. A `lambda` expression could also be used.
+ * CVE-2023-23437: Some Honor products are affected by information leak
+   vulnerability, successful exploitation could cause the information leak.
+ * CVE-2023-44271: An issue was discovered in `Pillow` before `10.0.0`. It
+   is a Denial of Service that uncontrollably allocates memory to process a
+   given task, potentially causing a service to crash by having it run out of
+   memory. This occurs for `truetype` in `ImageFont` when `textlength` in an
+   `ImageDraw` instance operates on a long text argument.
+ * CVE-2023-50447: `Pillow` through `10.1.0` allows `PIL.ImageMath.eval`
+   Arbitrary Code Execution via the environment parameter, a different
+   vulnerability than `CVE-2022-22817` (which was about the expression
+   parameter).
 bug: [57185]
 cve:
 - CVE-2022-22817
