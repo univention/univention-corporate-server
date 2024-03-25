@@ -6,14 +6,13 @@ src: curl
 fix: 7.64.0-4+deb10u9
 desc: |
  This update addresses the following issue:
- 7.64.0-4+deb10u9 (Sun, 28 Jan 2024 21:15:21 +0000)
- * Non-maintainer upload by the LTS Team.
- * CVE-2023-27534: A path traversal vulnerability existed. SFTP implementation
-   causes the tilde (~) character to be wrongly replaced when used as a prefix
-   in the first path element, in addition to its intended use as the first
-   element to indicate a path relative to the user's home directory. Attackers
-   can exploit this flaw to bypass filtering or execute arbitrary code by
-   crafting a path like /~2/foo while accessing a server with a specific user.
+ * CVE-2023-27534: A path traversal vulnerability existed. `SFTP`
+   implementation causes the tilde (`~`) character to be wrongly replaced
+   when used as a prefix in the first path element, in addition to its
+   intended use as the first element to indicate a path relative to the
+   user's home directory. Attackers can exploit this flaw to bypass filtering
+   or execute arbitrary code by crafting a path like `/~2/foo` while
+   accessing a server with a specific user.
 bug: [57160]
 cve:
 - CVE-2023-27534
