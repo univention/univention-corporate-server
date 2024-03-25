@@ -41,7 +41,6 @@ generate-config:
       */*/debian/control
     - >
       .gitlab-ci/doc-builder
-      --yaml .gitlab-ci/base.yml
       --yaml .gitlab-ci/base-doc.yml
       --out generated-config-doc.yml
   artifacts:

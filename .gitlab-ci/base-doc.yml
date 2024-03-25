@@ -1,58 +1,71 @@
 include:
   - project: 'univention/documentation/sphinx-docker'
     file: 'pipeline/sphinx.yml'
+    ref: "phahn/cc"
 
-stages:
-  - build
-  - merge
-  - production
+variables:
+  ucs: 507
+  DOC_TARGET_VERSION: "5.0"
+  CHANGELOG_TARGET_VERSION: "5.0-7"
+  GIT_STRATEGY: fetch
+  GIT_SUBMODULE_STRATEGY: none
+  GIT_DEPTH: "3"
 
 .sphinx-doc:
+  image: $SPHINX_BASE
+  stage: build
+  interruptible: true
   variables:
-    DOC_TARGET_VERSION: "5.0"
-    CHANGELOG_TARGET_VERSION: "5.0-7"
+    FORCE_COLOR: "TRUE"
+    BUILDDIR: "_build/$language"
   artifacts:
+    expire_in: 1 week
     paths:
       - $DOCS_DIR/_build
       - out
+    when: always
 
 .sphinx-html:
   extends:
     - .sphinx-doc
-    - .sphinx-html-template
   script:
-    - make -C "$DOCS_DIR" -e FORCE_COLOR=TRUE -e SPHINXOPTS="-v -D language='$language'" -e BUILDDIR="_build/$language" html
+    - truncate -s 0 "${DOCS_DIR}/${BUILDDIR}/spelling/index.spelling"
+    - make -C "$DOCS_DIR" -e SPHINXOPTS="-v -W --keep-going -w ${BUILDDIR}/build.err -D language='$language'" -k linkcheck spelling html
     - mkdir -p "out/$DOC_NAME/$DOC_TARGET_VERSION"
-    - mv "$DOCS_DIR/_build/$language/html" "out/$DOC_NAME/$DOC_TARGET_VERSION/$language"
+    - mv "${DOCS_DIR}/${BUILDDIR}/html" "out/${DOC_NAME}/${DOC_TARGET_VERSION}/${language}"
+  after_script:
+    - curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "out/${DOC_NAME}/${DOC_TARGET_VERSION}/${language}/objects.inv" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${DOC_NAME}.${language}/${CI_COMMIT_REF_SLUG}/objects.inv"
+    - sphinx2gitlab-code-climate --prefix "$DOCS_DIR" -o gl-ccr-linkcheck.json linkcheck "${DOCS_DIR}/${BUILDDIR}/linkcheck/output.json"
+    - sphinx2gitlab-code-climate --prefix "$DOCS_DIR" -o gl-ccr-spelling.json spelling "${DOCS_DIR}/${BUILDDIR}/spelling/index.spelling"
+    - sphinx2gitlab-code-climate --prefix "$DOCS_DIR" -o gl-ccr-build.json build "${DOCS_DIR}/${BUILDDIR}/build.err"
+    - sphinx2gitlab-code-climate -o gl-code-quality-report.json merge gl-ccr-linkcheck.json gl-ccr-spelling.json gl-ccr-build.json
+  artifacts:
+    paths:
+      - $DOCS_DIR/$BUILDDIR/html
+      - $DOCS_DIR/$BUILDDIR/linkcheck
+      - $DOCS_DIR/$BUILDDIR/spelling
+      - out
+    exclude:
+      - out/**/*webpack-macros.html
+      - out/**/.buildinfo
+      - out/**/*.py
+      - out/**/__pycache__/*
+      - out/**/__pycache__
+      - out/**/.doctrees
+    reports:
+      codequality: gl-code-quality-report.json
 
 .sphinx-pdf:
   extends:
     - .sphinx-doc
-    - .sphinx-pdf-template
   script:
-    - make -C "$DOCS_DIR" -e FORCE_COLOR=TRUE -e SPHINXOPTS="-v -D language='$language'" -e BUILDDIR="_build/$language" latexpdf
+    - make -C "$DOCS_DIR" -e SPHINXOPTS="-v -W --keep-going -D language='$language'" latexpdf
     - mkdir -p "out/$DOC_NAME/$DOC_TARGET_VERSION/$language"
     - mv "$DOCS_DIR/_build/$language/latex/$DOC_NAME.pdf" "out/$DOC_NAME/$DOC_TARGET_VERSION/$language/"
-
-.sphinx-linkcheck:
-  extends:
-    - .sphinx-doc
-    - .sphinx-linkcheck-template
-  script:
-    - make -C "$DOCS_DIR" -e FORCE_COLOR=TRUE -e SPHINXOPTS="-v -W --keep-going -D language='$language'" -e BUILDDIR="_build/$language" linkcheck
-  allow_failure: true
-
-.sphinx-spelling:
-  extends:
-    - .sphinx-doc
-    - .sphinx-spelling-template
-  script:
-    - make -C "$DOCS_DIR" -e FORCE_COLOR=TRUE -e SPHINXOPTS="-v -W --keep-going -D language='$language'" -e BUILDDIR="_build/$language" spelling
-
-.sphinx-warnings:
-  extends: .sphinx-warnings-template
-  script:
-    - make -C "$DOCS_DIR" -e FORCE_COLOR=TRUE -e SPHINXOPTS="-v -W --keep-going -D language='$language'" -e BUILDDIR="_build/$language" html
+  artifacts:
+    paths:
+      - $DOCS_DIR/$BUILDDIR/latex
+      - out
 
 .publish:
   interruptible: false
