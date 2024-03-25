@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: python3.7
+fix: 3.7.3-2+deb10u7
+desc: |
+ This update addresses the following issues:
+ 3.7.3-2+deb10u7 (Sat, 23 Mar 2024 18:12:05 +0200)
+ * Non-maintainer upload by the LTS Team.
+ * CVE-2023-6597: tempfile.TemporaryDirectory failure to remove dir
+ * CVE-2024-0450: quoted-overlap zipbomb DoS
+bug: [57177]
+cve:
+- CVE-2023-6597
+- CVE-2024-0450
