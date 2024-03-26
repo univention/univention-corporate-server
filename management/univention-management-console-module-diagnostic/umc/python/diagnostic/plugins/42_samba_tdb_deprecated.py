@@ -39,7 +39,7 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 
 UCS = (5, 2)
-MIGRATION_URL = "https://help.univention.com/t/pre-update-checks-for-ucs-5-0-0-aborts-warning-about-a-very-large-samba-tdb-database/18014"
+MIGRATION_URL = "https://help.univention.com/t/22821"
 title = _('Checking Samba database type')
 description = _('''As of UCS {ucs[0]}.{ucs[1]}, Samba should use mdb as for its database.
 The steps to migrate the Samba database from tdb to mdb can be found in:''').format(ucs=UCS)
