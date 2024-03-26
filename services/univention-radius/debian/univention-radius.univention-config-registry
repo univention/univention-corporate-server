@@ -96,7 +96,7 @@ File: etc/logrotate.d/univention-radius
 Variables: logrotate/.*
 
 Type: file
-File: etc/freeradius/3.0/policy.d/canonicalization
+File: etc/freeradius/3.0/policy.d/univention-mab
 User: root
 Group: freerad
 Mode: 640

@@ -272,9 +272,9 @@ authorize {
 
 @!@
 if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
-    print("\trewrite_calling_station_id")
+    print("\trewrite_calling_station_id_univention")
 else:
-    print("#\trewrite_calling_station_id")
+    print("#\trewrite_calling_station_id_univention")
 @!@
 
 	#

@@ -1,3 +1,9 @@
+univention-radius (7.0.7-2) unstable; urgency=medium
+
+  * Bug #57069: rename canonicalization to prevent functions with the same name with the .debian file
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 26 Mar 2024 13:11:58 +0100
+
 univention-radius (7.0.7-1) unstable; urgency=medium
 
   * Bug #57118 UCS 5.0-7 version bump

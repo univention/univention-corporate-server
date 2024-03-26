@@ -3,7 +3,7 @@ release: "5.0"
 version: [7]
 scope: ucs_5.0-0-errata5.0-7
 src: univention-radius
-fix: 7.0.7-1
+fix: 7.0.7-2
 desc: |
  This update addresses the following issues:
  * The RADIUS server now supports different MAC address formats for the MAB
