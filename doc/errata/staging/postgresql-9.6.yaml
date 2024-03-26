@@ -5,7 +5,8 @@ scope: ucs_4.4-0-errata4.4-9
 src: postgresql-9.6
 fix: 9.6.24-0+deb9u6
 desc: |
- This update addresses the following issue: * CVE-2024-0985: Late privilege
+ This update addresses the following issue:
+ * CVE-2024-0985: Late privilege
    drop in `REFRESH MATERIALIZED VIEW CONCURRENTLY` in PostgreSQL allows an
    object creator to execute arbitrary `SQL` functions as the command issuer.
    The command intends to run `SQL` functions as the owner of the
