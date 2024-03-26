@@ -268,6 +268,23 @@ This appendix lists the |UCSUCRVs| mentioned in the document.
    Default value is ``false``.
    For more information, see :ref:`ip-config-radius-configuration-mab`.
 
+.. envvar:: freeradius/conf/mac-addr-regexp
+
+   Configures the regular expression for the MAC address for the Radius server.
+   The regular expression must contain six groups,
+   each group representing a byte of the MAC address.
+
+   The default value is the regular expression:
+   ``([0-9a-f]{2})[^0-9a-f]?([0-9a-f]{2})[^0-9a-f]?([0-9a-f]{2})[^0-9a-f]?([0-9a-f]{2})[^0-9a-f]?([0-9a-f]{2})[^0-9a-f]?([0-9a-f]{2})``
+
+   .. TODO : Replace the erratum number with the real erratum number after the release of the feature.
+
+   .. versionadded:: 5.0-6-erratum-...
+
+      With :uv:erratum:`5.0x...` the Radius server
+      can handle different formats of the MAC addresses for the username when using MAB.
+
+      For more information and effects, see :ref:`ip-config-radius-configuration-mab`.
 
 .. envvar:: freeradius/vlan-id
 
