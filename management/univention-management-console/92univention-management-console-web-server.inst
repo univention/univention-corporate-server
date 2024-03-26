@@ -72,7 +72,7 @@ else
 fi
 
 # remove in 5.2
-setup_simplesamlphp () {
+configure_umc_simplesamlphp () {
 	if ! is_ucr_false 'umc/web/sso/enabled'; then
 		rm /usr/share/univention-management-console/saml/idp/*.xml
 		# shellcheck disable=SC2154
@@ -84,7 +84,7 @@ setup_simplesamlphp () {
 	fi
 }
 
-setup_keycloak () {
+configure_umc_keycloak () {
 	if ! is_ucr_false 'umc/web/sso/enabled'; then
 		rm /usr/share/univention-management-console/saml/idp/*.xml
 		ucr --debug set umc/saml/idp-server?"$(univention-keycloak get-keycloak-base-url)/realms/ucs/protocol/saml/descriptor" || return 1
@@ -122,7 +122,7 @@ if ucs_needsSimplesamlphpSetup; then
 	/usr/share/univention-management-console/saml/update_metadata "$@" || die
 	ucr set ucs/server/sso/fqdn?"ucs-sso.$domainname"
 	eval "$(ucr shell ucs/server/sso/fqdn)"
-	setup_simplesamlphp || {
+	configure_umc_simplesamlphp || {
 		ucr unset umc/saml/idp-server
 		exit 3
 	}
@@ -199,16 +199,19 @@ _setup_oidc () {
 
 if ucs_needsKeycloakSetup; then
 	# create metadata xml
-	/usr/share/univention-management-console/saml/update_metadata || true
+	/usr/share/univention-management-console/saml/update_metadata "$@" || true
 	# Register UMC as a Keycloak client, but ignore failure
 	univention-keycloak "$@" saml/sp create \
 		--metadata-url="https://$fqdn/univention/saml/metadata" \
 		--metadata-file="/usr/share/univention-management-console/saml/sp/metadata.xml" || true
 	is_ucr_true 'umc/web/oidc/enabled' && _setup_oidc "$@"
-	setup_keycloak || {
-		ucr unset umc/saml/idp-server
-		#exit 3  # no error in 5.0
-	}
+	# UMC configuration for keycloak only with 5.2 primary
+	if ucs_primaryVersionGreaterEqual 5.2-0 "$@"; then
+		configure_umc_keycloak || {
+			ucr unset umc/saml/idp-server
+			#exit 3  # no error in 5.0
+		}
+	fi
 else
 	echo "Warning: No keycloak setup for this host"
 fi
