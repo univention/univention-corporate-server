@@ -7,7 +7,7 @@ msgstr ""
 "administrators \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-21 12:42+0000\n"
-"PO-Revision-Date: 2024-02-29 15:15+0100\n"
+"PO-Revision-Date: 2024-03-26 09:31+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "MIME-Version: 1.0\n"
@@ -470,11 +470,10 @@ msgstr ""
 "MAC-Adressen für den Benutzernamen bei Verwendung von MAB umgehen."
 
 #: ../../appendix/variables.rst:287
-#, fuzzy
 msgid ""
 "For more information and effects, see :ref:`ip-config-radius-"
 "configuration-mab`."
-msgstr "Für weitere Informationen, siehe :ref:`mail-serverconfig-relay`."
+msgstr "Für weitere Informationen und Effekte, siehe :ref:`mail-serverconfig-relay`."
 
 #: ../../appendix/variables.rst:291
 msgid ""
