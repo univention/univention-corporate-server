@@ -9,3 +9,6 @@ desc: |
  * The RADIUS server now supports different MAC address formats for the MAB
    (MAC Authentication Bypass) feature.
 bug: [57069]
+erratum: 1011
+announced: 2024-03-27
+support: core
