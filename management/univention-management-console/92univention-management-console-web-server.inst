@@ -217,6 +217,7 @@ if ucs_needsKeycloakSetup; then
 			--metadata-url="https://$fqdn/univention/saml/metadata" \
 			--metadata-file="/usr/share/univention-management-console/saml/sp/metadata.xml" || true
 	fi
+	is_ucr_true 'umc/web/oidc/enabled' && _setup_oidc "$@"
 else
 	echo "Warning: No keycloak setup for this host"
 fi
