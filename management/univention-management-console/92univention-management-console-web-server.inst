@@ -194,7 +194,7 @@ _setup_oidc () {
 		--default-scopes="openid" \
 		--consent="Allow access to UDM-REST API and OpenLDAP?" \
 		--web-origins="+" \
-		"https://$fqdn_oidc/univention/oidc/" || true
+		"https://$fqdn_oidc/univention/oidc/" || die
 }
 
 if ucs_needsKeycloakSetup; then
