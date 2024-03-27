@@ -4,7 +4,7 @@ set -x
 set -e
 
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=tross.knut.univention.de}"
-export HALT=false
+export TERMINATE=false
 export DOCKER=true
 export REPLACE=true
 export UCS_TEST_RUN=false

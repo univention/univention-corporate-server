@@ -4,7 +4,7 @@ set -x
 set -e
 
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=ranarp.knut.univention.de}"
-export HALT=false
+export TERMINATE=false
 export DOCKER=true
 export REPLACE=true
 export UCS_ENV_IDBROKER_DOMAIN=broker.test
