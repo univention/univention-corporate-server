@@ -78,14 +78,6 @@ if configRegistry.get('ldap/hostdn'):
     print('    by * +0 break')
     print('')
 
-print('access to attrs=univentionGuardianRoles,univentionGuardianMemberRoles')
-print('    by group/univentionGroup/uniqueMember="cn=UDM-API-enabled-machines,cn=groups,%s" read' % ldap_base)
-print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % (groups_default_domainadmins, ldap_base, usr))
-if configRegistry['ldap/server/type'] == "slave":
-    print('    by dn.base="cn=admin,%s" %s' % (ldap_base, usr))
-print('    by set="user/objectClass & [univentionDomainController]" read')
-print('    by * none')
-print('')
 @!@
 
 access to attrs=univentionRadiusPassword
