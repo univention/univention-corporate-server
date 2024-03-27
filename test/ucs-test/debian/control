@@ -604,6 +604,7 @@ Package: ucs-test-radius
 Architecture: all
 Depends:
  eapol,
+ python3-pyrad,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Recommends:

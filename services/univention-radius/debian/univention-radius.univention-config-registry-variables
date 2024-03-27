@@ -226,3 +226,9 @@ Description[en]=If "radius/use-service-specific-password" is enabled, this varia
 Type=uint
 Default=24
 Categories=service-radius
+
+[freeradius/conf/mac-addr-regexp]
+Description[en]=Regular expression which is used to validate the MAC address and transform it into the : format. It should contain six groups, each group representing a byte of the MAC address.
+Description[de]=Regulärer Ausdruck, der zur Validierung der MAC-Adresse und zur Umwandlung in das : Format verwendet wird. Er sollte sechs Gruppen enthalten, wobei jede Gruppe ein Byte der MAC-Adresse darstellt.
+Type=str
+Categories=service-radius

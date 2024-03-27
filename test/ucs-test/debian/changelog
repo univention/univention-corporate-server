@@ -1,3 +1,9 @@
+ucs-test (12.0.29) unstable; urgency=medium
+
+  * Bug #57069: Update test for MAB (radius) to test different MAC formats.
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 27 Mar 2024 10:26:07 +0100
+
 ucs-test (12.0.28) unstable; urgency=medium
 
   * Bug #57083: fix 86_browser/185_portal_administration_inline_creation.py

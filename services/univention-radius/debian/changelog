@@ -1,3 +1,9 @@
+univention-radius (9.0.6) unstable; urgency=medium
+
+  * Bug #57069: Support different MAC formats for MAC authentication bypass
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 27 Mar 2024 13:11:58 +0100
+
 univention-radius (9.0.5) unstable; urgency=medium
 
   * Bug #56604: use Python 3.11 code annotations

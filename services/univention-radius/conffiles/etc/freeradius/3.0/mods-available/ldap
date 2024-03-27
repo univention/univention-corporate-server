@@ -231,7 +231,7 @@ auth_type = configRegistry.is_true('freeradius/conf/auth-type/mschap')
 
 filter = 'mschap:User-Name' if auth_type else 'Stripped-User-Name'
 if configRegistry.is_true('freeradius/conf/allow-mac-address-authentication'):
-    print('\t\tfilter = "(|(uid=%%{%s:-%%{User-Name}})(macAddress=%%{%s:-%%{User-Name}}))"' % (filter, filter))
+    print('\t\tfilter = "(|(uid=%%{%s:-%%{User-Name}})(macAddress=%%{Calling-Station-Id}))"' % (filter))
 else:
     print('\t\tfilter = "(uid=%%{%s:-%%{User-Name}})"' % filter)
 @!@
