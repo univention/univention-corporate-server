@@ -9,3 +9,6 @@ desc: |
  * The UMC SAML client is now updated in Keycloak on changes,
    e.g. when changing `umc/saml/assertion-lifetime`.
 bug: [57143]
+erratum: 1010
+announced: 2024-03-27
+support: core
