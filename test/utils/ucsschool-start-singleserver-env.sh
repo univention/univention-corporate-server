@@ -2,7 +2,7 @@
 set -x
 set -e
 
-export HALT=false
+export TERMINATE=false
 export DOCKER=true
 export KVM_LABEL_SUFFIX="${Config?:}-${UCSRelease?:}"
 export release_update="$UCSRelease"
