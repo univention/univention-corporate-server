@@ -30,9 +30,4 @@ if configRegistry.get('ldap/hostdn'):
     print('    by * +0 break')
     print('')
 
-print('access to attrs=univentionGuardianRoles,univentionGuardianMemberRoles')
-print('    by group/univentionGroup/uniqueMember="cn=UDM-API-enabled-machines,cn=groups,%s" read' % ldap_base)
-print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" read' % (groups_default_domainadmins, ldap_base))
-print('    by * none')
-print('')
 @!@
