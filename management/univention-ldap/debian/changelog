@@ -1,8 +1,14 @@
 univention-ldap (17.0.7) unstable; urgency=medium
 
+  * Bug #57110: Register guardian ACL on primary
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 27 Mar 2024 13:00:18 +0100
+
+univention-ldap (17.0.7) unstable; urgency=medium
+
   * Bug #57110: Add schema for guardian roles
 
- -- Felix Botner <botner@univention.de>  Mon, 18 Mar 2024 18:35:02 +0100
+ -- Felix Botner <botner@univention.de>  Wed, 26 Mar 2024 13:00:18 +0100
 
 univention-ldap (17.0.6) unstable; urgency=medium
 
