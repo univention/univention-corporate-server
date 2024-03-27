@@ -6,7 +6,7 @@ set -e
 cfg_file="$(mktemp)"
 export UCS_ENV_VEYON_WINDOWS_HOST="${UCS_ENV_VEYON_WINDOWS_HOST:=3}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=ranarp.knut.univention.de}"
-export HALT=false
+export TERMINATE=false
 export UCS_TEST_RUN=false
 export PYTHON_VERSION="python3"
 

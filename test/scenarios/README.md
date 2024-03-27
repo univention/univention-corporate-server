@@ -114,7 +114,7 @@ set -x
 set -e
 
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=tross.knut.univention.de}"
-export HALT=false          # do not destroy instances after setup
+export TERMINATE=false     # do not destroy instances after setup
 export DOCKER=true         # use docker
 export REPLACE=true        # replace existing instances
 export UCS_TEST_RUN=false  # don't execte use-test

@@ -3,7 +3,7 @@
 # newline witch DELIM
 export UCS_ENV_LOCUST_VARS="${UCS_ENV_LOCUST_VARS//$'\n'/:DELIM:}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=ranarp.knut.univention.de}"
-export HALT=false
+export TERMINATE=false
 export DOCKER=true
 export REPLACE=true
 export UCS_TEST_RUN=false
