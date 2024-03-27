@@ -5,7 +5,7 @@ set -e
 cfg_file="$(mktemp)"
 export UCS_ENV_VEYON_WINDOWS_HOST="${UCS_ENV_VEYON_WINDOWS_HOST:=3}"
 export KVM_BUILD_SERVER="EC2"
-export HALT=false
+export TERMINATE=false
 export PYTHON_VERSION="python3"
 
 # shellcheck disable=SC1091
