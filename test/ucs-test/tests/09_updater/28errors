@@ -111,7 +111,7 @@ run_tests () { # execute all updater programs
 	ucr set repository/online/server="http://localhost/${repoprefix#/}"
 
 	msg="Configuration error: credentials not accepted"
-	ucr set "${comp}=yes" "${comp}/parts=maintained" "${comp}/username=DUMMY" "${comp}/password=DUMMY" "${comp}/version=current"
+	ucr set "${comp}=yes" "${comp}/username=DUMMY" "${comp}/password=DUMMY" "${comp}/version=current"
 	grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.list
 	/usr/share/univention-updater/univention-updater net 2>&1 | grep -F "$msg"
 	grep -F "status=FAILED" /var/lib/univention-updater/univention-updater.status
@@ -124,10 +124,10 @@ run_tests () { # execute all updater programs
 	grep -F "errorsource=SETTINGS" /var/lib/univention-updater/univention-upgrade.status
 	ucr search --brief ^update/available
 	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
-	ucr unset "${comp}" "${comp}/parts" "${comp}/username" "${comp}/password" "${comp}/version"
+	ucr unset "${comp}" "${comp}/username" "${comp}/password" "${comp}/version"
 
 	msg="Component ${compname}DUMMY: Error downloading"
-	ucr set "${comp}DUMMY=yes" "${comp}DUMMY/parts=maintained" "${comp}DUMMY/version=current"
+	ucr set "${comp}DUMMY=yes" "${comp}DUMMY/version=current"
 	grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.list
 	/usr/share/univention-updater/univention-updater net 2>&1 | grep -F " marked as required."
 	grep -F "status=DONE" /var/lib/univention-updater/univention-updater.status
@@ -135,7 +135,7 @@ run_tests () { # execute all updater programs
 	ucr search --brief ^update/available
 	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
 	# univention-upgrade would call univention-errata-update, which would update to v2
-	ucr unset "${comp}DUMMY" "${comp}DUMMY/parts" "${comp}DUMMY/version"
+	ucr unset "${comp}DUMMY" "${comp}DUMMY/version"
 
 	ucr set proxy/http="http://DUMMY:DUMMY@localhost:${proxy_port:?}"
 	"${FIXED_12571}" || ucr commit /etc/apt/sources.list.d/15_ucs-online-version.list >&3
@@ -153,7 +153,7 @@ run_tests () { # execute all updater programs
 
 	# must be last since update succeeds!
 	msg="Configuration error: credentials not accepted"
-	ucr set "${comp}=yes" "${comp}/parts=maintained" "${comp}/username=DUMMY" "${comp}/password=DUMMY"
+	ucr set "${comp}=yes" "${comp}/username=DUMMY" "${comp}/password=DUMMY"
 	grep -F "$msg" /etc/apt/sources.list.d/20_ucs-online-component.list
 	/usr/share/univention-updater/univention-updater net 2>&1
 	grep -F "status=DONE" /var/lib/univention-updater/univention-updater.status
@@ -163,7 +163,7 @@ run_tests () { # execute all updater programs
 	grep -F "status=DONE" /var/lib/univention-updater/univention-upgrade.status
 	ucr search --brief ^update/available
 	#test -z "$(ucr get update/available)"  # make sure update/available has not been touched
-	ucr unset "${comp}" "${comp}/parts" "${comp}/username" "${comp}/password"
+	ucr unset "${comp}" "${comp}/username" "${comp}/password"
 
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	3"
 # vim:set ft=sh:

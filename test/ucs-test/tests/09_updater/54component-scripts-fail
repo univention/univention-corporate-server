@@ -62,7 +62,7 @@ __SH__
 python3 create_releases_json.py "${REPODIR}" "$version1" "$version2"
 
 comp="repository/online/component/${compname}"
-config_repo "${comp}=yes" "${comp}/parts=maintained" "${comp}/version=current"
+config_repo "${comp}=yes" "${comp}/version=current"
 
 	set -e
 	checkapt "http://localhost\\(:80\\)\\?/${repoprefix}/" "${BDIR[0]}"

@@ -59,7 +59,6 @@ config_repo \
 	version/patchlevel=0 \
 	version/erratalevel=0 \
 	"${comp}=yes" \
-	"${comp}/parts=maintained" \
 	"${comp}/username=${username}" \
 	"${comp}/password=DUMMY"
 
