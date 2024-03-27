@@ -11,3 +11,6 @@ desc: |
 bug: [57150]
 cve:
 - CVE-2023-39804
+erratum: 1008
+announced: 2024-03-27
+support: core
