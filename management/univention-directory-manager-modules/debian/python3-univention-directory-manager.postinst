@@ -76,4 +76,9 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "15.0.25-25"; th
 	systemctl is-active ucs-school-import-celery-worker.service && deb-systemd-invoke restart ucs-school-import-celery-worker.service || true
 fi
 
+
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "15.0.26-8"; then
+	deb-systemd-invoke restart univention-directory-listener.service || true
+fi
+
 exit 0
