@@ -1,0 +1,73 @@
+@%@UCRWARNING=# @%@
+
+#
+#  Normalize the MAC Addresses in the Calling/Called-Station-Id/User-Name
+#
+@!@
+default_mac_addr_regexp = '([0-9a-f]{2})[^0-9a-f]?([0-9a-f]{2})[^0-9a-f]?([0-9a-f]{2})[^0-9a-f]?([0-9a-f]{2})[^0-9a-f]?([0-9a-f]{2})[^0-9a-f]?([0-9a-f]{2})'
+print("mac-addr-regexp = '%s'" % configRegistry.get('freeradius/conf/mac-addr-regexp', default_mac_addr_regexp))
+@!@
+
+#
+#  Add "rewrite_called_station_id" in the "authorize" and
+#  "preacct" sections.
+#
+#  Makes Called-Station-ID conform to what RFC3580 says should
+#  be provided by 802.1X authenticators.
+#
+rewrite_called_station_id_univention {
+	if (&Called-Station-Id && (&Called-Station-Id =~ /^${policy.mac-addr-regexp}([^0-9a-f](.+))?$/i)) {
+		update request {
+			&Called-Station-Id := "%{toupper:%{1}:%{2}:%{3}:%{4}:%{5}:%{6}}"
+		}
+
+		# SSID component?
+		if ("%{8}") {
+			update request {
+				&Called-Station-SSID := "%{8}"
+			}
+		}
+		updated
+	}
+	else {
+		noop
+	}
+}
+
+#
+#  Add "rewrite_calling_station_id_univention" in the "authorize" and
+#  "preacct" sections.
+#
+#  Makes Calling-Station-ID conform to what RFC3580 says should
+#  be provided by 802.1X authenticators.
+#
+rewrite_calling_station_id_univention {
+	if (&Calling-Station-Id && (&Calling-Station-Id =~ /^${policy.mac-addr-regexp}$/i)) {
+		update request {
+			&Calling-Station-Id := "%{toupper:%{1}:%{2}:%{3}:%{4}:%{5}:%{6}}"
+		}
+		updated
+	}
+	else {
+		noop
+	}
+}
+
+# Add "user_name_is_mac" in the "authorize" section.
+#
+# If the User-Name is equal to Calling-Station-Id, or Service-Type
+# is Call-Check, then set Auth-Type to CSID.
+#
+user_name_is_mac {
+    if (&User-Name && (&User-Name =~ /^${policy.mac-addr-regexp}$/i)) {
+        if ((&Service-Type && &Service-Type == "Call-Check") || (&Calling-Station-Id && &Calling-Station-Id == "%{toupper:%{1}:%{2}:%{3}:%{4}:%{5}:%{6}}")) {
+            update control {
+                Auth-Type := 'CSID'
+            }
+            updated
+        }
+    }
+    else {
+        noop
+    }
+}
