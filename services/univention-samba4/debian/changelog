@@ -1,3 +1,9 @@
+univention-samba4 (11.0.5) unstable; urgency=medium
+
+  * Bug #57145: mdb is now default
+
+ -- Felix Botner <botner@univention.de>  Wed, 13 Mar 2024 16:42:01 +0100
+
 univention-samba4 (11.0.4) unstable; urgency=medium
 
   * Bug #56765: Remove samba4-saml-kerberos integration - only used for
