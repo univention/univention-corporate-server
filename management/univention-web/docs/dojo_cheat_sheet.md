@@ -15,7 +15,7 @@ Here is an example from `ucs/management/univention-web/js/widgets/ContainerWidge
 define(
     // list of dependencies
     [
-	    "dojo/_base/declare",
+	"dojo/_base/declare",
         "dojo/dom-class",
         "dijit/_WidgetBase",
         "dijit/_Container"
@@ -306,7 +306,7 @@ w = new MyWidget({});
 
 
 When you want a property of a widget to hold a reference type (e.g. arrays, Date, etc...)
-you have to initialize them in the `constructor()` lifecycle function or the property value will
+you have to initialize it in the `constructor()` lifecycle function or the property value will
 be shared across widget instances. Only [primitive types](https://developer.mozilla.org/en-US/docs/Glossary/Primitive)
 can be initialized directly when declaring the property.
 
