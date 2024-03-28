@@ -4,14 +4,6 @@
 	- when using `make build-dev` for `univention-web` the frontend might not work correctly
       if you have an ad-blocker active in your browser. Symptoms can be UMC modules not opening
       or the login not finishing for example.
-- stylus
-	- when writing stylus files make sure that you use the same whitespace for indentation.
-      In other words don't mix spaces and tabs for example.
-
-	  Stylus might compile without error but the result will probably be not what you expect.
-
-
-
 
 # Development of dojo based web interfaces
 

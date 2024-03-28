@@ -1,8 +1,13 @@
-# Widgets
+Every code snippet can be executed in the browser dev console
+while the UMC (http://ip/univention/management/) is open.
 
-## `require`, `define` and `declare`
+Note: The snippets are not isolated as they add variables to the global window object for easier fiddling.
+You may want to refresh the page between snippets.
 
-### `define`
+
+# Dojo - module definition and loading - `require`, `define` and `declare`
+
+## `define`
 TLDR: defines modules that can be imported in `define()` or `require()` calls.
 
 Dojo uses the [Asynchronous Module Definition (AMD)](https://github.com/amdjs/amdjs-api/wiki/AMD) API
@@ -31,7 +36,7 @@ define(
 );
 ```
 
-### require
+## require
 TLDR: import modules
 
 `require` can be used to import modules.
@@ -45,35 +50,38 @@ require(
     ],
     // callback with dependencies as parameters
     function(ContainerWidget) {
+        console.log('In callback of `require`');
+        console.log('ContainerWidget module: ', ContainerWidget);
         // do stuff here
     }
 )
 ```
 
 If you are sure the module is already loaded you can just supply a string as argument and the return value
-will be the module. If the module hasn't been loaded yet, you will get an error.
+will be the module. Although this should only be used for debugging in the browser dev console.
+In the source code, always specify your dependencies and work in the `define`, `require` callbacks.
 
 ```js
-fx = require('dojox/fx');
-// Uncaught Error: undefinedModule
-require(['dojo/fx'])
+require(['dojox/fx'])
+// run these lines seperately to give 'dojox/fx' time to be loaded
 fx = require('dojox/fx');
 // {anim: ƒ, animateProperty: ƒ, fadeTo: ƒ, fadeIn: ƒ, fadeOut: ƒ,}
 ```
 
-### declare
+If the module hasn't been loaded yet, you will get an error.
+```js
+fx = require('dojox/fx');
+// Uncaught Error: undefinedModule
+```
+
+## declare
 
 TLDR: declare Dojo classes.
 
-created before javascript `class` existed
+`declare` allows the creation of classes with object-oriented concepts like inheritance.
+It was created before the javascript `class` keyword existed.
 
-like `class` it provides class based syntax, inheritence etc
-
-also provides common functions like `inherited`TODO link to this.inherited
-
-
-
-
+# Dojo Widgets
 
 ## Prelude 1: `this.inherited(arguments)`
 
@@ -98,6 +106,8 @@ require([
 });
 
 new MyWidget({});
+// logs `null` since `buildRendering` of `_WidgetBase` would normally
+// create `this.domNode` but `this.inherited(arguments)` was not called.
 
 require([
   'dojo/_base/declare',
@@ -112,6 +122,7 @@ require([
 });
 
 new MyWidget({});
+// logs `<div id="MyWidget_1" widgetid="MyWidget_1"></div>
 ```
 
 `this.inherited(arguments)` is not limited to lifecycle functions.
@@ -158,14 +169,15 @@ require([
 
         _setSomeStringAttr: function(someString) {
             this.domNode.innerText = someString;
-            // important!  Call `this._set('someString', value)` with the final value or
-            // this.someString is not updated.
+            // important!  Call `this._set('someString', value)` with the final value,
+            // or `this.someString` is not updated.
             this._set('someString', someString);
         }
     });
 });
 
 w = new MyWidget({});
+w.domNode;
 ```
 
 `_setXXXAttr` and `_getXXXAttr` should not be called directly. Rather the generic `set` and `get` methods should be
@@ -174,6 +186,8 @@ used which will call the setter and getter functions.
 ```js
 w.set('someString', 'new string');
 w.get('someString');
+
+w.domNode;
 ```
 
 Generally it is safer to always use `set` and `get` when working with properties of widget instances.
@@ -183,6 +197,7 @@ the setter will not be called.
 ```js
 // This will NOT cause `_setSomeStringAttr` to be called and the widget probably won't work as expected.
 w.someString = 'foo';
+w.domNode;
 ```
 
 Setters and getters don't actually have to be functions.
@@ -209,7 +224,7 @@ require([
 });
 
 w = new MyWidget({});
-console.log(w.domNode);
+w.domNode;
 ```
 
 
@@ -269,11 +284,15 @@ require([
 
         // Not a specific lifecycle function but part of the lifecycle:
         // After `buildRendering` and before `postCreate`
-        // all `_setXXXAttr` functions are called.
+        // all `_setXXXAttr` functions are called,
+        // but only if they were provided as constructor parameter
+        // or are none falsy.
+        // See "## setters called during lifecycle only for none falsy values"
+        // for a more detailed explanation.
         _setSomeNumberAttr: function(someNumber) {
             console.log("_setSomeNumberAttr(): ", someNumber);
 
-            this.counterNode.innerText = this.someNumber;
+            this.counterNode.innerText = someNumber;
             this._set('someNumber', someNumber);
         },
 
@@ -289,21 +308,45 @@ require([
                 this.set('someNumber', this.someNumber + 1);
             }));
 
-            // Note that at this point the DOM node is not attached to the DOM yet
+            // Note that at this point the DOM node may not be attached to the DOM yet
             // so sizing related functionality can't be done here.
             console.log("The size of this widget: ", this.domNode.getBoundingClientRect());
         },
+
+        startup: function() {
+            console.log('Lifecycle function: "startup"');
+
+            // At this point the DOM node of the widget `this.domNode` is
+            // in the dom and you can do sizing related functionality.
+
+            console.log("The size of this widget: ", this.domNode.getBoundingClientRect());
+        },
+
+        destroy: function() {
+            console.log('Lifecycle function: "destroy"');
+            this.inherited(arguments);
+        }
     });
 });
 
-w = new MyWidget({});
+container = new umc.widgets.ContainerWidget({
+    style: "position: fixed; inset: 0; background: var(--bgc-content-body); z-index: 1000;"
+});
+document.body.appendChild(container.domNode);
+container.startup();
+
+// Create a widget instance with the `new` keyword.
+// You can an object to set values for widget properties.
+w = new MyWidget({
+    someNumber: 10,
+});
+container.addChild(w);
 ```
 
 
-# Caveats
+# Stumbling blocks
 
-## Initializing properties with reference types outside of `constructor` lifecycle method
-
+## Initializing properties with reference types, outside of `constructor` lifecycle method
 
 When you want a property of a widget to hold a reference type (e.g. arrays, Date, etc...)
 you have to initialize it in the `constructor()` lifecycle function or the property value will
@@ -364,14 +407,136 @@ console.log('w1 - primitive   : ', w1.primitive);
 console.log('w2 - primitive   : ', w2.primitive);
 ```
 
-## setters called during lifecycle only for none null values
+## setters not called during lifecycle for falsy values
+
+One stumbling block and potential annoyance is that
+the setter functions (`_setXXXAttr`) are not called
+during the creation lifecycle under certain circumstances.
+
+If a properties initial value (including `postMixInProperties` step)
+is falsy ( `false`, `0`, `null`, `undefined`, `''` (empty string), `NaN`),
+the corresponding setter will not be called.
 
 
+```js
+// Note: the following snipped excludes `this._set('xxx', value)` in the setters only for brevity.
+// You have to call it normally.
+
+require([
+    'dojo/_base/declare',
+    'dijit/_WidgetBase',
+], function(declare, _WidgetBase) {
+    MyWidget = declare("MyWidget", [_WidgetBase], {
+
+        zeroProp: 0,
+        _setZeroPropAttr: function(value) {
+            console.log('_setZeroPropAttr: ', value);
+        },
+
+        falseProp: false,
+        _setFalsePropAttr: function(value) {
+            console.log('_setFalsePropAttr: ', value);
+        },
+
+        nanProp: NaN,
+        _setNanPropAttr: function(value) {
+            console.log('_setNanPropAttr: ', value);
+        },
+
+        nullProp: null,
+        _setNullPropAttr: function(value) {
+            console.log('_setNullPropAttr: ', value);
+        },
+
+        undefinedProp: undefined,
+        _setUndefinedPropAttr: function(value) {
+            console.log('_setUndefinedPropAttr: ', value);
+        },
+
+        emptyStringProp: '',
+        _setEmptyStringPropAttr: function(value) {
+            console.log('_setEmptyStringPropAttr: ', value);
+        },
+
+        madeFalsyByPostMixInPropertiesProp: true,
+        _setMadeFalsyByPostMixInPropertiesPropAttr: function(value) {
+            console.log('_setMadeFalsyByPostMixInPropertiesPropAttr: ', value);
+        },
+
+        postMixInProperties: function() {
+            this.inherited(arguments);
+            this.madeFalsyByPostMixInPropertiesProp = false;
+        },
+    });
+});
+
+w = new MyWidget({});
+// None of the setters will be called
+```
 
 
+Contrary, if a property is specified when creating the widget,
+setters will always be called even if the value is falsy.
 
-# Debugging
+```js
+w = new MyWidget({
+    zeroProp: 0,
+    falseProp: false,
+    nanProp: NaN,
+    nullProp: null,
+    undefinedProp: undefined,
+    emptyStringProp: '',
+    madeFalsyByPostMixInPropertiesProp: false,
+});
 
-## MyWidget is not a constructor
+// Every setter is called.
+```
 
-Some syntax error
+
+That means that you can't solely rely on your setters
+to generate the correct initial DOM state.
+You have to incorporate (duplicate) that logic into
+`buildRendering` if the initial value of your prop is falsy.
+
+```js
+require([
+    'dojo/_base/declare',
+    'dijit/_WidgetBase',
+    'put-selector/put'
+], function(declare, _WidgetBase, put) {
+    MyWidget = declare("MyWidget", [_WidgetBase], {
+
+        value: 0,
+        _setValueAttr: function(value) {
+            this.valueNode.innerHTML = this.value;
+            this._set('value', value);
+        },
+
+        buildRendering: function() {
+            this.inherited(arguments);
+
+            this.valueNode = put('div#value');
+            put(this.domNode, 'div $ +', 'Value is:', this.valueNode);
+
+            // uncomment this line for the correct initial state
+            // this.set('value', 0);
+        },
+    });
+});
+
+w = new MyWidget({});
+w.domNode
+
+// The div with id 'value' is empty instead of containing '0'
+/*
+<div id="MyWidget_24" widgetid="MyWidget_24">
+  <div>Value is:</div>
+  <div id="value"></div>
+</div>
+ */
+```
+
+The `div` with `id="value"` is empty instead of containing `0`.
+Either don't rely on setters for the correct initial state of falsy values
+or call `this.set('prop', value)` manually in `buildRendering` for falsy
+initial values.
