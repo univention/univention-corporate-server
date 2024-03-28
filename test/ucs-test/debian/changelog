@@ -1,3 +1,9 @@
+ucs-test (12.0.32) unstable; urgency=medium
+
+  * Bug #56054: fix ucs-test-keycloak
+
+ -- Felix Botner <botner@univention.de>  Thu, 28 Mar 2024 14:54:42 +0100
+
 ucs-test (12.0.31) unstable; urgency=medium
 
   * Bug #57197: fix updater tests

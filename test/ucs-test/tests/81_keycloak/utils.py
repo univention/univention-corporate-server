@@ -30,23 +30,37 @@
 
 from __future__ import annotations
 
+import locale
 import subprocess
-from types import SimpleNamespace
 from typing import TYPE_CHECKING
 
 import requests
-from keycloak import KeycloakAdmin
 from playwright.sync_api import Page, expect
 
 
 if TYPE_CHECKING:
     from types import SimpleNamespace
 
-
-if TYPE_CHECKING:
-
     from keycloak import KeycloakAdmin
-    from selenium.webdriver.chrome.webdriver import WebDriver
+
+
+TRANSLATIONS = {
+    'de-DE': {
+        'Username or email': 'Benutzername oder E-Mail',
+        'password': 'Passwort',
+        'Sign In': 'Anmelden',
+        'Invalid username or password.': 'Ungültiger Benutzername oder Passwort.',
+        'Login (Single sign-on)': 'Anmelden (Single Sign-on)',
+        'Changing password failed. The password was already used.': 'Passwort ändern fehlgeschlagen. Das Passwort wurde bereits genutzt.',
+        'Changing password failed. The password is too short.': 'Passwort ändern fehlgeschlagen. Das Passwort ist zu kurz.',
+        "Passwords don't match.": 'Passwörter sind nicht identisch.',
+        'Please specify password.': 'Bitte geben Sie ein Passwort ein.',
+        'LOGOUT': 'ABMELDEN',
+        'Unexpected error when handling authentication request to identity provider.': 'Unerwarteter Fehler während der Bearbeitung der Anfrage an den Identity Provider.',
+        'The account has expired.': 'Das Benutzerkonto ist abgelaufen.',
+        'The account is disabled.': 'Das Benutzerkonto ist deaktiviert.',
+    },
+}
 
 
 def host_is_alive(host: str) -> bool:
@@ -55,16 +69,11 @@ def host_is_alive(host: str) -> bool:
 
 
 def get_portal_tile(page: Page, text: str, portal_config: SimpleNamespace):
-    return page.get_by_label(text)
+    return page.get_by_label(_(text))
 
 
-def get_language(driver: WebDriver, german: bool = False) -> str:
-    if german:
-        # TODO since chromium 119 l10n stuff does no longer work, all
-        # keycloak site are german, no matter what locale settings
-        # check at some point if we can revert this workaround
-        return 'de-DE'
-    return driver.execute_script('return window.navigator.userLanguage || window.navigator.language')
+def get_language_code() -> str:
+    return locale.getlocale()[0].replace('_', '-')
 
 
 def keycloak_password_change(
@@ -73,7 +82,7 @@ def keycloak_password_change(
     password: str,
     new_password: str,
     new_password_confirm: str,
-    fails_with: dict | None = None,
+    fails_with: str | None = None,
 ) -> None:
     page.locator(f"#{keycloak_config.password_id}").fill(password)
     page.locator(f"#{keycloak_config.password_new_id}").fill(new_password)
@@ -82,7 +91,7 @@ def keycloak_password_change(
 
     if fails_with:
         error = page.locator(keycloak_config.password_update_error_css_selector.replace("[class='", ".").replace("']", "").replace(" ", "."))
-        assert fails_with == error.inner_text(), f'{fails_with} != {error.inner_text()}'
+        assert _(fails_with) == error.inner_text(), f'{fails_with} != {error.inner_text()}'
 
 
 def keycloak_auth_header(config: SimpleNamespace) -> dict:
@@ -120,25 +129,40 @@ def keycloak_sessions_by_user(config: SimpleNamespace, username: str) -> dict:
     return response.json()
 
 
+def _(string: str) -> str:
+    lc = get_language_code()
+    if lc in TRANSLATIONS:
+        return TRANSLATIONS[lc].get(string, string)
+    else:
+        return string
+
+
 def keycloak_login(
     page: Page,
     keycloak_config: SimpleNamespace,
     username: str,
     password: str,
-    fails_with: dict | None = None,
+    fails_with: str | None = None,
     no_login: bool = False,
 ) -> None:
-    name = page.get_by_label("Username or email")
-    expect(name, "login form username input not visible").to_be_visible()
-    pw = page.get_by_label("password")
-    expect(pw, "password form input not visible").to_be_visible()
+    try:
+        name = page.get_by_label(_("Username or email"))
+        expect(name, "login form username input not visible").to_be_visible()
+        pw = page.get_by_label(_("password"))
+        expect(pw, "password form input not visible").to_be_visible()
+        if no_login:
+            return
+        name.fill(username)
+        pw.fill(password)
+        page.get_by_role("button", name=_("Sign In")).click()
+        if fails_with:
+            error = page.locator(keycloak_config.login_error_css_selector)
+            assert _(fails_with) == error.inner_text(), f'{_(fails_with)} == {error.inner_text()}'
+            assert error.is_visible()
 
-    if no_login:
-        return
-
-    name.fill(username)
-    pw.fill(password)
-    page.get_by_role("button", name="Sign In").click()
+    except Exception:
+        print(page.content())
+        raise
 
 
 def run_command(cmd: list) -> str:

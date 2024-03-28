@@ -14,7 +14,7 @@ from subprocess import CalledProcessError
 import pytest
 import requests
 from playwright.sync_api import expect
-from utils import run_command
+from utils import _, run_command
 
 
 LINK_COUNT = 12
@@ -89,7 +89,7 @@ def test_custom_theme(keycloak_adm_login, admin_account):
         with open(custom_css, 'w') as fh:
             fh.write(':root { --bgc-content-body: #831414; }')
         page = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
-        element = page.get_by_label('Username or email')
+        element = page.get_by_label(_('Username or email'))
         assert element.evaluate("el => getComputedStyle(el).backgroundColor") == color_css
     finally:
         shutil.move(temp_file, custom_css)
@@ -110,8 +110,8 @@ def test_cookie_banner(keycloak_adm_login, admin_account, ucr, keycloak_config):
     )
     # check the popup
     page = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
-    assert page.locator("[id='cookie-text']").inner_text() == 'english text'
-    assert page.locator("[id='cookie-title']").inner_text() == 'english title'
+    assert page.locator("[id='cookie-text']").inner_text() == 'en-US text'
+    assert page.locator("[id='cookie-title']").inner_text() == 'en-US title'
     button = page.get_by_role("button", name="ACCEPT")
     # accept the popup and check the cookie
     assert button.inner_text() == 'ACCEPT'
