@@ -2,7 +2,7 @@
 
 UCS provides two themes, 'light' and 'dark'.
 The theme files can be found under `/usr/share/univention-web/themes/dark.css` and
-`/usr/share/univention-web/themes/light.css` on an UCS system on consist solely of CSS variables which are
+`/usr/share/univention-web/themes/light.css` on a UCS system on consist solely of CSS variables which are
 throughout the other CSS files.
 The only thing that changes between `dark.css` and `light.css` are colors, but they also contain
 CSS variables that control other aspects of the design.

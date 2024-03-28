@@ -15,27 +15,27 @@
 
 # Development of dojo based web interfaces
 
-An UCS system provides several web interfaces that are build with the
+An UCS system provides several web interfaces that are built with the
 [Dojo Toolkit](https://docs.software-univention.de/architecture/5.0/en/appendix/third-party.html#term-Dojo-Toolkit)
 JavaScript framework.
 
 These web interfaces are:
-- /univention/login - The login page for all web interfaces of an UCS system.
+- /univention/login - The login page for all web interfaces of a UCS system.
 - /univention/management - The [UMC - Univention Management Console](https://docs.software-univention.de/architecture/5.0/en/services/umc.html#).
 - /univention/server-overview - A web interface, showing all UCS systems of the domain.
-- /univention/setup - The web based configuration wizard while installing an UCS system.
+- /univention/setup - The web based configuration wizard while installing a UCS system.
 
-This document explains how to develop for these dojo based web interfaces.
+This document explains how to develop for these Dojo-based web interfaces.
 
-## Getting an UCS system
+## Getting a UCS system
 
 For development you need a running UCS system.
 See the [Development environment](https://univention.gitpages.knut.univention.de/internal/dev-handbook/dev-env.html)
 section in "Handbook for Univention Development Department" on how to create a UCS system.
 
-## General setup of our Dojo Toolkit based web interfaces
+## General setup of our Dojo-Toolkit-based web interfaces
 
-Let's look at a generalised `index.html` file for a Dojo Toolkit based webinterface.
+Let's look at a generalised `index.html` file for a Dojo-Toolkit-based web interface.
 
 The `<body>` tag:
 
@@ -67,8 +67,8 @@ can contain various degrees of initial HTML. The minimum of overlapping HTML are
 
 The `<head>` tag:
 
-The `<head>` tag contains the usual suspects like the `<title>`, favicon and `<meta>` information but I want
-to focus on the setup of the Dojo Toolkit framework.
+The `<head>` tag contains the usual suspects like the `<title>`, favicon and `<meta>` information but let's
+focus on the setup of the Dojo Toolkit framework for now.
 
 First of, we don't use a Dojo Toolkit version directly. In the `univention/ucs` repository under
 [management/univention-dojo](https://git.knut.univention.de/univention/ucs/-/tree/5.0-6/management/univention-dojo?ref_type=heads)
@@ -79,11 +79,11 @@ The resulting package is used as a dependency for
 our JavaScript library on top of Dojo Toolkit.
 
 `univention-web` produces 5 artifacts that we use in the `<head>` tag to setup the web interface:
-- config.js - A file to create generalised `umcConfig` and `dojoConfig` object which configure the
+- config.js - A file to create generalised `umcConfig` and `dojoConfig` objects which configure the
               behaviour of our web interfaces and the
               [Dojo Loader](https://dojotoolkit.org/reference-guide/1.8/loader/amd.html#configuration-feature-detection)
               respectively.
-- dojo.js - A compiled file containing the Dojo Toolkit and libraries from `univention-dojo`; and our JavaScript tools
+- dojo.js - A compiled file containing the Dojo Toolkit, libraries from `univention-dojo` and our JavaScript tools
             and widgets from `univention-web`.
 - umc.css - A single CSS for everything inside dojo.js and some additional styles used across the web interfaces.
 - dark.css and light.css - CSS files defining a theme for the web interfaces.
@@ -91,7 +91,7 @@ our JavaScript library on top of Dojo Toolkit.
 
 ```html
 <head>
-	<!-- [...] ommited some tags <meta>, <title>, favicon [...] -->
+	<!-- [...] omitted some tags <meta>, <title>, favicon [...] -->
 
 	<!-- CSS for univention-web -->
 	<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
@@ -131,7 +131,7 @@ our JavaScript library on top of Dojo Toolkit.
 
 ## Dev setup for univention-web
 
-If you want to make changes to univention-web and see them on you UCS system you could just copy it over
+If you want to make changes to univention-web and test them on your UCS system you could just copy it over
 and install it:
 
 ```bash
@@ -141,20 +141,20 @@ cd univention-web && apt-get -y build-dep . && dpkg-buildpackage -us -uc && dpkg
 But this takes a long time (~5min). A faster way is to run `make build-dev`:
 
 ```bash
-# Copy the `univention-web` folder onto your UCS system.
+# Copy the `univention-web` folder to your UCS system.
 rsync -r /path/to/univention-web/ <ip-of-my-ucs-system>:/home/univention-web/
 
-# WARNING: If you copy `univention-web` to `/root/` you have to call
-#          `chmod +x /root`, or the frontend will not work correctly.
+# WARNING: If you copy `univention-web` to `/root/`, you have to call
+#          `chmod +x /root`, otherwise the frontend will not work properly.
 
-# On the UCS system go to where you copied `univention-web`.
+# On the UCS system go to where you copied `univention-web` to.
 cd /home/univention-web
 
 # Install needed dependencies
 apt-get build-dep .
 
 # Call `make build-dev` (build-dev is defined in univention-web/Makefile).
-# This will compile all stylus files to the final css output and create
+# This will compile all stylus files to the final CSS output and create
 # symlinks for all JavaScript files.
 make build-dev
 
@@ -165,10 +165,10 @@ make build-dev
 # just copy univention-web over again.
 rsync -r /path/to/univention-web <ip-of-my-ucs-system>:/home/univention-web/
 
-# If you made CSS changes or added new JavaScript files you  have to
+# If you make CSS changes or add new JavaScript files you have to
 # call `make clean` to erase the previous `make build-dev` and
 # then call 'make build-dev' again.
-# Otherwise you can omit this step
+# Otherwise you can omit this step.
 make clean; make build-dev
 
 # To revert to the installed `univention-web` version on the UCS system
@@ -178,15 +178,15 @@ make clean
 
 ## System setup (/var/www/univention/setup)
 
-The system setup is the web based configuration wizard while installing an UCS system.
+The system setup is the web-based configuration wizard while installing an UCS system.
 You can see some screenshots of it in the
 [Univention Corporate Server - Manual for users and administrators](https://docs.software-univention.de/manual/5.0/en/installation.html#domain-settings).
 
 The code for the system setup can be found here:
 [univention-system-setup](https://git.knut.univention.de/univention/ucs/-/tree/5.0-6/base/univention-system-setup?ref_type=heads).
 
-The directory also defines other frontend related packages like "univention-managment-console-setup".
-But for the web based configuration wizard we want to look at the "univention-system-setup" package.
+The directory also defines other frontend-related packages like "univention-managment-console-setup".
+But for the web-based configuration wizard we want to look at the "univention-system-setup" package.
 
 The frontend files for "univention-system-setup" can be found under
 `univention-system-setup/usr/share/univention-system-setup/www`.
@@ -214,10 +214,10 @@ Here are some non-exhaustive commands that can be useful for debugging/developin
 // get a reference to the ApplianceWizard.js instance
 w = dijit.byId('setupApplianceWizard')
 
-// list all pages in appearence order
+// list all pages in order of appearence
 w.pages.forEach(p => console.log(p.name))
 
-// select on of those pages
+// select one of those pages
 // w.selectChild(w._pages[pagename])
 w.selectChild(w._pages['network'])
 
@@ -250,7 +250,7 @@ The server overview shows all UCS systems of the domain.
 The source code for the frontend files can be found here:
 [univention-server-overview](https://git.knut.univention.de/univention/ucs/-/tree/5.0-6/management/univention-server-overview/www?ref_type=heads).
 
-To develop the system setup frontend you can just copy changes under
+To develop the server-overview frontend you can just copy changes under
 `univention-server-overview/www/` to
 `/var/www/univention/server-overview` on your UCS system.
 
@@ -280,8 +280,8 @@ An exception is the CSS for the login page.
 The style for the login is not defined in `univention-management-console`.
 It is defined in [univention-web/css/login.styl](https://git.knut.univention.de/univention/ucs/-/blob/5.0-6/management/univention-web/css/login.styl?ref_type=heads).
 
-You can either follow the [Dev setup for univention-web] to apply your changes to `login.styl`
-to you UCS system or just compile `login.styl` and copy it to the correct location.
+You can either follow the [Dev setup for univention-web](#dev-setup-for-univention-web) to apply your changes to `login.styl`
+on your UCS system or just compile `login.styl` and copy it to the correct location.
 
 ```bash
 stylus login.styl
@@ -291,10 +291,10 @@ scp login.css <ip-of-your-ucs-stytem>:/usr/share/univention-web/js/dijit/themes/
 
 ## UMC - Univention Management Console (/var/www/univention/management)
 
-The UMC is the web interface for the management of an UCS system.
+The UMC is the web interface for the management of a UCS system.
 
 The frontend of the UMC consists of two parts, the UMC itself and UMC modules:
-- The UMC itself - A web interfaces acting as the shell/host for loading and displaying UMC modules
+- The UMC itself - A web interface acting as the shell/host for loading and displaying UMC modules
 - UMC modules - JavaScript modules that can be loaded by the UMC and provide all the business functionality.
 
 For an architecture overview of the UMC you can read [Architecture documentation](https://docs.software-univention.de/architecture/5.0/en/services/umc.html#).
@@ -333,4 +333,4 @@ on an UCS system.
 
 To develop the frontend you can just copy the files from `umc/js` to
 `/usr/share/univention-management-console-frontend/js/umc/modules`
-on you UCS system.
+on your UCS system.
