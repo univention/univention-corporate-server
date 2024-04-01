@@ -62,29 +62,36 @@ from __future__ import annotations
 
 import asyncio
 import copy
-from typing import Any, AsyncIterator, Callable, Iterator, Mapping, Type
+from types import TracebackType
+from typing import (
+    Any, AsyncIterator, Awaitable, Callable, Dict, Iterator, List, Mapping, Optional, Type, TypeVar, Union, cast,
+)
 
 import aiohttp
 import uritemplate
+
+
+T = TypeVar('T')
+U = TypeVar('U')
 
 
 try:
     aiter  # noqa: B018
 except NameError:  # Python 3.7
     class _AsyncIterable:
-        def __init__(self, iterable):
+        def __init__(self, iterable: AsyncIterator[T]) -> None:
             self.iterable = iterable
 
-        def __aiter__(self):
+        def __aiter__(self) -> _AsyncIterable:
             return self
 
-        async def __anext__(self):
+        async def __anext__(self) -> T:
             return await anext(self.iterable)
 
-    def anext(iterable):
+    def anext(iterable: AsyncIterator[U]) -> Awaitable[U]:
         return iterable.__anext__()
 
-    def aiter(iterable):
+    def aiter(iterable: AsyncIterator[U]) -> _AsyncIterable:
         return _AsyncIterable(iterable)
 
 
@@ -92,7 +99,7 @@ class HTTPError(Exception):
 
     __slots__ = ('code', 'error_details', 'response')
 
-    def __init__(self, code: int, message: str, response: aiohttp.ClientResponse | None, error_details: dict | None = None) -> None:
+    def __init__(self, code: int, message: str, response: Optional[aiohttp.ClientResponse], error_details: Optional[Dict[str, Any]] = None) -> None:
         self.code = code
         self.response = response
         self.error_details = error_details
@@ -170,33 +177,36 @@ class Session:
         }
         self.session = self.create_session(concurrency_limit)
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> Session:
         await self.session.__aenter__()
         return self
 
-    async def __aexit__(self, exc, etype, etraceback):
-        await self.session.__aexit__(exc, etype, etraceback)
+    async def __aexit__(self, exc_type: Optional[Type[BaseException]],
+                        exc_value: Optional[BaseException],
+                        traceback: Optional[TracebackType]) -> None:
+        await self.session.__aexit__(exc_type, exc_value, traceback)
 
     def create_session(self, concurrency_limit: int = 10) -> aiohttp.ClientSession:
         connector = aiohttp.TCPConnector(limit=concurrency_limit)
-        auth = aiohttp.BasicAuth(self.credentials.username, self.credentials.password)
+        auth = aiohttp.BasicAuth(self.credentials.username, self.credentials.password)  # type: ignore
         return aiohttp.ClientSession(connector=connector, auth=auth)
 
-    def get_method(self, method: str) -> Callable[..., aiohttp.ClientResponse]:
+    def get_method(self, method: str) -> Callable[..., Awaitable[aiohttp.ClientResponse]]:
         sess = self.session
-        return {
+        func_mapping: Dict[str, Callable[..., Awaitable[aiohttp.ClientResponse]]] = {
             'GET': sess.get,
             'POST': sess.post,
             'PUT': sess.put,
             'DELETE': sess.delete,
             'PATCH': sess.patch,
             'OPTIONS': sess.options,
-        }.get(method.upper(), sess.get)
+        }
+        return func_mapping.get(method.upper(), sess.get)
 
-    async def request(self, method: str, uri: str, data: dict | None = None, expect_json: bool = False, **headers: str) -> Any:
+    async def request(self, method: str, uri: str, data: Optional[Dict[str, Any]] = None, expect_json: bool = False, **headers: str) -> Any:
         return (await self.make_request(method, uri, data, expect_json=expect_json, **headers)).data  # type: ignore # <https://github.com/python/mypy/issues/10008>
 
-    async def make_request(self, method: str, uri: str, data: dict | None = None, expect_json: bool = False, allow_redirects: bool = True, custom_redirect_handling: bool = False, **headers: str) -> Response:
+    async def make_request(self, method: str, uri: str, data: Optional[Dict[str, Any]] = None, expect_json: bool = False, allow_redirects: bool = True, custom_redirect_handling: bool = False, **headers: str) -> Response:
         if method in ('GET', 'HEAD'):
             params = data
             json = None
@@ -229,7 +239,7 @@ class Session:
 
         return await doit()
 
-    async def _follow_redirection(self, response: Response) -> Response:
+    async def _follow_redirection(self, response: aiohttp.ClientResponse) -> aiohttp.ClientResponse:
         location = response.headers.get('Location')
         #  aiohttp doesn't follow redirects for 202?
         if location and response.status in (201, 202):
@@ -244,7 +254,7 @@ class Session:
 
         return response
 
-    def _select_method(self, response: Response) -> str:
+    def _select_method(self, response: aiohttp.ClientResponse) -> str:
         if response.status in (300, 301, 303) and response.request_info.method != 'HEAD':
             return 'GET'
         return response.request_info.method  # pragma: no cover
@@ -269,9 +279,8 @@ class Session:
                         # traceback = error_details.get('traceback')
                         if server_message:
                             msg += f'\n{server_message}'
-            errors = {400: BadRequest, 404: NotFound, 403: Forbidden, 401: Unauthorized, 412: PreconditionFailed, 422: UnprocessableEntity, 500: ServerError, 503: ServiceUnavailable}
-            cls = HTTPError
-            cls = errors.get(response.status, cls)
+            errors: Dict[int, Type[HTTPError]] = {400: BadRequest, 404: NotFound, 403: Forbidden, 401: Unauthorized, 412: PreconditionFailed, 422: UnprocessableEntity, 500: ServerError, 503: ServiceUnavailable}
+            cls = errors.get(response.status, HTTPError)
             raise cls(response.status, msg, response, error_details=error_details)
         if response.headers.get('Content-Type') in ('application/json', 'application/hal+json'):
             return await response.json()
@@ -279,7 +288,7 @@ class Session:
             raise UnexpectedResponse(await response.text())
         return await response.text()
 
-    def get_relations(self, entry: dict, relation: str, name: str | None = None, template: dict[str, Any] | None = None) -> Iterator[dict[str, str]]:
+    def get_relations(self, entry: Dict[str, Any], relation: str, name: Optional[str] = None, template: Optional[Dict[str, Any]] = None) -> Iterator[Dict[str, str]]:
         links = copy.deepcopy(entry.get('_links', {}))
         links = links.get(relation, [None])
         links = links if links and isinstance(links, list) else [links]
@@ -291,13 +300,13 @@ class Session:
                 link['href'] = uritemplate.expand(link['href'], template)
             yield link
 
-    def get_relation(self, entry: dict, relation: str, name: str | None = None, template: dict[str, Any] | None = None) -> dict[str, str]:
+    def get_relation(self, entry: Dict[str, Any], relation: str, name: Optional[str] = None, template: Optional[Dict[str, Any]] = None) -> Dict[str, str]:
         try:
             return next(self.get_relations(entry, relation, name, template))
         except StopIteration:  # pragma: no cover
             raise _NoRelation(relation)
 
-    async def resolve_relations(self, entry: dict, relation: str, name: str | None = None, template: dict[str, Any] | None = None) -> AsyncIterator[Any]:
+    async def resolve_relations(self, entry: Dict[str, Any], relation: str, name: Optional[str] = None, template: Optional[Dict[str, Any]] = None) -> AsyncIterator[Dict[str, Any]]:
         embedded = entry.get('_embedded', {})
         if isinstance(embedded, dict) and relation in embedded:
             # yield from embedded[relation]
@@ -308,7 +317,7 @@ class Session:
         for rel in self.get_relations(entry, relation, name, template):
             yield (await self.make_request('GET', rel['href'])).data
 
-    async def resolve_relation(self, entry: dict, relation: str, name: str | None = None, template: dict[str, Any] | None = None) -> Any:
+    async def resolve_relation(self, entry: Dict[str, Any], relation: str, name: Optional[str] = None, template: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         try:
             return await anext(self.resolve_relations(entry, relation, name, template))
         except StopAsyncIteration:  # pragma: no cover
@@ -335,20 +344,22 @@ class UDM(Client):
     def bearer(cls, uri: str, bearer_token: str) -> UDM:
         return cls(uri, None, None, bearer_token=bearer_token)
 
-    def __init__(self, uri: str, username: str | None, password: str | None, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, uri: str, username: Optional[str], password: Optional[str], *args: Any, **kwargs: Any) -> None:
         self.uri = uri
         self.username = username
         self.password = password
         self.bearer_token = kwargs.pop('bearer_token', None)
-        self.entry: dict | Any | None = None
+        self.entry: Union[Dict[str, Any], Any, None] = None
         super().__init__(Session(self, *args, **kwargs))
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> UDM:
         await self.client.__aenter__()
         return self
 
-    async def __aexit__(self, exc, etype, etraceback):
-        await self.client.__aexit__(exc, etype, etraceback)
+    async def __aexit__(self, exc_type: Optional[Type[BaseException]],
+                        exc_value: Optional[BaseException],
+                        traceback: Optional[TracebackType]) -> None:
+        await self.client.__aexit__(exc_type, exc_value, traceback)
 
     async def load(self) -> None:
         # FIXME: use HTTP caching instead of memory caching
@@ -358,31 +369,35 @@ class UDM(Client):
     async def reload(self) -> None:
         self.entry = await self.client.request('GET', self.uri, expect_json=True)
 
-    async def get_ldap_base(self) -> str | None:
+    async def get_ldap_base(self) -> Optional[str]:
         await self.load()
+        assert self.entry is not None
         return Object.from_data(self, await self.client.resolve_relation(self.entry, 'udm:ldap-base')).dn
 
-    async def modules(self, name: str | None = None) -> AsyncIterator[Module]:
+    async def modules(self, name: Optional[str] = None) -> AsyncIterator[Module]:
         await self.load()
+        assert self.entry is not None
         async for module in self.client.resolve_relations(self.entry, 'udm:object-modules'):
             for module_info in self.client.get_relations(module, 'udm:object-types', name):
                 yield Module(self, module_info['href'], module_info['name'], module_info['title'])
 
     async def obj_by_dn(self, dn: str) -> Object:
         await self.load()
+        assert self.entry is not None
         return Object.from_data(self, await self.client.resolve_relation(self.entry, 'udm:object/get-by-dn', template={'dn': dn}))
 
     async def obj_by_uuid(self, uuid: str) -> Object:
         await self.load()
+        assert self.entry is not None
         return Object.from_data(self, await self.client.resolve_relation(self.entry, 'udm:object/get-by-uuid', template={'uuid': uuid}))
 
-    async def get(self, name: str) -> Module | None:
+    async def get(self, name: str) -> Optional[Module]:
         async for module in self.modules(name):
             return module
 
         return None
 
-    async def get_object(self, object_type: str, dn: str) -> Object | None:
+    async def get_object(self, object_type: str, dn: str) -> Optional[Object]:
         mod = await self.get(object_type)
         assert mod
         obj = await mod.get(dn)
@@ -404,7 +419,7 @@ class Module(Client):
         self.password = udm.password
         self.name = name
         self.title = title
-        self.relations: dict = {}
+        self.relations: Dict[str, Any] = {}
 
     async def load_relations(self) -> None:
         if self.relations:
@@ -414,57 +429,57 @@ class Module(Client):
     def __repr__(self) -> str:
         return f'Module(uri={self.uri!r}, name={self.name!r})'
 
-    async def new(self, position: str | None = None, superordinate: str | None = None, template: dict[str, Any] | None = None) -> Object:
+    async def new(self, position: Optional[str] = None, superordinate: Optional[str] = None, template: Optional[Dict[str, Any]] = None) -> Object:
         await self.load_relations()
         data = {'position': position, 'superordinate': superordinate, 'template': template}
         resp = await self.client.resolve_relation(self.relations, 'create-form', template=data)
         return Object.from_data(self.udm, resp)
 
-    async def get(self, dn: str, properties: list[str] | None = None) -> Object | None:
+    async def get(self, dn: str, properties: Optional[List[str]] = None) -> Optional[Object]:
         # TODO: use a link relation instead of a search
         async for obj in self._search_closed(position=dn, scope='base', properties=properties):
             return await obj.open()
         raise NotFound(404, 'Wrong object type!?', None)  # FIXME: object exists but is of different module. should be fixed on the server.
 
-    async def get_by_entry_uuid(self, uuid: str, properties: list[str] | None = None) -> Object | None:
+    async def get_by_entry_uuid(self, uuid: str, properties: Optional[List[str]] = None) -> Optional[Object]:
         # TODO: use a link relation instead of a search
         # return self.udm.get_by_uuid(uuid)
         async for obj in self._search_closed(filter={'entryUUID': uuid}, scope='base', properties=properties):
             return await obj.open()
         raise NotFound(404, 'Wrong object type!?', None)  # FIXME: object exists but is of different module. should be fixed on the server.
 
-    async def get_by_id(self, dn: str, properties: list[str] | None = None) -> Object | None:  # pragma: no cover
+    async def get_by_id(self, id_: str, properties: Optional[List[str]] = None) -> Optional[Object]:  # pragma: no cover
         # TODO: Needed?
         raise NotImplementedError()
 
-    async def search(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, opened: bool = False, properties: list[str] | None = None) -> AsyncIterator[Any]:
+    async def search(self, filter: Union[Dict[str, str], str, bytes, None] = None, position: Optional[str] = None, scope: Optional[str] = 'sub', hidden: bool = False, superordinate: Optional[str] = None, opened: bool = False, properties: Optional[List[str]] = None) -> AsyncIterator[Union[Object, ShallowObject]]:
         if opened:
-            async for entry in aiter(self._search_opened(filter, position, scope, hidden, superordinate, properties)):
-                yield entry
+            async for obj in cast(AsyncIterator[Object], aiter(self._search_opened(filter, position, scope, hidden, superordinate, properties))):
+                yield obj
         else:
-            async for entry in aiter(self._search_closed(filter, position, scope, hidden, superordinate, properties)):
-                yield entry
+            async for shallow_obj in cast(AsyncIterator[ShallowObject], aiter(self._search_closed(filter, position, scope, hidden, superordinate, properties))):
+                yield shallow_obj
 
-    async def _search_opened(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, properties: list[str] | None = None) -> AsyncIterator[Object]:
+    async def _search_opened(self, filter: Union[Dict[str, str], str, bytes, None] = None, position: Optional[str] = None, scope: Optional[str] = 'sub', hidden: bool = False, superordinate: Optional[str] = None, properties: Optional[List[str]] = None) -> AsyncIterator[Object]:
         async for obj in self._search(filter, position, scope, hidden, superordinate, True, properties):
             yield Object.from_data(self.udm, obj)  # NOTE: this is missing last-modified, therefore no conditional request is done on modification!
 
-    async def _search_closed(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, properties: list[str] | None = None) -> AsyncIterator[ShallowObject]:
+    async def _search_closed(self, filter: Union[Dict[str, str], str, bytes, None] = None, position: Optional[str] = None, scope: Optional[str] = 'sub', hidden: bool = False, superordinate: Optional[str] = None, properties: Optional[List[str]] = None) -> AsyncIterator[ShallowObject]:
         async for obj in self._search(filter, position, scope, hidden, superordinate, False, properties):
             objself = self.client.get_relation(obj, 'self')
             uri = objself['href']
             dn = objself['name']
             yield ShallowObject(self.udm, dn, uri)
 
-    async def _search(self, filter: dict[str, str] | str | bytes | None = None, position: str | None = None, scope: str | None = 'sub', hidden: bool = False, superordinate: str | None = None, opened: bool = False, properties: list[str] | None = None) -> AsyncIterator[Any]:
-        data = {
+    async def _search(self, filter: Union[Dict[str, str], str, bytes, None] = None, position: Optional[str] = None, scope: Optional[str] = 'sub', hidden: bool = False, superordinate: Optional[str] = None, opened: bool = False, properties: Optional[List[str]] = None) -> AsyncIterator[Any]:
+        data: Dict[str, Union[str, List[str], Dict[str, Any], None]] = {
             'position': position,
             'scope': scope,
             'hidden': '1' if hidden else '0',
         }
         if isinstance(filter, dict):
             for prop, val in filter.items():
-                data.setdefault('query', {})[f'query[{prop}]'] = val
+                data.setdefault('query', {})[f'query[{prop}]'] = val  # type: ignore
         elif isinstance(filter, str):
             data['filter'] = filter
         if superordinate:
@@ -479,21 +494,21 @@ class Module(Client):
         async for entry in self.client.resolve_relations(entries, 'udm:object'):
             yield entry
 
-    async def get_layout(self) -> Any | None:
+    async def get_layout(self) -> Optional[Any]:
         await self.load_relations()
         relation = await self.udm.client.resolve_relation(self.relations, 'udm:layout')
         return relation.get('layout')
 
-    async def get_properties(self) -> Any | None:
+    async def get_properties(self) -> Optional[Any]:
         await self.load_relations()
         return (await self.udm.client.resolve_relation(self.relations, 'udm:properties')).get('properties')
 
-    async def get_property_choices(self, property: str) -> Any | None:
+    async def get_property_choices(self, property: str) -> Optional[Any]:
         await self.load_relations()
         relations = await self.udm.client.resolve_relation(self.relations, 'udm:properties')
         return (await self.udm.client.resolve_relation(relations, 'udm:property-choices', name=property)).get('choices')
 
-    async def policy_result(self, policy_module: str, position: str, policy: str | None = None) -> dict:
+    async def policy_result(self, policy_module: str, position: str, policy: Optional[str] = None) -> Dict[str, Any]:
         await self.load_relations()
         policy_result = await self.udm.client.resolve_relation(self.relations, 'udm:policy-result', name=policy_module, template={'position': position, 'policy': policy})
         policy_result.pop('_links', None)
@@ -513,7 +528,7 @@ class ShallowObject(Client):
 
     __slots__ = ('dn', 'udm', 'uri')
 
-    def __init__(self, udm: UDM, dn: str | None, uri: str, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, udm: UDM, dn: Optional[str], uri: str, *args: Any, **kwargs: Any) -> None:
         super().__init__(udm.client, *args, **kwargs)
         self.dn = dn
         self.udm = udm
@@ -530,11 +545,11 @@ class References:
 
     __slots__ = ('obj', 'udm')
 
-    def __init__(self, obj: Object | None = None) -> None:
+    def __init__(self, obj: Optional[Object] = None) -> None:
         self.obj = obj
         self.udm = self.obj.udm if self.obj is not None else None
 
-    def __getitem__(self, item: str) -> list[ShallowObject]:
+    def __getitem__(self, item: str) -> List[ShallowObject]:
         assert self.obj
         assert self.udm
         return [
@@ -542,48 +557,50 @@ class References:
             for x in self.udm.client.get_relations(self.obj.hal, f'udm:object/property/reference/{item}')
         ]
 
-    def __getattribute__(self, key):
+    def __getattribute__(self, key: str) -> Any:
         try:
             return super().__getattribute__(key)
         except AttributeError:
             return self[key]
 
-    def __get__(self, obj: Any, cls: Type | None = None) -> References:
+    def __get__(self, obj: Any, cls: Optional[Type[Any]] = None) -> References:
         return type(self)(obj)
 
 
 class Object(Client):
 
+    __slots__ = ('etag', 'hal', 'last_modified', 'representation', 'udm')
+
     objects = References()
 
     @property
-    def module(self):
+    def module(self) -> Awaitable[Optional[Module]]:
         # FIXME: use "type" relation link
         # object_type = self.udm.get_relation(self.hal, 'type')['href']
         return self.udm.get(self.object_type)
 
     @property
     def object_type(self) -> str:
-        return self.representation['objectType']
+        return cast(str, self.representation['objectType'])
 
     @property
-    def dn(self) -> str | None:
+    def dn(self) -> Optional[str]:
         return self.representation.get('dn')
 
     @property
-    def properties(self):
-        return self.representation['properties']
+    def properties(self) -> Dict[str, Any]:
+        return cast(Dict[str, Any], self.representation['properties'])
 
     @property
-    def options(self) -> dict:
-        return self.representation.get('options', {})
+    def options(self) -> Dict[str, Any]:
+        return cast(Dict[str, Any], self.representation.get('options', {}))
 
     @property
-    def policies(self) -> dict:
-        return self.representation.get('policies', {})
+    def policies(self) -> Dict[str, Any]:
+        return cast(Dict[str, Any], self.representation.get('policies', {}))
 
     @property
-    def superordinate(self) -> str | None:
+    def superordinate(self) -> Optional[str]:
         return self.representation.get('superordinate')
 
     @superordinate.setter
@@ -591,7 +608,7 @@ class Object(Client):
         self.representation['superordinate'] = superordinate
 
     @property
-    def position(self) -> str | None:
+    def position(self) -> Optional[str]:
         return self.representation.get('position')
 
     @position.setter
@@ -599,7 +616,7 @@ class Object(Client):
         self.representation['position'] = position
 
     @property
-    def uri(self) -> str | None:
+    def uri(self) -> Optional[str]:
         try:
             uri = self.client.get_relation(self.hal, 'self')
         except _NoRelation:
@@ -613,13 +630,11 @@ class Object(Client):
         return cls.from_data(udm, response.data, response.response.headers)
 
     @classmethod
-    def from_data(cls, udm: UDM, entry: dict, headers: Mapping[str, str] | None = None) -> Object:
+    def from_data(cls, udm: UDM, entry: Dict[str, Any], headers: Optional[Mapping[str, str]] = None) -> Object:
         headers = headers or {}
         return cls(udm, entry, etag=headers.get('Etag'), last_modified=headers.get('Last-Modified'))
 
-    __slots__ = ('etag', 'hal', 'last_modified', 'representation', 'udm')
-
-    def __init__(self, udm: UDM, representation: dict, etag: str | None = None, last_modified: str | None = None, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, udm: UDM, representation: Dict[str, Any], etag: Optional[str] = None, last_modified: Optional[str] = None, *args: Any, **kwargs: Any) -> None:
         super().__init__(udm.client, *args, **kwargs)
         self.udm = udm
         self.representation = representation
@@ -641,7 +656,9 @@ class Object(Client):
         if uri:
             obj = await ShallowObject(self.udm, self.dn, uri['href']).open()
         else:
-            obj = await (await self.module).get(self.dn)
+            module = await self.module
+            assert module and self.dn
+            obj = cast(Object, await module.get(self.dn))
         self._copy_from_obj(obj)
 
     async def save(self, reload: bool = True) -> Response:
@@ -650,7 +667,7 @@ class Object(Client):
         else:
             return await self._create(reload)
 
-    async def json_patch(self, patch: dict, reload: bool = True) -> Response:
+    async def json_patch(self, patch: Dict[str, Any], reload: bool = True) -> Response:
         if self.dn:
             return await self._patch(patch, reload=reload)
         else:
@@ -675,10 +692,9 @@ class Object(Client):
             'If-Unmodified-Since': self.last_modified,
             'If-Match': self.etag,
         }.items() if value}
-
         return await self._request('PUT', self.uri, self.representation, headers, reload=reload)
 
-    async def _patch(self, data: dict, reload: bool = True) -> Response:
+    async def _patch(self, data: Dict[str, Any], reload: bool = True) -> Response:
         assert self.uri
         headers = {key: value for key, value in {
             'If-Unmodified-Since': self.last_modified,
@@ -691,8 +707,8 @@ class Object(Client):
         uri = self.client.get_relation(self.hal, 'create')
         return await self._request('POST', uri['href'], self.representation, {}, reload=reload)
 
-    async def _request(self, method: str, uri: str, data: dict, headers: dict, reload: bool = True) -> Response:
-        response = await self.client.make_request(method, uri, data=data, allow_redirects=False, custom_redirect_handling=True, **headers)  # type: ignore # <https://github.com/python/mypy/issues/10008>
+    async def _request(self, method: str, uri: str, data: Dict[str, Any], headers: Dict[str, Any], reload: bool = True) -> Response:
+        response = await self.client.make_request(method, uri, data=data, allow_redirects=False, custom_redirect_handling=True, **headers)
         await self._reload_from_response(response, reload)
         return response
 
@@ -718,22 +734,22 @@ class Object(Client):
         self.etag = obj.etag
         self.last_modified = obj.last_modified
 
-    async def generate_service_specific_password(self, service: str) -> Any | None:
+    async def generate_service_specific_password(self, service: str) -> Optional[Any]:
         uri = self.client.get_relation(self.hal, 'udm:service-specific-password')['href']
         response = await self.client.make_request('POST', uri, data={"service": service})
         return response.data.get('password', None)
 
-    async def get_layout(self) -> Any | None:
+    async def get_layout(self) -> Optional[Any]:
         return (await self.udm.client.resolve_relation(self.hal, 'udm:layout')).get('layout')
 
-    async def get_properties(self) -> Any | None:
+    async def get_properties(self) -> Optional[Any]:
         return (await self.udm.client.resolve_relation(self.hal, 'udm:properties')).get('properties')
 
-    async def get_property_choices(self, property: str) -> Any | None:
+    async def get_property_choices(self, property: str) -> Optional[Any]:
         hal = await self.udm.client.resolve_relation(self.hal, 'udm:properties')
         return (await self.udm.client.resolve_relation(hal, 'udm:property-choices', name=property)).get('choices')
 
-    async def policy_result(self, policy_module: str, policy: str | None = None) -> dict:
+    async def policy_result(self, policy_module: str, policy: Optional[str] = None) -> Dict[str, Any]:
         policy_result = await self.udm.client.resolve_relation(self.hal, 'udm:policy-result', name=policy_module, template={'policy': policy})
         policy_result.pop('_links', None)
         policy_result.pop('_embedded', None)
@@ -745,50 +761,50 @@ class PatchDocument:
 
     __slots__ = ('patch',)
 
-    def __init__(self):
-        self.patch = []
+    def __init__(self) -> None:
+        self.patch: List[Dict[str, Any]] = []
 
-    def add(self, path_segments, value):
+    def add(self, path_segments: List[str], value: Any) -> None:
         self.patch.append({
             'op': 'add',
             'path': self.expand_path(path_segments),
             'value': value,
         })
 
-    def replace(self, path_segments, value):
+    def replace(self, path_segments: List[str], value: Any) -> None:
         self.patch.append({
             'op': 'replace',
             'path': self.expand_path(path_segments),
             'value': value,
         })
 
-    def remove(self, path_segments, value):
+    def remove(self, path_segments: List[str], value: Any) -> None:
         self.patch.append({
             'op': 'remove',
             'path': self.expand_path(path_segments),
             'value': value,  # TODO: not official
         })
 
-    def move(self, path_segments, from_segments):  # pragma: no cover
+    def move(self, path_segments: List[str], from_segments: List[str]) -> None:  # pragma: no cover
         self.patch.append({
             'op': 'move',
             'path': self.expand_path(path_segments),
             'from': self.expand_path(from_segments),
         })
 
-    def copy(self, path_segments, from_segments):  # pragma: no cover
+    def copy(self, path_segments: List[str], from_segments: List[str]) -> None:  # pragma: no cover
         self.patch.append({
             'op': 'copy',
             'path': self.expand_path(path_segments),
             'from': self.expand_path(from_segments),
         })
 
-    def test(self, path_segments, value):  # pragma: no cover
+    def test(self, path_segments: List[str], value: Any) -> None:  # pragma: no cover
         self.patch.append({
             'op': 'test',
             'path': self.expand_path(path_segments),
             'value': value,
         })
 
-    def expand_path(self, path_segments):
+    def expand_path(self, path_segments: List[str]) -> str:
         return '/'.join(path.replace('~', '~0').replace('/', '~1') for path in [''] + path_segments)
