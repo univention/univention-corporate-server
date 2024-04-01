@@ -62,6 +62,8 @@ http.client._MAXHEADERS = 1000  # type: ignore
 
 class HTTPError(Exception):
 
+    __slots__ = ('code', 'error_details', 'response')
+
     def __init__(self, code: int, message: str, response: Optional[requests.Response] = None, error_details: Optional[Dict[str, Any]] = None) -> None:
         self.code = code
         self.response = response
@@ -115,6 +117,8 @@ class _NoRelation(Exception):
 
 class Response:
 
+    __slots__ = ('data', 'response', 'uri')
+
     def __init__(self, response: requests.Response, data: Any, uri: str) -> None:
         self.response = response
         self.data = data
@@ -122,6 +126,8 @@ class Response:
 
 
 class Session:
+
+    __slots__ = ('credentials', 'default_headers', 'enable_caching', 'language', 'reconnect', 'session', 'user_agent')
 
     def __init__(self, credentials: UDM, language: str = 'en-US', reconnect: bool = True, user_agent: str = 'univention.lib/1.0', enable_caching: bool = False) -> None:
         self.language = language
@@ -178,7 +184,7 @@ class Session:
         def doit() -> Response:
             try:
                 response = self.get_method(method)(uri, params=params, json=json, headers=dict(self.default_headers, **headers), allow_redirects=allow_redirects)
-            except requests.exceptions.ConnectionError as exc:
+            except requests.exceptions.ConnectionError as exc:  # pragma: no cover
                 raise ConnectionError(exc)
             if custom_redirect_handling:
                 response = self._follow_redirection(response)
@@ -189,12 +195,12 @@ class Session:
             try:
                 return doit()
             except ServiceUnavailable as exc:  # TODO: same for ConnectionError? python-request does it itself.
-                if not self.reconnect:
+                if not self.reconnect:  # pragma: no cover
                     raise
                 try:
                     assert exc.response is not None
                     retry_after = min(5, int(exc.response.headers.get('Retry-After', 1)))
-                except ValueError:
+                except ValueError:  # pragma: no cover
                     retry_after = 1
                 time.sleep(retry_after)
 
@@ -226,14 +232,14 @@ class Session:
             error_details = None
             try:
                 json = response.json()
-            except ValueError:
+            except ValueError:  # pragma: no cover
                 pass
             else:
                 if isinstance(json, dict):
                     error_details = json.get('error', {})
                     try:
                         error_details['error'] = list(self.resolve_relations(json, 'udm:error'))
-                    except _NoRelation:
+                    except _NoRelation:  # pragma: no cover
                         pass
                     if error_details:
                         server_message = error_details.get('message')
@@ -245,7 +251,7 @@ class Session:
             raise cls(response.status_code, msg, response, error_details=error_details)
         if response.headers.get('Content-Type') in ('application/json', 'application/hal+json'):
             return response.json()
-        elif expect_json:
+        elif expect_json:  # pragma: no cover
             raise UnexpectedResponse(response.text)
         if response.status_code == 204:
             return {}
@@ -266,7 +272,7 @@ class Session:
     def get_relation(self, entry: Dict[str, Any], relation: str, name: Optional[str] = None, template: Optional[Dict[str, Any]] = None) -> Dict[str, str]:
         try:
             return next(self.get_relations(entry, relation, name, template))
-        except StopIteration:
+        except StopIteration:  # pragma: no cover
             raise _NoRelation(relation)
 
     def resolve_relations(self, entry: Dict[str, Any], relation: str, name: Optional[str] = None, template: Optional[Dict[str, Any]] = None) -> Iterator[Dict[str, Any]]:
@@ -287,17 +293,21 @@ class Session:
 
 class Client:
 
+    __slots__ = ('client',)
+
     def __init__(self, client: Session) -> None:
         self.client = client
 
 
 class UDM(Client):
 
+    __slots__ = ('_api_version', 'bearer_token', 'entry', 'password', 'uri', 'username')
+
     @classmethod
     def http(cls, uri: str, username: str, password: str) -> UDM:
         return cls(uri, username, password)
 
-    @classmethod
+    @classmethod  # pragma: no cover
     def bearer(cls, uri: str, bearer_token: str) -> UDM:
         return cls(uri, None, None, bearer_token=bearer_token)
 
@@ -362,6 +372,8 @@ class UDM(Client):
 
 class Module(Client):
 
+    __slots__ = ('name', 'password', 'relations', 'title', 'udm', 'uri', 'username')
+
     def __init__(self, udm: UDM, uri: str, name: str, title: str, *args: Any, **kwargs: Any) -> None:
         super().__init__(udm.client, *args, **kwargs)
         self.udm = udm
@@ -399,7 +411,7 @@ class Module(Client):
             return obj.open()
         raise NotFound(404, 'Wrong object type!?', None)  # FIXME: object exists but is of different module. should be fixed on the server.
 
-    def get_by_id(self, id_: str, properties: Optional[List[str]] = None) -> Optional[Object]:
+    def get_by_id(self, id_: str, properties: Optional[List[str]] = None) -> Optional[Object]:  # pragma: no cover
         # TODO: Needed?
         raise NotImplementedError()
 
@@ -473,6 +485,8 @@ class Module(Client):
 
 class ShallowObject(Client):
 
+    __slots__ = ('dn', 'udm', 'uri')
+
     def __init__(self, udm: UDM, dn: Optional[str], uri: str, *args: Any, **kwargs: Any) -> None:
         super().__init__(udm.client, *args, **kwargs)
         self.dn = dn
@@ -487,6 +501,8 @@ class ShallowObject(Client):
 
 
 class References:
+
+    __slots__ = ('obj', 'udm')
 
     def __init__(self, obj: Optional[Object] = None) -> None:
         self.obj = obj
@@ -511,6 +527,8 @@ class References:
 
 
 class Object(Client):
+
+    __slots__ = ('etag', 'hal', 'last_modified', 'representation', 'udm')
 
     objects = References()
 
@@ -661,7 +679,7 @@ class Object(Client):
             self._copy_from_obj(Object.from_response(self.udm, response))
             return
 
-        if reload:
+        if reload:  # pragma: no cover
             self.reload()
 
     def _copy_from_obj(self, obj: Object) -> None:
@@ -695,6 +713,8 @@ class Object(Client):
 
 class PatchDocument:
     """application/json-patch+json representation"""
+
+    __slots__ = ('patch',)
 
     def __init__(self) -> None:
         self.patch: List[Dict[str, Any]] = []
