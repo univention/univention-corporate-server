@@ -69,6 +69,13 @@ from typing import (
 
 import aiohttp
 import uritemplate
+from typing_extensions import Protocol
+
+from .client import (
+    BadRequest, ConnectionError, Forbidden, HTTPError, HttpRequestP, HttpResponse, NoRelation, NotFound,
+    ObjectCopyProto, ObjectRepr, PreconditionFailed, References, Response, ServerError, ServiceUnavailable,
+    Unauthorized, UnexpectedResponse, UnprocessableEntity,
+)
 
 
 T = TypeVar('T')
@@ -95,69 +102,19 @@ except NameError:  # Python 3.7
         return _AsyncIterable(iterable)
 
 
-class HTTPError(Exception):
+class AsyncHttpResponse(HttpResponse, Protocol):
+    request_info: HttpRequestP
+    status: int
 
-    __slots__ = ('code', 'error_details', 'response')
+    async def text(self) -> str:  # type: ignore
+        ...
 
-    def __init__(self, code: int, message: str, response: Optional[aiohttp.ClientResponse], error_details: Optional[Dict[str, Any]] = None) -> None:
-        self.code = code
-        self.response = response
-        self.error_details = error_details
-        super().__init__(message)
-
-
-class BadRequest(HTTPError):
-    pass
+    async def json(self, *args: Any, **kwargs: Any) -> Dict[str, Any]:  # type: ignore
+        ...
 
 
-class Unauthorized(HTTPError):
-    pass
-
-
-class Forbidden(HTTPError):
-    pass
-
-
-class NotFound(HTTPError):
-    pass
-
-
-class PreconditionFailed(HTTPError):
-    pass
-
-
-class UnprocessableEntity(HTTPError):
-    pass
-
-
-class ServerError(HTTPError):
-    pass
-
-
-class ServiceUnavailable(HTTPError):
-    pass
-
-
-class ConnectionError(Exception):
-    pass
-
-
-class UnexpectedResponse(ConnectionError):
-    pass
-
-
-class _NoRelation(Exception):
-    pass
-
-
-class Response:
-
-    __slots__ = ('data', 'response', 'uri')
-
-    def __init__(self, response: aiohttp.ClientResponse, data: Any, uri: str) -> None:
-        self.response = response
-        self.data = data
-        self.uri = uri
+class AsyncResponse(Response[AsyncHttpResponse]):
+    ...
 
 
 class Session:
@@ -191,7 +148,7 @@ class Session:
         auth = aiohttp.BasicAuth(self.credentials.username, self.credentials.password)  # type: ignore
         return aiohttp.ClientSession(connector=connector, auth=auth)
 
-    def get_method(self, method: str) -> Callable[..., Awaitable[aiohttp.ClientResponse]]:
+    def get_method(self, method: str) -> Callable[..., Awaitable[AsyncHttpResponse]]:
         sess = self.session
         func_mapping: Dict[str, Callable[..., Awaitable[aiohttp.ClientResponse]]] = {
             'GET': sess.get,
@@ -201,12 +158,12 @@ class Session:
             'PATCH': sess.patch,
             'OPTIONS': sess.options,
         }
-        return func_mapping.get(method.upper(), sess.get)
+        return cast(Callable[..., Awaitable[AsyncHttpResponse]], func_mapping.get(method.upper(), sess.get))
 
     async def request(self, method: str, uri: str, data: Optional[Dict[str, Any]] = None, expect_json: bool = False, **headers: str) -> Any:
         return (await self.make_request(method, uri, data, expect_json=expect_json, **headers)).data  # type: ignore # <https://github.com/python/mypy/issues/10008>
 
-    async def make_request(self, method: str, uri: str, data: Optional[Dict[str, Any]] = None, expect_json: bool = False, allow_redirects: bool = True, custom_redirect_handling: bool = False, **headers: str) -> Response:
+    async def make_request(self, method: str, uri: str, data: Optional[Dict[str, Any]] = None, expect_json: bool = False, allow_redirects: bool = True, custom_redirect_handling: bool = False, **headers: str) -> AsyncResponse:
         if method in ('GET', 'HEAD'):
             params = data
             json = None
@@ -214,15 +171,15 @@ class Session:
             params = None
             json = data
 
-        async def doit() -> Response:
+        async def doit() -> AsyncResponse:
             try:
-                response = await self.get_method(method)(uri, params=params, json=json, headers=dict(self.default_headers, **headers), allow_redirects=allow_redirects)
+                response: AsyncHttpResponse = await self.get_method(method)(uri, params=params, json=json, headers=dict(self.default_headers, **headers), allow_redirects=allow_redirects)
             except aiohttp.ClientConnectionError as exc:  # pragma: no cover
                 raise ConnectionError(exc)
             if custom_redirect_handling:
                 response = await self._follow_redirection(response)
             data = await self.eval_response(response, expect_json=expect_json)
-            return Response(response, data, uri)
+            return AsyncResponse(response, data, uri)
 
         for _i in range(5):
             try:
@@ -239,7 +196,7 @@ class Session:
 
         return await doit()
 
-    async def _follow_redirection(self, response: aiohttp.ClientResponse) -> aiohttp.ClientResponse:
+    async def _follow_redirection(self, response: AsyncHttpResponse) -> AsyncHttpResponse:
         location = response.headers.get('Location')
         #  aiohttp doesn't follow redirects for 202?
         if location and response.status in (201, 202):
@@ -254,12 +211,12 @@ class Session:
 
         return response
 
-    def _select_method(self, response: aiohttp.ClientResponse) -> str:
+    def _select_method(self, response: AsyncHttpResponse) -> str:
         if response.status in (300, 301, 303) and response.request_info.method != 'HEAD':
             return 'GET'
         return response.request_info.method  # pragma: no cover
 
-    async def eval_response(self, response: aiohttp.ClientResponse, expect_json: bool = False) -> Any:
+    async def eval_response(self, response: AsyncHttpResponse, expect_json: bool = False) -> Any:
         if response.status >= 399:
             msg = f'{response.request_info.method} {response.url}: {response.status}'
             error_details = None
@@ -272,7 +229,7 @@ class Session:
                     error_details = json.get('error', {})
                     try:
                         error_details['error'] = [error async for error in self.resolve_relations(json, 'udm:error')]
-                    except _NoRelation:  # pragma: no cover
+                    except NoRelation:  # pragma: no cover
                         pass
                     if error_details:
                         server_message = error_details.get('message')
@@ -304,7 +261,7 @@ class Session:
         try:
             return next(self.get_relations(entry, relation, name, template))
         except StopIteration:  # pragma: no cover
-            raise _NoRelation(relation)
+            raise NoRelation(relation)
 
     async def resolve_relations(self, entry: Dict[str, Any], relation: str, name: Optional[str] = None, template: Optional[Dict[str, Any]] = None) -> AsyncIterator[Dict[str, Any]]:
         embedded = entry.get('_embedded', {})
@@ -321,7 +278,7 @@ class Session:
         try:
             return await anext(self.resolve_relations(entry, relation, name, template))
         except StopAsyncIteration:  # pragma: no cover
-            raise _NoRelation(relation)
+            raise NoRelation(relation)
 
 
 class Client:
@@ -435,20 +392,20 @@ class Module(Client):
         resp = await self.client.resolve_relation(self.relations, 'create-form', template=data)
         return Object.from_data(self.udm, resp)
 
-    async def get(self, dn: str, properties: Optional[List[str]] = None) -> Optional[Object]:
+    async def get(self, dn: str, properties: Optional[List[str]] = None) -> Object:
         # TODO: use a link relation instead of a search
         async for obj in self._search_closed(position=dn, scope='base', properties=properties):
             return await obj.open()
         raise NotFound(404, 'Wrong object type!?', None)  # FIXME: object exists but is of different module. should be fixed on the server.
 
-    async def get_by_entry_uuid(self, uuid: str, properties: Optional[List[str]] = None) -> Optional[Object]:
+    async def get_by_entry_uuid(self, uuid: str, properties: Optional[List[str]] = None) -> Object:
         # TODO: use a link relation instead of a search
         # return self.udm.get_by_uuid(uuid)
         async for obj in self._search_closed(filter={'entryUUID': uuid}, scope='base', properties=properties):
             return await obj.open()
         raise NotFound(404, 'Wrong object type!?', None)  # FIXME: object exists but is of different module. should be fixed on the server.
 
-    async def get_by_id(self, id_: str, properties: Optional[List[str]] = None) -> Optional[Object]:  # pragma: no cover
+    async def get_by_id(self, id_: str, properties: Optional[List[str]] = None) -> Object:  # pragma: no cover
         # TODO: Needed?
         raise NotImplementedError()
 
@@ -471,7 +428,7 @@ class Module(Client):
             dn = objself['name']
             yield ShallowObject(self.udm, dn, uri)
 
-    async def _search(self, filter: Union[Dict[str, str], str, bytes, None] = None, position: Optional[str] = None, scope: Optional[str] = 'sub', hidden: bool = False, superordinate: Optional[str] = None, opened: bool = False, properties: Optional[List[str]] = None) -> AsyncIterator[Any]:
+    async def _search(self, filter: Union[Dict[str, str], str, bytes, None] = None, position: Optional[str] = None, scope: Optional[str] = 'sub', hidden: bool = False, superordinate: Optional[str] = None, opened: bool = False, properties: Optional[List[str]] = None) -> AsyncIterator[Dict[str, Any]]:
         data: Dict[str, Union[str, List[str], Dict[str, Any], None]] = {
             'position': position,
             'scope': scope,
@@ -541,37 +498,20 @@ class ShallowObject(Client):
         return f'ShallowObject(dn={self.dn!r})'
 
 
-class References:
+class Object(ObjectRepr, Client):
 
-    __slots__ = ('obj', 'udm')
-
-    def __init__(self, obj: Optional[Object] = None) -> None:
-        self.obj = obj
-        self.udm = self.obj.udm if self.obj is not None else None
-
-    def __getitem__(self, item: str) -> List[ShallowObject]:
-        assert self.obj
-        assert self.udm
-        return [
-            ShallowObject(self.obj.udm, x['name'], x['href'])
-            for x in self.udm.client.get_relations(self.obj.hal, f'udm:object/property/reference/{item}')
-        ]
-
-    def __getattribute__(self, key: str) -> Any:
-        try:
-            return super().__getattribute__(key)
-        except AttributeError:
-            return self[key]
-
-    def __get__(self, obj: Any, cls: Optional[Type[Any]] = None) -> References:
-        return type(self)(obj)
-
-
-class Object(Client):
-
-    __slots__ = ('etag', 'hal', 'last_modified', 'representation', 'udm')
+    __slots__ = tuple(['etag', 'hal', 'last_modified', 'representation'] + list(Client.__slots__))
 
     objects = References()
+
+    def __init__(self, udm: UDM, representation: Dict[str, Any], etag: Optional[str] = None, last_modified: Optional[str] = None, *args: Any, **kwargs: Any) -> None:
+        Client.__init__(self, udm.client, *args, **kwargs)
+        ObjectRepr.__init__(self, representation, etag, last_modified)
+        self.udm = udm
+
+    def _copy_from_obj(self, obj: ObjectCopyProto) -> None:
+        ObjectRepr._copy_from_obj(self, obj)
+        self.udm = obj.udm
 
     @property
     def module(self) -> Awaitable[Optional[Module]]:
@@ -580,53 +520,17 @@ class Object(Client):
         return self.udm.get(self.object_type)
 
     @property
-    def object_type(self) -> str:
-        return cast(str, self.representation['objectType'])
-
-    @property
-    def dn(self) -> Optional[str]:
-        return self.representation.get('dn')
-
-    @property
-    def properties(self) -> Dict[str, Any]:
-        return cast(Dict[str, Any], self.representation['properties'])
-
-    @property
-    def options(self) -> Dict[str, Any]:
-        return cast(Dict[str, Any], self.representation.get('options', {}))
-
-    @property
-    def policies(self) -> Dict[str, Any]:
-        return cast(Dict[str, Any], self.representation.get('policies', {}))
-
-    @property
-    def superordinate(self) -> Optional[str]:
-        return self.representation.get('superordinate')
-
-    @superordinate.setter
-    def superordinate(self, superordinate: str) -> None:
-        self.representation['superordinate'] = superordinate
-
-    @property
-    def position(self) -> Optional[str]:
-        return self.representation.get('position')
-
-    @position.setter
-    def position(self, position: str) -> None:
-        self.representation['position'] = position
-
-    @property
     def uri(self) -> Optional[str]:
         try:
             uri = self.client.get_relation(self.hal, 'self')
-        except _NoRelation:
+        except NoRelation:
             uri = None
         if uri:
             return uri['href']
         return self.representation.get('uri')
 
     @classmethod
-    def from_response(cls, udm: UDM, response: Response) -> Object:
+    def from_response(cls, udm: UDM, response: AsyncResponse) -> Object:
         return cls.from_data(udm, response.data, response.response.headers)
 
     @classmethod
@@ -634,40 +538,29 @@ class Object(Client):
         headers = headers or {}
         return cls(udm, entry, etag=headers.get('Etag'), last_modified=headers.get('Last-Modified'))
 
-    def __init__(self, udm: UDM, representation: Dict[str, Any], etag: Optional[str] = None, last_modified: Optional[str] = None, *args: Any, **kwargs: Any) -> None:
-        super().__init__(udm.client, *args, **kwargs)
-        self.udm = udm
-        self.representation = representation
-        self.hal = {
-            '_links': representation.pop('_links', {}),
-            '_embedded': representation.pop('_embedded', {}),
-        }
-        self.etag = etag
-        self.last_modified = last_modified
-
     def __repr__(self) -> str:
         return f'Object(module={self.object_type!r}, dn={self.dn!r}, uri={self.uri!r})'
 
     async def reload(self) -> None:
         try:
             uri = self.client.get_relation(self.hal, 'self')
-        except _NoRelation:
+        except NoRelation:
             uri = None
         if uri:
             obj = await ShallowObject(self.udm, self.dn, uri['href']).open()
         else:
             module = await self.module
             assert module and self.dn
-            obj = cast(Object, await module.get(self.dn))
+            obj = await module.get(self.dn)
         self._copy_from_obj(obj)
 
-    async def save(self, reload: bool = True) -> Response:
+    async def save(self, reload: bool = True) -> AsyncResponse:
         if self.dn:
             return await self._modify(reload)
         else:
             return await self._create(reload)
 
-    async def json_patch(self, patch: Dict[str, Any], reload: bool = True) -> Response:
+    async def json_patch(self, patch: Dict[str, Any], reload: bool = True) -> AsyncResponse:
         if self.dn:
             return await self._patch(patch, reload=reload)
         else:
@@ -686,7 +579,7 @@ class Object(Client):
         self.position = position
         await self.save(reload=reload)
 
-    async def _modify(self, reload: bool = True) -> Response:
+    async def _modify(self, reload: bool = True) -> AsyncResponse:
         assert self.uri
         headers = {key: value for key, value in {
             'If-Unmodified-Since': self.last_modified,
@@ -694,7 +587,7 @@ class Object(Client):
         }.items() if value}
         return await self._request('PUT', self.uri, self.representation, headers, reload=reload)
 
-    async def _patch(self, data: Dict[str, Any], reload: bool = True) -> Response:
+    async def _patch(self, data: Dict[str, Any], reload: bool = True) -> AsyncResponse:
         assert self.uri
         headers = {key: value for key, value in {
             'If-Unmodified-Since': self.last_modified,
@@ -703,16 +596,16 @@ class Object(Client):
         }.items() if value}
         return await self._request('PATCH', self.uri, data, headers, reload=reload)
 
-    async def _create(self, reload: bool = True) -> Response:
+    async def _create(self, reload: bool = True) -> AsyncResponse:
         uri = self.client.get_relation(self.hal, 'create')
         return await self._request('POST', uri['href'], self.representation, {}, reload=reload)
 
-    async def _request(self, method: str, uri: str, data: Dict[str, Any], headers: Dict[str, Any], reload: bool = True) -> Response:
+    async def _request(self, method: str, uri: str, data: Dict[str, Any], headers: Dict[str, Any], reload: bool = True) -> AsyncResponse:
         response = await self.client.make_request(method, uri, data=data, allow_redirects=False, custom_redirect_handling=True, **headers)
         await self._reload_from_response(response, reload)
         return response
 
-    async def _reload_from_response(self, response: Response, reload: bool) -> None:
+    async def _reload_from_response(self, response: AsyncResponse, reload: bool) -> None:
         if reload and 200 <= response.response.status <= 299 and 'Location' in response.response.headers:
             uri = response.response.headers['Location']
             obj = ShallowObject(self.udm, None, uri)
@@ -726,13 +619,6 @@ class Object(Client):
 
         if reload:  # pragma: no cover
             await self.reload()
-
-    def _copy_from_obj(self, obj: Object) -> None:
-        self.udm = obj.udm
-        self.representation = copy.deepcopy(obj.representation)
-        self.hal = copy.deepcopy(obj.hal)
-        self.etag = obj.etag
-        self.last_modified = obj.last_modified
 
     async def generate_service_specific_password(self, service: str) -> Optional[Any]:
         uri = self.client.get_relation(self.hal, 'udm:service-specific-password')['href']
@@ -754,57 +640,3 @@ class Object(Client):
         policy_result.pop('_links', None)
         policy_result.pop('_embedded', None)
         return policy_result
-
-
-class PatchDocument:
-    """application/json-patch+json representation"""
-
-    __slots__ = ('patch',)
-
-    def __init__(self) -> None:
-        self.patch: List[Dict[str, Any]] = []
-
-    def add(self, path_segments: List[str], value: Any) -> None:
-        self.patch.append({
-            'op': 'add',
-            'path': self.expand_path(path_segments),
-            'value': value,
-        })
-
-    def replace(self, path_segments: List[str], value: Any) -> None:
-        self.patch.append({
-            'op': 'replace',
-            'path': self.expand_path(path_segments),
-            'value': value,
-        })
-
-    def remove(self, path_segments: List[str], value: Any) -> None:
-        self.patch.append({
-            'op': 'remove',
-            'path': self.expand_path(path_segments),
-            'value': value,  # TODO: not official
-        })
-
-    def move(self, path_segments: List[str], from_segments: List[str]) -> None:  # pragma: no cover
-        self.patch.append({
-            'op': 'move',
-            'path': self.expand_path(path_segments),
-            'from': self.expand_path(from_segments),
-        })
-
-    def copy(self, path_segments: List[str], from_segments: List[str]) -> None:  # pragma: no cover
-        self.patch.append({
-            'op': 'copy',
-            'path': self.expand_path(path_segments),
-            'from': self.expand_path(from_segments),
-        })
-
-    def test(self, path_segments: List[str], value: Any) -> None:  # pragma: no cover
-        self.patch.append({
-            'op': 'test',
-            'path': self.expand_path(path_segments),
-            'value': value,
-        })
-
-    def expand_path(self, path_segments: List[str]) -> str:
-        return '/'.join(path.replace('~', '~0').replace('/', '~1') for path in [''] + path_segments)
