@@ -51,20 +51,22 @@ from __future__ import annotations
 import copy
 import http.client
 import time
-from typing import Any, Callable, Dict, Iterator, List, Mapping, Optional, Type, Union, cast
+from typing import Any, Callable, Dict, Generic, Iterator, List, Mapping, Optional, Type, TypeVar, Union, cast
 
 import requests
 import uritemplate
+from typing_extensions import Protocol
 
 
 http.client._MAXHEADERS = 1000  # type: ignore
+T = TypeVar("T")
 
 
 class HTTPError(Exception):
 
     __slots__ = ('code', 'error_details', 'response')
 
-    def __init__(self, code: int, message: str, response: Optional[requests.Response] = None, error_details: Optional[Dict[str, Any]] = None) -> None:
+    def __init__(self, code: int, message: str, response: Optional[HttpResponse] = None, error_details: Optional[Dict[str, Any]] = None) -> None:
         self.code = code
         self.response = response
         self.error_details = error_details
@@ -111,18 +113,38 @@ class UnexpectedResponse(ConnectionError):
     pass
 
 
-class _NoRelation(Exception):
+class NoRelation(Exception):
     pass
 
 
-class Response:
+class Response(Generic[T]):
 
     __slots__ = ('data', 'response', 'uri')
 
-    def __init__(self, response: requests.Response, data: Any, uri: str) -> None:
+    def __init__(self, response: T, data: Any, uri: str) -> None:
         self.response = response
         self.data = data
         self.uri = uri
+
+
+class HttpRequestP(Protocol):
+    method: str
+
+
+class HttpResponse(Protocol):
+    data: Dict[str, str]
+    headers: Dict[str, str]
+    request: HttpRequestP
+    status_code: int
+    text: str
+    url: str
+
+    def json(self, *args: Any, **kwargs: Any) -> Dict[str, Any]:
+        ...
+
+
+class SyncResponse(Response[HttpResponse]):
+    ...
 
 
 class Session:
@@ -158,7 +180,7 @@ class Session:
             sess = CacheControl(sess)
         return sess
 
-    def get_method(self, method: str) -> Callable[..., requests.Response]:
+    def get_method(self, method: str) -> Callable[..., HttpResponse]:
         sess = self.session
         func_mapping: Dict[str, Callable[..., requests.Response]] = {
             'GET': sess.get,
@@ -168,12 +190,12 @@ class Session:
             'PATCH': sess.patch,
             'OPTIONS': sess.options,
         }
-        return func_mapping.get(method.upper(), sess.get)
+        return cast(Callable[..., HttpResponse], func_mapping.get(method.upper(), sess.get))
 
     def request(self, method: str, uri: str, data: Optional[Dict[str, Any]] = None, expect_json: bool = False, **headers: str) -> Any:
         return self.make_request(method, uri, data, expect_json=expect_json, **headers).data  # type: ignore # <https://github.com/python/mypy/issues/10008>
 
-    def make_request(self, method: str, uri: str, data: Optional[Dict[str, Any]] = None, expect_json: bool = False, allow_redirects: bool = True, custom_redirect_handling: bool = False, **headers: str) -> Response:
+    def make_request(self, method: str, uri: str, data: Optional[Dict[str, Any]] = None, expect_json: bool = False, allow_redirects: bool = True, custom_redirect_handling: bool = False, **headers: str) -> SyncResponse:
         if method in ('GET', 'HEAD'):
             params = data
             json = None
@@ -181,7 +203,7 @@ class Session:
             params = None
             json = data
 
-        def doit() -> Response:
+        def doit() -> SyncResponse:
             try:
                 response = self.get_method(method)(uri, params=params, json=json, headers=dict(self.default_headers, **headers), allow_redirects=allow_redirects)
             except requests.exceptions.ConnectionError as exc:  # pragma: no cover
@@ -189,7 +211,7 @@ class Session:
             if custom_redirect_handling:
                 response = self._follow_redirection(response)
             data = self.eval_response(response, expect_json=expect_json)
-            return Response(response, data, uri)
+            return SyncResponse(response, data, uri)
 
         for _i in range(5):
             try:
@@ -206,7 +228,7 @@ class Session:
 
         return doit()
 
-    def _follow_redirection(self, response: requests.Response) -> requests.Response:
+    def _follow_redirection(self, response: HttpResponse) -> HttpResponse:
         location = response.headers.get('Location')
         # python-requests doesn't follow redirects for 202
         if location and response.status_code in (201, 202):
@@ -221,12 +243,12 @@ class Session:
 
         return response
 
-    def _select_method(self, response: requests.Response) -> str:
+    def _select_method(self, response: HttpResponse) -> str:
         if response.status_code in (300, 301, 303) and response.request.method != 'HEAD':
             return 'GET'
-        return response.request.method  # type: ignore
+        return response.request.method
 
-    def eval_response(self, response: requests.Response, expect_json: bool = False) -> Any:
+    def eval_response(self, response: HttpResponse, expect_json: bool = False) -> Any:
         if response.status_code >= 399:
             msg = f'{response.request.method} {response.url}: {response.status_code}'
             error_details = None
@@ -239,7 +261,7 @@ class Session:
                     error_details = json.get('error', {})
                     try:
                         error_details['error'] = list(self.resolve_relations(json, 'udm:error'))
-                    except _NoRelation:  # pragma: no cover
+                    except NoRelation:  # pragma: no cover
                         pass
                     if error_details:
                         server_message = error_details.get('message')
@@ -273,7 +295,7 @@ class Session:
         try:
             return next(self.get_relations(entry, relation, name, template))
         except StopIteration:  # pragma: no cover
-            raise _NoRelation(relation)
+            raise NoRelation(relation)
 
     def resolve_relations(self, entry: Dict[str, Any], relation: str, name: Optional[str] = None, template: Optional[Dict[str, Any]] = None) -> Iterator[Dict[str, Any]]:
         embedded = entry.get('_embedded', {})
@@ -288,7 +310,7 @@ class Session:
         try:
             return next(self.resolve_relations(entry, relation, name, template))
         except StopIteration:
-            raise _NoRelation(relation)
+            raise NoRelation(relation)
 
 
 class Client:
@@ -398,20 +420,20 @@ class Module(Client):
         resp = self.client.resolve_relation(self.relations, 'create-form', template=data)
         return Object.from_data(self.udm, resp)
 
-    def get(self, dn: str, properties: Optional[List[str]] = None) -> Optional[Object]:
+    def get(self, dn: str, properties: Optional[List[str]] = None) -> Object:
         # TODO: use a link relation instead of a search
         for obj in self._search_closed(position=dn, scope='base', properties=properties):
             return obj.open()
         raise NotFound(404, 'Wrong object type!?', None)  # FIXME: object exists but is of different module. should be fixed on the server.
 
-    def get_by_entry_uuid(self, uuid: str, properties: Optional[List[str]] = None) -> Optional[Object]:
+    def get_by_entry_uuid(self, uuid: str, properties: Optional[List[str]] = None) -> Object:
         # TODO: use a link relation instead of a search
         # return self.udm.get_by_uuid(uuid)
         for obj in self._search_closed(filter={'entryUUID': uuid}, scope='base', properties=properties):
             return obj.open()
         raise NotFound(404, 'Wrong object type!?', None)  # FIXME: object exists but is of different module. should be fixed on the server.
 
-    def get_by_id(self, id_: str, properties: Optional[List[str]] = None) -> Optional[Object]:  # pragma: no cover
+    def get_by_id(self, id_: str, properties: Optional[List[str]] = None) -> Object:  # pragma: no cover
         # TODO: Needed?
         raise NotImplementedError()
 
@@ -432,7 +454,7 @@ class Module(Client):
             dn = objself['name']
             yield ShallowObject(self.udm, dn, uri)
 
-    def _search(self, filter: Union[Dict[str, str], str, bytes, None] = None, position: Optional[str] = None, scope: Optional[str] = 'sub', hidden: bool = False, superordinate: Optional[str] = None, opened: bool = False, properties: Optional[List[str]] = None) -> Iterator[Any]:
+    def _search(self, filter: Union[Dict[str, str], str, bytes, None] = None, position: Optional[str] = None, scope: Optional[str] = 'sub', hidden: bool = False, superordinate: Optional[str] = None, opened: bool = False, properties: Optional[List[str]] = None) -> Iterator[Dict[str, Any]]:
         data: Dict[str, Union[str, List[str], Dict[str, Any], None]] = {
             'position': position,
             'scope': scope,
@@ -526,17 +548,30 @@ class References:
         return type(self)(obj)
 
 
-class Object(Client):
+class ObjectCopyProto(Protocol):
+    representation: Dict[str, Any]
+    hal: Dict[str, Any]
+    etag: Optional[str]
+    last_modified: Optional[str]
+    udm: Any
 
-    __slots__ = ('etag', 'hal', 'last_modified', 'representation', 'udm')
 
-    objects = References()
+class ObjectRepr:
 
-    @property
-    def module(self) -> Optional[Module]:
-        # FIXME: use "type" relation link
-        # object_type = self.udm.get_relation(self.hal, 'type')['href']
-        return self.udm.get(self.object_type)
+    def __init__(self, representation: Dict[str, Any], etag: Optional[str] = None, last_modified: Optional[str] = None) -> None:
+        self.representation = representation
+        self.hal = {
+            '_links': representation.pop('_links', {}),
+            '_embedded': representation.pop('_embedded', {}),
+        }
+        self.etag = etag
+        self.last_modified = last_modified
+
+    def _copy_from_obj(self, obj: ObjectCopyProto) -> None:
+        self.representation = copy.deepcopy(obj.representation)
+        self.hal = copy.deepcopy(obj.hal)
+        self.etag = obj.etag
+        self.last_modified = obj.last_modified
 
     @property
     def object_type(self) -> str:
@@ -574,35 +609,42 @@ class Object(Client):
     def position(self, position: str) -> None:
         self.representation['position'] = position
 
+
+class Object(ObjectRepr, Client):
+
+    __slots__ = tuple(['etag', 'hal', 'last_modified', 'representation'] + list(Client.__slots__))
+
+    objects = References()
+
+    def __init__(self, udm: UDM, representation: Dict[str, Any], etag: Optional[str] = None, last_modified: Optional[str] = None, *args: Any, **kwargs: Any) -> None:
+        Client.__init__(self, udm.client, *args, **kwargs)
+        ObjectRepr.__init__(self, representation, etag, last_modified)
+        self.udm = udm
+
+    @property
+    def module(self) -> Optional[Module]:
+        # FIXME: use "type" relation link
+        # object_type = self.udm.get_relation(self.hal, 'type')['href']
+        return self.udm.get(self.object_type)
+
     @property
     def uri(self) -> Optional[str]:
         try:
             uri = self.client.get_relation(self.hal, 'self')
-        except _NoRelation:
+        except NoRelation:
             uri = None
         if uri:
             return uri['href']
         return self.representation.get('uri')
 
     @classmethod
-    def from_response(cls, udm: UDM, response: Response) -> Object:
+    def from_response(cls, udm: UDM, response: SyncResponse) -> Object:
         return cls.from_data(udm, response.data, response.response.headers)
 
     @classmethod
     def from_data(cls, udm: UDM, entry: Dict[str, Any], headers: Optional[Mapping[str, str]] = None) -> Object:
         headers = headers or {}
         return cls(udm, entry, etag=headers.get('Etag'), last_modified=headers.get('Last-Modified'))
-
-    def __init__(self, udm: UDM, representation: Dict[str, Any], etag: Optional[str] = None, last_modified: Optional[str] = None, *args: Any, **kwargs: Any) -> None:
-        super().__init__(udm.client, *args, **kwargs)
-        self.udm = udm
-        self.representation = representation
-        self.hal = {
-            '_links': representation.pop('_links', {}),
-            '_embedded': representation.pop('_embedded', {}),
-        }
-        self.etag = etag
-        self.last_modified = last_modified
 
     def __repr__(self) -> str:
         return f'Object(module={self.object_type!r}, dn={self.dn!r}, uri={self.uri!r})'
@@ -613,16 +655,16 @@ class Object(Client):
             obj = ShallowObject(self.udm, self.dn, uri['href']).open()
         else:
             assert self.module and self.dn
-            obj = cast(Object, self.module.get(self.dn))
+            obj = self.module.get(self.dn)
         self._copy_from_obj(obj)
 
-    def save(self, reload: bool = True) -> Response:
+    def save(self, reload: bool = True) -> SyncResponse:
         if self.dn:
             return self._modify(reload)
         else:
             return self._create(reload)
 
-    def json_patch(self, patch: Dict[str, Any], reload: bool = True) -> Response:
+    def json_patch(self, patch: Dict[str, Any], reload: bool = True) -> SyncResponse:
         if self.dn:
             return self._patch(patch, reload=reload)
         else:
@@ -641,7 +683,7 @@ class Object(Client):
         self.position = position
         self.save(reload=reload)
 
-    def _modify(self, reload: bool = True) -> Response:
+    def _modify(self, reload: bool = True) -> SyncResponse:
         assert self.uri
         headers = {key: value for key, value in {
             'If-Unmodified-Since': self.last_modified,
@@ -649,7 +691,7 @@ class Object(Client):
         }.items() if value}
         return self._request('PUT', self.uri, self.representation, headers, reload=reload)
 
-    def _patch(self, data: Dict[str, Any], reload: bool = True) -> Response:
+    def _patch(self, data: Dict[str, Any], reload: bool = True) -> SyncResponse:
         assert self.uri
         headers = {key: value for key, value in {
             'If-Unmodified-Since': self.last_modified,
@@ -658,16 +700,16 @@ class Object(Client):
         }.items() if value}
         return self._request('PATCH', self.uri, data, headers, reload=reload)
 
-    def _create(self, reload: bool = True) -> Response:
+    def _create(self, reload: bool = True) -> SyncResponse:
         uri = self.client.get_relation(self.hal, 'create')
         return self._request('POST', uri['href'], self.representation, {}, reload=reload)
 
-    def _request(self, method: str, uri: str, data: Dict[str, Any], headers: Dict[str, Any], reload: bool = True) -> Response:
+    def _request(self, method: str, uri: str, data: Dict[str, Any], headers: Dict[str, Any], reload: bool = True) -> SyncResponse:
         response = self.client.make_request(method, uri, data=data, allow_redirects=False, custom_redirect_handling=True, **headers)
         self._reload_from_response(response, reload)
         return response
 
-    def _reload_from_response(self, response: Response, reload: bool) -> None:
+    def _reload_from_response(self, response: SyncResponse, reload: bool) -> None:
         if reload and 200 <= response.response.status_code <= 299 and 'Location' in response.response.headers:
             uri = response.response.headers['Location']
             obj = ShallowObject(self.udm, None, uri)
@@ -682,12 +724,9 @@ class Object(Client):
         if reload:  # pragma: no cover
             self.reload()
 
-    def _copy_from_obj(self, obj: Object) -> None:
+    def _copy_from_obj(self, obj: ObjectCopyProto) -> None:
+        super()._copy_from_obj(obj)
         self.udm = obj.udm
-        self.representation = copy.deepcopy(obj.representation)
-        self.hal = copy.deepcopy(obj.hal)
-        self.etag = obj.etag
-        self.last_modified = obj.last_modified
 
     def generate_service_specific_password(self, service: str) -> Optional[Any]:
         uri = self.client.get_relation(self.hal, 'udm:service-specific-password')['href']
