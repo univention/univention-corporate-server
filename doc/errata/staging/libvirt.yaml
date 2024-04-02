@@ -1,0 +1,47 @@
+product: ucs
+release: "5.0"
+version: [6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: libvirt
+fix: 5.0.0-4+deb10u2A~5.0.7.202404020757
+desc: |
+ This update addresses the following issues:
+ 5.0.0-4+deb10u2 (Sun, 31 Mar 2024 15:22:37 +0200)
+ * Non-maintainer upload by the LTS Security Team.
+ * Fix CVE-2020-10703: NULL pointer dereference in the libvirt API that is
+   responsible for fetching a storage pool based on its target path.
+ * Fix CVE-2020-12430: Memory leak in the virDomainListGetStats libvirt API
+   that is responsible for retrieving domain statistics when managing QEMU
+   guests.
+ * Fix CVE-2020-25637: Double free memory issue in the libvirt API that is
+   responsible for requesting information about network interfaces of a
+   running QEMU domain.
+ * Fix CVE-2021-3631: SELinux MCS may be accessed by another machine.
+
+ * Fix CVE-2021-3667: Improper locking in the virStoragePoolLookupByTargetPath
+   API.
+ * Fix CVE-2021-3975: Use-after-free vulnerability. The
+   qemuMonitorUnregister() function in qemuProcessHandleMonitorEOF is called
+   using multiple threads without being adequately protected by a monitor
+   lock.
+ * Fix CVE-2021-4147: Deadlock and crash in libxl driver.
+ * Fix CVE-2022-0897: Missing locking in nwfilterConnectNumOfNWFilters.
+ * Fix CVE-2024-1441: Off-by-one error in the udevListInterfacesByStatus()
+   function.
+ * Fix CVE-2024-2494: Missing check for negative array lengths in RPC server
+   de-serialization routines.
+ * Fix CVE-2024-2496: NULL pointer dereference in the
+   udevConnectListAllInterfaces() function.
+bug: [57199]
+cve:
+- CVE-2020-10703
+- CVE-2020-12430
+- CVE-2020-25637
+- CVE-2021-3631
+- CVE-2021-3667
+- CVE-2021-3975
+- CVE-2021-4147
+- CVE-2022-0897
+- CVE-2024-1441
+- CVE-2024-2494
+- CVE-2024-2496
