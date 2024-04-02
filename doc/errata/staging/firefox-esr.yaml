@@ -1,0 +1,31 @@
+product: ucs
+release: "5.0"
+version: [6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: firefox-esr
+fix: 115.9.1esr-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ 115.9.1esr-1~deb10u1 (Sun, 24 Mar 2024 12:21:35 +0100)
+ * Backport to buster.
+ 115.9.1esr-1 (Sat, 23 Mar 2024 05:09:32 +0900)
+ * New upstream release.
+ * Fixes for mfsa2024-16, also known as CVE-2024-29944.
+ 115.9.0esr-2 (Thu, 21 Mar 2024 14:01:10 +0900)
+ * debian/control*, debian/rules: Undo workaround for bug 1052002.
+ 115.9.0esr-1 (Wed, 20 Mar 2024 05:59:40 +0900)
+ * Fixes for mfsa2024-13, also known as: CVE-2024-0743, CVE-2024-2607,
+   CVE-2024-2608, CVE-2024-2616, CVE-2023-5388, CVE-2024-2610, CVE-2024-2611,
+   CVE-2024-2612, CVE-2024-2614.
+bug: [57198]
+cve:
+- CVE-2024-29944
+- CVE-2024-0743
+- CVE-2024-2607
+- CVE-2024-2608
+- CVE-2024-2616
+- CVE-2023-5388
+- CVE-2024-2610
+- CVE-2024-2611
+- CVE-2024-2612
+- CVE-2024-2614
