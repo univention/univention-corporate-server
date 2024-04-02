@@ -109,7 +109,7 @@ define([
 	};
 
 	i18nTools.saveLangCookie = function(lang) {
-		cookie('UMCLang', lang, { expires: 100, path: '/univention/' });
+		cookie('UMCLang', lang, { expires: 100, domain: document.domain, path: '/univention/' });
 	};
 
 	/**

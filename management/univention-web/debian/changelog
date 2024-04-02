@@ -1,10 +1,11 @@
-univention-web (4.0.7-1) UNRELEASED; urgency=medium
+univention-web (4.0.7-2) unstable; urgency=medium
 
-  * Bug #57118 UCS 5.0-7 version bump
+  * Bug #57118: UCS 5.0-7 version bump
+  * Bug #57192: Fixed cookie creation for UMCLang inside the portal and univention-web
 
- -- Philipp Hahn <hahn@univention.de>  Thu, 07 Mar 2024 15:51:46 +0100
+ -- Mika Westphal <westphal@univention.de>  Tue, 02 Apr 2024 14:26:34 +0200
 
-univention-web (4.0.6-1) UNRELEASED; urgency=medium
+univention-web (4.0.6-1) unstable; urgency=medium
 
   * Bug #56832: UCS 5.0-6 version bump
 
