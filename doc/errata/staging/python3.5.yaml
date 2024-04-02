@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: python3.5
+fix: 3.5.3-1+deb9u9
+desc: |
+ This update addresses the following issue:
+
+ Debian update 3.5.3-1+deb9u9
+ 3.5.3-1+deb9u9 (Sun, 24 Mar 2024 22:36:02 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2024-0450: quoted-overlap zipbomb DoS
+bug: [57200]
+cve:
+- CVE-2024-0450
