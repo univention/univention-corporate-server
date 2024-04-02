@@ -167,11 +167,34 @@ To configure a default VLAN ID, set it as value to the |UCSUCRV|
 After you completed the configuration,
 the Radius server returns the assigned VLAN ID to requests with the given MAC address.
 
-.. important::
+UCS stores the MAC address in the LDAP directory as lowercase string with the
+colon (``:``) as separator, for example ``00:00:5e:00:53:00``.
 
-   You must provide the MAC address in the correct format. UCS stores the MAC
-   address in the LDAP directory as lowercase string with the colon (``:``) as
-   separator, for example ``00:00:5e:00:53:00``.
+
+.. versionadded:: 5.0-6-erratum-...
+
+   With :uv:erratum:`5.0x1011` the Radius server
+   can handle different formats of the MAC addresses for the username when using MAB.
+
+Devices that use MAB, use their MAC address as username
+and they may use different formats for it.
+The Radius server supports different case-sensitive formats.
+The following list shows the tested formats:
+
+* ``XX:XX:XX:XX:XX:XX``
+* ``XX-XX-XX-XX-XX-XX``
+* ``XX.XX.XX.XX.XX.XX``
+* ``XXXX.XXXX.XXXX``
+* ``XXXXXXXXXXXX``
+
+.. note::
+
+   For non-standard formats, you can configure a regular expression in the |UCSUCRV|
+   :envvar:`freeradius/conf/mac-addr-regexp` to match your custom MAC address format.
+
+   Depending on your regular expression, the previously listed formats may not work anymore.
+
+.. important::
 
    All devices that use MAB, need to have the same password set,
    because :ref:`service specific passwords <ip-config-radius-configuration-service-specific-password>` don't work,
