@@ -12,6 +12,8 @@ from typing import TYPE_CHECKING
 
 import pytest
 
+from univention.appcenter.actions import get_action
+from univention.appcenter.app_cache import Apps
 from univention.testing import selenium as _sel, strings, ucr as _ucr, udm as _udm, umc, utils
 
 
@@ -147,3 +149,30 @@ def wait_for_replication() -> Callable[..., None]:
 @pytest.fixture(scope='session')
 def account() -> utils.UCSTestDomainAdminCredentials:
     return utils.UCSTestDomainAdminCredentials()
+
+
+@pytest.fixture()
+def change_app_setting():
+    """Change settings of an app and revert"""
+    data = {'app': None, 'configure': None, 'changes': {}}
+
+    def _func(app_id: str, changes: dict, revert: bool = True) -> None:
+        apps_cache = Apps()
+        app = apps_cache.find(app_id, latest=True)
+        data['app'] = app
+        configure = get_action('configure')
+        data['configure'] = configure
+        settings = configure.list_config(app)
+        known_settings = {x.get('name'): x.get('value') for x in settings}
+        for change in changes:
+            if change in known_settings:
+                if revert:
+                    data['changes'][change] = known_settings[change]
+            else:
+                raise Exception(f'Unknown setting: {change}')
+        configure.call(app=app, set_vars=changes)
+
+    yield _func
+
+    if data['changes']:
+        data['configure'].call(app=data['app'], set_vars=data['changes'])

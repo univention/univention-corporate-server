@@ -10,36 +10,28 @@
 
 import pytest
 
-import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
-from univention.config_registry import handler_set
 
 import samltest
 
 
 def test_check_disabled_email_unverified():
-    with ucr_test.UCSTestConfigRegistry():
-        handler_set(['ucs/self/registration/check_email_verification=False'])
-        check_login(activated_email=False)
+    check_login(activated_email=False)
 
 
 def test_check_disabled_email_verified():
-    with ucr_test.UCSTestConfigRegistry():
-        handler_set(['ucs/self/registration/check_email_verification=False'])
-        check_login(activated_email=True)
+    check_login(activated_email=True)
 
 
-def test_check_enabled_email_unverified():
-    with ucr_test.UCSTestConfigRegistry():
-        handler_set(['ucs/self/registration/check_email_verification=True'])
-        with pytest.raises(samltest.SamlAccountNotVerified):
-            check_login(activated_email=False)
+def test_check_enabled_email_unverified(change_app_setting):
+    change_app_setting('keycloak', {'ucs/self/registration/check_email_verification': True})
+    with pytest.raises(samltest.SamlAccountNotVerified):
+        check_login(activated_email=False)
 
 
-def test_check_enabled_email_verified():
-    with ucr_test.UCSTestConfigRegistry():
-        handler_set(['ucs/self/registration/check_email_verification=True'])
-        check_login(activated_email=True)
+def test_check_enabled_email_verified(change_app_setting):
+    change_app_setting('keycloak', {'ucs/self/registration/check_email_verification': True})
+    check_login(activated_email=True)
 
 
 def check_login(activated_email=False):

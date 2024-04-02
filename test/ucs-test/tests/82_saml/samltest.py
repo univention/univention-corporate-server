@@ -26,7 +26,7 @@ def errors():
         'The password has expired and must be renewed.': SamlPasswordExpired,
         'The account has expired.': SamlAccountExpired,
         'Invalid username or password.': SamlAuthenticationFailed,
-        'Account not verified.': SamlAccountNotVerified,
+        'Your account is not verified.': SamlAccountNotVerified,
         'Changing password failed. The password was already used.': SamlPasswordChangeFailed,
         'Changing password failed. The password is too simple.': SamlPasswordChangeFailed,
         'The password has been changed successfully.': SamlPasswordChangeSuccess,
@@ -48,6 +48,8 @@ class SamlLoginError(SamlError):
             message = saml.xpath('*[@id="kc-content-wrapper"]/div/span')
         else:
             message = saml.xpath('*[@id="kc-form"]/div[1]/div/span', saml.xpath('form[@id="kc-passwd-update-form"]/div[@class="form-group"]/p'))
+        if message is None:
+            message = saml.xpath('*[@id="univention-self-service-form"]/div/div/p')
         if message is not None:
             message = message.text.strip()
         return Exception.__new__(errors().get(message, cls), saml, message)
