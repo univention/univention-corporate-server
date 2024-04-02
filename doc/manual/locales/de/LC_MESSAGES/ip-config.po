@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-31 11:28+0100\n"
-"PO-Revision-Date: 2024-01-31 11:34+0100\n"
+"POT-Creation-Date: 2024-04-02 13:28+0200\n"
+"PO-Revision-Date: 2024-04-02 13:29+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -2754,18 +2754,74 @@ msgstr ""
 " die zugewiesene VLAN-ID an Anfragen mit der angegebenen MAC-Adresse "
 "zurück."
 
-#: ../../ip-config/radius.rst:172
+#: ../../ip-config/radius.rst:170
 msgid ""
-"You must provide the MAC address in the correct format. UCS stores the "
-"MAC address in the LDAP directory as lowercase string with the colon "
-"(``:``) as separator, for example ``00:00:5e:00:53:00``."
+"UCS stores the MAC address in the LDAP directory as lowercase string with"
+" the colon (``:``) as separator, for example ``00:00:5e:00:53:00``."
 msgstr ""
-"Sie müssen die MAC-Adresse im korrekten Format angeben. UCS speichert die"
-" MAC-Adresse im LDAP-Verzeichnis als Zeichenkette in Kleinbuchstaben mit "
-"dem Doppelpunkt (``:``) als Trennzeichen, zum Beispiel "
-"``00:00:5e:00:53:00``."
+"UCS speichert die MAC-Adresse im LDAP-Verzeichnis als Zeichenkette in "
+"Kleinbuchstaben mit dem Doppelpunkt (``:``) als Trennzeichen, zum "
+"Beispiel ``00:00:5e:00:53:00``."
 
 #: ../../ip-config/radius.rst:176
+msgid ""
+"With :uv:erratum:`5.0x1011` the Radius server can handle different "
+"formats of the MAC addresses for the username when using MAB."
+msgstr ""
+"Mit :uv:erratum:`5.0x1011` kann der Radius-Server mit verschiedenen "
+"Formaten der MAC Adresse für Benutzernamen umgehen, wenn MAB verwendet wird."
+
+#: ../../ip-config/radius.rst:179
+msgid ""
+"Devices that use MAB, use their MAC address as username and they may use "
+"different formats for it. The Radius server supports different case-"
+"sensitive formats. The following list shows the tested formats:"
+msgstr ""
+"Geräte, die MAB verwenden, benutzen ihre MAC-Adresse als Benutzernamen "
+"und sie können unterschiedliche Formate dafür verwenden. Der Radius-"
+"Server unterstützt verschiedene Formate, die Groß- und Kleinschreibung "
+"unterscheiden. In der folgenden Liste sind die getesteten Formate "
+"aufgeführt:"
+
+#: ../../ip-config/radius.rst:184
+msgid "``XX:XX:XX:XX:XX:XX``"
+msgstr "``XX:XX:XX:XX:XX:XX``"
+
+#: ../../ip-config/radius.rst:185
+msgid "``XX-XX-XX-XX-XX-XX``"
+msgstr "``XX-XX-XX-XX-XX-XX``"
+
+#: ../../ip-config/radius.rst:186
+msgid "``XX.XX.XX.XX.XX.XX``"
+msgstr "``XX.XX.XX.XX.XX.XX``"
+
+#: ../../ip-config/radius.rst:187
+msgid "``XXXX.XXXX.XXXX``"
+msgstr "``XXXX.XXXX.XXXX``"
+
+#: ../../ip-config/radius.rst:188
+msgid "``XXXXXXXXXXXX``"
+msgstr "``XXXXXXXXXXXX``"
+
+#: ../../ip-config/radius.rst:192
+msgid ""
+"For non-standard formats, you can configure a regular expression in the "
+"|UCSUCRV| :envvar:`freeradius/conf/mac-addr-regexp` to match your custom "
+"MAC address format."
+msgstr ""
+"Für nicht-standardisierte Formate können Sie einen regulären Ausdruck in "
+"der |UCSUCRV| :envvar:`freeradius/conf/mac-addr-regexp` konfigurieren, "
+"der mit Ihrem benutzerdefinierten MAC-Adressformat zusammen passt."
+
+#: ../../ip-config/radius.rst:195
+msgid ""
+"Depending on your regular expression, the previously listed formats may "
+"not work anymore."
+msgstr ""
+"Je nach regulärem Ausdruck kann es vorkommen, dass die zuvor aufgeführten"
+" Formate nicht mehr funktionieren."
+
+#: ../../ip-config/radius.rst:199
 msgid ""
 "All devices that use MAB, need to have the same password set, because "
 ":ref:`service specific passwords <ip-config-radius-configuration-service-"
@@ -2776,12 +2832,12 @@ msgid ""
 msgstr ""
 "Alle Geräte, die MAB verwenden, müssen dasselbe Passwort haben, da "
 ":ref:`dienstspezifische Passwörter <ip-config-radius-configuration-"
-"service-specific-password>` nicht funktionieren, und der Switch muss das"
-" Passwort kennen. Sie können nur ein Gerätepasswort im Switch "
+"service-specific-password>` nicht funktionieren, und der Switch muss das "
+"Passwort kennen. Sie können nur ein Gerätepasswort im Switch "
 "konfigurieren. Sie können Ihr eigenes Passwort für die Geräte mit MAB "
 "erstellen, zum Beispiel ``mab request format attribute 2 password1``."
 
-#: ../../ip-config/radius.rst:183
+#: ../../ip-config/radius.rst:206
 msgid ""
 "If the network infrastructure provides a different format, you can often "
 "reconfigure the format. For example, for Cisco switches, you can use "
@@ -2799,11 +2855,11 @@ msgstr ""
 "xml/ios/sec_usr_aaa/configuration/15-e/sec-usr-aaa-15-e-book/sec-usr- "
 "config-mab-usrname-pwd.html>`_ beschrieben."
 
-#: ../../ip-config/radius.rst:194
+#: ../../ip-config/radius.rst:217
 msgid "Access point administration"
 msgstr "Access Points verwalten"
 
-#: ../../ip-config/radius.rst:196
+#: ../../ip-config/radius.rst:219
 msgid ""
 "All access points must be known to the RADIUS server. An access point can"
 " either be configured in the file "
@@ -2820,13 +2876,13 @@ msgstr ""
 "werden (Zum Beispiel über den Befehl :command:`makepasswd`.). Der Name "
 "kann frei gewählt werden."
 
-#: ../../ip-config/radius.rst:202
+#: ../../ip-config/radius.rst:225
 msgid "Example entry for an access point:"
 msgstr ""
 "Beispiel für einen Eintrag eines Access Points in der "
 ":file:`clients.conf` Datei:"
 
-#: ../../ip-config/radius.rst:204
+#: ../../ip-config/radius.rst:227
 msgid ""
 "client AP01 {\n"
 "    secret = a9RPAeVG\n"
@@ -2838,7 +2894,7 @@ msgstr ""
 "    ipaddr = 192.0.2.101\n"
 "}"
 
-#: ../../ip-config/radius.rst:211
+#: ../../ip-config/radius.rst:234
 msgid ""
 "To configure an access point using the UMC module :guilabel:`Computers` "
 "create or select a computer object and activate the *RADIUS-"
@@ -2860,7 +2916,7 @@ msgstr ""
 "Eigenschaften *NAS-Type* und Virtueller Server müssen in der Regel nicht "
 "verändert werden."
 
-#: ../../ip-config/radius.rst:219
+#: ../../ip-config/radius.rst:242
 msgid ""
 "Access points that are configured via the UMC module "
 ":guilabel:`Computers` are available to all RADIUS servers in the domain. "
@@ -2878,19 +2934,19 @@ msgstr ""
 "dies verzögert (etwa 15 Sekunden). Neue *Access Points* haben erst nach "
 "diesem Neustart Zugriff auf den RADIUS-Server."
 
-#: ../../ip-config/radius.rst:232
+#: ../../ip-config/radius.rst:255
 msgid "RADIUS option"
 msgstr "Setzen der RADIUS-Option"
 
-#: ../../ip-config/radius.rst:239
+#: ../../ip-config/radius.rst:262
 msgid "RADIUS authenticator options"
 msgstr "*RADIUS-Authenticator* Optionen"
 
-#: ../../ip-config/radius.rst:244
+#: ../../ip-config/radius.rst:267
 msgid "Access point and client configuration"
 msgstr "RADIUS an einem Computerobjekt einstellen"
 
-#: ../../ip-config/radius.rst:246
+#: ../../ip-config/radius.rst:269
 msgid ""
 "The access points must then be configured to use 802.1x (\"WPA "
 "Enterprise\") authentication. And the *RADIUS server* address should be "
@@ -2905,7 +2961,7 @@ msgstr ""
 " des ``secret`` aus dem Eintrag in der :file:`clients.conf` für den "
 "Access Point gesetzt sein."
 
-#: ../../ip-config/radius.rst:251
+#: ../../ip-config/radius.rst:274
 msgid ""
 "Wireless clients have to be configured to use *WPA* with *PEAP* and "
 "*MSCHAPv2* for authentication."
@@ -2913,11 +2969,11 @@ msgstr ""
 "WLAN Clients müssen so konfiguriert sein, dass sie *WPA* mit *PEAP* und "
 "*MSCHAPv2* für die Authentisierung verwenden."
 
-#: ../../ip-config/radius.rst:257
+#: ../../ip-config/radius.rst:280
 msgid "VLAN IDs"
 msgstr "VLAN IDs"
 
-#: ../../ip-config/radius.rst:259
+#: ../../ip-config/radius.rst:282
 msgid ""
 "Virtual Local Area Networks (VLANs) can be used to separate the traffic "
 "of users at the network level. UCS can be configured to return a VLAN ID "
@@ -2932,7 +2988,7 @@ msgstr ""
 "<3580>` zurück gibt. Weitere Informationen finden Sie in :ref:`computers-"
 "network-complex-vlan`."
 
-#: ../../ip-config/radius.rst:264
+#: ../../ip-config/radius.rst:287
 msgid ""
 "The VLAN ID for a user can be configured by assigning the user to a group"
 " with a VLAN ID."
@@ -2940,11 +2996,11 @@ msgstr ""
 "Die VLAN-ID für einen Benutzer kann konfiguriert werden, indem der "
 "Benutzer einer Gruppe mit einer VLAN-ID zugewiesen wird."
 
-#: ../../ip-config/radius.rst:271
+#: ../../ip-config/radius.rst:294
 msgid "Assigning VLAN ID to a user group"
 msgstr "Zuweisung VLAN ID zu einer Benutzergruppe"
 
-#: ../../ip-config/radius.rst:273
+#: ../../ip-config/radius.rst:296
 msgid ""
 "A default VLAN ID can be configured in the |UCSUCRV| :envvar:`freeradius"
 "/vlan-id`. This default VLAN ID will be returned if the user is not a "
@@ -2958,11 +3014,11 @@ msgstr ""
 "Antwort wird keine VLAN-ID enthalten, wenn der Benutzer nicht Mitglied "
 "einer Gruppe mit VLAN-ID ist und keine Standard VLAN-ID definiert ist."
 
-#: ../../ip-config/radius.rst:281
+#: ../../ip-config/radius.rst:304
 msgid "Debugging"
 msgstr "Fehlersuche"
 
-#: ../../ip-config/radius.rst:283
+#: ../../ip-config/radius.rst:306
 msgid ""
 "The :program:`RADIUS` app has a log file under "
 ":file:`/var/log/univention/radius_ntlm_auth.log`. The log verbosity can "
@@ -2976,7 +3032,7 @@ msgstr ""
 ":envvar:`freeradius/auth/helper/ntlm/debug` steuern. Der :program"
 ":`FreeRADIUS-Server` loggt nach :file:`/var/log/freeradius/radius.log`."
 
-#: ../../ip-config/radius.rst:289
+#: ../../ip-config/radius.rst:312
 msgid ""
 "The tool :program:`univention-radius-check-access` can be used to "
 "evaluate the current access policy for a given user and/or station ID "
@@ -2989,7 +3045,7 @@ msgstr ""
 " dem Server ausgeführt werden, wo das Paket :program:`univention-radius` "
 "installiert ist:"
 
-#: ../../ip-config/radius.rst:294
+#: ../../ip-config/radius.rst:317
 msgid ""
 "root@primary211:~# univention-radius-check-access --username=stefan\n"
 "DENY 'uid=stefan,cn=users,dc=ucs,dc=example'\n"
@@ -3009,7 +3065,7 @@ msgstr ""
 "-> -> 'cn=Users,cn=Builtin,dc=ucs,dc=example'\n"
 "Thus access is DENIED."
 
-#: ../../ip-config/radius.rst:305
+#: ../../ip-config/radius.rst:328
 msgid ""
 "root@primary211:~# univention-radius-check-access --username=janek\n"
 "DENY 'uid=janek,cn=users,dc=ucs,dc=example'\n"
@@ -3035,7 +3091,7 @@ msgstr ""
 "Thus access is ALLOWED.\n"
 "root@primary211:~#"
 
-#: ../../ip-config/radius.rst:319
+#: ../../ip-config/radius.rst:342
 msgid ""
 "It prints a detailed explanation and sets the exit code depending on the "
 "result of the access check (``0`` for *access granted*, ``1`` for *access"
@@ -3373,8 +3429,8 @@ msgstr ""
 #: ../../ip-config/web-proxy.rst:174
 msgid ""
 "If NTLM is used an NTLM authentication is performed for every HTTP query "
-"as standard. If for example the website <https://www.univention.com/> "
-"is opened, the subsequent pages and images are loaded in addition to the "
+"as standard. If for example the website <https://www.univention.com/> is "
+"opened, the subsequent pages and images are loaded in addition to the "
 "actual HTML page. The NTLM authentication can be cached per domain: If "
 "the |UCSUCRV| :envvar:`squid/ntlmauth/keepalive` is set to ``yes``, no "
 "further NTLM authentication is performed for subsequent HTML queries in "
