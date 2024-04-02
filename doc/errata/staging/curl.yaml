@@ -1,0 +1,52 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: curl
+fix: 7.52.1-5+deb9u21
+desc: |
+ This update addresses the following issues:
+ 7.52.1-5+deb9u21 (Tue, 30 Jan 2024 17:14:59 +0000)
+ * Non-maintainer upload by the ELTS Security Team.
+ * Fix CVE-2023-27534: a path traversal vulnerability existed in curl SFTP
+   implementation causes the tilde (~) character to be wrongly replaced when
+   used as a prefix in the first path element, in addition to its intended use
+   as the first element to indicate a path relative to the user's home
+   directory. Attackers can exploit this flaw to bypass filtering or execute
+   arbitrary code by crafting a path like /~2/foo while accessing a server
+   with a specific user.
+ * Fix CVE-2023-28321: An improper certificate validation vulnerability
+   existed in curl in the way it supports matching of wildcard patterns when
+   listed as "Subject Alternative Name" in TLS server certificates. curl can
+   be built to use its own name matching function for TLS rather than one
+   provided by a TLS library. This private wildcard matching function would
+   match IDN (International Domain Name) hosts incorrectly and could as a
+   result accept patterns that otherwise should mismatch. IDN hostnames are
+   converted to puny code before used for certificate checks. Puny coded names
+   always start with `xn--` and should not be allowed to pattern match, but
+   the wildcard check in curl could still check for `x*`, which would match
+   even though the IDN name most likely contained nothing even resembling an
+   `x`.
+ * Fix CVE-2023-28322: An information disclosure vulnerability existed in curl
+   when doing HTTP(S) transfers, libcurl might erroneously use the read
+   callback (`CURLOPT_READFUNCTION`) to ask for data to send, even when the
+   `CURLOPT_POSTFIELDS` option has been set, if the same handle previously
+   wasused to issue a `PUT` request which used that callback. This flaw may
+   surprise the application and cause it to misbehave and either send off the
+   wrong data or use memory after free or similar in the second transfer. The
+   problem exists in the logic for a reused handle when it is (expected to be)
+   changed from a PUT to a POST.
+ * Fix CVE-2023-46218: This flaw allowed a malicious HTTP server to set "super
+   cookies" in curl that are then passed back to more origins than what is
+   otherwise allowed or possible. This allowed a site to set cookies that then
+   would get sent to different and unrelated sites and domains. It could do
+   this by exploiting a mixed case flaw in curl's function that verified a
+   given cookie domain against the Public Suffix List (PSL). For example a
+   cookie could be set with `domain=co.UK` when the URL used a lower case
+   hostname `curl.co.uk`, even though `co.uk` is listed as a PSL domain.
+bug: [57201]
+cve:
+- CVE-2023-27534
+- CVE-2023-28321
+- CVE-2023-28322
+- CVE-2023-46218
