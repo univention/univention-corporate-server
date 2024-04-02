@@ -319,3 +319,24 @@ It is possible to start the server without it's gateway by stopping the systemd 
 ```bash
 /usr/bin/python3 -m univention.admin.rest -l de_DE.UTF-8 -c 1 -d 4 -p 9979
 ```
+
+## Building and publishing the UDM REST API Client
+
+There is a Makefile that offers all required commands.
+A help text is available, when started without arguments:
+
+```shell
+$ make -f Makefile.PyPI
+
+clean                remove all build and Python artifacts
+clean-build          remove build artifacts
+clean-pyc            remove Python file artifacts
+build                builds source and wheel package
+publish              package and upload a release to pypi
+publish-test         package and upload a release to the pypi test site
+install-hatch        install 'hatch' using 'pipx'
+```
+
+The build system uses [hatch](https://hatch.pypa.io/).
+To install it, run `make -f Makefile.PyPI install-hatch`.
+Then execute `make -f Makefile.PyPI publish-test` to build and publish the client to https://test.pypi.org/project/udm-rest-api-client/ or `make -f Makefile.PyPI publish` to publish to https://pypi.org/project/udm-rest-api-client/ .
