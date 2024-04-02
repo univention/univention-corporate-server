@@ -59,6 +59,13 @@ TRANSLATIONS = {
         'Unexpected error when handling authentication request to identity provider.': 'Unerwarteter Fehler während der Bearbeitung der Anfrage an den Identity Provider.',
         'The account has expired.': 'Das Benutzerkonto ist abgelaufen.',
         'The account is disabled.': 'Das Benutzerkonto ist deaktiviert.',
+        'en-US text': 'de-DE text',
+        'en-US title': 'de-DE title',
+        'ACCEPT': 'ANNEHMEN',
+        'Accept': 'Annehmen',
+        'en yada yada yada': 'de yada yada yada',
+        'Your account is not verified.': 'Konto nicht verifiziert.',
+        'You do not have the needed privileges to access': 'Zugriff verboten.',
     },
 }
 

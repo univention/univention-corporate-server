@@ -8,7 +8,7 @@ import os
 
 import pytest
 import requests
-from utils import run_command
+from utils import _, run_command
 
 from univention.udm import UDM
 
@@ -64,7 +64,7 @@ def test_univention_keycloak_legacy_flow_config(keycloak_administrator_connectio
 def test_legacy_authorization_saml(legacy_authorization_setup_saml, keycloak_config, keycloak_administrator_connection, portal_login_via_keycloak):
     # verify logon not possible
     page = portal_login_via_keycloak(legacy_authorization_setup_saml.user, 'univention', verify_login=False)
-    assert 'You do not have the needed privileges to access' in page.content()
+    assert _('You do not have the needed privileges to access') in page.content()
 
     # add user to group
     udm = UDM.admin().version(2)

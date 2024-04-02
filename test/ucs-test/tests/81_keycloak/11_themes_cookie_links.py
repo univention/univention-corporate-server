@@ -110,11 +110,11 @@ def test_cookie_banner(keycloak_adm_login, admin_account, ucr, keycloak_config):
     )
     # check the popup
     page = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
-    assert page.locator("[id='cookie-text']").inner_text() == 'en-US text'
-    assert page.locator("[id='cookie-title']").inner_text() == 'en-US title'
-    button = page.get_by_role("button", name="ACCEPT")
+    assert page.locator("[id='cookie-text']").inner_text() == _('en-US text')
+    assert page.locator("[id='cookie-title']").inner_text() == _('en-US title')
+    button = page.get_by_role("button", name=_('ACCEPT'))
     # accept the popup and check the cookie
-    assert button.inner_text() == 'ACCEPT'
+    assert button.inner_text() == _('ACCEPT')
     button.click()
     cookies = page.context.cookies()
     for cookie in cookies:
@@ -189,16 +189,17 @@ def test_login_page_with_cookie_banner_no_element_is_tabbable(keycloak_adm_login
         ],
     )
     page = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
-    page.focus("text=Accept")
-    assert page.evaluate("() => document.activeElement.textContent").replace("\n", "").strip() == 'Accept'
-    assert page.is_visible("text=Accept")
+    print(page.content())
+    page.focus(f'text={_("Accept")}')
+    assert page.evaluate("() => document.activeElement.textContent").replace("\n", "").strip() == _('Accept')
+    assert page.is_visible(f'text={_("Accept")}')
     # some browser fields
     page.keyboard.press("Tab")
     page.keyboard.press("Tab")
     page.keyboard.press("Tab")
     page.keyboard.press("Tab")
     # and back to the beginning
-    assert page.evaluate("() => document.activeElement.textContent").replace("\n", "").strip() == 'Accept'
+    assert page.evaluate("() => document.activeElement.textContent").replace("\n", "").strip() == _('Accept')
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails without keycloak locally installed')
