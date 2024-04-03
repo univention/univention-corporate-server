@@ -1,3 +1,3 @@
-- Hide deprecated fetchmail LDAP attributes in UMC
+- Hide deprecated Fetchmail LDAP attributes in UMC
 - Improved script :file:`/usr/share/univention-fetchmail/migrate-fetchmail.py`
 - Run migration script on upgrade
