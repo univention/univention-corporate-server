@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (7.0.8) unstable; urgency=medium
+
+  * Bug #55905: deprecate old fetchmail attributes
+
+ -- Juan Carlos García García <garcia-garcia@univention.de>  Fri, 08 Mar 2024 00:18:51 +0100
+
 univention-management-console-module-diagnostic (7.0.7) unstable; urgency=medium
 
   * Bug #56604: remove workarounds for Python 2 compatibility

@@ -63,7 +63,7 @@ extract_binddn_and_bindpwd_from_args() {
 
 ucs_addServiceToLocalhost "Fetchmail" "$@" || die
 
-if [ $JS_LAST_EXECUTED_VERSION -le 2 ]; then
+if [ $JS_LAST_EXECUTED_VERSION -le 20 ]; then
 
     systemctl try-restart univention-directory-listener
 

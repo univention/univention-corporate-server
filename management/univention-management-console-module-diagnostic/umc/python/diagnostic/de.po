@@ -1443,3 +1443,30 @@ msgid "to correct these settings and delete the obsolete variables."
 msgstr ""
 "um die Konfiguration zu korrigieren und die überflüssigen Variablen zu "
 "löschen."
+
+msgid "Fetchmail attributes were not migrated"
+msgstr "Die Fetchmail Attribute wurden nicht migriert."
+
+msgid "It is not possible to automatically fix the problem when 'univention-fetchmail' is running on a non-master server."
+msgstr "Es ist nicht möglich, das Problem automatisch zu beheben, wenn 'univention-fetchmail' nicht auf einem Master Server läuft."
+
+msgid "Migrate configurations"
+msgstr "Konfigurationen migrieren"
+
+msgid "Not all old LDAP fetchmail configurations have been migrated or incomplete configurations remain in some objects."
+msgstr "Nicht alle alten LDAP Fetchmail Konfigurationen wurden migriert oder unvollständige Konfigurationen sind noch in einigen Objekten erhalten."
+
+msgid "Run the script '/usr/share/univention-fetchmail/migrate-fetchmail.py --binddn $DN --bindpwdfile $PWDFILE' to migrate the complete configurations."
+msgstr "Führen Sie das Skript '/usr/share/univention-fetchmail/migrate-fetchmail.py --binddn $DN --bindpwdfile $PWDFILE' aus, um die vollständigen Konfigurationen zu migrieren."
+
+msgid "The following complete configurations were found: "
+msgstr "Die folgenden vollständigen Konfigurationen wurden gefunden: "
+
+msgid "The following incomplete configurations have been found. Manual action is required to fix it. Attributes still present from past configurations can be deleted."
+msgstr "Die folgenden unvollständigen Konfigurationen wurden gefunden. Zur Behebung sind manuelle Maßnahmen erforderlich. Attribute, die noch aus früheren Konfigurationen vorhanden sind, können gelöscht werden."
+
+msgid "User: %r\n"
+msgstr "Benutzer: %r\n"
+
+msgid "User: %r - remaining fetchmail attributes: %s.\n"
+msgstr "Benutzer: %r - verbleibende Fetchmail Attribute: %s.\n"
