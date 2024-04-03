@@ -12,3 +12,6 @@ desc: |
    The flag `--properties` has been added to UDM CLI
    to request specific properties.
 bug: [57110]
+erratum: 1018
+announced: 2024-04-03
+support: core
