@@ -64,7 +64,7 @@ if [ "$1" = "configure" ] && [ -n "$2" ]; then
 		fi
 	fi
 	# update keycloak ldap federation config Bug 57205
-	if dpkg --compare-versions "$2" lt-nl "1.0.10-6"; then
+	if dpkg --compare-versions "$2" lt-nl "1.0.11-2"; then
 		if [ -e /var/univention-join/joined ] ; then
 			if univention-app info | grep 'Installed:' | grep -q -w keycloak; then
 				if [ -e "/etc/keycloak.secret" ]; then

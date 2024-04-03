@@ -80,8 +80,8 @@ def test_list_users_works(keycloak_config):
     # check that there is an object with objectclass=person but without uid
     ldap = get_ldap_connection()
     assert ldap.search('(&(objectclass=person)(!(uid=*)))')
-    keycloak_get_request(keycloak_config, 'realms/master/users')
-    keycloak_get_request(keycloak_config, 'realms/ucs/users')
+    assert keycloak_get_request(keycloak_config, 'realms/master/users')
+    assert keycloak_get_request(keycloak_config, 'realms/ucs/users')
 
 
 def test_master_realm_config(keycloak_config, ucr):
