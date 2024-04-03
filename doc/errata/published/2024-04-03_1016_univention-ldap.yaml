@@ -9,3 +9,6 @@ desc: |
  * LDAP schema attributes for the UCS authorization engine
    (guardian) roles have been added.
 bug: [57110]
+erratum: 1016
+announced: 2024-04-03
+support: core
