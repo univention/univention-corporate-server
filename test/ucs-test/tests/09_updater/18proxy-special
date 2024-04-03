@@ -7,7 +7,7 @@
 ##  3. optionally check if the package is installable
 ## bugs: [17691, 18393]
 ## roles-not: [basesystem]
-## tags: [basic, proxy, SKIP]
+## tags: [basic, proxy]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ## exposure: dangerous
@@ -71,8 +71,7 @@ do
 	echo "Checking ${c}	${u}	${p}"
 	test -n "${u}" && run_test "u${u}u" "password"
 	test -n "${p}" && run_test "user" "p${p}p"
-	[ "$RETVAL" -gt 100 ] &&
-		exit "$RETVAL"
+	test -n "$RETVAL" && [ "$RETVAL" -gt 100 ] && exit "$RETVAL"
 done
 
 exit "${RETVAL:=100}" # Test bestanden (Keine Fehler)

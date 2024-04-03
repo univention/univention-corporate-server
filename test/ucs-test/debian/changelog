@@ -1,3 +1,9 @@
+ucs-test (12.0.36) unstable; urgency=medium
+
+  * Issue #2039: enable 09_updater/18proxy-special
+
+ -- Felix Botner <botner@univention.de>  Wed, 03 Apr 2024 15:46:40 +0200
+
 ucs-test (12.0.35) unstable; urgency=medium
 
   * Bug #56054: fix ucs-test-keycloak
