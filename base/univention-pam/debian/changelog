@@ -1,3 +1,9 @@
+univention-pam (15.0.6) unstable; urgency=medium
+
+  * Issue #2185: remove mdns from nsswitch.conf
+
+ -- Felix Botner <botner@univention.de>  Wed, 03 Apr 2024 14:16:29 +0200
+
 univention-pam (15.0.5) unstable; urgency=medium
 
   * Bug #56793: Add UCR adjustable logrotate config for sssd
