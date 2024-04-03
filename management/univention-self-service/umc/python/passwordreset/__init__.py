@@ -259,6 +259,7 @@ class Instance(Base):
             atexit.register(self.db.close_db)
             if not self.db.table_exists():
                 self.db.create_table()
+            username = MEMCACHED_USERNAME
             password = os.getenv("SELF_SERVICE_MEMCACHED_SECRET")
             if not password and MEMCACHED_SECRET_FILE:
                 try:
@@ -266,7 +267,14 @@ class Instance(Base):
                         password = pw_file.readline().strip()
                 except OSError:
                     raise UMC_Error('The memcached password is not properly configured.', status=503)
-            self.memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True, username=MEMCACHED_USERNAME, password=password)
+            if not username:
+                # pylibmc requires username and password to be exactly `None` for unauthenticated connections
+                MODULE.debug(f"Memcached: unauthenticated connection to {MEMCACHED_SOCKET}")
+                username = None
+                password = None
+            else:
+                MODULE.debug(f"Memcached: connecting to {MEMCACHED_SOCKET} with username={username}")
+            self.memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True, username=username, password=password)
 
         self.send_plugins = get_sending_plugins(MODULE.process)
         self.password_reset_plugins = {k: v for k, v in self.send_plugins.items() if v.message_application() == 'password_reset'}
