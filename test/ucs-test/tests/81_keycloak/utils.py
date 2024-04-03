@@ -53,6 +53,7 @@ TRANSLATIONS = {
         'Login (Single sign-on)': 'Anmelden (Single Sign-on)',
         'Changing password failed. The password was already used.': 'Passwort ändern fehlgeschlagen. Das Passwort wurde bereits genutzt.',
         'Changing password failed. The password is too short.': 'Passwort ändern fehlgeschlagen. Das Passwort ist zu kurz.',
+        'Changing password failed. The password is too short. The password must consist of at least 8 characters.': 'Passwort ändern fehlgeschlagen. Das Passwort ist zu kurz. Das Passwort muss mindestens 8 Zeichen lang sein.',
         "Passwords don't match.": 'Passwörter sind nicht identisch.',
         'Please specify password.': 'Bitte geben Sie ein Passwort ein.',
         'LOGOUT': 'ABMELDEN',

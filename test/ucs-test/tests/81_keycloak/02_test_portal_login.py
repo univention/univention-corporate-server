@@ -50,11 +50,15 @@ def test_password_change_same_passwords_fails(portal_login_via_keycloak, keycloa
 
 def test_password_change_new_password_too_short_fails(portal_login_via_keycloak, udm):
     username = udm.create_user(pwdChangeNextLogin=1)[1]
+    if package_installed('univention-samba4'):
+        error_msg = _('Changing password failed. The password is too short. The password must consist of at least 8 characters.')
+    else:
+        error_msg = _('Changing password failed. The password is too short.')
     portal_login_via_keycloak(
         username,
         'univention',
         new_password='a',
-        fails_with=_('Changing password failed. The password is too short.'),
+        fails_with=error_msg,
     )
 
 
@@ -79,14 +83,14 @@ def test_password_change_empty_passwords_fails(portal_login_via_keycloak, keyclo
 
 
 def test_password_change_after_second_try(portal_login_via_keycloak, keycloak_config, udm):
-    username = udm.create_user(pwdChangeNextLogin=1)[1]
+    username = udm.create_user(pwdChangeNextLogin=1, password='sdh78§$%kjJKJK')[1]
     page = portal_login_via_keycloak(
         username,
-        'univention',
-        new_password='univention',
+        'sdh78§$%kjJKJK',
+        new_password='sdh78§$%kjJKJK',
         fails_with=_('Changing password failed. The password was already used.'),
     )
-    keycloak_password_change(page, keycloak_config, 'univention', 'Univention.99', 'Univention.99')
+    keycloak_password_change(page, keycloak_config, 'sdh78§$%kjJKJK', 'Univention.99', 'Univention.99')
     assert Client(username=username, password='Univention.99')
 
 
