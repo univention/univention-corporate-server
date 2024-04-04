@@ -86,7 +86,7 @@ def run(_umc_instance: Instance) -> None:
                 counted_objects[module.short_description] += 1
         for module_name in sorted(counted_objects.keys()):
             num_objs = counted_objects[module_name]
-            details += '\n· ' + _('%d objects should be "%s"') % (num_objs, module_name)
+            details += '\n· ' + _('%(num_objs)d objects should be "%(module_name)s"') % {'num_objs': num_objs, 'module_name': module_name}
         raise Warning(description + details, buttons=[{
             'action': 'migrate_objects',
             'label': _('Migrate %d LDAP objects') % len(objects),

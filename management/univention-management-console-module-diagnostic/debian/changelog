@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (8.0.11) unstable; urgency=medium
+
+  * Bug #56621: Monitor state of app queues
+
+ -- Juan Carlos García García <garcia-garcia@univention.de>  Thu, 04 Apr 2024 11:15:00 +0100
+
 univention-management-console-module-diagnostic (8.0.10) unstable; urgency=medium
 
   * Bug #57145: add deprecation warning for Samba tdb
