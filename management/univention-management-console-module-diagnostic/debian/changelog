@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (7.0.9) unstable; urgency=medium
+
+  * Bug #56621: Monitor state of app queues
+
+ -- Juan Carlos García García <garcia-garcia@univention.de>  Thu, 04 Apr 2024 11:15:00 +0100
+
 univention-management-console-module-diagnostic (7.0.8) unstable; urgency=medium
 
   * Bug #55905: deprecate old fetchmail attributes
