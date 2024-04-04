@@ -748,6 +748,21 @@ class Test_DNSPointerRecord:
         udm.modify_object('dns/ptr_record', dn=ptr, superordinate=reverse_zone, remove={'ptr_record': ptr_records[:2]}, wait_for=True)
         utils.verify_ldap_object(ptr, {'pTRRecord': ptr_records[2:]})
 
+    def test_dns_ptr_list_ip(self, udm):
+        subnet = uts.random_subnet()
+        ip = f'{subnet}.2'
+        reverse_zone = udm.create_object('dns/reverse_zone', subnet=subnet, nameserver=uts.random_dns_record())
+        ptr_record = uts.random_dns_record()
+        ptr = udm.create_object('dns/ptr_record', address='2', superordinate=reverse_zone, ptr_record=ptr_record, ip=ip)
+        for s_filter in [
+            'ip=*',
+            f'ip={ip}',
+        ]:
+            res = udm.list_objects('dns/ptr_record', filter=s_filter)
+            assert ptr in [x[0] for x in res]
+        res = udm.list_objects('dns/ptr_record', filter='ip=1.2.3.4')
+        assert ptr not in [x[0] for x in res]
+
 
 class Test_DNSWrongSuperordinate:
 

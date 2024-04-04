@@ -47,6 +47,32 @@ def restart_slapd_after_test():
     utils.restart_slapd()
 
 
+class Test_UserList:
+
+    def test_sambaLogonHours_with_filter(self, udm):
+        samba_logon_hours_ldap = '000000000000000000000000000000080000000000'
+        samba_logon_hours_udm = '123'
+        user = udm.create_user(sambaLogonHours=samba_logon_hours_udm)[0]
+        for s_filter in [
+            'sambaLogonHours=*',
+            f'sambaLogonHours={samba_logon_hours_udm}',
+            f'sambaLogonHours={samba_logon_hours_ldap}',
+        ]:
+            res = udm.list_objects('users/user', filter=s_filter)
+            assert user in [x[0] for x in res]
+
+    def test_accountActivationDate_with_filter(self, udm):
+        account_activation_date_udm = '2006-06-09 02:43 Europe/Berlin'
+        user = udm.create_user(accountActivationDate=account_activation_date_udm)[0]
+        for s_filter in [
+            'accountActivationDate=*',
+            f'accountActivationDate={account_activation_date_udm}',
+            'krb5ValidStart=*',
+        ]:
+            res = udm.list_objects('users/user', filter=s_filter)
+            assert user in [x[0] for x in res]
+
+
 class Test_UserCreation:
 
     def test_user_creation(self, udm):

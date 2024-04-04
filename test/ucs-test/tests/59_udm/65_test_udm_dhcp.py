@@ -303,6 +303,24 @@ class Test_DHCPPool:
     @pytest.mark.tags('udm')
     @pytest.mark.roles('domaincontroller_master')
     @pytest.mark.exposure('careful')
+    def test_dhcp_host_list_with_filter(self, udm):
+        """Create dhcp/host"""
+        dhcp_service = udm.create_object('dhcp/service', service=uts.random_name())
+        mac = 'ethernet 02:ff:78:38:ab:24'
+        dhcp_host = udm.create_object('dhcp/host', host=uts.random_name(), hwaddress=mac, superordinate=dhcp_service)
+        utils.verify_ldap_object(dhcp_host, {'dhcpHWAddress': [mac]})
+        host = udm.list_objects('dhcp/host', filter=f'hwaddress={mac}')
+        assert host[0][1]['hwaddress'] == [mac]
+        hosts = udm.list_objects('dhcp/host', filter='hwaddress=*')
+        assert dhcp_host in [x[0] for x in hosts]
+        hosts = udm.list_objects('dhcp/host', filter='dhcpHWAddress=*')
+        assert dhcp_host in [x[0] for x in hosts]
+        host = udm.list_objects('dhcp/host', filter=f'dhcpHWAddress={mac}')
+        assert host[0][1]['hwaddress'] == [mac]
+
+    @pytest.mark.tags('udm')
+    @pytest.mark.roles('domaincontroller_master')
+    @pytest.mark.exposure('careful')
     def test_dhcp_pool_modification_remove_addressranges(self, udm):
         """Remove ranges during dhcp/pool modification"""
         dhcp_service = udm.create_object('dhcp/service', service=uts.random_name())

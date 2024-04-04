@@ -1,3 +1,9 @@
+ucs-test (12.0.69) unstable; urgency=medium
+
+  * Bug #54339: test list with filter
+
+ -- Felix Botner <botner@univention.de>  Fri, 03 May 2024 09:08:15 +0200
+
 ucs-test (12.0.68) unstable; urgency=medium
 
   * Issue #2186: restart umc before tests
