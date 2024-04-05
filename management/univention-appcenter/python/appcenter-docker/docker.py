@@ -51,6 +51,7 @@ from json import loads
 from subprocess import CalledProcessError, call, check_output
 from tempfile import NamedTemporaryFile
 
+import docker
 from ruamel import yaml
 
 from univention.appcenter.app_cache import Apps
@@ -224,6 +225,20 @@ def docker_cp(src, dest, logger=None, followlink=False):
     args.append(src)
     args.append(dest)
     return call_process2(args, logger=logger)
+
+
+def docker_get_existing_subnets():
+    try:
+        client = docker.from_env()
+        networks = client.networks.list()
+        subnets = []
+        for network in networks:
+            for config in network.attrs['IPAM']['Config']:
+                subnets.append(config['Subnet'])
+        return subnets
+    except docker.errors.APIError as exc:
+        _logger.warning('Could not get existing subnets: %s' % exc)
+        return []
 
 
 class Docker:
@@ -451,6 +466,13 @@ class Docker:
                 continue
             else:
                 used_docker_networks.append(app_network)
+        for subnet in docker_get_existing_subnets():
+            try:
+                sub_network = IPv4Network(subnet, False)
+                if not any(sub_network.overlaps(app_network) for app_network in used_docker_networks):
+                    used_docker_networks.append(sub_network)
+            except ValueError:
+                pass
         prefixlen_diff = 24 - int(netmask)
         if prefixlen_diff <= 0:
             _logger.warning('Cannot get a subnet big enough')  # maybe I could... but currently, I only work with 24-netmasks

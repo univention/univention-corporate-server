@@ -56,6 +56,7 @@ Package: python3-univention-appcenter
 Architecture: all
 Depends:
  gnupg,
+ python3-docker,
  python3-mysqldb,
  python3-univention,
  python3-univention-admin-diary,
