@@ -6,9 +6,13 @@
 ##   - docker.io
 
 import subprocess
+from ipaddress import IPv4Address, IPv4Network
 
+import docker
 import pytest
 from ruamel import yaml
+
+from univention.config_registry import ConfigRegistry
 
 from dockertest import App, get_app_name
 
@@ -47,8 +51,31 @@ InitialValue = This is a test
 '''
 
 
+def get_existing_subnets():
+    client = docker.from_env()
+    networks = client.networks.list()
+    subnets = []
+    for network in networks:
+        for config in network.attrs['IPAM']['Config']:
+            subnets.append(config['Subnet'])
+    return subnets
+
+
 @pytest.mark.exposure('dangerous')
 def test_docker_compose(appcenter):
+    ucr = ConfigRegistry()
+    ucr.load()
+    docker0_net = IPv4Network('%s' % (ucr.get('appcenter/docker/compose/network', '172.16.1.1/16'),), False)
+    gateway, netmask = docker0_net.exploded.split('/', 1)  # '172.16.1.1', '16'
+    prefixlen_diff = 24 - int(netmask)
+    target_subnet = None
+    for network in docker0_net.subnets(prefixlen_diff):
+        if IPv4Address('%s' % (gateway,)) in network:
+            continue
+        if any(IPv4Network(app_network, False).overlaps(network) for app_network in get_existing_subnets()):
+            continue
+        target_subnet = network
+        break
     name = get_app_name()
     setup = '#!/bin/sh'
     store_data = '#!/bin/sh'
@@ -91,16 +118,18 @@ def test_docker_compose(appcenter):
         app.execute_command_in_container(f'ls /var/lib/univention-appcenter/apps/{name}/data/test1.txt')
         image = subprocess.check_output(['docker', 'inspect', app.container_id, '--format={{.Config.Image}}'], text=True).strip()
         assert image == 'docker-test.software-univention.de/alpine:3.7'
-        from univention.config_registry import ConfigRegistry
-        ucr = ConfigRegistry()
         ucr.load()
         network = ucr.get('appcenter/apps/' + name + '/ip')
-        assert network == '172.16.1.0/24', network
+        # assert network == '172.16.1.0/24', network
+
+        assert network == target_subnet.exploded
         yml_file = f'/var/lib/univention-appcenter/apps/{name}/compose/docker-compose.yml'
         content = yaml.load(open(yml_file), yaml.RoundTripLoader, preserve_quotes=True)
-        assert content['networks']['appcenter_net']['ipam']['config'][0]['subnet'] == '172.16.1.0/24'
-        assert content['services']['test1']['networks']['appcenter_net']['ipv4_address'] == '172.16.1.2'
-        assert content['services']['test2']['networks']['appcenter_net']['ipv4_address'] == '172.16.1.3'
+        assert content['networks']['appcenter_net']['ipam']['config'][0]['subnet'] == target_subnet.exploded
+        # assert content['services']['test1']['networks']['appcenter_net']['ipv4_address'] == '172.16.1.2'
+        assert content['services']['test1']['networks']['appcenter_net']['ipv4_address'] == target_subnet[2].exploded
+        # assert content['services']['test2']['networks']['appcenter_net']['ipv4_address'] == '172.16.1.3'
+        assert content['services']['test2']['networks']['appcenter_net']['ipv4_address'] == target_subnet[3].exploded
         assert content['services']['test2']['environment']['TEST_KEY'] == 'This is a test', content['services']['test2']['environment']
     finally:
         app.uninstall()

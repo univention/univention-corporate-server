@@ -1,3 +1,9 @@
+ucs-test (12.0.37) unstable; urgency=medium
+
+  * Issue #2190: fix 80_docker/85_docker_compose.py
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 05 Apr 2024 13:17:01 +0200
+
 ucs-test (12.0.36) unstable; urgency=medium
 
   * Issue #2039: enable 09_updater/18proxy-special
