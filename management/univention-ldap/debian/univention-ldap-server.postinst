@@ -125,7 +125,13 @@ ucr set \
 eval "$(univention-config-registry shell)"
 
 stop_slapd
-/usr/share/univention-ldap/ldap_setup_index --add-defaults
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 16.0.15-5; then
+	/usr/share/univention-ldap/ldap_setup_index --add-defaults --only-update-ucr
+	output=$(/usr/sbin/slapindex -f /etc/ldap/slapd.conf sOARecord 2>&1) ||
+		echo "$output"
+else
+	/usr/share/univention-ldap/ldap_setup_index --add-defaults
+fi
 start_slapd
 
 for cfg in /var/lib/univention-ldap/ldap/DB_CONFIG /var/lib/univention-ldap/translog/DB_CONFIG
