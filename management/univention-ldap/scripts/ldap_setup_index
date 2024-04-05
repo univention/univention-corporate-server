@@ -105,6 +105,9 @@ class LdapIndex(object):
         parser.add_argument(
             '--rm-approx', '-A', action='append', metavar='ATTR',
             help='Remove from approximation index')
+        parser.add_argument(
+            '--only-update-ucr', action='store_true',
+            help="Only update UCR but don't auto rebuild")
         return parser.parse_args()
 
     def setup_logging(self):
@@ -116,7 +119,8 @@ class LdapIndex(object):
         basicConfig(stream=sys.stderr, level=level)
 
     def load_ucr(self, ucr):
-        self.autorebuild = ucr.is_true('ldap/index/autorebuild')
+        self.autorebuild = False if self.args.only_update_ucr else ucr.is_true('ldap/index/autorebuild')
+        self.update_ucr = self.args.only_update_ucr or ucr.is_true('ldap/index/autorebuild')
         self.quick_mode = ucr.is_true('ldap/index/quickmode', False)
         if self.autorebuild:
             LOG.debug('Automatically updating indexes is enabled')
@@ -166,7 +170,7 @@ class LdapIndex(object):
                 continue
             ucrv = self.ucrv(typ)
             old = ucr.get(ucrv)
-            if old is None or self.autorebuild:
+            if old is None or self.update_ucr:
                 changes[ucrv] = ','.join(sorted(attributes))
         LOG.info('Applying %s...', changes)
         if not changes:
@@ -337,6 +341,7 @@ RECOMMENDED_LDAP_INDEX = {
         'relativeDomainName',
         'shadowMax',
         'sn',
+        'sOARecord',
         'sRVRecord',
         'tXTRecord',
         'uid',
