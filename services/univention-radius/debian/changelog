@@ -1,3 +1,9 @@
+univention-radius (9.0.7) unstable; urgency=medium
+
+  * Bug #55007: preserve custom freeradius configuration
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Mon, 08 Apr 2024 19:28:19 +0200
+
 univention-radius (9.0.6) unstable; urgency=medium
 
   * Bug #57069: Support different MAC formats for MAC authentication bypass
