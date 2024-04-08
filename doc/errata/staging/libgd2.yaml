@@ -1,0 +1,21 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libgd2
+fix: 2.2.4-2+deb9u6
+desc: |
+ This update addresses the following issues:
+ 2.2.4-2+deb9u6 (Thu, 28 Mar 2024 19:03:02 +0100)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2021-40812 fix for an out-of-bounds read due to lack of return value
+   checks.
+ * CVE-2021-38115 fix for remote attackers to cause a denial of service
+   because of out-of-bounds read via a crafted TGA file
+ * CVE-2018-14553 fix for a NULL pointer dereference allowing attackers to
+   crash an application via a specific function call sequence
+bug: [57212]
+cve:
+- CVE-2021-40812
+- CVE-2021-38115
+- CVE-2018-14553
