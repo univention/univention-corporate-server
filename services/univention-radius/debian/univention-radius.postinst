@@ -91,6 +91,20 @@ call_joinscript 80univention-radius.inst
 
 test -d /etc/freeradius/ssl && chmod -cf 2755 /etc/freeradius/ssl
 
+# Bug #55007: preserve custom symbolic link to sites-available
+default_enabled_site_link="/etc/freeradius/3.0/sites-enabled/default"
+package_default_enabled_site="../sites-available/default"
+backup_default_enabled_site_link="/etc/freeradius/3.0/sites-enabled/default.backup"
+if ! [ -e "$default_enabled_site_link" ]; then
+	if [ -e "$backup_default_enabled_site_link" ]; then
+		mv "$backup_default_enabled_site_link" "$default_enabled_site_link"
+		echo "WARNING: Using configuration found in $(readlink "$default_enabled_site_link")"
+	else
+		ln -s "$package_default_enabled_site" "$default_enabled_site_link"
+		echo "Creating symbolic link with default configuration"
+	fi
+fi
+
 deb-systemd-helper enable freeradius.service
 systemctl restart freeradius
 

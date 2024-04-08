@@ -1,3 +1,9 @@
+univention-radius (7.0.7-3) unstable; urgency=medium
+
+  * Bug #55007: preserve custom freeradius configuration
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Mon, 08 Apr 2024 19:28:19 +0200
+
 univention-radius (7.0.7-2) unstable; urgency=medium
 
   * Bug #57069: rename canonicalization to prevent functions with the same name with the .debian file
