@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-04 09:34+0200\n"
-"PO-Revision-Date: 2024-04-04 09:36+0200\n"
+"POT-Creation-Date: 2024-04-08 13:34+0200\n"
+"PO-Revision-Date: 2024-04-08 13:36+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -1141,7 +1141,9 @@ msgstr ""
 #, python-format
 msgid ""
 "Number of objects that should be marked as \"%(server_role)s\": %(num_objs)d"
-msgstr "Anzahl an Objekten die als \"%(server_role)s\" markiert sein sollten: %(num_objs)d"
+msgstr ""
+"Anzahl an Objekten die als \"%(server_role)s\" markiert sein sollten: "
+"%(num_objs)d"
 
 #: plugins/57_univention_server_role_windows.py:92
 #, python-format
@@ -1560,20 +1562,17 @@ msgstr "Aktuell existieren unverarbeitete Dateien in diesen Verzeichnissen."
 
 #: plugins/69_check_app_listener_queue.py:47
 msgid ""
-"This means that the mechanism which synchronizes data between UCS and the "
-"app is in a broken state. "
+"This could either mean that the affected app is currently processing these "
+"files or that there is some issue with the app queues. "
 msgstr ""
-"Dies bedeutet, dass sich der Mechanismus, welcher für die Synchronisation "
-"von Daten zwischen UCS und der App verantwortlich ist, in einem fehlerhaften "
-"Zustand befindet. "
+"Dies könnte entweder bedeuten, dass die betroffene App derzeit diese Dateien abarbeitet "
+"oder es ein Problem in einer der App-Queues gibt."
 
 #: plugins/69_check_app_listener_queue.py:48
 msgid ""
-"Please make sure that the affected apps are correctly installed and "
-"configured."
+"More information can be found in the app log files under /var/log/univention/."
 msgstr ""
-"Bitte sicherstellen, dass die betroffenen Apps korrekt installiert und "
-"konfiguriert sind."
+"Mehr Informationen können in den App-Logdateien unter /var/log/univention/ gefunden werden."
 
 #: plugins/69_check_app_listener_queue.py:62
 #, python-format

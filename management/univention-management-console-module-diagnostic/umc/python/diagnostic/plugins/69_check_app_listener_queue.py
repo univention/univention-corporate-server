@@ -44,8 +44,8 @@ title = _('The app listener queues contain unprocessed files')
 description = '\n'.join([
     _('This test checks whether there are unprocessed files in the App Listener directory /var/lib/univention-appcenter/listener/$AppName/ and Listener Converter directory /var/lib/univention-appcenter/apps/$AppName/data/listener/ of installed apps. '),
     _('Currently, there are unprocessed files in these directories. '),
-    _('This means that the mechanism which synchronizes data between UCS and the app is in a broken state. '),
-    _('Please make sure that the affected apps are correctly installed and configured.'),
+    _('This could either mean that the affected app is currently processing these files or that there is some issue with the app queues. '),
+    _('More information can be found in the app log files under /var/log/univention/.'),
 ])
 
 APP_DIR = Path('/var/lib/univention-appcenter/apps/')
