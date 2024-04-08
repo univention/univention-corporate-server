@@ -80,7 +80,10 @@ def locking(request):
 @pytest.fixture(scope='session')
 def misc(request):
     sys.modules['univention.uldap'] = MagicMock()
-    import_lib_module(request, 'ucs')
+    if sys.version_info[0] == 2:
+        sys.modules['univention.lib'] = MagicMock()
+    else:
+        import_lib_module(request, 'ucs')
     return import_lib_module(request, 'misc')
 
 
