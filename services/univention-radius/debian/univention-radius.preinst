@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Univention RADIUS 802.1X
-#  postrm script
+#  preinst script
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -36,27 +36,16 @@
 
 #DEBHELPER#
 
-case "$1" in
-	remove|purge)
-		univention-config-registry unset \
-			security/packetfilter/package/univention-radius/udp/1812/all \
-			security/packetfilter/package/univention-radius/udp/1812/all/en \
-			security/packetfilter/package/univention-radius/udp/1813/all \
-			security/packetfilter/package/univention-radius/udp/1813/all/en \
-			security/packetfilter/package/univention-radius/udp/1814/all \
-			security/packetfilter/package/univention-radius/udp/1814/all/en
-		[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+eval "$(univention-config-registry shell)"
 
-		# shellcheck source=/dev/null
-		. /usr/share/univention-lib/all.sh
-		call_unjoinscript 20univention-radius.uinst
-		;;
-esac
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt-nl "7.0.7-3"; then
+	default_enabled_site_link="/etc/freeradius/3.0/sites-enabled/default"
+	package_default_enabled_site="../sites-available/default"
+	backup_default_enabled_site_link="/etc/freeradius/3.0/sites-enabled/default.backup"
 
-fn="/etc/freeradius/3.0/sites-enabled/default"
-if [ -L "$fn" ]; then
-	if [ $(readlink "$fn") = /etc/freeradius/3.0/sites-available/default ]; then
-		rm /etc/freeradius/3.0/sites-enabled/default
+	default_enabled_site_target=$(readlink "$default_enabled_site_link")
+	if [ "$default_enabled_site_target" != "$package_default_enabled_site" ]; then
+		ln -s "$default_enabled_site_target" "$backup_default_enabled_site_link"
 	fi
 fi
 
