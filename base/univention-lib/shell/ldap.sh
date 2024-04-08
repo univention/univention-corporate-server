@@ -343,63 +343,21 @@ ucs_needsSimplesamlphpSetup () {
 }
 
 #
-# ucd_primaryVersionGreaterEqual checks whether the UCS version
+# ucs_primaryVersionGreaterEqual checks whether the UCS version
 # of the primary server is higher or equal to some version
-# ucs_primaryVersionGreaterEqual <ucs_version> [<udm-credentials>]
+# ucs_primaryVersionGreaterEqual <ucs_version>
 # e.g.  if ucs_ucd_primaryVersionGreaterEqual 5.2-0 "$@"; then ...; fi
 #
 ucs_primaryVersionGreaterEqual () {
-	local version="$1"
-        local primary_version primary port tempfile
-	primary="$(/usr/sbin/univention-config-registry get ldap/master)"
-	port="$(/usr/sbin/univention-config-registry get ldap/master/port)"
-
-	if ! shift 1
-	then
-		echo "ucs_primaryVersionGreaterEqual: wrong argument number" >&2
-		return 2
-	fi
-
-	if [ -z "$port" ]
-	then
-		port=7389
-	fi
-
-	ucs_parseCredentials "$@"
-
-	# search always on the Primary Directory Node
-	set -- -H "ldap://$primary:$port"
-
-	# set credentials
-	if [ -n "$binddn" ] && [ -n "$bindpwd" ]
-	then
-		set -- "$@" -D "$binddn" -w "$bindpwd"
-	elif [ -n "$binddn" ] && [ -n "$bindpwdfile" ]
-	then
-		set -- "$@" -D "$binddn" -y "$bindpwdfile"
-	fi
-
-	# create a tempfile to get the real return code of the ldapsearch command,
-	# otherwise we get only the code of the sed command
-	tempfile="$(mktemp)"
-        univention-ldapsearch -LLL '(univentionServerRole=master)' 'univentionOperatingSystemVersion' > "$tempfile" || {
-		rm -f "$tempfile"
-		echo "ucs_primaryVersionGreaterEqual: search failed" >&2
-		return 2
-	}
-
-	primary_version="$(sed -ne "s/univentionOperatingSystemVersion: //p;T;q" "$tempfile")"
-	test -z "$primary_version" && {
-		rm -f "$tempfile"
-		echo "ucs_primaryVersionGreaterEqual: could not find version" >&2
-		return 2
-	}
-	rm -f "$tempfile"
-
-	dpkg --compare-versions "$primary_version" ge "$version"
-	return $?
+python3 -c "
+from univention.lib.misc import primaryVersionGreaterEqual
+import sys
+if primaryVersionGreaterEqual('$1'):
+    sys.exit(0)
+else:
+    sys.exit(1)
+"
 }
-
 
 # ucs_registerLDAPExtension writes an LDAP schema or ACL extension to UDM.
 # A listener module then writes it to a persistent place and restarts slapd.
