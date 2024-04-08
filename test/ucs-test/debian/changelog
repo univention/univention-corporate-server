@@ -1,3 +1,9 @@
+ucs-test (12.0.38) unstable; urgency=medium
+
+  * Bug #56054: replace page.screenshot with direct cpd call
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 08 Apr 2024 15:02:35 +0200
+
 ucs-test (12.0.37) unstable; urgency=medium
 
   * Issue #2190: fix 80_docker/85_docker_compose.py

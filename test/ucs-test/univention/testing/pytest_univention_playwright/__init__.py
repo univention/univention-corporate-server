@@ -29,6 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import base64
 import os
 import time
 from pathlib import Path
@@ -72,7 +73,15 @@ def save_trace(
     screenshot_filename = path / f'{ts}-{node_name}.jpeg'
     trace_filename = path / f'{ts}-{node_name}_trace.zip'
 
-    page.screenshot(path=screenshot_filename)
+    # page.screenshot seems to sometimes time out, use cdp directly instead
+    # page.screenshot(path=screenshot_filename)
+    cdp_client = page.context.new_cdp_session(page)
+
+    # cdp returns a base64 string
+    screenshot = cdp_client.send('Page.captureScreenshot', {'format': 'jpeg'})['data']
+    screenshot_bytes = base64.b64decode(screenshot.encode('ascii'))
+    with open(screenshot_filename, 'wb') as screenshot_file:
+        screenshot_file.write(screenshot_bytes)
 
     if tracing_stop_chunk:
         context.tracing.stop_chunk(path=trace_filename)
