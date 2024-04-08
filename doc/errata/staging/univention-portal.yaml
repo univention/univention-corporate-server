@@ -3,7 +3,7 @@ release: "5.0"
 version: [7]
 scope: ucs_5.0-0-errata5.0-7
 src: univention-portal
-fix:
+fix: 4.0.16-1
 desc: |
  This update addresses the following issues:
  * In the past the user was not able to unset there birthday inside the
