@@ -71,6 +71,7 @@ def locking(request):
 
 @pytest.fixture(scope='session')
 def misc(request):
+    import_lib_module(request, 'ucs')
     return import_lib_module(request, 'misc')
 
 
