@@ -1,8 +1,8 @@
-univention-management-console-module-diagnostic (7.0.9) unstable; urgency=medium
+univention-management-console-module-diagnostic (7.0.10) unstable; urgency=medium
 
-  * Bug #56621: Monitor state of app queues
+  * Bug #57217: Add diagnostic plugin to monitor state of app queues
 
- -- Juan Carlos García García <garcia-garcia@univention.de>  Thu, 04 Apr 2024 11:15:00 +0100
+ -- Juan Carlos García García <garcia-garcia@univention.de>  Mon, 08 Apr 2024 14:05:00 +0100
 
 univention-management-console-module-diagnostic (7.0.8) unstable; urgency=medium
 
