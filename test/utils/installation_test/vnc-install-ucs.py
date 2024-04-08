@@ -500,6 +500,7 @@ class UCSInstallation(VNCInstallation):
         self.type('\n\n')
 
     def _disk_default(self) -> None:
+        self.click_at(0, 0)
         self.click_on('entire_disk')
         self.type('\n')
 
