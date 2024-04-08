@@ -82,6 +82,7 @@ def misc(request):
     sys.modules['univention.uldap'] = MagicMock()
     if sys.version_info[0] == 2:
         sys.modules['univention.lib'] = MagicMock()
+        sys.modules['univention.lib.ucs'] = MagicMock()
     else:
         import_lib_module(request, 'ucs')
     return import_lib_module(request, 'misc')
