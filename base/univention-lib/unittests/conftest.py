@@ -79,7 +79,7 @@ def locking(request):
 
 @pytest.fixture(scope='session')
 def misc(request):
-    sys.modules['univention.uldap.getMachineConnection'] = MagicMock()
+    sys.modules['univention.uldap'] = MagicMock()
     import_lib_module(request, 'ucs')
     return import_lib_module(request, 'misc')
 
