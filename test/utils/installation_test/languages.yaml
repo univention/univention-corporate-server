@@ -92,7 +92,7 @@ disk_free:
 entire_disk:
   eng: use entire disk
   fra: utiliser un disque entier
-  deu: Festplatte verwenden
+  deu: vollständige Festplatte verwenden
 entire_disk_with_lvm:
   eng: gesamte Platte verwenden und LVM
   fra: utiliser tout un disque avec LVM
