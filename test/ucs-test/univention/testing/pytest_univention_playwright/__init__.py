@@ -68,6 +68,12 @@ def save_trace(
     ucr,
     tracing_stop_chunk: bool = False,
 ):
+    if path.is_file():
+        logger.error("trace path is a file and exists: %s" % path)
+        return
+
+    path.mkdir(parents=True, exist_ok=True)
+
     ts = time.time_ns()
 
     screenshot_filename = path / f'{ts}-{node_name}.jpeg'
