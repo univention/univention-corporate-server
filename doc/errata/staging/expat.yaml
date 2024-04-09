@@ -6,11 +6,9 @@ src: expat
 fix: 2.2.6-2+deb10u7
 desc: |
  This update addresses the following issue:
- 2.2.6-2+deb10u7 (Sat, 06 Apr 2024 18:16:16 +0200)
- * Non-maintainer upload by the LTS Team.
- * Fix test suite.
- * Backporting patch for CVE-2023-52425 - DoS (resource consumption) parsing
-   really big tokens due to O(n²) complexity.
+ * CVE-2023-52425: `libexpat` allows a denial of service (resource
+   consumption) because many full reparsings are required in the case of a
+   large token for which multiple buffer fills are needed.
 bug: [57215]
 cve:
 - CVE-2023-52425
