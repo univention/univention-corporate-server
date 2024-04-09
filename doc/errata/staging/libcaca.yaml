@@ -6,10 +6,11 @@ src: libcaca
 fix: 0.99.beta19-2.2+deb9u3
 desc: |
  This update addresses the following issues:
- 0.99.beta19-2.2+deb9u3 (Tue, 26 Mar 2024 19:03:02 +0100)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2021-30498 + CVE-2021-30499 heap buffer overflow might lead to memory
-   corruption
+ * CVE-2021-30498: A heap buffer overflow in `export.c` in function
+   `export_tga` might lead to memory corruption and other potential
+   consequences.
+ * CVE-2021-30499: A buffer overflow of `export.c` in function `export_troff`
+   might lead to memory corruption and other potential consequences.
 bug: [57213]
 cve:
 - CVE-2021-30498
