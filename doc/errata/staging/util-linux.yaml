@@ -6,15 +6,16 @@ src: util-linux
 fix: 2.33.1-0.1+deb10u1
 desc: |
  This update addresses the following issues:
- 2.33.1-0.1+deb10u1 (Sun, 07 Apr 2024 00:33:55 +0200)
- * Non-maintainer upload by the LTS Security Team.
- * Fix CVE-2021-37600: Potential integer overflow in ipcutils.c.
-
- * Fix CVE-2024-28085: Escape sequence injection in wall(1).
- * Prerequisite for the CVE-2024-28085 fix: Backport upstream changes to use
-   fputs_careful() in order to handle UTF-8 characters.
- * d/rules: Build with --disable-use-tty-group to avoid installing wall(1)
-   setgid tty.
+ * CVE-2021-37600: An integer overflow in `util-linux` can potentially cause a
+   buffer overflow if an attacker were able to use system resources in a way
+   that leads to a large number in the `/proc/sysvipc/sem` file. NOTE: this is
+   unexploitable in GNU C Library environments, and possibly in all realistic
+   environments.
+ * CVE-2024-28085: Wall in `util-linux`, often installed with `setgid` `tty`
+   permissions, allows escape sequences to be sent to other users' terminals
+   through `argv`. (Specifically, escape sequences received from `stdin` are
+   blocked, but escape sequences received from `argv` are not blocked.) There
+   may be plausible scenarios where this leads to account takeover.
 bug: [57214]
 cve:
 - CVE-2021-37600
