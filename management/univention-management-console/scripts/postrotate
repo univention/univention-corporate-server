@@ -34,7 +34,7 @@
 # <https://www.gnu.org/licenses/>.
 
 # SIGHUP for UMC-server
-systemctl kill -s SIGHUP univention-management-console-server.service
+systemctl kill -s SIGHUP 'univention-management-console-server*.service'
 
 # SIGHUP for all running UMC modules
 pkill -SIGHUP -f /usr/sbin/univention-management-console-module
