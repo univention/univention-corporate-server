@@ -7,6 +7,6 @@ fix: 4.0.16-1
 desc: |
  This update addresses the following issues:
  * In the past the user was not able to unset there birthday inside the
-   self service, because the input validation did not detected a valid
+   self service, because the input validation did not detect a valid
    date according to the ISO-8601 standard. This is now possible again.
 bug: [57023]
