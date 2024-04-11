@@ -158,10 +158,10 @@ _setup_oidc () {
 
 if ucs_needsKeycloakSetup; then
 	univention-keycloak get-keycloak-base-url || die
+	/usr/share/univention-management-console/saml/update_metadata "$@" || die
 	univention-keycloak "$@" saml/sp create \
 		--metadata-url="https://$fqdn/univention/saml/metadata" \
 		--metadata-file="/usr/share/univention-management-console/saml/sp/metadata.xml" || die
-	/usr/share/univention-management-console/saml/update_metadata "$@" || die
 	configure_umc_keycloak || {
 		ucr unset umc/saml/idp-server
 		exit 3
