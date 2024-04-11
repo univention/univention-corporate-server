@@ -260,7 +260,7 @@ ucs_parseCredentials () {
 }
 
 #
-# ucs_isServiceUnused cechks whether a service entry is used.
+# ucs_isServiceUnused checks whether a service entry is used.
 # ucs_isServiceUnused <servicename> [<udm-credentials>]
 # e.g.  if ucs_isServiceUnused "DNS" "$@"; then uninstall DNS; fi
 #
@@ -312,6 +312,51 @@ ucs_isServiceUnused () { # <servicename>
 	rm -f "$tempfile"
 
 	return "$ret"
+}
+
+#
+# ucs_needsKeycloakSetup checks whether the domain supports
+# keycloak or needs service to register to keycloak
+# ucs_needsKeycloakSetup [<udm-credentials>]
+# e.g.  if ucs_needsKeycloakSetup "$@"; then univention-keycloak ...; fi
+#
+ucs_needsKeycloakSetup () {
+	# currently only check if keycloak app has been installed
+	if ucs_isServiceUnused keycloak "$@"; then
+		return 1
+	fi
+	return 0
+}
+
+#
+# ucs_needsSimplesamlphpSetup checks whether the domain supports
+# simplesamlphp and needs service to register to simplesamlphp
+# ucs_needsSimplesamlphpSetup [<udm-credentials>]
+# e.g.  if ucs_needsSimplesamlphpSetup "$@"; then ...; fi
+#
+ucs_needsSimplesamlphpSetup () {
+	# currently only check if primary is not yet 5.2-0
+	if ucs_primaryVersionGreaterEqual 5.2-0 "$@"; then
+		return 1
+	fi
+	return 0
+}
+
+#
+# ucs_primaryVersionGreaterEqual checks whether the UCS version
+# of the primary server is higher or equal to some version
+# ucs_primaryVersionGreaterEqual <ucs_version>
+# e.g.  if ucs_ucd_primaryVersionGreaterEqual 5.2-0 "$@"; then ...; fi
+#
+ucs_primaryVersionGreaterEqual () {
+python3 -c "
+from univention.lib.misc import primaryVersionGreaterEqual
+import sys
+if primaryVersionGreaterEqual('$1'):
+    sys.exit(0)
+else:
+    sys.exit(1)
+"
 }
 
 # ucs_registerLDAPExtension writes an LDAP schema or ACL extension to UDM.
