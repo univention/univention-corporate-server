@@ -161,7 +161,7 @@ if ucs_needsKeycloakSetup; then
 	/usr/share/univention-management-console/saml/update_metadata "$@" || die
 	univention-keycloak "$@" saml/sp create \
 		--metadata-url="https://$fqdn/univention/saml/metadata" \
-		--metadata-file="/usr/share/univention-management-console/saml/sp/metadata.xml" || die
+		--metadata-file="/usr/share/univention-management-console/saml/sp/metadata.xml" || die "Could not create SAML service provider"
 	configure_umc_keycloak || {
 		ucr unset umc/saml/idp-server
 		exit 3
