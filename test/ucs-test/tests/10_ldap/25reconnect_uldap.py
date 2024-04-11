@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -s
 ## desc: Test reconnect mechanism of uldap
 ## tags: [reconnect]
 ## roles-not:
@@ -14,10 +14,10 @@ import subprocess
 from time import sleep
 
 import ldap
+import pytest
 
 import univention.config_registry
 import univention.uldap
-from univention.testing.utils import fail
 
 
 ucr = univention.config_registry.ConfigRegistry()
@@ -86,57 +86,47 @@ old_retry_count = ucr.get('ldap/client/retry/count')
 
 _set_retry_count(10)
 
-try:
-    _give_systemd_some_time()
-    _print_test_header('Test: connect, search, stop, start, search')
-    lo = _get_connection()
-    _search(lo)
-    _stop_slapd()
-    _start_slapd()
-    _search(lo)
-    _wait_for_slapd_to_be_started()
 
-    _give_systemd_some_time()
-    _print_test_header('Test: stop, connect - start after 9 seconds, search')
-    _stop_slapd()
-    _start_delyed(delay=8)
-    lo = _get_connection()
-    _search(lo)
-    _wait_for_slapd_to_be_started()
-
-    _give_systemd_some_time()
-    _print_test_header('Test: connect, stop,  - start after 9 seconds, search')
-    lo = _get_connection()
-    _stop_slapd()
-    _start_delyed(delay=8)
-    _search(lo)
-    _wait_for_slapd_to_be_started()
-
-    _give_systemd_some_time()
-    _print_test_header('Test: stop, connect - start after 11 seconds (which is too late), search')
-    _stop_slapd()
-    _start_delyed(delay=11)
-    try:
-        lo = _get_connection()
-        _search(lo)
-    except ldap.SERVER_DOWN:
-        pass
-    else:
-        fail('Search was successful')
-    _wait_for_slapd_to_be_started()
-
-    _give_systemd_some_time()
-    _print_test_header('Test: connect, stop - start after 11 seconds (which is too late), search')
-    lo = _get_connection()
-    _stop_slapd()
-    _start_delyed(delay=11)
-    try:
-        _search(lo)
-    except ldap.SERVER_DOWN:
-        pass
-    else:
-        fail('Search was successful')
-    _wait_for_slapd_to_be_started()
-
-finally:
+@pytest.fixture(scope='session', autouse=True)
+def cleanup():
+    yield
     _cleanup(old_retry_count)
+
+
+@pytest.mark.parametrize('operations', [
+    ["connect", ("search", True), "stop", ("start", 0), ("search", True)],
+    ["stop", ("start", 8), "connect", ("search", True)],
+    ["connect", "stop", ("start", 8), ("search", True)],
+    ["stop", ("start", 11), ("search", False)],
+    ["connect", "stop", ("start", 11), ("search", False)],
+])
+def test_reconnect_uldap(operations):
+    _give_systemd_some_time()
+    _print_test_header('Test: %r' % operations)
+    lo = None
+    for op in operations:
+        if isinstance(op, tuple):
+            if op[0] == 'start':
+                if op[1]:
+                    _start_delyed(delay=op[1])
+                else:
+                    _start_slapd()
+            elif op[0] == 'search':
+                try:
+                    if not lo:
+                        lo = _get_connection()
+                    _search(lo)
+                except ldap.SERVER_DOWN:
+                    if op[1]:
+                        raise
+
+            else:
+                raise Exception('Unknown operation: %s' % op[0])
+        else:
+            if op == 'connect':
+                lo = _get_connection()
+            elif op == 'stop':
+                _stop_slapd()
+            else:
+                raise Exception('Unknown operation: %s' % op)
+    _wait_for_slapd_to_be_started()
