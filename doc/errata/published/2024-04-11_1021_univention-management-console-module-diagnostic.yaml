@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * Add a diagnostic module to monitor the state of app queues.
 bug: [57217]
+erratum: 1021
+announced: 2024-04-11
+support: core
