@@ -11,7 +11,6 @@ Subfile: etc/pam.d/univention-management-console.d/50_base
 Variables: auth/methods
 Variables: auth/umc/addon/.*
 Variables: pam/krb5/minimum_uid
-Variables: pam/unix/maximum_uid
 
 Type: subfile
 Multifile: etc/pam.d/univention-management-console
@@ -57,7 +56,6 @@ Multifile: etc/pam.d/univention-management-console
 Subfile: etc/pam.d/univention-management-console.d/80_password
 Variables: pam/krb5/ticket_after_pwchange
 Variables: pam/krb5/minimum_uid
-Variables: pam/unix/maximum_uid
 
 Type: file
 File: etc/logrotate.d/univention-management-console

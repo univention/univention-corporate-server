@@ -1,3 +1,9 @@
+univention-pam (15.0.7) unstable; urgency=medium
+
+  * Bug #56793: Use pam/unix/maximum_uid only in UMC pam account
+
+ -- Arvid <requate@univention.de>  Fri, 12 Apr 2024 10:37:57 +0200
+
 univention-pam (15.0.6) unstable; urgency=medium
 
   * Issue #2185: remove mdns from nsswitch.conf

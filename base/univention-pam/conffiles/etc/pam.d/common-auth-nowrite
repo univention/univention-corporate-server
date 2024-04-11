@@ -11,12 +11,10 @@ auth     [success=1 user_unknown=1 \\
     else:
         print('auth     required          pam_faillock.so preauth')
 
-unix_maximum_uid = int(configRegistry.get('pam/unix/maximum_uid', 2000))
 krb5_minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
 
-print(f'''
+print('''
 # local unix authentication; don't cache passwords
-auth     [success=1 default=ignore]   pam_succeed_if.so quiet uid > {unix_maximum_uid}
 auth     sufficient        pam_unix.so
 ''')
 

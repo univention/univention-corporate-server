@@ -168,7 +168,6 @@ Variables: ldap/base
 Variables: ldap/hostdn
 Variables: ldap/server/port
 Variables: pam/krb5/minimum_uid
-Variables: pam/unix/maximum_uid
 
 Type: file
 File: etc/rsyslog.d/dovecot.conf
