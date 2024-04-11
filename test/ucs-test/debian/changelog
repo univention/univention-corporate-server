@@ -1,3 +1,9 @@
+ucs-test (12.0.41) unstable; urgency=medium
+
+  * Bug #56793 - Replace libnss-ldapd with SSSd
+
+ -- Felix Botner <botner@univention.de>  Thu, 11 Apr 2024 10:28:37 +0200
+
 ucs-test (12.0.40) unstable; urgency=medium
 
   * Issue #2189: Migrate 10_ldap/25reconnect_uldap.py to pytest
