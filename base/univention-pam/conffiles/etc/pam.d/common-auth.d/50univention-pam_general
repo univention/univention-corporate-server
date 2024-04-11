@@ -1,5 +1,4 @@
 @!@
-unix_maximum_uid = int(configRegistry.get('pam/unix/maximum_uid', 2000))
 krb5_minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
 pam_krb5 = '''
 auth     [success=<succ> new_authtok_reqd=ok \\
@@ -34,7 +33,6 @@ predicate = 'required' if not methods else 'sufficient'
 
 print(f'''
 # local unix authentication
-auth     [success=1 default=ignore]   pam_succeed_if.so quiet uid > {unix_maximum_uid}
 auth     {predicate: <10}        pam_unix.so
 ''')
 
