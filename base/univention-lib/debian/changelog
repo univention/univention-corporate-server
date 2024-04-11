@@ -1,3 +1,9 @@
+univention-lib (11.0.5) unstable; urgency=medium
+
+  * Bug #57163: add helper to check what kind of saml setup we need
+
+ -- Felix Botner <botner@univention.de>  Thu, 11 Apr 2024 14:41:15 +0200
+
 univention-lib (11.0.4) unstable; urgency=medium
 
   * Bug #56604: use __future__ annotations
