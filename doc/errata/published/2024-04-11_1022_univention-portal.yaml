@@ -10,3 +10,6 @@ desc: |
    self service, because the input validation did not detect a valid
    date according to the ISO-8601 standard. This is now possible again.
 bug: [57023]
+erratum: 1022
+announced: 2024-04-11
+support: core
