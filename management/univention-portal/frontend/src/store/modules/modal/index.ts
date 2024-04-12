@@ -138,7 +138,8 @@ const modal: PortalModule<ModalState> = {
       if (state.scrollbarLocked) {
         return;
       }
-      if (document.body.scrollHeight > window.innerHeight) {
+      // 48px is the height of the header
+      if (document.body.scrollHeight + 48 >= window.innerHeight) {
         const scrollY = window.scrollY;
         document.body.classList.add('body--lock-scrollbar');
         document.body.style.top = `-${scrollY}px`;
