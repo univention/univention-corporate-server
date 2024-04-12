@@ -37,7 +37,7 @@ def open_users(users: int = 100, roles: bool = False) -> None:
         user = users_mod.get(dn)
         if roles:
             user._orig_udm_object.open_guardian()
-            assert len(user._orig_udm_object.info.get('guardianInheritedRoles', [])) == 0  # TODO back to > 290
+            assert len(user._orig_udm_object.info.get('guardianInheritedRoles', [])) > 290
         else:
             assert len(user._orig_udm_object.info.get('guardianInheritedRoles', [])) == 0
 
@@ -52,7 +52,7 @@ def open_users_rest(users: int = 100, roles: bool = False) -> None:
         res = udm_rest_users.search(s_filter, opened=True, properties=properties)
         res = next(iter(res))
         if roles:
-            assert len(res.properties.get('guardianInheritedRoles', [])) == 0  # TODO back to > 290
+            assert len(res.properties.get('guardianInheritedRoles', [])) > 290
         else:
             assert len(res.properties.get('guardianInheritedRoles', [])) == 0
 
