@@ -3,7 +3,7 @@ release: "5.0"
 version: [7]
 scope: ucs_5.0-0-errata5.0-7
 src: univention-radius
-fix:
+fix: 7.0.7-3
 desc: |
  This update addresses the following issue:
  * The default enabled configuration under
