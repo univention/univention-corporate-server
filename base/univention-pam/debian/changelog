@@ -1,3 +1,11 @@
+univention-pam (15.0.8) unstable; urgency=medium
+
+  * Bug #56793: Remove pam/unix/maximum_uid workaround entirely
+    instead use "pwfield = x" in sssd.conf to make pam_unix
+    properly return PAM_AUTHINFO_UNAVAIL for ldap users.
+
+ -- Arvid <requate@univention.de>  Fri, 12 Apr 2024 15:41:45 +0200
+
 univention-pam (15.0.7) unstable; urgency=medium
 
   * Bug #56793: Use pam/unix/maximum_uid only in UMC pam account

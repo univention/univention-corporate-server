@@ -45,7 +45,6 @@ Multifile: etc/pam.d/univention-management-console
 Subfile: etc/pam.d/univention-management-console.d/60_account
 Variables: auth/methods
 Variables: pam/krb5/minimum_uid
-Variables: pam/unix/maximum_uid
 
 Type: subfile
 Multifile: etc/pam.d/univention-management-console

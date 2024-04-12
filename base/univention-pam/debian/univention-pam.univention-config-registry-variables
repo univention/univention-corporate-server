@@ -147,13 +147,6 @@ Description[en]=Specifies the maximum memory available for pam_access when check
 Type=str
 Categories=system-base
 
-[pam/unix/maximum_uid]
-Description[de]=Diese Option führt dazu, dass das pam_unix Modul Benutzer übersprungen wird, deren numerische Benutzer-ID über diesem spezifizierten Wert ist. Dies ist sinnvoll für Domänen-Benutzerkonten, die nur im UCS Verzeichnisdienst definiert sind.
-Description[en]=This option causes the pam_unix module to be skipped for users with a uidNumber that is larger than the specified value. This can be useful for domain users, that are only defined in the UCS directory service.
-Type=uint
-Categories=system-base
-Default=2000
-
 [pam/krb5/minimum_uid]
 Description[de]=Diese Option führt dazu, dass einige PAM Module Benutzer ignoriert, deren numerische Benutzer-ID unter diesem spezifizierten Wert ist. Dies kann dazu benutzt werden, dass Passwortänderungen für lokale System-Benutzer nicht mittels Kerberos durchgeführt werden.
 Description[en]=This option causes some PAM modules to ignore the user if the users numerical id is lower than the specified value. This can be used to bypass password changes using the Kerberos module for local system accounts.
