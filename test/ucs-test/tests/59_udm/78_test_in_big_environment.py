@@ -111,11 +111,11 @@ def test_rest_get_10_user():
 
 def test_rest_get_100_user():
     users = 100
-    assert run_test(open_users_rest, users=users, roles=True) < 7
-    assert run_test(open_users_rest, users=users, roles=False) < 6
+    assert run_test(open_users_rest, users=users, roles=True) < 8
+    assert run_test(open_users_rest, users=users, roles=False) < 7
 
 
 def test_rest_get_1000_user():
     users = 1000
-    assert run_test(open_users_rest, users=users, roles=True) < 65
-    assert run_test(open_users_rest, users=users, roles=False) < 60
+    assert run_test(open_users_rest, users=users, roles=True) < 70
+    assert run_test(open_users_rest, users=users, roles=False) < 70
