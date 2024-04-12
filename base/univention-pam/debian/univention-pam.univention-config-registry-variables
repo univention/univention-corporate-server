@@ -148,7 +148,7 @@ Type=str
 Categories=system-base
 
 [pam/unix/maximum_uid]
-Description[de]=Diese Option führt dazu, dass das pma_unix Modul Benutzer übersprungen wird, deren numerische Benutzer-ID über diesem spezifizierten Wert ist. Dies ist sinnvoll für Domänen-Benutzerkonten, die nur im UCS Verzeichnisdienst definiert sind.
+Description[de]=Diese Option führt dazu, dass das pam_unix Modul Benutzer übersprungen wird, deren numerische Benutzer-ID über diesem spezifizierten Wert ist. Dies ist sinnvoll für Domänen-Benutzerkonten, die nur im UCS Verzeichnisdienst definiert sind.
 Description[en]=This option causes the pam_unix module to be skipped for users with a uidNumber that is larger than the specified value. This can be useful for domain users, that are only defined in the UCS directory service.
 Type=uint
 Categories=system-base
