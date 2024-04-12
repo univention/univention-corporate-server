@@ -1,5 +1,5 @@
-#!/usr/share/ucs-test/runner python3
-## desc: Test the reconnect mechanism of univention-ldapsearch
+#!/usr/share/ucs-test/runner pytest-3 -s
+# ## desc: Test the reconnect mechanism of univention-ldapsearch
 ## tags: [apptest,reconnect]
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave]
 ## packages: [python3-psutil]
@@ -15,6 +15,7 @@ from subprocess import PIPE, Popen
 from time import sleep
 
 import psutil
+import pytest
 
 from univention.config_registry import ConfigRegistry, handler_set
 from univention.testing.utils import fail
@@ -22,6 +23,8 @@ from univention.testing.utils import fail
 
 UCR = ConfigRegistry()
 UCR.load()
+base_dn = None
+ucr_retry_count = None
 
 
 def restore_retry_count():
@@ -135,64 +138,53 @@ def print_test_header(header):
     print('**********************************************************************************')
 
 
-def main():
-    try:
-        set_ucr_retry_count(10)
-        print_test_header("Case 1: Stop and start slapd with 5 secs "
-                          "delay. Perform search. Retry count is 10.")
-        stop_slapd()
-        start_with_delay(5)
-        perform_univention_ldapsearch()
-        wait_for_slapd_to_be_started()
-
-        set_ucr_retry_count(1)
-        print_test_header("Case 2: Stop and start slapd with 5 secs "
-                          "delay. Perform search. Retry count is 1.")
-        print("Expecting that search case won't work, as retry count is 1 and start delay is 5.")
-        stop_slapd()
-        start_with_delay(5)
-        perform_univention_ldapsearch(True)  # fail on success
-        wait_for_slapd_to_be_started()
-
-        set_ucr_retry_count(11)
-        print_test_header("Case 3: Stop and start slapd with 7 secs "
-                          "delay. Perform search. Retry count is 11.")
-        stop_slapd()
-        start_with_delay(7)
-        perform_univention_ldapsearch()
-        wait_for_slapd_to_be_started()
-
-        set_ucr_retry_count(0)
-        print_test_header("Case 4: No server restart. "
-                          "Perform search. Retry count is 0.")
-        perform_univention_ldapsearch()
-
-        print_test_header("Case 5: Stop and start slapd with 5 secs "
-                          "delay. Perform search. Retry count is 0.")
-        print("Expecting that search case won't work, as retry count is 0 "
-              "and start delay is 5.")
-        stop_slapd()
-        start_with_delay(5)
-        perform_univention_ldapsearch(True)  # fail on success
-    finally:
-        restore_retry_count()
-        # try to restore slapd systemd status
-        Popen(('systemctl', 'daemon-reload')).wait()
-        Popen(('service', 'slapd', 'stop')).wait()
-        Popen(('service', 'slapd', 'start')).wait()
-        sleep(5)
-
-
-if __name__ == '__main__':
-    """
-    Tests that reconnect of univention-ldapsearch works with slapd restart.
-    """
+@pytest.fixture(scope='session', autouse=True)
+def setup():
+    global base_dn, ucr_retry_count
     ucr_retry_count = UCR.get('ldap/client/retry/count')
     print(("Saving initial 'ldap/client/retry/count' UCR setting =",
-          ucr_retry_count))
+           ucr_retry_count))
     base_dn = UCR.get('ldap/base')
-
-    main()
-
-    # Wait for some seconds otherwise the following test case will fail Bug #45828
+    yield
+    restore_retry_count()
+    # try to restore slapd systemd status
+    Popen(('systemctl', 'daemon-reload')).wait()
+    Popen(('service', 'slapd', 'stop')).wait()
+    Popen(('service', 'slapd', 'start')).wait()
     sleep(5)
+
+
+descriptios = [
+    "Case 1: Stop and start slapd with 5 secs delay. Perform search. Retry count is 10.",
+    """Case 2: Stop and start slapd with 5 secs delay. Perform search. Retry count is 1.
+Expecting that search case won't work, as retry count is 1 and start delay is 5.""",
+    "Case 3: Stop and start slapd with 7 secs delay. Perform search. Retry count is 11.",
+    "Case 4: No server restart. Perform search. Retry count is 0.",
+    """Case 5: Stop and start slapd with 5 secs delay. Perform search. Retry count is 0.
+Expecting that search case won't work, as retry count is 0 and start delay is 5.""",
+]
+
+
+@pytest.mark.parametrize('description_index,operations', [
+    (0, [("ucr_retry_count", 10), "stop", ("start", 5), ("search", False), "wait_for_slap_to_be_restarted"]),
+    (1, [("ucr_retry_count", 1), "stop", ("start", 5), ("search", True), "wait_for_slap_to_be_restarted"]),
+    (2, [("ucr_retry_count", 11), "stop", ("start", 7), ("search", False), "wait_for_slap_to_be_restarted"]),
+    (3, [("ucr_retry_count", 0), ("search", False), "wait_for_slap_to_be_restarted"]),
+    (4, [("ucr_retry_count", 0), "stop", ("start", 5), ("search", True)]),
+])
+def test_reconnect_univention_ldapsearch(description_index, operations):
+    print_test_header(descriptios[description_index])
+    for op in operations:
+        if isinstance(op, tuple):
+            if op[0] == "ucr_retry_count":
+                set_ucr_retry_count(op[1])
+            elif op[0] == "start":
+                start_with_delay(op[1])
+            elif op[0] == "search":
+                perform_univention_ldapsearch(op[1])
+        elif op == "stop":
+            stop_slapd()
+        elif op == "wait_for_slap_to_be_restarted":
+            wait_for_slapd_to_be_started()
+        else:
+            fail("Invalid operation: %s" % op)
