@@ -49,6 +49,24 @@ install_kelvin_api () {
   install_docker_app_from_branch ucsschool-kelvin-rest-api "$UCS_ENV_KELVIN_IMAGE" ucsschool/kelvin/processes=0 ucsschool/kelvin/log_level=DEBUG
 }
 
+install_kelvin_in_version() {
+  # Either install kelvin in a specified version or use a branch image or use the latest version
+  printf '%s' univention > /tmp/univention
+  if [ -n "$KELVIN_VERSION" ]; then
+    univention-app install ucsschool-kelvin-rest-api="$KELVIN_VERSION" --set ucsschool/kelvin/processes=0 ucsschool/kelvin/log_level=DEBUG --username Administrator --pwdfile /tmp/univention || rv=$?
+    return $rv
+  else
+    install_kelvin_api
+  fi
+}
+
+upgrade_kelvin () {
+  printf '%s' univention > /tmp/univention
+  univention-app upgrade ucsschool-kelvin-rest-api --noninteractive --username Administrator --pwdfile /tmp/univention || rv=$?
+  univention-app info
+  return $rv
+}
+
 install_ucsschool_id_connector () {
   install_docker_app_from_branch ucsschool-id-connector "$UCS_ENV_ID_CONNECTOR_IMAGE" ucsschool-id-connector/log_level=DEBUG
 }
