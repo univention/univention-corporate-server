@@ -106,6 +106,8 @@ def stop_slapd():
                     fail("\nFailed to wait for slapd to terminate.\n")
         except psutil.NoSuchProcess:
             pass
+        except ChildProcessError:
+            pass
 
 
 def start_slapd():
