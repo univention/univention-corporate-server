@@ -2901,6 +2901,7 @@ def init_keycloak_ucs(opt):
             "editMode": ["READ_ONLY"],
             "validatePasswordPolicy": ["false"],
             "batchSizeForSync": ["1000"],
+            "customUserSearchFilter": ['(uid=*)'],
         },
     }
 
