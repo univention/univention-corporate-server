@@ -7,7 +7,7 @@
 from datetime import datetime, timedelta
 
 import pytest
-from utils import _, keycloak_get_request, keycloak_password_change, keycloak_sessions_by_user
+from utils import _, keycloak_get_request, keycloak_password_change, keycloak_sessions_by_user, run_command
 
 from univention.lib.umc import Unauthorized
 from univention.testing.umc import Client
@@ -83,15 +83,27 @@ def test_password_change_empty_passwords_fails(portal_login_via_keycloak, keyclo
 
 
 def test_password_change_after_second_try(portal_login_via_keycloak, keycloak_config, udm):
-    username = udm.create_user(pwdChangeNextLogin=1, password='sdh78§$%kjJKJK')[1]
-    page = portal_login_via_keycloak(
-        username,
-        'sdh78§$%kjJKJK',
-        new_password='sdh78§$%kjJKJK',
-        fails_with=_('Changing password failed. The password was already used.'),
-    )
-    keycloak_password_change(page, keycloak_config, 'sdh78§$%kjJKJK', 'Univention.99', 'Univention.99')
-    assert Client(username=username, password='Univention.99')
+    error_msg = _('Changing password failed. The password was already used.')
+    orig_history_setting = None
+    if package_installed('univention-samba4'):
+        error_msg = _('Changing password failed. The password was already used. Choose a password which does not match any of your last 3 passwords.')
+        for line in run_command(['samba-tool', 'domain', 'passwordsettings', 'show']).split('\n'):
+            if 'Password history length:' in line:
+                orig_history_setting = line.split(':')[1].strip()
+        run_command(['samba-tool', 'domain', 'passwordsettings', 'set', '--history-length=3'])
+    try:
+        username = udm.create_user(pwdChangeNextLogin=1, password='sdh78§$%kjJKJK')[1]
+        page = portal_login_via_keycloak(
+            username,
+            'sdh78§$%kjJKJK',
+            new_password='sdh78§$%kjJKJK',
+            fails_with=error_msg,
+        )
+        keycloak_password_change(page, keycloak_config, 'sdh78§$%kjJKJK', 'Univention.99', 'Univention.99')
+        assert Client(username=username, password='Univention.99')
+    finally:
+        if package_installed('univention-samba4') and orig_history_setting:
+            run_command(['samba-tool', 'domain', 'passwordsettings', 'set', f'--history-length={orig_history_setting}'])
 
 
 @pytest.mark.skipif(package_installed('univention-samba4'), reason='Univention Samba 4 is installed and wont react to shadowLastChange.')
@@ -120,6 +132,7 @@ def test_password_change_expired_krb5PasswordEnd_and_shadowLastChange(portal_log
         ('krb5PasswordEnd', [''], [b'20240410000000Z']),
         ('shadowMax', [''], [b'2']),
         ('shadowLastChange', [''], [b'1000']),
+        ('sambaPwdLastSet', [''], [b'0']),
     ]
     ldap.modify(dn, changes)
     wait_for_listener_replication()

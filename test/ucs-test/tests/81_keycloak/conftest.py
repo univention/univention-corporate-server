@@ -47,7 +47,9 @@ from univention.appcenter.app_cache import Apps
 from univention.config_registry import ConfigRegistry
 from univention.lib.misc import custom_groupname
 from univention.testing.udm import UCSTestUDM
-from univention.testing.utils import UCSTestDomainAdminCredentials, get_ldap_connection, wait_for_listener_replication
+from univention.testing.utils import (
+    UCSTestDomainAdminCredentials, get_ldap_connection, wait_for_listener_replication, wait_for_s4connector_replication,
+)
 from univention.udm import UDM
 from univention.udm.binary_props import Base64Bzip2BinaryProperty
 
@@ -383,7 +385,7 @@ def legacy_authorization_setup_oidc(
     client = f'testclient-{user_name}'
     client_secret = 'abc'
     groups = {group_name: client}
-
+    wait_for_s4connector_replication()
     try:
         # create flow
         run_command(['univention-keycloak', 'legacy-authentication-flow', 'create', '--flow', 'direct grant'])

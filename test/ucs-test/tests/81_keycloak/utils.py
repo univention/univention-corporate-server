@@ -54,6 +54,7 @@ TRANSLATIONS = {
         'Changing password failed. The password was already used.': 'Passwort ändern fehlgeschlagen. Das Passwort wurde bereits genutzt.',
         'Changing password failed. The password is too short.': 'Passwort ändern fehlgeschlagen. Das Passwort ist zu kurz.',
         'Changing password failed. The password is too short. The password must consist of at least 8 characters.': 'Passwort ändern fehlgeschlagen. Das Passwort ist zu kurz. Das Passwort muss mindestens 8 Zeichen lang sein.',
+        'Changing password failed. The password was already used. Choose a password which does not match any of your last 3 passwords.': 'Passwort ändern fehlgeschlagen. Das Passwort wurde bereits genutzt. Wählen Sie ein Passwort, dass nicht den letzten 3 Passwörtern entspricht.',
         "Passwords don't match.": 'Passwörter sind nicht identisch.',
         'Please specify password.': 'Bitte geben Sie ein Passwort ein.',
         'LOGOUT': 'ABMELDEN',
