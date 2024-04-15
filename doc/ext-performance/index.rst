@@ -391,19 +391,12 @@ with the role |UCSPRIMARYDN| or |UCSBACKUPDN| by executing the following command
 .. code-block:: console
 
    $ ucr set umc/saml/assertion-lifetime=3600
-   $ univention-keycloak \
-       --binddn "$USERDN" \
-       --bindpwdfile "$FILENAME" \
-       saml/sp update "$CLIENT_ID" \
-       '{"attributes": {"saml.assertion.lifespan": "3600"}}'
+   $ cd /usr/share/univention-management-console/saml/
+   $ ./update_metadata --binddn "$USERDN" --bindpwdfile "$FILENAME"
 
 ``$USERDN`` has to be replaced with a valid DN of a user, that is member of the
 group ``Domain Admins`` and the file specified by ``$FILENAME`` has to contain
-the corresponding password of that user. ``$CLIENT_ID`` is the ID of the SAML
-client that needs to be updated, in most cases
-``https://$(hostname -f)/univention/saml/metadata`` or
-``https://$(ucr get umc/saml/sp/server)/univention/saml/metadata`` if the UCR
-variable :envvar:`umc/saml/sp/server` is set.
+the corresponding password of that user.
 
 It should be noted that increasing the lifetime has security implications that
 should be carefully considered.
