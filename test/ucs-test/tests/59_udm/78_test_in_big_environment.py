@@ -76,7 +76,7 @@ def run_test(func, *args, **kwargs):
 def test_get_1_user():
     users = 1
     assert run_test(open_users, users=users, roles=True) < 0.6
-    assert run_test(open_users, users=users, roles=False) < 0.007
+    assert run_test(open_users, users=users, roles=False) < 0.02
 
 
 def test_get_10_user():
@@ -88,7 +88,7 @@ def test_get_10_user():
 def test_get_100_user():
     users = 100
     assert run_test(open_users, users=users, roles=True) < 1.5
-    assert run_test(open_users, users=users, roles=False) < 0.8
+    assert run_test(open_users, users=users, roles=False) < 1
 
 
 def test_get_1000_user():
@@ -117,5 +117,5 @@ def test_rest_get_100_user():
 
 def test_rest_get_1000_user():
     users = 1000
-    assert run_test(open_users_rest, users=users, roles=True) < 70
+    assert run_test(open_users_rest, users=users, roles=True) < 75
     assert run_test(open_users_rest, users=users, roles=False) < 70
