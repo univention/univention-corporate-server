@@ -1,3 +1,9 @@
+ucs-test (12.0.45) unstable; urgency=medium
+
+  * Bug #56054: add logout fallback method to sidemenu
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 15 Apr 2024 10:28:21 +0200
+
 ucs-test (12.0.44) unstable; urgency=medium
 
   * Bug #57205: added test

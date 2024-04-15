@@ -127,7 +127,7 @@ def test_users(udm_module_scope, ldap_base, lo) -> Users:
 def logout(umc_browser_test: UMCBrowserTest):
     side_menu = SideMenu(umc_browser_test)
     side_menu.navigate(do_login=False)
-    side_menu.logout()
+    side_menu.logout_with_fallback()
 
 
 @pytest.mark.parametrize('role', ['admin', 'regular'])

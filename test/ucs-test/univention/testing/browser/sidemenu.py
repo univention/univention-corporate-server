@@ -35,10 +35,10 @@
 import time
 from pathlib import Path
 
-from playwright.sync_api import Locator, Page, expect
+from playwright.sync_api import Locator, Page, TimeoutError as PlaywrightTimeoutError, expect
 
 from univention.lib.i18n import Translation
-from univention.testing.browser.lib import UCSLanguage, UMCBrowserTest
+from univention.testing.browser.lib import MIN, UCSLanguage, UMCBrowserTest
 
 
 _ = Translation('ucs-test-framework').translate
@@ -185,7 +185,13 @@ class SideMenu:
     def logout(self):
         """Logout using the Side Menu"""
         self.page.get_by_role('button', name=_('Logout')).click()
-        self.page.get_by_role('dialog', name=_('Confirmation')).get_by_role('button', name=_('Logout')).click()
+        self.page.get_by_role('dialog', name=_('Confirmation')).get_by_role('button', name=_('Logout')).click(timeout=1 * MIN)
+
+    def logout_with_fallback(self):
+        try:
+            self.logout()
+        except PlaywrightTimeoutError:
+            self.page.goto(f'{self.tester.base_url}/univention/logout')
 
     def back(self):
         # TODO: find a better locator for this
