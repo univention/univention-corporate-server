@@ -113,7 +113,7 @@ class PackageManagement:
     def search_for_package(self, name: str):
         search_bar = self.page.locator('[name=pattern]')
         search_bar.fill('')
-        search_bar.type(name)
+        search_bar.press_sequentially(name)
         with self.page.expect_response(self.grid_load_url):
             search_bar.press('Enter')
 

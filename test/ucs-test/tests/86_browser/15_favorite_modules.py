@@ -115,7 +115,7 @@ def re_add_default_favorites(page: Page, ucr):
     check_removing_default_favorites(page)
 
     page.locator('.umcModuleSearchToggleButton').click()
-    page.locator('.umcModuleSearch input.dijitInputInner').type('*')
+    page.locator('.umcModuleSearch input.dijitInputInner').press_sequentially('*')
     for favorite in get_default_favorites(ucr):
         locator = get_locator_for_module_by_moduleid(page, favorite)
         locator.click(button='right')

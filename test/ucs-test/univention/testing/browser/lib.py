@@ -141,7 +141,7 @@ class Interactions:
     def get_available_modules(self) -> list[str]:
         self.page.locator('.umcModuleSearchToggleButton').click()
         logger.info('Clicked the search button')
-        self.page.locator('.umcModuleSearch input.dijitInputInner').type('*')
+        self.page.locator('.umcModuleSearch input.dijitInputInner').press_sequentially('*')
 
         modules = self.page.locator('.umcGalleryName').all()
         result = [module.get_attribute('title') or module.inner_text() for module in modules]
@@ -157,7 +157,7 @@ class Interactions:
         """
         self.page.locator('.umcModuleSearchToggleButton').click()
         logger.info('Clicked the search button')
-        self.page.locator('.umcModuleSearch input.dijitInputInner').type(module_name)
+        self.page.locator('.umcModuleSearch input.dijitInputInner').press_sequentially(module_name)
         module_by_title_attrib_locator = self.page.locator(f".umcGalleryName[title='{module_name}']")
         exact_module_name = re.compile(f'^{re.escape(module_name)}$')
         logger.info('Trying to find button to open module %s' % module_name)

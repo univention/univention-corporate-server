@@ -56,11 +56,11 @@ class SideMenuUser:
     def change_password(self, old_password: str, new_password: str):
         self.page.locator('#umcMenuChangePassword').click()
 
-        self.page.get_by_role('dialog').get_by_label('Old Password').type(old_password)
+        self.page.get_by_role('dialog').get_by_label('Old Password').press_sequentially(old_password)
         time.sleep(0.5)
-        self.page.get_by_role('dialog').get_by_label('New password', exact=True).type(new_password)
+        self.page.get_by_role('dialog').get_by_label('New password', exact=True).press_sequentially(new_password)
         time.sleep(0.5)
-        self.page.get_by_role('dialog').get_by_label('New password (retype)').type(new_password)
+        self.page.get_by_role('dialog').get_by_label('New password (retype)').press_sequentially(new_password)
         time.sleep(0.5)
         self.page.get_by_role('button', name=_('Change password')).click()
 

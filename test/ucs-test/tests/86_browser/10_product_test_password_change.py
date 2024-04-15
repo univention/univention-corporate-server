@@ -235,7 +235,7 @@ def test_login_while_changing_password(admin_user: User, random_password: str, u
     password_expired_text: Locator = umc_browser_test.page.get_by_text(_('The password has expired and must be renewed.'))
     expect(password_expired_text).to_be_visible()
 
-    umc_browser_test.page.get_by_label(_('New password'), exact=True).type(random_password)
+    umc_browser_test.page.get_by_label(_('New password'), exact=True).press_sequentially(random_password)
     time.sleep(0.5)
 
     retype_input = umc_browser_test.page.get_by_label(_('New Password (retype)'))
