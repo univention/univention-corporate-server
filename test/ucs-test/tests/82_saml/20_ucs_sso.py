@@ -13,8 +13,9 @@ from univention.testing.utils import fail, get_ldap_connection
 def _check_record_type(record_type, ucr):
     print(f'Checking record type: {record_type}')
     dns_entries = set()
+    sso_name = ucr.get('keycloak/server/sso/fqdn', f'ucs-sso-ng.{ucr["domainname"]}')
     try:
-        for addr in dns.resolver.query(ucr['ucs/server/sso/fqdn'], record_type):
+        for addr in dns.resolver.query(sso_name, record_type):
             dns_entries.add(addr.address)
     except dns.resolver.NoAnswer:
         pass
@@ -23,7 +24,7 @@ def _check_record_type(record_type, ucr):
     master_backup_ips = set()
     lo = get_ldap_connection()
     ldap_record_name = {'A': 'aRecord', 'AAAA': 'aAAARecord'}
-    ldap_filter = '(|(univentionServerRole=master)(univentionServerRole=backup))'
+    ldap_filter = '(&(|(univentionServerRole=master)(univentionServerRole=backup))(univentionService=keycloak))'
     for res in lo.search(ldap_filter, attr=[ldap_record_name[record_type]]):
         if res[1]:
             for ip in res[1].get(ldap_record_name[record_type]):
