@@ -8,10 +8,10 @@
 import subprocess
 from ipaddress import IPv4Address, IPv4Network
 
-import docker
 import pytest
 from ruamel import yaml
 
+from univention.appcenter.docker import docker_get_existing_subnets
 from univention.config_registry import ConfigRegistry
 
 from dockertest import App, get_app_name
@@ -51,16 +51,6 @@ InitialValue = This is a test
 '''
 
 
-def get_existing_subnets():
-    client = docker.from_env()
-    networks = client.networks.list()
-    subnets = []
-    for network in networks:
-        for config in network.attrs['IPAM']['Config']:
-            subnets.append(config['Subnet'])
-    return subnets
-
-
 @pytest.mark.exposure('dangerous')
 def test_docker_compose(appcenter):
     ucr = ConfigRegistry()
@@ -72,7 +62,7 @@ def test_docker_compose(appcenter):
     for network in docker0_net.subnets(prefixlen_diff):
         if IPv4Address('%s' % (gateway,)) in network:
             continue
-        if any(IPv4Network(app_network, False).overlaps(network) for app_network in get_existing_subnets()):
+        if any(app_network.overlaps(network) for app_network in docker_get_existing_subnets()):
             continue
         target_subnet = network
         break
