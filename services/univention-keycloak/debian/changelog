@@ -1,3 +1,9 @@
+univention-keycloak (2.0.3) unstable; urgency=medium
+
+  * Bug #57205: fix user ldap filter
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 Apr 2024 10:01:55 +0200
+
 univention-keycloak (2.0.2) unstable; urgency=medium
 
   * Bug #53127: upgrade to latest debhelper compat version
