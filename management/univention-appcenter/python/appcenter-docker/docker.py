@@ -234,7 +234,7 @@ def docker_get_existing_subnets():
         subnets = []
         for network in networks:
             for config in network.attrs['IPAM']['Config']:
-                subnets.append(config['Subnet'])
+                subnets.append(IPv4Network(config['Subnet'], False))
         return subnets
     except docker.errors.APIError as exc:
         _logger.warning('Could not get existing subnets: %s' % exc)
@@ -466,13 +466,8 @@ class Docker:
                 continue
             else:
                 used_docker_networks.append(app_network)
-        for subnet in docker_get_existing_subnets():
-            try:
-                sub_network = IPv4Network(subnet, False)
-                if not any(sub_network.overlaps(app_network) for app_network in used_docker_networks):
-                    used_docker_networks.append(sub_network)
-            except ValueError:
-                pass
+        used_docker_networks.extend(docker_get_existing_subnets())
+        used_docker_networks = set(used_docker_networks)
         prefixlen_diff = 24 - int(netmask)
         if prefixlen_diff <= 0:
             _logger.warning('Cannot get a subnet big enough')  # maybe I could... but currently, I only work with 24-netmasks
