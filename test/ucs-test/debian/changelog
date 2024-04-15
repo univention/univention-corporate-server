@@ -1,3 +1,9 @@
+ucs-test (12.0.44) unstable; urgency=medium
+
+  * Bug #57205: added test
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 Apr 2024 10:16:01 +0200
+
 ucs-test (12.0.43) unstable; urgency=medium
 
   * Issue #2189: Migrate 10_ldap/26reconnect_univention_ldapsearch.py to pytest

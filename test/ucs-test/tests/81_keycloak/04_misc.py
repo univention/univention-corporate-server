@@ -75,6 +75,15 @@ def test_every_umc_server_has_a_saml_client(ucr, keycloak_config):
         assert f'https://{host}/univention/saml/metadata' in kc_clients
 
 
+def test_list_users_works(keycloak_config):
+    """See https://forge.univention.org/bugzilla/show_bug.cgi?id=57205"""
+    # check that there is an object with objectclass=person but without uid
+    ldap = get_ldap_connection()
+    assert ldap.search('(&(objectclass=person)(!(uid=*)))')
+    assert keycloak_get_request(keycloak_config, 'realms/master/users')
+    assert keycloak_get_request(keycloak_config, 'realms/ucs/users')
+
+
 def test_master_realm_config(keycloak_config, ucr):
     # required actions master realm
     required_actions = keycloak_get_request(keycloak_config, 'realms/master/authentication/required-actions')
