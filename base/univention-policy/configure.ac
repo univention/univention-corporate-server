@@ -32,9 +32,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-AC_INIT(lib/policy.c)
+AC_INIT([univentionpolicy], [0.1])
+AC_CONFIG_SRCDIR([lib/policy.c])
+AM_INIT_AUTOMAKE
 
-AM_INIT_AUTOMAKE(univentionpolicy,0.1)
 AM_PROG_LIBTOOL
 
 LIB_CURRENT=0
