@@ -61,54 +61,25 @@ static void usage(void)
 }
 
 #define MAX_PASSWORD_SIZE 256
-static char* read_password_file(char* filename)
+static char *read_password_file(const char *filename)
 {
-	int buffer_len = MAX_PASSWORD_SIZE;
-	char* buffer = malloc(buffer_len);
-	if (buffer == NULL) {
-		perror("read_password_file: malloc failed");
-		return NULL;
-	}
-	int fd;
-	while ((fd = open(filename, O_RDONLY)) == -1) {
-		if (errno == EINTR) { /* the call was interrupted by a signal handler */
-			continue; /* try again */
-		}
+	char buf[MAX_PASSWORD_SIZE + 1];
+	int fd = open(filename, O_RDONLY);
+	if (fd < 0) {
 		perror("read_password_file: open failed");
-		free(buffer);
 		return NULL;
 	}
-	int buffer_pos = 0;
-	for (;;) {
-		int count = read(fd, buffer + buffer_pos, buffer_len - buffer_pos);
-		if (count == 0) {
-			break;
-		}
-		if (count == -1) {
-			if (errno == EINTR) { /* the call was interrupted by a signal handler */
-				continue; /* try again */
-			}
-			perror("read_password_file: read failed");
-			close(fd);
-			free(buffer);
-			return NULL;
-		}
-		buffer_pos+= count;
-	}
-	if (buffer[buffer_pos - 1] == '\n') {
-		buffer[buffer_pos - 1] = '\0';
-	} else {
-		buffer[buffer_pos] = '\0';
-	}
-	while (close(fd) == -1) {
-		if (errno == EINTR) { /* the call was interrupted by a signal handler */
-			continue; /* try again */
-		}
-		perror("read_password_file: close failed");
-		free(buffer);
+	int count = read(fd, buf, MAX_PASSWORD_SIZE);
+	close(fd);
+	if (count < 0 || count > MAX_PASSWORD_SIZE) {
+		perror("read_password_file: read failed");
 		return NULL;
 	}
-	return buffer;
+	buf[count] = '\0';
+	char *c = strstr(buf, "\n");
+	if (c)
+		*c = '\0';
+	return strdup(buf);
 }
 
 #define OUTPUT_VERBOSE 0
