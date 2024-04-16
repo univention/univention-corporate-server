@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: xorg-server
+fix: 2:1.19.2-1+deb9u19
+desc: |
+ This update addresses the following issues:
+ 2:1.19.2-1+deb9u19 (Mon, 15 Apr 2024 21:26:02 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2024-31080: Heap buffer overread in ProcXIGetSelectedEvents()
+ * CVE-2024-31081: Heap buffer overread in ProcXIPassiveGrabDevice()
+ * CVE-2024-31083: Use-after-free in ProcRenderAddGlyphs()
+bug: [57223]
+cve:
+- CVE-2024-31080
+- CVE-2024-31081
+- CVE-2024-31083
