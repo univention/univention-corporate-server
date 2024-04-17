@@ -1,0 +1,52 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: Test no fd's on delete log files
+### bugs: [56906]
+## roles:
+##  - domaincontroller_master
+## packages:
+##  - univention-directory-manager-tools
+##  - univention-management-console
+## exposure: dangerous
+
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+
+tests_domainadmin_name="$(ucr get tests/domainadmin/account | sed -e 's/^uid=//' -e 's/,.*//')"
+test_domainadmin_pwd="$(ucr get tests/domainadmin/pwd)"
+
+cleanup() {
+	ucr unset --force \
+		umc/server/debug/level \
+		umc/module/debug/level \
+		umc/http/processes
+	systemctl restart univention-management-console-server
+	sleep 3
+}
+
+trap cleanup EXIT
+
+echo "Setting umc/http/processes to 3 and increase debug level"
+
+ucr set --force umc/http/processes=3 umc/module/debug/level=4 umc/server/debug/level=4
+systemctl restart univention-management-console-server
+sleep 3
+
+echo "Create module process"
+
+umc-command -r -U "$tests_domainadmin_name" -P "$test_domainadmin_pwd" -f users/user udm/query -o objectProperty="username" -o objectPropertyValue="*"
+
+echo "logrotate"
+
+logrotate -f /etc/logrotate.d/univention-management-console
+
+echo "checking for open file handles on deleted files"
+
+lsof | grep '/var/log/univention/management-console-server.*(deleted)'
+fds="$(lsof | grep '/var/log/univention/management-console-server.*(deleted)' | wc -l)"
+test -n "fds" && test "$fds" -gt 0 && fail_fast 1 "found file handle on deleted file"
+lsof | grep '/var/log/univention/management-console-module.*(deleted)'
+fds="$(lsof | grep '/var/log/univention/management-console-module.*(deleted)' | wc -l)"
+test -n "fds" && test "$fds" -gt 0 && fail_fast 1 "found file handle on deleted file"
+
+exit 0
