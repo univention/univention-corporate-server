@@ -150,14 +150,14 @@ def add_jobs(pipeline: dict[str, object]) -> None:
         for target in TARGETS:
             pkg = path.name
             name = job_name(pkg, target)
-            job = job_desc(pkg, path, f".sphinx-{target}-template", languages, DEPENDS.get(pkg, set()))
+            job = job_desc(pkg, path, f".sphinx-{target}", languages, DEPENDS.get(pkg, set()))
             pipeline.update({name: job})
 
     # FIXME: cycle
     path = ROOT / "doc" / "developer-reference"
     pkg = f"{path.name} cycle"
     name = job_name(pkg, "html")
-    job = job_desc(pkg, path, ".sphinx-html-template", ["en"], set())
+    job = job_desc(pkg, path, ".sphinx-html", ["en"], set())
     pipeline.update({name: job})
 
 
