@@ -14,9 +14,46 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
+from __future__ import annotations
+
+import os
+import re
 import sys
 from datetime import date
+from typing import Iterator
+from urllib.parse import urlparse
+
+
+def _slugify(s: str) -> str:
+    return re.sub(r"[^0-9a-z]", "-", s.lower())[:63].strip("-")
+
+
+def _inventory(name: str, language: str) -> Iterator[str | None]:
+    env = os.environ
+    # Local build
+    yield f"../{name}/_build/{language}/html/objects.inv"
+    yield f"../{name}/_build/html/objects.inv"
+    # Previous build: current branch, merge target, default branch
+    for var in ('CI_COMMIT_REF_NAME', 'CI_MERGE_REQUEST_TARGET_BRANCH_NAME', 'CI_DEFAULT_BRANCH'):
+        try:
+            branch = env[var]
+            slug = _slugify(branch)
+            url = f"{env['CI_API_V4_URL']}/projects/{env['CI_PROJECT_ID']}/packages/generic/{name}.{language}/{slug}/objects.inv"
+        except LookupError:
+            continue
+        o = urlparse(url)
+        o = o._replace(netloc=f"job:{os.environ['CI_JOB_TOKEN']}@{o.netloc}")
+        yield o.geturl()
+    # Public build
+    yield None
+
+
+def ref(name: str, *, lang: str = "en", ver: str = "") -> tuple[str, tuple[str | None, ...]]:
+    ver = ver or version
+    return (
+        f"https://docs.software-univention.de/{name}/{ver}/{lang}",
+        tuple(_inventory(name, language)),
+    )
 
 
 # sys.path.insert(0, os.path.abspath('.'))
@@ -57,7 +94,7 @@ extensions = [
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
-    "uv-dev-ref": (f"https://docs.software-univention.de/developer-reference/{version}/en", ("../developer-reference/_build/en/html/objects.inv", "../developer-reference/_build/html/objects.inv", None)),
+    "uv-dev-ref": ref("developer-reference"),
     "uv-keycloak-ref": ("https://docs.software-univention.de/keycloak-app/latest", None),
     "uv-ox-connector-app": ("https://docs.software-univention.de/ox-connector-app/latest", None),
 }

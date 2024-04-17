@@ -14,9 +14,46 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+from __future__ import annotations
+
 import os
+import re
 import sys
 from datetime import date
+from typing import Iterator
+from urllib.parse import urlparse
+
+
+def _slugify(s: str) -> str:
+    return re.sub(r"[^0-9a-z]", "-", s.lower())[:63].strip("-")
+
+
+def _inventory(name: str, language: str) -> Iterator[str | None]:
+    env = os.environ
+    # Local build
+    yield f"../{name}/_build/{language}/html/objects.inv"
+    yield f"../{name}/_build/html/objects.inv"
+    # Previous build: current branch, merge target, default branch
+    for var in ('CI_COMMIT_REF_NAME', 'CI_MERGE_REQUEST_TARGET_BRANCH_NAME', 'CI_DEFAULT_BRANCH'):
+        try:
+            branch = env[var]
+            slug = _slugify(branch)
+            url = f"{env['CI_API_V4_URL']}/projects/{env['CI_PROJECT_ID']}/packages/generic/{name}.{language}/{slug}/objects.inv"
+        except LookupError:
+            continue
+        o = urlparse(url)
+        o = o._replace(netloc=f"job:{os.environ['CI_JOB_TOKEN']}@{o.netloc}")
+        yield o.geturl()
+    # Public build
+    yield None
+
+
+def ref(name: str, *, lang: str = "en", ver: str = "") -> tuple[str, tuple[str | None, ...]]:
+    ver = ver or version
+    return (
+        f"https://docs.software-univention.de/{name}/{ver}/{lang}",
+        tuple(_inventory(name, lang)),
+    )
 
 
 sys.path.append(os.path.abspath("./_ext"))
@@ -115,9 +152,9 @@ figure_language_filename = "{root}-{language}{ext}"
 univention_use_doc_base = True
 
 intersphinx_mapping = {
-    "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", ("../manual/_build/en/html/objects.inv", "../manual/_build/html/objects.inv", None)),
-    "uv-ext-domain": (f"https://docs.software-univention.de/ext-domain/{version}/en/", ("../ext-domain/_build/en/html/objects.inv", "../ext-domain/_build/html/objects.inv", None)),
-    "uv-ext-inst": (f"https://docs.software-univention.de/ext-installation/{version}/en/", ("../ext-installation/_build/en/html/objects.inv", "../ext-installation/_build/html/objects.inv", None)),
+    "uv-manual": ref("manual"),
+    "uv-ext-domain": ref("ext-domain"),
+    "uv-ext-inst": ref("ext-installation"),
 }
 
 # See Univention Sphinx Extension for its options.
@@ -133,9 +170,7 @@ def fix_title_translation(app, config):
         config.project = "Quickstart Guide für Univention Corporate Server"
         config.html_title = config.project
         config.tokenizer_lang = "de_DE"
-        config.intersphinx_mapping["uv-manual"] = (
-            f"https://docs.software-univention.de/manual/{version}/de", ("../manual/_build/de/html/objects.inv", "../manual/_build/html/objects.inv", None),
-        )
+        config.intersphinx_mapping["uv-manual"] = ref("manual", lang="de")
 
 
 def setup(app):
