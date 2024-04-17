@@ -6,11 +6,37 @@ src: xorg-server
 fix: 2:1.19.2-1+deb9u19
 desc: |
  This update addresses the following issues:
- 2:1.19.2-1+deb9u19 (Mon, 15 Apr 2024 21:26:02 +0300)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2024-31080: Heap buffer overread in ProcXIGetSelectedEvents()
- * CVE-2024-31081: Heap buffer overread in ProcXIPassiveGrabDevice()
- * CVE-2024-31083: Use-after-free in ProcRenderAddGlyphs()
+ * CVE-2024-31080: A heap-based buffer over-read vulnerability was found in
+   the `X.org` server's `ProcXIGetSelectedEvents()` function. This issue
+   occurs when byte-swapped length values are used in replies, potentially
+   leading to memory leakage and segmentation faults, particularly when
+   triggered by a client with a different endianness. This vulnerability could
+   be exploited by an attacker to cause the X server to read heap memory
+   values and then transmit them back to the client until encountering an
+   unmapped page, resulting in a crash. Despite the attacker's inability to
+   control the specific memory copied into the replies, the small length
+   values typically stored in a 32-bit integer can result in significant
+   attempted out-of-bounds reads.
+ * CVE-2024-31081: A heap-based buffer over-read vulnerability was found in
+   the `X.org` server's `ProcXIPassiveGrabDevice()` function. This issue
+   occurs when byte-swapped length values are used in replies, potentially
+   leading to memory leakage and segmentation faults, particularly when
+   triggered by a client with a different endianness. This vulnerability could
+   be exploited by an attacker to cause the X server to read heap memory
+   values and then transmit them back to the client until encountering an
+   unmapped page, resulting in a crash. Despite the attacker's inability to
+   control the specific memory copied into the replies, the small length
+   values typically stored in a 32-bit integer can result in significant
+   attempted out-of-bounds reads.
+ * CVE-2024-31083: A `use-after-free` vulnerability was found in the
+   `ProcRenderAddGlyphs()` function of Xorg servers. This issue occurs when
+   `AllocateGlyph()` is called to store new glyphs sent by the client to the X
+   server, potentially resulting in multiple entries pointing to the same
+   non-refcounted glyphs. Consequently, `ProcRenderAddGlyphs()` may free a
+   glyph, leading to a `use-after-free` scenario when the same `glyph` pointer
+   is subsequently accessed. This flaw allows an authenticated attacker to
+   execute arbitrary code on the system by sending a specially crafted
+   request.
 bug: [57223]
 cve:
 - CVE-2024-31080
