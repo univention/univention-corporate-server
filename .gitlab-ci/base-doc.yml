@@ -2,6 +2,21 @@ include:
   - project: 'univention/documentation/sphinx-docker'
     file: 'pipeline/sphinx.yml'
 
+.sphinx-html:
+  extends: .sphinx-html-template
+
+.sphinx-pdf:
+  extends: .sphinx-pdf-template
+
+.sphinx-linkcheck:
+  extends: .sphinx-linkcheck-template
+
+.sphinx-spelling:
+  extends: .sphinx-spelling-template
+
+.sphinx-warnings:
+  extends: .sphinx-warnings-template
+
 .publish:
   interruptible: false
   variables:
