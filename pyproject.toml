@@ -206,6 +206,9 @@ task-tags = ["TODO", "FIXME"]
 "test/ucs-test/*" = [
  "PLC0415",
 ]
+"doc/*/conf.py" = [
+ "UP035",
+]
 
 [tool.ruff.lint.flake8-builtins]
 builtins-ignorelist = ["copyright", "license", "object", "exit", "quit", "credits"]

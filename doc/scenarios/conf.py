@@ -14,10 +14,46 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
+from __future__ import annotations
+
+import os
+import re
 import sys
 from datetime import date
-from os import path
+from typing import Iterator
+from urllib.parse import urlparse
+
+
+def _slugify(s: str) -> str:
+    return re.sub(r"[^0-9a-z]", "-", s.lower())[:63].strip("-")
+
+
+def _inventory(name: str, lang: str) -> Iterator[str | None]:
+    env = os.environ
+    # Local build
+    yield f"../{name}/_build/{lang}/html/objects.inv"
+    yield f"../{name}/_build/html/objects.inv"
+    # Previous build: current branch, merge target, default branch
+    for var in ('CI_COMMIT_REF_NAME', 'CI_MERGE_REQUEST_TARGET_BRANCH_NAME', 'CI_DEFAULT_BRANCH'):
+        try:
+            branch = env[var]
+            slug = _slugify(branch)
+            url = f"{env['CI_API_V4_URL']}/projects/{env['CI_PROJECT_ID']}/packages/generic/{name}.{lang}/{slug}/objects.inv"
+        except LookupError:
+            continue
+        o = urlparse(url)
+        o = o._replace(netloc=f"job:{os.environ['CI_JOB_TOKEN']}@{o.netloc}")
+        yield o.geturl()
+    # Public build
+    yield None
+
+
+def ref(name: str, *, lang: str = "en", ver: str = "") -> tuple[str, tuple[str | None, ...]]:
+    ver = ver or version
+    return (
+        f"https://docs.software-univention.de/{name}/{ver}/{lang}",
+        tuple(_inventory(name, lang)),
+    )
 
 
 # sys.path.insert(0, os.path.abspath('.'))
@@ -57,8 +93,8 @@ extensions = [
 suppress_warnings = ['git.too_shallow']
 
 intersphinx_mapping = {
-    "uv-manual": (f"https://docs.software-univention.de/manual/{version}/en", ("../manual/_build/en/html/objects.inv", "../manual/_build/html/objects.inv", None)),
-    "uv-handbuch": (f"https://docs.software-univention.de/manual/{version}/de", ("../manual/_build/de/html/objects.inv", "../manual/_build/html/objects.inv", None)),
+    "uv-manual": ref("manual"),
+    "uv-handbuch": ref("manual", lang="de"),
 }
 
 bibtex_bibfiles = ["../bibliography.bib"]
@@ -83,7 +119,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-pdf_doc_base = path.basename(path.dirname(__file__))
+pdf_doc_base = os.path.basename(os.path.dirname(__file__))
 
 html_theme = 'univention_sphinx_book_theme'
 html_theme_options = {
