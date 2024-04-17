@@ -9,6 +9,8 @@ print("/var/log/univention/%s-*.log {" % name)
 for setting in sorted(settings):
     print("\t%s" % settings[setting])
 
+# do not remove log files
+print('\t copytruncate')
 # Add additional entry for management-console-server.log and management-console-web-server.log
 # to trigger a postrotate script for reloading of logfiles
 print('\tlastaction')
