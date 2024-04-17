@@ -6,9 +6,8 @@ src: pillow
 fix: 5.4.1-2+deb10u6
 desc: |
  This update addresses the following issue:
- 5.4.1-2+deb10u6 (Wed, 10 Apr 2024 20:46:20 +0300)
- * Non-maintainer upload by the LTS Team.
- * CVE-2024-28219: buffer overflow in _imagingcms.c
+ * CVE-2024-28219: In `_imagingcms.c` in Pillow before `10.3.0`, a buffer
+   overflow exists because `strcpy` is used instead of `strncpy`.
 bug: [57225]
 cve:
 - CVE-2024-28219
