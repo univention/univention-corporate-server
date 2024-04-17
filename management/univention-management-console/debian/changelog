@@ -1,3 +1,9 @@
+univention-management-console (13.0.15) unstable; urgency=medium
+
+  * Bug #56906: copytruncate logfiles during logrotate
+
+ -- Felix Botner <botner@univention.de>  Wed, 17 Apr 2024 15:01:16 +0200
+
 univention-management-console (13.0.13) unstable; urgency=medium
 
   * Bug #57113: fix umc/http/processes=0 evaluation in UCR template
