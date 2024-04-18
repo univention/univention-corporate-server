@@ -1,12 +1,13 @@
 #!/bin/bash
 #
-# Execute UCS tests in EC2 or KVM environment
+# Execute UCS tests in EC2 or KVM or OS environment
 #
 
 # defaults for release
 release='5.2-0'
 old_release='5.0-7'
 kvm_template_version='5.2-0+2024'
+openstack_image_name='UCS 5.2-0'
 # AMI: Univention Corporate Server (UCS) 5.0 (official image) rev. 7
 current_ami=ami-09fefd41ed2cea5a4
 # AMI: Univention Corporate Server (UCS) 5.0 (official image) rev. 7
@@ -22,7 +23,6 @@ kvm_label_suffix=''
 exact_match='false'
 ucsschool_release='scope'
 shutdown='false'
-openstack_image_name='UCS 5.2-0'
 source_iso="/var/univention/buildsystem2/isotests/ucs_${release}-latest-amd64.iso"
 
 # some internal stuff
@@ -97,6 +97,9 @@ usage () {
 	echo "    <>${BOLD}KVM_LABEL_SUFFIX${NORM}     - additional label for instance name (default: $kvm_label_suffix)"
 	echo "    | ${BOLD}KVM_KEYPAIR_PASSPHRASE${NORM} - ssh key password, also used as a fallback password for the ssh connection"
 	echo "    <>${BOLD}SOURCE_ISO${NORM}           - an ISO to mount (default: $source_iso)"
+	echo ""
+	echo "  OpenStack"
+	echo "    <>${BOLD}OPENSTACK_IMAGE_NAME${NORM} - OS template name [$openstack_image_name]"
 	echo ""
 	echo "  ucs-*-create"
 	echo "    <>${BOLD}EXACT_MATCH${NORM}          - do --exact-match to exactly match template names (default: $exact_match)"
@@ -232,21 +235,31 @@ else
 	export REPLACE="${REPLACE:=false}"
 fi
 
-# create the command and run in EC2, OpenStack or KVM depending on cfg
-exe="ucs-kvm-create"
-
 # build server can be overwritten per cfg file `build_server`
-build_server="$(grep '^\w*build_server:' "$CFG" | awk -F ": " '{print $2}')"
+build_server="$(awk -F ": " '/^\w*build_server:/{print $2}' "$CFG")"
 [ -n "$build_server" ] && KVM_BUILD_SERVER="$build_server"
 
-[ "$KVM_BUILD_SERVER" = "EC2" ] && exe="ucs-ec2-create"
-[ "$KVM_BUILD_SERVER" = "Openstack" ] && exe="ucs-openstack-create"
-
-if [ "$exe" = "ucs-ec2-create" ]
-then
+case "$KVM_BUILD_SERVER" in
+EC2)
 	[ -f ~/.boto ] ||
 		die "Missing ~/.boto file for EC2 access!"
-fi
+	exe="ucs-ec2-create"
+	;;
+Openstack|OpenStack|OS)
+	cfg () {
+		for os_cfg in ${OS_CLIENT_CONFIG_FILE:+"$OS_CLIENT_CONFIG_FILE"} "${PWD}/clouds.yaml" "${HOME}/.config/openstack/clouds.yaml" /etc/openstack/clouds.yaml
+		do
+			[ -r "$os_cfg" ] && return
+		done
+		die "Missing clouds.yaml file for OS access!"
+	}
+	cfg
+	exe="ucs-openstack-create"
+	;;
+KVM|*)
+	exe="ucs-kvm-create"
+	;;
+esac
 
 # start the test
 declare -a cmd=()
@@ -293,15 +306,7 @@ then
 			-v "$HOME/.ssh:$HOME/.ssh:ro"
 		)
 	fi
-	if [ "$exe" = "ucs-openstack-create" ]; then
-		for p in ${OS_CLIENT_CONFIG_FILE:+"$OS_CLIENT_CONFIG_FILE"} "${PWD}/clouds.yaml" "${HOME}/.config/openstack/clouds.yaml" /etc/openstack/clouds.yaml
-		do
-			[ -r "$p" ] || continue
-			cmd+=(-v "$p:/etc/openstack/clouds.yml:ro")
-			break
-		done
-
-	fi
+	cmd+=(${os_cfg:+-v "$os_cfg:/etc/openstack/clouds.yml:ro"})
 	# interactive mode for debug
 	$debug && cmd+=("-it")
 	# the image to start
