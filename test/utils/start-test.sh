@@ -98,13 +98,11 @@ usage () {
 	echo "    <>${BOLD}SOURCE_ISO${NORM}           - an ISO to mount (default: $source_iso)"
 	echo ""
 	echo "  ucs-*-create"
-	echo "    <>${BOLD}EXACT_MATCH${NORM}          - if true, add -e (only look for exact matches in template names) (default: $exact_match)"
-	echo "    <>${BOLD}SHUTDOWN${NORM}             - if true, add -s (shutdown VMs after run) (default: $shutdown)"
-	echo "    <>${BOLD}TERMINATE${NORM}            - if true, add -t (Remove VMs after run) (default: false)"
-	echo "    <>${BOLD}TERMINATE_ON_SUCCESS${NORM} - if true, add --terminate-on-success (Remove VMs after run only if setup has been successful, true for jenkins, otherwise false)"
-	echo "                           (default: true for jenkins, otherwise false)"
-	echo "    <>${BOLD}REPLACE${NORM}              - if true, add --replace (if set, overwrite previous VMs with same name)"
-	echo "                           (default: true for jenkins, otherwise false)"
+	echo "    <>${BOLD}EXACT_MATCH${NORM}          - do --exact-match to exactly match template names (default: $exact_match)"
+	echo "    <>${BOLD}SHUTDOWN${NORM}             - --shutdown VM after run (default: $shutdown)"
+	echo "    <>${BOLD}TERMINATE${NORM}            - --terminate-always VMs after run (default: false)"
+	echo "    <>${BOLD}TERMINATE_ON_SUCCESS${NORM} - --terminate-on-success VMs after run iff setup has been successful (default: false, Jenkins:true)"
+	echo "    <>${BOLD}REPLACE${NORM}              - --replace existing VM with same name (default: false, Jenkins:true)"
 	echo ""
 	echo "  update behaviour/dev or released version"
 	# TODO make the env var a captial letter, -> modify jenkins seed job(s) and cfg files
@@ -118,7 +116,7 @@ usage () {
 	echo ""
 	echo "  ucs-test/fetch-results"
 	echo "    <>${BOLD}UCS_TEST_RUN${NORM}         - if true, start ucs-test in utils/utils.sh::run_tests and copy log files from instance"
-	echo "                           in utils/utils-local.sh::fetch-results (default: true for jenkins, otherwise false)"
+	echo "                           in utils/utils-local.sh::fetch-results (default: false, Jenkins:true)"
 	echo ""
 	echo "  internal"
 	echo "    <>${BOLD}DOCKER${NORM}               - use docker container instead if local ucs-ec2-tools (default: true)"
@@ -221,14 +219,14 @@ if [ -n "${JENKINS_HOME:-}" ]
 then
 	export UCS_TEST_RUN="${UCS_TEST_RUN:=true}"
 	export TERMINATE="${TERMINATE:=true}"
-	export KVM_USER="build"
 	export TERMINATE_ON_SUCCESS="${TERMINATE_ON_SUCCESS:=false}"
+	export KVM_USER="build"
 	export REPLACE="${REPLACE:=true}"
 else
 	export TERMINATE="${TERMINATE:=false}"
+	export TERMINATE_ON_SUCCESS="${TERMINATE_ON_SUCCESS:=false}"
 	export UCS_TEST_RUN="${UCS_TEST_RUN:=false}"
 	export KVM_USER="${KVM_USER:=$USER}"
-	export TERMINATE_ON_SUCCESS="${TERMINATE_ON_SUCCESS:=false}"
 	export REPLACE="${REPLACE:=false}"
 fi
 
@@ -313,11 +311,12 @@ fi
 cmd+=("$exe" -c "$CFG")
 # TODO, add debug mode as switch by env variable or possibly there will be verbose modes instead
 # [ "$exe" = "ucs-openstack-create" ] && cmd+=(--debug)
-"$TERMINATE" && cmd+=("-t")
+if "$TERMINATE_ON_SUCCESS"; then cmd+=("--terminate-on-success")
+elif "$TERMINATE"; then cmd+=("--terminate-always")
+elif "$SHUTDOWN"; then cmd+=("--shutdown")
+fi
 "$REPLACE" && cmd+=("--replace")
-"$TERMINATE_ON_SUCCESS" && cmd+=("--terminate-on-success")
-"$EXACT_MATCH" && cmd+=("-e")
-"$SHUTDOWN" && cmd+=("-s")
+"$EXACT_MATCH" && cmd+=("--exact-match")
 
 echo "${BLUE}Starting test"
 sort -s -t= -k1 <"$docker_env_file"
