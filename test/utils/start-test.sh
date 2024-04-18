@@ -357,4 +357,4 @@ if [ -n "$JOB_URL" ]; then
 	printf "%${#header}s\n" | tr " " "+"
 fi
 
-exec "${cmd[@]}"
+"${cmd[@]}"
