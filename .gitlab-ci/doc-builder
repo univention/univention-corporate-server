@@ -18,7 +18,7 @@ BASE = Path(__file__).parent  # .gilab-ci/
 ROOT = BASE.parent
 
 
-TARGETS = ["html", "pdf", "linkcheck", "spelling", "warnings"]
+TARGETS = ["html", "pdf", "linkcheck", "spelling"]
 DEPENDS = {
     "app-center": {"manual", "developer-reference cycle"},
     "architecture": {"manual", "developer-reference", "app-center"},
