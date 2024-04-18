@@ -112,14 +112,17 @@ Extracted from `sed -ne '/^intersphinx_mapping/,/^}/{/^intersphinx_mapping/F;/:/
 flowchart LR
   app-center --> manual
   app-center ==> developer-reference
-  architecture --> manual & developer-reference & app-center
+  architecture --> manual & app-center
+  architecture ==> developer-reference
   architecture -.-> ucs-python-api
   changelog
-  developer-reference ==> app-center & manual
+  debian-admins --> manual & architecture
+  debian-admins -.-> python
+  developer-reference ==> app-center & architecture & manual
   developer-reference -.-> python & python-general
   ext-domain --> manual
   ext-installation
-  ext-network
+  ext-network --> manual
   ext-performance --> manual
   ext-windows --> manual
   manual ==> developer-reference
@@ -130,4 +133,5 @@ flowchart LR
 ```
 There is two cycles preventing a clean build:
 - `developer-reference` <-> `app-center`
+- `developer-reference` <-> `architecture`
 - `developer-reference` <-> `manual`
