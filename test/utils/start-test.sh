@@ -125,10 +125,6 @@ usage () {
 	echo "    < ${BOLD}DIMAGE${NORM}               - docker image (default: ${DIMAGE:--})"
 	echo "    <>${BOLD}DEBUG${NORM}                - debug mode (default: ${DEBUG:--})"
 	echo ""
-	echo "  branch tests:"
-	echo "    < ${BOLD}UCSSCHOOL_BRANCH${NORM}     - Name of U@S git branch to build"
-	echo "    < ${BOLD}UCS_BRANCH${NORM}           - Name of UCS git branch to build"
-	echo ""
 	echo "  apps"
 	echo "    | ${BOLD}APP_ID${NORM}               - An app ID, wekan"
 	echo "    | ${BOLD}COMBINED_APP_ID${NORM}      - ???"
@@ -235,26 +231,6 @@ else
 	export TERMINATE_ON_SUCCESS="${TERMINATE_ON_SUCCESS:=false}"
 	export REPLACE="${REPLACE:=false}"
 fi
-
-
-# if the default branch of UCS@school is given, then build UCS else build UCS@school
-build_git () {
-	local build_branch build_repo
-	if [[ "$UCSSCHOOL_BRANCH" = [0-9].[0-9] ]]
-	then
-		build_branch="$UCS_BRANCH"
-		build_repo='git@git.knut.univention.de:univention/ucs.git'
-	else
-		build_branch="$UCSSCHOOL_BRANCH"
-		build_repo='git@git.knut.univention.de:univention/ucsschool.git'
-	fi
-	# check branch test
-	ssh jenkins@buildvm.knut.univention.de /home/jenkins/build -r "${build_repo}" -b "${build_branch}" > utils/apt-get-branch-repo.list ||
-		die 'Branch build failed'
-	sed -i '/^deb /!d' utils/apt-get-branch-repo.list
-}
-[ -n "${UCSSCHOOL_BRANCH}${UCS_BRANCH}" ] &&
-	build_git
 
 # create the command and run in EC2, OpenStack or KVM depending on cfg
 exe="ucs-kvm-create"
