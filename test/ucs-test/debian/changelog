@@ -1,3 +1,9 @@
+ucs-test (12.0.52) unstable; urgency=medium
+
+  * Bug #56906: add test for fd's on deleted umc log files
+
+ -- Felix Botner <botner@univention.de>  Tue, 23 Apr 2024 10:06:11 +0200
+
 ucs-test (12.0.51) unstable; urgency=medium
 
   * Bug #56054: fix ucs-test-keycloak
