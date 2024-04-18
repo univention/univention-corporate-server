@@ -21,7 +21,7 @@ ROOT = BASE.parent
 TARGETS = ["html", "pdf", "linkcheck", "spelling"]
 DEPENDS = {
     "app-center": {"manual", "developer-reference cycle"},
-    "architecture": {"manual", "developer-reference", "app-center"},
+    "architecture": {"manual", "developer-reference cycle", "app-center"},
     "debian-admins": {"manual", "architecture"},
     "developer-reference": {"app-center", "architecture", "manual"},
     "ext-domain": {"manual"},
