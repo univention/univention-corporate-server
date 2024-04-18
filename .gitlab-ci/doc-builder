@@ -22,8 +22,10 @@ TARGETS = ["html", "pdf", "linkcheck", "spelling"]
 DEPENDS = {
     "app-center": {"manual", "developer-reference cycle"},
     "architecture": {"manual", "developer-reference", "app-center"},
-    "developer-reference": {"app-center", "manual"},
+    "debian-admins": {"manual", "architecture"},
+    "developer-reference": {"app-center", "architecture", "manual"},
     "ext-domain": {"manual"},
+    "ext-network": {"manual"},
     "ext-performance": {"manual"},
     "ext-windows": {"manual"},
     "manual": {"developer-reference cycle"},
