@@ -1,3 +1,9 @@
+ucs-test (12.0.51) unstable; urgency=medium
+
+  * Bug #56054: fix ucs-test-keycloak
+
+ -- Felix Botner <botner@univention.de>  Thu, 18 Apr 2024 21:36:23 +0200
+
 ucs-test (12.0.50) unstable; urgency=medium
 
   * Bug #56906: add test for fd's on deleted umc log files

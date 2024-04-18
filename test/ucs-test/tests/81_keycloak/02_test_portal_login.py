@@ -11,7 +11,9 @@ from utils import _, keycloak_get_request, keycloak_password_change, keycloak_se
 
 from univention.lib.umc import Unauthorized
 from univention.testing.umc import Client
-from univention.testing.utils import get_ldap_connection, package_installed, wait_for_listener_replication
+from univention.testing.utils import (
+    get_ldap_connection, package_installed, wait_for_listener_replication, wait_for_s4connector_replication,
+)
 
 
 def test_login(portal_login_via_keycloak, udm):
@@ -32,6 +34,9 @@ def test_login_disabled_fails(portal_login_via_keycloak, udm):
 def test_password_change_pwdChangeNextLogin(portal_login_via_keycloak, udm):
     username = udm.create_user(password='Univention.12', pwdChangeNextLogin=1)[1]
     assert portal_login_via_keycloak(username, 'Univention.12', new_password='Univention.99')
+    wait_for_listener_replication()
+    if package_installed('univention-samba4'):
+        wait_for_s4connector_replication()
     assert Client(username=username, password='Univention.99')
     with pytest.raises(Unauthorized):
         Client(username=username, password='univention')
@@ -100,6 +105,9 @@ def test_password_change_after_second_try(portal_login_via_keycloak, keycloak_co
             fails_with=error_msg,
         )
         keycloak_password_change(page, keycloak_config, 'sdh78§$%kjJKJK', 'Univention.99', 'Univention.99')
+        wait_for_listener_replication()
+        if package_installed('univention-samba4'):
+            wait_for_s4connector_replication()
         assert Client(username=username, password='Univention.99')
     finally:
         if package_installed('univention-samba4') and orig_history_setting:
@@ -138,6 +146,8 @@ def test_password_change_expired_krb5PasswordEnd_and_shadowLastChange(portal_log
     wait_for_listener_replication()
     assert portal_login_via_keycloak(username, 'univention', new_password='Univention.99')
     wait_for_listener_replication()
+    if package_installed('univention-samba4'):
+        wait_for_s4connector_replication()
     assert Client(username=username, password='Univention.99')
     with pytest.raises(Unauthorized):
         Client(username=username, password='univention')
