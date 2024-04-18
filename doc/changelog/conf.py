@@ -113,11 +113,7 @@ if "spelling" in sys.argv:
     extensions.remove("sphinx_sitemap")
     suppress_warnings.append("bibtex")
 
-root_doc = "index520"
-with open("temp.rst", "w") as fd:
-    for fn in os.listdir("staged"):
-        if fn.endswith(".rst"):
-            fd.write(f".. include:: staged/{fn}\n")
+root_doc = "index"
 
 rst_epilog = """
 .. include:: /../substitutions.txt

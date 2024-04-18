@@ -16,19 +16,9 @@ General
 
 .. _security:
 
-* All security updates issued for UCS 5.0-6 are included:
-
-  * FIXME
+* All security updates issued for UCS 5.0-7 are included:
 
 
 .. _debian:
 
 * The following updated packages from Debian 11.9 are included:
-
-  :program:`FIXME`
-
-.. _maintained:
-
-* The following packages have been moved to the maintained repository of UCS:
-
-  FIXME

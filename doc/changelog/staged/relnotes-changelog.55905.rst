@@ -1,2 +1,0 @@
-The LDAP attributes ``univentionFetchmailAddress``, ``univentionFetchmailServer``, ``univentionFetchmailProtocol``, ``univentionFetchmailPasswd``, ``univentionFetchmailKeepMailOnServer`` and ``univentionFetchmailUseSSL``
-are deprecated, ``univentionFetchmailSingle`` is used instead for Fetchmail configurations.
