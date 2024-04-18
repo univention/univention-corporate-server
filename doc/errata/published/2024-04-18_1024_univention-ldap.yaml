@@ -13,3 +13,6 @@ desc: |
    for teachers in UCS@school environments, which are subject to a
    larger number of LDAP ACLs.
 bug: [57193]
+erratum: 1024
+announced: 2024-04-18
+support: core
