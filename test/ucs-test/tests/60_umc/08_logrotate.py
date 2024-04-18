@@ -51,8 +51,10 @@ class Test_LogrotationReload:
             new_stats = [self.stat(logfile) for logfile in logfiles]
             assert len(new_stats) == 2
 
-            assert not os.path.samestat(old_stats[0], new_stats[0])
-            assert not os.path.samestat(old_stats[0], new_stats[1])
+            assert new_stats[0].st_size < old_stats[0].st_size
+            assert new_stats[1].st_size < old_stats[0].st_size
+            assert new_stats[0].st_size < 100
+            assert new_stats[1].st_size < 100
 
     def service_restart(self):
         check_call(['systemctl', 'restart', os.path.basename(self.SERVICE)])
