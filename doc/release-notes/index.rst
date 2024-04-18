@@ -16,10 +16,7 @@ Release highlights
 
 With |UCSUCS| 5.1-0, the first minor release for |UCSUCS| (UCS) is
 available. It provides several feature improvements and extensions, new
-properties as well as various improvements and bug fixes. Here is an overview of
-the most important changes:
-
-* FIXME
+properties as well as various improvements and bug fixes.
 
 .. _relnotes-update:
 
@@ -117,11 +114,11 @@ This section provides more information you need to consider before you update.
 
 .. _relnotes-python-37-compatibility:
 
-Python 3.7 compatibility
+Python 3.9 compatibility
 ========================
 
 Before you update, verify manually crafted Python code for compatibility with
-Python 3.7 and adjust it accordingly. This includes |UCSUCR| templates
+Python 3.9 and adjust it accordingly. This includes |UCSUCR| templates
 containing Python code. Customized AD-Connector mapping templates are an example
 for this. See also the :cite:t:`developer-reference` for advice.
 

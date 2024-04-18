@@ -157,7 +157,7 @@ if "spelling" in sys.argv:
     extensions.remove("sphinx_sitemap")
     suppress_warnings.append("bibtex")
 
-root_doc = "index52"
+root_doc = "index"
 
 html_sidebars = {
     "**": ["navbar-logo.html", "icon-links.html", "sections/sidebar-links.html"],
