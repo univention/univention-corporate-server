@@ -32,7 +32,7 @@ DEPENDS = {
     "scenarios": {"manual"},
 }  # FIXME: extract this from ../doc/*/conf.py intersphinx_mapping
 SPECIAL: dict[str, dict[str, object]] = {
-    "changelog": {"DOC_TARGET_VERSION": "$CHANGELOG_TARGET_VERSION", "GIT_DEPTH": 0},
+    "changelog": {"DOC_TARGET_VERSION": "$CHANGELOG_TARGET_VERSION", "GIT_DEPTH": 1000, "GIT_STRATEGY": "clone"},
     "release-notes": {"DOC_TARGET_VERSION": "$CHANGELOG_TARGET_VERSION"},
     "developer-reference cycle": {"SPHINXOPTS": "--keep-going"},
 }
