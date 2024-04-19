@@ -1,3 +1,9 @@
+univention-web (6.0.4) unstable; urgency=medium
+
+  * Bug #57192: Fixed cookie creation for UMCLang inside the portal and univention-web
+
+ -- Mika Westphal <westphal@univention.de>  Fri, 19 Apr 2024 09:20:23 +0200
+
 univention-web (6.0.3) unstable; urgency=medium
 
   * Bug #57083: add QA feedback to the latest portal style changes
