@@ -126,9 +126,10 @@ flowchart LR
   ext-performance --> manual
   ext-windows --> manual
   manual ==> developer-reference
-  manual -.-> keycloak & ox-connector-app
+  manual -.-> keycloak-app & ox-connector-app
   quickstart --> manual & ext-domain & ext-installation
   release-notes --> manual & changelog & ext-windows
+  release-notes -.-> keycloak-migration
   scenarios --> manual
 ```
 There is two cycles preventing a clean build:

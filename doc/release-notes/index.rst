@@ -6,7 +6,7 @@
 Release notes for the installation and update of Univention Corporate Server (UCS) |release|
 ############################################################################################
 
-Publication date of UCS |release|: 2024-FIXME
+Publication date of UCS |release|: 2024-12-31
 
 .. _relnotes-highlights:
 
@@ -39,6 +39,8 @@ This is only required for updating and should never be used in production.
 **********************
 Notes about the update
 **********************
+
+Prerequisite for updating is at least UCS 5.0-7.
 
 Run the update in a maintenance window, because some services in the domain may
 not be available temporarily. It's recommended that you test the update in a separate
@@ -86,10 +88,31 @@ Preparation of update
 
 This section provides more information you need to consider before you update.
 
+.. _relnotes-keycloak:
+
+Migration of default IDP service before updating to UCS 5.2
+===========================================================
+
+Starting with |UCSUCS| 5.2 the :program:`Keycloak` app replaces
+:program:`SimpleSAMLphp` and the :program:`Kopano Konnect` app as the default
+identity providers in |UCSUCS|. Before the update to UCS 5.2 an manual migration
+of the default identity providers is necessary. A detailed description of how
+to migrate can be found in :external+uv-keycloak-mig:doc:`index`.
+
+.. _relnotes-openldap-bdb:
+
+Migration of OpenLDAP database backend from BDB to MDB
+======================================================
+
+|UCSUCS| 5.2 will no longer support the database backend *Berkeley DB*
+for :program:`OpenLDAP`. All system with database backend *Berkeley DB*
+must be migrated before the update to UCS 5.2. Please see
+:uv:kb:`22322` for how to perform this migration.
+
 .. _relnotes-python-311-compatibility:
 
 Python 3.11 compatibility
-========================
+=========================
 
 Before you update, verify manually crafted Python code for compatibility with
 Python 3.11 and adjust it accordingly. This includes |UCSUCR| templates

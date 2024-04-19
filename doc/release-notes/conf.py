@@ -96,6 +96,7 @@ suppress_warnings = ['git.too_shallow']
 intersphinx_mapping = {
     "uv-manual": ref("manual"),
     "uv-ext-windows": ref("ext-windows"),
+    "uv-keycloak-mig": ("https://docs.software-univention.de/keycloak-migration/", None),
     f"uv-changelog-{release}": ref("changelog", ver=release),
 }
 
@@ -157,7 +158,7 @@ if "spelling" in sys.argv:
     extensions.remove("sphinx_sitemap")
     suppress_warnings.append("bibtex")
 
-root_doc = "index52"
+root_doc = "index"
 
 html_sidebars = {
     "**": ["navbar-logo.html", "icon-links.html", "sections/sidebar-links.html"],
