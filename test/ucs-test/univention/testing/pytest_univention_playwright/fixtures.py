@@ -125,7 +125,7 @@ def ldap_directory(umc_browser_test: UMCBrowserTest) -> LDAPDirectory:
     return LDAPDirectory(umc_browser_test)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture()
 def kill_module_processes():
     logger.info('killing module processes')
     try:
