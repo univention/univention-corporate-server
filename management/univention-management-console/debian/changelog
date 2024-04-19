@@ -1,3 +1,9 @@
+univention-management-console (14.0.14) unstable; urgency=medium
+
+  * TMP
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 19 Apr 2024 09:03:36 +0200
+
 univention-management-console (14.0.13) unstable; urgency=medium
 
   * Bug #56906: copytruncate logfiles during logrotate
