@@ -71,6 +71,23 @@ install_ucsschool_id_connector () {
   install_docker_app_from_branch ucsschool-id-connector "$UCS_ENV_ID_CONNECTOR_IMAGE" ucsschool-id-connector/log_level=DEBUG
 }
 
+install_ucsschool_id_connector_in_version() {
+  printf '%s' univention > /tmp/univention
+  if [ -n "$ID_CONNECTOR_VERSION" ]; then
+    univention-app install ucsschool-id-connector="$ID_CONNECTOR_VERSION" --set ucsschool-id-connector/log_level=DEBUG --username Administrator --pwdfile /tmp/univention || rv=$?
+    return $rv
+  else
+    install_ucsschool_id_connector
+  fi
+}
+
+upgrade_id_connector () {
+  printf '%s' univention > /tmp/univention
+  univention-app upgrade ucsschool-id-connector --noninteractive --username Administrator --pwdfile /tmp/univention || rv=$?
+  univention-app info
+  return $rv
+}
+
 install_ucsschool_apis () {
   install_docker_app_from_branch ucsschool-apis "$UCS_ENV_UCSSCHOOL_APIS_IMAGE" ucsschool/apis/log_level=DEBUG ucsschool/apis/processes=0
 }
