@@ -1,5 +1,0 @@
-[print/papersize]
-Description[en]=specify preferred paper size [a4]
-Description[de]=Legt die bevorzugte Papiergröße fest [a4]
-Type=str
-Categories=service-cups

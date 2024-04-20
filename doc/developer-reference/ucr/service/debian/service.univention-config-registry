@@ -1,4 +1,0 @@
-Type: file
-File: etc/init.d/atd
-Mode: 755
-Variables: atd/autostart

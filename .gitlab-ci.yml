@@ -19,7 +19,7 @@ include:
 variables:
   pipeline:
     value: ""
-    description: "Skip or force jobs: '(skip|force)-(doc|ucslint|build)'"
+    description: "Skip or force jobs: '(skip|force)-(ucslint|build)'"
   BUILD: docker-registry.knut.univention.de/knut/deb-builder
 
 pre-commit:
@@ -39,14 +39,8 @@ generate-config:
       --out generated-config-deb.yml
       --skip src:python-notifier
       */*/debian/control
-    - >
-      .gitlab-ci/doc-builder
-      --yaml .gitlab-ci/base.yml
-      --yaml .gitlab-ci/base-doc.yml
-      --out generated-config-doc.yml
   artifacts:
     paths:
-      - generated-config-doc.yml
       - generated-config-deb.yml
 
 prepare aptly:
@@ -102,30 +96,6 @@ select ucslint:
   artifacts:
     reports:
       dotenv: .env
-
-doc-pipeline:
-  stage: build
-  rules:
-    - if: "$CI_COMMIT_MESSAGE =~ /skip-doc/ || $pipeline =~ /skip-doc/"
-      when: never
-    - if: "$CI_COMMIT_MESSAGE =~ /force-doc/ || $pipeline =~ /force-doc/"
-    - changes:
-      - "doc/[^e]*/**/*"
-      - "doc/e[^r]*/**/*"
-      - "doc/er[^r]*/**/*"
-      - "doc/err[^a]*/**/*"
-      - "doc/erra[^t]*/**/*"
-      - "doc/errat[^a]*/**/*"
-      - "doc/errata?*/**/*"
-  needs:
-    - job: generate-config
-  trigger:
-    include:
-      - artifact: generated-config-doc.yml
-        job: generate-config
-    strategy: depend
-    forward:
-      pipeline_variables: true
 
 deb-pipeline:
   stage: build
