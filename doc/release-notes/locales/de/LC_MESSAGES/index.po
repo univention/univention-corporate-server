@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UCS 5.2 Release Notes 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-19 17:10+0200\n"
+"POT-Creation-Date: 2024-04-20 06:10+0200\n"
 "PO-Revision-Date: 2024-07-03 11:09+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -62,15 +62,15 @@ msgstr "Baustelle"
 
 #: ../../index.rst:32
 msgid ""
-"UCS 5.2 is based on Debian 12 Bookworm. As UCS 5.0 was based on Debian 10 "
-"Buster, there exists the intermediate UCS 5.1 based on Debian 11 Bullseye. "
-"This is only required for updating and should never be used in production. "
-"**No support!**"
+"UCS 5.2 is based on Debian 12 ``Bookworm``. As UCS 5.0 was based on Debian "
+"10 ``Buster``, there exists the intermediate UCS 5.1 based on Debian 11 "
+"``Bullseye``. This is only required for updating and should never be used in "
+"production. **No support!**"
 msgstr ""
-"UCS 5.2 basiert auf Debian 12 Bookworm. Da UCS 5.0 auf Debian 10 Buster "
-"basierte, gibt es dazwischen UCS 5.1 basierend auf Debian 11 Bullseye. Es "
-"ist nur für das Update notwendig und sollte niemals produktiv benutzt "
-"werden. **Kein Support!**"
+"UCS 5.2 basiert auf Debian 12 ``Bookworm``. Da UCS 5.0 auf Debian 10 "
+"``Buster`` basierte, gibt es dazwischen UCS 5.1 basierend auf Debian 11 "
+"``Bullseye``. Es ist nur für das Update notwendig und sollte niemals "
+"produktiv benutzt werden. **Kein Support!**"
 
 #: ../../index.rst:41
 msgid "Notes about the update"
@@ -173,7 +173,7 @@ msgstr ""
 
 #: ../../index.rst:94
 msgid "Migration of default IDP service before updating to UCS 5.2"
-msgstr "Migration des standard-IDP-Dienstes vor dem Update auf UCS 5.2"
+msgstr "Migration des Standard-IDP-Dienstes vor dem Update auf UCS 5.2"
 
 #: ../../index.rst:96
 msgid ""
@@ -188,7 +188,7 @@ msgstr ""
 "`SimpleSAMLphp` und die App :program:`Kopano Connect` als Standard-"
 "Identitätsprovider in |UCSUCS|. Vor dem Update auf UCS 5.2 ist eine "
 "händische Migration des Standard-Identitätsproviders notwendig. Eine "
-"detailierte Beschreibung des Vorgehens für die Migration finden Sie in :"
+"detaillierte Beschreibung des Vorgehens für die Migration finden Sie in :"
 "external+uv-keycloak-mig:doc:`index`."
 
 #: ../../index.rst:105

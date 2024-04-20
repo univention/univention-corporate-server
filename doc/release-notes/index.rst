@@ -29,8 +29,8 @@ the most important changes:
 * FIXME
 
 
-UCS 5.2 is based on Debian 12 Bookworm.
-As UCS 5.0 was based on Debian 10 Buster, there exists the intermediate UCS 5.1 based on Debian 11 Bullseye.
+UCS 5.2 is based on Debian 12 ``Bookworm``.
+As UCS 5.0 was based on Debian 10 ``Buster``, there exists the intermediate UCS 5.1 based on Debian 11 ``Bullseye``.
 This is only required for updating and should never be used in production.
 **No support!**
 
