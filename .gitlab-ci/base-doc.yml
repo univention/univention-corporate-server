@@ -5,7 +5,7 @@ include:
 .sphinx-html:
   extends: .sphinx-html-template
   after_script:
-    # - !reference [.sphinx-html-template, after_script] # after univention/documentation/sphinx-docker!11
+    - !reference [.sphinx-html-template, after_script]
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file "${DOCS_DIR}/${BUILDDIR}/html/objects.inv" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${DOC_TARGET_NAME}.${language}/${CI_COMMIT_REF_SLUG}/objects.inv" || :'
 
 .sphinx-pdf:
