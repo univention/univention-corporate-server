@@ -173,7 +173,7 @@ msgstr ""
 
 #: ../../index.rst:94
 msgid "Migration of default IDP service before updating to UCS 5.2"
-msgstr "Migration des Standard-IDP-Dienstes vor dem Update auf UCS 5.2"
+msgstr "Migration des Standard-Identitätsproviders vor dem Update auf UCS 5.2"
 
 #: ../../index.rst:96
 msgid ""
