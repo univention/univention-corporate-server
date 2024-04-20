@@ -35,7 +35,7 @@ repos:
                 |^base/univention-app-appliance/\
                "
     - id: check-yaml
-      exclude: "/conffiles/.*[.]yaml$"
+      exclude: "/conffiles/.*[.]yaml$|[.]gitlab-ci/base-doc[.]yml$"
     - id: check-merge-conflict
     - id: pretty-format-json
       exclude: "/conffiles/.*[.]json$\
