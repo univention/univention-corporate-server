@@ -206,6 +206,10 @@ check_ucr () {
 	false|no|disable|disabled|0|'') ;;
 	*) error "unmaintained should be disabled" ucr set repository/online/unmaintained='no' ;;
 	esac
+	case "${update_secure_apt:-}" in
+	true|yes|enable|enabled|1|'') ;;
+	*) error "secure_apt should be enabled" ucr set update/secure_apt='yes' ;;
+	esac
 	while IFS=': ' read -r key value
 	do
 		case "$key" in
