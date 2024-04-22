@@ -20,6 +20,7 @@ Variables: umc/login/content-security-policy/.*
 Variables: ucs/server/sso/fqdn
 Variables: umc/http/processes
 Variables: umc/http/processes/start-port
+Variables: keycloak/server/sso/fqdn
 
 Type: file
 File: etc/apache2/sso-vhost.conf.d/01redirect.conf
