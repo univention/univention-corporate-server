@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: expat
+fix: 2.2.0-2+deb9u8
+desc: |
+ This update addresses the following issue:
+ 2.2.0-2+deb9u8 (Sun, 07 Apr 2024 09:50:02 +0200)
+ * Non-maintainer upload for the ELTS Team.
+ * Enable testsuite.
+ * Backporting patch for CVE-2023-52425 - DoS (resource consumption) parsing
+   really big tokens due to O(n²) complexity.
+bug: [57233]
+cve:
+- CVE-2023-52425
