@@ -1,3 +1,9 @@
+univention-management-console (14.0.16) unstable; urgency=medium
+
+  * Bug #57229: Add missing keycloak/server/sso/fqdn UCRV to univention-management-console-web-server.univention-config-registry
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 13 May 2024 08:48:18 +0200
+
 univention-management-console (14.0.15) unstable; urgency=medium
 
   * Bug #57163: do not setup simplesamlphp with a 5.2 primary
