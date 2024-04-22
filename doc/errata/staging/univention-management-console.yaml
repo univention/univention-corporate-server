@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [7]
+scope: ucs_5.0-0-errata5.0-7
+src: univention-management-console
+fix: 12.0.33-7
+desc: |
+ This update addresses the following issues:
+ * A missing Univention Configuration Registry Variable
+   has been added to the trigger for the Apache2 `univention.conf`
+bug: [57229]
