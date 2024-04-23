@@ -6,11 +6,8 @@ src: expat
 fix: 2.2.0-2+deb9u8
 desc: |
  This update addresses the following issue:
- 2.2.0-2+deb9u8 (Sun, 07 Apr 2024 09:50:02 +0200)
- * Non-maintainer upload for the ELTS Team.
- * Enable testsuite.
- * Backporting patch for CVE-2023-52425 - DoS (resource consumption) parsing
-   really big tokens due to O(n²) complexity.
+ * Backport of patch for DoS attack vector (resource consumption when
+   parsing really big tokens due to O(n²) complexity). (CVE-2023-52425)
 bug: [57233]
 cve:
 - CVE-2023-52425
