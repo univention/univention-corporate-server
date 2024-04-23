@@ -94,7 +94,7 @@ def test_legacy_authorization_oidc(legacy_authorization_setup_oidc, keycloak_con
             'grant_type': 'password',
         },
     )
-    assert resp.json().get('error') == 'unknown_error'  # https://github.com/keycloak/keycloak/issues/13368
+    assert 'You do not have the needed privileges to access' in resp.text
 
     # add user to group
     udm = UDM.admin().version(2)
