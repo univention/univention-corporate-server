@@ -1,3 +1,9 @@
+ucs-test (12.0.54) unstable; urgency=medium
+
+  * Issue #2165: add UDM tests big environment
+
+ -- Felix Botner <botner@univention.de>  Tue, 23 Apr 2024 15:57:27 +0200
+
 ucs-test (12.0.53) unstable; urgency=medium
 
   * Bug #57192: always remove UMC module processes
