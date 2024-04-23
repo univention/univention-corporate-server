@@ -125,9 +125,7 @@ def ldap_directory(umc_browser_test: UMCBrowserTest) -> LDAPDirectory:
     return LDAPDirectory(umc_browser_test)
 
 
-@pytest.fixture(scope='module')
-def kill_module_processes():
-    logger.info('killing module processes')
+def kill_univention_management_console_module():
     try:
         subprocess.run(
             ['pkill', '-f', '/usr/sbin/univention-management-console-module'],
@@ -137,6 +135,18 @@ def kill_module_processes():
         if e.returncode != 1:
             logger.exception('failed killing module processes')
             raise
+
+
+@pytest.fixture(scope='module')
+def kill_module_processes_module():
+    logger.info('killing module processes')
+    kill_univention_management_console_module()
+
+
+@pytest.fixture()
+def kill_module_processes():
+    logger.info('killing module processes')
+    kill_univention_management_console_module()
 
 
 def setup_browser_context(context, start_tracing=True):
@@ -161,7 +171,7 @@ def context_module_scope(
 @pytest.fixture(scope='module')
 def umc_browser_test_module(
     context_module_scope: BrowserContext,
-    kill_module_processes,
+    kill_module_processes_module,
 ) -> UMCBrowserTest:
     page = setup_browser_context(context_module_scope)
     tester = UMCBrowserTest(page)

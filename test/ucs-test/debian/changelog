@@ -1,3 +1,10 @@
+ucs-test (11.0.33) unstable; urgency=medium
+
+  * Bug #57192: always remove UMC module processes
+    before browser tests
+
+ -- Felix Botner <botner@univention.de>  Tue, 23 Apr 2024 10:46:18 +0200
+
 ucs-test (11.0.32) unstable; urgency=medium
 
   * Bug #56906: add test for fd's on deleted umc log files
