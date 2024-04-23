@@ -6,7 +6,7 @@
 
 import json
 import os
-from subprocess import CalledProcessError
+from subprocess import CalledProcessError, run
 
 import pytest
 from keycloak.exceptions import KeycloakGetError
@@ -209,7 +209,7 @@ def test_bindpwd(admin_account):
     run_command(cmd)
     cmd = ['univention-keycloak', '--binduser', admin_account.username, '--bindpwd', "bindpw", 'realms', 'get']
     with pytest.raises(CalledProcessError):
-        run_command(cmd)
+        run(cmd, capture_output=True, check=True)
 
 
 @pytest.fixture()
