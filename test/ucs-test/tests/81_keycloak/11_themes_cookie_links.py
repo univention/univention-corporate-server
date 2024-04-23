@@ -216,7 +216,6 @@ def test_login_page_all_elements_are_tabbable(portal_login_via_keycloak, keycloa
     assert page.evaluate("() => document.activeElement.textContent") == 'English'
     # and back to the beginning
     page.keyboard.press("Tab")
-    # page.keyboard.press("Tab")
     assert page.evaluate("() => document.activeElement.name") == 'username'
 
 
