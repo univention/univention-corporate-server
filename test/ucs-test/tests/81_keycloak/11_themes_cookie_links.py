@@ -8,6 +8,7 @@ import os
 import shutil
 import socket
 import tempfile
+import time
 from itertools import product
 from subprocess import CalledProcessError
 
@@ -110,6 +111,7 @@ def test_cookie_banner(keycloak_adm_login, admin_account, ucr, keycloak_config):
     )
     # check the popup
     page = keycloak_adm_login(admin_account.username, admin_account.bindpw, no_login=True)
+    time.sleep(1)
     assert page.locator("[id='cookie-text']").inner_text() == _('en-US text')
     assert page.locator("[id='cookie-title']").inner_text() == _('en-US title')
     button = page.get_by_role("button", name=_('ACCEPT'))
@@ -215,8 +217,6 @@ def test_login_page_all_elements_are_tabbable(portal_login_via_keycloak, keycloa
     page.keyboard.press("Tab")
     page.keyboard.press("Tab")
     # and back to the beginning
-    page.keyboard.press("Tab")
-    page.keyboard.press("Tab")
     assert page.evaluate("() => document.activeElement.name") == 'username'
 
 

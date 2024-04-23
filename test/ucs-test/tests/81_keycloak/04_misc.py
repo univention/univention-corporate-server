@@ -37,6 +37,8 @@ def test_session_sync(ucr, udm, portal_login_via_keycloak, portal_config, keyclo
     login_url = f"https://{login_host}.{ucr['domainname']}"
     check_url = f"https://{check_host}.{ucr['domainname']}"
 
+    print(f'login at {login_url}')
+    print(f'check at {check_url}')
     # set ucs-sso-ng to login ip
     ucr.handler_set([f'hosts/static/{login_ip}={fqdn}'])
     assert socket.gethostbyname(fqdn) == login_ip
@@ -48,12 +50,12 @@ def test_session_sync(ucr, udm, portal_login_via_keycloak, portal_config, keyclo
     ucr.handler_unset([f'hosts/static/{login_ip}'])
     ucr.handler_set([f'hosts/static/{check_ip}={fqdn}'])
     assert socket.gethostbyname(fqdn) == check_ip
+
     # check portal in check_url
     print(f'check session on {check_url} ({check_ip})')
     page.goto(check_url)
-    get_portal_tile(page, portal_config.sso_login_tile_de, portal_config).click()
-    page.locator(f"id='[{portal_config.header_menu_id}]'").click()
-    # a = wait_for_class(driver, portal_config.portal_sidenavigation_username_class)[0]
+    get_portal_tile(page, 'Login (Single sign-on)', portal_config).click()
+    page.click(f"[id='{portal_config.header_menu_id}']")
     a = page.locator(f'.{portal_config.portal_sidenavigation_username_class}').first
     assert a.inner_html() == username
     # check sessions

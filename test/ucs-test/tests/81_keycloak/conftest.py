@@ -272,8 +272,7 @@ def keycloak_adm_login(page: Page, keycloak_config: SimpleNamespace):
         no_login: bool = False,
     ):
         page.goto(url)
-        expect(page).to_have_title(keycloak_config.title)
-        page.get_by_role('link', name='Administration Console').click()
+        expect(page).to_have_title('Univention Corporate Server Single-Sign On')
         keycloak_login(page, keycloak_config, username, password, fails_with=fails_with, no_login=no_login)
         # check that we are logged in
         if fails_with or no_login:
