@@ -1,3 +1,9 @@
+univention-management-console (14.0.14) unstable; urgency=medium
+
+  * Bug #56793: fix pam template
+
+ -- Felix Botner <botner@univention.de>  Tue, 23 Apr 2024 16:13:49 +0200
+
 univention-management-console (14.0.13) unstable; urgency=medium
 
   * Bug #56906: copytruncate logfiles during logrotate
