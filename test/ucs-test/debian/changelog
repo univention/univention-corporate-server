@@ -1,3 +1,10 @@
+ucs-test (10.0.21-29) unstable; urgency=medium
+
+  * Issue #209: update test to keycloak versiob 24.0.3
+    univention/components/keycloak-app#209
+
+ -- Felix Botner <botner@univention.de>  Tue, 23 Apr 2024 13:39:18 +0200
+
 ucs-test (10.0.21-28) unstable; urgency=medium
 
   * Bug #57192: always remove UMC module processes
