@@ -1,0 +1,46 @@
+product: ucs
+release: "5.0"
+version: [6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: openjdk-11
+fix: 11.0.23+9-1~deb10u1
+desc: |
+ This update addresses the following issues:
+ 11.0.23+9-1~deb10u1 (Thu, 18 Apr 2024 14:41:46 +0200)
+ * Backport to buster.
+ * Re-enable test suite, there's no t64 transition here.
+ 11.0.23+9-1 (Wed, 17 Apr 2024 15:39:11 +0200)
+ * OpenJDK 11.0.23 release, build 9. - CVE-2024-21011, 8319851: Improve
+   exception logging. - CVE-2024-21068, 8322122: Enhance generation of
+   addresses. - 8318340: Improve RSA key implementations. - CVE-2024-21012,
+   8315708: Enhance HTTP/2 client usage. - CVE-2024-21094, 8317507: Already
+   fixed in November 2023: C2 compilation fails with "Exceeded _node_regs
+   array". - CVE-2024-21085, 8322114: Improve Pack 200 handling.
+ [ Pushkar Kulkarni ]
+ * Use 64-bit clock_* function on archs like armhf.
+ 11.0.23~7ea-1 (Thu, 21 Mar 2024 01:56:26 +0100)
+ * OpenJDK 11.0.23+7 build (early access).
+ [ Matthias Klose ]
+ * Update cups dependencies for time_t64.
+ * copyright-generator: Derive release from debian/rules.
+ 11.0.22+7-3 (Mon, 11 Mar 2024 16:32:39 +0100)
+ * libcups2, libfontconfig1: Make it a recommends in jre-headless, a
+   dependency in jre.
+ * Make the dependencies for libfontmanager.so and libjsound.so
+   recommendations in jre-headless, and dependencies in jre.
+ * Drop build dependencies on libgtk2 | libgtk3.
+ * Disable running the tests for the time_t64 bootstrap.
+ 11.0.22+7-2 (Fri, 26 Jan 2024 21:04:10 +0100)
+ * Add zero support for loong64 (Leslie Zhai)..
+ * d/changelog: Whitespace cleanup.
+ * Update build dependency on libfontconfig-dev.
+ * Apply proposed patch for JDK-8307977..
+ [ Vladimir Petko ]
+ * d/t/jtreg-autopkgtest.*: Set jtreg home property correctly.
+bug: [57234]
+cve:
+- CVE-2024-21011
+- CVE-2024-21068
+- CVE-2024-21012
+- CVE-2024-21094
+- CVE-2024-21085
