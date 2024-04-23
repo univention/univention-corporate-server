@@ -12,6 +12,7 @@
 
 import datetime
 import email
+import subprocess
 from urllib.parse import parse_qs, urlparse
 
 import pytest
@@ -40,6 +41,15 @@ def activate_self_registration():
         hs(['umc/self-service/account-verification/frontend/enabled=true'])
         hs(['umc/self-service/account-deregistration/enabled=true'])
         yield ucr
+
+
+@pytest.fixture(autouse=True)
+def kill_umc_module_process():
+    print("kill umc module processes")
+    subprocess.call(['pkill', '-f', '/usr/sbin/univention-management-console-module'])
+    yield
+    print("kill umc module processes")
+    subprocess.call(['pkill', '-f', '/usr/sbin/univention-management-console-module'])
 
 
 @pytest.fixture()
