@@ -1,0 +1,24 @@
+product: ucs
+release: "5.0"
+version: [6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: containerd
+fix: 1.6.12-0ubuntu1~20.04.3
+desc: |
+ This update addresses the following issues:
+ * Denial of service through image processing (CVE-2023-25153)
+ * Incorrect supplementary group access control (CVE-2023-25173)
+ * Memory exhaustion (CVE-2022-23471)
+ * Insecure handling of image volumes (CVE-2022-23648)
+ * Insufficiently restricted directory permissions (CVE-2021-41103)
+ * Information leak between shared images via incorrect environment
+   variables (CVE-2021-21334)
+ * Elevation of privilege vulnerability (CVE-2020-15257)
+bug: [56457]
+cve:
+ - CVE-2023-25153
+ - CVE-2023-25173
+ - CVE-2022-23648
+ - CVE-2021-41103
+ - CVE-2021-21334
+ - CVE-2020-15257
