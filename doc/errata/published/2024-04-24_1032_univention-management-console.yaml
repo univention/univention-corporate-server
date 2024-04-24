@@ -13,3 +13,6 @@ desc: |
    configuration of UMC to not delete log files but to
    truncate the original log file to zero size in place.
 bug: [57163, 56906]
+erratum: 1032
+announced: 2024-04-24
+support: core
