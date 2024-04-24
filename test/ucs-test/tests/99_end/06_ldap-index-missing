@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: Check for missing LDAP index
-## bug:
+## bugs:
 ##  - 57193
 ## exposure: safe
 
