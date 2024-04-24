@@ -1,3 +1,10 @@
+univention-web (4.0.7-3) unstable; urgency=medium
+
+  * Bug #57192s: added explict dep to openjdk-11-jre-headless
+    to avoid problems with ca-certificates-java
+
+ -- Felix Botner <botner@univention.de>  Wed, 24 Apr 2024 12:22:40 +0200
+
 univention-web (4.0.7-2) unstable; urgency=medium
 
   * Bug #57118: UCS 5.0-7 version bump
