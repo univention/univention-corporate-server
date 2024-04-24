@@ -9,9 +9,11 @@ Build-Depends:
  librsvg2-bin,
  node-stylus,
  nodejs,
+ openjdk-11-jre,
  sed,
  univention-config-dev (>= 15.0.3),
  univention-dojo,
+ univention-dojo-dev,
  univention-management-console-dev (>= 12.0.2),
  unzip,
 
