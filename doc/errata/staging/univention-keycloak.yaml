@@ -6,6 +6,6 @@ src: univention-keycloak
 fix: 1.0.11-2
 desc: |
  This update addresses the following issues:
- * The LDAP filter for user objects in the LDAP ferderation
+ * The LDAP filter for user objects in the LDAP federation
    configuration has been changed to require the attribute `uid`.
 bug: [57205]

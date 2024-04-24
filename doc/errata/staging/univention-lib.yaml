@@ -9,5 +9,5 @@ desc: |
  * New helper function `ucs_needsKeycloakSetup`,
    `ucs_needsSimplesamlphpSetup` and
    `ucs_primaryVersionGreaterEqual` have been added to
-   easier evalute what kind of SAML setup is needed the domain.
+   easier evaluate what kind of SAML setup is needed the domain.
 bug: [57163]
