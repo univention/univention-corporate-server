@@ -1,3 +1,10 @@
+ucs-test (10.0.21-31) unstable; urgency=medium
+
+  * Issue #209: update test to keycloak versiob 24.0.3
+    univention/components/keycloak-app#209
+
+ -- Felix Botner <botner@univention.de>  Wed, 24 Apr 2024 10:56:39 +0200
+
 ucs-test (10.0.21-30) unstable; urgency=medium
 
   * Issue #209: update test to keycloak versiob 24.0.3
