@@ -55,6 +55,13 @@ BUILD_THEME_DIR=$(BUILD_DIR)/dijit/themes/umc
 build: $(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css $(BUILD_DIR)/config.js css/themes/dark.css css/themes/light.css
 
 $(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css: build_profile.js tmp-build
+	# univention-dojo-dev build dependency does not work for 5.0-7
+	# (some problem when installing java and ca-certificates-java)
+	# try to install it during the build process
+	whoami
+	apt-get -qq update
+	apt-get -y install default-jre-headless
+	apt-get -y install univention-dojo-dev
 	# main dojo build process
 	mkdir -p $(BUILD_DIR)
 	/usr/share/univention-dojo/util/buildscripts/build.sh profile=build_profile.js version="$(VERSION)"
