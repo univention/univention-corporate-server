@@ -10,3 +10,6 @@ desc: |
    `/etc/freeradius/3.0/sites-enabled/` was reset to the default one during
    installation. This breaks setups with custom configurations.
 bug: [55007]
+erratum: 1029
+announced: 2024-04-24
+support: core
