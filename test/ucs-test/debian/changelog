@@ -1,3 +1,9 @@
+ucs-test (10.0.21-32) unstable; urgency=low
+
+  * Bug #57193: Search for missing OpenLDAP indexes
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 24 Apr 2024 14:18:12 +0200
+
 ucs-test (10.0.21-31) unstable; urgency=medium
 
   * Issue #209: update test to keycloak versiob 24.0.3

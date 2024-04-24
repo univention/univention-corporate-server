@@ -1,0 +1,11 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: Check for missing LDAP index
+## bug:
+##  - 57193
+## exposure: safe
+
+# See <https://github.com/openldap/openldap/blob/master/servers/slapd/back-mdb/filterindex.c>
+! grep -E ' mdb_(approx|equality|inequality|substring)_candidates: \(.+\) not indexed' /var/log/debug
+
+# vim: set ft=sh :

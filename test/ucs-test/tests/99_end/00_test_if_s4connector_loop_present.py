@@ -6,7 +6,7 @@
 ##  - univention-s4-connector
 ## bugs:
 ##  - 52358
-## exposure: dangerous
+## exposure: safe
 
 import subprocess
 import time
