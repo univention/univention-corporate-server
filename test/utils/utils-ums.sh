@@ -9,6 +9,10 @@ install_tools () {
 	ucr set repository/online=true
 	univention-install -y sudo build-essential procps curl file git
 
+	# stop apache
+	ucr set apache2/autostart='no'
+	service apache2 stop
+
 	# somehow the default config for docker in UCS messes with docker/iptables
 	# so that DNS in kind does not work
 	# just remove our own config for now
@@ -54,10 +58,13 @@ setup_ums_stack () {
 	helm upgrade --install ums --namespace=default helm/ums --values helm/ums/custom_values.yaml --timeout 1800s || true
 
 	# TODO why
-	ums_umc_gatway="$(kubectl get pods| grep ^ums-umc-gateway-|awk '{print $1}')"
-	kubectl port-forward --address 0.0.0.0 "pods/$ums_umc_gatway" 8080:8080
+	ums_stack_gatway="$(kubectl get pods| grep ^ums-stack-gateway-|awk '{print $1}')"
+	kubectl port-forward --address 0.0.0.0 "pods/$ums_stack_gatway" 80:8080 &
 }
 
 # kubectl --namespace default events
 # helm uninstall  ums
 # kind delete cluster --name souvap-dev-env
+
+# get default user
+# kubectl get cm ums-stack-data-swp-data -o jsonpath='{.data.dev-test-users\.yaml}' -n default
