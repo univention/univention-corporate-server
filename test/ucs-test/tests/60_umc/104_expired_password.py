@@ -53,6 +53,9 @@ class TestPwdChangeNextLogin:
 
         udm.modify_object('users/user', dn=userdn, pwdChangeNextLogin=1)
 
+        if samba4_installed:
+            utils.wait_for_connector_replication()
+            wait_for_drs_replication(filter_format('sAMAccountName=%s', [username]))
         client = Client(language='en-US')
         with pytest.raises(Unauthorized) as msg:
             client.authenticate(username, password)
