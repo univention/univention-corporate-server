@@ -9,3 +9,6 @@ desc: |
  * The LDAP filter for user objects in the LDAP federation
    configuration has been changed to require the attribute `uid`.
 bug: [57205]
+erratum: 1028
+announced: 2024-04-24
+support: core
