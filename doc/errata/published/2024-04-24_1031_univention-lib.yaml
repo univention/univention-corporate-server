@@ -11,3 +11,6 @@ desc: |
    `ucs_primaryVersionGreaterEqual` have been added to
    easier evaluate what kind of SAML setup is needed the domain.
 bug: [57163]
+erratum: 1031
+announced: 2024-04-24
+support: core
