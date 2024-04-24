@@ -624,6 +624,7 @@ Description: Test scripts to test the radius integration
 Package: ucs-test-self-service
 Architecture: all
 Depends:
+ python3-playwright-venv,
  ucs-test-appcenter,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},

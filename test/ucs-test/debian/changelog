@@ -1,3 +1,9 @@
+ucs-test (10.0.21-33) unstable; urgency=low
+
+  * Only run test (on OpenStack) if locale is available
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 24 Apr 2024 20:16:08 +0200
+
 ucs-test (10.0.21-32) unstable; urgency=low
 
   * Bug #57193: Search for missing OpenLDAP indexes

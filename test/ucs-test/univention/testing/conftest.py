@@ -161,6 +161,6 @@ def locale_available(*locales: str) -> Callable[[_F], _F]:  # Py3.10+: ParamSpec
     required = set(locales) or {"de_DE", "en_US"}
 
     return pytest.mark.skipif(
-        available < required,
-        reason="Required locales are not available",
+        not required <= available,
+        reason="Required locales {} are not available {}".format(",".join(required), ",".join(available)),
     )
