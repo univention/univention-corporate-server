@@ -1,0 +1,21 @@
+product: ucs
+release: "5.0"
+version: [6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: docker.io
+fix: 20.10.21-0ubuntu1~20.04.2A~5.0.0.202404291519
+desc: |
+ This update addresses the following issues:
+ * Docker cli information disclosure on misconfiguration (CVE-2021-41092)
+ * Insufficiently restricted directory permissions (CVE-2021-41091)
+ * Permissions modifications outside of install directory (CVE-2021-41089)
+ * Privilege escalation via --userns-remap option (CVE-2021-21284)
+ * Pulling an intentionally malformed Docker image manifest crashes
+   the dockerd daemon (CVE-2021-21285)
+bug: [56457]
+cve:
+ - CVE-2021-41092
+ - CVE-2021-41091
+ - CVE-2021-41089
+ - CVE-2021-21284
+ - CVE-2021-21285
