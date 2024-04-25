@@ -38,7 +38,7 @@ def ad_in_sync_mode(sync_mode: str, configbase: str = 'connector') -> None:
 
 
 def wait_for_sync(min_wait_time: int = 0) -> None:
-    synctime = int(configRegistry.get("connector/ad/poll/sleep", 5))
+    synctime = configRegistry.get_int("connector/ad/poll/sleep", 5)
     synctime = ((synctime + 3) * 2)
     if min_wait_time > synctime:
         synctime = min_wait_time

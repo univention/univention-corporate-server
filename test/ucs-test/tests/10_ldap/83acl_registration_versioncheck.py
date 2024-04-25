@@ -27,8 +27,8 @@ ucr = ConfigRegistry()
 ucr.load()
 
 currentversion = '%s-%s' % (ucr.get('version/version'), ucr.get('version/patchlevel'))
-nextversion = '%s-%s' % (ucr.get('version/version'), int(ucr.get('version/patchlevel')) + 1)
-futureversion = '%s-%s' % (ucr.get('version/version'), int(ucr.get('version/patchlevel')) + 99)
+nextversion = '%s-%s' % (ucr.get('version/version'), ucr.get_int('version/patchlevel') + 1)
+futureversion = '%s-%s' % (ucr.get('version/version'), ucr.get_int('version/patchlevel') + 99)
 
 with UCSTestUDM() as udm:
     package_name = get_package_name()

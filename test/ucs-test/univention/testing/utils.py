@@ -126,10 +126,10 @@ def get_ldap_connection(admin_uldap: bool = False, primary: bool = False) -> acc
     ucr.load()
 
     if primary:
-        port = int(ucr.get('ldap/master/port', 7389))
+        port = ucr.get_int('ldap/master/port', 7389)
         ldap_servers = [ucr['ldap/master']]
     else:
-        port = int(ucr.get('ldap/server/port', 7389))
+        port = ucr.get_int('ldap/server/port', 7389)
         ldap_servers = []
         if ucr['ldap/server/name']:
             ldap_servers.append(ucr['ldap/server/name'])
@@ -213,8 +213,8 @@ def verify_ldap_object(
     """
     ucr = UCR
     ucr.load()
-    retry_count = int(ucr.get("tests/verify_ldap_object/retry_count", retry_count))
-    delay = int(ucr.get("tests/verify_ldap_object/delay", delay))
+    retry_count = ucr.get_int("tests/verify_ldap_object/retry_count", retry_count)
+    delay = ucr.get_int("tests/verify_ldap_object/delay", delay)
 
     if pre_check:
         pre_check(**(pre_check_kwargs or {}))
