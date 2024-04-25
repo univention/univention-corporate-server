@@ -1,37 +1,26 @@
 #!/bin/bash
 # shellcheck shell=bash
-DEBUGLEVEL=4
+UCSTEST_DEBUG=4
 eval "$(univention-config-registry shell)"
 : "${DOMAIN:=$domainname}"
 
 # shellcheck disable=SC2015
-tty <&2 >/dev/null && _B=$(tput rev 2>/dev/null) _N=$(tput sgr0 2>/dev/null) || unset _B _N
-error () { #DEBUGLEVEL 0
-	echo -e "${_B:-}error${_N:-} $(date +"%Y-%m-%d %H:%M:%S\t") $*" >&2
+tty >/dev/null && _B=$(tput rev 2>/dev/null) _N=$(tput sgr0 2>/dev/null) || unset _B _N
+_log () {
+	local lvl="${1:?}" name="${2:?}" ts=
+	[ "$UCSTEST_DEBUG" -ge "$lvl" ] || return 0
+	[ -n "${UCSTEST_PID:-}" ] || ts="$(date +'%Y-%m-%d %H:%M:%S\t')"
+	shift 2
+	echo -e "${_B:-}${name}${_N:-} ${ts}${*}" >&2
 }
-warning () { #DEBUGLEVEL 1
-	if [ "$DEBUGLEVEL" -ge 1 ]
-	then
-		echo -e "${_B:-}warning${_N:-} $(date +"%Y-%m-%d %H:%M:%S\t") $*" >&2
-	fi
-}
-info () { #DEBUGLEVEL 2
-	if [ "$DEBUGLEVEL" -ge 2 ]
-	then
-		echo -e "${_B:-}info${_N:-} $(date +"%Y-%m-%d %H:%M:%S\t") $*" >&2
-	fi
-}
-debug () { #DEBUGLEVEL 3
-	if [ "$DEBUGLEVEL" -ge 3 ]
-	then
-		echo -e "${_B:-}debug${_N:-} $(date +"%Y-%m-%d %H:%M:%S\t") $*" >&2
-	fi
-}
+error () { _log 0 error "$@"; }
+warning () { _log 1 warning "$@"; }
+info () { _log 2 info "$@"; }
+debug () { _log 3 debug "$@"; }
 section () { #This is intended to make life easier for readers of test-logs with #a lot of content. If your testcase performs multiple similar checks #each producing a lot of output visually dividing these checks into #sections will help a lot. You should use this function only on the #top level, i.e. directly in the test-script and not in any library #functions.
-	local sectionname="$1"
-	info "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-	info "$sectionname"
-	info "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+	_log 0 info '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+	_log 0 info "$@"
+	_log 0 info '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
 }
 
 check_perm () { # Check file permissions

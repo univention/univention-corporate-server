@@ -51,7 +51,7 @@ undo wait_for_replication # wait at end
 undo systemctl start univention-directory-listener
 
 setup () {
-	local DEBUGLEVEL=1 base i
+	local UCSTEST_DEBUG=1 base i
 	declare -r unique="${0##*/}_${$}_${RANDOM}"
 	section "Creating environment '$unique' for $CONTAINERS containers and $USERS_AND_GROUP users/groups"
 

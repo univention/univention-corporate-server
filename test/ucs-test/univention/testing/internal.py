@@ -60,10 +60,11 @@ S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
 INF = sys.maxsize
 
 
-def setup_environment() -> None:
+def setup_environment(suite: bool = False) -> None:
     """Setup runtime environment."""
     os.environ['TESTLIBPATH'] = '/usr/share/ucs-test/lib'
     os.environ['PYTHONUNBUFFERED'] = '1'
+    os.environ['UCSTEST_PID'] = str(os.getpid()) if suite else ""
 
 
 def setup_debug(level: int) -> None:

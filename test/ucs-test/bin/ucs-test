@@ -181,7 +181,7 @@ def main() -> int | None:
         logger.error('Unused arguments: %r', args)
         sys.exit(2)
 
-    setup_environment()
+    setup_environment(suite=True)
     setup_debug(options.verbose)
 
     selected_sections = options.sections if options.sections else all_sections.keys()
