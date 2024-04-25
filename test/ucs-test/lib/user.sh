@@ -107,6 +107,7 @@ user_remove () { # Remove User named like the first argument, supplied to the fu
 
 	if "${CONTROLMODE:-false}"
 	then
+		info "checking whether the user $USERNAME is really removed"
 		if user_exists "$USERNAME"
 		then
 			error "user $USERNAME should not exist, but it does"
@@ -118,9 +119,7 @@ user_remove () { # Remove User named like the first argument, supplied to the fu
 
 user_exists () { #returns 0, if user exits or 1 if he doesn't. Example: userexits $NAME
 	local USERNAME="${1:?name}"
-	info "checking whether the user $USERNAME is really removed"
-
-	if udm-test users/user list --filter uid="$USERNAME" | grep "^DN:"
+	if user_dn "$USERNAME"
 	then
 		debug "user $USERNAME exists"
 		return 0
@@ -135,7 +134,7 @@ user_change_pw_next_login () { # Set the Flag for changing the Password on the n
 	info "user $USERNAME must change password on next login"
 
 	udm-test users/user modify \
-		--dn="uid=$USERNAME,cn=users,$ldap_base" \
+		--dn "uid=$USERNAME,cn=users,$ldap_base" \
 		--set pwdChangeNextLogin=1
 }
 
@@ -152,21 +151,21 @@ user_rename () { # Rename a user # Example: renameuser $NAMEOLD $NAMENEW
 
 	info  "rename user $USERNAMEOLD to $USERNAMENEW"
 	udm-test users/user modify \
-		--dn="uid=$USERNAMEOLD,cn=users,$ldap_base" \
+		--dn "uid=$USERNAMEOLD,cn=users,$ldap_base" \
 		--set username="$USERNAMENEW"
 }
 
 user_set_attr () {
-	local name="${1:?name}" attr="${2:?udmAttribute}" ldap="${3?ldapAttribute}" value="${4?value}"
+	local name="${1:?name}" prop="${2:?udmProperty}" attr="${3?ldapAttribute}" value="${4?value}"
 
 	local dn
 	dn=$(user_dn "$name")
 
-	udm-test users/user modify --dn="$dn" --set "$attr=$value"
+	udm-test users/user modify --dn "$dn" --set "$prop=$value"
 	wait_for_replication
-	if [ -n "$ldap" ]
+	if [ -n "$attr" ]
 	then
-		univention-ldapsearch "uid=$name" "$ldap" | grep -q "^$ldap"
+		univention-ldapsearch "uid=$name" "$attr" | grep -q "^$attr"
 	fi
 }
 
