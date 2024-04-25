@@ -49,9 +49,9 @@ wait_for_drs_replication () {
 	OPTIND=0
 	while getopts "b:s:" option; do
 		case "${option}" in
-			b) opts+=("-b" "${OPTARG}"); shift 2; break;;
-			s) opts+=("-s" "${OPTARG}"); shift 2; break;;
-			*) echo "wait_for_drs_replication [-b <base] [-s <scope>] <ldap_filter>"; return 1; break;;
+			b) opts+=("-b" "${OPTARG}"); shift 2;;
+			s) opts+=("-s" "${OPTARG}"); shift 2;;
+			*) echo "wait_for_drs_replication [-b <base>] [-s <scope>] <ldap_filter>"; return 1;;
 		esac
 	done
 
