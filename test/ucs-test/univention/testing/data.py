@@ -16,11 +16,11 @@ import os
 import re
 import select
 import signal
+import subprocess
 import sys
 from datetime import datetime
 from functools import reduce
 from operator import and_, or_
-from subprocess import PIPE, Popen, call
 from time import monotonic
 from typing import IO, Any, Dict, Iterable, Iterator, List, Sequence, Set, Tuple, TypeVar, cast
 
@@ -139,7 +139,7 @@ class TestEnvironment:
         """Load join status."""
         with open(os.path.devnull, 'w+') as devnull:
             try:
-                ret = call(
+                ret = subprocess.call(
                     ('/usr/sbin/univention-check-join-status',),
                     stdin=devnull, stdout=devnull, stderr=devnull)
                 self.joined = ret == 0
@@ -627,7 +627,7 @@ class TestCase:
         args += self.exposure.pytest_args(environment)
         return args
 
-    def _run_tee(self, proc: Popen, result: TestResult, stdout: IO[str] = sys.stdout, stderr: IO[str] = sys.stderr) -> None:
+    def _run_tee(self, proc: subprocess.Popen, result: TestResult, stdout: IO[str] = sys.stdout, stderr: IO[str] = sys.stderr) -> None:
         """Run test collecting and passing through stdout, stderr:"""
         assert proc.stdout is not None
         assert proc.stderr is not None
@@ -713,7 +713,7 @@ class TestCase:
 
         TestCase._attach(result, 'stdout', combined)
 
-    def _terminate_proc(self, proc: Popen) -> Iterator[Tuple[bool, float]]:
+    def _terminate_proc(self, proc: subprocess.Popen) -> Iterator[Tuple[bool, float]]:
         yield False, self.timeout or float("inf")
         try:
             for i in range(8):  # 2^8 * 100ms = 25.5s
@@ -797,24 +797,19 @@ class TestCase:
             TestCase.logger.debug('Running %r using %s in %s', cmd, self.exe, dirname)
             try:
                 assert self.exe is not None
+                proc = subprocess.Popen(
+                    cmd,
+                    executable=self.exe.filename,
+                    stdin=None if result.environment.interactive else subprocess.DEVNULL,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    cwd=dirname,
+                    preexec_fn=os.setsid if result.environment.interactive else prepare_child,  # noqa: PLW1509
+                    env=dict(os.environ, **self.environment),
+                )
                 if result.environment.interactive:
-                    proc = Popen(
-                        cmd, executable=self.exe.filename,
-                        shell=False, stdout=PIPE, stderr=PIPE,
-                        close_fds=True, cwd=dirname,
-                        preexec_fn=os.setsid,  # noqa: PLW1509
-                        env=dict(os.environ, **self.environment),
-                    )
                     to_stdout, to_stderr = sys.stdout, sys.stderr
                 else:
-                    with open(os.path.devnull, 'rb') as devnull:
-                        proc = Popen(
-                            cmd, executable=self.exe.filename,
-                            shell=False, stdin=devnull,
-                            stdout=PIPE, stderr=PIPE, close_fds=True,
-                            cwd=dirname, preexec_fn=prepare_child,  # noqa: PLW1509
-                            env=dict(os.environ, **self.environment),
-                        )
                     to_stdout = to_stderr = result.environment.log
 
                 self._run_tee(proc, result, to_stdout, to_stderr)
