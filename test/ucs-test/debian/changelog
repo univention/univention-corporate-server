@@ -1,3 +1,9 @@
+ucs-test (10.0.21-36) unstable; urgency=low
+
+  * Bug #57193: Search for missing OpenLDAP indexes
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 29 Apr 2024 17:10:33 +0200
+
 ucs-test (10.0.21-35) unstable; urgency=medium
 
   * Issue #2186: restart umc before tests
