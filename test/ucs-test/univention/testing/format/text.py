@@ -14,7 +14,6 @@ import time
 from typing import IO
 from weakref import WeakValueDictionary
 
-import univention.config_registry
 from univention.testing.codes import MAX_MESSAGE_LEN
 from univention.testing.data import TestCase, TestEnvironment, TestFormatInterface, TestResult
 
@@ -72,8 +71,7 @@ class Text(TestFormatInterface):
             ucs_test_version = subprocess.check_output(['/usr/bin/dpkg-query', '--showformat=${Version}', '--show', 'ucs-test-framework']).decode('UTF-8', 'replace')
         except subprocess.CalledProcessError:
             ucs_test_version = 'not installed'
-        ucr = univention.config_registry.ConfigRegistry()
-        ucr.load()
+        ucr = environment.ucr
         print("UCS %s-%s-e%s ucs-test %s" % (ucr.get('version/version'), ucr.get('version/patchlevel'), ucr.get('version/erratalevel'), ucs_test_version), file=self.stream)
 
     def begin_section(self, section: str) -> None:

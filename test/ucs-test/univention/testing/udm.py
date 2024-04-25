@@ -69,7 +69,7 @@ import univention.admin.modules
 import univention.admin.objects
 import univention.admin.uldap
 import univention.testing.strings as uts
-import univention.testing.ucr
+from univention.config_registry import ucr
 from univention.testing import utils
 from univention.testing.ucs_samba import DRSReplicationFailed, wait_for_drs_replication
 
@@ -220,27 +220,20 @@ class UCSTestUDM:
         return self.__lo
 
     @property
-    def _ucr(self) -> univention.testing.ucr.UCSTestConfigRegistry:
-        if self.__ucr is None:
-            self.__ucr = univention.testing.ucr.UCSTestConfigRegistry()
-            self.__ucr.load()
-        return self.__ucr
-
-    @property
     def LDAP_BASE(self) -> str:
-        return self._ucr['ldap/base']
+        return ucr['ldap/base']
 
     @property
     def FQHN(self) -> str:
-        return '%(hostname)s.%(domainname)s.' % self._ucr
+        return '%(hostname)s.%(domainname)s.' % ucr
 
     @property
     def UNIVENTION_CONTAINER(self) -> str:
-        return 'cn=univention,%(ldap/base)s' % self._ucr
+        return 'cn=univention,%(ldap/base)s' % ucr
 
     @property
     def UNIVENTION_TEMPORARY_CONTAINER(self) -> str:
-        return 'cn=temporary,cn=univention,%(ldap/base)s' % self._ucr
+        return 'cn=temporary,cn=univention,%(ldap/base)s' % ucr
 
     def __init__(self, language=None) -> None:
         self._env = {}
@@ -898,14 +891,14 @@ class UCSTestUDM:
             if ad_ldap_search_args:
                 drs_replication = ad_ldap_search_args
 
-        if wait_for_s4connector and ad_ldap_search_args and self._ucr.get('samba4/ldap/base'):
+        if wait_for_s4connector and ad_ldap_search_args and ucr.get('samba4/ldap/base'):
             conditions.append((utils.ReplicationType.S4C_FROM_UCS, ad_ldap_search_args))
 
         if drs_replication:
             if not wait_for_replication:
                 conditions.append((utils.ReplicationType.LISTENER, wait_for_replication))
 
-            if self._ucr.get('server/role') in ('domaincontroller_backup', 'domaincontroller_slave', 'memberserver'):
+            if ucr.get('server/role') in ('domaincontroller_backup', 'domaincontroller_slave', 'memberserver'):
                 conditions.append((utils.ReplicationType.DRS, drs_replication))
 
         return utils.wait_for(conditions, verbose=False)
@@ -1254,9 +1247,6 @@ if __name__ == '__main__':
     print(doctest.testmod())
 
 if __name__ == '__disabled__':
-    ucr = univention.testing.ucr.UCSTestConfigRegistry()
-    ucr.load()
-
     with UCSTestUDM() as udm:
         # create user
         dnUser, _username = udm.create_user()

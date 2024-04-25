@@ -17,14 +17,11 @@ from ldap_extension_utils import (
     call_join_script, get_acl_name, get_container_name, get_package_name, set_container_description,
 )
 
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.testing.debian_package import DebianPackage
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import fail
 
-
-ucr = ConfigRegistry()
-ucr.load()
 
 currentversion = '%s-%s' % (ucr.get('version/version'), ucr.get('version/patchlevel'))
 nextversion = '%s-%s' % (ucr.get('version/version'), ucr.get_int('version/patchlevel') + 1)

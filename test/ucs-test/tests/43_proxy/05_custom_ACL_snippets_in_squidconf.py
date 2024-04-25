@@ -14,7 +14,7 @@ import pycurl
 
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
-from univention.config_registry import handler_set, handler_unset
+from univention.config_registry import handler_set, handler_unset, ucr
 from univention.testing import utils
 from univention.testing.network import NetworkRedirector
 
@@ -138,8 +138,6 @@ def do_test(test_case):
 
         set_ucr_variables(name, permission, acl_type, value_type, value)
 
-        ucr = ucr_test.UCSTestConfigRegistry()
-        ucr.load()
         auth = None
         if permission == 'deny':
             auth = pycurl.HTTPAUTH_BASIC

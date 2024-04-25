@@ -5,7 +5,6 @@
 
 from http.client import HTTPConnection
 
-from univention.config_registry import ConfigRegistry
 from univention.testing import network, utils
 from univention.testing.umc import Client
 
@@ -21,9 +20,6 @@ def get_ip_address(host, username, password):
 
 
 def main():
-    ucr = ConfigRegistry()
-    ucr.load()
-
     account = utils.UCSTestDomainAdminCredentials()
 
     with network.NetworkRedirector() as nethelper:

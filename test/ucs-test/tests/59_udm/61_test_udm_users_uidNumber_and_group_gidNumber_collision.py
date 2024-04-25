@@ -12,8 +12,8 @@
 ## exposure: dangerous
 ## packages:
 ##   - python3-univention-directory-manager
+
 import univention.admin.modules as udm_modules
-import univention.config_registry
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 from univention.testing import utils
@@ -102,12 +102,12 @@ if __name__ == '__main__':
     with udm_test.UCSTestUDM() as UDM:
         # make sure UNIQUENESS is set right
         if UCR['directory/manager/uid_gid/uniqueness']:
-            univention.config_registry.handler_unset(['directory/manager/uid_gid/uniqueness'])
+            UCR.handler_unset(['directory/manager/uid_gid/uniqueness'])
 
         FAILURES = [test() for test in TESTS if test()]
 
         # now test with uniqueness set to false
-        univention.config_registry.handler_set(['directory/manager/uid_gid/uniqueness=no'])
+        UCR.handler_set(['directory/manager/uid_gid/uniqueness=no'])
         UDM.stop_cli_server()
 
         # with uniqueness set to false failure case inverts

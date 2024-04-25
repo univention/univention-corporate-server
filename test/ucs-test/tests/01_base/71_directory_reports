@@ -7,7 +7,7 @@ import os
 from subprocess import check_call
 from urllib.parse import splitquery, splitvalue
 
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.testing.umc import Client
 from univention.testing.utils import UCSTestDomainAdminCredentials
 
@@ -27,7 +27,7 @@ def create_umc_report(client, report_type, obj, module):
         assert report.endswith('.csv')
 
 
-def test_umc(ucr):
+def test_umc():
     account = UCSTestDomainAdminCredentials()
     client = Client.get_test_connection()
     r = client.umc_command('udm/reports/query', {}, 'users/user')
@@ -38,7 +38,7 @@ def test_umc(ucr):
         create_umc_report(client, report_type, ['cn=Backup Join,cn=groups,{}'.format(ucr.get('ldap/base'))], 'groups/group')
 
 
-def test_cmdline(ucr):
+def test_cmdline():
     account = UCSTestDomainAdminCredentials()
     check_call(['univention-directory-reports', '-l'])
     check_call(['univention-directory-reports-cleanup'])
@@ -48,10 +48,8 @@ def test_cmdline(ucr):
 
 
 def main():
-    ucr = ConfigRegistry()
-    ucr.load()
-    test_umc(ucr)
-    test_cmdline(ucr)
+    test_umc()
+    test_cmdline()
 
 
 if __name__ == '__main__':

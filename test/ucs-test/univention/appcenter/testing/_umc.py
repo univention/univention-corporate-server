@@ -50,25 +50,17 @@ from http.client import HTTPException, HTTPSConnection
 from http.cookies import SimpleCookie
 from typing import Any, Dict, List, Tuple, Type, TypeVar, overload
 
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr_live as ucr
 
 
 _T = TypeVar("_T")
 
 
-def _get_ucr() -> ConfigRegistry:
-    ucr = ConfigRegistry()
-    ucr.load()
-    return ucr
-
-
 def _get_useragent() -> str:
-    ucr = _get_ucr()
     return 'UCS/%s (univention.lib.umc/%s-errata%s)' % (ucr.get('version/version', '0.0'), ucr.get('version/patchlevel', '0'), ucr.get('version/erratalevel', '0'))
 
 
 def _get_fqdn() -> str:
-    ucr = _get_ucr()
     return '%(hostname)s.%(domainname)s' % ucr
 
 
@@ -444,7 +436,7 @@ class Client:
 
         :raises ConnectionError: if :file:`/etc/machine.secret` cannot be read.
         """
-        username = '%s$' % _get_ucr().get('hostname')
+        username = '%(hostname)s$' % ucr
         try:
             with open('/etc/machine.secret') as machine_file:
                 password = machine_file.readline().strip()

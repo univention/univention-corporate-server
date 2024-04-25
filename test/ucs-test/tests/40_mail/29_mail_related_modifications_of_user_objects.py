@@ -49,8 +49,6 @@ def check_login_lookup(host, mail, password, expected_result):
 
 def main():
     with udm_test.UCSTestUDM() as udm:
-        ucr_tmp = univention.config_registry.ConfigRegistry()
-        ucr_tmp.load()
         cmd = ['/etc/init.d/dovecot', 'restart']
         with utils.AutoCallCommand(exit_cmd=cmd, stderr=subprocess.DEVNULL):
             with ucr_test.UCSTestConfigRegistry() as ucr:

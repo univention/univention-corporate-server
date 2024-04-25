@@ -6,19 +6,13 @@ from time import sleep
 import ldap
 from ldap.controls import LDAPControl
 
-import univention.admin.modules
-import univention.admin.objects
-import univention.admin.uldap
-import univention.config_registry
+import univention.admin.modules  # noqa: F401
+import univention.admin.objects  # noqa: F401
 import univention.testing.connector_common as tcommon
 import univention.testing.ucr as testing_ucr
-from univention.config_registry import handler_set as ucr_set
+from univention.config_registry import handler_set as ucr_set, ucr
 from univention.s4connector import s4
 from univention.testing import ldap_glue, utils
-
-
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
 
 
 class S4Connection(ldap_glue.ADConnection):
@@ -30,25 +24,25 @@ class S4Connection(ldap_glue.ADConnection):
 
     def __init__(self, configbase='connector'):
         self.configbase = configbase
-        self.adldapbase = configRegistry['%s/s4/ldap/base' % configbase]
+        self.adldapbase = ucr['%s/s4/ldap/base' % configbase]
         self.addomain = self.adldapbase.replace(',DC=', '.').replace('DC=', '')
-        self.login_dn = configRegistry['%s/s4/ldap/binddn' % configbase]
-        self.pw_file = configRegistry['%s/s4/ldap/bindpw' % configbase]
-        self.host = configRegistry['%s/s4/ldap/host' % configbase]
-        self.port = configRegistry['%s/s4/ldap/port' % configbase]
-        self.ca_file = configRegistry['%s/s4/ldap/certificate' % configbase]
-        self.protocol = configRegistry.get('%s/s4/ldap/protocol' % self.configbase, 'ldap').lower()
+        self.login_dn = ucr['%s/s4/ldap/binddn' % configbase]
+        self.pw_file = ucr['%s/s4/ldap/bindpw' % configbase]
+        self.host = ucr['%s/s4/ldap/host' % configbase]
+        self.port = ucr['%s/s4/ldap/port' % configbase]
+        self.ca_file = ucr['%s/s4/ldap/certificate' % configbase]
+        self.protocol = ucr.get('%s/s4/ldap/protocol' % self.configbase, 'ldap').lower()
         self.kerberos = False
-        self.socket = configRegistry.get('%s/s4/ldap/socket' % self.configbase, '')
+        self.socket = ucr.get('%s/s4/ldap/socket' % self.configbase, '')
 
         self.serverctrls_for_add_and_modify = []
-        if 'univention_samaccountname_ldap_check' in configRegistry.get('samba4/ldb/sam/module/prepend', '').split():
+        if 'univention_samaccountname_ldap_check' in ucr.get('samba4/ldb/sam/module/prepend', '').split():
             # The S4 connector must bypass this LDB module if it is activated via samba4/ldb/sam/module/prepend
             # The OID of the 'bypass_samaccountname_ldap_check' control is defined in ldb.h
             ldb_ctrl_bypass_samaccountname_ldap_check = LDAPControl('1.3.6.1.4.1.10176.1004.0.4.1', criticality=0)
             self.serverctrls_for_add_and_modify.append(ldb_ctrl_bypass_samaccountname_ldap_check)
 
-        self.connect(configRegistry.is_false('%s/s4/ldap/ssl' % self.configbase, True))
+        self.connect(ucr.is_false('%s/s4/ldap/ssl' % self.configbase, True))
 
 
 def check_object(object_dn, sid=None, old_object_dn=None):
@@ -105,7 +99,7 @@ def modify_username(user_dn, new_user_name, udm_instance):
 
 
 def connector_running_on_this_host():
-    return configRegistry.is_true("connector/s4/autostart")
+    return ucr.is_true("connector/s4/autostart")
 
 
 def exit_if_connector_not_running():
@@ -117,7 +111,7 @@ def exit_if_connector_not_running():
 
 
 def wait_for_sync(min_wait_time=0):
-    synctime = configRegistry.get_int("connector/s4/poll/sleep", 7)
+    synctime = ucr.get_int("connector/s4/poll/sleep", 7)
     synctime = ((synctime + 3) * 2)
     if min_wait_time > synctime:
         synctime = min_wait_time

@@ -9,7 +9,7 @@
 
 import pytest
 
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr_live as ucr
 from univention.testing.debian_package import DebianPackage
 from univention.testing.utils import package_installed
 
@@ -26,9 +26,6 @@ class UCSTest_AppCenter_PackageIsInstalled(Exception):
 
 @pytest.mark.exposure('dangerous')
 def test_additional_packages(appcenter, app_name, app_version):
-    ucr = ConfigRegistry()
-    ucr.load()
-
     app = App(name=app_name, version=app_version)
 
     package_name1 = get_app_name()

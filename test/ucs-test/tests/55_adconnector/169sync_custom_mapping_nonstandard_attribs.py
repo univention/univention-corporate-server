@@ -16,8 +16,8 @@ import unittest
 
 import ldap
 
-import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+from univention.config_registry import ucr
 from univention.testing.connector_common import NormalUser, create_udm_user
 from univention.testing.strings import random_string
 
@@ -29,9 +29,7 @@ sys.path.append("$TESTLIBPATH")
 
 class TestADCustomMappings(unittest.TestCase):
     def setUp(self):
-        with ucr_test.UCSTestConfigRegistry() as ucr:
-            ucr.load()
-            self.ldap_base = ucr["ldap/base"]
+        self.ldap_base = ucr["ldap/base"]
 
         self.attribute = "univentionFreeAttribute20"
         self.target_attribute = "company"

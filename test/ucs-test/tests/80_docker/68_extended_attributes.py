@@ -12,14 +12,10 @@ from contextlib import contextmanager
 import pytest
 
 import univention.testing.strings as uts
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.testing.utils import verify_ldap_object
 
 from dockertest import tiny_app
-
-
-ucr = ConfigRegistry()
-ucr.load()
 
 
 @contextmanager

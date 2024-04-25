@@ -9,14 +9,10 @@
 import subprocess
 import time
 
-import univention.config_registry
+from univention.config_registry import ucr
 from univention.testing import utils
 
 import samltest
-
-
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
 
 
 def renew_sso_cert():

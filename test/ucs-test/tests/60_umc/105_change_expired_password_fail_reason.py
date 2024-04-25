@@ -12,14 +12,12 @@ from typing import Dict, List
 import pytest
 
 from univention.admin.uldap import getAdminConnection
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.lib.umc import Unauthorized
 from univention.testing import utils
 
 
 samba4_installed = utils.package_installed('univention-samba4')
-ucr = ConfigRegistry()
-ucr.load()
 lo, pos = getAdminConnection()
 
 # from samba import generate_random_machine_password
@@ -59,7 +57,7 @@ if samba4_installed:
 
 
 @contextlib.contextmanager
-def enabled_password_quality_checks(ucr):
+def enabled_password_quality_checks():
     # TODO: from 07_expired_password: only if univention-samba4 is not installed
     if samba4_installed:
         yield
@@ -74,9 +72,9 @@ def enabled_password_quality_checks(ucr):
 
 
 @pytest.mark.parametrize('new_password,reason', [[y, reason] for reason, x in reasons.items() for y in x])
-def test_password_changing_failure_reason(new_password, reason, udm, Client, random_string, ucr):
+def test_password_changing_failure_reason(new_password, reason, udm, Client, random_string):
     print(f'test_password_changing_failure_reason({new_password!r}, {reason!r})')
-    with enabled_password_quality_checks(ucr):
+    with enabled_password_quality_checks():
         _test_password_changing_failure_reason(new_password, reason, udm, Client, random_string)
 
 

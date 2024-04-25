@@ -15,13 +15,9 @@ from time import sleep
 
 import ldap
 
-import univention.config_registry
 import univention.uldap
+from univention.config_registry import ucr
 from univention.testing.utils import fail
-
-
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
 
 
 def _cleanup(old_retry_count):

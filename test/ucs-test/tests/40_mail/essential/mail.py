@@ -49,10 +49,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from os.path import basename
 
-import univention.config_registry
 import univention.testing.strings as uts
-import univention.testing.ucr as ucr_test
-from univention.config_registry import handler_set
+from univention.config_registry import handler_set, ucr
 from univention.testing import utils
 from univention.testing.decorators import WaitForNonzeroResultOrTimeout
 
@@ -209,10 +207,6 @@ class PopMail(Mail):
         return True
 
 
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
-
-
 def random_email():
     return '%s@%s' % (uts.random_name(), ucr.get('domainname'))
 
@@ -331,8 +325,7 @@ def get_spam_folder_name():
 def spam_delivered(token, mail_address):
     delivered = False
     spam = False
-    with ucr_test.UCSTestConfigRegistry() as ucr:
-        spam_folder = ucr.get('mail/dovecot/folder/spam') or 'Spam'
+    spam_folder = ucr.get('mail/dovecot/folder/spam') or 'Spam'
     mail_dir = get_dovecot_maildir(mail_address, folder=spam_folder)
     if not os.path.isdir(mail_dir):
         print('Warning: maildir %r does not exist!' % (mail_dir,))
@@ -596,9 +589,8 @@ def get_dovecot_shared_folder_maildir(foldername):
 
 
 def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permission=None, group_permission=None):
-    with ucr_test.UCSTestConfigRegistry() as ucr:
-        domain = ucr.get('domainname').lower()  # lower() can be removed, when #39721 is fixed
-        basedn = ucr.get('ldap/base')
+    domain = ucr.get('domainname').lower()  # lower() can be removed, when #39721 is fixed
+    basedn = ucr.get('ldap/base')
     name = uts.random_name()
     folder_mailaddress = ''
     if isinstance(mailAddress, str):

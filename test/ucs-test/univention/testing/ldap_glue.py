@@ -14,12 +14,8 @@ from ldap import modlist
 from ldap.controls import LDAPControl
 
 import univention.testing.connector_common as tcommon
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr_live as ucr
 from univention.testing.utils import UCSTestDomainAdminCredentials
-
-
-ucr = ConfigRegistry()
-ucr.load()
 
 
 def get_rdn(dn):

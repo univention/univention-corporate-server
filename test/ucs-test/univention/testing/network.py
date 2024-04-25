@@ -51,7 +51,7 @@ from typing import List, Mapping, Tuple, Type
 
 from typing_extensions import Literal
 
-import univention.config_registry
+from univention.config_registry import ucr
 
 
 class UCSTestNetwork(Exception):
@@ -120,8 +120,6 @@ class NetworkRedirector:
     ]
 
     def __init__(self) -> None:
-        ucr = univention.config_registry.ConfigRegistry()
-        ucr.load()
         reUCRaddr = re.compile('^interfaces/[^/]+/address$')
         for key, val in ucr.items():
             if reUCRaddr.match(key):

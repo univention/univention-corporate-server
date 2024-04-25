@@ -9,8 +9,8 @@ import subprocess
 
 import univention.config_registry
 import univention.testing.strings as uts
-import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+from univention.config_registry import ucr
 from univention.testing import utils
 
 from essential.mail import create_shared_mailfolder
@@ -19,11 +19,9 @@ from essential.mailclient import MailClient_SSL
 
 def main():
     with udm_test.UCSTestUDM() as udm:
-        ucr_tmp = univention.config_registry.ConfigRegistry()
-        ucr_tmp.load()
         cmd = ['/etc/init.d/dovecot', 'restart']
         with utils.AutoCallCommand(exit_cmd=cmd, stderr=subprocess.DEVNULL):
-            with ucr_test.UCSTestConfigRegistry() as ucr:
+            if True:
                 domain = ucr.get('domainname')
                 univention.config_registry.handler_set(['mail/dovecot/mailbox/delete=yes'])
                 subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=subprocess.DEVNULL)

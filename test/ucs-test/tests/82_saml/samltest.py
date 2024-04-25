@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 from lxml import etree  # noqa: S410
 from requests_kerberos import OPTIONAL, HTTPKerberosAuth
 
-import univention.config_registry as configRegistry
+from univention.config_registry import ucr
 from univention.testing import utils
 
 
@@ -83,8 +83,6 @@ class SamlPasswordChangeSuccess(SamlLoginError):
 class GuaranteedIdP:
     def __init__(self, ip):
         self.ip = ip
-        ucr = configRegistry.ConfigRegistry()
-        ucr.load()
         self.sso_fqdn = ucr['ucs/server/sso/fqdn']
 
     def __enter__(self):
@@ -104,8 +102,6 @@ class SPCertificate:
 
     @staticmethod
     def get_server_cert_folder():
-        ucr = configRegistry.ConfigRegistry()
-        ucr.load()
         hostname = '%(hostname)s.%(domainname)s' % ucr
         return os.path.join('/etc/univention/ssl', hostname)
 
@@ -131,10 +127,8 @@ class SPCertificate:
 
 class SamlTest:
     def __init__(self, username, password, use_kerberos=False):
-        self.ucr = configRegistry.ConfigRegistry()
-        self.ucr.load()
         self.use_kerberos = use_kerberos
-        self.target_sp_hostname = '%(hostname)s.%(domainname)s' % self.ucr
+        self.target_sp_hostname = '%(hostname)s.%(domainname)s' % ucr
         self.username = username
         self.password = password
         self.session = requests.Session()

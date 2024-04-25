@@ -10,16 +10,13 @@ from os.path import ismount, join
 from subprocess import PIPE, Popen, call
 from time import sleep
 
+from univention.config_registry import ucr
 from univention.testing.strings import random_name, random_username
-from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import fail, wait_for_replication
 
 
 if __name__ == '__main__':
-    ucr = UCSTestConfigRegistry()
-    ucr.load()
-
     with UCSTestUDM() as udm:
         share_name = random_name()
         share_path = join('/mnt', share_name)

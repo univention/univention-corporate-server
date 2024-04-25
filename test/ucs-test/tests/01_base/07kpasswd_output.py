@@ -26,12 +26,8 @@ import tempfile
 
 import pexpect
 
-import univention.config_registry
 import univention.testing.udm as udm_test
-
-
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
+from univention.config_registry import ucr
 
 
 def create_ssh_session(username, password):

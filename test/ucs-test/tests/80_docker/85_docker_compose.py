@@ -10,6 +10,8 @@ import subprocess
 import pytest
 from ruamel import yaml
 
+from univention.config_registry import ucr_live as ucr
+
 from dockertest import App, get_app_name
 
 
@@ -91,9 +93,6 @@ def test_docker_compose(appcenter):
         app.execute_command_in_container(f'ls /var/lib/univention-appcenter/apps/{name}/data/test1.txt')
         image = subprocess.check_output(['docker', 'inspect', app.container_id, '--format={{.Config.Image}}'], text=True).strip()
         assert image == 'docker-test.software-univention.de/alpine:3.7'
-        from univention.config_registry import ConfigRegistry
-        ucr = ConfigRegistry()
-        ucr.load()
         network = ucr.get('appcenter/apps/' + name + '/ip')
         assert network == '172.16.1.0/24', network
         yml_file = f'/var/lib/univention-appcenter/apps/{name}/compose/docker-compose.yml'

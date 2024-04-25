@@ -40,7 +40,7 @@ import psutil
 from retrying import retry
 
 import univention.uldap
-from univention.config_registry import ConfigRegistry, ucs_live as ucr
+from univention.config_registry import ucr_live as ucr
 from univention.testing.strings import random_int, random_name
 from univention.testing.utils import UCSTestDomainAdminCredentials
 
@@ -108,26 +108,16 @@ def __fetch_schema_from_uri(ldap_uri: str) -> Tuple[str, ldap.schema.subentry.Su
 
 
 def fetch_schema_from_ldap_master() -> Tuple[str, ldap.schema.subentry.SubSchema]:
-    ucr = ConfigRegistry()
-    ucr.load()
-
     ldap_uri = 'ldap://%(ldap/master)s:%(ldap/master/port)s' % ucr
     return __fetch_schema_from_uri(ldap_uri)
 
 
 def fetch_schema_from_local_ldap() -> Tuple[str, ldap.schema.subentry.SubSchema]:
-    ucr = ConfigRegistry()
-    ucr.load()
-
     ldap_uri = 'ldap://%(hostname)s:%(domainname)s' % ucr
-
     return __fetch_schema_from_uri(ldap_uri)
 
 
 def get_ldap_master_connection(user_dn: str) -> univention.uldap.access:
-    ucr = ConfigRegistry()
-    ucr.load()
-
     return univention.uldap.access(host=ucr.get('ldap/master'), port=ucr.get_int('ldap/master/port', 7389), base=ucr.get('ldap/base'), binddn=user_dn, bindpw='univention')
 
 

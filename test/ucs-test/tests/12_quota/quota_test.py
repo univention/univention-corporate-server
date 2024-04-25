@@ -2,8 +2,8 @@ import os
 import subprocess
 
 import univention.testing.strings as uts
-import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+from univention.config_registry import ucr
 from univention.lib.fstab import Entry, File
 from univention.testing import utils
 from univention.testing.umc import Client
@@ -14,8 +14,6 @@ import quota_cache as qc
 class QuotaCheck:
 
     def __init__(self, quota_type="usrquota", fs_type="ext4"):
-        ucr = ucr_test.UCSTestConfigRegistry()
-        ucr.load()
         self.ldap_base = ucr.get('ldap/base')
         self.my_fqdn = '%(hostname)s.%(domainname)s' % ucr
         account = utils.UCSTestDomainAdminCredentials()

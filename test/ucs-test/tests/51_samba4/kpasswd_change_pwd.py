@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 
 import pexpect
 
-import univention.config_registry
+from univention.config_registry import ucr
 
 
 if __name__ == "__main__":
@@ -20,9 +20,6 @@ if __name__ == "__main__":
     if not opts.username or not opts.password or not opts.newpassword:
         parser.print_help()
         sys.exit(1)
-
-    ucr = univention.config_registry.ConfigRegistry()
-    ucr.load()
 
     cmd = 'kpasswd'
     if opts.adminname:

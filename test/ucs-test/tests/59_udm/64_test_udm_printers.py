@@ -18,14 +18,13 @@ import shlex
 import subprocess
 import sys
 import time
-from typing import Mapping
 
 import pytest
 from ldap.filter import filter_format
 
 import univention.testing.strings as uts
 import univention.testing.ucr
-from univention.config_registry import ucr as _ucr
+from univention.config_registry import ucr
 from univention.testing import utils
 
 
@@ -36,22 +35,20 @@ samba_common_bin_installed = utils.package_installed('samba-common-bin')
 PRINTER_PROTOCOLS = ['usb://', 'ipp://', 'socket://', 'parallel://', 'http://']
 
 
-def random_fqdn(ucr: Mapping[str, str]) -> str:
+def random_fqdn() -> str:
     return '%s.%s' % (uts.random_name(), ucr.get('domainname'))
 
 
 @pytest.mark.tags('udm')
 @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 @pytest.mark.exposure('careful')
-def test_create_printer(ucr, udm):
+def test_create_printer(udm):
     """Create shares/printer and verify LDAP object"""
-    ucr.load()
-
     properties = {
         'name': uts.random_name(),
         'location': uts.random_string(),
         'description': uts.random_name(),
-        'spoolHost': random_fqdn(ucr),
+        'spoolHost': random_fqdn(),
         'uri': '%s %s' % (random.choice(PRINTER_PROTOCOLS), uts.random_ip()),
         'model': 'foomatic-rip/Generic-PCL_4_Printer-gutenprint-ijs-simplified.5.2.ppd',
         'producer': 'cn=Generic,cn=cups,cn=univention,%s' % (ucr.get('ldap/base'),),
@@ -98,7 +95,7 @@ def test_create_printer(ucr, udm):
 @pytest.mark.tags('udm')
 @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 @pytest.mark.exposure('careful')
-def test_create_printer_and_check_printing_works(ucr, udm):
+def test_create_printer_and_check_printing_works(udm):
     """Create shares/printer and check if print access works"""
     account = utils.UCSTestDomainAdminCredentials()
 
@@ -181,11 +178,9 @@ def test_create_printer_and_check_printing_works(ucr, udm):
 @pytest.mark.tags('udm')
 @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 @pytest.mark.exposure('careful')
-def test_create_printergroup(ucr, udm):
+def test_create_printergroup(udm):
     """Create shares/printergroup and verify LDAP object"""
-    ucr.load()
-
-    spoolHost = random_fqdn(ucr)
+    spoolHost = random_fqdn()
 
     printer_properties1 = {
         'name': uts.random_name(),
@@ -250,7 +245,7 @@ def test_create_printergroup(ucr, udm):
 
 
 @pytest.mark.skipif(not printserver_installed, reason='Missing software: univention-printserver')
-@pytest.mark.skipif(_ucr['version/version'] == '5.1', reason='List not accurate in UCS 5.1 interim release')
+@pytest.mark.skipif(ucr['version/version'] == '5.1', reason='List not accurate in UCS 5.1 interim release')
 @pytest.mark.tags('udm')
 @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
 @pytest.mark.exposure('safe')

@@ -15,8 +15,8 @@
 import time
 
 import univention.testing.strings as uts
-import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+from univention.config_registry import ucr
 from univention.testing import utils
 
 from essential.mail import file_search_mail, send_mail
@@ -24,8 +24,6 @@ from essential.mail import file_search_mail, send_mail
 
 def main():
     TIMEOUT = 60
-    ucr = ucr_test.UCSTestConfigRegistry()
-    ucr.load()
     with udm_test.UCSTestUDM() as udm:
         domain = ucr.get('domainname')
         group_mail = 'g%s@%s' % (uts.random_string(), domain)

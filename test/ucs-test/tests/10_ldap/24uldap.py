@@ -18,12 +18,8 @@ from unittest import TestCase, main, skip, skipUnless
 import ldap
 
 from univention import uldap
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ConfigRegistry, ucr
 from univention.testing.utils import retry_on_error
-
-
-ucr = ConfigRegistry()
-ucr.load()
 
 
 class FakeUcr:

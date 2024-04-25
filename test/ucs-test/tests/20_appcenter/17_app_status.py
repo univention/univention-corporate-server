@@ -14,7 +14,7 @@ import requests
 import urllib3
 
 from univention.appcenter.app_cache import Apps
-from univention.appcenter.ucr import ucr_get
+from univention.config_registry import ucr
 from univention.testing import utils
 
 from appcentertest import get_requested_apps
@@ -27,8 +27,8 @@ urllib3.disable_warnings()
 def check_status(app):
     if app.docker:
         print('    Checking running Docker Container')
-        assert ucr_get('appcenter/apps/%s/status' % app.id) == 'installed'
-        container = ucr_get('appcenter/apps/%s/container' % app.id)
+        assert ucr['appcenter/apps/%s/status' % app.id] == 'installed'
+        container = ucr.get('appcenter/apps/%s/container' % app.id)
         output = subprocess.check_output(['docker', 'inspect', '-f', '{{.State.Running}}', container]).decode().rstrip('\n')
         if output != 'true':
             utils.fail('ERROR: Container not running!')
@@ -43,7 +43,7 @@ def check_status(app):
             print('    No appbox image, not checking packages')
     else:
         packages = app.default_packages
-        if ucr_get('server/role') in ['domaincontroller_master', 'domaincontroller_backup']:
+        if ucr['server/role'] in ['domaincontroller_master', 'domaincontroller_backup']:
             packages.extend(app.default_packages_master)
         print('    Checking packages', ', '.join(packages))
         output = subprocess.check_output(['dpkg', '-s'] + packages, stderr=subprocess.STDOUT).decode('utf-8')
@@ -54,13 +54,13 @@ def check_status(app):
 
 
 def check_ldap(app, apps):
-    dn = 'univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s' % (app.id, app.version, app.id, ucr_get('ldap/base'))
+    dn = 'univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s' % (app.id, app.version, app.id, ucr['ldap/base'])
     utils.verify_ldap_object(dn, {'univentionAppVersion': [app.version]})
-    utils.verify_ldap_object(dn, {'univentionAppName': ['[en] %s' % app.name], 'univentionAppInstalledOnServer': ['%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))]}, strict=False)
+    utils.verify_ldap_object(dn, {'univentionAppName': ['[en] %s' % app.name], 'univentionAppInstalledOnServer': ['%(hostname)s.%(domainname)s' % ucr]}, strict=False)
     for app_version in apps.get_all_apps_with_id(app.id):
         if app_version == app:
             continue
-        dn = 'univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s' % (app_version.id, app_version.version, app_version.id, ucr_get('ldap/base'))
+        dn = 'univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s' % (app_version.id, app_version.version, app_version.id, ucr['ldap/base'])
         utils.verify_ldap_object(dn, should_exist=False)
 
 
@@ -70,7 +70,7 @@ def check_webinterface(app):
         return
     print('    Webinterface for', app)
     if app.has_local_web_interface():
-        fqdn = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
+        fqdn = '%(hostname)s.%(domainname)s' % ucr
         if app.web_interface_port_http:
             port = app.web_interface_port_http
             if app.auto_mod_proxy:

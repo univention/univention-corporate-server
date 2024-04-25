@@ -49,7 +49,7 @@ import univention.appcenter.log as app_logger
 from univention.appcenter.actions import get_action
 from univention.appcenter.app_cache import AppCenterCache, Apps
 from univention.appcenter.utils import get_local_fqdn
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr_live
 from univention.testing import debian_package, utils
 from univention.testing.umc import Client
 
@@ -356,8 +356,7 @@ class CheckOperations:
     def __init__(self, application, info):
         self.application = application
         self.info = info
-        self.ucr = ConfigRegistry()
-        self.ucr.load()
+        self.ucr = ucr_live
 
     @classmethod
     def installed(cls, application, info):

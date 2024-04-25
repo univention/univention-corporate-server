@@ -10,8 +10,8 @@ import subprocess
 import ldap
 
 import univention.testing.strings as uts
-import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+from univention.config_registry import ucr
 from univention.testing import utils
 
 import quota_cache as qc
@@ -35,9 +35,6 @@ def rename_share(dn):
 
 
 if __name__ == '__main__':
-    ucr = ucr_test.UCSTestConfigRegistry()
-    ucr.load()
-
     my_fqdn = '%(hostname)s.%(domainname)s' % ucr
 
     with udm_test.UCSTestUDM() as udm:

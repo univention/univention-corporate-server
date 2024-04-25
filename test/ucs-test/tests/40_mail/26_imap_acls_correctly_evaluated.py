@@ -13,6 +13,7 @@ import univention.config_registry
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+from univention.config_registry import ucr
 from univention.testing import utils
 
 from essential.mail import check_delivery, create_shared_mailfolder, send_mail
@@ -21,10 +22,8 @@ from essential.mailclient import MailClient_SSL
 
 def main():
     with udm_test.UCSTestUDM() as udm:
-        ucr_tmp = univention.config_registry.ConfigRegistry()
-        ucr_tmp.load()
-        domain = ucr_tmp.get('domainname').lower()  # remove lower() when Bug #39721 is fixed
-        host = '%s.%s' % (ucr_tmp.get('hostname'), domain)
+        domain = ucr.get('domainname').lower()  # remove lower() when Bug #39721 is fixed
+        host = '%s.%s' % (ucr.get('hostname'), domain)
 
         cmd = ['/etc/init.d/dovecot', 'restart']
         with utils.AutoCallCommand(exit_cmd=cmd, stderr=subprocess.DEVNULL):

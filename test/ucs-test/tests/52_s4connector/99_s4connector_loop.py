@@ -13,13 +13,9 @@ import subprocess
 import time
 
 import univention.testing.udm as udm_test
-from univention.config_registry import ConfigRegistry, handler_set as ucr_set
+from univention.config_registry import handler_set as ucr_set, ucr
 from univention.testing import strings
 from univention.testing.utils import LDAPReplicationFailed, fail, wait_for_replication_and_postrun
-
-
-ucr = ConfigRegistry()
-ucr.load()
 
 
 # create computer

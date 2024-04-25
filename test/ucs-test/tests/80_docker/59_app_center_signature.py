@@ -10,7 +10,7 @@ from subprocess import call
 
 import pytest
 
-from univention.config_registry import ConfigRegistry, handler_set
+from univention.config_registry import handler_set, ucr_live as ucr
 from univention.testing.utils import fail
 
 from dockertest import Appcenter
@@ -96,8 +96,6 @@ def test_index_with_gpg(appcenter):
 
 
 def test_modify_index(appcenter):
-    ucr = ConfigRegistry()
-    ucr.load()
     f = f'/var/www/meta-inf/{appcenter.vv}'
     # this just so that all.tar gets newly synced
     call('rm /var/cache/univention-appcenter/%(fqdn)s/%(vv)s/.etags' % {'vv': appcenter.vv, 'fqdn': '%(hostname)s.%(domainname)s' % appcenter.ucr}, shell=True)

@@ -10,8 +10,8 @@
 import subprocess
 
 import univention.testing.strings as uts
-import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+from univention.config_registry import ucr
 from univention.testing import utils
 
 
@@ -24,9 +24,6 @@ def get_license_count(key):
 
 
 if __name__ == '__main__':
-    ucr = ucr_test.UCSTestConfigRegistry()
-    ucr.load()
-
     license_mapping = {
         '1': {
             'Accounts': [{

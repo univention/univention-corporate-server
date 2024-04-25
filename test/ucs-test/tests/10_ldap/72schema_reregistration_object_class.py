@@ -13,13 +13,10 @@ from time import sleep
 
 from ldap_extension_utils import call_join_script, call_unjoin_script, get_package_name, get_schema_name
 
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.testing.debian_package import DebianPackage
 from univention.testing.utils import verify_ldap_object
 
-
-ucr = ConfigRegistry()
-ucr.load()
 
 package_name = get_package_name()
 schema_name = get_schema_name()

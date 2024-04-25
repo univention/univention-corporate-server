@@ -18,7 +18,7 @@ import traceback
 import ldap
 from retrying import retry
 
-from univention.config_registry import ConfigRegistry, ucr
+from univention.config_registry import ucr
 from univention.management.console.modules import diagnostic
 from univention.testing.strings import random_int
 from univention.testing.utils import fail
@@ -57,9 +57,6 @@ def __fetch_schema_from_uri(ldap_uri):
 
 
 def fetch_schema_from_ldap_master():
-    ucr = ConfigRegistry()
-    ucr.load()
-
     ldap_uri = 'ldap://%(ldap/master)s:%(ldap/master/port)s' % ucr
     return __fetch_schema_from_uri(ldap_uri)
 

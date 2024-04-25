@@ -6,8 +6,8 @@
 ##   - univention-quota
 
 import univention.testing.strings as uts
-import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+from univention.config_registry import ucr
 from univention.testing import utils
 
 import quota_cache as qc
@@ -40,9 +40,6 @@ def append_policy(dn, udm_type, policy):
 
 
 if __name__ == '__main__':
-    ucr = ucr_test.UCSTestConfigRegistry()
-    ucr.load()
-
     with udm_test.UCSTestUDM() as udm:
         ou_dn = udm.create_object('container/ou', name=uts.random_name())
         share1 = create_share(ou_dn)

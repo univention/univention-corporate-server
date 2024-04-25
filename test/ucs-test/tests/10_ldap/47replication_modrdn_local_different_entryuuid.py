@@ -19,16 +19,13 @@ import ldap
 
 import univention.testing.udm as udm_test
 import univention.uldap
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.testing import utils
 from univention.testing.strings import random_name
 from univention.testing.utils import wait_for_replication
 
 
 success = True
-
-ucr = ConfigRegistry()
-ucr.load()
 
 UDM_MODULE = 'computers/ipmanagedclient'
 

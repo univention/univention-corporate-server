@@ -18,9 +18,9 @@
 import subprocess
 import time
 
-import univention.config_registry as configRegistry
 import univention.testing.udm as udm_test
 from univention import uldap
+from univention.config_registry import ucr
 from univention.testing import utils
 
 
@@ -44,7 +44,7 @@ class cmd:
         return cmd.returncode == 0
 
 
-def test_ldap_connection(ucr, user_dn, password):
+def test_ldap_connection(user_dn, password):
     print("Testing ldap connection")
     if ucr.get('server/role').startswith('domaincontroller_'):
         access = uldap.access(binddn=user_dn, bindpw=password)
@@ -54,7 +54,7 @@ def test_ldap_connection(ucr, user_dn, password):
         print(f"{key} = {value}")
 
 
-def test_samba_connection(ucr, username, password):
+def test_samba_connection(username, password):
     # In case of a memberserver in a S4 environment, we have to
     # wait until the user has been synchronized to Samba 4. Otherwise
     # we can't get a kerberos ticket
@@ -82,14 +82,11 @@ def test_samba_connection(ucr, username, password):
 
 
 def test(password="univention"):
-    ucr = configRegistry.ConfigRegistry()
-    ucr.load()
-
     with udm_test.UCSTestUDM() as udm:
         (user_dn, username) = udm.create_user(wait_for=True)
 
-        test_ldap_connection(ucr, user_dn, password)
-        test_samba_connection(ucr, username, password)
+        test_ldap_connection(user_dn, password)
+        test_samba_connection(username, password)
 
 
 if __name__ == '__main__':

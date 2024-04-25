@@ -15,12 +15,9 @@ from typing import Dict, Set
 import py.path
 import pytest
 
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.config_registry.handler import EXECUTE_TOKEN, run_filter
 
-
-ucr = ConfigRegistry()
-ucr.load()
 
 VERSIONS = (2, 3)
 BASE_DIR = "/etc/univention/templates/files/"

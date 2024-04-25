@@ -12,12 +12,8 @@ import subprocess
 import time
 
 import univention.s4connector.s4
-from univention.config_registry import ConfigRegistry, handler_set as ucr_set
+from univention.config_registry import handler_set as ucr_set, ucr
 from univention.testing.utils import LDAPReplicationFailed, fail, wait_for_replication_and_postrun
-
-
-ucr = ConfigRegistry()
-ucr.load()
 
 
 def get_rejected():

@@ -10,7 +10,7 @@ from random import sample
 
 import univention.admin
 from univention.admin.rest.client import UDM as UDM_REST
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.testing import utils
 from univention.udm import UDM
 
@@ -20,8 +20,6 @@ USER_WITH_NESTED_GROUPS = ['testuser160549', 'testuser549', 'testuser120549', 't
 
 
 users_mod = UDM.machine().version(2).get('users/user')
-ucr = ConfigRegistry()
-ucr.load()
 admin_account = utils.UCSTestDomainAdminCredentials()
 udm_rest = UDM_REST(
     uri='https://%(hostname)s.%(domainname)s/univention/udm/' % ucr,

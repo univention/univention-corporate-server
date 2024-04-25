@@ -9,7 +9,7 @@ import subprocess
 
 import pytest
 
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr_live as ucr
 
 from dockertest import App
 
@@ -57,8 +57,6 @@ def test_docker_env_file(appcenter, app_name):
         env_file = f'/var/lib/univention-appcenter/apps/{app_name}/compose/{app_name}.env'
         subprocess.call(['ls', '-la', env_file])
         env_content = open(env_file).read()
-        ucr = ConfigRegistry()
-        ucr.load()
         assert (f'TEST_HOSTNAME={ucr.get("hostname")}') in env_content, env_content
         env_container = subprocess.check_output(['univention-app', 'shell', app_name, 'env'], text=True)
         assert (f'TEST_HOSTNAME={ucr.get("hostname")}') in env_container, env_container

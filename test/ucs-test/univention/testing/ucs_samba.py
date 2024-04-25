@@ -20,7 +20,7 @@ from samba.auth import system_session
 from samba.param import LoadParm
 from samba.samdb import SamDB
 
-from univention import config_registry
+from univention.config_registry import ucr
 from univention.testing.utils import package_installed
 
 
@@ -68,8 +68,6 @@ def wait_for_drs_replication(ldap_filter: str, attrs: List[str] | str | None = N
     if not controls:
         controls = ["domain_scope:0"]
     if base is None:
-        ucr = config_registry.ConfigRegistry()
-        ucr.load()
         base = ucr['samba4/ldap/base']
     else:
         if len(ldap.dn.str2dn(base)[0]) > 1:
@@ -158,8 +156,6 @@ def force_drs_replication(source_dc: str | None = None, destination_dc: str | No
         return 0
 
     if not partition_dn:
-        ucr = config_registry.ConfigRegistry()
-        ucr.load()
         partition_dn = str(ucr.get('samba4/ldap/base'))
         print("USING partition_dn:", partition_dn)
 
@@ -175,9 +171,6 @@ def _ldap_replication_complete(verbose: bool = True) -> bool:
 
 
 def wait_for_s4connector(timeout: int = 360, delta_t: int = 1, s4cooldown_t: int = 5) -> int:
-    ucr = config_registry.ConfigRegistry()
-    ucr.load()
-
     if not package_installed('univention-s4-connector'):
         print('wait_for_s4connector(): skip, univention-s4-connector not installed.')
         return 0

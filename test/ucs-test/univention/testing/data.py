@@ -29,7 +29,7 @@ import retrying
 import yaml
 from apt_pkg import Error as Apt_Pkg_Error
 
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.testing.codes import Reason
 from univention.testing.errors import TestError
 from univention.testing.internal import UCSVersion
@@ -119,8 +119,7 @@ class TestEnvironment:
 
     def _load_ucr(self) -> None:
         """Load Univention Config Registry information."""
-        self.ucr = ConfigRegistry()
-        self.ucr.load()
+        self.ucr = ucr
         self.role = self.ucr.get('server/role', '')
         TestEnvironment.logger.debug('Role=%r' % self.role)
 

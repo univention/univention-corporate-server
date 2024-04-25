@@ -18,8 +18,8 @@
 import time
 
 import univention.testing.strings as uts
-import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+from univention.config_registry import ucr
 from univention.testing import utils
 
 from essential.mail import file_search_mail, send_mail
@@ -31,16 +31,13 @@ TIMEOUT = 120
 class Tester:
     def __init__(self):
         self.udm = udm_test.UCSTestUDM()
-        self.ucr = ucr_test.UCSTestConfigRegistry()
 
     def __enter__(self):
         self.udm.__enter__()
-        self.ucr.__enter__()
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.udm.__exit__(exc_type, exc_value, traceback)
-        self.ucr.__exit__(exc_type, exc_value, traceback)
 
     def test(self):
         mailsToTest, users = self.create_users_and_mail_addresses()
@@ -56,7 +53,7 @@ class Tester:
     def create_users_and_mail_addresses(self):
         mailsToTest = []
         users = []
-        domain = self.ucr.get('domainname')
+        domain = ucr.get('domainname')
         mails = [
             'BIG%ssmall@%s' % (uts.random_string(), domain),
             '%s.t.o.c@%s' % (uts.random_string(), domain),
@@ -66,7 +63,7 @@ class Tester:
         for mail in mails:
             _userdn, username = self.udm.create_user(
                 set={
-                    'mailHomeServer': '%s.%s' % (self.ucr.get('hostname'), domain),
+                    'mailHomeServer': '%s.%s' % (ucr.get('hostname'), domain),
                     'mailPrimaryAddress': mail,
                 },
             )

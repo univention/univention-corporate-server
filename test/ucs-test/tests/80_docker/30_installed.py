@@ -7,7 +7,7 @@
 
 import pytest
 
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr_live as ucr
 
 from dockertest import App, get_app_name, get_app_version, tiny_app
 
@@ -30,8 +30,6 @@ def test_docker(appcenter):
 
         appcenter.update()
 
-        ucr = ConfigRegistry()
-        ucr.load()
         codes_old = ucr.get('repository/app_center/installed').split('-')
         assert 'D1' not in codes_old, 'Wrong old Codes: %r' % codes_old
         assert 'D2' not in codes_old, 'Wrong old Codes: %r' % codes_old
@@ -40,7 +38,6 @@ def test_docker(appcenter):
         app_docker1.install()
         app_nondocker.install()
 
-        ucr.load()
         codes_new = ucr.get('repository/app_center/installed').split('-')
 
         assert 'D1' in codes_new, 'Wrong new Codes: %r' % codes_new

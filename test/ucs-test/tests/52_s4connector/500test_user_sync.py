@@ -10,6 +10,7 @@ import ldap
 import pytest
 
 import univention.testing.connector_common as tcommon
+from univention.config_registry import ucr
 from univention.testing.connector_common import (
     NormalUser, SpecialUser, Utf8User, create_con_user, create_udm_user, delete_con_user, delete_udm_user,
 )
@@ -113,7 +114,7 @@ def test_user_sync_from_s4_to_udm_with_rename(user_class, sync_mode):
         tcommon.verify_udm_object("users/user", udm_user_dn, None)
         udm_user_dn = ldap.dn.dn2str([
             [("uid", tcommon.to_unicode(udm_user.rename.get("username")), ldap.AVA_STRING)],
-            [("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(tcommon.configRegistry['ldap/base']))
+            [("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(ucr['ldap/base']))
         tcommon.verify_udm_object("users/user", udm_user_dn, udm_user.rename)
 
         delete_con_user(s4, s4_user_dn, udm_user_dn, s4connector.wait_for_sync)
@@ -136,7 +137,7 @@ def test_user_sync_from_s4_to_udm_with_move(user_class, sync_mode):
         tcommon.verify_udm_object("users/user", udm_user_dn, None)
         udm_user_dn = ldap.dn.dn2str([
             [("uid", tcommon.to_unicode(udm_user.basic.get("username")), ldap.AVA_STRING)],
-            [("CN", udm_user.container, ldap.AVA_STRING)]] + ldap.dn.str2dn(tcommon.configRegistry['ldap/base']))
+            [("CN", udm_user.container, ldap.AVA_STRING)]] + ldap.dn.str2dn(ucr['ldap/base']))
         tcommon.verify_udm_object("users/user", udm_user_dn, udm_user.basic)
 
         delete_con_user(s4, s4_user_dn, udm_user_dn, s4connector.wait_for_sync)

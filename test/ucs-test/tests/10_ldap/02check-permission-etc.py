@@ -16,7 +16,7 @@ import pwd
 import stat
 import sys
 
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 
 
 RETURN_PASS_CODE = 100
@@ -33,9 +33,6 @@ def main():
         ("/etc/slave-join.secret", "Slave Join"),
     ]  # filepaths and groupnames to check
     shouldowner = "root"
-
-    ucr = ConfigRegistry()
-    ucr.load()
 
     try:
         for filename, filegroup in filenames_groups:

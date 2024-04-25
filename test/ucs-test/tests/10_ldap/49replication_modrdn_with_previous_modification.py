@@ -21,15 +21,12 @@ import ldap
 
 import univention.testing.udm as udm_test
 from univention import uldap
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.testing.strings import random_name
 from univention.testing.utils import restart_listener, start_listener, stop_listener, wait_for_replication
 
 
 success = True
-
-ucr = ConfigRegistry()
-ucr.load()
 
 
 def get_entryUUID(lo, dn):

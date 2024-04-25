@@ -15,7 +15,7 @@ from subprocess import PIPE, Popen
 from sys import exit
 
 import univention.winexe
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.testing import utils
 from univention.testing.codes import Reason
 from univention.testing.strings import random_username
@@ -408,10 +408,8 @@ if __name__ == '__main__':
     GPOs are applied using 'Security Filtering',
     'Authenticated Users' are set to have only GpoRead permissions.
     """
-    ucr = ConfigRegistry()
-    ucr.load()
-
     account = utils.UCSTestDomainAdminCredentials()
+
     windows_admin = ucr.get('tests/windowsadmin/account', 'Administrator')
     windows_admin_password = ucr.get('tests/windowsadmin/pwd', 'univention')
     domainname = ucr.get('domainname')

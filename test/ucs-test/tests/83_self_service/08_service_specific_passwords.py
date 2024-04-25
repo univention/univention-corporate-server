@@ -18,7 +18,6 @@ import pytest
 from selenium.webdriver.common.by import By
 
 import univention.admin.uldap
-from univention.config_registry import handler_set as hs
 from univention.testing import utils
 from univention.testing.ucr import UCSTestConfigRegistry
 
@@ -34,8 +33,7 @@ except ImportError:
 @pytest.fixture(scope="module", autouse=True)
 def activate_self_registration():
     with UCSTestConfigRegistry() as ucr:
-        hs(['umc/self-service/service-specific-passwords/backend/enabled=true'])
-        hs(['radius/use-service-specific-password=true'])
+        ucr.handler_set(['umc/self-service/service-specific-passwords/backend/enabled=true', 'radius/use-service-specific-password=true'])
         yield ucr
 
 

@@ -16,12 +16,8 @@ from time import sleep
 
 import psutil
 
-from univention.config_registry import ConfigRegistry, handler_set
+from univention.config_registry import handler_set, ucr as UCR
 from univention.testing.utils import fail
-
-
-UCR = ConfigRegistry()
-UCR.load()
 
 
 def restore_retry_count():

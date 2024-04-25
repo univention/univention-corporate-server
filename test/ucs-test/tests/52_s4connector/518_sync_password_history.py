@@ -13,20 +13,17 @@ import subprocess
 import ldap
 import pytest
 
-import univention.config_registry
+import univention.admin.uldap
 import univention.testing.connector_common as tcommon
 import univention.testing.strings as tstrings
 from univention.admin import modules
+from univention.config_registry import ucr
 from univention.testing.connector_common import NormalUser, create_udm_user, delete_con_user, to_unicode
 from univention.testing.udm import UCSTestUDM, UCSTestUDM_ModifyUDMObjectFailed
 from univention.testing.utils import get_ldap_connection
 
 import s4connector
 from s4connector import connector_running_on_this_host, connector_setup
-
-
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
 
 
 class S4HistSync_Exception(Exception):
@@ -57,12 +54,12 @@ def create_s4_user(username, password, **kwargs):
     if child.returncode:
         raise S4CreateUser_Exception({'module': 'users/user', 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
 
-    new_position = 'cn=users,%s' % configRegistry.get('connector/s4/ldap/base')
+    new_position = 'cn=users,%s' % ucr.get('connector/s4/ldap/base')
     con_user_dn = f'cn={ldap.dn.escape_dn_chars(tcommon.to_unicode(username))},{new_position}'
 
     udm_user_dn = ldap.dn.dn2str([
         [("uid", to_unicode(username), ldap.AVA_STRING)],
-        [("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(configRegistry.get('ldap/base')))
+        [("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(ucr.get('ldap/base')))
     s4connector.wait_for_sync()
     return (con_user_dn, udm_user_dn)
 
@@ -157,7 +154,7 @@ def test_empty_pwd_policy():
         udm_user = NormalUser()
         (udm_user_dn, s4_user_dn) = create_udm_user(udm, s4, udm_user, s4connector.wait_for_sync)
 
-        base_dn = configRegistry.get('ldap/base')
+        base_dn = ucr.get('ldap/base')
         lo = get_ldap_connection(admin_uldap=True)
         position = univention.admin.uldap.position(lo.base)
         modules.update()

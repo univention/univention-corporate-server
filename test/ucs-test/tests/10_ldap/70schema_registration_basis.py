@@ -17,13 +17,10 @@ from ldap_extension_utils import (
     get_schema_name,
 )
 
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.testing.debian_package import DebianPackage
 from univention.testing.utils import fail
 
-
-ucr = ConfigRegistry()
-ucr.load()
 
 package_name = get_package_name()
 schema_name = get_schema_name()

@@ -11,8 +11,8 @@ import sys
 from time import sleep
 
 from univention.appcenter.app_cache import Apps
-from univention.appcenter.ucr import ucr_get
 from univention.appcenter.udm import ApplicationLDAPObject, get_machine_connection
+from univention.config_registry import ucr
 from univention.testing import utils
 from univention.testing.codes import Reason
 
@@ -80,7 +80,7 @@ if __name__ == '__main__':
                      "0.1 'rev 1.3'", "0.1 !@#$%^*-")
 
     print("\nChecking an App with id '%s'" % APP_ID)
-    ldap_base = ucr_get('ldap/base')
+    ldap_base = ucr['ldap/base']
 
     for version in test_versions:
         check_app_version_ldap_registraton(version)

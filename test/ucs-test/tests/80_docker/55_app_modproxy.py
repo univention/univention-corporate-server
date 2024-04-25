@@ -7,7 +7,7 @@
 
 import pytest
 
-from univention.testing.ucr import UCSTestConfigRegistry
+from univention.config_registry import ucr_live as ucr
 
 from dockertest import get_app_version, tiny_app_apache
 
@@ -15,8 +15,6 @@ from dockertest import get_app_version, tiny_app_apache
 @pytest.mark.exposure('dangerous')
 def test_app_modproxy(appcenter, app_name, app_version):
     # normal modproxy
-    ucr = UCSTestConfigRegistry()
-
     app = tiny_app_apache(app_name, app_version)
 
     try:
@@ -35,7 +33,6 @@ def test_app_modproxy(appcenter, app_name, app_version):
         app.verify(joined=False)
 
         app.verify_basic_modproxy_settings_tinyapp()
-        ucr.load()
         assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_http') == '80', ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_http')
         assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_https') == '443', ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_https')
 
@@ -66,7 +63,6 @@ def test_app_modproxy(appcenter, app_name, app_version):
         app.verify(joined=False)
 
         app.verify_basic_modproxy_settings_tinyapp(http=False, https=True)
-        ucr.load()
         assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_http') == '', ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_http')
         assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_https') == '443', ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_https')
 

@@ -2,16 +2,11 @@ import contextlib
 import subprocess
 from time import sleep
 
-import univention.config_registry
 import univention.testing.connector_common as tcommon
 import univention.testing.ucr as testing_ucr
-from univention.config_registry import handler_set as ucr_set
+from univention.config_registry import handler_set as ucr_set, ucr
 from univention.connector import ad
 from univention.testing import ldap_glue
-
-
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
 
 
 class ADConnection(ldap_glue.ADConnection):
@@ -23,7 +18,7 @@ class ADConnection(ldap_glue.ADConnection):
 
 
 def connector_running_on_this_host():
-    return configRegistry.is_true("connector/ad/autostart")
+    return ucr.is_true("connector/ad/autostart")
 
 
 def restart_adconnector():
@@ -38,7 +33,7 @@ def ad_in_sync_mode(sync_mode, configbase='connector'):
 
 
 def wait_for_sync(min_wait_time=0):
-    synctime = configRegistry.get_int("connector/ad/poll/sleep", 5)
+    synctime = ucr.get_int("connector/ad/poll/sleep", 5)
     synctime = ((synctime + 3) * 2)
     if min_wait_time > synctime:
         synctime = min_wait_time

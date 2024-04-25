@@ -12,15 +12,13 @@ import os.path
 import subprocess
 
 import univention.admin.modules as udm_modules
-import univention.config_registry as configRegistry
 import univention.testing.udm as udm_test
+from univention.config_registry import ucr
 from univention.testing import utils
 
 import samltest
 
 
-ucr = configRegistry.ConfigRegistry()
-ucr.load()
 udm_modules.update()
 
 

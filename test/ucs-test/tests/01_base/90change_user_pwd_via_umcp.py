@@ -12,7 +12,7 @@ from time import sleep
 import pytest
 
 import univention.testing.strings as uts
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.lib.umc import BadRequest
 from univention.testing import utils
 from univention.testing.udm import UCSTestUDM, UCSTestUDM_CreateUDMObjectFailed
@@ -27,9 +27,6 @@ def main():
     Tries to change user's password to a new (simple) one;
     Removes the test user and container.
     """
-    ucr = ConfigRegistry()
-    ucr.load()
-
     with UCSTestUDM() as udm:
         # create an ldap container:
         try:

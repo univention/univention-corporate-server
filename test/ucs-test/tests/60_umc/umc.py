@@ -3,7 +3,7 @@ import shutil
 import sys
 from time import sleep
 
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.lib.misc import custom_groupname
 from univention.lib.umc import ConnectionError, HTTPError
 from univention.testing import utils
@@ -20,8 +20,7 @@ class UMCBase:
         self.password = None
         self.hostname = None
         self.client = None
-        self.ucr = ConfigRegistry()
-        self.ucr.load()
+        self.ucr = ucr
         self.ldap_base = self.ucr.get('ldap/base')
 
     def request(self, *args, **kwargs):

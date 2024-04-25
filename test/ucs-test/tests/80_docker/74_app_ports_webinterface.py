@@ -7,7 +7,7 @@
 
 import pytest
 
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr_live as ucr
 
 from dockertest import get_app_version, tiny_app
 
@@ -29,8 +29,6 @@ def test_app_ports_webinterface(appcenter, app_name):
             appcenter.update()
             app.install()
 
-            ucr = ConfigRegistry()
-            ucr.load()
             if mod_proxy:
                 assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_http') == '80'
                 assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_https') == '443'

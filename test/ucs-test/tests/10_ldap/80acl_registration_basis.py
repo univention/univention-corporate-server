@@ -16,14 +16,10 @@ from ldap_extension_utils import (
     call_join_script, get_acl_name, get_container_name, get_package_name, set_container_description,
 )
 
-from univention.config_registry import ConfigRegistry
 from univention.testing.debian_package import DebianPackage
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import fail
 
-
-ucr = ConfigRegistry()
-ucr.load()
 
 with UCSTestUDM() as udm:
     package_name = get_package_name()

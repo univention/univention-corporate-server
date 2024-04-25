@@ -64,13 +64,14 @@ class UCSTestConfigRegistry(ConfigRegistry):
         ConfigRegistry.__init__(self, *args, **kwargs)
         self.__original_registry: Dict[int, Dict[str, str]] | None = None
 
-    def ucr_update(self, *args):
-        return univention.config_registry.frontend.ucr_update(*args)
+    def ucr_update(self, ucr: ConfigRegistry, changes: dict[str, str | None]) -> None:
+        assert not isinstance(ucr, UCSTestConfigRegistry), "MUST NOT be an UCSTestConfigRegistry instance"
+        return univention.config_registry.frontend.ucr_update(ucr, changes)
 
-    def handler_set(self, *args):
+    def handler_set(self, *args) -> None:
         return univention.config_registry.handler_set(*args)
 
-    def handler_unset(self, *args):
+    def handler_unset(self, *args) -> None:
         return univention.config_registry.handler_unset(*args)
 
     def load(self) -> None:

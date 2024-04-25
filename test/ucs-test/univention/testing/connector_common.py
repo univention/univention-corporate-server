@@ -10,13 +10,10 @@ import subprocess
 
 import ldap
 
-import univention.config_registry
 import univention.testing.strings as tstrings
+from univention.config_registry import ucr
 from univention.testing.udm import verify_udm_object
 
-
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
 
 UTF8_CHARSET = tstrings.STR_UMLAUT + "КирилицаКириллицаĆirilicaЋирилица" + "普通話普通话"
 # the CON sync can't # handle them (see bug #44373)
@@ -270,7 +267,7 @@ def create_con_user(con, udm_user, wait_for_sync):
     con_user_dn = con.createuser(username, **basic_con_user)
     udm_user_dn = ldap.dn.dn2str([
         [("uid", to_unicode(username), ldap.AVA_STRING)],
-        [("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(configRegistry.get('ldap/base')))
+        [("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(ucr.get('ldap/base')))
     wait_for_sync()
     verify_udm_object("users/user", udm_user_dn, udm_user.basic)
     return (basic_con_user, con_user_dn, udm_user_dn)
@@ -309,7 +306,7 @@ def create_con_group(con, udm_group, wait_for_sync):
     con_group_dn = con.group_create(groupname, **con_group)
     udm_group_dn = ldap.dn.dn2str([
         [("cn", groupname, ldap.AVA_STRING)],
-        [("CN", "groups", ldap.AVA_STRING)]] + ldap.dn.str2dn(configRegistry.get('ldap/base')))
+        [("CN", "groups", ldap.AVA_STRING)]] + ldap.dn.str2dn(ucr.get('ldap/base')))
     wait_for_sync()
     verify_udm_object("groups/group", udm_group_dn, udm_group.group)
     return (con_group, con_group_dn, udm_group_dn)

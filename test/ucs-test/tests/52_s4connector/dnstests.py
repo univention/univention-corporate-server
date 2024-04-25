@@ -7,13 +7,9 @@ import time
 
 import ldap
 
-import univention.config_registry
 import univention.testing.strings as uts
+from univention.config_registry import ucr
 from univention.testing import utils
-
-
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
 
 
 # Adding a DNS zone causes bind restart in postrun, so we may have to

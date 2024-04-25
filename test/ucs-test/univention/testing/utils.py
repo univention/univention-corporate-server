@@ -47,7 +47,7 @@ from typing import IO, Any, Callable, Dict, Iterable, List, Mapping, NoReturn, S
 import ldap
 
 from univention import uldap
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ConfigRegistry, ucr_live as ucr
 
 
 try:
@@ -58,8 +58,6 @@ except ImportError:
 S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
 FIREWALL_INIT_SCRIPT = '/etc/init.d/univention-firewall'
 SLAPD_INIT_SCRIPT = '/etc/init.d/slapd'
-
-UCR = ConfigRegistry()
 
 
 _T = TypeVar("_T")  # noqa: PYI018
@@ -104,10 +102,7 @@ class UCSTestDomainAdminCredentials:
     ''
     """
 
-    def __init__(self, ucr: ConfigRegistry | None = None) -> None:
-        if ucr is None:
-            ucr = UCR
-            ucr.load()
+    def __init__(self, ucr: ConfigRegistry = ucr) -> None:
         self.binddn = ucr.get('tests/domainadmin/account', 'uid=Administrator,cn=users,%(ldap/base)s' % ucr)
         self.pwdfile = ucr.get('tests/domainadmin/pwdfile')
         if self.pwdfile:
@@ -122,9 +117,6 @@ class UCSTestDomainAdminCredentials:
 
 
 def get_ldap_connection(admin_uldap: bool = False, primary: bool = False) -> access:
-    ucr = UCR
-    ucr.load()
-
     if primary:
         port = ucr.get_int('ldap/master/port', 7389)
         ldap_servers = [ucr['ldap/master']]
@@ -211,8 +203,6 @@ def verify_ldap_object(
     :raises LDAPObjectUnexpectedValue: if `strict=True` and a multi-value attribute of the LDAP object
             has more values than were listed in `expected_attr` or an `not_expected_attr` was found
     """
-    ucr = UCR
-    ucr.load()
     retry_count = ucr.get_int("tests/verify_ldap_object/retry_count", retry_count)
     delay = ucr.get_int("tests/verify_ldap_object/delay", delay)
 
@@ -296,9 +286,6 @@ def __verify_ldap_object(
 
 
 def s4connector_present() -> bool:
-    ucr = ConfigRegistry()
-    ucr.load()
-
     if ucr.is_true('directory/manager/samba3/legacy', False):
         return False
     if ucr.is_false('directory/manager/samba3/legacy', False):
@@ -468,8 +455,6 @@ def wait_for_replication_from_master_openldap_to_local_samba(replication_postrun
     """Wait for all kind of replications"""
     # the order matters!
     conditions: List[Tuple[ReplicationType, Any]] = [(ReplicationType.LISTENER, 'postrun' if replication_postrun else True)]
-    ucr = UCR
-    ucr.load()
     if ucr.get('samba4/ldap/base'):
         conditions.append((ReplicationType.S4C_FROM_UCS, ldap_filter))
     if ucr.get('server/role') in ('domaincontroller_backup', 'domaincontroller_slave'):
@@ -481,8 +466,6 @@ def wait_for_replication_from_local_samba_to_local_openldap(replication_postrun:
     """Wait for all kind of replications"""
     conditions = []
     # the order matters!
-    ucr = UCR
-    ucr.load()
     if ucr.get('server/role') in {'domaincontroller_backup', 'domaincontroller_slave'}:
         conditions.append((ReplicationType.DRS, ldap_filter))
     if ucr.get('samba4/ldap/base'):
@@ -613,8 +596,6 @@ def fail(log_message: str | None = None, returncode: int = 1) -> NoReturn:
 
 
 def uppercase_in_ldap_base() -> bool:
-    ucr = ConfigRegistry()
-    ucr.load()
     return not ucr.get('ldap/base').islower()
 
 

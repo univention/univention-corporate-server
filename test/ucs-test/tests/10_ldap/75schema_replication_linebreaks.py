@@ -20,14 +20,11 @@ from ldap_extension_utils import (
 
 import univention.testing.udm as udm_test
 import univention.uldap
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.testing.debian_package import DebianPackage
 from univention.testing.strings import random_name, random_string
 from univention.testing.utils import fail, wait_for_replication
 
-
-ucr = ConfigRegistry()
-ucr.load()
 
 package_name = get_package_name()
 schema_name = get_schema_name()

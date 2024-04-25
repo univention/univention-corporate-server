@@ -13,15 +13,14 @@
 import univention.admin.modules as udm_modules
 import univention.admin.objects
 import univention.testing.strings as uts
-import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+from univention.config_registry import ucr
 from univention.testing import utils
 from univention.testing.udm_extensions import call_cmd
 
 
-with ucr_test.UCSTestConfigRegistry() as ucr:
-    domain = ucr.get("domainname")
-    basedn = ucr.get("ldap/base")
+domain = ucr.get("domainname")
+basedn = ucr.get("ldap/base")
 
 lo = utils.get_ldap_connection(admin_uldap=True)
 univention.admin.modules.update()

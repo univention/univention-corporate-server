@@ -10,14 +10,10 @@ import base64
 
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
-from univention.config_registry import ConfigRegistry
 from univention.testing import utils
 
 
 if __name__ == '__main__':
-    ucr = ConfigRegistry()
-    ucr.load()
-
     with udm_test.UCSTestUDM() as udm:
         id = uts.random_name()
         name = uts.random_name()

@@ -9,15 +9,12 @@ import atexit
 
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.testing import utils
 from univention.testing.umc import Client
 
 
 if __name__ == '__main__':
-    ucr = ConfigRegistry()
-    ucr.load()
-
     # Since the S4 connector uses a object based synchronization,
     # it is a problem to change the same object in short intervals,
     # see https://forge.univention.org/bugzilla/show_bug.cgi?id=35336

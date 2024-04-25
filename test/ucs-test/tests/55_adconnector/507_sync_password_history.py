@@ -25,9 +25,10 @@ from samba.ndr import ndr_unpack
 from samba.net import Net
 from samba.param import LoadParm
 
-import univention.config_registry
 import univention.testing.connector_common as tcommon
 import univention.testing.strings as tstrings
+import univention.uldap
+from univention.config_registry import ucr
 from univention.connector.ad import kerberosAuthenticationFailed, netbiosDomainnameNotFound
 from univention.connector.ad.password import calculate_krb5keys, decrypt, decrypt_history
 from univention.testing.connector_common import NormalUser, create_udm_user, delete_con_user, to_unicode
@@ -41,10 +42,6 @@ from adconnector import connector_running_on_this_host, connector_setup
 AD = adconnector.ADConnection()
 
 from univention.testing.udm import UCSTestUDM, UCSTestUDM_ModifyUDMObjectFailed  # noqa: E402
-
-
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
 
 
 class ADHistSync_Exception(Exception):
@@ -66,13 +63,13 @@ class ADSetPassword_Exception(ADHistSync_Exception):
 
 def open_drs_connection():
 
-    ad_ldap_host = configRegistry.get("connector/ad/ldap/host")
-    ad_ldap_port = configRegistry.get('connector/ad/ldap/port')
-    ad_ldap_base = configRegistry.get('connector/ad/ldap/base')
-    ad_ldap_certificate = configRegistry.get('connector/ad/ldap/certificate')
+    ad_ldap_host = ucr.get("connector/ad/ldap/host")
+    ad_ldap_port = ucr.get('connector/ad/ldap/port')
+    ad_ldap_base = ucr.get('connector/ad/ldap/base')
+    ad_ldap_certificate = ucr.get('connector/ad/ldap/certificate')
 
-    tls_mode = 2 if configRegistry.is_true('connector/ad/ldap/ssl', True) else 0
-    ldaps = configRegistry.is_true('connector/ad/ldap/ldaps', False)  # tls or ssl
+    tls_mode = 2 if ucr.is_true('connector/ad/ldap/ssl', True) else 0
+    ldaps = ucr.is_true('connector/ad/ldap/ldaps', False)  # tls or ssl
 
     lo_ad = univention.uldap.access(
         host=ad_ldap_host, port=int(ad_ldap_port),
@@ -80,8 +77,8 @@ def open_drs_connection():
         use_ldaps=ldaps, ca_certfile=ad_ldap_certificate,
     )
 
-    ad_ldap_binddn = configRegistry.get('connector/ad/ldap/binddn')
-    ad_ldap_bindpw_file = configRegistry.get('connector/ad/ldap/bindpw')
+    ad_ldap_binddn = ucr.get('connector/ad/ldap/binddn')
+    ad_ldap_bindpw_file = ucr.get('connector/ad/ldap/bindpw')
     with open(ad_ldap_bindpw_file) as fd:
         ad_ldap_bindpw = fd.read().rstrip()
 
@@ -98,7 +95,7 @@ def open_drs_connection():
 
     lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
 
-    if configRegistry.is_true('connector/ad/ldap/kerberos'):
+    if ucr.is_true('connector/ad/ldap/kerberos'):
         os.environ['KRB5CCNAME'] = '/var/cache/univention-ad-connector/krb5.cc'
         get_kerberos_ticket(ad_ldap_bindpw, ad_ldap_binddn)
         auth = ldap.sasl.gssapi("")
@@ -115,7 +112,7 @@ def open_drs_connection():
         except ldap.LDAPError as msg:
             print("Failed to get SID from AD: %s" % msg)
     else:
-        ad_ldap_bind_username = configRegistry.get('connector/ad/ldap/binddn')
+        ad_ldap_bind_username = ucr.get('connector/ad/ldap/binddn')
 
     bindpw = lo_ad.bindpw
 
@@ -133,7 +130,7 @@ def open_drs_connection():
 
     dcinfo = drsuapi.DsGetDCInfoRequest1()
     dcinfo.level = 1
-    ad_netbios_domainname = configRegistry.get('connector/ad/netbiosdomainname', None)
+    ad_netbios_domainname = ucr.get('connector/ad/netbiosdomainname', None)
     if not ad_netbios_domainname:
         lp = LoadParm()
         net = Net(creds=None, lp=lp)
@@ -220,7 +217,7 @@ def get_ad_password(computer_guid, dn, drs, drsuapi_handle):
             if i.attid == drsuapi.DRSUAPI_ATTID_ntPwdHistory and i.value_ctr.values:
                 for j in i.value_ctr.values:
                     history_blob = j.blob
-            if i.attid == drsuapi.DRSUAPI_ATTID_supplementalCredentials and configRegistry.is_true('connector/ad/mapping/user/password/kerberos/enabled', False) and i.value_ctr.values:
+            if i.attid == drsuapi.DRSUAPI_ATTID_supplementalCredentials and ucr.is_true('connector/ad/mapping/user/password/kerberos/enabled', False) and i.value_ctr.values:
                 for j in i.value_ctr.values:
                     spl = _decrypt_supplementalCredentials(drs.user_session_key, j.blob)
                     keys = calculate_krb5keys(spl)
@@ -239,9 +236,9 @@ def get_ad_password(computer_guid, dn, drs, drsuapi_handle):
 
 def create_ad_user(username, password, **kwargs):
     #  use samba-tool
-    host = configRegistry.get("connector/ad/ldap/host")
-    admin = ldap.dn.explode_rdn(configRegistry.get("connector/ad/ldap/binddn"), notypes=True)[0]
-    passw = open(configRegistry.get("connector/ad/ldap/bindpw")).read()
+    host = ucr.get("connector/ad/ldap/host")
+    admin = ldap.dn.explode_rdn(ucr.get("connector/ad/ldap/binddn"), notypes=True)[0]
+    passw = open(ucr.get("connector/ad/ldap/bindpw")).read()
     cmd = ["samba-tool", "user", "create", "--use-username-as-cn", username.decode('UTF-8'), password, "--URL=ldap://%s" % host, "-U'%s'%%'%s'" % (admin, passw)]
 
     print(" ".join(cmd))
@@ -252,20 +249,20 @@ def create_ad_user(username, password, **kwargs):
     if child.returncode:
         raise ADCreateUser_Exception({'module': 'users/user', 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
 
-    new_position = 'cn=users,%s' % configRegistry.get('connector/ad/ldap/base')
+    new_position = 'cn=users,%s' % ucr.get('connector/ad/ldap/base')
     con_user_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(tcommon.to_unicode(username)), new_position)
 
     udm_user_dn = ldap.dn.dn2str([
         [("uid", to_unicode(username), ldap.AVA_STRING)],
-        [("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(configRegistry.get('ldap/base')))
+        [("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(ucr.get('ldap/base')))
     adconnector.wait_for_sync()
     return (con_user_dn, udm_user_dn)
 
 
 def modify_password_ad(username, password):
-    host = configRegistry.get("connector/ad/ldap/host")
-    admin = ldap.dn.explode_rdn(configRegistry.get("connector/ad/ldap/binddn"), notypes=True)[0]
-    passw = open(configRegistry.get("connector/ad/ldap/bindpw")).read()
+    host = ucr.get("connector/ad/ldap/host")
+    admin = ldap.dn.explode_rdn(ucr.get("connector/ad/ldap/binddn"), notypes=True)[0]
+    passw = open(ucr.get("connector/ad/ldap/bindpw")).read()
     cmd = ["samba-tool", "user", "setpassword", "--newpassword='%s'" % password, username.decode('UTF-8'), "--URL=ldap://%s" % host, "-U'%s'%%'%s'" % (admin, passw)]
 
     child = subprocess.Popen(" ".join(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)

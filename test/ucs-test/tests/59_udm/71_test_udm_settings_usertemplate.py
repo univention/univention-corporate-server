@@ -11,8 +11,8 @@ import unidecode
 
 import univention.admin.modules as udm_modules
 import univention.testing.strings as uts
-from univention.admin._ucr import configRegistry as ucr
 from univention.admin.uldap import getAdminConnection
+from univention.config_registry import ucr
 from univention.testing import utils
 from univention.testing.strings import random_domain_name, random_int, random_name
 from univention.testing.umc import Client
@@ -374,7 +374,7 @@ def test_use_usertemplate_umlauts(udm):
         })
 
 
-def test_usertemplate_filter(udm, ucr):
+def test_usertemplate_filter(udm):
     properties = {
         'CLIName': 'mail',
         'copyable': '0',

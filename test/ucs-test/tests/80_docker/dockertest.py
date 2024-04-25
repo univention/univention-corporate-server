@@ -38,7 +38,7 @@ import threading
 
 import requests
 
-from univention.config_registry import ConfigRegistry, handler_set
+from univention.config_registry import handler_set, ucr_live
 from univention.testing import umc, utils
 from univention.testing.debian_package import DebianPackage
 from univention.testing.strings import random_name, random_version
@@ -224,8 +224,7 @@ class App:
         self.package_name = package_name or get_app_name()
         self.package_version = '%s.%s' % (version, get_app_version())
 
-        self.ucr = ConfigRegistry()
-        self.ucr.load()
+        self.ucr = ucr_live
 
         if build_package:
             self.package = DebianPackage(name=self.package_name, version=self.package_version)
@@ -296,7 +295,6 @@ class App:
         self.installed = True
 
     def reload_container_id(self):
-        self.ucr.load()
         self.container_id = self.ucr.get('appcenter/apps/%s/container' % self.app_name)
 
     def file(self, fname):

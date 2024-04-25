@@ -20,7 +20,7 @@ from playwright.sync_api import Locator, Page, expect
 
 import univention.admin.modules as udm_modules
 import univention.testing.strings as uts
-import univention.testing.ucr as ucr_test
+from univention.config_registry import ucr
 from univention.lib.i18n import Translation
 from univention.testing.browser import logger
 from univention.testing.browser.generic_udm_module import UserModule
@@ -293,8 +293,6 @@ def set_samba_settings(settings):
 
 
 def _get_samba_obj():
-    ucr = ucr_test.UCSTestConfigRegistry()
-    ucr.load()
     lo = get_ldap_connection()
     udm_modules.update()
     samba_module = udm_modules.get('settings/sambadomain')
