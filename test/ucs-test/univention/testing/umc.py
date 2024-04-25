@@ -41,8 +41,8 @@ from typing import Any, Iterable, Tuple
 
 import requests
 
-from univention.config_registry import ConfigRegistry
 from univention.lib.umc import Client as _Client
+from univention.testing.utils import UCSTestDomainAdminCredentials
 
 
 class Client(_Client):
@@ -52,12 +52,8 @@ class Client(_Client):
 
     @classmethod
     def get_test_connection(cls, hostname: str | None = None, *args: Any, **kwargs: Any) -> Client:
-        ucr = ConfigRegistry()
-        ucr.load()
-        username = ucr.get('tests/domainadmin/account')
-        username = username.split(',')[0][len('uid='):]
-        password = ucr.get('tests/domainadmin/pwd')
-        return cls(hostname, username, password, *args, **kwargs)
+        account = UCSTestDomainAdminCredentials()
+        return cls(hostname, account.username, account.bindpw, *args, **kwargs)
 
     def umc_command(self, *args: Any, **kwargs: Any) -> Client:
         self.print_request_data = kwargs.pop('print_request_data', True)

@@ -21,6 +21,7 @@ from univention.appcenter.docker import Docker
 from univention.appcenter.log import log_to_logfile, log_to_stream
 from univention.appcenter.settings import SettingValueError
 from univention.appcenter.ucr import ucr_get, ucr_save
+from univention.testing.utils import UCSTestDomainAdminCredentials
 
 import appcentertest as app_test
 
@@ -71,13 +72,13 @@ def docker_shell(app, command):
 
 @contextmanager
 def install_app(app, set_vars=None):
-    username = re.match('uid=([^,]*),.*', ucr_get('tests/domainadmin/account')).groups()[0]
+    account = UCSTestDomainAdminCredentials()
     install = get_action('install')
     subprocess.run(['apt-get', 'update'], check=True)
-    install.call(app=[app], username=username, password=ucr_get('tests/domainadmin/pwd'), noninteractive=True, set_vars=set_vars)
+    install.call(app=[app], username=account.username, password=account.bindpw, noninteractive=True, set_vars=set_vars)
     yield app
     remove = get_action('remove')
-    remove.call(app=[app], username=username, password=ucr_get('tests/domainadmin/pwd'), noninteractive=True)
+    remove.call(app=[app], username=account.username, password=account.bindpw, noninteractive=True)
 
 
 @contextmanager

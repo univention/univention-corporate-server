@@ -29,6 +29,7 @@ import requests
 from selenium.webdriver.common.by import By
 
 from univention.testing import ucr as _ucr
+from univention.testing.utils import UCSTestDomainAdminCredentials
 
 
 logger = logging.getLogger(__name__)
@@ -385,8 +386,8 @@ else:
         """Username of the Admin account"""
         ret = os.environ.get('UCS_TEST_ADMIN_USERNAME')
         if not ret:
-            ret = config.get('tests/domainadmin/account')
-            ret = ret.split(',')[0].split('=')[-1] if ret else 'Administrator'
+            account = UCSTestDomainAdminCredentials()
+            ret = account.username or "Administrator"
         return ret
 
     @pytest.fixture(scope='session')
@@ -394,7 +395,8 @@ else:
         """Password of the Admin account"""
         ret = os.environ.get('UCS_TEST_ADMIN_PASSWORD')
         if not ret:
-            ret = config.get('tests/domainadmin/pwd') or 'univention'
+            account = UCSTestDomainAdminCredentials()
+            ret = account.bindpw
         return ret
 
     @pytest.fixture(scope='session')

@@ -16,7 +16,6 @@ import subprocess
 import time
 from typing import Mapping
 
-import ldap.dn
 import pytest
 
 import univention.testing.strings as uts
@@ -48,9 +47,7 @@ def keyAndValue_to_ldap(property_values):
 @pytest.mark.exposure('careful')
 def test_create_fileshare(udm, ucr):
     """Create shares/share and verify LDAP object"""
-    admin_dn = ucr.get('tests/domainadmin/account', 'uid=Administrator,cn=users,%s' % (ucr.get('ldap/base'),))
-    admin_name = ldap.dn.str2dn(admin_dn)[0][0][1]
-
+    account = utils.UCSTestDomainAdminCredentials()
     properties = {
         'name': uts.random_name(),
         'host': random_fqdn(ucr),
@@ -87,7 +84,7 @@ def test_create_fileshare(udm, ucr):
         'sambaCscPolicy': random.choice(['manual', 'documents', 'programs', 'disable']),
         'sambaHostsAllow': random_fqdn(ucr),
         'sambaHostsDeny': random_fqdn(ucr),
-        'sambaValidUsers': '%s, @"%s %s"' % (admin_name, uts.random_name(), uts.random_name()),
+        'sambaValidUsers': '%s, @"%s %s"' % (account.username, uts.random_name(), uts.random_name()),
         'sambaInvalidUsers': '%s, @"%s %s"' % (uts.random_name(), uts.random_name(), uts.random_name()),
         'sambaForceUser': uts.random_name(),
         'sambaForceGroup': uts.random_name(),
@@ -183,9 +180,7 @@ def test_create_fileshare(udm, ucr):
 @pytest.mark.exposure('careful')
 def test_create_fileshare_and_connect_via_samba(udm, ucr):
     """Create shares/share and check if share connect works"""
-    admin_dn = ucr.get('tests/domainadmin/account', 'uid=Administrator,cn=users,%s' % (ucr.get('ldap/base'),))
-    admin_name = ldap.dn.str2dn(admin_dn)[0][0][1]
-    password = ucr.get('tests/domainadmin/pwd', 'univention')
+    account = utils.UCSTestDomainAdminCredentials()
     sambaOplocks = random.choice(['0', '1'])
 
     properties = {
@@ -224,7 +219,7 @@ def test_create_fileshare_and_connect_via_samba(udm, ucr):
         'sambaCscPolicy': random.choice(['manual', 'documents', 'programs', 'disable']),
         # 'sambaHostsAllow': random_fqdn(ucr),
         # 'sambaHostsDeny': random_fqdn(ucr),
-        'sambaValidUsers': '%s, @"%s %s"' % (admin_name, uts.random_name(), uts.random_name()),
+        'sambaValidUsers': '%s, @"%s %s"' % (account.username, uts.random_name(), uts.random_name()),
         'sambaInvalidUsers': '%s, @"%s %s"' % (uts.random_name(), uts.random_name(), uts.random_name()),
         # 'sambaForceUser': uts.random_name(),
         # 'sambaForceGroup': uts.random_name(),
@@ -317,7 +312,7 @@ def test_create_fileshare_and_connect_via_samba(udm, ucr):
         pytest.skip('Samba 4 not installed')
     delay = 1
     time.sleep(delay)
-    cmd = ['smbclient', '//localhost/%s' % properties['sambaName'], '-U', '%'.join([admin_name, password]), '-c', 'showconnect']
+    cmd = ['smbclient', '//localhost/%s' % properties['sambaName'], '-U', f'{account.username}%{account.bindpw}', '-c', 'showconnect']
     print('\nRunning: %s' % ' '.join(cmd))
     p = subprocess.Popen(cmd, close_fds=True)
     p.wait()

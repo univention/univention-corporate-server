@@ -11,7 +11,7 @@ import logging
 import os
 import subprocess
 
-from univention.config_registry import ConfigRegistry
+from univention.testing.utils import UCSTestDomainAdminCredentials
 
 import appcentertest as app_test
 
@@ -111,11 +111,8 @@ def test_uninstall_postrm_error(app_center, application):
 
 
 def cleanup(application):
-    ucr = ConfigRegistry()
-    ucr.load()
-    username = ucr.get('tests/domainadmin/account').split(',')[0][len('uid='):]
-    pwdfile = ucr.get('tests/domainadmin/pwdfile')
-    subprocess.check_call(['univention-app', 'register', application, '--undo-it', '--noninteractive', '--username', username, '--pwdfile', pwdfile])
+    account = UCSTestDomainAdminCredentials()
+    subprocess.check_call(['univention-app', 'register', application, '--undo-it', '--noninteractive', '--username', account.username, '--pwdfile', account.pwdfile])
     ext = application.split('-')[2]
     try:
         os.unlink(f'/var/lib/dpkg/info/{application}.{ext}')

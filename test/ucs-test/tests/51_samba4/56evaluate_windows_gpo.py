@@ -411,27 +411,26 @@ if __name__ == '__main__':
     ucr = ConfigRegistry()
     ucr.load()
 
-    domain_admin_dn = ucr.get('tests/domainadmin/account')
-    domain_admin_password = ucr.get('tests/domainadmin/pwd')
+    account = utils.UCSTestDomainAdminCredentials()
     windows_admin = ucr.get('tests/windowsadmin/account', 'Administrator')
     windows_admin_password = ucr.get('tests/windowsadmin/pwd', 'univention')
     domainname = ucr.get('domainname')
     hostname = ucr.get('hostname')
     ldap_base = ucr.get('ldap/base')
 
-    if not all((domain_admin_dn, domain_admin_password, domainname, hostname, ldap_base)):
+    if not all((account.binddn, account.bindpw, domainname, hostname, ldap_base)):
         print("\nFailed to obtain settings for the test from UCR. Skipping the test.")
         exit(Reason.INSTALL)
 
-    domain_admin = domain_admin_dn.split(',')[0][len('uid='):]
-    samba_credentials = ("--username=" + domain_admin, "--password=" + domain_admin_password)
+    assert account.username is not None
+    samba_credentials = ("--username=" + account.username, "--password=" + account.bindpw)
 
     windows_client = udm_get_windows_computer()
 
     # setup winexe:
     Win = univention.winexe.WinExe(
         domainname,
-        domain_admin, domain_admin_password,
+        account.username, account.bindpw,
         windows_admin, windows_admin_password,
         445, dns_get_host_ip(windows_client['hostname']), loglevel=4)
     windows_check_domain()

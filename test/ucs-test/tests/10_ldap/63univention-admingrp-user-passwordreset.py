@@ -10,8 +10,6 @@
 import random
 import string
 
-import ldap
-
 import univention.config_registry
 import univention.testing.udm as udm_test
 from univention.testing import utils
@@ -75,10 +73,8 @@ try:
             if not has_write_access_for_descr(account, target):
                 fail('%s cannot set description of %s' % (account, target))
 
-        admin_dn = ucr['tests/domainadmin/account']
-        admin_name = ldap.dn.str2dn(admin_dn)[0][0][1]
-        admin_pwd = ucr['tests/domainadmin/pwd']
-        admin = Account("Administrator", admin_dn, admin_name, admin_pwd)
+        account = utils.UCSTestDomainAdminCredentials()
+        admin = Account("Administrator", account.binddn, account.username, account.bindpw)
 
         # create helpdesk groups
         try:

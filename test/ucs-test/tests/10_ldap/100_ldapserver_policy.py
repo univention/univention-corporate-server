@@ -22,20 +22,9 @@ from univention.testing.udm_extensions import call_cmd
 with ucr_test.UCSTestConfigRegistry() as ucr:
     domain = ucr.get("domainname")
     basedn = ucr.get("ldap/base")
-    admin_dn = ucr.get("tests/domainadmin/account")
-    admin_pw_file = ucr.get("tests/domainadmin/pwdfile")
 
 lo = utils.get_ldap_connection(admin_uldap=True)
 univention.admin.modules.update()
-admin_user = None
-
-
-def get_admin_user():
-    filter_s = admin_dn.partition(",")[0]
-    base_s = admin_dn.partition(",")[-1]
-    admin_user = udm_modules.lookup("users/user", None, lo, base=base_s, scope="sub", filter=filter_s)[0]
-    admin_user.open()
-    return admin_user["username"]
 
 
 def check_all_servers_in_policies(ldap_servers, udm_backups):
@@ -78,14 +67,11 @@ def situation_before_test():
 
 
 def run_join_script():
-    global admin_user
-    if not admin_user:
-        admin_user = get_admin_user()
-
+    account = utils.UCSTestDomainAdminCredentials()
     call_cmd([
         "univention-run-join-scripts",
-        "-dcaccount", admin_user,
-        "-dcpwd", admin_pw_file,
+        "-dcaccount", account.username,
+        "-dcpwd", account.pwdfile,
         "--force",
         "--run-scripts",
         "10univention-ldap-server.inst"],

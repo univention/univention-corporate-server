@@ -14,6 +14,7 @@ import pytest
 import univention.testing.strings as uts
 from univention.config_registry import handler_set
 from univention.testing.ucr import UCSTestConfigRegistry
+from univention.testing.utils import UCSTestDomainAdminCredentials
 from univention.udm import UDM
 
 
@@ -71,11 +72,11 @@ def activate_lastbind(bindpwdfile, other_server):
 
 @pytest.fixture(scope="module")
 def bindpwdfile(tmpdir_factory):
-    with UCSTestConfigRegistry() as ucr:
-        if ucr.get("tests/domainadmin/pwdfile", None):
-            return str(ucr.get("tests/domainadmin/pwdfile"))
+    account = UCSTestDomainAdminCredentials()
+    if account.pwdfile:
+        return account.pwdfile
     path = tmpdir_factory.mktemp('data').join('bindpwdfile')
-    path.write('univention')
+    path.write(account.bindpw)
     return str(path)
 
 
@@ -86,10 +87,8 @@ def failbindpwdfile():
 
 @pytest.fixture()
 def binddn(ucr):
-    if ucr.get("tests/domainadmin/account", None):
-        return str(ucr.get("tests/domainadmin/account"))
-    else:
-        return "uid=Administrator,cn=users,%s" % (ucr.get('ldap/base'),)
+    account = UCSTestDomainAdminCredentials()
+    return account.binddn
 
 
 @pytest.fixture()

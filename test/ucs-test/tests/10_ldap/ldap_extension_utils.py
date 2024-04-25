@@ -41,6 +41,7 @@ import psutil
 import univention.uldap
 from univention.config_registry import ConfigRegistry
 from univention.testing.strings import random_int, random_name
+from univention.testing.utils import UCSTestDomainAdminCredentials
 
 
 if TYPE_CHECKING:
@@ -88,22 +89,16 @@ def get_schema_attribute_id() -> str:
 
 def call_join_script(join_script_name: str) -> int:
     print(f'call_join_script({join_script_name!r})')
-    ucr = ConfigRegistry()
-    ucr.load()
-
     join_script = '/usr/lib/univention-install/%s' % join_script_name
-
-    return subprocess.call([join_script, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], shell=False)
+    account = UCSTestDomainAdminCredentials()
+    return subprocess.call([join_script, '--binddn', account.binddn, '--bindpwdfile', account.pwdfile], shell=False)
 
 
 def call_unjoin_script(unjoin_script_name: str) -> int:
     print(f'call_unjoin_script({unjoin_script_name!r})')
-    ucr = ConfigRegistry()
-    ucr.load()
-
     join_script = '/usr/lib/univention-uninstall/%s' % unjoin_script_name
-
-    return subprocess.call([join_script, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], shell=False)
+    account = UCSTestDomainAdminCredentials()
+    return subprocess.call([join_script, '--binddn', account.binddn, '--bindpwdfile', account.pwdfile], shell=False)
 
 
 def __fetch_schema_from_uri(ldap_uri: str) -> Tuple[str, ldap.schema.subentry.SubSchema]:

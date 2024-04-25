@@ -9,6 +9,7 @@
 import pytest
 
 import univention.admin
+from univention.testing.utils import UCSTestDomainAdminCredentials
 
 
 @pytest.fixture()
@@ -18,7 +19,8 @@ def credentials(user_type, rad_user, ucr):
     elif user_type == 'computer':
         return (ucr.get('ldap/hostdn'), open('/etc/machine.secret').read())
     elif user_type == 'admin':
-        return (ucr.get('tests/domainadmin/account'), ucr.get('tests/domainadmin/pwd'))
+        account = UCSTestDomainAdminCredentials()
+        return (account.binddn, account.bindpw)
     raise AssertionError()
 
 

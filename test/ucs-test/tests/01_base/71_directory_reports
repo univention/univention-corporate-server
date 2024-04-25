@@ -9,6 +9,7 @@ from urllib.parse import splitquery, splitvalue
 
 from univention.config_registry import ConfigRegistry
 from univention.testing.umc import Client
+from univention.testing.utils import UCSTestDomainAdminCredentials
 
 
 def create_umc_report(client, report_type, obj, module):
@@ -27,19 +28,21 @@ def create_umc_report(client, report_type, obj, module):
 
 
 def test_umc(ucr):
+    account = UCSTestDomainAdminCredentials()
     client = Client.get_test_connection()
     r = client.umc_command('udm/reports/query', {}, 'users/user')
     assert r.status == 200
     for report_type in ['CSV Report', 'PDF Document']:
-        create_umc_report(client, report_type, [ucr.get('tests/domainadmin/account')], 'users/user')
+        create_umc_report(client, report_type, [account.binddn], 'users/user')
         create_umc_report(client, report_type, [ucr.get('ldap/hostdn')], 'computers/computer')
         create_umc_report(client, report_type, ['cn=Backup Join,cn=groups,{}'.format(ucr.get('ldap/base'))], 'groups/group')
 
 
 def test_cmdline(ucr):
+    account = UCSTestDomainAdminCredentials()
     check_call(['univention-directory-reports', '-l'])
     check_call(['univention-directory-reports-cleanup'])
-    check_call(['univention-directory-reports', '-m', 'users/user', ucr.get('tests/domainadmin/account')])
+    check_call(['univention-directory-reports', '-m', 'users/user', account.binddn])
     check_call(['univention-directory-reports', '-m', 'computers/computer', ucr.get('ldap/hostdn')])
     check_call(['univention-directory-reports', '-m', 'groups/group', 'cn=Backup Join,cn=groups,{}'.format(ucr.get('ldap/base'))])
 

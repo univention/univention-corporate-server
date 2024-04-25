@@ -15,6 +15,7 @@ from ldap.controls import LDAPControl
 
 import univention.testing.connector_common as tcommon
 from univention.config_registry import ConfigRegistry
+from univention.testing.utils import UCSTestDomainAdminCredentials
 
 
 ucr = ConfigRegistry()
@@ -232,9 +233,10 @@ class ADConnection(LDAPConnection):
         if self.kerberos:  # i.e. if UCR ad/member=true
             # Note: tests/domainadmin/account is an OpenLDAP DN but
             #       we only extract the username from it in ldap_glue
-            self.login_dn = ucr['tests/domainadmin/account']
-            self.principal = ldap.dn.str2dn(self.login_dn)[0][0][1]
-            self.pw_file = ucr['tests/domainadmin/pwdfile']
+            account = UCSTestDomainAdminCredentials()
+            self.login_dn = account.binddn
+            self.principal = account.username
+            self.pw_file = account.pwdfile
         else:
             self.login_dn = ucr['%s/ad/ldap/binddn' % configbase]
             self.pw_file = ucr['%s/ad/ldap/bindpw' % configbase]

@@ -39,7 +39,7 @@ import threading
 import requests
 
 from univention.config_registry import ConfigRegistry, handler_set
-from univention.testing import umc
+from univention.testing import umc, utils
 from univention.testing.debian_package import DebianPackage
 from univention.testing.strings import random_name, random_version
 from univention.testing.ucr import UCSTestConfigRegistry
@@ -257,8 +257,9 @@ class App:
 
         self.installed = False
 
-        self.admin_user = self.ucr.get('tests/domainadmin/account').split(',')[0][len('uid='):]
-        self.admin_pwdfile = self.ucr.get('tests/domainadmin/pwdfile')
+        account = utils.UCSTestDomainAdminCredentials()
+        self.admin_user = account.username
+        self.admin_pwdfile = account.pwdfile
 
         print(repr(self))
 

@@ -9,7 +9,7 @@ import argparse
 import sys
 
 from univention.admin.rest.client.__main__ import main
-from univention.config_registry import ucr
+from univention.testing.utils import UCSTestDomainAdminCredentials
 
 
 parser = argparse.ArgumentParser()
@@ -28,13 +28,14 @@ sys.argv = [replacements.get(x, x) for x in sys.argv]
 args, sys.argv = parser.parse_known_args(sys.argv)
 
 if True:  # or ucr['server/role'] not in ('domaincontroller_master', 'domaincontroller_backup'):
+    account = UCSTestDomainAdminCredentials()
     sys.argv.insert(1, '--binddn')
-    sys.argv.insert(2, args.binddn or ucr['tests/domainadmin/account'])
+    sys.argv.insert(2, args.binddn or account.binddn)
     if args.bindpwdfile:
         sys.argv.insert(3, '--bindpwdfile')
         sys.argv.insert(4, args.bindpwdfile)
     else:
         sys.argv.insert(3, '--bindpwd')
-        sys.argv.insert(4, args.bindpwd or ucr['tests/domainadmin/pwd'])
+        sys.argv.insert(4, args.bindpwd or account.bindpw)
 
 main()

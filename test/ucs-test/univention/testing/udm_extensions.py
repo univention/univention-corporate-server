@@ -35,9 +35,8 @@ import subprocess
 import sys
 from typing import Iterable, Mapping, Sequence
 
-from univention.config_registry import ConfigRegistry
 from univention.testing.strings import random_name, random_version
-from univention.testing.utils import fail, get_ldap_connection
+from univention.testing.utils import UCSTestDomainAdminCredentials, fail, get_ldap_connection
 
 
 VALID_EXTENSION_TYPES = ('hook', 'syntax', 'module')
@@ -89,9 +88,8 @@ def call_join_script(name: str, fail_on_error: bool = True) -> int:
     Calls the given join script (e.g. name='66foobar.inst').
     If fail is true, then the function fail() is called if the exitcode is not zero.
     """
-    ucr = ConfigRegistry()
-    ucr.load()
-    return call_cmd(['/usr/lib/univention-install/%s' % name, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], fail_on_error=fail_on_error)
+    account = UCSTestDomainAdminCredentials()
+    return call_cmd(['/usr/lib/univention-install/%s' % name, '--binddn', account.binddn, '--bindpwdfile', account.pwdfile], fail_on_error=fail_on_error)
 
 
 def call_unjoin_script(name: str, fail_on_error: bool = True) -> int:
@@ -99,9 +97,8 @@ def call_unjoin_script(name: str, fail_on_error: bool = True) -> int:
     Calls the given unjoin script (e.g. name='66foobar-uninstall.uinst').
     If fail is true, then the function fail() is called if the exitcode is not zero.
     """
-    ucr = ConfigRegistry()
-    ucr.load()
-    return call_cmd(['/usr/lib/univention-uninstall/%s' % name, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], fail_on_error=fail_on_error)
+    account = UCSTestDomainAdminCredentials()
+    return call_cmd(['/usr/lib/univention-uninstall/%s' % name, '--binddn', account.binddn, '--bindpwdfile', account.pwdfile], fail_on_error=fail_on_error)
 
 
 def get_syntax_buffer(name: str | None = None, identifier: str | None = None) -> str:

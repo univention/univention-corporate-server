@@ -26,8 +26,7 @@ LOCKOUT_DURATION = 1  # duration of lockout in minutes
 LOCKOUT_THRESHOLD = 3  # amount of auth. attempts allowed before the lock out
 TEST_USER_PASS = 'Univention1'
 
-admin_username = ucr['tests/domainadmin/account'].split(",")[0][len("uid="):]
-admin_password = ucr['tests/domainadmin/pwd']
+account = utils.UCSTestDomainAdminCredentials()
 hostname = ucr['ldap/server/name']
 test_username = 'ucs_test_samba4_user_' + random_username(4)
 
@@ -77,7 +76,7 @@ def set_lockout_settings(lock_duration: int | str, lock_threshold: int | str) ->
         "samba-tool", "domain", "passwordsettings", "set",
         "--account-lockout-duration", str(lock_duration),
         "--account-lockout-threshold", str(lock_threshold),
-        "-U", f"{admin_username}%{admin_password}",
+        "-U", f"{account.username}%{account.bindpw}",
         "--debuglevel=1",
     )
 
@@ -100,7 +99,7 @@ def create_delete_test_user(should_exist: bool) -> None:
         print(f"# Deleting test user '{test_username}'")
         cmd = ["samba-tool", "user", 'delete', test_username]
 
-    cmd += ["-U", f"{admin_username}%{admin_password}", "--debuglevel=1"]
+    cmd += ["-U", f"{account.username}%{account.bindpw}", "--debuglevel=1"]
 
     out, err = create_and_run_process(cmd)
     if err:
@@ -183,7 +182,7 @@ def dump_pwpolicy() -> Iterator[str]:
 
 
 def main() -> None:
-    if not all((admin_username, admin_password, hostname)):
+    if not all((account.username, account.bindpw, hostname)):
         print("SKIP: Missing Administrator credentials or a hostname from UCR.")
         sys.exit(int(Reason.INSTALL))
 

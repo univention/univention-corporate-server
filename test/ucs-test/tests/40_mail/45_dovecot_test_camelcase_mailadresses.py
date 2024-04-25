@@ -44,19 +44,13 @@ def main():
         with utils.AutoCallCommand(enter_cmd=cmd, exit_cmd=cmd):
             with udm_test.UCSTestUDM() as udm:
                 userbase = []
-                admin_account = ucr.get("tests/domainadmin/account", "uid=Administrator,cn=users,{}".format(ucr["ldap/base"]))
-                pwd_file = ucr.get("tests/domainadmin/pwdfile")
-                if pwd_file:
-                    with open(pwd_file) as fp:
-                        password = fp.read().strip()
-                else:
-                    password = "univention"
+                account = utils.UCSTestDomainAdminCredentials()
                 lo = univention.uldap.access(
                     host=ucr["ldap/master"],
                     port=int(ucr["ldap/master/port"]),
                     base=ucr["ldap/base"],
-                    binddn=admin_account,
-                    bindpw=password,
+                    binddn=account.binddn,
+                    bindpw=account.bindpw,
                 )
 
                 fqdn = '%(hostname)s.%(domainname)s' % ucr

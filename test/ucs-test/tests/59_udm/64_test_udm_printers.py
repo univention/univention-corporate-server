@@ -20,7 +20,6 @@ import sys
 import time
 from typing import Mapping
 
-import ldap.dn
 import pytest
 from ldap.filter import filter_format
 
@@ -101,10 +100,7 @@ def test_create_printer(ucr, udm):
 @pytest.mark.exposure('careful')
 def test_create_printer_and_check_printing_works(ucr, udm):
     """Create shares/printer and check if print access works"""
-    ucr.load()
-    admin_dn = ucr.get('tests/domainadmin/account', 'uid=Administrator,cn=users,%s' % (ucr.get('ldap/base'),))
-    admin_name = ldap.dn.str2dn(admin_dn)[0][0][1]
-    password = ucr.get('tests/domainadmin/pwd', 'univention')
+    account = utils.UCSTestDomainAdminCredentials()
 
     spoolhost = '.'.join([ucr['hostname'], ucr['domainname']])
     acltype = random.choice(['allow all', 'allow'])
@@ -119,7 +115,7 @@ def test_create_printer_and_check_printing_works(ucr, udm):
         'producer': 'cn=Generic,cn=cups,cn=univention,%s' % (ucr.get('ldap/base'),),
         'sambaName': uts.random_name(),
         'ACLtype': acltype,
-        'ACLUsers': admin_dn,
+        'ACLUsers': account.binddn,
         'ACLGroups': 'cn=Printer Admins,cn=groups,%s' % (ucr.get('ldap/base'),),
     }
 
@@ -162,9 +158,9 @@ def test_create_printer_and_check_printing_works(ucr, udm):
     p.wait()
     assert not p.returncode, "CUPS printer {} not created after {} seconds".format(properties['name'], delay)
 
-    p = subprocess.Popen(['su', admin_name, '-c', 'lpr -P %s /etc/hosts' % properties['name']], close_fds=True)
+    p = subprocess.Popen(['su', account.username, '-c', 'lpr -P %s /etc/hosts' % properties['name']], close_fds=True)
     p.wait()
-    assert not p.returncode, "Printing to CUPS printer {} as {} failed".format(properties['name'], admin_name)
+    assert not p.returncode, "Printing to CUPS printer {} as {} failed".format(properties['name'], account.username)
 
     s4_dc_installed = utils.package_installed("univention-samba4")
     s3_file_and_print_server_installed = utils.package_installed("univention-samba")
@@ -172,7 +168,7 @@ def test_create_printer_and_check_printing_works(ucr, udm):
     if smb_server:
         delay = 1
         time.sleep(delay)
-        cmd = ['smbclient', '//localhost/%s' % properties['sambaName'], '-U', '%'.join([admin_name, password]), '-c', 'print /etc/hosts']
+        cmd = ['smbclient', '//localhost/%s' % properties['sambaName'], '-U', f'{account.username}%{account.bindpw}', '-c', 'print /etc/hosts']
         print('\nRunning: %s' % ' '.join(cmd))
         p = subprocess.Popen(cmd, close_fds=True)
         p.wait()
