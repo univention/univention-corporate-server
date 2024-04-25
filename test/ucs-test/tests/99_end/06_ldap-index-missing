@@ -1,11 +1,44 @@
-#!/usr/share/ucs-test/runner bash
-# shellcheck shell=bash
+#!/usr/share/ucs-test/runner python3
 ## desc: Check for missing LDAP index
 ## bugs:
 ##  - 57193
 ## exposure: safe
 
-# See <https://github.com/openldap/openldap/blob/master/servers/slapd/back-mdb/filterindex.c>
-! grep -E ' mdb_(approx|equality|inequality|substring)_candidates: \(.+\) not indexed' /var/log/debug
+import re
+import sys
+from typing import Dict, Set, Tuple
 
-# vim: set ft=sh :
+RE = re.compile(r'mdb_(approx|equality|inequality|substring)_candidates: \((\w+)\) not indexed')
+LOG = '/var/log/debug'
+IGNORE = {
+    'aAAARecord',  # FIXME: pres,+eq: ../../../../management/univention-directory-manager-modules/modules/univention/admin/handlers/__init__.py:2300
+    'name',  # FIXME: attribute 'name' SUP commonName surname countryName localityName stateOrProvinceName organizationName organizationalUnitName title givenName initials generationQualifier dmdName pseudonym ipServiceProtocol nisMapName nisDomain Solaris…
+    'objectClass',  # IGN: pres,eq; temporal issue?
+    'SAMLServiceProviderIdentifier',  # LOW: only used ../../../../management/univention-management-console-module-diagnostic/umc/python/diagnostic/plugins/04_saml_certificate_check.py and ../../../../management/univention-management-console/usr/share/univention-management-console/saml/update_metadata and join scripts
+    'uid',  # IGN: pres,eq,sub,approx
+    'univentionMonitoringAlertHosts',  # FIXME:  ../../../../monitoring/univention-monitoring-client/src/univention/admin/hooks.d/monitoring.py:49
+    'univentionNagiosParent',  # FIXME: ../../../../management/univention-directory-manager-modules/modules/univention/admin/nagios.py:296
+    'univentionNetworkAccess',  # FIXME: ../../../../services/univention-radius/conffiles/etc/freeradius/3.0/sites-available/default:402 et al
+    'univentionNetworkLink',  # FIXME: ../../../../management/univention-directory-manager-modules/modules/univention/admin/handlers/networks/network.py:224
+    'univentionPrinterSpoolHost',  # FIXME: ../../management/univention-directory-manager-modules/modules/univention/admin/handlers/shares/printer.py:274 and ../../management/univention-directory-manager-modules/modules/univention/admin/handlers/shares/printergroup.py:125 et al
+    'univentionShareHost',  # FIXME: ../../../../base/univention-quota/quota.py:170 and ../../../../services/univention-nfs/nfs-shares.py:60 and ../../../../services/univention-samba/debian/univention-samba.postinst:116
+    'univentionSharePath',  # FIXME: ../../../../base/univention-quota/quota.py:170 and ../../../../services/univention-nfs/nfs-shares.py:60 and ../../../../services/univention-samba/debian/univention-samba.postinst:116
+    'userOptionsPreset',  # LOW: ../../../../management/univention-directory-manager-modules/modules/univention/admin/handlers/settings/usertemplate.py:366 and ../../../../management/univention-directory-manager-modules/univention-migrate-users-to-ucs4.3:332 et al
+}
+
+counts: Dict[str, Tuple[int, Set[str]]] = {}
+
+with open(LOG) as fd:
+    for line in fd:
+        m = RE.search(line)
+        if m:
+            typ, attr = m.groups()
+            count, types = counts.get(attr, (0, set()))
+            counts[attr] = (count + 1, types | {typ})
+
+print(
+    '\n'.join(
+        ('{}: {} for {}{}'.format(attr, count, ','.join(types), "" if attr in IGNORE else " NEW") for attr, (count, types) in sorted(counts.items())),
+    ),
+)
+sys.exit(bool(set(counts) - IGNORE))
