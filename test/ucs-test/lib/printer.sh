@@ -10,7 +10,7 @@ getprintername () { # Generate a name for a printer. E.g. PRINTERNAME=$(getprint
 	random_chars 10 "${_lowerletters}${_ciphers}"
 }
 
-create_localprinter () { #Creates a printer. E.g. createlocalprinter $PRINTERNAME
+create_localprinter () { # Creates a printer. E.g. createlocalprinter $PRINTERNAME
 	local TMP_PRINTERNAME="${1:?printername, e.g \$(getprintername)}" rc=0
 	shift
 	info "create printer $TMP_PRINTERNAME"
