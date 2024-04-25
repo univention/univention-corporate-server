@@ -38,8 +38,8 @@ ucount=10 loop=10
 # shellcheck source=../../lib/undo.sh
 . "$TESTLIBPATH/undo.sh" || exit 137
 
-set -o errexit #"script bail out when it detects an error (a non-zero exit code).
-set -o nounset #If expansion is attempted on an unset variable or parameter --> prints error
+set -o errexit # script bail out when it detects an error (a non-zero exit code).
+set -o nounset # If expansion is attempted on an unset variable or parameter --> prints error
 
 tmpdir=$(mktemp -d)
 undo rm -rf "$tmpdir"

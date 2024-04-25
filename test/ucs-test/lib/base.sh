@@ -27,7 +27,7 @@ debug () { #DEBUGLEVEL 3
 		echo -e "${_B:-}debug${_N:-} $(date +"%Y-%m-%d %H:%M:%S\t") $*" >&2
 	fi
 }
-section () { #This is intended to make life easier for readers of test-logs with #a lot of content. If your testcase performs multiple similar checks #each producing a lot of output visually dividing these checks into #sections will help a lot. You should use this function only on the #top level, i.e. directly in the test-script and not in any library #functions.
+section () { # This is intended to make life easier for readers of test-logs with a lot of content. If your testcase performs multiple similar checks each producing a lot of output visually dividing these checks into sections will help a lot. You should use this function only on the top level, i.e. directly in the test-script and not in any library functions.
 	local sectionname="$1"
 	info "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 	info "$sectionname"
@@ -127,7 +127,7 @@ log_and_execute () {
 
 RETVAL=100
 ALREADY_FAILED=false
-fail_test () { #This is intended to make life easier for readers of test-logs while #searching the spot where a testcase failed first.  #In order for this to work you should consequently call fail_test #with the corresponding error-code in your test-case instead of directly #using exit and when you really want to exit do so with "exit $RETVAL" #The first occurrence of an error will then be marked specially in #the log file.
+fail_test () { # This is intended to make life easier for readers of test-logs while searching the spot where a testcase failed first.  In order for this to work you should consequently call fail_test with the corresponding error-code in your test-case instead of directly using exit and when you really want to exit do so with "exit $RETVAL" The first occurrence of an error will then be marked specially in the log file.
 	local errorcode=110
 	case "$1" in
 	[0-9]|[0-9][0-9]|[0-9][0-9][0-9]) errorcode="$1" ; shift ;;
@@ -148,7 +148,7 @@ fail_fast () { # Like fail_test "$reason" "$message" but with exit
 	fail_test "$@"
 	exit "$RETVAL"
 }
-fail_bool () { #This is intended to be called directly after functions that are supposed to return 0 on successful validation, 1 on failure or anything else in case of an internal error.
+fail_bool () { # This is intended to be called directly after functions that are supposed to return 0 on successful validation, 1 on failure or anything else in case of an internal error.
 	# Be sure not to use the !-Operator on such functions, as this prohibits to distinguish between check failure and internal test error.
 	# The intended calling scheme would be along the lines of: some_boolean_check; fail_bool 0 111 "Check xxx failed" or some_boolean_check; fail_bool 1 121
 	local rc=$?
@@ -236,7 +236,7 @@ wait_for_replication () { # wait for listener/notifier replication to complete (
 	error "replication incomplete."
 	return 1
 }
-wait_for_replication_and_postrun () { #wait for listener/notifier replicaion and listener postrun delay
+wait_for_replication_and_postrun () { # wait for listener/notifier replicaion and listener postrun delay
 	local rc
 	wait_for_replication
 	rc=$?

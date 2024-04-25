@@ -6,14 +6,14 @@
 # shellcheck source=random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
-group_randomname () { #Generates a random string as groupname and echo it. Usage: GROUPNAME=$(group_randomname)
+group_randomname () { # Generates a random string as groupname and echo it. Usage: GROUPNAME=$(group_randomname)
 	random_chars
 }
 
-group_create () { #Creates a group named like supplied in the first argument of the function
-	#usage:
-	#GROUPNAME=$(group_randomname)
-	#group_create "$GROUPNAME"
+group_create () { # Creates a group named like supplied in the first argument of the function
+	# usage:
+	# GROUPNAME=$(group_randomname)
+	# group_create "$GROUPNAME"
 
 	if [ -n "${1:-}" ]
 	then
@@ -49,7 +49,7 @@ group_create () { #Creates a group named like supplied in the first argument of 
 	return "$rc"
 }
 
-group_dn (){ #echos the DN of a Group. E.g. group_dn $GROUPNAME
+group_dn () { # echos the DN of a Group. E.g. group_dn $GROUPNAME
 	local GROUPNAME="${1:?groupname}"
 	udm-test groups/group list --filter cn="$GROUPNAME" | DN1
 }

@@ -35,8 +35,8 @@ CONTROLMODE=false
 . "$TESTLIBPATH/undo.sh" || exit 137
 
 
-set -o errexit #"script bail out when it detects an error (a non-zero exit code).
-set -o nounset #If expansion is attempted on an unset variable or parameter --> prints error
+set -o errexit # script bail out when it detects an error (a non-zero exit code).
+set -o nounset # If expansion is attempted on an unset variable or parameter --> prints error
 
 # Increase the timeout if dovecot is installed. In this case the user
 # creation takes more time (Bug #39102)

@@ -9,12 +9,12 @@ CONTROLMODE=true
 # shellcheck source=random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
-maildomain_name_randomname () { #Generates a random string as maildomain an echoes it. Usage: MAILDOMAINNAME=$(maildomain_name_randomname)
+maildomain_name_randomname () { # Generates a random string as maildomain an echoes it. Usage: MAILDOMAINNAME=$(maildomain_name_randomname)
 	random_string
 }
 
 
-create_mail_domain () { #Creates a mail/domain name like the first argument, supplied to the function.
+create_mail_domain () { # Creates a mail/domain name like the first argument, supplied to the function.
 	# creating a mail/domain name could be like:
 	# MAILDOMAINNAME=$(maildomain_name_randomname)
 	# create_mail_domain "$MAILDOMAINNAME"

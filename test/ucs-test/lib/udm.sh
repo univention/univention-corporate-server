@@ -54,7 +54,7 @@ udm_get_identifier_attribute () {
 udm_get_ldap_identifier_qualifier () {
 	local module="$1"
 
-	case "$module" in #This is probably not complete
+	case "$module" in # This is probably not complete
 		container/ou)
 			echo "ou"
 			;;
@@ -79,7 +79,7 @@ udm_get_ldap_identifier_qualifier () {
 udm_get_udm_filter_qualifier () {
 	local module="$1"
 
-	case "$module" in #This is probably not complete
+	case "$module" in # This is probably not complete
 		*)
 			udm_get_ldap_identifier_qualifier "$module"
 			;;
@@ -89,7 +89,7 @@ udm_get_udm_filter_qualifier () {
 udm_get_ldap_prefix () {
 	local module="$1"
 
-	case "$module" in #This is probably not complete
+	case "$module" in # This is probably not complete
 		computers/*)
 			echo "cn=computers,"
 			;;
