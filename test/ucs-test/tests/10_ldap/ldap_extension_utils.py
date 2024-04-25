@@ -105,8 +105,8 @@ def __fetch_schema_from_uri(ldap_uri: str) -> Tuple[str, ldap.schema.subentry.Su
     ucr = ConfigRegistry()
     ucr.load()
 
-    retry = ucr.get('ldap/client/retry/count', 15)
-    attempts = int(retry) + 1
+    retry = ucr.get_int('ldap/client/retry/count', 15)
+    attempts = retry + 1
 
     i = 0
     while i < attempts:
@@ -140,7 +140,7 @@ def get_ldap_master_connection(user_dn: str) -> univention.uldap.access:
     ucr = ConfigRegistry()
     ucr.load()
 
-    return univention.uldap.access(host=ucr.get('ldap/master'), port=int(ucr.get('ldap/master/port', '7389')), base=ucr.get('ldap/base'), binddn=user_dn, bindpw='univention')
+    return univention.uldap.access(host=ucr.get('ldap/master'), port=ucr.get_int('ldap/master/port', 7389), base=ucr.get('ldap/base'), binddn=user_dn, bindpw='univention')
 
 
 def set_container_description(user_dn: str, container: str) -> None:

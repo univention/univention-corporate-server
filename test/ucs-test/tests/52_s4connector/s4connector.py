@@ -117,7 +117,7 @@ def exit_if_connector_not_running():
 
 
 def wait_for_sync(min_wait_time=0):
-    synctime = int(configRegistry.get("connector/s4/poll/sleep", 7))
+    synctime = configRegistry.get_int("connector/s4/poll/sleep", 7)
     synctime = ((synctime + 3) * 2)
     if min_wait_time > synctime:
         synctime = min_wait_time

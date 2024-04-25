@@ -126,12 +126,12 @@ class TestEnvironment:
 
         version = self.ucr.get('version/version', '0.0').split('.', 1)
         major, minor = int(version[0]), int(version[1])
-        patchlevel = int(self.ucr.get('version/patchlevel', 0))
+        patchlevel = self.ucr.get_int('version/patchlevel', 0)
         if (major, minor) < (3, 0):
-            securitylevel = int(self.ucr.get('version/security-patchlevel', 0))
+            securitylevel = self.ucr.get_int('version/security-patchlevel', 0)
             self.ucs_version = UCSVersion((major, minor, patchlevel, securitylevel))
         else:
-            erratalevel = int(self.ucr.get('version/erratalevel', 0))
+            erratalevel = self.ucr.get_int('version/erratalevel', 0)
             self.ucs_version = UCSVersion((major, minor, patchlevel, erratalevel))
         TestEnvironment.logger.debug('Version=%r' % self.ucs_version)
 

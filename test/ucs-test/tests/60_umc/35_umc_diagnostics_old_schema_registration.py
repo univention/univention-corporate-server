@@ -55,8 +55,8 @@ def __fetch_schema_from_uri(ldap_uri):
     ucr = ConfigRegistry()
     ucr.load()
 
-    retry = ucr.get('ldap/client/retry/count', 15)
-    attempts = int(retry) + 1
+    retry = ucr.get_int('ldap/client/retry/count', 15)
+    attempts = retry + 1
 
     i = 0
     while i < attempts:

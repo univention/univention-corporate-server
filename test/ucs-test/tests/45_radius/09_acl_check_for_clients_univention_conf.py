@@ -98,7 +98,7 @@ def main():
                 print(f'*** testing {account.binddn} account against {target_server}')
                 lo = univention.admin.uldap.access(
                     host=target_server,
-                    port=int(ucr.get('ldap/master/port', '7389')),
+                    port=ucr.get_int('ldap/master/port', 7389),
                     base=ucr.get('ldap/base'),
                     binddn=account.binddn,
                     bindpw=account.bindpw)
@@ -109,7 +109,7 @@ def main():
                 print(f'*** testing {computer.dn} account against {target_server}')
                 lo = univention.admin.uldap.access(
                     host=target_server,
-                    port=int(ucr.get('ldap/master/port', '7389')),
+                    port=ucr.get_int('ldap/master/port', 7389),
                     base=ucr.get('ldap/base'),
                     binddn=computer.dn,
                     bindpw=computer.password)
@@ -120,7 +120,7 @@ def main():
                 print(f'*** testing {user.dn} account against {target_server}')
                 lo = univention.admin.uldap.access(
                     host=target_server,
-                    port=int(ucr.get('ldap/master/port', '7389')),
+                    port=ucr.get('ldap/master/port', 7389),
                     base=ucr.get('ldap/base'),
                     binddn=user.dn,
                     bindpw='univention')

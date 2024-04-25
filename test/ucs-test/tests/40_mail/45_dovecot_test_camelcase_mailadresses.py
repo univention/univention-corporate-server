@@ -47,7 +47,7 @@ def main():
                 account = utils.UCSTestDomainAdminCredentials()
                 lo = univention.uldap.access(
                     host=ucr["ldap/master"],
-                    port=int(ucr["ldap/master/port"]),
+                    port=ucr.get_int("ldap/master/port"),
                     base=ucr["ldap/base"],
                     binddn=account.binddn,
                     bindpw=account.bindpw,

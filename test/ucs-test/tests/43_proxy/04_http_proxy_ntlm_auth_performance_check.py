@@ -102,7 +102,7 @@ def main():
         # /var/log/syslog: (squid) Too many queued ntlmauthenticator requests
         # <http://wiki.squid-cache.org/KnowledgeBase/TooManyQueued>
         total = 30 + 60 * 40  # 30 for cold-LDAP-cache, 40 for hot-cache
-        MAX_CONCURRENT = 2 * int(ucr.get("squid/ntlmauth/children", 10)) * 2 + 1
+        MAX_CONCURRENT = 2 * ucr.get_int("squid/ntlmauth/children", 10) * 2 + 1
         concurrent = 0
 
         job = Job(ucr)

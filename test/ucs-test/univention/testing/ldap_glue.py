@@ -65,7 +65,7 @@ class LDAPConnection:
         self.login_dn = 'cn=admin,%s' % self.ldapbase
         self.pw_file = '/etc/ldap.secret'
         self.host = 'localhost'
-        self.port = ucr.get('ldap/server/port', 389)
+        self.port = ucr.get_int('ldap/server/port', 389)
         self.ca_file = None
         self.protocol = 'ldap'
         self.kerberos = False
@@ -87,9 +87,9 @@ class LDAPConnection:
                 socket = urllib.parse.quote(self.socket, '')
                 ldapuri = f"{self.protocol}://{socket}"
             else:
-                ldapuri = "%s://%s:%d" % (self.protocol, self.host, int(self.port))
+                ldapuri = "%s://%s:%d" % (self.protocol, self.host, self.port)
 
-            # lo = univention.uldap.access(host=self.host, port=int(self.port), base=self.adldapbase, binddn=self.login_dn , bindpw=self.pw_file, start_tls=tls_mode, ca_certfile=self.ca_file, uri=ldapuri)
+            # lo = univention.uldap.access(host=self.host, port=self.port, base=self.adldapbase, binddn=self.login_dn , bindpw=self.pw_file, start_tls=tls_mode, ca_certfile=self.ca_file, uri=ldapuri)
             self.lo = ldap.initialize(ldapuri)
             if self.ca_file:
                 self.lo.set_option(ldap.OPT_X_TLS_CACERTFILE, self.ca_file)
@@ -241,7 +241,7 @@ class ADConnection(LDAPConnection):
             self.login_dn = ucr['%s/ad/ldap/binddn' % configbase]
             self.pw_file = ucr['%s/ad/ldap/bindpw' % configbase]
         self.host = ucr['%s/ad/ldap/host' % configbase]
-        self.port = ucr['%s/ad/ldap/port' % configbase]
+        self.port = ucr.get_int('%s/ad/ldap/port' % configbase)
         self.ca_file = ucr['%s/ad/ldap/certificate' % configbase]
         self.protocol = 'ldap'
         self.serverctrls_for_add_and_modify = []
