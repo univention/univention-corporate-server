@@ -37,9 +37,10 @@ from typing import TYPE_CHECKING, Tuple
 import ldap
 import ldap.schema
 import psutil
+from retrying import retry
 
 import univention.uldap
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ConfigRegistry, ucs_live as ucr
 from univention.testing.strings import random_int, random_name
 from univention.testing.utils import UCSTestDomainAdminCredentials
 
@@ -101,22 +102,9 @@ def call_unjoin_script(unjoin_script_name: str) -> int:
     return subprocess.call([join_script, '--binddn', account.binddn, '--bindpwdfile', account.pwdfile], shell=False)
 
 
+@retry(retry_on_exception=ldap.SERVER_DOWN, stop_max_attempt_number=ucr.get_int('ldap/client/retry/count', 15) + 1)
 def __fetch_schema_from_uri(ldap_uri: str) -> Tuple[str, ldap.schema.subentry.SubSchema]:
-    ucr = ConfigRegistry()
-    ucr.load()
-
-    retry = ucr.get_int('ldap/client/retry/count', 15)
-    attempts = retry + 1
-
-    i = 0
-    while i < attempts:
-        try:
-            return ldap.schema.subentry.urlfetch(ldap_uri)
-        except ldap.SERVER_DOWN:
-            if i >= (attempts - 1):
-                raise
-            time.sleep(1)
-        i += 1
+    return ldap.schema.subentry.urlfetch(ldap_uri)
 
 
 def fetch_schema_from_ldap_master() -> Tuple[str, ldap.schema.subentry.SubSchema]:

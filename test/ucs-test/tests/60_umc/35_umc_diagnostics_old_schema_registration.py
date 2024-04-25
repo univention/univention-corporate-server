@@ -13,12 +13,12 @@
 
 import os
 import subprocess
-import time
 import traceback
 
 import ldap
+from retrying import retry
 
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ConfigRegistry, ucr
 from univention.management.console.modules import diagnostic
 from univention.testing.strings import random_int
 from univention.testing.utils import fail
@@ -51,22 +51,9 @@ def ucs_unregister_ldap_extension(schema_name):
     subprocess.check_call(['bash', '-c', 'source /usr/share/univention-lib/ldap.sh; ucs_unregisterLDAPExtension --schema %s' % schema_name[:-7]])
 
 
+@retry(retry_on_exception=ldap.SERVER_DOWN, stop_max_attempt_number=ucr.get_int('ldap/client/retry/count', 15) + 1)
 def __fetch_schema_from_uri(ldap_uri):
-    ucr = ConfigRegistry()
-    ucr.load()
-
-    retry = ucr.get_int('ldap/client/retry/count', 15)
-    attempts = retry + 1
-
-    i = 0
-    while i < attempts:
-        try:
-            return ldap.schema.subentry.urlfetch(ldap_uri)
-        except ldap.SERVER_DOWN:
-            if i >= (attempts - 1):
-                raise
-            time.sleep(1)
-        i += 1
+    return ldap.schema.subentry.urlfetch(ldap_uri)
 
 
 def fetch_schema_from_ldap_master():
