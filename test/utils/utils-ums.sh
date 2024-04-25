@@ -59,7 +59,7 @@ setup_ums_stack () {
 
 	# TODO why
 	ums_stack_gatway="$(kubectl get pods| grep ^ums-stack-gateway-|awk '{print $1}')"
-	kubectl port-forward --address 0.0.0.0 "pods/$ums_stack_gatway" 80:8080 &
+	nohub kubectl port-forward --address 0.0.0.0 "pods/$ums_stack_gatway" 80:8080 &
 }
 
 # kubectl --namespace default events
