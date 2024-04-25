@@ -71,6 +71,10 @@ conflictsoftware () { # check if conflicting package $1 is installed
 	fi
 }
 
+have () {  # Usage: have cmd
+	command -v "${1:?cmd}" >/dev/null 2>/dev/null
+}
+
 verify_value () {
 	local name="$1" actual_value="$2" expected_value="$3"
 
