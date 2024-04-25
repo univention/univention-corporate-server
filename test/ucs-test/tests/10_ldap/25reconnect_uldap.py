@@ -11,18 +11,20 @@
 ## exposure: dangerous
 
 import subprocess
+from contextlib import contextmanager
 from time import sleep
 
 import ldap
 
 import univention.uldap
-from univention.config_registry import ucr
-from univention.testing.utils import fail
+from univention.testing.ucr import UCSTestConfigRegistry
+from univention.testing.utils import fail, start_slapd, stop_slapd
 
 
-def _cleanup(old_retry_count):
+@contextmanager
+def _cleanup():
+    yield
     print('CLEANUP')
-    _set_retry_count(old_retry_count)
     _start_slapd()
     # Give the system a few seconds otherwise the following test case might be fail
     sleep(15)
@@ -37,19 +39,17 @@ def _search(lo):
 
 
 def _dump_journal():
-    subprocess.Popen(['journalctl', '-xn']).wait()
+    subprocess.call(['journalctl', '-xn'])
 
 
 def _stop_slapd():
-    rc = subprocess.Popen(['invoke-rc.d', 'slapd', 'stop']).wait()
+    stop_slapd()
     _dump_journal()
-    return rc
 
 
 def _start_slapd():
-    rc = subprocess.Popen(['invoke-rc.d', 'slapd', 'start']).wait()
+    start_slapd()
     _dump_journal()
-    return rc
 
 
 def _start_delyed(delay):
@@ -59,13 +59,6 @@ def _start_delyed(delay):
 def _wait_for_slapd_to_be_started():
     # This could be done a little bit better
     sleep(5)
-
-
-def _set_retry_count(count):
-    if count:
-        univention.config_registry.handler_set(['ldap/client/retry/count=%s' % count])
-    else:
-        univention.config_registry.handler_unset(['ldap/client/retry/count'])
 
 
 def _print_test_header(header):
@@ -78,11 +71,9 @@ def _give_systemd_some_time():
     sleep(5)
 
 
-old_retry_count = ucr.get('ldap/client/retry/count')
+with UCSTestConfigRegistry() as ucr, _cleanup():
+    ucr.handler_set(['ldap/client/retry/count=10'])
 
-_set_retry_count(10)
-
-try:
     _give_systemd_some_time()
     _print_test_header('Test: connect, search, stop, start, search')
     lo = _get_connection()
@@ -133,6 +124,3 @@ try:
     else:
         fail('Search was successful')
     _wait_for_slapd_to_be_started()
-
-finally:
-    _cleanup(old_retry_count)

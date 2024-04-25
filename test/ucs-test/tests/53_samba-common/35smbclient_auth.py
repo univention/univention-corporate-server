@@ -19,10 +19,8 @@ import subprocess
 import sys
 import time
 
-import atexit
-
-import univention.config_registry
 import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 from univention.testing import utils
 from univention.testing.ucs_samba import wait_for_drs_replication
@@ -44,9 +42,9 @@ class Test:
         self.innerDelay = Test._calculateInnerDelay(self.roundTime, self.amountPerRound)
 
     def main(self):
-        Test.disable_home_mount()
+        with udm_test.UCSTestUDM() as udm, ucr_test.UCSTestConfigRegistry() as ucr:
+            ucr.handler_set(['homedir/mount=false'])
 
-        with udm_test.UCSTestUDM() as udm:
             udm.create_user(username=self.username, password=self.password)
 
             print("Waiting for DRS replication...")
@@ -102,21 +100,6 @@ class Test:
         total = sum(delayArray)
         delayArray = [float(_) / total * roundTime for _ in delayArray]
         return delayArray
-
-    @staticmethod
-    def disable_home_mount():
-        ucr = univention.config_registry.ConfigRegistry()
-        ucr.load()
-        homedir_mount = ucr.get("homedir/mount")
-        univention.config_registry.handler_set(['homedir/mount=false'])
-        atexit.register(Test._cleanup, homedir_mount)
-
-    @staticmethod
-    def _cleanup(homedir_mount):
-        if not homedir_mount:
-            univention.config_registry.handler_unset(['homedir/mount'])
-        else:
-            univention.config_registry.handler_set([f'homedir/mount={homedir_mount}'])
 
 
 if __name__ == "__main__":

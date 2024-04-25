@@ -27,68 +27,26 @@ from samba.sd_utils import SDUtils
 
 import univention.testing.udm as udm_test
 import univention.uldap
-from univention.config_registry import ConfigRegistry
 from univention.s4connector import configdb
 from univention.testing import utils
 from univention.testing.strings import random_username
+from univention.testing.ucr import UCSTestConfigRegistry
 
 import s4connector
 
 
-def set_ucr(ucr_set, ucr_unset=None, ucr=None):
-    if not ucr:
-        ucr = ConfigRegistry()
-        ucr.load()
-
-    previous_ucr_set = []
-    previous_ucr_unset = []
-
-    if ucr_set:
-        if isinstance(ucr_set, str):
-            ucr_set = (ucr_set,)
-
-        for setting in ucr_set:
-            var = setting.split("=", 1)[0]
-            new_val = setting.split("=", 1)[1]
-            old_val = ucr.get(var)
-            if new_val == old_val:
-                continue
-
-            if old_val is not None:
-                previous_ucr_set.append('%s=%s' % (var, old_val))
-            else:
-                previous_ucr_unset.append('%s' % (var,))
-
-        univention.config_registry.handler_set(ucr_set)
-
-    if ucr_unset:
-        if isinstance(ucr_unset, str):
-            ucr_unset = (ucr_unset,)
-
-        for var in ucr_unset:
-            val = ucr.get(var)
-            if val is not None:
-                previous_ucr_set.append('%s=%s' % (var, val))
-
-        univention.config_registry.handler_unset(ucr_unset)
-
-    return (previous_ucr_set, previous_ucr_unset)
-
-
 class Testclass_GPO_Security_Descriptor:
 
-    def __init__(self, udm, ucr=None):
+    def __init__(self, udm):
         self.SAM_LDAP_FILTER_GPO = "(&(objectclass=grouppolicycontainer)(cn=%s))"
         self.gpo_ldap_filter = None
         self.gponame = None
 
         self.udm = udm
 
-        if ucr:
-            self.ucr = ucr
-        else:
-            self.ucr = ConfigRegistry()
-            self.ucr.load()
+        self.ucr = UCSTestConfigRegistry()
+        self.ucr.load()
+        self.has_ntsd = self.ucr.is_true("connector/s4/mapping/gpo/ntsd")
 
         self.adminaccount = utils.UCSTestDomainAdminCredentials()
         self.machine_ucs_ldap = univention.uldap.getMachineConnection()
@@ -120,21 +78,17 @@ class Testclass_GPO_Security_Descriptor:
         if p1.returncode != 0:
             utils.fail("Error restarting S4 Connector: %s\nCommand was: %s" % (stdout.decode('UTF-8', 'replace'), cmd))
 
-    def activate_ntsd_sync(self):
-        ucr_set = ["connector/s4/mapping/gpo/ntsd=true"]
-        self.previous_ucr_set, self.previous_ucr_unset = set_ucr(ucr_set, ucr=self.ucr)
-        if self.previous_ucr_unset or self.previous_ucr_set:
-            self.restart_s4_connector()
-
     def __enter__(self):
-        self.activate_ntsd_sync()
+        if not self.has_ntsd:
+            self.ucr.handler_set(["connector/s4/mapping/gpo/ntsd=true"])
+            self.restart_s4_connector()
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         if exc_type:
             print('GPO Cleanup after exception: %s %s' % (exc_type, exc_value))
-        if self.previous_ucr_unset or self.previous_ucr_set:
-            set_ucr(self.previous_ucr_set, self.previous_ucr_unset, ucr=self.ucr)
+        if not self.has_ntsd:
+            self.ucr.revert_to_original_registry()
             self.restart_s4_connector()
         self.remove_gpo()
 
