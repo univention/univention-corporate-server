@@ -23,7 +23,7 @@
 
 # 3.0-1: UDM is broken and double-bas64-encodes binary data
 
-ucount=10 loop=10
+UCOUNT=10 LOOP=10
 
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
@@ -45,9 +45,9 @@ tmpdir=$(mktemp -d)
 undo rm -rf "$tmpdir"
 
 declare -r unique="${0##*/}_${$}_${RANDOM}"
-section "Creating environment '$unique' for $ucount users"
+section "Creating environment '$unique' for $UCOUNT users"
 
-undo wait_for_replication # wait at end
+undo wait_for_s4c_and_replication
 
 if [ "${listener_debug_level:-0}" -le 2 ]
 then
@@ -56,83 +56,88 @@ then
 	undo ucr_restore
 	systemctl restart univention-directory-listener
 fi
-log_lines=$(wc -l /var/log/univention/listener.log)
+log_lines=$(wc -l </var/log/univention/listener.log)
 
 create_mail_domain "$domainname" && undo delete_mail_domain "$domainname"
 
 openssl x509 \
 	-inform pem -in "/etc/univention/ssl/$hostname/cert.pem" \
-	-outform der -out "$tmpdir/userCertificate.bin"
+	-outform der -out "$tmpdir/userCertificate.crt"
+base64 -w0 <"$tmpdir/userCertificate.crt" >"$tmpdir/userCertificate.b64"
 
 users=()
-for ((u=0; u<ucount; u++))
+for ((u=0; u<UCOUNT; u++))
 do
 	username="$(user_randomname)"
 	# shellcheck disable=SC2015
-	MAIL=true PERSON=true POSIX=true SAMBA=true PKI=true \
+	dn=$(MAIL=true PERSON=true POSIX=true SAMBA=true PKI=true UCSTEST_DEBUG=1 \
 		user_create "$username" \
 			--set description="$unique" \
 			--set displayName='Muster, Max' \
 			--set birthday='2013-07-19' \
 			--set employeeNumber='42' \
 			--set employeeType='boss' \
-			--set phone='+1-555-123' --set phone='+1-555-321' \
+			--append phone='+1-555-123' --append phone='+1-555-321' \
 			--set roomNumber=1 \
 			--set departmentNumber=1 \
 			--set street="Mary Somerville Str. 1" \
 			--set postcode="28359" \
 			--set city="Bremen" \
-			--set homeTelephoneNumber='+1-555-345' --set homeTelephoneNumber='+1-555-543' \
-			--set mobileTelephoneNumber='+1-555-456' --set mobileTelephoneNumber='+1-555-654' \
-			--set pagerTelephoneNumber='+1-555-567' --set pagerTelephoneNumber='+1-555-765' \
-			--set homePostalAddress='"Mary Somerville Str. 1" "28359" "Bremen"' \
-			--set homePostalAddress='"Mary-Somerville-Str. 1" "28359" "Bremen"' \
+			--append homeTelephoneNumber='+1-555-345' --append homeTelephoneNumber='+1-555-543' \
+			--append mobileTelephoneNumber='+1-555-456' --append mobileTelephoneNumber='+1-555-654' \
+			--append pagerTelephoneNumber='+1-555-567' --append pagerTelephoneNumber='+1-555-765' \
+			--append homePostalAddress='"Mary Somerville Str. 1" "28359" "Bremen"' \
+			--append homePostalAddress='"Mary-Somerville-Str. 1" "28359" "Bremen"' \
 			--set mailHomeServer="${hostname}.${domainname}" \
-			--set userCertificate="$(base64 <"$tmpdir/userCertificate.bin")" &&
+			--set userCertificate="$(<"$tmpdir/userCertificate.b64")") &&
 		undo user_remove "$username" ||
 		fail_fast 1 "Failed to create user $username"
-	users+=("uid=$username,cn=users,$ldap_base")
+	users+=("$dn")
 done
 
 section "Now testing replication..."
-wait_for_replication
+wait_for_s4c_and_replication
 
 validate () {
-	local file="$1" attr="$2" value
+	local file="$1" attr="$2" value ll
 	sed -rne "s/^${attr}(;binary)?:: //p" "$tmpdir/${file}.ldif" >"$tmpdir/tmp"
 	while read -r value
 	do
-		base64 -d <<<"$value" | cmp "$tmpdir/$attr.bin" ||
-			fail_test 1 "Difference in '$attr' on $file"
+		diff -w "$tmpdir/$attr.b64" - <<<"$value" && continue
+		for ((ll=l; l>=0; l--))
+		do
+			fn="$tmpdir/$attr.b64.$ll"
+			[ -f "$fn" ] && diff -q -w "$fn" - <<<"$value" && break
+		done
+		fail_test 1 "Difference on '$attr' in $file; matches $ll"
 	done <"$tmpdir/tmp"
 }
 
-for ((; loop>0; loop--))
+for ((l=0; l<LOOP; l++))
 do
 	width=$((200 + RANDOM % 100)) height=$((200 + RANDOM % 100))
-	convert -size "${width}x${height}" radial-gradient: jpeg:"$tmpdir/jpegPhoto.bin"
-	info "loop=${loop} width=${width} height=${height} size=$(stat -c "%s" "$tmpdir/jpegPhoto.bin")"
+	convert -size "${width}x${height}" radial-gradient: jpeg:"$tmpdir/jpegPhoto.jpg"
+	base64 -w0 <"$tmpdir/jpegPhoto.jpg" >"$tmpdir/jpegPhoto.$l.b64"
+	ln -snf "jpegPhoto.$l.b64" "$tmpdir/jpegPhoto.b64"
+	info "loop=${l} width=${width} height=${height} size=$(stat -c "%s" "$tmpdir/jpegPhoto.jpg")"
 
 	for userdn in "${users[@]}"
 	do
 		udm-test users/user modify --dn "$userdn" \
-			--set jpegPhoto="$(base64 <"$tmpdir/jpegPhoto.bin")" ||
+			--set jpegPhoto="$(<"$tmpdir/jpegPhoto.b64")" ||
 			fail_test 1 "Failed to modify user '$userdn'"
 	done
 
-	wait_for_replication
-	# Delay the next batch of changes a bit for the S4-Connector to catch up
-	# Otherwise sometimes it seems to happen that the S4-C overwrites the new value with an old one.
-	sleep 20
+	wait_for_s4c_and_replication
 
 	ldapsearch -x -LLL -o ldif-wrap=no \
 		-H "ldap://$ldap_master:$ldap_master_port" \
 		-D "$tests_domainadmin_account" \
 		-y "$tests_domainadmin_pwdfile" \
-		"(description=$unique)" >"$tmpdir/master.ldif" \
+		"(description=$unique)" \
 		>"$tmpdir/master.ldif" ||
 		fail_fast 1 "Failure to dump master"
-	[ "$(grep -c '^dn:' "$tmpdir/master.ldif")" -ne $ucount ] &&
+	[ "$(grep -c '^dn:' "$tmpdir/master.ldif")" -ne $UCOUNT ] &&
 		fail_test 1 "Incomplete LDIF of master: $(grep '^dn:' "$tmpdir/master.ldif")"
 	validate master userCertificate
 	validate master jpegPhoto
@@ -141,10 +146,10 @@ do
 		-H "ldap://$ldap_server_name:$ldap_server_port" \
 		-D "$tests_domainadmin_account" \
 		-y "$tests_domainadmin_pwdfile" \
-		"(description=$unique)" >"$tmpdir/server.ldif" \
+		"(description=$unique)" \
 		>"$tmpdir/server.ldif" ||
 		fail_fast 1 "Failure to dump server"
-	[ "$(grep -c '^dn:' "$tmpdir/server.ldif")" -ne $ucount ] &&
+	[ "$(grep -c '^dn:' "$tmpdir/server.ldif")" -ne $UCOUNT ] &&
 		fail_fast 1 "Incomplete LDIF of server: $(grep '^dn:' "$tmpdir/server.ldif")"
 	validate server userCertificate
 	validate server jpegPhoto
