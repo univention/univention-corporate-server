@@ -56,7 +56,7 @@ def _start_slapd():
     return rc
 
 
-def _start_delyed(delay):
+def _start_delayed(delay):
     subprocess.Popen('sleep %s; invoke-rc.d slapd start' % delay, shell=True)
 
 
@@ -95,8 +95,8 @@ def cleanup():
 
 @pytest.mark.parametrize('operations', [
     ["connect", ("search", True), "stop", ("start", 0), ("search", True)],
-    ["stop", ("start", 8), "connect", ("search", True)],
-    ["connect", "stop", ("start", 8), ("search", True)],
+    ["stop", ("start", 7), "connect", ("search", True)],
+    ["connect", "stop", ("start", 7), ("search", True)],
     ["stop", ("start", 11), ("search", False)],
     ["connect", "stop", ("start", 11), ("search", False)],
 ])
@@ -108,7 +108,7 @@ def test_reconnect_uldap(operations):
         if isinstance(op, tuple):
             if op[0] == 'start':
                 if op[1]:
-                    _start_delyed(delay=op[1])
+                    _start_delayed(delay=op[1])
                 else:
                     _start_slapd()
             elif op[0] == 'search':

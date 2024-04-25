@@ -1,3 +1,9 @@
+ucs-test (12.0.58) unstable; urgency=medium
+
+  * Issue #2189: Increase wait time for ldap reconnect.
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Thu, 25 Apr 2024 14:01:25 +0200
+
 ucs-test (12.0.57) unstable; urgency=medium
 
   * Bug #57193: Search for missing OpenLDAP indexes

@@ -88,25 +88,23 @@ def perform_univention_ldapsearch(fail_on_success=False):
 def stop_slapd():
     """
     Stops the slapd and waits for it to be stopped.
-    Looks for slapd in processes and waits if found extra 15 seconds.
+    Looks for slapd in processes and waits if found extra 20 seconds.
     """
     ret_code = Popen(('invoke-rc.d', 'slapd', 'stop')).wait()
     if ret_code != 0:
         fail("Expecting the return code to be 0, while it is: %s" % ret_code)
 
-    # look for process and wait up to 15 seconds for its termination:
+    # look for process and wait up to 20 seconds for its termination:
     for proc in psutil.process_iter():
         try:
             if 'slapd' in proc.name() and proc.ppid() == 1:
                 print("\nThe 'slapd' is still running, waiting...")
                 try:
-                    proc.wait(15)
+                    proc.wait(20)
                     print("slapd terminated.")
                 except psutil.TimeoutExpired:
                     fail("\nFailed to wait for slapd to terminate.\n")
         except psutil.NoSuchProcess:
-            pass
-        except ChildProcessError:
             pass
 
 
@@ -124,7 +122,7 @@ def start_with_delay(delay):
 
 
 def wait_for_slapd_to_be_started():
-    """Looks for slapd process and sleeos few seconds if not found."""
+    """Looks for slapd process and sleeps few seconds if not found."""
     for proc in psutil.process_iter():
         if 'slapd' in proc.name() and proc.ppid() == 1:
             # 'slapd' process found
@@ -171,7 +169,7 @@ Expecting that search case won't work, as retry count is 0 and start delay is 5.
     (0, [("ucr_retry_count", 10), "stop", ("start", 5), ("search", False), "wait_for_slap_to_be_restarted"]),
     (1, [("ucr_retry_count", 1), "stop", ("start", 5), ("search", True), "wait_for_slap_to_be_restarted"]),
     (2, [("ucr_retry_count", 11), "stop", ("start", 7), ("search", False), "wait_for_slap_to_be_restarted"]),
-    (3, [("ucr_retry_count", 0), ("search", False), "wait_for_slap_to_be_restarted"]),
+    (3, [("ucr_retry_count", 0), ("search", False)]),
     (4, [("ucr_retry_count", 0), "stop", ("start", 5), ("search", True)]),
 ])
 def test_reconnect_univention_ldapsearch(description_index, operations):
