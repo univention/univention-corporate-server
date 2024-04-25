@@ -67,7 +67,7 @@ user_create () { #Creates a user named like the first argument, supplied to the 
 	STARTTIME=$(date +%s%N)
 	if udm_out="$("${CMD[@]}" "$@" 2>&1)"
 	then
-		DN1 <<<"$udm_out"
+		UDM1 <<<"$udm_out"
 	else
 		rc=$?
 		echo "$udm_out" >&2
