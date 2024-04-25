@@ -27,7 +27,7 @@ computer_create () { # Creates a computer. E.g. computer_create "$COMPUTERNAME"
 	return "$rc"
 }
 
-computer_dn () { #echos the DN of a Computer. E.g. computer_dn $GROUPNAME
+computer_dn () { # echos the DN of a Computer. E.g. computer_dn $GROUPNAME
 	local name="$1" role="${2:-windows}"
 	udm-test "computers/$role" list --filter cn="$name" | DN1
 }

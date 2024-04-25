@@ -32,8 +32,8 @@ ccount=1 gcount=5 ucount=20
 # shellcheck source=../../lib/undo.sh
 . "$TESTLIBPATH/undo.sh" || exit 137
 
-set -o errexit #"script bail out when it detects an error (a non-zero exit code).
-set -o nounset #If expansion is attempted on an unset variable or parameter --> prints error
+set -o errexit # script bail out when it detects an error (a non-zero exit code).
+set -o nounset # If expansion is attempted on an unset variable or parameter --> prints error
 
 declare -r unique="${0##*/}_${$}_${RANDOM}"
 section "Creating environment '$unique' for $ccount containers, $gcount groups, $ucount users"

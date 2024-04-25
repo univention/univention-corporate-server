@@ -8,7 +8,7 @@ CONTROLMODE=true
 # shellcheck source=random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
-user_randomname () { #Generates a random string as username an echoes it. Usage: NAME=$(user_randomname)
+user_randomname () { # Generates a random string as username an echoes it. Usage: NAME=$(user_randomname)
 	random_string
 }
 
@@ -16,7 +16,7 @@ mail_domain_exists () {
 	univention-ldapsearch "(&(objectClass=univentionMailDomainname)(cn=$1))" | grep -q "^cn: $1"
 }
 
-user_create () { #Creates a user named like the first argument, supplied to the function.
+user_create () { # Creates a user named like the first argument, supplied to the function.
 	# "UDM options" can be set to "true" or "false": creating a user could look like this:
 	#   KERBEROS=true
 	#   MAIL=false
@@ -117,7 +117,7 @@ user_remove () { # Remove User named like the first argument, supplied to the fu
 	return 0
 }
 
-user_exists () { #returns 0, if user exits or 1 if he doesn't. Example: userexits $NAME
+user_exists () { # returns 0, if user exits or 1 if he doesn't. Example: user_exits $NAME
 	local USERNAME="${1:?name}"
 	if user_dn "$USERNAME"
 	then
@@ -129,7 +129,7 @@ user_exists () { #returns 0, if user exits or 1 if he doesn't. Example: userexit
 	fi
 }
 
-user_change_pw_next_login () { # Set the Flag for changing the Password on the next login for the user.  #Example: user_change_pw_next_login $NAME
+user_change_pw_next_login () { # Set the Flag for changing the Password on the next login for the user.  Example: user_change_pw_next_login $NAME
 	local USERNAME="${1:?user name}"
 	info "user $USERNAME must change password on next login"
 
@@ -146,7 +146,7 @@ user_check_pw_expiry () { # Checks if there is an expiry-date for the password o
 		grep passwordexpiry | cut -c19-26 | grep -qv None
 }
 
-user_rename () { # Rename a user # Example: renameuser $NAMEOLD $NAMENEW
+user_rename () { # Rename user $USERNAMEOLD to $USERNAMENEW
 	local USERNAMEOLD="${1:?old name}" USERNAMENEW="${2:?new name}"
 
 	info  "rename user $USERNAMEOLD to $USERNAMENEW"
