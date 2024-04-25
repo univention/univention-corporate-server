@@ -1,3 +1,9 @@
+ucs-test (12.0.59) unstable; urgency=medium
+
+  * Bug #56793: new selector in 83_self_service.08_service_specific_passwords
+
+ -- Felix Botner <botner@univention.de>  Thu, 25 Apr 2024 14:19:10 +0200
+
 ucs-test (12.0.58) unstable; urgency=medium
 
   * Issue #2189: Increase wait time for ldap reconnect.

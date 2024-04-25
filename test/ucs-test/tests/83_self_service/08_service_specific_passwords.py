@@ -53,12 +53,14 @@ def radius_auth(username, password):
 
 
 def get_new_ssp(chrome, user):
+    chrome.get('/')
     chrome.get('/univention/portal/#/selfservice/servicespecificpasswords')
     chrome.enter_input('username', user.properties['username'])
     chrome.enter_input('password', 'univention')
     chrome.enter_return()
     time.sleep(10)
-    chrome.driver.find_elements(By.CSS_SELECTOR, ".primary")[0].click()
+    print(chrome.driver.page_source)
+    chrome.driver.find_elements(By.CSS_SELECTOR, ".button--primary")[0].click()
     time.sleep(10)
     elem = chrome.driver.find_elements(By.CSS_SELECTOR, ".service-specific-passwords__hint")[0]
     return elem.text.splitlines()[1]
