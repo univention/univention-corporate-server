@@ -133,6 +133,7 @@ def test_password_change_expired_shadowLastChange(portal_login_via_keycloak, udm
     assert portal_login_via_keycloak(username, 'univention', new_password='Univention.99')
 
 
+@pytest.mark.skipif(package_installed('univention-samba4'), reason='Univention Samba 4 is installed and wont react to shadowLastChange.')
 def test_password_change_expired_krb5PasswordEnd_and_shadowLastChange(portal_login_via_keycloak, udm):
     ldap = get_ldap_connection(primary=True)
     dn, username = udm.create_user()
@@ -146,8 +147,6 @@ def test_password_change_expired_krb5PasswordEnd_and_shadowLastChange(portal_log
     wait_for_listener_replication()
     assert portal_login_via_keycloak(username, 'univention', new_password='Univention.99')
     wait_for_listener_replication()
-    if package_installed('univention-samba4'):
-        wait_for_s4connector_replication()
     assert Client(username=username, password='Univention.99')
     with pytest.raises(Unauthorized):
         Client(username=username, password='univention')
