@@ -34,11 +34,11 @@ def main():
     # Make sure postgrey is running
     if not postgrey_is_running:
         cmd = ['/etc/init.d/postgrey', 'start']
-        subprocess.call(cmd, stderr=open('/dev/null', 'w'))
+        subprocess.call(cmd, stderr=subprocess.DEVNULL)
 
     # /etc/init.d/postgrey stop
     cmd = ['/etc/init.d/postgrey', 'stop']
-    subprocess.call(cmd, stderr=open('/dev/null', 'w'))
+    subprocess.call(cmd, stderr=subprocess.DEVNULL)
     if is_running('/usr/sbin/postg'):
         utils.fail('/etc/init.d/postgrey stop did not stop the process')
     else:
@@ -47,7 +47,7 @@ def main():
     # revert to original state
     if postgrey_is_running:
         cmd = ['/etc/init.d/postgrey', 'start']
-        subprocess.call(cmd, stderr=open('/dev/null', 'w'))
+        subprocess.call(cmd, stderr=subprocess.DEVNULL)
 
 
 if __name__ == '__main__':

@@ -317,7 +317,7 @@ def dns_get_host_ip(host_name, all=False):
     for dig_source in dig_sources:
         try:
             cmd = ['dig', dig_source, host_name, '+search', '+short']
-            p1 = Popen(cmd, close_fds=True, stdout=PIPE, stderr=PIPE)
+            p1 = Popen(cmd, stdout=PIPE, stderr=PIPE)
             stdout, _stderr = p1.communicate()
             if p1.returncode == 0:
                 for i in stdout.split('\n'):

@@ -97,7 +97,7 @@ class Listener:
             '-d', '2',
             '-i',
         ]
-        proc = Popen(cmd, close_fds=True)
+        proc = Popen(cmd)
         print('I: %d = %r' % (proc.pid, cmd))
         ret = proc.wait()
         print('I: ret=%r' % (ret,))
@@ -109,7 +109,7 @@ class Listener:
             '-d', '4',
             '-F',
         ]
-        self.proc = Popen(cmd, close_fds=True)
+        self.proc = Popen(cmd)
         print('I: %d = %r' % (self.proc.pid, cmd))
         return self
 
@@ -229,7 +229,7 @@ def is_not_in_cache(env: Environment, ucr: dict[str, str]) -> bool:
         '-c', env.cdir,
         '-O', dump,
     ]
-    proc = Popen(cmd, close_fds=True)
+    proc = Popen(cmd)
     print('I: %d = %r' % (proc.pid, cmd))
     proc.wait()
 

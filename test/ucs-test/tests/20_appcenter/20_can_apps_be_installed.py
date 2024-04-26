@@ -35,7 +35,7 @@ with UCSTestConfigRegistry():
     def _apt_get_update():
         cmd = ['/usr/bin/apt-get', 'update']
         print('Executing the command: %s' % cmd)
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1, close_fds=True)
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1)
         (stdoutdata, stderrdata) = p.communicate()
         if p.returncode:
             print(f'apt-get update failed: {stdoutdata} {stderrdata}')
@@ -52,7 +52,7 @@ with UCSTestConfigRegistry():
             packages = _packages_to_install(app)
             cmd = ['/usr/bin/apt-get', 'install', '-s'] + packages
             print('Executing the command: %s' % cmd)
-            p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1, close_fds=True)
+            p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1)
             (stdoutdata, stderrdata) = p.communicate()
             retcode = p.returncode
             if retcode == 0:

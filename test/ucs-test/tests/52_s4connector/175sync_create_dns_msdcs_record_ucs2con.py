@@ -35,9 +35,7 @@ if __name__ == '__main__':
         "--ignore-exists", domainname, "add", "srv", s4_RR_val, "msdcs",
     ] + location.split(" ")
     print(" ".join(cmd))
-    p = subprocess.Popen(cmd)
-    p.wait()
-    if p.returncode:
+    if subprocess.call(cmd):
         print("WARNING: command exited with non-zero return code:\n%s" % (" ".join(cmd),))
     forward_zone_dn = "zoneName=%s,cn=dns,%s" % (domainname, dnstests.ucr["ldap/base"])
 

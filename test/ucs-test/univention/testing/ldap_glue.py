@@ -120,13 +120,9 @@ class LDAPConnection:
             raise Exception(ex + traceback.format_exc())
 
     def get_kerberos_ticket(self):
-        p1 = subprocess.Popen(['kdestroy'], close_fds=True)
-        p1.wait()
+        subprocess.call(['kdestroy'])
         cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % self.pw_file, self.principal]
-        p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-        stdout, _stderr = p1.communicate()
-        if p1.returncode != 0:
-            raise Exception('The following command failed: "%s" (%s): %s' % (''.join(cmd_block), p1.returncode, stdout.decode('UTF-8')))
+        subprocess.run(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=True)
 
     def exists(self, dn):
         try:

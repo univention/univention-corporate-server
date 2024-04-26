@@ -4,6 +4,7 @@
 ## packages: [univention-mail-server]
 
 import smtplib
+import subprocess
 import sys
 import time
 
@@ -33,7 +34,7 @@ def main():
         sys.exit(77)
 
     cmd = ['/etc/init.d/postfix', 'restart']
-    with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')):
+    with utils.AutoCallCommand(exit_cmd=cmd, stderr=subprocess.DEVNULL):
         with ucr_test.UCSTestConfigRegistry() as ucr:
             with udm_test.UCSTestUDM() as udm:
                 handler_set(['mail/postfix/policy/listfilter=yes', 'mail/postfix/greylisting=no'])

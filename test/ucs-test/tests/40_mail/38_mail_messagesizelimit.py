@@ -3,7 +3,9 @@
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
+
 import smtplib
+import subprocess
 import tempfile
 import time
 
@@ -34,7 +36,7 @@ def check_sending_mail(recipient, attachments, username, password, should_be_acc
 
 def main():
     cmd = ['/etc/init.d/postfix', 'restart']
-    with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')):
+    with utils.AutoCallCommand(exit_cmd=cmd, stderr=subprocess.DEVNULL):
         with ucr_test.UCSTestConfigRegistry() as ucr:
             with udm_test.UCSTestUDM() as udm:
                 limit = 8192  # Byte

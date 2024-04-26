@@ -23,9 +23,8 @@ WAIT_TIME_SYSTEMMAIL = 45.0
 
 @pytest.fixture()
 def restart_services():
-    subprocess.call(['service', 'postfix', 'restart'], close_fds=True)
-    subprocess.call(
-        ['service', 'univention-self-service-invitation', 'restart'], close_fds=True)
+    subprocess.call(['service', 'postfix', 'restart'])
+    subprocess.call(['service', 'univention-self-service-invitation', 'restart'])
     time.sleep(3)
 
 

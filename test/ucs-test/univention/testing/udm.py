@@ -1139,7 +1139,7 @@ class UCSTestUDM:
         self.cleanup()
 
     def _execute_udm(self, cmd):
-        child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False, env=self._env)
+        child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=self._env)
         (stdout, stderr) = child.communicate()
         stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
         return child.returncode, stdout, stderr

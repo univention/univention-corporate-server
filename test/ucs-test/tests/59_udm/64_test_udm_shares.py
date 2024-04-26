@@ -319,14 +319,11 @@ def test_create_fileshare_and_connect_via_samba(udm, ucr):
     time.sleep(delay)
     cmd = ['smbclient', '//localhost/%s' % properties['sambaName'], '-U', '%'.join([admin_name, password]), '-c', 'showconnect']
     print('\nRunning: %s' % ' '.join(cmd))
-    p = subprocess.Popen(cmd, close_fds=True)
-    p.wait()
-    if p.returncode:
+    if subprocess.call(cmd):
         share_definition = '/etc/samba/shares.conf.d/%s' % properties['sambaName']
         with open(share_definition) as f:
             print('### Samba share file %s :' % share_definition)
             print(f.read())
         print('### testpam for that smb.conf section:')
-        p = subprocess.Popen(['testparm', '-s', '--section-name', properties['sambaName']], close_fds=True)
-        p.wait()
+        subprocess.call(['testparm', '-s', '--section-name', properties['sambaName']])
         utils.fail('Samba fileshare {} not accessible'.format(properties['sambaName']))

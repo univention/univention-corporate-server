@@ -4,6 +4,7 @@
 ## packages: [univention-mail-server]
 
 import smtplib
+import subprocess
 import time
 
 import univention.testing.strings as uts
@@ -28,7 +29,7 @@ def check_sending_mail(sender, recipient, username, password, should_be_accepted
 
 def main():
     cmd = ['/etc/init.d/postfix', 'restart']
-    with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')):
+    with utils.AutoCallCommand(exit_cmd=cmd, stderr=subprocess.DEVNULL):
         with ucr_test.UCSTestConfigRegistry() as ucr:
             with udm_test.UCSTestUDM() as udm:
                 handler_set(['mail/postfix/policy/listfilter=yes', 'mail/postfix/greylisting=no'])

@@ -27,7 +27,7 @@ def main():
         host = '%s.%s' % (ucr_tmp.get('hostname'), domain)
 
         cmd = ['/etc/init.d/dovecot', 'restart']
-        with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')):
+        with utils.AutoCallCommand(exit_cmd=cmd, stderr=subprocess.DEVNULL):
             with ucr_test.UCSTestConfigRegistry():
                 univention.config_registry.handler_set([
                     'mail/dovecot/mailbox/delete=yes',
@@ -38,7 +38,7 @@ def main():
                 autocallcmd2 = ['doveadm', 'log', 'reopen']
                 logfiles = ['/var/log/auth.log', '/var/log/univention/listener.log', '/var/log/dovecot.log']
 
-                subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
+                subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=subprocess.DEVNULL)
                 with utils.AutoCallCommand(enter_cmd=autocallcmd1, exit_cmd=autocallcmd1):
                     with utils.FollowLogfile(logfiles=logfiles):
                         with utils.AutoCallCommand(enter_cmd=autocallcmd2, exit_cmd=autocallcmd2):

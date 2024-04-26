@@ -64,10 +64,9 @@ class Test:
     def smbclient(self):
         print("Forking %d processes..." % (len(self.innerDelay),))
         cmd = ("/usr/bin/smbclient", f"-U{self.username}%{self.password}", "//localhost/netlogon")
-        with open(os.path.devnull, 'wb') as null:
-            for delay in self.innerDelay:
-                subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=null, stderr=null)
-                time.sleep(delay)
+        for delay in self.innerDelay:
+            subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            time.sleep(delay)
 
     def check_processes(self):
         expectedResult = self.amountPerRound * self.totalRounds

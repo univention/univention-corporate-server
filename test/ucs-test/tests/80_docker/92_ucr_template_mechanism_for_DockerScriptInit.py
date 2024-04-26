@@ -17,7 +17,7 @@ from dockertest import Appcenter, tiny_app
 
 
 def check_docker_arg_against_ucrv(container_id: str, ucrv: str) -> None:
-    docker_inspect = subprocess.check_output(["docker", "inspect", f"{container_id}"], close_fds=True)
+    docker_inspect = subprocess.check_output(["docker", "inspect", f"{container_id}"])
     args = json.loads(docker_inspect)[0]['Args']
     first_arg = args[0].split("=", 1)[1]
     if first_arg != ucrv:

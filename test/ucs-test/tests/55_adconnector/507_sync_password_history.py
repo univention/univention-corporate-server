@@ -86,13 +86,12 @@ def open_drs_connection():
         ad_ldap_bindpw = fd.read().rstrip()
 
     def get_kerberos_ticket(ad_ldap_bindpw, ad_ldap_binddn):
-        p1 = subprocess.Popen(['kdestroy'], close_fds=True)
-        p1.wait()
+        subprocess.call(['kdestroy'])
         with NamedTemporaryFile('w') as fd:
             fd.write(ad_ldap_bindpw)
             fd.flush()
             cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % (fd.name,), ad_ldap_binddn]
-            p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+            p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             stdout, _stderr = p1.communicate()
         if p1.returncode != 0:
             raise kerberosAuthenticationFailed('The following command failed: "%s" (%s): %s' % (' '.join(cmd_block), p1.returncode, stdout.decode('UTF-8', 'replace')))

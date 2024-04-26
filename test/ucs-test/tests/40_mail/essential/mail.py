@@ -287,7 +287,7 @@ def restart_postfix():
     cmd = ['systemctl', 'restart', 'postfix']
     try:
         print(repr(cmd))
-        subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
+        subprocess.call(cmd, stderr=subprocess.DEVNULL)
     except OSError as ex:
         print(ex, file=sys.stderr)
 
@@ -296,7 +296,7 @@ def reload_postfix():
     cmd = ['systemctl', 'reload', 'postfix']
     try:
         print(repr(cmd))
-        subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
+        subprocess.call(cmd, stderr=subprocess.DEVNULL)
     except OSError as ex:
         print(ex, file=sys.stderr)
     time.sleep(1)
@@ -310,7 +310,7 @@ def reload_amavis_postfix():
     ):
         try:
             print(repr(cmd))
-            subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
+            subprocess.call(cmd, stderr=subprocess.DEVNULL)
         except OSError as ex:
             print(ex, file=sys.stderr)
     time.sleep(1)

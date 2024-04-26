@@ -22,11 +22,11 @@ def main():
         ucr_tmp = univention.config_registry.ConfigRegistry()
         ucr_tmp.load()
         cmd = ['/etc/init.d/dovecot', 'restart']
-        with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')):
+        with utils.AutoCallCommand(exit_cmd=cmd, stderr=subprocess.DEVNULL):
             with ucr_test.UCSTestConfigRegistry() as ucr:
                 domain = ucr.get('domainname')
                 univention.config_registry.handler_set(['mail/dovecot/mailbox/delete=yes'])
-                subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
+                subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=subprocess.DEVNULL)
                 host = '%s.%s' % (ucr.get('hostname'), domain)
                 password = 'univention'
                 mails = []

@@ -31,12 +31,10 @@ def setup_environment():
         'univention-install -y univention-directory-manager-module-example',
         shell=True,
         stdout=subprocess.DEVNULL,
-        stdin=None
     )
     check_call(
         'udm test/ip_phone create --set name=test111 --set ip=1.2.3.4 --set priuser=test@slapschema',
         shell=True,
-        stdin=None
     )
 
 
@@ -49,18 +47,15 @@ def clean_environment():
         'univention-install -y univention-directory-manager-module-example',
         shell=True,
         stdout=subprocess.DEVNULL,
-        stdin=None
     )
     check_call(
         'udm test/ip_phone remove --dn "cn=test111,$(ucr get ldap/base)"',
         shell=True,
-        stdin=None
     )
     check_call(
         'apt-get -y remove univention-directory-manager-module-example',
         shell=True,
         stdout=subprocess.DEVNULL,
-        stdin=None
     )
 
 
@@ -70,7 +65,6 @@ def remove_schema():
         'apt-get -y remove univention-directory-manager-module-example-schema',
         shell=True,
         stdout=subprocess.DEVNULL,
-        stdin=None
     )
     print("Removed schema")
 

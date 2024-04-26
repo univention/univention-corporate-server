@@ -601,8 +601,7 @@ wait_for_connector_replication = wait_for_s4connector_replication
 
 def package_installed(package: str) -> bool:
     sys.stdout.flush()
-    with open('/dev/null', 'w') as null:
-        return (subprocess.call("dpkg-query -W -f '${Status}' %s | grep -q ^install" % package, stderr=null, shell=True) == 0)
+    return subprocess.call("dpkg-query -W -f '${Status}' %s | grep -q ^install" % package, stderr=subprocess.DEVNULL, shell=True) == 0
 
 
 def fail(log_message: str | None = None, returncode: int = 1) -> NoReturn:

@@ -24,7 +24,7 @@ MAX_CONNECTIONS = 700
 def run_cmd(cmd):
     """Execute the given command"""
     print('Executing: %r' % (cmd,))
-    return subprocess.call(cmd, stderr=open('/dev/null', 'w'))
+    return subprocess.call(cmd, stderr=subprocess.DEVNULL)
 
 
 def set_openfiles_limit(new_limit):

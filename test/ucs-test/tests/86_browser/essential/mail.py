@@ -286,7 +286,7 @@ def activate_spam_header_tag(tag):
 def restart_postfix():
     cmd = ['/etc/init.d/postfix', 'restart']
     try:
-        subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
+        subprocess.call(cmd, stderr=subprocess.DEVNULL)
     except OSError as ex:
         print(ex, file=sys.stderr)
 
@@ -294,7 +294,7 @@ def restart_postfix():
 def reload_postfix():
     cmd = ['/etc/init.d/postfix', 'force-reload']
     try:
-        subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
+        subprocess.call(cmd, stderr=subprocess.DEVNULL)
     except OSError as ex:
         print(ex, file=sys.stderr)
 
@@ -306,7 +306,7 @@ def reload_amavis_postfix():
             ['/etc/init.d/postfix', 'force-reload'],
     ):
         try:
-            subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
+            subprocess.call(cmd, stderr=subprocess.DEVNULL)
         except OSError as ex:
             print(ex, file=sys.stderr)
 

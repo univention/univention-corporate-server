@@ -28,10 +28,10 @@ timeout = 1
 def main():
     with udm_test.UCSTestUDM() as udm:
         cmd = ['/etc/init.d/dovecot', 'restart']
-        with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')):
+        with utils.AutoCallCommand(exit_cmd=cmd, stderr=subprocess.DEVNULL):
             with ucr_test.UCSTestConfigRegistry() as ucr:
                 univention.config_registry.handler_set(['mail/dovecot/auth/cache_size=0'])
-                subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
+                subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=subprocess.DEVNULL)
                 quota01 = 5
                 domain = ucr.get('domainname')
                 pw = 'univention'
