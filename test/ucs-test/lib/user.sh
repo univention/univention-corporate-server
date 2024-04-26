@@ -166,7 +166,7 @@ user_set_attr () {
 	wait_for_replication
 	if [ -n "$ldap" ]
 	then
-		univention-ldapsearch "uid=$name" "$ldap" | ldapsearch-wrapper | grep -q "^$ldap"
+		univention-ldapsearch "uid=$name" "$ldap" | grep -q "^$ldap"
 	fi
 }
 
