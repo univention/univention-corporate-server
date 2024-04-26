@@ -2,9 +2,6 @@ import contextlib
 import subprocess
 from time import sleep
 
-import univention.admin.modules
-import univention.admin.objects
-import univention.admin.uldap
 import univention.config_registry
 import univention.testing.connector_common as tcommon
 import univention.testing.ucr as testing_ucr
