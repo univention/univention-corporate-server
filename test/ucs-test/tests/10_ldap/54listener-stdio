@@ -22,8 +22,6 @@ cat >"$listener" <<__HERE__
 import sys
 from typing import Dict, List
 
-import listener
-
 description = 'Test Python 3 StdIO flush'
 filter = '(cn=$ucstest)'
 
