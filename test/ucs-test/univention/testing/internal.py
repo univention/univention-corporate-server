@@ -120,6 +120,9 @@ def get_tests(sections: Iterable[str]) -> Dict[str, List[str]]:
             if RE_SUFFIX.search(filename):
                 logger.debug(f'Skipped file {fname}')
                 continue
+            if not os.path.exists(fname):
+                logger.debug(f'Skipped file {fname}')
+                continue
             logger.debug(f'Adding file {fname}')
             tests.append(fname)
 
