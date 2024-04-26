@@ -32,6 +32,7 @@
 
 import subprocess
 import time
+from typing import TYPE_CHECKING, Tuple
 
 import ldap
 import ldap.schema
@@ -42,10 +43,14 @@ from univention.config_registry import ConfigRegistry
 from univention.testing.strings import random_int, random_name
 
 
+if TYPE_CHECKING:
+    import ldap.schema.subentry
+
+
 WAIT_FOR_LDAP_TIME = 30  # seconds
 
 
-def wait_for_ldap():
+def wait_for_ldap() -> None:
     print("\n** Waiting for slapd")
     for count in range(WAIT_FOR_LDAP_TIME):
         try:
@@ -61,27 +66,27 @@ def wait_for_ldap():
                 print(count)
 
 
-def get_package_name():
+def get_package_name() -> str:
     return random_name()
 
 
-def get_schema_name():
+def get_schema_name() -> str:
     return random_name()
 
 
-def get_acl_name():
+def get_acl_name() -> str:
     return '62%s' % random_name()
 
 
-def get_container_name():
+def get_container_name() -> str:
     return random_name()
 
 
-def get_schema_attribute_id():
+def get_schema_attribute_id() -> str:
     return random_int() + random_int() + random_int() + random_int() + random_int()
 
 
-def call_join_script(join_script_name):
+def call_join_script(join_script_name: str) -> int:
     print(f'call_join_script({join_script_name!r})')
     ucr = ConfigRegistry()
     ucr.load()
@@ -91,7 +96,7 @@ def call_join_script(join_script_name):
     return subprocess.call([join_script, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], shell=False)
 
 
-def call_unjoin_script(unjoin_script_name):
+def call_unjoin_script(unjoin_script_name: str) -> int:
     print(f'call_unjoin_script({unjoin_script_name!r})')
     ucr = ConfigRegistry()
     ucr.load()
@@ -101,7 +106,7 @@ def call_unjoin_script(unjoin_script_name):
     return subprocess.call([join_script, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], shell=False)
 
 
-def __fetch_schema_from_uri(ldap_uri):
+def __fetch_schema_from_uri(ldap_uri: str) -> Tuple[str, ldap.schema.subentry.SubSchema]:
     ucr = ConfigRegistry()
     ucr.load()
 
@@ -119,7 +124,7 @@ def __fetch_schema_from_uri(ldap_uri):
         i += 1
 
 
-def fetch_schema_from_ldap_master():
+def fetch_schema_from_ldap_master() -> Tuple[str, ldap.schema.subentry.SubSchema]:
     ucr = ConfigRegistry()
     ucr.load()
 
@@ -127,7 +132,7 @@ def fetch_schema_from_ldap_master():
     return __fetch_schema_from_uri(ldap_uri)
 
 
-def fetch_schema_from_local_ldap():
+def fetch_schema_from_local_ldap() -> Tuple[str, ldap.schema.subentry.SubSchema]:
     ucr = ConfigRegistry()
     ucr.load()
 
@@ -136,14 +141,14 @@ def fetch_schema_from_local_ldap():
     return __fetch_schema_from_uri(ldap_uri)
 
 
-def get_ldap_master_connection(user_dn):
+def get_ldap_master_connection(user_dn: str) -> univention.uldap.access:
     ucr = ConfigRegistry()
     ucr.load()
 
     return univention.uldap.access(host=ucr.get('ldap/master'), port=int(ucr.get('ldap/master/port', '7389')), base=ucr.get('ldap/base'), binddn=user_dn, bindpw='univention')
 
 
-def set_container_description(user_dn, container):
+def set_container_description(user_dn: str, container: str) -> None:
     print(f'set_container_description({user_dn!r}, {container!r})')
     lo = get_ldap_master_connection(user_dn)
     lo.modify(container, [('description', b'', random_name().encode('UTF-8'))])
