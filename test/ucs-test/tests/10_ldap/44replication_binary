@@ -99,8 +99,7 @@ wait_for_replication
 
 validate () {
 	local file="$1" attr="$2" value
-	ldapsearch-wrapper <"$tmpdir/${file}.ldif" |
-		sed -rne "s/^${attr}(;binary)?:: //p" >"$tmpdir/tmp"
+	sed -rne "s/^${attr}(;binary)?:: //p" "$tmpdir/${file}.ldif" >"$tmpdir/tmp"
 	while read -r value
 	do
 		base64 -d <<<"$value" | cmp "$tmpdir/$attr.bin" ||
@@ -126,7 +125,7 @@ do
 	# Otherwise sometimes it seems to happen that the S4-C overwrites the new value with an old one.
 	sleep 20
 
-	ldapsearch -x -LLL \
+	ldapsearch -x -LLL -o ldif-wrap=no \
 		-H "ldap://$ldap_master:$ldap_master_port" \
 		-D "$tests_domainadmin_account" \
 		-y "$tests_domainadmin_pwdfile" \
@@ -138,7 +137,7 @@ do
 	validate master userCertificate
 	validate master jpegPhoto
 
-	ldapsearch -x -LLL \
+	ldapsearch -x -LLL -o ldif-wrap=no \
 		-H "ldap://$ldap_server_name:$ldap_server_port" \
 		-D "$tests_domainadmin_account" \
 		-y "$tests_domainadmin_pwdfile" \

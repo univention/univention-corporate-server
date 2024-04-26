@@ -60,7 +60,7 @@ udm_verify_multi_value_udm_attribute_contains_ignore_case "nestedGroup" \
 udm_verify_multi_value_udm_attribute_contains_ignore_case "nestedGroup" \
 	"cn=$gp3,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
 
-univention-ldapsearch cn=$gp1
+univention-ldapsearch "(cn=$gp1)"
 
 section "Rename group"
 
@@ -69,15 +69,15 @@ AD_GROUP_DN_N3="CN=$n_gp3,CN=groups,$(ad_get_base)"
 ad_set_attribute "$AD_GROUP_DN3" "sAMAccountName" "$n_gp3" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 
-univention-ldapsearch cn=$gp1
+univention-ldapsearch "(cn=$gp1)"
 
 UDM_groups_group_name="$gp1"
 udm_verify_multi_value_udm_attribute_contains_ignore_case "nestedGroup" \
 	"cn=$gp2,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
 udm_verify_multi_value_udm_attribute_contains_ignore_case "nestedGroup" \
 	"cn=$n_gp3,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
-member_result=$(univention-ldapsearch "cn=$gp1" | ldapsearch-wrapper | sed -ne 's|^uniqueMember: ||p' | grep -i "cn=$gp3,cn=groups,$ldap_base")
-test -n "$member_result" &&  fail_test 110
+univention-ldapsearch "(cn=$gp1)" | VAL uniqueMember | grep -Fi "cn=$gp3,cn=groups,$ldap_base" &&
+	fail_test 110
 
 section "Clean up"
 
