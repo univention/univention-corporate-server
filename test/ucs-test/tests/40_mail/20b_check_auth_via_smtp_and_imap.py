@@ -84,7 +84,7 @@ class AuthTests:
             'sieve-connect', '--nosslverify', '--notlsverify',
             '--user', user,
             '--authzid', user,
-            '--server', '{}.{}'.format(self.ucr.get('hostname'), self.ucr.get('domainname')),
+            '--server', '%(hostname)s.%(domainname)s' % self.ucr,
             '--port', '4190', '-4',
             '--passwordfd', '0',
             '--list'], stdin=subprocess.PIPE)

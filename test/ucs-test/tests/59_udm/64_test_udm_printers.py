@@ -102,7 +102,7 @@ def test_create_printer_and_check_printing_works(ucr, udm):
     """Create shares/printer and check if print access works"""
     account = utils.UCSTestDomainAdminCredentials()
 
-    spoolhost = '.'.join([ucr['hostname'], ucr['domainname']])
+    spoolhost = '%(hostname)s.%(domainname)s' % ucr
     acltype = random.choice(['allow all', 'allow'])
 
     properties = {

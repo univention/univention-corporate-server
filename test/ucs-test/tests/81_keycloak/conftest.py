@@ -172,7 +172,7 @@ def unverified_user() -> Iterator[UnverfiedUser]:
 
 @pytest.fixture()
 def portal_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
-    portal_fqdn = ucr_proper['umc/saml/sp-server'] if ucr_proper['umc/saml/sp-server'] else f"{ucr_proper['hostname']}.{ucr_proper['domainname']}"
+    portal_fqdn = ucr_proper['umc/saml/sp-server'] or ('%(hostname)s.%(domainname)s' % ucr_proper)
     config = {
         'url': f'https://{portal_fqdn}/univention/portal',
         'fqdn': portal_fqdn,

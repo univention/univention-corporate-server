@@ -24,8 +24,7 @@ if __name__ == '__main__':
 
     domainname = dnstests.ucr["domainname"]
     hostname = dnstests.ucr["hostname"]
-    fqdn = ".".join((hostname, domainname))
-    location = "0 100 389 %s." % fqdn
+    location = f"0 100 389 {hostname}.{domainname}."
 
     account = utils.UCSTestDomainAdminCredentials()
 

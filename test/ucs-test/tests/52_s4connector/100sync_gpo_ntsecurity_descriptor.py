@@ -93,7 +93,7 @@ class Testclass_GPO_Security_Descriptor:
         self.adminaccount = utils.UCSTestDomainAdminCredentials()
         self.machine_ucs_ldap = univention.uldap.getMachineConnection()
 
-        self.fqdn = ".".join((self.ucr["hostname"], self.ucr["domainname"]))
+        self.fqdn = "%(hostname)s.%(domainname)s" % self.ucr
 
         self.lp = LoadParm()
         self.lp.load_default()

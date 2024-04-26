@@ -407,7 +407,7 @@ class CheckOperations:
         return dn.format(id=self.application, version=app_version, base=ldap_base)
 
     def _check_url(self, protocol, port, interface):
-        fqdn = '{}.{}'.format(self.ucr.get("hostname"), self.ucr.get("domainname"))
+        fqdn = '%(hostname)s.%(domainname)s' % self.ucr
         url = f"{protocol}://{fqdn}:{port}{interface}"
         response = requests.get(url, timeout=30, verify=False)  # noqa: S501
 

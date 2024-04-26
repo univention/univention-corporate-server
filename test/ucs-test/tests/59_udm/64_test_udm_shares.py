@@ -185,7 +185,7 @@ def test_create_fileshare_and_connect_via_samba(udm, ucr):
 
     properties = {
         'name': uts.random_name(),
-        'host': '.'.join([ucr['hostname'], ucr['domainname']]),
+        'host': '%(hostname)s.%(domainname)s' % ucr,
         'path': '/test/%s' % uts.random_string(),
         'owner': uts.random_int(),
         'group': uts.random_int(),
