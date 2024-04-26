@@ -42,7 +42,7 @@ def check_all_servers_in_policies(ldap_servers, udm_backups):
     ldapserver_policies = udm_modules.lookup("policies/ldapserver", None, lo, base=basedn, scope="sub", filter="(cn=default-settings)")
     ldapserver_policy = ldapserver_policies[0]
 
-    if not all(map(lambda x: x in ldapserver_policy["ldapServer"], ldap_servers)):
+    if not all(server in ldapserver_policy["ldapServer"] for server in ldap_servers):
         utils.fail(
             "LDAP server policy does not contain all DC master and DC "
             "backups. ldapserver_policy[ldapServer]: {} ldap_servers: {}".format(ldapserver_policy["ldapServer"], ldap_servers),
@@ -52,11 +52,11 @@ def check_all_servers_in_policies(ldap_servers, udm_backups):
     registry_policy = registry_policies[0]
 
     ucr_backups = []
-    for ucr in registry_policy["registry"]:
-        if ucr[0] == "ldap/server/addition":
-            ucr_backups = ucr[1].split()
+    for k, v in registry_policy["registry"]:
+        if k == "ldap/server/addition":
+            ucr_backups = v.split()
 
-    if not all(map(lambda x: x in ucr_backups, udm_backups)):
+    if not all(server in ucr_backups for server in udm_backups):
         utils.fail(f"UCR policy does not contain all DC backups. ucr_backups: {ucr_backups} udm_backups: {udm_backups}")
 
 

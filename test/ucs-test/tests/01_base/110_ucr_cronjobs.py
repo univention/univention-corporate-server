@@ -79,7 +79,7 @@ def main():
             time.sleep((cron_plus_ten - now).seconds)
     finally:
         if ucrs:
-            handler_unset(map(lambda x: x.split("=")[0], ucrs))
+            handler_unset([x.split("=")[0] for x in ucrs])
 
     # look for mail
     with ucr_test.UCSTestConfigRegistry() as ucr:

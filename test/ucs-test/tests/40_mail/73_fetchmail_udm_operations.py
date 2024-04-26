@@ -171,7 +171,7 @@ def test_single_drop_configuration_removal(udm, ucr, fqdn, user_addr):
     fetchmail = load_rc(FETCHMAILRC_FILE)
     res = objfind(fetchmail, uid)
     assert len(res) == 2
-    assert any(map(lambda x: not check_entry(x, fqdn, remote_username + "1", password, user_addr, uid), res))
+    assert any(not check_entry(x, fqdn, remote_username + "1", password, user_addr, uid) for x in res)
 
     # Remove remaining configurations (Bug #56426)
     udm.modify_object('users/user', dn=user_dn, remove={
@@ -213,7 +213,7 @@ def test_multi_drop_configuration_removal(udm, ucr, fqdn, user_addr):
     fetchmail = load_rc(FETCHMAILRC_FILE)
     res = objfind(fetchmail, uid)
     assert len(res) == 2
-    assert any(map(lambda x: not check_entry(x, fqdn, remote_username + "1", password, user_addr, uid), res))
+    assert any(not check_entry(x, fqdn, remote_username + "1", password, user_addr, uid) for x in res)
 
     # Remove remaining configurations (Bug #56426)
     udm.modify_object('users/user', dn=user_dn, remove={
@@ -315,7 +315,7 @@ def test_modify_mailPrimaryAddress(udm, ucr, fqdn, user_addr):
     fetchmail = load_rc(FETCHMAILRC_FILE)
     res = objfind(fetchmail, uid)
     assert len(res) == 3
-    assert all(map(lambda x: check_entry(x[0], fqdn, x[1], password, new_mail, uid), zip(sorted(res), sorted([remote_username, remote_username + "1", remote_username + "2"]))))
+    assert all(check_entry(x, fqdn, name, password, new_mail, uid) for x, name in zip(sorted(res), sorted([remote_username, remote_username + "1", remote_username + "2"])))
 
 
 def test_modify_uid(udm, ucr, fqdn, user_addr):
@@ -407,4 +407,4 @@ def test_modify_configuration(udm, ucr, fqdn, user_addr):
     fetchmail = load_rc(FETCHMAILRC_FILE)
     res = objfind(fetchmail, uid)
     assert len(res) == 4
-    assert any(map(lambda x: check_entry(x, fqdn, remote_username + "5", password, user_addr, uid), res))
+    assert any(check_entry(x, fqdn, remote_username + "5", password, user_addr, uid) for x in res)
