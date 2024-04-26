@@ -8,10 +8,10 @@
 
 import pytest
 
-from dockertest import tiny_app
+from dockertest import App, Appcenter, tiny_app
 
 
-def assert_content(app, expected):
+def assert_content(app: App, expected: str) -> None:
     app.reload_container_id()
     configured_file = app.file('/tmp/configure.output')
     print('Searching in', configured_file, 'for', expected)
@@ -20,7 +20,7 @@ def assert_content(app, expected):
 
 
 @pytest.mark.exposure('dangerous')
-def test_app_configure_reinitialize(appcenter, app_name, app_version):
+def test_app_configure_reinitialize(appcenter: Appcenter, app_name: str, app_version: str) -> None:
     app = tiny_app(app_name, app_version)
     try:
         app.set_ini_parameter(

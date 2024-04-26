@@ -5,6 +5,8 @@
 ##  - domaincontroller_master
 ## exposure: dangerous
 
+from __future__ import annotations
+
 import base64
 import subprocess
 import sys
@@ -19,17 +21,17 @@ from umc import UMCBase
 
 class TestUMCUserAuthentication(UMCBase):
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Test Class constructor"""
         super().__init__()
 
-        self.UDM = None
+        self.UDM: UCSTestUDM | None = None
 
         self.test_user_dn = ''
         self.test_username = ''
         self.test_password = ''
 
-    def create_user(self):
+    def create_user(self) -> None:
         self.test_user_dn = self.UDM.create_user(
             password=self.test_password,
             username=self.test_username,
@@ -37,17 +39,17 @@ class TestUMCUserAuthentication(UMCBase):
         )[0]
         utils.verify_ldap_object(self.test_user_dn)
 
-    def set_image_jpeg(self):
+    def set_image_jpeg(self) -> None:
         with open('./34_userphoto.jpeg', 'rb') as fd:
             image = fd.read()
         assert image == base64.b64decode(self.set_image(image)), "Failed to set JPEG user photo"
 
-    def set_image_jpg(self):
+    def set_image_jpg(self) -> None:
         with open('./34_userphoto.jpg', 'rb') as fd:
             image = fd.read()
         assert image == base64.b64decode(self.set_image(image)), "Failed to set JPG user photo"
 
-    def set_image_png(self):
+    def set_image_png(self) -> None:
         with open('./34_userphoto.png', 'rb') as fd:
             image = fd.read()
         image = base64.b64decode(self.set_image(image))
@@ -58,17 +60,17 @@ class TestUMCUserAuthentication(UMCBase):
             stdout, _stderr = p.communicate()
             assert b'image/jpeg' in stdout, f"Failed to set PNG user photo (not converted to JPEG): {stdout!r}"
 
-    def unset_image(self):
-        assert not self.set_image(""), "Failed to unset user photo"
+    def unset_image(self) -> None:
+        assert not self.set_image(b""), "Failed to unset user photo"
 
-    def set_image(self, jpegPhoto):
+    def set_image(self, jpegPhoto: bytes) -> bytes | None:
         if jpegPhoto:
             jpegPhoto = base64.b64encode(jpegPhoto).decode('ASCII')  # TODO: make umcp/upload request
         self.modify_object([{"object": {"jpegPhoto": jpegPhoto, "$dn$": self.test_user_dn}}], 'users/user')
         response = self.get_object([self.test_user_dn], 'users/user')
         return response[0].get('jpegPhoto')
 
-    def main(self):
+    def main(self) -> None:
         """Tests the UMC user authentication and various password change cases."""
         self.test_username = 'umc_test_user_' + random_username(6)
         self.test_password = 'univention'

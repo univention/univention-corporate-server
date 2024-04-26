@@ -10,7 +10,7 @@ import subprocess
 import pytest
 from ruamel import yaml
 
-from dockertest import App, get_app_name
+from dockertest import App, Appcenter, get_app_name
 
 
 DOCKER_COMPOSE = '''
@@ -48,7 +48,7 @@ InitialValue = This is a test
 
 
 @pytest.mark.exposure('dangerous')
-def test_docker_compose(appcenter):
+def test_docker_compose(appcenter: Appcenter) -> None:
     name = get_app_name()
     setup = '#!/bin/sh'
     store_data = '#!/bin/sh'

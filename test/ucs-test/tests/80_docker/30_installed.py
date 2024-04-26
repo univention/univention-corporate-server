@@ -9,11 +9,11 @@ import pytest
 
 from univention.config_registry import ConfigRegistry
 
-from dockertest import App, get_app_name, get_app_version, tiny_app
+from dockertest import App, Appcenter, get_app_name, get_app_version, tiny_app
 
 
 @pytest.mark.exposure('dangerous')
-def test_docker(appcenter):
+def test_docker(appcenter: Appcenter) -> None:
     app_docker1 = app_docker2 = app_nondocker = None
     try:
         app_docker1 = tiny_app(get_app_name(), get_app_version())

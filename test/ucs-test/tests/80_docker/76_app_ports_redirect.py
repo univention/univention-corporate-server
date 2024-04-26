@@ -11,11 +11,11 @@ import pytest
 
 from univention.testing.utils import is_port_open, is_udp_port_open, restart_firewall
 
-from dockertest import App, get_docker_appbox_image, get_docker_appbox_ucs
+from dockertest import App, Appcenter, get_docker_appbox_image, get_docker_appbox_ucs
 
 
 @pytest.mark.exposure('dangerous')
-def test_app_ports_redirect(appcenter, app_name, app_version):
+def test_app_ports_redirect(appcenter: Appcenter, app_name: str, app_version: str) -> None:
     app = App(name=app_name, version=app_version, container_version=get_docker_appbox_ucs(), build_package=False)
     ports = ['4021:21', '4023:23']
     udp_ports = ['6100:6100', '7999:7999']

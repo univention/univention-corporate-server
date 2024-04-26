@@ -3,6 +3,8 @@
 ## tags: [apptest]
 ## exposure: safe
 
+from __future__ import annotations
+
 import glob
 import json
 import os
@@ -10,7 +12,6 @@ import subprocess
 import sys
 import tempfile
 from difflib import unified_diff
-from typing import Dict, Set
 
 import py.path
 import pytest
@@ -37,7 +38,7 @@ ALLOWED_DIFFERENCES = [
     '/etc/univention/templates/files/usr/share/univention-management-console/i18n/de/apps.mo',  # po-lib adds date
     '/etc/univention/templates/files/etc/mysql/mariadb.conf.d/60-ucr.cnf',  # not really different, but difference due to dict iteration
 ] + glob.glob('/etc/univention/templates/files/etc/security/*.conf')
-IGNORE: Dict[str, Set[int]] = {
+IGNORE: dict[str, set[int]] = {
 }
 
 SCRIPT = r'''#!/bin/sh

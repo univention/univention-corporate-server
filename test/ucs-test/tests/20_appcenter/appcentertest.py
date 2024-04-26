@@ -31,6 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
+
 import contextlib
 import functools
 import itertools
@@ -41,6 +43,7 @@ import string
 import subprocess
 import time
 from shutil import rmtree
+from typing import TYPE_CHECKING, Any, Callable, Iterable, Iterator
 
 import lxml.html
 import requests
@@ -54,16 +57,20 @@ from univention.testing import debian_package, utils
 from univention.testing.umc import Client
 
 
+if TYPE_CHECKING:
+    from univention.appcenter.app import App
+
+
 APPCENTER_FILE = "/var/cache/appcenter-installed.txt"  # installed apps
 
 
-def restart_umc():
+def restart_umc() -> None:
     print('Restarting UMC')
     subprocess.check_call(['deb-systemd-invoke', 'restart', 'univention-management-console-server'])
     time.sleep(3)
 
 
-def get_requested_apps():
+def get_requested_apps() -> list[App]:
     ret = []
     try:
         with open(APPCENTER_FILE) as f:
@@ -94,35 +101,35 @@ class AppCenterTestFailure(Exception):
 
 class AppCenterOperations:
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.client = Client.get_test_connection()
 
-    def _error_handler(self, error):
+    def _error_handler(self, error: str) -> None:
         raise AppCenterOperationError(error)
 
-    def _renew_connection(self):
+    def _renew_connection(self) -> None:
         try:
             if self.client.umc_get('session-info').status != 200:
                 raise ValueError()
         except BaseException:
             self.client.authenticate(self.client.username, self.client.password)
 
-    def query(self):
+    def query(self) -> list[dict[str, Any]]:
         self._renew_connection()
         return self.client.umc_command("appcenter/query").result
 
-    def get(self, application):
+    def get(self, application: str) -> dict[str, Any]:
         self._renew_connection()
         data = {"application": application}
         return self.client.umc_command("appcenter/get", data).result
 
-    def resolve(self, action, apps):
+    def resolve(self, action: str, apps: list[str]):
         """Call the UMC command `appcenter/resolve` with the given arguments."""
         self._renew_connection()
         data = {"action": action, "apps": apps}
         return self.client.umc_command("appcenter/resolve", data).result
 
-    def run(self, args):
+    def run(self, args: dict[str, object]):
         """
         Call the UMC command `appcenter/run` with the given options.
 
@@ -150,7 +157,7 @@ class AppCenterOperations:
                 return progress["result"]
             time.sleep(3)
 
-    def _make_run_args(self, apps, host=None):
+    def _make_run_args(self, apps: list[str], host: str | None = None) -> dict[str, object]:
         # missing: dry_run: True / False and action: "install"/"upgrade"/"remove"
         host = host or get_local_fqdn()
         return {
@@ -160,43 +167,43 @@ class AppCenterOperations:
             "settings": {app: {} for app in apps},
         }
 
-    def install_dry_run(self, apps, host=None):
+    def install_dry_run(self, apps: list[str], host: str | None = None):
         args = self._make_run_args(apps, host)
         args["action"] = "install"
         args["dry_run"] = True
         return self.run(args)
 
-    def install(self, apps, host=None):
+    def install(self, apps: list[str], host: str | None = None):
         args = self._make_run_args(apps, host)
         args["action"] = "install"
         args["dry_run"] = False
         return self.run(args)
 
-    def upgrade_dry_run(self, apps, host=None):
+    def upgrade_dry_run(self, apps: list[str], host: str | None = None):
         args = self._make_run_args(apps, host)
         args["action"] = "upgrade"
         args["dry_run"] = True
         return self.run(args)
 
-    def upgrade(self, apps, host=None):
+    def upgrade(self, apps: list[str], host: str | None = None):
         args = self._make_run_args(apps, host)
         args["action"] = "upgrade"
         args["dry_run"] = False
         return self.run(args)
 
-    def remove_dry_run(self, apps, host=None):
+    def remove_dry_run(self, apps: list[str], host: str | None = None):
         args = self._make_run_args(apps, host)
         args["action"] = "remove"
         args["dry_run"] = True
         return self.run(args)
 
-    def remove(self, apps, host=None):
+    def remove(self, apps: list[str], host: str | None = None):
         args = self._make_run_args(apps, host)
         args["action"] = "remove"
         args["dry_run"] = False
         return self.run(args)
 
-    def is_installed(self, application, info=None, msg=None):
+    def is_installed(self, application: str, info: dict[str, Any] | None = None, msg: str | None = None) -> bool:
         if info is None:
             info = self.get(application)
         result = info.get("is_installed", False) or info.get("is_installed_anywhere", False)
@@ -204,7 +211,7 @@ class AppCenterOperations:
             raise AppCenterOperationError(msg.format(application))
         return result
 
-    def is_docker(self, application, info=None, msg=None):
+    def is_docker(self, application: str, info: dict[str, Any] | None = None, msg: str | None = None) -> bool:
         if info is None:
             info = self.get(application)
         result = info.get("docker_image") is not None
@@ -212,7 +219,7 @@ class AppCenterOperations:
             raise AppCenterOperationError(msg.format(application))
         return result
 
-    def update_available(self, application, info=None, msg=None):
+    def update_available(self, application: str, info: dict[str, Any] | None = None, msg: str | None = None) -> bool:
         if info is None:
             info = self.get(application)
         result = any(m.get("update_available", False) for m in info.get("installations", {}).values())
@@ -223,7 +230,14 @@ class AppCenterOperations:
 
 class DebianPackage(debian_package.DebianPackage):
 
-    def __init__(self, name="testdeb", version="1.0", depends=None, breaks=None, conflicts=None):
+    def __init__(
+        self,
+        name: str = "testdeb",
+        version: str = "1.0",
+        depends: list[DebianPackage] | None = None,
+        breaks: list[DebianPackage] | None = None,
+        conflicts: list[DebianPackage] | None = None,
+    ) -> None:
         self._depends = depends or []
         self._breaks = breaks or []
         self._conflicts = conflicts or []
@@ -232,29 +246,29 @@ class DebianPackage(debian_package.DebianPackage):
         debian_package.DebianPackage.__init__(self, name, version)
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._package_name
 
     @property
-    def version(self):
+    def version(self) -> str:
         return self._package_version
 
     @property
-    def name_version(self):
+    def name_version(self) -> str:
         return f"{self._package_name} (>= {self._package_version})"
 
-    def create_file(self, name="", buffer=""):
+    def create_file(self, name: str, buffer: str) -> str:
         path = os.path.join(self._package_tempdir, name)
         self.__create_file_from_buffer(path, buffer)
         return path
 
-    def get_all_binary_names(self):
+    def get_all_binary_names(self) -> Iterator[str]:
         yield self.get_binary_name()
         for package in self._depends:
             if hasattr(package, "get_binary_name"):
                 yield package.get_binary_name()
 
-    def _create_control(self):
+    def _create_control(self) -> None:
         control_template = """
 Source: {package_name}
 Section: univention
@@ -287,7 +301,7 @@ class AppPackage:
     CODES = itertools.cycle("".join(code) for code in _CODES)
     COMPONENT_IDS = itertools.count(100, 100)
 
-    def __init__(self, package, ini_items, svg_buffer=""):
+    def __init__(self, package: DebianPackage, ini_items: dict[str, str], svg_buffer: str = "") -> None:
         self._package = package
         self._ucs_version = ini_items.get("version")
 
@@ -307,15 +321,26 @@ class AppPackage:
 
         self.populate = get_action("dev-populate-appcenter")
 
-    def _build_ini_buffer(self, ini_items):
-        def lines():
+    def _build_ini_buffer(self, ini_items: dict[str, str]) -> str:
+
+        def lines() -> Iterator[str]:
             yield "[Application]"
             for (key, value) in ini_items.items():
                 yield f"{key}={value}"
+
         return "\n".join(lines())
 
     @classmethod
-    def from_package(cls, package, app_id=None, app_name=None, app_version="3.14", app_code=None, app_conflicted_apps=None, app_required_apps=None):
+    def from_package(
+        cls,
+        package: DebianPackage,
+        app_id: str | None = None,
+        app_name: str | None = None,
+        app_version: str = "3.14",
+        app_code: str | None = None,
+        app_conflicted_apps: Iterable[App] | None = None,
+        app_required_apps: Iterable[App] | None = None,
+    ) -> AppPackage:
         my_app_id = app_id or package.name
         ini_items = {
             "ID": my_app_id,
@@ -333,11 +358,19 @@ class AppPackage:
         return cls(package, ini_items)
 
     @classmethod
-    def with_package(cls, app_id=None, app_name=None, app_version="3.14", app_code=None, app_conflicted_apps=None, **deb_args):
+    def with_package(
+        cls,
+        app_id: str | None = None,
+        app_name: str | None = None,
+        app_version: str = "3.14",
+        app_code: str | None = None,
+        app_conflicted_apps: Iterable[App] | None = None,
+        **deb_args,
+    ) -> AppPackage:
         package = DebianPackage(**deb_args)
         return cls.from_package(package, app_id, app_name, app_version, app_code)
 
-    def build_and_publish(self, component_id=None):
+    def build_and_publish(self, component_id: str | None = None) -> None:
         self._package.build()
         if component_id is None:
             component_id = f"{self.app_id}_{next(AppPackage.COMPONENT_IDS)}"
@@ -347,20 +380,20 @@ class AppPackage:
 
         self.populate.call(new=True, ini=self._ini_path, logo=self._svg_path, component_id=component_id, packages=list(self._package.get_all_binary_names()))
 
-    def remove_tempdir(self):
+    def remove_tempdir(self) -> None:
         self._package.remove()
 
 
 class CheckOperations:
 
-    def __init__(self, application, info):
+    def __init__(self, application: str, info: dict[str, Any]) -> None:
         self.application = application
         self.info = info
         self.ucr = ConfigRegistry()
         self.ucr.load()
 
     @classmethod
-    def installed(cls, application, info):
+    def installed(cls, application: str, info: dict[str, Any]) -> bool:
         print("Running checks if correctly installed..")
         checks = cls(application, info)
         return all((
@@ -372,7 +405,7 @@ class CheckOperations:
         ))
 
     @classmethod
-    def uninstalled(cls, application, info):
+    def uninstalled(cls, application: str, info: dict[str, Any]) -> bool:
         print("Running checks if correctly uninstalled..")
         checks = cls(application, info)
         return all((
@@ -381,18 +414,18 @@ class CheckOperations:
             checks._check_ldap_object_doesnt_exist(),
         ))
 
-    def _fail(self, message):
+    def _fail(self, message: str) -> bool:
         msg = "Error in (un)installed checks for {}: {}"
         print(msg.format(self.application, message))
         return False
 
-    def _packages(self):
+    def _packages(self) -> Iterator[str]:
         yield from self.info.get("default_packages", [])
         master = ("domaincontroller_master", "domaincontroller_backup")
         if self.ucr.get("server/role") in master:
             yield from self.info.get("default_packages_master", [])
 
-    def _dpkg_status(self, package):
+    def _dpkg_status(self, package: str) -> tuple[str, str]:
         cmd = ["dpkg-query", "-f='${db:Status-Abbrev}xx'", "--show", package]
         output = subprocess.check_output(cmd, stderr=subprocess.STDOUT, text=True)
         (expected_char, current_char) = output[:2]
@@ -400,13 +433,13 @@ class CheckOperations:
         current = {"n": "not-installed", "c": "config-files", "U": "unpacked", "H": "half-installed", "F": "half-configured", "W": "triggers-awaited", "t": "tritters-pending", "i": "installed"}.get(current_char, "unknown")
         return (expected, current)
 
-    def _get_dn(self):
+    def _get_dn(self) -> str:
         app_version = self.info.get("version")
         ldap_base = self.ucr.get("ldap/base")
         dn = "univentionAppID={id}_{version},cn={id},cn=apps,cn=univention,{base}"
         return dn.format(id=self.application, version=app_version, base=ldap_base)
 
-    def _check_url(self, protocol, port, interface):
+    def _check_url(self, protocol: str, port: int, interface: str) -> bool:
         fqdn = '{}.{}'.format(self.ucr.get("hostname"), self.ucr.get("domainname"))
         url = f"{protocol}://{fqdn}:{port}{interface}"
         response = requests.get(url, timeout=30, verify=False)  # noqa: S501
@@ -423,7 +456,7 @@ class CheckOperations:
             return self._check_url(protocol, port, link)
         return True
 
-    def _check_dpkg_installed_status(self):
+    def _check_dpkg_installed_status(self) -> bool:
         for package in self._packages():
             try:
                 (_expected, current) = self._dpkg_status(package)
@@ -436,7 +469,7 @@ class CheckOperations:
         print("OK - dpkg reports correctly installed")
         return True
 
-    def _check_dpkg_uninstalled_status(self):
+    def _check_dpkg_uninstalled_status(self) -> bool:
         for package in self._packages():
             try:
                 (_expected, current) = self._dpkg_status(package)
@@ -449,7 +482,7 @@ class CheckOperations:
         print("OK - dpkg reports correctly uninstalled")
         return True
 
-    def _check_files_exist(self):
+    def _check_files_exist(self) -> bool:
         for package in self._packages():
             output = subprocess.check_output(["dpkg", "--listfiles", package], text=True)
             for path in output.splitlines():
@@ -459,7 +492,7 @@ class CheckOperations:
         print("OK - All files exist in the filesystem after installation.")
         return True
 
-    def _check_ucr_variables_exist(self):
+    def _check_ucr_variables_exist(self) -> bool:
         interface = self.info.get("web_interface")
         port_http = self.info.get("web_interface_port_http")
         port_https = self.info.get("web_interface_port_https")
@@ -481,7 +514,7 @@ class CheckOperations:
             print(msg.format(web_entries_base))
         return True
 
-    def _check_ucr_variables_dont_exist(self):
+    def _check_ucr_variables_dont_exist(self) -> bool:
         repository = "repository/online/component/{}".format(self.info.get("component_id"))
         web_entries = f"ucs/web/overview/entries/(admin|service)/{self.application}"
         pattern = re.compile(f"{repository}|{web_entries}")
@@ -492,7 +525,7 @@ class CheckOperations:
         print("OK - All UCR variables removed after uninstallation.")
         return True
 
-    def _check_ldap_object_exists(self):
+    def _check_ldap_object_exists(self) -> bool:
         try:
             utils.verify_ldap_object(self._get_dn())
         except utils.LDAPObjectNotFound as e:
@@ -500,7 +533,7 @@ class CheckOperations:
         print("OK - LDAP object created after installation.")
         return True
 
-    def _check_ldap_object_doesnt_exist(self):
+    def _check_ldap_object_doesnt_exist(self) -> bool:
         try:
             utils.verify_ldap_object(self._get_dn(), should_exist=False)
         except utils.LDAPUnexpectedObjectFound as e:
@@ -508,12 +541,12 @@ class CheckOperations:
         print("OK - LDAP object removed after uninstallation.")
         return True
 
-    def _check_url_accessible(self):
+    def _check_url_accessible(self) -> bool:
         interface = self.info.get("web_interface")
         port_http = self.info.get("web_interface_port_http")
         port_https = self.info.get("web_interface_port_https")
 
-        if all((interface, port_http, port_https)) and \
+        if interface and port_http and port_https and \
                 self._check_url("http", port_http, interface) and \
                 self._check_url("https", port_https, interface):
             print("OK - Webinterface reachable after installation.")
@@ -522,11 +555,11 @@ class CheckOperations:
 
 class TestOperations:
 
-    def __init__(self, app_center, application):
+    def __init__(self, app_center: AppCenterOperations, application: str) -> None:
         self.app_center = app_center
         self.application = application
 
-    def dry_run_successful(self, dry_run_result):
+    def dry_run_successful(self, dry_run_result: dict[str, dict[str, Any]]) -> bool:
         print("Checking dry-run", dry_run_result)
         for host in dry_run_result:
             if dry_run_result[host]["errors"]:
@@ -536,7 +569,7 @@ class TestOperations:
                     return False
         return True
 
-    def operation_successfull(self, result):
+    def operation_successfull(self, result: dict[str, dict[str, Any]]) -> bool:
         print("Checking result", result)
         for host in result:
             for app in result[host]:
@@ -544,14 +577,14 @@ class TestOperations:
                     return False
         return True
 
-    def operations_equal(self, expected, actual, msg=None):
+    def operations_equal(self, expected: dict[str, Any], actual: dict[str, Any], msg: str | None = None) -> bool:
         simple_equal = ("invokation_forbidden_details", "invokation_warning_details")
         set_equal = ("broken", "install", "remove")
 
-        def compare_simple(key):
+        def compare_simple(key: str) -> bool:
             return expected.get(key) == actual.get(key)
 
-        def compare_set(key):
+        def compare_set(key: str) -> bool:
             return set(expected.get(key, [])) == set(actual.get(key, []))
 
         result = all(compare_simple(key) for key in simple_equal) and all(compare_set(key) for key in set_equal)
@@ -559,7 +592,7 @@ class TestOperations:
             raise AppCenterCheckError(msg.format(self.application))
         return result
 
-    def test_install(self, test_installed=True):
+    def test_install(self, test_installed: bool = True) -> None:
         dry_run = self.app_center.install_dry_run([self.application])
         if not self.dry_run_successful(dry_run):
             raise AppCenterCheckError(f"Dry-install of {self.application} failed.")
@@ -577,7 +610,7 @@ class TestOperations:
                 raise AppCenterCheckError(msg.format(self.application))
 
     @contextlib.contextmanager
-    def test_install_safe(self, test_installed=True):
+    def test_install_safe(self, test_installed: bool = True) -> Iterator[None]:
         try:
             self.test_install(test_installed=test_installed)
             yield
@@ -585,7 +618,7 @@ class TestOperations:
             if self.app_center.is_installed(self.application):
                 self.app_center.remove([self.application])
 
-    def test_upgrade(self, test_installed=True):
+    def test_upgrade(self, test_installed: bool = True) -> None:
         # FIXME: This is needed to find the upgrade (updates the AppCenters caches)
         self.app_center.query()
 
@@ -605,7 +638,7 @@ class TestOperations:
                 msg = "{} is not upgraded correctly."
                 raise AppCenterCheckError(msg.format(self.application))
 
-    def test_remove(self, test_uninstalled=True):
+    def test_remove(self, test_uninstalled: bool = True) -> None:
         dry_run = self.app_center.remove_dry_run([self.application])
         if not self.dry_run_successful(dry_run):
             raise AppCenterCheckError(f"Dry-remove of {self.application} failed.")
@@ -624,7 +657,7 @@ class TestOperations:
                 msg = "{} is not uninstalled correctly."
                 raise AppCenterCheckError(msg.format(self.application))
 
-    def test_install_remove_cycle(self):
+    def test_install_remove_cycle(self) -> None:
         info = self.app_center.get(self.application)
         if self.app_center.is_docker(self.application, info=info):
             msg = "{} is a docker application - skipping tests.."
@@ -640,7 +673,7 @@ class TestOperations:
 
 
 @contextlib.contextmanager
-def local_appcenter():
+def local_appcenter() -> Iterator[None]:
     restart_umc()
     setup_local_appcenter = get_action("dev-setup-local-appcenter")
     ucs_versions = AppCenterCache().get_ucs_versions()
@@ -659,9 +692,10 @@ def local_appcenter():
         assert not cleanup_failed
 
 
-def test_case(function):
+def test_case(function: Callable[..., None]) -> Callable[..., None]:  # Py3.10+: P=ParamSpec("P") ... Callable[Concatenate[AppCenterOperations, str, P], None] -> Callable[P, None]:
+
     @functools.wraps(function)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args: object, **kwargs: object) -> None:
         print(f"Running {function.__name__}{function.__doc__}")
         app_center = AppCenterOperations()
         try:
@@ -670,10 +704,11 @@ def test_case(function):
             print(f"Error in {function.__name__}{function.__doc__}")
             raise
         print(f"Ok - {function.__name__}{function.__doc__}")
+
     return wrapper
 
 
-def fail(message):
+def fail(message: str) -> None:
     raise AppCenterTestFailure(message)
 
 

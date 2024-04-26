@@ -5,8 +5,12 @@
 ## packages:
 ##   - docker.io
 
+from __future__ import annotations
+
 import os
 from subprocess import call
+from types import TracebackType
+from typing import Iterator, cast
 
 import pytest
 
@@ -17,7 +21,7 @@ from dockertest import Appcenter
 
 
 class SyncedAppcenter(Appcenter):
-    def __init__(self):
+    def __init__(self) -> None:
         Appcenter.__init__(self)
         self.vv = self.ucr.get('version/version')
         self.all_versions = ['4.1', '4.2', '4.3', '4.4', '5.0']
@@ -26,7 +30,7 @@ class SyncedAppcenter(Appcenter):
             'appcenter/index/verify=true',
         ])
 
-    def reset_local_cache(self):
+    def reset_local_cache(self) -> None:
         handler_set([
             'repository/app_center/server=%s' % (self.upstream_appcenter),
         ])
@@ -35,7 +39,7 @@ class SyncedAppcenter(Appcenter):
             'repository/app_center/server=http://%(hostname)s.%(domainname)s' % self.ucr,
         ])
 
-    def download(self, f):
+    def download(self, f: str) -> None:
         if os.path.exists('/var/www/%s' % f):
             os.remove('/var/www/%s' % f)
 
@@ -45,57 +49,57 @@ class SyncedAppcenter(Appcenter):
 
         call('wget -O /var/www/%s %s/%s' % (f, self.upstream_appcenter, f), shell=True)
 
-    def download_index_json(self):
+    def download_index_json(self) -> None:
         for version in self.all_versions:
             self.download(f'meta-inf/{version}/index.json.gz')
             self.download(f'meta-inf/{version}/all.tar.zsync')
             self.download(f'meta-inf/{version}/all.tar.gz')
 
-    def download_index_json_gpg(self):
+    def download_index_json_gpg(self) -> None:
         for version in self.all_versions:
             self.download(f'meta-inf/{version}/index.json.gz.gpg')
             self.download(f'meta-inf/{version}/all.tar.gpg')
 
-    def remove_from_cache(self, f):
+    def remove_from_cache(self, f: str) -> None:
         if os.path.exists(os.path.join('/var/cache/univention-appcenter/', f)):
             os.remove(os.path.join('/var/cache/univention-appcenter/', f))
 
-    def file_exists_in_cache(self, f):
+    def file_exists_in_cache(self, f: str) -> bool:
         return os.path.exists(os.path.join('/var/cache/univention-appcenter/', f))
 
-    def test_index_without_gpg(self):
+    def test_index_without_gpg(self) -> None:
         self.download_index_json()
         res = call('univention-app update', shell=True)
         if res == 0:
             fail('_test_index_without_gpg failed')
         print('### _test_index_without_gpg passed')
 
-    def __exit__(self, exc_type, exc_value, traceback):
-        Appcenter.__exit__(self, exc_type, exc_value, traceback)
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
+        Appcenter.__exit__(self, exc_type, exc_val, exc_tb)
 
 
 @pytest.fixture(scope="module")
-def test_appcenter():
+def test_appcenter() -> Iterator[SyncedAppcenter]:
     with SyncedAppcenter() as sac:
-        yield sac
+        yield cast(SyncedAppcenter, sac)
 
 
 @pytest.fixture()
-def appcenter(test_appcenter):
+def appcenter(test_appcenter: SyncedAppcenter) -> Iterator[SyncedAppcenter]:
     test_appcenter.download_index_json()
     test_appcenter.download_index_json_gpg()
     yield test_appcenter
     test_appcenter.reset_local_cache()
 
 
-def test_index_with_gpg(appcenter):
+def test_index_with_gpg(appcenter: SyncedAppcenter) -> None:
     res = call('univention-app update', shell=True)
     if res != 0:
         fail('_test_index_with_gpg failed')
     print('### _test_index_with_gpg passed')
 
 
-def test_modify_index(appcenter):
+def test_modify_index(appcenter: SyncedAppcenter) -> None:
     ucr = ConfigRegistry()
     ucr.load()
     f = f'/var/www/meta-inf/{appcenter.vv}'
@@ -109,7 +113,7 @@ def test_modify_index(appcenter):
     print('### _test_modify_index passed')
 
 
-def test_modify_inst(appcenter):
+def test_modify_inst(appcenter: SyncedAppcenter) -> None:
     filename = 'tecart_20151204.inst'
     basename, ext = os.path.splitext(filename)
     appcenter.remove_from_cache(filename)

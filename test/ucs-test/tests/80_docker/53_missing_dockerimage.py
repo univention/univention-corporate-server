@@ -9,11 +9,11 @@ import pytest
 
 from univention.testing.utils import package_installed
 
-from dockertest import App
+from dockertest import App, Appcenter
 
 
 @pytest.mark.exposure('dangerous')
-def test_missing_docker_img(appcenter, app_name, app_version):
+def test_missing_docker_img(appcenter: Appcenter, app_name: str, app_version: str) -> None:
     app = App(name=app_name, version=app_version)
 
     try:

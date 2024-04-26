@@ -5,6 +5,8 @@
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## tags: [skip_admember]
 
+from __future__ import annotations
+
 import time
 
 import pytest
@@ -29,7 +31,7 @@ class TestPwdChangeNextLogin:
     pam_ldap is therefore untested!
     """
 
-    PWD_CHANGE_NEXT_LOGIN_OPTIONS = [
+    PWD_CHANGE_NEXT_LOGIN_OPTIONS: list[list[str]] = [
         [],  # TODO: test without mail, person,
     ]
 

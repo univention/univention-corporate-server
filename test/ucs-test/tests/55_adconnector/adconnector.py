@@ -22,22 +22,22 @@ class ADConnection(ldap_glue.ADConnection):
         return ad.decode_sid(sid)
 
 
-def connector_running_on_this_host():
+def connector_running_on_this_host() -> bool:
     return configRegistry.is_true("connector/ad/autostart")
 
 
-def restart_adconnector():
+def restart_adconnector() -> None:
     print("Restarting AD-Connector")
     subprocess.check_call(["service", "univention-ad-connector", "restart"])
 
 
-def ad_in_sync_mode(sync_mode, configbase='connector'):
+def ad_in_sync_mode(sync_mode: str, configbase: str = 'connector') -> None:
     """Set the AD-Connector into the given `sync_mode` restart."""
     ucr_set([f'{configbase}/ad/mapping/syncmode={sync_mode}'])
     restart_adconnector()
 
 
-def wait_for_sync(min_wait_time=0):
+def wait_for_sync(min_wait_time: int = 0) -> None:
     synctime = int(configRegistry.get("connector/ad/poll/sleep", 5))
     synctime = ((synctime + 3) * 2)
     if min_wait_time > synctime:
@@ -47,7 +47,7 @@ def wait_for_sync(min_wait_time=0):
 
 
 @contextlib.contextmanager
-def connector_setup(sync_mode):
+def connector_setup(sync_mode: str):
     user_syntax = "directory/manager/web/modules/users/user/properties/username/syntax=string"
     group_syntax = "directory/manager/web/modules/groups/group/properties/name/syntax=string"
     with testing_ucr.UCSTestConfigRegistry():

@@ -10,10 +10,10 @@ import subprocess
 
 import pytest
 
-from dockertest import App
+from dockertest import App, Appcenter
 
 
-def cleanup(app):
+def cleanup(app: App) -> None:
     if os.path.isdir(app.check_dir):
         os.rmdir(app.check_dir)
     if app.installed is True:
@@ -22,7 +22,7 @@ def cleanup(app):
                 os.remove(app.file(i))
 
 
-def verify_certs(app):
+def verify_certs(app: App) -> None:
     print(f'looking for {app.check_dir}')
     assert os.path.isdir(app.check_dir) is True
     print(f'{app.check_dir} exists')
@@ -33,7 +33,7 @@ def verify_certs(app):
 
 
 @pytest.mark.exposure('dangerous')
-def test_app_update_certificates(appcenter, app_name):
+def test_app_update_certificates(appcenter: Appcenter, app_name: str) -> None:
     check_dir = f'/tmp/update-certificates-test-{app_name}'
     setup = '#!/bin/sh'
     store_data = '#!/bin/sh'

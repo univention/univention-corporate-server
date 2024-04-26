@@ -11,7 +11,7 @@ import json
 import pytest
 import requests
 
-from dockertest import App, UCTTest_DockerApp_UMCInstallFailed, get_app_name
+from dockertest import App, Appcenter, UCTTest_DockerApp_UMCInstallFailed, get_app_name
 
 
 URL = 'https://docker.software-univention.de/v2/ucs-appbox-amd64/tags/list'
@@ -26,13 +26,13 @@ def data():
 
 
 @pytest.fixture(scope="module")
-def image(data):
+def image(data) -> str:
     return 'docker.software-univention.de/ucs-appbox-amd64:' + max(data['tags'])
 
 
 @pytest.mark.skip()
 @pytest.mark.exposure('dangerous')
-def test_app_umc_install_setup(appcenter, data, image):  # get latest app box image
+def test_app_umc_install_setup(appcenter: Appcenter, data, image: str) -> None:  # get latest app box image
     # installation should fail if setup fails
     app_name = get_app_name()
     app = App(name=app_name, version='1.9', container_version=max(data['tags'])[:3], build_package=False)
@@ -62,7 +62,7 @@ exit 1
 
 @pytest.mark.skip()
 @pytest.mark.exposure('dangerous')
-def test_app_umc_install(appcenter, data, image):
+def test_app_umc_install(appcenter: Appcenter, data, image: str) -> None:
     # installation should succeed if setup is fine
     app_name = get_app_name()
     app = App(name=app_name, version='1.9', container_version=max(data['tags'])[:3], build_package=False)
@@ -83,7 +83,7 @@ exit 0
 
 @pytest.mark.skip()
 @pytest.mark.exposure('dangerous')
-def test_app_umc_install_latest_appbox(appcenter, data, image):
+def test_app_umc_install_latest_appbox(appcenter: Appcenter, data, image: str) -> None:
     # test appbox app installation
     app_name = get_app_name()
     app_name = 'testapp'

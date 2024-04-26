@@ -6,6 +6,7 @@
 ## bugs:
 ##  - 52230
 
+from __future__ import annotations
 
 import binascii
 import subprocess
@@ -46,7 +47,7 @@ class S4SetPassword_Exception(S4HistSync_Exception):
     pass
 
 
-def create_s4_user(username, password, **kwargs):
+def create_s4_user(username: str, password: bytes, **kwargs) -> tuple[str, str]:
     cmd = ["samba-tool", "user", "create", "--use-username-as-cn", username.decode('UTF-8'), password]
 
     print(" ".join(cmd))
@@ -67,7 +68,7 @@ def create_s4_user(username, password, **kwargs):
     return (con_user_dn, udm_user_dn)
 
 
-def modify_passwordpolicy_s4(key, value):
+def modify_passwordpolicy_s4(key: str, value: str) -> None:
     cmd = ["samba-tool", "domain", "passwordsettings", "set", f"--{key}={value}"]
 
     child = subprocess.Popen(" ".join(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -75,7 +76,7 @@ def modify_passwordpolicy_s4(key, value):
     stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
 
 
-def modify_password_s4(username, password):
+def modify_password_s4(username: str, password: bytes) -> None:
     cmd = ["samba-tool", "user", "setpassword", "--newpassword='%s'" % password, username.decode('UTF-8')]
 
     child = subprocess.Popen(" ".join(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -88,14 +89,14 @@ def modify_password_s4(username, password):
     s4connector.wait_for_sync()
 
 
-def udm_modify(udm, **kwargs):
+def udm_modify(udm, **kwargs) -> None:
     udm._cleanup.setdefault('users/user', []).append(kwargs['dn'])
     udm.modify_object(modulename='users/user', **kwargs)
     s4connector.wait_for_sync()
 
 
 @pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
-def test_initial_S4_pwd_is_synced():
+def test_initial_S4_pwd_is_synced() -> None:
     with connector_setup("sync") as s4, UCSTestUDM() as udm:
         (s4_user_dn, udm_user_dn) = create_s4_user(tstrings.random_username().encode('UTF-8'), "Univention.2-")
 
@@ -123,7 +124,7 @@ def test_initial_S4_pwd_is_synced():
 
 
 @pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
-def test_UCS_pwd_in_s4_history_synced():
+def test_UCS_pwd_in_s4_history_synced() -> None:
     with connector_setup("sync") as s4, UCSTestUDM() as udm:
         udm_user = NormalUser()
         (udm_user_dn, s4_user_dn) = create_udm_user(udm, s4, udm_user, s4connector.wait_for_sync)
@@ -152,7 +153,7 @@ def test_UCS_pwd_in_s4_history_synced():
 
 
 @pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
-def test_empty_pwd_policy():
+def test_empty_pwd_policy() -> None:
     with connector_setup("sync") as s4, UCSTestUDM() as udm:
         udm_user = NormalUser()
         (udm_user_dn, s4_user_dn) = create_udm_user(udm, s4, udm_user, s4connector.wait_for_sync)

@@ -10,7 +10,7 @@ import subprocess
 
 import pytest
 
-from dockertest import App
+from dockertest import App, Appcenter
 
 
 DOCKER_COMPOSE = '''
@@ -47,7 +47,7 @@ InitialValue =
 
 
 @pytest.mark.exposure('dangerous')
-def test_docker_reinitialize(appcenter, app_name):
+def test_docker_reinitialize(appcenter: Appcenter, app_name: str) -> None:
     store_data = '#!/bin/sh'
     configure_host = f'''#!/bin/sh
 if [ "$1" = "settings" ]; then

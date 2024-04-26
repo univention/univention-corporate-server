@@ -47,7 +47,7 @@ import copy
 import re
 import subprocess
 from types import TracebackType
-from typing import List, Mapping, Sequence, Tuple, Type
+from typing import Mapping, Sequence
 
 from typing_extensions import Literal
 
@@ -136,7 +136,7 @@ class NetworkRedirector:
         else:
             raise UCSTestNetworkCannotDetermineExternalAddress
         self.used_by_with_statement = False
-        self.cleanup_rules: List[Tuple[Literal["loop"], str, str] | Tuple[Literal["redirection"], str, int, int, str]] = []
+        self.cleanup_rules: list[tuple[Literal["loop"], str, str] | tuple[Literal["redirection"], str, int, int, str]] = []
         # [ ('loop', 'addr1', 'addr2'), ('redirection', 'remoteaddr', remoteport, localport), ... ]
 
     def __enter__(self) -> NetworkRedirector:  # FIXME Py3.9: Self
@@ -144,7 +144,7 @@ class NetworkRedirector:
         self.used_by_with_statement = True
         return self
 
-    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
+    def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         print('*** Leaving with-statement of NetworkRedirector()')
         self.revert_network_settings()
 
@@ -223,7 +223,7 @@ class NetworkRedirector:
         if not self.used_by_with_statement:
             raise UCSTestNetworkNoWithStatement
 
-        entry: Tuple[Literal["redirection"], str, int, int, str] = ('redirection', remote_addr, remote_port, local_port, family)
+        entry: tuple[Literal["redirection"], str, int, int, str] = ('redirection', remote_addr, remote_port, local_port, family)
         if entry not in self.cleanup_rules:
             self.cleanup_rules.append(entry)
             args: dict[str, str] = {

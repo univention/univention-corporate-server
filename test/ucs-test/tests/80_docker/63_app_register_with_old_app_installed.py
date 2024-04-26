@@ -7,11 +7,11 @@
 
 import pytest
 
-from dockertest import App
+from dockertest import App, Appcenter
 
 
 @pytest.mark.exposure('dangerous')
-def test_register_app_with_old_app_installed(appcenter):
+def test_register_app_with_old_app_installed(appcenter: Appcenter) -> None:
     try:
         name = "my-test-app"
         setup = '#!/bin/sh'

@@ -29,7 +29,7 @@ from gzip import open as gzip_open
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from time import sleep
-from typing import Dict, Iterable, List, Set, Tuple
+from typing import Iterable
 from urllib.error import ContentTooShortError
 from urllib.request import urlopen, urlretrieve
 
@@ -101,7 +101,7 @@ def download_packages_file(url: str, version: str, arch: str, temp_directory: Pa
     return file_path
 
 
-def load_packages_file(filename: Path, target_dict: Dict[str, PackageEntry], ucs_version: str) -> None:
+def load_packages_file(filename: Path, target_dict: dict[str, PackageEntry], ucs_version: str) -> None:
     """
     Reads the given 'filename' Packages.gz file.
     Creates a entry object for each found package and fills the target_dict.
@@ -123,13 +123,13 @@ def load_packages_file(filename: Path, target_dict: Dict[str, PackageEntry], ucs
             target_dict[pkg.package] = pkg
 
 
-def load_version(url: str, architectures: Iterable[str] = ARCHS) -> Dict[str, PackageEntry]:
+def load_version(url: str, architectures: Iterable[str] = ARCHS) -> dict[str, PackageEntry]:
     """
     Selects all minor and errata versions for the given 'url'.
     Downloads respective 'Packages.gz' for each version and
     returns a dict filled with PackageEntries.
     """
-    target: Dict[str, PackageEntry] = {}
+    target: dict[str, PackageEntry] = {}
 
     for version in select_minor_levels(url):
         for arch in architectures:
@@ -142,13 +142,13 @@ def load_version(url: str, architectures: Iterable[str] = ARCHS) -> Dict[str, Pa
     return target
 
 
-def compare(old_pkgs: Dict[str, PackageEntry], new_pkgs: Dict[str, PackageEntry]) -> None:
+def compare(old_pkgs: dict[str, PackageEntry], new_pkgs: dict[str, PackageEntry]) -> None:
     """
     Compares 'old_pkgs' and 'new_pkgs' versions via apt.
     Prints all the errors detected.
     """
     errors = 0
-    src_package_list: Set[str] = set()
+    src_package_list: set[str] = set()
 
     for package, new in sorted(new_pkgs.items()):
         old = old_pkgs.get(package)
@@ -187,7 +187,7 @@ def read_url(url: str):
         return fromstring(connection.read())
 
 
-def select_errata_levels(repo_component_url: str) -> List[str]:
+def select_errata_levels(repo_component_url: str) -> list[str]:
     """Returns list of .*-errata levels found in the given 'repo_component_url'."""
     return [
         f'component/{link.rstrip("/")}'
@@ -196,12 +196,12 @@ def select_errata_levels(repo_component_url: str) -> List[str]:
     ]
 
 
-def select_minor_levels(repo_major_url: str) -> List[str]:
+def select_minor_levels(repo_major_url: str) -> list[str]:
     """
     Returns the list of minor versions with patch and errata levels as found
     for the given 'repo_major_url'.
     """
-    check_patchlevels: List[str] = []
+    check_patchlevels: list[str] = []
 
     for link in read_url(repo_major_url).xpath('//a/@href'):
         link = link.rstrip("/")
@@ -217,12 +217,12 @@ def select_minor_levels(repo_major_url: str) -> List[str]:
     return check_patchlevels
 
 
-def select_major_versions_for_test(repo_url: str) -> Tuple[Version, Version]:
+def select_major_versions_for_test(repo_url: str) -> tuple[Version, Version]:
     """
     Looks into specified 'repo_url' and picks up the two most recent
     major versions (for example 3.2 and 4.0).
     """
-    versions: List[Version] = [
+    versions: list[Version] = [
         Version(link.rstrip("/"))
         for link in read_url(repo_url).xpath('//a/@href')
         if RE_MAJOR_MINOR.match(link.rstrip("/"))

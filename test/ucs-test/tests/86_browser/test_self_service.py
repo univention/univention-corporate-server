@@ -13,24 +13,24 @@ from univention.testing.browser import logger
 @contextlib.contextmanager
 def capture_mails(timeout=5):
     class Mail(SMTPServer):
-        def __init__(self, *args, **kwargs):
+        def __init__(self, *args, **kwargs) -> None:
             SMTPServer.__init__(self, *args, **kwargs)
             self.set_reuse_addr()
             fcntl.fcntl(self.socket.fileno(), fcntl.F_SETFD, fcntl.fcntl(self.socket.fileno(), fcntl.F_GETFD) | fcntl.FD_CLOEXEC)
             self.data = []
 
-        def process_message(self, peer, mailfrom, rcpttos, data, **kwargs):
+        def process_message(self, peer, mailfrom, rcpttos, data, **kwargs) -> None:
             logger.info("receiving email with length=%d" % len(data))
             self.data.append(data)
 
     class MailServer:
-        def __init__(self):
+        def __init__(self) -> None:
             logger.info("Starting mail server")
             self.smtp = Mail(("localhost", 25), "")
             self.thread = Thread(target=asyncore.loop, kwargs={"timeout": timeout})
             self.thread.start()
 
-        def stop(self):
+        def stop(self) -> None:
             logger.info("Stopping mail server")
             self.smtp.close()
             self.thread.join()

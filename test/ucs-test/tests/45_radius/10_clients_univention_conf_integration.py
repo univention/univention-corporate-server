@@ -6,8 +6,11 @@
 ## join: true
 ## exposure: dangerous
 
+from __future__ import annotations
+
 import subprocess
 from tempfile import NamedTemporaryFile
+from types import TracebackType
 
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
@@ -15,19 +18,19 @@ from univention.testing import utils
 
 
 class DummyInterface:
-    def __init__(self, ip):
+    def __init__(self, ip: str) -> None:
         self.network = f'{ip}/32'
 
-    def __enter__(self):
+    def __enter__(self) -> None:
         subprocess.check_output(['ip', 'link', 'add', 'eth99', 'type', 'dummy'])
         subprocess.check_output(['ip', 'addr', 'add', self.network, 'dev', 'eth99'])
         subprocess.check_output(['ip', 'link', 'set', 'up', 'eth99'])
 
-    def __exit__(self, *args):
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         subprocess.check_output(['ip', 'link', 'del', 'eth99'])
 
 
-def get_wpa_config(username, password):
+def get_wpa_config(username: str, password: str) -> str:
     wpa_config = '''
 network={{
     ssid="DoesNotMatterForThisTest"
@@ -41,7 +44,7 @@ network={{
     return wpa_config
 
 
-def eap_test(username, password, password_ap, addr_ap):
+def eap_test(username: str, password: str, password_ap: str, addr_ap: str) -> None:
     with NamedTemporaryFile() as tmp_file:
         wpa_config = get_wpa_config(username, password)
         tmp_file.write(wpa_config.encode('UTF-8'))
@@ -66,7 +69,7 @@ def eap_test(username, password, password_ap, addr_ap):
         ])
 
 
-def main():
+def main() -> None:
     with udm_test.UCSTestUDM() as udm:
         password = 'univention'
         username_allowed = udm.create_user(networkAccess=1)[1]

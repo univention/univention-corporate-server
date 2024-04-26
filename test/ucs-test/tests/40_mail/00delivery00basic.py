@@ -15,7 +15,10 @@
 # this script.
 #################
 
+from __future__ import annotations
+
 import time
+from types import TracebackType
 
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -38,9 +41,9 @@ class Tester:
         self.ucr.__enter__()
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
-        self.udm.__exit__(exc_type, exc_value, traceback)
-        self.ucr.__exit__(exc_type, exc_value, traceback)
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
+        self.udm.__exit__(exc_type, exc_val, exc_tb)
+        self.ucr.__exit__(exc_type, exc_val, exc_tb)
 
     def test(self):
         mailsToTest, users = self.create_users_and_mail_addresses()

@@ -1,5 +1,6 @@
 import os
 import time
+from typing import Iterator
 
 import pytest
 
@@ -7,7 +8,7 @@ from dockertest import Appcenter, get_app_name, get_app_version
 
 
 @pytest.fixture()
-def appcenter():
+def appcenter() -> Iterator[Appcenter]:
     # Appcenter doesn't delete itself instantly. If a new test is run directly after running a test the test will fail
     wait_timeout = 5
     while wait_timeout > 0:
@@ -20,10 +21,10 @@ def appcenter():
 
 
 @pytest.fixture()
-def app_name():
+def app_name() -> str:
     return get_app_name()
 
 
 @pytest.fixture()
-def app_version():
+def app_version() -> str:
     return get_app_version()

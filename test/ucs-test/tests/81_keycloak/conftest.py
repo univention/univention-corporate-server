@@ -32,7 +32,7 @@ from __future__ import annotations
 
 import os
 from types import SimpleNamespace
-from typing import Callable, Iterator
+from typing import Any, Callable, Iterator
 
 import pytest
 from keycloak import KeycloakAdmin, KeycloakOpenID
@@ -84,7 +84,7 @@ def keycloak_admin() -> str:
 
 
 @pytest.fixture()
-def keycloak_settings() -> dict:
+def keycloak_settings() -> dict[str, Any]:
     apps_cache = Apps()
     settings = {}
     candidate = apps_cache.find('keycloak', latest=True)

@@ -4,10 +4,11 @@
 ## roles: [domaincontroller_master]
 ## exposure: safe
 
+from __future__ import annotations
+
 import subprocess
 import sys
 from configparser import NoOptionError, NoSectionError
-from typing import Dict
 
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.ini_parser import read_ini_file
@@ -15,7 +16,7 @@ from univention.appcenter.ini_parser import read_ini_file
 
 returncode = 100
 
-codes: Dict[str, str] = {}
+codes: dict[str, str] = {}
 for app in Apps(locale='en').get_every_single_app():
     if app.id.startswith(("test-", "test_")) or app.id.endswith(("-test", "_test")):
         print('Ignoring test App %s' % app)

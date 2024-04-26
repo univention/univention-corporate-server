@@ -8,6 +8,7 @@
 import os
 import subprocess
 from contextlib import contextmanager
+from typing import Iterator
 
 import pytest
 
@@ -15,7 +16,7 @@ import univention.testing.strings as uts
 from univention.config_registry import ConfigRegistry
 from univention.testing.utils import verify_ldap_object
 
-from dockertest import tiny_app
+from dockertest import App, Appcenter, tiny_app
 
 
 ucr = ConfigRegistry()
@@ -23,7 +24,7 @@ ucr.load()
 
 
 @contextmanager
-def build_app(app_name, generic_user_activation, generic_user_activation_attribute=None, generic_user_activation_option=None):
+def build_app(app_name: str, generic_user_activation, generic_user_activation_attribute=None, generic_user_activation_option=None) -> Iterator[App]:
     app = tiny_app(name=app_name)
     try:
         app.set_ini_parameter(
@@ -37,7 +38,7 @@ def build_app(app_name, generic_user_activation, generic_user_activation_attribu
         app.remove()
 
 
-def run_app_tests(appcenter, app, udm, activation_name, app_name, attribute_dn=None, attribute_description=None, attrs=None):
+def run_app_tests(appcenter: Appcenter, app: App, udm, activation_name, app_name: str, attribute_dn=None, attribute_description=None, attrs=None):
     attribute_dn = attribute_dn or f'cn={activation_name},cn={app.app_name},cn=custom attributes,cn=univention,{ucr.get("ldap/base")}'
     attribute_description = attribute_description or f'Activate user for {app.app_name}'
     app.add_to_local_appcenter()
@@ -60,7 +61,7 @@ def run_app_tests(appcenter, app, udm, activation_name, app_name, attribute_dn=N
 
 
 @pytest.mark.exposure('dangerous')
-def test_schema_generation(appcenter, udm, app_name):
+def test_schema_generation(appcenter: Appcenter, udm, app_name: str) -> None:
     activation_name = f'{app_name}Activated'
     generic_user_activation = True
     with build_app(app_name, generic_user_activation, activation_name) as app:
@@ -68,7 +69,7 @@ def test_schema_generation(appcenter, udm, app_name):
 
 
 @pytest.mark.exposure('dangerous')
-def test_own_schema(appcenter, udm):
+def test_own_schema(appcenter: Appcenter, udm) -> None:
     app_name = 'extattrownschemaconstname'
     activation_name = f'{app_name}-active'
     generic_user_activation = activation_name
@@ -98,7 +99,7 @@ BelongsTo={app.app_name}-user"""
 
 
 @pytest.mark.exposure('dangerous')
-def test_attributes_file_without_attribute(appcenter, udm, app_name):
+def test_attributes_file_without_attribute(appcenter: Appcenter, udm, app_name: str) -> None:
     option_name = f'{app_name}User'
     activation_name = f'{app_name}Activated'
     additional_name = f'{app_name}-myAttr'
@@ -126,7 +127,7 @@ LongDescriptionDe=Das ist mein Attribut. Und es ist dufte!
 
 
 @pytest.mark.exposure('dangerous')
-def test_attributes_file_with_attribute(appcenter, udm, app_name):
+def test_attributes_file_with_attribute(appcenter: Appcenter, udm, app_name: str) -> None:
     option_name = f'{app_name}User'
     activation_name = f'{app_name}Activated'
     additional_name = f'{app_name}-myAttr'

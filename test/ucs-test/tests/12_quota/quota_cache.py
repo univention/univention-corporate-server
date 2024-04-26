@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import pickle  # noqa: S403
 import time
@@ -9,7 +11,7 @@ SHARE_CACHE_DIR = '/var/cache/univention-quota/'
 TIMEOUT = 5  # seconds
 
 
-def cache_must_exists(dn):
+def cache_must_exists(dn: str) -> None:
     filename = os.path.join(SHARE_CACHE_DIR, dn)
     i = 0
     while not os.path.exists(filename):
@@ -20,7 +22,7 @@ def cache_must_exists(dn):
         i += 1
 
 
-def cache_must_not_exists(dn):
+def cache_must_not_exists(dn: str) -> None:
     filename = os.path.join(SHARE_CACHE_DIR, dn)
     i = 0
     while os.path.exists(filename):
@@ -32,11 +34,10 @@ def cache_must_not_exists(dn):
         i += 1
 
 
-def get_cache_values(dn):
+def get_cache_values(dn: str) -> dict[str, str]:
     filename = os.path.join(SHARE_CACHE_DIR, dn)
     if not os.path.exists(filename):
         utils.fail('%s does not exist' % filename)
-        return None
 
     with open(filename, 'rb') as fd:
         dn, attrs, policy_result = pickle.load(fd)  # noqa: S301
@@ -52,7 +53,7 @@ def get_cache_values(dn):
     return {key: value.decode('UTF-8') if isinstance(value, bytes) else value for key, value in share.items()}
 
 
-def check_values(dn, inodeSoftLimit, inodeHardLimit, spaceSoftLimit, spaceHardLimit, reapplyQuota):
+def check_values(dn: str, inodeSoftLimit: str, inodeHardLimit: str, spaceSoftLimit: str, spaceHardLimit: str, reapplyQuota: str) -> None:
     cache = get_cache_values(dn)
 
     # if cache['univentionSharePath'] != path:

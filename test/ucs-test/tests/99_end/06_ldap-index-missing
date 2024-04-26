@@ -4,9 +4,10 @@
 ##  - 57193
 ## exposure: safe
 
+from __future__ import annotations
+
 import re
 import sys
-from typing import Dict, Set, Tuple
 
 RE = re.compile(r'mdb_(approx|equality|inequality|substring)_candidates: \((\w+)\) not indexed')
 LOG = '/var/log/debug'
@@ -50,7 +51,7 @@ IGNORE = {
     'userOptionsPreset',  # LOW: ../../../../management/univention-directory-manager-modules/modules/univention/admin/handlers/settings/usertemplate.py:366 and ../../../../management/univention-directory-manager-modules/univention-migrate-users-to-ucs4.3:332 et al
 }
 
-counts: Dict[str, Tuple[int, Set[str]]] = {}
+counts: dict[str, tuple[int, set[str]]] = {}
 
 with open(LOG) as fd:
     for line in fd:

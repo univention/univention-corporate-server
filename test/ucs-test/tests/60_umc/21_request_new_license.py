@@ -6,12 +6,15 @@
 ## packages: [univention-management-console-module-udm]
 ## bugs: [49384]
 
+from __future__ import annotations
+
 import http.server
 import shutil
 import ssl
 import subprocess
 from multiprocessing import Process
 from socket import gethostname
+from types import TracebackType
 from unittest import TestCase, main
 
 from univention.config_registry import handler_set, handler_unset
@@ -21,7 +24,7 @@ from univention.testing.network import NetworkRedirector
 
 class HTTPHandlerClass(http.server.BaseHTTPRequestHandler):
 
-    def do_POST(self):
+    def do_POST(self) -> None:
         self.send_response(200)
         self.end_headers()
 
@@ -30,13 +33,13 @@ class LicenseServer:
 
     cert_basedir = '/etc/univention/ssl/license.univention.de/'
 
-    def __init__(self, host, port):
+    def __init__(self, host: str, port: int) -> None:
         self.host = host
         self.port = port
         server = Process(target=self.startHttpServer)
         self.server = server
 
-    def __enter__(self):
+    def __enter__(self) -> LicenseServer:
         handler_set(['hosts/static/127.0.100.101=license.univention.de'])
         subprocess.check_call([
             'univention-certificate',
@@ -47,7 +50,7 @@ class LicenseServer:
         self.server.start()
         return self
 
-    def __exit__(self, *args):
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         # Terminating Http server
         self.server.terminate()
         self.server.join(5)
@@ -55,7 +58,7 @@ class LicenseServer:
         handler_unset(['hosts/static/127.0.100.101'])
         shutil.rmtree(self.cert_basedir)
 
-    def startHttpServer(self):
+    def startHttpServer(self) -> None:
         """Start a simple Http server in the working directory"""
         ServerClass = http.server.HTTPServer
         Protocol = 'HTTP/1.1'
@@ -90,7 +93,7 @@ class TestRequestLicense(TestCase):
         cls._licenseServer.__exit__(None, None, None)
         cls._nethelper.__exit__(None, None, None)
 
-    def test_request_license_admin(self):
+    def test_request_license_admin(self) -> None:
         account = utils.UCSTestDomainAdminCredentials()
         ans = subprocess.check_output([
             '/usr/sbin/umc-command',
@@ -104,7 +107,7 @@ class TestRequestLicense(TestCase):
         print(ans)
         assert 'STATUS   : 200' in ans
 
-    def test_request_license_machine(self):
+    def test_request_license_machine(self) -> None:
         username = f'{gethostname()}$'
         with open('/etc/machine.secret') as secret:
             password = secret.read().strip()

@@ -32,6 +32,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
+
 import gzip
 import os
 import os.path
@@ -45,6 +47,7 @@ from glob import glob
 from hashlib import md5, sha256
 from json import dumps
 from optparse import OptionParser
+from typing import Iterator
 
 import requests
 
@@ -57,7 +60,7 @@ DOCKER_READ_USER_CRED = {
 
 class FileInfo:
 
-    def __init__(self, app, name, url, filename):
+    def __init__(self, app: App, name: str, url: str, filename: str) -> None:
         self.name = name
         self.url = url
         self.filename = filename
@@ -68,7 +71,7 @@ class FileInfo:
 
 class DockerImageInfo:
 
-    def __init__(self, name, url, content):
+    def __init__(self, name: str, url: str, content: str) -> None:
         self.name = name
         self.url = url
         self.sha256 = sha256(content.encode('utf-8')).hexdigest()
@@ -76,7 +79,7 @@ class DockerImageInfo:
 
 class App:
 
-    def __init__(self, name, ucs_version, meta_inf_dir, components_dir, server):
+    def __init__(self, name: str, ucs_version: str, meta_inf_dir: str, components_dir: str, server: str) -> None:
         self.name = name
         self.ucs_version = ucs_version
         self.meta_inf_dir = meta_inf_dir
@@ -85,43 +88,43 @@ class App:
             server = server[:-1]
         self.server = server
 
-    def get_metainf_url(self):
+    def get_metainf_url(self) -> str:
         return f'{self.server}/meta-inf/{self.ucs_version}/'
 
-    def get_repository_url(self):
+    def get_repository_url(self) -> str:
         return f'{self.server}/univention-repository/{self.ucs_version}/maintained/component/{self.name}/'
 
-    def _meta_url(self, filename):
+    def _meta_url(self, filename: str) -> str:
         return urllib.parse.urljoin(self.get_metainf_url(), filename)
 
-    def _repository_url(self, filename):
+    def _repository_url(self, filename: str) -> str:
         return urllib.parse.urljoin(self.get_repository_url(), filename)
 
-    def _components_dir(self, filename):
+    def _components_dir(self, filename: str) -> str:
         return os.path.join(self.components_dir, self.name, filename)
 
-    def _meta_inf_dir(self, filename):
+    def _meta_inf_dir(self, filename: str) -> str:
         return os.path.join(self.meta_inf_dir, filename)
 
-    def get_ini_file(self):
+    def get_ini_file(self) -> str:
         return self._meta_inf_dir('%s.ini' % self.name)
 
-    def get_ini_url(self):
+    def get_ini_url(self) -> str:
         return self._meta_url('%s.ini' % self.name)
 
-    def get_png_file(self):
+    def get_png_file(self) -> str:
         return self._meta_inf_dir('%s.png' % self.name)
 
-    def get_png_url(self):
+    def get_png_url(self) -> str:
         return self._meta_url('%s.png' % self.name)
 
-    def file_info(self, name, url, filename):
+    def file_info(self, name: str, url: str, filename: str) -> FileInfo:
         return FileInfo(self, name, url, filename)
 
-    def docker_image_info(self, name, url, content):
+    def docker_image_info(self, name: str, url: str, content) -> DockerImageInfo:
         return DockerImageInfo(name, url, content)
 
-    def important_files(self):
+    def important_files(self) -> Iterator[FileInfo]:
         # Adding "special ini and png file
         for special_file in ['ini', 'png']:
             get_file_method = getattr(self, 'get_%s_file' % special_file.lower())
@@ -184,7 +187,7 @@ class App:
             url = self._repository_url(basename)
             yield self.file_info(basename, url, readme_filename)
 
-    def docker_images(self):
+    def docker_images(self) -> Iterator[DockerImageInfo]:
         # Adding manifest signature for docker
         config = ConfigParser()
         config.read(self.get_ini_file())
@@ -221,12 +224,12 @@ class App:
                 docker_image_manifest = response.text
                 yield self.docker_image_info(name, docker_url, docker_image_manifest)
 
-    def tar_files(self):
+    def tar_files(self) -> Iterator[tuple[str, str]]:
         for file_info in self.important_files():
             yield file_info.filename, file_info.archive_filename
 
-    def to_index(self):
-        index = {}
+    def to_index(self) -> dict[str, dict[str, dict[str, str] | str]]:
+        index: dict[str, dict[str, dict[str, str] | str]] = {}
         for file_info in self.important_files():
             index[file_info.name] = {
                 'url': file_info.url,
@@ -245,20 +248,20 @@ class App:
         return index
 
 
-def check_ini_file(filename):
+def check_ini_file(filename: str) -> str | None:
     name, ext = os.path.splitext(os.path.basename(filename))
     if ext == '.ini':
         return name
 
 
-def md5sum(filename):
+def md5sum(filename: str) -> str:
     m = md5()
     with open(filename, 'rb') as f:
         m.update(f.read())
         return m.hexdigest()
 
 
-def sha256sum(filename):
+def sha256sum(filename: str) -> str:
     m = sha256()
     with open(filename, 'rb') as f:
         m.update(f.read())

@@ -18,7 +18,7 @@ from dockertest import (
 
 
 @pytest.mark.exposure('dangerous')
-def test_docker_pull_via_proxy_http():
+def test_docker_pull_via_proxy_http() -> None:
     ucr = UCSTestConfigRegistry()
     ucr.load()
 

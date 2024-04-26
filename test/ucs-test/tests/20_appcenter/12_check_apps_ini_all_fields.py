@@ -7,11 +7,14 @@
 ##   - univention-management-console-module-appcenter
 ## exposure: safe
 
+from __future__ import annotations
+
 import re
 from configparser import NoOptionError, NoSectionError, RawConfigParser
 from optparse import OptionParser
 from re import compile as regex_compile
 from sys import stderr
+from types import TracebackType
 
 from univention.appcenter.app_cache import Apps
 from univention.testing import utils
@@ -22,12 +25,12 @@ failures = 0
 
 class AppCheck:
 
-    def __init__(self, pname):
+    def __init__(self, pname: str) -> None:
         self.pname = pname
         self.config = RawConfigParser()
         self.config.read((pname,))
 
-    def log(self, msg, *args):
+    def log(self, msg: str, *args) -> None:
         """
         Prints the given 'msg' with 'args' preceded by path to file unless
         '--quiet' argument was given.
@@ -35,7 +38,7 @@ class AppCheck:
         if not parsed.quiet:
             print('FILE:', self.pname, msg % args)
 
-    def check(self):
+    def check(self) -> None:
         """
         Performs the actual 'self.pname' file checks.
         Checks can be skipped when respective App is not installed
@@ -60,7 +63,7 @@ class AppCheck:
 
 class Error(Exception):
 
-    def __init__(self, msg):
+    def __init__(self, msg: str) -> None:
         global failures
         failures += 1
         print("\nERROR:", msg)
@@ -75,7 +78,7 @@ class Optional(Exception):
 class Fatal(Exception):
 
     # raised when required value is missing
-    def __init__(self, msg):
+    def __init__(self, msg: str) -> None:
         global failures
         failures += 1
         print("\nFATAL:", msg)
@@ -91,52 +94,52 @@ class Value:
     RE_CAPACITY = regex_compile(r'\d+(?:\s*[G]B)?$')
     RE_URL = regex_compile(r'^(?:https?://' + DOMAIN + r'(?::\d+)?)?' + PATH + r'$')
 
-    def __init__(self, value, appid):
+    def __init__(self, value: str, appid: str) -> None:
         self.value = value
         self.appid = appid
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.value)
 
-    def required(self):
+    def required(self) -> None:
         if not self.value:
             raise Fatal('Required value or/and section is missing.')
 
-    def optional(self):
+    def optional(self) -> None:
         if not self.value:
             # raise and catch later the exception to stop checks.
             raise Optional()
 
-    def is_bool(self):
+    def is_bool(self) -> None:
         if self.value in ('True', 'False', 'true', 'false'):
             return
         raise Error('Not a boolean: %s' % self.value)
 
-    def is_n_chars_long(self, length):
+    def is_n_chars_long(self, length: int) -> None:
         if len(self.value) <= length:
             return
         raise Error('Over %d chars long:\n >%s<>%s<' % (length,
                     self.value[:length + 1], self.value[length + 1:]))
 
-    def is_180c(self):
+    def is_180c(self) -> None:
         return self.is_n_chars_long(180)
 
-    def is_email(self):
+    def is_email(self) -> None:
         if self.RE_EMAIL.match(self.value):
             return
         raise Error('No email: "%s"' % self.value)
 
-    def is_www(self):
+    def is_www(self) -> None:
         if self.RE_WWW.match(self.value):
             return
         raise Error('No WWW: "%s"' % self.value)
 
-    def is_url(self):
+    def is_url(self) -> None:
         if self.RE_URL.match(self.value):
             return
         raise Error('No URL: "%s"' % self.value)
 
-    def is_role(self):
+    def is_role(self) -> None:
         ALLOWED = {
             'domaincontroller_master',
             'domaincontroller_backup',
@@ -148,22 +151,22 @@ class Value:
         if set(values) - ALLOWED:
             raise Error('Invalid server role: "%s"' % self.value)
 
-    def is_arch(self):
+    def is_arch(self) -> None:
         ALLOWED = {'amd64', 'i386'}
         if set(re.split(r'\s*,\s*', self.value)) - ALLOWED:
             raise Error('Invalid architectures: "%s"' % self.value)
 
-    def is_capacity(self):
+    def is_capacity(self) -> None:
         if self.RE_CAPACITY.match(self.value):
             return
         raise Error('Wrong capacity: "%s"' % self.value)
 
-    def deprecated_master_packages(self):
+    def deprecated_master_packages(self) -> None:
         if self.value:
             if self.appid not in 'kopano-core agorumcore-pro asterisk4ucs bareos fetchmail openvpn4ucs oxseforucs plucs simplesamlphp sugarcrm zarafa self-service'.split():
                 raise Error('Should not have DefaultPackagesMaster!!')
 
-    def is_category(self):
+    def is_category(self) -> None:
         ALLOWED = {'admin', 'service', 'False'}
         if self.value in ALLOWED:
             return
@@ -227,23 +230,23 @@ class Section:
         'Description': APPLICATION['Description'],
         'LongDescription': APPLICATION['LongDescription']}
 
-    def __init__(self, check, section, appid):
+    def __init__(self, check, section, appid) -> None:
         self.config = check.config
         self.section = section
         self.log = check.log
         self.appid = appid
 
-    def __enter__(self):
+    def __enter__(self) -> Section:
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         if not exc_type:
             return
 
         if issubclass(exc_type, NoSectionError):
             self.log('[%s] missing', self.section)
 
-    def check_all(self, options):
+    def check_all(self, options) -> None:
         for option, checks in options.items():
             self.check(option, *checks)
             self.config.remove_option(self.section, option)
@@ -251,7 +254,7 @@ class Section:
         for option, value in self.config.items(self.section):
             self.log('[%s].%s: Remaining %s', self.section, option, value)
 
-    def check(self, option, *checks):
+    def check(self, option, *checks) -> None:
         value = self.get(option)
         for cname in checks:
             try:
@@ -280,7 +283,7 @@ class Section:
         return Value(value, self.appid)
 
 
-def exclude_ignored(names, remove):
+def exclude_ignored(names, remove) -> None:
     """Removes the given 'remove' from the given 'names' when it is in."""
     for name in remove:
         try:

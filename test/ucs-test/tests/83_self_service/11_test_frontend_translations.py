@@ -6,9 +6,10 @@
 ## packages:
 ##   - univention-self-service
 
+from __future__ import annotations
+
 import re
 import time
-from typing import Dict, Union
 
 import pytest
 from playwright.sync_api import Locator, Page, expect
@@ -44,12 +45,12 @@ def self_service_user(udm_module_scope) -> SelfServiceUser:
     return do_create_user(udm_module_scope, mailPrimaryAddress=reset_mail_address, language='en-US')
 
 
-def find_label(page: Page, label_display_text: str) -> Union[Locator, None]:
+def find_label(page: Page, label_display_text: str) -> Locator | None:
     label_display_locators = page.get_by_text(label_display_text).all()
     return next((label_display_locator for label_display_locator in label_display_locators if label_display_locator.evaluate('(element) => element.tagName') == 'LABEL'), None)
 
 
-def check_labels(page: Page, labels: Dict[str, str], retries=4):
+def check_labels(page: Page, labels: dict[str, str], retries=4):
     for label_display, label_tag in labels.items():
         for i in range(retries):
             logger.info("checking for label with text %r and with attribute 'for=%r' (%d/%d)", label_display, label_tag, i + 1, retries)
@@ -106,7 +107,7 @@ def check_labels(page: Page, labels: Dict[str, str], retries=4):
         pytest.param(UCSLanguage.DE_DE, 'servicespecificpasswords', {'Benutzername': 'username', 'Passwort': 'password'}, marks=locale_available('de_DE')),
     ],
 )
-def test_frontend_translations(self_service: SelfService, lang: UCSLanguage, hash: str, labels: Dict[str, str], ucr):
+def test_frontend_translations(self_service: SelfService, lang: UCSLanguage, hash: str, labels: dict[str, str], ucr):
     page: Page = self_service.tester.page
     self_service.tester.set_language(lang)
     self_service.navigate(hash)
@@ -175,7 +176,7 @@ def test_frontend_translations(self_service: SelfService, lang: UCSLanguage, has
         pytest.param(UCSLanguage.DE_DE, 'servicespecificpasswords', {'Benutzername': 'username', 'Passwort': 'password'}, marks=locale_available('de_DE')),
     ],
 )
-def test_frontend_login_translations(self_service: SelfService, lang: UCSLanguage, hash: str, labels: Dict[str, str], self_service_user):
+def test_frontend_login_translations(self_service: SelfService, lang: UCSLanguage, hash: str, labels: dict[str, str], self_service_user):
     page: Page = self_service.tester.page
     self_service.tester.set_language(lang)
     self_service.navigate(hash, username=self_service_user.username, password=self_service_user.password)

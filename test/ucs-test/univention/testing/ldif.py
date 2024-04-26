@@ -23,7 +23,7 @@ import sys
 import time
 import unicodedata
 from optparse import OptionGroup, OptionParser, Values
-from typing import Any, Dict, Iterable, Iterator, List, NoReturn, Sequence, Set, Tuple
+from typing import Any, Dict, Iterable, Iterator, List, NoReturn, Sequence
 
 from typing_extensions import Literal
 
@@ -78,7 +78,7 @@ class Ldif:
         'structuralObjectClass',
     }
 
-    def __init__(self, src: Iterable[bytes], exclude: Set[str] = OPERATIONAL) -> None:
+    def __init__(self, src: Iterable[bytes], exclude: set[str] = OPERATIONAL) -> None:
         self.src = src
         self.exclude = exclude
         self.lno = 0
@@ -98,7 +98,7 @@ class Ldif:
 
         yield ''.join(lines)
 
-    def split(self, line: str) -> Tuple[str, str]:
+    def split(self, line: str) -> tuple[str, str]:
         r"""
         Split attribute and value.
         Options are stripped.
@@ -221,8 +221,8 @@ class LdifSlapcat:
         """
         while True:
             rlist = [proc.stdout]
-            wlist: List[int] = []
-            xlist: List[int] = []
+            wlist: list[int] = []
+            xlist: list[int] = []
             try:
                 rlist, wlist, xlist = select.select(rlist, wlist, xlist)
                 break
@@ -249,7 +249,7 @@ class LdifSsh(LdifSlapcat):
         self.command = [ssh, hostname] + self.command
 
 
-def stream2object(ldif: Ldif) -> Dict[str, Entry]:
+def stream2object(ldif: Ldif) -> dict[str, Entry]:
     """
     Convert LDIF stream to dictionary of objects.
 
@@ -259,7 +259,7 @@ def stream2object(ldif: Ldif) -> Dict[str, Entry]:
     >>> stream2object([{'dn': ['dc=test']}])
     {'dc=test': {}}
     """
-    objects: Dict[str, Entry] = {}
+    objects: dict[str, Entry] = {}
     for obj in ldif:
         try:
             dname, = obj.pop('dn')
@@ -271,7 +271,7 @@ def stream2object(ldif: Ldif) -> Dict[str, Entry]:
     return objects
 
 
-def sort_dn(dname: str) -> Tuple[Tuple[str, ...], ...]:
+def sort_dn(dname: str) -> tuple[tuple[str, ...], ...]:
     """
     Sort by reversed dn.
 
@@ -336,7 +336,7 @@ def compare_ldif(lldif: Ldif, rldif: Ldif, options: Values) -> int:
     return ret
 
 
-def compare_keys(ldata: Entry, rdata: Entry) -> Iterator[Tuple[Literal[-1, 0, 1], str, str]]:
+def compare_keys(ldata: Entry, rdata: Entry) -> Iterator[tuple[Literal[-1, 0, 1], str, str]]:
     """
     Compare and return attributes of two LDAP objects.
 
@@ -378,7 +378,7 @@ def compare_keys(ldata: Entry, rdata: Entry) -> Iterator[Tuple[Literal[-1, 0, 1]
             lkey = rkey = ""
 
 
-def compare_values(attr: str, lvalues: List[str], rvalues: List[str]) -> Iterator[Tuple[Literal[-1, 0, 1], str, str]]:
+def compare_values(attr: str, lvalues: list[str], rvalues: list[str]) -> Iterator[tuple[Literal[-1, 0, 1], str, str]]:
     """
     Compare and return values of two multi-valued LDAP attributes.
 
@@ -414,7 +414,7 @@ def compare_values(attr: str, lvalues: List[str], rvalues: List[str]) -> Iterato
             lval = rval = ""
 
 
-def parse_args(args: Sequence[str] | None = None) -> Tuple[LdifSource, LdifSource, Values]:
+def parse_args(args: Sequence[str] | None = None) -> tuple[LdifSource, LdifSource, Values]:
     """Parse command line arguments."""
     parser = OptionParser(usage=USAGE, description=DESCRIPTION)
     parser.disable_interspersed_args()

@@ -10,7 +10,10 @@
 ## - univention-squid-kerberos
 ## - univention-s4-connector
 
+from __future__ import annotations
+
 import subprocess
+from types import TracebackType
 
 import pycurl
 
@@ -23,18 +26,18 @@ from essential.simplesquid import SimpleSquid
 
 
 class kerberos_ticket:
-    def __init__(self, hostname):
+    def __init__(self, hostname: str) -> None:
         self.hostname = hostname
 
-    def __enter__(self):
+    def __enter__(self) -> None:
         subprocess.call(['kdestroy'])
         subprocess.check_call(['kinit', '--password-file=/etc/machine.secret', self.hostname + '$'])  # get kerberos ticket
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         subprocess.call(['kdestroy'])
 
 
-def check_no_ticket(host, url):
+def check_no_ticket(host: str, url: str) -> None:
     print('Check proxy without kerberos ticket...')
     subprocess.call(['kdestroy'])  # delete all active kerberos tickets
     curl = SimpleCurl(proxy=host, password='will_be_ignored', auth=pycurl.HTTPAUTH_GSSNEGOTIATE)
@@ -44,7 +47,7 @@ def check_no_ticket(host, url):
     print('Success: Proxy does not work without kerberos ticket')
 
 
-def check_with_ticket(host, url, hostname):
+def check_with_ticket(host: str, url: str, hostname: str) -> None:
     print('Check proxy with kerberos ticket...')
     with kerberos_ticket(hostname):
         curl = SimpleCurl(proxy=host, password='will_be_ignored', auth=pycurl.HTTPAUTH_GSSNEGOTIATE)
@@ -54,7 +57,7 @@ def check_with_ticket(host, url, hostname):
     print('Success: Proxy does work with kerberos ticket')
 
 
-def main():
+def main() -> None:
     squid = SimpleSquid()
     try:
         with ucr_test.UCSTestConfigRegistry() as ucr:

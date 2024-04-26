@@ -1,6 +1,7 @@
-#!/usr/bin/python3
 # SPDX-FileCopyrightText: 2024 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
+
+from __future__ import annotations
 
 import json
 import logging
@@ -25,7 +26,7 @@ session_info = '/univention/get/session-info'
 logout_entry = '/univention/logout'
 
 
-def get_credentials():
+def get_credentials() -> tuple[str, str]:
     global current_user
     current_user += 1
     if current_user > final_user:
@@ -33,7 +34,7 @@ def get_credentials():
     return 'testuser%d' % current_user, 'univention'
 
 
-def login_via_saml(client, username=None, password=None, prefix=''):
+def login_via_saml(client, username: str | None = None, password: str | None = None, prefix: str = ''):
     with client.get(entry, allow_redirects=True, timeout=TIMEOUT, catch_response=True, name=f'{prefix} login 1 {entry}') as req1:
         if req1.status_code != 401 and not (200 <= req1.status_code <= 399):
             req1.failure(f'Expected status code 401 or a status code between 200 and 399: {req1.status_code}')
@@ -75,7 +76,7 @@ def login_via_saml(client, username=None, password=None, prefix=''):
         return do_saml_login_at_umc(client, req3, name=f'{prefix} login 3 {entry} POST saml response')
 
 
-def do_saml_iframe_session_refresh(client, prefix=''):
+def do_saml_iframe_session_refresh(client, prefix: str = ''):
     with client.get('/univention/saml/iframe', allow_redirects=False, timeout=TIMEOUT, catch_response=True, name=f'{prefix} iframe 1 /univention/saml/iframe') as req1:
         if req1.status_code != 302:
             req1.failure(f'Expected 302: {req1.status_code}')
@@ -131,7 +132,7 @@ def get_login_params(req):
     return login_link, login_params
 
 
-def get_SAML_response(text):
+def get_SAML_response(text: str) -> tuple:
     try:
         soup = BeautifulSoup(text, features='lxml')
         saml_response = soup.select_one('input[name="SAMLResponse"]')['value']
@@ -141,7 +142,7 @@ def get_SAML_response(text):
         return None, None
 
 
-def get_kerberos_redirect(text):
+def get_kerberos_redirect(text: str) -> str | None:
     try:
         soup = BeautifulSoup(text, 'lxml')
         title = soup.find('title')
@@ -151,7 +152,7 @@ def get_kerberos_redirect(text):
         return None
 
 
-def replay_har(har_file, client, host, verify, session_id=None):
+def replay_har(har_file, client, host: str, verify, session_id: str | None = None) -> None:
     def to_dict(obj):
         return {entry['name']: entry['value'] for entry in obj}
 

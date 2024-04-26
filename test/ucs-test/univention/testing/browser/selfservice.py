@@ -32,8 +32,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Dict, Union
 
 from playwright.sync_api import Page, expect
 
@@ -55,7 +56,7 @@ class SelfService:
         self.tester: UMCBrowserTest = tester
         self.page: Page = tester.page
 
-    def navigate(self, hash: str = '', username: Union[str, None] = None, password: Union[str, None] = None):
+    def navigate(self, hash: str = '', username: str | None = None, password: str | None = None):
         if username and password:
             self.tester.login(username, password, f'/univention/portal/#/selfservice/{hash}')
             return
@@ -65,7 +66,7 @@ class SelfService:
         self.navigate('createaccount')
         expect(self.page.get_by_role('heading', name=_('Create an account'))).to_be_visible()
 
-    def fill_create_account(self, attributes: Dict[str, UserCreationAttribute], button: Union[str, None] = 'Create an account'):
+    def fill_create_account(self, attributes: dict[str, UserCreationAttribute], button: str | None = 'Create an account'):
         for k, v in attributes.items():
             if k == 'password':
                 self.page.get_by_role('textbox', name=_('Password'), exact=True).fill(v.value)

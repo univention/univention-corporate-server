@@ -5,12 +5,15 @@
 ##   - univention-appcenter-dev
 ## exposure: dangerous
 
+from __future__ import annotations
+
 import os
 import os.path
 import re
 import stat
 import subprocess
 from contextlib import contextmanager
+from typing import TYPE_CHECKING, Iterable
 
 import pytest
 
@@ -25,25 +28,33 @@ from univention.appcenter.ucr import ucr_get, ucr_save
 import appcentertest as app_test
 
 
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+    from types import TracebackType
+
+    from univention.appcenter.app import App
+    from univention.appcenter.settings import Setting
+
+
 log_to_logfile()
 log_to_stream()
 
 
 class Configuring:
-    def __init__(self, app, revert='configure'):
-        self.settings = set()
+    def __init__(self, app: App, revert='configure') -> None:
+        self.settings: set[str] = set()
         self.app = app
         self.revert = revert
 
-    def __enter__(self):
+    def __enter__(self) -> Configuring:
         return self
 
-    def set(self, config):
+    def set(self, config: Iterable[str]) -> None:
         self.settings.update(config)
         configure = get_action('configure')
         configure.call(app=self.app, set_vars=config, run_script='no')
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         if self.revert == 'configure':
             config = {key: None for key in self.settings}  # noqa: RUF025
             configure = get_action('configure')
@@ -55,19 +66,19 @@ class Configuring:
             ucr_save(config)
 
 
-def fresh_settings(content, app, num):
+def fresh_settings(content: str, app: App, num: int) -> tuple[App | None, Setting]:
     settings = get_settings(content, app)
     assert len(settings) == num
     return Apps().find(app.id), settings
 
 
-def docker_shell(app, command):
+def docker_shell(app: App, command: str) -> str:
     container = ucr_get(app.ucr_container_key)
     return subprocess.check_output(['docker', 'exec', container, '/bin/bash', '-c', command], stderr=subprocess.STDOUT, text=True)
 
 
 @contextmanager
-def install_app(app, set_vars=None):
+def install_app(app: App, set_vars: Setting | None = None) -> Iterator[App]:
     username = re.match('uid=([^,]*),.*', ucr_get('tests/domainadmin/account')).groups()[0]
     install = get_action('install')
     subprocess.run(['apt-get', 'update'], check=True)
@@ -78,7 +89,7 @@ def install_app(app, set_vars=None):
 
 
 @contextmanager
-def add_custom_settings(app, custom_settings_content):
+def add_custom_settings(app: App, custom_settings_content: str) -> Iterator[None]:
     custom_settings_file = "/var/lib/univention-appcenter/apps/{}/custom.settings".format(app.id)
     with open(custom_settings_file, "w") as f:
         f.write(custom_settings_content)
@@ -89,13 +100,13 @@ def add_custom_settings(app, custom_settings_content):
 
 
 @pytest.fixture(scope='module')
-def local_appcenter():
+def local_appcenter() -> Iterator[None]:
     with app_test.local_appcenter():
         yield
 
 
 @pytest.fixture(scope='module')
-def installed_component_app(local_appcenter):
+def installed_component_app(local_appcenter) -> Iterator[App]:
     ini_file = '''[Application]
 ID = ucs-test
 Code = TE
@@ -117,7 +128,7 @@ DefaultPackages = libcurl4-doc'''
 
 
 @pytest.fixture(scope='module')
-def apache_docker_app(local_appcenter):
+def apache_docker_app(local_appcenter) -> App:
     ini_file = '''[Application]
 ID = apache
 Code = AP
@@ -144,12 +155,12 @@ UCSOverviewCategory = False'''
 
 
 @pytest.fixture()
-def installed_apache_docker_app(apache_docker_app):
+def installed_apache_docker_app(apache_docker_app: App) -> Iterator[App]:
     with install_app(apache_docker_app) as app:
         yield app
 
 
-def get_settings(content, app):
+def get_settings(content: str, app: App) -> list[Setting]:
     fname = '/tmp/app.settings'
     with open(fname, 'w') as fd:
         fd.write(content)
@@ -162,7 +173,7 @@ def get_settings(content, app):
     return settings
 
 
-def test_string_setting(installed_component_app):
+def test_string_setting(installed_component_app: App) -> None:
     content = '''[test/setting]
 Type = String
 Description = My Description
@@ -189,7 +200,7 @@ InitialValue = Default: @%@ldap/base@%@
         assert setting.get_value(app) is None
 
 
-def test_string_setting_docker(installed_apache_docker_app):
+def test_string_setting_docker(installed_apache_docker_app: App) -> None:
     content = '''[test/setting]
 Type = String
 Description = My Description
@@ -231,7 +242,7 @@ InitialValue = Default: @%@hostname@%@
 Scope = {scope}
 '''.format(scope=scope) for scope in ('inside, outside', 'outside', 'inside')
 ])
-def test_string_custom_setting_docker(installed_apache_docker_app, content_custom):
+def test_string_custom_setting_docker(installed_apache_docker_app, content_custom: str) -> None:
     content = '''[test/setting]
 Type = String
 Description = My Description
@@ -279,7 +290,7 @@ Scope = inside, outside
                 assert docker_shell(app, f'grep "{setting2.name}: " /etc/univention/base.conf') == f'{setting2.name}: My new value2\n'
 
 
-def test_int_setting(installed_component_app):
+def test_int_setting(installed_component_app: App) -> None:
     content = '''[test/setting2]
 Type = Int
 Description = My Description 2
@@ -310,7 +321,7 @@ Required = Yes
         assert setting.get_value(app) == 3000
 
 
-def test_status_and_file_setting(installed_component_app):
+def test_status_and_file_setting(installed_component_app: App) -> None:
     content = '''[test/setting3]
 Type = Status
 Description = My Description 3
@@ -360,7 +371,7 @@ Description = My Description 4.2
             pass
 
 
-def test_file_setting_docker(installed_apache_docker_app):
+def test_file_setting_docker(installed_apache_docker_app: App) -> None:
     content = '''[test/setting4]
 Type = File
 Filename = /tmp/settingdir/setting4.test
@@ -393,7 +404,7 @@ Description = My Description 4
             pass
 
 
-def test_password_setting(installed_component_app):
+def test_password_setting(installed_component_app: App) -> None:
     content = '''[test/setting5]
 Type = Password
 
@@ -429,7 +440,7 @@ Filename = /tmp/settingdir/setting6.password
             pass
 
 
-def test_password_setting_docker(installed_apache_docker_app):
+def test_password_setting_docker(installed_apache_docker_app: App) -> None:
     content = '''[test/setting5]
 Type = Password
 
@@ -474,7 +485,7 @@ Filename = /tmp/settingdir/setting6.password
         assert open(password_file).read() == 'FilePassword'
 
 
-def test_bool_setting(installed_component_app):
+def test_bool_setting(installed_component_app: App) -> None:
     content = '''[test/setting7]
 Type = Bool
 Description = My Description 7
@@ -498,7 +509,7 @@ InitialValue = False
         assert setting.get_value(app) is True
 
 
-def test_list_setting(installed_component_app):
+def test_list_setting(installed_component_app: App) -> None:
     content = '''[test/setting8]
 Type = List
 Values = v1, v2, v3
@@ -519,7 +530,7 @@ Description = My Description 8
 
 
 @pytest.fixture(scope='module')
-def outside_test_settings():
+def outside_test_settings() -> str:
     return '''[test_settings/outside]
 Type = String
 Required = True
@@ -560,7 +571,7 @@ Description = setting5
 
 
 @pytest.fixture(scope='module')
-def outside_test_preinst():
+def outside_test_preinst() -> str:
     return '''#!/bin/bash
 eval "$(ucr shell)"
 set -x
@@ -573,7 +584,7 @@ test "$test_settings_bool" = "true" || exit 1
 exit 0'''
 
 
-def docker_app_ini():
+def docker_app_ini() -> tuple[str, str]:
     return '''[Application]
 ID = alpine
 Code = AP
@@ -590,7 +601,7 @@ AutoModProxy = False
 UCSOverviewCategory = False''', 'alpine'
 
 
-def package_app_ini():
+def package_app_ini() -> tuple[str, str]:
     return '''[Application]
 ID = ucstest
 Code = TE
@@ -603,7 +614,7 @@ DefaultPackages = libcurl4-doc''', 'ucstest'
 
 
 @pytest.fixture(scope='module', params=[package_app_ini, docker_app_ini])
-def outside_test_app(request, local_appcenter, outside_test_preinst, outside_test_settings):
+def outside_test_app(request, local_appcenter, outside_test_preinst, outside_test_settings) -> App:
     ini_file, app_id = request.param()
     with open('/tmp/app.ini', 'w') as fd:
         fd.write(ini_file)
@@ -616,7 +627,7 @@ def outside_test_app(request, local_appcenter, outside_test_preinst, outside_tes
     return Apps().find(app_id)
 
 
-def test_outside_settings_in_preinst(outside_test_app):
+def test_outside_settings_in_preinst(outside_test_app) -> None:
     settings_unset = [
         'test_settings/outside',
         'test_settings/inside',

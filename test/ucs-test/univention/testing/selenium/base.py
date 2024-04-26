@@ -41,7 +41,6 @@ import os
 import subprocess
 import time
 from types import TracebackType
-from typing import Type
 
 import selenium.common.exceptions as selenium_exceptions
 from PIL import Image
@@ -134,7 +133,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         self.set_viewport_size(1200, 800)
         return self
 
-    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
+    def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         try:
             if exc_type:
                 logger.error(f'Exception: {exc_type} {exc_value}')

@@ -13,7 +13,7 @@ from univention.config_registry import ConfigRegistry
 from univention.testing.debian_package import DebianPackage
 from univention.testing.utils import package_installed
 
-from dockertest import App, copy_package_to_appcenter, get_app_name
+from dockertest import App, Appcenter, copy_package_to_appcenter, get_app_name
 
 
 class UCSTest_AppCenter_PackageIsNotInstalled(Exception):
@@ -25,7 +25,7 @@ class UCSTest_AppCenter_PackageIsInstalled(Exception):
 
 
 @pytest.mark.exposure('dangerous')
-def test_additional_packages(appcenter, app_name, app_version):
+def test_additional_packages(appcenter: Appcenter, app_name: str, app_version: str) -> None:
     ucr = ConfigRegistry()
     ucr.load()
 

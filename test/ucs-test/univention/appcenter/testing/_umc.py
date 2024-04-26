@@ -48,7 +48,7 @@ import locale
 import ssl
 from http.client import HTTPException, HTTPSConnection
 from http.cookies import SimpleCookie
-from typing import Any, Dict, List, Tuple, Type, TypeVar, overload
+from typing import Any, TypeVar, overload
 
 from univention.config_registry import ConfigRegistry
 
@@ -110,7 +110,7 @@ class HTTPError(Exception):
     """
 
     __metaclass__ = _HTTPType
-    codes: Dict[int, Type[HTTPError]] = {}
+    codes: dict[int, type[HTTPError]] = {}
     """Specialized sub-classes for individual |HTTP| error codes."""
 
     @property
@@ -264,7 +264,7 @@ class Request:
     :param dict headers: a mapping of HTTP headers
     """
 
-    def __init__(self, method: str, path: str, data: str | None = None, headers: Dict[str, str] | None = None) -> None:
+    def __init__(self, method: str, path: str, data: str | None = None, headers: dict[str, str] | None = None) -> None:
         self.method = method
         self.path = path
         self.data = data
@@ -313,7 +313,7 @@ class Response:
         if isinstance(self.data, dict):
             return self.data.get('message')
 
-    def __init__(self, status: int, reason: str, body: bytes, headers: List[Tuple[str, str]], _response: http.client.HTTPResponse) -> None:
+    def __init__(self, status: int, reason: str, body: bytes, headers: list[tuple[str, str]], _response: http.client.HTTPResponse) -> None:
         self.status = status
         self.reason = reason
         self.body = body
@@ -394,7 +394,7 @@ class Client:
         self._timeout = timeout
         self._raise_errors = True
         self._automatic_reauthentication = automatic_reauthentication
-        self.cookies: Dict[str, str] = {}
+        self.cookies: dict[str, str] = {}
         self.username = username or ''
         self.password = password or ''
         if username:
@@ -614,7 +614,7 @@ class Client:
         #   so create a new connection on every request
         return self.ConnectionType(self.hostname, timeout=self._timeout)
 
-    def __build_data(self, data: Dict[str, Any] | None, flavor: str | None = None) -> Dict[str, Any]:
+    def __build_data(self, data: dict[str, Any] | None, flavor: str | None = None) -> dict[str, Any]:
         """
         Create a dictionary as expected by the |UMC| Server.
 

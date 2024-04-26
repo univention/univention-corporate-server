@@ -5,6 +5,8 @@
 ##  - domaincontroller_master
 ## exposure: dangerous
 
+from __future__ import annotations
+
 import sys
 
 from univention.testing import utils
@@ -16,17 +18,17 @@ from umc import UMCBase
 
 class TestUMCUserAuthentication(UMCBase):
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Test Class constructor"""
         super().__init__()
 
-        self.UDM = None
+        self.UDM: UCSTestUDM | None = None
 
         self.test_user_dn = ''
         self.test_username = ''
         self.test_password = ''
 
-    def create_user(self):
+    def create_user(self) -> None:
         """Creates a group and a user in it for the test."""
         print("\nCreating a user '%s'" % (self.test_username,))
 
@@ -37,19 +39,19 @@ class TestUMCUserAuthentication(UMCBase):
         )[0]
         utils.verify_ldap_object(self.test_user_dn)
 
-    def set_userexpiry_None(self):
+    def set_userexpiry_None(self) -> None:
         """Queries UDM's users/user from UMC"""
         return self.modify_object([{"object": {"userexpiry": None, "$dn$": self.test_user_dn}, "options": {"objectType": "users/user"}}], 'users/user')
 
-    def set_userexpiry_testval(self):
+    def set_userexpiry_testval(self) -> None:
         """Queries UDM's users/user from UMC"""
         return self.modify_object([{"object": {"userexpiry": "2015-02-02", "$dn$": self.test_user_dn}, "options": {"objectType": "users/user"}}], 'users/user')
 
-    def set_userexpiry_empty(self):
+    def set_userexpiry_empty(self) -> None:
         """Queries UDM's users/user from UMC"""
         return self.modify_object([{"object": {"userexpiry": "", "$dn$": self.test_user_dn}, "options": {"objectType": "users/user"}}], 'users/user')
 
-    def main(self):
+    def main(self) -> None:
         """Tests the UMC user authentication and various password change cases."""
         self.test_username = 'umc_test_user_' + random_username(6)
         self.test_password = 'univention'

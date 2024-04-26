@@ -39,7 +39,7 @@ import re
 import sys
 from itertools import cycle
 from pathlib import Path
-from typing import Any, Callable, Dict, Iterable, Iterator, Tuple
+from typing import Any, Callable, Iterable, Iterator
 
 
 __all__ = [
@@ -95,12 +95,12 @@ def strip_indent(text: str) -> str:
     return '\n'.join(line[indent:] for line in lines)
 
 
-def _version_sort(path: Path) -> Tuple[object]:
+def _version_sort(path: Path) -> tuple[object]:
     """Return tuple to sort versioned path."""
     return tuple(t(v) for v, t in zip(RE_VERSION.split(path.name), cycle((str, int))))
 
 
-def get_sections() -> Dict[str, Path]:
+def get_sections() -> dict[str, Path]:
     """Return dictionary section-name -> section-directory."""
     return {
         m.group(1): p
@@ -109,7 +109,7 @@ def get_sections() -> Dict[str, Path]:
     }
 
 
-def get_tests(sections: Iterable[str]) -> Iterator[Tuple[str, Path]]:
+def get_tests(sections: Iterable[str]) -> Iterator[tuple[str, Path]]:
     """Yield 2-tuples (section, filename)."""
     logger = logging.getLogger('test.find')
 
@@ -204,7 +204,7 @@ class UCSVersion:  # pylint: disable-msg=R0903  # noqa: PLW1641
     RE_VERSION = re.compile(r"^(<|<<|<=|=|==|>=|>|>>)?([1-9][0-9]*)\.([0-9]+)(?:-([0-9]*)(?:-([0-9]+))?)?$")
 
     @classmethod
-    def _parse(cls, ver: str, default_op: str = '=') -> Tuple[Callable[[Any, Any], Any], Tuple[int, int, int, int]]:
+    def _parse(cls, ver: str, default_op: str = '=') -> tuple[Callable[[Any, Any], Any], tuple[int, int, int, int]]:
         """
         Parse UCS-version range and return two-tuple (operator, version)
         >>> UCSVersion._parse('11.22')  # doctest: +ELLIPSIS
@@ -234,7 +234,7 @@ class UCSVersion:  # pylint: disable-msg=R0903  # noqa: PLW1641
         if not match:
             raise ValueError(f'Version does not match: "{ver}"')
         rel = match.group(1) or default_op
-        parts: Tuple[int, int, int, int] = tuple(int(_) if _ else INF for _ in match.groups()[1:])  # type: ignore
+        parts: tuple[int, int, int, int] = tuple(int(_) if _ else INF for _ in match.groups()[1:])  # type: ignore
         if rel in ('<', '<<'):
             return (operator.lt, parts)
         if rel in ('<=',):
@@ -247,7 +247,7 @@ class UCSVersion:  # pylint: disable-msg=R0903  # noqa: PLW1641
             return (operator.gt, parts)
         raise ValueError(f'Unknown version match: "{ver}"')
 
-    def __init__(self, ver: str | Tuple[int, int, int, int]) -> None:
+    def __init__(self, ver: str | tuple[int, int, int, int]) -> None:
         if isinstance(ver, str):
             self.rel, self.ver = self._parse(ver)
         elif isinstance(ver, tuple):

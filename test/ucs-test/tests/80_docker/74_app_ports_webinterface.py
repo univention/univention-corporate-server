@@ -9,11 +9,11 @@ import pytest
 
 from univention.config_registry import ConfigRegistry
 
-from dockertest import get_app_version, tiny_app
+from dockertest import Appcenter, get_app_version, tiny_app
 
 
 @pytest.mark.exposure('dangerous')
-def test_app_ports_webinterface(appcenter, app_name):
+def test_app_ports_webinterface(appcenter: Appcenter, app_name: str) -> None:
     webinterface_port_http = '8080'
     webinterface_port_https = '8443'
 

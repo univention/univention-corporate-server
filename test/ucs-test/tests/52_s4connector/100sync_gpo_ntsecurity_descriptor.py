@@ -11,9 +11,12 @@
 ## bugs:
 ##   - 33768
 
+from __future__ import annotations
+
 import re
 import subprocess
 import time
+from types import TracebackType
 
 import ldb
 from ldap.filter import filter_format
@@ -130,9 +133,9 @@ class Testclass_GPO_Security_Descriptor:
         self.activate_ntsd_sync()
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         if exc_type:
-            print('GPO Cleanup after exception: %s %s' % (exc_type, exc_value))
+            print('GPO Cleanup after exception: %s %s' % (exc_type, exc_val))
         if self.previous_ucr_unset or self.previous_ucr_set:
             set_ucr(self.previous_ucr_set, self.previous_ucr_unset, ucr=self.ucr)
             self.restart_s4_connector()

@@ -6,7 +6,10 @@
 ##  - domaincontroller_backup
 ## exposure: dangerous
 
+from __future__ import annotations
+
 import sys
+from typing import Any
 
 import atexit
 
@@ -19,13 +22,18 @@ from umc import UDMModule
 
 class TestUMCExtendedAttributes(UDMModule):
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Test Class constructor"""
         super().__init__()
         self.ldap_base = ''
 
-    def modify_check_user_attribute(self, user_dn, attribute_key,
-                                    old_value, new_value):
+    def modify_check_user_attribute(
+        self,
+        user_dn: str,
+        attribute_key: str,
+        old_value: str,
+        new_value: str,
+    ) -> None:
         """
         Checks if the 'user_dn' has the correct 'attribute_key': 'old_value'.
         Modifies given 'user_dn' 'attribute_key' to a 'new_value'.
@@ -48,8 +56,12 @@ class TestUMCExtendedAttributes(UDMModule):
         except KeyError as exc:
             utils.fail(f"A KeyError exception while trying to check and modify the user attribute '{attribute_key}' value: '{exc}'")
 
-    def modify_check_extended_attribute(self, attribute_name,
-                                        attribute_key, new_value):
+    def modify_check_extended_attribute(
+        self,
+        attribute_name: str,
+        attribute_key: str,
+        new_value: str,
+    ) -> None:
         """
         Modifies the extended attribute 'attribute_name' with
         'attribute_key' = 'new_value' and checks if the modification
@@ -74,7 +86,7 @@ class TestUMCExtendedAttributes(UDMModule):
                        "the extended attribute '%s' itself: '%s'"
                        % (attribute_name, exc))
 
-    def is_attribute_syntax_valid(self, attribute_name, obj_type, test_value):
+    def is_attribute_syntax_valid(self, attribute_name: str, obj_type: str, test_value: str) -> bool:
         """
         Makes a 'udm/validate' UMC request for a given 'attribute_name',
         'obj_type' and a 'test_value' and returns the value of the 'valid'
@@ -90,9 +102,12 @@ class TestUMCExtendedAttributes(UDMModule):
             utils.fail("A KeyError exception while getting the attribute "
                        "'valid' field value '%s'" % exc)
 
-    def check_attribute_in_module_properties(self, attribute_module,
-                                             attribute_name,
-                                             attribute_syntax):
+    def check_attribute_in_module_properties(
+        self,
+        attribute_module: str,
+        attribute_name: str,
+        attribute_syntax: str,
+    ) -> bool:
         """
         Checks if the 'attribute_name' is in given 'attribute_module'
         properties and that the 'attribute_syntax' is correct,
@@ -106,8 +121,9 @@ class TestUMCExtendedAttributes(UDMModule):
                            "not have the proper syntax '%s'"
                            % (attribute_module, attribute_name,
                               attribute_syntax))
+        return False
 
-    def check_attributes_query_structure(self):
+    def check_attributes_query_structure(self) -> None:
         """
         Makes a query for attributes request and checks it
         for the default fields
@@ -132,7 +148,7 @@ class TestUMCExtendedAttributes(UDMModule):
                 utils.fail("The field 'objectType' was not found in "
                            "attributes_query '%s'" % attribute)
 
-    def query_extended_attributes(self):
+    def query_extended_attributes(self) -> list[dict[str, Any]]:
         """
         Returns a result of the 'udm/nav/object/query' UMC request
         made with respective options and 'navigation' flavor
@@ -146,12 +162,15 @@ class TestUMCExtendedAttributes(UDMModule):
         }
         return self.request('udm/nav/object/query', options, "navigation")
 
-    def create_check_extended_attribute(self, attribute_name,
-                                        attribute_modules,
-                                        attribute_syntax='string',
-                                        attribute_default='',
-                                        obj_class="univentionFreeAttributes",
-                                        ldap_map="univentionFreeAttribute10"):
+    def create_check_extended_attribute(
+        self,
+        attribute_name: str,
+        attribute_modules: list[str],
+        attribute_syntax: str = 'string',
+        attribute_default: str = '',
+        obj_class: str = "univentionFreeAttributes",
+        ldap_map: str = "univentionFreeAttribute10",
+    ) -> None:
         """
         Creates an extended attribute via 'udm/add' UMC request with
         the given arguments and checks if the respective module (-s)
@@ -205,7 +224,7 @@ class TestUMCExtendedAttributes(UDMModule):
                            "module '%s' properties"
                            % (attribute_name, module))
 
-    def check_attribute_exists(self, attribute_name):
+    def check_attribute_exists(self, attribute_name: str) -> bool:
         """
         Makes a query request for all extended attributes and returns True,
         in case an attribute with a given 'attribute_name' is found.
@@ -214,7 +233,7 @@ class TestUMCExtendedAttributes(UDMModule):
             if attribute.get('name') == attribute_name:
                 return True
 
-    def remove_attribute_if_exists(self, attribute_name):
+    def remove_attribute_if_exists(self, attribute_name: str) -> None:
         """
         Checks if attribute with a given 'attribute_name' exists
         and deletes it when exists
@@ -222,7 +241,7 @@ class TestUMCExtendedAttributes(UDMModule):
         if self.check_attribute_exists(attribute_name):
             self.delete_obj(attribute_name, 'custom attributes', 'navigation')
 
-    def main(self):
+    def main(self) -> None:
         """
         A method to test the UMC extended attributes creation, modification
         and module integration

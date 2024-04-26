@@ -12,6 +12,7 @@ import json
 import os
 import uuid
 from types import SimpleNamespace
+from typing import Any
 
 import pytest
 from keycloak import KeycloakAdmin
@@ -24,7 +25,7 @@ from univention.udm import UDM
 from univention.udm.modules.users_user import UsersUserObject
 
 
-def get_realm_payload(realm: str, locales_format: str, default_locale: str, keycloak_url: str) -> dict:
+def get_realm_payload(realm: str, locales_format: list[str], default_locale: str, keycloak_url: str) -> dict[str, Any]:
     return {
         'id': realm,
         'realm': realm,
@@ -48,7 +49,7 @@ def get_realm_payload(realm: str, locales_format: str, default_locale: str, keyc
     }
 
 
-def get_client_payload(client_id: str, valid_redirect_urls: list) -> dict:
+def get_client_payload(client_id: str, valid_redirect_urls: list[str]) -> dict[str, Any]:
     return {
         'clientId': client_id,
         'surrogateAuthRequired': False,
@@ -177,7 +178,7 @@ def get_client_payload(client_id: str, valid_redirect_urls: list) -> dict:
     }
 
 
-def get_user_payload(uid: str) -> dict:
+def get_user_payload(uid: str) -> dict[str, Any]:
     return {
         'email': f'{uid}@univention.de',
         'username': uid,
@@ -197,7 +198,7 @@ def get_user_payload(uid: str) -> dict:
     }
 
 
-def get_idp_payload(keycloak_fqdn: str, certificate: str) -> dict:
+def get_idp_payload(keycloak_fqdn: str, certificate: str) -> dict[str, Any]:
     keycloak_fqdn = keycloak_fqdn.rstrip('/')
     return {
         'alias': 'saml',
@@ -241,7 +242,7 @@ def _create_idp(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRegistry, k
         if exc.response_code != 409:
             raise (exc)
     # execution
-    payload_exec_flow = {'provider': 'univention-authenticator'}
+    payload_exec_flow: dict[str, Any] = {'provider': 'univention-authenticator'}
     keycloak_admin_connection.create_authentication_flow_execution(payload=json.dumps(payload_exec_flow), flow_alias='Univention-Authenticator ad-hoc federation flow')
     execution_list = keycloak_admin_connection.get_authentication_flow_executions('Univention-Authenticator ad-hoc federation flow')
     ua_execution = next(filter(lambda flow: flow['displayName'] == 'Univention Authenticator', execution_list))

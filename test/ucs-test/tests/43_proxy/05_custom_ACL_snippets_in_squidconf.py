@@ -5,10 +5,13 @@
 ## exposure: dangerous
 ## packages: [univention-squid]
 
+from __future__ import annotations
+
 import itertools
 import time
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from multiprocessing import Process
+from types import TracebackType
 
 import pycurl
 
@@ -23,18 +26,18 @@ from essential.simplesquid import SimpleSquid
 
 
 class TestServer:
-    def __init__(self):
+    def __init__(self) -> None:
         # start http server in a different thread on (127.0.0.1:60025)
         p = Process(target=startHttpServer, kwargs={'port': 60025})
         p.start()
         print(p, p.is_alive())
         self.p = p
 
-    def __enter__(self):
+    def __enter__(self) -> TestServer:
         handler_set(['hosts/static/127.0.100.100=proxy_test1.univention.de proxy_test2.univention.de'])
         return self
 
-    def __exit__(self, *args):
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         # Terminating Http server
         self.p.join(5)
         self.p.terminate()
@@ -43,7 +46,7 @@ class TestServer:
         handler_unset(['hosts/static/127.0.100.100'])
 
 
-def startHttpServer(host='localhost', port=80):
+def startHttpServer(host: str = 'localhost', port: int = 80) -> None:
     """Start a simple Http server in the working directory"""
     HandlerClass = SimpleHTTPRequestHandler
     ServerClass = HTTPServer
@@ -58,7 +61,7 @@ def startHttpServer(host='localhost', port=80):
     httpd.serve_forever()
 
 
-def perform_test(test_case):
+def perform_test(test_case) -> None:
     ((permission, expected_response), acl_type, (value_type, value)) = test_case
     sub_case = []
     opposite_response = 407 if expected_response == 200 else 200
@@ -124,7 +127,7 @@ def perform_test(test_case):
     do_test(new_cases)
 
 
-def do_test(test_case):
+def do_test(test_case) -> None:
     for (permission, expected_response, acl_type, value_type, used_value, value) in test_case:
         name = uts.random_name()
         print()
@@ -162,7 +165,7 @@ def do_test(test_case):
             print(':::: OK ::::')
 
 
-def set_ucr_variables(name, permission, acl_type, value_type, value):
+def set_ucr_variables(name: str, permission: str, acl_type: str, value_type: str, value: str) -> None:
     squid = SimpleSquid()
     handler_set([
         'squid/acl/%s/%s/%s/%s=%s' % (name, permission, acl_type, value_type, value),
@@ -172,7 +175,7 @@ def set_ucr_variables(name, permission, acl_type, value_type, value):
     squid.reconfigure()
 
 
-def main():
+def main() -> None:
     try:
         permissions = ['allow', 'deny']
         responses = [200, 403]

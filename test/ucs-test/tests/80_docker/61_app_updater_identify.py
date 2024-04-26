@@ -7,11 +7,11 @@
 
 import pytest
 
-from dockertest import tiny_app
+from dockertest import Appcenter, tiny_app
 
 
 @pytest.mark.exposure('dangerous')
-def test_app_updater_identify(appcenter):
+def test_app_updater_identify(appcenter: Appcenter) -> None:
     app = tiny_app()
 
     try:

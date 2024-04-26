@@ -10,9 +10,12 @@
 ##  - memberserver
 ## exposure: careful
 
+from __future__ import annotations
+
 from os import environ
 from os.path import exists
 from tempfile import NamedTemporaryFile
+from typing import IO, TYPE_CHECKING
 from unittest import TestCase, main, skip, skipUnless
 
 import ldap
@@ -22,18 +25,22 @@ from univention.config_registry import ConfigRegistry
 from univention.testing.utils import retry_on_error
 
 
+if TYPE_CHECKING:
+    from types import TracebackType
+
+
 ucr = ConfigRegistry()
 ucr.load()
 
 
 class FakeUcr:
 
-    def __init__(self, values, defaults=True):
+    def __init__(self, values, defaults=True) -> None:
         self.values = dict(ucr.items()) if defaults else {}
         self.values.update(values)
-        self.tmp = None
+        self.tmp: IO[bytes] | None = None
 
-    def __enter__(self):
+    def __enter__(self) -> None:
         self.tmp = NamedTemporaryFile()
         self.tmp.write(b'# univention_ base.conf\n\n')
         for key, value in self.values.items():
@@ -41,7 +48,7 @@ class FakeUcr:
         self.tmp.flush()
         environ['UNIVENTION_BASECONF'] = self.tmp.name
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         self.tmp.close()
         self.tmp = None
         del environ['UNIVENTION_BASECONF']

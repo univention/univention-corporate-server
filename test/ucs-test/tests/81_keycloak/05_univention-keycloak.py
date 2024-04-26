@@ -204,7 +204,7 @@ def test_init_with_parameters(random_string, keycloak_admin_connection):
             pass
 
 
-def test_bindpwd(admin_account):
+def test_bindpwd(account) -> None:
     cmd = ['univention-keycloak', '--binduser', admin_account.username, '--bindpwd', admin_account.bindpw, 'realms', 'get']
     run_command(cmd)
     cmd = ['univention-keycloak', '--binduser', admin_account.username, '--bindpwd', "bindpw", 'realms', 'get']

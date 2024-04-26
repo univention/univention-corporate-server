@@ -75,14 +75,14 @@ class TestListenerModule(@@HANDLER_SUPER_CLASS@@):
 		self.test_log('remove', self.uid)
 		return
 
-	def error_handler(self, dn, old, new, command, exc_type, exc_value, exc_traceback):
-		ud.debug(ud.LISTENER, ud.ERROR, ''.join(traceback.format_exception(exc_type, exc_value, exc_traceback)))
-		ud.debug(ud.LISTENER, ud.ERROR, 'exc_type=%r exc_value=%r' % (exc_type, exc_value))
-		self.logger.error(''.join(traceback.format_exception(exc_type, exc_value, exc_traceback)))
+	def error_handler(self, dn, old, new, command, exc_type, exc_val, exc_tb):
+		ud.debug(ud.LISTENER, ud.ERROR, ''.join(traceback.format_exception(exc_type, exc_val, exc_tb)))
+		ud.debug(ud.LISTENER, ud.ERROR, 'exc_type=%r exc_val=%r' % (exc_type, exc_val))
+		self.logger.error(''.join(traceback.format_exception(exc_type, exc_val, exc_tb)))
 		if exc_type == MyTestException:
 			self.test_log('error_handler', new.get('uid', [b''])[0].decode('UTF-8') or old.get('uid', [b''])[0].decode('UTF-8'))
 			return
-		raise exc_type(exc_value)
+		raise exc_type(exc_val)
 
 	def clean(self):
 		self.test_log('clean', '')

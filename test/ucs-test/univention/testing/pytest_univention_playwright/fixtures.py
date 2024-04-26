@@ -30,9 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
+
 import subprocess
 from pathlib import Path
-from typing import Dict, Generator, Iterator
+from typing import Dict, Iterator
 
 import pytest
 from playwright.sync_api import Browser, BrowserContext, BrowserType, Page, expect
@@ -161,8 +163,8 @@ def setup_browser_context(context, start_tracing=True):
 @pytest.fixture(scope='module')
 def context_module_scope(
     browser_type: BrowserType,
-    ucs_browser_type_launch_args: Dict,
-    ucs_browser_context_args: Dict,
+    ucs_browser_type_launch_args: dict,
+    ucs_browser_context_args: dict,
 ):
     browser = browser_type.launch(**ucs_browser_type_launch_args)
     return browser.new_context(**ucs_browser_context_args)
@@ -182,12 +184,12 @@ def umc_browser_test_module(
 @pytest.fixture()
 def umc_browser_test(
     browser_type: BrowserType,
-    ucs_browser_type_launch_args: Dict,
-    ucs_browser_context_args: Dict,
+    ucs_browser_type_launch_args: dict,
+    ucs_browser_context_args: dict,
     request: pytest.FixtureRequest,
     kill_module_processes,
     ucr,
-) -> Generator[UMCBrowserTest, None, None]:
+) -> Iterator[UMCBrowserTest]:
     browser = browser_type.launch(**ucs_browser_type_launch_args)
     context = browser.new_context(**ucs_browser_context_args)
     page = setup_browser_context(context)

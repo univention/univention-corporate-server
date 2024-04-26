@@ -18,7 +18,6 @@ from sys import exit
 from tempfile import mkdtemp
 from time import sleep
 from types import TracebackType
-from typing import Dict, List, Type
 
 from univention.config_registry.frontend import handler_set
 from univention.testing.ucr import UCSTestConfigRegistry
@@ -35,9 +34,9 @@ USERID = 'listener'
 class Environment:
 
     def __init__(self) -> None:
-        self.tmpdir = None
-        self.mdir = None
-        self.cdir = None
+        self.tmpdir: str | None = None
+        self.mdir: str | None = None
+        self.cdir: str | None = None
 
         ent = getpwnam(USERID)
         self.uid = ent.pw_uid
@@ -66,18 +65,18 @@ class Environment:
                     line = 'TMPDIR = %r\n' % (self.tmpdir,)
                 target.write(line)
 
-    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         rmtree(self.tmpdir, ignore_errors=True)
         self.tmpdir = None
 
 
 class Listener:
 
-    def __init__(self, ucr: Dict[str, str], env: Environment) -> None:
+    def __init__(self, ucr: dict[str, str], env: Environment) -> None:
         self.ucr = ucr
         self.env = env
-        self.proc = None
-        self.cmd = [
+        self.proc: Popen | None = None
+        self.cmd: list[str] = [
             '/usr/sbin/univention-directory-listener',
             '-b', self.ucr['ldap/base'],
             '-m', self.env.mdir,
@@ -114,7 +113,7 @@ class Listener:
         print('I: %d = %r' % (self.proc.pid, cmd))
         return self
 
-    def __exit__(self, exc_type: Type[Exception] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:  # noqa: PYI036
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         if not exc_type:
             self.wait_transactions()
         self.kill_listener()
@@ -196,7 +195,7 @@ def main() -> None:
     exit(1 if error else 0)
 
 
-def unexpected_transactions(env: Environment, ucr: Dict[str, str]) -> bool:
+def unexpected_transactions(env: Environment, ucr: dict[str, str]) -> bool:
     found_add = False
     found_modify = False
     found_other = False
@@ -219,13 +218,13 @@ def unexpected_transactions(env: Environment, ucr: Dict[str, str]) -> bool:
     return found_other or not found_add or not found_modify
 
 
-def is_not_in_cache(env: Environment, ucr: Dict[str, str]) -> bool:
+def is_not_in_cache(env: Environment, ucr: dict[str, str]) -> bool:
     error = False
 
     dn = 'dn: ou=%s,%s' % (UNIQUE, ucr['ldap/base'])
 
     dump = join(env.tmpdir, 'dump')
-    cmd = [
+    cmd: list[str] = [
         '/usr/sbin/univention-directory-listener-dump',
         '-c', env.cdir,
         '-O', dump,
@@ -246,7 +245,7 @@ def is_not_in_cache(env: Environment, ucr: Dict[str, str]) -> bool:
     return error
 
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], cmd: str = '') -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]], cmd: str = '') -> None:
     with open(join(TMPDIR, UNIQUE), 'a') as log:
         print(repr((dn, bool(new), bool(old), cmd)), file=log)
 

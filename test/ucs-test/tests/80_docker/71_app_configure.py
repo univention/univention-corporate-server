@@ -7,11 +7,11 @@
 
 import pytest
 
-from dockertest import tiny_app
+from dockertest import Appcenter, tiny_app
 
 
 @pytest.mark.exposure('dangerous')
-def test_app_configure(appcenter, app_name, app_version):
+def test_app_configure(appcenter: Appcenter, app_name: str, app_version: str) -> None:
     app = tiny_app(app_name, app_version)
     try:
         app.set_ini_parameter(

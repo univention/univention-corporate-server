@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+from __future__ import annotations
+
 import json
 import os
 import re
@@ -7,6 +8,7 @@ import socket
 import subprocess
 import time
 from html import unescape
+from types import TracebackType
 
 import requests
 from bs4 import BeautifulSoup
@@ -81,13 +83,13 @@ class SamlPasswordChangeSuccess(SamlLoginError):
 
 
 class GuaranteedIdP:
-    def __init__(self, ip):
+    def __init__(self, ip: str) -> None:
         self.ip = ip
         ucr = configRegistry.ConfigRegistry()
         ucr.load()
         self.sso_fqdn = ucr['ucs/server/sso/fqdn']
 
-    def __enter__(self):
+    def __enter__(self) -> None:
         subprocess.call(['ucr', 'set', 'hosts/static/%s=%s' % (self.ip, self.sso_fqdn)])
         subprocess.call(['invoke-rc.d', 'nscd', 'restart'])
         IdP_IP = socket.gethostbyname(self.sso_fqdn)
@@ -95,7 +97,7 @@ class GuaranteedIdP:
             utils.fail("Couldn't set guaranteed IdP")
         print('Set IdP to: %s' % self.ip)
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         subprocess.call(['ucr', 'unset', 'hosts/static/%s' % self.ip])
         subprocess.call(['invoke-rc.d', 'nscd', 'restart'])
 
@@ -103,27 +105,27 @@ class GuaranteedIdP:
 class SPCertificate:
 
     @staticmethod
-    def get_server_cert_folder():
+    def get_server_cert_folder() -> str:
         ucr = configRegistry.ConfigRegistry()
         ucr.load()
         hostname = '%(hostname)s.%(domainname)s' % ucr
         return os.path.join('/etc/univention/ssl', hostname)
 
-    def __init__(self, certificate, update_metadata=True):
+    def __init__(self, certificate: bytes, update_metadata: bool = True) -> None:
         self.certificate = certificate
         cert_folder = self.get_server_cert_folder()
         self.cert_path = os.path.join(cert_folder, 'cert.pem')
         self.cert_path_backup = os.path.join(cert_folder, 'cert.pem.backup')
         self.update_metadata = update_metadata
 
-    def __enter__(self):
+    def __enter__(self) -> None:
         shutil.move(self.cert_path, self.cert_path_backup)
         with open(self.cert_path, 'wb') as cert_file:
             cert_file.write(self.certificate)
         if self.update_metadata:
             subprocess.check_call('/usr/share/univention-management-console/saml/update_metadata')
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         shutil.move(self.cert_path_backup, self.cert_path)
         if self.update_metadata:
             subprocess.check_call('/usr/share/univention-management-console/saml/update_metadata')
@@ -225,7 +227,7 @@ class SamlTest:
         print("The SAML message is:\n%s" % saml_message)
         return saml_message
 
-    def _extract_sp_url(self):
+    def _extract_sp_url(self) -> str:
         print("Extract url to post SAML message to")
         url = self.xpath('form[@method="post"]', {}).get('action')
         if url is None:
@@ -249,13 +251,13 @@ class SamlTest:
         print("The SAML AuthState is:\n%s" % auth_state)
         return auth_state
 
-    def _send_saml_response_to_sp(self, url, saml_msg, relay_state):
+    def _send_saml_response_to_sp(self, url, saml_msg, relay_state) -> None:
         # POST the SAML message to SP, thus logging in.
         print("POST SAML message to: %s" % url)
         self.position = "posting SAML message"
         self._request('POST', url, 200, data={'SAMLResponse': saml_msg, 'RelayState': relay_state})
 
-    def test_logged_in_status(self, expected_auth_type='SAML'):
+    def test_logged_in_status(self, expected_auth_type='SAML') -> None:
         """Test login on umc"""
         url = "https://%s/univention/get/session-info" % self.target_sp_hostname
         print("Test login @ %s" % url)
@@ -265,7 +267,7 @@ class SamlTest:
         assert auth_type == expected_auth_type, ("SAML wasn't used for login?", self.parsed_page)
         print("Login success")
 
-    def test_slapd(self):
+    def test_slapd(self) -> None:
         """Test ldap login with saml"""
         url = "https://%s/univention/command/udm/query" % self.target_sp_hostname
         print("Test ldap login @ %s" % url)
@@ -273,7 +275,7 @@ class SamlTest:
         self._request('POST', url, 200, data={"objectType": "users/user", "objectProperty": "None", "objectPropertyValue": ""})
         print("LDAP login success")
 
-    def test_umc_server(self):
+    def test_umc_server(self) -> None:
         """Test opening a umc module with saml"""
         url = "https://%s/univention/command/udm/meta_info" % self.target_sp_hostname
         print("Test umc module @ %s" % url)
@@ -281,7 +283,7 @@ class SamlTest:
         self._request('POST', url, 200, data={"objectType": "dns/dns"})
         print("LDAP login success")
 
-    def test_logout(self):
+    def test_logout(self) -> None:
         """Test logout on umc"""
         url = "https://%s/univention/get/session-info" % self.target_sp_hostname
         print("Test logout @ %s" % url)
@@ -289,7 +291,7 @@ class SamlTest:
         self._request('GET', url, 401, expected_format='json')
         print("Logout success at SP")
 
-    def test_logout_at_IdP(self):
+    def test_logout_at_IdP(self) -> None:
         """Test that passwordless login is not possible after logout"""
         print("Test logout at IdP...")
         try:
@@ -299,7 +301,7 @@ class SamlTest:
         else:
             utils.fail("Session not closed at IdP after logout")
 
-    def login_with_existing_session_at_IdP(self):
+    def login_with_existing_session_at_IdP(self) -> None:
         """
         Use Identity Provider to log in to a Service Provider.
         If the IdP already knows the session and doesn't ask for username and password
@@ -339,16 +341,16 @@ class SamlTest:
             raise SamlError(str(e))
 
     def _follow_kerberos_redirect(self, resp_content: bytes) -> requests.Response:
-        resp_content = resp_content.decode('utf-8')
-        soup = BeautifulSoup(resp_content, 'html.parser')
+        content = resp_content.decode('utf-8')
+        soup = BeautifulSoup(content, 'html.parser')
         title = soup.find('title')
         if title and 'Kerberos' in title.text:
             action = soup.find('body').findChild('form').attrs.get('action')
             return self.session.post(action, allow_redirects=True)
         else:
-            raise SamlError(f'No Kerberos redirect information found in: {resp_content}')
+            raise SamlError(f'No Kerberos redirect information found in: {content}')
 
-    def login_with_new_session_at_IdP(self):
+    def login_with_new_session_at_IdP(self) -> None:
         """
         Use Identity Provider to log in to a Service Provider.
         The IdP doesn't know the session and has to ask for username and password
@@ -384,7 +386,7 @@ class SamlTest:
         relay_state = self._extract_relay_state()
         self._send_saml_response_to_sp(url, saml_msg, relay_state)
 
-    def logout_at_IdP(self):
+    def logout_at_IdP(self) -> None:
         """Logout from session"""
         url = "https://%s/univention/logout" % self.target_sp_hostname
         print("Logging out at url: %s" % url)
@@ -399,7 +401,7 @@ class SamlTest:
         relay_state = self._extract_relay_state()
         self._request('POST', url, 200, data={'SAMLResponse': saml_msg, 'RelayState': relay_state})
 
-    def change_expired_password(self, new_password):
+    def change_expired_password(self, new_password: str) -> None:
         self.position = "posting change password form"
         print("Post SAML change password form to: %s" % self.page.url)
 

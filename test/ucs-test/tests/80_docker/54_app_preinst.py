@@ -9,12 +9,12 @@ import subprocess
 
 import pytest
 
-from dockertest import UCSTest_DockerApp_InstallationFailed, UCSTest_DockerApp_VerifyFailed, tiny_app
+from dockertest import Appcenter, UCSTest_DockerApp_InstallationFailed, UCSTest_DockerApp_VerifyFailed, tiny_app
 
 
 @pytest.mark.exposure('dangerous')
 @pytest.mark.parametrize("fail_in_preinst", [False, True])
-def test_create_app(appcenter, fail_in_preinst, app_name, app_version):
+def test_create_app(appcenter: Appcenter, fail_in_preinst: bool, app_name: str, app_version: str) -> None:
     app = tiny_app(app_name, app_version)
     try:
         app.add_script(preinst='''#!/bin/bash

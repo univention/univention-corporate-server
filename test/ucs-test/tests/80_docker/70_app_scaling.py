@@ -8,7 +8,7 @@
 
 import pytest
 
-from dockertest import tiny_app_apache
+from dockertest import Appcenter, tiny_app_apache
 
 
 DOCKER_APP_COUNT = 20
@@ -16,7 +16,7 @@ DOCKER_APP_COUNT = 20
 
 @pytest.mark.skip()
 @pytest.mark.exposure('dangerous')
-def test_app_scaling(appcenter, app_name, app_version):
+def test_app_scaling(appcenter: Appcenter, app_name: str, app_version: str) -> None:
     apps = []
 
     try:

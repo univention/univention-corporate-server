@@ -11,7 +11,7 @@ import sys
 
 import pytest
 
-from dockertest import tiny_app
+from dockertest import App, Appcenter, tiny_app
 
 
 class AssertionFailed(Exception):
@@ -53,7 +53,7 @@ def get_code_position(depth=1, line_length=80, fill_char='.', prefix="# ", color
         return color_start + ("%80s" % '').replace(' ', '=') + color_stop
 
 
-def hook_setup(app_name):
+def hook_setup(app_name: str) -> None:
     """
     the setup creates the necessary script hook folders and places a script in
     each of them with the filename being the action name. The script will
@@ -110,7 +110,7 @@ echo "$0" >> {file_result}'''.format(file_result=file_result)
             )
 
 
-def app_install(appcenter, app_name):
+def app_install(appcenter: Appcenter, app_name: str) -> App:
     print(get_code_position(color_start=color_highlight, color_stop=color_reset))
 
     app = tiny_app(app_name, '3.6')
@@ -124,7 +124,7 @@ def app_install(appcenter, app_name):
     return app
 
 
-def app_upgrade(appcenter, app_name):
+def app_upgrade(appcenter: Appcenter, app_name: str) -> App:
     print(get_code_position(color_start=color_highlight, color_stop=color_reset))
 
     app = tiny_app(app_name, '3.7')
@@ -138,14 +138,14 @@ def app_upgrade(appcenter, app_name):
     return app
 
 
-def app_remove(app):
+def app_remove(app: App) -> None:
     print(get_code_position(color_start=color_highlight, color_stop=color_reset))
 
     app.uninstall()
     app.remove()
 
 
-def verify_test_results_and_exit():
+def verify_test_results_and_exit() -> None:
     """
     function outputs all test results and checks if the result file contains
     the names of all actions (install/upgrade/remove).
@@ -162,7 +162,7 @@ def verify_test_results_and_exit():
 
 
 @pytest.mark.exposure('dangerous')
-def test_app_install_update_remove_hooks(appcenter, app_name):
+def test_app_install_update_remove_hooks(appcenter: Appcenter, app_name: str) -> None:
     """
     This test tests three hook directories: install, update and remove. Each of
     these actions should then execute its hook scripts and if that works a

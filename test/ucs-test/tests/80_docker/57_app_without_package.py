@@ -9,11 +9,11 @@ import pytest
 
 from univention.testing.utils import get_ldap_connection
 
-from dockertest import tiny_app_apache
+from dockertest import Appcenter, tiny_app_apache
 
 
 @pytest.mark.exposure('dangerous')
-def test_app_without_package(appcenter):
+def test_app_without_package(appcenter: Appcenter) -> None:
     try:
         app = tiny_app_apache()
         app.set_ini_parameter(

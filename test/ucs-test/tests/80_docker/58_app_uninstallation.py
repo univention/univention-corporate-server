@@ -11,11 +11,11 @@ import pytest
 
 from univention.testing.utils import fail, get_ldap_connection
 
-from dockertest import tiny_app
+from dockertest import Appcenter, tiny_app
 
 
 @pytest.mark.exposure('dangerous')
-def test_app_uninstallation(appcenter):
+def test_app_uninstallation(appcenter: Appcenter) -> None:
     app = tiny_app()
 
     try:

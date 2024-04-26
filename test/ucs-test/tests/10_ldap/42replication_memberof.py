@@ -32,7 +32,7 @@ Otherwise the test would be flaky.
 """
 from __future__ import annotations
 
-from typing import List
+from types import TracebackType
 
 import pytest
 
@@ -60,12 +60,12 @@ class AutoStartStopListener:
         """
         self.dry_run = dry_run
 
-    def __enter__(self):
+    def __enter__(self) -> AutoStartStopListener:
         if not self.dry_run:
             stop_listener()
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         if not self.dry_run:
             start_listener()
             wait_for_replication()
@@ -80,7 +80,7 @@ class TestCases:
     base_group = 'cn=groups,%(ldap/base)s' % ucr
     dn_domain_users = 'cn=%s,%s' % (custom_groupname('Domain Users', ucr), base_group)
 
-    def print_attributes(self, udm, dn_list: List[str], msg: str | None = None) -> None:
+    def print_attributes(self, udm, dn_list: list[str], msg: str | None = None) -> None:
         """
         Prints the DN and the values of the attributes memberOf and uniqueMember for all given
         DNs in dn_list. If msg is specified, a small header line is printed.

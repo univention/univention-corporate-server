@@ -7,7 +7,6 @@ from __future__ import annotations
 import email
 import imaplib
 import time
-from typing import Dict
 
 import univention.testing.strings as uts
 
@@ -101,7 +100,7 @@ class BaseMailClient:
                     result[i] = item
         return result
 
-    def get_acl(self, mailbox: str) -> Dict[str, Dict[str, str]]:
+    def get_acl(self, mailbox: str) -> dict[str, dict[str, str]]:
         """
         get the exact acls from getacl
 

@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 # SPDX-FileCopyrightText: 2024 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
@@ -22,7 +21,7 @@ stats.MODERN_UI_PERCENTILES_TO_CHART = [0.66, 0.75, 0.80, 0.90, 0.95, 0.99]
 stats.PERCENTILES_TO_STATISTICS = [0.66, 0.75, 0.80, 0.90, 0.95, 0.99]
 
 
-def allowed_gai_family():
+def allowed_gai_family() -> socket.AddressFamily:
     """https://github.com/shazow/urllib3/blob/master/urllib3/util/connection.py"""
     family = socket.AF_INET
     # python requests tries IPv6 first, which can result in weird timings -> disable it for now

@@ -22,7 +22,7 @@ from contextlib import contextmanager
 from http.client import HTTPConnection
 from shlex import quote
 from types import TracebackType
-from typing import Callable, Dict, Iterator, List, Sequence, Type
+from typing import Callable, Iterator, Sequence
 from urllib.parse import urlparse
 
 import requests
@@ -50,7 +50,7 @@ def run_test_file(fname: str) -> None:
 
 
 @contextmanager
-def pip_modules(modules: List[str]) -> Iterator[None]:
+def pip_modules(modules: list[str]) -> Iterator[None]:
     if os.environ.get('UCS_TEST_NO_PIP') == 'TRUE':
         yield
     if not shutil.which('pip3'):
@@ -122,7 +122,7 @@ class Session:
     def __enter__(self):  # -> Session # Py3.9: Self
         yield self  # FIXME?
 
-    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
+    def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         self.driver.quit()
 
     def __del__(self) -> None:
@@ -226,11 +226,11 @@ class Session:
     def reload(self) -> None:
         self.driver.refresh()
 
-    def find_all(self, css: str) -> List:
+    def find_all(self, css: str) -> list:
         logger.info("Searching for %r", css)
         return self.driver.find_elements(By.CSS_SELECTOR, css)
 
-    def find_all_below(self, element, css: str) -> List:
+    def find_all_below(self, element, css: str) -> list:
         return element.find_elements(By.CSS_SELECTOR, css)
 
     def find_first(self, css: str):
@@ -342,7 +342,7 @@ except ImportError:
     pass
 else:
     @pytest.fixture(scope='session')
-    def config() -> Dict[str, str]:
+    def config() -> dict[str, str]:
         """
         Test wide Configuration aka UCR
         Used to get some defaults if not environment variables are
@@ -429,7 +429,7 @@ else:
         class UCR:
             def __init__(self, client) -> None:
                 self.client = client
-                self._old: Dict[str, str] = {}
+                self._old: dict[str, str] = {}
 
             def get(self, key: str):
                 logger.info('Getting UCRV %s', key)

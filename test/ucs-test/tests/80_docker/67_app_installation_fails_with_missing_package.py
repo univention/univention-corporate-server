@@ -7,11 +7,11 @@
 
 import pytest
 
-from dockertest import App, UCSTest_DockerApp_InstallationFailed
+from dockertest import App, Appcenter, UCSTest_DockerApp_InstallationFailed
 
 
 @pytest.mark.exposure('dangerous')
-def test_app_installation_fail_with_missing_package(appcenter, app_name, app_version):
+def test_app_installation_fail_with_missing_package(appcenter: Appcenter, app_name: str, app_version: str) -> None:
     app = App(name=app_name, version=app_version, container_version='5.0', build_package=False)
 
     try:

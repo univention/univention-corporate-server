@@ -9,11 +9,11 @@ import pytest
 
 from univention.testing.utils import is_port_open
 
-from dockertest import UCSTest_DockerApp_InstallationFailed, tiny_app
+from dockertest import Appcenter, UCSTest_DockerApp_InstallationFailed, tiny_app
 
 
 @pytest.mark.exposure('dangerous')
-def test_app_ports_conflicts_redirect(appcenter, app_version):
+def test_app_ports_conflicts_redirect(appcenter: Appcenter, app_version: str) -> None:
     exclusive = tiny_app(name='exclusive', version=app_version)
     redirect = tiny_app(name='redirect', version=app_version)
     dummy = tiny_app(name='dummy', version=app_version)

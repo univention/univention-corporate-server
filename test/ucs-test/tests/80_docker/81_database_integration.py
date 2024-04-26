@@ -8,16 +8,17 @@
 
 from subprocess import check_output
 from textwrap import dedent
+from typing import Iterator
 
 import pytest
 
 from univention.testing.utils import restart_firewall
 
-from dockertest import tiny_app
+from dockertest import Appcenter, tiny_app
 
 
 @pytest.fixture(autouse=True)
-def cleanup_restart_firewall():
+def cleanup_restart_firewall() -> Iterator[None]:
     yield
     # make sure that all ports used by mysql and postgres are properly closed
     print('restart_firewall')
@@ -25,7 +26,7 @@ def cleanup_restart_firewall():
 
 
 @pytest.mark.parametrize('database', ['mysql', 'postgresql'])
-def test_database_integration(appcenter, database, app_name, app_version):
+def test_database_integration(appcenter: Appcenter, database: str, app_name: str, app_version: str) -> None:
     try:
         app = tiny_app(app_name, app_version)
         app.set_ini_parameter(Database=database)

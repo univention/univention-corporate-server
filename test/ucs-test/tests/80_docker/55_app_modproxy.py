@@ -9,11 +9,11 @@ import pytest
 
 from univention.testing.ucr import UCSTestConfigRegistry
 
-from dockertest import get_app_version, tiny_app_apache
+from dockertest import Appcenter, get_app_version, tiny_app_apache
 
 
 @pytest.mark.exposure('dangerous')
-def test_app_modproxy(appcenter, app_name, app_version):
+def test_app_modproxy(appcenter: Appcenter, app_name: str, app_version: str) -> None:
     # normal modproxy
     ucr = UCSTestConfigRegistry()
 

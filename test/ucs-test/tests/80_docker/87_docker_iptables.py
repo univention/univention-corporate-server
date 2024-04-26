@@ -12,7 +12,7 @@ import pytest
 
 from univention.testing.utils import restart_firewall
 
-from dockertest import App
+from dockertest import App, Appcenter
 
 
 DOCKER_COMPOSE = '''
@@ -34,7 +34,7 @@ services:
 
 
 @pytest.mark.exposure('dangerous')    # cleanup remnants from previous tests
-def test_docker_iptables(appcenter, app_name):
+def test_docker_iptables(appcenter: Appcenter, app_name: str) -> None:
     restart_firewall()
 
     setup = '#!/bin/sh'

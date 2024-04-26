@@ -4,6 +4,8 @@
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
 
+from __future__ import annotations
+
 import os
 import shutil
 import socket
@@ -11,7 +13,7 @@ import tempfile
 import time
 from itertools import product
 from subprocess import CalledProcessError
-from typing import Tuple
+from typing import Iterator
 
 import pytest
 import requests
@@ -36,7 +38,7 @@ def cleanup_cookies(context):
 
 
 @pytest.fixture()
-def login_links(lang: str, link_count: int) -> Tuple[str, int]:
+def login_links(lang: str, link_count: int) -> Iterator[tuple[str, int]]:
     try:
         for i in range(1, link_count + 1):
             run_command(['univention-keycloak', 'login-links', 'set', lang, str(i), f'href{i}', f'desc{i}'])

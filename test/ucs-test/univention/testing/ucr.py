@@ -47,7 +47,7 @@ from __future__ import annotations
 
 import copy
 from types import TracebackType
-from typing import Any, Dict, Type
+from typing import Any
 
 import univention.config_registry
 from univention.config_registry import ConfigRegistry
@@ -62,7 +62,7 @@ class UCSTestConfigRegistry(ConfigRegistry):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """initialise object"""
         ConfigRegistry.__init__(self, *args, **kwargs)
-        self.__original_registry: Dict[int, Dict[str, str]] | None = None
+        self.__original_registry: dict[int, dict[str, str]] | None = None
 
     def ucr_update(self, *args):
         return univention.config_registry.frontend.ucr_update(*args)
@@ -113,7 +113,7 @@ class UCSTestConfigRegistry(ConfigRegistry):
         self.load()
         return self
 
-    def __exit__(self, exc_type: Type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
+    def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         self.revert_to_original_registry()
 
 

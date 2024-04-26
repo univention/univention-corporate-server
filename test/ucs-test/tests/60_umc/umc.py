@@ -1,7 +1,10 @@
+from __future__ import annotations
+
 import os
 import shutil
 import sys
 from time import sleep
+from typing import Any, NoReturn
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.misc import custom_groupname
@@ -14,20 +17,20 @@ from univention.testing.umc import Client
 class UMCBase:
     """A base class for testing UMC-system"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Test Class constructor"""
         self.username = None
         self.password = None
         self.hostname = None
-        self.client = None
+        self.client: Client | None = None
         self.ucr = ConfigRegistry()
         self.ucr.load()
         self.ldap_base = self.ucr.get('ldap/base')
 
-    def request(self, *args, **kwargs):
+    def request(self, *args: Any, **kwargs: Any) -> Any:
         return self.client.umc_command(*args, **kwargs).result
 
-    def create_connection_authenticate(self):
+    def create_connection_authenticate(self) -> None:
         """Create UMC connection and authenticate"""
         try:
             self.client = Client.get_test_connection()
@@ -40,7 +43,7 @@ class UMCBase:
         self.password = self.client.password
         self.hostname = self.client.hostname
 
-    def check_obj_exists(self, name, obj_type, flavor=None):
+    def check_obj_exists(self, name: str, obj_type: str, flavor: str | None = None) -> bool:
         """
         Checks if user, group or policy object with provided 'name' exists
         via UMC 'udm/query' request, returns True when exists.
@@ -57,16 +60,16 @@ class UMCBase:
             if result['name'] == name:
                 return True
 
-    def get_object(self, options, flavor):
+    def get_object(self, dns: list[str], flavor: str) -> list[dict[str, Any]]:
         """
         Returns the request result of the 'udm/get' UMC connection,
         made with provided 'options' and 'flavor'
         """
-        request_result = self.client.umc_command('udm/get', options, flavor).result
+        request_result = self.client.umc_command('udm/get', dns, flavor).result
         assert request_result is not None
         return request_result
 
-    def modify_object(self, options, flavor):
+    def modify_object(self, options: list[dict[str, Any]], flavor: str) -> None:
         """
         Modifies the 'flavor' object as given in 'options' by making a
         UMC request 'udm/put', checks for 'success' in the response
@@ -75,7 +78,7 @@ class UMCBase:
         assert request_result
         assert request_result[0].get('success')
 
-    def delete_obj(self, name, obj_type, flavor):
+    def delete_obj(self, name: str, obj_type: str, flavor: str) -> None:
         """
         Deletes object with a 'name' by making UMC-request 'udm/remove'
         with relevant options and flavor depending on 'obj_type'
@@ -108,17 +111,17 @@ class UMCBase:
         assert request_result
         assert request_result[0].get('success')
 
-    def return_code_result_skip(self) -> None:
+    def return_code_result_skip(self) -> NoReturn:
         """Method to stop the test with the code 77, RESULT_SKIP"""
         sys.exit(int(Reason.SKIP))
 
 
 class JoinModule(UMCBase):
 
-    def query_joinscripts(self):
+    def query_joinscripts(self) -> list[dict[str, Any]]:
         return self.request('join/scripts/query', {"*": "*"})
 
-    def join(self, hostname):
+    def join(self, hostname: str) -> None:
         options = {
             "hostname": hostname,
             "username": self.username,
@@ -126,7 +129,7 @@ class JoinModule(UMCBase):
         }
         return self._join('join/join', options)
 
-    def run_scripts(self, script_names, force=False):
+    def run_scripts(self, script_names: str, force: bool = False) -> None:
         options = {
             "scripts": script_names,
             "force": force,
@@ -135,7 +138,7 @@ class JoinModule(UMCBase):
         }
         return self._join('join/run', options)
 
-    def _join(self, path, options):
+    def _join(self, path: str, options: dict[str, Any]) -> None:
         response = self.client.umc_command(path, options)
 
         if response.status != 202:
@@ -143,7 +146,7 @@ class JoinModule(UMCBase):
         if not response.result['success']:
             utils.fail("Request 'join/%s' did not return success=True in the response: '%s',hostname '%s'" % (path, response.result, self.hostname))
 
-    def wait_rejoin_to_complete(self, poll_attempts):
+    def wait_rejoin_to_complete(self, poll_attempts: int) -> None:
         """
         Polls the join process via UMC 'join/running' request to make
         sure joining is still going on, sleeps 10 secs after every poll
@@ -160,7 +163,7 @@ class JoinModule(UMCBase):
             sleep(10)
         utils.fail("Failed to wait for join script(-s) to finish")
 
-    def copy_file(self, src, dst):
+    def copy_file(self, src: str, dst: str) -> None:
         """Makes a copy of the 'src' file to 'dst' file if 'src' exists"""
         try:
             if os.path.exists(src):
@@ -172,7 +175,7 @@ class JoinModule(UMCBase):
         except (OSError, shutil.Error) as exc:
             utils.fail("An exception while coping the file from '%s', to '%s', error '%s'" % (src, dst, exc))
 
-    def delete_file(self, path):
+    def delete_file(self, path: str) -> None:
         """Checks if 'path' file exists and deletes it"""
         try:
             if os.path.exists(path):
@@ -199,7 +202,7 @@ class UDMModule(UMCBase):
 
     test_network_dn = ''
 
-    def create_computer(self, computer_name, ip_address, dns_forward, dns_reverse):
+    def create_computer(self, computer_name: str, ip_address: list[str], dns_forward: list[str], dns_reverse: list[str]) -> list[dict[str, Any]]:
         """
         Creates a computer with given arguments and self.ldap_base,
         self.test_network_dn via 'udm/add' UMC request
@@ -227,7 +230,7 @@ class UDMModule(UMCBase):
         }]
         return self.request("udm/add", options, "computers/computer")
 
-    def get_groupname_translation(self, groupname):
+    def get_groupname_translation(self, groupname: str) -> str:
         """
         Returns the localized translation for the given 'groupname'.
         Groupname should be the UCR variable name (e.g. domainadmins).

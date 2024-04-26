@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import os
 import subprocess
+from types import TracebackType
 
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -13,7 +16,7 @@ import quota_cache as qc
 
 class QuotaCheck:
 
-    def __init__(self, quota_type="usrquota", fs_type="ext4"):
+    def __init__(self, quota_type: str = "usrquota", fs_type: str = "ext4") -> None:
         ucr = ucr_test.UCSTestConfigRegistry()
         ucr.load()
         self.ldap_base = ucr.get('ldap/base')
@@ -26,12 +29,12 @@ class QuotaCheck:
         self.quota_type = quota_type
         self.fs_type = fs_type
 
-    def _activate_quota(self, loop_dev):
+    def _activate_quota(self, loop_dev: str) -> None:
         print("Enable quota")
         options = {"partitionDevice": loop_dev}
         self.umc_client.umc_command('quota/partitions/activate', options).result  # noqa: B018
 
-    def _check_quota_settings(self, loop_dev, expected_values={}):
+    def _check_quota_settings(self, loop_dev: str, expected_values: dict[str, int] = {}) -> None:
         print("Check quota settings")
         options = {"filter": "*", "partitionDevice": loop_dev}
         user_quotas = self.umc_client.umc_command('quota/users/query', options).result
@@ -51,7 +54,7 @@ class QuotaCheck:
         print(expected_user_quota)
         assert expected_user_quota in user_quotas, "Quota was not set through pam"
 
-    def test_quota_pam(self):
+    def test_quota_pam(self) -> None:
         with TempFilesystem(self.quota_type, fs_type=self.fs_type) as tfs, udm_test.UCSTestUDM() as udm:
             quota_policy = {
                 "inodeSoftLimit": '10',
@@ -87,7 +90,7 @@ class QuotaCheck:
             self.touch_file(tfs.mount_point)
             self._check_quota_settings(tfs.loop_dev)
 
-    def test_quota_pam_policy_removal(self):
+    def test_quota_pam_policy_removal(self) -> None:
         with TempFilesystem(self.quota_type, fs_type=self.fs_type) as tfs, udm_test.UCSTestUDM() as udm:
             quota_policy = {
                 "inodeSoftLimit": '10',
@@ -135,7 +138,7 @@ class QuotaCheck:
             self.touch_file(tfs.mount_point)
             self._check_quota_settings(tfs.loop_dev, expected_result)
 
-    def test_two_shares_on_one_mount(self, quota_policies, expected_result):
+    def test_two_shares_on_one_mount(self, quota_policies: list[dict[str, str]], expected_result: dict[str, int]) -> None:
         with TempFilesystem(self.quota_type, fs_type=self.fs_type) as tfs, udm_test.UCSTestUDM() as udm:
             self._activate_quota(tfs.loop_dev)
             print("Create Shares")
@@ -167,7 +170,7 @@ class QuotaCheck:
             self.touch_file(tfs.mount_point)
             self._check_quota_settings(tfs.loop_dev, expected_result)
 
-    def test_two_shares_on_one_mount_only_one_policy(self):
+    def test_two_shares_on_one_mount_only_one_policy(self) -> None:
         with TempFilesystem(self.quota_type, fs_type=self.fs_type) as tfs, udm_test.UCSTestUDM() as udm:
             quota_policy = {
                 "inodeSoftLimit": '10',
@@ -205,7 +208,7 @@ class QuotaCheck:
             self.touch_file(tfs.mount_point)
             self._check_quota_settings(tfs.loop_dev)
 
-    def touch_file(self, mountpoint):
+    def touch_file(self, mountpoint: str) -> None:
         print(f"Write file on filesystem as user: {self.username}")
         subprocess.check_call([
             "sudo",
@@ -230,13 +233,13 @@ class QuotaCheck:
 
 class TempFilesystem:
 
-    def __init__(self, quota_type, fs_type='ext4'):
+    def __init__(self, quota_type: str, fs_type: str = 'ext4') -> None:
         self.filename = "/tmp/30_quota_pam.fs"
         self.mount_point = "/mnt/30_quota_pam"
         self.quota_type = quota_type
         self.fs_type = fs_type
 
-    def _create_filesystem(self):
+    def _create_filesystem(self) -> None:
         print("Create file")
         subprocess.check_call([
             "dd",
@@ -253,7 +256,7 @@ class TempFilesystem:
             self.filename,
         ])
 
-    def _mount_filesystem(self):
+    def _mount_filesystem(self) -> None:
         os.mkdir(self.mount_point)
         print("Setup loop device")
         self.loop_dev = subprocess.check_output(["losetup", "--find"]).decode('UTF-8').strip("\n")
@@ -273,7 +276,7 @@ class TempFilesystem:
             self.mount_point,
         ])
 
-    def _umount_filesystem(self):
+    def _umount_filesystem(self) -> None:
         print("Unmount file")
         subprocess.check_call([
             "umount",
@@ -289,12 +292,12 @@ class TempFilesystem:
         etc_fstab.remove(entry)
         etc_fstab.save()
 
-    def __enter__(self):
+    def __enter__(self) -> TempFilesystem:
         self._create_filesystem()
         self._mount_filesystem()
         return self
 
-    def __exit__(self, *args):
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         self._umount_filesystem()
         os.rmdir(self.mount_point)
         os.remove(self.filename)

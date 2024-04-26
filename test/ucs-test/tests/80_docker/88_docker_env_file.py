@@ -11,7 +11,7 @@ import pytest
 
 from univention.config_registry import ConfigRegistry
 
-from dockertest import App
+from dockertest import App, Appcenter
 
 
 DOCKER_COMPOSE = '''
@@ -36,7 +36,7 @@ TEST_HOSTNAME=@%@hostname@%@
 
 
 @pytest.mark.exposure('dangerous')
-def test_docker_env_file(appcenter, app_name):
+def test_docker_env_file(appcenter: Appcenter, app_name: str) -> None:
     setup = '#!/bin/sh'
     store_data = '#!/bin/sh'
 

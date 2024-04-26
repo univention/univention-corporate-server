@@ -31,13 +31,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from univention.appcenter.app_cache import Apps
+
+
+if TYPE_CHECKING:
+    from univention.appcenter.app import App
 
 
 APPCENTER_FILE = "/var/cache/appcenter-uninstalled.txt"
 
 
-def get_requested_apps():
+def get_requested_apps() -> list[App]:
     ret = []
     try:
         with open(APPCENTER_FILE) as f:

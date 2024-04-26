@@ -6,7 +6,10 @@
 ##  - domaincontroller_backup
 ## exposure: dangerous
 
+from __future__ import annotations
+
 import sys
+from typing import Any
 
 import pytest
 
@@ -19,7 +22,7 @@ from umc import UDMModule
 
 class TestUMCNetworkFunctionality(UDMModule):
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Test Class constructor"""
         super().__init__()
         self.ldap_base = ''
@@ -27,11 +30,16 @@ class TestUMCNetworkFunctionality(UDMModule):
         self.test_network_dn = ''
         self.test_network_name = ''
         self.test_network_subnet = ''
-        self.test_ip_range = []
+        self.test_ip_range: list[str] = []  # tuple[str, str]
         self.test_computer_name = ''
 
-    def create_network(self, netmask="24", dns_forward="", dns_reverse="",
-                       dhcp_entry=""):
+    def create_network(
+        self,
+        netmask: str = "24",
+        dns_forward: str = "",
+        dns_reverse: str = "",
+        dhcp_entry: str = "",
+    ) -> None:
         """
         Makes a 'udm/add' request to create a network with a
         number of given options
@@ -53,7 +61,7 @@ class TestUMCNetworkFunctionality(UDMModule):
                        % (self.test_network_name, request_result, options))
         self.test_network_dn = request_result[0].get('$dn$')
 
-    def query_dhcp_services(self):
+    def query_dhcp_services(self) -> list[dict[str, Any]]:
         """Makes a 'udm/query' request to get the DHCP services available"""
         options = {"superordinate": "None",
                    "objectType": "dhcp/dhcp",
@@ -62,7 +70,7 @@ class TestUMCNetworkFunctionality(UDMModule):
                    "hidden": True}
         return self.request('udm/query', options, "dhcp/dhcp")
 
-    def get_network_config(self, increase_counter=True):
+    def get_network_config(self, increase_counter: bool = True) -> dict[str, Any]:
         """
         Makes a 'udm/network' request to get the network configuration
         with the next free IP address
@@ -71,12 +79,12 @@ class TestUMCNetworkFunctionality(UDMModule):
                    "increaseCounter": increase_counter}
         return self.request("udm/network", options)
 
-    def get_network_choices(self, syntax):
+    def get_network_choices(self, syntax) -> list[dict[str, Any]]:
         """Returns result of 'udm/syntax/choices' for a given 'syntax' request."""
         options = {"syntax": syntax}
         return self.request("udm/syntax/choices", options, "computers/computer")
 
-    def check_network_in_choices(self):
+    def check_network_in_choices(self) -> bool:
         """
         Makes a 'udm/syntax/choices' request with 'network' syntax options
         to get the networks available and returns True when network with
@@ -90,7 +98,7 @@ class TestUMCNetworkFunctionality(UDMModule):
             utils.fail("KeyError exception while parsing the network "
                        "'%s' for 'id' field: '%s'" % (network, exc))
 
-    def check_dns_dhcp_in_choices(self, syntax, name):
+    def check_dns_dhcp_in_choices(self, syntax: str, name: str) -> bool:
         """
         Makes a 'udm/syntax/chioces' request with given 'syntax'
         options to get the dns or dhcp available and returns True when
@@ -104,7 +112,7 @@ class TestUMCNetworkFunctionality(UDMModule):
             utils.fail("KeyError exception while parsing the choice "
                        "'%s' for 'id' field: '%s'" % (choice, exc))
 
-    def check_network_ip_modification(self):
+    def check_network_ip_modification(self) -> bool:
         """
         Checks if the 'self.test_network_dn' has the 'self.test_ip_ranage',
         returns True in case it has.
@@ -117,7 +125,7 @@ class TestUMCNetworkFunctionality(UDMModule):
             utils.fail("KeyError exception while parsing the network for "
                        "'ipRange' field: '%s'" % exc)
 
-    def modify_network_ip_range(self):
+    def modify_network_ip_range(self) -> None:
         """Makes a 'udm/put' request to modify network ipRange"""
         options = [{"object": {"dnsEntryZoneReverse": "",
                                "dhcpEntryZone": "",
@@ -127,7 +135,7 @@ class TestUMCNetworkFunctionality(UDMModule):
                     "options": None}]
         self.modify_object(options, "networks/network")
 
-    def check_syntax_validation(self, netmask, ip_range, network):
+    def check_syntax_validation(self, netmask: str, ip_range: list[str], network: str) -> None:
         """
         Makes a 'udm/validate' request with non-valid values and
         checks if they were reported as 'valid'==false
@@ -150,7 +158,7 @@ class TestUMCNetworkFunctionality(UDMModule):
                                "reported property '%s' as valid, when "
                                "should not" % (options, prop))
 
-    def check_networks_query_structure(self):
+    def check_networks_query_structure(self) -> None:
         """
         Makes a network query request and checks it for all
         default fields presence
@@ -175,7 +183,7 @@ class TestUMCNetworkFunctionality(UDMModule):
                 utils.fail("The field 'path' was not found in the "
                            "networks query, '%s'" % network)
 
-    def query_networks(self):
+    def query_networks(self) -> list[dict[str, Any]]:
         """Makes a 'udm/query' request for networks and returns result"""
         options = {"container": "all",
                    "objectType": "networks/network",
@@ -184,7 +192,7 @@ class TestUMCNetworkFunctionality(UDMModule):
                    "hidden": True}
         return self.request('udm/query', options, 'networks/network')
 
-    def run_dns_dhcp_choices_checks(self):
+    def run_dns_dhcp_choices_checks(self) -> None:
         """
         Checks if the correct options are reported for 'DNS_ForwardZone'
         and 'dhcpService' configurations
@@ -211,7 +219,7 @@ class TestUMCNetworkFunctionality(UDMModule):
             print("\nCheck skipped, since no DHCP services in the "
                   "domain were found...")
 
-    def run_address_reservation_checks(self):
+    def run_address_reservation_checks(self) -> None:
         """
         Checks if ip addresses ending with .0, .1 and .254 are not
         returned as an option for computer network configuration
@@ -250,7 +258,7 @@ class TestUMCNetworkFunctionality(UDMModule):
                        "'%s' messages, possibly another error with the "
                        "status code 400 " % (network_config.message, error_messages))
 
-    def run_checks_with_computers(self):
+    def run_checks_with_computers(self) -> None:
         """
         Creates a computer in a test network and after tries to create
         one more computer in the same network where no more free ip
@@ -295,7 +303,7 @@ class TestUMCNetworkFunctionality(UDMModule):
                        % ((self.test_computer_name + '_2'),
                           self.test_network_name))
 
-    def run_modification_checks(self):
+    def run_modification_checks(self) -> None:
         """
         Creates a network for the test, modifies it and
         checks if the modification was done correctly
@@ -318,7 +326,7 @@ class TestUMCNetworkFunctionality(UDMModule):
                        "ip range '%s' after the modification was done"
                        % (self.test_network_name, self.test_ip_range))
 
-    def run_basic_checks(self):
+    def run_basic_checks(self) -> None:
         """Checks the network query structure and that syntax validation works"""
         print("Querying the networks and checking the response structure")
         self.check_networks_query_structure()
@@ -332,7 +340,7 @@ class TestUMCNetworkFunctionality(UDMModule):
                                      ["10.20.256.2", "10.20.25.2"],
                                      "10.20.25.")
 
-    def main(self):
+    def main(self) -> None:
         """A method to test the UMC network functionality"""
         self.create_connection_authenticate()
         self.ldap_base = self.ucr.get('ldap/base')

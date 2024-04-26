@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import subprocess
 import time
-from typing import Callable, Iterator, Type
+from typing import Callable, Iterator
 
 import pytest
 
@@ -92,7 +92,7 @@ def selenium() -> Iterator[_sel.UMCSeleniumTest]:
 
 
 @pytest.fixture(scope='session')
-def Client() -> Type[umc.Client]:
+def Client() -> type[umc.Client]:
     """Session scoped client factory to access UMC."""
     return umc.Client
 

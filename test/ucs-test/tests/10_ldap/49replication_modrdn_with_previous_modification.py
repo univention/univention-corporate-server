@@ -42,9 +42,7 @@ def create_listener_module_for_computer(computer_name):
     filename = '/usr/lib/univention-directory-listener/system/%s-test.py' % (computer_name)
     fd = open(filename, 'w')
     fd.write('''
-from __future__ import absolute_import
-
-from typing import Dict, List
+from __future__ import absolute_import, annotations
 
 import univention.debug as ud
 
@@ -53,7 +51,7 @@ name="%(computer_name)s-test"
 description="%(computer_name)s"
 filter="(cn=%(computer_name)s)"
 
-def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str) -> None:
+def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]], command: str) -> None:
     if command == 'r':
         return
     ud.debug(ud.LISTENER, ud.PROCESS, "ucs-test debug: dn: %%s" %% dn)

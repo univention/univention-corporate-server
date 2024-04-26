@@ -9,11 +9,11 @@ import pytest
 
 from univention.testing.utils import get_ldap_connection
 
-from dockertest import get_app_name, get_app_version, tiny_app
+from dockertest import Appcenter, get_app_name, get_app_version, tiny_app
 
 
 @pytest.mark.exposure('dangerous')
-def test_app_install_with_required_app(appcenter):
+def test_app_install_with_required_app(appcenter: Appcenter) -> None:
     app_name = get_app_name()
     app_version = get_app_version()
     app2_name = get_app_name()

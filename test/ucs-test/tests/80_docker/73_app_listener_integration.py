@@ -16,7 +16,7 @@ from typing import Any
 
 import pytest
 
-from dockertest import App
+from dockertest import App, Appcenter
 
 
 APP_NAME = 'my-listener-test-app'
@@ -122,7 +122,7 @@ def systemd_service_enabled(service: str) -> bool:
 
 
 @pytest.mark.exposure('dangerous')
-def test_app_listener_integration(appcenter, udm):
+def test_app_listener_integration(appcenter: Appcenter, udm) -> None:
     name = APP_NAME
     systemd_service = f'univention-appcenter-listener-converter@{name}.service'
 

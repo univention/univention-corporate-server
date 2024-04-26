@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import email
 import time
-from typing import Dict
 from urllib.parse import parse_qs, urlparse
 
 import pytest
@@ -59,7 +58,7 @@ def get_registration_info(ucr):
     class local:
         dns = []
 
-    def _get_registration_info() -> Dict:
+    def _get_registration_info() -> dict[str, object]:
         container_dn = ucr.get('umc/self-service/account-registration/usercontainer')
         username = uts.random_name()
         attributes = {

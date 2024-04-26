@@ -49,7 +49,7 @@ class TestUMCDomainJoinModule(JoinModule):
         except OSError as exc:
             utils.fail("Failed to remove a symbolic link to the test join script, or failed to check if '%s' exists. Exception: '%s'" % (path, exc))
 
-    def get_join_script_state(self, script_name):
+    def get_join_script_state(self, script_name: str):
         """
         Makes a query request for all join scripts and returns the
         value of the 'configured' field for the given 'script_name'

@@ -13,10 +13,10 @@ import pytest
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.utils import fail
 
-from dockertest import tiny_app
+from dockertest import Appcenter, tiny_app
 
 
-def check_docker_arg_against_ucrv(container_id, ucrv):
+def check_docker_arg_against_ucrv(container_id: str, ucrv: str) -> None:
     docker_inspect = subprocess.check_output(["docker", "inspect", f"{container_id}"], close_fds=True)
     args = json.loads(docker_inspect)[0]['Args']
     first_arg = args[0].split("=", 1)[1]
@@ -25,7 +25,7 @@ def check_docker_arg_against_ucrv(container_id, ucrv):
 
 
 @pytest.mark.exposure('dangerous')
-def test_ucr_template_mechanism_for_docker_script_init(appcenter, app_name, app_version):
+def test_ucr_template_mechanism_for_docker_script_init(appcenter: Appcenter, app_name: str, app_version: str) -> None:
     with UCSTestConfigRegistry() as ucr:
         ucr.load()
         app = tiny_app(app_name, app_version)

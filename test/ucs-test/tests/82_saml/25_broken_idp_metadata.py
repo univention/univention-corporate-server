@@ -5,16 +5,19 @@
 ## join: true
 ## exposure: dangerous
 
+from __future__ import annotations
+
 import os
 import subprocess
 import time
+from types import TracebackType
 
 import pytest
 
 import samltest
 
 
-def restart_umc():
+def restart_umc() -> None:
     subprocess.check_call(["deb-systemd-invoke", "restart", "univention-management-console-server"])
     time.sleep(3)  # Wait for the umc to be ready to answer requests.
 
@@ -23,13 +26,13 @@ class move_idp_metadata:
 
     metadata_dir = "/usr/share/univention-management-console/saml/idp/"
 
-    def __enter__(self):
+    def __enter__(self) -> None:
         for metadata_file in os.listdir(self.metadata_dir):
             metadata_file_fullpath = self.metadata_dir + metadata_file
             os.rename(metadata_file_fullpath, metadata_file_fullpath + '.backup')
         restart_umc()
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         for metadata_file in os.listdir(self.metadata_dir):
             metadata_file_fullpath = self.metadata_dir + metadata_file
             os.rename(metadata_file_fullpath, metadata_file_fullpath.replace('.backup', ''))
@@ -42,7 +45,7 @@ def cleanup():
     restart_umc()
 
 
-def test_broken_idp_metadata(saml_session):
+def test_broken_idp_metadata(saml_session) -> None:
     with move_idp_metadata():
         with pytest.raises(samltest.SamlError) as exc:
             saml_session.login_with_new_session_at_IdP()

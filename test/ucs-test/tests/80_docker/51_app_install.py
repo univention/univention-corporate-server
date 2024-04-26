@@ -9,11 +9,11 @@ import pytest
 
 from univention.testing.utils import get_ldap_connection
 
-from dockertest import tiny_app
+from dockertest import Appcenter, tiny_app
 
 
 @pytest.mark.exposure('dangerous')
-def test_app_install(appcenter, app_name, app_version):
+def test_app_install(appcenter: Appcenter, app_name: str, app_version: str) -> None:
     app = tiny_app(app_name, app_version)
     try:
         app.add_to_local_appcenter()

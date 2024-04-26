@@ -279,14 +279,14 @@ def modify_password_ad(username, password):
     adconnector.wait_for_sync()
 
 
-def udm_modify(udm, **kwargs):
+def udm_modify(udm, **kwargs) -> None:
     udm._cleanup.setdefault('users/user', []).append(kwargs['dn'])
     udm.modify_object(modulename='users/user', **kwargs)
     adconnector.wait_for_sync()
 
 
 @pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
-def test_initial_AD_pwd_is_synced():
+def test_initial_AD_pwd_is_synced() -> None:
     with connector_setup("sync"), UCSTestUDM() as udm:
         (ad_user_dn, udm_user_dn) = create_ad_user(tstrings.random_username().encode('UTF-8'), "Univention.2-")
 
@@ -305,7 +305,7 @@ def test_initial_AD_pwd_is_synced():
 
 
 @pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
-def test_initial_UCS_pwd_is_synced():
+def test_initial_UCS_pwd_is_synced() -> None:
     with connector_setup("sync"), UCSTestUDM() as udm:
         udm_user = NormalUser()
         (udm_user_dn, ad_user_dn) = create_udm_user(udm, AD, udm_user, adconnector.wait_for_sync)
@@ -324,7 +324,7 @@ def test_initial_UCS_pwd_is_synced():
 
 
 @pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
-def test_create_user_in_AD_set_same_pwd_in_UDM():
+def test_create_user_in_AD_set_same_pwd_in_UDM() -> None:
     with connector_setup("sync"), UCSTestUDM() as udm:
         (ad_user_dn, udm_user_dn) = create_ad_user(tstrings.random_username().encode('UTF-8'), "Univention.2-")
 
@@ -347,7 +347,7 @@ def test_create_user_in_AD_set_same_pwd_in_UDM():
 
 
 @pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
-def test_set_already_used_password_set_in_AD():
+def test_set_already_used_password_set_in_AD() -> None:
     with connector_setup("sync"), UCSTestUDM() as udm:
         udm_user = NormalUser()
         (udm_user_dn, ad_user_dn) = create_udm_user(udm, AD, udm_user, adconnector.wait_for_sync)
