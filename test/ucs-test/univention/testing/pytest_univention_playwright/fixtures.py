@@ -35,7 +35,7 @@ from pathlib import Path
 from typing import Dict, Generator, Iterator
 
 import pytest
-from playwright.sync_api import BrowserContext, BrowserType, Page, expect
+from playwright.sync_api import Browser, BrowserContext, BrowserType, Page, expect
 
 from univention.config_registry import handler_set, handler_unset
 from univention.testing import udm as _udm
@@ -195,7 +195,7 @@ def umc_browser_test(
 
     yield tester
 
-    teardown_umc_browser_test(request, ucr, page, context)
+    teardown_umc_browser_test(request, ucr, page, context, browser)
 
 
 def teardown_umc_browser_test(
@@ -203,6 +203,7 @@ def teardown_umc_browser_test(
     ucr,
     page: Page,
     context: BrowserContext,
+    browser: Browser,
 ):
     try:
         report = request.node.stash[phase_report_key]
@@ -220,6 +221,8 @@ def teardown_umc_browser_test(
             context.tracing.stop()
     finally:
         page.close()
+        context.close()
+        browser.close()
 
 
 @pytest.fixture()

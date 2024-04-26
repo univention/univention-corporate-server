@@ -1,3 +1,9 @@
+ucs-test (10.0.21-34) unstable; urgency=medium
+
+  * Issue #2186: close brower after test
+
+ -- Felix Botner <botner@univention.de>  Fri, 26 Apr 2024 15:19:36 +0200
+
 ucs-test (10.0.21-33) unstable; urgency=low
 
   * Only run test (on OpenStack) if locale is available
