@@ -21,7 +21,7 @@ if __name__ == '__main__':
     print(f'List of Ucs-school-slaves: {schoolslaves_cn}')
 
     for slave in schoolslaves_cn:
-        p2 = Popen(['univention-s4search', '--cross-ncs', filter_format('(&(cn=%s)(userAccountControl:1.2.840.113556.1.4.803:=4096))', (slave,))], stdout=PIPE, stderr=PIPE, shell=False)
+        p2 = Popen(['univention-s4search', '--cross-ncs', filter_format('(&(cn=%s)(userAccountControl:1.2.840.113556.1.4.803:=4096))', (slave,))], stdout=PIPE, stderr=PIPE)
         (stdout, stderr) = p2.communicate()
         faulty_schools = []
         for line in stdout.strip().splitlines():

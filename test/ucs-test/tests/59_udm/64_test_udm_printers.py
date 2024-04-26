@@ -154,13 +154,9 @@ def test_create_printer_and_check_printing_works(ucr, udm):
     delay = 15
     print('*** Wait %s seconds for listener postrun' % delay)
     time.sleep(delay)
-    p = subprocess.Popen(['lpq', '-P', properties['name']], close_fds=True)
-    p.wait()
-    assert not p.returncode, "CUPS printer {} not created after {} seconds".format(properties['name'], delay)
+    subprocess.check_call(['lpq', '-P', properties['name']])
 
-    p = subprocess.Popen(['su', account.username, '-c', 'lpr -P %s /etc/hosts' % properties['name']], close_fds=True)
-    p.wait()
-    assert not p.returncode, "Printing to CUPS printer {} as {} failed".format(properties['name'], account.username)
+    subprocess.check_call(['su', account.username, '-c', 'lpr -P %s /etc/hosts' % properties['name']])
 
     s4_dc_installed = utils.package_installed("univention-samba4")
     s3_file_and_print_server_installed = utils.package_installed("univention-samba")
@@ -170,20 +166,16 @@ def test_create_printer_and_check_printing_works(ucr, udm):
         time.sleep(delay)
         cmd = ['smbclient', '//localhost/%s' % properties['sambaName'], '-U', f'{account.username}%{account.bindpw}', '-c', 'print /etc/hosts']
         print('\nRunning: %s' % ' '.join(cmd))
-        p = subprocess.Popen(cmd, close_fds=True)
-        p.wait()
-        if p.returncode:
+        if subprocess.call(cmd):
             share_definition = '/etc/samba/printers.conf.d/%s' % properties['sambaName']
             with open(share_definition) as f:
                 print('### Samba share file %s :' % share_definition)
                 print(f.read())
             print('### testpam for that smb.conf section:')
-            p = subprocess.Popen(['testparm', '-s', '--section-name', properties['sambaName']], close_fds=True)
-            p.wait()
+            subprocess.call(['testparm', '-s', '--section-name', properties['sambaName']])
             raise AssertionError('Samba printer share {} not accessible'.format(properties['sambaName']))
 
-    p = subprocess.Popen(['lprm', '-P', properties['name'], '-'], close_fds=True)
-    p.wait()
+    subprocess.call(['lprm', '-P', properties['name'], '-'])
 
 
 @pytest.mark.tags('udm')
@@ -316,7 +308,7 @@ def get_testparm_var(smbconf, sectionname, varname):
         "--section-name=%s" % sectionname,
         "--parameter-name=%s" % varname,
         smbconf]
-    p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+    p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (out, _err) = p1.communicate()
     return out.strip().decode('UTF-8', 'replace')
 
@@ -359,7 +351,7 @@ def test_force_printername(ucr, udm, ucr_value):
         univention.config_registry.handler_set([keyval])
 
     if ucr_value != previous_value:
-        subprocess.call(["systemctl", "restart", "univention-directory-listener"], close_fds=True)
+        subprocess.call(["systemctl", "restart", "univention-directory-listener"])
 
     ucr.load()
     expected_value = ucr.is_true(ucr_var, True)  # This is the behavior of cups-printers.py
@@ -398,12 +390,12 @@ def test_force_printername(ucr, udm, ucr_value):
         keyval = "%s=%s" % (ucr_var, "no")
         univention.config_registry.handler_set([keyval])
 
-    subprocess.call(["systemctl", "restart", "univention-directory-listener"], close_fds=True)
+    subprocess.call(["systemctl", "restart", "univention-directory-listener"])
 
     rename_share_and_check(udm, printer, expected_value)
 
     # restart listener with original UCR values:
-    subprocess.call(["systemctl", "restart", "univention-directory-listener"], close_fds=True)
+    subprocess.call(["systemctl", "restart", "univention-directory-listener"])
 
 
 def get_uirs():

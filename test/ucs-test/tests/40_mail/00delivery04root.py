@@ -29,7 +29,7 @@ from essential.mail import mail_delivered, send_mail
 def reload_postfix():
     print('** Reloading aliases and postfix')
     for cmd in (['newaliases'], ['postfix', 'reload']):
-        subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
+        subprocess.call(cmd, stderr=subprocess.DEVNULL)
     time.sleep(5)
 
 

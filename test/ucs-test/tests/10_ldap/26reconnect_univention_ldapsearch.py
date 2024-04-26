@@ -11,7 +11,7 @@
 
 from multiprocessing import Process
 from queue import Empty, Full
-from subprocess import PIPE, Popen
+from subprocess import PIPE, Popen, call
 from time import sleep
 
 import psutil
@@ -40,7 +40,7 @@ def set_ucr_retry_count(count):
 
 def univention_ldapsearch(fail_on_success):
     """A wrapper for 'univention-ldapsearch'"""
-    proc = Popen(('univention-ldapsearch', '-s', 'base', 'dn', '-LLL'), stdout=PIPE, stderr=PIPE, shell=False)
+    proc = Popen(('univention-ldapsearch', '-s', 'base', 'dn', '-LLL'), stdout=PIPE, stderr=PIPE)
 
     stdout, stderr = proc.communicate()
     stderr = stderr.decode('UTF-8')
@@ -87,7 +87,7 @@ def stop_slapd():
     Stops the slapd and waits for it to be stopped.
     Looks for slapd in processes and waits if found extra 15 seconds.
     """
-    ret_code = Popen(('invoke-rc.d', 'slapd', 'stop')).wait()
+    ret_code = call(('invoke-rc.d', 'slapd', 'stop'))
     if ret_code != 0:
         fail("Expecting the return code to be 0, while it is: %s" % ret_code)
 
@@ -107,7 +107,7 @@ def stop_slapd():
 
 def start_slapd():
     """Starts the slapd and wait for it to be started."""
-    ret_code = Popen(('invoke-rc.d', 'slapd', 'start')).wait()
+    ret_code = call(('invoke-rc.d', 'slapd', 'start'))
     if ret_code not in (0, 2):
         fail("Expecting the return code to be 0 or 2, while it is: %s"
              % ret_code)
@@ -177,9 +177,9 @@ def main():
     finally:
         restore_retry_count()
         # try to restore slapd systemd status
-        Popen(('systemctl', 'daemon-reload')).wait()
-        Popen(('service', 'slapd', 'stop')).wait()
-        Popen(('service', 'slapd', 'start')).wait()
+        call(('systemctl', 'daemon-reload'))
+        call(('service', 'slapd', 'stop'))
+        call(('service', 'slapd', 'start'))
         sleep(5)
 
 

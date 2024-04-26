@@ -170,7 +170,7 @@ def force_drs_replication(source_dc: str | None = None, destination_dc: str | No
 def _ldap_replication_complete(verbose: bool = True) -> bool:
     kwargs: Dict[str, Any] = {}
     if not verbose:
-        kwargs = {'stdout': open('/dev/null', 'w'), 'stderr': subprocess.STDOUT}
+        kwargs = {'stdout': subprocess.DEVNULL, 'stderr': subprocess.STDOUT}
     return subprocess.call('/usr/lib/nagios/plugins/check_univention_replication', **kwargs) == 0
 
 

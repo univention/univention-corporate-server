@@ -111,7 +111,7 @@ def match(re_test_object, dns_name, typ, param=None, should_exist=True):
     # Adding a DNS zone causes bind restart in postrun, so we may have to
     # retry a couple of times
     for attempt in range(MATCH_ATTEMPTS):
-        dig_subprocess = subprocess.Popen(dig_cmd, shell=False, stdout=subprocess.PIPE).communicate()
+        dig_subprocess = subprocess.Popen(dig_cmd, stdout=subprocess.PIPE).communicate()
         dig_answer = dig_subprocess[0].decode('UTF-8', 'replace').splitlines()
 
         if not re_test_object and dig_answer:

@@ -14,8 +14,8 @@ from univention.testing import utils
 
 
 def main():
-    subprocess.call(['service', 'postfix', 'restart'], close_fds=True)
-    subprocess.call(['service', 'univention-self-service-invitation', 'restart'], close_fds=True)
+    subprocess.call(['service', 'postfix', 'restart'])
+    subprocess.call(['service', 'univention-self-service-invitation', 'restart'])
     time.sleep(3)
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(pwdChangeNextLogin='1', PasswordRecoveryEmail='root@localhost')[1]

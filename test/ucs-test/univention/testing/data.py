@@ -137,14 +137,13 @@ class TestEnvironment:
 
     def _load_join(self) -> None:
         """Load join status."""
-        with open(os.path.devnull, 'w+') as devnull:
-            try:
-                ret = subprocess.call(
-                    ('/usr/sbin/univention-check-join-status',),
-                    stdin=devnull, stdout=devnull, stderr=devnull)
-                self.joined = ret == 0
-            except OSError:
-                self.joined = False
+        try:
+            ret = subprocess.call(
+                ('/usr/sbin/univention-check-join-status',),
+                stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            self.joined = ret == 0
+        except OSError:
+            self.joined = False
         TestEnvironment.logger.debug('Join=%r' % self.joined)
 
     def _load_apt(self) -> None:

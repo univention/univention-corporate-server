@@ -115,7 +115,7 @@ class Testclass_GPO_Security_Descriptor:
 
     def restart_s4_connector(self):
         cmd = ("/etc/init.d/univention-s4-connector", "restart")
-        p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+        p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         stdout, _stderr = p1.communicate()
         if p1.returncode != 0:
             utils.fail("Error restarting S4 Connector: %s\nCommand was: %s" % (stdout.decode('UTF-8', 'replace'), cmd))
@@ -221,7 +221,7 @@ class Testclass_GPO_Security_Descriptor:
                 "--username", self.adminaccount.username,
                 "--password", self.adminaccount.bindpw)
 
-            p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+            p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             stdout, _stderr = p1.communicate()
             if p1.returncode != 0:
                 if critical:
@@ -239,7 +239,7 @@ class Testclass_GPO_Security_Descriptor:
             "--username", self.adminaccount.username,
             "--password", self.adminaccount.bindpw)
 
-        p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+        p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         stdout, _stderr = p1.communicate()
         if p1.returncode != 0:
             utils.fail("ERROR: %s: creating GPO using samba-tool: %s\nCommand was: %s" % (logtag, stdout.decode('UTF-8', 'replace'), cmd))
@@ -253,7 +253,7 @@ class Testclass_GPO_Security_Descriptor:
 
     def modify_udm_object(self, modulename, **kwargs):
         cmd = self.udm._build_udm_cmdline(modulename, 'modify', kwargs)
-        child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+        child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         (stdout, stderr) = child.communicate()
 
         if child.returncode:

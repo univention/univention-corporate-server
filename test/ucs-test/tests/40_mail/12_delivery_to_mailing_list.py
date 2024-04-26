@@ -20,7 +20,7 @@ def main():
         with ucr_test.UCSTestConfigRegistry() as ucr:
             domain = ucr.get('domainname')
             handler_set(['mail/dovecot/mailbox/delete=yes'])
-            subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=open('/dev/null', 'w'))
+            subprocess.call(['/etc/init.d/dovecot', 'restart'], stderr=subprocess.DEVNULL)
             host = '%s.%s' % (ucr.get('hostname'), domain)
             password = 'univention'
             mails = []

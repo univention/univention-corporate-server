@@ -90,7 +90,7 @@ def capture_mails(timeout=5):
             self.smtp.close()
             self.thread.join()
 
-    subprocess.call(['invoke-rc.d', 'postfix', 'stop'], close_fds=True)
+    subprocess.call(['invoke-rc.d', 'postfix', 'stop'])
     time.sleep(3)
     try:
         server = MailServer()
@@ -104,4 +104,4 @@ def capture_mails(timeout=5):
             server.stop()
     finally:
         print('(re)starting postfix')
-        subprocess.call(['invoke-rc.d', 'postfix', 'start'], close_fds=True)
+        subprocess.call(['invoke-rc.d', 'postfix', 'start'])

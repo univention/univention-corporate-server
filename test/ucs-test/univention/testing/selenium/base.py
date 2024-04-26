@@ -145,7 +145,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
             self._ucr.__exit__(exc_type, exc_value, traceback)
 
     def restart_umc(self) -> None:
-        subprocess.call(['deb-systemd-invoke', 'restart', 'univention-management-console-server'], close_fds=True)
+        subprocess.call(['deb-systemd-invoke', 'restart', 'univention-management-console-server'])
 
     def set_viewport_size(self, width: int, height: int) -> None:
         self.driver.set_window_size(width, height)

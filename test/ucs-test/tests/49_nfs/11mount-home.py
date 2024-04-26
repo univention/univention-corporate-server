@@ -7,7 +7,7 @@
 ##   - univention-home-mounter
 
 from os.path import ismount, join
-from subprocess import PIPE, Popen
+from subprocess import PIPE, Popen, call
 from time import sleep
 
 from univention.testing.strings import random_name, random_username
@@ -66,7 +66,7 @@ if __name__ == '__main__':
         ret = (p1.wait(), p2.wait())
         print(stdout, ret)
 
-        Popen(('umount', '-l', '-f', user_home)).wait()
+        call(('umount', '-l', '-f', user_home))
 
         if any(ret) or share_path not in stdout:
             fail('Failed: %r %r' % (stdout, ret))

@@ -351,7 +351,7 @@ class Test_DNSResolve:
         udm.create_object('dns/ns_record', superordinate=forward_zone, **record_properties)
         utils.wait_for_replication_and_postrun()
         zone_fqdn = f'{zonename}.{partentzone}'
-        p1 = subprocess.Popen(['dig', '+nocmd', '+noall', '+answer', '@localhost', zone_fqdn, 'ANY'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+        p1 = subprocess.Popen(['dig', '+nocmd', '+noall', '+answer', '@localhost', zone_fqdn, 'ANY'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         stdout, _stderr = p1.communicate()
         stdout = stdout.decode('UTF-8', 'replace')
         assert p1.returncode == 0, "DNS dig query failed"
