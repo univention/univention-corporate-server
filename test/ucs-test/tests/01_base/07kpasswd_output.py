@@ -21,7 +21,6 @@
 
 import os
 import random
-import subprocess
 import sys
 import tempfile
 
@@ -33,22 +32,6 @@ import univention.testing.udm as udm_test
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
-
-
-def get_unique_username():
-    """returns a random username that is not used."""
-    while True:
-        randomname = "T%x" % (random.getrandbits(44),)
-        # this equivalent to
-        # univention-directory-manager users/user list | sed -rne "s_^\s+username:\s+(.*)$_\1_p"
-        udm = subprocess.Popen(["univention-directory-manager", "users/user", "list"], stdout=subprocess.PIPE)
-        sed = subprocess.Popen(["sed", "-rne", r"s_^\s+username:\s+(.*)$_\1_p"], stdin=udm.stdout, stdout=subprocess.PIPE)
-        stdout, _stderr = sed.communicate()
-        for username in stdout:
-            if randomname == username.strip():  # collision
-                break  # continue while
-        else:  # "for" did not "break"
-            return randomname  # randomname is unique
 
 
 def create_ssh_session(username, password):
