@@ -183,7 +183,7 @@ In addition to them the following tags are used commonly:
 - `apptest`: execute them only for testing new Apps, but otherwise skip them due to their long run time.
 - `basic`: check that basic functions work on all system roles.
 - `univention`: tests which require special pre-requisites, for exmaple *well known password* `univention` for admin user.
-- `import500`, `import30000`, `import65000`, `performance`: performance tests for importing ½/30/65k users.
+- `big_environmen`, `import500`, `import30000`, `import65000`, `performance`: performance tests for importing ½/30/65k users.
 - `rename_default_account`: modifies standard accounts.
 - `replication`: sub-set of tests for replication.
 - `ldapextensions`: sub-set of tests for LDAP extensions.

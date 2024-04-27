@@ -1,12 +1,17 @@
 #!/usr/share/ucs-test/runner pytest-3
 ## desc: Test udm performance in a big environment
-## tags: [big_environment]
+## tags:
+##   - big_environment
+##   - performance
 ## exposure: dangerous
 ## packages:
 ##   - univention-directory-manager-tools
 
 import time
 from random import sample
+from typing import Callable
+
+import pytest
 
 import univention.admin
 from univention.admin.rest.client import UDM as UDM_REST
@@ -30,8 +35,8 @@ udm_rest_users = udm_rest.get('users/user')
 
 
 def open_users(users: int = 100, roles: bool = False) -> None:
-    users = [f'uid=testuser{x},cn=users,{ucr["ldap/base"]}' for x in sample(range(1, USERS), users)]
-    for dn in users:
+    for x in sample(range(1, USERS), users):
+        dn = f'uid=testuser{x},cn=users,{ucr["ldap/base"]}'
         user = users_mod.get(dn)
         if roles:
             user._orig_udm_object.open_guardian()
@@ -41,11 +46,9 @@ def open_users(users: int = 100, roles: bool = False) -> None:
 
 
 def open_users_rest(users: int = 100, roles: bool = False) -> None:
-    users = [f'uid=testuser{x}' for x in sample(range(1, USERS), users)]
-    properties = ['*']
-    if roles:
-        properties = ['*', 'guardianInheritedRoles']
-    for s_filter in users:
+    properties = ['*', 'guardianInheritedRoles'] if roles else ['*']
+    for x in sample(range(1, USERS), users):
+        s_filter = f'uid=testuser{x}'
         # TODO use get(dn)?
         res = udm_rest_users.search(s_filter, opened=True, properties=properties)
         res = next(iter(res))
@@ -55,65 +58,49 @@ def open_users_rest(users: int = 100, roles: bool = False) -> None:
             assert len(res.properties.get('guardianInheritedRoles', [])) == 0
 
 
-def run_test(func, *args, **kwargs):
-    t_total = 0
+@pytest.fixture(scope='session')
+def open_once():
+    # TODO some kind of initialization, makes the first request after open_* faster
+    open_users(users=1)
+    open_users_rest(users=1)
+
+
+def run_test(func: Callable[[int, bool], None], *args, **kwargs) -> float:
+    t_total = 0.0
     reps = 3
     for i in range(reps):
-        # TODO some kind of initialization, makes the first request after open_* faster
-        open_users(users=1)
-        open_users_rest(users=1)
         univention.admin.guardian_roles.get_group_role.cache_clear()
-        t0 = time.time()
+        t0 = time.monotonic()
         func(*args, **kwargs)
-        t_total += time.time() - t0
+        t_total += time.monotonic() - t0
     d = t_total / reps
     print(f'{func.__name__} - {kwargs}: {d}')
     return d
 
 
-def test_get_1_user():
-    users = 1
-    assert run_test(open_users, users=users, roles=True) < 0.6
-    assert run_test(open_users, users=users, roles=False) < 0.02
+@pytest.mark.parametrize("users,roles,maxt", [
+    (1, True, 0.6),
+    (1, False, 0.02),
+    (10, True, 0.6),
+    (10, False, 0.07),
+    (100, True, 1.5),
+    (100, False, 1.0),
+    (1000, True, 9.0),
+    (1000, False, 6.0),
+])
+def test_get_user(users: int, roles: bool, maxt: float, open_once) -> None:
+    assert run_test(open_users, users=users, roles=roles) < maxt
 
 
-def test_get_10_user():
-    users = 10
-    assert run_test(open_users, users=users, roles=True) < 0.8
-    assert run_test(open_users, users=users, roles=False) < 0.07
-
-
-def test_get_100_user():
-    users = 100
-    assert run_test(open_users, users=users, roles=True) < 1.5
-    assert run_test(open_users, users=users, roles=False) < 1
-
-
-def test_get_1000_user():
-    users = 1000
-    assert run_test(open_users, users=users, roles=True) < 9
-    assert run_test(open_users, users=users, roles=False) < 6
-
-
-def test_rest_get_1_user():
-    users = 1
-    assert run_test(open_users_rest, users=users, roles=True) < 0.3
-    assert run_test(open_users_rest, users=users, roles=False) < 0.07
-
-
-def test_rest_get_10_user():
-    users = 10
-    assert run_test(open_users_rest, users=users, roles=True) < 0.7
-    assert run_test(open_users_rest, users=users, roles=False) < 0.8
-
-
-def test_rest_get_100_user():
-    users = 100
-    assert run_test(open_users_rest, users=users, roles=True) < 8
-    assert run_test(open_users_rest, users=users, roles=False) < 7
-
-
-def test_rest_get_1000_user():
-    users = 1000
-    assert run_test(open_users_rest, users=users, roles=True) < 75
-    assert run_test(open_users_rest, users=users, roles=False) < 70
+@pytest.mark.parametrize("users,roles,maxt", [
+    (1, True, 0.3),
+    (1, False, 0.07),
+    (10, True, 0.7),
+    (10, False, 0.8),
+    (100, True, 8.0),
+    (100, False, 7.0),
+    (1000, True, 75.0),
+    (1000, False, 70.0),
+])
+def test_rest_get_user(users: int, roles: bool, maxt: float, open_once) -> None:
+    assert run_test(open_users_rest, users=users, roles=True) < maxt
