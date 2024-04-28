@@ -24,6 +24,7 @@ from univention.appcenter.docker import Docker
 from univention.appcenter.log import log_to_logfile, log_to_stream
 from univention.appcenter.settings import SettingValueError
 from univention.appcenter.ucr import ucr_get, ucr_save
+from univention.testing.conftest import has_license
 
 import appcentertest as app_test
 
@@ -200,6 +201,7 @@ InitialValue = Default: @%@ldap/base@%@
         assert setting.get_value(app) is None
 
 
+@has_license()
 def test_string_setting_docker(installed_apache_docker_app: App) -> None:
     content = '''[test/setting]
 Type = String
@@ -234,6 +236,7 @@ Scope = inside, outside
         assert ucr_get(setting.name) == 'My new value'
 
 
+@has_license()
 @pytest.mark.parametrize('content_custom', [
     '''[test1/setting]
 Type = String
@@ -371,6 +374,7 @@ Description = My Description 4.2
             pass
 
 
+@has_license()
 def test_file_setting_docker(installed_apache_docker_app: App) -> None:
     content = '''[test/setting4]
 Type = File
@@ -440,6 +444,7 @@ Filename = /tmp/settingdir/setting6.password
             pass
 
 
+@has_license()
 def test_password_setting_docker(installed_apache_docker_app: App) -> None:
     content = '''[test/setting5]
 Type = Password
@@ -627,6 +632,7 @@ def outside_test_app(request, local_appcenter, outside_test_preinst, outside_tes
     return Apps().find(app_id)
 
 
+@has_license()
 def test_outside_settings_in_preinst(outside_test_app) -> None:
     settings_unset = [
         'test_settings/outside',

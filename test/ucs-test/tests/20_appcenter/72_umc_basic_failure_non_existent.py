@@ -7,7 +7,10 @@
 ##   - univention-appcenter-dev
 ## tags: [appcenter]
 
+import pytest
+
 from univention.lib.umc import ConnectionError, HTTPError
+from univention.testing.conftest import has_license
 
 import appcentertest as app_test
 
@@ -15,82 +18,50 @@ import appcentertest as app_test
 HTTPException = (HTTPError, ConnectionError)
 
 
-@app_test.test_case
-def test_install_non_existent_dry_run(app_center, application):
-    """Try to dry-run install an app that does not exist (must fail)."""
-    try:
+@pytest.fixture(scope="module", autouse=True)
+def wrap():
+    app_test.restart_umc()
+    yield
+    app_test.restart_umc()
+
+
+@has_license()
+def test_install_non_existent_dry_run(app_center, application) -> None:
+    """Dry-run install an app that does not exist must fail."""
+    with pytest.raises(HTTPException):
         app_center.install_dry_run([application])
-    except HTTPException:
-        pass
-    else:
-        app_test.fail("Dry-Install of non existent app did not fail.")
 
 
-@app_test.test_case
-def test_install_non_existent(app_center, application):
-    """Try to install an app that does not exist (must fail)."""
-    try:
+@has_license()
+def test_install_non_existent(app_center, application) -> None:
+    """Install an app that does not exist must fail."""
+    with pytest.raises(HTTPException):
         app_center.install([application])
-    except HTTPException:
-        pass
-    else:
-        app_test.fail("Dry-Install of non existent app did not fail.")
 
 
-@app_test.test_case
-def test_update_non_existent_dry_run(app_center, application):
-    """Try to dry-run update an app that does not exist (must fail)."""
-    try:
+@has_license()
+def test_update_non_existent_dry_run(app_center, application) -> None:
+    """Dry-run update an app that does not exist must fail."""
+    with pytest.raises(HTTPException):
         app_center.upgrade_dry_run([application])
-    except HTTPException:
-        pass
-    else:
-        app_test.fail("Dry-Update of non existent app did not fail.")
 
 
-@app_test.test_case
-def test_update_non_existent(app_center, application):
-    """Try to update an app that does not exist (must fail)."""
-    try:
+@has_license()
+def test_update_non_existent(app_center, application) -> None:
+    """Update an app that does not exist must fail."""
+    with pytest.raises(HTTPException):
         app_center.upgrade([application])
-    except HTTPException:
-        pass
-    else:
-        app_test.fail("Dry-Update of non existent app did not fail.")
 
 
-@app_test.test_case
-def test_uninstall_non_existent_dry_run(app_center, application):
-    """Try to dry-run uninstall an app that does not exist (must fail)."""
-    try:
+@has_license()
+def test_uninstall_non_existent_dry_run(app_center, application) -> None:
+    """Dry-run uninstall an app that does not exist must fail."""
+    with pytest.raises(HTTPException):
         app_center.remove_dry_run([application])
-    except HTTPException:
-        pass
-    else:
-        app_test.fail("Dry-Uninstall of non existent app did not fail.")
 
 
-@app_test.test_case
-def test_uninstall_non_existent(app_center, application):
-    """Try to uninstall an app that does not exist (must fail)."""
-    try:
+@has_license()
+def test_uninstall_non_existent(app_center, application) -> None:
+    """Uninstall an app that does not exist must fail."""
+    with pytest.raises(HTTPException):
         app_center.remove([application])
-    except HTTPException:
-        pass
-    else:
-        app_test.fail("Dry-Update of non existent app did not fail.")
-
-
-def main():
-    app_test.restart_umc()
-    test_install_non_existent_dry_run()
-    test_install_non_existent()
-    test_update_non_existent_dry_run()
-    test_update_non_existent()
-    test_uninstall_non_existent_dry_run()
-    test_uninstall_non_existent()
-    app_test.restart_umc()
-
-
-if __name__ == '__main__':
-    main()

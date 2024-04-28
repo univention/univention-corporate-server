@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -slv
 ## desc: |
 ##  Check basic App-Center Operations via UMC commands within a local testing appcenter.
 ## roles-not: [basesystem]
@@ -7,39 +7,31 @@
 ##   - univention-appcenter-dev
 ## tags: [appcenter]
 
-import logging
+from univention.testing.conftest import has_license
 
 import appcentertest as app_test
 
 
-@app_test.test_case
-def test_install_remove(app_center, application):
+@has_license()
+def test_install_remove(app_center, package) -> None:
     """Install and uninstall a simple app with correctness checks."""
-    package = app_test.AppPackage.with_package(name=application)
-    package.build_and_publish()
-    package.remove_tempdir()
-
     test = app_test.TestOperations(app_center, package.app_id)
     test.test_install_remove_cycle()
 
 
-@app_test.test_case
-def test_install_remove_twice(app_center, application):
+@has_license()
+def test_install_remove_twice(app_center, package) -> None:
     """
     Install and uninstall a simple app twice. This checks if the app is
     installable after being uninstalled once.
     """
-    package = app_test.AppPackage.with_package(name=application)
-    package.build_and_publish()
-    package.remove_tempdir()
-
     test = app_test.TestOperations(app_center, package.app_id)
     test.test_install_remove_cycle()
     test.test_install_remove_cycle()
 
 
-@app_test.test_case
-def test_install_remove_dependencies(app_center, application):
+@has_license()
+def test_install_remove_dependencies(app_center, application: str) -> None:
     """Install and uninstall a simple app with one dependency."""
     dependency = app_test.DebianPackage("my-dependency")
     dependency.build()
@@ -52,8 +44,8 @@ def test_install_remove_dependencies(app_center, application):
     test.test_install_remove_cycle()
 
 
-@app_test.test_case
-def test_install_upgrade_remove(app_center, application):
+@has_license()
+def test_install_upgrade_remove(app_center, application: str) -> None:
     """Install, upgrade and uninstall a simple app."""
     old = app_test.AppPackage.with_package(name=application, app_version="1.0")
 
@@ -70,8 +62,8 @@ def test_install_upgrade_remove(app_center, application):
         test.test_remove()
 
 
-@app_test.test_case
-def test_install_upgrade_remove_dependencies(app_center, application):
+@has_license()
+def test_install_upgrade_remove_dependencies(app_center, application: str) -> None:
     """
     Install, upgrade and uninstall a simple app with one dependency. Both the
     app version and the dependency version change.
@@ -94,19 +86,3 @@ def test_install_upgrade_remove_dependencies(app_center, application):
         new.remove_tempdir()
         test.test_upgrade()
         test.test_remove()
-
-
-def main():
-    app_test.app_logger.log_to_stream()
-    app_test.app_logger.get_base_logger().setLevel(logging.WARNING)
-
-    with app_test.local_appcenter():
-        test_install_remove()
-        test_install_remove_twice()
-        test_install_remove_dependencies()
-        test_install_upgrade_remove()
-        test_install_upgrade_remove_dependencies()
-
-
-if __name__ == '__main__':
-    main()

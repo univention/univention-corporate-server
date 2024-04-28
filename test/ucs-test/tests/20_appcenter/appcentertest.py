@@ -42,6 +42,7 @@ import re
 import string
 import subprocess
 import time
+import warnings
 from shutil import rmtree
 from typing import TYPE_CHECKING, Any, Callable, Iterable, Iterator
 
@@ -693,6 +694,7 @@ def local_appcenter() -> Iterator[None]:
 
 
 def test_case(function: Callable[..., None]) -> Callable[..., None]:  # Py3.10+: P=ParamSpec("P") ... Callable[Concatenate[AppCenterOperations, str, P], None] -> Callable[P, None]:
+    warnings.warn("Use pytest", DeprecationWarning, stacklevel=1)
 
     @functools.wraps(function)
     def wrapper(*args: object, **kwargs: object) -> None:
@@ -709,6 +711,7 @@ def test_case(function: Callable[..., None]) -> Callable[..., None]:  # Py3.10+:
 
 
 def fail(message: str) -> None:
+    warnings.warn("Use pytest.fail()", DeprecationWarning, stacklevel=1)
     raise AppCenterTestFailure(message)
 
 
