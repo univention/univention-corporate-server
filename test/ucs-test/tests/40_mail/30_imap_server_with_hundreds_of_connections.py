@@ -76,24 +76,24 @@ def main():
             set_openfiles_limit((2048, 2048))
             mem_start = used_memory()
             servers = []
-            time_start = time.time()
+            time_start = time.monotonic()
             for i in range(MAX_CONNECTIONS):
                 if i % 20 == 0:
                     print(f'Open connections: {i}/{MAX_CONNECTIONS}')
                 imap = MailClient_SSL(host)
                 servers.append(imap)
-            print('%d IMAP connections are OK (took %f seconds)' % (i + 1, time.time() - time_start))
+            print('%d IMAP connections are OK (took %f seconds)' % (i + 1, time.monotonic() - time_start))
 
-            time_start = time.time()
+            time_start = time.monotonic()
             for imap in servers:
                 imap.log_in(usermail, password)
-            print('%d IMAP logins are OK (took %f seconds)' % (i + 1, time.time() - time_start))
+            print('%d IMAP logins are OK (took %f seconds)' % (i + 1, time.monotonic() - time_start))
             mem_finish = used_memory()
 
-            time_start = time.time()
+            time_start = time.monotonic()
             for imap in servers:
                 imap.logout()
-            print('%d IMAP logouts are OK (took %f seconds)' % (i + 1, time.time() - time_start))
+            print('%d IMAP logouts are OK (took %f seconds)' % (i + 1, time.monotonic() - time_start))
 
             mem_per_proc = (mem_finish - mem_start) / 1500.0
             print('Memory Used = %.3fMB per connection (Warning: only rough estimation)' % mem_per_proc)

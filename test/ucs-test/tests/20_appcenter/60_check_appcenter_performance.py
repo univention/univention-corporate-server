@@ -28,9 +28,9 @@ def main():
     client = Client.get_test_connection()
 
     print("Start request to appcenter")
-    start_time = time.time()
+    start_time = time.monotonic()
     client.umc_command(*request_query)
-    end_time = time.time()
+    end_time = time.monotonic()
     print("Request finished")
 
     if end_time - start_time > max_time:

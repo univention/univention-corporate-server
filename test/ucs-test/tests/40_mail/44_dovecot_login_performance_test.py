@@ -61,13 +61,13 @@ def main():
             if utils.package_installed('univention-samba4'):
                 wait_for_drs_replication('cn=%s' % dn.partition(",")[0].rpartition("=")[-1])
             try:
-                start_time = time.time()
+                start_time = time.monotonic()
                 for i in range(MAX_TESTS):
                     print('Test %d' % (i, ))
                     M = imaplib.IMAP4_SSL(host='localhost')  # establish connection
                     M.login(userlist[random.randint(0, MAX_USER - 1)].addr, 'univention')  # use random users
             finally:
-                end_time = time.time()
+                end_time = time.monotonic()
                 print('IMAP login for %d random users took %f seconds ==> %f per login' % (
                     i + 1,
                     end_time - start_time,

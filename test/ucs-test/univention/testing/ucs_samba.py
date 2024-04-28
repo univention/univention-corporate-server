@@ -87,7 +87,7 @@ def wait_for_drs_replication(ldap_filter: str, attrs: list[str] | str | None = N
 
     if verbose:
         print(f"Waiting for DRS replication, filter: {ldap_filter!r}, base: {base!r}, scope: {scope!r}, should_exist: {should_exist!r}", end=' ')
-    t = t0 = time.time()
+    t = t0 = time.monotonic()
     while t < t0 + timeout:
         try:
             res = samdb.search(base=base, scope=scope, expression=ldap_filter, attrs=attrs, controls=controls)
@@ -107,7 +107,7 @@ def wait_for_drs_replication(ldap_filter: str, attrs: list[str] | str | None = N
 
         print('.', end=' ')
         time.sleep(delta_t)
-        t = time.time()
+        t = time.monotonic()
     raise DRSReplicationFailed("DRS replication for filter: %r failed due to timeout after %d sec." % (ldap_filter, t - t0))
 
 
@@ -196,7 +196,7 @@ def wait_for_s4connector(timeout: int = 360, delta_t: int = 1, s4cooldown_t: int
     replication_complete = False
     highestCommittedUSN = -1
     lastUSN = -1
-    t = t0 = time.time()
+    t = t0 = time.monotonic()
     while t < t0 + timeout:
         time.sleep(delta_t)
 
@@ -238,7 +238,7 @@ def wait_for_s4connector(timeout: int = 360, delta_t: int = 1, s4cooldown_t: int
 
         if static_count * delta_t >= s4cooldown_t:
             return 0
-        t = time.time()
+        t = time.monotonic()
 
     conn.close()
     raise WaitForS4ConnectorTimeout()

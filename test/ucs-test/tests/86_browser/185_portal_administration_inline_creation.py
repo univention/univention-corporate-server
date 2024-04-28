@@ -112,8 +112,8 @@ def test_inline_creation(umc_browser_test: UMCBrowserTest):
 def search_for_udm_object(module: str, name: str, udm, timeout: int = 10):
     udm_module = udm.get(module)
 
-    end = time.time() + timeout
-    while time.time() < end:
+    end = time.monotonic() + timeout
+    while time.monotonic() < end:
         entries = list(udm_module.search(f'name={name}'))
         if len(entries) != 0:
             return entries[0]

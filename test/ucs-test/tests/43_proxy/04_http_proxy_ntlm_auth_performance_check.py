@@ -4,6 +4,8 @@
 ## exposure: dangerous
 ## packages: [univention-squid]
 ## bugs: [26452,37931]
+## tags:
+##   - performance
 
 import os
 import time
@@ -31,7 +33,7 @@ def max_duration():
 
 def doJobs(job, num):
     children = set()
-    start = time.time()
+    start = time.monotonic()
     for _ in range(num):
         child = os.fork()
         if child:
@@ -48,7 +50,7 @@ def doJobs(job, num):
         elif os.WIFEXITED(status) and os.WEXITSTATUS(status):
             utils.fail('job %d failed with status %d' % (pid, os.WEXITSTATUS(status)))
         children.remove(pid)
-    end = time.time()
+    end = time.monotonic()
     os.write(1, b" %.2f\n" % (end - start,))
 
 
@@ -95,7 +97,7 @@ def main():
         register(squid.restart)
         time.sleep(3)
 
-        start = time.time()
+        start = time.monotonic()
 
         # /var/log/syslog: (squid) Too many queued ntlmauthenticator requests
         # <http://wiki.squid-cache.org/KnowledgeBase/TooManyQueued>
@@ -109,7 +111,7 @@ def main():
             doJobs(job, concurrent)
             total -= concurrent
 
-        end = time.time()
+        end = time.monotonic()
         duration = end - start
         print(f'Test took {duration:.2f} seconds')
 

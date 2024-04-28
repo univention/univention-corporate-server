@@ -24,7 +24,7 @@ from univention.testing import utils
 
 
 def resolve_dns_entry(zoneName, resourceRecord, timeout=120, tries=3):
-    start = time.time()
+    start = time.monotonic()
 
     while True:
         try:
@@ -35,7 +35,7 @@ def resolve_dns_entry(zoneName, resourceRecord, timeout=120, tries=3):
             if tries < 0:
                 raise
         except (NXDOMAIN, NoNameservers):
-            diff = time.time() - start
+            diff = time.monotonic() - start
             if diff > timeout:
                 raise
 

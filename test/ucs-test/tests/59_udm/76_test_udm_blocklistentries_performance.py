@@ -106,7 +106,7 @@ def test_create_1000_users_with_extreme_blocklist_setup(blocklist_setup, mail_do
     modules.init(lo, position, users)
     configRegistry['directory/manager/user/primarygroup/update'] = 'false'
     configRegistry['directory/manager/blocklist/enabled'] = 'true'
-    start = time.time()
+    start = time.monotonic()
     user_dns = []
     try:
         for i in range(number_of_users):
@@ -114,7 +114,7 @@ def test_create_1000_users_with_extreme_blocklist_setup(blocklist_setup, mail_do
             new = users.object(None, lo, position)
             user_dns.append(create_user(new, username, mail_domain_name))
     finally:
-        end = time.time()
+        end = time.monotonic()
         for dn in user_dns:
             lo.delete(dn)
     duration = end - start
