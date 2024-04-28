@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -slv
 ## desc: |
 ##  Check App-Center Operation failures with broken apps (exit 1 in {pre,post}{inst,rm}) via UMC commands within a local testing appcenter.
 ## roles-not: [basesystem]
@@ -11,6 +11,9 @@ import logging
 import os
 import subprocess
 
+import pytest
+
+from univention.testing.conftest import has_license
 from univention.testing.utils import UCSTestDomainAdminCredentials
 
 import appcentertest as app_test
@@ -42,13 +45,17 @@ def _test_app_uninstallation_fails(test):
         cleanup(test.application)
 
 
-@app_test.test_case
-def test_install_preinst_error(app_center, application):
+@pytest.fixture()
+def app_center() -> app_test.AppCenterOperations:
+    return app_test.AppCenterOperations()
+
+
+def test_install_preinst_error(app_center):
     """
     Try to install and uninstall an app that contains an error in `preinst`
     (exit 1). No traces must be left and the app must be reinstallable.
     """
-    package = app_test.DebianPackage(name=application)
+    package = app_test.DebianPackage(name="test-install-preinst-error")
     package.create_debian_file_from_buffer("preinst", "\nexit 1\n")
 
     app = app_test.AppPackage.from_package(package)
@@ -59,13 +66,12 @@ def test_install_preinst_error(app_center, application):
     _test_app_installation_fails(test)
 
 
-@app_test.test_case
-def test_install_postinst_error(app_center, application):
+def test_install_postinst_error(app_center):
     """
     Try to install and uninstall an app that contains an error in `postinst`
     (exit 1). No traces must be left and the app must be reinstallable.
     """
-    package = app_test.DebianPackage(name=application)
+    package = app_test.DebianPackage(name="test-install-postinst-error")
     package.create_debian_file_from_buffer("postinst", "\nexit 1\n")
 
     app = app_test.AppPackage.from_package(package)
@@ -76,13 +82,13 @@ def test_install_postinst_error(app_center, application):
     _test_app_installation_fails(test)
 
 
-@app_test.test_case
-def test_uninstall_prerm_error(app_center, application):
+@has_license()
+def test_uninstall_prerm_error(app_center):
     """
     Try to install and uninstall an app that contains an error in `prerm`
     (exit 1). No traces must be left and the app must be reinstallable.
     """
-    package = app_test.DebianPackage(name=application)
+    package = app_test.DebianPackage(name="test-uninstall-prerm-error")
     package.create_debian_file_from_buffer("prerm", "\nexit 1\n")
 
     app = app_test.AppPackage.from_package(package)
@@ -93,13 +99,13 @@ def test_uninstall_prerm_error(app_center, application):
     _test_app_uninstallation_fails(test)
 
 
-@app_test.test_case
-def test_uninstall_postrm_error(app_center, application):
+@has_license()
+def test_uninstall_postrm_error(app_center):
     """
     Try to install and uninstall an app that contains an error in `postrm`
     (exit 1). No traces must be left and the app must be reinstallable.
     """
-    package = app_test.DebianPackage(name=application)
+    package = app_test.DebianPackage(name="test-uninstall-postrm-error")
     package.create_debian_file_from_buffer("postrm", "\nexit 1\n")
 
     app = app_test.AppPackage.from_package(package)
@@ -113,7 +119,7 @@ def test_uninstall_postrm_error(app_center, application):
 def cleanup(application):
     account = UCSTestDomainAdminCredentials()
     subprocess.check_call(['univention-app', 'register', application, '--undo-it', '--noninteractive', '--username', account.username, '--pwdfile', account.pwdfile])
-    ext = application.split('-')[2]
+    _, _, ext, _ = application.split('-')
     try:
         os.unlink(f'/var/lib/dpkg/info/{application}.{ext}')
     except OSError:
@@ -122,16 +128,9 @@ def cleanup(application):
         subprocess.check_call(['dpkg', '--remove', application])
 
 
-def main():
+@pytest.fixture(scope="module", autouse=True)
+def setup():
     app_test.app_logger.log_to_stream()
     app_test.app_logger.get_base_logger().setLevel(logging.WARNING)
-
     with app_test.local_appcenter():
-        test_install_preinst_error()
-        test_install_postinst_error()
-        test_uninstall_prerm_error()
-        test_uninstall_postrm_error()
-
-
-if __name__ == '__main__':
-    main()
+        yield

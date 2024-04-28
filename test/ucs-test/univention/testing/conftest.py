@@ -155,7 +155,7 @@ def check_exposure(item: pytest.Item) -> None:
         pytest.skip(f'Too dangerous: {exposure} > {required_exposure}')
 
 
-def locale_available(*locales: str) -> Callable[[_F], _F]:  # Py3.10+: ParamSpec
+def locale_available(*locales: str) -> Callable[[_F], _F]:  # pytest.MarkDecorator
     from univention.config_registry import ucr
     available = {locale.split(".")[0] for locale in ucr.get("locale", "").split()}
     required = set(locales) or {"de_DE", "en_US"}
@@ -164,3 +164,8 @@ def locale_available(*locales: str) -> Callable[[_F], _F]:  # Py3.10+: ParamSpec
         not required <= available,
         reason="Required locales {} are not available {}".format(",".join(required), ",".join(available)),
     )
+
+
+def has_license() -> Callable[[_F], _F]:  # pytest.MarkDecorator
+    from univention.config_registry import ucr
+    return pytest.mark.skipif(not ucr.get("uuid/license"), reason="No valid license")
