@@ -16,7 +16,7 @@ import univention.testing.udm as udm_test
 from univention.config_registry import ucr
 from univention.testing import utils
 
-from essential.mail import check_delivery, create_shared_mailfolder, send_mail
+from essential.mail import check_delivery, create_shared_mailfolder, make_token, send_mail
 from essential.mailclient import MailClient_SSL
 
 
@@ -55,7 +55,7 @@ def main():
                                 )
                                 mails.append(usermail)
                                 users.append(userdn)
-                            token = str(time.time())
+                            token = make_token()
                             send_mail(recipients=mails, msg=token, port=587, tls=True, username=usermail, password=password, debuglevel=0)
                             check_delivery(token, mails[0], True)
                             group_mail = '%s@%s' % (uts.random_name(), domain)

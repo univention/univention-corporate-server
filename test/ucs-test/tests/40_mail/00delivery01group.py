@@ -19,7 +19,7 @@ import univention.testing.udm as udm_test
 from univention.config_registry import ucr
 from univention.testing import utils
 
-from essential.mail import file_search_mail, send_mail
+from essential.mail import file_search_mail, make_token, send_mail
 
 
 def main():
@@ -39,7 +39,7 @@ def main():
             )
             mails.append(usermail)
 
-        token = str(time.time())
+        token = make_token()
         send_mail(recipients=group_mail, msg=token, idstring=token, subject='Test Group Send')
 
         failed_addresses = ['DUMMY']

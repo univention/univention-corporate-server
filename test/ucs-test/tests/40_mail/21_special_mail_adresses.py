@@ -3,7 +3,6 @@
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
-import time
 
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -11,11 +10,11 @@ import univention.testing.udm as udm_test
 from univention.config_registry import handler_set
 from univention.testing import utils
 
-from essential.mail import mail_delivered, send_mail
+from essential.mail import mail_delivered, make_token, send_mail
 
 
 def check_sending_mail(username, password, recipient_email):
-    token = str(time.time())
+    token = make_token()
     send_mail(recipients=recipient_email, msg=token, tls=True, username=username, password=password)
     delivered = mail_delivered(token, check_root=True)
     if not delivered:

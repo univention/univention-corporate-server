@@ -37,7 +37,7 @@ def main():
 
                 # no subject tag test
                 print('*** check default behavior, no subject tag')
-                subject = 'my subject %s' % time.time()
+                subject = 'my subject %s' % essential.mail.make_token()
                 essential.mail.send_mail(recipients=mailPrimaryAddress, gtube=True, subject=subject)
                 for _i in range(60):
                     msg = imap.get_mails(filter='(SUBJECT "%s")' % subject, mailbox=spam_folder)
@@ -57,7 +57,7 @@ def main():
                 tag = '*** UCS_TEST ***'
                 essential.mail.activate_spam_header_tag(tag)
                 essential.mail.reload_amavis_postfix()
-                subject = 'my subject %s' % time.time()
+                subject = 'my subject %s' % essential.mail.make_token()
                 wanted = tag + subject
                 essential.mail.send_mail(recipients=mailPrimaryAddress, gtube=True, subject=subject)
                 for _i in range(60):

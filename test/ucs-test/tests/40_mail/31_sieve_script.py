@@ -5,7 +5,6 @@
 ## packages: [univention-mail-server, sieve-connect]
 
 import subprocess
-import time
 
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -13,7 +12,7 @@ import univention.testing.udm as udm_test
 from univention.config_registry import handler_set
 from univention.testing import utils
 
-from essential.mail import check_delivery, send_mail
+from essential.mail import check_delivery, make_token, send_mail
 
 
 def sieve_test(mail, expected_output):
@@ -51,7 +50,7 @@ def main():
             )
 
             sieve_test(usermail, '"default" ACTIVE')
-            token = str(time.time())
+            token = make_token()
             send_mail(recipients=usermail, msg=token, gtube=True)
             check_delivery(token, recipient_email=usermail, should_be_delivered=True, spam=True)
 
@@ -66,7 +65,7 @@ def main():
                 },
             )
             sieve_test(usermail, '')
-            token = str(time.time())
+            token = make_token()
             send_mail(recipients=usermail, msg=token, gtube=True)
             check_delivery(token, recipient_email=usermail, should_be_delivered=False, spam=True)
 

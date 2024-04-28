@@ -23,7 +23,7 @@ import univention.testing.udm as udm_test
 from univention.config_registry import handler_set
 from univention.testing import utils
 
-from essential.mail import mail_delivered, send_mail
+from essential.mail import mail_delivered, make_token, send_mail
 
 
 def reload_postfix():
@@ -50,7 +50,7 @@ def main():
                         'mailPrimaryAddress': mail,
                     },
                 )
-                token = str(time.time())
+                token = make_token()
                 delivery_OK = False
                 send_mail(recipients='root', msg=token, idstring=token, subject='Normal')
                 for _i in range(TIMEOUT):
@@ -66,7 +66,7 @@ def main():
                 handler_set(['mail/alias/root=%s' % mail])
                 reload_postfix()
 
-                token = str(time.time())
+                token = make_token()
                 delivery_OK = False
                 send_mail(recipients='root', msg=token, idstring=token, subject='Alias')
                 for _i in range(TIMEOUT):

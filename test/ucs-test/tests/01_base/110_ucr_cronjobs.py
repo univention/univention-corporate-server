@@ -59,7 +59,7 @@ def main():
             break
 
     time_s = f"{then.minute} {then.hour} * * *"
-    token = str(time.time())
+    token = uts.random_string()
     name = uts.random_name()
     ucrs = ucr_cron(name, time_s, f"echo {token}", name, "root")
     try:

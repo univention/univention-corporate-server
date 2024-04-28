@@ -22,7 +22,9 @@ import univention.testing.udm as udm_test
 from univention.config_registry import handler_set
 from univention.testing import utils
 
-from essential.mail import deactivate_spam_detection, reload_amavis_postfix, send_mail, virus_detected_and_quarantined
+from essential.mail import (
+    deactivate_spam_detection, make_token, reload_amavis_postfix, send_mail, virus_detected_and_quarantined,
+)
 
 
 def main():
@@ -45,14 +47,14 @@ def main():
                     },
                 )
 
-                token1 = str(time.time())
+                token1 = make_token()
                 send_mail(recipients=mail, msg=token1, virus=True, subject='Filter on')
                 time.sleep(5)
 
                 deactivate_spam_detection()
                 reload_amavis_postfix()
 
-                token2 = str(time.time())
+                token2 = make_token()
                 send_mail(recipients=mail, msg=token2, virus=True, subject='Filter off')
 
                 while TIMEOUT > 0:

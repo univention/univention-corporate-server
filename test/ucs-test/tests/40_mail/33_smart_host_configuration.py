@@ -17,7 +17,7 @@ from univention.testing import utils
 from univention.testing.mail import MailSink
 from univention.testing.network import NetworkRedirector
 
-from essential.mail import check_delivery, restart_postfix, send_mail
+from essential.mail import check_delivery, make_token, restart_postfix, send_mail
 
 
 TIMEOUT = 90  # sec
@@ -76,7 +76,7 @@ def main():
                 restart_postfix()
                 with tempfile.NamedTemporaryFile(suffix='.eml', dir='/tmp') as fp, MailSink('127.0.0.1', port, filename=fp.name):
                     recipient = 'noreply@univention.de'
-                    token = str(time.time())
+                    token = make_token()
                     send_mail(recipients=recipient, msg=token)
                     check_delivery_mailsink(token, fp.name, True)
                     check_delivery(token, recipient, False)

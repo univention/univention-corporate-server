@@ -22,7 +22,7 @@ import univention.testing.udm as udm_test
 from univention.config_registry import ucr
 from univention.testing import utils
 
-from essential.mail import file_search_mail, send_mail
+from essential.mail import file_search_mail, make_token, send_mail
 
 
 TIMEOUT = 120
@@ -75,7 +75,7 @@ class Tester:
     def mail_sending_test_1(self, mailsToTest):
         test_cases = []
         for mail in mailsToTest:
-            token = str(time.time())
+            token = make_token()
             test_cases.append([token, mail, False])
             print('\nTOKEN = %s\n' % token)
             send_mail(recipients=mail, msg=token, idstring=token, subject='Test')
@@ -84,7 +84,7 @@ class Tester:
     def mail_sending_test_2(self, users):
         test_cases = []
         for user in users:
-            token = str(time.time())
+            token = make_token()
             test_cases.append([token, user, False])
             print('\nTOKEN = %s\n' % token)
             send_mail(recipients=user, msg=token, subject='Test')
@@ -93,7 +93,7 @@ class Tester:
     def mail_sending_test_3_tls(self, users):
         test_cases = []
         for user in users:
-            token = str(time.time())
+            token = make_token()
             test_cases.append([token, user, False])
             print('\nTOKEN = %s\n' % token)
             send_mail(recipients=user, msg=token, subject='TestTLS', tls=True)

@@ -5,14 +5,13 @@
 ## packages: [univention-mail-server]
 
 import subprocess
-import time
 
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 from univention.config_registry import handler_set
 
-from essential.mail import check_delivery, send_mail
+from essential.mail import check_delivery, make_token, send_mail
 
 
 def main():
@@ -49,7 +48,7 @@ def main():
                 wait_for_drs_replication=True,
                 position="cn=mailinglists,cn=mail,{}".format(ucr.get("ldap/base")),
             )
-            token = str(time.time())
+            token = make_token()
             send_mail(recipients=list_mail, msg=token, tls=True, username=usermail, password=password)
 
             for mail in mails:
