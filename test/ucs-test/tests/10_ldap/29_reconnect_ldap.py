@@ -27,9 +27,9 @@ def search_thread():
     lo.lo._retry_delay = .001
     x = 0
     lo.search(filter="uid=Administrator", attr=["uid"])
-    s = time.time()
+    s = time.monotonic()
     print("go")
-    while (time.time() - s) < run_time:
+    while (time.monotonic() - s) < run_time:
         x += 1
         try:
             lo.search(filter="uid=Administrator", attr=["uid"])

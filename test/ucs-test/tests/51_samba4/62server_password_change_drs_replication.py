@@ -73,9 +73,9 @@ with UCSTestConfigRegistry() as ucr_test:
             print(f'User {user_name} could authenticate against UMC of {ldap_master}')
         # Wait for replication
         samba_found = False
-        t0 = time.time()
+        t0 = time.monotonic()
         timeout = 200
-        while (not samba_found) and (time.time() < t0 + timeout):
+        while (not samba_found) and (time.monotonic() < t0 + timeout):
             print('Checking if user %s can be found in samba-tool user list' % (user_name))
             output = subprocess.check_output(['samba-tool', 'user', 'list']).decode('UTF-8')
             output = output.splitlines()
@@ -114,9 +114,9 @@ with UCSTestConfigRegistry() as ucr_test:
         # Wait for replication
         print('Trying to log in with the new password')
         new_password_worked = False
-        t = time.time()
+        t = time.monotonic()
         timeout = 600
-        while (not new_password_worked) and (time.time() < t + timeout):
+        while (not new_password_worked) and (time.monotonic() < t + timeout):
             try:
                 umc_client.authenticate(user_name, new_password)
             except Exception:

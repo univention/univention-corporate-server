@@ -88,9 +88,9 @@ def test_module_process_timeout(umc_browser_test: UMCBrowserTest, module_process
     process_overview = ProcessOverview(umc_browser_test)
     umc_browser_test.open_module('Process overview')
 
-    timeout_end = time.time() + module_process_timeout + 10
+    timeout_end = time.monotonic() + module_process_timeout + 10
 
-    while time.time() < timeout_end:
+    while time.monotonic() < timeout_end:
         search_bar = umc_browser_test.page.get_by_text('Search...').last
         search_bar.click(force=True)
         with umc_browser_test.page.expect_response(process_overview.grid_load_url):

@@ -6,9 +6,10 @@
 ##   - univention-directory-manager-tools
 ##   - univention-samba4
 ##   - univention-s4-connector
-#
-#  Bug #33768
-
+## tags:
+##   - performance
+## bugs:
+##   - 33768
 
 import re
 import subprocess
@@ -190,9 +191,9 @@ class Testclass_GPO_Security_Descriptor:
         configdbfile = '/etc/univention/connector/s4internal.sqlite'
         s4c_internaldb = configdb(configdbfile)
 
-        t0 = time.time()
+        t0 = time.monotonic()
         while int(s4c_internaldb.get("S4", "lastUSN")) < usn:
-            if time.time() - t0 > 120:
+            if time.monotonic() - t0 > 120:
                 utils.fail("ERROR: %s: Replication takes too long, aborting" % logtag)
             time.sleep(1)
         time.sleep(15)
@@ -202,10 +203,10 @@ class Testclass_GPO_Security_Descriptor:
         initial_usn = int(ldb_msg["uSNChanged"][0])
         usn = initial_usn
 
-        t0 = time.time()
+        t0 = time.monotonic()
         while usn == initial_usn:
             time.sleep(1)
-            if time.time() - t0 > 120:
+            if time.monotonic() - t0 > 120:
                 utils.fail("ERROR: %s: Replication takes too long, aborting" % logtag)
             ldb_msg = self.get_ldb_object(dn=str(ldb_msg.dn), attrs=["uSNChanged"])
             usn = int(ldb_msg["uSNChanged"][0])
