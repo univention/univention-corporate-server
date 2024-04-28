@@ -16,9 +16,7 @@
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
-. /usr/share/univention-lib/ucr.sh
 . "adconnector.sh" || exit 137
-test -n "$connector_ad_ldap_host" || exit 137
 
 is_ucr_true connector/ad/mapping/group/grouptype || exit 137
 

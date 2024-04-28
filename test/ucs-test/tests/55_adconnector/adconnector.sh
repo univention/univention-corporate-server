@@ -82,6 +82,8 @@ AD_ESTIMATED_MAX_COMPUTATION_TIME=3
 # shellcheck source=/dev/null
 . /usr/share/univention-lib/ucr.sh
 
+[ -n "${connector_ad_ldap_host:-}" ] || exit 137  # ADC is unconfigured
+
 ad_is_connector_running () {
 	/etc/init.d/univention-ad-connector status >/dev/null 2>&1
 }

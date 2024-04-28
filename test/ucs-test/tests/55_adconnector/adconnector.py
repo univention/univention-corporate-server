@@ -21,6 +21,10 @@ def connector_running_on_this_host():
     return ucr.is_true("connector/ad/autostart")
 
 
+def adc_is_ready(configbase: str = "connector") -> bool:
+    return connector_running_on_this_host() and bool(ucr.get(f'{configbase}/s4/ldap/host'))
+
+
 def restart_adconnector():
     print("Restarting AD-Connector")
     subprocess.check_call(["service", "univention-ad-connector", "restart"])

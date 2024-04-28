@@ -13,9 +13,6 @@
 . "$TESTLIBPATH/random.sh" || exit 137
 
 . "adconnector.sh" || exit 137
-test -n "$connector_ad_ldap_host" || exit 137
-
-. /usr/share/univention-lib/ucr.sh
 
 UDM_users_user_username="$(random_chars)"
 UDM_users_user_lastname="$(random_chars)"

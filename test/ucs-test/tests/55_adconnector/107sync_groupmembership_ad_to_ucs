@@ -16,7 +16,6 @@
 . "$TESTLIBPATH/random.sh" || exit 137
 
 . "adconnector.sh" || exit 137
-test -n "$connector_ad_ldap_host" || exit 137
 
 G00="$(random_chars)"
 G01="$(random_chars)"

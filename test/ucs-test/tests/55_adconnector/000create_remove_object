@@ -16,9 +16,7 @@
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
-
 . "adconnector.sh" || exit 137
-test -n "$connector_ad_ldap_host" || exit 137
 
 UDM_users_user_username="$(random_chars)"
 DESCRIPTION="$(random_chars)"

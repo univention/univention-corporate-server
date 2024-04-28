@@ -34,12 +34,17 @@ from univention.connector.ad.password import calculate_krb5keys, decrypt, decryp
 from univention.testing.connector_common import NormalUser, create_udm_user, delete_con_user, to_unicode
 
 import adconnector
-from adconnector import connector_running_on_this_host, connector_setup
+from adconnector import adc_is_ready, connector_setup
 
+
+pytestmark = pytest.mark.skipif(not adc_is_ready(), reason="ADC not configured")
 
 # This is something weird. The `adconnector.ADConnection()` MUST be
 # instantiated, before `UCSTestUDM` is imported.
-AD = adconnector.ADConnection()
+try:
+    AD = adconnector.ADConnection()
+except (LookupError, AttributeError):
+    pytestmark = pytest.mark.skip(reason="ADC is unconfigured")
 
 from univention.testing.udm import UCSTestUDM, UCSTestUDM_ModifyUDMObjectFailed  # noqa: E402
 
@@ -281,7 +286,6 @@ def udm_modify(udm, **kwargs):
     adconnector.wait_for_sync()
 
 
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_initial_AD_pwd_is_synced():
     with connector_setup("sync"), UCSTestUDM() as udm:
         (ad_user_dn, udm_user_dn) = create_ad_user(tstrings.random_username().encode('UTF-8'), "Univention.2-")
@@ -300,7 +304,6 @@ def test_initial_AD_pwd_is_synced():
         delete_con_user(AD, ad_user_dn, udm_user_dn, adconnector.wait_for_sync)
 
 
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_initial_UCS_pwd_is_synced():
     with connector_setup("sync"), UCSTestUDM() as udm:
         udm_user = NormalUser()
@@ -319,7 +322,6 @@ def test_initial_UCS_pwd_is_synced():
         print("Ok")
 
 
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_create_user_in_AD_set_same_pwd_in_UDM():
     with connector_setup("sync"), UCSTestUDM() as udm:
         (ad_user_dn, udm_user_dn) = create_ad_user(tstrings.random_username().encode('UTF-8'), "Univention.2-")
@@ -342,7 +344,6 @@ def test_create_user_in_AD_set_same_pwd_in_UDM():
         delete_con_user(AD, ad_user_dn, udm_user_dn, adconnector.wait_for_sync)
 
 
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_set_already_used_password_set_in_AD():
     with connector_setup("sync"), UCSTestUDM() as udm:
         udm_user = NormalUser()

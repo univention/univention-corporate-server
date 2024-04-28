@@ -24,7 +24,8 @@ from univention.testing.strings import random_string
 from adconnector import ADConnection, restart_adconnector, wait_for_sync
 
 
-sys.path.append("$TESTLIBPATH")
+if not ucr.get("connector/ad/ldap/host"):
+    sys.exit(137)
 
 
 class TestADCustomMappings(unittest.TestCase):
