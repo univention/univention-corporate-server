@@ -103,11 +103,10 @@ class Test_UserModification:
     @pytest.mark.tags('apptest')
     def test_user_modification_set_pwdChangeNextLogin_kerberos_option(self, udm):
         """Mark the password of a kerberos user to be altered on next login"""
-        date = time.gmtime(time.time())
         user = udm.create_user()[0]
         udm.modify_object('users/user', dn=user, pwdChangeNextLogin='1')
 
-        utils.verify_ldap_object(user, {'krb5PasswordEnd': [time.strftime('%Y%m%d', date) + '000000Z']})
+        utils.verify_ldap_object(user, {'krb5PasswordEnd': [f"{datetime.utcnow():%Y%m%d}000000Z"]})
 
     @pytest.mark.tags('apptest')
     def test_user_modification_set_birthday(self, udm):
