@@ -17,10 +17,6 @@
 . "$TESTLIBPATH/random.sh" || exit 137
 
 . "adconnector.sh" || exit 137
-test -n "$connector_ad_ldap_host" || exit 137
-
-. /usr/share/univention-lib/ucr.sh
-
 
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"

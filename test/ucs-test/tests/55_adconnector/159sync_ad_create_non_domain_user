@@ -15,7 +15,6 @@
 . "$TESTLIBPATH/random.sh" || exit 137
 
 . "adconnector.sh" || exit 137
-test -n "$connector_ad_ldap_host" || exit 137
 
 
 UDM_groups_group_name="$(random_chars)"

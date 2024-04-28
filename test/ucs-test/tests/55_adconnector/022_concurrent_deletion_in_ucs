@@ -22,7 +22,6 @@
 . "$TESTLIBPATH/random.sh" || exit 137
 
 . "adconnector.sh" || exit 137
-test -n "$connector_ad_ldap_host" || exit 137
 ad_is_connector_running || exit 137
 
 create_user()

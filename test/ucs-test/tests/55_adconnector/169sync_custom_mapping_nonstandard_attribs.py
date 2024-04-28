@@ -21,10 +21,11 @@ import univention.testing.udm as udm_test
 from univention.testing.connector_common import NormalUser, create_udm_user
 from univention.testing.strings import random_string
 
-from adconnector import ADConnection, restart_adconnector, wait_for_sync
+from adconnector import ADConnection, adc_is_ready, restart_adconnector, wait_for_sync
 
 
-sys.path.append("$TESTLIBPATH")
+if not adc_is_ready():
+    sys.exit(137)
 
 
 class TestADCustomMappings(unittest.TestCase):

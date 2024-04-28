@@ -25,7 +25,6 @@
 
 RETVAL=100
 
-test -n "$connector_ad_ldap_host" || exit 137
 ad_is_connector_running || exit 137
 
 

@@ -18,9 +18,7 @@
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
-
 . "adconnector.sh" || exit 137
-test -n "$connector_ad_ldap_host" || exit 137
 
 SYNCMODE="$(ad_get_sync_mode)"
 

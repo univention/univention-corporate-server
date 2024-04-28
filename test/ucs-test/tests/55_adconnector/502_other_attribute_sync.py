@@ -16,12 +16,18 @@ from univention.testing.connector_common import (
 )
 
 import adconnector
-from adconnector import connector_setup
+from adconnector import adc_is_ready, connector_setup
 
+
+pytestmark = pytest.mark.skipif(not adc_is_ready(), reason="ADC not configured")
 
 # This is something weird. The `adconnector.ADConnection()` MUST be
 # instantiated, before `UCSTestUDM` is imported.
-AD = adconnector.ADConnection()
+try:
+    AD = adconnector.ADConnection()
+except (LookupError, AttributeError):
+    pytestmark = pytest.mark.skip(reason="ADC not unconfigured")
+
 from univention.testing.udm import UCSTestUDM  # noqa: E402
 
 
