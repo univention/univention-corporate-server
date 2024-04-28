@@ -7,6 +7,7 @@
 ##  - univention-mail-dovecot
 ##  - univention-directory-manager-tools
 ## bugs: [38727]
+
 import email
 import imaplib
 import subprocess
@@ -18,7 +19,7 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 from univention.testing import utils
 
-from essential.mail import ImapMail, mail_delivered
+from essential.mail import ImapMail, mail_delivered, make_token
 from essential.mailclient import MailClient
 
 
@@ -85,7 +86,7 @@ def main():
                 #
                 quota04 = 2
                 percent = 50
-                token_body = "my_message %s" % str(time.time())
+                token_body = "my_message %s" % make_token()
                 univention.config_registry.handler_set(["mail/dovecot/quota/warning/text/%d=%s" % (percent, token_body)])
                 subprocess.call(["/usr/bin/doveadm", "reload"])
                 udm.modify_object(modulename='users/user', dn=userdn, mailUserQuota=str(quota04))

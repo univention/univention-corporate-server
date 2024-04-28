@@ -218,7 +218,7 @@ def random_email():
 
 
 def make_token():
-    return str(time.time())
+    return uts.random_string()
 
 
 def get_dir_files(dir_path, recursive=True, exclude=None):
@@ -770,7 +770,7 @@ def check_sending_mail(
         allowed=True,
         local=True,
 ):
-    token = f'The token is {time.time()}.'
+    token = f'The token is {uts.random_string()}.'
     try:
         ret_code = send_mail(
             recipients=recipient_email,

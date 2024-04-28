@@ -4,12 +4,11 @@
 ## exposure: dangerous
 ## packages:
 ##  - univention-mail-postfix
-import time
 
 import univention.testing.ucr as ucr_test
 from univention.config_registry import handler_set
 
-from essential.mail import check_delivery, send_mail
+from essential.mail import check_delivery, make_token, send_mail
 
 
 def main():
@@ -17,7 +16,7 @@ def main():
         fqdn = '%(hostname)s.%(domainname)s' % ucr
         handler_set(['mail/alias/root=systemmail@%s' % fqdn])
         for recipient in ['root', 'root@localhost', 'root@%s' % fqdn]:
-            token = str(time.time())
+            token = make_token()
             send_mail(recipients=recipient, msg=token, tls=True)
             check_delivery(token, recipient, True)
 

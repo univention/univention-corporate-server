@@ -22,7 +22,7 @@ from univention.testing import utils
 from univention.testing.mail import MailSink, MailSinkGuard
 from univention.testing.network import NetworkRedirector
 
-from essential.mail import check_delivery, send_mail, set_mail_forward_copy_to_self_ucrv
+from essential.mail import check_delivery, make_token, send_mail, set_mail_forward_copy_to_self_ucrv
 
 
 TIMEOUT = 600  # in seconds
@@ -77,7 +77,7 @@ def send_and_check(user, sink_files, in_mail_sink, in_local):
             (user.mailAlternativeAddress, 'sending mail to mailAlternativeAddress'),
     ):
         print('*** %s' % (msg,))
-        token = f'token: {str(time.time())!r}'
+        token = make_token()
         send_mail(
             recipients=addr,
             msg=token,

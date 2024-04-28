@@ -3,19 +3,19 @@
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
+
 import smtplib
-import time
 
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 from univention.testing import utils
 
-from essential.mail import send_mail
+from essential.mail import make_token, send_mail
 
 
 def check_sending_mail(username, password, recipient_email, should_be_accepted):
-    token = str(time.time())
+    token = make_token()
     try:
         ret_code = send_mail(recipients=recipient_email, msg=token, tls=True, username=username, password=password)
         if bool(ret_code) == should_be_accepted:

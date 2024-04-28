@@ -18,7 +18,7 @@ from univention.testing import utils
 from univention.testing.mail import MailSink
 from univention.testing.network import NetworkRedirector
 
-from essential.mail import check_delivery, send_mail
+from essential.mail import check_delivery, make_token, send_mail
 
 
 TIMEOUT = 60  # sec
@@ -105,7 +105,7 @@ def main():
 
                 wait_for_dns(hosts)
                 for i, mail in enumerate(mails_list):
-                    token = str(time.time())
+                    token = make_token()
                     send_mail(
                         recipients=mail,
                         msg=token,
