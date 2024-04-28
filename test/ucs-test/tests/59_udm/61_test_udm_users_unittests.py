@@ -416,8 +416,7 @@ class TestUsers:
         expiry_interval = 7
         pwhistory = udm.create_object('policies/pwhistory', name='pw-test', expiryInterval=expiry_interval)
         cn = udm.create_object('container/cn', name='testusers', policy_reference=pwhistory)
-        expiry = int(time.time())
-        password_end = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
+        password_end = f"{datetime.utcnow():%Y%m%d}000000Z"
         # password_end_policy = time.strftime("%Y%m%d000000Z", time.gmtime(expiry + expiry_interval * 3600 * 24))
         self._test_modlist(udm, {'pwdChangeNextLogin': '1'}, {'krb5PasswordEnd': [password_end]})
         self._test_modlist(udm, {'pwdChangeNextLogin': '0', 'password': 'univention2'}, {'krb5PasswordEnd': []})

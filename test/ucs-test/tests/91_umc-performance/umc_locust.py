@@ -8,7 +8,6 @@ import logging
 import os
 import socket
 import subprocess
-from time import time
 
 import requests.packages.urllib3.util.connection as urllib3_cn
 import urllib3
@@ -39,7 +38,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 @events.init.add_listener
 def on_locust_init(environment, **_kwargs):
     environment.stats.use_response_times_cache = True
-    JmeterListener(environment, results_filename=f"/root/results_{datetime.datetime.fromtimestamp(time()).strftime('%Y_%m_%d_%H_%M_%S')}.csv")
+    JmeterListener(environment, results_filename=f"/root/results_{datetime.datetime.now():%Y_%m_%d_%H_%M_%S}.csv")
 
 
 @events.test_start.add_listener

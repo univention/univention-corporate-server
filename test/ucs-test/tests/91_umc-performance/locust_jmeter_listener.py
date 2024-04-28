@@ -12,7 +12,6 @@ import csv
 import os
 from datetime import datetime
 from pathlib import Path
-from time import time
 
 from locust.runners import WorkerRunner
 
@@ -51,7 +50,7 @@ class JmeterListener:
         self.flush_size = flush_size
         if not results_filename:
             # results filename format
-            self.results_filename = f"results_{datetime.fromtimestamp(time()).strftime('%Y_%m_%d_%H_%M_%S')}.csv"
+            self.results_filename = f"results_{datetime.now():%Y_%m_%d_%H_%M_%S}.csv"
             self.results_filename = os.path.join(
                 os.path.dirname(env.parsed_options.csv_prefix),
                 'jmeter',
@@ -112,7 +111,7 @@ class JmeterListener:
         self.results_file.close()
 
     def add_result(self, success, _request_type, name, response_time, response_length, exception, **kw):
-        timestamp = datetime.fromtimestamp(time()).strftime(self.timestamp_format)
+        timestamp = datetime.now().strftime(self.timestamp_format)
         response_message = 'OK' if success == 'true' else 'KO'
         # check to see if the additional fields have been populated. If not, set to a default value
         status_code = kw.get('status_code', '0')
