@@ -1,3 +1,10 @@
+ucs-test (10.0.21-35) unstable; urgency=medium
+
+  * Issue #2186: restart umc before tests
+    in 86_browser/132_miscellaneous_open_all_modules.py
+
+ -- Felix Botner <botner@univention.de>  Mon, 29 Apr 2024 16:09:55 +0200
+
 ucs-test (10.0.21-34) unstable; urgency=medium
 
   * Issue #2186: close brower after test
