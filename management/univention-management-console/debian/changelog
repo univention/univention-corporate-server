@@ -1,3 +1,9 @@
+univention-management-console (14.0.15) unstable; urgency=medium
+
+  * Bug #57163: do not setup simplesamlphp with a 5.2 primary
+
+ -- Felix Botner <botner@univention.de>  Mon, 29 Apr 2024 10:19:14 +0200
+
 univention-management-console (14.0.14) unstable; urgency=medium
 
   * Bug #56793: fix pam template

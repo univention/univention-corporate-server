@@ -59,7 +59,7 @@ Depends:
  pam-saml,
  python3-univention-lib,
  python3-univention-management-console (= ${source:Version}),
- shell-univention-lib (>= 1.0.10-1),
+ shell-univention-lib (>= 9.0.18-2),
  univention-base-files,
  univention-directory-manager-tools (>> 7.0.147),
  ${misc:Depends},
