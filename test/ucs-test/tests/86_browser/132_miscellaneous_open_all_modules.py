@@ -9,6 +9,8 @@
 ## join: true
 ## exposure: dangerous
 
+import subprocess
+import time
 from pathlib import Path
 
 import pytest
@@ -38,8 +40,15 @@ def logged_in_umc_browser_test(umc_browser_test_module: UMCBrowserTest):
     return umc_browser_test_module
 
 
+@pytest.fixture(scope='module')
+def restart_umc():
+    print('Restarting UMC')
+    subprocess.run(['deb-systemd-invoke', 'restart', 'univention-management-console-server'], check=True)
+    time.sleep(5)
+
+
 @pytest.mark.parametrize('module_name', get_all_modules())
-def test_open_all_modules(logged_in_umc_browser_test: UMCBrowserTest, module_name, ucr):
+def test_open_all_modules(restart_umc: None, logged_in_umc_browser_test: UMCBrowserTest, module_name, ucr):
     page: Page = logged_in_umc_browser_test.page
     try:
         expect(page.get_by_role('button', name=_('Favorites'))).to_be_visible(

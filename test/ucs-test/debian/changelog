@@ -1,4 +1,11 @@
-ucs-test (11.0.37) unstable; urgency=medium
+ucs-test (11.0.36) unstable; urgency=medium
+
+  * Issue #2186: restart umc before tests
+    in 86_browser/132_miscellaneous_open_all_modules.py
+
+ -- Felix Botner <botner@univention.de>  Thu, 02 May 2024 13:11:26 +0200
+
+ucs-test (11.0.35) unstable; urgency=medium
 
   * Issue #2186: give 83_self_service.11_test_frontend_translations.py
     a bit more time to check the labels
