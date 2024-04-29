@@ -11,112 +11,101 @@
 ## - domaincontroller_slave
 ## - memberserver
 
-# shellcheck disable=SC1091
+# shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
-# shellcheck disable=SC2154
-admin_account="$(echo "$tests_domainadmin_account" | sed -e 's|uid=||;s|,.*||')"
-# shellcheck disable=SC2154
-admin_passwd="$tests_domainadmin_pwd"
+
+admin="$(echo "${tests_domainadmin_account:?}" | sed -e 's|uid=||;s|,.*||')%${tests_domainadmin_pwd:?}"
 
 declare -a files_to_remove
 declare -a drivers_to_remove
-driver_dir="/var/lib/samba/drivers/x64"
+driver_dir='/var/lib/samba/drivers/x64'
 
 cleanup () {
+	for driver in "${drivers_to_remove[@]}"; do
+		rpcclient -U "$admin" localhost -c "deldriverex $driver" || :
+	done
 	for file in "${files_to_remove[@]}"; do
 		rm -f "$driver_dir/3/$file"
 		rm -f "$driver_dir/$file"
 	done
-	for driver in "${drivers_to_remove[@]}"; do
-		rpcclient -U "$admin_account%$admin_passwd" localhost -c "deldriverex $driver"
-	done
 }
 trap cleanup INT TERM EXIT
 
-upload_driver_file () {
-	local tmp_file
-	tmp_file="$(su "$admin_account" -c "mktemp")"
-	cd /tmp || fail_fast 1 "cd /tmp failed"
-	tmp_file="$(basename "$tmp_file")"
-	smbclient "//$(hostname)/print\$" -U "$admin_account%$admin_passwd" -c "prompt; put $tmp_file x64/$tmp_file" || fail_fast 1 "smbclient failed"
-	echo "$tmp_file"
+cleanup
+
+_add () {  # <suffix> [<direct-path>]
+	local dst="${2:-${driver_name:?}-${1:?}}"
+	[ -n "${2:-}" ] ||
+		smbclient "//$(hostname)/print\$" -U "$admin" -c "put /etc/hostname x64/${dst}" ||
+		fail_fast 1 "smbclient failed"
+	files_to_remove+=("$dst")
+	settings+=("$dst")
 }
 
 upload_printer_driver () {
-	local driver_file="$1" driver_name data_file config_file help_file
+	local driver="${1##*/}"
 	driver_name="test-driver-$(makepasswd)"
-	data_file="$(upload_driver_file)"
-	config_file="$(upload_driver_file)"
-	help_file="$(upload_driver_file)"
-	local driver_settings="$driver_name"
-	driver_settings+=":$(basename "$driver_file")"
-	driver_settings+=":$(basename "$data_file")"
-	driver_settings+=":$(basename "$config_file")"
-	driver_settings+=":$(basename "$help_file")"
-	driver_settings+=":"
-	driver_settings+=":RAW:"
-	files_to_remove+=("$driver_dir/$driver_file")
-	files_to_remove+=("$data_file")
-	files_to_remove+=("$config_file")
-	files_to_remove+=("$help_file")
+	declare -a settings=("$driver_name")
+	_add driver "$driver"
+	_add data
+	_add config
+	_add help
+	: _add lang-mon
+	settings+=('' RAW '')
+	local IFS=':'
 	rpcclient \
-		-U "$admin_account%$admin_passwd" localhost \
-		-c "adddriver 'Windows x64' '$driver_settings'" || fail_fast 1 "adddriver failed"
+		-U "$admin" localhost \
+		-c "adddriver 'Windows x64' '${settings[*]}'" || fail_fast 1 "adddriver failed"
 	drivers_to_remove+=("$driver_name")
 }
 
 check_driver_file () {
 	local driver_file="$1" md5sum="$2" md5sum_new
-	md5sum_new="$(md5sum "$driver_dir/3/$driver_file" | awk '{print $1}')"
-	if [ "$md5sum_new" = "$md5sum" ]; then
-		return 0
-	else
-		return 1
-	fi
+	md5sum_new="$(md5sum <"$driver_dir/3/$driver_file")"
+	[ "$md5sum_new" = "$md5sum" ]
 }
 
-rm -f "$driver_dir/MOIN.DLL"
-rm -f "$driver_dir/3/MOIN.DLL"
-rm -f "$driver_dir/moin.dll"
-rm -f "$driver_dir/3/moin.dll"
-
 # this should work
-echo "version1" > "$driver_dir/MOIN.DLL"
-chown "$admin_account" "$driver_dir/MOIN.DLL"
-md5sum_1="$(md5sum "$driver_dir/MOIN.DLL" | awk '{print $1}')"
-upload_printer_driver "MOIN.DLL"
+FN="$driver_dir/MOIN.DLL"
+echo "version1" >"$FN"
+chown "${admin%%%*}" "$FN"
+md5sum_1="$(md5sum <"$FN")"
+upload_printer_driver "$FN"
 check_driver_file MOIN.DLL "$md5sum_1" || fail_fast 1 "driver file checksum mismatch in download area"
-rm -f "$driver_dir/MOIN.DLL"
+rm -f "$FN"
 
 # check that this file is not uploaded
-echo "version2" > "$driver_dir/moin.dll"
-chown "$admin_account" "$driver_dir/moin.dll"
-touch -a -m -d "-20days" "$driver_dir/moin.dll"
-upload_printer_driver "moin.dll"
+FN="$driver_dir/moin.dll"
+echo "version2" >"$FN"
+chown "${admin%%%*}" "$FN"
+touch -a -m -d "-20days" "$FN"
+upload_printer_driver "$FN"
 check_driver_file MOIN.DLL "$md5sum_1" || fail_fast 1 "driver file checksum mismatch in download area, driver overwritten?"
 test -e "$driver_dir/3/moin.dll" && fail_fast 1 "driver file exist but shouldn't"
-rm -f "$driver_dir/moin.dll"
+rm -f "$FN"
 
 # check that this file is upload (modify time is older than the first file)
 # and MOIN.DLL is overwritten
-echo "version3" > "$driver_dir/moin.dll"
-chown "$admin_account" "$driver_dir/moin.dll"
-touch -a -m -d "+10days" "$driver_dir/moin.dll"
-md5sum_3="$(md5sum "$driver_dir/moin.dll" | awk '{print $1}')"
-upload_printer_driver "moin.dll"
+FN="$driver_dir/moin.dll"
+echo "version3" >"$FN"
+chown "${admin%%%*}" "$FN"
+touch -a -m -d "+10days" "$FN"
+md5sum_3="$(md5sum <"$FN")"
+upload_printer_driver "$FN"
 check_driver_file MOIN.DLL "$md5sum_3" || fail_fast 1 "driver not overwritten, but should be"
-! test -e "$driver_dir/3/moin.dll" || fail_fast 1 "driver file exists, but shouldn't"
-rm -f "$driver_dir/moin.dll"
+test -e "$driver_dir/3/moin.dll" && fail_fast 1 "driver file exists, but shouldn't"
+rm -f "$FN"
 
 # and again
-echo "version4" > "$driver_dir/moin.DLL"
-chown "$admin_account" "$driver_dir/moin.DLL"
-touch -a -m -d "+20days" "$driver_dir/moin.DLL"
-md5sum_4="$(md5sum "$driver_dir/moin.DLL" | awk '{print $1}')"
-upload_printer_driver "moin.DLL"
+FN="$driver_dir/moin.DLL"
+echo "version4" >"$FN"
+chown "${admin%%%*}" "$FN"
+touch -a -m -d "+20days" "$FN"
+md5sum_4="$(md5sum <"$FN")"
+upload_printer_driver "$FN"
 check_driver_file MOIN.DLL "$md5sum_4" || fail_fast 1 "driver not overwritten, but should be"
-! test -e "$driver_dir/3/moin.DLL" || fail_fast 1 "driver file exists, but shouldn't"
-! test -e "$driver_dir/3/moin.dll" || fail_fast 1 "driver file exists, but shouldn't"
-rm -f "$driver_dir/moin.DLL"
+test -e "$driver_dir/3/moin.DLL" && fail_fast 1 "driver file exists, but shouldn't"
+test -e "$driver_dir/3/moin.dll" && fail_fast 1 "driver file exists, but shouldn't"
+rm -f "$FN"
 
 exit "$RETVAL"
