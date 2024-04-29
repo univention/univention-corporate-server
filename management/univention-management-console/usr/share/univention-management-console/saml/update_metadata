@@ -33,14 +33,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import json
-import subprocess
 import sys
 
-from ldap.dn import escape_dn_chars
 from saml2.metadata import create_metadata_string
-
-from univention.config_registry import ucr
 
 
 metadata = create_metadata_string('/usr/share/univention-management-console/saml/sp.py', None, valid=None, cert=None, keyfile=None, mid=None, name=None, sign=False)
@@ -50,21 +45,3 @@ if not metadata:
 # write file for below and for the joinscript
 with open('/usr/share/univention-management-console/saml/sp/metadata.xml', 'wb') as fd:
     fd.write(metadata)
-
-entity_id = f'https://{ucr["hostname"]}.{ucr["domainname"]}/univention/saml/metadata'
-subprocess.check_call([
-    'univention-directory-manager', 'saml/serviceprovider', 'modify'] + sys.argv[1:] + [
-    '--dn', f'SAMLServiceProviderIdentifier={escape_dn_chars(entity_id)},cn=saml-serviceprovider,cn=univention,{ucr["ldap/base"]}',
-    '--set', 'assertionLifetime=%d' % ucr.get_int('umc/saml/assertion-lifetime', 300),
-    '--set', 'serviceProviderMetadata=%s' % (metadata.decode('UTF-8'),),
-])
-# ignore failure, keycloak might not yet be installed or this is the first time and the entry doesn't yet exists in keycloak (added later by the joinscript)
-subprocess.call([
-    'univention-keycloak',
-    'saml/sp',
-    'update',
-    '--metadata-file',
-    '/usr/share/univention-management-console/saml/sp/metadata.xml',
-    entity_id,
-    json.dumps({'attributes': {'saml.assertion.lifespan': ucr.get_int('umc/saml/assertion-lifetime', 300)}}),
-])

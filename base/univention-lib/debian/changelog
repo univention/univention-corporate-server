@@ -1,3 +1,9 @@
+univention-lib (10.0.8) unstable; urgency=medium
+
+  * Bug #57163: add helper to check what kind of saml setup we need
+
+ -- Felix Botner <botner@univention.de>  Mon, 29 Apr 2024 10:34:18 +0200
+
 univention-lib (10.0.7) unstable; urgency=medium
 
   * Bug #56604: remove workarounds for Python 2 compatibility

@@ -37,6 +37,30 @@ import subprocess
 from typing import Optional  # noqa: F401
 
 from univention.config_registry import ConfigRegistry
+from univention.lib.ucs import UCS_Version
+from univention.uldap import getMachineConnection
+
+
+def primaryVersionGreaterEqual(version):
+    # type: (str) -> bool
+    """
+    Returns True if UCS_Version of primary is greater or equal to given version.
+
+    :param UCS_Version version: the UCS version to check
+    :returns: True if UCS version of primary is greater or equal version
+    :rtype: bool
+    """
+    version = UCS_Version(version)
+    lo = getMachineConnection()
+    # TODO is this enough to search for the primary, or do we need cn=ucr[ldap/master]?
+    res = lo.search('univentionObjectType=computers/domaincontroller_master')
+    if len(res) != 1:
+        return False
+    primary_version = res[0][1].get('univentionOperatingSystemVersion')
+    if not primary_version:
+        return False
+    primary_version = UCS_Version(primary_version[0].decode('UTF-8'))
+    return primary_version >= version
 
 
 def createMachinePassword():

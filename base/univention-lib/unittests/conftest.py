@@ -31,6 +31,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import sys
+from unittest.mock import MagicMock
+
 import pytest
 from univentionunittests import import_module
 
@@ -71,6 +74,8 @@ def locking(request):
 
 @pytest.fixture(scope='session')
 def misc(request):
+    sys.modules['univention.uldap'] = MagicMock()
+    import_lib_module(request, 'ucs')
     return import_lib_module(request, 'misc')
 
 
