@@ -26,7 +26,7 @@ DEPENDS = {
     "developer-reference": {"app-center", "architecture", "manual"},
     "ext-domain": {"manual"},
     "ext-networks": {"manual"},
-    "ext-performance": {"manual"},
+    "ext-performance": {"manual", "developer-reference"},
     "ext-windows": {"manual"},
     "manual": {"developer-reference cycle"},
     "quickstart": {"manual", "ext-domain", "ext-installation"},

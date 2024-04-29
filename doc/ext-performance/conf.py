@@ -177,6 +177,7 @@ univention_use_doc_base = True
 
 intersphinx_mapping = {
     "uv-manual": ref("manual"),
+    "uv-dev-ref": ref("developer-reference"),
 }
 
 # See Univention Sphinx Extension for its options.
