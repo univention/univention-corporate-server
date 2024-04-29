@@ -6,10 +6,16 @@
 ## exposure: safe
 ## packages:
 ##  - univention-nagios-client
+
+# shellcheck disable=SC2317
+
 set -e -u
 
 have () {
 	command -v "$1" >/dev/null 2>&2
+}
+is_running () {
+	[ "$(systemctl show -p SubState --value "$1")" = running ]
 }
 
 cond_check_univention_winbind_suidwrapper () {
@@ -18,6 +24,9 @@ cond_check_univention_winbind_suidwrapper () {
 cond_check_univention_ldap_suidwrapper () {
 	have slapd
 }
+cond_check_univention_s4_connector_suidwrapper () {
+	have univention-s4-connector && is_running univention-s4-connector.service
+}
 eval_check_univention_s4_connector_suidwrapper () {
 	local rc=0
 	"$@" || rc="$?"
@@ -25,6 +34,11 @@ eval_check_univention_s4_connector_suidwrapper () {
 	0|1|2|3) rc=0 ;;
 	esac
 	return "$rc"
+}
+cond_check_univention_ad_connector_suidwrapper () {
+	have univention-ad-connector &&
+		is_running univention-ad-connector.service &&
+		[ -n "$(ucr get "${configbase:-connector}/ad/ldap/host")" ]
 }
 
 rc=0
