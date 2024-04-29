@@ -1,3 +1,9 @@
+ucs-test (10.0.21-41) unstable; urgency=medium
+
+  * Issue #2207: test keycloak REST endpoints
+
+ -- Felix Botner <botner@univention.de>  Tue, 07 May 2024 12:57:37 +0200
+
 ucs-test (10.0.21-40) unstable; urgency=low
 
   * Bug #57193: Search for missing OpenLDAP indexes
