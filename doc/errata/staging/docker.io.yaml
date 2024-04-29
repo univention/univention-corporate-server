@@ -3,7 +3,7 @@ release: "5.0"
 version: [6, 7]
 scope: ucs_5.0-0-errata5.0-7
 src: docker.io
-fix: 20.10.21-0ubuntu1~20.04.2A~5.0.0.202404291519
+fix: 20.10.21-0ubuntu1~20.04.2A~5.0.0.202404291605
 desc: |
  This update addresses the following issues:
  * Docker cli information disclosure on misconfiguration (CVE-2021-41092)
