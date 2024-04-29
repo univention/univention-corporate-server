@@ -215,6 +215,84 @@ A script can be downloaded from
 which suggests corresponding values based on the objects currently included in
 the system.
 
+.. _initial-user-provisioning:
+
+***********************************************************
+Performance during initial provisioning of users and groups
+***********************************************************
+
+There are several ways in which you can provision users and groups into UCS.
+Each method has its own performance implications and use cases.
+Especially for large environments it's important that you choose an efficient method.
+
+The following recommendations can improve performance when creating large
+numbers of users and adding them to groups:
+
+#. Use the *UDM Python library* in case you can do the provisioning locally on the UCS system.
+
+   Use the :external+uv-dev-ref:ref:`udm-rest-api` to provision users and groups to a remote UCS system.
+
+   It isn't recommended to use the UDM command line interface,
+   because it's significantly slower than the previously mentioned options.
+
+#. Create the users first and then the groups.
+   This prevents unnecessary LDAP operations,
+   because after the creation of the users, LDAP only needs to update the groups one time.
+
+#. For the duration of the provisioning,
+   deactivate the automatic update of the primary group, typically ``Domain Users``,
+   when you create or remove a user.
+   Set the |UCSUCR| variable :envvar:`directory/manager/user/primarygroup/update` to ``false``.
+
+You can use the following example as a guide for using the *UDM Python library*:
+
+.. code-block:: python
+
+    #!/usr/bin/python3
+
+    from univention.admin import modules, uldap
+    from univention.config_registry import ucr
+
+
+    lo, position = uldap.getAdminConnection()
+    base = ucr['ldap/base']
+
+    modules.update()
+
+    users = modules.get('users/user')
+    modules.init(lo, position, users)
+
+    groups = modules.get('groups/group')
+    modules.init(lo, position, groups)
+
+    def create_user(name):
+        position.setDn('cn=users,%s' % (base,))
+        user = users.lookup(None, lo, "uid=%s" % name)
+        if not user:
+            user = users.object(None, lo, position)
+            user.open()
+            user["lastname"] = name
+            user["firstname"] = name
+            user["password"] = "univention"
+            user["username"] = name
+            user.create()
+
+    def create_group(name, members=None):
+        """
+        Parameters:
+            name (str): name of the group
+            members (list[str]): list of user DNs
+        """
+        position.setDn('cn=groups,%s' % (base,))
+        group = groups.lookup(None, lo, "cn=%s" % name)
+        if not group:
+            group = groups.object(None, lo, position)
+            group.open()
+            group["name"] = name
+            if members:
+                group["users"] = members
+            group.create()
+
 .. _join:
 
 ******************************************
