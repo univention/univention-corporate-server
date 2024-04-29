@@ -1,3 +1,9 @@
+ucs-test (12.0.73) unstable; urgency=medium
+
+  * Issue #2207: test keycloak REST endpoints
+
+ -- Felix Botner <botner@univention.de>  Tue, 07 May 2024 13:26:30 +0200
+
 ucs-test (12.0.72) unstable; urgency=medium
 
   * Issue #209: translate error message in test_legacy_authorization_oidc
