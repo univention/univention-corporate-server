@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: util-linux
+fix: 2.29.2-1+deb9u2
+desc: |
+ This update addresses the following issue:
+ 2.29.2-1+deb9u2 (Fri, 26 Apr 2024 12:35:31 +0100)
+ * Non-maintainer upload by the Debian ELTS team. - CVE-2021-37600:
+   sys-utils/ipcutils: be careful when call calloc() for uint64 nmembs
+ * Remove existing debian/gbp.conf.
+ * Add debian/.gitlab-ci.yml and allow piuparts failures.
+bug: [57241]
+cve:
+- CVE-2021-37600
