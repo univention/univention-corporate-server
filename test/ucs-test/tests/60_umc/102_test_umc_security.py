@@ -27,7 +27,7 @@ class TestSecurityHeaders:
         assert response.get_header("X-Frame-Options") is None  # changed from: == "SAMEORIGIN"
         sso = 'https://%(ucs/server/sso/fqdn)s/ http://%(ucs/server/sso/fqdn)s/ https://%(keycloak/server/sso/fqdn)s/ http://%(keycloak/server/sso/fqdn)s/' % defaultdict(lambda: '', ucr)
         sso = sso.replace('http:///', '').replace('https:///', '').strip()
-        assert response.get_header("Content-Security-Policy") == "default-src 'self' 'unsafe-inline' 'unsafe-eval' %s  https://www.piwik.univention.de/ ; frame-ancestors 'self';" % sso
+        assert response.get_header("Content-Security-Policy") == "default-src 'self' 'unsafe-inline' 'unsafe-eval' %s  %s ; frame-ancestors 'self';" % (sso, "https://www.piwik.univention.de/" if ucr.is_true("umc/web/piwik", True) else "")
 
         assert response.get_header("X-Permitted-Cross-Domain-Policies") == "master-only"
         assert response.get_header("X-XSS-Protection") == "1; mode=block"
