@@ -6,11 +6,11 @@ src: util-linux
 fix: 2.29.2-1+deb9u2
 desc: |
  This update addresses the following issue:
- 2.29.2-1+deb9u2 (Fri, 26 Apr 2024 12:35:31 +0100)
- * Non-maintainer upload by the Debian ELTS team. - CVE-2021-37600:
-   sys-utils/ipcutils: be careful when call calloc() for uint64 nmembs
- * Remove existing debian/gbp.conf.
- * Add debian/.gitlab-ci.yml and allow piuparts failures.
+ * CVE-2021-37600: An integer overflow in util-linux can potentially cause a
+   buffer overflow if an attacker were able to use system resources in a way
+   that leads to a large number in the `/proc/sysvipc/sem` file. NOTE: this is
+   unexploitable in GNU C Library environments, and possibly in all realistic
+   environments.
 bug: [57241]
 cve:
 - CVE-2021-37600
