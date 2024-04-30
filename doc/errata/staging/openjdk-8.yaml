@@ -6,59 +6,13 @@ src: openjdk-8
 fix: 8u412-ga-1~deb9u1
 desc: |
  This update addresses the following issues:
- 8u412-ga-1~deb9u1 (Fri, 26 Apr 2024 12:53:17 +0200)
- * Backport to stretch.
- * Re-enable test suite.
- 8u412-ga-1 (Tue, 23 Apr 2024 01:10:58 +0200)
- * New upstream release
- * CVEs - CVE-2024-21011 - CVE-2024-21085 - CVE-2024-21068 - CVE-2024-21094
- * Security fixes - JDK-8317507, JDK-8325348: C2 compilation fails with
-   "Exceeded _node_regs array" - JDK-8318340: Improve RSA key implementations
-   - JDK-8319851: Improve exception logging - JDK-8322114: Improve Pack 200
-   handling - JDK-8322122: Enhance generation of addresses
- * Other changes see
-   https://mail.openjdk.org/pipermail/jdk8u-dev/2024-April/018329.html
- * Upload sponsored by QVEST ⮡ dıgıtal
- * Re-enable running tests by default except on noble/i386 (lacks prereqs)
- * Switch from pkg-config to pkgconf for bookworm/mantic+ (lintian)
- 8u402-ga-8 (Sat, 06 Apr 2024 17:27:18 +0200)
- * Boostrap with jdk-headless
- * Add patch to switch dlsym use to time_t-64 functions if needed
- 8u402-ga-7 (Tue, 02 Apr 2024 17:03:49 +0200)
- * Remove jexec from jinfo to fix update-java-alternatives (LP#2059181)
- 8u402-ga-6 (Sun, 24 Mar 2024 22:47:14 +0100)
- * Build without tests for t64 transition
- 8u402-ga-5 (Tue, 19 Mar 2024 22:43:33 +0100)
- * Switch noble also to libcups2t64
- 8u402-ga-4 (Thu, 14 Mar 2024 21:33:20 +0100)
- * Switch to a different “random small arch:all package existing only in
-   Debian” for the cups t64 divide check, due to #805988
- 8u402-ga-3 (Wed, 13 Mar 2024 22:46:46 +0100)
- [ Vladimir Petko ]
- * Unbreak installability with missing /usr/share/binfmts
- [ Thorsten Glaser, Vladimir Petko ]
- * Fix coïnstallability for real on focal, jammy, mantic where
-   libatk-wrapper-java-jni:i386 does not exist, by making its absence at
-   run-time into a warning for *only* i386 on affected releases (pre-focal,
-   noble+, Debian aren’t affected)
- , LP#1916327, LP#2053110
- [ Thorsten Glaser ]
- * Update dlopen dependencies for t64 transition: - libcups2 → libcups2t64 for
-   trixie+ (and >noble?) - libglib2.0-0 → libglib2.0-0t64 for trixie+ and
-   noble+ - libgtk2.0-0 → libgtk2.0-0t64 for trixie+ and noble+
- * Adjust bd_syslibs to ensure right side of the t64 divide
- 8u402-ga-2 (Wed, 31 Jan 2024 06:05:28 +0100)
- * d/rules reliability fixes and extra checks
- * Patch OpenJDK to pass errorlevel when configure fails
- * Show config.log if present in such cases
- * Do not install jexec alternative any more (unlike newer versions it cannot
-   run just any JAR), drop .jar binfmt registration with it (LP#1775785);
-   please use jarwrapper
- * Restore M-A installability of focal/i386 package (LP#1916327) by adding
-   xenial, bionic, focal, jammy to the list of releases built with the ATK
-   bridge, but not enabling it by default; keep jessie on, stretch and sid and
-   mantic/noble off the list: please report bugs for issues with the bridge,
-   so sthibault can find, debug, fix them
+ * Vulnerability that allows unauthenticated attacker with network access via
+   multiple protocols to compromise Oracle Java SE, Oracle GraalVM for JDK,
+   Oracle GraalVM Enterprise Edition. Successful attacks of this vulnerability
+   can result in unauthorized ability to cause a partial denial of service
+   (partial DOS) or unauthorized update, insert or delete access to data of
+   Oracle Java SE, Oracle GraalVM for JDK, Oracle GraalVM Enterprise Edition.
+   (CVE-2024-21011, CVE-2024-21068, CVE-2024-21094, CVE-2024-21085)
 bug: [57240]
 cve:
 - CVE-2024-21011
