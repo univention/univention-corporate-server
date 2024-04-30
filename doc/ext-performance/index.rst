@@ -267,8 +267,10 @@ You can use the following example as a guide for using the *UDM Python library*:
 
     def create_user(name):
         position.setDn('cn=users,%s' % (base,))
-        user = users.lookup(None, lo, "uid=%s" % name)
-        if not user:
+        res = users.lookup(None, lo, "uid=%s" % name)
+        if res:
+            user = res[0]
+        else:
             user = users.object(None, lo, position)
             user.open()
             user["lastname"] = name
@@ -276,22 +278,38 @@ You can use the following example as a guide for using the *UDM Python library*:
             user["password"] = "univention"
             user["username"] = name
             user.create()
+        return user.dn
 
-    def create_group(name, members=None):
+    def create_or_modify_group(name, members=None):
         """
         Parameters:
             name (str): name of the group
             members (list[str]): list of user DNs
         """
         position.setDn('cn=groups,%s' % (base,))
-        group = groups.lookup(None, lo, "cn=%s" % name)
-        if not group:
+        res = groups.lookup(None, lo, "cn=%s" % name)
+        if res and members:
+            group = res[0]
+            group.open()
+            group["users"].extend(members)
+            group.modify()
+        else:
             group = groups.object(None, lo, position)
             group.open()
             group["name"] = name
             if members:
                 group["users"] = members
             group.create()
+
+    username_list = ["exampleuser1", "exampleuser2"]
+    userdn_list = []
+    for name in username_list:
+        userdn = create_user(name)
+        if userdn:
+            userdn_list.append(userdn)
+
+    if userdn_list:
+        create_or_modify_group("examplegroup1", userdn_list)
 
 .. _join:
 
