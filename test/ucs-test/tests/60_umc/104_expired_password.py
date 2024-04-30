@@ -12,7 +12,7 @@ from ldap.filter import filter_format
 
 from univention.lib.umc import Unauthorized
 from univention.testing import utils
-from univention.testing.ucs_samba import wait_for_drs_replication, wait_for_s4connector_replication
+from univention.testing.ucs_samba import wait_for_drs_replication
 
 
 # TODO: test detection of expired password + account disabled + both
@@ -56,7 +56,7 @@ class TestPwdChangeNextLogin:
         if samba4_installed:
             utils.wait_for_connector_replication()
             wait_for_drs_replication(filter_format('sAMAccountName=%s', [username]))
-            wait_for_s4connector_replication()
+            utils.wait_for_s4connector_replication()
         client = Client(language='en-US')
         with pytest.raises(Unauthorized) as msg:
             client.authenticate(username, password)
