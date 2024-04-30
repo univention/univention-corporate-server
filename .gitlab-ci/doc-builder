@@ -50,6 +50,10 @@ pipeline: dict[str, object] = {
                 "changes": all_paths,
                 "when": "manual",
             },
+            {
+                "if": '$CI_COMMIT_REF_PROTECTED == "false" || $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "webide"',
+                "changes": all_paths,
+            },
         ],
     },
     "docs-create-production-merge-request": {
