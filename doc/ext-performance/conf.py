@@ -56,9 +56,6 @@ def ref(name: str, *, lang: str = "en", ver: str = "") -> tuple[str, tuple[str |
     )
 
 
-# sys.path.insert(0, os.path.abspath('.'))
-
-
 # -- Project information -----------------------------------------------------
 
 project = 'Univention Corporate Server - Performance Guide'
