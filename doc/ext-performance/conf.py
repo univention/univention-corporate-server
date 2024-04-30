@@ -65,10 +65,8 @@ author = ''
 version = "5.0"
 # The full version, including alpha/beta/rc tags
 release = version
-
 html_show_copyright = True
 language = 'en'
-
 html_title = project
 
 # -- General configuration ---------------------------------------------------
