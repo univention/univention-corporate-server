@@ -46,7 +46,7 @@ pipeline: dict[str, object] = {
         "extends": ".sphinx-merge-template",
         "rules": [
             {
-                "if": '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_PROTECTED || $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "webide"',
+                "if": '$CI_COMMIT_REF_PROTECTED == "true" || $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "webide"',
                 "changes": all_paths,
                 "when": "manual",
             },
@@ -59,7 +59,7 @@ pipeline: dict[str, object] = {
         ],
         "rules": [
             {
-                "if": '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_PROTECTED || $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "webide"',
+                "if": '$CI_COMMIT_REF_PROTECTED == "true" || $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "webide"',
                 "changes": all_paths,
             },
         ],
