@@ -55,7 +55,7 @@ pipeline: dict[str, object] = {
     "docs-create-production-merge-request": {
         "extends": ".sphinx-docs-merge-request-template",
         "needs": [
-            {"job": "docs-merge-to-one-artifact"}
+            {"job": "docs-merge-to-one-artifact"},
         ],
         "rules": [
             {
@@ -98,6 +98,7 @@ def job_desc(pkg: str, path: Path, extends: str, languages: list[str], depends: 
         SPECIAL.get(pkg, {}),
         DOCS_DIR=path.relative_to(ROOT).as_posix(),
         DOC_TARGET_NAME=path.name,
+        DOC_TARGET_PATH="$DOC_TARGET_NAME/$DOC_TARGET_VERSION/$language",
     )
     job: dict[str, object] = {
         "variables": variables,
