@@ -13,6 +13,10 @@ LOG = '/var/log/debug'
 IGNORE = {
     'aAAARecord',  # FIXME: pres,+eq: ../../../../management/univention-directory-manager-modules/modules/univention/admin/handlers/__init__.py:2300
     'memberOf', # FIXME: definitely keycloak, probably radius, maybe more ...
+    'msPrintAttributes',  # LOW: ../../../services/univention-s4-connector/modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:115
+    'msPrintServerName',  # LOW: ../../../services/univention-s4-connector/modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:116
+    'msPrintUNCName',  # LOW: ../../../services/univention-s4-connector/modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:117
+    'msPrinterName',  # LOW: ../../../services/univention-s4-connector/modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:118
     'name',  # FIXME: attribute 'name' SUP commonName surname countryName localityName stateOrProvinceName organizationName organizationalUnitName title givenName initials generationQualifier dmdName pseudonym ipServiceProtocol nisMapName nisDomain Solaris…
     'objectClass',  # IGN: pres,eq; temporal issue?
     'sambaLogonHours',  # LOW: only tested by ../../../../test/ucs-test/tests/59_udm/61_test_udm_users.py:52
