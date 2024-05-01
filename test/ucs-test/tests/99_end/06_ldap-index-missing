@@ -14,6 +14,7 @@ IGNORE = {
     'aAAARecord',  # FIXME: pres,+eq: ../../../../management/univention-directory-manager-modules/modules/univention/admin/handlers/__init__.py:2300
     'name',  # FIXME: attribute 'name' SUP commonName surname countryName localityName stateOrProvinceName organizationName organizationalUnitName title givenName initials generationQualifier dmdName pseudonym ipServiceProtocol nisMapName nisDomain Solaris…
     'objectClass',  # IGN: pres,eq; temporal issue?
+    'sambaLogonHours',  # LOW: only tested by ../../../../test/ucs-test/tests/59_udm/61_test_udm_users.py:52
     'SAMLServiceProviderIdentifier',  # LOW: only used ../../../../management/univention-management-console-module-diagnostic/umc/python/diagnostic/plugins/04_saml_certificate_check.py and ../../../../management/univention-management-console/usr/share/univention-management-console/saml/update_metadata and join scripts
     'uid',  # IGN: pres,eq,sub,approx
     'univentionAppID',  # FIXME: ../../management/univention-appcenter/python/appcenter/utils.py:636
