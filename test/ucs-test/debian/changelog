@@ -1,3 +1,9 @@
+ucs-test (12.0.66) unstable; urgency=low
+
+  * Bug #57193: Search for missing OpenLDAP indexes
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 01 May 2024 16:38:59 +0200
+
 ucs-test (12.0.65) unstable; urgency=medium
 
   * Issue #2020: expect only keycloak/server/sso/fqdn in
