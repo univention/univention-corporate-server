@@ -12,3 +12,6 @@ desc: |
    still in German. This is fixed now, and the same language is used
    everywhere.
 bug: [57192]
+erratum: 1033
+announced: 2024-05-02
+support: core
