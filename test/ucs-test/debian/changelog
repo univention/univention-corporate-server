@@ -1,3 +1,10 @@
+ucs-test (12.0.67) unstable; urgency=medium
+
+  * Issue #2186: give 83_self_service.11_test_frontend_translations.py
+    a bit more time to check the labels
+
+ -- Felix Botner <botner@univention.de>  Thu, 02 May 2024 13:21:32 +0200
+
 ucs-test (12.0.66) unstable; urgency=low
 
   * Bug #57193: Search for missing OpenLDAP indexes
