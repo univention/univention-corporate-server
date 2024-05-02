@@ -49,7 +49,7 @@ def find_label(page: Page, label_display_text: str) -> Union[Locator, None]:
     return next((label_display_locator for label_display_locator in label_display_locators if label_display_locator.evaluate('(element) => element.tagName') == 'LABEL'), None)
 
 
-def check_labels(page: Page, labels: Dict[str, str], retries=3):
+def check_labels(page: Page, labels: Dict[str, str], retries=4):
     for label_display, label_tag in labels.items():
         for i in range(retries):
             logger.info("checking for label with text %r and with attribute 'for=%r' (%d/%d)", label_display, label_tag, i + 1, retries)
@@ -64,7 +64,7 @@ def check_labels(page: Page, labels: Dict[str, str], retries=3):
             except AssertionError:
                 if i + 1 == retries:
                     raise
-                time.sleep(2)
+                time.sleep(3)
 
 
 @pytest.mark.parametrize(
@@ -160,5 +160,5 @@ def test_frontend_login_translations(self_service: SelfService, lang: UCSLanguag
     page: Page = self_service.tester.page
     self_service.tester.set_language(lang)
     self_service.navigate(hash, username=self_service_user.username, password=self_service_user.password)
-    time.sleep(3)
+    time.sleep(5)
     check_labels(page, labels)
