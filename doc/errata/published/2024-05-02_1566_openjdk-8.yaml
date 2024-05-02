@@ -19,3 +19,6 @@ cve:
 - CVE-2024-21085
 - CVE-2024-21068
 - CVE-2024-21094
+erratum: 1566
+announced: 2024-05-02
+support: lts
