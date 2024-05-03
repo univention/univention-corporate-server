@@ -64,10 +64,10 @@ basic_setup_allow_uss () {
 
 	_fix_grub56574
 	_fix_dns46993
+	_disable_apt
 
 	ucr set --force updater/identify="UCS (EC2 Test)"
-	ucr set update/check/cron/enabled=false update/check/boot/enabled=false mail/antispam/rules/autoupdate?yes server/password/cron='#0 1 * * *'
-	systemctl reload cron.service || true
+
 	sa_bug53751
 }
 
@@ -90,6 +90,16 @@ _fix_dns46993 () {  # Bug #46993: Use AmazonProvidedDNS/dnsmasq4kvm and remove O
 	)
 	ucr unset {nameserver,dns/forwarder}{1,2,3}
 	ucr set nameserver/external=false "${v[@]}"
+}
+
+_disable_apt () {
+	ucr set update/check/cron/enabled=false update/check/boot/enabled=false mail/antispam/rules/autoupdate?yes server/password/cron='#0 1 * * *'
+	systemctl reload cron.service || true
+
+	# Disable apt-daily.service running /usr/lib/apt/apt.systemd.daily
+	echo 'APT::Periodic::Enable 0;' >/etc/apt/apt.conf.d/90no-apt-daily.conf
+	[ -f /var/lib/apt/lists/lock ] || return 0
+	python3 -c 'import fcntl;lock=open("/var/lib/apt/lists/lock","r+");fcntl.lockf(lock.fileno(),fcntl.LOCK_EX)'
 }
 
 basic_setup () {
@@ -385,7 +395,7 @@ wait_for_setup_process () {
 	return 1
 }
 
-switch_app_center() {
+switch_app_center () {
 	if [ "$UCS_TEST_APPCENTER" = "true" ]; then
 		switch_to_test_app_center
 	elif [ "$(ucr get repository/app_center/server)" != "appcenter.software-univention.de" ]; then
@@ -400,7 +410,8 @@ switch_to_test_app_center () {
 	univention-install --yes univention-appcenter-dev
 	univention-app dev-use-test-appcenter
 	if [ -e /var/cache/appcenter-installed.txt ]; then
-		for app in $(< /var/cache/appcenter-installed.txt); do
+		for app in $(< /var/cache/appcenter-installed.txt)
+		do
 			if univention-app get "$app" DockerImage | grep -q ucs-appbox; then
 				# update appbox at this point
 				univention-app shell "$app" univention-upgrade --noninteractive --disable-app-updates
@@ -1222,7 +1233,7 @@ run_app_specific_test () {
 	return $rv
 }
 
-add_tech_key_authorized_keys() {
+add_tech_key_authorized_keys () {
 	install -m0755 -o0 -g0 -d /root/.ssh
 	echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKxi4dwmF9K7gV4JbQUmQ4ufRHcxYOYUHWoIRuj8jLmP1hMOqEmZ43rSRoe2E3xTNg+RAjwkX1GQmWQzzjRIYRpUfwLo+yEXtER1DCDTupLPAT5ulL6uPd5mK965vbE46g50LHRyTGZTbsh1A/NPD7+LNBvgm5dTo/KtMlvJHWDN0u4Fwix2uQfvCSOpF1n0tDh0b+rr01orITJcjuezIbZsArTszA+VVJpoMyvu/I3VQVDSoHB+7bKTPwPQz6OehBrFNZIp4zl18eAXafDoutTXSOUyiXcrViuKukRmvPAaO8u3+r+OAO82xUSQZgIWQgtsja8vsiQHtN+EtR8mIn tech' >>/root/.ssh/authorized_keys
 }
@@ -1486,16 +1497,19 @@ ucs-winrm () {
 }
 
 add_extra_apt_scope () {
-	[ -n "$SCOPE" ] ||
+	case "$SCOPE" in
+	'')
 		return 0
-
-	if [ "$(echo "$SCOPE" | cut -c1-5)" = "http:" ] || [ "$(echo "$SCOPE" | cut -c1-6)" = "https:" ]; then
+		;;
+	*://*)
 		# support: deb [trusted=yes] http://192.168.0.10/build2/git/fbest-12345-foo/ git main
-		echo "deb [trusted=yes] $SCOPE" > /etc/apt/sources.list.d/99_extra_scope.list
-	else
-		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/all/" > /etc/apt/sources.list.d/99_extra_scope.list
-		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/\$(ARCH)/" >> /etc/apt/sources.list.d/99_extra_scope.list
-	fi
+		echo "deb [trusted=yes] $SCOPE"
+		;;
+	*)
+		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/all/"
+		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/\$(ARCH)/"
+		;;
+	esac >/etc/apt/sources.list.d/99_extra_scope.list
 	apt-get update -qq || true  # ignore failure, univention-upgrade will do this as well
 }
 
@@ -1572,16 +1586,17 @@ change_template_hostname () {
 	univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 05univention-bind || rv=1
 
 	# update ucs-sso
-	if [ "$server_role" = "domaincontroller_backup" ]; then
+	case "$server_role" in
+	domaincontroller_backup)
 		systemctl stop nscd.service
 		univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 91univention-saml || rv=1
 		univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 92univention-management-console-web-server || rv=1
 		systemctl start nscd.service
-	fi
+		;;
+	esac
 
-	if [ -e "/usr/lib/univention-install/40ucs-school-import-http-api.inst" ]; then
+	[ -e "/usr/lib/univention-install/40ucs-school-import-http-api.inst" ] &&
 		univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts  40ucs-school-import-http-api
-	fi
 
 	rm -f /tmp/join_pwd
 
@@ -1599,20 +1614,19 @@ basic_setup_ucs_joined () {
 	ldap_base="$(ucr get ldap/base)"
 	domain="$(ucr get domainname)"
 
-	if [ "$server_role" = "domaincontroller_master" ]; then
+	case "$server_role" in
+	domaincontroller_master)
 		# sometimes univention-network-common.service fails on the
 		# primary for yet unknown reasons, make sure to update the ip address
 		local current_ip
 		current_ip="$(udm dns/host_record list --filter name="$(hostname)" | sed -n 's/^\W*a: //p')"
-		if [ -n "$current_ip" ] && [ "$current_ip" != "$masterip" ]; then
+		[ -n "$current_ip" ] && [ "$current_ip" != "$masterip" ] &&
 			/usr/sbin/univention-register-network-address --verbose
-		fi
-	fi
-
+		;;
+	*)
 	# TODO
 	#  ... recreate ssh keys ...
 	# fix ip on non-master systems
-	if [ "$server_role" != "domaincontroller_master" ]; then
 		ucr set "hosts/static/${masterip}=$(ucr get ldap/master)"
 		if [ "$(ucr get server/role)" = "memberserver" ]; then
 			ucr set nameserver1="$masterip"
@@ -1621,7 +1635,7 @@ basic_setup_ucs_joined () {
 		fi
 		ucr unset nameserver2
 		deb-systemd-invoke restart univention-directory-listener || rv=1
-		for i in $(seq 1 5); do
+		for ((i=1; i<=5; i++)); do
 			univention-register-network-address --verbose && urna_rv=0 && break
 			urna_rv=1
 			sleep 20
@@ -1630,7 +1644,8 @@ basic_setup_ucs_joined () {
 		echo $urna_rv
 
 		systemctl restart nscd.service || rv=1
-	fi
+		;;
+	esac
 
 	# get old ip TODO how to do it correctly?
 	old_ip="$(grep "set interfaces/eth0/address=" /var/log/univention/config-registry.replog | tail -1 | awk -F 'old:' '{print $2}')"
@@ -1639,14 +1654,16 @@ basic_setup_ucs_joined () {
 	fi
 
 	# fix ucs-sso
-	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+	case "$server_role" in
+	domaincontroller_master|domaincontroller_backup)
 		local sso_fqdn sso_hostname
 		sso_fqdn="$(ucr get ucs/server/sso/fqdn)"
 		sso_hostname="${sso_fqdn%%.*}"
 		[ -n "$old_ip" ] && udm dns/host_record modify \
 			--dn "relativeDomainName=$sso_hostname,zoneName=$domain,cn=dns,$ldap_base" \
 			--remove a="$old_ip"
-	fi
+		;;
+	esac
 
 	# fix samba/dns settings on samba DC's
 	# hacky approach, save the old ip addresses during template creation
@@ -1688,10 +1705,12 @@ basic_setup_ucs_joined () {
 			fi
 		fi
 	fi
-	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+	case "$server_role" in
+	domaincontroller_master|domaincontroller_backup)
 		# Flush old ip's from bind
 		/usr/sbin/rndc retransfer "$(hostname -d)."
-	fi
+		;;
+	esac
 
 	return $rv
 }
@@ -1713,7 +1732,7 @@ set_env_variables_from_env_file () {
 	return 0
 }
 
-copy_test_data_cache() {
+copy_test_data_cache () {
 	univention-install -y sshpass
 	local root_password="${1:?missing root password}" ip
 	shift
@@ -1762,7 +1781,6 @@ users_db.cache.close()
 groups_db.cache.close()
 EOF
 	copy_test_data_cache "$@"
-
 }
 
 cleanup_translog () {
