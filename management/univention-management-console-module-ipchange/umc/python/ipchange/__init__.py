@@ -119,8 +119,8 @@ class Instance(Base):
         # Change ucs-sso entry
         # FIXME: this should be done for UCS-in-AD domains as well!
         ucr.load()
-        sso_fqdn = ucr.get('ucs/server/sso/fqdn')
-        if ucr.is_true('ucs/server/sso/autoregistraton', True):
+        sso_fqdn = ucr.get('keycloak/server/sso/fqdn')
+        if ucr.is_true('keycloak/server/sso/autoregistraton', True) and sso_fqdn:
             fmodule = univention.admin.modules.get('dns/forward_zone')
             forwardobjects = univention.admin.modules.lookup(fmodule, None, lo, scope='sub', superordinate=None, filter=None)
             for forwardobject in forwardobjects:
