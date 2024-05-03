@@ -1,3 +1,9 @@
+univention-management-console-module-ipchange (10.0.4) unstable; urgency=medium
+
+  * Issue #2020: update keycloak/server/sso... in ipchange
+
+ -- Felix Botner <botner@univention.de>  Fri, 03 May 2024 14:24:58 +0200
+
 univention-management-console-module-ipchange (10.0.3) unstable; urgency=medium
 
   * Bug #56604: use Python 3.11 code annotations
