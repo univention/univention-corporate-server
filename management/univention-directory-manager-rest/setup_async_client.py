@@ -46,11 +46,11 @@ realname, email_address = parseaddr(dsc['Maintainer'])
 version_suffix = os.environ.get('PYTHON_PACKAGE_VERSION_SUFFIX', "")
 
 setup(
-    description="Python client library and CLI Interface for the UDM REST API",
+    description="Asyncronous python client library for the UDM REST API",
     url='https://www.univention.de/',
     license='GNU Affero General Public License v3',
 
-    packages=['univention.admin.rest.async_client'],
+    packages=['univention.admin.rest.client'],
     package_dir={"": "src"},
 
     name="udm-rest-api-async-client",
@@ -60,6 +60,6 @@ setup(
 
     install_requires=[
         "uritemplate",
-        "aiohttp",
+        "requests",
     ],
 )
