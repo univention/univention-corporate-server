@@ -166,11 +166,17 @@ deb-pipeline:
     forward:
       pipeline_variables: true
 
-build-pip-udm-rest-api:
-  extends: .pip_setuptools_py
-  variables:
-    BASE: ./management/univention-directory-manager-rest/
+.pip-build-matrix: &pip-build-matrix
+  - BASE: ./management/univention-directory-manager-rest/
     PACKAGING_ENTRYPOINT_FILENAME: setup_client.py
+  - BASE: ./management/univention-directory-manager-rest/
+    PACKAGING_ENTRYPOINT_FILENAME: setup_async_client.py
+
+
+build-pip-package:
+  extends: .pip_setuptools_py
+  parallel:
+    matrix: *pip-build-matrix
 
 errata validation:
   stage: prepare
