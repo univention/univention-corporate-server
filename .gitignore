@@ -1,6 +1,7 @@
 .cache/
 .pybuild/
 build/
+dist/
 *.buildinfo
 *.egg-info/
 */*/debian/debhelper-build-stamp

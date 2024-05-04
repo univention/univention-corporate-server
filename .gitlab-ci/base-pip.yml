@@ -1,0 +1,46 @@
+---
+
+.pip:
+  stage: build
+  image:
+    name: $PIP_BUILD_TOOLS
+    entrypoint: [""]
+
+.pip_hatch:
+  extends: .pip
+  script:
+    - cd $BASE
+    - ls
+    - cat pyproject.toml
+    - |-
+      if [ "$CI_COMMIT_BRANCH" != "$CI_DEFAULT_BRANCH" ]; then
+        VERSION_SUFFIX="dev0+${CI_COMMIT_REF_SLUG//-/.}.$CI_COMMIT_SHORT_SHA"
+        sed -i "0,/)/s//.$VERSION_SUFFIX&/; 1s/[-_\/]/./g" debian/changelog
+      fi
+    - echo $SETUPTOOLS_SCM_PRETEND_VERSION
+    - hatch build
+    - hatch publish -r ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi -u gitlab-ci-token -a ${CI_JOB_TOKEN}
+
+.pip_poetry:
+  extends: .pip
+  script:
+    - echo "$BASE Implement poetry build config"
+    - exit 1
+
+.pip_setuptools_py:
+  extends: .pip
+  variables:
+    PACKAGING_ENTRYPOINT_FILENAME: setup.py
+    PYTHON_PACKAGE_VERSION_SUFFIX: ""
+  script:
+    - cd $BASE
+    - ls
+    - cat $PACKAGING_ENTRYPOINT_FILENAME
+    - |-
+      if [ "$CI_COMMIT_BRANCH" != "$CI_DEFAULT_BRANCH" ]; then
+        PYTHON_PACKAGE_VERSION_SUFFIX=".dev0+${CI_COMMIT_REF_SLUG//-/.}.$CI_COMMIT_SHORT_SHA"
+      fi
+    - head debian/changelog
+    - python3 $PACKAGING_ENTRYPOINT_FILENAME sdist bdist_wheel
+    - URL=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi
+    - twine upload --verbose --skip-existing --repository-url $URL  -u gitlab-ci-token -p ${CI_JOB_TOKEN} dist/*.whl

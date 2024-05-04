@@ -17,6 +17,7 @@ include:
   - project: univention/dist/docker-services
     file: kaniko.yml
   - local: '/.gitlab-ci/base.yml'
+  - local: '/.gitlab-ci/base-pip.yml'
   - project: univention/dist/docker-services
     file: pre-commit.yml
 
@@ -164,6 +165,12 @@ deb-pipeline:
     strategy: depend
     forward:
       pipeline_variables: true
+
+build-pip-udm-rest-api:
+  extends: .pip_setuptools_py
+  variables:
+    BASE: ./management/univention-directory-manager-rest/
+    PACKAGING_ENTRYPOINT_FILENAME: setup_client.py
 
 errata validation:
   stage: prepare
