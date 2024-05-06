@@ -1,0 +1,25 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: qtbase-opensource-src
+fix: 5.7.1+dfsg-3+deb9u4
+desc: |
+ This update addresses the following issues:
+ 5.7.1+dfsg-3+deb9u4 (Fri, 26 Apr 2024 18:48:02 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2023-32763 fix QTextLayout buffer overflow due to crafted SVG file
+ * CVE-2023-24607 fix denial of service via a crafted string when the SQL ODBC
+   driver plugin is used
+ * fix regression caused by patch for CVE-2023-24607
+ * CVE-2023-38197 fix infinite loop in recursive entity expansion
+ * CVE-2023-37639 fix crash of application in QXmlStreamReader due to crafted
+   XML string
+ * CVE-2023-33285 fix buffer overflow in QDnsLookup
+bug: [57253]
+cve:
+- CVE-2023-32763
+- CVE-2023-24607
+- CVE-2023-38197
+- CVE-2023-37639
+- CVE-2023-33285
