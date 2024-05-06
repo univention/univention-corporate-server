@@ -280,6 +280,4 @@ UCS with pre-installed App, to check if changes in UCS break the appliance setup
 * [scenarios/autotest-247-ucsschool-id-broker-additional-traeger-staging.cfg](scenarios/autotest-247-ucsschool-id-broker-additional-traeger-staging.cfg)
 * [scenarios/autotest-247-ucsschool-id-broker-perf-ec2.cfg](scenarios/autotest-247-ucsschool-id-broker-perf-ec2.cfg): ID Broker Performance (EC2)
 * [scenarios/autotest-247-ucsschool-id-broker-perf-kvm.cfg](scenarios/autotest-247-ucsschool-id-broker-perf-kvm.cfg): ID Broker Performance (KVM)
-* [scenarios/autotest-248-ram-rankine.cfg](scenarios/autotest-248-ram-rankine.cfg): UCS@School RAM tests
-* [scenarios/autotest-248-ram-rankine-performance.cfg](scenarios/autotest-248-ram-rankine-performance.cfg): UCS@School RAM performance tests
 * [scenarios/autotest-300-ucsschool-large.cfg](scenarios/autotest-300-ucsschool-large.cfg): Install U@S 5.0 Multiserver Large Env
