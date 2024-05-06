@@ -37,7 +37,9 @@ import operator
 import os
 import re
 import sys
-from typing import Any, Callable, Dict, Iterable, List, Tuple
+from itertools import cycle
+from pathlib import Path
+from typing import Any, Callable, Dict, Iterable, Iterator, Tuple
 
 
 __all__ = [
@@ -51,10 +53,11 @@ __all__ = [
     'strip_indent',
 ]
 
-TEST_BASE = os.environ.get('UCS_TESTS', '/usr/share/ucs-test')
-RE_SECTION = re.compile(r'^[0-9]{2}_(.+)$')
-RE_PREFIX = re.compile(r'^[0-9]{2,3}_?(.+)')
+TEST_BASE = Path(os.environ.get('UCS_TESTS', '/usr/share/ucs-test'))
+RE_SECTION = re.compile(r'^[0-9]{2,}_(.+)$')
+RE_PREFIX = re.compile(r'^[0-9]{2,}_?(?:.+)')
 RE_SUFFIX = re.compile(r'(?:~|\.(?:lib|sh|py[co]|bak|mo|po|png|jpg|jpeg|xml|csv|inst|uinst))$')
+RE_VERSION = re.compile(r'(\d+)')
 LOG_BASE = '/var/log/univention/test_%d.log'
 S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
 INF = sys.maxsize
@@ -92,16 +95,22 @@ def strip_indent(text: str) -> str:
     return '\n'.join(line[indent:] for line in lines)
 
 
-def get_sections() -> Dict[str, str]:
+def _version_sort(path: Path) -> Tuple[object]:
+    """Return tuple to sort versioned path."""
+    return tuple(t(v) for v, t in zip(RE_VERSION.split(path.name), cycle((str, int))))
+
+
+def get_sections() -> Dict[str, Path]:
     """Return dictionary section-name -> section-directory."""
-    section_dirs = os.listdir(TEST_BASE)
-    sections = {dirname[3:]: TEST_BASE + os.path.sep + dirname for dirname in section_dirs if RE_SECTION.match(dirname)}
-    return sections
+    return {
+        m.group(1): p
+        for m, p in ((RE_SECTION.match(child.name), child) for child in sorted(TEST_BASE.iterdir(), key=_version_sort))
+        if m
+    }
 
 
-def get_tests(sections: Iterable[str]) -> Dict[str, List[str]]:
-    """Return dictionary of section -> [filenames]."""
-    result = {}
+def get_tests(sections: Iterable[str]) -> Iterator[Tuple[str, Path]]:
+    """Yield 2-tuples (section, filename)."""
     logger = logging.getLogger('test.find')
 
     all_sections = get_sections()
@@ -109,26 +118,19 @@ def get_tests(sections: Iterable[str]) -> Dict[str, List[str]]:
     for section in sections:
         dirname = all_sections[section]
         logger.debug(f'Processing directory {dirname}')
-        tests = []
 
-        files = os.listdir(dirname)
-        for filename in sorted(files):
-            fname = os.path.join(dirname, filename)
-            if not RE_PREFIX.match(filename):
+        for fname in sorted(dirname.iterdir(), key=_version_sort):
+            if not RE_PREFIX.match(fname.name):
                 logger.debug(f'Skipped file {fname}')
                 continue
-            if RE_SUFFIX.search(filename):
+            if RE_SUFFIX.search(fname.name):
                 logger.debug(f'Skipped file {fname}')
                 continue
-            if not os.path.exists(fname):
+            if not fname.exists():
                 logger.debug(f'Skipped file {fname}')
                 continue
             logger.debug(f'Adding file {fname}')
-            tests.append(fname)
-
-        if tests:
-            result[section] = tests
-    return result
+            yield section, fname
 
 
 class UCSVersion:  # pylint: disable-msg=R0903  # noqa: PLW1641

@@ -20,6 +20,7 @@ import sys
 from datetime import datetime
 from functools import reduce
 from operator import and_, or_
+from pathlib import Path
 from subprocess import PIPE, Popen, call
 from time import monotonic
 from typing import IO, Any, Dict, Iterable, Iterator, List, Sequence, Set, Tuple, TypeVar, cast
@@ -249,7 +250,7 @@ class CheckExecutable(Check):
     def check(self, _environment: TestEnvironment) -> Iterator[Verdict]:
         """Check environment for required executable."""
         if not os.path.isabs(self.filename):
-            if self.filename.startswith('python') or self.filename.startswith('pytest') or self.filename.startswith('py.test'):
+            if self.filename.startswith(('python', 'pytest', 'py.test')):
                 self.filename = '/usr/bin/' + self.filename
             elif self.filename.endswith('sh'):
                 self.filename = '/bin/' + self.filename
@@ -511,9 +512,9 @@ class TestCase:
     logger = logging.getLogger('test.case')
     RE_NL = re.compile(br'[\r\n]+')
 
-    def __init__(self, filename: str) -> None:
-        self.filename = os.path.abspath(filename)
-        self.uid = os.path.sep.join(filename.rsplit(os.path.sep, 2)[-2:])
+    def __init__(self, filename: Path) -> None:
+        self.filename = filename
+        self.uid = f"{filename.parent.name}/{filename.name}"
 
         self.exe: CheckExecutable | None = None
         self.args: List[str] = []
@@ -542,7 +543,7 @@ class TestCase:
     def load_meta(self) -> Dict[str, Any]:
         TestCase.logger.info('Loading test %s', self.filename)
 
-        with open(self.filename, 'rb') as tc_file:
+        with self.filename.open('rb') as tc_file:
             firstline = tc_file.readline()
             if not firstline.startswith(b'#!'):
                 raise TestError('Missing hash-bang')
@@ -766,8 +767,8 @@ class TestCase:
 
     def run(self, result: TestResult) -> None:
         """Run the test case and fill in result."""
-        base = os.path.basename(self.filename)
-        dirname = os.path.dirname(self.filename)
+        base = self.filename.name
+        dirname = self.filename.parent.as_posix()
         assert self.exe is not None
         cmd = [self.exe.filename] + self.exe.executable_args + [base] + self.args
 
@@ -933,7 +934,7 @@ class TestFormatInterface:  # pylint: disable-msg=R0921
         raise NotImplementedError()
 
 
-def __run_test(filename: str) -> None:
+def __run_test(filename: Path) -> None:
     """Run local test."""
     test_env = TestEnvironment()
     # test_env.dump()

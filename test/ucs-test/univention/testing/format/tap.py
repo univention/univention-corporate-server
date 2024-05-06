@@ -45,9 +45,10 @@ class TAP(TestFormatInterface):
 
     def format(self, result: TestResult) -> None:
         """
+        >>> from pathlib import Path
         >>> from univention.testing.data import TestCase
         >>> te = TestEnvironment()
-        >>> tc = TestCase('python/data.py')
+        >>> tc = TestCase(Path('python/data.py'))
         >>> tr = TestResult(tc, te)
         >>> tr.success()
         >>> TAP().format(tr)

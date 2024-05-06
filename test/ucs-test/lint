@@ -56,21 +56,17 @@ export PYTHONPATH=".${PYTHONPATH:+:$PYTHONPATH}"
 
 # shellcheck disable=SC2016
 python3 -c '
-from __future__ import print_function
 from univention.testing.internal import get_sections, get_tests
-from os.path import basename, splitext
+PYTHON = ("py.test", "pytest", "python", "selenium", "playwright", "locust", "locust-docker")
 sections = get_sections()
-tests = get_tests(sections)
-python = ("py.test", "pytest", "python", "selenium", "playwright", "locust", "locust-docker")
-for tests in tests.values():
-    for fname in tests:
-        name, ext = splitext(basename(fname))
-        if "." not in name and not ext:
+for _section, fname in get_tests(sections):
+    if "." not in fname.name:
+        continue
+    if fname.suffix == ".py":
+        line = fname.open().readline()
+        if any(exe in line for exe in PYTHON):
             continue
-        line = open(fname).readline()
-        if ext != ".py" or all(x not in line for x in python):
-            print(ext, line)
-            print(fname)
+    print(fname, line)
 ' >"$tmp" 2>&1 ||
 	issue "Failed to find tests" '/^Traceback/,$p'
 issue "Wrong file name"

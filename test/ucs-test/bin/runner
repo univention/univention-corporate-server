@@ -11,7 +11,8 @@ from __future__ import annotations
 
 import os
 import sys
-from argparse import REMAINDER, ArgumentParser, FileType, Namespace
+from argparse import REMAINDER, ArgumentParser, Namespace
+from pathlib import Path
 from typing import Sequence
 
 import univention.testing.format
@@ -49,7 +50,7 @@ def parse_args(args: Sequence[str] | None = None) -> Namespace:
 
     parser = ArgumentParser(parents=[common])
     parser.add_argument("interpreter", help="Command interpreter")
-    parser.add_argument("test", type=FileType("r"), help="ucs-test filename")
+    parser.add_argument("test", type=Path, help="ucs-test filename")
     parser.add_argument('args', nargs=REMAINDER, help="Additional arguments")
 
     options = parser.parse_args(args)
@@ -74,7 +75,7 @@ def main() -> int:
     test_env = TestEnvironment(interactive=options.interactive)
     if options.force:
         test_env.set_exposure('dangerous')
-    test_case = TestCase(options.test.name).load()
+    test_case = TestCase(options.test).load()
     test_result = TestResult(test_case, test_env).run()
     format.format(test_result)
     return 0 if test_result.reason.eofs in {'O', 'S'} else 1

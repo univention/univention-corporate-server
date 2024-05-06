@@ -11,10 +11,12 @@ from __future__ import annotations
 
 import argparse
 import logging
-import operator
 import sys
+from itertools import groupby
+from operator import itemgetter
+from pathlib import Path
 from time import time
-from typing import Iterable, List, Mapping, Tuple
+from typing import Iterable, List, Tuple
 
 import univention.testing.format
 from univention.testing.codes import Reason
@@ -97,9 +99,9 @@ def parse_options(sections: Iterable[str]) -> Tuple[argparse.Namespace, List[str
 class TestSet:
     """Container for tests."""
 
-    def __init__(self, tests: Mapping[str, Iterable[str]]) -> None:
-        self.tests = tests
-        self.max_count = sum(1 for tests in tests.values() for test in tests)
+    def __init__(self, tests: Iterable[Tuple[str, Path]]) -> None:
+        self.tests = list(tests)
+        self.max_count = len(self.tests)
         self.test_environment: TestEnvironment | None = None
         self.format: TestFormatInterface | None = None
         self.prefix = ''
@@ -128,10 +130,10 @@ class TestSet:
         self.format.begin_run(self.test_environment, self.max_count)
         try:
             count = 0
-            for section, cases in sorted(self.tests.items(), key=operator.itemgetter(1)):
+            for section, cases in groupby(self.tests, itemgetter(0)):
                 self.format.begin_section(section)
                 try:
-                    for fname in cases:
+                    for _, fname in cases:
                         count += 1
                         test_case = TestCase(fname)
                         test_result = TestResult(test_case, self.test_environment)
@@ -184,7 +186,7 @@ def main() -> int | None:
     setup_environment()
     setup_debug(options.verbose)
 
-    selected_sections = options.sections if options.sections else all_sections.keys()
+    selected_sections = options.sections or all_sections.keys()
     tests = get_tests(selected_sections)
 
     coverage = Coverage(options)

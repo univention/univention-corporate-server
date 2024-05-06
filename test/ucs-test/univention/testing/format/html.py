@@ -78,9 +78,10 @@ class HTML(TestFormatInterface):
         """
         Format single test.
 
+        >>> from pathlib import Path
         >>> from univention.testing.data import TestCase
         >>> te = TestEnvironment()
-        >>> tc = TestCase('python/data.py')
+        >>> tc = TestCase(Path('python/data.py'))
         >>> tr = TestResult(tc, te)
         >>> tr.success()
         >>> HTML().format(tr)
