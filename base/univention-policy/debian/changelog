@@ -1,3 +1,10 @@
+univention-policy (13.0.5) unstable; urgency=medium
+
+  * Bug #57257: Added compiler flag -fsanitize=address to
+    univention-policy-result to detect as example memory leaks or overflows.
+
+ -- Mika Westphal <westphal@univention.de>  Mon, 06 May 2024 10:06:10 +0200
+
 univention-policy (13.0.4) unstable; urgency=medium
 
   * Bug #57173: Respect ldap/server/port directory/manager/starttls in univention-policy
