@@ -50,7 +50,6 @@ class TAP(TestFormatInterface):
         >>> te = TestEnvironment()
         >>> tc = TestCase(Path('python/data.py'))
         >>> tr = TestResult(tc, te)
-        >>> tr.success()
         >>> TAP().format(tr)
         1..1
         """

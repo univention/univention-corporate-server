@@ -50,7 +50,6 @@ class Jenkins(TestFormatInterface):
         >>> te = TestEnvironment()
         >>> tc = TestCase(Path('python/data.py'))
         >>> tr = TestResult(tc, te)
-        >>> tr.success()
         >>> Jenkins().format(tr)
         """
         self.begin_run(result.environment)

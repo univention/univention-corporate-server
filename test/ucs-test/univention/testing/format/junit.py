@@ -39,12 +39,10 @@ class Junit(TestFormatInterface):
         """Called before each test."""
         super().begin_test(case, prefix)
         self.now = datetime.today().replace(microsecond=0)
-        print('\r', end='', file=self.stream)
         self.raw.begin_test(case, prefix)
         self.stream.flush()
 
     def end_run(self):
-        print('')  # clear \r
         self.stream.flush()
 
     def end_test(self, result: TestResult) -> None:
@@ -193,9 +191,9 @@ class Junit(TestFormatInterface):
         >>> te = TestEnvironment()
         >>> tc = TestCase(Path('python/data.py'))
         >>> tr = TestResult(tc, te)
-        >>> tr.success()
-        >>> Junit().format(tr)
-
+        >>> import io
+        >>> s = io.StringIO()
+        >>> Junit(s).format(tr)
         """
         self.begin_run(result.environment)
         self.begin_section('')

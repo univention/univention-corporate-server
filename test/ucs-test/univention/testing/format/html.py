@@ -83,7 +83,6 @@ class HTML(TestFormatInterface):
         >>> te = TestEnvironment()
         >>> tc = TestCase(Path('python/data.py'))
         >>> tr = TestResult(tc, te)
-        >>> tr.success()
         >>> HTML().format(tr)
         """
         self.begin_run(result.environment)

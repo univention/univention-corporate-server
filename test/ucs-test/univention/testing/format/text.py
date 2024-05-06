@@ -119,7 +119,6 @@ class Text(TestFormatInterface):
         >>> te = TestEnvironment()
         >>> tc = TestCase(Path('python/data.py'))
         >>> tr = TestResult(tc, te)
-        >>> tr.success()
         >>> import io
         >>> s = io.StringIO()
         >>> Text(s).format(tr)
