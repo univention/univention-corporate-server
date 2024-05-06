@@ -341,7 +341,9 @@ PAM / Local group cache
   :file:`/etc/sssd/sssd.conf` which is generated from a UCR template now. :program:`sssd`
   additionally reads configuration sub files from the directory
   :file:`/etc/sssd/conf.d`, which can be used in case options need to be customized
-  differently from what the UCR template initially supports. Please note that
+  differently from what the UCR template initially supports.
+  The user cache of :program:`sssd` can be flushed by running ``sss_cache -U``, instead
+  of running ``nscd -i passwd``.  Please note that
   :program:`sssd` doesn't support resolving ``shadow`` information at all, so e.g.
   ``pam_unix`` will not be able to read ``shadow`` related info for domain users
   (so there's a difference between domain users managed in UDM/LDAP and
