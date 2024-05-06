@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: emacs24
+fix: 24.5+1-11+deb9u3
+desc: |
+ This update addresses the following issues:
+
+ Debian update 24.5+1-11+deb9u3
+ 24.5+1-11+deb9u3 (Fri, 03 May 2024 12:49:30 +0100)
+ * Non-maintainer upload by the ELTS Team.
+ * Fix CVE-2024-30203, CVE-2024-30204 & CVE-2024-30205.
+bug: [57256]
+cve:
+- CVE-2024-30203
+- CVE-2024-30204
+- CVE-2024-30205
