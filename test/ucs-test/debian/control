@@ -60,8 +60,6 @@ Depends:
  univention-nagios-client,
  ${misc:Depends},
  ${python3:Depends},
-Provides:
- ${python3:Provides},
 Description: UCS test environment
  This package includes some scripts for testing the UCS installation or the UCS
  upgrade.
@@ -368,22 +366,15 @@ Description: Dependency for Selenium Tests
 
 Package: ucs-test-selenium
 Architecture: all
-Recommends:
- ucs-test-framework,
-Provides:
- ucs-test-module,
-Depends:
- ucs-test-libs (= ${source:Version}),
- ucs-test-selenium-runner,
- xvfb,
- ${misc:Depends},
-Description: Test scripts for UMC
- This package includes some scripts for testing UMC
+Description: Transitional dummy package
+ Transition to Playwright based testing.
+ Can be removed safely.
 
 Package: ucs-test-browser
 Architecture: all
 Recommends:
  ucs-test-framework,
+ ucs-test-selenium-runner,
 Provides:
  ucs-test-module,
 Depends:
@@ -391,6 +382,8 @@ Depends:
  python3-playwright-venv,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
+Replaces:
+ ucs-test-selenium (<< 10.0.22),
 Description: Test scripts for UMC
  This package includes some scripts for testing Univention Management Console
  using Playwright browser based testing.
@@ -464,17 +457,6 @@ Provides:
  ucs-test-module,
 Description: Test scripts to test the app removal
  This package includes test-cases for the app removal.
-
-Package: ucs-test-umc-system
-Architecture: all
-Recommends:
- ucs-test-framework,
-Depends:
- ucs-test-libs (= ${source:Version}),
- ${misc:Depends},
-Provides:
- ucs-test-module,
-Description: Transitional package
 
 Package: ucs-test-nfs
 Architecture: all

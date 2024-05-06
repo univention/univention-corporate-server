@@ -64,7 +64,7 @@ def self_service_user(email=None, **kwargs):
         yield do_create_user(udm, email, **kwargs)
 
 
-# copy pasted to 86_selenium/test_self_service.py
+# copy pasted to 86_browser/test_self_service.py
 @contextlib.contextmanager
 def capture_mails(timeout=5):
     class Mail(SMTPServer):
