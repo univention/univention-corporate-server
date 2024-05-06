@@ -22,8 +22,3 @@ class TestConditionError(Exception):
     def tests(self):
         """Return failed tests."""
         return self.args[0]
-
-
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()

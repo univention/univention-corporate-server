@@ -35,6 +35,8 @@ import subprocess
 import sys
 from typing import Iterable, Mapping, Sequence
 
+from typing_extensions import Literal
+
 from univention.config_registry import ConfigRegistry
 from univention.testing.strings import random_name, random_version
 from univention.testing.utils import fail, get_ldap_connection
@@ -52,15 +54,15 @@ def get_package_version() -> str:
     return random_version()
 
 
-def get_extension_name(extension_type: str) -> str:
+def get_extension_name(extension_type: Literal["hook", "syntax", "module"]) -> str:
     """
     Returns a valid extension name for the given extension type.
-    >>> get_extension_name('hook')
-    'jcvuardfqx'
-    >>> get_extension_name('syntax')
-    'hwvkm29tde'
-    >>> get_extension_name('module')
-    'ucstest/r3jkljngcp'
+    >>> get_extension_name('hook')  # doctest: +ELLIPSIS
+    '...'
+    >>> get_extension_name('syntax')  # doctest: +ELLIPSIS
+    '...'
+    >>> get_extension_name('module')  # doctest: +ELLIPSIS
+    'ucstest/...'
     """
     assert extension_type in VALID_EXTENSION_TYPES
     if extension_type == 'module':

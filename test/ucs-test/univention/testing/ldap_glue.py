@@ -406,8 +406,3 @@ class ADConnection(LDAPConnection):
                         pass
                 error_msg = f'{key}: {expected} not in {ad_value}, object {ad_object}'
                 assert expected.issubset(ad_value), error_msg
-
-
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()

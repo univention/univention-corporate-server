@@ -1258,10 +1258,6 @@ def _normalize_dn(dn: str) -> str:
     return ldap.dn.dn2str(ldap.dn.str2dn(dn))
 
 
-if __name__ == '__main__':
-    import doctest
-    print(doctest.testmod())
-
 if __name__ == '__disabled__':
     ucr = univention.testing.ucr.UCSTestConfigRegistry()
     ucr.load()

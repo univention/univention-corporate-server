@@ -22,8 +22,8 @@ import subprocess
 import sys
 import time
 import unicodedata
-from optparse import SUPPRESS_HELP, OptionGroup, OptionParser, Values
-from typing import Any, Dict, Iterable, Iterator, List, NoReturn, Set, Tuple
+from optparse import OptionGroup, OptionParser, Values
+from typing import Any, Dict, Iterable, Iterator, List, NoReturn, Sequence, Set, Tuple
 
 from typing_extensions import Literal
 
@@ -249,13 +249,6 @@ class LdifSsh(LdifSlapcat):
         self.command = [ssh, hostname] + self.command
 
 
-def __test(_option: Values, _opt_str: str, _value: None, _parser: OptionParser) -> NoReturn:
-    """Run internal test suite."""
-    import doctest
-    res = doctest.testmod()
-    sys.exit(int(bool(res[0])))
-
-
 def stream2object(ldif: Ldif) -> Dict[str, Entry]:
     """
     Convert LDIF stream to dictionary of objects.
@@ -421,7 +414,7 @@ def compare_values(attr: str, lvalues: List[str], rvalues: List[str]) -> Iterato
             lval = rval = ""
 
 
-def parse_args() -> Tuple[LdifSource, LdifSource, Values]:
+def parse_args(args: Sequence[str] | None = None) -> Tuple[LdifSource, LdifSource, Values]:
     """Parse command line arguments."""
     parser = OptionParser(usage=USAGE, description=DESCRIPTION)
     parser.disable_interspersed_args()
@@ -463,13 +456,8 @@ def parse_args() -> Tuple[LdifSource, LdifSource, Values]:
         help="show even unchanged attributes")
     parser.add_option_group(group)
 
-    parser.add_option(
-        '--test-internal',
-        action='callback', callback=__test,
-        help=SUPPRESS_HELP)
-
     try:
-        options, args = parser.parse_args(args=sys.argv[1:])
+        options, args = parser.parse_args(args=args)
         try:
             ldif1 = options.source.create(args.pop(0), options)
         except IndexError:
@@ -484,9 +472,9 @@ def parse_args() -> Tuple[LdifSource, LdifSource, Values]:
     return ldif1, ldif2, options
 
 
-def main() -> None:
+def main(args: Sequence[str] | None = None) -> None:
     """A main()-method with options."""
-    src1, src2, options = parse_args()
+    src1, src2, options = parse_args(args)
 
     try:
         ldif1, ldif2 = (src.start_reading() for src in (src1, src2))

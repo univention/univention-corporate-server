@@ -148,8 +148,3 @@ class Raw(Text):
         ruler = '.' * (cols - len(title))
         print(f'{title} {ruler}', end=' ', file=self.stream)
         self.stream.flush()
-
-
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()

@@ -36,7 +36,6 @@ from __future__ import annotations
 import os
 import pwd
 import subprocess
-import sys
 import time
 from types import TracebackType
 from typing import Set, Type
@@ -47,10 +46,9 @@ class MailSinkGuard:
     This class is a simple context manager that stops all attached mail sinks
     if the context is left.
 
-    with MaiLSinkGuard() as msg:
-            sink = MailSink(......)
-            msg.add(sink)
-            ....use sink....
+    >>> with MailSinkGuard() as msg:
+    ...     sink = MailSink('127.0.0.1', 12345, target_dir='/tmp/')
+    ...     msg.add(sink)
     """
 
     def __init__(self) -> None:
@@ -73,19 +71,29 @@ class MailSink:
     Each incoming mail will be written to a single file if target_dir is used.
     To write all incoming mails into one file, use filename.
 
+    >>> MailSink.CMD = '/bin/true'  # monkey-patch for unit-testing only
     >>> ms = MailSink('127.0.0.1', 12345, target_dir='/tmp/')
     >>> ms.start()
-    <do some stuff>
+    *** Starting SMTPSink at 127.0.0.1:12345
+    *** ['/bin/true', '-d', '/tmp/%Y%m%d-%H%M%S.', '-u', 'root', '127.0.0.1:12345', '10']
     >>> ms.stop()
+    *** SMTPSink at 127.0.0.1:12345 stopped
 
     >>> ms = MailSink('127.0.0.1', 12345, filename='/tmp/sinkfile.eml')
     >>> ms.start()
-    <do some stuff>
+    *** Starting SMTPSink at 127.0.0.1:12345
+    *** ['/bin/true', '-D', '/tmp/sinkfile.eml', '-u', 'root', '127.0.0.1:12345', '10']
     >>> ms.stop()
+    *** SMTPSink at 127.0.0.1:12345 stopped
 
     >>> with MailSink('127.0.0.1', 12345, filename='/tmp/sinkfile.eml') as ms:
-    >>>     <do some stuff>
+    ...     pass
+    *** Starting SMTPSink at 127.0.0.1:12345
+    *** ['/bin/true', '-D', '/tmp/sinkfile.eml', '-u', 'root', '127.0.0.1:12345', '10']
+    *** SMTPSink at 127.0.0.1:12345 stopped
     """
+
+    CMD = '/usr/sbin/smtp-sink'  # use postfix' smtp-sink tool
 
     def __init__(self, address: str, port: int, filename: str | None = None, target_dir: str | None = None, fqdn: str | None = None) -> None:
         self.address = address
@@ -104,7 +112,7 @@ class MailSink:
 
     def start(self) -> None:
         print(f'*** Starting SMTPSink at {self.address}:{self.port}')
-        cmd = ['/usr/sbin/smtp-sink']  # use postfix' smtp-sink tool
+        cmd = [self.CMD]
         if self.filename is not None:
             cmd.extend(['-D', self.filename])
         elif self.target_dir is not None:
@@ -118,7 +126,7 @@ class MailSink:
         cmd.append(f'{self.address}:{self.port}')
         cmd.append('10')
         print(f'*** {cmd!r}')
-        self.process = subprocess.Popen(cmd, stderr=sys.stdout, stdout=sys.stdout)
+        self.process = subprocess.Popen(cmd, stderr=subprocess.STDOUT)
 
     def stop(self) -> None:
         if self.process is not None:

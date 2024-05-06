@@ -940,9 +940,3 @@ def __run_test(filename: Path) -> None:
     #         print msg
     test_result = TestResult(test_case, test_env)
     test_result.dump()
-
-
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
-    # __run_test('tst3')

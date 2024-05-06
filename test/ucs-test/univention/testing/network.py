@@ -47,7 +47,7 @@ import copy
 import re
 import subprocess
 from types import TracebackType
-from typing import List, Mapping, Tuple, Type
+from typing import List, Mapping, Sequence, Tuple, Type
 
 from typing_extensions import Literal
 
@@ -87,36 +87,42 @@ class NetworkRedirector:
     The NetworkRedirector is able to establish port/connection redirections via
     iptables. It has to be used via the with-statement.
 
-    >>> with NetworkRedirector() as nethelper:
-    >>> nethelper.add_loop('1.2.3.4', '4.3.2.1')
-    >>> nethelper.add_redirection('1.1.1.1', 25, 60025)
-    >>> ...
-    >>> # the following lines are optional! NetworkRedirector does automatic cleanup!
-    >>> nethelper.remove_loop('1.2.3.4', '4.3.2.1')
-    >>> nethelper.remove_redirection('1.1.1.1', 25, 60025)
+    >>> NetworkRedirector.BIN_IPTABLES = '/bin/true'  # monkey-patch for unit-testing only
+    >>> with NetworkRedirector() as nethelper:  # doctest: +ELLIPSIS
+    ...     nethelper.add_loop('1.2.3.4', '4.3.2.1')
+    ...     nethelper.add_redirection('1.1.1.1', 25, 60025)
+    ...     pass
+    ...     # the following lines are optional! NetworkRedirector does automatic cleanup!
+    ...     nethelper.remove_loop('1.2.3.4', '4.3.2.1')
+    ...     nethelper.remove_redirection('1.1.1.1', 25, 60025)
+    *** Entering with-statement of NetworkRedirector()
+    ...
 
     It is also possible to redirect all traffic to a specific port.
     The trailing "/0" is important, otherwise the redirection won't work!
 
-    >>> nethelper.add_redirection('0.0.0.0/0', 25, 60025)
+    >>> with NetworkRedirector() as nethelper:  # doctest: +ELLIPSIS
+    ...     nethelper.add_redirection('0.0.0.0/0', 25, 60025)
+    *** Entering with-statement of NetworkRedirector()
+    ...
     """
 
     BIN_IPTABLES = '/sbin/iptables'
     CMD_LIST_LOOP = [
         # localhost--><addr1> ==> <addr2>-->localhost
-        [BIN_IPTABLES, '-t', 'mangle', '%(action)s', 'OUTPUT', '-d', '%(addr1)s', '-j', 'TOS', '--set-tos', '0x04'],
-        [BIN_IPTABLES, '-t', 'nat', '%(action)s', 'OUTPUT', '-d', '%(addr1)s', '-j', 'DNAT', '--to-destination', '%(local_external_addr)s'],
-        [BIN_IPTABLES, '-t', 'nat', '%(action)s', 'POSTROUTING', '-m', 'tos', '--tos', '0x04', '-j', 'SNAT', '--to-source', '%(addr2)s'],
+        ["%(IPT)s", '-t', 'mangle', '%(action)s', 'OUTPUT', '-d', '%(addr1)s', '-j', 'TOS', '--set-tos', '0x04'],
+        ["%(IPT)s", '-t', 'nat', '%(action)s', 'OUTPUT', '-d', '%(addr1)s', '-j', 'DNAT', '--to-destination', '%(local_external_addr)s'],
+        ["%(IPT)s", '-t', 'nat', '%(action)s', 'POSTROUTING', '-m', 'tos', '--tos', '0x04', '-j', 'SNAT', '--to-source', '%(addr2)s'],
 
         # localhost--><addr2> ==> <addr1>-->localhost
-        [BIN_IPTABLES, '-t', 'mangle', '%(action)s', 'OUTPUT', '-d', '%(addr2)s', '-j', 'TOS', '--set-tos', '0x08'],
-        [BIN_IPTABLES, '-t', 'nat', '%(action)s', 'OUTPUT', '-d', '%(addr2)s', '-j', 'DNAT', '--to-destination', '%(local_external_addr)s'],
-        [BIN_IPTABLES, '-t', 'nat', '%(action)s', 'POSTROUTING', '-m', 'tos', '--tos', '0x08', '-j', 'SNAT', '--to-source', '%(addr1)s'],
+        ["%(IPT)s", '-t', 'mangle', '%(action)s', 'OUTPUT', '-d', '%(addr2)s', '-j', 'TOS', '--set-tos', '0x08'],
+        ["%(IPT)s", '-t', 'nat', '%(action)s', 'OUTPUT', '-d', '%(addr2)s', '-j', 'DNAT', '--to-destination', '%(local_external_addr)s'],
+        ["%(IPT)s", '-t', 'nat', '%(action)s', 'POSTROUTING', '-m', 'tos', '--tos', '0x08', '-j', 'SNAT', '--to-source', '%(addr1)s'],
     ]
 
     CMD_LIST_REDIRECTION = [
         # redirect localhost-->%(remote_addr)s:%(remote_port)s ==> localhost:%(local_port)s
-        [BIN_IPTABLES, '-t', 'nat', '%(action)s', 'OUTPUT', '-p', '%(family)s', '-d', '%(remote_addr)s', '--dport', '%(remote_port)s', '-j', 'DNAT', '--to-destination', '127.0.0.1:%(local_port)s'],
+        ["%(IPT)s", '-t', 'nat', '%(action)s', 'OUTPUT', '-p', '%(family)s', '-d', '%(remote_addr)s', '--dport', '%(remote_port)s', '-j', 'DNAT', '--to-destination', '127.0.0.1:%(local_port)s'],
     ]
 
     def __init__(self) -> None:
@@ -150,14 +156,17 @@ class NetworkRedirector:
             elif entry[0] == 'redirection':
                 self.remove_redirection(entry[1], entry[2], entry[3], entry[4], ignore_errors=True)
 
-    def run_commands(self, cmdlist: List[List[str]], argdict: Mapping[str, object], ignore_errors: bool = False) -> None:
+    def run_commands(self, cmdlist: Sequence[Sequence[str]], argdict: Mapping[str, str], ignore_errors: bool = False) -> None:
         """
         Start all commands in cmdlist and replace formatstrings with arguments in argdict.
 
-        >>> run_commands([['/bin/echo', '%(msg)s'], ['/bin/echo', 'World']], {'msg': 'Hello'})
+        >>> with NetworkRedirector() as nethelper:  # doctest: +ELLIPSIS
+        ...     nethelper.run_commands([['/bin/echo', '%(msg)s'], ['/bin/echo', 'World']], {'msg': 'Hello'})
+        *** Entering with-statement of NetworkRedirector()
+        ...
         """
         for cmd in cmdlist:
-            cmd = [val % argdict for val in cmd]
+            cmd = [val % dict(argdict, IPT=self.BIN_IPTABLES) for val in cmd]
             print('*** %r' % cmd)
             result = subprocess.call(cmd)
             if result and not ignore_errors:
@@ -217,10 +226,10 @@ class NetworkRedirector:
         entry: Tuple[Literal["redirection"], str, int, int, str] = ('redirection', remote_addr, remote_port, local_port, family)
         if entry not in self.cleanup_rules:
             self.cleanup_rules.append(entry)
-            args = {
+            args: dict[str, str] = {
                 'remote_addr': remote_addr,
-                'remote_port': remote_port,
-                'local_port': local_port,
+                'remote_port': str(remote_port),
+                'local_port': str(local_port),
                 'action': '-A',
                 'family': family,
             }
@@ -234,10 +243,10 @@ class NetworkRedirector:
         except ValueError:
             raise UCSTestNetworkUnknownRedirection('The given redirection has not been established and cannot be removed.')
 
-        args = {
+        args: dict[str, str] = {
             'remote_addr': remote_addr,
-            'remote_port': remote_port,
-            'local_port': local_port,
+            'remote_port': str(remote_port),
+            'local_port': str(local_port),
             'action': '-D',
             'family': family,
         }

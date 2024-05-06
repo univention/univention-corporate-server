@@ -657,8 +657,3 @@ def is_port_open(port: int, hosts: Iterable[str] | None = None, timeout: float =
         except OSError as ex:
             print(f'is_port_open({port}) failed: {ex}')
     return False
-
-
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()

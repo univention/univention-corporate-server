@@ -313,8 +313,3 @@ class UCSVersion:  # pylint: disable-msg=R0903  # noqa: PLW1641
             if INF not in (self_ver, other_ver)
         ]
         return self.rel(*zip(*parts))  # pylint: disable-msg=W0142
-
-
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()

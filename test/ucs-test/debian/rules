@@ -48,17 +48,7 @@ override_dh_install:
 
 override_dh_auto_test:
 	./lint
-	python3 -m univention.testing.data -v
-	python3 -m univention.testing.errors -v
-	python3 -m univention.testing.format.html -v
-	python3 -m univention.testing.format.jenkins -v
-	python3 -m univention.testing.format.junit -v
-	python3 -m univention.testing.format.tap -v
-	python3 -m univention.testing.format.text -v
-	python3 -m univention.testing.internal -v
-	python3 -m univention.testing.udm -v
-	python3 -m univention.testing.utils -v
-	unittest/run-tests.sh
+	PYTHONPATH=. pytest-3 --doctest-modules --doctest-ignore-import-errors -vv unittest/ univention/testing/
 
 override_dh_gencontrol:
 	dh_gencontrol -- -Vucs-test:all-packages=$(subst $(SPACE),$(COMMA),$(PACKAGES))
