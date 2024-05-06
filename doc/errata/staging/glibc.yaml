@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: glibc
+fix: 2.24-11+deb9u6
+desc: |
+ This update addresses the following issue:
+ 2.24-11+deb9u6 (Tue, 23 Apr 2024 19:30:04 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2024-2961: Out-of-bounds write in iconv ISO-2022-CN-EXT module
+ * Don't ignore test failures during the build.
+bug: [57255]
+cve:
+- CVE-2024-2961
