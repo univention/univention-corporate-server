@@ -1,0 +1,19 @@
+product: ucs
+release: "5.0"
+version: [6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: nghttp2
+fix: 1.36.0-2+deb10u3
+desc: |
+ This update addresses the following issue:
+ 1.36.0-2+deb10u3 (Tue, 30 Apr 2024 18:59:06 +0200)
+ * Non-maintainer upload by the LTS Security Team.
+ * Fix CVE-2024-28182: An implementation using the nghttp2 library will
+   continue to receive CONTINUATION frames, and will not callback to the
+   application to allow visibility into this information before it resets the
+   stream, resulting in Denial of Service.
+ * d/libnghttp2-14.symbols: Add missig symbol from the backported upstream
+   fix.
+bug: [57251]
+cve:
+- CVE-2024-28182
