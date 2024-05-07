@@ -7,12 +7,12 @@
 
 from __future__ import annotations
 
-import os
-import os.path
 import re
 import stat
 import subprocess
 from contextlib import contextmanager
+from pathlib import Path
+from tempfile import NamedTemporaryFile
 from typing import TYPE_CHECKING, Iterable
 
 import pytest
@@ -79,9 +79,11 @@ def docker_shell(app: App, command: str) -> str:
 
 @contextmanager
 def install_app(app: App, set_vars: Setting | None = None) -> Iterator[App]:
-    username = re.match('uid=([^,]*),.*', ucr_get('tests/domainadmin/account')).groups()[0]
+    m = re.match('uid=([^,]*),.*', ucr_get('tests/domainadmin/account'))
+    assert m is not None
+    username = m.group(1)
     install = get_action('install')
-    subprocess.run(['apt-get', 'update'], check=True)
+    subprocess.run(['apt-get', 'update', '-q'], check=True)
     install.call(app=[app], username=username, password=ucr_get('tests/domainadmin/pwd'), noninteractive=True, set_vars=set_vars)
     yield app
     remove = get_action('remove')
@@ -90,13 +92,12 @@ def install_app(app: App, set_vars: Setting | None = None) -> Iterator[App]:
 
 @contextmanager
 def add_custom_settings(app: App, custom_settings_content: str) -> Iterator[None]:
-    custom_settings_file = "/var/lib/univention-appcenter/apps/{}/custom.settings".format(app.id)
-    with open(custom_settings_file, "w") as f:
-        f.write(custom_settings_content)
+    custom_settings_file = Path("/var/lib/univention-appcenter/apps") / app.id / "custom.settings"
+    custom_settings_file.write_text(custom_settings_content)
     try:
         yield
     finally:
-        os.remove(custom_settings_file)
+        custom_settings_file.unlink()
 
 
 @pytest.fixture(scope='module')
@@ -106,7 +107,7 @@ def local_appcenter() -> Iterator[None]:
 
 
 @pytest.fixture(scope='module')
-def installed_component_app(local_appcenter) -> Iterator[App]:
+def installed_component_app(local_appcenter, tmp_path_factory) -> Iterator[App]:
     ini_file = '''[Application]
 ID = ucs-test
 Code = TE
@@ -116,19 +117,20 @@ Version = 1.0
 License = free
 WithoutRepository = True
 DefaultPackages = libcurl4-doc'''
-    with open('/tmp/app.ini', 'w') as fd:
-        fd.write(ini_file)
-    with open('/tmp/app.logo', 'w') as fd:
-        fd.write('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><rect x="10" y="10" height="100" width="100" style="stroke:#ff0000; fill: #0000ff"/></svg>')
+    tmp = tmp_path_factory.mktemp("installed_component_app")
+    ini = tmp / "app.ini"
+    ini.write_text(ini_file)
+    logo = tmp / "app.logo"
+    logo.write_text('<svg xmlns="http://www.w3.org/2000/svg"><rect x="10" y="10" height="100" width="100" style="stroke:#ff0000; fill: #0000ff"/></svg>')
     populate = get_action('dev-populate-appcenter')
-    populate.call(new=True, ini='/tmp/app.ini', logo='/tmp/app.logo')
+    populate.call(new=True, ini=ini.as_posix(), logo=logo.as_posix())
     app = Apps().find('ucs-test')
     with install_app(app) as app:
         yield app
 
 
 @pytest.fixture(scope='module')
-def apache_docker_app(local_appcenter) -> App:
+def apache_docker_app(local_appcenter, tmp_path_factory) -> App:
     ini_file = '''[Application]
 ID = apache
 Code = AP
@@ -147,10 +149,11 @@ WebInterfacePortHTTP = 8080
 WebInterfacePortHTTPS = 0
 AutoModProxy = False
 UCSOverviewCategory = False'''
-    with open('/tmp/app.ini', 'w') as fd:
-        fd.write(ini_file)
+    tmp = tmp_path_factory.mktemp("apache_docker_app")
+    ini = tmp / "app.ini"
+    ini.write_text(ini_file)
     populate = get_action('dev-populate-appcenter')
-    populate.call(new=True, ini='/tmp/app.ini')
+    populate.call(new=True, ini=ini.as_posix())
     return Apps().find('apache')
 
 
@@ -161,11 +164,11 @@ def installed_apache_docker_app(apache_docker_app: App) -> Iterator[App]:
 
 
 def get_settings(content: str, app: App) -> list[Setting]:
-    fname = '/tmp/app.settings'
-    with open(fname, 'w') as fd:
+    with NamedTemporaryFile("w+") as fd:
         fd.write(content)
-    populate = get_action('dev-populate-appcenter')
-    populate.call(component_id=app.component_id, ini=app.get_ini_file(), settings='/tmp/app.settings')
+        fd.flush()
+        populate = get_action('dev-populate-appcenter')
+        populate.call(component_id=app.component_id, ini=app.get_ini_file(), settings=fd.name)
 
     app = Apps().find(app.id)
     settings = app.get_settings()
@@ -236,15 +239,14 @@ Scope = inside, outside
 
 
 @has_license()
-@pytest.mark.parametrize('content_custom', [
-    '''[test1/setting]
+@pytest.mark.parametrize('scope', ['inside, outside', 'outside', 'inside'])
+def test_string_custom_setting_docker(installed_apache_docker_app: App, scope: str) -> None:
+    content_custom = f'''[test1/setting]
 Type = String
 Description = My Description
 InitialValue = Default: @%@hostname@%@
 Scope = {scope}
-'''.format(scope=scope) for scope in ('inside, outside', 'outside', 'inside')
-])
-def test_string_custom_setting_docker(installed_apache_docker_app, content_custom: str) -> None:
+'''
     content = '''[test/setting]
 Type = String
 Description = My Description
@@ -258,7 +260,9 @@ Scope = inside, outside
             assert repr(setting) == "StringSetting(name='{}')".format(setting.name)
             assert setting.is_inside(app) is ("inside" in c)
             assert setting.is_outside(app) is ("outside" in c)
-            ucr_var_name = re.search('@%@(.*?)@%@', c).group(1)
+            m = re.search('@%@(.*?)@%@', c)
+            assert m is not None
+            ucr_var_name = m.group(1)
             assert setting.get_initial_value(app) == 'Default: %s' % ucr_get(ucr_var_name)
             assert setting.get_value(app) is None
 
@@ -323,21 +327,23 @@ Required = Yes
         assert setting.get_value(app) == 3000
 
 
-def test_status_and_file_setting(installed_component_app: App) -> None:
-    content = '''[test/setting3]
+def test_status_and_file_setting(installed_component_app: App, tmp_path: Path) -> None:
+    short = tmp_path / "setting4.test"
+    long = tmp_path / (300 * 'X')
+    content = f'''[test/setting3]
 Type = Status
 Description = My Description 3
 
 [test/setting4]
 Type = File
-Filename = /tmp/settingdir/setting4.test
+Filename = {short.as_posix()}
 Description = My Description 4
 
 [test/setting4/2]
 Type = File
-Filename = /tmp/%s
+Filename = {long.as_posix()}
 Description = My Description 4.2
-''' % (300 * 'X')
+'''
 
     app, settings = fresh_settings(content, installed_component_app, 3)
     status_setting, file_setting, file_setting2 = settings
@@ -345,39 +351,34 @@ Description = My Description 4.2
     assert repr(file_setting) == "FileSetting(name='test/setting4')"
     assert repr(file_setting2) == "FileSetting(name='test/setting4/2')"
 
-    try:
-        with Configuring(app, revert='ucr') as config:
-            ucr_save({status_setting.name: 'My Status'})
-            assert status_setting.get_value(app) == 'My Status'
-            assert not os.path.exists(file_setting.filename)
-            assert file_setting.get_value(app) is None
+    with Configuring(app, revert='ucr') as config:
+        ucr_save({status_setting.name: 'My Status'})
+        assert status_setting.get_value(app) == 'My Status'
+        assert not Path(file_setting.filename).exists()
+        assert file_setting.get_value(app) is None
 
-            config.set({status_setting.name: 'My new Status', file_setting.name: 'File content'})
+        config.set({status_setting.name: 'My new Status', file_setting.name: 'File content'})
 
-            assert status_setting.get_value(app) == 'My Status'
-            assert os.path.exists(file_setting.filename)
-            assert open(file_setting.filename).read() == 'File content'
-            assert file_setting.get_value(app) == 'File content'
+        assert status_setting.get_value(app) == 'My Status'
+        assert Path(file_setting.filename).exists()
+        assert Path(file_setting.filename).read_text() == 'File content'
+        assert file_setting.get_value(app) == 'File content'
 
-            config.set({file_setting.name: None})
-            assert not os.path.exists(file_setting.filename)
-            assert file_setting.get_value(app) is None
+        config.set({file_setting.name: None})
+        assert not Path(file_setting.filename).exists()
+        assert file_setting.get_value(app) is None
 
-            assert file_setting2.get_value(app) is None
-            config.set({file_setting2.name: 'File content 2'})
-            assert file_setting2.get_value(app) is None
-    finally:
-        try:
-            os.unlink(file_setting.filename)
-        except OSError:
-            pass
+        assert file_setting2.get_value(app) is None
+        config.set({file_setting2.name: 'File content 2'})
+        assert file_setting2.get_value(app) is None
 
 
 @has_license()
-def test_file_setting_docker(installed_apache_docker_app: App) -> None:
-    content = '''[test/setting4]
+def test_file_setting_docker(installed_apache_docker_app: App, tmp_path: Path) -> None:
+    fname = tmp_path / "setting4.test"
+    content = f'''[test/setting4]
 Type = File
-Filename = /tmp/settingdir/setting4.test
+Filename = {fname.as_posix()}
 Description = My Description 4
 '''
 
@@ -387,33 +388,28 @@ Description = My Description 4
 
     docker_file = Docker(app).path(setting.filename)
 
-    try:
-        with Configuring(app, revert='configure') as config:
-            assert not os.path.exists(docker_file)
-            assert setting.get_value(app) is None
+    with Configuring(app, revert='configure') as config:
+        assert not Path(docker_file).exists()
+        assert setting.get_value(app) is None
 
-            config.set({setting.name: 'Docker file content'})
-            assert os.path.exists(docker_file)
-            assert open(docker_file).read() == 'Docker file content'
-            assert setting.get_value(app) == 'Docker file content'
+        config.set({setting.name: 'Docker file content'})
+        assert Path(docker_file).exists()
+        assert Path(docker_file).read_text() == 'Docker file content'
+        assert setting.get_value(app) == 'Docker file content'
 
-            config.set({setting.name: None})
-            assert not os.path.exists(docker_file)
-            assert setting.get_value(app) is None
-    finally:
-        try:
-            os.unlink(setting.filename)
-        except OSError:
-            pass
+        config.set({setting.name: None})
+        assert not Path(docker_file).exists()
+        assert setting.get_value(app) is None
 
 
-def test_password_setting(installed_component_app: App) -> None:
-    content = '''[test/setting5]
+def test_password_setting(installed_component_app: App, tmp_path: Path) -> None:
+    fname = tmp_path / "setting6.password"
+    content = f'''[test/setting5]
 Type = Password
 
 [test/setting6]
 Type = PasswordFile
-Filename = /tmp/settingdir/setting6.password
+Filename = {fname.as_posix()}
 '''
 
     app, settings = fresh_settings(content, installed_component_app, 2)
@@ -426,31 +422,26 @@ Filename = /tmp/settingdir/setting6.password
     assert password_file_setting.should_go_into_image_configuration(app) is False
 
     assert password_setting.get_value(app) is None
-    assert not os.path.exists(password_file_setting.filename)
+    assert not Path(password_file_setting.filename).exists()
 
-    try:
-        with Configuring(app, revert='ucr') as config:
-            config.set({password_setting.name: 'MyPassword', password_file_setting.name: 'FilePassword'})
+    with Configuring(app, revert='ucr') as config:
+        config.set({password_setting.name: 'MyPassword', password_file_setting.name: 'FilePassword'})
 
-            assert password_setting.get_value(app) == 'MyPassword'
-            assert os.path.exists(password_file_setting.filename)
-            assert open(password_file_setting.filename).read() == 'FilePassword'
-            assert stat.S_IMODE(os.stat(password_file_setting.filename).st_mode) == 0o600
-    finally:
-        try:
-            os.unlink(password_file_setting.filename)
-        except OSError:
-            pass
+        assert password_setting.get_value(app) == 'MyPassword'
+        assert Path(password_file_setting.filename).exists()
+        assert Path(password_file_setting.filename).read_text() == 'FilePassword'
+        assert stat.S_IMODE(Path(password_file_setting.filename).stat().st_mode) == 0o600
 
 
 @has_license()
-def test_password_setting_docker(installed_apache_docker_app: App) -> None:
-    content = '''[test/setting5]
+def test_password_setting_docker(installed_apache_docker_app: App, tmp_path: Path) -> None:
+    fname = tmp_path / "settings6.password"
+    content = f'''[test/setting5]
 Type = Password
 
 [test/setting6]
 Type = PasswordFile
-Filename = /tmp/settingdir/setting6.password
+Filename = {fname.as_posix()}
 '''
 
     app, settings = fresh_settings(content, installed_apache_docker_app, 2)
@@ -467,15 +458,15 @@ Filename = /tmp/settingdir/setting6.password
     assert password_setting.is_inside(app) is True
     assert password_file_setting.is_inside(app) is True
 
-    assert not os.path.exists(password_file)
+    assert not Path(password_file).exists()
 
     with Configuring(app, revert='ucr') as config:
         config.set({password_setting.name: 'MyPassword', password_file_setting.name: 'FilePassword'})
 
         assert password_setting.get_value(app) == 'MyPassword'
-        assert os.path.exists(password_file)
-        assert open(password_file).read() == 'FilePassword'
-        assert stat.S_IMODE(os.stat(password_file).st_mode) == 0o600
+        assert Path(password_file).exists()
+        assert Path(password_file).read_text() == 'FilePassword'
+        assert stat.S_IMODE(Path(password_file).stat().st_mode) == 0o600
 
         stop = get_action('stop')
         stop.call(app=app)
@@ -486,7 +477,7 @@ Filename = /tmp/settingdir/setting6.password
         start = get_action('start')
         start.call(app=app)
         assert password_setting.get_value(app) == 'MyPassword'
-        assert open(password_file).read() == 'FilePassword'
+        assert Path(password_file).read_text() == 'FilePassword'
 
 
 def test_bool_setting(installed_component_app: App) -> None:
@@ -576,15 +567,15 @@ Description = setting5
 
 @pytest.fixture(scope='module')
 def outside_test_preinst() -> str:
-    return '''#!/bin/bash
+    return '''#!/bin/sh
 eval "$(ucr shell)"
-set -x
-test "$test_settings_outside" = "123" || exit 1
-test "$test_settings_list" = "value2" || exit 1
-test -z "$test_settings_inside" || exit 1
-test -z "$test_settings_not_exists" || exit 1
-test "$test_settings_not_given" = "initValue" || exit 1
-test "$test_settings_bool" = "true" || exit 1
+set -x -e
+test "$test_settings_outside" = "123"
+test "$test_settings_list" = "value2"
+test -z "$test_settings_inside"
+test -z "$test_settings_not_exists"
+test "$test_settings_not_given" = "initValue"
+test "$test_settings_bool" = "true"
 exit 0'''
 
 
@@ -618,16 +609,19 @@ DefaultPackages = libcurl4-doc''', 'ucstest'
 
 
 @pytest.fixture(scope='module', params=[package_app_ini, docker_app_ini])
-def outside_test_app(request, local_appcenter, outside_test_preinst, outside_test_settings) -> App:
+def outside_test_app(request, local_appcenter, outside_test_preinst, outside_test_settings, tmp_path_factory) -> App:
     ini_file, app_id = request.param()
-    with open('/tmp/app.ini', 'w') as fd:
-        fd.write(ini_file)
-    with open('/tmp/app.settings', 'w') as fd:
-        fd.write(outside_test_settings)
-    with open('/tmp/app.preinst', 'w') as fd:
-        fd.write(outside_test_preinst)
+
+    tmp = tmp_path_factory.mktemp("outside_test_app")
+    ini = tmp / "app.ini"
+    ini.write_text(ini_file)
+    settings = tmp / "app.settings"
+    settings.write_text(outside_test_settings)
+    preinst = tmp / "app.preinst"
+    preinst.write_text(outside_test_preinst)
+
     populate = get_action('dev-populate-appcenter')
-    populate.call(new=True, settings='/tmp/app.settings', preinst='/tmp/app.preinst', ini='/tmp/app.ini')
+    populate.call(new=True, settings=settings.as_posix(), preinst=preinst.as_posix(), ini=ini.as_posix())
     return Apps().find(app_id)
 
 
