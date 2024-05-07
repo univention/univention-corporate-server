@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [7]
+scope: ucs_5.0-0-errata5.0-7
+src: univention-directory-manager-modules
+fix: 15.0.26-10
+desc: |
+ This update addresses the following issues:
+ * If the UCR variable `directory/manager/mail-address/uniqueness`
+   is set to `true` the uniqueness check for email addresses takes
+   both user properties, `mailPrimaryAddress` and
+   `mailAlternativeAddress`, into account. It is now possible to
+   swap the values for these properties with one change to the
+   user object.
+bug: [57171]
