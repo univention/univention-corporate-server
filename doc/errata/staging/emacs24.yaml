@@ -6,11 +6,10 @@ src: emacs24
 fix: 24.5+1-11+deb9u3
 desc: |
  This update addresses the following issues:
-
- Debian update 24.5+1-11+deb9u3
- 24.5+1-11+deb9u3 (Fri, 03 May 2024 12:49:30 +0100)
- * Non-maintainer upload by the ELTS Team.
- * Fix CVE-2024-30203, CVE-2024-30204 & CVE-2024-30205.
+ * CVE-2024-30203: `Gnus` treats inline `MIME` contents as trusted.
+ * CVE-2024-30204: LaTeX preview is enabled by default for e-mail attachments.
+ * CVE-2024-30205: `Org` mode considers contents of remote files to be
+   trusted.
 bug: [57256]
 cve:
 - CVE-2024-30203
