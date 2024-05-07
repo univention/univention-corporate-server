@@ -854,7 +854,6 @@ class TestResult:
         self.duration = 0.0
         self.artifacts: Dict[str, Tuple[str, Any]] = {}
         self.condition: bool | None = None
-        self.is_pytest = False
 
     def dump(self, stream: IO[str] = sys.stdout) -> None:
         """Dump test result data."""
