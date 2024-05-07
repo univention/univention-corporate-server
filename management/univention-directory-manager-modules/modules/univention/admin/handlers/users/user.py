@@ -1451,15 +1451,26 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
 
             # ignore case in change of mailPrimaryAddress, we only store the lowercase address anyway
             if self['mailPrimaryAddress'] and self['mailPrimaryAddress'].lower() != (self.oldinfo.get('mailPrimaryAddress', None) or '').lower():
-                try:
-                    self.request_lock('mailPrimaryAddress', self['mailPrimaryAddress'])
-                except univention.admin.uexceptions.noLock:
-                    raise univention.admin.uexceptions.mailAddressUsed(self['mailPrimaryAddress'])
+                # do not check the address if it was used as mailAlternativeAddress but now no more
+                do_request_lock = True
+                if configRegistry.is_true('directory/manager/mail-address/uniqueness') and self.hasChanged('mailAlternativeAddress'):
+                    if self['mailPrimaryAddress'] in self.oldinfo.get('mailAlternativeAddress', []):
+                        if self['mailPrimaryAddress'] not in self['mailAlternativeAddress']:
+                            do_request_lock = False
+                if do_request_lock:
+                    try:
+                        self.request_lock('mailPrimaryAddress', self['mailPrimaryAddress'])
+                    except univention.admin.uexceptions.noLock:
+                        raise univention.admin.uexceptions.mailAddressUsed(self['mailPrimaryAddress'])
 
         # get lock for mailAlternativeAddress
         if (not self.exists() or self.hasChanged('mailAlternativeAddress')) and self['mailAlternativeAddress']:
             old_maas, new_maas = ({addr.lower() for addr in info.get('mailAlternativeAddress', [])} for info in (self.oldinfo, self.info))
             for added_maa in (new_maas - old_maas):
+                # do not check address if it was used as mailPrimaryAddress but now no more
+                if configRegistry.is_true('directory/manager/mail-address/uniqueness') and self.hasChanged('mailPrimaryAddress'):
+                    if self.oldinfo.get('mailPrimaryAddress', '').lower() == added_maa:
+                        continue
                 # uniqueness for mailAlternativeAddress
                 try:
                     self.request_lock('mailAlternativeAddress', added_maa)

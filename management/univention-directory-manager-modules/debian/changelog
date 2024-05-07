@@ -1,3 +1,9 @@
+univention-directory-manager-modules (16.0.22) unstable; urgency=medium
+
+  * Bug #57171: make changing mpa and maa in one step possible
+
+ -- Felix Botner <botner@univention.de>  Mon, 27 May 2024 11:05:24 +0200
+
 univention-directory-manager-modules (16.0.21) unstable; urgency=medium
 
   * Bug #57228: Remove guardian roles properties from users/ldap
