@@ -6,16 +6,15 @@ src: qtbase-opensource-src
 fix: 5.7.1+dfsg-3+deb9u4
 desc: |
  This update addresses the following issues:
- 5.7.1+dfsg-3+deb9u4 (Fri, 26 Apr 2024 18:48:02 +0200)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2023-32763 fix QTextLayout buffer overflow due to crafted SVG file
- * CVE-2023-24607 fix denial of service via a crafted string when the SQL ODBC
-   driver plugin is used
- * fix regression caused by patch for CVE-2023-24607
- * CVE-2023-38197 fix infinite loop in recursive entity expansion
- * CVE-2023-37639 fix crash of application in QXmlStreamReader due to crafted
-   XML string
- * CVE-2023-33285 fix buffer overflow in QDnsLookup
+ * CVE-2023-32763: When a `SVG` file with an image inside it is rendered, a
+   `QTextLayout` buffer overflow can be triggered.
+ * CVE-2023-24607: Denial of service was allowed via a crafted string when the
+   `SQL ODBC` driver plugin was used and the size of `SQLTCHAR` was 4.
+ * CVE-2023-38197: There are infinite loops in recursive entity expansion.
+ * CVE-2023-37639: Fix crash of application in `QXmlStreamReader` due to
+   crafted `XML` string
+ * CVE-2023-33285: `QDnsLookup` has a buffer over-read via a crafted reply
+   from a `DNS` server.
 bug: [57253]
 cve:
 - CVE-2023-32763
