@@ -39,7 +39,7 @@ import subprocess
 import sys
 import time
 import traceback
-from enum import IntEnum
+from enum import Enum, IntEnum
 from itertools import chain
 from types import TracebackType
 from typing import IO, Any, Callable, Iterable, Mapping, NoReturn, Sequence, Text, TypeVar
@@ -599,9 +599,41 @@ wait_for_replication_and_postrun = wait_for_listener_replication_and_postrun
 wait_for_connector_replication = wait_for_s4connector_replication
 
 
+class DpkgAction(Enum):
+    unknown = "u"
+    install = "i"
+    hold = "h"
+    remove = "r"
+    purge = "p"
+
+
+class DpkgStatus(Enum):
+    unknown = "?"
+    not_installed = "n"
+    config_files = "c"
+    unpacked = "U"
+    half_installed = "H"
+    half_configured = "F"
+    triggers_awaited = "W"
+    triggers_pending = "t"
+    installed = "i"
+
+    def is_installed(self) -> bool:
+        return self == self.installed
+
+    def is_uninstalled(self) -> bool:
+        return self in {self.not_installed, self.unknown, self.config_files}
+
+
+def dpkg_status(package: str) -> tuple[DpkgAction, DpkgStatus]:
+    cmd = ["dpkg-query", "-f", "${db:Status-Abbrev}", "--show", package]
+    proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False, text=True)
+    output = proc.stdout or "u?"
+    return (DpkgAction(output[0]), DpkgStatus(output[1]))
+
+
 def package_installed(package: str) -> bool:
-    sys.stdout.flush()
-    return subprocess.call("dpkg-query -W -f '${Status}' %s | grep -q ^install" % package, stderr=subprocess.DEVNULL, shell=True) == 0
+    return dpkg_status(package)[1].is_installed()
 
 
 def fail(log_message: str | None = None, returncode: int = 1) -> NoReturn:

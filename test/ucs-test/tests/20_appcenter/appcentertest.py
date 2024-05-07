@@ -56,6 +56,7 @@ from univention.appcenter.utils import get_local_fqdn
 from univention.config_registry import ConfigRegistry
 from univention.testing import debian_package, utils
 from univention.testing.umc import Client
+from univention.testing.utils import dpkg_status
 
 
 if TYPE_CHECKING:
@@ -426,14 +427,6 @@ class CheckOperations:
         if self.ucr.get("server/role") in master:
             yield from self.info.get("default_packages_master", [])
 
-    def _dpkg_status(self, package: str) -> tuple[str, str]:
-        cmd = ["dpkg-query", "-f='${db:Status-Abbrev}xx'", "--show", package]
-        output = subprocess.check_output(cmd, stderr=subprocess.STDOUT, text=True)
-        (expected_char, current_char) = output[:2]
-        expected = {"u": "unknown", "i": "install", "h": "hold", "r": "remove", "p": "purge"}.get(expected_char, "unknown")
-        current = {"n": "not-installed", "c": "config-files", "U": "unpacked", "H": "half-installed", "F": "half-configured", "W": "triggers-awaited", "t": "tritters-pending", "i": "installed"}.get(current_char, "unknown")
-        return (expected, current)
-
     def _get_dn(self) -> str:
         app_version = self.info.get("version")
         ldap_base = self.ucr.get("ldap/base")
@@ -459,12 +452,7 @@ class CheckOperations:
 
     def _check_dpkg_installed_status(self) -> bool:
         for package in self._packages():
-            try:
-                (_expected, current) = self._dpkg_status(package)
-                error = current != "installed"
-            except subprocess.CalledProcessError:
-                error = True
-            if error:
+            if not dpkg_status(package)[1].is_installed():
                 msg = "`dpkg -s {}` does not report as installed"
                 return self._fail(msg.format(package))
         print("OK - dpkg reports correctly installed")
@@ -472,12 +460,7 @@ class CheckOperations:
 
     def _check_dpkg_uninstalled_status(self) -> bool:
         for package in self._packages():
-            try:
-                (_expected, current) = self._dpkg_status(package)
-                error = current not in ("not-installed", "unknown", "config-files")
-            except subprocess.CalledProcessError as e:
-                error = e.returncode != 1
-            if error:
+            if not dpkg_status(package)[1].is_uninstalled():
                 msg = "`dpkg -s {}` does not report as uninstalled"
                 return self._fail(msg.format(package))
         print("OK - dpkg reports correctly uninstalled")
