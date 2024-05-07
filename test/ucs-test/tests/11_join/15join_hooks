@@ -9,44 +9,43 @@
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave
 ##  - memberserver
-## exposure: dangerous
+## exposure: careful
 
 eval "$(ucr shell)"
 
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
-# shellcheck source=../../lib/master.sh
-. "$TESTLIBPATH/master.sh" || exit 137
+# shellcheck source=../../lib/undo.sh
+. "$TESTLIBPATH/undo.sh" || exit 137
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
+tmp="$(mktemp -d)"
+undo rm -rf "$tmp"
+rnd="$(random_chars)"
 
-rm -f /tmp/prejoin /tmp/prejoinscripts /tmp/postjoinscripts
-
-udm-test settings/data create --set name=prejoin --set data_type=join/pre-join \
-	--set data="$(echo -e '#!/bin/bash\ntouch /tmp/prejoin' | bzip2 | base64 -w 0)"
-udm-test settings/data create --set name=prejoinscripts --set data_type=join/pre-joinscripts \
-	--set data="$(echo -e '#!/bin/bash\ntouch /tmp/prejoinscripts' | bzip2 | base64 -w 0)"
-udm-test settings/data create --set name=postjoinscripts --set data_type=join/post-joinscripts \
-	--set data="$(echo -e '#!/bin/bash\ntouch /tmp/postjoinscripts' | bzip2 | base64 -w 0)"
+udm-test settings/data create --set name="$rnd.prejoin" --set data_type=join/pre-join \
+	--set data="$(printf '#!/bin/sh\ntouch %q/prejoin' "$tmp" | bzip2 | base64 -w 0)"
+undo udm-test settings/data remove --dn "cn=$rnd.prejoin,${ldap_base:?}"
+udm-test settings/data create --set name="$rnd.prejoinscripts" --set data_type=join/pre-joinscripts \
+	--set data="$(printf '#!/bin/sh\ntouch %q/prejoinscripts' "$tmp" | bzip2 | base64 -w 0)"
+undo udm-test settings/data remove --dn "cn=$rnd.prejoinscripts,$ldap_base"
+udm-test settings/data create --set name="$rnd.postjoinscripts" --set data_type=join/post-joinscripts \
+	--set data="$(printf '#!/bin/sh\ntouch %q/postjoinscripts' "$tmp" | bzip2 | base64 -w 0)"
+undo udm-test settings/data remove --dn "cn=$rnd.postjoinscripts,$ldap_base"
 
 # indirect pre-join test
 /usr/share/univention-join/univention-join-hooks \
-	--server-role "$server_role" \
+	--server-role "${server_role:?}" \
 	--hooktype join/pre-join \
-	--master "$ldap_master" \
-	--binddn "$tests_domainadmin_account" \
-	--bindpwdfile "$tests_domainadmin_pwdfile"
-test -e /tmp/prejoin || fail_test 110
+	--master "${ldap_master:?}" \
+	--binddn "${tests_domainadmin_account:?}" \
+	--bindpwdfile "${tests_domainadmin_pwdfile:?}"
+[ -e "$tmp/prejoin" ] || fail_test 110
 
-test_username="$(echo $tests_domainadmin_account | awk -F , '{print $1}' | sed 's/uid=//')"
-univention-run-join-scripts -dcaccount "$test_username" -dcpwd "$tests_domainadmin_pwdfile"
-test -e /tmp/prejoinscripts || fail_test 110
-test -e /tmp/postjoinscripts || fail_test 110
-
-# do cleanup
-udm-test settings/data remove --dn "cn=prejoin,$ldap_base"
-udm-test settings/data remove --dn "cn=prejoinscripts,$ldap_base"
-udm-test settings/data remove --dn "cn=postjoinscripts,$ldap_base"
+uid="${tests_domainadmin_account%%,*}"
+univention-run-join-scripts -dcaccount "${uid#uid=}" -dcpwd "$tests_domainadmin_pwdfile"
+[ -e "$tmp/prejoinscripts" ] || fail_test 110
+[ -e "$tmp/postjoinscripts" ] || fail_test 110
 
 exit "$RETVAL"
