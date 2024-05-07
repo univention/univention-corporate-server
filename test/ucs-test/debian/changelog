@@ -1,3 +1,9 @@
+ucs-test (12.0.72) unstable; urgency=medium
+
+  * Issue #209: translate error message in test_legacy_authorization_oidc
+
+ -- Felix Botner <botner@univention.de>  Tue, 07 May 2024 09:36:16 +0200
+
 ucs-test (12.0.71) unstable; urgency=low
 
   * Bug #57193: Search for missing OpenLDAP indexes

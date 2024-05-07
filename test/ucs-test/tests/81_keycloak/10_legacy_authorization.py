@@ -96,7 +96,7 @@ def test_legacy_authorization_oidc(legacy_authorization_setup_oidc, keycloak_con
             'grant_type': 'password',
         },
     )
-    assert 'You do not have the needed privileges to access' in resp.text
+    assert _('You do not have the needed privileges to access') in resp.text
 
     # add user to group
     udm = UDM.admin().version(2)
