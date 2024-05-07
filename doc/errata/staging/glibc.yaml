@@ -6,10 +6,11 @@ src: glibc
 fix: 2.28-10+deb10u3
 desc: |
  This update addresses the following issue:
- 2.28-10+deb10u3 (Tue, 23 Apr 2024 19:23:00 +0300)
- * Non-maintainer upload by the LTS Team.
  * CVE-2024-2961: Out-of-bounds write in iconv ISO-2022-CN-EXT module
- * Don't ignore test failures during the build.
+ * CVE-2024-2961: The `iconv()` function in the `GNU C Library` and older may
+   overflow the output buffer passed to it by up to 4 bytes when converting
+   strings to the `ISO-2022-CN-EXT` character set, which may be used to crash
+   an application or overwrite a neighbouring variable.
 bug: [57249]
 cve:
 - CVE-2024-2961
