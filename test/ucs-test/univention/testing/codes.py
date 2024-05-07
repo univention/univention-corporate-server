@@ -16,7 +16,7 @@ __all__ = ['Reason']
 
 
 class Reason(Enum):
-    UNKNOWN = (-1, "E", "Test failed", "RED")
+    UNKNOWN = (-1, "O", "Test failed", "CYAN")
     SKIP = (77, "S", "Test skipped", "BLUE")
     OKAY = (100, "O", "Test passed", "GREEN")
     FIXED_EXPECTED = (101, "O", "Test passed", "GREEN")
