@@ -562,21 +562,14 @@ class TestOperations:
 
     def dry_run_successful(self, dry_run_result: dict[str, dict[str, Any]]) -> bool:
         print("Checking dry-run", dry_run_result)
-        for host in dry_run_result:
-            if dry_run_result[host]["errors"]:
-                return False
-            for app in dry_run_result[host]["packages"]:
-                if dry_run_result[host]["packages"][app].get("broken"):
-                    return False
-        return True
+        return not any(
+            apps["errors"] or any(vals.get("broken") for vals in apps["packages"].values())
+            for apps in dry_run_result.values()
+        )
 
     def operation_successfull(self, result: dict[str, dict[str, Any]]) -> bool:
         print("Checking result", result)
-        for host in result:
-            for app in result[host]:
-                if not result[host][app]["success"]:
-                    return False
-        return True
+        return all(vals["success"] for apps in result.values() for vals in apps.values())
 
     def operations_equal(self, expected: dict[str, Any], actual: dict[str, Any], msg: str | None = None) -> bool:
         simple_equal = ("invokation_forbidden_details", "invokation_warning_details")

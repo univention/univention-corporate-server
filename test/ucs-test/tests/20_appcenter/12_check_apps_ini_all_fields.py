@@ -283,15 +283,6 @@ class Section:
         return Value(value, self.appid)
 
 
-def exclude_ignored(names, remove) -> None:
-    """Removes the given 'remove' from the given 'names' when it is in."""
-    for name in remove:
-        try:
-            names.remove(name)
-        except ValueError:
-            pass
-
-
 def parse_args():
     """
     Creates an instance of OptionParser and parses arguments.
