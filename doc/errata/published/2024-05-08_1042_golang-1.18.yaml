@@ -43,3 +43,6 @@ cve:
  - CVE-2023-24538
  - CVE-2020-16845
 maintained: false
+erratum: 1042
+announced: 2024-05-08
+support: core
