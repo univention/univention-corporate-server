@@ -64,20 +64,13 @@ wait_for_replication_and_postrun
 
 ## look for printer and user
 echo "----Testing whether printer share '$printername' and user '$username' have been created"
-i=0
-while ! output="$(smbclient //localhost/$printername -U "$username%$password" -c "exit" 2>&1)"
-do
-        echo '.'
-        let i=$i+1
-        if [ $i = 20 ]; then
-		if echo "$output" | grep NT_STATUS_ACCESS_DENIED; then
-			fail_fast 1 "User was not provided 20 seconds after creation"
-		else
-			fail_fast 1 "Samba did not provide the printer share 20 seconds after creation"
-		fi
-        fi
-        sleep 1
-done
+# shellcheck disable=SC2317
+check_share () { output="$(smbclient "//localhost/$printername" -U "$username%$password" -c "exit" 2>&1)"; }
+retry 20 check_share ||
+	case "$output" in
+		*NT_STATUS_ACCESS_DENIED*) fail_fast 1 "User was not provided 20 seconds after creation" ;;
+		*) fail_fast 1 "Samba did not provide the printer share 20 seconds after creation" ;;
+	esac
 
 #create input file
 echo "----Creating input file"
@@ -91,28 +84,16 @@ nc_pid=$!
 
 ## initiate print
 echo "initiate print"
-i=0
-while ! smbclient -U"$username%$password" "//$hostname.$domainname/$printername" -c "print \"$tmp_filename\""
-do
-	let i=$i+1
-	if [ $i = 20 ]; then
-		fail_fast 1 "Initiate printing has not been successful."
-	fi
-	sleep 1
-done
+# shellcheck disable=SC2317
+check_print () { smbclient -U"$username%$password" "//$hostname.$domainname/$printername" -c "print \"$tmp_filename\""; }
+retry 20 check_print ||
+	fail_fast 1 "Initiate printing has not been successful."
 rm "$tmp_filename"
 
 ## check output
 echo "check output"
-i=0
-while ! grep -q "$(uname -a)" "/tmp/$printername"
-do
-	let i=$i+1
-	if [ $i = 20 ]; then
-		fail_fast 1 "Nothing has been printed to the output file."
-	fi
-	sleep 1
-done
+retry 20 grep -q "$(uname -a)" "/tmp/$printername" ||
+	fail_fast 1 "Nothing has been printed to the output file."
 
 kill "$nc_pid" >/dev/null 2>&1
 if [ "$nc_pid" = "$(pgrep -x nc)" ]; then

@@ -46,13 +46,8 @@ share_create "$sharename" "$sharepath1"
 
 wait_for_replication_and_postrun
 # wait until the share is ready
-for((i=0;i<60;i++)); do
-	if smbclient -U "${user1}%univention" "//$hostname/$sharename" -c ls; then
-		echo "I: Share is ready"
-		break
-	fi
-	sleep 1
-done
+retry 60 smbclient -U "${user1}%univention" "//$hostname/$sharename" -c exit ||
+	fail_fast "Share not ready"
 
 ftemp=$(mktemp)
 echo "test" >>"$ftemp"

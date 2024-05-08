@@ -59,15 +59,8 @@ user_create "$NAME" \
 	--set password="$(<$tests_domainadmin_pwdfile)" \
 	--set primaryGroup="$(get_domain_admins_dn)"
 
-attempts=10
-i=0
-while ((i < attempts)) && ! /usr/lib/univention-pam/ldap-group-to-file.py; do
-	((i+=1))
-	sleep 1
-done
-if ((i==attempts)); then
+retry 10 /usr/lib/univention-pam/ldap-group-to-file.py ||
 	warning "ldap-group-to-file.py failed $i times"
-fi
 
 ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" != "$hostname" ]

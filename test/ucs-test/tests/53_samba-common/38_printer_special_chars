@@ -74,20 +74,13 @@ wait_for_replication_and_postrun
 
 ## look for printer and user
 echo "----Testing wether printer share '$sambaprintername' and user '$username' have been created"
-i=0
-while ! output="$(smbclient "//localhost/$sambaprintername" -U "$username%$password" -c "exit" 2>&1)"
-do
-        echo '.'
-        let i=$i+1
-        if [ $i = 20 ]; then
-		if echo "$output" | grep NT_STATUS_ACCESS_DENIED; then
-			fail_fast 1 "User was not provided 20 seconds after creation"
-		else
-			fail_fast 1 "Samba did not provide the printer share 20 seconds after creation"
-		fi
-        fi
-        sleep 1
-done
+# shellcheck disable=SC2317
+check_share () { output="$(smbclient "//localhost/$sambaprintername" -U "$username%$password" -c "exit" 2>&1)"; }
+retry 20 check_share ||
+	case "$output" in
+		*NT_STATUS_ACCESS_DENIED*) fail_fast 1 "User was not provided 20 seconds after creation" ;;
+		*) fail_fast 1 "Samba did not provide the printer share 20 seconds after creation" ;;
+	esac
 
 #create input file
 tmp_filename="$(mktemp)"
@@ -100,29 +93,13 @@ nc_pid=$!
 
 ## initiate print
 echo "initiate print"
-i=0
-while ! lp -d "$printername" -U "$username" "$tmp_filename"
-do
-	echo "lp -d \"$printername\" -U \"$username\" \"$tmp_filename\""
-	let i=$i+1
-	if [ $i = 20 ]; then
+retry 20 lp -d "$printername" -U "$username" "$tmp_filename" ||
 		fail_fast 1 "CUPS: Initiate printing has not been successful."
-	fi
-	sleep 1
-done
-rm "$tmp_filename"
 
 ## check output
 echo "check output"
-i=0
-while ! grep -q "$(uname -a)" "/tmp/$printername"
-do
-	let i=$i+1
-	if [ $i = 20 ]; then
+retry 20 grep -q "$(uname -a)" "$tmp_$printername" ||
 		fail_fast 1 "CUPS: Nothing has been printed to the output file."
-	fi
-	sleep 1
-done
 
 kill "$nc_pid" >/dev/null 2>&1
 if [ "$nc_pid" = "$(pgrep -x nc)" ]; then
@@ -141,32 +118,15 @@ nc_pid=$!
 
 ## initiate print
 echo "initiate print"
-i=0
 ## Important: Wait.. Otherwise, if ONE too early attempt fails, then it seems to get cached for about 5 min.
 sleep 10
-while ! smbclient -U"$username%$password" "//$hostname.$domainname/$sambaprintername" -c "print \"$tmp_filename\""
-do
-	let i=$i+1
-	echo "SAMBA: Initiate printing has not been successful on attempt $i"
-	echo "smbclient -U\"$username%$password\" \"//$hostname.$domainname/$sambaprintername\" -c \"print \\\"$tmp_filename\\\"\""
-	if [ $i = 3 ]; then
-		fail_fast 1 "SAMBA: Initiate printing has not been successful."
-	fi
-	sleep 300
-done
-rm "$tmp_filename"
+retry_delay=300 retry 3 smbclient -U"$username%$password" "//$hostname.$domainname/$sambaprintername" -c "print \"$tmp_filename\"" ||
+	fail_fast 1 "SAMBA: Initiate printing has not been successful."
 
 ## check output
 echo "check output"
-i=0
-while ! grep -q "$(uname -a)" "/tmp/$sambaprintername"
-do
-	let i=$i+1
-	if [ $i = 20 ]; then
-		fail_fast 1 "SAMBA: Nothing has been printed to the output file."
-	fi
-	sleep 1
-done
+retry 20 grep -q "$(uname -a)" "/tmp/$sambaprintername" ||
+	fail_fast 1 "SAMBA: Nothing has been printed to the output file."
 
 kill "$nc_pid" >/dev/null 2>&1
 if [ "$nc_pid" = "$(pgrep -x nc)" ]; then

@@ -38,53 +38,31 @@ systemctl restart univention-directory-listener
 # create domain part in configured mail domains list
 undo wait_for_replication_and_postrun # Reversed order
 create_mail_domain "$domainname" && undo delete_mail_domain "$domainname"
-user_create "$USERNAME" &&
-	undo user_remove "$USERNAME" ||
-	fail_test 1
-group_create "$GROUPNAME" &&
-	undo group_remove "$GROUPNAME" ||
-	fail_test 1
+user_create "$USERNAME" ||
+	fail_fast 1
+undo user_remove "$USERNAME"
+group_create "$GROUPNAME" ||
+	fail_fast 1
+undo group_remove "$GROUPNAME"
 group_adduser "$USERNAME" "$GROUPNAME" ||
-	fail_test 1
+	fail_fast 1
 wait_for_replication_and_postrun
 
 #group_removeuser $USERNAME $GROUPNAME || fail_test 1
 
 echo "Waiting for NSS update script"
-i=0
-while sleep 1s
-do
-	if [ $i -lt "$TIME_TO_WAIT" ]; then
-		if getent group "$GROUPNAME" | grep -q "$USERNAME"; then
-			echo "NSS update script seems to work"
-			break
-		fi
-	else
-		echo "NSS update script doesn't seem to work. Waited longer than $TIME_TO_WAIT seconds."
-		fail_test 1
-		break
-	fi
-	i=`expr $i + 1`
-done
+# shellcheck disable=SC2317
+check_user_in_group () { getent group "$GROUPNAME" | grep -q "$USERNAME"; }
+retry "$TIME_TO_WAIT" check_user_in_group ||
+	fail_test 1 "NSS update script failed"
 
 group_removeuser "$USERNAME" "$GROUPNAME" || fail_test 1
 wait_for_replication_and_postrun
 
 echo "Waiting for NSS update script..."
-i=0
-while sleep 1s
-do
-	if [ $i -lt "$TIME_TO_WAIT" ]; then
-		if ! getent group "$GROUPNAME" | grep -q "$USERNAME"; then
-			echo "NSS update script seems to work"
-			break
-		fi
-	else
-		echo "NSS update script doesn't seem to work. Waited longer than $TIME_TO_WAIT seconds."
-		fail_test 1
-		break
-	fi
-	i=`expr $i + 1`
-done
+# shellcheck disable=SC2317
+check_user_not_in_group () { ! getent group "$GROUPNAME" | grep -q "$USERNAME"; }
+retry "$TIME_TO_WAIT" check_user_in_group ||
+	fail_test 1 "NSS update script failed"
 
 exit "$RETVAL"
