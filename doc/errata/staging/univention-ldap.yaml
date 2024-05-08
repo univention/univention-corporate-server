@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [7]
+scope: ucs_5.0-0-errata5.0-7
+src: univention-ldap
+fix:
+desc: |
+ This update addresses the following issues:
+ * The ldap object `cn=backup,$ldap_base` is not required anymore on primary
+   domain controllers.
+bug: [31252]
