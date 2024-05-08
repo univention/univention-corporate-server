@@ -17,32 +17,23 @@ LANG=C
 . "$TESTLIBPATH/base.sh" || exit 137
 
 test_backup () {
-    local output=$(univention-samba4-backup $@ 2>&1)
-    local retval=$?
-
-    if [ $retval -ne 0 ]; then
-        echo -e "$output"
-        fail_test $retval "univention-samba4-backup exited with code $retval"
-    fi
+    local output errors
+    output=$(univention-samba4-backup 2>&1) ||
+        fail_test $? "univention-samba4-backup exited with code $?: $output"
 
     # grep output for messages apeared in Bug #35392:
-    local errors=$(echo "$output" | grep -i -e "socket ignored" \
-                                         -e "file changed as we read it")
-
-    if [ -n "$errors" ]; then
-        echo -e "$errors"
-        fail_test 1 "univention-samba4-backup produced one of the messages that should be suppressed."
-    fi
+    errors=$(echo "$output" | grep -i -e "socket ignored" -e "file changed as we read it") &&
+        fail_test 1 "univention-samba4-backup produced one of the messages that should be suppressed: $errors"
 }
 
 # The bug described an error with `tar` while files were modified. This
 # simulates the case.
 start_modification () {
-    local base_dir=$1
-    local test_file=$(tempfile -d "$base_dir")
-    #`dd` is made as slow as possible to maximize the change of triggering the
+    local base_dir="$1" test_file
+    test_file=$(mktemp -d "$base_dir")
+    # `dd` is made as slow as possible to maximize the change of triggering the
     # bug. This creates a 10mb file.
-    dd if=/dev/zero of="$test_file" bs=1 count=10485760 2> /dev/null
+    dd if=/dev/zero of="$test_file" bs=1 count=10M 2>/dev/null
     rm -f "$test_file"
 }
 
