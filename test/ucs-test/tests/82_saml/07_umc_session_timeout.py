@@ -6,6 +6,7 @@
 ## exposure: safe
 ## roles: [domaincontroller_master]
 
+import json
 import subprocess
 import time
 
@@ -22,6 +23,17 @@ def test_umc_session_timeout(ucr, saml_session):
         ucr.handler_set([f'umc/saml/assertion-lifetime={session_timeout}', 'umc/saml/grace_time=1'])
         subprocess.check_call(['systemctl', 'restart', 'slapd.service'])
         subprocess.check_call(['/usr/share/univention-management-console/saml/update_metadata'])
+        fqdn = ucr['umc/saml/sp-server'] if ucr.get('umc/saml/sp-server') else '%(hostname)s.%(domainname)s' % ucr
+        entity_id = f'https://{fqdn}/univention/saml/metadata'
+        ucr.get('keycloak/server/sso/fqdn') and subprocess.call([
+            'univention-keycloak',
+            'saml/sp',
+            'update',
+            '--metadata-file',
+            '/usr/share/univention-management-console/saml/sp/metadata.xml',
+            entity_id,
+            json.dumps({'attributes': {'saml.assertion.lifespan': session_timeout}}),
+        ])
         try:
             saml_session.login_with_new_session_at_IdP()
             saml_session.test_logged_in_status()
@@ -45,3 +57,12 @@ def test_umc_session_timeout(ucr, saml_session):
     finally:
         subprocess.check_call(['systemctl', 'restart', 'slapd.service'])
         subprocess.check_call(['/usr/share/univention-management-console/saml/update_metadata'])
+        ucr.get('keycloak/server/sso/fqdn') and subprocess.call([
+            'univention-keycloak',
+            'saml/sp',
+            'update',
+            '--metadata-file',
+            '/usr/share/univention-management-console/saml/sp/metadata.xml',
+            entity_id,
+            json.dumps({'attributes': {'saml.assertion.lifespan': 300}}),
+        ])
