@@ -28,7 +28,6 @@ function ad_change_password ()
 	local new="$3"
 
 	samba-tool user password -U "$uid" --password "$old" --newpassword="$new"
-	return $?
 }
 
 SYNCMODE="$(ad_get_sync_mode)"

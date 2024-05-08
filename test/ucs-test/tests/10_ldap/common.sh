@@ -15,7 +15,6 @@ hasPwdAccess () { # has user $1 access to reset password of user $2 ?
 		--set password="$passwd" \
 		--set overridePWHistory=1 \
 		--set overridePWLength=1
-	return $?
 }
 
 hasDescrAccess () { # has user $1 access to set description of user $2 ?
@@ -28,7 +27,6 @@ hasDescrAccess () { # has user $1 access to set description of user $2 ?
 		--bindpwd "$adminpwd" \
 		--dn "$targetuser" \
 		--set description="$(date)"
-	return $?
 }
 
 resetPwd () { # reset password to univention for user $1
@@ -40,5 +38,4 @@ resetPwd () { # reset password to univention for user $1
 		--set password="$targetpwd" \
 		--set overridePWHistory=1 \
 		--set overridePWLength=1
-	return $?
 }

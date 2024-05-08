@@ -25,7 +25,6 @@ function ad_create_user_with_password () {
 	local admin="$(ucr get connector/ad/ldap/binddn | sed 's/,.*//;s/cn=//i')"
 	local pass="$(cat $(ucr get connector/ad/ldap/bindpw))"
 	samba-tool user create --use-username-as-cn "$username" "$password" --URL="ldap://$host" -U"$admin"%"$pass"
-	return $?
 }
 
 
