@@ -11,3 +11,6 @@ desc: |
  * Fix Debian Bug `#960887`: `Use of uninitialized value $caller`
 bug: [56457]
 maintained: false
+erratum: 1041
+announced: 2024-05-08
+support: core
