@@ -17,7 +17,7 @@
 
 . "adconnector.sh" || exit 137
 
-[ -n "$connector/listener/additionalbasenames" ] || exit 137
+[ -n "$connector_listener_additionalbasenames" ] || exit 137
 
 configbase2="connector2"  # That's what scenarios/ad-connector/autotest-241-adsync-w2k19-english-two-forest-children.cfg uses
 # if not configured with multiple connectors, skip this test due to missing software
