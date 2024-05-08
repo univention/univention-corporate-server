@@ -18,7 +18,7 @@ esac
 shift # past argument or value
 done
 
-function adapt_for_manual {
+adapt_for_manual () {
 	SHADOW=NO
 	OUTFILE=default_outfile
 

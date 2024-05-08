@@ -16,7 +16,7 @@ LANG=C
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
-function test_backup {
+test_backup () {
     local output=$(univention-samba4-backup $@ 2>&1)
     local retval=$?
 
@@ -37,7 +37,7 @@ function test_backup {
 
 # The bug described an error with `tar` while files were modified. This
 # simulates the case.
-function start_modification {
+start_modification () {
     local base_dir=$1
     local test_file=$(tempfile -d "$base_dir")
     #`dd` is made as slow as possible to maximize the change of triggering the

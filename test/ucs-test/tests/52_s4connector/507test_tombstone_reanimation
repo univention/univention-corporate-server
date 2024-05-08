@@ -37,7 +37,7 @@ UDM_groups_group_name="$(random_chars)"
 UDM_groups_group_sambaRID="$(( RANDOM % 10000 + 10000 ))"
 GROUP_AD_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
 
-function cleanup {
+cleanup () {
 	timedatectl set-timezone "$TIMEZONE"
 	udm_remove 'users/user'
 	udm_remove 'groups/group'

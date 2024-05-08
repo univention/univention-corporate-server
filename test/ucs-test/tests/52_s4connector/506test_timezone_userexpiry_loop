@@ -35,14 +35,13 @@ UDM_users_user_userexpiry="$(random_date)"
 AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
 UCS_DN="uid=$UDM_users_user_username,cn=users,$(ucr get ldap/base)"
 
-function cleanup {
+cleanup () {
 	timedatectl set-timezone "$TIMEZONE"
 	udm_remove 'users/user'
 	ad_wait_for_synchronization; fail_bool 0 110
 	udm_exists 'users/user'; fail_bool 1 110
 	ad_set_sync_mode "$SYNCMODE"
 }
-
 trap cleanup EXIT
 
 ad_connector_stop
@@ -63,5 +62,4 @@ do
 	udm-test 'users/user' modify \
 		--dn "$UCS_DN" \
 		--set userexpiry="$UDM_users_user_userexpiry" || fail_fast 110
-
 done

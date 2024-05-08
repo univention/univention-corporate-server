@@ -26,23 +26,23 @@ MAX_USERS=4
 username="$(random_chars)"
 
 # we work in parallel and we want to abort all executions with a single CTRL-C:
-function ctrl_c {
+ctrl_c () {
 	killall umc-set "$0"
 }
 trap ctrl_c INT
 trap "systemctl restart univention-management-console-server" EXIT
 
 # returns the number of open connections by the umc-server
-function get_number_of_close_waits() {
+get_number_of_close_waits () {
     lsof -p "$(pidof -x univention-management-console-server)" | grep -c CLOSE_WAIT
 }
 
-function get_user_ldap_domain() {
+get_user_ldap_domain () {
     ucr get tests/domainadmin/account | grep -Eo 'cn=.*'
 }
 
 # $1 = number of users
-function create_sample_users {
+create_sample_users () {
 	DOMAIN=$(get_user_ldap_domain)
     for i in $(seq 1 "$1"); do
         set -x
@@ -58,7 +58,7 @@ function create_sample_users {
     done
 }
 
-function remove_sample_users {
+remove_sample_users () {
     DOMAIN=$(get_user_ldap_domain)
     for i in $(seq 1 "$1"); do
         set -x
@@ -68,7 +68,7 @@ function remove_sample_users {
     done
 }
 
-function umc_cycle_password {
+umc_cycle_password () {
 	USER=$1
 	umc-set -U "$USER" -P "univention_0" -e -o '{"password": {"password": "univention_0", "new_password": "univention_1"}}';
 	umc-set -U "$USER" -P "univention_1" -e -o '{"password": {"password": "univention_1", "new_password": "univention_2"}}';
@@ -77,7 +77,7 @@ function umc_cycle_password {
 }
 
 # $1 = number of users
-function parallel_cycle_passwords {
+parallel_cycle_passwords () {
     for i in $(seq 1 "$1"); do
         set -x
         umc_cycle_password "$username""$i" &

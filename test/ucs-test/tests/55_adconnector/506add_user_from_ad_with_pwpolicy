@@ -18,7 +18,7 @@
 
 . "adconnector.sh" || exit 137
 
-function ad_create_user_with_password () {
+ad_create_user_with_password () {
 	local username="$1"
 	local password="$2"
 	local host="$(ucr get connector/ad/ldap/host)"
@@ -26,7 +26,6 @@ function ad_create_user_with_password () {
 	local pass="$(cat $(ucr get connector/ad/ldap/bindpw))"
 	samba-tool user create --use-username-as-cn "$username" "$password" --URL="ldap://$host" -U"$admin"%"$pass"
 }
-
 
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
@@ -52,7 +51,6 @@ if echo "$output" | grep -qi "$UDM_users_user_username"; then
 	echo "$output" >&2
 	fail_test 110 ""
 fi
-
 
 # cleanup
 /usr/share/univention-ad-connector/remove_ad_rejected.py "$AD_DN"

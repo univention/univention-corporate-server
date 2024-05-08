@@ -21,8 +21,7 @@
 
 . "s4connector.sh" || exit 137
 
-function ad_change_password ()
-{
+ad_change_password () {
 	local uid="$1"
 	local old="$2"
 	local new="$3"

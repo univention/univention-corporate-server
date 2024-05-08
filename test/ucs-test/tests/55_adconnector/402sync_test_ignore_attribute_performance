@@ -16,7 +16,6 @@
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
-
 . "adconnector.sh" || exit 137
 
 UDM_users_user_username="$(random_chars)"
@@ -27,8 +26,7 @@ UDM_USER_DN="uid=$UDM_users_user_username,cn=users,$ldap_base"
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 
-
-function ad_create_user_with_password () {
+ad_create_user_with_password () {
 	local username="$1"
 	local password="$2"
 	local host="$(ucr get connector/ad/ldap/host)"
@@ -49,7 +47,6 @@ ucr set connector/ad/poll/profiling=yes
 /etc/init.d/univention-ad-connector restart
 
 { # Generate ignorable replication change in AD
-
 	ad_admin="$(sed 's/,.*//;s/cn=//i' <<<"$connector_ad_ldap_binddn")"
 	ad_bindpw="$(< "$connector_ad_ldap_bindpw")"
 	ad_ldapurl="ldap://$connector_ad_ldap_host"
