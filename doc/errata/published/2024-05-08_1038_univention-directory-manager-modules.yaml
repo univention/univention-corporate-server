@@ -12,3 +12,6 @@ desc: |
    `users/user` module, `hwaddress` for the `dhcp/host`
    module and `ip` for the `dns/ptr_record` module.
 bug: [54339, 53830, 53807, 55604]
+erratum: 1038
+announced: 2024-05-08
+support: core
