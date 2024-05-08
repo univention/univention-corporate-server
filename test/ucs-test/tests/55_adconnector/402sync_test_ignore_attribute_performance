@@ -27,11 +27,10 @@ SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 
 ad_create_user_with_password () {
-	local username="$1"
-	local password="$2"
-	local host="$(ucr get connector/ad/ldap/host)"
-	local admin="$(ucr get connector/ad/ldap/binddn | sed 's/,.*//;s/cn=//i')"
-	local pass="$(cat $(ucr get connector/ad/ldap/bindpw))"
+	local username="$1" password="$2" host admin pass
+	host="$(ucr get connector/ad/ldap/host)"
+	admin="$(ucr get connector/ad/ldap/binddn | sed 's/,.*//;s/cn=//i')"
+	pass="$(cat $(ucr get connector/ad/ldap/bindpw))"
 	samba-tool user create --use-username-as-cn "$username" "$password" --URL="ldap://$host" -U"$admin"%"$pass"
 }
 

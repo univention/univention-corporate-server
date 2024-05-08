@@ -69,7 +69,7 @@ remove_sample_users () {
 }
 
 umc_cycle_password () {
-	USER=$1
+	local USER="$1"
 	umc-set -U "$USER" -P "univention_0" -e -o '{"password": {"password": "univention_0", "new_password": "univention_1"}}';
 	umc-set -U "$USER" -P "univention_1" -e -o '{"password": {"password": "univention_1", "new_password": "univention_2"}}';
 	umc-set -U "$USER" -P "univention_2" -e -o '{"password": {"password": "univention_2", "new_password": "univention_3"}}';

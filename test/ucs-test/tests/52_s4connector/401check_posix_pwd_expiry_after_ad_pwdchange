@@ -22,10 +22,7 @@
 . "s4connector.sh" || exit 137
 
 ad_change_password () {
-	local uid="$1"
-	local old="$2"
-	local new="$3"
-
+	local uid="$1" old="$2" new="$3"
 	samba-tool user password -U "$uid" --password "$old" --newpassword="$new"
 }
 
