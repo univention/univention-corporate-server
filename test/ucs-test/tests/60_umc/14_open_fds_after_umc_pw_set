@@ -37,35 +37,33 @@ get_number_of_close_waits () {
     lsof -p "$(pidof -x univention-management-console-server)" | grep -c CLOSE_WAIT
 }
 
-get_user_ldap_domain () {
-    ucr get tests/domainadmin/account | grep -Eo 'cn=.*'
-}
+DOMAIN="$(ucr get tests/domainadmin/account | grep -Eo 'cn=.*')"
 
 # $1 = number of users
 create_sample_users () {
-	DOMAIN=$(get_user_ldap_domain)
-    for i in $(seq 1 "$1"); do
-        set -x
+    local i
+    set -x
+    for ((i=0;i<$1;i++)); do
         # if the user already exists we want to reset the password
-        udm users/user modify --dn uid="$username""$i","$DOMAIN" \
+        udm users/user modify --dn uid="${username}${i},${DOMAIN}" \
             --set overridePWHistory=1 \
             --set password="univention_0" ||\
         udm users/user create  --superordinate "$DOMAIN" \
             --set lastname="nobody" \
-            --set username="$username$i" \
+            --set username="${username}${i}" \
             --set password="univention_0"
-        set +x
     done
+    set +x
 }
 
 remove_sample_users () {
-    DOMAIN=$(get_user_ldap_domain)
-    for i in $(seq 1 "$1"); do
-        set -x
+    local i
+    set -x
+    for ((i=0;i<$1;i++)); do
         # if the user already exists we want to reset the password
-        udm users/user remove --dn uid="$username""$i","$DOMAIN"
-        set +x
+        udm users/user remove --dn uid="${username}${i},${DOMAIN}"
     done
+    set +x
 }
 
 umc_cycle_password () {
@@ -78,11 +76,12 @@ umc_cycle_password () {
 
 # $1 = number of users
 parallel_cycle_passwords () {
-    for i in $(seq 1 "$1"); do
-        set -x
-        umc_cycle_password "$username""$i" &
-        set +x
+    local i
+    set -x
+    for ((i=0;i<$1;i++)); do
+        umc_cycle_password "${username}${i}" &
     done
+    set +x
 }
 
 set -e

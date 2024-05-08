@@ -13,7 +13,7 @@ wbinfo -p || exit 137
 
 /etc/init.d/winbind restart
 
-sleep 3;
+sleep 3
 
 wbinfo -p || fail_test 110
 

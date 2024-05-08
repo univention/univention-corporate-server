@@ -28,9 +28,9 @@ ucr set umc/http/max-open-file-descriptors=$fd_max
 systemctl restart univention-management-console-server
 sleep 5
 umc_pid="$(pidof -x univention-management-console-server)"
-control=$(cat /proc/$umc_pid/limits | grep "open files" | grep -o "[0-9]*" | head -1)
+control=$(grep "open files" <"/proc/$umc_pid/limits" | grep -o "[0-9]*" | head -1)
 echo "Checking how many fds are allowed according to /proc/$umc_pid/limits"
 
 echo "Result: $control"
-[ "$control" = "$fd_max" ] || fail_bool 110 "ERROR: max file descriptor configuration didn't work"
-[ $? = 0 ] && echo "SUCCESS: the maximum amount of file descriptors has been successfully set by setting ucr variable umc/http/max-open-file-descriptors"
+[ "$control" = "$fd_max" ] || fail_fast 110 "ERROR: max file descriptor configuration didn't work"
+echo "SUCCESS: the maximum amount of file descriptors has been successfully set by setting ucr variable umc/http/max-open-file-descriptors"
