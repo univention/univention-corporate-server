@@ -23,6 +23,7 @@ def assert_content(app: App, expected: str) -> None:
 def test_app_configure_reinitialize(appcenter: Appcenter, app_name: str, app_version: str) -> None:
     app = tiny_app(app_name, app_version)
     try:
+        # OKAY: /tmp/ inside docker image
         app.set_ini_parameter(
             DockerScriptConfigure='/tmp/configure',
         )

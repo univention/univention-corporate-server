@@ -14,13 +14,14 @@ from dockertest import Appcenter, tiny_app
 def test_app_configure(appcenter: Appcenter, app_name: str, app_version: str) -> None:
     app = tiny_app(app_name, app_version)
     try:
+        # OKAY: /tmp/ inside docker image
         app.set_ini_parameter(
             DockerScriptConfigure='/tmp/configure',
             DockerScriptSetup='/tmp/setup')
         app.add_script(configure='''#!/bin/sh
 set -x
 echo "Configuring the App"
-echo -n "$(more /etc/univention/base.conf | sed -ne 's|^test/configure/param: ||p')"  > /tmp/configure.output
+sed -ne 's|^test/configure/param: ||p' /etc/univention/base.conf >/tmp/configure.output
 exit 0
 ''')
         app.add_script(setup='#!/bin/sh')
@@ -28,13 +29,14 @@ exit 0
         appcenter.update()
         app.install()
         app.verify(joined=False)
+
         configured_file = app.file('/tmp/configure.output')
         app.configure({'test/configure/param': 'test1'})
-        assert configured_file.read_text() == 'test1'
+        assert configured_file.read_text().rstrip() == 'test1'
         app.configure({'test/configure/param': 'test2'})
-        assert configured_file.read_text() == 'test2'
+        assert configured_file.read_text().rstrip() == 'test2'
         app.configure({'test/configure/param': None})
-        assert configured_file.read_text() == ''
+        assert configured_file.read_text().rstrip() == ''
     finally:
         app.uninstall()
         app.remove()

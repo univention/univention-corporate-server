@@ -30,6 +30,7 @@ def test_ucr_template_mechanism_for_docker_script_init(appcenter: Appcenter, app
         ucr.load()
         app = tiny_app(app_name, app_version)
         try:
+            # OKAY: /tmp/ inside docker image
             app.set_ini_parameter(
                 DockerScriptSetup='/tmp/setup',
                 DockerScriptInit='/sbin/init --test=@%@ldap/base@%@',
