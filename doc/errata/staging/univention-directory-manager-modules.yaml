@@ -7,7 +7,8 @@ fix: 15.0.26-9
 desc: |
  This update addresses the following issues:
  * Added ability to filter for various attributes using the UDM
-   commandline interface. This includes `sambaLogonHours` and
-   `accountActivationDate` for the `users/user` module, `hwaddress` for
-   the `dhcp/host` module and `ip` for the `dns/ptr_record` module.
+   commandline interface and in `UMC`. This includes
+   `sambaLogonHours` and `accountActivationDate` for the
+   `users/user` module, `hwaddress` for the `dhcp/host`
+   module and `ip` for the `dns/ptr_record` module.
 bug: [54339, 53830, 53807, 55604]
