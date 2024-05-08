@@ -9,21 +9,15 @@
 ##  - univention-directory-manager-tools
 ## exposure: careful
 
-oldval=$(mktemp)
-univention-config-registry get ldap/schema/export >"$oldval"
-cleanup () {
-	if [ -s "$oldval" ]
-	then
-		ucr set ldap/schema/export="$(<$oldval)"
-	else
-		ucr unset ldap/schema/export
-	fi
-	rm -f "$oldval"
-}
-trap cleanup EXIT
+# shellcheck source=../../lib/ucr.sh
+. "$TESTLIBPATH/ucr.sh" || exit 137
+# shellcheck source=../../lib/undo.sh
+. "$TESTLIBPATH/undo.sh" || exit 137
 
 # activate ldap schema download
-univention-config-registry set ldap/schema/export=yes
+ucr set ldap/schema/export=yes
+undo /etc/init.d/slapd restart
+undo ucr_restore
 /etc/init.d/slapd restart
 
 # try to download schema file
