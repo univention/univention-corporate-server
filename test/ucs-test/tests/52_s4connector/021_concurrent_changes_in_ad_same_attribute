@@ -18,8 +18,6 @@ exit 131
 . "$TESTLIBPATH/random.sh" || exit 137
 
 . "s4connector.sh" || exit 137
-test -n "$connector_s4_ldap_host" || exit 137
-connector_running_on_this_host || exit 137
 
 for((i=0;i<10;i++)); do
 

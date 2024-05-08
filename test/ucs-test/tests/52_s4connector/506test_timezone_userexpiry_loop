@@ -17,14 +17,12 @@
 . "$TESTLIBPATH/udm.sh" || exit 137
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
+
 . "s4connector.sh" || exit 137
 
-if [ "$(command -v univention-ad-connector)" ]; then
-	echo "SKIP if AD-Connector installed: The AD-Connector still has the userexpiry loop problem. See Bug #50944"
-	exit 138
-fi
-test -n "$connector_s4_ldap_host" || exit 137
-connector_running_on_this_host || exit 137
+have univention-ad-connector &&
+	fail_fast 138 "SKIP if AD-Connector installed: The AD-Connector still has the userexpiry loop problem. See Bug #50944"
+
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 

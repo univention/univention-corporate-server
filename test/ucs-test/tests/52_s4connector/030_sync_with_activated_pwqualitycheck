@@ -15,10 +15,6 @@
 . "$TESTLIBPATH/random.sh" || exit 137
 
 . "s4connector.sh" || exit 137
-[ -n "${connector_s4_ldap_host:-}" ] || exit 137
-connector_running_on_this_host || exit 137
-
-eval "$(ucr shell)"
 
 policy_dn="cn=default-settings,cn=pwhistory,cn=users,cn=policies,$ldap_base"
 

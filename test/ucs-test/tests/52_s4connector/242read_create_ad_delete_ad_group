@@ -5,7 +5,6 @@
 ## packages:
 ## - univention-s4-connector
 
-
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 # shellcheck source=../../lib/udm.sh
@@ -13,10 +12,7 @@
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
-
 . "s4connector.sh" || exit 137
-test -n "$connector_s4_ldap_host" || exit 137
-connector_running_on_this_host || exit 137
 
 UDM_groups_group_name="$(random_chars)"
 DESCRIPTION="$(random_chars)"

@@ -26,6 +26,9 @@ import s4connector
 from s4connector import connector_running_on_this_host, connector_setup
 
 
+pytestmark = pytest.mark.skipif(not connector_running_on_this_host(), reason="S4C not configured")
+
+
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
@@ -95,7 +98,6 @@ def udm_modify(udm, **kwargs) -> None:
     s4connector.wait_for_sync()
 
 
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_initial_S4_pwd_is_synced() -> None:
     with connector_setup("sync") as s4, UCSTestUDM() as udm:
         (s4_user_dn, udm_user_dn) = create_s4_user(tstrings.random_username().encode('UTF-8'), "Univention.2-")
@@ -123,7 +125,6 @@ def test_initial_S4_pwd_is_synced() -> None:
         delete_con_user(s4, s4_user_dn, udm_user_dn, s4connector.wait_for_sync)
 
 
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_UCS_pwd_in_s4_history_synced() -> None:
     with connector_setup("sync") as s4, UCSTestUDM() as udm:
         udm_user = NormalUser()

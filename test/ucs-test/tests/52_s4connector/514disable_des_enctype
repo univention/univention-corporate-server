@@ -14,14 +14,10 @@
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
-. /usr/share/univention-lib/ucr.sh
 . "s4connector.sh" || exit 137
-test -n "$connector_s4_ldap_host" || exit 137
-connector_running_on_this_host || exit 137
 
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
-eval "$(ucr shell)"
 
 ucr set kerberos/defaults/enctypes/permitted="aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 arcfour-hmac-md5"
 ucr set kerberos/allow/weak/crypto="false"

@@ -15,14 +15,10 @@
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
-if [ "$(command -v univention-ad-connector)" ]; then
-	echo "SKIP if AD-Connector installed: Flaky if AD-Connector is also installed"
-	exit 138
-fi
+have univention-ad-connector &&
+	fail_fast 138  "SKIP if AD-Connector installed: Flaky if AD-Connector is also installed"
 
 . "s4connector.sh" || exit 137
-test -n "$connector_s4_ldap_host" || exit 137
-connector_running_on_this_host || exit 137
 
 for((i=0;i<10;i++)); do
 

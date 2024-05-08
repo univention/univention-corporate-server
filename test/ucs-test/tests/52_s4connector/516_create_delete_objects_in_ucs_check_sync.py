@@ -29,6 +29,9 @@ from univention.testing.utils import fail, get_ldap_connection
 from s4connector import connector_running_on_this_host, connector_setup
 
 
+pytestmark = pytest.mark.skipif(not connector_running_on_this_host(), reason="S4C not configured")
+
+
 def stderr(msg):
     print(msg, file=sys.stderr)
 
@@ -98,7 +101,6 @@ class Users:
         return True
 
 
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_no_leftovers_after_delete_in_ucs():
     """
     check that all objects are deleted if the (UCS) delete happens during
@@ -148,7 +150,6 @@ def test_no_leftovers_after_delete_in_ucs():
             user_objects.delete_users()
 
 
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_do_not_delete_objects_with_different_id():
     '''
     Check if Users in UCS wont be deleted in sync_to_ucs if deleted "by" UCS

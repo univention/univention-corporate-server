@@ -587,6 +587,12 @@ connector_mapping_restore () {
 }
 
 
+if [ -z "${FORCE_LOAD_S4C:-}" ]
+then
+	[ -n "${connector_s4_ldap_host:-}" ] || exit 137
+	connector_running_on_this_host || exit 137
+fi
+
 # vim:syntax=sh
 # Local Variables:
 # mode: sh

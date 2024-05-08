@@ -14,10 +14,7 @@
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
-. /usr/share/univention-lib/ucr.sh
 . "s4connector.sh" || exit 137
-[ -n "${connector_s4_ldap_host:-}" ] || exit 137
-connector_running_on_this_host || exit 137
 
 # shellcheck disable=SC2034
 SYNCMODE="$(ad_get_sync_mode)"

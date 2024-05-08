@@ -17,8 +17,6 @@
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
-RETVAL=100
-
 
 echo "Looking for a Windows host. It should be joined prior to the test run:"
 windows_host_dn="$(udm computers/windows list | DN1)"

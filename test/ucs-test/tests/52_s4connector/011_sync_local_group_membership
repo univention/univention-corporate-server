@@ -14,10 +14,7 @@
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
-. /usr/share/univention-lib/ucr.sh
 . "s4connector.sh" || exit 137
-test -n "$connector_s4_ldap_host" || exit 137
-connector_running_on_this_host || exit 137
 
 is_ucr_true connector/s4/mapping/group/grouptype || exit 137
 

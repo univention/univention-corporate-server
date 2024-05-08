@@ -25,6 +25,8 @@ import s4connector
 from s4connector import connector_running_on_this_host, connector_setup
 
 
+pytestmark = pytest.mark.skipif(not connector_running_on_this_host(), reason="S4C not configured")
+
 MAPPINGS = (
     # ucs_attribute, con_attribute, con_other_attribute
     ('phone', 'telephoneNumber', 'otherTelephone'),
@@ -62,7 +64,6 @@ def random_number():
 
 @pytest.mark.parametrize("attribute", MAPPINGS)
 @pytest.mark.parametrize("sync_mode", ["write", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_attribute_sync_from_udm_to_s4(attribute, sync_mode):
     (ucs_attribute, con_attribute, con_other_attribute) = attribute
     udm_user = NormalUser(selection=("username", "lastname", ucs_attribute))
@@ -121,7 +122,6 @@ def test_attribute_sync_from_udm_to_s4(attribute, sync_mode):
 
 @pytest.mark.parametrize("attribute", MAPPINGS)
 @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
 def test_attribute_sync_from_s4_to_udm(attribute, sync_mode):
     (ucs_attribute, con_attribute, con_other_attribute) = attribute
     udm_user = NormalUser(selection=("username", "lastname", ucs_attribute))

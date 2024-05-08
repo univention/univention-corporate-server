@@ -14,14 +14,10 @@
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
-if [ "$(command -v univention-ad-connector)" ]; then
-	echo "SKIP if AD-Connector installed: The AD-Connector can not handle incomplete sync. See Bug #42532"
-	exit 138
-fi
+have univention-ad-connector &&
+	fail_fast 138 "SKIP if AD-Connector installed: The AD-Connector can not handle incomplete sync. See Bug #42532"
 
 . "s4connector.sh" || exit 137
-test -n "$connector_s4_ldap_host" || exit 137
-connector_running_on_this_host || exit 137
 
 UDM_users_user_username="$(random_chars)"
 UDM_users_user_lastname="$(random_chars)"

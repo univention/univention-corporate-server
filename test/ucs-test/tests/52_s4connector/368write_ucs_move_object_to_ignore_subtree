@@ -16,10 +16,7 @@
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
-
 . "s4connector.sh" || exit 137
-test -n "$connector_s4_ldap_host" || exit 137
-connector_running_on_this_host || exit 137
 
 UDM_users_user_username="$(random_chars)"
 UDM_users_user_lastname="$(random_chars)"
@@ -41,7 +38,6 @@ ad_wait_for_synchronization; fail_bool 0 110
 section "Modify User-Ignore-Subtree"
 
 invoke-rc.d univention-s4-connector stop
-
 
 
 connector_mapping_adjust 'user' "cn=$CONTAINER_NAME,$ldap_base"
