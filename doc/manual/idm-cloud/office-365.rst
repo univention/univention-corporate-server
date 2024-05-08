@@ -115,6 +115,56 @@ enabled with the |UCSUCRV| :envvar:`office365/groups/sync`.
 
 Changes to |UCSUCRVs| are implemented only after restarting the |UCSUDL|.
 
+.. _idmcloud-o365-groups:
+
+Groups
+~~~~~~
+
+The :program:`Microsoft 365 Connector` can synchronize groups to Microsoft Azure Active Directory.
+The connector synchronizes a group,
+if it contains at least one user that's enabled for *Microsoft 365*.
+By default, the connector creates the group as a ``Security Group`` in *Microsoft 365*.
+
+You can enable the synchronization by setting
+the |UCSUCRV| :envvar:`office365/groups/sync` to ``yes``.
+
+.. versionadded:: 5.0-7-erratum-1060
+
+   With :uv:erratum:`5.0x1060`, you can change the group type to ``Microsoft 365 Group``
+   in the UMC on the *Microsoft 365* tab.
+
+   If the UCS system with the connector installed doesn't have at least this version level,
+   you can't change the group type.
+
+When you change the group type,
+the connector deletes the existing group in *Microsoft 365*,
+and it creates a group with the group type you defined.
+*Microsoft 365* doesn't allow to change the group type property of an existing group.
+The connector adds the group members to the group,
+and if the group is a *Microsoft 365 Team*,
+the connector also creates the team.
+
+.. caution::
+
+   Changing the group type can effect the group's permissions and settings in *Microsoft 365*.
+   Change group types with caution.
+
+You can change the default group type of a Microsoft 365 group.
+The following group types are available:
+
+* ``Security``
+* ``Microsoft 365 Group``
+
+To change the group type,
+you need to modify the default value
+of the extended attribute ``UniventionMicrosoft365GroupType`` to one of the available group types:
+
+.. code-block:: console
+
+    $ udm settings/extended_attribute modify \
+         --dn "cn=UniventionMicrosoft365GroupType,cn=custom attributes,cn=univention,$(ucr get ldap/base)" \
+         --set default="Microsoft 365 Group"
+
 .. _idmcloud-o365-teams:
 
 Teams
