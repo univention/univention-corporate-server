@@ -8,6 +8,8 @@
 ## tags:
 ##  - skip_admember
 
+from __future__ import annotations
+
 import binascii
 import hashlib
 import os
@@ -28,7 +30,8 @@ from samba.param import LoadParm
 import univention.config_registry
 import univention.testing.connector_common as tcommon
 import univention.testing.strings as tstrings
-from univention.connector.ad import kerberosAuthenticationFailed, netbiosDomainnameNotFound
+from univention.config_registry import ucr as configRegistry
+from univention.connector.ad import netbiosDomainnameNotFound
 from univention.connector.ad.password import calculate_krb5keys, decrypt, decrypt_history
 from univention.testing.connector_common import NormalUser, create_udm_user, delete_con_user, to_unicode
 
@@ -46,27 +49,6 @@ except (LookupError, AttributeError):
     pytestmark = pytest.mark.skip(reason="ADC is unconfigured")
 
 from univention.testing.udm import UCSTestUDM, UCSTestUDM_ModifyUDMObjectFailed  # noqa: E402
-
-
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
-
-
-class ADHistSync_Exception(Exception):
-    def __str__(self):
-        if self.args and len(self.args) == 1 and isinstance(self.args[0], dict):
-            return '\n'.join('%s=%s' % (key, value) for key, value in self.args[0].items())
-        else:
-            return Exception.__str__(self)
-    __repr__ = __str__
-
-
-class ADCreateUser_Exception(ADHistSync_Exception):
-    pass
-
-
-class ADSetPassword_Exception(ADHistSync_Exception):
-    pass
 
 
 def open_drs_connection():
@@ -96,10 +78,7 @@ def open_drs_connection():
             fd.write(ad_ldap_bindpw)
             fd.flush()
             cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % (fd.name,), ad_ldap_binddn]
-            p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            stdout, _stderr = p1.communicate()
-        if p1.returncode != 0:
-            raise kerberosAuthenticationFailed('The following command failed: "%s" (%s): %s' % (' '.join(cmd_block), p1.returncode, stdout.decode('UTF-8', 'replace')))
+            subprocess.run(cmd_block, capture_output=True, check=True)
 
     lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
 
@@ -242,22 +221,15 @@ def get_ad_password(computer_guid, dn, drs, drsuapi_handle):
     return nt_hash, keys, nt_hashes
 
 
-def create_ad_user(username, password, **kwargs):
+def create_ad_user(username: str, password: str, **kwargs) -> tuple[str, str]:
     #  use samba-tool
     host = configRegistry.get("connector/ad/ldap/host")
     admin = ldap.dn.explode_rdn(configRegistry.get("connector/ad/ldap/binddn"), notypes=True)[0]
     passw = open(configRegistry.get("connector/ad/ldap/bindpw")).read()
-    cmd = ["samba-tool", "user", "create", "--use-username-as-cn", username.decode('UTF-8'), password, "--URL=ldap://%s" % host, "-U'%s'%%'%s'" % (admin, passw)]
+    cmd = ["samba-tool", "user", "create", "--use-username-as-cn", username, password, f"--URL=ldap://{host}", f"-U{admin}%{passw}"]
+    subprocess.run(cmd, capture_output=True, check=True)
 
-    print(" ".join(cmd))
-    child = subprocess.Popen(" ".join(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    (stdout, stderr) = child.communicate()
-    stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
-
-    if child.returncode:
-        raise ADCreateUser_Exception({'module': 'users/user', 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
-
-    new_position = 'cn=users,%s' % configRegistry.get('connector/ad/ldap/base')
+    new_position = 'cn=users,%(connector/ad/ldap/base)s' % configRegistry
     con_user_dn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(tcommon.to_unicode(username)), new_position)
 
     udm_user_dn = ldap.dn.dn2str([
@@ -267,19 +239,12 @@ def create_ad_user(username, password, **kwargs):
     return (con_user_dn, udm_user_dn)
 
 
-def modify_password_ad(username, password):
+def modify_password_ad(username: str, password: str) -> None:
     host = configRegistry.get("connector/ad/ldap/host")
     admin = ldap.dn.explode_rdn(configRegistry.get("connector/ad/ldap/binddn"), notypes=True)[0]
     passw = open(configRegistry.get("connector/ad/ldap/bindpw")).read()
-    cmd = ["samba-tool", "user", "setpassword", "--newpassword='%s'" % password, username.decode('UTF-8'), "--URL=ldap://%s" % host, "-U'%s'%%'%s'" % (admin, passw)]
-
-    child = subprocess.Popen(" ".join(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    (stdout, stderr) = child.communicate()
-    stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
-
-    if child.returncode:
-        raise ADSetPassword_Exception({'module': 'users/user', 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
-
+    cmd = ["samba-tool", "user", "setpassword", f"--newpassword={password}", username, f"--URL=ldap://{host}", f"-U{admin}%{passw}"]
+    subprocess.run(cmd, capture_output=True, check=True)
     adconnector.wait_for_sync()
 
 
@@ -291,7 +256,7 @@ def udm_modify(udm, **kwargs) -> None:
 
 def test_initial_AD_pwd_is_synced() -> None:
     with connector_setup("sync"), UCSTestUDM() as udm:
-        (ad_user_dn, udm_user_dn) = create_ad_user(tstrings.random_username().encode('UTF-8'), "Univention.2-")
+        (ad_user_dn, udm_user_dn) = create_ad_user(tstrings.random_username(), "Univention.2-")
 
         drs, drs_handle, computer_guid = open_drs_connection()
         nt_hash, _keys, nt_hist = get_ad_password(computer_guid, ad_user_dn, drs, drs_handle)
@@ -327,7 +292,7 @@ def test_initial_UCS_pwd_is_synced() -> None:
 
 def test_create_user_in_AD_set_same_pwd_in_UDM() -> None:
     with connector_setup("sync"), UCSTestUDM() as udm:
-        (ad_user_dn, udm_user_dn) = create_ad_user(tstrings.random_username().encode('UTF-8'), "Univention.2-")
+        (ad_user_dn, udm_user_dn) = create_ad_user(tstrings.random_username(), "Univention.2-")
 
         print("- Try to set original AD password in UDM. (Should Raise)")
         with pytest.raises(UCSTestUDM_ModifyUDMObjectFailed):

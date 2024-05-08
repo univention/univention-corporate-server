@@ -14,10 +14,11 @@ import subprocess
 import ldap
 import pytest
 
-import univention.config_registry
+import univention.admin.uldap
 import univention.testing.connector_common as tcommon
 import univention.testing.strings as tstrings
 from univention.admin import modules
+from univention.config_registry import ucr
 from univention.testing.connector_common import NormalUser, create_udm_user, delete_con_user, to_unicode
 from univention.testing.udm import UCSTestUDM, UCSTestUDM_ModifyUDMObjectFailed
 from univention.testing.utils import get_ldap_connection
@@ -29,66 +30,28 @@ from s4connector import connector_running_on_this_host, connector_setup
 pytestmark = pytest.mark.skipif(not connector_running_on_this_host(), reason="S4C not configured")
 
 
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
+def create_s4_user(username: str, password: str, **kwargs) -> tuple[str, str]:
+    cmd = ["samba-tool", "user", "create", "--use-username-as-cn", username, password]
+    subprocess.run(cmd, capture_output=True, check=True)
 
-
-class S4HistSync_Exception(Exception):
-    def __str__(self):
-        if self.args and len(self.args) == 1 and isinstance(self.args[0], dict):
-            return '\n'.join(f'{key}={value}' for key, value in self.args[0].items())
-        else:
-            return Exception.__str__(self)
-    __repr__ = __str__
-
-
-class S4CreateUser_Exception(S4HistSync_Exception):
-    pass
-
-
-class S4SetPassword_Exception(S4HistSync_Exception):
-    pass
-
-
-def create_s4_user(username: str, password: bytes, **kwargs) -> tuple[str, str]:
-    cmd = ["samba-tool", "user", "create", "--use-username-as-cn", username.decode('UTF-8'), password]
-
-    print(" ".join(cmd))
-    child = subprocess.Popen(" ".join(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    (stdout, stderr) = child.communicate()
-    stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
-
-    if child.returncode:
-        raise S4CreateUser_Exception({'module': 'users/user', 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
-
-    new_position = 'cn=users,%s' % configRegistry.get('connector/s4/ldap/base')
+    new_position = 'cn=users,%(connector/s4/ldap/base)s' % ucr
     con_user_dn = f'cn={ldap.dn.escape_dn_chars(tcommon.to_unicode(username))},{new_position}'
 
     udm_user_dn = ldap.dn.dn2str([
         [("uid", to_unicode(username), ldap.AVA_STRING)],
-        [("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(configRegistry.get('ldap/base')))
+        [("CN", "users", ldap.AVA_STRING)]] + ldap.dn.str2dn(ucr['ldap/base']))
     s4connector.wait_for_sync()
     return (con_user_dn, udm_user_dn)
 
 
 def modify_passwordpolicy_s4(key: str, value: str) -> None:
     cmd = ["samba-tool", "domain", "passwordsettings", "set", f"--{key}={value}"]
-
-    child = subprocess.Popen(" ".join(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    (stdout, stderr) = child.communicate()
-    stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
+    subprocess.run(cmd, capture_output=True, check=False)
 
 
-def modify_password_s4(username: str, password: bytes) -> None:
-    cmd = ["samba-tool", "user", "setpassword", "--newpassword='%s'" % password, username.decode('UTF-8')]
-
-    child = subprocess.Popen(" ".join(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    (stdout, stderr) = child.communicate()
-    stdout, stderr = stdout.decode('utf-8', 'replace'), stderr.decode('utf-8', 'replace')
-
-    if child.returncode:
-        raise S4SetPassword_Exception({'module': 'users/user', 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
-
+def modify_password_s4(username: str, password: str) -> None:
+    cmd = ["samba-tool", "user", "setpassword", f"--newpassword={password}", username]
+    subprocess.run(cmd, capture_output=True, check=True)
     s4connector.wait_for_sync()
 
 
@@ -100,7 +63,7 @@ def udm_modify(udm, **kwargs) -> None:
 
 def test_initial_S4_pwd_is_synced() -> None:
     with connector_setup("sync") as s4, UCSTestUDM() as udm:
-        (s4_user_dn, udm_user_dn) = create_s4_user(tstrings.random_username().encode('UTF-8'), "Univention.2-")
+        (s4_user_dn, udm_user_dn) = create_s4_user(tstrings.random_username(), "Univention.2-")
 
         s4_results = s4.get(s4_user_dn, attr=['unicodePwd'])
         nt_hash = binascii.b2a_hex(s4_results['unicodePwd'][0])
@@ -131,7 +94,7 @@ def test_UCS_pwd_in_s4_history_synced() -> None:
         (udm_user_dn, s4_user_dn) = create_udm_user(udm, s4, udm_user, s4connector.wait_for_sync)
 
         print("- Set a different password in in S4.")
-        modify_password_s4(ldap.dn.explode_rdn(s4_user_dn, notypes=True)[0].encode("UTF-8"), "Univention.5-")
+        modify_password_s4(ldap.dn.explode_rdn(s4_user_dn, notypes=True)[0], "Univention.5-")
         print("Ok")
 
         print("- Try to set the same password in UDM. (Should Raise, the password is in the history)")
@@ -159,7 +122,7 @@ def test_empty_pwd_policy() -> None:
         udm_user = NormalUser()
         (udm_user_dn, s4_user_dn) = create_udm_user(udm, s4, udm_user, s4connector.wait_for_sync)
 
-        base_dn = configRegistry.get('ldap/base')
+        base_dn = ucr['ldap/base']
         lo = get_ldap_connection(admin_uldap=True)
         position = univention.admin.uldap.position(lo.base)
         modules.update()
