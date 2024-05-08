@@ -52,14 +52,9 @@ def test_open_fd_after_login(umc_browser_test: UMCBrowserTest, udm, try_wrong_pw
     assert ret < 3, f'More than 2 sockets in CLOSE_WAIT after UMC login:\n{open_sockets}'
 
 
-def count_fhs(state: str | None = None) -> tuple[str, int]:
-    state_str = f'state {state}' if state is not None else ''
-    ret = subprocess.run(
-        f'ss -tp {state_str} dport 7389 | grep pid=$(pidof -x univention-management-console-server)',
-        shell=True,
-        check=True,
-        stdout=subprocess.PIPE,
-    ).stdout.decode('utf-8')
-
-    sockets_in_close_wait = ret.count('\n')
-    return ret, sockets_in_close_wait
+def count_fhs(state: str = 'connected') -> tuple[str, int]:
+    pid = subprocess.check_output(['pidof', '-x', 'univention-management-console-server'], text=True).strip()
+    cmd = ['ss', '--no-header', '--numeric', '--tcp', '--processes', 'state', state, 'dport', '7389']
+    out = subprocess.check_output(cmd, text=True)
+    connections = [line for line in out.splitlines() if f'pid={pid}' in line]
+    return "\n".join(connections), len(connections)

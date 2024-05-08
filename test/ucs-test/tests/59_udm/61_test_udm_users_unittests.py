@@ -121,7 +121,7 @@ class TestUsers:
         except ImportError:
             pass
         else:
-            dates = subprocess.check_output('openssl x509 -startdate -enddate -noout < /etc/univention/ssl/%(hostname)s/cert.pem' % ucr, shell=True)
+            dates = subprocess.check_output(['openssl', 'x509', '-startdate', '-enddate', '-noout', '-in', '/etc/univention/ssl/%(hostname)s/cert.pem' % ucr])
             dates = dict(x.split('=', 1) for x in dates.decode('UTF-8').splitlines())
             certificate_ldap.update({
                 'certificateDateNotAfter': parser.parse(dates['notAfter']).strftime('%Y-%m-%d'),

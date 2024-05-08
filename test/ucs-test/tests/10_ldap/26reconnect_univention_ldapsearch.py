@@ -115,7 +115,7 @@ def start_slapd():
 
 def start_with_delay(delay):
     """Sleeps the given 'delay' and starts slapd."""
-    Popen('sleep %s; invoke-rc.d slapd start' % delay, shell=True)
+    Popen(['sh', '-c', 'sleep %s; invoke-rc.d slapd start' % delay])
 
 
 def wait_for_slapd_to_be_started():

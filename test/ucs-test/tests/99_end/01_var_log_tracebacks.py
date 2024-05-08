@@ -70,26 +70,18 @@ def test_journallog_tracebacks():
 def test_fetch_logfiles_on_dc_master(ucr, testcase=None):
     """Find traceback on the DC Master"""
     password = univention.testing.utils.UCSTestDomainAdminCredentials().bindpw
-    testpath = '/usr/share/ucs-test/99_end/01_var_log_tracebacks.py'
+    TESTPATH = '/usr/share/ucs-test/99_end/01_var_log_tracebacks.py'
     with tempfile.NamedTemporaryFile() as fd:
         fd.write(password.encode('UTF-8'))
         fd.flush()
-        try:
-            cmd_install = """univention-ssh %s root@%s '[ -e %s ] || univention-install -y ucs-test-end'""" % (shlex.quote(fd.name), shlex.quote(ucr['ldap/master']), shlex.quote(shlex.quote(testpath)))
-            subprocess.check_output(cmd_install, shell=True)
-        except subprocess.CalledProcessError as exc:
-            print(cmd_install)
-            if exc.output:
-                print(exc.output.decode('UTF-8', 'replace'))
-            pytest.fail(repr((cmd_install, exc.output.decode('UTF-8', 'replace'))), pytrace=False)
 
-        try:
-            cmd_test = """univention-ssh %s root@%s '%s -i -f'""" % (shlex.quote(fd.name), shlex.quote(ucr['ldap/master']), shlex.quote(shlex.quote(testpath)))
-            subprocess.check_call(cmd_test, shell=True)
-        except subprocess.CalledProcessError as exc:
-            print(cmd_test)
-            if exc.output:
-                print(exc.output.decode('UTF-8', 'replace'))
-            if exc.returncode:
-                pytest.fail(repr((cmd_test, exc.returncode)), pytrace=False)
+        def ssh(cmd: str) -> None:
+            subprocess.run(
+                ['univention-ssh', '--no-split', fd.name, f"root@{ucr['ldap/master']}", cmd],
+                capture_output=True,
+                check=True,
+            )
+
+        ssh(f'[ -e {shlex.quote(TESTPATH)} ] || exec univention-install -q -y ucs-test-end')
+        ssh(f'exec {TESTPATH} -i -f')
         # TODO: detect skipped exit code

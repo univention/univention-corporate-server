@@ -74,8 +74,8 @@ def upgrade_umc_saml_session(session):
 def kill_umc_module():
     return
     # extended regular expression, otherwise i find myself...
-    ret = subprocess.call('pgrep -f "/usr/sbin/univention-management-console-module -m [a]ppcenter"', shell=True)
+    ret = subprocess.call(['pgrep', '-f', '/usr/sbin/univention-management-console-module -m [a]ppcenter'])
     assert ret == 0, "No App Center processes"
-    ret = subprocess.call('pkill -f "/usr/sbin/univention-management-console-module -m [a]ppcenter"', shell=True)
-    ret = subprocess.call('pgrep -f "/usr/sbin/univention-management-console-module -m [a]ppcenter"', shell=True)
+    ret = subprocess.call(['pkill', '-f', '/usr/sbin/univention-management-console-module -m [a]ppcenter'])
+    ret = subprocess.call(['pgrep', '-f', '/usr/sbin/univention-management-console-module -m [a]ppcenter'])
     assert ret == 1, "pgrep returned %s" % ret

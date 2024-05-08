@@ -69,10 +69,10 @@ fi
         appcenter.update()
         app.install()
         app.verify(joined=False)
-        env = subprocess.check_output(f'univention-app shell {app_name} env', shell=True, text=True)
+        env = subprocess.check_output(['univention-app', 'shell', app_name, 'env'], text=True)
         assert 'TEST_KEY=1' in env, env
-        subprocess.call(f'univention-app configure {app_name} --set TEST_KEY=2', shell=True)
-        env = subprocess.check_output(f'univention-app shell {app_name} env', shell=True, text=True)
+        subprocess.call(['univention-app', 'configure', app_name, '--set', 'TEST_KEY=2'])
+        env = subprocess.check_output(['univention-app', 'shell', app_name, 'env'], text=True)
         assert 'TEST_KEY=2' in env, env
         assert 'EMPTY_KEY' not in env, env
     finally:

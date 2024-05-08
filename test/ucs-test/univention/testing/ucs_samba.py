@@ -6,13 +6,13 @@
 
 from __future__ import annotations
 
-import contextlib
 import re
 import socket
 import sqlite3
 import subprocess
 import time
-from typing import Any, Iterator
+from dataclasses import dataclass
+from typing import TYPE_CHECKING, Any, ClassVar
 
 import ldap
 import ldb
@@ -24,6 +24,10 @@ from univention import config_registry
 from univention.testing.utils import package_installed
 
 
+if TYPE_CHECKING:
+    from types import TracebackType
+
+
 class DRSReplicationFailed(Exception):
     pass
 
@@ -32,20 +36,42 @@ class WaitForS4ConnectorTimeout(Exception):
     pass
 
 
-@contextlib.contextmanager
-def password_policy(complexity: bool = False, minimum_password_age: int = 0, maximum_password_age: int = 3) -> Iterator[None]:
-    if not package_installed('univention-samba4'):
-        print('skipping samba password policy adjustment')
-        yield
-        return
-    min_pwd_age = subprocess.check_output('samba-tool domain passwordsettings show | grep "Minimum password age" | sed s/[^0-9]*/""/', shell=True).strip()
-    max_pwd_age = subprocess.check_output('samba-tool domain passwordsettings show | grep "Maximum password age" | sed s/[^0-9]*/""/', shell=True).strip()
-    pwd_complexity = subprocess.check_output('samba-tool domain passwordsettings show | grep complexity | sed "s/Password complexity: //"', shell=True).strip()
-    if complexity != pwd_complexity or str(minimum_password_age) != min_pwd_age or str(maximum_password_age) != max_pwd_age:
-        subprocess.call(['samba-tool', 'domain', 'passwordsettings', 'set', '--min-pwd-age', str(minimum_password_age), '--max-pwd-age', str(maximum_password_age), '--complexity', 'on' if complexity else 'off'])
-    yield
-    if complexity != pwd_complexity or str(minimum_password_age) != min_pwd_age:
-        subprocess.call(['samba-tool', 'domain', 'passwordsettings', 'set', '--min-pwd-age', min_pwd_age, '--max-pwd-age', max_pwd_age, '--complexity', pwd_complexity])
+@dataclass
+class password_policy:
+    complexity: bool = False
+    minimum_password_age: int = 0
+    maximum_password_age: int = 3
+
+    _old: ClassVar[Any] = None
+
+    def apply(self) -> None:
+        cmd = [
+            'samba-tool', 'domain', 'passwordsettings', 'set',
+            '--min-pwd-age', str(self.minimum_password_age),
+            '--max-pwd-age', str(self.maximum_password_age),
+            '--complexity', 'on' if self.complexity else 'off',
+        ]
+        subprocess.call(cmd)
+
+    @classmethod
+    def current(cls) -> password_policy:
+        current = dict(line.partition(": ")[::2] for line in subprocess.check_output(['samba-tool', 'domain', 'passwordsettings', 'show'], text=True).splitlines())
+        return cls(
+            current["Password complexity"] == "on",
+            int(current["Minimum password age (days)"]),
+            int(current["Maximum password age (days)"]),
+        )
+
+    def __enter__(self) -> None:
+        if package_installed('univention-samba4'):
+            old = self.__class__._old = self.__class__._old or self.current()
+            if old != self:
+                self.apply()
+
+    def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
+        old = self.__class__._old
+        if old and old != self:
+            old.apply()
 
 
 def wait_for_drs_replication(ldap_filter: str, attrs: list[str] | str | None = None, base: str | None = None, scope: int = ldb.SCOPE_SUBTREE, lp: LoadParm | None = None, timeout: int = 360, delta_t: int = 1, verbose: bool = True, should_exist: bool = True, controls: list[str] | None = None) -> None:

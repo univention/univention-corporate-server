@@ -55,7 +55,7 @@ if __name__ == '__main__':
         qc.cache_must_exists(share2)
 
         # renamed objects must be removed manually
-        subprocess.call('udm-test shares/share remove --dn "%s"' % share2, shell=True)
+        subprocess.call(['udm-test', 'shares/share', 'remove', '--dn', share2])
 
     utils.wait_for_replication_and_postrun()
 

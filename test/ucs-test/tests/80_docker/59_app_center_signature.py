@@ -8,6 +8,7 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 from subprocess import call
 from types import TracebackType
 from typing import Iterator, cast
@@ -34,12 +35,13 @@ class SyncedAppcenter(Appcenter):
         handler_set([
             'repository/app_center/server=%s' % (self.upstream_appcenter),
         ])
-        call('univention-app update', shell=True)
+        call(['univention-app', 'update'])
         handler_set([
             'repository/app_center/server=http://%(hostname)s.%(domainname)s' % self.ucr,
         ])
 
     def download(self, f: str) -> None:
+        p = Path("/var/www") / f
         if os.path.exists('/var/www/%s' % f):
             os.remove('/var/www/%s' % f)
 
@@ -47,7 +49,7 @@ class SyncedAppcenter(Appcenter):
         if not os.path.exists(d):
             os.makedirs(d)
 
-        call('wget -O /var/www/%s %s/%s' % (f, self.upstream_appcenter, f), shell=True)
+        call(['wget', '-O', p.as_posix(), f'{self.upstream_appcenter}/{f}'])
 
     def download_index_json(self) -> None:
         for version in self.all_versions:
@@ -69,10 +71,7 @@ class SyncedAppcenter(Appcenter):
 
     def test_index_without_gpg(self) -> None:
         self.download_index_json()
-        res = call('univention-app update', shell=True)
-        if res == 0:
-            fail('_test_index_without_gpg failed')
-        print('### _test_index_without_gpg passed')
+        assert call(['univention-app', 'update']) != 0
 
     def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         Appcenter.__exit__(self, exc_type, exc_val, exc_tb)
@@ -93,10 +92,7 @@ def appcenter(test_appcenter: SyncedAppcenter) -> Iterator[SyncedAppcenter]:
 
 
 def test_index_with_gpg(appcenter: SyncedAppcenter) -> None:
-    res = call('univention-app update', shell=True)
-    if res != 0:
-        fail('_test_index_with_gpg failed')
-    print('### _test_index_with_gpg passed')
+    assert call(['univention-app', 'update']) == 0
 
 
 def test_modify_index(appcenter: SyncedAppcenter) -> None:
@@ -107,10 +103,7 @@ def test_modify_index(appcenter: SyncedAppcenter) -> None:
     call('rm /var/cache/univention-appcenter/%(fqdn)s/%(vv)s/.etags' % {'vv': appcenter.vv, 'fqdn': '%(hostname)s.%(domainname)s' % appcenter.ucr}, shell=True)
     call('echo "foo" > nasty ; tar --append -f %(f)s/all.tar nasty' % {'f': f}, shell=True)
     call('zsyncmake -z -u %(server)s/meta-inf/%(vv)s/all.tar.gz %(f)s/all.tar -o %(f)s/all.tar.zsync' % {'server': ucr.get('repository/app_center/server'), 'vv': appcenter.vv, 'f': f}, shell=True)
-    res = call('univention-app update', shell=True)
-    if res == 0:
-        fail('_test_modify_index failed')
-    print('### _test_modify_index passed')
+    assert call(['univention-app', 'update']) != 0
 
 
 def test_modify_inst(appcenter: SyncedAppcenter) -> None:
@@ -119,7 +112,7 @@ def test_modify_inst(appcenter: SyncedAppcenter) -> None:
     appcenter.remove_from_cache(filename)
     appcenter.download(f'univention-repository/{appcenter.vv}/maintained/component/{basename}/{ext}')
     call(f'echo "## SIGNATURE TEST ###" >>/var/www/univention-repository/{appcenter.vv}/maintained/component/{basename}/{ext}', shell=True)
-    call('univention-app update', shell=True)
+    call(['univention-app', 'update'])
     # Check only if the file was removed from the local cache
     if appcenter.file_exists_in_cache(filename):
         fail('_test_modify_inst failed')

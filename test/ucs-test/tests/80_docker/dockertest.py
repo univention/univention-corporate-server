@@ -428,7 +428,7 @@ class App:
 
     def execute_command_in_container(self, cmd: str) -> str:
         print('Execute: %s' % cmd)
-        return subprocess.check_output('docker exec %s %s' % (self.container_id, cmd), stderr=subprocess.STDOUT, shell=True, text=True)
+        return subprocess.check_output(['docker', 'exec', self.container_id, 'sh', '-c', cmd], stderr=subprocess.STDOUT, text=True)
 
     def remove(self) -> None:
         print('App.remove()')
