@@ -116,4 +116,4 @@ else ucr unset connector/s4/mapping/msprintconnectionpolicy; fi
 service univention-s4-connector restart
 udm settings/msprintconnectionpolicy remove --dn "$UDM_DN"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

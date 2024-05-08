@@ -30,6 +30,6 @@ search ldap/acl/read/anonymous=no ldap/acl/read/ips='127.0.0.1' ||
 search ldap/acl/read/anonymous=yes ldap/acl/read/ips= ||
 	fail_test 110 "Failed anonymous read for all"
 
-exit $RETVAL
+exit "${RETVAL:-0}"
 
 # vim: set ft=sh :

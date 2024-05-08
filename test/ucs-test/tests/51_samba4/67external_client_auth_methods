@@ -47,4 +47,4 @@ if ! smbclient "//$(hostname -f)/$tests_domainadmin_name" -W "ExtDomNameFoo" -U"
     fail_fast 110 "Simulation of share access from external domain failed"
 fi
 
-exit $RETVAL
+exit "${RETVAL:-0}"

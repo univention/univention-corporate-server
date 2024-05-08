@@ -135,4 +135,4 @@ ucr set connector/s4/mapping/msgpsi="$connector_s4_mapping_msgpsi"
 
 ad_set_sync_mode "$SYNCMODE"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

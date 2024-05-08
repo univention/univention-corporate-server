@@ -23,4 +23,4 @@ free -h
 # add more tests
 #smbtorture //"$(hostname -f)"/sysvol -W $(ucr get windows/domain) --option="realm=$(hostname -d)" -UAdministrator%univention ALL || fail_fast 110
 
-exit $RETVAL
+exit "${RETVAL:-0}"

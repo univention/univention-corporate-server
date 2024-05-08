@@ -209,4 +209,4 @@ for ((i=0;i<num_testusers;i++)); do
 	fi
 done
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

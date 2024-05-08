@@ -113,4 +113,4 @@ ucr set connector/ad/mapping/user/primarymail="$SYNCPRIMARYMAIL"
 ad_set_sync_mode "$SYNCMODE"
 invoke-rc.d univention-ad-connector start
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

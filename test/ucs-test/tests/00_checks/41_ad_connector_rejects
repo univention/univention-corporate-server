@@ -17,4 +17,4 @@ then
 	fail_fast 1 "Rejects found"
 fi
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

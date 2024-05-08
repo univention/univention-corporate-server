@@ -46,4 +46,4 @@ for package in $PACKAGES; do
 	fi
 done
 
-exit $RETVAL
+exit "${RETVAL:-0}"

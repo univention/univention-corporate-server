@@ -49,4 +49,4 @@ if [ "$?" != 0 ]; then
 	echo "$output"
 	fail_test 1 "The test trying to display samba-Groups as a user failed"
 fi
-exit $RETVAL
+exit "${RETVAL:-0}"

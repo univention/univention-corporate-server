@@ -118,4 +118,4 @@ EOF
 done
 echo "The testscript, testing for the crash, doing a \"getent group\" went like it should, everything is fine."
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

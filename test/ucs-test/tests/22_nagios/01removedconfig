@@ -80,5 +80,5 @@ if [ -f /etc/nagios/conf.univention.d/services/$NAGIOSSERVICE,$HOSTNAME.$domainn
 then
 	RETVAL=111
 fi
-exit "$RETVAL"
+exit "${RETVAL:-0}"
 # vim:set filetype=sh ts=4:

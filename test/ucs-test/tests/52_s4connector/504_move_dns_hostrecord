@@ -58,4 +58,4 @@ ad_delete "DC=$new_name,$ad_zone,$(ad_get_base)"
 ad_delete "DC=$old_name,$ad_zone,$(ad_get_base)"
 ad_set_sync_mode "$SYNCMODE"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

@@ -62,4 +62,4 @@ for configbase in "$configbase2" connector; do
 	ad_set_sync_mode "${SYNCMODE["$configbase"]}" "$configbase"
 done
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

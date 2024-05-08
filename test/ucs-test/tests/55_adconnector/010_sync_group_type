@@ -82,4 +82,4 @@ for groupType in $LOCAL_GROUP_TYPE; do
 	udm_delete "groups/group"
 done
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

@@ -18,6 +18,6 @@
 check_perm -f /etc/horde/horde3/conf.php 0640 www-data root || RETVAL=110
 check_perm -f /etc/horde/horde3/conf.d/20-kolab_ucs.php 0640 www-data root || RETVAL=110
 
-exit $RETVAL
+exit "${RETVAL:-0}"
 
 # vim: set ft=sh :

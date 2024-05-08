@@ -134,4 +134,4 @@ if [ "$nc_pid" = "$(pgrep -x nc)" ]; then
 	kill -9 "$nc_pid" >/dev/null 2>&1
 fi
 
-exit $RETVAL
+exit "${RETVAL:-0}"

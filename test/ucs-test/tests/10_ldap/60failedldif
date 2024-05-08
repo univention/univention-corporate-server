@@ -97,4 +97,4 @@ for srv in samba winbind; do
 	fi
 done
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

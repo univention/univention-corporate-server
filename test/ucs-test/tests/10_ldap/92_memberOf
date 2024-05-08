@@ -36,4 +36,4 @@ else
 	member_of_not_available || fail_fast 1 "ldap/overlay/memberof=false, but memberOf found"
 fi
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

@@ -70,7 +70,7 @@ then
     xargs -0 ls -lad <"$tmpfile"
 fi
 rm -f "$tmpfile"
-exit $RETVAL
+exit "${RETVAL:-0}"
 
 # Docs
 #

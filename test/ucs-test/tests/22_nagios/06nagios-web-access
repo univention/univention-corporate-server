@@ -41,5 +41,5 @@ sleep 15
 wget -O - "https://${username}:univention@${hostname}.${domainname}/nagios/" 2>&1 ||
 	fail_fast 140 "nagios login failed"
 
-exit $RETVAL
+exit "${RETVAL:-0}"
 # vim:set filetype=sh noexpandtab ts=4

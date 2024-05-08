@@ -151,4 +151,4 @@ if ! ldapsearch -xLLL -D "$test_userdn" -w univention "uid=$test_username" 1.1 >
 	fail_test 1 "Authentication failure after unlock"
 fi
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

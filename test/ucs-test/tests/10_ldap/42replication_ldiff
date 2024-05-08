@@ -100,4 +100,4 @@ ldapsearch -x -LLL \
 ldiff "$tmpdir/master.ldif" "$tmpdir/server.ldif" ||
 	fail_test 1 "Difference between master and server"
 
-exit $RETVAL
+exit "${RETVAL:-0}"

@@ -26,5 +26,5 @@ do
 		fail_test 1 "$cipher"
 done
 
-exit ${RETVAL:-0}
+exit "${RETVAL:-0}"
 # vim: set ft=sh :

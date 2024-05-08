@@ -43,7 +43,7 @@ if [ -n "$dnlist" ]; then
 	mv /sbin/halt /sbin/halt.DISABLED
 
 	if [ "$server_role" = "domaincontroller_master" ]; then
-		exit $RETVAL
+		exit "${RETVAL:-0}"
 	fi
 
 	filename=$(mktemp)
@@ -79,4 +79,4 @@ if [ -n "$dnlist" ]; then
 	rm "$filename"
 fi
 
-exit $RETVAL
+exit "${RETVAL:-0}"

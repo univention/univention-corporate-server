@@ -54,4 +54,4 @@ fi
 echo "output of 'id $username':"
 id "$username"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

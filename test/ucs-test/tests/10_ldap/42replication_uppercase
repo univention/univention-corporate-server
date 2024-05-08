@@ -63,4 +63,4 @@ verify_description "$group_dn" "$description2"
 udm-test groups/group remove --dn "$group_dn"
 wait_for_replication
 
-exit $RETVAL
+exit "${RETVAL:-0}"

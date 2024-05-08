@@ -101,4 +101,4 @@ rm -f "$ad_object_file"
 
 ad_delete "$AD_DN" || fail_test 110
 
-exit $RETVAL
+exit "${RETVAL:-0}"

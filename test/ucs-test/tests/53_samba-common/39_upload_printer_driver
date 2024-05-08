@@ -67,4 +67,4 @@ rpcclient -U "$admin" localhost -c "enumdrivers 3" |
 	grep -F "Driver Name: [$driver_name]" ||
 	fail_fast 1 "could not find new driver in enumdrivers"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

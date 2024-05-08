@@ -92,4 +92,4 @@ udm container/cn remove --dn "cn=$CONTAINER_NAME,$ldap_base" || fail_test 110
 
 ad_set_sync_mode "$SYNCMODE"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

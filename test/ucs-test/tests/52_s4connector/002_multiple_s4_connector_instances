@@ -25,4 +25,4 @@ if [ "$RETVAL" = 110 ]; then
 	/etc/init.d/univention-s4-connector restart
 fi
 
-exit $RETVAL
+exit "${RETVAL:-0}"

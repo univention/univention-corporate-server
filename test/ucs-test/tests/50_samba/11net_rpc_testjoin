@@ -21,4 +21,4 @@ if [ ! "$(net rpc testjoin)" = "Join to '$win_dom' is OK" ] ; then
    fail_fast 110 "The RPC testjoin did not report that join to $win_dom is OK"
 fi
 
-exit $RETVAL
+exit "${RETVAL:-0}"

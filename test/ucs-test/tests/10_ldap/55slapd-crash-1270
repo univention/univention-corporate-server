@@ -83,4 +83,4 @@ else
 	echo "Everything was fine. The slapd did not crash."
 fi
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

@@ -30,6 +30,6 @@ then
 fi
 
 rm -f "$tmpfile"
-exit $RETVAL
+exit "${RETVAL:-0}"
 
 # vim:set ft=sh:

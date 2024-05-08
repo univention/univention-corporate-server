@@ -64,4 +64,4 @@ check_user_not_in_group () { ! getent group "$GROUPNAME" | grep -q "$USERNAME"; 
 retry "$TIME_TO_WAIT" check_user_in_group ||
 	fail_test 1 "NSS update script failed"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

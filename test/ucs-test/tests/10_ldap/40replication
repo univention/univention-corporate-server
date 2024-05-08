@@ -86,4 +86,4 @@ fi
 echo "Removing object:"
 remove_container_with_description
 
-exit $RETVAL
+exit "${RETVAL:-0}"

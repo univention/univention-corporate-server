@@ -52,4 +52,4 @@ fi
 
 echo "Starting cleanup"
 
-exit $RETVAL
+exit "${RETVAL:-0}"

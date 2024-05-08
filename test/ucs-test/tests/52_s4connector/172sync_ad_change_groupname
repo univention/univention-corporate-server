@@ -70,4 +70,4 @@ ad_exists "$AD_USER_DN"; fail_bool 1 110
 
 ad_set_sync_mode "$SYNCMODE"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

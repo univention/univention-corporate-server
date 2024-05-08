@@ -135,4 +135,4 @@ udm_verify_udm_attribute "domainWidePolicy" "YWJjZGVkZAo=" "ms/domainpolicy" "" 
 ad_set_sync_mode "$SYNCMODE"
 
 service univention-s4-connector restart
-exit "$RETVAL"
+exit "${RETVAL:-0}"

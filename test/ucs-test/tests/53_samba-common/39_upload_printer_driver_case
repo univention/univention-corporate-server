@@ -108,4 +108,4 @@ test -e "$driver_dir/3/moin.DLL" && fail_fast 1 "driver file exists, but shouldn
 test -e "$driver_dir/3/moin.dll" && fail_fast 1 "driver file exists, but shouldn't"
 rm -f "$FN"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

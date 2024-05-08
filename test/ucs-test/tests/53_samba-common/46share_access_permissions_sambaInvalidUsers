@@ -86,4 +86,4 @@ if [ "$?" != 0 ]; then
 	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $output"
 fi
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

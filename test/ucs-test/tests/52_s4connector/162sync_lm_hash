@@ -90,4 +90,4 @@ udm_kill_univention_cli_server
 
 ad_set_sync_mode "$SYNCMODE"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

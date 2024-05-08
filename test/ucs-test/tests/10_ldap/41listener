@@ -60,4 +60,4 @@ else
 	fail_test 1 "Did not find username '$USERNAME' in tempfile '$tempFile'"
 fi
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

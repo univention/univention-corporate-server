@@ -31,4 +31,4 @@ test "$permissions_owner" = 7 -o "$permissions_owner" = 5 || fail_test 110 "Wron
 permissions_group=${permissions:1:1}
 test "$permissions_group" = 7 -o "$permissions_group" = 5 || fail_test 110 "Wrong group permissions for /var/lib/samba/ntp_signd: $permissions_group"
 
-exit $RETVAL
+exit "${RETVAL:-0}"

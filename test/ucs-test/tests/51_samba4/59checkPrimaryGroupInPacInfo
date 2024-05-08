@@ -105,4 +105,4 @@ rm "$keytab"
 rm "$capture_file"
 rm "$capture_text"
 
-exit $RETVAL
+exit "${RETVAL:-0}"

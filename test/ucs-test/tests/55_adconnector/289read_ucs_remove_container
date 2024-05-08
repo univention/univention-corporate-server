@@ -94,4 +94,4 @@ ad_delete "$AD_CONTAINER1_DN" || fail_test 110
 ad_set_retry_rejected "$RETRYREJECTED"
 ad_set_sync_mode "$SYNCMODE"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

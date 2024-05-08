@@ -125,4 +125,4 @@ mapfile -t untested_options < <(comm -23 <(printf '%s\n' "${available_options[@]
 [ -z "${untested_options[*]}" ] ||
 	fail_fast 122 "UDM options '${untested_options[*]}' not covered by this test"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

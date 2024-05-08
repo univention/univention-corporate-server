@@ -72,4 +72,4 @@ cat 514kinit.log | grep "no valid enctype" && fail_fast "$UDM_users_user_usernam
 klist | grep "$UDM_users_user_username" || fail_fast "$UDM_users_user_username was not able to acquire arcfour ticket"
 kdestroy
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

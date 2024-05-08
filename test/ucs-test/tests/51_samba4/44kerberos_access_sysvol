@@ -95,4 +95,4 @@ retry 10 try_ls || {
 		fail_test 1 "Could not access Policies on sysvol with Kerberos authentication"
 }
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

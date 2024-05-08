@@ -210,7 +210,7 @@ cleanup () { # Undo all changes
 
 	rm -rf "${BASEDIR}"
 	echo "=== RESULT: ${RETVAL:=${rv}} ==="
-	exit "$RETVAL"  # `return` would be ignored
+	exit "${RETVAL:-0}"  # `return` would be ignored
 }
 trap cleanup EXIT
 failure () { # Report failed command

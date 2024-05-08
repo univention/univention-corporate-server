@@ -21,6 +21,6 @@ else
 	grep '^/etc/univention/templates/files/etc/nsswitch.conf$' "$tempfile" || fail_test 110 "nsswitch.conf was not found in /usr/sbin/univention-check-templates output"
 fi
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"
 
 # vim:set ft=sh:

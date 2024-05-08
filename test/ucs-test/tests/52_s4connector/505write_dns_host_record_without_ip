@@ -45,4 +45,4 @@ ad_wait_for_synchronization; fail_bool 0 110
 ad_exists "DC=$old_name,$ad_zone,$(ad_get_base)" ; fail_bool 1 12
 ad_set_sync_mode "$SYNCMODE"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

@@ -149,4 +149,4 @@ if [ "$?" != 0 ]; then
 fi
 
 
-exit $RETVAL
+exit "${RETVAL:-0}"

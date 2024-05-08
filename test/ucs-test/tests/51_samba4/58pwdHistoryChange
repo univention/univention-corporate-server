@@ -67,4 +67,4 @@ udm settings/sambadomain modify --dn "$samba_domain" --set "passwordHistory=$ori
 wait_for_replication_and_postrun
 user_remove "$username"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

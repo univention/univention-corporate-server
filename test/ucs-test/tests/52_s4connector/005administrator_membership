@@ -41,4 +41,4 @@ udm_verify_multi_value_udm_attribute_contains "users" \
 	"uid=Administrator,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
 
 ad_set_sync_mode "$SYNCMODE"
-exit "$RETVAL"
+exit "${RETVAL:-0}"

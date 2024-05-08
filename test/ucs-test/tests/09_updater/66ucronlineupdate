@@ -42,5 +42,5 @@ do
 done
 
 echo "=== RESULT: $RETVAL ==="
-exit "$RETVAL"
+exit "${RETVAL:-0}"
 # vim:set ft=sh:

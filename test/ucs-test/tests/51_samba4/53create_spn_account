@@ -50,4 +50,4 @@ wait_for_replication_and_postrun
 [ -n "$reset_password_complexity" ] &&
 	samba-tool domain passwordsettings set --complexity="$old_password_complexity"
 
-exit $RETVAL
+exit "${RETVAL:-0}"

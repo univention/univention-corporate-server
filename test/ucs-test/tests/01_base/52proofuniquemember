@@ -69,5 +69,5 @@ fi
 
 udm groups/group remove --dn="cn=$group,cn=groups,$ldap_base" || fail_test 110
 
-exit $RETVAL
+exit "${RETVAL:-0}"
 # vim: set ft=sh :

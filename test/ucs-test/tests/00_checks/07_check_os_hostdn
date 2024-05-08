@@ -17,4 +17,4 @@ ovs="$(univention-ldapsearch -b "$ldap_hostdn" -s base -LLL univentionOperatingS
 [ "$ovs" = "$version_version-$version_patchlevel" ] ||
 	fail_test 110 "univentionOperatingSystemVersion is set to $ovs"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

@@ -66,4 +66,4 @@ check_s4_age 0
 set_ucs_age "$OLD_VALUE"
 ad_wait_for_synchronization; fail_bool 0 110
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

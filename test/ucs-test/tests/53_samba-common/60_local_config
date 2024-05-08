@@ -28,4 +28,4 @@ result="$(echo ""  | testparm -vv 2>&1 | sed -ne 's|[ \t]*netbios aliases = ||p'
 [ "$result" = "$value" ] ||
 	fail_test 1 "netbios aliases is set to $result; expected $value"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

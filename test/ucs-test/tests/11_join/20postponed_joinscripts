@@ -105,4 +105,4 @@ EOF
 	cleanup_status
 fi
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

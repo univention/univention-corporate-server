@@ -47,4 +47,4 @@ for((i=0;i<10;i++)); do
 	fi
 done
 
-exit $RETVAL
+exit "${RETVAL:-0}"

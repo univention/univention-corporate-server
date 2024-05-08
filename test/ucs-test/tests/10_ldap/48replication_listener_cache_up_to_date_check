@@ -78,4 +78,4 @@ check_description "$containername" "test1"
 container_remove "cn=$containername,cn=groups,$ldap_base"
 wait_for_replication
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

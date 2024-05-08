@@ -161,4 +161,4 @@ do
 	"$ALREADY_FAILED" && break
 done
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

@@ -28,4 +28,4 @@ debian/rules override_dh_auto_configure
 TDB_NO_FSYNC=1 make -j test FAIL_IMMEDIATELY=1 SOCKET_WRAPPER_KEEP_PCAP=1 TESTS="samba3.raw.composite" || fail_fast 110
 
 
-exit $RETVAL
+exit "${RETVAL:-0}"

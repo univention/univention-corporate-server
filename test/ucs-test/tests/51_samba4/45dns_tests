@@ -68,4 +68,4 @@ check_a () {
 retry "$REPLICATION_TIME" check_a ||
 	fail_test 1 "Created A record could not be found."
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

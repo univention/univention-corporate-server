@@ -114,4 +114,4 @@ ad_exists "CN=$UDM_users_user_username,CN=$CONTAINER1,CN=$CONTAINER2,$(ad_get_ba
 ad_set_retry_rejected "$RETRYREJECTED"
 ad_set_sync_mode "$SYNCMODE"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

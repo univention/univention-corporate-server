@@ -49,7 +49,7 @@ issue "Missing reason for 'fail_test|fast'."
 # shellcheck disable=SC2016,SC2038
 find tests -type f -exec grep -E -l 'fail_test' {} + |
 	xargs grep -E -L '(exit|return) "?\${?RETVAL\>' >"$tmp" || :
-issue "Use of 'fail_test' without 'exit \$RETVAL'."
+issue "Use of 'fail_test' without 'exit \"\$RETVAL\"'."
 
 export UCS_TESTS="tests"
 export PYTHONPATH=".${PYTHONPATH:+:$PYTHONPATH}"

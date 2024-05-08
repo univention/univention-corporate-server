@@ -74,4 +74,4 @@ ucr set connector/s4/mapping/user/primarymail="$SYNCPRIMARYMAIL"
 ad_set_sync_mode "$SYNCMODE"
 invoke-rc.d univention-s4-connector start
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

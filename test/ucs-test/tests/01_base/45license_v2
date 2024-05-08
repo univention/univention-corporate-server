@@ -96,4 +96,4 @@ done
 ucr unset --force ldap/master
 ucr set ldap/master="$ldap_master"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

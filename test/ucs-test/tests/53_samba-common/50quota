@@ -171,4 +171,4 @@ done
 
 wait_for_replication_and_postrun
 
-exit $RETVAL
+exit "${RETVAL:-0}"

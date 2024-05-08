@@ -52,4 +52,4 @@ udm users/user modify --dn "$USER_DN" --set userexpiry="$(date -d '1 day tomorro
 wait_for_replication
 ldapsearch -x -D "$USER_DN" -w univention -s base dn || fail_test 1 'User expiry was set to tomorrow but the search failed'
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

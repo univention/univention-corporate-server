@@ -102,4 +102,4 @@ sleep 5
 invoke-rc.d univention-s4-connector restart
 # temporary debug
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

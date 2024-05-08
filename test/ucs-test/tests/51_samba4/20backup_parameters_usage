@@ -55,4 +55,4 @@ if [ "$(grep -F -e "$(ucr get samba4/backup/cron/options)" $CRON_JOB)" == '' ]; 
         fail_fast 110 "The UCR 'samba4/backup/cron/options' were not found in the cron job at $CRON_JOB"
 fi
 
-exit $RETVAL
+exit "${RETVAL:-0}"

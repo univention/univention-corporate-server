@@ -64,4 +64,4 @@ wait_for_gpo () {
 retry 10 wait_for_gpo ||
 		fail_fast 1 "GPO is not listed in samba-tool: $output"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

@@ -82,4 +82,4 @@ echo "## create a folder with permission"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder2" >/dev/null 2>&1)" ||
 	fail_test 1 "Failed to make a folder even though it should work: $output"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

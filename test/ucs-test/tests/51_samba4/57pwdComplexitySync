@@ -50,4 +50,4 @@ section "cleanup"
 samba-tool domain passwordsettings set --complexity="$orig_password_complexity"
 wait_for_replication_and_postrun
 
-exit $RETVAL
+exit "${RETVAL:-0}"

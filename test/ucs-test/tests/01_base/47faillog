@@ -116,8 +116,8 @@ failCount=$(pam_tally --user="$NAME" | awk '{print $NF}')
 if [ "$failCount" != "0" ]; then
 	fail_test 110 "E: failCount should be empty"
 	faillog -u "$NAME"
-	exit $RETVAL
+	exit "${RETVAL:-0}"
 fi
 
-exit $RETVAL
+exit "${RETVAL:-0}"
 # vim: set ft=sh :

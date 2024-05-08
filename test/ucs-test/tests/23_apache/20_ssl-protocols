@@ -15,7 +15,7 @@ set -e -u
 cleanup () {
 	ucr_restore || :
 	apachectl graceful || :
-	exit ${RETVAL:-0}
+	exit "${RETVAL:-0}"
 }
 trap cleanup EXIT
 

@@ -60,4 +60,4 @@ udm_modify "policies/pwhistory" "" "" "" "" \
 invoke-rc.d univention-ad-connector restart
 ad_set_sync_mode "$SYNCMODE"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

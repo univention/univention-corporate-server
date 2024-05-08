@@ -123,4 +123,4 @@ ad_set_sync_mode "$SYNCMODE"
 
 ad_wait_for_synchronization; fail_bool 0 110
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

@@ -98,4 +98,4 @@ echo "${0##*/};$delta" >"${0##*/}.csv"
 [ "$delta" -ge "$MAX" ] &&
 	fail_test 1 "Replication took $(printf "%'d" "$delta") > $(printf "%'d" "$MAX") s"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

@@ -17,4 +17,4 @@ if ! is_ucr_false connector/s4/autostart; then
 	fi
 fi
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

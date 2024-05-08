@@ -132,5 +132,5 @@ done <<EOF
 1	1	1	1
 EOF
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"
 # vim: set ft=sh :

@@ -75,4 +75,4 @@ udm dns/host_record modify --dn "$host_dns" ${arecords[@]}
 
 host "$FQHN"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

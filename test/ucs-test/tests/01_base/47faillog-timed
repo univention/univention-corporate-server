@@ -74,5 +74,5 @@ then
 	fail_test 1 "ssh login wasn't successful"
 fi
 
-exit $RETVAL
+exit "${RETVAL:-0}"
 # vim: set ft=sh :

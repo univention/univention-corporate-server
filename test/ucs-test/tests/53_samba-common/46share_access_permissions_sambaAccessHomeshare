@@ -55,4 +55,4 @@ output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$username"
 echo "$output" | grep -q "windows-profiles" ||
 	fail_test 1 "Expected 'windows-profiles' in homeshare directory listing, but received: $output"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

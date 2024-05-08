@@ -33,4 +33,4 @@ ln -s /etc/fstab "$samba_dir/scripts/" || fail_test "could not create link"
 univention-samba4-backup || fail_test "univention-samba4-backup failed with symlink in $samba_dir"
 
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

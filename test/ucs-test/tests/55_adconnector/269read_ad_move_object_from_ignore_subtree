@@ -94,4 +94,4 @@ connector_mapping_restore
 ad_set_sync_mode "$SYNCMODE"
 invoke-rc.d univention-ad-connector start
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

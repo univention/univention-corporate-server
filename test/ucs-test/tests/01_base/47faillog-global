@@ -83,14 +83,14 @@ test_output=$(ldapsearch -LLL -D "$userdn" -y "$tests_domainadmin_pwdfile" -s ba
 if [ -n "$test_output" ]; then
 	fail_test 110 "E: user can still do LDAP search but should be disabled in UDM"
 	univention-directory-manager users/user list --filter "uid=$NAME"
-	exit $RETVAL
+	exit "${RETVAL:-0}"
 fi
 
 test_output=$(ldapwhoami -D "$userdn" -y "$tests_domainadmin_pwdfile")
 if [ -n "$test_output" ]; then
 	fail_test 110 "E: user can still do LDAP whoami but should be disabled in UDM"
 	univention-directory-manager users/user list --filter "uid=$NAME"
-	exit $RETVAL
+	exit "${RETVAL:-0}"
 fi
 
 ### Just locking would be good, but requires ppolicy LDAP overlay active and configured properly to temporarily block LDAP authentication too,
@@ -99,14 +99,14 @@ fi
 # if [ "$udm_locked" != "  locked: 1" ]; then
 # 	fail_test 110 "E: user was not locked in UDM"
 # 	univention-directory-manager users/user list --filter "uid=$NAME"
-#	exit $RETVAL
+#	exit "${RETVAL:-0}"
 # fi
 
 udm_disabled=$(univention-directory-manager users/user list --filter "uid=$NAME" | grep "^  disabled: 1")
 if [ "$udm_disabled" != "  disabled: 1" ]; then
 	fail_test 110 "E: user was not disabled in UDM"
 	univention-directory-manager users/user list --filter "uid=$NAME"
-	exit $RETVAL
+	exit "${RETVAL:-0}"
 fi
 
 udm-test users/user modify --dn="$userdn" --set disabled=0 # --set locked=0
@@ -117,22 +117,22 @@ ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" != "$hostname" ]; then
 	fail_test 110 "E: The login wasn't successful, but the fail counter should be reset"
 	faillog -u "$NAME"
-	exit $RETVAL
+	exit "${RETVAL:-0}"
 fi
 
 test_output=$(ldapsearch -LLL -D "$userdn" -y "$tests_domainadmin_pwdfile" -s base 1.1 | dn1)
 if [ -z "$test_output" ]; then
 	fail_test 110 "E: The cannot do LDAP search, but the account should be re-enabled and un-locked again"
 	univention-directory-manager users/user list --filter "uid=$NAME"
-	exit $RETVAL
+	exit "${RETVAL:-0}"
 fi
 
 test_output=$(ldapwhoami -D "$userdn" -y "$tests_domainadmin_pwdfile")
 if [ -z "$test_output" ]; then
 	fail_test 110 "E: The cannot do LDAP whoami, but the account should be re-enabled and un-locked again"
 	univention-directory-manager users/user list --filter "uid=$NAME"
-	exit $RETVAL
+	exit "${RETVAL:-0}"
 fi
 
-exit $RETVAL
+exit "${RETVAL:-0}"
 # vim: set ft=sh :

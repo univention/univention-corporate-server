@@ -115,4 +115,4 @@ check_gpo () { output=$(samba-tool gpo show "$gpo_cn" 2>&1) && grep -Eq "^GPO\s+
 retry 10 check_gpo ||
 	fail_fast 1 "GPO is not listed in samba-tool: ${output:-}"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

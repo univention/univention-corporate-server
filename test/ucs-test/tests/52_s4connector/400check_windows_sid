@@ -67,4 +67,4 @@ echo "The Windows Host sambaSID in 'OpenLDAP' is '$windows_samba_sid'"
     fail_fast 110 "The SIDs of '$windows_hostname' are not the same in Samba4 '$windows_object_sid' and OpenLDAP '$windows_samba_sid'."
 
 
-exit $RETVAL
+exit "${RETVAL:-0}"

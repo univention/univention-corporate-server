@@ -39,4 +39,4 @@ fi
 wait_for_replication
 wait_for_drs_replication "(sAMAccountName=$username)"
 
-exit $RETVAL
+exit "${RETVAL:-0}"

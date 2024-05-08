@@ -31,5 +31,5 @@ RETVAL=$?
 
 univention-directory-manager groups/group remove --dn="cn=$GROUP2,cn=groups,$ldap_base"
 
-exit $RETVAL
+exit "${RETVAL:-0}"
 # vim: set ft=sh :

@@ -84,4 +84,4 @@ if getent group "Replicator" >/dev/null; then
 	test_group_sid "$(custom_groupname "Replicator")" S-1-5-32-552
 fi
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

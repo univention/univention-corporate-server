@@ -177,4 +177,4 @@ if echo "$output" | grep -qi "$UDM_users_user_username"; then
 	fail_fast 110 ""
 fi
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

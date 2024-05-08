@@ -60,4 +60,4 @@ ucr set connector/ad/mapping/user/ignorefilter="$ignorefilter"
 invoke-rc.d univention-ad-connector restart
 ad_set_sync_mode "$SYNCMODE"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

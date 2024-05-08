@@ -66,4 +66,4 @@ for groupType in $GLOBAL_GROUP_TYPE $LOCAL_GROUP_TYPE $DOMAIN_LOCAL_GROUP_TYPE $
 	udm_exists "groups/group"; fail_bool 1 110
 done
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

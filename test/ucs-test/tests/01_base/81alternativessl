@@ -65,5 +65,5 @@ fi
 
 univention-certificate revoke -name "$cert"
 
-exit $RETVAL
+exit "${RETVAL:-0}"
 # vim: set ft=sh :

@@ -56,4 +56,4 @@ userPassword: {BCRYPT}\$2b\$08\$s8k7t6cvdHLLMz75emGZMeP.d0c3Xl/.to3FntmYUxabPlpE
 
 univention-ldapsearch -D "$dn" -x -w randompassword uid="$test_username" || fail_fast 140 "cannot logon with bcrypt hash"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

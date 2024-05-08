@@ -110,4 +110,4 @@ ad_exists "CN=$UDM_users_user_username,OU=$OU1,OU=$OU2,$(ad_get_base)"; fail_boo
 ad_set_retry_rejected "$RETRYREJECTED"
 ad_set_sync_mode "$SYNCMODE"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"

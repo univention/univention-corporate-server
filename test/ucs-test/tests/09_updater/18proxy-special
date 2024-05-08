@@ -72,7 +72,7 @@ do
 	test -n "${u}" && run_test "u${u}u" "password"
 	test -n "${p}" && run_test "user" "p${p}p"
 	[ "$RETVAL" -gt 100 ] &&
-		exit "$RETVAL"
+		exit "${RETVAL:-0}"
 done
 
 exit "${RETVAL:=100}" # Test bestanden (Keine Fehler)

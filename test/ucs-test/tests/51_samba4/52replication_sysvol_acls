@@ -135,4 +135,4 @@ grep -q "$test_ntace" <<<"$replicated_gpo_ntacl" ||
 [ "$replicated_gpo_fattr" = "$custom_gpo_fattr" ] ||
 	fail_test 110 "The GPO fattrs have been modified"
 
-exit "$RETVAL"
+exit "${RETVAL:-0}"
