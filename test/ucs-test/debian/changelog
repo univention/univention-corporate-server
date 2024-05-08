@@ -1,3 +1,10 @@
+ucs-test (12.0.74) unstable; urgency=medium
+
+  * Issue #2020: expect only keycloak/server/sso/fqdn in
+    Content-Security-Policy
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 08 May 2024 15:38:18 +0200
+
 ucs-test (12.0.73) unstable; urgency=medium
 
   * Issue #2207: test keycloak REST endpoints

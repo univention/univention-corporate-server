@@ -25,9 +25,10 @@ class TestSecurityHeaders:
         client = Client()
         response = client.request('GET', path)
         assert response.get_header("X-Frame-Options") is None  # changed from: == "SAMEORIGIN"
-        sso = 'https://%(keycloak/server/sso/fqdn)s/ http://%(keycloak/server/sso/fqdn)s/' % defaultdict(lambda: '', ucr)
+        sso = 'https://%(ucs/server/sso/fqdn)s/ http://%(ucs/server/sso/fqdn)s/ https://%(keycloak/server/sso/fqdn)s/ http://%(keycloak/server/sso/fqdn)s/' % defaultdict(lambda: '', ucr)
         sso = sso.replace('http:///', '').replace('https:///', '').strip()
         assert response.get_header("Content-Security-Policy") == "default-src 'self' 'unsafe-inline' 'unsafe-eval' %s  https://www.piwik.univention.de/ ; frame-ancestors 'self';" % sso
+
         assert response.get_header("X-Permitted-Cross-Domain-Policies") == "master-only"
         assert response.get_header("X-XSS-Protection") == "1; mode=block"
         assert response.get_header("X-Content-Type-Options") == "nosniff"
@@ -47,11 +48,10 @@ class TestSecurityHeaders:
         if path == '/languages.json':
             assert response.get_header("Content-Security-Policy") == "frame-ancestors 'none';"
         else:
-            sso = 'https://%(keycloak/server/sso/fqdn)s/ http://%(keycloak/server/sso/fqdn)s/' % defaultdict(lambda: '', ucr)
-            sso = sso.replace('http:///', '').replace('https:///', '').strip()
-            # TODO fix sso fqdn in the portal
+            sso = 'https://%(ucs/server/sso/fqdn)s/ http://%(ucs/server/sso/fqdn)s/ https://%(keycloak/server/sso/fqdn)s/ http://%(keycloak/server/sso/fqdn)s/' % defaultdict(lambda: '', ucr)
             if 'portal' in path:
                 sso = 'https://%(ucs/server/sso/fqdn)s/ http://%(ucs/server/sso/fqdn)s/' % defaultdict(lambda: '', ucr)
+            sso = sso.replace('http:///', '').replace('https:///', '').strip()
             expected = "frame-ancestors 'self' %s;" % sso
             assert expected in response.get_header("Content-Security-Policy")
 
