@@ -34,15 +34,15 @@ def test_app_scaling(appcenter: Appcenter, app_name: str, app_version: str) -> N
 
         appcenter.update()
 
-        for i in range(DOCKER_APP_COUNT):
-            apps[i].install()
+        for app in apps:
+            app.install()
 
-        for i in range(DOCKER_APP_COUNT):
-            apps[i].verify(joined=False)
-            apps[i].configure_tinyapp_modproxy()
-            apps[i].verify_basic_modproxy_settings_tinyapp()
+        for app in apps:
+            app.verify(joined=False)
+            app.configure_tinyapp_modproxy()
+            app.verify_basic_modproxy_settings_tinyapp()
 
     finally:
-        for i in range(len(apps)):
-            apps[i].uninstall()
-            apps[i].remove()
+        for app in apps:
+            app.uninstall()
+            app.remove()

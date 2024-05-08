@@ -15,10 +15,13 @@ from typing import Iterator, cast
 
 import pytest
 
-from univention.config_registry import ConfigRegistry, handler_set
-from univention.testing.utils import fail
+from univention.config_registry import handler_set
 
 from dockertest import Appcenter
+
+
+CACHE = Path("/var/cache/univention-appcenter")
+META = Path("/var/www/meta-inf")
 
 
 class SyncedAppcenter(Appcenter):
@@ -42,12 +45,9 @@ class SyncedAppcenter(Appcenter):
 
     def download(self, f: str) -> None:
         p = Path("/var/www") / f
-        if os.path.exists('/var/www/%s' % f):
-            os.remove('/var/www/%s' % f)
-
-        d = os.path.dirname(f'/var/www/{f}')
-        if not os.path.exists(d):
-            os.makedirs(d)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        if p.exists():
+            p.unlink()
 
         call(['wget', '-O', p.as_posix(), f'{self.upstream_appcenter}/{f}'])
 
@@ -63,11 +63,12 @@ class SyncedAppcenter(Appcenter):
             self.download(f'meta-inf/{version}/all.tar.gpg')
 
     def remove_from_cache(self, f: str) -> None:
-        if os.path.exists(os.path.join('/var/cache/univention-appcenter/', f)):
-            os.remove(os.path.join('/var/cache/univention-appcenter/', f))
+        p = CACHE / f
+        if p.exists():
+            p.unlink()
 
     def file_exists_in_cache(self, f: str) -> bool:
-        return os.path.exists(os.path.join('/var/cache/univention-appcenter/', f))
+        return (CACHE / f).exists()
 
     def test_index_without_gpg(self) -> None:
         self.download_index_json()
@@ -95,14 +96,13 @@ def test_index_with_gpg(appcenter: SyncedAppcenter) -> None:
     assert call(['univention-app', 'update']) == 0
 
 
-def test_modify_index(appcenter: SyncedAppcenter) -> None:
-    ucr = ConfigRegistry()
-    ucr.load()
-    f = f'/var/www/meta-inf/{appcenter.vv}'
+def test_modify_index(appcenter: SyncedAppcenter, ucr) -> None:
+    f = META / appcenter.vv
     # this just so that all.tar gets newly synced
-    call('rm /var/cache/univention-appcenter/%(fqdn)s/%(vv)s/.etags' % {'vv': appcenter.vv, 'fqdn': '%(hostname)s.%(domainname)s' % appcenter.ucr}, shell=True)
-    call('echo "foo" > nasty ; tar --append -f %(f)s/all.tar nasty' % {'f': f}, shell=True)
-    call('zsyncmake -z -u %(server)s/meta-inf/%(vv)s/all.tar.gz %(f)s/all.tar -o %(f)s/all.tar.zsync' % {'server': ucr.get('repository/app_center/server'), 'vv': appcenter.vv, 'f': f}, shell=True)
+    appcenter.remove_from_cache(f"{ucr['hostname']}.{ucr['domainname']}/{appcenter.vv}/.etags")
+    tar = (f / "all.tar").as_posix()
+    call(["tar", "--append", "-f", tar, "-C", "/proc", "uptime"])
+    call(["zsyncmake", "-z", "-u", f"{ucr['repository/app_center/server']}/meta-inf/{appcenter.vv}/all.tar.gz", tar, "-o", f"{tar}.zsync"])
     assert call(['univention-app', 'update']) != 0
 
 
@@ -110,10 +110,9 @@ def test_modify_inst(appcenter: SyncedAppcenter) -> None:
     filename = 'tecart_20151204.inst'
     basename, ext = os.path.splitext(filename)
     appcenter.remove_from_cache(filename)
-    appcenter.download(f'univention-repository/{appcenter.vv}/maintained/component/{basename}/{ext}')
-    call(f'echo "## SIGNATURE TEST ###" >>/var/www/univention-repository/{appcenter.vv}/maintained/component/{basename}/{ext}', shell=True)
+    f = f'univention-repository/{appcenter.vv}/maintained/component/{basename}/{ext}'
+    appcenter.download(f)
+    (Path("/var/www") / f).write_text("## SIGNATURE TEST ###")
     call(['univention-app', 'update'])
     # Check only if the file was removed from the local cache
-    if appcenter.file_exists_in_cache(filename):
-        fail('_test_modify_inst failed')
-    print('### _test_modify_inst passed')
+    assert not appcenter.file_exists_in_cache(filename)

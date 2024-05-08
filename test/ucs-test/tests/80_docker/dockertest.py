@@ -33,10 +33,10 @@
 
 from __future__ import annotations
 
-import os
 import shutil
 import subprocess
 import threading
+from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 import requests
@@ -51,6 +51,11 @@ from univention.testing.ucr import UCSTestConfigRegistry
 if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence
     from types import TracebackType
+
+
+BASE_DIR = Path('/var/www')
+META_DIR = BASE_DIR / 'meta-inf'
+REPO_DIR = BASE_DIR / 'univention-repository'
 
 
 class BaseFailure(Exception):
@@ -158,20 +163,17 @@ def get_app_version() -> str:
 
 
 def copy_package_to_appcenter(ucs_version: str, app_directory: str, package_name: str) -> None:
-    target = os.path.join('/var/www/univention-repository/%s/maintained/component' % ucs_version, '%s/all' % app_directory)
-    print('cp %s %s' % (package_name, target))
-    if not os.path.exists(target):
-        os.makedirs(target)
-    shutil.copy(package_name, target)
-    command = '''
-        set -x -e;
-        cd /var/www/univention-repository/%(version)s/maintained/component;
-        apt-ftparchive packages %(app)s/all >%(app)s/all/Packages;
-        gzip -c %(app)s/all/Packages >%(app)s/all/Packages.gz
-    ''' % {'version': ucs_version, 'app': app_directory}
+    comp_dir = REPO_DIR / ucs_version / 'maintained' / 'component'
+    pkg_dir = comp_dir / app_directory / 'all'
+
+    print('cp %s %s' % (package_name, pkg_dir))
+    pkg_dir.mkdir(0o755, parents=True, exist_ok=True)
+    shutil.copy(package_name, pkg_dir.as_posix())
+
     print('Creating packages in local repository:')
-    print(command)
-    print(subprocess.check_output(command, shell=True, text=True))
+    pkg = pkg_dir / "Packages"
+    subprocess.run(["apt-ftparchive", "packages", f"{app_directory}/all"], cwd=comp_dir, stdout=pkg.open("wb"), check=True)
+    subprocess.run(["gzip", "--force", "--keep", "--no-name", pkg.as_posix()], check=True)
 
 
 def error_handling_call(cmd: Sequence[str] | str, exc: type[BaseException] = BaseFailure) -> None:
@@ -275,11 +277,9 @@ class App:
         self.ucr.load()
         self.container_id = self.ucr.get('appcenter/apps/%s/container' % self.app_name)
 
-    def file(self, fname: str) -> str:
-        if fname.startswith('/'):
-            fname = fname[1:]
+    def file(self, fname: str) -> Path:
         dirname = subprocess.check_output(['docker', 'inspect', '--format={{.GraphDriver.Data.MergedDir}}', self.container_id], text=True).strip()
-        return os.path.join(dirname, fname)
+        return Path(dirname) / fname.lstrip('/')
 
     def configure(self, args: Mapping[str, str | None]) -> None:
         set_vars = []
@@ -396,37 +396,33 @@ class App:
             self.package.remove()
 
     def _dump_ini(self) -> None:
-        if not os.path.exists('/var/www/meta-inf/%s' % self.ucs_version):
-            os.makedirs('/var/www/meta-inf/%s' % self.ucs_version)
+        vdir = META_DIR / self.ucs_version
+        vdir.mkdir(0o755, parents=True, exist_ok=True)
+        v41dir = META_DIR / '4.1'
+        if self.ucs_version == '4.2' and not v41dir.exists():
+            v41dir.mkdir(0o755)
 
-        if self.ucs_version == '4.2' and not os.path.exists('/var/www/meta-inf/4.1'):
-            os.makedirs('/var/www/meta-inf/4.1')
-
-        target = os.path.join('/var/www/meta-inf/%s' % self.ucs_version, '%s.ini' % self.app_directory)
-        with open(target, 'w') as f:
+        target = vdir / f'{self.app_directory}.ini'
+        with target.open("w") as f:
             print('Write ini file: %s' % target)
             f.write('[Application]\n')
             print('[Application]')
-            for key in self.ini.keys():
-                f.write('%s: %s\n' % (key, self.ini[key]))
-                print('%s: %s' % (key, self.ini[key]))
+            for key, val in self.ini.items():
+                f.write('%s: %s\n' % (key, val))
+                print('%s: %s' % (key, val))
             print()
-        svg = os.path.join('/var/www/meta-inf/%s' % self.ucs_version, self.ini.get('Logo'))
-        with open(svg, 'w') as f:
-            f.write(get_dummy_svg())
+
+        svg = vdir / self.ini.get('Logo')
+        svg.write_bytes(Path(__file__).with_name("dummy.svg").read_bytes())
 
     def _dump_scripts(self) -> None:
         for script, content in self.scripts.items():
-            comp_path = os.path.join('/var/www/univention-repository/%s/maintained/component' % self.ucs_version, '%s' % self.app_directory)
-            if not os.path.exists(comp_path):
-                os.makedirs(comp_path)
-            target = os.path.join(comp_path, script)
+            comp_dir = REPO_DIR / self.ucs_version / 'maintained' / 'component' / self.app_directory
+            comp_dir.mkdir(0o755, parents=True, exist_ok=True)
 
-            print('Create %s' % target)
-            print(content)
-
-            with open(target, 'w') as f:
-                f.write(content)
+            target = comp_dir / script
+            print(f'Create {target}: {content!r}')
+            target.write_text(content)
 
     def configure_tinyapp_modproxy(self) -> None:
         fqdn = '%(hostname)s.%(domainname)s' % self.ucr
@@ -462,15 +458,14 @@ class App:
                 if should_succeed:
                     raise
 
-            html = response.text
-            correct = html == test_string if should_succeed else html != test_string
-            if not correct:
-                raise UCSTest_DockerApp_ModProxyFailed(
-                    f'Got: {html}\nTested against: {test_string}\nProtocol: {protocol}\nTested equality: {should_succeed}',
-                )
+            if should_succeed:
+                assert response.text == test_string
+            else:
+                assert response.text != test_string
 
 
 class Appcenter:
+
     def __init__(self, version: str | None = None) -> None:
         self.meta_inf_created = False
         self.univention_repository_created = False
@@ -478,91 +473,48 @@ class Appcenter:
         self.ucr.load()
         self.apps: list[App] = []
 
-        if os.path.exists('/var/www/meta-inf'):
-            print('ERROR: /var/www/meta-inf already exists')
-            shutil.rmtree('/var/www/meta-inf', True)
-            shutil.rmtree('/var/www/univention-repository', True)
-            raise BaseFailure('/var/www/meta-inf already exists')
-        if os.path.exists('/var/www/univention-repository'):
-            print('ERROR: /var/www/univention-repository already exists')
-            shutil.rmtree('/var/www/meta-inf', True)
-            shutil.rmtree('/var/www/univention-repository', True)
-            raise BaseFailure('/var/www/univention-repository already exists')
+        paths = [p for p in (META_DIR, REPO_DIR) if p.exists()]
+        if paths:
+            for p in paths:
+                shutil.rmtree(p.as_posix(), ignore_errors=True)
+            raise BaseFailure(f'{paths} already existed')
 
-        if not version:
-            self.add_ucs_version_to_appcenter('4.1')
-            self.add_ucs_version_to_appcenter('4.2')
-            self.add_ucs_version_to_appcenter('4.3')
-            self.add_ucs_version_to_appcenter('4.4')
-            self.add_ucs_version_to_appcenter('5.0')
-            self.versions = ['4.1', '4.2', '4.3', '4.4', '5.0']
-            self._write_ucs_ini('[5.0]\nSupportedUCSVersions=5.0, 4.4, 4.3\n[4.4]\nSupportedUCSVersions=4.4, 4.3, 4.2, 4.1\n[4.3]\nSupportedUCSVersions=4.3, 4.2, 4.1\n')
-            self._write_suggestions_json()
-        else:
-            self.add_ucs_version_to_appcenter(version)
+        if version:
             self.versions = [version]
-            self._write_ucs_ini('[%s]\nSupportedUCSVersions=%s\n' % (version, version))
-            self._write_suggestions_json()
+            support = f'[{version}\nSupportedUCSVersions={version}\n'
+        else:
+            self.versions = VERSIONS
+            support = SUPPORT
+
+        for version in self.versions:
+            self.add_ucs_version_to_appcenter(version)
+
+        (META_DIR / 'ucs.ini').write_text(support)
+        (META_DIR / 'suggestions.json').write_text('{"v1": []}')
 
         print(repr(self))
 
-    def _write_suggestions_json(self) -> None:
-        with open('/var/www/meta-inf/suggestions.json', 'w') as f:
-            f.write('{"v1": []}')
-
-    def _write_ucs_ini(self, content: str) -> None:
-        with open('/var/www/meta-inf/ucs.ini', 'w') as f:
-            f.write(content)
-
     def add_ucs_version_to_appcenter(self, version: str) -> None:
-        if not os.path.exists('/var/www/meta-inf'):
-            os.makedirs('/var/www/meta-inf', 0o755)
+        if not META_DIR.exists():
+            META_DIR.mkdir(0o755, parents=True)
             self.meta_inf_created = True
 
-        if not os.path.exists('/var/www/univention-repository'):
-            os.makedirs('/var/www/univention-repository', 0o755)
+        if not REPO_DIR.exists():
+            REPO_DIR.mkdir(0o755, parents=True)
             self.univention_repository_created = True
 
-        os.makedirs('/var/www/univention-repository/%s/maintained/component' % version)
-        os.makedirs('/var/www/meta-inf/%s' % version)
+        (REPO_DIR / version / 'maintained' / 'component').mkdir(0o755, parents=True, exist_ok=True)
+        (META_DIR / version).mkdir(0o755, exist_ok=True)
 
-        if not os.path.exists('/var/www/meta-inf/categories.ini'):
-            with open('/var/www/meta-inf/categories.ini', 'w') as f:
-                f.write('''[de]
-Administration=Administration
-Business=Business
-Collaboration=Collaboration
-Education=Schule
-System services=Systemdienste
-UCS components=UCS-Komponenten
-Virtualization=Virtualisierung''')
+        categories = META_DIR / 'categories.ini'
+        if not categories.exists():
+            categories.write_text(CATEGORIES)
 
-        if not os.path.exists('/var/www/meta-inf/app-categories.ini'):
-            with open('/var/www/meta-inf/app-categories.ini', 'w') as f:
-                f.write(
-                    '[de]\n'
-                    'Backup & Archiving=Backup & Archivierung\n'
-                    'Education=Bildung\n'
-                    'CMS=CMS\n'
-                    'Collaboration & Groupware=Collaboration & Groupware\n'
-                    'CRM & ERP=CRM & ERP\n'
-                    'Desktop=Desktop\n'
-                    'Device Management=Device Management\n'
-                    'File Sync & Share=File Sync & Share\n'
-                    'Identity Management=Identity Management\n'
-                    'Infrastructure=Infrastruktur\n'
-                    'Mail & Messaging=Mail & Messaging\n'
-                    'Office=Office\n'
-                    'Printing=Drucken\n'
-                    'Project Management=Projekt Management\n'
-                    'Security=Sicherheit\n'
-                    'Storage=Speicher\n'
-                    'Telephony=Telefonie\n'
-                    'Virtualization=Virtualisierung\n')
-            with open('/var/www/meta-inf/rating.ini', 'w') as f:
-                f.write('# rating stuff\n')
-            with open('/var/www/meta-inf/license_types.ini', 'w') as f:
-                f.write('# license stuff')
+        app_categories = META_DIR / 'app-categories.ini'
+        if not app_categories.exists():
+            app_categories.write_text(APP_CATEGORIES)
+            (META_DIR / 'rating.ini').write_text('# rating stuff\n')
+            (META_DIR / 'license_types.ini').write_text('# license stuff')
 
         handler_set([
             'update/secure_apt=no',
@@ -571,34 +523,35 @@ Virtualization=Virtualisierung''')
         ])
 
     def update(self) -> None:
-        for vv in os.listdir('/var/www/meta-inf/'):
-            directory = os.path.join('/var/www/meta-inf/', vv)
-            if not os.path.isdir(directory):
-                continue
-            print('create_appcenter_json.py for %s' % vv)
-            fqdn = '%(hostname)s.%(domainname)s' % self.ucr
+        fqdn = '%(hostname)s.%(domainname)s' % self.ucr
+        for ver_dir in META_DIR.glob('[1-9]*.[0-9]*/'):
+            ver = ver_dir.name
+            print('create_appcenter_json.py for %s' % ver)
+            idx_file = ver_dir / 'index.json.gz'
+            tar_file = ver_dir / 'all.tar'
             subprocess.check_call([
                 './create_appcenter_json.py',
-                '-u', vv,
-                '-d', '/var/www',
-                '-o', f'/var/www/meta-inf/{vv}/index.json.gz',
+                '-u', ver,
+                '-d', f'{BASE_DIR}',
+                '-o', f'{idx_file}',
                 '-s', f'http://{fqdn}',
-                '-t', f'/var/www/meta-inf/{vv}/all.tar',
+                '-t', f'{tar_file}',
             ])
+            path = tar_file.with_suffix(f'{tar_file.suffix}.gz').relative_to(BASE_DIR)
             subprocess.check_call([
                 'zsyncmake',
-                '-u', f'http://{fqdn}/meta-inf/{vv}/all.tar.gz',
+                '-u', f'http://{fqdn}/{path}',
                 '-z',
-                '-o', f'/var/www/meta-inf/{vv}/all.tar.zsync',
-                f'/var/www/meta-inf/{vv}/all.tar',
+                '-o', f'{tar_file}.zsync',
+                f'{tar_file}',
             ])
         subprocess.check_call(['univention-app', 'update'])
 
     def cleanup(self) -> None:
         if self.meta_inf_created:
-            shutil.rmtree('/var/www/meta-inf')
+            shutil.rmtree(META_DIR.as_posix())
         if self.univention_repository_created:
-            shutil.rmtree('/var/www/univention-repository')
+            shutil.rmtree(REPO_DIR.as_posix())
         self.ucr.revert_to_original_registry()
 
     def __enter__(self) -> Appcenter:
@@ -606,54 +559,53 @@ Virtualization=Virtualisierung''')
 
     def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         if exc_type:
-            print('Cleanup after exception: %s %s' % (exc_type, exc_val))
+            print(f'Cleanup after exception: {exc_val}')
         try:
             for app in self.apps:
                 app.uninstall()
         except Exception as ex:
-            print('removing app %s in __exit__ failed with: %s' % (app, str(ex)))
+            print(f'removing app {app} in __exit__ failed with: {ex}')
         finally:
             self.cleanup()
 
 
-def get_dummy_svg() -> str:
-    return '''<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   version="1.1"
-   width="110"
-   height="126.122"
-   id="svg3555">
-  <defs
-     id="defs3557" />
-  <metadata
-     id="metadata3560">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <g
-     transform="translate(-319.28571,-275.01547)"
-     id="layer1">
-    <g
-       transform="matrix(1,0,0,-1,331.53071,388.89247)"
-       id="g530">
-      <path
-         d="m 0,0 0,101.633 85.51,0 0,-66.758 C 85.51,15.552 61.655,23.293 61.655,23.293 61.655,23.293 68.958,0 50.941,0 L 0,0 z m 97.755,33.818 0,80.059 -110,0 0,-126.122 63.372,0 c 20.867,0 46.628,27.266 46.628,46.063 M 40.87,21.383 C 33.322,18.73 27.1,21.772 28.349,29.02 c 1.248,7.25 8.41,22.771 9.432,25.705 1.021,2.936 -0.937,3.74 -3.036,2.546 -1.21,-0.698 -3.009,-2.098 -4.554,-3.458 -0.427,0.862 -1.03,1.848 -1.482,2.791 2.52,2.526 6.732,5.912 11.72,7.138 5.958,1.471 15.916,-0.88 11.636,-12.269 -3.056,-8.117 -5.218,-13.719 -6.58,-17.89 -1.361,-4.173 0.256,-5.048 2.639,-3.423 1.862,1.271 3.846,3 5.299,4.342 0.673,-1.093 0.888,-1.442 1.553,-2.698 C 52.452,29.217 45.85,23.163 40.87,21.383 m 15.638,50.213 c -3.423,-2.913 -8.498,-2.85 -11.336,0.143 -2.838,2.992 -2.365,7.779 1.058,10.694 3.423,2.913 8.498,2.85 11.336,-0.141 2.838,-2.993 2.364,-7.781 -1.058,-10.696"
-         id="path532"
-         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none" />
-    </g>
-  </g>
-</svg>'''
+CATEGORIES = '''\
+[de]
+Administration=Administration
+Business=Business
+Collaboration=Collaboration
+Education=Schule
+System services=Systemdienste
+UCS components=UCS-Komponenten
+Virtualization=Virtualisierung
+'''
+APP_CATEGORIES = '''\
+[de]
+Backup & Archiving=Backup & Archivierung
+Education=Bildung
+CMS=CMS
+Collaboration & Groupware=Collaboration & Groupware
+CRM & ERP=CRM & ERP
+Desktop=Desktop
+Device Management=Device Management
+File Sync & Share=File Sync & Share
+Identity Management=Identity Management
+Infrastructure=Infrastruktur
+Mail & Messaging=Mail & Messaging
+Office=Office
+Printing=Drucken
+Project Management=Projekt Management
+Security=Sicherheit
+Storage=Speicher
+Telephony=Telefonie
+Virtualization=Virtualisierung
+'''
+SUPPORT = '''\
+[5.0]
+SupportedUCSVersions=5.0, 4.4, 4.3
+[4.4]
+SupportedUCSVersions=4.4, 4.3, 4.2, 4.1
+[4.3]
+SupportedUCSVersions=4.3, 4.2, 4.1
+'''
+VERSIONS = ['4.1', '4.2', '4.3', '4.4', '5.0']

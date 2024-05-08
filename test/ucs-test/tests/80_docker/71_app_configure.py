@@ -30,11 +30,11 @@ exit 0
         app.verify(joined=False)
         configured_file = app.file('/tmp/configure.output')
         app.configure({'test/configure/param': 'test1'})
-        assert open(configured_file).read() == 'test1'
+        assert configured_file.read_text() == 'test1'
         app.configure({'test/configure/param': 'test2'})
-        assert open(configured_file).read() == 'test2'
+        assert configured_file.read_text() == 'test2'
         app.configure({'test/configure/param': None})
-        assert open(configured_file).read() == ''
+        assert configured_file.read_text() == ''
     finally:
         app.uninstall()
         app.remove()

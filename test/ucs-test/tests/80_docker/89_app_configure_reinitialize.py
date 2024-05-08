@@ -15,7 +15,7 @@ def assert_content(app: App, expected: str) -> None:
     app.reload_container_id()
     configured_file = app.file('/tmp/configure.output')
     print('Searching in', configured_file, 'for', expected)
-    content = open(configured_file).read()
+    content = configured_file.read_text()
     assert content == expected, f'{content!r} != {expected!r}'
 
 

@@ -41,9 +41,8 @@ exit %(exit_code)d
                 raise ValueError('Should not have been installed!')
             else:
                 output = subprocess.check_output(['univention-app', 'shell', app_name, 'env'], text=True)
-                if 'FOO=bar' not in output or 'repository_app_center_server=my.server' not in output:
-                    raise ValueError('Setting docker/params does not work')
-
+                assert 'FOO=bar' in output
+                assert 'repository_app_center_server=my.server' in output
     finally:
         app.uninstall()
         app.remove()

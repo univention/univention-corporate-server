@@ -13,23 +13,19 @@ import pytest
 from dockertest import App, Appcenter
 
 
-def cleanup(app: App) -> None:
-    if os.path.isdir(app.check_dir):
-        os.rmdir(app.check_dir)
-    if app.installed is True:
-        for i in app.cert_files:
-            if os.path.isfile(app.file(i)):
-                os.remove(app.file(i))
+def cleanup(app: App, check_dir: Path, cert_files: list[str]) -> None:
+    if check_dir.is_dir():
+        check_dir.rmdir()
+    if app.installed:
+        for i in cert_files:
+            with suppress(FileNotFoundError):
+                app.file(i).unlink()  # Py3.8+ missing_ok=True
 
 
-def verify_certs(app: App) -> None:
-    print(f'looking for {app.check_dir}')
-    assert os.path.isdir(app.check_dir) is True
-    print(f'{app.check_dir} exists')
-    for i in app.cert_files:
-        print(f'looking for {i} in container')
-        assert os.path.isfile(app.file(i)) is True
-        print(f'{i} exists')
+def verify_certs(app: App, check_dir: Path, cert_files: list[str]) -> None:
+    assert check_dir.is_dir()
+    for i in cert_files:
+        assert app.file(i).is_file()
 
 
 @pytest.mark.exposure('dangerous')
