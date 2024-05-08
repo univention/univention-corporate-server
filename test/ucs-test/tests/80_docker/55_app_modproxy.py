@@ -7,16 +7,12 @@
 
 import pytest
 
-from univention.testing.ucr import UCSTestConfigRegistry
-
-from dockertest import Appcenter, get_app_version, tiny_app_apache
+from dockertest import Appcenter, tiny_app_apache
 
 
 @pytest.mark.exposure('dangerous')
-def test_app_modproxy(appcenter: Appcenter, app_name: str, app_version: str) -> None:
-    # normal modproxy
-    ucr = UCSTestConfigRegistry()
-
+def test_app_modproxy(appcenter: Appcenter, app_name: str, app_version: str, ucr) -> None:
+    """normal modproxy with HTTP and HTTPS."""
     app = tiny_app_apache(app_name, app_version)
 
     try:
@@ -27,7 +23,6 @@ def test_app_modproxy(appcenter: Appcenter, app_name: str, app_version: str) -> 
             AutoModProxy='True',
         )
         app.add_to_local_appcenter()
-
         appcenter.update()
 
         app.install()
@@ -36,16 +31,16 @@ def test_app_modproxy(appcenter: Appcenter, app_name: str, app_version: str) -> 
 
         app.verify_basic_modproxy_settings_tinyapp()
         ucr.load()
-        assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_http') == '80', ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_http')
-        assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_https') == '443', ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_https')
-
+        assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_http') == '80'
+        assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_https') == '443'
     finally:
         app.uninstall()
         app.remove()
 
-    # special mod proxy with disabled HTTP
-    app_version = get_app_version()
 
+@pytest.mark.exposure('dangerous')
+def test_app_modproxy_https(appcenter: Appcenter, app_name: str, app_version: str, ucr) -> None:
+    """special mod proxy with disabled HTTP."""
     app = tiny_app_apache(app_name, app_version)
 
     try:
@@ -56,9 +51,7 @@ def test_app_modproxy(appcenter: Appcenter, app_name: str, app_version: str) -> 
             WebInterfaceProxyScheme='http',  # CONTAINER ONLY HAS HTTP (80) SUPPORT!
             AutoModProxy='True',
         )
-
         app.add_to_local_appcenter()
-
         appcenter.update()
 
         app.install()
@@ -67,9 +60,8 @@ def test_app_modproxy(appcenter: Appcenter, app_name: str, app_version: str) -> 
 
         app.verify_basic_modproxy_settings_tinyapp(http=False, https=True)
         ucr.load()
-        assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_http') == '', ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_http')
-        assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_https') == '443', ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_https')
-
+        assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_http') == ''
+        assert ucr.get(f'ucs/web/overview/entries/service/{app_name}/port_https') == '443'
     finally:
         app.uninstall()
         app.remove()
