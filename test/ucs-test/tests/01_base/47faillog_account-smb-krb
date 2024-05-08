@@ -16,6 +16,8 @@
 . "$TESTLIBPATH/user.sh" || exit 137
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/undo.sh
+. "$TESTLIBPATH/undo.sh" || exit 137
 
 # see Bug #35014.
 s4_services="$(univention-ldapsearch univentionService="Samba 4" | dn1)"
@@ -27,9 +29,11 @@ NAME=$(user_randomname)
 ucr set \
 	auth/faillog=no \
 	auth/faillog/lock_global=no
+undo invoke-rc.d ssh restart
+undo ucr_restore
 
 tdir=$(mktemp -d)
-trap 'rm -rf "$tdir" ; user_remove "$NAME" ; ucr_restore ; invoke-rc.d ssh restart' EXIT
+undo rm -rf "$tdir"
 
 posix_login () {
 	local name pass lstchg min max warn inact expire flag
@@ -89,6 +93,7 @@ krb_login () {
 user_create "$NAME" \
 	--set password="$(<"$tests_domainadmin_pwdfile")" \
 	--set primaryGroup="$(get_domain_admins_dn)"
+undo user_remove "$NAME"
 
 # shellcheck disable=SC2034
 while read -r udm windows kerberos posix comment

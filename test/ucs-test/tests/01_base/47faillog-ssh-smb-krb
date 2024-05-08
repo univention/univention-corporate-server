@@ -21,6 +21,8 @@
 . "$TESTLIBPATH/user.sh" || exit 137
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/undo.sh" || exit 137
 
 RETVAL=100
 NAME=$(user_randomname)
@@ -31,11 +33,13 @@ ucr set \
 	auth/faillog/limit=6 \
 	sshd/challengeresponse=yes \
 	sshd/passwordauthentication=no
+undo ucr_restore
 
 invoke-rc.d ssh restart
+undo invoke-rc.d ssh restart
 
-tdir=$(mktemp -d)
-trap "rm -rf '$tdir' ; udm mail/domain remove --dn 'cn=$domainname,$ldap_base' ; user_remove '$NAME' ; ucr_restore ; invoke-rc.d ssh restart" EXIT
+tdir="$(mktemp -d)"
+undo rm -rf "$tdir"
 fake_passwd="$tdir/fake_passwd"
 echo "foobar1234" >"$fake_passwd"
 
@@ -55,9 +59,11 @@ krb_login () {
 }
 
 udm mail/domain create --set name="$domainname"
+undo mail/domain remove --dn "cn=$domainname,$ldap_base"
 user_create "$NAME" \
 	--set password="$(<$tests_domainadmin_pwdfile)" \
 	--set primaryGroup="$(get_domain_admins_dn)"
+undo user_remove "$NAME"
 
 retry 10 /usr/lib/univention-pam/ldap-group-to-file.py ||
 	warning "ldap-group-to-file.py failed $i times"
