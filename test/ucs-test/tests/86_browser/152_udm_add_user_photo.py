@@ -25,7 +25,7 @@ from univention.testing.utils import get_ldap_connection
 _ = Translation('ucs-test-browser').translate
 
 
-def test_add_user_photo(umc_browser_test: UMCBrowserTest, udm):
+def test_add_user_photo(umc_browser_test: UMCBrowserTest, udm, tmp_path):
     page = umc_browser_test.page
     lo = get_ldap_connection()
     user = create_test_user(udm, lo)
@@ -34,14 +34,14 @@ def test_add_user_photo(umc_browser_test: UMCBrowserTest, udm):
     user_module.navigate()
     detail_view = user_module.open_details(user.username)
 
-    initial = detail_view.upload_picture('/tmp/inital.png')
+    initial = detail_view.upload_picture(tmp_path / 'inital.png')
     initial_src_attribute = initial.get_attribute('src')
 
     # if we don't sleep here the second image will be took before the first image is displayed on the user details page
     # this will lead to the assertion failing since the image is the same
     time.sleep(1)
 
-    changed = detail_view.upload_picture('/tmp/changed.png')
+    changed = detail_view.upload_picture(tmp_path / 'changed.png')
     changed_src_attribute = changed.get_attribute('src')
 
     assert initial_src_attribute != changed_src_attribute, "The src attribute didn't change after uploading a new image"
