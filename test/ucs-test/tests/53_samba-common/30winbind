@@ -75,35 +75,25 @@ wait_for_LDAP_replication_of_domain_sambaSid "$username"
 sleep 15
 
 printf "##  wbinfo --name-to-sid:\t"
-output=$(wbinfo -n "$username")
-if [ $? != 0 ]; then
+output=$(wbinfo -n "$username") ||
 	fail_fast 1 "wbinfo --name-to-sid '$username' failed"
-else
-	user_sid=$(echo "$output" | cut -d' '  -f1)
-fi
+user_sid=$(echo "$output" | cut -d' '  -f1)
 echo "$user_sid"
 
 printf "##  wbinfo --sid-to-uid:\t"
-user_uid=$(wbinfo -S "$user_sid")
-if [ $? != 0 ]; then
+user_uid=$(wbinfo -S "$user_sid") ||
 	fail_fast 1 "wbinfo --sid-to-uid '$user_sid' failed"
-fi
 echo "$user_uid"
 
 printf "##  wbinfo --uid-to-sid:\t"
-user_sid2=$(wbinfo -U "$user_uid")
-if [ $? != 0 ]; then
+user_sid2=$(wbinfo -U "$user_uid") ||
 	fail_fast 1 "wbinfo --uid-to-sid '$user_uid' failed"
-fi
 echo "$user_sid2"
 
 printf "##  wbinfo --sid-to-name:\t"
-output=$(wbinfo -s "$user_sid2")
-if [ $? != 0 ]; then
+output=$(wbinfo -s "$user_sid2") ||
 	fail_fast 1 "wbinfo --sid-to-name '$user_sid2' failed"
-else
-	user_name2=$(echo "$output" | cut -d' '  -f1)
-fi
+user_name2=$(echo "$output" | cut -d' '  -f1)
 echo "$user_name2"
 
 if [ "$user_name2" != "$FQUSERNAME" ]; then
@@ -116,46 +106,32 @@ do
 	test "$group_sid" = "$user_sid" && continue
 	printf "##  wbinfo --user-domgroups:\t$group_sid\n"
 	printf "##  wbinfo --sid-to-gid:\t"
-	group_gid=$(wbinfo -Y "$group_sid")
-	if [ "$?" != 0 ]; then
+	group_gid=$(wbinfo -Y "$group_sid") ||
 		fail_fast 1 "wbinfo --sid-to-gid '$group_sid' failed"
-	fi
 	echo "$group_gid"
 	printf "##  wbinfo --gid-to-sid:\t"
-	output=$(wbinfo -G "$group_gid")
-	if [ "$?" != 0 ]; then
+	output=$(wbinfo -G "$group_gid") ||
 		fail_fast 1 "wbinfo --gid-to-sid '$group_gid' failed"
-	else
-		group_sid2=$(echo "$output")
-	fi
+	group_sid2=$(echo "$output")
 	echo "$group_sid2"
 	printf "##  wbinfo --sid-to-name:\t"
-	output=$(wbinfo -s "$group_sid2")
-	if [ "$?" != 0 ]; then
+	output=$(wbinfo -s "$group_sid2") ||
 		fail_fast 1 "wbinfo --sid-to-name '$group_sid2' failed"
-	else
-		group_name2=$(echo "$output" | sed 's/ [0-9]*$//')
-	fi
+	group_name2=$(echo "$output" | sed 's/ [0-9]*$//')
 	echo "$group_name2"
 	printf "##  wbinfo --name-to-sid:\t"
-	output=$(wbinfo -n "$group_name2")
-	if [ "$?" != 0 ]; then
+	output=$(wbinfo -n "$group_name2") ||
 		fail_fast 1 "wbinfo --name-to-sid '$group_name2' failed"
-	else
-		group_sid3=$(echo "$output" | cut -d' '  -f1)
-	fi
+	group_sid3=$(echo "$output" | cut -d' '  -f1)
 	echo "$group_sid3"
 done
 
 echo "##  wbinfo --authenticate"
-wbinfo -a "$NAME%$password"
-if [ "$?" != 0 ]; then
+wbinfo -a "$NAME%$password" ||
 	fail_fast 1 "wbinfo --authenticate '$NAME%$password' failed"
-fi
 
 echo "##  wbinfo --krb5auth"
-if ! wbinfo --krb5auth "$NAME"%"$password"; then
+wbinfo --krb5auth "$NAME"%"$password" ||
 	fail_fast 1 "wbinfo --krb5auth '$NAME%$password' failed"
-fi
 
 exit 0

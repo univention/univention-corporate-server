@@ -40,8 +40,8 @@ trap "rm -f '$tmp_file' ; ucr_restore ; invoke-rc.d apache2 restart" EXIT
 #check alternative cert
 getssl "$tmp_file"
 
-cert_diff="$(diff "$tmp_file" <(openssl x509 -in "$cert_path" -text))"
-if [ $? -eq 0 ]; then
+if cert_diff="$(diff "$tmp_file" <(openssl x509 -in "$cert_path" -text))"
+then
 	echo "used right certificate"
 else
 	echo "used wrong certificate"

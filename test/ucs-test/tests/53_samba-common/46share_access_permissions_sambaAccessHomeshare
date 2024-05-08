@@ -52,10 +52,7 @@ admin_account="$(ucs_convertDN2UID "$tests_domainadmin_account")"
 
 echo "## access homeshare"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$username" -c "ls" 2>&1)"
-echo "$output" | grep -q "windows-profiles"
-if [ "$?" != 0 ]; then
+echo "$output" | grep -q "windows-profiles" ||
 	fail_test 1 "Expected 'windows-profiles' in homeshare directory listing, but received: $output"
-fi
-
 
 exit "$RETVAL"

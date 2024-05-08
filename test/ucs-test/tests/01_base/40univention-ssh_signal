@@ -9,8 +9,7 @@
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
-result="$(univention-ssh "$tests_root_pwdfile" "root@${hostname}.${domainname}" echo BEFORE \; kill '$$' \; echo AFTER)"
-if [ $? -eq 0 ]
+if result="$(univention-ssh "$tests_root_pwdfile" "root@${hostname}.${domainname}" echo BEFORE \; kill '$$' \; echo AFTER)"
 then
 	exit 110 # ERROR
 elif ! grep -q BEFORE <<<"$result"

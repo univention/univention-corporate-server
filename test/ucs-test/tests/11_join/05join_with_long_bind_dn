@@ -93,9 +93,8 @@ echo -n "$BINDPASSWORD" > "$BINDPWDFILE"
 /usr/sbin/univention-join -dcaccount "$BINDUSERNAME" -dcpwd "$BINDPWDFILE" || fail_test 1
 rm -f "$BINDPWDFILE"
 
-if ! check_join_status; then
+check_join_status ||
 	fail_test 1
-fi
 
 on_master_escaped \
 	univention-directory-manager container/cn remove \

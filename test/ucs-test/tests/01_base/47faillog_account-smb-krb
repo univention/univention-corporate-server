@@ -19,10 +19,8 @@
 
 # see Bug #35014.
 s4_services="$(univention-ldapsearch univentionService="Samba 4" | dn1)"
-if [ -n "$s4_services" ]; then
-	echo "Skip in S4 environments. See https://forge.univention.org/bugzilla/show_bug.cgi?id=35014."
-	exit 137
-fi
+[ -n "$s4_services" ] &&
+	fail_fast 137 "Skip in S4 environments. See https://forge.univention.org/bugzilla/show_bug.cgi?id=35014."
 
 NAME=$(user_randomname)
 
