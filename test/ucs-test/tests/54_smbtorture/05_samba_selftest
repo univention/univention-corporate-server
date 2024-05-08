@@ -22,8 +22,8 @@ apt-get -y build-dep samba
 # shellcheck disable=SC2016
 sed -i 's/$(conf_args)/$(conf_args) --enable-selftest/' debian/rules
 for i in $IGNORE; do
-    echo $i >> selftest/skip
-done
+    echo "$i"
+done >> selftest/skip
 debian/rules override_dh_auto_configure
 
 TDB_NO_FSYNC=1 make -j test FAIL_IMMEDIATELY=1 SOCKET_WRAPPER_KEEP_PCAP=1 TESTS="samba3.raw.composite" || fail_fast 110

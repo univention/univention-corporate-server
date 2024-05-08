@@ -16,14 +16,14 @@ RETVAL=100
 openssl s_server \
     -accept 10443 \
     -www \
-    -cert /etc/univention/ssl/$(hostname -f)/cert.pem \
-    -key /etc/univention/ssl/$(hostname -f)/private.key &
+    -cert "/etc/univention/ssl/$(hostname -f)/cert.pem" \
+    -key "/etc/univention/ssl/$(hostname -f)/private.key" &
 SERVER_PID=$!
 
 sleep 3
 
 finish () {
-    kill $SERVER_PID
+    kill "$SERVER_PID"
 }
 trap finish EXIT
 

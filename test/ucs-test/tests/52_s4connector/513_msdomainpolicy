@@ -39,8 +39,8 @@ ad_wait_for_synchronization; fail_bool 0 110
 
 rejected=$(univention-s4connector-list-rejected)
 
-echo $rejected | grep "CN=Default Domain Policy," && fail_fast "Default Domain Policy rejected"
-echo $rejected | grep "CN=AppCategories" && fail_fast "AppCategories rejected"
+echo "$rejected" | grep "CN=Default Domain Policy," && fail_fast "Default Domain Policy rejected"
+echo "$rejected" | grep "CN=AppCategories" && fail_fast "AppCategories rejected"
 
 udm ms/domainpolicy create --set name="TestPolicy" --set qualityOfService=1 --set pwdProperties=2 --set pwdHistoryLength=1 --set proxyLifetime=1 --set minTicketAge=1 --set minPwdLength=1 --set minPwdAge=1 --set maxTicketAge=5 --set maxRenewAge=3 --set maxPwdAge=50 --set lockoutThreshold=50 --set lockoutDuration=3 --set lockOutObservationWindow=1 --set forceLogoff=1 --set authenticationOptions=1 --set eFSPolicy="YWJjZGVkZAo=" --set domainWidePolicy="YWJjZGVkZAo=" || true
 

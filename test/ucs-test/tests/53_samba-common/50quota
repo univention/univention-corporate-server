@@ -21,7 +21,7 @@ eval "$(ucr shell)"
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
-account="$(echo ${tests_domainadmin_account} | sed -e 's|uid=||;s|,.*||')"
+account="$(echo "${tests_domainadmin_account}" | sed -e 's|uid=||;s|,.*||')"
 
 SOFTLIMIT=10485760
 HARDLIMIT=15728640
@@ -118,7 +118,7 @@ for FS in xfs ext2 ext3 ext4; do
 	max_files=15
 	for((i=0;i<max_files;i++)); do
 		dd if=/dev/zero of="${mountpoint}/file$i"  bs=1M count=1 seek=0
-		chown $user "$mountpoint/file$i"
+		chown "$user" "$mountpoint/file$i"
 		sync
 
 		echo "Running: smbcquotas -u $user -U ${account}%${tests_domainadmin_pwd} //$hostname/$share"
@@ -133,7 +133,7 @@ for FS in xfs ext2 ext3 ext4; do
 			res_smbcquota=$(echo "$result" | awk '{print $3 $4 $5}')
 		fi
 
-		res_repquota=$(repquota -v $mountpoint | grep "$user" | awk '{print $3*1024"/"$4*1024"/"$5*1024}')
+		res_repquota=$(repquota -v "$mountpoint" | grep "$user" | awk '{print $3*1024"/"$4*1024"/"$5*1024}')
 		echo "Result smbcquotas: $res_smbcquota"
 		echo "Result repquota  : $res_repquota"
 		if [ "$res_smbcquota" != "$res_repquota" ]; then
