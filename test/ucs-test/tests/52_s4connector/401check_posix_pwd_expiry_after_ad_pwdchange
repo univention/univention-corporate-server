@@ -54,7 +54,7 @@ udm_modify "users/user" "" "" "" "" --policy-reference="$policy_dn" || fail_test
 ad_wait_for_synchronization; fail_bool 0 110
 ad_change_password "$UDM_users_user_username" "univention" "123-abc-ABC-?" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
-smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%123-abc-ABC-?" ; fail_bool 0 100
+smbclient "//${HOST}/sysvol" -c 'exit' -U "${UDM_users_user_username}%123-abc-ABC-?" ; fail_bool 0 100
 expected_shadowMax="$SHADOW_MAX"
 expected_krb5PasswordEnd=$(date +"%Y%m%d000000Z" --date="@$(( $(date -u +"%s") + ($SHADOW_MAX * 24 * 3600)))")
 expected_shadowLastChange="$(( $(date +"%s") / 3600 / 24 ))"
@@ -72,7 +72,7 @@ udm_modify "users/user" "" "" "" "" --policy-dereference="$policy_dn" || fail_te
 ad_wait_for_synchronization; fail_bool 0 110
 ad_change_password "$UDM_users_user_username" "123-abc-ABC-?" "Univention.99" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
-smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%Univention.99" ; fail_bool 0 100
+smbclient "//${HOST}/sysvol" -c 'exit' -U "${UDM_users_user_username}%Univention.99" ; fail_bool 0 100
 eval "$(univention-policy-result -y /etc/machine.secret -D "$(ucr get ldap/hostdn)" -s "$user_dn")"
 expected_shadowMax=""
 expected_krb5PasswordEnd=""

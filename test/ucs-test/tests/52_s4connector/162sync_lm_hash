@@ -37,7 +37,7 @@ section "Trying authentication"
 
 HOST="$(ucr get connector/s4/ldap/host)"
 
-smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 100
+smbclient "//${HOST}/sysvol" -c 'exit' -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 100
 
 lm_hash1=$(ldbsearch -H /var/lib/samba/private/sam.ldb samaccountname="${UDM_users_user_username}" dBCSPwd | VAL dBCSPwd)
 
@@ -50,7 +50,7 @@ ad_wait_for_synchronization; fail_bool 0 110
 
 section "Trying authentication second time"
 
-smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 100
+smbclient "//${HOST}/sysvol" -c 'exit' -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 100
 
 lm_hash2=$(ldbsearch -H /var/lib/samba/private/sam.ldb samaccountname="${UDM_users_user_username}" dBCSPwd | VAL dBCSPwd)
 

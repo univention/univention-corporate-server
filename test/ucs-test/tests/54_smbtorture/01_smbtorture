@@ -15,7 +15,7 @@ RETVAL=100
 ps auxf
 free -h
 
-/usr/bin/time -v smbtorture //"$(hostname -f)"/sysvol -W $(ucr get windows/domain) --option="realm=$(hostname -d)" -UAdministrator%univention raw.composite || fail_fast 110
+/usr/bin/time -v smbtorture "//$(hostname -f)/sysvol" -W "$(ucr get windows/domain)" --option="realm=$(hostname -d)" -UAdministrator%univention raw.composite || fail_fast 110
 
 free -h
 

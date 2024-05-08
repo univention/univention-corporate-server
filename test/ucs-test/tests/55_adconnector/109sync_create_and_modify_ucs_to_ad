@@ -59,7 +59,7 @@ for i in 0 3 6 12; do
 			echo "Password sync is disabled, skipping password sync check"
 		else
 			echo "Search in AD as user $b with the new password"
-			smbclient -U "$domain_upper\\$b%q1w2e3r4" //$(ucr get connector/ad/ldap/host)/sysvol -c ls || fail_test 110
+			smbclient -U "$domain_upper\\$b%q1w2e3r4" "//$(ucr get connector/ad/ldap/host)/sysvol" -c 'exit' || fail_test 110
 		fi
 	done
 

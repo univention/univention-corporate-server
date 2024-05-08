@@ -58,7 +58,7 @@ samba_user=$(LANG=C pdbedit -L "$username" | grep "Username not found")
 	fail_test 110 "The created test user '$username' was not found via pdbedit after the password history was set: $samba_user"
 
 echo -e "\nCheck that user can access sysvol via smbclient:"
-output="$(smbclient //localhost/sysvol -U"$username%$password" -c "ls" 2>&1)" ||
+output="$(smbclient '//localhost/sysvol' -U"$username%$password" -c 'exit' 2>&1)" ||
 	fail_test 110 "E: Could not access sysvol as the user '$username' after the password history was set: $output"
 
 

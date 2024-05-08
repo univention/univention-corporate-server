@@ -55,7 +55,7 @@ udm_modify "users/user" "" "" "" "" \
 ad_wait_for_synchronization; fail_bool 0 110
 ad_reset_password "$UDM_users_user_username" "123-abc-ABC-?" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
-smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%123-abc-ABC-?" ; fail_bool 0 100
+smbclient "//${HOST}/sysvol" -c 'exit' -U "${UDM_users_user_username}%123-abc-ABC-?" ; fail_bool 0 100
 udm_verify_ldap_attribute "shadowLastChange" "$SHADOW_LASTCHANGE" "users/user" || fail_test 110
 udm_verify_ldap_attribute "shadowMax" "$SHADOW_MAX" "users/user" || fail_test 110
 udm_verify_ldap_attribute "krb5PasswordEnd" "$KRB5_PASSWORD_END" "users/user" || fail_test 110
@@ -71,7 +71,7 @@ udm_modify "users/user" "" "" "" "" \
 ad_wait_for_synchronization; fail_bool 0 110
 ad_reset_password "$UDM_users_user_username" "Univention.99" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
-smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%Univention.99" ; fail_bool 0 100
+smbclient "//${HOST}/sysvol" -c 'exit' -U "${UDM_users_user_username}%Univention.99" ; fail_bool 0 100
 udm_verify_ldap_attribute "shadowLastChange" "$SHADOW_LASTCHANGE" "users/user" || fail_test 110
 udm_verify_ldap_attribute "shadowMax" "" "users/user" || fail_test 110
 udm_verify_ldap_attribute "krb5PasswordEnd" "" "users/user" || fail_test 110

@@ -50,7 +50,7 @@ ad_exists "${AD_DN}"; fail_bool 0 110
 section "Trying authentication: SAMBA-KERBEROS-LDAP_UCS_BIND"
 
 HOST="$(ucr get connector/s4/ldap/host)"
-smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 110
+smbclient "//${HOST}/sysvol" -c 'exit' -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 110
 ldapsearch -D "$UCS_DN" -w "${UDM_users_user_password}" &>/dev/null; fail_bool 0 110
 echo "${UDM_users_user_password}" | kinit --password-file=STDIN "${UDM_users_user_username}" ; fail_bool 0 110
 
@@ -62,7 +62,7 @@ ad_wait_for_synchronization; fail_bool 0 110
 
 section "Trying authentication second time: SAMBA-KERBEROS-LDAP_UCS_BIND"
 
-smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 1 110
+smbclient "//${HOST}/sysvol" -c 'exit' -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 1 110
 echo "${UDM_users_user_password}" | kinit --password-file=STDIN "${UDM_users_user_username}"; fail_bool 1 110
 ldapsearch -D "$UCS_DN" -w "${UDM_users_user_password}" >/dev/null && fail_test 110
 
@@ -74,7 +74,7 @@ ad_wait_for_synchronization; fail_bool 0 110
 
 section "Trying authentication three time: SAMBA-KERBEROS-LDAP_UCS_BIND"
 
-smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 110
+smbclient "//${HOST}/sysvol" -c 'exit' -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 110
 echo "${UDM_users_user_password}" | kinit --password-file=STDIN "${UDM_users_user_username}" ; fail_bool 0 110
 ldapsearch -D "$UCS_DN" -w "${UDM_users_user_password}" >/dev/null; fail_bool 0 100
 
@@ -86,7 +86,7 @@ ad_wait_for_synchronization; fail_bool 0 110
 
 section "Trying authentication three time: SAMBA-KERBEROS-LDAP_UCS_BIND"
 
-smbclient //"${HOST}"/sysvol -c ls -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 110
+smbclient "//${HOST}/sysvol" -c 'exit' -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 110
 echo "${UDM_users_user_password}" | kinit --password-file=STDIN "${UDM_users_user_username}" ; fail_bool 0 110
 ldapsearch -D "$UCS_DN" -w "${UDM_users_user_password}" >/dev/null; fail_bool 0 110
 

@@ -66,7 +66,7 @@ echo "Test GPO created: $gpo_cn"
 smbclient "//${samba4_sysvol_sync_host:?}/sysvol" \
 	-U "${admin_account}%${tests_domainadmin_pwd}" \
 	-c "put /etc/hosts ${domainname}/Policies/${gpo_cn}/testfile1" ||
-	fail_fast 110 "smbclient //$samba4_sysvol_sync_host/sysvol exited with status $?"
+	fail_fast 110 "smbclient '//$samba4_sysvol_sync_host/sysvol' exited with status $?"
 
 
 ### Now modify the ACLs on the local GPO copy
