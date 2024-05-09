@@ -20,8 +20,6 @@
 
 RETVAL=100
 
-eval "$(ucr shell)"
-
 kinit -t /var/lib/samba/private/dns.keytab  dns-$hostname
 
 test_nqdn=$(random_hostname)

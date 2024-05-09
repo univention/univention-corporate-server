@@ -8,8 +8,6 @@
 ##  - domaincontroller_master
 ## exposure: dangerous
 
-eval "$(ucr shell)"
-
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 

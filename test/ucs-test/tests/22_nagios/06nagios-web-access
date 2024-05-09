@@ -21,8 +21,6 @@
 ### This script tests, if users of Domain Admins can access the nagios webinterface
 ###################
 
-eval "$(ucr shell hostname domainname)"
-
 username=$(user_randomname)
 
 cleanup () {

@@ -18,8 +18,6 @@
 # shellcheck source=../../lib/shares.sh
 . "$TESTLIBPATH/shares.sh" || exit 137
 
-eval "$(/usr/sbin/univention-config-registry shell)"
-
 sharename_tmp="$(random_share)"
 sharename="${sharename_tmp//[[:blank:]]/}"
 SHARE_POSITION="cn=shares,$ldap_base"

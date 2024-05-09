@@ -15,8 +15,6 @@
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
-eval "$(ucr shell)"
-
 RETVAL=100
 
 apt-get update || fail_test 110 "apt-get update failed"

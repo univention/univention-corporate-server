@@ -16,8 +16,6 @@
 
 RETVAL=100
 
-eval "$(ucr shell tests/root/pwdfile tests/domainadmin/account tests/domainadmin/pwd)"
-
 ## Conditions when to execute this test
 if [ "$server_role" = "memberserver" ]; then
     ## On a memberserver univention-samba needs to be installed

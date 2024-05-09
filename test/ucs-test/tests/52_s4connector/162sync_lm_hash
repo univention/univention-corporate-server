@@ -62,8 +62,6 @@ section "Remove LM Hash"
 
 user_dn=$(univention-ldapsearch uid="${UDM_users_user_username}" 1.1 | dn1)
 
-eval "$(ucr shell tests/domainadmin/account tests/domainadmin/pwdfile)"
-
 ldapmodify -x -D "$tests_domainadmin_account" -y "$tests_domainadmin_pwdfile" <<%EOF
 dn: $user_dn
 changetype: modify

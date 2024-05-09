@@ -23,9 +23,6 @@ SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 
 ucr set connector/s4/mapping/msgpwl?no
-
-eval "$(ucr shell)"
-
 ucr set connector/s4/mapping/msgpwl=yes
 
 service univention-s4-connector restart

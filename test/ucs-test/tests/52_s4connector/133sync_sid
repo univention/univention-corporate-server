@@ -20,7 +20,6 @@
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 
-eval "$(ucr shell)"
 if [ -n "${connector_s4_mapping_sid_to_ucs:-}" ] && [ -n "${connector_s4_mapping_sid_to_s4:-}" ]; then
 	trap 'ucr set connector/s4/mapping/sid_to_ucs="${connector_s4_mapping_sid_to_ucs:-}" connector/s4/mapping/sid_to_s4="${connector_s4_mapping_sid_to_s4:-}"; invoke-rc.d univention-s4-connector restart' INT TERM EXIT
 else

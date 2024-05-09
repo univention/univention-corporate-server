@@ -15,8 +15,6 @@
 # shellcheck source=../../lib/user.sh
 . "$TESTLIBPATH/user.sh" || exit 137
 
-eval "$(/usr/sbin/univention-config-registry shell)"
-
 univention-ldapsearch '(&(univentionService=Samba 4)(objectClass=univentionDomainController))' -LLL dn | grep -q "^dn: " &&
 	fail_fast 137 "This is a S4 domain, skip test"
 

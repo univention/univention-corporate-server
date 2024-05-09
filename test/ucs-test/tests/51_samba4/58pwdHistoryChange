@@ -16,8 +16,6 @@
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
-eval "$(ucr shell)"
-
 RETVAL=100
 TEST_PWD_HISTORY=5
 

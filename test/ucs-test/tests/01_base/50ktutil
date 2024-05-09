@@ -6,7 +6,6 @@
 ## tags: [basic]
 ## packages: [ldap-utils]
 ## exposure: dangerous
-eval "$(univention-config-registry shell)"
 
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137

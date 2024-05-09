@@ -12,12 +12,11 @@
 ##  - apptest
 ## packages: [univention-directory-manager-tools]
 ## exposure: dangerous
+
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
 group="Baggerfahrer"
-
-eval "$(univention-config-registry shell)"
 
 univention-directory-manager groups/group create --position="cn=groups,$ldap_base" --set name="$group" --set users="uid=bodo,cn=users,$ldap_base"
 univention-directory-manager groups/group remove --dn "cn=$group,cn=groups,$ldap_base"

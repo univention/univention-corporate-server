@@ -27,8 +27,6 @@ username="$(user_randomname)"
 printername="$(random_chars 12)"
 password=univention
 
-eval "$(ucr shell)"
-
 printsharebasedn="cn=shares,$ldap_base"
 
 if ! [ -x /bin/nc.openbsd ]; then

@@ -28,8 +28,6 @@
 
 RETVAL=0
 
-eval "$(ucr shell)"
-
 user1=$(user_randomname)
 user_create "$user1"
 user1_uidnumber=$(univention-ldapsearch uid="$user1" | VAL1 uidNumber)

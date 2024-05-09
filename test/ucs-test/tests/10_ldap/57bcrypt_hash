@@ -17,8 +17,6 @@
 # shellcheck source=../../lib/undo.sh
 . "$TESTLIBPATH/undo.sh" || exit 137
 
-eval "$(ucr shell ldap/pw-bcrypt)"
-
 skip_with_these_packages="univention-ad-connector univention-s4-connector univention-samba"
 for pkg in $skip_with_these_packages; do
 	if checkpkg "$pkg"; then

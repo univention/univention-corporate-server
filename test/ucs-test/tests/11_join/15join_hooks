@@ -11,8 +11,6 @@
 ##  - memberserver
 ## exposure: careful
 
-eval "$(ucr shell)"
-
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 # shellcheck source=../../lib/undo.sh

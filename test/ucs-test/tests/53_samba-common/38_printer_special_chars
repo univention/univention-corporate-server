@@ -30,8 +30,6 @@ printername="$(random_chars 10)"
 sambaprintername="$(random_chars 12) $(random_chars 46)"
 password=univention
 
-eval "$(ucr shell)"
-
 printsharebasedn="cn=shares,$ldap_base"
 printerdn="cn=$printername,$printsharebasedn"
 

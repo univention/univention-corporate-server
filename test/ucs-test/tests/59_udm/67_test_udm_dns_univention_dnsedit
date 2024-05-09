@@ -15,8 +15,6 @@
 . "$TESTLIBPATH/random.sh" || exit 137
 . /usr/share/univention-lib/all.sh || exit 137
 
-eval "$(ucr shell)"
-
 zonename="$(random_chars).test"
 host="$(random_chars)"
 

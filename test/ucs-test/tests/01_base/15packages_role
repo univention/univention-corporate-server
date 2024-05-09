@@ -7,8 +7,6 @@
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
-eval "$(ucr shell)"
-
 set -e
 case "$server_role" in
 domaincontroller_master)

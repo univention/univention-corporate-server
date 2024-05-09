@@ -15,8 +15,6 @@
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
-eval "$(ucr shell)"
-
 univention-s4search -b "CN=Configuration,$ldap_base" objectclass=foreignSecurityPrincipal cn | VAL cn | while read -r cn
 do
 	sid="$(univention-s4search -b "CN=Configuration,$ldap_base" "(&(objectclass=foreignSecurityPrincipal)(cn=$cn))" objectSid | VAL objectSid)"

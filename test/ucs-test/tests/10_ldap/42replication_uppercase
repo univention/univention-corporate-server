@@ -20,8 +20,6 @@
 
 RETVAL=0
 
-eval "$(ucr shell)"
-
 group="$(random_chars 20 "${_upperletters}")"
 description1="$(random_chars 20 "${_upperletters}")"
 description2="$(random_chars 20 "${_upperletters}")"

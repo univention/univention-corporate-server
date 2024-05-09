@@ -17,8 +17,6 @@
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
 
-eval "$(/usr/sbin/univention-config-registry shell)"
-
 ## some globals
 sharename="$(random_share)"
 SHARE_POSITION="cn=shares,$ldap_base"
