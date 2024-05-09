@@ -11,10 +11,13 @@
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
 
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
+
 JS_NAME='ucs-test-postponed-joinscripts'
 JS_FILE="99${JS_NAME}.inst"
 JS_PATH="/usr/lib/univention-install/${JS_FILE}"
-JS_FLAG="/tmp/${JS_FILE}.test"
+JS_FLAG="$tmp/${JS_FILE}.test"
 UU_STATUS="/var/lib/univention-updater/univention-updater.status"
 
 cleanup() {
