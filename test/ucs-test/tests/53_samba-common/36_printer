@@ -5,15 +5,21 @@
 ## packages:
 ##  - univention-samba | univention-samba4
 ##  - univention-printserver
+##  - netcat-openbsd
 ## roles:
 ## - domaincontroller_master
 ## - domaincontroller_backup
 ## - domaincontroller_slave
 ## - memberserver
+
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
 # shellcheck source=../../lib/user.sh
 . "$TESTLIBPATH/user.sh" || exit 137
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
+# shellcheck source=../../lib/undo.sh
+. "$TESTLIBPATH/undo.sh" || exit 137
 
 #create user
 echo "----Create user"
@@ -29,25 +35,13 @@ password=univention
 
 printsharebasedn="cn=shares,$ldap_base"
 
-if ! [ -x /bin/nc.openbsd ]; then
-	apt-get install -y netcat-openbsd
-fi
-
-trap '
-user_remove "$username"
-rm -rf "/tmp/$printername"
-udm-test shares/printer remove --dn="cn=$printername,$printsharebasedn"
-wait_for_replication_and_postrun
-if [ -n "$nc_pid" ] && [ "$nc_pid" = "$(pgrep -x nc)" ]; then
-	kill "$nc_pid" >/dev/null 2>&1
-	if [ "$nc_pid" = "$(pgrep -x nc)" ]; then
-		echo "netcat PID $nc_pid did not terminate, sending KILL"
-		kill -9 "$nc_pid" >/dev/null 2>&1
-	fi
-fi
-' INT TERM EXIT
+undo wait_for_replication_and_postrun
 
 user_create "$username" || fail_fast 1 "Could not create user $username."
+undo user_remove "$username"
+
+tmp="$(mktemp-d )"
+undo rm -rf "$tmp"
 
 #create printer
 echo "----create printer"
@@ -57,6 +51,7 @@ udm-test shares/printer create \
 	--set "spoolHost=$hostname.$domainname" \
 	--set "uri=socket:// 127.0.0.1:12345" \
 	--set "model=None"
+undo udm-test shares/printer remove --dn="cn=$printername,$printsharebasedn"
 
 wait_for_replication_and_postrun
 
@@ -72,32 +67,23 @@ retry 20 check_share ||
 
 #create input file
 echo "----Creating input file"
-
-tmp_filename="$(mktemp)"
-echo "$(uname -a)" > "$tmp_filename"
+uname -a >"$tmp/filename"
 
 #create output socket
-nc -l 12345 > "/tmp/$printername" &
+nc -l 12345 > "$tmp/$printername" &
 nc_pid=$!
+undo kill -9 "$nc_pid"
 
 ## initiate print
 echo "initiate print"
 # shellcheck disable=SC2317
-check_print () { smbclient -U"$username%$password" "//$hostname.$domainname/$printername" -c "print \"$tmp_filename\""; }
+check_print () { smbclient -U"$username%$password" "//$hostname.$domainname/$printername" -c "print \"$tmp/filename\""; }
 retry 20 check_print ||
 	fail_fast 1 "Initiate printing has not been successful."
-rm "$tmp_filename"
 
 ## check output
 echo "check output"
-retry 20 grep -q "$(uname -a)" "/tmp/$printername" ||
+retry 20 grep -F -q -f "$tmp/filename" "$tmp/$printername" ||
 	fail_fast 1 "Nothing has been printed to the output file."
-
-kill "$nc_pid" >/dev/null 2>&1
-if [ "$nc_pid" = "$(pgrep -x nc)" ]; then
-	echo "netcat PID $nc_pid didn't terminate, sending KILL"
-	kill -9 "$nc_pid" >/dev/null 2>&1
-fi
-
 
 exit "${RETVAL:-0}"

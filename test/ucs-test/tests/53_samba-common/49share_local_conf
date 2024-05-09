@@ -25,11 +25,17 @@
 . "$TESTLIBPATH/shares.sh" || exit 137
 # shellcheck source=../../lib/user.sh
 . "$TESTLIBPATH/user.sh" || exit 137
+# shellcheck source=../../lib/undo.sh
+. "$TESTLIBPATH/undo.sh" || exit 137
+# shellcheck source=../../lib/ucr.sh
+. "$TESTLIBPATH/ucr.sh" || exit 137
 
 RETVAL=0
 
 user1=$(user_randomname)
 user_create "$user1"
+undo wait_for_replication_and_postrun
+undo user_remove "$user1"
 user1_uidnumber=$(univention-ldapsearch uid="$user1" | VAL1 uidNumber)
 
 sharename="$(random_chars)"
@@ -41,6 +47,7 @@ chown "$user1" "$sharepath2"
 SHARE_SAMBA_WRITEABLE=1
 SHARE_UNIX_OWNER="$user1_uidnumber"
 share_create "$sharename" "$sharepath1"
+undo share_remove "$sharename"
 
 wait_for_replication_and_postrun
 # wait until the share is ready
@@ -48,6 +55,7 @@ retry 60 smbclient -U "${user1}%univention" "//$hostname/$sharename" -c exit ||
 	fail_fast "Share not ready"
 
 ftemp=$(mktemp)
+undo rm -f "$ftemp"
 echo "test" >>"$ftemp"
 ftemp_basename="$(basename "$ftemp")"
 
@@ -55,22 +63,22 @@ echo smbclient -U "${user1}%univention" "//$hostname/$sharename" -c "put $ftemp 
 smbclient -U "${user1}%univention" "//$hostname/$sharename" -c "put $ftemp $ftemp_basename" || fail_test 1
 test -e "$sharepath1/$ftemp_basename" || fail_test 1 "$sharepath1/$ftemp_basename does not exist"
 
+restart_samba () {
+	if [ -x /etc/init.d/samba-ad-dc ]; then
+		/etc/init.d/samba-ad-dc restart
+	elif [ -x /etc/init.d/samba ]; then
+		/etc/init.d/samba reload
+	fi
+	# Samba need some time
+	sleep 3
+}
+undo restart_samba
+undo ucr_restore
 ucr set "samba/share/$sharename/options/path=$sharepath2"
-if [ -x /etc/init.d/samba-ad-dc ]; then
-	/etc/init.d/samba-ad-dc restart
-elif [ -x /etc/init.d/samba-ad-dc ]; then
-	/etc/init.d/samba reload
-fi
-# Samba need some time
-sleep 3
+restart_samba
 
 echo smbclient -U "${user1}%univention" "//$hostname/$sharename" -c "put $ftemp ${ftemp_basename}_2" || fail_test 1
 smbclient -U "${user1}%univention" "//$hostname/$sharename" -c "put $ftemp ${ftemp_basename}_2" || fail_test 1
 test -e "$sharepath2/${ftemp_basename}_2" || fail_test 1 "$sharepath1/${ftemp_basename}_2 does not exist"
-
-ucr unset "samba/share/$sharename/options/path"
-rm -f "$ftemp"
-user_remove "$user1"
-share_remove "$sharename"
 
 exit "${RETVAL:-0}"

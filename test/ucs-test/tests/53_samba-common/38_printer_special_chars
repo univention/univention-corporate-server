@@ -5,15 +5,23 @@
 ## packages:
 ##  - univention-samba | univention-samba4
 ##  - univention-printserver
+##  - netcat-openbsd
 ## roles:
 ## - domaincontroller_master
 ## - domaincontroller_backup
 ## - domaincontroller_slave
 ## - memberserver
+
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
 # shellcheck source=../../lib/user.sh
 . "$TESTLIBPATH/user.sh" || exit 137
 # shellcheck source=../../lib/random.sh
 . "$TESTLIBPATH/random.sh" || exit 137
+# shellcheck source=../../lib/ucr.sh
+. "$TESTLIBPATH/ucr.sh" || exit 137
+# shellcheck source=../../lib/undo.sh
+. "$TESTLIBPATH/undo.sh" || exit 137
 
 #create user
 echo "----Create user"
@@ -33,40 +41,27 @@ password=univention
 printsharebasedn="cn=shares,$ldap_base"
 printerdn="cn=$printername,$printsharebasedn"
 
-if ! [ -x /bin/nc.openbsd ]; then
-	apt-get install -y netcat-openbsd
-fi
+undo wait_for_replication_and_postrun
 
-trap '
-user_remove "$username"
-rm -rf "/tmp/$printername" "/tmp/$sambaprintername"
-udm-test shares/printer remove --dn="$printerdn"
-ucr unset directory/manager/web/modules/shares/printer/properties/name/syntax directory/manager/web/modules/shares/printer/properties/sambaName/syntax
-wait_for_replication_and_postrun
-if [ -n "$nc_pid" ] && [ "$nc_pid" = "$(pgrep -x nc)" ]; then
-	kill "$nc_pid" >/dev/null 2>&1
-	if [ "$nc_pid" = "$(pgrep -x nc)" ]; then
-		echo "netcat PID $nc_pid did not terminate, sending KILL"
-		kill -9 "$nc_pid" >/dev/null 2>&1
-	fi
-fi
-' INT TERM EXIT
+tmp="$(mktemp-d )"
+undo rm -rf "$tmp"
 
 ucr set directory/manager/web/modules/shares/printer/properties/name/syntax=string directory/manager/web/modules/shares/printer/properties/sambaName/syntax=string
+undo ucr_restore
 user_create "$username" || fail_fast 1 "Could not create user $username."
+undo user_remove "$username"
 
 #create printer
 echo "----create printer"
-
 printercreated="$(udm-test shares/printer create \
 	--position "$printsharebasedn" \
 	--set "name=$printername" \
 	--set "sambaName=$sambaprintername" \
 	--set "spoolHost=$hostname.$domainname" \
 	--set "uri=socket:// 127.0.0.1:12346" \
-	--set "model=None" || fail_fast 1 "Could not create printer")"
-echo "$printercreated"
-printerdn="$(echo "$printercreated" | grep 'Object created:' | sed 's/Object created: //g')"
+	--set "model=None")" || fail_fast 1 "Could not create printer: $printercreated"
+printerdn="$(UDM1 <<<"$printercreated")"
+undo udm-test shares/printer remove --dn="$printerdn"
 
 wait_for_replication_and_postrun
 
@@ -80,56 +75,46 @@ retry 20 check_share ||
 		*) fail_fast 1 "Samba did not provide the printer share 20 seconds after creation" ;;
 	esac
 
-#create input file
-tmp_filename="$(mktemp)"
-echo "----Creating cups input file $tmp_filename"
-echo "$(uname -a)" > "$tmp_filename"
+uname -a >"$tmp/filename"
+
+
+section CUPS
 
 #create output socket
-nc -l 12346 > "/tmp/$printername" &
+nc -l 12346 > "$tmp/$printername" &
 nc_pid=$!
+undo kill -9 "$nc_pid"
 
 ## initiate print
 echo "initiate print"
-retry 20 lp -d "$printername" -U "$username" "$tmp_filename" ||
+retry 20 lp -d "$printername" -U "$username" "$tmp/filename" ||
 		fail_fast 1 "CUPS: Initiate printing has not been successful."
 
 ## check output
 echo "check output"
-retry 20 grep -q "$(uname -a)" "$tmp_$printername" ||
+retry 20 grep -F -f "$tmp/filename" "$tmp/$printername" ||
 		fail_fast 1 "CUPS: Nothing has been printed to the output file."
 
-kill "$nc_pid" >/dev/null 2>&1
-if [ "$nc_pid" = "$(pgrep -x nc)" ]; then
-	echo "netcat PID $nc_pid didn't terminate, sending KILL"
-	kill -9 "$nc_pid" >/dev/null 2>&1
-fi
+kill -9 "$nc_pid" >/dev/null 2>&1
 
-# SAME for samba!
-tmp_filename="$(mktemp)"
-echo "----Creating samba input file $tmp_filename"
-echo "$(uname -a)" > "$tmp_filename"
+
+section Samba
 
 #create output socket
-nc -l 12346 > "/tmp/$sambaprintername" &
+nc -l 12346 > "$tmp/$sambaprintername" &
 nc_pid=$!
+undo kill -9 "$nc_pid"
 
 ## initiate print
 echo "initiate print"
 ## Important: Wait.. Otherwise, if ONE too early attempt fails, then it seems to get cached for about 5 min.
 sleep 10
-retry_delay=300 retry 3 smbclient -U"$username%$password" "//$hostname.$domainname/$sambaprintername" -c "print \"$tmp_filename\"" ||
+retry_delay=300 retry 3 smbclient -U"$username%$password" "//$hostname.$domainname/$sambaprintername" -c "print \"$tmp/filename\"" ||
 	fail_fast 1 "SAMBA: Initiate printing has not been successful."
 
 ## check output
 echo "check output"
-retry 20 grep -q "$(uname -a)" "/tmp/$sambaprintername" ||
+retry 20 grep -q "$(uname -a)" "$tmp/$sambaprintername" ||
 	fail_fast 1 "SAMBA: Nothing has been printed to the output file."
-
-kill "$nc_pid" >/dev/null 2>&1
-if [ "$nc_pid" = "$(pgrep -x nc)" ]; then
-	echo "netcat PID $nc_pid didn't terminate, sending KILL"
-	kill -9 "$nc_pid" >/dev/null 2>&1
-fi
 
 exit "${RETVAL:-0}"
