@@ -39,7 +39,7 @@ section "Create new container"
 
 CONTAINER_NAME="$(random_chars)"
 udm container/cn create --set name="$CONTAINER_NAME" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 section "Modify User-Ignore-Subtree"
 
@@ -53,26 +53,26 @@ invoke-rc.d univention-ad-connector start
 section "Create user"
 
 udm_create "users/user" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-udm_exists "users/user"; fail_bool 0 110
-ad_exists "$AD_USER_DN"; fail_bool 0 110
+udm_exists "users/user" || fail_test 110
+ad_exists "$AD_USER_DN" || fail_test 110
 
 section "Move user to ignored subtree"
 
 udm users/user move --dn "uid=$UDM_users_user_username,cn=users,$ldap_base" \
 	--position "cn=$CONTAINER_NAME,$ldap_base" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_exists "users/user"; fail_bool 1 110
-udm_exists "users/user" "" "" "cn=$CONTAINER_NAME,$ldap_base"; fail_bool 0 110
+udm_exists "users/user" "" "" "cn=$CONTAINER_NAME,$ldap_base" || fail_test 110
 ad_exists "CN=$UDM_users_user_username,CN=$CONTAINER_NAME,$(ad_get_base)"; fail_bool 1 110
 ad_exists "$AD_USER_DN"; fail_bool 1 121 "See #18504"
 
 section "Clean up"
 
 udm_remove "users/user" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_USER_DN"; fail_bool 1 110
 udm_exists "users/user"; fail_bool 1 110

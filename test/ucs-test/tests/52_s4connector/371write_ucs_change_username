@@ -33,30 +33,30 @@ udm_create "users/user" || fail_test 110
 udm_create "groups/group" || fail_test 110
 udm_modify "users/user" "" "" "" "" \
 	--append groups="$UDM_GROUP_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 OTHER_USER_NAME="$(random_chars)other"
 udm_modify "users/user" "" "" "" "" \
 	--set username="$OTHER_USER_NAME" || fail_test 110
 UDM_users_user_username="$OTHER_USER_NAME"
 AD_USER_DN="CN=$UDM_users_user_username,CN=Users,$(ad_get_base)"
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-udm_verify_udm_attribute "username" "$UDM_users_user_username" "users/user"; fail_bool 0 110
-ad_verify_attribute	"$AD_USER_DN" "sAMAccountName" "$UDM_users_user_username"; fail_bool 0 110
+udm_verify_udm_attribute "username" "$UDM_users_user_username" "users/user" || fail_test 110
+ad_verify_attribute	"$AD_USER_DN" "sAMAccountName" "$UDM_users_user_username" || fail_test 110
 
 udm_verify_multi_value_udm_attribute_contains "users" \
-	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
+	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group" || fail_test 110
 udm_verify_multi_value_udm_attribute_contains "groups" \
-	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 110
-ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 0 110
-ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN"; fail_bool 0 110
+	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user" || fail_test 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN" || fail_test 110
 
 section "Clean up"
 
 udm_remove "users/user" || fail_test 110
 udm_remove "groups/group" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_exists "groups/group"; fail_bool 1 110
 ad_exists "$AD_GROUP_DN"; fail_bool 1 110

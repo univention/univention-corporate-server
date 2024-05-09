@@ -37,16 +37,16 @@ udm_modify "users/user" "" "" "" "" \
 		   --set street="" \
 		   --set city="$UDM_users_user_city" || fail_test 110
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_DN"; fail_bool 1 110
 
-udm_verify_udm_attribute "description" "None" "users/user"; fail_bool 0 110
-udm_verify_udm_attribute "street" "None" "users/user"; fail_bool 0 110
-udm_verify_udm_attribute "city" "$UDM_users_user_city" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "description" "None" "users/user" || fail_test 110
+udm_verify_udm_attribute "street" "None" "users/user" || fail_test 110
+udm_verify_udm_attribute "city" "$UDM_users_user_city" "users/user" || fail_test 110
 
 udm_remove "users/user" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_exists "users/user"; fail_bool 1 110
 ad_exists "$AD_DN"; fail_bool 1 110

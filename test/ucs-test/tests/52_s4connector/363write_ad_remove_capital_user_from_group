@@ -32,20 +32,20 @@ ad_createuser "$UDM_users_user_username" || fail_test 110
 section "Add user to group"
 
 ad_append_to_attribute "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-ad_exists "$AD_GROUP_DN"; fail_bool 0 110
+ad_exists "$AD_GROUP_DN" || fail_test 110
 udm_exists "groups/group"; fail_bool 1 110
-ad_exists "$AD_USER_DN"; fail_bool 0 110
+ad_exists "$AD_USER_DN" || fail_test 110
 udm_exists "users/user"; fail_bool 1 110
 
-ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 0 110
-ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN" || fail_test 110
 
 section "Remove user"
 
 ad_delete "$AD_USER_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_USER_DN"; fail_bool 1 110
 udm_exists "users/user"; fail_bool 1 110
@@ -55,7 +55,7 @@ ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; 
 section "Clean up"
 
 ad_delete "$AD_GROUP_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_GROUP_DN"; fail_bool 1 110
 udm_exists "groups/group"; fail_bool 1 110

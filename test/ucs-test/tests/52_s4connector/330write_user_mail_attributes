@@ -39,30 +39,30 @@ invoke-rc.d univention-s4-connector start
 
 udm_create "users/user" "" "" "" "" \
 	--option=person --option=mail --option=posix --option=samba --option=pki --option=kerberos || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-udm_exists "users/user"; fail_bool 0 110
-ad_exists "$AD_DN"; fail_bool 0 110
+udm_exists "users/user" || fail_test 110
+ad_exists "$AD_DN" || fail_test 110
 
-udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
+udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user" || fail_test 110
+ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress" || fail_test 110
 
 UDM_users_user_mailPrimaryAddress="$(random_chars)@${UDM_mail_domain_name}"
 udm_modify "users/user" "" "" "" "" \
 		   --set mailPrimaryAddress="$UDM_users_user_mailPrimaryAddress" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
-udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
+ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress" || fail_test 110
+udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user" || fail_test 110
 
 OLD_ADDRESS="$UDM_users_user_mailPrimaryAddress"
 UDM_users_user_mailPrimaryAddress="$(random_chars)@${UDM_mail_domain_name}"
 ad_set_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
-udm_verify_udm_attribute "mailPrimaryAddress" "$OLD_ADDRESS" "users/user"; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
+ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress" || fail_test 110
+udm_verify_udm_attribute "mailPrimaryAddress" "$OLD_ADDRESS" "users/user" || fail_test 110
 
 udm_remove "users/user" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_exists "users/user"; fail_bool 1 110
 ad_exists "$AD_DN"; fail_bool 1 110

@@ -30,11 +30,11 @@ section "test membership for ucs_module_others objects"
 
 udm_create "computers/linux" || fail_test 110
 udm_create "groups/group" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 ad_exists "$AD_computers_linux_dn" || fail_test 110
 ad_exists "$AD_groups_group_dn" || fail_test 110
 udm_modify "computers/linux" "" "" "" "" --append groups="$UDM_groups_group_dn" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 univention-s4search cn="$UDM_computers_linux_name"
 ad_verify_multi_value_attribute_contains "$AD_computers_linux_dn" "memberOf" "$AD_groups_group_dn" || fail_test 110
@@ -43,7 +43,7 @@ section "Clean up"
 
 udm_remove "computers/linux" || fail_test 110
 udm_remove "groups/group" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_exists "computers/linux"; fail_bool 1 110
 udm_exists "groups/group"; fail_bool 1 110

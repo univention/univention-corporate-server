@@ -55,10 +55,10 @@ group_dns+=("$test_groupdn")
 
 sleep 1
 /etc/init.d/samba start
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 for group_dn in "${group_dns[@]}"; do
-	ad_exists "$group_dn"; fail_bool 0 110
+	ad_exists "$group_dn" || fail_test 110
 done
 
 ad_set_sync_mode "$SYNCMODE"

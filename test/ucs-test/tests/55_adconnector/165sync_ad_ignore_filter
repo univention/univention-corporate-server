@@ -36,15 +36,15 @@ invoke-rc.d univention-ad-connector start
 section "Create user"
 
 ad_createuser "$UDM_users_user_username" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-ad_exists "$AD_USER_DN"; fail_bool 0 110
+ad_exists "$AD_USER_DN" || fail_test 110
 udm_exists "users/user"; fail_bool 1 110
 
 section "Clean up"
 
 ad_delete "$AD_USER_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_USER_DN"; fail_bool 1 110
 udm_exists "users/user"; fail_bool 1 110

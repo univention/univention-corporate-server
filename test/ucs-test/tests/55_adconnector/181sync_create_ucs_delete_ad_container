@@ -25,13 +25,13 @@ SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 
 udm_create "container/cn" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-udm_exists "container/cn"; fail_bool 0 110
-ad_exists "$AD_CONTAINER_DN"; fail_bool 0 110
+udm_exists "container/cn" || fail_test 110
+ad_exists "$AD_CONTAINER_DN" || fail_test 110
 
 ad_delete "$AD_CONTAINER_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_CONTAINER_DN"; fail_bool 1 110
 udm_exists "container/cn"; fail_bool 1 110

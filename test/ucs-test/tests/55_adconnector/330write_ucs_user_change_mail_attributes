@@ -46,20 +46,20 @@ invoke-rc.d univention-ad-connector start
 
 udm_create "users/user" "" "" "" "" \
 	--option=person --option=mail --option=posix --option=samba --option=pki --option=kerberos || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-udm_exists "users/user"; fail_bool 0 110
-ad_exists "$AD_DN"; fail_bool 0 110
+udm_exists "users/user" || fail_test 110
+ad_exists "$AD_DN" || fail_test 110
 
-udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 0 110
-#udm_verify_udm_attribute "Exchange-Homeserver" "$UDM_users_user_Exchange_Homeserver" "users/user"; fail_bool 0 110
-#udm_verify_udm_attribute "Exchange-homeMDB" "$UDM_users_user_Exchange_homeMDB" "users/user"; fail_bool 0 110
-#udm_verify_udm_attribute "Exchange-Nickname" "$UDM_users_user_Exchange_Nickname" "users/user"; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
+udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user" || fail_test 110
+#udm_verify_udm_attribute "Exchange-Homeserver" "$UDM_users_user_Exchange_Homeserver" "users/user" || fail_test 110
+#udm_verify_udm_attribute "Exchange-homeMDB" "$UDM_users_user_Exchange_homeMDB" "users/user" || fail_test 110
+#udm_verify_udm_attribute "Exchange-Nickname" "$UDM_users_user_Exchange_Nickname" "users/user" || fail_test 110
+ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress" || fail_test 110
 
-#ad_verify_attribute "$AD_DN" "msExchHomeServerName" "$UDM_users_user_Exchange_Homeserver"; fail_bool 0 110
-#ad_verify_attribute "$AD_DN" "homeMDB" "$UDM_users_user_Exchange_homeMDB"; fail_bool 0 110
-#ad_verify_attribute "$AD_DN" "mailNickname" "$UDM_users_user_Exchange_Nickname"; fail_bool 0 110
+#ad_verify_attribute "$AD_DN" "msExchHomeServerName" "$UDM_users_user_Exchange_Homeserver" || fail_test 110
+#ad_verify_attribute "$AD_DN" "homeMDB" "$UDM_users_user_Exchange_homeMDB" || fail_test 110
+#ad_verify_attribute "$AD_DN" "mailNickname" "$UDM_users_user_Exchange_Nickname" || fail_test 110
 
 #UDM_users_user_Exchange_Homeserver="$(random_chars)"
 #UDM_users_user_Exchange_homeMDB="$(random_chars)"
@@ -70,15 +70,15 @@ udm_modify "users/user" "" "" "" "" \
 #		   --set Exchange-Homeserver="$UDM_users_user_Exchange_Homeserver" \
 #		   --set Exchange-homeMDB="$UDM_users_user_Exchange_homeMDB" \
 #		   --set Exchange-Nickname="$UDM_users_user_Exchange_Nickname" \
-ad_wait_for_synchronization; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
-#ad_verify_attribute "$AD_DN" "msExchHomeServerName" "$UDM_users_user_Exchange_Homeserver"; fail_bool 0 110
-#ad_verify_attribute "$AD_DN" "homeMDB" "$UDM_users_user_Exchange_homeMDB"; fail_bool 0 110
-#ad_verify_attribute "$AD_DN" "mailNickname" "$UDM_users_user_Exchange_Nickname"; fail_bool 0 110
-udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 0 110
-#udm_verify_udm_attribute "Exchange-Homeserver" "$UDM_users_user_Exchange_Homeserver" "users/user"; fail_bool 0 110
-#udm_verify_udm_attribute "Exchange-homeMDB" "$UDM_users_user_Exchange_homeMDB" "users/user"; fail_bool 0 110
-#udm_verify_udm_attribute "Exchange-Nickname" "$UDM_users_user_Exchange_Nickname" "users/user"; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
+ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress" || fail_test 110
+#ad_verify_attribute "$AD_DN" "msExchHomeServerName" "$UDM_users_user_Exchange_Homeserver" || fail_test 110
+#ad_verify_attribute "$AD_DN" "homeMDB" "$UDM_users_user_Exchange_homeMDB" || fail_test 110
+#ad_verify_attribute "$AD_DN" "mailNickname" "$UDM_users_user_Exchange_Nickname" || fail_test 110
+udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user" || fail_test 110
+#udm_verify_udm_attribute "Exchange-Homeserver" "$UDM_users_user_Exchange_Homeserver" "users/user" || fail_test 110
+#udm_verify_udm_attribute "Exchange-homeMDB" "$UDM_users_user_Exchange_homeMDB" "users/user" || fail_test 110
+#udm_verify_udm_attribute "Exchange-Nickname" "$UDM_users_user_Exchange_Nickname" "users/user" || fail_test 110
 
 #UDM_users_user_Exchange_Homeserver="$(random_chars)"
 #UDM_users_user_Exchange_homeMDB="$(random_chars)"
@@ -86,21 +86,21 @@ udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddres
 OLD_ADDRESS="$UDM_users_user_mailPrimaryAddress"
 UDM_users_user_mailPrimaryAddress="$(random_chars)@${UDM_mail_domain_name}"
 ad_set_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress" || fail_test 110
-#ad_set_attribute "$AD_DN" "msExchHomeServerName" "$UDM_users_user_Exchange_Homeserver"; fail_bool 0 110
-#ad_set_attribute "$AD_DN" "homeMDB" "$UDM_users_user_Exchange_homeMDB"; fail_bool 0 110
-#ad_set_attribute "$AD_DN" "mailNickname" "$UDM_users_user_Exchange_Nickname"; fail_bool 0 110
-ad_wait_for_synchronization; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
-#ad_verify_attribute "$AD_DN" "msExchHomeServerName" "$UDM_users_user_Exchange_Homeserver"; fail_bool 0 110
-#ad_verify_attribute "$AD_DN" "homeMDB" "$UDM_users_user_Exchange_homeMDB"; fail_bool 0 110
-#ad_verify_attribute "$AD_DN" "mailNickname" "$UDM_users_user_Exchange_Nickname"; fail_bool 0 110
-udm_verify_udm_attribute "mailPrimaryAddress" "$OLD_ADDRESS" "users/user"; fail_bool 0 110
-#udm_verify_udm_attribute "Exchange-Homeserver" "$UDM_users_user_Exchange_Homeserver" "users/user"; fail_bool 0 110
-#udm_verify_udm_attribute "Exchange-homeMDB" "$UDM_users_user_Exchange_homeMDB" "users/user"; fail_bool 0 110
-#udm_verify_udm_attribute "Exchange-Nickname" "$UDM_users_user_Exchange_Nickname" "users/user"; fail_bool 0 110
+#ad_set_attribute "$AD_DN" "msExchHomeServerName" "$UDM_users_user_Exchange_Homeserver" || fail_test 110
+#ad_set_attribute "$AD_DN" "homeMDB" "$UDM_users_user_Exchange_homeMDB" || fail_test 110
+#ad_set_attribute "$AD_DN" "mailNickname" "$UDM_users_user_Exchange_Nickname" || fail_test 110
+ad_wait_for_synchronization || fail_test 110
+ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress" || fail_test 110
+#ad_verify_attribute "$AD_DN" "msExchHomeServerName" "$UDM_users_user_Exchange_Homeserver" || fail_test 110
+#ad_verify_attribute "$AD_DN" "homeMDB" "$UDM_users_user_Exchange_homeMDB" || fail_test 110
+#ad_verify_attribute "$AD_DN" "mailNickname" "$UDM_users_user_Exchange_Nickname" || fail_test 110
+udm_verify_udm_attribute "mailPrimaryAddress" "$OLD_ADDRESS" "users/user" || fail_test 110
+#udm_verify_udm_attribute "Exchange-Homeserver" "$UDM_users_user_Exchange_Homeserver" "users/user" || fail_test 110
+#udm_verify_udm_attribute "Exchange-homeMDB" "$UDM_users_user_Exchange_homeMDB" "users/user" || fail_test 110
+#udm_verify_udm_attribute "Exchange-Nickname" "$UDM_users_user_Exchange_Nickname" "users/user" || fail_test 110
 
 udm_remove "users/user" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_exists "users/user"; fail_bool 1 110
 ad_exists "$AD_DN"; fail_bool 1 110

@@ -42,20 +42,20 @@ ad_set_primary_group "$AD_USER_DN" "$AD_GROUP_DN" || fail_test 110
 section "Re-enable connector"
 
 ad_set_sync_mode "write"
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-ad_exists "$AD_GROUP_DN"; fail_bool 0 110
+ad_exists "$AD_GROUP_DN" || fail_test 110
 udm_exists "groups/group"; fail_bool 1 110
-ad_exists "$AD_USER_DN"; fail_bool 0 110
+ad_exists "$AD_USER_DN" || fail_test 110
 udm_exists "users/user"; fail_bool 1 110
 
-ad_verify_user_primary_group_attribute "$AD_GROUP_DN" "$AD_USER_DN"; fail_bool 0 110
+ad_verify_user_primary_group_attribute "$AD_GROUP_DN" "$AD_USER_DN" || fail_test 110
 
 section "Clean up"
 
 ad_delete "$AD_USER_DN" || fail_test 110
 ad_delete "$AD_GROUP_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_USER_DN"; fail_bool 1 110
 udm_exists "users/user"; fail_bool 1 110

@@ -38,15 +38,15 @@ invoke-rc.d univention-s4-connector start
 section "Create user"
 
 udm_create "users/user" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-udm_exists "users/user"; fail_bool 0 110
+udm_exists "users/user" || fail_test 110
 ad_exists "$AD_USER_DN"; fail_bool 1 110
 
 section "Clean up"
 
 udm_remove "users/user" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_USER_DN"; fail_bool 1 110
 udm_exists "users/user"; fail_bool 1 110

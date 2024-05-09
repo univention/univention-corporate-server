@@ -47,24 +47,24 @@ section "Create initial Tree structure"
 
 ad_createou "$OU1" || fail_test 110
 ad_createou "$OU2" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_createuser "$USER" "" "OU=$OU1,$(ad_get_base)" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 UDM_container_ou_name="$OU1"
-udm_exists "container/ou"; fail_bool 0 110
-ad_exists "$AD_OU1_DN"; fail_bool 0 110
+udm_exists "container/ou" || fail_test 110
+ad_exists "$AD_OU1_DN" || fail_test 110
 UDM_container_ou_name="$OU2"
-udm_exists "container/ou"; fail_bool 0 110
-ad_exists "$AD_OU2_DN"; fail_bool 0 110
-does_user_exist_in_ldap "uid=$UDM_users_user_username,ou=$OU1,$ldap_base"; fail_bool 0 110
-# udm_exists "users/user" "" "" "ou=$OU1,$ldap_base"; fail_bool 0 110
+udm_exists "container/ou" || fail_test 110
+ad_exists "$AD_OU2_DN" || fail_test 110
+does_user_exist_in_ldap "uid=$UDM_users_user_username,ou=$OU1,$ldap_base" || fail_test 110
+# udm_exists "users/user" "" "" "ou=$OU1,$ldap_base" || fail_test 110
 
 section "Move $OU1 into $OU2"
 
 ad_move "OU=$OU1,$(ad_get_base)" "OU=$OU1,OU=$OU2,$(ad_get_base)" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 UDM_container_ou_name="$OU1"
 udm_exists "container/ou"; fail_bool 1 110
@@ -73,26 +73,26 @@ ad_exists "$AD_OU1_DN"; fail_bool 1 110
 does_user_exist_in_ldap "uid=$UDM_users_user_username,ou=$OU1,$ldap_base"; fail_bool 1 110
 
 UDM_container_ou_name="$OU2"
-udm_exists "container/ou"; fail_bool 0 110
-ad_exists "$AD_OU2_DN"; fail_bool 0 110
+udm_exists "container/ou" || fail_test 110
+ad_exists "$AD_OU2_DN" || fail_test 110
 UDM_container_ou_name="$OU1"
 AD_OU1_DN="OU=$OU1,OU=$OU2,$(ad_get_base)"
-udm_exists "container/ou" "" "" "ou=$OU2,$ldap_base"; fail_bool 0 110
-ad_exists "$AD_OU1_DN"; fail_bool 0 110
+udm_exists "container/ou" "" "" "ou=$OU2,$ldap_base" || fail_test 110
+ad_exists "$AD_OU1_DN" || fail_test 110
 AD_USER_DN="CN=$USER,OU=$OU1,OU=$OU2,$(ad_get_base)"
 udm users/user list | grep ^DN
-# udm_exists "users/user" "" "" "ou=$OU1,ou=$OU2,$ldap_base"; fail_bool 0 110
-does_user_exist_in_ldap "uid=$UDM_users_user_username,ou=$OU1,ou=$OU2,$ldap_base"; fail_bool 0 110
-ad_exists "$AD_USER_DN"; fail_bool 0 110
+# udm_exists "users/user" "" "" "ou=$OU1,ou=$OU2,$ldap_base" || fail_test 110
+does_user_exist_in_ldap "uid=$UDM_users_user_username,ou=$OU1,ou=$OU2,$ldap_base" || fail_test 110
+ad_exists "$AD_USER_DN" || fail_test 110
 
 section "Clean up"
 
 ad_delete "CN=$USER,OU=$OU1,OU=$OU2,$(ad_get_base)" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 ad_delete "OU=$OU1,OU=$OU2,$(ad_get_base)" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 ad_delete "OU=$OU2,$(ad_get_base)" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 UDM_container_ou_name="$OU2"
 udm_exists "container/ou"; fail_bool 1 110

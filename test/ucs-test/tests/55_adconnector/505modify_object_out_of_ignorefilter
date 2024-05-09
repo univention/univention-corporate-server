@@ -32,18 +32,18 @@ UDM_users_user_lastname="test"
 AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
 echo "### creating user in ucs ###"
 udm_create "users/user"
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 echo "### creating attribute in ad to ignore ###"
-ad_set_attribute "$AD_DN" "description" "abc"; fail_bool 0 110
+ad_set_attribute "$AD_DN" "description" "abc" || fail_test 110
 echo "### creating attribute in ucs to ignore ###"
 udm_modify "users/user" "" "" "" "" --set description="abc" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 echo "### removing ucs user ###"
 udm_remove "users/user" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 echo "### unsetting ignorefilter attribute ###"
-ad_set_attribute "$AD_DN" "description" "abcdddddd"; fail_bool 0 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_set_attribute "$AD_DN" "description" "abcdddddd" || fail_test 110
+ad_wait_for_synchronization || fail_test 110
 
 output=$(univention-adconnector-list-rejected 2>&1)
 if echo "$output" | grep -qi "$UDM_users_user_username"; then

@@ -72,8 +72,8 @@ test_run () {
 	do
 		expected="${old[$key]}" current="${new[$key]}"
 		[ "$key" = "${MAP[$m]}" ] && expected+=1
-		[ "$current" = "$expected" ]
-		fail_bool 0 110 "mod=$m key=$key expected=$expected current=$current"
+		[ "$current" = "$expected" ] ||
+			fail_test 110 "mod=$m key=$key expected=$expected current=$current"
 	done
 
 	removeObject "$m" "$name"

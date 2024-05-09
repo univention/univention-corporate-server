@@ -35,7 +35,7 @@ invoke-rc.d univention-ad-connector restart
 UDM_policies_pwhistory_name="default-settings"
 udm_modify "policies/pwhistory" "" "" "" "" \
 	--set pwQualityCheck="TRUE"
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 user1="$(random_chars)"
 UDM_users_user_username="$user1"
@@ -43,7 +43,7 @@ UDM_users_user_password="Univention.99"
 AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
 echo "### creating user in ad ###"
 ad_create_user_with_password "$UDM_users_user_username" "$UDM_users_user_password"
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 output=$(univention-adconnector-list-rejected 2>&1)
 if echo "$output" | grep -qi "$UDM_users_user_username"; then

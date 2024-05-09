@@ -33,30 +33,30 @@ SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "write"
 
 ad_createuser "$UDM_users_user_username" || fail_test 110
-ad_set_attribute "$AD_DN" "givenName" "$UDM_users_user_firstname"; fail_bool 0 110
-ad_set_attribute "$AD_DN" "sn" "$UDM_users_user_lastname"; fail_bool 0 110
-ad_set_attribute "$AD_DN" "description" "$UDM_users_user_description"; fail_bool 0 110
-ad_set_attribute "$AD_DN" "streetAddress" "$UDM_users_user_street"; fail_bool 0 110
-ad_set_attribute "$AD_DN" "l" "$UDM_users_user_city"; fail_bool 0 110
-ad_set_attribute "$AD_DN" "postalCode" "$UDM_users_user_postcode"; fail_bool 0 110
-ad_set_attribute "$AD_DN" "profilePath" "$UDM_users_user_profilepath"; fail_bool 0 110
-ad_set_attribute "$AD_DN" "scriptPath" "$UDM_users_user_scriptpath"; fail_bool 0 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_set_attribute "$AD_DN" "givenName" "$UDM_users_user_firstname" || fail_test 110
+ad_set_attribute "$AD_DN" "sn" "$UDM_users_user_lastname" || fail_test 110
+ad_set_attribute "$AD_DN" "description" "$UDM_users_user_description" || fail_test 110
+ad_set_attribute "$AD_DN" "streetAddress" "$UDM_users_user_street" || fail_test 110
+ad_set_attribute "$AD_DN" "l" "$UDM_users_user_city" || fail_test 110
+ad_set_attribute "$AD_DN" "postalCode" "$UDM_users_user_postcode" || fail_test 110
+ad_set_attribute "$AD_DN" "profilePath" "$UDM_users_user_profilepath" || fail_test 110
+ad_set_attribute "$AD_DN" "scriptPath" "$UDM_users_user_scriptpath" || fail_test 110
+ad_wait_for_synchronization || fail_test 110
 
-ad_verify_attribute	"$AD_DN" "sAMAccountName" "$UDM_users_user_username"; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "givenName" "$UDM_users_user_firstname"; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "sn" "$UDM_users_user_lastname"; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "description" "$UDM_users_user_description"; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "streetAddress" "$UDM_users_user_street"; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "l" "$UDM_users_user_city"; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "postalCode" "$UDM_users_user_postcode"; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "profilePath" "$UDM_users_user_profilepath"; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "scriptPath" "$UDM_users_user_scriptpath"; fail_bool 0 110
+ad_verify_attribute	"$AD_DN" "sAMAccountName" "$UDM_users_user_username" || fail_test 110
+ad_verify_attribute "$AD_DN" "givenName" "$UDM_users_user_firstname" || fail_test 110
+ad_verify_attribute "$AD_DN" "sn" "$UDM_users_user_lastname" || fail_test 110
+ad_verify_attribute "$AD_DN" "description" "$UDM_users_user_description" || fail_test 110
+ad_verify_attribute "$AD_DN" "streetAddress" "$UDM_users_user_street" || fail_test 110
+ad_verify_attribute "$AD_DN" "l" "$UDM_users_user_city" || fail_test 110
+ad_verify_attribute "$AD_DN" "postalCode" "$UDM_users_user_postcode" || fail_test 110
+ad_verify_attribute "$AD_DN" "profilePath" "$UDM_users_user_profilepath" || fail_test 110
+ad_verify_attribute "$AD_DN" "scriptPath" "$UDM_users_user_scriptpath" || fail_test 110
 
 udm_exists "users/user"; fail_bool 1 110
 
 ad_delete "$AD_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_exists "users/user"; fail_bool 1 110
 ad_exists "$AD_DN"; fail_bool 1 110

@@ -28,7 +28,7 @@ udm_create "computers/windows" || fail_test 110
 UDM_groups_group_name="wcomp-group"
 udm_create "groups/group" || fail_test 110
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 # get ad dn's
 wcomp1_dn="$(ad_get_dn '(&(cn=wcomp1)(objectClass=computer))')"
@@ -41,16 +41,16 @@ test -n "$wcomp_group_dn" || fail_test 110
 # added hosts to group in ad
 ad_add_to_group "$wcomp_group_dn" "$wcomp1_dn" || fail_test 110 "failed to add computer to group in ad"
 ad_add_to_group "$wcomp_group_dn" "$wcomp2_dn" || fail_test 110 "failed to add computer to group in ad"
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 udm groups/group list --filter name=wcomp-group | grep -q 'hosts: cn=wcomp1,*' || fail_test 110 "computer not member of group in ucs"
 udm groups/group list --filter name=wcomp-group | grep -q 'hosts: cn=wcomp2,*' || fail_test 110 "computer not member of group in ucs"
 
 # remove from group in ad
 ad_remove_from_group "$wcomp_group_dn" "$wcomp1_dn" || fail_test 110 "failed to remove computer from group in ad"
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 udm groups/group list --filter name=wcomp-group | grep -q 'hosts: cn=wcomp1,*' && fail_test 110 "computer is still member of group"
 ad_remove_from_group "$wcomp_group_dn" "$wcomp2_dn" || fail_test 110 "failed to remove computer from group in ad"
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 udm groups/group list --filter name=wcomp-group | grep -q 'hosts: cn=wcomp2,*' && fail_test 110 "computer is still member of group"
 
 # cleanup

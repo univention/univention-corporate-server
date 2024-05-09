@@ -50,23 +50,23 @@ ad_container_create "$CONTAINER1" || fail_test 110
 ad_container_create "$CONTAINER3" "" "CN=$CONTAINER1,$(ad_get_base)" || fail_test 110
 ad_createuser "$UDM_users_user_username" "" "CN=$CONTAINER1,$(ad_get_base)" || fail_test 110
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 UDM_container_cn_name="$CONTAINER1"
-udm_exists "container/cn"; fail_bool 0 110
+udm_exists "container/cn" || fail_test 110
 UDM_container_cn_name="$CONTAINER3"
-udm_exists "container/cn" "" "" "cn=$CONTAINER1,$ldap_base"; fail_bool 0 110
-udm_exists "users/user" "" "" "cn=$CONTAINER1,$ldap_base"; fail_bool 0 110
+udm_exists "container/cn" "" "" "cn=$CONTAINER1,$ldap_base" || fail_test 110
+udm_exists "users/user" "" "" "cn=$CONTAINER1,$ldap_base" || fail_test 110
 
-ad_exists "CN=$CONTAINER1,$(ad_get_base)"; fail_bool 0 110
-ad_exists "CN=$CONTAINER3,CN=$CONTAINER1,$(ad_get_base)"; fail_bool 0 110
-ad_exists "CN=$UDM_users_user_username,CN=$CONTAINER1,$(ad_get_base)"; fail_bool 0 110
+ad_exists "CN=$CONTAINER1,$(ad_get_base)" || fail_test 110
+ad_exists "CN=$CONTAINER3,CN=$CONTAINER1,$(ad_get_base)" || fail_test 110
+ad_exists "CN=$UDM_users_user_username,CN=$CONTAINER1,$(ad_get_base)" || fail_test 110
 
 section "Recursively remove $CONTAINER1"
 
 ad_delete "CN=$CONTAINER1,$(ad_get_base)" || fail_test 110
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 UDM_container_cn_name="$CONTAINER1"
 udm_exists "container/cn"; fail_bool 1 110

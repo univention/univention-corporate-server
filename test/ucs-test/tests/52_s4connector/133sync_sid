@@ -31,11 +31,11 @@ rid=$(random_chars 6 123456789)
 ucr unset connector/s4/mapping/sid_to_ucs connector/s4/mapping/sid_to_s4
 
 UDM_groups_group_name="$(random_chars)"
-udm_create "groups/group"; fail_bool 0 110
-ad_wait_for_synchronization; fail_bool 0 110
+udm_create "groups/group" || fail_test 110
+ad_wait_for_synchronization || fail_test 110
 
 AD_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
-ad_exists "$AD_DN"; fail_bool 0 110
+ad_exists "$AD_DN" || fail_test 110
 LDAP_DN="cn=$UDM_groups_group_name,cn=groups,$ldap_base"
 
 domain_sid="$(univention-s4search -s base objectSid | VAL objectSid)"
@@ -53,7 +53,7 @@ set_new_rid_in_ldap ()
 {
 	next_rid
 	udm_modify "groups/group" "" "" "" "" --set "sambaRID=$rid" || fail_test 110
-	ad_wait_for_synchronization; fail_bool 0 110
+	ad_wait_for_synchronization || fail_test 110
 }
 
 set_new_rid_in_s4 ()
@@ -70,7 +70,7 @@ sid = ndr_pack(security.dom_sid('$new_sid'))
 adconnection = s4connector.S4Connection('connector')
 adconnection.set_attribute_with_provision_ctrl('$AD_DN', 'objectSid', sid)
 "
-	ad_wait_for_synchronization; fail_bool 0 110
+	ad_wait_for_synchronization || fail_test 110
 }
 
 next_rid()
@@ -116,7 +116,7 @@ is_sid_equal || fail_test 110
 
 ## Cleanup
 ad_delete "$AD_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_DN"; fail_bool 1 110
 udm_exists "groups/group"; fail_bool 1 110

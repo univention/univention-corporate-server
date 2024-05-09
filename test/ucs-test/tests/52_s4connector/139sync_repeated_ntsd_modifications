@@ -38,12 +38,12 @@ service univention-s4-connector restart
 samba-tool gpo create "$gpo_display_name" \
 		-k no \
 		-H ldap://"${hostname:?}.$domainname" \
-		-U "$admin_account%$tests_domainadmin_pwd" || fail_bool 0 110
+		-U "$admin_account%$tests_domainadmin_pwd" || fail_test 110
 UDM_container_msgpo_name="$(univention-s4search "(&(displayName=$gpo_display_name)(objectClass=groupPolicyContainer))" cn | VAL cn)"
 [ -n "$UDM_container_msgpo_name" ] ||
 	fail_fast 110 "New GPO not found in local Samba Directory service"
-ad_wait_for_synchronization; fail_bool 0 110
-udm_exists "container/msgpo" "" "" "cn=Policies,cn=System,$ldap_base"; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
+udm_exists "container/msgpo" "" "" "cn=Policies,cn=System,$ldap_base" || fail_test 110
 
 # modify the nTSecurityDescriptor repeatedly with different delays
 ldif=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(displayName=$gpo_display_name))" nTSecurityDescriptor 2>/dev/null | ldapsearch-wrapper)
@@ -131,8 +131,8 @@ done
 samba-tool gpo del "$UDM_container_msgpo_name" \
 		-k no \
 		-H ldap://"$hostname.$domainname" \
-		-U "$admin_account%$tests_domainadmin_pwd" || fail_bool 0 110
-ad_wait_for_synchronization; fail_bool 0 110
+		-U "$admin_account%$tests_domainadmin_pwd" || fail_test 110
+ad_wait_for_synchronization || fail_test 110
 udm_exists "container/msgpo" "" "" "cn=Policies,cn=System,$ldap_base"; fail_bool 1 110
 
 exit "${RETVAL:-0}"

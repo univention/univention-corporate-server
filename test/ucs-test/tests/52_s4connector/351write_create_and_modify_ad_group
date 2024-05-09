@@ -28,14 +28,14 @@ UDM_groups_group_description="$(random_chars)"
 
 ad_set_attribute "$AD_DN" "description" "$UDM_groups_group_description" || fail_test 110
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-ad_verify_attribute "$AD_DN" "description" "$UDM_groups_group_description"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "description" "$UDM_groups_group_description" || fail_test 110
 
 udm_exists "groups/group"; fail_bool 1 110
 
 ad_delete "$AD_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_exists "groups/group"; fail_bool 1 110
 ad_exists "$AD_DN"; fail_bool 1 110

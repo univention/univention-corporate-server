@@ -29,31 +29,31 @@ ad_group_create "$OUTER_GROUP" || fail_test 110
 
 ad_append_to_attribute "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)" \
 	"member" "CN=$INNER_GROUP,CN=groups,$(ad_get_base)" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-ad_exists "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 0 110
-ad_exists "CN=$INNER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 0 110
+ad_exists "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)" || fail_test 110
+ad_exists "CN=$INNER_GROUP,CN=groups,$(ad_get_base)" || fail_test 110
 
 UDM_groups_group_name="$INNER_GROUP"
-udm_exists "groups/group"; fail_bool 0 110
+udm_exists "groups/group" || fail_test 110
 UDM_groups_group_name="$OUTER_GROUP"
-udm_exists "groups/group"; fail_bool 0 110
+udm_exists "groups/group" || fail_test 110
 
 UDM_groups_group_name="$OUTER_GROUP"
 udm_verify_multi_value_udm_attribute_contains "nestedGroup" \
-	"cn=$INNER_GROUP,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
+	"cn=$INNER_GROUP,cn=groups,$ldap_base" "groups/group" || fail_test 110
 UDM_groups_group_name="$INNER_GROUP"
 udm_verify_multi_value_udm_attribute_contains "memberOf" \
-	"cn=$OUTER_GROUP,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
+	"cn=$OUTER_GROUP,cn=groups,$ldap_base" "groups/group" || fail_test 110
 
 ad_verify_multi_value_attribute_contains "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)" \
-	"member" "CN=$INNER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 0 110
+	"member" "CN=$INNER_GROUP,CN=groups,$(ad_get_base)" || fail_test 110
 ad_verify_multi_value_attribute_contains "CN=$INNER_GROUP,CN=groups,$(ad_get_base)" \
-	"memberOf" "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 0 110
+	"memberOf" "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)" || fail_test 110
 
 ad_remove_from_attribute "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)" \
 	"member" "CN=$INNER_GROUP,CN=groups,$(ad_get_base)" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 UDM_groups_group_name="$OUTER_GROUP"
 udm_verify_multi_value_udm_attribute_contains "nestedGroup" \

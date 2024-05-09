@@ -21,15 +21,15 @@ ad_set_sync_mode "sync"
 
 #Local UCS-Groups are expected to be synced as global AD-Groups
 udm_create "groups/group" "" "" "" "" --set sambaGroupType=3 || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-udm_exists "groups/group"; fail_bool 0 110
-ad_exists "CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"; fail_bool 0 110
+udm_exists "groups/group" || fail_test 110
+ad_exists "CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)" || fail_test 110
 
 ad_verify_attribute "CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)" \
-	"sAMAccountType" "268435456"; fail_bool 0 110
+	"sAMAccountType" "268435456" || fail_test 110
 
-udm_verify_udm_attribute "sambaGroupType" "3" "groups/group"; fail_bool 0 110
+udm_verify_udm_attribute "sambaGroupType" "3" "groups/group" || fail_test 110
 
 section "Clean up"
 

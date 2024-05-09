@@ -28,7 +28,7 @@ for((i=0;i<10;i++)); do
 	UDM_users_user_username="$(random_chars)"
 	UDM_users_user_lastname="$(random_chars)"
 	UDM_users_user_password="univention"
-	udm_create "users/user"; fail_bool 0 110
+	udm_create "users/user" || fail_test 110
 
 	for((j=0;j<10;j++)); do
 		udm_modify "users/user" "" "" "" "" \
@@ -36,9 +36,9 @@ for((i=0;i<10;i++)); do
 		sleep $i
 	done
 
-	ad_wait_for_synchronization; fail_bool 0 110
+	ad_wait_for_synchronization || fail_test 110
 
-	udm_verify_multi_value_udm_attribute_contains "description" "univention9" "users/user"; fail_bool 0 110
+	udm_verify_multi_value_udm_attribute_contains "description" "univention9" "users/user" || fail_test 110
 
 	udm_remove "users/user" || fail_test 110
 

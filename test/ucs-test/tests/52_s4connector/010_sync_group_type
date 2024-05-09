@@ -31,17 +31,17 @@ for groupType in 2 3 5; do
 	UDM_groups_group_name="$(random_chars)"
 	UDM_groups_group_sambaGroupType="$groupType"
 
-	udm_create "groups/group"; fail_bool 0 110
-	ad_wait_for_synchronization; fail_bool 0 110
+	udm_create "groups/group" || fail_test 110
+	ad_wait_for_synchronization || fail_test 110
 
 	AD_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
-	ad_exists "$AD_DN"; fail_bool 0 110
+	ad_exists "$AD_DN" || fail_test 110
 
-	ad_verify_attribute "$AD_DN" "groupType" "-2147483646"; fail_bool 0 110
-	udm_verify_udm_attribute "sambaGroupType" "$groupType" "groups/group"; fail_bool 0 110
+	ad_verify_attribute "$AD_DN" "groupType" "-2147483646" || fail_test 110
+	udm_verify_udm_attribute "sambaGroupType" "$groupType" "groups/group" || fail_test 110
 
 	ad_delete "$AD_DN" || fail_test 110
-	ad_wait_for_synchronization; fail_bool 0 110
+	ad_wait_for_synchronization || fail_test 110
 
 	ad_exists "$AD_DN"; fail_bool 1 110
 	udm_exists "groups/group"; fail_bool 1 110
@@ -51,16 +51,16 @@ for groupType in $GLOBAL_GROUP_TYPE $LOCAL_GROUP_TYPE $DOMAIN_LOCAL_GROUP_TYPE $
 	UDM_groups_group_name="$(random_chars)"
 	UDM_groups_group_adGroupType="$groupType"
 
-	udm_create "groups/group"; fail_bool 0 110
-	ad_wait_for_synchronization; fail_bool 0 110
+	udm_create "groups/group" || fail_test 110
+	ad_wait_for_synchronization || fail_test 110
 
 	AD_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
-	ad_exists "$AD_DN"; fail_bool 0 110
+	ad_exists "$AD_DN" || fail_test 110
 
-	ad_verify_attribute "$AD_DN" "groupType" "$groupType"; fail_bool 0 110
+	ad_verify_attribute "$AD_DN" "groupType" "$groupType" || fail_test 110
 
 	ad_delete "$AD_DN" || fail_test 110
-	ad_wait_for_synchronization; fail_bool 0 110
+	ad_wait_for_synchronization || fail_test 110
 
 	ad_exists "$AD_DN"; fail_bool 1 110
 	udm_exists "groups/group"; fail_bool 1 110

@@ -45,7 +45,7 @@ cleanup() {
 	echo ==========Test done - Cleanup==========
 
 	udm_remove "users/user" || fail_test 110
-	ad_wait_for_synchronization; fail_bool 0 110
+	ad_wait_for_synchronization || fail_test 110
 
 	udm_exists "users/user"; fail_bool 1 110
 	ad_exists "$AD_DN"; fail_bool 1 110
@@ -66,15 +66,15 @@ trap cleanup EXIT
 section "==========Create user in UDM and set mailPrimaryAddress=========="
 udm_create "users/user" "" "" "" "" \
 	--option=person --option=mail --option=posix --option=samba --option=pki  --option=kerberos|| fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-udm_exists "users/user"; fail_bool 0 110
+udm_exists "users/user" || fail_test 110
 ad_exists "$AD_DN"; fail_bool 1 110
 
-udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 0 110
-#udm_verify_udm_attribute "Exchange-Homeserver" "$UDM_users_user_Exchange_Homeserver" "users/user"; fail_bool 0 110
-#udm_verify_udm_attribute "Exchange-homeMDB" "$UDM_users_user_Exchange_homeMDB" "users/user"; fail_bool 0 110
-#udm_verify_udm_attribute "Exchange-Nickname" "$UDM_users_user_Exchange_Nickname" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user" || fail_test 110
+#udm_verify_udm_attribute "Exchange-Homeserver" "$UDM_users_user_Exchange_Homeserver" "users/user" || fail_test 110
+#udm_verify_udm_attribute "Exchange-homeMDB" "$UDM_users_user_Exchange_homeMDB" "users/user" || fail_test 110
+#udm_verify_udm_attribute "Exchange-Nickname" "$UDM_users_user_Exchange_Nickname" "users/user" || fail_test 110
 
 #UDM_users_user_Exchange_Homeserver="$(random_chars)"
 #UDM_users_user_Exchange_homeMDB="$(random_chars)"
@@ -85,11 +85,11 @@ udm_modify "users/user" "" "" "" "" \
 #		   --set Exchange-Homeserver="$UDM_users_user_Exchange_Homeserver" \
 #		   --set Exchange-homeMDB="$UDM_users_user_Exchange_homeMDB" \
 #		   --set Exchange-Nickname="$UDM_users_user_Exchange_Nickname" \
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 ad_exists "$AD_DN"; fail_bool 1 110
-udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 0 110
-#udm_verify_udm_attribute "Exchange-Homeserver" "$UDM_users_user_Exchange_Homeserver" "users/user"; fail_bool 0 110
-#udm_verify_udm_attribute "Exchange-homeMDB" "$UDM_users_user_Exchange_homeMDB" "users/user"; fail_bool 0 110
-#udm_verify_udm_attribute "Exchange-Nickname" "$UDM_users_user_Exchange_Nickname" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user" || fail_test 110
+#udm_verify_udm_attribute "Exchange-Homeserver" "$UDM_users_user_Exchange_Homeserver" "users/user" || fail_test 110
+#udm_verify_udm_attribute "Exchange-homeMDB" "$UDM_users_user_Exchange_homeMDB" "users/user" || fail_test 110
+#udm_verify_udm_attribute "Exchange-Nickname" "$UDM_users_user_Exchange_Nickname" "users/user" || fail_test 110
 
 exit "${RETVAL:-0}"

@@ -60,34 +60,34 @@ udm_modify "groups/group" "" "" "" "" \
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "read"
 invoke-rc.d univention-s4-connector start
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_G1_DN"; fail_bool 1 110
 ad_exists "$AD_G2_DN"; fail_bool 1 110
 ad_exists "$AD_B1_DN"; fail_bool 1 110
 ad_exists "$AD_B2_DN"; fail_bool 1 110
 UDM_groups_group_name="$G1"
-udm_exists "groups/group"; fail_bool 0 110
+udm_exists "groups/group" || fail_test 110
 UDM_groups_group_name="$G2"
-udm_exists "groups/group"; fail_bool 0 110
+udm_exists "groups/group" || fail_test 110
 UDM_users_user_username="$B1"
-udm_exists "users/user"; fail_bool 0 110
+udm_exists "users/user" || fail_test 110
 UDM_users_user_username="$B2"
-udm_exists "users/user"; fail_bool 0 110
+udm_exists "users/user" || fail_test 110
 
 UDM_groups_group_name="$G1"
-udm_verify_multi_value_udm_attribute_contains "users" "$UDM_B1_DN" "groups/group"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "users" "$UDM_B2_DN" "groups/group"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "users" "$UDM_B1_DN" "groups/group" || fail_test 110
+udm_verify_multi_value_udm_attribute_contains "users" "$UDM_B2_DN" "groups/group" || fail_test 110
 UDM_groups_group_name="$G2"
-udm_verify_multi_value_udm_attribute_contains "users" "$UDM_B1_DN" "groups/group"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "users" "$UDM_B2_DN" "groups/group"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "users" "$UDM_B1_DN" "groups/group" || fail_test 110
+udm_verify_multi_value_udm_attribute_contains "users" "$UDM_B2_DN" "groups/group" || fail_test 110
 
 UDM_users_user_username="$B1"
-udm_verify_multi_value_udm_attribute_contains "groups" "$UDM_G1_DN" "users/user"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "groups" "$UDM_G2_DN" "users/user"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "groups" "$UDM_G1_DN" "users/user" || fail_test 110
+udm_verify_multi_value_udm_attribute_contains "groups" "$UDM_G2_DN" "users/user" || fail_test 110
 UDM_users_user_username="$B2"
-udm_verify_multi_value_udm_attribute_contains "groups" "$UDM_G1_DN" "users/user"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "groups" "$UDM_G2_DN" "users/user"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "groups" "$UDM_G1_DN" "users/user" || fail_test 110
+udm_verify_multi_value_udm_attribute_contains "groups" "$UDM_G2_DN" "users/user" || fail_test 110
 
 section "Clean up"
 
@@ -100,7 +100,7 @@ udm_remove "groups/group" || fail_test 110
 UDM_groups_group_name="$G2"
 udm_remove "groups/group" || fail_test 110
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_G1_DN"; fail_bool 1 110
 ad_exists "$AD_G2_DN"; fail_bool 1 110

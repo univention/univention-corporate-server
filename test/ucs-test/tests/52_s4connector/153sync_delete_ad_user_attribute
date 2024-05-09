@@ -26,14 +26,14 @@ ad_group_create "$UDM_groups_group_name" "$UDM_groups_group_description" || fail
 
 ad_delete_attribute "$AD_DN" "description" || fail_test 110
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-ad_verify_attribute "$AD_DN" "description" ""; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "description" "" || fail_test 110
 
-udm_verify_udm_attribute "description" "None" "groups/group"; fail_bool 0 110
+udm_verify_udm_attribute "description" "None" "groups/group" || fail_test 110
 
 udm_remove "groups/group" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_exists "groups/group"; fail_bool 1 110
 ad_exists "$AD_DN"; fail_bool 1 110

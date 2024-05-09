@@ -45,24 +45,24 @@ section "Create user and add to group"
 
 ad_createuser "$UDM_users_user_username" "" "ou=\+1,$(ad_get_base)" || fail_test 110
 ad_append_to_attribute "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-ad_exists "$AD_GROUP_DN"; fail_bool 0 110
-udm_exists "groups/group" "" "" "ou=\2B1,$ldap_base"; fail_bool 0 110
-ad_exists "$AD_USER_DN"; fail_bool 0 110
-udm_exists "users/user" "" "" "ou=\2B1,$ldap_base"; fail_bool 0 110
+ad_exists "$AD_GROUP_DN" || fail_test 110
+udm_exists "groups/group" "" "" "ou=\2B1,$ldap_base" || fail_test 110
+ad_exists "$AD_USER_DN" || fail_test 110
+udm_exists "users/user" "" "" "ou=\2B1,$ldap_base" || fail_test 110
 
 udm_verify_multi_value_udm_attribute_contains_ignore_case "users" \
-	"uid=$UDM_users_user_username,ou=\2B1,$ldap_base" "groups/group"; fail_bool 0 110
+	"uid=$UDM_users_user_username,ou=\2B1,$ldap_base" "groups/group" || fail_test 110
 udm_verify_multi_value_udm_attribute_contains_ignore_case "groups" \
-	"cn=$UDM_groups_group_name,ou=\2B1,$ldap_base" "users/user"; fail_bool 0 110
-ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 0 110
-ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN"; fail_bool 0 110
+	"cn=$UDM_groups_group_name,ou=\2B1,$ldap_base" "users/user" || fail_test 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN" || fail_test 110
 
 section "Modify user in AD"
 
 ad_set_attribute "$AD_USER_DN" "description" "foo"
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 reject_output=$(univention-adconnector-list-rejected)
 if grep -q "${AD_USER_DN//\\/\\\\}" <<<"$reject_output"; then
     echo "$reject_output"
@@ -72,7 +72,7 @@ fi
 section "Remove user"
 
 ad_delete "$AD_USER_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_USER_DN"; fail_bool 1 110
 udm_exists "users/user" "" "" "ou=\2B1,$ldap_base"; fail_bool 1 110
@@ -84,7 +84,7 @@ ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; 
 section "Clean up"
 
 ad_delete "$AD_GROUP_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_GROUP_DN"; fail_bool 1 110
 udm_exists "groups/group" "" "" "ou=\2B1,$ldap_base"; fail_bool 1 110

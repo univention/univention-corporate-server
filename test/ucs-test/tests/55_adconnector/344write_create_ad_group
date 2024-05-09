@@ -27,13 +27,13 @@ SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "write"
 
 ad_group_create "$UDM_groups_group_name" "$DESCRIPTION" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-ad_exists "$AD_DN"; fail_bool 0 110
+ad_exists "$AD_DN" || fail_test 110
 udm_exists "groups/group"; fail_bool 1 110
 
 ad_delete "$AD_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_DN"; fail_bool 1 110
 udm_exists "groups/group"; fail_bool 1 110

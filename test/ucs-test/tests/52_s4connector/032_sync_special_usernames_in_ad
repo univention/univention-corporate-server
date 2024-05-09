@@ -50,7 +50,7 @@ replace: userWorkstations
 userWorkstations: pc01
 __HERE__
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_object_file="$(mktemp)"
 ad_object_file="$(mktemp)"
@@ -64,7 +64,7 @@ check_value_in_ucs ()
 	value="$2"
 
 	echo "Check $key, expected $value"
-	grep -e "^  $key: $value$" "$udm_object_file"; fail_bool 0 110
+	grep -e "^  $key: $value$" "$udm_object_file" || fail_test 110
 }
 
 check_value_in_ad ()
@@ -73,7 +73,7 @@ check_value_in_ad ()
 	value="$2"
 
 	echo "Check $key, expected $value"
-	grep -e "^$key: $value$" "$ad_object_file"; fail_bool 0 110
+	grep -e "^$key: $value$" "$ad_object_file" || fail_test 110
 }
 
 check_value_in_ucs "description" "univention"

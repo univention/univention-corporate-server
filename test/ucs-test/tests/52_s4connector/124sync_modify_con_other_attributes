@@ -23,31 +23,31 @@ check_phone_numbers ()
 	local phone3="$3"
 
 	if [ -n "$phone1" ]; then
-		ad_verify_attribute "$AD_DN" "telephoneNumber" "$phone1"; fail_bool 0 121 "See #18501"
+		ad_verify_attribute "$AD_DN" "telephoneNumber" "$phone1" || fail_test 121 "See #18501"
 	fi
 
 	if [ -n "$phone2" -a -n "$phone3" ]; then
-		ad_verify_multi_value_attribute_contains "$AD_DN" "otherTelephone" "$phone2"; fail_bool 0 121 "See #18501"
-		ad_verify_multi_value_attribute_contains "$AD_DN" "otherTelephone" "$phone3"; fail_bool 0 121 "See #18501"
+		ad_verify_multi_value_attribute_contains "$AD_DN" "otherTelephone" "$phone2" || fail_test 121 "See #18501"
+		ad_verify_multi_value_attribute_contains "$AD_DN" "otherTelephone" "$phone3" || fail_test 121 "See #18501"
 	elif [ -n "$phone2" ]; then
-		ad_verify_multi_value_attribute_contains "$AD_DN" "otherTelephone" "$phone2"; fail_bool 0 121 "See #18501"
+		ad_verify_multi_value_attribute_contains "$AD_DN" "otherTelephone" "$phone2" || fail_test 121 "See #18501"
 	elif [ -n "$phone3" ]; then
-		ad_verify_multi_value_attribute_contains "$AD_DN" "otherTelephone" "$phone3"; fail_bool 0 121 "See #18501"
+		ad_verify_multi_value_attribute_contains "$AD_DN" "otherTelephone" "$phone3" || fail_test 121 "See #18501"
 	else
-		ad_verify_attribute "$AD_DN" "otherTelephone" ""; fail_bool 0 121 "See #18501"
+		ad_verify_attribute "$AD_DN" "otherTelephone" "" || fail_test 121 "See #18501"
 	fi
 
 	if [ -n "$phone1" ]; then
-		udm_verify_multi_value_udm_attribute_contains "phone" "$phone1" "users/user"; fail_bool 0 110
+		udm_verify_multi_value_udm_attribute_contains "phone" "$phone1" "users/user" || fail_test 110
 	fi
 	if [ -n "$phone2" ]; then
-		udm_verify_multi_value_udm_attribute_contains "phone" "$phone2" "users/user"; fail_bool 0 110
+		udm_verify_multi_value_udm_attribute_contains "phone" "$phone2" "users/user" || fail_test 110
 	fi
 	if [ -n "$phone3" ]; then
-		udm_verify_multi_value_udm_attribute_contains "phone" "$phone3" "users/user"; fail_bool 0 110
+		udm_verify_multi_value_udm_attribute_contains "phone" "$phone3" "users/user" || fail_test 110
 	fi
 	if [ -z "$phone1" -a -z "$phone2" -a -z "$phone3" ]; then
-		udm_verify_multi_value_udm_attribute_contains "phone" "" "users/user"; fail_bool 0 110
+		udm_verify_multi_value_udm_attribute_contains "phone" "" "users/user" || fail_test 110
 	fi
 }
 
@@ -77,7 +77,7 @@ set_and_check_phone_numbers_in_ucs ()
 		udm-test "users/user" modify --dn "$UDM_DN" --append phone="$phone3"
 	fi
 
-	ad_wait_for_synchronization; fail_bool 0 110
+	ad_wait_for_synchronization || fail_test 110
 
 	check_phone_numbers "$@"
 }
@@ -92,7 +92,7 @@ set_and_check_phone_numbers_in_ad ()
 	ad_set_attribute $AD_DN otherTelephone "$phone2"
 	ad_append_to_attribute $AD_DN otherTelephone "$phone3"
 
-	ad_wait_for_synchronization; fail_bool 0 110
+	ad_wait_for_synchronization || fail_test 110
 
 	check_phone_numbers "$@"
 }
@@ -114,7 +114,7 @@ SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 
 udm_create "users/user" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 
 set_and_check_phone_numbers_in_ucs $(get_random_phone_number) "" ""
@@ -137,7 +137,7 @@ set_and_check_phone_numbers_in_ucs "$p1" "" "$(get_random_phone_number)"
 set_and_check_phone_numbers_in_ucs "$(get_random_phone_number)" "$(get_random_phone_number)" "$(get_random_phone_number)"
 
 udm_remove "users/user" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_exists "users/user"; fail_bool 1 110
 ad_exists "$AD_DN"; fail_bool 1 110

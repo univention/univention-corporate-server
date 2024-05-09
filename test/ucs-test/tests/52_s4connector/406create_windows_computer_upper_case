@@ -41,21 +41,21 @@ sAMAccountName: ${windows_name}$
 operatingSystem: Windows 8.1 Pro
 operatingSystemVersion: 6.3 (9600)" | ldbadd --verbose --relax -H /var/lib/samba/private/sam.ldb
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_verify_ldap_attribute "cn" "$windows_name" "computers/windows" || fail_test 110
 
 udm-test 'computers/windows' modify \
 	--dn "cn=$windows_name,cn=computers,$(ucr get ldap/base)" \
 	--set description="$windows_description" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 AD_DN="CN=$UDM_computers_windows_name,CN=computers,$(ad_get_base)"
-ad_verify_attribute "$AD_DN" "description" "$windows_description"; fail_bool 0 12
+ad_verify_attribute "$AD_DN" "description" "$windows_description" || fail_test 12
 
 # cleanup
 udm_remove 'computers/windows' || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 udm_exists 'computers/windows'; fail_bool 1 110
 ad_set_sync_mode "$SYNCMODE"
 

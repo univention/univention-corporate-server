@@ -35,27 +35,27 @@ ad_group_create "$gp2" || fail_test 110
 ad_group_create "$gp3" || fail_test 110
 ad_append_to_attribute "$AD_GROUP_DN1" "member" "$AD_GROUP_DN2" || fail_test 110
 ad_append_to_attribute "$AD_GROUP_DN1" "member" "$AD_GROUP_DN3" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-ad_exists "$AD_GROUP_DN1"; fail_bool 0 110
-ad_exists "$AD_GROUP_DN2"; fail_bool 0 110
-ad_exists "$AD_GROUP_DN3"; fail_bool 0 110
+ad_exists "$AD_GROUP_DN1" || fail_test 110
+ad_exists "$AD_GROUP_DN2" || fail_test 110
+ad_exists "$AD_GROUP_DN3" || fail_test 110
 
-ad_verify_multi_value_attribute_contains "$AD_GROUP_DN1" "member" "$AD_GROUP_DN2"; fail_bool 0 110
-ad_verify_multi_value_attribute_contains "$AD_GROUP_DN1" "member" "$AD_GROUP_DN3"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN1" "member" "$AD_GROUP_DN2" || fail_test 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN1" "member" "$AD_GROUP_DN3" || fail_test 110
 
 UDM_groups_group_name="$gp1"
-udm_exists "groups/group"; fail_bool 0 110
+udm_exists "groups/group" || fail_test 110
 UDM_groups_group_name="$gp2"
-udm_exists "groups/group"; fail_bool 0 110
+udm_exists "groups/group" || fail_test 110
 UDM_groups_group_name="$gp3"
-udm_exists "groups/group"; fail_bool 0 110
+udm_exists "groups/group" || fail_test 110
 
 UDM_groups_group_name="$gp1"
 udm_verify_multi_value_udm_attribute_contains_ignore_case "nestedGroup" \
-	"cn=$gp2,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
+	"cn=$gp2,cn=groups,$ldap_base" "groups/group" || fail_test 110
 udm_verify_multi_value_udm_attribute_contains_ignore_case "nestedGroup" \
-	"cn=$gp3,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
+	"cn=$gp3,cn=groups,$ldap_base" "groups/group" || fail_test 110
 
 univention-ldapsearch "(cn=$gp1)"
 
@@ -64,15 +64,15 @@ section "Rename group"
 n_gp3="U$(random_chars)"
 AD_GROUP_DN_N3="CN=$n_gp3,CN=groups,$(ad_get_base)"
 ad_set_attribute "$AD_GROUP_DN3" "sAMAccountName" "$n_gp3" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 univention-ldapsearch "(cn=$gp1)"
 
 UDM_groups_group_name="$gp1"
 udm_verify_multi_value_udm_attribute_contains_ignore_case "nestedGroup" \
-	"cn=$gp2,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
+	"cn=$gp2,cn=groups,$ldap_base" "groups/group" || fail_test 110
 udm_verify_multi_value_udm_attribute_contains_ignore_case "nestedGroup" \
-	"cn=$n_gp3,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
+	"cn=$n_gp3,cn=groups,$ldap_base" "groups/group" || fail_test 110
 univention-ldapsearch "(cn=$gp1)" | VAL uniqueMember | grep -Fi "cn=$gp3,cn=groups,$ldap_base" &&
 	fail_test 110
 
@@ -81,7 +81,7 @@ section "Clean up"
 ad_delete "$AD_GROUP_DN1" || fail_test 110
 ad_delete "$AD_GROUP_DN2" || fail_test 110
 ad_delete "$AD_GROUP_DN3" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_set_sync_mode "$SYNCMODE"
 

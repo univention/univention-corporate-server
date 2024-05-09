@@ -37,7 +37,7 @@ ad_set_sync_mode "sync"
 section "Create new container"
 
 udm container/cn create --set name="$CONTAINER_NAME" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 section "Create user and group"
 
@@ -45,17 +45,17 @@ udm_create "users/user" || fail_test 110
 udm_create "groups/group" || fail_test 110
 udm_modify "users/user" "" "" "" "" \
 	--append groups="$UDM_GROUP_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-udm_exists "users/user"; fail_bool 0 110
-ad_exists "$AD_USER_DN"; fail_bool 0 110
+udm_exists "users/user" || fail_test 110
+ad_exists "$AD_USER_DN" || fail_test 110
 
 udm_verify_multi_value_udm_attribute_contains "users" \
-	"$UDM_USER_DN" "groups/group"; fail_bool 0 110
+	"$UDM_USER_DN" "groups/group" || fail_test 110
 udm_verify_multi_value_udm_attribute_contains "groups" \
-	"$UDM_GROUP_DN" "users/user"; fail_bool 0 110
-ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 0 110
-ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN"; fail_bool 0 110
+	"$UDM_GROUP_DN" "users/user" || fail_test 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN" || fail_test 110
 
 section "Move user and group"
 
@@ -63,31 +63,31 @@ udm users/user move --dn "$UDM_USER_DN" \
 	--position "cn=$CONTAINER_NAME,$ldap_base" || fail_test 110
 udm groups/group move --dn "$UDM_GROUP_DN" \
 	--position "cn=$CONTAINER_NAME,$ldap_base" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_exists "users/user"; fail_bool 1 110
-udm_exists "users/user" "" "" "cn=$CONTAINER_NAME,$ldap_base"; fail_bool 0 110
+udm_exists "users/user" "" "" "cn=$CONTAINER_NAME,$ldap_base" || fail_test 110
 udm_exists "groups/group"; fail_bool 1 110
-udm_exists "groups/group" "" "" "cn=$CONTAINER_NAME,$ldap_base"; fail_bool 0 110
+udm_exists "groups/group" "" "" "cn=$CONTAINER_NAME,$ldap_base" || fail_test 110
 ad_exists "$AD_USER_DN"; fail_bool 1 110
-ad_exists "$AD_CONTAINER_USER_DN"; fail_bool 0 110
+ad_exists "$AD_CONTAINER_USER_DN" || fail_test 110
 ad_exists "$AD_GROUP_DN"; fail_bool 1 110
-ad_exists "$AD_CONTAINER_GROUP_DN"; fail_bool 0 110
+ad_exists "$AD_CONTAINER_GROUP_DN" || fail_test 110
 
 udm_verify_multi_value_udm_attribute_contains "users" \
-	"$UDM_CONTAINER_USER_DN" "groups/group"; fail_bool 0 110
+	"$UDM_CONTAINER_USER_DN" "groups/group" || fail_test 110
 udm_verify_multi_value_udm_attribute_contains "groups" \
-	"$UDM_CONTAINER_GROUP_DN" "users/user"; fail_bool 0 110
+	"$UDM_CONTAINER_GROUP_DN" "users/user" || fail_test 110
 ad_verify_multi_value_attribute_contains "$AD_CONTAINER_GROUP_DN" \
-	"member" "$AD_CONTAINER_USER_DN"; fail_bool 0 110
+	"member" "$AD_CONTAINER_USER_DN" || fail_test 110
 ad_verify_multi_value_attribute_contains "$AD_CONTAINER_USER_DN" \
-	"memberOf" "$AD_CONTAINER_GROUP_DN"; fail_bool 0 110
+	"memberOf" "$AD_CONTAINER_GROUP_DN" || fail_test 110
 
 section "Clean up"
 
 udm_remove "users/user" "" "" "cn=$CONTAINER_NAME,$ldap_base" || fail_test 110
 udm_remove "groups/group" "" "" "cn=$CONTAINER_NAME,$ldap_base" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_CONTAINER_USER_DN"; fail_bool 1 110
 udm_exists "users/user" "" "" "cn=$CONTAINER_NAME,$ldap_base"; fail_bool 1 110
@@ -98,6 +98,6 @@ udm container/cn remove --dn "cn=$CONTAINER_NAME,$ldap_base" || fail_test 110
 
 ad_set_sync_mode "$SYNCMODE"
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 exit "${RETVAL:-0}"

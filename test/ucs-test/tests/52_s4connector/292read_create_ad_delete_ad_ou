@@ -23,13 +23,13 @@ SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "read"
 
 ad_createou "$UDM_container_ou_name" "$UDM_container_ou_description" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-ad_exists "$AD_OU_DN"; fail_bool 0 110
-udm_exists "container/ou"; fail_bool 0 110
+ad_exists "$AD_OU_DN" || fail_test 110
+udm_exists "container/ou" || fail_test 110
 
 ad_delete "$AD_OU_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_OU_DN"; fail_bool 1 110
 udm_exists "container/ou"; fail_bool 1 110

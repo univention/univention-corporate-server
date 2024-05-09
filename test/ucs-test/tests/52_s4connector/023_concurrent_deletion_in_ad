@@ -50,7 +50,7 @@ for((i=0;i<10;i++)); do
 	ad_delete "CN=$username2,cn=users,$(ad_get_base)"
 	ad_delete "CN=$username3,cn=users,$(ad_get_base)"
 
-	ad_wait_for_synchronization; fail_bool 0 110
+	ad_wait_for_synchronization || fail_test 110
 
 	ad_exists "CN=$groupname,CN=groups,$(ad_get_base)" && fail_test 110
 	ad_exists "CN=$username1,cn=users,$(ad_get_base)" && fail_test 110

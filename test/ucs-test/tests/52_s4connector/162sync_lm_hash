@@ -31,13 +31,13 @@ SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 
 udm_create "users/user" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 section "Trying authentication"
 
 HOST="$(ucr get connector/s4/ldap/host)"
 
-smbclient "//${HOST}/sysvol" -c 'exit' -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 100
+smbclient "//${HOST}/sysvol" -c 'exit' -U "${UDM_users_user_username}%${UDM_users_user_password}" || fail_test 100
 
 lm_hash1=$(ldbsearch -H /var/lib/samba/private/sam.ldb samaccountname="${UDM_users_user_username}" dBCSPwd | VAL dBCSPwd)
 
@@ -46,11 +46,11 @@ section "Change password"
 UDM_users_user_password="A$(random_chars)22"
 udm_modify "users/user" "" "" "" "" \
 	--set password="$UDM_users_user_password" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 section "Trying authentication second time"
 
-smbclient "//${HOST}/sysvol" -c 'exit' -U "${UDM_users_user_username}%${UDM_users_user_password}" ; fail_bool 0 100
+smbclient "//${HOST}/sysvol" -c 'exit' -U "${UDM_users_user_username}%${UDM_users_user_password}" || fail_test 100
 
 lm_hash2=$(ldbsearch -H /var/lib/samba/private/sam.ldb samaccountname="${UDM_users_user_username}" dBCSPwd | VAL dBCSPwd)
 
@@ -68,7 +68,7 @@ changetype: modify
 delete: sambaLMPassword
 %EOF
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 lm_hash3=$(ldbsearch -H /var/lib/samba/private/sam.ldb samaccountname="${UDM_users_user_username}" dBCSPwd | VAL dBCSPwd)
 [ -z "$lm_hash3" ] ||
@@ -76,7 +76,7 @@ lm_hash3=$(ldbsearch -H /var/lib/samba/private/sam.ldb samaccountname="${UDM_use
 
 
 udm_remove "users/user" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_exists "users/user"; fail_bool 1 110
 

@@ -101,9 +101,9 @@ msieee80211-Data:: AwAAAPgAAAAwKgAAAAAAAAEAAAABAAAAAQAAAOQAAABOAEUAVwBTAFMASQBEA
 
 " | ldbadd --verbose -H /var/lib/samba/private/sam.ldb || fail_test 110
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-univention-ldapsearch -b "$policy_base_ucs" -s base dn -LLL  || fail_test 110
+univention-ldapsearch -b "$policy_base_ucs" -s base dn -LLL || fail_test 110
 univention-ldapsearch -b "CN=Neue Drahtlosnetzwerkrichtlinie,  CN=IEEE80211,CN=Windows,CN=Microsoft,CN=Machine,$policy_base_ucs" -s base dn -LLL || fail_test 110
 univention-ldapsearch -b "CN=Neue Richtlinie für Kabelnetzwerke,CN=IEEE8023,CN=Windows,CN=Microsoft,CN=Machine,$policy_base_ucs" -s base dn -LLL || fail_test 110
 univention-ldapsearch -b "CN=Neue XP-Drahtlosnetzwerkrichtlinie,CN=Wireless,CN=Windows,CN=Microsoft,CN=Machine,$policy_base_ucs" -s base dn -LLL || fail_test 110
@@ -112,14 +112,14 @@ ldbdel -H /var/lib/samba/private/sam.ldb "CN=Neue XP-Drahtlosnetzwerkrichtlinie,
 ldbdel -H /var/lib/samba/private/sam.ldb "CN=Neue Richtlinie für Kabelnetzwerke,CN=IEEE8023,CN=Windows,CN=Microsoft,CN=Machine,$policy_base" || fail_test 110
 ldbdel -H /var/lib/samba/private/sam.ldb "CN=Neue Drahtlosnetzwerkrichtlinie,CN=IEEE80211,CN=Windows,CN=Microsoft,CN=Machine,$policy_base" || fail_test 110
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 univention-ldapsearch -b "CN=Neue Drahtlosnetzwerkrichtlinie,CN=IEEE80211,CN=Windows,CN=Microsoft,CN=Machine,$policy_base_ucs" -s base dn -LLL && fail_test 110
 univention-ldapsearch -b "CN=Neue Richtlinie für Kabelnetzwerke,CN=IEEE8023,CN=Windows,CN=Microsoft,CN=Machine,$policy_base_ucs" -s base dn -LLL && fail_test 110
 univention-ldapsearch -b "CN=Neue XP-Drahtlosnetzwerkrichtlinie,CN=Wireless,CN=Windows,CN=Microsoft,CN=Machine,$policy_base_ucs" -s base dn -LLL && fail_test 110
 
 ldbdel -H /var/lib/samba/private/sam.ldb -r "$policy_base" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 univention-ldapsearch -b "$policy_base_ucs" -s base dn -LLL  && fail_test 110
 
 ucr set connector/s4/mapping/msgpwl="$connector_s4_mapping_msgpwl"

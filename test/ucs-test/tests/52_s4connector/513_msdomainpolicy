@@ -35,7 +35,7 @@ service univention-s4-connector restart
 
 service univention-s4-connector restart
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 rejected=$(univention-s4connector-list-rejected)
 
@@ -52,13 +52,13 @@ cleanup () {
 	ucr unset connector/s4/mapping/domainpolicy
 	udm ms/domainpolicy remove --dn "cn=TestPolicy,$ldap_base"
 	ldbdel -H /var/lib/samba/private/sam.ldb  "CN=TestAdPolicy,$(ad_get_base)"
-	ad_wait_for_synchronization; fail_bool 0 110
+	ad_wait_for_synchronization || fail_test 110
 	service univention-s4-connector restart
 
 }
 trap cleanup EXIT
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm ms/domainpolicy list --filter name=TestPolicy
 AD_DN="CN=TestPolicy,$ldap_base"
@@ -111,7 +111,7 @@ objectCategory: CN=Domain-Policy,CN=Schema,CN=Configuration,$(ad_get_base)
 distinguishedName: CN=TestADPolicy,$(ad_get_base)
 " | ldbadd --verbose -H /var/lib/samba/private/sam.ldb || true
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_verify_udm_attribute "qualityOfService" "1" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast
 udm_verify_udm_attribute "pwdProperties" "2" "ms/domainpolicy" "" "" "" "TestADPolicy" || fail_fast

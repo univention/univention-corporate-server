@@ -42,60 +42,60 @@ section "Add user to both groups"
 udm_modify "users/user" "" "" "" "" \
 	--append groups="cn=$GROUP1,cn=groups,$ldap_base" \
 	--append groups="cn=$GROUP2,cn=groups,$ldap_base" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 section "Check whether groups and users exist on ucs and ad-side"
 
 ad_exists "CN=$GROUP1,CN=groups,$(ad_get_base)"; fail_bool 1 110
 ad_exists "CN=$GROUP2,CN=groups,$(ad_get_base)"; fail_bool 1 110
 UDM_groups_group_name="$GROUP1"
-udm_exists "groups/group"; fail_bool 0 110
+udm_exists "groups/group" || fail_test 110
 UDM_groups_group_name="$GROUP2"
-udm_exists "groups/group"; fail_bool 0 110
+udm_exists "groups/group" || fail_test 110
 
 ad_exists "$AD_USER_DN"; fail_bool 1 110
-udm_exists "users/user"; fail_bool 0 110
+udm_exists "users/user" || fail_test 110
 
 section "Check attributes of user and group to verify membership on ucs and ad-side"
 
 UDM_groups_group_name="$GROUP1"
 udm_verify_multi_value_udm_attribute_contains "users" \
-	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
+	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group" || fail_test 110
 udm_verify_multi_value_udm_attribute_contains "groups" \
-	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 110
+	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user" || fail_test 110
 UDM_groups_group_name="$GROUP2"
 udm_verify_multi_value_udm_attribute_contains "users" \
-	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
+	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group" || fail_test 110
 udm_verify_multi_value_udm_attribute_contains "groups" \
-	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 110
+	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user" || fail_test 110
 
 section "Set primary group of user to GROUP1"
 
 udm_modify "users/user" "" "" "" "" \
 	--set primaryGroup="cn=$GROUP1,cn=groups,$ldap_base" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "CN=$GROUP1,CN=groups,$(ad_get_base)"; fail_bool 1 110
 ad_exists "CN=$GROUP2,CN=groups,$(ad_get_base)"; fail_bool 1 110
 ad_exists "$AD_USER_DN"; fail_bool 1 110
 
 UDM_groups_group_name="$GROUP1"
-udm_verify_udm_attribute "primaryGroup" "cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "primaryGroup" "cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user" || fail_test 110
 udm_verify_multi_value_udm_attribute_contains "users" \
-	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
+	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group" || fail_test 110
 udm_verify_multi_value_udm_attribute_contains "groups" \
-	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 110
+	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user" || fail_test 110
 UDM_groups_group_name="$GROUP2"
 udm_verify_multi_value_udm_attribute_contains "users" \
-	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
+	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group" || fail_test 110
 udm_verify_multi_value_udm_attribute_contains "groups" \
-	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 110
+	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user" || fail_test 110
 
 section "Set primary group of user to GROUP2"
 
 udm_modify "users/user" "" "" "" "" \
 	--set primaryGroup="cn=$GROUP2,cn=groups,$ldap_base" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "CN=$GROUP1,CN=groups,$(ad_get_base)"; fail_bool 1 110
 ad_exists "CN=$GROUP2,CN=groups,$(ad_get_base)"; fail_bool 1 110
@@ -103,15 +103,15 @@ ad_exists "$AD_USER_DN"; fail_bool 1 110
 
 UDM_groups_group_name="$GROUP1"
 udm_verify_multi_value_udm_attribute_contains "users" \
-	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
+	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group" || fail_test 110
 udm_verify_multi_value_udm_attribute_contains "groups" \
-	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 110
+	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user" || fail_test 110
 UDM_groups_group_name="$GROUP2"
-udm_verify_udm_attribute "primaryGroup" "cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "primaryGroup" "cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user" || fail_test 110
 udm_verify_multi_value_udm_attribute_contains "users" \
-	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
+	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group" || fail_test 110
 udm_verify_multi_value_udm_attribute_contains "groups" \
-	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 110
+	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user" || fail_test 110
 
 section "Clean up"
 
@@ -120,7 +120,7 @@ UDM_groups_group_name="$GROUP1"
 udm_remove "groups/group" || fail_test 110
 UDM_groups_group_name="$GROUP2"
 udm_remove "groups/group" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_USER_DN"; fail_bool 1 110
 udm_exists "users/user"; fail_bool 1 110

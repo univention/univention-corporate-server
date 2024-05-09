@@ -30,18 +30,18 @@ udm_create "groups/group" || fail_test 110
 
 udm_modify "groups/group" "" "" "" "" \
 		   --set description="" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "description" ""; fail_bool 0 110
-udm_verify_udm_attribute "description" "None" "groups/group"; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
+ad_verify_attribute "$AD_DN" "description" "" || fail_test 110
+udm_verify_udm_attribute "description" "None" "groups/group" || fail_test 110
 
 udm_modify "groups/group" "" "" "" "" \
 		   --remove description="$UDM_groups_group_description" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "description" ""; fail_bool 0 110
-udm_verify_udm_attribute "description" "None" "groups/group"; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
+ad_verify_attribute "$AD_DN" "description" "" || fail_test 110
+udm_verify_udm_attribute "description" "None" "groups/group" || fail_test 110
 
 udm_remove "groups/group" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_exists "groups/group"; fail_bool 1 110
 ad_exists "$AD_DN"; fail_bool 1 110

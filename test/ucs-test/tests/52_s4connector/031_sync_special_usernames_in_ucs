@@ -27,7 +27,7 @@ udm-test users/user create --position "cn=users,$ldap_base" \
 	--set description="univention" \
 	--set homeTelephoneNumber="123"
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm-test users/user modify --dn "uid=$UDM_users_user_username,cn=users,$ldap_base" \
 	--set organisation="Test" \
@@ -38,7 +38,7 @@ udm-test users/user modify --dn "uid=$UDM_users_user_username,cn=users,$ldap_bas
 	--set pagerTelephoneNumber="4" \
 	--set sambaUserWorkstations="pc01"
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_object_file="$(mktemp)"
 ad_object_file="$(mktemp)"
@@ -52,7 +52,7 @@ check_value_in_ucs ()
 	value="$2"
 
 	echo "Check $key, expected $value"
-	grep -e "^  $key: $value$" "$udm_object_file"; fail_bool 0 110
+	grep -e "^  $key: $value$" "$udm_object_file" || fail_test 110
 }
 
 check_value_in_ad ()
@@ -61,7 +61,7 @@ check_value_in_ad ()
 	value="$2"
 
 	echo "Check $key, expected $value"
-	grep -e "^$key: $value$" "$ad_object_file"; fail_bool 0 110
+	grep -e "^$key: $value$" "$ad_object_file" || fail_test 110
 }
 
 check_value_in_ucs "description" "univention"

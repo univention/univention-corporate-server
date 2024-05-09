@@ -48,22 +48,22 @@ sambaMaxPwdAge: $1
 OLD_VALUE=$(get_ucs_age)
 
 set_ucs_age 864000
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 check_s4_age -8640000000000
 
 set_ucs_age -1
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 check_s4_age 0
 
 set_ucs_age 864000
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 check_s4_age -8640000000000
 
 set_ucs_age 0
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 check_s4_age 0
 
 set_ucs_age "$OLD_VALUE"
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 exit "${RETVAL:-0}"

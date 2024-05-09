@@ -27,18 +27,18 @@ ad_set_sync_mode "sync"
 UDM_groups_group_name="Domain Admins"
 UDM_users_user_username="Administrator"
 udm_verify_multi_value_udm_attribute_contains "users" \
-	"uid=Administrator,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
+	"uid=Administrator,cn=users,$ldap_base" "groups/group" || fail_test 110
 
 # Change Domain Admins on UCS side
 description="$(random_chars)"
 udm_modify "groups/group" "" "" "" "" \
 	--set description="$description" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 UDM_groups_group_name="Domain Admins"
 UDM_users_user_username="Administrator"
 udm_verify_multi_value_udm_attribute_contains "users" \
-	"uid=Administrator,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
+	"uid=Administrator,cn=users,$ldap_base" "groups/group" || fail_test 110
 
 ad_set_sync_mode "$SYNCMODE"
 exit "${RETVAL:-0}"

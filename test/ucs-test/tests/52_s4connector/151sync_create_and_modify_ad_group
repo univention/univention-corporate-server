@@ -28,20 +28,20 @@ UDM_groups_group_description="$(random_chars)"
 
 ad_set_attribute "$AD_DN" "description" "$UDM_groups_group_description" || fail_test 110
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 UDM_groups_group_gidNumber=$(univention-ldapsearch "(&(cn=$UDM_groups_group_name)(objectClass=univentionGroup))" gidNumber | VAL gidNumber)
 
-ad_verify_attribute "$AD_DN" "description" "$UDM_groups_group_description"; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "gidNumber" "$UDM_groups_group_gidNumber"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "description" "$UDM_groups_group_description" || fail_test 110
+ad_verify_attribute "$AD_DN" "gidNumber" "$UDM_groups_group_gidNumber" || fail_test 110
 
 if [ "${connector_s4_windows_version:-}" != "win2000" ] || [ "${connector_s4_mapping_group_win2000_description:-}" != "false" ]
 then
-	udm_verify_udm_attribute "description" "$UDM_groups_group_description" "groups/group"; fail_bool 0 110
+	udm_verify_udm_attribute "description" "$UDM_groups_group_description" "groups/group" || fail_test 110
 fi
 
 udm_remove "groups/group" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_exists "groups/group"; fail_bool 1 110
 ad_exists "$AD_DN"; fail_bool 1 110

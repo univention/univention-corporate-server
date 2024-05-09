@@ -30,14 +30,14 @@ trap 'test "$old_value" = None &&
 username="$(random_chars)"
 
 for((i=0;i<5;i++)); do
-	samba-tool user add "$username$i" Univention.99 || fail_bool 0 110
+	samba-tool user add "$username$i" Univention.99 || fail_test 110
 done
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 # Check password
 for((i=0;i<5;i++)); do
-	ldapsearch -x -D "uid=$username$i,cn=users,$ldap_base" -s base -w Univention.99 || fail_bool 0 110
+	ldapsearch -x -D "uid=$username$i,cn=users,$ldap_base" -s base -w Univention.99 || fail_test 110
 done
 
 # Delete users
@@ -45,6 +45,6 @@ for((i=0;i<5;i++)); do
 	samba-tool user delete "$username$i"
 done
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 exit "${RETVAL:-0}"

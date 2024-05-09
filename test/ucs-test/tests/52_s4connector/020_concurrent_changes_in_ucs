@@ -29,9 +29,9 @@ for((i=0;i<10;i++)); do
 	UDM_users_user_username="$(random_chars)"
 	UDM_users_user_lastname="$(random_chars)"
 	UDM_users_user_password="univention"
-	udm_create "users/user"; fail_bool 0 110
+	udm_create "users/user" || fail_test 110
 
-	ad_wait_for_synchronization; fail_bool 0 110
+	ad_wait_for_synchronization || fail_test 110
 
 	udm_modify "users/user" "" "" "" "" \
 		--set description="univention" || fail_test 110
@@ -72,18 +72,18 @@ for((i=0;i<10;i++)); do
 	udm_modify "users/user" "" "" "" "" \
 		--set sambaUserWorkstations="pc01"|| fail_test 110
 
-	ad_wait_for_synchronization; fail_bool 0 110
+	ad_wait_for_synchronization || fail_test 110
 
-	udm_verify_multi_value_udm_attribute_contains "description" "univention" "users/user"; fail_bool 0 110
-	udm_verify_multi_value_udm_attribute_contains "homeTelephoneNumber" "1" "users/user"; fail_bool 0 110
-	udm_verify_multi_value_udm_attribute_contains "phone" "2" "users/user"; fail_bool 0 110
-	udm_verify_multi_value_udm_attribute_contains "organisation" "Test" "users/user"; fail_bool 0 110
-	udm_verify_multi_value_udm_attribute_contains "street" "Street" "users/user"; fail_bool 0 110
-	udm_verify_multi_value_udm_attribute_contains "city" "Bremen" "users/user"; fail_bool 0 110
-	udm_verify_multi_value_udm_attribute_contains "postcode" "28359" "users/user"; fail_bool 0 110
-	udm_verify_multi_value_udm_attribute_contains "mobileTelephoneNumber" "3" "users/user"; fail_bool 0 110
-	udm_verify_multi_value_udm_attribute_contains "pagerTelephoneNumber" "4" "users/user"; fail_bool 0 110
-	udm_verify_multi_value_udm_attribute_contains "sambaUserWorkstations" "pc01" "users/user"; fail_bool 0 110
+	udm_verify_multi_value_udm_attribute_contains "description" "univention" "users/user" || fail_test 110
+	udm_verify_multi_value_udm_attribute_contains "homeTelephoneNumber" "1" "users/user" || fail_test 110
+	udm_verify_multi_value_udm_attribute_contains "phone" "2" "users/user" || fail_test 110
+	udm_verify_multi_value_udm_attribute_contains "organisation" "Test" "users/user" || fail_test 110
+	udm_verify_multi_value_udm_attribute_contains "street" "Street" "users/user" || fail_test 110
+	udm_verify_multi_value_udm_attribute_contains "city" "Bremen" "users/user" || fail_test 110
+	udm_verify_multi_value_udm_attribute_contains "postcode" "28359" "users/user" || fail_test 110
+	udm_verify_multi_value_udm_attribute_contains "mobileTelephoneNumber" "3" "users/user" || fail_test 110
+	udm_verify_multi_value_udm_attribute_contains "pagerTelephoneNumber" "4" "users/user" || fail_test 110
+	udm_verify_multi_value_udm_attribute_contains "sambaUserWorkstations" "pc01" "users/user" || fail_test 110
 
 	udm_remove "users/user" || fail_test 110
 

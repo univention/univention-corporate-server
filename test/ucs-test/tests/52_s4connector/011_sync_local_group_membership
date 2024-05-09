@@ -27,9 +27,9 @@ UDM_GROUP_DN="cn=Printer-Admins,cn=groups,$ldap_base"
 AD_USER_DN="CN=$UDM_users_user_username,CN=Users,$(ad_get_base)"
 ad_createuser "$UDM_users_user_username" || fail_test 110
 ad_append_to_attribute "CN=Print Operators,CN=builtin,$(ad_get_base)" "member" "$AD_USER_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-ad_verify_multi_value_attribute_contains "CN=Print Operators,CN=builtin,$(ad_get_base)" "member" "$AD_USER_DN"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "CN=Print Operators,CN=builtin,$(ad_get_base)" "member" "$AD_USER_DN" || fail_test 110
 udm_verify_multi_value_udm_attribute_contains "users" \
 	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 1 110
 

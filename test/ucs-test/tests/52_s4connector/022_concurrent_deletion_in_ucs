@@ -25,7 +25,7 @@ create_user()
 	UDM_users_user_username="$1"
 	UDM_users_user_lastname="$2"
 	UDM_users_user_password="univention"
-	udm_create "users/user"; fail_bool 0 110
+	udm_create "users/user" || fail_test 110
 }
 
 for((i=0;i<10;i++)); do
@@ -62,10 +62,10 @@ for((i=0;i<10;i++)); do
 	user_remove "$username2"
 	user_remove "$username3"
 
-	ad_wait_for_synchronization; fail_bool 0 110
+	ad_wait_for_synchronization || fail_test 110
 
 	/etc/init.d/univention-s4-connector restart
-	ad_wait_for_synchronization; fail_bool 0 110
+	ad_wait_for_synchronization || fail_test 110
 
 	udm_exists "groups/group" && fail_test 110
 	UDM_users_user_username="$username1"

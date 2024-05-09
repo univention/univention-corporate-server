@@ -28,17 +28,17 @@ UDM_users_user_city="$(random_chars)"
 
 #We have to wait between all the AD-Commands: See #18501
 ad_delete_attribute "$AD_DN" "description" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 ad_set_attribute "$AD_DN" "l" "$UDM_users_user_city" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-ad_verify_attribute "$AD_DN" "description" ""; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "l" "$UDM_users_user_city"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "description" "" || fail_test 110
+ad_verify_attribute "$AD_DN" "l" "$UDM_users_user_city" || fail_test 110
 
 udm_exists "users/user"; fail_bool 1 110
 
 ad_delete "$AD_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_exists "users/user"; fail_bool 1 110
 ad_exists "$AD_DN"; fail_bool 1 110

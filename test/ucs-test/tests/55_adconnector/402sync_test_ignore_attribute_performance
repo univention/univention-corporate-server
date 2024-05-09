@@ -35,10 +35,10 @@ ad_create_user_with_password () {
 }
 
 ad_create_user_with_password "$UDM_users_user_username" "Univention.99" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-ad_exists "$AD_DN"; fail_bool 0 110
-udm_exists "users/user"; fail_bool 0 110
+ad_exists "$AD_DN" || fail_test 110
+udm_exists "users/user" || fail_test 110
 
 logrotate -f /etc/logrotate.d/univention-ad-connector
 
@@ -133,6 +133,6 @@ ucr unset connector/ad/poll/profiling
 /etc/init.d/univention-ad-connector restart
 
 ad_delete "$AD_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 exit "${RETVAL:-0}"

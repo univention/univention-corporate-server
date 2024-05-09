@@ -84,11 +84,11 @@ name: User
 objectCategory: CN=Container,CN=Schema,CN=Configuration,$samba4_ldap_base
 " | ldbadd --verbose -H /var/lib/samba/private/sam.ldb || fail_test 110
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 # FIXME: function is broken, maybe due to the { brackets?
 ## udm_verify_ldap_attribute "cn" "$policy_name" "container/msgpo" || fail_test 110
-univention-ldapsearch -b "$policy_base_ucs" -s base dn -LLL  || fail_test 110
+univention-ldapsearch -b "$policy_base_ucs" -s base dn -LLL || fail_test 110
 univention-ldapsearch -b "CN=User,$policy_base_ucs" -s base dn -LLL || fail_test 110
 univention-ldapsearch -b "CN=Machine,$policy_base_ucs" -s base dn -LLL || fail_test 110
 univention-ldapsearch -b "CN=PushedPrinterConnections,CN=Machine,$policy_base_ucs" -s base dn -LLL || fail_test 110
@@ -103,7 +103,7 @@ ldbdel -H /var/lib/samba/private/sam.ldb "CN=Machine,$policy_base" || fail_test 
 ldbdel -H /var/lib/samba/private/sam.ldb "CN=User,$policy_base" || fail_test 110
 ldbdel -H /var/lib/samba/private/sam.ldb "$policy_base" || fail_test 110
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 univention-ldapsearch -b "CN=PushedPrinterConnections,CN=Machine,$policy_base_ucs" -s base dn -LLL && fail_test 110
 univention-ldapsearch -b "CN=Machine,$policy_base_ucs" -s base dn -LLL && fail_test 110

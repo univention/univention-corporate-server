@@ -42,7 +42,7 @@ echo "$UDM_users_user_password" >"$tmp/$UDM_users_user_username"
 udm_create "users/user" || fail_fast 110
 undo udm_remove "users/user"
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 rejects="$(univention-s4connector-list-rejected)"
 echo "$rejects" | grep "$UDM_users_user_username" && fail_fast "$UDM_users_user_username rejected"

@@ -55,7 +55,7 @@ section "Clean up"
 ad_delete "$AD_USER_DN" || fail_test 110
 ad_delete "$AD_GROUP_DN" || fail_test 110
 ad_delete "OU=\+2,$(ad_get_base)" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_USER_DN"; fail_bool 1 110
 ad_exists "$AD_GROUP_DN"; fail_bool 1 110

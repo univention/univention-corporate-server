@@ -91,7 +91,7 @@ iPSECNegotiationPolicyType: {62F49E13-6C37-11D1-864C-14A300000000}
 iPSECNegotiationPolicyAction: {8A171DD3-77E3-11D1-8659-A04F00000000}
 " | ldbadd --verbose -H /var/lib/samba/private/sam.ldb || fail_test 110
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 univention-ldapsearch -b "CN=ipsecISAKMPPolicy{7238523D-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$ldap_base" -s base dn -LLL || fail_test 110
 univention-ldapsearch -b "CN=ipsecPolicy{7238523C-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$ldap_base" -s base dn -LLL || fail_test 110
@@ -105,7 +105,7 @@ ldbdel -H /var/lib/samba/private/sam.ldb "CN=ipsecNFA{59319C04-5EE3-11D2-ACE8-00
 ldbdel -H /var/lib/samba/private/sam.ldb "CN=ipsecFilter{7238523A-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$samba4_ldap_base" || fail_test 110
 ldbdel -H /var/lib/samba/private/sam.ldb "CN=ipsecNegotiationPolicy{59319BDF-5EE3-11D2-ACE8-0060B0ECCA17},CN=IP Security2,CN=System,$samba4_ldap_base" || fail_test 110
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 univention-ldapsearch -b "CN=ipsecISAKMPPolicy{7238523D-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$ldap_base" -s base dn -LLL && fail_test 110
 univention-ldapsearch -b "CN=ipsecPolicy{7238523C-70FA-11D1-864C-14A300000000},CN=IP Security2,CN=System,$ldap_base" -s base dn -LLL && fail_test 110
@@ -114,7 +114,7 @@ univention-ldapsearch -b "CN=ipsecFilter{7238523A-70FA-11D1-864C-14A300000000},C
 univention-ldapsearch -b "CN=ipsecNegotiationPolicy{59319BDF-5EE3-11D2-ACE8-0060B0ECCA17},CN=IP Security2,CN=System,$ldap_base" -s base dn -LLL && fail_test 110
 
 ldbdel -H /var/lib/samba/private/sam.ldb -r "CN=IP Security2,CN=System,$samba4_ldap_base" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 univention-ldapsearch -b "CN=IP Security2,CN=System,$ldap_base" -s base dn -LLL && fail_test 110
 
 ucr set connector/s4/mapping/msgpipsec="$connector_s4_mapping_msgpipsec"

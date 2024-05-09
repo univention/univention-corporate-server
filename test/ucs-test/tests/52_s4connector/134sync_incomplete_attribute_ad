@@ -24,22 +24,22 @@ ad_set_sync_mode "sync"
 
 
 ad_createuser $UDM_users_user_username $UDM_users_user_description "CN=users,$(ad_get_base)"
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 ad_set_attribute "$AD_DN" "description" "123"
 ad_set_attribute "$AD_DN" "telephoneNumber" "12 üüü 34" #invalid syntax in UCS
 ad_set_attribute "$AD_DN" "homePhone" "456"
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-udm_exists "users/user"; fail_bool 0 110
-ad_exists "$AD_DN"; fail_bool 0 110
+udm_exists "users/user" || fail_test 110
+ad_exists "$AD_DN" || fail_test 110
 
 ad_verify_attribute "$AD_DN" "description" "123" || fail_test 110
 ad_verify_attribute "$AD_DN" "telephoneNumber" "12 üüü 34" || fail_test 110
 ad_verify_attribute "$AD_DN" "homePhone" "456" || fail_test 110
 
 ad_delete "$AD_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_exists "users/user"; fail_bool 1 110
 ad_exists "$AD_DN"; fail_bool 1 110

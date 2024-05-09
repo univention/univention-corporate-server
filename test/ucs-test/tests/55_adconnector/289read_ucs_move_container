@@ -62,18 +62,18 @@ udm_create "container/cn" "" "" "cn=$CONTAINER1,$ldap_base" || fail_test 110
 UDM_users_user_username="$USER"
 udm_create "users/user" "" "" "cn=$CONTAINER1,$ldap_base" || fail_test 110
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 UDM_container_cn_name="$CONTAINER1"
-udm_exists "container/cn"; fail_bool 0 110
-ad_exists "$AD_CONTAINER1_DN"; fail_bool 0 110
+udm_exists "container/cn" || fail_test 110
+ad_exists "$AD_CONTAINER1_DN" || fail_test 110
 UDM_container_cn_name="$CONTAINER2"
-udm_exists "container/cn"; fail_bool 0 110
-ad_exists "$AD_CONTAINER2_DN"; fail_bool 0 110
+udm_exists "container/cn" || fail_test 110
+ad_exists "$AD_CONTAINER2_DN" || fail_test 110
 UDM_container_cn_name="$CONTAINER3"
-udm_exists "container/cn" "" "" "cn=$CONTAINER1,$ldap_base"; fail_bool 0 110
-ad_exists "$AD_CONTAINER3_DN"; fail_bool 0 110
-udm_exists "users/user" "" "" "cn=$CONTAINER1,$ldap_base"; fail_bool 0 110
+udm_exists "container/cn" "" "" "cn=$CONTAINER1,$ldap_base" || fail_test 110
+ad_exists "$AD_CONTAINER3_DN" || fail_test 110
+udm_exists "users/user" "" "" "cn=$CONTAINER1,$ldap_base" || fail_test 110
 
 section "Move $CONTAINER1 into $CONTAINER2"
 
@@ -82,29 +82,29 @@ ad_set_sync_mode "read"
 udm container/cn move --dn "cn=$CONTAINER1,$ldap_base" \
 	--position "cn=$CONTAINER2,$ldap_base" || fail_test 110
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 UDM_container_cn_name="$CONTAINER1"
 udm_exists "container/cn"; fail_bool 1 110
-ad_exists "$AD_CONTAINER1_DN"; fail_bool 0 110
+ad_exists "$AD_CONTAINER1_DN" || fail_test 110
 UDM_container_cn_name="$CONTAINER3"
 udm_exists "container/cn" "" "" "cn=$CONTAINER1,$ldap_base"; fail_bool 1 110
-ad_exists "$AD_CONTAINER3_DN"; fail_bool 0 110
+ad_exists "$AD_CONTAINER3_DN" || fail_test 110
 udm_exists "users/user" "" "" "cn=$CONTAINER1,$ldap_base"; fail_bool 1 110
 
 UDM_container_cn_name="$CONTAINER2"
-udm_exists "container/cn"; fail_bool 0 110
-ad_exists "$AD_CONTAINER2_DN"; fail_bool 0 110
+udm_exists "container/cn" || fail_test 110
+ad_exists "$AD_CONTAINER2_DN" || fail_test 110
 UDM_container_cn_name="$CONTAINER1"
 AD_CONTAINER1_DN="CN=$CONTAINER1,CN=$CONTAINER2,$(ad_get_base)"
-udm_exists "container/cn" "" "" "cn=$CONTAINER2,$ldap_base"; fail_bool 0 110
+udm_exists "container/cn" "" "" "cn=$CONTAINER2,$ldap_base" || fail_test 110
 ad_exists "$AD_CONTAINER1_DN"; fail_bool 1 110
 AD_CONTAINER3_DN="CN=$CONTAINER3,CN=$CONTAINER1,CN=$CONTAINER2,$(ad_get_base)"
 UDM_container_cn_name="$CONTAINER3"
-udm_exists "container/cn" "" "" "cn=$CONTAINER1,cn=$CONTAINER2,$ldap_base"; fail_bool 0 110
+udm_exists "container/cn" "" "" "cn=$CONTAINER1,cn=$CONTAINER2,$ldap_base" || fail_test 110
 ad_exists "$AD_CONTAINER3_DN"; fail_bool 1 110
 AD_USER_DN="CN=$USER,CN=$CONTAINER1,CN=$CONTAINER2,$(ad_get_base)"
-udm_exists "users/user" "" "" "cn=$CONTAINER1,cn=$CONTAINER2,$ldap_base"; fail_bool 0 110
+udm_exists "users/user" "" "" "cn=$CONTAINER1,cn=$CONTAINER2,$ldap_base" || fail_test 110
 ad_exists "$AD_USER_DN"; fail_bool 1 110
 
 section "Clean up"
@@ -119,7 +119,7 @@ udm_remove "container/cn" "" "" "cn=$CONTAINER2,$ldap_base" || fail_test 110
 UDM_container_cn_name="$CONTAINER2"
 udm_remove "container/cn" || fail_test 110
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 UDM_container_cn_name="$CONTAINER2"
 udm_exists "container/cn"; fail_bool 1 110

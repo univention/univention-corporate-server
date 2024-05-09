@@ -25,7 +25,7 @@ ad_set_sync_mode "sync"
 # create computer object
 UDM_dns_host_record_name="$(random_chars)"
 udm_create "dns/host_record" "" "zoneName=$(hostname -d),cn=dns,$(ucr get ldap/base)"|| fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 # rename computer object
 old_name="$UDM_dns_host_record_name"
@@ -35,7 +35,7 @@ ad_zone="DC=$(hostname -d),CN=MicrosoftDNS,dc=DomainDnsZones"
 udm-test 'dns/host_record' modify \
 	--dn "relativeDomainName=$old_name,$ucs_zone,$(ucr get ldap/base)" \
 	--set name="$new_name" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 
 ## check renamed object
@@ -43,14 +43,14 @@ UDM_dns_host_record_name="$new_name,$ucs_zone"
 udm_exists  "dns/host_record" || fail_test 10
 UDM_dns_host_record_name="$old_name,$ucs_zone"
 udm_exists "dns/host_record" && fail_test 110
-ad_exists "DC=$new_name,$ad_zone,$(ad_get_base)" ; fail_bool 0 12
+ad_exists "DC=$new_name,$ad_zone,$(ad_get_base)" || fail_test 12
 ad_exists "DC=$old_name,$ad_zone,$(ad_get_base)" ; fail_bool 1 12
 
 # cleanup
 udm_remove 'dns/host_record'
 UDM_dns_host_record_name="$new_name,$ucs_zone"
 udm_remove 'dns/host_record' || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 udm_exists 'dns/host_record'; fail_bool 1 110
 UDM_dns_host_record_name="$old_name,$ucs_zone"
 udm_exists 'dns/host_record'; fail_bool 1 110

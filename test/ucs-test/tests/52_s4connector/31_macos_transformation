@@ -21,21 +21,21 @@ UDM_computers_windows_name="$(random_chars)"
 UDM_computers_windows_description="$(random_chars)"
 udm_create "computers/windows" || fail_test 110
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 AD_DN="CN=$UDM_computers_windows_name,CN=computers,$(ad_get_base)"
-ad_exists "$AD_DN"; fail_bool 0 110
+ad_exists "$AD_DN" || fail_test 110
 
 udm-test 'computers/windows' modify --dn "cn=$UDM_computers_windows_name,cn=computers,$(ucr get ldap/base)" --set operatingSystem="Mac OS X" || fail_test 110  # FIXME: macOS ?
 
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_exists "computers/windows"; fail_bool 1 110
 UDM_computers_macos_name="$UDM_computers_windows_name"
-udm_exists "computers/macos"; fail_bool 0 110
+udm_exists "computers/macos" || fail_test 110
 
 ad_delete "$AD_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_DN"; fail_bool 1 110
 udm_exists "users/user"; fail_bool 1 110

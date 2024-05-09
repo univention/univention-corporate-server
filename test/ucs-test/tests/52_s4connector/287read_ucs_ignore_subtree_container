@@ -23,10 +23,10 @@ ad_set_sync_mode "sync"
 UDM_container_cn_name="$CONTAINER1"
 AD_CONTAINER_DN="CN=$UDM_container_cn_name,$(ad_get_base)"
 udm_create "container/cn" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-udm_exists "container/cn"; fail_bool 0 110
-ad_exists "$AD_CONTAINER_DN"; fail_bool 0 110
+udm_exists "container/cn" || fail_test 110
+ad_exists "$AD_CONTAINER_DN" || fail_test 110
 
 section "Modify Container-Ignore-Subtree"
 
@@ -43,15 +43,15 @@ UDM_container_cn_name="$CONTAINER2"
 AD_CONTAINER_DN="CN=$UDM_container_cn_name,CN=$CONTAINER1,$(ad_get_base)"
 
 udm_create "container/cn" "" "" "cn=$CONTAINER1,$ldap_base" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-udm_exists  "container/cn" "" "" "cn=$CONTAINER1,$ldap_base"; fail_bool 0 110
+udm_exists  "container/cn" "" "" "cn=$CONTAINER1,$ldap_base" || fail_test 110
 ad_exists "$AD_CONTAINER_DN"; fail_bool 1 110
 
 section "Clean up"
 
 udm_remove "container/cn" "" "" "cn=$CONTAINER1,$ldap_base" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_CONTAINER_DN"; fail_bool 1 110
 udm_exists  "container/cn" "" "" "cn=$CONTAINER1,$ldap_base"; fail_bool 1 110
@@ -64,7 +64,7 @@ invoke-rc.d univention-s4-connector start
 UDM_container_cn_name="$CONTAINER1"
 AD_CONTAINER_DN="CN=$UDM_container_cn_name,$(ad_get_base)"
 udm_remove "container/cn" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 ad_exists "$AD_CONTAINER_DN"; fail_bool 1 110
 udm_exists  "container/cn"; fail_bool 1 110

@@ -28,24 +28,24 @@ UDM_users_user_city="$(random_chars)"
 
 #We have to wait between all the AD-Commands: See #18501
 ad_delete_attribute "$AD_DN" "description" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 ad_set_attribute "$AD_DN" "l" "$UDM_users_user_city" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
-ad_verify_attribute "$AD_DN" "description" ""; fail_bool 0 110
-ad_verify_attribute "$AD_DN" "l" "$UDM_users_user_city"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "description" "" || fail_test 110
+ad_verify_attribute "$AD_DN" "l" "$UDM_users_user_city" || fail_test 110
 
 #With w2k and w2k3 the value for description would be "", with w2k8 it is "None".
 #As we can't distinguish the two cases we only test for the value not being the
 #original one
 udm_verify_udm_attribute "description" "$UDM_users_user_description" "users/user"; fail_bool 1 110
-udm_verify_udm_attribute "city" "$UDM_users_user_city" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "city" "$UDM_users_user_city" "users/user" || fail_test 110
 
 udm_remove "users/user" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization || fail_test 110
 
 udm_exists "users/user"; fail_bool 1 121 "See: #20005"
-ad_exists "$AD_DN"; fail_bool 0 110
+ad_exists "$AD_DN" || fail_test 110
 
 ad_delete "$AD_DN" || fail_test 110
 ad_exists "$AD_DN"; fail_bool 1 110
