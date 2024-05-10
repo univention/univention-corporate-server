@@ -41,6 +41,7 @@ print('univentionObjectType: container/cn')
 print('cn: samba')
 print('')
 print('dn: sambaDomainName=@@%%@@sambadomain@@%%@@,cn=samba,%s' % (configRegistry['ldap/base']))
+print('objectClass: top')
 print('sambaDomainName: @@%%@@sambadomain@@%%@@')
 print('sambaSID: @@%%@@sid@@%%@@')
 print('objectClass: sambaDomain')
@@ -141,6 +142,7 @@ univentionMailObject: cn=mailinglists,cn=mail,@%@ldap/base@%@
 univentionMailObject: cn=folder,cn=mail,@%@ldap/base@%@
 
 dn: cn=custom attributes,cn=univention,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
@@ -349,6 +351,7 @@ description: Containing all Printer Objects as per default Settings
 cn: printers
 
 dn: cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
@@ -372,66 +375,77 @@ description: Containing all Mail Objects as per default Settings
 cn: mail
 
 dn: cn=desktop,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: desktop
 
 dn: cn=shares,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: shares
 
 dn: cn=userquota,cn=shares,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: userquota
 
 dn: cn=printquota,cn=shares,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: printquota
 
 dn: cn=update,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: update
 
 dn: cn=ldap,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: ldap
 
 dn: cn=installation,cn=update,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: installation
 
 dn: cn=packages,cn=update,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: packages
 
 dn: cn=repository,cn=update,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: repository
 
 dn: cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: dhcp
 
 dn: cn=boot,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
@@ -446,6 +460,7 @@ univentionObjectType: policies/dhcp_boot
 cn: default-settings
 
 dn: cn=dns,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
@@ -460,24 +475,28 @@ univentionObjectType: policies/dhcp_dns
 cn: default-settings
 
 dn: cn=dnsupdate,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: dnsupdate
 
 dn: cn=leasetime,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: leasetime
 
 dn: cn=netbios,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: netbios
 
 dn: cn=routing,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
@@ -492,36 +511,42 @@ univentionObjectType: policies/dhcp_routing
 cn: default-settings
 
 dn: cn=scope,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: scope
 
 dn: cn=statements,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: statements
 
 dn: cn=sound,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: sound
 
 dn: cn=config-registry,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: config-registry
 
 dn: cn=xfree,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: xfree
 
 dn: cn=mail,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
@@ -558,6 +583,7 @@ description: Containing all DNS Objects as per default Settings
 cn: dns
 
 dn: cn=dhcp,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
@@ -565,12 +591,14 @@ description: Containing all DHCP Objects as per default Settings
 cn: dhcp
 
 dn: cn=users,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: users
 
 dn: cn=pwhistory,cn=users,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
@@ -587,12 +615,14 @@ univentionPWHistoryLen: 3
 univentionPWLength: 8
 
 dn: cn=nfsmounts,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
 cn: nfsmounts
 
 dn: cn=printservers,cn=policies,@%@ldap/base@%@
+objectClass: top
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
@@ -691,13 +721,6 @@ sambaGroupType: 2
 gidNumber: 5007
 uniqueMember: cn=DC Backup Hosts,cn=groups,@%@ldap/base@%@
 uniqueMember: cn=DC Slave Hosts,cn=groups,@%@ldap/base@%@
-
-dn: cn=backup,@%@ldap/base@%@
-objectClass: top
-objectClass: person
-cn: backup
-sn: backup
-userPassword: {crypt}@@%%@@backup.pw@@%%@@
 
 dn: cn=Printer-Admins,cn=groups,@%@ldap/base@%@
 objectClass: top

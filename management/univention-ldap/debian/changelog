@@ -1,3 +1,10 @@
+univention-ldap (18.0.8) unstable; urgency=medium
+
+  * Bug #31252: Remove cn=backup,$ldap_base from base.ldif
+  * Issue #2205: Add objectClass top all LDAP objects in base.ldif
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 08 May 2024 14:51:02 +0200
+
 univention-ldap (18.0.7) unstable; urgency=medium
 
   * Bug #57110: Register guardian ACL on primary
