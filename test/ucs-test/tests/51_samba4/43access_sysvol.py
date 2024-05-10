@@ -51,8 +51,9 @@ def test_put_a_file_in_the_folder_policies_on_sysvol_as_a_user(user, s4_domainna
     assert rc == 1, cmd
 
 
-def test_replace_gpt_ini_of_the_default_domain_policies_as_a_user(s4_domainname, user):
-    cmd = ['smbclient', '//localhost/sysvol', f"-U{user}%{'univention'}", '-c', f"cd {s4_domainname}/Policies/{{31B2F340-016D-11D2-945F-00C04FB984F9}};get GPT.INI /tmp/GPT.INI;put /tmp/GPT.INI GPT.INI"]
+def test_replace_gpt_ini_of_the_default_domain_policies_as_a_user(s4_domainname, user, tmpdir):
+    tmp = tmpdir.join("GPI.INI")
+    cmd = ['smbclient', '//localhost/sysvol', f"-U{user}%{'univention'}", '-c', f"cd {s4_domainname}/Policies/{{31B2F340-016D-11D2-945F-00C04FB984F9}};get GPT.INI {tmp};put {tmp} GPT.INI"]
     rc = call(cmd)
     assert rc == 1, cmd
 
