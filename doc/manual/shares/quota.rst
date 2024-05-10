@@ -118,7 +118,7 @@ Querying the quota status by administrators or users
 ----------------------------------------------------
 
 A user can view the quota limits defined for a system using the command
-:command:`repquota -va`, e.g.:
+:command:`repquota -vCa`, e.g.:
 
 .. code-block:: console
 

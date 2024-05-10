@@ -1,4 +1,4 @@
-ucs-test (12.0.75) unstable; urgency=medium
+ucs-test (12.0.76) unstable; urgency=medium
 
   * Issue #2020: expect only keycloak/server/sso/fqdn in
     Content-Security-Policy

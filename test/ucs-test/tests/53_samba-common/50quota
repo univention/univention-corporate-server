@@ -154,7 +154,7 @@ for FS in xfs ext2 ext3 ext4; do
 			res_smbcquota=$(echo "$result" | awk '{print $3 $4 $5}')
 		fi
 
-		res_repquota=$(repquota -v $mountpoint | grep "$user" | awk '{print $3*1024"/"$4*1024"/"$5*1024}')
+		res_repquota=$(repquota -Cv $mountpoint | grep "$user" | awk '{print $3*1024"/"$4*1024"/"$5*1024}')
 		echo "Result smbcquotas: $res_smbcquota"
 		echo "Result repquota  : $res_repquota"
 		if [ "$res_smbcquota" != "$res_repquota" ]; then
