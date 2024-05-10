@@ -88,7 +88,7 @@ fi
 on_master \
 	'while sleep 1s ; do echo waiting for nscd update ; if getent group 'Domain Admins' | grep -F '${BINDUSERNAME}' ; then break; fi; done'
 
-BINDPWDFILE="/tmp/bindpwd"
+BINDPWDFILE="$(mktemp)"
 echo -n "$BINDPASSWORD" > "$BINDPWDFILE"
 /usr/sbin/univention-join -dcaccount "$BINDUSERNAME" -dcpwd "$BINDPWDFILE" || fail_test 1
 rm -f "$BINDPWDFILE"
