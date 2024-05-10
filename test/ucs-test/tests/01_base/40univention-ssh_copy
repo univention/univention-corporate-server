@@ -3,16 +3,19 @@
 ## desc: Check univention-scp und univention-ssh-rsync
 ## tags: [univention]
 ## packages: [univention-ssh]
-## exposure: careful
+## exposure: safe
 
+# shellcheck source=../../lib/base.sh
 . "${TESTLIBPATH}/base.sh" || exit 137
-tmpfile="$(mktemp)"
-trap "rm -f '$tmpfile'" EXIT
+
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
 
 if \
-	univention-ssh-rsync "$tests_root_pwdfile" /etc/hostname "root@${hostname}.${domainname}:/tmp/$$" && \
-	univention-scp "$tests_root_pwdfile" "root@${hostname}.${domainname}:/tmp/$$" "$tmpfile" && \
-	cmp /etc/hostname "$tmpfile"
+	univention-ssh-rsync "${tests_root_pwdfile:?}" /etc/hostname "root@${hostname:?}.${domainname:?}:$tmp/ping" &&
+	cmp /etc/hostname "$tmp/ping" &&
+	univention-scp "$tests_root_pwdfile" "root@${hostname}.${domainname}:$tmp/ping" "$tmp/pong" &&
+	cmp /etc/hostname "$tmp/pong"
 then
 	exit 100 # OK
 else
