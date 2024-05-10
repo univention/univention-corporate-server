@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import subprocess
+from tempfile import NamedTemporaryFile
 from types import TracebackType
 
 import univention.testing.strings as uts
@@ -234,7 +235,7 @@ class QuotaCheck:
 class TempFilesystem:
 
     def __init__(self, quota_type: str, fs_type: str = 'ext4') -> None:
-        self.filename = "/tmp/30_quota_pam.fs"
+        self.filename = ""
         self.mount_point = "/mnt/30_quota_pam"
         self.quota_type = quota_type
         self.fs_type = fs_type
@@ -244,7 +245,7 @@ class TempFilesystem:
         subprocess.check_call([
             "dd",
             "if=/dev/zero",
-            f"of={self.filename}",
+            f"of={self.tmp.name}",
             "bs=1M",
             "count=301",
         ])
@@ -253,14 +254,14 @@ class TempFilesystem:
             "mkfs",
             "--type",
             self.fs_type,
-            self.filename,
+            self.tmp.name,
         ])
 
     def _mount_filesystem(self) -> None:
         os.mkdir(self.mount_point)
         print("Setup loop device")
         self.loop_dev = subprocess.check_output(["losetup", "--find"]).decode('UTF-8').strip("\n")
-        subprocess.check_call(["losetup", self.loop_dev, self.filename])
+        subprocess.check_call(["losetup", self.loop_dev, self.tmp.name])
         print("Mount file")
         file_mntent = Entry(self.loop_dev, self.mount_point, self.fs_type, options=[self.quota_type])
         etc_fstab = File()
@@ -293,6 +294,7 @@ class TempFilesystem:
         etc_fstab.save()
 
     def __enter__(self) -> TempFilesystem:
+        self.tmp = NamedTemporaryFile().__enter__()
         self._create_filesystem()
         self._mount_filesystem()
         return self
@@ -300,4 +302,4 @@ class TempFilesystem:
     def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         self._umount_filesystem()
         os.rmdir(self.mount_point)
-        os.remove(self.filename)
+        self.tmp.__exit__(None, None, None)
