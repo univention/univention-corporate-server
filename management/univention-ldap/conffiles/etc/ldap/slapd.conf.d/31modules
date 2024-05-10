@@ -73,6 +73,9 @@ if configRegistry.is_true('ldap/syncprov', True):
     ucr_filtered_output = ucr_filter_files(get_registered_files())
     if not re.search(r'\nmoduleload.*syncprov.so\n', ucr_filtered_output):
         print('moduleload\tsyncprov.so')
+
+print('moduleload\tconstraint.so')
+print('moduleload\taccesslog.so')
+if configRegistry.is_true('ldap/overlay/sock', False):
+    print('moduleload\tback_sock.so')
 @!@
-moduleload	constraint.so
-moduleload	accesslog.so
