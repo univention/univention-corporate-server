@@ -3,8 +3,6 @@
 ## tags: [basic, coverage]
 ## exposure: safe
 
-import os
-
 import pytest
 
 from univention.appcenter.ini_parser import (
@@ -19,7 +17,7 @@ log_to_stream()
 
 
 @pytest.fixture()
-def valid_ini_file():
+def valid_ini_file(tmp_path):
     content = '''[A section]
 AKey = A Value
 ABool = Yes
@@ -39,21 +37,14 @@ ABool = False
 [A fourth section]
 AKey = A 4th Value
 ABool = Something else'''
-    fname = '/tmp/test.ini'
-    with open(fname, 'w') as fd:
-        fd.write(content)
-    yield fname
-    os.unlink(fname)
+    tmp = tmp_path / "test.ini"
+    tmp.write_text(content)
+    return tmp.as_posix()
 
 
 @pytest.fixture()
-def missing_ini_file():
-    fname = '/tmp/missing.ini'
-    try:
-        os.unlink(fname)
-    except OSError:
-        pass
-    return fname
+def missing_ini_file(tmp_path):
+    return (tmp_path / "test.ini").as_posix()
 
 
 @pytest.fixture()
