@@ -44,14 +44,13 @@ def lo(ucr):
 
 
 @pytest.fixture()
-def ldif(ucr):
+def ldif(ucr, tmp_path) -> str:
     def_admin = 'cn=Administrator,cn=users,%s' % (ucr.get('ldap/base'),)
     attribute = 'description'
     new_attribute_val = uts.random_name()
-    filename = "/tmp/%s.ldif" % (uts.random_name())
-    with open(filename, 'w+') as f:
-        f.write(f"dn: {def_admin}\nchangetype: modify\nreplace: {attribute}\n{attribute}: {new_attribute_val}")
-    return filename
+    tmp = tmp_path / "ldif"
+    tmp.write_text(f"dn: {def_admin}\nchangetype: modify\nreplace: {attribute}\n{attribute}: {new_attribute_val}")
+    return tmp.as_posix()
 
 
 def check_primarys4_access(username, primary_ip, ucr, ldif, password="univention"):
@@ -67,7 +66,7 @@ def check_primarys4_access(username, primary_ip, ucr, ldif, password="univention
 
 
 # test that the school replica can't modify groupmemberships
-def test_group_modification(udm, ucr, lo, user1, ldif):
+def test_group_modification(udm, ucr, lo, user1):
     user_dn, username = user1[0].encode('utf-8'), user1[1].encode('utf-8')
     group_dn, _attrs = lo.search(filter='cn=Domain Admins', attr=['memberUid', 'uniqueMember'])[0]
     with pytest.raises(univention.admin.uexceptions.permissionDenied):
