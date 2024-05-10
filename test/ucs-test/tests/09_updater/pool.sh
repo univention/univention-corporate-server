@@ -13,7 +13,7 @@
 #       2. `mksrc`: Generate th Sources* files
 #       A dummy GPG test key is created by `mkgpg` and used by `gpgsign`
 #    4. `mksh`: Create updater {pre|post}up.sh[.gpg] files
-#    5. `create_releases_json.py`: Create `releass.json` for UCS-5+
+#    5. `create_releases_json.py`: Create `releases.json` for UCS-5+
 # 3. `config_repo`: Reconfigure the local system to use the dummy web server
 # 4. `checkapt`: Check that sources.list contains the right entries
 # 5. Perform an update and upgrade:
@@ -26,12 +26,12 @@
 #
 # Additional notes:
 # 1. All modifications done though this "ucr" wrapper are automatically undone on exit
-# 2. Extra files for apache should be symlinked from ${BASEDIR}, which are removed on exit
+# 2. Extra files for Apache should be symlinked from ${BASEDIR}, which are removed on exit
 #
 # Internales / variables:
 # - $UT_VERBOSE: Enable verbose debugging to the given file including a trace
-# - $UT_DELAY: Delay exiting for given amount of time - usefull for debugging the failing state
-# - $UT_PERF: Run test under `perf` to gather performance petrics
+# - $UT_DELAY: Delay exiting for given amount of time - useful for debugging the failing state
+# - $UT_PERF: Run test under `perf` to gather performance metrics
 # - $UT_INTERACTIVE: if set to "wait", it will wait for ${UT_INTERACTIVE_FILE:-/tmp/ucs-test.interactive.wait} to exist
 # - $UT_INTERACTIVE_FILE: file to check for current timestamp in interactive mode
 # - $BASEDIR: Temporary base directory
@@ -55,7 +55,7 @@
 #   `rm -f /tmp/utest.*; UT_DELAY=60 UT_VERBOSE=/tmp/utest /usr/share/ucs-test/09_updater/28errors -vf`
 #   in a terminal, which executes `sleep 60` in case of failures and created a verbose log file `/tmp/utest.$PID`.
 #   Use `killall -STOP sleep` in a second terminal to extend the `sleep`.
-#   You can then investigate the failed state and use the the log file to get the call chain.
+#   You can then investigate the failed state and use the log file to get the call chain.
 #   Afterwards use `killall -CONT sleep` to continue with the cleanup.
 
 shopt -s extglob

@@ -9,7 +9,7 @@
 ## bugs: [23527]
 
 #################
-#  Infomartion  #
+#  Information  #
 #################
 # This script test the spam detection by creating a user, sending a normal
 # eMail, sending a spam eMail and sending a spam eMail with the spam filter

@@ -132,7 +132,8 @@ Depends:
 Provides:
  ucs-test-module,
 Description: UCR tests
- This package includes some scripts to test the ucr.
+ This package includes some scripts to test the Univention Configuration
+ Registry.
 
 Package: ucs-test-univention-lib
 Architecture: all
@@ -145,7 +146,7 @@ Depends:
 Provides:
  ucs-test-module,
 Description: univention-lib tests
- This package includes some scripts to test the python module univention.lib
+ This package includes some scripts to test the Python module univention.lib
  and the univention shell library.
 
 Package: ucs-test-quota
@@ -184,8 +185,7 @@ Depends:
 Provides:
  ucs-test-module,
 Description: Test scripts for LDAP and replication
- This package includes some scripts for testing the UCS LDAP and the
- replication.
+ This package includes some scripts for testing UCS LDAP and replication.
 
 Package: ucs-test-mail
 Architecture: all
@@ -217,7 +217,7 @@ Depends:
 Provides:
  ucs-test-module,
 Description: Test scripts for samba (and NFS shares)
- This package includes some scripts for testing the functionality of the samba
+ This package includes some scripts for testing the functionality of the Samba
  domain and NFS shares.
 
 Package: ucs-test-samba4
@@ -233,8 +233,8 @@ Depends:
  ${misc:Depends},
 Provides:
  ucs-test-module,
-Description: Test scripts for samba4 (and NFS shares)
- This package includes some scripts for testing the functionality of the samba4
+Description: Test scripts for Samba 4 (and NFS shares)
+ This package includes some scripts for testing the functionality of the Samba 4
  domain and NFS shares.
 
 Package: ucs-test-samba-common
@@ -247,8 +247,8 @@ Depends:
  ${misc:Depends},
 Provides:
  ucs-test-module,
-Description: Test scripts for samba and samba4
- This package includes some scripts for testing the functionality of the samba or samba4
+Description: Test scripts for Samba and Samba 4
+ This package includes some scripts for testing the functionality of Samba or Samba 4
  domain and NFS shares.
 
 Package: ucs-test-s4connector
@@ -320,7 +320,7 @@ Depends:
 Provides:
  ucs-test-module,
 Description: Test scripts for UMC
- This package includes some scripts for testing UMC
+ This package includes some scripts for testing Univention Management Console.
 
 Package: ucs-test-umc-performance
 Architecture: all
@@ -336,7 +336,8 @@ Depends:
 Provides:
  ucs-test-module,
 Description: Test scripts for UMC performance measuring
- This package includes some scripts for testing UMC performance
+ This package includes some scripts for testing Univention Management Console
+ performance.
 
 Package: ucs-test-umc-module
 Architecture: all
@@ -349,7 +350,7 @@ Depends:
 Provides:
  ${python3:Provides},
 Description: Test UMC modules
- This package includes some test UMC modules
+ This package includes some test Univention Management Console modules.
 
 Package: ucs-test-selenium-runner
 Architecture: all
@@ -362,7 +363,7 @@ Depends:
  xvfb,
  ${misc:Depends},
 Description: Dependency for Selenium Tests
- This package includes dependencies for selenium tests
+ This package includes dependencies for Selenium tests.
 
 Package: ucs-test-selenium
 Architecture: all
@@ -390,7 +391,8 @@ Depends:
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
 Description: Test scripts for UMC
- This package includes some scripts for testing UMC
+ This package includes some scripts for testing Univention Management Console
+ using Playwright browser based testing.
 
 Package: ucs-test-adconnector
 Architecture: all
@@ -616,8 +618,8 @@ Recommends:
  ucs-test-framework,
 Provides:
  ucs-test-module,
-Description: Test scripts to test the radius integration
- This package includes test-cases for freeradius.
+Description: Test scripts to test the RADIUS integration
+ This package includes test-cases for FreeRADIUS.
 
 Package: ucs-test-self-service
 Architecture: all
@@ -675,7 +677,7 @@ Recommends:
  ucs-test-framework,
 Description: Test scripts to run smbtorture
  This package includes test-cases to run smbtorture
- samba selftest tests
+ Samba self tests.
 
 Package: ucs-test-crypto
 Architecture: all
@@ -709,9 +711,9 @@ Recommends:
  ucs-test-framework,
 Provides:
  ucs-test-module,
-Description: Test the UDM HTTP API
+Description: Test the UDM HTTP REST API
  This package includes test to verify the functionality of utilities
- from the UDM HTTP API.
+ from the UDM HTTP REST API.
 
 Package: ucs-test-keycloak
 Architecture: all
@@ -726,5 +728,5 @@ Depends:
  ${misc:Depends},
 Recommends:
  ucs-test-framework,
-Description: Test scripts for the keycloak app
- This package includes test-cases for the keycloak app.
+Description: Test scripts for the Keycloak app
+ This package includes test-cases for the Keycloak app.

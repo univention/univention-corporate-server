@@ -16,7 +16,7 @@ For every test a single executable file exists, which implements the test.
 * In the hash-bang-line `#!/usr/share/ucs-test/runner` should be used instead of using `/bin/bash` or `/usr/bin/python3` directly.
   This interpreter asserts several things:
   * The current working directory is changed to the directory containing the script.
-  * Meta data information from the test case file are used to check the required system role, check for required packages and versions.
+  * [Meta data](#Meta data) information from the test case file are used to check the required system role, check for required packages and versions.
     The test is only run if those pre-conditions are met.
   * The (integer) return value of the test script is converted to a human readable message.
 
@@ -30,6 +30,8 @@ It collects their output and creates some summary information.
 * `ucs-test-framework`: This package contains the minimum required files like [runner](bin/runner) and [ucs-test](bin/ucs-test).
 * `ucs-test-libs`: This package contains the optional shared libraries used by several other packages.
 * `ucs-test-*`: Each package contains the tests of the different sections.
+* `ucs-test`: Meta-package to install everything.
+* `ucs-test-modules-all`: Meta-package depending on all `ucs-test-*` packages.
 
 ## Libraries
 The `ucs-test-libs` package provides several libraries for common tasks, such as creating and modifying UDM objects, handling UCR variables, or common functions to simplify writing robust tests.
@@ -54,7 +56,7 @@ Currently the following libraries are shipped:
 - [random.sh](lib/random.sh): Provide function to generate random names for different requirements
 - [shares.sh](lib/shares.sh): Simplify handling UDM shares
 - [ucr.sh](lib/ucr.sh): Wrapper around UCR to restore values on exit ;user.sh: Simplify handling UDM users
-- [undo.sh](lib/undo.sh): Helper function for unding things in shell
+- [undo.sh](lib/undo.sh): Helper function for undoing things in shell
 - [user.sh](lib/user.sh): Simplify handling UDM users
 
 Sections can also include their own helper files, which should have the suffix `.py` or `.sh` to distinguish them from regular tests.
@@ -65,7 +67,7 @@ To allow the creation of LDAP objects on different system roles other than Prima
 - `tests/domainadmin/pwd`: Domain administrator password to be used in test cases
 - `tests/domainadmin/pwdfile`: File to read the domain administrator password
 
-By default these variables are set to the the DN of `Administrator` and to the password `univention`.
+By default these variables are set to the DN of `Administrator` and to the password `univention`.
 
 To use these variables in a UDM call, `udm-test` can be used, for example:
 ```sh
@@ -90,7 +92,7 @@ To wait also for the service restart, for example if a new printer was added, th
 # Usage
 Tests can be run in two ways.
 Either directly using their fully qualified name (`/usr/share/ucs-test/00_section/00_test`), or using `ucs-test` to run several tests together.
-`ucs-test` supports several options to select a subset of all installed tests, which are described in its manual page (<man:ucs-test>).
+`ucs-test` supports several options to select a subset of all installed tests, which are described in its manual page (<man:ucs-test(1)>).
 
 # Creating new tests
 There is a [minimal](doc/template.min) and a [maximal](doc/template.max) template for new tests.
@@ -167,9 +169,9 @@ This allows to differentiate the return values and to distinguish between tests,
 - `skip`: the test should be skipped since that version.
 ```
 ## versions:
-## 2.0-0: found
-## 2.1-0: fixed
-## 3.0-0: skip
+##  2.0-0: found
+##  2.1-0: fixed
+##  3.0-0: skip
 ```
 
 ### tags
@@ -182,8 +184,8 @@ The name for tags can be chosen freely, but the following words have special mea
 In addition to them the following tags are used commonly:
 - `apptest`: execute them only for testing new Apps, but otherwise skip them due to their long run time.
 - `basic`: check that basic functions work on all system roles.
-- `univention`: tests which require special pre-requisites, for exmaple *well known password* `univention` for admin user.
-- `import500`, `import30000`, `import65000`, `performance`: performance tests for importing ½/30/65k users.
+- `univention`: tests which require special pre-requisites, for example *well known password* `univention` for admin user.
+- `big_environmen`, `import500`, `import30000`, `import65000`, `performance`: performance tests for importing ½/30/65k users.
 - `rename_default_account`: modifies standard accounts.
 - `replication`: sub-set of tests for replication.
 - `ldapextensions`: sub-set of tests for LDAP extensions.
@@ -260,15 +262,15 @@ This mechanism allows the user to still install the full `ucs-test-*` section pa
 By using this mechanism of `ucs-test`, tests still missing some dependent packages are skipped.
 
 ### apps
-A list of apps that have to be installed on the system
-otherwise the test is not executed.
+A list of apps that have to be installed on the system.
+Otherwise the test is not executed.
 ```
 ## apps: [keycloak,mynewapp]
 ```
 
 ### apps-not
-A list of apps that must not to be installed on the system
-otherwise the test is not executed.
+A list of apps that must not to be installed on the system.
+Otherwise the test is not executed.
 ```
 ## apps-not: [keycloak,mynewapp]
 ```
@@ -281,14 +283,13 @@ This is used to classify tests in different categories:
 - `careful`: test do modify the system (create files, restart services, change configurations), but revert all changes back to the original state at the end of the test, regardless of if the test succeeds or fails.
 - `dangerous`: the test has side effects, which might change this and other systems in a way unfit for production systems.
   This includes — for example — creating users and groups in LDAP, re-configuring essential services like LDAP.
+
 The default is `dangerous`.
 
 ### external-junit
-
-Filename of a junit result file that is provided by the test itself.
-This can be used — for example — if the test starts pytest in a container.
-```
-...
+Filename of a JUnit result file that is provided by the test itself.
+This can be used — for example — if the test starts `pytest` in a container.
+```sh
 ## external_junit: /tmp/my_test_results.xml
 ...
 docker exec pytest --junit-xml=/tmp/junit.xml ...
@@ -298,7 +299,7 @@ docker cp container:/tmp/junit.xml /tmp/my_test_results.xml
 ## Return value
 In its simplest case a test should return `0` for success and `1` on failure.
 For backward compatibility to previous versions of `ucs-test` several other special values can be returned as well to provide more detailed information.
-For exmaple `REASON_SKIP` and several others can be used to skip tests if the pre-conditions for running the test are not met, for example missing credentials or missing help software.
+For example `REASON_SKIP` and several others can be used to skip tests if the pre-conditions for running the test are not met, for example missing credentials or missing help software.
 More information is available in the [source code](univention/testing/codes.py).
 
 # Quality
@@ -314,7 +315,7 @@ To enforce this `ucs-test` by default refrains from running tests with an [#expo
 
 # Appendix
 
-## Using pytest
+## Using `pytest`
 Since UCS 4.4-8 tests can directly use [pytest](http://pytest.org/).
 1. The file implementing the test must be executable and its name must have the suffix `.py`.
 2. The hash-bang-line should be `#!/usr/share/ucs-test/runner [/usr/bin/]pytest-3` followed by additional options for `pytest`.
@@ -334,11 +335,11 @@ Several [fixtures](tests/conftest.py) are available:
 ## Using Selenium
 Since UCS 4.2-3 tests can use [Selenium](https://www.selenium.dev/) for browser based UMC testing.
 1. The test must be implemented in Python.
-2. The hash-bang-line shoule be `#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium-pytest` when using `pytest`.
+2. The hash-bang-line should be `#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium-pytest` when using `pytest`.
 3. The hash-bang-line should be `#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium`.
 
 [univention.testing.selenium](univention/testing/selenium/base.py) provides several helper functions.
-See [86 selenium](tests/86_selenium/) for examples.
+See [86 browser](tests/86_browser/) for examples.
 
 ```python
 #!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium-pytest -s -l -v
@@ -348,3 +349,19 @@ def test_login(selenium):
     selenium.do_login()
     assert True
 ```
+
+## Using Playwright
+Since UCS 5.0-5 tests can use [Playwright](https://playwright.dev/) for browser based UMC testing.
+1. The test must be implemented in Python.
+2. The hash-bang-line should be `#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright`.
+
+[univention.testing.browser](univention/testing/browser/) provides several helper functions.
+See [86 browser](tests/86_browser/) for examples.
+
+```python
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
+## desc: Test basic UMC login
+## exposure: safe
+from univention.testing.browser.lib import UMCBrowserTest
+def test_login(umc_browser_test: UMCBrowserTest):
+    assert True

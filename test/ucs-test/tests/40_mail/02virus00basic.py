@@ -6,7 +6,7 @@
 ## bugs: [23527]
 
 #################
-#  Infomartion  #
+#  Information  #
 #################
 # This script tests the eMail virus detection by sending viruses
 # to a newly created user both with spam detection on and off,

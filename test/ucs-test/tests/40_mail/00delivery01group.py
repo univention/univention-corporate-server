@@ -6,7 +6,7 @@
 ## bugs: [23527]
 
 #################
-#  Infomartion  #
+#  Information  #
 #################
 # This script creates three users and gives each user the same alternative eMail address.
 # It then sends an eMail to the address and checks if all three user received it.
