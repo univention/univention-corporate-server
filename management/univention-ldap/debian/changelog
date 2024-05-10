@@ -1,3 +1,13 @@
+univention-ldap (17.0.9) unstable; urgency=medium
+
+  * Bug #57267: Support configuring the LDAP overlay slapd-sock
+    for `sockresps extendedresults` via the UCR variable
+    ldap/overlay/sock=true.
+  * Support activating `sockops add delete modify modrdn` via
+    UCR variable ldap/overlay/sock/sockops=CRUD.
+
+ -- Arvid <requate@univention.de>  Thu, 06 Jun 2024 12:22:07 +0200
+
 univention-ldap (17.0.8) unstable; urgency=medium
 
   * Bug #57110: Register guardian ACL on primary

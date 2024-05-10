@@ -98,3 +98,13 @@ add_content_acl on
 overlay constraint
 constraint_attribute uidNumber regex ^[^0]+[0-9]*$
 constraint_attribute gidNumber regex ^[^0]+[0-9]*$
+@!@
+if configRegistry.is_true('ldap/overlay/sock', False):
+    print('overlay sock')
+    print('extensions binddn connid peername')
+    print('socketpath /var/lib/univention-ldap/slapd-sock')
+    sockops = configRegistry.get('ldap/overlay/sock/sockops', '')
+    if sockops == 'CRUD':
+        print('sockops add delete modify modrdn')
+    print('sockresps extendedresult')
+@!@
