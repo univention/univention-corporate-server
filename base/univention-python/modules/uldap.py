@@ -852,23 +852,29 @@ class access(object):
             response['ctrls'] = resp_ctrls
 
     @_fix_reconnect_handling
-    def delete(self, dn):
+    def delete(self, dn, serverctrls=None, response=None):
         # type: (str) -> None
         """
         Delete a LDAP object.
 
         :param str dn: The distinguished name of the object to remove.
+        :param serverctrls: a list of :py:class:`ldap.controls.LDAPControl` instances sent to the server along with the LDAP request.
+        :type serverctrls: list[ldap.controls.LDAPControl]
+        :param dict response: An optional dictionary to receive the server controls of the result.
         """
         log.debug('uldap.delete %s', dn)
         if dn:
             log.debug('delete')
             try:
-                self.lo.delete_s(dn)
+                _rtype, _rdata, _rmsgid, resp_ctrls = self.lo.delete_ext_s(dn, serverctrls=serverctrls)
             except ldap.REFERRAL as exc:
                 if not self.follow_referral:
                     raise
                 lo_ref = self._handle_referral(exc)
-                lo_ref.delete_s(dn)
+                _rtype, _rdata, _rmsgid, resp_ctrls = lo_ref.delete_ext_s(dn, serverctrls=serverctrls)
+
+        if serverctrls and isinstance(response, dict):
+            response['ctrls'] = resp_ctrls
 
     def parentDn(self, dn):
         # type: (str) -> Optional[str]
