@@ -1,3 +1,9 @@
+univention-pam (15.0.10) unstable; urgency=medium
+
+  * Bug #56793: Set ldap_referrals to false in sssd.conf
+
+ -- Arvid <requate@univention.de>  Fri, 10 May 2024 15:29:46 +0200
+
 univention-pam (15.0.9) unstable; urgency=medium
 
   * Bug #56793: Avoid inline comments in sssd.conf, that can lead
