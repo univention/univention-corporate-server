@@ -1,3 +1,9 @@
+univention-updater (17.0.4) unstable; urgency=medium
+
+  * Bug #31252: Remove cn=backup,$ldap_base on upgrade to UCS 5.2
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 22 May 2024 14:51:02 +0200
+
 univention-updater (17.0.3) unstable; urgency=low
 
   * Bug #57296: disable fetchmail during the update to prevent update
