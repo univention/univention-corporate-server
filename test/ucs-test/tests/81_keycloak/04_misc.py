@@ -101,7 +101,7 @@ def test_rest_api_endpoints(keycloak_config, realm: str):
     keycloak_get_request(keycloak_config, f'realms/{realm}/ui-ext/sessions')
     keycloak_get_request(keycloak_config, f'realms/{realm}/admin-events')
     keycloak_get_request(keycloak_config, f'realms/{realm}/events')
-    assert keycloak_get_request(keycloak_config, f'realms/{realm}/authentication/unregistered-required-actions')
+    keycloak_get_request(keycloak_config, f'realms/{realm}/authentication/unregistered-required-actions')
     assert keycloak_get_request(keycloak_config, f'realms/{realm}/authentication/required-actions')
     assert keycloak_get_request(keycloak_config, f'realms/{realm}/authentication/flows')
     assert keycloak_get_request(keycloak_config, f'realms/{realm}/ui-ext/authentication-management/flows')

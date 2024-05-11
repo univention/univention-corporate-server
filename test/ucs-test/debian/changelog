@@ -1,4 +1,4 @@
-ucs-test (10.0.21-41) unstable; urgency=medium
+ucs-test (10.0.21-42) unstable; urgency=medium
 
   * Issue #2207: test keycloak REST endpoints
 
