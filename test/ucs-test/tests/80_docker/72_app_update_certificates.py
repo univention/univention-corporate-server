@@ -5,8 +5,12 @@
 ## packages:
 ##   - docker.io
 
-import os
+from __future__ import annotations
+
 import subprocess
+from contextlib import suppress
+from pathlib import Path
+from shlex import quote
 
 import pytest
 
@@ -29,29 +33,27 @@ def verify_certs(app: App, check_dir: Path, cert_files: list[str]) -> None:
 
 
 @pytest.mark.exposure('dangerous')
-def test_app_update_certificates(appcenter: Appcenter, app_name: str) -> None:
-    check_dir = f'/tmp/update-certificates-test-{app_name}'
+def test_app_update_certificates(appcenter: Appcenter, app_name: str, tmp_path: Path) -> None:
+    check_dir = tmp_path / "called"
     setup = '#!/bin/sh'
     store_data = '#!/bin/sh'
     update_certificates = f'''#!/bin/sh
 set -x
-mkdir "{check_dir}"
+mkdir {quote(check_dir.as_posix())}
 exit 0
 '''
 
     app = App(name=app_name, version='1', build_package=False, call_join_scripts=False)
-    app.check_dir = check_dir
-    check_files = []
-    check_files.append('etc/univention/ssl/docker-host-certificate/cert.perm')
-    check_files.append('etc/univention/ssl/docker-host-certificate/private.key')
-    check_files.append('usr/local/share/ca-certificates/ucs.crt')
-    check_files.append('etc/univention/ssl/%(hostname)s.%(domainname)s/cert.perm' % app.ucr)
-    check_files.append('etc/univention/ssl/%(hostname)s.%(domainname)s/private.key' % app.ucr)
-
-    app.cert_files = check_files
+    check_files = [
+        'etc/univention/ssl/docker-host-certificate/cert.perm',
+        'etc/univention/ssl/docker-host-certificate/private.key',
+        'usr/local/share/ca-certificates/ucs.crt',
+        'etc/univention/ssl/%(hostname)s.%(domainname)s/cert.perm' % app.ucr,
+        'etc/univention/ssl/%(hostname)s.%(domainname)s/private.key' % app.ucr,
+    ]
 
     try:
-        cleanup(app)
+        cleanup(app, check_dir, check_files)
         app.set_ini_parameter(
             DockerImage='docker-test.software-univention.de/alpine:3.6',
             DockerScriptUpdateCertificates='/certs',
@@ -66,22 +68,22 @@ exit 0
         appcenter.update()
         app.install()
         app.verify(joined=False)
-        verify_certs(app)
-        cleanup(app)
+        verify_certs(app, check_dir, check_files)
+        cleanup(app, check_dir, check_files)
+
         subprocess.check_output(['univention-app', 'update-certificates', app_name], text=True)
-        verify_certs(app)
-        cleanup(app)
+        verify_certs(app, check_dir, check_files)
+        cleanup(app, check_dir, check_files)
+
         subprocess.check_output(['univention-app', 'update-certificates'], text=True)
-        verify_certs(app)
-        cleanup(app)
+        verify_certs(app, check_dir, check_files)
+        cleanup(app, check_dir, check_files)
 
         app = App(name=app_name, version='2', build_package=False, call_join_scripts=False)
-        app.check_dir = check_dir
-        app.cert_files = check_files
         app.set_ini_parameter(
             DockerImage='docker-test.software-univention.de/alpine:3.7',
-            DockerScriptSetup='/setup',
             DockerScriptUpdateCertificates='/root/certs',
+            DockerScriptSetup='/setup',
             DockerScriptStoreData='/store_data',
             DockerScriptInit='/sbin/init',
         )
@@ -92,7 +94,7 @@ exit 0
         appcenter.update()
         app.upgrade()
         app.verify(joined=False)
-        verify_certs(app)
+        verify_certs(app, check_dir, check_files)
     finally:
         app.uninstall()
         app.remove()
