@@ -7,8 +7,12 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-import os
+from __future__ import annotations
+
 import subprocess
+from contextlib import suppress
+from pathlib import Path
+from typing import Iterator
 
 import pytest
 
@@ -33,27 +37,23 @@ def properties():
     }
 
 
-@pytest.fixture()
-def hook_name():
-    return uts.random_name()
+class Hook:
+    def __init__(self, tmp_path) -> None:
+        self.name = uts.random_name()
+        self.module = Path(HOOKSPATH) / f"{self.name}.py"
+        self.fails = tmp_path / f"{self.name}_executed"
 
 
 @pytest.fixture()
-def cleanup(hook_name):
-    yield
-    try:
-        os.remove('%s%s.py' % (HOOKSPATH, hook_name))
-    except OSError:
-        pass
-    try:
-        os.remove('/tmp/%s_executed' % hook_name)
-    except OSError:
-        pass
+def hook(tmp_path) -> Iterator[Hook]:
+    hook = Hook(tmp_path)
 
+    yield hook
 
-@pytest.fixture()
-def fn_hook():
-    return '%s%s.py' % (HOOKSPATH, hook_name)
+    with suppress(FileNotFoundError):
+        hook.module.unlink()  # Py3.8+: missing_ok=True
+    with suppress(FileNotFoundError):
+        hook.fails.unlink()  # Py3.8+: missing_ok=True
 
 
 def flatten(layout):
@@ -578,22 +578,21 @@ class Test_UDMExtension:
     @pytest.mark.tags('udm', 'apptest')
     @pytest.mark.roles('domaincontroller_master')
     @pytest.mark.exposure('careful')
-    def test_extented_attribute_ldap_addlist_hook(self, udm, hook_name, cleanup):
+    def test_extented_attribute_ldap_addlist_hook(self, udm, hook):
         """settings/extented_attribute LDAP addlist hook"""
-        with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
-            hook_module.write("""
+        hook.module.write_text(f"""
 import univention.admin
 import univention.admin.modules
 import univention.admin.hook
 import univention.admin.handlers.users.user
 
-class %s(univention.admin.hook.simpleHook):
+class {hook.name}(univention.admin.hook.simpleHook):
     def hook_ldap_addlist(self, obj, al=[]):
-        with open('/tmp/%s_executed', 'w') as fp:
+        with open('{hook.fails}', 'w') as fp:
             if not isinstance(obj, univention.admin.handlers.users.user.object):
-                fp.write('LDAP addlist hook called with wrong object parameter (Type: %%s)' %% type(obj))
-        return al + [('description', b'%s')]
-""" % (hook_name, hook_name, hook_name))
+                fp.write('LDAP addlist hook called with wrong object parameter (Type: %s)\\n' % type(obj))
+        return al + [('description', b'{hook.name}')]
+""")
 
         udm.stop_cli_server()
         cli_name = uts.random_string()
@@ -606,41 +605,39 @@ class %s(univention.admin.hook.simpleHook):
             module='users/user',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            hook=hook_name,
+            hook=hook.name,
         )
 
         user = udm.create_user(**{cli_name: uts.random_string()})[0]
-        utils.verify_ldap_object(user, {'description': [hook_name]})
+        utils.verify_ldap_object(user, {'description': [hook.name]})
 
-        with open('/tmp/%s_executed' % hook_name) as fp:
-            fails = fp.read()
-            assert not fails, fails
+        fails = hook.fails.read_text()
+        assert not fails, fails
 
     @pytest.mark.tags('udm', 'apptest')
     @pytest.mark.roles('domaincontroller_master')
     @pytest.mark.exposure('careful')
-    def test_extented_attribute_ldap_pre_create_hook(self, udm, ucr, hook_name, cleanup):
+    def test_extented_attribute_ldap_pre_create_hook(self, udm, ucr, hook):
         """settings/extented_attribute LDAP pre create hook"""
-        with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
-            hook_module.write("""
+        hook.module.write_text(f"""
 import univention.admin
 import univention.admin.modules
 import univention.admin.hook
 import univention.admin.handlers.users.user
 import univention.testing.utils
 
-class %s(univention.admin.hook.simpleHook):
+class {hook.name}(univention.admin.hook.simpleHook):
     def hook_ldap_pre_create(self, module):
-        with open('/tmp/%s_executed', 'w') as fp:
+        with open('{hook.fails}', 'w') as fp:
             if not isinstance(module, univention.admin.handlers.users.user.object):
-                fp.write('LDAP pre create Hook called with wrong object parameter (Type: %%s)' %% type(module))
+                fp.write('LDAP pre create Hook called with wrong object parameter (Type: %s)\\n' % type(module))
 
             univention.testing.utils.wait_for_replication()
             try:
-                univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s', should_exist = False)
+                univention.testing.utils.verify_ldap_object('uid={hook.name},cn=users,{ucr['ldap/base']}', should_exist=False)
             except univention.testing.utils.LDAPUnexpectedObjectFound:
-                fp.write('\\nObject had already been created when LDAP pre create hook was called')
-""" % (hook_name, hook_name, hook_name, ucr['ldap/base']))
+                fp.write('Object had already been created when LDAP pre create hook was called\\n')
+""")
 
         udm.stop_cli_server()
         cli_name = uts.random_string()
@@ -653,33 +650,31 @@ class %s(univention.admin.hook.simpleHook):
             module='users/user',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            hook=hook_name,
+            hook=hook.name,
         )
 
-        udm.create_user(**{cli_name: uts.random_string(), 'username': hook_name})[0]
+        udm.create_user(**{cli_name: uts.random_string(), 'username': hook.name})[0]
 
-        with open('/tmp/%s_executed' % hook_name) as fp:
-            fails = fp.read()
-            assert not fails, fails
+        fails = hook.fails.read_text()
+        assert not fails, fails
 
     @pytest.mark.tags('udm', 'apptest')
     @pytest.mark.roles('domaincontroller_master')
     @pytest.mark.exposure('careful')
-    def test_extented_attribute_open_hook(self, udm, hook_name, cleanup):
+    def test_extented_attribute_open_hook(self, udm, hook):
         """settings/extented_attribute open hook"""
-        with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
-            hook_module.write("""
+        hook.module.write_text(f"""
 import univention.admin
 import univention.admin.modules
 import univention.admin.hook
 import univention.admin.handlers.users.user
 
-class %s(univention.admin.hook.simpleHook):
+class {hook.name}(univention.admin.hook.simpleHook):
     def hook_open(self, obj):
-        with open('/tmp/%s_executed', 'a+') as fp:
+        with open('{hook.fails}', 'a+') as fp:
             if not isinstance(obj, univention.admin.handlers.users.user.object):
-                fp.write('Hook called with wrong object parameter (Type: %%s)' %% type(module))
-""" % (hook_name, hook_name))
+                fp.write('Hook called with wrong object parameter (Type: %s)\\n' % type(module))
+""")
 
         udm.stop_cli_server()
         cli_name = uts.random_string()
@@ -692,41 +687,39 @@ class %s(univention.admin.hook.simpleHook):
             module='users/user',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            hook=hook_name,
+            hook=hook.name,
         )
 
         user = udm.create_user(**{cli_name: uts.random_string()})[0]
         udm.modify_object('users/user', dn=user, displayName=uts.random_name())
 
-        with open('/tmp/%s_executed' % hook_name) as fp:
-            fails = fp.read()
-            assert not fails, fails
+        fails = hook.fails.read_text()
+        assert not fails, fails
 
     @pytest.mark.tags('udm', 'apptest')
     @pytest.mark.roles('domaincontroller_master')
     @pytest.mark.exposure('careful')
-    def test_extented_attribute_ldap_post_create_hook(self, udm, ucr, hook_name, cleanup):
+    def test_extented_attribute_ldap_post_create_hook(self, udm, ucr, hook):
         """settings/extented_attribute LDAP post create hook"""
-        with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
-            hook_module.write("""
+        hook.module.write_text(f"""
 import univention.admin
 import univention.admin.modules
 import univention.admin.hook
 import univention.admin.handlers.users.user
 import univention.testing.utils
 
-class %s(univention.admin.hook.simpleHook):
+class {hook.name}(univention.admin.hook.simpleHook):
     def hook_ldap_post_create(self, module):
-        with open('/tmp/%s_executed', 'w') as fp:
+        with open('{hook.fails}', 'w') as fp:
             if not isinstance(module, univention.admin.handlers.users.user.object):
-                fp.write('Hook called with wrong object parameter (Type: %%s)' %% type(module))
+                fp.write('Hook called with wrong object parameter (Type: %s)\\n' % type(module))
 
             univention.testing.utils.wait_for_replication()
             try:
-                univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s')
+                univention.testing.utils.verify_ldap_object('uid={hook.name},cn=users,{ucr["ldap/base"]}')
             except univention.testing.utils.LDAPObjectNotFound:
-                fp.write('\\nObject had not yet been created when LDAP post create hook was called')
-""" % (hook_name, hook_name, hook_name, ucr['ldap/base']))
+                fp.write('Object had not yet been created when LDAP post create hook was called\\n')
+""")
 
         udm.stop_cli_server()
         cli_name = uts.random_string()
@@ -739,40 +732,38 @@ class %s(univention.admin.hook.simpleHook):
             module='users/user',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            hook=hook_name,
+            hook=hook.name,
         )
 
-        udm.create_user(**{cli_name: uts.random_string(), 'username': hook_name})[0]
+        udm.create_user(**{cli_name: uts.random_string(), 'username': hook.name})[0]
 
-        with open('/tmp/%s_executed' % hook_name) as fp:
-            fails = fp.read()
-            assert not fails, fails
+        fails = hook.fails.read_text()
+        assert not fails, fails
 
     @pytest.mark.tags('udm', 'apptest')
     @pytest.mark.roles('domaincontroller_master')
     @pytest.mark.exposure('careful')
-    def test_extented_attribute_ldap_post_modify_hook(self, udm, ucr, hook_name, cleanup):
+    def test_extented_attribute_ldap_post_modify_hook(self, udm, ucr, hook):
         """settings/extented_attribute LDAP post modify hook"""
-        with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
-            hook_module.write("""
+        hook.module.write_text(f"""
 import univention.admin
 import univention.admin.modules
 import univention.admin.hook
 import univention.admin.handlers.users.user
 import univention.testing.utils
 
-class %s(univention.admin.hook.simpleHook):
+class {hook.name}(univention.admin.hook.simpleHook):
     def hook_ldap_post_modify(self, module):
-        with open('/tmp/%s_executed', 'w') as fp:
+        with open('{hook.fails}', 'w') as fp:
             if not isinstance(module, univention.admin.handlers.users.user.object):
-                fp.write('LDAP post modify hook called with wrong object parameter (Type: %%s)' %% type(module))
+                fp.write('LDAP post modify hook called with wrong object parameter (Type: %s)\\n' % type(module))
 
             univention.testing.utils.wait_for_replication()
             try:
-                univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s', {'description': [b'%s']}, retry_count=0)
+                univention.testing.utils.verify_ldap_object('uid={hook.name},cn=users,{ucr["ldap/base"]}', {{'description': [b'{hook.name}']}}, retry_count=0)
             except univention.testing.utils.LDAPObjectValueMissing:
-                fp.write('\\nObject was not yet modified when LDAP post modify hook was called')
-""" % (hook_name, hook_name, hook_name, ucr['ldap/base'], hook_name))
+                fp.write('Object was not yet modified when LDAP post modify hook was called\\n')
+""")
 
         udm.stop_cli_server()
         cli_name = uts.random_string()
@@ -785,36 +776,34 @@ class %s(univention.admin.hook.simpleHook):
             module='users/user',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            hook=hook_name,
+            hook=hook.name,
         )
 
-        user = udm.create_user(**{cli_name: uts.random_string(), 'username': hook_name})[0]
-        udm.modify_object('users/user', dn=user, description=hook_name)
+        user = udm.create_user(**{cli_name: uts.random_string(), 'username': hook.name})[0]
+        udm.modify_object('users/user', dn=user, description=hook.name)
 
-        with open('/tmp/%s_executed' % hook_name) as fp:
-            fails = fp.read()
-            assert not fails, fails
+        fails = hook.fails.read_text()
+        assert not fails, fails
 
     @pytest.mark.tags('udm', 'apptest')
     @pytest.mark.roles('domaincontroller_master')
     @pytest.mark.exposure('careful')
-    def test_extented_attribute_ldap_modlist_hook(self, udm, hook_name, cleanup):
+    def test_extented_attribute_ldap_modlist_hook(self, udm, hook):
         """settings/extented_attribute LDAP modlist hook"""
-        with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
-            hook_module.write("""
+        hook.module.write_text(f"""
 import univention.admin
 import univention.admin.modules
 import univention.admin.hook
 import univention.admin.handlers.users.user
 import univention.testing.utils
 
-class %s(univention.admin.hook.simpleHook):
+class {hook.name}(univention.admin.hook.simpleHook):
     def hook_ldap_modlist(self, module, ml=[]):
-        with open('/tmp/%s_executed', 'w') as fp:
+        with open('{hook.fails}', 'w') as fp:
             if not isinstance(module, univention.admin.handlers.users.user.object):
-                fp.write('LDAP modlist hook called with wrong object parameter (Type: %%s)' %% type(module))
-        return ml + [('description', module.get('description', b''), b'%s')]
-""" % (hook_name, hook_name, hook_name))
+                fp.write('LDAP modlist hook called with wrong object parameter (Type: %s)\\n' % type(module))
+        return ml + [('description', module.get('description', b''), b'{hook.name}')]
+""")
 
         udm.stop_cli_server()
         cli_name = uts.random_string()
@@ -831,41 +820,39 @@ class %s(univention.admin.hook.simpleHook):
             module='users/user',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            hook=hook_name,
+            hook=hook.name,
         )
 
         udm.modify_object('users/user', dn=user, displayName=uts.random_name())
-        utils.verify_ldap_object(user, {'description': [hook_name]})
+        utils.verify_ldap_object(user, {'description': [hook.name]})
 
-        with open('/tmp/%s_executed' % hook_name) as fp:
-            fails = fp.read()
-            assert not fails, fails
+        fails = hook.fails.read_text()
+        assert not fails, fails
 
     @pytest.mark.tags('udm', 'apptest')
     @pytest.mark.roles('domaincontroller_master')
     @pytest.mark.exposure('careful')
-    def test_extented_attribute_ldap_pre_modify_hook(self, udm, ucr, hook_name, cleanup):
+    def test_extented_attribute_ldap_pre_modify_hook(self, udm, ucr, hook):
         """settings/extented_attribute LDAP pre modify hook"""
-        with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
-            hook_module.write("""
+        hook.module.write_text(f"""
 import univention.admin
 import univention.admin.modules
 import univention.admin.hook
 import univention.admin.handlers.users.user
 import univention.testing.utils
 
-class %s(univention.admin.hook.simpleHook):
+class {hook.name}(univention.admin.hook.simpleHook):
     def hook_ldap_pre_modify(self, module):
-        with open('/tmp/%s_executed', 'w') as fp:
+        with open('{hook.fails}', 'w') as fp:
             if not isinstance(module, univention.admin.handlers.users.user.object):
-                fp.write('LDAP pre modify hook called with wrong object parameter (Type: %%s)' %% type(module))
+                fp.write('LDAP pre modify hook called with wrong object parameter (Type: %s)\\n' % type(module))
 
             univention.testing.utils.wait_for_replication()
             try:
-                univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s', {'description': []}, retry_count=0)
+                univention.testing.utils.verify_ldap_object('uid={hook.name},cn=users,{ucr["ldap/base"]}', {{'description': []}}, retry_count=0)
             except univention.testing.utils.LDAPObjectUnexpectedValue:
-                fp.write('\\nObject had already been modified when LDAP pre modify hook was called')
-""" % (hook_name, hook_name, hook_name, ucr['ldap/base']))
+                fp.write('Object had already been modified when LDAP pre modify hook was called\\n')
+""")
 
         udm.stop_cli_server()
         cli_name = uts.random_string()
@@ -878,41 +865,39 @@ class %s(univention.admin.hook.simpleHook):
             module='users/user',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            hook=hook_name,
+            hook=hook.name,
         )
 
-        user = udm.create_user(**{cli_name: uts.random_string(), 'username': hook_name})[0]
+        user = udm.create_user(**{cli_name: uts.random_string(), 'username': hook.name})[0]
         udm.modify_object('users/user', dn=user, description=uts.random_name())
 
-        with open('/tmp/%s_executed' % hook_name) as fp:
-            fails = fp.read()
-            assert not fails, fails
+        fails = hook.fails.read_text()
+        assert not fails, fails
 
     @pytest.mark.tags('udm', 'apptest')
     @pytest.mark.roles('domaincontroller_master')
     @pytest.mark.exposure('careful')
-    def test_extented_attribute_ldap_pre_remove_hook(self, udm, ucr, hook_name, cleanup):
+    def test_extented_attribute_ldap_pre_remove_hook(self, udm, ucr, hook):
         """settings/extented_attribute LDAP pre remove hook"""
-        with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
-            hook_module.write("""
+        hook.module.write_text(f"""
 import univention.admin
 import univention.admin.modules
 import univention.admin.hook
 import univention.admin.handlers.users.user
 import univention.testing.utils
 
-class %s(univention.admin.hook.simpleHook):
+class {hook.name}(univention.admin.hook.simpleHook):
     def hook_ldap_pre_remove(self, module):
-        with open('/tmp/%s_executed', 'w') as fp:
+        with open('{hook.fails}', 'w') as fp:
             if not isinstance(module, univention.admin.handlers.users.user.object):
-                fp.write('LDAP pre remove hook called with wrong object parameter (Type: %%s)' %% type(module))
+                fp.write('LDAP pre remove hook called with wrong object parameter (Type: %s)\\n' % type(module))
 
             univention.testing.utils.wait_for_replication()
             try:
-                univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s')
+                univention.testing.utils.verify_ldap_object('uid={hook.name},cn=users,{ucr["ldap/base"]}')
             except univention.testing.utils.LDAPObjectNotFound:
-                fp.write('\\nObject had already been removed when LDAP pre remove hook was called')
-""" % (hook_name, hook_name, hook_name, ucr['ldap/base']))
+                fp.write('Object had already been removed when LDAP pre remove hook was called\\n')
+""")
 
         udm.stop_cli_server()
         cli_name = uts.random_string()
@@ -925,41 +910,39 @@ class %s(univention.admin.hook.simpleHook):
             module='users/user',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            hook=hook_name,
+            hook=hook.name,
         )
 
-        user = udm.create_user(**{cli_name: uts.random_string(), 'username': hook_name})[0]
+        user = udm.create_user(**{cli_name: uts.random_string(), 'username': hook.name})[0]
         udm.remove_object('users/user', dn=user)
 
-        with open('/tmp/%s_executed' % hook_name) as fp:
-            fails = fp.read()
-            assert not fails, fails
+        fails = hook.fails.read_text()
+        assert not fails, fails
 
     @pytest.mark.tags('udm', 'apptest')
     @pytest.mark.roles('domaincontroller_master')
     @pytest.mark.exposure('careful')
-    def test_extented_attribute_ldap_post_remove_hook(self, udm, ucr, hook_name, cleanup):
+    def test_extented_attribute_ldap_post_remove_hook(self, udm, ucr, hook):
         """settings/extented_attribute LDAP post remove hook"""
-        with open('%s%s.py' % (HOOKSPATH, hook_name), 'w') as hook_module:
-            hook_module.write("""
+        hook.module.write_text(f"""
 import univention.admin
 import univention.admin.modules
 import univention.admin.hook
 import univention.admin.handlers.users.user
 import univention.testing.utils
 
-class %s(univention.admin.hook.simpleHook):
+class {hook.name}(univention.admin.hook.simpleHook):
     def hook_ldap_post_remove(self, module):
-        with open('/tmp/%s_executed', 'w') as fp:
+        with open('{hook.fails}', 'w') as fp:
             if not isinstance(module, univention.admin.handlers.users.user.object):
-                fp.write('LDAP post remove hook call with wrong object parameter (Type: %%s)' %% type(module))
+                fp.write('LDAP post remove hook call with wrong object parameter (Type: %s)\\n' % type(module))
 
             univention.testing.utils.wait_for_replication()
             try:
-                univention.testing.utils.verify_ldap_object('uid=%s,cn=users,%s', should_exist=False)
+                univention.testing.utils.verify_ldap_object('uid={hook.name},cn=users,{ucr["ldap/base"]}', should_exist=False)
             except univention.testing.utils.LDAPUnexpectedObjectFound:
-                fp.write('\\nObject had not yet been removed when LDAP post remove hook was called')
-""" % (hook_name, hook_name, hook_name, ucr['ldap/base']))
+                fp.write('Object had not yet been removed when LDAP post remove hook was called\\n')
+""")
 
         udm.stop_cli_server()
         cli_name = uts.random_string()
@@ -972,15 +955,14 @@ class %s(univention.admin.hook.simpleHook):
             module='users/user',
             objectClass='univentionFreeAttributes',
             ldapMapping='univentionFreeAttribute15',
-            hook=hook_name,
+            hook=hook.name,
         )
 
-        user = udm.create_user(**{cli_name: uts.random_string(), 'username': hook_name})[0]
+        user = udm.create_user(**{cli_name: uts.random_string(), 'username': hook.name})[0]
         udm.remove_object('users/user', dn=user)
 
-        with open('/tmp/%s_executed' % hook_name) as fp:
-            fails = fp.read()
-            assert not fails, fails
+        fails = hook.fails.read_text()
+        assert not fails, fails
 
     @pytest.mark.tags('udm', 'apptest')
     @pytest.mark.roles('domaincontroller_master')
@@ -1102,13 +1084,12 @@ class %s(univention.admin.hook.simpleHook):
     @pytest.mark.tags('udm', 'apptest')
     @pytest.mark.roles('domaincontroller_master')
     @pytest.mark.exposure('careful')
-    def test_extended_attribute_attributehook_value_mapping(self, udm, cleanup, hook_name, fn_hook):
+    def test_extended_attribute_attributehook_value_mapping(self, udm, hook):
         """settings/extented_attribute LDAP modlist hook"""
         cli_name = uts.random_string()
         attr_name = 'univentionFreeAttribute15'
         with udm_test.UCSTestUDM() as udm:
-            with open(fn_hook, 'w') as hook_module:
-                hook_module.write(f"""
+            hook.module.write_text(f"""
 import univention.debug as ud
 import univention.admin
 import univention.admin.modules
@@ -1117,12 +1098,12 @@ import univention.admin.handlers.users.user
 import univention.testing.utils
 
 def mydebug(msg):
-    ud.debug(ud.ADMIN, ud.ERROR, '40_extended_attribute_attributehook_value_mapping: {hook_name}: %s' % (msg,))
+    ud.debug(ud.ADMIN, ud.ERROR, '40_extended_attribute_attributehook_value_mapping: {hook.name}: %s' % (msg,))
 
 mydebug('TEST MODULE LOADED')
 
 
-class {hook_name}(univention.admin.hook.AttributeHook):
+class {hook.name}(univention.admin.hook.AttributeHook):
     version = 2
     ldap_attribute_name = '{attr_name}'
     udm_attribute_name = '{cli_name}'
@@ -1167,7 +1148,7 @@ class {hook_name}(univention.admin.hook.AttributeHook):
                 module='users/user',
                 objectClass='univentionFreeAttributes',
                 ldapMapping=attr_name,
-                hook=hook_name,
+                hook=hook.name,
                 syntax='TrueFalseUpper',
                 multivalue=0,
                 valueRequired=0,
