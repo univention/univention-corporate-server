@@ -1,0 +1,31 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: php7.0
+fix: 7.0.33-0+deb9u17
+desc: |
+ This update addresses the following issues:
+
+ Debian update 7.0.33-0+deb9u17
+ 7.0.33-0+deb9u17 (Sat, 11 May 2024 13:08:08 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * Two security problems were found in PHP, a widely-used open source general
+   purpose scripting language, which could result in information disclosure or
+   incorrect validation of password hashes.
+ * Fix CVE-2024-2756: Marco Squarcina discovered that network and same-site
+   attackers can set a standard insecure cookie in the victim's browser which
+   is treated as a `__Host-` or `__Secure-` cookie by PHP applications. This
+   issue stems from an incomplete fix to CVE-2022-31629.
+ * Fix CVE-2024-3096: Eric Stern discovered that if a password stored with
+   password_hash() starts with a null byte (\x00), testing a blank string as
+   the password via password_verify() incorrectly returns true. If a user were
+   able to create a password with a leading null byte (unlikely, but
+   syntactically valid), the issue would allow an attacker to trivially
+   compromise the victim's account by attempting to sign in with a blank
+   string.
+bug: [57275]
+cve:
+- CVE-2024-2756
+- CVE-2022-31629
+- CVE-2024-3096
