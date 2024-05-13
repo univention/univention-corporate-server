@@ -1,0 +1,25 @@
+product: ucs
+release: "5.0"
+version: [6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: php7.3
+fix: 7.3.31-1~deb10u6
+desc: |
+ This update addresses the following issues:
+ 7.3.31-1~deb10u6 (Tue, 07 May 2024 02:47:26 +0200)
+ * Non-maintainer upload by the LTS Security Team.
+ * Fix CVE-2024-2756: Due to an incomplete fix to CVE-2022-31629, network and
+   same-site attackers can set a standard insecure cookie in the victim's
+   browser which is treated as a __Host- or __Secure- cookie by PHP
+   applications.
+ * Fix CVE-2024-3096: If a password stored with password_hash starts with a
+   null byte (\x00), testing a blank string as the password via
+   password_verify() will incorrectly return true.
+ * d/p/CVE-2023-3823.patch: Also backport upstream commit 62228a25685 (a no-op
+   on Linux.)
+bug: [57270]
+cve:
+- CVE-2024-2756
+- CVE-2022-31629
+- CVE-2024-3096
+- CVE-2023-3823
