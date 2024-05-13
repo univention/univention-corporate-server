@@ -1,0 +1,17 @@
+product: ucs
+release: "5.0"
+version: [6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: python-idna
+fix: 2.6-1+deb10u1
+desc: |
+ This update addresses the following issue:
+
+ Debian update 2.6-1+deb10u1
+ 2.6-1+deb10u1 (Wed, 08 May 2024 17:57:07 +0200)
+ * Non-maintainer upload by the LTS Security Team.
+ * Fix CVE-2024-3651: Specially crafted inputs to idna.encode() can consume
+   significant resources, which may lead to denial of service.
+bug: [57272]
+cve:
+- CVE-2024-3651
