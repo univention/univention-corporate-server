@@ -1,0 +1,18 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: less
+fix: 481-2.1+deb9u1
+desc: |
+ This update addresses the following issues:
+ 481-2.1+deb9u1 (Tue, 07 May 2024 23:09:45 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2022-48624 and CVE-2024-32487: Several vulnerabilities were
+   discovered in less, a file pager, which may result in the execution of
+   arbitrary commands if a file with a specially crafted file name is
+   processed.
+bug: [57274]
+cve:
+- CVE-2022-48624
+- CVE-2024-32487
