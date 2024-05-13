@@ -80,7 +80,8 @@ install_upgrade_keycloak () {
 }
 
 keycloak_saml_idp_setup () {
-    local idp="${1:-ucs-sso-ng.$(ucr get domainname)}"
+    domainname="$(ucr get domainname)"
+    local idp="${1:-ucs-sso-ng.${domainname,,}}"
     if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
         udm portals/entry modify --dn "cn=login-saml,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)" --set activated=TRUE
     fi
