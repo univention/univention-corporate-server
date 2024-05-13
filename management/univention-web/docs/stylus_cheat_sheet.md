@@ -2,12 +2,10 @@
 
 From a birds eye view stylus is fairly similar to Sass or Less if you are familiar with them.
 
-Stylus is a language to write CSS code. It offers concepts like reusable functions, iterations, conditions
+Stylus is a language that is compiled into CSS. It offers concepts like reusable functions, iterations, conditions
 and more.
 
-As a quickstart I will just show the most used concept of stylus here that you will encounter basicyll
-in every stylus file.
-For a full overview please read the [stylus docs](https://stylus-lang.com/docs/).
+The following examples show basic concepts of stylus. For a full overview please read the [stylus docs](https://stylus-lang.com/docs/).
 
 ## Nesting and parent reference
 
