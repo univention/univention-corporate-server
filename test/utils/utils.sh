@@ -286,6 +286,7 @@ _fix_ssh47233 () { # Bug #47233: ssh connection stuck on reboot
 
 keycloak_migration() {
 	# migration to keycloak before 5.2 update
+	ucr set keycloak/server/sso/fqdn="ucs-sso-ng.${domainname,,}"
 	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
 		# Install keycloak
 		switch_to_test_app_center
