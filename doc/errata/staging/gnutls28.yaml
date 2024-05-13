@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: gnutls28
+fix: 3.5.8-5+deb9u7
+desc: |
+ This update addresses the following issue:
+ 3.5.8-5+deb9u7 (Fri, 10 May 2024 12:48:15 +0200)
+ * Non-maintainer upload by the ELTS Security Team.
+ * Backport fix for CVE-2021-4209 - DoS due to NULL pointer dereference.
+bug: [57273]
+cve:
+- CVE-2021-4209
