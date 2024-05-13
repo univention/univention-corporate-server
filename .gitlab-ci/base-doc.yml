@@ -17,9 +17,6 @@ include:
 .sphinx-spelling:
   extends: .sphinx-spelling-template
 
-.sphinx-warnings:
-  extends: .sphinx-warnings-template
-
 .publish:
   interruptible: false
   variables:
