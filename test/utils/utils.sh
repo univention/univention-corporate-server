@@ -286,8 +286,12 @@ _fix_ssh47233 () { # Bug #47233: ssh connection stuck on reboot
 
 keycloak_migration() {
 	# migration to keycloak before 5.2 update
+	domainname="$(ucr get domainname)"
 	ucr set keycloak/server/sso/fqdn="ucs-sso-ng.${domainname,,}"
 	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
+		# Workaround for https://git.knut.univention.de/univention/components/keycloak-app/-/issues/180 -> Keycloak admin console loads forever
+		# if fqdn is mixed case
+		univention-certificate new -name "$(ucr get keycloak/server/sso/fqdn)" -days "1825"
 		# Install keycloak
 		switch_to_test_app_center
 		# shellcheck source=/dev/null
@@ -296,7 +300,6 @@ keycloak_migration() {
 	fi
 	# shellcheck source=/dev/null
 	. utils-keycloak.sh && keycloak_saml_idp_setup
-	domainname="$(ucr get domainname)"
 	ucr set ucs/server/sso/fqdn="ucs-sso-ng.${domainname,,}"
 }
 
