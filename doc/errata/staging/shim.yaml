@@ -6,22 +6,10 @@ src: shim
 fix: 15.8-1~deb10u1
 desc: |
  This update addresses the following issue:
- 15.8-1~deb10u1 (Mon, 05 May 2024 11:33:57 +0100)
- * New upstream release fixing more bugs
- * Remove all our previous patches, no longer needed: +
-   Make-sbat_var.S-parse-right-with-buggy-gcc-binutils.patch (now upstream) +
-   Enable-NX.patch (we don't want NX just yet until the whole boot stack is
-   NX-capable) + block-grub-sbat3-debian.patch (not needed now upstream grub
-   SBAT is 4)
- * Cherry-pick 2 new patches from upstream for grub revocations: +
-   0001-sbat-Add-grub.peimage-2-to-latest-CVE-2024-2312.patch +
-   0002-sbat-Also-bump-latest-for-grub-4-and-to-todays-date.patch
- * Log if the build is nx-compatible or not
- * Force shim to use the latest revocations by default to block some older
-   grub / peimage issues. This is: "shim,4\ngrub,4\ngrub.peimage,2\n"
- * Install a copy of the Debian CA certificate into /usr/share/shim.
-
- * Clean up better after build.
+ * CVE-2024-2312: `GRUB2` does not call the module `fini` functions on exit,
+   leading to Debian/Ubuntu's peimage `GRUB2` module leaving `UEFI` system
+   table hooks after exit. This lead to a use-after-free condition, and could
+   possibly lead to secure boot bypass.
 bug: [57271]
 cve:
 - CVE-2024-2312
