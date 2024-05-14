@@ -182,12 +182,10 @@ int main(int argc, char* argv[])
 	if ((rc = univention_ldap_open(ldap_parameters)) != 0) {
 		bool gotConnection = false;
 		if (use_default_ldap_servers) {
-			char *addition = NULL;
-			char *splitPointer = NULL;
-			addition = univention_config_get_string("ldap/server/addition");
+			char *addition = univention_config_get_string("ldap/server/addition");
 			/* try ldap/server/addition */
 			if (addition) {
-				splitPointer = strtok(addition, " ");
+				char *saveptr, *splitPointer = strtok_r(addition, " ", &saveptr);
 				while (splitPointer != NULL) {
 					ldap_parameters->host = strdup(splitPointer);
 					if ((rc = univention_ldap_open(ldap_parameters)) == 0) {
@@ -195,7 +193,7 @@ int main(int argc, char* argv[])
 						break;
 					}
 					FREE(ldap_parameters->host);
-					splitPointer = strtok (NULL, " ");
+					splitPointer = strtok_r(NULL, " ", &saveptr);
 				}
 			}
 			free(addition);
