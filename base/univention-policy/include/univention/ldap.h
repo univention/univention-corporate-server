@@ -59,5 +59,6 @@ univention_ldap_parameters_t* univention_ldap_new(void);
 int univention_ldap_open(univention_ldap_parameters_t *lp);
 void univention_ldap_close(univention_ldap_parameters_t *lp);
 int univention_ldap_set_admin_connection( univention_ldap_parameters_t *lp );
+char *univention_ldap_read_secret(const char *filename);
 
 #endif

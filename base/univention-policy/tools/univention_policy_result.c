@@ -61,28 +61,6 @@ static void usage(void)
 	fprintf(stderr, "  -d         Enable debug\n");
 }
 
-#define MAX_PASSWORD_SIZE 256
-static char *read_password_file(const char *filename)
-{
-	char buf[MAX_PASSWORD_SIZE + 1];
-	int fd = open(filename, O_RDONLY);
-	if (fd < 0) {
-		perror("read_password_file: open failed");
-		return NULL;
-	}
-	int count = read(fd, buf, MAX_PASSWORD_SIZE);
-	close(fd);
-	if (count < 0 || count > MAX_PASSWORD_SIZE) {
-		perror("read_password_file: read failed");
-		return NULL;
-	}
-	buf[count] = '\0';
-	char *c = strstr(buf, "\n");
-	if (c)
-		*c = '\0';
-	return strdup(buf);
-}
-
 #define OUTPUT_VERBOSE 0
 #define OUTPUT_SHELL 1
 #define OUTPUT_BASECONFIG 2
@@ -144,7 +122,7 @@ int main(int argc, char* argv[])
 				break;
 			case 'y':
 				FREE(ldap_parameters->bindpw);
-				ldap_parameters->bindpw = read_password_file(optarg);
+				ldap_parameters->bindpw = univention_ldap_read_secret(optarg);
 				if (ldap_parameters->bindpw == NULL) {
 					return 1;
 				}

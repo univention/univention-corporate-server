@@ -1,3 +1,10 @@
+univention-policy (13.1.1) unstable; urgency=low
+
+  [ Philipp Hahn ]
+  * Bug #57282: Fix buffer overflow.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 23 Apr 2025 19:45:38 +0200
+
 univention-policy (13.1.0) unstable; urgency=medium
 
   [ Florian Best ]
