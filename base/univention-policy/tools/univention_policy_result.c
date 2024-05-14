@@ -105,13 +105,16 @@ int main(int argc, char* argv[])
 	while ((c = getopt(argc, argv, ":h:p:D:w:Wdsby:")) != -1) {
 		switch (c) {
 			case 'h':
+				FREE(ldap_parameters->host);
 				ldap_parameters->host = strdup(optarg);
 				noLdapServer = 0;
 				break;
 			case 'D':
+				FREE(ldap_parameters->binddn);
 				ldap_parameters->binddn = strdup(optarg);
 				break;
 			case 'W':
+				FREE(ldap_parameters->bindpw);
 				ldap_parameters->bindpw = getpass("Enter LDAP Password: ");
 				if (ldap_parameters->bindpw == NULL) {
 					perror("getpass: reading password failed");
@@ -120,6 +123,7 @@ int main(int argc, char* argv[])
 				ldap_parameters->bindpw = strdup(ldap_parameters->bindpw);
 				break;
 			case 'w':
+				FREE(ldap_parameters->bindpw);
 				ldap_parameters->bindpw = strdup(optarg);
 				break;
 			case 'd':
@@ -138,6 +142,7 @@ int main(int argc, char* argv[])
 				output = OUTPUT_BASECONFIG;
 				break;
 			case 'y':
+				FREE(ldap_parameters->bindpw);
 				ldap_parameters->bindpw = read_password_file(optarg);
 				if (ldap_parameters->bindpw == NULL) {
 					return 1;
