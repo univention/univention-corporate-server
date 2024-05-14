@@ -6,9 +6,10 @@ src: gnutls28
 fix: 3.5.8-5+deb9u7
 desc: |
  This update addresses the following issue:
- 3.5.8-5+deb9u7 (Fri, 10 May 2024 12:48:15 +0200)
- * Non-maintainer upload by the ELTS Security Team.
- * Backport fix for CVE-2021-4209 - DoS due to NULL pointer dereference.
+ * CVE-2021-4209: A `NULL` pointer dereference flaw was found in `GnuTLS`. As
+   Nettle's hash update functions internally call `memcpy`, providing
+   zero-length input may cause undefined behavior. This flaw leads to a denial
+   of service after authentication in rare circumstances.
 bug: [57273]
 cve:
 - CVE-2021-4209
