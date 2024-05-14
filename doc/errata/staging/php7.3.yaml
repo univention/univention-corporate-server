@@ -6,20 +6,26 @@ src: php7.3
 fix: 7.3.31-1~deb10u6
 desc: |
  This update addresses the following issues:
- 7.3.31-1~deb10u6 (Tue, 07 May 2024 02:47:26 +0200)
- * Non-maintainer upload by the LTS Security Team.
- * Fix CVE-2024-2756: Due to an incomplete fix to CVE-2022-31629, network and
+ * CVE-2024-2756: Due to an incomplete fix to CVE-2022-31629, network and
    same-site attackers can set a standard insecure cookie in the victim's
-   browser which is treated as a __Host- or __Secure- cookie by PHP
+   browser which is treated as a `__Host-` or `__Secure-` cookie by `PHP`
    applications.
- * Fix CVE-2024-3096: If a password stored with password_hash starts with a
-   null byte (\x00), testing a blank string as the password via
-   password_verify() will incorrectly return true.
- * d/p/CVE-2023-3823.patch: Also backport upstream commit 62228a25685 (a no-op
-   on Linux.)
+ * CVE-2024-3096: If a password stored with `password_hash` starts with a
+   `null` byte (`\x00`), testing a blank string as the password via
+   `password_verify()` will incorrectly return `true`.
+ * CVE-2023-3823: Various `XML` functions rely on `libxml` global state to
+   track configuration variables, like whether external entities are loaded.
+   This state is assumed to be unchanged unless the user explicitly changes it
+   by calling appropriate function. However, since the state is
+   process-global, other modules - such as `ImageMagick` - may also use this
+   library within the same process, and change that global state for their
+   internal purposes, and leave it in a state where external entities loading
+   is enabled. This can lead to the situation where external `XML` is parsed
+   with external entities loaded, which can lead to disclosure of any local
+   files accessible to `PHP`. This vulnerable state may persist in the same
+   process across many requests, until the process is shut down.
 bug: [57270]
 cve:
 - CVE-2024-2756
-- CVE-2022-31629
 - CVE-2024-3096
 - CVE-2023-3823
