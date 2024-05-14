@@ -1,3 +1,9 @@
+univention-policy (11.0.5-1) unstable; urgency=low
+
+  * Bug #57282: Fix buffer overflow.
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 14 May 2024 11:33:47 +0200
+
 univention-policy (11.0.4-4) unstable; urgency=medium
 
   * Bug #57257: Added compiler flag -fsanitize=address to

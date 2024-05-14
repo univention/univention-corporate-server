@@ -37,11 +37,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include <ldap.h>
+#include <pwd.h>
 #include <sasl/sasl.h>
 #include <sys/types.h>
-#include <pwd.h>
-#include <unistd.h>
 
 #include <univention/config.h>
 #include <univention/ldap.h>
@@ -110,13 +111,34 @@ static int sasl_interact(LDAP *ld, unsigned flags, void *defaults, void *in)
 	return LDAP_SUCCESS;
 }
 
-#define _UNIVENTION_LDAP_SECRET_LEN_MAX 27
+
+#define MAX_SECRET_SIZE 256
+char *univention_ldap_read_secret(const char *filename)
+{
+	char buf[MAX_SECRET_SIZE + 1];
+	int fd = open(filename, O_RDONLY);
+	if (fd < 0) {
+		perror("ldap_read_secret: open failed");
+		return NULL;
+	}
+	int count = read(fd, buf, MAX_SECRET_SIZE);
+	close(fd);
+	if (count < 0 || count > MAX_SECRET_SIZE) {
+		perror("ldap_read_secret: read failed");
+		return NULL;
+	}
+	buf[count] = '\0';
+	char *c = strstr(buf, "\n");
+	if (c)
+		*c = '\0';
+	return strdup(buf);
+}
+
+
 int univention_ldap_set_admin_connection( univention_ldap_parameters_t *lp )
 {
-	FILE *secret;
 	char *base = NULL;
 	int s;
-	size_t len;
 
 	base = univention_config_get_string("ldap/base");
 	if (!base) {
@@ -132,33 +154,13 @@ int univention_ldap_set_admin_connection( univention_ldap_parameters_t *lp )
 	}
 
 	FREE(lp->bindpw);
-	lp->bindpw = calloc(_UNIVENTION_LDAP_SECRET_LEN_MAX, sizeof(char));
+	lp->bindpw = univention_ldap_read_secret("/etc/ldap.secret");
 	if (!lp->bindpw) {
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "calloc(bindpw) failed");
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_read_secret() failed");
 		goto err;
 	}
-
-	secret = fopen("/etc/ldap.secret", "r" );
-	if (!secret) {
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "open(/etc/ldap.secret) failed");
-		goto err;
-	}
-	len = fread(lp->bindpw, _UNIVENTION_LDAP_SECRET_LEN_MAX, sizeof(char), secret);
-	if (ferror(secret))
-		len = -1;
-	fclose(secret);
-
-	for (; len >= 0; len--) {
-		switch (lp->bindpw[len]) {
-			case '\r':
-			case '\n':
-				lp->bindpw[len] = '\0';
-			case '\0':
-				continue;
-			default:
-				return 0;
-		}
-	}
+	if (*lp->bindpw)
+		return 0;
 
 	/* password already cleared memory. */
 err:
