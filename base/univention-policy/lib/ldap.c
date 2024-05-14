@@ -115,6 +115,7 @@ int univention_ldap_set_admin_connection( univention_ldap_parameters_t *lp )
 {
 	FILE *secret;
 	char *base = NULL;
+	int s;
 	size_t len;
 
 	base = univention_config_get_string("ldap/base");
@@ -123,9 +124,9 @@ int univention_ldap_set_admin_connection( univention_ldap_parameters_t *lp )
 		goto err;
 	}
 	FREE(lp->binddn);
-	len = asprintf(&lp->binddn, "cn=admin,%s", base);
+	s = asprintf(&lp->binddn, "cn=admin,%s", base);
 	free(base);
-	if (len < 0 || !lp->binddn) {
+	if (s < 0 || !lp->binddn) {
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "asprintf(binddn) failed");
 		goto err;
 	}
@@ -269,7 +270,7 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 				goto error_unbind;
 			}
 			s = asprintf(&lp->sasl_authzid, "u:%s", pwd.pw_name);
-			if (s < 0) {
+			if (s < 0 || !lp->sasl_authzid) {
 				univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "asprintf(sasl_authzid) failed");
 				free(buf);
 				goto error_unbind;
