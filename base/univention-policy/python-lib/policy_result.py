@@ -86,6 +86,9 @@ def _replace_ucr_key(current_attribute, encoding):
 
 def _policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None):
     # type: (str, str, str, str, str | None) -> tuple[dict[str, list[str]], dict[str, str]]
+    results = {}  # type: dict[str, list[str]] # Attribute -> [Values...]
+    policies = {}  # type: dict[str, str] # Attribute -> Policy-DN
+
     if not binddn:
         import univention.config_registry
         cr = univention.config_registry.ConfigRegistry()
@@ -98,29 +101,26 @@ def _policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None)
         command.extend(["-h", ldap_server])
     command.append(dn)
     p = Popen(command, stdout=PIPE, stderr=PIPE)
-    stdout, stderr = p.communicate()
-    if p.returncode != 0:
-        raise PolicyResultFailed("Error getting univention-policy-result for '%(dn)s': %(error)s" % {'dn': dn, 'error': stderr.decode('utf-8', 'replace')}, returncode=p.returncode)
-
-    results = {}  # type: dict[str, list[str]] # Attribute -> [Values...]
-    policies = {}  # type: dict[str, str] # Attribute -> Policy-DN
-    current_attribute = None
-    policy = None
-
-    for line in stdout.decode(encoding, 'replace').splitlines():
-        if line.startswith('Attribute: '):
-            current_attribute = line[len('Attribute: '):]
-            policies[current_attribute] = policy
-            current_values = results.setdefault(current_attribute, [])
-        elif line.startswith('Value: '):
-            value = line[len('Value: '):]
-            current_values.append(value)
-        elif line.startswith('Policy: '):
-            policy = line[len('Policy: '):]
-        elif line.startswith('DN: '):
+    assert p.stdout is not None
+    for chunk in p.stdout:
+        line = chunk.decode(encoding, 'replace').rstrip()
+        key, _sep, val = line.partition(' ')
+        if key == 'DN:':
             pass  # DN of the object
-        elif line.startswith('POLICY '):
+        elif key == 'POLICY':
             pass  # DN of the object ?
+        elif key == 'Policy:':
+            policy = val
+        elif key == 'Attribute:':
+            policies[val] = policy
+            current_values = results.setdefault(val, [])
+        elif key == 'Value:':
+            current_values.append(val)
         else:
             pass  # empty line
+
+    if p.wait() != 0:
+        assert p.stderr is not None
+        raise PolicyResultFailed("Error getting univention-policy-result for '%(dn)s': %(error)s" % {'dn': dn, 'error': p.stderr.read().decode('utf-8', 'replace')}, returncode=p.returncode)
+
     return (results, policies)
