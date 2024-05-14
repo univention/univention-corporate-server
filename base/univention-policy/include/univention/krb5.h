@@ -49,7 +49,7 @@ typedef struct univention_krb5_parameters_s {
 	krb5_creds creds;
 } univention_krb5_parameters_t;
 
-univention_krb5_parameters_t* univention_krb5_new(void);
+univention_krb5_parameters_t *univention_krb5_new(void);
 int univention_krb5_init(univention_krb5_parameters_t *kp);
 
 #endif

@@ -34,37 +34,32 @@
  */
 
 #define _GNU_SOURCE
+#include <krb5.h>
+#include <pwd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
+#include <unistd.h>
 #include <sys/types.h>
-#include <pwd.h>
-#include <krb5.h>
-
 #include <univention/config.h>
-#include <univention/krb5.h>
 #include <univention/debug.h>
+#include <univention/krb5.h>
 
-univention_krb5_parameters_t* univention_krb5_new(void)
-{
-	univention_krb5_parameters_t* kp;
+univention_krb5_parameters_t *univention_krb5_new(void) {
+	univention_krb5_parameters_t *kp;
 	if ((kp = calloc(1, sizeof(univention_krb5_parameters_t))) == NULL)
 		return NULL;
 	return kp;
 }
 
-static krb5_error_code kerb_prompter(krb5_context ctx, void *data,
-	       const char *name, const char *banner, int num_prompts,
-	       krb5_prompt prompts[])
-{
+static krb5_error_code kerb_prompter(krb5_context ctx, void *data, const char *name, const char *banner, int num_prompts, krb5_prompt prompts[]) {
 	if (num_prompts == 0)
 		return 0;
 
 	memset(prompts[0].reply->data, 0, prompts[0].reply->length);
 	if (prompts[0].reply->length > 0) {
 		if (data) {
-			strncpy(prompts[0].reply->data, data, prompts[0].reply->length-1);
+			strncpy(prompts[0].reply->data, data, prompts[0].reply->length - 1);
 			prompts[0].reply->length = strlen(prompts[0].reply->data);
 		} else {
 			prompts[0].reply->length = 0;
@@ -73,8 +68,7 @@ static krb5_error_code kerb_prompter(krb5_context ctx, void *data,
 	return 0;
 }
 
-int univention_krb5_init(univention_krb5_parameters_t *kp)
-{
+int univention_krb5_init(univention_krb5_parameters_t *kp) {
 	krb5_error_code rv = -1;
 	char *principal_name;
 
@@ -113,8 +107,7 @@ int univention_krb5_init(univention_krb5_parameters_t *kp)
 		goto err2;
 	if ((rv = krb5_parse_name(kp->context, principal_name, &kp->principal)))
 		goto err2;
-	if ((rv = krb5_get_init_creds_password(kp->context, &kp->creds, kp->principal,
-					NULL, kerb_prompter, kp->password, 0, NULL, NULL)))
+	if ((rv = krb5_get_init_creds_password(kp->context, &kp->creds, kp->principal, NULL, kerb_prompter, kp->password, 0, NULL, NULL)))
 		goto err3;
 	if ((rv = krb5_cc_initialize(kp->context, kp->ccache, kp->principal)))
 		goto err4;
