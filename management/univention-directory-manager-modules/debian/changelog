@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.0.9) unstable; urgency=medium
+
+  * Bug #57228: Remove guardian roles properties from users/ldap
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Thu, 09 May 2024 15:12:01 +0200
+
 univention-directory-manager-modules (17.0.8) unstable; urgency=medium
 
   * Bug #55604: fix searching for hwaddress of dhcp/host

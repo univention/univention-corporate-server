@@ -151,7 +151,9 @@ property_descriptions = dict({
     ),
 }, **pki_properties())
 
-property_descriptions.update(role_properties())
+role_prop = role_properties()
+role_prop.pop('guardianInheritedRoles')
+property_descriptions.update(role_prop)
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
