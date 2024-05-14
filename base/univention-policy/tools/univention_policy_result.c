@@ -35,6 +35,7 @@
 #include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <ldap.h>
@@ -89,7 +90,7 @@ static char *read_password_file(const char *filename)
 int main(int argc, char* argv[])
 {
 	int rc = 1;
-	int noLdapServer = 1;
+	bool use_default_ldap_servers = true;
 	char *dn;
 	univention_ldap_parameters_t* ldap_parameters;
 	univention_policy_handle_t* handle;
@@ -107,7 +108,7 @@ int main(int argc, char* argv[])
 			case 'h':
 				FREE(ldap_parameters->host);
 				ldap_parameters->host = strdup(optarg);
-				noLdapServer = 0;
+				use_default_ldap_servers = false;
 				break;
 			case 'D':
 				FREE(ldap_parameters->binddn);
@@ -179,9 +180,8 @@ int main(int argc, char* argv[])
 	ldap/server/name. We try ldap/server/addition too, if no host/uri
 	is set */
 	if ((rc = univention_ldap_open(ldap_parameters)) != 0) {
-
-		int gotConnection = 0;
-		if (noLdapServer) {
+		bool gotConnection = false;
+		if (use_default_ldap_servers) {
 			char *addition = NULL;
 			char *splitPointer = NULL;
 			addition = univention_config_get_string("ldap/server/addition");
@@ -191,7 +191,7 @@ int main(int argc, char* argv[])
 				while (splitPointer != NULL) {
 					ldap_parameters->host = strdup(splitPointer);
 					if ((rc = univention_ldap_open(ldap_parameters)) == 0) {
-						gotConnection = 1;
+						gotConnection = true;
 						break;
 					}
 					FREE(ldap_parameters->host);
