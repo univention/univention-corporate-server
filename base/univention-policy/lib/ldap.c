@@ -34,25 +34,23 @@
  */
 
 #define _GNU_SOURCE
+#include "internal.h"
+
+#include <fcntl.h>
+#include <ldap.h>
+#include <pwd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <fcntl.h>
-#include <ldap.h>
-#include <pwd.h>
-#include <sasl/sasl.h>
 #include <sys/types.h>
-
+#include <sasl/sasl.h>
 #include <univention/config.h>
-#include <univention/ldap.h>
 #include <univention/debug.h>
+#include <univention/ldap.h>
 
-#include "internal.h"
-
-univention_ldap_parameters_t* univention_ldap_new(void)
-{
-	univention_ldap_parameters_t* lp;
+univention_ldap_parameters_t *univention_ldap_new(void) {
+	univention_ldap_parameters_t *lp;
 	if ((lp = calloc(1, sizeof(univention_ldap_parameters_t))) == NULL)
 		return NULL;
 	/* connection defaults */
@@ -62,31 +60,30 @@ univention_ldap_parameters_t* univention_ldap_new(void)
 	return lp;
 }
 
-static int __sasl_interaction(unsigned flags, sasl_interact_t *interact, univention_ldap_parameters_t *lp)
-{
+static int __sasl_interaction(unsigned flags, sasl_interact_t *interact, univention_ldap_parameters_t *lp) {
 	const char *dflt = interact->defresult;
 
 	switch (interact->id) {
-		case SASL_CB_GETREALM:
-			if (lp)
-				dflt = lp->sasl_realm;
-			break;
-		case SASL_CB_AUTHNAME:
-			if (lp)
-				dflt = lp->sasl_authcid;
-			break;
-		case SASL_CB_PASS:
-			if (lp)
-				dflt = lp->bindpw;
-			break;
-		case SASL_CB_USER:
-			if (lp)
-				dflt = lp->sasl_authzid;
-			break;
-		case SASL_CB_NOECHOPROMPT:
-			break;
-		case SASL_CB_ECHOPROMPT:
-			break;
+	case SASL_CB_GETREALM:
+		if (lp)
+			dflt = lp->sasl_realm;
+		break;
+	case SASL_CB_AUTHNAME:
+		if (lp)
+			dflt = lp->sasl_authcid;
+		break;
+	case SASL_CB_PASS:
+		if (lp)
+			dflt = lp->bindpw;
+		break;
+	case SASL_CB_USER:
+		if (lp)
+			dflt = lp->sasl_authzid;
+		break;
+	case SASL_CB_NOECHOPROMPT:
+		break;
+	case SASL_CB_ECHOPROMPT:
+		break;
 	}
 
 	if (dflt && !*dflt)
@@ -98,8 +95,7 @@ static int __sasl_interaction(unsigned flags, sasl_interact_t *interact, univent
 	return LDAP_SUCCESS;
 }
 
-static int sasl_interact(LDAP *ld, unsigned flags, void *defaults, void *in)
-{
+static int sasl_interact(LDAP *ld, unsigned flags, void *defaults, void *in) {
 	sasl_interact_t *interact;
 
 	for (interact = in; interact->id != SASL_CB_LIST_END; interact++) {
@@ -113,8 +109,7 @@ static int sasl_interact(LDAP *ld, unsigned flags, void *defaults, void *in)
 
 
 #define MAX_SECRET_SIZE 256
-char *univention_ldap_read_secret(const char *filename)
-{
+char *univention_ldap_read_secret(const char *filename) {
 	char buf[MAX_SECRET_SIZE + 1];
 	int fd = open(filename, O_RDONLY);
 	if (fd < 0) {
@@ -135,8 +130,7 @@ char *univention_ldap_read_secret(const char *filename)
 }
 
 
-int univention_ldap_set_admin_connection( univention_ldap_parameters_t *lp )
-{
+int univention_ldap_set_admin_connection(univention_ldap_parameters_t *lp) {
 	char *base = NULL;
 	int s;
 
@@ -174,8 +168,7 @@ static int cb_urllist_proc(LDAP *ld, LDAPURLDesc **urllist, LDAPURLDesc **url, v
 	return 0;
 }
 
-int univention_ldap_open(univention_ldap_parameters_t *lp)
-{
+int univention_ldap_open(univention_ldap_parameters_t *lp) {
 	int rv = LDAP_OTHER;
 	struct berval cred;
 	char *uri;
@@ -312,8 +305,7 @@ out:
 	return rv;
 }
 
-void univention_ldap_close(univention_ldap_parameters_t* lp)
-{
+void univention_ldap_close(univention_ldap_parameters_t *lp) {
 	char *c;
 	if (lp == NULL)
 		return;

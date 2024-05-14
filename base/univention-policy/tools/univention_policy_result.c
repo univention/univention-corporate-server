@@ -32,23 +32,22 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <https://www.gnu.org/licenses/>.
  */
+#include "../lib/internal.h"
+
+#include <errno.h>
+#include <fcntl.h>
 #include <getopt.h>
+#include <ldap.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <ldap.h>
-#include <errno.h>
 #include <string.h>
-
+#include <unistd.h>
 #include <univention/config.h>
 #include <univention/debug.h>
 #include <univention/ldap.h>
-#include "../lib/internal.h"
 
-static void usage(void)
-{
+static void usage(void) {
 	fprintf(stderr, "Usage: univention_policy_result [-h <host>] [-D <binddn>] [-w <bindpw> | -y <pwfile> | -W] [-p port] [-s | -b] dn\n");
 	fprintf(stderr, "  -h host    LDAP server\n");
 	fprintf(stderr, "  -D binddn  bind DN\n");
@@ -65,17 +64,16 @@ static void usage(void)
 #define OUTPUT_SHELL 1
 #define OUTPUT_BASECONFIG 2
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
 	int rc = 1;
 	bool use_default_ldap_servers = true;
 	char *dn;
-	univention_ldap_parameters_t* ldap_parameters;
-	univention_policy_handle_t* handle;
+	univention_ldap_parameters_t *ldap_parameters;
+	univention_policy_handle_t *handle;
 	char opt_debug = 0;
 	char output = OUTPUT_VERBOSE;
-	LDAPMessage	*res;
-	struct  timeval	timeout;
+	LDAPMessage *res;
+	struct timeval timeout;
 
 	if ((ldap_parameters = univention_ldap_new()) == NULL)
 		return 1;
@@ -83,58 +81,58 @@ int main(int argc, char* argv[])
 	int c;
 	while ((c = getopt(argc, argv, ":h:p:D:w:Wdsby:")) != -1) {
 		switch (c) {
-			case 'h':
-				FREE(ldap_parameters->host);
-				ldap_parameters->host = strdup(optarg);
-				use_default_ldap_servers = false;
-				break;
-			case 'D':
-				FREE(ldap_parameters->binddn);
-				ldap_parameters->binddn = strdup(optarg);
-				break;
-			case 'W':
-				FREE(ldap_parameters->bindpw);
-				ldap_parameters->bindpw = getpass("Enter LDAP Password: ");
-				if (ldap_parameters->bindpw == NULL) {
-					perror("getpass: reading password failed");
-					goto err2;
-				}
-				ldap_parameters->bindpw = strdup(ldap_parameters->bindpw);
-				break;
-			case 'w':
-				FREE(ldap_parameters->bindpw);
-				ldap_parameters->bindpw = strdup(optarg);
-				break;
-			case 'd':
-				opt_debug = 1;
-				break;
-			case 'p':
-				if (sscanf(optarg, "%d", & ldap_parameters->port) != 1) {
-					fprintf(stderr, "the given port number '%s' is unusable", optarg);
-					goto err2;
-				}
-				break;
-			case 's':
-				output = OUTPUT_SHELL;
-				break;
-			case 'b':
-				output = OUTPUT_BASECONFIG;
-				break;
-			case 'y':
-				FREE(ldap_parameters->bindpw);
-				ldap_parameters->bindpw = univention_ldap_read_secret(optarg);
-				if (ldap_parameters->bindpw == NULL) {
-					return 1;
-				}
-				break;
-			case ':':
-				fprintf(stderr, "missing argument for option %c\n", optopt);
+		case 'h':
+			FREE(ldap_parameters->host);
+			ldap_parameters->host = strdup(optarg);
+			use_default_ldap_servers = false;
+			break;
+		case 'D':
+			FREE(ldap_parameters->binddn);
+			ldap_parameters->binddn = strdup(optarg);
+			break;
+		case 'W':
+			FREE(ldap_parameters->bindpw);
+			ldap_parameters->bindpw = getpass("Enter LDAP Password: ");
+			if (ldap_parameters->bindpw == NULL) {
+				perror("getpass: reading password failed");
 				goto err2;
-			default:
-				univention_ldap_close(ldap_parameters);
-				usage();
-				fprintf(stderr, "option %c is undefined\n", optopt);
-				goto err1;
+			}
+			ldap_parameters->bindpw = strdup(ldap_parameters->bindpw);
+			break;
+		case 'w':
+			FREE(ldap_parameters->bindpw);
+			ldap_parameters->bindpw = strdup(optarg);
+			break;
+		case 'd':
+			opt_debug = 1;
+			break;
+		case 'p':
+			if (sscanf(optarg, "%d", &ldap_parameters->port) != 1) {
+				fprintf(stderr, "the given port number '%s' is unusable", optarg);
+				goto err2;
+			}
+			break;
+		case 's':
+			output = OUTPUT_SHELL;
+			break;
+		case 'b':
+			output = OUTPUT_BASECONFIG;
+			break;
+		case 'y':
+			FREE(ldap_parameters->bindpw);
+			ldap_parameters->bindpw = univention_ldap_read_secret(optarg);
+			if (ldap_parameters->bindpw == NULL) {
+				return 1;
+			}
+			break;
+		case ':':
+			fprintf(stderr, "missing argument for option %c\n", optopt);
+			goto err2;
+		default:
+			univention_ldap_close(ldap_parameters);
+			usage();
+			fprintf(stderr, "option %c is undefined\n", optopt);
+			goto err1;
 		}
 	}
 
@@ -176,7 +174,7 @@ int main(int argc, char* argv[])
 			}
 			free(addition);
 		}
-		if (! gotConnection) {
+		if (!gotConnection) {
 			fprintf(stderr, "could not open policy for %s\n\n", dn);
 			goto err2;
 		}
@@ -185,10 +183,10 @@ int main(int argc, char* argv[])
 	timeout.tv_sec = 10;
 	timeout.tv_usec = 0;
 
-	if ((rc = ldap_search_ext_s(ldap_parameters->ld, dn, LDAP_SCOPE_BASE, "(objectClass=*)",  NULL, 0, NULL, NULL, &timeout, 0, &res )) != LDAP_SUCCESS) {
-			fprintf(stderr, "LDAP Error: %s\n", ldap_err2string(rc));
-			ldap_msgfree(res);
-			goto err2;
+	if ((rc = ldap_search_ext_s(ldap_parameters->ld, dn, LDAP_SCOPE_BASE, "(objectClass=*)", NULL, 0, NULL, NULL, &timeout, 0, &res)) != LDAP_SUCCESS) {
+		fprintf(stderr, "LDAP Error: %s\n", ldap_err2string(rc));
+		ldap_msgfree(res);
+		goto err2;
 	}
 	ldap_msgfree(res);
 
@@ -200,8 +198,8 @@ int main(int argc, char* argv[])
 		printf("POLICY %s\n\n", dn);
 	}
 	if ((handle = univention_policy_open(ldap_parameters->ld, ldap_parameters->base, dn)) != NULL) {
-		struct univention_policy_list_s* policy;
-		struct univention_policy_attribute_list_s* attribute;
+		struct univention_policy_list_s *policy;
+		struct univention_policy_attribute_list_s *attribute;
 
 		for (policy = handle->policies; policy != NULL; policy = policy->next) {
 			if (output == OUTPUT_BASECONFIG && policy != handle->policies)
@@ -229,13 +227,13 @@ int main(int argc, char* argv[])
 						printf("=\"");
 						for (c = attribute->values->values[i]; *c; c++) {
 							switch (*c) {
-								case '"':
-								case '$':
-								case '\\':
-								case '`':
-									putchar('\\');
-								default:
-									putchar(*c);
+							case '"':
+							case '$':
+							case '\\':
+							case '`':
+								putchar('\\');
+							default:
+								putchar(*c);
 							}
 						}
 						printf("\"\n");

@@ -33,15 +33,14 @@
  * <https://www.gnu.org/licenses/>.
  */
 
+#include "internal.h"
+
 #include <ldap.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
-
 #include <univention/debug.h>
-
-#include "internal.h"
 
 /** Deep-free univention_policy_result. */
 static void univention_policy_result_free(struct univention_policy_result_s *o) {
@@ -90,9 +89,8 @@ static void dprint_dn(LDAP *ld, LDAPMessage *entry) {
 /*
  * returns parent dn of dn, NULL if dn doesn't have any parents
  */
-static const char *parent_dn(const char *dn)
-{
-	char* pdn = strchr(dn, ',');
+static const char *parent_dn(const char *dn) {
+	char *pdn = strchr(dn, ',');
 	if (pdn != NULL)
 		++pdn;
 	return pdn;
@@ -101,8 +99,7 @@ static const char *parent_dn(const char *dn)
 /*
  * returns object from list if it already exists, create new object otherwise
  */
-static struct univention_policy_list_s* univention_policy_list_get(struct univention_policy_list_s** list, const char *name)
-{
+static struct univention_policy_list_s *univention_policy_list_get(struct univention_policy_list_s **list, const char *name) {
 	struct univention_policy_list_s *new;
 	struct univention_policy_list_s *cur;
 
@@ -127,8 +124,7 @@ static struct univention_policy_list_s* univention_policy_list_get(struct univen
 /*
  * returns object from list if it already exists, create new object otherwise
  */
-static struct univention_policy_attribute_list_s* univention_policy_attribute_list_get(struct univention_policy_attribute_list_s **list, const char *name)
-{
+static struct univention_policy_attribute_list_s *univention_policy_attribute_list_get(struct univention_policy_attribute_list_s **list, const char *name) {
 	struct univention_policy_attribute_list_s *new;
 	struct univention_policy_attribute_list_s *cur;
 
@@ -169,8 +165,7 @@ static void univention_policy_attribute_list_remove(struct univention_policy_att
 #endif
 
 /** Check if object_classes contains object_class. */
-static bool in_string_array(char **object_classes, const char *object_class)
-{
+static bool in_string_array(char **object_classes, const char *object_class) {
 	int i;
 	if (object_classes == NULL)
 		return false;
@@ -190,9 +185,8 @@ static void print_string_array(char **object_classes)
 #endif
 
 /* clean up handle by removing empty attributes. */
-static void univention_policy_cleanup(univention_policy_handle_t* handle)
-{
-	struct univention_policy_list_s* policy;
+static void univention_policy_cleanup(univention_policy_handle_t *handle) {
+	struct univention_policy_list_s *policy;
 	for (policy = handle->policies; policy != NULL; policy = policy->next) {
 		struct univention_policy_attribute_list_s **cur = &policy->attributes;
 		while (*cur != NULL) {
@@ -207,11 +201,10 @@ static void univention_policy_cleanup(univention_policy_handle_t* handle)
 }
 
 /* Retrieve policy 'dn' */
-static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_handle_t *handle, char **object_classes, const char *objectdn)
-{
-	int		rc;
-	LDAPMessage	*res;
-	struct  timeval	timeout = {.tv_sec=10, .tv_usec=0};
+static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_handle_t *handle, char **object_classes, const char *objectdn) {
+	int rc;
+	LDAPMessage *res;
+	struct timeval timeout = {.tv_sec = 10, .tv_usec = 0};
 
 	univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "considering policy: %s", dn);
 
@@ -221,13 +214,10 @@ static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_
 	} else if (rc != LDAP_SUCCESS) {
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "ldap_search_ext_s returned ERROR");
 	} else {
-		LDAPMessage	*entry;
+		LDAPMessage *entry;
 
 		/* BASE search returns at most one entry. */
-		for (entry = ldap_first_entry(ld, res);
-			 entry != NULL;
-			 entry = ldap_next_entry(ld, entry)) {
-
+		for (entry = ldap_first_entry(ld, res); entry != NULL; entry = ldap_next_entry(ld, entry)) {
 			struct univention_policy_list_s *policy = NULL;
 			char **fixed_attributes = NULL;
 			char **empty_attributes = NULL;
@@ -242,11 +232,8 @@ static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_
 				for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++) {
 					/* bv_val is "umcPolicy" or "univentionMailQuota" or
 					   bv_val starts with "univentionPolicy" but is not "univentionPolicy" */
-					if (!strcmp(vals[i]->bv_val, "umcPolicy") ||
-						!strcmp(vals[i]->bv_val, "univentionMailQuota") ||
-						(strcmp(vals[i]->bv_val, "univentionPolicy") &&
-							!strncmp(vals[i]->bv_val, "univentionPolicy" , strlen("univentionPolicy")))) {
-
+					if (!strcmp(vals[i]->bv_val, "umcPolicy") || !strcmp(vals[i]->bv_val, "univentionMailQuota") ||
+					    (strcmp(vals[i]->bv_val, "univentionPolicy") && !strncmp(vals[i]->bv_val, "univentionPolicy", strlen("univentionPolicy")))) {
 						if (policy != NULL) {
 							univention_debug(UV_DEBUG_POLICY, UV_DEBUG_ERROR, "more than one policy type has been determined for this policy!");
 						}
@@ -281,7 +268,7 @@ static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_
 				int ldap_filter_rc;
 				for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++) {
 					LDAPMessage *ldap_filter_res;
-					char *search_attrs[] = { LDAP_NO_ATTRS, NULL };
+					char *search_attrs[] = {LDAP_NO_ATTRS, NULL};
 					ldap_filter_rc = ldap_search_ext_s(ld, objectdn, LDAP_SCOPE_BASE, vals[i]->bv_val, search_attrs, 0, NULL, NULL, &timeout, 0, &ldap_filter_res);
 					if (ldap_filter_rc != LDAP_SUCCESS) {
 						univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "search filter '%s' caused error: %s: %s", vals[i]->bv_val, objectdn, ldap_err2string(ldap_filter_rc));
@@ -327,7 +314,7 @@ static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_
 #if 0
 					univention_policy_attribute_list_remove(&policy->attributes, empty_attributes[i]);
 #endif
-					struct univention_policy_attribute_list_s* policy_attr;
+					struct univention_policy_attribute_list_s *policy_attr;
 
 					univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "considering %s/%s (EA)", policy->name, empty_attributes[i]);
 					policy_attr = univention_policy_attribute_list_get(&policy->attributes, empty_attributes[i]);
@@ -338,7 +325,7 @@ static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_
 
 						policy_attr->values->policy_dn = strdup(dn);
 						policy_attr->values->count = 0;
-						policy_attr->values->values = calloc(policy_attr->values->count + 1, sizeof(char*));
+						policy_attr->values->values = calloc(policy_attr->values->count + 1, sizeof(char *));
 						policy_attr->values->values[0] = NULL;
 					} else {
 						univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "not setting attribute (EA)");
@@ -346,21 +333,10 @@ static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_
 				}
 
 				/* iterate over attributes of policy and parse remaining attributes. */
-				for (attr = ldap_first_attribute(ld, entry, &ber);
-					 attr != NULL;
-					 attr = ldap_next_attribute(ld, entry, ber)) {
-
-					if (strcmp(attr, "cn") &&
-						strcmp(attr, "objectClass") &&
-						strcmp(attr, "fixedAttributes") &&
-						strcmp(attr, "emptyAttributes") &&
-						strcmp(attr, "requiredObjectClasses") &&
-						strcmp(attr, "prohibitedObjectClasses") &&
-						strcmp(attr, "ldapFilter") &&
-						strcmp(attr, "univentionObjectType") &&
-						(vals = ldap_get_values_len(ld, entry, attr)) != NULL) {
-
-						struct univention_policy_attribute_list_s* policy_attr;
+				for (attr = ldap_first_attribute(ld, entry, &ber); attr != NULL; attr = ldap_next_attribute(ld, entry, ber)) {
+					if (strcmp(attr, "cn") && strcmp(attr, "objectClass") && strcmp(attr, "fixedAttributes") && strcmp(attr, "emptyAttributes") && strcmp(attr, "requiredObjectClasses") &&
+					    strcmp(attr, "prohibitedObjectClasses") && strcmp(attr, "ldapFilter") && strcmp(attr, "univentionObjectType") && (vals = ldap_get_values_len(ld, entry, attr)) != NULL) {
+						struct univention_policy_attribute_list_s *policy_attr;
 
 						univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "considering %s/%s", policy->name, attr);
 						policy_attr = univention_policy_attribute_list_get(&policy->attributes, attr);
@@ -372,7 +348,7 @@ static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_
 							univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "setting attribute");
 							policy_attr->values->policy_dn = strdup(dn);
 							policy_attr->values->count = ldap_count_values_len(vals);
-							policy_attr->values->values = calloc(policy_attr->values->count + 1, sizeof(char*));
+							policy_attr->values->values = calloc(policy_attr->values->count + 1, sizeof(char *));
 							for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++) {
 								policy_attr->values->values[i] = strdup(vals[i]->bv_val);
 							}
@@ -380,7 +356,7 @@ static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_
 						} else {
 							univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "not setting attribute");
 						}
-						ldap_value_free_len( vals );
+						ldap_value_free_len(vals);
 					}
 					ldap_memfree(attr);
 				}
@@ -394,27 +370,26 @@ static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_
 		}
 	}
 
-	ldap_msgfree( res );
+	ldap_msgfree(res);
 	univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ALL, "Search done.");
 }
 
 /*
  * reads policies for dn from conn
  */
-univention_policy_handle_t* univention_policy_open(LDAP* ld, const char *base, const char *dn)
-{
-	const char* pdn;
+univention_policy_handle_t *univention_policy_open(LDAP *ld, const char *base, const char *dn) {
+	const char *pdn;
 	int rc;
 	LDAPMessage *res;
 
-	struct timeval timeout = {.tv_sec=10, .tv_usec=0};
-	LDAPMessage	*entry;
-	struct berval		**vals;
-	int		i;
+	struct timeval timeout = {.tv_sec = 10, .tv_usec = 0};
+	LDAPMessage *entry;
+	struct berval **vals;
+	int i;
 	const char *filter = "(objectClass=*)";
-	char*		attrs[] = {"objectClass", "univentionPolicyReference", NULL};
+	char *attrs[] = {"objectClass", "univentionPolicyReference", NULL};
 
-	univention_policy_handle_t*	handle;
+	univention_policy_handle_t *handle;
 	char **object_classes = NULL;
 
 	univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "univention_policy_open with dn = %s", dn);
@@ -436,10 +411,7 @@ univention_policy_handle_t* univention_policy_open(LDAP* ld, const char *base, c
 			return NULL;
 		} else {
 			/* BASE search returns at most one entry. */
-			for (entry = ldap_first_entry(ld, res);
-				 entry != NULL;
-				 entry = ldap_next_entry(ld, entry)) {
-
+			for (entry = ldap_first_entry(ld, res); entry != NULL; entry = ldap_next_entry(ld, entry)) {
 				dprint_dn(ld, entry);
 
 				/* only get all 'objectClass' attributes from dn. */
@@ -468,7 +440,7 @@ univention_policy_handle_t* univention_policy_open(LDAP* ld, const char *base, c
 			}
 		}
 
-		ldap_msgfree( res );
+		ldap_msgfree(res);
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ALL, "Search done.");
 
 		if (strcmp(pdn, base) == 0)
@@ -486,10 +458,9 @@ univention_policy_handle_t* univention_policy_open(LDAP* ld, const char *base, c
 /*
  * returns values for policy/attribute
  */
-univention_policy_result_t* univention_policy_get(univention_policy_handle_t* handle, const char *policy_name, const char *attribute_name)
-{
-	struct univention_policy_list_s* policy;
-	struct univention_policy_attribute_list_s* attribute;
+univention_policy_result_t *univention_policy_get(univention_policy_handle_t *handle, const char *policy_name, const char *attribute_name) {
+	struct univention_policy_list_s *policy;
+	struct univention_policy_attribute_list_s *attribute;
 	policy = univention_policy_list_get(&handle->policies, policy_name);
 	attribute = univention_policy_attribute_list_get(&policy->attributes, attribute_name);
 	return attribute->values;
@@ -498,8 +469,7 @@ univention_policy_result_t* univention_policy_get(univention_policy_handle_t* ha
 /*
  * frees policy handle
  */
-void univention_policy_close(univention_policy_handle_t* handle)
-{
+void univention_policy_close(univention_policy_handle_t *handle) {
 	struct univention_policy_list_s *cur, *next;
 	for (cur = handle->policies; cur != NULL; cur = next) {
 		next = cur->next;
