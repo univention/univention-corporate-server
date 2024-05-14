@@ -6,12 +6,14 @@ src: less
 fix: 481-2.1+deb9u1
 desc: |
  This update addresses the following issues:
- 481-2.1+deb9u1 (Tue, 07 May 2024 23:09:45 +0200)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2022-48624 and CVE-2024-32487: Several vulnerabilities were
-   discovered in less, a file pager, which may result in the execution of
-   arbitrary commands if a file with a specially crafted file name is
-   processed.
+ * CVE-2022-48624: `close_altfile` in `filename.c` in less before ``606``
+   omits `shell_quote` calls for `LESSCLOSE`.
+ * CVE-2024-32487: `less` through `653` allows OS command execution via a
+   newline character in the name of a file, because quoting is mishandled in
+   `filename.c`. Exploitation typically requires use with attacker-controlled
+   file names, such as the files extracted from an untrusted archive.
+   Exploitation also requires the `LESSOPEN` environment variable, but this is
+   set by default in many common cases.
 bug: [57274]
 cve:
 - CVE-2022-48624
