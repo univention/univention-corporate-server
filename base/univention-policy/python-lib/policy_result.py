@@ -40,11 +40,13 @@ from subprocess import PIPE, Popen
 class PolicyResultFailed(Exception):
 
     def __init__(self, message, returncode):
+        # type: (str, int) -> None
         super(PolicyResultFailed, self).__init__(message)
         self.returncode = returncode
 
 
 def policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None):
+    # type: (str, str, str, str, str | None) -> tuple[dict[str, list[str]], dict[str, str]]
     """
     Return a tuple of hash-lists, mapping attributes to a list of values and
     mapping attributes to the matching Policy-DN.
@@ -63,6 +65,7 @@ def policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None):
 
 
 def ucr_policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None):
+    # type: (str, str, str, str, str | None) -> tuple[dict[str, list[str]], dict[str, str]]
     """
     Return a tuple of hash-lists, mapping attributes to a list of values and
     mapping attributes to the matching Policy-DN.
@@ -75,12 +78,14 @@ def ucr_policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=No
 
 
 def _replace_ucr_key(current_attribute, encoding):
+    # type: (str, str) -> str
     if current_attribute.startswith('univentionRegistry;entry-hex-'):
         current_attribute = codecs.decode(current_attribute.replace('univentionRegistry;entry-hex-', ''), 'hex').decode(encoding)
     return current_attribute
 
 
 def _policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None):
+    # type: (str, str, str, str, str | None) -> tuple[dict[str, list[str]], dict[str, str]]
     if not binddn:
         import univention.config_registry
         cr = univention.config_registry.ConfigRegistry()
@@ -97,8 +102,8 @@ def _policy_result(dn, binddn="", bindpw="", encoding='UTF-8', ldap_server=None)
     if p.returncode != 0:
         raise PolicyResultFailed("Error getting univention-policy-result for '%(dn)s': %(error)s" % {'dn': dn, 'error': stderr.decode('utf-8', 'replace')}, returncode=p.returncode)
 
-    results = {}  # Attribute -> [Values...]
-    policies = {}  # Attribute -> Policy-DN
+    results = {}  # type: dict[str, list[str]] # Attribute -> [Values...]
+    policies = {}  # type: dict[str, str] # Attribute -> Policy-DN
     current_attribute = None
     policy = None
 
