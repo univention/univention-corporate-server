@@ -166,10 +166,16 @@ err:
 	return 1;
 }
 
+static int cb_urllist_proc(LDAP *ld, LDAPURLDesc **urllist, LDAPURLDesc **url, void *params) {
+	univention_ldap_parameters_t *lp = params;
+	return 0;
+}
+
 int univention_ldap_open(univention_ldap_parameters_t *lp)
 {
 	int rv = LDAP_OTHER;
 	struct berval cred;
+	char *uri;
 
 	if (lp == NULL)
 		return 1;
@@ -178,49 +184,95 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 		lp->ld = NULL;
 	}
 
-	if (lp->host == NULL && lp->uri == NULL) {
-		lp->host = univention_config_get_string("ldap/server/name");
-		if (lp->host == NULL) {
-			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "UCRV ldap/server/name unset");
-			goto error;
-		}
-	}
-	if (lp->port == 0 && lp->uri == NULL) {
-		lp->port = univention_config_get_int("ldap/server/port");
-	}
 	if (lp->base == NULL) {
 		lp->base = univention_config_get_string("ldap/base");
 		if (lp->base == NULL) {
 			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "UCRV ldap/base unset");
-			goto error;
+			goto out;
 		}
 	}
-	if (lp->authmethod == LDAP_AUTH_SASL) {
+
+	if (lp->uri != NULL) {
+		uri = lp->uri;
+	} else {
+		int s;
+		char *schema = "ldap";
+
+		if (lp->host == NULL)
+			lp->host = univention_config_get_string("ldap/server/name");
+		if (lp->host == NULL) {
+			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "UCRV ldap/server/name unset");
+			goto out;
+		}
+
+		if (lp->port == 0)
+			lp->port = univention_config_get_int("ldap/server/port");
+		if (lp->port < 0)
+			lp->port = 7389;
+		if (lp->port == 636 || lp->port == 7636)
+			schema = "ldaps";
+
+		s = asprintf(&uri, "%s://%s:%d", schema, lp->host, lp->port);
+		if (s < 0 || !uri) {
+			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "asprintf(uri) failed");
+			goto out;
+		}
+	}
+	univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "connecting to %s", uri);
+	rv = ldap_initialize(&lp->ld, uri);
+	if (uri != lp->uri)
+		free(uri);
+	if (rv != LDAP_SUCCESS) {
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_initialize: %s", ldap_err2string(rv));
+		goto error;
+	}
+
+	rv = ldap_set_urllist_proc(lp->ld, cb_urllist_proc, lp);
+
+	/* set protocol version */
+	ldap_set_option(lp->ld, LDAP_OPT_PROTOCOL_VERSION, &lp->version);
+
+	/* TLS */
+	if (lp->start_tls) {
+		if ((rv = ldap_start_tls_s(lp->ld, NULL, NULL)) != LDAP_SUCCESS) {
+			if (lp->start_tls == 1) {
+				univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "start_tls: %s", ldap_err2string(rv));
+			} else {
+				univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "start_tls: %s", ldap_err2string(rv));
+				goto error_unbind;
+			}
+		}
+	}
+
+	switch (lp->authmethod) {
+	case LDAP_AUTH_SASL:
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "sasl_bind");
 		if (lp->sasl_authzid == NULL) {
 			struct passwd pwd, *result;
 			char *buf;
 			size_t bufsize;
 			int s;
 
+			rv = LDAP_OTHER;
 			bufsize = sysconf(_SC_GETPW_R_SIZE_MAX);
 			if (bufsize == -1)
 				bufsize = 16384;
 			buf = malloc(bufsize);
 			if (buf == NULL) {
 				univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "malloc(getpwuid) failed");
-				goto error;
+				goto error_unbind;
 			}
 			s = getpwuid_r(getuid(), &pwd, buf, bufsize, &result);
 			if (result == NULL) {
 				univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "could not lookup username");
 				free(buf);
-				goto error;
+				goto error_unbind;
 			}
 			s = asprintf(&lp->sasl_authzid, "u:%s", pwd.pw_name);
 			if (s < 0) {
 				univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "asprintf(sasl_authzid) failed");
 				free(buf);
-				goto error;
+				goto error_unbind;
 			}
 			free(buf);
 		}
@@ -230,59 +282,18 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 		if (lp->sasl_realm == NULL && strcmp(lp->sasl_mech, "GSSAPI") == 0) {
 			lp->sasl_realm = univention_config_get_string("kerberos/realm");
 		}
-	}
-
-	/* if uri is given use that */
-	if (lp->uri != NULL) {
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_PROCESS, "connecting to %s", lp->uri);
-		if ((rv = ldap_initialize(&lp->ld, lp->uri)) != LDAP_SUCCESS) {
-			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_initialize: %s", ldap_err2string(rv));
-			goto error;
-		}
-	/* otherwise connect to host:port */
-	} else {
-		char uri[1024];
-		snprintf(uri, sizeof(uri), "ldap://%s:%d", lp->host, lp->port);
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_PROCESS, "connecting to %s", uri);
-		if ((rv = ldap_initialize(&lp->ld, uri)) != LDAP_SUCCESS) {
-			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_initialize: %s", ldap_err2string(rv));
-			goto error;
-		}
-	}
-
-	/* set protocol version */
-	ldap_set_option(lp->ld, LDAP_OPT_PROTOCOL_VERSION, &lp->version);
-
-	/* TLS */
-	if (lp->start_tls) {
-		if ((rv = ldap_start_tls_s(lp->ld, NULL, NULL)) != LDAP_SUCCESS && lp->start_tls == 1) {
-			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "start_tls: %s", ldap_err2string(rv));
-		} else if (rv != LDAP_SUCCESS) {
-			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "start_tls: %s", ldap_err2string(rv));
-			goto error_unbind;
-		}
-	}
-
-	switch (lp->authmethod) {
-	case LDAP_AUTH_SASL:
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "sasl_bind");
-		if ((rv = ldap_sasl_interactive_bind_s(lp->ld, lp->binddn, lp->sasl_mech, NULL, NULL, LDAP_SASL_QUIET, sasl_interact, (void*) lp)) == LDAP_SUCCESS)
-			goto success;
+		if ((rv = ldap_sasl_interactive_bind_s(lp->ld, lp->binddn, lp->sasl_mech, NULL, NULL, LDAP_SASL_QUIET, sasl_interact, (void *)lp)) == LDAP_SUCCESS)
+			goto out;
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_sasl_interactive_bind: %s", ldap_err2string(rv));
 		break;
 
 	case LDAP_AUTH_SIMPLE:
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "simple_bind as %s", lp->binddn);
-		if (lp->bindpw == NULL) {
-			cred.bv_val = NULL;
-			cred.bv_len = 0;
-		} else {
-			cred.bv_val = lp->bindpw;
-			cred.bv_len = strlen(lp->bindpw);
-		}
+		cred.bv_val = lp->bindpw;
+		cred.bv_len = lp->bindpw ? strlen(lp->bindpw) : 0;
 
 		if ((rv = ldap_sasl_bind_s(lp->ld, lp->binddn, LDAP_SASL_SIMPLE, &cred, NULL, NULL, NULL)) == LDAP_SUCCESS)
-			goto success;
+			goto out;
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_simple_bind: %s", ldap_err2string(rv));
 		break;
 
@@ -294,7 +305,7 @@ error_unbind:
 	ldap_unbind_ext(lp->ld, NULL, NULL);
 error:
 	lp->ld = NULL;
-success:
+out:
 	return rv;
 }
 
