@@ -53,6 +53,7 @@ ILLEGAL_XML_UNICHR = (
     (0x10FFFE, 0x10FFFF),
 )
 RE_ILLEGAL_XML = re.compile('[%s]' % ''.join(f'{chr(low)}-{chr(high)}' for (low, high) in ILLEGAL_XML_UNICHR if low < sys.maxunicode))
+RE_TS = re.compile(rb"^(?:(\d\d\d\d-\d\d-\d\d[ T]\d\d:\d\d:\d\d[-+]\d\d:?\d\d) ?)?(.*)$")
 
 
 def checked_set(values: Iterable[T] | None) -> set[T]:
@@ -690,8 +691,10 @@ class TestCase:
                         line = buf[0:match.start()]
                         del buf[0:match.end()]
 
-                    now = datetime.now().isoformat(' ')
-                    entry = b'%s %s\n' % ('{1[0]}{0}{1[1]}'.format(now, paren).encode('ascii'), line.rstrip(b'\r\n'))
+                    m = RE_TS.match(line)
+                    assert m is not None
+                    now = datetime.fromisoformat(m[1].decode()) if m[1] else datetime.now()
+                    entry = b'%s %s\n' % ('{1[0]}{0}{1[1]}'.format(now.isoformat(' '), paren).encode('ascii'), m[2].rstrip(b'\r\n'))
                     log.append(entry)
                     combined.append(entry)
 
@@ -775,11 +778,11 @@ class TestCase:
             cmd = PytestRunner.extend_command(self, cmd)
             cmd.extend(self.pytest_check(result.environment))
 
-        time_start = datetime.now()
+        time_start = datetime.now().astimezone()
 
-        print('\n*** BEGIN *** %r ***' % (cmd,), file=result.environment.log)
-        print('*** %s *** %s ***' % (self.uid, self.description), file=result.environment.log)
-        print('*** START TIME: %s ***' % (time_start.strftime("%Y-%m-%d %H:%M:%S")), file=result.environment.log)
+        print(f'\n*** BEGIN *** {cmd!r} ***', file=result.environment.log)
+        print(f'*** {self.uid} *** {self.description} ***', file=result.environment.log)
+        print(f'*** START TIME: {time_start:%FT%T%z} ***', file=result.environment.log)
         result.environment.log.flush()
 
         # Protect wrapper from Ctrl-C as long as test case is running
@@ -823,12 +826,12 @@ class TestCase:
             if result.reason == Reason.ABORT:
                 raise KeyboardInterrupt()  # pylint: disable-msg=W1010
 
-        time_end = datetime.now()
+        time_end = datetime.now().astimezone()
         time_delta = time_end - time_start
 
-        print('*** END TIME: %s ***' % (time_end.strftime("%Y-%m-%d %H:%M:%S")), file=result.environment.log)
-        print('*** TEST DURATION (H:MM:SS.ms): %s ***' % (time_delta), file=result.environment.log)
-        print('*** END *** %d ***' % (result.result,), file=result.environment.log)
+        print(f'*** END TIME: {time_end:%FT%T%z} ***', file=result.environment.log)
+        print(f'*** TEST DURATION (H:MM:SS.ms): {time_delta} ***', file=result.environment.log)
+        print(f'*** END *** {result.result} ***', file=result.environment.log)
         result.environment.log.flush()
 
         result.duration = time_delta.total_seconds() * 1000

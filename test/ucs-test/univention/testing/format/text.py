@@ -10,7 +10,7 @@ import curses
 import re
 import subprocess
 import sys
-import time
+from datetime import datetime
 from typing import IO
 from weakref import WeakValueDictionary
 
@@ -66,8 +66,7 @@ class Text(TestFormatInterface):
     def begin_run(self, environment: TestEnvironment, count: int = 1) -> None:
         """Called before first test."""
         super().begin_run(environment, count)
-        now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-        print(f"Starting {count} ucs-test at {now} to {environment.log.name}", file=self.stream)
+        print(f"Starting {count} ucs-test at {datetime.now():%FT%T%z} to {environment.log.name}", file=self.stream)
         try:
             ucs_test_version = subprocess.check_output(['/usr/bin/dpkg-query', '--showformat=${Version}', '--show', 'ucs-test-framework']).decode('UTF-8', 'replace')
         except subprocess.CalledProcessError:

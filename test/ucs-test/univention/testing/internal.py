@@ -72,8 +72,9 @@ def setup_environment() -> None:
 def setup_debug(level: int) -> None:
     """Setup Python logging."""
     level = _TAB.get(level, logging.DEBUG)
-    FORMAT = '%(asctime)-15s ' + logging.BASIC_FORMAT
-    logging.basicConfig(stream=sys.stderr, level=level, format=FORMAT)
+    FORMAT = f'%(asctime)s {logging.BASIC_FORMAT}'
+    DATEFMT = '%FT%T%z'
+    logging.basicConfig(stream=sys.stderr, level=level, format=FORMAT, datefmt=DATEFMT)
 
 
 _TAB = {  # pylint: disable-msg=W0612
