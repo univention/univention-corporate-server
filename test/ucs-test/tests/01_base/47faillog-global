@@ -41,7 +41,7 @@ user_create "$NAME" \
 	--set password="$(<$tests_domainadmin_pwdfile)" \
 	--set primaryGroup="$(get_domain_admins_dn)"
 
-attempts=10
+attempts=20
 i=0
 while ((i < attempts)) && ! /usr/lib/univention-pam/ldap-group-to-file.py; do
 	((i+=1))

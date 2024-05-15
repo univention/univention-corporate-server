@@ -1,4 +1,4 @@
-ucs-test (12.0.80) unstable; urgency=medium
+ucs-test (12.0.81) unstable; urgency=medium
 
   * Issue #2261: Check keycloak/server/sso/fqdn for the xml file permissions
 
