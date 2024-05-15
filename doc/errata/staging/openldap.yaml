@@ -1,0 +1,19 @@
+product: ucs
+release: "5.0"
+version: [7]
+scope: ucs_5.0-0-errata5.0-7
+src: openldap
+fix:
+desc: |
+ This update addresses the following issues:
+ * Enhance LDAP overlay `slapd-sock` by adding
+   `extendedresults` as a possible value to the
+   `sockresps` configuration option. With that
+   configuration, the overlay outputs a change
+   ldif in the RESULT phase, including LDAPControl
+   data for `PostReadControl` and `PreReadControl`
+   collected during CRUD operations. The output
+   format is similar to the one used by the LDAP
+   overlay `auditlog` with an additional `control:`
+   field.
+bug: [57267]

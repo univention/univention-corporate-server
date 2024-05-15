@@ -1,0 +1,21 @@
+product: ucs
+release: "5.0"
+version: [7]
+scope: ucs_5.0-0-errata5.0-7
+src: univention-ldap
+fix:
+desc: |
+ This update addresses the following issues:
+ * Allow configuring the LDAP overlay slapd-sock
+   for `sockresps extendedresults` via UCR variable
+   `ldap/overlay/sock`.
+ * Once activated, it outputs LDAP changes including
+   LDIF for CRUD operations (not for search).
+ * Allow activating `sockops add delete modify modrdn` via
+   UCR variable `ldap/overlay/sock/sockops`.
+ * Please note that activating that second UCR variable
+   causes the slapd process to wait for confirmation for
+   CRUD events (see `man slapd-sock`), so don't activate
+   this unless there is a process responding to the
+   socket `/var/lib/univention-ldap/slapd-sock`.
+bug: [57267]

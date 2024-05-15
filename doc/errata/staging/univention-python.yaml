@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [7]
+scope: ucs_5.0-0-errata5.0-7
+src: univention-python
+fix:
+desc: |
+ This update addresses the following issues:
+ * Add new UCR varable `directory/manager/feature/prepostread`
+   to configure `univention.uldap` to send LDAPControls
+   `PostReadControl` and `PreReadControl` for CRUD operations
+   (`add`, `modify`, `modrdn`, `delete`). If this option
+   is activated the LDAPControls will instruct OpenLDAP to
+   return all regular and operational attributes the are
+   readable by the binddn before and after the change.
+bug: [57267]
