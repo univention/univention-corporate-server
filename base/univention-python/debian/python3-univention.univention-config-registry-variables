@@ -6,3 +6,10 @@ Categories=service-ldap
 Default=2
 Min=0
 Max=2
+
+[directory/manager/feature/prepostread]
+Description[de]=Konfiguriert die standardmäßige Verwendung der LDAPControls PreRead und PostRead zur Kontrolle von UDM-Änderungen. Die generierten Daten können z.B. mit dem overlay slapd-sock genutzt werden zum Monitoring von UDM-Änderungen.
+Description[en]=Configures the default use of LDAPControls PreRead and PostRead to control UDM changes. The generated data can be used e.g. with the overlay slapd-sock to monitor UDM changes.
+Type=bool
+Default=false
+Categories=service-ldap
