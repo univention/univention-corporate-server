@@ -192,7 +192,6 @@ class Plugin:
                             'name': 'sdb',
                             'href': 'https://sdb.univention.de/foo',
                             'label': _('Solve problem XYZ'),
-                            'title': '',
                     }]
     :attr list buttons:
             A list of umc.widgets.Button definitions which are displayed underneath of
