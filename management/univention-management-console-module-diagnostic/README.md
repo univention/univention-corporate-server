@@ -41,7 +41,6 @@ links: List[Dict[str, str]] = [
 		"name": "…",
 		"href": "https://…",
 		"label": _("…"),
-		"title": _("…"),
 	},
 ]
 # Optional: actions buttons - shown on any error when declared here globally
