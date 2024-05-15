@@ -208,7 +208,7 @@ def test_REST_requests_search_roles(REST_get, user_with_roles):
 
 
 def test_role_attributes_on_modules():
-    roles_and_inherited_roles_mods = [
+    inherited_roles_mods = [
         'users/user',
         'computers/domaincontroller_backup',
         'computers/windows',
@@ -220,13 +220,12 @@ def test_role_attributes_on_modules():
         'computers/windows_domaincontroller',
         'computers/domaincontroller_slave',
         'computers/trustaccount',
-        'users/ldap',
         'users/self',
     ]
     expected = {
-        'guardianRoles': roles_and_inherited_roles_mods,
+        'guardianRoles': [*inherited_roles_mods, 'users/ldap'],
         'guardianMemberRoles': ['groups/group'],
-        'guardianInheritedRoles': roles_and_inherited_roles_mods,
+        'guardianInheritedRoles': inherited_roles_mods,
     }
     modules.update()
     for mod_name, mod in modules.modules.items():

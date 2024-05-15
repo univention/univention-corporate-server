@@ -1,3 +1,10 @@
+ucs-test (12.0.79) unstable; urgency=medium
+
+  * Bug #57228: fix 59_udm.77_test_roles.test_role_attributes_on_modules
+  remove guardianInheritedRoles from users/ldap
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 15 May 2024 10:31:14 +0200
+
 ucs-test (12.0.78) unstable; urgency=medium
 
   * Issue #2207: Adapt keycloak test to 24.0.3
