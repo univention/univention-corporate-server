@@ -48,9 +48,8 @@ class OwnershipTest:
 
 
 def load_test_cases():
-    sso_fqdn = ucr["ucs/server/sso/fqdn"]
+    sso_fqdn = ucr["keycloak/server/sso/fqdn"]
     # TODO: where to get the sso_fqdn from, ucs/server/sso/fqdn or keycloak/server/sso/fqdn
-    sso_fqdn = f'ucs-sso-ng.{ucr["domainname"]}'
 
     return [
         OwnershipTest(
