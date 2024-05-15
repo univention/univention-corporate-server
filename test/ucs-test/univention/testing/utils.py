@@ -569,10 +569,11 @@ def wait_for_listener_replication_and_postrun(verbose: bool = True) -> None:
             seconds_since_last_change += 1
         else:
             seconds_since_last_change = 0
+
+        # Less than 15 sec because a postrun function can potentially make ldap changes,
+        # which would result in a loop here.
         if seconds_since_last_change > 12:
-            # Less than 15 sec because a postrun function can potentially make ldap changes,
-            # which would result in a loop here.
-            time.sleep(10)  # Give the postrun function some time
+            time.sleep(15)  # Give the postrun function some time
             if verbose:
                 print("Postrun should have run")
             return
