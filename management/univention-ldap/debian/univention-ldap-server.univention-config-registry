@@ -76,6 +76,7 @@ Variables: ldap/k5pwd
 Variables: ldap/pwd_scheme_kinit
 Variables: ldap/shadowbind
 Variables: ldap/overlay/lastbind
+Variables: ldap/overlay/sock
 Variables: ldap/pw-bcrypt
 Variables: ldap/refint
 Variables: server/role
@@ -117,6 +118,8 @@ Variables: ldap/shadowbind
 Variables: ldap/shadowbind/ignorefilter
 Variables: ldap/overlay/lastbind
 Variables: ldap/overlay/lastbind/precision
+Variables: ldap/overlay/sock
+Variables: ldap/overlay/sock/sockops
 Variables: ldap/refint
 Variables: server/role
 
