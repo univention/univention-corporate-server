@@ -9,3 +9,6 @@ desc: |
  * A missing Univention Configuration Registry Variable
    has been added to the trigger for the Apache2 `univention.conf`
 bug: [57229]
+erratum: 1049
+announced: 2024-05-15
+support: core
