@@ -42,11 +42,16 @@ from typing import Any
 import ldap
 import ldap.sasl
 import ldap.schema
+from ldap.controls.readentry import PostReadControl, PreReadControl
 from ldapurl import LDAPUrl, isLDAPUrl
 
 import univention.logging
 from univention.config_registry import ConfigRegistry
 
+
+configRegistry = ConfigRegistry()
+configRegistry.load()
+feature_full_prepostread = configRegistry.is_true('directory/manager/feature/prepostread', False)
 
 log = logging.getLogger('LDAP')
 
@@ -626,10 +631,19 @@ class access:
         :type serverctrls: list[ldap.controls.LDAPControl]
         :param dict response: An optional dictionary to receive the server controls of the result.
         """
-        if not serverctrls:
+        log.debug('uldap.add dn=%s', dn)
+
+        if feature_full_prepostread:
+            if serverctrls:
+                for ctrl in serverctrls:
+                    if isinstance(ctrl, PostReadControl):
+                        log.info('uldap.add: overriding PostReadControl (%s)', ctrl.attrList)
+                        ctrl.attrList = ['*', '+']
+            else:
+                serverctrls = [PostReadControl(True, ['*', '+'])]
+        elif not serverctrls:
             serverctrls = []
 
-        log.debug('uldap.add dn=%s', dn)
         nal: dict[str, Any] = {}
         for i in al:
             key, val = i[0], i[-1]
@@ -668,7 +682,16 @@ class access:
         """
         log.debug('uldap.modify %s', dn)
 
-        if not serverctrls:
+        if feature_full_prepostread:
+            if serverctrls:
+                for ctrl in serverctrls:
+                    for ctrl_type in (PreReadControl, PostReadControl):
+                        if isinstance(ctrl, ctrl_type):
+                            log.info('uldap.modify: overriding %s (%s)', type(ctrl_type).__name__, ctrl.attrList)
+                            ctrl.attrList = ['*', '+']
+            else:
+                serverctrls = [PreReadControl(True, ['*', '+']), PostReadControl(True, ['*', '+'])]
+        elif not serverctrls:
             serverctrls = []
 
         ml = []
@@ -784,7 +807,16 @@ class access:
         newrdn = ldap.dn.dn2str([ldap.dn.str2dn(newdn)[0]])
         newsdn = ldap.dn.dn2str(ldap.dn.str2dn(newdn)[1:])
 
-        if not serverctrls:
+        if feature_full_prepostread:
+            if serverctrls:
+                for ctrl in serverctrls:
+                    for ctrl_type in (PreReadControl, PostReadControl):
+                        if isinstance(ctrl, ctrl_type):
+                            log.info('uldap.rename: overriding %s (%s)', type(ctrl_type).__name__, ctrl.attrList)
+                            ctrl.attrList = ['*', '+']
+            else:
+                serverctrls = [PreReadControl(True, ['*', '+']), PostReadControl(True, ['*', '+'])]
+        elif not serverctrls:
             serverctrls = []
 
         if oldsdn and newsdn.lower() == oldsdn.lower():
@@ -831,6 +863,18 @@ class access:
         :param dict response: An optional dictionary to receive the server controls of the result.
         """
         log.debug('uldap.delete %s', dn)
+
+        if feature_full_prepostread:
+            if serverctrls:
+                for ctrl in serverctrls:
+                    if isinstance(ctrl, PreReadControl):
+                        log.info('uldap.delete: overriding PreReadControl (%s)', ctrl.attrList)
+                        ctrl.attrList = ['*', '+']
+            else:
+                serverctrls = [PreReadControl(True, ['*', '+'])]
+        elif not serverctrls:
+            serverctrls = []
+
         if dn:
             log.debug('delete')
             try:
