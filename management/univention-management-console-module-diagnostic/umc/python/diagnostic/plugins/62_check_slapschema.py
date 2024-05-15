@@ -32,7 +32,7 @@
 
 import os
 import re
-from subprocess import PIPE, Popen
+from subprocess import DEVNULL, PIPE, Popen
 
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import Instance, Warning
@@ -41,30 +41,36 @@ from univention.management.console.modules.diagnostic import Instance, Warning
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Validating the LDAP configuration and schema files.')
-description = _('LDAP configuration files are valid.')
+description = _('LDAP configuration is valid.')
 
-RE_ERROR = re.compile("^[0-9a-f]{8} ")
+RE_LINE = re.compile("^[0-9a-f]{8} (.+)")
 
 
 def run(_umc_instance: Instance) -> None:
     if not os.path.exists('/usr/sbin/slapschema'):
         return
 
-    process = Popen(['/usr/sbin/slapschema', '-f', '/etc/ldap/slapd.conf'], stdout=PIPE, stderr=PIPE, env={'LANG': 'C'}, shell=True)
-    _stdout, stderr_ = process.communicate()
-    stderr = stderr_.decode('UTF-8', 'replace')
-
-    if not stderr:
-        return
-
+    process = Popen(['/usr/sbin/slapschema', '-f', '/etc/ldap/slapd.conf'], stdout=DEVNULL, stderr=PIPE, env=dict(os.environ, LANG='C'))
+    assert process.stderr is not None
     errors = [
-        line.split(' ', 1)[1]
-        for line in stderr.splitlines()
-        if RE_ERROR.search(line)
+        m.group(1)
+        for m in (RE_LINE.match(line.decode().strip()) for line in process.stderr)
+        if m
     ]
-
-    if errors:
-        raise Warning(_('The LDAP schema validation failed with the following errors or warnings:\n') + "\n".join(errors))
+    if not errors:
+        return
+    errors.insert(0, _('LDAP schema validation failed:'))
+    msg = "\n".join(errors)
+    raise Warning(
+        description=msg,
+        links=[
+            {
+                "name": "sdb",
+                "href": "https://help.univention.com/t/problem-after-a-ldap-schema-was-removed-there-are-still-some-references-in-your-ldap/11810",
+                "label": "Univention Help: After removing an LDAP schema, there are still some references in LDAP ",
+            },
+        ],
+    )
 
 
 if __name__ == '__main__':

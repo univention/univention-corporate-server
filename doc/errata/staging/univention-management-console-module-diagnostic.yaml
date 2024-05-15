@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [7]
+scope: ucs_5.0-0-errata5.0-7
+src: univention-management-console-module-diagnostic
+fix: 6.0.8-4
+desc: |
+ This update addresses the following issues:
+ * The UMC diagnostics module to check the LDAP configuration and schema files
+   now provides links to a help article describing the problem and providing
+   manual steps to resolve the issue.
+bug: [57283]

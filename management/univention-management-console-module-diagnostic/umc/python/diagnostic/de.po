@@ -1280,15 +1280,12 @@ msgid "Validating the LDAP configuration and schema files."
 msgstr "Validierung der LDAP-Konfigurations und Schema Dateien."
 
 #: plugins/62_check_slapschema.py:44
-msgid "LDAP configuration files are valid."
-msgstr "LDAP-Konfigurationsdateien sind ungültig."
+msgid "LDAP configuration is valid."
+msgstr "LDAP-Konfiguration ist gültig."
 
 #: plugins/62_check_slapschema.py:67
-msgid ""
-"The LDAP schema validation failed with the following errors or warnings:\n"
-msgstr ""
-"Die LDAP-Schema-Validierung ist mit den folgenden Fehlern oder Warnungen "
-"fehlgeschlagen:\n"
+msgid "LDAP schema validation failed:"
+msgstr "Die LDAP-Schema-Validierung ist fehlgeschlagen:"
 
 #: plugins/63_proof_uniqueMembers.py:43
 msgid "Check LDAP database for inconsistencies in group memberships."
