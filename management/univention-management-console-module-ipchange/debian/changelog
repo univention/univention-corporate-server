@@ -1,5 +1,11 @@
 univention-management-console-module-ipchange (10.0.4) unstable; urgency=medium
 
+  * Bug #57290: Check sso fqdn case insensitively during ipchange
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 21 May 2024 10:03:59 +0200
+
+univention-management-console-module-ipchange (10.0.4) unstable; urgency=medium
+
   * Issue #2020: update keycloak/server/sso... in ipchange
 
  -- Felix Botner <botner@univention.de>  Fri, 03 May 2024 14:24:58 +0200

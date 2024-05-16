@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [7]
+scope: ucs_5.0-0-errata5.0-7
+src: univention-management-console-module-ipchange
+fix: 12.0.33-8
+desc: |
+ This update addresses the following issues:
+ * The `UMC` IP change module has been adapted to check
+   the zone of the Single-Sign On domain name case
+   insensitively.
+bug: [57290]
