@@ -1,3 +1,9 @@
+ucs-test (10.0.21-44) unstable; urgency=medium
+
+  * Bug #57193: Add memberOf to ignored attributes that lack index
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 16 May 2024 22:55:38 +0200
+
 ucs-test (10.0.21-43) unstable; urgency=medium
 
   * Bug #57228: fix 59_udm.77_test_roles.test_role_attributes_on_modules
