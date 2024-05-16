@@ -119,13 +119,14 @@ class Instance(Base):
         # Change ucs-sso entry
         # FIXME: this should be done for UCS-in-AD domains as well!
         ucr.load()
-        sso_fqdn = ucr.get('keycloak/server/sso/fqdn')
+        sso_fqdn = ucr.get('keycloak/server/sso/fqdn').lower()
         if ucr.is_true('keycloak/server/sso/autoregistraton', True) and sso_fqdn:
             fmodule = univention.admin.modules.get('dns/forward_zone')
             forwardobjects = univention.admin.modules.lookup(fmodule, None, lo, scope='sub', superordinate=None, filter=None)
             for forwardobject in forwardobjects:
                 zone = forwardobject.get('zone')
-                if not sso_fqdn.endswith(zone):
+                # check case insenstive. Mostly necessary for keycloak
+                if not sso_fqdn.endswith(zone.lower()):
                     continue
                 sso_name = sso_fqdn[:-(len(zone) + 1)]
                 for current_ip in current_ips:
