@@ -47,6 +47,7 @@ import uuid
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.utils import formatdate
 from os.path import basename
 
 import univention.config_registry
@@ -716,7 +717,7 @@ Regards,
     mimemsg = MIMEMultipart()
     mimemsg['From'] = m_sender
     mimemsg['To'] = COMMASPACE.join(m_recipients)
-    mimemsg['Date'] = time.strftime("%a, %d %b %Y %H:%M:%S +0000")
+    mimemsg['Date'] = formatdate()
     mimemsg['Subject'] = m_subject
     mimemsg['UCS-TEST'] = idstring
     mimemsg['Message-Id'] = messageid or create_random_msgid()
