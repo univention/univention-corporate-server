@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -v
 ## desc: Basic check of univention.lib.atjobs
 ## bugs: [36809]
 ## tags: [basic]
@@ -6,71 +6,59 @@
 ##   - python3-univention-lib
 ## exposure: dangerous
 
-import datetime
-from subprocess import PIPE, Popen
+from datetime import datetime, timedelta
+from typing import Dict, Iterator, Tuple
+
+import pytest
 
 from univention.lib import atjobs
-from univention.testing import strings, utils
+from univention.testing.strings import random_name, random_string
 
 
-def get_output(cmd):
-    p = Popen(cmd, stdout=PIPE, stderr=PIPE)
-    return (b'%s\n%s' % p.communicate()).decode('UTF-8')
+_AtJob = Tuple[atjobs.AtJob, str, Dict[str, str]]
 
 
-def print_job(job, msg=''):
+def print_job(job: atjobs.AtJob, msg: str) -> None:
     print(f'{msg}{job!r}\nNumber: {job.nr!r}\nCommand: {job.command!r}\nComments: {job.comments!r}\nExecTime: {job.execTime!r}\nOwner: {job.owner!r}')
 
 
-def main():
-    # save old job list
-    old_atq_output = get_output('atq')
+def validate(jut: atjobs.AtJob, expected: _AtJob) -> None:
+    job, cmd, comments = expected
+    assert jut.command.strip() == cmd
+    assert jut.comments == comments
+    assert jut.execTime == job.execTime
+    assert jut.owner == job.owner
 
-    job_number = None
-    job_command = 'echo %s' % (strings.random_name())
-    job_comments = {}
-    for _i in range(10):
-        job_comments[strings.random_name()] = strings.random_string(length=30)
 
+@pytest.fixture(scope="module")
+def atjob() -> Iterator[_AtJob]:
+    cmd = f'echo {random_name()}'
+    comments = {
+        random_name(): random_string(length=30)
+        for _i in range(10)
+    }
+    job = atjobs.add(cmd, execTime=(datetime.now() + timedelta(days=3)), comments=comments)
     try:
-        job = atjobs.add(job_command, execTime=(datetime.datetime.now() + datetime.timedelta(days=3)), comments=job_comments)
-        job_number = job.nr
-        print_job(job, '\nCreated atjob ')
-
-        for testjob in atjobs.list(extended=True):
-            if testjob.nr == job.nr:
-                print_job(testjob, '\nFound job ')
-                if testjob.command.strip() != job_command:
-                    utils.fail(f'Jobs differ: {testjob.command!r}  <==>  {job_command!r}')
-                if testjob.comments != job_comments:
-                    utils.fail(f'Jobs differ: {testjob.comments!r}  <==>  {job_comments!r}')
-                if testjob.execTime != job.execTime:
-                    utils.fail(f'Jobs differ: {testjob.execTime!r}  <==>  {job.execTime!r}')
-                if testjob.owner != job.owner:
-                    utils.fail(f'Jobs differ: {testjob.owner!r}  <==>  {job.owner!r}')
-
-                testjob2 = atjobs.load(testjob.nr, extended=True)
-                print_job(testjob2, '\nExplicitely loaded job ')
-                if testjob2.command.strip() != job_command:
-                    utils.fail(f'Jobs differ: {testjob2.command!r}  <==>  {job_command!r}')
-                if testjob2.comments != job_comments:
-                    utils.fail(f'Jobs differ: {testjob2.comments!r}  <==>  {job_comments!r}')
-                if testjob2.execTime != job.execTime:
-                    utils.fail(f'Jobs differ: {testjob2.execTime!r}  <==>  {job.execTime!r}')
-                if testjob2.owner != job.owner:
-                    utils.fail(f'Jobs differ: {testjob2.owner!r}  <==>  {job.owner!r}')
-                break
-        else:
-            utils.fail(f'job {job.nr!r} not found in list')
+        print_job(job, 'Created job ')
+        yield job, cmd, comments
     finally:
-        atjobs.remove(job_number)
-
-        new_atq_output = get_output('atq')
-        if old_atq_output != new_atq_output:
-            print('old_atq_output = %r' % (old_atq_output))
-            print('new_atq_output = %r' % (new_atq_output))
-            utils.fail('old and new atq output differ! remove() may have failed')
+        job.rm()
+        assert atjobs.load(job.nr) is None
 
 
-if __name__ == '__main__':
-    main()
+def test_create(atjob: _AtJob) -> None:
+    jobs = atjobs.list(extended=True)
+    for testjob in jobs:
+        if testjob.nr == atjob[0].nr:
+            print_job(testjob, 'Found job ')
+            break
+    else:
+        pytest.fail(f'job {atjob[0].nr!r} not found in {jobs}')
+
+    validate(testjob, atjob)
+
+
+def test_lookup(atjob: _AtJob) -> None:
+    testjob2 = atjobs.load(atjob[0].nr, extended=True)
+    print_job(testjob2, 'Explicitely loaded job ')
+    validate(testjob2, atjob)
