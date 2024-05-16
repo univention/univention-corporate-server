@@ -33,12 +33,7 @@ tests () {
 _aptget () { "$1" apt-get -qq update; }
 _pyapt () { "$1" python3 -c 'exit(0 if __import__("apt").Cache().update() else 1)'; }
 have apt && _apt () { "$1" apt -qq update; }
-have aptitude && _aptitude () {
-	# aptitude does not report unsigned repositories in the return value
-	local log="$BASEDIR/out"
-	aptitude --no-gui update >"$log" 2>&1
-	"$1" neg grep "E: The repository '[^']* Release' is not signed." "$log"
-}
+have aptitude && _aptitude () { "$1" aptitude --no-gui update; }
 have dselect && _dselect () { "$1" dselect update; }
 
 	set -e
