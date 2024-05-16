@@ -2,6 +2,7 @@
 ..
 .. SPDX-License-Identifier: AGPL-3.0-only
 
+.. _bsi-secure-password: https://www.bsi.bund.de/EN/Themen/Verbraucherinnen-und-Verbraucher/Informationen-und-Empfehlungen/Cyber-Sicherheitsempfehlungen/Accountschutz/Sichere-Passwoerter-erstellen/sichere-passwoerter-erstellen_node.html
 .. _docker-hub-univention: https://hub.docker.com/u/univention/
 .. _dovecot-mail-location-settings: https://doc.dovecot.org/configuration_manual/mail_location/
 .. _dovecot-shared-mailboxes: https://doc.dovecot.org/configuration_manual/shared_mailboxes/
