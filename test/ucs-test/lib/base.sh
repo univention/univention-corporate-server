@@ -241,7 +241,7 @@ wait_for_replication_and_postrun () { #wait for listener/notifier replicaion and
 	wait_for_replication
 	rc=$?
 	debug "Waiting for postrun..."
-	sleep 27
+	sleep 33
 	return $rc
 }
 
