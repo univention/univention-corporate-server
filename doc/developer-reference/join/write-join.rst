@@ -89,12 +89,12 @@ Source code:
    join script:
 
    ``## joinscript api: bindpwdfile``
-      Credentials from :command:`univention-join` and
-      :command:`univention-run-join-script` are passed through the two
-      parameters ``--binddn`` and ``--bindpwdfile``.
-      If the join script is executed on a primary directory node, the 
-      parameters are usually not transferred, as the corresponding credentials
-      are already directly accessible for the join script.
+      The parameters ``--binddn`` and ``--bindpwdfile``
+      pass the credentials for the commands :command:`univention-join` and
+      :command:`univention-run-join-script`.
+      When UCS runs the join script on a Primary Directory Node,
+      it doesn't use these parameters,
+      because the join script has direct access to the credentials.
 
       .. deprecated:: 4.4
 
