@@ -130,7 +130,7 @@ do
 	fi
 done <<EOF
 #udm	windows	kerberos	posix	comment
-0	0	0	0
+0	0	0	1	posix for an ldap user is not possible with libsssd
 1	1	1	1
 EOF
 

@@ -1,3 +1,9 @@
+ucs-test (12.0.82) unstable; urgency=medium
+
+  * Bug #2276: Adjust 47faillog_account-smb-krb due to libsssd
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 16 May 2024 21:48:32 +0200
+
 ucs-test (12.0.81) unstable; urgency=medium
 
   * Issue #2261: Check keycloak/server/sso/fqdn for the xml file permissions
