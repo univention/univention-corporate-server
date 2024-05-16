@@ -7,38 +7,45 @@
 Password settings for Windows clients when using Samba
 ======================================================
 
-With the Samba domain object, one can set the password requirements for
-logins to Windows clients in a Samba domain.
+With the Samba domain object,
+you can set the requirements for user account passwords in a Samba domain.
 
-The Samba domain object is managed via the UMC module :guilabel:`LDAP
-directory`. It can be found in the ``samba``
-container below the LDAP base and carries the domain's NetBIOS name.
+You can manage the Samba domain object through the UMC module :guilabel:`LDAP directory`.
+The Samba domain object locates in the ``samba`` container and has the domain's NetBIOS name.
+You find the ``samba`` container under the LDAP base.
 
-The settings of the Samba domain object and the policy (see :ref:`users-passwords`) should be set identically,
-otherwise different password requirements will apply for logins to
-Windows and UCS systems.
+.. important::
 
-.. list-table:: *General* tab
-   :header-rows: 1
-   :widths: 30 70
+   It's a strong recommendation to design the password requirement settings of the Samba domain object
+   identical to the user password policy as described in :ref:`users-passwords`.
 
-   * - Attribute
-     - Description
+   .. Same note exists in password-management.rst
 
-   * - Password length
-     - The minimum number of characters for a user password.
+In the *Password* section on the *General* tab of the *Samba Domain* object,
+you can configure the following settings.
 
-   * - Password history
-     - The latest password changes are saved in the form of hashes. These
-       passwords can then not be used by the user as a new password when setting
-       a new password. With a password history of five, for example, five new
-       passwords must be set before a password can be reused.
+Password length
+   The minimum number of characters for a user password.
 
-   * - Minimum password age
-     - The period of time set for this must have at least expired since the last
-       password change before a user can reset their password again.
+Password history
+   UCS stores password changes in the form of hashes.
+   Users can't use passwords from history when setting a password.
+   For example, with a password history value of ``5``,
+   user must set five other passwords before they can reuse a password from the history.
 
-   * - Maximum password age
-     - Once the saved period of time has elapsed, the password must be changed
-       again by the user the next time they sign in. If the value is left blank,
-       the password is infinitely valid.
+Minimum password age
+   Defines the period of time that must elapse,
+   before users can change their password.
+
+Maximum password age
+   Defines the maximum age for a password.
+   When the period of time is over,
+   UCS requires the user to change their password upon next sign-in.
+
+   To define an infinite period of time, leave the value empty.
+
+Password must meet complexity requirements
+   Activating the checkbox activates `Microsoft Password complexity requirements <microsoft-password-complexity-requirements_>`_.
+   A tooltip shows the required characters in a password.
+   The library :file:`Passfilt.dll` enforces the complexity requirements.
+   Administrators can't change them.
