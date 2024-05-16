@@ -437,20 +437,24 @@ Setup repository
    seealso: repository; packaging
    single: packaging; package repository
 
-Until now the binary package is only available locally, thus for installation it
-needs to be copied manually to each host and must be installed manually using
-:command:`dpkg -i`. If the package requires additional dependencies, the
-installation process will cancel, since packages are not downloaded by
-:command:`dpkg`, but by :command:`apt`. To support automatic installation and
-dependency resolution, the package must locate i an :program:`apt` repository,
-that is available through ``http`` or some other mechanism.
+Until now the binary package is only available locally.
+For installation you must manually copy it to each host
+and manually install it using :command:`dpkg -i`.
 
-For this example the repository is created below :file:`/var/www/repository/`,
-which is exported by default on all UCS systems, where :program:`apache2` is
-installed. Below that directory several other sub-directories and files must be
-created to be compatible with the :program:`UCS Updater`. The following example
-commands create a repository for UCS version 5.2 with the component name
-:samp:`{testcomp}`:
+If the package requires additional dependencies,
+the installation process cancels,
+because :command:`dpkg` doesn't download dependencies,
+but :command:`apt` does.
+To support automatic installation and dependency resolution,
+you must copy the package to an :program:`apt` repository,
+that's available through HTTP.
+
+The following example creates a repository under :file:`/var/www/repository/`.
+All UCS systems with :program:`apache2` installed export this directory by default.
+For compatibility reasons with the :program:`UCS Updater`,
+you need to create several subdirectories inside this directory.
+
+The following commands create a repository for UCS 5.0 with the component name :samp:`{testcomp}`:
 
 .. code-block::
 
@@ -464,29 +468,29 @@ commands create a repository for UCS version 5.2 with the component name
      gzip -9 < "Packages" > "$TESTCOMP/Packages.gz"
      mv "Packages" "$TESTCOMP/Packages" )
 
-
-This repository can be included on any UCS system by appending the following
-line to :file:`/etc/apt/sources.list`, assuming the FQDN of the host providing
-the repository is named :samp:`{repository.server}`:
+You can then include this repository on any UCS system by appending the following line
+to :file:`/etc/apt/sources.list`,
+assuming that the FQDN of the host with the repository is :samp:`{repository.example.com}`.
 
 .. code-block:: debsources
 
-   deb [trusted=yes] http://repository.server/repository/5.2/maintained/component testcomp/all/
+   deb [trusted=yes] http://repository.example.com/repository/5.2/maintained/component testcomp/all/
 
-.. note::
+.. important::
 
-   It is important that the directory, from were the :command:`apt-ftparchive`
-   command is invoked, matches the first string given in the
-   :file:`sources.list` file after the ``deb`` prefix. The URL together with the
-   suffix ``testcomp/all/`` not only specifies the location of the
-   :file:`Packages` file, but is also used as the base URL for all packages
-   listed in the :file:`Packages` file.
+   The directory, from where you run the :command:`apt-ftparchive` command,
+   must match the first string given in the :file:`sources.list` file after the ``deb`` prefix.
+   The URL together with the suffix ``testcomp/all/`` not only specifies the location of the :file:`Packages` file,
+   but the package manager also uses it as the base URL for all packages listed in the :file:`Packages` file.
 
-Instead of editing the :file:`sources.list` file directly, the repository can
-also be included as a component, which can be configured by setting several UCR
-variables. As UCR variables can also be configured through UDM policies, this
-simplifies the task of installing packages from such a repository on many hosts.
-For the repository above the following variables need to be set:
+Instead of editing the :file:`sources.list` file directly,
+you can include the repository as a component and configure it by setting several UCR variables.
+You can also configure UCR variables through UDM policies,
+which simplifies the task of installing packages from such a repository on many hosts.
+For the repository before you need to set the following variables:
+
+* :envvar:`repository/online/component/NAME`
+* :envvar:`repository/online/component/NAME/server`
 
 .. index::
    single: config registry; repository
@@ -494,9 +498,8 @@ For the repository above the following variables need to be set:
 .. code-block:: console
 
    $ ucr set \
-     repository/online/component/testcomp=yes \
-     repository/online/component/testcomp/server=repository.server \
-     repository/online/component/testcomp/prefix=repository
+     repository/online/component/testcomp=enabled \
+     repository/online/component/testcomp/server=https://repository.example.com/repository
 
 .. _pkg-obs:
 
