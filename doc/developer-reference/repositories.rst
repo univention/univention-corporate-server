@@ -74,62 +74,85 @@ and *unmaintained* software. While UCS 5 no longer uses this distinction.
 Integrate with |UCSUCR|
 =======================
 
-The following |UCSUCRVs| can be used to register a repository component.
-It is also possible to activate further functions here which cannot be
-configured through the UMC module.
-:samp:`{NAME}` stands for the component's name:
+You can use the following |UCSUCRVs| to register a repository component.
+It's also possible to activate further functions here
+that you can't configured through the UMC module.
+:samp:`{NAME}` stands for the component's name.
 
-:samp:`repository/online/component/{NAME}/server`
-   The repository server absolute URL on which the components are available. If this variable
-   is not set, the server from |UCSUCRV| :envvar:`repository/online/server` is
-   used.
+.. envvar:: repository/online/component/NAME/server
 
-:samp:`repository/online/component/{NAME}`
-   This variable must be set to *enabled* if the components are to be mounted.
+   The repository server absolute URL on which the components are available.
+   If this variable isn't set,
+   UCS uses the server from |UCSUCRV| :envvar:`repository/online/server`.
 
-:samp:`repository/online/component/{NAME}/localmirror`
-   This variable can be used to configure whether the component is mirrored
-   locally. In combination with the |UCSUCRV|
-   :samp:`repository/online/component/{NAME}/server`, a configuration can be set
-   up so that the component is mirrored, but not activated, or that it is
-   activated, but not mirrored.
+.. envvar:: repository/online/component/NAME
 
-:samp:`repository/online/component/{NAME}/description`
+   You must set this variable to ``enabled``, if UCS should activate and use the component.
+
+.. envvar:: repository/online/component/NAME/localmirror
+
+   You can use this variable to configure whether UCS mirrors the component locally.
+   In combination with the |UCSUCRV| :envvar:`repository/online/component/NAME/server`,
+   you can set up a configuration so that UCS mirrors the component, but doesn't activate it,
+   or that UCS activates the component, but doesn't mirror it.
+
+.. envvar:: repository/online/component/NAME/description
+
    A optional description for the repository.
 
-:samp:`repository/online/component/{NAME}/prefix`
-   ``DEPRECATED!`` Defines the URL prefix which is used on the repository server.
-   This variable should no longer be used. The path should be specified as a part
-   of the URL configured in the ``server`` variable.
+.. envvar:: repository/online/component/NAME/prefix
 
-:samp:`repository/online/component/{NAME}/layout`
+   .. deprecated:: 5.0
+
+   Defines the URL path prefix that the repository server uses.
+   Don't use this variable anymore.
+   Instead, specify the path as part of the absolute URL in the UCR variable
+   :envvar:`repository/online/component/NAME/server`.
+
+   For example: ``repository/online/component/NAME/server=https://repository.example.com/prefix``
+
+.. envvar:: repository/online/component/NAME/layout
+
    Defines the type of the repository:
 
-   * If ``arch`` is set or the variable is unset, the :file:`Packages` file is
-     searched within the architecture subdirectories :file:`amd64/` resp.
-     :file:`all/`.
+   * If the variable has the value ``arch`` or is unset,
+     UCS searches for the :file:`Packages` within the architecture subdirectories :file:`amd64/` and :file:`all/` respectively.
 
-   * If ``flat`` repository is specified, the :file:`Packages` file is searched
-     within the root directory of the repository.
+   * If the variable has the value ``flat``,
+     UCS searches for the :file:`Packages` file within the root directory of the repository.
 
-   This variable is usually not set.
+   This variable is usually unset.
 
-:samp:`repository/online/component/{NAME}/username`
-   ``DEPRECATED!`` Defines the username if the repository server requires authentication.
-   This variable should no longer be used. The username should be specified as a part
-   of the URL configured in the ``server`` variable.
+.. envvar:: repository/online/component/NAME/username
 
-:samp:`repository/online/component/{NAME}/password`
-   ``DEPRECATED!`` Defines the password if the repository server requires authentication.
-   This variable should no longer be used. The password should be specified as a part
-   of the URL configured in the ``server`` variable.
+   .. deprecated:: 5.0
 
-:samp:`repository/online/component/{NAME}/version`
-   This variable controls the versions to include, see :ref:`chap-repo-add` for
-   details.
+   The variable defines the username if the repository server requires authentication.
+   Don't use this variable anymore.
+   Instead, specify the username as part of the absolute URL in the UCR variable
+   :envvar:`repository/online/component/NAME/server`.
 
-:samp:`repository/online/component/{NAME}/defaultpackages`
-   A list of package names separated by blanks. The UMC module *Repository
-   Settings* offers the installation of this component if at least one of the
-   packages is not installed. Specifying the package list eases the subsequent
-   installation of components.
+   For example: ``repository/online/component/NAME/server=https://username@repository.example.com``
+
+.. envvar:: repository/online/component/NAME/password
+
+   .. deprecated:: 5.0
+
+   This variable defines the password if the repository server requires authentication.
+   Don't use this variable anymore.
+   Instead, specify the password as part of the absolute URL in the UCR variable
+   :envvar:`repository/online/component/NAME/server`.
+
+   For example: ``repository/online/component/NAME/server=https://username:password@repository.example.com``
+
+.. envvar:: repository/online/component/NAME/version
+
+   This variable controls the versions to include.
+   For more information, see :ref:`chap-repo-add`.
+
+.. envvar:: repository/online/component/NAME/defaultpackages
+
+   Defines a list of package names separated by blanks.
+   The UMC module *Repository Settings* offers the installation of this component
+   if at least one of the packages isn't installed.
+   Specifying the package list eases the subsequent installation of components.
