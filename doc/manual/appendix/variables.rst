@@ -1081,52 +1081,62 @@ This appendix lists the |UCSUCRVs| mentioned in the document.
 
 .. envvar:: password/quality/credit/digits
 
-   Defines the minimum number of digits for a new password. For more
-   information, see :ref:`users-passwords`.
+   Defines the minimum required number of digits for a password.
+   For more information, see :ref:`users-passwords`.
 
 
 .. envvar:: password/quality/credit/lower
 
-   Defines the minimum number of lowercase letters in the new password. For more
-   information, see :ref:`users-passwords`.
+   Defines the minimum required number of lowercase letters in the password.
+   For more information, see :ref:`users-passwords`.
 
 
 .. envvar:: password/quality/credit/other
 
-   Defines the minimum number of characters in the new password which are
-   neither letters nor digits. For more information, see :ref:`users-passwords`.
+   Defines the minimum required number of characters in the password which are
+   neither letters nor digits.
+   For more information, see :ref:`users-passwords`.
 
 
 .. envvar:: password/quality/credit/upper
 
-   Defines the minimum number of uppercase letters in the new password. For more
-   information, see :ref:`users-passwords`.
+   Defines the minimum required number of uppercase letters in the password.
+   For more information, see :ref:`users-passwords`.
 
 
 .. envvar:: password/quality/forbidden/chars
 
-   Defines the characters and digits that are not allowed for passwords. For
-   more information, see :ref:`users-passwords`.
+   Defines the characters and digits not allowed for passwords.
+   For more information, see :ref:`users-passwords`.
 
 
 .. envvar:: password/quality/length/min
 
-   Sets the minimum length default for a password on a per UCS system basis for
-   users not subject to a UDM password policy. The value ``yes`` applies checks
-   from the :program:`python-cracklib`. The value ``sufficient`` does not
-   include :program:`python-cracklib` checks. For more information, see
-   :ref:`users-passwords`.
+   Defines the minimum required default length for a password on a per UCS system basis for
+   users not subject to a UDM password policy.
+   The value ``yes`` applies checks from the :program:`python-cracklib`.
+   The value ``sufficient`` doesn't include :program:`python-cracklib` checks.
+   For more information, see :ref:`users-passwords`.
 
 
 .. envvar:: password/quality/mspolicy
 
-   Defines the standard Microsoft password complexity criteria. For more
-   information, see :ref:`users-passwords`.
+   Defines the standard Microsoft password complexity criteria.
+
+   The values ``yes``, ``1`` or ``true`` activate the standard Microsoft password complexity criteria
+   in addition to the other criteria validated with :program:`python-cracklib`.
+
+   The value ``sufficient`` only applies the standard Microsoft password complexity criteria
+   without :program:`python-cracklib`.
+
+   The default value is unset and corresponds to the value ``false``.
+
+   For more information, see :ref:`users-passwords`.
 
 .. envvar:: password/quality/required/chars
 
-   Defines individual characters/figures that are compulsory for passwords. For
-   more information, see :ref:`users-passwords`.
+   Defines individual characters that are required for passwords.
+   For more information, see :ref:`users-passwords`.
 
 
 .. envvar:: pkgdb/scan
