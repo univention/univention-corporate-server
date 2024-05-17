@@ -1,3 +1,9 @@
+univention-pam (15.0.11) unstable; urgency=medium
+
+  * Issue #2271: add UCR template for PAM config file "common-session-noninteractive"
+
+ -- Christian Castens <castens@univention.de>  Fri, 17 May 2024 12:17:46 +0200
+
 univention-pam (15.0.10) unstable; urgency=medium
 
   * Bug #56793: Set ldap_referrals to false in sssd.conf

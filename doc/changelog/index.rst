@@ -344,9 +344,9 @@ PAM / Local group cache
   differently from what the UCR template initially supports.
   The user cache of :program:`sssd` can be flushed by running ``sss_cache -U``, instead
   of running ``nscd -i passwd``. Please note that :program:`sssd` by default doesn't
-  dynamically ``enumerate`` accounts in passwd. Some tools that expect that by default,
-  may need adjustment to consider this; for example ``repquota`` needs to be called with
-  the option ``-C`` to resolve ``uid`` numbers to names. Additionally
+  dynamically ``enumerate`` accounts in :program:`passwd`. Some tools that expect that by
+  default, may need adjustment to consider this; for example ``repquota`` needs to be called
+  with the option ``-C`` to resolve ``uid`` numbers to names. Additionally
   :program:`sssd` doesn't support resolving ``shadow`` information at all, so e.g.
   ``pam_unix`` will not be able to read ``shadow`` related info for domain users
   (so there's a difference between domain users managed in UDM/LDAP and
@@ -360,6 +360,9 @@ PAM / Local group cache
 
 * The obsolete :program:`libpam-cracklib` has been replaced with :program:`libpam-pwquality`
   (:uv:bug:`56002`).
+
+* The :program:`pam` configuration file :file:`/etc/pam.d/common-session-noninteractive` is now
+  generated from a UCR template (:uv:bug:`57298`).
 
 .. _changelog-service-nfs:
 
