@@ -82,6 +82,7 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'/var/log/univention/sysvol-sync.log'
 		'/var/log/syslog*'=
 		'/var/log/univention/actualise.log'
+		'/var/log/univention/admindiary.log'
 		'/var/log/univention/appcenter.log'
 		'/var/log/univention/portal.log'
 		'/var/log/univention/config-registry.replog'='config-registry.replog.log'
