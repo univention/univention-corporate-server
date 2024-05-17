@@ -1,3 +1,10 @@
+ucs-test (12.0.85) unstable; urgency=medium
+
+  * Bug #57193: Add structuralObjectClass, univentionOperatingSystem to
+    ignored attributes that lack index
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 17 May 2024 11:58:23 +0200
+
 ucs-test (12.0.84) unstable; urgency=medium
 
   * Bug #57193: Add memberOf to ignored attributes that lack index

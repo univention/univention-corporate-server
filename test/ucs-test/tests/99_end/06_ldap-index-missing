@@ -17,6 +17,7 @@ IGNORE = {
     'objectClass',  # IGN: pres,eq; temporal issue?
     'sambaLogonHours',  # LOW: only tested by ../../../../test/ucs-test/tests/59_udm/61_test_udm_users.py:52
     'SAMLServiceProviderIdentifier',  # LOW: only used ../../../../management/univention-management-console-module-diagnostic/umc/python/diagnostic/plugins/04_saml_certificate_check.py and ../../../../management/univention-management-console/usr/share/univention-management-console/saml/update_metadata and join scripts
+    'structuralObjectClass', # base/univention-updater/script/check.sh
     'uid',  # IGN: pres,eq,sub,approx
     'univentionAppID',  # FIXME: ../../management/univention-appcenter/python/appcenter/utils.py:636
     'univentionDhcpFixedAddress',  # FIXME: ../../management/univention-directory-manager-modules/modules/univention/admin/handlers/__init__.py:2368 et al
@@ -29,6 +30,7 @@ IGNORE = {
     'univentionNewPortalFolderEntries',  # FIXME: ../../management/univention-portal/udm/handlers/folder.py:130 et al
     'univentionNewPortalMenuLinks',  # FIXME: ../../management/univention-portal/udm/handlers/entry.py:194
     'univentionNewPortalUserLinks',  # FIXME: ../../management/univention-portal/udm/handlers/entry.py:198
+    'univentionOperatingSystem', # base/univention-updater/script/check.sh
     'univentionPrinterSpoolHost',  # FIXME: ../../management/univention-directory-manager-modules/modules/univention/admin/handlers/shares/printer.py:274 and ../../management/univention-directory-manager-modules/modules/univention/admin/handlers/shares/printergroup.py:125 et al
     'univentionShareHost',  # FIXME: ../../../../base/univention-quota/quota.py:170 and ../../../../services/univention-nfs/nfs-shares.py:60 and ../../../../services/univention-samba/debian/univention-samba.postinst:116
     'univentionSharePath',  # FIXME: ../../../../base/univention-quota/quota.py:170 and ../../../../services/univention-nfs/nfs-shares.py:60 and ../../../../services/univention-samba/debian/univention-samba.postinst:116
