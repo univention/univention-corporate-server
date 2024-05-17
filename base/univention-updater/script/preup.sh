@@ -134,6 +134,15 @@ initrd_backup='/var/backups/univention-initrd.bak'
 mv /boot/*.bak "$initrd_backup" >/dev/null 2>&1
 
 
+# Bug #52923 #57296: disable fetchmail during update to prevent aborting update
+if dpkg -l univention-fetchmail 2>&3 | grep ^ii  >&3 ; then
+	if [ -z "$(ucr search "^fetchmail/autostart/update520$")" ] ; then
+		ucr set fetchmail/autostart/update520="$(ucr get fetchmail/autostart)" >&3
+	fi
+	ucr set fetchmail/autostart=no >&3 2>&3
+	systemctl stop fetchmail >&3 2>&3 || :
+fi
+
 # set KillMode of atd service to process to save the children from getting killed
 # up to this point the updater process is a child of atd as well
 install -m 0755 -o root -g root -d /etc/systemd/system/atd.service.d

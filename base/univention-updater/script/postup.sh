@@ -138,6 +138,22 @@ esac
 find /usr/lib/python3/dist-packages/ -type d -not -perm 755 -name __pycache__ -exec chmod 755 {} +
 
 
+# Bug #52923 #57296: switch back to old fetchmail/autostart status
+if [ -n "$(ucr search "^fetchmail/autostart/update520$")" ] ; then
+	eval "$(ucr shell fetchmail/autostart/update520)"
+	if [ -z "$fetchmail_autostart_update520" ] ; then
+		ucr unset fetchmail/autostart >&3 2>&3
+	else
+		ucr set fetchmail/autostart="$fetchmail_autostart_update520" >&3 2>&3
+	fi
+	ucr unset fetchmail/autostart/update520 >&3 2>&3
+	echo "Please note:" >&3
+	echo "The following fetchmail restart might fail if fetchmail is unconfigured." >&3
+	echo "This is usually no error." >&3
+	systemctl restart fetchmail >&3 2>&3
+fi
+
+
 echo "
 
 
