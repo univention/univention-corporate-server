@@ -82,21 +82,24 @@ class ShopParser(HTMLParser):
 
 class TestLicenseClient:
 
+    __test__ = False  # disable pytest discovery
+
+    license_server_url = 'license.univention.de'
+    license_shop = 'testing'
+    server_username = 'ucs-test'
+    secret_file = '/etc/license.secret'
+    license_filename = 'ValidTest.license'
+
     def __init__(self, parser: ArgumentParser | None = None) -> None:
         """Class constructor for the test license client and HTMLParser"""
         self.log = logging.getLogger("License_Client")
         self.setup_logging()
 
         self.parser = parser
-        self.license_server_url = 'license.univention.de'
-        self.license_filename = 'ValidTest.license'
 
         self.connection: HTTPSConnection | None = None
-        self.server_username = 'ucs-test'
         self.server_password = ''
-        self.secret_file = '/etc/license.secret'
         self.cookie = ''
-        self.license_shop = 'testing'
 
         self.license_params: dict[str, Any] = {
             "kundeUnternehmen": "Univention",
