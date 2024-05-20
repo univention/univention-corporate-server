@@ -5,8 +5,8 @@
 ## exposure: dangerous
 ## packages:
 ##   - univention-directory-manager-rest
+##   - python3-univention-directory-manager-rest-async-client
 # execute with: --tb=native -s -l -vv --cov-report=term-missing  --cov-report=html --cov=univention.admin.rest.async_client
-
 
 import subprocess
 
