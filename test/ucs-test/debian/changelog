@@ -1,3 +1,10 @@
+ucs-test (10.0.21-45) unstable; urgency=medium
+
+  * Issue #2189: Backport from 5.2: Adjust timeout heuristic for
+    wait_for_listener_replication_and_postrun
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 20 May 2024 13:18:28 +0200
+
 ucs-test (10.0.21-44) unstable; urgency=medium
 
   * Bug #57193: Add memberOf to ignored attributes that lack index
