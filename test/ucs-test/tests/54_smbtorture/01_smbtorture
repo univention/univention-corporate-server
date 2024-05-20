@@ -5,7 +5,8 @@
 ## packages:
 ##  - univention-samba4
 ##  - samba-testsuite
-## bugs: [40558]
+## tags: [SKIP]
+## bugs: [40558, 49003]
 
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137

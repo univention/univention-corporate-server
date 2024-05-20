@@ -3,7 +3,7 @@
 ## desc: "run samba selftest samba3.raw.composite"
 ## exposure: dangerous
 ## tags: [SKIP]
-## bugs: [40558]
+## bugs: [40558, 49003]
 
 # Skip test, waiting for https://forge.univention.org/bugzilla/show_bug.cgi?id=49003
 
