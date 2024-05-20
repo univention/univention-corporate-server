@@ -9,10 +9,8 @@
 from __future__ import annotations
 
 from datetime import date, timedelta
-from os import path
-from shutil import copy as file_copy, rmtree
-from subprocess import PIPE, Popen, check_call
-from tempfile import mkdtemp
+from pathlib import Path
+from subprocess import run
 from time import sleep
 from typing import Iterator
 
@@ -28,8 +26,8 @@ from umc import UDMModule
 
 
 @pytest.fixture(scope='session')
-def udm_license_module() -> Iterator[UDMLicenseManagement]:
-    _udm_license_module = UDMLicenseManagement()
+def udm_license_module(tmp_path_factory) -> Iterator[UDMLicenseManagement]:
+    _udm_license_module = UDMLicenseManagement(tmp_path_factory.mktemp(__name__))
     _udm_license_module.dump_current_license_to_file()
     _udm_license_module.create_connection_authenticate()
     try:
@@ -41,15 +39,15 @@ def udm_license_module() -> Iterator[UDMLicenseManagement]:
         _udm_license_module.delete_created_users()
 
 
-def test_free_license(udm_license_module):
+def test_free_license(udm_license_module: UDMLicenseManagement) -> None:
     """
     Uploads a free license, checks its info, attempts to create
     computers and users and removes those that were created after
     """
-    udm_license_module.modify_free_license_template()
+    path = udm_license_module.modify_free_license_template()
 
     print("\nUploading a 'Free' license: 'FreeForPersonalUseTest.license'")
-    udm_license_module.import_new_license('FreeForPersonalUseTest.license')
+    udm_license_module.import_new_license(path)
 
     print("\nChecking the 'Free' license info")
     udm_license_module.check_free_license_info()
@@ -67,16 +65,16 @@ def test_free_license(udm_license_module):
     udm_license_module.delete_created_users()
 
 
-@pytest.mark.skipif(not path.exists(TestLicenseClient.secret_file), reason="Missing license secret file")
+@pytest.mark.skipif(not Path(TestLicenseClient.secret_file).exists(), reason="Missing license secret file")
 def test_expired_license(udm_license_module: UDMLicenseManagement) -> None:
     """
     Uploads an expired license, attempts to create computers and users
     with it
     """
-    udm_license_module.get_expired_license()
+    path = udm_license_module.get_expired_license()
 
     print("\nUploading an expired license 'ExpiredTest.license' for the test")
-    udm_license_module.import_new_license(udm_license_module.temp_license_folder + '/ExpiredTest.license')
+    udm_license_module.import_new_license(path)
 
     print("\nAttempting to create 10 computers with an expired license")
     udm_license_module.expired_license_limits_check('computer')
@@ -86,13 +84,13 @@ def test_expired_license(udm_license_module: UDMLicenseManagement) -> None:
     udm_license_module.restart_umc_server()
 
 
-@pytest.mark.skipif(not path.exists(TestLicenseClient.secret_file), reason="Missing license secret file")
+@pytest.mark.skipif(not Path(TestLicenseClient.secret_file).exists(), reason="Missing license secret file")
 def test_valid_license(udm_license_module: UDMLicenseManagement) -> None:
     """Uploads a valid license, creates 10 computers and users with it"""
-    udm_license_module.get_valid_license()
+    path = udm_license_module.get_valid_license()
 
     print("\nUploading a valid license 'ValidTest.license' for the test")
-    udm_license_module.import_new_license(udm_license_module.temp_license_folder + '/ValidTest.license')
+    udm_license_module.import_new_license(path)
 
     print("\nAttempting to create 10 computers with a valid license")
     udm_license_module.valid_license_limits_check('computer')
@@ -122,16 +120,16 @@ def test_modified_signature(udm_license_module: UDMLicenseManagement) -> None:
     udm_license_module.modified_license_limits_check('user')
 
 
-@pytest.mark.skipif(not path.exists(TestLicenseClient.secret_file), reason="Missing license secret file")
+@pytest.mark.skipif(not Path(TestLicenseClient.secret_file).exists(), reason="Missing license secret file")
 def test_junk_license(udm_license_module: UDMLicenseManagement) -> None:
     """
     Uploads a 'junk' license and tries to create computers
     and users with it
     """
-    udm_license_module.generate_junk_license()
+    path = udm_license_module.generate_junk_license()
 
     print("\nUploading a 'junk' license 'JunkTest.license' for the test")
-    udm_license_module.import_new_license(udm_license_module.temp_license_folder + '/JunkTest.license')
+    udm_license_module.import_new_license(path)
 
     print("\nAttempting to create 10 computers with a 'junk' license")
     udm_license_module.junk_license_limits_check('computer')
@@ -142,16 +140,18 @@ def test_junk_license(udm_license_module: UDMLicenseManagement) -> None:
 
 class UDMLicenseManagement(UDMModule):
 
-    def __init__(self) -> None:
+    FFPUT = Path(__file__).with_name("FreeForPersonalUseTest.license")
+    SIGNATURE = "pWvKcjqCoalaf1DtYjcvYPRpxRfopKsEUtxRa+1nIFKKtQ=="
+
+    def __init__(self, tmp: Path) -> None:
         super(UDMLicenseManagement, self).__init__()
         self._license_client: TestLicenseClient | None = None
         self.ldap_base = self.ucr.get('ldap/base')
         self.license_dn = f"cn=admin,cn=license,cn=univention,{self.ldap_base}"
         self.test_network_dn = f"cn=default,cn=networks,{self.ldap_base}"
         self.test_network = Interfaces(self.ucr).get_default_ipv4_address().network
-        self.temp_license_folder = mkdtemp()
-        print("Temporary folder to be used to store obtained test licenses: '%s'" % self.temp_license_folder)
-        self.initial_license_file = self.temp_license_folder + '/InitiallyInstalled.license'
+        self.tmp = tmp
+        self.initial_license_file = tmp / 'InitiallyInstalled.license'
 
         self.users_to_delete: list[str] = []
         self.computers_to_delete: list[str] = []
@@ -160,7 +160,7 @@ class UDMLicenseManagement(UDMModule):
     def license_client(self) -> TestLicenseClient:
         if self._license_client is None:
             self._license_client = TestLicenseClient()
-            if not path.exists(self._license_client.secret_file):
+            if not Path(self._license_client.secret_file).exists():
                 pytest.skip("Missing license.secret file")
         return self._license_client
 
@@ -170,7 +170,7 @@ class UDMLicenseManagement(UDMModule):
         waits and creates a new connection after
         """
         print("\nRestarting the UMC Server to release active connections")
-        check_call(("deb-systemd-invoke", "restart", "univention-management-console-server"))
+        run(("systemctl", "restart", "univention-management-console-server"), check=True)
         sleep(10)  # wait while server is restarting
         self.create_connection_authenticate()
 
@@ -181,13 +181,13 @@ class UDMLicenseManagement(UDMModule):
         (i.e. before the first failed attempt or full 'amount')
         Recreates the UMC connection before every attempt.
         """
-        obj_name_base = 'umc_test_%s_%s_' % (obj_type, random_username(6))
+        obj_name_base = f'umc_test_{obj_type}_{random_username(6)}'
 
         for obj in range(amount):
             # the UMC connection is recreated every step in order to get the
             # license limitations working during this loop:
             self.create_connection_authenticate()
-            obj_name = obj_name_base + str(obj)
+            obj_name = f"{obj_name_base}_{obj}"
             if obj_type == 'computer':
                 request_result = self.create_computer(obj_name, [self.test_network[51 + obj].exploded], [], [])
             elif obj_type == 'user':
@@ -217,12 +217,12 @@ class UDMLicenseManagement(UDMModule):
                 "password": password,
                 "overridePWHistory": False,
                 "pwdChangeNextLogin": False,
-                "primaryGroup": "cn=" + ldap.dn.escape_dn_chars(groupname) + ",cn=" + ldap.dn.escape_dn_chars(group_container) + "," + self.ldap_base,
+                "primaryGroup": f"cn={ldap.dn.escape_dn_chars(groupname)},cn={ldap.dn.escape_dn_chars(group_container)},{self.ldap_base}",
                 "username": username,
                 "shell": "/bin/bash",
                 "locked": "0",
                 "homeSharePath": username,
-                "unixhome": "/home/" + username,
+                "unixhome": f"/home/{username}",
                 "overridePWLength": False,
                 "displayName": username,
                 "$options$": {
@@ -231,7 +231,7 @@ class UDMLicenseManagement(UDMModule):
                     "pki": False,
                 },
             },
-            "options": {"container": "cn=users," + self.ldap_base, "objectType": "users/user"},
+            "options": {"container": f"cn=users,{self.ldap_base}", "objectType": "users/user"},
         }]
         return self.request("udm/add", options, "users/user")
 
@@ -257,16 +257,13 @@ class UDMLicenseManagement(UDMModule):
         assert license_info['users'] == 5
         assert not license_info['servers']
 
-    def import_new_license(self, license_file: str) -> None:
+    def import_new_license(self, license_file: Path) -> None:
         """
         Reads the given 'license_file' and makes a 'udm/license/import' UMC
         request with the license details in options to import it
         """
-        if not path.exists(license_file):
-            print("The '%s' license file cannot be found" % license_file)
-            self.return_code_result_skip()
-        with open(license_file) as license:
-            license_text = license.read()
+        assert license_file.exists()
+        license_text = license_file.read_text()
 
         options = {"license": license_text}
         request_result = self.request('udm/license/import', options)
@@ -277,13 +274,9 @@ class UDMLicenseManagement(UDMModule):
         Opens a given 'license_file' for writing and puts in the output of
         launched 'univention-ldapsearch' with self.license_dn argument
         """
-        license_file = self.initial_license_file
-        print("\nSaving initial license to file: '%s'" % license_file)
-        with open(license_file, 'w') as license:
-            proc = Popen(("univention-ldapsearch", "-LLLb", self.license_dn), stdout=license, stderr=PIPE)
-            _stdout, stderr = proc.communicate()
-            assert not stderr
-            assert proc.returncode == 0
+        print(f"Saving initial license to file: {self.initial_license_file!r}")
+        with self.initial_license_file.open('w') as license:
+            run(("univention-ldapsearch", "-LLLb", self.license_dn), stdout=license, check=True)
 
     def modify_license_signature(self, new_signature: str) -> None:
         """Modifies the license signature to a given 'new_signature'"""
@@ -300,7 +293,7 @@ class UDMLicenseManagement(UDMModule):
         for computer in self.computers_to_delete:
             if self.check_obj_exists(computer, "computers/windows"):
                 self.delete_obj(computer, 'computers', 'computers/windows')
-        self.computers_to_delete = []
+        self.computers_to_delete.clear()
 
     def delete_created_users(self) -> None:
         """
@@ -310,7 +303,7 @@ class UDMLicenseManagement(UDMModule):
         for user in self.users_to_delete:
             if self.check_obj_exists(user, "users/user", "users/user"):
                 self.delete_obj(user, 'users/user', 'users/user')
-        self.users_to_delete = []
+        self.users_to_delete.clear()
 
     def free_license_limits_check(self, obj_type: str) -> None:
         """Checks the free license user/computer creation limits"""
@@ -338,73 +331,60 @@ class UDMLicenseManagement(UDMModule):
         amount_created = self.create_many_users_computers(obj_type, 10)
         assert amount_created == 0
 
-    def get_valid_license(self) -> None:
+    def get_valid_license(self) -> Path:
         """
         Gets a 'ValidTest.license' by ordering and downloading it
         from the licensing server via LicenseClient tool
         """
-        print("\nObtaining a valid license for the test:")
-        end_date = f"{date.today() + timedelta(days=30):%d.%m.%Y}"
+        path = self.tmp / 'ValidTest.license'
+        if not path.exists():
+            end_date = f"{date.today() + timedelta(days=30):%d.%m.%Y}"
+            print("Obtaining a valid license for the test:")
+            self.license_client.main(base_dn=self.ldap_base, end_date=end_date, license_file=path.as_posix())
+        return path
 
-        valid_license_file = self.temp_license_folder + '/ValidTest.license'
-        if not path.exists(valid_license_file):
-            self.license_client.main(base_dn=self.ldap_base, end_date=end_date, license_file=valid_license_file)
-
-    def get_expired_license(self) -> None:
+    def get_expired_license(self) -> Path:
         """
         Gets an 'ExpiredTest.license' by ordering and downloading it
         from the licensing server via LicenseClient tool
         """
-        print("\nObtaining an expired license for the test:")
-        end_date = f"{date.today() - timedelta(days=30):%d.%m.%Y}"
+        path = self.tmp / 'ExpiredTest.license'
+        if not path.exists():
+            end_date = f"{date.today() - timedelta(days=30):%d.%m.%Y}"
+            print("Obtaining an expired license for the test:")
+            self.license_client.main(base_dn=self.ldap_base, end_date=end_date, license_file=path.as_posix())
+        return path
 
-        expired_license_file = (self.temp_license_folder + '/ExpiredTest.license')
-        if not path.exists(expired_license_file):
-            self.license_client.main(base_dn=self.ldap_base, end_date=end_date, license_file=expired_license_file)
-
-    def modify_free_license_template(self) -> None:
+    def modify_free_license_template(self) -> Path:
         """
         Modifies the 'FreeForPersonalUseTest.license' to have a correct
         BaseDN. Skipps the test if Free license template was not found.
         """
         print("\nModifing the Free license template for the test")
-        with open('FreeForPersonalUseTest.license', 'r+') as free_license:
-            lines = free_license.readlines()
-            free_license.seek(0)
-            for line in lines:
-                if line.startswith("dn: "):
-                    line = "dn: " + self.license_dn + "\n"
-                free_license.write(line)
+        path = self.tmp / 'Modified.license'
+        with self.FFPUT.open('r') as fd, path.open("w") as out:
+            for line in fd:
+                key, sep, val = line.rstrip("\n").partition(": ")
+                out.write(f"{key}{sep}{self.license_dn if key == 'dn' else val}\n")
+        return path
 
-    def generate_junk_license(self) -> None:
+    def generate_junk_license(self) -> Path:
         """
         Copies the 'ValidTest.license' file to a 'JunkTest.license' file and
         changes a line with license signature.
         """
         print("\nGenerating a junk license based on valid license for the test")
-        self.get_valid_license()
-        junk_license_file = self.temp_license_folder + '/JunkTest.license'
-        file_copy(self.temp_license_folder + '/ValidTest.license', junk_license_file)
-        with open(junk_license_file, 'r+') as junk_license:
-            lines = junk_license.readlines()
-            junk_license.seek(0)
-            for line in lines:
-                if line.startswith("univentionLicenseSignature: "):
-                    line = "univentionLicenseSignature: pWvKcjqCoalaf1DtYjcvYPRpxRfopKsEUtxRa+1nIFKKtQ==\n"
-                junk_license.write(line)
-            junk_license.truncate()
+        valid = self.get_valid_license()
+        path = self.tmp / 'JunkTest.license'
+        with valid.open('r') as fd, path.open("w") as out:
+            for line in fd:
+                key, sep, val = line.rstrip("\n").partition(": ")
+                out.write(f"{key}{sep}{self.SIGNATURE if key == 'univentionLicenseSignature' else val}\n")
+        return path
 
-    def restore_initial_license(self):
-        """
-        Restores the initially dumped license, removes created
-        computers and users if there were any
-        """
-        license_file = self.initial_license_file
-        if path.exists(license_file):
+    def restore_initial_license(self) -> None:
+        """Restores the initially dumped license."""
+        if self.initial_license_file.exists():
             self.restart_umc_server()
-            print("\nRestoring initially dumped license from file '%s' and removing temp folder with license files" % license_file)
-            self.import_new_license(license_file)
-        try:
-            rmtree(self.temp_license_folder)
-        except OSError as exc:
-            print("An OSError while deleting the temporaryfolder with license files: '%s'" % exc)
+            print(f"Restoring initially dumped license from file {self.initial_license_file}")
+            self.import_new_license(self.initial_license_file)
