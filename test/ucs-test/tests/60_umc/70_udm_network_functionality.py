@@ -13,6 +13,7 @@ from typing import Any
 
 import pytest
 
+from univention.config_registry.interfaces import Interfaces
 from univention.lib.umc import BadRequest
 from univention.testing import utils
 from univention.testing.strings import random_username
@@ -347,8 +348,9 @@ class TestUMCNetworkFunctionality(UDMModule):
 
         self.test_computer_name = 'umc_test_computer_' + random_username(6)
         self.test_network_name = 'umc_test_network_' + random_username(6)
-        self.test_network = self.ucr.get('interfaces/%s/network' % self.ucr.get('interfaces/primary', 'eth0'))
-        self.test_network_subnet = self.test_network[:self.test_network.rfind('.')]
+        net = Interfaces(self.ucr).get_default_ipv4_address().network
+        self.test_network = net.network_address.exploded
+        self.test_network_subnet, _, _ = self.test_network.rpartition(".")
         self.test_ip_range = [self.test_network_subnet + '.50',
                               self.test_network_subnet + '.70']
 

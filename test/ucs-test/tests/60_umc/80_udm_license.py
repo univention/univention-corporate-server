@@ -20,6 +20,7 @@ import ldap.dn
 import pytest
 
 from univention import uldap
+from univention.config_registry.interfaces import Interfaces
 from univention.testing.license_client import TestLicenseClient
 from univention.testing.strings import random_username
 
@@ -147,7 +148,7 @@ class UDMLicenseManagement(UDMModule):
         self.ldap_base = self.ucr.get('ldap/base')
         self.license_dn = f"cn=admin,cn=license,cn=univention,{self.ldap_base}"
         self.test_network_dn = f"cn=default,cn=networks,{self.ldap_base}"
-        self.select_ip_address_subnet()
+        self.test_network = Interfaces(self.ucr).get_default_ipv4_address().network
         self.temp_license_folder = mkdtemp()
         print("Temporary folder to be used to store obtained test licenses: '%s'" % self.temp_license_folder)
         self.initial_license_file = self.temp_license_folder + '/InitiallyInstalled.license'
@@ -173,14 +174,6 @@ class UDMLicenseManagement(UDMModule):
         sleep(10)  # wait while server is restarting
         self.create_connection_authenticate()
 
-    def select_ip_address_subnet(self) -> None:
-        """
-        Selects the ip addresses subnet for the test by getting 'eth0' network
-        UCR variable and removing its ending
-        """
-        test_network_ip = self.ucr['interfaces/%s/network' % self.ucr.get('interfaces/primary', 'eth0')]
-        self.test_network_ip = test_network_ip[:test_network_ip.rfind('.') + 1]
-
     def create_many_users_computers(self, obj_type: str, amount: int) -> int:
         """
         Creates a given 'amount' of computers or users depending on given
@@ -196,7 +189,7 @@ class UDMLicenseManagement(UDMModule):
             self.create_connection_authenticate()
             obj_name = obj_name_base + str(obj)
             if obj_type == 'computer':
-                request_result = self.create_computer(obj_name, [self.test_network_ip + str(obj + 51)], [], [])
+                request_result = self.create_computer(obj_name, [self.test_network[51 + obj].exploded], [], [])
             elif obj_type == 'user':
                 # use translated group name for non-Enlish AD case: Bug #37921
                 domain_users = self.get_groupname_translation('domainusers')
