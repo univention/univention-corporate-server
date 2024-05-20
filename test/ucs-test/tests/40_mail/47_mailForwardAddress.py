@@ -100,7 +100,7 @@ def test_mail_forward(mail_copy_to_self):
             dns.resolver.query('mx01.kundenserver.de', 'A')[0].address,
         ]
         # setup mailsink and network redirector
-        port = random.randint(60000, 61000)
+        port = random.randrange(60000, 61000)
         sink_files = []
         mail_sinks = []
         for mx_addr in mx_addresses:

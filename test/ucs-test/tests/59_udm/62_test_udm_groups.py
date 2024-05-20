@@ -397,7 +397,7 @@ def test_group_univention_last_used_value(ucr, udm):
     assert lastUsedValue_old != lastUsedValue_new, 'Create group with automatic gidNumber: univentionLastUsedValue did not change, but it should!'
 
     lastUsedValue_old = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
-    gidNumber = str(random.randint(100000, 200000))
+    gidNumber = str(random.randrange(100000, 200000))
     group_dn = udm.create_group(gidNumber=gidNumber)[0]
     utils.verify_ldap_object(group_dn, expected_attr={'gidNumber': [gidNumber]})
     lastUsedValue_new = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]

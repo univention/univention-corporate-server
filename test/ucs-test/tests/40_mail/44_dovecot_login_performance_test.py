@@ -52,7 +52,7 @@ def main():
             utils.wait_for_replication()
             for i in range(MAX_GRP):
                 dn, grpname = udm.create_group(
-                    set={'users': userlist[random.randint(0, MAX_USER - 1)].dn},
+                    set={'users': userlist[random.randrange(MAX_USER)].dn},
                     wait_for_replication=False, check_for_drs_replication=False)
                 grplist.append(Bunch(dn=dn, name=grpname))
                 if i % 10 == 0:
@@ -65,7 +65,7 @@ def main():
                 for i in range(MAX_TESTS):
                     print('Test %d' % (i, ))
                     M = imaplib.IMAP4_SSL(host='localhost')  # establish connection
-                    M.login(userlist[random.randint(0, MAX_USER - 1)].addr, 'univention')  # use random users
+                    M.login(userlist[random.randrange(MAX_USER)].addr, 'univention')  # use random users
             finally:
                 end_time = time.monotonic()
                 print('IMAP login for %d random users took %f seconds ==> %f per login' % (

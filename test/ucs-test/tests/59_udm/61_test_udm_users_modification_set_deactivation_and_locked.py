@@ -22,14 +22,14 @@ transitions_log = []
 def test_user_modification_set_deactivation_and_locked(udm, ldap_base):
     """Test changing disabled and locked simultaneously"""
     user_dn = None
-    locked_state2 = locked_states.pop(random.randint(0, len(locked_states) - 1))
+    locked_state2 = locked_states.pop(random.randrange(len(locked_states)))
     while locked_states:
-        locked_state1 = locked_states.pop(random.randint(0, len(locked_states) - 1))
+        locked_state1 = locked_states.pop(random.randrange(len(locked_states)))
         disabled_states_list = list(disabled_states)
-        disabled_state1 = disabled_states_list.pop(random.randint(0, len(disabled_states_list) - 1))
+        disabled_state1 = disabled_states_list.pop(random.randrange(len(disabled_states_list)))
         user_dn = modify_and_check(udm, ldap_base, user_dn, disabled_state1, locked_state1)
         while disabled_states_list:
-            disabled_state2 = disabled_states_list.pop(random.randint(0, len(disabled_states_list) - 1))
+            disabled_state2 = disabled_states_list.pop(random.randrange(len(disabled_states_list)))
             modify_and_check(udm, ldap_base, user_dn, disabled_state2, locked_state2)
             modify_and_check(udm, ldap_base, user_dn, disabled_state1, locked_state1)
 

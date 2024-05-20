@@ -686,8 +686,8 @@ class UCSTestUDM:
             'printerACLTypes': choices('printerACLTypes'),
             'cscPolicy': choices('cscPolicy'),
             'ldapFilter': lambda: '(objectClass=*)',
-            'UNIX_AccessRight': lambda: oct(random.randint(0, 0o777)).replace('o', ''),
-            'UNIX_AccessRight_extended': lambda: oct(random.randint(0, 0o2777)).replace('o', ''),
+            'UNIX_AccessRight': f'{random.randint(0, 0o777):o}',
+            'UNIX_AccessRight_extended': f'{random.randint(0, 0o2777):o}',
             'timeperiod': lambda: ','.join(
                 '-'.join((uts.random_time((a, b)), uts.random_time((c, d))))
                 for a, b, c, d in random.choices(((0, 2, 4, 6), (8, 10, 10, 12), (24, 16, 18, 20), (20, 21, 22, 23)), k=random.randint(1, 4))

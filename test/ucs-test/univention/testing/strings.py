@@ -132,8 +132,7 @@ def random_subnet(ip_iter: Iterator[int] = iter(range(11, 121))) -> str:
 
 def random_ipv6_subnet() -> str:
     """Returns random six blocks of an ipv6 address"""
-    m = 16**4
-    return ":".join("%04x" % randint(0, m) for i in range(6))
+    return ":".join("%04x" % randint(0, 0xffff) for i in range(6))
 
 
 def random_domain_name(length: int = 10) -> str:
@@ -149,11 +148,11 @@ def random_dns_record() -> str:
 
 
 def random_date() -> str:
-    return '20%02d-%02d-%02d' % (randint(0, 99), randint(1, 12), randint(1, 27))
+    return '20%02d-%02d-%02d' % (randint(0, 99), randint(1, 12), randint(1, 28))
 
 
 def random_time(range_hour: Tuple[int, int] = (0, 23)) -> str:
-    return '%02d:%02d:%02d' % (randint(*range_hour), randint(0, 60), randint(0, 60))
+    return '%02d:%02d:%02d' % (randint(*range_hour), randint(0, 59), randint(0, 59))
 
 
 def random_email() -> str:

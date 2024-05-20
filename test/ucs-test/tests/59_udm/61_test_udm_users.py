@@ -111,7 +111,7 @@ class Test_UserCreation:
 
     def test_user_creation_with_uidNumber_already_in_use(self, udm):
         """Create users/user with uidNumber which is already in use"""
-        uid_number = str(random.randint(3000, 4999))
+        uid_number = str(random.randrange(3000, 5000))
         udm.create_user(uidNumber=uid_number)
         with pytest.raises(udm_test.UCSTestUDM_CreateUDMObjectFailed):
             udm.create_user(uidNumber=uid_number)
@@ -569,7 +569,7 @@ def test_user_univentionLastUsedValue(udm, ucr):
     assert lastUsedValue_old != lastUsedValue_new, 'Create user with automatic uidNumber: univentionLastUsedValue did not change, but it should!'
 
     lastUsedValue_old = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]
-    uidNumber = str(random.randint(100000, 200000))
+    uidNumber = str(random.randrange(100000, 200000))
     user_dn = udm.create_user(uidNumber=uidNumber)[0]
     utils.verify_ldap_object(user_dn, expected_attr={'uidNumber': [uidNumber]})
     lastUsedValue_new = lo.get(luv_dn).get('univentionLastUsedValue', [-1])[0]

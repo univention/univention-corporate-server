@@ -4,10 +4,10 @@
 ## exposure: dangerous
 
 import contextlib
+import random
 import signal
 import sys
 from os import WNOHANG, WTERMSIG, fork, wait4
-from random import randint
 from time import sleep
 
 import pytest
@@ -111,7 +111,7 @@ class Test_UMCTopModule:
         self.client = Client.get_test_connection()
         pid = 0
         while True:
-            pid = randint(2, 4194304)
+            pid = random.randrange(2, 0x400000)
             if not pid_exists(pid):
                 break
         with pytest.raises(BadRequest, match=r'No process found with PID|Kein Prozess mit der PID'):
