@@ -1,4 +1,4 @@
-univention-management-console-module-ipchange (10.0.4) unstable; urgency=medium
+univention-management-console-module-ipchange (10.0.5) unstable; urgency=medium
 
   * Bug #57290: Check sso fqdn case insensitively during ipchange
 
