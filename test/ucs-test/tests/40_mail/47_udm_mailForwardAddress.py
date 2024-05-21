@@ -20,12 +20,12 @@ from essential.mail import set_mail_forward_copy_to_self_ucrv
 class Bunch:
     """
     >>> y = Bunch(foo=42, bar='TEST')
-    >>> print repr(y.foo), repr(y.bar)
+    >>> print(repr(y.foo), repr(y.bar))
     42 'TEST'
 
     >>> x = Bunch()
     >>> x.a = 4
-    >>> print x.a
+    >>> print(x.a)
     4
     """
 

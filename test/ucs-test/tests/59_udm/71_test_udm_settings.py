@@ -260,12 +260,12 @@ def test_filename_validation(udm, lo, modify, prefix, path, position, attr, ocs,
 class Bunch:
     """
     >>> y = Bunch(foo=42, bar='TEST')
-    >>> print repr(y.foo), repr(y.bar)
+    >>> print(repr(y.foo), repr(y.bar))
     42 'TEST'
 
     >>> x = Bunch()
     >>> x.a = 4
-    >>> print x.a
+    >>> print(x.a)
     4
     """
 

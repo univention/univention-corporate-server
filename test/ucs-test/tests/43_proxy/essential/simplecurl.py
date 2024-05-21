@@ -110,7 +110,7 @@ class SimpleCurl:
             print('Requested page could not be fetched')
             raise  # noqa: PLE0704
         page = buf.getvalue()
-        # print page[1:400]
+        # print(page[1:400])
         buf.close()
         return page
 
