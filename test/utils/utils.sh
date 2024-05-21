@@ -1011,13 +1011,13 @@ import_license () {
 		nc -w 3 -z "$server" 443 && break
 		sleep 1
 	done
-	/root/shared-utils/license_client.py "${lb}" -u "$users" "$(date -d '+6 month' '+%d.%m.%Y')"
+	/root/shared-utils/license_client.py -u "$users" "${lb}" "$(date -d '+6 month' '+%d.%m.%Y')"
 	# It looks like we have in some AD member setups problems with the DNS resolution. Try to use
 	# the static variante (Bug #46448)
 	if [ ! -e ./ValidTest.license ]; then
 		ucr set "hosts/static/85.184.250.151=$server"
 		nscd -i hosts
-		/root/shared-utils/license_client.py "${lb}" -u "$users" "$(date -d '+6 month' '+%d.%m.%Y')"
+		/root/shared-utils/license_client.py -u "$users" "${lb}" "$(date -d '+6 month' '+%d.%m.%Y')"
 		ucr unset hosts/static/85.184.250.151
 		nscd -i hosts
 	fi
