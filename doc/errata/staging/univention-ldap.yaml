@@ -3,9 +3,13 @@ release: "5.0"
 version: [7]
 scope: ucs_5.0-0-errata5.0-7
 src: univention-ldap
-fix:
+fix: 16.0.15-7
 desc: |
  This update addresses the following issues:
  * The ldap object `cn=backup,$ldap_base` is not required anymore on primary
    domain controllers.
-bug: [31252]
+ * The udm module `settings/extended_attributes` has been updated to
+   include the property `preventUmcDefaultPopup` which is evaluated
+   in the `UMC` and will inhibit it from warning the user that
+   the default value of a property will be set during modification.
+bug: [31252, 51187]

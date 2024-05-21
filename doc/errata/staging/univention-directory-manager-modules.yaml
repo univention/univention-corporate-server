@@ -3,7 +3,7 @@ release: "5.0"
 version: [7]
 scope: ucs_5.0-0-errata5.0-7
 src: univention-directory-manager-modules
-fix: 15.0.26-10
+fix: 15.0.26-12
 desc: |
  This update addresses the following issues:
  * If the UCR variable `directory/manager/mail-address/uniqueness`
@@ -12,4 +12,8 @@ desc: |
    `mailAlternativeAddress`, into account. It is now possible to
    swap the values for these properties with one change to the
    user object.
-bug: [57171]
+ * The udm module `settings/extended_attributes` has been updated to
+   include the property `preventUmcDefaultPopup` which is evaluated
+   in the `UMC` and will inhibit it from warning the user that
+   the default value of a property will be set during modification.
+bug: [57171, 51187]

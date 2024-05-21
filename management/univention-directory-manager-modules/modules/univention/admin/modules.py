@@ -433,6 +433,9 @@ def update_extended_attributes(lo, module, position):
             log.error('modules update_extended_attributes: ERROR: processing univentionUDMPropertyValueMayChange threw exception - assuming mayChange=0')
             mayChange = False
 
+        # prevent UMC default popup
+        preventUmcDefaultPopup = bool(int(attrs.get('univentionUDMPropertyPreventUmcDefaultPopup', [b'0'])[0]))
+
         # value is editable (only via hooks or direkt module.info[] access)
         editable = attrs.get('univentionUDMPropertyValueNotEditable', [b'0'])[0] not in [b'1', b'TRUE']
 
@@ -487,6 +490,7 @@ def update_extended_attributes(lo, module, position):
             options=[x.decode('UTF-8', 'replace') for x in attrs.get('univentionUDMPropertyOptions', [])],
             required=valueRequired,
             may_change=mayChange,
+            prevent_umc_default_popup=preventUmcDefaultPopup,
             dontsearch=doNotSearch,
             default=propertyDefault,
             editable=editable,

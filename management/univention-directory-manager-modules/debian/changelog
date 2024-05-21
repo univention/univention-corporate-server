@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.26-12) unstable; urgency=medium
+
+  * Bug #51187: Add prevent_umc_default_popup to settings/extended_attributes
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 23 May 2024 12:21:24 +0200
+
 univention-directory-manager-modules (15.0.26-11) unstable; urgency=medium
 
   * Bug #57171: make changing mpa and maa in one step possible

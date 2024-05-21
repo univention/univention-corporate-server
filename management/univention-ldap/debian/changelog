@@ -1,3 +1,9 @@
+univention-ldap (16.0.15-7) unstable; urgency=medium
+
+  * Bug #51187 Add prevent_umc_default_popup to LDAP schema
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 23 May 2024 12:21:24 +0200
+
 univention-ldap (16.0.15-6) unstable; urgency=medium
 
   * Bug #31252: Remove cn=backup,$ldap_base from base.ldif

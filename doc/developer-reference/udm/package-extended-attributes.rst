@@ -159,6 +159,10 @@ described in :ref:`uv-manual:central-extended-attrs` in :cite:t:`ucs-manual`.
    .. PMH: In UCS-2.x this was the position number, in UCS-3.x it must be the
       name
 
+``preventUmcDefaultPopup`` (optional)
+   If this setting is enabled, the pop-up that is shown when the default value
+   automatically in UMC is suppressed.
+
 ``disableUDMWeb`` (optional)
    Disables showing this property in the UMC.
 
