@@ -3,7 +3,7 @@ release: "5.0"
 version: [7]
 scope: ucs_5.0-0-errata5.0-7
 src: openldap
-fix:
+fix: 2.4.47+dfsg-3+deb10u7A~5.0.7.202405171616
 desc: |
  This update addresses the following issues:
  * Enhance LDAP overlay `slapd-sock` by adding
