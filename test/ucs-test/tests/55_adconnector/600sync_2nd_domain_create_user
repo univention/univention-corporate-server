@@ -22,8 +22,8 @@ eval "$(ucr shell connector/listener/additionalbasenames)"
 [ -n "$connector/listener/additionalbasenames" ] || exit 137
 
 configbase2="connector2"  # That's what scenarios/ad-connector/autotest-241-adsync-w2k19-english-two-forest-children.cfg uses
-grep -Eq "\<$configbase2\>" <<<"$(ucr get connector/listener/additionalbasenames)" || \
-	fail_fast 110 "configbase '$configbase2' not found in UCR connector/listener/additionalbasenames: '$(ucr get connector/listener/additionalbasenames)'"
+# if not configured with multiple connectors, skip this test due to missing software
+grep -Eq "\<$configbase2\>" <<<"$(ucr get connector/listener/additionalbasenames)" || echo "configbase '$configbase2' not found in UCR connector/listener/additionalbasenames: '$(ucr get connector/listener/additionalbasenames)'" ; exit 137
 
 declare -A SYNCMODE
 

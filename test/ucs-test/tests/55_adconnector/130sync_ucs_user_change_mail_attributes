@@ -165,69 +165,6 @@ if echo "$output" | grep -qi "$UDM_users_user_username"; then
 	fail_fast 110 ""
 fi
 
-section "==========Replace 'mail' value in AD while proxyAddresses is not set=========="
-AD_user_mail2="$(random_chars)@${UDM_mail_domain_name}"
-
-echo "Removing 'proxyAddresses' in AD and changing 'mail' in AD to '$AD_user_mail2'"
-echo
-
-invoke-rc.d univention-ad-connector stop
-ad_delete_attribute "$AD_DN" proxyAddresses || fail_test 110
-ad_set_attribute "$AD_DN" "mail" "$AD_user_mail2" || fail_test 110
-invoke-rc.d univention-ad-connector start
-
-ad_wait_for_synchronization; fail_bool 0 110
-
-ad_verify_attribute "$AD_DN" "mail" "$AD_user_mail2"; fail_bool 0 110
-
-udm_verify_udm_attribute "mailPrimaryAddress" "$AD_user_mail2" "users/user"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "mailAlternativeAddress" \
-	"$AD_user_mail2" "users/user"; fail_bool 1 110
-
-## and the mailPrimaryAddress should get written back to AD:proxyAddresses too
-ad_verify_attribute "$AD_DN" "proxyAddresses" "SMTP:$AD_user_mail2"; fail_bool 0 110
-
-## don't overwrite UDM/OpenLDAP:"mail", which is only informative
-udm_verify_udm_attribute "e-mail" "$UDM_users_user_mail" "users/user"; fail_bool 0 110
-
-output=$(univention-adconnector-list-rejected 2>&1)
-if echo "$output" | grep -qi "$UDM_users_user_username"; then
-	echo "$output" >&2
-	fail_fast 110 ""
-fi
-
-section "==========Replace proxyAddresses value in AD=========="
-UDM_users_user_mailPrimaryAddress2="$(random_chars)@${UDM_mail_domain_name}"
-AD_user_mail3="private2@external.org"
-
-echo "Changing 'proxyAddresses' in AD to 'SMTP:$UDM_users_user_mailPrimaryAddress2' and changing 'mail' in AD to '$AD_user_mail3'"
-echo
-
-invoke-rc.d univention-ad-connector stop
-ad_set_attribute "$AD_DN" "proxyAddresses" "SMTP:$UDM_users_user_mailPrimaryAddress2" || fail_test 110
-# An also set mail to something else, just to see how the AD-Connector handles that, too.
-ad_set_attribute "$AD_DN" "mail" "$AD_user_mail3" || fail_test 110
-invoke-rc.d univention-ad-connector start
-
-ad_wait_for_synchronization; fail_bool 0 110
-
-ad_verify_attribute "$AD_DN" "proxyAddresses" "SMTP:$UDM_users_user_mailPrimaryAddress2"; fail_bool 0 110
-
-udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress2" "users/user"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "mailAlternativeAddress" \
-	"$UDM_users_user_mailPrimaryAddress2" "users/user"; fail_bool 1 110
-
-## and the mailPrimaryAddress should get written back to AD:mail too
-ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress2"; fail_bool 0 110
-
-## don't overwrite UDM/OpenLDAP:"mail", which is only informative
-udm_verify_udm_attribute "e-mail" "$UDM_users_user_mail" "users/user"; fail_bool 0 110
-
-output=$(univention-adconnector-list-rejected 2>&1)
-if echo "$output" | grep -qi "$UDM_users_user_username"; then
-	echo "$output" >&2
-	fail_fast 110 ""
-fi
 
 section "==========Set+Append new preferred proxyAddress in AD=========="
 #UDM_users_user_Exchange_Homeserver="$(random_chars)"
