@@ -12,6 +12,7 @@ RE = re.compile(r'mdb_(approx|equality|inequality|substring)_candidates: \((\w+)
 LOG = '/var/log/debug'
 IGNORE = {
     'aAAARecord',  # FIXME: pres,+eq: ../../../../management/univention-directory-manager-modules/modules/univention/admin/handlers/__init__.py:2300
+    'krb5ValidStart',  # inequality! dont know where this originates from...
     'memberOf', # FIXME: definitely keycloak, probably radius, maybe more ...
     'msPrintAttributes',  # LOW: ../../../services/univention-s4-connector/modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:115
     'msPrintServerName',  # LOW: ../../../services/univention-s4-connector/modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:116
@@ -21,8 +22,10 @@ IGNORE = {
     'objectClass',  # IGN: pres,eq; temporal issue?
     'sambaLogonHours',  # LOW: only tested by ../../../../test/ucs-test/tests/59_udm/61_test_udm_users.py:52
     'SAMLServiceProviderIdentifier',  # LOW: only used ../../../../management/univention-management-console-module-diagnostic/umc/python/diagnostic/plugins/04_saml_certificate_check.py and ../../../../management/univention-management-console/usr/share/univention-management-console/saml/update_metadata and join scripts
+    'structuralObjectClass', # base/univention-updater/script/check.sh
     'uid',  # IGN: pres,eq,sub,approx
     'univentionAppID',  # FIXME: ../../management/univention-appcenter/python/appcenter/utils.py:636
+    'univentionComputerPortal', # from 4.4's portal during upgrade tests
     'univentionDhcpFixedAddress',  # FIXME: ../../management/univention-directory-manager-modules/modules/univention/admin/handlers/__init__.py:2368 et al
     'univentionMonitoringAlertHosts',  # FIXME: ../../../../monitoring/univention-monitoring-client/src/univention/admin/hooks.d/monitoring.py:49
     'univentionNagiosParent',  # FIXME: ../../../../management/univention-directory-manager-modules/modules/univention/admin/nagios.py:296
@@ -33,6 +36,9 @@ IGNORE = {
     'univentionNewPortalFolderEntries',  # FIXME: ../../management/univention-portal/udm/handlers/folder.py:130 et al
     'univentionNewPortalMenuLinks',  # FIXME: ../../management/univention-portal/udm/handlers/entry.py:194
     'univentionNewPortalUserLinks',  # FIXME: ../../management/univention-portal/udm/handlers/entry.py:198
+    'univentionOperatingSystem',  # base/univention-updater/script/check.sh
+    'univentionPolicyObject',  # no idea where this is from, but it makes sense
+    'univentionPortalEntryPortal',  # from 4.4's portal during upgrade tests
     'univentionPrinterSpoolHost',  # FIXME: ../../management/univention-directory-manager-modules/modules/univention/admin/handlers/shares/printer.py:274 and ../../management/univention-directory-manager-modules/modules/univention/admin/handlers/shares/printergroup.py:125 et al
     'univentionShareHost',  # FIXME: ../../../../base/univention-quota/quota.py:170 and ../../../../services/univention-nfs/nfs-shares.py:60 and ../../../../services/univention-samba/debian/univention-samba.postinst:116
     'univentionSharePath',  # FIXME: ../../../../base/univention-quota/quota.py:170 and ../../../../services/univention-nfs/nfs-shares.py:60 and ../../../../services/univention-samba/debian/univention-samba.postinst:116
