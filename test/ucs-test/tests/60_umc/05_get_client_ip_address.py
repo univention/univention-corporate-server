@@ -1,48 +1,39 @@
-#!/usr/share/ucs-test/runner python3
+#!/usr/share/ucs-test/runner pytest-3 -vv
 ## desc: Check if UMC is able to return correct IP address
 ## exposure: dangerous
 ## packages: [univention-management-console-server]
 
 from http.client import HTTPConnection
+from typing import Iterator
 
-from univention.config_registry import ConfigRegistry
-from univention.testing import network, utils
+import pytest
+
+from univention.testing.network import NetworkRedirector
 from univention.testing.umc import Client
+from univention.testing.utils import UCSTestDomainAdminCredentials
 
 
-class Client(Client):
+class _Client(Client):
     # workaround ssl.CertificateError: hostname '1.2.3.4' doesn't match either of 'master091.$domainname', 'master091'
     ConnectionType = HTTPConnection
 
 
-def get_ip_address(host, username, password):
-    client = Client(host, username, password)
+def get_ip_address(host: str, account: UCSTestDomainAdminCredentials) -> str:
+    client = _Client(host, account.username, account.bindpw)
     return client.umc_get('ipaddress').data
 
 
-def main():
-    ucr = ConfigRegistry()
-    ucr.load()
-
-    account = utils.UCSTestDomainAdminCredentials()
-
-    with network.NetworkRedirector() as nethelper:
-        print('*** Check with different remote addresses')
-        for addr2 in ('4.3.2.1', '1.1.1.1', '2.2.2.2'):
-            nethelper.add_loop('1.2.3.4', addr2)
-
-            result = get_ip_address('1.2.3.4', account.username, account.bindpw)
-            print('Result: %r' % result)
-            if addr2 not in result:
-                utils.fail(f'UMC webserver is unable to determine correct HTTP client address (expected={addr2!r} result={result!r})')
-
-            nethelper.remove_loop('1.2.3.4', addr2)
-
-        print('*** Check with localhost')
-        result = get_ip_address('localhost', account.username, account.bindpw)
-        if result:
-            utils.fails('Response is expected to be empty')
+@pytest.fixture()
+def nethelper() -> Iterator[NetworkRedirector]:
+    with NetworkRedirector() as nr:
+        yield nr
 
 
-if __name__ == '__main__':
-    main()
+@pytest.mark.parametrize("addr", ['4.3.2.1', '1.1.1.1', '2.2.2.2'])
+def test_remote(addr: str, account: UCSTestDomainAdminCredentials, nethelper: NetworkRedirector) -> None:
+    nethelper.add_loop('1.2.3.4', addr)
+    assert addr in get_ip_address('1.2.3.4', account)
+
+
+def test_localhost(account: UCSTestDomainAdminCredentials) -> None:
+    assert not get_ip_address('localhost', account)
