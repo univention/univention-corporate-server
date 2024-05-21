@@ -21,7 +21,7 @@ from univention.testing.strings import random_string, random_username
 def close_all_processes():
     """force all module processes to close"""
     yield
-    subprocess.call(['deb-systemd-invoke', 'restart', 'univention-management-console-server'])
+    subprocess.call(['systemctl', 'restart', 'univention-management-console-server'])
     time.sleep(3)
 
 

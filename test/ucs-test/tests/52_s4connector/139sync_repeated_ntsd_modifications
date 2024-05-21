@@ -26,13 +26,13 @@ gpo_display_name="$(random_chars)"
 
 cleanup() {
 	ucr unset connector/s4/mapping/gpo/ntsd
-	service univention-s4-connector restart
+	systemctl restart univention-s4-connector
 }
 
 trap cleanup EXIT
 
 ucr set connector/s4/mapping/gpo/ntsd=yes
-service univention-s4-connector restart
+systemctl restart univention-s4-connector
 
 # create GPO
 samba-tool gpo create "$gpo_display_name" \

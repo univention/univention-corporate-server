@@ -30,7 +30,7 @@ SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 mspolicy=$(ucr get password/quality/mspolicy)
 ucr set password/quality/mspolicy="yes"
-invoke-rc.d univention-ad-connector restart
+systemctl restart univention-ad-connector
 
 UDM_policies_pwhistory_name="default-settings"
 udm_modify "policies/pwhistory" "" "" "" "" \
@@ -57,7 +57,7 @@ ad_delete "$AD_DN"
 ucr set password/quality/mspolicy="$mspolicy"
 udm_modify "policies/pwhistory" "" "" "" "" \
 	--remove pwQualityCheck
-invoke-rc.d univention-ad-connector restart
+systemctl restart univention-ad-connector
 ad_set_sync_mode "$SYNCMODE"
 
 exit "${RETVAL:-0}"

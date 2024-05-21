@@ -95,13 +95,14 @@ class AuthTests:
         return exitcode == 0
 
     def restart_services(self):
-        subprocess.call(['service', 'nscd', 'restart'])
-        subprocess.call(['service', 'saslauthd', 'restart'])
-        subprocess.call(['service', 'postfix', 'restart'])
-        if self.ucr.is_true('mail/cyrus'):
-            subprocess.call(['service', 'cyrus-imapd', 'restart'])
-        if self.ucr.is_true('mail/dovecot'):
-            subprocess.call(['service', 'dovecot', 'restart'])
+        subprocess.call(
+            ['systemctl', 'restart', 'nscd', 'saslauthd', 'postfix'] + [
+                srv for srv, ucrv in (
+                    ('cyrus-imapd', 'mail/cyrus'),
+                    ('dovecot', 'mail/dovecot'),
+                ) if self.ucr.is_true(ucrv)
+            ]
+        )
         utils.wait_for_replication()  # _and_postrun()
         time.sleep(8)   # postrun (15s) is too much
 

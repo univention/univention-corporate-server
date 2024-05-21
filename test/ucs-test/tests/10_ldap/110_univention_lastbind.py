@@ -63,10 +63,10 @@ def other_server():
 @pytest.fixture(scope="module")
 def activate_lastbind(bindpwdfile, other_server):
     handler_set(['ldap/overlay/lastbind=true'])
-    subprocess.call(['service', 'slapd', 'restart'])
+    subprocess.call(['systemctl', 'restart', 'slapd'])
     if other_server:
         subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'ucr', 'set', 'ldap/overlay/lastbind=true'])
-        subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'service', 'slapd', 'restart'])
+        subprocess.call(['univention-ssh', bindpwdfile, other_server.props.fqdn, 'systemctl', 'restart', 'slapd'])
 
 
 @pytest.fixture(scope="module")

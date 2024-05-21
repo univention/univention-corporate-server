@@ -21,9 +21,9 @@ SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 
 if [ -n "${connector_s4_mapping_sid_to_ucs:-}" ] && [ -n "${connector_s4_mapping_sid_to_s4:-}" ]; then
-	trap 'ucr set connector/s4/mapping/sid_to_ucs="${connector_s4_mapping_sid_to_ucs:-}" connector/s4/mapping/sid_to_s4="${connector_s4_mapping_sid_to_s4:-}"; invoke-rc.d univention-s4-connector restart' INT TERM EXIT
+	trap 'ucr set connector/s4/mapping/sid_to_ucs="${connector_s4_mapping_sid_to_ucs:-}" connector/s4/mapping/sid_to_s4="${connector_s4_mapping_sid_to_s4:-}"; systemctl restart univention-s4-connector' INT TERM EXIT
 else
-	trap 'ucr unset connector/s4/mapping/sid_to_ucs connector/s4/mapping/sid_to_s4; invoke-rc.d univention-s4-connector restart' INT TERM EXIT
+	trap 'ucr unset connector/s4/mapping/sid_to_ucs connector/s4/mapping/sid_to_s4; systemctl restart univention-s4-connector' INT TERM EXIT
 fi
 
 rid=$(random_chars 6 123456789)
@@ -83,7 +83,7 @@ is_sid_equal || fail_test 110
 
 ## Sync SID from S4 to LDAP
 ucr set connector/s4/mapping/sid_to_ucs=yes connector/s4/mapping/sid_to_s4=no
-invoke-rc.d univention-s4-connector restart
+systemctl restart univention-s4-connector
 
 set_new_rid_in_s4
 is_sid_equal || fail_test 110
@@ -94,7 +94,7 @@ is_sid_equal && fail_test 110
 
 ## Sync SID from LDAP to S4 (UCS@school mode)
 ucr set connector/s4/mapping/sid_to_ucs=no connector/s4/mapping/sid_to_s4=yes
-invoke-rc.d univention-s4-connector restart
+systemctl restart univention-s4-connector
 
 set_new_rid_in_ldap
 is_sid_equal || fail_test 110
@@ -105,7 +105,7 @@ is_sid_equal && fail_test 110
 
 ## Sync SID from LDAP to S4 and from S4 to LDAP
 ucr set connector/s4/mapping/sid_to_ucs=yes connector/s4/mapping/sid_to_s4=yes
-invoke-rc.d univention-s4-connector restart
+systemctl restart univention-s4-connector
 
 set_new_rid_in_ldap
 is_sid_equal || fail_test 110

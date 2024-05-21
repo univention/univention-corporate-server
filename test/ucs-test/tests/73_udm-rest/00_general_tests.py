@@ -31,7 +31,7 @@ univention.admin.modules.update()
 
 if ucr.is_true('ad/member'):
     # REST server needs to reload UCR variables for "Domain Admins" group name
-    subprocess.call(['service', 'univention-directory-manager-rest', 'restart'])
+    subprocess.call(['systemctl', 'restart', 'univention-directory-manager-rest'])
 
 
 class UDMClient(_UDMClient):

@@ -127,17 +127,17 @@ def wait_for_sync(min_wait_time: int = 0) -> None:
 
 def stop() -> None:
     print("Stopping S4-Connector")
-    subprocess.check_call(["service", "univention-s4-connector", "stop"])
+    subprocess.check_call(["systemctl", "stop", "univention-s4-connector"])
 
 
 def start() -> None:
     print("Starting S4-Connector")
-    subprocess.check_call(["service", "univention-s4-connector", "start"])
+    subprocess.check_call(["systemctl", "start", "univention-s4-connector"])
 
 
 def restart_s4connector() -> None:
     print("Restarting S4-Connector")
-    subprocess.check_call(["service", "univention-s4-connector", "restart"])
+    subprocess.check_call(["systemctl", "restart", "univention-s4-connector"])
 
 
 def s4_in_sync_mode(sync_mode, configbase='connector') -> None:

@@ -31,12 +31,12 @@ def slapd_config():
     def _func(ucr_changes: list) -> None:
         with UCSTestConfigRegistry() as ucr:
             ucr.handler_set(ucr_changes)
-            subprocess.check_call(['deb-systemd-invoke', 'restart', 'slapd'])
+            subprocess.check_call(['systemctl', 'restart', 'slapd'])
             time.sleep(3)
 
     yield _func
 
-    subprocess.check_call(['deb-systemd-invoke', 'restart', 'slapd'])
+    subprocess.check_call(['systemctl', 'restart', 'slapd'])
     time.sleep(3)
 
 

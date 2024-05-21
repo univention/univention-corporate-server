@@ -40,12 +40,12 @@ SYNCALTERNATIVEMAIL="$(ucr get connector/ad/mapping/user/alternativemail)"
 
 udm_create mail/domain "" "" "cn=domain,cn=mail,$ldap_base"
 
-invoke-rc.d univention-ad-connector stop
+systemctl stop univention-ad-connector
 ucr set connector/ad/mapping/user/primarymail=true
 ucr set connector/ad/mapping/user/alternativemail=true
 #ucr set connector/ad/mapping/user/exchange=true
 ad_set_sync_mode "sync"
-invoke-rc.d univention-ad-connector start
+systemctl start univention-ad-connector
 
 cleanup() {
 	section "==========Test done - Cleanup=========="
@@ -58,12 +58,12 @@ cleanup() {
 
 	udm_remove mail/domain "" "" "cn=domain,cn=mail,$ldap_base"
 
-	invoke-rc.d univention-ad-connector stop
+	systemctl stop univention-ad-connector
 	ucr set connector/ad/mapping/user/primarymail="$SYNCPRIMARYMAIL"
 	ucr set connector/ad/mapping/user/alternativemail="$SYNCALTERNATIVEMAIL"
 	#ucr set connector/ad/mapping/user/exchange="$SYNCEXCHANGE"
 	ad_set_sync_mode "$SYNCMODE"
-	invoke-rc.d univention-ad-connector start
+	systemctl start univention-ad-connector
 }
 trap cleanup EXIT
 

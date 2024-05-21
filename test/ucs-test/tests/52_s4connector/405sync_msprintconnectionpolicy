@@ -23,7 +23,7 @@ SYNCMODE="$(ad_get_sync_mode)"
 PRINTPOLICY="$(ucr get connector/s4/mapping/msprintconnectionpolicy)"
 ad_set_sync_mode "sync"
 ucr set connector/s4/mapping/msprintconnectionpolicy=true
-service univention-s4-connector restart
+systemctl restart univention-s4-connector
 
 section "msPrint-ConnectionPolicy: UDM add"
 
@@ -113,7 +113,7 @@ section "msPrint-ConnectionPolicy: cleanup"
 ad_set_sync_mode "$SYNCMODE"
 if [ -n "$PRINTPOLICY" ]; then ucr set connector/s4/mapping/msprintconnectionpolicy="$PRINTPOLICY";
 else ucr unset connector/s4/mapping/msprintconnectionpolicy; fi
-service univention-s4-connector restart
+systemctl restart univention-s4-connector
 udm settings/msprintconnectionpolicy remove --dn "$UDM_DN"
 
 exit "${RETVAL:-0}"

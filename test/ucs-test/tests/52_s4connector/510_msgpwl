@@ -25,7 +25,7 @@ ad_set_sync_mode "sync"
 ucr set connector/s4/mapping/msgpwl?no
 ucr set connector/s4/mapping/msgpwl=yes
 
-service univention-s4-connector restart
+systemctl restart univention-s4-connector
 
 policy_name="{E1E20275-CBF3-46D4-B926-$(random_chars 12 "ABCDEF0123456789")}"
 policy_base="CN=$policy_name,CN=Policies,CN=System,$samba4_ldap_base"

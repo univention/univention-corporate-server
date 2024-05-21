@@ -53,13 +53,13 @@ UDM_groups_group_name="$group1" udm_verify_multi_value_udm_attribute_contains "u
 UDM_groups_group_name="$group2" udm_verify_multi_value_udm_attribute_contains "users" "$USER_DN" "groups/group"; fail_bool 1 110
 
 section "move user $user, remove from group $group1 and add to $group2, all while the connector is not running"
-invoke-rc.d univention-s4-connector stop || fail_test 110
+systemctl stop univention-s4-connector || fail_test 110
 udm users/user move --dn "$USER_DN" --position "$ldap_base" || fail_test 110
 USER_DN="uid=$user,$ldap_base"
 AD_USER_DN="CN=$user,$(ad_get_base)"
 udm_modify "users/user" "" "" "$ldap_base" "" --remove groups="$GROUP1_DN" || fail_test 110
 udm_modify "users/user" "" "" "$ldap_base" "" --append groups="$GROUP2_DN" || fail_test 110
-invoke-rc.d univention-s4-connector start || fail_test 110
+systemctl start univention-s4-connector || fail_test 110
 sleep 10
 ad_wait_for_synchronization || fail_test 110
 

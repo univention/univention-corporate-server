@@ -31,7 +31,7 @@ SYNCMODE="$(ad_get_sync_mode)"
 SYNCPRIMARYMAIL="$(ucr get connector/ad/mapping/user/primarymail)"
 udm_create mail/domain "" "" "cn=domain,cn=mail,$ldap_base"
 
-invoke-rc.d univention-ad-connector stop
+systemctl stop univention-ad-connector
 ucr set connector/ad/mapping/user/primarymail=true
 ad_set_sync_mode "read"
 
@@ -45,17 +45,17 @@ cleanup() {
 	ad_exists "$AD_DN"; fail_bool 1 110
 
 	udm_remove mail/domain "" "" "cn=domain,cn=mail,$ldap_base"
-	invoke-rc.d univention-ad-connector stop
+	systemctl stop univention-ad-connector
 	ucr set connector/ad/mapping/user/primarymail="$SYNCPRIMARYMAIL"
 	ad_set_sync_mode "$SYNCMODE"
-	invoke-rc.d univention-ad-connector start
+	systemctl start univention-ad-connector
 }
 trap cleanup EXIT
 
 section "==========Create user with mail addresses in AD=========="
 ad_createuser "$UDM_users_user_username" "" "CN=Users,$(ad_get_base)" || fail_test 110
 ad_set_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress" || fail_test 110
-invoke-rc.d univention-ad-connector start
+systemctl start univention-ad-connector
 ad_wait_for_synchronization || fail_test 110
 
 udm_exists "users/user" || fail_test 110
@@ -107,11 +107,11 @@ AD_user_mail2="private2@external.org"
 echo "Changing 'proxyAddresses' in AD to 'SMTP:$UDM_users_user_mailPrimaryAddress2' and changing 'mail' in AD to '$AD_user_mail2'"
 echo
 
-invoke-rc.d univention-ad-connector stop
+systemctl stop univention-ad-connector
 ad_set_attribute "$AD_DN" "proxyAddresses" "SMTP:$UDM_users_user_mailPrimaryAddress2" || fail_test 110
 # An also set mail to something else, just to see how the AD-Connector handles that, too.
 ad_set_attribute "$AD_DN" "mail" "$AD_user_mail2" || fail_test 110
-invoke-rc.d univention-ad-connector start
+systemctl start univention-ad-connector
 
 ad_wait_for_synchronization || fail_test 110
 
@@ -140,12 +140,12 @@ echo "    and append '$smtp:$UDM_users_user_mailAlternativeAddress'"
 echo "    and append '$AD_preferred_sip_address'"
 echo
 
-invoke-rc.d univention-ad-connector stop
+systemctl stop univention-ad-connector
 ad_set_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress3" || fail_test 110
 ad_set_attribute "$AD_DN" "proxyAddresses" "SMTP:$UDM_users_user_mailPrimaryAddress3" || fail_test 110
 ad_append_to_attribute "$AD_DN" "proxyAddresses" "smtp:$UDM_users_user_mailAlternativeAddress" || fail_test 110
 ad_append_to_attribute "$AD_DN" "proxyAddresses" "$AD_preferred_sip_address" || fail_test 110
-invoke-rc.d univention-ad-connector start
+systemctl start univention-ad-connector
 
 ad_wait_for_synchronization || fail_test 110
 

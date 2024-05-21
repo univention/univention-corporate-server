@@ -159,11 +159,11 @@ ad_set_sync_mode () {
 	info "Setting S4 connector '$configbase' to ${mode}-mode"
 	if [ "$mode" != "$(ad_get_sync_mode "$configbase")" ]; then
 		ucr set "$configbase/s4/mapping/syncmode=$mode"
-		invoke-rc.d univention-s4-connector restart
+		systemctl restart univention-s4-connector
 		if ! ad_is_connector_running; then
 			# try again
 			sleep 3
-			invoke-rc.d univention-s4-connector restart
+			systemctl restart univention-s4-connector
 		fi
 	else
 		info "Already in ${mode}-mode"
@@ -516,11 +516,11 @@ ad_set_retry_rejected () {
 	retry_old="$(ucr get connector/s4/retryrejected)"
 	if [ "$retry" != "$retry_old" ]; then
 		ucr set connector/s4/retryrejected="$retry"
-		invoke-rc.d univention-s4-connector restart
+		systemctl restart univention-s4-connector
 		if ! ad_is_connector_running; then
 			# try again
 			sleep 3
-			invoke-rc.d univention-s4-connector restart
+			systemctl restart univention-s4-connector
 		fi
 	fi
 }
@@ -549,17 +549,17 @@ connector_running_on_this_host () {
 }
 
 ad_connector_start () {
-	invoke-rc.d univention-s4-connector start
+	systemctl start univention-s4-connector
 	sleep 3 # wait a few seconds
 }
 
 ad_connector_stop () {
-	invoke-rc.d univention-s4-connector stop
+	systemctl stop univention-s4-connector
 	sleep 3 # wait a few seconds
 }
 
 ad_connector_restart () {
-	invoke-rc.d univention-s4-connector restart
+	systemctl restart univention-s4-connector
 	sleep 3 # wait a few seconds
 }
 

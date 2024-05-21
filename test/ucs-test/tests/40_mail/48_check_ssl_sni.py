@@ -44,7 +44,7 @@ if __name__ == '__main__':
             'mail/dovecot/ssl/sni/%(sso_domain)s/certificate=/etc/univention/ssl/%(sso_domain)s/cert.pem' % {'sso_domain': sso_domain},
             'mail/dovecot/ssl/sni/%(sso_domain)s/key=/etc/univention/ssl/%(sso_domain)s/private.key' % {'sso_domain': sso_domain},
         ])
-        subprocess.call(['service', 'dovecot', 'restart'])
+        subprocess.call(['systemctl', 'restart', 'dovecot'])
 
         print('\nTest if host %s returns a certificate for %s' % (fqdn, fqdn))
         utils.retry_on_error((lambda: check_if_correct_cert_is_served(fqdn, fqdn, 993)), exceptions=(Exception, ), retry_count=5)
@@ -54,4 +54,4 @@ if __name__ == '__main__':
         check_if_correct_cert_is_served(fqdn, sso_domain, 995)
 
         ucr.revert_to_original_registry()
-        subprocess.call(['service', 'dovecot', 'restart'])
+        subprocess.call(['systemctl', 'restart', 'dovecot'])

@@ -30,11 +30,11 @@ revert_bcrypt () {
 	else
 		ucr unset ldap/pw-bcrypt
 	fi
-	service slapd restart
+	systemctl restart slapd
 }
 
 ucr set ldap/pw-bcrypt=true
-service slapd restart
+systemctl restart slapd
 undo revert_bcrypt
 
 test_username=$(user_randomname)

@@ -35,8 +35,8 @@ ucr set \
 	sshd/passwordauthentication=no
 undo ucr_restore
 
-invoke-rc.d ssh restart
-undo invoke-rc.d ssh restart
+systemctl restart ssh
+undo systemctl restart ssh
 
 tdir="$(mktemp -d)"
 undo rm -rf "$tdir"

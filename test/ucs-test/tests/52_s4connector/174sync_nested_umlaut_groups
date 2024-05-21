@@ -19,12 +19,12 @@
 
 SYNCMODE="$(ad_get_sync_mode)"
 
-invoke-rc.d univention-s4-connector stop
+systemctl stop univention-s4-connector
 
 ucr set --force directory/manager/web/modules/groups/group/properties/name/syntax=string
 pkill -f univention-cli-server
 
-invoke-rc.d univention-s4-connector start
+systemctl start univention-s4-connector
 
 groupname1="a$(random_chars)ö1"
 groupname2="a$(random_chars)ä2"

@@ -32,10 +32,10 @@ key_path="/etc/univention/ssl/$cert/private.key"
 univention-config-registry set \
 	"$ucr_cert=$cert_path" \
 	"$ucr_key=$key_path" >/dev/null
-invoke-rc.d apache2 restart
+systemctl restart apache2
 
 tmp_file="$(mktemp)"
-trap "rm -f '$tmp_file' ; ucr_restore ; invoke-rc.d apache2 restart" EXIT
+trap "rm -f '$tmp_file' ; ucr_restore ; systemctl restart apache2" EXIT
 
 #check alternative cert
 getssl "$tmp_file"
@@ -51,7 +51,7 @@ else
 fi
 
 ucr unset "$ucr_cert" "$ucr_key"
-invoke-rc.d apache2 restart
+systemctl restart apache2
 
 #check whether alternative cert is removed
 getssl "$tmp_file"

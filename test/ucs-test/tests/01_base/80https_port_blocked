@@ -14,7 +14,7 @@ HTTPS_PORT=443
 STOP_APACHE_AT_THE_END=false
 
 is_apache2_running () {
-	invoke-rc.d apache2 status
+	systemctl status apache2
 }
 
 echo "-------------------------------------------"
@@ -27,7 +27,7 @@ if [ -z "$prog" ] ; then
 elif [ "$prog" = apache2 ] ; then
 	echo "Apache2 is running"
 	echo "Stopping apache2"
-	invoke-rc.d apache2 stop
+	systemctl stop apache2
 	sleep 3s
 	if ! is_apache2_running
 	then
@@ -45,7 +45,7 @@ fi
 
 echo "-------------------------------------------"
 echo "Starting apache2"
-invoke-rc.d apache2 start
+systemctl start apache2
 sleep 3s
 if is_apache2_running
 then
@@ -60,7 +60,7 @@ if "$STOP_APACHE_AT_THE_END"
 then
 	echo "-------------------------------------------"
 	echo "Stopping apache2"
-	invoke-rc.d apache2 stop
+	systemctl stop apache2
 	sleep 3s
 	if ! is_apache2_running
 	then

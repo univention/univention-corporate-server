@@ -68,11 +68,11 @@ comp="repository/online/component/${compname}"
 config_mirror version/patchlevel=0 version/erratalevel=0
 
 config_proxy -a -u "${username}" -w "${password}"
-invoke-rc.d univention-firewall stop
+systemctl stop univention-firewall
 
 cleanup_extra () {
 	iptables -D INPUT   -p tcp --dport discard -j DROP >&3 2>&3 || true
-	invoke-rc.d univention-firewall start
+	systemctl start univention-firewall
 }
 
 run_tests () { # execute all updater programs

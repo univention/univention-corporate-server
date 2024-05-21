@@ -43,7 +43,7 @@ def logged_in_umc_browser_test(umc_browser_test_module: UMCBrowserTest):
 @pytest.fixture(scope='module')
 def restart_umc():
     print('Restarting UMC')
-    subprocess.run(['deb-systemd-invoke', 'restart', 'univention-management-console-server'], check=True)
+    subprocess.run(['systemctl', 'restart', 'univention-management-console-server'], check=True)
     time.sleep(5)
 
 

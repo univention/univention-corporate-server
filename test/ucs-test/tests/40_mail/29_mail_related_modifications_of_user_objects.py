@@ -61,7 +61,7 @@ def main():
                     'mail/dovecot/mailbox/delete=no',
                     'mail/dovecot/auth/cache_size=0',
                 ])
-                subprocess.call(['service', 'dovecot', 'restart'], stderr=subprocess.DEVNULL)
+                subprocess.call(['systemctl', 'restart', 'dovecot'], stderr=subprocess.DEVNULL)
                 host = '{}.{}'.format(ucr.get('hostname'), domain)
                 password = 'univention'
                 account = utils.UCSTestDomainAdminCredentials()

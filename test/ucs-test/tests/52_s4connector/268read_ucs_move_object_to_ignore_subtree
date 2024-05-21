@@ -33,13 +33,13 @@ ad_wait_for_synchronization || fail_test 110
 
 section "Modify User-Ignore-Subtree"
 
-invoke-rc.d univention-s4-connector stop
+systemctl stop univention-s4-connector
 
 
 connector_mapping_adjust 'user' "cn=$CONTAINER_NAME,$ldap_base"
 
 ad_set_sync_mode "read"
-invoke-rc.d univention-s4-connector start
+systemctl start univention-s4-connector
 
 section "Create user"
 
@@ -73,9 +73,9 @@ ad_set_sync_mode "sync"
 
 udm container/cn remove --dn "cn=$CONTAINER_NAME,$ldap_base"
 
-invoke-rc.d univention-s4-connector stop
+systemctl stop univention-s4-connector
 connector_mapping_restore
 ad_set_sync_mode "$SYNCMODE"
-invoke-rc.d univention-s4-connector start
+systemctl start univention-s4-connector
 
 exit "${RETVAL:-0}"

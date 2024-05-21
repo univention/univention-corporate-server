@@ -32,7 +32,7 @@ def adc_is_ready(configbase: str = "connector") -> bool:
 
 def restart_adconnector() -> None:
     print("Restarting AD-Connector")
-    subprocess.check_call(["service", "univention-ad-connector", "restart"])
+    subprocess.check_call(["systemctl", "restart", "univention-ad-connector"])
 
 
 def ad_in_sync_mode(sync_mode: str, configbase: str = 'connector') -> None:

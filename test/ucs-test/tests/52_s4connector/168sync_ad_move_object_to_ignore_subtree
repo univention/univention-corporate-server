@@ -36,13 +36,13 @@ udm_exists "container/cn" || fail_test 110
 
 section "Modify User-Ignore-Subtree"
 
-invoke-rc.d univention-s4-connector stop
+systemctl stop univention-s4-connector
 
 
 connector_mapping_adjust 'user' "CN=$UDM_container_cn_name,$ldap_base"
 
 ad_set_sync_mode "sync"
-invoke-rc.d univention-s4-connector start
+systemctl start univention-s4-connector
 
 section "Create user"
 
@@ -74,9 +74,9 @@ udm_exists "users/user"; fail_bool 1 110
 
 ad_delete "CN=$UDM_container_cn_name,$(ad_get_base)"
 
-invoke-rc.d univention-s4-connector stop
+systemctl stop univention-s4-connector
 connector_mapping_restore
 ad_set_sync_mode "$SYNCMODE"
-invoke-rc.d univention-s4-connector start
+systemctl start univention-s4-connector
 
 exit "${RETVAL:-0}"

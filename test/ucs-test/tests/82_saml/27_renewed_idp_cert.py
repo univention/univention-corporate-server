@@ -32,7 +32,7 @@ def renew_sso_cert():
         f"/etc/univention/ssl/{sso_fqdn}/private.key",
         f"/etc/simplesamlphp/{sso_fqdn}-idp-certificate.key",
     ])
-    subprocess.check_call(["deb-systemd-invoke", "restart", "univention-saml"])
+    subprocess.check_call(["systemctl", "restart", "univention-saml"])
 
 
 def reload_idp_metadata():
@@ -45,11 +45,11 @@ def reload_idp_metadata():
 
 
 def restart_slapd():
-    subprocess.check_call(["deb-systemd-invoke", "restart", "slapd"])
+    subprocess.check_call(["systemctl", "restart", "slapd"])
 
 
 def restart_umc_server():
-    subprocess.check_call(["deb-systemd-invoke", "restart", "univention-management-console-server"])
+    subprocess.check_call(["systemctl", "restart", "univention-management-console-server"])
     time.sleep(5)
 
 

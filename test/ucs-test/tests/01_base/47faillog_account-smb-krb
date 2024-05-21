@@ -29,7 +29,7 @@ NAME=$(user_randomname)
 ucr set \
 	auth/faillog=no \
 	auth/faillog/lock_global=no
-undo invoke-rc.d ssh restart
+undo systemctl restart ssh
 undo ucr_restore
 
 tdir=$(mktemp -d)

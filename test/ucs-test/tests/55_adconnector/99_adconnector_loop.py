@@ -38,7 +38,7 @@ def check_if_looping():
         ignorelist = ucr.get('connector/ad/mapping/windowscomputer/ignorelist', '')
         new_ignorelist = ignorelist + ','.join(object_names)
         ucr_set([f'connector/ad/mapping/windowscomputer/ignorelist={new_ignorelist}'])
-        subprocess.check_call(["service", "univention-ad-connector", "restart"])
+        subprocess.check_call(["systemctl", "restart", "univention-ad-connector"])
         print('Trying to wait for postrun again, see if a loop was the reason for failure')
         # wait a bit for things to settle..
         time.sleep(5)

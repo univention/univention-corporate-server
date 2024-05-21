@@ -28,12 +28,12 @@ ucr set connector/s4/mapping/msgpipsec=yes
 ucr set connector/s4/mapping/msgpwl=yes
 ucr set connector/s4/mapping/domainpolicy=yes
 
-service univention-s4-connector restart
+systemctl restart univention-s4-connector
 
 /usr/share/univention-s4-connector/resync_object_from_s4.py "CN=Default Domain Policy,CN=System,$ldap_base"
 /usr/share/univention-s4-connector/resync_object_from_s4.py "CN=AppCategories,CN=Default Domain Policy,CN=System,$ldap_base"
 
-service univention-s4-connector restart
+systemctl restart univention-s4-connector
 
 ad_wait_for_synchronization || fail_test 110
 
@@ -53,7 +53,7 @@ cleanup () {
 	udm ms/domainpolicy remove --dn "cn=TestPolicy,$ldap_base"
 	ldbdel -H /var/lib/samba/private/sam.ldb  "CN=TestAdPolicy,$(ad_get_base)"
 	ad_wait_for_synchronization || fail_test 110
-	service univention-s4-connector restart
+	systemctl restart univention-s4-connector
 
 }
 trap cleanup EXIT
@@ -134,5 +134,5 @@ udm_verify_udm_attribute "domainWidePolicy" "YWJjZGVkZAo=" "ms/domainpolicy" "" 
 
 ad_set_sync_mode "$SYNCMODE"
 
-service univention-s4-connector restart
+systemctl restart univention-s4-connector
 exit "${RETVAL:-0}"

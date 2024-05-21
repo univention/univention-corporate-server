@@ -26,13 +26,13 @@ SYNCMODE="$(ad_get_sync_mode)"
 
 section "Modify User-Ignore-Subtree"
 
-invoke-rc.d univention-ad-connector stop
+systemctl stop univention-ad-connector
 
 
 connector_mapping_adjust 'user' "cn=users,$ldap_base"
 
 ad_set_sync_mode "write"
-invoke-rc.d univention-ad-connector start
+systemctl start univention-ad-connector
 
 section "Create user"
 
@@ -50,9 +50,9 @@ ad_wait_for_synchronization || fail_test 110
 ad_exists "$AD_USER_DN"; fail_bool 1 110
 udm_exists "users/user"; fail_bool 1 110
 
-invoke-rc.d univention-ad-connector stop
+systemctl stop univention-ad-connector
 connector_mapping_restore
 ad_set_sync_mode "$SYNCMODE"
-invoke-rc.d univention-ad-connector start
+systemctl start univention-ad-connector
 
 exit "${RETVAL:-0}"

@@ -18,7 +18,7 @@
 
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
-invoke-rc.d univention-s4-connector restart
+systemctl restart univention-s4-connector
 
 # Make some import rounds with an increasing sleep time before changing the password
 for i in 0 3 6 12; do

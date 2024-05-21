@@ -29,10 +29,10 @@ ucr set \
 	sshd/challengeresponse=yes \
 	sshd/passwordauthentication=no
 
-invoke-rc.d ssh restart
+systemctl restart ssh
 
 tdir=$(mktemp -d)
-trap "rm -rf '$tdir' ; udm mail/domain remove --dn 'cn=$domainname,$ldap_base' ; user_remove '$NAME' ; ucr_restore ; invoke-rc.d ssh restart" EXIT
+trap "rm -rf '$tdir' ; udm mail/domain remove --dn 'cn=$domainname,$ldap_base' ; user_remove '$NAME' ; ucr_restore ; systemctl restart ssh" EXIT
 fake_passwd="$tdir/fake_passwd"
 echo "foobar1234" >"$fake_passwd"
 

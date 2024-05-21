@@ -18,7 +18,7 @@
 
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
-invoke-rc.d univention-ad-connector restart
+systemctl restart univention-ad-connector
 kdestroy  # to avoid smbclient failure (similar to Bug #52277)
 
 domain=$(ucr get connector/ad/mapping/kerberosdomain)

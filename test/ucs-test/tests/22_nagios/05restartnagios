@@ -20,18 +20,18 @@
 
 set -x
 
-trap "service nagios stop; pkill nagios; service nagios start" EXIT
+trap "systemctl stop nagios; pkill nagios; systemctl start nagios" EXIT
 
 # ensure nagios is started
 if [ "$(pgrep -c nagios)" -eq 0 ]; then
-	service nagios start
+	systemctl start nagios
 	sleep 3
 fi
 nagios_pid="$(nagiostats | VAL1 'Nagios PID')"
 
 # restart Nagios
 echo "Restarting Nagios"
-service nagios restart
+systemctl restart nagios
 sleep 3
 new_nagios_pid="$(nagiostats | VAL1 'Nagios PID')"
 

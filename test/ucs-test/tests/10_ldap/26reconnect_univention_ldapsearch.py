@@ -87,7 +87,7 @@ def stop_slapd():
     Stops the slapd and waits for it to be stopped.
     Looks for slapd in processes and waits if found extra 15 seconds.
     """
-    ret_code = call(('invoke-rc.d', 'slapd', 'stop'))
+    ret_code = call(('systemctl', 'stop', 'slapd'))
     if ret_code != 0:
         fail("Expecting the return code to be 0, while it is: %s" % ret_code)
 
@@ -107,7 +107,7 @@ def stop_slapd():
 
 def start_slapd():
     """Starts the slapd and wait for it to be started."""
-    ret_code = call(('invoke-rc.d', 'slapd', 'start'))
+    ret_code = call(('systemctl', 'start', 'slapd'))
     if ret_code not in (0, 2):
         fail("Expecting the return code to be 0 or 2, while it is: %s"
              % ret_code)
@@ -115,7 +115,7 @@ def start_slapd():
 
 def start_with_delay(delay):
     """Sleeps the given 'delay' and starts slapd."""
-    Popen(['sh', '-c', 'sleep %s; invoke-rc.d slapd start' % delay])
+    Popen(['sh', '-c', 'sleep %s; systemctl start slapd' % delay])
 
 
 def wait_for_slapd_to_be_started():
@@ -178,8 +178,8 @@ def main():
         restore_retry_count()
         # try to restore slapd systemd status
         call(('systemctl', 'daemon-reload'))
-        call(('service', 'slapd', 'stop'))
-        call(('service', 'slapd', 'start'))
+        call(('systemctl', 'stop', 'slapd'))
+        call(('systemctl', 'start', 'slapd'))
         sleep(5)
 
 

@@ -33,12 +33,12 @@ ad_exists "$AD_CONTAINER_DN" || fail_test 110
 
 section "Modify Container-Ignore-Subtree"
 
-invoke-rc.d univention-ad-connector stop
+systemctl stop univention-ad-connector
 
 connector_mapping_adjust 'container' "cn=$CONTAINER1,$ldap_base"
 
 ad_set_sync_mode "read"
-invoke-rc.d univention-ad-connector start
+systemctl start univention-ad-connector
 
 section "Create container"
 UDM_container_cn_name="$CONTAINER2"
@@ -58,10 +58,10 @@ ad_wait_for_synchronization || fail_test 110
 ad_exists "$AD_CONTAINER_DN"; fail_bool 1 110
 udm_exists  "container/cn" "" "" "cn=$CONTAINER1,$ldap_base"; fail_bool 1 110
 
-invoke-rc.d univention-ad-connector stop
+systemctl stop univention-ad-connector
 connector_mapping_restore
 ad_set_sync_mode "sync"
-invoke-rc.d univention-ad-connector start
+systemctl start univention-ad-connector
 
 UDM_container_cn_name="$CONTAINER1"
 AD_CONTAINER_DN="CN=$UDM_container_cn_name,$(ad_get_base)"

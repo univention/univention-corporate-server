@@ -24,7 +24,7 @@ ad_set_sync_mode "sync"
 
 ucr set connector/s4/mapping/msgpipsec=yes
 
-service univention-s4-connector restart
+systemctl restart univention-s4-connector
 
 echo -e "
 dn: CN=IP Security2,CN=System,$samba4_ldap_base

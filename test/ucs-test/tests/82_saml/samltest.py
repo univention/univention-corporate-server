@@ -91,7 +91,7 @@ class GuaranteedIdP:
 
     def __enter__(self) -> None:
         subprocess.call(['ucr', 'set', 'hosts/static/%s=%s' % (self.ip, self.sso_fqdn)])
-        subprocess.call(['invoke-rc.d', 'nscd', 'restart'])
+        subprocess.call(['systemctl', 'restart', 'nscd'])
         IdP_IP = socket.gethostbyname(self.sso_fqdn)
         if IdP_IP != self.ip:
             utils.fail("Couldn't set guaranteed IdP")
@@ -99,7 +99,7 @@ class GuaranteedIdP:
 
     def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> None:
         subprocess.call(['ucr', 'unset', 'hosts/static/%s' % self.ip])
-        subprocess.call(['invoke-rc.d', 'nscd', 'restart'])
+        subprocess.call(['systemctl', 'restart', 'nscd'])
 
 
 class SPCertificate:

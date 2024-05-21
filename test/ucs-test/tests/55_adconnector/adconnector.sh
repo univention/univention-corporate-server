@@ -160,11 +160,11 @@ ad_set_sync_mode () {
 	info "Setting AD-Connector '$configbase' to ${mode}-mode"
 	if [ "$mode" != "$(ad_get_sync_mode "$configbase")" ]; then
 		ucr set "$configbase/ad/mapping/syncmode=$mode"
-		invoke-rc.d univention-ad-connector restart
+		systemctl restart univention-ad-connector
 		if ! ad_is_connector_running; then
 			# try again
 			sleep 3
-			invoke-rc.d univention-ad-connector restart
+			systemctl restart univention-ad-connector
 		fi
 	else
 		info "Already in ${mode}-mode"
@@ -568,17 +568,17 @@ ad_set_retry_rejected () {
 	retry_old="$(ucr get connector/ad/retryrejected)"
 	if [ "$retry" != "$retry_old" ]; then
 		ucr set connector/ad/retryrejected="$retry"
-		invoke-rc.d univention-ad-connector restart
+		systemctl restart univention-ad-connector
 		if ! ad_is_connector_running; then
 			# try again
 			sleep 3
-			invoke-rc.d univention-ad-connector restart
+			systemctl restart univention-ad-connector
 		fi
 	fi
 }
 
 ad_connector_restart () {
-	invoke-rc.d univention-ad-connector restart
+	systemctl restart univention-ad-connector
 	sleep 3 # wait a few seconds
 }
 

@@ -112,7 +112,7 @@ UDM_B19_DN="uid=$B19,cn=users,$ldap_base"
 
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
-invoke-rc.d univention-ad-connector restart
+systemctl restart univention-ad-connector
 
 for g in "$G00" "$G01" "$G02" "$G03" "$G04" "$G05" "$G06" "$G07" "$G08" "$G09"; do
 	ad_group_create "$g" || fail_test 110

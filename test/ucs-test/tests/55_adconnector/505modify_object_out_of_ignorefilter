@@ -22,7 +22,7 @@ SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 ignorefilter="$(ucr get connector/ad/mapping/user/ignorefilter)"
 ucr set connector/ad/mapping/user/ignorefilter="description=abc"
-invoke-rc.d univention-ad-connector restart
+systemctl restart univention-ad-connector
 
 user1="$(random_chars)"
 
@@ -57,7 +57,7 @@ udm_remove "users/user"
 ad_delete "$AD_DN"
 ucr set connector/ad/mapping/user/ignorefilter="$ignorefilter"
 /usr/share/univention-ad-connector/remove_ad_rejected.py "$AD_DN"
-invoke-rc.d univention-ad-connector restart
+systemctl restart univention-ad-connector
 ad_set_sync_mode "$SYNCMODE"
 
 exit "${RETVAL:-0}"

@@ -33,7 +33,7 @@ ad_set_sync_mode "read"
 ucr set connector/debug/level=5
 smbcontrol all debug 10
 sleep 5
-invoke-rc.d univention-s4-connector restart
+systemctl restart univention-s4-connector
 # temporary debug
 section "Create new container"
 
@@ -99,7 +99,7 @@ ad_set_sync_mode "$SYNCMODE"
 ucr unset connector/debug/level
 smbcontrol all debug 1
 sleep 5
-invoke-rc.d univention-s4-connector restart
+systemctl restart univention-s4-connector
 # temporary debug
 
 exit "${RETVAL:-0}"

@@ -206,7 +206,7 @@ cleanup () { # Undo all changes
 	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
 	find /var/lib/apt/lists/ -type f -not -name lock -delete
 
-	[ -x /etc/init.d/cron ] && [ -f "${BASEDIR}/reenable_cron" ] && invoke-rc.d cron start >&3 2>&3 3>&-
+	[ -x /etc/init.d/cron ] && [ -f "${BASEDIR}/reenable_cron" ] && systemctl start cron >&3 2>&3 3>&-
 
 	rm -rf "${BASEDIR}"
 	echo "=== RESULT: ${RETVAL:=${rv}} ==="
@@ -360,7 +360,7 @@ _config_common () { # Setup done for testing
 	if [ -x /etc/init.d/cron ] && pidof cron >/dev/null
 	then
 		touch "${BASEDIR}/reenable_cron"
-		invoke-rc.d cron stop
+		systemctl stop cron
 	fi
 
 	dump_repo
