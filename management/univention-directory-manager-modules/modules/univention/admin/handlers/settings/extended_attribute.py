@@ -253,6 +253,12 @@ property_descriptions = {
         syntax=univention.admin.syntax.boolean,
         copyable=True,
     ),
+    'preventUmcDefaultPopup': univention.admin.property(
+        short_description=_('Prevent default popup'),
+        long_description=_('This setting will prevent a pop-up dialog in the UMC when the default value of a property is not set.'),
+        syntax=univention.admin.syntax.boolean,
+        required=False,
+    ),
 }
 
 layout = [
@@ -337,6 +343,7 @@ mapping.register('copyable', 'univentionUDMPropertyCopyable', None, univention.a
 mapping.register('version', 'univentionUDMPropertyVersion', None, univention.admin.mapping.ListToString)
 mapping.register('CLIName', 'univentionUDMPropertyCLIName', None, univention.admin.mapping.ListToString)
 mapping.register('options', 'univentionUDMPropertyOptions')
+mapping.register('preventUmcDefaultPopup', 'univentionUDMPropertyPreventUmcDefaultPopup', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):
