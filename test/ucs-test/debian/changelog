@@ -1,3 +1,9 @@
+ucs-test (10.0.21-46) unstable; urgency=medium
+
+  * Issue univention/ucs#2279: Fix ad connector tests
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 21 May 2024 17:08:31 +0200
+
 ucs-test (10.0.21-45) unstable; urgency=medium
 
   * Issue #2189: Backport from 5.2: Adjust timeout heuristic for
