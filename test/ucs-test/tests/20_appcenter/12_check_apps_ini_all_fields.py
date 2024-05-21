@@ -10,8 +10,8 @@
 from __future__ import annotations
 
 import re
+from argparse import ArgumentParser, Namespace
 from configparser import NoOptionError, NoSectionError, RawConfigParser
-from optparse import OptionParser
 from re import compile as regex_compile
 from sys import stderr
 from types import TracebackType
@@ -283,29 +283,16 @@ class Section:
         return Value(value, self.appid)
 
 
-def parse_args():
+def parse_args() -> Namespace:
     """
-    Creates an instance of OptionParser and parses arguments.
+    Parses arguments.
     The App Center's 'CACHE_DIR' will be used by default.
     To use args run interactively via: python filename ...
     """
-    parser = OptionParser(description=("Check Apps .ini files (Optional values, description length, allowed values, allowed chars)"))
-
-    parser.add_option("-q", "--quiet",
-                      default=False,
-                      dest="quiet",
-                      action="store_true",
-                      help="Decrease the verbosity.")
-
-    parser.add_option("-a", "--all",
-                      default=False,
-                      dest="check_all",
-                      action="store_true",
-                      help=("Force check of all Apps .ini. By default "
-                            "checks only currently installed Apps."))
-
-    options, _args = parser.parse_args()
-    return options
+    parser = ArgumentParser(description=("Check Apps .ini files (Optional values, description length, allowed values, allowed chars)"))
+    parser.add_argument("-q", "--quiet", action="store_true", help="Decrease the verbosity.")
+    parser.add_argument("-a", "--all", dest="check_all", action="store_true", help="Force check of all Apps .ini. By default checks only currently installed Apps.")
+    return parser.parse_args()
 
 
 if __name__ == '__main__':

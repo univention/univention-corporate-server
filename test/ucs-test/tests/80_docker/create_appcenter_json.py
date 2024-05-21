@@ -41,12 +41,12 @@ import socket
 import sys
 import tarfile
 import urllib
+from argparse import ArgumentParser
 from configparser import ConfigParser
 from difflib import unified_diff
 from glob import glob
 from hashlib import md5, sha256
 from json import dumps
-from optparse import OptionParser
 from typing import Iterator
 
 import requests
@@ -269,17 +269,17 @@ def sha256sum(filename: str) -> str:
 
 
 if __name__ == '__main__':
-    parser = OptionParser()
-    parser.add_option("-u", "--ucs-version", dest="version", default="3.1", help="use UCS version VERSION (e.g. (and default) %default)", metavar="VERSION")
-    parser.add_option("-d", "--directory", dest="directory", default=".", help="root directory where meta-inf and univention-repository lie", metavar="DIR")
-    parser.add_option("-o", "--output", dest="output", default=None, help="write output to OUTPUTFILE. Defaults to stdout. If specified and not ending with .gz, .gz is added", metavar="OUTPUTFILE")
-    parser.add_option("-t", "--tar", dest="archive", default=None, help="additionally add all files to tar archive TARFILE (not compressed)", metavar="TARFILE")
-    parser.add_option("-a", "--ask", action="store_true", dest="ask", default=False, help="Diff between existing OUTPUTFILE and buffer. Overwrites if changes are confirmed (interactive! ... if any diff)")
-    parser.add_option(
+    parser = ArgumentParser()
+    parser.add_argument("-u", "--ucs-version", dest="version", default="3.1", help="use UCS version VERSION (e.g. (and default) %(default)s)", metavar="VERSION")
+    parser.add_argument("-d", "--directory", default=".", help="root directory where meta-inf and univention-repository lie", metavar="DIR")
+    parser.add_argument("-o", "--output", help="write output to OUTPUTFILE. Defaults to stdout. If specified and not ending with .gz, .gz is added", metavar="OUTPUTFILE")
+    parser.add_argument("-t", "--tar", dest="archive", help="additionally add all files to tar archive TARFILE (not compressed)", metavar="TARFILE")
+    parser.add_argument("-a", "--ask", action="store_true", help="Diff between existing OUTPUTFILE and buffer. Overwrites if changes are confirmed (interactive! ... if any diff)")
+    parser.add_argument(
         "-s", "--server", dest="appcenter", default="https://appcenter.software-univention.de/",
-        help="external Univention App Center Server (defaults to %default. Another possibility may be https://appcenter-test.software-univention.de/ or http://appcenter.knut.univention.de/)", metavar="APPCENTER")
+        help="external Univention App Center Server (defaults to %(default)s. Another possibility may be https://appcenter-test.software-univention.de/ or http://appcenter.knut.univention.de/)", metavar="APPCENTER")
+    options = parser.parse_args()
 
-    (options, args) = parser.parse_args()
     root = options.directory
     ucs_version = options.version
     meta_inf_dir = os.path.join(root, 'meta-inf', ucs_version)
