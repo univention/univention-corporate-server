@@ -6,6 +6,8 @@
 ## packages:
 ##   - univention-directory-manager-rest
 
+from __future__ import annotations
+
 import subprocess
 import time
 from operator import itemgetter
@@ -15,7 +17,7 @@ import requests
 
 import univention.admin.modules
 from univention.admin.rest.client import (
-    UDM as UDMClient, Forbidden, PreconditionFailed, Unauthorized, UnprocessableEntity,
+    UDM as _UDMClient, Forbidden, PreconditionFailed, Unauthorized, UnprocessableEntity,
 )
 from univention.config_registry import ucr
 from univention.lib.misc import custom_groupname
@@ -28,18 +30,18 @@ univention.admin.modules.update()
 
 
 if ucr.is_true('ad/member'):
-    # REST server needs to reload UCR variables for "Domain Adminis" group name
+    # REST server needs to reload UCR variables for "Domain Admins" group name
     subprocess.call(['service', 'univention-directory-manager-rest', 'restart'])
 
 
-class UDMClient(UDMClient):
+class UDMClient(_UDMClient):
 
     @classmethod
-    def master_connection(cls, username, password):
+    def master_connection(cls, username: str, password: str) -> UDMClient:
         return cls.http('https://%s/univention/udm/' % (ucr['ldap/master'],), username, password)
 
     @classmethod
-    def test_connection(cls):
+    def test_connection(cls) -> UDMClient:
         account = UCSTestDomainAdminCredentials(ucr)
         return cls.master_connection(account.username, account.bindpw)
 
@@ -74,8 +76,12 @@ def test_authentication(udm):
     udm_client.get('users/user')
 
 
-@pytest.mark.parametrize('module', [n for n, m in univention.admin.modules.modules.items() if not getattr(m, 'virtual', False) and 'add' in m.operations])
-def test_all_module_descriptions(module, udm_client):
+@pytest.mark.parametrize('module', [
+    pytest.param(n, marks=pytest.mark.xfail(reason="REST needs restart") if n == "test/ip_phone" else ())
+    for n, m in univention.admin.modules.modules.items()
+    if not getattr(m, 'virtual', False) and 'add' in m.operations
+])
+def test_all_module_open(module, udm_client):
     mod = udm_client.get(module)
     mod.new()
 
