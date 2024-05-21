@@ -64,6 +64,9 @@ Variables: pam/krb5/minimum_uid
 Variables: pam/session/systemd
 
 Type: file
+File: etc/pam.d/common-session-noninteractive
+
+Type: file
 File: etc/pam.d/common-account
 Variables: auth/methods
 Variables: auth/faillog
