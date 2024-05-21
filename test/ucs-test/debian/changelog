@@ -1,3 +1,9 @@
+ucs-test (12.0.86) unstable; urgency=medium
+
+  * Issue univention/ucs#2279: Fix ad connector tests
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 21 May 2024 17:14:02 +0200
+
 ucs-test (12.0.85) unstable; urgency=medium
 
   * Bug #57193: Add structuralObjectClass, univentionOperatingSystem to
