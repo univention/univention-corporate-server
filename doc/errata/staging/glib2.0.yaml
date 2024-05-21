@@ -6,18 +6,12 @@ src: glib2.0
 fix: 2.58.3-2+deb10u6
 desc: |
  This update addresses the following issue:
- 2.58.3-2+deb10u6 (Fri, 10 May 2024 15:33:34 +0100)
- * d/patches: Backport GDBus fixes from 2.80.1, 2.80.2 - If local users send
-   signals on the D-Bus system bus that spoof a trusted sender, do not deliver
-   them to signal subscriptions for the trusted sender's well-known bus name
-   (CVE-2024-34397) - Fix a use-after-free when subscribing to signals with an
-   arg0 match rule, originally from 2.79.0 and necessary to make the test for
-   CVE-2024-34397 pass reliably - Add a local backport of g_set_str(),
-   required by the above - Relax name owner checks to avoid a regression in
-   ibus (avoids: #1070730, etc.)
- * d/p/gdbusmessage-Clean-the-cached-arg0-when-setting-the-messa.patch: Add
-   patch from upstream fixing a memory leak that can occur in rare situations
-   with the above changes (avoids: #1070851)
+ * CVE-2024-34397: When a `GDBus-based` client subscribes to signals from a
+   trusted system service such as NetworkManager on a shared computer, other
+   users of the same computer can send spoofed D-Bus signals that the
+   `GDBus-based` client will wrongly interpret as having been sent by the
+   trusted system service. This could lead to the `GDBus-based` client
+   behaving incorrectly, with an application-dependent impact.
 bug: [57300]
 cve:
 - CVE-2024-34397
