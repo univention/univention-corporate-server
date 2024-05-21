@@ -7,8 +7,6 @@
 
 from __future__ import annotations
 
-import sys
-
 from univention.testing import utils
 from univention.testing.strings import random_username
 from univention.testing.udm import UCSTestUDM
@@ -31,7 +29,7 @@ class TestUMCUserAuthentication(UMCBase):
     def create_user(self) -> None:
         """Creates a group and a user in it for the test."""
         print("\nCreating a user '%s'" % (self.test_username,))
-
+        assert self.UDM is not None
         self.test_user_dn = self.UDM.create_user(
             password=self.test_password,
             username=self.test_username,
@@ -90,4 +88,4 @@ class TestUMCUserAuthentication(UMCBase):
 
 if __name__ == '__main__':
     TestUMC = TestUMCUserAuthentication()
-    sys.exit(TestUMC.main())
+    TestUMC.main()

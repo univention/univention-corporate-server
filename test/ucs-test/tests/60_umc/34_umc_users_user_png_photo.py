@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import base64
 import subprocess
-import sys
 from tempfile import NamedTemporaryFile
 
 from univention.testing import utils
@@ -32,6 +31,7 @@ class TestUMCUserAuthentication(UMCBase):
         self.test_password = ''
 
     def create_user(self) -> None:
+        assert self.UDM is not None
         self.test_user_dn = self.UDM.create_user(
             password=self.test_password,
             username=self.test_username,
@@ -42,17 +42,23 @@ class TestUMCUserAuthentication(UMCBase):
     def set_image_jpeg(self) -> None:
         with open('./34_userphoto.jpeg', 'rb') as fd:
             image = fd.read()
-        assert image == base64.b64decode(self.set_image(image)), "Failed to set JPEG user photo"
+        res = self.set_image(image)
+        assert res is not None
+        assert image == base64.b64decode(res), "Failed to set JPEG user photo"
 
     def set_image_jpg(self) -> None:
         with open('./34_userphoto.jpg', 'rb') as fd:
             image = fd.read()
-        assert image == base64.b64decode(self.set_image(image)), "Failed to set JPG user photo"
+        res = self.set_image(image)
+        assert res is not None
+        assert image == base64.b64decode(res), "Failed to set JPEG user photo"
 
     def set_image_png(self) -> None:
         with open('./34_userphoto.png', 'rb') as fd:
             image = fd.read()
-        image = base64.b64decode(self.set_image(image))
+        res = self.set_image(image)
+        assert res is not None
+        image = base64.b64decode(res)
         with NamedTemporaryFile(mode='wb') as tempfile:
             tempfile.write(image)
             tempfile.flush()
@@ -61,12 +67,12 @@ class TestUMCUserAuthentication(UMCBase):
             assert b'image/jpeg' in stdout, f"Failed to set PNG user photo (not converted to JPEG): {stdout!r}"
 
     def unset_image(self) -> None:
-        assert not self.set_image(b""), "Failed to unset user photo"
+        res = self.set_image(b"")
+        assert not res, "Failed to unset user photo"
 
     def set_image(self, jpegPhoto: bytes) -> bytes | None:
-        if jpegPhoto:
-            jpegPhoto = base64.b64encode(jpegPhoto).decode('ASCII')  # TODO: make umcp/upload request
-        self.modify_object([{"object": {"jpegPhoto": jpegPhoto, "$dn$": self.test_user_dn}}], 'users/user')
+        data = base64.b64encode(jpegPhoto).decode('ASCII')  # TODO: make umcp/upload request
+        self.modify_object([{"object": {"jpegPhoto": data, "$dn$": self.test_user_dn}}], 'users/user')
         response = self.get_object([self.test_user_dn], 'users/user')
         return response[0].get('jpegPhoto')
 
@@ -87,4 +93,4 @@ class TestUMCUserAuthentication(UMCBase):
 
 if __name__ == '__main__':
     TestUMC = TestUMCUserAuthentication()
-    sys.exit(TestUMC.main())
+    TestUMC.main()

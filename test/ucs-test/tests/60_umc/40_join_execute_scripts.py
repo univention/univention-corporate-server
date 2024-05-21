@@ -54,8 +54,7 @@ class TestUMCDomainJoinModule(JoinModule):
         Makes a query request for all join scripts and returns the
         value of the 'configured' field for the given 'script_name'
         """
-        join_scripts = self.query_joinscripts()
-        for script in join_scripts:
+        for script in self.query_joinscripts():
             if script.get('script') == script_name:
                 return script.get('configured')
 
@@ -65,10 +64,11 @@ class TestUMCDomainJoinModule(JoinModule):
         for scripts that are pending and than making a single UMC
         request to execute them.
         """
-        script_names = []
-        for script in self.query_joinscripts():
-            if not script.get('configured'):
-                script_names.append(script.get('script'))
+        script_names = [
+            script.get('script')
+            for script in self.query_joinscripts()
+            if not script.get('configured')
+        ]
         self.run(script_names=script_names)
 
     def main(self):

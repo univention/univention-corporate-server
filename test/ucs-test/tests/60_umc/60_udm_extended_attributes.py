@@ -8,7 +8,6 @@
 
 from __future__ import annotations
 
-import sys
 from typing import Any
 
 import atexit
@@ -86,7 +85,7 @@ class TestUMCExtendedAttributes(UDMModule):
                        "the extended attribute '%s' itself: '%s'"
                        % (attribute_name, exc))
 
-    def is_attribute_syntax_valid(self, attribute_name: str, obj_type: str, test_value: str) -> bool:
+    def is_attribute_syntax_valid(self, attribute_name: str, obj_type: str, test_value: str) -> object:
         """
         Makes a 'udm/validate' UMC request for a given 'attribute_name',
         'obj_type' and a 'test_value' and returns the value of the 'valid'
@@ -94,13 +93,7 @@ class TestUMCExtendedAttributes(UDMModule):
         """
         options = {"objectType": obj_type,
                    "properties": {attribute_name: test_value}}
-        try:
-            for prop in self.request('udm/validate', options, obj_type):
-                if prop["property"] in attribute_name:
-                    return prop["valid"]
-        except KeyError as exc:
-            utils.fail("A KeyError exception while getting the attribute "
-                       "'valid' field value '%s'" % exc)
+        return next(prop["valid"] for prop in self.request('udm/validate', options, obj_type) if prop["property"] in attribute_name)
 
     def check_attribute_in_module_properties(
         self,
@@ -176,6 +169,7 @@ class TestUMCExtendedAttributes(UDMModule):
         the given arguments and checks if the respective module (-s)
         properties include the created attribute
         """
+        assert self.client is not None
         options = [{"object": {"objectClass": obj_class,
                                "module": attribute_modules,
                                "overwriteTab": False,
@@ -229,9 +223,7 @@ class TestUMCExtendedAttributes(UDMModule):
         Makes a query request for all extended attributes and returns True,
         in case an attribute with a given 'attribute_name' is found.
         """
-        for attribute in self.query_extended_attributes():
-            if attribute.get('name') == attribute_name:
-                return True
+        return any(attribute.get('name') == attribute_name for attribute in self.query_extended_attributes())
 
     def remove_attribute_if_exists(self, attribute_name: str) -> None:
         """
@@ -372,4 +364,4 @@ if __name__ == '__main__':
         utils.stop_s4connector()
 
     TestUMC = TestUMCExtendedAttributes()
-    sys.exit(TestUMC.main())
+    TestUMC.main()

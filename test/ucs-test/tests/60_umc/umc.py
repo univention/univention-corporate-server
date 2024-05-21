@@ -19,15 +19,13 @@ class UMCBase:
 
     def __init__(self) -> None:
         """Test Class constructor"""
-        self.username = None
-        self.password = None
-        self.hostname = None
         self.client: Client | None = None
         self.ucr = ConfigRegistry()
         self.ucr.load()
         self.ldap_base = self.ucr.get('ldap/base')
 
     def request(self, *args: Any, **kwargs: Any) -> Any:
+        assert self.client is not None
         return self.client.umc_command(*args, **kwargs).result
 
     def create_connection_authenticate(self) -> None:
@@ -39,9 +37,21 @@ class UMCBase:
             print("Waiting 5 seconds and making another attempt")
             sleep(5)
             self.client = Client.get_test_connection()
-        self.username = self.client.username
-        self.password = self.client.password
-        self.hostname = self.client.hostname
+
+    @property
+    def username(self) -> str:
+        assert self.client is not None
+        return self.client.username
+
+    @property
+    def password(self) -> str:
+        assert self.client is not None
+        return self.client.password
+
+    @property
+    def hostname(self) -> str:
+        assert self.client is not None
+        return self.client.hostname
 
     def check_obj_exists(self, name: str, obj_type: str, flavor: str | None = None) -> bool:
         """
@@ -56,15 +66,14 @@ class UMCBase:
             "objectPropertyValue": "",
             "hidden": True,
         }
-        for result in self.request('udm/query', options, flavor or obj_type):
-            if result['name'] == name:
-                return True
+        return any(result['name'] == name for result in self.request('udm/query', options, flavor or obj_type))
 
     def get_object(self, dns: list[str], flavor: str) -> list[dict[str, Any]]:
         """
         Returns the request result of the 'udm/get' UMC connection,
         made with provided 'options' and 'flavor'
         """
+        assert self.client is not None
         request_result = self.client.umc_command('udm/get', dns, flavor).result
         assert request_result is not None
         return request_result
@@ -74,6 +83,7 @@ class UMCBase:
         Modifies the 'flavor' object as given in 'options' by making a
         UMC request 'udm/put', checks for 'success' in the response
         """
+        assert self.client is not None
         request_result = self.client.umc_command('udm/put', options, flavor).result
         assert request_result
         assert request_result[0].get('success')
@@ -85,6 +95,7 @@ class UMCBase:
         Supported types are: users, groups, policies, extended attributes,
         networks and computers.
         """
+        assert self.client is not None
         print("Deleting test object '%s' with a name: '%s'" % (obj_type, name))
 
         if obj_type in ('users', 'users/user', 'users/ldap'):
@@ -127,7 +138,7 @@ class JoinModule(UMCBase):
             "username": self.username,
             "password": self.password,
         }
-        return self._join('join/join', options)
+        self._join('join/join', options)
 
     def run_scripts(self, script_names: str, force: bool = False) -> None:
         options = {
@@ -136,9 +147,10 @@ class JoinModule(UMCBase):
             "username": self.username,
             "password": self.password,
         }
-        return self._join('join/run', options)
+        self._join('join/run', options)
 
     def _join(self, path: str, options: dict[str, Any]) -> None:
+        assert self.client is not None
         response = self.client.umc_command(path, options)
 
         if response.status != 202:
@@ -153,6 +165,7 @@ class JoinModule(UMCBase):
         attempt, fails in case process still going after the given
         'poll_attempts'. Returns when process is not reported as running.
         """
+        assert self.client is not None
         for _attempt in range(poll_attempts):
             request_result = self.client.umc_command('join/running').result
             if request_result is None:
