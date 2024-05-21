@@ -1,0 +1,21 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: bind9
+fix: 1:9.10.3.dfsg.P4-12.3+deb9u16A~4.4.9.202405211450
+desc: |
+ This update addresses the following issues:
+ 1:9.10.3.dfsg.P4-12.3+deb9u16 (Fri, 17 May 2024 13:12:04 -0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2023-50387 and CVE-2023-50868 Specific DNS answers could cause a
+   denial-of-service condition due to DNS validation taking a long time.
+   (CVE-2023-50387) The same code change also addresses another problem:
+   preparing NSEC3 closest encloser proofs could exhaust available CPU
+   resources. (CVE-2023-50868)
+ * Add debian/tests/ from buster
+ * Make d/tests/validation less flaky.
+bug: [57302]
+cve:
+- CVE-2023-50387
+- CVE-2023-50868
