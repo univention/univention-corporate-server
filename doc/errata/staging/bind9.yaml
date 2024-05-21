@@ -1,0 +1,24 @@
+product: ucs
+release: "5.0"
+version: [6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: bind9
+fix: 1:9.11.5.P4+dfsg-5.1+deb10u11A~5.0.7.202405211119
+desc: |
+ This update addresses the following issues:
+ 1:9.11.5.P4+dfsg-5.1+deb10u11 (Fri, 17 May 2024 12:43:53 -0300)
+ * Non-maintainer upload by the LTS Team.
+ [ Ola Lundqvist ]
+ * CVE-2023-50387 and CVE-2023-50868 Specific DNS answers could cause a
+   denial-of-service condition due to DNS validation taking a long time.
+   (CVE-2023-50387) The same code change also addresses another problem:
+   preparing NSEC3 closest encloser proofs could exhaust available CPU
+   resources. (CVE-2023-50868)
+ [ Santiago Ruano Rincón ]
+ * Add debian/gbp.conf to match buster branches
+ * Correct the use of the debian revision in the newly added symbols in
+   libdns1104.symbols
+bug: [57301]
+cve:
+- CVE-2023-50387
+- CVE-2023-50868
