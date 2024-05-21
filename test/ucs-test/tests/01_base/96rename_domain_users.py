@@ -38,7 +38,7 @@ def search_templates(old_group_name, new_group_name):
     for template in templates:
         with open(template) as content_file:
             # find all lines that start with File or Multifile and strip it to get the paths of the template files
-            file_content += ['/' + filter_pattern.sub('', line).strip() for line in content_file.readlines() if filter_pattern.match(line)]
+            file_content += ['/' + filter_pattern.sub('', line).strip() for line in content_file if filter_pattern.match(line)]
 
     file_content = list(dict.fromkeys(file_content))
     for file in file_content:

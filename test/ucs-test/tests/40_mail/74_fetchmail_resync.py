@@ -53,17 +53,13 @@ def test_populate_file_and_resync(udm, ucr, fqdn):
             })
 
     time.sleep(5)
-    original_file = []
     with open('/etc/fetchmailrc') as f:
-        original_file = f.readlines()
-        original_file.sort()
+        original_file = sorted(f)
 
     subprocess.call(['univention-directory-listener-ctrl', 'resync', 'fetchmailrc'])
     time.sleep(5)
 
-    resynced_file = []
     with open('/etc/fetchmailrc') as f:
-        resynced_file = f.readlines()
-        resynced_file.sort()
+        resynced_file = sorted(f)
 
     assert original_file == resynced_file

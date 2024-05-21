@@ -92,13 +92,12 @@ found_backup_subcontainer = False
 BACKUP_DIR = '/var/univention-backup/replication'
 if os.path.exists(BACKUP_DIR):
     for f in os.listdir(BACKUP_DIR):
-        fd = open(os.path.join(BACKUP_DIR, f))
-        for line in fd.readlines():
-            if re.match('entryUUID: %s' % container_UUID, line):
-                found_backup_container = True
-            elif re.match('entryUUID: %s' % subcontainer_UUID, line):
-                found_backup_subcontainer = True
-        fd.close()
+        with open(os.path.join(BACKUP_DIR, f)) as fd:
+            for line in fd:
+                if re.match('entryUUID: %s' % container_UUID, line):
+                    found_backup_container = True
+                elif re.match('entryUUID: %s' % subcontainer_UUID, line):
+                    found_backup_subcontainer = True
 
 if not found_backup_container:
     print('ERROR: Backup of container with UUID %s was not found' % container_UUID)

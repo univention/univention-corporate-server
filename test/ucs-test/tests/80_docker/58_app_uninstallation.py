@@ -46,17 +46,15 @@ echo "Test 123 Conf" >/var/lib/univention-appcenter/apps/%(app_name)s/conf/test1
     assert not os.path.exists(f'/var/lib/univention-appcenter/apps/{app.app_name}/conf/test123')
     assert not os.path.exists(f'/var/lib/univention-appcenter/apps/{app.app_name}/conf/base.conf')
 
-    found_conf = False
     backup_dir = '/var/lib/univention-appcenter/backups/'
     for d in os.listdir(backup_dir):
         if d.startswith(f'appcenter-backup-{app.app_name}:'):
             conffile = os.path.join(backup_dir, d, 'conf', 'test123')
             if os.path.exists(conffile):
-                f = open(conffile)
-                res = f.readlines()
-                if res == ['Test 123 Conf\n']:
-                    found_conf = True
-    if not found_conf:
+                with open(conffile) as fd:
+                    if fd.read() == 'Test 123 Conf\n':
+                        break
+    else:
         fail('Conf backup file not found')
 
     lo = get_ldap_connection()

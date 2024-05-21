@@ -35,9 +35,9 @@ def read_connector_log():
     return f.read().splitlines()
 
 
-def count_connector_log_lines():
+def count_connector_log_lines() -> int:
     with open('/var/log/univention/connector-s4.log') as f:
-        return len(f.readlines())
+        return sum(1 for _ in f)
 
 
 def looping_objects(log):

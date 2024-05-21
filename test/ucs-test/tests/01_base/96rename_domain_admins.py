@@ -37,7 +37,7 @@ def search_templates(old_group_name, new_group_name, server_role):
     for template in templates:
         with open(template) as content_file:
             # find all lines that start with File or Multifile and strip it to get the paths of the template files
-            file_content += ['/' + file_pattern.sub('', line).strip() for line in content_file.readlines() if file_pattern.match(line)]
+            file_content += ['/' + file_pattern.sub('', line).strip() for line in content_file if file_pattern.match(line)]
 
     # A list of templates which are referencing the defaultdomainadmins group. The new name must be found in them
     should_contain_admin = [
