@@ -421,14 +421,14 @@ Separator=|
 Categories=service-ldap
 
 [ldap/overlay/sock]
-Description[de]=Aktiviert/Deaktiviert das LDAP-Overlay slapd-sock. Als `socketpath` wird `/var/lib/univention-ldap/slapd-sock` verwendet (siehe `man slapd-sock`).
-Description[en]=To enable/disable the LDAP overlay slapd-sock. `/var/lib/univention-ldap/slapd-sock` will be used as `socketpath` (see `man slapd-sock).
+Description[de]=Aktiviert/Deaktiviert das LDAP-Overlay slapd-sock. Als `socketpath` wird `/var/lib/univention-ldap/slapd-sock/sock` verwendet (siehe `man slapd-sock`).
+Description[en]=To enable/disable the LDAP overlay slapd-sock. `/var/lib/univention-ldap/slapd-sock/sock` will be used as `socketpath` (see `man slapd-sock).
 Type=bool
 Default=false
 Categories=service-ldap
 
 [ldap/overlay/sock/sockops]
-Description[de]=Konfiguriert die Option `sockops` für das LDAP-Overlay slapd-sock. Aktuell ist nur der Wert `CRUD` unterstützt, der `sockops add delete modify modrdn` setzt. Nach aktivieren des Overlays mit dieser Option schreibt der slapd-Prozess LDAP operation requests und responses in den Unix Domain Socket `/var/lib/univention-ldap/slapd-sock` und erwartet, dass dort ein Prozess diese Daten liest und jeden request mit `CONTINUE` beantwortet (siehe `man slapd-sock). Jede dieser LDAP-Operationen wird solange blockiert, bis der slapd über den socket die Antwort `CONTINUE` erhält.
-Description[en]=Configures the option `sockops` for the LDAP overlay slapd-sock. Currently only the value `CRUD` is suported, which sets 'sockops add delete modify modrdn`. After activating ths overlay and this option, the slapd process process will write these LDAP operation requests and responses to a Unix domain socket `/var/lib/univention-ldap/slapd-sock` and expects that some process reads that data and responds with `CONTINUE` to each operation request (see `man slapd-sock`). Each of the specified LDAP operations will be blocked until slapd receives the response `CONTINUE`.
+Description[de]=Konfiguriert die Option `sockops` für das LDAP-Overlay slapd-sock. Aktuell ist nur der Wert `CRUD` unterstützt, der `sockops add delete modify modrdn` setzt. Nach aktivieren des Overlays mit dieser Option schreibt der slapd-Prozess LDAP operation requests und responses in den Unix Domain Socket `/var/lib/univention-ldap/slapd-sock/sock` und erwartet, dass dort ein Prozess diese Daten liest und jeden request mit `CONTINUE` beantwortet (siehe `man slapd-sock). Jede dieser LDAP-Operationen wird solange blockiert, bis der slapd über den socket die Antwort `CONTINUE` erhält.
+Description[en]=Configures the option `sockops` for the LDAP overlay slapd-sock. Currently only the value `CRUD` is suported, which sets 'sockops add delete modify modrdn`. After activating ths overlay and this option, the slapd process process will write these LDAP operation requests and responses to a Unix domain socket `/var/lib/univention-ldap/slapd-sock/sock` and expects that some process reads that data and responds with `CONTINUE` to each operation request (see `man slapd-sock`). Each of the specified LDAP operations will be blocked until slapd receives the response `CONTINUE`.
 Type=str
 Categories=service-ldap
