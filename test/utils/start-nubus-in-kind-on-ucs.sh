@@ -11,6 +11,6 @@ export UCS_TEST_RUN=false
 
 # user specific instances "username_..."
 export KVM_OWNER="${BUILD_USER_ID:=$USER}"
-export JOB_BASE_NAME="${JOB_BASE_NAME:=UMSStackOnKind}"
+export JOB_BASE_NAME="${JOB_BASE_NAME:=NubusOnKind}"
 
-exec ./utils/start-test.sh scenarios/base/ums-kind.cfg
+exec ./utils/start-test.sh scenarios/base/nubus-kind.cfg

@@ -48,7 +48,7 @@ setup_cluster () {
 	./bootstrap-kind-cluster.sh
 }
 
-setup_ums_stack () {
+setup_stack () {
 	local ums_umc_gatway
 	git clone https://git.knut.univention.de/univention/customers/dataport/upx/ums-stack
 	cd ums-stack/
