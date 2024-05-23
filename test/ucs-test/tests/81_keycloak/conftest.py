@@ -30,7 +30,7 @@
 
 from __future__ import annotations
 
-import os
+from pathlib import Path
 from types import SimpleNamespace
 from typing import Any, Callable, Iterator
 
@@ -44,7 +44,7 @@ from utils import (
 
 from univention.appcenter.actions import get_action
 from univention.appcenter.app_cache import Apps
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr
 from univention.lib.misc import custom_groupname
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import UCSTestDomainAdminCredentials, get_ldap_connection, wait_for_listener_replication
@@ -53,32 +53,12 @@ from univention.udm.binary_props import Base64Bzip2BinaryProperty
 from univention.udm.modules.settings_data import SettingsDataObject
 
 
-# don't use the ucs-test ucr fixture (UCSTestConfigRegistry)
-# in fixtures, this can lean to problems if system settings
-# are reverted after the test, e.g. appcenter/apps/$id/container
-# after univention-app reinitialize
-@pytest.fixture(scope='session')
-def ucr_proper() -> ConfigRegistry:
-    ucr = ConfigRegistry()
-    return ucr.load()
+@pytest.fixture(scope="session")
+def keycloak_secret() -> str:
+    return Path('/etc/keycloak.secret').read_text().strip()
 
 
-@pytest.fixture()
-def admin_account() -> UCSTestDomainAdminCredentials:
-    return UCSTestDomainAdminCredentials()
-
-
-@pytest.fixture()
-def keycloak_secret() -> str | None:
-    secret_file = '/etc/keycloak.secret'
-    password = None
-    if os.path.isfile(secret_file):
-        with open(secret_file) as fd:
-            password = fd.read().strip()
-    return password
-
-
-@pytest.fixture()
+@pytest.fixture(scope="session")
 def keycloak_admin() -> str:
     return 'admin'
 
@@ -86,12 +66,12 @@ def keycloak_admin() -> str:
 @pytest.fixture()
 def keycloak_settings() -> dict[str, Any]:
     apps_cache = Apps()
-    settings = {}
     candidate = apps_cache.find('keycloak', latest=True)
     configure = get_action('configure')
-    for setting in configure.list_config(candidate):
-        settings[setting['name']] = setting['value']
-    return settings
+    return {
+        setting['name']: setting['value']
+        for setting in configure.list_config(candidate)
+    }
 
 
 @pytest.fixture()
@@ -128,10 +108,10 @@ def change_app_setting():
 
 
 @pytest.fixture()
-def upgrade_status_obj(ucr_proper) -> SettingsDataObject:
+def upgrade_status_obj() -> SettingsDataObject:
     udm = UDM.admin().version(2)
     mod = udm.get('settings/data')
-    obj = mod.get(f"cn=keycloak,cn=data,cn=univention,{ucr_proper.get('ldap/base')}")
+    obj = mod.get(f"cn=keycloak,cn=data,cn=univention,{ucr['ldap/base']}")
     orig_value = obj.props.data.raw
 
     yield obj
@@ -171,8 +151,8 @@ def unverified_user() -> Iterator[UnverfiedUser]:
 
 
 @pytest.fixture()
-def portal_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
-    portal_fqdn = ucr_proper['umc/saml/sp-server'] if ucr_proper['umc/saml/sp-server'] else f"{ucr_proper['hostname']}.{ucr_proper['domainname']}"
+def portal_config() -> SimpleNamespace:
+    portal_fqdn = ucr['umc/saml/sp-server'] or "%(hostname)s.%(domainname)s" % ucr
     config = {
         'url': f'https://{portal_fqdn}/univention/portal',
         'fqdn': portal_fqdn,
@@ -198,9 +178,9 @@ def portal_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
 
 
 @pytest.fixture()
-def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
-    server = ucr_proper.get('keycloak/server/sso/fqdn', f"ucs-sso-ng.{ucr_proper['domainname']}")
-    path = ucr_proper['keycloak/server/sso/path'] if ucr_proper['keycloak/server/sso/path'] else ''
+def keycloak_config() -> SimpleNamespace:
+    server = ucr.get('keycloak/server/sso/fqdn', f"ucs-sso-ng.{ucr['domainname']}")
+    path = ucr['keycloak/server/sso/path']
     url = f'https://{server}{path}'
     config = {
         'server': server,
@@ -312,9 +292,9 @@ def keycloak_adm_login(page: Page, keycloak_config: SimpleNamespace):
     return _func
 
 
-@pytest.fixture()
-def domain_admins_dn(ucr_proper: ConfigRegistry) -> str:
-    return f"cn={custom_groupname('Domain Admins')},cn=groups,{ucr_proper['ldap/base']}"
+@pytest.fixture(scope="session")
+def domain_admins_dn() -> str:
+    return f"cn={custom_groupname('Domain Admins')},cn=groups,{ucr['ldap/base']}"
 
 
 @pytest.fixture()
@@ -335,8 +315,8 @@ def keycloak_session(keycloak_config: SimpleNamespace) -> Callable[[str, str], K
 
 
 @pytest.fixture()
-def keycloak_administrator_connection(keycloak_session: Callable, admin_account: UCSTestDomainAdminCredentials) -> KeycloakAdmin:
-    return keycloak_session(admin_account.username, admin_account.bindpw)
+def keycloak_administrator_connection(keycloak_session: Callable, account: UCSTestDomainAdminCredentials) -> KeycloakAdmin:
+    return keycloak_session(account.username, account.bindpw)
 
 
 @pytest.fixture()
@@ -345,8 +325,7 @@ def keycloak_admin_connection(
     keycloak_admin: str,
     keycloak_secret: str,
 ) -> KeycloakAdmin:
-    if keycloak_secret:
-        return keycloak_session(keycloak_admin, keycloak_secret)
+    return keycloak_session(keycloak_admin, keycloak_secret)
 
 
 @pytest.fixture()
@@ -370,9 +349,7 @@ def keycloak_openid_connection(keycloak_openid: Callable) -> KeycloakOpenID:
 @pytest.fixture()
 def legacy_authorization_setup_saml(
     udm: UCSTestUDM,
-    ucr: ConfigRegistry,
     keycloak_administrator_connection: KeycloakAdmin,
-    admin_account: UCSTestDomainAdminCredentials,
     portal_config: SimpleNamespace,
 ) -> Iterator[SimpleNamespace]:
     group_dn, group_name = udm.create_group()
@@ -404,9 +381,7 @@ def legacy_authorization_setup_saml(
 @pytest.fixture()
 def legacy_authorization_setup_oidc(
     udm: UCSTestUDM,
-    ucr: ConfigRegistry,
     keycloak_administrator_connection: KeycloakAdmin,
-    admin_account: UCSTestDomainAdminCredentials,
 ) -> Iterator[SimpleNamespace]:
     group_dn, group_name = udm.create_group()
     user_dn, user_name = udm.create_user(password='univention')

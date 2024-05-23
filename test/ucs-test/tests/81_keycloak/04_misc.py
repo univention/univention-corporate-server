@@ -3,14 +3,16 @@
 ## tags: [keycloak]
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
+## apps: [keycloak]
 
-import os
 import socket
 
 import dns.resolver
 import pytest
 import requests
-from utils import get_portal_tile, host_is_alive, keycloak_get_request, keycloak_sessions_by_user, run_command
+from utils import (
+    get_portal_tile, host_is_alive, keycloak_get_request, keycloak_sessions_by_user, needs_secret, run_command,
+)
 
 from univention.testing.utils import get_ldap_connection
 
@@ -172,7 +174,7 @@ def test_ucs_realm_config(keycloak_config, ucr):
     }
 
 
-@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+@needs_secret
 def test_csp(keycloak_config, ucr):
     if not ucr.is_true('keycloak/server/sso/virtualhost'):
         pytest.skip('no virtual host config, therefore no special cookie header settings')

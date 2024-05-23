@@ -3,23 +3,23 @@
 ## tags: [keycloak]
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
+## apps: [keycloak]
 
 
-def test_login_administrator(keycloak_adm_login, admin_account):
-    assert keycloak_adm_login(admin_account.username, admin_account.bindpw)
+def test_login_administrator(keycloak_adm_login, account):
+    assert keycloak_adm_login(account.username, account.bindpw)
 
 
-def test_login_administrator_with_wrong_password_fails(keycloak_adm_login, keycloak_config, admin_account):
+def test_login_administrator_with_wrong_password_fails(keycloak_adm_login, keycloak_config, account):
     assert keycloak_adm_login(
-        admin_account.username,
-        f'{admin_account.bindpw}1234',
+        account.username,
+        f'{account.bindpw}1234',
         fails_with=keycloak_config.wrong_password_msg,
     )
 
 
 def test_login_local_admin(keycloak_adm_login, keycloak_secret, keycloak_admin):
-    if keycloak_secret:
-        assert keycloak_adm_login(keycloak_admin, keycloak_secret)
+    assert keycloak_adm_login(keycloak_admin, keycloak_secret)
 
 
 def test_login_non_admin_fails(keycloak_adm_login, keycloak_config, udm):

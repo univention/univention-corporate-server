@@ -4,12 +4,12 @@
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
 ## tags: [SKIP]
+## apps: [keycloak]
 
 from __future__ import annotations
 
 import base64
 import json
-import os
 import uuid
 from types import SimpleNamespace
 from typing import Any
@@ -18,7 +18,7 @@ import pytest
 from keycloak import KeycloakAdmin
 from keycloak.exceptions import KeycloakError, KeycloakGetError
 from playwright.sync_api import expect
-from utils import get_portal_tile, keycloak_login, run_command
+from utils import get_portal_tile, keycloak_login, needs_secret, run_command
 
 from univention.config_registry.backend import ConfigRegistry
 from univention.udm import UDM
@@ -409,7 +409,7 @@ def _test_federated_user(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRe
 
 
 @pytest.mark.skip()
-@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+@needs_secret
 def test_adhoc_federation(keycloak_admin_connection: KeycloakAdmin, ucr: ConfigRegistry, context, keycloak_config: SimpleNamespace, portal_config: SimpleNamespace):
     realm = 'dummy'
 

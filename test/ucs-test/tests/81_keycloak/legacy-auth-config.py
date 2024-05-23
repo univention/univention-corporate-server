@@ -54,7 +54,8 @@ def main() -> None:
     parser.add_argument('--keycloak-admin', help='keycloak admin', default='admin')
     parser.add_argument('--keycloak-password-file', help='keycloak password file', default='/etc/keycloak.secret', metavar='FILE', type=FileType('r', encoding='UTF-8'))
     opt = parser.parse_args()
-    opt.group_clients = {x[0]: x[1] for x in opt.group_clients}
+
+    opt.group_clients = dict(opt.group_clients)
     opt.keycloak_secret = opt.keycloak_password_file.read().strip()
     session = KeycloakAdmin(
         server_url=opt.keycloak_url,
@@ -69,7 +70,7 @@ def main() -> None:
     elif opt.action == 'remove':
         legacy_auth_config_remove(session, opt.group_clients)
     else:
-        raise NotImplementedError()
+        raise ValueError(opt.action)
 
 
 if __name__ == '__main__':

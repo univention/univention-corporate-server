@@ -3,6 +3,7 @@
 ## tags: [keycloak]
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
+## apps: [keycloak]
 
 import pytest
 import requests

@@ -3,6 +3,7 @@
 ## tags: [keycloak]
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
+## apps: [keycloak]
 
 from datetime import datetime, timedelta
 

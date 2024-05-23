@@ -31,11 +31,19 @@
 from __future__ import annotations
 
 import subprocess
+from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
 import requests
 from keycloak import KeycloakAdmin
 from playwright.sync_api import Page, expect
+
+
+SECRET = Path('/etc/keycloak.secret')
+
+
+needs_secret = pytest.mark.skipif(not SECRET.exists(), reason='No keycloak.secret')
 
 
 def host_is_alive(host: str) -> bool:

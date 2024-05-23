@@ -3,24 +3,24 @@
 ## tags: [keycloak]
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
-
-import os
+## apps: [keycloak]
 
 import pytest
 from keycloak import KeycloakAdmin
 from keycloak.connection import ConnectionManager
 from keycloak.exceptions import KeycloakAuthenticationError
+from utils import needs_secret
 
 
-def test_admin_connection_administrator(keycloak_administrator_connection, admin_account):
+def test_admin_connection_administrator(keycloak_administrator_connection, account):
     assert keycloak_administrator_connection.realm_name == 'ucs'
     assert isinstance(keycloak_administrator_connection.connection, ConnectionManager)
     assert keycloak_administrator_connection.client_id == 'admin-cli'
     assert keycloak_administrator_connection.client_secret_key is None
-    assert keycloak_administrator_connection.username == admin_account.username
+    assert keycloak_administrator_connection.username == account.username
 
 
-@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+@needs_secret
 def test_admin_connection_admin(keycloak_admin_connection, keycloak_admin):
     assert keycloak_admin_connection.username == keycloak_admin
     assert keycloak_admin_connection.client_id == 'admin-cli'
@@ -67,11 +67,11 @@ def test_admin_connection_domain_admins_group(keycloak_config, domain_admins_dn,
     assert connection.client_id == 'admin-cli'
 
 
-def test_openid_connection_administrator(keycloak_openid_connection, admin_account):
+def test_openid_connection_administrator(keycloak_openid_connection, account):
     # Administrator
-    token = keycloak_openid_connection.token(admin_account.username, admin_account.bindpw, scope='openid')
+    token = keycloak_openid_connection.token(account.username, account.bindpw, scope='openid')
     userinfo = keycloak_openid_connection.userinfo(token['access_token'])
-    assert userinfo['preferred_username'] == admin_account.username.lower(), 'Wrong user login'
+    assert userinfo['preferred_username'] == account.username.lower(), 'Wrong user login'
     keycloak_openid_connection.logout(token['refresh_token'])
 
 

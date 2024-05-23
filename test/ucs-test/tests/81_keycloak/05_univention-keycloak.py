@@ -3,21 +3,21 @@
 ## tags: [keycloak]
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
+## apps: [keycloak]
 
 import json
-import os
 from subprocess import CalledProcessError, run
 
 import pytest
 from keycloak.exceptions import KeycloakGetError
-from utils import run_command
+from utils import SECRET, needs_secret, run_command
 
 from univention.testing.strings import random_int, random_string
 from univention.testing.utils import wait_for_listener_replication
 from univention.udm.binary_props import Base64Bzip2BinaryProperty
 
 
-@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+@needs_secret
 def test_create_oidc_client(keycloak_administrator_connection):
     """Creates and delete OIDC client in Keycloak"""
     client_id = 'foo-cli'
@@ -30,7 +30,7 @@ def test_create_oidc_client(keycloak_administrator_connection):
     assert not keycloak_administrator_connection.get_client_id(client_id)
 
 
-@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+@needs_secret
 def test_upgrade_config_status(keycloak_app_version):
     """no upgrade needed after installation"""
     upgrades = run_command(['univention-keycloak', 'upgrade-config', '--json', '--get-upgrade-steps'])
@@ -43,7 +43,7 @@ def test_upgrade_config_status(keycloak_app_version):
     assert upgrades.get('domain_config_init')
 
 
-@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+@needs_secret
 def test_upgrade_config_pending_upgrades(upgrade_status_obj):
     """
     remove domain config version and checks for updates
@@ -60,7 +60,7 @@ def test_upgrade_config_pending_upgrades(upgrade_status_obj):
     assert len(pending_upgrades) > 0
 
 
-@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+@needs_secret
 def test_user_attribute_ldap_mapper(keycloak_administrator_connection):
     # create
     name = random_string()
@@ -83,7 +83,7 @@ def test_user_attribute_ldap_mapper(keycloak_administrator_connection):
     assert len(mapper) == 0
 
 
-@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+@needs_secret
 def test_saml_client_user_attribute_mapper(keycloak_administrator_connection):
     # create
     name = random_string()
@@ -129,7 +129,7 @@ def test_saml_client_user_attribute_mapper(keycloak_administrator_connection):
     assert name not in mappers
 
 
-@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+@needs_secret
 def test_messages():
     languages = json.loads(run_command(['univention-keycloak', 'messages', 'get-locales', '--json']))
     for lang in languages:
@@ -147,7 +147,7 @@ def test_messages():
         assert key not in messages
 
 
-@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+@needs_secret
 def test_login_links():
     languages = json.loads(run_command(['univention-keycloak', 'messages', 'get-locales', '--json']))
     for lang in languages:
@@ -183,7 +183,7 @@ def test_login_links():
                 )
 
 
-@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+@needs_secret
 def test_init_with_parameters(random_string, keycloak_admin_connection):
     realm_name = random_string()
     try:
@@ -205,27 +205,22 @@ def test_init_with_parameters(random_string, keycloak_admin_connection):
 
 
 def test_bindpwd(account) -> None:
-    cmd = ['univention-keycloak', '--binduser', admin_account.username, '--bindpwd', admin_account.bindpw, 'realms', 'get']
+    cmd = ['univention-keycloak', '--binduser', account.username, '--bindpwd', account.bindpw, 'realms', 'get']
     run_command(cmd)
-    cmd = ['univention-keycloak', '--binduser', admin_account.username, '--bindpwd', "bindpw", 'realms', 'get']
+    cmd = ['univention-keycloak', '--binduser', account.username, '--bindpwd', "bindpw", 'realms', 'get']
     with pytest.raises(CalledProcessError):
         run(cmd, capture_output=True, check=True)
 
 
 @pytest.fixture()
 def without_keycloak_secret():
-    secret = '/etc/keycloak.secret'
-    secret_tmp = f'{secret}.tmp'
-    moved = False
-
-    if os.path.isfile(secret):
-        os.rename(secret, secret_tmp)
-        moved = True
-
-    yield
-
-    if moved and os.path.isfile(secret_tmp):
-        os.rename(secret_tmp, secret)
+    if SECRET.is_file():
+        tmp = SECRET.with_suffix('.secret.tmp')
+        SECRET.rename(tmp)
+        yield
+        tmp.rename(SECRET)
+    else:
+        yield
 
 
 @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup')
