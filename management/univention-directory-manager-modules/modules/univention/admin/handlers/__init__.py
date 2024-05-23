@@ -3443,6 +3443,17 @@ class simpleComputer(simpleLdap):
                 network_object.open()
                 subnet = ip_network(u"%(network)s/%(netmask)s" % network_object, strict=False)
 
+                with open("/tmp/debug.log", "a") as f:
+                    import datetime
+                    f.write(str(datetime.datetime.now()))
+                    f.write(": ")
+                    f.write("%s; " % ips)
+                    f.write("%s; " % ip1)
+                    f.write("%s; " % subnet)
+                    f.write("%s; " % len(self.__dict__))
+                    f.write("%s; " % len(self.info))
+                    f.write("%s\n" % value)
+
                 if not ips or ip_address(u'%s' % (ip1,)) not in subnet:
                     if self.ip_freshly_set:
                         raise_after = univention.admin.uexceptions.ipOverridesNetwork
@@ -3472,6 +3483,31 @@ class simpleComputer(simpleLdap):
                 self.old_network = value
 
         elif key == 'ip':
+
+            ips = [ip for ip in value if ip] if self.has_property("ip") else []
+            ip1 = value[0] if len(ips) == 1 else value
+            assert isinstance(ip1, str)
+            self['ip'] = ip1
+
+            try:
+                self.ip = self.request_lock('aRecord', self['ip'][0])
+                self.ip_alredy_requested = True
+            except univention.admin.uexceptions.noLock:
+                pass
+
+
+            #TODO WHY is self["ip"] a list of strings according to the initializer?
+            #TODO WHY is there a self.ip vs self["ip"] ??
+
+            with open("/tmp/debug_ip.log", "a") as f:
+                import datetime
+                f.write(str(datetime.datetime.now()))
+                f.write(": ")
+                f.write("%s; " % self.network_object)
+                f.write("%s; " % len(self.info))
+                f.write("ip1=%s; " % ip1)
+                f.write("value=%s\n" % value)
+
             self.ip_freshly_set = True
             if not self.ip or self.ip != value:
                 if self.ip_alredy_requested:
