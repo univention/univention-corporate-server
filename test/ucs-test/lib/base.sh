@@ -114,6 +114,21 @@ log_and_execute () {
 	"$@"
 }
 
+bash_traceback () {  # print bash traceback (up to known failure report functions)
+	local i="${#FUNCNAME[@]}" sep=''
+	for ((i+=-1; i>1; i+=-1))
+	do
+		case "${BASH_SOURCE[i]##*/}:${FUNCNAME[i]}" in
+		base.sh:fail_test) break ;;
+		base.sh:fail_fast) break ;;
+		base.sh:fail_bool) break ;;
+		base.sh:assert) break ;;
+		esac
+		printf '%s%s:%s:%s' "$sep" "${BASH_SOURCE[i]##*/}" "${BASH_LINENO[i-1]}" "${FUNCNAME[i-1]}"
+		sep=' -> '
+	done
+}
+
 RETVAL=100
 ALREADY_FAILED=false
 fail_test () { # This is intended to make life easier for readers of test-logs while searching the spot where a testcase failed first.  In order for this to work you should consequently call fail_test with the corresponding error-code in your test-case instead of directly using exit and when you really want to exit do so with "exit $RETVAL" The first occurrence of an error will then be marked specially in the log file.
@@ -126,9 +141,9 @@ fail_test () { # This is intended to make life easier for readers of test-logs w
 	then
 		ALREADY_FAILED=true
 		RETVAL="$errorcode"
-		error "**************** Test failed above this line ($errorcode) ****************"
+		error "*** ${_B:-}First fail ($errorcode)${_N:-} *** $(bash_traceback) ***"
 	else
-		error "*** Test already failed above, but failed again ($errorcode) ***"
+		error "*** Subsequent fail ($errorcode) *** $(bash_traceback) ***"
 	fi
 	[ -z "$*" ] ||
 		error "$@"
