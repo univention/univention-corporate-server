@@ -2142,12 +2142,8 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         # case, however, this should be fixed correctly.
         # This workaround has been documented as Bug #25163.
         def _tmp_cmp(i):
-            if i[0] == 'mac':  # must be set before network, dhcpEntryZone
+            if i[0] == 'network':
                 return ("\x00", i[1])
-            if i[0] == 'network':  # must be set before ip, dhcpEntryZone, dnsEntryZoneForward, dnsEntryZoneReverse
-                return ("\x01", i[1])
-            if i[0] in ('ip', 'mac'):  # must be set before dnsEntryZoneReverse, dnsEntryZoneForward
-                return ("\x02", i[1])
             return i
 
         password_properties = module.password_properties

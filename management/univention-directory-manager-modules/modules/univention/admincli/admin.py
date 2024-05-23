@@ -260,34 +260,9 @@ def module_information(
     return information
 
 
-_V = TypeVar("_V")  # noqa: PYI018
-
-
-# FIXME: for the automatic IP address assignment, we need to make sure that
-# the network is set before the IP address (see Bug #24077, comment 6)
-# The following code is a workaround to make sure that this is the
-# case, however, this should be fixed correctly.
-# This workaround has been documented as Bug #25163.
-def _tmp_cmp(i):  # type: (Tuple[str, _V]) -> Tuple[str, _V]
-    if i[0] == 'mac':  # must be set before network, dhcpEntryZone
-        return ("\x00", i[1])
-    if i[0] == 'network':  # must be set before ip, dhcpEntryZone, dnsEntryZoneForward, dnsEntryZoneReverse
-        return ("\x01", i[1])
-    if i[0] in ('ip', 'mac'):  # must be set before dnsEntryZoneReverse, dnsEntryZoneForward
-        return ("\x02", i[1])
-    return i
-
-
-def object_input(
-    module,  # type: univention.admin.modules.UdmModule
-    object,
-    input,  # type: Dict[str, Union[str, List[str]]]
-    append=None,  # type: Optional[Dict[str, List[str]]]
-    remove=None,  # type: Optional[Dict[str, List[str]]]
-    stderr=None,  # type: Optional[IO[str]]
-):  # type: (...) -> None
+def object_input(module, object, input, append=None, remove=None, stderr=None):
     if append:
-        for key, values in sorted(append.items(), key=_tmp_cmp):
+        for key, values in append.items():
             if key in object and not object.has_property(key):
                 opts = module.property_descriptions[key].options
                 if len(opts) == 1:
@@ -352,7 +327,7 @@ def object_input(
             object[key] = current_values
 
     if input:
-        for key, value in sorted(input.items(), key=_tmp_cmp):
+        for key, value in input.items():
             if key in object and not object.has_property(key):
                 opts = module.property_descriptions[key].options
                 if len(opts) == 1:
