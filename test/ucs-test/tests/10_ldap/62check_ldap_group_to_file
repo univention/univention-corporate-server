@@ -25,8 +25,6 @@
 TIME_TO_WAIT=600 # time to waitf for NSS update script
 
 USERNAME=$(user_randomname)
-[ "$USERNAME" = "Administrator" ] &&
-	fail_fast 1 "Can not be an Administrator as user."
 GROUPNAME="$(group_randomname)"
 
 ucr set nss/group/cachefile="yes"

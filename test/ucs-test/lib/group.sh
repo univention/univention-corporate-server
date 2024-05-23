@@ -7,7 +7,13 @@
 . "$TESTLIBPATH/random.sh" || exit 137
 
 group_randomname () { # Generates a random string as groupname and echo it. Usage: GROUPNAME=$(group_randomname)
-	random_chars
+	local group
+	while :
+	do
+		group="$(random_chars)"
+		getent group "$group" >/dev/null || break
+	done
+	echo "$group"
 }
 
 group_create () { # Creates a group named like supplied in the first argument of the function

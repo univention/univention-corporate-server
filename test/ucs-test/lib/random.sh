@@ -47,7 +47,13 @@ random_mailaddress () { # Generates a random string with a length of 20 characte
 }
 
 random_hostname () { # Generates a random string with a length of 20
-	random_chars --prefix "${_lowerletters}" 20 "${_lowerletters}${_ciphers}"
+	local host
+	while :
+	do
+		host="$(random_chars --prefix "${_lowerletters}" 20 "${_lowerletters}${_ciphers}")"
+		getent hosts "$host" >/dev/null || break
+	done
+	echo "$host"
 }
 
 random_share () { # Generates a random string with length $STRINGLENGTH. string_numbers_letters_dots_spaces
@@ -55,7 +61,7 @@ random_share () { # Generates a random string with length $STRINGLENGTH. string_
 }
 
 random_ipv4 () { # Generate a random IPv4 address
-	echo -n $((RANDOM % 253 + 1)).$((RANDOM % 253 + 1)).$((RANDOM % 253 + 1)).$((RANDOM % 253 + 1))
+	printf '%d.%d.%d.%d' $((RANDOM % 253 + 1)) $((RANDOM % 253 + 1)) $((RANDOM % 253 + 1)) $((RANDOM % 253 + 1))
 }
 random_date () { # Generate a random date Y-m-d between 4000 days before and after today
 	date +%F --date="$((RANDOM %8000 - 4000))day"

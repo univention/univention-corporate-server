@@ -9,7 +9,13 @@ CONTROLMODE=true
 . "$TESTLIBPATH/random.sh" || exit 137
 
 user_randomname () { # Generates a random string as username an echoes it. Usage: NAME=$(user_randomname)
-	random_string
+	local user
+	while :
+	do
+		user="$(random_string)"
+		getent passwd "$user" >/dev/null || break
+	done
+	echo "$user"
 }
 
 mail_domain_exists () {
