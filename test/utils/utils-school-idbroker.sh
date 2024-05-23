@@ -499,8 +499,6 @@ add_broker_ca_to_host_and_idconnector () {
 	local primary_ip="${1:?missing primary ip}"
 	curl -k "https://$primary_ip/ucs-root-ca.crt" > /usr/local/share/ca-certificates/idbroker.crt
 	update-ca-certificates
-	docker cp /usr/local/share/ca-certificates/idbroker.crt "$(ucr get appcenter/apps/ucsschool-id-connector/container)":/usr/local/share/ca-certificates/idbroker.crt
-	univention-app shell ucsschool-id-connector update-ca-certificates
 }
 
 add_dns_for_ID-Broker () {
