@@ -1,3 +1,9 @@
+univention-licence (13.0.2) unstable; urgency=medium
+
+  * Bug #56858: replace transitional packages
+
+ -- Christian Castens <castens@univention.de>  Mon, 03 Jun 2024 16:00:00 +0200
+
 univention-licence (13.0.1) unstable; urgency=medium
 
   * Bug #55706: UCS 5.2-0 version bump

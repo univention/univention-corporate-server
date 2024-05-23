@@ -5,7 +5,7 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 ##   - univention-s4-connector
-#   - dnsutils
+#   - bind9-dnsutils
 
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test

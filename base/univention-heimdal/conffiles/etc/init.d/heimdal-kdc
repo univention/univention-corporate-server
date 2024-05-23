@@ -30,7 +30,6 @@ test -f $KPASSWDD_DAEMON || exit 0
 . /lib/init/vars.sh
 
 # Define LSB log_* functions.
-# Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
 . /lib/lsb/init-functions
 
 # commented out due to bug #574425.

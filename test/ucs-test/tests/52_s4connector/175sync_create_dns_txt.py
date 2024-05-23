@@ -5,7 +5,7 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 ##   - univention-s4-connector
-##   - dnsutils
+##   - bind9-dnsutils
 ## versions:
 ##  3.2-0: skip
 ##  4.2-0: fixed

@@ -7,7 +7,7 @@ Build-Depends:
  debhelper-compat (=13),
  dh-python,
  libicu-dev,
- libldap2-dev,
+ libldap-dev,
  liblmdb-dev,
  libssl-dev,
  libunivention-config-dev,

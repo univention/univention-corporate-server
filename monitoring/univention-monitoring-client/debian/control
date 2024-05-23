@@ -34,9 +34,9 @@ Description: UCS: monitoring client
 Package: univention-monitoring-plugins
 Architecture: any
 Depends:
+ bind9-dnsutils,
  cron,
  cups-bsd,
- dnsutils,
  dpt-i2o-raidutils,
  lmdb-utils,
  monitoring-plugins,

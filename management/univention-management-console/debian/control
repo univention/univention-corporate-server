@@ -173,12 +173,9 @@ Depends:
  univention-keycloak-client (>= 1.0.10-4),
  univention-management-console-frontend,
  univention-management-console-server,
- univention-saml-schema,
  ${misc:Depends},
 Pre-Depends:
  univention-management-console-web-server-fix,
-Breaks:
- univention-saml (<< 7.0.0-4),
 Description: UCS Management Console - Web server
  UCS Management Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement

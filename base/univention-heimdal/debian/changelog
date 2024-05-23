@@ -1,3 +1,9 @@
+univention-heimdal (15.0.3) unstable; urgency=medium
+
+  * Bug #56858: replace transitional packages
+
+ -- Christian Castens <castens@univention.de>  Thu, 30 May 2024 10:49:32 +0200
+
 univention-heimdal (15.0.2) unstable; urgency=medium
 
   * Bug #46120: rebase univention-heimdal UCR templates

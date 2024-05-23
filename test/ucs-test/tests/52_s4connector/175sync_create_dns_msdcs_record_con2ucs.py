@@ -5,7 +5,7 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 ##   - univention-s4-connector
-##   - dnsutils
+##   - bind9-dnsutils
 
 import sys
 

@@ -8,7 +8,7 @@ Build-Depends:
  automake,
  debhelper-compat (=13),
  dh-python,
- libldap2-dev,
+ libldap-dev,
  libsasl2-dev,
  libtool,
  libunivention-config-dev,
@@ -31,7 +31,7 @@ Description: UCS - group policy library
 Package: libunivention-policy-dev
 Architecture: any
 Depends:
- libldap2-dev,
+ libldap-dev,
  libunivention-policy0 (= ${binary:Version}),
  ${misc:Depends},
  ${python3:Depends},

@@ -7,7 +7,7 @@ Build-Depends:
  autoconf,
  automake,
  debhelper-compat (=13),
- libldap2-dev,
+ libldap-dev,
  libssl-dev,
  libtool,
  libunivention-config-dev,

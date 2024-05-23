@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends:
  debhelper-compat (=13),
- libldap2-dev,
+ libldap-dev,
  libpam0g-dev,
  libunivention-policy-dev,
 Standards-Version: 3.5.2

@@ -1,3 +1,9 @@
+univention-mail-dovecot (8.0.7) unstable; urgency=medium
+
+  * Bug #56858: replace transitional packages
+
+ -- Christian Castens <castens@univention.de>  Thu, 30 May 2024 10:51:32 +0200
+
 univention-mail-dovecot (8.0.6) unstable; urgency=medium
 
   * Bug #56793: Use pam/unix/maximum_uid only in UMC pam account

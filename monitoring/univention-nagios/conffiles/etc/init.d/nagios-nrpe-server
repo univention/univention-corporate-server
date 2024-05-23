@@ -24,12 +24,8 @@ PIDDIR=/var/run/nagios
 
 test -x $DAEMON || exit 0
 
-if ! [ -x "/lib/lsb/init-functions" ]; then
-	. /lib/lsb/init-functions
-else
-	echo "E: /lib/lsb/init-functions not found, lsb-base (>= 3.0-6) needed"
-	exit 1
-fi
+set -e
+. /lib/lsb/init-functions
 
 # Include nagios-nrpe defaults if available
 if [ -f /etc/default/nagios-nrpe-server ] ; then
@@ -48,8 +44,6 @@ if [ ! -d "$PIDDIR" ]; then
 	chown nagios "$PIDDIR"
     [ -x /sbin/restorecon ] && /sbin/restorecon "$PIDDIR"
 fi
-
-set -e
 
 case "$1" in
   start)

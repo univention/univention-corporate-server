@@ -18,11 +18,11 @@ Package: python3-univention-lib
 Architecture: all
 Depends:
  at,
- dnsutils,
+ bind9-dnsutils,
  pwgen,
  python3-apt,
  python3-dnspython,
- python3-ldap | python3-pyldap,
+ python3-ldap,
  python3-ldb,
  python3-magic,
  python3-pil,

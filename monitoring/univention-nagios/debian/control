@@ -10,8 +10,8 @@ Standards-Version: 3.8.2
 Package: univention-nagios-client
 Architecture: any
 Depends:
+ bind9-dnsutils,
  cron,
- dnsutils,
  dpt-i2o-raidutils,
  lmdb-utils,
  monitoring-plugins,

@@ -1,3 +1,9 @@
+univention-policy (13.0.6) unstable; urgency=medium
+
+  * Bug #56858: replace transitional packages
+
+ -- Christian Castens <castens@univention.de>  Mon, 03 Jun 2024 16:00:00 +0200
+
 univention-policy (13.0.5) unstable; urgency=medium
 
   * Bug #57257: Added compiler flag -fsanitize=address to
