@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-management-console-module-diagnostic
+fix: 6.0.9-1
+desc: |
+ This update addresses the following issues:
+ * The diagnostics module to check for local LDAP schema files and register
+   them as an LDAP extension has been fixed and now actually passes the right
+   argument to the internal function.
+bug: [57279]

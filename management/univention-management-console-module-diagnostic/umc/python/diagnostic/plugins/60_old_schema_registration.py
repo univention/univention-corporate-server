@@ -92,7 +92,7 @@ def udm_schema_obj_exists(name: str) -> bool:
 
 
 def create_udm_schema_obj(pname: str, pversion: str, fname: str) -> None:
-    subprocess.check_call(['sh', '-c', '. /usr/share/univention-lib/ldap.sh && ucs_registerLDAPExtension --packagename "$1" --packageversion "$2" --schema "$3"', pname, pversion, fname])
+    subprocess.check_call(['sh', '-c', '. /usr/share/univention-lib/ldap.sh && ucs_registerLDAPExtension --packagename "$0" --packageversion "$1" --schema "$2"', pname, pversion, fname])
 
 
 def run(_umc_instance: Instance) -> None:
