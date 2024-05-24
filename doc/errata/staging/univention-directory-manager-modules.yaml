@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [7, 8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-directory-manager-modules
+fix: 15.0.27-2
+desc: |
+ This update addresses the following issues:
+ * When the IP address is set when creating a new computer object,
+   the DNS entries for this object were not set correctly since erratum
+   738. The DNS entries will now be created correctly again.
+bug: [56313]

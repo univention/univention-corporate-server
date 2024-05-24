@@ -3472,6 +3472,10 @@ class simpleComputer(simpleLdap):
                 self.old_network = value
 
         elif key == 'ip':
+
+            ips = [ip for ip in value if ip] if self.has_property('ip') else []
+            ip1 = ips[0] if len(ips) >= 1 else ''
+
             self.ip_freshly_set = True
             if not self.ip or self.ip != value:
                 if self.ip_alredy_requested:
