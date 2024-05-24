@@ -303,12 +303,6 @@ keycloak_migration() {
 	ucr set ucs/server/sso/fqdn="ucs-sso-ng.${domainname,,}"
 }
 
-configure_umc_keycloak() {
-	. utils-keycloak.sh && keycloak_saml_idp_setup
-	domainname="$(ucr get domainname)"
-	ucr set ucs/server/sso/fqdn="ucs-sso-ng.${domainname,,}"
-}
-
 run_setup_join () {
 	local rv=0
 	# TODO find a better place for this
@@ -325,9 +319,6 @@ run_setup_join () {
 	# TODO find a better place for this
 	# currently neither the app nor UCS creates the SAML login portal entry, we need it for our tests
 	udm portals/entry modify --dn "cn=login-saml,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)" --set activated=TRUE
-
-	# TODO configure UMC for keycloak, because currently this is not done if Keycloak is installed after the UMC (after system-setup)
-	configure_umc_keycloak
 
 	return $rv
 }
