@@ -2090,7 +2090,7 @@ class simpleComputer(simpleLdap):
 
         self.newPrimaryGroupDn = 0
         self.oldPrimaryGroupDn = 0
-        self.ip_alredy_requested = 0
+        self.ip_already_requested = 0
         self.ip_freshly_set = False
 
         self.__multiip = len(self['mac']) > 1 or len(self['ip']) > 1
@@ -2933,11 +2933,11 @@ class simpleComputer(simpleLdap):
                     continue
                 if ipAddress in self.oldinfo.get('ip'):
                     continue
-                if not self.ip_alredy_requested:
+                if not self.ip_already_requested:
                     try:
                         ipAddress = self.request_lock('aRecord', ipAddress)
                     except univention.admin.uexceptions.noLock:
-                        self.ip_alredy_requested = 0
+                        self.ip_already_requested = 0
                         raise univention.admin.uexceptions.ipAlreadyUsed(ipAddress)
 
                 self.__changes['ip']['add'].append(ipAddress)
@@ -3404,7 +3404,7 @@ class simpleComputer(simpleLdap):
                         ip1 = self['ip'][0] if len(ips) == 1 else ''
                         try:
                             self.ip = self.request_lock('aRecord', self['ip'][0])
-                            self.ip_alredy_requested = True
+                            self.ip_already_requested = True
                         except univention.admin.uexceptions.noLock:
                             pass
 
@@ -3428,9 +3428,9 @@ class simpleComputer(simpleLdap):
 
             self.ip_freshly_set = True
             if not self.ip or self.ip != value:
-                if self.ip_alredy_requested:
+                if self.ip_already_requested:
                     univention.admin.allocators.release(self.lo, self.position, 'aRecord', self.ip)
-                    self.ip_alredy_requested = 0
+                    self.ip_already_requested = 0
                 if value and self.network_object:
                     if self.network_object['dnsEntryZoneForward'] and ip1:
                         self['dnsEntryZoneForward'] = [[self.network_object['dnsEntryZoneForward'], ip1]]
