@@ -354,7 +354,7 @@ class Base(Translation):
             # Ensure the connection cache is empty to prevent the use of expired saml messages
             # Bug #44621
             reset_ldap_connection_cache()
-            CORE.warn('Failed to open LDAP connection: %s' % (exc))
+            CORE.error('Failed to open LDAP connection: %s' % (exc))
             raise Unauthorized
 
     def __error_handling(self, request, method, etype, exc, etraceback):
