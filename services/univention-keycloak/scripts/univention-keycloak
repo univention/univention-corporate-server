@@ -428,7 +428,7 @@ def get_realm_id(kc_client, name):
     return realm_info[0]["id"]
 
 
-def update_saml_metadata_from_xml(metadata_url, payload, metadata_file, no_ssl_verify):
+def update_saml_metadata_from_xml(opt, metadata_url, payload, metadata_file, no_ssl_verify):
     # TODO: just upload the XML to keycloak instead of parsing it here
     if not metadata_file:
         xml_content = requests.get(metadata_url, verify=no_ssl_verify).content
@@ -467,10 +467,17 @@ def update_saml_metadata_from_xml(metadata_url, payload, metadata_file, no_ssl_v
         'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent': 'persistent',
         'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress': 'email',
         'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified': 'username',
+        'urn:mace:shibboleth:1.0:nameIdentifier': 'username',
     }
-    name_id_format = [name_id_formats[x.text] for x in saml_descriptor_xml.findall('.//{urn:oasis:names:tc:SAML:2.0:metadata}NameIDFormat')]
+
+    name_id_format = [
+        name_id_formats[x.text]
+        for x in saml_descriptor_xml.findall('.//{urn:oasis:names:tc:SAML:2.0:metadata}NameIDFormat')
+        if x.text in name_id_formats
+    ]
+
     if name_id_format:
-        attribs["saml_name_id_format"] = name_id_format[0]  # keycloak can only handle one NameID Format
+        attribs["saml_name_id_format"] = opt.name_id_format if getattr(opt, 'name_id_format', None) in name_id_format else name_id_format[0]  # keycloak can only handle one NameID Format
         attribs["saml_force_name_id_format"] = "true"
 
     name = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}ServiceName')
@@ -842,7 +849,7 @@ def update_client(opt: Namespace) -> None:
     clientid = session.get_client_id(opt.clientid)
     payload = json.loads(opt.changes)
     if opt.metadata_file:
-        update_saml_metadata_from_xml(clientid, payload, opt.metadata_file, opt.no_ssl_verify)
+        update_saml_metadata_from_xml(opt, clientid, payload, opt.metadata_file, opt.no_ssl_verify)
     session.update_client(clientid, payload)
 
 
@@ -981,7 +988,7 @@ def create_SAML_client(opt):
         client_payload_saml["attributes"]["saml.client.signature"] = "true"
 
     if opt.metadata_url:
-        update_saml_metadata_from_xml(client_id, client_payload_saml, opt.metadata_file, opt.no_ssl_verify)
+        update_saml_metadata_from_xml(opt, client_id, client_payload_saml, opt.metadata_file, opt.no_ssl_verify)
     # log into default realm in case UCS realm doesn't exist yet
     kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 
