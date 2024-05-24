@@ -1,3 +1,11 @@
+univention-lib (9.0.19-2) unstable; urgency=medium
+
+  * Bug #57293: Use keycloak/server/sso/fqdn instead of ucs/server/sso/fqdn
+    in admember.add_host_record_in_ad()
+  * Pass parameter "sso" from admember.sh to admember.add_host_record_in_ad()
+
+ -- Arvid <requate@univention.de>  Wed, 05 Jun 2024 12:40:33 +0200
+
 univention-lib (9.0.19-1) UNRELEASED; urgency=medium
 
   * Bug #57350 UCS 5.0-8 version bump

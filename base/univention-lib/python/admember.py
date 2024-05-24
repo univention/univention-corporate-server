@@ -1426,7 +1426,7 @@ def add_host_record_in_ad(uid=None, binddn=None, bindpw=None, bindpwdfile=None, 
         ip = Interfaces().get_default_ip_address().ip
 
     if sso and not fqdn:
-        fqdn = ucr.get('ucs/server/sso/fqdn', 'ucs-sso.' + domainname)
+        fqdn = ucr.get('keycloak/server/sso/fqdn', 'ucs-sso-ng.' + domainname)
 
     if not uid or not pwdfile or not fqdn or not ip:
         print('Missing binddn/bindpw/bindpwdfile/fqdn or ip, do nothing!')

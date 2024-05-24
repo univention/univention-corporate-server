@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-lib
+fix: 9.0.19-2
+desc: |
+ This update addresses the following issues:
+ * During setup of an AD-Connection as member of an AD domain
+   via either initial UCS System Setup or via the UMC wizard
+   AD-Connection a DNS record for SSO gets created automatically.
+   Until now, the UCR variable `ucs/server/sso/fqdn` was used for that
+   with `ucs-sso` as default. This update adjusts this to use the
+   UCR variable `keycloak/server/sso/fqdn` instead, with `ucs-sso-ng`
+   as default.
+bug: [57293]
