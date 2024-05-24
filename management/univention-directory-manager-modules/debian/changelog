@@ -1,3 +1,9 @@
+univention-directory-manager-modules (16.0.23) unstable; urgency=medium
+
+  * Bug #56313: Fix wrong relativeDomainName assignment
+
+ -- Johannes Königer <koeniger@univention.de>  Wed, 19 Jun 2024 12:23:20 +0200
+
 univention-directory-manager-modules (16.0.22) unstable; urgency=medium
 
   * Bug #57171: make changing mpa and maa in one step possible
