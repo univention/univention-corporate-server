@@ -30,7 +30,7 @@ detect_lib
 #   The certificate chain uses expired certificate.
 #   Could not handshake: Error in the certificate verification. [IP: 176.9.114.147 443]
 # here we are only interested in the apt key expiry
-apt_update () {
+apt_fails () {
 	local faketime="${1:?}"
 	shift
 	LC_ALL=C \
@@ -40,7 +40,7 @@ apt_update () {
 		-o 'Acquire::https::Verify-Peer=false' \
 		-o 'Acquire::https::Verify-Host=false' \
 		-q update 2>&1 |
-	grep "$@" '^[WE]:'
+	grep "$@" '^[WE]: .* EXPKEYSIG '
 }
 
 case "$(ucr get repository/app_center/server)" in
@@ -48,16 +48,13 @@ case "$(ucr get repository/app_center/server)" in
 esac
 
 # check if apt-get update in now+2y works
-if apt_update '+2y'
-then
+apt_fails '+2y' && {
 	apt-key list
 	fail_fast 110 "warnings/error during apt-get update"  # FAIL
-fi
+}
 
 # check if apt-get update in now+50y fails (just to test the test)
-if ! apt_update '+50y' -q
-then
+apt_fails '+50y' -q ||
 	fail_fast 110 "did not fail 50 years into the future, key should have expired by then"  # FAIL
-fi
 
 exit 0  # OKAY
