@@ -9,6 +9,8 @@ User self services
 
 .. highlight:: console
 
+For information about setting a user password policy, refer to :ref:`users-passwords`.
+
 .. _user-management-password-changes-by-users-via-umc:
 
 Password change by user via UCS portal page
