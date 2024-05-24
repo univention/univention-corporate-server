@@ -1,3 +1,11 @@
+univention-lib (11.0.6) unstable; urgency=medium
+
+  * Bug #57293: Use keycloak/server/sso/fqdn instead of ucs/server/sso/fqdn
+    in admember.add_host_record_in_ad()
+  * Pass parameter "sso" from admember.sh to admember.add_host_record_in_ad()
+
+ -- Arvid <requate@univention.de>  Fri, 24 May 2024 18:39:14 +0200
+
 univention-lib (11.0.5) unstable; urgency=medium
 
   * Bug #57163: add helper to check what kind of saml setup we need

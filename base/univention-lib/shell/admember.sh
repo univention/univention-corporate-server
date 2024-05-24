@@ -42,7 +42,7 @@ python3 -c "
 import univention.lib.admember
 import sys
 univention.lib.admember.initialize_debug()
-if univention.lib.admember.add_host_record_in_ad(binddn='$1', bindpw='$2', bindpwdfile='$3', fqdn='$4', ip='$5'):
+if univention.lib.admember.add_host_record_in_ad(binddn='$1', bindpw='$2', bindpwdfile='$3', fqdn='$4', ip='$5', sso='$6'):
 	sys.exit(0)
 else:
 	sys.exit(1)
