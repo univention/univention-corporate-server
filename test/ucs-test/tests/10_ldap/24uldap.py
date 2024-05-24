@@ -291,4 +291,4 @@ class TestAccessUsage(TestCase):
 
 
 if __name__ == '__main__':
-    main()
+    main(verbosity=2)
