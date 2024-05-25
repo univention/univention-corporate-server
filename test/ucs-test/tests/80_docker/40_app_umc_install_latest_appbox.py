@@ -11,7 +11,7 @@ import json
 import pytest
 import requests
 
-from dockertest import App, Appcenter, UCTTest_DockerApp_UMCInstallFailed, get_app_name
+from dockertest import App, Appcenter, UMCFailure, get_app_name
 
 
 URL = 'https://docker.software-univention.de/v2/ucs-appbox-amd64/tags/list'
@@ -49,7 +49,7 @@ exit 1
     try:
         try:
             app.install_via_umc()
-        except UCTTest_DockerApp_UMCInstallFailed as exc:
+        except UMCFailure as exc:
             _progress, errors = exc.args
             print(errors)
             assert {'message': 'This message goes to ERROR_FILE\n', 'level': 'CRITICAL'} in errors

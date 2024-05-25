@@ -9,7 +9,7 @@ import pytest
 
 from univention.testing.utils import is_port_open
 
-from dockertest import Appcenter, UCSTest_DockerApp_InstallationFailed, tiny_app
+from dockertest import Appcenter, AppFailure, tiny_app
 
 
 @pytest.mark.exposure('dangerous')
@@ -45,7 +45,7 @@ def test_app_ports_conflicts_redirect(appcenter: Appcenter, app_version: str) ->
         # if exclusive port is already used
         redirect.install()
         redirect.verify(joined=False)
-        with pytest.raises(UCSTest_DockerApp_InstallationFailed):
+        with pytest.raises(AppFailure):
             exclusive.install()
 
         # another app should be fine

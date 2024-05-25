@@ -7,7 +7,7 @@
 
 import pytest
 
-from dockertest import App, Appcenter, UCSTest_DockerApp_InstallationFailed
+from dockertest import App, Appcenter, AppFailure
 
 
 @pytest.mark.exposure('dangerous')
@@ -20,7 +20,7 @@ def test_app_installation_fail_with_missing_package(appcenter: Appcenter, app_na
 
         appcenter.update()
 
-        with pytest.raises(UCSTest_DockerApp_InstallationFailed):
+        with pytest.raises(AppFailure):
             app.install()
     finally:
         app.uninstall()

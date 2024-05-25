@@ -53,60 +53,20 @@ if TYPE_CHECKING:
     from types import TracebackType
 
 
-class UCSTest_Docker_Exception(Exception):
-    pass
+class BaseFailure(Exception):
+    """Base or internal error."""
 
 
-class UCSTest_Docker_LoginFailed(Exception):
-    pass
+class UMCFailure(BaseFailure):
+    """UMC client command failed."""
 
 
-class UCSTest_Docker_PullFailed(Exception):
-    pass
+class AppFailure(BaseFailure):
+    """univention-app failed."""
 
 
-class AppcenterMetainfAlreadyExists(Exception):
-    pass
-
-
-class AppcenterRepositoryAlreadyExists(Exception):
-    pass
-
-
-class UCSTest_DockerApp_InstallationFailed(Exception):
-    pass
-
-
-class UCSTest_DockerApp_ConfigureFailed(Exception):
-    pass
-
-
-class UCSTest_DockerApp_UpdateFailed(Exception):
-    pass
-
-
-class UCSTest_DockerApp_UpgradeFailed(Exception):
-    pass
-
-
-class UCSTest_DockerApp_VerifyFailed(Exception):
-    pass
-
-
-class UCSTest_DockerApp_RemoveFailed(Exception):
-    pass
-
-
-class UCSTest_DockerApp_ModProxyFailed(Exception):
-    pass
-
-
-class UCTTest_DockerApp_UMCInstallFailed(Exception):
-    pass
-
-
-class UCSTest_DockerApp_RegisterFailed(Exception):
-    pass
+class DockerFailure(BaseFailure):
+    """docker failed."""
 
 
 def tiny_app(name: str | None = None, version: str | None = None) -> App:
@@ -160,12 +120,12 @@ def get_docker_appbox_image() -> str:
 
 def docker_login(server: str = 'docker.software-univention.de') -> None:
     cmd = ['docker', 'login', '-u', 'ucs', '-p', 'readonly', server]
-    error_handling_call(cmd, exc=UCSTest_Docker_LoginFailed)
+    error_handling_call(cmd, exc=DockerFailure)
 
 
 def docker_pull(image: str, server: str = 'docker.software-univention.de') -> None:
     cmd = ['docker', 'pull', '%s/%s' % (server, image)]
-    error_handling_call(cmd, exc=UCSTest_Docker_PullFailed)
+    error_handling_call(cmd, exc=DockerFailure)
 
 
 def docker_image_is_present(imgname: str) -> bool:
@@ -214,11 +174,11 @@ def copy_package_to_appcenter(ucs_version: str, app_directory: str, package_name
     print(subprocess.check_output(command, shell=True, text=True))
 
 
-def error_handling_call(cmd: Sequence[str] | str, exc: type[BaseException] = Exception) -> None:
+def error_handling_call(cmd: Sequence[str] | str, exc: type[BaseException] = BaseFailure) -> None:
     try:
         print(subprocess.check_output(cmd, stderr=subprocess.STDOUT).decode('UTF-8', 'replace'))
     except subprocess.CalledProcessError as ex:
-        raise exc('%s: %s' % (ex, ex.output.decode('UTF-8', 'replace')))
+        raise exc('%s: %s' % (ex, ex.output.decode('UTF-8', 'replace'))) from ex
 
 
 class App:
@@ -305,7 +265,7 @@ class App:
             cmd.append('--do-not-call-join-scripts')
         cmd.append('%s=%s' % (self.app_name, self.app_version))
         print(cmd)
-        error_handling_call(cmd, exc=UCSTest_DockerApp_InstallationFailed)
+        error_handling_call(cmd, exc=AppFailure)
 
         self.reload_container_id()
 
@@ -334,7 +294,7 @@ class App:
             cmd.extend(['--set'] + set_vars)
         if unset_vars:
             cmd.extend(['--unset'] + unset_vars)
-        error_handling_call(cmd, exc=UCSTest_DockerApp_ConfigureFailed)
+        error_handling_call(cmd, exc=AppFailure)
 
     def install_via_umc(self) -> None:
 
@@ -357,7 +317,7 @@ class App:
         resp = client.umc_command('appcenter/docker/invoke', options).result
         progress_id = resp.get('id')
         if not resp:
-            raise UCTTest_DockerApp_UMCInstallFailed(resp, None)
+            raise UMCFailure(resp, None)
         errors = []
         finished = False
         progress: Any = None
@@ -372,20 +332,20 @@ class App:
                     errors.append(i)
             finished = progress.get('finished', False)
         if not progress['result'].get('success', False) or not progress['result'].get('can_continue', False):
-            raise UCTTest_DockerApp_UMCInstallFailed(progress, errors)
+            raise UMCFailure(progress, errors)
         self.reload_container_id()
         self.installed = True
         if errors:
-            raise UCTTest_DockerApp_UMCInstallFailed(None, errors)
+            raise UMCFailure(None, errors)
 
     def _update(self) -> None:
-        error_handling_call(['univention-app', 'update'], exc=UCSTest_DockerApp_UpdateFailed)
+        error_handling_call(['univention-app', 'update'], exc=AppFailure)
 
     def register(self) -> None:
         print('App.register()')
         cmd = ['univention-app', 'register', '--app']
         print(cmd)
-        error_handling_call(cmd, exc=UCSTest_DockerApp_RegisterFailed)
+        error_handling_call(cmd, exc=AppFailure)
 
     def upgrade(self) -> None:
         print('App.upgrade()')
@@ -395,16 +355,16 @@ class App:
             cmd.append('--do-not-call-join-scripts')
         cmd.append('%s=%s' % (self.app_name, self.app_version))
         print(cmd)
-        error_handling_call(cmd, exc=UCSTest_DockerApp_UpgradeFailed)
+        error_handling_call(cmd, exc=AppFailure)
         self.reload_container_id()
         self.installed = True
 
     def verify(self, joined: bool = True) -> None:
         print('App.verify(%r)' % (joined,))
-        error_handling_call(['univention-app', 'status', '%s=%s' % (self.app_name, self.app_version)], exc=UCSTest_DockerApp_VerifyFailed)
+        error_handling_call(['univention-app', 'status', '%s=%s' % (self.app_name, self.app_version)], exc=AppFailure)
 
         if joined:
-            error_handling_call(['docker', 'exec', self.container_id, 'univention-check-join-status'], exc=UCSTest_DockerApp_VerifyFailed)
+            error_handling_call(['docker', 'exec', self.container_id, 'univention-check-join-status'], exc=AppFailure)
 
         if self.package:
             try:
@@ -412,9 +372,9 @@ class App:
                 expected_output1 = '%s\t%s\r\n' % (self.package_name, self.package_version)
                 expected_output2 = '%s\t%s\n' % (self.package_name, self.package_version)
                 if output not in [expected_output1, expected_output2]:
-                    raise UCSTest_DockerApp_VerifyFailed('%r != %r' % (output, expected_output2))
-            except subprocess.CalledProcessError:
-                raise UCSTest_DockerApp_VerifyFailed('univention-app shell failed')
+                    raise AppFailure('%r != %r' % (output, expected_output2))
+            except subprocess.CalledProcessError as exc:
+                raise AppFailure('univention-app shell failed') from exc
 
     def uninstall(self) -> None:
         print('App.uninstall()')
@@ -424,7 +384,7 @@ class App:
                 cmd.append('--do-not-call-join-scripts')
             cmd.append('%s=%s' % (self.app_name, self.app_version))
             print(cmd)
-            error_handling_call(cmd, exc=UCSTest_DockerApp_RemoveFailed)
+            error_handling_call(cmd, exc=AppFailure)
 
     def execute_command_in_container(self, cmd: str) -> str:
         print('Execute: %s' % cmd)
@@ -522,12 +482,12 @@ class Appcenter:
             print('ERROR: /var/www/meta-inf already exists')
             shutil.rmtree('/var/www/meta-inf', True)
             shutil.rmtree('/var/www/univention-repository', True)
-            raise AppcenterMetainfAlreadyExists()
+            raise BaseFailure('/var/www/meta-inf already exists')
         if os.path.exists('/var/www/univention-repository'):
             print('ERROR: /var/www/univention-repository already exists')
             shutil.rmtree('/var/www/meta-inf', True)
             shutil.rmtree('/var/www/univention-repository', True)
-            raise AppcenterRepositoryAlreadyExists()
+            raise BaseFailure('/var/www/univention-repository already exists')
 
         if not version:
             self.add_ucs_version_to_appcenter('4.1')

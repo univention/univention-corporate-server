@@ -9,7 +9,7 @@ import subprocess
 
 import pytest
 
-from dockertest import Appcenter, UCSTest_DockerApp_InstallationFailed, UCSTest_DockerApp_VerifyFailed, tiny_app
+from dockertest import Appcenter, AppFailure, tiny_app
 
 
 @pytest.mark.exposure('dangerous')
@@ -33,7 +33,7 @@ exit %(exit_code)d
         try:
             app.install()
             app.verify(joined=False)
-        except (UCSTest_DockerApp_VerifyFailed, UCSTest_DockerApp_InstallationFailed):
+        except AppFailure:
             if not fail_in_preinst:
                 raise
         else:
