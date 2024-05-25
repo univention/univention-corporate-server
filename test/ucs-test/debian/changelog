@@ -1,3 +1,10 @@
+ucs-test (10.0.21-52) unstable; urgency=medium
+
+  * Issue #2221: Add specific attributes to list of ignored attributes that
+    lack index. They are used once during the upgrade of univention-samba
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 25 May 2024 21:57:00 +0200
+
 ucs-test (10.0.21-51) unstable; urgency=medium
 
   * Bug #57171: make changing mpa and maa in one step possible

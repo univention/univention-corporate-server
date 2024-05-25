@@ -42,6 +42,8 @@ IGNORE = {
     'univentionPrinterSpoolHost',  # FIXME: ../../management/univention-directory-manager-modules/modules/univention/admin/handlers/shares/printer.py:274 and ../../management/univention-directory-manager-modules/modules/univention/admin/handlers/shares/printergroup.py:125 et al
     'univentionShareHost',  # FIXME: ../../../../base/univention-quota/quota.py:170 and ../../../../services/univention-nfs/nfs-shares.py:60 and ../../../../services/univention-samba/debian/univention-samba.postinst:116
     'univentionSharePath',  # FIXME: ../../../../base/univention-quota/quota.py:170 and ../../../../services/univention-nfs/nfs-shares.py:60 and ../../../../services/univention-samba/debian/univention-samba.postinst:116
+    'univentionShareSambaInheritAcls',  # services/univention-samba/debian/univention-samba.postinst during upgrade from older version
+    'univentionShareSambaNtAclSupport',  # services/univention-samba/debian/univention-samba.postinst during upgrade from older version
     'userOptionsPreset',  # LOW: ../../../../management/univention-directory-manager-modules/modules/univention/admin/handlers/settings/usertemplate.py:366 and ../../../../management/univention-directory-manager-modules/univention-migrate-users-to-ucs4.3:332 et al
 }
 
