@@ -1,3 +1,10 @@
+ucs-test (10.0.21-53) unstable; urgency=medium
+
+  * Issue #2287: Ignore tracebacks during import time when upgrading from old
+    UCS versions. These should be just intermediate errors
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 26 May 2024 22:54:27 +0200
+
 ucs-test (10.0.21-52) unstable; urgency=medium
 
   * Issue #2221: Add specific attributes to list of ignored attributes that
