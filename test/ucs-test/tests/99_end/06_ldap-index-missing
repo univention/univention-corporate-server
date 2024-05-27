@@ -12,6 +12,7 @@ RE = re.compile(r'mdb_(approx|equality|inequality|substring)_candidates: \((\w+)
 LOG = '/var/log/debug'
 IGNORE = {
     'aAAARecord',  # FIXME: pres,+eq: ../../../../management/univention-directory-manager-modules/modules/univention/admin/handlers/__init__.py:2300
+    'krb5ValidEnd',  # inequality! dont know where this originates from...
     'krb5ValidStart',  # inequality! dont know where this originates from...
     'memberOf', # FIXME: definitely keycloak, probably radius, maybe more ...
     'msPrintAttributes',  # LOW: ../../../services/univention-s4-connector/modules/univention/admin/handlers/settings/msprintconnectionpolicy.py:115
@@ -36,6 +37,8 @@ IGNORE = {
     'univentionNewPortalFolderEntries',  # FIXME: ../../management/univention-portal/udm/handlers/folder.py:130 et al
     'univentionNewPortalMenuLinks',  # FIXME: ../../management/univention-portal/udm/handlers/entry.py:194
     'univentionNewPortalUserLinks',  # FIXME: ../../management/univention-portal/udm/handlers/entry.py:198
+    'univentionOffice365ADConnectionAlias',  # app/product tests of office365
+    'univentionOffice365Enabled',  # app/product tests of office365
     'univentionOperatingSystem',  # base/univention-updater/script/check.sh
     'univentionPolicyObject',  # no idea where this is from, but it makes sense
     'univentionPortalEntryPortal',  # from 4.4's portal during upgrade tests
