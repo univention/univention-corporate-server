@@ -1,3 +1,10 @@
+ucs-test (12.0.90) unstable; urgency=medium
+
+  * Issue #2221: Add office365 attributes to list of ignored attributes that
+    lack index.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 27 May 2024 12:23:05 +0200
+
 ucs-test (12.0.89) unstable; urgency=medium
 
   * Bug #57171: make changing mpa and maa in one step possible
