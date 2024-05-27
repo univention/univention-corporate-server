@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-16 10:24+0000\n"
-"PO-Revision-Date: 2024-02-16 11:33+0100\n"
+"POT-Creation-Date: 2024-05-29 15:17+0200\n"
+"PO-Revision-Date: 2024-05-29 15:19+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -1133,7 +1133,7 @@ msgstr ""
 "Weitere Informationen zur API finden Sie unter :cite:t:`developer-"
 "reference`."
 
-#: ../../central-management-umc/index.rst:65
+#: ../../central-management-umc/index.rst:69
 msgid "Chapter contents:"
 msgstr "Kapitelinhalte:"
 
@@ -1251,6 +1251,16 @@ msgstr ""
 "Abschließend wird die Kommandozeilenschnittstelle der Domänenverwaltung "
 "dargestellt (:ref:`central-udm`) und das Auswerten von Domänendaten über "
 "die UCS-Reporting-Funktionalität erläutert (:ref:`central-reports`)."
+
+#: ../../central-management-umc/index.rst:66
+msgid ""
+"The |UCSWEB| is part of Univention Nubus in the *Management UI* "
+"component. For more information about Nubus, refer to :ref:`introduction-"
+"nubus`"
+msgstr ""
+"Das |UCSWEB| ist Teil von Univention Nubus in der *Management UI* Komponente. "
+"Weitere Informationen zu Nubus finden Sie unter :ref:`introduction-"
+"nubus`."
 
 #: ../../central-management-umc/introduction.rst:8
 msgid "Introduction"
@@ -1844,9 +1854,10 @@ msgid ""
 "need to revert the steps for updating the portal tile and set the UCR "
 "variable :envvar:`portal/auth-mode` to ``ucs``."
 msgstr ""
-"Um zur Standardanmeldung in UCS ohne Single Sign-On zurückzukehren, müssen Sie "
-"müssen Sie die Schritte zum Aktualisieren der Kachel im Portal rückgängig machen und die UCR "
-"Variable :envvar:`portal/auth-mode` auf ``ucs`` setzen."
+"Um zur Standardanmeldung in UCS ohne Single Sign-On zurückzukehren, "
+"müssen Sie müssen Sie die Schritte zum Aktualisieren der Kachel im Portal"
+" rückgängig machen und die UCR Variable :envvar:`portal/auth-mode` auf "
+"``ucs`` setzen."
 
 #: ../../central-management-umc/login.rst:153
 msgid "OpenID Connect for single sign-on"
@@ -2408,7 +2419,15 @@ msgstr ""
 "Schulbetrieb stark voneinander unterscheiden, bringt UCS ein sehr "
 "flexibles und individuell anpassbares Konzept für Portalseiten mit."
 
-#: ../../central-management-umc/portal.rst:15
+#: ../../central-management-umc/portal.rst:17
+msgid ""
+"The Univention Portal is part of Univention Nubus. For more information "
+"about Nubus, refer to :ref:`introduction-nubus`"
+msgstr ""
+"Das Univention Portal ist Teil von Univention Nubus. Weitere "
+"Informationen über Nubus finden Sie unter :ref:`introduction-nubus`"
+
+#: ../../central-management-umc/portal.rst:20
 msgid ""
 "As illustrated in :numref:`portal-schema`, portal entries (i.e., links to"
 " applications/Apps/services; UDM object type ``portals/entry``) can be "
@@ -2425,7 +2444,7 @@ msgstr ""
 "Objekttyp ``portals/portal``) stellt alle Portal-Kategorien dar, die mit "
 "ihm verknüpft sind."
 
-#: ../../central-management-umc/portal.rst:22
+#: ../../central-management-umc/portal.rst:27
 msgid ""
 "In addition, you can create portal announcements (UDM object type "
 "``portals/announcement``) and use them to announce, for example, "
@@ -2442,7 +2461,7 @@ msgstr ""
 "Gruppe von Benutzern haben. Eine Ankündigung wird im Portal im oberen "
 "Bereich jedes Portals auf allen Portalen angezeigt."
 
-#: ../../central-management-umc/portal.rst:29
+#: ../../central-management-umc/portal.rst:34
 msgid ""
 "The portal *domain*, shipped with every installation, is configured on "
 "each server by default. In addition to all installed applications of the "
@@ -2454,7 +2473,7 @@ msgstr ""
 "installierten Applikationen in der Domäne werden hier auch Verweise zu "
 "|UCSUMC| sowie zur Serverübersicht angezeigt."
 
-#: ../../central-management-umc/portal.rst:33
+#: ../../central-management-umc/portal.rst:38
 msgid ""
 "To change the displayed portal, adjust the |UCSUCRV| :envvar:`portal"
 "/default-dn` and run the command :command:`univention-portal update`."
@@ -2463,7 +2482,7 @@ msgstr ""
 ":envvar:`portal/default-dn` an und führen Sie den Befehl :command"
 ":`univention-portal update` aus."
 
-#: ../../central-management-umc/portal.rst:36
+#: ../../central-management-umc/portal.rst:41
 msgid ""
 "Custom portals and portal entries can be defined and managed either via "
 "the UMC module :guilabel:`Portal` or directly on the portal site."
@@ -2472,7 +2491,7 @@ msgstr ""
 ":guilabel:`Portal` oder direkt auf der Portalseite angelegt und verwaltet"
 " werden."
 
-#: ../../central-management-umc/portal.rst:39
+#: ../../central-management-umc/portal.rst:44
 msgid ""
 "After logging in to the portal on the |UCSPRIMARYDN| or |UCSBACKUPDN|, "
 "members of the ``Domain Admins`` group can edit the portal after clicking"
@@ -2486,7 +2505,7 @@ msgstr ""
 " neue Einträge auf dem Portal erstellen, vorhandene Einträge "
 "modifizieren, sowie die Reihenfolge oder das Design modifizieren."
 
-#: ../../central-management-umc/portal.rst:44
+#: ../../central-management-umc/portal.rst:49
 msgid ""
 "You can use the UMC module :guilabel:`Portal` for advanced settings such "
 "as adding portals and announcements or control through the group "
@@ -2497,7 +2516,7 @@ msgstr ""
 "Gruppenmitgliedschaft steuern, welche Benutzer welche Portaleinträge "
 "sehen dürfen."
 
-#: ../../central-management-umc/portal.rst:48
+#: ../../central-management-umc/portal.rst:53
 msgid ""
 "By default, all portal entries are displayed for everyone. In the UMC "
 "module :guilabel:`Portal` in the category *Login*, it can be configured "
@@ -2514,7 +2533,7 @@ msgstr ""
 "``memberOf``. Eine Auswertung von verschachtelten "
 "Gruppenmitgliedsschaften (also Gruppen in Gruppen) findet statt."
 
-#: ../../central-management-umc/portal.rst:55
+#: ../../central-management-umc/portal.rst:60
 msgid ""
 "You can make further design adjustments in the file :file:`/usr/share"
 "/univention-portal/css/custom.css`. UCS doesn't overwrite this file "
@@ -2524,11 +2543,11 @@ msgstr ""
 "/univention-portal/css/custom.css` vornehmen. UCS überschreibt diese "
 "Datei bei einem Update nicht."
 
-#: ../../central-management-umc/portal.rst:64
+#: ../../central-management-umc/portal.rst:69
 msgid "Schema of the portal concept in UCS"
 msgstr "Schema des Portal-Konzepts in UCS"
 
-#: ../../central-management-umc/portal.rst:64
+#: ../../central-management-umc/portal.rst:69
 msgid ""
 "Schema of the portal concept in UCS: Portals can be independently defined"
 " and assigned to UCS systems as start site; a link entry can be displayed"
@@ -2538,11 +2557,11 @@ msgstr ""
 "Systemen als Startseite zugewiesen werden; ein Verweis kann auf mehreren "
 "Portalen angezeigt werden."
 
-#: ../../central-management-umc/portal.rst:71
+#: ../../central-management-umc/portal.rst:76
 msgid "Assign rights for portal settings"
 msgstr "Rechte für Portaleinstellungen vergeben"
 
-#: ../../central-management-umc/portal.rst:73
+#: ../../central-management-umc/portal.rst:78
 msgid ""
 "The following describes how to make the UMC module :guilabel:`Portal` "
 "accessible to selected groups or users. This example assumes that a group"
@@ -2555,7 +2574,7 @@ msgstr ""
 "ausgegangen, dass eine Gruppe ``Portal Admins`` erstellt wurde und "
 "Mitglieder dieser Gruppe Zugang zu den Portaleinstellungen haben sollen."
 
-#: ../../central-management-umc/portal.rst:78
+#: ../../central-management-umc/portal.rst:83
 msgid ""
 "On a |UCSPRIMARYDN| an ACL file has to be created first, for example "
 ":file:`/opt/62my-portal-acl.acl`. This file has to have the following "
@@ -2565,7 +2584,7 @@ msgstr ""
 ":file:`/opt/62my-portal-acl.acl`.  Diese Datei hat folgenden Inhalt "
 "aufzuweisen, um die nötigen ACL-Änderungen zu ermöglichen:"
 
-#: ../../central-management-umc/portal.rst:82
+#: ../../central-management-umc/portal.rst:87
 msgid ""
 "access to dn=\"cn=portals,cn=univention,@%@ldap/base@%@\" attrs=children\n"
 "  by group/univentionGroup/uniqueMember=\"cn=Portal "
@@ -2591,7 +2610,7 @@ msgstr ""
 "Admins,cn=groups,@%@ldap/base@%@\" write\n"
 "  by * +0 break"
 
-#: ../../central-management-umc/portal.rst:94
+#: ../../central-management-umc/portal.rst:99
 msgid ""
 "Then execute the following command to create an LDAP object for the LDAP "
 "ACLs:"
@@ -2599,7 +2618,7 @@ msgstr ""
 "Danach ist folgender Befehl auszuführen, um ein LDAP-Objekt für die LDAP-"
 "ACLs zu erzeugen:"
 
-#: ../../central-management-umc/portal.rst:96
+#: ../../central-management-umc/portal.rst:101
 msgid ""
 "$ udm settings/ldapacl create \\\n"
 "  --position \"cn=ldapacl,cn=univention,$(ucr get ldap/base)\" \\\n"
@@ -2621,13 +2640,13 @@ msgstr ""
 "  --set ucsversionend=5.99-0 \\\n"
 "  --set packageversion=1"
 
-#: ../../central-management-umc/portal.rst:109
+#: ../../central-management-umc/portal.rst:114
 msgid "If the ACL is to be deleted again, the following command can be used:"
 msgstr ""
 "Wenn die ACL wieder gelöscht werden soll, kann folgender Befehl verwendet"
 " werden:"
 
-#: ../../central-management-umc/portal.rst:111
+#: ../../central-management-umc/portal.rst:116
 msgid ""
 "udm settings/ldapacl remove \\\n"
 "  --dn \"cn=62my-portal-acl,cn=ldapacl,cn=univention,$(ucr get "
@@ -2637,7 +2656,7 @@ msgstr ""
 "  --dn \"cn=62my-portal-acl,cn=ldapacl,cn=univention,$(ucr get "
 "ldap/base)\""
 
-#: ../../central-management-umc/portal.rst:116
+#: ../../central-management-umc/portal.rst:121
 msgid ""
 "An appropriate UMC policy can now be created via UMC. The following *UMC "
 "operations* must be allowed within the policy:"
@@ -2646,23 +2665,23 @@ msgstr ""
 "folgenden *UMC-Operationen* müssen dafür innerhalb der Richtlinie erlaubt"
 " werden:"
 
-#: ../../central-management-umc/portal.rst:119
+#: ../../central-management-umc/portal.rst:124
 msgid "*udm-new-portal*"
 msgstr "*udm-portal*"
 
-#: ../../central-management-umc/portal.rst:120
+#: ../../central-management-umc/portal.rst:125
 msgid "*udm-syntax*"
 msgstr "*udm-syntax*"
 
-#: ../../central-management-umc/portal.rst:121
+#: ../../central-management-umc/portal.rst:126
 msgid "*udm-validate*"
 msgstr "*udm-validate*"
 
-#: ../../central-management-umc/portal.rst:122
+#: ../../central-management-umc/portal.rst:127
 msgid "*udm-license*"
 msgstr "*udm-license*"
 
-#: ../../central-management-umc/portal.rst:124
+#: ../../central-management-umc/portal.rst:129
 msgid ""
 "How to create a policy is described in :ref:`central-management-umc-"
 "create-policy`. Now the newly created policy only needs to be assigned to"
