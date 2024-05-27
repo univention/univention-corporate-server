@@ -1,3 +1,9 @@
+univention-ldap (16.0.15-8) unstable; urgency=medium
+
+  * Bug #31252: Rebert Remove cn=backup,$ldap_base from base.ldif
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Mon, 27 May 2024 14:00:02 +0200
+
 univention-ldap (16.0.15-7) unstable; urgency=medium
 
   * Bug #51187 Add prevent_umc_default_popup to LDAP schema

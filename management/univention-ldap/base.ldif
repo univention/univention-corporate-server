@@ -722,6 +722,13 @@ gidNumber: 5007
 uniqueMember: cn=DC Backup Hosts,cn=groups,@%@ldap/base@%@
 uniqueMember: cn=DC Slave Hosts,cn=groups,@%@ldap/base@%@
 
+dn: cn=backup,@%@ldap/base@%@
+objectClass: top
+objectClass: person
+cn: backup
+sn: backup
+userPassword: {crypt}@@%%@@backup.pw@@%%@@
+
 dn: cn=Printer-Admins,cn=groups,@%@ldap/base@%@
 objectClass: top
 objectClass: posixGroup
