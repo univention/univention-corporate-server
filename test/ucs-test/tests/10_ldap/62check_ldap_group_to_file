@@ -28,9 +28,7 @@ USERNAME=$(user_randomname)
 GROUPNAME="$(group_randomname)"
 
 ucr set nss/group/cachefile="yes"
-undo systemctl try-restart univention-directory-listener # reversed order
 undo ucr_restore
-systemctl restart univention-directory-listener
 
 # create domain part in configured mail domains list
 undo wait_for_replication_and_postrun # Reversed order
@@ -47,7 +45,7 @@ wait_for_replication_and_postrun
 
 #group_removeuser $USERNAME $GROUPNAME || fail_test 1
 
-echo "Waiting for NSS update script"
+debug "Waiting for NSS update script"
 # shellcheck disable=SC2317
 check_user_in_group () { getent group "$GROUPNAME" | grep -q "$USERNAME"; }
 retry "$TIME_TO_WAIT" check_user_in_group ||
@@ -56,7 +54,7 @@ retry "$TIME_TO_WAIT" check_user_in_group ||
 group_removeuser "$USERNAME" "$GROUPNAME" || fail_test 1
 wait_for_replication_and_postrun
 
-echo "Waiting for NSS update script..."
+debug "Waiting for NSS update script..."
 # shellcheck disable=SC2317
 check_user_not_in_group () { ! getent group "$GROUPNAME" | grep -q "$USERNAME"; }
 retry "$TIME_TO_WAIT" check_user_in_group ||
