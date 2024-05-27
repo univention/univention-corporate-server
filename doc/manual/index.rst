@@ -25,7 +25,7 @@ and includes extensive interfaces to infrastructure components and management to
 meaning it can integrate with existing environments.
 
 UCS consists of reliable open source software, tried and tested in organizations of different sizes.
-UCS integrates these software components through the |UCSUMS|.
+UCS combines these software components through a unified web interface.
 This allows the integration and administration of the system in both simple and complex distributed or virtualized environments.
 
 The central functions of UCS are:
@@ -88,6 +88,30 @@ You can install additional components from Univention and other manufacturers th
 They expand the system with numerous functions such as groupware,
 document management, and services for Windows,
 meaning that you can also operate them on a UCS system and administer them through the UCS management system.
+
+.. _introduction-nubus:
+
+What is Univention Nubus?
+=========================
+
+Univention Nubus is an open source solution for integrating identity and access management of various applications.
+It offers the following functions:
+
+* administration of users and groups
+
+* a portal with integrated user self service as the first entry port for end users
+
+* numerous interfaces for the integration of applications
+
+* shared single sign-on
+
+Standard integrations based on these interfaces connect common applications.
+Most components of Nubus originate directly from UCS.
+
+Nubus is the Univention product for identity and access management and the portal.
+You can deploy Nubus as part of UCS or on a Kubernetes cluster.
+Univention Corporate Server (UCS) is a way to deploy Nubus
+with services and integrations on hardware or virtual machines.
 
 .. _introduction-overview-ucs:
 
