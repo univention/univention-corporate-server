@@ -1,3 +1,10 @@
+univention-directory-manager-modules (17.0.11) unstable; urgency=medium
+
+  * univention/ucs#2026: Replace ucs-sso with krbkeycloak account in license
+    system account list
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 27 May 2024 11:37:49 +0200
+
 univention-directory-manager-modules (17.0.10) unstable; urgency=medium
 
   * Bug #57171: make changing mpa and maa in one step possible

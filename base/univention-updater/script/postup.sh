@@ -156,6 +156,11 @@ if [ -n "$(ucr search "^fetchmail/autostart/update520$")" ] ; then
 	systemctl restart fetchmail >&3 2>&3
 fi
 
+if univention-ldapsearch -LLL '(uid=ucs-sso)' 1.1 | grep -q '^dn'; then
+	ldapdelete -x -H ldapi:/// "uid=ucs-sso,cn=users,$(ucr get ldap/base)"
+fi
+rm -f /etc/simplesamlphp.keytab /etc/simplesamlphp/ucs-sso-kerberos.secret
+
 
 echo "
 

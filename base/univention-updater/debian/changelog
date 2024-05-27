@@ -1,3 +1,9 @@
+univention-updater (17.0.5) unstable; urgency=medium
+
+  * univention/ucs#2026: Remove simpleSAMLphp kerberos user on upgrade to 5.2
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 28 May 2024 09:18:52 +0200
+
 univention-updater (17.0.4) unstable; urgency=medium
 
   * Bug #31252: Remove cn=backup,$ldap_base on upgrade to UCS 5.2

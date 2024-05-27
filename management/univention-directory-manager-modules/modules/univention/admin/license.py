@@ -97,7 +97,7 @@ class License:
         self.searchResult = None
         self.sysAccountNames = (
             custom_username('Administrator'),
-            'ucs-sso',
+            'krbkeycloak',
             'join-backup',
             'join-slave',
             'spam',
