@@ -806,19 +806,11 @@ set_dns_forwarder () {
 if [ "$server_role" = "domaincontroller_backup" ]; then
 
 	if [ -e "/etc/ldap.secret" ]; then cat /etc/ldap.secret >>/etc/ldap.secret.SAVE; fi
-	if [ -e "/etc/ldap-backup.secret" ]; then cat /etc/ldap-backup.secret >>/etc/ldap-backup.secret.SAVE; fi
 
 	echo -n "Sync ldap.secret: "
 	univention-scp "$DCPWD" -q "${DCACCOUNT}@${DCNAME}:/etc/ldap.secret" /etc/ldap.secret >>/var/log/univention/join.log 2>&1
 	if [ ! -e "/etc/ldap.secret" ]; then
 		failed_message "/etc/ldap.secret not found"
-	fi
-	echo -e "\033[60Gdone"
-
-	echo -n "Sync ldap-backup.secret: "
-	univention-scp "$DCPWD" -q "${DCACCOUNT}@${DCNAME}:/etc/ldap-backup.secret" /etc/ldap-backup.secret >>/var/log/univention/join.log 2>&1
-	if [ ! -e "/etc/ldap-backup.secret" ]; then
-		failed_message "/etc/ldap-backup.secret not found"
 	fi
 	echo -e "\033[60Gdone"
 
@@ -903,14 +895,6 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	echo -e "\033[60Gdone"
 
 elif [ "$server_role" = "domaincontroller_slave" ]; then
-
-	echo -n "Sync ldap-backup.secret: "
-
-	if [ -e "/etc/ldap-backup.secret" ]; then cat /etc/ldap-backup.secret >>/etc/ldap-backup.secret.SAVE; fi
-
-	univention-scp "$DCPWD" "${DCACCOUNT}@${DCNAME}:/etc/ldap-backup.secret /etc/ldap-backup.secret" >>/var/log/univention/join.log 2>&1
-
-	echo -e "\033[60Gdone"
 
 	univention-config-registry set \
 		ldap/server/name="$hostname.$domainname" \

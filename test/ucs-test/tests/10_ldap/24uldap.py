@@ -88,18 +88,6 @@ class TestAdminConnection(TestCase):
             assert isinstance(access, uldap.access) is True
 
 
-@skipUnless(exists('/etc/ldap-backup.secret'), 'Missing ldap-backup.secret')
-class TestBackupConnection(TestCase):
-
-    def testDefault(self):
-        access = uldap.getBackupConnection()
-        assert isinstance(access, uldap.access)
-
-    def testServerDown(self):
-        with FakeUcr({'ldap/master': '255.255.255.255', 'ldap/backup': ''}):
-            self.assertRaises(ldap.SERVER_DOWN, uldap.getMachineConnection, reconnect=False)
-
-
 @skipUnless(exists('/etc/machine.secret'), 'Missing machine.secret')
 class TestMachineConnection(TestCase):
 

@@ -116,28 +116,6 @@ def getAdminConnection(start_tls: int | None = None, decode_ignorelist: None = N
     return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=admin,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, reconnect=reconnect)
 
 
-def getBackupConnection(start_tls: int | None = None, decode_ignorelist: None = None, reconnect: bool = True) -> 'access':
-    """
-    Open a LDAP connection to a Backup Directory Node LDAP server using the admin credentials.
-
-    :param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
-    :param bool reconnect: Automatically reconect if the connection fails.
-    :return: A LDAP access object.
-    :rtype: univention.uldap.access
-    """
-    ucr = ConfigRegistry()
-    ucr.load()
-    bindpw = open('/etc/ldap-backup.secret').read().rstrip('\n')
-    port = int(ucr.get('ldap/master/port', '7389'))
-    try:
-        return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, reconnect=reconnect)
-    except ldap.SERVER_DOWN:
-        if not ucr['ldap/backup']:
-            raise
-        backup = ucr['ldap/backup'].split(' ')[0]
-        return access(host=backup, port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, reconnect=reconnect)
-
-
 def getMachineConnection(start_tls: int | None = None, decode_ignorelist: None = None, ldap_master: bool = True, secret_file: str = "/etc/machine.secret", reconnect: bool = True, random_server: bool = False) -> 'access':
     """
     Open a LDAP connection using the machine credentials.

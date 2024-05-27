@@ -77,7 +77,6 @@ then
 		pw_crypt="univention"
 	fi
 
-	backup_crypt=$(mkpasswd --hash=sha-512 --stdin < /etc/ldap-backup.secret)
 	firstdc="$(echo "$ldap_base" | sed -e 's|,.*||g;s|.*=||')"
 	if [ -z "$windows_domain" ]; then
 		sambadomain=${domainname%%.*}
@@ -89,7 +88,7 @@ then
 	Domain=$domainname
 	cat /usr/share/univention-ldap/base.ldif /usr/share/univention-ldap/core-edition.ldif |
 		 sed -e \
-		"s|@@%%@@ldap\.pw@@%%@@|$pw_crypt|;s|@@%%@@backup\.pw@@%%@@|$backup_crypt|;s|@@%%@@sambadomain@@%%@@|$sambadomain|;s|@@%%@@firstdc@@%%@@|$firstdc|;s|@@%%@@realm@@%%@@|$realm|;s|@@%%@@sid@@%%@@|$sid|;s|@@%@@domain@@%@@|$Domain|" | \
+		"s|@@%%@@ldap\.pw@@%%@@|$pw_crypt|;s|@@%%@@sambadomain@@%%@@|$sambadomain|;s|@@%%@@firstdc@@%%@@|$firstdc|;s|@@%%@@realm@@%%@@|$realm|;s|@@%%@@sid@@%%@@|$sid|;s|@@%@@domain@@%@@|$Domain|" | \
 		univention-config-registry filter |
 		slapadd -f /etc/ldap/slapd.conf >>/var/log/univention/join.log 2>&1 ||
 		exit 1

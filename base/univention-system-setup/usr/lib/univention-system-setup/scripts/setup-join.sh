@@ -178,9 +178,8 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	# shellcheck source=/dev/null
 	. /usr/share/univention-lib/base.sh
 	create_machine_password >/etc/ldap.secret
-	create_machine_password >/etc/ldap-backup.secret
 else
-	rm -f /etc/ldap.secret /etc/ldap-backup.secret
+	rm -f /etc/ldap.secret
 fi
 rm -f /etc/machine.secret
 progress_next_step 1

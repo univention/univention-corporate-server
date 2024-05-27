@@ -138,7 +138,8 @@ esac
 find /usr/lib/python3/dist-packages/ -type d -not -perm 755 -name __pycache__ -exec chmod 755 {} +
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-  ldapdelete -x -H ldapi:/// cn=backup,$(ucr get ldap/base) 2>/dev/null
+  ldapdelete -x -H ldapi:/// cn=backup,$(ucr get ldap/base) >&3 2>&3
+  [ -e "/etc/ldap-backup.secret" ] && rm -f /etc/ldap-backup.secret >&3 2>&3
 fi
 
 # Bug #52923 #57296: switch back to old fetchmail/autostart status

@@ -64,11 +64,5 @@ then
 	create_machine_password > /etc/ldap.secret
 fi
 
-if [ ! -e /etc/ldap-backup.secret ]
-then
-	touch /etc/ldap-backup.secret
-	chmod 600 /etc/ldap-backup.secret
-	create_machine_password > /etc/ldap-backup.secret
-fi
 
 exit 0

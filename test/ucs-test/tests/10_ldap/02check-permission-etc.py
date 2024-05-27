@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python3
-## desc: Check for filesystem permissions on ldap.secret, ldap-backup.secret, slave-join.secret
+## desc: Check for filesystem permissions on ldap.secret, slave-join.secret
 ## tags:
 ##  - basic
 ##  - apptest
@@ -29,7 +29,6 @@ def main():
 
     filenames_groups = [
         ("/etc/ldap.secret", "DC Backup Hosts"),
-        ("/etc/ldap-backup.secret", "DC Backup Hosts"),
         ("/etc/slave-join.secret", "Slave Join"),
     ]  # filepaths and groupnames to check
     shouldowner = "root"

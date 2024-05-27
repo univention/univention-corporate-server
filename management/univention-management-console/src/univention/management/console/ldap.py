@@ -60,7 +60,6 @@ from univention.admin.uldap import (
     position as _position,
 )
 from univention.management.console.config import ucr
-from univention.uldap import getBackupConnection as _getBackupConnection
 
 
 __all__ = ('admin_connection', 'connection', 'get_admin_connection', 'get_connection', 'get_machine_connection', 'get_user_connection', 'machine_connection', 'user_connection')
@@ -115,14 +114,6 @@ class LDAP:
                 raise
         return self._wrapped(func, hash_, connection, loarg, poarg, no_cache)
 
-    def backup_connection(self, func=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, no_cache=False, **kwargs):
-        hash_ = ('backup', no_cache, tuple(kwargs.items()))
-
-        def connection():
-            lo = _getBackupConnection(**kwargs)
-            return _access(lo=lo), _position(lo.base)
-        return self._wrapped(func, hash_, connection, loarg, poarg, no_cache)
-
     def get_connection(self, *args, **kwargs):
         @self.connection(*args, **kwargs)
         def connection(ldap_connection=None, ldap_position=None):
@@ -143,12 +134,6 @@ class LDAP:
 
     def get_admin_connection(self, *args, **kwargs):
         @self.admin_connection(*args, **kwargs)
-        def connection(ldap_connection=None, ldap_position=None):
-            return ldap_connection, ldap_position
-        return connection()
-
-    def get_backup_connection(self, *args, **kwargs):
-        @self.backup_connection(*args, **kwargs)
         def connection(ldap_connection=None, ldap_position=None):
             return ldap_connection, ldap_position
         return connection()
@@ -216,8 +201,6 @@ machine_connection = _LDAP.machine_connection
 get_machine_connection = _LDAP.get_machine_connection
 admin_connection = _LDAP.admin_connection
 get_admin_connection = _LDAP.get_admin_connection
-backup_connection = _LDAP.backup_connection
-get_backup_connection = _LDAP.get_backup_connection
 user_connection = _LDAP.user_connection
 get_user_connection = _LDAP.get_user_connection
 connection = _LDAP.connection

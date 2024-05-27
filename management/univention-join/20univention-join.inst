@@ -124,7 +124,6 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 		find /etc/univention/ssl/ucsCA/ -type f | xargs chmod g+rw
 	fi
 
-	test -e /etc/ldap-backup.secret && chgrp "DC Backup Hosts"  /etc/ldap-backup.secret && chmod 640 /etc/ldap-backup.secret
 	test -e /etc/univention/ssl/ucsCA/CAcert.pem && chgrp "DC Slave Hosts"  /etc/univention/ssl/ucsCA/CAcert.pem && chmod 644 /etc/univention/ssl/ucsCA/CAcert.pem
 
 	if [ -d "/etc/univention/ssl/univention-directory-manager" ]; then
