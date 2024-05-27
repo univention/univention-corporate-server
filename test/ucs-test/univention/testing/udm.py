@@ -194,7 +194,7 @@ class UCSTestUDM:
 
         if match_filter:
             try:
-                res = self._lo.search(base=dn, filter=match_filter, scope='base', attr=[])
+                res = self._primary_lo.search(base=dn, filter=match_filter, scope='base', attr=[])
             except ldap.NO_SUCH_OBJECT:
                 print(f"OpenLDAP object to check against S4-Connector match_filter doesn't exist: {dn}")
                 res = None  # TODO: This happens during delete. By setting res=None here, we will not wait for DRS replication for deletes!
@@ -211,6 +211,7 @@ class UCSTestUDM:
             return ad_ldap_search_args
 
     __lo = None
+    __primary_lo = None
     __ucr = None
 
     @property
@@ -218,6 +219,14 @@ class UCSTestUDM:
         if self.__lo is None:
             self.__lo = utils.get_ldap_connection()
         return self.__lo
+
+    @property
+    def _primary_lo(self) -> univention.admin.uldap.access:
+        if self._ucr.get('server/role') == 'domaincontroller_master':
+            return self._lo
+        if self.__primary_lo is None:
+            self.__primary_lo = utils.get_ldap_connection(primary=True)
+        return self.__primary_lo
 
     @property
     def _ucr(self) -> univention.testing.ucr.UCSTestConfigRegistry:
