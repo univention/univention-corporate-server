@@ -6,14 +6,14 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-10 15:35+0200\n"
-"PO-Revision-Date: 2023-10-10 15:36+0200\n"
+"POT-Creation-Date: 2024-06-03 12:57+0200\n"
+"PO-Revision-Date: 2024-06-03 13:29+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.0\n"
+"Generated-By: Babel 2.14.0\n"
 
 #: ../../monitoring/dashboard.rst:8 ../../monitoring/dashboard.rst:26
 msgid "UCS Dashboard"
@@ -35,7 +35,7 @@ msgstr ""
 "Domäne oder der Server."
 
 #: ../../monitoring/dashboard.rst:19 ../../monitoring/monitoring.rst:48
-#: ../../monitoring/nagios.rst:17
+#: ../../monitoring/nagios.rst:16
 msgid "Installation"
 msgstr "Installation"
 
@@ -384,6 +384,7 @@ msgstr ""
 "ausgelöste Alarme, zum Beispiel per E-Mail. Der Alertmanager benötigt "
 "einige Einstellungen, um korrekt zu funktionieren."
 
+#: ../../monitoring/monitoring.rst:-1
 msgid "Alertmanager Settings"
 msgstr "Alertmanager Einstellungen"
 
@@ -501,8 +502,8 @@ msgstr "Alarm"
 
 #: ../../monitoring/monitoring.rst:117 ../../monitoring/monitoring.rst:205
 #: ../../monitoring/monitoring.rst:315 ../../monitoring/monitoring.rst:357
-#: ../../monitoring/monitoring.rst:386 ../../monitoring/nagios.rst:49
-#: ../../monitoring/nagios.rst:144
+#: ../../monitoring/monitoring.rst:386 ../../monitoring/nagios.rst:46
+#: ../../monitoring/nagios.rst:141
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -510,7 +511,7 @@ msgstr "Beschreibung"
 msgid "``UNIVENTION_DISK_ROOT`` and ``UNIVENTION_DISK_ROOT_WARNING``"
 msgstr "``UNIVENTION_DISK_ROOT`` und ``UNIVENTION_DISK_ROOT_WARNING``"
 
-#: ../../monitoring/monitoring.rst:120 ../../monitoring/nagios.rst:58
+#: ../../monitoring/monitoring.rst:120 ../../monitoring/nagios.rst:55
 #, python-format
 msgid ""
 "Monitors how full the :file:`/` partition is. An error status is raised "
@@ -520,7 +521,7 @@ msgstr ""
 "verbleibende freie Platz in der Standardeinstellung 25% oder 10% wird der"
 " Fehlerzustand gesetzt."
 
-#: ../../monitoring/monitoring.rst:123 ../../monitoring/nagios.rst:61
+#: ../../monitoring/monitoring.rst:123 ../../monitoring/nagios.rst:58
 msgid "``UNIVENTION_DNS``"
 msgstr "``UNIVENTION_DNS``"
 
@@ -545,7 +546,7 @@ msgstr ""
 msgid "``UNIVENTION_LDAP_AUTH``"
 msgstr "``UNIVENTION_LDAP_AUTH``"
 
-#: ../../monitoring/monitoring.rst:132 ../../monitoring/nagios.rst:70
+#: ../../monitoring/monitoring.rst:132 ../../monitoring/nagios.rst:67
 msgid "Monitors the LDAP server running on UCS Directory Nodes."
 msgstr "Überwacht den auf Directory Nodes laufenden LDAP-Server."
 
@@ -553,7 +554,7 @@ msgstr "Überwacht den auf Directory Nodes laufenden LDAP-Server."
 msgid "``UNIVENTION_LOAD`` and ``UNIVENTION_LOAD_WARNING``"
 msgstr "``UNIVENTION_LOAD`` und ``UNIVENTION_LOAD_WARNING``"
 
-#: ../../monitoring/monitoring.rst:135 ../../monitoring/nagios.rst:73
+#: ../../monitoring/monitoring.rst:135 ../../monitoring/nagios.rst:70
 msgid "Monitors the system load."
 msgstr "Überwacht die Systemlast."
 
@@ -561,7 +562,7 @@ msgstr "Überwacht die Systemlast."
 msgid "``UNIVENTION_NTP`` and ``UNIVENTION_NTP_WARNING``"
 msgstr "``UNIVENTION_NTP`` und ``UNIVENTION_NTP_WARNING``"
 
-#: ../../monitoring/monitoring.rst:138 ../../monitoring/nagios.rst:76
+#: ../../monitoring/monitoring.rst:138 ../../monitoring/nagios.rst:73
 msgid ""
 "Requests the time from the NTP service on the monitored UCS system. If "
 "this deviates by more than ``60`` or ``120`` seconds, the error status is"
@@ -571,7 +572,7 @@ msgstr ""
 "Tritt eine Abweichung von mehr als ``60`` oder ``120`` Sekunden auf, wird"
 " der Fehlerzustand erreicht."
 
-#: ../../monitoring/monitoring.rst:142 ../../monitoring/nagios.rst:80
+#: ../../monitoring/monitoring.rst:142 ../../monitoring/nagios.rst:77
 msgid "``UNIVENTION_SMTP``"
 msgstr "``UNIVENTION_SMTP``"
 
@@ -587,7 +588,7 @@ msgstr ""
 msgid "``UNIVENTION_SSL`` and ``UNIVENTION_SSL_WARNING``"
 msgstr "``UNIVENTION_SSL`` und ``UNIVENTION_SSL_WARNING``"
 
-#: ../../monitoring/monitoring.rst:146 ../../monitoring/nagios.rst:84
+#: ../../monitoring/monitoring.rst:146 ../../monitoring/nagios.rst:81
 msgid ""
 "Tests the remaining validity period of the UCS SSL certificates. This "
 "plugin is only suitable for |UCSPRIMARYDN| and |UCSBACKUPDN| systems."
@@ -599,7 +600,7 @@ msgstr ""
 msgid "``UNIVENTION_SWAP`` and ``UNIVENTION_SWAP_WARNING``"
 msgstr "``UNIVENTION_SWAP`` und ``UNIVENTION_SWAP_WARNING``"
 
-#: ../../monitoring/monitoring.rst:150 ../../monitoring/nagios.rst:88
+#: ../../monitoring/monitoring.rst:150 ../../monitoring/nagios.rst:85
 #, python-format
 msgid ""
 "Monitors the utilization of the swap partition. An error status is raised"
@@ -614,7 +615,7 @@ msgstr ""
 msgid "``UNIVENTION_REPLICATION`` and ``UNIVENTION_REPLICATION_WARNING``"
 msgstr "``UNIVENTION_REPLICATION`` und ``UNIVENTION_REPLICATION_WARNING``"
 
-#: ../../monitoring/monitoring.rst:155 ../../monitoring/nagios.rst:93
+#: ../../monitoring/monitoring.rst:155 ../../monitoring/nagios.rst:90
 msgid ""
 "Monitors the status of the LDAP replication and recognizes the creation "
 "of a :file:`failed.ldif` file and the standstill of the replication and "
@@ -638,7 +639,7 @@ msgstr ""
 "kein NSCD-Prozess wird ein *critical* Alarm ausgelöst, läuft mehr als ein"
 " Prozess, wird ein *warning* Alarm ausgelöst."
 
-#: ../../monitoring/monitoring.rst:165 ../../monitoring/nagios.rst:103
+#: ../../monitoring/monitoring.rst:165 ../../monitoring/nagios.rst:100
 msgid "``UNIVENTION_WINBIND``"
 msgstr "``UNIVENTION_WINBIND``"
 
@@ -650,7 +651,7 @@ msgstr ""
 "Testet die Verfügbarkeit des Winbind-Dienstes. Läuft kein Prozess, wird "
 "ein *critical* Alarm ausgelöst."
 
-#: ../../monitoring/monitoring.rst:169 ../../monitoring/nagios.rst:107
+#: ../../monitoring/monitoring.rst:169 ../../monitoring/nagios.rst:104
 msgid "``UNIVENTION_SMBD``"
 msgstr "``UNIVENTION_SMBD``"
 
@@ -662,7 +663,7 @@ msgstr ""
 "Testet die Verfügbarkeit des Samba-Dienstes. Läuft kein Prozess, wird ein"
 " Alarm ausgelöst."
 
-#: ../../monitoring/monitoring.rst:173 ../../monitoring/nagios.rst:111
+#: ../../monitoring/monitoring.rst:173 ../../monitoring/nagios.rst:108
 msgid "``UNIVENTION_NMBD``"
 msgstr "``UNIVENTION_NMBD``"
 
@@ -688,7 +689,7 @@ msgstr ""
 "der Domäne, wird ein *critical* Alarm ausgelöst, sind nicht-aufgerufene "
 "Join-Skripte vorhanden, wird ein *warning* Alarm ausgelöst."
 
-#: ../../monitoring/monitoring.rst:181 ../../monitoring/nagios.rst:121
+#: ../../monitoring/monitoring.rst:181 ../../monitoring/nagios.rst:118
 msgid "``UNIVENTION_KPASSWDD``"
 msgstr "``UNIVENTION_KPASSWDD``"
 
@@ -760,7 +761,7 @@ msgstr ""
 msgid "Additional alerts"
 msgstr "Zusätzliche Alarme"
 
-#: ../../monitoring/monitoring.rst:207 ../../monitoring/nagios.rst:146
+#: ../../monitoring/monitoring.rst:207 ../../monitoring/nagios.rst:143
 msgid "``UNIVENTION_OPSI``"
 msgstr "``UNIVENTION_OPSI``"
 
@@ -772,7 +773,7 @@ msgstr ""
 "Überwacht den OPSI-Daemon. Läuft kein OPSI-Prozess oder die OPSI-"
 "Weboberfläche ist nicht erreichbar, wird ein Alarm zurückgegeben."
 
-#: ../../monitoring/monitoring.rst:211 ../../monitoring/nagios.rst:150
+#: ../../monitoring/monitoring.rst:211 ../../monitoring/nagios.rst:147
 msgid "``UNIVENTION_SMART_SDA``"
 msgstr "``UNIVENTION_SMART_SDA``"
 
@@ -806,7 +807,7 @@ msgstr ""
 msgid "``UNIVENTION_ADCONNECTOR`` and ``UNIVENTION_ADCONNECTOR_WARNING``"
 msgstr "``UNIVENTION_ADCONNECTOR`` und ``UNIVENTION_ADCONNECTOR_WARNING``"
 
-#: ../../monitoring/monitoring.rst:222 ../../monitoring/nagios.rst:161
+#: ../../monitoring/monitoring.rst:222 ../../monitoring/nagios.rst:158
 msgid "Checks the status of the AD connector:"
 msgstr "Prüft den Status des Active Directory Connectors:"
 
@@ -834,7 +835,7 @@ msgstr "Kann der AD-Server nicht erreicht werden, wird ein Alarm zurückgegeben.
 msgid "The plugin can also be used in multi-connector instances."
 msgstr "Das Plugin kann auch in Multi-Connector-Instanzen verwendet werden."
 
-#: ../../monitoring/monitoring.rst:231 ../../monitoring/nagios.rst:126
+#: ../../monitoring/monitoring.rst:231 ../../monitoring/nagios.rst:123
 msgid "``UNIVENTION_CUPS``"
 msgstr "``UNIVENTION_CUPS``"
 
@@ -847,7 +848,7 @@ msgstr ""
 "oder ist die Weboberfläche nicht erreichbar, wird ein *critical* Alarm "
 "ausgelöst."
 
-#: ../../monitoring/monitoring.rst:235 ../../monitoring/nagios.rst:131
+#: ../../monitoring/monitoring.rst:235 ../../monitoring/nagios.rst:128
 msgid "``UNIVENTION_SQUID``"
 msgstr "``UNIVENTION_SQUID``"
 
@@ -1320,10 +1321,10 @@ msgid ""
 "With UCS 5.0 support for the Nagios server component has been "
 "discontinued. Yet, the systems can still be monitored via NRPE."
 msgstr ""
-"In UCS 5.0 ist die Serverkomponente von Nagios nicht mehr unterstützt. "
-"Die Systeme können aber weiterhin mittels NRPE überwacht werden."
+"Mit UCS 5.0 wurde die Unterstützung für die Nagios Serverkomponente "
+"eingestellt. Die Systeme können jedoch weiterhin über NRPE überwacht werden."
 
-#: ../../monitoring/nagios.rst:19
+#: ../../monitoring/nagios.rst:18
 msgid ""
 "In addition to the standard plugins provided with the installation of the"
 " :program:`univention-nagios-client` package, additional plugins can be "
@@ -1333,11 +1334,11 @@ msgstr ""
 ":`univention-nagios-client` mitgebracht werden, können zusätzliche "
 "Plugins über folgende Pakete nachinstalliert werden:"
 
-#: ../../monitoring/nagios.rst:23
+#: ../../monitoring/nagios.rst:22
 msgid ":program:`univention-nagios-raid`: Monitoring of the software RAID status"
 msgstr ":program:`univention-nagios-raid` Überwachung des Software-RAID-Status"
 
-#: ../../monitoring/nagios.rst:25
+#: ../../monitoring/nagios.rst:24
 msgid ""
 ":program:`univention-nagios-smart`: Test of the S.M.A.R.T. status of hard"
 " drives"
@@ -1345,7 +1346,7 @@ msgstr ""
 ":program:`univention-nagios-smart` Prüfung des S.M.A.R.T.-Status von "
 "Festplatten"
 
-#: ../../monitoring/nagios.rst:28
+#: ../../monitoring/nagios.rst:27
 msgid ":program:`univention-nagios-opsi`: Test of software distribution OPSI"
 msgstr ":program:`univention-nagios-opsi` Prüfung der Softwareverteilung OPSI"
 
@@ -1360,11 +1361,11 @@ msgstr ""
 "eingerichtet, bringt dieser das Überwachungsplugin :program:`univention-"
 "nagios-ad-connector` mit."
 
-#: ../../monitoring/nagios.rst:39 ../../monitoring/nagios.rst:44
+#: ../../monitoring/nagios.rst:36 ../../monitoring/nagios.rst:41
 msgid "Preconfigured Nagios checks"
 msgstr "Vorkonfigurierte Nagios-Prüfungen"
 
-#: ../../monitoring/nagios.rst:41
+#: ../../monitoring/nagios.rst:38
 msgid ""
 "During the installation, basic Nagios tests are set up automatically for "
 "UCS systems."
@@ -1372,15 +1373,15 @@ msgstr ""
 "Während der Installation werden automatisch grundlegende Nagios-Prüfungen"
 " für die UCS-Systeme der Domäne eingerichtet."
 
-#: ../../monitoring/nagios.rst:48 ../../monitoring/nagios.rst:143
+#: ../../monitoring/nagios.rst:45 ../../monitoring/nagios.rst:140
 msgid "Nagios service"
 msgstr "Nagios-Dienst"
 
-#: ../../monitoring/nagios.rst:51
+#: ../../monitoring/nagios.rst:48
 msgid "``UNIVENTION_PING``"
 msgstr "``UNIVENTION_PING``"
 
-#: ../../monitoring/nagios.rst:52
+#: ../../monitoring/nagios.rst:49
 #, python-format
 msgid ""
 "Tests the availability of the monitored UCS system with the command "
@@ -1392,11 +1393,11 @@ msgstr ""
 "erreicht, wenn die Antwortzeit 50 ms oder 100 ms überschreitet oder "
 "Paketverluste von 20% oder 40% auftreten."
 
-#: ../../monitoring/nagios.rst:57
+#: ../../monitoring/nagios.rst:54
 msgid "``UNIVENTION_DISK_ROOT``"
 msgstr "``UNIVENTION_DISK_ROOT``"
 
-#: ../../monitoring/nagios.rst:62
+#: ../../monitoring/nagios.rst:59
 msgid ""
 "Tests the function of the local DNS server and the accessibility of the "
 "public DNS server by querying the hostname ``www.univention.de``. If no "
@@ -1412,39 +1413,39 @@ msgstr ""
 "``www.univention.de`` z.B. gegen den FQDN des |UCSPRIMARYDN| ersetzt "
 "werden, um die Funktion der Namensauflösung zu testen."
 
-#: ../../monitoring/nagios.rst:69
+#: ../../monitoring/nagios.rst:66
 msgid "``UNIVENTION_LDAP``"
 msgstr "``UNIVENTION_LDAP``"
 
-#: ../../monitoring/nagios.rst:72
+#: ../../monitoring/nagios.rst:69
 msgid "``UNIVENTION_LOAD``"
 msgstr "``UNIVENTION_LOAD``"
 
-#: ../../monitoring/nagios.rst:75
+#: ../../monitoring/nagios.rst:72
 msgid "``UNIVENTION_NTP``"
 msgstr "``UNIVENTION_NTP``"
 
-#: ../../monitoring/nagios.rst:81
+#: ../../monitoring/nagios.rst:78
 msgid "Tests the mail server."
 msgstr "Testet den Mailserver."
 
-#: ../../monitoring/nagios.rst:83
+#: ../../monitoring/nagios.rst:80
 msgid "``UNIVENTION_SSL``"
 msgstr "``UNIVENTION_SSL``"
 
-#: ../../monitoring/nagios.rst:87
+#: ../../monitoring/nagios.rst:84
 msgid "``UNIVENTION_SWAP``"
 msgstr "``UNIVENTION_SWAP``"
 
-#: ../../monitoring/nagios.rst:92
+#: ../../monitoring/nagios.rst:89
 msgid "``UNIVENTION_REPLICATION``"
 msgstr "``UNIVENTION_REPLICATION``"
 
-#: ../../monitoring/nagios.rst:98
+#: ../../monitoring/nagios.rst:95
 msgid "``UNIVENTION_NSCD``"
 msgstr "``UNIVENTION_NSCD``"
 
-#: ../../monitoring/nagios.rst:99
+#: ../../monitoring/nagios.rst:96
 msgid ""
 "Tests the availability of the name server cache daemon (NSCD). If there "
 "is no NSCD process running, a CRITICAL event is triggered; if more than "
@@ -1454,7 +1455,7 @@ msgstr ""
 "kein NSCD-Prozess wird ein CRITICAL-Event ausgelöst, läuft mehr als ein "
 "Prozess, wird ein WARNING-Event ausgelöst."
 
-#: ../../monitoring/nagios.rst:104
+#: ../../monitoring/nagios.rst:101
 msgid ""
 "Tests the availability of the Winbind service. If no process is running, "
 "a CRITICAL event is triggered."
@@ -1462,7 +1463,7 @@ msgstr ""
 "Testet die Verfügbarkeit des Winbind-Dienstes. Läuft kein Prozess, wird "
 "ein CRITICAL-Event ausgelöst."
 
-#: ../../monitoring/nagios.rst:108
+#: ../../monitoring/nagios.rst:105
 msgid ""
 "Tests the availability of the Samba service. If no process is running, a "
 "CRITICAL event is triggered."
@@ -1470,7 +1471,7 @@ msgstr ""
 "Testet die Verfügbarkeit des Samba-Dienstes. Läuft kein Prozess, wird ein"
 " CRITICAL-Event ausgelöst."
 
-#: ../../monitoring/nagios.rst:112
+#: ../../monitoring/nagios.rst:109
 msgid ""
 "Tests the availability of the NMBD service, which is responsible for the "
 "NetBIOS service in Samba. If no process is running, a CRITICAL event is "
@@ -1480,11 +1481,11 @@ msgstr ""
 "Dienst zuständig ist. Läuft kein Prozess, wird ein CRITICAL-Event "
 "ausgelöst."
 
-#: ../../monitoring/nagios.rst:116
+#: ../../monitoring/nagios.rst:113
 msgid "``UNIVENTION_JOINSTATUS``"
 msgstr "``UNIVENTION_JOINSTATUS``"
 
-#: ../../monitoring/nagios.rst:117
+#: ../../monitoring/nagios.rst:114
 msgid ""
 "Tests the join status of a system. If a system has yet to join, a "
 "CRITICAL event is triggered; if non-run join scripts are available, a "
@@ -1494,7 +1495,7 @@ msgstr ""
 "der Domäne, wird ein CRITICAL-Event ausgelöst, sind nicht-aufgerufene "
 "Join-Skripte vorhanden, wird ein WARNING-Event zurückgeliefert."
 
-#: ../../monitoring/nagios.rst:122
+#: ../../monitoring/nagios.rst:119
 msgid ""
 "Tests the availability of the Kerberos password service (only available "
 "on Primary/|UCSBACKUPDN|\\ s). If fewer or more than one process is "
@@ -1504,7 +1505,7 @@ msgstr ""
 " Primary/|UCSBACKUPDN|). Läuft weniger oder mehr als ein Prozess, wird "
 "ein CRITICAL-Event ausgelöst."
 
-#: ../../monitoring/nagios.rst:127
+#: ../../monitoring/nagios.rst:124
 msgid ""
 "Monitors the CUPS daemon. If there is no :program:`cupsd` process running"
 " or the web interface on port 631 is not accessible, the CRITICAL status "
@@ -1514,7 +1515,7 @@ msgstr ""
 "die Weboberfläche auf Port 631 nicht erreichbar, wird der Status CRITICAL"
 " zurückgegeben."
 
-#: ../../monitoring/nagios.rst:132
+#: ../../monitoring/nagios.rst:129
 msgid ""
 "Monitors the Squid proxy. If no squid process is running or the Squid "
 "proxy is not accessible, the CRITICAL status is returned."
@@ -1522,7 +1523,7 @@ msgstr ""
 "Überwacht den Proxy Squid. Läuft kein Squid-Prozess oder der Squid-Proxy "
 "ist nicht erreichbar, wird der Status CRITICAL zurückgegeben."
 
-#: ../../monitoring/nagios.rst:135
+#: ../../monitoring/nagios.rst:132
 msgid ""
 "The following Nagios services are only available on the respective Nagios"
 " client once additional packages have been installed (see :ref:`nagios-"
@@ -1532,11 +1533,11 @@ msgstr ""
 "verfügbar, sobald zusätzliche Pakete installiert wurden (siehe :ref"
 ":`nagios-installation`):"
 
-#: ../../monitoring/nagios.rst:139
+#: ../../monitoring/nagios.rst:136
 msgid "Additional Nagios checks"
 msgstr "Zusätzliche Nagios Checks"
 
-#: ../../monitoring/nagios.rst:147
+#: ../../monitoring/nagios.rst:144
 msgid ""
 "Monitors the OPSI Daemon. If no OPSI process is running or the OPSI proxy"
 " is not accessible, the CRITICAL status is returned."
@@ -1545,7 +1546,7 @@ msgstr ""
 "Weboberfläche ist nicht erreichbar, wird der Status CRITICAL "
 "zurückgegeben."
 
-#: ../../monitoring/nagios.rst:151
+#: ../../monitoring/nagios.rst:148
 msgid ""
 "Tests the S.M.A.R.T. status of the hard drive :file:`/dev/sda`. "
 "Corresponding Nagios services exist for the hard drives :file:`sdb`, "
@@ -1555,11 +1556,11 @@ msgstr ""
 "Festplatten :file:`sdb`, :file:`sdc` und :file:`sdd` existieren "
 "entsprechende Nagios-Dienste."
 
-#: ../../monitoring/nagios.rst:155
+#: ../../monitoring/nagios.rst:152
 msgid "``UNIVENTION_RAID``"
 msgstr "``UNIVENTION_RAID``"
 
-#: ../../monitoring/nagios.rst:156
+#: ../../monitoring/nagios.rst:153
 msgid ""
 "Tests the status of the software RAID via :file:`/proc/mdadm` and returns"
 " CRITICAL if one of the hard drives in the RAID association has failed or"
@@ -1570,33 +1571,36 @@ msgstr ""
 "ausgefallen ist, oder einen WARNING Alarm zurück, wenn der Recovery-"
 "Vorgang läuft."
 
-#: ../../monitoring/nagios.rst:160
+#: ../../monitoring/nagios.rst:157
 msgid "``UNIVENTION_ADCONNECTOR``"
 msgstr "``UNIVENTION_ADCONNECTOR``"
 
-#: ../../monitoring/nagios.rst:163
+#: ../../monitoring/nagios.rst:160
 msgid "If no connector process is running, CRITICAL is reported."
 msgstr "Läuft kein Connector-Prozess, wird der Status CRITICAL zurückgegeben."
 
-#: ../../monitoring/nagios.rst:164
+#: ../../monitoring/nagios.rst:161
 msgid ""
 "If more than one process is running per connector instance, a WARNING is "
 "given."
 msgstr "Existiert mehr als ein Prozess pro Connector-Instanz gibt es eine WARNING."
 
-#: ../../monitoring/nagios.rst:165
+#: ../../monitoring/nagios.rst:162
 msgid "If rejects occur, a WARNING is given."
 msgstr "Treten Rejects auf, gibt es eine WARNING."
 
-#: ../../monitoring/nagios.rst:166
+#: ../../monitoring/nagios.rst:163
 msgid "If the AD server cannot be reached, a CRITICAL status occurs."
 msgstr "Kann der AD-Server nicht erreicht werden, tritt ein CRITICAL-Zustand ein."
 
-#: ../../monitoring/nagios.rst:168
+#: ../../monitoring/nagios.rst:165
 msgid ""
 "The plugin can also be used in multi-connector instances; the name of the"
 " instance must be passed on as a parameter."
 msgstr ""
 "Das Plugin kann auch in Multi-Connector-Instanzen verwendet werden. Dabei"
 " muss der Name der Instanz als Parameter übergeben werden."
+
+#~ msgid ":program:`univention-nagios-ad-connector`: Test of the AD Connector"
+#~ msgstr ":program:`univention-nagios-ad-connector` Prüfung des AD-Connectors"
 
