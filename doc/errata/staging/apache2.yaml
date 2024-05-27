@@ -1,0 +1,26 @@
+product: ucs
+release: "5.0"
+version: [6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: apache2
+fix: 2.4.59-1~deb10u1A~5.0.7.202405270804
+desc: |
+ This update addresses the following issues:
+ 2.4.59-1~deb10u1 (Fri, 24 May 2024 22:36:21 +0000)
+ [ Yadd ]
+ * Team upload
+ * New upstream version 2.4.59 (Closes: CVE-2019-17567, CVE-2023-31122,
+   CVE-2023-38709, CVE-2023-45802, CVE-2024-24795, CVE-2024-27316)
+ * Update test framework
+ * Drop old patches
+ * Update patches
+ [ Bastien Roucariès ]
+ * Break against fossil
+bug: [57339]
+cve:
+- CVE-2019-17567
+- CVE-2023-31122
+- CVE-2023-38709
+- CVE-2023-45802
+- CVE-2024-24795
+- CVE-2024-27316
