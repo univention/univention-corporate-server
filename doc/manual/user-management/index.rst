@@ -14,6 +14,11 @@ UCS integrates central identity management. All user information are managed
 centrally in UCS via the |UCSUMC| module :guilabel:`Users` and stored in the
 LDAP directory service.
 
+.. note::
+
+   The user management is part of Univention Nubus in the *Directory Manager* component.
+   For more information about Nubus, refer to :ref:`introduction-nubus`
+
 All the services integrated in the domain access the central account
 information, i.e., the same username and password are used for the user login to
 a Windows client as for the login on the IMAP server.

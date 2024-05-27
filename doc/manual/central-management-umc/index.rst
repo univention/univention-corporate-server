@@ -61,6 +61,10 @@ In conclusion, the command line interface of the domain administration is
 illustrated (:ref:`central-udm`), and the evaluation of domain data via the UCS
 reporting function are explained (:ref:`central-reports`).
 
+.. note::
+
+   The |UCSWEB| is part of Univention Nubus in the *Management UI* component.
+   For more information about Nubus, refer to :ref:`introduction-nubus`
 
 .. toctree::
    :caption: Chapter contents:
