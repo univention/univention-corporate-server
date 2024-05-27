@@ -16,6 +16,11 @@ coordination of OpenLDAP.
 Often several LDAP servers are operated in a UCS domain. The configuration of
 the server(s) used is described in :ref:`computers-configure-ldap-server`.
 
+.. note::
+
+   The LDAP directory is part of Univention Nubus in the *Identity Store and Directory Service* component.
+   For more information about Nubus, refer to :ref:`introduction-nubus`
+
 .. _domain-ldap-schema:
 
 LDAP schemas

@@ -17,6 +17,11 @@ In addition, there are also local user groups on each system, which are
 predominantly used for hardware access. These are not managed through the
 |UCSUMS|, but saved in the :file:`/etc/group` file.
 
+.. note::
+
+   The group management is part of Univention Nubus in the *Directory Manager* component.
+   For more information about Nubus, refer to :ref:`introduction-nubus`
+
 .. _groups-assignement:
 
 User group assignments

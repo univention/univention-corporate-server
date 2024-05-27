@@ -12,6 +12,11 @@ Requirements strongly differ from small to large environments in organizations,
 public authorities, or even schools. Therefore, UCS implemented a very flexible
 and individually customizable concept for portal pages.
 
+.. note::
+
+   The Univention Portal is part of Univention Nubus.
+   For more information about Nubus, refer to :ref:`introduction-nubus`
+
 As illustrated in :numref:`portal-schema`, portal entries (i.e., links
 to applications/Apps/services; UDM object type ``portals/entry``) can be
 assigned to none, one or multiple portal categories. A portal category
