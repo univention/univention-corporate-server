@@ -6,7 +6,7 @@
 ## packages:
 ##   - python3-univention-directory-manager
 
-from typing import Callable
+from collections.abc import Callable
 
 import pytest
 
