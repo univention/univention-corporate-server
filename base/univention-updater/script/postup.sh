@@ -163,6 +163,8 @@ if [ -n "$(ucr search "^fetchmail/autostart/update510$")" ] ; then
 	systemctl restart fetchmail >&3 2>&3
 fi
 
+rm -f /etc/apt/preferences.d/99ucs510.pref /etc/apt/apt.conf.d/99ucs510
+
 echo "
 
 

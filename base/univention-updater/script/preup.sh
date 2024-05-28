@@ -181,6 +181,15 @@ if dpkg -l univention-appcenter-docker 2>&3 | grep ^ii  >&3 ; then
 	ucr set update/510/univention-appcenter-docker=true
 fi
 
+[ -f /etc/apt/preferences.d/99ucs510.pref ] ||
+cat >/etc/apt/preferences.d/99ucs510.pref <<__PREF__
+Package: postgresql-15
+Pin: release l=Univention Corporate Server, v=5.1.0
+Pin-Priority: 1001
+__PREF__
+[ -f /etc/apt/apt.conf.d/99ucs510 ] || echo 'APT::Get::Allow-Downgrades "true";' >/etc/apt/apt.conf.d/99ucs510
+
+
 # Issue univention/ucs#2548: make sure we keep univention-monitoring-client and univention-nagios-client
 if dpkg -l univention-monitoring-client 2>&3 | grep ^ii  >&3 ; then
   ucr set update/510/univention-monitoring-client=true
