@@ -43,10 +43,14 @@ import univention.debug as ud
 import listener
 
 
-# pwdChangeNextLogin=1 should be set, this is either shadowMax=1 or shadowLastChange=0
+# `pwdChangeNextLogin=1` should be set for the created user.
+# When this listener module was created, it was assumed that this results
+# in either `shadowMax=1` or `shadowLastChange=0`.
+# But this is only true if there is no password policy applied during creation -
+# the filter was changed to require `sambaPwdLastSet=0` instead. (Bug #57226)
 name = 'selfservice-invitation'
 description = 'trigger selfservice email for new users with PasswordRecoveryEmail'
-filter = '(&(univentionPasswordSelfServiceEmail=*)(uid=*)(|(shadowMax=1)(shadowLastChange=0)))'
+filter = '(&(univentionPasswordSelfServiceEmail=*)(uid=*)(sambaPwdLastSet=0))'
 modrdn = '1'
 cache_dir = '/var/cache/univention-directory-listener/selfservice-invitation'
 
