@@ -1,3 +1,9 @@
+ucs-test (12.0.93) unstable; urgency=medium
+
+  * Issue #2274: Ignore office365 tracebacks
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 28 May 2024 11:58:02 +0200
+
 ucs-test (12.0.92) unstable; urgency=medium
 
   * Bug #57320: Add keycloak tests for all documentated migration of clients
