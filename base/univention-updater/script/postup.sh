@@ -158,6 +158,7 @@ if univention-ldapsearch -LLL '(uid=ucs-sso)' 1.1 | grep -q '^dn'; then
 fi
 rm -f /etc/simplesamlphp.keytab /etc/simplesamlphp/ucs-sso-kerberos.secret
 
+rm -f /etc/apt/preferences.d/99ucs520.pref /etc/apt/apt.conf.d/99ucs520
 
 echo "
 

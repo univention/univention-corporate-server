@@ -1,3 +1,10 @@
+univention-updater (17.0.7) unstable; urgency=medium
+
+  * Issue univention/ucs#2244: Pin runc package in 5.2: the upstream debian version
+    is slightly lower than the one we imported from ubuntu in 5.0
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 28 May 2024 17:19:21 +0200
+
 univention-updater (17.0.6) unstable; urgency=medium
 
   * Bug #31252: Revert Remove cn=backup,$ldap_base on upgrade to UCS 5.2

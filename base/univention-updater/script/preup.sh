@@ -169,6 +169,15 @@ deactivate_old_package_sources () {
 }
 deactivate_old_package_sources
 
+[ -f /etc/apt/preferences.d/99ucs520.pref ] ||
+cat >/etc/apt/preferences.d/99ucs520.pref <<__PREF__
+Package: runc
+Pin: release l=Univention Corporate Server, v=5.2.0
+Pin-Priority: 1001
+__PREF__
+[ -f /etc/apt/apt.conf.d/99ucs520 ] || echo 'APT::Get::Allow-Downgrades "true";' >/etc/apt/apt.conf.d/99ucs520
+
+
 # univention/ucs#1945 - disable php7.4
 a2dismod php7.4 || true
 
