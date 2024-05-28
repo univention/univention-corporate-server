@@ -66,7 +66,7 @@ def pam_conv(auth, query_list, userData):
 
 with open(conf, "w") as fd:
 	print("auth required pam_sss.so", file=fd)
-	print("account required pam_unix.so", file=fd)
+	print("account required pam_sss.so", file=fd)
 
 try:
 	auth = PAM.pam()
@@ -101,7 +101,7 @@ do
 	user_set_attr "$NAME" disabled "" "$udm"
 
 	[ 0 -ne "$windows" ] && kerberos="$windows" # Kerberos checks sambaAcctFlags
-	[ 0 -ne "$posix" ] && windows="$posix" # Samba depends on pam_unix: acct_expired=bad
+	[ 0 -ne "$posix" ] && windows="$posix" # Samba depends on pam_sss: acct_expired=bad
 
 	sleep 5 # wait for replication
 
