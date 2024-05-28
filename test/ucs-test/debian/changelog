@@ -1,3 +1,10 @@
+ucs-test (12.0.95) unstable; urgency=medium
+
+  *  Bug #56735: Fix REST async-client tests for scenarios where Administrator
+     pwd is not "univention"
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 28 May 2024 16:38:27 +0200
+
 ucs-test (12.0.94) unstable; urgency=medium
 
   * Issue #2276: Tests sss pam_module instead of pam_unix for LDAP users
