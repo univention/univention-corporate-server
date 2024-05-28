@@ -3,7 +3,7 @@ release: "5.0"
 version: [7]
 scope: ucs_5.0-0-errata5.0-7
 src: univention-ldap
-fix: 16.0.15-7
+fix: 16.0.15-8
 desc: |
  This update addresses the following issues:
  * Even though all OCs inherit from top and actually are found when
