@@ -6,11 +6,9 @@ src: bluez
 fix: 5.50-1.2~deb10u5
 desc: |
  This update addresses the following issue:
- 5.50-1.2~deb10u5 (Tue, 21 May 2024 22:00:06 +0200)
- * Non-maintainer upload by the Debian LTS Team.
  * CVE-2023-27349: Fix crash while handling unsupported events. This
    vulnerability allows network-adjacent attackers to execute arbitrary code
-   via Bluetooth on affected installations of BlueZ. User interaction is
+   via Bluetooth on affected installations of `BlueZ`. User interaction is
    required to exploit this vulnerability in that the target must connect to a
    malicious device. The specific flaw exists within the handling of the AVRCP
    protocol. The issue results from the lack of proper validation of
