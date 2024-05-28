@@ -137,9 +137,6 @@ esac
 # Bug #52971: fix __pycache__ directory permissions
 find /usr/lib/python3/dist-packages/ -type d -not -perm 755 -name __pycache__ -exec chmod 755 {} +
 
-if [ "$server_role" = "domaincontroller_master" ]; then
-  ldapdelete -x -H ldapi:/// cn=backup,$(ucr get ldap/base) 2>/dev/null
-fi
 
 # Bug #52923 #57296: switch back to old fetchmail/autostart status
 if [ -n "$(ucr search "^fetchmail/autostart/update520$")" ] ; then

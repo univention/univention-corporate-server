@@ -1,3 +1,9 @@
+univention-ldap (18.0.9) unstable; urgency=medium
+
+  * Bug #31252: Revert Remove cn=backup,$ldap_base from base.ldif
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 28 May 2024 11:51:02 +0200
+
 univention-ldap (18.0.8) unstable; urgency=medium
 
   * Bug #31252: Remove cn=backup,$ldap_base from base.ldif
