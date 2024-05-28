@@ -22,7 +22,8 @@ from univention.testing.utils import verify_ldap_object
 @pytest.mark.asyncio()
 async def test_create_modify_move_remove(random_string, ucr):
     uri = 'http://localhost/univention/udm/'
-    async with UDM.http(uri, 'Administrator', 'univention') as udm:
+    pwd = ucr.get('tests/domainadmin/pwd', 'univention')
+    async with UDM.http(uri, 'Administrator', pwd) as udm:
         module = await udm.get("users/user")
         cn = await udm.get("container/cn")
         obj = await module.new()
@@ -101,7 +102,8 @@ async def test_create_modify_move_remove(random_string, ucr):
 @pytest.mark.asyncio()
 async def test_json_patch(random_string, ucr):
     uri = 'http://localhost/univention/udm/'
-    async with UDM.http(uri, 'Administrator', 'univention') as udm:
+    pwd = ucr.get('tests/domainadmin/pwd', 'univention')
+    async with UDM.http(uri, 'Administrator', pwd) as udm:
         module = await udm.get("users/user")
         obj = await module.new()
         patch = PatchDocument()
@@ -138,7 +140,8 @@ async def test_json_patch(random_string, ucr):
 @pytest.mark.asyncio()
 async def test_various_api_methods(random_string, ucr):
     uri = 'http://localhost/univention/udm/'
-    async with UDM.http(uri, 'Administrator', 'univention') as udm:
+    pwd = ucr.get('tests/domainadmin/pwd', 'univention')
+    async with UDM.http(uri, 'Administrator', pwd) as udm:
         assert (await udm.get_ldap_base()) == ucr['ldap/base']
         mod = await udm.get('container/dc')
         with pytest.raises(_NoRelation):
@@ -194,9 +197,10 @@ async def test_various_api_methods(random_string, ucr):
 
 
 @pytest.mark.asyncio()
-async def test_service_unavailable():
+async def test_service_unavailable(ucr):
     uri = 'http://localhost/univention/udm/'
-    async with UDM.http(uri, 'Administrator', 'univention') as udm:
+    pwd = ucr.get('tests/domainadmin/pwd', 'univention')
+    async with UDM.http(uri, 'Administrator', pwd) as udm:
         subprocess.call(['systemctl', 'stop', 'univention-directory-manager-rest'])  # noqa: ASYNC101
         try:
             with pytest.raises(ServiceUnavailable):
