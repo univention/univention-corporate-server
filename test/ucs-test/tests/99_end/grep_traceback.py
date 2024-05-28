@@ -362,6 +362,7 @@ COMMON_EXCEPTIONS = (
     # E(r"_ldb.LdbError: \(1, 'LDAP client internal error: NT_STATUS_INVALID_PARAMETER'\)", ['univention-samba4-site-tool.py'], 54592),
     # E(r"AssertionError: Attribute \(username\) is parsed wrong as.*", ['103_ucsschool_smbstatus_parser.py'], 54591),
     # E(r"optparse.OptionConflictError: option.*authentication-file", ['univention-samba4-site-tool.py'], 55082),
+    E(r"univention.office365.microsoft.exceptions.core_exceptions.MSGraphError"),  # office365 product tests deliberately creates these errors
 )
 
 
