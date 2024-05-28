@@ -171,7 +171,7 @@ UCS stores the MAC address in the LDAP directory as lowercase string with the
 colon (``:``) as separator, for example ``00:00:5e:00:53:00``.
 
 
-.. versionadded:: 5.0-6-erratum-...
+.. versionadded:: 5.0-6-erratum-1011
 
    With :uv:erratum:`5.0x1011` the Radius server
    can handle different formats of the MAC addresses for the username when using MAB.
