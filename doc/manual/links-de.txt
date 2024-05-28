@@ -2,6 +2,7 @@
 ..
 .. SPDX-License-Identifier: AGPL-3.0-only
 
+.. _bsi-secure-password: https://www.bsi.bund.de/DE/Themen/Verbraucherinnen-und-Verbraucher/Informationen-und-Empfehlungen/Cyber-Sicherheitsempfehlungen/Accountschutz/Sichere-Passwoerter-erstellen/sichere-passwoerter-erstellen_node.html
 .. _docker-hub-univention: https://hub.docker.com/u/univention/
 .. _dovecot-mail-location-settings: https://doc.dovecot.org/configuration_manual/mail_location/
 .. _dovecot-shared-mailboxes: https://doc.dovecot.org/configuration_manual/shared_mailboxes/
@@ -21,6 +22,7 @@
 .. _microsoft-domain-verify: https://learn.microsoft.com/de-de/entra/fundamentals/add-custom-domain
 .. _microsoft-rsat-tools: https://www.microsoft.com/en-us/download/details.aspx?id=45520
 .. _microsoft-install-the-certification-authority: https://learn.microsoft.com/de-de/windows-server/networking/core-network-guide/cncg/server-certs/install-the-certification-authority
+.. _microsoft-password-complexity-requirements: https://learn.microsoft.com/de-de/previous-versions/windows/it-pro/windows-10/security/threat-protection/security-policy-settings/password-must-meet-complexity-requirements
 .. _mozilla-css-custom-properties: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
 .. _mozilla-css-selectors: https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors
 .. _postfix-reject-rbl-client: http://www.postfix.org/postconf.5.html#reject_rbl_client

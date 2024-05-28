@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-29 14:20+0100\n"
-"PO-Revision-Date: 2024-02-29 15:28+0100\n"
+"POT-Creation-Date: 2024-05-28 13:15+0200\n"
+"PO-Revision-Date: 2024-05-28 13:22+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -278,249 +278,532 @@ msgstr "Verwaltung der Benutzerpasswörter"
 
 #: ../../user-management/password-management.rst:10
 msgid ""
-"Passwords which are difficult to guess and regular password changes are "
-"an essential element of the system security of a UCS domain. The "
-"following properties can be configured for users using a *password "
-"policy*."
+"Most internet users find it difficult to choose the right password. The "
+"password is the key to accessing user accounts, even in a UCS domain. "
+"Passwords that are difficult to guess and regular passwords changes are "
+"an essential element of the system security of a UCS domain. To prevent "
+"users from choosing passwords that are too easy, administrators can "
+"configure several properties in a *password policy*."
 msgstr ""
-"Schwer zu erratende Passwörter und regelmäßige Passwortwechsel sind ein "
-"wichtiger Baustein der Systemsicherheit einer UCS-Domäne. Folgende "
-"Eigenschaften lassen sich für Benutzer über eine *Passwort*-Richtlinie "
-"konfigurieren."
+"Den meisten Internetnutzern fällt es schwer, das richtige Passwort zu "
+"wählen. Das Passwort ist der Schlüssel zum Zugriff auf Benutzerkonten, "
+"auch in einer UCS-Domäne. Schwer zu erratende Passwörter und regelmäßiger"
+" Wechsel der Passwörter sind ein wesentliches Element der "
+"Systemsicherheit einer UCS-Domäne. Um zu verhindern, dass Benutzer zu "
+"einfache Passwörter wählen, können Administratoren mehrere Eigenschaften "
+"in einer *Passwortrichtlinie* konfigurieren."
 
-#: ../../user-management/password-management.rst:15
+#: ../../user-management/password-management.rst:17
 msgid ""
-"If Samba is used, the settings of the Samba domain object (see :ref"
-":`users-password-samba`) apply for logins to Window clients. The settings"
-" of the Samba domain object and the policy should be set identically, "
-"otherwise different password requirements will apply for logins to "
-"Windows and UCS systems."
+"This section describes how to define password policies, such as a minimum"
+" password length and an expiration time interval. UCS applies the "
+"password policy when users change their passwords."
 msgstr ""
-"Wird Samba eingesetzt, greifen für Anmeldungen an Windows-Clients die "
-"Einstellungen des Samba-Domänenobjekts (siehe :ref:`users-password-"
-"samba`). Die Einstellungen des Samba-Domänenobjekts und der Richtlinie "
-"sollten identisch gesetzt werden, sonst greifen für Anmeldungen an "
-"Windows- und UCS-Systemen unterschiedliche Passwortanforderungen."
+"Dieser Abschnitt beschreibt, wie Sie Passwortrichtlinien definieren, z. "
+"B. eine Mindestlänge des Passworts und ein Zeitintervall für den Ablauf. "
+"UCS wendet die Passwortrichtlinie an, wenn Benutzer ihre Passwörter "
+"ändern. "
 
 #: ../../user-management/password-management.rst:21
 msgid ""
-"The password is saved in different attributes for every user saved in the"
-" management system:"
+"UCS stores the user password for every user as hash in different "
+"attributes of the corresponding LDAP user account object:"
 msgstr ""
-"Für jeden im Managementsystem gespeicherten Benutzer wird das Passwort in"
-" verschiedenen Attributen gespeichert:"
+"UCS speichert das Benutzerpasswort für jeden Benutzer als Hash in "
+"verschiedenen Attributen des entsprechenden LDAP-Objekts des "
+"Benutzerkontos:"
+
+#: ../../user-management/password-management.rst
+msgid "``krb5Key``"
+msgstr "``krb5Key``"
 
 #: ../../user-management/password-management.rst:24
-msgid "The ``krb5Key`` attribute stores the Kerberos password."
-msgstr "Das Attribut ``krb5Key`` speichert das Kerberos-Passwort."
+msgid "stores the Kerberos password."
+msgstr "speichert das Kerberos-Passwort."
+
+#: ../../user-management/password-management.rst
+msgid "``userPassword``"
+msgstr "``userPassword``"
 
 #: ../../user-management/password-management.rst:26
 msgid ""
-"The ``userPassword`` attribute stores the Unix password (in other Linux "
-"distributions present in :file:`/etc/shadow`)."
+"stores the Unix password. Other Linux distributions store it in "
+":file:`/etc/shadow`."
 msgstr ""
-"Das Attribut ``userPassword`` speichert das Unix-Passwort (das in anderen"
-" Linux-Distributionen in :file:`/etc/shadow` gespeichert wird)."
+"speichert das Unix-Passwort. Andere Linux Distributionen speichern es in "
+":file:`/etc/shadow`."
+
+#: ../../user-management/password-management.rst
+msgid "``sambaNTPassword``"
+msgstr "``sambaNTPassword``"
 
 #: ../../user-management/password-management.rst:29
-msgid ""
-"The ``sambaNTPassword`` attribute stores the NT password hash used by "
-"Samba."
-msgstr ""
-"Das Attribut ``sambaNTPassword`` enthält den von Samba verwendeten NT-"
-"Passwort-Hash."
+msgid "stores the NT password hash used by Samba."
+msgstr "speichert den von Samba verwendeten NT-Passwort-Hash."
 
-#: ../../user-management/password-management.rst:31
+#: ../../user-management/password-management.rst:33
 msgid ""
-"Password changes are always initiated via Kerberos, either in the UCS PAM"
-" configuration or via Samba."
+"`Creating Secure Passwords <bsi-secure-password_>`_ by German Federal "
+"Office of Information Security"
 msgstr ""
-"Passwortänderungen werden immer über Kerberos initiiert, entweder über "
-"die UCS-PAM-Konfiguration oder über Samba."
+"`Sichere Passwörter erstellen <bsi-secure-password_>`_ von Bundesamt für "
+"Sicherheit in der Informationstechnik"
+
+#: ../../user-management/password-management.rst:34
+msgid "for more information and tips about creating a secure and good password."
+msgstr ""
+"für weitere Informationen und Tipps zur Erstellung eines sicheren und "
+"guten Passworts."
 
 #: ../../user-management/password-management.rst:39
-msgid "Configuring a password policy"
-msgstr "Konfiguration einer Passwort-Richtlinie"
+msgid "Password policy types"
+msgstr "Arten von Passwortrichtlinien"
 
-#: ../../user-management/password-management.rst:52
+#: ../../user-management/password-management.rst:41
+msgid ""
+"UCS has several types of password policy settings as outlined in this "
+"section. What policy applies depends on who runs the password change and "
+"if the UCS domain has Samba installed through the app :program:`Active "
+"Directory Domain Controller`."
+msgstr ""
+"UCS verfügt über mehrere Arten von Kennwortrichtlinieneinstellungen, die "
+"in diesem Abschnitt beschrieben sind. Welche Richtlinie gilt, hängt davon"
+" ab, wer die Passwortänderung durchführt und ob in der UCS-Domäne Samba "
+"über die App :program:`Active Directory Domain Controller` installiert "
+"ist. "
+
+#: ../../user-management/password-management.rst:68
+msgid "Password Policy in UDM"
+msgstr "Passwortrichtlinie in UDM"
+
+#: ../../user-management/password-management.rst:47
+msgid ""
+"The *Password Policy* is a UDM policy that applies to user password "
+"changes done through UMC modules which in turn use UDM in the backend. "
+"The *Password Policy* applies, when an **administrator** changes a user's"
+" password through UMC or UDM. It also applies, when a **user** changes "
+"their password and if the UCS domain **hasn't** Samba installed."
+msgstr ""
+"Die *Passwortrichtlinie* ist eine UDM Richtlinie, die für die Änderung "
+"von Benutzerpasswörtern durch UMC-Module gilt, die ihrerseits UDM im "
+"Backend verwenden. Die *Passwortrichtlinie* gilt, wenn ein "
+"**Administrator** das Passwort eines Benutzers über UMC oder UDM ändert. "
+"Dies gilt auch, wenn ein **Benutzer** sein Passwort ändert und die UCS-"
+"Domäne **kein** Samba installiert hat."
+
+#: ../../user-management/password-management.rst:53
+msgid ""
+"UCS defines a default password policy. :ref:`users-passwords-policy-"
+"settings-umc` describes the available settings for the *Password Policy*."
+msgstr ""
+"UCS definiert eine Standard-Passwortrichtlinie. :ref:`users-passwords-"
+"policy-settings-umc` beschreibt die verfügbaren Einstellungen für die "
+"*Passwortrichtlinie*."
+
+#: ../../user-management/password-management.rst:56
+msgid ""
+"You can enhance the *Password quality check* with |UCSUCRVs| mentioned in"
+" :ref:`users-passwords-policy-settings-umc`."
+msgstr ""
+"Sie können die *Passwort-Qualitätsprüfung* mit |UCSUCRVs| erweitern, wie "
+"in :ref:`users-passwords-policy-settings-umc` erwähnt."
+
+#: ../../user-management/password-management.rst:58
+msgid ""
+"You can create additional password policies and assign them to user "
+"account objects in the LDAP directory tree. For more information about "
+"policies, see :ref:`central-policies`."
+msgstr ""
+"Sie können zusätzliche Passwortrichtlinien erstellen und sie den "
+"Benutzerkonten im LDAP-Verzeichnisbaum zuweisen. Weitere Informationen "
+"über Richtlinien finden Sie unter :ref:`central-policies`."
+
+#: ../../user-management/password-management.rst:64
+msgid ""
+"When you have Samba installed, design the password requirement settings "
+"of the user password policy identical to the Samba domain object as "
+"described in :ref:`users-password-samba`."
+msgstr ""
+"Wenn Sie Samba installiert haben, entwerfen Sie die Einstellungen für die"
+" Passwortanforderungen der Benutzerpasswortrichtlinie so, dass sie mit "
+"dem Samba-Domänenobjekt identisch ist, wie in :ref:`users-password-samba`"
+" beschrieben."
+
+#: ../../user-management/password-management.rst:85
+msgid "Password policy for the Samba domain"
+msgstr "Passwortrichtlinie für die Samba-Domäne"
+
+#: ../../user-management/password-management.rst:71
+msgid ""
+"When you have Samba installed in your UCS domain, the Samba domain has "
+"it's own password policy. The Samba password policy **always** applies, "
+"when a **user** changes their password, regardless of the used service, "
+"through Univention Portal, User Self Service, Microsoft Windows, or "
+"Kerberos."
+msgstr ""
+"Wenn Sie Samba in Ihrer UCS-Domäne installiert haben, hat die Samba-"
+"Domäne eine eigene Passwortrichtlinie. UCS wendet die Samba-"
+"Passwortrichtlinie an, wenn ein **Benutzer** sein Passwort ändert, egal "
+"über welchen Dienst, über das Univention Portal, den User Self Service, "
+"Microsoft Windows oder Kerberos."
+
+#: ../../user-management/password-management.rst:77
+msgid ""
+"To configure the password policy for the Samba domain, see :ref:`users-"
+"password-samba`."
+msgstr ""
+"Um die Passwortrichtlinie für die Samba-Domäne zu konfigurieren, siehe "
+":ref:`users-password-samba`."
+
+#: ../../user-management/password-management.rst:82
+msgid ":ref:`windows-setup4` of Samba"
+msgstr ":ref:`windows-setup4` von Samba"
+
+#: ../../user-management/password-management.rst:82
+msgid "for more information about the installation of Samba."
+msgstr "für weitere Informationen über die Installation von Samba."
+
+#: ../../user-management/password-management.rst:84
+msgid ":ref:`windows-services-for-windows`"
+msgstr ":ref:`windows-services-for-windows`"
+
+#: ../../user-management/password-management.rst:85
+msgid "for general information about Samba providing Services for Windows."
+msgstr "für allgemeine Informationen über die Services für Windows."
+
+#: ../../user-management/password-management.rst:90
+msgid "Change the user password"
+msgstr "Ändern des Benutzerpassworts"
+
+#: ../../user-management/password-management.rst:92
+msgid "Changing the user password has the following triggers:"
+msgstr "Das Ändern des Benutzerpassworts hat folgende Auslöser:"
+
+#: ../../user-management/password-management.rst:94
+msgid ""
+"The systems requires the user to change their password, for example, "
+"because the password reached the expiration interval."
+msgstr ""
+"Das System fordert den Benutzer auf, sein Passwort zu ändern, z. B. weil "
+"das Passwort sein Ablaufdatum erreicht hat."
+
+#: ../../user-management/password-management.rst:97
+msgid ""
+"Through a setting at the user account, an administrator requests the user"
+" to change their password upon next sign-in."
+msgstr ""
+"Durch eine Einstellung am Benutzerkonto, fordert ein Administrator den "
+"Benutzer auf, sein Passwort bei der nächsten Anmeldung zu ändern."
+
+#: ../../user-management/password-management.rst:100
+msgid "The user decides to change their password."
+msgstr "Der Benutzer beschließt, sein Passwort zu ändern."
+
+#: ../../user-management/password-management.rst:102
+msgid ""
+"When a user decides to change their password, they can use the following "
+"ways:"
+msgstr ""
+"Wenn ein Benutzer sein Passwort ändern möchte, kann er dies auf folgende "
+"Weise tun:"
+
+#: ../../user-management/password-management.rst:116
+msgid "Univention Portal"
+msgstr "Univention Portal"
+
+#: ../../user-management/password-management.rst:106
+msgid ""
+"Every UCS domain has the *Portal* installed. To change the password, use "
+"the following steps:"
+msgstr ""
+"In jeder UCS-Domäne ist das *Portal* installiert. Um das Passwort zu "
+"ändern, gehen Sie wie folgt vor:"
+
+#: ../../user-management/password-management.rst:109
+msgid "Sign in to the *Univention Portal*."
+msgstr "Melden Sie sich am *Univention Portal* an."
+
+#: ../../user-management/password-management.rst:111
+msgid "Navigate to the user menu. It's the *\"burger menu\"* in top right corner."
+msgstr ""
+"Navigieren Sie zum Benutzermenü. Es ist das *\"Burger-Menü\"* in der "
+"oberen rechten Ecke."
+
+#: ../../user-management/password-management.rst:113
+msgid "Select :menuselection:`User settings --> Change your password`."
+msgstr ""
+"Wählen Sie :menuselection:`Benutzereinstellungen --> Ihr Passwort ändern`"
+" aus."
+
+#: ../../user-management/password-management.rst:115
+msgid ""
+"Provide your current password and set a new password. Retype it and "
+"confirm."
+msgstr ""
+"Geben Sie Ihr aktuelles Passwort ein und setzen Sie ein neues Passwort. "
+"Geben Sie es erneut ein und bestätigen Sie es."
+
+#: ../../user-management/password-management.rst:123
+msgid "User Self Service"
+msgstr "Benutzer Selbstverwaltung"
+
+#: ../../user-management/password-management.rst:119
+msgid ""
+"The :ref:`user-management-password-changes-by-users` is a dedicated app "
+"in the :ref:`software-appcenter`. It offers a direct link to the password"
+" change so that administrators can add a prominent tile to the Univention"
+" Portal for the password change. Furthermore, the app offers a way to "
+"reset the user password when they forgot it."
+msgstr ""
+"Die :ref:`user-management-password-changes-by-users` ist eine eigene App "
+"im :ref:`software-appcenter`. Sie bietet einen direkten Link zur "
+"Passwortänderung, so dass Administratoren eine prominente Kachel im "
+"Univention Portal für die Passwortänderung hinzufügen können. Außerdem "
+"bietet die App eine Möglichkeit, das Passwort der Benutzer "
+"zurückzusetzen, wenn diese es vergessen haben."
+
+#: ../../user-management/password-management.rst:127
+msgid "Microsoft Windows"
+msgstr "Microsoft Windows"
+
+#: ../../user-management/password-management.rst:126
+msgid ""
+"Users can change their user password through their Microsoft Windows "
+"client that's joined in the UCS domain through Samba."
+msgstr ""
+"Benutzer können ihr Benutzerpasswort über ihren Microsoft Windows-Client "
+"ändern, der über Samba mit der UCS-Domäne verbunden ist."
+
+#: ../../user-management/password-management.rst:136
+msgid "Kerberos"
+msgstr "Kerberos"
+
+#: ../../user-management/password-management.rst:130
+msgid ""
+"Users can change their user password through clients that have joined in "
+"the UCS domain through Kerberos. They can use the default features of "
+"those clients to change the password."
+msgstr ""
+"Benutzer können ihr Benutzerpasswort über Clients ändern, die der UCS-"
+"Domäne über Kerberos beigetreten sind. Sie können die Standardfunktionen "
+"zur Änderung des Passworts dieser Clients verwenden."
+
+#: ../../user-management/password-management.rst:134
+msgid ""
+"For more information about joining Ubuntu and Linux systems to a UCS "
+"domain and the integration with Kerberos, see :cite:t:`ext-doc-domain`."
+msgstr ""
+"Für weitere Informationen über die Einbindung von Ubuntu- und Linux-"
+"Systemen in eine UCS Domäne und die Integration mit Kerberos, siehe "
+":cite:t:`ext-doc-domain`."
+
+#: ../../user-management/password-management.rst:141
+msgid "Password policy settings in UMC"
+msgstr "Passwortrichtlinieneinstellungen in UMC"
+
+#: ../../user-management/password-management.rst:143
+msgid ""
+"With the password policy settings in UMC administrators can define the "
+"minimum password length, the expiry interval and the password history "
+"length. :numref:`password-policy` shows the password policy settings in "
+"UMC. Following the figure, you find a reference of the available "
+"settings."
+msgstr ""
+"Mit den Einstellungen der Passwortrichtlinie in UMC können "
+"Administratoren die Mindestpasswortlänge, das Ablaufintervall und die "
+"Länge der Passworthistorie festlegen. :numref:`password-policy` zeigt die"
+" Einstellungen der Passwortrichtlinie in UMC. Im Anschluss an die "
+"Abbildung finden Sie einen Referenz der verfügbaren Einstellungen."
+
+#: ../../user-management/password-management.rst:153
+msgid "Configuring a password policy"
+msgstr "Konfiguration einer Passwortrichtlinie"
+
+#: ../../user-management/password-management.rst:155
+msgid ""
+"On the *General* tab of a password policy, you can configure the "
+"following settings."
+msgstr ""
+"Auf dem Reiter *Allgemein* einer Passwortwortrichtlinie können Sie die "
+"folgenden Einstellungen vornehmen."
+
+#: ../../user-management/password-management.rst:170
 msgid "History length"
 msgstr "Passworthistorie"
 
-#: ../../user-management/password-management.rst:42
+#: ../../user-management/password-management.rst:158
 msgid ""
-"The *history length* saves the last password hashes. These passwords can "
-"then not be used by the user as a new password when setting a new "
-"password. With a password history length of five, for example, five new "
-"passwords must be set before a password can be reused. If no password "
-"history check should be performed, the value must be set to ``0``."
+"The password history saves the last used password hashes. The *History "
+"length* determines the length of that history, for example if the history"
+" stores the last three or the last seven passwords. Users can't reuse "
+"passwords from the password history for setting a new password. UCS "
+"doesn't store the passwords retroactively."
 msgstr ""
-"Die *Passworthistorie* speichert die letzten Passwortänderungen in Form "
-"von Hashes. Diese Passwörter können dann vom Benutzer bei einer Änderung "
-"nicht als neues Passwort verwendet werden. Mit einer Passworthistorie von"
-" z.B. fünf müssten fünf neue Passwörter verwendet werden, bis ein "
-"Passwort erneut verwendet werden kann. Wenn keine Speicherung der "
-"Passwort-Historie erfolgen soll, muss der Wert auf ``0`` gesetzt werden."
+"Der Passworthistorie speichert die zuletzt verwendeten Passwort-Hashes. "
+"Die *History Länge* bestimmt die Länge der Historie, zum Beispiel, ob die"
+" Historie die letzten drei oder die letzten sieben Passwort-Hashes "
+"speichert. Benutzer können keine Passwörter aus der Passworthistorie "
+"wiederverwenden, um ein neues Passwort festzulegen. UCS speichert die "
+"Passwörter nicht rückwirkend."
 
-#: ../../user-management/password-management.rst:48
+#: ../../user-management/password-management.rst:164
 msgid ""
-"The passwords are not stored retroactively. Example: If ten passwords "
-"were stored, and the value is reduced to three, the oldest seven "
-"passwords will be deleted during the next password change. If then the "
-"value is increased again, the number of stored passwords initially "
-"remains at three, and is only increased by each password change."
+"To deactivate the validation for the password history, set the value to "
+"``0``."
 msgstr ""
-"Die Passwörter werden nicht rückwirkend gespeichert. Wenn beispielsweise "
-"ursprünglich zehn Passwörter gespeichert wurden und der Wert auf drei "
-"herabgesetzt wird, werden die älteren sieben Passwörter bei der nächsten "
-"Passwort-Änderung aus der Historie entfernt. Wird danach die "
-"Historienlänge wieder erhöht, müssen erst wieder Passwörter angesammelt "
-"werden."
+"Um die Überprüfung der Passworthistorie zu deaktivieren, setzen Sie den "
+"Wert auf ``0``."
 
-#: ../../user-management/password-management.rst:67
+#: ../../user-management/password-management.rst:170
+msgid "Example"
+msgstr "Beispiel"
+
+#: ../../user-management/password-management.rst:167
+msgid ""
+"If UCS stored ten passwords, and you reduce the value for the password "
+"history length to ``3``, UCS deletes the oldest seven passwords from the "
+"password history during the next password change. If you then change the "
+"password history length, the number of stored passwords stays at three "
+"and increases by each password change."
+msgstr ""
+"Wenn UCS zehn Passwort-Hashes gespeichert hat und Sie den Wert für die "
+"Länge der Passworthistorie auf ``3`` reduzieren, löscht UCS bei der "
+"nächsten Passwortänderung die älteren sieben Passwörter aus der "
+"Passworthistorie. Wenn Sie dann die Länge der Passworthistorie "
+"vergrößern, bleibt die Anzahl der gespeicherten Passwörter bei drei und "
+"erhöht sich mit jeder Passwortänderung."
+
+#: ../../user-management/password-management.rst:185
 #: ../../user-management/password-settings-windows-clients.rst:28
 msgid "Password length"
 msgstr "Passwortlänge"
 
-#: ../../user-management/password-management.rst:55
+#: ../../user-management/password-management.rst:173
 msgid ""
-"The *password length* is the minimum length in characters that a user "
-"password must comply with. If no value is entered here, the minimum size "
-"is eight characters. The default value of eight characters for password "
-"length is fixed, so it always applies if no policy is set and the "
-"*Override password check* checkbox is not ticked. This means it even "
-"applies if the *default-settings* password policy has been deleted."
+"The *Password length* is the minimum length in characters that a user "
+"password must comply with. If you don't set a value, UCS applies the "
+"minimum length of ``8`` characters."
 msgstr ""
-"Die *Passwortlänge* ist die Anzahl an Zeichen, die ein Benutzerpasswort "
-"mindestens enthalten muss. Wird nichts eintragen, beträgt die "
-"Mindestlänge acht Zeichen. Der Vorgabewert von acht Zeichen für die "
-"Passwort-Länge ist fest vorgegeben. Er gilt deswegen immer, wenn keine "
-"Richtlinie gesetzt ist und das Auswahlkästchen :guilabel:`Passwort-Länge "
-"ignorieren` nicht markiert ist, also auch, wenn die Passwort-Richtlinie "
-"*default-settings* gelöscht wurde."
+"Die *Passwortlänge* ist die Mindestlänge in Zeichen, die ein "
+"Benutzerpasswort einhalten muss. Wenn Sie keinen Wert angeben, verwendet "
+"UCS die Mindestlänge von ``8`` Zeichen."
 
-#: ../../user-management/password-management.rst:62
+#: ../../user-management/password-management.rst:177
 msgid ""
-"If no password length check should be performed, the value must be set to"
-" ``0``."
+"The default value always applies if you don't set a policy and you "
+"activated the *Override password check* checkbox. This means it even "
+"applies if you deleted the *default-settings* password policy."
 msgstr ""
-"Wenn keine Prüfung der Passwortlänge erfolgen soll, muss der Wert auf "
-"``0`` gesetzt werden."
+"Der Standardwert gilt immer, wenn Sie keine Richtlinie festlegen und Sie "
+"das Kontrollkästchen *Passwortprüfung außer Kraft setzen* aktiviert "
+"haben. Das heißt, er gilt auch wenn Sie die Passwortrichtlinie *Standard-"
+"Einstellungen* gelöscht haben."
 
-#: ../../user-management/password-management.rst:64
+#: ../../user-management/password-management.rst:181
 msgid ""
-"A per server default can be configured via |UCSUCRV| "
-":envvar:`password/quality/length/min`, which applies to users that are "
-"not subject to a *UDM password policy*. See the |UCSUCRV| description for"
-" details."
+"To deactivate the validation for the password length, set the value to "
+"``0``."
 msgstr ""
-"Pro Server kann über die |UCSUCRV| :envvar:`password/quality/length/min` "
-"ein Defaultwert konfiguriert werden, der auf Benutzerkonten angewendet "
-"wird, denen keine *UDM Passwort-Richtlinie* zugewiesen ist. Die "
-"Beschreibung der |UCSUCRV| enthält weitere Details."
+"Um die Überprüfung der Passwortlänge zu deaktivieren, setzen Sie den Wert"
+" auf ``0``."
 
-#: ../../user-management/password-management.rst:75
+#: ../../user-management/password-management.rst:183
+msgid ""
+"You can configure a default value per UCS system through the |UCSUCRV| "
+":envvar:`password/quality/length/min`. The setting applies to users that "
+"aren't subject to a *UDM password policy*."
+msgstr ""
+"Sie können einen Standardwert pro UCS-System über die |UCSUCRV| "
+":envvar:`password/quality/length/min` konfigurieren. Die Einstellung gilt"
+" für Benutzer, die nicht einer *UDM-Passwortrichtlinie* unterliegen."
+
+#: ../../user-management/password-management.rst:194
 msgid "Password expiry interval"
 msgstr "Passwortablaufintervall"
 
-#: ../../user-management/password-management.rst:70
+#: ../../user-management/password-management.rst:188
 msgid ""
-"A *password expiry interval* demands regular password changes. A password"
-" change is demanded during login to |UCSWEB|\\ s, to Kerberos, on Windows"
-" clients and on UCS systems following expiry of the period in days. The "
-"remaining validity of the password is displayed in the user management "
-"under *Password expiry date* in the *Account* tab. If this input field is"
-" left blank, no password expiry interval is applied."
+"A *Password expiry interval* demands regular password changes. UCS "
+"requires a user to change their password during sign-in to |UCSWEB|\\ s, "
+"to Kerberos, and on UCS systems when the expiry interval in days passed. "
+"UCS displays the remaining validity of the user password in the user "
+"management module at *Password expiry date* in the *Account* tab."
 msgstr ""
-"Ein *Passwortablaufintervall* forciert regelmäßige Passwortänderungen. "
-"Bei der Anmeldung an |UCSWEB|\\ n, Kerberos, Windows-Clients und an UCS-"
-"Systemen wird nach Ablauf des Intervalls in Tagen ein Passwortwechsel "
-"erzwungen. Die verbleibende Gültigkeit des Passworts wird in der "
-"Benutzerverwaltung unter *Passwortablaufdatum* im Reiter *Konto* "
-"angezeigt. Wird das Eingabefeld leer belassen, wird kein "
-"Passwortablaufintervall angewendet."
+"Ein *Passwort-Ablaufintervall* verlangt regelmäßige Passwortänderungen. "
+"UCS verlangt von einem Benutzer, dass er sein Passwort bei der Anmeldung "
+"an der |UCSWEB|, an Kerberos, und an UCS-Systemen ändert, wenn das "
+"Ablaufintervall verstrichen ist. UCS zeigt die Restlaufzeit des "
+"Benutzerpassworts im Benutzerverwaltungsmodul unter *Passwortablaufdatum*"
+" im Reiter *Konto* an."
 
-#: ../../user-management/password-management.rst:107
+#: ../../user-management/password-management.rst:194
+msgid "To deactivate the *Password expiry interval*, leave the value blank."
+msgstr ""
+"Um das *Passwort-Ablaufintervall* zu deaktivieren, lassen Sie den Wert "
+"leer."
+
+#: ../../user-management/password-management.rst:218
 msgid "Password quality check"
 msgstr "Passwortqualitätsprüfung"
 
-#: ../../user-management/password-management.rst:78
+#: ../../user-management/password-management.rst:197
 msgid ""
-"If the option *Password quality check* is activated, additional checks - "
-"including dictionary checks - are performed for password changes in "
-"Samba, |UCSWEB|\\ s and Kerberos."
+"If you activate the option *Password quality check*, UCS runs additional "
+"password checks, including dictionary checks, for password changes in UMC"
+" and Kerberos."
 msgstr ""
-"Ist die Option *Passwortqualitätsprüfung* aktiviert, werden für "
-"Passwortänderungen in Samba, |UCSWEB|\\ n und Kerberos zusätzliche "
-"Prüfungen vorgenommen, die auch eine Wörterbuchprüfung beinhalten."
+"Wenn Sie die Option *Passwortqualitätsprüfung* aktivieren, führt UCS "
+"zusätzliche Passwortprüfungen, einschließlich Wörterbuchprüfungen, für "
+"Passwortänderungen in UMC und Kerberos durch."
 
-#: ../../user-management/password-management.rst:82
+#: ../../user-management/password-management.rst:201
 msgid ""
-"The configuration is done via |UCSUCR| and should occur on all login "
-"servers. The following checks can be enforced:"
+"You configure the quality checks through the following |UCSUCR| "
+"variables. For more information, refer to linked variable descriptions."
 msgstr ""
-"Die Konfiguration erfolgt über |UCSUCR| und sollte auf allen "
-"Anmeldeservern erfolgen. Folgende Prüfungen können erzwungen werden:"
+"Sie konfigurieren die Qualitätsprüfungen über die folgenden |UCSUCR| "
+"Variablen. Weitere Informationen finden Sie in den verlinkten "
+"Variablenbeschreibungen."
 
-#: ../../user-management/password-management.rst:85
-msgid ""
-"Minimum number of digits in the new password "
-"(:envvar:`password/quality/credit/digits`)."
-msgstr ""
-"Die Mindestanzahl von Zahlen in dem neuen Passwort "
-"(:envvar:`password/quality/credit/digits`)."
+#: ../../user-management/password-management.rst:204
+msgid "You can enforce the following checks:"
+msgstr "Sie können die folgenden Kontrollen erzwingen:"
 
-#: ../../user-management/password-management.rst:88
-msgid ""
-"Minimum number of uppercase letters in the new password "
-"(:envvar:`password/quality/credit/upper`)."
-msgstr ""
-"Die Mindestanzahl von Grossbuchstaben in dem neuen Passwort "
-"(:envvar:`password/quality/credit/upper`)."
+#: ../../user-management/password-management.rst:206
+msgid ":envvar:`password/quality/credit/digits`"
+msgstr ":envvar:`password/quality/credit/digits`"
 
-#: ../../user-management/password-management.rst:91
-msgid ""
-"Minimum number of lowercase letters in the new password "
-"(:envvar:`password/quality/credit/lower`)."
-msgstr ""
-"Die Mindestanzahl von Kleinbuchstaben in dem neuen Passwort "
-"(:envvar:`password/quality/credit/lower`)."
+#: ../../user-management/password-management.rst:207
+msgid ":envvar:`password/quality/credit/upper`"
+msgstr ":envvar:`password/quality/credit/upper`"
 
-#: ../../user-management/password-management.rst:94
-msgid ""
-"Minimum number of characters in the new password which are neither "
-"letters nor digits (:envvar:`password/quality/credit/other`)."
-msgstr ""
-"Die Mindestanzahl von Zeichen in dem neuen Passwort, die keine Buchstaben"
-" oder Ziffern sind (:envvar:`password/quality/credit/other`)."
+#: ../../user-management/password-management.rst:208
+msgid ":envvar:`password/quality/credit/lower`"
+msgstr ":envvar:`password/quality/credit/lower`"
 
-#: ../../user-management/password-management.rst:97
-msgid ""
-"Individual characters/digits can be excluded "
-"(:envvar:`password/quality/forbidden/chars`)."
-msgstr ""
-"Einzelne Zeichen/Ziffern können ausgeschlossen werden "
-"(:envvar:`password/quality/forbidden/chars`)."
+#: ../../user-management/password-management.rst:209
+msgid ":envvar:`password/quality/credit/other`"
+msgstr ":envvar:`password/quality/credit/other`"
 
-#: ../../user-management/password-management.rst:100
-msgid ""
-"Individual characters/figures can be made compulsory "
-"(:envvar:`password/quality/required/chars`)."
-msgstr ""
-"Einzelne Zeichen/Ziffern können erzwungen werden "
-"(:envvar:`password/quality/required/chars`)."
+#: ../../user-management/password-management.rst:210
+msgid ":envvar:`password/quality/forbidden/chars`"
+msgstr ":envvar:`password/quality/forbidden/chars`"
 
-#: ../../user-management/password-management.rst:103
+#: ../../user-management/password-management.rst:211
+msgid ":envvar:`password/quality/required/chars`"
+msgstr ":envvar:`password/quality/required/chars`"
+
+#: ../../user-management/password-management.rst:212
+msgid ":envvar:`password/quality/mspolicy`"
+msgstr ":envvar:`password/quality/mspolicy`"
+
+#: ../../user-management/password-management.rst:216
 msgid ""
-"Standard Microsoft password complexity criteria can be applied "
-"(:envvar:`password/quality/mspolicy`). This can be done in addition to "
-"the :program:`python-cracklib` checks (value ``yes``) or instead of them "
-"(``sufficient``). See |UCSUCRV| description for details."
+"To apply the *password quality check* on all UCS sign-in systems, you "
+"need to set the |UCSUCRVs| on **all** UCS sign-in servers."
 msgstr ""
-"Standard-Microsoft-Passwortkomplexitätskriterien können angewendet werden"
-" (:envvar:`password/quality/mspolicy`). Dies kann entweder zusätzlich zu "
-"den :file:`python-cracklib` Checks geschehen (Wert ``yes``) oder statt "
-"dessen (``sufficient``). Die Beschreibung der |UCSUCRV| enthält weitere "
-"Details."
+"Um die *Passwortqualitätsprüfung* auf alle UCS Anmeldesysteme anzuwenden,"
+" müssen Sie die |UCSUCRVs| auf **allen** UCS Anmeldeservern setzen."
 
 #: ../../user-management/password-settings-windows-clients.rst:8
 msgid "Password settings for Windows clients when using Samba"
@@ -528,113 +811,124 @@ msgstr "Passwort-Einstellungen für Windows-Clients bei Verwendung von Samba"
 
 #: ../../user-management/password-settings-windows-clients.rst:10
 msgid ""
-"With the Samba domain object, one can set the password requirements for "
-"logins to Windows clients in a Samba domain."
+"With the Samba domain object, you can set the requirements for user "
+"account passwords in a Samba domain."
 msgstr ""
-"Mit dem Samba-Domänenobjekt können die Passwortanforderungen bei der "
-"Anmeldung an Windows-Clients in einer Samba-Domäne festgelegt werden."
+"Mit dem Samba-Domänenobjekt können Sie die Anforderungen an Passwörter "
+"für Benutzerkonten in einer Samba-Domäne festlegen."
 
 #: ../../user-management/password-settings-windows-clients.rst:13
 msgid ""
-"The Samba domain object is managed via the UMC module :guilabel:`LDAP "
-"directory`. It can be found in the ``samba`` container below the LDAP "
-"base and carries the domain's NetBIOS name."
+"You can manage the Samba domain object through the UMC module "
+":guilabel:`LDAP directory`. The Samba domain object locates in the "
+"``samba`` container and has the domain's NetBIOS name. You find the "
+"``samba`` container under the LDAP base."
 msgstr ""
-"Das Samba-Domänenobjekt wird über das UMC-Modul :guilabel:`LDAP-"
-"Verzeichnis` verwaltet. Es befindet sich im Container ``samba`` unterhalb"
-" der LDAP-Basis und trägt den NetBIOS-Namen der Domäne."
+"Sie können das Samba-Domänenobjekt über das UMC-Modul :guilabel:`LDAP-"
+"Verzeichnis` verwalten. Das Samba-Domänen-Objekt befindet sich im "
+"``samba``-Container und hat den NetBIOS-Namen der Domäne. Sie finden den "
+"``samba``-Container unter der LDAP-Basis."
 
-#: ../../user-management/password-settings-windows-clients.rst:17
+#: ../../user-management/password-settings-windows-clients.rst:19
 msgid ""
-"The settings of the Samba domain object and the policy (see :ref:`users-"
-"passwords`) should be set identically, otherwise different password "
-"requirements will apply for logins to Windows and UCS systems."
+"It's a strong recommendation to design the password requirement settings "
+"of the Samba domain object identical to the user password policy as "
+"described in :ref:`users-passwords`."
 msgstr ""
-"Die Einstellungen des Samba-Domänenobjekts und der Richtlinie (siehe :ref"
-":`users-passwords`) sollten identisch gesetzt werden, sonst greifen für "
-"Anmeldungen an Windows- und UCS-Systemen unterschiedliche "
-"Passwortanforderungen."
+"Es wird dringend empfohlen, die Einstellungen der Passwortanforderungen "
+"des Samba-Domänenobjekts identisch mit der Benutzerpasswortrichtlinie zu "
+"gestalten, wie in :ref:`users-passwords` beschrieben."
 
-#: ../../user-management/password-settings-windows-clients.rst:21
-#: ../../user-management/umc.rst:65
-msgid "*General* tab"
-msgstr "Reiter *Allgemein*"
+#: ../../user-management/password-settings-windows-clients.rst:24
+msgid ""
+"In the *Password* section on the *General* tab of the *Samba Domain* "
+"object, you can configure the following settings."
+msgstr ""
+"Im Abschnitt *Passwort* auf dem Reiter *Allgemein* des Objekts *Samba "
+"Domain* können Sie die folgenden Einstellungen vornehmen."
 
-#: ../../user-management/password-settings-windows-clients.rst:25
-#: ../../user-management/umc.rst:69 ../../user-management/umc.rst:162
-#: ../../user-management/umc.rst:185 ../../user-management/umc.rst:332
-#: ../../user-management/umc.rst:395
-msgid "Attribute"
-msgstr "Attribut"
-
-#: ../../user-management/password-settings-windows-clients.rst:26
-#: ../../user-management/umc.rst:70 ../../user-management/umc.rst:95
-#: ../../user-management/umc.rst:163 ../../user-management/umc.rst:186
-#: ../../user-management/umc.rst:333 ../../user-management/umc.rst:396
-msgid "Description"
-msgstr "Beschreibung"
-
-#: ../../user-management/password-settings-windows-clients.rst:29
+#: ../../user-management/password-settings-windows-clients.rst:28
 msgid "The minimum number of characters for a user password."
 msgstr "Die Anzahl an Zeichen, die ein Benutzerpasswort mindestens enthalten muss."
 
-#: ../../user-management/password-settings-windows-clients.rst:31
+#: ../../user-management/password-settings-windows-clients.rst:34
 msgid "Password history"
 msgstr "Passworthistorie"
 
-#: ../../user-management/password-settings-windows-clients.rst:32
+#: ../../user-management/password-settings-windows-clients.rst:31
 msgid ""
-"The latest password changes are saved in the form of hashes. These "
-"passwords can then not be used by the user as a new password when setting"
-" a new password. With a password history of five, for example, five new "
-"passwords must be set before a password can be reused."
+"UCS stores password changes in the form of hashes. Users can't use "
+"passwords from history when setting a password. For example, with a "
+"password history value of ``5``, user must set five other passwords "
+"before they can reuse a password from the history."
 msgstr ""
-"Die letzten Passwortänderungen werden in Form von Hashes gespeichert. "
-"Diese Passwörter können dann vom Benutzer bei einer Änderung nicht als "
-"neues Passwort verwendet werden. Mit einer Passworthistorie von z.B. fünf"
-" müssten fünf neue Passwörter verwendet werden, bis ein Passwort erneut "
-"verwendet werden kann."
+"UCS speichert Passwortänderungen in Form von Hashes. Benutzer können "
+"keine Passwörter aus der Historie verwenden, wenn sie ein Passwort "
+"setzen. Zum Beispiel, mit einem Wert für die Länge der Passworthistorie "
+"von ``5`` muss der Benutzer fünf andere Passwörter festlegen, bevor er "
+"ein Passwort aus der Historie wiederverwenden kann."
 
-#: ../../user-management/password-settings-windows-clients.rst:37
+#: ../../user-management/password-settings-windows-clients.rst:38
 msgid "Minimum password age"
 msgstr "Minimales Passwortalter"
 
-#: ../../user-management/password-settings-windows-clients.rst:38
+#: ../../user-management/password-settings-windows-clients.rst:37
 msgid ""
-"The period of time set for this must have at least expired since the last"
-" password change before a user can reset their password again."
+"Defines the period of time that must elapse, before users can change "
+"their password."
 msgstr ""
-"Der hier festgelegte Zeitraum muss mindestens seit der letzten "
-"Passwortänderungen vergangen sein, bis ein Benutzer sein Passwort das "
-"nächste Mal setzen kann."
+"Legt die Zeitspanne fest, die vergehen muss, bevor die Benutzer ihr ihr "
+"Passwort ändern können."
 
-#: ../../user-management/password-settings-windows-clients.rst:41
+#: ../../user-management/password-settings-windows-clients.rst:45
 msgid "Maximum password age"
 msgstr "Maximales Passwortalter"
 
-#: ../../user-management/password-settings-windows-clients.rst:42
+#: ../../user-management/password-settings-windows-clients.rst:41
 msgid ""
-"Once the saved period of time has elapsed, the password must be changed "
-"again by the user the next time they sign in. If the value is left blank,"
-" the password is infinitely valid."
+"Defines the maximum age for a password. When the period of time is over, "
+"UCS requires the user to change their password upon next sign-in."
 msgstr ""
-"Nach Ablauf des hier hinterlegten Zeitraums muss das Passwort vom "
-"Benutzer bei der nächsten Anmeldung geändert werden. Bleibt der Wert "
-"leer, ist das Passwort unbegrenzt gültig."
+"Legt das maximale Alter für ein Passwort fest. Nach Ablauf dieser "
+"Zeitspanne, fordert UCS den Benutzer auf, sein Passwort bei der nächsten "
+"Anmeldung zu ändern."
+
+#: ../../user-management/password-settings-windows-clients.rst:45
+msgid "To define an infinite period of time, leave the value empty."
+msgstr "Um eine unendliche Zeitspanne zu definieren, lassen Sie den Wert leer."
+
+#: ../../user-management/password-settings-windows-clients.rst:52
+msgid "Password must meet complexity requirements"
+msgstr "Das Passwort muss die Komplexitätsanforderungen erfüllen"
+
+#: ../../user-management/password-settings-windows-clients.rst:48
+msgid ""
+"Activating the checkbox activates `Microsoft Password complexity "
+"requirements <microsoft-password-complexity-requirements_>`_. A tooltip "
+"shows the required characters in a password. The library "
+":file:`Passfilt.dll` enforces the complexity requirements. Administrators"
+" can't change them."
+msgstr ""
+"Das Aktivieren des Kontrollkästchens aktiviert die `Microsoft Password "
+"complexity Anforderungen <microsoft-password-complexity-requirements_>`_."
+" Ein Tooltip zeigt die erforderlichen Zeichen in einem Passwort an. Die "
+"Bibliothek :file:`Passfilt.dll` erzwingt die Komplexitätsanforderungen. "
+"Administratoren können sie nicht ändern."
 
 #: ../../user-management/udm-blocklists.rst:8
 msgid "Prevent reuse of user property values"
 msgstr "Wiederverwendung von Benutzereigenschaften verhindern"
 
-#: ../../user-management/udm-blocklists.rst:14
+#: ../../user-management/udm-blocklists.rst:12
 msgid ""
 "Since :uv:erratum:`5.0x974`, UCS supports block lists to prevent the "
 "reuse of user or group property values."
 msgstr ""
-"Seit :uv:erratum:`5.0x974` unterstützt UCS Blocklisten, um die Wiederverwendung "
-"von Benutzer- oder Gruppeneigenschaftswerten zu verhindern."
+"Seit :uv:erratum:`5.0x974` unterstützt UCS Blocklisten, um die "
+"Wiederverwendung von Benutzer- oder Gruppeneigenschaftswerten zu "
+"verhindern."
 
-#: ../../user-management/udm-blocklists.rst:17
+#: ../../user-management/udm-blocklists.rst:15
 msgid ""
 "Block lists is a module in UDM. It allows to configure block lists for "
 "UDM properties. When an administrator or software modifies or removes a "
@@ -644,14 +938,14 @@ msgid ""
 " UDM property. Block lists operate on the UDM level."
 msgstr ""
 "Blocklisten ist ein Modul in UDM. Es ermöglicht die Konfiguration von "
-"Blocklisten für UDM Eigenschaften. Ändert oder entfernt ein Administrator oder "
-"eine Software eine UDM Eigenschaft an einem UDM Objekt, fügt die Blockliste "
-"automatisch einen Eintrag über diese Eigenschaft mit ihrem Wert in die "
-"Blockliste ein. Der Eintrag in der Blockliste verhindert, dass ein anderes "
-"UDM Objekt den gleichen Wert der UDM Eigenschaft verwenden kann. Blocklisten "
-"arbeiten auf der UDM Ebene."
+"Blocklisten für UDM Eigenschaften. Ändert oder entfernt ein Administrator"
+" oder eine Software eine UDM Eigenschaft an einem UDM Objekt, fügt die "
+"Blockliste automatisch einen Eintrag über diese Eigenschaft mit ihrem "
+"Wert in die Blockliste ein. Der Eintrag in der Blockliste verhindert, "
+"dass ein anderes UDM Objekt den gleichen Wert der UDM Eigenschaft "
+"verwenden kann. Blocklisten arbeiten auf der UDM Ebene."
 
-#: ../../user-management/udm-blocklists.rst:25
+#: ../../user-management/udm-blocklists.rst:23
 msgid ""
 "For example, you want to prevent that UCS reuses values of the UDM "
 "property ``mailPrimaryAddress`` of the UDM objects *user*. You configure "
@@ -663,32 +957,33 @@ msgid ""
 "``mailPrimaryAddress``, the UDM block list creates another entries for "
 "``james@example.com``."
 msgstr ""
-"Sie wollen zum Beispiel verhindern, dass UCS die Werte der UDM Eigenschaft "
-"``mailPrimaryAddress`` der UDM Objekte *user* wiederverwendet. Sie "
-"konfigurieren eine Blockliste für die UDM Eigenschaft ``mailPrimaryAddress``. "
-"Wenn Sie dann den Wert ``chef@example.com`` für die UDM Eigenschaft "
-"``mailPrimaryAddress`` aus einem UDM Benutzerobjekt entfernen, erzeugt die "
-"UDM Blockliste einen Eintrag für diesen Wert. Wenn Sie den Wert von "
-"``james@example.com`` auf ``john@example.com`` für die UDM Eigenschaft "
-"``mailPrimaryAddress`` ändern, erzeugt die UDM Blockliste einen weiteren "
-"Eintrag für ``james@example.com``."
+"Sie wollen zum Beispiel verhindern, dass UCS die Werte der UDM "
+"Eigenschaft ``mailPrimaryAddress`` der UDM Objekte *user* "
+"wiederverwendet. Sie konfigurieren eine Blockliste für die UDM "
+"Eigenschaft ``mailPrimaryAddress``. Wenn Sie dann den Wert "
+"``chef@example.com`` für die UDM Eigenschaft ``mailPrimaryAddress`` aus "
+"einem UDM Benutzerobjekt entfernen, erzeugt die UDM Blockliste einen "
+"Eintrag für diesen Wert. Wenn Sie den Wert von ``james@example.com`` auf "
+"``john@example.com`` für die UDM Eigenschaft ``mailPrimaryAddress`` "
+"ändern, erzeugt die UDM Blockliste einen weiteren Eintrag für "
+"``james@example.com``."
 
-#: ../../user-management/udm-blocklists.rst:35
+#: ../../user-management/udm-blocklists.rst:33
 msgid ""
 "UDM block lists now prevents reusing the values ``chef@example.com`` and "
 "``james@example.com``. You can't use them on other UDM user objects for "
 "the UDM property ``mailPrimaryAddress``."
 msgstr ""
 "UDM Blocklisten verhindern nun die Wiederverwendung der Werte "
-"``chef@example.com`` und ``james@example.com``. Sie können in anderen "
-"UDM Benutzerobjekten für die UDM Eigenschaft ``mailPrimaryAddress`` nicht mehr "
-"verwendet werden."
+"``chef@example.com`` und ``james@example.com``. Sie können in anderen UDM"
+" Benutzerobjekten für die UDM Eigenschaft ``mailPrimaryAddress`` nicht "
+"mehr verwendet werden."
 
-#: ../../user-management/udm-blocklists.rst:41
+#: ../../user-management/udm-blocklists.rst:39
 msgid "Activate block lists"
 msgstr "Aktivieren von Blocklisten"
 
-#: ../../user-management/udm-blocklists.rst:43
+#: ../../user-management/udm-blocklists.rst:41
 msgid ""
 "Before you can activate the block lists, you first need to update the UCS"
 " systems, where you manage UDM objects, to at least "
@@ -698,39 +993,40 @@ msgstr ""
 "Systeme, in denen Sie UDM Objekte verwalten, mindestens auf "
 ":uv:erratum:`5.0x974` aktualisieren."
 
-#: ../../user-management/udm-blocklists.rst:48
+#: ../../user-management/udm-blocklists.rst:46
 msgid ""
 "Second, you need to set the |UCSUCRV| "
 ":envvar:`directory/manager/blocklist/enabled` to ``true`` with "
 ":option:`ucr set` on all UCS systems, where you manage UDM objects."
 msgstr ""
-"Zweitens müssen Sie die |UCSUCRV| :envvar:`directory/manager/blocklist/enabled` "
-"mit :option:`ucr set` auf allen UCS-Systemen, auf denen Sie UDM Objekte "
-"verwalten, auf ``true`` setzen."
+"Zweitens müssen Sie die |UCSUCRV| "
+":envvar:`directory/manager/blocklist/enabled` mit :option:`ucr set` auf "
+"allen UCS-Systemen, auf denen Sie UDM Objekte verwalten, auf ``true`` "
+"setzen."
 
-#: ../../user-management/udm-blocklists.rst:54
+#: ../../user-management/udm-blocklists.rst:52
 msgid "Configure block lists"
 msgstr "Konfigurieren von Blocklisten"
 
-#: ../../user-management/udm-blocklists.rst:56
+#: ../../user-management/udm-blocklists.rst:54
 msgid ""
 "You can create, list, and remove block list entries in the UMC module "
 "*Blocklists*, or through the command line tool :program:`udm "
 "blocklists/list`."
 msgstr ""
-"Sie können Blocklisteneinträge mit dem UMC-Modul *Blocklisten* oder über das "
-"Kommandozeilenwerkzeug :program:`udm blocklists/list` erstellen, auflisten und "
-"entfernen."
+"Sie können Blocklisteneinträge mit dem UMC-Modul *Blocklisten* oder über "
+"das Kommandozeilenwerkzeug :program:`udm blocklists/list` erstellen, "
+"auflisten und entfernen."
 
-#: ../../user-management/udm-blocklists.rst:59
+#: ../../user-management/udm-blocklists.rst:57
 msgid "On every block list you need to define the following properties:"
 msgstr "Für jede Blockliste müssen Sie die folgenden Eigenschaften festlegen:"
 
-#: ../../user-management/udm-blocklists.rst:62
+#: ../../user-management/udm-blocklists.rst:60
 msgid "Name"
 msgstr "Name"
 
-#: ../../user-management/udm-blocklists.rst:62
+#: ../../user-management/udm-blocklists.rst:60
 msgid ""
 "Provides a human-readable name for the block list for later "
 "identification."
@@ -738,11 +1034,11 @@ msgstr ""
 "Gibt der Blockliste einen menschenlesbaren Namen für die spätere "
 "Identifizierung."
 
-#: ../../user-management/udm-blocklists.rst:68
+#: ../../user-management/udm-blocklists.rst:66
 msgid "Retention time"
 msgstr "Aufbewahrungszeit"
 
-#: ../../user-management/udm-blocklists.rst:65
+#: ../../user-management/udm-blocklists.rst:63
 msgid ""
 "Defines the retention time for entries in this block list. The retention "
 "time is the time period that needs to expire to automatically remove "
@@ -750,23 +1046,23 @@ msgid ""
 "month and twenty days."
 msgstr ""
 "Legt die Aufbewahrungszeit für Einträge in dieser Blockliste fest. Die "
-"Aufbewahrungszeit ist der Zeitraum, der ablaufen muss, um Einträge automatisch "
-"aus der Blockliste zu entfernen. Zum Beispiel ``1m 20d``, was für einen Monat "
-"und zwanzig Tage steht."
+"Aufbewahrungszeit ist der Zeitraum, der ablaufen muss, um Einträge "
+"automatisch aus der Blockliste zu entfernen. Zum Beispiel ``1m 20d``, was"
+" für einen Monat und zwanzig Tage steht."
 
-#: ../../user-management/udm-blocklists.rst:71
+#: ../../user-management/udm-blocklists.rst:69
 msgid "Properties to block"
 msgstr "Zu blockierende Eigenschaften"
 
-#: ../../user-management/udm-blocklists.rst:71
+#: ../../user-management/udm-blocklists.rst:69
 msgid ""
 "Defines the UDM modules and their properties that the block list prevents"
 " from reuse."
 msgstr ""
-"Definiert die UDM Module und ihre Eigenschaften, deren Wiederverwendung die "
-"Blockliste verhindert."
+"Definiert die UDM Module und ihre Eigenschaften, deren Wiederverwendung "
+"die Blockliste verhindert."
 
-#: ../../user-management/udm-blocklists.rst:73
+#: ../../user-management/udm-blocklists.rst:71
 msgid ""
 "The following example for :program:`udm blocklists/list` shows how to "
 "create a block list through the command line. The block list prevents the"
@@ -774,12 +1070,13 @@ msgid ""
 "objects and the UDM property ``mailAddress`` for ``groups/group`` "
 "objects."
 msgstr ""
-"Das folgende Beispiel für :program:`udm blocklists/list` zeigt, wie man eine "
-"Blockliste über die Befehlszeile erstellt wird. Die Blockliste verhindert die "
-"Wiederverwendung der UDM Eigenschaft ``mailPrimaryAddress`` für ``users/user`` "
-"Objekte und die UDM Eigenschaft ``mailAddress`` für ``groups/group`` Objekte."
+"Das folgende Beispiel für :program:`udm blocklists/list` zeigt, wie man "
+"eine Blockliste über die Befehlszeile erstellt wird. Die Blockliste "
+"verhindert die Wiederverwendung der UDM Eigenschaft "
+"``mailPrimaryAddress`` für ``users/user`` Objekte und die UDM Eigenschaft"
+" ``mailAddress`` für ``groups/group`` Objekte."
 
-#: ../../user-management/udm-blocklists.rst:79
+#: ../../user-management/udm-blocklists.rst:77
 msgid ""
 "$ udm blocklists/list create \\\n"
 "  --set name=user-and-group-emails \\\n"
@@ -793,11 +1090,11 @@ msgstr ""
 "  --append blockingProperties=\"users/user mailPrimaryAddress\" \\\n"
 "  --append blockingProperties=\"groups/group mailAddress\""
 
-#: ../../user-management/udm-blocklists.rst:91
+#: ../../user-management/udm-blocklists.rst:89
 msgid "Manage block list entries"
 msgstr "Einträge in der Blockliste verwalten"
 
-#: ../../user-management/udm-blocklists.rst:93
+#: ../../user-management/udm-blocklists.rst:91
 msgid ""
 "You can manage block list entries in the UMC module *Blocklists*, or "
 "through the command line tool :program:`udm blocklists/list`."
@@ -805,27 +1102,27 @@ msgstr ""
 "Sie können Blocklisteneinträge im UMC-Modul *Blocklisten* oder über das "
 "Kommandozeilenwerkzeug :program:`udm blocklists/list` verwalten."
 
-#: ../../user-management/udm-blocklists.rst:95
+#: ../../user-management/udm-blocklists.rst:93
 msgid ""
 "When you activated block lists, UDM automatically creates entries in the "
 "configured block list, when you remove a value from a UDM property of a "
 "UDM object. UDM automatically deletes expired entries from the block "
 "list."
 msgstr ""
-"Wenn Sie Blocklisten aktiviert haben, erstellt UDM automatisch Einträge in der "
-"konfigurierten Blockliste, wenn Sie einen Wert aus einer UDM Eigenschaft eines "
-"UDM Objekts entfernen. UDM löscht abgelaufene Einträge automatisch aus der "
-"Blockliste."
+"Wenn Sie Blocklisten aktiviert haben, erstellt UDM automatisch Einträge "
+"in der konfigurierten Blockliste, wenn Sie einen Wert aus einer UDM "
+"Eigenschaft eines UDM Objekts entfernen. UDM löscht abgelaufene Einträge "
+"automatisch aus der Blockliste."
 
-#: ../../user-management/udm-blocklists.rst:100
+#: ../../user-management/udm-blocklists.rst:98
 msgid "Every block list entry has the following properties:"
 msgstr "Jeder Blocklisteneintrag hat die folgenden Eigenschaften:"
 
-#: ../../user-management/udm-blocklists.rst:108
+#: ../../user-management/udm-blocklists.rst:106
 msgid "Value"
 msgstr "Wert"
 
-#: ../../user-management/udm-blocklists.rst:104
+#: ../../user-management/udm-blocklists.rst:102
 msgid ""
 "A SHA-256 hash representing the value that the block list is blocking "
 "from reuse. The UDM property value is a clear text value. Before UDM "
@@ -835,34 +1132,36 @@ msgid ""
 msgstr ""
 "Ein SHA-256-Hash, der den Wert darstellt, den die Blockliste für die "
 "Wiederverwendung blockiert. Der Wert für die UDM Eigenschaft ist ein "
-"Klartextwert. Bevor UDM den Blocklisteneintrag erstellt, wird der Wert in "
-"Kleinbuchstaben umgewandelt. Alle groß- und kleingeschriebenen Varianten des "
-"Wertes stimmen dann mit dem Blocklisteneintrag überein, wenn er von UDM "
-"validiert wird."
+"Klartextwert. Bevor UDM den Blocklisteneintrag erstellt, wird der Wert in"
+" Kleinbuchstaben umgewandelt. Alle groß- und kleingeschriebenen Varianten"
+" des Wertes stimmen dann mit dem Blocklisteneintrag überein, wenn er von "
+"UDM validiert wird."
 
-#: ../../user-management/udm-blocklists.rst:120
+#: ../../user-management/udm-blocklists.rst:118
 msgid "Blocked until"
 msgstr "Blockiert bis"
 
-#: ../../user-management/udm-blocklists.rst:111
+#: ../../user-management/udm-blocklists.rst:109
 msgid ""
 "The timestamp when the block list entry expires. It uses the "
 "`GeneralizedTime-LDAP-Syntax <ldap-generalized-time_>`_ format."
 msgstr ""
-"Der Zeitstempel, zu dem der Eintrag in der Blockliste abläuft. Er verwendet das "
-"`GeneralizedTime-LDAP-Syntax <ldap-generalized-time_>`_ Format."
+"Der Zeitstempel, zu dem der Eintrag in der Blockliste abläuft. Er "
+"verwendet das `GeneralizedTime-LDAP-Syntax <ldap-generalized-time_>`_ "
+"Format."
 
-#: ../../user-management/udm-blocklists.rst:114
+#: ../../user-management/udm-blocklists.rst:112
 msgid ""
 "When UDM creates a block list entry, it takes the current date and time, "
 "adds the configured retention time of the corresponding block list and "
 "writes the result to *Blocked until*."
 msgstr ""
-"Wenn UDM einen Blocklisteneintrag erstellt, nimmt es das aktuelle Datum und die "
-"aktuelle Uhrzeit, addiert die konfigurierte Aufbewahrungszeit der "
-"entsprechenden Blockliste und schreibt das Ergebnis nach *Blockiert bis*."
+"Wenn UDM einen Blocklisteneintrag erstellt, nimmt es das aktuelle Datum "
+"und die aktuelle Uhrzeit, addiert die konfigurierte Aufbewahrungszeit der"
+" entsprechenden Blockliste und schreibt das Ergebnis nach *Blockiert "
+"bis*."
 
-#: ../../user-management/udm-blocklists.rst:119
+#: ../../user-management/udm-blocklists.rst:117
 msgid ""
 "Changing the retention time of the block list doesn't update the *Blocked"
 " until* property of the block list entry."
@@ -870,35 +1169,36 @@ msgstr ""
 "Eine Änderung der Aufbewahrungszeit der Blockliste führt nicht zur "
 "Aktualisierung der Eigenschaft *Blockiert bis* des Blocklisteneintrags."
 
-#: ../../user-management/udm-blocklists.rst:124
+#: ../../user-management/udm-blocklists.rst:122
 msgid "Origin ID"
 msgstr "ID des Ursprungsobjekts"
 
-#: ../../user-management/udm-blocklists.rst:123
+#: ../../user-management/udm-blocklists.rst:121
 msgid ""
 "The ID of the UDM object that caused the block list entry. You can still "
 "use the value of the block list entry on this UDM object."
 msgstr ""
-"Die ID des UDM Objekts, das den Blocklisteneintrag verursacht hat. Sie können "
-"weiterhin den Wert des Blocklisteneintrags für dieses UDM Objekt verwenden."
+"Die ID des UDM Objekts, das den Blocklisteneintrag verursacht hat. Sie "
+"können weiterhin den Wert des Blocklisteneintrags für dieses UDM Objekt "
+"verwenden."
 
-#: ../../user-management/udm-blocklists.rst:128
+#: ../../user-management/udm-blocklists.rst:126
 msgid ""
 "Listing block list entries gives you only the hashes of the blocked "
 "values."
 msgstr ""
-"Wenn Sie die Einträge der Blockliste auflisten, erhalten Sie nur die Hashes der "
-"blockierten Werte."
+"Wenn Sie die Einträge der Blockliste auflisten, erhalten Sie nur die "
+"Hashes der blockierten Werte."
 
-#: ../../user-management/udm-blocklists.rst:130
+#: ../../user-management/udm-blocklists.rst:128
 msgid ""
 "Nevertheless, you can search for the clear text value of a particular "
 "entry, for example, in case you want to delete that entry."
 msgstr ""
-"Sie können jedoch nach dem Klartextwert eines bestimmten Eintrags suchen, z. B. "
-"wenn Sie diesen Eintrag löschen möchten."
+"Sie können jedoch nach dem Klartextwert eines bestimmten Eintrags suchen,"
+" z. B. wenn Sie diesen Eintrag löschen möchten."
 
-#: ../../user-management/udm-blocklists.rst:133
+#: ../../user-management/udm-blocklists.rst:131
 msgid ""
 "$ udm blocklists/entry list\n"
 "DN: cn=sha256:a859cd5964b6ac...,cn=emails,cn=blocklists\n"
@@ -916,67 +1216,68 @@ msgstr ""
 "$ udm blocklists/entry list --filter value=blocked_email@example.com\n"
 "DN: cn=sha256:c859cd5964b6ac...,cn=emails,cn=blocklists"
 
-#: ../../user-management/udm-blocklists.rst:147
+#: ../../user-management/udm-blocklists.rst:145
 msgid "Expired block list entries"
 msgstr "Abgelaufene Blocklisteneinträge"
 
-#: ../../user-management/udm-blocklists.rst:149
+#: ../../user-management/udm-blocklists.rst:147
 msgid ""
 "Every entry in a block list has a *Blocked until* property. Block list "
 "entries expire after the timestamp passed. A cron job on the "
 "|UCSPRIMARYDN| deletes expired block list entries."
 msgstr ""
 "Jeder Eintrag in einer Blockliste hat eine Eigenschaft *Blockiert bis*. "
-"Blocklisteneinträge laufen nach Ablauf dieses Zeitstempels ab. Ein Cron-Job auf "
-"dem |UCSPRIMARYDN| löscht abgelaufene Blocklisteneinträge."
+"Blocklisteneinträge laufen nach Ablauf dieses Zeitstempels ab. Ein Cron-"
+"Job auf dem |UCSPRIMARYDN| löscht abgelaufene Blocklisteneinträge."
 
-#: ../../user-management/udm-blocklists.rst:153
+#: ../../user-management/udm-blocklists.rst:151
 msgid ""
 "You can configure how often cron runs the job with the |UCSUCRV| "
 ":envvar:`directory/manager/blocklist/cleanup/cron`. The log file "
 ":file:`/var/log/univention/blocklist-clean-expired-entries.log` lists the"
 " expired entries that UDM deleted."
 msgstr ""
-"Sie können die Häufigkeit, mit der Cron den Job ausführt, mit dem Parameter "
-"|UCSUCRV| :envvar:`directory/manager/blocklist/cleanup/cron` konfigurieren. Die "
-"Protokolldatei :file:`/var/log/univention/blocklist-clean-expired-entries.log` "
-"listet die abgelaufenen Einträge auf, die UDM gelöscht hat."
+"Sie können die Häufigkeit, mit der Cron den Job ausführt, mit dem "
+"Parameter |UCSUCRV| :envvar:`directory/manager/blocklist/cleanup/cron` "
+"konfigurieren. Die Protokolldatei :file:`/var/log/univention/blocklist-"
+"clean-expired-entries.log` listet die abgelaufenen Einträge auf, die UDM "
+"gelöscht hat."
 
-#: ../../user-management/udm-blocklists.rst:161
+#: ../../user-management/udm-blocklists.rst:159
 msgid "LDAP ACLs for block lists"
 msgstr "LDAP ACLs für Blocklisten"
 
-#: ../../user-management/udm-blocklists.rst:163
+#: ../../user-management/udm-blocklists.rst:161
 msgid ""
 "By default every UCS node in the domain and every member of the ``Domain "
 "Admins`` group can write block list entries. And everybody can read. You "
 "can configure the permissions on the |UCSPRIMARYDN| and the "
 "|UCSBACKUPDN|\\ s with the following |UCSUCRVs|:"
 msgstr ""
-"Standardmäßig kann jeder UCS Knoten in der Domäne und jedes Mitglied der Gruppe "
-"``Domain Admins`` Blocklisteneinträge schreiben. Und jeder kann lesen. Sie "
-"können die Berechtigungen für den |UCSPRIMARYDN| und den |UCSBACKUPDN|\\ s mit "
-"den folgenden |UCSUCRVs| konfigurieren:"
+"Standardmäßig kann jeder UCS Knoten in der Domäne und jedes Mitglied der "
+"Gruppe ``Domain Admins`` Blocklisteneinträge schreiben. Und jeder kann "
+"lesen. Sie können die Berechtigungen für den |UCSPRIMARYDN| und den "
+"|UCSBACKUPDN|\\ s mit den folgenden |UCSUCRVs| konfigurieren:"
 
-#: ../../user-management/udm-blocklists.rst:168
+#: ../../user-management/udm-blocklists.rst:166
 msgid ":envvar:`ldap/database/internal/acl/blocklists/groups/read`"
 msgstr ":envvar:`ldap/database/internal/acl/blocklists/groups/read`"
 
-#: ../../user-management/udm-blocklists.rst:169
+#: ../../user-management/udm-blocklists.rst:167
 msgid ":envvar:`ldap/database/internal/acl/blocklists/groups/write`"
 msgstr ":envvar:`ldap/database/internal/acl/blocklists/groups/write`"
 
-#: ../../user-management/udm-blocklists.rst:171
+#: ../../user-management/udm-blocklists.rst:169
 msgid ""
 "For example, if you want to give a user the permission to delete block "
 "list entries who isn't member of the ``Domain Admins`` group, you need to"
 " create a group with that user as member and add the LDAP DN of this "
 "group to :envvar:`ldap/database/internal/acl/blocklists/groups/write`."
 msgstr ""
-"Wenn Sie zum Beispiel einem Benutzer das Recht geben wollen, Einträge in der "
-"Blockliste zu löschen, der nicht Mitglied der Gruppe ``Domain Admins`` ist, "
-"müssen Sie eine Gruppe mit diesem Benutzer als Mitglied erstellen und den LDAP "
-"DN dieser Gruppe zu "
+"Wenn Sie zum Beispiel einem Benutzer das Recht geben wollen, Einträge in "
+"der Blockliste zu löschen, der nicht Mitglied der Gruppe ``Domain "
+"Admins`` ist, müssen Sie eine Gruppe mit diesem Benutzer als Mitglied "
+"erstellen und den LDAP DN dieser Gruppe zu "
 ":envvar:`ldap/database/internal/acl/blocklists/groups/write` hinzufügen."
 
 #: ../../user-management/umc.rst:8
@@ -1058,6 +1359,22 @@ msgstr "Erweiterte Benutzeransicht"
 #: ../../user-management/umc.rst:61
 msgid "User management module - General tab"
 msgstr "Modul Benutzerverwaltung - Reiter Allgemein"
+
+#: ../../user-management/umc.rst:65
+msgid "*General* tab"
+msgstr "Reiter *Allgemein*"
+
+#: ../../user-management/umc.rst:69 ../../user-management/umc.rst:162
+#: ../../user-management/umc.rst:185 ../../user-management/umc.rst:332
+#: ../../user-management/umc.rst:395
+msgid "Attribute"
+msgstr "Attribut"
+
+#: ../../user-management/umc.rst:70 ../../user-management/umc.rst:95
+#: ../../user-management/umc.rst:163 ../../user-management/umc.rst:186
+#: ../../user-management/umc.rst:333 ../../user-management/umc.rst:396
+msgid "Description"
+msgstr "Beschreibung"
 
 #: ../../user-management/umc.rst:72
 msgid "Title"
@@ -2125,16 +2442,14 @@ msgstr ""
 #: ../../user-management/user-lockout.rst:121
 msgid ""
 "Automatic account locking must be enabled for each UCS Directory Node. To"
-" do this, the |UCSUCRV| :envvar:`ldap/ppolicy/enabled` "
-"must be set to ``yes`` and the OpenLDAP "
-"server must be restarted:"
+" do this, the |UCSUCRV| :envvar:`ldap/ppolicy/enabled` must be set to "
+"``yes`` and the OpenLDAP server must be restarted:"
 msgstr ""
-"Die Aktivierung der automatischen Kontosperrung muss pro UCS Directory "
-"Node aktiviert werden. Dazu muss die |UCSUCRV| "
-":envvar:`ldap/ppolicy/enabled` auf ``yes`` "
-"gesetzt werden und der OpenLDAP Server muss neu gestartet werden:"
+"Die automatische Kontosperrung muss für jeden UCS Directory aktiviert werden. "
+"Dazu muss die |UCSUCRV| :envvar:`ldap/ppolicy/enabled` auf ``yes`` gesetzt und "
+"der OpenLDAP-Server neu gestartet werden: "
 
-#: ../../user-management/user-lockout.rst:126
+#: ../../user-management/user-lockout.rst:125
 msgid ""
 "$ ucr set ldap/ppolicy/enabled=yes\n"
 "$ systemctl restart slapd"
@@ -2142,7 +2457,7 @@ msgstr ""
 "$ ucr set ldap/ppolicy/enabled=yes\n"
 "$ systemctl restart slapd"
 
-#: ../../user-management/user-lockout.rst:132
+#: ../../user-management/user-lockout.rst:131
 msgid ""
 "The default policy is designed so that five repeated failed LDAP server "
 "login attempts within five minutes cause the lockout. A locked account "
@@ -2156,7 +2471,7 @@ msgstr ""
 "Modul :guilabel:`Benutzer` über die Checkbox *Aussperrung zurücksetzen* "
 "im Reiter *Konto* freigeschaltet werden."
 
-#: ../../user-management/user-lockout.rst:137
+#: ../../user-management/user-lockout.rst:136
 msgid ""
 "The number of repeated failed LDAP server login attempts can be adjusted "
 "in the configuration object with the *objectClass* ``pwdPolicy``:"
@@ -2165,15 +2480,15 @@ msgstr ""
 "Konfigurationsobjekt mit der *objectClass* ``pwdPolicy`` angepasst "
 "werden:"
 
-#: ../../user-management/user-lockout.rst:140
+#: ../../user-management/user-lockout.rst:139
 msgid "$ univention-ldapsearch objectclass=pwdPolicy"
 msgstr "$ univention-ldapsearch objectclass=pwdPolicy"
 
-#: ../../user-management/user-lockout.rst:146
+#: ../../user-management/user-lockout.rst:145
 msgid "``pwdMaxFailure``"
 msgstr "``pwdMaxFailure``"
 
-#: ../../user-management/user-lockout.rst:146
+#: ../../user-management/user-lockout.rst:145
 msgid ""
 "attribute determines the number of LDAP authentication errors before "
 "locking."
@@ -2181,11 +2496,11 @@ msgstr ""
 "Das Attribut bestimmt die Anzahl der LDAP-Authentifizierungsfehler vor "
 "der Sperrung."
 
-#: ../../user-management/user-lockout.rst:150
+#: ../../user-management/user-lockout.rst:149
 msgid "``pwdMaxFailureCountInterval``"
 msgstr "``pwdMaxFailureCountInterval``"
 
-#: ../../user-management/user-lockout.rst:149
+#: ../../user-management/user-lockout.rst:148
 msgid ""
 "attribute determines the time interval in seconds that is considered. "
 "Failed login attempts outside this interval are ignored in the count."
@@ -2194,13 +2509,13 @@ msgstr ""
 "wird. LDAP-Authentifizierungsfehler außerhalb dieses Intervalls werden "
 "bei der Zählung vernachlässigt."
 
-#: ../../user-management/user-lockout.rst:152
+#: ../../user-management/user-lockout.rst:151
 msgid "The following command can be used to block the account after 10 attempts:"
 msgstr ""
 "Um den Account erst nach 10 Versuchen zu sperren kann der folgende Befehl"
 " verwendet werden:"
 
-#: ../../user-management/user-lockout.rst:155
+#: ../../user-management/user-lockout.rst:154
 msgid ""
 "$ LB=\"$(ucr get ldap/base)\"\n"
 "$ ldapmodify -x -D \"cn=admin,$LB\" -y /etc/ldap.secret <<__EOT__\n"
@@ -2218,7 +2533,7 @@ msgstr ""
 "pwdMaxFailure: 10\n"
 "__EOT__"
 
-#: ../../user-management/user-lockout.rst:166
+#: ../../user-management/user-lockout.rst:165
 msgid ""
 "The manual unlocking of a user is done in the user administration on the "
 "tab *Account* by activating the checkbox *Unlock account*."
@@ -2231,11 +2546,19 @@ msgstr ""
 msgid "User self services"
 msgstr "Benutzer Selbstverwaltung"
 
-#: ../../user-management/user-self-service.rst:15
+#: ../../user-management/user-self-service.rst:12
+msgid ""
+"For information about setting a user password policy, refer to :ref"
+":`users-passwords`."
+msgstr ""
+"Informationen zum Festlegen einer Benutzer-Passwortrichtlinie finden Sie "
+"unter :ref:`users-passwords`."
+
+#: ../../user-management/user-self-service.rst:17
 msgid "Password change by user via UCS portal page"
 msgstr "Passwortwechsel über UCS Portal"
 
-#: ../../user-management/user-self-service.rst:17
+#: ../../user-management/user-self-service.rst:19
 msgid ""
 "Every logged in user can change their own password by opening the menu "
 "via the hamburger icon in the top right corner and selecting "
@@ -2250,11 +2573,11 @@ msgstr ""
 "authentication-pam`) durchgeführt und ist danach zentral für alle Dienste"
 " verfügbar."
 
-#: ../../user-management/user-self-service.rst:26
+#: ../../user-management/user-self-service.rst:28
 msgid "Password management via Self Service app"
 msgstr "Passwort-Verwaltung über Self Service App"
 
-#: ../../user-management/user-self-service.rst:28
+#: ../../user-management/user-self-service.rst:30
 msgid ""
 "By installing the UCS components :program:`Self Service Backend` and "
 ":program:`Self Service` in the domain via the :guilabel:`App Center`, "
@@ -2266,7 +2589,7 @@ msgstr ""
 "Domäne über das :guilabel:`App Center` werden Benutzer dazu befähigt, ihr"
 " Passwort ohne die Interaktion mit einem Administrator zu verwalten."
 
-#: ../../user-management/user-self-service.rst:33
+#: ../../user-management/user-self-service.rst:35
 msgid ""
 "The :program:`Self Service` app creates its own portal, accessible at the"
 " web URI ``/univention/selfservice/``, which bundles all its "
@@ -2286,15 +2609,15 @@ msgstr ""
 "Token an eine vorher dafür registrierte Kontakt-E-Mail-Adresse gesendet, "
 "das dann auf der Webseite vom Benutzer einzugeben ist."
 
-#: ../../user-management/user-self-service.rst:41
+#: ../../user-management/user-self-service.rst:43
 msgid ""
-"The following |UCSUCRVs| can be used to activate or deactivate "
-"individual features of the password management."
+"The following |UCSUCRVs| can be used to activate or deactivate individual"
+" features of the password management."
 msgstr ""
 "Mit den folgenden |UCSUCRVs| können einzelne Funktionen der Passwort-"
 "Verwaltung aktiviert oder deaktiviert werden."
 
-#: ../../user-management/user-self-service.rst:46
+#: ../../user-management/user-self-service.rst:48
 msgid ""
 "Activates or deactivates the backend of the *Password forgotten* page. "
 "This |UCSUCRV| has to be set on the systems that is defined as "
@@ -2308,7 +2631,7 @@ msgstr ""
 "server` definiert ist, da Anfragen bezüglich dieser Variablen an das "
 "*Self Service Backend* weitergeleitet werden."
 
-#: ../../user-management/user-self-service.rst:54
+#: ../../user-management/user-self-service.rst:56
 msgid ""
 "Activates or deactivates the backend of the *Protect account* page. This "
 "|UCSUCRV| has to be set on the systems that is defined as :program:`Self "
@@ -2322,7 +2645,7 @@ msgstr ""
 "server` definiert ist, da Anfragen bezüglich dieser Variablen an das "
 "*Self Service Backend* weitergeleitet werden."
 
-#: ../../user-management/user-self-service.rst:62
+#: ../../user-management/user-self-service.rst:64
 msgid ""
 "Activates or deactivates the backend for service specific passwords. "
 "Currently, only the service RADIUS is supported. Find more information in"
@@ -2333,7 +2656,7 @@ msgstr ""
 "Weitere Informationen finden sich in :ref:`ip-config-radius-"
 "configuration-service-specific-password`."
 
-#: ../../user-management/user-self-service.rst:66
+#: ../../user-management/user-self-service.rst:68
 msgid ""
 "Those variables also activate or deactivate the corresponding entries in "
 "the portal. However, you can also adjust them manually, they are in fact "
@@ -2343,11 +2666,11 @@ msgstr ""
 "deaktiviert. Sie können die Einträge aber auch manuell anpassen. Sie "
 "verhalten sich wie normale Einträge im Portal."
 
-#: ../../user-management/user-self-service.rst:73
+#: ../../user-management/user-self-service.rst:75
 msgid "Contact information"
 msgstr "Profilverwaltung"
 
-#: ../../user-management/user-self-service.rst:75
+#: ../../user-management/user-self-service.rst:77
 msgid ""
 "Additional personal data can be stored in LDAP with the users account. "
 "This may include a picture, the users private address and other contact "
@@ -2362,15 +2685,15 @@ msgstr ""
 " auch ausgewählte Felder für den Benutzer selber freigeschaltet werden. "
 "Der kann diese Daten über die *Self Service* App selber pflegen."
 
-#: ../../user-management/user-self-service.rst:86
+#: ../../user-management/user-self-service.rst:88
 msgid "User profile self-service"
 msgstr "Benutzerprofilselbstverwaltung"
 
-#: ../../user-management/user-self-service.rst:88
+#: ../../user-management/user-self-service.rst:90
 msgid "For this the following |UCSUCRVs| must be configured:"
 msgstr "Dafür müssen folgende |UCSUCRVs| konfiguriert werden:"
 
-#: ../../user-management/user-self-service.rst:94
+#: ../../user-management/user-self-service.rst:96
 msgid ""
 "This variable configures the *LDAP* attributes a user can modify at its "
 "own user account. The names of the attributes must be separated by comma."
@@ -2381,7 +2704,7 @@ msgstr ""
 "Attribute sind durch Komma zu trennen. Diese Variable ist auf dem "
 "|UCSPRIMARYDN| (und |UCSBACKUPDN|\\ s) zu setzen."
 
-#: ../../user-management/user-self-service.rst:100
+#: ../../user-management/user-self-service.rst:102
 msgid ""
 "This variable configures the *UDM* attributes a user can modify. The "
 "names of the attributes must be separated by comma. This variable must be"
@@ -2394,7 +2717,7 @@ msgstr ""
 "setzen, auf denen die *Self Service* App installiert ist (ebenso auf dem "
 "|UCSPRIMARYDN|)."
 
-#: ../../user-management/user-self-service.rst:106
+#: ../../user-management/user-self-service.rst:108
 msgid ""
 "This variable sets *UDM* attributes specified in |UCSUCRV| :envvar:`self-"
 "service/udm_attributes` to read-only. Use a comma-separated list for "
@@ -2407,7 +2730,7 @@ msgstr ""
 "auf denen die :program:`Self Service` App installiert ist, einschließlich"
 " |UCSPRIMARYDN|."
 
-#: ../../user-management/user-self-service.rst:111
+#: ../../user-management/user-self-service.rst:113
 msgid ""
 "To prevent this variable's intended behavior from being prohibited, "
 "remove the *LDAP* attributes specified in |UCSUCRV| :envvar:`self-"
@@ -2420,7 +2743,7 @@ msgstr ""
 "diese *LDAP* Attribute verhindern, dass die in dieser Variable "
 "angegebenen *UDM* Attribute schreibgeschützt werden."
 
-#: ../../user-management/user-self-service.rst:118
+#: ../../user-management/user-self-service.rst:120
 msgid ""
 "This variable must be set to ``true`` on all involved server systems to "
 "enable the mechanism."
@@ -2428,7 +2751,7 @@ msgstr ""
 "Diese Variable muss auf allen beteiligten Server-Systemen auf ``true`` "
 "gesetzt werden, um den Mechanismus zu aktivieren."
 
-#: ../../user-management/user-self-service.rst:123
+#: ../../user-management/user-self-service.rst:125
 msgid ""
 "This variable defines whether the specification of user name and password"
 " is necessary when opening and modifying your own user profile if you are"
@@ -2438,7 +2761,7 @@ msgstr ""
 "Benutzerprofils die Angabe von Benutzername und Passwort notwendig ist, "
 "wenn man bereits am Univention Portal angemeldet ist."
 
-#: ../../user-management/user-self-service.rst:127
+#: ../../user-management/user-self-service.rst:129
 msgid ""
 "As of UCS 4.4-7, this |UCSUCRV| is automatically set to ``true`` when the"
 " :program:`Self Service` is installed for the first time. The ``true`` "
@@ -2451,7 +2774,7 @@ msgstr ""
 "vorhandenen Portalsitzung aktiviert. Die Felder *Benutzername* und "
 "*Passwort* werden dann automatisch ausgefüllt oder nicht mehr angezeigt."
 
-#: ../../user-management/user-self-service.rst:133
+#: ../../user-management/user-self-service.rst:135
 msgid ""
 "Systems upgraded to UCS 4.4-7 will retain the old behavior by "
 "automatically setting the value to ``false``. Note that this variable "
@@ -2464,7 +2787,7 @@ msgstr ""
 "Systemen inklusive |UCSPRIMARYDN| auf den gleichen Wert gesetzt sein "
 "muss."
 
-#: ../../user-management/user-self-service.rst:139
+#: ../../user-management/user-self-service.rst:141
 msgid ""
 "Both ``*attributes`` variables must match each other. The names of the "
 "attributes and their mapping can be fetched from the following command:"
@@ -2472,7 +2795,7 @@ msgstr ""
 "Beide ``*attributes`` Variablen müssen zueinander passen. Die Namen der "
 "Attribute und deren Zuordnung kann man über folgenden Aufruf erhalten:"
 
-#: ../../user-management/user-self-service.rst:142
+#: ../../user-management/user-self-service.rst:144
 msgid ""
 "$ python3 -c 'from univention.admin.handlers.users.user import mapping;\\"
 "\n"
@@ -2488,11 +2811,11 @@ msgstr ""
 "sorted(mapping._map.items()))) \\\n"
 "  )'"
 
-#: ../../user-management/user-self-service.rst:152
+#: ../../user-management/user-self-service.rst:154
 msgid "Self registration"
 msgstr "Selbstregistrierung"
 
-#: ../../user-management/user-self-service.rst:154
+#: ../../user-management/user-self-service.rst:156
 msgid ""
 "The Self Service allows for users to register themselves, which will "
 "create a user account that has to be verified via email."
@@ -2501,7 +2824,7 @@ msgstr ""
 "wodurch ein Benutzerkonto erstellt wird, das per E-Mail verifiziert "
 "werden muss."
 
-#: ../../user-management/user-self-service.rst:157
+#: ../../user-management/user-self-service.rst:159
 msgid ""
 "User accounts that are created via the Self Service will have the "
 "``RegisteredThroughSelfService`` attribute of the user set to ``TRUE`` "
@@ -2516,37 +2839,37 @@ msgstr ""
 "hat, wird das ``PasswordRecoveryEmailVerified`` Attribut auf ``TRUE`` "
 "gesetzt."
 
-#: ../../user-management/user-self-service.rst:166
+#: ../../user-management/user-self-service.rst:168
 msgid "Account creation"
 msgstr "Kontoerstellung"
 
-#: ../../user-management/user-self-service.rst:173
+#: ../../user-management/user-self-service.rst:175
 msgid "Account registration"
 msgstr "Selbstregistrierung"
 
-#: ../../user-management/user-self-service.rst:175
+#: ../../user-management/user-self-service.rst:177
 msgid ""
 "Aspects about the *Create an account* page and the account creation "
-"itself can be configured with the following |UCSUCRVs|. These "
-"|UCSUCRVs| have to be set on the systems that is defined as "
-":program:`Self Service Backend` via the |UCSUCRV| :envvar:`self-service"
-"/backend-server`, since requests regarding these variables are forwarded "
-"to the Self Service backend."
+"itself can be configured with the following |UCSUCRVs|. These |UCSUCRVs| "
+"have to be set on the systems that is defined as :program:`Self Service "
+"Backend` via the |UCSUCRV| :envvar:`self-service/backend-server`, since "
+"requests regarding these variables are forwarded to the Self Service "
+"backend."
 msgstr ""
 "Aspekte der *Konto erstellen* Seite und der Kontoerstellung selbst können"
-" mit den folgenden |UCSUCRVs| konfiguriert werden. Diese Variablen "
-"müssen auf dem :program:`Self Service Backend` gesetzt werden, das über "
-"die |UCSUCRV| :envvar:`self-service/backend-server` definiert ist, da "
+" mit den folgenden |UCSUCRVs| konfiguriert werden. Diese Variablen müssen"
+" auf dem :program:`Self Service Backend` gesetzt werden, das über die "
+"|UCSUCRV| :envvar:`self-service/backend-server` definiert ist, da "
 "Anfragen bezüglich dieser Variablen an das Self Service Backend "
 "weitergeleitet werden."
 
-#: ../../user-management/user-self-service.rst:184
+#: ../../user-management/user-self-service.rst:186
 msgid "With this variable the account registration can be disabled/enabled."
 msgstr ""
 "Mit dieser Variable kann die Selbstregistrierung deaktiviert/aktiviert "
 "werden."
 
-#: ../../user-management/user-self-service.rst:188
+#: ../../user-management/user-self-service.rst:190
 msgid ""
 "With this variable a :ref:`user template <users-templates>` can be "
 "specified that will be used for the creation of self registered accounts."
@@ -2555,7 +2878,7 @@ msgstr ""
 "angegeben werden, die für die Erstellung von selbst registrierten Konten "
 "verwendet wird."
 
-#: ../../user-management/user-self-service.rst:193
+#: ../../user-management/user-self-service.rst:195
 msgid ""
 "With this variable a container can be specified under which the self "
 "registered users are created."
@@ -2563,7 +2886,7 @@ msgstr ""
 "Mit dieser Variable kann ein Container angegeben werden, unter dem die "
 "selbst registrierten Benutzer angelegt werden."
 
-#: ../../user-management/user-self-service.rst:198
+#: ../../user-management/user-self-service.rst:200
 msgid ""
 "This variable configures which UDM attributes of a user account are shown"
 " on the *Create an account* page of the Self Service. The names of the "
@@ -2574,7 +2897,7 @@ msgstr ""
 "Namen der UDM-Attribute müssen als kommaseparierte Liste angegeben "
 "werden."
 
-#: ../../user-management/user-self-service.rst:204
+#: ../../user-management/user-self-service.rst:206
 msgid ""
 "This variable configures which of the UDM attributes set via the "
 "|UCSUCRV| :envvar:`umc/self-service/account-registration/udm_attributes` "
@@ -2586,11 +2909,11 @@ msgstr ""
 "Attribute vom Benutzer angegeben werden müssen. Die Namen der UDM-"
 "Attribute müssen als kommaseparierte Liste angegeben werden."
 
-#: ../../user-management/user-self-service.rst:212
+#: ../../user-management/user-self-service.rst:214
 msgid "Verification email"
 msgstr "Verifizierungsmail"
 
-#: ../../user-management/user-self-service.rst:214
+#: ../../user-management/user-self-service.rst:216
 msgid ""
 "After a user has clicked on :guilabel:`Create account`, they will see a "
 "message that an email for the account verification has been sent."
@@ -2599,26 +2922,26 @@ msgstr ""
 "er eine Nachricht, dass eine E-Mail für die Kontoverifizierung versendet "
 "wurde."
 
-#: ../../user-management/user-self-service.rst:223
+#: ../../user-management/user-self-service.rst:225
 msgid "Sending the verification email"
 msgstr "Senden der Verifizierungsmail"
 
-#: ../../user-management/user-self-service.rst:225
+#: ../../user-management/user-self-service.rst:227
 msgid ""
 "Aspects about the *verification email* and the verification token can be "
-"configured with the following |UCSUCRVs|. These |UCSUCRVs| have to "
-"be set on the :program:`Self Service Backend` that is defined via the "
-"|UCSUCRV| :envvar:`self-service/backend-server`, since requests regarding"
-" these variables are forwarded to the :program:`Self Service Backend`."
+"configured with the following |UCSUCRVs|. These |UCSUCRVs| have to be set"
+" on the :program:`Self Service Backend` that is defined via the |UCSUCRV|"
+" :envvar:`self-service/backend-server`, since requests regarding these "
+"variables are forwarded to the :program:`Self Service Backend`."
 msgstr ""
 "Aspekte der *Verifizierungsmail* und des Verifizierungstokens können über"
-" die folgenden |UCSUCRVs| konfiguriert werden. Diese Variablen müssen "
-"auf dem *Self Service Backend* gesetzt werden, der über die |UCSUCRV| "
+" die folgenden |UCSUCRVs| konfiguriert werden. Diese Variablen müssen auf"
+" dem *Self Service Backend* gesetzt werden, der über die |UCSUCRV| "
 ":envvar:`self-service/backend-server` definiert ist, da Anfragen "
 "bezüglich dieser Variablen an den *Self Service Backend* weitergeleitet "
 "werden."
 
-#: ../../user-management/user-self-service.rst:233
+#: ../../user-management/user-self-service.rst:235
 msgid ""
 "Defines the ``host`` part to use in the verification link URL. The "
 "default is to use the FQDN of the :program:`Self Service Backend` defined"
@@ -2630,7 +2953,7 @@ msgstr ""
 ":`self-service/backend-server` definierten :program:`Self Service "
 "Backend` verwendet, da diese |UCSUCRV| dort ausgewertet wird."
 
-#: ../../user-management/user-self-service.rst:240
+#: ../../user-management/user-self-service.rst:242
 msgid ""
 "Defines the sender address of the verification email. Default is "
 ":samp:`Account Verification Service <noreply@{FQDN}>`."
@@ -2638,12 +2961,12 @@ msgstr ""
 "Definiert die Absenderadresse der Verifizierungsmail. Die Voreinstellung "
 "ist :samp:`Account Verification Service <noreply@{FQDN}>`."
 
-#: ../../user-management/user-self-service.rst:245
-#: ../../user-management/user-self-service.rst:334
+#: ../../user-management/user-self-service.rst:247
+#: ../../user-management/user-self-service.rst:336
 msgid "Server name or IP address of the mail server to use."
 msgstr "Servername oder IP-Adresse des zu verwendenden Mail-Servers."
 
-#: ../../user-management/user-self-service.rst:249
+#: ../../user-management/user-self-service.rst:251
 msgid ""
 "A path to a text file whose content will be used for the body of the "
 "verification email. The text can contain the following strings which will"
@@ -2658,7 +2981,7 @@ msgstr ""
 "Datei :file:`/usr/share/univention-self-"
 "service/email_bodies/verification_email_body.txt` verwendet."
 
-#: ../../user-management/user-self-service.rst:258
+#: ../../user-management/user-self-service.rst:260
 msgid ""
 "Defines the number of characters that is used for the verification token."
 " Defaults to ``64``."
@@ -2666,12 +2989,12 @@ msgstr ""
 "Definiert die Anzahl der Zeichen, die für den Verifizierungstoken "
 "verwendet wird. Als Standard werden 64 Zeichen verwendet."
 
-#: ../../user-management/user-self-service.rst:264
-#: ../../user-management/user-self-service.rst:274
+#: ../../user-management/user-self-service.rst:266
+#: ../../user-management/user-self-service.rst:276
 msgid "Account verification"
 msgstr "Kontoverifizierung"
 
-#: ../../user-management/user-self-service.rst:266
+#: ../../user-management/user-self-service.rst:268
 msgid ""
 "Following the verification link from the email, the user will land on the"
 " *Account verification* page of the :program:`Self Service`."
@@ -2679,7 +3002,7 @@ msgstr ""
 "Wenn der Benutzer dem Verifizierungslink aus der E-Mail folgt, gelangt er"
 " auf die Seite *Kontoverifizierung* des :program:`Self Service`."
 
-#: ../../user-management/user-self-service.rst:276
+#: ../../user-management/user-self-service.rst:278
 msgid ""
 "The account verification and request of new verification tokens can be "
 "disabled/enabled with the |UCSUCRV| :envvar:`umc/self-service/account-"
@@ -2694,11 +3017,11 @@ msgstr ""
 "das über die |UCSUCRV| :envvar:`self-service/backend-server` definiert "
 "ist."
 
-#: ../../user-management/user-self-service.rst:288
+#: ../../user-management/user-self-service.rst:290
 msgid "Account verification message"
 msgstr "Kontoverifizierung"
 
-#: ../../user-management/user-self-service.rst:290
+#: ../../user-management/user-self-service.rst:292
 msgid ""
 "The SSO login can be configured to deny login from unverified, self "
 "registered accounts. This is configured through the |UCSUCRV| "
@@ -2713,7 +3036,7 @@ msgstr ""
 " vorgenommen werden. Für Konten, die durch einen Administrator angelegt "
 "wurden, hat diese Einstellung keine Auswirkung."
 
-#: ../../user-management/user-self-service.rst:296
+#: ../../user-management/user-self-service.rst:298
 msgid ""
 "The message on the SSO login page for unverified, self registered "
 "accounts, can be set with the |UCSUCRVs| :envvar:`saml/idp/selfservice"
@@ -2728,9 +3051,10 @@ msgstr ""
 ":envvar:`saml/idp/selfservice/account-verification/error-descr` "
 "konfiguriert werden. Eine lokalisierte Nachricht kann konfiguriert "
 "werden, indem eine *Locale* wie z.B. ``de`` an die Variable angehängt "
-"wird. Z.B. :samp:`saml/idp/selfservice/account-verification/error-title/{de}`."
+"wird. Z.B. :samp:`saml/idp/selfservice/account-verification/error-"
+"title/{de}`."
 
-#: ../../user-management/user-self-service.rst:304
+#: ../../user-management/user-self-service.rst:306
 msgid ""
 "If the :program:`Keycloak` app is used as identity provider see :ref:`uv-"
 "keycloak-ref:app-settings` in the :cite:t:`ucs-keycloak-doc` for the "
@@ -2740,11 +3064,11 @@ msgstr ""
 "wird,schauen Sie bitte in der :cite:t:`ucs-keycloak-doc` unter :ref:`uv-"
 "keycloak-ref:app-settings` für die entsprechenden Einstellungen."
 
-#: ../../user-management/user-self-service.rst:311
+#: ../../user-management/user-self-service.rst:313
 msgid "Self deregistration"
 msgstr "Selbst-Deregistrierung"
 
-#: ../../user-management/user-self-service.rst:313
+#: ../../user-management/user-self-service.rst:315
 msgid ""
 "The :program:`Self Service` allows for users to request the deletion of "
 "their own account. This feature can be activated with the |UCSUCRV| "
@@ -2759,7 +3083,7 @@ msgstr ""
 "Seite *Ihr Profil* des *Self Service* angezeigt wird (:ref:`users-"
 "templates`)."
 
-#: ../../user-management/user-self-service.rst:319
+#: ../../user-management/user-self-service.rst:321
 msgid ""
 "If a user has requested to delete their account, it will not be deleted "
 "directly but deactivated. In addition the "
@@ -2779,7 +3103,7 @@ msgstr ""
 "angegeben hat, wird er eine E-Mail-Benachrichtigung erhalten, die mit den"
 " folgenden |UCSUCRVs| konfiguriert werden kann."
 
-#: ../../user-management/user-self-service.rst:329
+#: ../../user-management/user-self-service.rst:331
 msgid ""
 "Defines the sender address of the email. Default is :samp:`Password Reset"
 " Service <noreply@{FQDN}>`."
@@ -2787,7 +3111,7 @@ msgstr ""
 "Definiert die E-Mail-Adresse des Absenders für Benachrichtigung. Die "
 "Voreinstellung ist :samp:`Password Reset Service <noreply@{FQDN}>`."
 
-#: ../../user-management/user-self-service.rst:338
+#: ../../user-management/user-self-service.rst:340
 msgid ""
 "A path to a text file whose content will be used for the body of the "
 "email. The text can contain the following strings which will be "
@@ -2802,7 +3126,7 @@ msgstr ""
 "service/email_bodies/deregistration_notification_email_body.txt` "
 "verwendet."
 
-#: ../../user-management/user-self-service.rst:344
+#: ../../user-management/user-self-service.rst:346
 msgid ""
 "The Self Service provides a script under :file:`/usr/share/univention-"
 "self-service/delete_deregistered_accounts.py` that can be used to delete "
@@ -2816,7 +3140,7 @@ msgstr ""
 "``DeregistredThroughSelfService`` auf ``TRUE`` gesetzt ist und deren "
 "``DeregistrationTimestamp`` älter ist als eine angegebene Zeit."
 
-#: ../../user-management/user-self-service.rst:350
+#: ../../user-management/user-self-service.rst:352
 msgid ""
 "The following command would delete users whose "
 "``DeregistrationTimestamp`` is older than 5 days and 2 hours:"
@@ -2824,7 +3148,7 @@ msgstr ""
 "Der folgende Befehl würde Benutzer löschen, deren "
 "``DeregistrationTimestamp`` älter als 5 Tage und 2 Stunden ist:"
 
-#: ../../user-management/user-self-service.rst:353
+#: ../../user-management/user-self-service.rst:355
 msgid ""
 "$ /usr/share/univention-self-service/delete_deregistered_accounts.py \\\n"
 "  --timedelta-days 5 \\\n"
@@ -2834,11 +3158,11 @@ msgstr ""
 "  --timedelta-days 5 \\\n"
 "  --timedelta-hours 2"
 
-#: ../../user-management/user-self-service.rst:359
+#: ../../user-management/user-self-service.rst:361
 msgid "For all possible arguments to the script see:"
 msgstr "Für alle möglichen Argumente zum Skript siehe:"
 
-#: ../../user-management/user-self-service.rst:361
+#: ../../user-management/user-self-service.rst:363
 msgid ""
 "$ /usr/share/univention-self-service/delete_deregistered_accounts.py "
 "--help"
@@ -2846,13 +3170,13 @@ msgstr ""
 "$ /usr/share/univention-self-service/delete_deregistered_accounts.py "
 "--help"
 
-#: ../../user-management/user-self-service.rst:366
+#: ../../user-management/user-self-service.rst:368
 msgid "The script can be run regularly by creating a cron job via |UCSUCR|."
 msgstr ""
 "Das Skript kann regelmäßig ausgeführt werden, indem ein Cron-Job über "
 "|UCSUCR| erstellt wird."
 
-#: ../../user-management/user-self-service.rst:368
+#: ../../user-management/user-self-service.rst:370
 msgid ""
 "$ ucr set cron/delete_deregistered_accounts/command=\\\n"
 "/usr/share/univention-self-service/delete_deregistered_accounts.py\\\n"
@@ -2864,7 +3188,7 @@ msgstr ""
 "' --timedelta-days 30'\\\n"
 "  cron/delete_deregistered_accounts/time='00 06 * * *'  # daily at 06:00"
 
-#: ../../user-management/user-self-service.rst:376
+#: ../../user-management/user-self-service.rst:378
 msgid ""
 "More information on how to set cron jobs via |UCSUCR| can be found in "
 ":ref:`computers-defining-cron-jobs-in-univention-configuration-registry`."
