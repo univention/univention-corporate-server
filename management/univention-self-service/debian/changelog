@@ -1,8 +1,13 @@
-univention-self-service (5.0.10-1) UNRELEASED; urgency=medium
+univention-self-service (5.0.10-2) unstable; urgency=medium
 
+  [ Ivan Barbecho Delgado ]
   * Bug #57350 UCS 5.0-8 version bump
 
- -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Mon, 03 Jun 2024 13:44:15 +0200
+  [ Johannes Königer ]
+  * Bug #57226: Change the filter for the self-service
+    listener module to only trigger when `sambaPwdLastSet=0`
+
+ -- Johannes Königer <koeniger@univention.de>  Tue, 04 Jun 2024 08:44:07 +0200
 
 univention-self-service (5.0.9-1) UNRELEASED; urgency=medium
 
