@@ -1,3 +1,9 @@
+univention-system-setup (15.0.6) unstable; urgency=medium
+
+  * Bug #57147: replace call to ntpdate with call to chronyd -q
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 07 Jun 2024 09:59:50 +0200
+
 univention-system-setup (15.0.5) unstable; urgency=medium
 
   * Bug #56604: use Python 3.11 code annotations

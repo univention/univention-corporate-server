@@ -1,3 +1,9 @@
+univention-base-files (11.0.7) unstable; urgency=medium
+
+  * Bug #57147: replace ntpsec with chrony
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 21 Jun 2024 08:36:29 +0200
+
 univention-base-files (11.0.6) unstable; urgency=medium
 
   * Bug #56858: replace transitional packages

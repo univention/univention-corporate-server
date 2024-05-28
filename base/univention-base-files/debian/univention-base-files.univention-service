@@ -30,13 +30,13 @@ programs=/usr/sbin/nscd
 icon=service/nscd
 systemd=nscd.service
 
-[ntp]
+[chrony]
 Description[de]=NTP-Server
 Description[en]=NTP Server
-programs=/usr/sbin/ntpd
+programs=/usr/sbin/chronyd
 start_type=ntp/autostart
 icon=service/ntp
-systemd=ntpsec.service
+systemd=chrony.service
 
 [rpcbind]
 Description[de]=RPC Port-Mapper Dienst

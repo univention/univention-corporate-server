@@ -1,3 +1,9 @@
+univention-ssl (16.0.4) unstable; urgency=medium
+
+  * Bug #?: replace rdate with chrony
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 21 Jun 2024 07:30:22 +0000
+
 univention-ssl (16.0.3) unstable; urgency=medium
 
   * Issue #2296: Create new keys in pkcs1 format (like in UCS 5.0), not in

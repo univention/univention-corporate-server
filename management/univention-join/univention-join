@@ -608,14 +608,16 @@ $CHECK_RUN && exit 0
 [ -x /usr/sbin/univention-admin-diary-entry-create ] &&
 context_id=$(/usr/sbin/univention-admin-diary-entry-create --event JOIN_STARTED --arg "hostname=$(ucr get hostname)")
 
-if [ -x /usr/bin/rdate ]; then
+if [ -x /usr/sbin/chronyd ]; then
 	echo -n "Sync time: "
-	if timeout -k 20 15 /usr/bin/rdate -n "$DCNAME" >>/var/log/univention/join.log 2>&1
+	service chrony stop
+	if chronyd -qdt 15 "server $DCNAME iburst" >>/var/log/univention/join.log 2>&1
 	then
 		echo -e "\033[60Gdone"
 	else
 		echo -e "\033[60Gfail"
 	fi
+	service chrony start
 fi
 
 args=()

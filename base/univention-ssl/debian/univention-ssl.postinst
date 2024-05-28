@@ -71,10 +71,12 @@ domaincontroller_master|basesystem|'')
 
 		# try to set the clock before generating the root CA, otherwise it is possible that the certificate is not valid at the end of the installation
 		# Bug #13549
-		timeout -k 5 15 rdate -n 2.debian.pool.ntp.org ||
-			timeout -k 5 15 rdate time.fu-berlin.de ||
-			timeout -k 5 15 rdate 130.133.1.10 ||
+    service chrony stop
+		chronyd -qdt 15 'pool 2.debian.pool.ntp.org iburst' ||
+			chronyd -qdt 15 'server time.fu-berlin.de iburst' ||
+			chronyd -qdt 15 'server 130.133.1.10 iburst' ||
 			true
+    service chrony start
 
 		# shellcheck source=../make-certificates.sh
 		. /usr/share/univention-ssl/make-certificates.sh

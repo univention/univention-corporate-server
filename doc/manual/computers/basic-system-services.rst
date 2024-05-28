@@ -488,7 +488,7 @@ Usually the |UCSPRIMARYDN| functions as the time server of a domain. With the
 |UCSUCR| variables :envvar:`timeserver`, :envvar:`timeserver2` and
 :envvar:`timeserver3` external NTP servers can be included as time sources.
 
-Manual time synchronization can be started by the command :command:`ntpdate`.
+Manual time synchronization can be started by the command :command:`chronyd -q`.
 
 Windows clients joined in a Samba/AD domain only accept signed NTP time
 requests. If the |UCSUCRV| :envvar:`ntp/signed` is set to ``yes``, the NTP

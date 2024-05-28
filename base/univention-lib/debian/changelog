@@ -1,3 +1,9 @@
+univention-lib (11.0.8) unstable; urgency=medium
+
+  * Bug #57147: restart service chrony instead of ntp
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 21 Jun 2024 08:36:29 +0200
+
 univention-lib (11.0.7) unstable; urgency=medium
 
   * Bug #56858: replace transitional packages

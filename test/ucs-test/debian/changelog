@@ -1,3 +1,10 @@
+ucs-test (12.0.109) unstable; urgency=medium
+
+  * Bug #57147: add chrony logfiles to check logfiles test and adjust
+    ntp_permissions test
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 21 Jun 2024 08:36:28 +0200
+
 ucs-test (12.0.108) unstable; urgency=medium
 
   * Bug #57226: Test delivery of self-registration invitations when

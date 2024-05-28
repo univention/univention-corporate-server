@@ -32,7 +32,6 @@ Recommends:
  locate,
  man-db,
  nmap,
- ntpsec-ntpdate,
  rdate,
  rsyslog-relp,
  univention-network-common,

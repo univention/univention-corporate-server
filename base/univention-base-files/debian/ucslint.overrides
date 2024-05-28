@@ -20,8 +20,7 @@
 0004-56: conffiles/etc/inputrc
 0004-56: conffiles/etc/networks
 # Python substitution in UCR variable name
-0004-12: conffiles/etc/default/ntpsec-ntpdate
-0004-12: conffiles/etc/ntpsec/ntp.conf
+0004-12: conffiles/etc/chrony.d/sources/10-univention.sources
 # No header in displayed files
 0004-16: conffiles/etc/hostname
 0004-16: conffiles/boot/boot.msg

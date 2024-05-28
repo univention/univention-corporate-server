@@ -1,0 +1,22 @@
+@%@UCRWARNING=# @%@
+
+@!@
+timeserver = configRegistry.get('timeserver')
+ptp_kvm = configRegistry.get('ntp/ptp-kvm')
+if timeserver != 'local' and not ptp_kvm:
+    role = configRegistry.get('server/role')
+    dcs = [_f for _f in [configRegistry.get('ldap/master')] + configRegistry.get('ldap/backup', '').split(' ') if _f]
+
+    source_type = "peer" if role in ["domaincontroller_master", "domaincontroller_backup"] and configRegistry.is_true('ntp/dc-as-peer') else 'server'
+    if role != "domaincontroller_master" or configRegistry.is_true('ntp/dc-as-peer'):
+        fqdn = '%(hostname)s.%(domainname)s' % configRegistry
+        for ts in dcs:
+            if ts != fqdn:
+                print("%s %s" % (source_type, ts))
+
+    for ts in [timeserver] + [configRegistry.get('timeserver%d' % d) for d in range(2, 4)]:
+        if ts and ts not in dcs:
+            print("server %s" % ts)
+elif not ptp_kvm:
+    print("server 127.127.1.0")
+@!@

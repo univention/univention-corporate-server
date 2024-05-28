@@ -541,7 +541,7 @@ univention-run-join-scripts -dcaccount "$dn" -dcpwd /tmp/joinpwd
 
 rm -f /tmp/joinpwd
 
-systemctl try-restart ntpsec.service
+systemctl try-restart chrony.service
 
 exit 0
 __EOF__

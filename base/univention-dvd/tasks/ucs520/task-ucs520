@@ -17,7 +17,7 @@ univention-cloud-init
 univention-system-activation
 univention-welcome-screen
 rdate
-ntpsec-ntpdate
+chrony
 firefox-esr-l10n-de
 firefox-esr
 

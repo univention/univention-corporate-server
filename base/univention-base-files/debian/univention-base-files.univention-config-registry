@@ -114,7 +114,10 @@ Type: file
 File: etc/inputrc
 
 Type: file
-File: etc/ntpsec/ntp.conf
+File: etc/chrony/chrony.conf
+
+Type: file
+File: etc/chrony/sources.d/10-univention.sources
 Variables: ldap/master
 Variables: ldap/backup
 Variables: server/role
@@ -122,20 +125,15 @@ Variables: timeserver
 Variables: timeserver2
 Variables: timeserver3
 Variables: ntp/signed
-Variables: ntp/tinker/panic
-Variables: ntp/noquery
+Variables: ntp/ptp-kvm
+Variables: ntp/dc-as-peer
 
 Type: file
-File: etc/default/ntpsec
-
-Type: file
-File: etc/default/ntpsec-ntpdate
-Variables: ldap/master
-Variables: ldap/backup
-Variables: timeserver
-Variables: timeserver2
-Variables: timeserver3
+File: etc/chrony/conf.d/10-univention.conf
+Variables: ntp/ptp-kvm
+Variables: ntp/signed
 Variables: server/role
+Variables: timeserver
 
 Type: file
 File: boot/boot.msg

@@ -1,3 +1,9 @@
+univention-join (14.0.5) unstable; urgency=medium
+
+  * Bug #?: Replace rdate with chrony
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 21 Jun 2024 07:29:41 +0000
+
 univention-join (14.0.4) unstable; urgency=medium
 
   * Bug #56793: Replace libnss-ldapd with SSSd

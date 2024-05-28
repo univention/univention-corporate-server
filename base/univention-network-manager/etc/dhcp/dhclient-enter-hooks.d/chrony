@@ -1,15 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 #
-# Univention Network Manager
-#  network script: fix time
-#  the network link is active
+# Univention Server
+#  network script: modify resolv.conf
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2008-2024 Univention GmbH
+# Copyright 2021-2024 Univention GmbH
 #
-# https://www.univention.de/
+# http://www.univention.de/
 #
 # All rights reserved.
 #
@@ -32,14 +31,18 @@
 # You should have received a copy of the GNU Affero General Public
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
-# <https://www.gnu.org/licenses/>.
+# <http://www.gnu.org/licenses/>.
 
-[ -f /var/run/ntpd.pid ] && exit 0
-[ -d /run/systemd/system ] && exit 0
+OUTPUT_FILE=/etc/chrony/sources.d/99-dhcp.sources
 
-. /etc/network/ucs-network-tools
-ucs_ignore_interface
-
-invoke-rc.d rdate start
-
-exit 0
+if ( . /usr/share/univention-lib/ucr.sh ; is_ucr_true "ntp/external" && ! is_ucr_true "ntp/ptp-kvm" ); then
+  if [ "$new_ntp_servers" ]; then
+    truncate -s 0 "$OUTPUT_FILE"
+    read -a ntp_servers <<<"$new_ntp_servers"
+    for ntp_server in "${ntp_servers[@]}"; do
+      printf "server %s\n" "$ntp_server" >> "$OUTPUT_FILE"
+    done
+    printf "\n" >> "$OUTPUT_FILE"
+    chronyc reload sources
+  fi
+fi

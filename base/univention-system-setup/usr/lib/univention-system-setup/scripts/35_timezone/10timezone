@@ -54,9 +54,9 @@ rm -f /etc/localtime /etc/timezone
 echo "$timezone" >/etc/timezone
 install -m644 "/usr/share/zoneinfo/$timezone" /etc/localtime
 
-service stop ntp
+service stop chrony
 # shellcheck disable=SC2015
-[ -x /usr/sbin/ntpdate-debian ] && /usr/sbin/ntpdate-debian || true
-service start ntp
+[ -x /usr/bin/chronyd ] && /usr/sbin/chronyd -qdt 15 || true
+service start chrony
 
 exit 0

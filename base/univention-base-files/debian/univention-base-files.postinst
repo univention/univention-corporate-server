@@ -50,7 +50,8 @@ univention-config-registry set ldap/base?dc=univention,dc=unconfigured \
 	ucr/backup/enabled?yes \
 	ucr/replog/enabled?yes \
 	ntp/signed?yes \
-	ntp/tinker/panic?0 \
+	ntp/external?no \
+	ntp/dc-as-peer?no \
 	kernel/fs/inotify/max_queued_events?16384 \
 	kernel/fs/inotify/max_user_instances?512 \
 	kernel/fs/inotify/max_user_watches?32768
@@ -74,7 +75,6 @@ univention-config-registry set cron/autostart?yes \
 		'systemd/journald/SystemMaxFileSize?100M' \
 		'systemd/journald/MaxFileSec?1 day' \
 		'systemd/journald/MaxRetentionSec?12 week' \
-		'ntp/noquery?true'
 
 getent passwd tss >/dev/null || useradd --system tss
 getent group scanner >/dev/null || addgroup --system scanner
@@ -117,6 +117,11 @@ dpkg-statoverride --update --add root root 0640 /var/log/faillog || true
 
 if test -x /etc/init.d/ssh; then
 	invoke-rc.d ssh reload
+fi
+
+if [ "$1" = "configure" ] && [ "$#" -eq 1 ] || [ "$#" = "2" ] && [ "$(dpkg --compare-versions "$2" lt 11.0.6)" ]; then
+  chronyc keygen 1 SHA256
+  chronyc keygen 2 SHA1
 fi
 
 exit 0

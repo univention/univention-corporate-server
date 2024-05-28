@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (8.0.14) unstable; urgency=medium
+
+  * Bug #57147: fix diagnostic check for ownership of samba/ntp_signd
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 21 Jun 2024 08:36:28 +0200
+
 univention-management-console-module-diagnostic (8.0.13) unstable; urgency=medium
 
   * Bug #57279: Fix schema registration

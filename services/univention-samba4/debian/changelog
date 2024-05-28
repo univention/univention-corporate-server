@@ -1,3 +1,9 @@
+univention-samba4 (11.0.6) unstable; urgency=medium
+
+  * Bug #57147: change ownership of ntp_socket_dir from ntpsec to chrony
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 28 May 2024 16:13:05 +0200
+
 univention-samba4 (11.0.5) unstable; urgency=medium
 
   * Bug #57145: mdb is now default

@@ -817,15 +817,21 @@ Description[en]=Windows clients joined in a Samba 4 domain only accept signed NT
 Type=bool
 Categories=system-base
 
-[ntp/tinker/panic]
-Description[de]=Die maximale Zeitdifferenz zum NTP Server in Sekunden die synchronisiert wird (für beliebige Zeitdifferenz auf '0' setzen).
-Description[en]=The maximum time difference to the NTP server in seconds which is synchronised (set to '0' for any time difference).
-Type=int
+[ntp/ptp-kvm]
+Description[de]=Der vollständige Pfad zum Gerät der PTP-Uhr, die als Zeitquelle verwendet werden soll, gefolgt von den gewünschten Optionen. Alle verfügbaren Optionen finden Sie in chrony.conf(5).
+Description[en]=The full path to the device of the PTP clock which should be used as a time source followed by desired options. For all available options see chrony.conf(5).
+Type=str
 Categories=system-base
 
-[ntp/noquery]
-Description[de]=ntpq und ntpdc Abfragen von entfernten Rechnern ablehnen. (Zeitdienst ist nicht betroffen)
-Description[en]=Deny ntpq and ntpdc queries from remote hosts. (Time service is not affected)
+[ntp/external]
+Description[de]=Verwenden Sie von DHCP angekündigte NTP-Server.
+Description[en]=Use NTP servers advertised by DHCP.
+Type=bool
+Categories=system-base
+
+[ntp/dc-as-peer]
+Description[de]=Verwenden Sie auf Primär- und Backup-Servern andere Primär-/Backup-Server als NTP-Peers anstatt als NTP-Server.
+Description[en]=On Primary- and Backup Directory Nodes use other Primary-/Backup Directory Nodes as NTP peers rather than as NTP servers.
 Type=bool
 Categories=system-base
 
@@ -846,6 +852,7 @@ Description[de]=In einer UCS-Domäne dient standardmäßig der Primary Directory
 Description[en]=Usually the Primary Directory Node functions as the time server of a UCS domain. With the variables 'timeserver', 'timeserver2' and 'timeserver3' external NTP servers can be included as time sources.
 Type=str
 Categories=system-network
+
 
 [ucr/output/brief]
 Description[de]=Ist diese Option aktiviert, wird bei der Suche nach Univention Configuration Registry-Variablen auf der Kommandozeile mit dem Kommando 'search' die Variablenbeschreibung nicht mit ausgegeben. Ist die Variable nicht gesetzt, wird die Variablenbeschreibung angezeigt.

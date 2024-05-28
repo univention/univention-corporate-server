@@ -870,7 +870,7 @@ def set_timeserver(timeserver, ucr=None):
     # type: (str, Optional[ConfigRegistry]) -> None
     ud.debug(ud.MODULE, ud.PROCESS, "Setting timeserver to %s" % timeserver)
     univention.config_registry.handler_set(['timeserver=%s' % (timeserver,)])
-    restart_service("ntp")
+    restart_service("chrony")
 
 
 def stop_service(service):
