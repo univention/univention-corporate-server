@@ -6,17 +6,14 @@ src: apache2
 fix: 2.4.25-3+deb9u16A~4.4.9.202405270805
 desc: |
  This update addresses the following issues:
- 2.4.25-3+deb9u16 (Sun, 26 May 2024 13:47:43 +0000)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2023-31122: Fix and Out-of-bounds Read vulnerability in mod_macro
-   of Apache HTTP Server
- * Fix CVE-2023-38709: Fix a faulty input validation in the core of Apache
-   allows malicious or exploitable backend/content generators to split HTTP
+ * CVE-2023-31122: Out-of-bounds Read vulnerability in `mod_macro` of Apache
+   HTTP Server.
+ * CVE-2023-38709: Faulty input validation in the core of Apache allows
+   malicious or exploitable backend/content generators to split HTTP
    responses.
- * Fix CVE-2024-24795: Fix HTTP Response splitting in multiple modules. Apache
-   allowed an attacker that can inject malicious response headers into backend
-   applications to cause an HTTP desynchronization attack.
- * Fix autopkgtest suite.
+ * CVE-2024-24795: HTTP Response splitting in multiple modules in Apache HTTP
+   Server allows an attacker that can inject malicious response headers into
+   backend applications to cause an HTTP desynchronization attack.
 bug: [57341]
 cve:
 - CVE-2023-31122
