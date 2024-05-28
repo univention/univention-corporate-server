@@ -1,3 +1,10 @@
+ucs-test (11.0.42) unstable; urgency=medium
+
+  * Bug #57226: Test delivery of self-registration invitations when
+    a password policy is applied
+
+ -- Johannes Königer <koeniger@univention.de>  Mon, 17 Jun 2024 09:52:09 +0200
+
 ucs-test (11.0.41) unstable; urgency=medium
 
   * Bug #56054: check for UDM license check in password test
