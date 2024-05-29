@@ -1,3 +1,10 @@
+ucs-test (11.0.43) unstable; urgency=medium
+
+  * Bug #56313: Add test for IP assignment during computer object creation
+    and check the DNS objects which are created as a side effect.
+
+ -- Johannes Königer <koeniger@univention.de>  Wed, 20 Jun 2024 16:54:19 +0200
+
 ucs-test (11.0.42) unstable; urgency=medium
 
   * Bug #57226: Test delivery of self-registration invitations when

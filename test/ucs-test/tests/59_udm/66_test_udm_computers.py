@@ -4,8 +4,8 @@
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
-##   - univention-config
-##   - univention-directory-manager-tools
+## - univention-config
+## - univention-directory-manager-tools
 ## timeout: 0
 
 import ipaddress
@@ -19,7 +19,7 @@ import pytest
 from univention.testing import utils
 from univention.testing.decorators import SetTimeout
 from univention.testing.strings import random_name, random_string
-from univention.testing.udm import UCSTestUDM
+from univention.testing.udm import UCSTestUDM, UCSTestUDM_CreateUDMObjectFailed
 
 
 COMPUTER_MODULES = UCSTestUDM.COMPUTER_MODULES
@@ -76,16 +76,183 @@ def get_ssl(name):
     raise LookupError('not found')
 
 
+def verify_dns_objects(computer_name, computer_ip, forward_zone_dn, forward_zone_name, reverse_zone, ip_netmask):
+    """Verify DNS objects which are created alongside a computer object"""
+    if ':' in computer_ip:
+        utils.verify_ldap_object('relativeDomainName=%s,%s' % (
+            computer_name, forward_zone_dn), {'aAAARecord': [computer_ip]}, retry_count=3)
+        relative_domainname = '.'.join(
+            reversed(list(computer_ip.replace(':', '')[int(ip_netmask) // 4:])))
+    else:
+        relative_domainname = '.'.join(
+            computer_ip.split('.')[int(ip_netmask) // 8:])
+        utils.verify_ldap_object('relativeDomainName=%s,%s' % (
+            computer_name, forward_zone_dn), {'aRecord': [computer_ip]}, retry_count=3)
+
+    utils.verify_ldap_object('relativeDomainName=%s,%s' % (relative_domainname, reverse_zone), {
+                             'pTRRecord': ['%s.%s.' % (computer_name, forward_zone_name)]}, retry_count=3)
+
+
 @pytest.mark.roles('domaincontroller_master')
 @pytest.mark.exposure('careful')
 @pytest.mark.parametrize('role', COMPUTER_MODULES)
 class Test_ComputerAllRoles:
-
     @pytest.mark.tags('udm', 'udm-computers', 'apptest')
     def test_all_roles_creation(self, udm, verify_ldap_object, role):
         """Create minimal object for all computer roles"""
         computer = udm.create_object(role, name=random_string())
         verify_ldap_object(computer)
+
+    @pytest.mark.tags('udm', 'udm-computers')
+    @pytest.mark.parametrize(
+        'ip_computer,ip_subnet,ip_network,ip_netmask,ip_range',
+        [
+            ('10.20.30.133', '10.20.30', '10.20.30.0',
+             '24', '10.20.30.2 10.20.30.254'),
+            ('2001:0001:0002:0003:0000:ffff:ffff:1333', '2001:0001:0002:0003',
+             '2001:1:2:3::', '64', '2001:1:2:3::2 2001:1:2:3:0:ffff:ffff:ffff'),
+        ],
+    )
+    def test_all_roles_creation_check_dns(self, ip_computer, ip_subnet, ip_network, ip_netmask, ip_range, udm, ucr, verify_ldap_object, role):
+        """Create object for all computer roles to test if DNS entries are correct"""
+        dNSCn = 'cn=dns,%s' % (ucr.get('ldap/base'),)
+        forwardZoneName = '%s.%s' % (random_name(), random_name())
+        forwardZone = udm.create_object(
+            'dns/forward_zone', zone=forwardZoneName, position=dNSCn, nameserver=random_string(numeric=False))
+        reverseZone = udm.create_object(
+            'dns/reverse_zone', subnet=ip_subnet, position=dNSCn, nameserver=random_string(numeric=False))
+        dhcpService = udm.create_object('dhcp/service', service=random_name())
+
+        networkProperties = {
+            'name': random_name(),
+            'network': ip_network,
+            'netmask': ip_netmask,
+            'dnsEntryZoneForward': forwardZone,
+            'dnsEntryZoneReverse': reverseZone,
+            'dhcpEntryZone': dhcpService,
+            'ipRange': ip_range,
+        }
+        network = udm.create_object('networks/network', **networkProperties)
+        verify_ldap_object(network)
+
+        computerProperties = {'mac': '01:23:45:67:89:ab', 'name': random_name(
+        ), 'ip': ip_computer, 'network': network}
+        computer = udm.create_object(role, **computerProperties)
+        verify_ldap_object(computer)
+
+        verify_dns_objects(computerProperties['name'], computerProperties['ip'],
+                           forwardZone, forwardZoneName, reverseZone, ip_netmask)
+
+    @pytest.mark.tags('udm', 'udm-computers')
+    @pytest.mark.parametrize(
+        'ip_computer,ip_computer_modified,ip_subnet,ip_network,ip_netmask,ip_range',
+        [
+            ('10.20.30.143', '10.20.30.144', '10.20.30',
+             '10.20.30.0', '24', '10.20.30.2 10.20.30.254'),
+            (
+                '2001:0001:0002:0003:0000:ffff:ffff:1343',
+                '2001:0001:0002:0003:0000:ffff:ffff:1344',
+                '2001:0001:0002:0003',
+                '2001:1:2:3::',
+                '64',
+                '2001:1:2:3::2 2001:1:2:3:0:ffff:ffff:ffff',
+            ),
+        ],
+    )
+    def test_all_roles_ip_address_modification(self, ip_computer, ip_computer_modified, ip_subnet, ip_network, ip_netmask, ip_range, udm, ucr, verify_ldap_object, role):
+        """Test if ip address can be modified"""
+        dNSCn = 'cn=dns,%s' % (ucr.get('ldap/base'),)
+        forwardZoneName = '%s.%s' % (random_name(), random_name())
+        forwardZone = udm.create_object(
+            'dns/forward_zone', zone=forwardZoneName, position=dNSCn, nameserver=random_string(numeric=False))
+        reverseZone = udm.create_object(
+            'dns/reverse_zone', subnet=ip_subnet, position=dNSCn, nameserver=random_string(numeric=False))
+        dhcpService = udm.create_object('dhcp/service', service=random_name())
+
+        networkProperties = {
+            'name': random_name(),
+            'network': ip_network,
+            'netmask': ip_netmask,
+            'dnsEntryZoneForward': forwardZone,
+            'dnsEntryZoneReverse': reverseZone,
+            'dhcpEntryZone': dhcpService,
+            'ipRange': ip_range,
+        }
+
+        network = udm.create_object('networks/network', **networkProperties)
+        verify_ldap_object(network)
+
+        computerProperties = {'mac': '01:23:45:67:89:ab', 'name': random_name(
+        ), 'ip': ip_computer, 'network': network}
+        computer = udm.create_object(role, **computerProperties)
+        verify_ldap_object(computer)
+        verify_dns_objects(computerProperties['name'], computerProperties['ip'],
+                           forwardZone, forwardZoneName, reverseZone, ip_netmask)
+
+        computer = udm.modify_object(
+            role, dn=computer, ip=ip_computer_modified)
+        verify_ldap_object(computer)
+        verify_dns_objects(computerProperties['name'], ip_computer_modified,
+                           forwardZone, forwardZoneName, reverseZone, ip_netmask)
+
+    @pytest.mark.tags('udm', 'udm-computers')
+    @pytest.mark.parametrize(
+        'ip_computer,ip_subnet,ip_network,ip_netmask,ip_range',
+        [
+            ('10.20.30.143', '10.20.30', '10.20.30.0',
+             '24', '10.20.30.2 10.20.30.254'),
+            ('2001:0001:0002:0003:0000:ffff:ffff:1343', '2001:0001:0002:0003',
+             '2001:1:2:3::', '64', '2001:1:2:3::2 2001:1:2:3:0:ffff:ffff:ffff'),
+        ],
+    )
+    def test_all_roles_ip_address_double_use(self, ip_computer, ip_subnet, ip_network, ip_netmask, ip_range, udm, ucr, verify_ldap_object, role):
+        """Test if ip address can be modified"""
+        if ":" in ip_computer:
+            pytest.skip("This test fails currently due to Bug #57368. Remove this skip if Bug #57368 is fixed.")
+        dNSCn = 'cn=dns,%s' % (ucr.get('ldap/base'),)
+        forwardZoneName = '%s.%s' % (random_name(), random_name())
+        forwardZone = udm.create_object(
+            'dns/forward_zone', zone=forwardZoneName, position=dNSCn, nameserver=random_string(numeric=False))
+        reverseZone = udm.create_object(
+            'dns/reverse_zone', subnet=ip_subnet, position=dNSCn, nameserver=random_string(numeric=False))
+        dhcpService = udm.create_object('dhcp/service', service=random_name())
+
+        networkProperties = {
+            'name': random_name(),
+            'network': ip_network,
+            'netmask': ip_netmask,
+            'dnsEntryZoneForward': forwardZone,
+            'dnsEntryZoneReverse': reverseZone,
+            'dhcpEntryZone': dhcpService,
+            'ipRange': ip_range,
+        }
+        network = udm.create_object('networks/network', **networkProperties)
+        verify_ldap_object(network)
+
+        computerProperties = {'mac': '01:23:45:67:89:ab', 'name': random_name(
+        ), 'ip': ip_computer, 'network': network}
+        computer = udm.create_object(role, **computerProperties)
+
+        verification_attributes = {'macAddress': [
+            computerProperties['mac']], 'cn': [computerProperties['name']]}
+
+        if ':' in ip_computer:
+            verification_attributes['aAAARecord'] = [ip_computer]
+        else:
+            verification_attributes['aRecord'] = [ip_computer]
+
+        verify_ldap_object(computer, verification_attributes, retry_count=3)
+        verify_dns_objects(computerProperties['name'], computerProperties['ip'],
+                           forwardZone, forwardZoneName, reverseZone, ip_netmask)
+
+        computerProperties_2 = {'mac': '01:23:45:67:89:ac', 'name': random_name(
+        ), 'ip': ip_computer, 'network': network}
+
+        with pytest.raises(UCSTestUDM_CreateUDMObjectFailed) as exc:
+            computer = udm.create_object(role, **computerProperties_2)
+
+        assert f'IP address is already in use: {ip_computer}.' in str(
+            exc.value)
 
     @pytest.mark.tags('udm', 'udm-computers')
     def test_all_roles_removal(self, udm, verify_ldap_object, role):
