@@ -15,3 +15,6 @@ desc: |
    in the `UMC` and will inhibit it from warning the user that
    the default value of a property will be set during modification.
 bug: [50268, 51187]
+erratum: 1060
+announced: 2024-05-29
+support: core
