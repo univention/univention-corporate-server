@@ -19,6 +19,8 @@
 .. _kernel-bonding: https://www.kernel.org/doc/Documentation/networking/bonding.txt
 .. _lastbind-overlay: https://manpages.ubuntu.com/manpages/xenial/man5/slapo-lastbind.5.html
 .. _ldap-generalized-time: https://ldapwiki.com/wiki/GeneralizedTime
+.. _manpage-postconf-relayhost: https://manpages.debian.org/bookworm/postfix/postconf.5.en.html#relayhost_(default:_empty)
+.. _manpage-postconf-smtp-sasl-password-maps: https://manpages.debian.org/bookworm/postfix/postconf.5.en.html#smtp_sasl_password_maps_(default:_empty)
 .. _microsoft-domain-verify: https://learn.microsoft.com/en-us/entra/fundamentals/add-custom-domain
 .. _microsoft-rsat-tools: https://www.microsoft.com/en-us/download/details.aspx?id=45520
 .. _microsoft-install-the-certification-authority: https://learn.microsoft.com/en-us/windows-server/networking/core-network-guide/cncg/server-certs/install-the-certification-authority
