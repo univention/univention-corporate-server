@@ -538,7 +538,7 @@ gencert () {
 		san="$(univention-ldapsearch -LLLo ldif-wrap=no "(cNAMERecord=${fqdn%.}.)" 1.1 | sed -rne 's/^dn: relativeDomainName=([^,]+),zoneName=([^,]+),.*/\1 \1.\2/p' | tr '\n' ' ')"
 		mk_config "$name/openssl.cnf" "" "$days" "$cn" "$fqdn $hostname $san"
 		# generate a key pair
-		openssl genrsa -out "$name/private.key" "$DEFAULT_BITS"
+		openssl genrsa -traditional -out "$name/private.key" "$DEFAULT_BITS"
 		openssl req -batch -config "$name/openssl.cnf" -new -key "$name/private.key" -out "$name/req.pem"
 	fi
 

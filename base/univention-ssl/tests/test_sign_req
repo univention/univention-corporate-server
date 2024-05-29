@@ -12,7 +12,7 @@ days="1000"
 name="${R64}"
 subjectAltName="dummy"
 mk_config "$opensslconf" "$password" "$days" "$name" "$subjectAltName"
-openssl genrsa -out "$sslbase/my-private.key" "2048"
+openssl genrsa -traditional -out "$sslbase/my-private.key" "2048"
 openssl req -batch -config "$opensslconf" -new -key "$sslbase/my-private.key" -out "$sslbase/my-req.pem"
 openssl req -in "$sslbase/my-req.pem" -text
 
