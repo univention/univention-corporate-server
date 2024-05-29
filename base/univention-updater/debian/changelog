@@ -1,4 +1,4 @@
-univention-updater (17.0.7) unstable; urgency=medium
+univention-updater (17.0.8) unstable; urgency=medium
 
   * Issue univention/ucs#2244: Pin runc package in 5.2: the upstream debian version
     is slightly lower than the one we imported from ubuntu in 5.0

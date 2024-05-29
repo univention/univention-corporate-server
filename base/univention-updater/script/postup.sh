@@ -153,11 +153,14 @@ if [ -n "$(ucr search "^fetchmail/autostart/update520$")" ] ; then
 	systemctl restart fetchmail >&3 2>&3
 fi
 
-if univention-ldapsearch -LLL '(uid=ucs-sso)' 1.1 | grep -q '^dn'; then
-	ldapdelete -x -H ldapi:/// "uid=ucs-sso,cn=users,$(ucr get ldap/base)"
+if [ "${server_role:-}"="domaincontroller_master" ]; then
+	if univention-ldapsearch -LLL '(uid=ucs-sso)' 1.1 | grep -q '^dn'; then
+		udm users/user remove --dn="uid=ucs-sso,cn=users,$(ucr get ldap/base)"
+	fi
 fi
 rm -f /etc/simplesamlphp.keytab /etc/simplesamlphp/ucs-sso-kerberos.secret
 
+# remove pinning after upgrade
 rm -f /etc/apt/preferences.d/99ucs520.pref /etc/apt/apt.conf.d/99ucs520
 
 echo "
