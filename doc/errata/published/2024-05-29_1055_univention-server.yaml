@@ -10,3 +10,6 @@ desc: |
    version of Univention Configuration Registry. This fixes a regression
    caused by erratum 988.
 bug: [57132]
+erratum: 1055
+announced: 2024-05-29
+support: core
