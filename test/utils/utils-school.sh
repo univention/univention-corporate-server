@@ -88,6 +88,31 @@ upgrade_id_connector () {
   return $rv
 }
 
+add_ca_to_host () {
+	local host_fqdn="${1:?missing fqdn}"
+	curl -k "https://$host_fqdn/ucs-root-ca.crt" > /usr/local/share/ca-certificates/"$host_fqdn".crt
+	update-ca-certificates
+}
+
+add_dns_entry () {
+        local hostname="${1:?missing hostname}"
+	local domain="${2:?missing domain}"
+	local ip="${3:?missing ip}"
+	udm dns/forward_zone create \
+		--set zone="$domain" \
+		--set nameserver="$(hostname -f)." \
+		--position="cn=dns,$(ucr get ldap/base)" \
+                --ignore_exists || return 1
+	udm dns/host_record create \
+		--set a="$ip" \
+		--set name="$hostname" \
+		--position "zoneName=$domain,cn=dns,$(ucr get ldap/base)" || return 1
+	while ! nslookup "$hostname.$domain" | grep -q "$ip"; do
+		echo "Waiting for DNS..."
+		sleep 1
+	done
+}
+
 install_ucsschool_apis () {
   install_docker_app_from_branch ucsschool-apis "$UCS_ENV_UCSSCHOOL_APIS_IMAGE" ucsschool/apis/log_level=DEBUG ucsschool/apis/processes=0
 }
