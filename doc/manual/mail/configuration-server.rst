@@ -7,25 +7,57 @@
 Configuration of the mail server
 ================================
 
+This section describes the configuration of the :program:`Postfix` mail server in UCS.
+
 .. _mail-serverconfig-relay:
 
 Configuration of a relay host for sending the emails
 ----------------------------------------------------
 
-By default, :program:`Postfix` creates a direct SMTP connection to the mail
-server responsible for the domain when it sends an email to a non-local address.
-:program:`Postfix` determines this server by querying the MX record in the DNS.
+By default, :program:`Postfix` creates a direct SMTP connection
+to the mail server responsible for the domain
+when sending mail to a non-local address.
 
-Alternatively, :program:`Postfix` can use a mail relay server. This is a server
-that receives emails and handles their transport. Administrators can have this
-type of mail relay server, such as one provided by the company's headquarter or
-by the internet provider. To set up a relay host, specify it as a fully
-qualified domain name (FQDN) in the |UCSUCRV| :envvar:`mail/relayhost`.
+Alternatively, :program:`Postfix` can use a mail relay server.
+This is a server that receives mail and handles its transport.
+Administrators may have this type of mail relay server,
+such as one provided by the company's headquarters or internet provider.
 
-If authentication is necessary on the relay host for sending, set the |UCSUCRV|
-:envvar:`mail/relayauth` to ``yes`` and edit the :file:`/etc/postfix/smtp_auth`
-file. Provide the relay host, username, and password in this file in one line in
-the format: :samp:`{FQDN-Relayhost} {username}:{password}`
+To set up a relay host, specify it as a fully qualified domain name (FQDN) in the |UCSUCRV| :envvar:`mail/relayhost`.
+
+Examples:
+   * ``ucr set mail/relayhost="mx01.example.com"``
+
+     The mail server delivers outgoing mail to the mail server ``mx01.example.com`` on port ``25``.
+
+   * ``ucr set mail/relayhost="mx01.example.com:587"``
+
+     The mail server delivers outgoing mail to the mail server ``mx01.example.com`` on port ``587``.
+
+:program:`Postfix` determines the actual target address of the relay mail server by querying the MX/SRV record in the DNS.
+To turn off MX lookup, use the format :samp:`[{FQDN relay host}]`,
+as you see in the following examples:
+
+* ``ucr set mail/relayhost="[mx01.example.com]"``
+
+  The mail server delivers outgoing mail to the mail server ``mx01.example.com`` on port ``25``.
+
+* ``ucr set mail/relayhost="[mx01.example.com]:587"``
+
+  The mail server delivers outgoing mail to the mail server ``mx01.example.com`` on port ``587``.
+
+If the relay host requires authentication for sending,
+set the |UCSUCRV| :envvar:`mail/relayauth` to ``yes``
+and edit the :file:`/etc/postfix/smtp_auth` file.
+Provide the FQDN for the relay host, username, and password in this file in one line
+in the format: :samp:`{FQDN relay host} {username}:{password}`.
+The part for the :samp:`{FQDN relay host}`
+must look exactly like the value of :envvar:`mail/relayhost`.
+
+Examples:
+   * ``mx01.example.com:587 outgoing-username@example.com:verySecretPassword``
+   * ``[mx01.example.com]:587 outgoing-username@example.com:verySecretPassword``
+     with MX lookup turned off
 
 To adopt the changes in :program:`Postfix`, complete the following commands:
 
@@ -58,6 +90,14 @@ To adopt the changes in :program:`Postfix`, complete the following commands:
    :envvar:`mail/relayhost` and :envvar:`mail/relayauth` have the value ``yes``
    and if :envvar:`mail/postfix/tls/client/level` doesn't have the value
    ``none``.
+
+.. seealso::
+
+   :manpage:`postconf(5)` - manual page for :program:`postconf` - Postfix configuration parameters
+      for a reference of the configuration values
+      `relayhost <manpage-postconf-relayhost_>`_,
+      and `smtp_sasl_password_maps <manpage-postconf-smtp-sasl-password-maps_>`_.
+
 
 .. _mail-serverconfig-mailsize:
 
