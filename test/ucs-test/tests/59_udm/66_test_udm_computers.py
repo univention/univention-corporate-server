@@ -570,83 +570,83 @@ class Test_ComputerAllRoles:
             result_ip = lo.getAttr(dn, 'univentionDhcpFixedAddress')[0].decode('ASCII')
             assert result_ip.startswith(NET)
 
-        @pytest.mark.tags('udm', 'udm-computers')
-        def test_nameserver_update_in_zone_on_delete(self, udm, verify_ldap_object, role):
-            """Check if nameservers in forward/reverse DNS zones are updated when deleting the nameserver"""
-            # create zones and computer
-            server_name = 'qwertzu'
-            domain = 'asdfgh'
-            fqdn_dot = server_name + '.' + domain + '.'
-            forward = udm.create_object('dns/forward_zone', zone=domain, nameserver='aaa.aa.')
-            reverse = udm.create_object('dns/reverse_zone', subnet='10.20.30', nameserver='aaa.aa.')
-            computer = udm.create_object(role, set={
-                'ip': '10.20.30.3',
-                'name': server_name,
-                'dnsEntryZoneForward': forward,
-                'dnsEntryZoneReverse': reverse,
-                'domain': domain,
+    @pytest.mark.tags('udm', 'udm-computers')
+    def test_nameserver_update_in_zone_on_delete(self, udm, verify_ldap_object, role):
+        """Check if nameservers in forward/reverse DNS zones are updated when deleting the nameserver"""
+        # create zones and computer
+        server_name = 'qwertzu'
+        domain = 'asdfgh'
+        fqdn_dot = server_name + '.' + domain + '.'
+        forward = udm.create_object('dns/forward_zone', zone=domain, nameserver='aaa.aa.')
+        reverse = udm.create_object('dns/reverse_zone', subnet='10.20.30', nameserver='aaa.aa.')
+        computer = udm.create_object(role, set={
+            'ip': '10.20.30.3',
+            'name': server_name,
+            'dnsEntryZoneForward': forward,
+            'dnsEntryZoneReverse': reverse,
+            'domain': domain,
+        })
+        udm.modify_object('dns/forward_zone', dn=forward, nameserver=[fqdn_dot], wait_for_replication=False)
+        udm.modify_object('dns/reverse_zone', dn=reverse, nameserver=[fqdn_dot], wait_for=True)
+        utils.wait_for_connector_replication()
+        verify_ldap_object(forward, {'nSRecord': ['aaa.aa.', fqdn_dot]})
+        verify_ldap_object(reverse, {'nSRecord': ['aaa.aa.', fqdn_dot]})
+
+        # delete computer and check new name in zones
+        udm.remove_object(role, dn=computer, wait_for=True)
+        utils.wait_for_connector_replication()
+        verify_ldap_object(forward, {'nSRecord': ['aaa.aa.']})
+        verify_ldap_object(reverse, {'nSRecord': ['aaa.aa.']})
+
+    @pytest.mark.tags('udm', 'udm-computers')
+    def test_multiple_dhcp_entry_zones(self, udm, verify_ldap_object, role):
+        """
+        Test appending and removing dhcpEntryZone for all computer roles
+        Computer objects request a uidNumber when creating an object, but the value of
+        univentionLastUsedValue has never been incremented.
+        Since UCS 4.3-2erratumX this is no longer the case and univentionLastUsedValue
+        is never changed.
+        """
+        # bugs: [44937]
+        computerName = random_name()
+
+        service = udm.create_object('dhcp/service', service=random_name())
+        dhcpEntryZones = (
+            [service, '10.20.30.40', '11:11:11:11:11:11'],
+            [service, '10.20.30.41', '22:22:22:22:22:22'],
+            [service, '10.20.30.42', '33:33:33:33:33:33'],
+            [service, '10.20.30.43', '44:44:44:44:44:44'],
+        )
+
+        computer = udm.create_object(role, name=computerName)
+
+        udm.modify_object(role, dn=computer, append={
+            'ip': [zone[1] for zone in dhcpEntryZones],
+            'mac': [zone[2] for zone in dhcpEntryZones],
+            'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones],
+        })
+        for i, (service, ip, mac) in enumerate(dhcpEntryZones, -1):
+            addon = '' if i < 0 else '_uv%d' % (i,)
+            verify_ldap_object('cn=%s%s,%s' % (computerName, addon, service), {
+                'univentionDhcpFixedAddress': [ip],
+                'dhcpHWAddress': ['ethernet %s' % mac],
             })
-            udm.modify_object('dns/forward_zone', dn=forward, nameserver=[fqdn_dot], wait_for_replication=False)
-            udm.modify_object('dns/reverse_zone', dn=reverse, nameserver=[fqdn_dot], wait_for=True)
-            utils.wait_for_connector_replication()
-            verify_ldap_object(forward, {'nSRecord': ['aaa.aa.', fqdn_dot]})
-            verify_ldap_object(reverse, {'nSRecord': ['aaa.aa.', fqdn_dot]})
 
-            # delete computer and check new name in zones
-            udm.remove_object(role, dn=computer, wait_for=True)
-            utils.wait_for_connector_replication()
-            verify_ldap_object(forward, {'nSRecord': ['aaa.aa.']})
-            verify_ldap_object(reverse, {'nSRecord': ['aaa.aa.']})
+        udm.modify_object(role, dn=computer, remove={
+            'ip': [zone[1] for zone in dhcpEntryZones[:2]],
+            'mac': [zone[2] for zone in dhcpEntryZones[:2]],
+            'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones[:2]],
+        })
+        for i, (service, ip, mac) in list(enumerate(dhcpEntryZones, -1))[:2]:
+            addon = '' if i < 0 else '_uv%d' % (i,)
+            verify_ldap_object('cn=%s%s,%s' % (ldap.dn.escape_dn_chars(computerName), addon, service), should_exist=False)
 
-        @pytest.mark.tags('udm', 'udm-computers')
-        def test_multiple_dhcp_entry_zones(self, udm, verify_ldap_object, role):
-            """
-            Test appending and removing dhcpEntryZone for all computer roles
-            Computer objects request a uidNumber when creating an object, but the value of
-            univentionLastUsedValue has never been incremented.
-            Since UCS 4.3-2erratumX this is no longer the case and univentionLastUsedValue
-            is never changed.
-            """
-            # bugs: [44937]
-            computerName = random_name()
-
-            service = udm.create_object('dhcp/service', service=random_name())
-            dhcpEntryZones = (
-                [service, '10.20.30.40', '11:11:11:11:11:11'],
-                [service, '10.20.30.41', '22:22:22:22:22:22'],
-                [service, '10.20.30.42', '33:33:33:33:33:33'],
-                [service, '10.20.30.43', '44:44:44:44:44:44'],
-            )
-
-            computer = udm.create_object(role, name=computerName)
-
-            udm.modify_object(role, dn=computer, append={
-                'ip': [zone[1] for zone in dhcpEntryZones],
-                'mac': [zone[2] for zone in dhcpEntryZones],
-                'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones],
+        for i, (service, ip, mac) in list(enumerate(dhcpEntryZones, -1))[2:]:
+            addon = '' if i < 0 else '_uv%d' % (i,)
+            verify_ldap_object('cn=%s%s,%s' % (ldap.dn.escape_dn_chars(computerName), addon, service), {
+                'univentionDhcpFixedAddress': [ip],
+                'dhcpHWAddress': ['ethernet %s' % mac],
             })
-            for i, (service, ip, mac) in enumerate(dhcpEntryZones, -1):
-                addon = '' if i < 0 else '_uv%d' % (i,)
-                verify_ldap_object('cn=%s%s,%s' % (computerName, addon, service), {
-                    'univentionDhcpFixedAddress': [ip],
-                    'dhcpHWAddress': ['ethernet %s' % mac],
-                })
-
-            udm.modify_object(role, dn=computer, remove={
-                'ip': [zone[1] for zone in dhcpEntryZones[:2]],
-                'mac': [zone[2] for zone in dhcpEntryZones[:2]],
-                'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones[:2]],
-            })
-            for i, (service, ip, mac) in list(enumerate(dhcpEntryZones, -1))[:2]:
-                addon = '' if i < 0 else '_uv%d' % (i,)
-                verify_ldap_object('cn=%s%s,%s' % (ldap.dn.escape_dn_chars(computerName), addon, service), should_exist=False)
-
-            for i, (service, ip, mac) in list(enumerate(dhcpEntryZones, -1))[2:]:
-                addon = '' if i < 0 else '_uv%d' % (i,)
-                verify_ldap_object('cn=%s%s,%s' % (ldap.dn.escape_dn_chars(computerName), addon, service), {
-                    'univentionDhcpFixedAddress': [ip],
-                    'dhcpHWAddress': ['ethernet %s' % mac],
-                })
 
     @pytest.mark.tags('udm', 'udm-computers', 'apptest')
     def test_all_roles_univentionLastUsedValue(self, udm, ucr, lo, verify_ldap_object, wait_for_replication_cleanup, role):
