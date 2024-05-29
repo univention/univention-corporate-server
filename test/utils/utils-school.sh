@@ -83,6 +83,9 @@ install_ucsschool_id_connector_in_version() {
 
 upgrade_id_connector () {
   printf '%s' univention > /tmp/univention
+  if [ -n "$UCS_ENV_ID_CONNECTOR_IMAGE" ]; then
+    univention-app dev-set ucsschool-id-connector "DockerImage=$UCS_ENV_ID_CONNECTOR_IMAGE"
+  fi
   univention-app upgrade ucsschool-id-connector --noninteractive --username Administrator --pwdfile /tmp/univention || rv=$?
   univention-app info
   return $rv
