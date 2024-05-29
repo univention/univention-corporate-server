@@ -10,3 +10,6 @@ desc: |
    the zone of the Single-Sign On domain name case
    insensitively.
 bug: [57290]
+erratum: 1058
+announced: 2024-05-29
+support: core
