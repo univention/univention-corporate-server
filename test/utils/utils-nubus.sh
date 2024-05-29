@@ -1,7 +1,7 @@
 set -e
 set -x
 
-# https://docs.software-univention.de/nubus-operation/latest/en/install.html
+# https://docs.software-univention.de/nubus-kubernetes-operation/latest/en/install.html
 # https://git.knut.univention.de/univention/customers/dataport/upx/dev-env/
 
 install_tools () {
