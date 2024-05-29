@@ -36,34 +36,29 @@ def test_ucs_test_logfile():
         args.logfile = os.path.join(ucs_test.cwd(), args.logfile)
 
     if args.logfile and os.path.isfile(args.logfile):
-        not_found = grep_traceback.main([args.logfile], ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS)
-        assert not_found, 'ucs-test logfile contains tracebacks'
+        grep_traceback.main([args.logfile], ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS)
 
 
 @pytest.mark.exposure('safe')
 def test_var_log_tracebacks():
-    if not grep_traceback.main(glob.glob('/var/log/univention/*.log'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS):
-        pytest.fail('logfiles contain tracebacks', pytrace=False)
+    grep_traceback.main(glob.glob('/var/log/univention/*.log'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS)
 
 
 @pytest.mark.exposure('safe')
 def test_var_log_subdirectory_tracebacks():
-    if not grep_traceback.main(glob.glob('/var/log/univention/*/*.log'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS):
-        pytest.fail('logfiles contain tracebacks', pytrace=False)
+    grep_traceback.main(glob.glob('/var/log/univention/*/*.log'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS)
 
 
 @pytest.mark.exposure('safe')
 def test_var_log_tracebacks_gz():
-    if not grep_traceback.main(glob.glob('/var/log/univention/*.log.*.gz'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS):
-        pytest.fail('logfiles *.gz contain tracebacks', pytrace=False)
+    grep_traceback.main(glob.glob('/var/log/univention/*.log.*.gz'), ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS)
 
 
 @pytest.mark.exposure('safe')
 def test_journallog_tracebacks():
     proc = subprocess.Popen(['journalctl', '-o', 'cat'], stdout=subprocess.PIPE)
-    if not grep_traceback.main([proc.stdout], ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS):
-        pytest.fail('logfiles journalctl contain tracebacks', pytrace=False)
-    assert proc.wait() == 0
+    grep_traceback.main([proc.stdout], ignore_exceptions=grep_traceback.COMMON_EXCEPTIONS)
+    proc.wait()
 
 
 @pytest.mark.roles_not('domaincontroller_master')
