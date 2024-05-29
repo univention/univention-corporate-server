@@ -9,3 +9,6 @@ desc: |
  * UMC now also logs the reason for a failed LDAP connection
    for module processes.
 bug: [57311]
+erratum: 1057
+announced: 2024-05-29
+support: core
