@@ -153,7 +153,7 @@ if [ -n "$(ucr search "^fetchmail/autostart/update520$")" ] ; then
 	systemctl restart fetchmail >&3 2>&3
 fi
 
-if [ "${server_role:-}"="domaincontroller_master" ]; then
+if [ "${server_role:-}" = "domaincontroller_master" ]; then
 	if univention-ldapsearch -LLL '(uid=ucs-sso)' 1.1 | grep -q '^dn'; then
 		udm users/user remove --dn="uid=ucs-sso,cn=users,$(ucr get ldap/base)"
 	fi
