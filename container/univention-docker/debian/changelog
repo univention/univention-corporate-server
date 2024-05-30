@@ -1,3 +1,9 @@
+univention-docker (7.0.3) unstable; urgency=medium
+
+  * Bug #55807: Revert disabling ip(6)tables in docker config
+
+ -- Arvid <requate@univention.de>  Thu, 30 May 2024 22:23:22 +0200
+
 univention-docker (7.0.2) unstable; urgency=medium
 
   * Bug #56604: drop Python 2 compatibility
