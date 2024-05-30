@@ -18,11 +18,11 @@ To create users, administrators can use the simplified user creation wizard,
 as shown in the following screenshots.
 
 You open the wizard by clicking the :guilabel:`Add` button in the *Users* module.
-In the first screen *Add a new user*,
+In the first page *Add a new user*,
 you select the *Container* where you want to locate the user object
 and if you want to create a user account using a template.
 
-When you click :guilabel:`Next`, you see the screen in :numref:`user-create`.
+When you click :guilabel:`Next`, you see the page in :numref:`user-create`.
 
 .. _user-create:
 
@@ -76,6 +76,19 @@ You can deactivate the simplified wizard by setting the
 
    Advanced user settings
 
+If you want to define the user's primary email address in the simplified wizard,
+you can activate the field by setting the
+|UCSUCRV| :envvar:`directory/manager/web/modules/users/user/properties/mailPrimaryAddress/required` to
+``true`` and restarting the :program:`univention-management-console-server`.
+The wizard's second page then asks for the user's primary email address,
+as shown in :numref:`user-create-wizard-primary-email`.
+
+.. _user-create-wizard-primary-email:
+
+.. figure:: /images/users_user_wizard_primary_mail.*
+   :alt: Require setting the user's primary email address in the wizard
+
+   Require setting the user's primary email address in the wizard
 
 .. _users-management-table-general:
 
