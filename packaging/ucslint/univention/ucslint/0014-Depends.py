@@ -232,7 +232,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         fn_control = path / 'debian' / 'control'
         for cand in self._cand(deps):
             if self.RE_TRANSITIONAL.search(cand.summary or ''):
-                self.addmsg('0014-8', f'depends on transitional package {cand.package.name}', fn_control)
+                self.addmsg('0014-9', f'depends on transitional package {cand.package.name}', fn_control)
 
     def check_essential(self, path: Path, deps: Iterable[str]) -> None:
         fn_control = path / 'debian' / 'control'
