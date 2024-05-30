@@ -4,11 +4,25 @@
 
 .. _users-management:
 
-User management via |UCSUMC| module
-===================================
+User management through |UCSUMC| module
+=======================================
 
-Users are managed in the UMC module *Users* (see
-:ref:`central-user-interface`).
+This section describes the user management through the UMC module *Users*.
+
+.. _users-management-user-creation-wizard:
+
+User creation wizard
+--------------------
+
+To create users, administrators can use the simplified user creation wizard,
+as shown in the following screenshots.
+
+You open the wizard by clicking the :guilabel:`Add` button in the *Users* module.
+In the first screen *Add a new user*,
+you select the *Container* where you want to locate the user object
+and if you want to create a user account using a template.
+
+When you click :guilabel:`Next`, you see the screen in :numref:`user-create`.
 
 .. _user-create:
 
@@ -17,22 +31,27 @@ Users are managed in the UMC module *Users* (see
 
    Creating a user in the UMC module *Users*
 
-With :guilabel:`Next` on :numref:`user-create` the second page
-:numref:`user-password` is shown, where the initial password can be set.
+With :guilabel:`Next`, the *Users* module shows the third page as in
+:numref:`user-password`, where you can define the initial password.
 
 .. _user-password:
 
 .. figure:: /images/users_password.*
-   :alt: Password setting for a new user
+   :alt: Password setting for a user
 
-   Password setting for a new user
+   Password setting for a user
 
-As an alternative the user may set the initial password himself if the
-:program:`Self Service` app is installed. For this to work an external email
-address must be given, which is registered at the contact email address. The
-user will then receive an email to that address containing a web address and a
-token, which can be used to set the password and unlock the account. For this
-also see :ref:`user-management-password-changes-by-users-self-service`.
+As an alternative the user may set the initial password themselves,
+if the UCS domain has the :program:`Self Service` app installed.
+To allow the user setting the initial password by themselves,
+you must define their external email address.
+
+To define an external email address,
+open the *Advanced* user account settings,
+click the tab :guilabel:`Contact` and provide an external email address in the field *E-mail address*.
+The self service app sends an email to the user's external email address with a link and a token.
+The user can use the link to set their initial password and unlock the user account.
+For more information, refer to :ref:`user-management-password-changes-by-users-self-service`.
 
 .. _user-password-new:
 
@@ -41,11 +60,14 @@ also see :ref:`user-management-password-changes-by-users-self-service`.
 
    Initial user password
 
-By default a simplified wizard for creating a user is shown, which only requests
-the most important settings. All attributes can be shown by clicking on
-:guilabel:`Advanced`. The simplified wizard can be deactivated by setting the
+By default, the *Users* module shows a simplified wizard for creating a user.
+The wizard only requests the most important settings.
+To see all user account attributes as in :numref:`user-create-advanced`,
+click :guilabel:`Advanced` in the wizard.
+
+You can deactivate the simplified wizard by setting the
 |UCSUCRV| :envvar:`directory/manager/web/modules/users/user/wizard/disabled` to
-``true``.
+``true`` and restarting the :program:`univention-management-console-server`.
 
 .. _user-create-advanced:
 
