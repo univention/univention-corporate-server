@@ -8,3 +8,7 @@
 0009-2: third_party/waf/waflib/extras/fluid.py
 0009-2: third_party/waf/waflib/extras/satellite_assembly.py
 0009-2: third_party/waf/waflib/extras/cfg_altoptions.py
+# Invalid Python string literal in upstream WAF
+0009-10
+# Bad shell code in upstream WAF
+0017-8: buildtools/compare_generated.sh
