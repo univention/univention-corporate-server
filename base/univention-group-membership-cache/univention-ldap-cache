@@ -31,43 +31,16 @@
 # <https://www.gnu.org/licenses/>.
 #
 
-import os
+import asyncio
 import re
-import subprocess
 import sys
 from argparse import SUPPRESS, ArgumentParser, Namespace  # noqa: F401
 from collections.abc import Container, Iterable  # noqa: F401
-from glob import glob
-from hashlib import md5
 
 from univention.ldap_cache.cache import Caches, get_cache  # noqa: F401
 from univention.ldap_cache.cache.shard_config import add_shard_to_config, rm_shard_from_config
+from univention.ldap_cache.consumer import CacheConsumer
 from univention.uldap import getMachineConnection
-
-
-listener_template = '''#!/usr/bin/python3
-
-from univention.ldap_cache.listener_module import LdapCacheHandler
-
-name = {name!r}
-
-class QueryHandler(LdapCacheHandler):
-    class Configuration(LdapCacheHandler.Configuration):
-        name = {name!r}
-        def get_description(self):
-            return 'Automatically created listener module for the univention-group-membership-member cache (%s)' % ({desc!r},)
-        def get_ldap_filter(self):
-            return {filter!r}
-        def get_attributes(self):
-            return {attrs!r}
-'''
-
-
-def _md5sum(value):
-    # type: (str) -> str
-    m = md5()
-    m.update(value.encode('utf-8'))
-    return m.hexdigest()
 
 
 def _query_objects(query, attrs):
@@ -136,36 +109,9 @@ def rebuild(args):
         print('Added', i, 'objects')
 
 
-def create_listener_modules(args):
-    # type: (Namespace) -> None
-    listener_dir = '/usr/lib/univention-directory-listener/system/'
-    existing_listeners = set(glob(os.path.join(listener_dir, 'ldap-cache-*')))
-    for query, (_caches, attrs) in _get_queries(get_cache()).items():
-        attrs.discard('dn')
-        attrs.discard('entryUUID')
-        listener_name = 'ldap-cache-%s' % _md5sum(query)
-        fname = os.path.join(listener_dir, '%s.py' % listener_name)
-        existing_listeners.discard(fname)
-        print('Writing', fname, 'for', query)
-        with open(fname, 'w') as fd:
-            fd.write(listener_template.format(
-                name=listener_name,
-                desc=', '.join(sorted({cache.db_name for cache in _caches})),
-                filter=query,
-                attrs=sorted(attrs),
-            ))
-    for fname in existing_listeners:
-        print('Removing', fname)
-        os.unlink(fname)
-    subprocess.call(['service', 'univention-directory-listener', 'restart'])
-    for fname in existing_listeners:
-        # also remove status "initialized" so that the listener may be added again in the future
-        # needs to be done after the listener is running again
-        listener_name = os.path.basename(fname)[:-3]
-        try:
-            os.unlink(os.path.join('/var/lib/univention-directory-listener/handlers/', listener_name))
-        except OSError:
-            pass
+def run_provisioning_consumer(args):
+    consumer = CacheConsumer()
+    asyncio.run(consumer.start_listening_for_changes())
 
 
 def list_caches(args):
@@ -230,8 +176,8 @@ def main():
     subparser.add_argument('cache_name', nargs='*', help='The cache consists of different parts. You can only rebuild certain parts of the cache. See "list"')
     subparser.set_defaults(func=rebuild)
 
-    subparser = subparsers.add_parser('create-listener-modules', description='Automatically creates listener modules that will eventually fill the cache (and removes unnecessary); restarts the univention-directory-listener. May be needed after shards are added to /removed from the cache', help='Create listener modules')
-    subparser.set_defaults(func=create_listener_modules)
+    subparser = subparsers.add_parser('run-provisioning-consumer', description='Automatically runs provisioning consumer that will eventually fill the cache (and removes unnecessary). May be needed after shards are added to /removed from the cache', help='Run provisioning consumer')
+    subparser.set_defaults(func=run_provisioning_consumer)
 
     subparser = subparsers.add_parser('add-cache', description=SUPPRESS)
     subparser.add_argument('db_name')

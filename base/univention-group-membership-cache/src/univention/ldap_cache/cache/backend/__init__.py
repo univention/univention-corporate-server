@@ -84,7 +84,7 @@ class Shard:
     def __init__(self, cache: Any) -> None:
         self._cache = cache
 
-    def rm_object(self, obj: tuple[str, Mapping[str, Sequence[bytes]]]) -> None:
+    def rm_object(self, obj: tuple[str, Mapping[str, Sequence[str | bytes]]]) -> None:
         try:
             key = self.get_key(obj)
         except ValueError:
@@ -93,7 +93,7 @@ class Shard:
         debug('Removing %s', key)
         self._cache.delete(key, values)
 
-    def add_object(self, obj: tuple[str, Mapping[str, Sequence[bytes]]]) -> None:
+    def add_object(self, obj: tuple[str, Mapping[str, Sequence[str | bytes]]]) -> None:
         try:
             key = self.get_key(obj)
         except ValueError:
@@ -105,15 +105,15 @@ class Shard:
         else:
             self._cache.delete(key, [])
 
-    def _get_from_object(self, obj: tuple[str, Mapping[str, Sequence[bytes]]], attr: str) -> Sequence[Any]:
+    def _get_from_object(self, obj: tuple[str, Mapping[str, Sequence[str | bytes]]], attr: str) -> Sequence[Any]:
         if attr == 'dn':
             return [obj[0]]
         return obj[1].get(attr, [])
 
-    def get_values(self, obj: tuple[str, Mapping[str, Sequence[bytes]]]) -> Any:
+    def get_values(self, obj: tuple[str, Mapping[str, Sequence[str | bytes]]]) -> Any:
         return _s(self._get_from_object(obj, self.value))
 
-    def get_key(self, obj: tuple[str, Mapping[str, Sequence[bytes]]]) -> Any:
+    def get_key(self, obj: tuple[str, Mapping[str, Sequence[str | bytes]]]) -> Any:
         values = self._get_from_object(obj, self.key)
         if values:
             return _s(values[0]).lower()
