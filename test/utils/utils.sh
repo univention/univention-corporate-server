@@ -303,6 +303,12 @@ keycloak_migration() {
 	ucr set ucs/server/sso/fqdn="ucs-sso-ng.${domainname,,}"
 }
 
+configure_umc_keycloak() {
+	. utils-keycloak.sh && keycloak_saml_idp_setup
+	domainname="$(ucr get domainname)"
+	ucr set ucs/server/sso/fqdn="ucs-sso-ng.${domainname,,}"
+}
+
 run_setup_join () {
 	local rv=0
 	# TODO find a better place for this
