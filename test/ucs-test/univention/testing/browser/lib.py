@@ -269,7 +269,6 @@ class UMCBrowserTest(Interactions):
         login_should_fail: bool = False,
         do_navigation: bool = True,
         expect_password_change_prompt: bool = False,
-        skip_xhr_check: bool = False,
     ):
         """
         Navigates to {base_url}/univention/login?location={location} and logs in with the given credentials
@@ -281,7 +280,6 @@ class UMCBrowserTest(Interactions):
         :param login_should_fail: Returns after failure to log in with wrong credentials
         :param do_navigation: Wether to navigate to the login page
         :param expect_password_change_prompt: Expect a password change prompt to be visible after clicking the Login button
-        :param skip_xhr_check: Skip the check for certain requests to be completed
         """
         logger.info("Starting login to '%s' " % location)
         page = self.page
@@ -306,18 +304,7 @@ class UMCBrowserTest(Interactions):
             logger.info('Login failed as expected')
             return
 
-        if '/univention/management' in location and not check_for_no_module_available_popup and not skip_xhr_check:
-            logger.info('Logging in, waiting for requests to finish')
-            join_script_query = re.compile(r'https?://.+/univention/command/join/scripts/query')
-            license_query = re.compile(r'https?://.+/univention/command/udm/license')
-
-            if ucr.get('server/role') == 'domaincontroller_master':
-                with self.page.expect_response(join_script_query), self.page.expect_response(license_query):
-                    login_button.click()
-            else:
-                with self.page.expect_response(join_script_query):
-                    login_button.click()
-        elif check_for_no_module_available_popup:
+        if check_for_no_module_available_popup:
             login_button.click()
             logger.info("Checking for the 'No module for user available popup'")
             self.check_for_no_module_available_popup()

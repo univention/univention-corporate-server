@@ -113,7 +113,7 @@ def test_module_visibility_for_regular_user(umc_browser_test: UMCBrowserTest, ud
     add_user_policy(udm, umc_browser_test, username)
     add_group_policy(udm, umc_browser_test, username)
 
-    umc_browser_test.login(username, skip_xhr_check=True)
+    umc_browser_test.login(username)
 
     allowed_modules: Set[str] = {
         _('Univention Configuration Registry'),

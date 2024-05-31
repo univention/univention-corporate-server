@@ -177,7 +177,7 @@ def test_module_availability(umc_browser_test: UMCBrowserTest, ucr):
     users = determine_users_by_join_status()
 
     for user in users:
-        umc_browser_test.login(user, skip_xhr_check=user != 'Administrator')
+        umc_browser_test.login(user)
         expected_modules = set(expected_modules_for_role[role][user])
         assert set(umc_browser_test.get_available_modules()) & expected_modules == expected_modules
 
