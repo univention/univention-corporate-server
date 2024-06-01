@@ -1,4 +1,4 @@
-univention-keycloak (3.0.7) unstable; urgency=medium
+univention-keycloak (3.0.8) unstable; urgency=medium
 
   * Bug #57320: Make name_id_format selectable if provided by cli
 
