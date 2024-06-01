@@ -1,12 +1,5 @@
 univention-management-console (14.0.18) unstable; urgency=medium
 
-  * univention/components/keycloak-app#211: Move SAML setup code from UMC join
-    script to keycloak join script
-
- -- Marius Meschter <marius.meschter@univention.de>  Thu, 30 May 2024 14:32:27 +0200
-
-univention-management-console (14.0.17) unstable; urgency=medium
-
   * Bug #57311: log reason for failed LDAP connection
 
  -- Felix Botner <botner@univention.de>  Fri, 24 May 2024 12:10:45 +0200
