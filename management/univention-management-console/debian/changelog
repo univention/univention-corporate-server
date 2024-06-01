@@ -1,4 +1,4 @@
-univention-management-console (14.0.18) unstable; urgency=medium
+univention-management-console (14.0.19) unstable; urgency=medium
 
   * Bug #57311: log reason for failed LDAP connection
 
