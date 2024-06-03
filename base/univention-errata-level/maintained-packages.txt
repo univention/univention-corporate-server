@@ -125,7 +125,6 @@ cairo-perf-utils
 cdebconf
 cdebconf-gtk
 cdebconf-priority
-cdrkit-doc
 cgroupfs-mount
 cifs-utils
 cl-brlapi
@@ -345,7 +344,6 @@ fancontrol
 fdisk
 fetchmail
 fetchmailconf
-fig2dev
 file
 findutils
 firmware-ath9k-htc
@@ -485,7 +483,6 @@ gdc-multilib-s390x-linux-gnu
 gdc-powerpc64le-linux-gnu
 gdc-s390x-linux-gnu
 gdisk
-genisoimage
 geoip-bin
 geoip-database
 geoip-database-extra
@@ -650,7 +647,6 @@ grub2
 grub2-common
 gsasl
 gsfonts
-gsl-bin
 gtk-3-examples
 gtk-update-icon-cache
 gtk2-engines-pixbuf
@@ -687,7 +683,6 @@ hunspell-en-us
 hunspell-tools
 hyperv-daemons
 i2c-tools
-icedax
 icu-devtools
 icu-doc
 idle
@@ -1272,18 +1267,11 @@ libgraphite2-3
 libgraphite2-dev
 libgraphite2-doc
 libgraphite2-utils
-libgrpc++-dev
-libgrpc++1
-libgrpc-dev
-libgrpc6
 libgs-dev
 libgs9
 libgs9-common
 libgsasl7
 libgsasl7-dev
-libgsl-dev
-libgsl23
-libgslcblas0
 libgsm-tools
 libgsm1
 libgsm1-dev
@@ -1575,8 +1563,6 @@ libmicrohttpd12
 libmime-tools-perl
 libmnl-dev
 libmnl0
-libmodbus-dev
-libmodbus5
 libmodule-implementation-perl
 libmodule-runtime-perl
 libmonitoring-plugin-perl
@@ -2241,8 +2227,6 @@ libutempter-dev
 libutempter0
 libuuid1
 libvariable-magic-perl
-libvarnishapi-dev
-libvarnishapi2
 libvirt-clients
 libvirt-daemon
 libvirt-daemon-driver-storage-gluster
@@ -2841,7 +2825,6 @@ printer-driver-sag-gdi
 printer-driver-splix
 procps
 protobuf-c-compiler
-protobuf-compiler-grpc
 psl
 psl-make-dafsa
 psmisc
@@ -2959,7 +2942,6 @@ python-genshi-doc
 python-gnupg
 python-gpg
 python-gridfs
-python-grpcio
 python-html5lib
 python-httplib2
 python-idna
@@ -3207,7 +3189,6 @@ python3-gnupg
 python3-gpg
 python3-graphite2
 python3-gridfs
-python3-grpcio
 python3-html5lib
 python3-httplib2
 python3-idna
@@ -3417,8 +3398,6 @@ ruby-all-dev
 ruby-dev
 ruby-did-you-mean
 ruby-full
-ruby-grpc
-ruby-grpc-tools
 ruby-minitest
 ruby-net-telnet
 ruby-power-assert
@@ -3750,8 +3729,6 @@ util-linux
 util-linux-locales
 uuid-dev
 uuid-runtime
-varnish
-varnish-doc
 vim
 vim-athena
 vim-common
@@ -3787,7 +3764,6 @@ whiptail
 whois
 winbind
 wngerman
-wodim
 wpagui
 wpasupplicant
 wswiss
