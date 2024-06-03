@@ -478,7 +478,7 @@ def update_saml_metadata_from_xml(opt, metadata_url, payload, metadata_file, no_
     ]
 
     if name_id_format:
-        attribs["saml_name_id_format"] = opt.name_id_format if getattr(opt, 'name_id_format', 'transient') in name_id_format else name_id_format[0]  # keycloak can only handle one NameID Format
+        attribs["saml_name_id_format"] = opt.name_id_format if getattr(opt, 'name_id_format', None) in name_id_format else name_id_format[0]  # keycloak can only handle one NameID Format
         attribs["saml_force_name_id_format"] = "true"
 
     name = saml_descriptor_xml.find('.//{urn:oasis:names:tc:SAML:2.0:metadata}ServiceName')
