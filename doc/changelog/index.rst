@@ -14,194 +14,137 @@ Changelog for Univention Corporate Server (UCS) |release|
 General
 *******
 
-* The dependency of :command:`univention-fix-ucr-dns` on :program:`py3dns` has been replaced by
-  :program:`dnspython` to support |EDNS|, which is required for virtual machines on AWS-
-  EC2 and OpenStack. This also fixes an issue with "Amazon Provided DNS", which
-  only supports "recursive queries": as such they were not identified as
-  forwarding DNS services and did not get moved from |UCSUCRVs|
-  :envvar:`nameserver[123]` to :envvar:`dns/forwarder[123]`. This resulted in UCS domain
-  specific queries being sent wrongly to the "Amazon Provided DNS", which then
-  were not able to answer them and returned a failure instead, leading to all
-  kind of application errors (:uv:bug:`56911`).
+# TODO
 
 .. _security:
 
-* All security updates issued for UCS 5.0-6 are included:
+* All security updates issued for UCS 5.0-7 are included:
 
-  * :program:`bind9` (:uv:cve:`2023-3341`) (:uv:bug:`57029`)
+  * :program:`bind9` (:uv:cve:`2023-50387`, :uv:cve:`2023-50868`)
+    (:uv:bug:`57301`)
 
-  * :program:`bluez` (:uv:cve:`2023-45866`) (:uv:bug:`56921`)
+  * :program:`bluez` (:uv:cve:`2023-27349`) (:uv:bug:`57342`)
 
-  * :program:`curl` (:uv:cve:`2023-28322`, :uv:cve:`2023-46218`)
-    (:uv:bug:`56941`)
+  * :program:`containerd` (:uv:cve:`2020-15257`, :uv:cve:`2021-21334`,
+    :uv:cve:`2021-41103`, :uv:cve:`2022-23471`, :uv:cve:`2022-23648`,
+    :uv:cve:`2023-25153`, :uv:cve:`2023-25173`) (:uv:bug:`56457`)
 
-  * :program:`exim4` (:uv:cve:`2023-51766`) (:uv:bug:`56968`)
+  * :program:`curl` (:uv:cve:`2023-27534`) (:uv:bug:`57160`)
 
-  * :program:`firefox-esr` (:uv:cve:`2023-6856`, :uv:cve:`2023-6857`,
-    :uv:cve:`2023-6858`, :uv:cve:`2023-6859`, :uv:cve:`2023-6860`,
-    :uv:cve:`2023-6861`, :uv:cve:`2023-6862`, :uv:cve:`2023-6863`,
-    :uv:cve:`2023-6864`, :uv:cve:`2023-6865`, :uv:cve:`2023-6867`,
-    :uv:cve:`2024-0741`, :uv:cve:`2024-0742`, :uv:cve:`2024-0746`,
-    :uv:cve:`2024-0747`, :uv:cve:`2024-0749`, :uv:cve:`2024-0750`,
-    :uv:cve:`2024-0751`, :uv:cve:`2024-0753`, :uv:cve:`2024-0755`,
-    :uv:cve:`2024-1546`, :uv:cve:`2024-1547`, :uv:cve:`2024-1548`,
-    :uv:cve:`2024-1549`, :uv:cve:`2024-1550`, :uv:cve:`2024-1551`,
-    :uv:cve:`2024-1552`, :uv:cve:`2024-1553`) (:uv:bug:`56939`,
-    :uv:bug:`57008`, :uv:bug:`57085`)
+  * :program:`docker.io` (:uv:cve:`2021-21284`, :uv:cve:`2021-21285`,
+    :uv:cve:`2021-41089`, :uv:cve:`2021-41091`, :uv:cve:`2021-41092`)
+    (:uv:bug:`56457`)
 
-  * :program:`gnutls28` (:uv:cve:`2024-0553`) (:uv:bug:`57086`)
+  * :program:`emacs` (:uv:cve:`2024-30203`, :uv:cve:`2024-30204`,
+    :uv:cve:`2024-30205`) (:uv:bug:`57250`)
 
-  * :program:`imagemagick` (:uv:cve:`2023-1289`, :uv:cve:`2023-34151`,
-    :uv:cve:`2023-39978`, :uv:cve:`2023-5341`) (:uv:bug:`57080`)
+  * :program:`expat` (:uv:cve:`2023-52425`) (:uv:bug:`57215`)
 
-  * :program:`intel-microcode` (:uv:cve:`2023-23583`)
-    (:uv:bug:`56920`)
+  * :program:`firefox-esr` (:uv:cve:`2023-5388`, :uv:cve:`2024-0743`,
+    :uv:cve:`2024-2607`, :uv:cve:`2024-2608`, :uv:cve:`2024-2609`,
+    :uv:cve:`2024-2610`, :uv:cve:`2024-2611`, :uv:cve:`2024-2612`,
+    :uv:cve:`2024-2614`, :uv:cve:`2024-2616`, :uv:cve:`2024-29944`,
+    :uv:cve:`2024-3302`, :uv:cve:`2024-3852`, :uv:cve:`2024-3854`,
+    :uv:cve:`2024-3857`, :uv:cve:`2024-3859`, :uv:cve:`2024-3861`,
+    :uv:cve:`2024-3864`, :uv:cve:`2024-4367`, :uv:cve:`2024-4767`,
+    :uv:cve:`2024-4768`, :uv:cve:`2024-4769`, :uv:cve:`2024-4770`,
+    :uv:cve:`2024-4777`) (:uv:bug:`57198`, :uv:bug:`57232`,
+    :uv:bug:`57303`)
 
-  * :program:`jinja2` (:uv:cve:`2024-22195`) (:uv:bug:`57007`)
+  * :program:`glib2.0` (:uv:cve:`2024-34397`) (:uv:bug:`57300`)
 
-  * :program:`libde265` (:uv:cve:`2023-49465`, :uv:cve:`2023-49467`,
-    :uv:cve:`2023-49468`) (:uv:bug:`56948`)
+  * :program:`glibc` (:uv:cve:`2024-2961`) (:uv:bug:`57249`)
 
-  * :program:`linux` (:uv:cve:`2021-44879`, :uv:cve:`2023-0590`,
-    :uv:cve:`2023-1077`, :uv:cve:`2023-1206`, :uv:cve:`2023-1989`,
-    :uv:cve:`2023-25775`, :uv:cve:`2023-3212`, :uv:cve:`2023-3390`,
-    :uv:cve:`2023-34319`, :uv:cve:`2023-34324`, :uv:cve:`2023-35001`,
-    :uv:cve:`2023-3609`, :uv:cve:`2023-3611`, :uv:cve:`2023-3772`,
-    :uv:cve:`2023-3776`, :uv:cve:`2023-39189`, :uv:cve:`2023-39192`,
-    :uv:cve:`2023-39193`, :uv:cve:`2023-39194`, :uv:cve:`2023-40283`,
-    :uv:cve:`2023-4206`, :uv:cve:`2023-4207`, :uv:cve:`2023-4208`,
-    :uv:cve:`2023-4244`, :uv:cve:`2023-42753`, :uv:cve:`2023-42754`,
-    :uv:cve:`2023-42755`, :uv:cve:`2023-45863`, :uv:cve:`2023-45871`,
-    :uv:cve:`2023-4622`, :uv:cve:`2023-4623`, :uv:cve:`2023-4921`,
-    :uv:cve:`2023-51780`, :uv:cve:`2023-51781`, :uv:cve:`2023-51782`,
-    :uv:cve:`2023-5717`, :uv:cve:`2023-6606`, :uv:cve:`2023-6931`,
-    :uv:cve:`2023-6932`) (:uv:bug:`56972`)
+  * :program:`golang-1.13` (:uv:cve:`2020-16845`, :uv:cve:`2022-1705`,
+    :uv:cve:`2022-27664`, :uv:cve:`2022-28131`, :uv:cve:`2022-2879`,
+    :uv:cve:`2022-2880`, :uv:cve:`2022-30629`, :uv:cve:`2022-30631`,
+    :uv:cve:`2022-30632`, :uv:cve:`2022-30633`, :uv:cve:`2022-30635`,
+    :uv:cve:`2022-32148`, :uv:cve:`2022-32189`, :uv:cve:`2022-41717`,
+    :uv:cve:`2023-24534`, :uv:cve:`2023-24537`, :uv:cve:`2023-24538`)
+    (:uv:bug:`56457`)
 
-  * :program:`linux-latest` (:uv:cve:`2021-44879`,
-    :uv:cve:`2023-0590`, :uv:cve:`2023-1077`, :uv:cve:`2023-1206`,
-    :uv:cve:`2023-1989`, :uv:cve:`2023-25775`, :uv:cve:`2023-3212`,
-    :uv:cve:`2023-3390`, :uv:cve:`2023-34319`, :uv:cve:`2023-34324`,
-    :uv:cve:`2023-35001`, :uv:cve:`2023-3609`, :uv:cve:`2023-3611`,
-    :uv:cve:`2023-3772`, :uv:cve:`2023-3776`, :uv:cve:`2023-39189`,
-    :uv:cve:`2023-39192`, :uv:cve:`2023-39193`, :uv:cve:`2023-39194`,
-    :uv:cve:`2023-40283`, :uv:cve:`2023-4206`, :uv:cve:`2023-4207`,
-    :uv:cve:`2023-4208`, :uv:cve:`2023-4244`, :uv:cve:`2023-42753`,
-    :uv:cve:`2023-42754`, :uv:cve:`2023-42755`, :uv:cve:`2023-45863`,
-    :uv:cve:`2023-45871`, :uv:cve:`2023-4622`, :uv:cve:`2023-4623`,
-    :uv:cve:`2023-4921`, :uv:cve:`2023-51780`, :uv:cve:`2023-51781`,
-    :uv:cve:`2023-51782`, :uv:cve:`2023-5717`, :uv:cve:`2023-6606`,
-    :uv:cve:`2023-6931`, :uv:cve:`2023-6932`) (:uv:bug:`56972`)
+  * :program:`golang-1.18` (:uv:cve:`2020-16845`, :uv:cve:`2022-1705`,
+    :uv:cve:`2022-1962`, :uv:cve:`2022-27664`, :uv:cve:`2022-28131`,
+    :uv:cve:`2022-2879`, :uv:cve:`2022-2880`, :uv:cve:`2022-29526`,
+    :uv:cve:`2022-30629`, :uv:cve:`2022-30630`, :uv:cve:`2022-30631`,
+    :uv:cve:`2022-30632`, :uv:cve:`2022-30633`, :uv:cve:`2022-30635`,
+    :uv:cve:`2022-32148`, :uv:cve:`2022-32189`, :uv:cve:`2022-41715`,
+    :uv:cve:`2022-41717`, :uv:cve:`2023-24534`, :uv:cve:`2023-24537`,
+    :uv:cve:`2023-24538`) (:uv:bug:`56457`)
 
-  * :program:`linux-signed-amd64` (:uv:cve:`2021-44879`,
-    :uv:cve:`2023-0590`, :uv:cve:`2023-1077`, :uv:cve:`2023-1206`,
-    :uv:cve:`2023-1989`, :uv:cve:`2023-25775`, :uv:cve:`2023-3212`,
-    :uv:cve:`2023-3390`, :uv:cve:`2023-34319`, :uv:cve:`2023-34324`,
-    :uv:cve:`2023-35001`, :uv:cve:`2023-3609`, :uv:cve:`2023-3611`,
-    :uv:cve:`2023-3772`, :uv:cve:`2023-3776`, :uv:cve:`2023-39189`,
-    :uv:cve:`2023-39192`, :uv:cve:`2023-39193`, :uv:cve:`2023-39194`,
-    :uv:cve:`2023-40283`, :uv:cve:`2023-4206`, :uv:cve:`2023-4207`,
-    :uv:cve:`2023-4208`, :uv:cve:`2023-4244`, :uv:cve:`2023-42753`,
-    :uv:cve:`2023-42754`, :uv:cve:`2023-42755`, :uv:cve:`2023-45863`,
-    :uv:cve:`2023-45871`, :uv:cve:`2023-4622`, :uv:cve:`2023-4623`,
-    :uv:cve:`2023-4921`, :uv:cve:`2023-51780`, :uv:cve:`2023-51781`,
-    :uv:cve:`2023-51782`, :uv:cve:`2023-5717`, :uv:cve:`2023-6606`,
-    :uv:cve:`2023-6931`, :uv:cve:`2023-6932`) (:uv:bug:`56972`)
+  * :program:`imagemagick` (:uv:cve:`2022-48541`) (:uv:bug:`57176`)
 
-  * :program:`mariadb-10.3` (:uv:cve:`2023-22084`) (:uv:bug:`57005`)
+  * :program:`intel-microcode` (:uv:cve:`2023-22655`,
+    :uv:cve:`2023-28746`, :uv:cve:`2023-38575`, :uv:cve:`2023-39368`,
+    :uv:cve:`2023-43490`) (:uv:bug:`57252`)
 
-  * :program:`openjdk-11` (:uv:cve:`2024-20918`, :uv:cve:`2024-20919`,
-    :uv:cve:`2024-20921`, :uv:cve:`2024-20926`, :uv:cve:`2024-20945`,
-    :uv:cve:`2024-20952`) (:uv:bug:`57010`)
+  * :program:`libgd2` (:uv:cve:`2018-14553`, :uv:cve:`2021-38115`,
+    :uv:cve:`2021-40812`) (:uv:bug:`57216`)
 
-  * :program:`openssh` (:uv:cve:`2021-41617`, :uv:cve:`2023-48795`,
-    :uv:cve:`2023-51385`) (:uv:bug:`56940`)
+  * :program:`libnet-cidr-lite-perl` (:uv:cve:`2021-47154`)
+    (:uv:bug:`57179`)
 
-  * :program:`pillow` (:uv:cve:`2023-50447`) (:uv:bug:`57032`)
+  * :program:`libvirt` (:uv:cve:`2020-10703`, :uv:cve:`2020-12430`,
+    :uv:cve:`2020-25637`, :uv:cve:`2021-3631`, :uv:cve:`2021-3667`,
+    :uv:cve:`2021-3975`, :uv:cve:`2021-4147`, :uv:cve:`2022-0897`,
+    :uv:cve:`2024-1441`, :uv:cve:`2024-2494`, :uv:cve:`2024-2496`)
+    (:uv:bug:`57199`)
 
-  * :program:`postfix` (:uv:cve:`2023-51764`) (:uv:bug:`57030`)
+  * :program:`nghttp2` (:uv:cve:`2024-28182`) (:uv:bug:`57251`)
 
-  * :program:`squid` (:uv:cve:`2023-46728`, :uv:cve:`2023-46846`,
-    :uv:cve:`2023-46847`, :uv:cve:`2023-49285`, :uv:cve:`2023-49286`,
-    :uv:cve:`2023-50269`) (:uv:bug:`56964`, :uv:bug:`57009`)
+  * :program:`nss` (:uv:cve:`2023-5388`, :uv:cve:`2024-0743`)
+    (:uv:bug:`57152`)
 
-  * :program:`sudo` (:uv:cve:`2023-28486`, :uv:cve:`2023-28487`,
-    :uv:cve:`2023-7090`) (:uv:bug:`57031`)
+  * :program:`openjdk-11` (:uv:cve:`2024-21011`, :uv:cve:`2024-21012`,
+    :uv:cve:`2024-21068`, :uv:cve:`2024-21085`, :uv:cve:`2024-21094`)
+    (:uv:bug:`57234`)
 
-  * :program:`unbound` (:uv:cve:`2023-50387`, :uv:cve:`2023-50868`)
-    (:uv:bug:`57081`)
+  * :program:`php7.3` (:uv:cve:`2022-31629`, :uv:cve:`2023-3823`,
+    :uv:cve:`2024-2756`, :uv:cve:`2024-3096`) (:uv:bug:`57270`)
 
-  * :program:`univention-mail-postfix` (:uv:cve:`2023-51764`)
-    (:uv:bug:`56957`)
+  * :program:`pillow` (:uv:cve:`2021-23437`, :uv:cve:`2022-22817`,
+    :uv:cve:`2023-44271`, :uv:cve:`2024-28219`) (:uv:bug:`57180`,
+    :uv:bug:`57225`)
 
-  * :program:`wpa` (:uv:cve:`2023-52160`) (:uv:bug:`57108`)
+  * :program:`postgresql-11` (:uv:cve:`2024-0985`) (:uv:bug:`57175`)
 
-  * :program:`xorg-server` (:uv:cve:`2023-6377`, :uv:cve:`2023-6478`,
-    :uv:cve:`2023-6816`, :uv:cve:`2024-0229`, :uv:cve:`2024-21885`,
-    :uv:cve:`2024-21886`) (:uv:bug:`56923`, :uv:bug:`57006`)
+  * :program:`python-idna` (:uv:cve:`2024-3651`) (:uv:bug:`57272`)
+
+  * :program:`python2.7` (:uv:cve:`2024-0450`) (:uv:bug:`57178`)
+
+  * :program:`python3.7` (:uv:cve:`2023-6597`, :uv:cve:`2024-0450`)
+    (:uv:bug:`57177`)
+
+  * :program:`qemu` (:uv:cve:`2023-2861`, :uv:cve:`2023-3354`,
+    :uv:cve:`2023-5088`) (:uv:bug:`57149`)
+
+  * :program:`runc` (:uv:cve:`2021-30465`, :uv:cve:`2023-25809`,
+    :uv:cve:`2023-27561`, :uv:cve:`2023-28642`, :uv:cve:`2024-21626`)
+    (:uv:bug:`56457`)
+
+  * :program:`shim` (:uv:cve:`2024-2312`) (:uv:bug:`57271`)
+
+  * :program:`tar` (:uv:cve:`2023-39804`) (:uv:bug:`57150`)
+
+  * :program:`tiff` (:uv:cve:`2023-3576`, :uv:cve:`2023-52356`)
+    (:uv:bug:`57151`)
+
+  * :program:`util-linux` (:uv:cve:`2021-37600`, :uv:cve:`2024-28085`)
+    (:uv:bug:`57214`)
+
+  * :program:`xorg-server` (:uv:cve:`2024-31080`,
+    :uv:cve:`2024-31081`, :uv:cve:`2024-31083`) (:uv:bug:`57224`)
 
 
 .. _debian:
 
-* The following updated packages from Debian 10.13 are included:
+* The following updated packages from Debian 0.0 are included:
 
-  :program:`ansible`
-  :program:`asterisk`
-  :program:`cjson`
-  :program:`debian-security-support`
-  :program:`engrampa`
-  :program:`fontforge`
-  :program:`gsoap`
-  :program:`haproxy`
-  :program:`iwd`
-  :program:`keystone`
-  :program:`kodi`
-  :program:`libapache2-mod-auth-openidc`
-  :program:`libgit2`
-  :program:`libjwt`
-  :program:`libreoffice`
-  :program:`libspreadsheet-parseexcel-perl`
-  :program:`libspreadsheet-parsexlsx-perl`
-  :program:`libuv1`
-  :program:`man-db`
-  :program:`openvswitch`
-  :program:`osslsigncode`
-  :program:`php-guzzlehttp-psr7`
-  :program:`php-phpseclib`
-  :program:`phpseclib`
-  :program:`python-asyncssh`
-  :program:`python-django`
-  :program:`rabbitmq-server`
-  :program:`rear`
-  :program:`ruby-httparty`
-  :program:`spip`
-  :program:`subunit`
-  :program:`tinyxml`
-  :program:`wireshark`
-  :program:`wordpress`
-  :program:`xerces-c`
-  :program:`yard`
+  :program:`FIXME`
 
 .. _maintained:
 
 * The following packages have been moved to the maintained repository of UCS:
-
-  :program:`orcania` (:uv:bug:`49006`), :program:`rhonabwy`
-  (:uv:bug:`49006`), :program:`ulfius` (:uv:bug:`49006`),
-  :program:`yder` (:uv:bug:`49006`)
-
-.. _changelog-basic:
-
-*********************
-Basic system services
-*********************
-
-.. _changelog-basis-ucr:
-
-Univention Configuration Registry
-=================================
-
-* Fix traceback when :py:class:`Interfaces()` is used with :py:class:`ReadOnlyConfigRegistry()`
-  (:uv:bug:`56911`).
 
 .. _changelog-domain:
 
@@ -209,49 +152,50 @@ Univention Configuration Registry
 Domain services
 ***************
 
-.. _changelog-domain-openldap:
+* Fix dependency of server role packages to explicitly depend on a fixed
+  version of Univention Configuration Registry. This fixes a regression caused
+  by erratum 988 (:uv:bug:`57132`).
 
-OpenLDAP
-========
+.. _changelog-udm:
 
-* During normal replication objects with ``objectClass=lock`` are not replicated.
-  But during initial join they were. By adjusting the filter in the listener
-  module this is now avoided, speeding up initial replication
-  (:uv:bug:`56954`).
+LDAP Directory Manager
+======================
 
-.. _changelog-domain-openldap-replication:
+* UDM has been adjusted to support declaring properties as lazy loading. If a
+  property is lazy loading, it will only be fetched if explicitly requested.
+  The flag ``--properties`` has been added to UDM CLI to request specific
+  properties (:uv:bug:`57110`).
 
-Listener/Notifier domain replication
-------------------------------------
+* If the UCR variable ``directory/manager/mail-address/uniqueness`` is set to
+  ``true`` the uniqueness check for email addresses takes both user properties,
+  ``mailPrimaryAddress`` and ``mailAlternativeAddress``, into account. It is now
+  possible to swap the values for these properties with one change to the user
+  object (:uv:bug:`57171`).
 
-* During normal replication objects with ``objectClass=lock`` are not replicated.
-  But during initial join they were. By adjusting the filter in the listener
-  module this is now avoided, speeding up initial replication
-  (:uv:bug:`56954`).
+* The udm module ``settings/extended_attributes`` has been updated to include the
+  property ``preventUmcDefaultPopup`` which is evaluated in the ``UMC`` and will
+  inhibit it from warning the user that the default value of a property will be
+  set during modification (:uv:bug:`51187`).
 
-* In case the communication to the notifier fails, e.g. due to a restart of the
-  |UCSUDN| service on the |UCSPRIMARYDN|, the
-  listener did not retry but exit and relies on :program:`systemd` to get restarted. This
-  strategy does not work during the initialization phase while joining, when
-  the listener is not yet run as :program:`systemd` service. A retry mechanism has been
-  introduced for this case, which is similar to what we already did for the
-  connection to the LDAP server. There is a new |UCSUCRV|
-  :envvar:`listener/notifier/retries` with default 30. There is an exponential back-off
-  algorithm to delay the retries and log messages are generated showing what is
-  going on (:uv:bug:`57024`).
+* A regression impacting the modification of ``users/ldap`` objects within the
+  UMC has been addressed, stemming from Errata 1018 (:uv:bug:`57228`).
 
-.. _changelog-domain-dnsserver:
+* Compatibility with Python 2.7 has been restored, which was broken by erratum
+  991 (:uv:bug:`57146`).
 
-DNS server
-==========
+* Added ability to filter for various attributes using the UDM commandline
+  interface and in ``UMC``. This includes ``sambaLogonHours`` and
+  ``accountActivationDate`` for the ``users/user`` module, ``hwaddress`` for the
+  ``dhcp/host`` module and ``ip`` for the ``dns/ptr_record`` module (:uv:bug:`54339`,
+  :uv:bug:`54339`, :uv:bug:`53830`, :uv:bug:`54339`, :uv:bug:`53830`,
+  :uv:bug:`53807`, :uv:bug:`54339`, :uv:bug:`53830`, :uv:bug:`53807`,
+  :uv:bug:`55604`).
 
-* DNS zones are now detected by having a ``SOA`` record instead of having a
-  relative name ``@``. This is allowed as DNS labels might consist of any 8-bit
-  octets including an escaped ``\@``. Deleting such entries resulted into the
-  complete zone being dropped from :program:`BIND9` (:uv:bug:`50385`).
+* An asynchronous UDM REST API client has been added (:uv:bug:`56735`).
 
-* The listener module writing the :program:`BIND9` configuration files now ignores DNS
-  zone files with invalid file names (:uv:bug:`57013`).
+* A list of properties that should be returned by the REST API can be
+  specified. As a default, all regular properties are returned. Lazy loading
+  properties are only returned if explicitly requested (:uv:bug:`57110`).
 
 .. _changelog-umc:
 
@@ -264,168 +208,96 @@ Univention Management Console
 Univention Management Console web interface
 ===========================================
 
-* For enhanced automated testing the |UCSREST| now handles requests with
-  mime type :mimetype:`application/json-patch+json` (:uv:bug:`55555`).
-
-* The |UCSREST| now supports authentication via the ``Bearer`` authentication
-  scheme (:uv:bug:`49006`).
-
-* |UCSREST| now supports a different LDAP base for each |UCSUDM| module. This is a
-  requirement for the blocklist feature (:uv:bug:`57039`).
-
-* After log rotating log files of the |UCSREST|, the service is reloaded so
-  that it logs into the new files (:uv:bug:`54338`).
-
-* All |UCSUDM| log lines are now prefixed with the request ID. This can be disabled
-  via the |UCSUCRV| :envvar:`directory/manager/rest/debug/prefix-with-request-id`
-  (:uv:bug:`56970`).
-
-* For containerized environments, the |UCSREST| OpenAPI Schema user
-  interface is now exposed via the |UCSREST| server as well
-  (:uv:bug:`57058`).
-
-* The replacement of the fallback |UCSUMC| logger has been adjusted to use
-  :program:`univention.logging` (:uv:bug:`55324`).
+* When a user selects a different language inside the UMC, it was not used
+  inside the modules. As example, the Server is on German, but a user selects
+  English as their preferred language, the modules were still in German. This
+  is fixed now, and the same language is used everywhere (:uv:bug:`57192`).
 
 .. _changelog-umc-portal:
 
 Univention Portal
 =================
 
-* The HTML title and icon of the Portal is now configurable via the |UCSUCRVs|
-  :envvar:`umc/web/title` and :envvar:`umc/web/favicon` (:uv:bug:`56917`).
-
-* The labels of the self-service password forgotten form were always displayed
-  in English when they were accessed directly via URL without navigating
-  through the portal (:uv:bug:`56853`).
+* In the past the user was not able to unset their birthday inside the self
+  service, because the input validation did not detect a valid date according
+  to the ISO-8601 standard. This is now possible again (:uv:bug:`57023`).
 
 .. _changelog-umc-server:
 
 Univention Management Console server
 ====================================
 
-* The custom :py:mod:`univention.debug` wrapper of |UCSUMC| has been replaced by the new
-  logging interface :py:mod:`univention.logging` (:uv:bug:`55324`).
+* UMC now also logs the reason for a failed LDAP connection for module
+  processes (:uv:bug:`57311`).
 
-* The |UCSUCRV| :envvar:`ldap/server/sasl/mech_list` has been added to allow
-  restricting the list of |SASL| mechanisms that the local LDAP server offers. By
-  default GSS-SPNEGO and NTLM get disabled with the update, because they don't
-  work properly with :program:`slapd` in UCS (:uv:bug:`56868`).
+* The UMC SAML client is now updated in Keycloak on changes, e.g. when changing
+  ``umc/saml/assertion-lifetime`` (:uv:bug:`57143`).
 
-* Due to frequent corruption of the on-disk |SAML| identity cache the default in
-  multiprocessing mode has been changed to the in-memory cache. The |UCSUCRV|
-  :envvar:`umc/saml/in-memory-identity-cache` has therefore been removed
-  (:uv:bug:`54880`).
+* A memory leak in the UMC server has been fixed (:uv:bug:`57104`).
 
-* The valid URI schemes for the |SAML| attribute consuming service and single
-  logout endpoints are now configurable via the |UCSUCRV| :envvar:`umc/saml/schemes`
-  (:uv:bug:`57060`).
+* A LDAP connection leak in the UMC server has been fixed (:uv:bug:`57113`).
 
-* The |UCSUMC| has been prepared to support login via
-  OpenID Connect, which is currently unsupported and therefore disabled by
-  default (:uv:bug:`49006`).
+* The permission and ownership of the UMC log file is now only modified if it
+  is not stdout or stderr (:uv:bug:`57154`).
 
-* The HTML title and icon of |UCSUMC| is now configurable via the |UCSUCRVs|
-  :envvar:`umc/web/title` and :envvar:`umc/web/favicon` (:uv:bug:`56917`).
+* If the primary UCS server is on UCS version 5.2-0 or higher, UMC will no
+  longer create or configure a client for simpleSAMLphp (:uv:bug:`57163`).
 
-* An icon that is shown in the UCS license import dialog in |UCSUMC| had to be
-  replaced with a new one that has an OSI compliant license (:uv:bug:`56717`).
+* The option ``copytruncate`` has been added to the ``logrotate`` configuration of
+  UMC to not delete log files but to truncate the original log file to zero
+  size in place (:uv:bug:`56906`).
 
-.. _changelog-umc-appcenter:
-
-Univention App Center
-=====================
-
-* The replacement of the fallback |UCSUMC| logger has been adjusted to use
-  :py:mod:`univention.logging` (:uv:bug:`55324`).
-
-.. _changelog-umc-udmcli:
-
-|UCSUDM| and command line interface
-===================================
-
-* The |UCSUCR| Policy |UCSUDM| module now has an attribute
-  indicating that it supports being assigned to an object multiple times
-  (:uv:bug:`57046`).
-
-* A file descriptor leak in the |UCSUDM| CLI server has been fixed (:uv:bug:`57089`).
-
-* Fix reaping terminated child processes (:uv:bug:`7735`).
-
-* Fix a potential infinite loop in handling Samba logon hour syntax
-  (:uv:bug:`28496`).
-
-* Adjusted DNS object handling to fix compatibility with the |UCSREST|
-  (:uv:bug:`55555`).
-
-* The cron job for deleting expired block list entries now runs only if block
-  lists are activated (:uv:bug:`57102`).
-
-* Fix escaping of DNS labels and names (:uv:bug:`50385`).
-
-* Allow using domain ``home.arpa`` from :rfc:`8375` (:uv:bug:`55612`).
-
-* The StartTLS operation mode is now configurable via the |UCSUCRV|
-  :envvar:`directory/manager/starttls`. This is required in a |k8s| environment
-  (:uv:bug:`57098`).
-
-* The log messages of |UCSUDM| are now logged via the Python :py:mod:`logging` interface,
-  which is configured to still log to the :py:mod:`univention.debug` log stream. This
-  is a prerequisite for prefixing log lines with the request ID in the |UCSREST| (:uv:bug:`56970`).
-
-* The :py:mod:`uldap` library now supports the |SASL| binding mechanism ``OAUTHBEARER``
-  (:uv:bug:`49006`).
-
-* On UCS 5.2 systems purely numeric user and group names are no longer allowed
-  by default. The |UCSUCRVs| :envvar:`directory/manager/user/enable-legacy-username-format` and :envvar:`directory/manager/group/enable-legacy-cn-format` have been added
-  to optionally allow such names if needed. System upgrades detect whether
-  fully numeric names are already in use, in which case they are automatically
-  allowed (:uv:bug:`56232`).
-
-* The new logging interface :py:mod:`univention.logging` is used to initialize
-  :py:mod:`univention.debug` (:uv:bug:`55324`).
-
-* A missing dependency to :program:`python-univention-debug` has been added, which
-  preserves Python 2.7 compatibility (:uv:bug:`57064`).
+* A missing Univention Configuration Registry Variable has been added to the
+  trigger for the Apache2 ``univention.conf`` (:uv:bug:`57229`).
 
 .. _changelog-umc-setup:
 
 Modules for system settings / setup wizard
 ==========================================
 
-* The |UCSUDM| CLI daemon is now restarted after setting the LDAP base during system
-  setup (:uv:bug:`57039`).
-
-* A incompatibility with newer versions of :program:`dnspython` has been fixed
-  (:uv:bug:`56911`).
+* The ``UMC`` IP change module has been adapted to check the zone of the Single-
+  Sign On domain name case insensitively (:uv:bug:`57290`).
 
 .. _changelog-umc-diagnostic:
 
 System diagnostic module
 ========================
 
-* The diagnostic plugin for checking |SAML| (|SSO|) certificates now also supports
-  the Keycloak identity provider (:uv:bug:`55976`).
+* Add a diagnostic module to monitor the state of app queues (:uv:bug:`57217`).
 
-* The diagnostic module :command:`31_file_permissions` has been extended to include
-  sensitive files for |OIDC| configuration (:uv:bug:`49006`).
+.. _changelog-umc-policy:
 
-* A check has been added to verify that the LDAP server's configuration file
-  has the file system permissions 0640 (:uv:bug:`57038`).
+Policies
+========
 
-.. _changelog-umc-other:
+* The StartTLS operation mode configured via the UCR variable
+  ``directory/manager/starttls`` will now be used by univention-policy
+  (:uv:bug:`57158`).
 
-Other modules
-=============
+* The LDAP port configured via the UCR variable ``ldap/server/port`` will now be
+  used by univention-policy (:uv:bug:`57159`).
 
-* A |UCSUMC| module for blocklist lists and entries has been added (:uv:bug:`57043`).
+* The StartTLS operation mode configured via the UCR variable
+  ``directory/manager/starttls`` and the LDAP port configured via the UCR
+  variable ``ldap/server/port`` will now be used by univention-policy
+  (:uv:bug:`57173`).
 
-* Existing |UCSUCR| policies attached to a container
-  are no longer deleted when multiple ones previously existed and a new one is
-  added (:uv:bug:`57046`).
+* The StartTLS and ldap/server/port UCR variables have caused a regression
+  where certain password lengths could not parsed anymore during LDAP bind.
+  This change has been reverted to investigate the problem. If you updated to
+  erratum 997, please update this package immediately (:uv:bug:`57169`).
 
-* The error handling when super-ordinate objects don't exist has been repaired
-  (:uv:bug:`55555`).
+* A compiler flag has been added to the building process to detect certain
+  memory errors during the execution of ``univention_policy_results``
+  (:uv:bug:`57257`).
+
+.. _changelog-umc-ldap:
+
+LDAP directory browser
+======================
+
+* All lazy loading properties are fetched by the UMC UDM module
+  (:uv:bug:`57110`).
 
 .. _changelog-lib:
 
@@ -433,69 +305,27 @@ Other modules
 Univention base libraries
 *************************
 
-* A new Python module :py:mod:`univention.logging` has been introduced which provides a
-  Python :py:mod:`logging` handler for :py:mod:`univention.debug`. It allows software
-  components to use the :py:mod:`logging` interface of Python while logging into a
-  :py:mod:`univention.debug` stream (:uv:bug:`55324`).
+* LDAP schema attributes for the UCS authorization engine (guardian) roles have
+  been added (:uv:bug:`57110`).
 
-* Log messages are no longer erroneously logged by the wrong logger when
-  :py:mod:`univention.debug2` is used but :py:mod:`univention.logging` isn't imported
-  (:uv:bug:`57026`).
+* Even though all OCs inherit from top and actually are found when searching
+  for ``(objectClass=top)``, the (inherited) ``objectClass: top`` does not show up
+  as an attribute in the output of ``ldapsearch`` (:uv:bug:`50268`).
 
-* The detection of the correct log level has been repaired in case
-  :py:mod:`univention.debug` was not initialized via :py:mod:`univention.logging`
-  (:uv:bug:`57101`).
+* The udm module ``settings/extended_attributes`` has been updated to include the
+  property ``preventUmcDefaultPopup`` which is evaluated in the ``UMC`` and will
+  inhibit it from warning the user that the default value of a property will be
+  set during modification (:uv:bug:`51187`).
 
-* The StartTLS operation mode is now configurable via the |UCSUCRV| :envvar:`directory/manager/starttls`. This is required in a |k8s| environment
-  (:uv:bug:`57098`).
+* Errata update 991 improved the LDAP filters for DNS objets in UDM but we
+  forgot to add an LDAP index for the sOARecord attribute there. This update
+  fixes that and should improve the performance of the UMC modules ``computers``
+  and ``school computers``, especially for teachers in UCS@school environments,
+  which are subject to a larger number of LDAP ACLs (:uv:bug:`57193`).
 
-* An unused dependency on :program:`py3dns` has been removed (:uv:bug:`56911`).
-
-* The :py:mod:`uldap` library now supports the |SASL| binding mechanism ``OAUTHBEARER``
-  (:uv:bug:`49006`).
-
-* The log messages of :py:mod:`uldap` are now logged via the Python :py:mod:`logging`
-  interface, which is configured to still log to the :py:mod:`univention.debug` log
-  stream. This is a prerequisite for prefixing log lines with the request ID
-  in the |UCSREST| (:uv:bug:`56970`).
-
-* The new LDAP database ``cn=internal`` has been added to store blocklist entries
-  (:uv:bug:`57038`).
-
-* The LDAP server has been extended with the ``OAUTHBEARER`` |SASL| mechanism,
-  which is disabled by default (:uv:bug:`49006`).
-
-* A memory leak in the |UCSREST| has been fixed, which was caused by not
-  discarding unused weak references in the :py:class:`univention.lib.i18n.Translation`
-  (:uv:bug:`56420`).
-
-.. _changelog-deployment:
-
-*******************
-Software deployment
-*******************
-
-* On UCS 5.2 systems purely numeric user and group names are no longer allowed
-  by default. The |UCSUCRVs| :envvar:`directory/manager/user/enable-legacy-username-format` and :envvar:`directory/manager/group/enable-legacy-cn-format` have been added
-  to optionally allow such names if needed. System upgrades detect whether
-  fully numeric names are already in use, in which case they are automatically
-  allowed (:uv:bug:`56232`).
-
-* :command:`univention-system-stats` collects system information periodically. One of
-  the commands it uses is :command:`top`. The parameter ``c`` has been added to show the
-  complete process command line in the output of :command:`top` (:uv:bug:`50567`).
-
-.. _changelog-deployment-pkgdb:
-
-Software monitor
-================
-
-* The dependency on :program:`py3dns` has been replaced by :program:`dnspython` to support EDNS,
-  which is required for virtual machines on AWS-EC2 and OpenStack
-  (:uv:bug:`56911`).
-
-* The StartTLS operation mode is now configurable via the |UCSUCRV| :envvar:`directory/manager/starttls`. This is required in a |k8s| environment
-  (:uv:bug:`57098`).
+* New helper function ``ucs_needsKeycloakSetup``, ``ucs_needsSimplesamlphpSetup``
+  and ``ucs_primaryVersionGreaterEqual`` have been added to easier evaluate what
+  kind of SAML setup is needed the domain (:uv:bug:`57163`).
 
 .. _changelog-service:
 
@@ -505,138 +335,23 @@ System services
 
 .. _changelog-service-saml:
 
-|SAML|
-======
+SAML
+====
 
-* The :command:`univention-keycloak` scripts has been extended to support more
-  parameters for the :command:`init` command (:uv:bug:`57001`).
-
-* The standard configuration for Keycloak has been changed to allow machine
-  accounts to login (:uv:bug:`57100`).
-
-* The package :program:`univention-keycloak` ships the command line script :command:`univention-
-  keycloak-migration-status` which is used before the update to UCS 5.2 to
-  check whether the migration to Keycloak is complete. The requirement to
-  install the Keycloak app before the update has been dropped. The update to
-  UCS 5.2 will be possible without the installation of the Keycloak app
-  (:uv:bug:`56888`).
-
-* Commands to manage proxy realms (supplemental logical |IDP|\ 's in Keycloak that
-  authenticate users on the default |IDP|) have been added to :command:`univention-keycloak` (:uv:bug:`56884`).
-
-* The :command:`univention-keycloak` scripts has been extended to support more
-  parameters for the ``oidc/rp`` creation (:uv:bug:`49006`).
-
-.. _changelog-service-selfservice:
-
-Univention self service
-=======================
-
-* The connection settings for the :program:`memcached` and :program:`PostgreSQL` databases are now
-  configurable via |UCSUCRVs|. This is a requirement to run the self service
-  in a containerized environment (:uv:bug:`57061`).
-
-.. _changelog-service-mail:
-
-Mail services
-=============
-
-* Avoid duplicate entries in :file:`/etc/fetchmailrc` when running a listener
-  re-synchronization (:uv:bug:`56521`).
-
-* Fixed migration script LDAP filter to only process user objects
-  (:uv:bug:`57090`).
-
-* The Fetchmail listener now writes atomically to :file:`/etc/fetchmailrc`
-  (:uv:bug:`56587`).
-
-.. _changelog-service-dovecot:
-
-Dovecot
-=======
-
-* The type of the |UCSUCRV| :envvar:`mail/dovecot/logging/auth_verbose_passwords`
-  has been changed to :py:obj:`str`, so that the validation in |UCSUCR| strict type setting
-  mode passes (:uv:bug:`56520`).
+* The LDAP filter for user objects in the LDAP federation configuration has
+  been changed to require the attribute ``uid`` (:uv:bug:`57205`).
 
 .. _changelog-service-radius:
 
 RADIUS
 ======
 
-* The |UCSUCRV| :envvar:`freeradius/conf/allow-mac-address-authentication` has been
-  added to to allow authentication via MAC address and VLAN-assignment for
-  computer objects. By default, this feature is disabled (:uv:bug:`56060`).
+* The RADIUS server now supports different MAC address formats for the MAB (MAC
+  Authentication Bypass) feature (:uv:bug:`57069`).
 
-.. _changelog-service-other:
-
-Other services
-==============
-
-* The directory :file:`/var/log/univention/listener_modules/` and
-  :file:`/var/log/apt/history.log` are now also fetched in a Univention Support
-  Information archive (:uv:bug:`56962`).
-
-.. _changelog-win:
-
-********************
-Services for Windows
-********************
-
-.. _changelog-win-samba:
-
-Samba
-=====
-
-* When joining a system to a UCS domain with a large number of objects in the
-  LDAP directory, the script :command:`create_spn_account.sh` restarted the S4-Connector
-  too often while waiting for the service principal name to appear in the
-  Samba/AD SAM directory, possibly causing additional delay. (:uv:bug:`57027`).
-
-* When stopping the Samba processes, a process could remain e.g. bound to port
-  135, causing problems for Samba restarts. The script stopping the processes
-  has been made more robust (:uv:bug:`56914`).
-
-.. _changelog-win-s4c:
-
-Univention S4 Connector
-=======================
-
-* During normal replication objects with ``objectClass=lock`` are not replicated.
-  But during initial join they were. By adjusting the filter in the listener
-  module this is now avoided, speeding up initial replication
-  (:uv:bug:`56954`).
-
-* Initial join could take a long time in cases where customers have a lot of
-  DNS records in Samba/AD. The joinscript now prioritizes objects (DNS zones
-  etc) that are essential for operation of Samba/AD. This improves usability
-  during initial joins and rejoins (:uv:bug:`56956`).
-
-* Group member DNs with containing special characters that require escaping can
-  be notated in different ways. When comparing them, this has not been taken
-  into consideration, leading to rejects and tracebacks in the log file. (:uv:bug:`57072`).
-
-* The StartTLS operation mode is now configurable via the |UCSUCRV|
-  :envvar:`directory/manager/starttls`. This is required in a |k8s| environment
-  (:uv:bug:`57098`).
-
-.. _changelog-win-adc:
-
-Univention Active Directory Connection
-======================================
-
-* During normal replication objects with ``objectClass=lock`` are not replicated.
-  But during initial join they were. By adjusting the filter in the listener
-  module this is now avoided, speeding up initial replication
-  (:uv:bug:`56954`).
-
-* Group member DNs with containing special characters that require escaping can
-  be notated in different ways. When comparing them, this has not been taken
-  into consideration, leading to rejects and tracebacks in the log file. (:uv:bug:`57072`).
-
-* The StartTLS operation mode is now configurable via the |UCSUCRV|
-  :envvar:`directory/manager/starttls`. This is required in a |k8s| environment
-  (:uv:bug:`57098`).
+* The default enabled configuration under ``/etc/freeradius/3.0/sites-enabled/``
+  was reset to the default one during installation. This breaks setups with
+  custom configurations (:uv:bug:`55007`).
 
 .. _changelog-other:
 
@@ -644,5 +359,9 @@ Univention Active Directory Connection
 Other changes
 *************
 
-* A PAM and a |SASL| module for ``OAUTHBEARER`` (:rfc:`7628`) has been introduced
-  (:uv:bug:`49006`).
+* Newer version of package is required as build time dependency for ``runc``,
+  ``containerd`` and ``docker.io`` (:uv:bug:`56457`).
+
+* Fix Debian Bug ``#960887``: ``Use of uninitialized value $caller``
+  (:uv:bug:`56457`).
+

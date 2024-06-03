@@ -62,7 +62,7 @@ def ref(name: str, *, lang: str = "en", ver: str = "") -> tuple[str, tuple[str |
 # -- Project information -----------------------------------------------------
 
 # The full version, including alpha/beta/rc tags
-release = "5.0-7"
+release = "5.0-8"
 
 version = "5.0"
 

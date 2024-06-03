@@ -14,7 +14,7 @@ Publication date of UCS |release|: 2024-03-12
 Release highlights
 ******************
 
-With |UCSUCS| 5.0-7, the seventh patchlevel release for |UCSUCS| (UCS) 5.0 is
+With |UCSUCS| 5.0-8, the seventh patchlevel release for |UCSUCS| (UCS) 5.0 is
 available. It provides several feature improvements and extensions, new
 properties as well as various improvements and bug fixes. Here is an overview of
 the most important changes:
@@ -27,7 +27,7 @@ the most important changes:
 
 * |UCSUCS| has been prepared for better Kubernetes integration.
 
-* UCS 5.0-7 includes various security updates, for example for
+* UCS 5.0-8 includes various security updates, for example for
   :program:`BIND9`, :program:`MariaDB`, :program:`OpenJDK-11`, :program:`OpenSSH`, :program:`Postfix`
   and the :program:`Linux` kernel.
 
@@ -183,10 +183,10 @@ and run it on the UCS system.
 .. code-block:: console
 
    # download
-   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-7{.gpg,}
+   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-8{.gpg,}
 
    # verify and run script
-   $ apt-key verify pre-update-checks-5.0-7{.gpg,} && bash pre-update-checks-5.0-7
+   $ apt-key verify pre-update-checks-5.0-8{.gpg,} && bash pre-update-checks-5.0-8
 
    ...
 
@@ -270,7 +270,7 @@ Changelog
 *********
 
 You find the changes since UCS 5.0-6 in
-:external+uv-changelog-5.0-7:doc:`index`.
+:external+uv-changelog-5.0-8:doc:`index`.
 
 .. _biblio:
 
