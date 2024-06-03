@@ -1,3 +1,9 @@
+ucs-test (10.0.21-59) unstable; urgency=medium
+
+  * Bug #56054: Remove 'skip_xhr_check' argument to login method from 11_test_frontend_translations
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 03 Jun 2024 08:23:18 +0200
+
 ucs-test (10.0.21-58) unstable; urgency=medium
 
   * Bug #56054: Remove waiting for certain network requests on login to

@@ -57,7 +57,7 @@ class SelfService:
 
     def navigate(self, hash: str = '', username: Union[str, None] = None, password: Union[str, None] = None):
         if username and password:
-            self.tester.login(username, password, f'/univention/portal/#/selfservice/{hash}', skip_xhr_check=True)
+            self.tester.login(username, password, f'/univention/portal/#/selfservice/{hash}')
             return
         self.page.goto(f'{self.tester.base_url}/univention/portal/#/selfservice/{hash}')
 
