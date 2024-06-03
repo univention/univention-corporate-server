@@ -1,3 +1,9 @@
+univention-lib (9.0.19-1) UNRELEASED; urgency=medium
+
+  * Bug #57350 UCS 5.0-8 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Mon, 03 Jun 2024 13:44:21 +0200
+
 univention-lib (9.0.18-2) unstable; urgency=medium
 
   * Bug #57163: add helper to check what kind of saml setup we need

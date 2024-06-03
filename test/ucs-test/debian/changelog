@@ -1,3 +1,9 @@
+ucs-test (10.0.22-1) UNRELEASED; urgency=medium
+
+  * Bug #57350 UCS 5.0-8 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Mon, 03 Jun 2024 13:44:21 +0200
+
 ucs-test (10.0.21-59) unstable; urgency=medium
 
   * Bug #56054: Remove 'skip_xhr_check' argument to login method from 11_test_frontend_translations

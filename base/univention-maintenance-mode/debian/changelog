@@ -1,3 +1,9 @@
+univention-maintenance-mode (3.0.4-1) UNRELEASED; urgency=medium
+
+  * Bug #57350 UCS 5.0-8 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Mon, 03 Jun 2024 13:44:18 +0200
+
 univention-maintenance-mode (3.0.3-1) UNRELEASED; urgency=medium
 
   * Bug #57118 UCS 5.0-7 version bump
