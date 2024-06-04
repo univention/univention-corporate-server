@@ -930,15 +930,15 @@ setup_ec2 () {
 	mv /usr/share/initramfs-tools/scripts/local-bottom/growroot /usr/share/initramfs-tools/scripts/init-premount/
 	###### cp growroot.patch
 	cat > /root/growroot.patch <<__EOF__
---- /usr/share/initramfs-tools/scripts/init-premount/growroot.orig	2019-03-09 18:46:31.000000000 +0100
-+++ /usr/share/initramfs-tools/scripts/init-premount/growroot	2021-01-26 08:15:24.968000000 +0100
+--- /usr/share/initramfs-tools/scripts/init-premount/growroot.orig      2024-06-04 12:36:47.808220276 +0200
++++ /usr/share/initramfs-tools/scripts/init-premount/growroot   2024-06-04 12:36:48.620183880 +0200
 @@ -81,10 +81,6 @@
-        *) exit 0;;
+	*) exit 0;;
  esac
 
 -# There was something to do, unmount and resize
 -umount "\${rootmnt}" ||
--       fail "failed to umount \${rootmnt}";
+-	fail "failed to umount \${rootmnt}";
 -
  # Wait for any of the initial udev events to finish
  # This is to avoid any other processes using the block device that the
@@ -951,14 +951,14 @@ setup_ec2 () {
 -#   see /usr/share/initramfs-tools/scripts/local
 -#FSTYPE=\$(wait-for-root "\${ROOT}" \${ROOTDELAY:-30})
 -if [ -z "\${ROOTFSTYPE}" ] || [ "\${ROOTFSTYPE}" = auto ]; then
--               FSTYPE=\$(get_fstype "\${ROOT}")
+-		FSTYPE=\$(get_fstype "\${ROOT}")
 -else
--               FSTYPE=\${ROOTFSTYPE}
+-		FSTYPE=\${ROOTFSTYPE}
 -fi
 -roflag="-r"
 -[ "\${readonly}" = "y" ] || roflag="-w"
 -mount \${roflag} \${FSTYPE:+-t \${FSTYPE} }\${ROOTFLAGS} \${ROOT} \${rootmnt} ||
--       fail "failed to re-mount \${ROOT}. this is bad!"
+-	fail "failed to re-mount \${ROOT}. this is bad!"
 -
 -# write to /etc/grownroot-grown. most likely this wont work (readonly)
 -{ date --utc > "\${rootmnt}/etc/growroot-grown" ; } >/dev/null 2>&1 || :
