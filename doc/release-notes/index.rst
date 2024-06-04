@@ -6,7 +6,7 @@
 Release notes for the installation and update of Univention Corporate Server (UCS) |release|
 ############################################################################################
 
-Publication date of UCS |release|: 2024-03-12
+Publication date of UCS |release|: 2024-06-11
 
 .. _relnotes-highlights:
 
@@ -14,7 +14,7 @@ Publication date of UCS |release|: 2024-03-12
 Release highlights
 ******************
 
-With |UCSUCS| 5.0-8, the seventh patchlevel release for |UCSUCS| (UCS) 5.0 is
+With |UCSUCS| 5.0-8, the eight patchlevel release for |UCSUCS| (UCS) 5.0 is
 available. It provides several feature improvements and extensions, new
 properties as well as various improvements and bug fixes. Here is an overview of
 the most important changes:
