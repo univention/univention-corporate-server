@@ -311,8 +311,6 @@ configure_umc_keycloak() {
 
 run_setup_join () {
 	local rv=0
-	# TODO find a better place for this
-	ucr set ldap/debug/level=filter
 	patch_setup_join # temp. remove me
 	set -o pipefail
 	/usr/lib/univention-system-setup/scripts/setup-join.sh ${1:+"$@"} | tee -a /var/log/univention/setup.log || rv=$?
