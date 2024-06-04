@@ -138,9 +138,37 @@ General
 
 .. _debian:
 
-* The following updated packages from Debian 0.0 are included:
+* The following updated packages from Debian 10.13 are included:
 
-  :program:`FIXME`
+  :program:`cacti`
+  :program:`composer`
+  :program:`distro-info-data`
+  :program:`fossil`
+  :program:`freeipa`
+  :program:`frr`
+  :program:`gross`
+  :program:`gst-plugins-base1.0`
+  :program:`gtkwave`
+  :program:`jetty9`
+  :program:`knot-resolver`
+  :program:`less`
+  :program:`libcaca`
+  :program:`libdatetime-timezone-perl`
+  :program:`libkf5ksieve`
+  :program:`libpgjava`
+  :program:`mediawiki`
+  :program:`nodejs`
+  :program:`node-xml2js`
+  :program:`org-mode`
+  :program:`putty`
+  :program:`python-pymysql`
+  :program:`qtbase-opensource-src`
+  :program:`ruby-rack`
+  :program:`shim-helpers-amd64-signed`
+  :program:`trafficserver`
+  :program:`tzdata`
+  :program:`unadf`
+  :program:`zfs-linux`
 
 .. _maintained:
 
