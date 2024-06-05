@@ -1,3 +1,9 @@
+univention-bind (16.0.4) unstable; urgency=medium
+
+  * Issue univention/ucs#2309: Make DNSSEC-Validation configurable
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 05 Jun 2024 09:03:39 +0200
+
 univention-bind (16.0.3) unstable; urgency=medium
 
   * Bug #56604: use Python 3.11 code annotations
