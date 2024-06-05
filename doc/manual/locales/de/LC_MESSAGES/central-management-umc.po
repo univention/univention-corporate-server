@@ -2673,7 +2673,7 @@ msgstr ""
 
 #: ../../central-management-umc/portal.rst:124
 msgid "*udm-new-portal*"
-msgstr "*udm-portal*"
+msgstr "*udm-new-portal*"
 
 #: ../../central-management-umc/portal.rst:125
 msgid "*udm-syntax*"
