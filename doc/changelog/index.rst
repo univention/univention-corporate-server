@@ -225,6 +225,33 @@ LDAP Directory Manager
   specified. As a default, all regular properties are returned. Lazy loading
   properties are only returned if explicitly requested (:uv:bug:`57110`).
 
+* The LDAP overlay ``slapd-sock`` has ben enhanced by adding ``extendedresults``
+  as a possible value to the ``sockresps`` configuration option. With that
+  configuration, the overlay outputs a change LDIF in the ``RESULT`` phase,
+  including LDAPControl data for ``PostReadControl`` and ``PreReadControl``
+  collected during CRUD operations. The output format is similar to the one
+  used by the LDAP overlay ``auditlog`` with an additional ``control:`` field
+  (:uv:bug:`57267`).
+
+* There is a new UCR variable ``directory/manager/feature/prepostread``
+  to configure ``univention.uldap`` to send LDAPControls ``PostReadControl`` and
+  ``PreReadControl`` for CRUD operations (``add``, ``modify``, ``modrdn``, ``delete``).
+  If this option is activated the LDAPControls will instruct OpenLDAP to return
+  all regular and operational attributes the are readable by the ``binddn`` before
+  and after the change (:uv:bug:`57267`).
+
+* UCS now allows configuring the LDAP overlay slapd-sock for
+  ``sockresps extendedresults`` via UCR variable ``ldap/overlay/sock``.
+  Once activated, it outputs LDAP changes including LDIF for CRUD operations
+  (not for search).
+  Additionally the UCR variable ``ldap/overlay/sock/sockops`` allows
+  activating ``sockops add delete modify modrdn``. Please note that activating
+  that second UCR variable causes the slapd process to wait for confirmation
+  for CRUD events (see ``man slapd-sock``), so this must not be activated unless
+  there is a suitable process responding to the socket path
+  ``/var/lib/univention-ldap/slapd-sock/sock``. The purpose of these changes
+  is to feed into the provisioning queue of Nubus (:uv:bug:`57267`).
+
 .. _changelog-umc:
 
 *****************************
