@@ -211,7 +211,7 @@ LDAP Directory Manager
 * Compatibility with Python 2.7 has been restored, which was broken by erratum
   991 (:uv:bug:`57146`).
 
-* Added ability to filter for various attributes using the UDM commandline
+* Added ability to filter for various attributes using the UDM command line
   interface and in ``UMC``. This includes ``sambaLogonHours`` and
   ``accountActivationDate`` for the ``users/user`` module, ``hwaddress`` for the
   ``dhcp/host`` module and ``ip`` for the ``dns/ptr_record`` module (:uv:bug:`54339`,
@@ -293,10 +293,10 @@ Univention Management Console server
 * A LDAP connection leak in the UMC server has been fixed (:uv:bug:`57113`).
 
 * The permission and ownership of the UMC log file is now only modified if it
-  is not stdout or stderr (:uv:bug:`57154`).
+  is not STDOUT or STDERR (:uv:bug:`57154`).
 
 * If the primary UCS server is on UCS version 5.2-0 or higher, UMC will no
-  longer create or configure a client for simpleSAMLphp (:uv:bug:`57163`).
+  longer create or configure a client for ``simpleSAMLphp`` (:uv:bug:`57163`).
 
 * The option ``copytruncate`` has been added to the ``logrotate`` configuration of
   UMC to not delete log files but to truncate the original log file to zero
@@ -326,18 +326,18 @@ Policies
 ========
 
 * The StartTLS operation mode configured via the UCR variable
-  ``directory/manager/starttls`` will now be used by univention-policy
+  ``directory/manager/starttls`` will now be used by ``univention-policy``
   (:uv:bug:`57158`).
 
 * The LDAP port configured via the UCR variable ``ldap/server/port`` will now be
-  used by univention-policy (:uv:bug:`57159`).
+  used by ``univention-policy`` (:uv:bug:`57159`).
 
 * The StartTLS operation mode configured via the UCR variable
   ``directory/manager/starttls`` and the LDAP port configured via the UCR
-  variable ``ldap/server/port`` will now be used by univention-policy
+  variable ``ldap/server/port`` will now be used by ``univention-policy``
   (:uv:bug:`57173`).
 
-* The StartTLS and ldap/server/port UCR variables have caused a regression
+* The StartTLS and ``ldap/server/port`` UCR variables have caused a regression
   where certain password lengths could not parsed anymore during LDAP bind.
   This change has been reverted to investigate the problem. If you updated to
   erratum 997, please update this package immediately (:uv:bug:`57169`).
@@ -372,8 +372,8 @@ Univention base libraries
   inhibit it from warning the user that the default value of a property will be
   set during modification (:uv:bug:`51187`).
 
-* Errata update 991 improved the LDAP filters for DNS objets in UDM but we
-  forgot to add an LDAP index for the sOARecord attribute there. This update
+* Errata update 991 improved the LDAP filters for DNS objects in UDM but we
+  forgot to add an LDAP index for the ``sOARecord`` attribute there. This update
   fixes that and should improve the performance of the UMC modules ``computers``
   and ``school computers``, especially for teachers in UCS@school environments,
   which are subject to a larger number of LDAP ACLs (:uv:bug:`57193`).
