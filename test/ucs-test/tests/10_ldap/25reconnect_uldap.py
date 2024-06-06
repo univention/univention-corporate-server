@@ -45,19 +45,19 @@ def _dump_journal():
 
 
 def _stop_slapd():
-    rc = subprocess.Popen(['invoke-rc.d', 'slapd', 'stop']).wait()
+    rc = subprocess.Popen(['systemctl', 'stop', 'slapd']).wait()
     _dump_journal()
     return rc
 
 
 def _start_slapd():
-    rc = subprocess.Popen(['invoke-rc.d', 'slapd', 'start']).wait()
+    rc = subprocess.Popen(['systemctl', 'start', 'slapd']).wait()
     _dump_journal()
     return rc
 
 
 def _start_delayed(delay):
-    subprocess.Popen('sleep %s; invoke-rc.d slapd start' % delay, shell=True)
+    subprocess.Popen('sleep %s; systemctl start slapd' % delay, shell=True)
 
 
 def _wait_for_slapd_to_be_started():

@@ -1,3 +1,9 @@
+ucs-test (12.0.99) unstable; urgency=medium
+
+  * Issue #2189: Replace invoke-rc.d in 10_ldap/25reconnect_uldap.py
+
+ -- Arvid <requate@univention.de>  Thu, 06 Jun 2024 19:18:52 +0200
+
 ucs-test (12.0.98) unstable; urgency=medium
 
   * Bug #56054: Remove 'skip_xhr_check' argument to login method from 11_test_frontend_translations
