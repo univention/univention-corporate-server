@@ -337,11 +337,6 @@ Policies
   variable ``ldap/server/port`` will now be used by ``univention-policy``
   (:uv:bug:`57173`).
 
-* The StartTLS and ``ldap/server/port`` UCR variables have caused a regression
-  where certain password lengths could not parsed anymore during LDAP bind.
-  This change has been reverted to investigate the problem. If you updated to
-  erratum 997, please update this package immediately (:uv:bug:`57169`).
-
 * A compiler flag has been added to the building process to detect certain
   memory errors during the execution of ``univention_policy_results``
   (:uv:bug:`57257`).
