@@ -90,7 +90,7 @@ def stop_slapd():
     Stops the slapd and waits for it to be stopped.
     Looks for slapd in processes and waits if found extra 20 seconds.
     """
-    ret_code = Popen(('invoke-rc.d', 'slapd', 'stop')).wait()
+    ret_code = Popen(('systemctl', 'stop', 'slapd')).wait()
     if ret_code != 0:
         fail("Expecting the return code to be 0, while it is: %s" % ret_code)
 
@@ -110,7 +110,7 @@ def stop_slapd():
 
 def start_slapd():
     """Starts the slapd and wait for it to be started."""
-    ret_code = Popen(('invoke-rc.d', 'slapd', 'start')).wait()
+    ret_code = Popen(('systemctl', 'start', 'slapd')).wait()
     if ret_code not in (0, 2):
         fail("Expecting the return code to be 0 or 2, while it is: %s"
              % ret_code)
@@ -118,7 +118,7 @@ def start_slapd():
 
 def start_with_delay(delay):
     """Sleeps the given 'delay' and starts slapd."""
-    Popen('sleep %s; invoke-rc.d slapd start' % delay, shell=True)
+    Popen('sleep %s; systemctl start slapd' % delay, shell=True)
 
 
 def wait_for_slapd_to_be_started():
