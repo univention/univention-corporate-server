@@ -293,6 +293,8 @@ class ModuleProcess(_ModuleConnection):
         # type: (int) -> None
         pid = self.pid()
         CORE.process('ModuleProcess: child %d (%s) exited with %d%s' % (pid, self.name, returncode, self.str_returncode(returncode)))
+        if self._client and not self._client._closed:
+            self._client.close()
         self.disconnect_inactivity_timer()
 
     def str_returncode(self, returncode):
