@@ -1,8 +1,12 @@
-univention-portal (4.0.17-1) UNRELEASED; urgency=medium
+univention-portal (4.0.17-1) unstable; urgency=medium
 
+  [ Ivan Barbecho Delgado ]
   * Bug #57350 UCS 5.0-8 version bump
 
- -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Mon, 03 Jun 2024 13:44:15 +0200
+  [ Felix Botner ]
+  * Bug #57378 switch product logos
+
+ -- Felix Botner <botner@univention.de>  Fri, 07 Jun 2024 11:56:16 +0200
 
 univention-portal (4.0.16-1) unstable; urgency=medium
 

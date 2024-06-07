@@ -1,8 +1,12 @@
-univention-apache (12.0.6-1) UNRELEASED; urgency=medium
+univention-apache (12.0.6-1) unstable; urgency=medium
 
+  [ Ivan Barbecho Delgado ]
   * Bug #57350 UCS 5.0-8 version bump
 
- -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Mon, 03 Jun 2024 13:44:17 +0200
+  [ Felix Botner ]
+  * Bug #57378 switch product logos
+
+ -- Felix Botner <botner@univention.de>  Fri, 07 Jun 2024 11:58:48 +0200
 
 univention-apache (12.0.5-1) UNRELEASED; urgency=medium
 

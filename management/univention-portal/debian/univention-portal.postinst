@@ -37,6 +37,7 @@
 
 a2ensite univention-portal.conf
 
+# shellcheck source=/dev/null
 . /usr/share/univention-lib/all.sh
 create_logfile /var/log/univention/portal.log "root:adm" 640
 
@@ -64,6 +65,7 @@ systemctl restart univention-portal-server
 ucr set apache2/force_https/exclude/request_uri/univention-portal?/univention/get
 
 if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "4.0.5-74"; then
+	# shellcheck disable=SC2154
 	univention-directory-manager portals/entry modify --dn "cn=univentionforum,cn=entry,cn=portals,cn=univention,$ldap_base" \
 		--append displayName='"fr_FR" "Forum Univention (Aide)"' \
 		--append description='"fr_FR" "Forum Univention (Aide)"'
@@ -87,6 +89,18 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "4.0.5-75"; then
 		--set linkTarget=samewindow
 	univention-directory-manager portals/portal modify --dn "cn=domain,cn=portal,cn=portals,cn=univention,$ldap_base" --ignore_not_exists \
 		--append userLinks="cn=self-service-password-change,cn=entry,cn=portals,cn=univention,$ldap_base"
+fi
+
+# update domain settings icon with 5.0-8
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "4.0.17-1"; then
+	if [ -e /var/univention-join/joined ] ; then
+		# shellcheck disable=SC2154
+		if [ "$server_role" = "domaincontroller_master" ]; then
+			univention-directory-manager portals/entry modify \
+				--dn "cn=umc-domain,cn=entry,cn=portals,cn=univention,$ldap_base" \
+				--set icon="$(base64 //usr/share/univention-portal/univention-management-console.svg)" || true
+		fi
+	fi
 fi
 
 exit 0
