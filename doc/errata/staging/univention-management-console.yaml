@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-management-console
+fix:
+desc: |
+ This update addresses the following issues:
+ * Fix a bug where it was impossible to change passwords via the UMC
+   due to the UMC server not closing file descriptors properly.
+bug: [57194]
