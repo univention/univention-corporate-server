@@ -1,3 +1,9 @@
+univention-system-activation (7.0.3) unstable; urgency=medium
+
+  * Bug #57378 switch product logos
+
+ -- Felix Botner <botner@univention.de>  Mon, 17 Jun 2024 16:00:58 +0200
+
 univention-system-activation (7.0.2) unstable; urgency=medium
 
   * Bug #56604: drop Python 2 compatibility
