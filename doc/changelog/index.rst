@@ -415,3 +415,5 @@ Other changes
 * Fix Debian Bug ``#960887``: ``Use of uninitialized value $caller``
   (:uv:bug:`56457`).
 
+* Product logos (login page icon, favicon, portal icon, UMC portal entry icon)
+  have been updated (:uv:bug:`57378`).
