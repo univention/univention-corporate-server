@@ -1,3 +1,9 @@
+univention-system-activation (6.0.5) unstable; urgency=medium
+
+  * Bug #57378 switch product logos
+
+ -- Felix Botner <botner@univention.de>  Mon, 17 Jun 2024 15:41:57 +0200
+
 univention-system-activation (6.0.4) unstable; urgency=medium
 
   * Bug #55915: replace `cgi` import with `email`

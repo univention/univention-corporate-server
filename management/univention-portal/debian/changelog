@@ -1,3 +1,9 @@
+univention-portal (5.0.9) unstable; urgency=medium
+
+  * Bug #57378 switch product logos
+
+ -- Felix Botner <botner@univention.de>  Mon, 17 Jun 2024 15:41:57 +0200
+
 univention-portal (5.0.8) unstable; urgency=medium
 
   * Bug #57023: make birthday for the user unsetable inside the self-service

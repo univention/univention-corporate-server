@@ -1,3 +1,9 @@
+univention-apache (13.0.5) unstable; urgency=medium
+
+  * Bug #57378 switch product logos
+
+ -- Felix Botner <botner@univention.de>  Mon, 17 Jun 2024 15:41:56 +0200
+
 univention-apache (13.0.4) unstable; urgency=medium
 
   * Bug #56604: remove workarounds for Python 2 compatibility

@@ -1,3 +1,9 @@
+univention-web (5.0.4) unstable; urgency=medium
+
+  * Bug #57378 switch product logos
+
+ -- Felix Botner <botner@univention.de>  Mon, 17 Jun 2024 15:41:56 +0200
+
 univention-web (5.0.3) unstable; urgency=medium
 
   * Bug #57192: Fixed cookie creation for UMCLang inside the portal and univention-web
