@@ -11,7 +11,7 @@ export SPHINXINTL_LANGUAGE ?= de
 export SPHINXOPTS ?= -q -W --keep-going
 
 dir_root := $(shell git rev-parse --show-toplevel)
-dir_git := $(shell git rev-parse --git-common-dir)
+dir_git := $(realpath $(shell git rev-parse --git-common-dir))
 dir_doc := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 USER_ID := $(shell id -u)
