@@ -1667,7 +1667,7 @@ basic_setup_ucs_joined () {
 	case "$server_role" in
 	domaincontroller_master|domaincontroller_backup)
 		local sso_fqdn sso_hostname
-		sso_fqdn="$(ucr get ucs/server/sso/fqdn)"
+		sso_fqdn="$(ucr get keycloak/server/sso/fqdn)"
 		sso_hostname="${sso_fqdn%%.*}"
 		[ -n "$old_ip" ] && udm dns/host_record modify \
 			--dn "relativeDomainName=$sso_hostname,zoneName=$domain,cn=dns,$ldap_base" \
