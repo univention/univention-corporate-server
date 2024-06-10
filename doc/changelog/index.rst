@@ -417,3 +417,6 @@ Other changes
 
 * Product logos (login page icon, ``favicon``, portal icon, UMC portal entry
   icon) have been updated (:uv:bug:`57378`).
+
+* Add new PGP public key ``univention-archive-key-ucs-52x.gpg`` for UCS version 5.2.
+  This key is used to sign the UCS version 5.2 repository (:uv:bug:`57312`).
