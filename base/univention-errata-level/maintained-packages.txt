@@ -926,6 +926,7 @@ gobjc-multilib-s390x-linux-gnu
 gobjc-powerpc64le-linux-gnu
 gobjc-s390x-linux-gnu
 golang-docker-dev
+golang-github-containerd-containerd-dev
 golang-github-docker-containerd-dev
 golang-github-docker-docker-dev
 golang-github-opencontainers-runc-dev
@@ -2330,6 +2331,9 @@ libopts25-dev
 libopus-dev
 libopus-doc
 libopus0
+liborcania-dev
+liborcania1.2
+liborcania2.3
 libosmesa6
 libosmesa6-dev
 libossp-uuid-dev
@@ -2362,6 +2366,7 @@ libpam-krb5
 libpam-ldap
 libpam-modules
 libpam-modules-bin
+libpam-oauthbearer
 libpam-runtime
 libpam-systemd
 libpam-univentionmailcyrus
@@ -2535,6 +2540,8 @@ librest-extras-0.7-0
 librest-extras-dev
 librevenge-0.0-0
 librevenge-dev
+librhonabwy-dev
+librhonabwy1.1
 libriemann-client-dev
 libriemann-client0
 libroken18-heimdal
@@ -2689,6 +2696,7 @@ libsasl2-modules-db
 libsasl2-modules-gssapi-heimdal
 libsasl2-modules-gssapi-mit
 libsasl2-modules-ldap
+libsasl2-modules-oauthbearer
 libsasl2-modules-otp
 libsasl2-modules-sql
 libseccomp-dev
@@ -2869,6 +2877,9 @@ libuchardet-dev
 libuchardet0
 libudev-dev
 libudev1
+libulfius-dev
+libulfius2.5
+libulfius2.7
 libunbound-dev
 libunbound8
 libunicode-utf8-perl
@@ -3169,6 +3180,8 @@ libyaml-dev
 libyaml-doc
 libyaml-libyaml-perl
 libyaml-syck-perl
+libyder-dev
+libyder2.0
 libzstd-dev
 libzstd1
 libzvbi-common
@@ -3226,6 +3239,13 @@ linux-headers-4.19.0-25-cloud-amd64
 linux-headers-4.19.0-25-common
 linux-headers-4.19.0-25-common-rt
 linux-headers-4.19.0-25-rt-amd64
+linux-headers-4.19.0-26-all
+linux-headers-4.19.0-26-all-amd64
+linux-headers-4.19.0-26-amd64
+linux-headers-4.19.0-26-cloud-amd64
+linux-headers-4.19.0-26-common
+linux-headers-4.19.0-26-common-rt
+linux-headers-4.19.0-26-rt-amd64
 linux-headers-amd64
 linux-headers-cloud-amd64
 linux-headers-rt-amd64
@@ -3265,6 +3285,12 @@ linux-image-4.19.0-25-cloud-amd64
 linux-image-4.19.0-25-cloud-amd64-unsigned
 linux-image-4.19.0-25-rt-amd64
 linux-image-4.19.0-25-rt-amd64-unsigned
+linux-image-4.19.0-26-amd64
+linux-image-4.19.0-26-amd64-unsigned
+linux-image-4.19.0-26-cloud-amd64
+linux-image-4.19.0-26-cloud-amd64-unsigned
+linux-image-4.19.0-26-rt-amd64
+linux-image-4.19.0-26-rt-amd64-unsigned
 linux-image-amd64
 linux-image-amd64-signed-template
 linux-image-cloud-amd64
@@ -3281,6 +3307,7 @@ linux-support-4.19.0-20
 linux-support-4.19.0-23
 linux-support-4.19.0-24
 linux-support-4.19.0-25
+linux-support-4.19.0-26
 lld-7
 lldb-7
 llvm-7
@@ -3788,7 +3815,6 @@ python-decorator
 python-defusedxml
 python-dev
 python-distro-info
-python-dns
 python-dnspython
 python-doc
 python-dockerpty
@@ -4059,7 +4085,6 @@ python3-defusedxml
 python3-dev
 python3-distro-info
 python3-distutils
-python3-dns
 python3-dnspython
 python3-doc
 python3-docker
@@ -4210,6 +4235,7 @@ python3-univention-debug
 python3-univention-directory-manager
 python3-univention-directory-manager-cli
 python3-univention-directory-manager-rest
+python3-univention-directory-manager-rest-async-client
 python3-univention-directory-manager-rest-client
 python3-univention-directory-reports
 python3-univention-group-membership-cache
@@ -4277,6 +4303,7 @@ ri
 riemann-c-client
 rlfe
 rmligs-german
+rnbyc
 rootskel
 rootskel-gtk
 rpcbind
@@ -4870,6 +4897,7 @@ util-linux-locales
 uuid
 uuid-dev
 uuid-runtime
+uwsc
 va-driver-all
 varnish
 varnish-doc
