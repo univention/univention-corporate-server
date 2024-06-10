@@ -1,26 +1,25 @@
 # SPDX-FileCopyrightText: 2021-2024 Univention GmbH
 #
 # SPDX-License-Identifier: AGPL-3.0-only
-
 msgid ""
 msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-08 12:34+0000\n"
+"POT-Creation-Date: 2024-06-10 10:30+0000\n"
 "PO-Revision-Date: 2022-06-14 16:16+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.14.0\n"
 
-#: ../../idm-cloud/google.rst:4
+#: ../../idm-cloud/google.rst:8
 msgid "Google Apps for Work Connector"
 msgstr "Google Apps for Work Connector"
 
-#: ../../idm-cloud/google.rst:6
+#: ../../idm-cloud/google.rst:10
 msgid ""
 "Google Apps for Work Connector allows users and groups to synchronize to "
 "a G Suite domain. You can control which of the users created in UCS are "
@@ -35,7 +34,7 @@ msgstr ""
 "provisioniert. Es kann dabei konfiguriert werden, welche Attribute "
 "synchronisiert werden und Attribute können dabei anonymisiert werden."
 
-#: ../../idm-cloud/google.rst:12
+#: ../../idm-cloud/google.rst:16
 msgid ""
 "The single sign-on login to G Suite is done via the UCS integrated SAML "
 "implementation. Authentication takes place against the UCS server, and no"
@@ -52,11 +51,11 @@ msgstr ""
 "DNS-Namen der UCS-Domäne auflösen können, das ist insbesondere für "
 "Mobilgeräte wichtig zu beachten."
 
-#: ../../idm-cloud/google.rst:22 ../../idm-cloud/office-365.rst:24
+#: ../../idm-cloud/google.rst:26 ../../idm-cloud/office-365.rst:28
 msgid "Setup"
 msgstr "Einrichtung"
 
-#: ../../idm-cloud/google.rst:24
+#: ../../idm-cloud/google.rst:28
 msgid ""
 "To setup the Google Apps for Work Connectors a G Suite Administrator "
 "account, a corresponding account in the G Suite domain, and a `domain "
@@ -72,7 +71,7 @@ msgstr ""
 "bereitgestellt. Für das Konfigurieren des SSO wird jedoch eine eigene "
 "Internet-Domäne benötigt, in der TXT‑Records erstellt werden können."
 
-#: ../../idm-cloud/google.rst:30
+#: ../../idm-cloud/google.rst:34
 msgid ""
 "If no G Suite subscription is available yet, it can be configured via "
 "`Set up Google Workspace for your organization <google-setup-"
@@ -83,7 +82,7 @@ msgstr ""
 "workspace_>`_ konfiguriert werden. Mit einem privaten Gmail Konto ist "
 "eine Verbindung nicht möglich."
 
-#: ../../idm-cloud/google.rst:34
+#: ../../idm-cloud/google.rst:38
 msgid ""
 "Afterwards, you should sign in with a *G Suite administrator account* in "
 "the `Admin Console <google-admin-console_>`_. The domain should now be "
@@ -96,7 +95,7 @@ msgstr ""
 "Record im DNS der eigenen Domäne zu erzeugen. Dieser Vorgang kann einige "
 "Minuten in Anspruch nehmen."
 
-#: ../../idm-cloud/google.rst:39
+#: ../../idm-cloud/google.rst:43
 msgid ""
 "Now the Google Apps for Work Connector from the App Center can be "
 "installed on the UCS system. The installation only takes a few minutes. "
@@ -109,15 +108,15 @@ msgstr ""
 "Einrichtung zur Verfügung. Mit Abschluss des Einrichtungsassistenten ist "
 "die Installation abgeschlossen und der Connector ist einsatzbereit."
 
-#: ../../idm-cloud/google.rst:49
+#: ../../idm-cloud/google.rst:53
 msgid "Google Apps for Work Setup Wizard"
 msgstr "Google Apps for Work Einrichtungsassistent"
 
-#: ../../idm-cloud/google.rst:54 ../../idm-cloud/office-365.rst:62
+#: ../../idm-cloud/google.rst:58 ../../idm-cloud/office-365.rst:66
 msgid "Configuration"
 msgstr "Konfiguration"
 
-#: ../../idm-cloud/google.rst:56
+#: ../../idm-cloud/google.rst:60
 msgid ""
 "After the setup via the setup wizard, you can use the user module on each"
 " user object on the *Google Apps tab* to configure that this user is "
@@ -128,7 +127,7 @@ msgstr ""
 "Apps` konfiguriert werden, dass dieser Benutzer zu G Suite provisioniert "
 "wird."
 
-#: ../../idm-cloud/google.rst:60
+#: ../../idm-cloud/google.rst:64
 msgid ""
 "If a change is made to the user, the changes will also be replicated to "
 "the G Suite domain. There is no synchronization from the G Suite domain "
@@ -141,7 +140,7 @@ msgstr ""
 " der G Suite Domäne vorgenommen wurden, können durch Änderungen an den "
 "gleichen Attributen in UCS unter Umständen wieder überschrieben werden."
 
-#: ../../idm-cloud/google.rst:65
+#: ../../idm-cloud/google.rst:69
 msgid ""
 "If the Google Apps property is removed from a user, the user will be "
 "deleted from the G Suite domain accordingly."
@@ -168,7 +167,7 @@ msgstr ""
 "apps/attributes/mapping/.*` entfernt, so werden keine Daten außer der "
 "primären E-Mail-Adresse synchronisiert."
 
-#: ../../idm-cloud/google.rst:76
+#: ../../idm-cloud/google.rst:80
 msgid ""
 "The |UCSUCRV| :envvar:`google-apps/attributes/anonymize` can be used to "
 "specify comma-separated LDAP attributes that are created in the G Suite "
@@ -178,7 +177,7 @@ msgstr ""
 "kommasepariert LDAP Attribute angegeben werden, die zwar in der G Suite "
 "Domäne angelegt, jedoch mit Zufallswerten gefüllt werden."
 
-#: ../../idm-cloud/google.rst:80
+#: ../../idm-cloud/google.rst:84
 msgid ""
 "The |UCSUCRV| :envvar:`google-apps/attributes/never` can be used to "
 "specify comma-separated LDAP attributes that should not be synchronized, "
@@ -192,7 +191,7 @@ msgstr ""
 "apps/attributes/mapping/.*` oder :envvar:`google-"
 "apps/attributes/anonymize` konfiguriert sind."
 
-#: ../../idm-cloud/google.rst:85
+#: ../../idm-cloud/google.rst:89
 msgid ""
 "The synchronization of Google Apps for Work user groups can be enabled "
 "with the |UCSUCRV| :envvar:`google-apps/groups/sync`."
@@ -200,17 +199,17 @@ msgstr ""
 "Die Synchronisation der Gruppen der Google Apps for Work Benutzer kann "
 "mit der |UCSUCRV| :envvar:`google-apps/groups/sync` aktiviert werden."
 
-#: ../../idm-cloud/google.rst:88
+#: ../../idm-cloud/google.rst:92
 msgid "Changes to |UCSUCRVs| are implemented after restarting the |UCSUDL|."
 msgstr ""
 "Änderungen an |UCSUCRVs| werden erst nach dem Neustart des |UCSUDL| "
 "umgesetzt."
 
-#: ../../idm-cloud/google.rst:93 ../../idm-cloud/office-365.rst:177
+#: ../../idm-cloud/google.rst:97 ../../idm-cloud/office-365.rst:194
 msgid "Troubleshooting/Debugging"
 msgstr "Fehlersuche"
 
-#: ../../idm-cloud/google.rst:95
+#: ../../idm-cloud/google.rst:99
 msgid ""
 "Messages during setup are logged in the following log file "
 ":file:`/var/log/univention/management-console-module-googleapps.log`."
@@ -219,7 +218,7 @@ msgstr ""
 ":file:`/var/log/univention/management-console-module-googleapps.log` "
 "protokolliert."
 
-#: ../../idm-cloud/google.rst:98
+#: ../../idm-cloud/google.rst:102
 msgid ""
 "In case of synchronization problems, the log file of the |UCSUDL| should "
 "be checked: :file:`/var/log/univention/listener.log`. The |UCSUCRV| "
@@ -230,15 +229,15 @@ msgstr ""
 " :envvar:`google-apps/debug/werror` können mehr Debugausgaben aktiviert "
 "werden."
 
-#: ../../idm-cloud/index.rst:24
+#: ../../idm-cloud/index.rst:28
 msgid "Chapter contents:"
 msgstr "Kapitelinhalte:"
 
-#: ../../idm-cloud/index.rst:5
+#: ../../idm-cloud/index.rst:9
 msgid "Identity Management connection to cloud services"
 msgstr "Identity Management Anbindung an Cloud-Dienste"
 
-#: ../../idm-cloud/index.rst:7
+#: ../../idm-cloud/index.rst:11
 msgid ""
 "UCS offers an integrated Identity Management System. Through |UCSUMC|, "
 "users and groups among others can be administered. Depending on the "
@@ -250,7 +249,7 @@ msgstr ""
 "Abhängig von den installierten Diensten stehen diese Identitäten über "
 "unterschiedliche Schnittstellen bereit, z.B. via LDAP."
 
-#: ../../idm-cloud/index.rst:12
+#: ../../idm-cloud/index.rst:16
 msgid ""
 "The management system can be extended with the help of provided "
 "extensions, also called apps. Thus users or groups can also be replicated"
@@ -262,7 +261,7 @@ msgstr ""
 "direkt in Cloud-Dienste repliziert werden. Im App Center sind u.a.  "
 "Erweiterung für Microsoft 365 oder G Suite vorhanden."
 
-#: ../../idm-cloud/index.rst:17
+#: ../../idm-cloud/index.rst:21
 msgid ""
 "Thanks to single sign-on (SSO), users can sign in with their usual "
 "password and immediately get to work online in the cloud. The password "
@@ -274,7 +273,7 @@ msgstr ""
 "Dabei bleibt das Passwort im Unternehmensnetzwerk und wird nicht zum "
 "Cloud Dienst übertragen."
 
-#: ../../idm-cloud/index.rst:21
+#: ../../idm-cloud/index.rst:25
 msgid ""
 "The following chapter describes how to set up the Microsoft 365 Connector"
 " and the Google Apps for Work Connector."
@@ -282,11 +281,11 @@ msgstr ""
 "In den folgenden Kapiteln ist die Einrichtung des Microsoft 365 und des "
 "Google Apps for Work Connector beschrieben."
 
-#: ../../idm-cloud/office-365.rst:4
+#: ../../idm-cloud/office-365.rst:8
 msgid "Microsoft 365 Connector"
 msgstr "Microsoft 365 Connector"
 
-#: ../../idm-cloud/office-365.rst:6
+#: ../../idm-cloud/office-365.rst:10
 msgid ""
 "The synchronization of users and groups and teams to an Azure Directory "
 "Domain, which will then be used by Microsoft 365, is made possible by the"
@@ -304,7 +303,7 @@ msgstr ""
 " provisioniert. Es kann dabei konfiguriert werden, welche Attribute "
 "synchronisiert werden und Attribute können dabei anonymisiert werden."
 
-#: ../../idm-cloud/office-365.rst:14
+#: ../../idm-cloud/office-365.rst:18
 msgid ""
 "The single sign-on login to Microsoft 365 is done via the UCS integrated "
 "SAML implementation. Authentication takes place against the UCS server, "
@@ -322,7 +321,7 @@ msgstr ""
 "aber die DNS-Namen der UCS-Domäne auflösen können, das ist insbesondere "
 "für Mobilgeräte wichtig zu beachten."
 
-#: ../../idm-cloud/office-365.rst:26
+#: ../../idm-cloud/office-365.rst:30
 msgid ""
 "To setup the Microsoft 365 Connector a Microsoft 365 Administrator "
 "account, a corresponding Account in the Azure Active Directory, as well "
@@ -339,7 +338,7 @@ msgstr ""
 "eine eigene Internet-Domäne benötigt, in der TXT‑Records erstellt werden "
 "können."
 
-#: ../../idm-cloud/office-365.rst:32
+#: ../../idm-cloud/office-365.rst:36
 msgid ""
 "In case there is no Microsoft 365 subscription available, one can be "
 "configured it via https://www.office.com/ in the *trial for business* "
@@ -350,7 +349,7 @@ msgstr ""
 "Unternehmen* konfiguriert werden. Mit einem privaten Microsoft Konto ist "
 "eine Verbindung nicht möglich."
 
-#: ../../idm-cloud/office-365.rst:36
+#: ../../idm-cloud/office-365.rst:40
 msgid ""
 "You should then sign in with a *Microsoft 365 Administrator Account* into"
 " the :guilabel:`Microsoft 365 Admin Center`. At the bottom left of the "
@@ -363,7 +362,7 @@ msgstr ""
 "auszuwählen, welches in einem neuen Fenster das *Azure Management Portal*"
 " öffnet."
 
-#: ../../idm-cloud/office-365.rst:41
+#: ../../idm-cloud/office-365.rst:45
 msgid ""
 "In the *Azure Active Directory* section the menu item :guilabel:`Custom "
 "domain names` can be used to add and verify your own domain. For this it "
@@ -377,7 +376,7 @@ msgstr ""
 "Anspruch nehmen. Anschließend sollte der *Status* der konfigurierten "
 "Domäne als **überprüft** angezeigt werden."
 
-#: ../../idm-cloud/office-365.rst:47
+#: ../../idm-cloud/office-365.rst:51
 msgid ""
 "Now the :program:`Microsoft 365 Connector` App can be installed from the "
 "App Center on the UCS system. The installation takes a few minutes. There"
@@ -390,11 +389,11 @@ msgstr ""
 " zur Verfügung. Mit Abschluss des Einrichtungsassistenten ist die "
 "Installation abgeschlossen und der Connector ist einsatzbereit."
 
-#: ../../idm-cloud/office-365.rst:57
+#: ../../idm-cloud/office-365.rst:61
 msgid "Microsoft 365 Setup assistant"
 msgstr "Microsoft 365 Einrichtungsassistent"
 
-#: ../../idm-cloud/office-365.rst:64
+#: ../../idm-cloud/office-365.rst:68
 msgid ""
 "After the end of the installation through the setup wizard, users can be "
 "enabled to use Microsoft 365. This configuration can be done through the "
@@ -408,11 +407,11 @@ msgstr ""
 " wird. Der Verbrauch und die Zuweisung von Lizenzen ist im *Microsoft 365"
 " Admin Center* zu erkennen."
 
-#: ../../idm-cloud/office-365.rst:72
+#: ../../idm-cloud/office-365.rst:76
 msgid "Users"
 msgstr "Benutzer"
 
-#: ../../idm-cloud/office-365.rst:74
+#: ../../idm-cloud/office-365.rst:78
 msgid ""
 "If a change is made to the user, the changes are likewise replicated to "
 "the Azure Active Directory domain. There is no synchronization from the "
@@ -427,7 +426,7 @@ msgstr ""
 "vorgenommen werden, können durch Änderungen an den gleichen Attributen in"
 " UCS unter Umständen wieder überschrieben werden."
 
-#: ../../idm-cloud/office-365.rst:79
+#: ../../idm-cloud/office-365.rst:83
 msgid ""
 "Due to Azure Active Directory security policies, users or groups in the "
 "Azure AD can't be deleted during synchronization. They are merely "
@@ -444,7 +443,7 @@ msgstr ""
 "mit ``ZZZ_deleted`` anfangen, können im *Microsoft 365 Admin Center* "
 "gelöscht werden."
 
-#: ../../idm-cloud/office-365.rst:85
+#: ../../idm-cloud/office-365.rst:89
 msgid ""
 "It is necessary to configure a country for the user in Microsoft 365. The"
 " connector uses the specification of the country from the contact data of"
@@ -459,7 +458,7 @@ msgstr ""
 ":envvar:`office365/attributes/usageLocation` kann ein 2-Zeichen-Kürzel, "
 "z.B. ``DE`` vorgegeben werden."
 
-#: ../../idm-cloud/office-365.rst:91
+#: ../../idm-cloud/office-365.rst:95
 msgid ""
 "Through |UCSUCRV| :envvar:`office365/attributes/sync`, the LDAP "
 "attributes (e.g. first name, last name, etc.) of a user's account which "
@@ -472,7 +471,7 @@ msgstr ""
 "LDAP Attributen. Somit ist eine Anpassung an die eigenen Bedürfnisse "
 "einfach möglich."
 
-#: ../../idm-cloud/office-365.rst:96
+#: ../../idm-cloud/office-365.rst:100
 msgid ""
 "With the |UCSUCRV| :envvar:`office365/attributes/anonymize`, a comma-"
 "separated list of LDAP attributes can be configured that are created in "
@@ -486,7 +485,7 @@ msgstr ""
 "|UCSUCRVs| :envvar:`office365/attributes/static/.*` erlauben das Füllen "
 "von Attributen auf Microsoft Seite mit einem vordefinierten Wert."
 
-#: ../../idm-cloud/office-365.rst:102
+#: ../../idm-cloud/office-365.rst:106
 msgid ""
 "The |UCSUCRV| :envvar:`office365/attributes/never` can be used to specify"
 " a comma separated list of LDAP attributes that should not be "
@@ -498,33 +497,31 @@ msgstr ""
 "werden sollen, selbst wenn diese in :envvar:`office365/attributes/sync` "
 "oder :envvar:`office365/attributes/anonymize` auftauchen."
 
-#: ../../idm-cloud/office-365.rst:107
+#: ../../idm-cloud/office-365.rst:111
 msgid ""
-"The |UCSUCRVs| :envvar:`office365/attributes/mapping/.*` define a "
-"mapping of UCS LDAP attributes to Azure Attributes. Usually these "
-"variables don't need to be changed. The synchronization of the groups of "
-"Microsoft 365 user can be enabled with the |UCSUCRV| "
+"The |UCSUCRVs| :envvar:`office365/attributes/mapping/.*` define a mapping"
+" of UCS LDAP attributes to Azure Attributes. Usually these variables "
+"don't need to be changed. The synchronization of the groups of Microsoft "
+"365 user can be enabled with the |UCSUCRV| "
 ":envvar:`office365/groups/sync`."
 msgstr ""
-"Die |UCSUCRVs| :envvar:`office365/attributes/mapping/.*` definieren "
-"eine Abbildung der UCS LDAP Attribute zu Azure Attributen.  Diese "
-"Variablen müssen normalerweise nicht verändert werden. Die "
-"Synchronisation der Gruppen der Microsoft 365 Benutzer kann mit der "
-"|UCSUCRV| :envvar:`office365/groups/sync` aktiviert werden."
+"Die |UCSUCRVs| :envvar:`office365/attributes/mapping/.*` definieren eine "
+"Abbildung der UCS LDAP Attribute zu Azure Attributen.  Diese Variablen "
+"müssen normalerweise nicht verändert werden. Die Synchronisation der "
+"Gruppen der Microsoft 365 Benutzer kann mit der |UCSUCRV| "
+":envvar:`office365/groups/sync` aktiviert werden."
 
-#: ../../idm-cloud/office-365.rst:112
-msgid ""
-"Changes to |UCSUCRVs| are implemented only after restarting the "
-"|UCSUDL|."
+#: ../../idm-cloud/office-365.rst:116
+msgid "Changes to |UCSUCRVs| are implemented only after restarting the |UCSUDL|."
 msgstr ""
 "Änderungen an |UCSUCRVs| werden erst nach dem Neustart des |UCSUDL| "
 "umgesetzt."
 
-#: ../../idm-cloud/office-365.rst:117
+#: ../../idm-cloud/office-365.rst:121
 msgid "Teams"
 msgstr "Teams"
 
-#: ../../idm-cloud/office-365.rst:119
+#: ../../idm-cloud/office-365.rst:123
 msgid ""
 "To use Teams, synchronization of groups must be enabled in the |UCSUCRV| "
 ":envvar:`office365/groups/sync` with the value ``yes``, and then the "
@@ -550,7 +547,7 @@ msgstr ""
 " Das Einrichten eines neuen Teams in Microsoft 365 kann einige Minuten in"
 " Anspruch nehmen."
 
-#: ../../idm-cloud/office-365.rst:129
+#: ../../idm-cloud/office-365.rst:133
 msgid ""
 "Ensure that users of a team in Azure are provided with a license that "
 "includes the use of Teams."
@@ -558,11 +555,11 @@ msgstr ""
 "Es muss sichergestellt sein, dass die Benutzer eines Teams in Azure eine "
 "Lizenz erhalten, in der die Nutzung von Teams enthalten ist."
 
-#: ../../idm-cloud/office-365.rst:135
+#: ../../idm-cloud/office-365.rst:139
 msgid "Synchronization of Users in multiple Azure Active Directories"
 msgstr "Synchronisation von Benutzern in mehrere Azure Active Directories"
 
-#: ../../idm-cloud/office-365.rst:137
+#: ../../idm-cloud/office-365.rst:141
 msgid ""
 "The Microsoft 365 Connector is able to synchronize users to multiple "
 "Azure Active Directories. For each user account, multiple Azure AD "
@@ -577,7 +574,7 @@ msgstr ""
 "in jedem der seinem UCS Konto zugewiesenen Azure AD ein separates Konto "
 "mit eindeutigem Benutzernamen (*Userprincipalname*, UPN)."
 
-#: ../../idm-cloud/office-365.rst:142
+#: ../../idm-cloud/office-365.rst:146
 msgid ""
 "An alias is assigned to each additional Azure AD connection by the "
 "administrator. To manage these aliases the program :command:`/usr/share"
@@ -599,7 +596,7 @@ msgstr ""
 "Der Wert dieser |UCSUCRV| bestimmt, welche Azure Verbindung durch den "
 "Microsoft 365 Einrichtungswizard konfiguriert wird."
 
-#: ../../idm-cloud/office-365.rst:152
+#: ../../idm-cloud/office-365.rst:156
 msgid ""
 "After creating the alias, the new connection must be configured through "
 "the Microsoft 365 Configuration Wizard, as well."
@@ -608,18 +605,17 @@ msgstr ""
 "Einrichtungswizard eingerichtet werden, damit Benutzer synchronisiert "
 "werden können."
 
-#: ../../idm-cloud/office-365.rst:155
+#: ../../idm-cloud/office-365.rst:159
 msgid ""
 "To use single sign-on with multiple Azure AD connections, a new logical "
-"SAML Identity Provider is needed for each connection. This is described "
-"in :ref:`domain-saml-extended-configuration`."
+"SAML Identity Provider is needed for each connection. This is done "
+"automatically by the wizard."
 msgstr ""
 "Um Single Sign-On mit mehreren Azure AD Verbindungen zu ermöglichen, muss"
 " für jede weitere Verbindung ein neuer logischer SAML Identity Provider "
-"erstellt werden. Dies ist in :ref:`domain-saml-extended-configuration` "
-"beschrieben."
+"erstellt werden. Der Wizard übernimmt diese Aufgabe automatisch."
 
-#: ../../idm-cloud/office-365.rst:159
+#: ../../idm-cloud/office-365.rst:163
 msgid ""
 "The Identity Provider should get the same name as the alias. If another "
 "name was chosen, the PowerShell script to configure single sign-on needs "
@@ -634,7 +630,39 @@ msgstr ""
 " Domaincontrollern muss also beispielsweise die |UCSUCRV| in der Form "
 ":samp:`saml/idp/entityID/supplement/{Aliasname}=true` gesetzt werden."
 
-#: ../../idm-cloud/office-365.rst:165
+#: ../../idm-cloud/office-365.rst:169
+msgid ""
+"IdP initiated logins can be done via the portal tile that the App creates"
+" during the configuration of the first connection. All subsequent "
+"connections would need their dedicated portal tiles. The App does not "
+"create those. Instead, there is a script :command:`/usr/share/univention-"
+"office365/scripts/generate-portal-tile-for-ad-connection` that can be "
+"used to create them. It takes as its first argument the name of the Azure"
+" AD connection. Subsequent arguments are used to limit the visibility of "
+"the tile: If many connections (and therefore many portal tiles) are used,"
+" the portal may get cramped. Portal tiles can be shown only to certain "
+"groups. So the scripts accepts any number of groups of which at least one"
+" needs to include a user in order for that user to really see the tile. "
+"Note that this means that the user needs to be logged in before seeing "
+"these tiles."
+msgstr ""
+"IdP initiierte Logins können über die Portalkachel angestoßen werden, die "
+"die App während der Konfiguration der ersten Verbindung erstellt. Alle "
+"folgenden Verbindungen brauchen dann aber eigene Portalkacheln; die App "
+"erzeugt keine weiteren. Stattdessen existiert das Skript "
+":command:`/usr/share/univention-office365/scripts/generate-portal-tile-for-ad-connection`, "
+"das entsprechende Kacheln erstellen kann. Das Skript braucht als erstes "
+"Argument den Namen der Azure AD Verbindung, weitere Argumente können "
+"genutzt werden, um die Sichtbarkeit der Kachel einzuschränken: Bei sehr "
+"vielen Verbindungen (und damit auch sehr vielen Portalkacheln) kann das "
+"Portal leicht überladen wirken. Portalkacheln können auf bestimmte Gruppen "
+"beschränkt werden; diese Gruppen kann man dem Skript übergeben. Die Kachel "
+"wird einem Benutzer in diesem Fall nur dann angezeigt, wenn er Mitglied "
+"mindestens einer der Gruppen ist. Bitte beachten Sie, dass das bedeutet, "
+"dass die Kachel dann nur gesehen werden kann, wenn sich der Benutzer "
+"bereits eingeloggt hat."
+
+#: ../../idm-cloud/office-365.rst:182
 msgid ""
 "A UCS user can only use one Microsoft 365 account in one browser session "
 "at a time. To change the connection, a logout from Microsoft 365 is "
@@ -644,7 +672,7 @@ msgstr ""
 "gleichzeitig verbunden sein. Um die Verbindung zu wechseln, ist ein "
 "Abmelden an Microsoft 365 notwendig."
 
-#: ../../idm-cloud/office-365.rst:169
+#: ../../idm-cloud/office-365.rst:186
 msgid ""
 "A default alias for Microsoft 365 enabled users and groups can be set in "
 "the |UCSUCRV| :envvar:`office365/defaultalias`. To synchronize them into "
@@ -659,7 +687,7 @@ msgstr ""
 "Microsoft 365 das entsprechende Azure AD Verbindungsalias als Ziel "
 "ausgewählt werden."
 
-#: ../../idm-cloud/office-365.rst:179
+#: ../../idm-cloud/office-365.rst:196
 msgid ""
 "Messages during the setup are logged in :file:`/var/log/univention"
 "/management-console-module-office365.log`."
@@ -668,7 +696,7 @@ msgstr ""
 ":file:`/var/log/univention/management-console-module-office365.log` "
 "protokolliert."
 
-#: ../../idm-cloud/office-365.rst:182
+#: ../../idm-cloud/office-365.rst:199
 msgid ""
 "In case of synchronization problems, the log file of the |UCSUDL| should "
 "be examined: :file:`/var/log/univention/listener.log`."
@@ -676,7 +704,7 @@ msgstr ""
 "Bei Synchronisationsproblemen sollte die Logdatei des |UCSUDL| geprüft "
 "werden: :file:`/var/log/univention/listener.log`."
 
-#: ../../idm-cloud/office-365.rst:185
+#: ../../idm-cloud/office-365.rst:202
 msgid ""
 "Some actions of the Connector use long-running Azure Cloud operations, "
 "especially when using Teams. These operations are logged in the log file "

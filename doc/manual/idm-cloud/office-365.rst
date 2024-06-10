@@ -157,14 +157,27 @@ After creating the alias, the new connection must be configured through
 the Microsoft 365 Configuration Wizard, as well.
 
 To use single sign-on with multiple Azure AD connections, a new logical
-SAML Identity Provider is needed for each connection. This is described
-in :ref:`domain-saml-extended-configuration`.
+SAML Identity Provider is needed for each connection. This is done automatically
+by the wizard.
 
 The Identity Provider should get the same name as the alias. If another name was
 chosen, the PowerShell script to configure single sign-on needs to be adjusted
 manually. For example the |UCSUCRV|
 :samp:`saml/idp/entityID/supplement/{Aliasname}=true` needs to be set on all
 domain controllers responsible for single sign-on.
+
+IdP initiated logins can be done via the portal tile that the App creates
+during the configuration of the first connection. All subsequent connections
+would need their dedicated portal tiles. The App does not create those.
+Instead, there is a script
+:command:`/usr/share/univention-office365/scripts/generate-portal-tile-for-ad-connection`
+that can be used to create them. It takes as its first argument the name of the
+Azure AD connection. Subsequent arguments are used to limit the visibility of
+the tile: If many connections (and therefore many portal tiles) are used, the
+portal may get cramped. Portal tiles can be shown only to certain groups. So
+the scripts accepts any number of groups of which at least one needs to include
+a user in order for that user to really see the tile. Note that this means
+that the user needs to be logged in before seeing these tiles.
 
 A UCS user can only use one Microsoft 365 account in one browser session
 at a time. To change the connection, a logout from Microsoft 365 is
