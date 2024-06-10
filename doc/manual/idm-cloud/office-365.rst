@@ -166,7 +166,7 @@ manually. For example the |UCSUCRV|
 :samp:`saml/idp/entityID/supplement/{Aliasname}=true` needs to be set on all
 domain controllers responsible for single sign-on.
 
-IdP initiated logins can be done via the portal tile that the App creates
+IdP initiated logins can be done via the Univention Portal tile that the App creates
 during the configuration of the first connection. All subsequent connections
 would need their dedicated portal tiles. The App does not create those.
 Instead, there is a script
