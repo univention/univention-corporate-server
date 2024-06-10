@@ -14,8 +14,6 @@ Changelog for Univention Corporate Server (UCS) |release|
 General
 *******
 
-# TODO
-
 .. _security:
 
 * All security updates issued for UCS 5.0-7 are included:
