@@ -16,7 +16,7 @@ General
 
 .. _security:
 
-* All security updates issued for UCS 5.0-7 are included:
+* UCS 5.0-8 includes all issued security updates issued for UCS 5.0-7:
 
   * :program:`bind9` (:uv:cve:`2023-50387`, :uv:cve:`2023-50868`)
     (:uv:bug:`57301`)
@@ -136,41 +136,41 @@ General
 
 .. _debian:
 
-* The following updated packages from Debian 10.13 are included:
+* UCS 5.0-8 includes the following updated packages from Debian 10.13:
 
-  :program:`cacti`
-  :program:`composer`
-  :program:`distro-info-data`
-  :program:`fossil`
-  :program:`freeipa`
-  :program:`frr`
-  :program:`gross`
-  :program:`gst-plugins-base1.0`
-  :program:`gtkwave`
-  :program:`jetty9`
-  :program:`knot-resolver`
-  :program:`less`
-  :program:`libcaca`
-  :program:`libdatetime-timezone-perl`
-  :program:`libkf5ksieve`
-  :program:`libpgjava`
-  :program:`mediawiki`
-  :program:`nodejs`
-  :program:`node-xml2js`
-  :program:`org-mode`
-  :program:`putty`
-  :program:`python-pymysql`
-  :program:`qtbase-opensource-src`
-  :program:`ruby-rack`
-  :program:`shim-helpers-amd64-signed`
-  :program:`trafficserver`
-  :program:`tzdata`
-  :program:`unadf`
+  :program:`cacti`,
+  :program:`composer`,
+  :program:`distro-info-data`,
+  :program:`fossil`,
+  :program:`freeipa`,
+  :program:`frr`,
+  :program:`gross`,
+  :program:`gst-plugins-base1.0`,
+  :program:`gtkwave`,
+  :program:`jetty9`,
+  :program:`knot-resolver`,
+  :program:`less`,
+  :program:`libcaca`,
+  :program:`libdatetime-timezone-perl`,
+  :program:`libkf5ksieve`,
+  :program:`libpgjava`,
+  :program:`mediawiki`,
+  :program:`nodejs`,
+  :program:`node-xml2js`,
+  :program:`org-mode`,
+  :program:`putty`,
+  :program:`python-pymysql`,
+  :program:`qtbase-opensource-src`,
+  :program:`ruby-rack`,
+  :program:`shim-helpers-amd64-signed`,
+  :program:`trafficserver`,
+  :program:`tzdata`,
+  :program:`unadf`,
   :program:`zfs-linux`
 
 .. _maintained:
 
-* The following packages have been moved to the maintained repository of UCS:
+* UCS 5.0-8 includes the following packages in the maintained repository of UCS:
 
   :program:`crudeoauth`
 
@@ -189,68 +189,60 @@ Domain services
 LDAP Directory Manager
 ======================
 
-* |UCSUDM| has been adjusted to support declaring properties as lazy loading. If a
-  property is lazy loading, it will only be fetched if explicitly requested.
-  The flag ``--properties`` has been added to |UCSUDM| CLI to request specific
-  properties (:uv:bug:`57110`).
+* Adjusted |UCSUDM| to support declaring properties as lazy loading.
+  If a property is lazy loading, UCS only fetches it, if explicitly requested.
+  Added the flag ``--properties`` to |UCSUDM| CLI to request specific properties (:uv:bug:`57110`).
 
-* If the |UCSUCRV| :envvar:`directory/manager/mail-address/uniqueness` is set to
-  ``true`` the uniqueness check for email addresses takes both user properties,
-  ``mailPrimaryAddress`` and ``mailAlternativeAddress``, into account. It is now
-  possible to swap the values for these properties with one change to the user
-  object (:uv:bug:`57171`).
+* If the |UCSUCRV| :envvar:`directory/manager/mail-address/uniqueness` has the value ``true``,
+  the uniqueness check for email addresses takes both user properties,
+  ``mailPrimaryAddress`` and ``mailAlternativeAddress``, into account.
+  It's now possible to swap the values for these properties with one change to the user object (:uv:bug:`57171`).
 
-* The |UCSUDM| module ``settings/extended_attributes`` has been updated to include the
-  property ``preventUmcDefaultPopup`` which is evaluated in the |UCSUMC| and will
-  inhibit it from warning the user that the default value of a property will be
-  set during modification (:uv:bug:`51187`).
+* Updated the |UCSUDM| module ``settings/extended_attributes`` to include the property ``preventUmcDefaultPopup``
+  which UCS evaluates in the |UCSUMC|.
+  It inhibits UCS from warning the user that a modification sets the default value of a property (:uv:bug:`51187`).
 
-* A regression impacting the modification of ``users/ldap`` objects within the
-  |UCSUMC| has been addressed, stemming from erratum 1018 (:uv:bug:`57228`).
+* Addressed a regression impacting the modification of ``users/ldap`` objects within the |UCSUMC|,
+  stemming from erratum 1018 (:uv:bug:`57228`).
 
-* Compatibility with Python 2.7 has been restored, which was broken by erratum
-  991 (:uv:bug:`57146`).
+* Restored compatibility with Python 2.7, which erratum 991 has broken (:uv:bug:`57146`).
 
-* Added ability to filter for various attributes using the |UCSUDM| command line
-  interface and in |UCSUMC|. This includes ``sambaLogonHours`` and
-  ``accountActivationDate`` for the ``users/user`` module, ``hwaddress`` for the
-  ``dhcp/host`` module and ``ip`` for the ``dns/ptr_record`` module (:uv:bug:`54339`,
-  :uv:bug:`54339`, :uv:bug:`53830`, :uv:bug:`54339`, :uv:bug:`53830`,
+* Added ability to filter for various attributes using the |UCSUDM| command line interface and in |UCSUMC|.
+  This includes ``sambaLogonHours`` and ``accountActivationDate`` for the ``users/user`` module,
+  ``hwaddress`` for the ``dhcp/host`` module
+  and ``ip`` for the ``dns/ptr_record`` module
+  (:uv:bug:`54339`, :uv:bug:`54339`, :uv:bug:`53830`, :uv:bug:`54339`, :uv:bug:`53830`,
   :uv:bug:`53807`, :uv:bug:`54339`, :uv:bug:`53830`, :uv:bug:`53807`,
   :uv:bug:`55604`).
 
-* An asynchronous |UCSREST| client has been added (:uv:bug:`56735`).
+* Added an asynchronous |UCSREST| client (:uv:bug:`56735`).
 
-* A list of properties that should be returned by the |UCSREST| can be
-  specified. As a default, all regular properties are returned. Lazy loading
-  properties are only returned if explicitly requested (:uv:bug:`57110`).
+* Administrators can specify a list of properties that |UCSREST| should return.
+  As a default behavior, |UCSREST| returns all regular properties.
+  |UCSREST| only returns lazy loading properties, if explicitly requested (:uv:bug:`57110`).
 
-* The LDAP overlay ``slapd-sock`` has been enhanced by adding ``extendedresults``
-  as a possible value to the ``sockresps`` configuration option. With that
-  configuration, the overlay outputs a change LDIF in the ``RESULT`` phase,
-  including LDAPControl data for ``PostReadControl`` and ``PreReadControl``
-  collected during CRUD operations. The output format is similar to the one
-  used by the LDAP overlay ``auditlog`` with an additional ``control:`` field
-  (:uv:bug:`57267`).
+* Enhanced the LDAP overlay ``slapd-sock`` by adding ``extendedresults`` as a possible value to the ``sockresps`` configuration option.
+  With that configuration, the overlay outputs a changed LDIF in the ``RESULT`` phase,
+  including *LDAPControl* data for ``PostReadControl`` and ``PreReadControl`` collected during CRUD operations.
+  The output format is similar to the one used by the LDAP overlay ``auditlog`` with an additional ``control:`` field (:uv:bug:`57267`).
 
-* There is a new |UCSUCRV| :envvar:`directory/manager/feature/prepostread`
-  to configure :py:mod:`univention.uldap` to send LDAPControls ``PostReadControl`` and
-  ``PreReadControl`` for CRUD operations (``add``, ``modify``, ``modrdn``, ``delete``).
-  If this option is activated the LDAPControls will instruct OpenLDAP to return
-  all regular and operational attributes the are readable by the ``binddn`` before
-  and after the change (:uv:bug:`57267`).
+* Added the |UCSUCRV| :envvar:`directory/manager/feature/prepostread`
+  to configure :py:mod:`univention.uldap`
+  to send *LDAPControls* ``PostReadControl`` and ``PreReadControl``
+  for the CRUD operations ``add``, ``modify``, ``modrdn``, and ``delete``.
+  If UCS has this option activated,
+  the *LDAPControls* instruct OpenLDAP to return all regular and operational attributes
+  that are readable by the ``binddn`` before and after the change (:uv:bug:`57267`).
 
-* UCS now allows configuring the LDAP overlay slapd-sock for
-  ``sockresps extendedresults`` via |UCSUCRV| :envvar:`ldap/overlay/sock`.
-  Once activated, it outputs LDAP changes including LDIF for CRUD operations
-  (not for search).
-  Additionally the |UCSUCRV| :envvar:`ldap/overlay/sock/sockops` allows
-  activating ``sockops add delete modify modrdn``. Please note that activating
-  that second |UCSUCRV| causes the :program:`slapd` process to wait for confirmation
-  for CRUD events (see ``man slapd-sock``), so this must not be activated unless
-  there is a suitable process responding to the socket path
-  :file:`/var/lib/univention-ldap/slapd-sock/sock`. The purpose of these changes
-  is to feed into the provisioning queue of Nubus (:uv:bug:`57267`).
+* UCS now allows configuring the LDAP overlay ``slapd-sock`` for ``sockresps extendedresults`` through the |UCSUCRV| :envvar:`ldap/overlay/sock`.
+  If activated, it outputs LDAP changes including LDIF for CRUD operations, not for search.
+  Additionally, the |UCSUCRV| :envvar:`ldap/overlay/sock/sockops` allows activating ``sockops add delete modify modrdn``.
+
+  Please note that activating that second |UCSUCRV|
+  causes the :program:`slapd` process to wait for confirmation for CRUD events, see :command:`man slapd-sock`.
+  So, you mustn't activate it,
+  unless there is a suitable process responding to the socket path :file:`/var/lib/univention-ldap/slapd-sock/sock`.
+  The purpose of these changes is to feed into the provisioning queue of Nubus (:uv:bug:`57267`).
 
 .. _changelog-umc:
 
@@ -263,91 +255,81 @@ Univention Management Console
 Univention Management Console web interface
 ===========================================
 
-* When a user selects a different language inside the |UCSUMC|, it was not used
-  inside the modules. As example, the Server is on German, but a user selects
-  English as their preferred language, the modules were still in German. This
-  is fixed now, and the same language is used everywhere (:uv:bug:`57192`).
+* When a user selects a different language inside the |UCSUMC|,
+  it didn't use the language inside the modules.
+  For example, the server provides German,
+  but a user selects English as their preferred language,
+  the modules were still in German. Fixed it and |UCSUMC| uses the same language everywhere (:uv:bug:`57192`).
 
 .. _changelog-umc-portal:
 
 Univention Portal
 =================
 
-* In the past the user was not able to unset their birthday inside the self
-  service, because the input validation did not detect a valid date according
-  to the ISO-8601 standard. This is now possible again (:uv:bug:`57023`).
+* In the past the user wasn't able to unset their birthday inside the self service,
+  because the input validation didn't detect a valid date according to the ISO-8601 standard.
+  Users can unset their birthday again (:uv:bug:`57023`).
 
 .. _changelog-umc-server:
 
 Univention Management Console server
 ====================================
 
-* |UCSUMC| now also logs the reason for a failed LDAP connection for module
-  processes (:uv:bug:`57311`).
+* |UCSUMC| now also logs the reason for a failed LDAP connection for module processes (:uv:bug:`57311`).
 
-* The |UCSUMC| |SAML| client is now updated in Keycloak on changes, e.g. when changing
-  |UCSUCRV| :envvar:`umc/saml/assertion-lifetime` (:uv:bug:`57143`).
+* The |UCSUMC| |SAML| client is now updated in Keycloak on changes,
+  for example when changing the |UCSUCRV| :envvar:`umc/saml/assertion-lifetime` (:uv:bug:`57143`).
 
-* A memory leak in the |UCSUMC| server has been fixed (:uv:bug:`57104`).
+* Fixed a memory leak in the |UCSUMC| server (:uv:bug:`57104`).
 
-* A LDAP connection leak in the |UCSUMC| server has been fixed (:uv:bug:`57113`).
+* Fixed a LDAP connection leak in the |UCSUMC| server (:uv:bug:`57113`).
 
 * The permission and ownership of the |UCSUMC| log file is now only modified if it
-  is not STDOUT or STDERR (:uv:bug:`57154`).
+  isn't ``STDOUT`` or ``STDERR`` (:uv:bug:`57154`).
 
-* If the primary UCS server is on UCS version 5.2-0 or higher, |UCSUMC| will no
-  longer create or configure a client for ``simpleSAMLphp`` (:uv:bug:`57163`).
+* If the UCS primary directory node is on UCS version 5.2-0 or higher,
+  |UCSUMC| no longer creates or configures a client for ``simpleSAMLphp`` (:uv:bug:`57163`).
 
-* The option ``copytruncate`` has been added to the :program:`logrotate` configuration of
-  |UCSUMC| to not delete log files but to truncate the original log file to zero
-  size in place (:uv:bug:`56906`).
+* Added the option ``copytruncate`` to the :program:`logrotate` configuration of |UCSUMC|
+  to not delete log files,
+  but to truncate the original log file to zero size in place (:uv:bug:`56906`).
 
-* A missing Univention Configuration Registry Variable has been added to the
-  trigger for the Apache2 :file:`univention.conf` (:uv:bug:`57229`).
+* Added a missing |UCSUCRV| to the trigger the :program:`apache2` :file:`univention.conf` (:uv:bug:`57229`).
 
 .. _changelog-umc-setup:
 
 Modules for system settings / setup wizard
 ==========================================
 
-* The |UCSUMC| IP change module has been adapted to check the zone of the Single-
-  Sign On domain name case insensitively (:uv:bug:`57290`).
+* Adapted the |UCSUMC| IP change module to check the zone of the single sign-n domain name case insensitively (:uv:bug:`57290`).
 
 .. _changelog-umc-diagnostic:
 
 System diagnostic module
 ========================
 
-* Add a diagnostic module to monitor the state of app queues (:uv:bug:`57217`).
+* Added a diagnostic module to monitor the state of app queues (:uv:bug:`57217`).
 
 .. _changelog-umc-policy:
 
 Policies
 ========
 
-* The StartTLS operation mode configured via the |UCSUCRV|
-  :envvar:`directory/manager/starttls` will now be used by ``univention-policy``
-  (:uv:bug:`57158`).
+* ``univention-policy`` uses the ``StartTLS`` operation mode configured through the |UCSUCRV|
+  :envvar:`directory/manager/starttls` (:uv:bug:`57158`, :uv:bug:`57173`).
 
-* The LDAP port configured via the |UCSUCRV| :envvar:`ldap/server/port` will now be
-  used by ``univention-policy`` (:uv:bug:`57159`).
+* ``univention-policy`` uses the LDAP port configured through the |UCSUCRV|
+  :envvar:`ldap/server/port` (:uv:bug:`57159`, :uv:bug:`57173`).
 
-* The StartTLS operation mode configured via the |UCSUCRV|
-  :envvar:`directory/manager/starttls` and the LDAP port configured via the
-  |UCSUCRV| :envvar:`ldap/server/port` will now be used by ``univention-policy``
-  (:uv:bug:`57173`).
-
-* A compiler flag has been added to the building process to detect certain
-  memory errors during the execution of :command:`univention_policy_result`
-  (:uv:bug:`57257`).
+* Added a compiler flag to the building process
+  to detect certain memory errors during the execution of :command:`univention_policy_result` (:uv:bug:`57257`).
 
 .. _changelog-umc-ldap:
 
 LDAP directory browser
 ======================
 
-* All lazy loading properties are fetched by the |UCSUMC| |UCSUDM| module
-  (:uv:bug:`57110`).
+* The |UCSUMC| |UCSUDM| module fetches all lazy loading properties (:uv:bug:`57110`).
 
 .. _changelog-lib:
 
@@ -355,27 +337,24 @@ LDAP directory browser
 Univention base libraries
 *************************
 
-* LDAP schema attributes for the UCS authorization engine (guardian) roles have
-  been added (:uv:bug:`57110`).
+* Added the LDAP schema attributes for the UCS authorization engine *Guardian* roles (:uv:bug:`57110`).
 
-* Even though all OCs inherit from top and actually are found when searching
-  for ``(objectClass=top)``, the (inherited) ``objectClass: top`` does not show up
-  as an attribute in the output of :command:`ldapsearch` (:uv:bug:`50268`).
+* Even though all OCs inherit from top and :command:`ldapsearch` actually finds them when searching
+  for ``(objectClass=top)``,
+  the (inherited) ``objectClass: top`` doesn't show up as an attribute in the output of :command:`ldapsearch` (:uv:bug:`50268`).
 
-* The |UCSUDM| module ``settings/extended_attributes`` has been updated to include the
-  property ``preventUmcDefaultPopup`` which is evaluated in the |UCSUMC| and will
-  inhibit it from warning the user that the default value of a property will be
-  set during modification (:uv:bug:`51187`).
+* Updated the |UCSUDM| module ``settings/extended_attributes`` to include the property ``preventUmcDefaultPopup``
+  which UCS evaluates in the |UCSUMC|.
+  It inhibits UCS from warning the user that a modification sets the default value of a property (:uv:bug:`51187`).
 
-* Erratum 991 improved the LDAP filters for DNS objects in |UCSUDM| but we
-  forgot to add an LDAP index for the ``sOARecord`` attribute there. This update
-  fixes that and should improve the performance of the |UCSUMC| modules ``computers``
-  and ``school computers``, especially for teachers in UCS@school environments,
+* Erratum 991 improved the LDAP filters for DNS objects in |UCSUDM|,
+  but forgot to add an LDAP index for the ``sOARecord`` attribute there.
+  This update fixes that and improves the performance of the |UCSUMC| modules ``computers`` and ``school computers``,
+  especially for teachers in UCS\@school environments,
   which are subject to a larger number of LDAP ACLs (:uv:bug:`57193`).
 
-* New helper function ``ucs_needsKeycloakSetup``, ``ucs_needsSimplesamlphpSetup``
-  and ``ucs_primaryVersionGreaterEqual`` have been added to easier evaluate what
-  kind of |SAML| setup is needed the domain (:uv:bug:`57163`).
+* Added the helper functions ``ucs_needsKeycloakSetup``, ``ucs_needsSimplesamlphpSetup``, and ``ucs_primaryVersionGreaterEqual``
+  to easier evaluate what kind of |SAML| setup the domain needs (:uv:bug:`57163`).
 
 .. _changelog-service:
 
@@ -388,8 +367,8 @@ System services
 SAML
 ====
 
-* The LDAP filter for user objects in the LDAP federation configuration has
-  been changed to require the attribute ``uid`` (:uv:bug:`57205`).
+* Changed the LDAP filter for user objects in the LDAP federation configuration
+  to require the attribute ``uid`` (:uv:bug:`57205`).
 
 .. _changelog-service-radius:
 
@@ -415,8 +394,7 @@ Other changes
 * Fix Debian Bug ``#960887``: ``Use of uninitialized value $caller``
   (:uv:bug:`56457`).
 
-* Product logos (login page icon, ``favicon``, portal icon, |UCSUMC| portal entry
-  icon) have been updated (:uv:bug:`57378`).
+* Updated the following product logos: login page icon, ``favicon``, portal icon, and |UCSUMC| portal entry icon (:uv:bug:`57378`).
 
-* Add new PGP public key :file:`univention-archive-key-ucs-52x.gpg` for UCS version 5.2.
-  This key is used to sign the UCS version 5.2 repository (:uv:bug:`57312`).
+* Added the GPG/PGP public key :file:`univention-archive-key-ucs-52x.gpg` for UCS version 5.2.
+  This key signs the UCS version 5.2 repository (:uv:bug:`57312`).
