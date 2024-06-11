@@ -172,6 +172,8 @@ General
 
 * The following packages have been moved to the maintained repository of UCS:
 
+  :program:`crudeoauth`
+
 .. _changelog-domain:
 
 ***************
