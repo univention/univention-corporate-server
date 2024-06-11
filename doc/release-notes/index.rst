@@ -35,6 +35,8 @@ the most important changes:
 * The RADIUS server now supports different MAC address formats for the ``MAB``
   (MAC Authentication Bypass) feature.
 
+* Enhanced UMC stability and performance for handling numerous simultaneous logins.
+
 * UCS 5.0-8 includes various security updates, for example for
   :program:`BIND9`, :program:`docker`, :program:`OpenJDK-11`, :program:`PHP`
   and the :program:`Linux` kernel.
