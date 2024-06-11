@@ -34,8 +34,8 @@ DEPENDS = {
     "scenarios": {"manual"},
 }  # FIXME: extract this from ../doc/*/conf.py intersphinx_mapping
 SPECIAL: dict[str, dict[str, object]] = {
-    "changelog": {"DOC_TARGET_VERSION": "$CHANGELOG_TARGET_VERSION"},
-    "release-notes": {"DOC_TARGET_VERSION": "$CHANGELOG_TARGET_VERSION"},
+    "changelog": {"DOC_TARGET_PATH": "$DOC_TARGET_NAME/$CHANGELOG_TARGET_VERSION/$language"},
+    "release-notes": {"DOC_TARGET_PATH": "$DOC_TARGET_NAME/$CHANGELOG_TARGET_VERSION/$language"},
     "developer-reference cycle": {"SPHINXOPTS": "--keep-going"},
 }
 
@@ -102,7 +102,8 @@ def job_desc(pkg: str, path: Path, extends: str, languages: list[str], depends: 
         SPECIAL.get(pkg, {}),
         DOCS_DIR=path.relative_to(ROOT).as_posix(),
         DOC_TARGET_NAME=path.name,
-        DOC_TARGET_PATH="$DOC_TARGET_NAME/$DOC_TARGET_VERSION/$language",
+        # For special documents we need to overwrite the default DOC_TARGET_PATH and pull the value from the SPECIAL dict.
+        DOC_TARGET_PATH=SPECIAL.get(pkg, {}).get("DOC_TARGET_PATH", None) or "$DOC_TARGET_NAME/$DOC_TARGET_VERSION/$language",
     )
     job: dict[str, object] = {
         "variables": variables,
