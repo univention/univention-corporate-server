@@ -44,7 +44,6 @@ msgstr ""
 "Fehlerkorrekturen. Die wichtigsten Änderungen im Überblick:"
 
 #: ../../index.rst:22
-#, fuzzy
 msgid ""
 "With the launch of Univention Nubus we introduced new icons and logos for"
 " Univention Products. The corresponding components within |UCSUCS| "
