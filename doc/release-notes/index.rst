@@ -269,7 +269,7 @@ Users running older browsers may experience display or performance issues.
 Changelog
 *********
 
-You find the changes since UCS 5.0-6 in
+You find the changes since UCS 5.0-7 in
 :external+uv-changelog-5.0-8:doc:`index`.
 
 .. _biblio:
