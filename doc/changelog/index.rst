@@ -232,7 +232,7 @@ LDAP Directory Manager
   (:uv:bug:`57267`).
 
 * There is a new |UCSUCRV| :envvar:`directory/manager/feature/prepostread`
-  to configure :py:mod:``univention.uldap`` to send LDAPControls ``PostReadControl`` and
+  to configure :py:mod:`univention.uldap` to send LDAPControls ``PostReadControl`` and
   ``PreReadControl`` for CRUD operations (``add``, ``modify``, ``modrdn``, ``delete``).
   If this option is activated the LDAPControls will instruct OpenLDAP to return
   all regular and operational attributes the are readable by the ``binddn`` before
