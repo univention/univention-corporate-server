@@ -523,10 +523,10 @@ msgstr "Changelog"
 
 #: ../../index.rst:272
 msgid ""
-"You find the changes since UCS 5.0-6 in :external+uv-changelog-5.0-8:doc:"
+"You find the changes since UCS 5.0-7 in :external+uv-changelog-5.0-8:doc:"
 "`index`."
 msgstr ""
-"Die Änderungen seit UCS 5.0-6 finden Sie in :external+uv-changelog-5.0-8:doc:"
+"Die Änderungen seit UCS 5.0-7 finden Sie in :external+uv-changelog-5.0-8:doc:"
 "`index`."
 
 #: ../../index.rst:279
