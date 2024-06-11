@@ -223,7 +223,7 @@ LDAP Directory Manager
   specified. As a default, all regular properties are returned. Lazy loading
   properties are only returned if explicitly requested (:uv:bug:`57110`).
 
-* The LDAP overlay ``slapd-sock`` has ben enhanced by adding ``extendedresults``
+* The LDAP overlay ``slapd-sock`` has been enhanced by adding ``extendedresults``
   as a possible value to the ``sockresps`` configuration option. With that
   configuration, the overlay outputs a change LDIF in the ``RESULT`` phase,
   including LDAPControl data for ``PostReadControl`` and ``PreReadControl``
