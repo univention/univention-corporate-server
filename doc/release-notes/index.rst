@@ -19,16 +19,24 @@ available. It provides several feature improvements and extensions, new
 properties as well as various improvements and bug fixes. Here is an overview of
 the most important changes:
 
-* The new feature ``blocklist`` allows denying the use of certain values in LDAP.
+* With the launch of Univention Nubus we introduced new Icons and Logos for
+  Univention Products. The corresponding components within |UCSUCS| receive a visual
+  update, clearly presenting their affiliation with Univention's Identity &
+  Access Management Nubus.
 
-* The robustness of |UCSUDL| and |UCSS4C| has been improved, especially during the initial domain join.
+* A new repository signing key has been added in preparation for UCS 5.2.
 
-* |UCSUDM| support for DNS has been improved.
+* Apps provisioned through the Univention Listener mechanism process incoming
+  changes using a file-based queue. With the update to 5.0-8, it is now
+  possible to monitor the current state of the app queue, if the App Center
+  mechanism is used, to identify and diagnose potential processing errors via
+  system diagnostics.
 
-* |UCSUCS| has been prepared for better Kubernetes integration.
+* The RADIUS server now supports different MAC address formats for the ``MAB``
+  (MAC Authentication Bypass) feature.
 
 * UCS 5.0-8 includes various security updates, for example for
-  :program:`BIND9`, :program:`MariaDB`, :program:`OpenJDK-11`, :program:`OpenSSH`, :program:`Postfix`
+  :program:`BIND9`, :program:`docker`, :program:`OpenJDK-11`, :program:`PHP`
   and the :program:`Linux` kernel.
 
 .. _relnotes-update:
