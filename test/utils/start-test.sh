@@ -5,11 +5,11 @@
 
 # defaults for release
 release='5.0-8'  #
-export CURRENT_AMI="${CURRENT_AMI:=ami-068c5ee1a47ec4429}"  # AMI: Univention Corporate Server (UCS) 5.0 (official image) rev. 8
+export CURRENT_AMI="${CURRENT_AMI:=ami-0165dba9749b1012f}"  # AMI: Univention Corporate Server (UCS) 5.0 (official image) rev. 9
 old_release='4.4-9'  #
 export OLD_AMI="${OLD_AMI:=ami-02ad9aab36aadf18a}"  # AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 11
-export KVM_UCSVERSION="${KVM_UCSVERSION:=5.0-7+e993}"  #
-export OPENSTACK_IMAGE_NAME="${OPENSTACK_IMAGE_NAME:=UCS 5.0-7}"  #
+export KVM_UCSVERSION="${KVM_UCSVERSION:=5.0-8+e1060}"  #
+export OPENSTACK_IMAGE_NAME="${OPENSTACK_IMAGE_NAME:=UCS 5.0-8}"  #
 
 export UCS_MINORRELEASE="${release%%-*}"
 export TARGET_VERSION="${TARGET_VERSION:=$release}"
