@@ -19,7 +19,7 @@ available. It provides several feature improvements and extensions, new
 properties as well as various improvements and bug fixes. Here is an overview of
 the most important changes:
 
-* With the launch of Univention Nubus we introduced new Icons and Logos for
+* With the launch of Univention Nubus we introduced new icons and logos for
   Univention Products. The corresponding components within |UCSUCS| receive a visual
   update, clearly presenting their affiliation with Univention's Identity &
   Access Management Nubus.
