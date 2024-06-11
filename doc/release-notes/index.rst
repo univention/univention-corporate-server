@@ -26,7 +26,7 @@ the most important changes:
 
 * A new repository signing key has been added in preparation for UCS 5.2.
 
-* Apps provisioned through the Univention Listener mechanism process incoming
+* Apps provisioned through the |UCSUDL| mechanism process incoming
   changes using a file-based queue. With the update to 5.0-8, it is now
   possible to monitor the current state of the app queue, if the App Center
   mechanism is used, to identify and diagnose potential processing errors via
