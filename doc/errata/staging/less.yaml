@@ -1,0 +1,18 @@
+product: ucs
+release: "5.0"
+version: [6, 7]
+scope: ucs_5.0-0-errata5.0-7
+src: less
+fix: 487-0.1+deb10u1
+desc: |
+ This update addresses the following issues:
+ 487-0.1+deb10u1 (Mon, 27 May 2024 19:20:40 +0200)
+ * Non-maintainer upload by the LTS Security Team.
+ * Fix CVE-2022-48624: LESSCLOSE invocation doesn't shell quote filenames.
+
+ * Fix CVE-2024-32487: Arbitrary command execution via a newline character in
+   filenames.
+bug: [57380]
+cve:
+- CVE-2022-48624
+- CVE-2024-32487
