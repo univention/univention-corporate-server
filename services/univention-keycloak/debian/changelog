@@ -1,3 +1,10 @@
+univention-keycloak (1.0.12-2) unstable; urgency=medium
+
+  * Bug #57375: Fix bug where all but one --set option in
+    univention-keycloak domain-config was ignored.
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Wed, 12 Jun 2024 09:42:00 +0200
+
 univention-keycloak (1.0.12-1) UNRELEASED; urgency=medium
 
   * Bug #57350 UCS 5.0-8 version bump
