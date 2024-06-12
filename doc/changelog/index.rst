@@ -234,7 +234,7 @@ LDAP Directory Manager
   the *LDAPControls* instruct OpenLDAP to return all regular and operational attributes
   that are readable by the ``binddn`` before and after the change (:uv:bug:`57267`).
 
-* UCS now allows configuring the LDAP overlay ``slapd-sock`` for ``sockresps extendedresults`` through the|UCSUCRV| :envvar:`ldap/overlay/sock`.
+* UCS now allows configuring the LDAP overlay ``slapd-sock`` for ``sockresps extendedresults`` through the |UCSUCRV| :envvar:`ldap/overlay/sock`.
   If activated, it outputs LDAP changes including LDIF for CRUD operations, not for search.
   Additionally, the |UCSUCRV| :envvar:`ldap/overlay/sock/sockops` allows activating ``sockops add delete modify modrdn``.
 
