@@ -3,7 +3,7 @@ release: "5.0"
 version: [8]
 scope: ucs_5.0-0-errata5.0-8
 src: univention-management-console
-fix:
+fix: 12.0.34-2
 desc: |
  This update addresses the following issues:
  * Fix a bug where it was impossible to change passwords via the UMC
