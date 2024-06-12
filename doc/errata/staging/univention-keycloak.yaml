@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [7]
+scope: ucs_5.0-0-errata5.0-7
+src: univention-keycloak
+fix: 1.0.11-3
+desc: |
+ This update addresses the following issues:
+ * The univention-keycloak CLI was fixed, so that you can use --set
+   multiple times in the domain-config sub command, as documented.
+bug: [57383]
