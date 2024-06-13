@@ -179,6 +179,7 @@ def portal_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
 def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
     server = ucr_proper.get('keycloak/server/sso/fqdn', f"ucs-sso-ng.{ucr_proper['domainname']}")
     path = ucr_proper['keycloak/server/sso/path'] if ucr_proper['keycloak/server/sso/path'] else ''
+    password = ucr_proper['tests/domainadmin/pwd']
     url = f'https://{server}{path}'
     config = {
         'server': server,
@@ -196,7 +197,7 @@ def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
         'login_data': {
             'client_id': 'admin-cli',
             'username': 'Administrator',
-            'password': 'univention',
+            'password': f'{password}',
             'grant_type': 'password',
         },
         'logout_all_data': {'realm': 'ucs'},
