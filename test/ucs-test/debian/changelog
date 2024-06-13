@@ -1,4 +1,4 @@
-ucs-test (10.0.22-3) unstable; urgency=medium
+ucs-test (10.0.22-4) unstable; urgency=medium
 
   * Bug #55949: Adjust Keycloak SCP test; Keycloak now allows Microsoft Online
 

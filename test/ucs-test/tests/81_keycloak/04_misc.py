@@ -187,6 +187,6 @@ def test_csp(keycloak_config, ucr):
         run_command(['systemctl', 'restart', 'apache2'])
         response = requests.post(f'{keycloak_config.admin_url}/master/console', headers={'Accept': 'text/html'})
         assert response.headers['Content-Security-Policy']
-        assert f"frame-src 'self'; frame-ancestors 'self' https://*.{ucr['domainname']} https://*.external.com;  object-src 'none';" == response.headers['Content-Security-Policy']
+        assert f"frame-src 'self'; frame-ancestors 'self' https://*.{ucr['domainname']} https://login.microsoftonline.com https://*.external.com;  object-src 'none';" == response.headers['Content-Security-Policy']
     finally:
         run_command(['systemctl', 'restart', 'apache2'])
