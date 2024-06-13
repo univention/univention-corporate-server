@@ -1,6 +1,6 @@
 product: ucs
 release: "5.0"
-version: [6, 7]
+version: [7]
 scope: ucs_5.0-0-errata5.0-7
 src: 
 fix: 
