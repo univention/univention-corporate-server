@@ -10,7 +10,7 @@ old_release='4.4-9'  #
 export OLD_AMI="${OLD_AMI:=ami-02ad9aab36aadf18a}"  # AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 11
 export KVM_UCSVERSION="${KVM_UCSVERSION:=5.0-8+e1060}"  #
 export OPENSTACK_IMAGE_NAME="${OPENSTACK_IMAGE_NAME:=UCS 5.0-8}"  #
-
+export KVM_OPERATING_SYSTEM="${KVM_OPERATING_SYSTEM:=UCS}"  # --operating-system {Debian,Others,UCS,Windows,all} for ucs-kt-get
 export UCS_MINORRELEASE="${release%%-*}"
 export TARGET_VERSION="${TARGET_VERSION:=$release}"
 export UCS_VERSION="${UCS_VERSION:=$release}"
