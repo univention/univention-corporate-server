@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [7, 8]
+scope: ucs_5.0-0-errata5.0-8
+src: cups
+fix: 2.2.10-6+deb10u10A~5.0.8.202406130955
+desc: |
+ This update addresses the following issue:
+ 2.2.10-6+deb10u10 (Tue, 11 Jun 2024 22:16:49 +0200)
+ * CVE-2024-35235 fix domain socket handling
+bug: [57382]
+cve:
+- CVE-2024-35235
