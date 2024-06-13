@@ -1,3 +1,9 @@
+ucs-test (12.0.103) unstable; urgency=medium
+
+  * Issue univention/ucs#2285: Use admember domain admin password in tests
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 13 Jun 2024 17:12:29 +0200
+
 ucs-test (12.0.102) unstable; urgency=medium
 
   * Bug #55949: Adjust Keycloak SCP test; Keycloak now allows Microsoft Online
