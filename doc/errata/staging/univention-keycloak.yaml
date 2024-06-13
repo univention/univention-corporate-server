@@ -1,6 +1,6 @@
 product: ucs
 release: "5.0"
-version: [8]
+version: [7, 8]
 scope: ucs_5.0-0-errata5.0-8
 src: univention-keycloak
 fix: 1.0.12-2
