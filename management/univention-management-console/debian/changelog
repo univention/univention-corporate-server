@@ -1,3 +1,9 @@
+univention-management-console (14.0.21) unstable; urgency=medium
+
+  * Bug #57194: Ensure file descriptors are closed upon module process death
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 14 Jun 2024 17:23:33 +0200
+
 univention-management-console (14.0.20) unstable; urgency=medium
 
   * Bug #56858: replace transitional packages
