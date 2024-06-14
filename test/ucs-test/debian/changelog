@@ -1,3 +1,9 @@
+ucs-test (11.0.41) unstable; urgency=medium
+
+  * Bug #56054: check for UDM license check in password test
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 14 Jun 2024 12:41:19 +0200
+
 ucs-test (11.0.40) unstable; urgency=medium
 
   * Bug #57171: make changing mpa and maa in one step possible
