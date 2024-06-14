@@ -31,7 +31,7 @@ General
 
 * Various dependencies on old transitional Debian and Univention packages have been
   replaced with dependencies on new successor packages. The :program:`univention-saml`
-  packages were transitional since UCS 5.1 and have now been removed completely.
+  packages were transitional since UCS 5.1 and have now been removed completely
   (:uv:bug:`56858`).
 
 * The argument to the ``--ucsversionstart`` flag for
