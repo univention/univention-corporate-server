@@ -1,3 +1,9 @@
+univention-archive-key (12.0.2) unstable; urgency=medium
+
+  * Bug #57312: Add univention-archive-key-ucs-52x.gpg
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 14 Jun 2024 13:44:20 +0200
+
 univention-archive-key (12.0.1) unstable; urgency=medium
 
   * Bug #55706: UCS 5.2-0 version bump
