@@ -1598,11 +1598,15 @@ basic_setup_ucs_joined () {
 		fi
 		ucr unset nameserver2
 		deb-systemd-invoke restart univention-directory-listener || rv=1
+		wget -O /usr/local/share/ca-certificates/ucsCA-tmp.crt "http://${masterip}/ucs-root-ca.crt"
+		update-ca-certificates
 		for ((i=1; i<=5; i++)); do
 			univention-register-network-address --verbose && urna_rv=0 && break
 			urna_rv=1
 			sleep 20
 		done
+		rm /usr/local/share/ca-certificates/ucsCA-tmp.crt
+		update-ca-certificates
 		[ $urna_rv -eq 1 ] && rv=1
 		echo $urna_rv
 
