@@ -30,6 +30,7 @@ install_tools () {
   install_kind
   install_kubectl
   install_helm
+  install_k9s
 }
 
 setup_cluster () {
@@ -70,7 +71,7 @@ setup_nubus () {
   kubectl -n default get secret nubus-nubus-credentials -o json | jq -r '.data.admin_password' | base64 -d > /root/pass_default.admin
   kubectl -n default get secret nubus-nubus-credentials -o json | jq -r '.data.user_password' | base64 -d > /root/pass_default.user
 
-  echo "127.0.0.2	id.example.com portal.example.com" >> /etc/hosts
+  ucr set hosts/static/127.0.0.2="id.example.com portal.example.com"
 }
 
 run_setup_tests () {
@@ -121,4 +122,9 @@ install_helm () {
   univention-install -y helm
 
   helm completion bash > /etc/bash_completion.d/helm
+}
+
+install_k9s () {
+  echo "Installing k9s"
+  curl -sS https://webi.sh/k9s | sh
 }
