@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: nghttp2
+fix: 1.18.1-1+deb9u4
+desc: |
+ This update addresses the following issue:
+ 1.18.1-1+deb9u4 (Sat, 25 May 2024 09:03:02 +0200)
+ * Non-maintainer upload by the LTS Team.
+ * CVE-2024-28182 An implementation using the nghttp2 library will continue to
+   receive CONTINUATION frames, and will not callback to the application to
+   allow visibility into this information before it resets the stream,
+   resulting in Denial of Service.
+ * debian/libnghttp2-14.symbols: Add missig symbol from the fix of
+   CVE-2024-28182.
+bug: [57390]
+cve:
+- CVE-2024-28182
