@@ -26,3 +26,12 @@ This is a cleaned-up copy from <file://omar/var/univention/buildsystem2/cd-conte
 
 The file is shipped in `/usr/share/univention-errata-level/`.
 It is evaluated by [univention-list-installed-unmaintained-packages](../base/univention-updater/) from `univention-updater`.
+
+
+Cleanup command
+===============
+
+Remove lines that contain `*-dgb` or `*-dbgsym` or `*-di` or `*-udeb`  from [maintained-packages.txt](maintained-packages.txt)
+```
+sed -e '/.*-dbg$/d' -e '/.*-dbgsym/d' -e '/.*-udeb$/d' -e '/.*-di$/d' -i  maintained-packages.txt
+```
