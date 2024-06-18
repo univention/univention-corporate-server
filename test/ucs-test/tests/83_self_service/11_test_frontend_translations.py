@@ -21,7 +21,7 @@ from univention.testing.conftest import locale_available
 from univention.testing.strings import random_username
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture(autouse=True, scope='session')
 def activate_self_service(ucr_session):
     ucr_session.handler_set(
         [
@@ -70,38 +70,47 @@ def check_labels(page: Page, labels: Dict[str, str], retries=4):
 @pytest.mark.parametrize(
     'lang, hash, labels',
     [
-        pytest.param(UCSLanguage.EN_US, 'profile', {'Username': 'username', 'Password': 'password'}, marks=locale_available("en_US")),
-        pytest.param(UCSLanguage.DE_DE, 'profile', {'Benutzername': 'username', 'Passwort': 'password'}, marks=locale_available("de_DE")),
+        pytest.param(UCSLanguage.EN_US, 'profile', {'Username': 'username', 'Password': 'password'}, marks=locale_available('en_US')),
+        pytest.param(UCSLanguage.DE_DE, 'profile', {'Benutzername': 'username', 'Passwort': 'password'}, marks=locale_available('de_DE')),
         pytest.param(
             UCSLanguage.EN_US,
             'createaccount',
             {'Email': 'PasswordRecoveryEmail', 'Password (retype)': 'password--retype', 'First name': 'firstname', 'Last name': 'lastname', 'User name': 'username'},
-            marks=locale_available("en_US"),
+            marks=locale_available('en_US'),
         ),
         pytest.param(
             UCSLanguage.DE_DE,
             'createaccount',
             {'E-Mail': 'PasswordRecoveryEmail', 'Passwort (Wiederholung)': 'password--retype', 'Vorname': 'firstname', 'Nachname': 'lastname', 'Benutzername': 'username'},
-            marks=locale_available("de_DE"),
+            marks=locale_available('de_DE'),
         ),
-        pytest.param(UCSLanguage.EN_US, 'verifyaccount', {'Username': 'username', 'Token': 'token'}, marks=locale_available("en_US")),
-        pytest.param(UCSLanguage.DE_DE, 'verifyaccount', {'Benutzername': 'username', 'Token': 'token'}, marks=locale_available("de_DE")),
-        pytest.param(UCSLanguage.EN_US, 'passwordchange', {'Old password': 'oldPassword', 'New password': 'newPassword', 'New password (retype)': 'newPasswordRetype'}, marks=locale_available("en_US")),
-        pytest.param(UCSLanguage.DE_DE, 'passwordchange', {'Altes Passwort': 'oldPassword', 'Neues Passwort': 'newPassword', 'Neues Passwort (Wiederholung)': 'newPasswordRetype'}, marks=locale_available("de_DE")),
-        pytest.param(UCSLanguage.EN_US, 'passwordforgotten', {'Username': 'username'}, marks=locale_available("en_US")),
-        pytest.param(UCSLanguage.DE_DE, 'passwordforgotten', {'Benutzername': 'username'}, marks=locale_available("de_DE")),
-        pytest.param(UCSLanguage.EN_US, 'protectaccount', {'Username': 'username', 'Password': 'password'}, marks=locale_available("en_US")),
-        pytest.param(UCSLanguage.DE_DE, 'protectaccount', {'Benutzername': 'username', 'Passwort': 'password'}, marks=locale_available("de_DE")),
-        pytest.param(UCSLanguage.EN_US, 'servicespecificpasswords', {'Username': 'username', 'Password': 'password'}, marks=locale_available("en_US")),
-        pytest.param(UCSLanguage.DE_DE, 'servicespecificpasswords', {'Benutzername': 'username', 'Passwort': 'password'}, marks=locale_available("de_DE")),
+        pytest.param(UCSLanguage.EN_US, 'verifyaccount', {'Username': 'username', 'Token': 'token'}, marks=locale_available('en_US')),
+        pytest.param(UCSLanguage.DE_DE, 'verifyaccount', {'Benutzername': 'username', 'Token': 'token'}, marks=locale_available('de_DE')),
+        pytest.param(
+            UCSLanguage.EN_US,
+            'passwordchange',
+            {'Old password': 'oldPassword', 'New password': 'newPassword', 'New password (retype)': 'newPasswordRetype'},
+            marks=locale_available('en_US'),
+        ),
+        pytest.param(
+            UCSLanguage.DE_DE,
+            'passwordchange',
+            {'Altes Passwort': 'oldPassword', 'Neues Passwort': 'newPassword', 'Neues Passwort (Wiederholung)': 'newPasswordRetype'},
+            marks=locale_available('de_DE'),
+        ),
+        pytest.param(UCSLanguage.EN_US, 'passwordforgotten', {'Username': 'username'}, marks=locale_available('en_US')),
+        pytest.param(UCSLanguage.DE_DE, 'passwordforgotten', {'Benutzername': 'username'}, marks=locale_available('de_DE')),
+        pytest.param(UCSLanguage.EN_US, 'protectaccount', {'Username': 'username', 'Password': 'password'}, marks=locale_available('en_US')),
+        pytest.param(UCSLanguage.DE_DE, 'protectaccount', {'Benutzername': 'username', 'Passwort': 'password'}, marks=locale_available('de_DE')),
+        pytest.param(UCSLanguage.EN_US, 'servicespecificpasswords', {'Username': 'username', 'Password': 'password'}, marks=locale_available('en_US')),
+        pytest.param(UCSLanguage.DE_DE, 'servicespecificpasswords', {'Benutzername': 'username', 'Passwort': 'password'}, marks=locale_available('de_DE')),
     ],
 )
-def test_frontend_translations(self_service: SelfService, lang: UCSLanguage, hash: str, labels: Dict[str, str]):
+def test_frontend_translations(self_service: SelfService, lang: UCSLanguage, hash: str, labels: Dict[str, str], ucr):
     page: Page = self_service.tester.page
     self_service.tester.set_language(lang)
     self_service.navigate(hash)
     time.sleep(1)
-
     check_labels(page, labels)
 
 
@@ -124,7 +133,7 @@ def test_frontend_translations(self_service: SelfService, lang: UCSLanguage, has
                 'Postal code': '',
                 'City': '',
             },
-            marks=locale_available("en_US"),
+            marks=locale_available('en_US'),
         ),
         pytest.param(
             UCSLanguage.DE_DE,
@@ -142,18 +151,28 @@ def test_frontend_translations(self_service: SelfService, lang: UCSLanguage, has
                 'Postleitzahl': '',
                 'Stadt': '',
             },
-            marks=locale_available("de_DE"),
+            marks=locale_available('de_DE'),
         ),
-        pytest.param(UCSLanguage.EN_US, 'verifyaccount', {'Username': 'username', 'Token': 'token'}, marks=locale_available("en_US")),
-        pytest.param(UCSLanguage.DE_DE, 'verifyaccount', {'Benutzername': 'username', 'Token': 'token'}, marks=locale_available("de_DE")),
-        pytest.param(UCSLanguage.EN_US, 'passwordchange', {'Old password': 'oldPassword', 'New password': 'newPassword', 'New password (retype)': 'newPasswordRetype'}, marks=locale_available("en_US")),
-        pytest.param(UCSLanguage.DE_DE, 'passwordchange', {'Altes Passwort': 'oldPassword', 'Neues Passwort': 'newPassword', 'Neues Passwort (Wiederholung)': 'newPasswordRetype'}, marks=locale_available("de_DE")),
-        pytest.param(UCSLanguage.EN_US, 'passwordforgotten', {'Username': 'username'}, marks=locale_available("en_US")),
-        pytest.param(UCSLanguage.DE_DE, 'passwordforgotten', {'Benutzername': 'username'}, marks=locale_available("de_DE")),
-        pytest.param(UCSLanguage.EN_US, 'protectaccount', {'Username': 'username', 'Password': 'password'}, marks=locale_available("en_US")),
-        pytest.param(UCSLanguage.DE_DE, 'protectaccount', {'Benutzername': 'username', 'Passwort': 'password'}, marks=locale_available("de_DE")),
-        pytest.param(UCSLanguage.EN_US, 'servicespecificpasswords', {'Username': 'username', 'Password': 'password'}, marks=locale_available("en_US")),
-        pytest.param(UCSLanguage.DE_DE, 'servicespecificpasswords', {'Benutzername': 'username', 'Passwort': 'password'}, marks=locale_available("de_DE")),
+        pytest.param(UCSLanguage.EN_US, 'verifyaccount', {'Username': 'username', 'Token': 'token'}, marks=locale_available('en_US')),
+        pytest.param(UCSLanguage.DE_DE, 'verifyaccount', {'Benutzername': 'username', 'Token': 'token'}, marks=locale_available('de_DE')),
+        pytest.param(
+            UCSLanguage.EN_US,
+            'passwordchange',
+            {'Old password': 'oldPassword', 'New password': 'newPassword', 'New password (retype)': 'newPasswordRetype'},
+            marks=locale_available('en_US'),
+        ),
+        pytest.param(
+            UCSLanguage.DE_DE,
+            'passwordchange',
+            {'Altes Passwort': 'oldPassword', 'Neues Passwort': 'newPassword', 'Neues Passwort (Wiederholung)': 'newPasswordRetype'},
+            marks=locale_available('de_DE'),
+        ),
+        pytest.param(UCSLanguage.EN_US, 'passwordforgotten', {'Username': 'username'}, marks=locale_available('en_US')),
+        pytest.param(UCSLanguage.DE_DE, 'passwordforgotten', {'Benutzername': 'username'}, marks=locale_available('de_DE')),
+        pytest.param(UCSLanguage.EN_US, 'protectaccount', {'Username': 'username', 'Password': 'password'}, marks=locale_available('en_US')),
+        pytest.param(UCSLanguage.DE_DE, 'protectaccount', {'Benutzername': 'username', 'Passwort': 'password'}, marks=locale_available('de_DE')),
+        pytest.param(UCSLanguage.EN_US, 'servicespecificpasswords', {'Username': 'username', 'Password': 'password'}, marks=locale_available('en_US')),
+        pytest.param(UCSLanguage.DE_DE, 'servicespecificpasswords', {'Benutzername': 'username', 'Passwort': 'password'}, marks=locale_available('de_DE')),
     ],
 )
 def test_frontend_login_translations(self_service: SelfService, lang: UCSLanguage, hash: str, labels: Dict[str, str], self_service_user):
