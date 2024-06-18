@@ -19,7 +19,7 @@ from univention.testing.browser.selfservice import SelfService
 from univention.testing.strings import random_username
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture(autouse=True, scope='session')
 def activate_self_service(ucr_session):
     ucr_session.handler_set(
         [
@@ -56,7 +56,8 @@ def check_labels(page: Page, labels: dict[str, str], retries=4):
                 assert found_label is not None, f'A label with the text {label_display} has not been found.'
                 expect(found_label).to_be_visible()
                 expect(found_label, f"Expected locator to have tag {label_tag}--\\d\\d, but found {found_label.get_attribute('for')}").to_have_attribute(
-                    'for', re.compile(rf'{label_tag}--\d\d'),
+                    'for',
+                    re.compile(rf'{label_tag}--\d\d'),
                 )
                 return
             except AssertionError:
