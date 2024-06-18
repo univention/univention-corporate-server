@@ -58,12 +58,13 @@ def test_open_all_modules(restart_umc: None, logged_in_umc_browser_test: UMCBrow
         logged_in_umc_browser_test.login()
 
     try:
-        logged_in_umc_browser_test.open_and_close_module(module_name)
+        logged_in_umc_browser_test.open_and_close_module(module_name, wait_for_network_idle=True)
     except (AssertionError, PlaywrightTimeoutError):
         try:
             save_trace(page, page.context, module_name, Path('browser').resolve(), ucr, tracing_stop_chunk=True)
             check_for_backtrace(page)
         finally:
             logged_in_umc_browser_test.restart_umc()
+            logged_in_umc_browser_test.login()
             page.context.tracing.start_chunk()
         raise

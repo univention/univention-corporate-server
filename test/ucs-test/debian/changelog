@@ -1,3 +1,10 @@
+ucs-test (10.0.22-7) unstable; urgency=medium
+
+  * Bug #56054: make open_all_modules browser test more resilient to one of
+    the tests failing
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 18 Jun 2024 15:49:42 +0200
+
 ucs-test (10.0.22-6) unstable; urgency=medium
 
   * Bug #57226: Test delivery of self-registration invitations when

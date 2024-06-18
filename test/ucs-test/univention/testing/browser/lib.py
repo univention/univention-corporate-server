@@ -135,8 +135,8 @@ class Interactions:
         logger.info('Found %d modules' % len(modules))
         self.open_modules(modules, limit=limit, start_at=start_at)
 
-    def open_and_close_module(self, module_name: str):
-        self.open_module(_(module_name))
+    def open_and_close_module(self, module_name: str, wait_for_network_idle: bool = False):
+        self.open_module(_(module_name), wait_for_network_idle=wait_for_network_idle)
         self.page.get_by_role('button', name=_('Close')).click()
 
     def get_available_modules(self) -> List[str]:
@@ -150,11 +150,13 @@ class Interactions:
         self.page.locator('.umcModuleSearchToggleButton').click()
         return result
 
-    def open_module(self, module_name: str, expect_response: re.Pattern | str | None = None):
+    def open_module(self, module_name: str, expect_response: re.Pattern[str] | str | None = None, wait_for_network_idle: bool = False):
         """
         This method opens a module from anywhere where the module search bar in the UCM is visible
 
         :param module_name: the name of the module to be opened
+        :param expect_response: wait for a specific response to be completed before returning
+        :param wait_for_network_idle: wait for no network connections for at least 500ms. Mututally exclusive with expect_response.
         """
         self.page.locator('.umcModuleSearchToggleButton').click()
         logger.info('Clicked the search button')
@@ -175,7 +177,12 @@ class Interactions:
                 clickable_module_locator.click()
         else:
             clickable_module_locator.click()
+
         logger.info('Clicked the module button')
+        if expect_response is None and wait_for_network_idle:
+            logger.info('Waiting for network to be idle...')
+            self.page.wait_for_load_state("networkidle")
+
         if module_name == 'App Center':
             from univention.testing.browser.appcenter import AppCenter, wait_for_final_query
 
