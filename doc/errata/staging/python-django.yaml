@@ -6,30 +6,20 @@ src: python-django
 fix: 1:1.10.7-2+deb9u22
 desc: |
  This update addresses the following issues:
- 1:1.10.7-2+deb9u22 (Wed, 29 May 2024 09:46:29 +0100)
- [ Chris Lamb ]
- * Non-maintainer upload by the Debian ELTS team.
- * Update tests now that urllib.parse in python3-six has been changed to strip
-   ASCII newlines and tabs.
  * CVE-2023-36053: Prevent a potential regular expression denial of service
-   (DoS) vulnerability in EmailValidator and URLValidator. EmailValidator and
-   URLValidator were subject to potential regular expression denial of service
-   attack via a very large number of domain name labels of emails and URLs.
-
- [ Daniel Leidert ]
- * CVE-2023-43665: Fix a DoS vulnuerability in django.utils.text.Truncator.
-   Following the fix for CVE-2019-14232, the regular expressions used in the
-   implementation of django.utils.text.Truncator’s chars() and words() methods
-   were revised and improved. However, these regular expressions still
-   exhibited linear backtracking complexity, so when given a very long,
-   potentially malformed HTML input, the evaluation would still be slow,
-   leading to a potential denial of service vulnerability.
+   (DoS) vulnerability in `EmailValidator` and `URLValidator`.
+   `EmailValidator` and `URLValidator` were subject to potential regular
+   expression denial of service attack via a very large number of domain name
+   labels of emails and URLs.
  * CVE-2024-24680: Prevent a potential DoS in the intcomma template filter.
-   The intcomma template filter was subject to a potential denial-of-service
+   The `intcomma` template filter was subject to a potential denial-of-service
    attack when used with very long strings.
+ * CVE-2023-43665: Potential DoS (denial of service) attack via certain inputs
+   with very long, potentially malformed HTML text. The `chars()` and
+   `words()` methods are used to implement the `truncatechars_html` and
+   `truncatewords_html` template filters, which are thus also vulnerable.
 bug: [57388]
 cve:
 - CVE-2023-36053
 - CVE-2023-43665
-- CVE-2019-14232
 - CVE-2024-24680
