@@ -49,27 +49,54 @@ setup_cluster () {
      --set controller.hostPort.enabled=true \
      --set controller.service.ports.http=80
 
+  echo "Waiting for Ingress..."
+  kubectl wait --namespace ingress-nginx --for=condition=available --timeout=600s deployment.apps/ingress-nginx-controller
+
   echo "Installing Cert Manager..."
   kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.0/cert-manager.yaml
 }
 
 setup_nubus () {
-  local VERSION="0.18.3" NAMESPACE="default"
+  local ARTIFACTS_API_NUBUS_CHARTS_URL='https://artifacts.software-univention.de/api/v2.0/projects/nubus/repositories/charts%252Fnubus/artifacts?page=1&page_size=100&with_tag=true&with_label=false&with_scan_overview=false&with_signature=false&with_immutable_status=false&with_accessory=false' CUSTOM_VALUES_URL VERSION_ARG
 
-  echo "Installing Nubus..."
+  echo "Installing Nubus into namespace '$K8S_NAMESPACE'..."
 
-  curl --output custom_values.yaml "https://raw.githubusercontent.com/univention/nubus-stack/v${VERSION}/helm/nubus/example.yaml"
+  if [ -n "$UMBRELLA_CHART_VERSION" ]; then
+    echo "Using Helm chart version '$UMBRELLA_CHART_VERSION' from environment variable."
+    VERSION_ARG="--version=$UMBRELLA_CHART_VERSION"
+  else
+    echo "Using latest Helm chart version (env var 'UMBRELLA_CHART_VERSION' empty)."
+    VERSION_ARG=""
+  fi
+
+  if [ -n "$CUSTOM_VALUES_CONTENT" ]; then
+    echo "Received custom_values.yaml from environment variable 'CUSTOM_VALUES_CONTENT'."
+    echo "$CUSTOM_VALUES_CONTENT" | base64 -d > custom_values.yaml
+  else
+    if [ -z "$UMBRELLA_CHART_VERSION" ]; then
+      echo "Retrieving latest Helm chart version from 'artifacts.software-univention.de'..."
+      curl -X GET -H 'accept: application/json' "$ARTIFACTS_API_NUBUS_CHARTS_URL" > nubus-charts.json
+      UMBRELLA_CHART_VERSION="$(jq -r '.[].extra_attrs.version' < nubus-charts.json | sort | tail -1)"
+      echo "Latest version found is '$UMBRELLA_CHART_VERSION'."
+    fi
+    CUSTOM_VALUES_URL="https://raw.githubusercontent.com/univention/nubus-stack/v${UMBRELLA_CHART_VERSION}/helm/nubus/example.yaml"
+    echo "Retrieving custom_values.yaml from '$CUSTOM_VALUES_URL'..."
+    curl --output custom_values.yaml "$CUSTOM_VALUES_URL"
+  fi
+  echo "Content of 'custom_values.yaml':"
+  cat custom_values.yaml
 
   helm upgrade \
      --install nubus \
-     --namespace="$NAMESPACE" \
+     --namespace="$K8S_NAMESPACE" \
+     --create-namespace \
      oci://artifacts.software-univention.de/nubus/charts/nubus \
      --values custom_values.yaml \
      --timeout 20m \
-     --version "$VERSION"
+     $VERSION_ARG
 
-  kubectl -n default get secret nubus-nubus-credentials -o json | jq -r '.data.admin_password' | base64 -d > /root/pass_default.admin
-  kubectl -n default get secret nubus-nubus-credentials -o json | jq -r '.data.user_password' | base64 -d > /root/pass_default.user
+  kubectl -n "$K8S_NAMESPACE" get secret nubus-nubus-credentials -o json | jq -r '.data.admin_password' | base64 -d > /root/pass_default.admin
+  kubectl -n "$K8S_NAMESPACE" get secret nubus-nubus-credentials -o json | jq -r '.data.user_password' | base64 -d > /root/pass_default.user
 
   ucr set hosts/static/127.0.0.2="id.example.com portal.example.com"
 }
@@ -80,13 +107,16 @@ run_setup_tests () {
 }
 
 test_keycloak () {
+  echo "Testing if Keycloak is reachable..."
   curl -ks https://id.example.com/realms/nubus/login-actions/authenticate | grep -q displayCookieBanner
-  kubectl logs deployments/nubus-keycloak | tail | grep -q cookie_not_found
+  kubectl -n "$K8S_NAMESPACE" logs deployments/nubus-keycloak | tail | grep -q cookie_not_found
 }
 
 test_udm_rest () {
   local USERNAME=default.admin PASSWORD FQDN=portal.example.com SLEPT=1 TIMEOUT=300
   PASSWORD="$(</root/pass_default.admin)"
+
+  echo "Testing UDM REST API..."
 
   while [ "$(curl -ks -X GET -H "Accept: application/json"     "https://${USERNAME}:${PASSWORD}@${FQDN}/univention/udm/users/user/?query\[username\]=default.*" | jq .results)" != "2" ]; do
     echo "Waiting for 2 'default.*' users ($SLEPT)...";
