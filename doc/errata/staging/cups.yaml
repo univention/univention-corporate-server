@@ -6,8 +6,14 @@ src: cups
 fix: 2.2.10-6+deb10u10A~5.0.8.202406130955
 desc: |
  This update addresses the following issue:
- 2.2.10-6+deb10u10 (Tue, 11 Jun 2024 22:16:49 +0200)
- * CVE-2024-35235 fix domain socket handling
+ * CVE-2024-35235: Starting the `cupsd` server with a Listen configuration
+   item pointing to a symbolic link, the cupsd process can be caused to
+   perform an arbitrary chmod of the provided argument, providing
+   world-writable access to the target. Given that cupsd is often running as
+   `root`, this can result in the change of permission of any user or system
+   files to be world writable. Given the aforementioned Ubuntu AppArmor
+   context, on such systems this vulnerability is limited to those files
+   modifiable by the cupsd process.
 bug: [57382]
 cve:
 - CVE-2024-35235
