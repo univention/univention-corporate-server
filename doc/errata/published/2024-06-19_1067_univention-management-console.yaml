@@ -9,3 +9,6 @@ desc: |
  * Fix a bug where it was impossible to change passwords via the UMC
    due to the UMC server not closing file descriptors properly.
 bug: [57194]
+erratum: 1067
+announced: 2024-06-19
+support: core
