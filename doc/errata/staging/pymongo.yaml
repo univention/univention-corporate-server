@@ -6,11 +6,9 @@ src: pymongo
 fix: 3.7.1-1.1+deb10u1
 desc: |
  This update addresses the following issue:
- 3.7.1-1.1+deb10u1 (Sun, 16 Jun 2024 17:42:49 +0000)
- * QA upload
- * Fix CVE-2024-5629: An out-of-bounds read in the 'bson' module allowed
-   deserialization of malformed BSON provided by a Server to raise an
-   exception which may contain arbitrary application memory
+ * CVE-2024-5629: An out-of-bounds read in the 'bson' module allowed
+   deserialization of malformed `BSON` provided by a Server to raise an
+   exception which may contain arbitrary application memory.
 bug: [57386]
 cve:
 - CVE-2024-5629
