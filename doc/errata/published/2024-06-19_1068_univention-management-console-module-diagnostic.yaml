@@ -10,3 +10,6 @@ desc: |
    them as an LDAP extension has been fixed and now actually passes the right
    argument to the internal function.
 bug: [57279]
+erratum: 1068
+announced: 2024-06-19
+support: core
