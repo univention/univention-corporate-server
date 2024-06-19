@@ -13,7 +13,7 @@ desc: |
    `root`, this can result in the change of permission of any user or system
    files to be world writable. Given the aforementioned Ubuntu AppArmor
    context, on such systems this vulnerability is limited to those files
-   modifiable by the cupsd process.
+   modifiable by the `cupsd` process.
 bug: [57382]
 cve:
 - CVE-2024-35235
