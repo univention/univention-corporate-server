@@ -6,9 +6,7 @@ src: libvpx
 fix: 1.7.0-3+deb10u3
 desc: |
  This update addresses the following issue:
- 1.7.0-3+deb10u3 (Sun, 16 Jun 2024 21:55:29 +0300)
- * Non-maintainer upload by the LTS Team.
- * CVE-2024-5197: Integer overflows
+ * CVE-2024-5197: Integer overflows.
 bug: [57387]
 cve:
 - CVE-2024-5197
