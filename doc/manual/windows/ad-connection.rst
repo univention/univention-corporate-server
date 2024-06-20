@@ -550,6 +550,32 @@ Log files
 Details on preconfigured synchronization
 ----------------------------------------
 
+You can configure the :program:`AD Connector` to only synchronize a specific
+selection of objects. To do this, you can add LDAP object DNs to an internal
+allowlist using the following UCR variables:
+
+  * :envvar:`connector/ad/mapping/allowsubtree/.*/ucs`
+  * :envvar:`connector/ad/mapping/allowsubtree/.*/ad`
+
+Use the |UCSUCRV| :envvar:`connector/ad/mapping/allowsubtree/.*/ucs` to add a DN
+from your UCS LDAP to the allowlist of objects that need to be synchronized from
+your UCS LDAP to the connected Active Directory. Every UCS LDAP subtree you want
+to add to the allowlist needs its own dedicated UCR variable. The ``.*`` portion
+of the variable makes this possible. It is a placeholder that allows you to set
+a custom name for each variable. If you follow this approach, you will end up
+with a series of UCR variables of the type described, each containing only one
+DN. UCS LDAP objects that are not specified in any of these UCR variables, and
+are not part of a specified subtree, will be excluded from synchronization and
+removed from the connected Active Directory. For this configuration to take
+effect a restart of the :program:`AD Connector` is needed, though.
+
+If you want to define an allowlist from the point of view of the connected
+Active Directory, use the |UCSUCRV|
+:envvar:`connector/ad/mapping/allowsubtree/.*/ad` instead. This variable works
+exactly like the previously described one, only that it configures the
+synchronization of objects in the opposite direction, from Active Directory to
+UCS.
+
 All containers which are ignored due to corresponding filters are exempted from
 synchronization as standard. This can be found in the
 :file:`/etc/univention/connector/ad/mapping` configuration file under the

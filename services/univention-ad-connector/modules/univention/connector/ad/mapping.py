@@ -90,6 +90,17 @@ def get_mapping(configbasename='connector'):
 def create_mapping(configbasename='connector'):
     def connector(string):
         return string % (configbasename,)
+
+    global_allow_subtree_ad = []
+    global_allow_subtree_ucs = []
+
+    for key in configRegistry:
+        if key.startswith(connector('%s/ad/mapping/allowsubtree')):
+            if key.endswith('/ad'):
+                global_allow_subtree_ad.append(configRegistry[key])
+            elif key.endswith('/ucs'):
+                global_allow_subtree_ucs.append(configRegistry[key])
+
     global_ignore_subtree = [
         'cn=univention,%(ldap/base)s' % configRegistry,
         'cn=policies,%(ldap/base)s' % configRegistry,
@@ -139,6 +150,7 @@ def create_mapping(configbasename='connector'):
             scope='sub',
             con_search_filter='(&(objectClass=user)(!objectClass=computer))',
             match_filter='(|(&(objectClass=posixAccount)(objectClass=sambaSamAccount))(objectClass=user))',
+            allow_subtree=global_allow_subtree_ucs + global_allow_subtree_ad,
             ignore_filter=user_ignore_filter or None,
             ignore_subtree=global_ignore_subtree,
             con_create_objectclass=['top', 'user', 'person', 'organizationalPerson'],
@@ -307,6 +319,7 @@ def create_mapping(configbasename='connector'):
             ucs_module='groups/group',
             sync_mode=configRegistry.get(connector('%s/ad/mapping/group/syncmode'), configRegistry.get(connector('%s/ad/mapping/syncmode'))),
             scope='sub',
+            allow_subtree=global_allow_subtree_ucs + global_allow_subtree_ad,
             ignore_filter=group_ignore_filter or None,
             ignore_subtree=global_ignore_subtree,
             con_search_filter='objectClass=group',
@@ -396,6 +409,7 @@ def create_mapping(configbasename='connector'):
             con_search_filter='(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=4096))',
             # ignore_filter='userAccountControl=4096',
             match_filter='(|(&(objectClass=univentionWindows)(!(univentionServerRole=windows_domaincontroller)))(objectClass=computer)(objectClass=univentionMemberServer)(objectClass=univentionUbuntuClient)(objectClass=univentionLinuxClient)(objectClass=univentionMacOSClient))',
+            allow_subtree=global_allow_subtree_ucs + global_allow_subtree_ad,
             ignore_subtree=global_ignore_subtree,
             ignore_filter=ignore_filter_from_attr('cn', connector('%s/ad/mapping/windowscomputer/ignorelist')) or None,
             con_create_objectclass=['top', 'computer'],
@@ -436,6 +450,7 @@ def create_mapping(configbasename='connector'):
             sync_mode=configRegistry.get(connector('%s/ad/mapping/container/syncmode'), configRegistry.get(connector('%s/ad/mapping/syncmode'))),
             scope='sub',
             con_search_filter='(|(objectClass=container)(objectClass=builtinDomain))',  # builtinDomain is cn=builtin (with group cn=Administrators)
+            allow_subtree=global_allow_subtree_ucs + global_allow_subtree_ad,
             ignore_filter=ignore_filter_from_attr('cn', connector('%s/ad/mapping/container/ignorelist'), 'mail,kerberos') or None,
             ignore_subtree=global_ignore_subtree,
             post_ucs_modify_functions=[
@@ -462,6 +477,7 @@ def create_mapping(configbasename='connector'):
             sync_mode=configRegistry.get(connector('%s/ad/mapping/ou/syncmode'), configRegistry.get(connector('%s/ad/mapping/syncmode'))),
             scope='sub',
             con_search_filter='objectClass=organizationalUnit',
+            allow_subtree=global_allow_subtree_ucs + global_allow_subtree_ad,
             ignore_filter=ignore_filter_from_attr('ou', connector('%s/ad/mapping/ou/ignorelist')) or None,
             ignore_subtree=global_ignore_subtree,
             post_ucs_modify_functions=[
