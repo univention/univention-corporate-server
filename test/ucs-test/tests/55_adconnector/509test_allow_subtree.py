@@ -6,8 +6,7 @@
 
 import contextlib
 from dataclasses import dataclass
-from types import SimpleNamespace
-from typing import Generator, List, Optional
+from typing import Generator, List, Optional, Tuple
 
 import pytest
 
@@ -44,7 +43,7 @@ class DomObject:
 
 
 @contextlib.contextmanager
-def allow_subtree_setup(sync_mode: str, create_objects: bool = False) -> Generator[SimpleNamespace, None, None]:
+def allow_subtree_setup(sync_mode: str, create_objects: bool = False) -> Generator[Tuple[List, List, UCSTestUDM], None, None]:
     try:
         with testing_ucr.UCSTestConfigRegistry() as ucr, UCSTestUDM() as udm:
             # allow ou=ou1-allowed,base
@@ -94,11 +93,7 @@ def allow_subtree_setup(sync_mode: str, create_objects: bool = False) -> Generat
                 ]
             )
             restart_adconnector()
-            yield SimpleNamespace(
-                allowed=[allowed1, allowed2],
-                denied=[not_allowed1, not_allowed2],
-                udm=udm,
-            )
+            yield ([allowed1, allowed2], [not_allowed1, not_allowed2], udm)
     finally:
         restart_adconnector()
 
@@ -130,43 +125,43 @@ def create_objects_in_ad(ad: ADConnection, tree: SubTree, wait: bool = False) ->
 @pytest.mark.parametrize("sync_mode", ["sync"])
 @pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_create(sync_mode: str) -> None:
-    with allow_subtree_setup(sync_mode) as subtrees:
+    with allow_subtree_setup(sync_mode) as (allowed, denied, udm):
         # check denied for other subtrees
-        for tree in subtrees.denied:
+        for tree in denied:
             if sync_mode in ['sync', 'write']:
                 # check objects creates in UCS are not synced to AD
-                for obj in create_objects_in_ucs(subtrees.udm, tree):
+                for obj in create_objects_in_ucs(udm, tree):
                     with pytest.raises(AssertionError):
                         AD.verify_object(obj.ad_dn, {'name': obj.name})
-                    subtrees.udm.verify_ldap_object(obj.udm_dn)
+                    udm.verify_ldap_object(obj.udm_dn)
                 # check objects creates in AD are not synced to UCS
                 for obj in create_objects_in_ad(AD, tree):
                     AD.verify_object(obj.ad_dn, {'name': obj.name})
                     with pytest.raises(LDAPObjectNotFound):
-                        subtrees.udm.verify_ldap_object(obj.udm_dn, retry_count=3, delay=1)
+                        udm.verify_ldap_object(obj.udm_dn, retry_count=3, delay=1)
         # check sync works
-        for tree in subtrees.allowed:
+        for tree in allowed:
             if sync_mode in ['sync', 'write']:
-                for obj in create_objects_in_ucs(subtrees.udm, tree):
+                for obj in create_objects_in_ucs(udm, tree):
                     AD.verify_object(obj.ad_dn, {'name': obj.name})
-                    subtrees.udm.verify_ldap_object(obj.udm_dn)
+                    udm.verify_ldap_object(obj.udm_dn)
             if sync_mode in ['sync', 'read']:
                 for obj in create_objects_in_ad(AD, tree):
                     AD.verify_object(obj.ad_dn, {'name': obj.name})
-                    subtrees.udm.verify_ldap_object(obj.udm_dn)
+                    udm.verify_ldap_object(obj.udm_dn)
 
 
 # @pytest.mark.parametrize("sync_mode", ["read", "sync"])
 @pytest.mark.parametrize("sync_mode", ["sync"])
 @pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_modify(sync_mode: str) -> None:
-    with allow_subtree_setup(sync_mode, create_objects=True) as subtrees:
-        for tree in subtrees.denied:
+    with allow_subtree_setup(sync_mode, create_objects=True) as (allowed, denied, udm):
+        for tree in denied:
             if sync_mode in ['sync', 'write']:
                 for obj in tree.objects:
                     # modify in UCS, check no change in AD
-                    subtrees.udm.modify_object(obj.udm_module, dn=obj.udm_dn, description='changed in UCS')
-                    subtrees.udm.verify_ldap_object(obj.udm_dn, expected_attr={'description': ['changed in UCS']})
+                    udm.modify_object(obj.udm_module, dn=obj.udm_dn, description='changed in UCS')
+                    udm.verify_ldap_object(obj.udm_dn, expected_attr={'description': ['changed in UCS']})
                     wait_for_sync()
                     with pytest.raises(AssertionError):
                         AD.verify_object(obj.ad_dn, {'description': 'changed in UCS'})
@@ -177,9 +172,9 @@ def test_modify(sync_mode: str) -> None:
                     AD.verify_object(obj.ad_dn, {'description': 'changed in AD'})
                     wait_for_sync()
                     with pytest.raises(LDAPObjectValueMissing):
-                        subtrees.udm.verify_ldap_object(obj.udm_dn, expected_attr={'description': ['changed in AD']}, retry_count=3, delay=1)
+                        udm.verify_ldap_object(obj.udm_dn, expected_attr={'description': ['changed in AD']}, retry_count=3, delay=1)
         # check sync works
-        for tree in subtrees.allowed:
+        for tree in allowed:
             if sync_mode in ['sync', 'write']:
                 for obj in tree.objects:
                     # modify in UCS, check change in AD
