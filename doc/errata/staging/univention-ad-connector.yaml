@@ -1,0 +1,18 @@
+product: ucs
+release: "5.0"
+version: [8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-ad-connector
+fix: 14.0.19-2
+desc: |
+ This update addresses the following issues:
+ * The connector can now be configured to only synchronize objects
+   from specific subtrees via the newly added UCR variables
+   `connector/ad/mapping/allowsubtree/$NAME/ucs` and
+   `connector/ad/mapping/allowsubtree/$NAME/ad`. `$NAME` is an
+   arbitrary string, the value for the `ucs` variable is a subtree
+   LDAP DN in the UCS directory and the value for the `ad` variable
+   is a subtree LDAP DN of the AD directory. Both must include the
+   LDAP base of the respective directory. If configured only objects
+   from these subtrees are synchronized, everything else is ignored.
+bug: [57394]

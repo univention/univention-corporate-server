@@ -308,3 +308,15 @@ Type=list
 Separator=,
 Elementtype=str
 Categories=service-adcon
+
+[con.*/ad/mapping/allowsubtree/.*/ucs]
+Description[de]=Die DN eines Teilbaums des UCS LDAP, welcher von UCS LDAP nach Active Directory synchronisiert wird. Objekte, deren DN nicht mit dieser DN endet, werden von der Synchronisation ausgeschlossen und aus dem Active Directory gelöscht, falls diese bereits synchronisiert wurden. Für jeden Teilbaum, der bei der Synchronisation berücksichtigt werden soll, muss eine eigene Variable angelegt werden. Die Auswahl der zu synchronisierenden Objekte kann über die UCR Variablen `con.*/ad/mapping/{user,group,container,ou}/ignorelist` und `con.*/ad/mapping/user/ignorefilter` weiter eingeschränkt werden.
+Description[en]=The DN of an UCS LDAP subtree which is synchronized from UCS LDAP to Active Directory. Objects whose DN does not end with this DN are excluded from the synchronization and deleted from the Active Directory if they have already been synchronized. A separate variable must be set for each subtree that is to be included in the synchronization. The selection of objects to be synchronized can be further restricted via the UCR variables `con.*/ad/mapping/{user,group,container,ou}/ignorelist` and `con.*/ad/mapping/user/ignorefilter`.
+Type=str
+Categories=service-adcon
+
+[con.*/ad/mapping/allowsubtree/.*/ad/]
+Description[de]=Die DN eines Teilbaums des Active Directory, welcher von Active Directory nach UCS LDAP synchronisiert wird. Objekte, deren DN nicht mit dieser DN endet, werden von der Synchronisation ausgeschlossen und aus dem UCS LDAP gelöscht. Für jeden Teilbaum, der bei der Synchronisation berücksichtigt werden soll, muss eine eigene Variable angelegt werden. Die Auswahl der zu synchronisierenden Objekte kann über die UCR Variablen `con.*/ad/mapping/{user,group,container,ou}/ignorelist` und `con.*/ad/mapping/user/ignorefilter` weiter eingeschränkt werden.
+Description[en]=The DN of an Active Directory subtree which is synchronized from Active Directory to UCS LDAP. Objects whose DN does not end with this DN are excluded from the synchronization and deleted from the UCS LDAP if they have already been synchronized. A separate variable must be set for each subtree that is to be included in the synchronization. The selection of objects to be synchronized can be further restricted via the UCR variables `con.*/ad/mapping/{user,group,container,ou}/ignorelist` and `con.*/ad/mapping/user/ignorefilter`.
+Type=str
+Categories=service-adcon
