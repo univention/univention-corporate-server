@@ -408,6 +408,7 @@ class property(object):
             con_search_filter='',
             ignore_filter=None,
             match_filter=None,
+            allow_subtree=[],
             ignore_subtree=[],
             con_create_objectclass=[],
             con_create_attributes=[],
@@ -439,6 +440,7 @@ class property(object):
         self.con_search_filter = con_search_filter
         self.ignore_filter = ignore_filter
         self.match_filter = match_filter
+        self.allow_subtree = allow_subtree
         self.ignore_subtree = ignore_subtree
 
         self.con_create_objectclass = con_create_objectclass
@@ -773,10 +775,20 @@ class ucs(object):
                 object = {'dn': dn, 'modtype': 'modify', 'attributes': new}
                 try:
                     if self._ignore_object(key, object):
-                        ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: new object is ignored, nothing to do")
-                        change_type = 'modify'
-                        ignore_subtree_match = True
-                        return True
+                        if (new and not old) and (old_dn and old_dn != dn) and not self._ignore_object(key, {'dn': old_dn, 'attributes': new}):
+                            # TODO why do we not get an old,
+                            # the _ignore_object in this case should operate on the old object, but currently we don't have it
+                            # so we pass new because we need the attributes to check the ignore/allow filter
+                            # we need to check if this is a move and in case that the new object is ignored and old object
+                            # is not ignored we need to remove the object
+                            ud.debug(ud.LDAP, ud.ERROR, "__sync_file_from_ucs: object was moved and is ignored now, delete")
+                            change_type = 'delete'
+                            ignore_subtree_match = True
+                        else:
+                            ud.debug(ud.LDAP, ud.INFO, "__sync_file_from_ucs: new object is ignored, nothing to do")
+                            change_type = 'modify'
+                            ignore_subtree_match = True
+                            return True
                     else:
                         if old_dn and old_dn != dn:
                             change_type = "modify"
@@ -1604,7 +1616,7 @@ class ucs(object):
 
     def _ignore_object(self, key, object):
         """
-        parse if object should be ignored because of ignore_subtree or ignore_filter
+        parse if object should be ignored because of ignore_subtree, allow_subtree or ignore_filter
 
         :param key: the property_type from the mapping
         :param object: a mapped or unmapped AD or UCS object
@@ -1612,6 +1624,12 @@ class ucs(object):
         if 'dn' not in object:
             ud.debug(ud.LDAP, ud.INFO, f"_ignore_object: ignore object without DN (key: {key})")
             return True  # ignore not existing object
+
+        if self.property[key].allow_subtree:
+            if not any(self._subtree_match(object['dn'], dn) for dn in self.property[key].allow_subtree):
+                ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because it is not in one of the allowed subtrees: [%r:%r]" % (key, object['dn']))
+                return True
+
         for subtree in self.property[key].ignore_subtree:
             if self._subtree_match(object['dn'], subtree):
                 ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of subtree match: [%r:%r]" % (key, object['dn']))

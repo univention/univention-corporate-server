@@ -1,5 +1,11 @@
 univention-ad-connector (15.0.7) unstable; urgency=medium
 
+  * Bug #57394: add synchronization allowlist feature
+
+ -- Christian Castens <castens@univention.de>  Thu, 20 Jun 2024 10:10:17 +0200
+
+univention-ad-connector (15.0.7) unstable; urgency=medium
+
   * Bug #56604: remove workarounds for Python 2 compatibility
 
  -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 23:54:11 +0100
@@ -42,7 +48,7 @@ univention-ad-connector (15.0.1) unstable; urgency=medium
 
 univention-ad-connector (14.0.18-1) UNRELEASED; urgency=medium
 
-  * Bug #57118 UCS 5.0-7 version bump
+  * Bug #57118: UCS 5.0-7 version bump
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 07 Mar 2024 15:51:55 +0100
 

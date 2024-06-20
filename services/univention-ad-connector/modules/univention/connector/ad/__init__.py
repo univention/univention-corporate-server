@@ -2007,7 +2007,7 @@ class ad(univention.connector.ucs):
 
         # check for move, if old_object exists, set modtype move
         pre_mapped_ucs_old_dn = old_dn
-        if old_dn:
+        if old_dn and object['modtype'] != 'delete':
             ud.debug(ud.LDAP, ud.INFO, "move %s from [%s] to [%s]" % (property_type, old_dn, object['dn']))
             if hasattr(self.property[property_type], 'dn_mapping_function'):
                 tmp_object = copy.deepcopy(object)
