@@ -45,62 +45,62 @@ class DomObject:
 
 @contextlib.contextmanager
 def allow_subtree_setup(sync_mode: str, create_objects: bool = False) -> Generator[SimpleNamespace, None, None]:
-    with testing_ucr.UCSTestConfigRegistry() as ucr, UCSTestUDM() as udm:
-        # allow ou=ou1-allowed,base
-        # allow cn=cn2-allowed,cn=users
-        # deny  cn=users,base
-        # deny  cn=cn3-denied,base
-        allowed1 = SubTree(name='ou1-allowed')
-        allowed1.udm_position = ucr['ldap/base']
-        allowed1.ad_position = ucr['connector/ad/ldap/base']
-        allowed1.udm_dn = f'ou={allowed1.name},{allowed1.udm_position}'
-        allowed1.ad_dn = f'ou={allowed1.name},{allowed1.ad_position}'
-        allowed2 = SubTree(name='cn2-allowed')
-        allowed2.udm_position = f'cn=users,{ucr["ldap/base"]}'
-        allowed2.ad_position = f'cn=users,{ucr["connector/ad/ldap/base"]}'
-        allowed2.udm_dn = f'cn={allowed2.name},{allowed2.udm_position}'
-        allowed2.ad_dn = f'cn={allowed2.name},{allowed2.ad_position}'
-        not_allowed1 = SubTree(name='users')
-        not_allowed1.udm_position = ucr['ldap/base']
-        not_allowed1.ad_position = ucr['connector/ad/ldap/base']
-        not_allowed1.udm_dn = f'cn={not_allowed1.name},{not_allowed1.udm_position}'
-        not_allowed1.ad_dn = f'cn={not_allowed1.name},{not_allowed1.ad_position}'
-        not_allowed2 = SubTree(name='cn3-denied')
-        not_allowed2.udm_position = ucr['ldap/base']
-        not_allowed2.ad_position = ucr['connector/ad/ldap/base']
-        not_allowed2.udm_dn = f'cn={not_allowed2.name},{not_allowed2.udm_position}'
-        not_allowed2.ad_dn = f'cn={not_allowed2.name},{not_allowed2.ad_position}'
-        # create container and optionally some objects in the containers
-        udm.create_object('container/ou', name=allowed1.name)
-        udm.create_object('container/cn', name=allowed2.name, position=allowed2.udm_position)
-        udm.create_object('container/cn', name=not_allowed2.name, position=not_allowed2.udm_position)
-        if create_objects:
-            not_allowed1.objects = create_objects_in_ucs(udm, not_allowed1, wait=False)
-            not_allowed2.objects = create_objects_in_ucs(udm, not_allowed2, wait=False)
-            allowed1.objects = create_objects_in_ucs(udm, allowed1, wait=False)
-            allowed2.objects = create_objects_in_ucs(udm, allowed2, wait=False)
-        wait_for_sync()
-        AD.verify_object(allowed1.ad_dn, {'name': allowed1.name})
-        AD.verify_object(allowed2.ad_dn, {'name': allowed2.name})
-        AD.verify_object(not_allowed2.ad_dn, {'name': not_allowed2.name})
-        # configure connector
-        ucr_set(
-            [
-                f"connector/ad/allow-subtree/test1/ucs={allowed1.udm_dn}",
-                f"connector/ad/allow-subtree/test1/ad={allowed1.ad_dn}",
-                f"connector/ad/allow-subtree/test2/ucs={allowed2.udm_dn}",
-                f"connector/ad/allow-subtree/test2/ad={allowed2.ad_dn}",
-            ]
-        )
-        restart_adconnector()
-        try:
+    try:
+        with testing_ucr.UCSTestConfigRegistry() as ucr, UCSTestUDM() as udm:
+            # allow ou=ou1-allowed,base
+            # allow cn=cn2-allowed,cn=users
+            # deny  cn=users,base
+            # deny  cn=cn3-denied,base
+            allowed1 = SubTree(name='ou1-allowed')
+            allowed1.udm_position = ucr['ldap/base']
+            allowed1.ad_position = ucr['connector/ad/ldap/base']
+            allowed1.udm_dn = f'ou={allowed1.name},{allowed1.udm_position}'
+            allowed1.ad_dn = f'ou={allowed1.name},{allowed1.ad_position}'
+            allowed2 = SubTree(name='cn2-allowed')
+            allowed2.udm_position = f'cn=users,{ucr["ldap/base"]}'
+            allowed2.ad_position = f'cn=users,{ucr["connector/ad/ldap/base"]}'
+            allowed2.udm_dn = f'cn={allowed2.name},{allowed2.udm_position}'
+            allowed2.ad_dn = f'cn={allowed2.name},{allowed2.ad_position}'
+            not_allowed1 = SubTree(name='users')
+            not_allowed1.udm_position = ucr['ldap/base']
+            not_allowed1.ad_position = ucr['connector/ad/ldap/base']
+            not_allowed1.udm_dn = f'cn={not_allowed1.name},{not_allowed1.udm_position}'
+            not_allowed1.ad_dn = f'cn={not_allowed1.name},{not_allowed1.ad_position}'
+            not_allowed2 = SubTree(name='cn3-denied')
+            not_allowed2.udm_position = ucr['ldap/base']
+            not_allowed2.ad_position = ucr['connector/ad/ldap/base']
+            not_allowed2.udm_dn = f'cn={not_allowed2.name},{not_allowed2.udm_position}'
+            not_allowed2.ad_dn = f'cn={not_allowed2.name},{not_allowed2.ad_position}'
+            # create container and optionally some objects in the containers
+            udm.create_object('container/ou', name=allowed1.name)
+            udm.create_object('container/cn', name=allowed2.name, position=allowed2.udm_position)
+            udm.create_object('container/cn', name=not_allowed2.name, position=not_allowed2.udm_position)
+            if create_objects:
+                not_allowed1.objects = create_objects_in_ucs(udm, not_allowed1, wait=False)
+                not_allowed2.objects = create_objects_in_ucs(udm, not_allowed2, wait=False)
+                allowed1.objects = create_objects_in_ucs(udm, allowed1, wait=False)
+                allowed2.objects = create_objects_in_ucs(udm, allowed2, wait=False)
+            wait_for_sync()
+            AD.verify_object(allowed1.ad_dn, {'name': allowed1.name})
+            AD.verify_object(allowed2.ad_dn, {'name': allowed2.name})
+            AD.verify_object(not_allowed2.ad_dn, {'name': not_allowed2.name})
+            # configure connector
+            ucr_set(
+                [
+                    f"connector/ad/allow-subtree/test1/ucs={allowed1.udm_dn}",
+                    f"connector/ad/allow-subtree/test1/ad={allowed1.ad_dn}",
+                    f"connector/ad/allow-subtree/test2/ucs={allowed2.udm_dn}",
+                    f"connector/ad/allow-subtree/test2/ad={allowed2.ad_dn}",
+                ]
+            )
+            restart_adconnector()
             yield SimpleNamespace(
                 allowed=[allowed1, allowed2],
                 denied=[not_allowed1, not_allowed2],
                 udm=udm,
             )
-        finally:
-            restart_adconnector()
+    finally:
+        restart_adconnector()
 
 
 def create_objects_in_ucs(udm: UCSTestUDM, tree: SubTree, wait: bool = False) -> List[DomObject]:
@@ -130,30 +130,30 @@ def create_objects_in_ad(ad: ADConnection, tree: SubTree, wait: bool = False) ->
 @pytest.mark.parametrize("sync_mode", ["sync"])
 @pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
 def test_create(sync_mode: str) -> None:
-    with allow_subtree_setup(sync_mode) as subtrees, UCSTestUDM() as udm:
+    with allow_subtree_setup(sync_mode) as subtrees:
         # check denied for other subtrees
         for tree in subtrees.denied:
             if sync_mode in ['sync', 'write']:
                 # check objects creates in UCS are not synced to AD
-                for obj in create_objects_in_ucs(udm, tree):
+                for obj in create_objects_in_ucs(subtrees.udm, tree):
                     with pytest.raises(AssertionError):
                         AD.verify_object(obj.ad_dn, {'name': obj.name})
-                    udm.verify_ldap_object(obj.udm_dn)
+                    subtrees.udm.verify_ldap_object(obj.udm_dn)
                 # check objects creates in AD are not synced to UCS
                 for obj in create_objects_in_ad(AD, tree):
                     AD.verify_object(obj.ad_dn, {'name': obj.name})
                     with pytest.raises(LDAPObjectNotFound):
-                        udm.verify_ldap_object(obj.udm_dn, retry_count=3, delay=1)
+                        subtrees.udm.verify_ldap_object(obj.udm_dn, retry_count=3, delay=1)
         # check sync works
         for tree in subtrees.allowed:
             if sync_mode in ['sync', 'write']:
-                for obj in create_objects_in_ucs(udm, tree):
+                for obj in create_objects_in_ucs(subtrees.udm, tree):
                     AD.verify_object(obj.ad_dn, {'name': obj.name})
-                    udm.verify_ldap_object(obj.udm_dn)
+                    subtrees.udm.verify_ldap_object(obj.udm_dn)
             if sync_mode in ['sync', 'read']:
                 for obj in create_objects_in_ad(AD, tree):
                     AD.verify_object(obj.ad_dn, {'name': obj.name})
-                    udm.verify_ldap_object(obj.udm_dn)
+                    subtrees.udm.verify_ldap_object(obj.udm_dn)
 
 
 # @pytest.mark.parametrize("sync_mode", ["read", "sync"])
