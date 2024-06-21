@@ -39,6 +39,7 @@ from typing import TYPE_CHECKING
 
 from playwright.sync_api import Locator, Page, expect
 
+from univention.config_registry import ucr
 from univention.lib.i18n import Translation
 
 
@@ -140,7 +141,7 @@ class GenericUDMModule:
         self.page: Page = tester.page
         self.module_name: str = module_name
 
-    def navigate(self, username='Administrator', password='univention') -> None:
+    def navigate(self, username='Administrator', password=ucr.get('tests/domainadmin/pwd', 'univention')) -> None:
         self.tester.login(username, password)
         self.tester.open_module(self.module_name)
 
@@ -153,11 +154,15 @@ class GenericUDMModule:
         """
         self.page.get_by_role('button', name=_('Add')).click()
 
+        if self.page.get_by_text(_('This UCS system is part of an Active Directory domain')).is_visible():
+            self.page.get_by_role('button', name=_('Next')).click()
         return AddObjectDialog(self.tester, self.page.get_by_role('dialog'))
 
     def add_object_detail_view(self) -> DetailsView:
         """See `add_object_dialog` for details"""
         self.page.get_by_role('button', name=_('Add')).click()
+        if self.page.get_by_text(_('This UCS system is part of an Active Directory domain')).is_visible():
+            self.page.get_by_role('button', name=_('Next')).click()
         return DetailsView(self.tester)
 
     def open_details(self, name: str) -> DetailsView:
@@ -272,7 +277,8 @@ class UserModule(GenericUDMModule):
         add_object.fill_field(f"{_('Password')} *", password, exact=True)
         add_object.fill_field(f"{_('Password (retype)')} *", password, exact=True)
         add_object.finish('Create User')
-
+        if ucr.is_true('ad/member'):
+            return CreatedItem(first_name + ' ' + last_name)
         return CreatedItem(name)
 
     def copy_user(self, original_name: str, name: str, last_name: str = 'last_name', password: str = 'univention') -> None:
