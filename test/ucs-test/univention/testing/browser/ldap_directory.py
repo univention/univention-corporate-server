@@ -35,6 +35,7 @@
 
 from playwright.sync_api import Locator, Page, expect
 
+from univention.config_registry import ucr
 from univention.lib.i18n import Translation
 from univention.testing.browser.lib import UMCBrowserTest
 
@@ -50,7 +51,7 @@ class LDAPDirectory:
         self.page: Page = tester.page
         self.module_name = _('LDAP directory')
 
-    def navigate(self, username='Administrator', password='univention'):
+    def navigate(self, username='Administrator', password=ucr.get('tests/domainadmin/pwd', 'univention')):
         self.tester.login(username, password)
         self.tester.open_module(self.module_name)
 

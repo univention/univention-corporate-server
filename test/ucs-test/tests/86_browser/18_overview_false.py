@@ -18,15 +18,15 @@ from univention.testing.browser.lib import UMCBrowserTest
 _ = Translation('ucs-test-browser').translate
 
 
-def test_correct_number_of_tabs_displayed(umc_browser_test: UMCBrowserTest, udm):
+def test_correct_number_of_tabs_displayed(umc_browser_test: UMCBrowserTest, udm, ucr):
     page = umc_browser_test.page
 
     name = uts.random_name()
     _dn, username = udm.create_user(username=name, displayName=name)
 
     user_module = UserModule(umc_browser_test)
-    umc_browser_test.login('Administrator', 'univention', '/univention/management/?overview=false#module=udm:users/user')
 
+    umc_browser_test.login('Administrator', ucr.get('tests/domainadmin/pwd', 'univention'), '/univention/management/?overview=false#module=udm:users/user')
     details = user_module.open_details(username)
     details.open_tab(_('Policies'))
     users_tab = page.get_by_role('tab', name=_('Users'))

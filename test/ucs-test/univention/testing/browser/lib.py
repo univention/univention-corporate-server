@@ -166,7 +166,6 @@ class Interactions:
         logger.info('Trying to find button to open module %s' % module_name)
         module_locator = self.page.locator('.umcGalleryName', has_text=exact_module_name)
         expect(module_locator.or_(module_by_title_attrib_locator)).to_be_visible()
-
         if module_by_title_attrib_locator.is_visible():
             clickable_module_locator = module_by_title_attrib_locator
         else:
@@ -270,7 +269,7 @@ class UMCBrowserTest(Interactions):
     def login(
         self,
         username: str = 'Administrator',
-        password: str = 'univention',
+        password: str = ucr.get('tests/domainadmin/pwd', 'univention'),
         location: str = '/univention/management',
         check_for_no_module_available_popup: bool = False,
         login_should_fail: bool = False,

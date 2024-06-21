@@ -39,6 +39,7 @@ import time
 from playwright.sync_api import Page, expect
 from typing_extensions import Literal
 
+from univention.config_registry import ucr
 from univention.lib.i18n import Translation
 from univention.testing.browser.lib import UMCBrowserTest
 
@@ -55,7 +56,7 @@ class ProcessOverview:
         self.module_name = _('Process overview')
         self.grid_load_url = re.compile('.*univention/command/top/query.*')
 
-    def navigate(self, username='Administrator', password='univention'):
+    def navigate(self, username='Administrator', password=ucr.get('tests/domainadmin/pwd', 'univention')):
         self.tester.login(username, password)
         self.tester.open_module(self.module_name, self.grid_load_url)
 
