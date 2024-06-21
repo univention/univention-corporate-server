@@ -1,4 +1,4 @@
-ucs-test (10.0.22-11) unstable; urgency=medium
+ucs-test (10.0.22-12) unstable; urgency=medium
 
   * Issue univention/ucs#2285: Fix browser tests for admember tests
 
