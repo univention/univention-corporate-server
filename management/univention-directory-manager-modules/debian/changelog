@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.0.13) unstable; urgency=medium
+
+  * Bug #53333: Skip over non existent objects in search
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Mon, 24 Jun 2024 12:50:00 +0200
+
 univention-directory-manager-modules (17.0.12) unstable; urgency=medium
 
   * Bug #56313: Fix wrong relativeDomainName assignment
