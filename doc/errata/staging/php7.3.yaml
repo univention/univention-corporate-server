@@ -1,0 +1,21 @@
+product: ucs
+release: "5.0"
+version: [7, 8]
+scope: ucs_5.0-0-errata5.0-8
+src: php7.3
+fix: 7.3.31-1~deb10u7
+desc: |
+ This update addresses the following issues:
+ 7.3.31-1~deb10u7 (Mon, 17 Jun 2024 23:48:38 +0200)
+ * Non-maintainer upload by the LTS team.
+ * Fix CVE-2024-5458: Due to a code logic error, filtering functions such as
+   filter_var when validating URLs (FILTER_VALIDATE_URL) for certain types of
+   URLs the function will result in invalid user information (username +
+   password part of URLs) being treated as valid user information. This may
+   lead to the downstream code accepting invalid URLs as valid and parsing
+   them incorrectly. The problem is related to CVE-2020-7071, but affects IPv6
+   host parts.
+bug: [57400]
+cve:
+- CVE-2024-5458
+- CVE-2020-7071
