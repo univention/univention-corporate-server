@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: pymongo
+fix: 3.4.0-1+deb9u1
+desc: |
+ This update addresses the following issue:
+ 3.4.0-1+deb9u1 (Sun, 16 Jun 2024 21:29:05 +0000)
+ * ELTS team upload
+ * Fix CVE-2024-5629: An out-of-bounds read in the 'bson' module allows
+   deserialization of malformed BSON provided by a Server to raise an
+   exception which may contain arbitrary application memory.
+bug: [57401]
+cve:
+- CVE-2024-5629
