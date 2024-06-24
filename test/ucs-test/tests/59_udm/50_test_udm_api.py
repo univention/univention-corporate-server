@@ -356,6 +356,30 @@ class TestUdmGenericVariousModules(TestCase):
         print('OK: loaded {objs} objects in {mods} modules.'.format(**stats))
 
 
+class TestUdmSearch(TestCase):
+    """Test UDM APIs module.search feature and robustness"""
+
+    udm_test = None
+
+    @classmethod
+    def setUpClass(cls):
+        cls.udm = UDM.admin().version(1)
+        cls.udm_test = UCSTestUDM()
+
+    def test_search_while_obj_is_deleted(self):
+        """Creating two users, iterating over both users while deleting one"""
+        dn1, username1 = self.udm_test.create_user()
+        dn2, username2 = self.udm_test.create_user()
+
+        i = 0
+        for user in self.udm.get("users/user").search(f"(|(username={username1})(username={username2}))"):
+            i += 1
+            assert user.dn == dn1
+            user2 = self.udm.obj_by_dn(dn2)
+            user2.delete()
+        assert i == 1
+
+
 class TestUdmAutoOpen(TestCase):
     """Test UDM APIs module.meta.auto_open feature"""
 
