@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [7, 8]
+scope: ucs_5.0-0-errata5.0-8
+src: nano
+fix: 3.2-3+deb10u1
+desc: |
+ This update addresses the following issue:
+ 3.2-3+deb10u1 (Tue, 11 Jun 2024 21:30:35 +0300)
+ * Non-maintainer upload by the LTS Team.
+ * CVE-2024-5742: Emergency file symlink attack
+bug: [57399]
+cve:
+- CVE-2024-5742
