@@ -595,7 +595,12 @@ class GenericModule(BaseModule, metaclass=GenericModuleMeta):
         except univention.admin.uexceptions.ldapSizelimitExceeded:
             raise SearchLimitReached(module_name=self.name, search_filter=filter_s, sizelimit=sizelimit)
         for dn in dns:
-            yield self.get(dn)
+            try:
+                retrieved_obj = self.get(dn)
+            except NoObject:
+                logging.getLogger('ADMIN').warning('Skipping over search result with DN {!r}, that does not exist anymore'.format(dn))
+                continue
+            yield retrieved_obj
 
     def _dn_exists(self, dn):
         # type: (str) -> bool
