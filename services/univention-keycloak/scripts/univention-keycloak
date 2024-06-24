@@ -154,12 +154,11 @@ class KeycloakDomainConfig:
         data = self.get()
         return data.get("domain_config_init")
 
-    def set(self, values):
+    def set(self, val):
         obj = self.get_obj()
         data = self.get()
-        for val in values:
-            key, value = val.split("=", 1)
-            data[key] = value
+        key, value = val.split("=", 1)
+        data[key] = value
         self.save_obj(data, obj)
 
     def set_domain_config_version(self, version: str) -> None:
@@ -1649,7 +1648,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     parser_domain_config.add_argument("--json", help="json output", default=False, action="store_true")
     parser_domain_config.add_argument("--get", help="get domain config", default=False, action="store_true")
     # dangerous, hidden, should only by the app itself
-    parser_domain_config.add_argument("--set", help=SUPPRESS, action="append")
+    parser_domain_config.add_argument("--set", help=SUPPRESS)
     # dangerous, hidden, should only be used for tests
     parser_domain_config.add_argument("--set-domain-config-version", help=SUPPRESS)
     # dangerous, hidden, should only be used for tests
