@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: nano
+fix: 2.7.4-1+deb9u1
+desc: |
+ This update addresses the following issue:
+ 2.7.4-1+deb9u1 (Sun, 16 Jun 2024 23:36:18 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2024-5742: Emergency file symlink attack
+bug: [57404]
+cve:
+- CVE-2024-5742
