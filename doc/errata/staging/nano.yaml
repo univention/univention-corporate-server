@@ -6,9 +6,11 @@ src: nano
 fix: 2.7.4-1+deb9u1
 desc: |
  This update addresses the following issue:
- 2.7.4-1+deb9u1 (Sun, 16 Jun 2024 23:36:18 +0300)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2024-5742: Emergency file symlink attack
+ * CVE-2024-5742: A vulnerability was found in GNU Nano that allows a possible
+   privilege escalation through an insecure temporary file. If Nano is killed
+   while editing, a file it saves to an emergency file with the permissions of
+   the running user provides a window of opportunity for attackers to escalate
+   privileges through a malicious symlink.
 bug: [57404]
 cve:
 - CVE-2024-5742
