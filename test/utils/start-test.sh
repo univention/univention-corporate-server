@@ -40,8 +40,9 @@ export TERMINATE="${TERMINATE:=$(_jenkins)}"
 image="${DIMAGE:-gitregistry.knut.univention.de/univention/dist/ucs-ec2-tools}"
 : "${DEBUG:=false}"
 : "${DOCKER:=true}"
+: "${DOCKER_ENV_TMP_DIR:=/tmp}"
 
-docker_env_file="$(mktemp)"
+docker_env_file="$(mktemp -p ${DOCKER_ENV_TMP_DIR})"
 
 have () {
 	command -v "$1" >/dev/null 2>&1
