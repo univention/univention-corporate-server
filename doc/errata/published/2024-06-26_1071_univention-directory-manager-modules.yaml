@@ -13,3 +13,6 @@ desc: |
    a faulty state, when an object included in the result was deleted
    before the operation was finished. Those deleted objects are now skipped.
 bug: [56313, 53333]
+erratum: 1071
+announced: 2024-06-26
+support: core
