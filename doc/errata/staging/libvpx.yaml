@@ -6,7 +6,7 @@ src: libvpx
 fix: 1.6.1-3+deb9u6
 desc: |
  This update addresses the issue:
- * CVE-2024-5197: There exists interger overflows. Calling `vpx_img_alloc()`
+ * CVE-2024-5197: There exists integer overflows. Calling `vpx_img_alloc()`
    and `vpx_img_wrap()` with a large value parameter may result in integer
    overflows in the calculations of buffer sizes and offsets and some fields
    of the returned `vpx_image_t` struct may be invalid.
