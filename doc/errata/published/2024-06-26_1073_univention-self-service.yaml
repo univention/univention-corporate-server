@@ -11,3 +11,6 @@ desc: |
    were not sent when users are created. This was fixed by adjusting
    the self-service listener module filter.
 bug: [57226]
+erratum: 1073
+announced: 2024-06-26
+support: core
