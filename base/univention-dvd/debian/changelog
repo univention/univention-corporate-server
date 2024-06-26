@@ -1,3 +1,10 @@
+univention-dvd (5.0.5-2) unstable; urgency=medium
+
+  * Bug #57406: Add screen to the DVD packages so that it can be installed as
+    recommendation from univention-updater (useful for Support)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 26 Jun 2024 21:33:19 +0200
+
 univention-dvd (5.0.5-1) unstable; urgency=medium
 
   * Bug #57350 UCS 5.0-8 version bump

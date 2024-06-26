@@ -34,6 +34,8 @@ univention-container-role-common
 /* AD Member Mode */
 univention-ad-connector
 univention-samba
+/* Very Important Recommends */
+screen
 
 /* Translation Packages */
 univention-l10n-fr
