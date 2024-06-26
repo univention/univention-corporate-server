@@ -12,3 +12,6 @@ desc: |
    creation overwrote the options passed on the `CLI`. This resulted in
    some of the migration guide example creations not working anymore.
 bug: [57375, 57320]
+erratum: 1072
+announced: 2024-06-26
+support: core
