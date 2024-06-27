@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [7, 8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-support-info
+fix: 6.0.0-7
+desc: |
+ This update addresses the following issues:
+ * The package `screen` has been added to the recommendations as it is a vital
+   part of Univention's support. The package has been cut since 5.0-6 while
+   optimizing installation size, but is now re-added. The package should be
+   automatically installed with this update.
+bug: [57406]
