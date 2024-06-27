@@ -598,7 +598,7 @@ class GenericModule(BaseModule, metaclass=GenericModuleMeta):
             try:
                 retrieved_obj = self.get(dn)
             except NoObject:
-                logging.getLogger('ADMIN').warning('Skipping over search result with DN {!r}, that does not exist anymore'.format(dn))
+                logging.getLogger('ADMIN').warning(f'Skipping over search result with DN {dn!r}, that does not exist anymore')
                 continue
             yield retrieved_obj
 
