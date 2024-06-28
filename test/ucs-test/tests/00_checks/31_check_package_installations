@@ -1,0 +1,21 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: check if certain packages are installed
+## exposure: safe
+## tags:
+## - apptest
+## - ucsschool
+
+rc=0
+
+for pkg in screen; do
+	echo "Checking if $pkg is installed"
+	if $(dpkg -l "$pkg" | tail -1 | grep -q ^ii); then
+		echo "OK"
+	else
+		echo "FAIL"
+		rc=1
+	fi
+done
+
+exit $rc
