@@ -1,3 +1,9 @@
+univention-samba4 (11.6.2) unstable; urgency=medium
+
+  * Bug #57409: don't touch backups every day
+
+ -- Florian Best <best@univention.de>  Fri, 05 Jun 2026 17:00:13 +0200
+
 univention-samba4 (11.6.1) unstable; urgency=medium
 
   * Bug #59336: Need to ship an update to restart listener in postup
