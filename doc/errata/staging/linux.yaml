@@ -1,0 +1,1071 @@
+product: ucs
+release: "5.0"
+version: [7, 8]
+scope: ucs_5.0-0-errata5.0-8
+src: linux
+fix: 4.19.316-1
+desc: |
+ This update addresses the following issues:
+ 4.19.316-1 (Tue, 25 Jun 2024 20:32:46 +0200)
+ * New upstream stable update:
+   https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.19.305 - nfc:
+   llcp_core: Hold a ref to llcp_local->dev when holding a ref to llcp_local -
+   i40e: Fix filter input checks to prevent config with invalid values - net:
+   sched: em_text: fix possible memory leak in em_text_destroy() - [armhf]
+   sun9i: smp: Fix array-index-out-of-bounds read in sunxi_mc_smp_init - net:
+   Save and restore msg_namelen in sock_sendmsg (regression in 4.19.297) -
+   i40e: fix use-after-free in i40e_aqc_add_filters() - i40e: Restore VF MSI-X
+   state during PCI reset - net/qla3xxx: switch from 'pci_' to 'dma_' API -
+   net/qla3xxx: fix potential memleak in ql_alloc_buffer_queues - asix: Add
+   check for usbnet_get_endpoints - bnxt_en: Remove mis-applied code from
+   bnxt_cfg_ntp_filters() - mm/memory-failure: check the mapcount of the
+   precise page - [x86] firewire: ohci: suppress unexpected system reboot in
+   AMD Ryzen machines and ASM108x/VT630x PCIe cards - mm: fix
+   unmap_mapping_range high bits shift bug - mmc: rpmb: fixes pause retune on
+   all RPMB partitions. - mmc: core: Cancel delayed work before releasing host
+   - fuse: nlookup missing decrement in fuse_direntplus_link - netfilter:
+   nf_tables: Reject tables of unsupported family (CVE-2023-6040) - PCI:
+   Disable ATS for specific Intel IPU E2000 devices - net: add a route cache
+   full diagnostic message - net/dst: use a smaller percpu_counter batch for
+   dst entries accounting - ipv6: make ip6_rt_gc_expire an atomic_t - ipv6:
+   remove max_size check inline with ipv4 (CVE-2023-52340)
+   https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.19.306 - f2fs:
+   explicitly null-terminate the xattr list (CVE-2023-52436) - ASoC: rt5650:
+   add mutex to avoid the jack detection failure - net/tg3: fix race condition
+   in tg3_reset_task() - ASoC: da7219: Support low DC impedance headset -
+   [armhf] drm/exynos: fix a potential error pointer dereference - [arm*] clk:
+   rockchip: rk3128: Fix HCLK_OTG gate register - jbd2: correct the printing
+   of write_flags in jbd2_write_superblock() - drm/crtc: Fix uninit-value bug
+   in drm_mode_setcrtc - tracing: Have large events show up as '[LINE TOO
+   BIG]' instead of nothing - tracing: Add size check when printing
+   trace_marker output - ring-buffer: Do not record in NMI if the arch does
+   not support cmpxchg in NMI - [x86] Input: atkbd - skip ATKBD_CMD_GETID in
+   translated mode - [x86] Input: i8042 - add nomux quirk for Acer P459-G2-M -
+   [x86] Input: xpad - add Razer Wolverine V2 support - [armhf] sun9i: smp:
+   fix return code check of of_property_match_string - drm/crtc: fix
+   uninitialized variable use - uio: Fix use-after-free in uio_open
+   (CVE-2023-52439) - [x86] lib: Fix overflow when counting digits - [arm64]
+   EDAC/thunderx: Fix possible out-of-bounds string access (CVE-2023-52464) -
+   [x86] ACPI: video: check for error while searching for backlight device
+   parent (CVE-2023-52693) - [amd64] ACPI: LPIT: Avoid u32 multiplication
+   overflow (CVE-2023-52683) - calipso: fix memory leak in
+   netlbl_calipso_add_pass() (CVE-2023-52698) - mtd: Fix gluebi NULL pointer
+   dereference caused by ftl notifier (CVE-2023-52449) - selinux: Fix error
+   priority for bind with AF_UNSPEC on PF_INET6 socket - crypto: virtio -
+   Handle dataq logic with tasklet - [x86] crypto: ccp - fix memleak in
+   ccp_init_dm_workarea - crypto: af_alg - Disallow multiple in-flight AIO
+   requests - pstore: ram_core: fix possible overflow in
+   persistent_ram_init_ecc() - crypto: virtio - Wait for tasklet to complete
+   on device remove - crypto: scompress - return proper error code for
+   allocation failure - crypto: scompress - Use per-CPU struct instead
+   multiple variables - crypto: scomp - fix req->dst buffer overflow
+   (CVE-2023-52612) - blocklayoutdriver: Fix reference leak of
+   pnfs_device_node - NFSv4.1/pnfs: Ensure we handle the error
+   NFS4ERR_RETURNCONFLICT - bpf, lpm: Fix check prefixlen before walking trie
+   - rtlwifi: Use ffs in <foo>_phy_calculate_bit_shift - wifi: rtlwifi:
+   rtl8821ae: phy: fix an undefined bitwise shift behavior - [arm64] scsi:
+   hisi_sas: Replace with standard error code return value - wifi: rtlwifi:
+   add calculate_bit_shift() - wifi: rtlwifi: rtl8188ee: phy: using
+   calculate_bit_shift() - wifi: rtlwifi: rtl8192c: using
+   calculate_bit_shift() - wifi: rtlwifi: rtl8192cu: using
+   calculate_bit_shift() - wifi: rtlwifi: rtl8192ce: using
+   calculate_bit_shift() - rtlwifi: rtl8192de: make arrays static const, makes
+   object smaller - wifi: rtlwifi: rtl8192de: using calculate_bit_shift() -
+   wifi: rtlwifi: rtl8192ee: using calculate_bit_shift() - wifi: rtlwifi:
+   rtl8192se: using calculate_bit_shift() - Bluetooth: Fix bogus check for
+   re-auth no supported with non-ssp - Bluetooth: btmtkuart: fix recv_buf()
+   return value - ip6_tunnel: fix NEXTHDR_FRAGMENT handling in
+   ip6_tnl_parse_tlv_enc_lim() (CVE-2024-26633) - RDMA/usnic: Silence
+   uninitialized symbol smatch warnings - media: pvrusb2: fix use after free
+   on context disconnection (CVE-2023-52445) - f2fs: fix to avoid dirent
+   corruption (CVE-2023-52444) - drm/radeon/r600_cs: Fix possible int
+   overflows in r600_cs_check_reg() - drm/radeon/r100: Fix integer overflow
+   issues in r100_cs_track_check() - drm/radeon: check return value of
+   radeon_ring_lock() - [arm64] drm/msm/mdp4: flush vblank event on disable -
+   drm/drv: propagate errors from drm_modeset_register_all() - drm/radeon:
+   check the alloc_workqueue return value in radeon_crtc_init()
+   (CVE-2023-52470) - drm/amd/pm: fix a double-free in si_dpm_init
+   (CVE-2023-52691) - drivers/amd/pm: fix a use-after-free in
+   kv_parse_power_table (CVE-2023-52469) - gpu/drm/radeon: fix two memleaks in
+   radeon_vm_init - watchdog: set cdev owner before adding (regression in
+   4.19.93) - [x86] watchdog/hpwdt: Only claim UNKNOWN NMI if from iLO -
+   [arm*] watchdog: bcm2835_wdt: Fix WDIOC_SETTIMEOUT handling - of: Fix
+   double free in of_parse_phandle_with_args_map (CVE-2023-52679) - binder:
+   fix async space check for 0-sized buffers - [x86] Input: atkbd - use ab83
+   as id when skipping the getid command - xen-netback: don't produce
+   zero-size SKB frags (CVE-2023-46838) - binder: fix race between mmput() and
+   do_exit() (CVE-2023-52609) - binder: fix unused alloc->free_async_space -
+   tick-sched: Fix idle and iowait sleeptime accounting vs CPU hotplug -
+   [armhf] usb: phy: mxs: remove CONFIG_USB_OTG condition for
+   mxs_phy_is_otg_host() - [arm*] usb: dwc: ep0: Update request status in
+   dwc3_ep0_stall_restart - [arm*] Revert "usb: dwc3: Soft reset phy on probe
+   for host" (regression in 4.19.297) - [arm*] Revert "usb: dwc3: don't reset
+   device side if dwc3 was configured as host-only" (regression in 4.19.291) -
+   [arm*] usb: chipidea: wait controller resume finished for wakeup irq -
+   [x86] Revert "usb: typec: class: fix typec_altmode_put_partner to put
+   plugs" (regression in 4.19.302) - [x86] usb: typec: class: fix
+   typec_altmode_put_partner to put plugs - usb: mon: Fix atomicity violation
+   in mon_bin_vma_fault (regression in 4.19.90) - ALSA: oxygen: Fix right
+   channel of capture volume mixer - fbdev: flush deferred work in
+   fb_deferred_io_fsync() - wifi: rtlwifi: Remove bogus and dangerous ASPM
+   disable/enable code - wifi: rtlwifi: Convert LNKCTL change to PCIe cap RMW
+   accessors - wifi: mwifiex: configure BSSID consistently when starting AP -
+   HID: wacom: Correct behavior when processing some confidence == false
+   touches - acpi: property: Let args be NULL in
+   __acpi_node_get_property_reference - perf genelf: Set ELF program header
+   addresses properly - apparmor: avoid crash when parsed profile name is
+   empty (CVE-2023-52443) - [armhf] serial: imx: Correct clock error message
+   in function probe() - net: qualcomm: rmnet: fix global oob in rmnet_policy
+   (CVE-2024-26597) - ipvs: avoid stat macros calls from preemptible context -
+   [armhf] i2c: s3c24xx: fix read transfers in polling mode - [armhf] i2c:
+   s3c24xx: fix transferring more than one message in polling mode - Revert
+   "NFSD: Fix possible sleep during nfsd4_release_lockowner()" (regression in
+   4.19.246) - crypto: scompress - initialize per-CPU variables on each CPU
+   https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.19.307 - driver
+   core: add device probe log helper - ext4: allow for the last group to be
+   marked as trimmed (regression in 4.19.296) - PM: hibernate: Enforce
+   ordering during image compression/decompression - hwrng: core - Fix page
+   fault dead lock on mmap-ed hwrng (CVE-2023-52615) - rpmsg: virtio: Free
+   driver_override when rpmsg_remove() (CVE-2023-52670) - nouveau/vmm: don't
+   set addr on the fail path to avoid warning - block: Remove special-casing
+   of compound pages - [x86] CPU/AMD: Fix disabling XSAVES on AMD family 0x17
+   due to erratum - net/smc: fix illegal rmb_desc access in SMC-D connection
+   dump (CVE-2024-26615) - vlan: skip nested type that is not
+   IFLA_VLAN_QOS_MAPPING - llc: make llc_ui_sendmsg() more robust against
+   bonding changes (CVE-2024-26636) - llc: Drop support for ETH_P_TR_802_2.
+   (CVE-2024-26635) - net/rds: Fix UBSAN: array-index-out-of-bounds in
+   rds_cmsg_recv (CVE-2024-23849) - tracing: Ensure visibility when inserting
+   an element into tracing_map (CVE-2024-26645) - tcp: Add memory barrier to
+   tcp_push() - netlink: fix potential sleeping issue in mqueue_flush_file -
+   net/mlx5e: fix a double-free in arfs_create_groups (CVE-2024-35835) -
+   netfilter: nf_tables: restrict anonymous set and map names to 16 bytes -
+   [armhf] net: fec: fix the unhandled context fault from smmu - btrfs: don't
+   warn if discard range is not aligned to sector - btrfs: defrag: reject
+   unknown flags of btrfs_ioctl_defrag_range_args - netfilter: nf_tables:
+   reject QUEUE/DROP verdict parameters (CVE-2024-1086) - gpiolib: acpi:
+   Ignore touchpad wakeup on GPD G1619-04 - drm: Don't unref the same fb many
+   times by mistake due to deadlock handling (CVE-2023-52486) - tick/sched:
+   Preserve number of idle sleeps across CPU hotplug events - [amd64]
+   x86/entry/ia32: Ensure s32 is sign extended to s64 - net/sched: cbs: Fix
+   not adding cbs instance to list (regression in 4.19.99) (CVE-2021-33630) -
+   audit: Send netlink ACK before setting connection in auditd_set - [x86]
+   ACPI: video: Add quirk for the Colorful X15 AT 23 Laptop - ACPI: extlog:
+   fix NULL pointer dereference check - FS:JFS:UBSAN:array-index-out-of-bounds
+   in dbAdjTree (CVE-2023-52604) - UBSAN: array-index-out-of-bounds in
+   dtSplitRoot (CVE-2023-52603) - jfs: fix slab-out-of-bounds Read in dtSearch
+   (CVE-2023-52602) - jfs: fix array-index-out-of-bounds in dbAdjTree
+   (CVE-2023-52601) - jfs: fix uaf in jfs_evict_inode (CVE-2023-52600) -
+   pstore/ram: Fix crash when setting number of cpus to an odd number
+   (CVE-2023-52619) - afs: fix the usage of read_seqbegin_or_lock() in
+   afs_find_server*() - rxrpc_find_service_conn_rcu: fix the usage of
+   read_seqbegin_or_lock() - jfs: fix array-index-out-of-bounds in diNewExt
+   (CVE-2023-52599) - SUNRPC: Fix a suspicious RCU usage warning
+   (CVE-2023-52623) - ext4: fix inconsistent between segment fstrim and full
+   fstrim - ext4: unify the type of flexbg_size to unsigned int - ext4: remove
+   unnecessary check from alloc_flex_gd() - ext4: avoid online resizing
+   failures due to oversized flex bg (CVE-2023-52622) - scsi: lpfc: Fix
+   possible file string name overflow when updating firmware - PCI: Add no PM
+   reset quirk for NVIDIA Spectrum devices - bonding: return -ENOMEM instead
+   of BUG in alb_upper_dev_walk - wifi: ath9k: Fix potential
+   array-index-out-of-bounds read in ath9k_htc_txstatus() (CVE-2023-52594) -
+   bpf: Add map and need_defer parameters to .map_fd_put_ptr() - scsi: libfc:
+   Don't schedule abort twice - scsi: libfc: Fix up timeout error in
+   fc_fcp_rec_error() - [armhf] dts: rockchip: fix rk3036 hdmi ports node -
+   md: Whenassemble the array, consult the superblock of the freshest device -
+   wifi: rtl8xxxu: Add additional USB IDs for RTL8192EU devices - wifi:
+   rtlwifi: rtl8723{be,ae}: using calculate_bit_shift() - wifi: cfg80211: free
+   beacon_ies when overridden from hidden BSS - f2fs: fix to check return
+   value of f2fs_reserve_new_block() - fast_dput(): handle underflows
+   gracefully - RDMA/IPoIB: Fix error code return in ipoib_mcast_join -
+   drm/drm_file: fix use of uninitialized variable - drm/framebuffer: Fix use
+   of uninitialized variable - drm/mipi-dsi: Fix detach call without attach -
+   media: stk1160: Fixed high volume of stk1160_dbg messages - [x86] ALSA:
+   hda: Intel: add HDA_ARL PCI ID support - [armhf] drm/exynos: Call
+   drm_atomic_helper_shutdown() at shutdown/unbind time - IB/ipoib: Fix mcast
+   list locking (CVE-2023-52587) - media: ddbridge: fix an error code problem
+   in ddb_probe - [arm64] drm/msm/dpu: Ratelimit framedone timeout msgs -
+   drm/amdgpu: Let KFD sync with VM fences - [amd64] drm/amdgpu: Drop 'fence'
+   check in 'to_amdgpu_amdkfd_fence()' - leds: trigger: panic: Don't register
+   panic notifier if creating the trigger failed - blk-mq: fix IO hang from
+   sbitmap wakeup race (CVE-2024-26671) - ceph: fix deadlock or deadcode of
+   misusing dget() (CVE-2023-52583) - wifi: cfg80211: fix RCU dereference in
+   __cfg80211_bss_update - [x86] scsi: isci: Fix an error code problem in
+   isci_io_request_build() - ixgbe: Refactor returning internal error codes -
+   ixgbe: Refactor overtemp event handling - ixgbe: Fix an error handling path
+   in ixgbe_read_iosf_sb_reg_x550() - ipv6: Ensure natural alignment of const
+   ipv6 loopback and router addresses - llc: call sock_orphan() at release
+   time (CVE-2024-26625) - netfilter: nf_log: replace BUG_ON by WARN_ON_ONCE
+   when putting logger - net: ipv4: fix a memleak in ip_setup_cork (regression
+   in 4.19.91) - HID: apple: Add support for the 2021 Magic Keyboard - HID:
+   apple: Swap the Fn and Left Control keys on Apple keyboards - HID: apple:
+   Add 2021 magic keyboard FN key mapping - dmaengine: fix
+   is_slave_direction() return false when DMA_DEV_TO_DEV - [armhf] phy: ti:
+   phy-omap-usb2: Fix NULL pointer dereference for SRP (CVE-2024-26600) -
+   hwmon: (aspeed-pwm-tacho) mutex for tach reading - [x86] hwmon: (coretemp)
+   Fix out-of-bounds memory access (CVE-2024-26664) - [x86] hwmon: (coretemp)
+   Fix bogus core_id to attr name mapping (regression in 4.19.264) - inet:
+   read sk->sk_family once in inet_recv_error() (CVE-2024-26679) - rxrpc: Fix
+   response to PING RESPONSE ACKs to a dead call - tipc: Check the bearer type
+   before calling tipc_udp_nl_bearer_add() (CVE-2024-26663) - ppp_async: limit
+   MRU to 64K (CVE-2024-26675) - netfilter: nft_compat: reject unused compat
+   flag - netfilter: nft_compat: restrict match/target protocol to u16 - USB:
+   serial: qcserial: add new usb-id for Dell Wireless DW5826e - USB: serial:
+   option: add Fibocom FM101-GL variant - USB: serial: cp210x: add ID for IMST
+   iM871A-USB - [x86] Input: atkbd - skip ATKBD_CMD_SETLEDS when skipping
+   ATKBD_CMD_GETID - vhost: use kzalloc() instead of kmalloc() followed by
+   memset() (CVE-2024-0340) - hrtimer: Report offline hrtimer enqueue
+   (regression in 4.19.302) - btrfs: forbid creating subvol qgroups - btrfs:
+   send: return EOPNOTSUPP on unknown flags - ASoC: rt5645: Fix deadlock in
+   rt5645_jack_detect_work() (CVE-2024-26722) - i40e: Fix waiting for queues
+   of all VSIs to be disabled - mm/writeback: fix possible divide-by-zero in
+   wb_dirty_limits(), again (CVE-2024-26720) - HID: wacom: generic: Avoid
+   reporting a serial of '0' to userspace - HID: wacom: Do not register input
+   devices until after hid_hw_start - USB: hub: check for alternate port
+   before enabling A_ALT_HNP_SUPPORT - usb: f_mass_storage: forbid async queue
+   when shutdown happen - scsi: Revert "scsi: fcoe: Fix potential deadlock on
+   &fip->ctlr_lock" (regression in 4.19.295) (CVE-2024-26917) - nfc: nci: free
+   rx_data_reassembly skb on NCI device cleanup (CVE-2024-26825) -
+   xen-netback: properly sync TX responses - binder: signal epoll threads of
+   self-work (CVE-2024-26606) - ext4: fix double-free of blocks due to wrong
+   extents moved_len (CVE-2024-26704) - ring-buffer: Clean
+   ring_buffer_poll_wait() error return - ALSA: hda/conexant: Add quirk for
+   SWS JS201D - nilfs2: fix data corruption in dsync block recovery for small
+   block sizes (CVE-2024-26697) - nilfs2: fix hang in
+   nilfs_lookup_dirty_data_buffers() (CVE-2024-26696) - pmdomain: core: Move
+   the unused cleanup to a _sync initcall - sched/membarrier: reduce the
+   ability to hammer on sys_membarrier (CVE-2024-26602) - nilfs2: fix
+   potential bug in end_buffer_async_write (CVE-2024-26685) - lsm: new
+   security_file_ioctl_compat() hook - netfilter: nf_tables: fix pointer math
+   issue in nft_byteorder_eval() (CVE-2024-0607)
+   https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.19.308 -
+   net/sched: Retire CBQ qdisc - net/sched: Retire ATM qdisc - net/sched:
+   Retire dsmark qdisc - [arm*] stmmac: no need to check return value of
+   debugfs_create functions - [arm*] net: stmmac: fix notifier registration
+   (regression in 4.19.283) - memcg: add refcnt for pcpu stock to avoid UAF
+   problem in drain_all_stock() - nilfs2: replace WARN_ONs for invalid DAT
+   metadata block requests - userfaultfd: fix mmap_changing checking in
+   mfill_atomic_hugetlb - sched/rt: sysctl_sched_rr_timeslice show default
+   timeslice after reset - sched/rt: Disallow writing invalid values to
+   sched_rt_period_us - scsi: target: core: Add TMF to tmr_list handling
+   (CVE-2024-26845) - wifi: cfg80211: fix missing interfaces when dumping -
+   wifi: mac80211: fix race condition on enabling fast-xmit (CVE-2024-26779) -
+   [x86] fbdev: savage: Error out if pixclock equals zero (CVE-2024-26778) -
+   [x86] fbdev: sis: Error out if pixclock equals zero (CVE-2024-26777) -
+   ext4: avoid allocating blocks from corrupted group in
+   ext4_mb_try_best_found() (CVE-2024-26773) - ext4: avoid allocating blocks
+   from corrupted group in ext4_mb_find_by_goal() (CVE-2024-26772) - [arm64]
+   regulator: pwm-regulator: Add validity checks in continuous .get_voltage -
+   [x86] hwmon: (coretemp) Enlarge per package core count limit - firewire:
+   core: send bus reset promptly on gap count error - virtio-blk: Ensure no
+   requests in virtqueues before deleting vqs. - [amd64] IB/hfi1: Fix sdma.h
+   tx->num_descs off-by-one error (regression in 4.19.291) (CVE-2024-26766) -
+   mm: memcontrol: switch to rcu protection in drain_all_stock() - dm-crypt:
+   don't modify the data when using authenticated encryption (CVE-2024-26763)
+   - gtp: fix use-after-free and null-ptr-deref in gtp_genl_dump_pdp()
+   (CVE-2024-26754) - l2tp: pass correct message length to ip6_append_data
+   (regression in 4.19.296) (CVE-2024-26752) - usb: gadget: ncm: Avoid
+   dropping datagrams of properly parsed NTBs (CVE-2024-27405) - usb: roles:
+   don't get/set_role() when usb_role_switch is unregistered - [amd64]
+   IB/hfi1: Fix a memleak in init_credit_return (CVE-2024-26839) -
+   RDMA/bnxt_re: Return error for SRQ resize - RDMA/srpt: Support specifying
+   the srpt_service_guid parameter (CVE-2024-26744) - RDMA/ulp: Use dev_name
+   instead of ibdev->name - RDMA/srpt: Make debug output more detailed - ipv6:
+   sr: fix possible use-after-free and null-ptr-deref (CVE-2024-26735) -
+   PCI/MSI: Prevent MSI hardware interrupt number truncation - [arm*] KVM:
+   arm64: vgic-its: Test for valid IRQ in its_sync_lpi_pending_table() -
+   [arm*] KVM: arm64: vgic-its: Test for valid IRQ in MOVALL handler - fs/aio:
+   Restrict kiocb_set_cancel_fn() to I/O submitted via libaio (CVE-2024-26764)
+   https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.19.309 - netlink:
+   Fix kernel-infoleak-after-free in __skb_datagram_iter (CVE-2024-26805 -
+   tun: Fix xdp_rxq_info's queue_index when detaching - lan78xx: enable auto
+   speed configuration for LAN7850 if no EEPROM is detected - net: usb:
+   dm9601: fix wrong return value in dm9601_mdio_read (regression in 4.19.297)
+   - Bluetooth: Avoid potential use-after-free in hci_error_reset
+   (CVE-2024-26801) - Bluetooth: hci_event: Fix handling of
+   HCI_EV_IO_CAPA_REQUEST (regression in 4.19.297) (CVE-2024-27416) -
+   Bluetooth: Enforce validation on max value of connection interval
+   (regression in 4.19.76) - efi/capsule-loader: fix incorrect allocation size
+   (CVE-2024-27413) - power: supply: bq27xxx-i2c: Do not free non existing IRQ
+   (CVE-2024-27412) - gtp: fix use-after-free and null-ptr-deref in
+   gtp_newlink() (CVE-2024-26793) - wifi: nl80211: reject iftype change with
+   mesh ID change (CVE-2024-27410) - btrfs: dev-replace: properly validate
+   device names (CVE-2024-26791) - mmc: core: Fix eMMC initialization with
+   1-bit bus connection - cachefiles: fix memory leak in
+   cachefiles_add_cache() (CVE-2024-26840)
+   https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.19.310 - lan78xx:
+   Add missing return code checks - lan78xx: Fix partial packet errors on
+   suspend/resume - lan78xx: Fix race conditions in suspend/resume handling -
+   net: lan78xx: fix runtime PM count underflow on link stop - net: move
+   definition of pcpu_lstats to header file - geneve: make sure to pull inner
+   header in geneve_rx() (CVE-2024-26857) - net/ipv6: avoid possible UAF in
+   ip6_route_mpath_notify() (CVE-2024-26852) - net/rds: fix WARNING in
+   rds_conn_connect_if_down (CVE-2024-27024) - netfilter: nf_conntrack_h323:
+   Add protection for bmp length out of range (CVE-2024-26851) - [x86] netrom:
+   Fix data-races around sysctl variables (CVE-2024-27419) - btrfs:
+   ref-verify: free ref cache before clearing mount opt - [x86] Input: i8042 -
+   fix strange behavior of touchpad on Clevo NS70PU - [x86] hv_netvsc: Make
+   netvsc/VF binding check both MAC and serial number - [x86] hv_netvsc: use
+   netif_is_bond_master() instead of open code - [x86] hv_netvsc: Register VF
+   in netvsc_probe if NET_DEVICE_REGISTER missed (CVE-2024-26820) - getrusage:
+   move thread_group_cputime_adjusted() outside of lock_task_sighand() -
+   getrusage: use __for_each_thread() - getrusage: use sig->stats_lock rather
+   than lock_task_sighand()
+   https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.19.311 - ASoC:
+   rt5645: Make LattePanda board DMI match more precise - [x86] xen: Add some
+   null pointer checking to smp.c - block: sed-opal: handle empty atoms when
+   parsing response - dm-verity, dm-crypt: align "struct bvec_iter" correctly
+   - scsi: mpt3sas: Prevent sending diag_reset when the controller is ready -
+   Bluetooth: rfcomm: Fix null-ptr-deref in rfcomm_check_security
+   (CVE-2024-22099, CVE-2024-26903) - firewire: core: use long bus reset on
+   gap count error - [x86] ASoC: Intel: bytcr_rt5640: Add an extra entry for
+   the Chuwi Vi8 tablet - [i386] Input: gpio_keys_polled - suppress deferred
+   probe error for gpio - crypto: algif_aead - fix uninitialized ctx->init -
+   crypto: af_alg - make some functions static - crypto: algif_aead - Only
+   wake up when ctx->more is zero - do_sys_name_to_handle(): use kzalloc() to
+   fix kernel-infoleak (CVE-2024-26901) - md: switch to ->check_events for
+   media change notifications - block: add a new set_read_only method - md:
+   implement ->set_read_only to hook into BLKROSET processing - md: Don't
+   clear MD_CLOSING when the raid is about to stop - aoe: fix the potential
+   use-after-free problem in aoecmd_cfg_pkts (CVE-2023-6270) - timekeeping:
+   Fix cross-timestamp interpolation on counter wrap - timekeeping: Fix
+   cross-timestamp interpolation corner case decision - [arm*] timekeeping:
+   Fix cross-timestamp interpolation for non-x86 - wifi: ath10k: fix NULL
+   pointer dereference in ath10k_wmi_tlv_op_pull_mgmt_tx_compl_ev()
+   (CVE-2023-7042) - b43: dma: Fix use true/false for bool type variable -
+   wifi: b43: Stop/wake correct queue in DMA Tx path when QoS is disabled
+   (CVE-2023-52644) - wifi: b43: Stop/wake correct queue in PIO Tx path when
+   QoS is disabled - b43: main: Fix use true/false for bool type - wifi: b43:
+   Stop correct queue in DMA worker when QoS is disabled - wifi: b43: Disable
+   QoS for bcm4331 - wifi: mwifiex: debugfs: Drop unnecessary error check for
+   debugfs_create_dir() - sock_diag: annotate data-races around
+   sock_diag_handlers[family] - af_unix: Annotate data-race of gc_in_progress
+   in wait_for_unix_gc(). - wifi: libertas: fix some memleaks in
+   lbs_allocate_cmd_buffer() (CVE-2024-35828) - ACPI: processor_idle: Fix
+   memory leak in acpi_processor_power_exit() (CVE-2024-26894) - [amd64]
+   iommu/amd: Mark interrupt as managed - wifi: brcmsmac: avoid function
+   pointer casts - ACPI: scan: Fix device check notification handling - [x86]
+   relocs: Ignore relocations in .notes section (CVE-2024-26816) - SUNRPC: fix
+   some memleaks in gssx_dec_option_array (CVE-2024-27388) - [armhf] mmc:
+   wmt-sdmmc: remove an incorrect release_mem_region() call in the .remove
+   function - igb: move PEROUT and EXTTS isr logic to separate functions -
+   igb: Fix missing time sync events - Bluetooth: Remove superfluous call to
+   hci_conn_check_pending() - Bluetooth: hci_core: Fix possible buffer
+   overflow (CVE-2024-26889) - sr9800: Add check for usbnet_get_endpoints
+   (CVE-2024-26651) - [armhf,i386] bpf: Fix hashtab overflow check on 32-bit
+   arches (CVE-2024-26884) - [armhf,i386] bpf: Fix stackmap overflow check on
+   32-bit arches (CVE-2024-26883) - ipv6: fib6_rules: flush route cache when
+   rule is changed - tcp: fix incorrect parameter validation in the
+   do_tcp_getsockopt() function - l2tp: fix incorrect parameter validation in
+   the pppol2tp_getsockopt() function - udp: fix incorrect parameter
+   validation in the udp_lib_getsockopt() function - net/x25: fix incorrect
+   parameter validation in the x25_getsockopt() function - nfp: flower: handle
+   acti_netdevs allocation failure (CVE-2024-27046) - dm raid: fix false
+   positive for requeue needed during reshape - dm: call the resume method on
+   internal suspend (CVE-2024-26880) - [arm*] drm/tegra: dsi: Add missing
+   check for of_find_device_by_node (CVE-2023-52650) - [arm*] gpu: host1x:
+   mipi: Update tegra_mipi_request() to be node based - [arm*] drm/tegra: dsi:
+   Make use of the helper function dev_err_probe() - [arm*] drm/tegra: dsi:
+   Fix some error handling paths in tegra_dsi_probe() - [arm*] drm/tegra: dsi:
+   Fix missing pm_runtime_disable() in the error handling path of
+   tegra_dsi_probe() - [arm*] drm/rockchip: inno_hdmi: Fix video timing - drm:
+   Don't treat 0 as -1 in drm_fixp2int_ceil - [arm*] drm/rockchip: lvds: do
+   not overwrite error code - [arm*] drm/rockchip: lvds: do not print scary
+   message when probing defer - media: tc358743: register v4l2 async device
+   only after successful setup (CVE-2024-35830) - perf evsel: Fix duplicate
+   initialization of data->id in evsel__parse_sample() - media: v4l2-tpg: fix
+   some memleaks in tpg_alloc (CVE-2024-27078) - media: v4l2-mem2mem: fix a
+   memleak in v4l2_m2m_register_entity (CVE-2024-27077) - media: dvbdev:
+   remove double-unlock - media: dvbdev: Fix memleak in dvb_register_device -
+   media: dvbdev: fix error logic at dvb_register_device() - media: dvb-core:
+   Fix use-after-free due to race at dvb_register_device() - media: edia:
+   dvbdev: fix a use-after-free (CVE-2024-27043) - [arm64] clk: qcom: reset:
+   Allow specifying custom reset delay - [arm64] clk: qcom: reset: support
+   resetting multiple bits - [arm64] clk: qcom: reset: Commonize the de/assert
+   functions - [arm64] clk: qcom: reset: Ensure write completion on reset
+   de/assertion - quota: check time limit when back out space/inode change -
+   quota: simplify drop_dquot_ref() - quota: Fix potential NULL pointer
+   dereference (CVE-2024-26878) - quota: Fix rcu annotations of inode dquot
+   pointers - perf thread_map: Free strlist on normal path in
+   thread_map__new_by_tid_str() - drm/radeon/ni: Fix wrong firmware size
+   logging in ni_init_microcode() - ALSA: seq: fix function cast warnings -
+   media: go7007: add check of return value of go7007_read_addr() - media:
+   pvrusb2: fix pvr2_stream_callback casts - [arm64] firmware: qcom: scm: Add
+   WLAN VMID for Qualcomm SCM interface - [arm64] clk: qcom: dispcc-sdm845:
+   Adjust internal GDSC wait times - PCI: Mark 3ware-9650SE Root Port Extended
+   Tags as broken - [arm64] clk: hisilicon: hi3519: Release the correct number
+   of gates in hi3519_clk_unregister() - [arm*] drm/tegra: put drm_gem_object
+   ref on error in tegra_fb_create - [arm*] mfd: syscon: Call of_node_put()
+   only when of_parse_phandle() takes a ref - [arm*] crypto: arm - Rename
+   functions to avoid conflict with crypto/sha256.h - [arm*] crypto: arm/sha -
+   fix function cast warnings - drm/amdgpu: Fix missing break in ATOM_ARG_IMM
+   Case of atom_get_src_int() - media: pvrusb2: fix uaf in
+   pvr2_context_set_notify (CVE-2024-26875) - media: dvb-frontends: avoid
+   stack overflow warnings with clang (CVE-2024-27075) - media: go7007: fix a
+   memleak in go7007_load_encoder (CVE-2024-27074) - [arm*] drm/mediatek: Fix
+   a null pointer crash in mtk_drm_crtc_finish_page_flip (CVE-2024-26874) -
+   ALSA: usb-audio: Stop parsing channels bits when all channels are found.
+   (CVE-2024-27436) - scsi: csiostor: Avoid function pointer casts - scsi:
+   bfa: Fix function pointer type mismatch for hcb_qe->cbfn - net: sunrpc: Fix
+   an off by one in rpc_sockaddr2uaddr() - NFS: Fix an off by one in
+   root_nfs_cat() - [arm64] clk: qcom: gdsc: Add support to update GDSC
+   transition delay - [armhf] tty: serial: samsung: fix tx_empty() to return
+   TIOCSER_TEMT - kconfig: fix infinite loop when expanding a macro at the end
+   of file - serial: 8250_exar: Don't remove GPIO device on suspend - hsr: Fix
+   uninit-value access in hsr_get_node() (CVE-2024-26863) - rds: introduce
+   acquire/release ordering in acquire/release_in_xmit() - net/bnx2x: Prevent
+   access to a freed page in page_pool (CVE-2024-26859) - spi: spi-mt65xx: Fix
+   NULL pointer access in interrupt handler (CVE-2024-27028) - crypto: af_alg
+   - Fix regression on empty requests - crypto: af_alg - Work around empty
+   control messages without MSG_MORE
+   https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.19.312 - [x86]
+   cpu: Support AMD Automatic IBRS - [x86] bugs: Use sysfs_emit() -
+   timer/trace: Replace deprecated vsprintf pointer extension %pf by %ps -
+   timer/trace: Improve timer tracing - timers: Prepare support for PREEMPT_RT
+   - timers: Use del_timer_sync() even on UP - timers: Rename del_timer_sync()
+   to timer_delete_sync() - wifi: brcmfmac: Fix use-after-free bug in
+   brcmf_cfg80211_detach (CVE-2023-47233) - media: xc4000: Fix atomicity
+   violation in xc4000_get_frequency (CVE-2024-24861) - [x86] KVM: Always
+   flush async #PF workqueue when vCPU is being destroyed (CVE-2024-26976) -
+   [x86] crypto: qat - fix double free during reset - [x86] crypto: qat -
+   resolve race condition during AER recovery (CVE-2024-26974) - fat: fix
+   uninitialized field in nostale filehandles (CVE-2024-26973) - ubifs: Set
+   page uptodate in the correct place (CVE-2024-35821) - ubi: Check for too
+   small LEB size in VTBL code (CVE-2024-25739) - ubi: correct the calculation
+   of fastmap size - PM: suspend: Set mem_sleep_current during kernel command
+   line setup - [arm64] clk: qcom: gcc-ipq8074: fix terminating of frequency
+   table arrays (CVE-2024-26969) - [armhf] clk: qcom: mmcc-apq8084: fix
+   terminating of frequency table arrays (CVE-2024-26966) - [armhf] clk: qcom:
+   mmcc-msm8974: fix terminating of frequency table arrays (CVE-2024-26965) -
+   USB: serial: ftdi_sio: add support for GMC Z216C Adapter IR-USB - USB:
+   serial: add device ID for VeriFone adapter - USB: serial: cp210x: add ID
+   for MGP Instruments PDS100 - USB: serial: option: add MeiG Smart SLM320
+   product - USB: serial: cp210x: add pid/vid for TDK NC0110013M and
+   MM0110113M - PM: sleep: wakeirq: fix wake irq warning in system suspend
+   (regression in 4.19.291) - fuse: don't unhash root (regression in 4.19.226)
+   - PCI: Drop pci_device_remove() test of pci_dev->driver - PCI/PM: Drain
+   runtime-idle callbacks before driver removal (CVE-2024-35809) - dm-raid:
+   fix lockdep waring in "pers->hot_add_disk" - mmc: core: Fix switch on gp3
+   partition - hwmon: (amc6821) add of_match table - ext4: fix corruption
+   during on-line resize (CVE-2024-35807) - speakup: Fix 8bit characters from
+   direct synth - soc: fsl: qbman: Always disable interrupts when taking
+   cgr_lock (CVE-2024-35806) - soc: fsl: qbman: Use raw spinlock for cgr_lock
+   (CVE-2024-35819) - [armhf] drm/imx/ipuv3: do not return negative values
+   from .get_modes() - [arm*] drm/vc4: hdmi: do not return negative values
+   from .get_modes() - [x86] memtest: use {READ,WRITE}_ONCE in memory scanning
+   - nilfs2: fix failure to detect DAT corruption in btree and direct mappings
+   (CVE-2024-26956) - nilfs2: use a more common logging style - nilfs2:
+   prevent kernel bug at submit_bh_wbc() (CVE-2024-26955) - [x86] CPU/AMD:
+   Update the Zenbleed microcode revisions - [x86] comedi: comedi_test:
+   Prevent timers rescheduling during deletion - netfilter: nf_tables:
+   disallow anonymous set with timeout flag (CVE-2024-26642) - netfilter:
+   nf_tables: reject constant set with timeout - xfrm: Avoid clang fortify
+   warning in copy_to_user_tmpl() - ALSA: hda/realtek - Fix headset Mic no
+   show at resume back for Lenovo ALC897 platform - USB: usb-storage: Prevent
+   divide-by-0 error in isd200_ata_command (CVE-2024-27059) - usb: gadget:
+   ncm: Fix handling of zero block length packets (regression in 4.19.297)
+   (CVE-2024-35825) - usb: port: Don't try to peer unused USB ports based on
+   location - vt: fix unicode buffer corruption when deleting characters
+   (CVE-2024-35823) - vt: fix memory overlapping when deleting chars in the
+   buffer (CVE-2022-48627) - mm/memory-failure: fix an incorrect use of tail
+   pages - mm/migrate: set swap entry values of THP tail pages properly. -
+   wifi: mac80211: check/clear fast rx for non-4addr sta VLAN changes
+   (CVE-2024-35789) - fs/aio: Check IOCB_AIO_RW before the struct aio_kiocb
+   conversion (CVE-2024-35815) - printk: Update @console_may_schedule in
+   console_trylock_spinning() - btrfs: allocate btrfs_ioctl_defrag_range_args
+   on stack - Revert "loop: Check for overflow while configuring loop" - loop:
+   Call loop_config_discard() only after new config is applied - loop: Factor
+   out setting loop device size - loop: Refactor loop_set_status() size
+   calculation - loop: properly observe rotational flag of underlying device -
+   perf/core: Fix reentry problem in perf_output_read_group() - efivarfs:
+   Request at most 512 bytes for variable names - loop: Factor out configuring
+   loop from status - loop: Check for overflow while configuring loop - loop:
+   loop_set_status_from_info() check before assignment - usb: dwc2: host: Fix
+   remote wakeup from hibernation - usb: dwc2: host: Fix hibernation flow -
+   usb: dwc2: host: Fix ISOC flow in DDMA mode - usb: dwc2: gadget: LPM flow
+   fix - usb: udc: remove warning when queue disabled ep (CVE-2024-35822) -
+   scsi: qla2xxx: Fix command flush on cable pull (CVE-2024-26931) - [x86]
+   cpu: Enable STIBP on AMD if Automatic IBRS is enabled - scsi: lpfc: Correct
+   size for wqe for memset() - USB: core: Fix deadlock in
+   usb_deauthorize_interface() (CVE-2024-26934) - nfc: nci: Fix uninit-value
+   in nci_dev_up and nci_ntf_packet (CVE-2024-35915) - mptcp: add
+   sk_stop_timer_sync helper - tcp: properly terminate timers for kernel
+   sockets (CVE-2024-35910) - r8169: fix issue caused by buggy BIOS on certain
+   boards with RTL8168d - Bluetooth: hci_event: set the conn encrypted before
+   conn establishes - Bluetooth: Fix TOCTOU in HCI debugfs implementation
+   (CVE-2024-24857, CVE-2024-24858) - netfilter: nf_tables: disallow timeout
+   for anonymous sets (CVE-2023-52620) - net/rds: fix possible cp null
+   dereference (CVE-2024-35902) - mm, vmscan: prevent infinite loop for costly
+   GFP_NOIO | __GFP_RETRY_MAYFAIL allocations - netfilter: nf_tables: Fix
+   potential data-race in __nft_flowtable_type_get() (CVE-2024-35898) -
+   net/sched: act_skbmod: prevent kernel-infoleak (CVE-2024-35893) - [arm*]
+   net: stmmac: fix rx queue priority assignment - ipv6: Fix infinite
+   recursion in fib6_dump_done(). (CVE-2024-35886) - i40e: fix vf may be used
+   uninitialized in this function warning (regression in 4.19.264)
+   (CVE-2024-36020) - initramfs: factor out a helper to populate the initrd
+   image - fs: add a vfs_fchown helper - fs: add a vfs_fchmod helper -
+   initramfs: switch initramfs unpacking to struct file based APIs - init:
+   open /initrd.image with O_LARGEFILE - erspan: Add type I version 0 support.
+   - erspan: make sure erspan_base_hdr is present in skb->head
+   (CVE-2024-35888) - ASoC: ops: Fix wraparound for mask in snd_soc_get_volsw
+   - ata: sata_sx4: fix pdc20621_get_from_dimm() on 64-bit - [x86] ALSA:
+   hda/realtek: Update Panasonic CF-SZ6 quirk to support headset with
+   microphone - wifi: ath9k: fix LNA selection in ath_ant_try_scan() - [x86]
+   VMCI: Fix memcpy() run-time warning in dg_dispatch_as_host()
+   (CVE-2024-35944) - [arm64] dts: rockchip: fix rk3399 hdmi ports node -
+   btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()
+   (CVE-2024-35936) - btrfs: export: handle invalid inode or root reference in
+   btrfs_get_parent() - btrfs: send: handle path ref underflow in header
+   iterate_inode_ref() (CVE-2024-35935) - Bluetooth: btintel: Fix null ptr
+   deref in btintel_read_version (CVE-2024-35933) - Input: synaptics-rmi4 -
+   fail probing if memory allocation for "phys" fails - sysv: don't call
+   sb_bread() with pointers_lock held (CVE-2023-52699) - scsi: lpfc: Fix
+   possible memory leak in lpfc_rcv_padisc() (CVE-2024-35930) - isofs: handle
+   CDs with bad root inode but good Joliet root directory - [i386]
+   drm/amd/display: Fix nanosec stat overflow - SUNRPC: increase size of
+   rpc_wait_queue.qlen from unsigned short to unsigned int - block: prevent
+   division by zero in blk_rq_stat_sum() (CVE-2024-35925) - Input: allocate
+   keycode for Display refresh rate toggle - [x86] fbdev: viafb: fix typo in
+   hw_bitblt_1 and hw_bitblt_2 - fbmon: prevent division by zero in
+   fb_videomode_from_videomode() (CVE-2024-35922) - tty: n_gsm: require
+   CAP_NET_ADMIN to attach N_GSM0710 ldisc (CVE-2023-52880) - virtio: reenable
+   config if freezing device failed - x86/mm/pat: fix VM_PAT handling in COW
+   mappings (CVE-2024-35877) - Bluetooth: btintel: Fixe build regression -
+   [x86] VMCI: Fix possible memcpy() run-time warning in
+   vmci_datagram_invoke_guest_handler() - erspan: Check IFLA_GRE_ERSPAN_VER is
+   set. - ip_gre: do not report erspan version on GRE interface - initramfs:
+   fix populate_initrd_image() section mismatch - [amd64] amdkfd: use calloc
+   instead of kzalloc to avoid integer overflow (CVE-2024-26817)
+   https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.19.313 -
+   batman-adv: Avoid infinite loop trying to resize local TT (CVE-2024-35982)
+   - Bluetooth: Fix memory leak in hci_req_sync_complete() (CVE-2024-35978) -
+   nouveau: fix function cast warning - geneve: fix header validation in
+   geneve[6]_xmit_skb (regression in 4.19.191) (CVE-2024-35973) - ipv6: fix
+   race condition between ipv6_get_ifaddr and ipv6_del_addr (CVE-2024-35969) -
+   net/mlx5: Properly link new fs rules into the tree (CVE-2024-35960) -
+   vhost: Add smp_rmb() in vhost_vq_avail_empty() - [x86] apic: Force
+   native_apic_mem_read() to use the MOV instruction - btrfs: record delayed
+   inode root in transaction - kprobes: Fix possible use-after-free issue on
+   kprobe registration (regression in 4.19.256) (CVE-2024-35955) - netfilter:
+   nf_tables: __nft_expr_type_get() selects specific family type - netfilter:
+   nf_tables: Fix potential data-race in __nft_expr_type_get()
+   (CVE-2024-27020) - tun: limit printing rate when illegal packet received by
+   tun dev (CVE-2024-27013) - RDMA/mlx5: Fix port number for counter query in
+   multi-port configuration (regression in 4.19.258) - drm: nv04: Fix out of
+   bounds access (CVE-2024-27008) - [x86] comedi: vmk80xx: fix incomplete
+   endpoint checking (CVE-2024-27001) - USB: serial: option: add Fibocom
+   FM135-GL variants - USB: serial: option: add support for Fibocom
+   FM650/FG650 - USB: serial: option: add Lonsung U8300/U9300 product - USB:
+   serial: option: support Quectel EM060K sub-models - USB: serial: option:
+   add Rolling RW101-GL and RW135-GL support - USB: serial: option: add Telit
+   FN920C04 rmnet compositions - [arm*] usb: dwc2: host: Fix dereference issue
+   in DDMA completion flow. (CVE-2024-26997) - speakup: Avoid crash on very
+   long word (CVE-2024-26994) - fs: sysfs: Fix reference leak in
+   sysfs_break_active_protection() (CVE-2024-26993) - nouveau: fix instmem
+   race condition around ptr stores (CVE-2024-26984) - nilfs2: fix OOB in
+   nilfs_set_de_type (CVE-2024-26981) - tracing: Remove hist trigger
+   synth_var_refs - tracing: Use var_refs[] for hist trigger reference
+   checking - [arm64] dts: rockchip: enable internal pull-up on PCIE_WAKE# for
+   RK3399 Puma - [arm64] dts: mediatek: mt7622: fix IR nodename - [arm64] dts:
+   mediatek: mt7622: fix ethernet controller "compatible" - [arm64] dts:
+   mediatek: mt7622: drop "reset-names" from thermal block - net: usb:
+   ax88179_178a: stop lying about skb->truesize (regression in 4.19.251) -
+   net: gtp: Fix Use-After-Free in gtp_dellink (CVE-2024-27396) - ipvs: Fix
+   checksumming on GSO of SCTP packets - net: openvswitch: ovs_ct_exit to be
+   done under ovs_lock - net: openvswitch: Fix Use-After-Free in ovs_ct_exit
+   (CVE-2024-27395) - i40e: Do not use WQ_MEM_RECLAIM flag for workqueue
+   (CVE-2024-36004) - serial: core: Provide port lock wrappers - drm/amdgpu:
+   restrict bo mapping within gpu address limits - amdgpu: validate
+   offset_in_bo of drm_amdgpu_gem_va - drm/amdgpu: validate the parameters of
+   bo mapping operations more clearly (CVE-2024-26922) - tracing: Show size of
+   requested perf buffer - tracing: Increase PERF_MAX_TRACE_SIZE to handle
+   Sentinel1 and docker together - Bluetooth: Fix type of len in
+   {l2cap,sco}_sock_getsockopt_old() - btrfs: fix information leak in
+   btrfs_ioctl_logical_to_ino() (CVE-2024-35849) - [arm64] dts: rockchip:
+   enable internal pull-up for Q7_THRM# on RK3399 Puma - [arm*]
+   irqchip/gic-v3-its: Prevent double free on error (CVE-2024-35847) - [x86]
+   net: b44: set pause params only when interface is up - [x86] mtd:
+   diskonchip: work around ubsan link failure - tcp: Clean up kernel
+   listener's reqsk in inet_twsk_purge() - tcp: Fix NEW_SYN_RECV handling in
+   inet_twsk_purge() - [x86] idma64: Don't try to serve interrupts when device
+   is powered off - i2c: smbus: fix NULL function pointer dereference
+   (CVE-2024-35984) - HID: i2c-hid: remove I2C_HID_READ_PENDING flag to
+   prevent lock-up (CVE-2024-35997) - udp: preserve the connected status if
+   only UDP cmsg
+   https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.19.314 - wifi:
+   nl80211: don't free NULL coalescing rule (CVE-2024-36941) - [amd64]
+   drm/amdkfd: change system memory overcommit limit - [amd64] drm/amdgpu: Fix
+   leak when GPU memory allocation fails - net: slightly optimize
+   eth_type_trans - ethernet: add a helper for assigning port addresses -
+   ethernet: Add helper for assigning packet type when dest address does not
+   match device address - pinctrl: core: delete incorrect free in
+   pinctrl_enable() (CVE-2024-36940) - pinctrl: devicetree: fix refcount leak
+   in pinctrl_dt_to_map() (CVE-2024-36959) - bna: ensure the copied buf is NUL
+   terminated (CVE-2024-36934) - nsh: Restore skb->{protocol,data,mac_header}
+   for outer header in nsh_gso_segment(). (CVE-2024-36933) - net l2tp: drop
+   flow hash on forward - [arm*] net: dsa: mv88e6xxx: Add number of MACs in
+   the ATU - [arm*] net: dsa: mv88e6xxx: Fix number of databases for 88E6141 /
+   88E6341 - net: bridge: fix multicast-to-unicast with fraglist GSO - tipc:
+   fix a possible memleak in tipc_buf_append (regression in 4.19.193)
+   (CVE-2024-36954) - scsi: lpfc: Update lpfc_ramp_down_queue_handler() logic
+   - gfs2: Fix invalid metadata access in punch_hole - wifi: mac80211: fix
+   ieee80211_bss_*_flags kernel-doc - net: mark racy access on sk->sk_rcvbuf -
+   scsi: bnx2fc: Remove spin_lock_bh while releasing resources after upload
+   (CVE-2024-36919) - ALSA: line6: Zero-initialize message buffers - firewire:
+   ohci: mask bus reset interrupts between ISR and bottom half
+   (CVE-2024-36950) - [x86] tools/power turbostat: Fix added raw MSR output -
+   [x86] tools/power turbostat: Fix Bzy_MHz documentation typo - btrfs: make
+   btrfs_clear_delalloc_extent() free delalloc reserve - btrfs: always clear
+   PERTRANS metadata during commit - scsi: target: Fix SELinux error when
+   systemd-modules loads the target module - fs/9p: only translate RWX
+   permissions for plain 9P2000 (CVE-2024-36964) - fs/9p: translate O_TRUNC
+   into OTRUNC - 9p: explicitly deny setlease attempts - fs/9p: drop inodes
+   immediately on non-.L too - net:usb:qmi_wwan: support Rolling modules -
+   tcp: remove redundant check on tskb - tcp: defer shutdown(SEND_SHUTDOWN)
+   for TCP_SYN_RECV sockets (CVE-2024-36905) - tcp: Use
+   refcount_inc_not_zero() in tcp_twsk_unique(). (CVE-2024-36904) - Bluetooth:
+   Fix use-after-free bugs caused by sco_sock_timeout (regression in 4.19.207)
+   (CVE-2024-27398) - Bluetooth: l2cap: fix null-ptr-deref in
+   l2cap_chan_timeout (CVE-2024-27399) - rtnetlink: Correct nested
+   IFLA_VF_VLAN_LIST attribute validation (CVE-2024-36017) - phonet: fix
+   rtm_phonet_notify() skb allocation (CVE-2024-36946) - net: bridge: fix
+   corrupted ethernet header on multicast-to-unicast - ipv6: fib6_rules: avoid
+   possible NULL dereference in fib6_rule_action() (CVE-2024-36902) - af_unix:
+   Do not use atomic ops for unix_sk(sk)->inflight. - af_unix: Fix garbage
+   collector racing against connect() (CVE-2024-26923) - firewire: nosy:
+   ensure user_length is taken into account when fetching packet contents
+   (CVE-2024-27401) - usb: gadget: composite: fix OS descriptors w_value logic
+   - usb: gadget: f_fs: Fix a race condition when processing setup packets. -
+   tipc: fix UAF in error path (CVE-2024-36886) - dyndbg: fix old BUG_ON in
+   >control parser (CVE-2024-35947) - [x86] drm/vmwgfx: Fix invalid reads in
+   fence signaled events (CVE-2024-36960) - net: fix out-of-bounds access in
+   ops_init (CVE-2024-36883) - af_unix: Suppress false-positive lockdep splat
+   for spin_lock() in __unix_gc().
+   https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.19.315 - dm: limit
+   the number of targets and parameter size area (CVE-2023-52429) - btrfs: add
+   missing mutex_unlock in btrfs_relocate_sys_chunks() - tracing: Simplify
+   creation and deletion of synthetic events - tracing: Add unified dynamic
+   event framework - tracing: Use dyn_event framework for synthetic events -
+   tracing: Remove unneeded synth_event_mutex - tracing: Consolidate
+   trace_add/remove_event_call back to the nolock functions - string.h: Add
+   str_has_prefix() helper function - tracing: Use str_has_prefix() helper for
+   histogram code - tracing: Use str_has_prefix() instead of using fixed sizes
+   - tracing: Have the historgram use the result of str_has_prefix() for len
+   of prefix - tracing: Refactor hist trigger action code - tracing: Split up
+   onmatch action data - tracing: Generalize hist trigger onmax and save
+   action - tracing: Remove unnecessary var_ref destroy in
+   track_data_destroy()
+   https://www.kernel.org/pub/linux/kernel/v4.x/ChangeLog-4.19.316 - [x86]
+   tsc: Trust initial offset in architectural TSC-adjust MSRs - speakup: Fix
+   sizeof() vs ARRAY_SIZE() bug (CVE-2024-38587) - ring-buffer: Fix a race
+   between readers and resize checks (CVE-2024-38601) - nilfs2: fix unexpected
+   freezing of nilfs_segctor_sync() - nilfs2: fix potential hang in
+   nilfs_detach_log_writer() (CVE-2024-38582) - tty: n_gsm: fix possible
+   out-of-bounds in gsm0_receive() (CVE-2024-36016) - wifi: cfg80211: fix the
+   order of arguments for trace events of the tx_rx_evt class - net: usb:
+   qmi_wwan: add Telit FN920C04 compositions - drm/amd/display: Set
+   color_mgmt_changed to true on unsuspend - ASoC: rt5645: Fix the electric
+   noise due to the CBJ contacts floating - ASoC: da7219-aad: fix usage of
+   device_get_named_child_node() - crypto: bcm - Fix pointer arithmetic
+   (CVE-2024-38579) - [arm*] firmware: raspberrypi: Use correct device for DMA
+   mappings - ecryptfs: Fix buffer size for tag 66 packet (CVE-2024-38578) -
+   nilfs2: fix out-of-range warning - jffs2: prevent xattr node from
+   overflowing the eraseblock (CVE-2024-38599) - null_blk: Fix missing
+   mutex_destroy() at module removal - md: fix resync softlockup when bitmap
+   size is less than array size (regression in 4.19.291) (CVE-2024-38598) -
+   [arm64] power: supply: cros_usbpd: provide ID table for avoiding fallback
+   match - nfsd: drop st_mutex before calling move_to_close_lru() - wifi:
+   ath10k: poll service ready message before failing - [x86] boot: Ignore
+   relocations in .notes sections in walk_relocs() too - qed: avoid truncating
+   work queue length - scsi: ufs: cleanup struct utp_task_req_desc - scsi:
+   ufs: add a low-level __ufshcd_issue_tm_cmd helper - scsi: ufs: core:
+   Perform read back after disabling interrupts - scsi: ufs: core: Perform
+   read back after disabling UIC_COMMAND_COMPL - scsi: libsas: Fix the failure
+   of adding phy with zero-address to port - scsi: hpsa: Fix allocation size
+   for Scsi_Host private data - [x86] purgatory: Switch to the
+   position-independent small code model (regression in 4.19.74) - wifi:
+   ath10k: Fix an error code problem in
+   ath10k_dbg_sta_write_peer_debug_trigger() - wifi: ath10k: populate board
+   data for WCN3990 - wifi: carl9170: add a proper sanity check for endpoints
+   (CVE-2024-38567) - wifi: ar5523: enable proper endpoint verification
+   (CVE-2024-38565) - scsi: bfa: Ensure the copied buf is NUL terminated
+   (CVE-2024-38560) - scsi: qedf: Ensure the copied buf is NUL terminated
+   (CVE-2024-38559) - wifi: mwl8k: initialize cmd->addr[] properly - net: usb:
+   sr9700: stop lying about skb->truesize - af_unix: Fix data races in
+   unix_release_sock/unix_stream_sendmsg (CVE-2024-38596) - net: usb:
+   smsc95xx: stop lying about skb->truesize - net: openvswitch: fix
+   overwriting ct original tuple for ICMPv6 (CVE-2024-38558) - ipv6: sr: add
+   missing seg6_local_exit - ipv6: sr: fix incorrect unregister order - ipv6:
+   sr: fix invalid unregister error path (CVE-2024-38612) - drm/amd/display:
+   Fix potential index out of bounds in color transformation function
+   (CVE-2024-38552) - mtd: rawnand: hynix: fixed typo - drm/mediatek: Add 0
+   size check to mtk_drm_gem_obj (CVE-2024-38549) - media: ngene: Add
+   dvb_ca_en50221_init return value check - media: radio-shark2: Avoid
+   led_names truncations - [arm64] drm/arm/malidp: fix a possible null pointer
+   dereference (CVE-2024-36014) - ASoC: tracing: Export SND_SOC_DAPM_DIR_OUT
+   to its value - [arm64] RDMA/hns: Use complete parentheses in macros - [x86]
+   insn: Fix PUSH instruction in x86 instruction decoder opcode map - ext4:
+   avoid excessive credit estimate in ext4_tmpfile() - SUNRPC: Fix
+   gss_free_in_token_pages() - RDMA/IPoIB: Fix format truncation compilation
+   errors - [x86] netrom: fix possible dead-lock in nr_rt_ioctl()
+   (CVE-2024-38589) - af_packet: do not call packet_read_pending() from
+   tpacket_destruct_skb() (regression in 4.19.57) - sched/topology: Don't set
+   SD_BALANCE_WAKE on cpuset domain relax - sched/fair: Allow disabling
+   sched_balance_newidle with sched_relax_domain_level - greybus: lights:
+   check return of get_channel_from_mode (CVE-2024-38637) - [x86] dmaengine:
+   idma64: Add check for dma_set_max_seg_size - firmware: dmi-id: add a
+   release callback function - serial: max3100: Lock port->lock when calling
+   uart_handle_cts_change() (CVE-2024-38634) - serial: max3100: Update
+   uart_driver_registered on driver removal (CVE-2024-38633) - usb: gadget:
+   u_audio: Clear uac pointer when freed. - stm class: Fix a double free in
+   stm_register_device() (CVE-2024-38627) - [x86] ppdev: Remove usage of the
+   deprecated ida_simple_xx() API - [x86] ppdev: Add an error check in
+   register_device (CVE-2024-36015) - f2fs: add error prints for debugging
+   mount failure - f2fs: fix to release node block count in error path of
+   f2fs_new_node_page() - libsubcmd: Fix parse-options memory leak - [arm64]
+   drm/msm/dpu: use kms stored hw mdp block - um: Add winch to winch_handlers
+   before registering winch IRQ (CVE-2024-39292) - media: stk1160: fix bounds
+   checking in stk1160_copy_video() (CVE-2024-38621) - media: cec: cec-adap:
+   always cancel work in cec_transmit_msg_fh - media: cec: cec-api: add
+   locking in cec_release() - null_blk: Fix the WARNING: modpost: missing
+   MODULE_DESCRIPTION() - [x86] kconfig: Select ARCH_WANT_FRAME_POINTERS again
+   when UNWINDER_FRAME_POINTER=y - nfc: nci: Fix uninit-value in nci_rx_work
+   (CVE-2024-38381) - ipv6: sr: fix memleak in seg6_hmac_init_algo - params:
+   lift param_set_uint_minmax to common code - tcp: Fix shift-out-of-bounds in
+   dctcp_update_alpha(). (CVE-2024-37356) - openvswitch: Set the skbuff
+   pkt_type for proper pmtud support. - [arm64] asm-bug: Add .align 2 to the
+   end of __BUG_ENTRY - virtio: delete vq in vp_find_vqs_msix()< when
+   request_irq() fails (CVE-2024-37353) - [armhf] net: fec: avoid lock evasion
+   when reading pps_enable - netfilter: nfnetlink_queue: acquire
+   rcu_read_lock() in instance_destroy_rcu() (CVE-2024-36286) - spi: Don't
+   mark message DMA mapped when no transfer in it is - nvmet: fix ns
+   enable/disable possible hang - net/mlx5e: Use rx_missed_errors instead of
+   rx_dropped for reporting buffer exhaustion - dma-buf/sw-sync: don't enable
+   IRQ from sync_print_obj() (CVE-2024-38780) - enic: Validate length of nl
+   attributes in enic_set_vf_port (CVE-2024-38659) - smsc95xx: remove
+   redundant function arguments - smsc95xx: use usbnet->driver_priv - net:
+   usb: smsc95xx: fix changing LED_SEL bit value updated from EEPROM - [armhf]
+   net:fec: Add fec_enet_deinit() - kconfig: fix comparison to constant
+   symbols, 'm', 'n' - ipvlan: Dont Use skb->sk in
+   ipvlan_process_v{4,6}_outbound (CVE-2024-33621) - ALSA: timer: Set lower
+   bound of start tick time (CVE-2024-38618) - genirq/cpuhotplug, x86/vector:
+   Prevent vector leak during CPU offline (CVE-2024-31076) - SUNRPC: Fix loop
+   termination condition in gss_free_in_token_pages() (regression in 4.19.99)
+   (CVE-2024-36288) - binder: fix max_thread type inconsistency - mmc: core:
+   Do not force a retune before RPMB switch - nilfs2: fix use-after-free of
+   timer for log writer thread (CVE-2024-38583) - neighbour: fix unaligned
+   access to pneigh_entry - [i386] ata: pata_legacy: make legacy_exit() work
+   again - [arm64] tegra: Correct Tegra132 I2C alias - md/raid5: fix deadlock
+   that raid5d() wait for itself to clear MD_SB_CHANGE_PENDING (regression in
+   4.19.262) - wifi: rtl8xxxu: Fix the TX power of RTL8192CU, RTL8723AU -
+   [arm64] dts: hi3798cv200: fix the size of GICR - media: mxl5xx: Move xpt
+   structures off stack - media: v4l2-core: hold videodev_lock until dev reg,
+   finishes - [x86] fbdev: savage: Handle err return when savagefb_check_var
+   failed - netfilter: nf_tables: pass context to nft_set_destroy() -
+   netfilter: nftables: rename set element data activation/deactivation
+   functions - netfilter: nf_tables: drop map element references from
+   preparation phase - netfilter: nft_set_rbtree: allow loose matching of
+   closing element in interval - netfilter: nft_set_rbtree: Add missing
+   expired checks - netfilter: nft_set_rbtree: Switch to node list walk for
+   overlap detection - netfilter: nft_set_rbtree: fix null deref on element
+   insertion - netfilter: nft_set_rbtree: fix overlap expiration walk -
+   netfilter: nf_tables: don't skip expired elements during walk - netfilter:
+   nf_tables: GC transaction API to avoid race with control plane - netfilter:
+   nf_tables: adapt set backend to use GC transaction API - netfilter:
+   nf_tables: remove busy mark and gc batch API - netfilter: nf_tables: fix GC
+   transaction races with netns and netlink event exit path - netfilter:
+   nf_tables: GC transaction race with netns dismantle - netfilter: nf_tables:
+   GC transaction race with abort path - netfilter: nf_tables: defer gc run if
+   previous batch is still pending - netfilter: nft_set_rbtree: skip sync GC
+   for new elements in this transaction - netfilter: nft_set_rbtree: use read
+   spinlock to avoid datapath contention - netfilter: nft_set_hash: try later
+   when GC hits EAGAIN on iteration - netfilter: nf_tables: fix memleak when
+   more than 255 elements expired - netfilter: nf_tables: unregister flowtable
+   hooks on netns exit - netfilter: nf_tables: double hook unregistration in
+   netns path - netfilter: nftables: update table flags from the commit phase
+   - netfilter: nf_tables: fix table flag updates - netfilter: nf_tables:
+   disable toggling dormant table state more than once - netfilter: nf_tables:
+   bogus EBUSY when deleting flowtable after flush (for 4.19) - netfilter:
+   nft_dynset: fix timeouts later than 23 days - netfilter: nftables: exthdr:
+   fix 4-byte stack OOB write (CVE-2023-52628) - netfilter: nft_dynset: report
+   EOPNOTSUPP on missing set feature - netfilter: nft_dynset: relax
+   superfluous check on set updates - netfilter: nf_tables: mark newset as
+   dead on transaction abort - netfilter: nf_tables: skip dead set elements in
+   netlink dump - netfilter: nf_tables: validate NFPROTO_* family - netfilter:
+   nft_set_rbtree: skip end interval element from gc - netfilter: nf_tables:
+   set dormant flag on hook register failure - netfilter: nf_tables: allow
+   NFPROTO_INET in nft_(match/target)_validate() - netfilter: nf_tables: do
+   not compare internal table flags on updates - netfilter: nf_tables: mark
+   set as dead when unbinding anonymous set with timeout - netfilter:
+   nf_tables: reject new basechain after table flag update - netfilter:
+   nf_tables: discard table flag update with pending basechain deletion -
+   [arm64] KVM: arm64: Allow AArch32 PSTATE.M to be restored as System mode -
+   [x86] crypto: qat - Fix ADF_DEV_RESET_SYNC memory leak - net/9p: fix
+   uninit-value in p9_client_rpc() - [x86] intel_th: pci: Add Meteor Lake-S
+   CPU support - net: fix __dst_negative_advice() race (CVE-2024-36971) -
+   ext4: fix mb_cache_entry's e_refcnt leak in ext4_xattr_block_cache_find() -
+   nfs: fix undefined behavior in nfs_block_bits()
+ [ Ben Hutchings ]
+ * Bump ABI to 27
+ * ovl: fail on invalid uid/gid mapping at copy up (CVE-2023-0386)
+ * [rt] Update to 4.19.315-rt135: - Drop "crypto: scompress - serialize RT
+   percpu scratch buffer access with a local lock", redundant with changes in
+   4.19.306 - Drop patches to timer subsystem that were included in 4.19.312
+bug: [57414]
+cve:
+- CVE-2023-6040
+- CVE-2023-52340
+- CVE-2023-52436
+- CVE-2023-52439
+- CVE-2023-52464
+- CVE-2023-52693
+- CVE-2023-52683
+- CVE-2023-52698
+- CVE-2023-52449
+- CVE-2023-52612
+- CVE-2024-26633
+- CVE-2023-52445
+- CVE-2023-52444
+- CVE-2023-52470
+- CVE-2023-52691
+- CVE-2023-52469
+- CVE-2023-52679
+- CVE-2023-46838
+- CVE-2023-52609
+- CVE-2023-52443
+- CVE-2024-26597
+- CVE-2023-52615
+- CVE-2023-52670
+- CVE-2024-26615
+- CVE-2024-26636
+- CVE-2024-26635
+- CVE-2024-23849
+- CVE-2024-26645
+- CVE-2024-35835
+- CVE-2024-1086
+- CVE-2023-52486
+- CVE-2021-33630
+- CVE-2023-52604
+- CVE-2023-52603
+- CVE-2023-52602
+- CVE-2023-52601
+- CVE-2023-52600
+- CVE-2023-52619
+- CVE-2023-52599
+- CVE-2023-52623
+- CVE-2023-52622
+- CVE-2023-52594
+- CVE-2023-52587
+- CVE-2024-26671
+- CVE-2023-52583
+- CVE-2024-26625
+- CVE-2024-26600
+- CVE-2024-26664
+- CVE-2024-26679
+- CVE-2024-26663
+- CVE-2024-26675
+- CVE-2024-0340
+- CVE-2024-26722
+- CVE-2024-26720
+- CVE-2024-26917
+- CVE-2024-26825
+- CVE-2024-26606
+- CVE-2024-26704
+- CVE-2024-26697
+- CVE-2024-26696
+- CVE-2024-26602
+- CVE-2024-26685
+- CVE-2024-0607
+- CVE-2024-26845
+- CVE-2024-26779
+- CVE-2024-26778
+- CVE-2024-26777
+- CVE-2024-26773
+- CVE-2024-26772
+- CVE-2024-26766
+- CVE-2024-26763
+- CVE-2024-26754
+- CVE-2024-26752
+- CVE-2024-27405
+- CVE-2024-26839
+- CVE-2024-26744
+- CVE-2024-26735
+- CVE-2024-26764
+- CVE-2024-26805
+- CVE-2024-26801
+- CVE-2024-27416
+- CVE-2024-27413
+- CVE-2024-27412
+- CVE-2024-26793
+- CVE-2024-27410
+- CVE-2024-26791
+- CVE-2024-26840
+- CVE-2024-26857
+- CVE-2024-26852
+- CVE-2024-27024
+- CVE-2024-26851
+- CVE-2024-27419
+- CVE-2024-26820
+- CVE-2024-22099
+- CVE-2024-26903
+- CVE-2024-26901
+- CVE-2023-6270
+- CVE-2023-7042
+- CVE-2023-52644
+- CVE-2024-35828
+- CVE-2024-26894
+- CVE-2024-26816
+- CVE-2024-27388
+- CVE-2024-26889
+- CVE-2024-26651
+- CVE-2024-26884
+- CVE-2024-26883
+- CVE-2024-27046
+- CVE-2024-26880
+- CVE-2023-52650
+- CVE-2024-35830
+- CVE-2024-27078
+- CVE-2024-27077
+- CVE-2024-27043
+- CVE-2024-26878
+- CVE-2024-26875
+- CVE-2024-27075
+- CVE-2024-27074
+- CVE-2024-26874
+- CVE-2024-27436
+- CVE-2024-26863
+- CVE-2024-26859
+- CVE-2024-27028
+- CVE-2023-47233
+- CVE-2024-24861
+- CVE-2024-26976
+- CVE-2024-26974
+- CVE-2024-26973
+- CVE-2024-35821
+- CVE-2024-25739
+- CVE-2024-26969
+- CVE-2024-26966
+- CVE-2024-26965
+- CVE-2024-35809
+- CVE-2024-35807
+- CVE-2024-35806
+- CVE-2024-35819
+- CVE-2024-26956
+- CVE-2024-26955
+- CVE-2024-26642
+- CVE-2024-27059
+- CVE-2024-35825
+- CVE-2024-35823
+- CVE-2022-48627
+- CVE-2024-35789
+- CVE-2024-35815
+- CVE-2024-35822
+- CVE-2024-26931
+- CVE-2024-26934
+- CVE-2024-35915
+- CVE-2024-35910
+- CVE-2024-24857
+- CVE-2024-24858
+- CVE-2023-52620
+- CVE-2024-35902
+- CVE-2024-35898
+- CVE-2024-35893
+- CVE-2024-35886
+- CVE-2024-36020
+- CVE-2024-35888
+- CVE-2024-35944
+- CVE-2024-35936
+- CVE-2024-35935
+- CVE-2024-35933
+- CVE-2023-52699
+- CVE-2024-35930
+- CVE-2024-35925
+- CVE-2024-35922
+- CVE-2023-52880
+- CVE-2024-35877
+- CVE-2024-26817
+- CVE-2024-35982
+- CVE-2024-35978
+- CVE-2024-35973
+- CVE-2024-35969
+- CVE-2024-35960
+- CVE-2024-35955
+- CVE-2024-27020
+- CVE-2024-27013
+- CVE-2024-27008
+- CVE-2024-27001
+- CVE-2024-26997
+- CVE-2024-26994
+- CVE-2024-26993
+- CVE-2024-26984
+- CVE-2024-26981
+- CVE-2024-27396
+- CVE-2024-27395
+- CVE-2024-36004
+- CVE-2024-26922
+- CVE-2024-35849
+- CVE-2024-35847
+- CVE-2024-35984
+- CVE-2024-35997
+- CVE-2024-36941
+- CVE-2024-36940
+- CVE-2024-36959
+- CVE-2024-36934
+- CVE-2024-36933
+- CVE-2024-36954
+- CVE-2024-36919
+- CVE-2024-36950
+- CVE-2024-36964
+- CVE-2024-36905
+- CVE-2024-36904
+- CVE-2024-27398
+- CVE-2024-27399
+- CVE-2024-36017
+- CVE-2024-36946
+- CVE-2024-36902
+- CVE-2024-26923
+- CVE-2024-27401
+- CVE-2024-36886
+- CVE-2024-35947
+- CVE-2024-36960
+- CVE-2024-36883
+- CVE-2023-52429
+- CVE-2024-38587
+- CVE-2024-38601
+- CVE-2024-38582
+- CVE-2024-36016
+- CVE-2024-38579
+- CVE-2024-38578
+- CVE-2024-38599
+- CVE-2024-38598
+- CVE-2024-38567
+- CVE-2024-38565
+- CVE-2024-38560
+- CVE-2024-38559
+- CVE-2024-38596
+- CVE-2024-38558
+- CVE-2024-38612
+- CVE-2024-38552
+- CVE-2024-38549
+- CVE-2024-36014
+- CVE-2024-38589
+- CVE-2024-38637
+- CVE-2024-38634
+- CVE-2024-38633
+- CVE-2024-38627
+- CVE-2024-36015
+- CVE-2024-39292
+- CVE-2024-38621
+- CVE-2024-38381
+- CVE-2024-37356
+- CVE-2024-37353
+- CVE-2024-36286
+- CVE-2024-38780
+- CVE-2024-38659
+- CVE-2024-33621
+- CVE-2024-38618
+- CVE-2024-31076
+- CVE-2024-36288
+- CVE-2024-38583
+- CVE-2023-52628
+- CVE-2024-36971
+- CVE-2023-0386
