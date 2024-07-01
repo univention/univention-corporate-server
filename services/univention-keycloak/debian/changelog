@@ -1,3 +1,11 @@
+univention-keycloak (1.0.12-4) unstable; urgency=medium
+
+  * Bug #57420: Instead of just checking if there already is an existing
+    "userid_mapper" check if there is a mapper already mapping the uid or the
+    URN of the uid
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 01 Jul 2024 15:57:10 +0200
+
 univention-keycloak (1.0.12-3) unstable; urgency=medium
 
   * Bug #57320: Make name_id_format selectable if provided by cli

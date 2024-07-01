@@ -7,6 +7,8 @@
 ## tags:
 ##  - skip_admember
 
+import pytest
+
 import univention.admin.modules as udm_modules
 from univention.testing import utils
 
@@ -16,6 +18,7 @@ import samltest
 udm_modules.update()
 
 
+@pytest.mark.usefixtures("configure_sso")
 def test_using_existing_session(saml_session):
     lo = utils.get_ldap_connection(admin_uldap=True)
 

@@ -11,11 +11,14 @@
 import subprocess
 import time
 
+import pytest
+
 from univention.testing import utils
 
 import samltest
 
 
+@pytest.mark.usefixtures("configure_sso")
 def test_saml_check(saml_session):
     # cert_folder = samltest.SPCertificate.get_server_cert_folder()
     # with open(os.path.join(cert_folder, 'cert.pem'), 'rb') as cert_file:

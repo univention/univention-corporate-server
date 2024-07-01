@@ -395,9 +395,13 @@ class SamlTest:
             return
 
         url = self._extract_sp_url()
-        saml_msg = self.xpath('input[@name="SAMLResponse"]', {}).get('value')
+        saml_msg: str = self.xpath('input[@name="SAMLRequest"]', {}).get('value')
         relay_state = self._extract_relay_state()
-        self._request('POST', url, 200, data={'SAMLResponse': saml_msg, 'RelayState': relay_state})
+        self._request('POST', url, 200, data={'SAMLRequest': saml_msg, 'RelayState': relay_state})
+        saml_msg_2: str = self.xpath('input[@name="SAMLResponse"]', default={}).get('value')
+        relay_state_2 = self._extract_relay_state()
+        url2 = "https://%s/univention/saml/slo/" % self.target_sp_hostname
+        self._request("POST", url2, 200, data={'SAMLRequest': saml_msg_2, 'RelayState': relay_state_2})
 
     def change_expired_password(self, new_password):
         self.position = "posting change password form"

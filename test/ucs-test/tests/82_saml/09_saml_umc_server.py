@@ -6,9 +6,10 @@
 ## exposure: safe
 ## tags:
 ##  - skip_admember
-
 import subprocess
 import time
+
+import pytest
 
 from univention.testing import utils
 
@@ -28,6 +29,7 @@ def __test_umc_sp(samlSession, test_function):
     samlSession.test_logout()
 
 
+@pytest.mark.usefixtures("configure_sso")
 def test_umc_server():
     def assert_module_testing():
         # Ensure an UMC module will be opened
@@ -52,6 +54,7 @@ def test_umc_server():
     __test_umc_sp(saml_session, saml_session.test_umc_server)
 
 
+@pytest.mark.usefixtures("configure_sso")
 def test_umc_ldap_con():
     def assert_slapd_testing():
         saml_session.test_slapd()

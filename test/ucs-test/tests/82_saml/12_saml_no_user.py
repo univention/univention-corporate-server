@@ -13,6 +13,7 @@ import pytest
 import samltest
 
 
+@pytest.mark.usefixtures("configure_sso")
 def test_saml_no_user():
     saml_session = samltest.SamlTest('NonExistent3.14', 'univention')
 
