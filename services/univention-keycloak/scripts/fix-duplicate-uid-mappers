@@ -1,0 +1,89 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+#
+# Univention Keycloak
+#
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
+# Copyright 2022-2024 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+import json
+import subprocess
+
+from univention.admin.uldap import getMachineConnection
+from univention.config_registry import ucr
+
+
+print('fixing duplicate UID mappers in UMC SAML clients...')
+
+lo, _ = getMachineConnection()
+
+ldap_search_result = lo.search(filter='univentionService=Univention Management Console', attr=['displayName'])
+
+for umc in ldap_search_result:
+    umc = umc[1]['displayName'][0].decode('utf-8')
+
+    saml_client_name = f'https://{umc}.{ucr["domainname"]}/univention/saml/metadata'
+    try:
+        saml_clients_json = subprocess.run(['univention-keycloak', 'saml/sp', 'get', '--json', '--client-id', saml_client_name, '--all'], check=True, capture_output=True)
+    except subprocess.CalledProcessError as err:
+        print(f'univention-keycloak saml/sp get failed for saml client with name {saml_client_name}: {err}')
+        continue
+
+    saml_clients = json.loads(saml_clients_json.stdout)
+
+    try:
+        saml_client = saml_clients[0]
+    except IndexError:
+        print(f'No SAML client found in keycloak for client ID {saml_client_name}')
+        continue
+
+    protocol_mappers = saml_client.get('protocolMappers', [])
+
+    uid_protocol_mappers = [
+        mapper
+        for mapper in protocol_mappers
+        if mapper.get('config', {}).get('attribute.name', '') == 'urn:oid:0.9.2342.19200300.100.1.1' or mapper.get('config', {}).get('friendly.name', '') == 'uid'
+    ]
+
+    if len(uid_protocol_mappers) <= 1:
+        continue
+
+    updated_protocol_mappers = [mapper for mapper in protocol_mappers if mapper.get('name', '') != 'userid_mapper']
+
+    if len(protocol_mappers) == len(updated_protocol_mappers):
+        continue
+
+    saml_client['protocolMappers'] = updated_protocol_mappers
+
+    updated_client_json = json.dumps(saml_client)
+
+    try:
+        subprocess.run(['univention-keycloak', 'saml/sp', 'update', saml_client_name, updated_client_json], check=True)
+    except subprocess.CalledProcessError as err:
+        print(f'univention-keycloak saml/sp update failed for saml client with name {saml_client_name}: {err}')

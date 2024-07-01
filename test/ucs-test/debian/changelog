@@ -1,3 +1,9 @@
+ucs-test (10.0.22-20) unstable; urgency=medium
+
+  * Bug #57420: run SAML tests with simplesamlphp and keycloak on primary
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 09 Jul 2024 14:25:12 +0200
+
 ucs-test (10.0.22-19) unstable; urgency=medium
 
   *  Issue univention/ucs#2279: Disable 156sync_ad_user_group_membership_in_special_OU_and_timing

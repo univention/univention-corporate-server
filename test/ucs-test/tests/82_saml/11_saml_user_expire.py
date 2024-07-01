@@ -17,6 +17,7 @@ import univention.testing.udm as udm_test
 import samltest
 
 
+@pytest.mark.usefixtures("configure_sso")
 def test_expired_account():
     yesterday = datetime.now() - timedelta(days=1)
     with udm_test.UCSTestUDM() as udm:
@@ -29,6 +30,7 @@ def test_expired_account():
             saml_session.login_with_new_session_at_IdP()
 
 
+@pytest.mark.usefixtures("configure_sso")
 def test_unexpired_account():
     tomorrow = datetime.now() + timedelta(days=1)
     with udm_test.UCSTestUDM() as udm:

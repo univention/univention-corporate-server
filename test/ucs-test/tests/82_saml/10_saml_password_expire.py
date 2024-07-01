@@ -12,6 +12,7 @@ from univention.testing.utils import get_ldap_connection
 import samltest
 
 
+@pytest.mark.usefixtures("configure_sso")
 def test_normal_user():
     with udm_test.UCSTestUDM() as udm:
         username = udm.create_user(pwdChangeNextLogin='1')[1]
@@ -25,6 +26,7 @@ def test_normal_user():
             saml_session.login_with_new_session_at_IdP()
 
 
+@pytest.mark.usefixtures("configure_sso")
 def test_kinit_user():
     with udm_test.UCSTestUDM() as udm:
         dn, username = udm.create_user(pwdChangeNextLogin='1')
@@ -41,6 +43,7 @@ def test_kinit_user():
             saml_session.login_with_new_session_at_IdP()
 
 
+@pytest.mark.usefixtures("configure_sso")
 def test_k5key_user():
     with udm_test.UCSTestUDM() as udm:
         dn, username = udm.create_user(pwdChangeNextLogin='1')

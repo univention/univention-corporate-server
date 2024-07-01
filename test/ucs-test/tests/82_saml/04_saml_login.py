@@ -7,7 +7,10 @@
 ##   - univention-samba4
 ## tags:
 ##  - skip_admember
+import pytest
 
+
+@pytest.mark.usefixtures("configure_sso")
 def test_umc_web_server(saml_session):
     saml_session.login_with_new_session_at_IdP()
     saml_session.test_logged_in_status()

@@ -10,11 +10,14 @@
 
 import os
 
+import pytest
+
 from univention.testing import utils
 
 import samltest
 
 
+@pytest.mark.usefixtures("configure_sso")
 def test_umc_cert_chain(saml_session):
     cert_folder = samltest.SPCertificate.get_server_cert_folder()
     with open(os.path.join(cert_folder, 'cert.pem'), 'rb') as cert_file:

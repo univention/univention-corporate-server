@@ -5,9 +5,12 @@
 
 from urllib.request import urlopen
 
+import pytest
+
 from univention.testing.utils import fail
 
 
+@pytest.mark.usefixtures("configure_sso")
 def test_download_metadata(ucr):
     metadata_url = ucr['umc/saml/idp-server']
     if metadata_url is None:

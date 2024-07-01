@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-keycloak
+fix: 1.0.12-4
+desc: |
+ This update addresses the following issues:
+ * Prevent the creation of two mappers in the default
+  Univention Managment Console Keycloak SAML client which caused
+  SAML logins to fail.
+bug: [57420]

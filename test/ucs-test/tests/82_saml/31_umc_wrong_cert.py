@@ -10,11 +10,14 @@
 
 import sys
 
+import pytest
+
 from univention.testing import utils
 
 import samltest
 
 
+@pytest.mark.usefixtures("configure_sso")
 def test_umc_wrong_cert():
     with open('/etc/univention/ssl/ucsCA/CAcert.pem', 'rb') as ca_file:
         cert = ca_file.read()

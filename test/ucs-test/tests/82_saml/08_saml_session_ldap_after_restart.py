@@ -8,7 +8,10 @@
 
 import subprocess
 
+import pytest
 
+
+@pytest.mark.usefixtures("configure_sso")
 def test_session_ldap_after_restart(saml_session):
     saml_session.login_with_new_session_at_IdP()
     subprocess.call(['/etc/init.d/slapd', 'restart'])
