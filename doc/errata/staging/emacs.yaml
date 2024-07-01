@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [7, 8]
+scope: ucs_5.0-0-errata5.0-8
+src: emacs
+fix: 1:26.1+1-3.2+deb10u6
+desc: |
+ This update addresses the following issue:
+ 1:26.1+1-3.2+deb10u6 (Sat, 29 Jun 2024 11:18:55 +0800)
+ * Non-maintainer upload by the LTS Security Team.
+ * Backport upstream fix for CVE-2024-39331.
+bug: [57416]
+cve:
+- CVE-2024-39331
