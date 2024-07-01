@@ -6,16 +6,10 @@
 ## - apptest
 ## - ucsschool
 
-rc=0
+. "$TESTLIBPATH/base.sh" || exit 137
 
 for pkg in screen; do
-	echo "Checking if $pkg is installed"
-	if $(dpkg -l "$pkg" | tail -1 | grep -q ^ii); then
-		echo "OK"
-	else
-		echo "FAIL"
-		rc=1
-	fi
+	requiresoftware "$pkg" || fail_test 1
 done
 
-exit $rc
+exit "$RETVAL"
