@@ -73,7 +73,16 @@ if [ "$1" = "configure" ] && [ -n "$2" ]; then
 			fi
 		fi
 	fi
-
+	# remove duplicate UID mappers Bug #57420
+	if dpkg --compare-versions "$2" lt-nl "10.0.12-4"; then
+		if [ -e /var/univention-join/joined ] ; then
+			if univention-app info | grep 'Installed:' | grep -q -w keycloak; then
+				if [ -e "/etc/keycloak.secret" ]; then
+					/usr/share/univention-keycloak/fix-duplicate-uid-mappers || true
+				fi
+			fi
+		fi
+	fi
 fi
 
 exit 0

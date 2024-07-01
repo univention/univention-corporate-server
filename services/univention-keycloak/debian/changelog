@@ -1,3 +1,11 @@
+univention-keycloak (3.0.11) unstable; urgency=medium
+
+  * Bug #57420: Instead of just checking if there already is an existing
+    "userid_mapper" check if there is a mapper already mapping the uid or the
+    URN of the uid
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 10 Jul 2024 10:54:22 +0200
+
 univention-keycloak (3.0.10) unstable; urgency=medium
 
   * Bug #57383: Fix bug where all but one --set option in

@@ -430,7 +430,7 @@ def get_realm_id(kc_client, name):
     return realm_info[0]["id"]
 
 
-def update_saml_metadata_from_xml(opt, metadata_url, payload, metadata_file, no_ssl_verify):
+def update_saml_metadata_from_xml(opt, metadata_url, payload, metadata_file, no_ssl_verify, umc_uid_mapper=False):
     # TODO: just upload the XML to keycloak instead of parsing it here
     if not metadata_file:
         xml_content = requests.get(metadata_url, verify=no_ssl_verify).content
@@ -501,6 +501,8 @@ def update_saml_metadata_from_xml(opt, metadata_url, payload, metadata_file, no_
     protocol_mappers = payload.setdefault("protocolMappers", [])
     for ldap_attribute in saml_descriptor_xml.findall('.//{urn:oasis:names:tc:SAML:2.0:metadata}RequestedAttribute'):
         if ldap_attribute.attrib.get('isRequired') != 'true' and 'FriendlyName' not in ldap_attribute.attrib:
+            continue
+        if umc_uid_mapper and ldap_attribute.attrib["Name"] == "urn:oid:0.9.2342.19200300.100.1.1":
             continue
         friendly_name = ldap_attribute.attrib['FriendlyName']
         mapper = {
@@ -997,15 +999,23 @@ def create_SAML_client(opt):
         client_payload_saml["attributes"]["saml.client.signature"] = "true"
 
     if opt.metadata_url:
-        update_saml_metadata_from_xml(opt, client_id, client_payload_saml, opt.metadata_file, opt.no_ssl_verify)
-    # log into default realm in case UCS realm doesn't exist yet
+        update_saml_metadata_from_xml(opt, client_id, client_payload_saml, opt.metadata_file, opt.no_ssl_verify, opt.umc_uid_mapper)
 
-    if not _get_mapper("userid_mapper", client_payload_saml["protocolMappers"]):
+    if not check_uid_mapper_exists(client_payload_saml["protocolMappers"]):
         client_payload_saml["protocolMappers"].append(default_uid_mapper)
 
+    # log into default realm in case UCS realm doesn't exist yet
     kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
 
     kc_admin.create_client(payload=client_payload_saml, skip_exists=True)
+
+
+def check_uid_mapper_exists(protocol_mappers):
+    return any(
+        mapper["config"]["attribute.name"] == "urn:oid:0.9.2342.19200300.100.1.1"
+        or mapper["config"]["attribute.name"] == "uid"
+        for mapper in protocol_mappers
+    )
 
 
 def create_oidc_client(opt):
