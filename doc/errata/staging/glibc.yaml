@@ -6,12 +6,10 @@ src: glibc
 fix: 2.28-10+deb10u4
 desc: |
  This update addresses the following issues:
- 2.28-10+deb10u4 (Sat, 29 Jun 2024 13:27:34 +0300)
- * Non-maintainer upload by the LTS Team.
- * CVE-2024-33599: nscd: Stack-based buffer overflow in netgroup cache
- * CVE-2024-33600: nscd: Null pointer crashes after notfound response
- * CVE-2024-33601: nscd: Daemon may terminate on memory allocation failure
- * CVE-2024-33602: nscd: Possible memory corruption
+ * nscd: Stack-based buffer overflow in netgroup cache
+ * nscd: Null pointer crashes after notfound response
+ * nscd: Daemon may terminate on memory allocation failure
+ * nscd: Possible memory corruption
 bug: [57415]
 cve:
 - CVE-2024-33599
