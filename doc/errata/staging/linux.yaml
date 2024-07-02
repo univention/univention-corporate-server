@@ -810,6 +810,7 @@ desc: |
  * [rt] Update to 4.19.315-rt135: - Drop "crypto: scompress - serialize RT
    percpu scratch buffer access with a local lock", redundant with changes in
    4.19.306 - Drop patches to timer subsystem that were included in 4.19.312
+note: This is the 1st of three parts.
 bug: [57414]
 cve:
 - CVE-2023-6040

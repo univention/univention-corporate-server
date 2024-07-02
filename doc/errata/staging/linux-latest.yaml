@@ -2,8 +2,8 @@ product: ucs
 release: "5.0"
 version: [7, 8]
 scope: ucs_5.0-0-errata5.0-8
-src: linux-signed-amd64
-fix: 4.19.316+1
+src: linux-latest
+fix: 4.19+105+deb10u22
 desc: |
  This update addresses the following issues:
 
@@ -813,7 +813,7 @@ desc: |
  * [rt] Update to 4.19.315-rt135: - Drop "crypto: scompress - serialize RT
    percpu scratch buffer access with a local lock", redundant with changes in
    4.19.306 - Drop patches to timer subsystem that were included in 4.19.312
-note: This is the 2nd of three parts.
+note: This is the 3rd of three parts.
 bug: [57414]
 cve:
 - CVE-2023-6040
