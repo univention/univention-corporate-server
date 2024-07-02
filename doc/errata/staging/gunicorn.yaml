@@ -12,7 +12,7 @@ desc: |
    Python 3. Compile regex with \Z to detect the pattern at the end of the
    line which apparently satisfies the corresponding tests and causes no
    regression.
- * Fix CVE-2024-1135: Gunicorn fails to properly validate Transfer-Encoding
+ * CVE-2024-1135: Gunicorn fails to properly validate Transfer-Encoding
    headers, leading to HTTP Request Smuggling (HRS) vulnerabilities. By
    crafting requests with conflicting Transfer-Encoding headers, attackers can
    bypass security restrictions and access restricted endpoints. This issue is
