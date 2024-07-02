@@ -6,11 +6,14 @@ src: git
 fix: 1:2.20.1-2+deb10u9
 desc: |
  This update addresses the following issues:
- 1:2.20.1-2+deb10u9 (Wed, 26 Jun 2024 15:16:59 +0800)
- * Non-maintainer upload by the LTS Security Team.
- * Backport commit 9cf8547320, a follow-up fix for CVE-2019-1387.
- * Backport upstream fixes for CVE-2023-25652, CVE-2023-25815, CVE-2023-29007,
-   CVE-2024-32002, CVE-2024-32004, CVE-2024-32021, CVE-2024-32465, #1071160).
+ * remote code execution in recursive clones
+ * by feeding specially crafted input to `git apply --reject`, a path outside the working tree can be overwritten with partially controlled contents
+ * malicious placement of crafted messages when git was compiled with runtime prefix
+ * arbitrary configuration injection when renaming or deleting a section from a configuration file
+ * Recursive clones RCE
+ * RCE while cloning local repos
+ * symlink bypass
+ * additional local RCE
 bug: [57412]
 cve:
 - CVE-2019-1387
