@@ -6,17 +6,18 @@ src: git
 fix: 1:2.20.1-2+deb10u9
 desc: |
  This update addresses the following issues:
- * remote code execution in recursive clones
- * by feeding specially crafted input to `git apply --reject`, a path outside
-   the working tree can be overwritten with partially controlled contents
- * malicious placement of crafted messages when git was compiled with runtime
-   prefix
- * arbitrary configuration injection when renaming or deleting a section from
-   a configuration file
- * Recursive clones RCE
- * RCE while cloning local repos
- * symlink bypass
- * additional local RCE
+ * CVE-2019-1387: remote code execution in recursive clones
+ * CVE-2023-25652: by feeding specially crafted input to `git apply --reject`,
+   a path outside the working tree can be overwritten with partially
+   controlled contents
+ * CVE-2023-25815: malicious placement of crafted messages when git was
+   compiled with runtime prefix
+ * CVE-2023-29007: arbitrary configuration injection when renaming or deleting
+   a section from a configuration file
+ * CVE-2024-32002: Recursive clones RCE
+ * CVE-2024-32004: RCE while cloning local repos
+ * CVE-2024-32021: symlink bypass
+ * CVE-2024-32465: additional local RCE
 bug: [57412]
 cve:
 - CVE-2019-1387
