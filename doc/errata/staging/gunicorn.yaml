@@ -6,15 +6,12 @@ src: gunicorn
 fix: 19.6.0-10+deb9u3
 desc: |
  This update addresses the following issue:
- 19.6.0-10+deb9u3 (Fri, 28 Jun 2024 20:58:09 +0200)
  * Fix autopkgtest and encode string to byte object.
  * Fix gunicorn Python 2 library and replace fullmatch function in
    CVE-2024-1135-part3.patch with match again because fullmatch only exists on
    Python 3. Compile regex with \Z to detect the pattern at the end of the
    line which apparently satisfies the corresponding tests and causes no
    regression.
- 19.6.0-10+deb9u2 (Fri, 28 Jun 2024 13:45:41 +0200)
- * Non-maintainer upload by the ELTS team.
  * Fix CVE-2024-1135: Gunicorn fails to properly validate Transfer-Encoding
    headers, leading to HTTP Request Smuggling (HRS) vulnerabilities. By
    crafting requests with conflicting Transfer-Encoding headers, attackers can
