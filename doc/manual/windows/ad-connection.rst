@@ -550,31 +550,51 @@ Log files
 Details on preconfigured synchronization
 ----------------------------------------
 
-You can configure the :program:`AD Connector` to only synchronize a specific
-selection of objects. To do this, you can add LDAP object DNs to an internal
-allowlist using the following UCR variables:
+You can configure the :program:`Active Directory Connection` to synchronize only a specific selection of objects through an allow list.
+To configure the allow list, you must add LDAP object DNs through the following UCR variables:
 
-  * :envvar:`connector/ad/mapping/allowsubtree/.*/ucs`
-  * :envvar:`connector/ad/mapping/allowsubtree/.*/ad`
+.. envvar:: connector/ad/mapping/allowsubtree/.*/ucs
 
-Use the |UCSUCRV| :envvar:`connector/ad/mapping/allowsubtree/.*/ucs` to add a DN
-from your UCS LDAP to the allowlist of objects that need to be synchronized from
-your UCS LDAP to the connected Active Directory. Every UCS LDAP subtree you want
-to add to the allowlist needs its own dedicated UCR variable. The ``.*`` portion
-of the variable makes this possible. It is a placeholder that allows you to set
-a custom name for each variable. If you follow this approach, you will end up
-with a series of UCR variables of the type described, each containing only one
-DN. UCS LDAP objects that are not specified in any of these UCR variables, and
-are not part of a specified subtree, will be excluded from synchronization and
-removed from the connected Active Directory. For this configuration to take
-effect a restart of the :program:`AD Connector` is needed, though.
+   For synchronization from UCS LDAP directory to Active Directory
 
-If you want to define an allowlist from the point of view of the connected
-Active Directory, use the |UCSUCRV|
-:envvar:`connector/ad/mapping/allowsubtree/.*/ad` instead. This variable works
-exactly like the previously described one, only that it configures the
-synchronization of objects in the opposite direction, from Active Directory to
-UCS.
+   Use the |UCSUCRV| :envvar:`connector/ad/mapping/allowsubtree/.*/ucs`
+   to add a DN from your UCS LDAP directory to the allow list of objects
+   for synchronization from your UCS LDAP directory to the connected Active Directory.
+
+   Take the description about the ``*.`` placeholder later into account.
+
+   The *AD Connection* excludes UCS LDAP objects from synchronization
+   and removes them from the connected Active Directory
+   that you haven't specified in any of these UCR variables,
+   and that aren't part of the specified subtrees.
+
+
+.. envvar:: connector/ad/mapping/allowsubtree/.*/ad
+
+   For synchronization from Active Directory to UCS LDAP directory
+
+   Use the |UCSUCRV| :envvar:`connector/ad/mapping/allowsubtree/.*/ad`
+   to add a DN from your Active Directory to the allow list of objects
+   for synchronization from your connected Active Directory to your UCS LDAP directory.
+   It configures the synchronization of LDAP objects in the opposite direction,
+   from the connected Active Directory to the UCS LDAP directory.
+
+   Take the description about the ``*.`` placeholder later into account.
+
+   The *AD Connection* excludes Active Directory objects from synchronization
+   and removes them from the UCS LDAP directory
+   that you haven't specified in any of these UCR variables,
+   and that aren't part of the specified subtrees.
+
+For each LDAP subtree that you want to add to the allow list,
+you must define a separate UCR variable.
+The ``.*`` part of the variable is a placeholder
+that you can use as an individual label for each variable.
+If you follow this approach, you create a series of UCR variables of the described types.
+Each variable contains only one DN.
+
+After you defined or changed the UCR variables,
+you need to restart the :program:`Active Directory Connection`.
 
 All containers which are ignored due to corresponding filters are exempted from
 synchronization as standard. This can be found in the
