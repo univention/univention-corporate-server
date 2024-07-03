@@ -11,3 +11,6 @@ desc: |
    optimizing installation size, but is now re-added. The package should be
    automatically installed with this update.
 bug: [57406]
+erratum: 1080
+announced: 2024-07-03
+support: core
