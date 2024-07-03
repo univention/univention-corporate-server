@@ -10,3 +10,6 @@ desc: |
 bug: [57416]
 cve:
 - CVE-2024-39331
+erratum: 1074
+announced: 2024-07-03
+support: core
