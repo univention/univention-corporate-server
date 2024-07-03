@@ -3,7 +3,7 @@ release: "5.0"
 version: [7, 8]
 scope: ucs_5.0-0-errata5.0-8
 src: linux-latest
-fix: 4.19+105+deb10u22
+fix: 105+deb10u22
 desc: |
  * CVE-2023-52449: mtd: Fix gluebi NULL pointer dereference caused by ftl
    notifier
