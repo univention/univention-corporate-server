@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-join
+fix: 12.0.8-2
+desc: |
+ This update addresses the following issues:
+ * A bug has been fixed that could cause the domain join to fail
+  if the /etc/univention/ssl directory was too big
+bug: [57421]
