@@ -832,7 +832,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 		>>/var/log/univention/join.log 2>&1
 
 	echo -n "Sync SSL directory: "
-	univention-ssh-rsync "$DCPWD" -az "${DCACCOUNT}@${DCNAME}:/etc/univention/ssl/*" /etc/univention/ssl/ >>/var/log/univention/join.log 2>&1
+	univention-ssh-rsync "$DCPWD" -az "${DCACCOUNT}@${DCNAME}:/etc/univention/ssl/" /etc/univention/ssl/ >>/var/log/univention/join.log 2>&1
 	echo -e "\033[60Gdone"
 
 	setup_ssl
