@@ -134,7 +134,7 @@ Description: UCS - Managed Node
 Package: univention-role-server-common
 Architecture: any
 Depends:
- linux-image-amd64 [amd64],
+ linux-image-5.10-amd64 [amd64],
  ntp | ntp-server,
  ntpdate,
  python3-dnspython,
