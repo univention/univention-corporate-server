@@ -1,3 +1,10 @@
+ucs-test (10.0.22-16) unstable; urgency=medium
+
+  * Issue #2221: Add attributes that lack LDAP index - used in
+    well-known-sid-object-rename
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 08 Jul 2024 18:09:40 +0200
+
 ucs-test (10.0.22-15) unstable; urgency=medium
 
   * Bug #57406: Prettify test case
