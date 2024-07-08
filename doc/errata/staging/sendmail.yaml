@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: sendmail
+fix: 8.15.2-8+deb9u2
+desc: |
+ This update addresses the following issue:
+ 8.15.2-8+deb9u2 (Sun, 24 Mar 2024 22:52:56 +0000)
+ * ELTS Team upload
+ * Fix CVE-2023-51765: sendmail allowed SMTP smuggling in certain
+   configurations. Remote attackers can use a published exploitation technique
+   to inject e-mail messages with a spoofed MAIL FROM address, allowing bypass
+   of an SPF protection mechanism. This occurs because sendmail supports
+   <LF>.<CR><LF> but some other popular e-mail servers do not. This is
+   resolved with 'o' in srv_features.
+ * Enable _FFR_REJECT_NUL_BYTE for rejecting mail that include NUL byte
+bug: [57436]
+cve:
+- CVE-2023-51765
