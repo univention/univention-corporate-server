@@ -5,10 +5,7 @@ scope: ucs_4.4-0-errata4.4-9
 src: exim4
 fix: 4.89-2+deb9u12A~4.4.9.202407081141
 desc: |
- This update addresses the following issue:
- 4.89-2+deb9u12 (Mon, 24 Jun 2024 22:03:02 +0200)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2023-51766 It was discovered that Exim, a mail transport agent, can be
+ * CVE-2023-51766: It was discovered that Exim, a mail transport agent, can be
    induced to accept a second message embedded as part of the body of a first
    message in certain configurations where PIPELINING or CHUNKING on incoming
    connections is offered.
