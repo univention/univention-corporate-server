@@ -5,15 +5,26 @@ scope: ucs_4.4-0-errata4.4-9
 src: ffmpeg
 fix: 7:3.2.19-0+deb9u4
 desc: |
- This update addresses the following issues:
- 7:3.2.19-0+deb9u4 (Sat, 06 Jul 2024 11:23:52 +0200)
- * Non-maintainer upload by the ELTS team.
- * Fix CVE-2023-50010, CVE-2023-51793, CVE-2023-51794, CVE-2023-51798,
-   CVE-2024-31578 and CVE-2022-48434: Several buffer overflow vulnerabilities
-   were discovered in ffmpeg, tools for transcoding, streaming and playing of
-   multimedia files. An attacker may use these flaws to create specially
-   crafted multimedia files to cause a denial of service or arbitrary code
-   execution when they are processed by ffmpeg.
+ * CVE-2023-50010: Buffer Overflow vulnerability in Ffmpeg v.n6.1-3-g466799d4f5
+   allows a local attacker to execute arbitrary code via the `set_encoder_id`
+   function in `/fftools/ffmpeg_enc.c` component.
+ * CVE-2023-51793: Buffer Overflow vulnerability in Ffmpeg v.N113007-g8d24a28d06
+   allows a local attacker to execute arbitrary code via the
+   `libavutil/imgutils.c:353:9` in `image_copy_plane`.
+ * CVE-2023-51794: Buffer Overflow vulnerability in Ffmpeg v.N113007-g8d24a28d06
+   allows a local attacker to execute arbitrary code via the
+   `libavfilter/af_stereowiden.c:120:69`.
+ * CVE-2023-51798: Buffer Overflow vulnerability in Ffmpeg v.N113007-g8d24a28d06
+   allows a local attacker to execute arbitrary code via a floating point
+   exception (FPE) error at `libavfilter/vf_minterpolate.c:1078:60` in
+   `interpolate`.
+ * CVE-2024-31578: FFmpeg version n6.1.1 was discovered to contain a heap
+   use-after-free via the `av_hwframe_ctx_init` function.
+ * CVE-2022-48434: `libavcodec/pthread_frame.c` in FFmpeg before 5.1.2, as
+   used in VLC and other products, leaves stale hwaccel state in worker
+   threads, which allows attackers to trigger a use-after-free and execute
+   arbitrary code in some circumstances (e.g., hardware re-initialization upon
+   a mid-video SPS change when Direct3D11 is used).
 bug: [57435]
 cve:
 - CVE-2023-50010
