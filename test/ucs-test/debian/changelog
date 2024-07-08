@@ -1,3 +1,9 @@
+ucs-test (10.0.22-18) unstable; urgency=medium
+
+  * Bug #57394: Test cases for AD-Connector allowsubtree
+
+ -- Arvid <requate@univention.de>  Tue, 09 Jul 2024 11:14:06 +0200
+
 ucs-test (10.0.22-17) unstable; urgency=medium
 
   * Issue #2221: Add attributes that lack LDAP index - used in
