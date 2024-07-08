@@ -1,0 +1,24 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: ffmpeg
+fix: 7:3.2.19-0+deb9u4
+desc: |
+ This update addresses the following issues:
+ 7:3.2.19-0+deb9u4 (Sat, 06 Jul 2024 11:23:52 +0200)
+ * Non-maintainer upload by the ELTS team.
+ * Fix CVE-2023-50010, CVE-2023-51793, CVE-2023-51794, CVE-2023-51798,
+   CVE-2024-31578 and CVE-2022-48434: Several buffer overflow vulnerabilities
+   were discovered in ffmpeg, tools for transcoding, streaming and playing of
+   multimedia files. An attacker may use these flaws to create specially
+   crafted multimedia files to cause a denial of service or arbitrary code
+   execution when they are processed by ffmpeg.
+bug: [57435]
+cve:
+- CVE-2023-50010
+- CVE-2023-51793
+- CVE-2023-51794
+- CVE-2023-51798
+- CVE-2024-31578
+- CVE-2022-48434
