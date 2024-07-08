@@ -1,3 +1,9 @@
+ucs-test (12.0.115) unstable; urgency=medium
+
+  * Bug #56054: keycloak test, print page content in case of an error
+
+ -- Felix Botner <botner@univention.de>  Mon, 08 Jul 2024 16:52:32 +0200
+
 ucs-test (12.0.114) unstable; urgency=medium
 
   * Bug #57406: Prettify test case

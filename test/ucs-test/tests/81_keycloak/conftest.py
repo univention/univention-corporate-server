@@ -243,21 +243,25 @@ def portal_login_via_keycloak(page: Page, portal_config: SimpleNamespace, keyclo
         url: str | None = portal_config.url,
         no_login: bool = False,
     ):
-        page.goto(url)
-        expect(page).to_have_title(portal_config.title)
-        get_portal_tile(page, portal_config.sso_login_tile, portal_config).click()
-        # login
-        keycloak_login(page, keycloak_config, username, password, fails_with=fails_with if not new_password else None, no_login=no_login)
-        # check password change
-        if new_password:
-            new_password_confirm = new_password_confirm if new_password_confirm else new_password
-            keycloak_password_change(page, keycloak_config, password, new_password, new_password_confirm, fails_with=fails_with)
-        if fails_with or no_login:
-            return page
-        # check that we are logged in
-        if verify_login:
-            header_menu = page.locator(f'#{portal_config.header_menu_id}')
-            expect(header_menu, 'header menu not visible').to_be_visible()
+        try:
+            page.goto(url)
+            expect(page).to_have_title(portal_config.title)
+            get_portal_tile(page, portal_config.sso_login_tile, portal_config).click()
+            # login
+            keycloak_login(page, keycloak_config, username, password, fails_with=fails_with if not new_password else None, no_login=no_login)
+            # check password change
+            if new_password:
+                new_password_confirm = new_password_confirm if new_password_confirm else new_password
+                keycloak_password_change(page, keycloak_config, password, new_password, new_password_confirm, fails_with=fails_with)
+            if fails_with or no_login:
+                return page
+            # check that we are logged in
+            if verify_login:
+                header_menu = page.locator(f'#{portal_config.header_menu_id}')
+                expect(header_menu, 'header menu not visible').to_be_visible()
+        except Exception:
+            print(page.content())
+            raise
         return page
 
     return _func
@@ -272,13 +276,17 @@ def keycloak_adm_login(page: Page, keycloak_config: SimpleNamespace):
         url: str | None = keycloak_config.url,
         no_login: bool = False,
     ):
-        page.goto(url)
-        expect(page).to_have_title('Univention Corporate Server Single-Sign On')
-        keycloak_login(page, keycloak_config, username, password, fails_with=fails_with, no_login=no_login)
-        # check that we are logged in
-        if fails_with or no_login:
-            return page
-        expect(page).to_have_title('Keycloak Administration UI')
+        try:
+            page.goto(url)
+            expect(page).to_have_title('Univention Corporate Server Single-Sign On')
+            keycloak_login(page, keycloak_config, username, password, fails_with=fails_with, no_login=no_login)
+            # check that we are logged in
+            if fails_with or no_login:
+                return page
+            expect(page).to_have_title('Keycloak Administration UI')
+        except Exception:
+            print(page.content())
+            raise
         return page
 
     return _func
