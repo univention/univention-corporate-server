@@ -13,8 +13,6 @@ import tempfile
 import psutil
 import pytest
 
-import univention.testing.utils
-
 import grep_traceback
 
 
@@ -69,7 +67,7 @@ def test_journallog_tracebacks():
 # ])  # FIXME: skip test_ucs_test_logfile
 def test_fetch_logfiles_on_dc_master(ucr, testcase=None):
     """Find traceback on the DC Master"""
-    password = univention.testing.utils.UCSTestDomainAdminCredentials().bindpw
+    password = ucr.get('tests/root/pwd', 'univention')
     testpath = '/usr/share/ucs-test/99_end/01_var_log_tracebacks.py'
     with tempfile.NamedTemporaryFile() as fd:
         fd.write(password.encode('UTF-8'))

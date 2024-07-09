@@ -17,6 +17,8 @@
 
 . "s4connector.sh" || exit 137
 
+is_ucr_true connector/ad/autostart && exit 137
+
 # check if ucs-version supports extended mapping of s4-attributes
 ext_mapping=false;
 current_version="$(dpkg-query -W -f '${Version}' univention-s4-connector)"

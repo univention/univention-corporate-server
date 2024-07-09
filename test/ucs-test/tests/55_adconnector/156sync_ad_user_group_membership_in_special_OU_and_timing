@@ -7,6 +7,7 @@
 ## tags:
 ##  - groupsync
 ##  - skip_admember
+##  - SKIP
 
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137

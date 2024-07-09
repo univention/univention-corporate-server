@@ -26,7 +26,7 @@ def test_correct_number_of_tabs_displayed(umc_browser_test: UMCBrowserTest, udm,
 
     user_module = UserModule(umc_browser_test)
 
-    umc_browser_test.login('Administrator', ucr.get('tests/domainadmin/pwd', 'univention'), '/univention/management/?overview=false#module=udm:users/user')
+    umc_browser_test.login(ucr.get('tests/domainadmin/username', 'Administrator'), ucr.get('tests/domainadmin/pwd', 'univention'), '/univention/management/?overview=false#module=udm:users/user')
     details = user_module.open_details(username)
     details.open_tab(_('Policies'))
     users_tab = page.get_by_role('tab', name=_('Users'))

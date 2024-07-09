@@ -56,7 +56,7 @@ class ProcessOverview:
         self.module_name = _('Process overview')
         self.grid_load_url = re.compile('.*univention/command/top/query.*')
 
-    def navigate(self, username='Administrator', password=ucr.get('tests/domainadmin/pwd', 'univention')):
+    def navigate(self, username=ucr.get('tests/domainadmin/username', 'Administrator'), password=ucr.get('tests/domainadmin/pwd', 'univention')):
         self.tester.login(username, password)
         self.tester.open_module(self.module_name, self.grid_load_url)
 
