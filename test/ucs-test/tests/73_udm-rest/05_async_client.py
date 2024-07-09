@@ -62,10 +62,12 @@ async def test_create_modify_move_remove(random_string, ucr):
         await obj.reload()
 
         # test that the user is and only is in group Domain Users
-        with pytest.raises(AssertionError):
-            for group in obj.objects.groups:
-                grp = await group.open()
-                assert grp.properties['name'] != 'Domain Users'
+        group_names = []
+        for group in obj.objects.groups:
+            grp = await group.open()
+            group_names.append(grp.properties['name'])
+        domain_users = ucr.get('groups/default/domainusers', 'Domain Users')  # AD Member?
+        assert group_names == [domain_users]
 
         # TODO: test move and rename
         container = await cn.new()

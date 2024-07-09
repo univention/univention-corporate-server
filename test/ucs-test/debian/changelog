@@ -1,3 +1,11 @@
+ucs-test (10.0.22-21) unstable; urgency=medium
+
+  * Issue #2338: Fix
+    73_udm-rest.05_async_client.test_create_modify_move_remove for AD member
+    mode
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 09 Jul 2024 16:01:48 +0200
+
 ucs-test (10.0.22-20) unstable; urgency=medium
 
   * Bug #57420: run SAML tests with simplesamlphp and keycloak on primary
