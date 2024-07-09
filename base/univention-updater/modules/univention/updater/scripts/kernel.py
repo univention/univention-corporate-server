@@ -38,7 +38,8 @@ from typing import List, Optional
 from apt import Cache
 
 
-PREFIX = "linux-image-"
+STANDARD_PREFIX = "linux-image-"
+ELTS_PREFIX = "linux-image-5.10-"
 
 
 def main() -> None:
@@ -56,40 +57,56 @@ def parse_args(argv: Optional[List[str]] = None) -> Namespace:
 def prune(opt: Namespace) -> None:
     cache = Cache()
 
-    cur = {PREFIX + uname()[2] + suffix for suffix in ("", "-signed")}
-    top = {
+    ucs4_metapackage = {
         "univention-kernel-image",
-        PREFIX + "amd64",
-        PREFIX + "rt-amd64",
-        PREFIX + "686-pae",
-        PREFIX + "686",
-        PREFIX + "rt-686-pae",
     }
+    binary_variants = {
+        "amd64",
+        "rt-amd64",
+        "686-pae",
+        "686",
+        "rt-686-pae",
+    }
+    top = ucs4_metapackage | {STANDARD_PREFIX + v for v in binary_variants}
     meta = [
         pkg.installed
         for pkg in (cache[pkg] for pkg in top if pkg in cache)
         if pkg.is_installed
     ]
+    elts_top = {ELTS_PREFIX + v for v in binary_variants}
+    elts_meta = [
+        pkg.installed
+        for pkg in (cache[pkg] for pkg in elts_top if pkg in cache)
+        if pkg.is_installed
+    ]
     if opt.verbose:
-        print("Installed kernel meta packages:\n %s" % ("\n ".join(sorted(str(pkg) for pkg in meta)),))
+        print("Installed kernel meta packages:\n %s" % ("\n ".join(sorted(str(pkg) for pkg in meta + elts_meta)),))
+
+    cur = {STANDARD_PREFIX + uname()[2] + suffix for suffix in ("", "-signed")}
+    # cur_running = {pkg for pkg in cur if pkg in cache and cache[pkg].is_installed}
+    # if elts_meta and meta and cur_running and next(iter(cur_running)).startswith(ELTS_PREFIX[:-1]):
+    #   # We could decide to remove the old kernel since the new one is running
+    #   meta = []
+    #   top = set()
 
     keep = (
         {
             dep.name
-            for pkg in meta
+            for pkg in meta + elts_meta
             for alt in pkg.dependencies
             for dep in alt
-            if dep.name.startswith(PREFIX)
+            if dep.name.startswith(STANDARD_PREFIX)
         }
         | cur
         | top
+        | elts_top
     )
     if opt.verbose:
         print("Exception list for kernel packages:\n %s" % ("\n ".join(sorted(keep)),))
 
     cache.clear()
     for pkg in cache:
-        if pkg.name.startswith(PREFIX) and pkg.is_installed:
+        if pkg.name.startswith(STANDARD_PREFIX) and pkg.is_installed:
             if pkg.name not in keep:
                 if opt.verbose:
                     print("Purging kernel package: %s" % (pkg.name,))

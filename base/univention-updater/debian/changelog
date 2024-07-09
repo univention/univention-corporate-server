@@ -1,3 +1,9 @@
+univention-updater (15.0.15-2) unstable; urgency=medium
+
+  * Bug #57427: Make univention-prune-kernels keep linux-image-5.10*
+
+ -- Arvid <requate@univention.de>  Tue, 09 Jul 2024 11:53:13 +0200
+
 univention-updater (15.0.15-1) unstable; urgency=medium
 
   * Bug #57350 UCS 5.0-8 version bump
