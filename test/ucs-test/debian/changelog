@@ -1,3 +1,9 @@
+ucs-test (10.0.22-19) unstable; urgency=medium
+
+  *  Issue univention/ucs#2279: Disable 156sync_ad_user_group_membership_in_special_OU_and_timing
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 09 Jul 2024 14:12:30 +0200
+
 ucs-test (10.0.22-18) unstable; urgency=medium
 
   * Bug #57394: Test cases for AD-Connector allowsubtree
