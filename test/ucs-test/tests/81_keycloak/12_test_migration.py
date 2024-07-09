@@ -49,7 +49,7 @@ def compare_client(old, new):
     (NC_CLIENT, 'https://backup.ucs.test/nextcloud/apps/user_saml/saml/metadata', ['univention-keycloak', 'saml/sp', 'create', '--metadata-url=https://backup.ucs.test/nextcloud/apps/user_saml/saml/metadata', '--metadata-file=nc.xml', '--role-mapping-single-value']),
     (GOOGLE_CLIENT, 'google.com', ['univention-keycloak', 'saml/sp', 'create', '--client-id=google.com', '--assertion-consumer-url-post=https://www.google.com/a/testdomain.com/acs', '--single-logout-service-url-post=https://www.google.com/a/testdomain.com/acs', '--idp-initiated-sso-url-name=google.com', '--name-id-format=email', '--frontchannel-logout-off']),
     (UMC_CLIENT, 'https://whatever.ucs.test/univention/saml/metadata', ['univention-keycloak', 'saml/sp', 'create', '--metadata-url=https://whatever.ucs.test/univention/saml/metadata', '--metadata-file=umc.xml'])])
-def test_create_google_client(keycloak_administrator_connection, client, client_id, args):
+def test_create_client(keycloak_administrator_connection, client, client_id, args):
     """Creates Google SAML client with univention-keycloak"""
     run_command(args)
     try:
