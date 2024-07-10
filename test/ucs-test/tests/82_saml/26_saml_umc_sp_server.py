@@ -4,13 +4,9 @@
 ## exposure: safe
 ## bugs: [39552]
 
-
-import pytest
-
 from univention.testing.utils import fail, get_ldap_connection
 
 
-@pytest.mark.usefixtures("configure_sso")
 def test_saml_umc_sp_server(ucr):
     lo = get_ldap_connection()
     for res in lo.search('univentionService=Univention Management Console', attr=['cn', 'associatedDomain']):

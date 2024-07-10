@@ -15,7 +15,6 @@ import univention.testing.udm as udm_test
 import samltest
 
 
-@pytest.mark.usefixtures("configure_sso")
 def test_saml_wrong_password():
     with udm_test.UCSTestUDM() as udm:
         testcase_user_name = udm.create_user()[1]

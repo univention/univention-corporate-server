@@ -42,7 +42,6 @@ def cleanup():
     restart_umc()
 
 
-@pytest.mark.usefixtures("configure_sso")
 def test_broken_idp_metadata(saml_session):
     with move_idp_metadata():
         with pytest.raises(samltest.SamlError) as exc:

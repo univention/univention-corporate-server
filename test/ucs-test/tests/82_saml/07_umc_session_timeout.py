@@ -9,15 +9,12 @@
 import subprocess
 import time
 
-import pytest
-
 from univention.config_registry import handler_set
 from univention.testing import utils
 
 import samltest
 
 
-@pytest.mark.usefixtures("configure_sso")
 def test_umc_session_timeout(ucr, saml_session):
     session_timeout = 10
     try:

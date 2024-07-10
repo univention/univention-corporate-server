@@ -14,7 +14,6 @@ from univention.testing import ucs_samba
 import samltest
 
 
-@pytest.mark.usefixtures("configure_sso")
 def test_change_expired_password(ucr):
     with udm_test.UCSTestUDM() as udm:
         testcase_user_name = udm.create_user(pwdChangeNextLogin='1')[1]

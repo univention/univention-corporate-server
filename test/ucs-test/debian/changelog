@@ -1,3 +1,9 @@
+ucs-test (10.0.22-25) unstable; urgency=medium
+
+  * Issue #57420: revert 82_saml changes to test with keycloak
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 10 Jul 2024 21:03:15 +0200
+
 ucs-test (10.0.22-24) unstable; urgency=medium
 
   * Issue #2338: Fix 81_keycloak/04_misc.py failing if a recently added and
