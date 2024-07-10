@@ -410,6 +410,7 @@ class property(object):
             ignore_filter=None,
             match_filter=None,
             allow_subtree=[],
+            allow_filter=None,
             ignore_subtree=[],
             con_create_objectclass=[],
             con_create_attributes=[],
@@ -442,6 +443,7 @@ class property(object):
         self.ignore_filter = ignore_filter
         self.match_filter = match_filter
         self.allow_subtree = allow_subtree
+        self.allow_filter = allow_filter
         self.ignore_subtree = ignore_subtree
 
         self.con_create_objectclass = con_create_objectclass
@@ -1629,6 +1631,11 @@ class ucs(object):
         if self.property[key].allow_subtree:
             if not any(self._subtree_match(object['dn'], dn) for dn in self.property[key].allow_subtree):
                 ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because it is not in one of the allowed subtrees: [%r:%r]" % (key, object['dn']))
+                return True
+
+        if self.property[key].allow_filter:
+            if not self._filter_match(self.property[key].allow_filter, object['attributes']):
+                ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of allow_filter: [%r:%r]" % (key, object['dn']))
                 return True
 
         for subtree in self.property[key].ignore_subtree:
