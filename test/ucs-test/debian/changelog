@@ -1,3 +1,11 @@
+ucs-test (12.0.136) unstable; urgency=medium
+
+  * Issue #2338: Fix 81_keycloak/04_misc.py failing if a recently added and
+    used client got deleted, left open sessions which cause problems for
+    Keycloaks REST API (/sessions/)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 09 Aug 2024 12:01:36 +0200
+
 ucs-test (12.0.135) unstable; urgency=medium
 
   * Issue univention/ucs#2357: support UMC OIDC in keycloak tests
