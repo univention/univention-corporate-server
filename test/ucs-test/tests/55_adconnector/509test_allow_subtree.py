@@ -2,7 +2,9 @@
 ## desc: "Test the UCS<->AD sync with allow_subtree in {read,write,sync} mode with users"
 ## exposure: dangerous
 ## packages:
-## - univention-ad-connector
+##  - univention-ad-connector
+## tags:
+##  - skip_admember
 
 import contextlib
 from dataclasses import dataclass

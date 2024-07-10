@@ -1,3 +1,9 @@
+ucs-test (10.0.22-23) unstable; urgency=medium
+
+  * Bug #57394: skip allowsubtree tests in admember mode
+
+ -- Felix Botner <botner@univention.de>  Wed, 10 Jul 2024 12:24:18 +0200
+
 ucs-test (10.0.22-22) unstable; urgency=medium
 
   * Issue #57420: Fix 82_saml tests. Remove fixture type annotation
