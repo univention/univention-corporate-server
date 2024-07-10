@@ -10,7 +10,9 @@ import socket
 import dns.resolver
 import pytest
 import requests
-from utils import get_portal_tile, host_is_alive, keycloak_get_request, keycloak_sessions_by_user, run_command
+from utils import (
+    get_portal_tile, host_is_alive, keycloak_get_request, keycloak_post_request, keycloak_sessions_by_user, run_command,
+)
 
 from univention.testing.utils import get_ldap_connection
 
@@ -98,6 +100,7 @@ def test_rest_api_endpoints(keycloak_config, realm: str):
     assert keycloak_get_request(keycloak_config, f'realms/{realm}/client-scopes')
     assert keycloak_get_request(keycloak_config, f'realms/{realm}/roles')
     keycloak_get_request(keycloak_config, f'realms/{realm}/groups')
+    keycloak_post_request(keycloak_config, f'realms/{realm}/logout-all')
     keycloak_get_request(keycloak_config, f'realms/{realm}/ui-ext/sessions')
     keycloak_get_request(keycloak_config, f'realms/{realm}/admin-events')
     keycloak_get_request(keycloak_config, f'realms/{realm}/events')

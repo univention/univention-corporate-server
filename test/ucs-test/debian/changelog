@@ -1,3 +1,11 @@
+ucs-test (10.0.22-24) unstable; urgency=medium
+
+  * Issue #2338: Fix 81_keycloak/04_misc.py failing if a recently added and
+    used client got deleted, left open sessions which cause problems for
+    Keycloaks REST API (/sessions/)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 10 Jul 2024 12:26:16 +0200
+
 ucs-test (10.0.22-23) unstable; urgency=medium
 
   * Bug #57394: skip allowsubtree tests in admember mode
