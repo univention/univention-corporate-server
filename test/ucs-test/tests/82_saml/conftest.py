@@ -50,7 +50,7 @@ def is_keycloak_installed() -> bool:
 
 
 @pytest.fixture(params=["keycloak", "simplesamlphp"])
-def configure_sso(request: pytest.FixtureRequest, is_keycloak_installed: bool):
+def configure_sso(request, is_keycloak_installed: bool):
     # can't use the UCR fixture here since it seems to not like us calling UCR via the CLI
     domainname = ucr["domainname"]
     server_role = ucr["server/role"]

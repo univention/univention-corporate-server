@@ -1,3 +1,9 @@
+ucs-test (10.0.22-22) unstable; urgency=medium
+
+  * Issue #57420: Fix 82_saml tests. Remove fixture type annotation
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 10 Jul 2024 12:14:12 +0200
+
 ucs-test (10.0.22-21) unstable; urgency=medium
 
   * Issue #2338: Fix
