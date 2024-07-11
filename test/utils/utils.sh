@@ -952,6 +952,7 @@ set_administrator_dn_for_ucs_test () {
 	local dn
 	dn="$(univention-ldapsearch -LLL '(sambaSid=*-500)' 1.1 | sed -ne 's|dn: ||p')"
 	ucr set tests/domainadmin/account="$dn"
+	ucr set tests/domainadmin/username="$(ucr get tests/domainadmin/account | sed -e 's/uid=//' -e 's/,.*//')"
 }
 
 set_administrator_password_for_ucs_test () {

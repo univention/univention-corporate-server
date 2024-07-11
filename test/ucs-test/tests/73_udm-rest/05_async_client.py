@@ -22,8 +22,9 @@ from univention.testing.utils import verify_ldap_object
 @pytest.mark.asyncio()
 async def test_create_modify_move_remove(random_string, ucr):
     uri = 'http://localhost/univention/udm/'
+    username = ucr.get('tests/domainadmin/username', 'Administrator')
     pwd = ucr.get('tests/domainadmin/pwd', 'univention')
-    async with UDM.http(uri, 'Administrator', pwd) as udm:
+    async with UDM.http(uri, username, pwd) as udm:
         module = await udm.get("users/user")
         cn = await udm.get("container/cn")
         obj = await module.new()
@@ -105,7 +106,8 @@ async def test_create_modify_move_remove(random_string, ucr):
 async def test_json_patch(random_string, ucr):
     uri = 'http://localhost/univention/udm/'
     pwd = ucr.get('tests/domainadmin/pwd', 'univention')
-    async with UDM.http(uri, 'Administrator', pwd) as udm:
+    username = ucr.get('tests/domainadmin/username', 'Administrator')
+    async with UDM.http(uri, username, pwd) as udm:
         module = await udm.get("users/user")
         obj = await module.new()
         patch = PatchDocument()
@@ -142,8 +144,10 @@ async def test_json_patch(random_string, ucr):
 @pytest.mark.asyncio()
 async def test_various_api_methods(random_string, ucr):
     uri = 'http://localhost/univention/udm/'
+    dn = ucr.get('tests/domainadmin/account', 'Administrator')
+    username = ucr.get('tests/domainadmin/username', 'Administrator')
     pwd = ucr.get('tests/domainadmin/pwd', 'univention')
-    async with UDM.http(uri, 'Administrator', pwd) as udm:
+    async with UDM.http(uri, username, pwd) as udm:
         assert (await udm.get_ldap_base()) == ucr['ldap/base']
         mod = await udm.get('container/dc')
         with pytest.raises(_NoRelation):
@@ -183,7 +187,7 @@ async def test_various_api_methods(random_string, ucr):
 
         report_types = await (await udm.get('users/user')).get_report_types()
         assert len(report_types) == 2
-        await (await udm.get('users/user')).create_report(report_types[0], ['uid=Administrator,cn=users,%(ldap/base)s' % ucr])
+        await (await udm.get('users/user')).create_report(report_types[0], [dn])
 
         superordinate = (await (await udm.get('dns/forward_zone')).search().__anext__()).dn
         ptr = (await (await udm.get('dns/host_record')).search(superordinate=superordinate, opened=True).__anext__())
@@ -202,7 +206,8 @@ async def test_various_api_methods(random_string, ucr):
 async def test_service_unavailable(ucr):
     uri = 'http://localhost/univention/udm/'
     pwd = ucr.get('tests/domainadmin/pwd', 'univention')
-    async with UDM.http(uri, 'Administrator', pwd) as udm:
+    username = ucr.get('tests/domainadmin/username', 'Administrator')
+    async with UDM.http(uri, username, pwd) as udm:
         subprocess.call(['systemctl', 'stop', 'univention-directory-manager-rest'])  # noqa: ASYNC101
         try:
             with pytest.raises(ServiceUnavailable):
