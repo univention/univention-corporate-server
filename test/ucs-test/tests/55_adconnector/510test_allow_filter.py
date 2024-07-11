@@ -293,69 +293,77 @@ def test_delete(sync_mode: str) -> None:
     allowed_container = random_string()
     allowed_ou = random_string()
 
+    allowed_user2 = random_string()
+    allowed_group2 = random_string()
+    allowed_container2 = random_string()
+    allowed_ou2 = random_string()
+
     with allow_filter_setup(sync_mode) as udm:
 
-        objs1 = create_objects_in_ucs(udm)
-        objs2 = create_objects_in_ucs(udm)
-        objs3 = create_objects_in_ucs(
+        no_sync_objs_udm_delete = create_objects_in_ucs(udm)
+        no_sync_objs_ad_delete = create_objects_in_ucs(udm)
+        sync_objs_ad_delete = create_objects_in_ucs(
             udm,
             username=allowed_user,
             groupname=allowed_group,
             containername=allowed_container,
             ouname=allowed_ou,
         )
-        for obj in objs1 + objs2 + objs3:
-            AD.search(obj.ad_filter, required=True)
+        sync_objs_udm_delete = create_objects_in_ucs(
+            udm,
+            username=allowed_user2,
+            groupname=allowed_group2,
+            containername=allowed_container2,
+            ouname=allowed_ou2,
 
-        # TODO when deleting a matching object in AD we have the problem that
-        # the filter attribute from the AD object can get invalid because
-        # AD adds \DEL:ID to the rdn attribute and other attributes are deleted
-        # at this point we don't have the full (old) object for the filter match
-        # ->
-        #  container CN=oxud50ug2c,DC=ucs,DC=test
-        #  allow filter (cn=oxud50ug2c)
-        #  object after delete in AD
-        #    'cn': [b'oxud50ug2c\nDEL:3206cf5b-120d-4dd9-bc7b-21aeb20da325']
-        #  sync to UCS fails because (cn=oxud50ug2c) no longer matches
+        )
 
         config = [
-            f"connector/ad/mapping/user/allowfilter=(|(uid={allowed_user})(sAMAccountName={allowed_user}))",
-            f"connector/ad/mapping/group/allowfilter=(|(cn={allowed_group})(sAMAccountName={allowed_group}))",
-            f"connector/ad/mapping/container/allowfilter=(cn={allowed_container})",
-            f"connector/ad/mapping/ou/allowfilter=(ou={allowed_ou})",
+            f"connector/ad/mapping/user/allowfilter=(|(uid={allowed_user})(cn={allowed_user})(uid={allowed_user2})(cn={allowed_user2}))",
+            f"connector/ad/mapping/group/allowfilter=(|(cn={allowed_group})(cn={allowed_group})(cn={allowed_group2})(cn={allowed_group2}))",
+            f"connector/ad/mapping/container/allowfilter=(|(cn={allowed_container})(cn={allowed_container2}))",
+            f"connector/ad/mapping/ou/allowfilter=(|(ou={allowed_ou})(ou={allowed_ou2}))",
         ]
         ucr_set(config)
         restart_adconnector()
 
         # check delete in UCS is not synced
         if sync_mode in ('sync', 'write'):
-            for obj in objs1:
+            for obj in no_sync_objs_udm_delete:
                 udm.remove_object(obj.udm_module, dn=obj.udm_dn)
             wait_for_sync()
-            for obj in objs1:
+            for obj in no_sync_objs_udm_delete:
                 AD.verify_object(obj.ad_dn, {'name': obj.name})
             # cleanup
-            for obj in objs1:
+            for obj in no_sync_objs_udm_delete:
                 AD.delete(obj.ad_dn)
 
         # check delete in AD is not synced
         if sync_mode in ('sync', 'read'):
-            for obj in objs2:
+            for obj in no_sync_objs_ad_delete:
                 AD.delete(obj.ad_dn)
             wait_for_sync()
-            for obj in objs2:
+            for obj in no_sync_objs_ad_delete:
                 udm.verify_ldap_object(obj.udm_dn)
 
-        # check delete works if filter matches
+        # check delete in AD works if filter matches
         if sync_mode in ('sync', 'read'):
-            for obj in objs3:
+            for obj in sync_objs_ad_delete:
                 AD.delete(obj.ad_dn)
             wait_for_sync()
-            for obj in objs3:
-                # TODO
-                if obj.udm_module in ['users/user', 'groups/group']:
-                    with pytest.raises(LDAPObjectNotFound):
-                        udm.verify_ldap_object(obj.udm_dn, retry_count=3, delay=1)
+            for obj in sync_objs_ad_delete:
+                with pytest.raises(LDAPObjectNotFound):
+                    print(obj)
+                    udm.verify_ldap_object(obj.udm_dn, retry_count=3, delay=1)
+
+        # check delete in UCS works if filter matches
+        if sync_mode in ('sync', 'write'):
+            for obj in sync_objs_udm_delete:
+                udm.remove_object(obj.udm_module, dn=obj.udm_dn)
+            wait_for_sync()
+            for obj in sync_objs_udm_delete:
+                with pytest.raises(NO_SUCH_OBJECT):
+                    AD.search(obj.ad_filter, required=True)
 
 
 @pytest.mark.parametrize("sync_mode", ["sync"])
@@ -416,6 +424,8 @@ def test_filter_no_longer_matches(sync_mode: str) -> None:
             udm.modify_object('users/user', dn=udm_dn, description='nosync')
             wait_for_sync()
             # TODO is this OK?
+            # Problem: the allowed attribute has been removed from the object,
+            # this change is not synced to the other side
             AD.verify_object(ad_dn, {'name': username, 'description': 'sync'})
 
         # create and modify in AD, check in UCS
