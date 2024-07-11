@@ -10,3 +10,6 @@ desc: |
    Univention Managment Console Keycloak SAML client which caused
    SAML logins to fail.
 bug: [57420]
+erratum: 1083
+announced: 2024-07-11
+support: core
