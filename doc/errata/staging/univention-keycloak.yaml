@@ -7,6 +7,6 @@ fix: 1.0.12-4
 desc: |
  This update addresses the following issues:
  * Prevent the creation of two mappers in the default
-  Univention Managment Console Keycloak SAML client which caused
-  SAML logins to fail.
+   Univention Managment Console Keycloak SAML client which caused
+   SAML logins to fail.
 bug: [57420]
