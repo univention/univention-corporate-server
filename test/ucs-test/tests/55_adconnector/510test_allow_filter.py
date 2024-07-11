@@ -321,8 +321,8 @@ def test_delete(sync_mode: str) -> None:
         config = [
             f"connector/ad/mapping/user/allowfilter=(|(uid={allowed_user})(sAMAccountName={allowed_user}))",
             f"connector/ad/mapping/group/allowfilter=(|(cn={allowed_group})(sAMAccountName={allowed_group}))",
-            f"connector/ad/mapping/container/allowfilter=(|(cn={allowed_container})(description=sync))",
-            f"connector/ad/mapping/ou/allowfilter=(|(ou={allowed_ou})(description=sync))",
+            f"connector/ad/mapping/container/allowfilter=(cn={allowed_container})",
+            f"connector/ad/mapping/ou/allowfilter=(ou={allowed_ou})",
         ]
         ucr_set(config)
         restart_adconnector()
@@ -347,11 +347,12 @@ def test_delete(sync_mode: str) -> None:
                 udm.verify_ldap_object(obj.udm_dn)
 
         # check delete works if filter matches
-        if sync_mode in ('sync'):
+        if sync_mode in ('sync', 'read'):
             for obj in objs3:
                 AD.delete(obj.ad_dn)
             wait_for_sync()
             for obj in objs3:
+                # TODO
                 if obj.udm_module in ['users/user', 'groups/group']:
                     with pytest.raises(LDAPObjectNotFound):
                         udm.verify_ldap_object(obj.udm_dn, retry_count=3, delay=1)
@@ -394,6 +395,86 @@ def test_filter_matches_after_modification(sync_mode: str) -> None:
             finally:
                 AD.delete(ad_dn)
 
-# TODO
-# test_subtree_filter_prioriry
-# test_filter_no_longer_matches
+
+@pytest.mark.parametrize("sync_mode", ["sync"])
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
+def test_filter_no_longer_matches(sync_mode: str) -> None:
+
+    with allow_filter_setup(sync_mode) as udm:
+        config = [
+            'connector/ad/mapping/user/allowfilter=(description=sync)',
+        ]
+        ucr_set(config)
+        restart_adconnector()
+
+        # create and modify in UCS, check in AD
+        if sync_mode in ('sync', 'write'):
+            udm_dn, username = udm.create_user('users/user', description='sync')
+            ad_dn = f'cn={username},cn=users,{AD.adldapbase}'
+            wait_for_sync()
+            AD.verify_object(ad_dn, {'name': username})
+            udm.modify_object('users/user', dn=udm_dn, description='nosync')
+            wait_for_sync()
+            # TODO is this OK?
+            AD.verify_object(ad_dn, {'name': username, 'description': 'sync'})
+
+        # create and modify in AD, check in UCS
+        if sync_mode in ('sync', 'read'):
+            name = random_string()
+            ad_dn = AD.createuser(name, description='sync'.encode('UTF-8'))
+            try:
+                udm_dn = f'uid={name},cn=users,{udm.LDAP_BASE}'
+                wait_for_sync()
+                udm.verify_ldap_object(udm_dn)
+                AD.set_attribute(ad_dn, 'description', 'nosync'.encode('UTF-8'))
+                wait_for_sync()
+                # TODO is this OK?
+                udm.verify_ldap_object(udm_dn, expected_attr={'description': ['sync']})
+            finally:
+                AD.delete(ad_dn)
+
+
+@pytest.mark.parametrize("sync_mode", ["sync"])
+@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
+def test_allowsubtree_higher_priority_than_allowfilter(sync_mode: str) -> None:
+
+    with allow_filter_setup(sync_mode) as udm:
+        username = random_string()
+        ucr_set([f'connector/ad/mapping/user/allowfilter=(uid={username})'])
+        restart_adconnector()
+
+        # check modify from UCS does not work if allowsubtree does not match
+        if sync_mode in ('sync', 'write'):
+            udm_dn, _ = udm.create_user('users/user', username=username)
+            ad_dn = f'cn={username},cn=users,{AD.adldapbase}'
+            wait_for_sync()
+            # ok, it is synced
+            AD.verify_object(ad_dn, {'name': username})
+            # now check that it is no longer synced with allowsubtree config
+            ucr_set(['connector/ad/mapping/allowsubtree/test1/ucs=cn=nothing'])
+            restart_adconnector()
+            udm.modify_object('users/user', dn=udm_dn, description='changed in UCS')
+            with pytest.raises(AssertionError):
+                AD.verify_object(ad_dn, {'description': 'changed in UCS'})
+
+        # check create in AD is not synced to UCS if allowsubtree does not match
+        if sync_mode in ('sync', 'read'):
+            username = random_string()
+            ucr_set([
+                f'connector/ad/mapping/user/allowfilter=(|(uid={username})(sAMAccountName={username}))',
+                'connector/ad/mapping/allowsubtree/test1/ucs=cn=nothing',
+            ])
+            restart_adconnector()
+            ad_dn = AD.createuser(username, description='sync'.encode('UTF-8'))
+            wait_for_sync()
+            try:
+                with pytest.raises(NO_SUCH_OBJECT):
+                    udm._primary_lo.search(filter=f'uid={username}', attr=[], required=True)
+                # make allowsubtree match and check sync works
+                ucr_set([f'connector/ad/mapping/allowsubtree/test1/ucs={udm.LDAP_BASE}'])
+                restart_adconnector()
+                AD.set_attribute(ad_dn, 'description', 'Changed in AD'.encode('UTF-8'))
+                wait_for_sync()
+                udm._primary_lo.search(filter=f'uid={username}', attr=[], required=True)
+            finally:
+                AD.delete(ad_dn)
