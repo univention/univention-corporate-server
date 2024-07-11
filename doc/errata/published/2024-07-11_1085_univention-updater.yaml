@@ -9,3 +9,6 @@ desc: |
  * The script `univention-prune-kernels` has been adjusted to the new
    kernel version linux-5.10
 bug: [57427]
+erratum: 1085
+announced: 2024-07-11
+support: core
