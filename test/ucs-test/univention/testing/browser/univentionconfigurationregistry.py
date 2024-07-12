@@ -85,6 +85,10 @@ class UniventionConfigurationRegistry:
     def set_variable(self, key: str, value: str):
         self.page.get_by_text(key).click()
         time.sleep(1)
+        # wait for the loading animation to disappear before filling the textbox
+        # TODO is there a better way?
+        for standby in self.page.locator('.umcStandbySvg').all():
+            standby.wait_for(state='hidden')
         value_textbox = self.page.get_by_role('textbox', name=_('Value'), exact=True)
         value_textbox.clear()
         value_textbox.fill(value)
