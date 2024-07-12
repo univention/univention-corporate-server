@@ -788,7 +788,7 @@ run_ucsschool_tests () {
 	done
 
 	# pass other arguments beside the first on
-	args=("$@")
+	local args=("$@")
 	run_apptests --prohibit=SKIP-UCSSCHOOL "${args[@]:1}" "${test_args[@]}"
 }
 
