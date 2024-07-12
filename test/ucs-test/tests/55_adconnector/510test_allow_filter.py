@@ -481,7 +481,10 @@ def test_allowsubtree_higher_priority_than_allowfilter(sync_mode: str) -> None:
                 with pytest.raises(NO_SUCH_OBJECT):
                     udm._primary_lo.search(filter=f'uid={username}', attr=[], required=True)
                 # make allowsubtree match and check sync works
-                ucr_set([f'connector/ad/mapping/allowsubtree/test1/ucs={udm.LDAP_BASE}'])
+                ucr_set([
+                    f'connector/ad/mapping/allowsubtree/test1/ucs={udm.LDAP_BASE}',
+                    f'connector/ad/mapping/allowsubtree/test1/ucs={AD.adldapbase}',
+                ])
                 restart_adconnector()
                 AD.set_attribute(ad_dn, 'description', 'Changed in AD'.encode('UTF-8'))
                 wait_for_sync()
