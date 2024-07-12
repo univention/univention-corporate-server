@@ -786,7 +786,10 @@ run_ucsschool_tests () {
 			test_args+=("--section=end")
 		fi
 	done
-	run_apptests --prohibit=SKIP-UCSSCHOOL "${test_args[@]}"
+
+	# pass other arguments beside the first on
+	args=("$@")
+	run_apptests --prohibit=SKIP-UCSSCHOOL "${args[@]:1}" "${test_args[@]}"
 }
 
 # run only tests with tag big_environment
