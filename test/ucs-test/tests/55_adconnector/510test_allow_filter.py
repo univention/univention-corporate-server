@@ -483,7 +483,7 @@ def test_allowsubtree_higher_priority_than_allowfilter(sync_mode: str) -> None:
                 # make allowsubtree match and check sync works
                 ucr_set([
                     f'connector/ad/mapping/allowsubtree/test1/ucs={udm.LDAP_BASE}',
-                    f'connector/ad/mapping/allowsubtree/test1/ucs={AD.adldapbase}',
+                    f'connector/ad/mapping/allowsubtree/test1/ad={AD.adldapbase}',
                 ])
                 restart_adconnector()
                 AD.set_attribute(ad_dn, 'description', 'Changed in AD'.encode('UTF-8'))
