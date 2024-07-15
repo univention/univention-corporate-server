@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.0.14) unstable; urgency=medium
+
+  * Bug #57439: Repair and modernize univention-sync-memberuid
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 25 Jul 2024 16:31:20 +0200
+
 univention-directory-manager-modules (17.0.13) unstable; urgency=medium
 
   * Bug #53333: Skip over non existent objects in search
