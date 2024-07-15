@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-directory-manager-modules
+fix: 15.0.27-4
+desc: |
+ This update addresses the following issues:
+ * A traceback that was thrown when running ``univention-sync-memberuid``
+   has been fixed. The script now also supports limiting operation to
+   certrain groups, or excluding certain groups.
+bug: [57439]

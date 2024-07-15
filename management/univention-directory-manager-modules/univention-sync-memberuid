@@ -45,7 +45,10 @@ from logging import getLogger
 
 import ldap
 
-import univention.config_registry
+import univention.admin.filter
+import univention.admin.uldap
+import univention.logging
+from univention.config_registry import ucr
 
 
 log = getLogger('ADMIN')
@@ -57,45 +60,49 @@ class ConsistencyError(Exception):
 
 def main() -> None:
     """synchronise attributes uniqueMember to memberUID of group objects."""
-    configRegistry = univention.config_registry.ConfigRegistry()
-    configRegistry.load()
-
     parser = ArgumentParser()
-    parser.add_argument(
-        '-t', '--test', action='store_true',
-        dest='test', default=False, help='just test the modification')
-    parser.add_argument(
-        '-d', action='store', default=2, type=int,
-        dest='debug', help='set debug level')
-    parser.add_argument(
-        '-c', '--continue', action='store_true',
-        dest='cont', default=False, help='continue on error')
+    parser.add_argument('-t', '--test', action='store_true', dest='test', default=False, help='just test the modification')
+    parser.add_argument('-d', action='store', default=2, type=int, dest='debug', help='set debug level')
+    parser.add_argument('-c', '--continue', action='store_true', dest='cont', default=False, help='continue on error')
+    parser.add_argument('-g', '--groups', action='append', required=False, dest='groups', help='Only process the specified group')
+    parser.add_argument('-x', '--exclude', action='append', required=False, dest='exclude', help='Exclude the specified group')
 
     options = parser.parse_args()
 
     univention.logging.basicConfig(filename='/var/log/univention/sync-memberuid.log', univention_debug_level=options.debug)
 
-    base_dn = configRegistry['ldap/base']
+    base_dn = ucr['ldap/base']
 
-    lo = ldap.initialize('ldap://localhost:7389')
-    bindpw = open('/etc/ldap.secret').read()
-    if bindpw[-1] == '\n':
-        bindpw = bindpw[:-1]
-    lo.simple_bind_s("cn=admin," + base_dn, bindpw)
+    lo, _ = univention.admin.uldap.getAdminConnection()
 
     try:
-        process_groups(lo, base_dn, options.test, options.cont)
+        process_groups(lo, base_dn, options.groups, options.exclude, options.test, options.cont)
     except ConsistencyError:
         sys.exit(1)
 
 
+def make_searchfilter(
+    groups,  # type: list[str] | None
+    exclude,  # type: list[str] | None
+):  # type: (...) -> univention.admin.filter.conjunction
+    filters = []
+    if groups is not None:
+        filters = [univention.admin.filter.conjunction('|', [f'(cn={group})' for group in groups])] + filters
+    if exclude is not None:
+        filters = [univention.admin.filter.conjunction('!', f'(cn={group})') for group in exclude] + filters
+    return str(univention.admin.filter.conjunction('&', ['(objectClass=posixGroup)', '(objectClass=univentionGroup)'] + filters))
+
+
 def process_groups(
-    lo,  # type: ldap.ldapobject.LDAPObject
+    lo,  # type: univention.admin.uldap.access
     base_dn,  # type: str
+    groups,  # type: list[str]
+    exclude,  # type: list[str]
     test=False,  # type: bool
     cont=False,  # type: bool
 ):  # type: (...) -> None
-    groups = lo.search_s(base_dn, ldap.SCOPE_SUBTREE, '(&(objectClass=posixGroup)(objectClass=univentionGroup))', ('uniqueMember', 'memberUid'))
+    filter = make_searchfilter(groups, exclude)
+    groups = lo.search(filter, base_dn, attr=['uniqueMember', 'memberUid'])
 
     if test:
         print('Test Mode: The following groups have to be modified:')
@@ -108,7 +115,7 @@ def process_groups(
         for uniqueMember in member_dns:
             uniqueMember = uniqueMember.decode('utf-8')
             try:
-                result = lo.search_s(uniqueMember, ldap.SCOPE_BASE, '(objectclass=*)')
+                result = lo.search(base=uniqueMember, scope='base')
             except ldap.NO_SUCH_OBJECT as ex:
                 log.warning('searching %s failed: %s', uniqueMember, ex)
                 print('WARNING: DN %s not found' % uniqueMember, file=sys.stderr)
@@ -132,7 +139,7 @@ def process_groups(
             add = list(new - old)
             if add:
                 try:
-                    lo.modify_s(grp_dn, [(ldap.MOD_ADD, 'memberUid', add)])
+                    lo.modify(grp_dn, [('memberUid', '', add)], exceptions=True)
                 except ldap.LDAPError as ex:
                     log.error('adding memberUid entries failed: %s', ex)
                     if not cont:
@@ -140,7 +147,7 @@ def process_groups(
             remove = list(old - new)
             if remove:
                 try:
-                    lo.modify_s(grp_dn, [(ldap.MOD_DELETE, 'memberUid', remove)])
+                    lo.modify(grp_dn, [('memberUid', remove, '')], exceptions=True)
                 except ldap.LDAPError as ex:
                     log.error('removing memberUid entries failed: %s', ex)
                     if not cont:
