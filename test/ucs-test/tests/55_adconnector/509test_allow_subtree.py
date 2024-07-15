@@ -257,7 +257,7 @@ def test_modify(sync_mode: str) -> None:
             if sync_mode in ('sync', 'read'):
                 for obj in tree.objects:
                     # modify in AD, check no change in UCS
-                    AD.set_attribute(obj.ad_dn, 'description', 'changed in AD')
+                    AD.set_attribute(obj.ad_dn, 'description', b'changed in AD')
                     AD.verify_object(obj.ad_dn, {'description': 'changed in AD'})
                     wait_for_sync()
                     with pytest.raises(LDAPObjectValueMissing):
@@ -274,7 +274,7 @@ def test_modify(sync_mode: str) -> None:
             if sync_mode in ('sync', 'read'):
                 for obj in tree.objects:
                     # modify in AD, check cange in UCS
-                    AD.set_attribute(obj.ad_dn, 'description', 'changed in AD')
+                    AD.set_attribute(obj.ad_dn, 'description', b'changed in AD')
                     AD.verify_object(obj.ad_dn, {'description': 'changed in AD'})
                     wait_for_sync()
                     udm.verify_ldap_object(obj.udm_dn, expected_attr={'description': ['changed in AD']})

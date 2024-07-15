@@ -1,3 +1,9 @@
+ucs-test (12.0.121) unstable; urgency=medium
+
+  * Bug #57394: Fix 55_adconnector/509test_allow_subtree.py
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 Jul 2024 14:41:20 +0200
+
 ucs-test (12.0.120) unstable; urgency=medium
 
   * Issue #2346: Fix 132_miscellaneous_open_all_modules
