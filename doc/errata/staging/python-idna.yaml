@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: python-idna
+fix: 2.2-1+deb9u1
+desc: |
+ This update addresses the following issue:
+
+ Debian update 2.2-1+deb9u1
+ 2.2-1+deb9u1 (Wed, 03 Jul 2024 11:04:37 -0400)
+ * Non-maintainer upload by the Extended LTS Security Team
+ * Backport upstream fix for CVE-2024-3651: Specially crafted inputs to
+   idna.encode() can consume significant resources, which may lead to denial
+   of service.
+ * Add debian/salsa-ci.yml using the stretch recipe.
+bug: [57448]
+cve:
+- CVE-2024-3651
