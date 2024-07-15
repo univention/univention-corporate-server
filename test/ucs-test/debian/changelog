@@ -1,3 +1,9 @@
+ucs-test (12.0.120) unstable; urgency=medium
+
+  * Issue #2346: Fix 132_miscellaneous_open_all_modules
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 Jul 2024 09:36:08 +0200
+
 ucs-test (12.0.119) unstable; urgency=medium
 
   * Issue #2347: Fix 12_product_test_ucr
