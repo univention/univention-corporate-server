@@ -1,3 +1,9 @@
+ucs-test (10.0.22-30) unstable; urgency=medium
+
+  * Issue univention/ucs#2279: Fix adconnector and s4connector tests
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 16 Jul 2024 21:13:41 +0200
+
 ucs-test (10.0.22-29) unstable; urgency=medium
 
   * Bug #57442: connector/ad/mapping/{object type}/allowfilter tests
