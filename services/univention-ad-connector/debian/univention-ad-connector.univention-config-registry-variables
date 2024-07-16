@@ -320,3 +320,33 @@ Description[de]=Die DN eines Teilbaums des Active Directory, welcher von Active 
 Description[en]=The DN of an Active Directory subtree which is synchronized from Active Directory to UCS LDAP. Objects whose DN does not end with this DN are excluded from the synchronization and deleted from the UCS LDAP if they have already been synchronized. A separate variable must be set for each subtree that is to be included in the synchronization. The selection of objects to be synchronized can be further restricted via the UCR variables `con.*/ad/mapping/{user,group,container,ou}/ignorelist` and `con.*/ad/mapping/user/ignorefilter`.
 Type=str
 Categories=service-adcon
+
+[con.*/ad/mapping/user/allowfilter]
+Description[de]=Nur die Benutzerobjekte, die diesem LDAP Filter entsprechen, werden durch den Connector synchronisiert.
+Description[en]=Only those user objects that match this LDAP filter are synchronised by the connector.
+Type=str
+Categories=service-adcon
+
+[con.*/ad/mapping/group/allowfilter]
+Description[de]=Nur die Gruppenobjekte, die diesem LDAP Filter entsprechen, werden durch den Connector synchronisiert.
+Description[en]=Only those group objects that match this LDAP filter are synchronised by the connector.
+Type=str
+Categories=service-adcon
+
+[con.*/ad/mapping/container/allowfilter]
+Description[de]=Nur die Containerobjekte, die diesem LDAP Filter entsprechen, werden durch den Connector synchronisiert.
+Description[en]=Only those container objects that match this LDAP filter are synchronised by the connector.
+Type=str
+Categories=service-adcon
+
+[con.*/ad/mapping/ou/allowfilter]
+Description[de]=Nur die OU-Objekte, die diesem LDAP Filter entsprechen, werden durch den Connector synchronisiert.
+Description[en]=Only those ou objects that match this LDAP filter are synchronised by the connector.
+Type=str
+Categories=service-adcon
+
+[con.*/ad/mapping/windowscomputer/allowfilter]
+Description[de]=Nur die Windows-Computer Objekte, die diesem LDAP Filter entsprechen, werden durch den Connector synchronisiert.
+Description[en]=Only those windowscomputer objects that match this LDAP filter are synchronised by the connector.
+Type=str
+Categories=service-adcon

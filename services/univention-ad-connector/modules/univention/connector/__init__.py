@@ -410,6 +410,7 @@ class property(object):
             ignore_filter=None,
             match_filter=None,
             allow_subtree=[],
+            allow_filter=None,
             ignore_subtree=[],
             con_create_objectclass=[],
             con_create_attributes=[],
@@ -442,6 +443,7 @@ class property(object):
         self.ignore_filter = ignore_filter
         self.match_filter = match_filter
         self.allow_subtree = allow_subtree
+        self.allow_filter = allow_filter
         self.ignore_subtree = ignore_subtree
 
         self.con_create_objectclass = con_create_objectclass
@@ -512,6 +514,10 @@ class ucs(object):
 
         irrelevant_attributes = self.configRegistry.get('%s/ad/mapping/attributes/irrelevant' % (self.CONFIGBASENAME,), '')
         self.irrelevant_attributes = set(irrelevant_attributes.split(','))
+
+        # TODO just for testing, remove before merge
+        # specific debug levels
+        self._ignore_object_debug_level = int(self.configRegistry.get('%s/debug/level/ignore_object' % self.CONFIGBASENAME, ud.INFO))
 
     def init_ldap_connections(self):
         self.open_ucs()
@@ -1622,26 +1628,33 @@ class ucs(object):
         :param key: the property_type from the mapping
         :param object: a mapped or unmapped AD or UCS object
         """
+        dl = self._ignore_object_debug_level
+
         if 'dn' not in object:
-            ud.debug(ud.LDAP, ud.INFO, f"_ignore_object: ignore object without DN (key: {key})")
+            ud.debug(ud.LDAP, dl, f"_ignore_object: ignore object without DN (key: {key})")
             return True  # ignore not existing object
 
         if self.property[key].allow_subtree:
             if not any(self._subtree_match(object['dn'], dn) for dn in self.property[key].allow_subtree):
-                ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because it is not in one of the allowed subtrees: [%r:%r]" % (key, object['dn']))
+                ud.debug(ud.LDAP, dl, "_ignore_object: ignore object because it is not in one of the allowed subtrees: [%r:%r]" % (key, object['dn']))
+                return True
+
+        if self.property[key].allow_filter:
+            if not self._filter_match(self.property[key].allow_filter, object['attributes']):
+                ud.debug(ud.LDAP, dl, "_ignore_object: ignore object because of allow_filter: [%r:%r]" % (key, object['dn']))
                 return True
 
         for subtree in self.property[key].ignore_subtree:
             if self._subtree_match(object['dn'], subtree):
-                ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of subtree match: [%r:%r]" % (key, object['dn']))
+                ud.debug(ud.LDAP, dl, "_ignore_object: ignore object because of subtree match: [%r:%r]" % (key, object['dn']))
                 return True
 
         if self.property[key].ignore_filter and self._filter_match(self.property[key].ignore_filter, object['attributes']):
-            ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of ignore_filter: [%r:%r]" % (key, object['dn']))
+            ud.debug(ud.LDAP, dl, "_ignore_object: ignore object because of ignore_filter: [%r:%r]" % (key, object['dn']))
             return True
 
         if self.property[key].match_filter and not self._filter_match(self.property[key].match_filter, object['attributes']):
-            ud.debug(ud.LDAP, ud.INFO, "_ignore_object: ignore object because of match_filter: [%r:%r]" % (key, object['dn']))
+            ud.debug(ud.LDAP, dl, "_ignore_object: ignore object because of match_filter: [%r:%r]" % (key, object['dn']))
             return True
 
         ud.debug(ud.LDAP, ud.INFO, "_ignore_object: Do not ignore %r:%r" % (key, object['dn']))

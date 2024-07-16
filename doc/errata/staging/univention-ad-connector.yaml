@@ -3,7 +3,7 @@ release: "5.0"
 version: [8]
 scope: ucs_5.0-0-errata5.0-8
 src: univention-ad-connector
-fix: 14.0.19-2
+fix: 14.0.19-3
 desc: |
  This update addresses the following issues:
  * The connector can now be configured to only synchronize objects
@@ -15,4 +15,9 @@ desc: |
    is a subtree LDAP DN of the AD directory. Both must include the
    LDAP base of the respective directory. If configured only objects
    from these subtrees are synchronized, everything else is ignored.
-bug: [57394]
+ * The connector can now be configured to only synchronize objects
+   that match a specific LDAP filter. For each object type in
+   `user`, `group`, `container`, `ou` and `windowscomputer` the UCR
+   variable `connector/ad/mapping/{object type}/allowfilter` can
+   be used to configure this LDAP filter.
+bug: [57394, 57442]
