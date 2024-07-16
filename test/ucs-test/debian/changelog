@@ -1,3 +1,9 @@
+ucs-test (11.0.46) unstable; urgency=medium
+
+  * Bug #57442: connector/ad/mapping/{object type}/allowfilter tests
+
+ -- Felix Botner <botner@univention.de>  Fri, 19 Jul 2024 10:53:29 +0200
+
 ucs-test (11.0.45) unstable; urgency=medium
 
   * Bug #57394: skip allowsubtree tests in admember mode
