@@ -1,3 +1,9 @@
+ucs-test (10.0.22-29) unstable; urgency=medium
+
+  * Bug #57442: connector/ad/mapping/{object type}/allowfilter tests
+
+ -- Felix Botner <botner@univention.de>  Tue, 16 Jul 2024 14:01:41 +0200
+
 ucs-test (10.0.22-28) unstable; urgency=medium
 
   * Issue #2346: Fix 132_miscellaneous_open_all_modules
