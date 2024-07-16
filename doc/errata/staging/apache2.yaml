@@ -6,26 +6,26 @@ src: apache2
 fix: 2.4.25-3+deb9u17A~4.4.9.202407151304
 desc: |
  This update addresses the following issues:
- 2.4.25-3+deb9u17 (Fri, 28 Jun 2024 16:41:04 +0000)
- * Non-maintainer upload by the ELTS team.
- * Backport HTTP2 from 2.4.59: + Fix CVE-2024-27316: HTTP/2 incoming headers
-   exceeding the limit were temporarily buffered in nghttp2 in order to
-   generate an informative HTTP 413 response. If a client does not stop
-   sending headers, this leads to memory exhaustion. + Fix CVE-2023-45802:
-   When a HTTP/2 stream was reset (RST frame) by a client, there was a time
-   window were the request's memory resources were not reclaimed immediately.
-   Instead, de-allocation was deferred to connection close. A client could
-   send new requests and resets, keeping the connection busy and open and
-   causing the memory footprint to keep on growing. On connection close, all
-   resources were reclaimed, but the process might run out of memory before
-   that. + Fix CVE-2021-33193: A crafted method sent through HTTP/2 will
-   bypass validation and be forwarded by mod_proxy, which can lead to request
-   splitting or cache poisoning + Fix CVE-2020-11993: When trace/debug was
-   enabled for the HTTP/2 module and on certain traffic edge patterns, logging
-   statements were made on the wrong connection, causing concurrent use of
-   memory pool. + Fix CVE-2020-9490: A specially crafted value for the
-   'Cache-Digest' header in a HTTP/2 request would result in a crash when the
-   server actually tries to HTTP/2 PUSH a resource afterwards.
+ * CVE-2024-27316: `HTTP/2` incoming headers exceeding the limit were
+   temporarily buffered in `nghttp2` in order to generate an informative HTTP
+   `413` response. If a client does not stop sending headers, this leads to
+   memory exhaustion.
+ * CVE-2023-45802: When a `HTTP/2` stream was reset (`RST` frame) by a client,
+   there was a time window were the request's memory resources were not
+   reclaimed immediately. Instead, de-allocation was deferred to connection
+   close. A client could send new requests and resets, keeping the connection
+   busy and open and causing the memory footprint to keep on growing. On
+   connection close, all resources were reclaimed, but the process might run
+   out of memory before that.
+ * CVE-2021-33193: A crafted method sent through `HTTP/2` will bypass
+   validation and be forwarded by mod_proxy, which can lead to request
+   splitting or cache poisoning
+ * CVE-2020-11993: When `trace/debug` was enabled for the `HTTP/2` module and
+   on certain traffic edge patterns, logging statements were made on the wrong
+   connection, causing concurrent use of memory pool.
+ * CVE-2020-9490: A specially crafted value for the 'Cache-Digest' header in a
+   `HTTP/2` request would result in a crash when the server actually tries to
+   `HTTP/2` PUSH a resource afterwards.
 bug: [57449]
 cve:
 - CVE-2024-27316
