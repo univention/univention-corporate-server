@@ -6,14 +6,14 @@ src: python-idna
 fix: 2.2-1+deb9u1
 desc: |
  This update addresses the following issue:
-
- Debian update 2.2-1+deb9u1
- 2.2-1+deb9u1 (Wed, 03 Jul 2024 11:04:37 -0400)
- * Non-maintainer upload by the Extended LTS Security Team
- * Backport upstream fix for CVE-2024-3651: Specially crafted inputs to
-   idna.encode() can consume significant resources, which may lead to denial
-   of service.
- * Add debian/salsa-ci.yml using the stretch recipe.
+ * CVE-2024-3651: A vulnerability was identified in the `kjd/idna` library,
+   specifically within the `idna.encode()` function. The issue arises from the
+   function's handling of crafted input strings, which can lead to quadratic
+   complexity and consequently, a denial of service condition. This
+   vulnerability is triggered by a crafted input that causes the
+   `idna.encode()` function to process the input with considerable
+   computational load, significantly increasing the processing time in a
+   quadratic manner relative to the input size.
 bug: [57448]
 cve:
 - CVE-2024-3651
