@@ -99,6 +99,7 @@ class Users:
 
 
 @pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(configRegistry.is_true("connector/ad/autostart"), reason="This issue is not fixed in the ad connector yet.")
 def test_no_leftovers_after_delete_in_ucs():
     """
     check that all objects are deleted if the (UCS) delete happens during
