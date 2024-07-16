@@ -243,6 +243,16 @@ class ADConnection(LDAPConnection):
         no_starttls = ucr.is_false('%s/ad/ldap/ssl' % configbase)
         self.connect(no_starttls)
 
+    def search(self, ldap_filter, attr=[], required=False):
+        res = self.lo.search_ext_s(self.adldapbase, ldap.SCOPE_SUBTREE, ldap_filter, attr, timeout=10)
+        result = []
+        for dn, attr in res:
+            if dn:
+                result.append((dn, attr))
+        if not result and required:
+            raise ldap.NO_SUCH_OBJECT({'desc': 'no object'})
+        return result
+
     def get(self, dn, attr=[], required=False):
         """returns ldap object"""
         if dn:
@@ -377,7 +387,9 @@ class ADConnection(LDAPConnection):
         if description:
             attrs['description'] = to_bytes(description)
 
-        self.create(f'ou={ldap.dn.escape_dn_chars(name)},{position}', attrs)
+        dn = f'ou={ldap.dn.escape_dn_chars(name)},{position}'
+        self.create(dn, attrs)
+        return dn
 
     def verify_object(self, dn, expected_attributes):
         """

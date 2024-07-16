@@ -1,3 +1,9 @@
+ucs-test (12.0.122) unstable; urgency=medium
+
+  * Bug #57442: connector/ad/mapping/{object type}/allowfilter tests
+
+ -- Felix Botner <botner@univention.de>  Fri, 19 Jul 2024 12:20:58 +0200
+
 ucs-test (12.0.121) unstable; urgency=medium
 
   * Bug #57394: Fix 55_adconnector/509test_allow_subtree.py

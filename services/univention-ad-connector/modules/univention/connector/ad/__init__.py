@@ -1759,6 +1759,18 @@ class ad(univention.connector.ucs):
         if modified:
             ucs_admin_object.modify()
 
+    def ucs_object_ignored(self, ad_dn, property_key):
+        ignored = True
+        ud.debug(ud.LDAP, ud.INFO, "ucs_object_ignored: ad_dn %s" % ad_dn)
+        ucs_dn = self._get_dn_by_con(ad_dn)
+        ud.debug(ud.LDAP, ud.INFO, "ucs_object_ignored: ucs_dn %s" % ucs_dn)
+        if ucs_dn:
+            ucs_object = self.get_ucs_ldap_object(ucs_dn)
+            if ucs_object:
+                ignored = self._ignore_object(property_key, {'dn': ucs_dn, 'attributes': ucs_object})
+        ud.debug(ud.LDAP, ud.INFO, "ucs_object_ignored: ignored %s" % ignored)
+        return ignored
+
     def initialize(self):
         print("--------------------------------------")
         print("Initialize sync from AD")
@@ -1888,6 +1900,7 @@ class ad(univention.connector.ucs):
                 print_progress(True)
                 continue
 
+            force_sync = False
             if self._ignore_object(property_key, ad_object):
                 if ad_object['modtype'] == 'move':
                     ud.debug(ud.LDAP, ud.INFO, "object_from_element: Detected a move of an AD object into a ignored tree: dn: %s" % ad_object['dn'])
@@ -1895,6 +1908,13 @@ class ad(univention.connector.ucs):
                     ad_object['dn'] = ad_object['olddn']
                     ad_object['modtype'] = 'delete'
                     # check the move target
+                elif ad_object['modtype'] == 'delete' and not self.ucs_object_ignored(ad_object['dn'], property_key):
+                    ud.debug(ud.LDAP, ud.INFO, "object_from_element: deleting UCS object for ignored AD object %s because UCS object is not ignored" % ad_object['dn'])
+                    # if we have an allwofilter like description=sync the deleted tombstone AD object
+                    # is missing the information to check for _ignore_object
+                    # in this case (deleted in AD and AD object ignored) we check the UCS object and if not ignored
+                    # we delete the object in UCS
+                    force_sync = True
                 else:
                     self.__update_lastUSN(ad_object)
                     print_progress()
@@ -1910,10 +1930,10 @@ class ad(univention.connector.ucs):
             try:
                 try:
                     mapped_object = self._object_mapping(property_key, ad_object)
-                    if not self._ignore_object(property_key, mapped_object):
-                        sync_successfull = self.sync_to_ucs(property_key, mapped_object, ad_object['dn'], ad_object)
-                    else:
+                    if not force_sync and self._ignore_object(property_key, mapped_object):
                         sync_successfull = True
+                    else:
+                        sync_successfull = self.sync_to_ucs(property_key, mapped_object, ad_object['dn'], ad_object)
                 except univention.admin.uexceptions.ldapError as msg:
                     if isinstance(msg.original_exception, ldap.SERVER_DOWN):
                         raise msg.original_exception

@@ -501,6 +501,14 @@ def create_mapping(configbasename='connector'):
         ),
     }
 
+    # allow filter
+    for obj_type in ad_mapping.keys():
+        allow_filter = configRegistry.get(connector(f'%s/ad/mapping/{obj_type}/allowfilter'), '')
+        if allow_filter:
+            if not allow_filter.startswith('('):
+                allow_filter = f'({allow_filter})'
+            ad_mapping[obj_type].allow_filter = allow_filter
+
     # users
     if configRegistry.is_false(connector('%s/ad/mapping/user/exchange'), True):
         ad_mapping['user'].post_attributes.pop('Exchange-Homeserver')

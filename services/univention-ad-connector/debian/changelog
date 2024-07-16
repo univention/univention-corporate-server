@@ -1,5 +1,11 @@
 univention-ad-connector (16.0.3) unstable; urgency=medium
 
+  * Bug #57442: add connector/ad/mapping/{object type}/allowfilter
+
+ -- Felix Botner <botner@univention.de>  Fri, 19 Jul 2024 12:20:59 +0200
+
+univention-ad-connector (16.0.3) unstable; urgency=medium
+
   * Bug #57394: add synchronization allowlist feature
 
  -- Christian Castens <castens@univention.de>  Thu, 20 Jun 2024 10:10:17 +0200
