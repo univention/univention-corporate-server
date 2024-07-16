@@ -203,6 +203,30 @@ Description[en]=All users which match this LDAP-Filter are not synchronised by t
 Type=str
 Categories=service-adcon
 
+[con.*/ad/mapping/group/ignorefilter]
+Description[en]=All groups which match this LDAP-Filter are not synchronised by the connector.
+Description[de]=Alle Gruppen, die dem hier angegebenen LDAP-Filter entsprechen, werden nicht durch den Connector synchronisiert.
+Type=str
+Categories=service-adcon
+
+[con.*/ad/mapping/windowscomputer/ignorefilter]
+Description[de]=Alle Windows-Computer, die dem hier angegebenen LDAP-Filter entsprechen, werden nicht durch den Connector synchronisiert.
+Description[en]=All Windows computers which match this LDAP-Filter are not synchronised by the connector.
+Type=str
+Categories=service-adcon
+
+[con.*/ad/mapping/container/ignorefilter]
+Description[de]=Alle Container, die dem hier angegebenen LDAP-Filter entsprechen, werden nicht durch den Connector synchronisiert.
+Description[en]=All containers which match this LDAP-Filter are not synchronised by the connector.
+Type=str
+Categories=service-adcon
+
+[con.*/ad/mapping/ou/ignorefilter]
+Description[de]=Alle OUs, die dem hier angegebenen LDAP-Filter entsprechen, werden nicht durch den Connector synchronisiert.
+Description[en]=All OUs which match this LDAP-Filter are not synchronised by the connector.
+Type=str
+Categories=service-adcon
+
 [con.*/ad/mapping/group/ignorelist]
 Description[de]=Die hier angegebenen Gruppennamen werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden.
 Description[en]=The group names specified here are not synchronised by the connector. Multiple values need to be separated by commas.
