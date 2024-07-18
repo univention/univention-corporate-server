@@ -1507,6 +1507,7 @@ ucs-winrm () {
 }
 
 add_extra_apt_scope () {
+	local repo_name REPO_SERVER="http://omar.knut.univention.de/build2/git"
 	case "$SCOPE" in
 	'')
 		return 0
@@ -1515,12 +1516,23 @@ add_extra_apt_scope () {
 		# support: deb [trusted=yes] http://192.168.0.10/build2/git/fbest-12345-foo/ git main
 		echo "deb [trusted=yes] $SCOPE"
 		;;
+	*/*)
+		repo_name="$(echo "$SCOPE" | slugify)"
+		echo "deb [trusted=yes] $REPO_SERVER/$repo_name git main"
+		# allow downgrade
+		echo 'APT::Get::allow-downgrades "true";' > /etc/apt/apt.conf.d/99allow-downgrade
+		# pin repo
+		echo 'Package: *' > "/etc/apt/preferences.d/99$repo_name.pref"
+		echo 'Pin: release o=Univention,a=git,n=git' >> "/etc/apt/preferences.d/99$repo_name.pref"
+		echo 'Pin-Priority: 1001' >> "/etc/apt/preferences.d/99$repo_name.pref"
+		;;
 	*)
 		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/all/"
 		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/\$(ARCH)/"
 		;;
 	esac >/etc/apt/sources.list.d/99_extra_scope.list
-	apt-get update -qq || true  # ignore failure, univention-upgrade will do this as well
+	# do not ignore errors, fail if repo is not available
+	apt-get update -qq
 }
 
 create_version_file_tmp_ucsver () {
