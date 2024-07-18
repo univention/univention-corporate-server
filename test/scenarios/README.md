@@ -138,20 +138,23 @@ Best practice
 UCS Branch Tests
 ================
 
-In order to test change from feature branches we need a way to add repositories to our test instances (via our scenario files), for that we have:
+In order to test change from feature branches we need a way to add repositories to our test instances (via our scenario files), for that we have `utils.sh::add_extra_apt_scope()` and the `SCOPE` parameter/env var for jobs. The value can have different meanings:
 
-**packages from gitlab pipeline:**
+**string with ://**
 
-* use `utils.sh::add_extra_branch_repository()`
-* uses env var `UCS_ENV_UCS_BRANCH` (an ucs branch name)
+* uses SCOPE as apt repository
+* adds this as repository to the apt sources
+
+**string with one /**
+
+* uses `SCOPE` as UCS branch name
 * adds `http://omar.knut.univention.de/build2/git` sources list for corresonding repository
 * adds apt.conf for that repo with priority 1001 (install, downgrade from this repo)
 
-**packages from different scope repository**
+**string**
 
-* use `utils.sh::add_extra_apt_scope()`
-* uses env var `SCOPE` (an ucs build scope)
-* **TODO** merge with univention/dist/jenkins#2 - `UCS_ENV_APT_REPO` and `UCS_ENV_APT_PREFS`
+* uses `SCOPE` as repo-ng build scope
+* adds scope to source.list
 
 Jenkins
 -------
@@ -163,7 +166,7 @@ The idea is that we have dedicated jenkins jobs for different scenarios which ca
 
 These jenkins jobs
 
-* a required parameter `UCS_ENV_UCS_BRANCH`
+* a required parameter `SCOPE`
 * checks out this ucs branch and starts the scenario
 * adds the gitlab branch repo and from that on just the usual setup and test runs
 
