@@ -1,4 +1,4 @@
-univention-ad-connector (16.0.3) unstable; urgency=medium
+univention-ad-connector (16.0.4) unstable; urgency=medium
 
   * Bug #57442: add connector/ad/mapping/{object type}/allowfilter
 
