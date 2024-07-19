@@ -137,7 +137,7 @@ class GenericUDMModule(object):
         self.page: Page = tester.page
         self.module_name: str = module_name
 
-    def navigate(self, username='Administrator', password=ucr.get('tests/domainadmin/pwd', 'univention')) -> None:
+    def navigate(self, username=ucr.get('tests/domainadmin/username', 'Administrator'), password=ucr.get('tests/domainadmin/pwd', 'univention')) -> None:
         self.tester.login(username, password)
         self.tester.open_module(self.module_name)
 

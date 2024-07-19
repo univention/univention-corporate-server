@@ -51,7 +51,7 @@ class LDAPDirectory:
         self.page: Page = tester.page
         self.module_name = _('LDAP directory')
 
-    def navigate(self, username='Administrator', password=ucr.get('tests/domainadmin/pwd', 'univention')):
+    def navigate(self, username=ucr.get('tests/domainadmin/username', 'Administrator'), password=ucr.get('tests/domainadmin/pwd', 'univention')):
         self.tester.login(username, password)
         self.tester.open_module(self.module_name)
 
