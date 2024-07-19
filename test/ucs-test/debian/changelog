@@ -1,3 +1,9 @@
+ucs-test (10.0.22-31) unstable; urgency=medium
+
+  * Issue #2346: Fix 132_miscellaneous_open_all_modules
+
+ -- Felix Botner <botner@univention.de>  Fri, 19 Jul 2024 13:45:54 +0200
+
 ucs-test (10.0.22-30) unstable; urgency=medium
 
   * Issue univention/ucs#2279: Fix adconnector and s4connector tests
