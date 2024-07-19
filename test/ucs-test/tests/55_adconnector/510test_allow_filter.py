@@ -7,8 +7,8 @@
 ##  - skip_admember
 
 import contextlib
+from collections.abc import Generator
 from dataclasses import dataclass
-from typing import Generator, List, Optional
 
 import pytest
 from ldap import NO_SUCH_OBJECT
@@ -55,12 +55,12 @@ def allow_filter_setup(sync_mode: str) -> Generator[UCSTestUDM, None, None]:
 
 def create_objects_in_ucs(
     udm: UCSTestUDM,
-    username: Optional[str] = None,
-    groupname: Optional[str] = None,
-    containername: Optional[str] = None,
-    ouname: Optional[str] = None,
-    wait: bool = True
-) -> List[DomObject]:
+    username: str | None = None,
+    groupname: str | None = None,
+    containername: str | None = None,
+    ouname: str | None = None,
+    wait: bool = True,
+) -> list[DomObject]:
 
     objects = []
 
@@ -73,8 +73,8 @@ def create_objects_in_ucs(
             udm_filter=f'uid={name}',
             udm_module='users/user',
             udm_dn=dn,
-            ad_dn=f'cn={name},cn=users,{AD.adldapbase}'
-        )
+            ad_dn=f'cn={name},cn=users,{AD.adldapbase}',
+        ),
     )
     name = groupname if groupname else random_string()
     dn = udm.create_object('groups/group', name=name)
@@ -85,8 +85,8 @@ def create_objects_in_ucs(
             udm_filter=f'cn={name}',
             udm_module='groups/group',
             udm_dn=dn,
-            ad_dn=f'cn={name},{AD.adldapbase}'
-        )
+            ad_dn=f'cn={name},{AD.adldapbase}',
+        ),
     )
     name = containername if containername else random_string()
     dn = udm.create_object('container/cn', name=name)
@@ -97,8 +97,8 @@ def create_objects_in_ucs(
             udm_filter=f'cn={name}',
             udm_module='container/cn',
             udm_dn=dn,
-            ad_dn=f'cn={name},{AD.adldapbase}'
-        )
+            ad_dn=f'cn={name},{AD.adldapbase}',
+        ),
     )
     name = ouname if ouname else random_string()
     dn = udm.create_object('container/ou', name=name)
@@ -109,15 +109,15 @@ def create_objects_in_ucs(
             udm_filter=f'ou={name}',
             udm_module='container/ou',
             udm_dn=dn,
-            ad_dn=f'ou={name},{AD.adldapbase}'
-        )
+            ad_dn=f'ou={name},{AD.adldapbase}',
+        ),
     )
     if wait:
         wait_for_sync()
     return objects
 
 
-def create_objects_in_ad(ad: ADConnection, wait: bool = True) -> List[DomObject]:
+def create_objects_in_ad(ad: ADConnection, wait: bool = True) -> list[DomObject]:
     objects = []
     name = random_string()
     dn = ad.createuser(name)
@@ -129,7 +129,7 @@ def create_objects_in_ad(ad: ADConnection, wait: bool = True) -> List[DomObject]
             udm_module='users/user',
             ad_dn=dn,
             udm_dn=None,
-        )
+        ),
     )
     name = random_string()
     dn = ad.group_create(name)
@@ -141,7 +141,7 @@ def create_objects_in_ad(ad: ADConnection, wait: bool = True) -> List[DomObject]
             udm_module='groups/group',
             ad_dn=dn,
             udm_dn=None,
-        )
+        ),
     )
     name = random_string()
     dn = ad.container_create(name)
@@ -153,7 +153,7 @@ def create_objects_in_ad(ad: ADConnection, wait: bool = True) -> List[DomObject]
             udm_module='container/cn',
             ad_dn=dn,
             udm_dn=None,
-        )
+        ),
     )
     name = random_string()
     dn = ad.createou(name)
@@ -165,7 +165,7 @@ def create_objects_in_ad(ad: ADConnection, wait: bool = True) -> List[DomObject]
             udm_module='container/ou',
             ad_dn=dn,
             udm_dn=None,
-        )
+        ),
     )
     if wait:
         wait_for_sync()
@@ -260,7 +260,7 @@ def test_modify(sync_mode: str) -> None:
         # check modification in AD is not synced
         if sync_mode in ('sync', 'read'):
             for obj in objs:
-                AD.set_attribute(obj.ad_dn, 'description', 'changed in AD'.encode('UTF-8'))
+                AD.set_attribute(obj.ad_dn, 'description', b'changed in AD')
                 AD.verify_object(obj.ad_dn, {'description': 'changed in AD'})
             wait_for_sync()
             for obj in objs:
@@ -277,7 +277,7 @@ def test_modify(sync_mode: str) -> None:
                 ouname=allowed_ou,
             )
             for obj in objs:
-                AD.set_attribute(obj.ad_dn, 'description', 'changed in AD'.encode('UTF-8'))
+                AD.set_attribute(obj.ad_dn, 'description', b'changed in AD')
                 AD.verify_object(obj.ad_dn, {'description': 'changed in AD'})
             wait_for_sync()
             for obj in objs:
@@ -397,7 +397,7 @@ def test_filter_matches_after_modification(sync_mode: str) -> None:
                 wait_for_sync()
                 with pytest.raises(LDAPObjectNotFound):
                     udm.verify_ldap_object(udm_dn, retry_count=3, delay=1)
-                AD.set_attribute(ad_dn, 'description', 'sync'.encode('UTF-8'))
+                AD.set_attribute(ad_dn, 'description', b'sync')
                 wait_for_sync()
                 udm.verify_ldap_object(udm_dn)
             finally:
@@ -431,12 +431,12 @@ def test_filter_no_longer_matches(sync_mode: str) -> None:
         # create and modify in AD, check in UCS
         if sync_mode in ('sync', 'read'):
             name = random_string()
-            ad_dn = AD.createuser(name, description='sync'.encode('UTF-8'))
+            ad_dn = AD.createuser(name, description=b'sync')
             try:
                 udm_dn = f'uid={name},cn=users,{udm.LDAP_BASE}'
                 wait_for_sync()
                 udm.verify_ldap_object(udm_dn)
-                AD.set_attribute(ad_dn, 'description', 'nosync'.encode('UTF-8'))
+                AD.set_attribute(ad_dn, 'description', b'nosync')
                 wait_for_sync()
                 # TODO is this OK?
                 udm.verify_ldap_object(udm_dn, expected_attr={'description': ['sync']})
@@ -475,7 +475,7 @@ def test_allowsubtree_higher_priority_than_allowfilter(sync_mode: str) -> None:
                 'connector/ad/mapping/allowsubtree/test1/ucs=cn=nothing',
             ])
             restart_adconnector()
-            ad_dn = AD.createuser(username, description='sync'.encode('UTF-8'))
+            ad_dn = AD.createuser(username, description=b'sync')
             wait_for_sync()
             try:
                 with pytest.raises(NO_SUCH_OBJECT):
@@ -486,7 +486,7 @@ def test_allowsubtree_higher_priority_than_allowfilter(sync_mode: str) -> None:
                     f'connector/ad/mapping/allowsubtree/test1/ad={AD.adldapbase}',
                 ])
                 restart_adconnector()
-                AD.set_attribute(ad_dn, 'description', 'Changed in AD'.encode('UTF-8'))
+                AD.set_attribute(ad_dn, 'description', b'Changed in AD')
                 wait_for_sync()
                 udm._primary_lo.search(filter=f'uid={username}', attr=[], required=True)
             finally:
