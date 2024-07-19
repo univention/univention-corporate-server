@@ -658,6 +658,12 @@ the other side is also deleted.
 
    TODO maybe an example?
 
+.. note::
+
+   However this filter does not support the full LDAP filter syntax. It is
+   always case sensitive and the placeholder ``*`` can only be used as a
+   single value without any other characters.
+
 After changing these settings you need to restart the :program:`AD Connector`.
 
 Ignore objects from specific LDAP subtrees
@@ -682,24 +688,48 @@ After changing this setting you need to restart the :program:`AD Connector`.
 Ignore objects by LDAP filter
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To except users from synchronization their user
-name can be added to the |UCSUCRV|:
+To except objects from the synchronization their name can be added to
+the |UCSUCRV|:
 
-.. envvar:: connector/ad/mapping/user/ignorelist
+.. envvar:: connector/ad/mapping/{type}/ignorelist
 
-   The user names specified here are not synchronized by the connector.
+   The objects in this list are not be synchronized by the connector.
    Multiple values need to be separated by commas.
 
-For more flexibility a LDAP filter can be set with the |UCSUCRV|:
+   ``{type}`` can be ``user``, ``group``, ``container``, ``ou`` or
+   ``windowscomputer``.
 
-.. envvar:: connector/ad/mapping/user/ignorefilter
+   Name for ``user`` objects is the value of the attribute ``uid``, for
+   ``group``, ``container`` and ``windowscomputer`` name is the value of
+   the attribute ``cn`` and for ``ou`` objects the value of the attribute
+   ``ou``.
 
-   All users objects that match this LDAP filter are not synchronized by the
+   .. code-block::
+
+      $ ucr set connector/ad/mapping/user/ignorelist=Administrator,krbtgt,root,pcpatch,mmustermann
+
+For more flexibility you can also set a LDAP filter to ignore objects with
+the |UCSUCRV|:
+
+.. envvar:: connector/ad/mapping/{type}/ignorefilter
+
+   All objects that match this LDAP filter are not synchronized by the
    connector.
 
-However this filter does not support the full LDAP filter syntax. It is always
-case sensitive and the placeholder ``*`` can only be used as a single value
-without any other characters.
+   ``{type}`` can be ``user``, ``group``, ``container``, ``ou`` or
+   ``windowscomputer``.
+
+   .. code-block::
+
+      $ ucr set connector/ad/mapping/user/ignorefilter="(description=no sync)"
+
+.. note::
+
+   However this filter does not support the full LDAP filter syntax. It is
+   always case sensitive and the placeholder ``*`` can only be used as a
+   single value without any other characters.
+
+After changing these settings you need to restart the :program:`AD Connector`.
 
 Priority of allow and ignore rules
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
