@@ -179,7 +179,7 @@ class Interactions:
         logger.info('Clicked the module button')
         if expect_response is None and wait_for_network_idle:
             logger.info('Waiting for network to be idle...')
-            self.page.wait_for_load_state("networkidle", timeout=240)
+            self.page.wait_for_load_state("networkidle", timeout=30 * 3 * 1000)
 
         if module_name == 'App Center':
             from univention.testing.browser.appcenter import AppCenter, wait_for_final_query
