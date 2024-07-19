@@ -634,6 +634,7 @@ everything else is ignored.
 
    Only those objects with object type ``{type}`` that match this LDAP filter
    are synchronized by the connector.
+
    ``{type}`` can be ``user``, ``group``, ``container``, ``ou`` or
    ``windowscomputer``.
 
