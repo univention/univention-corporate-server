@@ -1,3 +1,9 @@
+univention-s4-connector (14.0.18-2) unstable; urgency=medium
+
+  * Bug #57453: Make sqlite files only readable to root
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 19 Jul 2024 09:34:54 +0200
+
 univention-s4-connector (14.0.18-1) UNRELEASED; urgency=medium
 
   * Bug #57350 UCS 5.0-8 version bump

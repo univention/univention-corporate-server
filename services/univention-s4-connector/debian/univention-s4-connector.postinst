@@ -65,6 +65,8 @@ univention-config-registry set connector/s4/listener/dir?/var/lib/univention-con
 if [ ! -d /var/lib/univention-connector/s4 ]; then
 	mkdir -p /var/lib/univention-connector/s4
 	chown 0.0 /var/lib/univention-connector/s4
+        touch /etc/univention/connector/s4internal.sqlite
+        touch /etc/univention/connector/s4cache.sqlite
 fi
 
 systemctl try-restart univention-directory-listener || true
@@ -106,6 +108,8 @@ EOF
 		/etc/init.d/univention-s4-connector start
 		skip_final_restart=true
 	 fi
+
+chmod 640 /etc/univention/connector/*.sqlite
 
 	if [ "$skip_final_restart" != "true" ]; then
 		/etc/init.d/univention-s4-connector restart

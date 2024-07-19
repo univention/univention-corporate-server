@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.19-4) unstable; urgency=medium
+
+  * Bug #57453: Make sqlite files only readable to root
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 19 Jul 2024 09:34:32 +0200
+
 univention-ad-connector (14.0.19-3) unstable; urgency=medium
 
   * Bug #57442: add connector/ad/mapping/{object type}/allowfilter
