@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [7, 8]
+scope: ucs_5.0-0-errata5.0-8
+src: imagemagick
+fix: 8:6.9.10.23+dfsg-2.1+deb10u8
+desc: |
+ This update addresses the following issues:
+ 8:6.9.10.23+dfsg-2.1+deb10u8 (Tue, 25 Jun 2024 18:25:48 +0000)
+ * CVE-2023-34151 fix was incomplete
+ * Fix variation of CVE-2023-1289 found by testing.
+bug: [57461]
+cve:
+- CVE-2023-34151
+- CVE-2023-1289
