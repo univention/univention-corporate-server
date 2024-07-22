@@ -1165,12 +1165,53 @@ def create_oidc_client(opt):
                 "protocolMapper": "oidc-audience-mapper",
                 "consentRequired": False,
                 "config": {
-                    "included.client.audience": opt.client_id,
+                    "included.client.audience": opt.client_id if not opt.audience_to_map else opt.audience_to_map,
                     "id.token.claim": "true",
                     "access.token.claim": "true",
                 },
             },
         )
+
+    if opt.add_dn_mapper:
+        client_payload_oidc["protocolMappers"].append(
+            {
+                "name": "dn",
+                "protocol": "openid-connect",
+                "protocolMapper": "oidc-audience-mapper",
+                "consentRequired": False,
+                "config": {
+                    "access.token.claim": "true",
+                    "aggregate.attrs": False,
+                    "claim.name": "dn",
+                    "id.token.claim": "false",
+                    "jsonType.label": "String",
+                    "multivalued": False,
+                    "user.attribute": "LDAP_ENTRY_DN",
+                    "userinfo.token.claim": "false",
+                },
+            },
+        )
+
+    if opt.add_guardian_audience_mapper:
+        client_payload_oidc["protocolMappers"].append(
+            {
+                "name": "guardian-audience",
+                "protocol": "openid-connect",
+                "protocolMapper": "oidc-audience-mapper",
+                "consentRequired": False,
+                "config": {
+                    "included.client.audience": "guardian",
+                    "id.token.claim": "false",
+                    "access.token.claim": "true",
+                },
+            },
+        )
+
+    if opt.add_guardian_management_mappers:
+        client_payload_oidc["protocolMappers"].append(_get_guardian_management_mappers())
+
+    if opt.add_ICS_mappers:
+        client_payload_oidc["protocolMappers"].append(_get_ICS_mappers())
 
     for i, audience in enumerate(opt.access_token_audience):
         client_payload_oidc["protocolMappers"].append(
@@ -1206,6 +1247,153 @@ def create_oidc_client(opt):
         client_payload_oidc["secret"] = opt.client_secret
 
     kc_admin.create_client(payload=client_payload_oidc, skip_exists=True)
+
+
+def _get_guardian_management_mappers() -> list:
+    mappers = [
+        {
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usersessionmodel-note-mapper",
+            "name": "Client IP Address",
+            "consentRequired": False,
+            "config": {
+                "user.session.note": "clientAddress",
+                "claim.name": "clientAddress",
+                "jsonType.label": "String",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "userinfo.token.claim": "true",
+                "access.tokenResponse.claim": False,
+            },
+        },
+        {
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usersessionmodel-note-mapper",
+            "name": "Client ID",
+            "consentRequired": False,
+            "config": {
+                "user.session.note": "client_id",
+                "claim.name": "client_id",
+                "jsonType.label": "String",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "userinfo.token.claim": "true",
+                "access.tokenResponse.claim": False,
+            },
+        },
+        {
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-audience-mapper",
+            "name": "audiencemap",
+            "consentRequired": False,
+            "config": {
+                "included.client.audience": "guardian-cli",
+                "included.custom.audience": "",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "userinfo.token.claim": "true",
+            },
+        },
+        {
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usersessionmodel-note-mapper",
+            "name": "Client Host",
+            "consentRequired": False,
+            "config": {
+                "user.session.note": "clientHost",
+                "claim.name": "clientHost",
+                "jsonType.label": "String",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "userinfo.token.claim": "true",
+                "access.tokenResponse.claim": False,
+            },
+        },
+        {
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "name": "dn",
+            "consentRequired": False,
+            "config": {
+                "user.attribute": "LDAP_ENTRY_DN",
+                "claim.name": "dn",
+                "jsonType.label": "String",
+                "id.token.claim": "false",
+                "access.token.claim": "true",
+                "userinfo.token.claim": "false",
+                "multivalued": False,
+                "aggregate.attrs": False,
+            },
+        },
+        {
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-audience-mapper", "name": "guardian-audience", "consentRequired": False,
+            "config": {
+                "included.client.audience": "guardian",
+                "included.custom.audience": "",
+                "id.token.claim": "false",
+                "access.token.claim": "true",
+                "userinfo.token.claim": "false",
+            },
+        },
+    ]
+    return mappers
+
+
+def _get_ICS_mappers() -> list:
+    ICS_mappers = [
+        {
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "name": "phoenixusername_temp",
+            "consentRequired": False,
+            "config": {
+                "introspection.token.claim": "true",
+                "userinfo.token.claim": "true",
+                "user.attribute": "uid",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "claim.name": "phoenixusername",
+                "jsonType.label": "String",
+                "lightweight.claim": False,
+                "multivalued": False,
+                "aggregate.attrs": False,
+            },
+        },
+        {
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-audience-mapper",
+            "name": "intercom-audience",
+            "consentRequired": False,
+            "config": {
+                "included.client.audience": "opendesk-intercom",
+                "id.token.claim": "false",
+                "access.token.claim": "true",
+                "introspection.token.claim": "true",
+                "userinfo.token.claim": "false",
+                "included.custom.audience": "",
+                "lightweight.claim": False,
+            },
+        },
+        {
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "name": "entryuuid_temp",
+            "consentRequired": False,
+            "config": {
+                "introspection.token.claim": "true",
+                "userinfo.token.claim": "true",
+                "user.attribute": "entryUUID",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "claim.name": "entryuuid",
+                "jsonType.label": "String",
+                "lightweight.claim": False,
+                "multivalued": False,
+                "aggregate.attrs": False,
+            },
+        }]
+    return ICS_mappers
 
 
 def modify_client_scope_mapper(opt):
@@ -1549,6 +1737,10 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_oidc_parser.add_argument("--consent", help="Contains the text which will be on the consent screen about permissions specific just for this client. If given, users have to consent to client access.")
     create_oidc_parser.add_argument("--web-origins", action="append", default=[], help="Allowed CORS Origins.")
     create_oidc_parser.add_argument("--admin-url", default="", help="URL for admin interface of the client.")
+    create_oidc_parser.add_argument("--add-ICS-mappers", action='store_true', default=False, help="Add the mappers needed for the ICS client.")
+    create_oidc_parser.add_argument("--add-guardian-management-mappers", action='store_true', default=False, help="Add the mappers needed for the guardian management API.")
+    create_oidc_parser.add_argument("--add-guardian-audience-mapper", action='store_true', default=False, help="Add the guardian audience mapper.")
+    create_oidc_parser.add_argument("--add-dn-mapper", action='store_true', default=False, help="Add the dn mapped into the token.")
     create_oidc_parser.set_defaults(func=create_oidc_client)
 
     get_oidc_secrets_parser = operation_subparsers.add_parser("secret", help="get client secret from Keycloak")
