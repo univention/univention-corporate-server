@@ -150,6 +150,7 @@ def test_no_leftovers_after_delete_in_ucs():
 
 
 @pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention S4 Connector not configured.")
+@pytest.mark.skipif(configRegistry.is_true("connector/ad/autostart"), reason="This issue is not fixed in the ad connector yet.")
 def test_do_not_delete_objects_with_different_id():
     '''
     Check if Users in UCS wont be deleted in sync_to_ucs if deleted "by" UCS
