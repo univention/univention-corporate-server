@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: binutils
+fix: 2.28-5+deb9u1
+desc: |
+ This update addresses the following issues:
+ 2.28-5+deb9u1 (Sat, 13 Jul 2024 20:41:44 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2018-12934: OOM in c++filt
+ * CVE-2018-1000876: Integer Overflow in objdump
+bug: [57460]
+cve:
+- CVE-2018-12934
+- CVE-2018-1000876
