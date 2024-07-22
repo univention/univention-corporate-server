@@ -1043,7 +1043,7 @@ def create_oidc_client(opt):
         "name": opt.name if opt.name else opt.client_id,
         "description": opt.description,
         "rootUrl": opt.app_url,
-        "adminUrl": "",
+        "adminUrl": opt.admin_url,
         "baseUrl": opt.app_url,
         "surrogateAuthRequired": False,
         "enabled": True,
@@ -1058,7 +1058,7 @@ def create_oidc_client(opt):
         "implicitFlowEnabled": opt.allow_implicit_flow,
         "directAccessGrantsEnabled": opt.direct_access_grants,
         "serviceAccountsEnabled": opt.service_accounts_enabled,
-        "publicClient": False,
+        "publicClient": opt.public_client,
         "frontchannelLogout": not opt.no_frontchannel_logout,
         "protocol": "openid-connect",
         "attributes": {
@@ -1071,7 +1071,7 @@ def create_oidc_client(opt):
             "saml.force.post.binding": "false",
             "frontchannel.logout.session.required": "false",
             "oauth2.device.authorization.grant.enabled": "false",
-            "backchannel.logout.revoke.offline.tokens": "false",
+            "backchannel.logout.revoke.offline.tokens": opt.backchannel_logout_revoke_offline,
             "saml.server.signature.keyinfo.ext": "false",
             "use.refresh.tokens": "true",
             "oidc.ciba.grant.enabled": "false",
@@ -1521,7 +1521,8 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_oidc_parser.add_argument("--client-secret", default="")
     create_oidc_parser.add_argument("--description", default="")
     create_oidc_parser.add_argument("--name", default=None)
-    create_oidc_parser.add_argument("--app-url", required=True)
+    create_oidc_parser.add_argument("--app-url", required=False)
+    create_oidc_parser.add_argument("--public-client", action='store_true', default=False)
     create_oidc_parser.add_argument("--host-fqdn", required=no_ucr_available, default=host_fqdn)
     create_oidc_parser.add_argument("--redirect-uri", action='append', help="Valid redirect URIs.")
     create_oidc_parser.add_argument("--direct-access-grants", help='enable "Direct access grants" flow (default: False)', default=False, action="store_true")
@@ -1535,6 +1536,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_oidc_parser.add_argument("--id-token-audience", action="append", default=[], help="Add audiences to ID Tokens.")
     create_oidc_parser.add_argument("--frontchannel-logout-url", help="URL for frontchannel logout that will cause the client to log itself out when a logout request is sent to this realm.")
     create_oidc_parser.add_argument("--backchannel-logout-url", help="URL for backchannel logout that will cause the client to log itself out when a logout request is sent to this realm.")
+    create_oidc_parser.add_argument("--backchannel-logout-revoke-session", action='store_true', default=False)
     create_oidc_parser.add_argument("--post-logout-redirect-uris", action="append", default=[], help="URL pattern for valid redirections after logout.")
     create_oidc_parser.add_argument("--always-display-in-console", action="store_true", default=False, help="Always list this client in the Account UI, even if the user does not have an active session.")
     create_oidc_parser.add_argument("--policy-url", default="", help="URL that the Relying Party Client provides to the End-User to read about the how the profile data will be used.")
@@ -1546,6 +1548,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_oidc_parser.add_argument("--optional-scopes", action="append", default=[], help="Add optional scopes.")
     create_oidc_parser.add_argument("--consent", help="Contains the text which will be on the consent screen about permissions specific just for this client. If given, users have to consent to client access.")
     create_oidc_parser.add_argument("--web-origins", action="append", default=[], help="Allowed CORS Origins.")
+    create_oidc_parser.add_argument("--admin-url", default="", help="URL for admin interface of the client.")
     create_oidc_parser.set_defaults(func=create_oidc_client)
 
     get_oidc_secrets_parser = operation_subparsers.add_parser("secret", help="get client secret from Keycloak")
