@@ -9,7 +9,7 @@
 .. _dovecot-nfs: https://doc.dovecot.org/configuration_manual/nfs/
 .. _dovecot-services: https://doc.dovecot.org/configuration_manual/service_configuration/
 .. _fetchmail-multidrop: https://www.fetchmail.info/fetchmail-man.html#the-use-and-abuse-of-multidrop-mailboxes
-.. _freeradius: https://freeradius.org/
+.. _freeradius: https://www.freeradius.org/
 .. _github-univention-domain-join: https://github.com/univention/univention-domain-join
 .. _google-admin-console: https://admin.google.com/
 .. _google-domain-verify: https://support.google.com/a/topic/9196?hl=de
