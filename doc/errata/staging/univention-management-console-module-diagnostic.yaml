@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-management-console-module-diagnostic
+fix: 6.0.9-2
+desc: |
+ This update addresses the following issues:
+ * A diagnostic module now checks for the correct file permissions of the
+   SQLite database of both the S4-Connector and the AD-Connector.
+bug: [57453]

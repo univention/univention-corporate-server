@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-s4-connector
+fix: 14.0.18-2
+desc: |
+ This update addresses the following issues:
+ * SQLite databases used by the S4 Connector were world readable. This has
+   been changed.
+bug: [57453]
