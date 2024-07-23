@@ -64,6 +64,7 @@ from univention.management.console.resources import (
 from univention.management.console.saml import SamlACS, SamlIframeACS, SamlLogout, SamlMetadata, SamlSingleLogout
 from univention.management.console.session import categoryManager, moduleManager
 from univention.management.console.shared_memory import shared_memory
+from univention.management.console.sse import SSELogoutNotifer
 
 
 try:
@@ -110,6 +111,7 @@ class Application(TApplication):
             url(r'/oidc/backchannel-logout', OIDCBackchannelLogout, name='backchannel-logout'),
             url(r'/oidc/logout-done', OIDCLogoutFinished, name='oidc-logout-done'),
             url(r'/oidc/.well-known/oauth-client', OIDCMetadata),
+            url(r'/logout-sse', SSELogoutNotifer),
             (r'/logout/?', Logout),
             (r'()/(.+)', Command),
         ], default_handler_class=Nothing, **settings)

@@ -32,7 +32,7 @@
 
 import subprocess
 from pathlib import Path
-from typing import Dict, Generator, Iterator
+from typing import Dict, Generator, Iterator, List, Union
 
 import pytest
 from playwright.sync_api import Browser, BrowserContext, BrowserType, Page, expect
@@ -48,7 +48,7 @@ from univention.testing.browser.sidemenu import SideMenuLicense, SideMenuUser
 from univention.testing.browser.suggestion import AppCenterCacheTest
 from univention.testing.browser.univentionconfigurationregistry import UniventionConfigurationRegistry
 
-from . import check_for_backtrace, save_trace
+from . import check_for_backtrace, save_screenshot, save_trace
 
 
 @pytest.fixture(scope='session', autouse=True)
@@ -79,6 +79,25 @@ def ucs_browser_context_args(browser_context_args):
 
 @pytest.fixture(scope='session')
 def ucs_browser_type_launch_args(browser_type_launch_args):
+    return {
+        **browser_type_launch_args,
+        'executable_path': '/usr/bin/chromium',
+        'args': [
+            '--disable-gpu',
+        ],
+    }
+
+
+@pytest.fixture(scope='session')
+def browser_context_args(browser_context_args):
+    return {
+        **browser_context_args,
+        'ignore_https_errors': True,
+    }
+
+
+@pytest.fixture(scope='session')
+def browser_type_launch_args(browser_type_launch_args):
     return {
         **browser_type_launch_args,
         'executable_path': '/usr/bin/chromium',
@@ -201,7 +220,7 @@ def umc_browser_test(
 def teardown_umc_browser_test(
     request: pytest.FixtureRequest,
     ucr,
-    page: Page,
+    page: Union[Page, List[Page]],
     context: BrowserContext,
     browser: Browser,
 ):
@@ -212,17 +231,19 @@ def teardown_umc_browser_test(
             'phase_report_key has not been found in node stash. Skipping trace saving and backtrace checking.',
         )
         return
-
+    if not isinstance(page, list):
+        page = [page]
     try:
         if 'call' in report and report['call'].failed:
-            save_trace(page, context, request.node.name, Path('browser').resolve(), ucr)
-            check_for_backtrace(page)
+
+            save_trace(context, request.node.name, Path('browser').resolve(), ucr)
+            for i, p in enumerate(page):
+                save_screenshot(p, request.node.name, Path('browser'), ucr, i)
+                check_for_backtrace(p, page_index=i)
         else:
             context.tracing.stop()
     finally:
-        page.close()
         context.close()
-        browser.close()
 
 
 @pytest.fixture()
