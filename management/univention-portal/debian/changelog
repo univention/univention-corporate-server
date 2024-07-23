@@ -1,3 +1,28 @@
+univention-portal (6.0.10) unstable; urgency=medium
+
+  * Bug #57467 Add a shared worker that connects to the UMCs /logout-sse
+    endpoint and notifies all attached ports when the logout message is
+    received.
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 15:17:29 +0200
+
+univention-portal (6.0.10) unstable; urgency=medium
+
+  [ Ivan Barbecho Delgado ]
+  * Bug #57350 UCS 5.0-8 version bump
+
+  [ Felix Botner ]
+  * Bug #57378 switch product logos
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:29 +0200
+
+univention-portal (6.0.10) unstable; urgency=medium
+
+  * Bug #57023: make birthday for the user unsetable inside the self-service
+  * Bug #57118: UCS 5.0-7 version bump
+
+ -- Mika Westphal <westphal@univention.de>  Mon, 12 Aug 2024 15:17:29 +0200
+
 univention-portal (6.0.9) unstable; urgency=medium
 
   * Bug #57378 switch product logos

@@ -29,7 +29,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import base64
 import os
 import time
 from pathlib import Path
@@ -41,7 +40,7 @@ from univention.testing.browser import logger
 from univention.testing.browser.lib import SEC
 
 
-def check_for_backtrace(page: Page):
+def check_for_backtrace(page: Page, page_index: int = 0):
     show_backtrace_button = page.get_by_role('button', name='Show server error message')
     notification_502_error = page.get_by_text('An unknown error with status code 502 occurred').first
     try:
@@ -52,7 +51,7 @@ def check_for_backtrace(page: Page):
                 'region',
                 name='Hide server error message',
             )
-            logger.info('Recorded backtrace')
+            logger.info(f'Recorded backtrace on page {page_index}')
             print(backtrace_container.inner_text())
         else:
             logger.info('An unknown error with status code 502 occurred while connecting to the server.')
@@ -60,8 +59,26 @@ def check_for_backtrace(page: Page):
         pass
 
 
+def print_path_in_jenkins(name: str, ucr):
+    subfolder = ''
+    if os.environ.get('JENKINS_WS'):
+        if 'master' not in ucr.get('server/role'):
+            subfolder = f"{ucr.get('hostname')}/"
+        full_url = f"{os.environ['JENKINS_WS']}ws/test/{quote(subfolder)}browser/{quote(name)}"
+        logger.info('Browser screenshot URL: %s' % full_url)
+
+
+def save_screenshot(page: Page, node_name, path: Path, ucr, page_index: int = 0):
+    ts = time.time_ns()
+
+    screenshot_filename = path / f'{ts}-{node_name}-page_{page_index}.jpeg'
+
+    page.screenshot(path=screenshot_filename)
+
+    print_path_in_jenkins(screenshot_filename.name, ucr)
+
+
 def save_trace(
-    page: Page,
     context: BrowserContext,
     node_name: str,
     path: Path,
@@ -76,31 +93,11 @@ def save_trace(
 
     ts = time.time_ns()
 
-    screenshot_filename = path / f'{ts}-{node_name}.jpeg'
     trace_filename = path / f'{ts}-{node_name}_trace.zip'
-
-    # page.screenshot seems to sometimes time out, use cdp directly instead
-    # page.screenshot(path=screenshot_filename)
-    cdp_client = page.context.new_cdp_session(page)
-
-    # cdp returns a base64 string
-    screenshot = cdp_client.send('Page.captureScreenshot', {'format': 'jpeg'})['data']
-    screenshot_bytes = base64.b64decode(screenshot.encode('ascii'))
-    with open(screenshot_filename, 'wb') as screenshot_file:
-        screenshot_file.write(screenshot_bytes)
 
     if tracing_stop_chunk:
         context.tracing.stop_chunk(path=trace_filename)
     else:
         context.tracing.stop(path=trace_filename)
 
-    if os.environ.get('JENKINS_WS'):
-        if 'master' not in ucr.get('server/role'):
-            subfolder = f"{ucr.get('hostname')}/"
-        else:
-            subfolder = ''
-
-        browser_trace_url = f"{os.environ['JENKINS_WS']}ws/test/{quote(subfolder)}browser/{quote(trace_filename.name)}"
-        browser_screenshot_url = f"{os.environ['JENKINS_WS']}ws/test/{quote(subfolder)}browser/{quote(screenshot_filename.name)}"
-        logger.info('Browser trace URL: %s' % browser_trace_url)
-        logger.info('Browser screenshot URL: %s' % browser_screenshot_url)
+    print_path_in_jenkins(trace_filename.name, ucr)

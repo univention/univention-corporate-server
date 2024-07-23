@@ -38,6 +38,7 @@
 import { defineComponent } from 'vue';
 import CookieBanner from '@/components/globals/CookieBanner.vue';
 
+import { isTrue } from '@/jsHelper/ucr';
 import { getCookie } from '@/jsHelper/tools';
 import { login } from '@/jsHelper/login';
 import { mapGetters } from 'vuex';
@@ -94,6 +95,16 @@ export default defineComponent({
     }
 
     this.$store.dispatch('deactivateLoadingState');
+
+    if (!!window.SharedWorker && isTrue(this.metaData['portal/reload-tabs-on-logout']) && this.userState.username) {
+      const worker = new SharedWorker('/univention/portal/sse-worker.js');
+      worker.port.start();
+      worker.port.onmessage = (event) => {
+        if (event.data === 'logout') {
+          window.location.reload();
+        }
+      };
+    }
   },
   methods: {
     hideCookieBanner(): void {

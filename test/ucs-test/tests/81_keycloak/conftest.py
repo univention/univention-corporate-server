@@ -30,6 +30,7 @@
 
 from __future__ import annotations
 
+import functools
 import os
 from types import SimpleNamespace
 from typing import TYPE_CHECKING
@@ -233,44 +234,57 @@ def browser_type_launch_args(browser_type_launch_args):
     }
 
 
+def __portal_login_func(
+    portal_config: SimpleNamespace,
+    keycloak_config: SimpleNamespace,
+    page: Page,
+    username: str,
+    password: str,
+    fails_with: str | None = None,
+    new_password: str | None = None,
+    new_password_confirm: str | None = None,
+    verify_login: bool | None = True,
+    url: str | None = '',
+    no_login: bool = False,
+    protocol: str | None = 'saml',
+):
+    try:
+        url = portal_config.url
+        page.goto(url)
+        expect(page).to_have_title(portal_config.title)
+        lang = page.evaluate('() => window.navigator.userLanguage || window.navigator.language')
+        sso_login_tile = portal_config.sso_login_tile if lang == 'en-US' else portal_config.sso_login_tile_de
+        if protocol == 'oidc':
+            sso_login_tile = portal_config.sso_oidc_login_tile
+        get_portal_tile(page, sso_login_tile, portal_config).click()
+        # login
+        keycloak_login(page, keycloak_config, username, password, fails_with=fails_with if not new_password else None, no_login=no_login)
+        # check password change
+        if new_password:
+            new_password_confirm = new_password_confirm or new_password
+            keycloak_password_change(page, keycloak_config, password, new_password, new_password_confirm, fails_with=fails_with)
+        if protocol == 'oidc':
+            grant_oidc_privileges(page)
+        if fails_with or no_login:
+            return page
+        # check that we are logged in
+        if verify_login:
+            header_menu = page.locator(f'#{portal_config.header_menu_id}')
+            expect(header_menu, 'header menu not visible').to_be_visible()
+        return page
+    except Exception:
+        print(page.content())
+        raise
+
+
 @pytest.fixture()
 def portal_login_via_keycloak(page: Page, portal_config: SimpleNamespace, keycloak_config: SimpleNamespace):
-    def _func(
-        username: str,
-        password: str,
-        fails_with: str | None = None,
-        new_password: str | None = None,
-        new_password_confirm: str | None = None,
-        verify_login: bool | None = True,
-        url: str | None = portal_config.url,
-        no_login: bool = False,
-        protocol: str | None = 'saml',
-    ):
-        try:
-            page.goto(url)
-            expect(page).to_have_title(portal_config.title)
-            sso_login_tile = portal_config.sso_oidc_login_tile if protocol == 'oidc' else portal_config.sso_login_tile
-            get_portal_tile(page, sso_login_tile, portal_config).click()
-            # login
-            keycloak_login(page, keycloak_config, username, password, fails_with=fails_with if not new_password else None, no_login=no_login)
-            # check password change
-            if new_password:
-                new_password_confirm = new_password_confirm if new_password_confirm else new_password
-                keycloak_password_change(page, keycloak_config, password, new_password, new_password_confirm, fails_with=fails_with)
-            if protocol == 'oidc':
-                grant_oidc_privileges(page)
-            if fails_with or no_login:
-                return page
-            # check that we are logged in
-            if verify_login:
-                header_menu = page.locator(f'#{portal_config.header_menu_id}')
-                expect(header_menu, 'header menu not visible').to_be_visible()
-        except Exception:
-            print(page.content())
-            raise
-        return page
+    return functools.partial(__portal_login_func, portal_config, keycloak_config, page)
 
-    return _func
+
+@pytest.fixture()
+def portal_login_via_keycloak_custom_page(portal_config: SimpleNamespace, keycloak_config: SimpleNamespace):
+    return functools.partial(__portal_login_func, portal_config, keycloak_config)
 
 
 @pytest.fixture()

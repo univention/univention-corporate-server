@@ -1,3 +1,621 @@
+ucs-test (12.0.139) unstable; urgency=medium
+
+  * Bug 57467: add tests for the logout notifier
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.139) unstable; urgency=medium
+
+  * Issue univention/ucs#2338: keycloak admin login
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.139) unstable; urgency=medium
+
+  * Issue univention/ucs#2338: longer timeout in browser tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue univention/ucs#2375: Increase timeouts for openstack
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue univention/ucs#2375: Increase timeouts for openstack
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue univention/ucs#2357: support UMC OIDC in keycloak tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue univention/components/keycloak-app#220: Update tests for keycloak v25
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue univention/ucs#2375: Increase timeouts for openstack
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57439: enable debug log level of univention-sync-memberuid
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue univention/ucs#2279: fix tests failing due to localtime/utc conversion around midnight
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57465: Extend 508test_filter_ignore.py to also test groups,
+    computers, containers
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57439: add tests for univention-sync-memberuid
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue univention/ucs#2279: Fix s4/ad test combination
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2346: Fix 132_miscellaneous_open_all_modules
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue univention/ucs#2279: Fix adconnector and s4connector tests
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57442: connector/ad/mapping/{object type}/allowfilter tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2346: Fix 132_miscellaneous_open_all_modules
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2347: Fix 12_product_test_ucr
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2346: Fix 132_miscellaneous_open_all_modules
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #57420: revert 82_saml changes to test with keycloak
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2338: Fix 81_keycloak/04_misc.py failing if a recently added and
+    used client got deleted, left open sessions which cause problems for
+    Keycloaks REST API (/sessions/)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57394: skip allowsubtree tests in admember mode
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #57420: Fix 82_saml tests. Remove fixture type annotation
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2338: Fix
+    73_udm-rest.05_async_client.test_create_modify_move_remove for AD member
+    mode
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57420: run SAML tests with simplesamlphp and keycloak on primary
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  *  Issue univention/ucs#2279: Disable 156sync_ad_user_group_membership_in_special_OU_and_timing
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57394: Test cases for AD-Connector allowsubtree
+
+ -- Arvid <requate@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2221: Add attributes that lack LDAP index - used in
+    well-known-sid-object-rename
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57406: Prettify test case
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57406: Add new test to verify screen is installed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #53333: Test that we skip over non existent objects in search
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue univention/ucs#2285: Fix browser tests for admember tests
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57320: Add keycloak tests for all documentated migration of clients
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #56313: Add test for IP assignment during computer object creation
+    and check the DNS objects which are created as a side effect.
+
+ -- Johannes Königer <koeniger@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #56054: add scope=module/session to 11_test_frontend_translations
+    preventing unnecessary UDM/UCR calls
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #56054: make open_all_modules browser test more resilient to one of
+    the tests failing
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57226: Test delivery of self-registration invitations when
+    a password policy is applied
+
+ -- Johannes Königer <koeniger@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #56054: check for UDM license check in password test
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #55949: Adjust Keycloak SCP test; Keycloak now allows Microsoft Online
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=low
+
+  * Bug #57279: Fix schema registration
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) UNRELEASED; urgency=medium
+
+  * Bug #57350 UCS 5.0-8 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #56054: Remove 'skip_xhr_check' argument to login method from 11_test_frontend_translations
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #56054: Remove waiting for certain network requests on login to
+    hopefully reduce flakiness
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2295: Do not make the tests fail that grep for tracebacks in
+    various log files
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #56735: Fix REST async-client tests for scenarios where Administrator
+    pwd is not "univention"
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2289: Improve robustness of wait_for, which tends to skip
+    drs_replication even if it should wait for it
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2221: Add office365 attributes to list of ignored attributes that
+    lack index.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2287: Ignore tracebacks during import time when upgrading from old
+    UCS versions. These should be just intermediate errors
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2221: Add specific attributes to list of ignored attributes that
+    lack index. They are used once during the upgrade of univention-samba
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57171: make changing mpa and maa in one step possible
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57171: make changing mpa and maa in one step possible
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #53333: Ignore tracebacks for
+    cn=internal-name-for-(folder|category|entry) portal objects
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2221: Add more items to the list of ignored attributes that lack
+    index
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=low
+
+  * Bug #57193: Search for missing OpenLDAP indexes
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue univention/ucs#2279: Fix ad connector tests
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2189: Backport from 5.2: Adjust timeout heuristic for
+    wait_for_listener_replication_and_postrun
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57193: Add memberOf to ignored attributes that lack index
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57228: fix 59_udm.77_test_roles.test_role_attributes_on_modules
+  remove guardianInheritedRoles from users/ldap
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2207: test keycloak REST endpoints
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=low
+
+  * Bug #57193: Search for missing OpenLDAP indexes
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #54339: test list with filter
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2186: give 83_self_service.11_test_frontend_translations.py
+    a bit more time to check the labels
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=low
+
+  * Bug #57193: Search for missing OpenLDAP indexes
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=low
+
+  * Bug #57193: Search for missing OpenLDAP indexes
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2186: restart umc before tests
+    in 86_browser/132_miscellaneous_open_all_modules.py
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2186: close brower after test
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=low
+
+  * Only run test (on OpenStack) if locale is available
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=low
+
+  * Bug #57193: Search for missing OpenLDAP indexes
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #209: update test to keycloak versiob 24.0.3
+    univention/components/keycloak-app#209
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #209: update test to keycloak versiob 24.0.3
+    univention/components/keycloak-app#209
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #209: update test to keycloak versiob 24.0.3
+    univention/components/keycloak-app#209
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57192: always remove UMC module processes
+    before browser tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #56906: add test for fd's on deleted umc log files
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #56906: add test for fd's on deleted umc log files
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2165: fix roles tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57205: added test
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2165: fix roles tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2165: fix roles tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2165: fix roles tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2165: fix roles tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57069: Update test for MAB (radius) to test different MAC formats.
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2154: fix blocklist tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2154: fix blocklist tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57137: performance test refactor
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Issue #2154: fix blocklist tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57113: add jmeter results to UMC performance tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57137: performance tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57137: performance tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #53538: fix test
+    80_docker/69_app_install_update_remove_hooks.test_app_install_update_remove_hooks
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57137: Test UDM REST API for guardianInheritedRoles
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #56054: make keycloak playwright tests work
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #57113: add performance tests for UMC
+
+ -- Florian Best <best@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Migrate Keycloak Selenium tests to Playwright
+
+ -- Jonas Franke <info@jonasfranke.xyz>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Migrate Docker tests to pytest
+
+ -- Jonas Franke <info@jonasfranke.xyz>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #56054: fix typo in bin/playwright
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #56054: only load necessary pytest plugins for playwright
+    functionality
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #56735: add missing package dependencies
+
+ -- Florian Best <best@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
+ucs-test (12.0.138) unstable; urgency=medium
+
+  * Bug #56735: add async client
+  * Bug #57118 UCS 5.0-7 version bump
+
+ -- Florian Best <best@univention.de>  Mon, 12 Aug 2024 15:17:25 +0200
+
 ucs-test (12.0.137) unstable; urgency=medium
 
   * Issue univention/ucs#2338: longer timeout in browser tests

@@ -1,4 +1,5 @@
 frontend/dist/*	usr/share/univention-portal/
+frontend/worker/sse-worker.js /usr/share/univention-portal/
 key.svg	usr/share/univention-portal/
 listener/*.py	usr/lib/univention-directory-listener/system/
 login.svg	usr/share/univention-portal/
