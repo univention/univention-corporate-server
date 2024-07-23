@@ -66,9 +66,11 @@ univention-config-registry set connector/ad/listener/dir?/var/lib/univention-con
 if [ ! -d /var/lib/univention-connector/ad ]; then
 	mkdir -p /var/lib/univention-connector/ad
 	chown 0.0 /var/lib/univention-connector/ad
-	touch /etc/univention/connector/internal.sqlite
-	touch /etc/univention/connector/adcache.sqlite
 fi
+
+touch /etc/univention/connector/internal.sqlite
+touch /etc/univention/connector/adcache.sqlite
+chmod 640 /etc/univention/connector/*.sqlite
 
 sqlite3 "/etc/univention/connector/internal.sqlite" "ALTER TABLE 'AD rejected' ADD retry_count NUMBER DEFAULT 0;" 2>/dev/null || true
 
@@ -97,8 +99,6 @@ EOF
 	systemctl start univention-ad-connector
 	skip_final_restart=true
 fi
-
-chmod 640 /etc/univention/connector/*.sqlite
 
 if [ "$skip_final_restart" != "true" ]; then
 	/etc/init.d/univention-ad-connector crestart || true
