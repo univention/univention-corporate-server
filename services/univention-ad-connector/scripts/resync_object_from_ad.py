@@ -73,6 +73,7 @@ class ad(univention.connector.ad.ad):
             c.execute("DELETE from GUIDS where id = ?", (guid_id,))
             cache_db.commit()
         cache_db.close()
+        os.chmod(cache_filename, 640)
 
     def _add_object_to_rejected(self, ad_dn, usn):
         state_filename = '/etc/univention/%s/internal.sqlite' % CONFIGBASENAME
@@ -81,6 +82,7 @@ class ad(univention.connector.ad.ad):
         c.execute("INSERT OR REPLACE INTO 'AD rejected' (key, value) VALUES (?, ?);", (usn, ad_dn))
         db.commit()
         db.close()
+        os.chmod(state_filename, 640)
 
     def resync(self, ad_dns=None, ldapfilter=None, ldapbase=None):
         treated_dns = []

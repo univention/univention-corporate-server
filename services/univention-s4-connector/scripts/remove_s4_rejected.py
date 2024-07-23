@@ -34,6 +34,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import os
 import sys
 from argparse import ArgumentParser
 
@@ -46,13 +47,14 @@ class ObjectNotFound(BaseException):
 
 
 def remove_s4_rejected(s4_dn):
-    config = univention.s4connector.configdb('/etc/univention/connector/s4internal.sqlite')
+    db_internal_file = '/etc/univention/connector/s4internal.sqlite'
+    config = univention.s4connector.configdb(db_internal_file)
     found = False
     for usn, rejected_dn in config.items('S4 rejected'):
         if univention.uldap.access.compare_dn(s4_dn, rejected_dn):
             config.remove_option('S4 rejected', usn)
             found = True
-
+    os.chmod(db_internal_file, 640)
     if not found:
         raise ObjectNotFound()
 
