@@ -74,7 +74,7 @@ def daemon(lock_file, options):
             print('Daemon Mode Error: %s' % e.strerror)
         if (pid == 0):
             os.chdir("/")
-            os.umask(0o022)
+            os.umask(0o027)
         else:
             pf = open('/var/run/univention-ad-%s' % options.configbasename, 'w+')
             pf.write(str(pid))

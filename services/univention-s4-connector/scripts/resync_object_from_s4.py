@@ -34,6 +34,7 @@
 # <https://www.gnu.org/licenses/>.
 
 
+import os
 import sqlite3
 import sys
 from argparse import ArgumentParser
@@ -65,7 +66,8 @@ class S4Resync:
         self.samdb = SamDB(url='/var/lib/samba/private/sam.ldb', session_info=system_session(), credentials=creds, lp=lp)
 
     def _remove_cache_entries(self, guid):
-        cache_db = sqlite3.connect('/etc/univention/connector/s4cache.sqlite')
+        db_cache_file = '/etc/univention/connector/s4cache.sqlite'
+        cache_db = sqlite3.connect(db_cache_file)
         c = cache_db.cursor()
         c.execute("SELECT id FROM GUIDS WHERE guid=?", (str(guid),))
         guid_ids = c.fetchone()
@@ -75,13 +77,16 @@ class S4Resync:
             c.execute("DELETE from GUIDS where id = ?", (guid_id,))
             cache_db.commit()
         cache_db.close()
+        os.chmod(db_cache_file, 640)
 
     def _add_object_to_rejected(self, s4_dn, usn):
-        db = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
+        db_internal_file = '/etc/univention/connector/s4internal.sqlite'
+        db = sqlite3.connect(db_internal_file)
         c = db.cursor()
         c.execute("INSERT OR REPLACE INTO 'S4 rejected' (key, value) VALUES (?, ?);", (usn, s4_dn))
         db.commit()
         db.close()
+        os.chmod(db_internal_file, 640)
 
     def resync(self, s4_dns=None, ldapfilter=None):
         treated_dns = []

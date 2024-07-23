@@ -47,7 +47,8 @@ class ObjectNotFound(BaseException):
 
 
 def remove_ucs_rejected(ucs_dn):
-    config = univention.s4connector.configdb('/etc/univention/connector/s4internal.sqlite')
+    db_internal_file = '/etc/univention/connector/s4internal.sqlite'
+    config = univention.s4connector.configdb(db_internal_file)
     found = False
     for filename, rejected_dn in config.items('UCS rejected'):
         if univention.s4connector.RE_NO_RESYNC.match(rejected_dn):
@@ -60,7 +61,7 @@ def remove_ucs_rejected(ucs_dn):
             os.remove(filename)
         config.remove_option('UCS rejected', filename)
         found = True
-
+    os.chmod(db_internal_file, 640)
     if not found:
         raise ObjectNotFound()
 
