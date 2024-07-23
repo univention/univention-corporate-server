@@ -68,6 +68,10 @@ if [ ! -d /var/lib/univention-connector/ad ]; then
 	chown 0.0 /var/lib/univention-connector/ad
 fi
 
+touch /etc/univention/connector/internal.sqlite
+touch /etc/univention/connector/adcache.sqlite
+chmod 640 /etc/univention/connector/*.sqlite
+
 sqlite3 "/etc/univention/connector/internal.sqlite" "ALTER TABLE 'AD rejected' ADD retry_count NUMBER DEFAULT 0;" 2>/dev/null || true
 
 # Bug #54587
