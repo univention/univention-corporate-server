@@ -6,10 +6,13 @@ src: binutils
 fix: 2.28-5+deb9u1
 desc: |
  This update addresses the following issues:
- 2.28-5+deb9u1 (Sat, 13 Jul 2024 20:41:44 +0300)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2018-12934: OOM in c++filt
- * CVE-2018-1000876: Integer Overflow in objdump
+ * CVE-2018-12934: Allows attackers to trigger excessive memory consumption
+   (`aka OOM`). This can occur during execution of `cxxfilt`.
+ * CVE-2018-1000876: Integer Overflow vulnerability in `objdump`,
+   `bfd_get_dynamic_reloc_upper_bound`, `bfd_canonicalize_dynamic_reloc` that
+   can result in Integer overflow trigger heap overflow. Successful
+   exploitation allows execution of arbitrary code. This attack appear to be
+   exploitable via Local.
 bug: [57460]
 cve:
 - CVE-2018-12934
