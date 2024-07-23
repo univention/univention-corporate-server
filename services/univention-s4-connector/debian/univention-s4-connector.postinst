@@ -67,6 +67,10 @@ if [ ! -d /var/lib/univention-connector/s4 ]; then
 	chown 0.0 /var/lib/univention-connector/s4
 fi
 
+touch /etc/univention/connector/s4internal.sqlite
+touch /etc/univention/connector/s4cache.sqlite
+chmod 640 /etc/univention/connector/*.sqlite
+
 systemctl try-restart univention-directory-listener || true
 
 if [ "$1" = "configure" ]; then
