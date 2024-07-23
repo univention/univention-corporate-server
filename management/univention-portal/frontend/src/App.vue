@@ -76,6 +76,13 @@ export default defineComponent({
     },
   },
   async mounted() {
+    const eventSource = new EventSource('/univention/logout-sse');
+
+    eventSource.addEventListener('message', (event) => {
+      if (event.data === "logout") {
+        window.location.reload();
+      }
+    });
     // Set locale and load portal data from backend
     this.$store.dispatch('activateLoadingState');
     const answer = await this.$store.dispatch('loadPortal', {

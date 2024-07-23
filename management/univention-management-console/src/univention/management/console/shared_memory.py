@@ -46,6 +46,7 @@ class _SharedMemory(managers.SyncManager):
     saml_state_cache = {}
     children = {}
     pkce = {}
+    logout_notifiers = {}
 
     def dict(self):
         if self.started:
@@ -69,6 +70,7 @@ class _SharedMemory(managers.SyncManager):
         self.saml_state_cache = self.dict()
         self.children = self.dict()
         self.pkce = self.dict()
+        self.logout_notifiers = self.dict()
 
 
 shared_memory = _SharedMemory()

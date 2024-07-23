@@ -69,6 +69,7 @@ from tornado.web import HTTPError
 import univention.admin.uexceptions as udm_errors
 from univention.lib.i18n import I18N_Error, Locale
 
+from univention.management.console.shared_memory import shared_memory
 from .config import MODULE_COMMAND, MODULE_INACTIVITY_TIMER, ucr
 from .error import BadGateway, BadRequest, Forbidden, NotFound, UMC_Error, Unauthorized
 from .ldap import reset_cache as reset_ldap_connection_cache
@@ -393,6 +394,11 @@ class Logout(Resource):
             return self.redirect('/univention/saml/logout', status=303)
 
         self.expire_session()
+        session_id = session.session_id
+        CORE.error('SESSION ID FOR SSE: %s', (session_id))
+        logout_notifier = shared_memory.logout_notifiers.get(session_id, None)
+        if session_id and logout_notifier:
+            logout_notifier.set()
         self.redirect(ucr.get('umc/logout/location') or '/univention/', status=303)
 
     post = get
