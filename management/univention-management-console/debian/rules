@@ -68,7 +68,8 @@ override_dh_python2:
 		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/saml.py \
 		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/server.py \
 		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/session.py \
-		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/shared_memory.py
+		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/shared_memory.py \
+		debian/python-${PYBUILD_NAME}/usr/lib/python2.7/dist-packages/univention/management/console/sse.py
 
 override_dh_install:
 	dh_install -Xde.po

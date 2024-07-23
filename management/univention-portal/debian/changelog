@@ -1,3 +1,11 @@
+univention-portal (4.0.17-2) unstable; urgency=medium
+
+  * Bug #57467 Add a shared worker that connects to the UMCs /logout-sse
+    endpoint and notifies all attached ports when the logout message is
+    received.
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 08 Aug 2024 14:55:51 +0200
+
 univention-portal (4.0.17-1) unstable; urgency=medium
 
   [ Ivan Barbecho Delgado ]

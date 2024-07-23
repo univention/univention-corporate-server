@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-29 15:17+0200\n"
+"POT-Creation-Date: 2024-08-12 08:51+0000\n"
 "PO-Revision-Date: 2024-05-29 15:19+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -1258,9 +1258,9 @@ msgid ""
 "component. For more information about Nubus, refer to :ref:`introduction-"
 "nubus`"
 msgstr ""
-"Das |UCSWEB| ist Teil von Univention Nubus in der *Management UI* Komponente. "
-"Weitere Informationen zu Nubus finden Sie unter :ref:`introduction-"
-"nubus`."
+"Das |UCSWEB| ist Teil von Univention Nubus in der *Management UI* "
+"Komponente. Weitere Informationen zu Nubus finden Sie unter :ref"
+":`introduction-nubus`."
 
 #: ../../central-management-umc/introduction.rst:8
 msgid "Introduction"
@@ -1633,10 +1633,26 @@ msgstr ""
 " eine Zwei-Faktor-Authentifizierung (2FA) zu erweitern."
 
 #: ../../central-management-umc/login.rst:42
+msgid "Refresh portal tabs on logout or session timeout"
+msgstr "Portal Tabs bei Abmeldung oder Ablauf der Session aktualisieren"
+
+#: ../../central-management-umc/login.rst:44
+msgid ""
+"All browser tabs where the user is logged into the portal will "
+"automatically refresh when a logout is detected. The same applies if the "
+"session times out. This feature is enabled by default and can be toggled "
+"through the UCR Variable :envvar:`portal/reload-tabs-on-logout`."
+msgstr ""
+"Alle Browser Tabs, in denen der Benutzer im Portal eingeloggt ist, werden "
+"automatisch aktualisiert, wenn eine Abmeldung erkannt wird. Dasselbe gilt, wenn "
+"die Sitzung abläuft. Diese Funktion ist standardmäßig aktiviert und kann über die "
+"UCR-Variable :envvar:`portal/reload-tabs-on-logout` umgeschaltet werden."
+
+#: ../../central-management-umc/login.rst:49
 msgid "Choose the right user account"
 msgstr "Wählen Sie das richtige Benutzerkonto"
 
-#: ../../central-management-umc/login.rst:44
+#: ../../central-management-umc/login.rst:51
 msgid ""
 "To sign in, enter the *Username* and *Password* of the corresponding "
 "domain account in the login mask."
@@ -1644,11 +1660,11 @@ msgstr ""
 "Um sich anzumelden, geben Sie in der Anmeldemaske den *Benutzernamen* und"
 " das *Passwort* des entsprechenden Domänenkontos ein."
 
-#: ../../central-management-umc/login.rst:56
+#: ../../central-management-umc/login.rst:63
 msgid "``Administrator``"
 msgstr "``Administrator``"
 
-#: ../../central-management-umc/login.rst:47
+#: ../../central-management-umc/login.rst:54
 msgid ""
 "When you sign in with the ``Administrator`` account on a |UCSPRIMARYDN| "
 "or |UCSBACKUPDN|, the UCS management system shows the UMC modules for the"
@@ -1660,7 +1676,7 @@ msgstr ""
 "Module für die Verwaltung und Konfiguration des lokalen Systems, sowie "
 "die UMC-Module für die Verwaltung der Daten in der Domäne an."
 
-#: ../../central-management-umc/login.rst:53
+#: ../../central-management-umc/login.rst:60
 msgid ""
 "You specified the initial password for the ``Administrator`` account in "
 "the setup wizard during installation. The password corresponds to the "
@@ -1673,11 +1689,11 @@ msgstr ""
 "``Administrator`` Konto für die Erstanmeldung an einem neu installierten "
 "|UCSPRIMARYDN|."
 
-#: ../../central-management-umc/login.rst:61
+#: ../../central-management-umc/login.rst:68
 msgid "``root``"
 msgstr "``root``"
 
-#: ../../central-management-umc/login.rst:59
+#: ../../central-management-umc/login.rst:66
 msgid ""
 "In some cases, it might be necessary to sign in with the system's local "
 "``root`` account. For more information, refer to :ref:`computers-"
@@ -1690,11 +1706,11 @@ msgstr ""
 " Zugriff auf UMC-Module für die Verwaltung und Konfiguration des lokalen "
 "Systems."
 
-#: ../../central-management-umc/login.rst:66
+#: ../../central-management-umc/login.rst:73
 msgid "Other user accounts"
 msgstr "Andere Benutzerkonten"
 
-#: ../../central-management-umc/login.rst:64
+#: ../../central-management-umc/login.rst:71
 msgid ""
 "When you sign in with another user account, the UCS management system "
 "shows the UMC modules approved for the user. For additional information "
@@ -1705,11 +1721,11 @@ msgstr ""
 " Informationen zur Zulassung weiterer Module finden Sie unter :ref"
 ":`delegated-administration`."
 
-#: ../../central-management-umc/login.rst:71
+#: ../../central-management-umc/login.rst:78
 msgid "Single sign-on"
 msgstr "Single Sign-On"
 
-#: ../../central-management-umc/login.rst:73
+#: ../../central-management-umc/login.rst:80
 msgid ""
 "By default, the login page for the portal has single sign-on deactivated."
 " The following sections describe how to activate single sign-on. After a "
@@ -1723,7 +1739,7 @@ msgstr ""
 " UCS-Systeme der Domäne sowie für Applikationen von Drittanbietern "
 "gültig, wenn diese webbasiertes Single Sign-On unterstützen."
 
-#: ../../central-management-umc/login.rst:80
+#: ../../central-management-umc/login.rst:87
 msgid ""
 "For sign-in through single sing-on, the browser session closes for 8 "
 "hours of inactivity. To get a fresh session, the user must sign in again."
@@ -1732,7 +1748,7 @@ msgstr ""
 "Inaktivität geschlossen. Um eine frische Sitzung zu erhalten, muss sich "
 "der Benutzer erneut anmelden."
 
-#: ../../central-management-umc/login.rst:84
+#: ../../central-management-umc/login.rst:91
 msgid ""
 "It's possible to enforce the sign in on the local system by clicking the "
 "link :guilabel:`Login without Single Sign On` on the login page, as show "
@@ -1742,15 +1758,15 @@ msgstr ""
 "Sie auf den Link :guilabel:`Anmeldung ohne Single Sign On` auf der "
 "Anmeldeseite klicken, wie :numref:`umc-login-sso` zu sehen."
 
-#: ../../central-management-umc/login.rst:94
+#: ../../central-management-umc/login.rst:101
 msgid "UCS sign-in page for single sign-on"
 msgstr "UCS Anmeldeseite für Single Sign-On"
 
-#: ../../central-management-umc/login.rst:99
+#: ../../central-management-umc/login.rst:106
 msgid "SAML for single sign-on"
 msgstr "SAML für Single Sign-On"
 
-#: ../../central-management-umc/login.rst:101
+#: ../../central-management-umc/login.rst:108
 msgid ""
 "UCS has SAML activated by default. This section describes how to activate"
 " it for the *Login* buttons in the Portal. For more information about "
@@ -1760,16 +1776,16 @@ msgstr ""
 "wie man es für die *Anmeldung* Schaltflächen im Portal aktiviert. Weitere"
 " Informationen zu SAML finden Sie unter :ref:`domain-saml`."
 
-#: ../../central-management-umc/login.rst:106
-#: ../../central-management-umc/login.rst:188
+#: ../../central-management-umc/login.rst:113
+#: ../../central-management-umc/login.rst:195
 msgid "Activate"
 msgstr "Aktivieren"
 
-#: ../../central-management-umc/login.rst:108
+#: ../../central-management-umc/login.rst:115
 msgid "To activate single sign-on through SAML, use the following steps:"
 msgstr "Um Single Sign-On über SAML zu aktivieren, gehen Sie wie folgt vor:"
 
-#: ../../central-management-umc/login.rst:110
+#: ../../central-management-umc/login.rst:117
 msgid ""
 "Ensure that all users in your domain who want to use the portal and the "
 "UCS management system with single sign-on can reach :samp:`ucs-"
@@ -1779,7 +1795,7 @@ msgstr ""
 "und das UCS-Managementsystem mit Single Sign-On nutzen wollen, :samp"
 ":`ucs-sso.{[Domänenname]}` erreichen können."
 
-#: ../../central-management-umc/login.rst:114
+#: ../../central-management-umc/login.rst:121
 msgid ""
 "Change the |UCSUCRV| :envvar:`portal/auth-mode` to ``saml`` with "
 ":option:`ucr set`. The default value was ``ucs``."
@@ -1787,7 +1803,7 @@ msgstr ""
 "Ändern Sie den |UCSUCRV| :envvar:`portal/auth-mode` auf ``saml`` mit "
 ":option:`ucr set`. Der Standardwert war ``ucs``."
 
-#: ../../central-management-umc/login.rst:117
+#: ../../central-management-umc/login.rst:124
 msgid ""
 "For the change to take effect, restart the portal server with the "
 "following command:"
@@ -1795,15 +1811,15 @@ msgstr ""
 "Damit die Änderung wirksam wird, starten Sie den Portal Server mit dem "
 "folgenden Befehl neu:"
 
-#: ../../central-management-umc/login.rst:119
+#: ../../central-management-umc/login.rst:126
 msgid "$ systemctl restart univention-portal-server.service"
 msgstr "$ systemctl restart univention-portal-server.service"
 
-#: ../../central-management-umc/login.rst:124
+#: ../../central-management-umc/login.rst:131
 msgid "Update sign-in links"
 msgstr "Anmeldelinks aktualisieren"
 
-#: ../../central-management-umc/login.rst:126
+#: ../../central-management-umc/login.rst:133
 msgid ""
 "Restarting the portal server automatically updates the *Login* link in "
 "the user menu. You must manually update the portal tile. The default "
@@ -1819,7 +1835,7 @@ msgstr ""
 " für die einmalige Anmeldung zu ersetzen, führen Sie die folgenden "
 "Schritte aus:"
 
-#: ../../central-management-umc/login.rst:133
+#: ../../central-management-umc/login.rst:140
 msgid ""
 "In *Univention Management Console* open the UMC Module Portal: "
 ":menuselection:`Domain --> Portal`."
@@ -1827,7 +1843,7 @@ msgstr ""
 "Öffnen Sie in der *Univention Management Console* das UMC-Modul Portal: "
 ":menuselection:`Domäne --> Portal`."
 
-#: ../../central-management-umc/login.rst:136
+#: ../../central-management-umc/login.rst:143
 msgid ""
 "To activate the preconfigured sign in tile for SAML, edit the entry "
 "``login-saml``, scroll down to the section *Advanced* and activate the "
@@ -1838,7 +1854,7 @@ msgstr ""
 "Abschnitt *Erweitert* und aktivieren Sie die Checkbox "
 ":guilabel:`Erweitert`."
 
-#: ../../central-management-umc/login.rst:141
+#: ../../central-management-umc/login.rst:148
 msgid ""
 "To deactivate the default sign in tile, edit the entry ``login-ucs``, "
 "scroll down to the section *Advanced* and deactivate the checkbox "
@@ -1848,7 +1864,7 @@ msgstr ""
 "Eintrag ``login-ucs``, scrollen Sie nach unten zum Abschnitt *Advanced* "
 "und deaktivieren Sie die Checkbox :guilabel:`Advanced`."
 
-#: ../../central-management-umc/login.rst:146
+#: ../../central-management-umc/login.rst:153
 msgid ""
 "To change back to the default sign-in in UCS without single sign-on, you "
 "need to revert the steps for updating the portal tile and set the UCR "
@@ -1859,11 +1875,11 @@ msgstr ""
 " rückgängig machen und die UCR Variable :envvar:`portal/auth-mode` auf "
 "``ucs`` setzen."
 
-#: ../../central-management-umc/login.rst:153
+#: ../../central-management-umc/login.rst:160
 msgid "OpenID Connect for single sign-on"
 msgstr "OpenID Connect für Single Sign-On"
 
-#: ../../central-management-umc/login.rst:157
+#: ../../central-management-umc/login.rst:164
 msgid ""
 "Using OpenID Connect for single sign-on to the portal and the UCS "
 "management system **isn't covered** by Univention product support. Don't "
@@ -1873,7 +1889,7 @@ msgstr ""
 "und am UCS-Managementsystem **wird nicht vom Univention-Produktsupport "
 "abgedeckt**. Verwenden Sie es nicht in Produktionsumgebungen."
 
-#: ../../central-management-umc/login.rst:163
+#: ../../central-management-umc/login.rst:170
 msgid ""
 "With :uv:erratum:`5.0x947` the portal and the UCS management system have "
 "the capability to allow single sign-on with OpenID Connect. The "
@@ -1883,7 +1899,7 @@ msgstr ""
 "die Möglichkeit, Single Sign-On mit OpenID Connect durchzuführen. Die "
 "Fähigkeit ist standardmäßig deaktiviert."
 
-#: ../../central-management-umc/login.rst:167
+#: ../../central-management-umc/login.rst:174
 msgid ""
 "OpenID Connect (OIDC) is a protocol that allows single sign-on. OIDC is a"
 " more lightweight protocol than SAML. It's one variant for using single "
@@ -1895,11 +1911,11 @@ msgstr ""
 " Verwendung von Single Sign-On im Portal und im UCS-Managementsystem. "
 "Dieser Abschnitt beschreibt, wie Sie es mit UCS verwenden."
 
-#: ../../central-management-umc/login.rst:173
+#: ../../central-management-umc/login.rst:180
 msgid "Requirements"
 msgstr "Anforderungen"
 
-#: ../../central-management-umc/login.rst:175
+#: ../../central-management-umc/login.rst:182
 msgid ""
 "Before you can use OIDC for single sign-on, you must meet the following "
 "requirements:"
@@ -1907,7 +1923,7 @@ msgstr ""
 "Bevor Sie OIDC für Single Sign-On verwenden können, müssen Sie die "
 "folgenden Voraussetzungen erfüllen:"
 
-#: ../../central-management-umc/login.rst:177
+#: ../../central-management-umc/login.rst:184
 msgid ""
 "You must at least have :uv:erratum:`5.0x947` installed throughout your "
 "UCS domain."
@@ -1915,19 +1931,19 @@ msgstr ""
 "Sie müssen mindestens :uv:erratum:`5.0x947` überall in Ihrer UCS-Domäne "
 "installiert haben."
 
-#: ../../central-management-umc/login.rst:179
+#: ../../central-management-umc/login.rst:186
 msgid ""
 "For information about how to upgrade, refer to :ref:`software-ucs-"
 "updates`."
 msgstr "Informationen zum Upgrade finden Sie unter :ref:`software-ucs-updates`."
 
-#: ../../central-management-umc/login.rst:181
+#: ../../central-management-umc/login.rst:188
 msgid "You must have the app :program:`Keycloak` installed in your UCS domain."
 msgstr ""
 "Sie müssen die App :program:`Keycloak` in Ihrer UCS-Domäne installiert "
 "haben."
 
-#: ../../central-management-umc/login.rst:183
+#: ../../central-management-umc/login.rst:190
 msgid ""
 "For information about the installation of :program:`Keycloak`, refer to "
 ":external+uv-keycloak-ref:ref:`app-installation` in :cite:t:`ucs-"
@@ -1937,7 +1953,7 @@ msgstr ""
 " :external+uv-keycloak-ref:ref:`app-installation` in :cite:t:`ucs-"
 "keycloak-doc`."
 
-#: ../../central-management-umc/login.rst:190
+#: ../../central-management-umc/login.rst:197
 msgid ""
 "First, you need to decide on which UCS systems you want to enable single "
 "sign-on using OpenID Connect. Second, you need to apply the following "
@@ -1947,7 +1963,7 @@ msgstr ""
 "Sign-On mit OpenID Connect aktivieren möchten. Zweitens müssen Sie die "
 "folgenden Schritte auf jedem dieser UCS-Systeme anwenden."
 
-#: ../../central-management-umc/login.rst:193
+#: ../../central-management-umc/login.rst:200
 msgid ""
 "Deactivate SAML for portal sign-in through the UCR variable "
 ":envvar:`umc/web/sso/enabled` so that the automatic to sign in again "
@@ -1957,7 +1973,7 @@ msgstr ""
 ":envvar:`umc/web/sso/enabled`, damit die automatische Neuanmeldung nicht "
 "zuerst SAML ausprobiert, sondern direkt OIDC verwendet."
 
-#: ../../central-management-umc/login.rst:196
+#: ../../central-management-umc/login.rst:203
 msgid ""
 "Change the |UCSUCRV| :envvar:`umc/web/oidc/enabled` to ``true`` with "
 ":option:`ucr set`."
@@ -1965,7 +1981,7 @@ msgstr ""
 "Ändern Sie die |UCSUCRV| :envvar:`umc/web/oidc/enabled` auf ``true`` mit "
 ":option:`ucr set`."
 
-#: ../../central-management-umc/login.rst:198
+#: ../../central-management-umc/login.rst:205
 msgid ""
 "$ ucr set \\\n"
 "   umc/web/sso/enabled=false \\\n"
@@ -1975,11 +1991,11 @@ msgstr ""
 "   umc/web/sso/enabled=false \\\n"
 "   umc/web/oidc/enabled=true"
 
-#: ../../central-management-umc/login.rst:204
+#: ../../central-management-umc/login.rst:211
 msgid "Run the join script for the UMC web server:"
 msgstr "Führen Sie das Join-Skript für den UMC Webserver aus:"
 
-#: ../../central-management-umc/login.rst:206
+#: ../../central-management-umc/login.rst:213
 msgid ""
 "$ univention-run-join-scripts \\\n"
 "   --force \\\n"
@@ -1991,11 +2007,11 @@ msgstr ""
 "   --run-scripts \\\n"
 "   92univention-management-console-web-server.inst"
 
-#: ../../central-management-umc/login.rst:214
+#: ../../central-management-umc/login.rst:221
 msgid "Verification and log files"
 msgstr "Verifizierung und Logdateien"
 
-#: ../../central-management-umc/login.rst:216
+#: ../../central-management-umc/login.rst:223
 msgid ""
 "To verify that the setup works, open the URL "
 ":samp:`https://{FQDN}/univention/oidc` in a web browser, such as Mozilla "
@@ -2007,21 +2023,21 @@ msgstr ""
 " Firefox, und melden Sie sich an. Öffnen Sie ein UMC-Modul, z. B. "
 "*Users*, und führen Sie eine Suche durch."
 
-#: ../../central-management-umc/login.rst:221
+#: ../../central-management-umc/login.rst:228
 msgid "You find relevant logging information in the following locations:"
 msgstr ""
 "Entsprechende Informationen zur Protokollierung finden Sie an den "
 "folgenden Stellen:"
 
-#: ../../central-management-umc/login.rst:223
+#: ../../central-management-umc/login.rst:230
 msgid "Log file: :file:`/var/log/univention/management-console.server.log`"
 msgstr "Logdatei: :file:`/var/log/univention/management-console.server.log`"
 
-#: ../../central-management-umc/login.rst:225
+#: ../../central-management-umc/login.rst:232
 msgid ":program:`journald`: :command:`journalctl -u slapd.service`"
 msgstr ":program:`journald`: :command:`journalctl -u slapd.service`"
 
-#: ../../central-management-umc/login.rst:227
+#: ../../central-management-umc/login.rst:234
 msgid ""
 "To reflect the changes for the login method in the portal, you need to "
 "edit the *Login* tile manually, similar to the setup with :ref:`central-"
@@ -2033,11 +2049,11 @@ msgstr ""
 "Einrichtung mit :ref:`central-management-umc-login-single-sign-on-saml`. "
 "Der Link muss auf ``/univention/oidc/`` zeigen."
 
-#: ../../central-management-umc/login.rst:233
+#: ../../central-management-umc/login.rst:240
 msgid "Deactivate"
 msgstr "Deaktivieren"
 
-#: ../../central-management-umc/login.rst:235
+#: ../../central-management-umc/login.rst:242
 msgid ""
 "First, you need to decide on which UCS systems you want to deactivate "
 "single sign-on using OpenID Connect. Second, you need to apply the "
@@ -2047,7 +2063,7 @@ msgstr ""
 "On über OpenID Connect deaktivieren möchten. Zweitens müssen Sie die "
 "folgenden Schritte auf jedem dieser UCS-Systeme anwenden."
 
-#: ../../central-management-umc/login.rst:238
+#: ../../central-management-umc/login.rst:245
 msgid ""
 "Unset the |UCSUCRV| :envvar:`umc/web/oidc/enabled` with :option:`ucr "
 "unset`:"
@@ -2055,11 +2071,11 @@ msgstr ""
 "Deaktivieren Sie die |UCSUCRV| :envvar:`umc/web/oidc/enabled` mit "
 ":option:`ucr unset`:"
 
-#: ../../central-management-umc/login.rst:240
+#: ../../central-management-umc/login.rst:247
 msgid "$ ucr unset umc/web/oidc/enabled"
 msgstr "$ ucr unset umc/web/oidc/enabled"
 
-#: ../../central-management-umc/login.rst:244
+#: ../../central-management-umc/login.rst:251
 msgid ""
 "Remove the :external+uv-keycloak-ref:term:`OIDC RP` from Keycloak with "
 "the following command:"
@@ -2067,7 +2083,7 @@ msgstr ""
 "Entfernen Sie das :external+uv-keycloak-ref:term:`OIDC RP` aus Keycloak "
 "mit dem folgenden Befehl:"
 
-#: ../../central-management-umc/login.rst:246
+#: ../../central-management-umc/login.rst:253
 msgid ""
 "$ univention-keycloak oidc/rp remove \\\n"
 "   \"$(ucr get umc/oidc/$(hostname -f)/client-id)\""
@@ -2075,13 +2091,13 @@ msgstr ""
 "$ univention-keycloak oidc/rp remove \\\n"
 "   \"$(ucr get umc/oidc/$(hostname -f)/client-id)\""
 
-#: ../../central-management-umc/login.rst:251
+#: ../../central-management-umc/login.rst:258
 msgid "Unset all |UCSUCRVs| that you can find with the following searches:"
 msgstr ""
 "Setzen Sie alle |UCSUCRVs| zurück, die Sie mit den folgenden Suchen "
 "finden können:"
 
-#: ../../central-management-umc/login.rst:253
+#: ../../central-management-umc/login.rst:260
 msgid ""
 "$ ucr search --brief --key ^umc/oidc\n"
 "$ ucr search --brief --key ^ldap/server/sasl/oauthbearer"
@@ -2089,13 +2105,13 @@ msgstr ""
 "$ ucr search --brief --key ^umc/oidc\n"
 "$ ucr search --brief --key ^ldap/server/sasl/oauthbearer"
 
-#: ../../central-management-umc/login.rst:258
+#: ../../central-management-umc/login.rst:265
 msgid "Remove the OIDC secret from the system and restart affected services:"
 msgstr ""
 "Entfernen Sie das OIDC-Geheimnis aus dem System und starten Sie die "
 "betroffenen Dienste neu:"
 
-#: ../../central-management-umc/login.rst:260
+#: ../../central-management-umc/login.rst:267
 msgid ""
 "$ rm -f \\\n"
 "   /etc/umc-oidc.secret \\\n"
@@ -2107,7 +2123,7 @@ msgstr ""
 "   /usr/share/univention-management-console/oidc/http*\n"
 "$ systemctl restart slapd.service univention-manangement-console"
 
-#: ../../central-management-umc/login.rst:267
+#: ../../central-management-umc/login.rst:274
 msgid ""
 "Manually update the portal tile for *Login*, so that the link points to "
 "``/univention/login/``."

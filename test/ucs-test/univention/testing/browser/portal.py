@@ -171,14 +171,20 @@ class UCSSideMenu:
         self.page.locator('[data-test="openEditmodeButton"]').click()
         return UCSPortalEditMode(self.tester)
 
+    def logout(self) -> None:
+        self.page.get_by_role("button", name=_("Logout")).click()
+
 
 class UCSPortal:
     def __init__(self, tester: UMCBrowserTest):
         self.tester: UMCBrowserTest = tester
         self.page: Page = tester.page
 
-    def navigate(self, username='Administrator', password='univention'):
-        self.tester.login(username, password, location='/univention/portal')
+    def navigate(self, username='Administrator', password='univention', do_login: bool = True):
+        if do_login:
+            self.tester.login(username, password, location='/univention/portal')
+        else:
+            self.page.goto(f'{self.tester.base_url}/univention/portal')
 
     def side_menu(self) -> UCSSideMenu:
         return UCSSideMenu(self.tester)

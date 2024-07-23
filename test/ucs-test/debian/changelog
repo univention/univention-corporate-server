@@ -1,3 +1,9 @@
+ucs-test (10.0.22-50) unstable; urgency=medium
+
+  * Bug 57467: add tests for the logout notifier
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 14:43:25 +0200
+
 ucs-test (10.0.22-49) unstable; urgency=medium
 
   * Issue univention/ucs#2338: keycloak admin login
