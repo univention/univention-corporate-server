@@ -1071,7 +1071,7 @@ def create_oidc_client(opt):
             "saml.force.post.binding": "false",
             "frontchannel.logout.session.required": "false",
             "oauth2.device.authorization.grant.enabled": "false",
-            "backchannel.logout.revoke.offline.tokens": opt.backchannel_logout_revoke_offline,
+            "backchannel.logout.revoke.offline.tokens": opt.backchannel_logout_revoke_session,
             "saml.server.signature.keyinfo.ext": "false",
             "use.refresh.tokens": "true",
             "oidc.ciba.grant.enabled": "false",
@@ -1208,10 +1208,11 @@ def create_oidc_client(opt):
         )
 
     if opt.add_guardian_management_mappers:
-        client_payload_oidc["protocolMappers"].append(_get_guardian_management_mappers())
+        client_payload_oidc["protocolMappers"] += _get_guardian_management_mappers()
 
+    # FIXME: This clears the default mappers and leave the ICS only
     if opt.add_ICS_mappers:
-        client_payload_oidc["protocolMappers"].append(_get_ICS_mappers())
+        client_payload_oidc["protocolMappers"] = _get_ICS_mappers()
 
     for i, audience in enumerate(opt.access_token_audience):
         client_payload_oidc["protocolMappers"].append(
