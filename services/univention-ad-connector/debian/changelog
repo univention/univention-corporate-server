@@ -1,4 +1,4 @@
-univention-ad-connector (14.0.19-4) unstable; urgency=medium
+univention-ad-connector (14.0.19-5) unstable; urgency=medium
 
   * Bug #57453: Make sqlite files only readable to root
 
