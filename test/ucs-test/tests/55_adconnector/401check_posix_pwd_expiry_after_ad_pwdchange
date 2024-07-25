@@ -33,7 +33,7 @@ SYNCMODE="$(ad_get_sync_mode)"
 HOST="$(ucr get connector/ad/ldap/host)"
 SHADOW_LASTCHANGE="$(( $(date +"%s") / 3600 / 24 ))"
 SHADOW_MAX=99
-KRB5_PASSWORD_END=$(date +"%Y%m%d000000Z" --date="@$(( $(date -u +"%s") + ($SHADOW_MAX * 24 * 3600)))")
+KRB5_PASSWORD_END=$(date -u +"%Y%m%d000000Z" --date="@$(( $(date -u +"%s") + ($SHADOW_MAX * 24 * 3600)))")
 
 ad_set_sync_mode "sync"
 

@@ -1,4 +1,4 @@
-ucs-test (10.0.22-34) unstable; urgency=medium
+ucs-test (10.0.22-35) unstable; urgency=medium
 
   * Issue univention/ucs#2279: Fix s4/ad test combination
 
