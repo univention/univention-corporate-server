@@ -32,6 +32,7 @@
 
 import base64
 import binascii
+from datetime import datetime
 import hashlib
 import json
 import os
@@ -437,29 +438,32 @@ class _OIDCLogoutBase(OIDCResource):
 
 
 class OIDCLogout(_OIDCLogoutBase):
-    """User initiated logout at the OP"""
+    """RP-Initiated Logout https://openid.net/specs/openid-connect-rpinitiated-1_0.html"""
 
     def get(self):
-        """User initiated front channel logout at OP."""
-        CORE.debug('frontchannel logout')
+        """RP-Initiated Logout."""
+        CORE.debug('RP initiated logout')
         user = self.current_user
 
         if user is None or user.oidc is None:
             return self._logout_success()
 
         access_token = user.oidc.access_token
-        if not access_token:
+        id_token = user.oidc.id_token
+        if not access_token or not id_token:
             raise BadRequest(self._("Not logged in"))
 
         logout_url = '%s?%s' % (self._OAUTH_END_SESSION_URL, urlencode({
-            'post_logout_redirect_uri': self.reverse_abs_url('oidc-logout-done'),
+            'post_logout_redirect_uri': 'https://master60.test.internal',
             'client_id': self.client_id,
+            'id_token_hint': id_token
             # 'logout_hint': None,
             # 'ui_locales': None,
         }))
         self.redirect(logout_url)
 
     async def post(self):
+        # FIXME: does this exist in the spec???
         """User initiated back channel logout at OP."""
         CORE.debug('backchannel logout')
         user = self.current_user
@@ -505,7 +509,10 @@ class OIDCFrontchannelLogout(_OIDCLogoutBase):
         self.add_header('Cache-Control', 'no-store')
         # self.get_query_argument('iss')
         # sid = self.get_query_argument('sid')
-        return self._logout_success()
+        user = self.current_user
+        user.logout()
+        self.set_cookies(('UMCSessionId', ''), expires=datetime.fromtimestamp(0))
+        # return self._logout_success()
 
 
 class OIDCBackchannelLogout(OIDCResource):
