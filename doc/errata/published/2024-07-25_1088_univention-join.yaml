@@ -9,3 +9,6 @@ desc: |
  * A bug has been fixed that could cause the domain join to fail
    if the /etc/univention/ssl directory was too big
 bug: [57421]
+erratum: 1088
+announced: 2024-07-25
+support: core
