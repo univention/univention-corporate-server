@@ -33,4 +33,5 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+umask 027
 /usr/bin/python3 -W ignore -m univention.s4connector.s4.main "$@"
