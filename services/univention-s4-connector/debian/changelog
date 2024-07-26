@@ -1,4 +1,4 @@
-univention-s4-connector (14.0.18-4) unstable; urgency=medium
+univention-s4-connector (14.0.18-5) unstable; urgency=medium
 
   * Bug #57453: Make sqlite files only readable to root
 

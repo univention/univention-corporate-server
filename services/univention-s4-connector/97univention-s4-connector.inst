@@ -82,6 +82,7 @@ if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 	timestamp=$(date +%Y%m%d%H%M%S)
 	for dbfile in "$internal_db" "$locking_db" "$cache_db"; do
 		test -e "$dbfile" && mv "$dbfile" "${dbfile}_${timestamp}"
+		touch "$dbfile" && chmod 640 "$dbfile"
 	done
 fi
 
