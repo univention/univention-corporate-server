@@ -3,7 +3,7 @@ release: "5.0"
 version: [8]
 scope: ucs_5.0-0-errata5.0-8
 src: univention-ad-connector
-fix: 14.0.19-4
+fix: 14.0.19-7
 desc: |
  This update addresses the following issues:
  * The connector can now be configured to only synchronize objects
