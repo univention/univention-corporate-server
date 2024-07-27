@@ -136,10 +136,31 @@ def create_mapping(configbasename='connector'):
     user_ignore_filter = '(|{}{}{})'.format('(userAccountControl=2080)', user_ignore_filter, user_ignore_list)
 
     ignore_filter_parts = '(groupType=-2147483643)(groupType=4)(univentionGroupType=-2147483643)(univentionGroupType=4)'
+    group_ignore_filter = configRegistry.get(connector('%s/ad/mapping/group/ignorefilter'), '')
+    if group_ignore_filter and not group_ignore_filter.startswith('('):
+        group_ignore_filter = f'({group_ignore_filter})'
     if configRegistry.is_false(connector('%s/ad/mapping/group/grouptype'), False):
         ignore_filter_parts += '(sambaGroupType=5)(groupType=5)'
     ignore_filter_parts += ignore_filter_from_attr('cn', connector('%s/ad/mapping/group/ignorelist'))
-    group_ignore_filter = f'(|{ignore_filter_parts})'
+    group_ignore_filter = f'(|{group_ignore_filter}{ignore_filter_parts})'
+
+    computer_ignore_filter = configRegistry.get(connector('%s/ad/mapping/windowscomputer/ignorefilter'), '')
+    if computer_ignore_filter and not computer_ignore_filter.startswith('('):
+        computer_ignore_filter = f'({computer_ignore_filter})'
+    computer_ignore_parts = ignore_filter_from_attr('cn', connector('%s/ad/mapping/windowscomputer/ignorelist'))
+    computer_ignore_filter = f'(|{computer_ignore_filter}{computer_ignore_parts})' if computer_ignore_filter or computer_ignore_parts else ''
+
+    container_ignore_attrs = ignore_filter_from_attr('cn', connector('%s/ad/mapping/container/ignorelist'), 'mail,kerberos')
+    container_ignore_filter = configRegistry.get(connector('%s/ad/mapping/container/ignorefilter'), '')
+    if container_ignore_filter and not container_ignore_filter.startswith('('):
+        container_ignore_filter = f'({container_ignore_filter})'
+    container_ignore_filter = f'(|{container_ignore_filter}{container_ignore_attrs})' if container_ignore_filter or container_ignore_attrs else ''
+
+    ou_ignore_attrs = ignore_filter_from_attr('ou', connector('%s/ad/mapping/ou/ignorelist'))
+    ou_ignore_filter = configRegistry.get(connector('%s/ad/mapping/ou/ignorefilter'), '')
+    if ou_ignore_filter and not ou_ignore_filter.startswith('('):
+        ou_ignore_filter = f'({ou_ignore_filter})'
+    ou_ignore_filter = f'(|{ou_ignore_filter}{ou_ignore_attrs})' if ou_ignore_filter or ou_ignore_attrs else ''
 
     ad_mapping = {
         'user': univention.connector.property(
@@ -412,7 +433,7 @@ def create_mapping(configbasename='connector'):
             match_filter='(|(&(objectClass=univentionWindows)(!(univentionServerRole=windows_domaincontroller)))(objectClass=computer)(objectClass=univentionMemberServer)(objectClass=univentionUbuntuClient)(objectClass=univentionLinuxClient)(objectClass=univentionMacOSClient))',
             allow_subtree=global_allow_subtree_ucs + global_allow_subtree_ad,
             ignore_subtree=global_ignore_subtree,
-            ignore_filter=ignore_filter_from_attr('cn', connector('%s/ad/mapping/windowscomputer/ignorelist')) or None,
+            ignore_filter=computer_ignore_filter or None,
             con_create_objectclass=['top', 'computer'],
             con_create_attributes=[('userAccountControl', [b'4096'])],
             attributes={
@@ -452,7 +473,7 @@ def create_mapping(configbasename='connector'):
             scope='sub',
             con_search_filter='(|(objectClass=container)(objectClass=builtinDomain))',  # builtinDomain is cn=builtin (with group cn=Administrators)
             allow_subtree=global_allow_subtree_ucs + global_allow_subtree_ad,
-            ignore_filter=ignore_filter_from_attr('cn', connector('%s/ad/mapping/container/ignorelist'), 'mail,kerberos') or None,
+            ignore_filter=container_ignore_filter or None,
             ignore_subtree=global_ignore_subtree,
             post_ucs_modify_functions=[
                 univention.connector.ad.set_univentionObjectFlag_to_synced,
@@ -479,7 +500,7 @@ def create_mapping(configbasename='connector'):
             scope='sub',
             con_search_filter='objectClass=organizationalUnit',
             allow_subtree=global_allow_subtree_ucs + global_allow_subtree_ad,
-            ignore_filter=ignore_filter_from_attr('ou', connector('%s/ad/mapping/ou/ignorelist')) or None,
+            ignore_filter=ou_ignore_filter or None,
             ignore_subtree=global_ignore_subtree,
             post_ucs_modify_functions=[
                 univention.connector.ad.set_univentionObjectFlag_to_synced,

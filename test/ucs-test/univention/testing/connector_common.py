@@ -205,6 +205,61 @@ class SpecialGroup(TestGroup):
         )
 
 
+class TestObject:
+    def __init__(self, obj, rename={}, container=None):
+        self.obj = obj
+        self.rename = dict(self.obj)
+        self.rename.update(rename)
+        self.container = container
+
+    @classmethod
+    def to_unicode(cls, dictionary):
+        return {k: to_unicode(v) for k, v in dictionary.items()}
+
+    def __repr__(self):
+        args = (self.obj, self.rename, self.container)
+        return "{}({})".format(self.__class__.__name__, ", ".join(repr(a) for a in args))
+
+
+class NormalWindows(TestObject):
+    def __init__(self):
+        super().__init__(
+            obj={
+                "name": tstrings.random_groupname().encode('UTF-8'),
+                "description": random_bytestring(alpha=True, numeric=True),
+                # "inventoryNumber": random_bytestring(alpha=False, numeric=True),
+                "operatingSystem": b"Windows",
+                "operatingSystemVersion": b"11",
+            },
+            rename={"name": tstrings.random_groupname().encode('UTF-8')},
+            container=tstrings.random_name(),
+        )
+
+
+class NormalContainer(TestObject):
+    def __init__(self):
+        super().__init__(
+            obj={
+                "name": tstrings.random_groupname().encode('UTF-8'),
+                "description": random_bytestring(alpha=True, numeric=True),
+            },
+            rename={"name": tstrings.random_groupname().encode('UTF-8')},
+            container=tstrings.random_name(),
+        )
+
+
+class NormalOU(TestObject):
+    def __init__(self):
+        super().__init__(
+            obj={
+                "name": tstrings.random_groupname().encode('UTF-8'),
+                "description": random_bytestring(alpha=True, numeric=True),
+            },
+            rename={"name": tstrings.random_groupname().encode('UTF-8')},
+            container=tstrings.random_name(),
+        )
+
+
 def map_udm_user_to_con(user):
     """
     Map a UDM user given as a dictionary of `property`:`values` mappings to a
@@ -241,6 +296,50 @@ def map_udm_group_to_con(group):
     mapping = {"name": "sAMAccountName", "description": "description"}
     # return {mapping[key]: value for (key, value) in group.items() if key in mapping}
     return {mapping[key]: ([value] if not isinstance(value, (list, tuple)) else value) for (key, value) in group.items() if key in mapping}
+
+
+def map_udm_windows_to_con(windows):
+    """
+    Map a UDM computers/windows given as a dictionary of `property`:`values` mappings to a
+    dictionary of `attributes`:`values` mappings as required by the CON-LDAP.
+    Note: This expects the properties from the UDM computers/windows module and not
+    OpenLDAP-attributes!.
+    """
+    mapping = {
+        "name": "sAMAccountName",
+        "description": "description",
+        "operatingSystem": "operatingSystem",
+        "operatingSystemVersion": "operatingSystemVersion",
+    }
+    return {mapping[key]: ([value] if not isinstance(value, (list, tuple)) else value) for (key, value) in windows.items() if key in mapping}
+
+
+def map_udm_container_to_con(container):
+    """
+    Map a UDM container/* given as a dictionary of `property`:`values` mappings to a
+    dictionary of `attributes`:`values` mappings as required by the CON-LDAP.
+    Note: This expects the properties from the UDM container/* module and not
+    OpenLDAP-attributes!.
+    """
+    mapping = {
+        "name": "cn",
+        "description": "description",
+    }
+    return {mapping[key]: ([value] if not isinstance(value, (list, tuple)) else value) for (key, value) in container.items() if key in mapping}
+
+
+def map_udm_ou_to_con(container):
+    """
+    Map a UDM container/* given as a dictionary of `property`:`values` mappings to a
+    dictionary of `attributes`:`values` mappings as required by the CON-LDAP.
+    Note: This expects the properties from the UDM container/* module and not
+    OpenLDAP-attributes!.
+    """
+    mapping = {
+        "name": "ou",
+        "description": "description",
+    }
+    return {mapping[key]: ([value] if not isinstance(value, (list, tuple)) else value) for (key, value) in container.items() if key in mapping}
 
 
 def create_udm_user(udm, con, user, wait_for_sync, verify=True):
