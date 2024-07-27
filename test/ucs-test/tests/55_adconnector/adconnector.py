@@ -58,3 +58,73 @@ def connector_setup(sync_mode):
         tcommon.restart_univention_cli_server()
         ad_in_sync_mode(sync_mode)
         yield
+
+
+class _Connector:
+    def __init__(self):
+        self._ad = ADConnection()
+        self._created = []
+
+    def wait_for_sync(self):
+        return wait_for_sync()
+
+    def restart(self):
+        return restart_adconnector()
+
+    def create_object(self, object_type, attrs):
+        if object_type == "users/user":
+            dn = self._ad.createuser(attrs["username"], None, **tcommon.map_udm_user_to_con(attrs))
+        elif object_type == "groups/group":
+            dn = self._ad.group_create(attrs["name"].decode("utf-8"), None, **tcommon.map_udm_group_to_con(attrs))
+        elif object_type == "computers/windows":
+            dn = self._ad.windows_create(attrs["name"].decode("utf-8"), None, **tcommon.map_udm_windows_to_con(attrs))
+        elif object_type == "container/cn":
+            dn = self._ad.container_create(attrs["name"].decode("utf-8"), None, attrs.get("description"))
+        elif object_type == "container/ou":
+            dn = self._ad.createou(attrs["name"].decode("utf-8"), None, attrs.get("description"))
+        else:
+            raise NotImplementedError(f"Dont know how to create {object_type}")
+        self.wait_for_sync()
+        return dn
+
+    def move(self, ad_dn, new_dn):
+        self._ad.move(ad_dn, new_dn)
+        self.wait_for_sync()
+        return new_dn
+
+    def set_attributes(self, ad_dn, attrs):
+        self._ad.set_attributes(ad_dn, **attrs)
+        self.wait_for_sync()
+
+    def delete_object(self, ad_dn, udm_dn):
+        self._ad.delete(ad_dn)
+        try:
+            self._created.remove((ad_dn, udm_dn))
+        except ValueError:
+            pass
+        self.wait_for_sync()
+
+    def verify_object(self, object_type, ad_dn, obj):
+        if object_type == "users/user":
+            obj = tcommon.map_udm_user_to_con(obj)
+        elif object_type == "groups/group":
+            obj = tcommon.map_udm_group_to_con(obj)
+        elif object_type == "computers/windows":
+            obj = tcommon.map_udm_windows_to_con(obj)
+        elif object_type == "container/cn":
+            obj = tcommon.map_udm_container_to_con(obj)
+        elif object_type == "container/ou":
+            obj = tcommon.map_udm_ou_to_con(obj)
+        self._ad.verify_object(ad_dn, obj)
+
+
+@contextlib.contextmanager
+def connector_setup2(mode):
+    with connector_setup(mode):
+        connector = _Connector()
+        try:
+            yield connector
+        finally:
+            for ad_dn, udm_dn in connector._created[::-1]:
+                connector.delete_object(ad_dn, udm_dn)
+            connector.restart()
