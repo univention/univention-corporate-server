@@ -337,6 +337,23 @@ class ADConnection(LDAPConnection):
         self.create(new_dn, new_attributes)
         return new_dn
 
+    def windows_create(self, name, position=None, **attributes):
+        """
+        Create a AD windows with attributes as given by the keyword-args
+        `attributes`. The created windows will be populated with some defaults if
+        not otherwise set.
+
+        Returns the dn of the created windows.
+        """
+        new_position = position or 'cn=Computers,%s' % self.adldapbase
+        new_dn = f'cn={ldap.dn.escape_dn_chars(name)},{new_position}'
+
+        defaults = (('userAccountControl', [b'4098']), ('objectclass', [b'top', b'person', b'organizationalPerson', b'user', b'computer']), ('cn', to_bytes(name)))
+        new_attributes = dict(defaults)
+        new_attributes.update(attributes)
+        self.create(new_dn, new_attributes)
+        return new_dn
+
     def getprimarygroup(self, user_dn):
         try:
             res = self.lo.search_ext_s(user_dn, ldap.SCOPE_BASE, timeout=10)
