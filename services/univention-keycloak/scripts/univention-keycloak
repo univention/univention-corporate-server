@@ -1738,6 +1738,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_oidc_parser.add_argument("--consent", help="Contains the text which will be on the consent screen about permissions specific just for this client. If given, users have to consent to client access.")
     create_oidc_parser.add_argument("--web-origins", action="append", default=[], help="Allowed CORS Origins.")
     create_oidc_parser.add_argument("--admin-url", default="", help="URL for admin interface of the client.")
+    create_oidc_parser.add_argument("--audience-to-map", default="", help="Audience to use if --add-audience-mapper is enabled.")
     create_oidc_parser.add_argument("--add-ICS-mappers", action='store_true', default=False, help="Add the mappers needed for the ICS client.")
     create_oidc_parser.add_argument("--add-guardian-management-mappers", action='store_true', default=False, help="Add the mappers needed for the guardian management API.")
     create_oidc_parser.add_argument("--add-guardian-audience-mapper", action='store_true', default=False, help="Add the guardian audience mapper.")
