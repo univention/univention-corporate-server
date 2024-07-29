@@ -1,4 +1,4 @@
-univention-management-console-module-diagnostic (8.0.14) unstable; urgency=medium
+univention-management-console-module-diagnostic (8.0.15) unstable; urgency=medium
 
   * Bug #57453: Change diagnostic module to check that the connectors sqlite files
     are only readable to root
