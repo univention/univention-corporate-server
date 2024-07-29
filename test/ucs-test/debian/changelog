@@ -3,7 +3,7 @@ ucs-test (12.0.127) unstable; urgency=medium
   * Bug #57465: Extend 508test_filter_ignore.py to also test groups,
     computers, containers
 
- -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 26 Jul 2024 10:58:19 +0200
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 29 Jul 2024 10:28:19 +0200
 
 ucs-test (12.0.126) unstable; urgency=medium
 
