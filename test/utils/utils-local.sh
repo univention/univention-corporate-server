@@ -109,6 +109,7 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'/var/log/univention/updater.log'
 		'/var/log/univention/server_password_change.log'
 		'/var/lib/univention-directory-replication/failed.ldif'
+		'/var/log/univention/sync-memberuid.log'
 	)
 	local FILE rc=0
 	for FILE in "${FILES[@]}"; do

@@ -8,6 +8,7 @@
 ## timeout: 0
 
 import subprocess
+from typing import List
 
 import pytest
 
@@ -34,6 +35,12 @@ def inconsistent_membership(udm, lo):
     return ret
 
 
+def run_sync_memberuid(args: List[str] = []):
+    args = [TOOL_PATH] + args + ['-d', '4']
+    print(f"running 'univention-sync-memberuid' with args {args[1:]}")
+    subprocess.run(args, check=True)
+
+
 def assert_memberUid_is_modified(lo, group_dn, user_name):
     result = lo.search(base=group_dn, scope="base")
     assert result[0][1]['memberUid'][0].decode('utf-8') == f"{user_name}+MODIFIED"
@@ -49,7 +56,7 @@ def test_inconsistent_membership(lo, inconsistent_membership):
     _, user_name = inconsistent_membership['user']
 
     assert_memberUid_is_modified(lo, group_dn, user_name)
-    subprocess.run(TOOL_PATH, check=True)
+    run_sync_memberuid()
     assert_memberUid_is_correct(lo, group_dn, user_name)
 
 
@@ -61,7 +68,7 @@ def test_exclude_groups(lo, inconsistent_membership):
     assert_memberUid_is_modified(lo, group_dn1, user_name)
     assert_memberUid_is_modified(lo, group_dn2, user_name)
 
-    subprocess.run([TOOL_PATH, '-x', group_name2], check=True)
+    run_sync_memberuid(['-x', group_name2])
 
     assert_memberUid_is_correct(lo, group_dn1, user_name)
     assert_memberUid_is_modified(lo, group_dn2, user_name)
@@ -75,7 +82,7 @@ def test_limit_to_group(lo, inconsistent_membership):
     assert_memberUid_is_modified(lo, group_dn1, user_name)
     assert_memberUid_is_modified(lo, group_dn2, user_name)
 
-    subprocess.run([TOOL_PATH, '-g', group_name1], check=True)
+    run_sync_memberuid(['-g', group_name1])
 
     assert_memberUid_is_correct(lo, group_dn1, user_name)
     assert_memberUid_is_modified(lo, group_dn2, user_name)
@@ -104,7 +111,7 @@ def test_fix_multiple_groups_and_users(udm, lo):
     modify_memberUid(groups[4], users[3])
     modify_memberUid(groups[0], users[2])
     modify_memberUid(groups[1], users[3])
-    subprocess.run(TOOL_PATH, check=True)
+    run_sync_memberuid()
 
     for group in groups:
         result = lo.search(base=group_dn, scope="base")[0]
