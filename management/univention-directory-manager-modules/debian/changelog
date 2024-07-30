@@ -1,3 +1,10 @@
+univention-directory-manager-modules (17.0.15) unstable; urgency=medium
+
+  * Bug #57439: in univention-sync-memberuid, catch uexceptions instead
+    of LDAP exceptions
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 30 Jul 2024 09:19:36 +0200
+
 univention-directory-manager-modules (17.0.14) unstable; urgency=medium
 
   * Bug #57439: Repair and modernize univention-sync-memberuid
