@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: krb5
+fix: 1.15-1+deb9u6
+desc: |
+ This update addresses the following issues:
+ 1.15-1+deb9u6 (Mon, 29 Jul 2024 10:22:53 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2024-26458: Memory leak in xmt_rmtcallres()
+ * CVE-2024-26461: Memory leak in gss_krb5int_make_seal_token_v3()
+ * CVE-2024-37370: GSS wrap token Extra Count field manipulation
+ * CVE-2024-37371: Invalid GSS memory reads with manipulated tokens
+bug: [57481]
+cve:
+- CVE-2024-26458
+- CVE-2024-26461
+- CVE-2024-37370
+- CVE-2024-37371
