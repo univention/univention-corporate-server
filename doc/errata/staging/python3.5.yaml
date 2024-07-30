@@ -1,0 +1,24 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: python3.5
+fix: 3.5.3-1+deb9u10
+desc: |
+ This update addresses the following issues:
+
+ Debian update 3.5.3-1+deb9u10
+ 3.5.3-1+deb9u10 (Mon, 15 Jul 2024 13:01:25 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2024-0397: Race condition in ssl.SSLContext
+ * CVE-2024-4032: Incorrect information about private addresses in the
+   ipaddress module
+ * CVE-2024-5642: NPN buffer overread when using empty list in
+   SSLContext.set_npn_protocols()
+ * Fix the autopkgtest.
+ * Fix build test failures and make them fatal.
+bug: [57479]
+cve:
+- CVE-2024-0397
+- CVE-2024-4032
+- CVE-2024-5642
