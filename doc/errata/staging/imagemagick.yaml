@@ -6,9 +6,8 @@ src: imagemagick
 fix: 8:6.9.10.23+dfsg-2.1+deb10u9
 desc: |
  This update addresses the following issue:
- 8:6.9.10.23+dfsg-2.1+deb10u9 (Tue, 23 Jul 2024 14:12:43 +0000)
- * Fix a possible regression in CVE-2023-34151. Compute correctly bounds.width
-   in pattern opertor.
+ * Undefined behavior when casting double to size_t in svg, mvg and other
+   formats. (CVE-2023-34151)
 bug: [57478]
 cve:
 - CVE-2023-34151
