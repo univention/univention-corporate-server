@@ -1,0 +1,19 @@
+product: ucs
+release: "5.0"
+version: [7, 8]
+scope: ucs_5.0-0-errata5.0-8
+src: python3.7
+fix: 3.7.3-2+deb10u8
+desc: |
+ This update addresses the following issues:
+ 3.7.3-2+deb10u8 (Fri, 19 Jul 2024 19:25:16 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2024-0397: Race condition in ssl.SSLContext
+ * CVE-2024-4032: Incorrect information about private addresses in the
+   ipaddress module
+ * Fix the autopkgtest.
+ * Fix build test failures and make them fatal.
+bug: [57477]
+cve:
+- CVE-2024-0397
+- CVE-2024-4032
