@@ -43,8 +43,6 @@ import sys
 from argparse import ArgumentParser
 from logging import getLogger
 
-import ldap
-
 import univention.admin.filter
 import univention.admin.uldap
 import univention.logging
@@ -116,7 +114,7 @@ def process_groups(
             uniqueMember = uniqueMember.decode('utf-8')
             try:
                 result = lo.search(base=uniqueMember, scope='base')
-            except ldap.NO_SUCH_OBJECT as ex:
+            except univention.admin.uexceptions.noObject as ex:
                 log.warning('searching %s failed: %s', uniqueMember, ex)
                 print('WARNING: DN %s not found' % uniqueMember, file=sys.stderr)
                 continue
@@ -139,8 +137,8 @@ def process_groups(
             add = list(new - old)
             if add:
                 try:
-                    lo.modify(grp_dn, [('memberUid', '', add)], exceptions=True)
-                except ldap.LDAPError as ex:
+                    lo.modify(grp_dn, [('memberUid', '', add)])
+                except univention.admin.uexceptions.ldapError as ex:
                     log.error('adding memberUid entries failed: %s', ex)
                     if not cont:
                         raise ConsistencyError()
@@ -148,7 +146,7 @@ def process_groups(
             if remove:
                 try:
                     lo.modify(grp_dn, [('memberUid', remove, '')], exceptions=True)
-                except ldap.LDAPError as ex:
+                except univention.admin.uexceptions.ldapError as ex:
                     log.error('removing memberUid entries failed: %s', ex)
                     if not cont:
                         raise ConsistencyError()
