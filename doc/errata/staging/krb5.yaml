@@ -1,0 +1,20 @@
+product: ucs
+release: "5.0"
+version: [7, 8]
+scope: ucs_5.0-0-errata5.0-8
+src: krb5
+fix: 1.17-3+deb10u7
+desc: |
+ This update addresses the following issues:
+ 1.17-3+deb10u7 (Mon, 29 Jul 2024 09:34:11 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2024-26458: Memory leak in xmt_rmtcallres()
+ * CVE-2024-26461: Memory leak in gss_krb5int_make_seal_token_v3()
+ * CVE-2024-37370: GSS wrap token Extra Count field manipulation
+ * CVE-2024-37371: Invalid GSS memory reads with manipulated tokens
+bug: [57476]
+cve:
+- CVE-2024-26458
+- CVE-2024-26461
+- CVE-2024-37370
+- CVE-2024-37371
