@@ -6,17 +6,12 @@ src: python3.5
 fix: 3.5.3-1+deb9u10
 desc: |
  This update addresses the following issues:
-
- Debian update 3.5.3-1+deb9u10
- 3.5.3-1+deb9u10 (Mon, 15 Jul 2024 13:01:25 +0300)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2024-0397: Race condition in ssl.SSLContext
- * CVE-2024-4032: Incorrect information about private addresses in the
-   ipaddress module
- * CVE-2024-5642: NPN buffer overread when using empty list in
-   SSLContext.set_npn_protocols()
- * Fix the autopkgtest.
- * Fix build test failures and make them fatal.
+ * A memory race condition in the `ssl.SSLContext` methods
+   `cert_store_stats()` and `get_ca_certs()`. (CVE-2024-0397)
+ * Incorrect information about private addresses in the `ipaddress`
+   module. (CVE-2024-4032)
+ * `NPN` buffer overread when using empty list in
+   `SSLContext.set_npn_protocols()`. (CVE-2024-5642)
 bug: [57479]
 cve:
 - CVE-2024-0397
