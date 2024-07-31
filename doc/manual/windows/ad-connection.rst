@@ -774,52 +774,55 @@ Use the following |UCSUCRV|:
 Priority of allow and ignore rules
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If the result of a rule is that the object has to be ignored, the processing
-of the rules stops and the object is not synchronized. If the result of a rule
-is the object is not ignored the next rule is processed or, in case of the
-last rule, the object is synchronized.
+This section describes the processing order for the previously documented UCR variable settings for
+selective synchronization.
 
-The rules are processed for each object in the following order:
+The :program:`Active Directory Connection` processes the rules
+for allow and ignore of the previously described variables in a defined order.
+Depending on the evaluation result, the connector behaves the following way:
+
+* If a rule leads to the result that the connector has to ignore an object,
+  the rule processing stops and the connector doesn't synchronize the object.
+
+* If a rule leads to the result that the connector doesn't ignore an object,
+  the connector evaluates the next rule.
+  If the rule was the last rule and there's no next rule,
+  the connector synchronizes the object.
+
+The connector evaluates the rules for each object in the following order:
 
 1. **allow subtree**
 
-   no match: no synchronization, stop
-
-   match: continue
+   :No match: No synchronization. Stop.
+   :Match: Continue.
 
 2. **allow filter**
 
-   no match: no synchronization, stop
-
-   match: continue
+   :No match: No synchronization. Stop.
+   :Match: Continue.
 
 3. **ignore subtree**
 
-   no match: continue
+   :No match: Continue.
+   :Match: No synchronization. Stop.
 
-   match: no synchronization, stop
+4. **ignore filter**, including ``ignorelist``
 
-4. **ignore filter** (including ``ignorelist``)
-
-   no match: continue
-
-   match: no synchronization, stop
+   :No match: Continue.
+   :Match: No synchronization. Stop.
 
 5. **end of rules**
 
-   synchronize object
+   Synchronize object.
 
 .. _ad-connector-details-on-preconfigured-synchronization:
 
 Details on preconfigured synchronization
 ----------------------------------------
 
-.. TODO: do we need to docuemnt this?
-
-By default some LDAP subtrees are exempted from the synchronization. You can
-find the list of ignored subtrees in
-:file:`/var/log/univention/connector-ad-mapping.log` under the *ignore_subtree*
-setting for each object type.
+By default, the :program:`Active Directory Connection` exempts some LDAP subtrees from the synchronization.
+You find the list of ignored subtrees in the :file:`/var/log/univention/connector-ad-mapping.log` file
+at the *ignore_subtree* setting for each object type.
 
 .. _ad-connector-containers-and-ous:
 
