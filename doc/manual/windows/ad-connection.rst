@@ -708,6 +708,8 @@ Ignore objects by LDAP filter
 
 To except objects from the synchronization, you can add their name to the following |UCSUCRVs|:
 
+After changing these settings, you need to restart the :program:`Active Directory Connection`.
+
 .. envvar:: connector/ad/mapping/{type}/ignorelist
 
    The connector **doesn't** synchronize the objects that this variable defines as values.
