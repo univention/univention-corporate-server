@@ -5,6 +5,8 @@
 ## - univention-ad-connector
 ## bugs:
 ##  - 55150
+## tags:
+##  - skip_admember
 
 import pytest
 from ldap.dn import dn2str, str2dn
