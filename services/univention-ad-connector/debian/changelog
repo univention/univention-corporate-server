@@ -1,4 +1,4 @@
-univention-ad-connector (14.0.19-8) unstable; urgency=medium
+univention-ad-connector (14.0.19-9) unstable; urgency=medium
 
   * Bug #57394: add connector/ad/mapping/{object type}/ignorefilter.
 
