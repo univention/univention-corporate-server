@@ -1,3 +1,9 @@
+ucs-test (12.0.129) unstable; urgency=medium
+
+  * Bug #57320: Add test for all documented clients for keycloak migration
+
+ -- Felix Botner <botner@univention.de>  Wed, 31 Jul 2024 15:05:39 +0200
+
 ucs-test (12.0.128) unstable; urgency=medium
 
   * Bug #57465: Extend 508test_filter_ignore.py to also test groups,
