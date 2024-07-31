@@ -10,3 +10,6 @@ desc: |
    has been fixed. The script now also supports limiting operation to
    certain groups, or excluding certain groups.
 bug: [57439]
+erratum: 1092
+announced: 2024-07-31
+support: core
