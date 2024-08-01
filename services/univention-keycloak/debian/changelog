@@ -1,6 +1,6 @@
 univention-keycloak (3.0.12) unstable; urgency=medium
 
-  * Bug #00000: Added new options for OIDC client creation
+  * Bug #57492: Added new options for OIDC client creation
 
  -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Wed, 24 Jul 2024 10:50:42 +0200
 
