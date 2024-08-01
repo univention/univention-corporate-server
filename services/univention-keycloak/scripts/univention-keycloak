@@ -1742,8 +1742,9 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_oidc_parser.add_argument("--admin-url", default="", help="URL for the admin url field in the client, this points to the admin interface of the client.")
     create_oidc_parser.add_argument("--audience-to-map", default="", help="Option to configure the audience that will be use if --add-audience-mapper is used and you need a different one from the default value.")
     create_oidc_parser.add_argument("--add-ics-mappers", action='store_true', default=False, help="Removes all the default mappers and creates the one needed for the Intercom Service client.")
-    create_oidc_parser.add_argument("--add-guardian-management-mappers", action='store_true', default=False, help="Add the mappers needed for the guardian management API.")
-    create_oidc_parser.add_argument("--add-guardian-audience-mapper", action='store_true', default=False, help="Add the guardian audience mapper. This shouldn't be use with --add-guardian-management-mappers")
+    guardian_mapper_group = create_oidc_parser.add_mutually_exclusive_group()
+    guardian_mapper_group.add_argument("--add-guardian-management-mappers", action='store_true', default=False, help="Add the mappers needed for the guardian management API.")
+    guardian_mapper_group.add_argument("--add-guardian-audience-mapper", action='store_true', default=False, help="Add the guardian audience mapper. This shouldn't be use with --add-guardian-management-mappers")
     create_oidc_parser.add_argument("--add-dn-mapper", action='store_true', default=False, help="Add the dn mapped into the token.")
     create_oidc_parser.set_defaults(func=create_oidc_client)
 
