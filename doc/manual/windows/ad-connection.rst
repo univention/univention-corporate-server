@@ -551,8 +551,6 @@ Log files
 Selective synchronization
 -------------------------
 
-.. TODO: do we define envvar's here or in the appendix?
-
 You can configure the :program:`Active Directory Connection` to synchronize
 only a specific selection of source objects.
 You can select the source objects according to the following criteria,
@@ -675,8 +673,6 @@ After changing these settings you need to restart the :program:`Active Directory
    If you want to turn off the synchronization for an object,
    you must make the change on both sides, UCS and Active Directory.
 
-   .. TODO maybe an example?
-
 .. note::
 
    However, this filter doesn't support the full LDAP filter syntax.
@@ -746,6 +742,16 @@ After changing these settings, you need to restart the :program:`Active Director
    .. code-block:: console
 
       $ ucr set connector/ad/mapping/user/ignorelist="Administrator,krbtgt,root,pcpatch,mmustermann"
+
+.. important::
+
+   Some of the ``ignorelist`` settings have default values that are important
+   for the functionality of the connector. Make sure not to overwrite these
+   settings. You can check the current value of an |UCSUCRV| with
+
+   .. code-block:: console
+
+      $ ucr get connector/ad/mapping/user/ignorelist
 
 For more flexibility you can also set an LDAP filter to ignore objects.
 Use the following |UCSUCRV|:
