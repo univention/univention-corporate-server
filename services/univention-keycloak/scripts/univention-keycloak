@@ -1392,6 +1392,12 @@ def create_oidc_client(opt):
 
     kc_admin.create_client(payload=client_payload_oidc, skip_exists=True)
 
+    # seems that backchannel.logout.revoke.offline.tokens can't be set during create
+    if opt.backchannel_logout_revoke_session:
+        client_id = kc_admin.get_client_id(opt.client_id)
+        payload = {'attributes': {'backchannel.logout.revoke.offline.tokens': True}}
+        kc_admin.update_client(client_id, payload)
+
 
 def modify_client_scope_mapper(opt):
     # log into default realm in case UCS realm doesn't exist yet
