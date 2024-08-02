@@ -11,7 +11,7 @@
 
 from multiprocessing import Process
 from queue import Empty, Full
-from subprocess import PIPE, Popen
+from subprocess import PIPE, Popen, check_call
 from time import sleep
 
 import psutil
@@ -90,20 +90,24 @@ def stop_slapd():
     Stops the slapd and waits for it to be stopped.
     Looks for slapd in processes and waits if found extra 20 seconds.
     """
-    ret_code = Popen(('systemctl', 'stop', 'slapd')).wait()
-    if ret_code != 0:
-        fail("Expecting the return code to be 0, while it is: %s" % ret_code)
+    check_call(['systemctl', 'stop', 'slapd'])
 
     # look for process and wait up to 20 seconds for its termination:
     for proc in psutil.process_iter():
         try:
             if 'slapd' in proc.name() and proc.ppid() == 1:
-                print("\nThe 'slapd' is still running, waiting...")
+                print("\nThe 'slapd' is still running, waiting ...")
                 try:
                     proc.wait(20)
                     print("slapd terminated.")
                 except psutil.TimeoutExpired:
-                    fail("\nFailed to wait for slapd to terminate.\n")
+                    print("\nThe 'slapd' is still running, killing ...")
+                    proc.kill()
+                    try:
+                        proc.wait(20)
+                        print("slapd terminated.")
+                    except psutil.TimeoutExpired:
+                        fail("\nFailed to wait for slapd to terminate.\n")
         except psutil.NoSuchProcess:
             pass
 
