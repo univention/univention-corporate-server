@@ -1,0 +1,36 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: openjdk-8
+fix: 8u422-b05-1~deb9u1
+desc: |
+ This update addresses the following issues:
+ 8u422-b05-1~deb9u1 (Sat, 27 Jul 2024 19:08:40 +0200)
+ * Backport to stretch.
+ * Re-add default-jre-headless build-dep, needed by jtreg for the test suite.
+ 8u422-b05-1 (Sat, 20 Jul 2024 01:34:18 +0200)
+ * New upstream release
+ * CVEs - CVE-2024-21131 - CVE-2024-21138 - CVE-2024-21140 - CVE-2024-21144 -
+   CVE-2024-21145 - CVE-2024-21147
+ * Security fixes - JDK-8314794: Improve UTF8 String supports - JDK-8319859:
+   Better symbol storage - JDK-8320097: Improve Image transformations -
+   JDK-8320548: Improved loop handling - JDK-8322106: Enhance Pack 200 loading
+   - JDK-8323231: Improve array management - JDK-8323390: Enhance mask blit
+   functionality - JDK-8324559: Improve 2D image handling - JDK-8325600:
+   Better symbol storage
+ * Other changes see
+   https://mail.openjdk.org/pipermail/jdk8u-dev/2024-July/018904.html
+ * Re-enable tests on noble/i386, the prerequisites were added back with no
+   coordination; disable on sid/{m68k,sh4} for same reason
+ * Overhaul way various control files are (re‑)generated
+ * Avoid default-jre being pulled in by B-D-ing on jdk-!headless again
+ * Upload sponsored by QVEST ⮡ dıgıtal
+bug: [57498]
+cve:
+- CVE-2024-21131
+- CVE-2024-21138
+- CVE-2024-21140
+- CVE-2024-21144
+- CVE-2024-21145
+- CVE-2024-21147
