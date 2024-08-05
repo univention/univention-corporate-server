@@ -71,6 +71,7 @@ udm_verify_multi_value_udm_attribute_contains_ignore_case "groups" \
 
 section "Re-Add user to group"
 
+ad_wait_for_synchronization; fail_bool 0 110
 ad_append_to_attribute "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
 

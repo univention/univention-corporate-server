@@ -173,6 +173,16 @@ function ad_set_sync_mode () {
 	fi
 }
 
+function wait_for_connector_to_be_inactive() {
+	python3 -c "
+import sys
+sys.path.append('$TESTLIBPATH')
+import s4connector
+s4connector.wait_for_connector_to_be_inactive()
+"
+	return $?
+}
+
 function ad_exists () {
 	local dn="$1"
 	local configbase="${2:-connector}"
