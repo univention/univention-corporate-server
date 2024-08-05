@@ -136,7 +136,7 @@ def test_no_leftovers_after_delete_in_ucs():
                 fail("not all users (uid=%s*) have been removed, but should be" % name)
             # we store (ucs) added objects in 'UCS added' and remove the entry during
             # remove to samba, check if the table is clean
-            time.sleep(5)
+            time.sleep(41)
             if not user_objects.check_UCS_added_table_is_clean():
                 fail("some uuid were not removed from s4internal.sqlite->UCS added")
             # check if we really hit the problem (by checking for a specific log message)

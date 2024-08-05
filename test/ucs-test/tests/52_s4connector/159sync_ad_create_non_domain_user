@@ -62,6 +62,7 @@ udm_verify_udm_attribute "primaryGroup" \
 ad_verify_user_primary_group_attribute "$AD_GROUP_DN" "$AD_USER_DN"; fail_bool 0 110
 
 section "Clean up"
+ad_wait_for_synchronization; fail_bool 0 110
 
 ad_delete "$AD_USER_DN" || fail_test 110
 ad_delete "$AD_GROUP_DN" || fail_test 110
