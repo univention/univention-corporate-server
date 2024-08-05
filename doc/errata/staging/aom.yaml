@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [7, 8]
+scope: ucs_5.0-0-errata5.0-8
+src: aom
+fix: 1.0.0-3+deb10u2
+desc: |
+ This update addresses the following issue:
+ 1.0.0-3+deb10u2 (Wed, 31 Jul 2024 22:12:43 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2024-5171: Integer overflows
+bug: [57497]
+cve:
+- CVE-2024-5171
