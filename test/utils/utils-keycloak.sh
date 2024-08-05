@@ -91,6 +91,34 @@ keycloak_saml_idp_setup () {
     fi
 }
 
+keycloak_umc_oidc_idp_setup() {
+	# FIXME
+	local join_user join_pwdfile
+	join_pwdfile="/tmp/pwdfile"
+	join_user="Administrator"
+	echo -n "univention" > "$join_pwdfile"
+
+	ucr set umc/web/oidc/enabled=true
+	univention-run-join-scripts -dcaccount "$join_user" -dcpwd "$join_pwdfile" --force --run-scripts 92univention-management-console-web-server
+	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
+		udm portals/entry create "$@" --ignore_exists \
+			--position "cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)" \
+			--set name=login-oidc \
+			--append displayName="\"en_US\" \"OIDC Login\"" \
+			--append displayName="\"de_DE\" \"OIDC Login\"" \
+			--append description="\"en_US\" \"Log in to the portal\"" \
+			--append description="\"de_DE\" \"Am Portal anmelden\"" \
+			--append link='"en_US" "/univention/oidc/?location=/univention/portal/"' \
+			--set anonymous=TRUE \
+			--set activated=TRUE \
+			--set linkTarget=samewindow \
+			--set icon="$(base64 /usr/share/univention-portal/login.svg)"
+		udm  portals/category modify "$@" --ignore_exists \
+			--dn "cn=domain-service,cn=category,cn=portals,cn=univention,$(ucr get ldap/base)"\
+			--append entries="cn=login-oidc,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)"
+	fi
+}
+
 install_self_service () {
     if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
         apt-get -y install univention-self-service-master univention-self-service
