@@ -10,10 +10,23 @@ import pytest
 import requests
 from bs4 import BeautifulSoup
 from requests_kerberos import OPTIONAL, HTTPKerberosAuth
+from utils import portal_logout
 
 
 @pytest.mark.parametrize('protocol', ['saml', 'oidc'])
-def test_kerberos_authentication(ucr, protocol):
+def test_kerberos_authentication(portal_login_via_keycloak, ucr, protocol, portal_config):
+
+    if protocol == 'oidc':
+        # login with playwright to get rid of the oidc grant
+        # privileges dialog, i don't get it to work with requests
+        #   soup = BeautifulSoup(page.content, features='lxml')
+        #   uri = soup.find('form', {'class': 'form-actions'}).attrs['action']
+        #   code = soup.find('input', {'name': 'code'}).attrs['value']
+        #   data = {'code': code, 'accept': 'Yes'}
+        #   page = session.post(f'https://ucs-sso-ng.ucs.test/{uri}', data=data, verify='/etc/univention/ssl/ucsCA/CAcert.pem', headers=headers)
+        page = portal_login_via_keycloak('Administrator', 'univention', protocol='oidc')
+        portal_logout(page, portal_config)
+        page.close()
 
     ucr.handler_set(['kerberos/defaults/rdns=false'])
     subprocess.call(['kdestroy'])
