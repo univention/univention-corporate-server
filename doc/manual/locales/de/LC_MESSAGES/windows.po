@@ -1390,7 +1390,7 @@ msgid ""
 "the connector also deletes the corresponding object on the other side."
 msgstr ""
 "Für bidirektionale Synchronisation muss der Filter sowohl auf das UCS-Objekt"
-"als auch auf das AD-Objekt zutreffen. Wird ein dem Filter "
+" als auch auf das AD-Objekt zutreffen. Wird ein dem Filter "
 "entsprechendes Objekt gelöscht, löscht der Connector auch das "
 "entsprechende Objekt auf der anderen Seite."
 
@@ -1631,7 +1631,7 @@ msgid ""
 " rules for the previously described variables in a defined order. "
 "Depending on the evaluation result, the connector behaves as follows:"
 msgstr ""
-"Der :program:`AD Connector` arbeitet die Allow- und Ignore-Regeln für die "
+"Der :program:`AD Connector` arbeitet die ``Allow``- und ``Ignore``-Regeln für die "
 "zuvor beschriebenen Variablen in einer festgelegten Reihenfolge ab. Abhängig "
 "vom Auswertungsergebnis verhält sich der Connector wie folgt:"
 
@@ -1680,7 +1680,7 @@ msgstr "Keine Übereinstimmung"
 #: ../../windows/ad-connection.rst:814 ../../windows/ad-connection.rst:820
 #: ../../windows/ad-connection.rst:827 ../../windows/ad-connection.rst:833
 msgid "No synchronization. Stop."
-msgstr "Keine Synchronisation. Stop."
+msgstr "Keine Synchronisation. Abarbeitung der Regeln beenden."
 
 #: ../../windows/ad-connection.rst
 msgid "Match"
@@ -1742,6 +1742,10 @@ msgid ""
 "subtrees in the :file:`/var/log/univention/connector-ad-mapping.log` file"
 " under the *ignore_subtree* setting for each object type."
 msgstr ""
+"Standardmäßig schließt die :program:`Active Directory Connection` einige "
+"LDAP-Teilbäume von der Synchronisierung aus. Die Liste der ignorierten Teilbäume "
+"finden Sie in der Datei :file:`/var/log/univention/connector-ad-mapping.log` "
+"unter der Einstellung *ignore_subtree* für jeden Objekttyp."
 
 #: ../../windows/ad-connection.rst:851
 msgid "Containers and organizational units"
