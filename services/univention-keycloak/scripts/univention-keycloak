@@ -1741,7 +1741,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_oidc_parser.add_argument("--web-origins", action="append", default=[], help="Allowed CORS Origins.")
     create_oidc_parser.add_argument("--admin-url", default="", help="URL for the admin url field in the client, this points to the admin interface of the client.")
     create_oidc_parser.add_argument("--audience-to-map", default="", help="Option to configure the audience that will be used if --add-audience-mapper is used and you need a different one from the default value.")
-    create_oidc_parser.add_argument("--add-ics-mappers", action='store_true', default=False, help="Removes all the default mappers and creates the one needed for the Intercom Service client.")
+    create_oidc_parser.add_argument("--add-ics-mappers", action='store_true', default=False, help="Creates the mappers needed for the Intercom Service client instead of all the default mappers.")
     guardian_mapper_group = create_oidc_parser.add_mutually_exclusive_group()
     guardian_mapper_group.add_argument("--add-guardian-management-mappers", action='store_true', default=False, help="Add the mappers needed for the guardian management API. This cannot be used together with --add-guardian-audience-mapper.")
     guardian_mapper_group.add_argument("--add-guardian-audience-mapper", action='store_true', default=False, help="Add the guardian audience mapper. This cannot be used together with --add-guardian-management-mappers.")
