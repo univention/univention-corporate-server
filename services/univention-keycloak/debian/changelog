@@ -1,3 +1,9 @@
+univention-keycloak (1.0.12-5) unstable; urgency=medium
+
+  * Bug #57452: fix create_legacy_authentication_flow for keycloak v25
+
+ -- Felix Botner <botner@univention.de>  Tue, 16 Jul 2024 15:09:22 +0200
+
 univention-keycloak (1.0.12-4) unstable; urgency=medium
 
   * Bug #57420: Instead of just checking if there already is an existing

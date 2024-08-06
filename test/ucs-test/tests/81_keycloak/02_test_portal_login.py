@@ -133,17 +133,9 @@ def test_login_not_possible_with_deleted_user(keycloak_config, portal_login_via_
     assert not sessions
 
     udm.remove_user(username)
+
     # user has been deleted, login should be denied
-    #
-    # see https://forge.univention.org/bugzilla/show_bug.cgi?id=55903
-    # we can't logon with that deleted user, just check for that
-    # generic error message
-    # if this bug is fixed, just
-    #   assert portal_login_via_keycloak(username, "univention", fails_with=keycloak_config.wrong_password_msg)
-    # should do it
-    page = portal_login_via_keycloak(username, 'univention', verify_login=False)
-    error = page.locator("#kc-error-message")
-    assert error.inner_text() == 'Unexpected error when handling authentication request to identity provider.'
+    assert portal_login_via_keycloak(username, 'univention', fails_with=keycloak_config.wrong_password_msg)
 
     # check that user is no longer available in keycloak
     users = keycloak_get_request(keycloak_config, 'realms/ucs/users', params={'search': username})
