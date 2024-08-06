@@ -1,4 +1,4 @@
-ucs-test (10.0.22-41) unstable; urgency=medium
+ucs-test (10.0.22-42) unstable; urgency=medium
 
   * Issue univention/ucs#2375: Increase timeouts for openstack
 

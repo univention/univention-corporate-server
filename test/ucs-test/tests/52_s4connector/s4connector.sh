@@ -98,7 +98,7 @@ function ad_wait_for_synchronization () {
 	#See /var/log/univention/${configbase}-status.log
 	#and univention-connector-list-rejected
 
-	let local synctime="2 * ($(ucr get $configbase/s4/poll/sleep) + $AD_ESTIMATED_MAX_COMPUTATION_TIME)"
+	let local synctime="5 * ($(ucr get $configbase/s4/poll/sleep) + $AD_ESTIMATED_MAX_COMPUTATION_TIME)"
 	if [ "$min_wait_time" -gt "$synctime" ]; then
 		synctime="$min_wait_time"
 	fi
