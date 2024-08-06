@@ -6,10 +6,8 @@ src: exim4
 fix: 4.89-2+deb9u13A~4.4.9.202408050906
 desc: |
  This update addresses the following issue:
- 4.89-2+deb9u13 (Mon, 29 Jul 2024 22:03:02 +0200)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2024-39929 Fix parsing of multiline RFC 2231 header filename parameter
-   in mime ACL.
+ * CVE-2024-39929: Fix parsing of multiline RFC 2231 header filename
+   parameter in mime ACL.
 bug: [57499]
 cve:
 - CVE-2024-39929
