@@ -1361,9 +1361,9 @@ msgid ""
 ":program:`AD Connector` removes the object from the target directory."
 msgstr ""
 "Wird ein Objekt von einem Teilbaum, der synchronisiert wird, in einen Tailbaum"
-"verschoben der nicht synchronisiert wird, wird das Objekt im angebunden"
-"Verzeichnisdienst gelöscht. Dies gilt für beide Richtungen, UCS nach AD und AD"
-"nach UCS."
+" verschoben der nicht synchronisiert wird, wird das Objekt im angebunden"
+" Verzeichnisdienst gelöscht. Dies gilt für beide Richtungen, UCS nach AD und AD"
+" nach UCS."
 
 #: ../../windows/ad-connection.rst:643
 msgid "Allow only objects that match an LDAP filter"
