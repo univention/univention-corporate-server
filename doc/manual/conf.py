@@ -97,6 +97,7 @@ intersphinx_mapping = {
     "uv-dev-ref": ref("developer-reference"),
     "uv-keycloak-ref": ("https://docs.software-univention.de/keycloak-app/latest", None),
     "uv-ox-connector-app": ("https://docs.software-univention.de/ox-connector-app/latest", None),
+    "uv-ext-windows": ref("ext-windows"),
 }
 
 bibtex_bibfiles = ["../bibliography.bib"]

@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-13 16:30+0200\n"
+"POT-Creation-Date: 2024-08-22 10:19+0000\n"
 "PO-Revision-Date: 2024-08-15 17:57+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -1101,9 +1101,10 @@ msgid "Additional tools / Debugging connector problems"
 msgstr "Werkzeuge / Fehlersuche"
 
 #: ../../windows/ad-connection.rst:510
+#, fuzzy
 msgid ""
-"The UCS AD Connector provides the following tools and log files for "
-"diagnosis:"
+"The :program:`Active Directory Connection` provides the following tools "
+"and log files for diagnosis:"
 msgstr ""
 "Mit dem UCS AD-Connector werden einige Tools und Logdateien "
 "bereitgestellt:"
@@ -1125,7 +1126,8 @@ msgstr ""
 " das Skript einen LDAP-Filter, die zweite Option kann eine Liste der "
 "anzuzeigenden LDAP-Attribute sein, z.B.:"
 
-#: ../../windows/ad-connection.rst:521
+#: ../../windows/ad-connection.rst:521 ../../windows/ad-connection.rst:545
+#: ../../windows/ad-connection.rst:559 ../../windows/ad-connection.rst:573
 msgid "Example:"
 msgstr "Beispiel:"
 
@@ -1157,11 +1159,144 @@ msgstr ""
 "Dieses Skript könnte eine Fehlermeldung oder eine unvollständige Ausgabe "
 "anzeigen, wenn der AD Connector in Betrieb ist."
 
+#: ../../windows/ad-connection.rst:550
+msgid ":command:`remove_ad_rejected.py`"
+msgstr ""
+
+#: ../../windows/ad-connection.rst:541
+msgid ""
+"You can use this script to remove an AD object from the AD rejected list "
+"located in the internal database file "
+":file:`/etc/univention/{connector}/internal.sqlite`"
+msgstr ""
+
 #: ../../windows/ad-connection.rst:547
+msgid ""
+"$ /usr/share/univention-ad-connector/remove_ad_rejected.py \\\n"
+"   -c connector <AD object DN>"
+msgstr ""
+
+#: ../../windows/ad-connection.rst:564
+msgid ":command:`remove_ucs_rejected.py`"
+msgstr ""
+
+#: ../../windows/ad-connection.rst:555
+msgid ""
+"You can use this script to remove an UCS directory object from the UCS "
+"rejected list located in the internal database file "
+":file:`/etc/univention/{connector}/internal.sqlite`"
+msgstr ""
+
+#: ../../windows/ad-connection.rst:561
+msgid ""
+"$ /usr/share/univention-ad-connector/remove_ucs_rejected.py \\\n"
+"   -c connector <UCS object DN>"
+msgstr ""
+
+#: ../../windows/ad-connection.rst:590
+msgid ":command:`resync_object_from_ad.py`"
+msgstr ""
+
+#: ../../windows/ad-connection.rst:569
+msgid ""
+"You can use this script to re-synchronize directory objects from AD to "
+"UCS. Use it to synchronize a single or multiple directory objects."
+msgstr ""
+
+#: ../../windows/ad-connection.rst:575
+msgid ""
+"# to re-sychronize a single object\n"
+"$ /usr/share/univention-ad-connector/resync_object_from_ad.py \\\n"
+"    -c connector <object DN>\n"
+"\n"
+"# to re-synchronize all objects matching a specific filter\n"
+"$ /usr/share/univention-ad-connector/resync_object_from_ad.py \\\n"
+"    -c connector \\\n"
+"    --filter \"(objectClass=posixAccount)\"\n"
+"\n"
+"# to re-synchronize all objects matching a specific base\n"
+"$ /usr/share/univention-ad-connector/resync_object_from_ad.py \\\n"
+"    -c connector \\\n"
+"    --filter \"(objectClass=posixAccount)\" \\\n"
+"    --base \"dc=example,dc=com\""
+msgstr ""
+
+#: ../../windows/ad-connection.rst:615
+msgid ":command:`resync_object_from_ucs.py`"
+msgstr ""
+
+#: ../../windows/ad-connection.rst:595
+msgid ""
+"You can use this script to re-synchronize directory objects from UCS to "
+"AD. Use it to synchronize a single or multiple directory objects."
+msgstr ""
+
+#: ../../windows/ad-connection.rst:598
+#, fuzzy
+msgid "Examples:"
+msgstr "Beispiel:"
+
+#: ../../windows/ad-connection.rst:600
+msgid ""
+"# to re-synchronize a single object\n"
+"$ /usr/share/univention-ad-connector/resync_object_from_ucs.py \\\n"
+"   -c connector <object DN>\n"
+"\n"
+"# to re-synchronize all objects matching a specific filter\n"
+"$ /usr/share/univention-ad-connector/resync_object_from_ucs.py \\\n"
+"   -c connector \\\n"
+"   --filter \"<LDAP filter>\" \\\n"
+"\n"
+"# to re-synchronize all objects matching a specific base\n"
+"$ /usr/share/univention-ad-connector/resync_object_from_ucs.py \\\n"
+"   -c connector \\\n"
+"   --filter \"<LDAP filter>\" \\\n"
+"   --base \"<base dn>\" \\"
+msgstr ""
+
+#: ../../windows/ad-connection.rst:624
+msgid ":command:`prepare-new-instance`"
+msgstr ""
+
+#: ../../windows/ad-connection.rst:620
+msgid ""
+"You can use this script to create AD connection instances. The script "
+"copies the required files and sets specific UCR variables."
+msgstr ""
+
+#: ../../windows/ad-connection.rst:623
+msgid ""
+"Alternatively, you can use this script to delete an AD connection "
+"instance. The script then internally removes the files for the instance "
+"and resets the UCR variables."
+msgstr ""
+
+#: ../../windows/ad-connection.rst:630
+msgid ":command:`well-known-sid-object-rename`"
+msgstr ""
+
+#: ../../windows/ad-connection.rst:629
+msgid ""
+"You can use this script to rename users and groups with well-known SIDs "
+"in UDM. The AD Connection uses it to rename users and groups with well-"
+"known SIDs."
+msgstr ""
+
+#: ../../windows/ad-connection.rst:636
+msgid ":command:`make-deleted-objects-readable-for-this-machine`"
+msgstr ""
+
+#: ../../windows/ad-connection.rst:635
+msgid ""
+"You can use this script to grant list and read access to ``CN=Deleted "
+"Objects`` in Active Directory."
+msgstr ""
+
+#: ../../windows/ad-connection.rst:647
 msgid "Log files"
 msgstr "Logdateien"
 
-#: ../../windows/ad-connection.rst:541
+#: ../../windows/ad-connection.rst:641
 msgid ""
 "For troubleshooting when experiencing synchronization problems, "
 "corresponding messages can be found in the following files on the UCS "
@@ -1170,19 +1305,19 @@ msgstr ""
 "Zur Fehlersuche bei Synchronisationsproblemen finden sich entsprechende "
 "Meldungen in folgenden Dateien auf dem UCS-System:"
 
-#: ../../windows/ad-connection.rst:545
+#: ../../windows/ad-connection.rst:645
 msgid ":file:`/var/log/univention/connector-ad.log`"
 msgstr ":file:`/var/log/univention/connector-ad.log`"
 
-#: ../../windows/ad-connection.rst:546
+#: ../../windows/ad-connection.rst:646
 msgid ":file:`/var/log/univention/connector-ad-status.log`"
 msgstr ":file:`/var/log/univention/connector-ad-status.log`"
 
-#: ../../windows/ad-connection.rst:552
+#: ../../windows/ad-connection.rst:652
 msgid "Selective synchronization"
 msgstr "Selektive Synchronisation"
 
-#: ../../windows/ad-connection.rst:554
+#: ../../windows/ad-connection.rst:654
 msgid ""
 "You can configure the :program:`Active Directory Connection` to "
 "synchronize only a specific selection of source objects. You can select "
@@ -1191,30 +1326,30 @@ msgid ""
 msgstr ""
 "Sie können die :program:`Active Directory Connection` so konfigurieren, "
 "dass nur eine bestimmte Auswahl von Quellobjekten synchronisiert wird. "
-"Sie können die Quellobjekte nach Kriterien auswählen, die "
-"in den folgenden Abschnitten ausführlich beschrieben werden: "
+"Sie können die Quellobjekte nach Kriterien auswählen, die in den "
+"folgenden Abschnitten ausführlich beschrieben werden: "
 
-#: ../../windows/ad-connection.rst:559
+#: ../../windows/ad-connection.rst:659
 msgid "Selecting objects by location in the LDAP subtree"
 msgstr "Auswahl von Objekten nach Standort im LDAP-Teilbaum"
 
-#: ../../windows/ad-connection.rst:560
+#: ../../windows/ad-connection.rst:660
 msgid "Selecting objects by matching an LDAP filter"
 msgstr "Auswahl von Objekten durch Übereinstimmung mit einem LDAP-Filter"
 
-#: ../../windows/ad-connection.rst:561
+#: ../../windows/ad-connection.rst:661
 msgid "Selecting all items except by location in the LDAP subtree"
 msgstr "Auswahl aller Elemente außer nach Standort im LDAP-Teilbaum"
 
-#: ../../windows/ad-connection.rst:562
+#: ../../windows/ad-connection.rst:662
 msgid "Selecting all items except by matching an LDAP filter"
 msgstr "Auswahl aller Elemente außer durch Übereinstimmung mit einem LDAP-Filter"
 
-#: ../../windows/ad-connection.rst:565
+#: ../../windows/ad-connection.rst:665
 msgid "Allow only specific LDAP subtrees"
 msgstr "Nur bestimmte LDAP-Teilbäume zulassen"
 
-#: ../../windows/ad-connection.rst:567
+#: ../../windows/ad-connection.rst:667
 msgid ""
 "To configure the connector to synchronize only specific subtrees of the "
 "LDAP structure you can use the following UCR variables:"
@@ -1223,11 +1358,11 @@ msgstr ""
 " LDAP-Struktur synchronisiert, können Sie die folgenden UCR-Variablen "
 "verwenden: "
 
-#: ../../windows/ad-connection.rst:572
+#: ../../windows/ad-connection.rst:672
 msgid "For synchronization from UCS LDAP directory to Active Directory"
 msgstr "Für die Synchronisation von UCS LDAP-Verzeichnis zu Active Directory"
 
-#: ../../windows/ad-connection.rst:574
+#: ../../windows/ad-connection.rst:674
 msgid ""
 "Use this |UCSUCRV| to define a DN from your UCS LDAP directory for the "
 "synchronization to the connected Active Directory. Then the *AD "
@@ -1244,17 +1379,17 @@ msgstr ""
 "enthalten sein und der Vergleich der DNs ist unabhängig von der Groß- und"
 " Kleinschreibung. "
 
-#: ../../windows/ad-connection.rst:582 ../../windows/ad-connection.rst:603
+#: ../../windows/ad-connection.rst:682 ../../windows/ad-connection.rst:703
 msgid "See the explanation of the ``.*`` placeholder below."
 msgstr "Siehe die Erklärung des Platzhalters ``.*`` weiter unten."
 
-#: ../../windows/ad-connection.rst:584 ../../windows/ad-connection.rst:605
-#: ../../windows/ad-connection.rst:662 ../../windows/ad-connection.rst:698
-#: ../../windows/ad-connection.rst:774
+#: ../../windows/ad-connection.rst:684 ../../windows/ad-connection.rst:705
+#: ../../windows/ad-connection.rst:762 ../../windows/ad-connection.rst:798
+#: ../../windows/ad-connection.rst:874
 msgid "For example:"
 msgstr "Zum Beispiel:"
 
-#: ../../windows/ad-connection.rst:586
+#: ../../windows/ad-connection.rst:686
 msgid ""
 "$ ucr set "
 "connector/ad/mapping/allowsubtree/school1/ucs=\"ou=school1,dc=ucs,domain\""
@@ -1268,11 +1403,11 @@ msgstr ""
 "$ ucr set "
 "connector/ad/mapping/allowsubtree/school2/ucs=\"ou=school2,dc=ucs,domain\""
 
-#: ../../windows/ad-connection.rst:593
+#: ../../windows/ad-connection.rst:693
 msgid "For synchronization from Active Directory to UCS LDAP directory"
 msgstr "Für die Synchronisation von Active Directory zum UCS Verzeichnisdienst"
 
-#: ../../windows/ad-connection.rst:595
+#: ../../windows/ad-connection.rst:695
 msgid ""
 "Use this |UCSUCRV| to define a DN from your Active Directory for the "
 "synchronization to your UCS LDAP directory. Then the *AD Connection* only"
@@ -1288,7 +1423,7 @@ msgstr ""
 "sein, und beim Vergleich der DNs wird nicht zwischen Groß- und "
 "Kleinschreibung unterschieden. "
 
-#: ../../windows/ad-connection.rst:607
+#: ../../windows/ad-connection.rst:707
 msgid ""
 "$ ucr set "
 "connector/ad/mapping/allowsubtree/school1/ad=\"ou=school1,dc=ad,domain\""
@@ -1302,11 +1437,11 @@ msgstr ""
 "$ ucr set "
 "connector/ad/mapping/allowsubtree/school2/ad=\"ou=school2,dc=ad,domain\""
 
-#: ../../windows/ad-connection.rst:616
+#: ../../windows/ad-connection.rst:716
 msgid "Placeholder ``.*``"
 msgstr "Platzhalter ``.*``"
 
-#: ../../windows/ad-connection.rst:613
+#: ../../windows/ad-connection.rst:713
 msgid ""
 "The ``.*`` part of the variable is a placeholder that you can use as an "
 "individual label for each variable. If you follow this approach, you "
@@ -1318,7 +1453,7 @@ msgstr ""
 "diesen Ansatz verfolgen, können Sie eine Reihe von UCR-Variablen der "
 "beschriebenen Typen erstellen. Jede Variable enthält nur einen DN."
 
-#: ../../windows/ad-connection.rst:618
+#: ../../windows/ad-connection.rst:718
 msgid ""
 "For each LDAP subtree that you want to allow for synchronization, you "
 "have to configure a separate |UCSUCRV|."
@@ -1326,7 +1461,7 @@ msgstr ""
 "Für jeden LDAP-Teilbaum, den Sie für die Synchronisierung zulassen "
 "möchten, müssen Sie eine separate |UCSUCRV| konfigurieren. "
 
-#: ../../windows/ad-connection.rst:621
+#: ../../windows/ad-connection.rst:721
 msgid ""
 "After you have defined or changed the UCR variables, you must restart the"
 " :program:`Active Directory Connection`."
@@ -1334,7 +1469,7 @@ msgstr ""
 "Nachdem Sie die UCR-Variablen definiert oder geändert haben, müssen Sie "
 "die :program:`Active Directory Verbindung` neu starten. "
 
-#: ../../windows/ad-connection.rst:626
+#: ../../windows/ad-connection.rst:726
 msgid ""
 "The :program:`Active Directory Connection` determines the position of the"
 " target object by dynamic and static factors such as the mapping property"
@@ -1350,7 +1485,7 @@ msgstr ""
 "entsprechenden Zielobjekts kann also außerhalb der Teilbäume liegen, die "
 "den |UCSUCRV|\\ n entsprechen."
 
-#: ../../windows/ad-connection.rst:635
+#: ../../windows/ad-connection.rst:735
 msgid ""
 "If you use of the ``…/allowsubtree/.*/[ad|ucs]`` configuration and move a"
 " source object from inside a considered subtree to a position that's "
@@ -1362,114 +1497,118 @@ msgstr ""
 "ein Quellobjekt aus einem betrachteten Teilbaum an eine Position "
 "verschieben, die außerhalb des kombinierten Geltungsbereichs aller Ihrer "
 "``…/allowsubtree/.*/[ad|ucs]`` Definitionen liegt, dann entfernt die  "
-":program:`Active Directory Verbindung` das Objekt aus dem Zielverzeichnis."
+":program:`Active Directory Verbindung` das Objekt aus dem "
+"Zielverzeichnis."
 
-#: ../../windows/ad-connection.rst:641
+#: ../../windows/ad-connection.rst:741
 msgid "Allow only objects that match an LDAP filter"
 msgstr "Nur Objekte zulassen, die einem LDAP-Filter entsprechen"
 
-#: ../../windows/ad-connection.rst:643
+#: ../../windows/ad-connection.rst:743
 msgid ""
 "You can configure an LDAP filter for each type of object. "
 ":program:`Active Directory Connection` synchronizes only LDAP objects "
 "that match that filter. It ignores all other LDAP objects."
 msgstr ""
 "Sie können für jede Art von Objekt einen LDAP-Filter konfigurieren. "
-":program:`Active Directory Verbindung` synchronisiert nur LDAP-Objekte, die "
-"diesem Filter entsprechen. Alle anderen LDAP-Objekte werden ignoriert. "
+":program:`Active Directory Verbindung` synchronisiert nur LDAP-Objekte, "
+"die diesem Filter entsprechen. Alle anderen LDAP-Objekte werden "
+"ignoriert. "
 
-#: ../../windows/ad-connection.rst:647
+#: ../../windows/ad-connection.rst:747
 msgid ""
 "For bi-directional synchronization, the filter must match both, the UCS "
 "object and the AD object. If an object matching the filter is deleted, "
 "the connector also deletes the corresponding object on the other side."
 msgstr ""
 "Für die bidirektionale Synchronisierung muss der Filter sowohl mit dem "
-"UCS Objekt als auch mit dem AD-Objekt übereinstimmen. Wird ein Objekt, das mit "
-"dem Filter übereinstimmt, gelöscht, löscht der Connector auch das entsprechende "
-"Objekt auf der anderen Seite."
+"UCS Objekt als auch mit dem AD-Objekt übereinstimmen. Wird ein Objekt, "
+"das mit dem Filter übereinstimmt, gelöscht, löscht der Connector auch das"
+" entsprechende Objekt auf der anderen Seite."
 
-#: ../../windows/ad-connection.rst:653
+#: ../../windows/ad-connection.rst:753
 msgid ""
 "The connector only synchronizes those objects with ``{type}`` object type"
 " that match this LDAP filter. ``{type}`` can be one of the following "
 "values:"
 msgstr ""
-"Der Connector synchronisiert nur die Objekte mit dem Objekttyp ``{type}``, die "
-"diesem LDAP-Filter entsprechen. ``{type}`` kann einer der folgenden Werte sein: "
+"Der Connector synchronisiert nur die Objekte mit dem Objekttyp "
+"``{type}``, die diesem LDAP-Filter entsprechen. ``{type}`` kann einer der"
+" folgenden Werte sein: "
 
-#: ../../windows/ad-connection.rst:656 ../../windows/ad-connection.rst:728
-#: ../../windows/ad-connection.rst:768
+#: ../../windows/ad-connection.rst:756 ../../windows/ad-connection.rst:828
+#: ../../windows/ad-connection.rst:868
 msgid "``user``"
 msgstr "``user``"
 
-#: ../../windows/ad-connection.rst:657 ../../windows/ad-connection.rst:731
-#: ../../windows/ad-connection.rst:769
+#: ../../windows/ad-connection.rst:757 ../../windows/ad-connection.rst:831
+#: ../../windows/ad-connection.rst:869
 msgid "``group``"
 msgstr "``group``"
 
-#: ../../windows/ad-connection.rst:658 ../../windows/ad-connection.rst:734
-#: ../../windows/ad-connection.rst:770
+#: ../../windows/ad-connection.rst:758 ../../windows/ad-connection.rst:834
+#: ../../windows/ad-connection.rst:870
 msgid "``container``"
 msgstr "``container``"
 
-#: ../../windows/ad-connection.rst:659 ../../windows/ad-connection.rst:737
-#: ../../windows/ad-connection.rst:738 ../../windows/ad-connection.rst:771
+#: ../../windows/ad-connection.rst:759 ../../windows/ad-connection.rst:837
+#: ../../windows/ad-connection.rst:838 ../../windows/ad-connection.rst:871
 msgid "``ou``"
 msgstr "``ou``"
 
-#: ../../windows/ad-connection.rst:660 ../../windows/ad-connection.rst:740
-#: ../../windows/ad-connection.rst:772
+#: ../../windows/ad-connection.rst:760 ../../windows/ad-connection.rst:840
+#: ../../windows/ad-connection.rst:872
 msgid "``windowscomputer``"
 msgstr "``windowscomputer``"
 
-#: ../../windows/ad-connection.rst:664
+#: ../../windows/ad-connection.rst:764
 msgid "$ ucr set connector/ad/mapping/user/allowfilter=\"(description=sync)\""
 msgstr "$ ucr set connector/ad/mapping/user/allowfilter=\"(description=sync)\""
 
-#: ../../windows/ad-connection.rst:668
+#: ../../windows/ad-connection.rst:768
 msgid ""
 "After changing these settings you must restart the :program:`Active "
 "Directory Connection`."
 msgstr ""
-"Nach dem Ändern dieser Einstellungen müssen Sie die :program:`Active Directory "
-"Verbindung` neu starten."
+"Nach dem Ändern dieser Einstellungen müssen Sie die :program:`Active "
+"Directory Verbindung` neu starten."
 
-#: ../../windows/ad-connection.rst:672 ../../windows/ad-connection.rst:782
+#: ../../windows/ad-connection.rst:772 ../../windows/ad-connection.rst:882
 msgid ""
 "However, this filter doesn't support the full LDAP filter syntax. It's "
 "always case-sensitive. You can only use the placeholder ``*`` as a single"
 " value without any other characters."
 msgstr ""
-"Dieser Filter unterstützt jedoch nicht die vollständige LDAP-Filtersyntax. Es "
-"wird immer zwischen Groß- und Kleinschreibung unterschieden. Sie können nur den "
-"Platzhalter ``*`` als Einzelwert ohne andere Zeichen verwenden."
+"Dieser Filter unterstützt jedoch nicht die vollständige LDAP-"
+"Filtersyntax. Es wird immer zwischen Groß- und Kleinschreibung "
+"unterschieden. Sie können nur den Platzhalter ``*`` als Einzelwert ohne "
+"andere Zeichen verwenden."
 
-#: ../../windows/ad-connection.rst:678
+#: ../../windows/ad-connection.rst:778
 msgid ""
 "If an object that matches the filter is changed so that the filter no "
 "longer matches, the connector **doesn't** synchronize the change. This "
 "means that the connector still applies changes from the other side to the"
 " object."
 msgstr ""
-"Wenn ein Objekt, das mit dem Filter übereinstimmt, so geändert wird, dass der "
-"Filter nicht mehr passt, **synchronisiert** der Connector keine Änderung. Das "
-"bedeutet, dass der Connector weiterhin Änderungen von der anderen Seite auf das "
-"Objekt anwendet."
+"Wenn ein Objekt, das mit dem Filter übereinstimmt, so geändert wird, dass"
+" der Filter nicht mehr passt, **synchronisiert** der Connector keine "
+"Änderung. Das bedeutet, dass der Connector weiterhin Änderungen von der "
+"anderen Seite auf das Objekt anwendet."
 
-#: ../../windows/ad-connection.rst:682
+#: ../../windows/ad-connection.rst:782
 msgid ""
 "If you want to turn off the synchronization for an object, you must make "
 "the change on both sides, UCS and Active Directory."
 msgstr ""
-"Wenn Sie die Synchronisierung für ein Objekt ausschalten wollen, müssen Sie die "
-"Änderung auf beiden Seiten, UCS und Active Directory, vornehmen."
+"Wenn Sie die Synchronisierung für ein Objekt ausschalten wollen, müssen "
+"Sie die Änderung auf beiden Seiten, UCS und Active Directory, vornehmen."
 
-#: ../../windows/ad-connection.rst:686
+#: ../../windows/ad-connection.rst:786
 msgid "Ignore objects from specific LDAP subtrees"
 msgstr "Ignorieren von Objekten aus bestimmten LDAP-Teilbäumen"
 
-#: ../../windows/ad-connection.rst:688
+#: ../../windows/ad-connection.rst:788
 msgid ""
 "To configure the connector to ignore objects from certain LDAP subtrees "
 "you can use the following |UCSUCRV|:"
@@ -1477,19 +1616,19 @@ msgstr ""
 "Um den Connector so zu konfigurieren, dass er Objekte aus bestimmten "
 "LDAP-Teilbäumen ignoriert, können Sie die folgende |UCSUCRV| verwenden:"
 
-#: ../../windows/ad-connection.rst:693
+#: ../../windows/ad-connection.rst:793
 msgid ""
 "The variable defines the locations in the directory service that the "
 "connector excludes from the synchronization. The values can contain "
 "positions in Active Directory and in the UCS LDAP directory. By default, "
 "the variable isn't set."
 msgstr ""
-"Die Variable definiert die Stellen im Verzeichnisdienst, die der Connector von "
-"der Synchronisation ausschließt. Die Werte können Positionen in Active "
-"Directory und im UCS LDAP-Verzeichnis enthalten. Standardmäßig ist die Variable "
-"nicht gesetzt."
+"Die Variable definiert die Stellen im Verzeichnisdienst, die der "
+"Connector von der Synchronisation ausschließt. Die Werte können "
+"Positionen in Active Directory und im UCS LDAP-Verzeichnis enthalten. "
+"Standardmäßig ist die Variable nicht gesetzt."
 
-#: ../../windows/ad-connection.rst:700
+#: ../../windows/ad-connection.rst:800
 msgid ""
 "$ ucr set "
 "connector/ad/mapping/ignoresubtree/ignore1=\"cn=alumni,dc=ucs,domain\"\n"
@@ -1501,27 +1640,27 @@ msgstr ""
 "$ ucr set "
 "connector/ad/mapping/ignoresubtree/ignore2=\"cn=alumni,dc=ad,domain\""
 
-#: ../../windows/ad-connection.rst:705
+#: ../../windows/ad-connection.rst:805
 msgid ""
 "After changing this setting you must restart the :program:`Active "
 "Directory Connection`."
 msgstr ""
-"Nach der Änderung dieser Einstellung müssen Sie die :program:`Active Directory "
-"Verbindung` neu starten."
+"Nach der Änderung dieser Einstellung müssen Sie die :program:`Active "
+"Directory Verbindung` neu starten."
 
-#: ../../windows/ad-connection.rst:708
+#: ../../windows/ad-connection.rst:808
 msgid "Ignore objects by LDAP filter"
 msgstr "Objekte durch LDAP-Filter ignorieren"
 
-#: ../../windows/ad-connection.rst:710
+#: ../../windows/ad-connection.rst:810
 msgid ""
 "To exclude objects from the synchronization, you can add their names to "
 "the following |UCSUCRV|:"
 msgstr ""
-"Um Objekte von der Synchronisierung auszuschließen, können Sie ihre Namen zu "
-"den folgenden |UCSUCRV| hinzufügen:"
+"Um Objekte von der Synchronisierung auszuschließen, können Sie ihre Namen"
+" zu den folgenden |UCSUCRV| hinzufügen:"
 
-#: ../../windows/ad-connection.rst:714
+#: ../../windows/ad-connection.rst:814
 msgid ""
 "The connector **doesn't** synchronize the objects that this variable "
 "defines as values. Separate multiple values by commas. For the possible "
@@ -1529,38 +1668,38 @@ msgid ""
 "type-value-mapping-tab`. The table also shows which LDAP attributes you "
 "need to consider in the filter depending on the object type."
 msgstr ""
-"Der Connector synchronisiert **keine** Objekte, die diese Variable als Werte "
-"definiert. Trennen Sie mehrere Werte durch Kommas. Für die möglichen Werte für "
-"``{type}``, siehe :numref:`ad-connector-allow-and-ignore-rules-"
-"type-value-mapping-tab`. Die Tabelle zeigt auch, welche LDAP-Attribute Sie je "
-"nach Objekttyp im Filter berücksichtigen müssen."
+"Der Connector synchronisiert **keine** Objekte, die diese Variable als "
+"Werte definiert. Trennen Sie mehrere Werte durch Kommas. Für die "
+"möglichen Werte für ``{type}``, siehe :numref:`ad-connector-allow-and-"
+"ignore-rules-type-value-mapping-tab`. Die Tabelle zeigt auch, welche "
+"LDAP-Attribute Sie je nach Objekttyp im Filter berücksichtigen müssen."
 
-#: ../../windows/ad-connection.rst:721
+#: ../../windows/ad-connection.rst:821
 msgid "Mapping for which ``{type}`` needs which LDAP attribute"
 msgstr "Zuordnung, welcher ``{type}`` welches LDAP-Attribut benötigt"
 
-#: ../../windows/ad-connection.rst:725
+#: ../../windows/ad-connection.rst:825
 msgid "``{type}``"
 msgstr "``{type}``"
 
-#: ../../windows/ad-connection.rst:726
+#: ../../windows/ad-connection.rst:826
 msgid "Value from LDAP attribute"
 msgstr "Wert aus LDAP-Attribut"
 
-#: ../../windows/ad-connection.rst:729
+#: ../../windows/ad-connection.rst:829
 msgid "``uid``"
 msgstr "``uid``"
 
-#: ../../windows/ad-connection.rst:732 ../../windows/ad-connection.rst:735
-#: ../../windows/ad-connection.rst:741
+#: ../../windows/ad-connection.rst:832 ../../windows/ad-connection.rst:835
+#: ../../windows/ad-connection.rst:841
 msgid "``cn``"
 msgstr "``cn``"
 
-#: ../../windows/ad-connection.rst:743
+#: ../../windows/ad-connection.rst:843
 msgid "For example, the ``user`` type considers the LDAP attribute ``uid``:"
 msgstr "Der Typ ``user`` berücksichtigt zum Beispiel das LDAP-Attribut ``uid``:"
 
-#: ../../windows/ad-connection.rst:745
+#: ../../windows/ad-connection.rst:845
 msgid ""
 "$ ucr set "
 "connector/ad/mapping/user/ignorelist=\"Administrator,krbtgt,root,pcpatch,mmustermann\""
@@ -1568,31 +1707,31 @@ msgstr ""
 "$ ucr set "
 "connector/ad/mapping/user/ignorelist=\"Administrator,krbtgt,root,pcpatch,mmustermann\""
 
-#: ../../windows/ad-connection.rst:751
+#: ../../windows/ad-connection.rst:851
 msgid ""
 "Some of the ``ignorelist`` settings have defaults that are important for "
 "the functionality of the connector. Make sure that you don't overwrite "
 "these settings. You can verify the current value of a |UCSUCRV| with the "
 "following command:"
 msgstr ""
-"Einige der ``ignorelist``-Einstellungen haben Voreinstellungen, die für die "
-"Funktionalität des Connector wichtig sind. Achten Sie darauf, dass Sie diese "
-"Einstellungen nicht überschreiben. Sie können den aktuellen Wert einer "
-"|UCSUCRV| mit dem folgenden Befehl überprüfen: "
+"Einige der ``ignorelist``-Einstellungen haben Voreinstellungen, die für "
+"die Funktionalität des Connector wichtig sind. Achten Sie darauf, dass "
+"Sie diese Einstellungen nicht überschreiben. Sie können den aktuellen "
+"Wert einer |UCSUCRV| mit dem folgenden Befehl überprüfen: "
 
-#: ../../windows/ad-connection.rst:756
+#: ../../windows/ad-connection.rst:856
 msgid "$ ucr get connector/ad/mapping/user/ignorelist"
 msgstr "$ ucr get connector/ad/mapping/user/ignorelist"
 
-#: ../../windows/ad-connection.rst:760
+#: ../../windows/ad-connection.rst:860
 msgid ""
 "For more flexibility you can also set an LDAP filter to ignore objects. "
 "Use the following |UCSUCRV|:"
 msgstr ""
-"Für mehr Flexibilität können Sie auch einen LDAP-Filter setzen, um Objekte zu "
-"ignorieren. Verwenden Sie die folgende |UCSUCRV|:"
+"Für mehr Flexibilität können Sie auch einen LDAP-Filter setzen, um "
+"Objekte zu ignorieren. Verwenden Sie die folgende |UCSUCRV|:"
 
-#: ../../windows/ad-connection.rst:765
+#: ../../windows/ad-connection.rst:865
 msgid ""
 "The connector **doesn't** synchronize the objects that match this LDAP "
 "filter. ``{type}`` can be have one of the following values:"
@@ -1600,23 +1739,23 @@ msgstr ""
 "Der Connector synchronisiert **keine** Objekte, die diesem LDAP-Filter "
 "entsprechen. ``{type}`` kann einen der folgenden Werte haben:"
 
-#: ../../windows/ad-connection.rst:776
+#: ../../windows/ad-connection.rst:876
 msgid "$ ucr set connector/ad/mapping/user/ignorefilter=\"(description=no sync)\""
 msgstr "$ ucr set connector/ad/mapping/user/ignorefilter=\"(description=no sync)\""
 
-#: ../../windows/ad-connection.rst:786
+#: ../../windows/ad-connection.rst:886
 msgid ""
 "After changing these settings, you must restart the :program:`Active "
 "Directory Connection`."
 msgstr ""
-"Nach dem Ändern dieser Einstellungen müssen Sie die :program:`Active Directory "
-"Verbindung` neu starten."
+"Nach dem Ändern dieser Einstellungen müssen Sie die :program:`Active "
+"Directory Verbindung` neu starten."
 
-#: ../../windows/ad-connection.rst:789
+#: ../../windows/ad-connection.rst:889
 msgid "Priority of allow and ignore rules"
 msgstr "Vorrang der Regeln"
 
-#: ../../windows/ad-connection.rst:791
+#: ../../windows/ad-connection.rst:891
 msgid ""
 "This section describes the processing order for the previously documented"
 " settings for selective synchronization."
@@ -1624,39 +1763,43 @@ msgstr ""
 "In diesem Abschnitt wird die Verarbeitungsreihenfolge für die bisher "
 "dokumentierten Einstellungen zur selektiven Synchronisation beschrieben. "
 
-#: ../../windows/ad-connection.rst:794
+#: ../../windows/ad-connection.rst:894
 msgid ""
 "The :program:`Active Directory Connection` processes the allow and ignore"
 " rules in a defined order. Depending on the evaluation result, the "
 "connector behaves as follows:"
 msgstr ""
-"Die :program:`Active Directory Verbindung` verarbeitet die Regeln für Erlauben und "
-"Ignorieren in einer definierten Reihenfolge. Abhängig vom Ergebnis der "
-"Auswertung verhält sich der Connector wie folgt: "
+"Die :program:`Active Directory Verbindung` verarbeitet die Regeln für "
+"Erlauben und Ignorieren in einer definierten Reihenfolge. Abhängig vom "
+"Ergebnis der Auswertung verhält sich der Connector wie folgt: "
 
-#: ../../windows/ad-connection.rst:797
+#: ../../windows/ad-connection.rst:897
 msgid ""
 "If a rule results in the connector ignoring an object, the connector "
 "stops processing the rule and doesn't synchronize the object."
 msgstr ""
-"Wenn eine Regel dazu führt, dass der Connector ein Objekt ignoriert, stoppt der "
-"Connector die Verarbeitung der Regel und synchronisiert kein Objekt."
+"Wenn eine Regel dazu führt, dass der Connector ein Objekt ignoriert, "
+"stoppt der Connector die Verarbeitung der Regel und synchronisiert kein "
+"Objekt."
 
-#: ../../windows/ad-connection.rst:800
+#: ../../windows/ad-connection.rst:900
 msgid ""
 "If a rule results in the connector not ignoring an object, the connector "
 "evaluates the next rule. If the rule was the last rule and there's no "
 "next rule, the connector synchronizes the object."
 msgstr ""
 "Wenn eine Regel dazu führt, dass der Connector ein Objekt verarbeitet, "
-"wertet der Connector die nächste Regel aus. Wenn die Regel die letzte Regel war "
-"und es keine nächste Regel gibt, synchronisiert der Connector das Objekt. "
+"wertet der Connector die nächste Regel aus. Wenn die Regel die letzte "
+"Regel war und es keine nächste Regel gibt, synchronisiert der Connector "
+"das Objekt. "
 
-#: ../../windows/ad-connection.rst:805
+#: ../../windows/ad-connection.rst:905
 msgid "The connector evaluates the rules for each object in the following order:"
-msgstr "Der Connector wertet die Regeln für jedes Objekt in der folgenden Reihenfolge aus:"
+msgstr ""
+"Der Connector wertet die Regeln für jedes Objekt in der folgenden "
+"Reihenfolge aus:"
 
-#: ../../windows/ad-connection.rst:807
+#: ../../windows/ad-connection.rst:907
 msgid "**Allow subtree**:"
 msgstr "**Teilbaum zulassen**:"
 
@@ -1664,7 +1807,7 @@ msgstr "**Teilbaum zulassen**:"
 msgid "UCR variables"
 msgstr "UCR Variablen"
 
-#: ../../windows/ad-connection.rst:809
+#: ../../windows/ad-connection.rst:909
 msgid ""
 ":envvar:`connector/ad/mapping/allowsubtree/.*/ucs` and "
 ":envvar:`connector/ad/mapping/allowsubtree/.*/ad`"
@@ -1676,8 +1819,8 @@ msgstr ""
 msgid "No match"
 msgstr "Keine Übereinstimmung"
 
-#: ../../windows/ad-connection.rst:810 ../../windows/ad-connection.rst:816
-#: ../../windows/ad-connection.rst:823 ../../windows/ad-connection.rst:829
+#: ../../windows/ad-connection.rst:910 ../../windows/ad-connection.rst:916
+#: ../../windows/ad-connection.rst:923 ../../windows/ad-connection.rst:929
 msgid "No synchronization. Stop."
 msgstr "Keine Synchronisation. Abarbeitung der Regeln beenden."
 
@@ -1685,12 +1828,12 @@ msgstr "Keine Synchronisation. Abarbeitung der Regeln beenden."
 msgid "Match"
 msgstr "Übereinstimmung"
 
-#: ../../windows/ad-connection.rst:811 ../../windows/ad-connection.rst:817
-#: ../../windows/ad-connection.rst:822 ../../windows/ad-connection.rst:828
+#: ../../windows/ad-connection.rst:911 ../../windows/ad-connection.rst:917
+#: ../../windows/ad-connection.rst:922 ../../windows/ad-connection.rst:928
 msgid "Continue."
 msgstr "Fortsetzen."
 
-#: ../../windows/ad-connection.rst:813
+#: ../../windows/ad-connection.rst:913
 msgid "**Allow filter**:"
 msgstr "**Filter zulassen**:"
 
@@ -1698,23 +1841,23 @@ msgstr "**Filter zulassen**:"
 msgid "UCR variable"
 msgstr "UCR Variable"
 
-#: ../../windows/ad-connection.rst:815
+#: ../../windows/ad-connection.rst:915
 msgid ":envvar:`connector/ad/mapping/{type}/allowfilter`"
 msgstr ":envvar:`connector/ad/mapping/{type}/allowfilter`"
 
-#: ../../windows/ad-connection.rst:819
+#: ../../windows/ad-connection.rst:919
 msgid "**Ignore subtree**:"
 msgstr "**Unterbaum ignorieren**:"
 
-#: ../../windows/ad-connection.rst:821
+#: ../../windows/ad-connection.rst:921
 msgid ":envvar:`connector/ad/mapping/ignoresubtree/.*`"
 msgstr ":envvar:`connector/ad/mapping/ignoresubtree/.*`"
 
-#: ../../windows/ad-connection.rst:825
+#: ../../windows/ad-connection.rst:925
 msgid "**Ignore filter**:"
 msgstr "**Filter ignorieren**:"
 
-#: ../../windows/ad-connection.rst:827
+#: ../../windows/ad-connection.rst:927
 msgid ""
 ":envvar:`connector/ad/mapping/{type}/ignorelist` and "
 ":envvar:`connector/ad/mapping/{type}/ignorefilter`"
@@ -1722,19 +1865,19 @@ msgstr ""
 ":envvar:`connector/ad/mapping/{type}/ignorelist` und "
 ":envvar:`connector/ad/mapping/{type}/ignorefilter`"
 
-#: ../../windows/ad-connection.rst:831
+#: ../../windows/ad-connection.rst:931
 msgid "**End of rules**."
 msgstr "**Ende der Regeln**."
 
-#: ../../windows/ad-connection.rst:833
+#: ../../windows/ad-connection.rst:933
 msgid "**Synchronize object**."
 msgstr "**Objekt synchronisieren**."
 
-#: ../../windows/ad-connection.rst:838
+#: ../../windows/ad-connection.rst:938
 msgid "Details on preconfigured synchronization"
 msgstr "Details zur vorkonfigurierten Synchronisation"
 
-#: ../../windows/ad-connection.rst:840
+#: ../../windows/ad-connection.rst:940
 msgid ""
 "By default, the :program:`Active Directory Connection` excludes some LDAP"
 " subtrees from the synchronization. You can find the list of ignored "
@@ -1743,15 +1886,15 @@ msgid ""
 msgstr ""
 "Standardmäßig schließt die :program:`Active Directory Verbindung` einige "
 "LDAP-Teilbäume von der Synchronisation aus. Sie finden die Liste der "
-"ignorierten Teilbäume in der Datei "
-":file:`/var/log/univention/connector-ad-mapping.log` unter der Einstellung "
-"``ignore_subtree`` für jeden Objekttyp."
+"ignorierten Teilbäume in der Datei :file:`/var/log/univention/connector-"
+"ad-mapping.log` unter der Einstellung ``ignore_subtree`` für jeden "
+"Objekttyp."
 
-#: ../../windows/ad-connection.rst:847
+#: ../../windows/ad-connection.rst:947
 msgid "Containers and organizational units"
 msgstr "Container und Organisationseinheiten"
 
-#: ../../windows/ad-connection.rst:849
+#: ../../windows/ad-connection.rst:949
 msgid ""
 "Containers and organizational units are synchronized together with their "
 "description. In addition, the ``cn=mail`` and ``cn=kerberos`` containers "
@@ -1768,12 +1911,12 @@ msgstr ""
 "Container anzulegen. AD zeigt diese im erweiterten Modus aber an "
 "(:menuselection:`Ansicht --> Erweiterte Funktionen`)."
 
-#: ../../windows/ad-connection.rst:856 ../../windows/ad-connection.rst:880
-#: ../../windows/ad-connection.rst:964
+#: ../../windows/ad-connection.rst:956 ../../windows/ad-connection.rst:980
+#: ../../windows/ad-connection.rst:1064
 msgid "Take the following particularities into account:"
 msgstr "Berücksichtigen Sie die folgenden Besonderheiten:"
 
-#: ../../windows/ad-connection.rst:858
+#: ../../windows/ad-connection.rst:958
 msgid ""
 "Containers or organizational units deleted in AD are deleted recursively "
 "in UCS, which means that any non-synchronized subordinate objects, which "
@@ -1783,11 +1926,11 @@ msgstr ""
 " rekursiv gelöscht, das bedeutet, dass nicht synchronisierte "
 "Unterobjekte, die in AD nicht zu sehen sind, ebenfalls entfernt werden."
 
-#: ../../windows/ad-connection.rst:865
+#: ../../windows/ad-connection.rst:965
 msgid "Groups"
 msgstr "Gruppen"
 
-#: ../../windows/ad-connection.rst:867
+#: ../../windows/ad-connection.rst:967
 msgid ""
 "Groups are synchronized using the group name, whereby a user's primary "
 "group is taken into account (which is only stored for the user in LDAP in"
@@ -1797,7 +1940,7 @@ msgstr ""
 " Berücksichtigung der primären Gruppe eines Benutzers statt (die unter AD"
 " nur am Benutzer im LDAP hinterlegt wird)."
 
-#: ../../windows/ad-connection.rst:870
+#: ../../windows/ad-connection.rst:970
 msgid ""
 "Group members with no opposite in the other system, e.g., due to ignore "
 "filters, are ignored (thus remain members of the group)."
@@ -1806,15 +1949,15 @@ msgstr ""
 " kein Gegenstück haben, werden ignoriert (bleiben also Mitglied der "
 "Gruppe)."
 
-#: ../../windows/ad-connection.rst:873
+#: ../../windows/ad-connection.rst:973
 msgid "The description of the group is also synchronized."
 msgstr "Zusätzlich wird die Beschreibung der Gruppe synchronisiert."
 
-#: ../../windows/ad-connection.rst:878
+#: ../../windows/ad-connection.rst:978
 msgid "Particularities"
 msgstr "Besonderheiten"
 
-#: ../../windows/ad-connection.rst:882
+#: ../../windows/ad-connection.rst:982
 msgid ""
 "The *pre Windows 2000 name* (LDAP attribute ``samAccountName``) is used "
 "in AD, which means that a group in Active Directory can appear under a "
@@ -1824,7 +1967,7 @@ msgstr ""
 "``samAccountName``) verwendet, daher kann eine Gruppe im Active Directory"
 " mit anderem Namen erscheinen als unter UCS."
 
-#: ../../windows/ad-connection.rst:886
+#: ../../windows/ad-connection.rst:986
 msgid ""
 "The connector ignores groups, which have been configured as a *Well-Known"
 " Group* under :guilabel:`Samba group type` in |UCSUDM|. There is no "
@@ -1834,7 +1977,7 @@ msgstr ""
 "Gruppentyp` als *Bekannte Gruppe* konfiguriert wurden. Eine "
 "Synchronisation von SID oder RID findet nicht statt."
 
-#: ../../windows/ad-connection.rst:890
+#: ../../windows/ad-connection.rst:990
 msgid ""
 "Groups which were configured as *Local Group* under :guilabel:`Samba "
 "group type` in |UCSUDM| are synchronized as a *global group* in the "
@@ -1844,7 +1987,7 @@ msgstr ""
 "Gruppe* konfiguriert wurden, werden vom Connector als *globale Gruppen* "
 "in das Active Directory synchronisiert."
 
-#: ../../windows/ad-connection.rst:894
+#: ../../windows/ad-connection.rst:994
 msgid ""
 "Newly created or moved groups are always saved in the same subcontainer "
 "on the opposite side. If several groups with the same name are present in"
@@ -1862,7 +2005,7 @@ msgstr ""
 "auf der anderen Seite identisch, so dass sich die DNs der Gruppen ab "
 "diesem Zeitpunkt nicht mehr unterscheiden."
 
-#: ../../windows/ad-connection.rst:901
+#: ../../windows/ad-connection.rst:1001
 msgid ""
 "Certain group names are converted using a mapping table so that, for "
 "example in a German language setup, the UCS group ``Domain Users`` is "
@@ -1879,43 +2022,43 @@ msgstr ""
 "Dazu kann die |UCSUCRV| :envvar:`connector/ad/mapping/group/language` "
 "verwendet werden."
 
-#: ../../windows/ad-connection.rst:908
+#: ../../windows/ad-connection.rst:1008
 msgid "The complete table is:"
 msgstr "Die vollständige Tabelle ist:"
 
-#: ../../windows/ad-connection.rst:914
+#: ../../windows/ad-connection.rst:1014
 msgid "*UCS group*"
 msgstr "*UCS-Gruppe*"
 
-#: ../../windows/ad-connection.rst:915
+#: ../../windows/ad-connection.rst:1015
 msgid "*AD group*"
 msgstr "*AD-Gruppe*"
 
-#: ../../windows/ad-connection.rst:917
+#: ../../windows/ad-connection.rst:1017
 msgid "``Domain Users``"
 msgstr "``Domain Users``"
 
-#: ../../windows/ad-connection.rst:918
+#: ../../windows/ad-connection.rst:1018
 msgid "``Domänen-Benutzer``"
 msgstr "``Domänen-Benutzer``"
 
-#: ../../windows/ad-connection.rst:920
+#: ../../windows/ad-connection.rst:1020
 msgid "``Domain Admins``"
 msgstr "``Domain Admins``"
 
-#: ../../windows/ad-connection.rst:921
+#: ../../windows/ad-connection.rst:1021
 msgid "``Domänen-Admins``"
 msgstr "``Domänen-Admins``"
 
-#: ../../windows/ad-connection.rst:923
+#: ../../windows/ad-connection.rst:1023
 msgid "``Windows Hosts``"
 msgstr "``Windows Hosts``"
 
-#: ../../windows/ad-connection.rst:924
+#: ../../windows/ad-connection.rst:1024
 msgid "``Domänencomputer``"
 msgstr "``Domänencomputer``"
 
-#: ../../windows/ad-connection.rst:926
+#: ../../windows/ad-connection.rst:1026
 msgid ""
 "Nested groups are represented differently in AD and UCS. In UCS, if "
 "groups are members of groups, these objects can not always be "
@@ -1930,7 +2073,7 @@ msgstr ""
 "daher aufgrund der in Active Directory vorliegenden Einschränkungen immer"
 " nur dort zugewiesen werden."
 
-#: ../../windows/ad-connection.rst:931
+#: ../../windows/ad-connection.rst:1031
 msgid ""
 "If a global group :samp:`{A}` is accepted as a member of another global "
 "group :samp:`{B}` in |UCSUDM|, this membership does not appear in Active "
@@ -1948,11 +2091,11 @@ msgstr ""
 ":program:`Windows 2008` besteht diese Einschränkung nicht mehr, dort "
 "können im Active Directory auch globale Gruppen verschachtelt werden."
 
-#: ../../windows/ad-connection.rst:941
+#: ../../windows/ad-connection.rst:1041
 msgid "Custom mappings"
 msgstr "Benutzerdefinierte Mappings"
 
-#: ../../windows/ad-connection.rst:943
+#: ../../windows/ad-connection.rst:1043
 msgid ""
 "For custom mappings, see :ref:`uv-dev-ref:ad-connection-custom-mappings` "
 "in :cite:t:`developer-reference`."
@@ -1960,11 +2103,11 @@ msgstr ""
 "Für benutzerdefinierte Mappings, siehe :ref:`uv-dev-ref:ad-connection-"
 "custom-mappings` in :cite:t:`developer-reference`."
 
-#: ../../windows/ad-connection.rst:949
+#: ../../windows/ad-connection.rst:1049
 msgid "Users"
 msgstr "Benutzer"
 
-#: ../../windows/ad-connection.rst:951
+#: ../../windows/ad-connection.rst:1051
 msgid ""
 "Users are synchronized like groups using the username or using the AD pre"
 " Windows 2000 name. The *First name*, *Last name*, *Primary group* (in so"
@@ -1987,11 +2130,11 @@ msgstr ""
 "der Mapping-Konfiguration auskommentiert, sind *Primäre Mail-Adresse* und"
 " *Telefonnummer*."
 
-#: ../../windows/ad-connection.rst:960
+#: ../../windows/ad-connection.rst:1060
 msgid "The ``root`` and ``Administrator`` users are exempted."
 msgstr "Ausgenommen werden die Benutzer ``root`` und ``Administrator``."
 
-#: ../../windows/ad-connection.rst:966
+#: ../../windows/ad-connection.rst:1066
 msgid ""
 "Users are also identified using the name, so that for users created "
 "before the first synchronization on both sides, the same process applies "
@@ -2002,7 +2145,7 @@ msgstr ""
 "wurden, hinsichtlich der Position im LDAP das gleiche Verhalten gilt wie "
 "bei Gruppen."
 
-#: ../../windows/ad-connection.rst:970
+#: ../../windows/ad-connection.rst:1070
 msgid ""
 "In some cases, a user to be created under AD, for which the password has "
 "been rejected, is deleted from AD immediately after creation. The "
@@ -2023,7 +2166,7 @@ msgstr ""
 "Rückübertragung gelöscht. Das Auftreten dieses Verhaltens ist abhängig "
 "von dem eingestellten Abfrageintervall des Connectors."
 
-#: ../../windows/ad-connection.rst:979
+#: ../../windows/ad-connection.rst:1079
 msgid ""
 "AD and UCS create new users in a specific primary group (usually ``Domain"
 " Users`` or ``Domänen-Benutzer``) depending on the presetting. During the"

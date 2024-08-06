@@ -507,7 +507,7 @@ show this as an example:
 Additional tools / Debugging connector problems
 -----------------------------------------------
 
-The UCS AD Connector provides the following tools and log files for
+The :program:`Active Directory Connection` provides the following tools and log files for
 diagnosis:
 
 .. _ad-connector-univention-adsearch:
@@ -534,6 +534,106 @@ diagnosis:
 
    This script may display an error message or an incomplete output if the AD
    connector is in operation.
+
+.. _ad-connector-remove-ad-rejected:
+
+:command:`remove_ad_rejected.py`
+   You can use this script to remove an AD object from the AD rejected list
+   located in the internal database file
+   :file:`/etc/univention/{connector}/internal.sqlite`.
+
+   Example:
+
+   .. code-block:: console
+
+      $ /usr/share/univention-ad-connector/remove_ad_rejected.py \
+         -c connector <AD object DN>
+
+.. _ad-connector-remove-ucs-rejected:
+
+:command:`remove_ucs_rejected.py`
+   You can use this script to remove an UCS directory object from the UCS rejected
+   list located in the internal database file
+   :file:`/etc/univention/{connector}/internal.sqlite`.
+
+   Example:
+
+   .. code-block:: console
+
+      $ /usr/share/univention-ad-connector/remove_ucs_rejected.py \
+         -c connector <UCS object DN>
+
+.. _ad-connector-resync-object-from-ad:
+
+:command:`resync_object_from_ad.py`
+    You can use this script to
+    re-synchronize directory objects from AD to UCS.
+    Use it to synchronize a single or multiple directory objects.
+
+    Example:
+
+    .. code-block:: console
+
+       # to re-sychronize a single object
+       $ /usr/share/univention-ad-connector/resync_object_from_ad.py \
+           -c connector <object DN>
+
+       # to re-synchronize all objects matching a specific filter
+       $ /usr/share/univention-ad-connector/resync_object_from_ad.py \
+           -c connector \
+           --filter "(objectClass=posixAccount)"
+
+       # to re-synchronize all objects matching a specific base
+       $ /usr/share/univention-ad-connector/resync_object_from_ad.py \
+           -c connector \
+           --filter "(objectClass=posixAccount)" \
+           --base "dc=example,dc=com"
+
+.. _ad-connector-resync-object-from-ucs:
+
+:command:`resync_object_from_ucs.py`
+    You can use this script to re-synchronize directory objects from UCS to AD.
+    Use it to synchronize a single or multiple directory objects.
+
+    Examples:
+
+    .. code-block:: console
+
+        # to re-synchronize a single object
+        $ /usr/share/univention-ad-connector/resync_object_from_ucs.py \
+           -c connector <object DN>
+
+        # to re-synchronize all objects matching a specific filter
+        $ /usr/share/univention-ad-connector/resync_object_from_ucs.py \
+           -c connector \
+           --filter "<LDAP filter>" \
+
+        # to re-synchronize all objects matching a specific base
+        $ /usr/share/univention-ad-connector/resync_object_from_ucs.py \
+           -c connector \
+           --filter "<LDAP filter>" \
+           --base "<base dn>" \
+
+.. _ad-connector-prepare-new-instance:
+
+:command:`prepare-new-instance`
+    You can use this script to create AD connection instances.
+    The script copies the required files and sets specific UCR variables.
+
+    Alternatively, you can use this script to delete an AD connection instance.
+    The script then internally removes the files for the instance and resets the UCR variables.
+
+.. _ad-connector-well-known-sid-object-rename:
+
+:command:`well-known-sid-object-rename`
+    You can use this script to rename users and groups with well-known SIDs in UDM.
+    The AD Connection uses it to rename users and groups with well-known SIDs.
+
+.. _ad-connector-make-deleted-objects-readable-for-this-machine:
+
+:command:`make-deleted-objects-readable-for-this-machine`
+    You can use this script to grant list and read access to
+    ``CN=Deleted Objects`` in Active Directory.
 
 .. _windows-logfiles:
 

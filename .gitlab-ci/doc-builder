@@ -28,7 +28,7 @@ DEPENDS = {
     "ext-networks": {"manual"},
     "ext-performance": {"manual", "developer-reference"},
     "ext-windows": {"manual"},
-    "manual": {"developer-reference cycle"},
+    "manual": {"developer-reference cycle", "ext-windows cycle"},
     "quickstart": {"manual", "ext-domain", "ext-installation"},
     "release-notes": {"manual", "changelog", "ext-windows"},
     "scenarios": {"manual"},
@@ -37,6 +37,7 @@ SPECIAL: dict[str, dict[str, object]] = {
     "changelog": {"DOC_TARGET_PATH": "$DOC_TARGET_NAME/$CHANGELOG_TARGET_VERSION/$language"},
     "release-notes": {"DOC_TARGET_PATH": "$DOC_TARGET_NAME/$CHANGELOG_TARGET_VERSION/$language"},
     "developer-reference cycle": {"SPHINXOPTS": "--keep-going"},
+    "ext-windows cycle": {"SPHINXOPTS": "--keep-going"},
 }
 
 
