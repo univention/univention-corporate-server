@@ -1353,10 +1353,6 @@ def create_oidc_client(opt):
     if opt.add_guardian_management_mappers:
         client_payload_oidc["protocolMappers"] += DEFAULT_GUARDIAN_MANAGEMENT_MAPPERS
 
-    # This clears the default mappers and leave the ICS only
-    if opt.add_ics_mappers:
-        client_payload_oidc["protocolMappers"] = DEFAULT_ICS_MAPPERS
-
     for i, audience in enumerate(opt.access_token_audience):
         client_payload_oidc["protocolMappers"].append(
             {
@@ -1386,6 +1382,10 @@ def create_oidc_client(opt):
                 },
             },
         )
+
+    # This clears the default mappers and leave the ICS only
+    if opt.add_ics_mappers:
+        client_payload_oidc["protocolMappers"] = DEFAULT_ICS_MAPPERS
 
     if opt.client_secret:
         client_payload_oidc["secret"] = opt.client_secret
