@@ -572,16 +572,17 @@ structure you can use the following UCR variables:
    For synchronization from UCS LDAP directory to Active Directory
 
    Use the |UCSUCRV| :envvar:`connector/ad/mapping/allowsubtree/.*/ucs`
-   to define a DN from your UCS LDAP directory for synchronization
+   to define a DN from your UCS LDAP directory for the synchronization
    from your UCS LDAP directory to the connected Active Directory.
-   You need to include the LDAP base in the DNs.
+   You must include the LDAP base in the DNs.
 
-   Please note the explanation about the ``.*`` placeholder below.
+   See the explanation of the ``.*`` placeholder below.
 
    The *AD Connection* only considers UCS LDAP objects for synchronization
    that locate in subtrees specified by one of these UCR variables.
    The comparison of the DNs isn't case-sensitive.
 
+   For example:
    .. code-block:: console
 
       $ ucr set connector/ad/mapping/allowsubtree/school1/ucs="ou=school1,dc=ucs,domain"
@@ -592,39 +593,43 @@ structure you can use the following UCR variables:
    For synchronization from Active Directory to UCS LDAP directory
 
    Use the |UCSUCRV| :envvar:`connector/ad/mapping/allowsubtree/.*/ad`
-   to define a DN from your Active Directory for synchronization
+   to define a DN from your Active Directory for the synchronization
    from your connected Active Directory to your UCS LDAP directory.
-   You need to include the LDAP base in the DNs.
+   You must include the LDAP base in the DNs.
 
-   Please note the explanation about the ``.*`` placeholder below.
+   See the explanation of the ``.*`` placeholder below.
 
    The *AD Connection* only considers Active Directory objects for synchronization
    that locate in subtrees specified by one of these UCR variables.
    The comparison of the DNs isn't case-sensitive.
+
+   For example:
 
    .. code-block:: console
 
       $ ucr set connector/ad/mapping/allowsubtree/school1/ad="ou=school1,dc=ad,domain"
       $ ucr set connector/ad/mapping/allowsubtree/school2/ad="ou=school2,dc=ad,domain"
 
-For each LDAP subtree that you want to allow for synchronization,
-you must configure a separate |UCSUCRV|.
-The ``.*`` part of the variable is a placeholder
-that you can use as an individual label for each variable.
-If you follow this approach, you create a series of UCR variables of the described types.
-Each variable contains only one DN.
+Placeholder ``.*``
+   The ``.*`` part of the variable is a placeholder
+   that you can use as an individual label for each variable.
+   If you follow this approach, you create a series of UCR variables of the types described.
+   Each variable contains only one DN.
 
-After you defined or changed the UCR variables,
-you need to restart the :program:`Active Directory Connection`.
+For each LDAP subtree that you want to allow for synchronization,
+you have to configure a separate |UCSUCRV|.
+
+After you have defined or changed the UCR variables,
+you must restart the :program:`Active Directory Connection`.
 
 .. tip::
 
    The :program:`Active Directory Connection` determines the position of the target object
    by dynamic and static factors
-   such as the mapping property attributes ``dn_mapping_function`` and ``position_mapping``
+   such as the mapping property attributes ``dn_mapping_function`` and ``position_mapping``,
    if they're configured in the mapping for individual object types.
-   So the position of the corresponding target object may lie outside
-   of the subtrees corresponding to the |UCSUCRV|.
+   The position of the corresponding target object can therefore be outside
+   the subtrees corresponding to the |UCSUCRV|.
 
 .. warning::
 
@@ -662,7 +667,13 @@ the connector also deletes the corresponding object on the other side.
       $ ucr set connector/ad/mapping/user/allowfilter="(description=sync)"
 
 
-After changing these settings you need to restart the :program:`Active Directory Connection`.
+   .. note::
+
+      However, this filter doesn't support the full LDAP filter syntax.
+      It's always case-sensitive.
+      You can only use the placeholder ``*`` as a single value without any other characters.
+
+After changing these settings you must restart the :program:`Active Directory Connection`.
 
 .. important::
 
@@ -672,12 +683,6 @@ After changing these settings you need to restart the :program:`Active Directory
 
    If you want to turn off the synchronization for an object,
    you must make the change on both sides, UCS and Active Directory.
-
-.. note::
-
-   However, this filter doesn't support the full LDAP filter syntax.
-   It's always case-sensitive.
-   You can only use the placeholder ``*`` as a single value without any other characters.
 
 Ignore objects from specific LDAP subtrees
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -692,19 +697,21 @@ use the following |UCSUCRV|:
    The values can contain positions in Active Directory and in the UCS LDAP.
    By default, the variable isn't set.
 
+   For example:
+
    .. code-block:: console
 
       $ ucr set connector/ad/mapping/ignoresubtree/ignore1="cn=alumni,dc=ucs,domain"
       $ ucr set connector/ad/mapping/ignoresubtree/ignore2="cn=alumni,dc=ad,domain"
 
-After changing this setting you need to restart the :program:`Active Directory Connection`.
+After changing this setting you must restart the :program:`Active Directory Connection`.
 
 Ignore objects by LDAP filter
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To except objects from the synchronization, you can add their name to the following |UCSUCRVs|:
+To exclude objects from the synchronization, you can add their names to the following |UCSUCRVs|:
 
-After changing these settings, you need to restart the :program:`Active Directory Connection`.
+After changing these settings, you must restart the :program:`Active Directory Connection`.
 
 .. envvar:: connector/ad/mapping/{type}/ignorelist
 
@@ -743,15 +750,16 @@ After changing these settings, you need to restart the :program:`Active Director
 
       $ ucr set connector/ad/mapping/user/ignorelist="Administrator,krbtgt,root,pcpatch,mmustermann"
 
-.. important::
+   .. important::
 
-   Some of the ``ignorelist`` settings have default values that are important
-   for the functionality of the connector. Make sure not to overwrite these
-   settings. You can check the current value of an |UCSUCRV| with
+      Some of the ``ignorelist`` settings have defaults
+      that are important for the functionality of the connector.
+      Make sure that you don't overwrite these settings.
+      You can verify the current value of a |UCSUCRV| with the following command:
 
-   .. code-block:: console
+      .. code-block:: console
 
-      $ ucr get connector/ad/mapping/user/ignorelist
+         $ ucr get connector/ad/mapping/user/ignorelist
 
 For more flexibility you can also set an LDAP filter to ignore objects.
 Use the following |UCSUCRV|:
@@ -773,11 +781,11 @@ Use the following |UCSUCRV|:
 
       $ ucr set connector/ad/mapping/user/ignorefilter="(description=no sync)"
 
-.. note::
+   .. note::
 
-   However, this filter doesn't support the full LDAP filter syntax.
-   It's always case-sensitive.
-   You can only use the placeholder ``*`` as a single value without any other characters.
+      However, this filter doesn't support the full LDAP filter syntax.
+      It's always case-sensitive.
+      You can only use the placeholder ``*`` as a single value without any other characters.
 
 Priority of allow and ignore rules
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -785,52 +793,56 @@ Priority of allow and ignore rules
 This section describes the processing order for the previously documented UCR variable settings for
 selective synchronization.
 
-The :program:`Active Directory Connection` processes the rules
-for allow and ignore of the previously described variables in a defined order.
-Depending on the evaluation result, the connector behaves the following way:
+The :program:`Active Directory Connection` processes the allow and ignore rules
+for the previously described variables in a defined order.
+Depending on the evaluation result, the connector behaves as follows:
 
-* If a rule leads to the result that the connector has to ignore an object,
-  the rule processing stops and the connector doesn't synchronize the object.
+* If a rule results in the connector ignoring an object,
+  the connector stops processing the rule and doesn't synchronize the object.
 
-* If a rule leads to the result that the connector doesn't ignore an object,
+* If a rule results in the connector not ignoring an object,
   the connector evaluates the next rule.
   If the rule was the last rule and there's no next rule,
   the connector synchronizes the object.
 
 The connector evaluates the rules for each object in the following order:
 
-1. **allow subtree**
+1. **allow subtree**:
 
+   :UCR variables: :envvar:`connector/ad/mapping/allowsubtree/.*/ucs` and :envvar:`connector/ad/mapping/allowsubtree/.*/ad`
    :No match: No synchronization. Stop.
    :Match: Continue.
 
-2. **allow filter**
+2. **allow filter**:
 
+   :UCR variable: :envvar:`connector/ad/mapping/{type}/allowfilter`
    :No match: No synchronization. Stop.
    :Match: Continue.
 
-3. **ignore subtree**
+3. **ignore subtree**:
 
+   :UCR variable: :envvar:`connector/ad/mapping/ignoresubtree/.*`
    :No match: Continue.
    :Match: No synchronization. Stop.
 
-4. **ignore filter**, including ``ignorelist``
+4. **ignore filter**:
 
+   :UCR variables: :envvar:`connector/ad/mapping/{type}/ignorelist` and :envvar:`connector/ad/mapping/{type}/ignorefilter`
    :No match: Continue.
    :Match: No synchronization. Stop.
 
-5. **end of rules**
+5. **End of rules**.
 
-   Synchronize object.
+6. **Synchronize object**.
 
 .. _ad-connector-details-on-preconfigured-synchronization:
 
 Details on preconfigured synchronization
 ----------------------------------------
 
-By default, the :program:`Active Directory Connection` exempts some LDAP subtrees from the synchronization.
-You find the list of ignored subtrees in the :file:`/var/log/univention/connector-ad-mapping.log` file
-at the *ignore_subtree* setting for each object type.
+By default, the :program:`Active Directory Connection` excludes some LDAP subtrees from the synchronization.
+You can find the list of ignored subtrees in the :file:`/var/log/univention/connector-ad-mapping.log` file
+under the *ignore_subtree* setting for each object type.
 
 .. _ad-connector-containers-and-ous:
 
