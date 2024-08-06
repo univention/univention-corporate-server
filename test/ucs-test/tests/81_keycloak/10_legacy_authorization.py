@@ -16,12 +16,60 @@ from univention.udm import UDM
 
 LEGACY_APP_AUTHORIZATION_NAME = 'browser flow with legacy app authorization'
 EXPECTED_EXECUTIONS = [
-    {'requirement': 'REQUIRED', 'displayName': 'Normal Login (browser legacy app authorization)', 'configurable': False, 'authenticationFlow': True, 'level': 0, 'index': 0},
-    {'requirement': 'ALTERNATIVE', 'displayName': 'Cookie', 'configurable': False, 'providerId': 'auth-cookie', 'level': 1, 'index': 0},
-    {'requirement': 'ALTERNATIVE', 'displayName': 'Kerberos', 'configurable': False, 'providerId': 'auth-spnego', 'level': 1, 'index': 1},
-    {'requirement': 'ALTERNATIVE', 'displayName': 'Identity Provider Redirector', 'configurable': True, 'providerId': 'identity-provider-redirector', 'level': 1, 'index': 2},
-    {'requirement': 'ALTERNATIVE', 'displayName': 'forms (browser flow with legacy app authorization)', 'configurable': False, 'authenticationFlow': True, 'level': 1, 'index': 3},
-    {'requirement': 'REQUIRED', 'displayName': 'Username Password Form', 'configurable': False, 'providerId': 'auth-username-password-form', 'level': 2, 'index': 0},
+    {
+        'requirement': 'REQUIRED',
+        'displayName': 'Normal Login (browser legacy app authorization)',
+        'configurable': False,
+        'authenticationFlow': True,
+        'level': 0,
+        'index': 0,
+        'priority': 1,
+    },
+    {
+        'requirement': 'ALTERNATIVE',
+        'displayName': 'Cookie',
+        'configurable': False,
+        'providerId': 'auth-cookie',
+        'level': 1,
+        'index': 0,
+        'priority': 10,
+    },
+    {
+        'requirement': 'ALTERNATIVE',
+        'displayName': 'Kerberos',
+        'configurable': False,
+        'providerId': 'auth-spnego',
+        'level': 1,
+        'index': 1,
+        'priority': 20,
+    },
+    {
+        'requirement': 'ALTERNATIVE',
+        'displayName': 'Identity Provider Redirector',
+        'configurable': True,
+        'providerId': 'identity-provider-redirector',
+        'level': 1,
+        'index': 2,
+        'priority': 25,
+    },
+    {
+        'requirement': 'ALTERNATIVE',
+        'displayName': 'forms (browser flow with legacy app authorization)',
+        'configurable': False,
+        'authenticationFlow': True,
+        'level': 1,
+        'index': 3,
+        'priority': 30,
+    },
+    {
+        'requirement': 'REQUIRED',
+        'displayName': 'Username Password Form',
+        'configurable': False,
+        'providerId': 'auth-username-password-form',
+        'level': 2,
+        'index': 0,
+        'priority': 10,
+    },
     {
         'requirement': 'CONDITIONAL',
         'displayName': 'Browser - Conditional OTP (browser flow with legacy app authorization)',
@@ -29,10 +77,35 @@ EXPECTED_EXECUTIONS = [
         'authenticationFlow': True,
         'level': 2,
         'index': 1,
+        'priority': 20,
     },
-    {'requirement': 'REQUIRED', 'displayName': 'Condition - user configured', 'configurable': False, 'providerId': 'conditional-user-configured', 'level': 3, 'index': 0},
-    {'requirement': 'REQUIRED', 'displayName': 'OTP Form', 'configurable': False, 'providerId': 'auth-otp-form', 'level': 3, 'index': 1},
-    {'requirement': 'REQUIRED', 'displayName': 'Univention App Authenticator', 'configurable': True, 'providerId': 'univention-app-authenticator', 'level': 0, 'index': 1},
+    {
+        'requirement': 'REQUIRED',
+        'displayName': 'Condition - user configured',
+        'configurable': False,
+        'providerId': 'conditional-user-configured',
+        'level': 3,
+        'index': 0,
+        'priority': 10,
+    },
+    {
+        'requirement': 'REQUIRED',
+        'displayName': 'OTP Form',
+        'configurable': False,
+        'providerId': 'auth-otp-form',
+        'level': 3,
+        'index': 1,
+        'priority': 20,
+    },
+    {
+        'requirement': 'REQUIRED',
+        'displayName': 'Univention App Authenticator',
+        'configurable': True,
+        'providerId': 'univention-app-authenticator',
+        'level': 0,
+        'index': 1,
+        'priority': 2,
+    },
 ]
 
 
@@ -53,7 +126,9 @@ def test_univention_keycloak_legacy_flow_config(keycloak_administrator_connectio
                 del e['description']
             if 'flowId' in e:
                 del e['flowId']
-        assert executions == EXPECTED_EXECUTIONS
+        sorted_executions = sorted(executions, key=lambda ele: sorted(ele.items()))
+        sorted_expected_executions = sorted(EXPECTED_EXECUTIONS, key=lambda ele: sorted(ele.items()))
+        assert sorted_executions == sorted_expected_executions
     finally:
         if remove:
             run_command(['univention-keycloak', 'legacy-authentication-flow', 'delete'])

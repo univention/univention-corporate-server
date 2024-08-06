@@ -2093,6 +2093,7 @@ def create_legacy_authentication_flow(opt: Namespace) -> None:
         "configurable": False,
         "requirement": "REQUIRED",
         "type": "basic-flow",
+        "priority": 1,
     }
     session.create_and_update_authentication_flow_subflow(payload, flow_alias=flow_name)
 
@@ -2117,6 +2118,7 @@ def create_legacy_authentication_flow(opt: Namespace) -> None:
         "requirementChoices": ["REQUIRED", "DISABLED", "ALTERNATIVE"],
         "configurable": True,
         "providerId": "univention-app-authenticator",
+        "priority": 2,
     }
     try:
         session.create_and_update_authentication_flow_execution(payload, flow_alias=flow_name)

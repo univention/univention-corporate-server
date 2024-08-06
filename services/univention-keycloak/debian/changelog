@@ -1,3 +1,9 @@
+univention-keycloak (3.0.14) unstable; urgency=medium
+
+  * Bug #57452: fix create_legacy_authentication_flow for keycloak v25
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Aug 2024 09:48:37 +0200
+
 univention-keycloak (3.0.13) unstable; urgency=medium
 
   * Bug #57492: Fix wrong protocol mapper for dn mapper
