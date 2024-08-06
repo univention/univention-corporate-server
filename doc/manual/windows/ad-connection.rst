@@ -583,6 +583,7 @@ structure you can use the following UCR variables:
    The comparison of the DNs isn't case-sensitive.
 
    For example:
+
    .. code-block:: console
 
       $ ucr set connector/ad/mapping/allowsubtree/school1/ucs="ou=school1,dc=ucs,domain"
