@@ -3,7 +3,7 @@ release: "5.0"
 version: [8]
 scope: ucs_5.0-0-errata5.0-8
 src: univention-ad-connector
-fix: 14.0.19-8
+fix: 14.0.19-10
 desc: |
  This update addresses the following issues:
  * The connector can now be configured to only synchronize objects
@@ -27,4 +27,5 @@ desc: |
    be used to configure this LDAP filter.
  * SQLite databases used by the AD Connector were world readable in certain
    cases. This has been changed.
-bug: [57394, 57442, 57465, 57453]
+ * The `dn` argument of `resync_object_from_ad.py` was set as not required.
+bug: [57394, 57442, 57465, 57453, 57504]
