@@ -1192,7 +1192,7 @@ msgstr ""
 "Sie können die :program:`Active Directory Connection` so konfigurieren, "
 "dass nur eine bestimmte Auswahl an Objekten synchronisiert wird. Die "
 "Objekte können anhand der folgenden Kriterien für die "
-"Synchronisationausgewählt oder ignoriert werden, Details zur "
+"Synchronisation ausgewählt oder ignoriert werden, Details zur "
 "Konfiguration in den folgenden Abschnitten."
 
 #: ../../windows/ad-connection.rst:559
@@ -1237,7 +1237,7 @@ msgstr ""
 "Verwenden Sie die |UCSUCRV| "
 ":envvar:`connector/ad/mapping/allowsubtree/.*/ucs`, um eine DN aus Ihrem "
 "UCS LDAP Verzeichnis für die Synchronisation zum verbundenen Active "
-"Directoryzu erlauben. Sie müssen die LDAP Basis in den DNs mit angeben."
+"Directory zu erlauben. Sie müssen die LDAP Basis in den DNs mit angeben."
 
 #: ../../windows/ad-connection.rst:579 ../../windows/ad-connection.rst:601
 msgid "See the explanation of the ``.*`` placeholder below."
@@ -1379,8 +1379,8 @@ msgid ""
 "that match that filter. It ignores all other LDAP objects."
 msgstr ""
 "Sie können für jeden Objekttyp einen LDAP-Filter "
-"konfigurieren.:program:`Active Directory Connection` synchronisiert dann "
-"nur Objekte aufdie dieser Filter zutrifft. Alle anderen Objekte werden "
+"konfigurieren. :program:`Active Directory Connection` synchronisiert dann "
+"nur Objekte auf die dieser Filter zutrifft. Alle anderen Objekte werden "
 "ignoriert."
 
 #: ../../windows/ad-connection.rst:649
@@ -1389,8 +1389,8 @@ msgid ""
 "object and the AD object. If an object matching the filter is deleted, "
 "the connector also deletes the corresponding object on the other side."
 msgstr ""
-"Für bidirektionale Synchronisation muss der Filter sowohl auf das UCS-"
-"Objekt als auch auf das AD-Objekt zutreffen. Wird ein dem Filter "
+"Für bidirektionale Synchronisation muss der Filter sowohl auf das UCS-Objekt"
+"als auch auf das AD-Objekt zutreffen. Wird ein dem Filter "
 "entsprechendes Objekt gelöscht, löscht der Connector auch das "
 "entsprechende Objekt auf der anderen Seite."
 
@@ -1407,27 +1407,27 @@ msgstr ""
 #: ../../windows/ad-connection.rst:658 ../../windows/ad-connection.rst:733
 #: ../../windows/ad-connection.rst:773
 msgid "``user``"
-msgstr "``user``"
+msgstr ""
 
 #: ../../windows/ad-connection.rst:659 ../../windows/ad-connection.rst:736
 #: ../../windows/ad-connection.rst:774
 msgid "``group``"
-msgstr "``group``"
+msgstr ""
 
 #: ../../windows/ad-connection.rst:660 ../../windows/ad-connection.rst:739
 #: ../../windows/ad-connection.rst:775
 msgid "``container``"
-msgstr "``container``"
+msgstr ""
 
 #: ../../windows/ad-connection.rst:661 ../../windows/ad-connection.rst:742
 #: ../../windows/ad-connection.rst:743 ../../windows/ad-connection.rst:776
 msgid "``ou``"
-msgstr "``ou``"
+msgstr ""
 
 #: ../../windows/ad-connection.rst:662 ../../windows/ad-connection.rst:745
 #: ../../windows/ad-connection.rst:777
 msgid "``windowscomputer``"
-msgstr "``windowscomputer``"
+msgstr ""
 
 #: ../../windows/ad-connection.rst:666
 msgid "$ ucr set connector/ad/mapping/user/allowfilter=\"(description=sync)\""
@@ -1440,7 +1440,7 @@ msgid ""
 " value without any other characters."
 msgstr ""
 "Dieser Filter unterstützt jedoch nicht die vollständige LDAP-"
-"Filtersyntax. Er ist immer case-sensitiv. Sie können den Platzhalter "
+"Filtersyntax. Er berücksichtigt immer Groß-/Kleinschreibung und Sie können den Platzhalter "
 "``*`` nur als Einzelwert ohne weitere Zeichen verwenden."
 
 #: ../../windows/ad-connection.rst:677
@@ -1481,6 +1481,8 @@ msgid ""
 "To configure the connector to ignore objects from certain LDAP subtrees "
 "you can use the following |UCSUCRV|:"
 msgstr ""
+"Um Objekte bestimmte Teilbäume der LDAP Struktur zu ignorieren verwenden"
+" Sie folgende UCR Variablen:"
 
 #: ../../windows/ad-connection.rst:696
 msgid ""
@@ -1489,6 +1491,10 @@ msgid ""
 "positions in Active Directory and in the UCS LDAP. By default, the "
 "variable isn't set."
 msgstr ""
+"Die Variable definiert die Teilbäume im Verzeichnisdienst, die der"
+" Connector von der Synchronisierung ausschließt. Die Werte können"
+" Positionen im Active Directory und im UCS LDAP enthalten."
+" Standardmäßig ist die Variable nicht gesetzt."
 
 #: ../../windows/ad-connection.rst:703
 msgid ""
@@ -1499,7 +1505,6 @@ msgid ""
 msgstr ""
 
 #: ../../windows/ad-connection.rst:708
-#, fuzzy
 msgid ""
 "After changing this setting you must restart the :program:`Active "
 "Directory Connection`."
@@ -1509,16 +1514,17 @@ msgstr ""
 
 #: ../../windows/ad-connection.rst:711
 msgid "Ignore objects by LDAP filter"
-msgstr ""
+msgstr "Objekte ignorieren auf die ein LDAP Filter zutrifft"
 
 #: ../../windows/ad-connection.rst:713
 msgid ""
 "To exclude objects from the synchronization, you can add their names to "
 "the following |UCSUCRVs|:"
 msgstr ""
+"Um bestimmte Objekte von der Synchronisation auszuschließen, können Sie"
+" deren Namen zu den folgenden |UCSUCRVs| hinzufügen:"
 
 #: ../../windows/ad-connection.rst:715
-#, fuzzy
 msgid ""
 "After changing these settings, you must restart the :program:`Active "
 "Directory Connection`."
@@ -1534,10 +1540,15 @@ msgid ""
 "type-value-mapping-tab`. The table also shows which LDAP attributes you "
 "need to consider in the filter depending on the object type."
 msgstr ""
+"Der Connector **synchronisiert** die Objekte, die diese Variable als Werte"
+" definiert, **nicht**. Mehrere Werte sind durch Kommas zu trennen. Die "
+"möglichen Werte für ``{type}`` finden Sie unter :numref:`ad-connector-allow-and-ignore-rules-type-value-mapping-tab`."
+"Die Tabelle zeigt außerdem, welche LDAP-Attribute Sie je nach Objekttyp "
+"im Filter berücksichtigen müssen."
 
 #: ../../windows/ad-connection.rst:726
 msgid "Mapping for which ``{type}`` needs which LDAP attribute"
-msgstr ""
+msgstr "Mapping welcher ``{type}`` benötigt welches LDAP Attribut."
 
 #: ../../windows/ad-connection.rst:730
 msgid "``{type}``"
@@ -1545,7 +1556,7 @@ msgstr ""
 
 #: ../../windows/ad-connection.rst:731
 msgid "Value from LDAP attribute"
-msgstr ""
+msgstr "Wert dieses LDAP Attribut"
 
 #: ../../windows/ad-connection.rst:734
 msgid "``uid``"
@@ -1558,7 +1569,7 @@ msgstr ""
 
 #: ../../windows/ad-connection.rst:748
 msgid "For example, the ``user`` type considers the LDAP attribute ``uid``:"
-msgstr ""
+msgstr "Beispielsweise wird beim Typ ``user`` das LDAP Attribut ``uid`` verwendet."
 
 #: ../../windows/ad-connection.rst:750
 msgid ""
@@ -1573,11 +1584,14 @@ msgid ""
 "these settings. You can verify the current value of a |UCSUCRV| with the "
 "following command:"
 msgstr ""
+"Einige der ``ignorelist`` Variablen haben Standardwerte, die für die "
+"Funktionalität des Connectors wichtig sind. Stellen Sie sicher, dass Sie "
+"diese Einstellungen nicht überschreiben. Sie können den aktuellen Wert einer "
+"|UCSUCRV| mit dem folgenden Befehl überprüfen:"
 
 #: ../../windows/ad-connection.rst:761
-#, fuzzy
 msgid "$ ucr get connector/ad/mapping/user/ignorelist"
-msgstr "$ ucr set connector/s4/mapping/group/grouptype=false"
+msgstr ""
 
 #: ../../windows/ad-connection.rst:765
 msgid ""
