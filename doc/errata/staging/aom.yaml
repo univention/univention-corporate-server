@@ -6,9 +6,8 @@ src: aom
 fix: 1.0.0-3+deb10u2
 desc: |
  This update addresses the following issue:
- 1.0.0-3+deb10u2 (Wed, 31 Jul 2024 22:12:43 +0300)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2024-5171: Integer overflows
+ * CVE-2024-5171: Fix integer overflows in libaom internal
+   function `img_alloc_helper`.
 bug: [57497]
 cve:
 - CVE-2024-5171
