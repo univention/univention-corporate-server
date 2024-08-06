@@ -1,3 +1,9 @@
+ucs-test (12.0.131) unstable; urgency=medium
+
+  * Bug #57492: Add test for nubus changes
+
+ -- Felix Botner <botner@univention.de>  Fri, 02 Aug 2024 14:28:43 +0200
+
 ucs-test (12.0.130) unstable; urgency=medium
 
   * Issue 2338: kill slapd in 26reconnect_univention_ldapsearch

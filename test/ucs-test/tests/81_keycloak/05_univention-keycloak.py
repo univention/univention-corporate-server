@@ -239,3 +239,310 @@ def test_machine_account_fails(without_keycloak_secret):
     cmd = ['univention-keycloak', 'realms', 'get']
     with pytest.raises(CalledProcessError):
         run_command(cmd)
+
+
+def get_protocol_mappers(con, client_id):
+    keycloak_id = con.get_client_id(client_id)
+    client = con.get_client(keycloak_id)
+    for pm in client['protocolMappers']:
+        del pm['id']
+    return keycloak_id, client['protocolMappers']
+
+
+@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+def test_oidc_guardian_audience_mapper(random_string, keycloak_admin_connection):
+    client_id = random_string()
+    args = ['univention-keycloak', 'oidc/rp', 'create', '--add-guardian-audience-mapper', client_id]
+    run_command(args)
+    expected_mapper = {
+        "name": "guardian-audience",
+        "protocol": "openid-connect",
+        "protocolMapper": "oidc-audience-mapper",
+        "consentRequired": False,
+        "config": {
+            "included.client.audience": "guardian",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            'userinfo.token.claim': 'false',
+        },
+    }
+    try:
+        keycloak_id, mappers = get_protocol_mappers(keycloak_admin_connection, client_id)
+        assert expected_mapper in mappers
+    finally:
+        if keycloak_id:
+            keycloak_admin_connection.delete_client(keycloak_id)
+
+
+@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+def test_oidc_dn_mapper(random_string, keycloak_admin_connection):
+    client_id = random_string()
+    args = ['univention-keycloak', 'oidc/rp', 'create', '--add-dn-mapper', client_id]
+    run_command(args)
+    expected_mapper = {
+        "name": "dn",
+        "protocol": "openid-connect",
+        "protocolMapper": "oidc-audience-mapper",
+        "consentRequired": False,
+        "config": {
+            "access.token.claim": "true",
+            "aggregate.attrs": 'false',
+            "claim.name": "dn",
+            "id.token.claim": "false",
+            "jsonType.label": "String",
+            "multivalued": 'false',
+            "user.attribute": "LDAP_ENTRY_DN",
+            "userinfo.token.claim": "false",
+        },
+    }
+    try:
+        keycloak_id, mappers = get_protocol_mappers(keycloak_admin_connection, client_id)
+        assert expected_mapper in mappers
+    finally:
+        if keycloak_id:
+            keycloak_admin_connection.delete_client(keycloak_id)
+
+
+@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+@pytest.mark.parametrize('audience_to_map', [None, 'myaudience'])
+def test_oidc_audience_mapper(random_string, keycloak_admin_connection, audience_to_map):
+    client_id = random_string()
+    args = ['univention-keycloak', 'oidc/rp', 'create', '--add-audience-mapper']
+    if audience_to_map:
+        args.append('--audience-to-map')
+        args.append(audience_to_map)
+    args.append(client_id)
+    run_command(args)
+    expected_mapper = {
+        "name": "audiencemap",
+        "protocol": "openid-connect",
+        "protocolMapper": "oidc-audience-mapper",
+        "consentRequired": False,
+        "config": {
+            "included.client.audience": audience_to_map if audience_to_map else client_id,
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true",
+        },
+    }
+    try:
+        keycloak_id, mappers = get_protocol_mappers(keycloak_admin_connection, client_id)
+        assert expected_mapper in mappers
+    finally:
+        if keycloak_id:
+            keycloak_admin_connection.delete_client(keycloak_id)
+
+
+@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+def test_oidc_guardian_management_mappers(random_string, keycloak_admin_connection):
+    client_id = random_string()
+    args = ['univention-keycloak', 'oidc/rp', 'create', '--add-guardian-management-mappers', client_id]
+    run_command(args)
+    expected_mappers = [
+        {
+            "protocol": "openid-connect",
+            "name": "Client IP Address",
+            "protocolMapper": "oidc-usersessionmodel-note-mapper",
+            "consentRequired": False,
+            "config": {
+                "user.session.note": "clientAddress",
+                "userinfo.token.claim": "true",
+                "id.token.claim": "true",
+                "claim.name": "clientAddress",
+                "jsonType.label": "String",
+                "access.token.claim": "true",
+                "access.tokenResponse.claim": 'false',
+            },
+        },
+        {
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usersessionmodel-note-mapper",
+            "name": "Client IP Address",
+            "consentRequired": False,
+            "config": {
+                "user.session.note": "clientAddress",
+                "claim.name": "clientAddress",
+                "jsonType.label": "String",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "userinfo.token.claim": "true",
+                "access.tokenResponse.claim": 'false',
+            },
+        },
+        {
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-audience-mapper",
+            "name": "audiencemap",
+            "consentRequired": False,
+            "config": {
+                "included.client.audience": "guardian-cli",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "userinfo.token.claim": "true",
+            },
+        },
+        {
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usersessionmodel-note-mapper",
+            "name": "Client Host",
+            "consentRequired": False,
+            "config": {
+                "user.session.note": "clientHost",
+                "claim.name": "clientHost",
+                "jsonType.label": "String",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "userinfo.token.claim": "true",
+                "access.tokenResponse.claim": 'false',
+            },
+        },
+        {
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "name": "dn",
+            "consentRequired": False,
+            "config": {
+                "user.attribute": "LDAP_ENTRY_DN",
+                "claim.name": "dn",
+                "jsonType.label": "String",
+                "id.token.claim": "false",
+                "access.token.claim": "true",
+                "userinfo.token.claim": "false",
+                "multivalued": 'false',
+                "aggregate.attrs": 'false',
+            },
+        },
+        {
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-audience-mapper", "name": "guardian-audience", "consentRequired": False,
+            "config": {
+                "included.client.audience": "guardian",
+                "id.token.claim": "false",
+                "access.token.claim": "true",
+                "userinfo.token.claim": "false",
+            },
+        },
+    ]
+    try:
+        keycloak_id, mappers = get_protocol_mappers(keycloak_admin_connection, client_id)
+        for mapper in expected_mappers:
+            assert mapper in mappers
+    finally:
+        if keycloak_id:
+            keycloak_admin_connection.delete_client(keycloak_id)
+
+
+@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+def test_oidc_ics_mappers(random_string, keycloak_admin_connection):
+    client_id = random_string()
+    args = ['univention-keycloak', 'oidc/rp', 'create', '--add-ics-mappers', client_id]
+    run_command(args)
+    expected_mappers = [
+        {
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "name": "phoenixusername_temp",
+            "consentRequired": False,
+            "config": {
+                "introspection.token.claim": "true",
+                "userinfo.token.claim": "true",
+                "user.attribute": "uid",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "claim.name": "phoenixusername",
+                "jsonType.label": "String",
+                "lightweight.claim": 'false',
+                "multivalued": 'false',
+                "aggregate.attrs": 'false',
+            },
+        },
+        {
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "name": "entryuuid_temp",
+            "consentRequired": False,
+            "config": {
+                "introspection.token.claim": "true",
+                "userinfo.token.claim": "true",
+                "user.attribute": "entryUUID",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "claim.name": "entryuuid",
+                "jsonType.label": "String",
+                "lightweight.claim": 'false',
+                "multivalued": 'false',
+                "aggregate.attrs": 'false',
+            },
+        },
+        {
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-audience-mapper",
+            "name": "intercom-audience",
+            "consentRequired": False,
+            "config": {
+                "included.client.audience": "opendesk-intercom",
+                "id.token.claim": "false",
+                "access.token.claim": "true",
+                "introspection.token.claim": "true",
+                "lightweight.claim": 'false',
+                "userinfo.token.claim": "false",
+            },
+        },
+    ]
+    try:
+        keycloak_id, mappers = get_protocol_mappers(keycloak_admin_connection, client_id)
+        assert len(mappers) == 3
+        for mapper in expected_mappers:
+            assert mapper in mappers
+    finally:
+        if keycloak_id:
+            keycloak_admin_connection.delete_client(keycloak_id)
+
+
+@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+def test_oidc_client_defaults(random_string, keycloak_admin_connection):
+    client_id = random_string()
+    args = ['univention-keycloak', 'oidc/rp', 'create', client_id]
+    run_command(args)
+    try:
+        keycloak_id = keycloak_admin_connection.get_client_id(client_id)
+        client = keycloak_admin_connection.get_client(keycloak_id)
+        assert client['adminUrl'] == ''
+        assert not client.get('baseUrl')
+        assert client['publicClient'] is False
+        assert client['attributes']['backchannel.logout.revoke.offline.tokens'] == 'false'
+        # TODO test more options
+    finally:
+        if keycloak_id:
+            keycloak_admin_connection.delete_client(keycloak_id)
+
+
+@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+def test_oidc_client_options(random_string, keycloak_admin_connection):
+    client_id = random_string()
+    admin_url = random_string()
+    app_url = f'https://{random_string()}'
+    args = ['univention-keycloak', 'oidc/rp', 'create', client_id]
+    args = [
+        'univention-keycloak', 'oidc/rp', 'create',
+        '--app-url', app_url,
+        '--admin-url', admin_url,
+        '--public-client',
+        '--backchannel-logout-revoke-session',
+        client_id,
+    ]
+    run_command(args)
+    try:
+        keycloak_id = keycloak_admin_connection.get_client_id(client_id)
+        client = keycloak_admin_connection.get_client(keycloak_id)
+        assert client['adminUrl'] == admin_url
+        assert client['rootUrl'] == app_url
+        assert client['baseUrl'] == app_url
+        assert app_url in client['redirectUris']
+        assert app_url in client['webOrigins']
+        assert client['publicClient'] is True
+        assert client['attributes']['backchannel.logout.revoke.offline.tokens'] == 'true'
+        # TODO test more options
+    finally:
+        if keycloak_id:
+            keycloak_admin_connection.delete_client(keycloak_id)

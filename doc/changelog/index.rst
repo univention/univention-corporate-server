@@ -160,6 +160,14 @@ LDAP Directory Manager
   has been removed. Group memberships in the UDM module ``users/user`` are now
   always resolved via the LDAP attribute ``memberOf`` (:uv:bug:`56253`).
 
+.. _changelog-service-keycloak:
+
+Keycloak
+========
+
+* Several changes to ``univention-keycloak`` for better integration with
+  Univention Nubus (:uv:bug:`57492`).
+
 .. _changelog-umc:
 
 *****************************
