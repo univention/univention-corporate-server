@@ -1320,7 +1320,7 @@ def create_oidc_client(opt):
             {
                 "name": "dn",
                 "protocol": "openid-connect",
-                "protocolMapper": "oidc-audience-mapper",
+                "protocolMapper": "oidc-usermodel-attribute-mapper",
                 "consentRequired": False,
                 "config": {
                     "access.token.claim": "true",
