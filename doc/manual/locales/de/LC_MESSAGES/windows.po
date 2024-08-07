@@ -1379,7 +1379,7 @@ msgid ""
 msgstr ""
 "Sie können für jeden Objekttyp einen LDAP-Filter "
 "konfigurieren. :program:`Active Directory Connection` synchronisiert dann "
-"nur Objekte auf die dieser Filter zutrifft. Alle anderen Objekte werden "
+"nur Objekte, auf die dieser Filter zutrifft. Alle anderen Objekte werden "
 "ignoriert."
 
 #: ../../windows/ad-connection.rst:649
