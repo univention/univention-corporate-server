@@ -1,6 +1,6 @@
 univention-keycloak (3.0.13) unstable; urgency=medium
 
-  * Bug #00000: Fix wrong protocol mapper for dn mapper
+  * Bug #57492: Fix wrong protocol mapper for dn mapper
 
  -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Wed, 07 Aug 2024 23:37:29 +0200
 
