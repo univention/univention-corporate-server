@@ -571,16 +571,15 @@ structure you can use the following UCR variables:
 
    For synchronization from UCS LDAP directory to Active Directory
 
-   Use the |UCSUCRV| :envvar:`connector/ad/mapping/allowsubtree/.*/ucs`
+   Use this |UCSUCRV|
    to define a DN from your UCS LDAP directory for the synchronization
    from your UCS LDAP directory to the connected Active Directory.
-   You must include the LDAP base in the DNs.
+   Then the *AD Connection* only considers UCS LDAP objects for synchronization
+   that locate in subtrees specified by one of these UCR variables.
+   You must include the LDAP base in the DNs and the comparison of the DNs is
+   case-insensitive.
 
    See the explanation of the ``.*`` placeholder below.
-
-   The *AD Connection* only considers UCS LDAP objects for synchronization
-   that locate in subtrees specified by one of these UCR variables.
-   The comparison of the DNs isn't case-sensitive.
 
    For example:
 
@@ -593,16 +592,15 @@ structure you can use the following UCR variables:
 
    For synchronization from Active Directory to UCS LDAP directory
 
-   Use the |UCSUCRV| :envvar:`connector/ad/mapping/allowsubtree/.*/ad`
+   Use this |UCSUCRV|
    to define a DN from your Active Directory for the synchronization
    from your connected Active Directory to your UCS LDAP directory.
-   You must include the LDAP base in the DNs.
+   Then the *AD Connection* only considers Active Directory objects for synchronization
+   that locate in subtrees specified by one of these UCR variables.
+   You must include the LDAP base in the DNs and the comparison of the DNs is   
+   case-insensitive.
 
    See the explanation of the ``.*`` placeholder below.
-
-   The *AD Connection* only considers Active Directory objects for synchronization
-   that locate in subtrees specified by one of these UCR variables.
-   The comparison of the DNs isn't case-sensitive.
 
    For example:
 
@@ -791,12 +789,11 @@ Use the following |UCSUCRV|:
 Priority of allow and ignore rules
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This section describes the processing order for the previously documented UCR variable settings for
+This section describes the processing order for the previously documented settings for
 selective synchronization.
 
 The :program:`Active Directory Connection` processes the allow and ignore rules
-for the previously described variables in a defined order.
-Depending on the evaluation result, the connector behaves as follows:
+in a defined order. Depending on the evaluation result, the connector behaves as follows:
 
 * If a rule results in the connector ignoring an object,
   the connector stops processing the rule and doesn't synchronize the object.
