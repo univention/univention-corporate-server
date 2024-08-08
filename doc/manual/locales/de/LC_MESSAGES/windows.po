@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-08 10:26+0000\n"
+"POT-Creation-Date: 2024-08-08 10:49+0000\n"
 "PO-Revision-Date: 2023-10-10 15:37+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -1249,7 +1249,7 @@ msgstr "Bitte beachten Sie die Erklärung zu dem ``.*`` Platzhalter unten."
 
 #: ../../windows/ad-connection.rst:584 ../../windows/ad-connection.rst:605
 #: ../../windows/ad-connection.rst:662 ../../windows/ad-connection.rst:699
-#: ../../windows/ad-connection.rst:777
+#: ../../windows/ad-connection.rst:775
 msgid "For example:"
 msgstr "Beispiel:"
 
@@ -1320,7 +1320,7 @@ msgid ""
 "After you have defined or changed the UCR variables, you must restart the"
 " :program:`Active Directory Connection`."
 msgstr ""
-"Nachdem Sie die UCR Variablen erstellen oder geändert haben, müssen sie "
+"Nach der Änderung dieser Einstellungen müssen Sie "
 "den :program:`AD Connector` neu starten."
 
 #: ../../windows/ad-connection.rst:626
@@ -1388,28 +1388,28 @@ msgstr ""
 "dieser LDAP Filter zutrifft. ``{type}`` kann einen der folgenden Werte "
 "haben:"
 
-#: ../../windows/ad-connection.rst:656 ../../windows/ad-connection.rst:731
-#: ../../windows/ad-connection.rst:771
+#: ../../windows/ad-connection.rst:656 ../../windows/ad-connection.rst:729
+#: ../../windows/ad-connection.rst:769
 msgid "``user``"
 msgstr ""
 
-#: ../../windows/ad-connection.rst:657 ../../windows/ad-connection.rst:734
-#: ../../windows/ad-connection.rst:772
+#: ../../windows/ad-connection.rst:657 ../../windows/ad-connection.rst:732
+#: ../../windows/ad-connection.rst:770
 msgid "``group``"
 msgstr ""
 
-#: ../../windows/ad-connection.rst:658 ../../windows/ad-connection.rst:737
-#: ../../windows/ad-connection.rst:773
+#: ../../windows/ad-connection.rst:658 ../../windows/ad-connection.rst:735
+#: ../../windows/ad-connection.rst:771
 msgid "``container``"
 msgstr ""
 
-#: ../../windows/ad-connection.rst:659 ../../windows/ad-connection.rst:740
-#: ../../windows/ad-connection.rst:741 ../../windows/ad-connection.rst:774
+#: ../../windows/ad-connection.rst:659 ../../windows/ad-connection.rst:738
+#: ../../windows/ad-connection.rst:739 ../../windows/ad-connection.rst:772
 msgid "``ou``"
 msgstr ""
 
-#: ../../windows/ad-connection.rst:660 ../../windows/ad-connection.rst:743
-#: ../../windows/ad-connection.rst:775
+#: ../../windows/ad-connection.rst:660 ../../windows/ad-connection.rst:741
+#: ../../windows/ad-connection.rst:773
 msgid "``windowscomputer``"
 msgstr ""
 
@@ -1417,7 +1417,7 @@ msgstr ""
 msgid "$ ucr set connector/ad/mapping/user/allowfilter=\"(description=sync)\""
 msgstr ""
 
-#: ../../windows/ad-connection.rst:671 ../../windows/ad-connection.rst:785
+#: ../../windows/ad-connection.rst:671 ../../windows/ad-connection.rst:783
 msgid ""
 "However, this filter doesn't support the full LDAP filter syntax. It's "
 "always case-sensitive. You can only use the placeholder ``*`` as a single"
@@ -1433,7 +1433,7 @@ msgid ""
 "After changing these settings you must restart the :program:`Active "
 "Directory Connection`."
 msgstr ""
-"Nachdem Sie die UCR variablen angepasst haben, müssen sie den "
+"Nach der Änderung dieser Einstellungen müssen Sie den "
 ":program:`AD Connector` neu starten."
 
 #: ../../windows/ad-connection.rst:679
@@ -1494,7 +1494,7 @@ msgid ""
 "After changing this setting you must restart the :program:`Active "
 "Directory Connection`."
 msgstr ""
-"Nachdem Sie die UCR variablen angepasst haben, müssen sie den "
+"Nach der Änderung dieser Einstellung müssen Sie den "
 ":program:`AD Connector` neu starten."
 
 #: ../../windows/ad-connection.rst:709
@@ -1509,15 +1509,7 @@ msgstr ""
 "Um bestimmte Objekte von der Synchronisation auszuschließen, können Sie "
 "deren Namen zu den folgenden |UCSUCRVs| hinzufügen:"
 
-#: ../../windows/ad-connection.rst:713
-msgid ""
-"After changing these settings, you must restart the :program:`Active "
-"Directory Connection`."
-msgstr ""
-"Nachdem Sie die UCR variablen angepasst haben, müssen sie den "
-":program:`AD Connector` neu starten."
-
-#: ../../windows/ad-connection.rst:717
+#: ../../windows/ad-connection.rst:715
 msgid ""
 "The connector **doesn't** synchronize the objects that this variable "
 "defines as values. Separate multiple values by commas. For the possible "
@@ -1532,38 +1524,38 @@ msgstr ""
 "außerdem, welche LDAP-Attribute Sie je nach Objekttyp im Filter "
 "berücksichtigen müssen."
 
-#: ../../windows/ad-connection.rst:724
+#: ../../windows/ad-connection.rst:722
 msgid "Mapping for which ``{type}`` needs which LDAP attribute"
 msgstr "Mapping welcher ``{type}`` benötigt welches LDAP Attribut."
 
-#: ../../windows/ad-connection.rst:728
+#: ../../windows/ad-connection.rst:726
 msgid "``{type}``"
 msgstr ""
 
-#: ../../windows/ad-connection.rst:729
+#: ../../windows/ad-connection.rst:727
 msgid "Value from LDAP attribute"
 msgstr "Wert dieses LDAP Attribut"
 
-#: ../../windows/ad-connection.rst:732
+#: ../../windows/ad-connection.rst:730
 msgid "``uid``"
 msgstr ""
 
-#: ../../windows/ad-connection.rst:735 ../../windows/ad-connection.rst:738
-#: ../../windows/ad-connection.rst:744
+#: ../../windows/ad-connection.rst:733 ../../windows/ad-connection.rst:736
+#: ../../windows/ad-connection.rst:742
 msgid "``cn``"
 msgstr ""
 
-#: ../../windows/ad-connection.rst:746
+#: ../../windows/ad-connection.rst:744
 msgid "For example, the ``user`` type considers the LDAP attribute ``uid``:"
 msgstr "Beispielsweise wird beim Typ ``user`` das LDAP Attribut ``uid`` verwendet."
 
-#: ../../windows/ad-connection.rst:748
+#: ../../windows/ad-connection.rst:746
 msgid ""
 "$ ucr set "
 "connector/ad/mapping/user/ignorelist=\"Administrator,krbtgt,root,pcpatch,mmustermann\""
 msgstr ""
 
-#: ../../windows/ad-connection.rst:754
+#: ../../windows/ad-connection.rst:752
 msgid ""
 "Some of the ``ignorelist`` settings have defaults that are important for "
 "the functionality of the connector. Make sure that you don't overwrite "
@@ -1575,11 +1567,11 @@ msgstr ""
 "diese Einstellungen nicht überschreiben. Sie können den aktuellen Wert "
 "einer |UCSUCRV| mit dem folgenden Befehl überprüfen:"
 
-#: ../../windows/ad-connection.rst:759
+#: ../../windows/ad-connection.rst:757
 msgid "$ ucr get connector/ad/mapping/user/ignorelist"
 msgstr ""
 
-#: ../../windows/ad-connection.rst:763
+#: ../../windows/ad-connection.rst:761
 msgid ""
 "For more flexibility you can also set an LDAP filter to ignore objects. "
 "Use the following |UCSUCRV|:"
@@ -1587,7 +1579,7 @@ msgstr ""
 "Für mehr Flexibilität können Sie auch einen LDAP-Filter nutzen, um "
 "Objekte zu ignorieren. Verwenden Sie folgende |UCSUCRV|:"
 
-#: ../../windows/ad-connection.rst:768
+#: ../../windows/ad-connection.rst:766
 msgid ""
 "The connector **doesn't** synchronize the objects that match this LDAP "
 "filter. ``{type}`` can be have one of the following values:"
@@ -1595,9 +1587,17 @@ msgstr ""
 "Der Connector synchronisiert die Objekte **nicht**, auf die dieser LDAP-"
 "Filter zutrifft. ``{type}`` kann einen der folgenden Werte haben:"
 
-#: ../../windows/ad-connection.rst:779
+#: ../../windows/ad-connection.rst:777
 msgid "$ ucr set connector/ad/mapping/user/ignorefilter=\"(description=no sync)\""
 msgstr ""
+
+#: ../../windows/ad-connection.rst:787
+msgid ""
+"After changing these settings, you must restart the :program:`Active "
+"Directory Connection`."
+msgstr ""
+"Nach der Änderung dieser Einstellungen müssen Sie den "
+":program:`AD Connector` neu starten."
 
 #: ../../windows/ad-connection.rst:790
 msgid "Priority of allow and ignore rules"
