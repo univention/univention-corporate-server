@@ -1,3 +1,9 @@
+univention-management-console (13.0.19) unstable; urgency=medium
+
+  * Bug 57505: Ensure file mode 600 for oidc.json
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Aug 2024 20:57:57 +0200
+
 univention-management-console (13.0.18) unstable; urgency=medium
 
   * Bug #57311: log reason for failed LDAP connection
