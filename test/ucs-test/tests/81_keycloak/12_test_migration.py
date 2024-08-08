@@ -7,11 +7,10 @@
 import os
 
 import pytest
-from DATA import GOOGLE_CLIENT, NC_CLIENT, O365CLIENT, OC_CLIENT, UMC_CLIENT
+from DATA import GOOGLE_CLIENT, NC_CLIENT, O365CLIENT, OC_CLIENT, UMC_CLIENT, UMC_OIDC_CLIENT
 from utils import run_command
 
-
-kc_id = 666
+from univention.config_registry import ucr
 
 
 def get_client_by_id(connection, client_id):
@@ -19,13 +18,13 @@ def get_client_by_id(connection, client_id):
     return kc_id, connection.get_client(kc_id)
 
 
-def compare_client(old, new):
+def compare_client(old, new, substitutes):
     old_mappers = old.pop('protocolMappers', [])
     new_mappers = new.pop('protocolMappers', [])
     for mapp in old_mappers:
         for new_mapp in new_mappers:
             if mapp['name'] == new_mapp['name']:
-                compare_client(mapp, new_mapp)
+                compare_client(mapp, new_mapp, substitutes)
                 break
         else:
             pytest.fail("Old client contains more protocolMappers than the new one")
@@ -35,11 +34,15 @@ def compare_client(old, new):
         if key == 'id':
             continue
         if isinstance(old[key], dict):
-            compare_client(old[key], new[key])
+            compare_client(old[key], new[key], substitutes)
         elif isinstance(old[key], list):
             assert old[key].sort() == new[key].sort()
         else:
-            assert old[key] == new[key]
+            if new[key] != 'ignore':
+                if isinstance(new[key], str):
+                    assert old[key] == new[key].format(**substitutes)
+                else:
+                    assert old[key] == new[key]
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
@@ -48,12 +51,20 @@ def compare_client(old, new):
     (OC_CLIENT, 'owncloudclient', ['univention-keycloak', 'oidc/rp', 'create', '--client-secret=univention', '--app-url=https://backup.ucs.test/owncloud/apps/openidconnect/redirect', 'owncloudclient']),
     (NC_CLIENT, 'https://backup.ucs.test/nextcloud/apps/user_saml/saml/metadata', ['univention-keycloak', 'saml/sp', 'create', '--metadata-url=https://backup.ucs.test/nextcloud/apps/user_saml/saml/metadata', '--metadata-file=nc.xml', '--role-mapping-single-value']),
     (GOOGLE_CLIENT, 'google.com', ['univention-keycloak', 'saml/sp', 'create', '--client-id=google.com', '--assertion-consumer-url-post=https://www.google.com/a/testdomain.com/acs', '--single-logout-service-url-post=https://www.google.com/a/testdomain.com/acs', '--idp-initiated-sso-url-name=google.com', '--name-id-format=email', '--frontchannel-logout-off']),
-    (UMC_CLIENT, 'https://whatever.ucs.test/univention/saml/metadata', ['univention-keycloak', 'saml/sp', 'create', '--metadata-url=https://whatever.ucs.test/univention/saml/metadata', '--metadata-file=umc.xml'])])
+    (UMC_CLIENT, 'https://whatever.ucs.test/univention/saml/metadata', ['univention-keycloak', 'saml/sp', 'create', '--metadata-url=https://whatever.ucs.test/univention/saml/metadata', '--metadata-file=umc.xml']),
+    (UMC_OIDC_CLIENT, f'https://{ucr["hostname"]}.{ucr["domainname"]}/univention/oidc/', None),
+])
 def test_create_client(keycloak_administrator_connection, client, client_id, args):
     """Creates Google SAML client with univention-keycloak"""
-    run_command(args)
+    if args:
+        run_command(args)
     try:
         kc_id, new_client = get_client_by_id(keycloak_administrator_connection, client_id)
-        compare_client(new_client, client)
+        substitutes = {}
+        if not args:
+            substitutes['fqdn'] = f'{ucr["hostname"]}.{ucr["domainname"]}'
+            substitutes['ip'] = f'{ucr["interfaces/eth0/address"]}'
+        compare_client(new_client, client, substitutes)
     finally:
-        keycloak_administrator_connection.delete_client(kc_id)
+        if args:
+            keycloak_administrator_connection.delete_client(kc_id)

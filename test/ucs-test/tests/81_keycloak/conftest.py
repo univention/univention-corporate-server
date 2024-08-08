@@ -38,8 +38,8 @@ import pytest
 from keycloak import KeycloakAdmin, KeycloakOpenID
 from playwright.sync_api import Page, expect
 from utils import (
-    get_portal_tile, keycloak_login, keycloak_password_change, legacy_auth_config_create, legacy_auth_config_remove,
-    run_command,
+    get_portal_tile, grant_oidc_privileges, keycloak_login, keycloak_password_change, legacy_auth_config_create,
+    legacy_auth_config_remove, run_command,
 )
 
 from univention.appcenter.actions import get_action
@@ -179,6 +179,7 @@ def portal_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
         'title': 'Univention Portal',
         'sso_login_tile': 'Login (Single sign-on)',
         'sso_login_tile_de': 'Anmelden (Single Sign-on)',
+        'sso_oidc_login_tile': 'OIDC Login',
         'tile_name_class': 'portal-tile__name',
         'category_title_class': 'portal-category__title',
         'categories_id': 'portalCategories',
@@ -268,25 +269,34 @@ def portal_login_via_keycloak(page: Page, portal_config: SimpleNamespace, keyclo
         verify_login: bool | None = True,
         url: str | None = portal_config.url,
         no_login: bool = False,
+        protocol: str | None = 'saml',
     ):
-        page.goto(url)
-        expect(page).to_have_title(portal_config.title)
-        lang = page.evaluate('() => window.navigator.userLanguage || window.navigator.language')
-        sso_login_tile = portal_config.sso_login_tile if lang == 'en-US' else portal_config.sso_login_tile_de
-        get_portal_tile(page, sso_login_tile, portal_config).click()
-        # login
-        keycloak_login(page, keycloak_config, username, password, fails_with=fails_with if not new_password else None, no_login=no_login)
-        # check password change
-        if new_password:
-            new_password_confirm = new_password_confirm if new_password_confirm else new_password
-            keycloak_password_change(page, keycloak_config, password, new_password, new_password_confirm, fails_with=fails_with)
-        if fails_with or no_login:
+        try:
+            page.goto(url)
+            expect(page).to_have_title(portal_config.title)
+            lang = page.evaluate('() => window.navigator.userLanguage || window.navigator.language')
+            sso_login_tile = portal_config.sso_login_tile if lang == 'en-US' else portal_config.sso_login_tile_de
+            if protocol == 'oidc':
+                sso_login_tile = portal_config.sso_oidc_login_tile
+            get_portal_tile(page, sso_login_tile, portal_config).click()
+            # login
+            keycloak_login(page, keycloak_config, username, password, fails_with=fails_with if not new_password else None, no_login=no_login)
+            # check password change
+            if new_password:
+                new_password_confirm = new_password_confirm if new_password_confirm else new_password
+                keycloak_password_change(page, keycloak_config, password, new_password, new_password_confirm, fails_with=fails_with)
+            if protocol == 'oidc':
+                grant_oidc_privileges(page)
+            if fails_with or no_login:
+                return page
+            # check that we are logged in
+            if verify_login:
+                header_menu = page.locator(f'#{portal_config.header_menu_id}')
+                expect(header_menu, 'header menu not visible').to_be_visible()
             return page
-        # check that we are logged in
-        if verify_login:
-            header_menu = page.locator(f'#{portal_config.header_menu_id}')
-            expect(header_menu, 'header menu not visible').to_be_visible()
-        return page
+        except Exception:
+            print(page.content())
+            raise
 
     return _func
 
