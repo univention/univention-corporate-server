@@ -282,7 +282,7 @@ def test_oidc_dn_mapper(random_string, keycloak_admin_connection):
     expected_mapper = {
         "name": "dn",
         "protocol": "openid-connect",
-        "protocolMapper": "oidc-audience-mapper",
+        "protocolMapper": "oidc-usermodel-attribute-mapper",
         "consentRequired": False,
         "config": {
             "access.token.claim": "true",
