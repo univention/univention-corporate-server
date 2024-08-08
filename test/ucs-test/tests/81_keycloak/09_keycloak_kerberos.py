@@ -30,14 +30,12 @@ def test_kerberos_authentication(portal_login_via_keycloak, ucr, protocol, porta
 
     ucr.handler_set(['kerberos/defaults/rdns=false'])
     subprocess.call(['kdestroy'])
-    hostname = ucr.get('hostname')
-    domainname = ucr.get('domainname')
     subprocess.check_call(['kinit', '--password-file=/var/lib/ucs-test/pwdfile', 'Administrator'])
     session = requests.Session()
     session.auth = HTTPKerberosAuth(mutual_authentication=OPTIONAL)
 
     headers = {'Accept-Language': 'en-US;q=0.6,en;q=0.4', 'Referer': ''}
-    url = f'https://{hostname}.{domainname}/univention/saml/' if protocol == 'saml' else f'https://{hostname}.{domainname}/univention/oidc/'
+    url = f'https://{portal_config.fqdn}/univention/saml/' if protocol == 'saml' else f'https://{portal_config.fqdn}/univention/oidc/'
     page = session.get(url, data=None, verify='/etc/univention/ssl/ucsCA/CAcert.pem', headers=headers)
     assert page.status_code == 200
 
