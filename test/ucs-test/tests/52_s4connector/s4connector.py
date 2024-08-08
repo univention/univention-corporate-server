@@ -1,4 +1,5 @@
 import contextlib
+import hashlib
 import subprocess
 import sys
 from time import sleep
@@ -19,6 +20,31 @@ from univention.testing import ldap_glue, utils
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
+
+
+def calculate_file_hash(file_path: str):
+    with open(file_path, "rb") as f:
+        file_hash = hashlib.md5(f.read()).hexdigest()
+    return file_hash
+
+
+def no_change_in_file(no_change_for: int, log_file: str) -> bool:
+    last_hash = calculate_file_hash(log_file)
+    sleep(no_change_for)
+    current_hash = calculate_file_hash(log_file)
+    return current_hash == last_hash
+
+
+def wait_for_connector_to_be_inactive() -> None:
+    no_change_for = 10
+    log_file = '/var/log/univention/connector-s4.log'
+    for i in range(30):
+        if no_change_in_file(no_change_for, log_file):
+            print(f'no change in {log_file} for {no_change_for}s')
+            break
+        sleep(10)
+    else:
+        raise Exception('wait for no change in connector log timed out')
 
 
 class S4Connection(ldap_glue.ADConnection):

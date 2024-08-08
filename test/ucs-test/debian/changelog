@@ -1,3 +1,9 @@
+ucs-test (10.0.22-46) unstable; urgency=medium
+
+  * Issue univention/ucs#2375: Increase timeouts for openstack
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Aug 2024 16:11:16 +0200
+
 ucs-test (10.0.22-45) unstable; urgency=medium
 
   * Issue univention/ucs#2375: Increase timeouts for openstack
