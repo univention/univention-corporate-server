@@ -1,3 +1,9 @@
+univention-management-console (14.0.22) unstable; urgency=medium
+
+  * Bug 57505: Ensure file mode 600 for oidc.json
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Aug 2024 21:03:08 +0200
+
 univention-management-console (14.0.21) unstable; urgency=medium
 
   * Bug #57194: Ensure file descriptors are closed upon module process death

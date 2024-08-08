@@ -98,3 +98,4 @@ Variables: users/default/Administrator
 Type: file
 File: usr/share/univention-management-console/oidc/oidc.json
 Variables: umc/oidc/.*
+Mode: 600
