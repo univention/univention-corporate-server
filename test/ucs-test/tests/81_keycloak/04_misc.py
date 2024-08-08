@@ -10,12 +10,15 @@ import socket
 import dns.resolver
 import pytest
 import requests
-from utils import get_portal_tile, host_is_alive, keycloak_get_request, keycloak_sessions_by_user, run_command
+from utils import (
+    get_portal_tile, grant_oidc_privileges, host_is_alive, keycloak_get_request, keycloak_sessions_by_user, run_command,
+)
 
 from univention.testing.utils import get_ldap_connection
 
 
-def test_session_sync(ucr, udm, portal_login_via_keycloak, portal_config, keycloak_config):
+@pytest.mark.parametrize('protocol', ['saml', 'oidc'])
+def test_session_sync(ucr, udm, portal_login_via_keycloak, portal_config, keycloak_config, protocol):
     """
     Test session sync between two keycloak servers.
     Configure system so that keycloak fqdn points to system one
@@ -45,7 +48,7 @@ def test_session_sync(ucr, udm, portal_login_via_keycloak, portal_config, keyclo
     # login on login_host
     username = udm.create_user()[1]
     print(f'login to {login_url} ({login_ip})')
-    page = portal_login_via_keycloak(username, 'univention', url=login_url)
+    page = portal_login_via_keycloak(username, 'univention', url=login_url, protocol=protocol)
     # change ucs-sso-ng to check_ip
     ucr.handler_unset([f'hosts/static/{login_ip}'])
     ucr.handler_set([f'hosts/static/{check_ip}={fqdn}'])
@@ -54,14 +57,17 @@ def test_session_sync(ucr, udm, portal_login_via_keycloak, portal_config, keyclo
     # check portal in check_url
     print(f'check session on {check_url} ({check_ip})')
     page.goto(check_url)
-    get_portal_tile(page, 'Login (Single sign-on)', portal_config).click()
+    login_tile = portal_config.sso_oidc_login_tile if protocol == 'oidc' else portal_config.sso_login_tile
+    get_portal_tile(page, login_tile, portal_config).click()
+    grant_oidc_privileges(page)
     page.click(f"[id='{portal_config.header_menu_id}']")
     a = page.locator(f'.{portal_config.portal_sidenavigation_username_class}').first
     assert a.inner_html() == username
     # check sessions
     sessions = keycloak_sessions_by_user(keycloak_config, username)[0]
-    assert f'{login_url}/univention/saml/metadata' in sessions['clients'].values()
-    assert f'{check_url}/univention/saml/metadata' in sessions['clients'].values()
+    sso_protocol = 'oidc/' if protocol == 'oidc' else 'saml/metadata'
+    assert f'{login_url}/univention/{sso_protocol}' in sessions['clients'].values()
+    assert f'{check_url}/univention/{sso_protocol}' in sessions['clients'].values()
 
 
 def test_every_umc_server_has_a_saml_client(ucr, keycloak_config):
@@ -75,6 +81,16 @@ def test_every_umc_server_has_a_saml_client(ucr, keycloak_config):
     kc_clients = [client['clientId'] for client in keycloak_get_request(keycloak_config, 'realms/ucs/clients')]
     for host in umc_hosts:
         assert f'https://{host}/univention/saml/metadata' in kc_clients
+
+
+def test_every_umc_server_has_a_oidc_client(ucr, keycloak_config):
+    ldap = get_ldap_connection()
+    umc_hosts = ldap.search('univentionService=Univention Management Console', attr=['cn'])
+    umc_hosts = [f"{host[1]['cn'][0].decode('utf-8')}.{ucr['domainname']}" for host in umc_hosts]
+    umc_hosts = [host for host in umc_hosts if host_is_alive(host)]
+    kc_clients = [client['clientId'] for client in keycloak_get_request(keycloak_config, 'realms/ucs/clients')]
+    for host in umc_hosts:
+        assert f'https://{host}/univention/oidc/' in kc_clients
 
 
 @pytest.mark.parametrize('realm', ['master', 'ucs'])

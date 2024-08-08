@@ -146,6 +146,23 @@ def _(string: str) -> str:
         return string
 
 
+def grant_oidc_privileges(page: Page) -> None:
+    if "oidc" in page.url:
+        try:
+            accept = page.get_by_role("button", name="Yes")
+            expect(accept, "button accept to grant privileges not visible").to_be_visible()
+            accept.click()
+        except AssertionError:
+            pass
+
+
+def portal_logout(page: Page, portal_config: SimpleNamespace) -> None:
+    page.click(f"[id={portal_config.header_menu_id}]")
+    page.click(f"[id={portal_config.logout_button_id}]")
+    if 'openid-connect' in page.url:
+        page.get_by_role('button', name='Logout').click()
+
+
 def keycloak_login(
     page: Page,
     keycloak_config: SimpleNamespace,
