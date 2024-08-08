@@ -151,11 +151,11 @@ class ad(univention.connector.ad.ad):
 
 
 if __name__ == '__main__':
-    parser = ArgumentParser()
+    parser = ArgumentParser(description="Resync object from AD to UCS")
     parser.add_argument("-f", "--filter", dest="ldapfilter", help="LDAP search filter")
     parser.add_argument("-b", "--base", dest="ldapbase", help="LDAP search base")
-    parser.add_argument("-c", "--configbasename", help="", metavar="CONFIGBASENAME", default="connector")
-    parser.add_argument('dn')
+    parser.add_argument("-c", "--configbasename", help="Config basename", metavar="CONFIGBASENAME", default="connector")
+    parser.add_argument("dn", nargs='?', default=None, help="Active Directory DN to resync")
     options = parser.parse_args()
 
     CONFIGBASENAME = options.configbasename
