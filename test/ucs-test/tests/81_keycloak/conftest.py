@@ -283,7 +283,7 @@ def keycloak_adm_login(page: Page, keycloak_config: SimpleNamespace):
             # check that we are logged in
             if fails_with or no_login:
                 return page
-            expect(page).to_have_title('Keycloak Administration UI')
+            expect(page).to_have_title('Keycloak Administration Console')
         except Exception:
             print(page.content())
             raise

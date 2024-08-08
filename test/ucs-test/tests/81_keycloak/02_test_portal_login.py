@@ -181,7 +181,7 @@ def test_login_not_possible_with_deleted_user(keycloak_config, portal_login_via_
     udm.remove_user(username)
 
     # user has been deleted, login should be denied
-    assert portal_login_via_keycloak(username, 'univention', fails_with=keycloak_config.wrong_password_msg)
+    assert portal_login_via_keycloak(username, 'univention', fails_with=_('Invalid username or password.'))
 
     # check that user is no longer available in keycloak
     users = keycloak_get_request(keycloak_config, 'realms/ucs/users', params={'search': username})
