@@ -597,7 +597,7 @@ structure you can use the following UCR variables:
    from your connected Active Directory to your UCS LDAP directory.
    Then the *AD Connection* only considers Active Directory objects for synchronization
    that locate in subtrees specified by one of these UCR variables.
-   You must include the LDAP base in the DNs and the comparison of the DNs is   
+   You must include the LDAP base in the DNs and the comparison of the DNs is
    case-insensitive.
 
    See the explanation of the ``.*`` placeholder below.
