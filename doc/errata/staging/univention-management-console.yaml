@@ -6,6 +6,6 @@ src: univention-management-console
 fix: 12.0.34-3
 desc: |
  This update addresses the following issues:
- * Ensure that `usr/share/univention-management-console/oidc/oidc.json`
+ * Ensure that `/usr/share/univention-management-console/oidc/oidc.json`
    has file permission `600`.
 bug: [57505]
