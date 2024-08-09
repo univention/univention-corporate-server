@@ -1321,7 +1321,7 @@ msgid ""
 " :program:`Active Directory Connection`."
 msgstr ""
 "Nach der Änderung dieser Einstellungen müssen Sie "
-"den :program:`AD Connector` neu starten."
+"die :program:`AD Directory Connection` neu starten."
 
 #: ../../windows/ad-connection.rst:626
 msgid ""
@@ -1433,8 +1433,8 @@ msgid ""
 "After changing these settings you must restart the :program:`Active "
 "Directory Connection`."
 msgstr ""
-"Nach der Änderung dieser Einstellungen müssen Sie den "
-":program:`AD Connector` neu starten."
+"Nach der Änderung dieser Einstellungen müssen Sie die "
+":program:`AD Directory Connection` neu starten."
 
 #: ../../windows/ad-connection.rst:679
 msgid ""
@@ -1495,7 +1495,7 @@ msgid ""
 "Directory Connection`."
 msgstr ""
 "Nach der Änderung dieser Einstellung müssen Sie den "
-":program:`AD Connector` neu starten."
+":program:`AD Directory Connection` neu starten."
 
 #: ../../windows/ad-connection.rst:709
 msgid "Ignore objects by LDAP filter"
@@ -1596,8 +1596,8 @@ msgid ""
 "After changing these settings, you must restart the :program:`Active "
 "Directory Connection`."
 msgstr ""
-"Nach der Änderung dieser Einstellungen müssen Sie den "
-":program:`AD Connector` neu starten."
+"Nach der Änderung dieser Einstellungen müssen Sie die "
+":program:`AD Directory Connection` neu starten."
 
 #: ../../windows/ad-connection.rst:790
 msgid "Priority of allow and ignore rules"
@@ -1617,7 +1617,7 @@ msgid ""
 " rules in a defined order. Depending on the evaluation result, the "
 "connector behaves as follows:"
 msgstr ""
-"Der :program:`AD Connector` arbeitet die ``Allow``- und ``Ignore``-Regeln"
+"Die :program:`AD Directory Connection` arbeitet die ``Allow``- und ``Ignore``-Regeln"
 " in einer festgelegten Reihenfolge ab. Abhängig vom Auswertungsergebnis "
 "verhält sich der Connector wie folgt:"
 
