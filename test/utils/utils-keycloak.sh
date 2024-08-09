@@ -105,8 +105,8 @@ keycloak_umc_oidc_idp_setup() {
 		# but the ldap/server/sasl/oauthbearer... vars are not updated
 		# so we do it manually here
 		#ucr set umc/oidc/issuer="https://$idp/realms/ucs"
-		ucr set "ldap/server/sasl/oauthbearer/trusted-issuer/$host_fqdn"="https://${fqdn}/realms/ucs"
-		ucr set "ldap/server/sasl/oauthbearer/trusted-jwks/$host_fqdn"="/usr/share/univention-management-console/oidc/https%3A%2F%2F${fqdn}%2Frealms%2Fucs.jwks"
+		ucr set "ldap/server/sasl/oauthbearer/trusted-issuer/$host_fqdn"="https://${idp}/realms/ucs"
+		ucr set "ldap/server/sasl/oauthbearer/trusted-jwks/$host_fqdn"="/usr/share/univention-management-console/oidc/https%3A%2F%2F${idp}%2Frealms%2Fucs.jwks"
 		# not sure here. ucr set ldap/server/sasl/oauthbearer/trusted-audience/master.ucs.test='ldaps://auth.extern.test/'
 	fi
 
