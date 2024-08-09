@@ -94,10 +94,11 @@ keycloak_umc_oidc_idp_setup() {
 	join_pwdfile="/tmp/pwdfile"
 	join_user="Administrator"
 	echo -n "univention" > "$join_pwdfile"
-	local idp="$1"; shift
+	local idp="$1"
 
 	# external fqdn for idp
 	if [ -n "$idp" ]; then
+		shift
 		# OIDC
 		host_fqdn="$(ucr get hostname).$(ucr get domainname)"
 		# umc/oidc/issuer is correctly set by the join script,
