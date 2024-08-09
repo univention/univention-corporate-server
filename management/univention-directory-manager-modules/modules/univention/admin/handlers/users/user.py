@@ -848,7 +848,7 @@ def unmapSambaKickoffTimeToUserexpiry(oldattr):  # type: (dict[str, list[bytes]]
 
 
 def _mapUserExpiryToShadowExpire(userexpiry):  # type: (str) -> str
-    return u"%d" % long(time.mktime(time.strptime(userexpiry, "%Y-%m-%d")) / 3600 / 24 + 1)
+    return u"%d" % long(calendar.timegm(time.strptime(userexpiry, "%Y-%m-%d")) / 3600 / 24)
 
 
 def _mapUserExpiryToKrb5ValidEnd(userexpiry):  # type: (str) -> str

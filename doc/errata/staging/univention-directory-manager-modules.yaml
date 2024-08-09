@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-directory-manager-modules
+fix: 5.0.27-6
+desc: |
+ This update addresses the following issues:
+ * The LDAP attribute `shadowExpire` was calculated in a
+   way which resulted in users expiring one day later than
+   expected in certain timezones. This has been corrected.
+bug: [46349]

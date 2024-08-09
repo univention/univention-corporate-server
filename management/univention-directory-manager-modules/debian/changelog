@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.27-6) unstable; urgency=medium
+
+  * Bug #46349: Don't let expiry date depend on timezone
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 09 Aug 2024 17:14:41 +0200
+
 univention-directory-manager-modules (15.0.27-5) unstable; urgency=medium
 
   * Bug #57439: in univention-sync-memberuid, catch uexceptions instead
