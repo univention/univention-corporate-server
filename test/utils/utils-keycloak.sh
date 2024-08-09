@@ -197,6 +197,7 @@ external_keycloak_fqdn_config () {
 	local fqdn="${1:?missing fqdn}"; shift
 	local certificate="${1:?missing certificate}"; shift
 	local keyfile="${1:?missing keyfile}"; shift
+	local host_fqdn
 	# keycloak config
 	ucr set \
 		keycloak/apache2/ssl/certificate="$certificate" \
@@ -205,6 +206,16 @@ external_keycloak_fqdn_config () {
 		keycloak/server/sso/fqdn="${fqdn}"
 	# to not create a certificate for external name in univention-saml/91univention-saml.inst
 	#ucr set keycloak/server/sso/certificate/generation=false
+
+	# OIDC
+	host_fqdn="$(ucr get hostname).$(ucr get domainname)"
+	# umc/oidc/issuer is correct, but the ldap/server/sasl/oauthbearer... vars are not updated in the join script
+	# so we do it manually here
+	ucr set umc/oidc/issuer="https://$fqdn/realms/ucs"
+	ucr set "ldap/server/sasl/oauthbearer/trusted-issuer/$host_fqdn"="https://${fqdn}/realms/ucs"
+	ucr set "ldap/server/sasl/oauthbearer/trusted-jwks/$host_fqdn"="/usr/share/univention-management-console/oidc/https%3A%2F%2F${fqdn}%2Frealms%2Fucs.jwks"
+	# not sure here. ucr set ldap/server/sasl/oauthbearer/trusted-audience/master.ucs.test='ldaps://auth.extern.test/'
+	service slapd restart
 }
 
 external_portal_apache_config () {
@@ -234,11 +245,26 @@ external_portal_config () {
 	local fqdn="${1:?missing fqdn}"; shift
 	local certificate="${1:?missing certificate}"; shift
 	local keyfile="${1:?missing keyfile}"; shift
+	local host_fqdn
+
+	# saml
 	ucr set umc/saml/sp-server="$fqdn"
 	# workaround for https://forge.univention.org/bugzilla/show_bug.cgi?id=55982
 	# copy certificate to /etc/univention/ssl
 	mkdir -p "/etc/univention/ssl/$fqdn"
 	cp -rf "$certificate" "/etc/univention/ssl/$fqdn/cert.pem"
 	cp -rf "$keyfile" "/etc/univention/ssl/$fqdn/private.key"
+
+	# oidc
+	ucr set umc/oidc/rp/server="$fqdn"
+	# i guess this would need to be set on all UMC servers? so that they trust each other?
+	ucr set "ldap/server/sasl/oauthbearer/trusted-authorized-party/$fqdn"="https://$fqdn/univention/oidc/"
+
+	# re run join
 	univention-run-join-scripts --force --run-scripts 92univention-management-console-web-server.inst
+
+	# somehow after the join this is broken, points to hostname.domainame, should be external portal name
+	host_fqdn="$(ucr get hostname).$(ucr get domainname)"
+	ucr set "umc/oidc/$host_fqdn/client-id"="https://${fqdn}/univention/oidc/"
+	service univention-management-console-server restart
 }
