@@ -61,10 +61,6 @@ udm users/user create \
 	--set password="$password" \
 	--set objectFlag=hidden
 
-# TODO remove, switch to test appcenter for 5.2 development
-univention-install -y univention-appcenter-dev
-univention-app dev-use-test-appcenter
-
 # install keycloak
 univention-app update || true
 # TODO which parameters
