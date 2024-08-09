@@ -90,13 +90,29 @@ keycloak_saml_idp_setup () {
 
 keycloak_umc_oidc_idp_setup() {
 	# FIXME
-	local join_user join_pwdfile
+	local join_user join_pwdfile host_fqdn
 	join_pwdfile="/tmp/pwdfile"
 	join_user="Administrator"
 	echo -n "univention" > "$join_pwdfile"
+	local idp="$1"
+
+	# external fqdn for idp
+	if [ -n "$idp" ]; then
+		# OIDC
+		host_fqdn="$(ucr get hostname).$(ucr get domainname)"
+		# umc/oidc/issuer is correctly set by the join script,
+		# but the ldap/server/sasl/oauthbearer... vars are not updated
+		# so we do it manually here
+		#ucr set umc/oidc/issuer="https://$idp/realms/ucs"
+		ucr set "ldap/server/sasl/oauthbearer/trusted-issuer/$host_fqdn"="https://${fqdn}/realms/ucs"
+		ucr set "ldap/server/sasl/oauthbearer/trusted-jwks/$host_fqdn"="/usr/share/univention-management-console/oidc/https%3A%2F%2F${fqdn}%2Frealms%2Fucs.jwks"
+		# not sure here. ucr set ldap/server/sasl/oauthbearer/trusted-audience/master.ucs.test='ldaps://auth.extern.test/'
+	fi
 
 	ucr set umc/web/oidc/enabled=true
 	univention-run-join-scripts -dcaccount "$join_user" -dcpwd "$join_pwdfile" --force --run-scripts 92univention-management-console-web-server
+	systemctl restart slapd
+
 	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
 		udm portals/entry create "$@" --ignore_exists \
 			--position "cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)" \
@@ -197,7 +213,6 @@ external_keycloak_fqdn_config () {
 	local fqdn="${1:?missing fqdn}"; shift
 	local certificate="${1:?missing certificate}"; shift
 	local keyfile="${1:?missing keyfile}"; shift
-	local host_fqdn
 	# keycloak config
 	ucr set \
 		keycloak/apache2/ssl/certificate="$certificate" \
@@ -207,15 +222,6 @@ external_keycloak_fqdn_config () {
 	# to not create a certificate for external name in univention-saml/91univention-saml.inst
 	#ucr set keycloak/server/sso/certificate/generation=false
 
-	# OIDC
-	host_fqdn="$(ucr get hostname).$(ucr get domainname)"
-	# umc/oidc/issuer is correct, but the ldap/server/sasl/oauthbearer... vars are not updated in the join script
-	# so we do it manually here
-	ucr set umc/oidc/issuer="https://$fqdn/realms/ucs"
-	ucr set "ldap/server/sasl/oauthbearer/trusted-issuer/$host_fqdn"="https://${fqdn}/realms/ucs"
-	ucr set "ldap/server/sasl/oauthbearer/trusted-jwks/$host_fqdn"="/usr/share/univention-management-console/oidc/https%3A%2F%2F${fqdn}%2Frealms%2Fucs.jwks"
-	# not sure here. ucr set ldap/server/sasl/oauthbearer/trusted-audience/master.ucs.test='ldaps://auth.extern.test/'
-	service slapd restart
 }
 
 external_portal_apache_config () {
