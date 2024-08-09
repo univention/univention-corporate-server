@@ -94,7 +94,7 @@ keycloak_umc_oidc_idp_setup() {
 	join_pwdfile="/tmp/pwdfile"
 	join_user="Administrator"
 	echo -n "univention" > "$join_pwdfile"
-	local idp="$1"
+	local idp="$1"; shift
 
 	# external fqdn for idp
 	if [ -n "$idp" ]; then
@@ -127,7 +127,7 @@ keycloak_umc_oidc_idp_setup() {
 			--set linkTarget=samewindow \
 			--set icon="$(base64 /usr/share/univention-portal/login.svg)"
 		udm  portals/category modify "$@" --ignore_exists \
-			--dn "cn=domain-service,cn=category,cn=portals,cn=univention,$(ucr get ldap/base)"\
+			--dn "cn=domain-service,cn=category,cn=portals,cn=univention,$(ucr get ldap/base)" \
 			--append entries="cn=login-oidc,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)"
 	fi
 }
