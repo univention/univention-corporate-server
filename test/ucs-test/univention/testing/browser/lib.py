@@ -137,7 +137,8 @@ class Interactions:
 
     def open_and_close_module(self, module_name: str):
         self.open_module(_(module_name))
-        self.page.get_by_role('button', name=_('Close')).click()
+        # give it a bit more time, e.g. system diagnostic runs longer
+        self.page.get_by_role('button', name=_('Close')).click(timeout=60000)
 
     def get_available_modules(self) -> List[str]:
         self.page.locator('.umcModuleSearchToggleButton').click()
