@@ -1,3 +1,10 @@
+ucs-test (10.0.22-51) unstable; urgency=medium
+
+  * Bug 57467: adjust logout notifier tests to work with OIDC logout
+    confirmation and different portal FQDN
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 12 Aug 2024 18:39:08 +0200
+
 ucs-test (10.0.22-50) unstable; urgency=medium
 
   * Bug 57467: add tests for the logout notifier

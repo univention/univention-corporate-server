@@ -180,11 +180,11 @@ class UCSPortal:
         self.tester: UMCBrowserTest = tester
         self.page: Page = tester.page
 
-    def navigate(self, username='Administrator', password='univention', do_login: bool = True):
+    def navigate(self, username='Administrator', password='univention', do_login: bool = True, portal_url=None):
         if do_login:
             self.tester.login(username, password, location='/univention/portal')
         else:
-            self.page.goto(f'{self.tester.base_url}/univention/portal')
+            self.page.goto(f'{portal_url or self.tester.base_url}/univention/portal')
 
     def side_menu(self) -> UCSSideMenu:
         return UCSSideMenu(self.tester)
