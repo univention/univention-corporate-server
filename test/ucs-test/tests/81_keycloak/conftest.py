@@ -310,13 +310,17 @@ def keycloak_adm_login(page: Page, keycloak_config: SimpleNamespace):
         url: str | None = keycloak_config.url,
         no_login: bool = False,
     ):
-        page.goto(url)
-        expect(page).to_have_title('Univention Corporate Server Single-Sign On')
-        keycloak_login(page, keycloak_config, username, password, fails_with=fails_with, no_login=no_login)
-        # check that we are logged in
-        if not fails_with or not no_login:
-            return page
-        expect(page).to_have_title('Keycloak Administration UI')
+        try:
+            page.goto(url)
+            expect(page).to_have_title('Univention Corporate Server Single-Sign On')
+            keycloak_login(page, keycloak_config, username, password, fails_with=fails_with, no_login=no_login)
+            # check that we are logged in
+            if fails_with or no_login:
+                return page
+            expect(page).to_have_title('Keycloak Administration Console')
+        except Exception:
+            print(page.content())
+            raise
         return page
 
     return _func
