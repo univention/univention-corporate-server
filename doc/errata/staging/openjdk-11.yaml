@@ -1,0 +1,54 @@
+product: ucs
+release: "5.0"
+version: [7, 8]
+scope: ucs_5.0-0-errata5.0-8
+src: openjdk-11
+fix: 11.0.24+8-2~deb10u1
+desc: |
+ This update addresses the following issues:
+ 11.0.24+8-2~deb10u1 (Tue, 06 Aug 2024 12:32:23 +0200)
+ * Backport to buster.
+ * Disable test suite, jtreg7 is not available on buster.
+ 11.0.24+8-2 (Tue, 30 Jul 2024 08:49:56 +0200)
+ [ Vladimir Petko ]
+ * d/copyright: Regenerate copyright.
+ * d/rules, d/t/*: Collate all excluded tests into d/problemlist.csv.
+ * d/p/jdk-8336529-proposed.patch: Fix time_t migration issue on armhf openjdk
+   is unable to set file last modified timestamp.
+ * d/p/jdk-8334895-proposed.patch: Refresh patch.
+ * d/rules: Relax jtreg7 version condition for backports.
+ * d/rules, d/control.in: Depend on pkgconf rather than pkg-config in bookworm
+   and later releases. This resolves lintian warning
+   build-depends-on-obsolete-package Build-Depends: pkg-config => pkgconf.
+ * d/rules: Drop autotools-dev dependency for the modern debhelper. This
+   resolves obsolete autotools-dev dependency lintian warning. See #844191.
+ 11.0.24+8-1 (Wed, 17 Jul 2024 13:18:57 +0200)
+ * OpenJDK 11.0.24 release, build 8. - CVEs: + CVE-2024-21147 + CVE-2024-21145
+   + CVE-2024-21140 + CVE-2024-21144 + CVE-2024-21131 + CVE-2024-21138 -
+   Security Fixes: + JDK-8281658: New security category for -XshowSettings
+   launcher option. + JDK-8316138: Added GlobalSign R46 and E46 root CA
+   certificates. + JDK-8256660: Disabled DTLS 1.0. + JDK-8326891: Native
+   executables and libraries on Linux use RPATH instead of RUNPATH.
+ 11.0.24~7ea-1 (Sat, 29 Jun 2024 10:11:23 +0200)
+ * OpenJDK 11.0.24+7 build (early access).
+ * d/p/*: Refresh patches.
+ * d/rules, d/control: Use jtreg7, enable jtreg.
+ * d/JB-demo.overrides.in: Add jar-contains-source override for SwingSet demo
+   jar.
+ * d/rules, d/copyright-generator/copyright-gen.py, d/copyright: Exclude
+   test/jdk/sun/management/windows/revokeall.exe from orig tarball, format
+   d/copyright-generator/copyright-gen.py.
+ * d/p/8307977-proposed.diff: Rename to jdk-8307977-proposed.patch.
+ * d/p/jdk-8334502.patch: Fix iso8601_utctime armhf function.
+ * d/p/jtreg-location.diff: Drop patch as it is no longer needed for jtreg7.
+ * d/rules: Include buildflags.mk to avoid errors due to undefined variables.
+ [ Matthias Klose ]
+ * Remove references to obsolete patches..
+bug: [57511]
+cve:
+- CVE-2024-21147
+- CVE-2024-21145
+- CVE-2024-21140
+- CVE-2024-21144
+- CVE-2024-21131
+- CVE-2024-21138
