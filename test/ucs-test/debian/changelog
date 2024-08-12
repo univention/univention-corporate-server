@@ -1,3 +1,9 @@
+ucs-test (12.0.137) unstable; urgency=medium
+
+  * Issue univention/ucs#2338: longer timeout in browser tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 12 Aug 2024 10:59:36 +0200
+
 ucs-test (12.0.136) unstable; urgency=medium
 
   * Issue #2338: Fix 81_keycloak/04_misc.py failing if a recently added and
