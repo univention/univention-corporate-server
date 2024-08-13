@@ -7,7 +7,7 @@ msgstr ""
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-08-13 16:30+0200\n"
-"PO-Revision-Date: 2024-08-13 17:01+0200\n"
+"PO-Revision-Date: 2024-08-13 17:22+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -1189,9 +1189,9 @@ msgid ""
 "the source objects according to the following criteria, described in "
 "detail in the following sections:"
 msgstr ""
-"Sie können das :program:`Active Directory Connection` so konfigurieren, "
+"Sie können die :program:`Active Directory Connection` so konfigurieren, "
 "dass nur eine bestimmte Auswahl von Quellobjekten synchronisiert wird. "
-"Sie können die Quellobjekte nach den folgenden Kriterien auswählen, die "
+"Sie können die Quellobjekte nach Kriterien auswählen, die "
 "in den folgenden Abschnitten ausführlich beschrieben werden: "
 
 #: ../../windows/ad-connection.rst:559
@@ -1208,7 +1208,7 @@ msgstr "Auswahl aller Elemente außer nach Standort im LDAP-Teilbaum"
 
 #: ../../windows/ad-connection.rst:562
 msgid "Selecting all items except by matching an LDAP filter"
-msgstr "Auswahl aller Elemente, die nicht mit einem LDAP-Filter übereinstimmen"
+msgstr "Auswahl aller Elemente außer durch Übereinstimmung mit einem LDAP-Filter"
 
 #: ../../windows/ad-connection.rst:565
 msgid "Allow only specific LDAP subtrees"
@@ -1219,7 +1219,7 @@ msgid ""
 "To configure the connector to synchronize only specific subtrees of the "
 "LDAP structure you can use the following UCR variables:"
 msgstr ""
-"Um den Connector so zu konfigurieren, dass er nur bestimmte Teilbäume der"
+"Um den Konnektor so zu konfigurieren, dass er nur bestimmte Teilbäume der"
 " LDAP-Struktur synchronisiert, können Sie die folgenden UCR-Variablen "
 "verwenden: "
 
@@ -1332,7 +1332,7 @@ msgid ""
 " :program:`Active Directory Connection`."
 msgstr ""
 "Nachdem Sie die UCR-Variablen definiert oder geändert haben, müssen Sie "
-"das :program:`Active Directory Connection` neu starten. "
+"die :program:`Active Directory Verbindung` neu starten. "
 
 #: ../../windows/ad-connection.rst:626
 msgid ""
@@ -1343,12 +1343,12 @@ msgid ""
 "the corresponding target object can therefore be outside the subtrees "
 "corresponding to the |UCSUCRV|."
 msgstr ""
-"Die :program:`Active Directory Connection` bestimmt die Position des "
+"Die :program:`Active Directory Verbindung` bestimmt die Position des "
 "Zielobjekts durch dynamische und statische Faktoren wie die Mapping-"
 "Attribute ``dn_mapping_function`` und ``position_mapping``, sofern sie im"
 " Mapping für einzelne Objekttypen konfiguriert sind. Die Position des "
 "entsprechenden Zielobjekts kann also außerhalb der Teilbäume liegen, die "
-"dem |UCSUCRV|\\ n entsprechen."
+"den |UCSUCRV|\\ n entsprechen."
 
 #: ../../windows/ad-connection.rst:635
 msgid ""
@@ -1362,7 +1362,7 @@ msgstr ""
 "ein Quellobjekt aus einem betrachteten Teilbaum an eine Position "
 "verschieben, die außerhalb des kombinierten Geltungsbereichs aller Ihrer "
 "``…/allowsubtree/.*/[ad|ucs]`` Definitionen liegt, dann entfernt die  "
-":program:`AD Connection` das Objekt aus dem Zielverzeichnis. "
+":program:`Active Directory Verbindung` das Objekt aus dem Zielverzeichnis."
 
 #: ../../windows/ad-connection.rst:641
 msgid "Allow only objects that match an LDAP filter"
@@ -1375,7 +1375,7 @@ msgid ""
 "that match that filter. It ignores all other LDAP objects."
 msgstr ""
 "Sie können für jede Art von Objekt einen LDAP-Filter konfigurieren. "
-":program:`Active Directory Connection` synchronisiert nur LDAP-Objekte, die "
+":program:`Active Directory Verbindung` synchronisiert nur LDAP-Objekte, die "
 "diesem Filter entsprechen. Alle anderen LDAP-Objekte werden ignoriert. "
 
 #: ../../windows/ad-connection.rst:647
@@ -1395,8 +1395,8 @@ msgid ""
 " that match this LDAP filter. ``{type}`` can be one of the following "
 "values:"
 msgstr ""
-"Der Konnektor synchronisiert nur die Objekte mit dem Objekttyp ``{Typ}``, die "
-"diesem LDAP-Filter entsprechen. ``{Typ}`` kann einer der folgenden Werte sein: "
+"Der Konnektor synchronisiert nur die Objekte mit dem Objekttyp ``{type}``, die "
+"diesem LDAP-Filter entsprechen. ``{type}`` kann einer der folgenden Werte sein: "
 
 #: ../../windows/ad-connection.rst:656 ../../windows/ad-connection.rst:728
 #: ../../windows/ad-connection.rst:768
@@ -1475,7 +1475,7 @@ msgid ""
 "you can use the following |UCSUCRV|:"
 msgstr ""
 "Um den Konnektor so zu konfigurieren, dass er Objekte aus bestimmten "
-"LDAP-Teilbäumen ignoriert, können Sie den folgenden |UCSUCRV| verwenden:"
+"LDAP-Teilbäumen ignoriert, können Sie die folgende |UCSUCRV| verwenden:"
 
 #: ../../windows/ad-connection.rst:693
 msgid ""
@@ -1485,7 +1485,7 @@ msgid ""
 "the variable isn't set."
 msgstr ""
 "Die Variable definiert die Stellen im Verzeichnisdienst, die der Konnektor von "
-"der Synchronisation ausschließt. Die Werte können Positionen im Active "
+"der Synchronisation ausschließt. Die Werte können Positionen in Active "
 "Directory und im UCS LDAP-Verzeichnis enthalten. Standardmäßig ist die Variable "
 "nicht gesetzt."
 
@@ -1529,19 +1529,19 @@ msgid ""
 "type-value-mapping-tab`. The table also shows which LDAP attributes you "
 "need to consider in the filter depending on the object type."
 msgstr ""
-"Der Konnektor **synchronisiert** keine Objekte, die diese Variable als Werte "
+"Der Konnektor synchronisiert **keine** Objekte, die diese Variable als Werte "
 "definiert. Trennen Sie mehrere Werte durch Kommas. Für die möglichen Werte für "
-"``{Typ}``, siehe :numref:`ad-connector-allow-and-ignore-rules- "
+"``{type}``, siehe :numref:`ad-connector-allow-and-ignore-rules-"
 "type-value-mapping-tab`. Die Tabelle zeigt auch, welche LDAP-Attribute Sie je "
 "nach Objekttyp im Filter berücksichtigen müssen."
 
 #: ../../windows/ad-connection.rst:721
 msgid "Mapping for which ``{type}`` needs which LDAP attribute"
-msgstr "Zuordnung, welcher ``{Typ}`` welches LDAP-Attribut benötigt"
+msgstr "Zuordnung, welcher ``{type}`` welches LDAP-Attribut benötigt"
 
 #: ../../windows/ad-connection.rst:725
 msgid "``{type}``"
-msgstr "``{Typ}``"
+msgstr "``{type}``"
 
 #: ../../windows/ad-connection.rst:726
 msgid "Value from LDAP attribute"
@@ -1590,7 +1590,7 @@ msgid ""
 "Use the following |UCSUCRV|:"
 msgstr ""
 "Für mehr Flexibilität können Sie auch einen LDAP-Filter setzen, um Objekte zu "
-"ignorieren. Verwenden Sie den folgenden |UCSUCRV|:"
+"ignorieren. Verwenden Sie die folgende |UCSUCRV|:"
 
 #: ../../windows/ad-connection.rst:765
 msgid ""
@@ -1598,7 +1598,7 @@ msgid ""
 "filter. ``{type}`` can be have one of the following values:"
 msgstr ""
 "Der Connector synchronisiert **keine** Objekte, die diesem LDAP-Filter "
-"entsprechen. ``{Typ}`` kann einen der folgenden Werte haben:"
+"entsprechen. ``{type}`` kann einen der folgenden Werte haben:"
 
 #: ../../windows/ad-connection.rst:776
 msgid "$ ucr set connector/ad/mapping/user/ignorefilter=\"(description=no sync)\""
@@ -1648,7 +1648,7 @@ msgid ""
 "evaluates the next rule. If the rule was the last rule and there's no "
 "next rule, the connector synchronizes the object."
 msgstr ""
-"Wenn eine Regel dazu führt, dass der Konnektor ein Objekt nicht ignoriert, "
+"Wenn eine Regel dazu führt, dass der Konnektor ein Objekt verarbeitet, "
 "wertet der Konnektor die nächste Regel aus. Wenn die Regel die letzte Regel war "
 "und es keine nächste Regel gibt, synchronisiert der Konnektor das Objekt. "
 
