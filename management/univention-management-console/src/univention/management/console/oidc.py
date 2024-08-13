@@ -455,6 +455,7 @@ class OIDCLogout(_OIDCLogoutBase):
         logout_url = '%s?%s' % (self._OAUTH_END_SESSION_URL, urlencode({
             'post_logout_redirect_uri': self.reverse_abs_url('oidc-logout-done'),
             'client_id': self.client_id,
+            'id_token_hint': user.oidc.id_token,
             # 'logout_hint': None,
             # 'ui_locales': None,
         }))

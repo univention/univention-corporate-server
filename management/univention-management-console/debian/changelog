@@ -1,3 +1,9 @@
+univention-management-console (14.0.26) unstable; urgency=medium
+
+  * Bug #57475: add oidc-id-token hint to disable logout confirmation dialog
+
+ -- Christian Castens <castens@univention.de>  Wed, 14 Aug 2024 17:11:08 +0200
+
 univention-management-console (14.0.25) unstable; urgency=medium
 
   * univention/ucs#2388 don't verify refresh token for getting expiry
