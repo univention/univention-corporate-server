@@ -1,3 +1,9 @@
+univention-management-console (14.0.25) unstable; urgency=medium
+
+  * univention/ucs#2388 don't verify refresh token for getting expiry
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 13 Aug 2024 11:24:43 +0200
+
 univention-management-console (14.0.24) unstable; urgency=medium
 
   * Bug #57467: Add /logout-sse endpoint which will send a message to the attached

@@ -70,7 +70,8 @@ class OIDCUser:
 
     @property
     def session_end_time(self):
-        exp = jwt.decode(self.refresh_token, verify=False)['exp'] if self.refresh_token else self.claims['exp']
+        # We can't verify the refresh token here, maybe we should get the session expiry from the token response instead
+        exp = jwt.decode(self.refresh_token, options={"verify_signature": False})['exp'] if self.refresh_token else self.claims['exp']
         return int(monotonic() + (exp - time.time()))
 
     @property
