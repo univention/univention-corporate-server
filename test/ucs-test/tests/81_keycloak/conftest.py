@@ -35,11 +35,11 @@ import functools
 import json
 import os
 from types import SimpleNamespace
-from typing import Callable, Iterator
+from typing import Callable, Generator, Iterator
 
 import pytest
 from keycloak import KeycloakAdmin, KeycloakOpenID
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Browser, BrowserContext, Page, expect
 from utils import (
     get_portal_tile, grant_oidc_privileges, keycloak_login, keycloak_password_change, legacy_auth_config_create,
     legacy_auth_config_remove, run_command,
@@ -49,6 +49,7 @@ from univention.appcenter.actions import get_action
 from univention.appcenter.app_cache import Apps
 from univention.config_registry import ConfigRegistry
 from univention.lib.misc import custom_groupname
+from univention.testing.pytest_univention_playwright import fixtures
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import UCSTestDomainAdminCredentials, get_ldap_connection, wait_for_listener_replication
 from univention.udm import UDM
@@ -212,6 +213,7 @@ def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
         'url': url,
         'admin_url': f'{url}/admin',
         'token_url': f'{url}/realms/ucs/protocol/openid-connect/token',
+        'logout_url': f'{url}/realms/ucs/protocol/openid-connect/logout',
         'master_token_url': f'{url}/realms/master/protocol/openid-connect/token',
         'users_url': f'{url}/admin/realms/ucs/users',
         'client_session_stats_url': f'{url}/admin/realms/ucs/client-session-stats',
@@ -472,8 +474,8 @@ def legacy_authorization_setup_oidc(
         keycloak_administrator_connection.delete_client(client_id)
 
 
-@pytest.fixture(params=['frontchannel', 'backchannel'])
-def oidc_client_frontchannel(ucr, request):
+@pytest.fixture()
+def oidc_client_logout_meachanism(ucr, request):
     if request.param == 'frontchannel':
         pytest.skip("frontchannel logout doesn't currently does not work for external OPs. Skipp all frontchannel logout tests for now.")
     modified_clients = []
@@ -492,3 +494,16 @@ def oidc_client_frontchannel(ucr, request):
 
     for client in modified_clients:
         run_command(['univention-keycloak', 'oidc/rp', 'update', client['clientId'], json.dumps(client)])
+
+
+@pytest.fixture()
+def multi_tab_context(browser: Browser, request: pytest.FixtureRequest, ucr) -> Generator[BrowserContext, None, None]:
+    context = browser.new_context(ignore_https_errors=True)
+    context.set_default_timeout(30 * 1000)
+    expect.set_options(timeout=30 * 1000)
+
+    context.tracing.start(screenshots=True, snapshots=True, sources=True)
+
+    yield context
+
+    fixtures.teardown_umc_browser_test(request, ucr, context.pages, context, browser)
