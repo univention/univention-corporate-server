@@ -1,3 +1,9 @@
+univention-management-console (12.0.34-5) unstable; urgency=medium
+
+  * Bug #57475: add oidc-id-token hint to disable logout confirmation dialog
+
+ -- Christian Castens <castens@univention.de>  Tue, 13 Aug 2024 11:11:08 +0200
+
 univention-management-console (12.0.34-4) unstable; urgency=medium
 
   * Bug #57467: Add /logout-sse endpoint which will send a message to the attached

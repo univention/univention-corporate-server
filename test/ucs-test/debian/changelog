@@ -1,3 +1,9 @@
+ucs-test (10.0.22-55) unstable; urgency=medium
+
+  * Bug #57475: add oidc-id-token hint to disable logout confirmation dialog
+
+ -- Christian Castens <castens@univention.de>  Wed, 14 Aug 2024 17:21:08 +0200
+
 ucs-test (10.0.22-54) unstable; urgency=medium
 
   * Bug 57467: disable frontchannel logout during backchannel logout OIDC
