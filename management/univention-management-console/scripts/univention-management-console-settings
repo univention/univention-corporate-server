@@ -1,0 +1,123 @@
+#!/usr/bin/python3
+#
+# Univention Management Console
+#
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
+# Copyright 2006-2024 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+import argparse
+import json
+import sys
+
+from univention.config_registry import ucr
+from univention.udm import UDM
+from univention.udm.binary_props import Base64Bzip2BinaryProperty
+from univention.udm.exceptions import NoObject
+
+
+settings_position = f"cn=umc,cn=data,cn=univention,{ucr.get('ldap/base')}"
+
+
+class StoreInDict(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string) -> None:
+        if not hasattr(namespace, 'options'):
+            namespace.options = {}
+
+        options = namespace.options
+        options[self.dest] = values
+        namespace.options = options
+
+
+class UMCSettings:
+    def __init__(self, position: str = settings_position):
+        self.udm = UDM.admin().version(3)
+        self.module = self.udm.get('settings/data')
+        try:
+            settings_obj = self.module.get(settings_position)
+        except NoObject:
+            settings_obj = self.module.new()
+            settings_obj.props.name = 'umc'
+            settings_obj.props.data_type = 'string'
+        self.obj = settings_obj
+        self._tmp_settings = {}
+
+    def get_settings(self):
+        if self.obj.props.data:
+            return json.loads(self.obj.props.data.raw.decode('utf-8'))
+        return {}
+
+    def set_setting(self, key, value):
+        self._tmp_settings[key] = value
+
+    def save(self):
+        new_settings = {**self.get_settings(), **self._tmp_settings}
+        self.obj.props.data = Base64Bzip2BinaryProperty('data', raw_value=json.dumps(new_settings).encode('utf-8'))
+        self.obj.save()
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        prog='univention-management-console-settings',
+    )
+
+    subparser = parser.add_subparsers(title='commands', required=True, dest='command', help='print the current configuration or set options')
+    get_subparser = subparser.add_parser('get')
+    get_subparser.set_defaults(func=get_options)
+
+    set_subparser = subparser.add_parser('set')
+    set_subparser.add_argument('-u', '--sqlURI', nargs='?', const=None, help='The SQL connection URI', action=StoreInDict)
+    set_subparser.set_defaults(func=set_options)
+
+    args = parser.parse_args()
+    if 'options' not in args and args.command == 'set':
+        set_subparser.print_help()
+        sys.exit(1)
+    return args
+
+
+def main():
+    args = parse_args()
+    settings = UMCSettings()
+
+    args.func(args, settings)
+
+
+def get_options(args, settings: UMCSettings):
+    print(settings.get_settings())
+
+
+def set_options(args, settings: UMCSettings):
+    for key, value in args.options.items():
+        settings.set_setting(key, value)
+    settings.save()
+
+
+if __name__ == '__main__':
+    main()

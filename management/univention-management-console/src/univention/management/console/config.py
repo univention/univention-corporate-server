@@ -60,3 +60,5 @@ MODULE_COMMAND = '/usr/sbin/univention-management-console-module'
 
 MODULE_DEBUG_LEVEL = ucr.get_int('umc/module/debug/level', 2)
 MODULE_INACTIVITY_TIMER = ucr.get_int('umc/module/timeout', 600) * 1000
+
+SQL_CONNECTION_ENV_VAR = 'UMC_SQL_CONNECTION_URI'

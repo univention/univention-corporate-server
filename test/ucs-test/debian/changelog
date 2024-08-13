@@ -1,3 +1,10 @@
+ucs-test (12.0.166) unstable; urgency=medium
+
+  * Bug #57482: Add a Keycloak/OIDC test - 14_oidc_umc_multi_processes.py. It
+    tests OIDC login and logout with UMC in multiprocess mode
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 03 Sep 2024 15:07:28 +0200
+
 ucs-test (12.0.164) unstable; urgency=medium
 
   * Bug #56054: make 11_umc_pam-login_unclosed_fh_test less flaky. Use actual

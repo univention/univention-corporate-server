@@ -89,6 +89,7 @@ Depends:
  python3-pysaml2,
  python3-sdnotify,
  python3-setproctitle,
+ python3-sqlalchemy,
  python3-tornado,
  python3-univention,
  python3-univention-config-registry,
