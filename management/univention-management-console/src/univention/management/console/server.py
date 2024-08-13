@@ -52,7 +52,7 @@ from tornado.web import Application as TApplication, url
 
 import univention.debug as ud
 from univention.management.console import saml
-from univention.management.console.config import ucr
+from univention.management.console.config import SQL_CONNECTION_ENV_VAR, ucr
 from univention.management.console.log import CORE, log_init, log_reopen
 from univention.management.console.oidc import (
     OIDCBackchannelLogout, OIDCFrontchannelLogout, OIDCLogin, OIDCLogout, OIDCLogoutFinished, OIDCMetadata,
@@ -65,6 +65,7 @@ from univention.management.console.saml import SamlACS, SamlIframeACS, SamlLogou
 from univention.management.console.session import categoryManager, moduleManager
 from univention.management.console.shared_memory import shared_memory
 from univention.management.console.sse import SSELogoutNotifer
+from univention.udm import UDM
 
 
 try:
@@ -223,6 +224,16 @@ class Server(object):
 
         # bind sockets
         sockets = bind_sockets(self.options.port, ucr.get('umc/http/interface', '127.0.0.1'), backlog=ucr.get_int('umc/http/requestqueuesize', 100), reuse_port=True)
+
+        if os.environ.get(SQL_CONNECTION_ENV_VAR, None) is None:
+            try:
+                settings_data_mod = UDM.admin().version(3).get('settings/data')
+                umc_settings_position = f"cn=umc,cn=data,cn=univention,{ucr.get('ldap/base')}"
+                umc_settings_obj = settings_data_mod.get(umc_settings_position)
+                settings_obj = json.loads(umc_settings_obj.props.data.raw.decode('utf-8'))
+                os.environ[SQL_CONNECTION_ENV_VAR] = settings_obj['sqlURI']
+            except Exception:
+                pass
 
         # start sub worker processes
         if self.options.processes != 1:

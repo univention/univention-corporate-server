@@ -1,3 +1,9 @@
+univention-management-console (13.0.23) unstable; urgency=medium
+
+  * Bug #57482: Add an SQL database for session storage.
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 05 Sep 2024 15:35:32 +0200
+
 univention-management-console (13.0.22) unstable; urgency=medium
 
   * Bug #57467: Add /logout-sse endpoint which will send a message to the attached

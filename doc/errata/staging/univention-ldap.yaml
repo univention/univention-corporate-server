@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-ldap
+fix: 16.0.16-3
+desc: |
+ This update addresses the following issues:
+ * An ACL has been added that restricts access to the new
+   UMC settings object.
+bug: [57482]
