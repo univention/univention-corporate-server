@@ -5,34 +5,20 @@
 ## exposure: dangerous
 
 from types import SimpleNamespace
-from typing import Generator, List
+from typing import List
 from urllib.parse import urlparse
 
 import pytest
-from playwright.sync_api import Browser, BrowserContext, expect
+from playwright.sync_api import BrowserContext, expect
 
 from univention.lib.i18n import Translation
 from univention.testing.browser.lib import UMCBrowserTest
 from univention.testing.browser.portal import UCSPortal, UCSSideMenu
-from univention.testing.pytest_univention_playwright import fixtures
 
 
 _ = Translation('ucs-test-browser').translate
 
 num_tabs = 4
-
-
-@pytest.fixture()
-def multi_tab_context(browser: Browser, request: pytest.FixtureRequest, ucr) -> Generator[BrowserContext, None, None]:
-    context = browser.new_context(ignore_https_errors=True)
-    context.set_default_timeout(30 * 1000)
-    expect.set_options(timeout=30 * 1000)
-
-    context.tracing.start(screenshots=True, snapshots=True, sources=True)
-
-    yield context
-
-    fixtures.teardown_umc_browser_test(request, ucr, context.pages, context, browser)
 
 
 def test_logout_refresh_plain(multi_tab_context: BrowserContext):

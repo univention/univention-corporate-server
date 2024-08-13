@@ -42,6 +42,8 @@ import tornado.gen
 from ldap.filter import filter_format
 
 import univention.admin.uexceptions as udm_errors
+from univention.management.console.session_db import DBSession
+from univention.management.console.session_dict import SessionDict
 
 from .acl import ACLs, LDAP_ACLs
 from .auth import AuthHandler
@@ -73,7 +75,6 @@ class User(object):
         self.ip = None
         self.authenticated = False
         self.username = None
-        self.username = None
         self.password = None
         self.auth_type = None
         self.user_dn = None
@@ -89,7 +90,7 @@ class Session(object):
 
     __slots__ = ('_', '__weakref__', '_active_requests', '_timeout_id', 'acls', 'oidc', 'processes', 'saml', 'session_id', 'user')
     __auth = AuthHandler()
-    sessions = {}
+    sessions = SessionDict()
 
     @classmethod
     def get_or_create(cls, session_id):
@@ -259,6 +260,10 @@ class Session(object):
     def reset_timeout(self):
         self.disconnect_timer()
         self.user.session_end_time = monotonic() + _session_timeout
+
+        # this will trigger the update of the session end time in the database
+        if self.sessions.get(self.session_id, None):
+            self.sessions[self.session_id] = self
         ioloop = tornado.ioloop.IOLoop.current()
         when = int(self.session_end_time - monotonic())
         CORE.debug('reset_timeout(): new session expiration in %s seconds' % (when,))
@@ -289,6 +294,8 @@ class Session(object):
         logout_notifier = logout_notifiers.get(self.session_id)
         if logout_notifier is not None:
             logout_notifier.set()
+
+        DBSession.delete(self.session_id)
 
         if self.saml:
             self.saml.on_logout()

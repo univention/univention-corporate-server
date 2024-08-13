@@ -524,15 +524,11 @@ class OIDCBackchannelLogout(OIDCResource):
             self.finish({'error': 'invalid_request', 'error_description': str(exc)})
             return
 
-        sessions = [user for user in Session.sessions.values() if user and user.oidc and user.oidc.id_token and claims['iss'] == user.oidc.claims['iss']]
-        for user in sessions:
-            if user.oidc.claims['sid'] == claims.get('sid'):
-                user.logout()
-                break
-        else:
-            for user in sessions:
-                if user.oidc.claims['sub'] == claims.get('sub'):
-                    user.logout()
+        for session in Session.sessions.get_oidc_sessions(claims):
+            if session.session_id in Session.sessions.sessions:
+                Session.sessions[session.session_id].logout()
+            else:
+                session.delete(session.session_id)
 
         self.finish()
 
