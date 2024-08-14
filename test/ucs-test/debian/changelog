@@ -1,3 +1,9 @@
+ucs-test (10.0.22-52) unstable; urgency=medium
+
+  * Bug 57467: adjust keycloak portal login fixture
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 14 Aug 2024 09:20:26 +0200
+
 ucs-test (10.0.22-51) unstable; urgency=medium
 
   * Bug 57467: adjust logout notifier tests to work with OIDC logout

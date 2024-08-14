@@ -269,12 +269,12 @@ def __portal_login_func(
     new_password: str | None = None,
     new_password_confirm: str | None = None,
     verify_login: bool | None = True,
-    url: str | None = '',
+    url: str | None = None,
     no_login: bool = False,
     protocol: str | None = 'saml',
 ):
     try:
-        url = portal_config.url
+        url = url or portal_config.url
         page.goto(url)
         expect(page).to_have_title(portal_config.title)
         lang = page.evaluate('() => window.navigator.userLanguage || window.navigator.language')
