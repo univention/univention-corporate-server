@@ -9,3 +9,6 @@ desc: |
  * A diagnostic module now checks for the correct file permissions of the
    SQLite database of both the S4-Connector and the AD-Connector.
 bug: [57453]
+erratum: 1097
+announced: 2024-08-14
+support: core
