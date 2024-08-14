@@ -9,3 +9,6 @@ desc: |
  * SQLite databases used by the S4 Connector were world readable. This has
    been changed.
 bug: [57453]
+erratum: 1098
+announced: 2024-08-14
+support: core
