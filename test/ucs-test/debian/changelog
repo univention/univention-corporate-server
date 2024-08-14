@@ -1,3 +1,9 @@
+ucs-test (12.0.140) unstable; urgency=medium
+
+  * Bug 57467: fix keycloak conftest portal login function
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 14 Aug 2024 09:24:13 +0200
+
 ucs-test (12.0.139) unstable; urgency=medium
 
   * Bug 57467: add tests for the logout notifier
