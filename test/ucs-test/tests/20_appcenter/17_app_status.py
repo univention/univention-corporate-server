@@ -58,7 +58,7 @@ def check_ldap(app, apps):
     utils.verify_ldap_object(dn, {'univentionAppVersion': [app.version]})
     utils.verify_ldap_object(dn, {'univentionAppName': ['[en] %s' % app.name], 'univentionAppInstalledOnServer': ['%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))]}, strict=False)
     for app_version in apps.get_all_apps_with_id(app.id):
-        if app_version == app:
+        if app_version.id == app.id and app_version.version == app.version:
             continue
         dn = 'univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s' % (app_version.id, app_version.version, app_version.id, ucr_get('ldap/base'))
         utils.verify_ldap_object(dn, should_exist=False)

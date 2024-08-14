@@ -1,3 +1,9 @@
+ucs-test (10.0.22-53) unstable; urgency=medium
+
+  * Bug #57514: Fix 17_check_status.py
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 14 Aug 2024 10:56:48 +0200
+
 ucs-test (10.0.22-52) unstable; urgency=medium
 
   * Bug 57467: adjust keycloak portal login fixture
