@@ -80,7 +80,8 @@ def test_logout_refresh_sso(multi_tab_context: BrowserContext, portal_login_via_
         expect(tab.page.get_by_role('link', name=_('Login Same tab'), exact=True), message=f'Tab {i} not logged out').to_be_visible()
 
 
-def test_logout_refresh_oidc_backchannel(multi_tab_context: BrowserContext, portal_login_via_keycloak_custom_page, keycloak_config: SimpleNamespace):
+@pytest.mark.usefixtures('oidc_client_frontchannel')
+def test_logout_refresh_oidc_backchannel_frontchannel(multi_tab_context: BrowserContext, portal_login_via_keycloak_custom_page, keycloak_config: SimpleNamespace):
     tabs = [UCSPortal(UMCBrowserTest(multi_tab_context.new_page())) for _ in range(num_tabs)]
 
     login_tabs(tabs, 'oidc', portal_login_via_keycloak_custom_page)
