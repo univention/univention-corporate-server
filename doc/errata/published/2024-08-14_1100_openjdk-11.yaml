@@ -100,3 +100,6 @@ cve:
 - CVE-2024-21144
 - CVE-2024-21145
 - CVE-2024-21147
+erratum: 1100
+announced: 2024-08-14
+support: core
