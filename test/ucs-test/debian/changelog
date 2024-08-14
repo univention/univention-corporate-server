@@ -3,8 +3,8 @@ ucs-test (11.0.50) unstable; urgency=medium
   * Bug #57514: Fix 17_check_status.py
 
  -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 14 Aug 2024 10:56:48 +0200
-u
-cs-test (11.0.49) unstable; urgency=medium
+
+ucs-test (11.0.49) unstable; urgency=medium
 
   * Issue univention/ucs#2338: longer timeout in browser tests
 
