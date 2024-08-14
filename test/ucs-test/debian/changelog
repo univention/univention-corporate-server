@@ -1,3 +1,10 @@
+ucs-test (12.0.142) unstable; urgency=medium
+
+  * Bug 57467: disable frontchannel logout during backchannel logout OIDC
+    tests
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 14 Aug 2024 14:36:57 +0200
+
 ucs-test (12.0.141) unstable; urgency=medium
 
   * Bug #57514: Fix 17_check_status.py

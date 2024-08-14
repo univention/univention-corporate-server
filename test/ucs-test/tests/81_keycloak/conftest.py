@@ -30,7 +30,9 @@
 
 from __future__ import annotations
 
+import copy
 import functools
+import json
 import os
 from types import SimpleNamespace
 from typing import TYPE_CHECKING
@@ -440,3 +442,25 @@ def legacy_authorization_setup_oidc(
         run_command(['univention-keycloak', 'legacy-authentication-flow', 'delete', '--flow', 'direct grant'])
         legacy_auth_config_remove(keycloak_administrator_connection, groups)
         keycloak_administrator_connection.delete_client(client_id)
+
+
+@pytest.fixture(params=['frontchannel', 'backchannel'])
+def oidc_client_frontchannel(ucr, request):
+    if request.param == 'frontchannel':
+        pytest.skip("frontchannel logout doesn't currently does not work for external OPs. Skipp all frontchannel logout tests for now.")
+    modified_clients = []
+    oidc_clients = json.loads(run_command(['univention-keycloak', 'oidc/rp', 'get', '--json', '--all']))
+
+    for client in oidc_clients:
+        if '/univention/oidc' not in client['clientId']:
+            continue
+        modified_clients.append(client)
+        oidc_client_updated = copy.deepcopy(client)
+        oidc_client_updated['frontchannelLogout'] = request.param == 'frontchannel'
+        oidc_client_updated = json.dumps(oidc_client_updated)
+        run_command(['univention-keycloak', 'oidc/rp', 'update', client['clientId'], oidc_client_updated])
+
+    yield
+
+    for client in modified_clients:
+        run_command(['univention-keycloak', 'oidc/rp', 'update', client['clientId'], json.dumps(client)])
