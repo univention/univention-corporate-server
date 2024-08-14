@@ -9,3 +9,6 @@ desc: |
  * `univention-keycloak` had to adapted to Keycloak version 25 to correctly
    create the configuration for the legacy authorization.
 bug: [57452]
+erratum: 1099
+announced: 2024-08-14
+support: core
