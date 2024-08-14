@@ -29,3 +29,6 @@ desc: |
    cases. This has been changed.
  * The `dn` argument of `resync_object_from_ad.py` was set as not required.
 bug: [57394, 57442, 57465, 57453, 57504]
+erratum: 1096
+announced: 2024-08-14
+support: core
