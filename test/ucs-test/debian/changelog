@@ -1,3 +1,9 @@
+ucs-test (10.0.22-57) unstable; urgency=medium
+
+  * Issue univention/ucs#2375: Increase timeouts for openstack
+
+ -- Felix Botner <botner@univention.de>  Thu, 15 Aug 2024 12:31:48 +0200
+
 ucs-test (10.0.22-56) unstable; urgency=medium
 
   * Bug #57518: univention-keycloak --no-frontchannel-logout now has a
