@@ -1,3 +1,11 @@
+univention-keycloak (2.0.5) unstable; urgency=medium
+
+  * Bug #57518: In `univention-keycloak`, fix the `oidc/rp` option
+    `--no-frontchannel-logout`. It used to activate the frontchannel logout,
+    not deactivate it.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 15 Aug 2024 10:48:56 +0200
+
 univention-keycloak (2.0.4) unstable; urgency=medium
 
   * Bug #57452: fix create_legacy_authentication_flow for keycloak v25

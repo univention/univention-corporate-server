@@ -1509,7 +1509,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_oidc_parser.add_argument("--allow-implicit-flow", action='store_true', help="enables support of 'Implicit Flow' for this client.")
     create_oidc_parser.add_argument("--access-token-lifespan", help="Max time before an access token is expired.")
     create_oidc_parser.add_argument("--service-accounts-enabled", action='store_true')
-    create_oidc_parser.add_argument("--no-frontchannel-logout", action='store_false', default=True)
+    create_oidc_parser.add_argument("--no-frontchannel-logout", action='store_true', default=False)
     create_oidc_parser.add_argument("--auth-browser-flow", help="Override realm authentication flow bindings for 'Browser Flow'.", default=None)
     create_oidc_parser.add_argument("--add-audience-mapper", action='store_true', default=False, help="Add a audience mapper to add audience to access token.")
     create_oidc_parser.add_argument("--access-token-audience", action="append", default=[], help="Add audiences to Access Tokens.")
