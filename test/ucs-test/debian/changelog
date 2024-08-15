@@ -1,3 +1,10 @@
+ucs-test (10.0.22-56) unstable; urgency=medium
+
+  * Bug #57518: univention-keycloak --no-frontchannel-logout now has a
+    different default, so the relying parties are created differently
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 15 Aug 2024 10:51:25 +0200
+
 ucs-test (10.0.22-55) unstable; urgency=medium
 
   * Bug #57475: add oidc-id-token hint to disable logout confirmation dialog
