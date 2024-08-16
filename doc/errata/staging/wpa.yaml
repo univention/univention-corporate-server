@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [7, 8]
+scope: ucs_5.0-0-errata5.0-8
+src: wpa
+fix: 2:2.7+git20190128+0c1e29f-6+deb10u5A~5.0.8.202408161117
+desc: |
+ This update addresses the following issue:
+ 2:2.7+git20190128+0c1e29f-6+deb10u5 (Wed, 14 Aug 2024 18:40:45 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2024-5290: Only load libraries from trusted path
+bug: [57519]
+cve:
+- CVE-2024-5290
