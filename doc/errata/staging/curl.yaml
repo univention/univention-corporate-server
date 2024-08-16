@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: curl
+fix: 7.52.1-5+deb9u22
+desc: |
+ This update addresses the following issue:
+ 7.52.1-5+deb9u22 (Sat, 03 Aug 2024 12:32:08 +0200)
+ * Non-maintainer upload by the LTS team.
+ * Fix CVE-2024-7264: A denial-of-service vulnerability was found in cURL, an
+   easy-to-use client-side URL transfer library. libcurl's ASN1 parser code
+   has the GTime2str() function, used for parsing an ASN.1 Generalized Time
+   field. If given an syntactically incorrect field, the parser might end up
+   crashing but this flaw can also lead to heap contents getting returned to
+   the application when CURLINFO_CERTINFO is used.
+bug: [57525]
+cve:
+- CVE-2024-7264
