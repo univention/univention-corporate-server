@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [7, 8]
+scope: ucs_5.0-0-errata5.0-8
+src: gdk-pixbuf
+fix: 2.38.1+dfsg-1+deb10u1
+desc: |
+ This update addresses the following issue:
+ 2.38.1+dfsg-1+deb10u1 (Mon, 12 Aug 2024 19:56:33 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2022-48622: ANI file loader memory corruption
+bug: [57523]
+cve:
+- CVE-2022-48622
