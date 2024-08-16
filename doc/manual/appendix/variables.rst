@@ -82,20 +82,6 @@ This appendix lists the |UCSUCRVs| mentioned in the document.
    For more information, see :ref:`ad-connector-groups`.
 
 
-.. envvar:: connector/ad/mapping/user/ignorefilter
-
-   Defines a filter for usernames so that the AD Connector excepts matching users
-   from the synchronization. For more information, see
-   :ref:`ad-connector-details-on-preconfigured-synchronization`:
-
-
-.. envvar:: connector/ad/mapping/user/ignorelist
-
-   Configures a list of usernames that the AD Connector excludes from
-   synchronization. For more information, see
-   :ref:`ad-connector-details-on-preconfigured-synchronization`.
-
-
 .. envvar:: connector/ad/poll/sleep
 
    Configures the interval to poll for changes in the AD domain. The default is
