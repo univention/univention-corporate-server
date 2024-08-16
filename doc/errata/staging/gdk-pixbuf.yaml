@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: gdk-pixbuf
+fix: 2.36.5-2+deb9u3
+desc: |
+ This update addresses the following issue:
+ 2.36.5-2+deb9u3 (Mon, 12 Aug 2024 20:11:50 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2022-48622: ANI file loader memory corruption
+bug: [57521]
+cve:
+- CVE-2022-48622
