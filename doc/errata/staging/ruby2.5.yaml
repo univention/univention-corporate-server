@@ -1,0 +1,38 @@
+product: ucs
+release: "5.0"
+version: [7, 8]
+scope: ucs_5.0-0-errata5.0-8
+src: ruby2.5
+fix: 2.5.5-3+deb10u7
+desc: |
+ This update addresses the following issues:
+ 2.5.5-3+deb10u7 (Sat, 10 Aug 2024 11:34:49 +0200)
+ * Non-maintainer upload by the ELTS Security Team.
+ * Fix testsuite * Update test certificates. * Update tests for new tzdata. *
+   Update tests for Git CVE 2022-39253. * Backport assert_linear_performance.
+   * Add missing test for CVE 2023-28756. * Fix flaky test in io_console. *
+   Exclude CI-breaking test TestProcess#test_popen_exit. * Exclude flaky test
+   TestRDocMarkupPreProcess#test_class_post_process. * Exclude flaky test
+   TestTime#test_strftime_no_hidden_garbage.
+ * CVE-2023-36617: follow-up fix for CVE-2023-28755.
+ * CVE-2024-27280: a buffer-overread issue was discovered in StringIO. The
+   ungetbyte and ungetc methods on a StringIO can read past the end of a
+   string, and a subsequent call to StringIO.gets may return the memory value.
+ * CVE-2024-27281: when parsing .rdoc_options (used for configuration in RDoc)
+   as a YAML file, object injection and resultant remote code execution are
+   possible because there are no restrictions on the classes that can be
+   restored. (When loading the documentation cache, object injection and
+   resultant remote code execution are also possible if there were a crafted
+   cache.)
+ * CVE-2024-27282: if attacker-supplied data is provided to the Ruby regex
+   compiler, it is possible to extract arbitrary heap data relative to the
+   start of the text, including pointers and sensitive strings.
+
+ * Fix lintian error: drop obsolete override.
+bug: [57524]
+cve:
+- CVE-2023-36617
+- CVE-2023-28755
+- CVE-2024-27280
+- CVE-2024-27281
+- CVE-2024-27282
