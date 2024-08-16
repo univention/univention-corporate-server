@@ -1,0 +1,54 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: ruby2.3
+fix: 2.3.3-1+deb9u12
+desc: |
+ This update addresses the following issues:
+
+ Debian update 2.3.3-1+deb9u12
+ 2.3.3-1+deb9u12 (Sat, 10 Aug 2024 11:36:41 +0200)
+ * Non-maintainer upload by the ELTS Security Team.
+ * Fix testsuite * Update test certificates. * Update tests for new tzdata. *
+   Update tests for Git CVE 2022-39253. * Backport assert_linear_performance.
+   * Fix flaky test TestRipper::Generic#test_parse_files. * Fix flaky tests in
+   io_console. * autopkgtest: make use of the text exclusion rules under
+   test/excludes/
+ * CVE-2021-28965: the REXML gem does not properly address XML round-trip
+   issues. An incorrect document can be produced after parsing and
+   serializing.
+ * CVE-2021-33621: the cgi gem allows HTTP response splitting. This is
+   relevant to applications that use untrusted user input either to generate
+   an HTTP response or to create a CGI::Cookie object.
+ * CVE-2022-28739: buffer over-read occurs in String-to-Float conversion,
+   including Kernel#Float and String#to_f.
+ * CVE-2023-28755: a ReDoS issue was discovered in the URI component. The URI
+   parser mishandles invalid URLs that have specific characters. It causes an
+   increase in execution time for parsing strings to URI objects.
+ * CVE-2023-28756: a ReDoS issue was discovered in the Time component. The
+   Time parser mishandles invalid URLs that have specific characters. It
+   causes an increase in execution time for parsing strings to Time objects.
+ * CVE-2023-36617: follow-up fix for CVE-2023-28755.
+ * CVE-2024-27281: when parsing .rdoc_options (used for configuration in RDoc)
+   as a YAML file, object injection and resultant remote code execution are
+   possible because there are no restrictions on the classes that can be
+   restored. (When loading the documentation cache, object injection and
+   resultant remote code execution are also possible if there were a crafted
+   cache.)
+ * CVE-2024-27282: if attacker-supplied data is provided to the Ruby regex
+   compiler, it is possible to extract arbitrary heap data relative to the
+   start of the text, including pointers and sensitive strings.
+ * Reference missing symbols rb_big_hash@Base (fixes:
+   symbols-file-contains-current-version-with-debian-revision)
+ * Fix lintian error: drop obsolete override.
+bug: [57520]
+cve:
+- CVE-2021-28965
+- CVE-2021-33621
+- CVE-2022-28739
+- CVE-2023-28755
+- CVE-2023-28756
+- CVE-2023-36617
+- CVE-2024-27281
+- CVE-2024-27282
