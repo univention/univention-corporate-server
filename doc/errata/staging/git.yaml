@@ -1,0 +1,22 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: git
+fix: 1:2.11.0-3+deb9u11
+desc: |
+ This update addresses the following issues:
+ 1:2.11.0-3+deb9u11 (Fri, 16 Aug 2024 09:44:36 +0800)
+ * Non-maintainer upload by the ELTS Team.
+ * Backport commit 9cf8547320, a follow-up fix for CVE-2019-1387.
+ * Backport upstream fixes for CVE-2023-25652, CVE-2023-25815, CVE-2023-29007,
+   CVE-2024-32002 and CVE-2024-32021
+ , #1071160).
+bug: [57528]
+cve:
+- CVE-2019-1387
+- CVE-2023-25652
+- CVE-2023-25815
+- CVE-2023-29007
+- CVE-2024-32002
+- CVE-2024-32021
