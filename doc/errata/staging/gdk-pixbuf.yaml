@@ -6,9 +6,9 @@ src: gdk-pixbuf
 fix: 2.36.5-2+deb9u3
 desc: |
  This update addresses the following issue:
- 2.36.5-2+deb9u3 (Mon, 12 Aug 2024 20:11:50 +0300)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2022-48622: ANI file loader memory corruption
+ * Memory corruption in the ANI decoder when parsing chunks in a crafted .ani
+   file. A crafted file could allow an attacker to overwrite heap metadata,
+   leading to a denial of service or code execution attack (CVE-2022-48622).
 bug: [57521]
 cve:
 - CVE-2022-48622
