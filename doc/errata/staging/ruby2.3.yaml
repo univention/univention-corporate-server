@@ -25,7 +25,7 @@ desc: |
  * A ReDoS issue was in the URI parser mishandles invalid URLs that have
    specific characters. This is a follow-up fix for CVE-2023-28755
    (CVE-2023-36617).
- * When parsing .rdoc_options as a YAML file, object injection and resultant
+ * When parsing `.rdoc_options` as a YAML file, object injection and resultant
    remote code execution are possible because there are no restrictions on
    the classes that can be restored  (CVE-2024-27281).
  * If attacker-supplied data is provided to the Ruby regex compiler,
