@@ -6,13 +6,10 @@ src: util-linux
 fix: 2.29.2-1+deb9u3
 desc: |
  This update addresses the following issue:
- 2.29.2-1+deb9u3 (Wed, 14 Aug 2024 22:55:36 -0400)
- * Non-maintainer upload by the Debian ELTS Team.
- * Fix CVE-2024-28085: Escape sequence injection in wall(1).
-
+ * Fix CVE-2024-28085: Escape sequence injection in `wall(1)`.
  * Prerequisite for the CVE-2024-28085 fix: Backport upstream changes to use
-   fputs_careful() in order to handle UTF-8 characters.
- * d/rules: Build with --disable-use-tty-group to avoid installing wall(1)
+   `fputs_careful()` in order to handle UTF-8 characters.
+ * d/rules: Build with `--disable-use-tty-group` to avoid installing `wall(1)`
    setgid tty.
 bug: [57527]
 cve:

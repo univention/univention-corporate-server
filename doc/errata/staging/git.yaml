@@ -6,12 +6,17 @@ src: git
 fix: 1:2.11.0-3+deb9u11
 desc: |
  This update addresses the following issues:
- 1:2.11.0-3+deb9u11 (Fri, 16 Aug 2024 09:44:36 +0800)
- * Non-maintainer upload by the ELTS Team.
- * Backport commit 9cf8547320, a follow-up fix for CVE-2019-1387.
- * Backport upstream fixes for CVE-2023-25652, CVE-2023-25815, CVE-2023-29007,
-   CVE-2024-32002 and CVE-2024-32021
- , #1071160).
+ * CVE-2019-1387: Remote code execution in recursive clones with nested
+   submodules
+ * CVE-2023-25652: by feeding specially crafted input to `git apply
+   --reject`, a path outside the working tree can be overwritten with partially
+   controlled contents
+ * CVE-2023-25815: malicious placement of crafted messages when git was
+   compiled with runtime prefix
+ * CVE-2023-29007: arbitrary configuration injection when renaming or
+   deleting a section from a configuration file
+ * CVE-2024-32002: Recursive clones RCE
+ * CVE-2024-32021: symlink bypass
 bug: [57528]
 cve:
 - CVE-2019-1387
