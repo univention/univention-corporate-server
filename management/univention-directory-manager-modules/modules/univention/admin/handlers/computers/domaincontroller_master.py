@@ -318,6 +318,7 @@ class object(ComputerObject):
     CONFIG_NAME = 'univentionDefaultDomainControllerMasterGroup'
     SAMBA_ACCOUNT_FLAG = 'S'
     SERVER_ROLE = 'master'
+    default_containers_attribute_name = 'domaincontroller'
 
 
 rewrite = object.rewrite_filter

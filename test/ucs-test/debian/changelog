@@ -1,3 +1,9 @@
+ucs-test (10.0.22-58) unstable; urgency=medium
+
+  * Bug #57526: default container tests
+
+ -- Felix Botner <botner@univention.de>  Mon, 19 Aug 2024 13:46:15 +0200
+
 ucs-test (10.0.22-57) unstable; urgency=medium
 
   * Issue univention/ucs#2375: Increase timeouts for openstack
