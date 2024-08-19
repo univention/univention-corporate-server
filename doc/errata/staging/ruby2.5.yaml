@@ -9,12 +9,12 @@ desc: |
  * A regular expression related denial of service (ReDoS) issue was
    discovered.  The URI parser mishandles invalid URLs that have specific
    characters. This is a follow-up fix for CVE-2023-28755 (CVE-2023-36617).
- * A buffer-overread issue was discovered. The ungetbyte and ungetc methods
-   on a StringIO can read past the end of a string, and a subsequent call to
-   StringIO.gets may return the memory value (CVE-2024-27280).
- * When parsing .rdoc_options as a YAML file, object injection and resultant
-   remote code execution are possible because there are no restrictions on
-   the classes that can be restored  (CVE-2024-27281).
+ * A buffer-overread issue was discovered. The `ungetbyte` and `ungetc`
+   methods on a StringIO can read past the end of a string, and a subsequent
+   call to `StringIO.gets` may return the memory value (CVE-2024-27280).
+ * When parsing `.rdoc_options` as a YAML file, object injection and
+   resultant remote code execution are possible because there are no
+   restrictions on the classes that can be restored  (CVE-2024-27281).
  * If attacker-supplied data is provided to the Ruby regex compiler,
    it is possible to extract arbitrary heap data relative to the start of
    the text, including pointers and sensitive strings (CVE-2024-27282).
