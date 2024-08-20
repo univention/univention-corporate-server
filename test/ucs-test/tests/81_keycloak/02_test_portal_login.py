@@ -11,7 +11,9 @@ from utils import keycloak_get_request, keycloak_password_change, keycloak_sessi
 
 from univention.lib.umc import Unauthorized
 from univention.testing.umc import Client
-from univention.testing.utils import get_ldap_connection, wait_for_listener_replication
+from univention.testing.utils import (
+    get_ldap_connection, package_installed, wait_for_listener_replication, wait_for_replication_and_postrun,
+)
 
 
 @pytest.mark.parametrize('protocol', ['saml', 'oidc'])
@@ -48,6 +50,7 @@ def test_password_change_wrong_old_password_fails(portal_login_via_keycloak, key
 
 
 @pytest.mark.parametrize('protocol', ['saml', 'oidc'])
+@pytest.mark.skipif(package_installed('univention-samba4'), reason='Missing software: univention-samba4')
 def test_password_change_same_passwords_fails(portal_login_via_keycloak, keycloak_config, portal_config, udm, protocol):
     username = udm.create_user(pwdChangeNextLogin=1)[1]
     portal_login_via_keycloak(username, 'univention', new_password='univention', fails_with='Changing password failed. The password was already used.', protocol=protocol)
@@ -66,6 +69,7 @@ def test_password_change_new_password_too_short_fails(portal_login_via_keycloak,
 
 
 @pytest.mark.parametrize('protocol', ['saml', 'oidc'])
+@pytest.mark.skipif(package_installed('univention-samba4'), reason='Missing software: univention-samba4')
 def test_password_change_confirm_new_passwords_fails(portal_login_via_keycloak, keycloak_config, portal_config, udm, protocol):
     username = udm.create_user(pwdChangeNextLogin=1)[1]
     portal_login_via_keycloak(
@@ -90,15 +94,15 @@ def test_password_change_empty_passwords_fails(portal_login_via_keycloak, keyclo
 
 @pytest.mark.parametrize('protocol', ['saml', 'oidc'])
 def test_password_change_after_second_try(portal_login_via_keycloak, keycloak_config, portal_config, udm, protocol):
-    username = udm.create_user(pwdChangeNextLogin=1)[1]
+    username = udm.create_user(password="univention", pwdChangeNextLogin=1)[1]
     page = portal_login_via_keycloak(
         username,
-        'univention',
-        new_password='univention',
-        fails_with='Changing password failed. The password was already used.',
+        password='univention',
+        new_password='u',
+        fails_with='Changing password failed. The password is too short.',
         protocol=protocol,
     )
-    keycloak_password_change(page, keycloak_config, 'univention', 'Univention.99', 'Univention.99')
+    keycloak_password_change(page, keycloak_config, username, 'univention', 'Univention.99', 'Univention.99')
     assert Client(username=username, password='Univention.99')
 
 
@@ -111,7 +115,7 @@ def test_password_change_expired_shadowLastChange(portal_login_via_keycloak, key
         ('shadowLastChange', [''], [b'1000']),
     ]
     ldap.modify(dn, changes)
-    wait_for_listener_replication()
+    wait_for_replication_and_postrun()
     assert portal_login_via_keycloak(username, 'univention', new_password='Univention.99', protocol=protocol)
     assert Client(username=username, password='Univention.99')
     with pytest.raises(Unauthorized):
