@@ -1,3 +1,9 @@
+ucs-test (11.0.51) unstable; urgency=medium
+
+  * Bug #57526: default container tests
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Aug 2024 12:15:30 +0200
+
 ucs-test (11.0.50) unstable; urgency=medium
 
   * Bug #57514: Fix 17_check_status.py

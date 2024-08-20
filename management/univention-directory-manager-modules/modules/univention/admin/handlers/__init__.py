@@ -180,6 +180,7 @@ class simpleLdap(object):
     use_performant_ldap_search_filter = False
     ldap_base = configRegistry['ldap/base']
     _lo_machine_primary = None
+    default_containers_attribute_name = None
 
     def __init__(
         self,
@@ -1812,16 +1813,21 @@ class simpleLdap(object):
         """
         containers = univention.admin.modules.defaultContainers(univention.admin.modules._get(cls.module))
         settings_directory = univention.admin.modules._get('settings/directory')
+        position = univention.admin.uldap.position(lo.base)
+        try:
+            univention.admin.modules.init(lo, position, settings_directory)
+        except univention.admin.uexceptions.noObject:
+            pass
+
         try:
             default_containers = settings_directory.lookup(None, lo, '', required=True)[0]
         except univention.admin.uexceptions.noObject:
             return containers
 
-        base = cls.module.split('/', 1)[0]
-        if cls.module in ('shares/print', 'shares/printer', 'shares/printergroup'):
-            base = 'printers'
-        elif cls.module in ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/windows_domaincontroller'):
-            base = 'domaincontroller'
+        if cls.default_containers_attribute_name:
+            base = cls.default_containers_attribute_name
+        else:
+            base = cls.module.split('/', 1)[0]
 
         containers.extend(default_containers.info.get(base, []))
         return containers
