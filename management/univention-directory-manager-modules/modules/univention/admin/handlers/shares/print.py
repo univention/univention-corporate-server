@@ -83,6 +83,7 @@ mapping = univention.admin.mapping.mapping()
 
 class object(univention.admin.handlers.simpleLdap):
     module = module
+    default_containers_attribute_name = 'printers'
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):

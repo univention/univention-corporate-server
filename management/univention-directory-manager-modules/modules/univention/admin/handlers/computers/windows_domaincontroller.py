@@ -297,6 +297,7 @@ class object(ComputerObject):
     CONFIG_NAME = 'univentionDefaultDomainControllerGroup'
     SAMBA_ACCOUNT_FLAG = 'S'
     SERVER_ROLE = 'windows_domaincontroller'
+    default_containers_attribute_name = 'domaincontroller'
 
     @classmethod
     def lookup_filter(cls, filter_s=None, lo=None):

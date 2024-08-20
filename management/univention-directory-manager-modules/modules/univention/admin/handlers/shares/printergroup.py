@@ -109,6 +109,7 @@ mapping.register('groupMember', 'univentionPrinterGroupMember')
 
 class object(univention.admin.handlers.simpleLdap):
     module = module
+    default_containers_attribute_name = 'printers'
 
     def _ldap_pre_create(self):
         super()._ldap_pre_create()
