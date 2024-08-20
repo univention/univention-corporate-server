@@ -16,8 +16,10 @@ import subprocess
 import ldap.dn
 import pytest
 
+import univention.admin.modules as udm_modules
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
+from univention.admin import uldap
 from univention.testing import strings, utils
 
 
@@ -464,3 +466,100 @@ def test_register_data(udm, ucr, remove_tmp_file):
         },
     )
     print('OK: object unchanged.')
+
+
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('dangerous')
+def test_default_containers(ldap_base):
+    """Check expected default containers"""
+    udm_modules.update()
+    expected_default_containers = {
+        'mail/lists': [f'cn=domain,cn=mail,{ldap_base}', f'cn=mailinglists,cn=mail,{ldap_base}', f'cn=folder,cn=mail,{ldap_base}'],
+        'dns/forward_zone': [f'cn=dns,{ldap_base}'],
+        'portals/entry': [f'cn=entry,cn=portals,cn=univention,{ldap_base}'],
+        'portals/portal': [f'cn=portal,cn=portals,cn=univention,{ldap_base}'],
+        'portals/announcement': [f'cn=announcement,cn=portals,cn=univention,{ldap_base}'],
+        'portals/category': [f'cn=category,cn=portals,cn=univention,{ldap_base}'],
+        'portals/folder': [f'cn=folder,cn=portals,cn=univention,{ldap_base}'],
+        'portals/all': [
+            f'cn=portal,cn=portals,cn=univention,{ldap_base}',
+            f'cn=entry,cn=portals,cn=univention,{ldap_base}',
+            f'cn=category,cn=portals,cn=univention,{ldap_base}',
+            f'cn=folder,cn=portals,cn=univention,{ldap_base}',
+            f'cn=announcement,cn=portals,cn=univention,{ldap_base}'
+        ],
+        'groups/group': [f'cn=groups,{ldap_base}'],
+        'dhcp/shared': [f'cn=dhcp,{ldap_base}'],
+        'computers/domaincontroller_backup': [f'cn=dc,cn=computers,{ldap_base}'],
+        'computers/windows': [f'cn=computers,{ldap_base}', f'cn=memberserver,cn=computers,{ldap_base}', f'cn=dc,cn=computers,{ldap_base}'],
+        'computers/linux': [f'cn=computers,{ldap_base}', f'cn=memberserver,cn=computers,{ldap_base}', f'cn=dc,cn=computers,{ldap_base}'],
+        'computers/memberserver': [f'cn=computers,{ldap_base}', f'cn=memberserver,cn=computers,{ldap_base}', f'cn=dc,cn=computers,{ldap_base}'],
+        'computers/ipmanagedclient': [f'cn=computers,{ldap_base}', f'cn=memberserver,cn=computers,{ldap_base}', f'cn=dc,cn=computers,{ldap_base}'],
+        'computers/macos': [f'cn=computers,{ldap_base}', f'cn=memberserver,cn=computers,{ldap_base}', f'cn=dc,cn=computers,{ldap_base}'],
+        'computers/domaincontroller_master': [f'cn=dc,cn=computers,{ldap_base}'],
+        'computers/computer': [f'cn=computers,{ldap_base}', f'cn=memberserver,cn=computers,{ldap_base}', f'cn=dc,cn=computers,{ldap_base}'],
+        'computers/ubuntu': [f'cn=computers,{ldap_base}', f'cn=memberserver,cn=computers,{ldap_base}', f'cn=dc,cn=computers,{ldap_base}'],
+        'computers/windows_domaincontroller': [f'cn=dc,cn=computers,{ldap_base}'],
+        'computers/domaincontroller_slave': [f'cn=dc,cn=computers,{ldap_base}'],
+        'computers/trustaccount': [f'cn=computers,{ldap_base}', f'cn=memberserver,cn=computers,{ldap_base}', f'cn=dc,cn=computers,{ldap_base}'],
+        'networks/network': [f'cn=networks,{ldap_base}'],
+        'users/self': [f'cn=users,{ldap_base}'],
+        'users/passwd': [f'cn=users,{ldap_base}'],
+        'users/user': [f'cn=users,{ldap_base}'],
+        'users/contact': [f'cn=users,{ldap_base}'],
+        'appcenter/app': [f'cn=apps,cn=univention,{ldap_base}'],
+        'settings/portal': [f'cn=portal,cn=univention,{ldap_base}'],
+        'settings/data': [f'cn=data,cn=univention,{ldap_base}'],
+        'settings/portal_category': [f'cn=categories,cn=portal,cn=univention,{ldap_base}'],
+        'settings/portal_entry': [f'cn=portal,cn=univention,{ldap_base}'],
+        'shares/printergroup': [f'cn=printers,{ldap_base}'],
+        'shares/printer': [f'cn=printers,{ldap_base}'],
+        'shares/share': [f'cn=shares,{ldap_base}'],
+        'shares/print': [f'cn=printers,{ldap_base}'],
+
+    }
+    lo, position = uldap.getAdminConnection()
+    for module_name in udm_modules.modules.keys():
+        module = udm_modules.get(module_name)
+        udm_modules.init(lo, position, module)
+        obj = module.object(None, lo, position)
+        default_containers = obj.get_default_containers(lo)
+        if module_name in expected_default_containers:
+            assert set(expected_default_containers[module_name]).issubset(default_containers), f'mismatch for module {module_name}'
+
+
+@pytest.mark.roles('domaincontroller_master')
+@pytest.mark.exposure('dangerous')
+def test_default_containers_extended_attribute(ldap_base, udm):
+    name = uts.random_name()
+    default_container1 = uts.random_name()
+    default_container2 = uts.random_name()
+    expected_containers = [default_container1, default_container2]
+    properties = {
+        'name': name,
+        'shortDescription': uts.random_string(),
+        'CLIName': name,
+        'module': 'settings/directory',
+        'objectClass': 'univentionFreeAttributes',
+        'ldapMapping': 'univentionFreeAttribute19',
+        'multivalue': '1',
+        'mayChange': 1,
+        'deleteObjectClass': 1,
+    }
+    udm.stop_cli_server()
+    udm.create_object('settings/extended_attribute', position=udm.UNIVENTION_CONTAINER, **properties)
+    setting_dn = f'cn=default containers,{udm.UNIVENTION_CONTAINER}'
+    udm.stop_cli_server()
+    try:
+        cmd = ['udm', 'settings/directory', 'modify', f'--dn={setting_dn}', '--append', f'{name}={default_container1}', '--append', f'{name}={default_container2}']
+        subprocess.check_call(cmd)
+        lo, position = uldap.getAdminConnection()
+        udm_modules.update()
+        users = udm_modules.get('users/user')
+        users.object.default_containers_attribute_name = name
+        udm_modules.init(lo, position, users)
+        containers = users.object.get_default_containers(lo)
+        assert set(containers) == set(expected_containers)
+    finally:
+        cmd = ['udm', 'settings/directory', 'modify', f'--dn={setting_dn}', '--remove', f'{name}={default_container1}', '--remove', f'{name}={default_container2}']
+        subprocess.check_call(cmd)

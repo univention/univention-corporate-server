@@ -211,6 +211,7 @@ mapping.register('ACLtype', 'univentionPrinterACLtype', None, univention.admin.m
 
 class object(univention.admin.handlers.simpleLdap):
     module = module
+    default_containers_attribute_name = 'printers'
 
     def __init__(
         self,
