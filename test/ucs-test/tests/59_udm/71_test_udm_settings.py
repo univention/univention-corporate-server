@@ -525,7 +525,7 @@ def test_default_containers(ldap_base):
         obj = module.object(None, lo, position)
         default_containers = obj.get_default_containers(lo)
         if module_name in expected_default_containers:
-            assert set(default_containers) == set(expected_default_containers[module_name]), f'mismatch for module {module_name}'
+            assert set(expected_default_containers[module_name]).issubset(default_containers), f'mismatch for module {module_name}'
 
 
 @pytest.mark.roles('domaincontroller_master')

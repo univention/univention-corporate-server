@@ -1832,7 +1832,10 @@ class simpleLdap(object):
         containers = univention.admin.modules.defaultContainers(univention.admin.modules._get(cls.module))
         settings_directory = univention.admin.modules._get('settings/directory')
         position = univention.admin.uldap.position(lo.base)
-        univention.admin.modules.init(lo, position, settings_directory)
+        try:
+            univention.admin.modules.init(lo, position, settings_directory)
+        except univention.admin.uexceptions.noObject:
+            pass
 
         try:
             default_containers = settings_directory.lookup(None, lo, '', required=True)[0]
