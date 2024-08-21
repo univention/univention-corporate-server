@@ -90,29 +90,29 @@ keycloak_saml_idp_setup () {
 
 keycloak_umc_oidc_idp_setup() {
 	# FIXME
-	local join_user join_pwdfile host_fqdn
+	local join_user join_pwdfile
 	join_pwdfile="/tmp/pwdfile"
 	join_user="Administrator"
 	echo -n "univention" > "$join_pwdfile"
-	local idp="$1"
 
-	# external fqdn for idp
-	if [ -n "$idp" ]; then
-		shift
-		# OIDC
-		host_fqdn="$(ucr get hostname).$(ucr get domainname)"
-		# umc/oidc/issuer is correctly set by the join script,
-		# but the ldap/server/sasl/oauthbearer... vars are not updated
-		# so we do it manually here
-		#ucr set umc/oidc/issuer="https://$idp/realms/ucs"
-		ucr set "ldap/server/sasl/oauthbearer/trusted-issuer/$host_fqdn"="https://${idp}/realms/ucs"
-		ucr set "ldap/server/sasl/oauthbearer/trusted-jwks/$host_fqdn"="/usr/share/univention-management-console/oidc/https%3A%2F%2F${idp}%2Frealms%2Fucs.jwks"
-		# not sure here. ucr set ldap/server/sasl/oauthbearer/trusted-audience/master.ucs.test='ldaps://auth.extern.test/'
-	fi
+	## external fqdn for idp
+	#if [ -n "$idp" ]; then
+	#	shift
+	#	# OIDC
+	#	host_fqdn="$(ucr get hostname).$(ucr get domainname)"
+	#	# umc/oidc/issuer is correctly set by the join script,
+	#	# but the ldap/server/sasl/oauthbearer... vars are not updated
+	#	# so we do it manually here
+	#	#ucr set umc/oidc/issuer="https://$idp/realms/ucs"
+	#	ucr set "ldap/server/sasl/oauthbearer/trusted-issuer/$host_fqdn"="https://${idp}/realms/ucs"
+	#	ucr set "ldap/server/sasl/oauthbearer/trusted-jwks/$host_fqdn"="/usr/share/univention-management-console/oidc/https%3A%2F%2F${idp}%2Frealms%2Fucs.jwks"
+	#	# not sure here. ucr set ldap/server/sasl/oauthbearer/trusted-audience/master.ucs.test='ldaps://auth.extern.test/'
+	#fi
 
 	ucr set umc/web/oidc/enabled=true
+	# join script uses umc/oidc/issuer="$(univention-keycloak get-keycloak-base-url) to get the IDP
+	# alternative would be to set everything that the join script does manually
 	univention-run-join-scripts -dcaccount "$join_user" -dcpwd "$join_pwdfile" --force --run-scripts 92univention-management-console-web-server
-	systemctl restart slapd
 
 	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
 		udm portals/entry create "$@" --ignore_exists \
@@ -246,15 +246,19 @@ EOF
 	systemctl reload apache2.service
 }
 
-external_portal_config () {
+external_portal_config_saml () {
 	# requiremnts:
 	# * certificate/apache config for external portal
 	local fqdn="${1:?missing fqdn}"; shift
 	local certificate="${1:?missing certificate}"; shift
 	local keyfile="${1:?missing keyfile}"; shift
-	local host_fqdn
 
-	# saml
+	# FIXME
+	local join_user join_pwdfile
+	join_pwdfile="/tmp/pwdfile"
+	join_user="Administrator"
+	echo -n "univention" > "$join_pwdfile"
+
 	ucr set umc/saml/sp-server="$fqdn"
 	# workaround for https://forge.univention.org/bugzilla/show_bug.cgi?id=55982
 	# copy certificate to /etc/univention/ssl
@@ -262,16 +266,67 @@ external_portal_config () {
 	cp -rf "$certificate" "/etc/univention/ssl/$fqdn/cert.pem"
 	cp -rf "$keyfile" "/etc/univention/ssl/$fqdn/private.key"
 
+	# re run join
+	univention-run-join-scripts -dcaccount "$join_user" -dcpwd "$join_pwdfile" --force --run-scripts 92univention-management-console-web-server
+}
+
+external_portal_config_oidc () {
+	local fqdn="${1:?missing fqdn}"; shift
+
 	# oidc
 	ucr set umc/oidc/rp/server="$fqdn"
+
 	# i guess this would need to be set on all UMC servers? so that they trust each other?
 	ucr set "ldap/server/sasl/oauthbearer/trusted-authorized-party/$fqdn"="https://$fqdn/univention/oidc/"
 
-	# re run join
-	univention-run-join-scripts --force --run-scripts 92univention-management-console-web-server.inst
+	# FIXME
+	local join_user join_pwdfile
+	join_pwdfile="/tmp/pwdfile"
+	join_user="Administrator"
+	echo -n "univention" > "$join_pwdfile"
 
-	# somehow after the join this is broken, points to hostname.domainame, should be external portal name
-	host_fqdn="$(ucr get hostname).$(ucr get domainname)"
-	ucr set "umc/oidc/$host_fqdn/client-id"="https://${fqdn}/univention/oidc/"
-	service univention-management-console-server restart
+	# re run join
+	univention-run-join-scripts -dcaccount "$join_user" -dcpwd "$join_pwdfile" --force --run-scripts 92univention-management-console-web-server
+
+	# WHY?
+	service slapd restart
+
+	## somehow after the join this is broken, points to hostname.domainame, should be external portal name
+	#host_fqdn="$(ucr get hostname).$(ucr get domainname)"
+	#ucr set "umc/oidc/$host_fqdn/client-id"="https://${fqdn}/univention/oidc/"
+	#service univention-management-console-server restart
+}
+
+haproxy_portal_config () {
+	local certificate="${1:?missing certificate}"; shift
+	local keyfile="${1:?missing keyfile}"; shift
+	local host harray ip name
+	service apache2 stop
+	univention-install -y haproxy
+	# cert for ha proxy, we need the key in the cert file
+	cat "$keyfile" >> "$certificate"
+	#log /dev/log    local1 debug
+	cat <<EOF >> "/etc/haproxy/haproxy.cfg"
+
+frontend portal_httpd
+	bind :443 ssl crt $certificate
+	default_backend portals
+
+backend portals
+	balance roundrobin
+	timeout server 10000
+	cookie SERVER insert indirect nocache
+	#server portal 10.207.165.17:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie portal
+	#server backup 10.207.165.18:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie backup
+$(
+	for host in "$@"; do
+		# shellcheck disable=SC2206
+		harray=($host)
+		name=${harray[0]}
+		ip=${harray[1]}
+		echo -e "\tserver $name ${ip}:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie $name"
+	done
+)
+EOF
+	service haproxy restart
 }

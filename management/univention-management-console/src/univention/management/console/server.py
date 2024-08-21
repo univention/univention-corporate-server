@@ -261,6 +261,7 @@ class Server(object):
             settings = {
                 'oidc': oidc,
                 'default_authorization_server': config.get('default_authorization_server'),
+                'default_rp_server': ucr.get('umc/oidc/rp/server', None),  # TODO: need this to identify the correct oidc conf later
             }
         application = Application(
             serve_traceback=ucr.is_true('umc/http/show_tracebacks', True),

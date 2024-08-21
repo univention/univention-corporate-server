@@ -139,32 +139,40 @@ _setup_oidc () {
 		ucr unset umc/oidc/issuer; exit 3
 	}
 	rm /usr/share/univention-management-console/oidc/*.jwks
+	# TODO should we overwrite that ?
 	ucr --debug set umc/oidc/issuer="$(univention-keycloak get-keycloak-base-url)/realms/ucs" || _cleanup_oidc_die
 	[ "$(ls -A /usr/share/univention-management-console/oidc/*.jwks)" ] || _cleanup_oidc_die
 
+	# TODO why ? here, at least umc/oidc/issuer and jwk can be different if keycloak gets a new fqdn
 	ucr set \
 		"ldap/server/sasl/oauthbearer/trusted-audience/$domainname?ldaps://$domainname/" \
 		"ldap/server/sasl/oauthbearer/trusted-audience/$hostname.$domainname?ldaps://$hostname.$domainname/" \
-		"ldap/server/sasl/oauthbearer/trusted-issuer/$hostname.$domainname?$(ucr get umc/oidc/issuer)"
+		"ldap/server/sasl/oauthbearer/trusted-issuer/$hostname.$domainname=$(ucr get umc/oidc/issuer)"
 		#ldap/server/sasl/oauthbearer/required-scopes/
 
 	for jwk in /usr/share/univention-management-console/oidc/*.jwks; do
-		[ -e "$jwk" ] && ucr set "ldap/server/sasl/oauthbearer/trusted-jwks/$hostname.$domainname"?"$jwk"
+		[ -e "$jwk" ] && ucr set "ldap/server/sasl/oauthbearer/trusted-jwks/$hostname.$domainname"="$jwk"
 	done
-
-	if [ ! -e /etc/umc-oidc.secret ]; then
-		touch /etc/umc-oidc.secret
-		chmod 0600 /etc/umc-oidc.secret
-		create_machine_password > /etc/umc-oidc.secret
-
-		ucr commit /usr/share/univention-management-console/oidc/oidc.json
-		univention-directory-listener-ctrl resync umc-service-providers
-	fi
 
 	if [ -n "$umc_oidc_rp_server" ]; then
 		fqdn_oidc="$umc_oidc_rp_server"
 	else
 		fqdn_oidc="$hostname.$domainname"
+	fi
+
+	if [ ! -e /etc/umc-oidc.secret ]; then
+		touch /etc/umc-oidc.secret
+		chmod 0600 /etc/umc-oidc.secret
+		# TODO also check if there is already a client and try to get the password
+		secret=$(univention-keycloak oidc/rp secret --client-name "https://$fqdn_oidc/univention/oidc/") || secret=""
+		if [ -n "$secret" ]; then
+			# TODO this is bad, make univention-keycloak just print the secret (--bash)
+			echo "$secret" | sed -n "s/.*'value': '//p" | sed -n "s/'}$//p" > /etc/umc-oidc.secret
+		else
+			create_machine_password > /etc/umc-oidc.secret
+		fi
+		ucr commit /usr/share/univention-management-console/oidc/oidc.json
+		univention-directory-listener-ctrl resync umc-service-providers
 	fi
 
 	univention-keycloak "$@" oidc/rp create \
