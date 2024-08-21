@@ -42,6 +42,7 @@ from time import monotonic
 import jwt
 from jwt.algorithms import RSAAlgorithm
 from six.moves.urllib_parse import urlencode, urlparse, urlunsplit
+from sqlalchemy import exc
 from tornado import escape
 from tornado.auth import OAuth2Mixin
 from tornado.httpclient import HTTPClientError, HTTPRequest
@@ -52,6 +53,7 @@ from univention.management.console.error import BadRequest, NotFound, OpenIDProv
 from univention.management.console.log import CORE
 from univention.management.console.resource import Resource
 from univention.management.console.session import Session
+from univention.management.console.session_db import DBDisabledException, get_session
 from univention.management.console.shared_memory import shared_memory
 
 
@@ -528,7 +530,13 @@ class OIDCBackchannelLogout(OIDCResource):
             if session.session_id in Session.sessions.sessions:
                 Session.sessions[session.session_id].logout()
             else:
-                session.delete(session.session_id)
+                try:
+                    with get_session() as db_session:
+                        session.delete(db_session, session.session_id)
+                except exc.DBAPIError as err:
+                    CORE.error('Deleting the from the database during OIDC backchannel logout failed\n%s' % (err))
+                except DBDisabledException:
+                    pass
 
         self.finish()
 

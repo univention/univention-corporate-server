@@ -273,3 +273,40 @@ Second, you need to apply the following steps to each of those UCS systems.
 
 #. Manually update the portal tile for *Login*,
    so that the link points to ``/univention/login/``.
+
+Backchannel Logout
+""""""""""""""""""
+
+If OIDC backchannel logout is used along with multiprocessing of the UMC server, a database for session storage has to be used.
+The connection string for this database has to be saved in a UDM object or passed to the UMC processes via an environment variable.
+The script ``univention-mangement-console-settings`` can be used to create or modify the UDM object used to save this connection string.
+In most cases it is enough to configure only an :program:`SQLite` database.
+If however a case exists where one portal is load balanced by multiple UCS servers, it is necessary to use a database all the systems can access, for example :program:`PostgreSQL`.
+
+#. Install the necessary database driver
+
+   Internally :program:`SQLAlchemy` is being used.
+   Therefore all the databases supported by :program:`SQLAlchemy` version 1.2.18 are supported.
+   For most databases it is necessary to install the appropriate driver.
+   More information on this can found in the `official SQLAlchemy documentation <https://docs.sqlalchemy.org/en/13/dialects/index.html>`_.
+
+   Example how to install a database driver for :program:`PostgreSQL`:
+
+   .. code-block:: console
+
+      $ apt install python3-psycopg2
+
+#. Set the SQL connection URI:
+
+   .. code-block:: console
+
+      $ univention-management-console-setting set \
+         -u 'postgresql+psycopg2://user:password@postgres:5432/db'
+
+#. Restart the UMC:
+
+   .. code-block:: console
+
+      $ systemctl restart \
+         'univention-management-console-server*'
+

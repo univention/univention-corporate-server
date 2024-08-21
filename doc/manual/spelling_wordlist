@@ -13,6 +13,7 @@ subtree
 subtrees
 ad hoc
 Tabs
+backchannel
 
 # to satisfy the German spell checker, only needed in this local scope
 Carter
@@ -51,3 +52,5 @@ remove
 to
 using
 vollqualifizierten
+Multiprocessing
+Verbindungs-URI

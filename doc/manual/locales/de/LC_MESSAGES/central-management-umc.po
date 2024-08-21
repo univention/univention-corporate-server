@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-12 08:51+0000\n"
+"POT-Creation-Date: 2024-08-21 14:27+0000\n"
 "PO-Revision-Date: 2024-05-29 15:19+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -1643,10 +1643,11 @@ msgid ""
 "session times out. This feature is enabled by default and can be toggled "
 "through the UCR Variable :envvar:`portal/reload-tabs-on-logout`."
 msgstr ""
-"Alle Browser Tabs, in denen der Benutzer im Portal eingeloggt ist, werden "
-"automatisch aktualisiert, wenn eine Abmeldung erkannt wird. Dasselbe gilt, wenn "
-"die Sitzung abläuft. Diese Funktion ist standardmäßig aktiviert und kann über die "
-"UCR-Variable :envvar:`portal/reload-tabs-on-logout` umgeschaltet werden."
+"Alle Browser Tabs, in denen der Benutzer im Portal eingeloggt ist, werden"
+" automatisch aktualisiert, wenn eine Abmeldung erkannt wird. Dasselbe "
+"gilt, wenn die Sitzung abläuft. Diese Funktion ist standardmäßig "
+"aktiviert und kann über die UCR-Variable :envvar:`portal/reload-tabs-on-"
+"logout` umgeschaltet werden."
 
 #: ../../central-management-umc/login.rst:49
 msgid "Choose the right user account"
@@ -2130,6 +2131,85 @@ msgid ""
 msgstr ""
 "Aktualisieren Sie manuell die *Anmelden* Kachel im Portal, so dass der "
 "Link auf ``/univention/login/`` zeigt."
+
+#: ../../central-management-umc/login.rst:278
+msgid "Backchannel Logout"
+msgstr "Backchannel Logout"
+
+#: ../../central-management-umc/login.rst:280
+msgid ""
+"If OIDC backchannel logout is used along with multiprocessing of the UMC "
+"server, a database for session storage has to be used. The connection "
+"string for this database has to be saved in a UDM object or passed to the"
+" UMC processes via an environment variable. The script ``univention-"
+"mangement-console-settings`` can be used to create or modify the UDM "
+"object used to save this connection string. In most cases it is enough to"
+" configure only an :program:`SQLite` database. If however a case exists "
+"where one portal is load balanced by multiple UCS servers, it is "
+"necessary to use a database all the systems can access, for example "
+":program:`PostgreSQL`."
+msgstr ""
+"Wenn OIDC Backchannel Logout zusammen mit Multiprocessing des UMC Servers "
+"verwendet wird, muss eine Datenbank für die Speicherung von Sitzungen verwendet "
+"werden. Die Verbindungs-URI für diese Datenbank muss in einem UDM "
+"Objekt gespeichert oder über eine Umgebungsvariable an die UMC Prozesse "
+"übergeben werden. Das Skript ``univention-management-console-settings`` "
+"kann verwendet werden, um das UDM Objekt, das zum Speichern der "
+"Verbindungs-URI verwendet wird, zu erstellen oder zu bearbeiten. In "
+"den meisten Fällen reicht es aus, nur eine SQLite-Datenbank zu "
+"konfigurieren. Wenn jedoch ein Fall vorliegt, bei dem ein Portal von "
+"mehreren UCS-Servern last verteilt wird, ist es notwendig, eine Datenbank "
+"zu verwenden, auf die alle Systeme zugreifen können, beispielsweise "
+":program:`PostgreSQL`."
+
+#: ../../central-management-umc/login.rst:286
+msgid "Install the necessary database driver"
+msgstr "Den notwendigen Datenbank Treiber installieren"
+
+#: ../../central-management-umc/login.rst:288
+msgid ""
+"Internally :program:`SQLAlchemy` is being used. Therefore all the "
+"databases supported by :program:`SQLAlchemy` version 1.2.18 are "
+"supported. For most databases it is necessary to install the appropriate "
+"driver. More information on this can found in the `official SQLAlchemy "
+"documentation <https://docs.sqlalchemy.org/en/13/dialects/index.html>`_."
+msgstr ""
+"Intern wird :program:`SQLAlchemy` verwendet. Daher werden alle von "
+":program:`SQLAlchemy` Version 1.2.18 unterstützten Datenbanken "
+"unterstützt. Für die meisten Datenbanken ist es notwendig, den "
+"entsprechenden Treiber zu installieren. Weitere Informationen dazu finden"
+" sich in der `offiziellen SQLAlchemy-Dokumentation "
+"<https://docs.sqlalchemy.org/en/13/dialects/index.html>`_."
+
+#: ../../central-management-umc/login.rst:293
+msgid "Example how to install a database driver for :program:`PostgreSQL`:"
+msgstr ""
+"Beispiel zum installieren eines Datenbank Treibers für "
+":program:`PostgreSQL`"
+
+#: ../../central-management-umc/login.rst:295
+msgid "$ apt install python3-psycopg2"
+msgstr ""
+
+#: ../../central-management-umc/login.rst:299
+msgid "Set the SQL connection URI:"
+msgstr "Setzen der SQL Verbindungs-URI:"
+
+#: ../../central-management-umc/login.rst:301
+msgid ""
+"$ univention-management-console-setting set \\\n"
+"   -u 'postgresql+psycopg2://user:password@postgres:5432/db'"
+msgstr ""
+
+#: ../../central-management-umc/login.rst:306
+msgid "Restart the UMC:"
+msgstr "Neustart der UMC:"
+
+#: ../../central-management-umc/login.rst:308
+msgid ""
+"$ systemctl restart \\\n"
+"   'univention-management-console-server*'"
+msgstr ""
 
 #: ../../central-management-umc/policies.rst:8
 msgid "Policies"
@@ -4165,4 +4245,7 @@ msgstr "Reiter Richtlinien"
 #: ../../central-management-umc/user-defined-ldap-structures.rst:68
 msgid "The *Policies* tab is described in :ref:`central-policies-assign`."
 msgstr "Diese Karteikarte wird in :ref:`central-policies-assign` beschrieben."
+
+#~ msgid "For example for PostgreSQL:"
+#~ msgstr ""
 

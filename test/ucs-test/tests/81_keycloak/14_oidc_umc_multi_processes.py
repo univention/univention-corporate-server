@@ -17,22 +17,27 @@ _ = Translation('ucs-test-browser').translate
 
 
 @pytest.fixture()
-def no_frontchannel_and_umc_multi_processes(ucr):
+def umc_multi_processes(ucr):
     old_value = ucr.get("umc/http/processes", 1)
-    ucr.handler_set(["umc/http/processes=4"])
+    ucr.handler_set(["umc/http/processes=8"])
     try:
+        run_command(['univention-management-console-settings', 'set', '-u', 'sqlite:////var/cache/univention-management-console/session_db'])
         run_command(["systemctl", "restart", "apache2"])
         run_command(["systemctl", "restart", "univention-management-console-*"])
         time.sleep(10)
         yield
     finally:
         ucr.handler_set(["umc/http/processes=%s" % old_value])
+        run_command(['univention-management-console-settings', 'set', '-u'])
         run_command(["systemctl", "restart", "apache2"])
         run_command(["systemctl", "restart", "univention-management-console-*"])
         time.sleep(10)
 
 
-def test_login(no_frontchannel_and_umc_multi_processes, udm, portal_login_via_keycloak_custom_page, portal_config, keycloak_config, multi_tab_context):
+@pytest.mark.usefixtures("umc_multi_processes")
+@pytest.mark.usefixtures('oidc_client_logout_meachanism')
+@pytest.mark.parametrize('oidc_client_logout_meachanism', ['backchannel'], indirect=True)
+def test_login(udm, portal_login_via_keycloak_custom_page, portal_config, keycloak_config, multi_tab_context):
     username = udm.create_user()[1]
 
     portal_hostname = portal_config.fqdn

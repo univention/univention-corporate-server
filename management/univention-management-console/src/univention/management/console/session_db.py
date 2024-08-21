@@ -1,3 +1,4 @@
+import os
 import time
 from contextlib import contextmanager
 
@@ -5,26 +6,64 @@ from sqlalchemy import BigInteger, Column, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from univention.config_registry import ucr
+from .config import SQL_CONNECTION_ENV_VAR
 
 
-engine = create_engine(ucr['umc/http/session/db-url'])
+class DBDisabledException(Exception):
+    pass
+
+
+class DBRegistry:
+    __engine = None
+    __registry = None
+    __init = False
+    _enabled = False
+
+    @classmethod
+    def get(cls):
+        if not cls.__init:
+            cls.__create()
+
+        return cls.__registry()
+
+    @classmethod
+    def enabled(cls):
+        if not cls.__init:
+            cls.__create()
+
+        return cls._enabled
+
+    @classmethod
+    def __create(cls):
+        cls.__init = True
+        connection_uri = os.environ.get(SQL_CONNECTION_ENV_VAR, None)
+        if connection_uri is None:
+            return
+
+        engine = create_engine(connection_uri)
+        cls.__engine = engine
+        cls.__registry = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
+        Base.metadata.create_all(cls.__engine)
+        cls._enabled = True
+
+
 Base = declarative_base()
 
 
 @contextmanager
-def get_session(bind, auto_commit=True):
+def get_session(auto_commit=True):
     # type: (bool) -> Iterator[sqlalchemy.Session]
+    if not DBRegistry.enabled():
+        raise DBDisabledException
+
     session = None
     try:
-        session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=bind))
+        session = DBRegistry.get()
         yield session
     finally:
         if session is not None:
             if auto_commit:
                 session.commit()
-            session.remove()
-            session.bind.dispose()
 
 
 class DBSession(Base):
@@ -38,54 +77,45 @@ class DBSession(Base):
     sessions = {}
 
     def __repr__(self):
-        return f'<Session(session_id={self.session_id}, expire_time={self.expire_time})>'
+        return f'<Session(session_id={self.session_id}, expire_time={self.expire_time}, oidc_sid={self.oidc_sid}, oidc_sub={self.oidc_sub}, oidc_iss={self.oidc_iss})>'
 
     @classmethod
-    def get(cls, session_id):
-        with get_session(bind=engine) as session:
-            return session.query(cls).filter(cls.session_id == session_id).first()
+    def get(cls, db_session, session_id):
+        return db_session.query(cls).filter(cls.session_id == session_id).first()
 
     @classmethod
-    def delete(cls, session_id):
-        with get_session(bind=engine) as session:
-            session.query(cls).filter(cls.session_id == session_id).delete()
+    def delete(cls, db_session, session_id):
+        db_session.query(cls).filter(cls.session_id == session_id).delete()
 
     @classmethod
-    def update(cls, session_id, value):
-        with get_session(bind=engine) as session:
-            expire_time = cls.calculate_session_end_time(value)
-            session.query(cls).filter(cls.session_id == session_id).update({'expire_time': expire_time})
-            session.commit()
+    def update(cls, db_session, session_id, umc_session):
+        expire_time = cls.calculate_session_end_time(umc_session)
+        db_session.query(cls).filter(cls.session_id == session_id).update({'expire_time': expire_time})
 
     @classmethod
-    def create(cls, session_id, umcSession):
+    def create(cls, db_session, session_id, umc_session):
         oidc_params = {}
-        if umcSession.oidc:
-            oidc_params['oidc_sid'] = umcSession.oidc.claims['sid']
-            oidc_params['oidc_sub'] = umcSession.oidc.claims['sub']
-            oidc_params['oidc_iss'] = umcSession.oidc.claims['iss']
+        if umc_session.oidc:
+            oidc_params['oidc_sid'] = umc_session.oidc.claims.get('sid')
+            oidc_params['oidc_sub'] = umc_session.oidc.claims.get('sub')
+            oidc_params['oidc_iss'] = umc_session.oidc.claims.get('iss')
 
-        with get_session(bind=engine) as session:
-            session.add(cls(session_id=session_id, expire_time=cls.calculate_session_end_time(umcSession), **oidc_params))
-            session.commit()
+        db_session.add(cls(session_id=session_id, expire_time=cls.calculate_session_end_time(umc_session), **oidc_params))
+        db_session.commit()
 
     @classmethod
-    def calculate_session_end_time(cls, value):
-        session_valid_in_seconds = value.session_end_time - time.monotonic()
+    def calculate_session_end_time(cls, umc_session):
+        session_valid_in_seconds = umc_session.session_end_time - time.monotonic()
         real_session_end_time = time.time() + session_valid_in_seconds
 
         return real_session_end_time
 
     @classmethod
-    def get_by_oidc(cls, claims):
-        with get_session(bind=engine) as session:
-            oidc_sessions_by_sid = session.query(cls).filter(cls.oidc_iss == claims.get('iss'), cls.oidc_sid == claims.get('sid')).first()
-            if oidc_sessions_by_sid:
-                yield oidc_sessions_by_sid
-            else:
-                oidc_sessions_by_sub = session.query(cls).filter(cls.oidc_iss == claims.get('iss'), cls.oidc_sub == claims.get('sub')).all()
-                for oidc_session in oidc_sessions_by_sub:
-                    yield oidc_session
-
-
-Base.metadata.create_all(engine)
+    def get_by_oidc(cls, db_session, claims):
+        oidc_sessions_by_sid = db_session.query(cls).filter(cls.oidc_iss == claims.get('iss'), cls.oidc_sid == claims.get('sid')).first()
+        if oidc_sessions_by_sid:
+            yield oidc_sessions_by_sid
+        else:
+            oidc_sessions_by_sub = db_session.query(cls).filter(cls.oidc_iss == claims.get('iss'), cls.oidc_sub == claims.get('sub')).all()
+            for oidc_session in oidc_sessions_by_sub:
+                yield oidc_session

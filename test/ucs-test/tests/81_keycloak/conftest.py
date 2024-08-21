@@ -474,8 +474,8 @@ def legacy_authorization_setup_oidc(
         keycloak_administrator_connection.delete_client(client_id)
 
 
-@pytest.fixture(params=['frontchannel', 'backchannel'])
-def oidc_client_frontchannel(ucr, request):
+@pytest.fixture()
+def oidc_client_logout_meachanism(ucr, request):
     if request.param == 'frontchannel':
         pytest.skip("frontchannel logout doesn't currently does not work for external OPs. Skipp all frontchannel logout tests for now.")
     modified_clients = []

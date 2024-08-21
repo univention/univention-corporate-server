@@ -42,7 +42,6 @@ import tornado.gen
 from ldap.filter import filter_format
 
 import univention.admin.uexceptions as udm_errors
-from univention.management.console.session_db import DBSession
 from univention.management.console.session_dict import SessionDict
 
 from .acl import ACLs, LDAP_ACLs
@@ -294,8 +293,6 @@ class Session(object):
         logout_notifier = logout_notifiers.get(self.session_id)
         if logout_notifier is not None:
             logout_notifier.set()
-
-        DBSession.delete(self.session_id)
 
         if self.saml:
             self.saml.on_logout()
