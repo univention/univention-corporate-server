@@ -1,3 +1,9 @@
+univention-management-console (13.0.20) unstable; urgency=medium
+
+  * Bug #57506: Do not show the OIDC consent screen when the RP is the UMC
+
+ -- Mika Westphal <westphal@univention.de>  Wed, 21 Aug 2024 14:25:11 +0200
+
 univention-management-console (13.0.19) unstable; urgency=medium
 
   * Bug 57505: Ensure file mode 600 for oidc.json
