@@ -9,8 +9,8 @@ desc: |
  * CVE-2019-1387: Remote code execution in recursive clones with nested
    submodules
  * CVE-2023-25652: by feeding specially crafted input to `git apply
-   --reject`, a path outside the working tree can be overwritten with partially
-   controlled contents
+   --reject`, a path outside the working tree can be overwritten with
+   partially controlled contents
  * CVE-2023-25815: malicious placement of crafted messages when git was
    compiled with runtime prefix
  * CVE-2023-29007: arbitrary configuration injection when renaming or
