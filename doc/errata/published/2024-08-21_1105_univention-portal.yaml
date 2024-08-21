@@ -11,3 +11,6 @@ desc: |
    by default and can be toggled with the Univention Configuration Registry
    Variable `portal/reload-tabs-on-logout`.
 bug: [57467]
+erratum: 1105
+announced: 2024-08-21
+support: core
