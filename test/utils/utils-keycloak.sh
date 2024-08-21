@@ -316,8 +316,8 @@ backend portals
 	balance roundrobin
 	timeout server 10000
 	cookie SERVER insert indirect nocache
-	#server portal 10.207.165.17:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie portal
-	#server backup 10.207.165.18:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie backup
+	# sticky sessions
+	cookie SERVER insert indirect nocache
 $(
 	for host in "$@"; do
 		# shellcheck disable=SC2206
