@@ -13,3 +13,6 @@ desc: |
  * Added `oidc-id-token` hint to UMC logout to disable Keycloak's logout
    confirmation dialog.
 bug: [57505, 57467, 57475]
+erratum: 1104
+announced: 2024-08-21
+support: core
