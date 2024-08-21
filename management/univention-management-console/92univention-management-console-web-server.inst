@@ -192,7 +192,6 @@ _setup_oidc () {
 		--logo-url="https://$fqdn_oidc/favicon.ico" \
 		--pkce-code-challenge-method="S256" \
 		--default-scopes="openid" \
-		--consent="Allow access to UDM-REST API and OpenLDAP?" \
 		--web-origins="+" \
 		"https://$fqdn_oidc/univention/oidc/" || die
 }
