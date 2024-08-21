@@ -1,3 +1,9 @@
+univention-management-console (14.0.27) unstable; urgency=medium
+
+  * Bug #57506: Do not show the OIDC consent screen when the RP is the UMC
+
+ -- Mika Westphal <westphal@univention.de>  Wed, 21 Aug 2024 14:25:11 +0200
+
 univention-management-console (14.0.26) unstable; urgency=medium
 
   * Bug #57475: add oidc-id-token hint to disable logout confirmation dialog
