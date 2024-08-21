@@ -1,4 +1,4 @@
-univention-directory-manager-modules (17.0.17) unstable; urgency=medium
+univention-directory-manager-modules (17.0.18) unstable; urgency=medium
 
   * Don't let expiry date depend on timezone
 
