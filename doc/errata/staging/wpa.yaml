@@ -6,9 +6,14 @@ src: wpa
 fix: 2:2.4-1+deb9u11A~4.4.9.202408161117
 desc: |
  This update addresses the following issue:
- 2:2.4-1+deb9u11 (Wed, 14 Aug 2024 19:21:53 +0300)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2024-5290: Only load libraries from trusted path
+ * An issue was discovered in `wpa_supplicant` that resulted in loading
+   of arbitrary shared objects, which allows a local unprivileged attacker
+   to escalate privileges to the user that `wpa_supplicant` runs as
+   (usually root). Membership in the `netdev` group or access to the `dbus`
+   interface of `wpa_supplicant` allow an unprivileged user to specify an
+   arbitrary path to a module to be loaded by the `wpa_supplicant` process.
+   Now it only loads libraries from trusted paths.
+   (CVE-2024-5290).
 bug: [57522]
 cve:
 - CVE-2024-5290
