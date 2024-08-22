@@ -195,3 +195,9 @@ Description[de]=Definiert den Dateipfad zu den OpenID Provider Zertifikaten im J
 Description[en]=Defines the file path to the OpenID Provider certificates in JWKS format of this relying party entry.
 Type=str
 Categories=management-umc,oidc
+
+[umc/oidc/rp/server]
+Description[de]=Definiert den FQDN des Relying Party Eintrags für die UMC. Wenn die Variable nicht gesetzt ist wird der Rechnername und alle IP Adressen verwendet.
+Description[en]=Defines the fqdn of the relying party for UMC. If the variable is unset, the fqdn of the UCS system and all IP addresses are used.
+Type=str
+Categories=management-umc,oidc

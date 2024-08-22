@@ -90,11 +90,11 @@ class OIDCResource(OAuth2Mixin, Resource):
 
     def get_openid_provider(self, issuer):
 
-        # TODO: we may have multiple configs in oidc.json, use the conf that refers to the value of umc/oidc/rp/server
-        if self.application.settings['default_rp_server']:
-            if self.application.settings['default_rp_server'] in self.application.settings['oidc']:
-                if self.application.settings['oidc'][self.application.settings['default_rp_server']]['issuer'] == issuer:
-                    return self.application.settings['oidc'][self.application.settings['default_rp_server']]
+        # We may have multiple configs in oidc.json, use the one that refers to the value of umc/oidc/rp/server
+        if self.application.settings['umc_oidc_rp_server']:
+            if self.application.settings['umc_oidc_rp_server'] in self.application.settings['oidc']:
+                if self.application.settings['oidc'][self.application.settings['umc_oidc_rp_server']]['issuer'] == issuer:
+                    return self.application.settings['oidc'][self.application.settings['umc_oidc_rp_server']]
 
         for openid_provider in self.application.settings['oidc'].values():
             if openid_provider['issuer'] == issuer:
