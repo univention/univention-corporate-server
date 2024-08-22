@@ -153,18 +153,19 @@ _setup_oidc () {
 		[ -e "$jwk" ] && ucr set "ldap/server/sasl/oauthbearer/trusted-jwks/$hostname.$domainname"="$jwk"
 	done
 
-	if [ -n "$umc_oidc_rp_server" ]; then
-		fqdn_oidc="$umc_oidc_rp_server"
-	else
-		fqdn_oidc="$hostname.$domainname"
-	fi
-
 	if [ ! -e /etc/umc-oidc.secret ]; then
 		touch /etc/umc-oidc.secret
 		chmod 0600 /etc/umc-oidc.secret
 		create_machine_password > /etc/umc-oidc.secret
+
 		ucr commit /usr/share/univention-management-console/oidc/oidc.json
 		univention-directory-listener-ctrl resync umc-service-providers
+	fi
+
+	if [ -n "$umc_oidc_rp_server" ]; then
+		fqdn_oidc="$umc_oidc_rp_server"
+	else
+		fqdn_oidc="$hostname.$domainname"
 	fi
 
 	univention-keycloak "$@" oidc/rp create \
