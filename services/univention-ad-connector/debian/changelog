@@ -1,3 +1,10 @@
+univention-ad-connector (16.0.9) unstable; urgency=medium
+
+  * Bug #57510: Don't map the targetdn of a move operation
+    through the s4 cache
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 12 Sep 2024 18:33:05 +0200
+
 univention-ad-connector (16.0.8) unstable; urgency=medium
 
   * Bug #57504: change the dn argument to not be required by the script

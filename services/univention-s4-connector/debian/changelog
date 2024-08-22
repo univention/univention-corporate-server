@@ -1,3 +1,10 @@
+univention-s4-connector (16.0.6) unstable; urgency=medium
+
+  * Bug #57510: Don't map the targetdn of a move operation
+    through the s4 cache
+
+ -- Julia Bremer <bremer@univention.de>  Thu, 12 Sep 2024 18:32:44 +0200
+
 univention-s4-connector (16.0.5) unstable; urgency=medium
 
   * Bug #57453: Make sqlite files only readable to root
