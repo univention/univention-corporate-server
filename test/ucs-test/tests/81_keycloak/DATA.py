@@ -38,7 +38,7 @@ UMC_OIDC_CLIENT = {
     ],
     "notBefore": 0,
     "bearerOnly": False,
-    "consentRequired": True,
+    "consentRequired": False,
     "standardFlowEnabled": True,
     "implicitFlowEnabled": False,
     "directAccessGrantsEnabled": True,
@@ -78,7 +78,7 @@ UMC_OIDC_CLIENT = {
         "tls.client.certificate.bound.access.tokens": "false",
         "acr.loa.map": "ignore",
         "saml.authnstatement": "false",
-        "display.on.consent.screen": "true",
+        "display.on.consent.screen": "false",
         "token.response.type.bearer.lower-case": "false",
         "saml.onetimeuse.condition": "false"
     },
