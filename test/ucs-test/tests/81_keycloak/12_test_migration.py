@@ -18,13 +18,13 @@ def get_client_by_id(connection, client_id):
     return kc_id, connection.get_client(kc_id)
 
 
-def compare_client(old, new, substitutes):
+def compare_client(old, new, substitutes, client_id):
     old_mappers = old.pop('protocolMappers', [])
     new_mappers = new.pop('protocolMappers', [])
     for mapp in old_mappers:
         for new_mapp in new_mappers:
             if mapp['name'] == new_mapp['name']:
-                compare_client(mapp, new_mapp, substitutes)
+                compare_client(mapp, new_mapp, substitutes, client_id)
                 break
         else:
             pytest.fail("Old client contains more protocolMappers than the new one")
@@ -34,15 +34,15 @@ def compare_client(old, new, substitutes):
         if key == 'id':
             continue
         if isinstance(old[key], dict):
-            compare_client(old[key], new[key], substitutes)
+            compare_client(old[key], new[key], substitutes, client_id)
         elif isinstance(old[key], list):
             assert old[key].sort() == new[key].sort()
         else:
             if new[key] != 'ignore':
                 if isinstance(new[key], str):
-                    assert old[key] == new[key].format(**substitutes)
+                    assert old[key] == new[key].format(**substitutes), f'mismatch for {key} in {client_id}'
                 else:
-                    assert old[key] == new[key]
+                    assert old[key] == new[key], f'mismatch for {key} in {client_id}'
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
@@ -64,7 +64,7 @@ def test_create_client(keycloak_administrator_connection, client, client_id, arg
         if not args:
             substitutes['fqdn'] = f'{ucr["hostname"]}.{ucr["domainname"]}'
             substitutes['ip'] = f'{ucr["interfaces/eth0/address"]}'
-        compare_client(new_client, client, substitutes)
+        compare_client(new_client, client, substitutes, client_id)
     finally:
         if args:
             keycloak_administrator_connection.delete_client(kc_id)
