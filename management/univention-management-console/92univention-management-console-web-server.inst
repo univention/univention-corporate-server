@@ -137,8 +137,8 @@ systemctl restart apache2
 _setup_oidc () {
 
 	# some customers have their own keycloak and want no auto-configuration whatsoever
-	if is_ucr_false "umc/web/oidc/autoconfiguration"; then
-		echo "UMC OIDC auto configuration disabled by umc/web/oidc/autoconfiguration"
+	if is_ucr_false "umc/join/oidc/autoconfiguration"; then
+		echo "UMC OIDC auto configuration disabled by umc/join/oidc/autoconfiguration"
 		return 0
 	fi
 
@@ -147,7 +147,7 @@ _setup_oidc () {
 	}
 	rm /usr/share/univention-management-console/oidc/*.jwks
 	# don't overwrite, a new issuer is a manual step on every UCS
-	ucr --debug set umc/oidc/issuer?"$(univention-keycloak get-keycloak-base-url)/realms/ucs" || _cleanup_oidc_die
+	ucr --debug set umc/oidc/issuer="$(univention-keycloak get-keycloak-base-url)/realms/ucs" || _cleanup_oidc_die
 	[ "$(ls -A /usr/share/univention-management-console/oidc/*.jwks)" ] || _cleanup_oidc_die
 
 	ucr set \
