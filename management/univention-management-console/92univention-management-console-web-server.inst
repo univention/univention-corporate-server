@@ -135,6 +135,13 @@ fi
 systemctl restart apache2
 
 _setup_oidc () {
+
+	# some customers have their own keycloak and want no auto-configuration whatsoever
+	if is_ucr_false "umc/web/oidc/autoconfiguration"; then
+		echo "UMC OIDC auto configuration disabled by umc/web/oidc/autoconfiguration"
+		return 0
+	fi
+
 	_cleanup_oidc_die () {
 		ucr unset umc/oidc/issuer; exit 3
 	}

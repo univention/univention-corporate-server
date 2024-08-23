@@ -270,6 +270,10 @@ external_portal_config_oidc () {
 	# create client with --fqdn $fqdn --password univention
 	# update secret
 
+	# we have to set a password, so that the password is the same for every client
+	# in case we have multiple UCS servers act as one portal (load balancing setup)
+	echo "univention" > /etc/umc-oidc.secret
+
 	# FIXME
 	local join_user join_pwdfile
 	join_pwdfile="/tmp/pwdfile"
