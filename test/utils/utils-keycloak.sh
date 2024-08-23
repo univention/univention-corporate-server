@@ -102,7 +102,7 @@ keycloak_umc_oidc_idp_setup() {
 	univention-run-join-scripts -dcaccount "$join_user" -dcpwd "$join_pwdfile" --force --run-scripts 92univention-management-console-web-server
 
 	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
-		udm portals/entry create "$@" --ignore_exists \
+		udm portals/entry create --ignore_exists \
 			--position "cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)" \
 			--set name=login-oidc \
 			--append displayName="\"en_US\" \"OIDC Login\"" \
@@ -114,7 +114,7 @@ keycloak_umc_oidc_idp_setup() {
 			--set activated=TRUE \
 			--set linkTarget=samewindow \
 			--set icon="$(base64 /usr/share/univention-portal/login.svg)"
-		udm  portals/category modify "$@" --ignore_exists \
+		udm  portals/category modify --ignore_exists \
 			--dn "cn=domain-service,cn=category,cn=portals,cn=univention,$(ucr get ldap/base)" \
 			--append entries="cn=login-oidc,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)"
 	fi
@@ -262,13 +262,6 @@ external_portal_config_oidc () {
 
 	# oidc
 	ucr set umc/oidc/rp/server="$fqdn"
-
-	# i guess this would need to be set on all UMC servers? so that they trust each other?
-	ucr set "ldap/server/sasl/oauthbearer/trusted-authorized-party/$fqdn"="https://$fqdn/univention/oidc/"
-
-	# TODO
-	# create client with --fqdn $fqdn --password univention
-	# update secret
 
 	# we have to set a password, so that the password is the same for every client
 	# in case we have multiple UCS servers act as one portal (load balancing setup)

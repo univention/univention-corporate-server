@@ -137,8 +137,8 @@ systemctl restart apache2
 _setup_oidc () {
 
 	# some customers have their own keycloak and want no auto-configuration whatsoever
-	if is_ucr_false "umc/join/oidc/autoconfiguration"; then
-		echo "UMC OIDC auto configuration disabled by umc/join/oidc/autoconfiguration"
+	if is_ucr_false "umc/oidc/autoconfiguration"; then
+		echo "UMC OIDC auto configuration disabled by umc/oidc/autoconfiguration"
 		return 0
 	fi
 
@@ -171,6 +171,7 @@ _setup_oidc () {
 
 	if [ -n "$umc_oidc_rp_server" ]; then
 		fqdn_oidc="$umc_oidc_rp_server"
+		ucr set "ldap/server/sasl/oauthbearer/trusted-authorized-party/$fqdn"="https://$fqdn/univention/oidc/"
 	else
 		fqdn_oidc="$hostname.$domainname"
 	fi
