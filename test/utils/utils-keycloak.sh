@@ -212,27 +212,6 @@ external_keycloak_fqdn_config () {
 
 }
 
-external_portal_apache_config () {
-	local fqdn="${1:?missing fqdn}"; shift
-	cat <<-EOF >"/etc/apache2/sites-enabled/univention-portal-external-fqdn.conf"
-	<IfModule mod_ssl.c>
-	<VirtualHost *:443>
-		ServerName $fqdn
-		IncludeOptional /etc/apache2/ucs-sites.conf.d/*.conf
-		SSLEngine on
-		SSLProxyEngine on
-		SSLProxyCheckPeerCN off
-		SSLProxyCheckPeerName off
-		SSLProxyCheckPeerExpire off
-		SSLCertificateFile /opt/portal.extern.test/cert.pem
-		SSLCertificateKeyFile /opt/portal.extern.test/private.key
-		SSLCACertificateFile /etc/univention/ssl/ucsCA/CAcert.pem
-	</VirtualHost>
-	</IfModule>
-EOF
-	systemctl reload apache2.service
-}
-
 external_portal_config_saml () {
 	# requiremnts:
 	# * certificate/apache config for external portal
@@ -276,6 +255,69 @@ external_portal_config_oidc () {
 	univention-run-join-scripts -dcaccount "$join_user" -dcpwd "$join_pwdfile" --force --run-scripts 92univention-management-console-web-server
 
 	# WHY?
+	service slapd restart
+}
+
+
+external_portal_config_oidc_manually () {
+	local fqdn="${1:?missing fqdn}"; shift
+	local idp="${1:?missing idp}"; shift
+
+	# oidc configuration
+	ucr set \
+		umc/oidc/autoconfiguration=false \
+		umc/web/oidc/enabled=true \
+		umc/oidc/rp/server="$fqdn" \
+		umc/oidc/issuer="https://${idp}/realms/ucs" \
+		umc/oidc/default-op="$fqdn"
+
+	# create oidc client
+	echo "univention" > /etc/umc-oidc.secret
+	# FIXME
+	univention-keycloak --binduser Administrator --bindpwd univention oidc/rp create \
+		--app-url "https://$fqdn/univention/oidc/" \
+		--host-fqdn "$fqdn" \
+		--client-secret "$(cat /etc/umc-oidc.secret)" \
+		--name="UMC on $fqdn" \
+		--description="Univention Management Console on $fqdn" \
+		--direct-access-grants \
+		--access-token-lifespan="${umc_oidc_access_token_lifespan:-300}" \
+		--access-token-audience="ldaps://$(ucr get domainname)/" \
+		--id-token-audience="https://$fqdn/univention/oidc/" \
+		--redirect-uri="https://$fqdn/univention/oidc/*" \
+		--redirect-uri="http://$fqdn/univention/oidc/*" \
+		--post-logout-redirect-uris="http://$fqdn/univention/oidc/*" \
+		--post-logout-redirect-uris="https://$fqdn/univention/oidc/*" \
+		--no-frontchannel-logout \
+		--frontchannel-logout-url="https://$fqdn/univention/oidc/frontchannel-logout" \
+		--backchannel-logout-url="https://$fqdn/univention/oidc/backchannel-logout" \
+		--always-display-in-console \
+		--logo-url="https://$fqdn/favicon.ico" \
+		--pkce-code-challenge-method="S256" \
+		--default-scopes="openid" \
+		--web-origins="+" "myclient"
+
+	# umc oidc configuration
+	ucr set \
+		"umc/oidc/$fqdn/client-id"="myclient" \
+		"umc/oidc/$fqdn/client-secret-file"="/etc/umc-oidc.secret" \
+		"umc/oidc/$fqdn/extra-parameter"="kc_idp_hint" \
+		"umc/oidc/$fqdn/issuer"="https://$idp/realms/ucs" \
+		"umc/oidc/$fqdn/openid-certs"="/usr/share/univention-management-console/oidc/https%3A%2F%2F${idp}%2Frealms%2Fucs.jwks" \
+		"umc/oidc/$fqdn/openid-configuration"="/usr/share/univention-management-console/oidc/https%3A%2F%2F${idp}%2Frealms%2Fucs.json"
+
+	# ldap
+	local hostname domainname
+	hostname="$(ucr get hostname)"
+	domainname="$(ucr get domainname)"
+	ucr set \
+		"ldap/server/sasl/oauthbearer/trusted-audience/$domainname?ldaps://$domainname/" \
+		"ldap/server/sasl/oauthbearer/trusted-audience/$hostname.$domainname?ldaps://$hostname.$domainname/" \
+		"ldap/server/sasl/oauthbearer/trusted-issuer/$hostname.$domainname=https://$idp/realms/ucs" \
+		"ldap/server/sasl/oauthbearer/trusted-jwks/$hostname.$domainname"="/usr/share/univention-management-console/oidc/https%3A%2F%2F${idp}%2Frealms%2Fucs.jwks" \
+		"ldap/server/sasl/oauthbearer/trusted-authorized-party/$hostname.$domainname"="myclient"
+
+	service univention-management-console-server restart
 	service slapd restart
 }
 
