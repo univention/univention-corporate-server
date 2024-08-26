@@ -94,6 +94,13 @@ fi
 systemctl restart apache2
 
 _setup_oidc () {
+
+	# some customers have their own keycloak and want no auto-configuration whatsoever
+	if is_ucr_false "umc/oidc/autoconfiguration"; then
+		echo "UMC OIDC auto configuration disabled by umc/oidc/autoconfiguration"
+		return 0
+	fi
+
 	_cleanup_oidc_die () {
 		ucr unset umc/oidc/issuer; exit 3
 	}
@@ -104,11 +111,11 @@ _setup_oidc () {
 	ucr set \
 		"ldap/server/sasl/oauthbearer/trusted-audience/$domainname?ldaps://$domainname/" \
 		"ldap/server/sasl/oauthbearer/trusted-audience/$hostname.$domainname?ldaps://$hostname.$domainname/" \
-		"ldap/server/sasl/oauthbearer/trusted-issuer/$hostname.$domainname?$(ucr get umc/oidc/issuer)"
+		"ldap/server/sasl/oauthbearer/trusted-issuer/$hostname.$domainname=$(ucr get umc/oidc/issuer)"
 		#ldap/server/sasl/oauthbearer/required-scopes/
 
 	for jwk in /usr/share/univention-management-console/oidc/*.jwks; do
-		[ -e "$jwk" ] && ucr set "ldap/server/sasl/oauthbearer/trusted-jwks/$hostname.$domainname"?"$jwk"
+		[ -e "$jwk" ] && ucr set "ldap/server/sasl/oauthbearer/trusted-jwks/$hostname.$domainname"="$jwk"
 	done
 
 	if [ ! -e /etc/umc-oidc.secret ]; then
@@ -122,6 +129,7 @@ _setup_oidc () {
 
 	if [ -n "$umc_oidc_rp_server" ]; then
 		fqdn_oidc="$umc_oidc_rp_server"
+		ucr set "ldap/server/sasl/oauthbearer/trusted-authorized-party/$fqdn"="https://$fqdn/univention/oidc/"
 	else
 		fqdn_oidc="$hostname.$domainname"
 	fi

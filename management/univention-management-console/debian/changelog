@@ -1,3 +1,9 @@
+univention-management-console (14.0.29) unstable; urgency=medium
+
+  * Bug #57483: Simplify UMC OIDC setup
+
+ -- Felix Botner <botner@univention.de>  Mon, 26 Aug 2024 14:32:31 +0200
+
 univention-management-console (14.0.27) unstable; urgency=medium
 
   * Bug #57506: Do not show the OIDC consent screen when the RP is the UMC
