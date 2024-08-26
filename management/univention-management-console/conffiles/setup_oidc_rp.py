@@ -78,7 +78,12 @@ def handler(config_registry, changes):
     if oidc_op != well_known['issuer']:
         print('Warning: Issuer different: %r != %r' % (oidc_op, well_known['issuer']), file=sys.stderr)
 
-    fqdn = '%(hostname)s.%(domainname)s' % config_registry
+    # some customers want to use a non-UCS keycloak with their own OIDC clients
+    # we don't want to change the client configuration for UMC in this case
+    if config_registry.is_false('umc/oidc/autoconfiguration'):
+        return
+
+    fqdn = config_registry['umc/oidc/rp/server'] if config_registry.get('umc/oidc/rp/server') else '%(hostname)s.%(domainname)s' % config_registry
 
     handler_set([
         'umc/oidc/default-op=%s' % (fqdn,),
