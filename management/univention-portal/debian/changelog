@@ -1,3 +1,9 @@
+univention-portal (4.0.17-3) unstable; urgency=medium
+
+  * Bug 57534: Support oidc in portal login button
+
+ -- Felix Botner <botner@univention.de>  Mon, 26 Aug 2024 17:59:17 +0200
+
 univention-portal (4.0.17-2) unstable; urgency=medium
 
   * Bug #57467 Add a shared worker that connects to the UMCs /logout-sse
