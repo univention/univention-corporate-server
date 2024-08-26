@@ -1,0 +1,18 @@
+product: ucs
+release: "5.0"
+version: [8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-samba4
+fix: 9.0.18-2
+desc: |
+ This update addresses the following issues:
+ * Since updating from Kernel 4.19 to Kernel 5.10 the behavior of the `xfs`
+   filesystem seems to have changed with respect to the handling of xattrs.
+   As a symptom, `rsync -aAX` as used by the script `sysvol-sync.sh`
+   seems to remove `trusted.SGI_ACL_FILE` and `trusted.SGI_ACL_DEFAULT`
+   when synchronizing from the sysvol from a system with an `ext4` partition,
+   which doesn't have those, but only the usual `system.posix_acl_access` and
+   `system.posix_acl_default`. The script `sysvol-sync.sh` has been adjusted
+   to filter the syncronized xattrs to only consider `security.NTACL` and
+   not touch any other xattrs.
+bug: [57529]
