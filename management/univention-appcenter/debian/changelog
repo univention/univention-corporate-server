@@ -1,3 +1,9 @@
+univention-appcenter (11.0.9) unstable; urgency=medium
+
+  * Bug #57544: Run configure and joinscripts in the correct order during upgrade
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 27 Aug 2024 16:28:38 +0200
+
 univention-appcenter (11.0.8) unstable; urgency=medium
 
   * Bug #57210: get networks not managed by the appcenter.
