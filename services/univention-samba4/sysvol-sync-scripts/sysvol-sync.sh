@@ -92,7 +92,7 @@ check_if_need_sync() {
 	local need_sync
 
 	local src="$remote_login:$SYSVOL_PATH"
-	need_sync="$(univention-ssh-rsync /etc/machine.secret \
+	need_sync="$(univention-ssh-rsync --no-split /etc/machine.secret \
 		--dry-run -v "${rsync_options[@]}" \
 		"$src"/ "$dst" 2>/dev/null \
 		| tail --lines=+2 | head --lines=-3)"
@@ -173,7 +173,7 @@ copy_sysvol_from() {
 	(	get_remote_lock "$remote_login" || return 1
 
 		## Read remote sysvol to local importdir
-		out="$(univention-ssh-rsync /etc/machine.secret \
+		out="$(univention-ssh-rsync --no-split /etc/machine.secret \
 			"${rsync_options[@]}" \
 			"$src"/ "$importdir" 2>&1)"
 
@@ -252,7 +252,7 @@ sync_from_active_downstream_DCs() {
 		## check if downstream s4dc has changes:
 		stderr_log_debug "[$log_prefix] rsync check for changes on downstream DC"
 
-		rsync_options=(-aAX --delete --delete-excluded \
+		rsync_options=(-aAX --delete --delete-excluded --filter='-xr! security.NTACL' \
 			--exclude='scripts/user/.*.vbs.[[:alnum:]][[:alnum:]][[:alnum:]][[:alnum:]][[:alnum:]][[:alnum:]]' \
 			)
 
@@ -380,9 +380,9 @@ if [ ! $? -eq 1 ]; then
 fi
 
 if [ "$1" = '--overwrite-local' ]; then
-	default_rsync_options=("-aAX")
+	default_rsync_options=("-aAX" --filter='-xr! security.NTACL')
 else
-	default_rsync_options=("-auAX" "--dirs-update")
+	default_rsync_options=("-auAX" --filter='-xr! security.NTACL' "--dirs-update")
 fi
 
 touch "$SYSVOL_LOCKFILE"

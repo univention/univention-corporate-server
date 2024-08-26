@@ -1,3 +1,9 @@
+univention-samba4 (9.0.17-2) unstable; urgency=medium
+
+  * Bug #57529: use rsync --filter with "-x" rules to only sync security.NTACL
+
+ -- Arvid <requate@univention.de>  Thu, 29 Aug 2024 17:54:45 +0200
+
 univention-samba4 (9.0.17-1) UNRELEASED; urgency=medium
 
   * Bug #57350 UCS 5.0-8 version bump
