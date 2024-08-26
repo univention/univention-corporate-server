@@ -182,13 +182,18 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
         self._had_image_upgrade = True
         self.log('Setting up new container (%s)' % app)
         ucr_save({app.ucr_image_key: None})
+
         old_configure = args.configure
+        old_joinscripts = args.call_join_scripts
         args.configure = False
+        args.call_join_scripts = False
         args.pull_image = False
         self._install_new_app(app, args)
         self._update_converter_service(app)
         args.configure = old_configure
+        args.call_join_scripts = old_joinscripts
         args.set_vars = settings
+
         self._configure(app, args)
         self._register_app(app, args)
         self._call_join_script(app, args)

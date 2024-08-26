@@ -1,3 +1,9 @@
+univention-appcenter (10.0.12) unstable; urgency=medium
+
+  * Bug #57544: Run configure and joinscripts in the correct order
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 27 Aug 2024 16:26:49 +0200
+
 univention-appcenter (10.0.11) unstable; urgency=medium
 
   * Bug #56716: handle not found app
