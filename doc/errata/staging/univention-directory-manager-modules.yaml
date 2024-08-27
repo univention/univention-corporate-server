@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-directory-manager-modules
+fix: 15.0.27-8
+desc: |
+ This update addresses the following issues:
+ * In case a UDM property syntax has been overridden via UCR but the
+   specified value does not correspond to any defined syntax,
+   UDM logged a traceback. This has now been replaced by a proper
+   log message explaining the origin of the problem.
+bug: [57484]
