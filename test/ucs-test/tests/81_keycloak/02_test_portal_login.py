@@ -7,9 +7,14 @@
 from datetime import datetime, timedelta
 
 import pytest
-from utils import keycloak_get_request, keycloak_password_change, keycloak_sessions_by_user, portal_logout
+from utils import (
+    keycloak_get_request, keycloak_login, keycloak_password_change, keycloak_sessions_by_user, portal_logout,
+    run_command,
+)
 
+from univention.config_registry import handler_set
 from univention.lib.umc import Unauthorized
+from univention.testing import ucr as testing_ucr
 from univention.testing.umc import Client
 from univention.testing.utils import (
     get_ldap_connection, package_installed, wait_for_listener_replication, wait_for_replication_and_postrun,
@@ -174,3 +179,24 @@ def test_account_disabled(portal_login_via_keycloak, keycloak_config, portal_con
     wait_for_listener_replication()
     portal_login_via_keycloak(username, 'univentionA', fails_with=keycloak_config.wrong_password_msg, protocol=protocol)
     portal_login_via_keycloak(username, 'univention', fails_with=keycloak_config.account_disabled_msg, protocol=protocol)
+
+
+@pytest.mark.parametrize('protocol', ['saml', 'oidc'])
+def test_portal_login_button(portal_config, protocol, ucr, page, keycloak_config, udm):
+    try:
+        _, username = udm.create_user()
+        with testing_ucr.UCSTestConfigRegistry():
+            handler_set([f'portal/auth-mode={protocol}'])
+            run_command(['service', 'univention-portal-server', 'restart'])
+            run_command(['service', 'univention-management-console-server', 'restart'])
+            page.goto(portal_config.url)
+            page.get_by_role('button', name='Menu').click()
+            page.get_by_role('button', name='Login').click()
+            page.get_by_label('Username or email')
+            assert protocol in page.url
+            keycloak_login(page=page, username=username, password='univention', keycloak_config=keycloak_config)
+            page.get_by_role('button', name='Menu').click()
+            page.get_by_text(username, exact=True).click()
+    finally:
+        run_command(['service', 'univention-portal-server', 'restart'])
+        run_command(['service', 'univention-management-console-server', 'restart'])
