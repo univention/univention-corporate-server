@@ -1,8 +1,11 @@
-univention-directory-reports (12.0.6-1) UNRELEASED; urgency=medium
+univention-directory-reports (12.0.6-2) unstable; urgency=medium
 
+  [ Ivan Barbecho Delgado ]
   * Bug #57350 UCS 5.0-8 version bump
+  * Bug #57431: Fix handling of template interpreter when encountering nested lists
+    in properties. Introduced the `inner-separator` template attribute.
 
- -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Mon, 03 Jun 2024 13:44:15 +0200
+ -- Johannes Königer <koeniger@univention.de>  Tue, 27 Aug 2024 18:13:14 +0200
 
 univention-directory-reports (12.0.5-1) UNRELEASED; urgency=medium
 

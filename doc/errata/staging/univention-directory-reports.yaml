@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-directory-reports
+fix: 12.0.6-2
+desc: |
+ This update addresses the following issues:
+ * Fixed the handling of complex multivalue UDM properties (for example:
+   ``dnsEntryZoneForward``) which prevented users from using them in
+   a customized report template.
+bug: [57431]
