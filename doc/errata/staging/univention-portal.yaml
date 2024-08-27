@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-portal
+fix: 4.0.17-3
+desc: |
+ This update addresses the following issues:
+ * The Portal/UMC authentication mode setting `portal/auth-mode`
+   now also support the value `oidc` to configure OIDC
+   authentication for the login button.
+bug: [57534]

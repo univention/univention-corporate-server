@@ -181,7 +181,7 @@ def test_account_disabled(portal_login_via_keycloak, keycloak_config, portal_con
     portal_login_via_keycloak(username, 'univention', fails_with=keycloak_config.account_disabled_msg, protocol=protocol)
 
 
-@pytest.mark.parametrize('protocol', ['saml', 'oidc'])
+@pytest.mark.parametrize('protocol', ['login', 'saml', 'oidc'])
 def test_portal_login_button(portal_config, protocol, ucr, page, keycloak_config, udm):
     try:
         _, username = udm.create_user()
@@ -194,7 +194,12 @@ def test_portal_login_button(portal_config, protocol, ucr, page, keycloak_config
             page.get_by_role('button', name='Login').click()
             page.get_by_label('Username or email')
             assert protocol in page.url
-            keycloak_login(page=page, username=username, password='univention', keycloak_config=keycloak_config)
+            if protocol == 'login':
+                page.get_by_label('Username').fill(username)
+                page.get_by_label('Password', exact=True).fill('univention')
+                page.get_by_role('button', name='Login').click()
+            else:
+                keycloak_login(page=page, username=username, password='univention', keycloak_config=keycloak_config)
             page.get_by_role('button', name='Menu').click()
             page.get_by_text(username, exact=True).click()
     finally:
