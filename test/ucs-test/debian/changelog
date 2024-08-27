@@ -1,3 +1,9 @@
+ucs-test (10.0.22-61) unstable; urgency=medium
+
+  * univention/ucs#2338: skip check_release_signature if local repo is used
+
+ -- Felix Botner <botner@univention.de>  Tue, 27 Aug 2024 19:22:13 +0200
+
 ucs-test (10.0.22-60) unstable; urgency=medium
 
   *  Bug #57424: Adjust tests to s4 being installed
