@@ -174,8 +174,22 @@ class Interpreter(object):
                     if not value or (isinstance(value, str) and value.lower() == 'none'):
                         token.value = token.attrs.get('default', '')
                     else:
-                        sep = token.attrs.get('separator', ', ')
-                        token.value = sep.join(value)
+                        inner_separator = token.attrs.get('inner-separator', ' ')
+                        if base.descriptions[token.attrs['name']].multivalue:
+                            sep = token.attrs.get('separator', ', ')
+                            if all(isinstance(element, (list, tuple)) for element in value):
+                                if all(isinstance(v, str) for element in value for v in element):
+                                    value = [inner_separator.join(element) for element in value]
+                                else:  # safety fallback
+                                    value = [inner_separator.join([str(v) for v in element]) for element in value]
+                            elif not all(isinstance(element, str) for element in value):
+                                value = [str(element) for element in value]
+                            token.value = sep.join(value)
+                        else:
+                            if all(isinstance(v, str) for v in value):
+                                token.value = inner_separator.join(value)
+                            else:  # safety fallback
+                                token.value = inner_separator.join([str(v) for v in value])
                 else:
                     token.value = value
             elif 'default' in token.attrs:
