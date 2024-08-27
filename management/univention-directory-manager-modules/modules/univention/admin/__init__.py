@@ -110,8 +110,7 @@ def ucr_overwrite_properties(module, lo):
                                 syntax._load(lo)
                                 setattr(prop, attr, syntax)
                             else:
-                                syntax = univention.admin.syntax.string()
-                                setattr(prop, attr, syntax())
+                                log.error("ucr_overwrite_properties: UCR variable %s does not refer to a known UDM syntax: '%s'", var, new_prop_val)
                     elif prop_val_type is bool:
                         setattr(prop, attr, configRegistry.is_true(None, None, new_prop_val))
                     else:
