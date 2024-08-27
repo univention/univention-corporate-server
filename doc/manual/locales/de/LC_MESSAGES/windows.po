@@ -7,7 +7,7 @@ msgstr ""
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-08-22 10:19+0000\n"
-"PO-Revision-Date: 2024-08-15 17:57+0200\n"
+"PO-Revision-Date: 2024-08-27 14:39+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -1101,13 +1101,12 @@ msgid "Additional tools / Debugging connector problems"
 msgstr "Werkzeuge / Fehlersuche"
 
 #: ../../windows/ad-connection.rst:510
-#, fuzzy
 msgid ""
 "The :program:`Active Directory Connection` provides the following tools "
 "and log files for diagnosis:"
 msgstr ""
-"Mit dem UCS AD-Connector werden einige Tools und Logdateien "
-"bereitgestellt:"
+"Die :program:`Active Directory Connection` stellt die folgenden Werkzeuge und "
+"Protokolldateien für die Diagnose zur Verfügung:"
 
 #: ../../windows/ad-connection.rst:525
 msgid ":command:`univention-adsearch`"
@@ -1161,47 +1160,60 @@ msgstr ""
 
 #: ../../windows/ad-connection.rst:550
 msgid ":command:`remove_ad_rejected.py`"
-msgstr ""
+msgstr ":command:`remove_ad_rejected.py`"
 
 #: ../../windows/ad-connection.rst:541
 msgid ""
 "You can use this script to remove an AD object from the AD rejected list "
 "located in the internal database file "
-":file:`/etc/univention/{connector}/internal.sqlite`"
+":file:`/etc/univention/{connector}/internal.sqlite`."
 msgstr ""
+"Sie können dieses Skript verwenden, um ein AD-Objekt aus der Liste der "
+"abgelehnten AD-Objekte zu entfernen, das sich in der internen Datenbankdatei "
+":file:`/etc/univention/{connector}/internal.sqlite` befindet."
 
 #: ../../windows/ad-connection.rst:547
 msgid ""
 "$ /usr/share/univention-ad-connector/remove_ad_rejected.py \\\n"
 "   -c connector <AD object DN>"
 msgstr ""
+"$ /usr/share/univention-ad-connector/remove_ad_rejected.py \\\n"
+"   -c connector <AD object DN>"
 
 #: ../../windows/ad-connection.rst:564
 msgid ":command:`remove_ucs_rejected.py`"
-msgstr ""
+msgstr ":command:`remove_ucs_rejected.py`"
 
 #: ../../windows/ad-connection.rst:555
 msgid ""
 "You can use this script to remove an UCS directory object from the UCS "
 "rejected list located in the internal database file "
-":file:`/etc/univention/{connector}/internal.sqlite`"
+":file:`/etc/univention/{connector}/internal.sqlite`."
 msgstr ""
+"Mit diesem Skript können Sie ein UCS Verzeichnisobjekt aus der Liste der "
+"abgelehnten UCS-Objekte entfernen, das sich in der internen "
+"Datenbankdatei :file:`/etc/univention/{connector}/internal.sqlite` befindet."
 
 #: ../../windows/ad-connection.rst:561
 msgid ""
 "$ /usr/share/univention-ad-connector/remove_ucs_rejected.py \\\n"
 "   -c connector <UCS object DN>"
 msgstr ""
+"$ /usr/share/univention-ad-connector/remove_ucs_rejected.py \\\n"
+"   -c connector <UCS object DN>"
 
 #: ../../windows/ad-connection.rst:590
 msgid ":command:`resync_object_from_ad.py`"
-msgstr ""
+msgstr ":command:`resync_object_from_ad.py`"
 
 #: ../../windows/ad-connection.rst:569
 msgid ""
 "You can use this script to re-synchronize directory objects from AD to "
 "UCS. Use it to synchronize a single or multiple directory objects."
 msgstr ""
+"Sie können dieses Skript verwenden, um Verzeichnisobjekte von AD zu UCS "
+"erneut zu synchronisieren. Verwenden Sie es, um ein einzelnes oder mehrere "
+"Verzeichnisobjekte zu synchronisieren."
 
 #: ../../windows/ad-connection.rst:575
 msgid ""
@@ -1220,21 +1232,37 @@ msgid ""
 "    --filter \"(objectClass=posixAccount)\" \\\n"
 "    --base \"dc=example,dc=com\""
 msgstr ""
+"# to re-sychronize a single object\n"
+"$ /usr/share/univention-ad-connector/resync_object_from_ad.py \\\n"
+"    -c connector <object DN>\n"
+"\n"
+"# to re-synchronize all objects matching a specific filter\n"
+"$ /usr/share/univention-ad-connector/resync_object_from_ad.py \\\n"
+"    -c connector \\\n"
+"    --filter \"(objectClass=posixAccount)\"\n"
+"\n"
+"# to re-synchronize all objects matching a specific base\n"
+"$ /usr/share/univention-ad-connector/resync_object_from_ad.py \\\n"
+"    -c connector \\\n"
+"    --filter \"(objectClass=posixAccount)\" \\\n"
+"    --base \"dc=example,dc=com\""
 
 #: ../../windows/ad-connection.rst:615
 msgid ":command:`resync_object_from_ucs.py`"
-msgstr ""
+msgstr ":command:`resync_object_from_ucs.py`"
 
 #: ../../windows/ad-connection.rst:595
 msgid ""
 "You can use this script to re-synchronize directory objects from UCS to "
 "AD. Use it to synchronize a single or multiple directory objects."
 msgstr ""
+"Sie können dieses Skript verwenden, um Verzeichnisobjekte von UCS nach AD "
+"erneut zu synchronisieren. Verwenden Sie es, um ein einzelnes oder mehrere "
+"Verzeichnisobjekte zu synchronisieren. "
 
 #: ../../windows/ad-connection.rst:598
-#, fuzzy
 msgid "Examples:"
-msgstr "Beispiel:"
+msgstr "Beispiele:"
 
 #: ../../windows/ad-connection.rst:600
 msgid ""
@@ -1253,16 +1281,33 @@ msgid ""
 "   --filter \"<LDAP filter>\" \\\n"
 "   --base \"<base dn>\" \\"
 msgstr ""
+"# to re-synchronize a single object\n"
+"$ /usr/share/univention-ad-connector/resync_object_from_ucs.py \\\n"
+"   -c connector <object DN>\n"
+"\n"
+"# to re-synchronize all objects matching a specific filter\n"
+"$ /usr/share/univention-ad-connector/resync_object_from_ucs.py \\\n"
+"   -c connector \\\n"
+"   --filter \"<LDAP filter>\" \\\n"
+"\n"
+"# to re-synchronize all objects matching a specific base\n"
+"$ /usr/share/univention-ad-connector/resync_object_from_ucs.py \\\n"
+"   -c connector \\\n"
+"   --filter \"<LDAP filter>\" \\\n"
+"   --base \"<base dn>\" \\"
 
 #: ../../windows/ad-connection.rst:624
 msgid ":command:`prepare-new-instance`"
-msgstr ""
+msgstr ":command:`prepare-new-instance`"
 
 #: ../../windows/ad-connection.rst:620
 msgid ""
 "You can use this script to create AD connection instances. The script "
 "copies the required files and sets specific UCR variables."
 msgstr ""
+"Sie können dieses Skript verwenden, um AD-Verbindungsinstanzen zu erstellen. "
+"Das Skript kopiert die erforderlichen Dateien und setzt bestimmte "
+"UCR-Variablen."
 
 #: ../../windows/ad-connection.rst:623
 msgid ""
@@ -1270,10 +1315,13 @@ msgid ""
 "instance. The script then internally removes the files for the instance "
 "and resets the UCR variables."
 msgstr ""
+"Alternativ können Sie dieses Skript auch verwenden, um eine "
+"AD-Verbindungsinstanz zu löschen. Das Skript löscht dann intern die Dateien für "
+"die Instanz und setzt die UCR-Variablen zurück."
 
 #: ../../windows/ad-connection.rst:630
 msgid ":command:`well-known-sid-object-rename`"
-msgstr ""
+msgstr ":command:`well-known-sid-object-rename`"
 
 #: ../../windows/ad-connection.rst:629
 msgid ""
@@ -1281,16 +1329,21 @@ msgid ""
 "in UDM. The AD Connection uses it to rename users and groups with well-"
 "known SIDs."
 msgstr ""
+"Sie können dieses Skript verwenden, um Benutzer und Gruppen mit bekannten SIDs "
+"in UDM umzubenennen. Die :program:`AD Connection` verwendet es, um Benutzer und Gruppen "
+"mit bekannten SIDs umzubenennen."
 
 #: ../../windows/ad-connection.rst:636
 msgid ":command:`make-deleted-objects-readable-for-this-machine`"
-msgstr ""
+msgstr ":command:`make-deleted-objects-readable-for-this-machine`"
 
 #: ../../windows/ad-connection.rst:635
 msgid ""
 "You can use this script to grant list and read access to ``CN=Deleted "
 "Objects`` in Active Directory."
 msgstr ""
+"Sie können dieses Skript verwenden, um Zugriff zum Auflisten und Lesen auf "
+"``CN=Deleted Objects`` in Active Directory zu gewähren."
 
 #: ../../windows/ad-connection.rst:647
 msgid "Log files"
