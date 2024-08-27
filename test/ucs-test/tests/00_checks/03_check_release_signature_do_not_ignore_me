@@ -43,9 +43,13 @@ apt_update () {
 	grep "$@" '^[WE]:'
 }
 
+# skip if test appcenter is used
 case "$(ucr get repository/app_center/server)" in
 *appcenter-test*) exit 77  # SKIP
 esac
+
+# skip if branch test repo is used
+[ -n "$SCOPE" ] && [ -e /etc/apt/sources.list.d/99_extra_scope.list ] && exit 77  # SKIP
 
 # check if apt-get update in now+2y works
 if apt_update '+2y'
