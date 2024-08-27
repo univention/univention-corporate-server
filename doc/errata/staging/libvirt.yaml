@@ -6,18 +6,16 @@ src: libvirt
 fix: 3.0.0-4+deb9u6A~4.4.9.202408261410
 desc: |
  This update addresses the following issues:
- 3.0.0-4+deb9u6 (Sat, 24 Aug 2024 17:47:51 +0200)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2021-3631 Fix break out of sVirt confinement.
- * CVE-2021-3975 Fix use after free that could be used to crash the libvirt
+ * CVE-2021-3631: Fix break out of sVirt confinement.
+ * CVE-2021-3975: Fix use after free that could be used to crash the libvirt
    daemon and cause a denial of service.
- * CVE-2024-1441 Fix an off-by-one error that could be used to crash the
+ * CVE-2024-1441: Fix an off-by-one error that could be used to crash the
    libvirt daemon and cause a denial of service.
- * CVE-2024-2496 Fix null pointer dereference that could be used to crash the
+ * CVE-2024-2496: Fix null pointer dereference that could be used to crash the
    libvirt daemon and cause a denial of service.
- * CVE-2022-0897 Fix bad mutex handling that could be used to crash the
+ * CVE-2022-0897: Fix bad mutex handling that could be used to crash the
    network filter management daemon.
- * CVE-2024-2494 Fix length check in deserialization data that could be used
+ * CVE-2024-2494: Fix length check in deserialization data that could be used
    to crash the libvirt daemon and cause a denial of service.
 bug: [57543]
 cve:

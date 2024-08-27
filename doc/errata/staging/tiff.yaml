@@ -6,11 +6,9 @@ src: tiff
 fix: 4.0.8-2+deb9u12
 desc: |
  This update addresses the following issues:
- 4.0.8-2+deb9u12 (Sat, 27 Jul 2024 22:03:02 +0200)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2023-52356 A segment fault could be triggered by passing a crafted tiff
-   file to the TIFFReadRGBATileExt() API
- * CVE-2023-3576 A memory leak flaw was found in Libtiff's tiffcrop utility.
+ * CVE-2023-52356: A segmentation fault could be triggered by passing a crafted tiff
+   file to the `TIFFReadRGBATileExt() API`
+ * CVE-2023-3576: A memory leak flaw was found in Libtiff's `tiffcrop` utility.
 bug: [57542]
 cve:
 - CVE-2023-52356
