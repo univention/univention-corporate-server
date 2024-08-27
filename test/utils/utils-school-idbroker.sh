@@ -42,22 +42,25 @@ ansible_preperation () {
 	cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 	ssh -o "StrictHostKeyChecking=accept-new" localhost true
 	# Download ansible scripts
-	#wget "http://service.knut.univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz"
-	wget --user "$repo_user" --password="$(< "$repo_password_file")" \
-		"https://service.software-univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz" || return $?
+	wget "http://service.knut.univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz"
+	#wget --user "$repo_user" --password="$(< "$repo_password_file")" \
+	#	"https://service.software-univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz" || return $?
 	tar -xf ansible_playbook.tar.gz
 	cd deployment || return $?
 	# check the jenkins-data repo for the following files
-	cp /root/id-broker-TESTING.cert id-broker.cert
+	openssl x509 -req -in /root/id-broker-TESTING.csr -signkey /root/id-broker-TESTING.key -out id-broker.cert -days 365
 	cp /root/id-broker-TESTING.key id-broker.key
+	cp /root/idbroker_jenkins_ansible.password idbroker_jenkins_ansible.password
 	# shellcheck disable=SC1091
 	. /root/id-broker-secrets.sh
-	sed -i "s/broker.local/$(hostname -d)/g" inventories/jenkins/hosts
+	sed -i "s/broker.test/$(hostname -d)/g" inventories/jenkins/hosts
 	sed -i "s/CLIENT_SECRET=CLIENT_SECRET/CLIENT_SECRET=$UTA_CLIENT_SECRET/g" /etc/univention-test-app.conf
 	sed -i "s/ID_BROKER_KEYCLOAK_FQDN=ID_BROKER_KEYCLOAK_FQDN/ID_BROKER_KEYCLOAK_FQDN=kc.$(hostname -d)/g" /etc/univention-test-app.conf
 	sed -i "s/ID_BROKER_SDAPI_FQDN=ID_BROKER_SDAPI_FQDN/ID_BROKER_SDAPI_FQDN=self-disclosure1.$(hostname -d)/g" /etc/univention-test-app.conf
+	echo "APPLICATION_ROOT=/univention-test-app/" >> /etc/univention-test-app.conf
 	echo "EXTERNAL_ROOT_URL=https://$(hostname -f)/univention-test-app/" >> /etc/univention-test-app.conf
-	curl -k "https://ucs-sso.$traeger1_domain/simplesamlphp/saml2/idp/metadata.php" > files/jenkins/univention_id_broker/idp_metadata/traeger1_metadata.xml
+	curl -k "https://ucs-sso.$traeger1_domain/simplesamlphp/saml2/idp/metadata.php" > files/jenkins/univention_id_broker/idp_metadata/traeger1-simple-saml_metadata.xml
+	curl -k "https://ucs-sso-ng.$traeger1_domain/realms/ucs/protocol/saml/descriptor" > files/jenkins/univention_id_broker/idp_metadata/traeger1-kc-saml_metadata.xml
 	curl -k "https://ucs-sso.$traeger2_domain/simplesamlphp/saml2/idp/metadata.php" > files/jenkins/univention_id_broker/idp_metadata/traeger2_metadata.xml
 }
 
@@ -90,19 +93,22 @@ apache_custom_vhosts () {
 }
 
 ansible_run_keycloak_configuration () {
-	cd deployment || return $?
-	/usr/local/bin/ansible-galaxy install -r requirements.yml
-	ANSIBLE_LOG_PATH=ansible.log /usr/local/bin/ansible-playbook site.yml --vault-password-file /root/idbroker_jenkins_ansible.password -i inventories/jenkins
+	docker run --rm -v ~/.ssh:/root/.ssh -v /root/deployment/:/apps -w /apps \
+		artifacts.software-univention.de/id-broker/alpine/ansible:2.17.0 \
+		bash -c "ansible-galaxy collection install --requirements-file requirements.yml --upgrade && ANSIBLE_LOG_PATH=ansible.log ansible-playbook -i inventories/jenkins/hosts --vault-password-file idbroker_jenkins_ansible.password --skip-tags partner_provisioning site.yml"
 }
 
-# register IDBroker as service in ucs IdP
-register_idbroker_as_sp_in_ucs () {
+ansible_run_keycloak_partner_provisioning () {
+	docker run --rm -v ~/.ssh:/root/.ssh -v /root/deployment/:/apps -w /apps \
+		artifacts.software-univention.de/id-broker/alpine/ansible:2.17.0 \
+		bash -c "ansible-galaxy collection install --requirements-file requirements.yml --upgrade && ANSIBLE_LOG_PATH=ansible.log ansible-playbook -i inventories/jenkins/hosts --vault-password-file idbroker_jenkins_ansible.password --tags partner_provisioning site.yml"
+}
+
+register_idbroker_as_sp_in_ucs_simpleSAML () {
 	local broker_fqdn="${1:?missing broker_fqdn}"
-	local broker_ip="${2:?missing broker_ip}"
-	local keycloak_identifier="${3:?missing keycloak_identifier=}"
+	local keycloak_identifier="${2:?missing keycloak_identifier=}"
 	local lb
 	lb="$(ucr get ldap/base)"
-	ucr set hosts/static/"$broker_ip"="$broker_fqdn"
 	udm saml/idpconfig modify \
 		--dn "id=default-saml-idp,cn=univention,${lb}" \
 		--append LdapGetAttributes=entryUUID
@@ -198,8 +204,8 @@ create_id_connector_school_authority_config () {
 	local password="${5:?missing password}"
 	local token
 
-    univention-app restart ucsschool-id-connector
-    sleep 5
+	univention-app restart ucsschool-id-connector
+	sleep 5
 
 	token="$(curl -s -X POST "https://$(hostname -f)/ucsschool-id-connector/api/token" \
 		-H 'accept: application/json' \
@@ -225,24 +231,25 @@ create_id_connector_school_authority_config () {
 					}
 				}
 		}"
-    univention-app restart ucsschool-id-connector
-    sleep 5
+	univention-app restart ucsschool-id-connector
+	sleep 5
 }
 
 create_school_users_classes () {
 	local ou1="ou1"
 	local ou2="ou2"
 	local lb
+    local traeger="${1:?missing traeger name}"
 	lb="$(ucr get ldap/base)"
 
 	/usr/share/ucs-school-import/scripts/create_ou "$ou1"
 	/usr/share/ucs-school-import/scripts/create_ou "$ou2"
-	i=1; python -m ucsschool.lib.models create --name "stud${i}"  --set firstname "Traeger${i}" --set lastname "Student${i}" --set password univention --school DEMOSCHOOL Student
-	i=1; python -m ucsschool.lib.models create --name "teach${i}" --set firstname "Traeger${i}" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL Teacher
-	i=2; python -m ucsschool.lib.models create --name "stud${i}"  --set firstname "Traeger${i}" --set lastname "Student${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Student
-	i=2; python -m ucsschool.lib.models create --name "teach${i}" --set firstname "Traeger${i}" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Teacher
-	i=3; python -m ucsschool.lib.models create --name "stud${i}"  --set firstname "Traeger${i}" --set lastname "Student${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Student
-	i=3; python -m ucsschool.lib.models create --name "teach${i}" --set firstname "Traeger${i}" --set lastname "Teacher${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Teacher
+	i=1; python -m ucsschool.lib.models create --name "stud${i}"  --set firstname "$traeger" --set lastname "Student${i}" --set password univention --school DEMOSCHOOL Student
+	i=1; python -m ucsschool.lib.models create --name "teach${i}" --set firstname "$traeger" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL Teacher
+	i=2; python -m ucsschool.lib.models create --name "stud${i}"  --set firstname "$traeger" --set lastname "Student${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Student
+	i=2; python -m ucsschool.lib.models create --name "teach${i}" --set firstname "$traeger" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Teacher
+	i=3; python -m ucsschool.lib.models create --name "stud${i}"  --set firstname "$traeger" --set lastname "Student${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Student
+	i=3; python -m ucsschool.lib.models create --name "teach${i}" --set firstname "$traeger" --set lastname "Teacher${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Teacher
 	python -m ucsschool.lib.models modify --dn "cn=DEMOSCHOOL-Democlass,cn=klassen,cn=schueler,cn=groups,ou=DEMOSCHOOL,${lb}" \
 		--append users "uid=stud1,cn=schueler,cn=users,ou=DEMOSCHOOL,${lb}" \
 		--append users "uid=stud2,cn=schueler,cn=users,ou=DEMOSCHOOL,${lb}" \
@@ -344,10 +351,12 @@ kvm_setup_dns_entries_in_broker () {
 	udm dns/forward_zone create --set zone="${UCS_ENV_TRAEGER1_DOMAIN}" --set nameserver="$(hostname -f)." --position="cn=dns,${lb}" || return 1
 	# shellcheck disable=SC2153
 	udm dns/host_record create --set a="${TRAEGER1_IP}" --set name=ucs-sso --position zoneName="${UCS_ENV_TRAEGER1_DOMAIN},cn=dns,${lb}" || return 1
+	udm dns/host_record create --set a="${TRAEGER1_IP}" --set name=ucs-sso-ng --position zoneName="${UCS_ENV_TRAEGER1_DOMAIN},cn=dns,${lb}" || return 1
 	udm dns/host_record create --set a="${TRAEGER1_IP}" --set name=traeger1 --position zoneName="${UCS_ENV_TRAEGER1_DOMAIN},cn=dns,${lb}" || return 1
 	udm dns/forward_zone create --set zone="${UCS_ENV_TRAEGER2_DOMAIN}" --set nameserver="$(hostname -f)." --position="cn=dns,${lb}" || return 1
 	# shellcheck disable=SC2153
 	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=ucs-sso --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,${lb}" || return 1
+	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=ucs-sso-ng --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,${lb}" || return 1
 	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=traeger2 --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,${lb}" || return 1
 }
 
@@ -400,6 +409,7 @@ fix_traeger_dns_entries_in_broker_domain () {
 	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=traeger1.test,cn=dns,${lb}" --set a="$traeger1_ip"
 	udm dns/host_record modify --dn "relativeDomainName=traeger2,zoneName=traeger2.test,cn=dns,${lb}" --set a="$traeger2_ip"
 	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=traeger2.test,cn=dns,${lb}" --set a="$traeger2_ip"
+	udm dns/host_record modify --dn "relativeDomainName=ucs-sso-ng,zoneName=traeger2.test,cn=dns,${lb}" --set a="$traeger2_ip"
 	# ucs sso TODO add other systems
 	udm dns/host_record modify --dn "relativeDomainName=ucs-sso,zoneName=$(ucr get domainname),cn=dns,${lb}" --set a="$(ucr get interfaces/eth0/address)"
 }
@@ -501,96 +511,89 @@ add_broker_ca_to_host_and_idconnector () {
 	update-ca-certificates
 }
 
-add_dns_for_ID-Broker () {
-	local broker_domain="${1:?missing broker domain}"
-	local primary_ip="${2:?missing ID-Broker primary ip}"
-	local provisioning_ip="${3:?missing provisioning ip}"
-	udm dns/forward_zone create \
-		--set zone="$broker_domain" \
-		--set nameserver="$(hostname -f)." \
-		--position="cn=dns,$(ucr get ldap/base)" || return 1
-	udm dns/host_record create \
-		--set a="$primary_ip" \
-		--set name=idbroker-primary \
-		--position "zoneName=$broker_domain,cn=dns,$(ucr get ldap/base)" || return 1
-	udm dns/host_record create \
-		--set a="$provisioning_ip" \
-		--set name=provisioning1 \
-		--position "zoneName=$broker_domain,cn=dns,$(ucr get ldap/base)" || return 1
-	while ! nslookup "provisioning1.$broker_domain" | grep -q "$provisioning_ip"; do
-		echo "Waiting for DNS..."
+add_traeger_ca_to_id_broker () {
+	local traeger="${1:?missing traeger}"
+	local traeger_ip="${2:?missing traeger ip}"
+	curl -k "https://$traeger_ip/ucs-root-ca.crt" > /usr/local/share/ca-certificates/"$traeger".crt
+	update-ca-certificates
+	docker cp /usr/local/share/ca-certificates/"$traeger".crt keycloak:/"$traeger".crt
+	docker exec --user root keycloak keytool -keystore /opt/jboss/keycloak/standalone/configuration/truststore.jks -import -alias "$traeger" -file /"$traeger".crt -storepass "keycloak" -noprompt
+	docker restart keycloak
+	while [ ! "$(curl --write-out '%{http_code}' localhost:8080/auth/ -o /dev/null 2> /dev/null)" -eq 200 ]; do
+		echo "Waiting for keycloak"
 		sleep 1
 	done
 }
 
 wait_for_sddb_provisioning () {
-    if ! univention-app status id-broker-sddb-builder; then
-        echo "No id-broker-sddb-builder running"
-        return 0
-    fi
-    while true; do
-        echo "Waiting for appcenter listener"
-        sleep 10
-        new_listener_objects=$(find /var/lib/univention-appcenter/apps/id-broker-sddb-builder/data/listener/ -name "*.json" | wc -l)
+	if ! univention-app status id-broker-sddb-builder; then
+		echo "No id-broker-sddb-builder running"
+		return 0
+	fi
+	while true; do
+		echo "Waiting for appcenter listener"
+		sleep 10
+		new_listener_objects=$(find /var/lib/univention-appcenter/apps/id-broker-sddb-builder/data/listener/ -name "*.json" | wc -l)
 
-        if [[ "$new_listener_objects" -gt 0 ]]; then
-            echo "$new_listener_objects new appcenter listener objects"
-            univention-app shell id-broker-sddb-builder /tmp/univention-id-broker-sddb-builder.listener_trigger >> sddb_listener.log 2>&1
-        else
-            break
-        fi
-    done
-    while true; do
-        echo "Waiting for converter daemon"
-        sleep 10
-        queue_length=$(univention-app shell id-broker-sddb-builder sddb-builder queues length regular)
-        if [[ "$queue_length" -gt 0 ]]; then
-            echo "$queue_length items on converter queue"
-        else
-            echo "converter daemon queue is empty"
-            break
-        fi
-    done
+		if [[ "$new_listener_objects" -gt 0 ]]; then
+			echo "$new_listener_objects new appcenter listener objects"
+			univention-app shell id-broker-sddb-builder /tmp/univention-id-broker-sddb-builder.listener_trigger >> sddb_listener.log 2>&1
+		else
+			break
+		fi
+	done
+	while true; do
+		echo "Waiting for converter daemon"
+		sleep 10
+		queue_length=$(univention-app shell id-broker-sddb-builder sddb-builder queues length regular)
+		if [[ "$queue_length" -gt 0 ]]; then
+			echo "$queue_length items on converter queue"
+		else
+			echo "converter daemon queue is empty"
+			break
+		fi
+	done
 }
 
 resync_sddb () {
-    if ! univention-app status id-broker-sddb-builder; then
-        echo "No id-broker-sddb-builder running"
-        return 0
-    fi
-    univention-app shell id-broker-sddb-builder sddb-builder queues bulk-append regular sp_mapping ""
-    echo "Append all ucsschool items to queue"
-    schools=$(python3 -c 'from ucsschool.lib.models.school import School; from univention.uldap import getMachineConnection; lo = getMachineConnection(); print(" ".join(school.name for school in School.get_all(lo, filter_str="(ucsschoolSourceUID=*)")))')
-    for school in $schools; do
-        univention-app shell id-broker-sddb-builder sddb-builder queues bulk-append regular school "$school"
-    done
-    wait_for_sddb_provisioning
+	if ! univention-app status id-broker-sddb-builder; then
+		echo "No id-broker-sddb-builder running"
+		return 0
+	fi
+	univention-app shell id-broker-sddb-builder sddb-builder queues bulk-append regular sp_mapping ""
+	echo "Append all ucsschool items to queue"
+	schools=$(python3 -c 'from ucsschool.lib.models.school import School; from univention.uldap import getMachineConnection; lo = getMachineConnection(); print(" ".join(school.name for school in School.get_all(lo, filter_str="(ucsschoolSourceUID=*)")))')
+	for school in $schools; do
+		univention-app shell id-broker-sddb-builder sddb-builder queues bulk-append regular school "$school"
+	done
+	wait_for_sddb_provisioning
 }
 
 install_id_broker_sddb_builder () {
-  . utils.sh && install_docker_app_from_branch id-broker-sddb-builder "$UCS_ENV_ID_BROKER_SDDB_BUILDER_IMAGE" kelvin_host="$(hostname -f)" db_url="redis://$(hostname -f):6379" kelvin_username=Administrator kelvin_password=univention converter_daemon_num_workers=24
+	# shellcheck source=utils.sh
+	. utils.sh && install_docker_app_from_branch id-broker-sddb-builder "$UCS_ENV_ID_BROKER_SDDB_BUILDER_IMAGE" kelvin_host="$(hostname -f)" db_url="redis://$(hostname -f):6379" kelvin_username=Administrator kelvin_password=univention converter_daemon_num_workers=24
 }
 
 load_sddb_jenkins () {
-    if [[ "$UCS_CACHED_SDDB" == "true" ]]; then
-        wget "http://omar.knut.univention.de/build2/ucs_5.0-0-id-broker-5.0/data/dump.rdb"
-        docker stop redis-stack
-        mv dump.rdb /var/lib/redis/data/
-        docker start redis-stack
-        univention-app restart id-broker-sddb-builder
-    else
-        resync_sddb
-    fi
-    wait_for_sddb_provisioning
+	if [[ "$UCS_CACHED_SDDB" == "true" ]]; then
+		wget "http://omar.knut.univention.de/build2/ucs_5.0-0-id-broker-5.0/data/dump.rdb"
+		docker stop redis-stack
+		mv dump.rdb /var/lib/redis/data/
+		docker start redis-stack
+		univention-app restart id-broker-sddb-builder
+	else
+		resync_sddb
+	fi
+	wait_for_sddb_provisioning
 }
 
 configure_self_disclosure () {
-    local sddb_host
-    local API_CONFIG
-    sddb_host="sddb.$(hostname -d)"
-    API_CONFIG="/etc/ucsschool/apis/id-broker/self-disclosure-api.json"
-    mkdir -p "$(dirname $API_CONFIG)"
-      python -c "
+	local sddb_host
+	local API_CONFIG
+	sddb_host="sddb.$(hostname -d)"
+	API_CONFIG="/etc/ucsschool/apis/id-broker/self-disclosure-api.json"
+	mkdir -p "$(dirname $API_CONFIG)"
+	python -c "
 import json
 try:
   conf = json.load(open('$API_CONFIG'))
@@ -600,6 +603,19 @@ if 'redis_url' not in conf:
   conf = {'redis_url': 'redis://$sddb_host:6379', 'sddb_rest_host': '$sddb_host'}
 json.dump(conf, open('$API_CONFIG', 'w'), indent=4, sort_keys=True)
 "
+}
+
+setup_keycloak_as_idp_on_school () {
+	 univention-app install keycloak
+	 ucr set umc/saml/idp-server="https://ucs-sso-ng.$(hostname -d)/realms/ucs/protocol/saml/descriptor"
+	 udm portals/entry modify --dn "cn=login-saml,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)" --set activated=TRUE
+	 service slapd restart
+}
+
+install_test_app () {
+	docker run -d -p 5000:5000 --name univention-test-app --env-file /etc/univention-test-app.conf -v /etc/univention/ssl/ucsCA/CAcert.pem:/CAcert.pem -e REQUESTS_CA_BUNDLE=/CAcert.pem --restart always artifacts.software-univention.de/id-broker/oidc/univention-test-app:latest
+	echo "ProxyPass /univention-test-app http://127.0.0.1:5000/univention-test-app retry=0" > /etc/apache2/ucs-sites.conf.d/univention-test-app.conf
+	systemctl reload apache2
 }
 
 # vim:set filetype=sh ts=4:

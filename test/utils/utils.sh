@@ -421,7 +421,7 @@ install_apps () {
 	for app in "$@"
 	do
 		username="$(ucr get tests/domainadmin/account | sed -e 's/uid=//' -e 's/,.*//')"
-		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
+		if [ -n "$(univention-app get "$app" DockerImage)" ] || [ -n "$(univention-app get "$app" DockerMainService)" ]; then
 			if [ -z "$(ucr get "appcenter/apps/$app/status")" ]; then
 				univention-app install "$app" --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
 			elif univention-app info | grep --quiet --perl-regexp 'Upgradable: ?\S* '"$app"'(?: |$)\S*'; then
