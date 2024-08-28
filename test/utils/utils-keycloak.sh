@@ -139,10 +139,13 @@ install_self_service () {
     deb-systemd-invoke restart univention-management-console-server univention-portal-server
 }
 
-performance_settings () {
-	ucr set umc/http/processes=8
-	deb-systemd-invoke restart univention-management-console-server
+umc_multiproc_settings () {
+	local procs="${1:-8}"
+	ucr set umc/http/processes="$procs"
+	service apache2 restart
+	service univention-management-console-server restart
 }
+
 
 run_performance_tests () {
 	univention-install -y libffi-dev python3-pip
@@ -321,36 +324,51 @@ external_portal_config_oidc_manually () {
 	service slapd restart
 }
 
-haproxy_portal_config () {
-	local certificate="${1:?missing certificate}"; shift
-	local keyfile="${1:?missing keyfile}"; shift
-	local host harray ip name
+# FIXME
+haproxy_config_external_fqdn () {
+
+	local primary_ip="${1:?missing ip for primary}"; shift
+	local backup_ip="${1:?missing ip for backup}"; shift
+	local backup2_ip="${1:?missing ip for backup2}"; shift
 	service apache2 stop
 	univention-install -y haproxy
-	# cert for ha proxy, we need the key in the cert file
-	cat "$keyfile" >> "$certificate"
-	#log /dev/log    local1 debug
+	# cert for ha proxy, we need the key in the cert file, and every cert in one directory
+	mkdir -p /opt/certs
+	cat /opt/portal.extern.test/cert.pem /opt/portal.extern.test/private.key >> /opt/certs/portal.pem
+	cat /opt/auth.extern.test/cert.pem /opt/auth.extern.test/private.key >> /opt/certs/auth.pem
 	cat <<EOF >> "/etc/haproxy/haproxy.cfg"
 
 frontend portal_httpd
-	bind :443 ssl crt $certificate
-	default_backend portals
+	bind :443 ssl crt /opt/certs
+	use_backend portals if { req.hdr(host) -i portal.extern.test }
+	use_backend keycloaks if { req.hdr(host) -i auth.extern.test }
 
 backend portals
 	balance roundrobin
 	timeout server 10000
-	cookie SERVER insert indirect nocache
 	# sticky sessions
 	cookie SERVER insert indirect nocache
-$(
-	for host in "$@"; do
-		# shellcheck disable=SC2206
-		harray=($host)
-		name=${harray[0]}
-		ip=${harray[1]}
-		echo -e "\tserver $name ${ip}:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie $name"
-	done
-)
+	server master  $primary_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie master
+	server backup  $backup_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie backup
+	server backup2 $backup2_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie backup2
+
+
+backend keycloaks
+	balance roundrobin
+	timeout server 10000
+	# sticky sessions
+	cookie KEYCLOAK insert indirect nocache
+	server master $primary_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie master
+
+EOF
+	service haproxy restart
+}
+
+# FIXME
+haproxy_config_external_fqdn_add_second_keycloak () {
+	local backup_ip="${1:?missing ip for backup}"; shift
+	cat <<EOF >> "/etc/haproxy/haproxy.cfg"
+	server backup $backup_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie backup
 EOF
 	service haproxy restart
 }
