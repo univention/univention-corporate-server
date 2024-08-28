@@ -248,6 +248,7 @@ external_portal_config_oidc () {
 	# we have to set a password, so that the password is the same for every client
 	# in case we have multiple UCS servers act as one portal (load balancing setup)
 	echo "univention" > /etc/umc-oidc.secret
+	chmod 600 /etc/umc-oidc.secret
 
 	# FIXME
 	local join_user join_pwdfile
@@ -276,7 +277,9 @@ external_portal_config_oidc_manually () {
 
 	# create oidc client
 	echo "univention" > /etc/umc-oidc.secret
-	# FIXME
+	chmod 600 /etc/umc-oidc.secret
+
+	# FIXME credentials
 	univention-keycloak --binduser Administrator --bindpwd univention oidc/rp create \
 		--app-url "https://$fqdn/univention/oidc/" \
 		--host-fqdn "$fqdn" \
@@ -300,6 +303,12 @@ external_portal_config_oidc_manually () {
 		--default-scopes="openid" \
 		--web-origins="+" "myclient"
 
+	# create a client for the host, just to please the test
+	# 04_misc.py::test_every_umc_server_has_a_oidc_client
+	univention-keycloak --binduser Administrator --bindpwd univention oidc/rp create \
+		--app-url "https://$(ucr get hostname).$(ucr get domainname)/univention/oidc/" \
+		"https://$(ucr get hostname).$(ucr get domainname)/univention/oidc/"
+
 	# umc oidc configuration
 	ucr set \
 		"umc/oidc/$fqdn/client-id"="myclient" \
@@ -319,6 +328,16 @@ external_portal_config_oidc_manually () {
 		"ldap/server/sasl/oauthbearer/trusted-issuer/$hostname.$domainname=https://$idp/realms/ucs" \
 		"ldap/server/sasl/oauthbearer/trusted-jwks/$hostname.$domainname"="/usr/share/univention-management-console/oidc/https%3A%2F%2F${idp}%2Frealms%2Fucs.jwks" \
 		"ldap/server/sasl/oauthbearer/trusted-authorized-party/$hostname.$domainname"="myclient"
+
+	# not necessary for the setup,
+	# just a test the we don't break the manual configuration
+	ucr set umc/oidc/issuer="https://${idp}/realms/ucs"
+	local join_user join_pwdfile
+	join_pwdfile="/tmp/pwdfile"
+	join_user="Administrator"
+	echo -n "univention" > "$join_pwdfile"
+	# re run join
+	univention-run-join-scripts -dcaccount "$join_user" -dcpwd "$join_pwdfile" --force --run-scripts 92univention-management-console-web-server
 
 	service univention-management-console-server restart
 	service slapd restart

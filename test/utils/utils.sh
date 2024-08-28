@@ -1538,10 +1538,17 @@ change_template_hostname () {
 		--set domain="$(ucr get domainname)" || rv=1
 	while read -r service; do
 		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwd "$admin_password" --dn "$hostdn" --append service="$service"
-	done < <(udm computers/domaincontroller_backup list --filter name="$old_hostname" | sed -n 's/^  service: //p')
+	done < <(udm "computers/$server_role" list --filter name="$old_hostname" | sed -n 's/^  service: //p')
 	while read -r school_role; do
 		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwd "$admin_password" --dn "$hostdn" --append ucsschoolRole="$school_role"
-	done < <(udm computers/domaincontroller_backup list --filter name="$old_hostname" | sed -n 's/^  ucsschoolRole: //p')
+	done < <(udm "computers/$server_role" list --filter name="$old_hostname" | sed -n 's/^  ucsschoolRole: //p')
+	while read -r os; do
+		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwd "$admin_password" --dn "$hostdn" --set operatingSystem="$os"
+	done < <(udm "computers/$server_role" list --filter name="$old_hostname" | sed -n 's/^  operatingSystem: //p')
+	while read -r osversion; do
+		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwd "$admin_password" --dn "$hostdn" --set operatingSystemVersion="$osversion"
+	done < <(udm "computers/$server_role" list --filter name="$old_hostname" | sed -n 's/^  operatingSystemVersion: //p')
+
 
 	# get new cert
 	univention-fetch-certificate "$hostname" "$primary_ip" || rv=1
