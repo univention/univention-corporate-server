@@ -150,6 +150,7 @@ def test_ucs_realm_config(keycloak_config, ucr):
     }
 
 
+@pytest.mark.is_keycloak()
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
 def test_csp(keycloak_config, ucr):
     if not ucr.is_true('keycloak/server/sso/virtualhost'):

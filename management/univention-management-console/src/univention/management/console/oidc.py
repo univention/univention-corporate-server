@@ -538,9 +538,9 @@ class OIDCBackchannelLogout(OIDCResource):
             else:
                 try:
                     with get_session() as db_session:
-                        session.delete(db_session, session.session_id)
+                        session.delete(db_session, session.session_id, True)
                 except exc.DBAPIError as err:
-                    CORE.error('Deleting the from the database during OIDC backchannel logout failed\n%s' % (err))
+                    CORE.error('Deleting the session from the database during OIDC backchannel logout failed\n%s' % (err))
                 except DBDisabledException:
                     pass
 

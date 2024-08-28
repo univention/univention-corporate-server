@@ -59,12 +59,11 @@ from univention.management.console.oidc import (
 )
 from univention.management.console.resources import (
     UCR, Auth, Categories, Command, GetIPAddress, Hosts, Index, Info, Logout, Meta, Modules, NewSession, Nothing,
-    SessionInfo, Set, SetLocale, SetPassword, SetUserPreferences, Upload, UserPreferences,
+    SessionInfo, Set, SetLocale, SetPassword, SetUserPreferences, SSELogoutNotifer, Upload, UserPreferences,
 )
 from univention.management.console.saml import SamlACS, SamlIframeACS, SamlLogout, SamlMetadata, SamlSingleLogout
 from univention.management.console.session import categoryManager, moduleManager
 from univention.management.console.shared_memory import shared_memory
-from univention.management.console.sse import SSELogoutNotifer
 from univention.udm import UDM
 
 
@@ -227,13 +226,13 @@ class Server(object):
 
         if os.environ.get(SQL_CONNECTION_ENV_VAR, None) is None:
             try:
-                settings_data_mod = UDM.admin().version(3).get('settings/data')
+                settings_data_mod = UDM.machine().version(3).get('settings/data')
                 umc_settings_position = f"cn=umc,cn=data,cn=univention,{ucr.get('ldap/base')}"
                 umc_settings_obj = settings_data_mod.get(umc_settings_position)
                 settings_obj = json.loads(umc_settings_obj.props.data.raw.decode('utf-8'))
                 os.environ[SQL_CONNECTION_ENV_VAR] = settings_obj['sqlURI']
-            except Exception:
-                pass
+            except Exception as exc:
+                CORE.info('Could not read from umc settings/data object. Continuing without shared db session %s' % (exc,))
 
         # start sub worker processes
         if self.options.processes != 1:

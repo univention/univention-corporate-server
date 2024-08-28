@@ -80,7 +80,7 @@ if configRegistry.get('ldap/hostdn'):
 
 print('access to filter="(&(univentionObjectType=settings/data)(cn=umc))" attrs=univentionData')
 print('    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" read' % (groups_default_domainadmins, ldap_base))
-print('    by set="user/objectClass & [univentionDomainController]" read')
+print('    by set="user/objectClass & ([univentionDomainController] | [univentionMemberServer])" read')
 print('    by * none')
 print('')
 
