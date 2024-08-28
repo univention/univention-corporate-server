@@ -10,3 +10,6 @@ desc: |
    and the configure scripts during upgrade in the
    same order as during the initial installation.
 bug: [57544]
+erratum: 1107
+announced: 2024-08-28
+support: core
