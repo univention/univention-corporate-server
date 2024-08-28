@@ -11,3 +11,6 @@ desc: |
  * Better support for Portal/UMC OIDC setup with FQDN different from
    internal UCS name.
 bug: [57506,57483]
+erratum: 1109
+announced: 2024-08-28
+support: core
