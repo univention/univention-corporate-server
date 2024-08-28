@@ -1,3 +1,11 @@
+ucs-test (12.0.167) unstable; urgency=medium
+
+  * Bug #57482: rename logout notifier tests to 81_keycloak/13_logout.py and
+    test OIDC backchannel logout with support for multiple processes and
+    automatic/manual refresh depending on the database configured
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 03 Sep 2024 15:14:40 +0200
+
 ucs-test (12.0.166) unstable; urgency=medium
 
   * Bug #57482: Add a Keycloak/OIDC test - 14_oidc_umc_multi_processes.py. It

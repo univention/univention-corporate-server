@@ -100,7 +100,7 @@ def all_xml_files_in(dir):
 setup(
     package_dir={'': 'src'},
     packages=['univention', 'univention.management', 'univention.management.console', 'univention.management.console.modules'],
-    scripts=['scripts/univention-management-console-module', 'scripts/univention-management-console-client', 'scripts/univention-management-console-acls'],
+    scripts=['scripts/univention-management-console-module', 'scripts/univention-management-console-client', 'scripts/univention-management-console-acls', 'scripts/univention-management-console-settings'],
     entry_points={
         'console_scripts': ['univention-management-console-server = univention.management.console.server:main'],
     },

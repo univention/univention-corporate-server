@@ -33,10 +33,7 @@
 import asyncio
 import weakref
 
-from tornado.iostream import StreamClosedError
-
 from .log import CORE
-from .resource import Resource
 
 
 class _LogoutNotifiers:
@@ -54,63 +51,8 @@ class _LogoutNotifiers:
             return event
 
     def get(self, session_id: str):
-        return self.__events.get(session_id, None)
-
-
-async def wait_task(event):
-    try:
-        return await event.wait()
-    except asyncio.CancelledError as e:
-        raise e
-
-
-class SSELogoutNotifer(Resource):
-    requires_authentication = True
-    wait_task = None
-    cancelled = True
-
-    async def wait(self, event: asyncio.Event):
-        self.wait_task = asyncio.create_task(wait_task(event))
-        try:
-            ret = await self.wait_task
-            self.cancelled = False
-            return ret
-        except asyncio.CancelledError:
-            CORE.debug("logout-sse wait_task has been cancelled")
-
-    async def get(self):
-        self.set_header('content-type', 'text/event-stream')
-        self.set_header('cache-control', 'no-cache')
-        self.set_status(200)
-        self.write("data:init\n\n")
-        await self.flush()
-
-        session_id = self.current_user.session_id
-        self.for_session_id = session_id
-        CORE.debug("logout-sse requested for session_id %s" % (session_id, ))
-
-        event = await logout_notifiers.get_or_set(session_id)
-
-        await self.wait(event)
-        CORE.debug("logout-sse finished for session_id %s" % session_id)
-
-        # the connection might have already been closed here, and we might not even have been logged out
-        try:
-            if not self.cancelled:
-                self.write("data:logout\n\n")
-            self.finish()
-        except StreamClosedError:
-            pass
-
-    def on_connection_close(self):
-        if self.wait_task is not None:
-            CORE.debug("logout-sse connection closed by client and wait task still active. Cancelling")
-            self.wait_task.cancel()
-
-    def on_finish(self):
-        if self.wait_task is not None and (not self.wait_task.cancelled() or not self.wait_task.done()):
-            CORE.debug("logout-sse request finished but task not cancelled and not finished")
-            self.wait_task.cancel()
+        event = self.__events.get(session_id, None)
+        return event
 
 
 logout_notifiers: _LogoutNotifiers = _LogoutNotifiers()

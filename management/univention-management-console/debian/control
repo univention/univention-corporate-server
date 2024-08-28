@@ -99,6 +99,8 @@ Depends:
  univention-join,
  ${misc:Depends},
  ${python3:Depends},
+Recommends:
+ python3-psycopg2,
 Provides:
  ${python3:Provides},
 Description: UCS Management Console - Python 3 Modules
