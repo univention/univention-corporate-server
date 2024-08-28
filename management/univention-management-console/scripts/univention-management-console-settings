@@ -6,7 +6,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2006-2024 Univention GmbH
+# Copyright 2024 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -36,6 +36,7 @@
 import argparse
 import json
 import sys
+from typing import Any, Dict
 
 from univention.config_registry import ucr
 from univention.udm import UDM
@@ -58,7 +59,11 @@ class StoreInDict(argparse.Action):
 
 class UMCSettings:
     def __init__(self, position: str = settings_position):
-        self.udm = UDM.admin().version(3)
+
+        self.udm = UDM.machine().version(3)
+        if ucr.get("server/role") in ["domaincontroller_master", "domaincontroller_backup"]:
+            self.udm = UDM.admin().version(3)
+
         self.module = self.udm.get('settings/data')
         try:
             settings_obj = self.module.get(settings_position)
@@ -69,10 +74,16 @@ class UMCSettings:
         self.obj = settings_obj
         self._tmp_settings = {}
 
-    def get_settings(self):
+    def get_settings(self) -> Dict[str, Any]:
         if self.obj.props.data:
             return json.loads(self.obj.props.data.raw.decode('utf-8'))
         return {}
+
+    def print_settings(self, as_json: bool):
+        if as_json:
+            print(json.dumps(self.get_settings()))
+        else:
+            print(self.get_settings())
 
     def set_setting(self, key, value):
         self._tmp_settings[key] = value
@@ -87,6 +98,8 @@ def parse_args():
     parser = argparse.ArgumentParser(
         prog='univention-management-console-settings',
     )
+
+    parser.add_argument('-j', '--json', action='store_true')
 
     subparser = parser.add_subparsers(title='commands', required=True, dest='command', help='print the current configuration or set options')
     get_subparser = subparser.add_parser('get')
@@ -111,13 +124,14 @@ def main():
 
 
 def get_options(args, settings: UMCSettings):
-    print(settings.get_settings())
+    settings.print_settings(args.json)
 
 
 def set_options(args, settings: UMCSettings):
     for key, value in args.options.items():
         settings.set_setting(key, value)
     settings.save()
+    settings.print_settings(args.json)
 
 
 if __name__ == '__main__':

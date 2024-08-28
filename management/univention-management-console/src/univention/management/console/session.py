@@ -289,11 +289,6 @@ class Session(object):
     def on_logout(self):
         self.disconnect_timer()
 
-        from .sse import logout_notifiers
-        logout_notifier = logout_notifiers.get(self.session_id)
-        if logout_notifier is not None:
-            logout_notifier.set()
-
         if self.saml:
             self.saml.on_logout()
 

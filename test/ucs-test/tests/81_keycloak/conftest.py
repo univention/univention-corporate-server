@@ -34,6 +34,7 @@ import copy
 import functools
 import json
 import os
+import socket
 from types import SimpleNamespace
 from typing import Callable, Generator, Iterator
 
@@ -80,6 +81,15 @@ def keycloak_secret() -> str | None:
         with open(secret_file) as fd:
             password = fd.read().strip()
     return password
+
+
+@pytest.fixture(autouse=True)
+def is_keycloak(request, keycloak_config, ucr_proper):
+    if request.node.get_closest_marker('is_keycloak'):
+        keycloak_ip = socket.gethostbyname(keycloak_config.server)
+        my_ip = socket.gethostbyname(ucr_proper['hostname'])
+        if keycloak_ip != my_ip:
+            pytest.skip('this system is not the keycloak server, test makes no sense here')
 
 
 @pytest.fixture()
@@ -475,7 +485,7 @@ def legacy_authorization_setup_oidc(
 
 
 @pytest.fixture()
-def oidc_client_logout_meachanism(ucr, request):
+def oidc_client_logout_meachanism(request):
     if request.param == 'frontchannel':
         pytest.skip("frontchannel logout doesn't currently does not work for external OPs. Skipp all frontchannel logout tests for now.")
     modified_clients = []
@@ -490,7 +500,7 @@ def oidc_client_logout_meachanism(ucr, request):
         oidc_client_updated = json.dumps(oidc_client_updated)
         run_command(['univention-keycloak', 'oidc/rp', 'update', client['clientId'], oidc_client_updated])
 
-    yield
+    yield request.param
 
     for client in modified_clients:
         run_command(['univention-keycloak', 'oidc/rp', 'update', client['clientId'], json.dumps(client)])

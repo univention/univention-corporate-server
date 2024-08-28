@@ -1,22 +1,10 @@
 ucs-test (10.0.22-64) unstable; urgency=medium
 
-  * Bug #57482: Add a Keycloak/OIDC test - 14_oidc_umc_multi_processes.py. It
-    tests OIDC login and logout with UMC in multiprocess mode
+  * Bug #57482: rename logout notifier tests to 81_keycloak/13_logout.py and
+    test OIDC backchannel logout with support for multiple processes and
+    automatic/manual refresh depending on the database configured
 
- -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 21 Aug 2024 15:35:28 +0200
-
-ucs-test (10.0.22-64) unstable; urgency=medium
-
-  * Bug #57467: adjust logout notifier tests to work with OIDC logout
-    confirmation and different portal FQDN
-
- -- Marius Meschter <marius.meschter@univention.de>  Wed, 21 Aug 2024 15:35:28 +0200
-
-ucs-test (10.0.22-64) unstable; urgency=medium
-
-  * Bug #57467: add tests for the logout notifier
-
- -- Marius Meschter <marius.meschter@univention.de>  Wed, 21 Aug 2024 15:35:28 +0200
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 02 Sep 2024 15:44:40 +0200
 
 ucs-test (10.0.22-63) unstable; urgency=medium
 
