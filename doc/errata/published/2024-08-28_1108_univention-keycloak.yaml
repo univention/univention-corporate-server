@@ -10,3 +10,6 @@ desc: |
    dealing with OIDC Relying parties. It used to activate the frontchannel
    logout, not deactivate it as it was supposed to do (and now does).
 bug: [57518]
+erratum: 1108
+announced: 2024-08-28
+support: core
