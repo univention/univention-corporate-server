@@ -6,7 +6,7 @@ src: univention-portal
 fix: 4.0.17-3
 desc: |
  This update addresses the following issues:
- * The Portal/UMC authentication mode setting `portal/auth-mode`
-   now also supports the value `oidc` to configure OIDC
-   authentication for the login button.
+ * The login button in the Portal's sidebar can now be configured to
+   perform OIDC authentication by setting the UCR variable
+   `portal/auth-mode` to the value `oidc`.
 bug: [57534]
