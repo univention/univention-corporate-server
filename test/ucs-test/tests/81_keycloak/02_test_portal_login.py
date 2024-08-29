@@ -8,10 +8,13 @@ from datetime import datetime, timedelta
 
 import pytest
 from utils import (
-    _, keycloak_get_request, keycloak_password_change, keycloak_sessions_by_user, portal_logout, run_command,
+    _, keycloak_get_request, keycloak_login, keycloak_password_change, keycloak_sessions_by_user, portal_logout,
+    run_command,
 )
 
+from univention.config_registry import handler_set
 from univention.lib.umc import Unauthorized
+from univention.testing import ucr as testing_ucr
 from univention.testing.umc import Client
 from univention.testing.utils import (
     get_ldap_connection, package_installed, wait_for_listener_replication, wait_for_s4connector_replication,
@@ -219,3 +222,29 @@ def test_account_disabled(portal_login_via_keycloak, udm, protocol):
     wait_for_listener_replication()
     portal_login_via_keycloak(username, 'univentionA', fails_with=_('Invalid username or password.'), protocol=protocol)
     portal_login_via_keycloak(username, 'univention', fails_with=_('The account is disabled.'), protocol=protocol)
+
+
+@pytest.mark.parametrize('protocol', ['login', 'saml', 'oidc'])
+def test_portal_login_button(portal_config, protocol, ucr, page, keycloak_config, udm):
+    try:
+        _, username = udm.create_user()
+        with testing_ucr.UCSTestConfigRegistry():
+            handler_set([f'portal/auth-mode={protocol}'])
+            run_command(['service', 'univention-portal-server', 'restart'])
+            run_command(['service', 'univention-management-console-server', 'restart'])
+            page.goto(portal_config.url)
+            page.get_by_role('button', name='Menu').click()
+            page.get_by_role('button', name='Login').click()
+            page.get_by_label('Username or email')
+            assert protocol in page.url
+            if protocol == 'login':
+                page.get_by_label('Username').fill(username)
+                page.get_by_label('Password', exact=True).fill('univention')
+                page.get_by_role('button', name='Login').click()
+            else:
+                keycloak_login(page=page, username=username, password='univention', keycloak_config=keycloak_config)
+            page.get_by_role('button', name='Menu').click()
+            page.get_by_text(username, exact=True).click()
+    finally:
+        run_command(['service', 'univention-portal-server', 'restart'])
+        run_command(['service', 'univention-management-console-server', 'restart'])

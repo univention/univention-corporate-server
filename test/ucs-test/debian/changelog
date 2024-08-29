@@ -1,3 +1,9 @@
+ucs-test (12.0.148) unstable; urgency=medium
+
+  * Bug #57534: test for portal/auth-mode
+
+ -- Felix Botner <botner@univention.de>  Thu, 29 Aug 2024 13:47:48 +0200
+
 ucs-test (12.0.147) unstable; urgency=medium
 
   * univention/ucs#2338: skip check_release_signature if local repo is used
