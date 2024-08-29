@@ -324,7 +324,8 @@ haproxy_config_external_fqdn () {
 
 	local primary_ip="${1:?missing ip for primary}"; shift
 	local backup_ip="${1:?missing ip for backup}"; shift
-	local backup2_ip="${1:?missing ip for backup2}"; shift
+	local replica_ip="${1:?missing ip for replica}"; shift
+	local member_ip="${1:?missing ip for member}"; shift
 	service apache2 stop
 	univention-install -y haproxy
 	# cert for ha proxy, we need the key in the cert file, and every cert in one directory
@@ -345,7 +346,8 @@ backend portals
 	cookie SERVER insert indirect nocache
 	server master  $primary_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie master
 	server backup  $backup_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie backup
-	server backup2 $backup2_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie backup2
+	server replica $replica_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie replica
+	server member  $member_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie member
 
 
 backend keycloaks
