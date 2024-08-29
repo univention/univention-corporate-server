@@ -23,6 +23,7 @@ entry = '/univention/saml/'
 session_cookie_name = 'UMCSessionId'
 session_info = '/univention/get/session-info'
 logout_entry = '/univention/logout'
+oidc_entry = '/univention/oidc/?location=/univention/portal/'
 
 
 def get_credentials():
@@ -31,6 +32,40 @@ def get_credentials():
     if current_user > final_user:
         current_user = start_user
     return 'testuser%d' % current_user, 'univention'
+
+
+def login_via_oidc(client, username=None, password=None, prefix=''):
+    # breakpoint()
+    with client.get(oidc_entry, allow_redirects=True, timeout=TIMEOUT, catch_response=True, name=f'{prefix} oidc login 1 {oidc_entry}') as req1:
+        if req1.status_code != 401 and not (200 <= req1.status_code <= 399):
+            req1.failure(f'Expected status code 401 or a status code between 200 and 399: {req1.status_code}')
+            return None
+        req1.success()
+
+        kerberos_redirect_url = get_kerberos_redirect(req1.text)
+        idp_login_site = req1
+
+    if kerberos_redirect_url:
+        with client.get(kerberos_redirect_url, timeout=TIMEOUT, catch_response=True, name=f'{prefix} kerberos redirect page') as krb_redir:
+            idp_login_site = krb_redir
+
+    login_link, login_params = get_login_params(idp_login_site)
+    if username is None or password is None:
+        username, password = get_credentials()
+    login_params.update(
+        {
+            'username': username,
+            'password': password
+        }
+    )
+
+    with client.post(login_link, data=login_params, name=f'{prefix} oidc login 2 POST credentials', catch_response=True, timeout=TIMEOUT) as req3:
+        if req3.status_code != 200:
+            req3.failure(f'Expected status code 200: {req3.status_code}')
+        cookie = next((cookie.value for cookie in client.cookiejar if cookie.name == session_cookie_name), None)
+        if not cookie:
+            req3.failure(f'UCS: got no cookie for {session_cookie_name}')
+        return cookie
 
 
 def login_via_saml(client, username=None, password=None, prefix=''):
