@@ -303,7 +303,7 @@ external_portal_config_oidc_manually () {
 		"ldap/server/sasl/oauthbearer/trusted-audience/$hostname.$domainname?ldaps://$hostname.$domainname/" \
 		"ldap/server/sasl/oauthbearer/trusted-issuer/$hostname.$domainname=https://$idp/realms/ucs" \
 		"ldap/server/sasl/oauthbearer/trusted-jwks/$hostname.$domainname"="/usr/share/univention-management-console/oidc/https%3A%2F%2F${idp}%2Frealms%2Fucs.jwks" \
-		"ldap/server/sasl/oauthbearer/trusted-authorized-party/$hostname.$domainname"="https://portal.extern.test/univention/oidc/"
+		"ldap/server/sasl/oauthbearer/trusted-authorized-party/portal.extern.test"="https://portal.extern.test/univention/oidc/"
 
 	# not necessary for the setup,
 	# just a test the we don't break the manual configuration
