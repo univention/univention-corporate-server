@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-portal
+fix: 4.0.17-3
+desc: |
+ This update addresses the following issues:
+ * The login button in the Portal's sidebar can now be configured to
+   perform OIDC authentication by setting the UCR variable
+   `portal/auth-mode` to the value `oidc`.
+bug: [57534]
