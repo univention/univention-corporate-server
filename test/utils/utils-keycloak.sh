@@ -85,7 +85,7 @@ keycloak_saml_idp_setup () {
         udm portals/entry modify --dn "cn=login-saml,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)" --set activated=TRUE
     fi
     ucr set umc/saml/idp-server="https://$idp/realms/ucs/protocol/saml/descriptor"
-    systemctl restart slapd
+    systemctl restart slapd || true
 }
 
 keycloak_umc_oidc_idp_setup() {
