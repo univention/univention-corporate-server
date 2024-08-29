@@ -279,30 +279,6 @@ external_portal_config_oidc_manually () {
 	echo "univention" > /etc/umc-oidc.secret
 	chmod 600 /etc/umc-oidc.secret
 
-	# FIXME credentials
-	univention-keycloak --binduser Administrator --bindpwd univention oidc/rp create \
-		--app-url "https://$fqdn/univention/oidc/" \
-		--host-fqdn "$fqdn" \
-		--client-secret "$(cat /etc/umc-oidc.secret)" \
-		--name="UMC on $fqdn" \
-		--description="Univention Management Console on $fqdn" \
-		--direct-access-grants \
-		--access-token-lifespan="${umc_oidc_access_token_lifespan:-300}" \
-		--access-token-audience="ldaps://$(ucr get domainname)/" \
-		--id-token-audience="https://$fqdn/univention/oidc/" \
-		--redirect-uri="https://$fqdn/univention/oidc/*" \
-		--redirect-uri="http://$fqdn/univention/oidc/*" \
-		--post-logout-redirect-uris="http://$fqdn/univention/oidc/*" \
-		--post-logout-redirect-uris="https://$fqdn/univention/oidc/*" \
-		--no-frontchannel-logout \
-		--frontchannel-logout-url="https://$fqdn/univention/oidc/frontchannel-logout" \
-		--backchannel-logout-url="https://$fqdn/univention/oidc/backchannel-logout" \
-		--always-display-in-console \
-		--logo-url="https://$fqdn/favicon.ico" \
-		--pkce-code-challenge-method="S256" \
-		--default-scopes="openid" \
-		--web-origins="+" "myclient"
-
 	# create a client for the host, just to please the test
 	# 04_misc.py::test_every_umc_server_has_a_oidc_client
 	univention-keycloak --binduser Administrator --bindpwd univention oidc/rp create \
@@ -311,7 +287,7 @@ external_portal_config_oidc_manually () {
 
 	# umc oidc configuration
 	ucr set \
-		"umc/oidc/$fqdn/client-id"="myclient" \
+		"umc/oidc/$fqdn/client-id"="https://portal.extern.test/univention/oidc/" \
 		"umc/oidc/$fqdn/client-secret-file"="/etc/umc-oidc.secret" \
 		"umc/oidc/$fqdn/extra-parameter"="kc_idp_hint" \
 		"umc/oidc/$fqdn/issuer"="https://$idp/realms/ucs" \
@@ -327,7 +303,7 @@ external_portal_config_oidc_manually () {
 		"ldap/server/sasl/oauthbearer/trusted-audience/$hostname.$domainname?ldaps://$hostname.$domainname/" \
 		"ldap/server/sasl/oauthbearer/trusted-issuer/$hostname.$domainname=https://$idp/realms/ucs" \
 		"ldap/server/sasl/oauthbearer/trusted-jwks/$hostname.$domainname"="/usr/share/univention-management-console/oidc/https%3A%2F%2F${idp}%2Frealms%2Fucs.jwks" \
-		"ldap/server/sasl/oauthbearer/trusted-authorized-party/$hostname.$domainname"="myclient"
+		"ldap/server/sasl/oauthbearer/trusted-authorized-party/$hostname.$domainname"="https://portal.extern.test/univention/oidc/"
 
 	# not necessary for the setup,
 	# just a test the we don't break the manual configuration

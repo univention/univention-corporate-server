@@ -1578,6 +1578,11 @@ change_template_hostname () {
 		univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 91univention-saml || rv=1
 		univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 92univention-management-console-web-server || rv=1
 		systemctl start nscd.service
+		# Create kerberos principal for ldap/hostname.domainname
+		udm kerberos/kdcentry create --binddn "$admin_userdn" --bindpwd "$admin_password" \
+			--ignore_exists --position "cn=kerberos,$(ucr get ldap/base)" \
+			--set name="ldap/${new_fqdn}" --set generateRandomPassword=1 || rv=1
+		kadmin -l ext "ldap/${new_fqdn}@$(ucr get kerberos/realm)"
 		;;
 	esac
 
