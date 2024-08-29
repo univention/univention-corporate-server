@@ -1,3 +1,9 @@
+univention-management-console (14.0.30) unstable; urgency=medium
+
+  * univention/ucs#2388 close http client after getting access token
+
+ -- Felix Botner <botner@univention.de>  Thu, 29 Aug 2024 20:18:43 +0200
+
 univention-management-console (14.0.29) unstable; urgency=medium
 
   * Bug #57483: Simplify UMC OIDC setup
