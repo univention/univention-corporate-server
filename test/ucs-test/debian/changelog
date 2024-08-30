@@ -1,4 +1,4 @@
-ucs-test (12.0.149) unstable; urgency=medium
+ucs-test (12.0.150) unstable; urgency=medium
 
   * Issue univention/ucs#2412: Update tests for 5.2
 

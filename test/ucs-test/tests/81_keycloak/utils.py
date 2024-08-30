@@ -111,7 +111,7 @@ def keycloak_password_change(
         return
 
     wait_for_listener_replication_and_postrun()
-    if (page.get_by_label("Username or email").is_visible()):
+    if (page.get_by_label(_("Username or email")).is_visible()):
         keycloak_login(page=page, username=username, password=new_password, keycloak_config=keycloak_config)
 
 
