@@ -1,3 +1,9 @@
+ucs-test (12.0.149) unstable; urgency=medium
+
+  * Issue univention/ucs#2412: Update tests for 5.2
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 30 Aug 2024 13:45:09 +0200
+
 ucs-test (12.0.148) unstable; urgency=medium
 
   * Bug #57534: test for portal/auth-mode
