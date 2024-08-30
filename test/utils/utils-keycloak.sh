@@ -86,9 +86,7 @@ keycloak_saml_idp_setup () {
         udm portals/entry modify --dn "cn=login-saml,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)" --set activated=TRUE
     fi
     ucr set umc/saml/idp-server="https://$idp/realms/ucs/protocol/saml/descriptor"
-    if [ -f "/usr/sbin/slapd" ]; then
-        systemctl restart slapd
-    fi
+    systemctl restart slapd || true
 }
 
 keycloak_umc_oidc_idp_setup() {
@@ -142,9 +140,11 @@ install_self_service () {
     deb-systemd-invoke restart univention-management-console-server univention-portal-server
 }
 
-performance_settings () {
-	ucr set umc/http/processes=8
-	deb-systemd-invoke restart univention-management-console-server
+umc_multiproc_settings () {
+	local procs="${1:-8}"
+	ucr set umc/http/processes="$procs"
+	service apache2 restart
+	service univention-management-console-server restart
 }
 
 run_performance_tests () {
@@ -247,6 +247,7 @@ external_portal_config_oidc () {
 	# we have to set a password, so that the password is the same for every client
 	# in case we have multiple UCS servers act as one portal (load balancing setup)
 	echo "univention" > /etc/umc-oidc.secret
+	chmod 600 /etc/umc-oidc.secret
 
 	# FIXME
 	local join_user join_pwdfile
@@ -257,7 +258,7 @@ external_portal_config_oidc () {
 	univention-run-join-scripts -dcaccount "$join_user" -dcpwd "$join_pwdfile" --force --run-scripts 92univention-management-console-web-server
 
 	# WHY?
-	service slapd restart
+	service slapd restart || true
 }
 
 
@@ -275,33 +276,17 @@ external_portal_config_oidc_manually () {
 
 	# create oidc client
 	echo "univention" > /etc/umc-oidc.secret
-	# FIXME
+	chmod 600 /etc/umc-oidc.secret
+
+	# create a client for the host, just to please the test
+	# 04_misc.py::test_every_umc_server_has_a_oidc_client
 	univention-keycloak --binduser Administrator --bindpwd univention oidc/rp create \
-		--app-url "https://$fqdn/univention/oidc/" \
-		--host-fqdn "$fqdn" \
-		--client-secret "$(cat /etc/umc-oidc.secret)" \
-		--name="UMC on $fqdn" \
-		--description="Univention Management Console on $fqdn" \
-		--direct-access-grants \
-		--access-token-lifespan="${umc_oidc_access_token_lifespan:-300}" \
-		--access-token-audience="ldaps://$(ucr get domainname)/" \
-		--id-token-audience="https://$fqdn/univention/oidc/" \
-		--redirect-uri="https://$fqdn/univention/oidc/*" \
-		--redirect-uri="http://$fqdn/univention/oidc/*" \
-		--post-logout-redirect-uris="http://$fqdn/univention/oidc/*" \
-		--post-logout-redirect-uris="https://$fqdn/univention/oidc/*" \
-		--no-frontchannel-logout \
-		--frontchannel-logout-url="https://$fqdn/univention/oidc/frontchannel-logout" \
-		--backchannel-logout-url="https://$fqdn/univention/oidc/backchannel-logout" \
-		--always-display-in-console \
-		--logo-url="https://$fqdn/favicon.ico" \
-		--pkce-code-challenge-method="S256" \
-		--default-scopes="openid" \
-		--web-origins="+" "myclient"
+		--app-url "https://$(ucr get hostname).$(ucr get domainname)/univention/oidc/" \
+		"https://$(ucr get hostname).$(ucr get domainname)/univention/oidc/"
 
 	# umc oidc configuration
 	ucr set \
-		"umc/oidc/$fqdn/client-id"="myclient" \
+		"umc/oidc/$fqdn/client-id"="https://$fqdn/univention/oidc/" \
 		"umc/oidc/$fqdn/client-secret-file"="/etc/umc-oidc.secret" \
 		"umc/oidc/$fqdn/extra-parameter"="kc_idp_hint" \
 		"umc/oidc/$fqdn/issuer"="https://$idp/realms/ucs" \
@@ -317,42 +302,69 @@ external_portal_config_oidc_manually () {
 		"ldap/server/sasl/oauthbearer/trusted-audience/$hostname.$domainname?ldaps://$hostname.$domainname/" \
 		"ldap/server/sasl/oauthbearer/trusted-issuer/$hostname.$domainname=https://$idp/realms/ucs" \
 		"ldap/server/sasl/oauthbearer/trusted-jwks/$hostname.$domainname"="/usr/share/univention-management-console/oidc/https%3A%2F%2F${idp}%2Frealms%2Fucs.jwks" \
-		"ldap/server/sasl/oauthbearer/trusted-authorized-party/$hostname.$domainname"="myclient"
+		"ldap/server/sasl/oauthbearer/trusted-authorized-party/$fqdn"="https://$fqdn/univention/oidc/"
+
+	# not necessary for the setup,
+	# just a test the we don't break the manual configuration
+	ucr set umc/oidc/issuer="https://${idp}/realms/ucs"
+	local join_user join_pwdfile
+	join_pwdfile="/tmp/pwdfile"
+	join_user="Administrator"
+	echo -n "univention" > "$join_pwdfile"
+	# re run join
+	univention-run-join-scripts -dcaccount "$join_user" -dcpwd "$join_pwdfile" --force --run-scripts 92univention-management-console-web-server
 
 	service univention-management-console-server restart
-	service slapd restart
+	service slapd restart || true
 }
 
-haproxy_portal_config () {
-	local certificate="${1:?missing certificate}"; shift
-	local keyfile="${1:?missing keyfile}"; shift
-	local host harray ip name
+# FIXME
+haproxy_config_external_fqdn () {
+
+	local primary_ip="${1:?missing ip for primary}"; shift
+	local backup_ip="${1:?missing ip for backup}"; shift
+	local replica_ip="${1:?missing ip for replica}"; shift
+	local member_ip="${1:?missing ip for member}"; shift
 	service apache2 stop
 	univention-install -y haproxy
-	# cert for ha proxy, we need the key in the cert file
-	cat "$keyfile" >> "$certificate"
-	#log /dev/log    local1 debug
+	# cert for ha proxy, we need the key in the cert file, and every cert in one directory
+	mkdir -p /opt/certs
+	cat /opt/portal.extern.test/cert.pem /opt/portal.extern.test/private.key >> /opt/certs/portal.pem
+	cat /opt/auth.extern.test/cert.pem /opt/auth.extern.test/private.key >> /opt/certs/auth.pem
 	cat <<EOF >> "/etc/haproxy/haproxy.cfg"
 
 frontend portal_httpd
-	bind :443 ssl crt $certificate
-	default_backend portals
+	bind :443 ssl crt /opt/certs
+	use_backend portals if { req.hdr(host) -i portal.extern.test }
+	use_backend keycloaks if { req.hdr(host) -i auth.extern.test }
 
 backend portals
 	balance roundrobin
 	timeout server 10000
-	cookie SERVER insert indirect nocache
 	# sticky sessions
 	cookie SERVER insert indirect nocache
-$(
-	for host in "$@"; do
-		# shellcheck disable=SC2206
-		harray=($host)
-		name=${harray[0]}
-		ip=${harray[1]}
-		echo -e "\tserver $name ${ip}:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie $name"
-	done
-)
+	server master  $primary_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie master
+	server backup  $backup_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie backup
+	server replica $replica_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie replica
+	server member  $member_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie member
+
+
+backend keycloaks
+	balance roundrobin
+	timeout server 10000
+	# sticky sessions
+	cookie KEYCLOAK insert indirect nocache
+	server master $primary_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie master
+
+EOF
+	service haproxy restart
+}
+
+# FIXME
+haproxy_config_external_fqdn_add_second_keycloak () {
+	local backup_ip="${1:?missing ip for backup}"; shift
+	cat <<EOF >> "/etc/haproxy/haproxy.cfg"
+	server backup $backup_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie backup
 EOF
 	service haproxy restart
 }

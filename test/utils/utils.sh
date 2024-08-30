@@ -1588,16 +1588,23 @@ change_template_hostname () {
 		--set domain="$(ucr get domainname)" || rv=1
 	while read -r service; do
 		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwd "$admin_password" --dn "$hostdn" --append service="$service"
-	done < <(udm computers/domaincontroller_backup list --filter name="$old_hostname" | sed -n 's/^  service: //p')
+	done < <(udm "computers/$server_role" list --filter name="$old_hostname" | sed -n 's/^  service: //p')
 	while read -r school_role; do
 		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwd "$admin_password" --dn "$hostdn" --append ucsschoolRole="$school_role"
-	done < <(udm computers/domaincontroller_backup list --filter name="$old_hostname" | sed -n 's/^  ucsschoolRole: //p')
+	done < <(udm "computers/$server_role" list --filter name="$old_hostname" | sed -n 's/^  ucsschoolRole: //p')
+	while read -r os; do
+		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwd "$admin_password" --dn "$hostdn" --set operatingSystem="$os"
+	done < <(udm "computers/$server_role" list --filter name="$old_hostname" | sed -n 's/^  operatingSystem: //p')
+	while read -r osversion; do
+		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwd "$admin_password" --dn "$hostdn" --set operatingSystemVersion="$osversion"
+	done < <(udm "computers/$server_role" list --filter name="$old_hostname" | sed -n 's/^  operatingSystemVersion: //p')
 
 	# get new cert
 	univention-fetch-certificate "$hostname" "$primary_ip" || rv=1
 
 	# fix some templates
 	[ -e /etc/bind/named.conf.samba4 ] && ucr commit /etc/bind/named.conf.samba4
+	[ -e /etc/postgresql/pam_ldap.conf ] && ucr commit /etc/postgresql/pam_ldap.conf
 
 	# systemctl try-restart univention-directory-listener.service univention-management-console-server.service apache2.service postgresql.service || [ $? -eq 5]
 	for service in slapd univention-directory-listener univention-management-console-server apache2 postgresql; do
@@ -1620,6 +1627,11 @@ change_template_hostname () {
 		univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 91univention-saml || rv=1
 		univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 92univention-management-console-web-server || rv=1
 		systemctl start nscd.service
+		# Create kerberos principal for ldap/hostname.domainname
+		udm kerberos/kdcentry create --binddn "$admin_userdn" --bindpwd "$admin_password" \
+			--ignore_exists --position "cn=kerberos,$(ucr get ldap/base)" \
+			--set name="ldap/${new_fqdn}" --set generateRandomPassword=1 || rv=1
+		kadmin -l ext "ldap/${new_fqdn}@$(ucr get kerberos/realm)"
 		;;
 	esac
 
