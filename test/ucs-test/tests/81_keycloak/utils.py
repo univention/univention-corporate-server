@@ -37,6 +37,8 @@ from typing import TYPE_CHECKING
 import requests
 from playwright.sync_api import Page, expect
 
+from univention.testing.utils import wait_for_listener_replication_and_postrun
+
 
 if TYPE_CHECKING:
     from types import SimpleNamespace
@@ -46,6 +48,8 @@ if TYPE_CHECKING:
 
 TRANSLATIONS = {
     'de-DE': {
+        'Username': 'Benutzername',
+        'Password': 'Passwort',
         'Username or email': 'Benutzername oder E-Mail',
         'password': 'Passwort',
         'Sign In': 'Anmelden',
@@ -68,6 +72,8 @@ TRANSLATIONS = {
         'en yada yada yada': 'de yada yada yada',
         'Your account is not verified.': 'Konto nicht verifiziert.',
         'You do not have the needed privileges to access': 'Zugriff verboten.',
+        'Menu': 'Menü',
+        'Login': 'Anmelden',
     },
 }
 
@@ -88,6 +94,7 @@ def get_language_code() -> str:
 def keycloak_password_change(
     page: Page,
     keycloak_config: SimpleNamespace,
+    username: str,
     password: str,
     new_password: str,
     new_password_confirm: str,
@@ -101,6 +108,11 @@ def keycloak_password_change(
     if fails_with:
         error = page.locator(keycloak_config.password_update_error_css_selector.replace("[class='", ".").replace("']", "").replace(" ", "."))
         assert _(fails_with) == error.inner_text(), f'{fails_with} != {error.inner_text()}'
+        return
+
+    wait_for_listener_replication_and_postrun()
+    if (page.get_by_label("Username or email").is_visible()):
+        keycloak_login(page=page, username=username, password=new_password, keycloak_config=keycloak_config)
 
 
 def keycloak_auth_header(config: SimpleNamespace) -> dict:

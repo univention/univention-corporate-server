@@ -261,7 +261,7 @@ def __portal_login_func(
         # check password change
         if new_password:
             new_password_confirm = new_password_confirm if new_password_confirm else new_password
-            keycloak_password_change(page, keycloak_config, password, new_password, new_password_confirm, fails_with=fails_with)
+            keycloak_password_change(page, keycloak_config, username, password, new_password, new_password_confirm, fails_with=fails_with)
         if protocol == 'oidc':
             grant_oidc_privileges(page)
         if fails_with or no_login:
