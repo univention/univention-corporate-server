@@ -235,7 +235,7 @@ def test_portal_login_button(portal_config, protocol, ucr, page, keycloak_config
             page.goto(portal_config.url)
             page.get_by_role('button', name=_('Menu')).click()
             page.get_by_role('button', name=_('Login')).click()
-            page.get_by_label('Username or email')
+            page.get_by_label(_('Username or email'))
             assert protocol in page.url
             if protocol == 'login':
                 page.get_by_label(_('Username')).fill(username)
