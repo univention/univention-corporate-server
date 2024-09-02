@@ -4,6 +4,7 @@
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
 
+import time
 from datetime import datetime, timedelta
 
 import pytest
@@ -232,6 +233,7 @@ def test_portal_login_button(portal_config, protocol, ucr, page, keycloak_config
             handler_set([f'portal/auth-mode={protocol}'])
             run_command(['service', 'univention-portal-server', 'restart'])
             run_command(['service', 'univention-management-console-server', 'restart'])
+            time.sleep(10)
             page.goto(portal_config.url)
             page.get_by_role('button', name=_('Menu')).click()
             page.get_by_role('button', name=_('Login')).click()
@@ -248,3 +250,4 @@ def test_portal_login_button(portal_config, protocol, ucr, page, keycloak_config
     finally:
         run_command(['service', 'univention-portal-server', 'restart'])
         run_command(['service', 'univention-management-console-server', 'restart'])
+        time.sleep(10)
