@@ -175,7 +175,7 @@ class Interpreter(object):
                         token.value = token.attrs.get('default', '')
                     else:
                         sep = token.attrs.get('separator', ', ')
-                        inner_separator = token.attrs.get('inner-separator', '; ')
+                        inner_separator = token.attrs.get('inner-separator', ' ')
 
                         if all(isinstance(element, (list, tuple)) for element in value):
                             if all(isinstance(e, str) for element in value for e in element):
