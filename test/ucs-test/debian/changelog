@@ -1,3 +1,11 @@
+ucs-test (10.0.22-63) unstable; urgency=medium
+
+  * Bug #56054: make 11_umc_pam-login_unclosed_fh_test less flaky. Use actual
+    side menu logout button and remove wait_for_url since the login function
+    does that already.
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 02 Sep 2024 14:24:44 +0200
+
 ucs-test (10.0.22-62) unstable; urgency=medium
 
   * Bug #57534: test for portal/auth-mode
