@@ -1,0 +1,20 @@
+product: ucs
+release: "5.0"
+version: [7, 8]
+scope: ucs_5.0-0-errata5.0-8
+src: systemd
+fix: 241-7~deb10u11A~5.0.8.202409020923
+desc: |
+ This update addresses the following issues:
+ 241-7~deb10u11 (Mon, 26 Aug 2024 10:30:05 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2023-7008: Don't accept records of DNSSEC-signed domains when they have
+   no signature.
+ * CVE-2023-50387: DNSSEC denial of service (CPU consumption)
+ * CVE-2023-50868: DNSSEC denial of service (CPU consumption)
+ * Fixed the autopkgtest.
+bug: [57559]
+cve:
+- CVE-2023-7008
+- CVE-2023-50387
+- CVE-2023-50868
