@@ -48,6 +48,8 @@ for groupType in 2 3 5; do
 
 	ad_exists "$AD_DN"; fail_bool 1 110
 	udm_exists "groups/group"; fail_bool 1 110
+
+	wait_for_s4_connector_to_be_inactive
 done
 
 for groupType in $GLOBAL_GROUP_TYPE $LOCAL_GROUP_TYPE $DOMAIN_LOCAL_GROUP_TYPE $UNIVERSAL_GROUP_TYPE; do
@@ -67,6 +69,8 @@ for groupType in $GLOBAL_GROUP_TYPE $LOCAL_GROUP_TYPE $DOMAIN_LOCAL_GROUP_TYPE $
 
 	ad_exists "$AD_DN"; fail_bool 1 110
 	udm_exists "groups/group"; fail_bool 1 110
+
+	wait_for_s4_connector_to_be_inactive
 done
 
 exit "$RETVAL"

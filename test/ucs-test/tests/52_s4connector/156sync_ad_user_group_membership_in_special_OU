@@ -44,6 +44,7 @@ section "Add user to group"
 
 ad_append_to_attribute "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
 
 ad_exists "$AD_GROUP_DN"; fail_bool 0 110
 udm_exists "groups/group" "" "" "ou=\2B1,$ldap_base"; fail_bool 0 110
@@ -61,6 +62,7 @@ section "Remove user from group"
 
 ad_remove_from_attribute "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
 
 ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 1 110
 ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN"; fail_bool 1 110
@@ -72,8 +74,10 @@ udm_verify_multi_value_udm_attribute_contains_ignore_case "groups" \
 section "Re-Add user to group"
 
 ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
 ad_append_to_attribute "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
 
 udm_verify_multi_value_udm_attribute_contains_ignore_case "users" \
 	"uid=$UDM_users_user_username,ou=\2B1,$ldap_base" "groups/group"; fail_bool 0 110
@@ -86,6 +90,7 @@ section "Remove user"
 
 ad_delete "$AD_USER_DN" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
 
 ad_exists "$AD_USER_DN"; fail_bool 1 110
 udm_exists "users/user" "" "" "ou=\2B1,$ldap_base"; fail_bool 1 110
@@ -98,6 +103,7 @@ section "Clean up"
 
 ad_delete "$AD_GROUP_DN" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
 
 ad_exists "$AD_GROUP_DN"; fail_bool 1 110
 udm_exists "groups/group" "" "" "ou=\2B1,$ldap_base"; fail_bool 1 110

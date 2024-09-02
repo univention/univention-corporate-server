@@ -38,6 +38,7 @@ for((i=0;i<5;i++)); do
 done
 
 ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
 
 # Check password
 for((i=0;i<5;i++)); do

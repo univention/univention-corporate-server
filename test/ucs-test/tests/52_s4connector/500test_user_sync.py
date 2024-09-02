@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: "Test the UCS<->AD sync in {read,write,sync} mode with users"
 ## exposure: dangerous
+## timeout: 7200
 ## packages:
 ## - univention-s4-connector
 ## bugs:

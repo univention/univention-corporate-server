@@ -102,9 +102,13 @@ function ad_wait_for_synchronization () {
 	if [ "$min_wait_time" -gt "$synctime" ]; then
 		synctime="$min_wait_time"
 	fi
+
 	info "Waiting for full synchronisation (sleeping for $synctime seconds)"
 	info "Hint: You might want to decrease this value during debugging of the tests"
 	sleep "$synctime"
+
+	# TODO add to python lib too?
+	wait_for_s4_connector_to_be_inactive
 
 	#TODO: Implement (conservative) ping-pong detection (if possible at all)
 
@@ -173,12 +177,11 @@ function ad_set_sync_mode () {
 	fi
 }
 
-function wait_for_connector_to_be_inactive() {
+function wait_for_s4_connector_to_be_inactive() {
+	echo "waiting for s4 connector to be inactive"
 	python3 -c "
-import sys
-sys.path.append('$TESTLIBPATH')
-import s4connector
-s4connector.wait_for_connector_to_be_inactive()
+from univention.testing.utils import wait_for_s4_connector_to_be_inactive
+wait_for_s4_connector_to_be_inactive()
 "
 	return $?
 }

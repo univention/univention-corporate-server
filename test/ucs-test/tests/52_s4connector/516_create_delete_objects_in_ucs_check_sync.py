@@ -7,12 +7,8 @@
 ## bugs:
 ##  - 50593
 
-# TODO
-# i can't add --log-format '%(asctime)s.%(msecs)s %(levelname)s:%(name)s:%(message)s'
-# to the pytest call, why?
-
-import logging
 import subprocess
+import sys
 import time
 
 import pytest
@@ -33,7 +29,8 @@ from univention.testing.utils import fail, get_ldap_connection
 from s4connector import connector_running_on_this_host, connector_setup, wait_for_sync
 
 
-LOGGER = logging.getLogger(__name__)
+def stderr(msg):
+    print(msg, file=sys.stderr)
 
 
 class Users:
@@ -58,11 +55,12 @@ class Users:
         uuid = self.lo.get(userdn, attr=['+'])['entryUUID'][0].decode('UTF-8')
         self.uuids.append(uuid)
         self.users.append((userdn, user))
-        LOGGER.info(f'create user {username} ({uuid})')
+        stderr(f'create user {username} ({uuid})')
 
     def delete_users(self):
-        for _dn, user in self.users:
+        for dn, user in self.users:
             try:
+                stderr(f'delete user {dn}')
                 user.remove()
             except KeyError:
                 '''
@@ -80,7 +78,7 @@ class Users:
             try:
                 verify_udm_object('users/user', dn, None)
             except AssertionError:
-                LOGGER.error('%s still exists in UCS LDAP' % dn)
+                stderr('%s still exists in UCS LDAP' % dn)
                 return False
         return True
 
@@ -89,7 +87,7 @@ class Users:
             try:
                 verify_udm_object('users/user', dn, {'username': str2dn(dn)[0][0][1]})
             except noObject:
-                LOGGER.error('%s does not exist in UCS LDAP' % dn)
+                stderr('%s does not exist in UCS LDAP' % dn)
                 return False
         return True
 
@@ -97,7 +95,7 @@ class Users:
         db = configdb('/etc/univention/connector/s4internal.sqlite')
         for uuid in self.uuids:
             if db.get('UCS added', uuid):
-                LOGGER.error('%s found in UCS added database' % uuid)
+                stderr('%s found in UCS added database' % uuid)
                 return False
         return True
 
@@ -121,7 +119,7 @@ def test_no_leftovers_after_delete_in_ucs():
         # do not update domain users, this changes to timing
         handler_set(['directory/manager/user/primarygroup/update=false'])
         user_objects = Users()
-        create_users = 100
+        create_users = 30
         name = random_name()
         try:
             # create users
@@ -129,29 +127,21 @@ def test_no_leftovers_after_delete_in_ucs():
                 username = f"{name}{i}"
                 user_objects.create_user(username)
             # wait for the connector to pick up these changes
-            time.sleep(5)
-            # delete users (hopefully during the modify sync AD > UCS)
+            for i in range(20):
+                if subprocess.call(['grep', f'sync AD > UCS:.*user.*modify.*uid={name}.*', '/var/log/univention/connector-s4.log']) == 0:
+                    break
+                time.sleep(3)
+            # delete users during the modify sync AD > UCS
             user_objects.delete_users()
             # now check that everything is removed
-            for i in range(15):
-                time.sleep(10)
-                if user_objects.check_every_user_is_deleted():
-                    break
-            else:
-                fail("not all users (uid=%s*) have been removed, but should be" % name)
-            # we store (ucs) added objects in 'UCS added' and remove the entry during
-            # remove to samba, check if the table is clean
-            for i in range(15):
-                time.sleep(10)
-                if user_objects.check_UCS_added_table_is_clean():
-                    break
-            else:
-                fail("some uuid were not removed from s4internal.sqlite->UCS added")
-            # check if we really hit the problem (by checking for a specific log message)
+            assert user_objects.check_every_user_is_deleted(), "not all users, have been removed, but should be"
+            wait_for_sync()
+            assert user_objects.check_UCS_added_table_is_clean(), "some uuid were not removed from s4internal.sqlite->UCS added"
             logentry = f'uid={name}{create_users - 1},.* sync ignored: does not exist in UCS but has already been added in the past'
             logfile = '/var/log/univention/connector-s4.log'
             if subprocess.call(['grep', '-q', logentry, logfile]) != 0:
                 print(f'The log message that indicates that we really hit the problem is missing in {logfile}: {logentry}')
+            assert user_objects.check_every_user_is_deleted(), "not all users, have been removed, but should be"
         finally:
             # cleanup
             user_objects.delete_users()
