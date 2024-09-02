@@ -56,6 +56,7 @@ SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 invoke-rc.d univention-s4-connector start
 ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
 
 ad_exists "$AD_G1_DN"; fail_bool 0 110
 ad_exists "$AD_G2_DN"; fail_bool 0 110
@@ -102,7 +103,8 @@ ad_delete "$AD_G1_DN" || fail_test 110
 ad_delete "$AD_G2_DN" || fail_test 110
 
 #At least with w2k these operations take very long to sync
-ad_wait_for_synchronization 30; fail_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
 
 ad_exists "$AD_G1_DN"; fail_bool 1 110
 ad_exists "$AD_G2_DN"; fail_bool 1 110

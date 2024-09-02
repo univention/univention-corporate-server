@@ -113,6 +113,7 @@ localizedDescription: 0 :: TestCat
 " | ldbadd --verbose -H /var/lib/samba/private/sam.ldb || fail_test 110
 
 ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
 
 univention-ldapsearch -b "$policy_base_ucs" -s base dn -LLL  || fail_test 110
 univention-ldapsearch -b "CN=Class Store,CN=Machine,$policy_base_ucs" -s base dn -LLL || fail_test 110
@@ -126,6 +127,7 @@ ldbdel -H /var/lib/samba/private/sam.ldb "CN=Packages,CN=Class Store,CN=Machine,
 ldbdel -H /var/lib/samba/private/sam.ldb "CN=Class Store,CN=Machine,$policy_base" || fail_test 110
 
 ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
 
 univention-ldapsearch -b "CN=Class Store,CN=Machine,$policy_base_ucs" -s base dn -LLL && fail_test 110
 univention-ldapsearch -b "CN=Packages,CN=Class Store,CN=Machine,$policy_base_ucs" -s base dn -LLL && fail_test 110
@@ -134,6 +136,7 @@ univention-ldapsearch -b "CN=10fafe6a-333b-45d1-9f61-b4566abab127,CN=Packages,CN
 
 ldbdel -H /var/lib/samba/private/sam.ldb -r "$policy_base" || fail_test 110
 ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
 univention-ldapsearch -b "$policy_base_ucs" -s base dn -LLL  && fail_test 110
 
 ucr set connector/s4/mapping/msgpsi="$connector_s4_mapping_msgpsi"

@@ -67,6 +67,7 @@ SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
 invoke-rc.d univention-s4-connector start
 ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
 
 ad_exists "$AD_G1_DN"; fail_bool 0 110
 ad_exists "$AD_G2_DN"; fail_bool 0 110
@@ -113,6 +114,7 @@ UDM_users_user_username="$B2"
 udm_remove "users/user" || fail_test 110
 
 ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
 
 UDM_groups_group_name="$G1"
 udm_remove "groups/group" || fail_test 110
@@ -120,6 +122,7 @@ UDM_groups_group_name="$G2"
 udm_remove "groups/group" || fail_test 110
 
 ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
 
 ad_exists "$AD_G1_DN"; fail_bool 1 110
 ad_exists "$AD_G2_DN"; fail_bool 1 110

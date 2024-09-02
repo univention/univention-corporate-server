@@ -663,6 +663,28 @@ def is_port_open(port: int, hosts: Iterable[str] | None = None, timeout: float =
     return False
 
 
+def no_change_in_file(no_change_for: int, log_file: str) -> bool:
+    modify_time = os.path.getmtime(log_file)
+    current_time = time.time()
+    if (current_time - modify_time) >= no_change_for:
+        return True
+    return False
+
+
+def wait_for_s4_connector_to_be_inactive(no_change_for: int = 15) -> None:
+    log_file = '/var/log/univention/connector-s4.log'
+    if not os.path.isfile(log_file):
+        return
+    for i in range(30):
+        if no_change_in_file(no_change_for, log_file):
+            print(f'no change in {log_file} for {no_change_for}s')
+            break
+        print('connector is active, waiting')
+        time.sleep(no_change_for + 3)
+    else:
+        print('wait_for_s4_connector_to_be_inactive timed out, contiuing anyway')
+
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()

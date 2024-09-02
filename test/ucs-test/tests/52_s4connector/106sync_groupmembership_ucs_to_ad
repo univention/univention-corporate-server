@@ -122,6 +122,9 @@ for g in "$G00" "$G01" "$G02" "$G03" "$G04" "$G05" "$G06" "$G07" "$G08" "$G09"; 
 	UDM_groups_group_name="$g"
 	udm_create "groups/group" || fail_test 110
 done
+
+ad_wait_for_synchronization; fail_bool 0 110
+
 for b in "$B00" "$B01" "$B02" "$B03" "$B04" "$B05" "$B06" "$B07" "$B08" "$B09" "$B10" "$B11" "$B12" "$B13" "$B14" "$B15" "$B16" "$B17" "$B18" "$B19"; do
 	UDM_users_user_username="$b"
 	# udm_create "users/user" || fail_test 110
@@ -140,7 +143,7 @@ done
 
 # lets wait at least two times because of so many users
 ad_wait_for_synchronization; fail_bool 0 110
-ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
 
 for ad_dn in "$AD_G00_DN" "$AD_G01_DN" "$AD_G02_DN" "$AD_G03_DN" "$AD_G04_DN" "$AD_G05_DN" "$AD_G06_DN" "$AD_G07_DN" "$AD_G08_DN" "$AD_G09_DN"; do
 	ad_exists "$ad_dn"; fail_bool 0 110
@@ -188,6 +191,7 @@ for g in "$G00" "$G01" "$G02" "$G03" "$G04" "$G05" "$G06" "$G07" "$G08" "$G09"; 
 done
 
 ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
 
 for b in "$B00" "$B01" "$B02" "$B03" "$B04" "$B05" "$B06" "$B07" "$B08" "$B09" "$B10" "$B11" "$B12" "$B13" "$B14" "$B15" "$B16" "$B17" "$B18" "$B19"; do
 	UDM_users_user_username="$b"
@@ -195,6 +199,7 @@ for b in "$B00" "$B01" "$B02" "$B03" "$B04" "$B05" "$B06" "$B07" "$B08" "$B09" "
 done
 
 ad_wait_for_synchronization; fail_bool 0 110
+wait_for_s4_connector_to_be_inactive
 
 for ad_dn in "$AD_G00_DN" "$AD_G01_DN" "$AD_G02_DN" "$AD_G03_DN" "$AD_G04_DN" "$AD_G05_DN" "$AD_G06_DN" "$AD_G07_DN" "$AD_G08_DN" "$AD_G09_DN"; do
 	ad_exists "$ad_dn"; fail_bool 1 110

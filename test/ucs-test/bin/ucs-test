@@ -153,6 +153,10 @@ class TestSet:
                         if filter_condition and not check:
                             continue
 
+                        if section == 's4connector':
+                            from univention.testing.utils import wait_for_s4_connector_to_be_inactive
+                            wait_for_s4_connector_to_be_inactive()
+
                         if self.prefix:
                             self.format.begin_test(test_case, self.prefix % (count, self.max_count))
                         else:
