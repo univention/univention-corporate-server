@@ -1,3 +1,9 @@
+ucs-test (10.0.22-65) unstable; urgency=medium
+
+  * Bug #57534: test for portal/auth-mode
+
+ -- Felix Botner <botner@univention.de>  Mon, 02 Sep 2024 20:12:14 +0200
+
 ucs-test (10.0.22-64) unstable; urgency=medium
 
   * Bug #57482: rename logout notifier tests to 81_keycloak/13_logout.py and
