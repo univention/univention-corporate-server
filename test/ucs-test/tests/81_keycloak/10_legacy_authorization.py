@@ -9,7 +9,7 @@ import os
 import pytest
 import requests
 from playwright.sync_api import expect
-from utils import _, run_command
+from utils import _, get_language_code, run_command
 
 from univention.udm import UDM
 
@@ -163,6 +163,7 @@ def test_legacy_authorization_oidc(legacy_authorization_setup_oidc, keycloak_con
     # verify logon not possible
     resp = requests.post(
         keycloak_config.token_url,
+        headers={'Accept-Language': get_language_code()},
         data={
             'client_id': legacy_authorization_setup_oidc.client,
             'client_secret': legacy_authorization_setup_oidc.client_secret,
@@ -171,7 +172,7 @@ def test_legacy_authorization_oidc(legacy_authorization_setup_oidc, keycloak_con
             'grant_type': 'password',
         },
     )
-    assert _('You do not have the needed privileges to access') in resp.text
+    assert _('Access forbidden.') in resp.text
 
     # add user to group
     udm = UDM.admin().version(2)

@@ -71,7 +71,7 @@ TRANSLATIONS = {
         'Accept': 'Annehmen',
         'en yada yada yada': 'de yada yada yada',
         'Your account is not verified.': 'Konto nicht verifiziert.',
-        'You do not have the needed privileges to access': 'Zugriff verboten.',
+        'Access forbidden.': 'Zugriff verboten.',
         'Menu': 'Menü',
         'Login': 'Anmelden',
     },

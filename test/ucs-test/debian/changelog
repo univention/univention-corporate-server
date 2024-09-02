@@ -1,3 +1,9 @@
+ucs-test (12.0.160) unstable; urgency=medium
+
+  * Issue univention/ucs#2388: keycloak tests for 5.2
+
+ -- Felix Botner <botner@univention.de>  Mon, 02 Sep 2024 18:32:59 +0200
+
 ucs-test (12.0.159) unstable; urgency=medium
 
   * Issue univention/ucs#2375: Increase timeouts for openstack
