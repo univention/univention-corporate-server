@@ -13,7 +13,6 @@
 
 from __future__ import annotations
 
-import re
 import subprocess
 import time
 from typing import TYPE_CHECKING
@@ -43,8 +42,7 @@ def test_open_fd_after_login(umc_browser_test: UMCBrowserTest, udm, try_wrong_pw
         umc_browser_test.page.get_by_role('link', name=_('Login Same tab'), exact=True).click()
         umc_browser_test.login(username, password, check_for_no_module_available_popup=False, login_should_fail=False, do_navigation=False)
         if not try_wrong_pw:
-            umc_browser_test.page.wait_for_url(re.compile('.*/univention/portal/#.*'))
-        umc_browser_test.end_umc_session()
+            umc_browser_test.logout()
 
     open_sockets, ret = count_fhs()
     logger.info('%d open sockets before sleep:\n%s' % (ret, open_sockets))

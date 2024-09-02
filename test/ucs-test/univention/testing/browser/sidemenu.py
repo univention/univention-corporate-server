@@ -38,7 +38,7 @@ from pathlib import Path
 from playwright.sync_api import Locator, Page, TimeoutError as PlaywrightTimeoutError, expect
 
 from univention.lib.i18n import Translation
-from univention.testing.browser.lib import MIN, UCSLanguage, UMCBrowserTest
+from univention.testing.browser.lib import UCSLanguage, UMCBrowserTest
 
 
 _ = Translation('ucs-test-framework').translate
@@ -123,6 +123,7 @@ class SideMenu:
     def __init__(self, tester: UMCBrowserTest) -> None:
         self.tester: UMCBrowserTest = tester
         self.page: Page = tester.page
+        self.is_portal: bool = False
 
     def find_side_menu_button(self):
         side_menu_button_umc = self.page.locator('.umcMenuButton')
@@ -131,6 +132,7 @@ class SideMenu:
 
         if side_menu_button_portal.is_visible():
             self.side_menu_button = side_menu_button_portal
+            self.is_portal = True
         else:
             self.side_menu_button = side_menu_button_umc
 
@@ -185,7 +187,9 @@ class SideMenu:
     def logout(self):
         """Logout using the Side Menu"""
         self.page.get_by_role('button', name=_('Logout')).click()
-        self.page.get_by_role('dialog', name=_('Confirmation')).get_by_role('button', name=_('Logout')).click(timeout=1 * MIN)
+        # logout configrmation popup only in the UMC
+        if not self.is_portal:
+            self.page.get_by_role('dialog', name=_('Confirmation')).get_by_role('button', name=_('Logout')).click()
 
     def logout_with_fallback(self):
         try:
