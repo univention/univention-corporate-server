@@ -121,7 +121,7 @@ def test_password_change_after_second_try(portal_login_via_keycloak, keycloak_co
             fails_with=error_msg,
             protocol=protocol,
         )
-        keycloak_password_change(page, keycloak_config, 'sdh78§$%kjJKJK', username, 'Univention.99', 'Univention.99')
+        keycloak_password_change(page, keycloak_config, username, 'sdh78§$%kjJKJK', 'Univention.99', 'Univention.99')
         wait_for_listener_replication()
         if package_installed('univention-samba4'):
             wait_for_s4connector_replication()
