@@ -91,6 +91,7 @@ keycloak_saml_idp_setup () {
 
 keycloak_umc_oidc_idp_setup() {
 	local idp="${1:-ucs-sso-ng.$(ucr get domainname)}"
+	local fqdn="$(ucr get hostname).$(ucr get domainname)"
 
 	# FIXME
 	local join_user join_pwdfile
@@ -100,6 +101,8 @@ keycloak_umc_oidc_idp_setup() {
 
 	ucr set umc/web/oidc/enabled=true
 	ucr set umc/oidc/issuer="https://$idp/realms/ucs"
+
+	ucr set umc/oidc/rp/server="${fqdn,,}"
 	univention-run-join-scripts -dcaccount "$join_user" -dcpwd "$join_pwdfile" --force --run-scripts 92univention-management-console-web-server
 
 	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
@@ -242,7 +245,7 @@ external_portal_config_oidc () {
 	local fqdn="${1:?missing fqdn}"; shift
 
 	# oidc
-	ucr set umc/oidc/rp/server="$fqdn"
+	ucr set umc/oidc/rp/server="${fqdn,,}"
 
 	# we have to set a password, so that the password is the same for every client
 	# in case we have multiple UCS servers act as one portal (load balancing setup)

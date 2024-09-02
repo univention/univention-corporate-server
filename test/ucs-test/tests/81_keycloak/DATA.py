@@ -136,7 +136,7 @@ UMC_OIDC_CLIENT = {
             "protocolMapper": "oidc-audience-mapper",
             "consentRequired": False,
             "config": {
-                "included.client.audience": "ldaps://ucs.test/",
+                "included.client.audience": "ldaps://{domainname}/",
                 "id.token.claim": "false",
                 "access.token.claim": "true",
                 "userinfo.token.claim": "false",

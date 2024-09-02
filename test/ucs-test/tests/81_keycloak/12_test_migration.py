@@ -63,6 +63,7 @@ def test_create_client(keycloak_administrator_connection, client, client_id, arg
         substitutes = {}
         if not args:
             substitutes['fqdn'] = f'{ucr["hostname"]}.{ucr["domainname"]}'
+            substitutes['domainname'] = f'{ucr["domainname"]}'
             substitutes['ip'] = f'{ucr["interfaces/eth0/address"]}'
         compare_client(new_client, client, substitutes, client_id)
     finally:
