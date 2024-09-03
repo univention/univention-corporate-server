@@ -350,7 +350,11 @@ class OIDCResource(OAuth2Mixin, Resource):
                 refresh_token=user.oidc.refresh_token,
             )
         except HTTPClientError as exc:
-            CORE.error('Could not get new access token: %s' % (exc.response.body,))
+            json_response = escape.json_decode(exc.response.body)
+            if json_response.get('error') == 'invalid_grant':
+                if user.session_id in Session.sessions:
+                    Session.sessions[user.session_id].logout()
+            CORE.error('Could not get new access token: %s' % (json_response))
             raise OpenIDProvideUnavailable(self._('Could not receive token from authorization server.'))
 
         try:
