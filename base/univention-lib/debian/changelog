@@ -1,4 +1,10 @@
-univention-lib (9.0.19-1) UNRELEASED; urgency=medium
+univention-lib (9.0.19-2) unstable; urgency=medium
+
+  * Bug #56736: Typo in UCR variable
+
+ -- Arvid <requate@univention.de>  Tue, 03 Sep 2024 12:01:19 +0200
+
+univention-lib (9.0.19-1) unstable; urgency=medium
 
   * Bug #57350 UCS 5.0-8 version bump
 
