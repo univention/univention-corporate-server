@@ -141,7 +141,7 @@ def test_legacy_authorization_saml(legacy_authorization_setup_saml, keycloak_con
     # verify logon not possible
     page = portal_login_via_keycloak(legacy_authorization_setup_saml.user, 'univention', verify_login=False)
     expect(page.locator('#kc-content-wrapper'), 'kc-content-wrapper not visible').to_be_visible()
-    assert _('You do not have the needed privileges to access') in page.content()
+    assert _('Access forbidden.') in page.content()
 
     # add user to group
     udm = UDM.admin().version(2)

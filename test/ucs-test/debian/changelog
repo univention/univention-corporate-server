@@ -1,3 +1,9 @@
+ucs-test (12.0.163) unstable; urgency=medium
+
+  * Issue univention/ucs#2388: keycloak tests for 5.2
+
+ -- Felix Botner <botner@univention.de>  Tue, 03 Sep 2024 10:53:38 +0200
+
 ucs-test (12.0.162) unstable; urgency=medium
 
   * Bug #57534: test for portal/auth-mode
