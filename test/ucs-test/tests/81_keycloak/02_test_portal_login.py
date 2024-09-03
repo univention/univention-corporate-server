@@ -182,6 +182,7 @@ def test_account_disabled(portal_login_via_keycloak, keycloak_config, portal_con
     portal_login_via_keycloak(username, 'univention', fails_with=keycloak_config.account_disabled_msg, protocol=protocol)
 
 
+@pytest.mark.is_keycloak()
 @pytest.mark.parametrize('protocol', ['login', 'saml', 'oidc'])
 def test_portal_login_button(portal_config, protocol, ucr, page, keycloak_config, udm):
     try:
