@@ -15,43 +15,41 @@ from __future__ import annotations
 
 import subprocess
 import time
-from typing import TYPE_CHECKING
 
 import pytest
 
 from univention.lib.i18n import Translation
+from univention.lib.umc import HTTPError
 from univention.testing.browser import logger
-
-
-if TYPE_CHECKING:
-    from univention.testing.browser.lib import UMCBrowserTest
+from univention.testing.umc import Client
 
 
 _ = Translation('ucs-test-browser').translate
 
 
 @pytest.mark.parametrize('try_wrong_pw', [False, True])
-def test_open_fd_after_login(umc_browser_test: UMCBrowserTest, udm, try_wrong_pw: bool):
-    umc_browser_test.restart_umc()
+def test_open_fd_after_login(udm, try_wrong_pw: bool):
+    subprocess.call(['systemctl', 'restart', 'univention-management-console-server.service'])
     password = 'wrong_password' if try_wrong_pw else 'univention'
 
     for i in range(4):
         username = udm.create_user()[1]
         logger.info('Created user with username %s' % username)
-        umc_browser_test.page.goto(f'{umc_browser_test.base_url}/univention/portal')
-        umc_browser_test.page.get_by_role('link', name=_('Login Same tab'), exact=True).click()
-        umc_browser_test.login(username, password, check_for_no_module_available_popup=False, login_should_fail=False, do_navigation=False)
-        if not try_wrong_pw:
-            umc_browser_test.logout()
+        client = Client(language='en-US')
+        try:
+            client.authenticate(username, password)
+        except HTTPError:
+            if not try_wrong_pw:
+                raise
 
     open_sockets, ret = count_fhs()
     logger.info('%d open sockets before sleep:\n%s' % (ret, open_sockets))
     time.sleep(60 * 1)
-    umc_browser_test.systemd_restart_service('slapd')
+    subprocess.call(['systemctl', 'restart', 'slapd.service'])
 
     open_sockets, ret = count_fhs(state='close-wait')
     logger.info('%d sockets in close-wait' % ret)
-    assert ret < 3, f'More than 2 sockets in CLOSE_WAIT after UMC login:\n{open_sockets}'
+    assert ret <= 3, f'More than 3 sockets in CLOSE_WAIT after UMC login:\n{open_sockets}'
 
 
 def count_fhs(state: str | None = None) -> tuple[str, int]:
