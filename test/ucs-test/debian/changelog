@@ -1,3 +1,9 @@
+ucs-test (10.0.22-67) unstable; urgency=medium
+
+  * Bug #57482: wait for login page in admin console tests
+
+ -- Felix Botner <botner@univention.de>  Tue, 03 Sep 2024 10:48:41 +0200
+
 ucs-test (10.0.22-66) unstable; urgency=medium
 
   * Bug #57534: test for portal/auth-mode

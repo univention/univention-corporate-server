@@ -337,7 +337,9 @@ def keycloak_adm_login(page: Page, keycloak_config: SimpleNamespace):
     ):
         try:
             page.goto(url)
-            expect(page).to_have_title('Univention Corporate Server Single-Sign On')
+            page.wait_for_load_state('networkidle', timeout=5 * 1000)
+            print(page.content())
+            expect(page).to_have_title('Univention Corporate Server Single-Sign On', timeout=30 * 1000)
             keycloak_login(page, keycloak_config, username, password, fails_with=fails_with, no_login=no_login)
             # check that we are logged in
             if fails_with or no_login:
