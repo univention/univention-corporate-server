@@ -134,26 +134,6 @@ def test_password_change_after_second_try(portal_login_via_keycloak, keycloak_co
 
 @pytest.mark.skipif(package_installed('univention-samba4'), reason='Univention Samba 4 is installed and wont react to shadowLastChange.')
 @pytest.mark.parametrize('protocol', ['saml', 'oidc'])
-def test_password_change_expired_shadowLastChange(portal_login_via_keycloak, udm, protocol):
-    ldap = get_ldap_connection(primary=True)
-    dn, username = udm.create_user()
-    changes = [
-        ('shadowMax', [''], [b'2']),
-        ('shadowLastChange', [''], [b'1000']),
-    ]
-    ldap.modify(dn, changes)
-    wait_for_listener_replication()
-    # Since UCS 5.2 PAM auth/account is solely done by krb5, no more
-    # shadow stuff. Just shadowMax + shadowLastChange will not trigger a
-    # password change in PAM/UMC.
-    # Keycloak still checks this case and presents a pw change dialog,
-    # but the password is not changed. Check here if keycloak
-    # presents a pw dialog.
-    assert portal_login_via_keycloak(username, 'univention', new_password='Univention.99', protocol=protocol)
-
-
-@pytest.mark.skipif(package_installed('univention-samba4'), reason='Univention Samba 4 is installed and wont react to shadowLastChange.')
-@pytest.mark.parametrize('protocol', ['saml', 'oidc'])
 def test_password_change_expired_krb5PasswordEnd_and_shadowLastChange(portal_login_via_keycloak, udm, protocol):
     ldap = get_ldap_connection(primary=True)
     dn, username = udm.create_user()

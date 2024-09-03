@@ -1,3 +1,10 @@
+ucs-test (12.0.168) unstable; urgency=medium
+
+  * Bug #57482: wait for login page in admin console tests
+  * Issue univention/ucs#2388: remove shadowMax test
+
+ -- Felix Botner <botner@univention.de>  Tue, 03 Sep 2024 15:17:36 +0200
+
 ucs-test (12.0.167) unstable; urgency=medium
 
   * Bug #57482: rename logout notifier tests to 81_keycloak/13_logout.py and
