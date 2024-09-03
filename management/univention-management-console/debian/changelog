@@ -1,6 +1,9 @@
-univention-management-console (12.0.35-1) UNRELEASED; urgency=medium
+univention-management-console (12.0.35-1) unstable; urgency=medium
 
   * Bug #57581 UCS 5.0-9 version bump
+  * Bug #57515: Delete umc session when refresh OIDC token fail with
+   invalid_grant
+
 
  -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:18:33 +0200
 
