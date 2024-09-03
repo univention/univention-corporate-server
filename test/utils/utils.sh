@@ -298,11 +298,6 @@ keycloak_migration() {
 		. utils-keycloak.sh && install_upgrade_keycloak --set ucs/self/registration/check_email_verification="True"
 		univention-keycloak-migration-status -f -d
 	fi
-	# shellcheck source=/dev/null
-	. utils-keycloak.sh && keycloak_saml_idp_setup
-	# shellcheck source=/dev/null
-	. utils-keycloak.sh && keycloak_umc_oidc_idp_setup
-	ucr set ucs/server/sso/fqdn="ucs-sso-ng.${domainname,,}"
 }
 
 configure_umc_keycloak() {
