@@ -278,6 +278,7 @@ external_portal_config_oidc_manually () {
 	# create oidc client
 	echo "univention" > /etc/umc-oidc.secret
 	chmod 600 /etc/umc-oidc.secret
+	ucr set portal/reload-tabs-on-logout=true
 
 	# create a client for the host, just to please the test
 	# 04_misc.py::test_every_umc_server_has_a_oidc_client
