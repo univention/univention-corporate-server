@@ -10,3 +10,6 @@ desc: |
    caused that the specified limit was not considered but instead the
    default value of `10` was applied. This has been fixed.
 bug: [56736]
+erratum: 1115
+announced: 2024-09-04
+support: core
