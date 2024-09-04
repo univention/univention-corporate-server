@@ -1501,6 +1501,19 @@ This appendix lists the |UCSUCRVs| mentioned in the document.
    before using the regular login.
    For more information, refer to :ref:`central-management-umc-login`.
 
+.. envvar:: umc/oidc/issuer
+
+   Configures the OIDC identity provider for the UMC OIDC authentication.
+   If the variable is unset, the value
+   ``https://ucs-sso-ng.ucs.test/realms/ucs`` is used.
+   For more information, refer to :ref:`central-management-umc-login`.
+
+.. envvar:: umc/oidc/rp/server
+
+  Defines the FQDN of the relying party for UMC. If the variable is unset,
+  the FQDN of the UCS system and all IP addresses are used.
+  For more information, refer to :ref:`central-management-umc-login`
+
 .. envvar:: umc/web/sso/enabled
 
    If activated with ``true``,

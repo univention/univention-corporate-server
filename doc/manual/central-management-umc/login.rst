@@ -43,7 +43,7 @@ Refresh portal tabs on logout or session timeout
 
 All browser tabs where the user is logged into the portal will automatically refresh when a logout is detected.
 The same applies if the session times out.
-This feature is enabled by default and can be toggled through the UCR Variable :envvar:`portal/reload-tabs-on-logout`.
+This feature is deactivated by default and can be toggled through the UCR Variable :envvar:`portal/reload-tabs-on-logout`.
 
 Choose the right user account
 -----------------------------
@@ -159,15 +159,9 @@ and set the UCR variable :envvar:`portal/auth-mode` to ``ucs``.
 OpenID Connect for single sign-on
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. warning::
+.. versionadded:: 5.0-8-erratum-1118
 
-   Using OpenID Connect for single sign-on to the portal and the UCS management system
-   **isn't covered** by Univention product support.
-   Don't use it in production environments.
-
-.. versionadded:: 5.0-6-erratum-947
-
-   With :uv:erratum:`5.0x947` the portal and the UCS management system
+   With :uv:erratum:`5.0x1118` the portal and the UCS management system
    have the capability to allow single sign-on with OpenID Connect.
    The capability is deactivated by default.
 
@@ -176,12 +170,14 @@ OIDC is a more lightweight protocol than SAML.
 It's one variant for using single sign-on in the portal and the UCS management system.
 This section describes how to use it with UCS.
 
+.. _central-management-umc-login-single-sign-on-oidc-requirements:
+
 Requirements
 """"""""""""
 
 Before you can use OIDC for single sign-on, you must meet the following requirements:
 
-#. You must at least have :uv:erratum:`5.0x947` installed throughout your UCS domain.
+#. You must at least have :uv:erratum:`5.0x1118` installed throughout your UCS domain.
 
    For information about how to upgrade, refer to :ref:`software-ucs-updates`.
 
@@ -191,8 +187,10 @@ Before you can use OIDC for single sign-on, you must meet the following requirem
    refer to :external+uv-keycloak-ref:ref:`app-installation`
    in :cite:t:`ucs-keycloak-doc`.
 
-Activate
-""""""""
+.. _central-management-umc-login-single-sign-on-oidc-activation:
+
+Activation
+""""""""""
 
 First, you need to decide on which UCS systems you want to enable single sign-on using OpenID Connect.
 Second, you need to apply the following steps to each of those UCS systems.
@@ -216,6 +214,47 @@ Second, you need to apply the following steps to each of those UCS systems.
          --force \
          --run-scripts \
          92univention-management-console-web-server.inst
+
+#. Change the |UCSUCRV| :envvar:`portal/auth-mode` to ``oidc`` with :option:`ucr set`.
+   The default value was ``ucs``.
+
+#. For the change to take effect, restart the portal server with the following command:
+
+   .. code-block:: console
+
+      $ systemctl restart univention-portal-server.service
+
+.. _central-management-umc-login-single-sign-on-oidc-sign-in-links:
+
+Create sign-in links
+""""""""""""""""""""
+
+Restarting the portal server automatically updates the *Login* link in the user menu.
+You can optionally create a portal tile for the sign-in with OpenID Connect on
+the |UCSPRIMARYDN| with the commands in :numref:`central-management-umc-login-single-sign-on-oidc-sign-in-links-listing`.
+
+.. code-block:: console
+   :caption: Create portal tile for sign-in with OpenID Connect
+   :name: central-management-umc-login-single-sign-on-oidc-sign-in-links-listing
+
+   $ udm portals/entry create --ignore_exists \
+       --position "cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)" \
+       --set name=login-oidc \
+       --append displayName="\"en_US\" \"Login (Single sign-on)\"" \
+       --append displayName="\"de_DE\" \"Anmelden (Single Sign-on)\"" \
+       --append description="\"en_US\" \"Log in to the portal\"" \
+       --append description="\"de_DE\" \"Am Portal anmelden\"" \
+       --append link='"en_US" "/univention/oidc/?location=/univention/portal/"' \
+       --set anonymous=TRUE \
+       --set activated=TRUE \
+       --set linkTarget=samewindow \
+       --set icon="$(base64 /usr/share/univention-portal/login.svg)"
+
+   $ udm portals/category modify --ignore_exists \
+       --dn "cn=domain-service,cn=category,cn=portals,cn=univention,$(ucr get ldap/base)"\
+       --append entries="cn=login-oidc,cn=entry,cn=portals,cn=univention,$(ucr get ldap/base)"
+
+.. _central-management-umc-login-single-sign-on-oidc-sign-in-verification:
 
 Verification and log files
 """"""""""""""""""""""""""
@@ -269,7 +308,140 @@ Second, you need to apply the following steps to each of those UCS systems.
       $ rm -f \
          /etc/umc-oidc.secret \
          /usr/share/univention-management-console/oidc/http*
-      $ systemctl restart slapd.service univention-manangement-console
+      $ systemctl restart slapd univention-management-console-server
 
 #. Manually update the portal tile for *Login*,
    so that the link points to ``/univention/login/``.
+
+#. Change the |UCSUCRV| :envvar:`portal/auth-mode` to ``ucs`` with
+   :option:`ucr set` and restart the portal server.
+
+.. _central-management-umc-login-single-sign-on-oidc-sign-in-non-standard-fqdn-idp:
+
+Identity Provider with non-standard FQDN
+""""""""""""""""""""""""""""""""""""""""
+
+By default, the FQDN for the :program:`Keycloak` identity provider is ``ucs-sso-ng.$domainname``.
+However, it's possible to configure a different FQDN for the identity provider.
+For more information,
+see :external+uv-keycloak-ref:ref:`use-case-custom-fqdn-idp` in :cite:t:`ucs-keycloak-doc`.
+
+If you have such a setup,
+you have to configure the identity provider
+for the OpenID Connect authentication in UMC on each UCS system.
+Change the |UCSUCRV| :envvar:`umc/oidc/issuer` to the FQDN of your :program:`Keycloak` identity provider
+and run the join script of the UMC web server again,
+as shown in
+:numref:`central-management-umc-login-single-sign-on-oidc-sign-in-non-standard-fqdn-idp-listing`.
+
+.. code-block:: console
+   :caption: Set non-standard FQDN for identity provider :program:`Keycloak`
+   :name: central-management-umc-login-single-sign-on-oidc-sign-in-non-standard-fqdn-idp-listing
+
+   $ IDP="auth.extern.test"
+   $ ucr set umc/oidc/issuer="https://$IDP/realms/ucs"
+   $ univention-run-join-scripts --force \
+      --run-scripts 92univention-management-console-web-server
+
+.. _central-management-umc-login-single-sign-on-oidc-sign-in-non-standard-fqdn-portal:
+
+Non-standard FQDN for the Univention Portal and UMC
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+
+By default, the UMC is available under the FQDN ``$hostname.$domainname``.
+If you have a setup with a different FQDN for the UMC you have to change the
+|UCSUCRV| :envvar:`umc/oidc/rp/server` to the FQDN of
+the UMC, and run the join script of the UMC web server again,
+as shown in :numref:`central-management-umc-login-single-sign-on-oidc-sign-in-non-standard-fqdn-portal-listing`.
+
+.. code-block:: console
+   :caption: Set non-standard FQDN for the portal and UMC
+   :name: central-management-umc-login-single-sign-on-oidc-sign-in-non-standard-fqdn-portal-listing
+
+   $ ucr set umc/oidc/rp/server="portal.extern.test"
+   $ univention-run-join-scripts --force \
+      --run-scripts 92univention-management-console-web-server
+   $ systemctl restart slapd
+
+.. important::
+
+   If you want to run multiple Portal/UMC servers behind a load
+   balancer, you need to run these commands on all UCS systems with UMC.
+
+   Since all the systems use the same OIDC client in this setup,
+   make sure that the file :file:`/etc/umc-oidc.secret` has the same contents
+   on each system and matches the client secret in :program:`Keycloak`
+   for that client.
+
+.. _central-management-umc-login-single-sign-on-oidc-back-channel-sign-out:
+
+Back-channel sign-out
+"""""""""""""""""""""
+
+If you use OIDC back-channel sign-out together with multiprocessing of the UMC,
+the UMC needs a database for session storage to handle the session logout correctly.
+You have enabled multiprocessing in UMC
+if the |UCSUCRV| :envvar:`umc/http/processes` has a value greater than one (``> 1``).
+
+If you have only one UMC server without UMC multiprocessing,
+you don't need to change the configuration.
+
+To keep track of the sessions in the database for UMC,
+you need to configure the database connection string
+with the :program:`univention-mangement-console-settings` script,
+as shown in :numref:`central-management-umc-login-single-sign-on-oidc-back-channel-sign-out-sql-connection-listing`.
+
+However, if the Univention Portal or UMC uses multiple UCS
+servers for load balancing,
+or if UMC has a configuration for multiprocessing,
+it's necessary to use a :program:`PostgreSQL` database
+that all the UCS systems can access.
+In these cases, you must consider the following aspects:
+
+#. PostgreSQL database server:
+
+   You either need to provide a :program:`PostgreSQL` database yourself
+   that all the UMC servers have access to.
+
+   Or you install and configure :program:`PostgreSQL` on one of the UCS servers.
+   As shown in the example in
+   :numref:`central-management-umc-login-single-sign-on-oidc-back-channel-sign-out-postgres-install-listing`,
+   you can freely choose the values for
+   ``db_user``, ``db_name``, and ``db_password``.
+   ``db_host`` is the UCS system with :program:`PostgreSQL` running.
+
+   .. code-block:: console
+      :caption: Example for installation of :program:`PostgreSQL`
+      :name: central-management-umc-login-single-sign-on-oidc-back-channel-sign-out-postgres-install-listing
+
+      $ univention-install univention-postgresql
+      $ su postgres -c "createdb db_name"
+      $ su postgres -c "/usr/bin/createuser db_user"
+      $ su postgres -c "psql db_name -c \"ALTER ROLE db_user WITH ENCRYPTED PASSWORD 'db_password'\""
+      $ ucr set postgres11/pg_hba/config/host="db_name db_user 0.0.0.0/0 md5"
+      $ systemctl restart postgresql
+
+#. Set the SQL connection URI on the |UCSPRIMARYDN|:
+
+   .. code-block:: console
+      :caption: Set SQL connection URI
+      :name: central-management-umc-login-single-sign-on-oidc-back-channel-sign-out-sql-connection-listing
+
+      $ univention-management-console-setting set \
+         -u 'postgresql+psycopg2://db_user:db_password@db_host:5432/db_name'
+
+#. Restart the UMC on all UCS servers:
+
+   .. code-block:: console
+
+      $ systemctl restart univention-management-console-server
+
+.. important::
+
+   The feature for the refresh of the portal tabs on sign-out or session timeout
+   requires :program:`PostgreSQL`.
+
+   You can also use a local :program:`SQLite` database for one UMC server with multiprocessing,
+   or you can use :program:`MariaDB` as central database for multiple load-balancing UMC servers.
+   In both cases, the refresh of the portal tabs isn't supported and won't work, as it requires
+   a :program:`PostgreSQL` database.
