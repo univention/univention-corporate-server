@@ -11,3 +11,6 @@ desc: |
    UDM logged a traceback. This has now been replaced by a proper
    log message explaining the origin of the problem.
 bug: [57484]
+erratum: 1114
+announced: 2024-09-04
+support: core
