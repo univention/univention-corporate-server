@@ -12,3 +12,6 @@ desc: |
  * The default for `portal/reload-tabs-on-logout` has been changed
    to `false`.
 bug: [57534, 57562]
+erratum: 1116
+announced: 2024-09-04
+support: core
