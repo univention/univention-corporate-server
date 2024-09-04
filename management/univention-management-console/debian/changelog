@@ -1,103 +1,10 @@
-univention-management-console (13.0.24) unstable; urgency=medium
-
-  * Bug #57482: Add an SQL database for session storage.
-
- -- Marius Meschter <marius.meschter@univention.de>  Wed, 28 Aug 2024 11:51:25 +0200
-
-univention-management-console (13.0.24) unstable; urgency=medium
-
-  * Bug #57506: Do not show the OIDC consent screen when the RP is the UMC
-
- -- Mika Westphal <westphal@univention.de>  Wed, 21 Aug 2024 14:25:11 +0200
-
-univention-management-console (13.0.24) unstable; urgency=medium
-
-  * Bug #57475: add oidc-id-token hint to disable logout confirmation dialog
-
- -- Christian Castens <castens@univention.de>  Tue, 13 Aug 2024 11:11:08 +0200
-
-univention-management-console (13.0.24) unstable; urgency=medium
-
-  * Bug #57467: Add /logout-sse endpoint which will send a message to the attached
-    client indicating that the current session has ended due to logout/expiry.
-
- -- Marius Meschter <marius.meschter@univention.de>  Fri, 09 Aug 2024 13:13:41 +0200
-
-univention-management-console (13.0.23) unstable; urgency=medium
-
-  * Bug #57194 Ensure file descriptors are closed upon module process death.
-
- -- Ole Schwiegert <schwiegert@univention.de>  Wed, 12 Jun 2024 09:20:00 +0200
-
-univention-management-console (13.0.23) UNRELEASED; urgency=medium
-
-  * Bug #57350 UCS 5.0-8 version bump
-
- -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Mon, 03 Jun 2024 13:44:14 +0200
-
-univention-management-console (13.0.23) unstable; urgency=medium
-
-  * Bug #57311: log reason for failed LDAP connection
-
- -- Felix Botner <botner@univention.de>  Wed, 22 May 2024 12:28:57 +0200
-
-univention-management-console (13.0.23) unstable; urgency=medium
-
-  * Bug #57229: Add missing keycloak/server/sso/fqdn UCRV to univention-management-console-web-server.univention-config-registry
-
- -- Marius Meschter <marius.meschter@univention.de>  Fri, 19 Apr 2024 10:00:56 +0200
-
-univention-management-console (13.0.23) unstable; urgency=medium
-
-  * Bug #56906: copytruncate logfiles during logrotate
-
- -- Felix Botner <botner@univention.de>  Wed, 17 Apr 2024 14:40:43 +0200
-
-univention-management-console (13.0.23) unstable; urgency=medium
-
-  * Bug #57163: do not setup simplesamlphp with a 5.2 primary
-
- -- Felix Botner <botner@univention.de>  Mon, 25 Mar 2024 16:50:19 +0100
-
-univention-management-console (13.0.23) unstable; urgency=medium
-
-  * Bug #57143. update keycloak UMC client on changes
-
- -- Felix Botner <botner@univention.de>  Mon, 25 Mar 2024 13:51:18 +0100
-
-univention-management-console (13.0.23) unstable; urgency=medium
-
-  * Bug #57113: fix umc/http/processes=0 evaluation in UCR template
-
- -- Florian Best <best@univention.de>  Mon, 18 Mar 2024 12:27:25 +0100
-
-univention-management-console (13.0.23) unstable; urgency=medium
-
-  * Bug #57154:  only change ownership and permission of
-    UMC log file if not stdout or stderr
-
- -- Marius Meschter <marius.meschter@univention.de>  Mon, 18 Mar 2024 11:38:45 +0100
-
-univention-management-console (13.0.23) unstable; urgency=medium
-
-  * Bug #57104: fix memory leak / circular references
-  * Bug #57113: fix LDAP connection leak
-  * Bug #57118 UCS 5.0-7 version bump
-
- -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 08:51:49 +0100
-
-univention-management-console (13.0.23) unstable; urgency=medium
-
-  * Bug #57482: Add an SQL database for session storage.
-
- -- Marius Meschter <marius.meschter@univention.de>  Wed, 05 Sep 2024 15:35:32 +0200
-
 univention-management-console (13.0.22) unstable; urgency=medium
 
+  * Bug #57482: Add an SQL database for session storage.
   * Bug #57467: Add /logout-sse endpoint which will send a message to the attached
     client indicating that the current session has ended due to logout/expiry.
 
- -- Marius Meschter <marius.meschter@univention.de>  Fri, 09 Aug 2024 13:13:41 +0200
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 28 Aug 2024 11:51:25 +0200
 
 univention-management-console (13.0.21) unstable; urgency=medium
 

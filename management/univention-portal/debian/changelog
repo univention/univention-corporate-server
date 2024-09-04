@@ -1,5 +1,11 @@
 univention-portal (5.0.11) unstable; urgency=medium
 
+  * Bug #57562: default false for portal/reload-tabs-on-logout
+
+ -- Felix Botner <botner@univention.de>  Wed, 04 Sep 2024 14:54:09 +0200
+
+univention-portal (5.0.11) unstable; urgency=medium
+
   * Bug #57467 Add a shared worker that connects to the UMCs /logout-sse
     endpoint and notifies all attached ports when the logout message is
     received.

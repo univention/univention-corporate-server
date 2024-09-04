@@ -46,5 +46,5 @@ Categories=portal
 Description[de]=Wenn aktiviert, wird eine persistente Verbindung zwischen der Univention Management Console und dem Browser aufgebaut, die jeden Portal-Browser-Tab über einen Logout benachrichtigt und diesen dann neu lädt.
 Description[en]=If activated, a persistent connection between the users browser and the Univention Management Console will be set-up, which will notify all Univention Portal browser tabs of a logout and causes them to reload.
 Type=bool
-Default=true
+Default=false
 Categories=portal
