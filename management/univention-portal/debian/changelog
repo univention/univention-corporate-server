@@ -1,3 +1,9 @@
+univention-portal (4.0.17-4) unstable; urgency=medium
+
+  * Bug #57562: default false for portal/reload-tabs-on-logout
+
+ -- Felix Botner <botner@univention.de>  Wed, 04 Sep 2024 14:54:09 +0200
+
 univention-portal (4.0.17-3) unstable; urgency=medium
 
   * Bug #57534: Support oidc in portal login button
