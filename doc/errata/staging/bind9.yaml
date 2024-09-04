@@ -6,13 +6,15 @@ src: bind9
 fix: 1:9.11.5.P4+dfsg-5.1+deb10u13A~5.0.8.202409020923
 desc: |
  This update addresses the following issues:
- 1:9.11.5.P4+dfsg-5.1+deb10u13 (Tue, 20 Aug 2024 09:02:23 +0200)
- * Fix assertion failure in CVE-2023-4408 backport.
- 1:9.11.5.P4+dfsg-5.1+deb10u12 (Wed, 14 Aug 2024 11:31:05 +0200)
- * CVE-2024-1975
- * CVE-2024-1737
- * CVE-2023-4408
- * Update symbols file for dropped symbols.
+ * CVE-2024-1975: If a server hosts a zone containing a "KEY" Resource Record,
+   or a resolver DNSSEC-validates a "KEY" Resource Record from a DNSSEC-signed
+   domain in cache, a client can exhaust resolver CPU resources by sending
+   a stream of SIG(0) signed requests.
+ * CVE-2024-1737: Resolver caches and authoritative zone databases
+   that hold significant numbers of RRs for the same hostname (of any RTYPE)
+   can suffer from degraded performance as content is being added or updated,
+   and also when handling client queries for this name.
+ * CVE-2023-4408: Parsing large DNS messages may cause excessive CPU load
 bug: [57558]
 cve:
 - CVE-2023-4408

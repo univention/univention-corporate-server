@@ -6,29 +6,24 @@ src: apache2
 fix: 2.4.59-1~deb10u2A~5.0.8.202409020923
 desc: |
  This update addresses the following issues:
- 2.4.59-1~deb10u2 (Tue, 20 Aug 2024 23:40:12 +0000)
- * Team upload by ELTS Team
- [ Bastien Roucariès ]
- * Unfuzz patches
- * Add new autopkgtest suite from santiago
- * Fix CVE-2024-36387: Serving WebSocket protocol upgrades over a HTTP/2
+ * CVE-2024-36387: Serving WebSocket protocol upgrades over a HTTP/2
    connection could result in a NULL Pointer dereference
- * Fix CVE-2024-38476: SSRF or local script execution via backend applications
+ * CVE-2024-38476: SSRF or local script execution via backend applications
    whose response headers are malicious or exploitable
- * Fix CVE-2024-38477: a NULL pointer dereference was found in mod_proxy
+ * CVE-2024-38477: a NULL pointer dereference was found in `mod_proxy`
    allowing an attacker to crash the server via a malicious request.
- * Fix CVE-2024-38573: A potential SSRF in mod_rewrite allowed an attacker to
+ * CVE-2024-38573: A potential SSRF in mod_rewrite allowed an attacker to
    cause unsafe RewriteRules to unexpectedly setup URL's to be handled by
    mod_proxy.
- * Fix CVE-2024-39884: A regression of CVE-2024-38476 in the core of Apache
+ * CVE-2024-39884: A regression of CVE-2024-38476 in the core of Apache
    HTTP Server ignores some use of the legacy content-type based configuration
-   of handlers. "AddType" and similar configuration, under some circumstances
+   of handlers. `AddType` and similar configuration, under some circumstances
    where files are requested indirectly, result in source code disclosure of
    local content. For example, PHP scripts may be served instead of
    interpreted.
- * Fix CVE-2024-40725: A partial fix for CVE-2024-38476 in the core of Apache
+ * CVE-2024-40725: A partial fix for CVE-2024-38476 in the core of Apache
    HTTP Server ignores some use of the legacy content-type based configuration
-   of handlers. "AddType" and similar configuration, under some circumstances
+   of handlers. `AddType` and similar configuration, under some circumstances
    where files are requested indirectly, result in source code disclosure of
    local content. For example, PHP scripts may be served instead of
    interpreted.
