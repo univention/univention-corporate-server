@@ -9,3 +9,6 @@ desc: |
  * Add a configurable SQL storage for UMC sessions. This now makes OIDC
    backchannel logout possible if the UMC is run in multiprocessing mode.
 bug: [57482]
+erratum: 1117
+announced: 2024-09-04
+support: core
