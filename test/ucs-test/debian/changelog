@@ -1,4 +1,4 @@
-ucs-test (12.0.168) unstable; urgency=medium
+ucs-test (12.0.169) unstable; urgency=medium
 
   * Bug #57482: wait for login page in admin console tests
   * Issue univention/ucs#2388: remove shadowMax test
