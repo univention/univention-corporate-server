@@ -42,7 +42,7 @@ clean_old_backups () {
 	local arg_pattern="$1"
 	local arg_max_age="$2"
 	[ -z "$arg_pattern" ] && return 1
-	eval "$(univention-config-registry shell backup/clean/min/backups backup/clean/max_age)"
+	eval "$(univention-config-registry shell backup/clean/min_backups backup/clean/max_age)"
 
 	local backup_dir="/var/univention-backup"
 	local pattern="$backup_dir/$arg_pattern"
