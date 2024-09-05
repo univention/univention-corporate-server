@@ -1,3 +1,9 @@
+ucs-test (12.0.170) unstable; urgency=medium
+
+  * Issue univention/ucs#2388: delete deprecated test
+
+ -- Felix Botner <botner@univention.de>  Thu, 05 Sep 2024 11:23:29 +0200
+
 ucs-test (12.0.169) unstable; urgency=medium
 
   * Bug #57482: wait for login page in admin console tests
