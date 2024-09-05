@@ -481,7 +481,7 @@ def oidc_client_logout_meachanism(request):
 
 
 @pytest.fixture()
-def multi_tab_context(browser: Browser, request: pytest.FixtureRequest, ucr) -> Generator[BrowserContext, None, None]:
+def multi_tab_context(browser: Browser, request: pytest.FixtureRequest, ucr_proper) -> Generator[BrowserContext, None, None]:
     context = browser.new_context(ignore_https_errors=True)
     context.set_default_timeout(30 * 1000)
     expect.set_options(timeout=30 * 1000)
@@ -490,4 +490,4 @@ def multi_tab_context(browser: Browser, request: pytest.FixtureRequest, ucr) -> 
 
     yield context
 
-    fixtures.teardown_umc_browser_test(request, ucr, context.pages, context, browser)
+    fixtures.teardown_umc_browser_test(request, ucr_proper, context.pages, context, browser)

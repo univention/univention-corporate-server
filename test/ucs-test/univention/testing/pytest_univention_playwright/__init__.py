@@ -59,17 +59,17 @@ def check_for_backtrace(page: Page, page_index: int = 0):
         pass
 
 
-def print_path_in_jenkins(name: str, ucr):
+def print_path_in_jenkins(name: str, ucr, typ='screenshot'):
     subfolder = ''
     if os.environ.get('JENKINS_WS'):
         if 'master' not in ucr.get('server/role'):
             subfolder = f"{ucr.get('hostname')}/"
         full_url = f"{os.environ['JENKINS_WS']}ws/test/{quote(subfolder)}browser/{quote(name)}"
-        logger.info('Browser screenshot URL: %s' % full_url)
+        logger.info('Browser %s URL: %s' % (typ, full_url))
 
 
-def save_screenshot(page: Page, node_name, path: Path, ucr, page_index: int = 0):
-    ts = time.time_ns()
+def save_screenshot(page: Page, node_name, path: Path, ucr, page_index: int = 0, timestamp: int | None = None):
+    ts = timestamp or time.time_ns()
 
     screenshot_filename = path / f'{ts}-{node_name}-page_{page_index}.jpeg'
 
@@ -84,14 +84,9 @@ def save_trace(
     path: Path,
     ucr,
     tracing_stop_chunk: bool = False,
+    timestamp: int | None = None,
 ):
-    if path.is_file():
-        logger.error("trace path is a file and exists: %s" % path)
-        return
-
-    path.mkdir(parents=True, exist_ok=True)
-
-    ts = time.time_ns()
+    ts = timestamp or time.time_ns()
 
     trace_filename = path / f'{ts}-{node_name}_trace.zip'
 
@@ -100,4 +95,4 @@ def save_trace(
     else:
         context.tracing.stop(path=trace_filename)
 
-    print_path_in_jenkins(trace_filename.name, ucr)
+    print_path_in_jenkins(trace_filename.name, ucr, 'trace')

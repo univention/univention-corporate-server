@@ -12,6 +12,7 @@ import pytest
 from playwright.sync_api import BrowserContext, expect
 from utils import run_command
 
+from univention.config_registry.frontend import ucr_update
 from univention.lib.i18n import Translation
 from univention.testing.browser.lib import UMCBrowserTest
 from univention.testing.browser.portal import UCSPortal, UCSSideMenu
@@ -20,6 +21,21 @@ from univention.testing.browser.portal import UCSPortal, UCSSideMenu
 _ = Translation('ucs-test-browser').translate
 
 num_tabs = 4
+
+
+@pytest.fixture(autouse=True, scope='module')
+def enable_logout_refresh(ucr_proper):
+    print('enabling logout refresh')
+    original = ucr_proper['portal/reload-tabs-on-logout']
+    ucr_update(ucr_proper, {
+        'portal/reload-tabs-on-logout': 'true',
+    })
+
+    yield
+
+    ucr_update(ucr_proper, {
+        'portal/reload-tabs-on-logout': original,
+    })
 
 
 def test_logout_refresh_plain(multi_tab_context: BrowserContext):
@@ -70,7 +86,7 @@ def test_logout_refresh_sso(multi_tab_context: BrowserContext, portal_login_via_
 
 def umc_db_is_postgres():
     umc_settings = json.loads(run_command(['univention-management-console-settings', '-j', 'get']))
-    return 'sqlURI' in umc_settings and 'postgresql+psycopg2' in umc_settings['sqlURI']
+    return 'sqlURI' in umc_settings and umc_settings['sqlURI'] is not None and 'postgresql+psycopg2' in umc_settings['sqlURI']
 
 
 def do_login_logout(udm, portal_login_via_keycloak_custom_page, portal_config, keycloak_config, multi_tab_context, needs_manual_refresh):
@@ -97,8 +113,8 @@ def do_login_logout(udm, portal_login_via_keycloak_custom_page, portal_config, k
 
 @pytest.mark.repeat(5)
 @pytest.mark.parametrize('oidc_client_logout_meachanism', ['backchannel', 'frontchannel'], indirect=True)
-def test_login_logout_with_automatic_refresh(udm, portal_login_via_keycloak_custom_page, portal_config, keycloak_config, multi_tab_context, oidc_client_logout_meachanism, ucr):
-    if not umc_db_is_postgres() and oidc_client_logout_meachanism == 'backchannel' and int(ucr.get('umc/http/processes')) != 1:
+def test_oidc_backchannel_login_logout_with_automatic_refresh(udm, portal_login_via_keycloak_custom_page, portal_config, keycloak_config, multi_tab_context, oidc_client_logout_meachanism, ucr_proper):
+    if not umc_db_is_postgres() and oidc_client_logout_meachanism == 'backchannel' and int(ucr_proper.get('umc/http/processes')) != 1:
         pytest.skip('Automatic logout refresh does not work if logout mechanism is backchannel AND the database is not postgres AND umc multiprocessing is enabled')
     do_login_logout(udm, portal_login_via_keycloak_custom_page, portal_config, keycloak_config, multi_tab_context, False)
 
@@ -107,7 +123,7 @@ def test_login_logout_with_automatic_refresh(udm, portal_login_via_keycloak_cust
 @pytest.mark.repeat(5)
 @pytest.mark.usefixtures('oidc_client_logout_meachanism')
 @pytest.mark.parametrize('oidc_client_logout_meachanism', ['backchannel', 'frontchannel'], indirect=True)
-def test_login_logout_with_manual_refresh(udm, portal_login_via_keycloak_custom_page, portal_config, keycloak_config, multi_tab_context, ucr):
-    if int(ucr.get('umc/http/processes')) == 1:
+def test_oidc_backchannel_login_logout_with_manual_refresh(udm, portal_login_via_keycloak_custom_page, portal_config, keycloak_config, multi_tab_context, ucr_proper):
+    if int(ucr_proper.get('umc/http/processes')) == 1:
         pytest.skip('No need to test manual refresh when multiprocessing disabled.')
     do_login_logout(udm, portal_login_via_keycloak_custom_page, portal_config, keycloak_config, multi_tab_context, True)
