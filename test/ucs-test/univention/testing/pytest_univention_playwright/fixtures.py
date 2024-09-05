@@ -31,6 +31,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import subprocess
+import time
 from pathlib import Path
 from typing import Dict, Generator, Iterator, List, Union
 
@@ -235,10 +236,11 @@ def teardown_umc_browser_test(
         page = [page]
     try:
         if 'call' in report and report['call'].failed:
+            failure_timestamp = time.time_ns()
 
-            save_trace(context, request.node.name, Path('browser').resolve(), ucr)
+            save_trace(context, request.node.name, Path('browser').resolve(), ucr, timestamp=failure_timestamp)
             for i, p in enumerate(page):
-                save_screenshot(p, request.node.name, Path('browser'), ucr, i)
+                save_screenshot(p, request.node.name, Path('browser'), ucr, i, timestamp=failure_timestamp)
                 check_for_backtrace(p, page_index=i)
         else:
             context.tracing.stop()
