@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-ad-connector
+fix: 14.0.19-11
+desc: |
+ This update addresses the following issues:
+ * Starting with UCS 5.0-0 the AD-Connector had an issue with rewriting
+   mixed case AD DNs in the presence of a custom `position_mapping`.
+   This problem has been fixed, so that mixed case DNs from AD are
+   mapped properly to UCS LDAP DNs again, avoiding unintelligible rejects.
+bug: [57565]

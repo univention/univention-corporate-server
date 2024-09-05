@@ -1801,7 +1801,9 @@ class ucs(object):
                 rdn_store = ldap.dn.explode_dn(dn_mapped)[0]
                 # note: position_mapping == [] by default
                 for mapping in MAPPING.position_mapping:
-                    dn_mapped = self._subtree_replace(dn_mapped.lower(), mapping[1].lower(), mapping[0])
+                    replaced_dn_mapped_lower = self._subtree_replace(dn_mapped.lower(), mapping[1].lower(), mapping[0])
+                    if replaced_dn_mapped_lower != dn_mapped.lower():
+                        dn_mapped = replaced_dn_mapped_lower
 
                 if dn_mapped == object[dntype]:
                     if self.lo.base == dn_mapped[len(dn_mapped) - len(self.lo.base):] and len(self.lo.base) > len(self.lo_ad.base):
