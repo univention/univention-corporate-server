@@ -6,11 +6,9 @@ src: postgresql-11
 fix: 11.22-0+deb10u3
 desc: |
  This update addresses the following issue:
- 11.22-0+deb10u3 (Fri, 30 Aug 2024 15:53:22 -0400)
- * Non-maintainer upload by the ELTS Team.
- * Fix race condition in pg_dump in PostgreSQL that allows an object creator
-   to execute arbitrary SQL functions as the user running pg_dump, which is
-   often a superuser. (CVE-2024-7348)
+ * Time-of-check vs Time-of-use (TOCTOU) race condition in pg_dump
+   allowed an object creator to execute arbitrary SQL functions
+   as the user running pg_dump, which is often a superuser (CVE-2024-7348).
 bug: [57572]
 cve:
 - CVE-2024-7348
