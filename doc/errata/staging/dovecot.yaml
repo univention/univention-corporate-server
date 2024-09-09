@@ -6,17 +6,11 @@ src: dovecot
 fix: 1:2.3.4.1-5+deb10u8
 desc: |
  This update addresses the following issues:
- 1:2.3.4.1-5+deb10u8 (Wed, 28 Aug 2024 00:53:14 +0200)
- * Non-maintainer upload by the ELTS Security Team.
- * Fix CVE-2024-23185: Very large headers can cause resource exhaustion when
-   parsing message.
- * Backport upstream change to parse multiple address headers the same as if
-   they were in a single header. Upstream argues this is better from security
-   point of view.
- * Backport upstream changes for CVE-2024-23184: Having a large number of
-   address headers (From, To, Cc, Bcc, etc.) could become excessively CPU
-   intensive.
+ * Having a large number of address headers (`From`, `To`, `Cc`, `Bcc`, etc.)
+   could become excessively CPU intensive (CVE-2024-23184)
+ * Very large headers could cause resource exhaustion when parsing message
+   (CVE-2024-23185)
 bug: [57570]
 cve:
-- CVE-2024-23185
 - CVE-2024-23184
+- CVE-2024-23185
