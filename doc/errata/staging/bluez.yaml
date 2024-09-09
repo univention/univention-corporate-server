@@ -6,10 +6,12 @@ src: bluez
 fix: 5.50-1.2~deb10u6
 desc: |
  This update addresses the following issues:
- 5.50-1.2~deb10u6 (Fri, 30 Aug 2024 18:14:07 +0300)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2023-50229: Phone Book Access profile Heap-based Buffer Overflow
- * CVE-2023-50230: Phone Book Access profile Heap-based Buffer Overflow
+ * BlueZ Phone Book Access Profile Heap-based Buffer Overflow
+   Remote Code Execution Vulnerability. This vulnerability allows
+   network-adjacent attackers to execute arbitrary code on affected
+   installations of BlueZ. User interaction is required to exploit
+   this vulnerability in that the target must connect to a malicious
+   Bluetooth device (CVE-2023-50229, CVE-2023-50230).
 bug: [57571]
 cve:
 - CVE-2023-50229
