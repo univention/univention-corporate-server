@@ -1,3 +1,10 @@
+univention-appcenter (9.0.12-3) unstable; urgency=medium
+
+  * Bug #57546: Support using --set option in univention-app configure
+    multiple times in one call
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 09 Sep 2024 11:30:49 +0200
+
 univention-appcenter (9.0.12-2) unstable; urgency=medium
 
   * Bug #57544: Run joinscripts after the configure script. Even during upgrade

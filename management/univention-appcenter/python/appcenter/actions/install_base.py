@@ -60,7 +60,7 @@ from univention.appcenter.utils import call_process2, get_locale, resolve_depend
 
 class StoreConfigAction(Action):
     def __call__(self, parser, namespace, value, option_string=None):
-        set_vars = {}
+        set_vars = getattr(namespace, self.dest) or {}
         for val in value:
             try:
                 key, val = val.split('=', 1)
