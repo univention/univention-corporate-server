@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [7, 8]
+scope: ucs_5.0-0-errata5.0-8
+src: libxml2
+fix: 2.9.4+dfsg1-7+deb10u7
+desc: |
+ This update addresses the following issues:
+ 2.9.4+dfsg1-7+deb10u7 (Fri, 06 Sep 2024 18:21:47 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2016-3709: HTML 4 parser cross-site scripting
+ * CVE-2022-2309: Parser NULL pointer dereference
+bug: [57573]
+cve:
+- CVE-2016-3709
+- CVE-2022-2309
