@@ -34,6 +34,7 @@
 
 from __future__ import annotations
 
+import locale
 import logging
 import re
 import subprocess
@@ -220,6 +221,7 @@ class UMCBrowserTest(Interactions):
         self.lang = lang
         self.__set_lang(str(lang))
         translator.set_language(str(lang).replace('-', '_'))
+        locale.setlocale(locale.LC_ALL, f'{str(lang).replace("-", "_")}.')
 
     def __set_lang(self, lang: str):
         self.page.context.clear_cookies()
