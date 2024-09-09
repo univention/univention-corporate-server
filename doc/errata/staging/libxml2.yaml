@@ -6,10 +6,10 @@ src: libxml2
 fix: 2.9.4+dfsg1-7+deb10u7
 desc: |
  This update addresses the following issues:
- 2.9.4+dfsg1-7+deb10u7 (Fri, 06 Sep 2024 18:21:47 +0300)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2016-3709: HTML 4 parser cross-site scripting
- * CVE-2022-2309: Parser NULL pointer dereference
+ * Incorrect server side include parsing could lead to cross-site scripting
+   (CVE-2016-3709)
+ * NULL Pointer Dereference allows triggering crashes through forged input,
+   given a vulnerable code sequence in the application (CVE-2022-2309)
 bug: [57573]
 cve:
 - CVE-2016-3709
