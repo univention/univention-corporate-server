@@ -1,3 +1,10 @@
+ucs-test (12.0.172) unstable; urgency=medium
+
+  * Issue univention/ucs#2412: add portal_logout_url to portal navigate
+    function
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 09 Sep 2024 10:17:08 +0200
+
 ucs-test (12.0.171) unstable; urgency=medium
 
   * Bug #57562: enable prtal/reload-tabs-on-logout for logout tests
