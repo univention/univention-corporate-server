@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [8]
+scope: ucs_5.0-0-errata5.0-8
+src: univention-appcenter
+fix: 9.0.12-3
+desc: |
+ This update addresses the following issues:
+ * `univention-app configure` can now be called with `--set` being specified
+   multiple times.
+bug: [57546]
