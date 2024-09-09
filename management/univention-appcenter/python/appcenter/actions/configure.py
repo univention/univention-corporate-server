@@ -55,7 +55,7 @@ class Configure(UniventionAppAction):
         parser.add_argument('app', action=StoreAppAction, help='The ID of the App that shall be configured')
         parser.add_argument('--list', action='store_true', help='List all configuration options as well as their current values')
         parser.add_argument('--set', nargs='+', action=StoreConfigAction, metavar='KEY=VALUE', dest='set_vars', help='Sets the configuration variable. Example: --set some/variable=value some/other/variable="value 2"')
-        parser.add_argument('--unset', nargs='+', metavar='KEY', help='Unsets the configuration variable. Example: --unset some/variable')
+        parser.add_argument('--unset', nargs='+', action='append', metavar='KEY', help='Unsets the configuration variable. Example: --unset some/variable')
         parser.add_argument('--run-script', choices=['settings', 'install', 'upgrade', 'remove', 'no'], default='settings', help='Run configuration script to support a specific action - or not at all. Default: %(default)s')
         parser.add_argument('--scope', choices=['inside', 'outside'], help=SUPPRESS)
 
@@ -74,8 +74,9 @@ class Configure(UniventionAppAction):
         else:
             self.log('Configuring %s' % args.app)
             set_vars = (args.set_vars or {}).copy()
-            for key in (args.unset or []):
-                set_vars[key] = None
+            for keys in (args.unset or []):
+                for key in keys:
+                    set_vars[key] = None
             self._set_config(args.app, set_vars, args)
 
     @classmethod
