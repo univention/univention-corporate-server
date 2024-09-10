@@ -71,14 +71,62 @@ Authentication is realized via the `univention-management-console` PAM stack, wh
 
 #### Sessions
 The session lifetime depends on the authentication mechanism.
-Plain logins have a 8 hours lifetime, configurable via `umc/http/session/timeout`.
-SAML logins have a 5 minutes lifetime, configurable via `umc/saml/assertion-lifetime`.
-OIDC logins have a 5 minutes lifetime, configurable via `umc/oidc/access-token/lifespan`.
+
+##### Plain login
+Plain login sessions don't have a session lifetime per se but rather a session timeout.
+This timeout is configured by `umc/http/session/timeout`.
+It gets reset during requests to UMC endpoints which don't set `self.ignore_session_timeout_reset` to true.
+![plain login session refresh mechanism](doc/plain-login-session-refresh.png)
+
+##### SAML login
+The length of SAML sessions is equal to the length of the SAML assertion lifetime.
+More specifially the `NotOnOrAfter` assertion.
+The SAML assertion lifetime can be set with the `umc/saml/assertion-lifetime` UCRV, which defaults to 5 minutes.
+
+When using Keycloak, changing this variable will cause the SAML client for this UMC to be updated in Keycloak with the new assertion length, using `univention-keycloak`.
+Note: The client name is composed of `https://$fqdn/saml/metadata`, so this only works when using the default client.
+When using SimpleSAMLphp, modifying this variable will cause the UDM `saml/serviceprovider` entry for this UMC to get modified.
+
+SAML session length does not get reset on requests, the session will end when the lifetime is over.
+However the UMC frontend does a passive login on SAML session timeout which will cause a new session to be created, making it look like the user was never logged out.
+This is however a new session. It is not a refresh of the old session but a completely new session, with a new session id.
+
+##### OIDC Login
+The length of an OIDC session is equal to the length of the refresh token.
+There is currently no way to change the length of the refresh token through a UCRV, it has to be done directly in Keycloak/the OpenID provider.
+
+In Keycloak, by default, the length of the refresh token is the length of the session.
+This doesn't mean however that the refresh token is valid for the entire Keycloak session.
+The session might time out on the Keycloak side or get manually logged out in the Admin UI.
+
+The refresh token is being used to get new access tokens, which have a lifespan of 5 minutes by default in Keycloak.
+The access token in turn is then passed to PAM/LDAP as authentication.
+
+This access token however has nothing to do with the session length in the UMC, which determined only by the refresh token lifetime.
+
+As with SAML the timeout of the session is not reset by requests.
+The UMC session ends when the refresh token expires which is, by default, also when the Keycloak session expires.
 
 #### Session storage in memory
 All sessions are stored in memory and not in some external database like `sqlite`, `redis`, etc.
 Therefore login states are lost after a restart of the UMC server.
 To prevent session loss during a UCS upgrade via UMC we are preventing the restart of the service during upgrades.
+
+#### Session storage in a database
+It is also possible to configure an SQL store for sessions.
+This can be done via the `univention-management-console-settings` utility.
+This SQL store does *NOT* make sessions persistent between UMC restarts, or allows a request to be served by a UMC process other than the one that created it.
+The UMC is still stateful.
+
+The use case for this SQL session store is mostly for [OIDC backchannel logouts](https://openid.net/specs/openid-connect-backchannel-1_0.html).
+Since the logout token request sent by the OP to the RP does not contain any sticky sessions it can land on any UMC, when multiprocessing is enabled or the Portal is load-balanced between multiple machines.
+
+This is implemented in [session_db.py](./src/univention/management/console/session_db.py) which is doing the actual interaction with the database and [session_dict.py](./src/univention/management/console/session_dict.py) which is a class implementing `collections.abc.MutableMapping` and is a replacement for the plain session dict.
+
+If a database is configured, the session will automatically get added/removed from the dict and when looking up a session it is only returned if it exists locally and in the database.
+
+Furthermore to make the portal logout refresh work with backchannel OIDC logout and multiprocessing, a pub-sub system in implemented.
+Currently it is implemented using PostgreSQL [listen](https://www.postgresql.org/docs/current/sql-listen.html)/[notify](https://www.postgresql.org/docs/current/sql-notify.html) and therefore only works if the configured database is PostgreSQL.
 
 ### Authorization
 All authenticated users are granted access to all internal core resources.
