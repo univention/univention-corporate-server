@@ -6,13 +6,9 @@ src: postgresql-9.6
 fix: 9.6.24-0+deb9u7
 desc: |
  This update addresses the following issue:
-
- Debian update 9.6.24-0+deb9u7
- 9.6.24-0+deb9u7 (Fri, 30 Aug 2024 23:05:21 -0400)
- * Non-maintainer upload by the ELTS Team.
- * Fix race condition in pg_dump in PostgreSQL that allows an object creator
-   to execute arbitrary SQL functions as the user running pg_dump, which is
-   often a superuser. (CVE-2024-7348)
+ * CVE-2024-7348: Time-of-check Time-of-use (TOCTOU) race condition in
+   `pg_dump` in `PostgreSQL` allows an object creator to execute arbitrary
+   `SQL` functions as the user running `pg_dump`, which is often a superuser.
 bug: [57576]
 cve:
 - CVE-2024-7348
