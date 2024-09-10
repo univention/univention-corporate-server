@@ -5,9 +5,6 @@ scope: ucs_4.4-0-errata4.4-9
 src: libxml2
 fix: 2.9.4+dfsg1-2.2+deb9u11
 desc: |
- This update addresses the following issue:
- 2.9.4+dfsg1-2.2+deb9u11 (Thu, 05 Sep 2024 18:30:12 +0300)
- * Non-maintainer upload by the ELTS Team.
  * CVE-2022-2309: Parser NULL pointer dereference
 bug: [57578]
 cve:
