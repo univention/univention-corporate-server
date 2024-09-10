@@ -1,3 +1,9 @@
+ucs-test (12.0.175) unstable; urgency=medium
+
+  * Issue univention/ucs#2412: fix locale string
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 10 Sep 2024 10:29:18 +0200
+
 ucs-test (12.0.174) unstable; urgency=medium
 
   * Bug #57546: Added 20_appcenter/91_univention_app_parsing.py
