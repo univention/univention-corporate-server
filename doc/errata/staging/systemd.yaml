@@ -6,13 +6,10 @@ src: systemd
 fix: 232-25+deb9u17A~4.4.9.202409041501
 desc: |
  This update addresses the following issues:
- 232-25+deb9u17 (Mon, 26 Aug 2024 12:38:07 +0300)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2023-7008: Don't accept records of DNSSEC-signed domains when they have
-   no signature.
- * CVE-2023-50387: DNSSEC denial of service (CPU consumption)
- * CVE-2023-50868: DNSSEC denial of service (CPU consumption)
- * Fixed the autopkgtest.
+ * CVE-2023-7008: Don't accept records of `DNSSEC-signed` domains when they
+   have no signature.
+ * CVE-2023-50387: `DNSSEC` denial of service (CPU consumption)
+ * CVE-2023-50868: `DNSSEC` denial of service (CPU consumption)
 bug: [57556]
 cve:
 - CVE-2023-7008
