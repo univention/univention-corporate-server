@@ -6,56 +6,49 @@ src: mariadb-10.1
 fix: 10.1.48-0+deb9u3
 desc: |
  This update addresses the following issues:
-
- Debian update 10.1.48-0+deb9u3
- 10.1.48-0+deb9u3 (Tue, 03 Sep 2024 13:54:04 -0300)
- * Non-maintainer upload by the ELTS Security Team.
- * Use ELTS CI.
- * Fix CVE-2021-2154: An Easily exploitable vulnerability allowed high
-   privileged attacker with network access via multiple protocols to
-   compromise MySQL Server. Successful attacks of this vulnerability can
-   result in unauthorized ability to cause a hang or frequently repeatable
-   crash (complete DOS). The UDF_INIT() function caused a crash.
- * Fix CVE-2021-2166: An Easily exploitable vulnerability allowed high
-   privileged attacker with network access via multiple protocols to
-   compromise MySQL Server. Successful attacks of this vulnerability can
-   result in unauthorized ability to cause a hang or frequently repeatable
-   crash (complete DOS). Plugin variables in SET were not correctly locked.
- * Fix CVE-2021-2194: An Easily exploitable vulnerability allowed high
-   privileged attacker with network access via multiple protocols to
-   compromise MySQL Server. Successful attacks of this vulnerability can
-   result in unauthorized ability to cause a hang or frequently repeatable
-   crash (complete DOS). In Full-text phrase search, MariaDB filter out row
-   that do not contain all the tokens in the phrase. If MariaDB do not filter
-   out doc_id that doesn't appear in all the token's doc_id lists then hit an
-   assert.
- * Fix CVE-2021-2389: An Easily exploitable vulnerability allowed high
-   privileged attacker with network access via multiple protocols to
-   compromise MySQL Server. Successful attacks of this vulnerability can
-   result in unauthorized ability to cause a hang or frequently repeatable
-   crash (complete DOS). Server throws OOM error when we execute twitter load
-   with SELECTs for UPDATE + UPDATES, and SELECT queries on tables with
-   full-text index.
- * Fix CVE-2021-46657: get_sort_by_table in MariaDB allowed an application
-   crash via certain subquery uses of ORDER BY.
- * Fix CVE-2021-46661: MariaDB allowed an application crash in
-   find_field_in_tables and find_order_in_list via an unused common table
+ * CVE-2021-2154: An Easily exploitable vulnerability allowed high privileged
+   attacker with network access via multiple protocols to compromise `MySQL`
+   Server. Successful attacks of this vulnerability can result in unauthorized
+   ability to cause a hang or frequently repeatable crash (complete DOS). The
+   `UDF_INIT()` function caused a crash.
+ * CVE-2021-2166: An Easily exploitable vulnerability allowed high privileged
+   attacker with network access via multiple protocols to compromise `MySQL`
+   Server. Successful attacks of this vulnerability can result in unauthorized
+   ability to cause a hang or frequently repeatable crash (complete DOS).
+   Plugin variables in `SET` were not correctly locked.
+ * CVE-2021-2194: An Easily exploitable vulnerability allowed high privileged
+   attacker with network access via multiple protocols to compromise `MySQL`
+   Server. Successful attacks of this vulnerability can result in unauthorized
+   ability to cause a hang or frequently repeatable crash (complete DOS). In
+   Full-text phrase search, `MariaDB` filter out row that do not contain all
+   the tokens in the phrase. If `MariaDB` do not filter out `doc_id` that
+   doesn't appear in all the token's `doc_id` lists then hit an assert.
+ * CVE-2021-2389: An Easily exploitable vulnerability allowed high privileged
+   attacker with network access via multiple protocols to compromise `MySQL`
+   Server. Successful attacks of this vulnerability can result in unauthorized
+   ability to cause a hang or frequently repeatable crash (complete DOS).
+   Server throws OOM error when we execute twitter load with `SELECTs` for
+   `UPDATE` + `UPDATES`, and `SELECT` queries on tables with full-text index.
+ * CVE-2021-46657: get_sort_by_table in MariaDB allowed an application crash
+   via certain subquery uses of `ORDER BY`.
+ * CVE-2021-46661: `MariaDB` allowed an application crash in
+   `find_field_in_tables` and find_order_in_list via an unused common table
    expression (CTE).
- * Fix CVE-2021-46663: MariaDB allowed a ha_maria::extra application crash via
-   certain SELECT statements.
- * Fix CVE-2021-46664: MariaDB crashed in sub_select_postjoin_aggr for a NULL
-   value of aggr.
- * Fix CVE-2021-46665: MariaDB crashed because of incorrect used_tables
+ * CVE-2021-46663: `MariaDB` allowed a `ha_maria::extra application` crash via
+   certain `SELECT` statements.
+ * CVE-2021-46664: `MariaDB` crashed in `sub_select_postjoin_aggr` for a
+   `NULL` value of `aggr`.
+ * CVE-2021-46665: `MariaDB` crashed because of incorrect `used_tables`
    expectations.
- * Fix CVE-2021-46666: MariaDB crashed because of mishandling of a pushdown
-   from a HAVING clause to a WHERE clause.
- * Fix CVE-2021-46667: MariadDB was vulnerable due to a sql_lex.cc integer
+ * CVE-2021-46666: `MariaDB` crashed because of mishandling of a pushdown from
+   a `HAVING` clause to a `WHERE` clause.
+ * CVE-2021-46667: MariadDB was vulnerable due to a `sql_lex.cc` integer
    overflow, leading to an application crash.
- * Fix CVE-2021-46668: MariaDB crashed via certain long SELECT DISTINCT
+ * CVE-2021-46668: `MariaDB` crashed via certain long `SELECT DISTINCT`
    statements that improperly interact with storage-engine resource
    limitations for temporary data structures.
- * Fix CVE-2021-46669: MariaDB allowed attackers to trigger a
-   convert_const_to_int use-after-free when the BIGINT data type is used.
+ * CVE-2021-46669: `MariaDB` allowed attackers to trigger a
+   `convert_const_to_int use-after-free` when the `BIGINT` data type is used.
 bug: [57575]
 cve:
 - CVE-2021-2154
