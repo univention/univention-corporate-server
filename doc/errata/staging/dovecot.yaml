@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: dovecot
+fix: 1:2.2.27-3+deb9u8
+desc: |
+ This update addresses the following issue:
+ 1:2.2.27-3+deb9u8 (Thu, 29 Aug 2024 15:53:03 +0200)
+ * Non-maintainer upload by the ELTS Security Team.
+ * Fix CVE-2024-23185: Very large headers can cause resource exhaustion when
+   parsing message.
+bug: [57577]
+cve:
+- CVE-2024-23185
