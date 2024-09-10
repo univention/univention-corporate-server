@@ -6,8 +6,6 @@ src: bluez
 fix: 5.43-2+deb9u8
 desc: |
  This update addresses the following issues:
- 5.43-2+deb9u8 (Tue, 03 Sep 2024 12:18:24 +0300)
- * Non-maintainer upload by the ELTS Team.
  * CVE-2023-27349: AVRCP crash while handling unsupported events.
  * CVE-2023-50229: Phone Book Access profile Heap-based Buffer Overflow
  * CVE-2023-50230: Phone Book Access profile Heap-based Buffer Overflow
