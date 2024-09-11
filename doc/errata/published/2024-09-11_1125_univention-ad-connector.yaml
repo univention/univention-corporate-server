@@ -12,3 +12,6 @@ desc: |
    This could result in the unwanted deletion of
    objects during a subtree rename.
 bug: [57510]
+erratum: 1125
+announced: 2024-09-11
+support: core
