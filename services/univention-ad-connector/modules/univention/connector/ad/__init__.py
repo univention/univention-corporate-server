@@ -2053,7 +2053,7 @@ class ad(univention.connector.ucs):
                 old_object = None
 
             if old_object:
-                ud.debug(ud.LDAP, ud.INFO, "move %s from [%s] to [%s]" % (property_type, old_dn, object['dn']))
+                ud.debug(ud.LDAP, ud.PROCESS, "move %s from [%s] to [%s]" % (property_type, old_dn, object['dn']))
                 try:
                     self.lo_ad.rename(old_dn, object['dn'])
                 except ldap.NO_SUCH_OBJECT:  # check if object is already moved (we may resync now)
