@@ -63,7 +63,6 @@ from univention.management.console.resources import (
 from univention.management.console.saml import SamlACS, SamlIframeACS, SamlLogout, SamlMetadata, SamlSingleLogout
 from univention.management.console.session import categoryManager, moduleManager
 from univention.management.console.shared_memory import shared_memory
-from univention.udm import UDM
 
 
 try:
@@ -222,16 +221,6 @@ class Server:
 
         # bind sockets
         sockets = bind_sockets(self.options.port, ucr.get('umc/http/interface', '127.0.0.1'), backlog=ucr.get_int('umc/http/requestqueuesize', 100), reuse_port=True)
-
-        if os.environ.get(SQL_CONNECTION_ENV_VAR, None) is None:
-            try:
-                settings_data_mod = UDM.machine().version(3).get('settings/data')
-                umc_settings_position = f"cn=umc,cn=data,cn=univention,{ucr.get('ldap/base')}"
-                umc_settings_obj = settings_data_mod.get(umc_settings_position)
-                settings_obj = json.loads(umc_settings_obj.props.data.raw.decode('utf-8'))
-                os.environ[SQL_CONNECTION_ENV_VAR] = settings_obj['sqlURI']
-            except Exception as exc:
-                CORE.info('Could not read from umc settings/data object. Continuing without shared db session %s' % (exc,))
 
         # start sub worker processes
         if self.options.processes != 1:
