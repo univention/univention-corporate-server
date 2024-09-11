@@ -64,3 +64,6 @@ cve:
 - CVE-2021-46667
 - CVE-2021-46668
 - CVE-2021-46669
+erratum: 1614
+announced: 2024-09-11
+support: lts
