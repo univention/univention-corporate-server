@@ -14,3 +14,6 @@ cve:
 - CVE-2023-27349
 - CVE-2023-50229
 - CVE-2023-50230
+erratum: 1610
+announced: 2024-09-11
+support: lts
