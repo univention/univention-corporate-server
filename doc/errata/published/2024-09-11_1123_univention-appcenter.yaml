@@ -9,3 +9,6 @@ desc: |
  * `univention-app configure` can now be called with `--set` being specified
    multiple times.
 bug: [57546]
+erratum: 1123
+announced: 2024-09-11
+support: core
