@@ -38,7 +38,6 @@ from univention.management.console.resources import (
 from univention.management.console.saml import SamlACS, SamlIframeACS, SamlLogout, SamlMetadata, SamlSingleLogout
 from univention.management.console.session import categoryManager, moduleManager
 from univention.management.console.shared_memory import shared_memory
-from univention.udm import UDM
 
 
 try:
@@ -201,22 +200,6 @@ class Server:
 
         # bind sockets
         sockets = bind_sockets(self.options.port, ucr.get('umc/http/interface', '127.0.0.1'), backlog=ucr.get_int('umc/http/requestqueuesize', 100), reuse_port=True)
-
-        try:
-            settings_data_mod = UDM.machine().version(3).get('settings/data')
-            umc_settings_position = f"cn=umc,cn=data,cn=univention,{ucr.get('ldap/base')}"
-            umc_settings_obj = settings_data_mod.get(umc_settings_position)
-            settings_obj = json.loads(umc_settings_obj.props.data.raw.decode('utf-8'))
-        except Exception as exc:
-            CORE.info('Could not read from umc settings/data object. Continuing without shared db session %s', exc)
-        else:
-            for env_var, (setting_name, default_setting_value) in env_to_settings.items():
-                if os.environ.get(env_var, None) is None:
-                    if setting_name in settings_obj:
-                        os.environ[env_var] = settings_obj[setting_name]
-                    elif default_setting_value is not None:
-                        os.environ[env_var] = default_setting_value
-                        CORE.info('Could not read %s from umc settings/data object. Continuing with default value %s', setting_name, default_setting_value)
 
         # start sub worker processes
         if self.options.processes != 1:
