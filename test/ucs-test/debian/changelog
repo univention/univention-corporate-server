@@ -1,3 +1,10 @@
+ucs-test (10.0.22-70) unstable; urgency=medium
+
+  * Bug #57510: Add tests for move case with objects that were put
+    in different postions before
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 11 Sep 2024 10:06:44 +0200
+
 ucs-test (10.0.22-69) unstable; urgency=medium
 
   * Bug #57546: Added 20_appcenter/91_univention_app_parsing.py
