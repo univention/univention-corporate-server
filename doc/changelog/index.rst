@@ -376,7 +376,35 @@ General
 
 * UCS 5.0-9 includes the following updated packages from Debian ELTS:
 
-  :program:`FIXME`
+  :program:`dns-root-data`
+  :program:`shim-signed`
+  :program:`atril`
+  :program:`composer`
+  :program:`dcmtk`
+  :program:`dlt-daemon`
+  :program:`dnsmasq`
+  :program:`edk2`
+  :program:`freexian-archive-keyring`
+  :program:`frr`
+  :program:`gunicorn`
+  :program:`indent`
+  :program:`libmojolicious-perl`
+  :program:`libndp`
+  :program:`libtommath`
+  :program:`netty`
+  :program:`org-mode`
+  :program:`pdns-recursor`
+  :program:`plasma-workspace`
+  :program:`putty`
+  :program:`python-aiosmtpd`
+  :program:`python-django`
+  :program:`roundcube`
+  :program:`sendmail`
+  :program:`suricata`
+  :program:`thunderbird`
+  :program:`tryton-client`
+  :program:`tryton-server`
+  :program:`uw-imap`
 
 .. _maintained:
 
