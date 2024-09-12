@@ -14,7 +14,7 @@ Publication date of UCS |release|: 2024-06-11
 Release highlights
 ******************
 
-With |UCSUCS| 5.0-8, the eight patch level release for |UCSUCS| (UCS) 5.0 is available.
+With |UCSUCS| 5.0-9, the eight patch level release for |UCSUCS| (UCS) 5.0 is available.
 It provides several feature improvements and extensions, new properties,
 as well as, various improvements and bug fixes.
 Here is an overview of the most important changes:
@@ -28,7 +28,7 @@ Here is an overview of the most important changes:
 * In preparation of UCS 5.2, the repository receives a dedicated signing key.
 
 * Apps provisioned through the |UCSUDL| mechanism process incoming changes using a file-based queue.
-  With the update to 5.0-8, it's now possible to monitor the current state of the app queue,
+  With the update to 5.0-9, it's now possible to monitor the current state of the app queue,
   to identify and diagnose potential processing errors through system diagnostics.
 
 * The RADIUS server now supports different MAC address formats for the *MAB*
@@ -36,7 +36,7 @@ Here is an overview of the most important changes:
 
 * Enhanced UMC stability and performance for handling numerous simultaneous logins.
 
-* UCS 5.0-8 includes various security updates, for example for
+* UCS 5.0-9 includes various security updates, for example for
   :program:`BIND9`, :program:`docker`, :program:`OpenJDK-11`, :program:`PHP`
   and the :program:`Linux` kernel.
 
@@ -185,10 +185,10 @@ You can download the script before the update and run it on the UCS system.
 .. code-block:: console
 
    # download
-   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-8{.gpg,}
+   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-9{.gpg,}
 
    # verify and run script
-   $ apt-key verify pre-update-checks-5.0-8{.gpg,} && bash pre-update-checks-5.0-8
+   $ apt-key verify pre-update-checks-5.0-9{.gpg,} && bash pre-update-checks-5.0-9
 
    ...
 
@@ -268,7 +268,7 @@ Users running older browsers may experience display or performance issues.
 Changelog
 *********
 
-You find the changes since UCS 5.0-7 in :external+uv-changelog-5.0-8:doc:`index`.
+You find the changes since UCS 5.0-8 in :external+uv-changelog-5.0-9:doc:`index`.
 
 .. _biblio:
 
