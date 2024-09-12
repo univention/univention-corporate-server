@@ -59,7 +59,7 @@ def ref(name: str, *, lang: str = "en", ver: str = "") -> tuple[str, tuple[str |
 # -- Project information -----------------------------------------------------
 
 version = "5.0"
-release = "5.0-8"
+release = "5.0-9"
 project = f"UCS {version} for Debian and Ubuntu Administrators"
 copyright = f'2023-{date.today().year}, Univention GmbH'
 author = 'Univention GmbH'
