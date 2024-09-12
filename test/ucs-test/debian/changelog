@@ -1,3 +1,9 @@
+ucs-test (12.0.180) unstable; urgency=medium
+
+  * Bug #57515: test session logout with invalid access token
+
+ -- Felix Botner <botner@univention.de>  Mon, 30 Sep 2023 11:27:33 +0100
+
 ucs-test (12.0.179) unstable; urgency=medium
 
   * Bug #57565: Use some arbitrary position_mapping in one of the AD-C test
