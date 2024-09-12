@@ -1,3 +1,21 @@
+univention-heimdal (13.0.11-1) UNRELEASED; urgency=medium
+
+  * Bug #57581 UCS 5.0-9 version bump
+
+ -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:35:03 +0200
+
+univention-heimdal (13.0.10-1) UNRELEASED; urgency=medium
+
+  * Bug #57581 UCS 5.0-9 version bump
+
+ -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:29:38 +0200
+
+univention-heimdal (13.0.9-1) UNRELEASED; urgency=medium
+
+  * Bug #57581 UCS 5.0-9 version bump
+
+ -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:18:26 +0200
+
 univention-heimdal (13.0.8-1) UNRELEASED; urgency=medium
 
   * Bug #57350 UCS 5.0-8 version bump

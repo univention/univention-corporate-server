@@ -1,3 +1,21 @@
+univention-docker-container-mode (5.0.6-1) UNRELEASED; urgency=medium
+
+  * Bug #57581 UCS 5.0-9 version bump
+
+ -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:34:57 +0200
+
+univention-docker-container-mode (5.0.5-1) UNRELEASED; urgency=medium
+
+  * Bug #57581 UCS 5.0-9 version bump
+
+ -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:29:32 +0200
+
+univention-docker-container-mode (5.0.4-1) UNRELEASED; urgency=medium
+
+  * Bug #57581 UCS 5.0-9 version bump
+
+ -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:18:21 +0200
+
 univention-docker-container-mode (5.0.3-1) UNRELEASED; urgency=medium
 
   * Bug #57350 UCS 5.0-8 version bump

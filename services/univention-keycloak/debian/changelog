@@ -1,3 +1,21 @@
+univention-keycloak (1.0.15-1) UNRELEASED; urgency=medium
+
+  * Bug #57581 UCS 5.0-9 version bump
+
+ -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:35:06 +0200
+
+univention-keycloak (1.0.14-1) UNRELEASED; urgency=medium
+
+  * Bug #57581 UCS 5.0-9 version bump
+
+ -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:29:41 +0200
+
+univention-keycloak (1.0.13-1) UNRELEASED; urgency=medium
+
+  * Bug #57581 UCS 5.0-9 version bump
+
+ -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:18:30 +0200
+
 univention-keycloak (1.0.12-6) unstable; urgency=medium
 
   * Bug #57518: In `univention-keycloak`, fix the `oidc/rp` option

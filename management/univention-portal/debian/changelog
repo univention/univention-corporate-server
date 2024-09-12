@@ -1,3 +1,21 @@
+univention-portal (4.0.20-1) UNRELEASED; urgency=medium
+
+  * Bug #57581 UCS 5.0-9 version bump
+
+ -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:35:12 +0200
+
+univention-portal (4.0.19-1) UNRELEASED; urgency=medium
+
+  * Bug #57581 UCS 5.0-9 version bump
+
+ -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:29:47 +0200
+
+univention-portal (4.0.18-1) UNRELEASED; urgency=medium
+
+  * Bug #57581 UCS 5.0-9 version bump
+
+ -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:18:36 +0200
+
 univention-portal (4.0.17-4) unstable; urgency=medium
 
   * Bug #57562: default false for portal/reload-tabs-on-logout

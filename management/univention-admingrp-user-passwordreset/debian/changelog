@@ -1,3 +1,21 @@
+univention-admingrp-user-passwordreset (10.0.8-1) UNRELEASED; urgency=medium
+
+  * Bug #57581 UCS 5.0-9 version bump
+
+ -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:35:12 +0200
+
+univention-admingrp-user-passwordreset (10.0.7-1) UNRELEASED; urgency=medium
+
+  * Bug #57581 UCS 5.0-9 version bump
+
+ -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:29:46 +0200
+
+univention-admingrp-user-passwordreset (10.0.6-1) UNRELEASED; urgency=medium
+
+  * Bug #57581 UCS 5.0-9 version bump
+
+ -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:18:35 +0200
+
 univention-admingrp-user-passwordreset (10.0.5-1) UNRELEASED; urgency=medium
 
   * Bug #57350 UCS 5.0-8 version bump

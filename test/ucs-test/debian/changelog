@@ -1,3 +1,21 @@
+ucs-test (10.0.25-1) UNRELEASED; urgency=medium
+
+  * Bug #57581 UCS 5.0-9 version bump
+
+ -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:35:06 +0200
+
+ucs-test (10.0.24-1) UNRELEASED; urgency=medium
+
+  * Bug #57581 UCS 5.0-9 version bump
+
+ -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:29:41 +0200
+
+ucs-test (10.0.23-1) UNRELEASED; urgency=medium
+
+  * Bug #57581 UCS 5.0-9 version bump
+
+ -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:18:30 +0200
+
 ucs-test (10.0.22-70) unstable; urgency=medium
 
   * Bug #57510: Add tests for move case with objects that were put
