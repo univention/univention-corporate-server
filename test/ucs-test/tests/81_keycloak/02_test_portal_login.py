@@ -4,10 +4,16 @@
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
 
+import json
+import os
+import time
 from datetime import datetime, timedelta
 
 import pytest
-from utils import keycloak_get_request, keycloak_login, keycloak_password_change, keycloak_sessions_by_user, run_command
+from utils import (
+    keycloak_delete_session, keycloak_get_request, keycloak_login, keycloak_password_change, keycloak_sessions_by_user,
+    run_command,
+)
 
 from univention.config_registry import handler_set
 from univention.lib.umc import Unauthorized
@@ -185,3 +191,44 @@ def test_portal_login_button(portal_config, protocol, ucr, page, keycloak_config
     finally:
         run_command(['service', 'univention-portal-server', 'restart'])
         run_command(['service', 'univention-management-console-server', 'restart'])
+
+
+@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='needs to change client config, only with keycloak.secret present')
+def test_oidc_session_logout_after_access_token_invalid_issue_ucs_2401(portal_config, portal_login_via_keycloak, keycloak_config, portal_login_via_keycloak_custom_page, admin_account):
+    client_id = f'https://{portal_config.fqdn}/univention/oidc/'
+    client_config = json.loads(run_command(['univention-keycloak', 'oidc/rp', 'get', '--client-id', client_id, '--json', '--all']))[0]
+    username = admin_account.username
+    password = admin_account.bindpw
+    access_token_lifespan = 10
+    try:
+        # enable frontchannel and set access token lifespan
+        changes = {
+            'frontchannelLogout': True,
+            'attributes': {
+                'access.token.lifespan': access_token_lifespan,
+            }
+        }
+        run_command(['univention-keycloak', 'oidc/rp', 'update', client_id, json.dumps(changes)])
+        page = portal_login_via_keycloak(username, password, protocol='oidc')
+        tile = 'App Center'
+        page.get_by_role('link', name=f'{tile} iFrame').click()
+        # close the tab
+        page.locator('[data-test="close-tab-1"]').click()
+        # now delete the session in keycloak and wait for access.token.lifespan,
+        # opening the module again should bring us to the login screen
+        for session in keycloak_sessions_by_user(keycloak_config, username):
+            keycloak_delete_session(keycloak_config, session['id'])
+        assert keycloak_sessions_by_user(keycloak_config, username) == []
+        time.sleep(access_token_lifespan + 1)
+        page.get_by_role('link', name=f'{tile} iFrame').click()
+        # we expect a login page
+        portal_login_via_keycloak_custom_page(page, username, password, protocol='oidc')
+    finally:
+        # revert to original configuration
+        changes = {
+            'frontchannelLogout': client_config['frontchannelLogout'],
+            'attributes': {
+                'access.token.lifespan': client_config['attributes']['access.token.lifespan']
+            }
+        }
+        run_command(['univention-keycloak', 'oidc/rp', 'update', client_id, json.dumps(changes)])
