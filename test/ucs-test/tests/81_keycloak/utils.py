@@ -114,6 +114,12 @@ def keycloak_sessions_by_user(config: SimpleNamespace, username: str) -> dict:
     return response.json()
 
 
+def keycloak_delete_session(config: SimpleNamespace, session_id: str) -> None:
+    url = f'{config.sessions_url}/{session_id}'
+    response = requests.delete(url, headers=keycloak_auth_header(config))
+    assert response.status_code == 204, response.text
+
+
 def grant_oidc_privileges(page: Page) -> None:
     if "oidc" in page.url:
         try:
@@ -151,6 +157,7 @@ def keycloak_login(
 
 
 def run_command(cmd: list) -> str:
+    print(f'execute {cmd}')
     return subprocess.run(cmd, stdout=subprocess.PIPE, check=True).stdout.decode('utf-8')
 
 
