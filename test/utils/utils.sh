@@ -1612,9 +1612,9 @@ basic_setup_ucs_joined () {
 			/usr/sbin/univention-register-network-address --verbose
 		;;
 	*)
-	# TODO
-	#  ... recreate ssh keys ...
-	# fix ip on non-master systems
+		# TODO
+		#  ... recreate ssh keys ...
+		# fix ip on non-master systems
 		ucr set "hosts/static/${masterip}=$(ucr get ldap/master)"
 		if [ "$(ucr get server/role)" = "memberserver" ]; then
 			ucr set nameserver1="$masterip"
@@ -1622,15 +1622,22 @@ basic_setup_ucs_joined () {
 			ucr set ldap/server/ip="$(ucr get "interfaces/$(ucr get interfaces/primary)/address")"
 		fi
 		ucr unset nameserver2
+		systemctl restart univention-network-common.service || true
+		sleep 3
 		deb-systemd-invoke restart univention-directory-listener || rv=1
 		for ((i=1; i<=5; i++)); do
-			univention-register-network-address --verbose && urna_rv=0 && break
+			univention-register-network-address --verbose 2>/tmp/univention-register-network-address.stderr.$$ && urna_rv=0 && break
+			if [ -e /tmp/univention-register-network-address.stderr.$$ ]; then
+				# sometimes univention-network-common.service works during boot,
+				# in this case the ip is already changed, ignore this error here
+				grep "The IP address is already in use by host record.*$(hostname)" /tmp/univention-register-network-address.stderr.$$  && urna_rv=0 && break
+			fi
 			urna_rv=1
 			sleep 20
 		done
+		rm -f /tmp/univention-register-network-address.stderr.$$
 		[ $urna_rv -eq 1 ] && rv=1
 		echo $urna_rv
-
 		systemctl restart nscd.service || rv=1
 		;;
 	esac
