@@ -14,4 +14,4 @@ export SCENARIO="${SCENARIO:=ox-connector-single}"
 export KVM_OWNER="${BUILD_USER_ID:=$USER}"
 export JOB_BASE_NAME="$SCENARIO"
 
-exec ./utils/start-test.sh scenarios/keycloak/${SCENARIO}.cfg
+exec ./utils/start-test.sh scenarios/ox-connector/${SCENARIO}.cfg
