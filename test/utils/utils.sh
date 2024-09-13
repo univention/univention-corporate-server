@@ -1625,8 +1625,6 @@ basic_setup_ucs_joined () {
 			ucr set ldap/server/ip="$(ucr get "interfaces/$(ucr get interfaces/primary)/address")"
 		fi
 		ucr unset nameserver2
-		systemctl restart univention-network-common.service || true
-		sleep 3
 		deb-systemd-invoke restart univention-directory-listener || rv=1
 		for ((i=1; i<=5; i++)); do
 			univention-register-network-address --verbose 2>/tmp/univention-register-network-address.stderr.$$ && urna_rv=0 && break
