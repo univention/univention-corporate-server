@@ -190,6 +190,14 @@ if [ -z "$JOB_NAME" ]; then
 	export JOB_NAME="${job_name%.cfg}"
 fi
 
+# set JOB_BASE_NAME if empty to the basename of the cfg
+if [ -z "$JOB_BASE_NAME" ]; then
+	job_name="$(basename "$CFG")"
+	export JOB_BASE_NAME="${job_name%.cfg}"
+fi
+
+
+
 if "$check_missing"
 then
 	[ -f ~/ec2/scripts/activate-errata-test-scope.sh ] ||
