@@ -5,7 +5,7 @@
 
 # defaults for release
 release='5.0-9'  #
-export CURRENT_AMI="${CURRENT_AMI:=ami-0165dba9749b1012f}"  # AMI: Univention Corporate Server (UCS) 5.0 (official image) rev. 9
+export CURRENT_AMI="${CURRENT_AMI:=ami-0d03b9d85291d1774}"  # AMI: Univention Corporate Server (UCS) 5.0 (official image) rev. 10
 old_release='4.4-9'  #
 export OLD_AMI="${OLD_AMI:=ami-02ad9aab36aadf18a}"  # AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 11
 export KVM_UCSVERSION="${KVM_UCSVERSION:=5.0-8+e1060}"  #
