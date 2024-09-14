@@ -34,6 +34,7 @@ export KVM_USER="$(_jenkins build "${KVM_USER:=$USER}")"
 export REPLACE="${REPLACE:=$(_jenkins)}"
 export UCS_TEST_RUN="${UCS_TEST_RUN:=$(_jenkins)}"
 export TERMINATE="${TERMINATE:=$(_jenkins)}"
+export OS_CLOUD="${OS_CLOUD:=univention-development}"
 
 # some internal stuff
 image="${DIMAGE:-gitregistry.knut.univention.de/univention/dist/ucs-ec2-tools}"
