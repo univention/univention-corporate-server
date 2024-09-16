@@ -366,7 +366,7 @@ as shown in :numref:`central-management-umc-login-single-sign-on-oidc-sign-in-no
 .. important::
 
    If you want to run multiple Portal/UMC servers behind a load
-   balancer, you need to run these commands on all UCS systems with UMC.
+   balancer, you need to run these commands on all UCS systems.
 
    Since all the systems use the same OIDC client in this setup,
    make sure that the file :file:`/etc/umc-oidc.secret` has the same contents
