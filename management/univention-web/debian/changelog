@@ -1,15 +1,3 @@
-univention-web (4.0.11-1) UNRELEASED; urgency=medium
-
-  * Bug #57581 UCS 5.0-9 version bump
-
- -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:35:11 +0200
-
-univention-web (4.0.10-1) UNRELEASED; urgency=medium
-
-  * Bug #57581 UCS 5.0-9 version bump
-
- -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:29:45 +0200
-
 univention-web (4.0.9-1) UNRELEASED; urgency=medium
 
   * Bug #57581 UCS 5.0-9 version bump

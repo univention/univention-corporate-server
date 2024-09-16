@@ -1,15 +1,3 @@
-univention-foomatic-ppds (12.0.6-1) UNRELEASED; urgency=medium
-
-  * Bug #57581 UCS 5.0-9 version bump
-
- -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:35:09 +0200
-
-univention-foomatic-ppds (12.0.5-1) UNRELEASED; urgency=medium
-
-  * Bug #57581 UCS 5.0-9 version bump
-
- -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:29:43 +0200
-
 univention-foomatic-ppds (12.0.4-1) UNRELEASED; urgency=medium
 
   * Bug #57581 UCS 5.0-9 version bump

@@ -1,15 +1,3 @@
-univention-debhelper (2.0.7-1) UNRELEASED; urgency=medium
-
-  * Bug #57581 UCS 5.0-9 version bump
-
- -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:35:05 +0200
-
-univention-debhelper (2.0.6-1) UNRELEASED; urgency=medium
-
-  * Bug #57581 UCS 5.0-9 version bump
-
- -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:29:40 +0200
-
 univention-debhelper (2.0.5-1) UNRELEASED; urgency=medium
 
   * Bug #57581 UCS 5.0-9 version bump

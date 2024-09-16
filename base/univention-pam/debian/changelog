@@ -1,15 +1,3 @@
-univention-pam (13.0.12-1) UNRELEASED; urgency=medium
-
-  * Bug #57581 UCS 5.0-9 version bump
-
- -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:35:01 +0200
-
-univention-pam (13.0.11-1) UNRELEASED; urgency=medium
-
-  * Bug #57581 UCS 5.0-9 version bump
-
- -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:29:36 +0200
-
 univention-pam (13.0.10-1) UNRELEASED; urgency=medium
 
   * Bug #57581 UCS 5.0-9 version bump
