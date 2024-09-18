@@ -410,7 +410,8 @@ General
 
 * The following packages have been moved to the maintained repository of UCS:
 
-  :program:`FIXME`
+  :program:`linux-5.10`
+  :program:`linux-signed-5.10-amd64`
 
 .. _changelog-domain:
 
