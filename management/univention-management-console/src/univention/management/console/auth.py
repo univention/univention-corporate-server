@@ -41,12 +41,14 @@ import ldap
 from ldap.filter import filter_format
 
 import univention.admin.uexceptions as udm_errors
+import univention.admin.handlers.users.user as udm_user
 from univention.management.console.ldap import get_machine_connection, reset_cache
 from univention.management.console.log import AUTH
 from univention.management.console.pam import (
     AccountExpired, AuthenticationError, AuthenticationFailed, AuthenticationInformationMissing, PamAuth,
     PasswordChangeFailed, PasswordExpired,
 )
+from univention.management.console.config import ucr
 
 
 class AuthenticationResult:
@@ -114,8 +116,12 @@ class AuthHandler:
     def __authenticate_thread(self, pam, username, password, new_password, auth_type=None, **custom_prompts):
         AUTH.info('Trying to authenticate user %r (auth_type: %r)' % (username, auth_type))
         username = self.__canonicalize_username(username)
+
         try:
-            pam.authenticate(username, password, **custom_prompts)
+            if new_password:
+                self.__authenticate_ldap(username, password)
+            else:
+                pam.authenticate(username, password, **custom_prompts)
         except AuthenticationFailed as auth_failed:
             AUTH.error(str(auth_failed))
             raise
@@ -125,7 +131,8 @@ class AuthHandler:
                 raise
 
             try:
-                pam.change_password(username, password, new_password)
+                # Change password using UDM
+                self.__change_password_udm(username, new_password)
             except PasswordChangeFailed as change_failed:
                 AUTH.error(str(change_failed))
                 raise
@@ -135,6 +142,46 @@ class AuthHandler:
         else:
             AUTH.info('Authentication for %r was successful' % (username,))
             return (username, password)
+
+    def __authenticate_ldap(self, username, password):
+        machine_lo = get_machine_connection(write=False)[0]
+        user_dn = machine_lo.searchDn(filter_format('(&(uid=%s)(objectClass=person))', (username,)))[0]
+        AUTH.info("User dn: %s" % (user_dn,))
+        AUTH.info("Authenticating user: %s" % (username,))
+        try:
+            machine_lo.lo.bind(user_dn, password)
+            # expect ldap.INVALID_CREDENTIALS: {'msgtype': 97, 'msgid': 2, 'result': 49, 'desc': 'Invalid credentials', 'ctrls': [], 'info': 'password expired'}, but that's ok
+        except (ldap.LDAPError, udm_errors.base) as exc:
+            if isinstance(exc, ldap.INVALID_CREDENTIALS):
+                if exc.args[0].get('info') == 'password expired':
+                    raise PasswordExpired('Password expired')
+            raise AuthenticationFailed('Failed to open LDAP connection for user %s: %s' % (username, exc))
+
+    def __change_password_udm(self, username, new_password):
+        AUTH.info("Setting new password for user: %s" % (username,))
+        lo = get_machine_connection(write=True)[0]
+        if lo:
+            user_dn = lo.searchDn(filter_format('(&(uid=%s)(objectClass=person))', (username,)))[0]
+            AUTH.info("User dn: %s" % (user_dn,))
+            user = udm_user.object(None, lo, None, user_dn)
+            user.open()
+            user["password"] = new_password
+            user["pwdChangeNextLogin"] = 0
+            try:
+                user.modify()
+            except (udm_errors.pwToShort, udm_errors.pwQuality) as exc:
+                language = ucr.get('locale/default', 'en').split('_', 1)[0]
+                password_complexity_message = ucr.get('umc/login/password-complexity-message/%s' % (language,), ucr.get('umc/login/password-complexity-message/en', str(exc)))
+                raise PasswordChangeFailed(password_complexity_message)
+            except udm_errors.pwalreadyused as exc:
+                raise PasswordChangeFailed(exc.message)
+            except Exception as exc:
+                AUTH.error(f"__change_password_udm(): failed to set password: {traceback.format_exc()}")
+                raise PasswordChangeFailed(str(exc))
+            else:
+                AUTH.info("User modify succeeded!")
+        else:
+            raise PasswordChangeFailed("LDAP connection failed")
 
     def __canonicalize_username(self, username: str) -> str:
         try:
