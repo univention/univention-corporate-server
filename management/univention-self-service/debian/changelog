@@ -1,8 +1,14 @@
-univention-self-service (5.0.11-1) UNRELEASED; urgency=medium
+univention-self-service (5.0.11-2) unstable; urgency=medium
 
+  [ Arvid ]
   * Bug #57581 UCS 5.0-9 version bump
 
- -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:18:34 +0200
+  [ Dirk Wiesenthal ]
+  * Make the UMC module a singleton. As it does not need to preserve any
+    state, it greatly benefits from not creating one module process per
+    session
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 18 Sep 2024 20:37:00 +0200
 
 univention-self-service (5.0.10-2) unstable; urgency=medium
 
