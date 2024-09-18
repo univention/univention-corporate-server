@@ -494,7 +494,7 @@ Univention Management Console server
   confirmation dialog (:uv:bug:`57475`).
 
 * Add a configurable SQL storage for UMC sessions. This now makes OIDC
-  backchannel logout possible if the UMC is run in multiprocessing mode
+  back-channel logout possible if the UMC is run in multiprocessing mode
   (:uv:bug:`57482`).
 
 * Fix a bug where it was impossible to change passwords via the UMC due to the
@@ -514,7 +514,7 @@ Univention App Center
 * ``univention-app configure`` can now be called with ``--set`` being specified
   multiple times (:uv:bug:`57546`).
 
-* The appcenter now executes the joinscript and the configure scripts during
+* The App Center now executes the joinscript and the configure scripts during
   upgrade in the same order as during the initial installation
   (:uv:bug:`57544`).
 
@@ -524,7 +524,7 @@ Domain join module
 ==================
 
 * A bug has been fixed that could cause the domain join to fail if the
-  /etc/univention/ssl directory was too big (:uv:bug:`57421`).
+  ``/etc/univention/ssl`` directory was too big (:uv:bug:`57421`).
 
 .. _changelog-umc-user:
 
@@ -573,7 +573,7 @@ Software deployment
 *******************
 
 * The script ``univention-prune-kernels`` has been adjusted to the new kernel
-  version linux-5.10 (:uv:bug:`57427`).
+  version ``linux-5.10`` (:uv:bug:`57427`).
 
 .. _changelog-service:
 
@@ -586,19 +586,19 @@ System services
 SAML
 ====
 
-* Prevent the creation of two mappers in the default Univention Managment
+* Prevent the creation of two mappers in the default Univention Management
   Console Keycloak SAML client which caused SAML logins to fail
   (:uv:bug:`57420`).
 
 * In ``univention-keycloak``, fix the option ``--no-frontchannel-logout`` when
-  dealing with OIDC Relying parties. It used to activate the frontchannel
+  dealing with OIDC Relying parties. It used to activate the front-channel
   logout, not deactivate it as it was supposed to do (and now does,
   :uv:bug:`57518`).
 
-* The univention-keycloak CLI was fixed, so that you can use --set multiple
-  times in the domain-config sub command, as documented (:uv:bug:`57375`).
+* The ``univention-keycloak`` CLI was fixed, so that you can use ``--set`` multiple
+  times in the ``domain-config`` sub command, as documented (:uv:bug:`57375`).
 
-* There was an error where a provided XML file during serviceprovider creation
+* There was an error where a provided XML file during service provider creation
   overwrote the options passed on the ``CLI``. This resulted in some of the
   migration guide example creations not working anymore (:uv:bug:`57320`).
 
@@ -629,7 +629,7 @@ Univention S4 Connector
 
 * The S4-Connector used to skip synchronizing a move operation, if the moved
   object is already present in its DN cache. This could result in the unwanted
-  deletion of objects during a subtree rename (:uv:bug:`57510`).
+  deletion of objects during a sub-tree rename (:uv:bug:`57510`).
 
 .. _changelog-win-adc:
 
@@ -638,16 +638,16 @@ Univention Active Directory Connection
 
 * The AD-Connector used to skip synchronizing a move operation, if the moved
   object is already present in its DN cache. This could result in the unwanted
-  deletion of objects during a subtree rename (:uv:bug:`57510`).
+  deletion of objects during a sub-tree rename (:uv:bug:`57510`).
 
 * The connector can now be configured to only synchronize objects from specific
-  subtrees via the newly added UCR variables
+  sub-trees via the newly added UCR variables
   ``connector/ad/mapping/allowsubtree/$NAME/ucs`` and
   ``connector/ad/mapping/allowsubtree/$NAME/ad``. ``$NAME`` is an arbitrary string,
-  the value for the ``ucs`` variable is a subtree LDAP DN in the UCS directory
-  and the value for the ``ad`` variable is a subtree LDAP DN of the AD directory.
+  the value for the ``ucs`` variable is a sub-tree LDAP DN in the UCS directory
+  and the value for the ``ad`` variable is a sub-tree LDAP DN of the AD directory.
   Both must include the LDAP base of the respective directory. If configured
-  only objects from these subtrees are synchronized, everything else is ignored
+  only objects from these sub-trees are synchronized, everything else is ignored
   (:uv:bug:`57394`).
 
 * The connector can now be configured to only synchronize objects that match a
