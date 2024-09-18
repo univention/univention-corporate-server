@@ -23,7 +23,10 @@ from univention.appcenter.ucr import ucr_run_filter
 def change_app_compose_image(args: argparse.ArgumentParser) -> None:
 
     apps_cache = Apps()
-    candidate = apps_cache.find(args.app, latest=True)
+    if args.version:
+        candidate = apps_cache.find(args.app, app_version=args.version)
+    else:
+        candidate = apps_cache.find(args.app, latest=True)
     compose_file = candidate.get_cache_file("compose")
 
     with open(compose_file) as f:
@@ -63,6 +66,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("-a", "--app", required=True, help="app id")
     parser.add_argument("-i", "--image", required=True, help="the new image for the main service of the app")
+    parser.add_argument("-v", "--version", required=False, help="Appcenter version")
     parser.add_argument("-o", "--other_service", nargs=2, action="append", metavar=("service", "image"), required=False, help="images for other services")
     args = parser.parse_args()
     change_app_compose_image(args)
