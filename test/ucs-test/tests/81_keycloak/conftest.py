@@ -48,7 +48,7 @@ from utils import (
 
 from univention.appcenter.actions import get_action
 from univention.appcenter.app_cache import Apps
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 from univention.lib.misc import custom_groupname
 from univention.testing.pytest_univention_playwright import fixtures
 from univention.testing.udm import UCSTestUDM
@@ -90,13 +90,19 @@ def keycloak_secret() -> str | None:
     return password
 
 
-@pytest.fixture(autouse=True)
-def is_keycloak(request, keycloak_config, ucr_proper):
-    if request.node.get_closest_marker('is_keycloak'):
-        keycloak_ip = socket.gethostbyname(keycloak_config.server)
-        my_ip = socket.gethostbyname(ucr_proper['hostname'])
-        if keycloak_ip != my_ip:
-            pytest.skip('this system is not the keycloak server, test makes no sense here')
+# make sure we are the keycloak server, useful for tests that change local configuration
+# and expect a certain behavior in keycloak
+@pytest.fixture()
+def is_keycloak(keycloak_config, ucr_proper):
+    keycloak_ip = socket.gethostbyname(keycloak_config.server)
+    my_ip = socket.gethostbyname(ucr_proper['hostname'])
+    if keycloak_ip != my_ip:
+        pytest.skip('this system is not the keycloak server, test makes no sense here')
+    try:
+        handler_set([f'hosts/static/{my_ip}={keycloak_config.server}'])
+        yield True
+    finally:
+        handler_unset([f'hosts/static/{my_ip}'])
 
 
 @pytest.fixture()
@@ -234,6 +240,7 @@ def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
 
 @pytest.fixture(scope='session')
 def browser_context_args(browser_context_args):
+    expect.set_options(timeout=30 * 1000)
     return {**browser_context_args, 'ignore_https_errors': True, 'locale': get_language_code()}
 
 

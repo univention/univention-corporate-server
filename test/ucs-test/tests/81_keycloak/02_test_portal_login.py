@@ -205,9 +205,8 @@ def test_account_disabled(portal_login_via_keycloak, udm, protocol):
     portal_login_via_keycloak(username, 'univention', fails_with=_('The account is disabled.'), protocol=protocol)
 
 
-@pytest.mark.is_keycloak()
 @pytest.mark.parametrize('protocol', ['login', 'saml', 'oidc'])
-def test_portal_login_button(portal_config, protocol, ucr, page, keycloak_config, udm):
+def test_portal_login_button(portal_config, protocol, ucr, page, keycloak_config, udm, is_keycloak):
     try:
         username = udm.create_user()[1]
         with testing_ucr.UCSTestConfigRegistry():

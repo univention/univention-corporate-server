@@ -53,13 +53,12 @@ def test_get_webresources(keycloak_config):
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails without keycloak locally installed')
-@pytest.mark.is_keycloak()
 @pytest.mark.parametrize(
     'settings',
     [['dark', 'rgb(255, 255, 255)'], ['light', 'rgb(30, 30, 29)']],
     ids=['dark', 'light'],
 )
-def test_theme_switch(ucr, keycloak_adm_login, admin_account, settings):
+def test_theme_switch(ucr, keycloak_adm_login, admin_account, settings, is_keycloak):
     theme = settings[0]
     color = settings[1]
     ucr.handler_set([f'ucs/web/theme={theme}'])
@@ -69,8 +68,7 @@ def test_theme_switch(ucr, keycloak_adm_login, admin_account, settings):
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails without keycloak locally installed')
-@pytest.mark.is_keycloak()
-def test_custom_theme(keycloak_adm_login, admin_account):
+def test_custom_theme(keycloak_adm_login, admin_account, is_keycloak):
     custom_css = '/var/www/univention/login/css/custom.css'
     color_css = 'rgb(131, 20, 20)'
     with tempfile.NamedTemporaryFile(dir='/tmp', delete=False) as tmpfile:
@@ -87,8 +85,7 @@ def test_custom_theme(keycloak_adm_login, admin_account):
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails without keycloak locally installed')
-@pytest.mark.is_keycloak()
-def test_cookie_banner(keycloak_adm_login, admin_account, ucr, keycloak_config):
+def test_cookie_banner(keycloak_adm_login, admin_account, ucr, keycloak_config, is_keycloak):
     ucr.handler_set(
         [
             'umc/cookie-banner/cookie=TESTCOOKIE',
@@ -121,8 +118,7 @@ def test_cookie_banner(keycloak_adm_login, admin_account, ucr, keycloak_config):
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails without keycloak locally installed')
-@pytest.mark.is_keycloak()
-def test_cookie_banner_no_banner_with_cookie_domains(keycloak_adm_login, admin_account, ucr):
+def test_cookie_banner_no_banner_with_cookie_domains(keycloak_adm_login, admin_account, ucr, is_keycloak):
     # no banner if umc/cookie-banner/domains does not match
     # the current domain
     ucr.handler_set(
@@ -140,8 +136,7 @@ def test_cookie_banner_no_banner_with_cookie_domains(keycloak_adm_login, admin_a
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails without keycloak locally installed')
-@pytest.mark.is_keycloak()
-def test_cookie_banner_domains(keycloak_adm_login, admin_account, ucr, keycloak_config):
+def test_cookie_banner_domains(keycloak_adm_login, admin_account, ucr, keycloak_config, is_keycloak):
     # check if cookie domain is set to umc/cookie-banner/domains
     domain = keycloak_config.server.split('.', 1)[1]
     ucr.handler_set(
@@ -167,8 +162,7 @@ def test_cookie_banner_domains(keycloak_adm_login, admin_account, ucr, keycloak_
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails without keycloak locally installed')
-@pytest.mark.is_keycloak()
-def test_login_page_with_cookie_banner_no_element_is_tabbable(keycloak_adm_login, admin_account, ucr):
+def test_login_page_with_cookie_banner_no_element_is_tabbable(keycloak_adm_login, admin_account, ucr, is_keycloak):
     # only the accept button is tabbable
     ucr.handler_set(
         [
