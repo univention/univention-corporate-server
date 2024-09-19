@@ -472,8 +472,8 @@ msgid "FDDI"
 msgstr "FDDI"
 
 #: modules/univention/admin/syntax.py:1437
-msgid "Failed to convert PNG file into JPEG format."
-msgstr "Konvertierung der PNG-Datei ins JPEG-Format ist fehlgeschlagen."
+msgid "Failed to convert file into JPEG format."
+msgstr "Konvertierung der Datei ins JPEG-Format ist fehlgeschlagen."
 
 #: modules/univention/admin/syntax.py:4851
 #: modules/univention/admin/syntax.py:4875
