@@ -365,3 +365,18 @@ See [86 browser](tests/86_browser/) for examples.
 from univention.testing.browser.lib import UMCBrowserTest
 def test_login(umc_browser_test: UMCBrowserTest):
     assert True
+```
+
+### Running Specific Playwright Tests
+
+To run a specific playwright test you can use the following syntax:
+
+```sh
+/usr/share/ucs-test/playwright /path/to/test.py::test_name
+```
+
+*Note:* we should use this `playwright` instead of `pytest-3` to aboid the following error:
+
+```
+E   ModuleNotFoundError: No module named 'playwright'
+```
