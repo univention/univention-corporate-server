@@ -348,3 +348,34 @@ def test_login(selenium):
     selenium.do_login()
     assert True
 ```
+
+## Using Playwright
+Since UCS 5.0-5 tests can use [Playwright](https://playwright.dev/) for browser based UMC testing.
+1. The test must be implemented in Python.
+2. The hash-bang-line should be `#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright`.
+
+[univention.testing.browser](univention/testing/browser/) provides several helper functions.
+See [86 browser](tests/86_browser/) for examples.
+
+```python
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/playwright
+## desc: Test basic UMC login
+## exposure: safe
+from univention.testing.browser.lib import UMCBrowserTest
+def test_login(umc_browser_test: UMCBrowserTest):
+    assert True
+```
+
+### Running Specific Playwright Tests
+
+To run a specific playwright test you can use the following syntax:
+
+```sh
+/usr/share/ucs-test/playwright /path/to/test.py::test_name
+```
+
+*Note:* we should use this `playwright` instead of `pytest-3` to aboid the following error:
+
+```
+E   ModuleNotFoundError: No module named 'playwright'
+```
