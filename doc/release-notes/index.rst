@@ -14,31 +14,35 @@ Publication date of UCS |release|: 2024-06-11
 Release highlights
 ******************
 
-With |UCSUCS| 5.0-9, the eight patch level release for |UCSUCS| (UCS) 5.0 is available.
+With |UCSUCS| 5.0-9, the ninth patch level release for |UCSUCS| (UCS) 5.0 is available.
 It provides several feature improvements and extensions, new properties,
 as well as, various improvements and bug fixes.
 Here is an overview of the most important changes:
 
-* With the release of Univention Nubus,
-  UCS receives updates for icons and logos for Univention Products.
-  The corresponding components within |UCSUCS| receive a visual update,
-  clearly presenting their affiliation with Univention Nubus Identity and
-  Access Management.
+* Single Sign-On (SSO) is a central element of integrated identity & access
+  management (IAM). The Nubus Identity Provider already supports the most
+  important protocols, SAML and OpenID Connect (OIDC). With Univention
+  Corporate Server 5.0-9, OIDC is now also available for the  UCS web
+  interfaces, in particular the portal and the Univention Management Console
+  (UMC). In addition to the migration to the newer SSO mechanism, OIDC in UCS
+  5.0-9 enables new functions such as the “Back-channel Logout”, which supports
+  a Single Logout (SLO) without user interaction. To improve the user
+  experience, an automatic update of the portal content in all open tabs after
+  a logout ensures that the logged out state is displayed correctly everywhere.
 
-* In preparation of UCS 5.2, the repository receives a dedicated signing key.
-
-* Apps provisioned through the |UCSUDL| mechanism process incoming changes using a file-based queue.
-  With the update to 5.0-9, it's now possible to monitor the current state of the app queue,
-  to identify and diagnose potential processing errors through system diagnostics.
-
-* The RADIUS server now supports different MAC address formats for the *MAB*
-  (MAC Authentication Bypass) feature.
-
-* Enhanced UMC stability and performance for handling numerous simultaneous logins.
+* The Active Directory Connection synchronizes users, groups and computer
+  objects between Nubus and Active Directory (AD). With UCS 5.0-9, selective
+  synchronization has been fundamentally revised. It now enables flexible
+  control of the synchronized objects on the basis of Allow and Deny filters,
+  both at the level of entire sub trees and individual object types.
+  The improved selection ensures that only the desired objects are
+  synchronized, which avoids unwanted entries on both sides and minimizes
+  manual effort.
 
 * UCS 5.0-9 includes various security updates, for example for
-  :program:`BIND9`, :program:`docker`, :program:`OpenJDK-11`, :program:`PHP`
-  and the :program:`Linux` kernel.
+  :program:`apache2`, :program:`BIND9`, :program:`OpenJDK-11`,
+  :program:`dovecot`, :program:`postgresql`, :program:`systemd`
+  and the :program:`Linux-5.10` kernel.
 
 .. _relnotes-update:
 
