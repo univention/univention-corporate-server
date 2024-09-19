@@ -222,8 +222,8 @@ msgstr ""
 "La valeur doit être une archive au format Base64 compressée par bzip2 : %s"
 
 #: modules/univention/admin/syntax.py:1472
-msgid "Failed to convert PNG file into JPEG format."
-msgstr "Échec de la conversion du fichier PNG au format JPEG."
+msgid "Failed to convert file into JPEG format."
+msgstr "Échec de la conversion du fichier au format JPEG."
 
 #: modules/univention/admin/syntax.py:1479
 msgid "Value must be Base64 encoded jpeg."
