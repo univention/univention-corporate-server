@@ -428,10 +428,11 @@ Domain services
 LDAP Directory Manager
 ======================
 
-* In case a UDM property syntax has been overridden via UCR but the specified
-  value does not correspond to any defined syntax, UDM logged a traceback. This
-  has now been replaced by a proper log message explaining the origin of the
-  problem (:uv:bug:`57484`).
+* In case a UDM property syntax has been overridden through UCR,
+  but the specified value doesn't correspond to any defined syntax,
+  UDM logged a traceback.
+  This has now been replaced by a proper log message
+  explaining the origin of the problem (:uv:bug:`57484`).
 
 * A traceback that was thrown when running ``univention-sync-memberuid`` has
   been fixed. The script now also supports limiting operation to certain
@@ -442,17 +443,17 @@ LDAP Directory Manager
   been corrected (:uv:bug:`46349`).
 
 * The UDM module ``settings/directory`` provides the default container setting
-  for other UDM modules. It is now possible to extend ``settings/directory`` with
+  for other UDM modules. It's now possible to extend ``settings/directory`` with
   an extended attribute to define default containers for custom UDM modules.
-  The name of the ``settings/directory`` property, that defines the default
+  The name of the ``settings/directory`` property that defines the default
   container for your module, can be defined by the variable
   ``default_containers_attribute_name`` in the module (:uv:bug:`57526`).
 
 * When the IP address is set when creating a new computer object, the DNS
-  entries for this object were not set correctly since erratum 738. The DNS
+  entries for this object weren't set correctly since erratum 738. The DNS
   entries will now be created correctly again (:uv:bug:`56313`).
 
-* When searching for objects via UDM it was possible to create a faulty state,
+* When searching for objects through UDM, it was possible to create a faulty state,
   when an object included in the result was deleted before the operation was
   finished. Those deleted objects are now skipped (:uv:bug:`53333`).
 
@@ -470,13 +471,13 @@ Univention Portal
 * All browser tabs where the user is logged into the Portal will now
   automatically refresh when a logout is detected. This feature is enabled by
   default and can be toggled with the Univention Configuration Registry
-  Variable ``portal/reload-tabs-on-logout`` (:uv:bug:`57467`).
+  Variable :envvar:`portal/reload-tabs-on-logout` (:uv:bug:`57467`).
 
 * The login button in the Portal's sidebar can now be configured to perform
-  OIDC authentication by setting the UCR variable ``portal/auth-mode`` to the
+  OIDC authentication by setting the UCR variable :envvar:`portal/auth-mode` to the
   value ``oidc`` (:uv:bug:`57534`).
 
-* The default for ``portal/reload-tabs-on-logout`` has been changed to ``false``
+* The default for :envvar:`portal/reload-tabs-on-logout` has been changed to ``false``
   (:uv:bug:`57562`).
 
 .. _changelog-umc-server:
@@ -484,7 +485,7 @@ Univention Portal
 Univention Management Console server
 ====================================
 
-* Ensure that ``/usr/share/univention-management-console/oidc/oidc.json`` has
+* Ensure that :file:`/usr/share/univention-management-console/oidc/oidc.json` has
   file permission ``600`` (:uv:bug:`57505`).
 
 * A new endpoint has been added to the UMC, supporting the refresh of all
@@ -497,10 +498,10 @@ Univention Management Console server
   back-channel logout possible if the UMC is run in multiprocessing mode
   (:uv:bug:`57482`).
 
-* Fix a bug where it was impossible to change passwords via the UMC due to the
+* Fix a bug where it was impossible to change passwords through the UMC due to the
   UMC server not closing file descriptors properly (:uv:bug:`57194`).
 
-* Do not show the OpenID Connect permission consent screen when the UMC is the
+* Don't show the OpenID Connect permission consent screen when the UMC is the
   relying party (:uv:bug:`57506`).
 
 * Better support for Portal/UMC OIDC setup with FQDN different from internal
@@ -532,7 +533,7 @@ User management
 ===============
 
 * When a password policy is used together with the self-registration feature it
-  was possible that invitation emails were not sent when users are created.
+  was possible that invitation emails weren't sent when users are created.
   This was fixed by adjusting the self-service listener module filter
   (:uv:bug:`57226`).
 
@@ -545,11 +546,11 @@ System diagnostic module
   as an LDAP extension has been fixed and now actually passes the right
   argument to the internal function (:uv:bug:`57279`).
 
-* A diagnostic module now checks for the correct file permissions of the SQLite
-  database of both the S4-Connector and the AD-Connector (:uv:bug:`57453`).
+* A diagnostic module now checks for the correct file permissions of the :program:`SQLite`
+  database of both the :program:`S4 Connector` and the :program:`AD-Connector` (:uv:bug:`57453`).
 
-* The package ``screen`` has been added to the recommendations as it is a vital
-  part of Univention's support. The package has been cut since 5.0-6 while
+* The package ``screen`` has been added to the recommendations as it's a vital
+  part of Univention support. The package has been cut since 5.0-6 while
   optimizing installation size, but is now re-added. The package should be
   automatically installed with this update (:uv:bug:`57406`).
 
@@ -562,8 +563,8 @@ Univention base libraries
 * An ACL has been added that restricts access to the new UMC settings object
   (:uv:bug:`57482`).
 
-* A typo in evaluation of the UCR variable ``backup/clean/min_backups`` caused
-  that the specified limit was not considered but instead the default value of
+* A typo in evaluation of the UCR variable :envvar:`backup/clean/min_backups` caused
+  that the specified limit wasn't considered but instead the default value of
   ``10`` was applied. This has been fixed (:uv:bug:`56736`).
 
 .. _changelog-deployment:
@@ -602,7 +603,7 @@ SAML
   overwrote the options passed on the ``CLI``. This resulted in some of the
   migration guide example creations not working anymore (:uv:bug:`57320`).
 
-* ``univention-keycloak`` had to adapted to Keycloak version 25 to correctly
+* ``univention-keycloak`` had to be adapted to Keycloak version 25 to correctly
   create the configuration for the legacy authorization (:uv:bug:`57452`).
 
 .. _changelog-service-cups:
@@ -624,11 +625,11 @@ Services for Windows
 Univention S4 Connector
 =======================
 
-* SQLite databases used by the S4 Connector were world readable. This has been
+* :program:`SQLite` databases used by the :program:`S4 Connector` were world readable. This has been
   changed (:uv:bug:`57453`).
 
-* The S4-Connector used to skip synchronizing a move operation, if the moved
-  object is already present in its DN cache. This could result in the unwanted
+* The :program:`S4 Connector` used to skip synchronizing a move operation, if the moved
+  object was already present in its DN cache. This could result in the unwanted
   deletion of objects during a sub-tree rename (:uv:bug:`57510`).
 
 .. _changelog-win-adc:
@@ -636,14 +637,14 @@ Univention S4 Connector
 Univention Active Directory Connection
 ======================================
 
-* The AD-Connector used to skip synchronizing a move operation, if the moved
-  object is already present in its DN cache. This could result in the unwanted
+* The :program:`AD Connector` used to skip synchronizing a move operation, if the moved
+  object was already present in its DN cache. This could result in the unwanted
   deletion of objects during a sub-tree rename (:uv:bug:`57510`).
 
 * The connector can now be configured to only synchronize objects from specific
-  sub-trees via the newly added UCR variables
-  ``connector/ad/mapping/allowsubtree/$NAME/ucs`` and
-  ``connector/ad/mapping/allowsubtree/$NAME/ad``. ``$NAME`` is an arbitrary string,
+  sub-trees through the newly added UCR variables
+  :envvar:`connector/ad/mapping/allowsubtree/.*/ucs` and
+  :envvar:`connector/ad/mapping/allowsubtree/.*/ad`. ``.*`` is an arbitrary string,
   the value for the ``ucs`` variable is a sub-tree LDAP DN in the UCS directory
   and the value for the ``ad`` variable is a sub-tree LDAP DN of the AD directory.
   Both must include the LDAP base of the respective directory. If configured
@@ -652,14 +653,15 @@ Univention Active Directory Connection
 
 * The connector can now be configured to only synchronize objects that match a
   specific LDAP filter. For each object type in ``user``, ``group``, ``container``,
-  ``ou`` and ``windowscomputer`` the UCR variable ``connector/ad/mapping/{object
-  type}/allowfilter`` can be used to configure this LDAP filter
+  ``ou`` and ``windowscomputer``
+  the UCR variable :envvar:`connector/ad/mapping/{type}/allowfilter`
+  can be used to configure this LDAP filter
   (:uv:bug:`57442`).
 
 * The connector can now be configured to ignore certain objects that match a
   specific LDAP filter. For each object type in ``user``, ``group``, ``container``,
-  ``ou`` and ``windowscomputer`` the UCR variable ``connector/ad/mapping/{object
-  type}/ignorefilter`` can be used to configure this LDAP filter
+  ``ou`` and ``windowscomputer`` the
+  UCR variable :envvar:`connector/ad/mapping/{type}/ignorefilter` can be used to configure this LDAP filter
   (:uv:bug:`57465`).
 
 * SQLite databases used by the AD Connector were world readable in certain
