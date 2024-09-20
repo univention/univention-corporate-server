@@ -44,10 +44,16 @@ have () {
 }
 
 FTP_DOM='software-univention.de' FTP_SCHEME='https' FTP_TEST_REPO="updates-test"
-case "${VIRTTECH:=$(systemd-detect-virt)}" in
-amazon|xen) ;;
-qemu|kvm) FTP_DOM='knut.univention.de' FTP_SCHEME='http' FTP_TEST_REPO="updates-test" ;;
-esac
+
+# systemd-detect-virt is no longer reliable, it returns kvm in ec2 in some
+# cases (don't know why yet), so we check the system-uuid first, see
+# https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/identify_ec2_instances.html
+if [[ ! "$(dmidecode --string system-uuid)" =~ ^ec2.* ]]; then
+	case "${VIRTTECH:=$(systemd-detect-virt)}" in
+	amazon|xen) ;;
+	qemu|kvm) FTP_DOM='knut.univention.de' FTP_SCHEME='http' FTP_TEST_REPO="updates-test" ;;
+	esac
+fi
 
 basic_setup_allow_uss () {
 	# force dpkg not to call "sync" during package installations/updates
