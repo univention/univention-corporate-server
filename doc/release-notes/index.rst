@@ -19,10 +19,10 @@ It provides several feature improvements and extensions, new properties,
 as well as, various improvements and bug fixes.
 Here is an overview of the most important changes:
 
-* Single Sign-On (SSO) is a central element of integrated identity & access
+* Single sign-on (SSO) is a central element of integrated identity and access
   management (IAM). The Nubus Identity Provider already supports the most
   important protocols, SAML and OpenID Connect (OIDC). With Univention
-  Corporate Server 5.0-9, OIDC is now also available for the  UCS web
+  Corporate Server 5.0-9, OIDC is now also available for the UCS web
   interfaces, in particular the portal and the Univention Management Console
   (UMC). In addition to the migration to the newer SSO mechanism, OIDC in UCS
   5.0-9 enables new functions such as the “Back-channel Logout”, which supports
@@ -30,13 +30,14 @@ Here is an overview of the most important changes:
   experience, an automatic update of the portal content in all open tabs after
   a logout ensures that the logged out state is displayed correctly everywhere.
 
-* The Active Directory Connection synchronizes users, groups and computer
+* The Active Directory Connection synchronizes users, groups, and computer
   objects between Nubus and Active Directory (AD). With UCS 5.0-9, selective
   synchronization has been fundamentally revised. It now enables flexible
-  control of the synchronized objects on the basis of Allow and Deny filters,
+  control of the synchronized objects on the basis of allow and deny filters,
   both at the level of entire sub trees and individual object types.
-  The improved selection ensures that only the desired objects are
-  synchronized, which avoids unwanted entries on both sides and minimizes
+  The improved selection ensures
+  that the AD Connection synchronizes only the needed objects,
+  which avoids unwanted entries on both sides and minimizes
   manual effort.
 
 * UCS 5.0-9 includes various security updates, for example for
