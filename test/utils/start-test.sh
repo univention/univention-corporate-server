@@ -9,8 +9,8 @@ export CURRENT_AMI="${CURRENT_AMI:=ami-0dd2d7c27d69ddb3f}"  # AMI: Univention Co
 old_release='5.0-8'  #
 export OLD_AMI="${OLD_AMI:=ami-068c5ee1a47ec4429}"  # AMI: Univention Corporate Server (UCS) 5.0 (official image) rev. 8
 export KVM_UCSVERSION="${KVM_UCSVERSION:=5.2-0+2024}"  #
-export OPENSTACK_IMAGE_NAME="${OPENSTACK_IMAGE_NAME:=UCS 5.2-0}"  #
-
+export OPENSTACK_IMAGE_VERSION="${OPENSTACK_IMAGE_NAME:=5.2-0}"  # version for the openstack image
+export OPENSTACK_IMAGE_NAME="${OPENSTACK_IMAGE_NAME:=UCS $OPENSTACK_IMAGE_VERSION}"  # name of the default openstack image
 export UCS_MINORRELEASE="${release%%-*}"
 export TARGET_VERSION="${TARGET_VERSION:=$release}"
 export UCS_VERSION="${UCS_VERSION:=$release}"
