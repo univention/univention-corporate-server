@@ -789,6 +789,7 @@ run_ucsschool_tests () {
 		if [ "$(echo "$test_group" | sed -re 's/[0-9]+$//')" == "import" ]; then
 			# test_args+=("--section=checks")  # enable?
 			test_args+=("--section=ucsschool")
+			test_args+=("--section=ucsschool-import-lusd")
 			test_args+=("--section=end")
 		fi
 	done
