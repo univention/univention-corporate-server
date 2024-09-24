@@ -1648,9 +1648,11 @@ change_template_hostname () {
 
 register_network_address () {
 	local rv=0 i
+	systemctl is-failed univention-management-console-server && systemctl restart univention-management-console-server
 	for ((i=1; i<=5; i++)); do
 		univention-register-network-address --verbose 2>/tmp/univention-register-network-address.stderr.$$ && rv=0 && break
 		if [ -e /tmp/univention-register-network-address.stderr.$$ ]; then
+			cat /tmp/univention-register-network-address.stderr.$$
 			# sometimes univention-network-common.service works during boot,
 			# in this case the ip is already changed, ignore this error here
 			grep "The IP address is already in use by host record.*$(hostname)" /tmp/univention-register-network-address.stderr.$$  && rv=0 && break
