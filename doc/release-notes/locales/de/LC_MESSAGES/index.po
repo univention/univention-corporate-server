@@ -24,8 +24,8 @@ msgstr ""
 "Corporate Server (UCS) |release|"
 
 #: ../../index.rst:9
-msgid "Publication date of UCS |release|: 2024-06-11"
-msgstr "Veröffentlichungsdatum von UCS |release|: 2024-06-11"
+msgid "Publication date of UCS |release|: 2024-09-24"
+msgstr "Veröffentlichungsdatum von UCS |release|: 2024-09-24"
 
 #: ../../index.rst:15
 msgid "Release highlights"
