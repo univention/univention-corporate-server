@@ -1603,10 +1603,26 @@ change_template_hostname () {
 	return $rv
 }
 
+register_network_address () {
+	local rv=0 i
+	for ((i=1; i<=5; i++)); do
+		univention-register-network-address --verbose 2>/tmp/univention-register-network-address.stderr.$$ && rv=0 && break
+		if [ -e /tmp/univention-register-network-address.stderr.$$ ]; then
+			# sometimes univention-network-common.service works during boot,
+			# in this case the ip is already changed, ignore this error here
+			grep "The IP address is already in use by host record.*$(hostname)" /tmp/univention-register-network-address.stderr.$$  && rv=0 && break
+		fi
+		rv=1
+		sleep 20
+	done
+	rm -f /tmp/univention-register-network-address.stderr.$$
+	return $rv
+}
+
 basic_setup_ucs_joined () {
 	local masterip="${1:?missing master ip}"
 	local admin_password="${2:-univention}"
-	local rv=0 server_role ldap_base domain old_ip urna_rv=0 current_ip i
+	local rv=0 server_role ldap_base domain old_ip current_ip
 
 	server_role="$(ucr get server/role)"
 	ldap_base="$(ucr get ldap/base)"
@@ -1618,8 +1634,9 @@ basic_setup_ucs_joined () {
 		# primary for yet unknown reasons, make sure to update the ip address
 		local current_ip
 		current_ip="$(udm dns/host_record list --filter name="$(hostname)" | sed -n 's/^\W*a: //p')"
-		[ -n "$current_ip" ] && [ "$current_ip" != "$masterip" ] &&
-			/usr/sbin/univention-register-network-address --verbose
+		if [ -n "$current_ip" ] && [ "$current_ip" != "$masterip" ]; then
+			register_network_address || rv=1
+		fi
 		;;
 	*)
 		# TODO
@@ -1633,19 +1650,7 @@ basic_setup_ucs_joined () {
 		fi
 		ucr unset nameserver2
 		deb-systemd-invoke restart univention-directory-listener || rv=1
-		for ((i=1; i<=5; i++)); do
-			univention-register-network-address --verbose 2>/tmp/univention-register-network-address.stderr.$$ && urna_rv=0 && break
-			if [ -e /tmp/univention-register-network-address.stderr.$$ ]; then
-				# sometimes univention-network-common.service works during boot,
-				# in this case the ip is already changed, ignore this error here
-				grep "The IP address is already in use by host record.*$(hostname)" /tmp/univention-register-network-address.stderr.$$  && urna_rv=0 && break
-			fi
-			urna_rv=1
-			sleep 20
-		done
-		rm -f /tmp/univention-register-network-address.stderr.$$
-		[ $urna_rv -eq 1 ] && rv=1
-		echo $urna_rv
+		register_network_address || rv=1
 		systemctl restart nscd.service || rv=1
 		;;
 	esac
