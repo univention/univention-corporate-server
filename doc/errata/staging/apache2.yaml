@@ -6,24 +6,21 @@ src: apache2
 fix: 2.4.59-1~deb10u3A~5.0.9.202409251402
 desc: |
  This update addresses the following issues:
- 2.4.59-1~deb10u3 (Mon, 16 Sep 2024 20:34:52 +0000)
- * Team upload by ELTS team
- * Fix CVE-2024-38474: Substitution encoding issue in mod_rewrite in Apache
+ * CVE-2024-38474: Substitution encoding issue in `mod_rewrite` in Apache
    HTTP Server allows attacker to execute scripts in directories permitted by
    the configuration but not directly reachable by any URL or source
    disclosure of scripts meant to only to be executed as CGI. Some
    RewriteRules that capture and substitute unsafely will now fail unless
-   rewrite flag "UnsafeAllow3F" is specified.
- * Fix CVE-2024-38475: Improper escaping of output in mod_rewrite in Apache
+   rewrite flag `UnsafeAllow3F` is specified.
+ * CVE-2024-38475: Improper escaping of output in `mod_rewrite` in Apache
    HTTP allows an attacker to map URLs to filesystem locations that are
    permitted to be served by the server but are not intentionally/directly
    reachable by any URL, resulting in code execution or source code
    disclosure. Substitutions in server context that use a backreferences or
    variables as the first segment of the substitution are affected. Some
    unsafe RewiteRules will be broken by this change and the rewrite flag
-   "UnsafePrefixStat" can be used to opt back in once ensuring the
+   `UnsafePrefixStat` can be used to opt back in once ensuring the
    substitution is appropriately constrained.
- * Fix CVE-2024-38474 regression
 bug: [57618]
 cve:
 - CVE-2024-38474
