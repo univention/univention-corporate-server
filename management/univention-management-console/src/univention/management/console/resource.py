@@ -94,6 +94,7 @@ class Resource(RequestHandler):
         self.request.content_negotiation_lang = 'json'
         self.decode_request_arguments()
         await self.parse_authorization()
+        await self.check_saml_session()
         if not self.ignore_session_timeout_reset:
             self.current_user.reset_timeout()  # FIXME: order correct?
         await self.refresh_oidc_session()
@@ -101,6 +102,44 @@ class Resource(RequestHandler):
         self.bind_session_to_ip()
         if self.requires_authentication and not self.current_user.user.authenticated:
             raise Forbidden(self._("For using this request a login is required."))
+    
+    async def check_saml_session(self):
+        CORE.error("CHECKING SAML SESSION")
+        session = self.get_current_user()
+        if not session.saml:
+            return
+        if not session.saml.expired:
+            return
+        # is_passive, relay_state='iframe-passive'
+        from univention.management.console.saml import SAMLResource, SamlACS
+        saml_resource = SAMLResource(self.application, self.request)
+        saml_acs = SamlACS(saml_resource, self.request)
+        binding, http_args = saml_acs.create_authn_request(is_passive='true', relay_state='iframe-passive')
+        http_client = self.get_auth_http_client()
+
+        CORE.error(binding)
+        url = http_args['Location']
+        headers = {}
+        for key, value in http_args['headers']:
+            headers[key] = value
+        response = await http_client.fetch(
+            url,
+            method="GET",
+            headers=headers
+        )
+
+        CORE.error(response.body)
+        CORE.error("WE ARE AN EXPIRED SAML SESSION")
+
+        import asyncio
+        CORE.error("SLEEPING NOW AFTER REFRESH")
+        await asyncio.sleep(15)
+        if session.saml.expired:
+            CORE.error("SESSION STILL EXPIRED AFTER SLEEP")
+            raise Forbidden("session expired")
+        
+        CORE.error("IT WORKED!!!!!")
+        return
 
     def check_session_validity(self):
         if not self.requires_authentication:  # TODO: or do we just want to disable this during auth?

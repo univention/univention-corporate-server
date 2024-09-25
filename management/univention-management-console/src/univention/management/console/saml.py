@@ -71,13 +71,14 @@ SERVICE_UNAVAILABLE = 503
 class SAMLUser(object):
     """SAML specific user information"""
 
-    __slots__ = ('message', 'name_id', 'session_end_time', 'username')
+    __slots__ = ('message', 'name_id', 'session_end_time', 'username', 'expired')
 
     def __init__(self, response, message):
         self.name_id = encode_name_id(response.name_id)
         self.message = message
         self.username = u''.join(response.ava['uid'])
         self.session_end_time = 0
+        self.expired = False
         if response.not_on_or_after:
             self.session_end_time = int(monotonic() + (response.not_on_or_after - time.time()))
 
@@ -198,7 +199,6 @@ class SamlMetadata(SAMLResource):
 
 class SamlACS(SAMLResource):
     """SAML attribute consuming service (or Single Sign On redirection)"""
-
     @property
     def sp(self):
         if not self.SP and not self.reload():
@@ -245,9 +245,23 @@ class SamlACS(SAMLResource):
         self.redirect(location, status=303)
 
     async def attribute_consuming_service_iframe(self, binding, message, relay_state):
+        CORE.error("iframe acs start")
         self.request.headers['Accept'] = 'application/json'  # enforce JSON response in case of errors
         self.request.headers['X-Iframe-Response'] = 'true'  # enforce textarea wrapping
         response = self.parse_authn_response(message, binding)
+        current_user = self.get_current_user()
+        CORE.error(current_user)
+        if current_user and current_user.user and current_user.user.authenticated and current_user.saml:
+            CORE.error("resetting current_user")
+            current_user.saml.expired = False
+            if response.not_on_or_after:
+                CORE.error("upadting current_user session end time")
+                current_user.saml.session_end_time = int(monotonic() + (response.not_on_or_after - time.time()))
+                current_user.reset_timeout()
+
+            self.set_header('Content-Type', 'text/html')
+            data = {"refreshed": true, "status": 200, "result": {"username": current_user.saml.username}}
+            self.finish(b'<html><body><textarea>%s</textarea></body></html>' % (json.dumps(data).encode('ASCII'),))
         saml = SAMLUser(response, message)
 
         await self.pam_saml_authentication(saml)
