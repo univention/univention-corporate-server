@@ -28,6 +28,9 @@ UDM_users_user_profilepath="$(random_chars)"
 UDM_users_user_scriptpath="$(random_chars)"
 AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
 
+connector_some_custom_position_mapping "user"
+invoke-rc.d univention-ad-connector restart
+
 SYNCMODE="$(ad_get_sync_mode)"
 
 ad_set_sync_mode "sync"
@@ -81,6 +84,9 @@ ad_wait_for_synchronization; fail_bool 0 110
 
 udm_exists "users/user"; fail_bool 1 110
 ad_exists "$AD_DN"; fail_bool 1 110
+
+connector_mapping_restore
+invoke-rc.d univention-ad-connector restart
 
 ad_set_sync_mode "$SYNCMODE"
 

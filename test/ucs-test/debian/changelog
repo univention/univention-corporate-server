@@ -1,3 +1,9 @@
+ucs-test (12.0.179) unstable; urgency=medium
+
+  * Bug #57565: Use some arbitrary position_mapping in one of the AD-C test
+
+ -- Felix Botner <botner@univention.de>  Thu, 26 Sep 2024 10:25:59 +0200
+
 ucs-test (12.0.178) unstable; urgency=medium
 
   * Issue univention/ucs#2388: make sure we are keycloak with is_keycloak
