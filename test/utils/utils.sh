@@ -1639,6 +1639,10 @@ basic_setup_ucs_joined () {
 		if [ -n "$current_ip" ] && [ "$current_ip" != "$masterip" ]; then
 			register_network_address || rv=1
 		fi
+		# sometime in OpenStack the host_record does not get updated
+		udm dns/host_record modify \
+			--dn "relativeDomainName=$(hostname),zoneName=$(ucr get domainname),cn=dns,$(ucr get ldap/base)" \
+			--set a="$masterip"
 		;;
 	*)
 		# TODO
