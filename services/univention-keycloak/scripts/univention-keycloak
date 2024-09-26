@@ -1804,6 +1804,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     init_parser.add_argument("--no-starttls", action='store_true', default=False, help="Disables the usage of StartTLS in the communication with the LDAP server, unencrypted traffic will be used.")
     init_parser.add_argument("--no-kerberos", action='store_true', default=False, help="Disables the Kerberos support on the LDAP user federation.")
     init_parser.add_argument("--frontchannel-logout-off", default=False, action="store_true", help="Switch off frontchannelLogout")
+    init_parser.add_argument("--enable-user-events", default=False, action="store_true", help="Enable realm user events")
 
     init_parser.set_defaults(func=init_keycloak_ucs)
 
@@ -3001,7 +3002,14 @@ def init_keycloak_ucs(opt):
     print(f"Using bind-dn: {opt.binddn}")
 
     # log into default realm in case UCS realm doesn't exist yet
-    kc_admin = KeycloakAdmin(server_url=opt.keycloak_url, username=opt.binduser, password=opt.bindpwd, realm_name=opt.realm, user_realm_name=DEFAULT_REALM, verify=opt.no_ssl_verify)
+    kc_admin = KeycloakAdmin(
+        server_url=opt.keycloak_url,
+        username=opt.binduser,
+        password=opt.bindpwd,
+        realm_name=opt.realm,
+        user_realm_name=DEFAULT_REALM,
+        verify=opt.no_ssl_verify,
+    )
 
     # check if we need to run init
     print("Check if init is needed", end=": ")
@@ -3047,12 +3055,14 @@ def init_keycloak_ucs(opt):
             "xXSSProtection": "1; mode=block",
             "strictTransportSecurity": "max-age=31536000; includeSubDomains",
         },
+        "eventsEnabled": False,
     }
     kc_admin.update_realm(DEFAULT_REALM, payload=realm_payload)
 
     # create ucs realm
     realm_payload["id"] = opt.realm
     realm_payload["realm"] = opt.realm
+    realm_payload["eventsEnabled"] = opt.enable_user_events
 
     if opt.force:
         kc_admin.update_realm(realm_payload["realm"], payload=realm_payload)
