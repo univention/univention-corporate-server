@@ -710,6 +710,25 @@ EOF
 }
 
 
+function connector_some_custom_position_mapping()
+{
+
+	cat > /etc/univention/connector/ad/localmapping.py <<EOF
+from univention.config_registry import ConfigRegistry
+ucr = ConfigRegistry()
+ucr.load()
+
+def mapping_hook(ad_mapping):
+	# Some custom position mapping that should not match
+	source_position = 'ou=IAM-AD,%(ldap/base)s' % ucr
+	target_position = 'OU=IAM-UCS,%(connector/ad/ldap/base)s' % ucr
+	custom_position_mapping = [(source_position, target_position)]
+	ad_mapping['$1'].position_mapping = custom_position_mapping
+	return ad_mapping
+EOF
+}
+
+
 function connector_mapping_restore ()
 {
 	rm -f /etc/univention/connector/ad/localmapping.py

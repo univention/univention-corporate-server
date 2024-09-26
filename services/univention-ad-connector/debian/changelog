@@ -1,3 +1,10 @@
+univention-ad-connector (15.0.14) unstable; urgency=medium
+
+  * Bug #57565: Fix rewriting mixed case AD DNs in the presence
+    of a "position_mapping".
+
+ -- Arvid <requate@univention.de>  Thu, 26 Sep 2024 10:14:29 +0200
+
 univention-ad-connector (15.0.13) unstable; urgency=medium
 
   * Bug #57504: change the dn argument to not be required by the script
