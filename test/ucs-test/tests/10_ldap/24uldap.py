@@ -10,7 +10,7 @@
 ##  - memberserver
 ## exposure: careful
 
-from os import environ
+from os import environ, unlink
 from os.path import exists
 from tempfile import NamedTemporaryFile
 from unittest import TestCase, main, skip, skipUnless
@@ -34,17 +34,18 @@ class FakeUcr:
         self.tmp = None
 
     def __enter__(self):
-        self.tmp = NamedTemporaryFile()
+        self.tmp = open(environ['UNIVENTION_BASECONF'], 'wb')
         self.tmp.write(b'# univention_ base.conf\n\n')
         for key, value in self.values.items():
             self.tmp.write(f'\n{key}: {value}'.encode())
         self.tmp.flush()
-        environ['UNIVENTION_BASECONF'] = self.tmp.name
+        self.tmp.close()
 
     def __exit__(self, exc_type, exc_value, traceback):
+        self.tmp = open(environ['UNIVENTION_BASECONF'], 'wb')
+        for key, value in ucr.items():
+            self.tmp.write(f'\n{key}: {value}'.encode())
         self.tmp.close()
-        self.tmp = None
-        del environ['UNIVENTION_BASECONF']
 
 
 class TestParentDn(TestCase):
@@ -291,4 +292,11 @@ class TestAccessUsage(TestCase):
 
 
 if __name__ == '__main__':
-    main()
+
+    tmpfile = NamedTemporaryFile(delete=False)
+    environ['UNIVENTION_BASECONF'] = tmpfile.name
+    with FakeUcr({}):
+        main()
+    del environ['UNIVENTION_BASECONF']
+    tmpfile.close()
+    unlink(tmpfile.name)

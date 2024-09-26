@@ -46,7 +46,7 @@ from ldap.controls.readentry import PostReadControl, PreReadControl
 from ldapurl import LDAPUrl, isLDAPUrl
 
 import univention.logging
-from univention.config_registry import ucr
+from univention.config_registry import ucr_live as ucr
 
 
 log = logging.getLogger('LDAP')
@@ -91,10 +91,12 @@ def getRootDnConnection(start_tls: int | None = None, decode_ignorelist: None = 
     port = int(ucr.get('slapd/port', '7389').split(',')[0])
     host = ucr['hostname'] + '.' + ucr['domainname']
     if ucr.get('ldap/server/type', 'dummy') == 'master':
-        bindpw = open('/etc/ldap.secret').read().rstrip('\n')
+        with open('/etc/ldap.secret') as secret:
+            bindpw = secret.read().rstrip('\n')
         binddn = 'cn=admin,{}'.format(ucr['ldap/base'])
     else:
-        bindpw = open('/etc/ldap/rootpw.conf').read().rstrip('\n').replace('rootpw "', '', 1)[:-1]
+        with open('/etc/ldap/rootpw.conf') as secret:
+            bindpw = secret.read().rstrip('\n').replace('rootpw "', '', 1)[:-1]
         binddn = 'cn=update,{}'.format(ucr['ldap/base'])
     return access(host=host, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, reconnect=reconnect)
 
@@ -108,7 +110,8 @@ def getAdminConnection(start_tls: int | None = None, decode_ignorelist: None = N
     :return: A LDAP access object.
     :rtype: univention.uldap.access
     """
-    bindpw = open('/etc/ldap.secret').read().rstrip('\n')
+    with open('/etc/ldap.secret') as secret:
+        bindpw = secret.read().rstrip('\n')
     port = int(ucr.get('ldap/master/port', '7389'))
     return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=admin,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, reconnect=reconnect)
 
@@ -122,7 +125,8 @@ def getBackupConnection(start_tls: int | None = None, decode_ignorelist: None = 
     :return: A LDAP access object.
     :rtype: univention.uldap.access
     """
-    bindpw = open('/etc/ldap-backup.secret').read().rstrip('\n')
+    with open('/etc/ldap-backup.secret') as secret:
+        bindpw = secret.read().rstrip('\n')
     port = int(ucr.get('ldap/master/port', '7389'))
     try:
         return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, reconnect=reconnect)
@@ -145,7 +149,8 @@ def getMachineConnection(start_tls: int | None = None, decode_ignorelist: None =
     :return: A LDAP access object.
     :rtype: univention.uldap.access
     """
-    bindpw = open(secret_file).read().rstrip('\n')
+    with open(secret_file) as secret:
+        bindpw = secret.read().rstrip('\n')
 
     if ldap_master:
         # Connect to Primary Directory Node
