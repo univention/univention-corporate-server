@@ -1,3 +1,9 @@
+ucs-test (10.0.23-3) unstable; urgency=medium
+
+  * Bug #57515: test session logout with invalid access token
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Thu, 26 Sep 2024 12:02:28 +0200
+
 ucs-test (10.0.23-2) unstable; urgency=medium
 
   * Bug #57565: Use some arbitrary position_mapping in one of the AD-C test
@@ -7,8 +13,6 @@ ucs-test (10.0.23-2) unstable; urgency=medium
 ucs-test (10.0.23-1) UNRELEASED; urgency=medium
 
   * Bug #57581 UCS 5.0-9 version bump
-  * Bug #57515: test session logout with invalid access token
-
 
  -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:18:30 +0200
 
