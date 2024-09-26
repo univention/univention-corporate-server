@@ -204,6 +204,49 @@ def test_init_with_parameters(random_string, keycloak_admin_connection):
             pass
 
 
+@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+@pytest.mark.parametrize("enable_user_events, expected", [
+    (True, True),
+    (False, False),
+])
+def test_init_with_user_events_flag(random_string, keycloak_admin_connection, enable_user_events, expected):
+    """
+    Test the initialization of a Keycloak realm with user events enabled or disabled.
+    Verifies that the 'eventsEnabled' attribute is set correctly and 'jboss-logging' is in 'eventsListeners'.
+    """
+    realm_name = random_string()
+    try:
+        cmd = [
+            'univention-keycloak',
+            '--realm', realm_name,
+            'init',
+            '--enable-user-events' if enable_user_events else '',
+        ]
+        # Remove empty strings to avoid issues
+        cmd = [arg for arg in cmd if arg]
+        run_command(cmd)
+
+        cmd = ['univention-keycloak', 'realms', 'get', '--all', '--json']
+        realms = json.loads(run_command(cmd))
+
+        realm = next((x for x in realms if x['id'] == realm_name), None)
+        assert realm is not None, f"Realm {realm_name} was not found."
+
+        assert realm['realm'] == realm_name, "Realm name does not match."
+
+        # Verify that 'eventsEnabled' is set as expected
+        assert realm.get('eventsEnabled') is expected, f"'eventsEnabled' should be {expected}."
+
+        # Verify that 'jboss-logging' is in 'eventsListeners'
+        assert "jboss-logging" in realm.get('eventsListeners', []), "'jboss-logging' should be in 'eventsListeners'."
+
+    finally:
+        try:
+            keycloak_admin_connection.delete_realm(realm_name=realm_name)
+        except KeycloakGetError:
+            pass
+
+
 def test_bindpwd(admin_account):
     cmd = ['univention-keycloak', '--binduser', admin_account.username, '--bindpwd', admin_account.bindpw, 'realms', 'get']
     run_command(cmd)
