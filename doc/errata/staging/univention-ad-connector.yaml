@@ -1,9 +1,9 @@
 product: ucs
 release: "5.0"
-version: [8]
-scope: ucs_5.0-0-errata5.0-8
+version: [9]
+scope: ucs_5.0-0-errata5.0-9
 src: univention-ad-connector
-fix: 14.0.19-11
+fix: 14.0.20-2
 desc: |
  This update addresses the following issues:
  * Starting with UCS 5.0-0 the AD-Connector had an issue with rewriting
