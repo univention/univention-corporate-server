@@ -1032,7 +1032,8 @@ import_license () {
 		ucr unset hosts/static/85.184.250.151
 		nscd -i hosts
 	fi
-	univention-license-import ./ValidTest.license && univention-license-check
+	univention-license-import ./ValidTest.license || return $?
+	univention-license-check
 	echo "license/base=$(ucr get license/base) uuid/license=$(ucr get uuid/license)"
 }
 
