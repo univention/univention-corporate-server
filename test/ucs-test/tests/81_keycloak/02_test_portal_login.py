@@ -230,12 +230,8 @@ def test_oidc_session_logout_after_access_token_invalid_issue_ucs_2401(portal_co
         }
         run_command(['univention-keycloak', 'oidc/rp', 'update', client_id, json.dumps(changes)])
         page = portal_login_via_keycloak(username, password, protocol='oidc')
-        # FIXME i18n in ucs 5.2-0
-        lang = page.evaluate('() => window.navigator.userLanguage || window.navigator.language')
-        user_mod = 'Users' if lang == 'en-US' else 'Benutzer'
-        page.get_by_role('link', name=f'{user_mod} iFrame').click(timeout=30 * 1000)
-        # wait for umc to load, open the user detail page
-        page.frame_locator(f'iframe[title="{user_mod}"]').get_by_text(username).click()
+        tile = 'App Center'
+        page.get_by_role('link', name=f'{tile} iFrame').click()
         # close the tab
         page.locator('[data-test="close-tab-1"]').click()
         # now delete the session in keycloak and wait for access.token.lifespan,
@@ -244,11 +240,10 @@ def test_oidc_session_logout_after_access_token_invalid_issue_ucs_2401(portal_co
             keycloak_delete_session(keycloak_config, session['id'])
         assert keycloak_sessions_by_user(keycloak_config, username) == []
         time.sleep(access_token_lifespan + 1)
-        page.get_by_role('link', name=f'{user_mod} iFrame').click()
+        page.get_by_role('link', name=f'{tile} iFrame').click()
         # we expect a login page
         portal_login_via_keycloak_custom_page(page, username, password, protocol='oidc')
     finally:
-        print(page.content())
         # revert to original configuration
         changes = {
             'frontchannelLogout': client_config['frontchannelLogout'],

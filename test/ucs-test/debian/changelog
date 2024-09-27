@@ -1,3 +1,9 @@
+ucs-test (10.0.23-5) unstable; urgency=medium
+
+  * Bug #57515: test session logout with invalid access token
+
+ -- Felix Botner <botner@univention.de>  Fri, 27 Sep 2024 17:23:58 +0200
+
 ucs-test (10.0.23-4) unstable; urgency=medium
 
   * Bug #57515: test session logout with invalid access token
