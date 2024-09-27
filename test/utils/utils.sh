@@ -1621,6 +1621,18 @@ register_network_address () {
 	return $rv
 }
 
+remove_ucs_server_from_domain () {
+	local name="$1" mod dn
+	mod="$(univention-ldapsearch cn="$name" univentionObjectType | sed -ne 's/univentionObjectType: //p')"
+	dn="$(univention-ldapsearch "(&(objectClass=univentionHost)(cn=$name))" dn | sed -ne 's/dn: //p')"
+	[ -n "$dn" ] && udm "$mod" remove --remove_referring --dn "$dn"
+	dn="$(udm dns/host_record list --filter relativeDomainName="$name" | sed -ne 's/DN: //p')"
+	[ -n "$dn" ] && udm dns/host_record remove --dn "$dn"
+	dn="$(udm dns/ptr_record list --filter pTRRecord="$name.$(ucr get domainname)." | sed -ne 's/DN: //p')"
+	[ -n "$dn" ] && udm dns/ptr_record remove --dn "$dn"
+	return 0
+}
+
 basic_setup_ucs_joined () {
 	local masterip="${1:?missing master ip}"
 	local admin_password="${2:-univention}"
