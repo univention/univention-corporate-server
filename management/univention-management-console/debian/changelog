@@ -1,3 +1,9 @@
+univention-management-console (14.0.32) unstable; urgency=medium
+
+  * Bug #57622: hard dependency to psycopg2
+
+ -- Felix Botner <botner@univention.de>  Fri, 27 Sep 2024 12:45:27 +0200
+
 univention-management-console (14.0.31) unstable; urgency=medium
 
   * Bug #57482: Add an SQL database for session storage.
