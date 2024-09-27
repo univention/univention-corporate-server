@@ -94,6 +94,7 @@ Depends:
  python-openssl,
  python-pam,
  python-polib,
+ python-psycopg2,
  python-pycurl,
  python-pysaml2,
  python-sdnotify,
@@ -109,8 +110,6 @@ Depends:
  univention-join,
  ${misc:Depends},
  ${python:Depends},
-Recommends:
- python-psycopg2,
 Provides:
  ${python:Provides},
 Description: UCS Management Console - Python 2 Modules
@@ -134,6 +133,7 @@ Depends:
  python3-openssl,
  python3-pam,
  python3-polib,
+ python3-psycopg2,
  python3-pycurl,
  python3-pysaml2,
  python3-sdnotify,
@@ -149,8 +149,6 @@ Depends:
  univention-join,
  ${misc:Depends},
  ${python3:Depends},
-Recommends:
- python3-psycopg2,
 Provides:
  ${python3:Provides},
 Description: UCS Management Console - Python 3 Modules
