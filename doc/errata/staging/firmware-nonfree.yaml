@@ -1,0 +1,45 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: firmware-nonfree
+fix: 20190114+really20220913-0+deb9u3
+desc: |
+ This update addresses the following issues:
+ 20190114+really20220913-0+deb9u3 (Mon, 09 Sep 2024 21:27:14 +0200)
+ * Non-maintainer upload by the LTS Security Team.
+ * Update to linux-support-5.10.0-0.deb9.30
+ * Backported for stretch from buster, package version
+   20190114+really20220913-0+deb10u3:
+ [ Arturo Borrero Gonzalez ]
+ * iwlwifi: update firmware files for: - CVE-2023-35061 - potential
+   information disclosure via adjacent access - CVE-2023-38417 - potential
+   denial of service via adjacent access -
+ CVE-2023-47210 - potential denial of service via adjacent access For affected
+ hardware details, see Intel advisories: - INTEL-SA-00947 (CVE-2023-35061) -
+ INTEL-SA-01039 (CVE-2023-38417 and CVE-2023-47210) New and updated firmware
+ files come from the upstream linux-firmware repository version tag 20240115.
+ The updated firmware files might need an updated kernel.
+ [ Tobias Frost ]
+ * Add metadata for updated/new firmware files.
+ * Updated firmware files: intel/ibt-0041-0041.sfi intel/ibt-17-16-1.sfi
+   intel/ibt-17-2.sfi intel/ibt-18-16-1.sfi intel/ibt-18-2.sfi
+   intel/ibt-19-0-0.sfi intel/ibt-19-0-1.sfi intel/ibt-19-0-4.sfi
+   intel/ibt-19-16-4.sfi intel/ibt-19-240-1.sfi intel/ibt-19-240-4.sfi
+   intel/ibt-19-32-0.sfi intel/ibt-19-32-1.sfi intel/ibt-19-32-4.sfi
+   intel/ibt-20-0-3.sfi intel/ibt-20-1-3.sfi intel/ibt-20-1-4.sfi
+   iwlwifi-Qu-b0-hr-b0-77.ucode iwlwifi-Qu-b0-jf-b0-77.ucode
+   iwlwifi-Qu-c0-hr-b0-77.ucode iwlwifi-Qu-c0-jf-b0-77.ucode
+   iwlwifi-QuZ-a0-hr-b0-77.ucode iwlwifi-QuZ-a0-jf-b0-77.ucode
+   iwlwifi-cc-a0-77.ucode iwlwifi-so-a0-gf-a0-84.ucode
+   iwlwifi-so-a0-gf-a0-86.ucode iwlwifi-so-a0-gf-a0.pnvm
+   iwlwifi-so-a0-gf4-a0-84.ucode iwlwifi-so-a0-gf4-a0-86.ucode
+   iwlwifi-so-a0-gf4-a0.pnvm iwlwifi-so-a0-hr-b0-83.ucode
+   iwlwifi-so-a0-hr-b0-84.ucode iwlwifi-so-a0-hr-b0-86.ucode
+   iwlwifi-ty-a0-gf-a0-84.ucode iwlwifi-ty-a0-gf-a0-86.ucode
+   iwlwifi-ty-a0-gf-a0.pnvm
+bug: [57629]
+cve:
+- CVE-2023-35061
+- CVE-2023-38417
+- CVE-2023-47210
