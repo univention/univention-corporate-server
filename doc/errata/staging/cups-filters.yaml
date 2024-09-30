@@ -1,0 +1,17 @@
+product: ucs
+release: "5.0"
+version: [8, 9]
+scope: ucs_5.0-0-errata5.0-9
+src: cups-filters
+fix: 1.21.6-5+deb10u2A~5.0.9.202409301006
+desc: |
+ This update addresses the following issues:
+ 1.21.6-5+deb10u2 (Thu, 26 Sep 2024 23:45:05 +0200)
+ * CVE-2024-47076 cfGetPrinterAttributes5(): Validate response attributes
+   before return
+ * CVE-2024-47176 Default BrowseRemoteProtocols should not include "cups"
+   protocol
+bug: [57626]
+cve:
+- CVE-2024-47076
+- CVE-2024-47176
