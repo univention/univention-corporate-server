@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [8, 9]
+scope: ucs_5.0-0-errata5.0-9
+src: iproute2
+fix: 4.20.0-2+deb10u2
+desc: |
+ This update addresses the following issue:
+ 4.20.0-2+deb10u2 (Sat, 28 Sep 2024 01:30:33 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2019-20795: Use-after-free in get_netnsid_from_name()
+bug: [57624]
+cve:
+- CVE-2019-20795
