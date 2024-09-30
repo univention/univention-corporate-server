@@ -9,7 +9,7 @@ export CURRENT_AMI="${CURRENT_AMI:=ami-0d29832308bf979df}"  # AMI: Univention Co
 old_release='4.4-9'  #
 export OLD_AMI="${OLD_AMI:=ami-02ad9aab36aadf18a}"  # AMI: Univention Corporate Server (UCS) 4.4 (official image) rev. 11
 export KVM_UCSVERSION="${KVM_UCSVERSION:=5.0-9+e1125}"  #
-export OPENSTACK_IMAGE_VERSION="${OPENSTACK_IMAGE_VERSION:=5.0-8}"  # version for the openstack image
+export OPENSTACK_IMAGE_VERSION="${OPENSTACK_IMAGE_VERSION:=5.0-9}"  # version for the openstack image
 export OPENSTACK_IMAGE_NAME="${OPENSTACK_IMAGE_NAME:=UCS $OPENSTACK_IMAGE_VERSION}"  # name of the default openstack image
 export KVM_OPERATING_SYSTEM="${KVM_OPERATING_SYSTEM:=UCS}"  # --operating-system {Debian,Others,UCS,Windows,all} for ucs-kt-get
 export UCS_MINORRELEASE="${release%%-*}"
