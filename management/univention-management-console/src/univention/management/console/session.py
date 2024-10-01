@@ -105,10 +105,10 @@ class Session(object):
         cls.sessions[session_id] = session
 
     @classmethod
-    def expire(cls, session_id):
+    def expire(cls, session_id, reload=True):
         """Removes a session when the connection to the UMC server has died or the session is expired"""
         try:
-            del cls.sessions[session_id]
+            cls.sessions.delete(session_id, reload)
             CORE.info('Cleaning up session %r' % (session_id,))
         except KeyError:
             CORE.info('Session %r not found' % (session_id,))
@@ -252,7 +252,8 @@ class Session(object):
             return
 
         CORE.info('session %r timed out' % (self.session_id,))
-        self.expire(self.session_id)
+
+        self.expire(self.session_id, reload=False)
         self.on_logout()
         return False
 
