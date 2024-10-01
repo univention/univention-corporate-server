@@ -1,4 +1,4 @@
-ucs-test (10.0.23-8) unstable; urgency=medium
+ucs-test (10.0.23-9) unstable; urgency=medium
 
   * Bug #57609: Test that the Self Service behaves as a singleton
 
@@ -9,18 +9,6 @@ ucs-test (10.0.23-8) unstable; urgency=medium
   * Bug #57515: test session logout with invalid access token
 
  -- Felix Botner <botner@univention.de>  Thu, 26 Sep 2024 21:45:31 +0200
-
-ucs-test (10.0.23-8) unstable; urgency=medium
-
-  * Bug #57515: test session logout with invalid access token
-
- -- Felix Botner <botner@univention.de>  Thu, 26 Sep 2024 21:45:31 +0200
-
-ucs-test (10.0.23-8) unstable; urgency=medium
-
-  * Bug #57609: Test that the Self Service behaves as a singleton
-
- -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 01 Oct 2024 10:17:48 +0200
 
 ucs-test (10.0.23-7) unstable; urgency=medium
 
