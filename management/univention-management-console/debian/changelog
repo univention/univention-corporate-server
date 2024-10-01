@@ -1,3 +1,9 @@
+univention-management-console (12.0.35-3) unstable; urgency=medium
+
+  * Bug #57563: Remove portal refresh on expiry
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 01 Oct 2024 15:27:38 +0200
+
 univention-management-console (12.0.35-2) unstable; urgency=medium
 
   * Bug #57622: hard dependency to psycopg2
