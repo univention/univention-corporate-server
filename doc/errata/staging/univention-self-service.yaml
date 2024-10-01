@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [9]
+scope: ucs_5.0-0-errata5.0-9
+src: univention-self-service
+fix: 5.0.11-2
+desc: |
+ This update addresses the following issues:
+ * The UMC module is now a singleton, i.e., multiple requests will not create
+   new instances of the module but will be handled by one single module
+   process. This can greatly increase performance and decrease memory
+   consumption.
+bug: [57609]
