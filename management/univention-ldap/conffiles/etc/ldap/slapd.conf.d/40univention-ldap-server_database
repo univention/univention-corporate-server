@@ -33,6 +33,8 @@ if configRegistry.is_true('ldap/shadowbind', True):
     ignorefilter = configRegistry.get("ldap/shadowbind/ignorefilter")
     if ignorefilter:
         print('shadowbind-ignore-filter "%s"' % (ignorefilter,))
+    if configRegistry.is_true("ldap/shadowbind/responsecontrol/passwordexpired"):
+        print('shadowbind-response-control-password-expired on')
 
 if configRegistry.is_true('ldap/overlay/lastbind'):
     print('overlay lastbind')
