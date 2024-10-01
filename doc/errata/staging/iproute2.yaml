@@ -6,9 +6,8 @@ src: iproute2
 fix: 4.20.0-2+deb10u2
 desc: |
  This update addresses the following issue:
- 4.20.0-2+deb10u2 (Sat, 28 Sep 2024 01:30:33 +0300)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2019-20795: Use-after-free in get_netnsid_from_name()
+ * A use-after-free vulnerability has been addressed in
+  `get_netnsid_from_name()` in `ip/ipnetns.c`. (CVE-2019-20795)
 bug: [57624]
 cve:
 - CVE-2019-20795
