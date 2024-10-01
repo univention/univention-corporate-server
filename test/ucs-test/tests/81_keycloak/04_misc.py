@@ -5,6 +5,7 @@
 ## exposure: dangerous
 
 import os
+import shutil
 import socket
 
 import dns.resolver
@@ -208,3 +209,15 @@ def test_csp(keycloak_config, ucr, is_keycloak):
         assert f"frame-src 'self'; frame-ancestors 'self' https://*.{ucr['domainname']} https://login.microsoftonline.com https://*.external.com;  object-src 'none';".lower() == response.headers['Content-Security-Policy'].lower()
     finally:
         run_command(['systemctl', 'restart', 'apache2'])
+
+
+@pytest.mark.roles('domaincontroller_master')
+def test_additional_ca_certifiates_issue_223():
+    ca_dir = '/var/lib/univention-appcenter/apps/keycloak/conf/ca-certificates'
+    src = '/etc/univention/ssl/ucsCA/CAcert.pem'
+    dst = f'{ca_dir}/my-new-certificate.pem'
+    os.makedirs(os.path.dirname(dst), exist_ok=True)
+    shutil.copyfile(src, dst)
+    run_command(['univention-app', 'configure', 'keycloak'])
+    stdout = run_command(['docker', 'exec', '-u', 'root', 'keycloak', 'keytool', '-cacerts', '-list', '-storepass', 'changeit', '-noprompt'])
+    assert 'my-new-certificate.pem' in stdout, f'certificate not found in {stdout}'
