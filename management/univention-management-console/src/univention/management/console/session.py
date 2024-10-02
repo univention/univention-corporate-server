@@ -237,11 +237,11 @@ class Session(object):
         else:
             return None
 
-    def logout(self):
+    def logout(self, reload=True):
         CORE.info('User %r logged out' % (self.user.username,))
 
         self.on_logout()
-        self.expire(self.session_id)
+        self.expire(self.session_id, reload=reload)
 
     def _session_timeout_timer(self):
         if self._active_requests:

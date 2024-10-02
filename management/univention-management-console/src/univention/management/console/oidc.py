@@ -353,7 +353,7 @@ class OIDCResource(OAuth2Mixin, Resource):
             json_response = escape.json_decode(exc.response.body)
             if json_response.get('error') == 'invalid_grant':
                 if user.session_id in Session.sessions:
-                    Session.sessions[user.session_id].logout()
+                    Session.sessions[user.session_id].logout(reload=False)
             CORE.error('Could not get new access token: %s' % (json_response))
             raise OpenIDProvideUnavailable(self._('Could not receive token from authorization server.'))
 

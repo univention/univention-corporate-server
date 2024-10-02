@@ -1,3 +1,9 @@
+univention-management-console (12.0.35-4) unstable; urgency=medium
+
+  * Bug #57563: Remove portal refresh on oicd session refresh fail
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 02 Oct 2024 13:07:46 +0200
+
 univention-management-console (12.0.35-3) unstable; urgency=medium
 
   * Bug #57563: Remove portal refresh on expiry
