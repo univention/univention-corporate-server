@@ -6,15 +6,13 @@ src: libreoffice
 fix: 1:6.1.5-3+deb9u4
 desc: |
  This update addresses the following issue:
- 1:6.1.5-3+deb9u4 (Sun, 15 Sep 2024 22:07:49 +0000)
- * Team upload by ELTS security team.
- * Fix CVE-2024-6472: Certificate Validation user interface in LibreOffice
-   allows potential vulnerability. Signed macros are scripts that have been
-   digitally signed by the developer using a cryptographic signature. When a
-   document with a signed macro is opened a warning is displayed by
-   LibreOffice before the macro is executed. Previously if verification failed
-   the user could fail to understand the failure and choose to enable the
-   macros anyway.
+ * Certificate Validation user interface in LibreOffice allows potential
+   vulnerability. Signed macros are scripts that have been digitally signed
+   by the developer using a cryptographic signature. When a document with a
+   signed macro is opened a warning is displayed by LibreOffice before the
+   macro is executed. Previously if verification failed the user could fail
+   to understand the failure and choose to enable the macros anyway.
+   (CVE-2024-6472)
 bug: [57627]
 cve:
 - CVE-2024-6472
