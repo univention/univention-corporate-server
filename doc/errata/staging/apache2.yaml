@@ -6,29 +6,21 @@ src: apache2
 fix: 2.4.25-3+deb9u19A~4.4.9.202409301010
 desc: |
  This update addresses the following issues:
- 2.4.25-3+deb9u19 (Wed, 18 Sep 2024 15:45:11 +0000)
- * Non-maintainer upload by the ELTS team.
- * Adds RewriteOption "LegacyPrefixDocRoot": When a substitution is a fully
-   qualified URL, and the scheme/host/port matches the current virtual host,
-   stop interpreting the path component as a local path just because the first
-   component of the path exists in the filesystem. Adds RewriteOption
-   "LegacyPrefixDocRoot" to revert to previous behavior.
- * Fix CVE-2024-38474: Substitution encoding issue in mod_rewrite in Apache
-   HTTP Server allows attacker to execute scripts in directories permitted by
-   the configuration but not directly reachable by any URL or source
-   disclosure of scripts meant to only to be executed as CGI. Some
-   RewriteRules that capture and substitute unsafely will now fail unless
-   rewrite flag "UnsafeAllow3F" is specified.
- * Fix CVE-2024-38475: Improper escaping of output in mod_rewrite in Apache
-   HTTP allows an attacker to map URLs to filesystem locations that are
-   permitted to be served by the server but are not intentionally/directly
-   reachable by any URL, resulting in code execution or source code
-   disclosure. Substitutions in server context that use a backreferences or
-   variables as the first segment of the substitution are affected. Some
-   unsafe RewiteRules will be broken by this change and the rewrite flag
-   "UnsafePrefixStat" can be used to opt back in once ensuring the
-   substitution is appropriately constrained.
- * Fix CVE-2024-38474 regression
+ * Substitution encoding issue in mod_rewrite in Apache HTTP Server allows
+   attacker to execute scripts in directories permitted by the configuration
+   but not directly reachable by any URL or source disclosure of scripts
+   meant to only to be executed as CGI. Some RewriteRules that capture and
+   substitute unsafely will now fail unless rewrite flag "UnsafeAllow3F" is
+   specified. (CVE-2024-38474)
+ * Improper escaping of output in mod_rewrite in Apache HTTP allows an
+   attacker to map URLs to filesystem locations that are permitted to be
+   served by the server but are not intentionally/directly reachable by any
+   URL, resulting in code execution or source code disclosure. Substitutions
+   in server context that use a backreferences or variables as the first
+   segment of the substitution are affected. Some unsafe RewiteRules will be
+   broken by this change and the rewrite flag "UnsafePrefixStat" can be used
+   to opt back in once ensuring the substitution is appropriately
+   constrained. (CVE-2024-38475)
 bug: [57628]
 cve:
 - CVE-2024-38474
