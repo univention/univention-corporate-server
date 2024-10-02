@@ -6,11 +6,9 @@ src: cups-filters
 fix: 1.21.6-5+deb10u2A~5.0.9.202409301006
 desc: |
  This update addresses the following issues:
- 1.21.6-5+deb10u2 (Thu, 26 Sep 2024 23:45:05 +0200)
- * CVE-2024-47076 cfGetPrinterAttributes5(): Validate response attributes
-   before return
- * CVE-2024-47176 Default BrowseRemoteProtocols should not include "cups"
-   protocol
+ * Attacker-controlled data can be provided to the CUPS system.
+   (CVE-2024-47076)
+ * Possible requests to attacker-controlled URLs. (CVE-2024-47176)
 bug: [57626]
 cve:
 - CVE-2024-47076
