@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [9]
+scope: ucs_5.0-0-errata5.0-9
+src: univention-python
+fix: 13.0.8-2
+desc: |
+ This update addresses the following issues:
+ * For performance reasons the python library `uldap.py` does no
+   longer load an UCR instance on module import.
+bug: [57574]

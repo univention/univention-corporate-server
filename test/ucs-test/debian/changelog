@@ -1,3 +1,9 @@
+ucs-test (12.0.184) unstable; urgency=medium
+
+  * Bug #57574: no ucr load on module import
+
+ -- Felix Botner <botner@univention.de>  Wed, 02 Oct 2024 12:23:39 +0200
+
 ucs-test (12.0.183) unstable; urgency=medium
 
   * Bug #57609: Test that the Self Service behaves as a singleton

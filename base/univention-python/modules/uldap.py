@@ -46,12 +46,8 @@ from ldap.controls.readentry import PostReadControl, PreReadControl
 from ldapurl import LDAPUrl, isLDAPUrl
 
 import univention.logging
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr_live as ucr
 
-
-configRegistry = ConfigRegistry()
-configRegistry.load()
-feature_full_prepostread = configRegistry.is_true('directory/manager/feature/prepostread', False)
 
 log = logging.getLogger('LDAP')
 
@@ -92,15 +88,15 @@ def getRootDnConnection(start_tls: int | None = None, decode_ignorelist: None = 
     :return: A LDAP access object.
     :rtype: univention.uldap.access
     """
-    ucr = ConfigRegistry()
-    ucr.load()
     port = int(ucr.get('slapd/port', '7389').split(',')[0])
     host = ucr['hostname'] + '.' + ucr['domainname']
     if ucr.get('ldap/server/type', 'dummy') == 'master':
-        bindpw = open('/etc/ldap.secret').read().rstrip('\n')
+        with open('/etc/ldap.secret') as secret:
+            bindpw = secret.read().rstrip('\n')
         binddn = 'cn=admin,{}'.format(ucr['ldap/base'])
     else:
-        bindpw = open('/etc/ldap/rootpw.conf').read().rstrip('\n').replace('rootpw "', '', 1)[:-1]
+        with open('/etc/ldap/rootpw.conf') as secret:
+            bindpw = secret.read().rstrip('\n').replace('rootpw "', '', 1)[:-1]
         binddn = 'cn=update,{}'.format(ucr['ldap/base'])
     return access(host=host, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, reconnect=reconnect)
 
@@ -114,9 +110,8 @@ def getAdminConnection(start_tls: int | None = None, decode_ignorelist: None = N
     :return: A LDAP access object.
     :rtype: univention.uldap.access
     """
-    ucr = ConfigRegistry()
-    ucr.load()
-    bindpw = open('/etc/ldap.secret').read().rstrip('\n')
+    with open('/etc/ldap.secret') as secret:
+        bindpw = secret.read().rstrip('\n')
     port = int(ucr.get('ldap/master/port', '7389'))
     return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=admin,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, reconnect=reconnect)
 
@@ -130,9 +125,8 @@ def getBackupConnection(start_tls: int | None = None, decode_ignorelist: None = 
     :return: A LDAP access object.
     :rtype: univention.uldap.access
     """
-    ucr = ConfigRegistry()
-    ucr.load()
-    bindpw = open('/etc/ldap-backup.secret').read().rstrip('\n')
+    with open('/etc/ldap-backup.secret') as secret:
+        bindpw = secret.read().rstrip('\n')
     port = int(ucr.get('ldap/master/port', '7389'))
     try:
         return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, reconnect=reconnect)
@@ -155,10 +149,8 @@ def getMachineConnection(start_tls: int | None = None, decode_ignorelist: None =
     :return: A LDAP access object.
     :rtype: univention.uldap.access
     """
-    ucr = ConfigRegistry()
-    ucr.load()
-
-    bindpw = open(secret_file).read().rstrip('\n')
+    with open(secret_file) as secret:
+        bindpw = secret.read().rstrip('\n')
 
     if ldap_master:
         # Connect to Primary Directory Node
@@ -239,9 +231,6 @@ class access:
         self.reconnect = reconnect
 
         self.port = int(port) if port else None
-
-        ucr = ConfigRegistry()
-        ucr.load()
 
         if self.start_tls is None:
             self.start_tls = ucr.get_int('directory/manager/starttls', 2)
@@ -633,7 +622,7 @@ class access:
         """
         log.debug('uldap.add dn=%s', dn)
 
-        if feature_full_prepostread:
+        if ucr.is_true('directory/manager/feature/prepostread', False):
             if serverctrls:
                 for ctrl in serverctrls:
                     if isinstance(ctrl, PostReadControl):
@@ -682,7 +671,7 @@ class access:
         """
         log.debug('uldap.modify %s', dn)
 
-        if feature_full_prepostread:
+        if ucr.is_true('directory/manager/feature/prepostread', False):
             if serverctrls:
                 for ctrl in serverctrls:
                     for ctrl_type in (PreReadControl, PostReadControl):
@@ -807,7 +796,7 @@ class access:
         newrdn = ldap.dn.dn2str([ldap.dn.str2dn(newdn)[0]])
         newsdn = ldap.dn.dn2str(ldap.dn.str2dn(newdn)[1:])
 
-        if feature_full_prepostread:
+        if ucr.is_true('directory/manager/feature/prepostread', False):
             if serverctrls:
                 for ctrl in serverctrls:
                     for ctrl_type in (PreReadControl, PostReadControl):
@@ -864,7 +853,7 @@ class access:
         """
         log.debug('uldap.delete %s', dn)
 
-        if feature_full_prepostread:
+        if ucr.is_true('directory/manager/feature/prepostread', False):
             if serverctrls:
                 for ctrl in serverctrls:
                     if isinstance(ctrl, PreReadControl):
