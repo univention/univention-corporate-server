@@ -1,3 +1,11 @@
+univention-self-service (6.0.8) unstable; urgency=medium
+
+  * Bug #57609: Make the UMC module a singleton. As it does not need to
+    preserve any state, it greatly benefits from not creating one module
+    process per session
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 02 Oct 2024 12:01:11 +0200
+
 univention-self-service (6.0.7) unstable; urgency=medium
 
   * Bug #57226: Change the filter for the self-service
