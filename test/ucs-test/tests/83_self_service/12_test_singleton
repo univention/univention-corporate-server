@@ -1,0 +1,46 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: Check that Self Service UMC module is singleton
+## packages:
+## - univention-self-service
+## - univention-self-service-passwordreset-umc
+## roles-not: [basesystem]
+## tags:
+##  - apptest
+## exposure: dangerous
+
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+
+service univention-management-console-server restart
+
+DOMAIN="$(ucr get hostname).$(ucr get domainname)"
+
+for i in $(seq 1 3); do
+  curl "https://${DOMAIN}/univention/command/passwordreset/send_token" \
+  -H 'accept: application/json, text/plain, */*' \
+  -H 'accept-language: de-DE' \
+  -H 'content-type: application/json;charset=UTF-8' \
+  -H 'cookie: UMCLang=de-DE' \
+  -H 'origin: https://${DOMAIN}' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://${DOMAIN}/univention/portal/' \
+  -H 'sec-ch-ua: "Not)A;Brand";v="99", "Google Chrome";v="127", "Chromium";v="127"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "Windows"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36' \
+  -H 'x-requested-with: XMLHttpRequest' \
+  --data-raw '{"options":{"username":"unknown.user","method":"email"}}'
+  echo
+done
+
+ps aux | grep -i "/usr/bin/python3 /usr/sbin/univention-management-console-module -m passwordreset"
+
+count="$(ps aux | grep -c -i '/usr/bin/python3 /usr/sbin/univention-management-console-module -m passwordreset')"
+
+[ "$count" -eq "2" ] ||
+	fail_fast 110 "Wrong number of expected results when searching for UMC processes. We want 2: One UMC process and the grep command. In the lines above are the results."
+
