@@ -1,3 +1,10 @@
+ucs-test (10.0.23-10) unstable; urgency=medium
+
+  * Bug #57609: Fix test to only run on roles that have the Self Service
+    installed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 02 Oct 2024 09:47:25 +0200
+
 ucs-test (10.0.23-9) unstable; urgency=medium
 
   * Bug #57609: Test that the Self Service behaves as a singleton

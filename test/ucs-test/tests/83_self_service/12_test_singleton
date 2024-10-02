@@ -1,11 +1,13 @@
 #!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
 ## desc: Check that Self Service UMC module is singleton
+## packages:
+## - univention-self-service
+## - univention-self-service-passwordreset-umc
 ## roles-not: [basesystem]
 ## tags:
-##  - basic
 ##  - apptest
-## exposure: safe
+## exposure: dangerous
 
 # shellcheck source=../../lib/base.sh
 . "$TESTLIBPATH/base.sh" || exit 137
@@ -39,6 +41,5 @@ ps aux | grep -i "/usr/bin/python3 /usr/sbin/univention-management-console-modul
 
 count="$(ps aux | grep -c -i '/usr/bin/python3 /usr/sbin/univention-management-console-module -m passwordreset')"
 
-# the grep command + one umc module == 2
 [ "$count" -eq "2" ] ||
-	fail_fast 110 "Wrong number of expected results when searching for UMC processes"
+	fail_fast 110 "Wrong number of expected results when searching for UMC processes. We want 2: One UMC process and the grep command. In the lines above are the results."
