@@ -7,7 +7,8 @@ fix: 4.20.0-2+deb10u2
 desc: |
  This update addresses the following issue:
  * A use-after-free vulnerability has been addressed in
-  `get_netnsid_from_name()` in `ip/ipnetns.c`. (CVE-2019-20795)
+   `get_netnsid_from_name()` in `ip/ipnetns.c`. (CVE-2019-20795)
+   exploitability.
 bug: [57624]
 cve:
 - CVE-2019-20795
