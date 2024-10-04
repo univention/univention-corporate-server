@@ -13,6 +13,6 @@ desc: |
    when synchronizing from the sysvol from a system with an `ext4` partition,
    which doesn't have those, but only the usual `system.posix_acl_access` and
    `system.posix_acl_default`. The script `sysvol-sync.sh` has been adjusted
-   to filter the syncronized xattrs to only consider `security.NTACL` and
+   to filter the synchronized xattrs to only consider `security.NTACL` and
    not touch any other xattrs.
 bug: [57529]
