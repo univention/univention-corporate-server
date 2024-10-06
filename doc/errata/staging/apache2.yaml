@@ -1,0 +1,140 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: apache2
+fix: 2.4.25-3+deb9u19A~4.4.9.202410062011
+desc: |
+ This update addresses the following issues:
+ 2.4.25-3+deb9u19 (Wed, 18 Sep 2024 15:45:11 +0000)
+ * Non-maintainer upload by the ELTS team.
+ * Adds RewriteOption "LegacyPrefixDocRoot": When a substitution is a fully
+   qualified URL, and the scheme/host/port matches the current virtual host,
+   stop interpreting the path component as a local path just because the first
+   component of the path exists in the filesystem. Adds RewriteOption
+   "LegacyPrefixDocRoot" to revert to previous behavior.
+ * Fix CVE-2024-38474: Substitution encoding issue in mod_rewrite in Apache
+   HTTP Server allows attacker to execute scripts in directories permitted by
+   the configuration but not directly reachable by any URL or source
+   disclosure of scripts meant to only to be executed as CGI. Some
+   RewriteRules that capture and substitute unsafely will now fail unless
+   rewrite flag "UnsafeAllow3F" is specified.
+ * Fix CVE-2024-38475: Improper escaping of output in mod_rewrite in Apache
+   HTTP allows an attacker to map URLs to filesystem locations that are
+   permitted to be served by the server but are not intentionally/directly
+   reachable by any URL, resulting in code execution or source code
+   disclosure. Substitutions in server context that use a backreferences or
+   variables as the first segment of the substitution are affected. Some
+   unsafe RewiteRules will be broken by this change and the rewrite flag
+   "UnsafePrefixStat" can be used to opt back in once ensuring the
+   substitution is appropriately constrained.
+ * Fix CVE-2024-38474 regression
+ 2.4.25-3+deb9u18 (Thu, 11 Jul 2024 21:27:10 +0000)
+ * Fix CVE-2024-36387: Serving WebSocket protocol upgrades over a HTTP/2
+   connection could result in a Null Pointer dereference, leading to a crash
+   of the server process.
+ * Fix CVE-2024-38476: SSRF or local script execution via backend applications
+   whose response headers are malicious or exploitable
+ * Fix CVE-2024-38477: a NULL pointer dereference was found in mod_proxy
+   allowing an attacker to crash the server via a malicious request.
+ * Fix CVE-2024-38573: A potential SSRF in mod_rewrite allowed an attacker to
+   cause unsafe RewriteRules to unexpectedly setup URL's to be handled by
+   mod_proxy.
+ * Fix CVE-2024-39884: A regression of CVE-2024-38476 in the core of Apache
+   HTTP Server ignores some use of the legacy content-type based configuration
+   of handlers. "AddType" and similar configuration, under some circumstances
+   where files are requested indirectly, result in source code disclosure of
+   local content. For example, PHP scripts may be served instead of
+   interpreted.
+ * Fix CVE-2024-40725: A partial fix for CVE-2024-38476 in the core of Apache
+   HTTP Server ignores some use of the legacy content-type based configuration
+   of handlers. "AddType" and similar configuration, under some circumstances
+   where files are requested indirectly, result in source code disclosure of
+   local content. For example, PHP scripts may be served instead of
+   interpreted.
+ * Recognize dolphin and Konqueror/5 browsers for webdav (LP: #1927742)
+ 2.4.25-3+deb9u17 (Fri, 28 Jun 2024 16:41:04 +0000)
+ * Backport HTTP2 from 2.4.59: + Fix CVE-2024-27316: HTTP/2 incoming headers
+   exceeding the limit were temporarily buffered in nghttp2 in order to
+   generate an informative HTTP 413 response. If a client does not stop
+   sending headers, this leads to memory exhaustion. + Fix CVE-2023-45802:
+   When a HTTP/2 stream was reset (RST frame) by a client, there was a time
+   window were the request's memory resources were not reclaimed immediately.
+   Instead, de-allocation was deferred to connection close. A client could
+   send new requests and resets, keeping the connection busy and open and
+   causing the memory footprint to keep on growing. On connection close, all
+   resources were reclaimed, but the process might run out of memory before
+   that. + Fix CVE-2021-33193: A crafted method sent through HTTP/2 will
+   bypass validation and be forwarded by mod_proxy, which can lead to request
+   splitting or cache poisoning + Fix CVE-2020-11993: When trace/debug was
+   enabled for the HTTP/2 module and on certain traffic edge patterns, logging
+   statements were made on the wrong connection, causing concurrent use of
+   memory pool. + Fix CVE-2020-9490: A specially crafted value for the
+   'Cache-Digest' header in a HTTP/2 request would result in a crash when the
+   server actually tries to HTTP/2 PUSH a resource afterwards.
+ 2.4.25-3+deb9u16 (Sun, 26 May 2024 13:47:43 +0000)
+ * Fix CVE-2023-31122: Fix and Out-of-bounds Read vulnerability in mod_macro
+   of Apache HTTP Server
+ * Fix CVE-2023-38709: Fix a faulty input validation in the core of Apache
+   allows malicious or exploitable backend/content generators to split HTTP
+   responses.
+ * Fix CVE-2024-24795: Fix HTTP Response splitting in multiple modules. Apache
+   allowed an attacker that can inject malicious response headers into backend
+   applications to cause an HTTP desynchronization attack.
+ * Fix autopkgtest suite.
+ 2.4.25-3+deb9u15 (Tue, 25 Apr 2023 08:16:21 +0000)
+ * CVE-2023-25690: Some mod_proxy configurations allow a HTTP Request
+   Smuggling attack. Configurations are affected when mod_proxy is enabled
+   along with some form of RewriteRule or ProxyPassMatch in which a
+   non-specific pattern matches some portion of the user-supplied
+   request-target (URL) data and is then re-inserted into the proxied
+   request-target using variable substitution.
+ * CVE-2022-36760: Inconsistent Interpretation of HTTP Requests (‘HTTP Request
+   Smuggling’) vulnerability in mod_proxy_ajp of Apache HTTP Server allows an
+   attacker to smuggle requests to the AJP server it forwards requests to.
+ * CVE-2006-20001: A carefully crafted If: request header can cause a memory
+   read, or write of a single zero byte, in a pool (heap) memory location
+   beyond the header value sent. This could cause the process to crash.
+ * CVE-2022-37436: a malicious backend can cause the response headers to be
+   truncated early, resulting in some headers being incorporated into the
+   response body. If the later headers have any security purpose, they will
+   not be interpreted by the client.
+ * Backport regression fix for CVE-2023-25690.
+ 2.4.25-3+deb9u14 (Sat, 18 Jun 2022 20:05:41 -0400)
+ * Non-maintainer upload by the LTS team.
+ * CVE-2022-26377: mod_proxy_ajp: Possible request smuggling.
+ * CVE-2022-28614: read beyond bounds via ap_rwrite().
+ * CVE-2022-28615: Read beyond bounds in ap_strcmp_match().
+ * CVE-2022-29404: Denial of service in mod_lua r:parsebody.
+ * CVE-2022-30522: mod_sed denial of service.
+ * CVE-2022-30556: Information Disclosure in mod_lua with websockets.
+ * CVE-2022-31813: mod_proxy X-Forwarded-For dropped by hop-by-hop mechanism.
+bug: [57628]
+cve:
+- CVE-2024-38474
+- CVE-2024-38475
+- CVE-2024-36387
+- CVE-2024-38476
+- CVE-2024-38477
+- CVE-2024-38573
+- CVE-2024-39884
+- CVE-2024-40725
+- CVE-2024-27316
+- CVE-2023-45802
+- CVE-2021-33193
+- CVE-2020-11993
+- CVE-2020-9490
+- CVE-2023-31122
+- CVE-2023-38709
+- CVE-2024-24795
+- CVE-2023-25690
+- CVE-2022-36760
+- CVE-2006-20001
+- CVE-2022-37436
+- CVE-2022-26377
+- CVE-2022-28614
+- CVE-2022-28615
+- CVE-2022-29404
+- CVE-2022-30522
+- CVE-2022-30556
+- CVE-2022-31813
