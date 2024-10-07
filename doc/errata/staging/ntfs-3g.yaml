@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: ntfs-3g
+fix: 1:2016.2.22AR.1+dfsg-1+deb9u5
+desc: |
+ This update addresses the following issue:
+ 1:2016.2.22AR.1+dfsg-1+deb9u5 (Fri, 04 Oct 2024 16:12:56 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2023-52890: Use-after-free in ntfs_uppercase_mbs()
+bug: [57651]
+cve:
+- CVE-2023-52890
