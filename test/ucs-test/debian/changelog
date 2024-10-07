@@ -1,3 +1,10 @@
+ucs-test (10.0.23-11) unstable; urgency=medium
+
+  * Bug #57609: Making Self Service a singleton made it necessary to restart
+    UMC in one test
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 07 Oct 2024 12:12:05 +0200
+
 ucs-test (10.0.23-10) unstable; urgency=medium
 
   * Bug #57609: Fix test to only run on roles that have the Self Service
