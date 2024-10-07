@@ -1,0 +1,20 @@
+product: ucs
+release: "5.0"
+version: [8, 9]
+scope: ucs_5.0-0-errata5.0-9
+src: expat
+fix: 2.2.6-2+deb10u8
+desc: |
+ This update addresses the following issues:
+ 2.2.6-2+deb10u8 (Wed, 25 Sep 2024 04:26:59 +0200)
+ * Non-maintainer upload by the ELTS Team.
+ * Fix CVE-2024-45490: xmlparse.c does not reject a negative length for
+   XML_ParseBuffer(), which may cause memory corruption or code execution.
+
+ * Fix CVE-2024-45491: Integer overflow for nDefaultAtts on 32-bit platforms.
+ * Fix CVE-2024-45492: Integer overflow for m_groupSize on 32-bit platforms.
+bug: [57644]
+cve:
+- CVE-2024-45490
+- CVE-2024-45491
+- CVE-2024-45492
