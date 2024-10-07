@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: vlc
+fix: 3.0.21-0+deb9u1
+desc: |
+ This update addresses the following issue:
+ 3.0.21-0+deb9u1 (Wed, 02 Oct 2024 17:54:36 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * New upstream release. - CVE-2024-46461: MMS stream buffer overflow.
+bug: [57649]
+cve:
+- CVE-2024-46461
