@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [8, 9]
+scope: ucs_5.0-0-errata5.0-9
+src: libxml2
+fix: 2.9.4+dfsg1-7+deb10u8
+desc: |
+ This update addresses the following issue:
+ 2.9.4+dfsg1-7+deb10u8 (Wed, 02 Oct 2024 20:09:43 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2016-9318: XML External Entity (XXE) attack via crafted document
+bug: [57573]
+cve:
+- CVE-2016-9318
