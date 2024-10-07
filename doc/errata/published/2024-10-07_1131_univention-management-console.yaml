@@ -12,3 +12,6 @@ desc: |
  * The automatic browser reload of the `univention-portal` led to a visual
    logout every 5 minutes, since the initial assertion was expired then.
 bug: [57515,57622,57563]
+erratum: 1131
+announced: 2024-10-07
+support: core
