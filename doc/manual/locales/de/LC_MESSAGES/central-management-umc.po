@@ -1633,21 +1633,20 @@ msgstr ""
 " eine Zwei-Faktor-Authentifizierung (2FA) zu erweitern."
 
 #: ../../central-management-umc/login.rst:42
-msgid "Refresh portal tabs on logout or session timeout"
-msgstr "Portal Tabs bei Abmeldung oder Ablauf der Session aktualisieren"
+msgid "Refresh portal tabs on logout"
+msgstr "Portal Tabs bei Abmeldung aktualisieren"
 
 #: ../../central-management-umc/login.rst:44
 msgid ""
 "All browser tabs where the user is logged into the portal will "
-"automatically refresh when a logout is detected. The same applies if the "
-"session times out. This feature is deactivated by default and can be "
-"toggled through the UCR Variable :envvar:`portal/reload-tabs-on-logout`."
+"automatically refresh when a logout is detected. This feature is "
+"deactivated by default and can be toggled through the UCR Variable "
+":envvar:`portal/reload-tabs-on-logout`."
 msgstr ""
 "Alle Browser Tabs, in denen der Benutzer im Portal eingeloggt ist, werden"
-" automatisch aktualisiert, wenn eine Abmeldung erkannt wird. Dasselbe "
-"gilt, wenn die Sitzung abläuft. Diese Funktion ist standardmäßig "
-"deaktiviert und kann über die UCR-Variable :envvar:`portal/reload-tabs-"
-"on-logout` umgeschaltet werden."
+" automatisch aktualisiert, wenn eine Abmeldung erkannt wird. Diese "
+"Funktion ist standardmäßig deaktiviert und kann über die UCR-Variable "
+":envvar:`portal/reload-tabs-on-logout` umgeschaltet werden."
 
 #: ../../central-management-umc/login.rst:49
 msgid "Choose the right user account"
