@@ -1,0 +1,21 @@
+product: ucs
+release: "5.0"
+version: [8, 9]
+scope: ucs_5.0-0-errata5.0-9
+src: mariadb-10.3
+fix: 1:10.3.39-0+deb10u3
+desc: |+
+ This update addresses the following issue:
+ 1:10.3.39-0+deb10u3 (Sat, 28 Sep 2024 21:04:12 +0000)
+ * Non-maintainer upload by the ELTS Security Team.
+ * Fix CVE-2024-21096: Difficult to exploit vulnerability allows
+   unauthenticated attacker with logon to the infrastructure where MariaDB
+   Server executes to compromise MariaDB Server. Successful attacks of this
+   vulnerability can result in unauthorized update, insert or delete access to
+   some of MariaDB Server accessible data as well as unauthorized read access
+   to a subset of MariaDB Server accessible data and unauthorized ability to
+   cause a partial denial of service (partial DoS)
+
+bug: [57652]
+cve:
+- CVE-2024-21096
