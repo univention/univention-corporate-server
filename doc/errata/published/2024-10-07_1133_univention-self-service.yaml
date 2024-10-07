@@ -11,3 +11,6 @@ desc: |
    process. This can greatly increase performance and decrease memory
    consumption.
 bug: [57609]
+erratum: 1133
+announced: 2024-10-07
+support: core
