@@ -11,3 +11,6 @@ desc: |
    This problem has been fixed, so that mixed case DNs from AD are
    mapped properly to UCS LDAP DNs again, avoiding unintelligible rejects.
 bug: [57565]
+erratum: 1130
+announced: 2024-10-07
+support: core
