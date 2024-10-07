@@ -38,11 +38,10 @@ To sign out of the management system, click :guilabel:`Logout` in the user menu.
 By installing a third-party application, such as :program:`privacyIDEA`, it's possible to extend
 the |UCSWEB| authentication with a two-factor authentication (2FA).
 
-Refresh portal tabs on logout or session timeout
+Refresh portal tabs on logout
 ------------------------------------------------
 
 All browser tabs where the user is logged into the portal will automatically refresh when a logout is detected.
-The same applies if the session times out.
 This feature is deactivated by default and can be toggled through the UCR Variable :envvar:`portal/reload-tabs-on-logout`.
 
 Choose the right user account
