@@ -16,3 +16,6 @@ desc: |
    to filter the synchronized xattrs to only consider `security.NTACL` and
    not touch any other xattrs.
 bug: [57529]
+erratum: 1132
+announced: 2024-10-07
+support: core
