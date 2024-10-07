@@ -68,6 +68,8 @@ def get_new_ssp(chrome, user):
 
 def test_service_specific_password(chrome, ucr, users):
     lo = univention.admin.uldap.access(host=ucr.get('ldap/master'), port=ucr.get('ldap/server/port'), base=ucr.get('ldap/base'), binddn=ucr.get('tests/domainadmin/account'), bindpw=ucr.get('tests/domainadmin/pwd'), start_tls=2, follow_referral=True)
+    subprocess.call(['service', 'univention-management-console-server', 'restart'])  # needs to be restarted to be current wrt umc/self-service/service-specific-passwords/backend/enabled=true
+    time.sleep(10)
     with chrome.capture('test_service_specific_password'):
         user = users('service-specific-password', {'networkAccess': True})
         password = get_new_ssp(chrome, user)
