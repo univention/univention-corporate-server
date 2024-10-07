@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: e2fsprogs
+fix: 1.43.4-2+deb9u3A~4.4.9.202410071506
+desc: |
+ This update addresses the following issue:
+ 1.43.4-2+deb9u3 (Fri, 04 Oct 2024 00:43:51 +0300)
+ * Non-maintainer upload by the ELTS Team.
+ * CVE-2022-1304: e2fsck out-of-bounds read/write
+ * Run the upstream tests during build.
+bug: [57654]
+cve:
+- CVE-2022-1304
