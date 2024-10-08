@@ -1,3 +1,10 @@
+univention-management-console (12.0.35-6) unstable; urgency=medium
+
+  * Issue univention/components/keycloak-app#224: OIDC Doesn't work with
+    mixed case domainname
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 21 Oct 2024 09:34:56 +0200
+
 univention-management-console (12.0.35-5) unstable; urgency=medium
 
   * Bug #57516: Add Content-Security-Policy frame-ancestors for oidc/frontchannel-logout
