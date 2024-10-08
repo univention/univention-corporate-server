@@ -6,13 +6,11 @@ src: cups
 fix: 2.2.10-6+deb10u11A~5.0.9.202410071504
 desc: |
  This update addresses the following issues:
- 2.2.10-6+deb10u11 (Thu, 26 Sep 2024 23:45:05 +0200)
- * CVE-2024-47175 Fix CVE and upstream also added some extra hardening to
-   patch - validate response from printer in scheduler/ipp.c - sanitize make
-   and model in cups/ppd-cache.c - PPDize preset and template names in
-   cups/ppd-cache.c
- * fix possible regression of CVE-2024-35235 in case only domain sockets are
-   used
+ * CVE-2024-35235: Fix domain socket handling
+ * CVE-2024-47175: `libppd` function `ppdCreatePPDFromIPP2` does not sanitize
+   IPP attributes when creating the PPD buffer. When used in combination with
+   other functions such as `cfGetPrinterAttributes5`, can result in user
+   controlled input and ultimately code execution via Foomatic.
 bug: [57647]
 cve:
 - CVE-2024-47175
