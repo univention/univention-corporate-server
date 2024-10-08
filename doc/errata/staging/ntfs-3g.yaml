@@ -6,9 +6,8 @@ src: ntfs-3g
 fix: 1:2016.2.22AR.1+dfsg-1+deb9u5
 desc: |
  This update addresses the following issue:
- 1:2016.2.22AR.1+dfsg-1+deb9u5 (Fri, 04 Oct 2024 16:12:56 +0300)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2023-52890: Use-after-free in ntfs_uppercase_mbs()
+ * CVE-2023-52890: NTFS-3G has a use-after-free in `ntfs_uppercase_mbs` in
+   `libntfs-3g/unistr.c`.
 bug: [57651]
 cve:
 - CVE-2023-52890
