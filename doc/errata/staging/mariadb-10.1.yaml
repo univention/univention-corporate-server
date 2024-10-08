@@ -6,57 +6,32 @@ src: mariadb-10.1
 fix: 10.1.48-0+deb9u4
 desc: |
  This update addresses the following issues:
-
- Debian update 10.1.48-0+deb9u4
- 10.1.48-0+deb9u4 (Wed, 28 Aug 2024 21:47:06 +0000)
- * Non-maintainer upload by the ELTS Security Team.
- [Roberto C. Sánchez]
- * Fix CVE-2021-46659: an application crash existed because MariaDB does not
-   recognize that SELECT_LEX::nest_level is local to each VIEW
- [Bastien Roucariès]
- * Fix CVE-2022-21427: An Easily exploitable vulnerability allowed high
-   privileged attacker with network access via multiple protocols to
-   compromise MariaDB Server. Successful attacks of this vulnerability can
-   result in unauthorized ability to cause a hang or frequently repeatable
-   crash (complete DOS). Certain UTF8 combining marks cause MariaDB to crash
-   when doing Full-Text searches.
- * Fix CVE-2022-24048, CVE-2022-24051, CVE-2022-24052: MariaDB CONNECT Storage
-   Engine Stack-based Buffer Overflow Privilege Escalation Vulnerability. This
-   vulnerability allows local attackers to escalate privileges on affected
-   installations of MariaDB. Authentication is required to exploit this
-   vulnerability. The specific flaw exists within the processing of SQL
-   queries. The issue results from the lack of proper validation of the length
-   of user-supplied data prior to copying it to a fixed-length stack-based
-   buffer. An attacker can leverage this vulnerability to escalate privileges
-   and execute arbitrary code in the context of the service account. Concerned
-   storage Engine were JSON, XML, MYSQL.
- * CVE-2022-24050: MariaDB CONNECT Storage Engine Use-After-Free Privilege
-   Escalation Vulnerability. This vulnerability allows local attackers to
-   escalate privileges on affected installations of MariaDB. Authentication is
-   required to exploit this vulnerability. The specific flaw exists within the
-   processing of SQL queries. The issue results from the lack of validating
-   the existence of an object prior to performing operations on the object. An
-   attacker can leverage this vulnerability to escalate privileges and execute
-   arbitrary code in the context of the service account.
- * CVE-2022-27380: An issue in the component my_decimal::operator= of MariaDB
-   Server was discovered to allow attackers to cause a Denial of Service (DoS)
-   via specially crafted SQL statements.
- * CVE-2022-27383: An use-after-free was found in the component
-   my_strcasecmp_8bit, which is exploited via specially crafted SQL
-   statements.
- * Fix CVE-2022-27384, CVE-2022-32083 An issue in the component
-   Item_subselect::init_expr_cache_tracker allow attackers to cause a Denial
-   of Service (DoS) via specially crafted SQL statements.
- * Fix CVE-2022-27387: a global buffer overflow in the component
-   decimal_bin_size was found, which is exploited via specially crafted SQL
-   statements.
- * Fix CVE-2022-27448: There is an Assertion failure via 'node->pcur->rel_pos
-   == BTR_PCUR_ON'. This could lead to a crash in multi-update and implicit
-   grouping
- * Fix CVE-2022-31622: Fix a Denial of Service. When an error occurs
-   (pthread_create returns a nonzero value) while executing the method
-   create_worker_threads, the held lock is not released correctly, which
-   allows local users to trigger a denial of service due to the deadlock
+ * CVE-2021-46659: CVSS base score 5.5
+   (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2022-21427: CVSS base score 4.9
+   (CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2022-24048: CVSS base score 7.8
+   (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2022-24051: CVSS base score 7.8
+   (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2022-24052: CVSS base score 7.8
+   (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2022-24050: CVSS base score 7.8
+   (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2022-27380: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2022-27383: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2022-27384: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2022-32083: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2022-27387: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2022-27448: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2022-31622: CVSS base score 5.5
+   (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
 bug: [57656]
 cve:
 - CVE-2021-46659
