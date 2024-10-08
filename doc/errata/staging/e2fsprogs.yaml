@@ -6,10 +6,9 @@ src: e2fsprogs
 fix: 1.44.5-1+deb10u4A~5.0.9.202410071504
 desc: |
  This update addresses the following issue:
- 1.44.5-1+deb10u4 (Thu, 03 Oct 2024 17:30:29 +0300)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2022-1304: e2fsck out-of-bounds read/write
- * Run the upstream tests during build.
+ * CVE-2022-1304: An out-of-bounds read/write vulnerability was found. This
+   issue leads to a segmentation fault and possibly arbitrary code execution
+   via a specially crafted filesystem.
 bug: [57648]
 cve:
 - CVE-2022-1304
