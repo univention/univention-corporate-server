@@ -6,11 +6,18 @@ src: cups-filters
 fix: 1.11.6-3+deb9u3
 desc: |
  This update addresses the following issues:
- 1.11.6-3+deb9u3 (Thu, 26 Sep 2024 23:45:05 +0200)
- * CVE-2024-47076 cfGetPrinterAttributes5(): Validate response attributes
-   before return
- * CVE-2024-47176 Default BrowseRemoteProtocols should not include "cups"
-   protocol
+ * CVE-2024-47076: The `cfGetPrinterAttributes5` function in `libcupsfilters`
+   does not sanitize IPP attributes returned from an IPP server. When these
+   IPP attributes are used, for instance, to generate a PPD file, this can
+   lead to attacker controlled data to be provided to the rest of the CUPS
+   system.
+ * CVE-2024-47176: `cups-browsed` binds to `INADDR_ANY:631`, causing it to
+   trust any packet from any source, and can cause the
+   `Get-Printer-Attributes` IPP request to an attacker controlled URL. When
+   combined with other vulnerabilities, such as CVE-2024-47076,
+   CVE-2024-47175, and CVE-2024-47177, an attacker can execute arbitrary
+   commands remotely on the target machine without authentication when a
+   malicious printer is printed to.
 bug: [57655]
 cve:
 - CVE-2024-47076
