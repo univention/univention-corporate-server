@@ -6,12 +6,16 @@ src: sqlite3
 fix: 3.27.2-3+deb10u3
 desc: |
  This update addresses the following issues:
- 3.27.2-3+deb10u3 (Mon, 30 Sep 2024 13:28:13 +0300)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2019-19244: Mishandling of sub-select that uses both DISTINCT and
-   window functions, and also has certain ORDER BY usage
- * CVE-2021-36690: Expert extension segfault
- * CVE-2023-7104: Session extension buffer overread
+ * CVE-2019-19244: Mishandling of `sub-select` that uses both `DISTINCT` and
+   window functions, and also has certain `ORDER BY` usage.
+ * CVE-2021-36690: A segmentation fault can occur in the `sqlite3.exe`
+   command-line component of via the `idxGetTableInfo` function when there is
+   a crafted `SQL` query.
+ * CVE-2023-7104: A vulnerability was found in SQLite SQLite3 classified as
+   critical. This issue affects the function `sessionReadRecord` of the file
+   `ext/session/sqlite3session.c` of the component make `alltest` Handler. The
+   manipulation leads to heap-based buffer overflow. It is recommended to
+   apply a patch to fix this issue.
 bug: [57645]
 cve:
 - CVE-2019-19244
