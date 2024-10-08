@@ -6,9 +6,11 @@ src: vlc
 fix: 3.0.21-0+deb9u1
 desc: |
  This update addresses the following issue:
- 3.0.21-0+deb9u1 (Wed, 02 Oct 2024 17:54:36 +0300)
- * Non-maintainer upload by the ELTS Team.
- * New upstream release. - CVE-2024-46461: MMS stream buffer overflow.
+ * CVE-2024-46461: VLC is vulnerable to denial of service through an integer
+   overflow which could be triggered with a maliciously crafted `mms` stream
+   (heap based overflow). If successful, a malicious third party could trigger
+   either a crash of VLC or an arbitrary code execution with the target user's
+   privileges.
 bug: [57649]
 cve:
 - CVE-2024-46461
