@@ -50,14 +50,14 @@ UMC_OIDC_CLIENT = {
         "access.token.lifespan": "300",
         "saml.multivalued.roles": "false",
         "saml.force.post.binding": "false",
-        "post.logout.redirect.uris": "http://{fqdn}/univention/oidc/*##https://{fqdn}/univention/oidc/*##http://{ip}/univention/oidc/*##https://{ip}/univention/oidc/*",
+        "post.logout.redirect.uris": "http://{fqdn_lower}/univention/oidc/*##https://{fqdn_lower}/univention/oidc/*##http://{ip}/univention/oidc/*##https://{ip}/univention/oidc/*",
         "frontchannel.logout.session.required": "false",
         "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.revoke.offline.tokens": "false",
         "saml.server.signature.keyinfo.ext": "false",
         "use.refresh.tokens": "true",
         "oidc.ciba.grant.enabled": "false",
-        "backchannel.logout.url": "https://{fqdn}/univention/oidc/backchannel-logout",
+        "backchannel.logout.url": "https://{fqdn_lower}/univention/oidc/backchannel-logout",
         "backchannel.logout.session.required": "false",
         "client_credentials.use_refresh_token": "false",
         "consent.screen.text": "Allow access to UDM-REST API and OpenLDAP?",
@@ -69,7 +69,7 @@ UMC_OIDC_CLIENT = {
         "id.token.as.detached.signature": "false",
         "client.secret.creation.time": "1661514856",
         "saml.encrypt": "false",
-        "frontchannel.logout.url": "https://{fqdn}/univention/oidc/frontchannel-logout",
+        "frontchannel.logout.url": "https://{fqdn_lower}/univention/oidc/frontchannel-logout",
         "logoUri": "https://{fqdn}/favicon.ico",
         "saml.server.signature": "false",
         "exclude.session.state.from.auth.response": "false",
@@ -123,7 +123,7 @@ UMC_OIDC_CLIENT = {
             "protocolMapper": "oidc-audience-mapper",
             "consentRequired": False,
             "config": {
-                "included.client.audience": "https://{fqdn}/univention/oidc/",
+                "included.client.audience": "https://{fqdn_lower}/univention/oidc/",
                 "id.token.claim": "true",
                 "access.token.claim": "false",
                 "userinfo.token.claim": "true"
@@ -136,7 +136,7 @@ UMC_OIDC_CLIENT = {
             "protocolMapper": "oidc-audience-mapper",
             "consentRequired": False,
             "config": {
-                "included.client.audience": "ldaps://ucs.test/",
+                "included.client.audience": "ldaps://{domainname}/",
                 "id.token.claim": "false",
                 "access.token.claim": "true",
                 "userinfo.token.claim": "false"
