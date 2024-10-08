@@ -6,9 +6,10 @@ src: libxml2
 fix: 2.9.4+dfsg1-7+deb10u8
 desc: |
  This update addresses the following issue:
- 2.9.4+dfsg1-7+deb10u8 (Wed, 02 Oct 2024 20:09:43 +0300)
- * Non-maintainer upload by the ELTS Team.
- * CVE-2016-9318: XML External Entity (XXE) attack via crafted document
+ * CVE-2016-9318: `libxml2` does not offer a flag directly indicating that the
+   current document may be read but other files may not be opened, which makes
+   it easier for remote attackers to conduct XML External Entity (XXE) attacks
+   via a crafted document.
 bug: [57573]
 cve:
 - CVE-2016-9318
