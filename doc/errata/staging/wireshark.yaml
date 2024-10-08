@@ -6,94 +6,126 @@ src: wireshark
 fix: 2.6.20-0+deb10u9~deb9u1
 desc: |
  This update addresses the following issues:
- 2.6.20-0+deb10u9~deb9u1 (Sun, 29 Sep 2024 23:54:34 +0300)
- * Non-maintainer upload by the ELTS Team.
- * Rebuild for stretch.
- 2.6.20-0+deb10u9 (Sun, 29 Sep 2024 22:10:53 +0300)
- * CVE-2023-0667: MSMMS dissector buffer overflow
- * CVE-2023-3649: iSCSI dissector crash
- * CVE-2023-4512: CBOR dissector crash
- * CVE-2024-0211: DOCSIS dissector crash
- * CVE-2024-2955: T.38 dissector crash
- * CVE-2024-4853: Editcap byte chopping crash
- * CVE-2024-4854: MONGO dissector infinite loop
- * CVE-2024-8250: NTLMSSP dissector crash
- * CVE-2024-8645: SPRT dissector crash
- * Abort the build on test failures.
- * Don't patch generated files.
- 2.6.20-0+deb10u8 (Thu, 29 Feb 2024 22:49:52 +0200)
- * Non-maintainer upload by the LTS Team.
- * CVE-2023-4511: BT SDP dissector infinite loop
- * CVE-2023-4513: BT SDP dissector memory leak
- * CVE-2023-6175: NetScreen file parser crash
- * CVE-2024-0208: GVCP dissector crash
- 2.6.20-0+deb10u7 (Fri, 02 Jun 2023 18:37:25 +0300)
- * Non-maintainer upload by the LTS Security Team.
- * CVE-2023-2856: VMS TCPIPtrace file parser crash.
- * CVE-2023-2858: NetScaler file parser crash.
- * CVE-2023-2879: GDSDB infinite loop.
- * CVE-2023-2952: XRA dissector infinite loop.
- 2.6.20-0+deb10u6 (Sat, 29 Apr 2023 18:50:25 +0300)
- * CVE-2023-1161: ISO 15765 dissector crash.
- * CVE-2023-1992: RPCoRDMA dissector crash.
- * CVE-2023-1993: LISP dissector large loop vulnerability.
- * CVE-2023-1994: GQUIC dissector crash.
- 2.6.20-0+deb10u5 (Wed, 08 Feb 2023 19:46:07 +0100)
- * Apply applicable part of the patch for CVE-2022-4345. (only one dissector
-   is affected, the others missing the vulnerable features).
- * Apply applicable parts of the patch for CVE-2023-0411. (see patch -- named
-   after the CVE for details)
- * Backport patch for CVE-2023-0412.
- * Cherry-pick upstream fix for CVE-2023-0413.
- * Apply upstream patch for CVE-2023-0415.
- * Apply upstream patch for CVE-2023-0417.
- 2.6.20-0+deb10u4 (Sun, 29 May 2022 17:58:46 +0200)
- * Non-maintainer upload.
- * Fix the following CVE:
- * CVE-2021-4181: Crash in the Sysdig Event dissector.
- * CVE-2021-4184: Infinite loop in the BitTorrent DHT dissector.
- * CVE-2021-4185: Infinite loop in the RTMPT dissector.
- * CVE-2021-22191: Improper URL handling in Wireshark.
- * CVE-2022-0581: Crash in the CMS protocol dissector.
- * CVE-2022-0582: Unaligned access in the CSN.1 protocol dissector.
- * CVE-2022-0583: Crash in the PVFS protocol dissector.
- * CVE-2022-0585: Large loops in multiple protocol dissectors.
- * CVE-2022-0586: Infinite loop in RTMPT protocol dissector.
- 2.6.20-0+deb10u3 (Sun, 16 Jan 2022 14:46:43 +0200)
- * CVE-2021-22207: Excessive memory consumption in the MS-WSP dissector.
-
- * CVE-2021-22235: Crash in the DNP dissector.
- * CVE-2021-39921: NULL pointer exception in the Modbus dissector.
- * CVE-2021-39922: Buffer overflow in the C12.22 dissector.
- * CVE-2021-39923: Large loop in the PNRP dissector.
- * CVE-2021-39924: Large loop in the Bluetooth DHT dissector.
- * CVE-2021-39928: NULL pointer exception in the IEEE 802.11 dissector.
- * CVE-2021-39929: Uncontrolled Recursion in the Bluetooth DHT dissector.
- 2.6.20-0+deb10u2 (Thu, 09 Dec 2021 14:35:23 +0100)
- * debian/watch: Get upstream releases from gitlab
- * debian/rules: Ignore failing tests on architectures where Lua tests are
-   failing
- * Fix buffer overflow in the Bluetooth SDP dissector (CVE-2021-39925)
- * debian/gitlab-ci.yml: Test against buster
- 2.6.20-0+deb10u1 (Sat, 30 Jan 2021 15:55:58 +0200)
- * New upstream version including the following security fixes: -
-   CVE-2019-16319: The Gryphon dissector could go into an infinite loop. -
-   CVE-2019-19553: The CMS dissector could crash. - CVE-2020-7045: The BT ATT
-   dissector could crash. - CVE-2020-9428: The EAP dissector could crash. -
-   CVE-2020-9430: The WiMax DLMAP dissector could crash. - CVE-2020-9431: The
-   LTE RRC dissector could leak memory. - CVE-2020-11647: The BACapp dissector
-   could crash. - CVE-2020-13164: The NFS dissector could crash. -
-   CVE-2020-15466: The GVCP dissector could go into an infinite loop. -
-   CVE-2020-25862: The TCP dissector could crash. - CVE-2020-25863: The MIME
-   Multipart dissector could crash.
- * Adjust 17_libdir_location.patch for context changes.
- * Since Wireshark 2.6.14 tests are run automatically by debhelper, backport
-   the build fix and making test failures non-fatal.
- * CVE-2020-26575: The Facebook Zero Protocol (aka FBZERO) dissector could
-   enter an infinite loop.
- * CVE-2020-28030: The GQUIC dissector could crash.
- * CVE-2020-26418: Memory leak in the Kafka protocol dissector.
- * CVE-2020-26421: Crash in USB HID protocol dissector.
+ * CVE-2023-0667: CVSS base score 6.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2023-3649: CVSS base score 5.5
+   (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2023-4512: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2024-0211: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2024-2955: CVSS base score 7.8
+   (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+ * CVE-2024-4853: CVSS base score 3.6
+   (CVSS:3.1/AV:L/AC:H/PR:N/UI:R/S:U/C:N/I:L/A:L).
+ * CVE-2024-4854: CVSS base score 6.4
+   (CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:L/I:L/A:H).
+ * CVE-2024-8250: CVSS base score 5.5
+   (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2024-8645: CVSS base score 5.5
+   (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2023-4511: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2023-4513: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2023-6175: CVSS base score 7.8
+   (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+ * CVE-2024-0208: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2023-2856: CVSS base score 6.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2023-2858: CVSS base score 6.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2023-2879: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2023-2952: CVSS base score 6.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2023-1161: CVSS base score 7.1
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:L/A:H).
+ * CVE-2023-1992: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2023-1993: CVSS base score 6.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2023-1994: CVSS base score 6.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2022-4345: CVSS base score 6.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2023-0411: CVSS base score 6.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2023-0412: CVSS base score 7.1
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:H).
+ * CVE-2023-0413: CVSS base score 6.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2023-0415: CVSS base score 6.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2023-0417: CVSS base score 6.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2021-4181: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2021-4184: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2021-4185: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2021-22191: CVSS base score 8.8
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+ * CVE-2022-0581: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2022-0582: CVSS base score 9.8
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+ * CVE-2022-0583: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2022-0585: CVSS base score 6.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+ * CVE-2022-0586: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2021-22207: CVSS base score 6.5
+   (CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2021-22235: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2021-39921: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2021-39922: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2021-39923: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2021-39924: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2021-39928: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2021-39929: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2021-39925: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2019-16319: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2019-19553: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2020-7045: CVSS base score 6.5
+   (CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2020-9428: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2020-9430: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2020-9431: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2020-11647: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2020-13164: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2020-15466: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2020-25862: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2020-25863: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2020-26575: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2020-28030: CVSS base score 7.5
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+ * CVE-2020-26418: CVSS base score 5.3
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+ * CVE-2020-26421: CVSS base score 5.3
+   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
 bug: [57653]
 cve:
 - CVE-2023-0667
@@ -156,3 +188,5 @@ cve:
 - CVE-2020-28030
 - CVE-2020-26418
 - CVE-2020-26421
+erratum: 1620
+announced: 2024-10-08
