@@ -6,14 +6,13 @@ src: expat
 fix: 2.2.0-2+deb9u9
 desc: |
  This update addresses the following issues:
- 2.2.0-2+deb9u9 (Sun, 29 Sep 2024 10:48:35 +0200)
- * Non-maintainer upload by the ELTS Team.
- * Fix CVE-2024-45490: xmlparse.c does not reject a negative length for
-   XML_ParseBuffer(), which may cause memory corruption or code execution.
-
- * Fix CVE-2024-45491: Integer overflow for nDefaultAtts on 32-bit platforms.
- * Fix CVE-2024-45492: Integer overflow for m_groupSize on 32-bit platforms.
- * Backport NULL checks from upstream version 2.2.1.
+ * CVE-2024-45490: `xmlparse.c` does not reject a negative length for
+   `XML_ParseBuffer`.
+ * CVE-2024-45491: `dtdCopy` in `xmlparse.c` can have an integer overflow for
+   `nDefaultAtts` on 32-bit platforms (where `UINT_MAX` equals `SIZE_MAX`).
+ * CVE-2024-45492: `nextScaffoldPart` in `xmlparse.c` can have an integer
+   overflow for `m_groupSize` on 32-bit platforms (where `UINT_MAX` equals
+   `SIZE_MAX`).
 bug: [57657]
 cve:
 - CVE-2024-45490
