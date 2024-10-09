@@ -62,3 +62,6 @@ cve:
 - CVE-2021-39261
 - CVE-2021-39262
 - CVE-2021-39263
+erratum: 1139
+announced: 2024-10-09
+support: core
