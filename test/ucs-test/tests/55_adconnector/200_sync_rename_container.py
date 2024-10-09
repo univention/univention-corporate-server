@@ -3,6 +3,8 @@
 ## exposure: dangerous
 ## packages:
 ## - univention-ad-connector
+## tags:
+## - skip_admember
 ## bugs:
 ##  - 52230
 
