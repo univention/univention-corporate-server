@@ -6,7 +6,10 @@ src: ntfs-3g
 fix: 1:2017.3.23AR.3-4+deb11u4~deb10u1
 desc: |
  This update addresses the following issues:
- * Used a default usn when the former one cannot be retrieved (CVE-2022-30788)
+ * Fix use-after-free in 'ntfs_uppercase_mbs' (CVE-2023-52890).
+ * Rejected zero-sized runs (CVE-2022-40284)
+ * Used a default `usn` when the former one cannot be retrieved
+   (CVE-2022-30788)
  * Made sure there is no null character in an attribute name (CVE-2022-30786)
  * Avoided allocating and reading an attribute beyond its full size
    (CVE-2022-30784)
