@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [9]
+scope: ucs_5.0-0-errata5.0-9
+src: univention-management-console-module-udm
+fix: 10.0.12-2
+desc: |
+ This update addresses the following issues:
+ * When using OIDC login the Univention Management Console
+   Univention Directory Manager Module would sometimes not load
+   when the LDAP server was restarted.
+bug: [57533]

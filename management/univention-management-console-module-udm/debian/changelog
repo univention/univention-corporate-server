@@ -1,3 +1,9 @@
+univention-management-console-module-udm (10.0.12-2) unstable; urgency=medium
+
+  * Bug #57533 refresh global bind function when password changes
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 09 Oct 2024 16:03:34 +0200
+
 univention-management-console-module-udm (10.0.12-1) UNRELEASED; urgency=medium
 
   * Bug #57581 UCS 5.0-9 version bump

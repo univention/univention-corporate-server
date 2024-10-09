@@ -35,6 +35,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import copy
+import functools
 import inspect
 import locale
 import os
@@ -60,6 +61,7 @@ from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.ldap import get_user_connection
 from univention.management.console.log import MODULE
+from univention.management.console.message import Request as UMCRequest
 from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.modules.decorators import (
     SimpleThread, allow_get_request, file_upload, multi_response, prevent_xsrf_check, sanitize, simple_response,
@@ -74,8 +76,9 @@ from univention.management.console.modules.sanitizers import (
 from .tools import LicenseError, LicenseImport, check_license, dump_license, install_opener, urlopen
 from .udm_ldap import (
     LDAP_AuthenticationFailed, LDAP_Connection, NoIpLeft, ObjectDoesNotExist, SuperordinateDoesNotExist, UDM_Error,
-    UDM_Module, UserWithoutDN, _get_syntax, container_modules, get_module, get_obj_module, info_syntax_choices,
-    ldap_dn2path, list_objects, read_syntax_choices, search_syntax_choices_by_key, set_bind_function,
+    UDM_Module, UserWithoutDN, _get_syntax, calculate_bind_hash, container_modules, get_bind_hash, get_module,
+    get_obj_module, info_syntax_choices, ldap_dn2path, list_objects, read_syntax_choices, search_syntax_choices_by_key,
+    set_bind_function, set_bind_hash,
 )
 
 
@@ -161,7 +164,35 @@ class PropertySearchSanitizer(SearchSanitizer):
             self.add_asterisks, self.use_asterisks = add_asterisks, use_asterisks
 
 
-class Instance(Base, ProgressMixin):
+class UDMModuleMeta(type):
+    def __new__(mcs, name, bases, attrs):
+        for attr_name, attr_value in list(attrs.items()):
+            if callable(attr_value) and not attr_name.startswith('_'):
+                attrs[attr_name] = mcs.wrap_method(attr_value)
+
+        return super().__new__(mcs, name, bases, attrs)
+
+    @staticmethod
+    def wrap_method(method):
+        @functools.wraps(method)
+        def update_bind_function(self, *args, **kwargs):
+            if len(args) >= 1 and args[0] is not None and isinstance(args[0], UMCRequest):
+                request = args[0]
+
+                def bind_user_connection(lo):
+                    request.bind_user_connection(lo)
+                    self.require_license(lo)
+
+                new_bind_hash = calculate_bind_hash(request)
+                if new_bind_hash != get_bind_hash():
+                    MODULE.debug("Bind hash has changed. Setting new bind function")
+                    set_bind_hash(new_bind_hash)
+                    set_bind_function(bind_user_connection)
+            return method(self, *args, **kwargs)
+        return update_bind_function
+
+
+class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
 
     def __init__(self):
         Base.__init__(self)
@@ -182,6 +213,7 @@ class Instance(Base, ProgressMixin):
             self.require_license(lo)
 
         set_bind_function(bind_user_connection)
+        set_bind_hash(calculate_bind_hash(request))
 
         # read user settings and initial UDR
         self.reports_cfg = udr.Config()
@@ -215,9 +247,9 @@ class Instance(Base, ProgressMixin):
 
     def get_ldap_connection(self):
         try:
-            lo, _po = get_user_connection(bind=self.bind_user_connection, write=True)
+            lo, _po = get_user_connection(bind=self.bind_user_connection, write=True, bindhash=calculate_bind_hash(self._current_request))
         except (LDAPError, udm_errors.ldapError):
-            lo, _po = get_user_connection(bind=self.bind_user_connection, write=True)
+            lo, _po = get_user_connection(bind=self.bind_user_connection, write=True, bindhash=calculate_bind_hash(self._current_request))
         return lo, udm_uldap.position(lo.base)
 
     def get_module(self, flavor, ldap_dn):
