@@ -1,3 +1,9 @@
+univention-keycloak (3.0.16) unstable; urgency=medium
+
+  * Bug #57665: Add option --enable-user-events
+
+ -- Arvid <requate@univention.de>  Wed, 09 Oct 2024 17:55:11 +0200
+
 univention-keycloak (3.0.15) unstable; urgency=medium
 
   * Bug #57518: In `univention-keycloak`, fix the `oidc/rp` option

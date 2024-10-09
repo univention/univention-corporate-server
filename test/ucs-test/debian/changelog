@@ -1,3 +1,9 @@
+ucs-test (12.0.186) unstable; urgency=medium
+
+  * Bug #57665: Test univention-keyckloak --enable-user-events
+
+ -- Arvid <requate@univention.de>  Wed, 09 Oct 2024 17:55:28 +0200
+
 ucs-test (12.0.185) unstable; urgency=medium
 
   * Bug #57609: Making Self Service a singleton made it necessary to restart
