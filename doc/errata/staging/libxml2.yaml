@@ -10,6 +10,6 @@ desc: |
    current document may be read but other files may not be opened, which makes
    it easier for remote attackers to conduct XML External Entity (XXE) attacks
    via a crafted document.
-bug: [57573]
+bug: [57664]
 cve:
 - CVE-2016-9318
