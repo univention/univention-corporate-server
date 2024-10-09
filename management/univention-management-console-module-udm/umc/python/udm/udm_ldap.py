@@ -70,7 +70,21 @@ _ = Translation('univention-management-console-module-udm').translate
 udm_modules.update()
 
 __bind_function = None
+__bind_hash = None
 _licenseCheck = 0
+
+
+def calculate_bind_hash(request):
+    return hash((request.username, request.password, request.auth_type))
+
+
+def set_bind_hash(hash):
+    global __bind_hash
+    __bind_hash = hash
+
+
+def get_bind_hash():
+    return __bind_hash
 
 
 def set_bind_function(connection_getter):
@@ -93,7 +107,7 @@ def LDAP_Connection(func):
     """
     @functools.wraps(func)
     def _decorated(*args, **kwargs):
-        method = user_connection(func, bind=get_bind_function(), write=True)
+        method = user_connection(func, bind=get_bind_function(), write=True, bindhash=get_bind_hash())
         try:
             return method(*args, **kwargs)
         except (LDAPError, udm_errors.ldapError):
@@ -405,9 +419,9 @@ class UDM_Module(object):
     def get_ldap_connection(self, base=None):
         if get_bind_function():
             try:
-                self.ldap_connection, _po = get_user_connection(bind=get_bind_function(), write=True)
+                self.ldap_connection, _po = get_user_connection(bind=get_bind_function(), write=True, bindhash=get_bind_hash())
             except (LDAPError, udm_errors.ldapError):
-                self.ldap_connection, _po = get_user_connection(bind=get_bind_function(), write=True)
+                self.ldap_connection, _po = get_user_connection(bind=get_bind_function(), write=True, bindhash=get_bind_hash())
             self.ldap_position = udm.uldap.position(self.ldap_connection.base)
         return self.ldap_connection, udm.uldap.position(base if base else self.ldap_connection.base)
 

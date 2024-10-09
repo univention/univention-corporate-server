@@ -35,7 +35,7 @@ import json
 import os
 import socket
 from types import SimpleNamespace
-from typing import Callable, Generator, Iterator
+from typing import Any, Callable, Dict, Generator, Iterator
 
 import pytest
 from keycloak import KeycloakAdmin, KeycloakOpenID
@@ -478,6 +478,25 @@ def oidc_client_frontchannel(ucr, request):
 
     yield
 
+    for client in modified_clients:
+        run_command(['univention-keycloak', 'oidc/rp', 'update', client['clientId'], json.dumps(client)])
+
+
+@pytest.fixture()
+def modify_keycloak_clients(request):
+    mod_func: Callable[[Dict[Any, Any]]] = request.param
+    modified_clients = []
+    oidc_clients = json.loads(run_command(['univention-keycloak', 'oidc/rp', 'get', '--json', '--all']))
+
+    for client in oidc_clients:
+        if '/univention/oidc' not in client['clientId']:
+            continue
+        modified_clients.append(client)
+        oidc_client_updated = copy.deepcopy(client)
+        mod_func(oidc_client_updated)
+        oidc_client_updated = json.dumps(oidc_client_updated)
+        run_command(['univention-keycloak', 'oidc/rp', 'update', client['clientId'], oidc_client_updated])
+    yield
     for client in modified_clients:
         run_command(['univention-keycloak', 'oidc/rp', 'update', client['clientId'], json.dumps(client)])
 
