@@ -1,3 +1,9 @@
+ucs-test (12.0.192) unstable; urgency=medium
+
+  * Bug #57533 add test for refreshing bind function in UMC UDM module
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 18 Oct 2024 09:11:21 +0200
+
 ucs-test (12.0.191) unstable; urgency=medium
 
   * Issue univention/customers/dataport/team-souvap#881:

@@ -36,7 +36,7 @@ import json
 import os
 import socket
 from types import SimpleNamespace
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import pytest
 from keycloak import KeycloakAdmin, KeycloakOpenID
@@ -464,6 +464,25 @@ def legacy_authorization_setup_oidc(
         run_command(['univention-keycloak', 'legacy-authentication-flow', 'delete', '--flow', 'direct grant'])
         legacy_auth_config_remove(keycloak_administrator_connection, groups)
         keycloak_administrator_connection.delete_client(client_id)
+
+
+@pytest.fixture()
+def modify_keycloak_clients(request):
+    mod_func: Callable[[dict[Any, Any]]] = request.param
+    modified_clients = []
+    oidc_clients = json.loads(run_command(['univention-keycloak', 'oidc/rp', 'get', '--json', '--all']))
+
+    for client in oidc_clients:
+        if '/univention/oidc' not in client['clientId']:
+            continue
+        modified_clients.append(client)
+        oidc_client_updated = copy.deepcopy(client)
+        mod_func(oidc_client_updated)
+        oidc_client_updated = json.dumps(oidc_client_updated)
+        run_command(['univention-keycloak', 'oidc/rp', 'update', client['clientId'], oidc_client_updated])
+    yield
+    for client in modified_clients:
+        run_command(['univention-keycloak', 'oidc/rp', 'update', client['clientId'], json.dumps(client)])
 
 
 @pytest.fixture()
