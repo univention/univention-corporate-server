@@ -14,11 +14,11 @@ desc: |
    (CVE-2022-30789)
  * Made sure there is no null character in an attribute name (bis)
    (CVE-2022-30786)
- * Fixed possible out-of-buffer condition in ntfsck (CVE-2021-46790)
+ * Fixed possible out-of-buffer condition in `ntfsck` (CVE-2021-46790)
  * Fixed operation on little endian data (CVE-2022-30788)
- * Returned an error code when the --help or --version options are used
+ * Returned an error code when the `--help` or `--version` options are used
    (CVE-2022-30783)
- * Hardened the checking of directory offset requested by a readdir
+ * Hardened the checking of directory offset requested by a `readdir`
    (CVE-2022-30785, CVE-2022-30787)
  * Fix multiple buffer overflows. (CVE-2021-33285, CVE-2021-35269,
    CVE-2021-35268, CVE-2021-33289, CVE-2021-33286, CVE-2021-35266,
