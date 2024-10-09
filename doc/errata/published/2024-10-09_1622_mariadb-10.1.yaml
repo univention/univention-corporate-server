@@ -6,32 +6,15 @@ src: mariadb-10.1
 fix: 10.1.48-0+deb9u4
 desc: |
  This update addresses the following issues:
- * CVE-2021-46659: CVSS base score 5.5
-   (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
- * CVE-2022-21427: CVSS base score 4.9
-   (CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:H).
- * CVE-2022-24048: CVSS base score 7.8
-   (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
- * CVE-2022-24051: CVSS base score 7.8
-   (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
- * CVE-2022-24052: CVSS base score 7.8
-   (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
- * CVE-2022-24050: CVSS base score 7.8
-   (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
- * CVE-2022-27380: CVSS base score 7.5
-   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
- * CVE-2022-27383: CVSS base score 7.5
-   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
- * CVE-2022-27384: CVSS base score 7.5
-   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
- * CVE-2022-32083: CVSS base score 7.5
-   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
- * CVE-2022-27387: CVSS base score 7.5
-   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
- * CVE-2022-27448: CVSS base score 7.5
-   (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
- * CVE-2022-31622: CVSS base score 5.5
-   (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
+ * CVSS score 5.5 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2021-46659, CVE-2022-31622)
+ * CVSS score 4.9 (CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2022-21427)
+ * CVSS score 7.8 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2022-24048, CVE-2022-24051, CVE-2022-24052, CVE-2022-24050)
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2022-27380, CVE-2022-27383, CVE-2022-27384, CVE-2022-32083,
+   CVE-2022-27387, CVE-2022-27448)
 bug: [57656]
 cve:
 - CVE-2021-46659
