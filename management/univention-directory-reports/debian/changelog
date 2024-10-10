@@ -1,3 +1,16 @@
+univention-directory-reports (14.0.4) unstable; urgency=medium
+
+  * Bug #57431: Support single-value properties with complex syntax too
+
+ -- Arvid <requate@univention.de>  Thu, 10 Oct 2024 09:36:42 +0200
+
+univention-directory-reports (14.0.3) unstable; urgency=medium
+
+  * Bug #57431: Fix handling of template interpreter when encountering nested lists
+    in properties. Introduced the `inner-separator` template attribute.
+
+ -- Johannes Königer <koeniger@univention.de>  Thu, 10 Oct 2024 09:36:21 +0200
+
 univention-directory-reports (14.0.2) unstable; urgency=medium
 
   * Bug #56604: use Python 3.11 code annotations
