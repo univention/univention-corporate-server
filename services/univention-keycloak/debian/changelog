@@ -1,3 +1,10 @@
+univention-keycloak (3.0.17) unstable; urgency=medium
+
+  * Issue univention/customers/dataport/team-souvap#881:
+    Add option --cors-frame-ancestors to univention-keycloak
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Fri, 11 Oct 2024 11:02:21 +0200
+
 univention-keycloak (3.0.16) unstable; urgency=medium
 
   * Bug #57665: Add option --enable-user-events

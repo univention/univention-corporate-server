@@ -247,6 +247,45 @@ def test_init_with_user_events_flag(random_string, keycloak_admin_connection, en
             pass
 
 
+@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+@pytest.mark.parametrize("cors_frame_ancestors, expected", [
+    ("test.url.org", "test.url.org"),
+])
+def test_init_with_cors_frame_ancestors(random_string, keycloak_admin_connection, cors_frame_ancestors, expected):
+    """
+    Test the initialization of a Keycloak realm with a custom frame ancestor in the CSP.
+    Verifies that the 'contentSecurityPolicy' attribute is set correctly.
+    """
+    realm_name = random_string()
+    try:
+        cmd = [
+            'univention-keycloak',
+            '--realm', realm_name,
+            'init',
+            '--cors-frame-ancestors', cors_frame_ancestors,
+        ]
+        # Remove empty strings to avoid issues
+        cmd = [arg for arg in cmd if arg]
+        run_command(cmd)
+
+        cmd = ['univention-keycloak', 'realms', 'get', '--all', '--json']
+        realms = json.loads(run_command(cmd))
+
+        realm = next((x for x in realms if x['id'] == realm_name), None)
+        assert realm is not None, f"Realm {realm_name} was not found."
+
+        assert realm['realm'] == realm_name, "Realm name does not match."
+
+        # Verify the 'contentSecurityPolicy' of the realm
+        assert expected in realm.get('browserSecurityHeaders').get("contentSecurityPolicy"), f"The 'contentSecurityPolicy' should contain {expected}."
+
+    finally:
+        try:
+            keycloak_admin_connection.delete_realm(realm_name=realm_name)
+        except KeycloakGetError:
+            pass
+
+
 def test_bindpwd(admin_account):
     cmd = ['univention-keycloak', '--binduser', admin_account.username, '--bindpwd', admin_account.bindpw, 'realms', 'get']
     run_command(cmd)

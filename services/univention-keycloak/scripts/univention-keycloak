@@ -1805,6 +1805,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     init_parser.add_argument("--no-kerberos", action='store_true', default=False, help="Disables the Kerberos support on the LDAP user federation.")
     init_parser.add_argument("--frontchannel-logout-off", default=False, action="store_true", help="Switch off frontchannelLogout")
     init_parser.add_argument("--enable-user-events", default=False, action="store_true", help="Enable realm user events")
+    init_parser.add_argument("--cors-frame-ancestors", default="", help="String containing the addresses to be added to the default CORS settings in the realm")
 
     init_parser.set_defaults(func=init_keycloak_ucs)
 
@@ -3057,6 +3058,10 @@ def init_keycloak_ucs(opt):
         },
         "eventsEnabled": False,
     }
+
+    if opt.cors_frame_ancestors:
+        realm_payload["browserSecurityHeaders"]["contentSecurityPolicy"] = f"frame-src 'self'; frame-ancestors 'self' {opt.cors_frame_ancestors} ; object-src 'none';"
+
     kc_admin.update_realm(DEFAULT_REALM, payload=realm_payload)
 
     # create ucs realm
