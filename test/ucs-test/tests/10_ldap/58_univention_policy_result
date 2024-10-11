@@ -1,0 +1,64 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: Tests the CLI univention-policy-result wrt UCRV directory/manager/starttls and ldap/server/port
+## roles:
+##  - domaincontroller_master
+## packages:
+##  - univention-ldap-server
+## exposure: dangerous
+## bugs: [57158, 57159]
+
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/undo.sh
+. "$TESTLIBPATH/undo.sh" || exit 137
+
+old_server_port="$(ucr get slapd/port)"
+old_client_port="$(ucr get ldap/server/port)"
+old_starttls="$(ucr get directory/manager/starttls)"
+
+univention-policy-result -y /etc/machine.secret -D "$(ucr get ldap/hostdn)" "$(ucr get tests/domainadmin/account)" || fail_fast 140 "univention-policy-result broken before test started"
+
+# configure ldap server port
+undo service slapd restart  # correct order of undo
+ucr set slapd/port=7399,389 && undo ucr set slapd/port="$old_server_port"
+service slapd restart
+
+# now univention-policy-result should not work
+univention-policy-result -y /etc/machine.secret -D "$(ucr get ldap/hostdn)" "$(ucr get tests/domainadmin/account)" && fail_fast 141 "univention-policy-result should not work before client is setup correctly"
+
+# configure ldap client port
+ucr set ldap/server/port=7399 && undo ucr set ldap/server/port="$old_client_port"
+
+# now univention-policy-result should work again
+univention-policy-result -y /etc/machine.secret -D "$(ucr get ldap/hostdn)" "$(ucr get tests/domainadmin/account)" || fail_fast 142 "univention-policy-result should work after client is setup correctly"
+
+
+
+
+# configure ldap server to enforce tls. this is temporarily as cn=config is not persistent in UCS
+# a slapd restart (see above in undo) is enough to change it back
+ldapmodify -x -H LDAPI:// <<<'dn: olcDatabase={1}mdb,cn=config
+changetype: modify
+replace: olcSecurity
+olcSecurity: ssf=128'
+
+ldapmodify -x -H LDAPI:// <<<'dn: cn=config
+changetype: modify
+replace: olcLocalSSF
+olcLocalSSF: 128'
+
+
+# configure ldap client to use tls
+ucr set directory/manager/starttls=2 && undo ucr set directory/manager/starttls="$old_starttls"
+
+# now univention-policy-result should work
+univention-policy-result -y /etc/machine.secret -D "$(ucr get ldap/hostdn)" "$(ucr get tests/domainadmin/account)" || fail_fast 143 "univention-policy-result should work after client is setup correctly"
+
+# configure ldap client to not use tls
+ucr set directory/manager/starttls=0
+
+# now univention-policy-result should not work
+univention-policy-result -y /etc/machine.secret -D "$(ucr get ldap/hostdn)" "$(ucr get tests/domainadmin/account)" && fail_fast 144 "univention-policy-result should not work before client is setup correctly"
+
+exit "$RETVAL"
