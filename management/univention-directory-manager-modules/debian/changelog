@@ -1,3 +1,11 @@
+univention-directory-manager-modules (17.0.21) unstable; urgency=medium
+
+  * univention/customers/dataport/team-souvap#439: Enforce JPEG conversion
+  for all profile pictures. To prevent malware to be uploaded as a profile
+  picture, we enforce the conversion of all profile pictures to JPEG format.
+
+ -- Carlos García-Mauriño <garcia-maurino@univention.de>  Mon, 14 Oct 2024 16:03:01 +0200
+
 univention-directory-manager-modules (17.0.20) unstable; urgency=medium
 
   * Bug #57484: In case a UDM property syntax has been overridden via UCR
