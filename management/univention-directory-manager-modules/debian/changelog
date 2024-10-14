@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.28-3) unstable; urgency=medium
+
+  * Bug #57672: adjust exceptions caught by jpegPhoto parse
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 14 Oct 2024 18:37:59 +0200
+
 univention-directory-manager-modules (15.0.28-2) unstable; urgency=medium
 
   * univention/customers/dataport/team-souvap#439: Enforce JPEG conversion
