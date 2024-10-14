@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [8, 9]
+scope: ucs_5.0-0-errata5.0-9
+src: gtk+2.0
+fix: 2.24.32-3+deb10u1
+desc: |
+ This update addresses the following issue:
+  * CVSS score 7.0 (CVSS:3.1/AV:L/AC:H/PR:N/UI:R/S:U/C:H/I:H/A:H).
+ (CVE-2024-6655)
+bug: [57668]
+cve:
+- CVE-2024-6655
