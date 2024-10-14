@@ -519,7 +519,10 @@ class OIDCFrontchannelLogout(_OIDCLogoutBase):
         self.add_header('Cache-Control', 'no-store')
         # self.get_query_argument('iss')
         # sid = self.get_query_argument('sid')
-        return self._logout_success()
+        user = self.current_user
+        if user:
+            user.oidc = None
+        self.expire_session()
 
 
 class OIDCBackchannelLogout(OIDCResource):

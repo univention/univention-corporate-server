@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [9]
+scope: ucs_5.0-0-errata5.0-9
+src: univention-management-console
+fix: 12.0.35-5
+desc: |
+ This update addresses the following issues:
+ * The `oidc/frontchannel-logout` endpoint of the UMC server now uses the
+   Content-Security-Policy frame-ancestors directive to specify sources
+   that are allowed to embed the OIDC logout iframe.
+bug: [57516]
