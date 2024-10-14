@@ -468,8 +468,6 @@ def legacy_authorization_setup_oidc(
 
 @pytest.fixture()
 def oidc_client_logout_meachanism(request):
-    if request.param == 'frontchannel':
-        pytest.skip("frontchannel logout doesn't currently does not work for external OPs. Skipp all frontchannel logout tests for now.")
     modified_clients = []
     oidc_clients = json.loads(run_command(['univention-keycloak', 'oidc/rp', 'get', '--json', '--all']))
 

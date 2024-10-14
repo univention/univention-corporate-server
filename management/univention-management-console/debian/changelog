@@ -1,3 +1,9 @@
+univention-management-console (14.0.35) unstable; urgency=medium
+
+  * Bug #57516: Add Content-Security-Policy frame-ancestors for oidc/frontchannel-logout
+
+ -- Christian Castens <castens@univention.de>  Mon, 14 Oct 2024 16:22:46 +0200
+
 univention-management-console (14.0.34) unstable; urgency=medium
 
   * Bug #57563: Remove portal refresh on expiry
