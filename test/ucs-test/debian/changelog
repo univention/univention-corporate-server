@@ -1,3 +1,10 @@
+ucs-test (10.0.23-16) unstable; urgency=medium
+
+  * Bug #57672: Use a real JPEG image as 'jpegPhoto' in UDM blocklist
+    performance test
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 15 Oct 2024 15:10:09 +0200
+
 ucs-test (10.0.23-15) unstable; urgency=medium
 
   * Bug #57516: activate OIDC front-channel logout tests

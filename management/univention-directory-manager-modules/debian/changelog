@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.28-4) unstable; urgency=medium
+
+  * Bug #57672: don't re-encode already valid JPEG images
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 15 Oct 2024 15:09:05 +0200
+
 univention-directory-manager-modules (15.0.28-3) unstable; urgency=medium
 
   * Bug #57672: adjust exceptions caught by jpegPhoto parse

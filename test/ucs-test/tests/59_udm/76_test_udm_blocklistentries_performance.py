@@ -27,7 +27,7 @@ def create_user(new, username, maildom):
     new['username'] = username
     new['description'] = f'{username}-description'
     new['mailPrimaryAddress'] = f'{username}@{maildom}'
-    new['jpegPhoto'] = '/9j/4AAQSkZJRgABAQEBLAEsAAD/4Se4'
+    new['jpegPhoto'] = '/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA='
     new['organisation'] = f'{username}-organisation'
     new['employeeNumber'] = f'{username}-employeeNumber'
     new['employeeType'] = f'{username}-employeeType'
