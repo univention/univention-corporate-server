@@ -10,3 +10,6 @@ desc: |
    Univention Directory Manager Module would sometimes not load
    when the LDAP server was restarted.
 bug: [57533]
+erratum: 1145
+announced: 2024-10-16
+support: core
