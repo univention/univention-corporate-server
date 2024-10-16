@@ -9,6 +9,8 @@
 ##   - univention-ad-connector
 
 
+import base64
+import os
 import time
 
 import pytest
@@ -18,6 +20,11 @@ from univention.admin.uldap import getAdminConnection
 from univention.testing.utils import package_installed
 
 
+CWD = os.path.dirname(os.path.abspath(__file__))
+jpeg_bytes = open(f'{CWD}/example_user_jpeg_photo.jpg', 'rb').read()
+b64encoded_jpeg_photo = base64.b64encode(jpeg_bytes).decode('ascii')
+
+
 def create_user(new, username, maildom):
     new['title'] = f'{username}-title'
     new['firstname'] = f'{username}-firstname'
@@ -25,7 +32,7 @@ def create_user(new, username, maildom):
     new['username'] = username
     new['description'] = f'{username}-description'
     new['mailPrimaryAddress'] = f'{username}@{maildom}'
-    new['jpegPhoto'] = '/9j/4AAQSkZJRgABAQEBLAEsAAD/4Se4'
+    new['jpegPhoto'] = b64encoded_jpeg_photo
     new['organisation'] = f'{username}-organisation'
     new['employeeNumber'] = f'{username}-employeeNumber'
     new['employeeType'] = f'{username}-employeeType'
@@ -98,7 +105,8 @@ def mail_domain_name(udm, random_name):
     return mail_domain_name
 
 
-def test_create_1000_users_with_extreme_blocklist_setup(blocklist_setup, mail_domain_name):
+@pytest.mark.usefixtures('blocklist_setup')
+def test_create_1000_users_with_extreme_blocklist_setup(mail_domain_name):
     number_of_users = 1000
     lo, position = getAdminConnection()
     modules.update()

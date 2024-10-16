@@ -1421,7 +1421,7 @@ class jpegPhoto(Upload):
                 output.fileno = _fileno
                 image.save(output, format='JPEG')
                 raw = output.getvalue()
-                text = base64.b64encode(raw)
+                text = base64.b64encode(raw).decode('UTF-8')
             except (OSError, KeyError, IndexError):
                 log.warning('Failed to convert image to JPEG: %s', traceback.format_exc())
                 raise univention.admin.uexceptions.valueError(_('Failed to convert file into JPEG format.'))

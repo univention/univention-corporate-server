@@ -21,6 +21,7 @@ import univention.admin.modules as udm_modules
 import univention.admin.uldap
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
+from univention.admin.syntax import jpegPhoto
 from univention.admin.uldap import position
 from univention.testing import utils
 from univention.testing.umc import Client
@@ -150,9 +151,11 @@ class Test_UserModification:
 
         with open('%s/example_user_jpeg_photo.jpg' % (CWD,), "rb") as jpeg:
             jpeg_data = jpeg.read()
+            encoded_image = base64.b64encode(jpeg_data).decode('ascii')
 
-        udm.modify_object('users/user', dn=user, jpegPhoto=base64.b64encode(jpeg_data).decode('ascii'))
-        utils.verify_ldap_object(user, {'jpegPhoto': [jpeg_data]})
+        udm.modify_object('users/user', dn=user, jpegPhoto=encoded_image)
+        converted_image = base64.b64decode(jpegPhoto.parse(encoded_image))
+        utils.verify_ldap_object(user, {'jpegPhoto': [converted_image]})
 
     def test_user_creation_with_umlaut_in_username(self, udm):
         """Create users/user with umlaut in username"""

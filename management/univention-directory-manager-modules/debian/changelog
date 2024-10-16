@@ -1,6 +1,12 @@
+univention-directory-manager-modules (17.0.22) unstable; urgency=medium
+
+  * Bug #57672: return string from parse to be compatbile with old behavior
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 17 Oct 2024 14:34:51 +0200
+
 univention-directory-manager-modules (17.0.21) unstable; urgency=medium
 
-  * univention/customers/dataport/team-souvap#439: Enforce JPEG conversion
+  * univention/team-souvap#439: Enforce JPEG conversion
   for all profile pictures. To prevent malware to be uploaded as a profile
   picture, we enforce the conversion of all profile pictures to JPEG format.
 

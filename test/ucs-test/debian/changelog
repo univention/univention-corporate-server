@@ -1,3 +1,9 @@
+ucs-test (12.0.190) unstable; urgency=medium
+
+  * Bug #57672: Adjusts tests to work with re-encoded jpeg image
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 17 Oct 2024 14:31:20 +0200
+
 ucs-test (12.0.188) unstable; urgency=medium
 
   * Bug #57516: activate OIDC front-channel logout tests
