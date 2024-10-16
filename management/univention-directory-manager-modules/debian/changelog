@@ -1,3 +1,17 @@
+univention-directory-manager-modules (16.0.27) unstable; urgency=medium
+
+  * Bug #57672: return string from parse to be compatbile with old behavior
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 17 Oct 2024 14:34:51 +0200
+
+univention-directory-manager-modules (16.0.27) unstable; urgency=medium
+
+  * univention/team-souvap#439: Enforce JPEG conversion
+  for all profile pictures. To prevent malware to be uploaded as a profile
+  picture, we enforce the conversion of all profile pictures to JPEG format.
+
+ -- Carlos García-Mauriño <garcia-maurino@univention.de>  Mon, 14 Oct 2024 16:03:01 +0200
+
 univention-directory-manager-modules (16.0.25) unstable; urgency=medium
 
   * Bug #46349: Don't let expiry date depend on timezone

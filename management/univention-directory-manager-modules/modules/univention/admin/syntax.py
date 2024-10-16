@@ -1409,25 +1409,22 @@ class jpegPhoto(Upload):
     def parse(self, text):
         try:
             raw = base64.b64decode(text)
-            if raw.startswith(b'\211PNG\r\n\032\n'):  # PNG
-                # convert from PNG to JPEG
-                try:
-                    fp = BytesIO(raw)
-                    text = BytesIO()
-                    image = PIL.Image.open(fp)
-                    image = image.convert('RGB')
+            # Always convert to JPEG, regardless of input format
+            try:
+                fp = BytesIO(raw)
+                output = BytesIO()
+                image = PIL.Image.open(fp)
+                image = image.convert('RGB')
 
-                    def _fileno(*a, **k):
-                        raise AttributeError()  # workaround for an old PIL lib which can't handle BytesIO
-                    text.fileno = _fileno
-                    image.save(text, format='jpeg')
-                    raw = text.getvalue()
-                    text = base64.b64encode(raw)
-                except (OSError, KeyError, IndexError):
-                    log.warning('Failed to convert PNG file into JPEG: %s', traceback.format_exc())
-                    raise univention.admin.uexceptions.valueError(_('Failed to convert PNG file into JPEG format.'))
-            if raw[:2] != b'\xff\xd8' and raw[6:10] not in (b'JFIF', b'Exif'):
-                raise ValueError()
+                def _fileno(*a, **k):
+                    raise AttributeError()  # workaround for an old PIL lib which can't handle BytesIO
+                output.fileno = _fileno
+                image.save(output, format='JPEG')
+                raw = output.getvalue()
+                text = base64.b64encode(raw).decode('UTF-8')
+            except (OSError, KeyError, IndexError):
+                log.warning('Failed to convert image to JPEG: %s', traceback.format_exc())
+                raise univention.admin.uexceptions.valueError(_('Failed to convert PNG file into JPEG format.'))
             return text
         except (base64.binascii.Error, ValueError, TypeError):
             raise univention.admin.uexceptions.valueError(_('Value must be Base64 encoded jpeg.'))
