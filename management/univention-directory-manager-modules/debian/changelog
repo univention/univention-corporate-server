@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.28-5) unstable; urgency=medium
+
+  * Bug #57672: revert to original method and re-encode all images as jpeg
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 17 Oct 2024 14:34:51 +0200
+
 univention-directory-manager-modules (15.0.28-4) unstable; urgency=medium
 
   * Bug #57672: don't re-encode already valid JPEG images
@@ -12,7 +18,7 @@ univention-directory-manager-modules (15.0.28-3) unstable; urgency=medium
 
 univention-directory-manager-modules (15.0.28-2) unstable; urgency=medium
 
-  * univention/customers/dataport/team-souvap#439: Enforce JPEG conversion
+  * univention/team-souvap#439: Enforce JPEG conversion
   for all profile pictures. To prevent malware to be uploaded as a profile
   picture, we enforce the conversion of all profile pictures to JPEG format.
 

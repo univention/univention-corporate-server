@@ -1,3 +1,9 @@
+ucs-test (10.0.23-18) unstable; urgency=medium
+
+  * Bug #57672: Adjusts tests to work with re-encoded jpeg image
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 17 Oct 2024 14:31:20 +0200
+
 ucs-test (10.0.23-17) unstable; urgency=medium
 
   * Bug #57533: make oidc access token refresh test more reliable

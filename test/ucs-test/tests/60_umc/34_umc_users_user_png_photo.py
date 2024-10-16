@@ -10,11 +10,19 @@ import subprocess
 import sys
 from tempfile import NamedTemporaryFile
 
+from univention.admin.syntax import jpegPhoto as jpegPhotoSyntaxClass
 from univention.testing import utils
 from univention.testing.strings import random_username
 from univention.testing.udm import UCSTestUDM
 
 from umc import UMCBase
+
+
+def reencode_image(original_bytes: bytes) -> bytes:
+    # for some reason when uploading through UMC the image get's decoded (passed through the syntax class pase method) twice
+    b64_string = base64.b64encode(original_bytes).decode('ASCII')
+    once = jpegPhotoSyntaxClass.parse(b64_string)
+    return base64.b64decode(jpegPhotoSyntaxClass.parse(once))
 
 
 class TestUMCUserAuthentication(UMCBase):
@@ -40,12 +48,12 @@ class TestUMCUserAuthentication(UMCBase):
     def set_image_jpeg(self):
         with open('./34_userphoto.jpeg', 'rb') as fd:
             image = fd.read()
-        assert image == base64.b64decode(self.set_image(image)), "Failed to set JPEG user photo"
+        assert reencode_image(image) == base64.b64decode(self.set_image(image)), "Failed to set JPEG user photo"
 
     def set_image_jpg(self):
         with open('./34_userphoto.jpg', 'rb') as fd:
             image = fd.read()
-        assert image == base64.b64decode(self.set_image(image)), "Failed to set JPG user photo"
+        assert reencode_image(image) == base64.b64decode(self.set_image(image)), "Failed to set JPG user photo"
 
     def set_image_png(self):
         with open('./34_userphoto.png', 'rb') as fd:

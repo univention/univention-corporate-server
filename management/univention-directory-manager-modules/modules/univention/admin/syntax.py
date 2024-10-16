@@ -1427,17 +1427,14 @@ class jpegPhoto(Upload):
                 fp = BytesIO(raw)
                 output = BytesIO()
                 image = PIL.Image.open(fp)
-                if image.format != 'JPEG':
-                    image = image.convert('RGB')
+                image = image.convert('RGB')
 
-                    def _fileno(*a, **k):
-                        raise AttributeError()  # workaround for an old PIL lib which can't handle BytesIO
-                    output.fileno = _fileno
-                    image.save(output, format='JPEG')
-                    raw = output.getvalue()
-                    text = base64.b64encode(raw)
-                else:
-                    image.verify()
+                def _fileno(*a, **k):
+                    raise AttributeError()  # workaround for an old PIL lib which can't handle BytesIO
+                output.fileno = _fileno
+                image.save(output, format='JPEG')
+                raw = output.getvalue()
+                text = base64.b64encode(raw).decode('UTF-8')
             except (OSError, KeyError, IndexError, IOError):
                 log.warning('Failed to convert image to JPEG: %s', traceback.format_exc())
                 raise univention.admin.uexceptions.valueError(_('Failed to convert file into JPEG format.'))

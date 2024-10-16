@@ -102,9 +102,35 @@ validate () {
 	sed -rne "s/^${attr}(;binary)?:: //p" "$tmpdir/${file}.ldif" >"$tmpdir/tmp"
 	while read -r value
 	do
-		base64 -d <<<"$value" | cmp "$tmpdir/$attr.bin" ||
+		if [ "$attr" == "jpegPhoto" ]; then
+			original_base64=$(base64 < "$tmpdir/$attr.bin")
+			validate_reencoded_jpeg "$original_base64" "$value" ||
+				fail_test 1 "Difference in reencoded '$attr' on $file"
+		else
+			base64 -d <<<"$value" | cmp "$tmpdir/$attr.bin" ||
 			fail_test 1 "Difference in '$attr' on $file"
+    fi
 	done <"$tmpdir/tmp"
+}
+
+validate_reencoded_jpeg () {
+	local original_base64="$1"
+	local ldif_base64="$2"
+	python3 - <<EOF
+import base64
+from univention.admin.syntax import jpegPhoto
+
+original_base64 = """$original_base64"""
+ldif_base64 = """$ldif_base64"""
+
+reencoded_original = jpegPhoto.parse(original_base64)
+
+if reencoded_original == ldif_base64:
+	exit(0)
+else:
+	print(f'got: {reencoded_original}, expected: {ldif_base64}')
+	exit(1)
+EOF
 }
 
 for ((; loop>0; loop--))
