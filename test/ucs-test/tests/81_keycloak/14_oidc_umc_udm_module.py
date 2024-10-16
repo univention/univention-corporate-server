@@ -39,6 +39,7 @@ def disable_saml_oauthbearer_grace(ucr_proper):
     ucr_update(ucr_proper, {ucrv: '0'})
     run_command(['systemctl', 'restart', 'slapd'])
     run_command(['systemctl', 'restart', 'univention-management-console-server'])
+    time.sleep(10)
 
     yield
 

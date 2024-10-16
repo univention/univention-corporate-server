@@ -1,3 +1,9 @@
+ucs-test (10.0.23-17) unstable; urgency=medium
+
+  * Bug #57533: make oidc access token refresh test more reliable
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 16 Oct 2024 08:53:10 +0200
+
 ucs-test (10.0.23-16) unstable; urgency=medium
 
   * Bug #57672: Use a real JPEG image as 'jpegPhoto' in UDM blocklist
