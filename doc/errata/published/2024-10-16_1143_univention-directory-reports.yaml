@@ -10,3 +10,6 @@ desc: |
    ``dnsEntryZoneForward``) which prevented users from using them in
    customized report templates.
 bug: [57431]
+erratum: 1143
+announced: 2024-10-16
+support: core
