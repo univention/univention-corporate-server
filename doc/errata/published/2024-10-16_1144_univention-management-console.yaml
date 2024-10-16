@@ -10,3 +10,6 @@ desc: |
    properly in environments where the OpenID Provider (OP) is hosted on a
    different domain than the UMC.
 bug: [57516]
+erratum: 1144
+announced: 2024-10-16
+support: core
