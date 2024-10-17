@@ -1,4 +1,4 @@
-ucs-test (11.0.59) unstable; urgency=medium
+ucs-test (11.0.60) unstable; urgency=medium
 
   * Bug #57672: Adjusts tests to work with re-encoded jpeg image
 
