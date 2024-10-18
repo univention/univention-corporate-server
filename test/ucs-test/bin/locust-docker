@@ -32,4 +32,4 @@ ip3="$(dig +short "@$ldap_master" "$kc_server_sso_fqdn" | head -1)"
 export HOST3="$kc_server_sso_fqdn"
 export IP3="$ip3"
 
-exec docker-compose -f /usr/share/ucs-test-locust/docker-compose.yml up --build --scale worker="${locust_workers:-12}" --exit-code-from master
+exec docker-compose -f /usr/share/ucs-test-locust/docker-compose.yml up --build --scale worker="${locust_workers:-5}" --exit-code-from master
