@@ -2944,7 +2944,7 @@ msgstr "*RADIUS-Authenticator* Optionen"
 
 #: ../../ip-config/radius.rst:267
 msgid "Access point and client configuration"
-msgstr "RADIUS an einem Computerobjekt einstellen"
+msgstr "Konfiguration von Access Point und Client"
 
 #: ../../ip-config/radius.rst:269
 msgid ""
