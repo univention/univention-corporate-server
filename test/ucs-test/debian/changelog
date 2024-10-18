@@ -1,3 +1,11 @@
+ucs-test (10.0.23-20) unstable; urgency=medium
+
+  * univention/ucs#2440: Modify the performance tests to work as repeating
+    tasks and prioritize consistent requests/second over with new
+    LOCUST_THROUGHPUT parameter
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 18 Oct 2024 16:53:45 +0200
+
 ucs-test (10.0.23-19) unstable; urgency=medium
 
   * univention/ucs#2440: Write OIDC Login Performance JMETER CSV to seperate file

@@ -4,9 +4,10 @@
 ## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
 ## tags: [producttest]
 ## env:
-##   LOCUST_SPAWN_RATE: "10"
+##   LOCUST_SPAWN_RATE: "12"
 ##   LOCUST_RUN_TIME: "20m"
-##   LOCUST_USERS: "5000"
+##   LOCUST_USERS: "1400"
+##   LOCUST_THROUGHPUT: "100"
 ##   LOCUST_USER_CLASSES: OIDCLogin
 ##   USE_KEYCLOAK: "1"
 ##   WAIT_MAX: "180"
@@ -18,8 +19,9 @@ import os
 import time
 from urllib.parse import urlparse
 
-from locust import FastHttpUser, constant, events, run_single_user, task
-from locust_jmeter_listener import JmeterListener
+from locust import FastHttpUser, events, run_single_user, task
+from locust_plugins import constant_total_ips
+from locust_plugins.listeners.jmeter import JmeterListener
 from utils import TIMEOUT, get_credentials, login_via_oidc
 
 
@@ -27,7 +29,9 @@ WAIT_MAX = int(os.environ.get('WAIT_MAX', '120'))
 
 
 class OIDCLogin(FastHttpUser):
-    wait_time = constant(WAIT_MAX)
+    throughput = int(os.environ.get('LOCUST_THROUGHPUT', '100'))
+    print(f'Running with a target throughput of {throughput}')
+    wait_time = constant_total_ips(throughput)
     network_timeout = TIMEOUT
     connection_timeout = TIMEOUT
     insecure = True
@@ -36,7 +40,7 @@ class OIDCLogin(FastHttpUser):
     def on_init(environment, **_kwargs):
         environment.stats.use_response_times_cache = True
         try:
-            JmeterListener(environment, results_filename='/mnt/locust/jmeter_results_OIDC_Login.csv')
+            JmeterListener(env=environment, results_filename='/mnt/locust/jmeter_results_OIDC_Login.csv')
         except PermissionError:
             print("JmeterListener disabled")
 
@@ -92,7 +96,6 @@ class OIDCLogin(FastHttpUser):
             if resp.status_code != 200:
                 resp.failure(f'Expected 200: {resp.status_code}')
 
-        print(f'sleeping for {WAIT_MAX}')
         time.sleep(WAIT_MAX)
 
         # 14. GET /univention/get/session-info
@@ -100,8 +103,6 @@ class OIDCLogin(FastHttpUser):
             if resp.status_code != 200:
                 resp.failure(f'Expected 200: {resp.status_code}')
                 return
-
-        time.sleep(999999999999)
 
 
 if __name__ == '__main__':

@@ -7,4 +7,5 @@ RUN apt-get --quiet update && \
     && rm -rf /apt /var/lib/apt/lists/*
     # python3-bs4 \
     # python3-lxml \
-RUN pip3 install bs4 lxml
+RUN pip3 install bs4 lxml locust-plugins
+

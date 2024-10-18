@@ -18,7 +18,7 @@ export SSP_FQDN="$ucs_sso_fqdn"
 export LOCUST_LOCUSTFILE="$1"
 export LOCUST_USER_CLASSES="${@: -1}"
 export LOCUST_HOST="$host"
-export LOCUST_EXPECT_WORKERS="${locust_workers:-12}"
+export LOCUST_EXPECT_WORKERS="${locust_workers:-5}"
 
 ip="$(dig +short "@$ldap_master" "$ldap_master" | head -1)"
 export HOST1="${ldap_master}"
