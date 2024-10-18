@@ -36,7 +36,7 @@ class OIDCLogin(FastHttpUser):
     def on_init(environment, **_kwargs):
         environment.stats.use_response_times_cache = True
         try:
-            JmeterListener(environment, results_filename='/mnt/locust/jmeter_results_SAMLSessionRefresh.csv')
+            JmeterListener(environment, results_filename='/mnt/locust/jmeter_results_OIDC_Login.csv')
         except PermissionError:
             print("JmeterListener disabled")
 

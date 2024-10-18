@@ -1,3 +1,9 @@
+ucs-test (10.0.23-19) unstable; urgency=medium
+
+  * univention/ucs#2440: Write OIDC Login Performance JMETER CSV to seperate file
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 18 Oct 2024 09:38:00 +0200
+
 ucs-test (10.0.23-18) unstable; urgency=medium
 
   * Bug #57672: Adjusts tests to work with re-encoded jpeg image
