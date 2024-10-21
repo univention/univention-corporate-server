@@ -521,7 +521,7 @@ class UDM_Module(object):
                         del obj.info[property_name]
                     continue
                 try:
-                    obj[property_name] = property_obj.syntax.parse(value)
+                    obj[property_name] = value  # instead of property_obj.syntax.parse(value), becasue __setitem__ already calls that
                 except TypeError as exc:
                     raise UMC_Error(_('The property %(property)s has an invalid value: %(value)s') % {'property': property_obj.short_description, 'value': exc})
 
