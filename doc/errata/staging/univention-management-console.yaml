@@ -3,7 +3,7 @@ release: "5.0"
 version: [9]
 scope: ucs_5.0-0-errata5.0-9
 src: univention-management-console
-fix: 12.0.35-6
+fix: 12.0.35-7
 desc: |
  This update addresses the following issues:
  * As Keycloak's OIDC URIs are checked case sensitively,
@@ -11,4 +11,7 @@ desc: |
    rejected on servers which contained uppercase letters.
    All generated URIs are converted to lowercase from now
    on.
-bug: [57679]
+ * Improved database session management under high load to prevent errors.
+   Sessions are now properly closed, ensuring better stability in
+   high concurrency environments.
+bug: [57679, 57680]

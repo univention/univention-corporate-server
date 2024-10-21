@@ -1269,6 +1269,15 @@ postgres_update () {
 	systemctl restart postgresql.service
 }
 
+configure_umc_postgres () {
+	su postgres -c "createdb umc"
+	su postgres -c "/usr/bin/createuser umc"
+	su postgres -c "psql umc -c \"ALTER ROLE umc WITH ENCRYPTED PASSWORD 'univention'\""
+	ucr set postgres11/pg_hba/config/host="umc umc 0.0.0.0/0 md5"
+	service postgresql restart
+	univention-management-console-settings set -u 'postgresql+psycopg2://umc:univention@master.ucs.test:5432/umc'
+}
+
 dump_systemd_journal () {
 	journalctl > /var/log/journalctl.log || echo "Could not dump systemd journal." >&2
 }
