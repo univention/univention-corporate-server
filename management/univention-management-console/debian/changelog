@@ -1,3 +1,10 @@
+univention-management-console (13.0.28) unstable; urgency=medium
+
+  * Bug #57680: Fix get_session context manager to properly close SQLAlchemy sessions after use
+  * Bug #57680: Correct scoped_session usage in DbRegistry for Tornado's event loop model.
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 21 Oct 2024 14:33:22 +0200
+
 univention-management-console (13.0.27) unstable; urgency=medium
 
   * Issue univention/components/keycloak-app#224: OIDC Doesn't work with

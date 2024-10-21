@@ -6,7 +6,7 @@ from typing import Generator, Union
 from sqlalchemy import BigInteger, Column, String, create_engine, text
 from sqlalchemy.engine import Connection, Engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import Session, scoped_session, sessionmaker
+from sqlalchemy.orm import Session, sessionmaker
 from tornado import ioloop
 
 import univention.debug as ud
@@ -53,9 +53,9 @@ class DBRegistry:
         if connection_uri is None:
             return
         ud.debug(ud.MAIN, 99, "Connecting to database: %s" % (connection_uri,))
-        engine = create_engine(connection_uri, echo=True)
+        engine = create_engine(connection_uri, pool_pre_ping=True)
         cls.__engine = engine
-        cls.__registry = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
+        cls.__registry = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
         Base.metadata.create_all(cls.__engine)
 
@@ -121,6 +121,7 @@ def get_session(auto_commit=True) -> Generator[Session, None, None]:
         if session is not None:
             if auto_commit:
                 session.commit()
+            session.close()
 
 
 class DBSession(Base):
