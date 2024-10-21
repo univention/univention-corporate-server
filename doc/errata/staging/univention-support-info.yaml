@@ -6,7 +6,7 @@ src: univention-support-info
 fix: 6.0.0-8
 desc: |
  This update addresses the following issues:
- * This script `univention-report-support-info` now
+ * The script `univention-report-support-info` now
    keeps the generated archive per default.
    The option `--cleanup` has been added to the script,
    to overrule this new behavior.
