@@ -132,7 +132,7 @@ _setup_oidc () {
 		fqdn_oidc="$umc_oidc_rp_server"
 		ucr set "ldap/server/sasl/oauthbearer/trusted-authorized-party/$fqdn"="https://$fqdn/univention/oidc/"
 	else
-		fqdn_oidc="$fqdn"
+	        fqdn_oidc="$hostname.$domainname"
 	fi
 
 	univention-keycloak "$@" oidc/rp create \
