@@ -99,8 +99,24 @@ UDM_users_user_pager1="$(random_chars 5 "$_ciphers")"
 UDM_users_user_pager2="$(random_chars 7 "$_ciphers")"
 UDM_users_user_pager3="$(random_chars 4 "$_ciphers")"
 
+encode_jpegPhoto() {
+	local original_jpegPhoto="$1"
+	jpegPhoto_encoded=$(python3 - <<EOF
+import base64
+from univention.admin.syntax import jpegPhoto
+original = """$original_jpegPhoto"""
+
+reencoded_original = jpegPhoto.parse(original)
+
+print(reencoded_original)
+EOF
+)
+	echo "$jpegPhoto_encoded"
+}
+
 if $ext_mapping; then
-	UDM_users_user_jpegPhoto="/9j/4AAQSkZJRgABAQEBLAEsAAD/4Se4"
+  UDM_users_user_jpegPhoto="/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/wAALCAABAAEBAREA/8QAFAABAAAAAAAAAAAAAAAAAAAACf/EABQQAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQEAAD8AKp//2Q=="
+  UDM_users_user_jpegPhoto_encoded=$(encode_jpegPhoto "$UDM_users_user_jpegPhoto")
 	UDM_users_user_employeeNumber="$(random_chars)"
 	UDM_users_user_employeeType="$(random_chars)"
 	UDM_users_user_loginShell="$(random_chars)"
@@ -191,7 +207,7 @@ ad_verify_attribute "$AD_DN" "pager" "$UDM_users_user_pager1"; fail_bool 0 121 "
 ad_verify_multi_value_attribute_contains "$AD_DN" "otherPager" "$UDM_users_user_pager2"; fail_bool 0 121 "See #18501"
 ad_verify_multi_value_attribute_contains "$AD_DN" "otherPager" "$UDM_users_user_pager3"; fail_bool 0 121 "See #18501"
 if $ext_mapping; then
-	ad_verify_attribute "$AD_DN" "jpegPhoto" "$UDM_users_user_jpegPhoto" "" "" "base64"; fail_bool 0 121
+	ad_verify_attribute "$AD_DN" "jpegPhoto" "$UDM_users_user_jpegPhoto_encoded" "" "" "base64"; fail_bool 0 121
 	ad_verify_attribute "$AD_DN" "employeeNumber" "$UDM_users_user_employeeNumber"; fail_bool 0 121
 	ad_verify_attribute "$AD_DN" "employeeType" "$UDM_users_user_employeeType"; fail_bool 0 121
 	ad_verify_attribute "$AD_DN" "loginShell" "$UDM_users_user_loginShell"; fail_bool 0 121
@@ -234,7 +250,7 @@ udm_verify_multi_value_udm_attribute_contains "pagerTelephoneNumber" "$UDM_users
 udm_verify_multi_value_udm_attribute_contains "pagerTelephoneNumber" "$UDM_users_user_pager3" "users/user"; fail_bool 0 110
 if $ext_mapping; then
 	udm_verify_udm_attribute "employeeNumber" "$UDM_users_user_employeeNumber" "users/user"; fail_bool 0 110
-	udm_verify_udm_attribute "jpegPhoto" "$UDM_users_user_jpegPhoto" "users/user"; fail_bool 0 110
+	udm_verify_udm_attribute "jpegPhoto" "$UDM_users_user_jpegPhoto_encoded" "users/user"; fail_bool 0 110
 	udm_verify_udm_attribute "employeeType" "$UDM_users_user_employeeType" "users/user"; fail_bool 0 110
 	udm_verify_udm_attribute "shell" "$UDM_users_user_loginShell" "users/user"; fail_bool 0 110
 	udm_verify_udm_attribute "unixhome" "$UDM_users_user_unixhome" "users/user" ; fail_bool 0 110
