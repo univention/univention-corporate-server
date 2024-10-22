@@ -148,6 +148,7 @@ The following API clients implemented in Python exist for the |UCSREST|:
 
      from univention.admin.rest.client import UDM
      from univention.config_registry import ucr
+
      uri = 'https://%(hostname)s.%(domainname)s/univention/udm/' % ucr
      udm = UDM.http(uri, 'Administrator', 'univention')
      module = udm.get('users/user')
@@ -194,6 +195,8 @@ The following API clients implemented in Python exist for the |UCSREST|:
 
      import asyncio
      from univention.admin.rest.async_client import UDM
+     from univention.config_registry import ucr
+
      uri = 'https://%(hostname)s.%(domainname)s/univention/udm/' % ucr
 
      async def main():
@@ -235,6 +238,7 @@ The following API clients implemented in Python exist for the |UCSREST|:
              await obj.delete()
 
 * Python |UCSREST| Client:
+
   * `Package at PyPI <https://pypi.org/project/udm-rest-client/>`_
   * :external+python-udm-rest-client:doc:`Documentation <index>`
 
