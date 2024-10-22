@@ -1,4 +1,4 @@
-univention-management-console (14.0.36) unstable; urgency=medium
+univention-management-console (14.0.37) unstable; urgency=medium
 
   * Issue univention/components/keycloak-app#224: OIDC Doesn't work with
     mixed case domainname
