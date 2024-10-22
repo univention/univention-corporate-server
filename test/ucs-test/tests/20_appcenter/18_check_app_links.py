@@ -57,6 +57,7 @@ forbidden_links['http://download.siouxapp.com/redirect/ucs-appcenter/appvendor.h
 forbidden_links['http://www.cloudssky.com/en/support/opencms/index.html'] = True
 forbidden_links['http://cloudssky.com/en/solutions/index.html'] = True
 forbidden_links['http://www.cloudssky.com'] = True
+forbidden_links['https://$DASHBOARD_SERVER/metrics-prometheus/graph'] = True
 
 README_FILES = [
     'README',
