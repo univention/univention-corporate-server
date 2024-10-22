@@ -1,3 +1,10 @@
+ucs-test (10.0.23-24) unstable; urgency=medium
+
+  * Issue univention/ucs#2472: ignore example link in 18_check_app_links.py
+    for admin-dashboard app
+
+ -- Felix Botner <botner@univention.de>  Tue, 22 Oct 2024 11:56:00 +0200
+
 ucs-test (10.0.23-23) unstable; urgency=medium
 
   * Bug #57672: Adjusts s4connector test to work with re-encoded jpeg image
