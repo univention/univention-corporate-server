@@ -488,6 +488,7 @@ install_docker_app_from_branch () {
     fi
     docker pull "$custom_docker_image"
     docker tag "$custom_docker_image" "$orig_image"
+    univention-app dev-set "$app_name" "DockerImage=$custom_docker_image"
 	fi
 	declare -a cmd=(univention-app install "$app_name" --noninteractive --username Administrator --pwdfile /tmp/univention)
 	"${cmd[@]}" ${1:+--set $@}
