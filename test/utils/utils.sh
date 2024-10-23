@@ -483,7 +483,13 @@ install_docker_app_from_branch () {
 	printf '%s' univention > /tmp/univention
 	if [ -n "$custom_docker_image" ]; then
 		univention-install --yes univention-appcenter-dev
-		univention-app dev-set "$app_name" "DockerImage=$custom_docker_image"
+    orig_image="$(univention-app get "$app_name" DockerImage|sed -n 's/^DockerImage: //p')"
+    if [ -z "$orig_image" ]; then
+      echo "ERROR: Could not determine original DockerImage for $app_name"
+      return 1
+    fi
+    docker pull "$custom_docker_image"
+    docker tag "$custom_docker_image" "$orig_image"
 	fi
 	declare -a cmd=(univention-app install "$app_name" --noninteractive --username Administrator --pwdfile /tmp/univention)
 	"${cmd[@]}" ${1:+--set $@}
