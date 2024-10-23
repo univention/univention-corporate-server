@@ -459,6 +459,10 @@ install_apps_master_packages () {
 }
 
 install_with_unmaintained () {
+	echo "temporary ssh setting to migitiate ssh connection failures during test runs"
+	ucr set sshd/ClientAliveCountMax=10
+	service sshd restart
+
 	local rv=0
 	wait_for_repo_server || rv=$?
 	ucr set repository/online=true repository/online/unmaintained=yes
