@@ -1,3 +1,9 @@
+univention-ldb-modules (10.0.3) unstable; urgency=medium
+
+  * Bug #57690: Version bump to re-build
+
+ -- Arvid <requate@univention.de>  Wed, 23 Oct 2024 11:51:29 +0200
+
 univention-ldb-modules (10.0.2) unstable; urgency=medium
 
   * Bug #56604: drop Python 2 compatibility
