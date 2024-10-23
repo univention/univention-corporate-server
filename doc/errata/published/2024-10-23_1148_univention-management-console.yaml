@@ -12,3 +12,6 @@ desc: |
    All generated URIs are converted to lowercase from now
    on.
 bug: [57679]
+erratum: 1148
+announced: 2024-10-23
+support: core
