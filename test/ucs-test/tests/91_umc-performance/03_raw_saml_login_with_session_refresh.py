@@ -39,7 +39,7 @@ class SAMLSessionRefresh(FastHttpUser):
     @events.init.add_listener
     def on_init(environment, **_kwargs):
         environment.stats.use_response_times_cache = True
-        JmeterListener(env=environment, results_filename='/mnt/locust/jmeter_results_SAMLSessionRefresh.csv')
+        JmeterListener(env=environment, results_filename='/mnt/locust/jmeter_results_SAMLSessionRefresh.csv', timestamp_format='%Y/%m/%d %H:%M:%S')
 
     @task
     def login_refresh_logout(self):

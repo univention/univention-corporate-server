@@ -1,4 +1,4 @@
-FROM locustio/locust:master
+FROM docker-registry.knut.univention.de/locustio/locust:master
 USER root
 RUN apt-get --quiet update && \
   DEBIAN_FRONTEND=noninteractive \
