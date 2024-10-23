@@ -11,3 +11,6 @@ desc: |
    The option `--cleanup` has been added to the script,
    to overrule this new behavior.
 bug: [57641]
+erratum: 1149
+announced: 2024-10-23
+support: core
