@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues
  * Enforce JPEG conversion for all profile pictures not just PNG.
 bug: [57672]
+erratum: 1147
+announced: 2024-10-23
+support: core
