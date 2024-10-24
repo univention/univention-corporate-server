@@ -83,7 +83,7 @@ test_account_sid=$(univention-s4search samaccountname="$test_account" objectSid 
 sleep 1
 
 ### Update the NTACLs on the local SYSVOL share via SMB
-test_ntace="(A;OICI;0x001200a9;;;$test_account_sid)"
+test_ntace="(A;OICI;0x1200a9;;;$test_account_sid)"
 tmp_gpo_ntacl="${start_gpo_ntacl}$test_ntace"
 smbcacls //localhost/sysvol "$domainname/Policies/$gpo_cn" -U "$admin_account%$tests_domainadmin_pwd" -S "$tmp_gpo_ntacl" --sddl
 
