@@ -106,9 +106,7 @@ test_master () {
 		sleep 120
 		# check time, give it a 5min threshold
 		wintime=$(ucs-winrm run-ps --client "$client" --credssp --cmd 'Get-Date -Format t')
-		wintime_epoch="$(date -u -d "$wintime" +%s)"
-		##ucstime_epoch="$(date -u +%s)"
-		# no utc here?
+		wintime_epoch="$(date -d "$wintime" +%s)"
 		ucstime_epoch="$(date +%s)"
 		diff=$((wintime_epoch - ucstime_epoch))
 		test ${diff#-} -lt 300
