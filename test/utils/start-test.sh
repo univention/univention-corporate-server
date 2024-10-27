@@ -13,6 +13,7 @@ export OPENSTACK_IMAGE_VERSION="${OPENSTACK_IMAGE_VERSION:=5.0-9}"  # version fo
 export OPENSTACK_IMAGE_NAME="${OPENSTACK_IMAGE_NAME:=UCS $OPENSTACK_IMAGE_VERSION}"  # name of the default openstack image
 export KVM_OPERATING_SYSTEM="${KVM_OPERATING_SYSTEM:=UCS}"  # --operating-system {Debian,Others,UCS,Windows,all} for ucs-kt-get
 export UCS_MINORRELEASE="${release%%-*}"
+export RANDOM_UCS_ROOT_PASSWORD="${RANDOM_UCS_ROOT_PASSWORD:=$(shuf -zern32 {A..Z} {a..z} {0..9})}"  # used in some scenarios to hide the password. access by certificate (or pass it yourself or look at the environment)
 export TARGET_VERSION="${TARGET_VERSION:=$release}"
 export UCS_VERSION="${UCS_VERSION:=$release}"
 export OLD_VERSION="${OLD_VERSION:=$old_release}"
