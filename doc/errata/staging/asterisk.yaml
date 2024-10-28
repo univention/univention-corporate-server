@@ -7,7 +7,7 @@ fix: 1:13.14.1~dfsg-2+deb9u10
 desc: |
  This update addresses the following issue:
   * CVSS score 8.8 (CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
- (CVE-2024-42365)
+    (CVE-2024-42365)
 bug: [57701]
 cve:
 - CVE-2024-42365
