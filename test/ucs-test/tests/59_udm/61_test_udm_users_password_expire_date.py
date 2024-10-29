@@ -5,6 +5,7 @@
 ## packages: [python3-univention-directory-manager]
 ## bugs: [25279,36330]
 
+import calendar
 import copy
 import re
 import time
@@ -105,7 +106,7 @@ def udm_formula_for_sambaKickoffTime(userexpirydate):
 def udm_formula_for_shadowExpire(userexpirydate):
     # Note: this is a timezone dependent value
     dateformat = syntax_date2_dateformat(userexpirydate)
-    return str(int(time.mktime(time.strptime(userexpirydate, dateformat)) / 3600 / 24 + 1)).encode('ASCII')
+    return str(int(calendar.timegm(time.strptime(userexpirydate, dateformat)) / 3600 / 24)).encode('ASCII')
 
 
 SAMBAACCTFLAGS_NORMAL = b'[U          ]'

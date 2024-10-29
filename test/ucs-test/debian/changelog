@@ -1,4 +1,4 @@
-ucs-test (10.0.23-26) unstable; urgency=medium
+ucs-test (10.0.23-27) unstable; urgency=medium
 
   * Issue univention/ucs#2338: Fix shadow tests for openstack
 
