@@ -478,11 +478,11 @@ class TestUsers:
         self._test_modlist(udm, {'userexpiry': userexpiry}, {'krb5ValidEnd': valid_end}, **x)
 
     @pytest.mark.parametrize('disabled,userexpiry,shadow_expire', [
-        ('none', '2018-01-01', [str(int(time.mktime(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24 + 1))]),
-        ('all', '2018-01-01', [str(int(time.mktime(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24 + 1))]),
-        ('posix', '2018-01-01', [str(int(time.mktime(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24 + 1))]),
-        ('posix_kerberos', '2018-01-01', [str(int(time.mktime(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24 + 1))]),
-        ('windows_posix', '2018-01-01', [str(int(time.mktime(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24 + 1))]),
+        ('none', '2018-01-01', [str(int(calendar.timegm(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24))]),
+        ('all', '2018-01-01', [str(int(calendar.timegm(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24))]),
+        ('posix', '2018-01-01', [str(int(calendar.timegm(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24))]),
+        ('posix_kerberos', '2018-01-01', [str(int(calendar.timegm(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24))]),
+        ('windows_posix', '2018-01-01', [str(int(calendar.timegm(time.strptime('2018-01-01', "%Y-%m-%d")) / 3600 / 24))]),
         ('kerberos', '', []),
         ('all', '', ['1']),
         ('posix', '', ['1']),
