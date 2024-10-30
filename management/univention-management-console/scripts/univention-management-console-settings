@@ -107,6 +107,10 @@ def parse_args():
 
     set_subparser = subparser.add_parser('set')
     set_subparser.add_argument('-u', '--sqlURI', nargs='?', const=None, help='The SQL connection URI', action=StoreInDict)
+    set_subparser.add_argument('-s', '--sqlPoolSize', nargs='?', const=None, help='The SQL connection pool size', action=StoreInDict)
+    set_subparser.add_argument('-o', '--sqlMaxOverflow', nargs='?', const=None, help='The SQL connection max overflow', action=StoreInDict)
+    set_subparser.add_argument('-t', '--sqlPoolTimeout', nargs='?', const=None, help='The SQL connection pool timeout', action=StoreInDict)
+    set_subparser.add_argument('-r', '--sqlPoolRecycle', nargs='?', const=None, help='The SQL connection pool recycle', action=StoreInDict)
     set_subparser.set_defaults(func=set_options)
 
     args = parser.parse_args()

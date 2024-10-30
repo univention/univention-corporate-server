@@ -5,12 +5,15 @@ from typing import Generator, Union
 
 from sqlalchemy import BigInteger, Column, String, create_engine, text
 from sqlalchemy.engine import Connection, Engine
+from sqlalchemy.engine.url import make_url
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session, sessionmaker
 from tornado import ioloop
 
-import univention.debug as ud
-from univention.management.console.config import SQL_CONNECTION_ENV_VAR
+from univention.management.console.config import (
+    SQL_CONNECTION_ENV_VAR, SQL_MAX_OVERFLOW_ENV_VAR, SQL_POOL_RECYCLE_ENV_VAR, SQL_POOL_SIZE_ENV_VAR,
+    SQL_POOL_TIMEOUT_ENV_VAR,
+)
 from univention.management.console.log import CORE
 from univention.management.console.sse import logout_notifiers
 
@@ -52,8 +55,22 @@ class DBRegistry:
         connection_uri = os.environ.get(SQL_CONNECTION_ENV_VAR, None)
         if connection_uri is None:
             return
-        ud.debug(ud.MAIN, 99, "Connecting to database: %s" % (connection_uri,))
-        engine = create_engine(connection_uri, pool_pre_ping=True)
+        opts = {
+            'pool_pre_ping': True,
+            'pool_size': int(os.environ.get(SQL_POOL_SIZE_ENV_VAR)),
+            'max_overflow': int(os.environ.get(SQL_MAX_OVERFLOW_ENV_VAR)),
+            'pool_timeout': int(os.environ.get(SQL_POOL_TIMEOUT_ENV_VAR)),
+            'pool_recycle': int(os.environ.get(SQL_POOL_RECYCLE_ENV_VAR))
+        }
+
+        url = make_url(connection_uri)
+        msg = f"Connecting to database {url.drivername}://{url.host}/{url.database} with parameters {', '.join([f'{k}={v}' for k, v in opts.items()])}"
+        CORE.process(f"Connecting to database: {msg}")
+
+        engine = create_engine(
+            connection_uri,
+            **opts,
+        )
         cls.__engine = engine
         cls.__registry = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

@@ -52,7 +52,7 @@ from tornado.web import Application as TApplication, url
 
 import univention.debug as ud
 from univention.management.console import saml
-from univention.management.console.config import SQL_CONNECTION_ENV_VAR, ucr
+from univention.management.console.config import env_to_settings, ucr
 from univention.management.console.log import CORE, log_init, log_reopen
 from univention.management.console.oidc import (
     OIDCBackchannelLogout, OIDCFrontchannelLogout, OIDCLogin, OIDCLogout, OIDCLogoutFinished, OIDCMetadata,
@@ -224,15 +224,21 @@ class Server(object):
         # bind sockets
         sockets = bind_sockets(self.options.port, ucr.get('umc/http/interface', '127.0.0.1'), backlog=ucr.get_int('umc/http/requestqueuesize', 100), reuse_port=True)
 
-        if os.environ.get(SQL_CONNECTION_ENV_VAR, None) is None:
-            try:
-                settings_data_mod = UDM.machine().version(3).get('settings/data')
-                umc_settings_position = f"cn=umc,cn=data,cn=univention,{ucr.get('ldap/base')}"
-                umc_settings_obj = settings_data_mod.get(umc_settings_position)
-                settings_obj = json.loads(umc_settings_obj.props.data.raw.decode('utf-8'))
-                os.environ[SQL_CONNECTION_ENV_VAR] = settings_obj['sqlURI']
-            except Exception as exc:
-                CORE.info('Could not read from umc settings/data object. Continuing without shared db session %s' % (exc,))
+        try:
+            settings_data_mod = UDM.machine().version(3).get('settings/data')
+            umc_settings_position = f"cn=umc,cn=data,cn=univention,{ucr.get('ldap/base')}"
+            umc_settings_obj = settings_data_mod.get(umc_settings_position)
+            settings_obj = json.loads(umc_settings_obj.props.data.raw.decode('utf-8'))
+        except Exception as exc:
+            CORE.info('Could not read from umc settings/data object. Continuing without shared db session %s' % (exc,))
+        else:
+            for env_var, (setting_name, default_setting_value) in env_to_settings.items():
+                if os.environ.get(env_var, None) is None:
+                    if setting_name in settings_obj:
+                        os.environ[env_var] = settings_obj[setting_name]
+                    elif default_setting_value is not None:
+                        os.environ[env_var] = default_setting_value
+                        CORE.info('Could not read %s from umc settings/data object. Continuing with default value %s' % (setting_name, default_setting_value))
 
         # start sub worker processes
         if self.options.processes != 1:
