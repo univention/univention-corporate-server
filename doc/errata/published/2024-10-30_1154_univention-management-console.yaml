@@ -10,3 +10,6 @@ desc: |
    Sessions are now properly closed, ensuring better stability in
    high concurrency environments.
 bug: [57680]
+erratum: 1154
+announced: 2024-10-30
+support: core
