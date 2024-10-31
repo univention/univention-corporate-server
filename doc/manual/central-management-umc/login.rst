@@ -426,8 +426,33 @@ In these cases, you must consider the following aspects:
       :caption: Set SQL connection URI
       :name: central-management-umc-login-single-sign-on-oidc-back-channel-sign-out-sql-connection-listing
 
-      $ univention-management-console-setting set \
+      $ univention-management-console-settings set \
          -u 'postgresql+psycopg2://db_user:db_password@db_host:5432/db_name'
+
+#. Optional parameters for the database connection pool:
+
+   * ``Pool Size``: The number of connections to the database.
+     The default value is ``5``.
+   * ``Max Overflow``: The maximum number of temporary connections.
+     The default value is ``10``.
+   * ``Pool Timeout``: The number of seconds to wait for a connection to be available.
+     The default value is ``30``.
+   * ``Pool Recycle``: The number of seconds after which a connection is recycled.
+     The default value is ``-1``.
+
+   With these default values, each UMC process can have up to 15 connections to the database.
+   The total number of connections is: ``<Number of Servers> * <Number of Processes> * (<Pool Size> + <Max Overflow>)``.
+   Make sure that the database can handle the number of connections.
+
+   .. code-block:: console
+      :caption: Set optional parameters for the database connection pool
+      :name: central-management-umc-login-single-sign-on-oidc-back-channel-sign-out-sql-connection-optional-listing
+
+      $ univention-management-console-settings set \
+           -s 5 \
+           -o 10 \
+           -t 30 \
+           -r 3600
 
 #. Restart the UMC on all UCS servers:
 
