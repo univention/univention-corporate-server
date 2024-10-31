@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.28-6) unstable; urgency=medium
+
+  * Bug #57713: count system accounts also with unlimited license
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Thu, 31 Oct 2024 08:12:05 +0100
+
 univention-directory-manager-modules (15.0.28-5) unstable; urgency=medium
 
   * Bug #57672: revert to original method and re-encode all images as jpeg
