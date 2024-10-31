@@ -395,9 +395,6 @@ class License(object):
         version = self.version
         if version not in self.licenses:
             version = '2'
-        if self.licenses[version][License.USERS] == 'unlimited':
-            self.sysAccountsFound = 0
-            return
 
         userfilter = [univention.admin.filter.expression('uid', account) for account in self.sysAccountNames]
         filter = univention.admin.filter.conjunction('&', [

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (16.0.28) unstable; urgency=medium
+
+  * Bug #57713: count system accounts also with unlimited license
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 05 Nov 2024 13:10:08 +0100
+
 univention-directory-manager-modules (16.0.27) unstable; urgency=medium
 
   * Bug #57672: return string from parse to be compatbile with old behavior
