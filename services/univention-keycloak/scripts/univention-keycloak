@@ -1737,6 +1737,14 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     parser_legacy_authentication_flow_delete.set_defaults(func=delete_legacy_authentication_flow)
     parser_legacy_authentication_flow_delete.add_argument("--flow", help="delete the flow (default browser).", default="browser")
 
+    # kerberos condition flow
+    parser_conditional_krb_flow = subparsers.add_parser("conditional-krb-authentication-flow", add_help=False)
+    parser_conditional_krb_flow_operations = parser_conditional_krb_flow.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
+    parser_conditional_krb_flow_create = parser_conditional_krb_flow_operations.add_parser("create", help="create the legacy authentication flow")
+    parser_conditional_krb_flow_create.add_argument("--flow", help="create the new flow based on this existing authentication flow (default browser).", default="browser")
+    parser_conditional_krb_flow_create.add_argument("--name", help="the name of the new created flow", default="")
+    parser_conditional_krb_flow_create.add_argument("--allowed-ip", help="IP address range which is allowed to use kerberos", default=[], action="append")
+    parser_conditional_krb_flow_create.set_defaults(func=create_conditional_krb_authentication_flow)
     opt = parser.parse_args(args)
     if opt.binddn:
         opt.binduser = explode_rdn(opt.binddn, 1)[0]
@@ -1839,6 +1847,87 @@ def messages_set(opt: Namespace) -> None:
 def messages_delete(opt: Namespace) -> None:
     session = UniventionKeycloakAdmin(opt)
     session.delete_message_bundle(opt.language, opt.key)
+
+
+def create_conditional_krb_subflows(session, opt, payload, flow_level, level, flow_name):
+    krb_subflow1 = {
+        "displayName": f"Kerberos alternative {flow_name}",
+        "requirement": "ALTERNATIVE",
+        "priority": payload["priority"],
+        "description": "",
+        "type": "basic-flow",
+    }
+    krb_subflow2 = {
+        "displayName": f"Kerberos condition {flow_name}",
+        "requirement": "CONDITIONAL",
+        "description": "",
+        "type": "basic-flow",
+    }
+    condition_execution = {
+        "displayName": f"Conditional IP address {flow_name}",
+        "requirement": "REQUIRED",
+        "providerId": "univention-condition-ipaddress",
+        "priority": 0,
+    }
+    krb_execution = {
+        "displayName": f"Kerberos {flow_name}",
+        "providerId": "auth-spnego",
+        "requirement": "ALTERNATIVE",
+        "priority": 1,
+    }
+    payload = krb_subflow1
+    session.create_and_update_authentication_flow_subflow(payload, flow_alias=flow_level[level])
+    alias = payload["displayName"]
+    payload = krb_subflow2
+    session.create_and_update_authentication_flow_subflow(payload, flow_alias=alias)
+    alias = payload["displayName"]
+    session.create_and_update_authentication_flow_execution(condition_execution, flow_alias=alias)
+    session.create_and_update_authentication_flow_execution(krb_execution, flow_alias=alias)
+
+    payload = {
+        "alias": "ipaddressconfig",
+        "config": {
+            "ip-subnets": "##".join(opt.allowed_ip) if opt.allowed_ip else "0.0.0.0/0##::/0"
+        }
+    }
+
+    condition_user_role_id = None
+    for exe in session.get_authentication_flow_executions(flow_name):
+        if exe.get("authenticationFlow"):
+            continue
+        if exe["providerId"] == "univention-condition-ipaddress":
+            condition_user_role_id = exe["id"]
+    create_config_for_execution(session, payload, condition_user_role_id)
+
+
+def create_conditional_krb_authentication_flow(opt):
+    flow_name = opt.name or f"{opt.flow} kerberos conditional"
+    session = UniventionKeycloakAdmin(opt)
+
+    payload = {
+        "alias": flow_name,
+        "providerId": "basic-flow",
+        "builtIn": False,
+        "topLevel": True,
+        "description": f"{opt.flow}r based authentication with conditional kerberos authentication",
+    }
+    session.create_authentication_flow(payload=json.dumps(payload))
+    # create all executions and sub-flows in the correct level
+    flow_level = {0: flow_name}
+    for payload in session.get_authentication_flow_executions(opt.flow):
+        level = payload["level"]
+        if payload.get("authenticationFlow", False):
+            # save level name mapping for flow
+            name = f"{payload['displayName']} ({flow_name})"
+            flow_level[level + 1] = name
+            payload["type"] = "basic-flow"
+            payload["displayName"] = name
+            session.create_and_update_authentication_flow_subflow(payload, flow_alias=flow_level[level])
+        # replace kerberos execution with conditional subflow
+        elif payload.get("providerId") == "auth-spnego":
+            create_conditional_krb_subflows(session, opt, payload, flow_level, level, flow_name)
+        else:
+            session.create_and_update_authentication_flow_execution(payload, flow_alias=flow_level[level])
 
 
 def create_legacy_authentication_flow(opt: Namespace) -> None:
