@@ -1,3 +1,9 @@
+univention-keycloak (1.0.13-2) unstable; urgency=medium
+
+  * Bug #56474: function to add kerberos auth to univention-keycloak
+
+ -- Julia Bremer <bremer@univention.de>  Sun, 03 Nov 2024 17:02:49 +0100
+
 univention-keycloak (1.0.13-1) UNRELEASED; urgency=medium
 
   * Bug #57581 UCS 5.0-9 version bump

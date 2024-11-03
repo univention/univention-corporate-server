@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [9]
+scope: ucs_5.0-0-errata5.0-9
+src: univention-keycloak
+fix: 1.0.13-2
+desc: |
+ This update addresses the following issues:
+ * The tool `univention-keycloak` was enabled to update
+   an existing authentication flow so that it replaces the
+   kerberos authentication step with a conditional subflow
+   which can enable kerberos authentication depending on the
+   client IP address.
+bug: [56474]
