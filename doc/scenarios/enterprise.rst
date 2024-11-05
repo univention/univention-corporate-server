@@ -188,16 +188,6 @@ HMV must satisfy a range of insurance industry compliance requirements.
   figures for passwords. In addition, passwords can be compared against a list
   of unsafe passwords, for example ``secret``.
 
-.. _insurance-monitoring:
-
-System monitoring with Nagios NRPE
-==================================
-
-UCS integrates the system monitoring software Nagios through NRPE, which allows the
-monitoring of complex IT structures from networks, computers and services. This
-includes a comprehensive range of monitoring modules, which can also be expanded
-if necessary.
-
 .. _insurance-aix:
 
 Integration of the AIX system
