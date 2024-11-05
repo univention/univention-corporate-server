@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [8, 9]
+scope: ucs_5.0-0-errata5.0-9
+src: shim-signed
+fix: 1.44~1+deb10u2
+desc: |
+ This update addresses the following issues:
+ * In order to support Secure Boot in Debian 10 (Buster) ELTS, the SecureBoot
+   shim needs to be updated to include the Freexian public certificate which
+   was used to sign the ELTS Linux kernel and other packages. This update adds
+   that certificate to the shim alongside the Debian public CA, which allows
+   to boot both old (signed by Debian) and new (signed by Freexian) packages.
+bug: [57718]
+note: This is the 4th of five parts.
