@@ -197,20 +197,6 @@ user database of the AIX system. Now only the ``secldapclntd`` service runs on
 the AIX system; it performs all the authentication processes against the UCS
 LDAP directory.
 
-.. _insurance-crm:
-
-Integration of SuiteCRM
-=======================
-
-:program:`SuiteCRM` is employed as the CRM solution for sales personnel. The
-administration of the SuiteCRM users and roles integrates directly in the
-|UCSUMC|. The installation can be performed with a few clicks using the
-Univention App Center.
-
-The installation is operated as a |UCSREPLICADN| system on the Amazon EC2 cloud.
-This ensures high availability and allows flexible scaling to growing
-performance and storage requirements.
-
 .. _insurance-ref:
 
 References
@@ -225,6 +211,3 @@ References
 
 * `opsi
   <https://www.univention.com/products/univention-app-center/app-catalog/opsi/>`_
-
-* `SuiteCRM
-  <https://www.univention.com/products/univention-app-center/app-catalog/digitec-suitecrm/>`_
