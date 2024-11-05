@@ -147,17 +147,6 @@ connections can be reduced. Furthermore, the view of internet content can be
 controlled and managed. For example, it can be defined, which users or user
 groups view which websites.
 
-.. _lawyer-backup:
-
-Backup
-======
-
-All files, both the users' files in the home directory and the legal literature
-files in the central share, are stored on the UCS system and can thus be
-centrally saved on a tape drive. The App Center in UCS offers several solutions
-like for example :program:`Bareos Backup Server` and :program:`SEP sesam Backup
-Server` that can be used flexibly for different backup and archiving strategies.
-
 .. _lawyer-outlook:
 
 Outlook
@@ -180,9 +169,6 @@ References
 
 * :ref:`uv-manual:windows-ad-takeover`
 
-* `Bareos Backup Server
-  <https://www.univention.com/products/univention-app-center/app-catalog/bareos/>`_
-
 * `OX App Suite
   <https://www.univention.com/products/app-catalog/oxseforucs/>`_
 
@@ -190,6 +176,3 @@ References
   <https://www.univention.com/products/univention-app-center/app-catalog/squid/>`_
 
 * `Self Service <https://www.univention.com/products/univention-app-center/app-catalog/self-service/>`_
-
-* `SEP sesam Backup Server
-  <https://www.univention.com/products/univention-app-center/app-catalog/sep-sesam/>`_
