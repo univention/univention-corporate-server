@@ -128,14 +128,12 @@ waiting times.
 Groupware
 =========
 
-On the UCS system the groupware solution :program:`Kopano` is installed as app
-from the App Center. Kopano accesses the user data of the UCS directory service.
-The administration integrates seamlessly in the |UCSUMC|. The employees use the
-web-based :program:`Kopano WebApp` for calendaring, also available in the App
-Center.
+On the UCS system the groupware solution :program:`OX App Suite`
+is installed as app from the App Center.
+OX App Suite accesses the user data of the UCS directory service.
+The administration integrates seamlessly in the |UCSUMC|.
 
-Virus detection including signature updates and spam filters are integrated at
-no additional cost.
+Virus detection including signature updates and spam filters are integrated at no additional cost.
 
 .. _lawyer-proxy:
 
@@ -185,11 +183,8 @@ References
 * `Bareos Backup Server
   <https://www.univention.com/products/univention-app-center/app-catalog/bareos/>`_
 
-* `Kopano Core
-  <https://www.univention.com/products/univention-app-center/app-catalog/kopano-core/>`_
-
-* `Kopano WebApp
-  <https://www.univention.com/products/univention-app-center/app-catalog/kopano-webapp/>`_
+* `OX App Suite
+  <https://www.univention.com/products/app-catalog/oxseforucs/>`_
 
 * `Proxyserver / Webcache (Squid)
   <https://www.univention.com/products/univention-app-center/app-catalog/squid/>`_
