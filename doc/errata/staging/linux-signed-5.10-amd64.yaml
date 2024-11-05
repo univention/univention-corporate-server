@@ -102,7 +102,7 @@ desc: |
    CVE-2024-38601, CVE-2024-38597, CVE-2024-38586)
  * CVSS score 4.1 (CVSS:3.1/AV:L/AC:H/PR:H/UI:N/S:U/C:H/I:N/A:N).
    (CVE-2024-41011)
-bug: [57719]
+bug: [57718]
 cve:
 - CVE-2024-43849
 - CVE-2024-43846
@@ -321,3 +321,4 @@ cve:
 - CVE-2024-38586
 - CVE-2024-39468
 - CVE-2024-25741
+note: This is the 2nd of two parts.
