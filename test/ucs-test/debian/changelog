@@ -1,3 +1,9 @@
+ucs-test (10.0.23-30) unstable; urgency=medium
+
+  * Bug #56474: Add kerberos conditional auth tests
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 12 Nov 2024 13:38:07 +0100
+
 ucs-test (10.0.23-29) unstable; urgency=medium
 
   * Issue univention/ucs#2375: wait not so long for S4 connector
