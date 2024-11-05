@@ -24,10 +24,6 @@ the users work on the move with laptops as salespersons or estimators.
 Microsoft Windows is used on all the desktops. Software distribution and the
 installation of security updates are centralized.
 
-Citrix XenApp needs to be employed in the headquarters because of a
-superordinate group policy: users connect to the terminal services with thin
-clients.
-
 The groupware Microsoft Exchange is provided centrally by the parent company.
 
 All users, computers and services need to be centrally administrable. Critical
@@ -165,7 +161,7 @@ parent company allows authentication with the same username / password.
 
 Users can connect to the services of both environments in a transparent way, as
 the same user settings apply in both domains. For example, a user can sign in
-both the UCS directory service on their laptop and the Citrix Server in the
+both the UCS directory service on their laptop and the
 Microsoft Active Directory with the same username and password.
 
 .. _insurance-compliance:
@@ -200,15 +196,6 @@ In the past, all users working on the system were maintained twice in the local
 user database of the AIX system. Now only the ``secldapclntd`` service runs on
 the AIX system; it performs all the authentication processes against the UCS
 LDAP directory.
-
-.. _insurance-terminal:
-
-Citrix terminal services
-========================
-
-In the headquarters 150 users work with terminal services based on Citrix
-XenApp. The XenApp terminal server runs on a Windows member server, which joined
-the local Samba/AD domain.
 
 .. _insurance-crm:
 
