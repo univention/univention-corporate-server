@@ -249,8 +249,5 @@ References
 * `opsi
   <https://www.univention.com/products/univention-app-center/app-catalog/opsi/>`_
 
-* `SEP sesam Backup Server
-  <https://www.univention.com/products/univention-app-center/app-catalog/sep-sesam/>`_
-
 * `SuiteCRM
   <https://www.univention.com/products/univention-app-center/app-catalog/digitec-suitecrm/>`_
