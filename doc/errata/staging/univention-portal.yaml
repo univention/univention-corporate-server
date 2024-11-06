@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [9]
+scope: ucs_5.0-0-errata5.0-9
+src: univention-portal
+fix: 4.0.18-2
+desc: |
+ This update addresses the following issues:
+ * Unique HTML identifiers have been added to each self-service module
+   to simplify custom CSS usage.
+bug: [57731]

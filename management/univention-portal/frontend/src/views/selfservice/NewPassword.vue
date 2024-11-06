@@ -32,6 +32,7 @@
     :subtitle="SUBTITLE"
   >
     <my-form
+      id="new-password"
       ref="form"
       v-model="formValues"
       :widgets="formWidgetsWithTabindex"

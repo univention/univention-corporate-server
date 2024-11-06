@@ -1,3 +1,9 @@
+univention-portal (4.0.18-2) UNRELEASED; urgency=medium
+
+  * Bug #57731: add optional id attribute to self-service components
+
+ -- Christian Castens <castens@univention.de>  Tue, 05 Nov 2024 16:18:36 +0200
+
 univention-portal (4.0.18-1) UNRELEASED; urgency=medium
 
   * Bug #57581 UCS 5.0-9 version bump

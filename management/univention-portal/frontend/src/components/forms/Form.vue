@@ -27,7 +27,7 @@
   <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <form>
+  <form :id="id">
     <main>
       <form-element
         v-for="widget in widgets"
@@ -58,6 +58,10 @@ export default defineComponent({
     FormElement,
   },
   props: {
+    id: {
+      type: String,
+      required: false,
+    },
     modelValue: {
       // type: Object, TODO
       required: true,

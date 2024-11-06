@@ -28,6 +28,7 @@
 -->
 <template>
   <guarded-site
+    id="service-specific-passwords"
     :title="TITLE"
     :subtitle="SUBTITLE"
     path="passwordreset/get_service_specific_passwords"

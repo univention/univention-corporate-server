@@ -32,6 +32,7 @@
     :subtitle="subtitle"
   >
     <my-form
+      :id="id"
       ref="form"
       v-model="formValues"
       :widgets="formWidgetsWithTabindex"
@@ -85,6 +86,10 @@ export default defineComponent({
     ErrorDialog,
   },
   props: {
+    id: {
+      type: String,
+      required: false,
+    },
     title: {
       type: String,
       required: true,

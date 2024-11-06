@@ -28,6 +28,7 @@
 -->
 <template>
   <guarded-site
+    id="protect-account"
     ref="guardedSite"
     :title="TITLE"
     :subtitle="SUBTITLE"

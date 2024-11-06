@@ -31,6 +31,7 @@
     :title="TITLE"
   >
     <my-form
+      id="verify-account"
       ref="form"
       v-model="formValues"
       :widgets="formWidgetsWithTabindex"

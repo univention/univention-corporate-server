@@ -31,6 +31,7 @@
     :title="TITLE"
   >
     <my-form
+      id="create-account"
       v-if="formWidgets.length > 0"
       ref="form"
       v-model="formValues"

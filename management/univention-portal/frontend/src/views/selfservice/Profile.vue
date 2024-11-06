@@ -32,6 +32,7 @@
     :subtitle="SUBTITLE"
   >
     <my-form
+      id="profile"
       v-if="!attributesLoaded"
       ref="loginForm"
       v-model="loginValues"

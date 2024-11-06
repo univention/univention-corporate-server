@@ -16,6 +16,7 @@
         {{ DESCRIPTION }}
       </template>
       <my-form
+        id="confirm-deregistration"
         ref="form"
         v-model="formValues"
         :widgets="visibleWidgets"

@@ -32,6 +32,7 @@ License with the Debian GNU/Linux or Univention distribution in file
     :subtitle="SUBTITLE"
   >
     <my-form
+      id="password-change"
       ref="form"
       v-model="formValues"
       :widgets="formWidgetsTranslated"

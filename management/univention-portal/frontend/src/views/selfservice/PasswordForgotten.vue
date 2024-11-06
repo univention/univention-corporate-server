@@ -28,6 +28,7 @@
 -->
 <template>
   <guarded-site
+    id="password-forgotten"
     ref="guardedSite"
     :title="TITLE"
     :subtitle="SUBTITLE"
