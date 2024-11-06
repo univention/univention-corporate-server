@@ -10,3 +10,6 @@ desc: |
    correctly in case of an `unlimited` license. This has been
    fixed.
 bug: [57713]
+erratum: 1159
+announced: 2024-11-06
+support: core
