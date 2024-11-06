@@ -11,3 +11,6 @@ desc: |
    via `univention-management-console-settings` for improved
    resource management.
 bug: [57714]
+erratum: 1160
+announced: 2024-11-06
+support: core
