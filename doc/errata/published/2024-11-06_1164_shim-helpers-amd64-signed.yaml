@@ -13,3 +13,6 @@ desc: |
    to boot both old (signed by Debian) and new (signed by Freexian) packages.
 bug: [57718]
 note: This is the 5th of five parts.
+erratum: 1164
+announced: 2024-11-06
+support: core
