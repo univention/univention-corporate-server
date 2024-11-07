@@ -246,11 +246,13 @@ class TestCases:
             dn_user1 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
             udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1], wait_for_replication=with_listener, wait_for=with_listener)
 
+        wait_for_replication()
         with AutoStartStopListener(with_listener):
             dn_user2 = udm.create_object('users/user', position=self.base_user, username=random_name(), lastname=random_name(), password=random_name(), wait_for_replication=with_listener, wait_for=with_listener)
             udm.modify_object('groups/group', dn=dn_grp1, users=[dn_user1, dn_user2], wait_for_replication=with_listener, wait_for=with_listener)
             udm.modify_object('groups/group', dn=dn_grp1, remove={'users': [dn_user1]}, wait_for_replication=with_listener, wait_for=with_listener)
 
+        wait_for_replication()
         self.print_attributes(udm, [dn_user1, dn_user2], 'RESULT')
         utils.verify_ldap_object(dn_grp1, {'uniqueMember': [dn_user2]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)
         utils.verify_ldap_object(dn_user1, {'memberOf': [self.dn_domain_users]}, strict=True, retry_count=RETRY_COUNT, delay=DELAY)

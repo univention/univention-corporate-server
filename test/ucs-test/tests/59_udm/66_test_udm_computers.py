@@ -190,7 +190,7 @@ class Test_ComputerAllRoles:
                            forwardZone, forwardZoneName, reverseZone, ip_netmask)
 
         computer = udm.modify_object(
-            role, dn=computer, ip=ip_computer_modified)
+            role, dn=computer, ip=ip_computer_modified, wait_for=True)
         verify_ldap_object(computer)
         verify_dns_objects(computerProperties['name'], ip_computer_modified,
                            forwardZone, forwardZoneName, reverseZone, ip_netmask)
