@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.20-3) unstable; urgency=medium
+
+  * Bug #57737: Remove rejects in case AD object is not "readable"
+
+ -- Felix Botner <botner@univention.de>  Fri, 08 Nov 2024 10:02:09 +0100
+
 univention-ad-connector (14.0.20-2) unstable; urgency=medium
 
   * Bug #57565: Fix rewriting mixed case AD DNs in the presence

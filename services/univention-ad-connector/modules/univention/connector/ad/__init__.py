@@ -1825,7 +1825,7 @@ class ad(univention.connector.ucs):
                     property_key = self.__identify_ad_type(ad_object)
                     if not property_key:  # TODO: still needed? (removed in s4)
                         ud.debug(ud.LDAP, ud.INFO, "sync to ucs: Dropping reject for unidentified object %s" % (dn,))
-                        self._remove_rejected(id)
+                        self._remove_rejected(change_usn)
                         continue
                     mapped_object = self._object_mapping(property_key, ad_object)
                     try:
