@@ -659,7 +659,13 @@ class _UDMObjectOrAttribute(object):
         if callable(cls.udm_filter):
             filter_s = cls.udm_filter(options)
         else:
-            filter_s = cls.udm_filter % _EscapedDict(options)
+            # options.get... seems the right thing, but for backwards compatibility
+            # we also check options, may be removed in the future
+            # see univention/dev-issues/dev-incidents#94
+            try:
+                filter_s = cls.udm_filter % _EscapedDict(options)
+            except KeyError:
+                filter_s = cls.udm_filter % _EscapedDict(options.get('dependencies', {}))
 
         object_properties = []
         if 'property' in options:
