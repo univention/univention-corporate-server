@@ -670,7 +670,7 @@ def no_change_in_file(no_change_for: int, log_file: str) -> bool:
     return False
 
 
-def wait_for_s4_connector_to_be_inactive(no_change_for: int = 15) -> None:
+def wait_for_s4_connector_to_be_inactive(no_change_for: int = 10) -> None:
     log_file = '/var/log/univention/connector-s4.log'
     if not os.path.isfile(log_file):
         return
