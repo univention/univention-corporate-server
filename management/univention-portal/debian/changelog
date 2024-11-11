@@ -1,4 +1,4 @@
-univention-portal (4.0.18-2) UNRELEASED; urgency=medium
+univention-portal (4.0.18-2) unstable; urgency=medium
 
   * Bug #57731: add optional id attribute to self-service components
 
