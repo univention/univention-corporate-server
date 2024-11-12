@@ -63,7 +63,7 @@ def run(_umc_instance: Instance, rerun: bool = False) -> None:
         ucr.get('keycloak/server/sso/path', ''),
     )
     sso_fqdn = ucr.get('ucs/server/sso/fqdn')
-    umc_saml_idp = ucr.get('umc/saml/idp-server')
+    umc_saml_idp = ucr.get('umc/saml/idp-server', '')
     # keycloak
     if keycloak_fqdn and 'realms/ucs/protocol/saml/descriptor' in umc_saml_idp:
         run_keycloak(_umc_instance, keycloak_fqdn, rerun)
