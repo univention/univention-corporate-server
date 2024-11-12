@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libseccomp
+fix: 2.4.1-1~deb9u1
+desc: |
+ This update addresses the following issue:
+ * CVSS score 7.3 (CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L).
+   (CVE-2019-9893)
+bug: [57743]
+cve:
+- CVE-2019-9893
