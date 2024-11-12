@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: nss
+fix: 2:3.26.2-1.1+deb9u8
+desc: |
+ This update addresses the following issues:
+ * CVSS score 8.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2024-6609)
+ * CVSS score 6.1 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N).
+   (CVE-2024-6602)
+bug: [57745]
+cve:
+- CVE-2024-6602
+- CVE-2024-6609
