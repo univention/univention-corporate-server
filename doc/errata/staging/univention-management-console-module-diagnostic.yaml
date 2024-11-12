@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [9]
+scope: ucs_5.0-0-errata5.0-9
+src: univention-management-console-module-diagnostic
+fix: 6.0.10-2
+desc: |
+ This update addresses the following issues:
+ * The diagnostic check `04_saml_certificate_check` could show a traceback if
+   UMC was not configured for any kind of Single Sign-On. This has been fixed.
+bug: [57746]
