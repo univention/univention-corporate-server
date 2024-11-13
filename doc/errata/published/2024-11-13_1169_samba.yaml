@@ -18,3 +18,6 @@ desc: |
    for Samba bug 14676 which where introduced there in anticipation
    of `lmdb` version `0.9.26`, which UCS `5.0` doesn't use.
 bug: [57734]
+erratum: 1169
+announced: 2024-11-13
+support: core
