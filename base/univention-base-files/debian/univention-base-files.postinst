@@ -123,4 +123,13 @@ if test -x /etc/init.d/ssh; then
 	invoke-rc.d ssh reload
 fi
 
+if [ "$1" = configure ] && dpkg --compare-versions "${2:-}" lt-nl 9.0.9-2; then
+    if [ "$(sysctl --values net.ipv4.neigh.default.gc_thresh1)" -ne 128 ] || [ "$(sysctl --values net.ipv4.neigh.default.gc_thresh2)" -ne  512 ] || [ "$(sysctl --values net.ipv4.neigh.default.gc_thresh3)" -ne 1024 ]; then
+        univention-config-registry set kernel/net/ipv4/neigh/default/gc_thresh1?"$(sysctl --values net.ipv4.neigh.default.gc_thresh1)"
+        univention-config-registry set kernel/net/ipv4/neigh/default/gc_thresh2?"$(sysctl --values net.ipv4.neigh.default.gc_thresh2)"
+        univention-config-registry set kernel/net/ipv4/neigh/default/gc_thresh3?"$(sysctl --values net.ipv4.neigh.default.gc_thresh3)"
+    fi
+    systemctl try-restart systemd-sysctl.service || true
+fi
+
 exit 0
