@@ -60,12 +60,12 @@ msgstr ""
 msgid ""
 "In both modes, the :program:`Active Directory Connection` service is used"
 " in UCS (UCS AD Connector for short), which can synchronize the directory"
-" service objects between a Windows 2012/2016/2019 server with Active "
+" service objects between a Windows 2012/2016/2019/2022 server with Active "
 "Directory (AD) and the OpenLDAP directory of |UCSUCS|."
 msgstr ""
 "In beiden Modi wird unter UCS der Dienst :program:`Active Directory-"
 "Verbindung` verwendet (kurz UCS AD-Connector), der "
-"Verzeichnisdienstobjekte zwischen einem Windows 2012/2016/2019-Server mit"
+"Verzeichnisdienstobjekte zwischen einem Windows 2012/2016/2019/2022-Server mit"
 " Active Directory (AD) und dem OpenLDAP-Verzeichnis aus |UCSUCS| "
 "synchronisieren kann."
 
@@ -808,8 +808,8 @@ msgstr ""
 "Passwortdaten."
 
 #: ../../windows/ad-connection.rst:373
-msgid "Exporting the certificate on Windows 2012 / 2016 / 2019"
-msgstr "Export unter Windows Server 2012 / 2016 / 2019"
+msgid "Exporting the certificate on Windows 2012 / 2016 / 2019 / 2022"
+msgstr "Export unter Windows Server 2012 / 2016 / 2019 / 2022"
 
 #: ../../windows/ad-connection.rst:375
 msgid ""

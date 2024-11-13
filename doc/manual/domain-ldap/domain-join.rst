@@ -156,7 +156,7 @@ Windows domain joins
 
 The procedure for joining a Windows system to a UCS domain made available via
 Samba is now described as an example for Windows 11, Windows 10 and Windows 2012
-/ 2016 / 2019. The process is similar for other Windows versions. In addition to
+/ 2016 / 2019 / 2022. The process is similar for other Windows versions. In addition to
 the client versions, Windows server systems can also join the domain. Windows
 servers join the domain as member servers; joining a Windows systems as a domain
 controller is not supported. For more information about Windows in a UCS domain,
@@ -240,8 +240,8 @@ started by clicking on :guilabel:`OK`.
 
 .. _domain-ldap-win-2012:
 
-Windows Server 2012 / 2016 / 2019
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Windows Server 2012 / 2016 / 2019 / 2022
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The control panel can be reached by moving the cursor to the bottom right-hand
 corner of the screen. The *Control Panel* can then be searched for under
