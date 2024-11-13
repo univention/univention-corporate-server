@@ -10,3 +10,6 @@ desc: |
    so that a syntax which depends on the value of another
    property for its `udm_filter` works again.
 bug: [57733]
+erratum: 1171
+announced: 2024-11-13
+support: core
