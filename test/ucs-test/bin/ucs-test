@@ -25,6 +25,27 @@ from univention.testing.internal import LOG_BASE, get_sections, get_tests, setup
 from univention.testing.pytest import PytestRunner
 
 
+class StoreTag(argparse.Action):
+    tag_level = ""
+
+    def __call__(self, parser, namespace, value, option_string=None):
+        dest = getattr(namespace, self.dest, {})
+        dest[value] = self.tag_level
+        setattr(namespace, self.dest, dest)
+
+
+class StoreRequired(StoreTag):
+    tag_level = "required"
+
+
+class StoreProhibited(StoreTag):
+    tag_level = "prohibited"
+
+
+class StoreIgnored(StoreTag):
+    tag_level = "ignored"
+
+
 def parse_options(sections: Iterable[str]) -> Tuple[argparse.Namespace, List[str]]:
     """Parse command line options."""
     parser = argparse.ArgumentParser()
@@ -44,15 +65,15 @@ def parse_options(sections: Iterable[str]) -> Tuple[argparse.Namespace, List[str
         help="Run tests only from this section", metavar="SECTION")
     selection_group.add_argument(
         "-p", "--prohibit",
-        dest="tags_prohibited", action="append", default=[],
+        dest="tags", action=StoreProhibited, default={},
         help="Skip tests with this tag", metavar="TAG")
     selection_group.add_argument(
         "-r", "--require",
-        dest="tags_required", action="append", default=[],
+        dest="tags", action=StoreRequired, default={},
         help="Only run tests with this tag", metavar="TAG")
     selection_group.add_argument(
         "-g", "--ignore",
-        dest="tags_ignored", action="append", default=[],
+        dest="tags", action=StoreIgnored, default={},
         help="Neither require nor prohibit this tag", metavar="TAG")
     selection_group.add_argument(
         "-E", "--exposure",
@@ -202,10 +223,13 @@ def main() -> int | None:
         test_environment = TestEnvironment(
             interactive=options.interactive,
             logfile=options.logfile)
+    tags_required = [tag for tag, level in options.tags.items() if level == "required"]
+    tags_ignored = [tag for tag, level in options.tags.items() if level == "ignored"]
+    tags_prohibited = [tag for tag, level in options.tags.items() if level == "prohibited"]
     test_environment.tag(
-        require=options.tags_required,
-        ignore=options.tags_ignored,
-        prohibit=options.tags_prohibited)
+        require=tags_required,
+        ignore=tags_ignored,
+        prohibit=tags_prohibited)
     if options.exposure:
         test_environment.set_exposure(options.exposure)
     test_environment.set_timeout(options.timeout)
