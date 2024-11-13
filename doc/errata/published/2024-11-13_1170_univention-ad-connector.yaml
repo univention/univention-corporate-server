@@ -9,3 +9,6 @@ desc: |
  * Rejects in the connector for objects in AD that cannot be
    completely read are now properly deleted.
 bug: [57737]
+erratum: 1170
+announced: 2024-11-13
+support: core
