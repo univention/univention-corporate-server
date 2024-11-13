@@ -9,3 +9,6 @@ desc: |
  * Unique HTML identifiers have been added to each self-service module
    to simplify custom CSS usage.
 bug: [57731]
+erratum: 1174
+announced: 2024-11-13
+support: core
