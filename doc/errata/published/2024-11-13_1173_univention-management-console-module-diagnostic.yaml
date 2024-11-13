@@ -9,3 +9,6 @@ desc: |
  * The diagnostic check `04_saml_certificate_check` could show a traceback if
    UMC was not configured for any kind of Single Sign-On. This has been fixed.
 bug: [57746]
+erratum: 1173
+announced: 2024-11-13
+support: core
