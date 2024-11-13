@@ -12,3 +12,6 @@ desc: |
    which can enable kerberos authentication depending on the
    client IP address.
 bug: [56474]
+erratum: 1172
+announced: 2024-11-13
+support: core
