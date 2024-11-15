@@ -1,3 +1,9 @@
+univention-base-files (10.0.8) unstable; urgency=medium
+
+  * Bug #57712: Include ARP cache GC thresholds in UCR and raise defaults.
+
+ -- Johannes Königer <koeniger@univention.de>  Mon, 18 Nov 2024 09:12:53 +0100
+
 univention-base-files (10.0.7) unstable; urgency=medium
 
   * Bug #56665: /sbin/udevadm → /bin/udevadm

@@ -164,6 +164,9 @@ Variables: interfaces/[^/]*/ipv6/acceptRA
 Variables: kernel/fs/inotify/max_user_instances
 Variables: kernel/fs/inotify/max_user_watches
 Variables: kernel/fs/inotify/max_queued_events
+Variables: kernel/net/ipv4/neigh/default/gc_thresh1
+Variables: kernel/net/ipv4/neigh/default/gc_thresh2
+Variables: kernel/net/ipv4/neigh/default/gc_thresh3
 
 Type: multifile
 Multifile: etc/network/interfaces

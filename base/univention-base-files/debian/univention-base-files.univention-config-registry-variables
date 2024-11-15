@@ -661,6 +661,27 @@ Description[en]=The upper limit of queued events per Inotify instance.
 Type=uint
 Categories=system-kernel
 
+[kernel/net/ipv4/neigh/default/gc_thresh1]
+Description[de]=Ein Linux Kernel Parameter: Die Grenze von ARP Cache Einträgen unterhalb derer der GC nicht läuft.
+Description[en]=A Linux kernel parameter: The threshold of ARP cache entries below which the garbage collector will not run.
+Type=uint
+Categories=system-kernel
+Default=1024
+
+[kernel/net/ipv4/neigh/default/gc_thresh2]
+Description[de]=Ein Linux Kernel Parameter: Die Grenze ab welcher der GC ARP Cache Einträge die älter als 5 Sekunden sind entfernt.
+Description[en]=A Linux kernel parameter: The threshold when garbage collector purges ARP cache entries that are older than 5 seconds.
+Type=uint
+Categories=system-kernel
+Default=2048
+
+[kernel/net/ipv4/neigh/default/gc_thresh3]
+Description[de]=Ein Linux Kernel Parameter: Die maximale Anzahl von ARP Cache Einträgen die nicht permanent sind.
+Description[en]=A Linux kernel parameter: The maximum number of ARP cache entries that are non-permanent.
+Type=uint
+Categories=system-kernel
+Default=4096
+
 [ldap/backup]
 Description[de]=Der/die Backup Directory Node-Systeme der Domäne. Mehrfache Einträge müssen mit Leerzeichen getrennt werden.
 Description[en]=The Backup Directory Node system(s) in the domain. Multiple entries need to be separated by blanks.
