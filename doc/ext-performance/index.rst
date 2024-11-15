@@ -547,6 +547,7 @@ that the number of allowed file objects is limited by default.
 The maximum number of open files can be configured on a per-user or per-group
 basis. The default for all users can be set through the following |UCSUCRVs|:
 
+
 :samp:`security/limits/user/{default}/hard/nofile`
    The hard limit defines the upper limit a user can assign to a
    process. The default is ``32768``.
@@ -568,6 +569,19 @@ used by all users and applications to monitor changes in file systems.
 :envvar:`kernel/fs/inotify/max_queued_events`
    The upper limit of queued events per inotify instance. The default is
    ``16384``.
+
+When the UCS system is part of a network of a very large number of devices,
+it is possible that the ARP garbage collector thresholds are insufficient.
+For those scenarios, raise the following thresholds:
+
+:envvar:`kernel/net/ipv4/neigh/default/gc_thresh1`
+   The threshold of ARP cache entries below which the garbage collector will not run. The default is 1024.
+
+:envvar:`kernel/net/ipv4/neigh/default/gc_thresh2/`
+   The threshold when garbage collector purges ARP cache entries that are older than 5 seconds. The default is 2048.
+
+:envvar:`kernel/net/ipv4/neigh/default/gc_thresh3/`
+   The maximum number of ARP cache entries that are non-permanent. The default is 4096.
 
 Samba
 =====
