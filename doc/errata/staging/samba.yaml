@@ -1,0 +1,17 @@
+product: ucs
+release: "5.0"
+version: [9]
+scope: ucs_5.0-0-errata5.0-9
+src: samba
+fix: 2:4.18.3-1A~5.0.0.202411191740
+desc: |
+ This update addresses the following issues:
+ * The init script `/etc/init.d/samba-ad-dc` has been adjusted
+   to explicitly stop `winbindd` and `smbd` processes too and
+   also check for pids in their respective process group.
+   This can be necessary during package updates, in case the
+   `winbind.postinst` and `samba.postinst` scripts start these
+   processes separately instead of as child of the main `samba`
+   process. This should avoid `/etc/init.d/samba restart` failing with
+   error message `NT_STATUS_ADDRESS_ALREADY_ASSOCIATED` in `log.samba`.
+bug: [57310]
