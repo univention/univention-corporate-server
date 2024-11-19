@@ -207,18 +207,18 @@ set_rid_pool() {
 
 stop_conflicting_services() {
 	## stop samba3 services and heimdal-kdc if present
+	if [ -x /etc/init.d/winbind ]; then
+		if [ -n "$(pgrep -f /usr/sbin/winbindd)" ]; then
+			/etc/init.d/winbind stop
+			# Bug #35600: Really stop all winbind processes
+			start-stop-daemon --stop --quiet --retry 2 --exec /usr/sbin/winbindd
+		fi
+	fi
 	if [ -x /etc/init.d/samba ]; then
 		if [ -n "$(pgrep -f '/usr/sbin/(smbd|nmbd)')" ]; then
 			/etc/init.d/samba stop
 			## the smbd init script might refuse to run if it detects ADDC config in smb.conf
 			start-stop-daemon --stop --quiet --retry 2 --exec /usr/sbin/smbd
-		fi
-	fi
-	if [ -x /etc/init.d/winbind ]; then
-		if [ -n "$(pgrep -xf /usr/sbin/winbindd)" ]; then
-			/etc/init.d/winbind stop
-			# Bug #35600: Really stop all winbind processes
-			start-stop-daemon --stop --quiet --retry 2 --exec /usr/sbin/winbindd
 		fi
 	fi
 	if [ -x /etc/init.d/heimdal-kdc ]; then

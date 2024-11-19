@@ -1,3 +1,9 @@
+univention-samba4 (9.0.18-3) unstable; urgency=medium
+
+  * Bug #57310: Let stop_conflicting_services stop winbindd first
+
+ -- Arvid <requate@univention.de>  Tue, 19 Nov 2024 17:05:02 +0100
+
 univention-samba4 (9.0.18-2) unstable; urgency=medium
 
   * Bug #57529: use rsync --filter with "-x" rules to only sync security.NTACL
