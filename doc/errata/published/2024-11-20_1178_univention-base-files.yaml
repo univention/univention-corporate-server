@@ -9,3 +9,6 @@ desc: |
  * The Linux kernel parameters for the garbage collection of ARP cache
    entries can now be set with UCR and have their default values increased.
 bug: [57712]
+erratum: 1178
+announced: 2024-11-20
+support: core
