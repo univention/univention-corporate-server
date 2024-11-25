@@ -31,3 +31,43 @@ License: AGPL-3.0-only
 Files: data/images/*.jpg
 Copyright: FreeDigitalPhotos.net
 License: UNKNOWN
+
+Files: portal/app-logo-nextcloud.svg
+Copyright: Nextcloud GmbH
+License: UNKNOWN
+
+Files: portal/app-logo-onlyoffice.svg
+Copyright: Ascensio System SIA
+License: UNKNOWN
+
+Files: portal/app-logo-openproject.svg
+Copyright: OpenProject GmbH
+License: UNKNOWN
+
+Files: portal/app-logo-owncloud.svg
+Copyright: ownCloud GmbH
+License: UNKNOWN
+
+Files: portal/app-logo-ox.svg
+Copyright: Open-Xchange AG
+License: UNKNOWN
+
+Files: portal/app-logo-kopano.svg
+Copyright: Kopano BV
+License: UNKNOWN
+
+Files: portal/app-logo-collabora.svg
+Copyright: Collabora Productivity Ltd.
+License: UNKNOWN
+
+Files: portal/*.svg
+Copyright: Univention GmbH
+License: LicenseRef-Univention-Proprietary
+
+Files: portal/background.jpg
+Copyright: Univention GmbH
+License: LicenseRef-Univention-Proprietary
+
+Files: usr/share/univention-web/js/umc/hooks/univention_demo_arrows.svg
+Copyright: 2012-2024 Univention GmbH
+License: LicenseRef-Univention-Proprietary

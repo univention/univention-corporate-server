@@ -1,3 +1,0 @@
-Type: file
-File: usr/share/univention-web/js/umc/hooks/appliance.json
-Variables: umc/web/appliance/.*
