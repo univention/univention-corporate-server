@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: qtbase-opensource-src
+fix: 5.7.1+dfsg-3+deb9u5
+desc: |
+ This update addresses the following issue:
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N).
+   (CVE-2023-34410)
+bug: [57764]
+cve:
+- CVE-2023-34410
