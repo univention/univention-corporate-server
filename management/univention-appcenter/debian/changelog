@@ -1,3 +1,10 @@
+univention-appcenter (11.0.12) unstable; urgency=medium
+
+  * Issue univention/ucs#2518: Removed some third party logos from the source
+    code
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 25 Nov 2024 22:09:42 +0100
+
 univention-appcenter (11.0.11) unstable; urgency=medium
 
   * Issue univention/ucs#2495: Update copyright
