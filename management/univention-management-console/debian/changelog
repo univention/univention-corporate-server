@@ -1,7 +1,7 @@
 univention-management-console (14.0.41) unstable; urgency=medium
 
   * Issue univention/ucs#2519: Remove code for advocating the Univention
-    Summit and the aambassador program
+    Summit and the ambassador program
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 26 Nov 2024 00:05:23 +0100
 
