@@ -15,3 +15,6 @@ desc: |
    process. This should avoid `/etc/init.d/samba restart` failing with
    error message `NT_STATUS_ADDRESS_ALREADY_ASSOCIATED` in `log.samba`.
 bug: [57310]
+erratum: 1183
+announced: 2024-11-27
+support: core
