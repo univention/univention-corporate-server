@@ -10,3 +10,6 @@ desc: |
    provisioning. This should avoid unnecessary waiting time when
    stopping the other samba processes in the next step.
 bug: [57310]
+erratum: 1184
+announced: 2024-11-27
+support: core
