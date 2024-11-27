@@ -116,6 +116,15 @@ def keycloak_app_version() -> str:
 
 
 @pytest.fixture()
+def tracing_page(page, request: pytest.FixtureRequest, ucr_proper):
+    page.context.tracing.start(screenshots=True, snapshots=True)
+
+    yield page
+
+    fixtures.teardown_umc_browser_test(request, ucr_proper, page, page.context, page.context.browser)
+
+
+@pytest.fixture()
 def change_app_setting():
     data = {'app': None, 'configure': None, 'changes': {}}
 
@@ -318,8 +327,8 @@ def __portal_login_func(
 
 
 @pytest.fixture()
-def portal_login_via_keycloak(page: Page, portal_config: SimpleNamespace, keycloak_config: SimpleNamespace):
-    return functools.partial(__portal_login_func, portal_config, keycloak_config, page)
+def portal_login_via_keycloak(tracing_page: Page, portal_config: SimpleNamespace, keycloak_config: SimpleNamespace):
+    return functools.partial(__portal_login_func, portal_config, keycloak_config, tracing_page)
 
 
 @pytest.fixture()
@@ -328,7 +337,9 @@ def portal_login_via_keycloak_custom_page(portal_config: SimpleNamespace, keyclo
 
 
 @pytest.fixture()
-def keycloak_adm_login(page: Page, keycloak_config: SimpleNamespace):
+def keycloak_adm_login(tracing_page: Page, keycloak_config: SimpleNamespace):
+    page = tracing_page
+
     def _func(
         username: str,
         password: str,
