@@ -43,7 +43,6 @@ fake_package_install () {
 		python3-univention \
 		python3-univention-admin-diary \
 		python3-univention-admin-diary-backend \
-		python3-univention-app-appliance \
 		python3-univention-appcenter \
 		python3-univention-appcenter-dev \
 		python3-univention-appcenter-docker \

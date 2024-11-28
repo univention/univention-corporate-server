@@ -32,7 +32,6 @@ repos:
       exclude: "/conffiles/.*[.]json$"
     - id: check-xml
       exclude: "/conffiles/.*[.]xml$\
-                |^base/univention-app-appliance/\
                "
     - id: check-yaml
       exclude: "/conffiles/.*[.]yaml$|[.]gitlab-ci/base-doc[.]yml$"
