@@ -3,7 +3,6 @@
 # /base/
 # /base/pam-runasroot/
 /base/pam-univentionmailcyrus/ @dtroeder @sschwardt
-# /base/univention-app-appliance/
 /base/univention-archive-key/ @phahn
 /base/univention-base-files/ @phahn
 # /base/univention-bootsplash/

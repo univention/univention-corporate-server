@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: univention-app-appliance\n"
+"Project-Id-Version: univention-demo-configuration\n"
 "Report-Msgid-Bugs-To: forge.univention.org\n"
 "POT-Creation-Date: 2017-11-28 12:01+0100\n"
 "PO-Revision-Date: 2020-09-05 16:09+0200\n"
