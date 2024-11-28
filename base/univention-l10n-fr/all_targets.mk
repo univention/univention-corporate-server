@@ -109,7 +109,6 @@ ALL_TARGETS := $(DESTDIR)/usr/lib/univention-portal/udm/fr.mo \
 	$(DESTDIR)/usr/share/univention-system-activation/i18n/fr/main.json \
 	$(DESTDIR)/usr/share/univention-system-setup-boot/www/i18n/fr/main.json \
 	$(DESTDIR)/usr/share/univention-system-setup/www/i18n/fr/main.json \
-	$(DESTDIR)/usr/share/univention-web/js/umc/hooks/i18n/fr/appliance.json \
 	$(DESTDIR)/usr/share/univention-web/js/umc/hooks/i18n/fr/passwordchange.json \
 	$(DESTDIR)/usr/share/univention-web/js/umc/hooks/i18n/fr/passwordreset.json \
 	$(DESTDIR)/usr/share/univention-web/js/umc/hooks/i18n/fr/univention_demo.json \
