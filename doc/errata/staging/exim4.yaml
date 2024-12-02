@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: exim4
+fix: 4.89-2+deb9u14A~4.4.9.202412021954
+desc: |
+ This update addresses the following issues:
+ * CVSS score 8.1 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2023-42117)
+ * CVSS score 4.6 (CVSS:3.1/AV:A/AC:H/PR:L/UI:N/S:U/C:L/I:L/A:L).
+   (CVE-2022-3559)
+ * CVSS score 3.1 (CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N).
+   (CVE-2023-42119)
+bug: [57783]
+cve:
+- CVE-2022-3559
+- CVE-2023-42117
+- CVE-2023-42119
