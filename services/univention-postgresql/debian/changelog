@@ -1,3 +1,9 @@
+univention-postgresql (13.0.4) unstable; urgency=medium
+
+  * Bug #57791: Add metapackage univention-postgresql-15
+
+ -- Arvid <requate@univention.de>  Mon, 02 Dec 2024 19:55:19 +0100
+
 univention-postgresql (13.0.3) unstable; urgency=medium
 
   * Bug #56540: Update Postgres 11 -> 13
