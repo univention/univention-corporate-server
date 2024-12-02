@@ -1,3 +1,9 @@
+univention-pkgdb (14.0.7) unstable; urgency=medium
+
+  * Bug #57791: Backport postgresql-15
+
+ -- Arvid <requate@univention.de>  Tue, 03 Dec 2024 21:05:24 +0100
+
 univention-pkgdb (14.0.6) unstable; urgency=medium
 
   * Bug #56604: remove workarounds for Python 2 compatibility
