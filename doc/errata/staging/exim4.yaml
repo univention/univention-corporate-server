@@ -1,0 +1,22 @@
+product: ucs
+release: "5.0"
+version: [8, 9]
+scope: ucs_5.0-0-errata5.0-9
+src: exim4
+fix: 4.92-8+deb10u11
+desc: |
+ This update addresses the following issues:
+ * CVSS score 8.1 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2023-42117)
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N).
+   (CVE-2021-38371)
+ * CVSS score 4.6 (CVSS:3.1/AV:A/AC:H/PR:L/UI:N/S:U/C:L/I:L/A:L).
+   (CVE-2022-3559)
+ * CVSS score 3.1 (CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N).
+   (CVE-2023-42119)
+bug: [57781]
+cve:
+- CVE-2021-38371
+- CVE-2022-3559
+- CVE-2023-42117
+- CVE-2023-42119
