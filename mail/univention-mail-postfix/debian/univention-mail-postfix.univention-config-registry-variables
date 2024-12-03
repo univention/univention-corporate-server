@@ -244,7 +244,7 @@ Type=list
 Separator=,
 Elementtype=str
 Categories=service-mail
-Default=!SSLv2
+Default=>=TLSv1.2
 
 [mail/postfix/tls/client/policy/.*]
 Description[de]=Diese Variablen konfigurieren die Verwendung von TLS-Verschlüsselung durch den SMTP-Client für bestimmte Domänen oder Mailserver in der Datei /etc/postfix/tls_policy (siehe  <http://www.postfix.org/TLS_README.html#client_tls_policy>). Der Variablenwert enthält enthält je eine Zeile der Tabelle (z.B. mail/postfix/tls/client/policy/1='[127.0.0.1]:10024 none').
@@ -259,7 +259,7 @@ Type=list
 Separator=,
 Elementtype=str
 Categories=service-mail
-Default=!SSLv2
+Default=>=TLSv1.2
 
 [mail/postfix/tls/client/exclude_ciphers]
 Description[de]=Liste der Verschlüsselungstypen, die aus der SMTP-Client Cipher Liste auf allen TLS Sicherheitsstufen ausgenommen sind, siehe <http://www.postfix.org/postconf.5.html#smtp_tls_exclude_ciphers>.
@@ -377,7 +377,7 @@ Type=list
 Separator=,
 Elementtype=str
 Categories=service-mail
-Default=!SSLv2
+Default=>=TLSv1.2
 
 [mail/postfix/smtpd/tls/protocols]
 Description[de]=Liste der TLS-Protokolle, die der Postfix SMTP-Server mit opportunistischer TLS-Verschlüsselung verwendet. <http://www.postfix.org/postconf.5.html#smtpd_tls_protocols>

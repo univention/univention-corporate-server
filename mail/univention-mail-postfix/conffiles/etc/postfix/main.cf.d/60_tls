@@ -5,8 +5,8 @@ smtpd_starttls_timeout = 300s
 smtpd_timeout = 300s
 @!@
 fqdn = '%(hostname)s.%(domainname)s' % configRegistry
-print('smtpd_tls_mandatory_protocols = %s' % configRegistry.get('mail/postfix/smtpd/tls/mandatory_protocols', '!SSLv2'))
-print('smtpd_tls_protocols = %s' % configRegistry.get('mail/postfix/smtpd/tls/protocols', ''))
+print('smtpd_tls_mandatory_protocols = %s' % configRegistry.get('mail/postfix/smtpd/tls/mandatory_protocols', '>=TLSv1.2'))
+print('smtpd_tls_protocols = %s' % configRegistry.get('mail/postfix/smtpd/tls/protocols', '>=TLSv1.2'))
 print('smtpd_tls_exclude_ciphers = %s' % configRegistry.get('mail/postfix/smtpd/tls/exclude_ciphers', 'RC4, aNULL'))
 print('smtpd_tls_cert_file = %s' % configRegistry.get('mail/postfix/ssl/certificate', '/etc/univention/ssl/%s/cert.pem' % fqdn))
 print('smtpd_tls_key_file = %s' % configRegistry.get('mail/postfix/ssl/key', '/etc/univention/ssl/%s/private.key' % fqdn))
@@ -33,8 +33,8 @@ if configRegistry.is_true('mail/postfix/dovecot_sasl'):
 # smtp client
 @!@
 print('smtp_tls_security_level = %s' % configRegistry.get('mail/postfix/tls/client/level', 'may'))
-print('smtp_tls_mandatory_protocols = %s' % configRegistry.get('mail/postfix/tls/client/mandatory_protocols', '!SSLv2'))
-print('smtp_tls_protocols = %s' % configRegistry.get('mail/postfix/tls/client/protocols', '!SSLv2'))
+print('smtp_tls_mandatory_protocols = %s' % configRegistry.get('mail/postfix/tls/client/mandatory_protocols', '>=TLSv1.2'))
+print('smtp_tls_protocols = %s' % configRegistry.get('mail/postfix/tls/client/protocols', '>=TLSv1.2'))
 print('smtp_tls_exclude_ciphers = %s' % configRegistry.get('mail/postfix/tls/client/exclude_ciphers', 'RC4, aNULL'))
 print('smtp_tls_policy_maps = %s' % (configRegistry.get('mail/postfix/tls/policy/maps', 'hash:/etc/postfix/tls_policy'),))
 @!@
