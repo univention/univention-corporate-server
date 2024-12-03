@@ -59,6 +59,12 @@ Separator=;
 Elementtype=str
 Categories=Network
 
+[dns/sec/enable]
+Description[de]=Diese Variable konfiguriert, ob der Named Dienst DNSSEC aktiviert.
+Description[en]=This variable configures if the Named service is enabled for DNSSEC.
+Type=bool
+Categories=Network
+
 [dns/sec/validation]
 Description[de]=Diese Variable konfiguriert, ob der Named Dienst DNSSEC validiert.
 Description[en]=This variable configures if the Named service validates DNSSEC responses.

@@ -2,6 +2,7 @@ univention-bind (14.0.9-1) UNRELEASED; urgency=medium
 
   (Iván)
   * Issue univention/ucs#2309: Make DNSSEC-Validation configurable
+  * Issue univention/ucs#2309: Make DNSSEC-Enable configurable
 
   (Arvid)
   * Bug #57581 UCS 5.0-9 version bump

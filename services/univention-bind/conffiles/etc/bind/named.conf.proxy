@@ -12,8 +12,11 @@ options {
 	listen-on { any; };
 @!@
 dns_allow_query = configRegistry.get('dns/allow/query', '').strip(';')
+dnssec_enable = configRegistry.is_true('dns/sec/enable', True)
 dnssec_val = configRegistry.is_true('dns/sec/validation', True)
-if not dnssec_val:
+if not dnssec_enable:
+    print('\tdnssec-enable no;')
+elif not dnssec_val:
     print('\tdnssec-validation no;')
 if dns_allow_query:
     print('\tallow-query { %s; };' % dns_allow_query)
