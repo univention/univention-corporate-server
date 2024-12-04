@@ -1,3 +1,9 @@
+univention-keycloak (1.0.13-3) unstable; urgency=medium
+
+  * Issue univention/components/keycloak-app#206: Add ucs/server/sso/uri
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 04 Dec 2024 10:13:43 +0100
+
 univention-keycloak (1.0.13-2) unstable; urgency=medium
 
   * Bug #56474: function to add kerberos auth to univention-keycloak

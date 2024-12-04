@@ -1,0 +1,12 @@
+[ucs/server/sso/uri]
+Description[de]=Definiert die URI des Identity Provider dieser UCS Domäne. Diese Einstellung ist in UCS 5.0 noch unbenutzt und wird erst bei der Aktualisierung auf UCS 5.2 relevant.
+Description[en]=Defines the URI of the identity provider of this UCS domain. This setting is not used in UCS 5.0. It will be relevant during the upgrade to UCS 5.2.
+Type=str
+Categories=management
+
+[ucs/server/sso/uri/autopolicy]
+Description[de]=Wenn diese Variable gesetzt ist, pflegt die Keycloak App eine UCR Policy, die die Variable ucs/server/sso/uri domänenweit zur Verfügung stellt.
+Description[en]=If this variable is set, the Keycloak app will maintain a UCR policy that distributes the variable ucs/server/sso/uri in the domain.
+Type=str
+Default=true
+Categories=management
