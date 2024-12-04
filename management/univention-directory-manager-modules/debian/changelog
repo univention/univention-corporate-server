@@ -1,3 +1,9 @@
+univention-directory-manager-modules (16.0.30) unstable; urgency=medium
+
+  * Bug #51187: Add prevent_umc_default_popup to settings/extended_attributes
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 04 Dec 2024 18:39:26 +0100
+
 univention-directory-manager-modules (16.0.29) unstable; urgency=medium
 
   * Bug #57733: fix udm_filter for dynamic syntax
