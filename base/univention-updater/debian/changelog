@@ -1,3 +1,11 @@
+univention-updater (16.0.18) unstable; urgency=medium
+
+  * Issue univention/ucs#2542:
+    - make sure univention-appcenter-docker stays installed
+    - disable php7.0 apache mod
+
+ -- Felix Botner <botner@univention.de>  Wed, 04 Dec 2024 23:09:20 +0100
+
 univention-updater (16.0.17) unstable; urgency=low
 
   * Bug #57296: disable fetchmail during the update to prevent update

@@ -169,6 +169,17 @@ deactivate_old_package_sources () {
 }
 deactivate_old_package_sources
 
+# Issue univention/ucs#2542: make sure we keep univention-appcenter-docker
+if dpkg -l univention-appcenter-docker 2>&3 | grep ^ii  >&3 ; then
+	ucr set update/510/univention-appcenter-docker=true
+fi
+
+# univention/ucs#1945 - disable php7.0
+# apache2: Syntax error on line 146 of /etc/apache2/apache2.conf: Syntax error on line 3 of /etc/apache2/mods-enabled/php7.0.load:
+#          Cannot load /usr/lib/apache2/modules/libphp7.0.so into server: /usr/lib/apache2/modules/libphp7.0.so:
+#          cannot open shared object file: No such file or directory Action '--configtest' failed.
+a2dismod php7.0 || true
+
 # Pre-upgrade
 preups=""
 ${update_commands_update:-false} >&3 2>&3

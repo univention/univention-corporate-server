@@ -153,6 +153,8 @@ if [ -n "$(ucr search "^fetchmail/autostart/update510$")" ] ; then
 	systemctl restart fetchmail >&3 2>&3
 fi
 
+# Issue univention/ucs#2542: make sure we keep univention-appcenter-docker
+is_ucr_true update/510/univention-appcenter-docker && univention-install -f univention-appcenter-docker && ucr unset update/510/univention-appcenter-docker
 
 echo "
 
