@@ -59,6 +59,12 @@ Separator=;
 Elementtype=str
 Categories=Network
 
+[dns/sec/validation]
+Description[de]=Diese Variable konfiguriert, ob der Named Dienst DNSSEC validiert.
+Description[en]=This variable configures if the Named service validates DNSSEC responses.
+Type=bool
+Categories=Network
+
 [dns/ipv6]
 Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, kann Bind auch über IPv6-Sockets verwendet werden.
 Description[en]=If this option is activated or the variable is unset, Bind can be used over IPv6 sockets.

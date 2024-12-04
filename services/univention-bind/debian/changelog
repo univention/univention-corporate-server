@@ -1,3 +1,9 @@
+univention-bind (15.0.5) UNRELEASED; urgency=medium
+
+  * Issue univention/ucs#2309: Make DNSSEC-Validation configurable
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Thu, 12 Sep 2024 13:18:30 +0200
+
 univention-bind (15.0.4) unstable; urgency=medium
 
   * Bug #56604: remove workarounds for Python 2 compatibility
