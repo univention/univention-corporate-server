@@ -1240,14 +1240,12 @@ This appendix lists the |UCSUCRVs| mentioned in the document.
 .. envvar:: saml/idp/authsource
 
    Allows Kerberos authentication at the SAML identity provider. Change to
-   ``univention-negotiate`` to activate. The default is ``univention-ldap``. For
-   more information, see :ref:`domain-saml`.
+   ``univention-negotiate`` to activate. The default is ``univention-ldap``.
 
 .. envvar:: saml/idp/entityID/supplement/[identifier]
 
    Activates additional local identity providers for SAML on a UCS system
-   serving as UCS Identity provider. To activate set the value to ``true``. For
-   more information see :ref:`domain-saml-extended-configuration`.
+   serving as UCS Identity provider. To activate set the value to ``true``.
 
 
 .. envvar:: saml/idp/negotiate/filter-subnets
@@ -1255,8 +1253,7 @@ This appendix lists the |UCSUCRVs| mentioned in the document.
    Allows to restrict the Kerberos authentication at the SAML identity provider
    to certain IP subnetworks in the `CIDR notation
    <w-classless-inter-domain-routing_>`_, for example
-   :samp:`127.0.0.0/16,192.168.0.0/16`. For more information, see
-   :ref:`domain-saml`.
+   :samp:`127.0.0.0/16,192.168.0.0/16`.
 
 .. envvar:: saml/idp/selfservice/account-verification/error-descr
 

@@ -84,7 +84,7 @@ but Univention may add additional names and use cases.
 Some |UCSWEB|\ s import their own local :file:`custom.css` file
 which you can use to adjust the design of the following pages:
 
-* For :ref:`domain-saml-sso-login`: :file:`/usr/share/univention-management-console-login/css/custom.css`
+* For :ref:`central-user-interface`: :file:`/usr/share/univention-management-console-login/css/custom.css`
 
 * For :ref:`central-portal`: :file:`/usr/share/univention-portal/css/custom.css`
 
