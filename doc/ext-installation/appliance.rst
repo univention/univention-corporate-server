@@ -350,7 +350,6 @@ external service that the provisioning of the instance is done.
        permissions: '0400'
      - path: /var/cache/univention-system-setup/installapps
        content: |
-         simplesamlphp
          adconnector
        owner: root:root
        permissions: '0400'
@@ -365,8 +364,7 @@ external service that the provisioning of the instance is done.
 
 The file with the apps to be installed contains a list of IDs of applications
 from the |UCSAPPC|, see :ref:`installbase`. The list in the example
-above installs the :program:`AD Connector` and the :program:`SAML integration` on the
-provided |UCSPRIMARYDN|.
+above installs the :program:`AD Connector` on the provided |UCSPRIMARYDN|.
 
 .. _license:
 

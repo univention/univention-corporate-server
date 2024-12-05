@@ -84,12 +84,8 @@ as well as, for third party apps,
 if the apps support web based single sign-on.
 
 For sign-in through single sing-on,
-the browser session closes for 8 hours of inactivity.
+the browser session closes after 8 hours of inactivity.
 To get a fresh session, the user must sign in again.
-
-It's possible to enforce the sign in on the local system
-by clicking the link :guilabel:`Login without Single Sign On` on the login page,
-as show in :numref:`umc-login-sso`.
 
 .. _umc-login-sso:
 
@@ -104,18 +100,17 @@ as show in :numref:`umc-login-sso`.
 SAML for single sign-on
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-UCS has SAML activated by default.
-This section describes how to activate it for the *Login* buttons in the Portal.
-For more information about SAML, refer to :ref:`domain-saml`.
+UCS supports single sign-on via SAML through the Keycloak App. Refer to
+:external+uv-keycloak-ref:ref:`login-portal`.
 
-Activate
-""""""""
+Further configuration
+"""""""""""""""""""""
 
-To activate single sign-on through SAML, use the following steps:
+After following the steps for Keycloak, use the following steps for a better user experience:
 
 #. Ensure that all users in your domain
    who want to use the portal and the UCS management system with single sign-on
-   can reach :samp:`ucs-sso.{[Domain Name]}`.
+   can reach :samp:`ucs-sso-ng.{[Domain Name]}`.
 
 #. Change the |UCSUCRV| :envvar:`portal/auth-mode` to ``saml`` with :option:`ucr set`.
    The default value was ``ucs``.
@@ -131,7 +126,7 @@ Update sign-in links
 
 Restarting the portal server automatically updates the *Login* link in the user menu.
 You must manually update the portal tile.
-The default portal has a preconfigured single sign-on login tile.
+The default portal has a preconfigured, but disabled single sign-on login tile.
 Use the portal edit mode to enable it.
 To replace the *Login* tile with the single sign-on tile,
 follow these steps:

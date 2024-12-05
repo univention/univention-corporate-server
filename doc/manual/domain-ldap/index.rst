@@ -51,8 +51,7 @@ Further information can be found in :ref:`domain-kerberos`.
    ssl
    kerberos
    password-hashes
-   saml
-   oidc
+   single-sign-on
    backup2master
    fault-tolerant-setup
    admin-diary
