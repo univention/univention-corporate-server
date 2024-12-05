@@ -1,3 +1,9 @@
+univention-updater (16.0.20) unstable; urgency=medium
+
+  * Issue univention/ucs#2542: make sure univention-appcenter-docker stays installed
+
+ -- Felix Botner <botner@univention.de>  Thu, 05 Dec 2024 13:46:59 +0100
+
 univention-updater (16.0.19) unstable; urgency=medium
 
   * Issue univention/ucs#2542: remove obsolete docker param log-opts
