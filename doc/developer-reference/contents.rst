@@ -23,6 +23,5 @@ Univention Developer Reference
    repositories
    translation/index
    updater
-   sso
    misc
    appendix/index
