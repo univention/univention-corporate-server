@@ -64,6 +64,7 @@ Description[de]=Diese Variable konfiguriert, ob der Named Dienst DNSSEC validier
 Description[en]=This variable configures if the Named service validates DNSSEC responses.
 Type=bool
 Categories=Network
+Default=no
 
 [dns/ipv6]
 Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, kann Bind auch über IPv6-Sockets verwendet werden.
