@@ -1,0 +1,17 @@
+product: ucs
+release: "5.0"
+version: [8,9]
+scope: ucs_5.0-0-errata5.0-9
+src: simplesamlphp
+fix: 1.16.3-1+deb10u3A~5.0.9.202412051629
+desc: |
+ This update addresses the following issues:
+ * CVSS score 8.8
+   (CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:N/VA:H/SC:L/SI:L/SA:N).
+   (CVE-2024-52596)
+ * CVSS score 8.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:L/A:L).
+   (CVE-2024-52806)
+bug: [57799]
+cve:
+ - CVE-2024-52596
+ - CVE-2024-52806
