@@ -1,3 +1,9 @@
+univention-updater (16.0.19) unstable; urgency=medium
+
+  * Issue univention/ucs#2542: remove obsolete docker param log-opts
+
+ -- Felix Botner <botner@univention.de>  Thu, 05 Dec 2024 09:44:41 +0100
+
 univention-updater (16.0.18) unstable; urgency=medium
 
   * Issue univention/ucs#2542:

@@ -154,6 +154,9 @@ if [ -n "$(ucr search "^fetchmail/autostart/update510$")" ] ; then
 fi
 
 # Issue univention/ucs#2542: make sure we keep univention-appcenter-docker
+if [ -n "$(ucr get docker/daemon/default/map/log-opt)" ]; then
+	ucr unset docker/daemon/default/map/log-opt && ucr commit /etc/default/docker
+fi
 is_ucr_true update/510/univention-appcenter-docker && univention-install -f univention-appcenter-docker && ucr unset update/510/univention-appcenter-docker
 
 echo "
