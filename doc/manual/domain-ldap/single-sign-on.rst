@@ -12,4 +12,4 @@ compatible identity provider based on :program:`Keycloak`. The identity
 provider is not installed by default and should be installed via the |UCSAPPC|.
 
 For an extensive documentation, describing the configuration of the App,
-creating clients, and more, refer to :external+uv-keycloak-ref:ref:`index`.
+creating clients, and more, refer to :external+uv-keycloak-ref:ref:`doc-entry`.
