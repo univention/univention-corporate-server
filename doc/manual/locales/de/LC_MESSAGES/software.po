@@ -393,7 +393,7 @@ msgstr "Auswahl von UCS-Komponenten im App Center"
 
 #: ../../software/further-software.rst:46
 msgid "Installation/removal of individual packages via |UCSUMC| module"
-msgstr "Installation/Deinstallation von UCS-Komponenten im Univention App Center"
+msgstr "Installation/Entfernung einzelner Pakete über Univention Management Console-Modul"
 
 #: ../../software/further-software.rst:48
 msgid ""
