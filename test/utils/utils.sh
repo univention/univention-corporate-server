@@ -424,7 +424,7 @@ install_apps () {
 		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
 			if [ -z "$(ucr get "appcenter/apps/$app/status")" ]; then
 				univention-app install "$app" --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
-			else
+			elif univention-app info | grep --quiet --perl-regexp 'Upgradable: ?\S* '"$app"'(?: |$)\S*'; then
 				univention-app upgrade "$app" --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
 			fi
 		else
