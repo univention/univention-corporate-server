@@ -1777,7 +1777,7 @@ msgid ""
 "After following the steps for Keycloak, use the following steps for a "
 "better user experience:"
 msgstr ""
-"Nach dem Befolgen der Schritte für die Keycloak-Konfiguration, können die nächsten Schritte die Benutzererfahrung weiter verbessern:"
+"Nach dem Befolgen der Schritte für die Konfiguration von Keycloak können die nächsten Schritte die Benutzererfahrung weiter verbessern:"
 
 #: ../../central-management-umc/login.rst:111
 msgid ""

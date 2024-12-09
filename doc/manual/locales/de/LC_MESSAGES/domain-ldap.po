@@ -2432,7 +2432,7 @@ msgid ""
 "identity provider is not installed by default and should be installed via"
 " the |UCSAPPC|."
 msgstr ""
-"UCS bietet *Single Sign-On* mit einem SAML 2.0 und OpenID Connect-kompatiblen, auf :program:`Keycloak` aufsetzendem Identity Provider. Der Identity Provider ist standardmäßig nicht installiert und sollte über das |UCSAPPC| nachinstalliert werden."
+"UCS bietet *Single Sign-On* einen mit SAML 2.0 und OpenID Connect kompatiblen, auf :program:`Keycloak` aufsetzenden Identity Provider. Der Identity Provider ist standardmäßig nicht installiert und sollte über das |UCSAPPC| nachinstalliert werden."
 
 #: ../../domain-ldap/single-sign-on.rst:14
 msgid ""
