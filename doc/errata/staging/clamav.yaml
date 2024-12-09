@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [8,9]
+scope: ucs_5.0-0-errata5.0-9
+src: clamav
+fix: 1.0.7+dfsg-1~deb10u1A~5.0.9.202412091213
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2024-20505)
+ * CVSS score 6.1 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:H).
+   (CVE-2024-20506)
+bug: [57798]
+cve:
+ - CVE-2024-20505
+ - CVE-2024-20506
