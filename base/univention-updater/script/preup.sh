@@ -180,6 +180,10 @@ fi
 #          cannot open shared object file: No such file or directory Action '--configtest' failed.
 a2dismod php7.0 || true
 
+# univention/ucs#1951 - dirty hack to migrate the app scripts from py2 to py2 (admin-dashboard)
+test -e /usr/sbin/univention-dashboard-management && sed -i s'|/usr/bin/python2.7|/usr/bin/python3|' /usr/sbin/univention-dashboard-management
+test -e /usr/sbin/univention-metrics-domain && sed -i s'|/usr/bin/python2.7|/usr/bin/python3|' /usr/sbin/univention-metrics-domain
+
 # Pre-upgrade
 preups=""
 ${update_commands_update:-false} >&3 2>&3
