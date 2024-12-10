@@ -1,3 +1,9 @@
+univention-updater (16.0.23) unstable; urgency=medium
+
+  * Issue univention/ucs#2551: check for blocking apps
+
+ -- Felix Botner <botner@univention.de>  Tue, 10 Dec 2024 17:17:45 +0100
+
 univention-updater (16.0.22) unstable; urgency=medium
 
   * Issue univention/ucs#1951: migrate admin-dashboard scripts from py2 to py3
