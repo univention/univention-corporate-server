@@ -126,7 +126,7 @@ Update sign-in links
 
 Restarting the portal server automatically updates the *Login* link in the user menu.
 You must manually update the portal tile.
-The default portal has a preconfigured, but disabled single sign-on login tile.
+The default portal has a preconfigured, but deactivated single sign-on login tile.
 Use the portal edit mode to enable it.
 To replace the *Login* tile with the single sign-on tile,
 follow these steps:
