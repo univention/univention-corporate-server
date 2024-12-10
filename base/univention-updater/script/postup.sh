@@ -86,6 +86,12 @@ memberserver) apt_install univention-server-member ;;
 *) die "The server role '$server_role' is not supported!" ;;
 esac
 
+# Issue univention/ucs#2542: make sure we keep univention-appcenter-docker
+if [ -n "$(ucr get docker/daemon/default/map/log-opt)" ]; then
+	ucr unset docker/daemon/default/map/log-opt && ucr commit /etc/default/docker
+fi
+is_ucr_true update/510/univention-appcenter-docker && univention-install -y univention-appcenter-docker && ucr unset update/510/univention-appcenter-docker
+
 is_ucr_true update52/skip/autoremove ||
 	DEBIAN_FRONTEND=noninteractive apt-get -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages autoremove >&3 2>&3
 
@@ -128,12 +134,6 @@ is_joined &&
 
 # Bug #44188: recreate and reload packetfilter rules to make sure the system is accessible
 service univention-firewall restart >&3 2>&3
-
-# Issue univention/ucs#2542: make sure we keep univention-appcenter-docker
-if [ -n "$(ucr get docker/daemon/default/map/log-opt)" ]; then
-	ucr unset docker/daemon/default/map/log-opt && ucr commit /etc/default/docker
-fi
-is_ucr_true update/510/univention-appcenter-docker && univention-install -y univention-appcenter-docker && ucr unset update/510/univention-appcenter-docker
 
 # run remaining joinscripts
 case "${server_role:-}" in
