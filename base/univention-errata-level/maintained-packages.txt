@@ -2828,6 +2828,8 @@ libtext-levenshtein-perl
 libtext-wrapi18n-perl
 libtextwrap-dev
 libtextwrap1
+libtfm-dev
+libtfm1
 libthai-data
 libthai-dev
 libthai-doc
