@@ -5,27 +5,29 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UCS 5.2 Release Notes 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-20 06:10+0200\n"
-"PO-Revision-Date: 2024-07-03 11:09+0100\n"
+"POT-Creation-Date: 2024-12-12 11:55+0000\n"
+"PO-Revision-Date: 2024-12-12 13:00+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
-"Language: German\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Generated-By: Babel 2.16.0\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: ../../index.rst:7
 msgid ""
 "Release notes for the installation and update of Univention Corporate Server "
 "(UCS) |release|"
 msgstr ""
-"Release Notes für die Inbetriebnahme und Aktualisierung von Univention "
-"Corporate Server (UCS) |release|"
+"Release Notes für die Inbetriebnahme und Aktualisierung von Univention Corporate "
+"Server (UCS) |release|"
 
 #: ../../index.rst:9
-msgid "Publication date of UCS |release|: 2024-12-31"
-msgstr "Veröffentlichungsdatum von UCS |release|: 2024-12-31"
+msgid "Publication date of UCS |release|: 2025-02-05"
+msgstr "Veröffentlichungsdatum von UCS |release|: 2025-02-05"
 
 #: ../../index.rst:15
 msgid "Release highlights"
@@ -33,169 +35,226 @@ msgstr "Release-Highlights"
 
 #: ../../index.rst:17
 msgid ""
-"With |UCSUCS| 5.2-0, the second minor release for |UCSUCS| (UCS) is "
-"available. It provides several feature improvements and extensions, new "
-"properties as well as various improvements and bug fixes. Here is an "
-"overview of the most important changes:"
+"With |UCSUCS| 5.2-0, the second minor release for |UCSUCS| (UCS) is available. "
+"It provides several feature improvements and extensions, new properties as well "
+"as various improvements and bug fixes. Here is an overview of the most important "
+"changes:"
 msgstr ""
 "Mit |UCSUCS| 5.2-0 steht das zweite Minor Release für |UCSUCS| (UCS) zur "
 "Verfügung. Es umfasst Funktionserweiterungen und Verbesserungen, neue "
 "Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen. Die "
 "wichtigsten Änderungen im Überblick:"
 
-#: ../../index.rst:22
-msgid "Keycloak replaces SimpleSAMLPHP."
-msgstr "Keycloak ersetzt SimpleSAMLPHP"
-
-#: ../../index.rst:24
-msgid "No support for mixed UCS 4.x / UCS 5.x environments."
-msgstr "Keine Unterstützung für gemischte UCS 4.x / UCS 5.x Umgebungen."
+#: ../../index.rst:21
+msgid ""
+"|UCSUCS| 5.2 is based on Debian 12 ``Bookworm`` and a lot of packages have been "
+"updated due to this. As |UCSUCS| 5.0 was based on Debian 10 ``Buster``, there "
+"exists the intermediate |UCSUCS| 5.1 based on Debian 11 ``Bullseye``. This is "
+"only required for updating and should never be used in production, however the "
+"update should automatically continue up to 5.2 without manual interaction "
+"needed. Newer versions are being provided for, but not limited to, the Linux "
+"Kernel (6.1.0-28), :program:`Samba` (4.21.1), :program:`OpenLDAP` (2.5.13), "
+"PostgreSQL (15), Python (3.11) and Docker (4.18.0)."
+msgstr ""
+"|UCSUCS| 5.2 basiert auf Debian 12 ``Bookworm`` , wodurch viele Pakete nun in "
+"einer neueren Version vorliegen. Da |UCSUCS| 5.0 auf Debian 10 ``Buster`` "
+"basierte existiert als technischer Zwischenschritt |UCSUCS| 5.1 basierend auf "
+"Debian 11 ``Bullseye``. Dieses Release ist selbst nicht für den produktiven "
+"Einsatz vorgesehen, aktualisiert sich allerdings automatisch und ohne manuelle "
+"Interaktion auf 5.2, welches neuere Versionen von unter anderem dem Linux Kernel "
+"(6.1.0-28), :program:`Samba` (4.21.1), :program:`OpenLDAP` (2.5.13), PostgreSQL "
+"(15), Python (3.11) und Docker (4.18.0) enthält."
 
 #: ../../index.rst:26
-msgid "Update from Python 3.7 to Python 3.11. No more support for Python 2."
-msgstr ""
-"Update von Python 3.7 auf Python 3.11. Keine Unterstützung mehr für Python 2."
-
-#: ../../index.rst:29
-msgid "FIXME"
-msgstr "Baustelle"
-
-#: ../../index.rst:32
 msgid ""
-"UCS 5.2 is based on Debian 12 ``Bookworm``. As UCS 5.0 was based on Debian "
-"10 ``Buster``, there exists the intermediate UCS 5.1 based on Debian 11 "
-"``Bullseye``. This is only required for updating and should never be used in "
-"production. **No support!**"
+":program:`Keycloak` replaces :program:`SimpleSAMLphp` and :program:`Kopano "
+"Konnect` as the only Identity Provider (IDP) for |UCSUCS|. This means that, "
+"going forward, :program:`Keycloak` will be the sole component used for "
+"authentication and (single-) sign on. :program:`Keycloak` is already available "
+"as an app for |UCSUCS| 5.0, the `Migration Guide <https://docs.software-"
+"univention.de/keycloak-migration/>`_ covers everything needed to update. :"
+"program:`Keycloak` provides a fast range of features and configurability "
+"concerning log-in and usage scenarios, like federation, single-sign on with "
+"SAML, OIDC and Kerberos or custom conditional authentication flows for an "
+"overview of tested use cases the `App Manual <https://docs.software-univention."
+"de/keycloak-app/latest/index.html>`_ can be consulted."
 msgstr ""
-"UCS 5.2 basiert auf Debian 12 ``Bookworm``. Da UCS 5.0 auf Debian 10 "
-"``Buster`` basierte, gibt es dazwischen UCS 5.1 basierend auf Debian 11 "
-"``Bullseye``. Es ist nur für das Update notwendig und sollte niemals "
-"produktiv benutzt werden. **Kein Support!**"
+":program:`Keycloak` ersetzt :program:`SimpleSAMLphp` und :program:`Kopano "
+"Konnect` als alleiniger Identity Provider (IDP) for |UCSUCS|. In Zukunft ist :"
+"program:`Keycloak` damit die einzige Komponente, welche Authentifikation und "
+"(Single) Sign-On bereitstellt. :program:`Keycloak` ist bereits als App im "
+"Univention App Center für |UCSUCS| 5.0 verfügbar, der `Migration Guide <https://"
+"docs.software-univention.de/keycloak-migration/>`_ unterstützt hier beim "
+"reibungslosen Update. :program:`Keycloak` stellt eine große Spanne an Funktionen "
+"und Konfigurierbarkeit hinsichtlich Log-In und Nutzungsszenarien wie Föderation, "
+"Single Sign-On mit SAML, OIDC und Kerberos oder eigener konditionaler "
+"Authentifizierungsverfahren bereit. Um einen Überblick über getestete "
+"Anwendungsfälle zu erhalten kann das `App Manual <https://docs.software-"
+"univention.de/keycloak-app/latest/index.html>`_ konsultiert werden."
 
-#: ../../index.rst:41
+#: ../../index.rst:31
+msgid ""
+"|UCSUCS| 5.0 supported mixed environments with leading systems updated to 5.0 "
+"while other |UCSUCS| nodes still ran |UCSUCS| 4. With |UCSUCS| 5.2 support for |"
+"UCSUCS| 4 environments is dropped, but it is still possible to mix |UCSUCS| 5.2 "
+"and 5.0 in one domain."
+msgstr ""
+"UCSUCS| 5.0 unterstützte gemischte Umgebungen mit führenden Systemen auf Stand "
+"5.0 und weiteren |UCSUCS| Nodes innerhalb der Domäne auf Version 4. Mit |UCSUCS| "
+"5.2 wird die Unterstützung von |UCSUCS| 4 Umgebungen vollständig eingestellt, es "
+"ist aber weiterhin möglich die Versionsstände 5.2 und 5.0 in einer Domäne zu "
+"mischen."
+
+#: ../../index.rst:33
+msgid ""
+"Python has been updated from 3.7 to 3.11. While |UCSUCS| 5.0 still supported "
+"Python 2.7 this Support is being removed completely with |UCSUCS| 5.2."
+msgstr ""
+"Python als Sprache der Wahl für viele |UCSUCS| Komponenten wurde von Version 3.7 "
+"auf 3.11 aktualisiert. Während |UCSUCS| 5.0 weiterhin Python 2.7 unterstützte "
+"wird dieses mit |UCSUCS| 5.2 nicht mehr weitergeführt."
+
+#: ../../index.rst:35
+msgid ""
+"The overall Look & Feel of the web interface has been modernized and improved. "
+"Most notably the integration of various staggered elements has been improved to "
+"make the navigation easier and highlight important areas more prominently."
+msgstr ""
+"Das optische Erscheinungsbild der Weboberfläche wurde insgesamt modernisiert und "
+"verbessert. Vor allem die Integration verschiedener gestaffelter Elemente wurde "
+"verbessert, um die Navigation zu erleichtern und wichtige Bereiche deutlicher "
+"hervorzuheben."
+
+#: ../../index.rst:39
+msgid ""
+"The Univention Configuration Registry (UCR) now checks and validates values "
+"given according to the configured type, preventing accidental wrong usage of "
+"unsupported values."
+msgstr ""
+"Die Univention Configuration Registry (UCR) prüft und validiert nun Werte, die "
+"entsprechend des konfigurierten Typs angegeben werden, um eine versehentliche "
+"Verwendung nicht unterstützter Werte zu verhindern."
+
+#: ../../index.rst:45
 msgid "Notes about the update"
 msgstr "Hinweise zum Update"
 
-#: ../../index.rst:43
+#: ../../index.rst:47
 msgid "Prerequisite for updating is at least UCS 5.0-7."
 msgstr "Voraussetzungen für das Update ist mindestens UCS 5.0-7."
 
-#: ../../index.rst:45
+#: ../../index.rst:49
 msgid ""
-"Run the update in a maintenance window, because some services in the domain "
-"may not be available temporarily. It's recommended that you test the update "
-"in a separate test environment before the actual update. The test "
-"environment must be identical to the production environment."
+"Run the update in a maintenance window, because some services in the domain may "
+"not be available temporarily. It's recommended that you test the update in a "
+"separate test environment before the actual update. The test environment must be "
+"identical to the production environment."
 msgstr ""
-"Führen Sie das Update in einem Wartungsfenster durch, da einige Dienste in "
-"der Domäne möglicherweise vorübergehend nicht verfügbar sind. Es wird "
-"empfohlen, die Aktualisierung in einer separaten Testumgebung zu testen, "
-"bevor Sie die eigentliche Aktualisierung durchführen. Die Testumgebung muss "
-"mit der Produktionsumgebung identisch sein."
+"Führen Sie das Update in einem Wartungsfenster durch, da einige Dienste in der "
+"Domäne möglicherweise vorübergehend nicht verfügbar sind. Es wird empfohlen, die "
+"Aktualisierung in einer separaten Testumgebung zu testen, bevor Sie die "
+"eigentliche Aktualisierung durchführen. Die Testumgebung muss mit der "
+"Produktionsumgebung identisch sein."
 
-#: ../../index.rst:50
+#: ../../index.rst:54
 msgid ""
-"Depending on the system performance, network connection, and installed "
-"software, the update can take anywhere from FIXME minutes to several hours. "
-"For large environments, consult :cite:t:`ucs-performance-guide`."
+"Depending on the system performance, network connection, and installed software, "
+"the update can take anywhere from FIXME minutes to several hours. For large "
+"environments, consult :cite:t:`ucs-performance-guide`."
 msgstr ""
-"Je nach Systemleistung, Netzwerkverbindung und installierter Software kann "
-"die Aktualisierung zwischen ?? Minuten und mehreren Stunden dauern. Für "
-"große Umgebungen konsultieren Sie bitte den :cite:t:`ucs-performance-guide`."
+"Je nach Systemleistung, Netzwerkverbindung und installierter Software kann die "
+"Aktualisierung zwischen ?? Minuten und mehreren Stunden dauern. Für große "
+"Umgebungen konsultieren Sie bitte den :cite:t:`ucs-performance-guide`."
 
-#: ../../index.rst:57
+#: ../../index.rst:61
+msgid "Recommended update sequence for environments with more than one UCS system"
+msgstr "Empfohlene Update-Reihenfolge für Umgebungen mit mehr als einem UCS System"
+
+#: ../../index.rst:63
 msgid ""
-"Recommended update sequence for environments with more than one UCS system"
+"In environments with more than one UCS system, take the update sequence of the "
+"UCS systems into account."
 msgstr ""
-"Empfohlene Update-Reihenfolge für Umgebungen mit mehr als einem UCS System"
+"Beachten Sie in Umgebungen mit mehr als einem UCS-System die Update-Reihenfolge "
+"der UCS-Systeme:"
 
-#: ../../index.rst:59
-msgid ""
-"In environments with more than one UCS system, take the update sequence of "
-"the UCS systems into account."
-msgstr ""
-"Beachten Sie in Umgebungen mit mehr als einem UCS-System die Update-"
-"Reihenfolge der UCS-Systeme:"
-
-#: ../../index.rst:62
+#: ../../index.rst:66
 msgid ""
 "The authoritative version of the LDAP directory service operates on the |"
-"UCSPRIMARYDN|, formerly referred to as master domain controller, and "
-"replicates to all the remaining LDAP servers of the UCS domain. As changes "
-"to the LDAP schema can occur during release updates, the |UCSPRIMARYDN| must "
-"always be the first system to be updated during a release update."
+"UCSPRIMARYDN|, formerly referred to as master domain controller, and replicates "
+"to all the remaining LDAP servers of the UCS domain. As changes to the LDAP "
+"schema can occur during release updates, the |UCSPRIMARYDN| must always be the "
+"first system to be updated during a release update."
 msgstr ""
-"Die maßgebliche (authoritative) Version des LDAP-Verzeichnisdienstes "
-"operiert auf dem |UCSPRIMARYDN| (frühere Bezeichnung: Master Domain "
-"Controller) und repliziert an alle übrigen LDAP-Server der UCS-Domäne. Da "
-"bei Release-Updates Veränderungen an den LDAP-Schemata auftreten können, "
-"muss der |UCSPRIMARYDN| bei einem Release-Update immer das erste System "
-"sein, auf dem das Update durchgeführt wird."
+"Die maßgebliche (authoritative) Version des LDAP-Verzeichnisdienstes operiert "
+"auf dem |UCSPRIMARYDN| (frühere Bezeichnung: Master Domain Controller) und "
+"repliziert an alle übrigen LDAP-Server der UCS-Domäne. Da bei Release-Updates "
+"Veränderungen an den LDAP-Schemata auftreten können, muss der |UCSPRIMARYDN| bei "
+"einem Release-Update immer das erste System sein, auf dem das Update "
+"durchgeführt wird."
 
-#: ../../index.rst:72
+#: ../../index.rst:76
 msgid "Simultaneous operation of UCS and Debian on UEFI systems"
 msgstr "Gleichzeitiger Betrieb von UCS und Debian auf UEFI Systemen"
 
-#: ../../index.rst:74
+#: ../../index.rst:78
 msgid ""
-"Please note that simultaneous operation of UCS and Debian GNU/Linux on a "
-"UEFI system starting with UCS 5.0 isn't supported."
+"Please note that simultaneous operation of UCS and Debian GNU/Linux on a UEFI "
+"system starting with UCS 5.0 isn't supported."
 msgstr ""
 "Beginnend mit UCS 5.0 wird ein gleichzeitiger Betrieb von UCS und Debian GNU/"
 "Linux auf einem UEFI System nicht unterstützt."
 
-#: ../../index.rst:77
+#: ../../index.rst:81
 msgid ""
-"The reason for this is the GRUB boot loader of |UCSUCS|, which partly uses "
-"the same configuration files as Debian. An already installed Debian leads to "
-"the fact that UCS can't boot (anymore) after the installation of or an "
-"update to UCS 5.0. A subsequent installation of Debian results in UCS 5.0 "
-"not being able to boot. For more information, refer to :uv:kb:`17768`."
+"The reason for this is the GRUB boot loader of |UCSUCS|, which partly uses the "
+"same configuration files as Debian. An already installed Debian leads to the "
+"fact that UCS can't boot (anymore) after the installation of or an update to UCS "
+"5.0. A subsequent installation of Debian results in UCS 5.0 not being able to "
+"boot. For more information, refer to :uv:kb:`17768`."
 msgstr ""
-"Ursache hierfür ist der Bootloader GRUB von |UCSUCS|, der teilweise die "
-"gleichen Konfigurationsdateien wie Debian verwendet. Ein bereits "
-"installiertes Debian führt dazu, dass UCS nach der Installation von bzw. "
-"einem Update auf UCS 5.0 nicht (mehr) startet. Eine nachträgliche "
-"Installation von Debian wird ebenfalls dazu führen, dass UCS 5.0 nicht mehr "
-"startet. Mehr Informationen finden Sie unter :uv:kb:`17768`."
+"Ursache hierfür ist der Bootloader GRUB von |UCSUCS|, der teilweise die gleichen "
+"Konfigurationsdateien wie Debian verwendet. Ein bereits installiertes Debian "
+"führt dazu, dass UCS nach der Installation von bzw. einem Update auf UCS 5.0 "
+"nicht (mehr) startet. Eine nachträgliche Installation von Debian wird ebenfalls "
+"dazu führen, dass UCS 5.0 nicht mehr startet. Mehr Informationen finden Sie "
+"unter :uv:kb:`17768`."
 
-#: ../../index.rst:87
+#: ../../index.rst:91
 msgid "Preparation of update"
 msgstr "Vorbereitung des Updates"
 
-#: ../../index.rst:89
+#: ../../index.rst:93
 msgid ""
-"This section provides more information you need to consider before you "
-"update."
+"This section provides more information you need to consider before you update."
 msgstr ""
 "In diesem Abschnitt finden Sie weitere Informationen, die Sie vor der "
 "Aktualisierung beachten müssen."
 
-#: ../../index.rst:94
+#: ../../index.rst:98
 msgid "Migration of default IDP service before updating to UCS 5.2"
 msgstr "Migration des Standard-Identitätsproviders vor dem Update auf UCS 5.2"
 
-#: ../../index.rst:96
+#: ../../index.rst:100
 msgid ""
 "Starting with |UCSUCS| 5.2 the :program:`Keycloak` app replaces :program:"
-"`SimpleSAMLphp` and the :program:`Kopano Konnect` app as the default "
-"identity providers in |UCSUCS|. Before the update to UCS 5.2 an manual "
-"migration of the default identity providers is necessary. A detailed "
-"description of how to migrate can be found in :external+uv-keycloak-mig:doc:"
-"`index`."
+"`SimpleSAMLphp` and the :program:`Kopano Konnect` app as the default identity "
+"providers in |UCSUCS|. Before the update to UCS 5.2 an manual migration of the "
+"default identity providers is necessary. A detailed description of how to "
+"migrate can be found in :external+uv-keycloak-mig:doc:`index`."
 msgstr ""
 "Beginnend mit |UCSUCS| 5.2 ersetzt die App :program:`Keycloak` :program:"
 "`SimpleSAMLphp` und die App :program:`Kopano Connect` als Standard-"
-"Identitätsprovider in |UCSUCS|. Vor dem Update auf UCS 5.2 ist eine "
-"händische Migration des Standard-Identitätsproviders notwendig. Eine "
-"detaillierte Beschreibung des Vorgehens für die Migration finden Sie in :"
-"external+uv-keycloak-mig:doc:`index`."
+"Identitätsprovider in |UCSUCS|. Vor dem Update auf UCS 5.2 ist eine händische "
+"Migration des Standard-Identitätsproviders notwendig. Eine detaillierte "
+"Beschreibung des Vorgehens für die Migration finden Sie in :external+uv-keycloak-"
+"mig:doc:`index`."
 
-#: ../../index.rst:105
+#: ../../index.rst:109
 msgid "Migration of OpenLDAP database backend from BDB to MDB"
 msgstr "Migration der OpenLDAP Datenbank von BDB auf MDB"
 
-#: ../../index.rst:107
+#: ../../index.rst:111
 msgid ""
 "|UCSUCS| 5.2 will no longer support the database backend *Berkeley DB* for :"
 "program:`OpenLDAP`. All system with database backend *Berkeley DB* must be "
@@ -203,117 +262,116 @@ msgid ""
 "perform this migration."
 msgstr ""
 "|UCSUCS| 5.2 unterstützt nicht länger das Datenbankformat *Berkeley DB* für :"
-"program:`OpenLDAP`. Alle Systeme mit dem Datenbankformat *Berkeley DB* "
-"müssen vor dem Update auf UCS 5.2 migriert werden. Siehe :uv:kb:`22322` für "
-"eine Anleitung zur Migration."
+"program:`OpenLDAP`. Alle Systeme mit dem Datenbankformat *Berkeley DB* müssen "
+"vor dem Update auf UCS 5.2 migriert werden. Siehe :uv:kb:`22322` für eine "
+"Anleitung zur Migration."
 
-#: ../../index.rst:115
+#: ../../index.rst:119
 msgid "Python 3.11 compatibility"
 msgstr "Python 3.11 Kompatibilität"
 
-#: ../../index.rst:117
+#: ../../index.rst:121
 msgid ""
-"Before you update, verify manually crafted Python code for compatibility "
-"with Python 3.11 and adjust it accordingly. This includes |UCSUCR| templates "
-"containing Python code. Customized AD-Connector mapping templates are an "
-"example for this. See also the :cite:t:`developer-reference` for advice."
+"Before you update, verify manually crafted Python code for compatibility with "
+"Python 3.11 and adjust it accordingly. This includes |UCSUCR| templates "
+"containing Python code. Customized AD-Connector mapping templates are an example "
+"for this. See also the :cite:t:`developer-reference` for advice."
 msgstr ""
-"Bevor Sie aktualisieren, prüfen Sie manuell erstellten Python-Programmcode "
-"auf Kompatibilität mit Python 3.11 und passen Sie ihn entsprechend an. Das "
-"betrifft auch |UCSUCR| Templates, die Python-Code enthalten. Angepasste |"
-"UCSADC| Mapping Templates sind ein Beispiel. In der :cite:t:`developer-"
-"reference` finden sich weitere Hinweise."
+"Bevor Sie aktualisieren, prüfen Sie manuell erstellten Python-Programmcode auf "
+"Kompatibilität mit Python 3.11 und passen Sie ihn entsprechend an. Das betrifft "
+"auch |UCSUCR| Templates, die Python-Code enthalten. Angepasste |UCSADC| Mapping "
+"Templates sind ein Beispiel. In der :cite:t:`developer-reference` finden sich "
+"weitere Hinweise."
 
-#: ../../index.rst:125
+#: ../../index.rst:129
 msgid "AD Connector mapping"
 msgstr "AD Connector Mapping"
 
-#: ../../index.rst:127
+#: ../../index.rst:131
 msgid ""
-"When you operate multiple instances of the :program:`AD Connector` as "
-"described in :ref:`uv-ext-windows:ad-multiple`, you need to adjust the "
-"mapping configuration and ensure Python 3.11 compatibility before the "
-"update. :uv:kb:`17754` describes the steps."
+"When you operate multiple instances of the :program:`AD Connector` as described "
+"in :ref:`uv-ext-windows:ad-multiple`, you need to adjust the mapping "
+"configuration and ensure Python 3.11 compatibility before the update. :uv:kb:"
+"`17754` describes the steps."
 msgstr ""
-"Wenn Sie mehrere Instanzen des :program:`AD Connector` betreiben, wie in :"
-"ref:`uv-ext-windows:ad-multiple` beschrieben, müssen Sie die Mapping-"
-"Konfiguration anpassen. Außerdem müssen Sie die Kompatibilität mit Python "
-"3.11 vor dem Update sicher stellen. :uv:kb:`17754` beschreibt die Schritte."
+"Wenn Sie mehrere Instanzen des :program:`AD Connector` betreiben, wie in :ref:"
+"`uv-ext-windows:ad-multiple` beschrieben, müssen Sie die Mapping-Konfiguration "
+"anpassen. Außerdem müssen Sie die Kompatibilität mit Python 3.11 vor dem Update "
+"sicher stellen. :uv:kb:`17754` beschreibt die Schritte."
 
-#: ../../index.rst:134
+#: ../../index.rst:138
 msgid "Sufficient disk space"
 msgstr "Ausreichender Festplattenplatz"
 
-#: ../../index.rst:136
+#: ../../index.rst:140
 msgid ""
 "Also verify that you have sufficient disk space available for the update. A "
-"standard installation requires a minimum of FIXME GB of disk space. The "
-"update requires approximately FIXME GB additional disk space to download and "
-"install the packages, depending on the size of the existing installation."
+"standard installation requires a minimum of FIXME GB of disk space. The update "
+"requires approximately FIXME GB additional disk space to download and install "
+"the packages, depending on the size of the existing installation."
 msgstr ""
-"Prüfen Sie auch, ob ausreichend Festplattenplatz verfügbar ist. Eine "
-"Standard-Installation benötigt mindestens ?? GB Speicherplatz. Das Update "
-"benötigt je nach Umfang der vorhandenen Installation ungefähr ?? GB "
-"zusätzlichen Speicherplatz zum Herunterladen und Installieren der Pakete."
+"Prüfen Sie auch, ob ausreichend Festplattenplatz verfügbar ist. Eine Standard-"
+"Installation benötigt mindestens ?? GB Speicherplatz. Das Update benötigt je "
+"nach Umfang der vorhandenen Installation ungefähr ?? GB zusätzlichen "
+"Speicherplatz zum Herunterladen und Installieren der Pakete."
 
-#: ../../index.rst:144
+#: ../../index.rst:148
 msgid "Console usage for update"
 msgstr "Nutzung der Konsole für das Update"
 
-#: ../../index.rst:146
+#: ../../index.rst:150
 msgid ""
 "For the update, sign in on the system's local console as user ``root``, and "
 "initiate the update there. Alternatively, you can conduct the update using |"
 "UCSUMC|."
 msgstr ""
 "Melden Sie sich für das Update auf der lokalen Konsole des Systems mit dem "
-"Benutzer ``root`` an und starten Sie das Update dort. Alternativ können Sie "
-"das Update über |UCSUMC| durchführen."
+"Benutzer ``root`` an und starten Sie das Update dort. Alternativ können Sie das "
+"Update über |UCSUMC| durchführen."
 
-#: ../../index.rst:150
+#: ../../index.rst:154
 msgid ""
-"If you want or have to run the update over a network connection, ensure that "
-"the update continues in case of network disconnection. Network connection "
-"interrupts may cancel the update procedure that you initiated over a remote "
-"connection. An interrupted update procedure affects the system severely. To "
-"keep the update running even in case of an interrupted network connection, "
-"use tools such as :command:`tmux`, :command:`screen`, and :command:`at`. All "
-"UCS system roles have these tools installed by default."
+"If you want or have to run the update over a network connection, ensure that the "
+"update continues in case of network disconnection. Network connection interrupts "
+"may cancel the update procedure that you initiated over a remote connection. An "
+"interrupted update procedure affects the system severely. To keep the update "
+"running even in case of an interrupted network connection, use tools such as :"
+"command:`tmux`, :command:`screen`, and :command:`at`. All UCS system roles have "
+"these tools installed by default."
 msgstr ""
 "Wenn Sie das Update über eine Netzwerkverbindung durchführen möchten oder "
 "müssen, stellen Sie sicher, dass das Update im Fall einer Unterbrechung der "
-"Netzwerkverbindung weiterläuft. Unterbrechungen der Netzwerkverbindung "
-"können den Aktualisierungsvorgang abbrechen, den Sie über eine entfernte "
-"Verbindung ausgelöst haben. Ein unterbrochener Aktualisierungsvorgang kann "
-"Ihr System ernsthaft beeinträchtigen. Damit das Update auch bei einer "
-"unterbrochenen Netzwerkverbindung weiterläuft, verwenden Sie beispielsweise "
-"Werkzeuge wie :command:`tmux`, :command:`screen` oder :command:`at` "
-"einsetzen. Sie sind auf allen UCS Systemrollen installiert."
+"Netzwerkverbindung weiterläuft. Unterbrechungen der Netzwerkverbindung können "
+"den Aktualisierungsvorgang abbrechen, den Sie über eine entfernte Verbindung "
+"ausgelöst haben. Ein unterbrochener Aktualisierungsvorgang kann Ihr System "
+"ernsthaft beeinträchtigen. Damit das Update auch bei einer unterbrochenen "
+"Netzwerkverbindung weiterläuft, verwenden Sie beispielsweise Werkzeuge wie :"
+"command:`tmux`, :command:`screen` oder :command:`at` einsetzen. Sie sind auf "
+"allen UCS Systemrollen installiert."
 
-#: ../../index.rst:161
+#: ../../index.rst:165
 msgid "Script to check for known update issues"
 msgstr "Skript zur Prüfung auf bekannte Update-Probleme"
 
-#: ../../index.rst:163
+#: ../../index.rst:167
 msgid ""
-"Univention provides a script that checks for problems which would prevent "
-"the successful update of the system. You can download the script before the "
-"update and run it on the UCS system."
+"Univention provides a script that checks for problems which would prevent the "
+"successful update of the system. You can download the script before the update "
+"and run it on the UCS system."
 msgstr ""
 "Univention bietet ein Skript an, mit dem Probleme, die das Update des UCS "
 "Systems verhindern würden, schon vor dem Update erkannt werden können. Sie "
 "können das Skript vor dem Update manuell auf das System herunterladen und "
 "ausführen:"
 
-#: ../../index.rst:167
+#: ../../index.rst:171
 msgid ""
 "# download\n"
-"$ curl -OOf https://updates.software-univention.de/download/univention-"
-"update-checks/pre-update-checks-5.2-0{.gpg,}\n"
+"$ curl -OOf https://updates.software-univention.de/download/univention-update-"
+"checks/pre-update-checks-5.2-0{.gpg,}\n"
 "\n"
 "# verify and run script\n"
-"$ apt-key verify pre-update-checks-5.2-0{.gpg,} && bash pre-update-"
-"checks-5.2-0\n"
+"$ apt-key verify pre-update-checks-5.2-0{.gpg,} && bash pre-update-checks-5.2-0\n"
 "\n"
 "...\n"
 "\n"
@@ -329,12 +387,11 @@ msgid ""
 "..."
 msgstr ""
 "# download\n"
-"$ curl -OOf https://updates.software-univention.de/download/univention-"
-"update-checks/pre-update-checks-5.2-0{.gpg,}\n"
+"$ curl -OOf https://updates.software-univention.de/download/univention-update-"
+"checks/pre-update-checks-5.2-0{.gpg,}\n"
 "\n"
 "# verify and run script\n"
-"$ apt-key verify pre-update-checks-5.2-0{.gpg,} && bash pre-update-"
-"checks-5.2-0\n"
+"$ apt-key verify pre-update-checks-5.2-0{.gpg,} && bash pre-update-checks-5.2-0\n"
 "\n"
 "...\n"
 "\n"
@@ -349,79 +406,75 @@ msgstr ""
 "Checking ldap_schema ...                          OK\n"
 "..."
 
-#: ../../index.rst:193
+#: ../../index.rst:197
 msgid "Post processing of the update"
 msgstr "Nachbereitung des Updates"
 
-#: ../../index.rst:195
+#: ../../index.rst:199
 msgid ""
 "Following the update, you need to run new or updated join scripts. You can "
-"either use the UMC module *Domain join* or run the command :command:"
-"`univention-run-join-scripts` as user ``root``."
+"either use the UMC module *Domain join* or run the command :command:`univention-"
+"run-join-scripts` as user ``root``."
 msgstr ""
-"Nach dem Update müssen Sie die neuen oder aktualisierten Join-Skripte "
-"ausführen. Sie können dafür entweder das UMC-Modul *Domänenbeitritt* "
-"verwenden oder durch Befehl :command:`univention-run-join-scripts` als "
-"Benutzer ``root`` aufrufen."
+"Nach dem Update müssen Sie die neuen oder aktualisierten Join-Skripte ausführen. "
+"Sie können dafür entweder das UMC-Modul *Domänenbeitritt* verwenden oder durch "
+"Befehl :command:`univention-run-join-scripts` als Benutzer ``root`` aufrufen."
 
-#: ../../index.rst:199
+#: ../../index.rst:203
 msgid "Subsequently, you need to restart the UCS system."
 msgstr "Anschließend müssen Sie das UCS-System neu starten."
 
-#: ../../index.rst:205
+#: ../../index.rst:209
 msgid "Notes on selected packages"
 msgstr "Hinweise zum Einsatz einzelner Pakete"
 
-#: ../../index.rst:207
+#: ../../index.rst:211
 msgid ""
-"The following sections inform about some selected packages regarding the "
-"update."
+"The following sections inform about some selected packages regarding the update."
 msgstr ""
 "Die folgenden Abschnitte informieren über einige ausgewählte Pakete im "
 "Zusammenhang mit dem Update."
 
-#: ../../index.rst:212
+#: ../../index.rst:216
 msgid "Collection of usage statistics"
 msgstr "Erfassung von Nutzungsstatistiken"
 
-#: ../../index.rst:214
+#: ../../index.rst:218
 msgid ""
-"When using the *UCS Core Edition*, UCS collects anonymous statistics on the "
-"use of |UCSUMC|. The modules opened get logged to an instance of the web "
-"traffic analysis tool *Matomo*. Usage statistics enable Univention to better "
-"tailor the development of |UCSUMC| to customer needs and carry out usability "
-"improvements."
+"When using the *UCS Core Edition*, UCS collects anonymous statistics on the use "
+"of |UCSUMC|. The modules opened get logged to an instance of the web traffic "
+"analysis tool *Matomo*. Usage statistics enable Univention to better tailor the "
+"development of |UCSUMC| to customer needs and carry out usability improvements."
 msgstr ""
-"Mit der *UCS Core Edition* werden anonyme Nutzungsstatistiken zur Verwendung "
-"von |UCSUMC| erzeugt. Die aufgerufenen Module werden dabei von einer Instanz "
-"des Web-Traffic-Analyse-Tools *Matomo* protokolliert. Nutzungsstatistiken "
-"ermögliche es Univention die Entwicklung von |UCSUMC| besser auf das "
-"Kundeninteresse zuzuschneiden und Usability-Verbesserungen vorzunehmen."
+"Mit der *UCS Core Edition* werden anonyme Nutzungsstatistiken zur Verwendung von "
+"|UCSUMC| erzeugt. Die aufgerufenen Module werden dabei von einer Instanz des Web-"
+"Traffic-Analyse-Tools *Matomo* protokolliert. Nutzungsstatistiken ermögliche es "
+"Univention die Entwicklung von |UCSUMC| besser auf das Kundeninteresse "
+"zuzuschneiden und Usability-Verbesserungen vorzunehmen."
 
-#: ../../index.rst:219
+#: ../../index.rst:223
 msgid ""
-"You can verify the license status through the menu entry :menuselection:"
-"`License --> License information` of the user menu in the upper right corner "
-"of |UCSUMC|. Your UCS system is a *UCS Core Edition* system, if the *License "
-"information* lists ``UCS Core Edition`` under *License type*."
+"You can verify the license status through the menu entry :menuselection:`License "
+"--> License information` of the user menu in the upper right corner of |UCSUMC|. "
+"Your UCS system is a *UCS Core Edition* system, if the *License information* "
+"lists ``UCS Core Edition`` under *License type*."
 msgstr ""
 "Sie können den Lizenzstatus über den Menüeintrag :menuselection:`Lizenz --> "
-"Lizenzinformationen` des Benutzermenüs in der oberen rechten Ecke von |"
-"UCSUMC| überprüfen. Ihr UCS-System ist ein *UCS Core Edition*-System, wenn "
-"unter *Lizenzinformationen* unter *Lizenztyp* ``UCS Core Edition`` "
-"aufgeführt ist."
-
-#: ../../index.rst:224
-msgid ""
-"UCS doesn't collect usage statistics, when you use an `Enterprise "
-"Subscription <https://www.univention.com/products/prices-and-subscriptions/"
-">`_ license such as *UCS Base Subscription* or *UCS Standard Subscription*."
-msgstr ""
-"UCS sammelt keine Nutzungsstatistiken, wenn Sie eine `Enterprise "
-"Subskription <https://www.univention.com/products/prices-and-subscriptions/"
-">`_ wie *UCS Base Subscription* oder *UCS Standard Subscription* verwenden."
+"Lizenzinformationen` des Benutzermenüs in der oberen rechten Ecke von |UCSUMC| "
+"überprüfen. Ihr UCS-System ist ein *UCS Core Edition*-System, wenn unter "
+"*Lizenzinformationen* unter *Lizenztyp* ``UCS Core Edition`` aufgeführt ist."
 
 #: ../../index.rst:228
+msgid ""
+"UCS doesn't collect usage statistics, when you use an `Enterprise Subscription "
+"<https://www.univention.com/products/prices-and-subscriptions/>`_ license such "
+"as *UCS Base Subscription* or *UCS Standard Subscription*."
+msgstr ""
+"UCS sammelt keine Nutzungsstatistiken, wenn Sie eine `Enterprise Subskription "
+"<https://www.univention.com/products/prices-and-subscriptions/>`_ wie *UCS Base "
+"Subscription* oder *UCS Standard Subscription* verwenden."
+
+#: ../../index.rst:232
 msgid ""
 "Independent of the license used, you can deactivate the usage statistics "
 "collection by setting the |UCSUCRV| :envvar:`umc/web/piwik` to ``false``."
@@ -430,54 +483,76 @@ msgstr ""
 "Nutzungsstatistiken durch Setzen der |UCSUCRV| :envvar:`umc/web/piwik` auf "
 "``false`` deaktivieren."
 
-#: ../../index.rst:234
+#: ../../index.rst:238
 msgid "Recommended browsers for the access to |UCSUMC|"
 msgstr "Empfohlene Browser für den Zugriff auf |UCSUMC|"
 
-#: ../../index.rst:236
+#: ../../index.rst:240
 msgid ""
 "|UCSUMC| uses numerous JavaScript and CSS functions to display the web "
-"interface. Your web browser needs to permit cookies. |UCSUMC| requires one "
-"of the following browsers:"
+"interface. Your web browser needs to permit cookies. |UCSUMC| requires one of "
+"the following browsers:"
 msgstr ""
-"|UCSUMC| verwendet für die Darstellung der Web-Oberfläche zahlreiche "
-"JavaScript- und CSS-Funktionen. Ihr Browser muss dafür Cookies zulassen. |"
-"UCSUMC| benötigt dafür einen der folgenden Browser:"
-
-#: ../../index.rst:240
-msgid "Chrome as of version FIXME"
-msgstr "Chrome ab Version ??"
-
-#: ../../index.rst:242
-msgid "Firefox as of version FIXME"
-msgstr "Firefox ab Version ??"
+"|UCSUMC| verwendet für die Darstellung der Web-Oberfläche zahlreiche JavaScript- "
+"und CSS-Funktionen. Ihr Browser muss dafür Cookies zulassen. |UCSUMC| benötigt "
+"dafür einen der folgenden Browser:"
 
 #: ../../index.rst:244
-msgid "Safari and Safari Mobile as of version FIXME"
-msgstr "Safari und Safari Mobile ab Version ??"
+msgid "Chrome as of version FIXME"
+msgstr "Chrome ab Version FIXME"
 
 #: ../../index.rst:246
-msgid "Microsoft Edge as of version FIXME"
-msgstr "Microsoft Edge ab Version ??"
+msgid "Firefox as of version FIXME"
+msgstr "Firefox ab Version FIXME"
 
 #: ../../index.rst:248
-msgid ""
-"Users running older browsers may experience display or performance issues."
+msgid "Safari and Safari Mobile as of version FIXME"
+msgstr "Safari und Safari Mobile ab Version FIXME"
+
+#: ../../index.rst:250
+msgid "Microsoft Edge as of version FIXME"
+msgstr "Microsoft Edge ab Version FIXME"
+
+#: ../../index.rst:252
+msgid "Users running older browsers may experience display or performance issues."
 msgstr ""
 "Mit älteren Browsern können Darstellungs- oder Performanceprobleme auftreten."
 
-#: ../../index.rst:254
+#: ../../index.rst:258
 msgid "Changelog"
 msgstr "Changelog"
 
-#: ../../index.rst:256
+#: ../../index.rst:260
 msgid ""
-"You find the changes since UCS 5.0-7 in :external+uv-changelog-5.2-0:doc:"
-"`index`."
+"You find the changes since UCS 5.0-7 in :external+uv-changelog-5.2-0:doc:`index`."
 msgstr ""
 "Die Änderungen seit UCS 5.0-7 finden Sie in :external+uv-changelog-5.2-0:doc:"
 "`index`."
 
-#: ../../index.rst:263
+#: ../../index.rst:267
 msgid "Bibliography"
 msgstr "Literaturverzeichnis"
+
+#~ msgid "Keycloak replaces SimpleSAMLPHP."
+#~ msgstr "Keycloak ersetzt SimpleSAMLPHP"
+
+#~ msgid "No support for mixed UCS 4.x / UCS 5.x environments."
+#~ msgstr "Keine Unterstützung für gemischte UCS 4.x / UCS 5.x Umgebungen."
+
+#~ msgid "Update from Python 3.7 to Python 3.11. No more support for Python 2."
+#~ msgstr ""
+#~ "Update von Python 3.7 auf Python 3.11. Keine Unterstützung mehr für Python 2."
+
+#~ msgid "FIXME"
+#~ msgstr "Baustelle"
+
+#~ msgid ""
+#~ "UCS 5.2 is based on Debian 12 ``Bookworm``. As UCS 5.0 was based on Debian 10 "
+#~ "``Buster``, there exists the intermediate UCS 5.1 based on Debian 11 "
+#~ "``Bullseye``. This is only required for updating and should never be used in "
+#~ "production. **No support!**"
+#~ msgstr ""
+#~ "UCS 5.2 basiert auf Debian 12 ``Bookworm``. Da UCS 5.0 auf Debian 10 "
+#~ "``Buster`` basierte, gibt es dazwischen UCS 5.1 basierend auf Debian 11 "
+#~ "``Bullseye``. Es ist nur für das Update notwendig und sollte niemals "
+#~ "produktiv benutzt werden. **Kein Support!**"
