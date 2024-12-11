@@ -450,15 +450,9 @@ class AppCenterCache(_AppCache):
     def get_ucs_versions(self):
         # type: () -> List[str]
         if self._ucs_versions is None:
-            cache_file = self.get_cache_file('.ucs.ini')
             ucs_version = self._get_current_ucs_version()
-            versions = AppCenterVersion.all_from_file(cache_file)
-            for version in versions:
-                if version.name == ucs_version:
-                    self._ucs_versions = version.supported_ucs_versions
-                    break
-            else:
-                self._ucs_versions = [ucs_version]
+            cache_file = self.get_cache_file('.ucs.ini')
+            self._ucs_versions = _get_ucs_versions_for(ucs_version, cache_file) or [ucs_version]
         return self._ucs_versions
 
     def get_locale(self):
@@ -538,9 +532,10 @@ class AppCenterCache(_AppCache):
 
 
 class Apps(_AppCache):
-    def __init__(self, cache_class=None, locale=None):
+    def __init__(self, cache_class=None, locale=None, ucs_version=None):
         self._cache_class = cache_class
         self._locale = locale
+        self._ucs_version = ucs_version
 
     def get_appcenter_cache_class(self):
         if self._cache_class is None:
@@ -556,7 +551,13 @@ class Apps(_AppCache):
     def get_appcenter_caches(self):
         # type: () -> List[AppCenterCache]
         server = default_server()
-        cache = self._build_appcenter_cache(server, None)
+
+        # get dedicated ucs_versions for self._ucs_version - if set
+        netloc = urlsplit(server).netloc
+        cache_file = os.path.join(CACHE_DIR, netloc, '.ucs.ini')
+        ucs_versions = _get_ucs_versions_for(self._ucs_version, cache_file)
+
+        cache = self._build_appcenter_cache(server, ucs_versions)
         return [cache]
 
     def _build_appcenter_cache(self, server, ucs_versions):
@@ -642,3 +643,12 @@ def default_ucs_version():
     # type: () -> str
     cache = AppCenterCache.build(server=default_server())
     return cache.get_ucs_versions()[0]
+
+
+def _get_ucs_versions_for(ucs_version, ucs_ini_file):
+    if ucs_version is None:
+        return None
+    versions = AppCenterVersion.all_from_file(ucs_ini_file)
+    for version in versions:
+        if version.name == ucs_version:
+            return version.supported_ucs_versions
