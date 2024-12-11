@@ -92,6 +92,10 @@ if [ -n "$(ucr get docker/daemon/default/map/log-opt)" ]; then
 fi
 is_ucr_true update/510/univention-appcenter-docker && univention-install -y univention-appcenter-docker && ucr unset update/510/univention-appcenter-docker
 
+# Issue univention/ucs#2548: make sure we keep univention-monitoring-client and univention-nagios-client
+is_ucr_true update/510/univention-monitoring-client && univention-install -y univention-monitoring-client && ucr unset update/510/univention-monitoring-client
+is_ucr_true update/510/univention-nagios-client && univention-install -y univention-nagios-client && ucr unset update/510/univention-nagios-client
+
 is_ucr_true update52/skip/autoremove ||
 	DEBIAN_FRONTEND=noninteractive apt-get -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages autoremove >&3 2>&3
 

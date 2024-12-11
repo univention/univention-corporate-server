@@ -174,6 +174,14 @@ if dpkg -l univention-appcenter-docker 2>&3 | grep ^ii  >&3 ; then
 	ucr set update/510/univention-appcenter-docker=true
 fi
 
+# Issue univention/ucs#2548: make sure we keep univention-monitoring-client and univention-nagios-client
+if dpkg -l univention-monitoring-client 2>&3 | grep ^ii  >&3 ; then
+  ucr set update/510/univention-monitoring-client=true
+fi
+if dpkg -l univention-nagios-client 2>&3 | grep ^ii  >&3 ; then
+  ucr set update/510/univention-nagios-client=true
+fi
+
 # univention/ucs#1945 - disable php7.0
 # apache2: Syntax error on line 146 of /etc/apache2/apache2.conf: Syntax error on line 3 of /etc/apache2/mods-enabled/php7.0.load:
 #          Cannot load /usr/lib/apache2/modules/libphp7.0.so into server: /usr/lib/apache2/modules/libphp7.0.so:

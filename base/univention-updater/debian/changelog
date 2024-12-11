@@ -1,3 +1,11 @@
+univention-updater (16.0.25) unstable; urgency=medium
+
+  * Issue univention/ucs#2548: make sure we keep univention-monitoring-client
+    and univention-nagios-client
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 11 Dec 2024 14:27:20 +0100
+
+ 
 univention-updater (16.0.24) unstable; urgency=medium
 
   * Issue univention/ucs#2551: check min version of system
