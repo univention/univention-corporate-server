@@ -115,7 +115,7 @@ class UpdateCheck(UniventionAppAction):
         update = get_action('update')
         update.logger = get_logfile_logger('update-check')
         update.call()
-        current_cache = Apps(locale='en')
+        current_cache = Apps(ucs_version=current_minor, locale='en')
 
         # get apps in next version
         with TemporaryDirectory() as tempdir:
