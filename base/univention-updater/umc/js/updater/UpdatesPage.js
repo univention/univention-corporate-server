@@ -165,11 +165,12 @@ define([
 								blockingComponents = [];
 							} else {
 								blockingComponents = blockingComponents.split(' ');
+								to_show = false;
 							}
 							var updatestext = '';
 
 							var updatestextdrop5_1 = '';
-							if (values.some(value => value.id.indexOf('5.2-') === 0) && ucs_version.indexOf('5.0-') === 0) {
+							if (!blockingComponents && values.some(value => value.id.indexOf('5.2-') === 0) && ucs_version.indexOf('5.0-') === 0) {
 								updatestextdrop5_1 = _('Note: UCS 5.1-0 is missing in this list on purpose. UCS 5.1-0 is not meant to be installed directly and may not fully work; it is just an <a href="https://www.univention.com/blog-en/2023/06/announcement-ucs-release-5-2/" target="_blank" rel="noopener noreferrer">intermediate release on the way to UCS 5.2-0</a>.\n')
 							}
 
@@ -238,24 +239,26 @@ define([
 								componentQueryDeferred.resolve();
 							}
 
-							if (updatestext || updatestextdrop5_1) {
-								updatestext = updatestext + ' ' + updatestextdrop5_1;
-								element_updatestext.set('content', updatestext);
-								this._form.showWidget('ucs_updates_text', true);
-							}
+							componentQueryDeferred.then(lang.hitch(this, function() {
+								if (updatestext || updatestextdrop5_1) {
+									updatestext = updatestext + ' ' + updatestextdrop5_1;
+									element_updatestext.set('content', updatestext);
+									this._form.showWidget('ucs_updates_text', true);
+								}
 
-							// hide or show combobox, spacers and corresponding button
-							this._form.showWidget('releases', to_show);
+								// hide or show combobox, spacers and corresponding button
+								this._form.showWidget('releases', to_show);
 
-							var but = this._form._buttons.run_release_update;
-							but.set('visible', to_show);
+								var but = this._form._buttons.run_release_update;
+								but.set('visible', to_show);
 
-							// renew affordance to check for package updates, but only
-							// if we didn't see availability yet.
-							if (!this._updates_available) {
-								this._set_updates_button(false, _("Package update status not yet checked"));
-							}
+								// renew affordance to check for package updates, but only
+								// if we didn't see availability yet.
+								if (!this._updates_available) {
+									this._set_updates_button(false, _("Package update status not yet checked"));
+								}
 
+							}));
 							this.standbyDuring(all([componentQueryDeferred, this._check_dist_upgrade(), this._check_app_updates()]));
 						} catch(error)
 						{
