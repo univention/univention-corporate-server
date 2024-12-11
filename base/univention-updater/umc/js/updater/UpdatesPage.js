@@ -166,6 +166,7 @@ define([
 								blockingComponents = [];
 							} else {
 								blockingComponents = blockingComponents.split(' ');
+								to_show = false;
 							}
 							var updatestext = '';
 							var updatesTextComponentsUnknown = '';
