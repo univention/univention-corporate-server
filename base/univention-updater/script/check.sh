@@ -44,6 +44,7 @@ fi
 VERSION="52"  # we don't put 51 here because the upgrade should look like upgrading to UCS 5.2
 VERSION_NAME="5.1"
 MIN_VERSION="5.0-7"
+MIN_VERSION_SYSTEM="5.0-9-1170"
 
 # shellcheck disable=SC2034
 updateLogDir="/var/univention-backup/update-to-${UPDATE_NEXT_VERSION:-$VERSION_NAME}"
@@ -551,6 +552,12 @@ update_check_system_date_too_old() {
 	echo "	update will fail if Spamassassin is installed."
 	echo
 	echo "	This check can be disabled by setting the UCR variable '$var' to 'yes'."
+	return 1
+}
+
+update_check_min_version () {
+	dpkg --compare-versions "$MIN_VERSION_SYSTEM" le "${version_version}-${version_patchlevel}-${version_erratalevel}" && return 0
+	echo "	The system needs to be at least at version $MIN_VERSION_SYSTEM in order to update!"
 	return 1
 }
 
