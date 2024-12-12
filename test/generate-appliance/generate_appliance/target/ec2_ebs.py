@@ -134,8 +134,11 @@ class EC2_EBS(Target):
             if status == "completed":
                 return detail["SnapshotId"]
             if status == "active":
-                progress = int(detail["Progress"])
-                Progress(import_task_id, 100)(progress)
+                try:
+                    progress = int(detail["Progress"])
+                    Progress(import_task_id, 100)(progress)
+                except KeyError:
+                    pass
             else:
                 print(detail)
             sleep(15)
