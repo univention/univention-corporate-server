@@ -25,11 +25,7 @@ for var in configRegistry:
         'docker/daemon/default/opts/registry-mirrors',
     ):
         continue  # already configured via json
-    if var.startswith('docker/daemon/default/map'):
-        opt = var.split('/')[-1]
-        for i in configRegistry[var].split(','):
-            docker_opts += '--%s=%s ' % (opt, i)
-    elif var.startswith('docker/daemon/default/opts'):
+    if var.startswith('docker/daemon/default/opts'):
         opt = var.split('/')[-1]
         docker_opts += '--%s=%s ' % (opt, configRegistry[var])
     elif var.startswith('docker/daemon/default/parameter') and configRegistry.is_true(var):
