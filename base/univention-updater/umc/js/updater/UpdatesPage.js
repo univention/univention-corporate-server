@@ -170,7 +170,7 @@ define([
 							var updatestext = '';
 
 							var updatestextdrop5_1 = '';
-							if (!blockingComponents && values.some(value => value.id.indexOf('5.2-') === 0) && ucs_version.indexOf('5.0-') === 0) {
+							if (blockingComponents.length === 0 && values.some(value => value.id.indexOf('5.2-') === 0) && ucs_version.indexOf('5.0-') === 0) {
 								updatestextdrop5_1 = _('Note: UCS 5.1-0 is missing in this list on purpose. UCS 5.1-0 is not meant to be installed directly and may not fully work; it is just an <a href="https://www.univention.com/blog-en/2023/06/announcement-ucs-release-5-2/" target="_blank" rel="noopener noreferrer">intermediate release on the way to UCS 5.2-0</a>.\n')
 							}
 
