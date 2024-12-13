@@ -1,3 +1,9 @@
+ucs-test (12.0.23-33) unstable; urgency=medium
+
+  * univention/ucsschool#1258: Add python2 template exception
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 13 Dec 2024 13:08:41 +0100
+
 ucs-test (12.0.23-32) unstable; urgency=medium
 
   * univention/ucs#2338: Add tracing to keycloak playwright tests
