@@ -1,3 +1,9 @@
+univention-updater (16.0.28) unstable; urgency=medium
+
+  * Issue univention/components/keycloak-app#206: Change settings from keycloak/server/sso/fqdn to ucs/server/sso/uri
+
+ -- Julia Bremer <bremer@univention.de>  Fri, 13 Dec 2024 16:48:43 +0100
+
 univention-updater (16.0.27) unstable; urgency=medium
 
   * Bug #57802: Do not provide a list of UCS releases to update to if some

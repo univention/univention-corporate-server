@@ -242,10 +242,6 @@ migrate_openldap_bdb () {
 update_check_keycloak_migration () {
 	local var="update$VERSION/ignore_keycloak_migration" msg
 	ignore_check "$var" && return 100
-	case "$server_role" in
-	domaincontroller_master) role_package="univention-server-master" ;;
-	*) return 0 ;;
-	esac
 	msg="$(univention-keycloak-migration-status 2>&1)" && return 0
 	msg="${msg//$'\n'/$'\n'$'\t'}"
 	echo -e "$msg"
