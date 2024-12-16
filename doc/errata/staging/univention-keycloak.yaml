@@ -3,7 +3,7 @@ release: "5.0"
 version: [9]
 scope: ucs_5.0-0-errata5.0-9
 src: univention-keycloak
-fix: 1.0.13-3
+fix: 1.0.13-4
 desc: |
  This update addresses the following issues:
  * The script `univention-keycloak-migration-status` has been adjusted to

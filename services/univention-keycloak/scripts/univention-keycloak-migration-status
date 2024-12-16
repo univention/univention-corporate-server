@@ -127,7 +127,8 @@ def fix_uri_setting(opt, new_value):
 
 
 def check_uri_setting():
-    subprocess.check_call(['/usr/lib/univention-directory-policy/univention-policy-update-config-registry'])
+    subprocess.call(['/usr/lib/univention-directory-policy/univention-policy-update-config-registry'])
+    ucr.load()
     ucs_server_sso_uri = ucr.get('ucs/server/sso/uri')
     if not keycloak_installed_in_domain():
         return True

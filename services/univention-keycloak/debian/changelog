@@ -1,3 +1,9 @@
+univention-keycloak (1.0.13-4) unstable; urgency=medium
+
+  * Issue univention/components/keycloak-app#206: ignore policy update errors
+
+ -- Felix Botner <botner@univention.de>  Mon, 16 Dec 2024 09:28:52 +0100
+
 univention-keycloak (1.0.13-3) unstable; urgency=medium
 
   * Issue univention/components/keycloak-app#206: Add ucs/server/sso/uri
