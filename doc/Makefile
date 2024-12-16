@@ -15,13 +15,20 @@ dir_git := $(realpath $(shell git rev-parse --git-common-dir))
 dir_doc := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 USER_ID := $(shell id -u)
-DOCKER_REGISTRY := docker-registry.knut.univention.de
-SPHINX_DOCKER_BASE = $(DOCKER_REGISTRY)/knut/sphinx-base:latest
-SPHINX_DOCKER_FULL = $(DOCKER_REGISTRY)/sphinx:latest
+DOCKER_REGISTRY := gitregistry.knut.univention.de
+SPHINX_DOCKER_BASE = $(DOCKER_REGISTRY)/univention/documentation/sphinx-docker/base:latest
+SPHINX_DOCKER_FULL = $(DOCKER_REGISTRY)/pdf:latest
+
 SPHINX_DOCKER = $(SPHINX_DOCKER_BASE)
 DOCKER_CMD := docker run --rm -v "$(dir_root):$(dir_root)" -v "$(dir_git):$(dir_git):ro" -w "$(dir_doc)" --network=host -e SPHINXINTL_LANGUAGE -e SPHINXOPTS -e HOME=/tmp -u "$(USER_ID)"
 Q ?= @
 unexport CDPATH
+
+.PHONY: update-po-all
+update-po-all:
+	${Q} $(MAKE) clean html
+	${Q} $(MAKE) html
+	${Q} $(MAKE) update-po
 
 .PHONY: update-po stat-po
 update-po stat-po:
