@@ -97,6 +97,7 @@ intersphinx_mapping = {
     "uv-manual": ref("manual"),
     "uv-ext-windows": ref("ext-windows"),
     "uv-keycloak-mig": ("https://docs.software-univention.de/keycloak-migration/", None),
+    "uv-keycloak-app": ("https://docs.software-univention.de/keycloak-app/latest/", None),
     f"uv-changelog-{release}": ref("changelog", ver=release),
 }
 

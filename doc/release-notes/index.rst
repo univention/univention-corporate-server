@@ -15,28 +15,49 @@ Release highlights
 ******************
 
 With |UCSUCS| 5.2-0, the second minor release for |UCSUCS| (UCS) is available.
-It provides several feature improvements and extensions, new properties as well as various improvements and bug fixes.
+It provides several feature improvements and extensions, new properties, as well as bug fixes.
 Here is an overview of the most important changes:
 
-* |UCSUCS| 5.2 is based on Debian 12 ``Bookworm`` and a lot of packages have been updated due to this.
-  As |UCSUCS| 5.0 was based on Debian 10 ``Buster``, there exists the intermediate |UCSUCS| 5.1 based on Debian 11 ``Bullseye``.
-  This is only required for updating and should never be used in production, however the update should automatically continue up to 5.2 without manual interaction needed.
-  Newer versions are being provided for, but not limited to, the Linux Kernel (6.1.0-28), :program:`Samba` (4.21.1), :program:`OpenLDAP` (2.5.13), PostgreSQL (15), Python (3.11) and Docker (4.18.0).
+* |UCSUCS| 5.2 bases on Debian 12 ``Bookworm`` and therefore it updates a lot of packages.
+  As |UCSUCS| 5.0 based on Debian 10 ``Buster``, the intermediate |UCSUCS| 5.1 based on Debian 11 ``Bullseye`` exists.
+  |UCSUCS| 5.1 is only required for updating, and you must never use it in production.
+  However, the update automatically continues up to 5.2 without the need for manual interaction.
+  |UCSUCS| 5.2 provides up-to-date versions for,
+  but not limited to,
+  the Linux Kernel (6.1.0-28), :program:`Samba` (4.21.1), :program:`OpenLDAP` (2.5.13), PostgreSQL (15), Python (3.11), and Docker (4.18.0).
 
-* :program:`Keycloak` replaces :program:`SimpleSAMLphp` and :program:`Kopano Konnect` as the only Identity Provider (IDP) for |UCSUCS|.
-  This means that, going forward, :program:`Keycloak` will be the sole component used for authentication and (single-) sign on.
-  :program:`Keycloak` is already available as an app for |UCSUCS| 5.0, the `Migration Guide <https://docs.software-univention.de/keycloak-migration/>`_ covers everything needed to update.
-  :program:`Keycloak` provides a fast range of features and configurability concerning log-in and usage scenarios, like federation, single-sign on with SAML, OIDC and Kerberos or custom conditional authentication flows for an overview of tested use cases the `App Manual <https://docs.software-univention.de/keycloak-app/latest/index.html>`_ can be consulted.
+* :program:`Keycloak` replaces :program:`SimpleSAMLphp` and :program:`Kopano Konnect`.
+  In |UCSUCS| 5.2, :program:`Keycloak` is the only Identity Provider (IDP).
+  This means that :program:`Keycloak` is the sole component used for authentication and (single-) sign on.
+  :program:`Keycloak` is already available as an app for |UCSUCS| 5.0.
+  The
+  :external+uv-keycloak-mig:doc:`Migration Guide <index>`
+  provides information and preparation steps for the update.
+  :program:`Keycloak` offers a vast range of features
+  and configurability concerning sign-in and usage scenarios,
+  such as federation, single-sign on with SAML, OIDC and Kerberos,
+  or custom conditional authentication flows.
+  For an overview of tested use cases,
+  see the
+  :external+uv-keycloak-app:doc:`Univention Keycloak app Manual <index>`.
 
-* |UCSUCS| 5.0 supported mixed environments with leading systems updated to 5.0 while other |UCSUCS| nodes still ran |UCSUCS| 4. With |UCSUCS| 5.2 support for |UCSUCS| 4 environments is dropped, but it is still possible to mix |UCSUCS| 5.2 and 5.0 in one domain.
+* |UCSUCS| 5.0 supported mixed environments with leading systems updated to 5.0
+  while other |UCSUCS| nodes still ran |UCSUCS| 4.
+  |UCSUCS| 5.2 drops support for |UCSUCS| 4 environments.
+  However, it's still possible to mix |UCSUCS| 5.2 and 5.0 in one domain.
 
-* Python has been updated from 3.7 to 3.11. While |UCSUCS| 5.0 still supported Python 2.7 this Support is being removed completely with |UCSUCS| 5.2.
+* |UCSUCS| 5.2 updates Python from 3.7 to 3.11.
+  While |UCSUCS| 5.0 still supported Python 2.7,
+  |UCSUCS| 5.2 no longer supports Python 2.7 and removes its support completely.
 
-* The overall Look & Feel of the web interface has been modernized and improved. Most notably the integration of various staggered elements has been improved to make the navigation easier and highlight important areas more prominently.
+* |UCSUCS| 5.2 modernizes the web interface
+  and improves the overall look and feel.
+  In particular, it improves the integration of various staggered elements
+  to make navigation easier and highlight significant areas more prominently.
 
-.. FIXME: there should probably be some kind of special element for UCR like :program:?
+* The *Univention Configuration Registry (UCR)* now evaluates and validates given values
+  according to the configured type to prevent accidental misuse of unsupported values.
 
-* The Univention Configuration Registry (UCR) now checks and validates values given according to the configured type, preventing accidental wrong usage of unsupported values.
 
 .. _relnotes-update:
 
