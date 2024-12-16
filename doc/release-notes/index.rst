@@ -136,6 +136,14 @@ must be migrated before the update to UCS 5.2. Please see
 
 .. _relnotes-python-311-compatibility:
 
+Mixed environments consisting of both 5.2 and 5.0 nodes
+=======================================================
+
+FIXME: This should state the detailed requirements and constraints in terms of mixed
+environments.
+
+.. _relnotes-mixed-environments:
+
 Python 3.11 compatibility
 =========================
 
