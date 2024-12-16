@@ -1,0 +1,19 @@
+product: ucs
+release: "5.0"
+version: [8, 9]
+scope: ucs_5.0-0-errata5.0-9
+src: libsoup2.4
+fix: 2.64.2-2+deb10u1
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2024-52532)
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N).
+   (CVE-2024-52530)
+ * CVSS score 4.9 (CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L).
+   (CVE-2024-52531)
+bug: [57808]
+cve:
+- CVE-2024-52530
+- CVE-2024-52531
+- CVE-2024-52532
