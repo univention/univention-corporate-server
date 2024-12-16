@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: avahi
+fix: 0.6.32-2+deb9u3
+desc: |
+ This update addresses the following issues:
+ * CVSS score 6.2 (CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2023-38473, CVE-2023-38472, CVE-2023-38471, CVE-2023-38470,
+   CVE-2023-38469, CVE-2023-1981)
+bug: [57811]
+cve:
+- CVE-2023-38469
+- CVE-2023-38470
+- CVE-2023-38471
+- CVE-2023-38472
+- CVE-2023-38473
+- CVE-2023-1981
