@@ -1,6 +1,6 @@
 product: ucs
 release: "5.0"
-version: [8, 9]
+version: [9]
 scope: ucs_5.0-0-errata5.0-9
 src: avahi
 fix: 0.7-4+deb10u4
