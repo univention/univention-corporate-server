@@ -8,6 +8,9 @@ options {
 	tkey-gssapi-keytab "/var/lib/samba/private/dns.keytab";
 	listen-on { any; };
 @!@
+dnssec_val = configRegistry.is_true('dns/sec/validation', True)
+if not dnssec_val:
+    print('\tdnssec-validation no;')
 dns_allow_query = configRegistry.get('dns/allow/query')
 if dns_allow_query:
     print('\tallow-query { %s; };' % dns_allow_query)

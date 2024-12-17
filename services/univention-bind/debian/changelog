@@ -1,3 +1,9 @@
+univention-bind (15.0.6) unstable; urgency=medium
+
+  * Issue univention/ucs#2309: Make DNSSEC-Validation configurable
+
+ -- Felix Botner <botner@univention.de>  Tue, 17 Dec 2024 17:07:50 +0100
+
 univention-bind (15.0.5) UNRELEASED; urgency=medium
 
   * Issue univention/ucs#2309: Make DNSSEC-Validation configurable

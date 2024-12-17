@@ -26,6 +26,7 @@ Variables: dns/master/address
 
 Type: file
 File: etc/bind/named.conf.samba4
+Variables: dns/sec/validation
 Variables: dns/allow/query
 Variables: dns/allow/transfer
 Variables: dns/allow/query/cache
