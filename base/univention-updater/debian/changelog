@@ -1,3 +1,9 @@
+univention-updater (16.0.29) unstable; urgency=medium
+
+  * Issue univention/ucs#2551: update min version of system to 1195
+
+ -- Felix Botner <botner@univention.de>  Wed, 18 Dec 2024 15:19:57 +0100
+
 univention-updater (16.0.28) unstable; urgency=medium
 
   * Issue univention/components/keycloak-app#206: Change settings from keycloak/server/sso/fqdn to ucs/server/sso/uri
