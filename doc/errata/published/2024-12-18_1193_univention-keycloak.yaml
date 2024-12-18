@@ -10,3 +10,6 @@ desc: |
    check the setting ucs/server/sso/uri, which will be used
    from UCS 5.2 onwards.
 bug: [57806]
+erratum: 1193
+announced: 2024-12-18
+support: core
