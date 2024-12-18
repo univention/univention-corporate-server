@@ -9,3 +9,6 @@ desc: |
  * Do not provide the option to update to a new UCS release if some docker
    apps are not yet released for that release.
 bug: [57802]
+erratum: 1195
+announced: 2024-12-18
+support: core
