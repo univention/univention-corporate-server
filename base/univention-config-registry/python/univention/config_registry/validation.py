@@ -131,6 +131,30 @@ class String(BaseValidator):
         return "%s(regex=%r)" % (self.NAME, self.regex) if self.regex else self.NAME
 
 
+class StringLowerCase(String):
+    """Validator for |UCR| type "str_lowercase"."""
+
+    NAME = "str_lowercase"
+
+    def validate(self, value):
+        # type: (str) -> object
+        if value == value.lower():
+            return super().validate(value)
+        return False
+
+
+class StringUpperCase(String):
+    """Validator for |UCR| type "str_uppercase"."""
+
+    NAME = "str_uppercase"
+
+    def validate(self, value):
+        # type: (str) -> object
+        if value == value.upper():
+            return super().validate(value)
+        return False
+
+
 class URLHttp(BaseValidator):
     """Validator for |UCR| type "url_http"."""
 

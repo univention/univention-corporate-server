@@ -380,17 +380,21 @@ For each variable a section of the following structure is defined:
    the input. Valid values include:
 
    - ``str`` for strings
+   - ``str_lowercase`` for lowercase strings
+   - ``str_uppercase`` for uppercase strings
    - ``json`` for JSON strings
    - ``ipv4address`` for IPv4 addresses
    - ``ipv6address`` for IPv6 addresses
    - ``ipaddress`` for IPv6 addresses
    - ``url_proxy`` for HTTP/HTTP proxy URLs
+   - ``url_http`` for HTTP URLs
    - ``bool`` for boolean values
    - ``int`` for integers (-∞…∞)
    - ``uint`` for unsigned integers (0…∞)
    - ``pint`` for positive integers (1…∞)
    - ``portnumber`` for TCP/UDP port numbers 0-65535
    - ``list`` for lists of items separated by some character
+   - ``cron`` for cron expressions
 
 ``Elementtype`` (required for Type=list)
    Specifies the type for all elements of type ``list``.

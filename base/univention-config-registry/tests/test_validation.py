@@ -26,6 +26,27 @@ def test_string(value):
 
 
 @pytest.mark.parametrize(
+    'value,expected_lower,expected_upper',
+    [
+        ('abc', True, False),
+        ('ABC', False, True),
+        ('Abc', False, False),
+        ('A.B.C', False, True),
+        ('a.b.c', True, False),
+        ('1234', True, True),
+        ('', True, True),
+        (' ', True, True),
+    ]
+)
+def test_string_lowercase_uppercase(value, expected_lower, expected_upper):
+    """Test the StringLowerCase and StringUpperCase validators."""
+    sval = ttyp.StringUpperCase({})
+    assert sval.is_valid(value) == expected_upper
+    sval = ttyp.StringLowerCase({})
+    assert sval.is_valid(value) == expected_lower
+
+
+@pytest.mark.parametrize(
     "regex,expected",
     [
         ('^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$', True),
