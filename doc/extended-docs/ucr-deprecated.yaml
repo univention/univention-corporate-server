@@ -561,3 +561,12 @@
    - ucs/web/overview/entries/admin/nagios/link
    - ucs/web/overview/entries/admin/nagios/priority
    - ucs/web/overview/entries/admin/nagios/icon
+
+- git: 9467660bec04029b3dd18e1925fe15897c885864
+  desc: univention-keycloak
+  obsolete: "5.2-0"
+  vars:
+    - saml/idp/authsource
+    - saml/idp/negotiate/filter-subnets
+    - saml/idp/selfservice/account-verification/error-descr
+    - saml/idp/selfservice/account-verification/error-title
