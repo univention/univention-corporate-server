@@ -46,19 +46,6 @@ email address shown under *Contact*.
 
    Details for an application in the App Center
 
-With *Vote Apps* there is a special form of Apps in the App Center that do not
-install anything on the UCS system. Voting helps Univention and the potential
-app provider to determine the interest in this app. Vote apps are usually only
-displayed for a limited voting period. That Vote Apps are available, can be
-recognized by the shown *Vote Apps* filter option in the App Center overview.
-
-.. _appcenter-vote-apps:
-
-.. figure:: /images/vote_apps.*
-   :alt: Example Vote Apps in App Center overview and detail view
-
-   Example *Vote Apps* in App Center overview and detail view
-
 Some applications may not be compatible with other software packages from UCS.
 For instance, most groupware packages require the UCS mail stack to be
 uninstalled. Every application checks whether incompatible versions are
