@@ -98,6 +98,13 @@ The UMC module :guilabel:`Univention Configuration Registry` can be used to
 display and adjust the variables of a system. There is also the possibility of
 setting new variables using :guilabel:`Add new variable`.
 
+.. _ucr-umc-module:
+
+.. figure:: /images/ucr.*
+   :alt: Managing |UCSUCR| variables via the UMC
+
+   Managing |UCSUCR| variables via the UMC
+
 A search mask is displayed on the start page. All variables are classified using
 a *Category*, for example all LDAP-specific settings.
 

@@ -209,6 +209,10 @@ msgstr ""
 "auth/sshd/group/Domain Admins: yes\n"
 "auth/sshd/restrict: yes"
 
+#: ../../computers/ucr.rst:106
+msgid "Managing |UCSUCR| variables via the UMC"
+msgstr "Verwaltung von |UCSUCR|-Variablen über die UMC"
+
 #: ../../computers/basic-system-services.rst:118
 msgid "Configuration of the LDAP server in use"
 msgstr "Konfiguration des verwendeten LDAP-Servers"
