@@ -39,7 +39,7 @@ information on the Univention App Center can be found in
 
 .. _appcenter-ucscomponents:
 
-.. figure:: /images/appcenter-ucs.*
+.. figure:: /images/appcenter_overview.*
    :alt: Selection of UCS components in the App Center
 
    Selection of UCS components in the App Center

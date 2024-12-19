@@ -19,6 +19,8 @@ There one needs to switch to the ``univention`` container and then to the
 new *Settings: extended attribute* object created here with
 :guilabel:`Add`.
 
+.. FIXME: Missing
+
 .. _umc-extended-attrs-figure:
 
 .. figure:: /images/umc_extended_attribute.*

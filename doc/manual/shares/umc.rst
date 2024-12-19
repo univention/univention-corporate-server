@@ -16,7 +16,7 @@ configuration.
 
 .. _shares-umc:
 
-.. figure:: /images/projekt-freigabe.*
+.. figure:: /images/project-share.*
    :alt: Creating a share via the UMC module *Shares*
 
    Creating a share via the UMC module :guilabel:`Shares`

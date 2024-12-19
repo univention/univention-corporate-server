@@ -41,6 +41,8 @@ updates and errata updates.
 :numref:`software-umc-update` shows the overview page of the module. The
 currently installed version is displayed under :guilabel:`Release updates`.
 
+.. FIXME: Needs new screenshots with some package updates actually available
+
 .. _software-umc-update:
 
 .. figure:: /images/software_onlineupdate.*
