@@ -56,7 +56,7 @@ servers.
 
 .. _quickstart-systemrole:
 
-.. figure:: images/systemrole.png
+.. figure:: ../manual/images/installer-domainrole.png
 
    Selecting the domain setup
 
@@ -128,7 +128,7 @@ partitioning of entries can be customized in a very flexible manner, see also
 
 .. _quickstart-ucs-portal:
 
-.. figure:: images/ucs-portal.png
+.. figure:: ../manual/images/portal.png
 
    Illustration of the portal page on the |UCSPRIMARYDN| with all domain wide
    available applications
@@ -155,7 +155,7 @@ management (Univention Directory Manager)
 
 .. _quickstart-umc-overview:
 
-.. figure:: images/umc-modules.png
+.. figure:: ../manual/images/umc-favorites-tab.png
 
    Modules in the UMC
 
@@ -181,7 +181,7 @@ Management Console:
 
 .. _quickstart-appcenter:
 
-.. figure:: images/appcenter.png
+.. figure:: ../manual/images/appcenter_overview.png
 
    Subsequent installation of UCS components
 
@@ -204,7 +204,7 @@ updated when the UCR variables registered on them are changed.
 
 .. _quickstart-ucr-image:
 
-.. figure:: images/ucr.png
+.. figure:: ../manual/images/ucr.png
 
    Managing |UCSUCR| variables
 

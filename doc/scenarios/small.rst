@@ -52,7 +52,7 @@ and requested when logging on to the Windows client.
 
 .. _create-user:
 
-.. figure:: /images/umc-benutzeranlegen.*
+.. figure:: ../manual/images/users_user_advanced.*
    :alt: Creating a user in Univention Directory Manager
 
    Creating a user in Univention Directory Manager
