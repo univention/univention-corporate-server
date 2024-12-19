@@ -167,7 +167,7 @@ References
 * :ref:`UCS Manual <uv-manual:introduction>`
 
 * `OX App Suite
-  <https://www.univention.com/products/univention-app-center/app-catalog/oxseforucs/>`_
+  <https://www.univention.com/products/app-catalog/oxseforucs/>`_
 
 * `Proxy server/ web cache (Squid)
-  <https://www.univention.com/products/univention-app-center/app-catalog/squid/>`_
+  <https://www.univention.com/products/app-catalog/squid/>`_

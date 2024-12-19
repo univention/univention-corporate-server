@@ -173,6 +173,6 @@ References
   <https://www.univention.com/products/app-catalog/oxseforucs/>`_
 
 * `Proxyserver / Webcache (Squid)
-  <https://www.univention.com/products/univention-app-center/app-catalog/squid/>`_
+  <https://www.univention.com/products/app-catalog/squid/>`_
 
-* `Self Service <https://www.univention.com/products/univention-app-center/app-catalog/self-service/>`_
+* `Self Service <https://www.univention.com/products/app-catalog/self-service/>`_

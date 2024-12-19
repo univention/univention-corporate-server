@@ -210,4 +210,4 @@ References
   <https://docs.software-univention.de/installation-5.0.html>`_
 
 * `opsi
-  <https://www.univention.com/products/univention-app-center/app-catalog/opsi/>`_
+  <https://www.univention.com/products/app-catalog/opsi/>`_

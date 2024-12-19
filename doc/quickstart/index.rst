@@ -18,7 +18,7 @@ reference to further documentation. The documentation on UCS is
 available at https://docs.software-univention.de/.
 
 The installation DVD can be downloaded from the Univention website at
-https://www.univention.com/downloads/download-ucs.
+https://www.univention.com/products/download/.
 The installation DVD is only available for the host architecture *amd64*
 (64-bit). It has support for the Unified Extensible Firmware
 Interface-Standard (UEFI) including SecureBoot.
