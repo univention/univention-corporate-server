@@ -1237,38 +1237,10 @@ This appendix lists the |UCSUCRVs| mentioned in the document.
    information, see :ref:`windows-sysvolshare`.
 
 
-.. envvar:: saml/idp/authsource
-
-   Allows Kerberos authentication at the SAML identity provider. Change to
-   ``univention-negotiate`` to activate. The default is ``univention-ldap``.
-
 .. envvar:: saml/idp/entityID/supplement/[identifier]
 
    Activates additional local identity providers for SAML on a UCS system
    serving as UCS Identity provider. To activate set the value to ``true``.
-
-
-.. envvar:: saml/idp/negotiate/filter-subnets
-
-   Allows to restrict the Kerberos authentication at the SAML identity provider
-   to certain IP subnetworks in the `CIDR notation
-   <w-classless-inter-domain-routing_>`_, for example
-   :samp:`127.0.0.0/16,192.168.0.0/16`.
-
-.. envvar:: saml/idp/selfservice/account-verification/error-descr
-
-   Configures the error message description text for the :program:`Self
-   Service`. The text shows up for users that login through SSO with an
-   unverified and self registered user account. For more information, see
-   :ref:`user-management-password-changes-by-users-selfregistration-account-verification`.
-
-
-.. envvar:: saml/idp/selfservice/account-verification/error-title
-
-   Configures the error message title for the :program:`Self Service`. The title
-   shows up for users that login through SSO with an unverified and self
-   registered user account. For more information, see
-   :ref:`user-management-password-changes-by-users-selfregistration-account-verification`.
 
 
 .. envvar:: saml/idp/selfservice/check_email_verification

@@ -6,14 +6,14 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-09 10:51+0000\n"
+"POT-Creation-Date: 2024-12-19 15:29+0000\n"
 "PO-Revision-Date: 2024-05-24 10:16+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.16.0\n"
 
 #: ../../appendix/bibliography.rst:6
 msgid "Bibliography"
@@ -1892,15 +1892,6 @@ msgstr ""
 
 #: ../../appendix/variables.rst:1242
 msgid ""
-"Allows Kerberos authentication at the SAML identity provider. Change to "
-"``univention-negotiate`` to activate. The default is ``univention-ldap``."
-msgstr ""
-"Erlaubt Kerberos-Authentifizierung beim SAML-Identitätsanbieter. Ändern "
-"Sie auf ``univention-negotiate`` um zu aktivieren. Die Voreinstellung ist"
-" ``univention-ldap``"
-
-#: ../../appendix/variables.rst:1247
-msgid ""
 "Activates additional local identity providers for SAML on a UCS system "
 "serving as UCS Identity provider. To activate set the value to ``true``."
 msgstr ""
@@ -1908,48 +1899,7 @@ msgstr ""
 "System, das als UCS-Identitätsanbieter dient. Zum Aktivieren setzen Sie "
 "den Wert auf ``true``."
 
-#: ../../appendix/variables.rst:1253
-msgid ""
-"Allows to restrict the Kerberos authentication at the SAML identity "
-"provider to certain IP subnetworks in the `CIDR notation <w-classless-"
-"inter-domain-routing_>`_, for example "
-":samp:`127.0.0.0/16,192.168.0.0/16`."
-msgstr ""
-"Ermöglicht es, die Kerberos-Authentifizierung beim SAML-"
-"Identitätsanbieter auf bestimmte IP-Subnetze in der `CIDR-Notation "
-"<w-classless- inter-domain-routing_>`_ zu beschränken, zum Beispiel "
-":samp:`127.0.0.0/16,192.168.0.0/16`."
-
-#: ../../appendix/variables.rst:1260
-msgid ""
-"Configures the error message description text for the :program:`Self "
-"Service`. The text shows up for users that login through SSO with an "
-"unverified and self registered user account. For more information, see "
-":ref:`user-management-password-changes-by-users-selfregistration-account-"
-"verification`."
-msgstr ""
-"Konfiguriert den Beschreibungstext der Fehlermeldung für das "
-":program:`Self Service`. Der Text wird für Benutzer angezeigt, die sich "
-"über SSO mit einem nicht verifizierten und selbst registrierten "
-"Benutzerkonto anmelden. Weitere Informationen finden Sie unter :ref"
-":`user-management-password-changes-by-users-selfregistration-account-"
-"verification`."
-
-#: ../../appendix/variables.rst:1268
-msgid ""
-"Configures the error message title for the :program:`Self Service`. The "
-"title shows up for users that login through SSO with an unverified and "
-"self registered user account. For more information, see :ref:`user-"
-"management-password-changes-by-users-selfregistration-account-"
-"verification`."
-msgstr ""
-"Konfiguriert den Titel der Fehlermeldung für das :program:`Self Service`."
-" Der Titel wird für Benutzer angezeigt, die sich über SSO mit einem nicht"
-" verifizierten und selbst registrierten Benutzerkonto anmelden. Weitere "
-"Informationen finden Sie unter :ref:`user-management-password-changes-by-"
-"users-selfregistration-account-verification`."
-
-#: ../../appendix/variables.rst:1276
+#: ../../appendix/variables.rst:1248
 msgid ""
 "Controls if the SSO login denies logins from unverified and self "
 "registered user accounts. For more information, see :ref:`user-"
@@ -1961,7 +1911,7 @@ msgstr ""
 "Informationen finden Sie unter :ref:`user-management-password-changes-by-"
 "users-selfregistration-account-verification`."
 
-#: ../../appendix/variables.rst:1282
+#: ../../appendix/variables.rst:1254
 msgid ""
 "To disable Univention firewall, set the value to ``true``. For more "
 "information, see :ref:`ip-config-packet-filter-with-univention-firewall`."
@@ -1970,7 +1920,7 @@ msgstr ""
 " Für weitere Informationen, siehe :ref:`ip-config-packet-filter-with-"
 "univention-firewall`."
 
-#: ../../appendix/variables.rst:1288
+#: ../../appendix/variables.rst:1260
 msgid ""
 "Defines the UCS system where the backend of the :program:`Self Service` "
 "app is installed. For more information, see :ref:`user-management-"
@@ -1980,7 +1930,7 @@ msgstr ""
 ":program:`Self Service` installiert ist. Weitere Informationen finden Sie"
 " unter :ref:`user-management-password-changes-by-users-self-service`."
 
-#: ../../appendix/variables.rst:1294
+#: ../../appendix/variables.rst:1266
 msgid ""
 "Enables or disables the password rotation on a UCS system. Per default "
 "the password rotation is activated. For more information, see :ref"
@@ -1990,7 +1940,7 @@ msgstr ""
 "Standardmäßig ist die Passwortrotation aktiviert. Für weitere "
 "Informationen, siehe :ref:`computers-hostaccounts`."
 
-#: ../../appendix/variables.rst:1301
+#: ../../appendix/variables.rst:1273
 msgid ""
 "Defines the interval in days to regenerate the computer account password."
 " The default is set to 21 days. For more information, see :ref"
@@ -2000,7 +1950,7 @@ msgstr ""
 "neu generiert wird. Der Standardwert ist auf 21 Tage eingestellt. Weitere"
 " Informationen finden Sie unter :ref:`computers-hostaccounts`."
 
-#: ../../appendix/variables.rst:1308
+#: ../../appendix/variables.rst:1280
 msgid ""
 "Contains the name of the UCS system's server role. For more information, "
 "see :ref:`system-roles`."
@@ -2008,7 +1958,7 @@ msgstr ""
 "Enthält den Namen der Serverrolle des UCS-Systems. Für weitere "
 "Informationen, siehe :ref:`system-roles`."
 
-#: ../../appendix/variables.rst:1314
+#: ../../appendix/variables.rst:1286
 msgid ""
 "To limit the access to the Squid web proxy, define a list of group names "
 "separated by semicolon (``;``). For more information, see :ref:`proxy-"
@@ -2018,7 +1968,7 @@ msgstr ""
 " Liste von Gruppennamen, die durch Semikolon (``;``) getrennt sind. Für "
 "weitere Informationen, siehe :ref:`proxy-userauth`."
 
-#: ../../appendix/variables.rst:1320
+#: ../../appendix/variables.rst:1292
 msgid ""
 "Configures additional networks to allow access to the Squid web proxy. "
 "Separate the entries with blank spaces and use the CIDR notation, for "
@@ -2031,7 +1981,7 @@ msgstr ""
 "Informationen finden Sie unter :ref:`ip-config-restriction-of-access-to-"
 "permitted-networks`."
 
-#: ../../appendix/variables.rst:1327
+#: ../../appendix/variables.rst:1299
 msgid ""
 "To activate direct authentication for the Squid web proxy against the "
 "LDAP server, set the value to ``yes`` and restart Squid. For more "
@@ -2041,7 +1991,7 @@ msgstr ""
 "LDAP-Server zu aktivieren, setzen Sie den Wert auf ``yes`` und starten "
 "Sie Squid neu. Für weitere Informationen, siehe :ref:`proxy-userauth`."
 
-#: ../../appendix/variables.rst:1334
+#: ../../appendix/variables.rst:1306
 msgid ""
 "To deactivate the caching function of the Squid web proxy, set the value "
 "to ``no``. For more information, see :ref:`ip-config-caching-of-web-"
@@ -2051,7 +2001,7 @@ msgstr ""
 "den Wert auf ``no``. Für weitere Informationen, siehe :ref:`ip-config-"
 "caching-of-web-content`."
 
-#: ../../appendix/variables.rst:1340
+#: ../../appendix/variables.rst:1312
 msgid ""
 "Configures the port for Squid web proxy, where the daemon listens for "
 "incoming connections. The default value is ``3128``. For more "
@@ -2061,7 +2011,7 @@ msgstr ""
 "eingehende Verbindungen wartet. Der Standardwert ist ``3128``. Für "
 "weitere Informationen, siehe :ref:`proxy-port`."
 
-#: ../../appendix/variables.rst:1347
+#: ../../appendix/variables.rst:1319
 msgid ""
 "To activate authentication through Kerberos for the Squid web proxy, set "
 "the value to ``yes`` and restart Squid. For more information, see :ref"
@@ -2071,7 +2021,7 @@ msgstr ""
 "aktivieren, setzen Sie den Wert auf ``yes`` und starten Sie Squid neu. "
 "Für weitere Informationen, siehe :ref:`proxy-userauth`."
 
-#: ../../appendix/variables.rst:1354
+#: ../../appendix/variables.rst:1326
 msgid ""
 "To activate authentication for the Squid web proxy against the NTLM "
 "interface, set the value to ``yes`` and restart Squid. For more "
@@ -2081,7 +2031,7 @@ msgstr ""
 "Schnittstelle zu aktivieren, setzen Sie den Wert auf ``yes`` und starten "
 "Sie Squid neu. Für weitere Informationen, siehe :ref:`proxy-userauth`."
 
-#: ../../appendix/variables.rst:1361
+#: ../../appendix/variables.rst:1333
 msgid ""
 "To deactivate further NTML authentication for subsequent HTML requests to"
 " the same website, set the value to ``yes``. For more information, see "
@@ -2091,7 +2041,7 @@ msgstr ""
 "dieselbe Website zu deaktivieren, setzen Sie den Wert auf ``yes``. Für "
 "weitere Informationen, siehe :ref:`proxy-userauth`."
 
-#: ../../appendix/variables.rst:1368
+#: ../../appendix/variables.rst:1340
 msgid ""
 "Configures the list of permitted ports for the Squid web proxy. Separate "
 "entries with blank spaces. For more information, see :ref:`ip-config-"
@@ -2101,7 +2051,7 @@ msgstr ""
 "Trennen Sie die Einträge durch Leerzeichen. Für weitere Informationen, "
 "siehe :ref:`ip-config-permitted-ports`."
 
-#: ../../appendix/variables.rst:1375
+#: ../../appendix/variables.rst:1347
 msgid ""
 "Configures how the SSH daemon permits login for the user ``root``. The "
 "value ``without-password`` does not ask for the password interactively. "
@@ -2113,7 +2063,7 @@ msgstr ""
 "Passwort. Die Anmeldung erfordert den öffentlichen SSH-Schlüssel. Für "
 "weitere Informationen, siehe :ref:`computers-ssh-login-to-systems`."
 
-#: ../../appendix/variables.rst:1383
+#: ../../appendix/variables.rst:1355
 msgid ""
 "Configure the port that the SSH daemon uses to listen for connection. The"
 " default value is ``22``. For more information, see :ref:`computers-ssh-"
@@ -2123,7 +2073,7 @@ msgstr ""
 "Verbindungen zu warten. Der Standardwert ist ``22``. Für weitere "
 "Informationen, siehe :ref:`computers-ssh-login-to-systems`."
 
-#: ../../appendix/variables.rst:1390
+#: ../../appendix/variables.rst:1362
 msgid ""
 "Configures, if the SSH daemon allows X11 forwarding. Valid values are "
 "``yes`` and ``no``. For more information, see :ref:`computers-ssh-login-"
@@ -2133,7 +2083,7 @@ msgstr ""
 "sind ``yes`` und ``no``. Für weitere Informationen, siehe :ref"
 ":`computers-ssh-login-to-systems`."
 
-#: ../../appendix/variables.rst:1396
+#: ../../appendix/variables.rst:1368
 msgid ""
 "Records the expiry date of the local computer certificate on each UCS "
 "system. The value reflects the number of days since the 1970-01-01."
@@ -2142,7 +2092,7 @@ msgstr ""
 "UCS-System auf. Der Wert gibt die Anzahl der Tage seit dem *1. Januar "
 "1970* an."
 
-#: ../../appendix/variables.rst:1402
+#: ../../appendix/variables.rst:1374
 msgid ""
 "Records the expiry date of the root certificate on each UCS system. The "
 "value reflects the number of days since the 1970-01-01."
@@ -2150,7 +2100,7 @@ msgstr ""
 "Zeichnet das Ablaufdatum des Stammzertifikats auf jedem UCS-System auf. "
 "Der Wert gibt die Anzahl der Tage seit dem *1. Januar 1970* an."
 
-#: ../../appendix/variables.rst:1408
+#: ../../appendix/variables.rst:1380
 msgid ""
 "Defines the warning period for the expiration check of the SSL/TLS root "
 "certificate. The default value is ``30`` days. See :ref:`domain-ssl`."
@@ -2158,7 +2108,7 @@ msgstr ""
 "Legt den Warnzeitraum für die Ablaufprüfung des SSL/TLS-Root-Zertifikats "
 "fest. Der Standardwert ist ``30`` Tage. Siehe :ref:`domain-ssl`."
 
-#: ../../appendix/variables.rst:1413
+#: ../../appendix/variables.rst:1385
 msgid ""
 "Enables or disables the logging of the system status. The default value "
 "is ``yes``. For more information, see :ref:`computers-logging-the-system-"
@@ -2168,7 +2118,7 @@ msgstr ""
 "Standardwert ist ``yes``. Für weitere Informationen, siehe :ref"
 ":`computers-logging-the-system-status`."
 
-#: ../../appendix/variables.rst:1420
+#: ../../appendix/variables.rst:1392
 msgid ""
 "Configures the run times when :command:`univention-system-stats` is run. "
 "The value follows the :ref:`cron syntax <cron-syntax>`. For more "
@@ -2179,7 +2129,7 @@ msgstr ""
 "Für weitere Informationen, siehe :ref:`computers-logging-the-system-"
 "status`."
 
-#: ../../appendix/variables.rst:1427
+#: ../../appendix/variables.rst:1399
 msgid ""
 "Configures the first external NTP timeserver. For more information, see "
 ":ref:`basicservices-ntp`."
@@ -2187,7 +2137,7 @@ msgstr ""
 "Konfiguriert den ersten externen NTP-Zeitserver. Für weitere "
 "Informationen, siehe :ref:`basicservices-ntp`."
 
-#: ../../appendix/variables.rst:1433
+#: ../../appendix/variables.rst:1405
 msgid ""
 "Configures the second external NTP timeserver. For more information, see "
 ":ref:`basicservices-ntp`."
@@ -2195,7 +2145,7 @@ msgstr ""
 "Konfiguriert den zweiten externen NTP-Zeitserver. Für weitere "
 "Informationen, siehe :ref:`basicservices-ntp`."
 
-#: ../../appendix/variables.rst:1439
+#: ../../appendix/variables.rst:1411
 msgid ""
 "Configures the third external NTP timeserver. For more information, see "
 ":ref:`basicservices-ntp`."
@@ -2203,7 +2153,7 @@ msgstr ""
 "Konfiguriert den dritten externen NTP-Zeitserver. Für weitere "
 "Informationen, siehe :ref:`basicservices-ntp`."
 
-#: ../../appendix/variables.rst:1445
+#: ../../appendix/variables.rst:1417
 msgid ""
 "Select the theme for |UCSWEB|. The value corresponds to a CSS file under "
 ":file:`/usr/share/univention-web/themes/` with the same name without "
@@ -2213,7 +2163,7 @@ msgstr ""
 "unter :file:`/usr/share/univention-web/themes/` mit demselben Namen ohne "
 "Erweiterung für den Dateinamen."
 
-#: ../../appendix/variables.rst:1452
+#: ../../appendix/variables.rst:1424
 msgid ""
 "To activate the :program:`Self Service` deregistration, set the variable "
 "to ``True``. For more information, see :ref:`user-management-password-"
@@ -2223,7 +2173,7 @@ msgstr ""
 "die Variable auf ``True``. Weitere Informationen finden Sie unter :ref"
 ":`user-management-password-changes-by-users-selfderegistration`."
 
-#: ../../appendix/variables.rst:1459
+#: ../../appendix/variables.rst:1431
 msgid ""
 "Enables or disables the account verification and request of new "
 "verification tokens for the :program:`Self Service`. For more "
@@ -2235,7 +2185,7 @@ msgstr ""
 "Informationen finden Sie unter :ref:`user-management-password-changes-by-"
 "users-selfregistration-account-verification`."
 
-#: ../../appendix/variables.rst:1466
+#: ../../appendix/variables.rst:1438
 msgid ""
 "Configures the default user name for the domain administrator. The value "
 "might be changed during an AD Takeover. For more information, see :ref"
@@ -2245,7 +2195,7 @@ msgstr ""
 "Wert kann während einer AD-Übernahme geändert werden. Für weitere "
 "Informationen, siehe :ref:`windows-ad-takeover-migrate`."
 
-#: ../../appendix/variables.rst:1472
+#: ../../appendix/variables.rst:1444
 msgid ""
 "Configures the time out period in seconds for the browser session after "
 "which the UCS management system requires a renewed sign in. The default "
@@ -2255,7 +2205,7 @@ msgstr ""
 " das UCS-Managementsystem eine erneute Anmeldung verlangt. Der "
 "Standardwert ist ``28800`` Sekunden für 8 Stunden."
 
-#: ../../appendix/variables.rst:1479
+#: ../../appendix/variables.rst:1451
 msgid ""
 "If activated with ``true``, the UMC first tries a single sign-on login "
 "through OpenID Connect before using the regular login. For more "
@@ -2266,7 +2216,7 @@ msgstr ""
 "Weitere Informationen finden Sie unter :ref:`central-management-umc-"
 "login`."
 
-#: ../../appendix/variables.rst:1486
+#: ../../appendix/variables.rst:1458
 msgid ""
 "Configures the OIDC identity provider for the UMC OIDC authentication. If"
 " the variable is unset, the value ``https://ucs-sso-"
@@ -2278,7 +2228,7 @@ msgstr ""
 "``https://ucs-sso-ng.ucs.test/realms/ucs`` verwendet. Weitere "
 "Informationen finden Sie unter :ref:`central-management-umc-login`."
 
-#: ../../appendix/variables.rst:1493
+#: ../../appendix/variables.rst:1465
 msgid ""
 "Defines the FQDN of the relying party for UMC. If the variable is unset, "
 "the FQDN of the UCS system and all IP addresses are used. For more "
@@ -2288,7 +2238,7 @@ msgstr ""
 "gesetzt ist, wird der FQDN des UCS System verwendet. Weitere "
 "Informationen finden Sie unter :ref:`central-management-umc-login`."
 
-#: ../../appendix/variables.rst:1499
+#: ../../appendix/variables.rst:1471
 msgid ""
 "If activated with ``true``, the UMC first tries a single sign-on login "
 "through SAML before using the regular login. For more information, refer "
@@ -2297,30 +2247,4 @@ msgstr ""
 "Wenn mit ``true`` aktiviert, versucht UMC zuerst eine Single Sign-On "
 "Anmeldung über SAML, bevor es die normale Anmeldung verwendet. Weitere "
 "Informationen finden Sie unter :ref:`central-management-umc-login`."
-
-#~ msgid ""
-#~ "Defines a filter for usernames so "
-#~ "that the AD Connector excepts matching"
-#~ " users from the synchronization. For "
-#~ "more information, see :ref:`ad-connector-"
-#~ "details-on-preconfigured-synchronization`:"
-#~ msgstr ""
-#~ "Definiert einen Filter für Benutzernamen, "
-#~ "die der AD Connector von der "
-#~ "Synchronisation ausschließt. Für weitere "
-#~ "Informationen, siehe :ref:`ad-connector-"
-#~ "details-on-preconfigured-synchronization`:"
-
-#~ msgid ""
-#~ "Configures a list of usernames that "
-#~ "the AD Connector excludes from "
-#~ "synchronization. For more information, see "
-#~ ":ref:`ad-connector-details-on-"
-#~ "preconfigured-synchronization`."
-#~ msgstr ""
-#~ "Konfiguriert eine Liste von Benutzernamen, "
-#~ "die der AD Connector von der "
-#~ "Synchronisation ausschließt. Weitere Informationen"
-#~ " finden Sie unter :ref:`ad-connector-"
-#~ "details-on-preconfigured-synchronization`."
 
