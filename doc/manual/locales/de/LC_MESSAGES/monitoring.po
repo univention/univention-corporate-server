@@ -1601,6 +1601,3 @@ msgstr ""
 "Das Plugin kann auch in Multi-Connector-Instanzen verwendet werden. Dabei"
 " muss der Name der Instanz als Parameter übergeben werden."
 
-#~ msgid ":program:`univention-nagios-ad-connector`: Test of the AD Connector"
-#~ msgstr ":program:`univention-nagios-ad-connector` Prüfung des AD-Connectors"
-
