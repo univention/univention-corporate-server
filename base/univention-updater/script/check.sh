@@ -613,6 +613,25 @@ update_check_user_country_mapping () {
 	return 1
 }
 
+update_check_docker_storage_driver () {  # Issue #2570
+	[ -x /usr/bin/docker ] || return 0
+	local active_storage_driver dircount
+
+	active_storage_driver=$(docker info -f '{{.Driver}}')
+	eval "$(ucr shell docker/daemon/default/opts/storage-driver)"
+	if [ "$active_storage_driver" = overlay2 ] && [ "$docker_daemon_default_opts_storage_driver" = overlay ]; then
+		echo '	Docker is running with overlay2 as Storage Driver but the UCR variable docker/daemon/default/opts/storage-driver is set to "overlay"'
+		echo '	unsetting UCR variable to avoid docker ignoring the container data in /var/lib/docker/overlay2'
+		ucr unset docker/daemon/default/opts/storage-driver
+		if [ -d /var/lib/docker/overlay ]; then
+			dircount=$(find /var/lib/docker/overlay/ -mindepth 1 -maxdepth 1 -type d -printf '.' | wc -c)
+			if [ "$dircount" -gt 0 ]; then
+				echo '	INFO: There is still data in /var/lib/docker/overlay/, please consider checking if that is still required.'
+			fi
+		fi
+	fi
+}
+
 checks () {
 	# stderr to log
 	exec 2>>"$UPDATER_LOG"
