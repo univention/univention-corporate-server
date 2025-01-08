@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [9]
+scope: ucs_5.0-0-errata5.0-9
+src: univention-saml
+fix: 7.0.12-2
+desc: |
+ This update addresses the following issues:
+ * Skip 91univention-saml.inst in case the primary is on UCS 5.2.
+   In this case simpleSAMLphp is no longer supported and the steps
+   in 91univention-saml.inst not needed.
+bug: [57839]
