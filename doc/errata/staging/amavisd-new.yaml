@@ -3,7 +3,7 @@ release: "4.4"
 version: [9]
 scope: ucs_4.4-0-errata4.4-9
 src: amavisd-new
-fix: 1:2.10.1-4+deb9u1A~4.4.9.202501071244
+fix: 1:2.10.1-4+deb9u1A~4.4.0.202501081257
 desc: |
  This update addresses the following issue:
  * Amavisd has an Interpretation Conflict when there are multiple boundary
