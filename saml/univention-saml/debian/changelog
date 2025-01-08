@@ -1,3 +1,9 @@
+univention-saml (7.0.12-2) unstable; urgency=medium
+
+  * Bug #57839: skip 91univention-saml.inst is primary is on 5.2
+
+ -- Felix Botner <botner@univention.de>  Wed, 08 Jan 2025 14:34:18 +0100
+
 univention-saml (7.0.12-1) UNRELEASED; urgency=medium
 
   * Bug #57581 UCS 5.0-9 version bump

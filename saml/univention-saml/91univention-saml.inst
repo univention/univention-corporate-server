@@ -98,6 +98,12 @@ trap check_exit EXIT
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
+if ! ucs_needsSimplesamlphpSetup; then
+	echo "No SimpleSamlPHP setup needed as primary is on 5.2"
+	joinscript_save_current_version
+	exit 0
+fi
+
 PAUSE_DEBUG
 eval "$(ucr shell)"
 RESUME_DEBUG
