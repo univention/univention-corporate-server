@@ -6,7 +6,10 @@ src: amavisd-new
 fix: 1:2.11.0-6.1+deb10u1A~5.0.9.202501071113
 desc: |
  This update addresses the following issue:
- * CVSS score unknown. (CVE-2024-28054)
+ * Amavisd has an Interpretation Conflict when there are multiple boundary
+   parameters in a MIME email message. Consequently, there can be an
+   incorrect check for banned files or malware. CVSS score unknown.
+   (CVE-2024-28054)
 bug: [57823]
 cve:
 - CVE-2024-28054
