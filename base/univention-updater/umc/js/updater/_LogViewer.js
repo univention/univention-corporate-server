@@ -82,6 +82,7 @@ define([
 
 		_checkForMaintenanceMode: function() {
 			var loginURL = '/univention/login/';
+			var umcSoftwareUpdateModuleURL = '/univention/management/?header=try-hide&overview=false&menu=false';
 			var xhr = new XMLHttpRequest();
 			xhr.timeout = this._check_interval;
 			xhr.onreadystatechange = lang.hitch(this, function(e) {
@@ -93,7 +94,7 @@ define([
 							// Okay. During update, the maintenance mode is on.
 							// We should leave UMC and watch the progress on the maintenance page instead
 							this.set('gotoMaintenance', true);
-							document.location = loginURL + '?dojo.preventCache=' + Math.floor(Math.random() * 100000);
+							document.location = umcSoftwareUpdateModuleURL + '&dojo.preventCache=' + Math.floor(Math.random() * 100000) + '#module=updater';
 						}
 					}));
 				}

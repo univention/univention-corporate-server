@@ -1,3 +1,9 @@
+univention-updater (15.0.18-4) unstable; urgency=medium
+
+  * Bug #57838: redirect back to the Software Update UMC module after an update
+
+ -- Christian Castens <castens@univention.de>  Fri, 10 Jan 2025 10:33:08 +0100
+
 univention-updater (15.0.18-3) unstable; urgency=medium
 
   * Bug #57802: Fix testing for empty blockingComponents list
