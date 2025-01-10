@@ -81,12 +81,12 @@ define([
 		},
 
 		_checkForMaintenanceMode: function() {
-			var loginURL = '/univention/login/';
-			var umcSoftwareUpdateModuleURL = '/univention/management/?header=try-hide&overview=false&menu=false';
 			var xhr = new XMLHttpRequest();
 			xhr.timeout = this._check_interval;
 			xhr.onreadystatechange = lang.hitch(this, function(e) {
 				if (xhr.readyState === 4 && xhr.status === 200) {
+					var originalLocation = new URL(window.location.href);
+					originalLocation.searchParams.set('preventCache', Math.floor(Math.random() * 100000));
 					var headers = xhr.getAllResponseHeaders().toLowerCase();
 					array.forEach(headers.split('\n'), lang.hitch(this, function(header) {
 						var content = header.split(':', 2);
@@ -94,12 +94,12 @@ define([
 							// Okay. During update, the maintenance mode is on.
 							// We should leave UMC and watch the progress on the maintenance page instead
 							this.set('gotoMaintenance', true);
-							document.location = umcSoftwareUpdateModuleURL + '&dojo.preventCache=' + Math.floor(Math.random() * 100000) + '#module=updater';
+							window.location.href = originalLocation.toString();
 						}
 					}));
 				}
 			});
-			xhr.open('HEAD', loginURL + '?dojo.preventCache=' + Math.floor(Math.random() * 100000), true);
+			xhr.open('HEAD', '/univention/login/?dojo.preventCache=' + Math.floor(Math.random() * 100000), true);
 			xhr.send();
 		},
 
