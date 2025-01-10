@@ -1,3 +1,9 @@
+univention-updater (16.0.33) unstable; urgency=medium
+
+  * Bug #57838: redirect back to the Software Update UMC module after an update
+
+ -- Christian Castens <castens@univention.de>  Thu, 16 Jan 2025 15:33:08 +0100
+
 univention-updater (16.0.32) unstable; urgency=medium
 
   * Issue univention/ucs#2550: remove sources.list backups after update
