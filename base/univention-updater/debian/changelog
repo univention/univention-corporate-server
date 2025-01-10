@@ -1,4 +1,4 @@
-univention-updater (15.0.18-4) unstable; urgency=medium
+univention-updater (15.0.18-5) unstable; urgency=medium
 
   * Bug #57838: redirect back to the Software Update UMC module after an update
 
