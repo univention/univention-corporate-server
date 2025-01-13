@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: python-tornado
+fix: 4.4.3-1+deb9u1
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2024-52804)
+ * CVSS score 7.4 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:N/I:H/A:N).
+   (CVE-2023-28370)
+bug: [57851]
+cve:
+- CVE-2024-52804
+- CVE-2023-28370
