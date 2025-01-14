@@ -6,7 +6,7 @@ src: univention-saml
 fix: 7.0.12-2
 desc: |
  This update addresses the following issues:
- * Skip 91univention-saml.inst in case the primary is on UCS 5.2.
+ * Skip `91univention-saml.inst` in case the primary is on UCS 5.2.
    In this case simpleSAMLphp is no longer supported and the steps
-   in 91univention-saml.inst not needed.
+   in `91univention-saml.inst` not needed.
 bug: [57839]
