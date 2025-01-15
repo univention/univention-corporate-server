@@ -478,6 +478,7 @@ espeak-ng-data
 espeak-ng-espeak
 espeakup
 ethdetect
+ethtool
 exim4
 exim4-base
 exim4-config
@@ -1635,6 +1636,8 @@ libdrm-intel1
 libdrm-nouveau2
 libdrm-radeon1
 libdrm2
+libdumbnet-dev
+libdumbnet1
 libdw-dev
 libdw1
 libdynaloader-functions-perl
@@ -3666,6 +3669,9 @@ open-iscsi
 open-isns-discoveryd
 open-isns-server
 open-isns-utils
+open-vm-tools
+open-vm-tools-desktop
+open-vm-tools-dev
 openbox
 openbox-dev
 openbox-gnome-session
@@ -4029,6 +4035,7 @@ python-doc
 python-dockerpty
 python-docopt
 python-docutils
+python-dumbnet
 python-ecdsa
 python-egenix-mx-base-dev
 python-egenix-mxbeebase
@@ -5273,6 +5280,7 @@ xz-utils
 xzdec
 yajl-tools
 zenmap
+zerofree
 zip
 zlib1g
 zlib1g-dev
