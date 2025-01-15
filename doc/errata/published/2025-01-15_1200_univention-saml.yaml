@@ -10,3 +10,6 @@ desc: |
    In this case simpleSAMLphp is no longer supported and the steps
    in `91univention-saml.inst` not needed.
 bug: [57839]
+erratum: 1200
+announced: 2025-01-15
+support: core
