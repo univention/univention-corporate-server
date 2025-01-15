@@ -164,7 +164,7 @@ deactivate_old_package_sources () {
 	local sources_lists
 	sources_lists=("/etc/apt/sources.list.d/15_ucs-online-version.list" "/etc/apt/sources.list.d/20_ucs-online-component.list")
 	for sources_list in "${sources_lists[@]}"; do
-		mv "$sources_list" "${sources_list}.upgrade510-backup"
+		mv "$sources_list" "${sources_list}.upgrade510.bak"
 	done
 }
 deactivate_old_package_sources

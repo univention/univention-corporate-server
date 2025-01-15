@@ -1,3 +1,9 @@
+univention-updater (16.0.32) unstable; urgency=medium
+
+  * Issue univention/ucs#2550: remove sources.list backups after update
+
+ -- Felix Botner <botner@univention.de>  Wed, 15 Jan 2025 21:14:32 +0100
+
 univention-updater (16.0.31) unstable; urgency=medium
 
   * Issue univention/ucs#2573: Block update for postgresql-9.6
