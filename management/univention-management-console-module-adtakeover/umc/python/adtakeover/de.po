@@ -274,11 +274,11 @@ msgstr "Übernahme der NETBIOS-Adresse"
 #: umc/python/adtakeover/takeover.py:689
 #, python-format
 msgid ""
-"The Active Directory domain has a function level of Windows Server 2012 or "
-"newer, Samba currently only supports up to Windows 2008R2: %s"
+"The Active Directory domain has a function level of Windows Server 2016 or "
+"newer, Samba currently only supports up to Windows 2012R2: %s"
 msgstr ""
-"Die Active Directory Domäne hat einen Funktionslevel von Windows Server 2012 "
-"oder neuer, Samba unterstützt momentan nur bis Windows 2008R2: %s"
+"Die Active Directory Domäne hat einen Funktionslevel von Windows Server 2016 "
+"oder neuer, Samba unterstützt momentan nur bis Windows 2012R2: %s"
 
 #: umc/python/adtakeover/takeover.py:1485
 #: umc/python/adtakeover/takeover.py:1493
