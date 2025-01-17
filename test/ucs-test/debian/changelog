@@ -1,3 +1,10 @@
+ucs-test (12.0.23-34) unstable; urgency=medium
+
+  * Issue univention/ucs#1701: partial revert and migrate 500, 30000 and 65000
+    scenario to the new way.
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 17 Jan 2025 08:04:38 +0100
+
 ucs-test (12.0.23-33) unstable; urgency=medium
 
   * univention/ucsschool#1258: Add python2 template exception
