@@ -13,5 +13,4 @@ class Vmdk(Image):
     OPTIONS = {
         "adapter_type": "lsilogic",
         "hwversion": "11",
-        "subformat": "streamOptimized",
     }

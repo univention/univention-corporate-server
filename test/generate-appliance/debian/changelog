@@ -1,3 +1,10 @@
+generate-appliance (6.0.6-3) unstable; urgency=medium
+
+  * Issue univention/ucs#1711: remove subformat=streamOptimized option from
+    vmdk (not supported by wmware player)
+
+ -- Felix Botner <botner@univention.de>  Fri, 17 Jan 2025 14:58:58 +0100
+
 generate-appliance (6.0.6-2) unstable; urgency=medium
 
   * Issue univention/ucs#2309: ignore missing status info in response
