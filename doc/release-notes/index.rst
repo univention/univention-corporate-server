@@ -26,7 +26,7 @@ Here is an overview of the most important changes:
   However, the update automatically continues up to 5.2 without the need for manual interaction.
   |UCSUCS| 5.2 provides up-to-date versions for,
   but not limited to,
-  the Linux Kernel (6.1.0-28), :program:`Samba` (4.21.1), :program:`OpenLDAP` (2.5.13), PostgreSQL (15), Python (3.11), and Docker (4.18.0).
+  the Linux Kernel (6.1.0-28), :program:`Samba` (4.21.1), :program:`OpenLDAP` (2.5.13), PostgreSQL (15), Python (3.11), and Docker (20.10.24).
 
 * :program:`Keycloak` replaces :program:`SimpleSAMLphp` and :program:`Kopano Konnect`.
   In |UCSUCS| 5.2, :program:`Keycloak` is the only Identity Provider (IDP).
