@@ -329,5 +329,3 @@ Additional references
 
 * `<https://help.ubuntu.com/community/PamCcredsHowto>`_
 
-* `<http://labs.opinsys.com/blog/2010/03/26/user-management-with-sssd-on-shared-laptops/>`_
-
