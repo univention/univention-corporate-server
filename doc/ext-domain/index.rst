@@ -12,4 +12,3 @@ Univention Corporate Server - Extended domain services documentation
    ubuntu
    unix
    ssl
-   syncrepl
