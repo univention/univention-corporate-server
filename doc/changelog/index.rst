@@ -151,7 +151,7 @@ LDAP Directory Manager
   to the LDAP attribute ``c`` is now enforced for the upgrade to UCS 5.2
   (:uv:bug:`56528`).
 
-* The default values of |UCSUCRV| 
+* The default values of |UCSUCRV|
   :envvar:`directory/manager/user/enable-legacy-username-format`
   and |UCSUCRV|
   :envvar:`directory/manager/group/enable-legacy-cn-format`
@@ -201,7 +201,7 @@ Univention Portal
 Univention App Center
 =====================
 
-* Removed the commands :command:`univention-rename-app` and 
+* Removed the commands :command:`univention-rename-app` and
   :command:`univention-register-apps` which used old code that didn't work since at
   least UCS 5.0 and which are unneeded (:uv:bug:`56724`).
 
@@ -317,7 +317,7 @@ Nagios
   The UDM module ``nagios/service`` has been reduced
   to the minimal required NRPE properties (:uv:bug:`56367`).
 
-* LDAP credentials are now passes through the environment variable
+* LDAP credentials are now passed through the environment variable
   :envvar:`LDAP_PASSWORD` instead of using the deprecated option ``-y``
   (:uv:bug:`56580`).
 
