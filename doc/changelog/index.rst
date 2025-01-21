@@ -35,7 +35,7 @@ General
   (:uv:bug:`56858`).
 
 * The argument to the ``--ucsversionstart`` flag for
-  ``ucs_registerLDAPExtension`` has been changed to 5.0-7 (:uv:bug:`56124`).
+  ``ucs_registerLDAPExtension`` has been changed to ``5.0-7`` (:uv:bug:`56124`).
 
 .. _changelog-basic:
 
@@ -93,7 +93,7 @@ OpenLDAP
 ========
 
 * The configurability of the LDAP overlay module ``memberOf`` has been removed.
-  Since UCS 4.3 the default settings are required (:uv:bug:`56662`).
+  Since UCS 4.3, UCS needs the ``memberOf`` overlay and activates it by default (:uv:bug:`56662`).
 
 * All LDAP utility command line calls have been adjusted to use :samp:`-H
   {LDAP_URI}` instead of the obsolete :samp:`-h {host} -p {port}` arguments
@@ -136,7 +136,7 @@ DNS server
 LDAP Directory Manager
 ======================
 
-* The HTTP status code for move operations has been fixed (:uv:bug:`55057`).
+* The HTTP status code for move operations has been fixed to ``202`` for *ACCEPTED* (:uv:bug:`55057`).
 
 * The obsolete UDM modules ``settings/portal*`` have been removed
   (:uv:bug:`52048`).
@@ -151,14 +151,16 @@ LDAP Directory Manager
   to the LDAP attribute ``c`` is now enforced for the upgrade to UCS 5.2
   (:uv:bug:`56528`).
 
-* The default values of |UCSUCRV| :envvar:`directory/manager/user/enable-legacy-
-  username-format` and |UCSUCRV| :envvar:`directory/manager/group/enable-legacy-
-  cn-format` have been changed to ``false`` which configures UCS to disallow
-  purely numerical user and group names (:uv:bug:`56992`).
+* The default values of |UCSUCRV| 
+  :envvar:`directory/manager/user/enable-legacy-username-format`
+  and |UCSUCRV|
+  :envvar:`directory/manager/group/enable-legacy-cn-format`
+  have been changed to ``false`` which configures UCS
+  to disallow purely numerical user and group names (:uv:bug:`56992`).
 
 * The |UCSUCRV| :envvar:`directory/manager/user/group-memberships-via-memberof`
   has been removed. Group memberships in the UDM module ``users/user`` are now
-  always resolved via the LDAP attribute ``memberOf`` (:uv:bug:`56253`).
+  always resolved through the LDAP attribute ``memberOf`` (:uv:bug:`56253`).
 
 .. _changelog-service-keycloak:
 
@@ -183,8 +185,8 @@ Keycloak
 Univention Management Console
 *****************************
 
-* Deprecated Python APIs especially regarding the use of :program:`python-
-  notifier` have been removed (:uv:bug:`56538`).
+* Deprecated Python APIs especially regarding the use of
+  :program:`python-notifier` have been removed (:uv:bug:`56538`).
 
 .. _changelog-umc-portal:
 
@@ -203,7 +205,7 @@ Univention App Center
   :`univention-register-apps` which used old code that did not work since at
   least UCS 5.0 and which are unneeded (:uv:bug:`56724`).
 
-* The initial App Center cache has been updated. It is important especially when
+* The initial App Center cache has been updated. It's important especially when
   working offline (:uv:bug:`56716`).
 
 * Adapted code to API changes in the new Python :program:`apt` library
@@ -248,7 +250,7 @@ Univention base libraries
 * The package dependencies have been adjusted to depend on
   :program:`libldap-2.5-0` (:uv:bug:`56596`).
 
-* The concept ``decode ignorelist`` has been removed. UDM does not decode
+* The concept ``decode ignorelist`` has been removed. UDM doesn't decode
   attributes automatically anymore since UCS 5.0 (:uv:bug:`50343`).
 
 .. _changelog-deployment:
@@ -259,8 +261,8 @@ Software deployment
 
 * During the update to UCS 5.2, objects from deprecated UCS versions are deleted
   from the LDAP directory. Information about deleted objects and the objects
-  LDIF output can be found in the logfile :file:`/var/univention-backup/update-
-  to-5.2-0/removed_with_ucs5_*timestamp*.ldif` (:uv:bug:`56134`).
+  LDIF output can be found in the log file
+  :file:`/var/univention-backup/update-to-5.2-0/removed_with_ucs5_{<timestamp>}.ldif` (:uv:bug:`56134`).
 
 .. _changelog-service:
 
@@ -310,10 +312,10 @@ Printing services
 Nagios
 ======
 
-* The Nagios server functionality has been removed from UDM. Therefore the UDM
-  module ``nagios/timeperiod`` has been removed. The UDM module
-  ``nagios/service`` has been reduced to the minimal required NRPE properties
-  (:uv:bug:`56367`).
+* The Nagios server functionality has been removed from UDM.
+  Therefore, the UDM module ``nagios/timeperiod`` has been removed.
+  The UDM module ``nagios/service`` has been reduced
+  to the minimal required NRPE properties (:uv:bug:`56367`).
 
 * LDAP credentials are now passes via the environment variable
   :envvar:`LDAP_PASSWORD` instead of using the deprecated option ``-y``
@@ -332,8 +334,8 @@ RADIUS
 * FreeRADIUS now uses TLS 1.3 as default maximum TLS version. TLS 1.3 may cause
   issues for Microsoft Windows 10 Clients. See UCS Manual (:uv:bug:`55763`).
 
-* The MD4 functionality is now provided by the ``python3-samba`` package because
-  it was dropped from ``OpenSSL`` (:uv:bug:`55996`).
+* The MD4 functionality is now provided by the ``python3-samba`` package,
+  because it was dropped from ``OpenSSL`` (:uv:bug:`55996`).
 
 * The FreeRADIUS service now uses a specific credentials file in
   :file:`/etc/freeradius.secret` (:uv:bug:`55963`).
@@ -363,27 +365,35 @@ DHCP services
 PAM / Local group cache
 =======================
 
-* The deprecated :program:`libnss-ldap` and :program:`libpam-ldap` have been replaced with
-  :program:`sssd`. :program:`sssd` is currently used for users only. This also means that
-  :program:`nscd` is not used any longer for the :program:`passwd` related system calls (but
-  it still is used as cache for ``hosts`` resolution). The UCR variables
-  :envvar:`nscd/passwd/.` are not used any longer. The :program:`sssd` is configured via
-  :file:`/etc/sssd/sssd.conf` which is generated from a UCR template now. :program:`sssd`
-  additionally reads configuration sub files from the directory
-  :file:`/etc/sssd/conf.d`, which can be used in case options need to be customized
-  differently from what the UCR template initially supports.
-  The user cache of :program:`sssd` can be flushed by running ``sss_cache -U``, instead
-  of running ``nscd -i passwd``. Please note that :program:`sssd` by default doesn't
-  dynamically ``enumerate`` accounts in :program:`passwd`. Some tools that expect that by
-  default, may need adjustment to consider this; for example ``repquota`` needs to be called
-  with the option ``-C`` to resolve ``uid`` numbers to names. Additionally
-  :program:`sssd` doesn't support resolving ``shadow`` information at all, so e.g.
-  ``pam_unix`` will not be able to read ``shadow`` related info for domain users
-  (so there's a difference between domain users managed in UDM/LDAP and
-  traditional Linux local accounts). Please also note that UCS currently still
-  uses ``pam_krb5`` separately from :program:`sssd`, as UCS and Samba use Heimdal
-  Kerberos, while :program:`sssd` may be more leaning towards MIT Kerberos. We want to
-  avoid hard to detect compatibility issues here, currently (:uv:bug:`56793`).
+* The deprecated :program:`libnss-ldap` and :program:`libpam-ldap` have been replaced with :program:`sssd`.
+  :program:`sssd` is currently used for users only.
+  This also means that :program:`nscd` isn't used any longer
+  for the :program:`passwd` related system calls,
+  but it still is used as cache for ``hosts`` resolution.
+  The UCR variables :envvar:`nscd/passwd/.` aren't used any longer.
+
+  The :program:`sssd` is configured through :file:`/etc/sssd/sssd.conf`
+  which is generated from a UCR template now.
+  :program:`sssd` additionally reads configuration sub files
+  from the directory :file:`/etc/sssd/conf.d`
+  which can be used in case options need to be customized differently
+  from what the UCR template initially supports.
+
+  The user cache of :program:`sssd` can be flushed by running :command:`sss_cache -U`,
+  instead of running :command:`nscd -i passwd`.
+
+  Note that :program:`sssd` by default doesn't dynamically ``enumerate`` accounts in :program:`passwd`.
+  Some tools that expect that by default,
+  may need adjustment to consider this.
+  For example, :program:`repquota` needs to be called with the option ``-C`` to resolve ``uid`` numbers to names.
+
+  Additionally, :program:`sssd` doesn't support resolving ``shadow`` information at all,
+  so for example ``pam_unix`` won't be able to read ``shadow`` related information for domain users.
+  There's a difference between domain users managed in UDM/LDAP and traditional Linux local accounts.
+
+  Also note that UCS currently still uses ``pam_krb5`` separately from :program:`sssd`,
+  as UCS and Samba use *Heimdal Kerberos*,
+  while :program:`sssd` may be more leaning towards *MIT Kerberos* (:uv:bug:`56793`).
 
 * The obsolete :program:`pam-tally` has been replaced with :program:`pam-faillock`
   (:uv:bug:`56547`).
