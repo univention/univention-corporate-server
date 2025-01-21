@@ -179,7 +179,8 @@ status = {'finished': False}  # type: Dict[str, Any]
 failcount = 0
 last_message = None
 while not status['finished']:
-    if failcount >= 1200:
+    time.sleep(5)
+    if failcount >= 60:
         print('ERROR: %d failed attempts - committing suicide' % (failcount, ))
         sys.exit(1)
     try:
@@ -188,7 +189,6 @@ while not status['finished']:
     except (HTTPError, ConnectionError):
         failcount += 1
         print('TRACEBACK %d in client.umc_command("schoolinstaller/progress"):\n%s' % (failcount, traceback.format_exc()))
-        time.sleep(1)
     message = '%(component)s - %(info)s' % status
     if last_message != message:
         last_message = message
