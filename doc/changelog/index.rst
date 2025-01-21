@@ -431,7 +431,6 @@ Samba
 
 * :program:`samba` has been updated to version 4.21.1 (:uv:bug:`57690`).
 * The default for the Samba database is now ``mdb`` (:uv:bug:`57145`).
-  https://bugzilla.samba.org/show_bug.cgi?id=14676
 * :program:`samba-tool` has been adjusted to revert the changes for
   `Samba Bug 14676 <https://bugzilla.samba.org/show_bug.cgi?id=14676>`_
   which caused a regression for samba-tool backup with ``mdb`` backend database (:uv:bug:`57297`).
