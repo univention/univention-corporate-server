@@ -423,4 +423,3 @@ Samba
 * The default for the Samba database is now ``mdb`` (:uv:bug:`57145`).
 * :program:`samba-tool` has been adjusted to revert the changes for Samba Bug 14676,
   which caused a regression for samba-tool backup with ``mdb`` backend database (:uv:bug:`57297`).
-
