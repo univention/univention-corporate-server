@@ -1,0 +1,17 @@
+product: ucs
+release: "5.0"
+version: [9]
+scope: ucs_5.0-0-errata5.0-9
+src: tiff
+fix: 4.1.0+git191117-2~deb10u10
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2024-7006, CVE-2023-52356)
+ * CVSS score 5.5 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+   (CVE-2023-25433)
+bug: [57892]
+cve:
+- CVE-2024-7006
+- CVE-2023-52356
+- CVE-2023-25433
