@@ -1,4 +1,4 @@
-.. SPDX-FileCopyrightText: 2021-2024 Univention GmbH
+.. SPDX-FileCopyrightText: 2021-2025 Univention GmbH
 ..
 .. SPDX-License-Identifier: AGPL-3.0-only
 
@@ -66,7 +66,7 @@ Notes about the update
 **********************
 
 Prerequisite for updating to UCS 5.2 is that all UCS systems in domain are at
-least on version 5.0-7 and that the system that is to be updated is at least
+least on version 5.0-9 and that the system that is to be updated is at least
 on version 5.0-9-1195.
 
 Run the update in a maintenance window, because some services in the domain may
@@ -75,7 +75,7 @@ test environment before the actual update. The test environment must be
 identical to the production environment.
 
 Depending on the system performance, network connection, and installed software,
-the update can take anywhere from FIXME minutes to several hours. For large
+the update can take anywhere from 30 minutes to several hours. For large
 environments, consult :cite:t:`ucs-performance-guide`.
 
 .. _relnotes-sequence:
@@ -141,14 +141,16 @@ must be migrated before the update to UCS 5.2. Please see
 Mixed environments consisting of both 5.2 and 5.0 nodes
 =======================================================
 
-FIXME: This should state the detailed requirements and constraints in terms of mixed
-environments.
+If you continue to operate |UCSREPLICADN|\ s or |UCSMANAGEDNODE|\ s in version
+5.0 in your 5.2 domain you must make sure that Python 2.7 is no longer used
+on these systems (UDM hooks, UMC modules, etc.). This can may be the case
+for some third party software.
 
-* If you plan to create a new local software repository on an |UCSUCS| 5.2
-  system and want to use this local repository for updating other UCS systems
-  from 5.0-x to 5.2-x, please read the
-  `knowledgebase article #23755 <https://help.univention.com/t/23755/>`_
-  for further notes.
+If you plan to create a new local software repository on an |UCSUCS| 5.2
+system and want to use this local repository for updating other UCS systems
+from 5.0-x to 5.2-x, please read the
+`knowledgebase article #23755 <https://help.univention.com/t/23755/>`_
+for further notes.
 
 .. _relnotes-mixed-environments:
 
@@ -175,8 +177,8 @@ Sufficient disk space
 =====================
 
 Also verify that you have sufficient disk space available for the update. A
-standard installation requires a minimum of FIXME GB of disk space. The update
-requires approximately FIXME GB additional disk space to download and install the
+standard installation requires a minimum of 6-10 GB of disk space. The update
+requires approximately 5 GB additional disk space to download and install the
 packages, depending on the size of the existing installation.
 
 .. _relnotes-console-for-update:
@@ -300,7 +302,7 @@ Users running older browsers may experience display or performance issues.
 Changelog
 *********
 
-You find the changes since UCS 5.0-7 in
+You find the changes since UCS 5.0-9 in
 :external+uv-changelog-5.2-0:doc:`index`.
 
 .. _biblio:
