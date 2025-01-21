@@ -1,0 +1,22 @@
+product: ucs
+release: "5.0"
+version: [9]
+scope: ucs_5.0-0-errata5.0-9
+src: rsync
+fix: 3.1.2-1+deb9u5A~4.4.0.202501201243
+desc: |
+ This update addresses the following issue:
+ * CVE-2024-12085 prevent information leak off the stack
+ * CVE-2024-12086 refuse fuzzy options when fuzzy not selected
+ * CVE-2024-12087 Refuse a duplicate dirlist
+ * CVE-2024-12088 make --safe-links stricter
+ * CVE-2024-12747 fixed symlink race condition in sender
+ * fix for upstream regression of CVE-2024-12087 FLAG_GOT_DIR_FLIST
+   collission with FLAG_HLINKED
+bug: [57884]
+cve:
+- CVE-2024-12085
+- CVE-2024-12086
+- CVE-2024-12087
+- CVE-2024-12088
+- CVE-2024-12747
