@@ -102,8 +102,8 @@ OpenLDAP
 * Support for the :program:`Berkeley DB` database backend for
   :program:`OpenLDAP` has been removed (:uv:bug:`57112`).
 
-* The Univention Virtual Machine Manager related LDAP schema and contents are
-  required to be removed before upgrading to UCS 5.2 (:uv:bug:`56651`).
+* The Univention Virtual Machine Manager related LDAP schema and objects are
+  automatically removed during the upgrade to UCS 5.2 (:uv:bug:`56651`).
 
 .. _changelog-domain-openldap-schema:
 
