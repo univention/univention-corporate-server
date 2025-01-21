@@ -171,7 +171,7 @@ Keycloak
   Univention Nubus (:uv:bug:`57492`).
 
 * Starting with UCS 5.2-0, the Identity Provider (IDP) endpoint for SAML and
-  OIDC services for all UCS systems is defined by the |UCSUCR| policy
+  OIDC services for all UCS systems is defined by the policy
   ``sso_uri_domainwide_setting``. This policy sets the |UCSUCRV|
   :envvar:`ucs/server/sso/uri` on all UCS systems in the domain. During
   installation of the :program:`Keycloak` app or when changing the FQDN of the
@@ -201,8 +201,8 @@ Univention Portal
 Univention App Center
 =====================
 
-* Removed the commands :command:`univention-rename-app` and :command
-  :`univention-register-apps` which used old code that did not work since at
+* Removed the commands :command:`univention-rename-app` and 
+  :command:`univention-register-apps` which used old code that didn't work since at
   least UCS 5.0 and which are unneeded (:uv:bug:`56724`).
 
 * The initial App Center cache has been updated. It's important especially when
@@ -220,7 +220,7 @@ Univention App Center
   (:uv:bug:`56058`).
 
 * The App Center now avoids assigning a subnet to an app that conflicts with
-  other networks already created in docker (:uv:bug:`57210`).
+  other networks already created in Docker (:uv:bug:`57210`).
 
 .. _changelog-umc-user:
 
@@ -317,7 +317,7 @@ Nagios
   The UDM module ``nagios/service`` has been reduced
   to the minimal required NRPE properties (:uv:bug:`56367`).
 
-* LDAP credentials are now passes via the environment variable
+* LDAP credentials are now passes through the environment variable
   :envvar:`LDAP_PASSWORD` instead of using the deprecated option ``-y``
   (:uv:bug:`56580`).
 
@@ -355,7 +355,7 @@ SSL/TLS
 DHCP services
 =============
 
-* The LDAP configuration in :file:`dhcpd.conf` has been disabled temporarily
+* The LDAP configuration in :file:`dhcpd.conf` has been turned off temporarily
   during UCS 5.1 to avoid issues with :program:`isc-dhcp-server` version
   ``4.4.1-2.3`` running into a thread deadlock when testing the configuration
   (:uv:bug:`56730`).
