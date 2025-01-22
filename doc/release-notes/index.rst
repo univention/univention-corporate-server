@@ -67,7 +67,15 @@ Notes about the update
 
 Prerequisite for updating to UCS 5.2 is that all UCS systems in domain are at
 least on version 5.0-9 and that the system that is to be updated is at least
-on version 5.0-9-1195.
+on version 5.0-9-1200.
+
+.. note::
+
+   When installing a |UCSPRIMARYDN| from the 5.0-9 appliance images or the
+   5.0-9 DVD, the final domain join currently fails if the |UCSPRIMARYDN| is
+   version 5.2-0. Please start the setup without the domain join and upgrade
+   the system to at least 5.0-9-1200. Then start the domain join.
+   This will be fixed with the 5.0-10 appliance images and DVD.
 
 Run the update in a maintenance window, because some services in the domain may
 not be available temporarily. It's recommended that you test the update in a separate
