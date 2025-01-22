@@ -1,3 +1,9 @@
+univention-updater (16.0.36) unstable; urgency=medium
+
+  * Issue univention/ucs#2551: update min version of system to 1204
+
+ -- Felix Botner <botner@univention.de>  Wed, 22 Jan 2025 17:20:54 +0100
+
 univention-updater (16.0.35) unstable; urgency=medium
 
   * Bug #57114: use official repo server

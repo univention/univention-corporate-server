@@ -44,7 +44,7 @@ fi
 VERSION="52"  # we don't put 51 here because the upgrade should look like upgrading to UCS 5.2
 VERSION_NAME="5.1"
 MIN_VERSION="5.0-7"
-MIN_VERSION_SYSTEM="5.0-9-1195"
+MIN_VERSION_SYSTEM="5.0-9-1204"
 
 # shellcheck disable=SC2034
 updateLogDir="/var/univention-backup/update-to-${UPDATE_NEXT_VERSION:-$VERSION_NAME}"
