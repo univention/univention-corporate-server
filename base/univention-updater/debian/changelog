@@ -1,3 +1,9 @@
+univention-updater (16.0.34) unstable; urgency=medium
+
+  * Bug #57114: use official repo server
+
+ -- Felix Botner <botner@univention.de>  Wed, 22 Jan 2025 10:16:39 +0100
+
 univention-updater (16.0.33) unstable; urgency=medium
 
   * Bug #57838: redirect back to the Software Update UMC module after an update
