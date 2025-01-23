@@ -1,3 +1,9 @@
+univention-updater (16.0.38) unstable; urgency=medium
+
+  * Issue univention/ucs#2631: mention 5.2-0 release notes during update
+
+ -- Felix Botner <botner@univention.de>  Thu, 23 Jan 2025 12:38:21 +0100
+
 univention-updater (16.0.37) unstable; urgency=medium
 
   * Issue univention/ucs#2631: mention 5.2-0 release notes during update
