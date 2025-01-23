@@ -71,7 +71,7 @@ Notes about the update
 
 Prerequisite for updating to UCS 5.2 is that all UCS systems in domain are at
 least on version 5.0-9 and that the system intended for update is at least
-on version 5.0-9 erratum 1200.
+on version 5.0-9 erratum 1204.
 
 .. important::
 
@@ -80,7 +80,7 @@ on version 5.0-9 erratum 1200.
    if the UCS |UCSPRIMARYDN| has version 5.2-0.
 
    Start the setup without the domain join
-   and upgrade the system to at least 5.0-9 erratum 1200.
+   and upgrade the system to at least 5.0-9 erratum 1204.
    Then start the domain join.
    The upcoming UCS 5.0-10 appliance images and DVD fixes the issue.
 
