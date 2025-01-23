@@ -75,7 +75,7 @@ on version 5.0-9 erratum 1204.
 
 .. important::
 
-   When installing a |UCSPRIMARYDN| from the 5.0-9 appliance images or the
+   When installing a |UCSBACKUPDN| from the 5.0-9 appliance images or the
    5.0-9 DVD, the final domain join fails,
    if the UCS |UCSPRIMARYDN| has version 5.2-0.
 
@@ -162,9 +162,8 @@ Mixed environments consisting of both 5.2 and 5.0 nodes
 If you continue to operate |UCSREPLICADN|\ s or |UCSMANAGEDNODE|\ s in version 5.0 in your 5.2 domain,
 you must ensure that Python 2.7 is no longer used on these systems,
 for example in UDM hooks, UMC modules, etc.
-Third party software may still use Python 2.7.
 
-If you plan to create a local software repository on an |UCSUCS| 5.2 system
+If you plan to create a new local software repository on an |UCSUCS| 5.2 system
 and want to use this local repository for updating other UCS systems from 5.0-x to 5.2-x,
 make sure you read :uv:kb:`23755`
 for further notes.
