@@ -261,11 +261,11 @@ either use the UMC module *Domain join* or run the command
 
 Subsequently, you need to restart the UCS system.
 
-Please check the PostgreSQL version all systems updated to UCS 5.2.
+Please verify the PostgreSQL version on all UCS systems that updated to UCS 5.2.
 As UCS 5.2 ships Version 15 of PostgreSQL, updated systems may need
-migration from PostgreSQL-11.
-The `knowledgebase article #22162 <https://help.univention.com/t/22162/>`_
-explains the recommended steps.
+migration from PostgreSQL 11.
+For the recommended migration steps,
+see :uv:kb:`22162`.
 
 .. _relnotes-packages:
 
