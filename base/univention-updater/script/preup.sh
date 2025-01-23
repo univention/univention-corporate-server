@@ -57,8 +57,15 @@ readcontinue () {
 echo
 echo "HINT:"
 echo "Please check the release notes carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
-echo " English version: https://docs.software-univention.de/release-notes/${UPDATE_NEXT_VERSION}/en/"
-echo " German version:  https://docs.software-univention.de/release-notes/${UPDATE_NEXT_VERSION}/de/"
+echo ""
+echo "UCS 5.1-0 is an intermediate release and must not be used in production."
+echo "After the update to UCS 5.1-0 make sure to immediately update to UCS 5.2-0,"
+echo "the updater will ask you to do so."
+echo ""
+echo "All the necessary information are therefore in the release notes for UCS 5.2-0."
+echo ""
+echo " English version: https://docs.software-univention.de/release-notes/5.2-0/en/"
+echo " German version:  https://docs.software-univention.de/release-notes/5.2-0/de/"
 echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."
