@@ -71,9 +71,9 @@ msgid ""
 "(4.21.1), :program:`OpenLDAP` (2.5.13), PostgreSQL (15), Python (3.11), "
 "and Docker (4.18.0)."
 msgstr ""
-" Es aktualisiert sich allerdings automatisch und ohne manuelle "
-"Interaktion auf 5.2, welches neuere Versionen von unter anderem dem Linux"
-" Kernel (6.1.0-28), :program:`Samba` (4.21.1), :program:`OpenLDAP` "
+"Es aktualisiert sich allerdings automatisch und ohne manuelle "
+"Interaktion auf 5.2, welches neuere Versionen von unter anderem dem Linux "
+"Kernel (6.1.0-28), :program:`Samba` (4.21.1), :program:`OpenLDAP` "
 "(2.5.13), PostgreSQL (15), Python (3.11) und Docker (4.18.0) enthält."
 
 #: ../../index.rst:31
@@ -95,8 +95,8 @@ msgid ""
 "The :external+uv-keycloak-mig:doc:`Migration Guide to Keycloak <index>` "
 "provides information and preparation steps for the update."
 msgstr ""
-" Der :external+uv-keycloak-mig:doc:`Migration Guide to Keycloak <index>` "
-"liefert Informationen und Vorbereitungsschritte für das Update. "
+"Der :external+uv-keycloak-mig:doc:`Migration Guide to Keycloak <index>` "
+"liefert Informationen und Vorbereitungsschritte für das Update."
 
 #: ../../index.rst:40
 msgid ""
