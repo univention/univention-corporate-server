@@ -277,7 +277,7 @@ PostgreSQL
 ==========
 
 * PostgreSQL has been upgraded to version 15. As administrator, you now have
-  the option to change the password enryption to ``scram-sha-256``.
+  the option to change the password encryption to ``scram-sha-256``.
   This can be achieved by using the UCR variables |UCSUCRV|
   :envvar:`postgres15/password-encryption` and |UCSUCRV|
   :envvar:`postgres15/pg_hba/password-encryption` (:uv:bug:`56540`).
