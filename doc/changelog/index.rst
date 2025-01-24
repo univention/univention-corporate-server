@@ -227,8 +227,9 @@ Univention App Center
 User management
 ===============
 
-* The old self service frontend (``/univention/self-service/``) has been removed
-  (:uv:bug:`56601`).
+* The deprecated self service frontend that came with UCS 4.4
+  (``/univention/self-service/``) has been removed (:uv:bug:`56601`).
+  Since UCS 5.0, the self service frontend is ``/univention/selfservice/``.
 
 .. _changelog-umc-diagnostic:
 
@@ -275,8 +276,9 @@ System services
 PostgreSQL
 ==========
 
-* PostgreSQL has been upgraded to version 15. Password encryption from ``md5``
-  to ``scram-sha-256`` can now be achieved by using the UCR variables |UCSUCRV|
+* PostgreSQL has been upgraded to version 15. As administrator, you now have
+  the option to change the password enryption to ``scram-sha-256``.
+  This can be achieved by using the UCR variables |UCSUCRV|
   :envvar:`postgres15/password-encryption` and |UCSUCRV|
   :envvar:`postgres15/pg_hba/password-encryption` (:uv:bug:`56540`).
 
@@ -285,9 +287,8 @@ PostgreSQL
 Mail services
 =============
 
-* Hide deprecated Fetchmail LDAP attributes in UMC - Improved script
-  :file:`/usr/share/univention-fetchmail/migrate-fetchmail.py` - Run migration
-  script on upgrade (:uv:bug:`55905`).
+* Some deprecated Fetchmail LDAP attributes are now hidden in UMC.
+  Their data is automatically migrated during upgrade (:uv:bug:`55905`).
 
 .. _changelog-service-imap:
 
