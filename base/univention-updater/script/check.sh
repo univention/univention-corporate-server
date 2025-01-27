@@ -339,6 +339,19 @@ if blocking_computers or blocking_objects:
     exit(1)'
 }
 
+# block update if SELinux is still active (Bug #57902)
+update_check_selinux_deactivated() {
+	[ -e /sys/fs/selinux/deny_unknown ] || return 0
+
+	local var="update$VERSION/ignore_selinux_active"
+	ignore_check "$var" && return 100
+
+	echo "	The file /sys/fs/selinux/deny_unknown exists indicating that SELinux is still active."
+	echo "	Please reboot the system to let errata update 5.0x873 take effect."
+	echo "	The update can be started after SELinux has been disabled."
+	return 1
+}
+
 checks () {
 	# stderr to log
 	exec 2>>"$UPDATER_LOG"
