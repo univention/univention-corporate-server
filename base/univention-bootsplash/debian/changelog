@@ -1,3 +1,9 @@
+univention-bootsplash (13.0.4) unstable; urgency=medium
+
+  * Issue univention/ucs#2561: update logos
+
+ -- Felix Botner <botner@univention.de>  Mon, 27 Jan 2025 15:59:37 +0100
+
 univention-bootsplash (13.0.3) unstable; urgency=medium
 
   * Issue univention/ucs#2495: Update copyright

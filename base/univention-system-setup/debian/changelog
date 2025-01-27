@@ -1,3 +1,9 @@
+univention-system-setup (15.0.14) unstable; urgency=medium
+
+  * Issue univention/ucs#2561: update logos
+
+ -- Felix Botner <botner@univention.de>  Mon, 27 Jan 2025 16:00:34 +0100
+
 univention-system-setup (15.0.13) unstable; urgency=medium
 
   * Bug #56661: migrate from NTP to NTPSEC
