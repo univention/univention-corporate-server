@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: postgresql-9.6
+fix: 9.6.24-0+deb9u8
+desc: |
+ This update addresses the following issues:
+ * CVSS score 8.8 (CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2024-10979)
+ * CVSS score 4.2 (CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:L/I:L/A:N).
+   (CVE-2024-10978, CVE-2024-10976)
+ * CVSS score 3.1 (CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:N/I:L/A:N).
+   (CVE-2024-10977)
+bug: [57900]
+cve:
+- CVE-2024-10976
+- CVE-2024-10977
+- CVE-2024-10978
+- CVE-2024-10979
