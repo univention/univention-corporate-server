@@ -1,3 +1,9 @@
+univention-updater (16.0.39) unstable; urgency=medium
+
+  * Bug #57902: Add preup check for selinuxfs
+
+ -- Arvid Requate <requate@univention.de>  Mon, 27 Jan 2025 16:34:46 +0100
+
 univention-updater (16.0.38) unstable; urgency=medium
 
   * Issue univention/ucs#2631: mention 5.2-0 release notes during update
