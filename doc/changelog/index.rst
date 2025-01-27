@@ -227,8 +227,8 @@ Univention App Center
 User management
 ===============
 
-* The deprecated self service frontend that came with UCS 4.4
-  (``/univention/self-service/``) has been removed (:uv:bug:`56601`).
+* The deprecated self service frontend ``/univention/self-service/``
+  that came with UCS 4.4 has been removed (:uv:bug:`56601`).
   Since UCS 5.0, the self service frontend is ``/univention/selfservice/``.
 
 .. _changelog-umc-diagnostic:
