@@ -447,13 +447,13 @@ msgstr ""
 
 #: ../../index.rst:232
 msgid ""
-"Ubuntu systems (see :ref:`uv-ext-domain:ext-dom-ubuntu`) and other Linux "
-"distributions like Debian, SUSE or Red Hat can also be integrated into "
-"the domain, see :ref:`uv-ext-domain:ext-dom-unix`."
+"Ubuntu systems (see :ref:`uv-manual:ubuntu-domain-join`) and other Linux "
+"distributions like Debian, SUSE or Red Hat can also be integrated into the "
+"domain, see :ref:`uv-ext-domain:ext-dom-unix`."
 msgstr ""
-"Ubuntu-Systeme (siehe :ref:`ext-dom-ubuntu`) und andere Linux-"
-"Distributionen wie Debian, SUSE oder Red Hat können ebenfalls in die "
-"Domäne integriert werden, siehe :ref:`uv-ext-domain:ext-dom-unix`."
+"Ubuntu-Systeme (siehe :ref:`uv-manual:ubuntu-domain-join`) und andere Linux-Distributionen "
+"wie Debian, SUSE oder Red Hat können ebenfalls in die Domäne integriert "
+"werden, siehe :ref:`uv-ext-domain:ext-dom-unix`."
 
 #: ../../index.rst:240
 msgid "Further expansion of the domain"
