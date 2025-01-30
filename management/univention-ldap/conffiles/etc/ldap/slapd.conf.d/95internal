@@ -25,6 +25,7 @@ index      cn pres,eq,sub,approx
 index      entryCSN eq
 index      entryUUID eq
 index      objectClass pres,eq
+sortvals   unqiueMember memberUid
 """
 
 # primary

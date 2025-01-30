@@ -1,8 +1,12 @@
-univention-ldap (16.0.17-1) UNRELEASED; urgency=medium
+univention-ldap (16.0.17-2) unstable; urgency=medium
 
+  [ Arvid ]
   * Bug #57581 UCS 5.0-9 version bump
 
- -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:18:36 +0200
+  [ Dirk Wiesenthal ]
+  * Bug #52175: Use sortvals in slapd.conf for uniqueMember and memberUid
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 30 Jan 2025 17:55:28 +0100
 
 univention-ldap (16.0.16-3) unstable; urgency=medium
 
