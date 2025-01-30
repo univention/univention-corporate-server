@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [9]
+scope: ucs_5.0-0-errata5.0-9
+src: univention-ldap
+fix:
+desc: |
+ This update addresses the following issues:
+ * OpenLDAP is now configured to use the `sortvals` option for uniqueMember
+   and memberUid. This should greatly improve user and group modification in
+   big environments.
+bug: [52175]
