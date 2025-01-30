@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quick start guide for Univention Corporate Server\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-29 15:15+0100\n"
+"POT-Creation-Date: 2025-01-30 01:46+0000\n"
 "PO-Revision-Date: 2025-01-29 15:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -14,7 +14,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.16.0\n"
 
 #: ../../index.rst:9
 msgid "Introduction"
@@ -447,19 +447,18 @@ msgstr ""
 
 #: ../../index.rst:232
 msgid ""
-"Ubuntu systems (see :ref:`uv-manual:ubuntu-domain-join`) and other Linux "
-"distributions like Debian, SUSE or Red Hat can also be integrated into the "
-"domain, see :ref:`uv-ext-domain:ext-dom-unix`."
+"You can also integrate Ubuntu systems and other Linux distributions like "
+"Debian, SUSE, or Red Hat into the domain. For Ubuntu, see :external+uv-"
+"manual:ref:`ubuntu-domain-join`. For other Linux distributions, see "
+":external+uv-ext-domain:ref:`ext-dom-unix`."
 msgstr ""
-"Ubuntu-Systeme (siehe :ref:`uv-manual:ubuntu-domain-join`) und andere Linux-Distributionen "
-"wie Debian, SUSE oder Red Hat können ebenfalls in die Domäne integriert "
-"werden, siehe :ref:`uv-ext-domain:ext-dom-unix`."
+"Sie können auch Ubuntu-Systeme und andere Linux-Distributionen wie Debian, SUSE oder Red Hat in die Domäne integrieren. Für Ubuntu, siehe :external+uv-manual:ref:`ubuntu-domain-join`. Für andere Linux-Distributionen, siehe :external+uv-ext-domain:ref:`ext-dom-unix`."
 
-#: ../../index.rst:240
+#: ../../index.rst:241
 msgid "Further expansion of the domain"
 msgstr "Weiterer Ausbau der Domäne"
 
-#: ../../index.rst:242
+#: ../../index.rst:243
 msgid ""
 "This quickstart guide only provides an entry into UCS. UCS is very "
 "scalable, additional services can simply be installed on additional "
@@ -472,7 +471,7 @@ msgstr ""
 ":ref:`UCS Handbuch - Domänenbeitritt von UCS-Systemen <uv-manual:linux-"
 "domain-join>` beschrieben."
 
-#: ../../index.rst:247
+#: ../../index.rst:248
 msgid ""
 "UCS offers various additional services which are covered by the UCS "
 "license and which can be integrated at a later point in time:"
@@ -481,18 +480,19 @@ msgstr ""
 "durch die UCS-Lizenz bereits abgedeckt sind und zu einem späteren "
 "Zeitpunkt integriert werden können, zum Beispiel:"
 
-#: ../../index.rst:250
+#: ../../index.rst:251
 msgid ""
 "Single-sign-on with web services, see :external+uv-manual:ref:`domain-"
 "single-sign-on`."
 msgstr ""
-"Single Sign-On mit Web Services, siehe :external+uv-manual:ref:`domain-single-sign-on`."
+"Single Sign-On mit Web Services, siehe :external+uv-manual:ref:`domain-"
+"single-sign-on`."
 
-#: ../../index.rst:252
+#: ../../index.rst:253
 msgid ":ref:`UCS manual - IP assignment via DHCP <uv-manual:module-dhcp-dhcp>`."
 msgstr ":ref:`UCS Handbuch - IP-Vergabe über DHCP <uv-manual:module-dhcp-dhcp>`."
 
-#: ../../index.rst:255
+#: ../../index.rst:256
 msgid ""
 ":ref:`UCS manual - Web proxy for caching and policy management / virus "
 "scan <uv-manual:ip-config-web-proxy-for-caching-and-policy-management-"
@@ -502,19 +502,19 @@ msgstr ""
 "Management/Virenscan <uv-manual:ip-config-web-proxy-for-caching-and-"
 "policy-management-virus-scan>`."
 
-#: ../../index.rst:258
+#: ../../index.rst:259
 msgid "Hybrid cloud setups"
 msgstr "Hybride Cloudumgebungen"
 
-#: ../../index.rst:264
+#: ../../index.rst:265
 msgid "Further information"
 msgstr "Weitere Informationen"
 
-#: ../../index.rst:266
+#: ../../index.rst:267
 msgid "|UCSUCS| provides comprehensive documentation:"
 msgstr "|UCSUCS| ist umfangreich dokumentiert:"
 
-#: ../../index.rst:268
+#: ../../index.rst:269
 msgid ""
 "The primary source of information on UCS is the :external+uv-"
 "manual:doc:`UCS Manual for users and administrators <index>`."
@@ -522,7 +522,7 @@ msgstr ""
 "Primäre Dokumentationsquelle zu UCS ist das :external+uv-manual:doc:`UCS "
 "Handbuch für Benutzer und Administratoren <index>`."
 
-#: ../../index.rst:271
+#: ../../index.rst:272
 msgid ""
 "Further documentation for advanced scenarios can be found in the extended"
 " documentation. The various documents are linked at https://docs"
@@ -532,7 +532,7 @@ msgstr ""
 "erweiterten Dokumentation zu finden. Die verschiedenen Dokumente sind "
 "unter https://docs.software-univention.de/ verlinkt."
 
-#: ../../index.rst:275
+#: ../../index.rst:276
 msgid ""
 "Answers to frequently asked questions can be found in the `support and "
 "knowledge database (SDB) <https://help.univention.com/c/knowledge-"
@@ -542,10 +542,11 @@ msgstr ""
 "Knowledge Base (SDB) <https://help.univention.com/c/knowledge-"
 "base/supported/48>`_ zu finden."
 
-#: ../../index.rst:279
+#: ../../index.rst:280
 msgid ""
 "Questions on UCS can be asked at `Univention Help "
 "<https://help.univention.com/>`_."
 msgstr ""
 "Fragen zu UCS können auch im `Univention Forum "
 "<https://help.univention.com/>`_ gestellt werden."
+
