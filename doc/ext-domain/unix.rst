@@ -12,8 +12,10 @@ These are general instructions for the integration of Unix/Linux-based
 non-UCS systems - referred to in the following simply as Unix systems -
 in the trust context of the UCS domain.
 
-The integration of Ubuntu clients is :ref:`easier with a dedicated
-tool<uv-manual:ubuntu-domain-join>`.
+For the integration of Ubuntu clients,
+Univention offers a dedicated tool.
+For more information,
+see :external+uv-manual:ref:`ubuntu-domain-join`.
 
 The integration of macOS clients is documented with :ref:`example step-by-step
 instructions <uv-manual:macos-domain-join>` in the UCS manual. macOS systems use
