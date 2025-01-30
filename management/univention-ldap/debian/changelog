@@ -1,4 +1,4 @@
-univention-ldap (16.0.17-2) unstable; urgency=medium
+univention-ldap (16.0.17-3) unstable; urgency=medium
 
   [ Arvid ]
   * Bug #57581 UCS 5.0-9 version bump
