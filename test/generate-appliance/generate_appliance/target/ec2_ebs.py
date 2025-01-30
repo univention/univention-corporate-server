@@ -46,7 +46,7 @@ class EC2_EBS(Target):
     public = False
 
     def create(self, image: Raw) -> None:
-        vmdk = Vmdk(image)
+        vmdk = Vmdk(image, subformat="streamOptimized")
 
         s3 = boto3.client("s3", region_name=self.options.region)
         vmdk_get = self.upload_file(s3, vmdk, self.options.bucket)

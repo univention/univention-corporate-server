@@ -1,3 +1,9 @@
+generate-appliance (6.0.6-4) unstable; urgency=medium
+
+  * Issue univention/ucs#1711: add ubformat=streamOptimized for ec2
+
+ -- Felix Botner <botner@univention.de>  Thu, 30 Jan 2025 09:45:25 +0100
+
 generate-appliance (6.0.6-3) unstable; urgency=medium
 
   * Issue univention/ucs#1711: remove subformat=streamOptimized option from
