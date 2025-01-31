@@ -231,7 +231,7 @@ different clients. The following clients are supported:
 
 - You can also integrate Ubuntu systems and other Linux distributions
   like Debian, SUSE, or Red Hat into the domain.
-  For Ubuntu, see :external+uv-manual:ref:`ubuntu-domain-join`. 
+  For Ubuntu, see :external+uv-manual:ref:`ubuntu-domain-join`.
   For other Linux distributions, see :external+uv-ext-domain:ref:`ext-dom-unix`.
 
 .. _quickstart-extend:
