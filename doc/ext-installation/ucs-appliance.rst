@@ -41,3 +41,6 @@ settings in the default setting:
 * Selection of the language, time zone and keyboard layout
 
 * Configuration of the network settings
+
+* Setup of a new UCS domain or joining a UCS or Microsoft Active Directory
+  domain
