@@ -6,7 +6,9 @@ src: univention-ldap
 fix:
 desc: |
  This update addresses the following issues:
- * OpenLDAP is now configured to use the `sortvals` option for uniqueMember
-   and memberUid. This should greatly improve user and group modification in
-   big environments.
+ * OpenLDAP is now configured to use the `sortvals` option for the attributes
+   `uniqueMember` and `memberUid`. This improves the performance when
+   modifying user or groups in environments with groups with several thousand
+   members. The attributes for the `sortvals` option can be configured via the
+   UCR variable `ldap/server/sortvals`.
 bug: [52175]

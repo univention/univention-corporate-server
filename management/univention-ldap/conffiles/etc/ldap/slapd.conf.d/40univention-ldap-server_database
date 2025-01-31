@@ -72,8 +72,10 @@ for indextype in ('pres', 'eq', 'sub', 'approx'):
 
 for attr, indextypes in sorted(attr2index.items()):
     print("index\t%s\t%s" % (attr, ",".join(indextypes)))
+print('')
+if configRegistry.get('ldap/server/sortvals'):
+    print('sortvals\t%s' % configRegistry.get('ldap/server/sortvals', ''))
 @!@
-sortvals	uniqueMember memberUid
 
 limits group/univentionGroup/uniqueMember="cn=DC Backup Hosts,cn=groups,@%@ldap/base@%@" time=unlimited size=unlimited size.prtotal=unlimited size.pr=unlimited
 limits group/univentionGroup/uniqueMember="cn=DC Slave Hosts,cn=groups,@%@ldap/base@%@" time=unlimited size=unlimited size.prtotal=unlimited size.pr=unlimited
