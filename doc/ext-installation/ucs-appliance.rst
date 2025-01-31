@@ -44,6 +44,3 @@ settings in the default setting:
 
 * Setup of a new UCS domain or joining a UCS or Microsoft Active Directory
   domain
-
-* Software selection of UCS key components. The user can install software from
-  other vendors at a later point in time via the Univention App Center.
