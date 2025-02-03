@@ -1,3 +1,10 @@
+ucs-test (11.0.61) unstable; urgency=medium
+
+  * Issue univention/ucs!1348: add test for checking the execution time of a
+    UDM move command in big environments
+
+ -- Mika Westphal <westphal@univention.de>  Mon, 03 Feb 2025 14:21:20 +0100
+
 ucs-test (11.0.60) unstable; urgency=medium
 
   * Bug #57672: Adjusts tests to work with re-encoded jpeg image
