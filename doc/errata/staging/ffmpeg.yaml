@@ -1,0 +1,23 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: ffmpeg
+fix: 7:3.2.19-0+deb9u6
+desc: |
+ This update addresses the following issues:
+ * CVSS score 9.1 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:H).
+   (CVE-2024-35366)
+ * CVSS score 9.1 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H).
+   (CVE-2024-35367)
+ * CVSS score 6.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+   (CVE-2024-36616)
+ * CVSS score 6.2 (CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2024-36618, CVE-2024-36617)
+bug: [57943]
+cve:
+- CVE-2024-36618
+- CVE-2024-36617
+- CVE-2024-36616
+- CVE-2024-35367
+- CVE-2024-35366
