@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: git
+fix: 1:2.11.0-3+deb9u12
+desc: |
+ This update addresses the following issues:
+ * CVSS score 4.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:L/A:N).
+   (CVE-2024-52006)
+ * CVSS score 3.1 (CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:N/I:L/A:N).
+   (CVE-2024-50349)
+bug: [57941]
+cve:
+- CVE-2024-50349
+- CVE-2024-52006
