@@ -393,8 +393,8 @@ Description[en]=Defines the configuration of the SASL mechanism OAUTHBEARER. Exp
 Type=str
 
 [ldap/server/sortvals]
-Description[en]=List of multi-valued LDAP attributes whose LDAP index internally is stored sorted. This can significantly improve the time needed to add and remove values from that attribute. By default theses are 'uniqueMember' and 'memberUid'.
-Description[de]=Liste von mehrwertigen LDAP-Attributen, deren LDAP-Index intern sortiert gespeichert wird. Dies kann die Zeit, die zum Hinzufügen und Entfernen von Werten aus diesem Attribut benötigt wird, erheblich verkürzen. Standardmäßig sind dies 'uniqueMember' und 'memberUid'.
+Description[en]=List of multi-valued LDAP attributes whose LDAP index internally is stored sorted. This can significantly improve the time needed to remove values from that attribute. By default theses are 'uniqueMember' and 'memberUid'.
+Description[de]=Liste von mehrwertigen LDAP-Attributen, deren LDAP-Index intern sortiert gespeichert wird. Dies kann die Zeit, die zum Entfernen von Werten aus diesem Attribut benötigt wird, erheblich verkürzen. Standardmäßig sind dies 'uniqueMember' und 'memberUid'.
 Type=list
 Separator=[ ]
 Elementtype=str

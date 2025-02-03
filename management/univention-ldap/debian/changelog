@@ -1,3 +1,9 @@
+univention-ldap (16.0.17-6) unstable; urgency=medium
+
+  * Bug #52175: Update description for `ldap/server/sortvals`
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Mon, 03 Feb 2025 11:44:13 +0200
+
 univention-ldap (16.0.17-5) unstable; urgency=medium
 
   * Bug #52175: make sortvals configurable via UCR variable
