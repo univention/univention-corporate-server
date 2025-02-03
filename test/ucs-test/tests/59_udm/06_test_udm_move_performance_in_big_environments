@@ -1,0 +1,19 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: Check the time a move operation in UDM needs to complete for big environments
+## tags: [big_environment]
+## exposure: dangerous
+## packages:
+##  - time
+##  - mawk
+
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+
+duration=$(/usr/bin/time -f %e -q udm users/user move --dn "uid=testuser4,cn=users,$(ucr get ldap/base)" --position "$(ucr get ldap/base)" 2>&1 >/dev/null)
+
+if awk "BEGIN {exit !($duration > 300)}"; then
+    fail_test 1 "The udm move operation took to long. Allowed: 300 seconds, actually: $duration"
+fi
+
+exit "$RETVAL"
