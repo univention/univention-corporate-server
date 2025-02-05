@@ -35,6 +35,7 @@
 import copy
 import time
 from logging import getLogger
+from typing import List
 
 import ldap
 from ldap.filter import filter_format
@@ -540,15 +541,15 @@ class object(univention.admin.handlers.simpleLdap):
         new = DN.set(self.info.get('users', []) + self.info.get('hosts', []) + self.info.get('nestedGroup', []))
         if old != new:
             # create lists for uniqueMember entries to be added or removed
-            uniqueMemberAdd = list(DN.values(new - old))
-            uniqueMemberRemove = list(DN.values(old - new))
+            uniqueMemberAdd = new - old
+            uniqueMemberRemove = old - new
             old = list(DN.values(old))
             new = list(DN.values(new))
 
-            def getUidList(uniqueMembers):
+            def getUidList(uniqueMembers: List[DN]) -> List[str]:
                 result = []
                 for uniqueMember in uniqueMembers:
-                    dn = ldap.dn.str2dn(uniqueMember)[0]
+                    dn = uniqueMember._dn[0]
                     try:
                         result.append([x[1] for x in dn if x[0].lower() == 'uid'][0])  # noqa: RUF015
                     except IndexError:
@@ -573,11 +574,11 @@ class object(univention.admin.handlers.simpleLdap):
 
             if uniqueMemberRemove:
                 uniqueMemberRemove = keepCase(uniqueMemberRemove, old)
-                uniqueMemberRemove = [x.encode('UTF-8') for x in uniqueMemberRemove]
+                uniqueMemberRemove = [x.encode('UTF-8') for x in DN.values(uniqueMemberRemove)]
                 ml.append(('uniqueMember', uniqueMemberRemove, ''))
 
             if uniqueMemberAdd:
-                uniqueMemberAdd = [x.encode('UTF-8') for x in uniqueMemberAdd]
+                uniqueMemberAdd = [x.encode('UTF-8') for x in DN.values(uniqueMemberAdd)]
                 ml.append(('uniqueMember', '', uniqueMemberAdd))
 
             oldMemberUids = [x.decode('UTF-8') for x in self.oldattr.get('memberUid', ())]
