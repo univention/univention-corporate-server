@@ -61,13 +61,18 @@ class DN(object):
     def __init__(self, dn):
         # type: (str) -> None
         self.dn = dn
+        self._hash = None
+        self._str = None
         try:
             self._dn = ldap.dn.str2dn(self.dn)
         except ldap.DECODING_ERROR:
             raise ValueError('Malformed DN syntax: %r' % (self.dn,))
 
     def __str__(self):
-        return ldap.dn.dn2str(self._dn)
+        # compute string only once since the object is static
+        if self._str is None:
+            self._str = ldap.dn.dn2str(self._dn)
+        return self._str
 
     def __unicode__(self):  # noqa: PLW3201
         return unicode(str(self))  # noqa: F821
@@ -104,8 +109,11 @@ class DN(object):
         return not self == other
 
     def __hash__(self):
+        # compute hash only once - object is static
         # TODO: attributes which's values are case insensitive should be respected
-        return hash(tuple([tuple(sorted((x.lower(), y, z) for x, y, z in rdn)) for rdn in self._dn]))
+        if self._hash is None:
+            self._hash = hash(tuple([tuple(sorted((x.lower(), y, z) for x, y, z in rdn)) for rdn in self._dn]))
+        return self._hash
 
     @classmethod
     def set(cls, values):
