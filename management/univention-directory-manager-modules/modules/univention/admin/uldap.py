@@ -35,8 +35,9 @@
 from __future__ import absolute_import
 
 import time
+from functools import lru_cache
 from logging import getLogger
-from typing import Any, Callable  # noqa: F401
+from typing import Any, Callable, Iterable, List  # noqa: F401
 
 import ldap
 
@@ -116,20 +117,30 @@ class DN(object):
         return self._hash
 
     @classmethod
-    def set(cls, values):
+    @lru_cache(maxsize=200000)  # TODO FIXME choose a smaller default and make this value configurable
+    def _cached_str2dn(cls, dn: str):
+        return cls(dn)
+
+    @classmethod
+    @lru_cache(maxsize=200000)  # TODO FIXME choose a smaller default and make this value configurable
+    def _cached_dn2str(cls, dn: "DN"):
+        return str(dn)
+
+    @classmethod
+    def set(cls, values: List[str]):
         """
         >>> len(DN.set(['CN=computers,dc=foo', 'cn=computers,dc=foo', 'cn = computers,dc=foo']))
         1
         """
-        return set(map(cls, values))
+        return set(map(cls._cached_str2dn, values))
 
     @classmethod
-    def values(cls, values):
+    def values(cls, values: Iterable["DN"]):
         """
         >>> DN.values(DN.set(['cn=foo', 'cn=bar']) - DN.set(['cn = foo'])) == {'cn=bar'}
         True
         """
-        return set(map(str, values))
+        return set(map(cls._cached_dn2str, values))
 
 
 def getBaseDN(host='localhost', port=None, uri=None):
