@@ -12,3 +12,6 @@ desc: |
    members. The attributes for the `sortvals` option can be configured via the
    UCR variable `ldap/server/sortvals`.
 bug: [52175]
+erratum: 1212
+announced: 2025-02-05
+support: core
