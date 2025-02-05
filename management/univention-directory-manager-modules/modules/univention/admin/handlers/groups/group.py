@@ -573,7 +573,6 @@ class object(univention.admin.handlers.simpleLdap):
             memberUidRemove = getUidList(uniqueMemberRemove)
 
             if uniqueMemberRemove:
-                uniqueMemberRemove = keepCase(uniqueMemberRemove, old)
                 uniqueMemberRemove = [x.encode('UTF-8') for x in DN.values(uniqueMemberRemove)]
                 ml.append(('uniqueMember', uniqueMemberRemove, ''))
 
