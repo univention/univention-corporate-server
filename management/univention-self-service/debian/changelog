@@ -1,3 +1,9 @@
+univention-self-service (5.0.11-3) unstable; urgency=medium
+
+  * Bug #57512: add Message-ID to emails sent by the Self Service
+
+ -- Christian Castens <castens@univention.de>  Mon, 03 Feb 2025 14:22:38 +0200
+
 univention-self-service (5.0.11-2) unstable; urgency=medium
 
   [ Arvid ]

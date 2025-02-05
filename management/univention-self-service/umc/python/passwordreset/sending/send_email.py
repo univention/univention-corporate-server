@@ -52,7 +52,7 @@ import email.charset
 import os.path
 import smtplib
 from email.mime.nonmultipart import MIMENonMultipart
-from email.utils import formatdate
+from email.utils import formatdate, make_msgid
 
 from six.moves.urllib_parse import quote
 
@@ -126,6 +126,7 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
         msg["Date"] = formatdate(localtime=True)
         msg["From"] = self.ucr.get("umc/self-service/passwordreset/email/sender_address", f"Password Reset Service <noreply@{fqdn}>")
         msg["To"] = self.data["address"]
+        msg["Message-ID"] = make_msgid()
         msg.set_payload(txt, charset=cs)
 
         smtp = smtplib.SMTP(self.server)
