@@ -536,24 +536,29 @@ class object(univention.admin.handlers.simpleLdap):
                 ml.append(('sambaSID', self.oldattr.get('sambaSID', [b'']), [sid.encode('ASCII')]))
                 self._samba_sid = sid
 
-        old = DN.set(self.oldinfo.get('users', []) + self.oldinfo.get('hosts', []) + self.oldinfo.get('nestedGroup', []))
-        new = DN.set(self.info.get('users', []) + self.info.get('hosts', []) + self.info.get('nestedGroup', []))
+        old = set(self.oldinfo.get('users', []) + self.oldinfo.get('hosts', []) + self.oldinfo.get('nestedGroup', []))
+        new = set(self.info.get('users', []) + self.info.get('hosts', []) + self.info.get('nestedGroup', []))
         if old != new:
             # create lists for uniqueMember entries to be added or removed
-            uniqueMemberAdd = list(DN.values(new - old))
-            uniqueMemberRemove = list(DN.values(old - new))
-            old = list(DN.values(old))
-            new = list(DN.values(new))
+            uniqueMemberAdd = DN.set(new - old)
+            uniqueMemberRemove = DN.set(old - new)
+            # old and new might contain the same DNs (as str) but with different case.
+            # After unifying the strings to DN objects there might be identical DNs that are
+            # subtracted from uniqueMemberAdd and uniqueMemberRemove.
+            sameMembers = uniqueMemberAdd & uniqueMemberRemove
+            if sameMembers:
+                uniqueMemberRemove = uniqueMemberRemove - sameMembers
+                uniqueMemberAdd = uniqueMemberAdd - sameMembers
 
-            def getUidList(uniqueMembers):
+            def getUidList(uniqueMembers):  # type: (List[DN]) -> List[str]
                 result = []
                 for uniqueMember in uniqueMembers:
-                    dn = ldap.dn.str2dn(uniqueMember)[0]
+                    dn = uniqueMember._dn[0]
                     try:
                         result.append([x[1] for x in dn if x[0].lower() == 'uid'][0])  # noqa: RUF015
                     except IndexError:
                         # UID is not stored in DN --> fetch UID by DN
-                        uid_list = self.lo.getAttr(uniqueMember, 'uid')
+                        uid_list = self.lo.getAttr(uniqueMember.dn, 'uid')
                         # a group have no uid attribute, see Bug #12644
                         if uid_list:
                             result.append(uid_list[0].decode('UTF-8'))
@@ -573,11 +578,11 @@ class object(univention.admin.handlers.simpleLdap):
 
             if uniqueMemberRemove:
                 uniqueMemberRemove = keepCase(uniqueMemberRemove, old)
-                uniqueMemberRemove = [x.encode('UTF-8') for x in uniqueMemberRemove]
+                uniqueMemberRemove = [x.encode('UTF-8') for x in DN.values(uniqueMemberRemove)]
                 ml.append(('uniqueMember', uniqueMemberRemove, ''))
 
             if uniqueMemberAdd:
-                uniqueMemberAdd = [x.encode('UTF-8') for x in uniqueMemberAdd]
+                uniqueMemberAdd = [x.encode('UTF-8') for x in DN.values(uniqueMemberAdd)]
                 ml.append(('uniqueMember', '', uniqueMemberAdd))
 
             oldMemberUids = [x.decode('UTF-8') for x in self.oldattr.get('memberUid', ())]
