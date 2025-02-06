@@ -588,6 +588,9 @@ class object(univention.admin.handlers.simpleLdap):
                 memberUidAdd = [x.encode('UTF-8') for x in memberUidAdd]
                 ml.append(('memberUid', '', memberUidAdd))
 
+            log.debug('groups/group: _ldap_modlist(): %s', DN._cached_str2dn.cache_info())
+            log.debug('groups/group: _ldap_modlist(): %s', DN._cached_dn2str.cache_info())
+
         return ml
 
     def _ldap_post_create(self):
