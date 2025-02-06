@@ -319,8 +319,10 @@ how to migrate a productive UCS domain.
 To use LMDB instead of TDB, set the corresponding |UCSUCRV|
 :envvar:`samba/database/backend/store` to ``mdb`` before you install the app
 :program:`Active Directory-compatible Domain Controller` in your UCS domain.
-Starting with UCS 5.2-0 this is the new default for provisioning the Samba
-backend database.
+
+.. versionadded:: 5.2-0
+
+   LMDB is the default for provisioning the Samba backend database.
 
 The |UCSUCRV| :envvar:`samba/database/backend/store/size` defines the current
 maximal size of the individual backend database store files and has the default
@@ -336,15 +338,20 @@ pages used`` minus ``Free pages``. The value at ``Max pages`` shows the current
 effective limit. The backend storage files locate in :file:`/var/lib/samba/private/sam.ldb.d/`
 and have the file extension :file:`.ldb`.
 
-LMDB uses ``fsync`` to persist transactions. As an optimization, the operating system
-should only write modified memory pages to the storage medium. In Amazon EC2 this
-may result in a higher number of IOPS as compared to TDB, which may significantly
-slow down provisioning and operations like e.g. bulk group membership changes.
-As a temporary speed up option Samba offers the parameter ``ldb:nosync``.
-Activating that may be useful during a provisioning phase, but it should not be
-activated permanently during daily business because it endangers durability of
-changes committed to the SAM database. Other means of I/O performance improvements
-should be considered instead. The parameter can be set like this:
+LMDB uses ``fsync`` to persist transactions.
+As an optimization,
+the operating system should only write modified memory pages to the disk.
+On Amazon EC2,
+writing modified memory pages can result in a higher number of IOPS as compared to TDB,
+which can significantly slow down provisioning
+and operations such as bulk group membership changes.
+As a temporary speed-up option, Samba offers the ``ldb:nosync`` parameter.
+Enabling ``ldb:nosync`` provides performance benefits during a provisioning phase.
+However, don't enable ``ldb:nosync`` permanently during day-to-day operations,
+as this compromises durability of changes committed to the SAM database.
+Instead, consider other means of improving I/O performance.
+To set this parameter,
+use the following commands:
 
 .. code-block:: console
 
