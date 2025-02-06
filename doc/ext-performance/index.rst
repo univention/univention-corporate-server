@@ -338,7 +338,7 @@ pages used`` minus ``Free pages``. The value at ``Max pages`` shows the current
 effective limit. The backend storage files locate in :file:`/var/lib/samba/private/sam.ldb.d/`
 and have the file extension :file:`.ldb`.
 
-LMDB uses ``fsync`` to persist transactions.
+LMDB uses ``fdatasync`` to persist transactions.
 As an optimization,
 the operating system should only write modified memory pages to the disk.
 On Amazon EC2,
