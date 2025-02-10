@@ -9,7 +9,7 @@
 Creating a UCS appliance/cloud image
 ************************************
 
-This section describes how to set up an appliance based on UCS 5.0. This type of
+This section describes how to set up an appliance based on UCS 5.2. This type of
 appliance can also be used to provide preconfigured instances as a cloud service
 provider. The creation of images for typical virtualization solutions is another
 possible application scenario, see :ref:`create-virt`.
@@ -379,7 +379,7 @@ Cloud service providers have the possibility of retrieving UCS licenses via an
 API, i.e., if a new instance is to be created for a customer, the license can be
 retrieved via the API and then installed in the provided instance directly.
 
-Access to the license server requires a user name and a password. These can be
+Access to the license server requires a username and a password. These can be
 requested from `Univention contact <https://www.univention.com/contact/>`_.
 In this document, ``https://license.univention.de/shop/example/`` is used as an
 example URL for the license server.
@@ -422,9 +422,9 @@ A license can also be ordered with a POST request via
      --keep-session-cookies \
      --save-cookies cookie.db \
      --load-cookies cookie.db \
-     --post-data='kundeEmail=customer@example&'\
+     --post-data='kundeEmail=customer@example.com&'\
    'kundeUnternehmen=New%20Customern&'\
-   'EndDate=31.12.2023&'\
+   'EndDate=31.12.2025&'\
    'BaseDN=dc%3Ddrei%2Cdc%3Dzwei%2Cdc%3Dtest&'\
    'Servers=0&'\
    'Support=0&'\
@@ -454,7 +454,7 @@ includes additional information, e.g.:
 ::
 
    ...
-   <span id="details">Not a valid date: u'31.12.2023</span>
+   <span id="details">Not a valid date: u'31.12.2025</span>
    ...
 
 
