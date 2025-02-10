@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [0]
+scope: ucs_5.2-0-errata5.2-0
+src: univention-squid
+fix: 15.0.2
+desc: |
+ This update addresses the following issues:
+ * You can now manually configure the squid cache settings.
+   Any value other than `ufs` in the UCRV `squid/cache/format` disables
+   the cache configuration in `squid.conf`. A custom squid cache
+   configuration can be added to `/etc/squid/local.conf`.
+bug: [57775]

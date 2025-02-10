@@ -1,6 +1,6 @@
 univention-squid (15.0.2) unstable; urgency=low
 
-  * Planio #45881 Write Squid-Cache-Dir only when using ufs
+  * Bug #57775: Write squid cache config only when using ufs
 
  -- Jonas Einnolf <einnolf@univention.de>  Tue, 04 Feb 2025 15:29:57 +0100
 
