@@ -190,8 +190,8 @@ Type=str
 Categories=service-webproxy
 
 [squid/cache/format]
-Description[de]=Storage Backend für den Squid Proxy.
-Description[en]=The storage system to use. Only "ufs" is currently supported.
+Description[de]=Storage Backend für den Squid Proxy. Bei anderen Werten als "ufs" muss die Konfiguration in /etc/squid/local.conf erfolgen.
+Description[en]=The storage system to use. When using values other than "ufs", configure cache_dir settings in /etc/squid/local.conf.
 Type=str
 Categories=service-webproxy
 
