@@ -675,6 +675,22 @@ update_check_selinux_deactivated() {
 	return 1
 }
 
+update_check_auth_faillog() {
+	is_ucr_true auth/faillog || return 0
+	echo "	The UCR variable 'auth/faillog' is set to '$(/usr/sbin/univention-config-registry get auth/faillog)', indicating that the pam_tally module is in use."
+	echo "	However, the pam_tally and pam_tally2 modules have been removed on UCS 5.2. You must remove all "
+	echo "	references to these modules from your PAM configuration before upgrading the system."
+	echo ""
+	echo "	Please execute the following command:"
+	echo ""
+	echo "		ucr set auth/faillog=no"
+	echo ""
+	echo "	Before upgrading, ensure your PAM configuration no longer references pam_tally or pam_tally2."
+	echo "	If you need the functionality previously provided by this variable, you can re-enable it after"
+	echo "	the upgrade."
+	return 1
+}
+
 checks () {
 	# stderr to log
 	exec 2>>"$UPDATER_LOG"

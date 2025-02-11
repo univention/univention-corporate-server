@@ -1,3 +1,10 @@
+univention-updater (16.0.40) unstable; urgency=medium
+
+  * Issue univention/ucs#2663: add upgrade check for pam_tally references in the PAM
+    configuration that prevent system upgrades to 5.2
+
+ -- Christian Castens <castens@univention.de>  Tue, 11 Feb 2025 15:11:20 +0100
+
 univention-updater (16.0.39) unstable; urgency=medium
 
   * Bug #57902: Add preup check for selinuxfs
