@@ -9,3 +9,6 @@ desc: |
  * The Message-ID header has been added to emails sent via Self Service
    to prevent rejection by certain email providers
 bug: [57953]
+erratum: 1213
+announced: 2025-02-12
+support: core
