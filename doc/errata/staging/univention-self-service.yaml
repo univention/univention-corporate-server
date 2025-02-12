@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issues:
  * The Message-ID header has been added to emails sent via Self Service
    to prevent rejection by certain email providers
-bug: [57512]
+bug: [57953]
