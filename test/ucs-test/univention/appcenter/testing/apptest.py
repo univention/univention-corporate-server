@@ -170,7 +170,10 @@ class Session:
                 time.sleep(3)
                 break
         else:
-            raise RuntimeError('Could not find "Change Language" in portal sidemenu')
+            print('Could not find "Change Language" in portal sidemenu')
+            # close side menu
+            self.wait_until_clickable_and_click('#header-button-menu')
+            return
         # choose english
         for elem in self.find_all('.portal-sidenavigation__menu-item--show'):
             print('sub -%s-' % elem.text)
@@ -179,7 +182,7 @@ class Session:
                 time.sleep(3)
                 break
         else:
-            raise RuntimeError('Could not find "English" in portal sidemenu')
+            print('Could not find "English" in portal sidemenu')
         # close side menu
         self.wait_until_clickable_and_click('#header-button-menu')
 

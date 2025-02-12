@@ -1,3 +1,9 @@
+ucs-test (12.0.23-37) unstable; urgency=medium
+
+  * fix goto_portal do not raise an exception when the change language is not show.
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 12 Feb 2025 08:09:03 +0100
+
 ucs-test (12.0.23-36) unstable; urgency=medium
 
   * Issue univention/ucs!1348: fix the test for checking the execution time of
