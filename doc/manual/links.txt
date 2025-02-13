@@ -25,8 +25,8 @@
 .. _microsoft-rsat-tools: https://www.microsoft.com/en-us/download/details.aspx?id=45520
 .. _microsoft-install-the-certification-authority: https://learn.microsoft.com/en-us/windows-server/networking/core-network-guide/cncg/server-certs/install-the-certification-authority
 .. _microsoft-password-complexity-requirements: https://learn.microsoft.com/de-de/previous-versions/windows/it-pro/windows-10/security/threat-protection/security-policy-settings/password-must-meet-complexity-requirements
-.. _mozilla-css-custom-properties: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
-.. _mozilla-css-selectors: https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Selectors
+.. _mozilla-css-custom-properties: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties
+.. _mozilla-css-selectors: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Basic_selectors
 .. _postfix-reject-rbl-client: http://www.postfix.org/postconf.5.html#reject_rbl_client
 .. _postfix-smtp-recipient-restrictions: http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions
 .. _python3-re: https://docs.python.org/3/library/re.html
