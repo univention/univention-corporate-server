@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-02 13:28+0200\n"
-"PO-Revision-Date: 2024-04-02 13:29+0200\n"
+"POT-Creation-Date: 2025-02-14 10:45+0000\n"
+"PO-Revision-Date: 2025-02-14 11:54+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.16.0\n"
 
 #: ../../ip-config/dhcp.rst:8
 msgid "IP assignment via DHCP"
@@ -2539,50 +2539,229 @@ msgstr "Dienst-spezifisches Passwort"
 
 #: ../../ip-config/radius.rst:61
 msgid ""
-"By default, users authenticate with their domain password. By setting the"
-" |UCSUCRV| :envvar:`radius/use-service-specific-password` to ``true``, a "
-"dedicated password for RADIUS will be used. Through the :ref:`Self "
-"Service app <user-management-password-changes-by-users>`, users can get "
-"such a password. The system will generate a random password for users to "
-"use. If needed, a new password can be generated at any time. This also "
-"invalidates the old password. To enable this page in the Self Service, "
-"the |UCSUCRV| :envvar:`umc/self-service/service-specific-"
-"passwords/backend/enabled` has to be set to ``true`` on the "
-":guilabel:`Self Service Backend`."
+"By default, users authenticate with their domain password. RADIUS uses a "
+"specific password, if an administrator sets the |UCSUCRV| :envvar:`radius"
+"/use-service-specific-password` to ``true``. Users can request a password"
+" specific to wireless LAN use through the :ref:`Self Service app <user-"
+"management-password-changes-by-users>`. UCS generates a random password "
+"for each password request from the :program:`Self Service`. If necessary,"
+" users can generate a random password at any time, which also invalidates"
+" the existing password."
 msgstr ""
-"Standardmäßig authentifizieren sich Benutzer über ihr Domänenpasswort. "
-"Durch Setzen der |UCSUCRV| :envvar:`radius/use-service-specific-password`"
-" auf ``true`` wird stattdessen ein Passwort speziell für RADIUS genutzt. "
-"Dieses Passwort können Nutzer selbst über die :ref:`App Self Service "
-"<user-management-password-changes-by-users>` setzen lassen. Dafür ist auf"
-" dem :guilabel:`Self Service Backend` die |UCSUCRV| :envvar:`umc/self-"
-"service/service-specific-passwords/backend/enabled` auf ``true`` zu "
-"setzen. In der App kann dann vom System ein zufälliges Passwort erzeugt "
-"werden, das die Benutzer dann nutzen können. Bei Bedarf kann das Passwort"
-" neu generiert werden.  Dadurch wird gleichzeitig das alte Passwort "
-"ungültig."
+"Standardmäßig authentifizieren sich die Benutzer mit ihrem Passwort für "
+"die Domäne. RADIUS verwendet ein dediziertes Passwort, wenn ein "
+"Administrator den Parameter |UCSUCRV| :envvar:`radius/use-service-"
+"specific-password` auf ``true`` setzt. Benutzer können ein spezielles "
+"Passwort für die Verwendung von WLAN über die :ref:`Self Service App "
+"<user-management-password-changes-by-users>` anfordern. UCS und die "
+":program:`Self Service` App generieren ein Zufallspasswort für jede "
+"Passwortanfrage. Bei Bedarf können die Benutzer jederzeit ein "
+"Zufallspasswort erzeugen, wodurch auch das bestehende Passwort ungültig "
+"wird."
 
-#: ../../ip-config/radius.rst:76
+#: ../../ip-config/radius.rst:73
+msgid ""
+"To enable the service specific password page in the :program:`Self "
+"Service` app, the administrator must set the |UCSUCRV| :envvar:`umc/self-"
+"service/service-specific-passwords/backend/enabled` to the value ``true``"
+" on the UCS system that has the :program:`Self Service Backend` app "
+"installed."
+msgstr ""
+"Um die dienst-spezifische Passwortseite in der :program:`Self Service` "
+"App zu aktivieren, muss der Administrator die |UCSUCRV| "
+":envvar:`umc/self- service/service-specific-passwords/backend/enabled` "
+"auf dem UCS-System, auf dem die :program:`Self Service Backend` App "
+"installiert ist, auf den Wert ``true`` setzen."
+
+#: ../../ip-config/radius.rst:84
 msgid "The page in the Self Service to get a RADIUS specific password"
 msgstr "Seite im Self Service, um ein RADIUS-spezifisches Passwort zu bekommen"
 
-#: ../../ip-config/radius.rst:78
+#: ../../ip-config/radius.rst:86
 msgid ""
-"The parameters used to generate the passwords can be adjusted. On a "
-"|UCSPRIMARYDN| some |UCSUCRVs| have to be set:"
+"UCS allows configuring the password quality for the auto generated "
+"service specific passwords through the following |UCSUCRVs|. For a "
+"description, see the references to the respective generic password "
+"quality settings."
 msgstr ""
-"Die Parameter, mit denen das Passwort erzeugt wird, können angepasst "
-"werden. Auf dem |UCSPRIMARYDN| müssen dazu |UCSUCRVs| gesetzt werden:"
+"UCS ermöglicht die Konfiguration der Passwortqualität für die automatisch"
+" generierten und dienst-spezifischen Passwörter durch die folgenden "
+"|UCSUCRVs|. Eine Beschreibung finden Sie in den Verweisen auf die "
+"jeweiligen generischen Passwortqualitätseinstellungen."
 
-#: ../../ip-config/radius.rst:81
+#: ../../ip-config/radius.rst:93
+msgid "Password quality parameters for RADIUS"
+msgstr "RADIUS Passwortqualitätsparameter"
+
+#: ../../ip-config/radius.rst:97
+msgid "RADIUS password quality parameter"
+msgstr "RADIUS Passwortqualitätsparameter"
+
+#: ../../ip-config/radius.rst:98
+msgid "Generic password quality parameter"
+msgstr "Allgemeiner Qualitätsparameter für Passwörter"
+
+#: ../../ip-config/radius.rst:100
+msgid "``password/radius/quality/credit/digits``"
+msgstr "``password/radius/quality/credit/digits``"
+
+#: ../../ip-config/radius.rst:101
+msgid ":envvar:`password/quality/credit/digits`"
+msgstr ":envvar:`password/quality/credit/digits`"
+
+#: ../../ip-config/radius.rst:103
+msgid "``password/radius/quality/credit/lower``"
+msgstr "``password/radius/quality/credit/lower``"
+
+#: ../../ip-config/radius.rst:104
+msgid ":envvar:`password/quality/credit/lower`"
+msgstr ":envvar:`password/quality/credit/lower`"
+
+#: ../../ip-config/radius.rst:106
+msgid "``password/radius/quality/credit/other``"
+msgstr "``password/radius/quality/credit/other``"
+
+#: ../../ip-config/radius.rst:107
+msgid ":envvar:`password/quality/credit/other`"
+msgstr ":envvar:`password/quality/credit/other`"
+
+#: ../../ip-config/radius.rst:109
+msgid "``password/radius/quality/credit/upper``"
+msgstr "``password/radius/quality/credit/upper``"
+
+#: ../../ip-config/radius.rst:110
+msgid ":envvar:`password/quality/credit/upper`"
+msgstr ":envvar:`password/quality/credit/upper`"
+
+#: ../../ip-config/radius.rst:112
+msgid "``password/radius/quality/forbidden/chars``"
+msgstr "``password/radius/quality/forbidden/chars``"
+
+#: ../../ip-config/radius.rst:113
+msgid ":envvar:`password/quality/forbidden/chars`"
+msgstr ":envvar:`password/quality/forbidden/chars`"
+
+#: ../../ip-config/radius.rst:115
+msgid "``password/radius/quality/length/min``"
+msgstr "``password/radius/quality/length/min``"
+
+#: ../../ip-config/radius.rst:116
+msgid ":envvar:`password/quality/length/min`"
+msgstr ":envvar:`password/quality/length/min`"
+
+#: ../../ip-config/radius.rst:120
+msgid ""
+"The settings in the ``password/quality/**`` |UCSUCRVs| don't have an "
+"effect on the service specific password."
+msgstr ""
+"Die Einstellungen in den ``password/quality/**`` |UCSUCRVs| haben keinen "
+"Einfluss auf das dienst-spezifische Passwort."
+
+#: ../../ip-config/radius.rst:122
+msgid ""
+"To configure the password quality, choose the scenario on the following "
+"tabs that matches your environment where you installed the "
+":program:`RADIUS` app."
+msgstr ""
+"Um die Passwortqualität zu konfigurieren, wählen Sie von den folgenden "
+"Reitern das Szenario aus, das Ihrer Umgebung entspricht, in der Sie die "
+":program:`RADIUS` App installiert haben."
+
+#: ../../ip-config/radius.rst:128 ../../ip-config/radius.rst:156
+msgid "To configure the password quality, use the following steps."
+msgstr ""
+"Führen Sie die folgenden Schritte aus, um die Passwortqualität zu "
+"konfigurieren."
+
+#: ../../ip-config/radius.rst:132 ../../ip-config/radius.rst:161
+msgid "Prerequisite"
+msgstr "Voraussetzung"
+
+#: ../../ip-config/radius.rst:132
+msgid "You have the :program:`RADIUS` app installed on the |UCSPRIMARYDN|."
+msgstr "Sie haben die :program:`RADIUS` App auf dem |UCSPRIMARYDN| installiert."
+
+#: ../../ip-config/radius.rst:134 ../../ip-config/radius.rst:163
+msgid ""
+"For available password quality parameters, either look at :numref:`ip-"
+"config-radius-configuration-service-specific-password-table`, or at your "
+"system."
+msgstr ""
+"Die verfügbaren Qualitätsparameter für Passwörter finden Sie entweder in "
+":numref:`ip-config-radius-configuration-service-specific-password-table` "
+"oder in Ihrem System."
+
+#: ../../ip-config/radius.rst:139
+msgid ""
+"**On the Primary Directory Node**, open the command-line and lookup the "
+"available password quality parameters:"
+msgstr ""
+"Öffnen Sie **auf dem Primary Directory Node** die Befehlszeile "
+"und sehen Sie die verfügbaren Qualitätsparameter für Passwörter nach:"
+
+#: ../../ip-config/radius.rst:143 ../../ip-config/radius.rst:173
 msgid "$ ucr search password/radius/quality"
 msgstr "$ ucr search password/radius/quality"
 
-#: ../../ip-config/radius.rst:89
+#: ../../ip-config/radius.rst:147
+msgid ""
+"Pick the parameter that you want to change and set the respective "
+"|UCSUCRv|, for example the minimal password length."
+msgstr ""
+"Wählen Sie den Parameter, den Sie ändern möchten, und stellen Sie die "
+"entsprechende |UCSUCRv| ein, z. B. die minimale Passwortlänge."
+
+#: ../../ip-config/radius.rst:150 ../../ip-config/radius.rst:182
+msgid "$ ucr set password/radius/quality/length/min=32"
+msgstr "$ ucr set password/radius/quality/length/min=32"
+
+#: ../../ip-config/radius.rst:160
+msgid ""
+"You have the :program:`RADIUS` app installed on a UCS system **other "
+"than** the |UCSPRIMARYDN|."
+msgstr ""
+"Sie haben die Anwendung :program:`RADIUS` auf einem **anderen** UCS "
+"System installiert, als den |UCSPRIMARYDN|."
+
+#: ../../ip-config/radius.rst:168
+msgid ""
+"**On the UCS system** that has the :program:`RADIUS` app installed, open "
+"the command-line and lookup the available password quality parameters:"
+msgstr ""
+"**Auf dem UCS-System**, auf dem die "
+":program:`RADIUS` App installiert ist, öffnen Sie die Befehlszeile und sehen Sie die"
+" verfügbaren Qualitätsparameter für Passwörter nach:"
+
+#: ../../ip-config/radius.rst:177
+msgid ""
+"Pick the parameter that you want to change and set the respective "
+"|UCSUCRv|, for example the minimal password length. On the "
+"|UCSPRIMARYDN|, open the command-line and run the following command:"
+msgstr ""
+"Wählen Sie den Parameter, den Sie ändern möchten, und setzen Sie die "
+"entsprechende |UCSUCRv|, z. B. die minimale Passwortlänge. Öffnen Sie auf"
+" dem |UCSPRIMARYDN| die Befehlszeile und führen Sie den folgenden Befehl "
+"aus:"
+
+#: ../../ip-config/radius.rst:186
+msgid ""
+"Regardless the scenario, you finally need to restart the *UDM HTTP REST "
+"API* on the |UCSPRIMARYDN|. Open the command-line and run the following "
+"command."
+msgstr ""
+"Unabhängig vom Szenario müssen Sie schließlich die *UDM HTTP REST API* "
+"auf dem |UCSPRIMARYDN| neu starten. Öffnen Sie die Befehlszeile und "
+"führen Sie den folgenden Befehl aus."
+
+#: ../../ip-config/radius.rst:190
+msgid "$ systemctl restart univention-directory-manager-rest.service"
+msgstr "$ systemctl restart univention-directory-manager-rest.service"
+
+#: ../../ip-config/radius.rst:197
 msgid "MAC filtering"
 msgstr "MAC-Adressfilter"
 
-#: ../../ip-config/radius.rst:91
+#: ../../ip-config/radius.rst:199
 msgid ""
 "By default access to the network is allowed for every device (assuming "
 "the used username has access). It can be restricted to only allow "
@@ -2601,11 +2780,11 @@ msgstr ""
 "entsprechenden Geräteobjekt muss der Zugang zum Netzwerk auch erlaubt "
 "sein (entweder direkt oder über eine der Gruppen)."
 
-#: ../../ip-config/radius.rst:101
+#: ../../ip-config/radius.rst:209
 msgid "MAC Authentication Bypass with computer objects"
 msgstr "MAC Authentication Bypass für Computerobjekte"
 
-#: ../../ip-config/radius.rst:103
+#: ../../ip-config/radius.rst:211
 msgid ""
 "MAC Authentication Bypass (MAB) is a proprietary fallback mode to 802.1X "
 "for devices that don't support 802.1X authentication, such as network "
@@ -2618,7 +2797,7 @@ msgstr ""
 "solchen Geräten ermöglicht, sich mit ihrer MAC-Adresse als Benutzernamen "
 "beim Netzwerk zu authentifizieren."
 
-#: ../../ip-config/radius.rst:109
+#: ../../ip-config/radius.rst:217
 msgid ""
 "This section describes how to use a device's MAC address for "
 "authentication and assign them a VLAN to the corresponding network "
@@ -2632,17 +2811,17 @@ msgstr ""
 "aktivieren, setzen Sie die |UCSUCRV| :envvar:`freeradius/conf/allow-mac-"
 "address-authentication` auf ``true``."
 
-#: ../../ip-config/radius.rst:116
+#: ../../ip-config/radius.rst:224
 msgid "Devices that authenticate using MAB ignore network access settings:"
 msgstr ""
 "Geräte, die sich mit MAB authentifizieren, ignorieren die "
 "Netzwerkzugangseinstellungen:"
 
-#: ../../ip-config/radius.rst:118
+#: ../../ip-config/radius.rst:226
 msgid "|UCSUCRV| :envvar:`radius/mac/whitelisting`"
 msgstr "|UCSUCRV| :envvar:`radius/mac/whitelisting`"
 
-#: ../../ip-config/radius.rst:120
+#: ../../ip-config/radius.rst:228
 msgid ""
 "The checkbox *Allow network access* at the computer object and in the "
 "group setting"
@@ -2650,7 +2829,7 @@ msgstr ""
 "Die Checkbox *Netzwerkzugriff zulassen* beim Computerobjekt und in der "
 "Gruppeneinstellung"
 
-#: ../../ip-config/radius.rst:124
+#: ../../ip-config/radius.rst:232
 msgid ""
 "Attackers can spoof MAC addresses. Consider any port as compromised where"
 " your switch allows to use MAB. Make sure you have put appropriate "
@@ -2661,7 +2840,7 @@ msgstr ""
 "zulässt. Vergewissern Sie sich, dass Sie geeignete Maßnahmen ergriffen "
 "haben, um Ihr Netzwerk weiterhin sicher zu halten."
 
-#: ../../ip-config/radius.rst:130
+#: ../../ip-config/radius.rst:238
 msgid ""
 "To assign the VLAN ID to a computer, you need to add it to the group of "
 "the computer object with the respective VLAN ID. In the UCS management "
@@ -2671,19 +2850,19 @@ msgstr ""
 "Computerobjekts hinzufügen, dass die entsprechende VLAN ID hat. Gehen Sie"
 " im UCS-Managementsystem wie folgt vor: "
 
-#: ../../ip-config/radius.rst:134
+#: ../../ip-config/radius.rst:242
 msgid "Open :menuselection:`Devices --> Computers`."
 msgstr "Öffnen Sie :menuselection:`Geräte --> Computer`."
 
-#: ../../ip-config/radius.rst:136
+#: ../../ip-config/radius.rst:244
 msgid "Click the computer object to edit."
 msgstr "Klicken Sie das Computerobjekt, das Sie bearbeiten möchten."
 
-#: ../../ip-config/radius.rst:138
+#: ../../ip-config/radius.rst:246
 msgid "Go to :menuselection:`Advanced settings --> Groups`."
 msgstr "Gehen Sie zu :menuselection:`Erweiterte Einstellungen --> Gruppen`."
 
-#: ../../ip-config/radius.rst:140
+#: ../../ip-config/radius.rst:248
 msgid ""
 "To add a group with VLAN IDs, click :guilabel:`+ ADD`, select ``Virtual "
 "LAN ID`` from the *Object property* drop-down, and activate the "
@@ -2694,7 +2873,7 @@ msgstr ""
 "*Objekteigenschaft* und aktivieren Sie die entsprechende Gruppe, um sie "
 "hinzuzufügen."
 
-#: ../../ip-config/radius.rst:144
+#: ../../ip-config/radius.rst:252
 msgid ""
 "To save, click :guilabel:`ADD` in the *Add objects* dialog and "
 ":guilabel:`SAVE` in the *Advanced settings*."
@@ -2702,7 +2881,7 @@ msgstr ""
 "Um zu speichern, klicken Sie auf :guilabel:`HINZUFÜGEN` im *Objekte "
 "hinzufügen* Dialog und :guilabel:`SAVE` in *Erweiterte Einstellungen*."
 
-#: ../../ip-config/radius.rst:149
+#: ../../ip-config/radius.rst:257
 msgid ""
 "To assign the VLAN ID to a user group, you need to add it to the user "
 "group settings. In the UCS management system, follow these steps:"
@@ -2711,29 +2890,29 @@ msgstr ""
 "Benutzergruppeneinstellungen hinzufügen. Führen Sie im UCS-"
 "Managementsystem die folgenden Schritte aus:"
 
-#: ../../ip-config/radius.rst:152
+#: ../../ip-config/radius.rst:260
 msgid "Open :menuselection:`Users --> Groups`."
 msgstr "Öffnen Sie :menuselection:`Benutzer --> Gruppen`."
 
-#: ../../ip-config/radius.rst:154
+#: ../../ip-config/radius.rst:262
 msgid "Click the user group object to edit or create a new user group."
 msgstr ""
 "Klicken Sie die Benutzergruppe zum Bearbeiten oder erstellen Sie eine "
 "neue Benutzergruppe."
 
-#: ../../ip-config/radius.rst:156
+#: ../../ip-config/radius.rst:264
 msgid "Go to :menuselection:`RADIUS`."
 msgstr "Gehen Sie zu :menuselection:`RADIUS`."
 
-#: ../../ip-config/radius.rst:158
+#: ../../ip-config/radius.rst:266
 msgid "Enter the VLAN ID as number into the field *Virtual LAN ID*."
 msgstr "Geben Sie die VLAN ID as Zahl in das Feld *Virtual LAN ID*."
 
-#: ../../ip-config/radius.rst:160
+#: ../../ip-config/radius.rst:268
 msgid "To save, click :guilabel:`SAVE`."
 msgstr "Zum Speichern, klicken Sie :guilabel:`SPEICHERN`."
 
-#: ../../ip-config/radius.rst:162
+#: ../../ip-config/radius.rst:270
 msgid ""
 "If a computer object has assigned several groups with VLAN IDs, UCS "
 "selects the VLAN ID with the lowest number and assigns it. To configure a"
@@ -2745,7 +2924,7 @@ msgstr ""
 " eine Standard VLAN-ID zu konfigurieren, setzen Sie diese als Wert in die"
 " |UCSUCRV| :envvar:`freeradius/vlan-id`."
 
-#: ../../ip-config/radius.rst:167
+#: ../../ip-config/radius.rst:275
 msgid ""
 "After you completed the configuration, the Radius server returns the "
 "assigned VLAN ID to requests with the given MAC address."
@@ -2754,7 +2933,7 @@ msgstr ""
 " die zugewiesene VLAN-ID an Anfragen mit der angegebenen MAC-Adresse "
 "zurück."
 
-#: ../../ip-config/radius.rst:170
+#: ../../ip-config/radius.rst:278
 msgid ""
 "UCS stores the MAC address in the LDAP directory as lowercase string with"
 " the colon (``:``) as separator, for example ``00:00:5e:00:53:00``."
@@ -2763,15 +2942,16 @@ msgstr ""
 "Kleinbuchstaben mit dem Doppelpunkt (``:``) als Trennzeichen, zum "
 "Beispiel ``00:00:5e:00:53:00``."
 
-#: ../../ip-config/radius.rst:176
+#: ../../ip-config/radius.rst:284
 msgid ""
 "With :uv:erratum:`5.0x1011` the Radius server can handle different "
 "formats of the MAC addresses for the username when using MAB."
 msgstr ""
 "Mit :uv:erratum:`5.0x1011` kann der Radius-Server mit verschiedenen "
-"Formaten der MAC Adresse für Benutzernamen umgehen, wenn MAB verwendet wird."
+"Formaten der MAC Adresse für Benutzernamen umgehen, wenn MAB verwendet "
+"wird."
 
-#: ../../ip-config/radius.rst:179
+#: ../../ip-config/radius.rst:287
 msgid ""
 "Devices that use MAB, use their MAC address as username and they may use "
 "different formats for it. The Radius server supports different case-"
@@ -2783,27 +2963,27 @@ msgstr ""
 "unterscheiden. In der folgenden Liste sind die getesteten Formate "
 "aufgeführt:"
 
-#: ../../ip-config/radius.rst:184
+#: ../../ip-config/radius.rst:292
 msgid "``XX:XX:XX:XX:XX:XX``"
 msgstr "``XX:XX:XX:XX:XX:XX``"
 
-#: ../../ip-config/radius.rst:185
+#: ../../ip-config/radius.rst:293
 msgid "``XX-XX-XX-XX-XX-XX``"
 msgstr "``XX-XX-XX-XX-XX-XX``"
 
-#: ../../ip-config/radius.rst:186
+#: ../../ip-config/radius.rst:294
 msgid "``XX.XX.XX.XX.XX.XX``"
 msgstr "``XX.XX.XX.XX.XX.XX``"
 
-#: ../../ip-config/radius.rst:187
+#: ../../ip-config/radius.rst:295
 msgid "``XXXX.XXXX.XXXX``"
 msgstr "``XXXX.XXXX.XXXX``"
 
-#: ../../ip-config/radius.rst:188
+#: ../../ip-config/radius.rst:296
 msgid "``XXXXXXXXXXXX``"
 msgstr "``XXXXXXXXXXXX``"
 
-#: ../../ip-config/radius.rst:192
+#: ../../ip-config/radius.rst:300
 msgid ""
 "For non-standard formats, you can configure a regular expression in the "
 "|UCSUCRV| :envvar:`freeradius/conf/mac-addr-regexp` to match your custom "
@@ -2813,7 +2993,7 @@ msgstr ""
 "der |UCSUCRV| :envvar:`freeradius/conf/mac-addr-regexp` konfigurieren, "
 "der mit Ihrem benutzerdefinierten MAC-Adressformat zusammen passt."
 
-#: ../../ip-config/radius.rst:195
+#: ../../ip-config/radius.rst:303
 msgid ""
 "Depending on your regular expression, the previously listed formats may "
 "not work anymore."
@@ -2821,7 +3001,7 @@ msgstr ""
 "Je nach regulärem Ausdruck kann es vorkommen, dass die zuvor aufgeführten"
 " Formate nicht mehr funktionieren."
 
-#: ../../ip-config/radius.rst:199
+#: ../../ip-config/radius.rst:307
 msgid ""
 "All devices that use MAB, need to have the same password set, because "
 ":ref:`service specific passwords <ip-config-radius-configuration-service-"
@@ -2837,7 +3017,7 @@ msgstr ""
 "konfigurieren. Sie können Ihr eigenes Passwort für die Geräte mit MAB "
 "erstellen, zum Beispiel ``mab request format attribute 2 password1``."
 
-#: ../../ip-config/radius.rst:206
+#: ../../ip-config/radius.rst:314
 msgid ""
 "If the network infrastructure provides a different format, you can often "
 "reconfigure the format. For example, for Cisco switches, you can use "
@@ -2855,11 +3035,11 @@ msgstr ""
 "xml/ios/sec_usr_aaa/configuration/15-e/sec-usr-aaa-15-e-book/sec-usr- "
 "config-mab-usrname-pwd.html>`_ beschrieben."
 
-#: ../../ip-config/radius.rst:217
+#: ../../ip-config/radius.rst:325
 msgid "Access point administration"
 msgstr "Access Points verwalten"
 
-#: ../../ip-config/radius.rst:219
+#: ../../ip-config/radius.rst:327
 msgid ""
 "All access points must be known to the RADIUS server. An access point can"
 " either be configured in the file "
@@ -2876,13 +3056,13 @@ msgstr ""
 "werden (Zum Beispiel über den Befehl :command:`makepasswd`.). Der Name "
 "kann frei gewählt werden."
 
-#: ../../ip-config/radius.rst:225
+#: ../../ip-config/radius.rst:333
 msgid "Example entry for an access point:"
 msgstr ""
 "Beispiel für einen Eintrag eines Access Points in der "
 ":file:`clients.conf` Datei:"
 
-#: ../../ip-config/radius.rst:227
+#: ../../ip-config/radius.rst:335
 msgid ""
 "client AP01 {\n"
 "    secret = a9RPAeVG\n"
@@ -2894,7 +3074,7 @@ msgstr ""
 "    ipaddr = 192.0.2.101\n"
 "}"
 
-#: ../../ip-config/radius.rst:234
+#: ../../ip-config/radius.rst:342
 msgid ""
 "To configure an access point using the UMC module :guilabel:`Computers` "
 "create or select a computer object and activate the *RADIUS-"
@@ -2916,7 +3096,7 @@ msgstr ""
 "Eigenschaften *NAS-Type* und Virtueller Server müssen in der Regel nicht "
 "verändert werden."
 
-#: ../../ip-config/radius.rst:242
+#: ../../ip-config/radius.rst:350
 msgid ""
 "Access points that are configured via the UMC module "
 ":guilabel:`Computers` are available to all RADIUS servers in the domain. "
@@ -2934,19 +3114,19 @@ msgstr ""
 "dies verzögert (etwa 15 Sekunden). Neue *Access Points* haben erst nach "
 "diesem Neustart Zugriff auf den RADIUS-Server."
 
-#: ../../ip-config/radius.rst:255
+#: ../../ip-config/radius.rst:363
 msgid "RADIUS option"
 msgstr "Setzen der RADIUS-Option"
 
-#: ../../ip-config/radius.rst:262
+#: ../../ip-config/radius.rst:370
 msgid "RADIUS authenticator options"
 msgstr "*RADIUS-Authenticator* Optionen"
 
-#: ../../ip-config/radius.rst:267
+#: ../../ip-config/radius.rst:375
 msgid "Access point and client configuration"
 msgstr "Konfiguration von Access Point und Client"
 
-#: ../../ip-config/radius.rst:269
+#: ../../ip-config/radius.rst:377
 msgid ""
 "The access points must then be configured to use 802.1x (\"WPA "
 "Enterprise\") authentication. And the *RADIUS server* address should be "
@@ -2961,7 +3141,7 @@ msgstr ""
 " des ``secret`` aus dem Eintrag in der :file:`clients.conf` für den "
 "Access Point gesetzt sein."
 
-#: ../../ip-config/radius.rst:274
+#: ../../ip-config/radius.rst:382
 msgid ""
 "Wireless clients have to be configured to use *WPA* with *PEAP* and "
 "*MSCHAPv2* for authentication."
@@ -2969,11 +3149,11 @@ msgstr ""
 "WLAN Clients müssen so konfiguriert sein, dass sie *WPA* mit *PEAP* und "
 "*MSCHAPv2* für die Authentisierung verwenden."
 
-#: ../../ip-config/radius.rst:280
+#: ../../ip-config/radius.rst:388
 msgid "VLAN IDs"
 msgstr "VLAN IDs"
 
-#: ../../ip-config/radius.rst:282
+#: ../../ip-config/radius.rst:390
 msgid ""
 "Virtual Local Area Networks (VLANs) can be used to separate the traffic "
 "of users at the network level. UCS can be configured to return a VLAN ID "
@@ -2988,7 +3168,7 @@ msgstr ""
 "<3580>` zurück gibt. Weitere Informationen finden Sie in :ref:`computers-"
 "network-complex-vlan`."
 
-#: ../../ip-config/radius.rst:287
+#: ../../ip-config/radius.rst:395
 msgid ""
 "The VLAN ID for a user can be configured by assigning the user to a group"
 " with a VLAN ID."
@@ -2996,11 +3176,11 @@ msgstr ""
 "Die VLAN-ID für einen Benutzer kann konfiguriert werden, indem der "
 "Benutzer einer Gruppe mit einer VLAN-ID zugewiesen wird."
 
-#: ../../ip-config/radius.rst:294
+#: ../../ip-config/radius.rst:402
 msgid "Assigning VLAN ID to a user group"
 msgstr "Zuweisung VLAN ID zu einer Benutzergruppe"
 
-#: ../../ip-config/radius.rst:296
+#: ../../ip-config/radius.rst:404
 msgid ""
 "A default VLAN ID can be configured in the |UCSUCRV| :envvar:`freeradius"
 "/vlan-id`. This default VLAN ID will be returned if the user is not a "
@@ -3014,11 +3194,11 @@ msgstr ""
 "Antwort wird keine VLAN-ID enthalten, wenn der Benutzer nicht Mitglied "
 "einer Gruppe mit VLAN-ID ist und keine Standard VLAN-ID definiert ist."
 
-#: ../../ip-config/radius.rst:304
+#: ../../ip-config/radius.rst:412
 msgid "Debugging"
 msgstr "Fehlersuche"
 
-#: ../../ip-config/radius.rst:306
+#: ../../ip-config/radius.rst:414
 msgid ""
 "The :program:`RADIUS` app has a log file under "
 ":file:`/var/log/univention/radius_ntlm_auth.log`. The log verbosity can "
@@ -3032,7 +3212,7 @@ msgstr ""
 ":envvar:`freeradius/auth/helper/ntlm/debug` steuern. Der :program"
 ":`FreeRADIUS-Server` loggt nach :file:`/var/log/freeradius/radius.log`."
 
-#: ../../ip-config/radius.rst:312
+#: ../../ip-config/radius.rst:420
 msgid ""
 "The tool :program:`univention-radius-check-access` can be used to "
 "evaluate the current access policy for a given user and/or station ID "
@@ -3045,7 +3225,7 @@ msgstr ""
 " dem Server ausgeführt werden, wo das Paket :program:`univention-radius` "
 "installiert ist:"
 
-#: ../../ip-config/radius.rst:317
+#: ../../ip-config/radius.rst:425
 msgid ""
 "root@primary211:~# univention-radius-check-access --username=stefan\n"
 "DENY 'uid=stefan,cn=users,dc=ucs,dc=example'\n"
@@ -3065,7 +3245,7 @@ msgstr ""
 "-> -> 'cn=Users,cn=Builtin,dc=ucs,dc=example'\n"
 "Thus access is DENIED."
 
-#: ../../ip-config/radius.rst:328
+#: ../../ip-config/radius.rst:436
 msgid ""
 "root@primary211:~# univention-radius-check-access --username=janek\n"
 "DENY 'uid=janek,cn=users,dc=ucs,dc=example'\n"
@@ -3091,7 +3271,7 @@ msgstr ""
 "Thus access is ALLOWED.\n"
 "root@primary211:~#"
 
-#: ../../ip-config/radius.rst:342
+#: ../../ip-config/radius.rst:450
 msgid ""
 "It prints a detailed explanation and sets the exit code depending on the "
 "result of the access check (``0`` for *access granted*, ``1`` for *access"
@@ -3459,4 +3639,55 @@ msgstr ""
 "Mit der |UCSUCRV| :envvar:`squid/auth/allowed_groups` kann der Zugriff "
 "auf eine oder mehrere Gruppen beschränkt werden. Bei Angabe mehrerer "
 "Gruppen sind diese durch ein Semikolon zu trennen."
+
+#~ msgid ""
+#~ "By default, users authenticate with "
+#~ "their domain password. By setting the"
+#~ " |UCSUCRV| :envvar:`radius/use-service-"
+#~ "specific-password` to ``true``, a dedicated"
+#~ " password for RADIUS will be used."
+#~ " Through the :ref:`Self Service app "
+#~ "<user-management-password-changes-by-"
+#~ "users>`, users can get such a "
+#~ "password. The system will generate a "
+#~ "random password for users to use. "
+#~ "If needed, a new password can be"
+#~ " generated at any time. This also "
+#~ "invalidates the old password. To enable"
+#~ " this page in the Self Service, "
+#~ "the |UCSUCRV| :envvar:`umc/self-service/service-"
+#~ "specific-passwords/backend/enabled` has to be"
+#~ " set to ``true`` on the "
+#~ ":guilabel:`Self Service Backend`."
+#~ msgstr ""
+#~ "Standardmäßig authentifizieren sich Benutzer "
+#~ "über ihr Domänenpasswort. Durch Setzen "
+#~ "der |UCSUCRV| :envvar:`radius/use-service-"
+#~ "specific-password` auf ``true`` wird "
+#~ "stattdessen ein Passwort speziell für "
+#~ "RADIUS genutzt. Dieses Passwort können "
+#~ "Nutzer selbst über die :ref:`App Self"
+#~ " Service <user-management-password-"
+#~ "changes-by-users>` setzen lassen. Dafür "
+#~ "ist auf dem :guilabel:`Self Service "
+#~ "Backend` die |UCSUCRV| :envvar:`umc/self-"
+#~ "service/service-specific-passwords/backend/enabled` "
+#~ "auf ``true`` zu setzen. In der App"
+#~ " kann dann vom System ein zufälliges"
+#~ " Passwort erzeugt werden, das die "
+#~ "Benutzer dann nutzen können. Bei Bedarf"
+#~ " kann das Passwort neu generiert "
+#~ "werden.  Dadurch wird gleichzeitig das "
+#~ "alte Passwort ungültig."
+
+#~ msgid ""
+#~ "The parameters used to generate the "
+#~ "passwords can be adjusted. On a "
+#~ "|UCSPRIMARYDN| some |UCSUCRVs| have to "
+#~ "be set:"
+#~ msgstr ""
+#~ "Die Parameter, mit denen das Passwort"
+#~ " erzeugt wird, können angepasst werden. "
+#~ "Auf dem |UCSPRIMARYDN| müssen dazu "
+#~ "|UCSUCRVs| gesetzt werden:"
 
