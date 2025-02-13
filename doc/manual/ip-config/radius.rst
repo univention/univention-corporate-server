@@ -58,15 +58,23 @@ checkbox can also be set on groups, which allows all users in this group access.
 Service specific password
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By default, users authenticate with their domain password. By setting the
-|UCSUCRV| :envvar:`radius/use-service-specific-password` to ``true``, a dedicated
-password for RADIUS will be used. Through the :ref:`Self Service app
-<user-management-password-changes-by-users>`, users can get such a password. The
-system will generate a random password for users to use. If needed, a new
-password can be generated at any time. This also invalidates the old password.
-To enable this page in the Self Service, the |UCSUCRV|
-:envvar:`umc/self-service/service-specific-passwords/backend/enabled` has to be
-set to ``true`` on the :guilabel:`Self Service Backend`.
+By default, users authenticate with their domain password.
+RADIUS uses a specific password,
+if an administrator sets the |UCSUCRV|
+:envvar:`radius/use-service-specific-password` to ``true``.
+Users can request a password specific to wireless LAN use
+through the
+:ref:`Self Service app <user-management-password-changes-by-users>`.
+UCS generates a random password for each password request
+from the :program:`Self Service`.
+If necessary, users can generate a random password at any time,
+which also invalidates the existing password.
+
+To enable the service specific password page in the :program:`Self Service` app,
+the administrator must set the |UCSUCRV|
+:envvar:`umc/self-service/service-specific-passwords/backend/enabled`
+to the value ``true`` on the UCS system
+that has the :program:`Self Service Backend` app installed.
 
 .. _ip-config-radius-selfservice:
 
@@ -75,13 +83,113 @@ set to ``true`` on the :guilabel:`Self Service Backend`.
 
    The page in the Self Service to get a RADIUS specific password
 
-The parameters used to generate the passwords can be adjusted. On a
-|UCSPRIMARYDN| some |UCSUCRVs| have to be set:
+UCS allows configuring the password quality for the auto generated service specific passwords
+through the following |UCSUCRVs|.
+For a description,
+see the references to the respective generic password quality settings.
 
-.. code-block:: console
+.. _ip-config-radius-configuration-service-specific-password-table:
 
-   $ ucr search password/radius/quality
+.. list-table:: Password quality parameters for RADIUS
+   :header-rows: 1
+   :width: 90%
 
+   * - RADIUS password quality parameter
+     - Generic password quality parameter
+
+   * - ``password/radius/quality/credit/digits``
+     - :envvar:`password/quality/credit/digits`
+
+   * - ``password/radius/quality/credit/lower``
+     - :envvar:`password/quality/credit/lower`
+
+   * - ``password/radius/quality/credit/other``
+     - :envvar:`password/quality/credit/other`
+
+   * - ``password/radius/quality/credit/upper``
+     - :envvar:`password/quality/credit/upper`
+
+   * - ``password/radius/quality/forbidden/chars``
+     - :envvar:`password/quality/forbidden/chars`
+
+   * - ``password/radius/quality/length/min``
+     - :envvar:`password/quality/length/min`
+
+.. important::
+
+   The settings in the ``password/quality/**`` |UCSUCRVs| don't have an effect on the service specific password.
+
+To configure the password quality,
+choose the scenario on the following tabs
+that matches your environment where you installed the :program:`RADIUS` app.
+
+.. tab:: RADIUS on Primary
+
+   To configure the password quality,
+   use the following steps.
+
+   Prerequisite
+      You have the :program:`RADIUS` app installed on the |UCSPRIMARYDN|.
+
+   #. For available password quality parameters,
+      either look at
+      :numref:`ip-config-radius-configuration-service-specific-password-table`,
+      or at your system.
+
+      **On the Primary Directory Node**,
+      open the command-line
+      and lookup the available password quality parameters:
+
+      .. code-block:: console
+
+         $ ucr search password/radius/quality
+
+   #. Pick the parameter that you want to change and set the respective |UCSUCRv|,
+      for example the minimal password length.
+
+      .. code-block:: console
+
+         $ ucr set password/radius/quality/length/min=32
+
+.. tab:: RADIUS on other UCS systems
+
+   To configure the password quality,
+   use the following steps.
+
+   Prerequisite
+      You have the :program:`RADIUS` app installed on a UCS system
+      **other than** the |UCSPRIMARYDN|.
+
+   #. For available password quality parameters,
+      either look at
+      :numref:`ip-config-radius-configuration-service-specific-password-table`,
+      or at your system.
+
+      **On the UCS system**
+      that has the :program:`RADIUS` app installed,
+      open the command-line
+      and lookup the available password quality parameters:
+
+      .. code-block:: console
+
+         $ ucr search password/radius/quality
+
+   #. Pick the parameter that you want to change and set the respective |UCSUCRv|,
+      for example the minimal password length.
+      On the |UCSPRIMARYDN|,
+      open the command-line and run the following command:
+
+      .. code-block:: console
+
+         $ ucr set password/radius/quality/length/min=32
+
+3. Regardless the scenario,
+   you finally need to restart the *UDM HTTP REST API* on the |UCSPRIMARYDN|.
+   Open the command-line and run the following command.
+
+   .. code-block:: console
+
+      $ systemctl restart univention-directory-manager-rest.service
 
 .. _ip-config-radius-configuration-mac-filtering:
 
