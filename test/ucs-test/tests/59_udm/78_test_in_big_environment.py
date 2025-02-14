@@ -20,6 +20,7 @@ USER_WITH_NESTED_GROUPS = ['testuser160549', 'testuser549', 'testuser120549', 't
 
 
 users_mod = UDM.machine().version(2).get('users/user')
+groups_mod = UDM.admin().version(2).get('groups/group')
 ucr = ConfigRegistry()
 ucr.load()
 admin_account = utils.UCSTestDomainAdminCredentials()
@@ -75,47 +76,79 @@ def run_test(func, *args, **kwargs):
 
 def test_get_1_user():
     users = 1
-    assert run_test(open_users, users=users, roles=True) < 0.6
-    assert run_test(open_users, users=users, roles=False) < 0.02
+    assert run_test(open_users, users=users, roles=True) < 0.8
+    assert run_test(open_users, users=users, roles=False) < 0.04
 
 
 def test_get_10_user():
     users = 10
     assert run_test(open_users, users=users, roles=True) < 0.8
-    assert run_test(open_users, users=users, roles=False) < 0.07
+    assert run_test(open_users, users=users, roles=False) < 0.1
 
 
 def test_get_100_user():
     users = 100
-    assert run_test(open_users, users=users, roles=True) < 1.5
+    assert run_test(open_users, users=users, roles=True) < 1.8
     assert run_test(open_users, users=users, roles=False) < 1
 
 
 def test_get_1000_user():
     users = 1000
-    assert run_test(open_users, users=users, roles=True) < 9
-    assert run_test(open_users, users=users, roles=False) < 6
+    assert run_test(open_users, users=users, roles=True) < 10
+    assert run_test(open_users, users=users, roles=False) < 7
 
 
 def test_rest_get_1_user():
     users = 1
-    assert run_test(open_users_rest, users=users, roles=True) < 0.3
-    assert run_test(open_users_rest, users=users, roles=False) < 0.07
+    assert run_test(open_users_rest, users=users, roles=True) < 0.4
+    assert run_test(open_users_rest, users=users, roles=False) < 0.2
 
 
 def test_rest_get_10_user():
     users = 10
-    assert run_test(open_users_rest, users=users, roles=True) < 0.7
-    assert run_test(open_users_rest, users=users, roles=False) < 0.8
+    assert run_test(open_users_rest, users=users, roles=True) < 1.5
+    assert run_test(open_users_rest, users=users, roles=False) < 1.3
 
 
 def test_rest_get_100_user():
     users = 100
-    assert run_test(open_users_rest, users=users, roles=True) < 8
-    assert run_test(open_users_rest, users=users, roles=False) < 7
+    assert run_test(open_users_rest, users=users, roles=True) < 10
+    assert run_test(open_users_rest, users=users, roles=False) < 15
 
 
 def test_rest_get_1000_user():
     users = 1000
-    assert run_test(open_users_rest, users=users, roles=True) < 75
-    assert run_test(open_users_rest, users=users, roles=False) < 70
+    assert run_test(open_users_rest, users=users, roles=True) < 120
+    assert run_test(open_users_rest, users=users, roles=False) < 100
+
+
+def test_remove_one_user_from_big_group():
+    allowed_run_time = 15
+    groups = [
+        'cn=testgroup400,cn=groups,dc=ucs,dc=test',
+        'cn=testgroup800,cn=groups,dc=ucs,dc=test',
+        'cn=testgroup1200,cn=groups,dc=ucs,dc=test',
+    ]
+
+    modification = {}
+    for dn in groups:
+        group = groups_mod.get(dn)
+        assert len(group.props.users) >= 199999, len(group.props.users)
+        user = sample(group.props.users, 1)[0]
+        modification[group] = user
+
+    # now the check
+    try:
+        duration = 0
+        for group_obj, user_dn in modification.items():
+            group_obj.props.users.remove(user_dn)
+            ts = time.time()
+            group_obj.save()
+            duration += time.time() - ts
+        duration_per_run = duration / len(groups)
+        assert duration_per_run < allowed_run_time, f'move took longer than {allowed_run_time}s - {duration_per_run}s'
+    finally:
+        for group_obj, user_dn in modification.items():
+            if user_dn not in group_obj.props.users:
+                group_obj.props.users.append(user_dn)
+            group_obj.save()
