@@ -3,9 +3,11 @@ release: "5.2"
 version: [0]
 scope: ucs_5.2-0-errata5.2-0
 src: univention-keycloak
-fix: 3.0.25
+fix: 3.0.26
 desc: |
  This update addresses the following issues:
  * Fixed an issue that causes `univention-keycloak` to crash on
    system that were not running UCR.
-bug: [57964]
+ * Fixed the link to the 5.2 changelogs in
+   `univention-keycloak-migration-status`
+bug: [57964, 57973]

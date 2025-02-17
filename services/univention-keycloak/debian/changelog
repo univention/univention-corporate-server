@@ -1,3 +1,10 @@
+univention-keycloak (3.0.26) unstable; urgency=medium
+
+  * Issue univention/ucs#2672: adjust link to 5.2 changelog in
+    univention-keycloak-migration-status
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 17 Feb 2025 14:10:47 +0100
+
 univention-keycloak (3.0.25) unstable; urgency=medium
 
   * Bug #57964: avoid lower-casing null values

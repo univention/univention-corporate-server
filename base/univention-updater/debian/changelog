@@ -1,3 +1,9 @@
+univention-updater (17.0.33) unstable; urgency=medium
+
+  * Issue univention/ucs#2672: fix link to 5.2-0 changelog
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 17 Feb 2025 14:02:02 +0100
+
 univention-updater (17.0.32) unstable; urgency=medium
 
   * Issue univention/ucs#2663: add upgrade check for pam_tally references in the PAM

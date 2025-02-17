@@ -180,7 +180,7 @@ update_check_openldap_bdb () {
 		echo "	database backend."
 		echo
 		echo "	Please read the release notes"
-		echo "		<https://docs.software-univention.de/release-notes-5.2-0-en.html>"
+		echo "		<https://docs.software-univention.de/release-notes/5.2-0/en/index.html>"
 		echo "	and the help article"
 		echo "		<https://help.univention.com/t/22322>"
 		echo "	on how to migrate OpenLDAP to MDB."

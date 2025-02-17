@@ -173,7 +173,7 @@ def migration_complete(opt):
             file=sys.stderr,
         )
         print(
-            "\nPlease read the UCS 5.2 release notes <https://docs.software-univention.de/release-notes-5.2-0-en.html>"
+            "\nPlease read the UCS 5.2 release notes <https://docs.software-univention.de/release-notes/5.2-0/en/index.html>"
             f"\nand the Keycloak migration guide: {GUIDE_URL}"
             "\nfor how to migrate your domain to Keycloak.",
             file=sys.stderr,
