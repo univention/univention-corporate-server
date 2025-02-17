@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [9]
+scope: ucs_5.0-0-errata5.0-9
+src: univention-keycloak
+fix: 1.0.13-5
+desc: |
+ This update addresses the following issues:
+ * Fixed the link to the 5.2 changelog in
+   `univention-keycloak-migration-status`.
+bug: [57973]
