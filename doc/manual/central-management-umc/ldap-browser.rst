@@ -30,8 +30,6 @@ The :guilabel:`Add` button can be used to add new objects here too. Similar to
 the control elements described in :ref:`central-user-interface`, existing
 objects can also be edited, deleted or moved here.
 
-.. FIXME: Could not get a screenshot with the context menu opened
-
 .. _umc-container-edit:
 
 .. figure:: /images/umc_navigation_edit.*

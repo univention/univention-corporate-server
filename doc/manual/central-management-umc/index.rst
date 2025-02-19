@@ -10,8 +10,6 @@
 
 .. highlight:: console
 
-.. FIXME: Screenshot too big
-
 .. _fig-ucs-portal:
 
 .. figure:: /images/portal.*

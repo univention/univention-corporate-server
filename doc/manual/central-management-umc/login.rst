@@ -87,8 +87,6 @@ For sign-in through single sing-on,
 the browser session closes after 8 hours of inactivity.
 To get a fresh session, the user must sign in again.
 
-.. FIXME: New screenshots missing
-
 .. _umc-login-sso:
 
 .. figure:: /images/umc_login_sso.*
