@@ -41,11 +41,12 @@ from univention.management.console.modules.diagnostic import MODULE, Instance, W
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 
-UCS = (5, 0)
-POSTGRESQL_VERSION = (11,)
-MIGRATION_URL = "https://help.univention.com/t/updating-from-postgresql-9-6-or-9-4-to-postgresql-11/17531"
+UCS = (5, 0, 10)
+POSTGRESQL_VERSION = (15,)
+MIGRATION_URL_11_TO_15 = "https://help.univention.com/t/updating-from-postgresql-11-to-postgresql-15/22162"
+MIGRATION_URL_9_TO_11 = "https://help.univention.com/t/updating-from-postgresql-9-6-or-9-4-to-postgresql-11/17531"
 title = _('Check currently installed PostgreSQL version')
-description = _('''As of UCS {ucs[0]}.{ucs[1]}, PostgreSQL {postgresql_version[0]} should be used.
+description = _('''As of UCS {ucs[0]}.{ucs[1]}-{ucs[2]}, PostgreSQL {postgresql_version[0]} should be used.
 This step has to be performed manually as described in''').format(
     ucs=UCS, postgresql_version=POSTGRESQL_VERSION,
 )
@@ -53,8 +54,13 @@ This step has to be performed manually as described in''').format(
 links = [
     {
         "name": "postgresql-migration",
-        "href": MIGRATION_URL,
+        "href": MIGRATION_URL_9_TO_11,
         "label": _("Updating from PostgreSQL 9.6 or 9.4 to PostgreSQL 11"),
+    },
+    {
+        "name": "postgresql-migration",
+        "href": MIGRATION_URL_11_TO_15,
+        "label": _("Updating from PostgreSQL 11 to PostgreSQL 15"),
     },
 ]
 run_descr = [_('The migration status can be checked by executing: pg_lsclusters -h.')]
