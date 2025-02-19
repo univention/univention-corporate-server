@@ -40,8 +40,6 @@ clicking the checkbox the left of *Name*). Clicking on :menuselection:`More -->
 Create report` allows to choose between the *Standard Report* in PDF format and
 the *Standard CSV Report* in CSV format.
 
-.. FIXME: Could not get a screenshot with the context menu opened
-
 .. _umc-report:
 
 .. figure:: /images/umc_report.*
