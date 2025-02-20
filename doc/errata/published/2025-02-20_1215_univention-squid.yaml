@@ -11,3 +11,6 @@ desc: |
    the cache configuration in `squid.conf`. A custom squid cache
    configuration can be added to `/etc/squid/local.conf`.
 bug: [57963]
+erratum: 1215
+announced: 2025-02-20
+support: core
