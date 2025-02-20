@@ -63,6 +63,7 @@ from univention.management.console.error import UMC_Error
 from univention.management.console.ldap import get_user_connection, user_connection
 from univention.management.console.log import MODULE
 
+from univention.management.console.modules.udm.guardian import user_may_read
 
 _ = Translation('univention-management-console-module-udm').translate
 
@@ -93,6 +94,15 @@ def set_bind_function(connection_getter):
 
 def get_bind_function():
     return __bind_function
+
+
+def set_bind_user(user_dn):
+    global __bind_user_dn
+    __bind_user_dn = user_dn
+
+
+def get_bind_user():
+    return __bind_user_dn
 
 
 def LDAP_Connection(func):
@@ -416,7 +426,10 @@ class UDM_Module:
             AppAttributes._cache = None
 
     def get_ldap_connection(self, base=None):
-        if get_bind_function():
+        if ucr.is_true("umc/udm/delegation"):
+            from univention.admin.uldap import getAdminConnection
+            self.ldap_connection, _po = getAdminConnection()
+        elif get_bind_function():
             try:
                 self.ldap_connection, _po = get_user_connection(bind=get_bind_function(), write=True, bindhash=get_bind_hash())
             except (LDAPError, udm_errors.ldapError):
@@ -713,6 +726,7 @@ class UDM_Module:
         MODULE.info('Triggering garbage collection')
         gc.collect()
 
+        result = user_may_read(result)
         return result
 
     def get(self, ldap_dn=None, superordinate=None, attributes=[]):
@@ -1391,6 +1405,7 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
                 raise ObjectDoesNotExist(container)
         UDM_Error(e).reraise()
 
+    choices = user_may_read(choices)
     return choices
 
 
