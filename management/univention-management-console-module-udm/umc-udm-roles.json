@@ -1,0 +1,61 @@
+{
+  "domainadmin": [
+    {
+      "condition": {
+        "position": "*"
+      },
+      "permissions": {
+        "*": {
+          "attributes": {
+            "*": "write"
+          },
+          "create": true,
+          "delete": true
+        }
+      }
+    }
+  ],
+  "ouadmin": [
+    {
+      "condition": {
+        "position": "$CONTEXT",
+        "scope": "subtree"
+      },
+      "permissions": {
+        "*": {
+          "attributes": {
+            "*": "write",
+            "guardianMemberRoles": "read",
+            "guardianRole": "read"
+          },
+          "create": true,
+          "delete": true
+        }
+      }
+    },
+    {
+      "condition": {
+        "position": "cn=groups",
+        "scope": "base"
+      },
+      "permissions": {
+        "groups/group": {
+          "attributes": {
+            "*": "read"
+          }
+        }
+      }
+    },
+    {
+      "condition": {
+        "position": "cn=domain,cn=mail",
+        "scope": "base"
+      },
+      "permissions": {
+        "mail/domain": {
+          "create": true
+        }
+      }
+    }
+  ]
+}
