@@ -78,6 +78,7 @@ from .udm_ldap import (
     get_obj_module, info_syntax_choices, ldap_dn2path, list_objects, read_syntax_choices, search_syntax_choices_by_key,
     set_bind_function, set_bind_hash, set_bind_user,
 )
+from .guardian import user_may_read
 
 
 USE_ASTERISKS = ucr.is_true('directory/manager/web/allow_wildcard_search', True)
@@ -779,6 +780,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         return: [ { 'id' : <LDAP DN of container>, 'label' : <name> }, ... ]
         """
         containers = [{'id': x, 'label': ldap_dn2path(x, ldap_base=module.ldap_base)} for x in module.get_default_containers()]
+        containers = user_may_read(containers)
         return sorted(containers, key=lambda x: x['label'].lower())
 
     @module_from_request
