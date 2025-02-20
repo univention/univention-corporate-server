@@ -9,3 +9,6 @@ desc: |
  * Fixed the link to the 5.2 changelog in
    `univention-keycloak-migration-status`.
 bug: [57975]
+erratum: 1216
+announced: 2025-02-20
+support: core
