@@ -34,19 +34,51 @@
 # <https://www.gnu.org/licenses/>.
 
 
-def user_may_read(objs):
-    from univention.management.console.udm.udm_ldap import get_bind_user
-    # if not ucr.is_true("umc/udm/delegation"):
-    #    return objs
+from univention.admin.uexceptions import permissionDenied
+from univention.management.console.config import ucr
+
+
+def _check_user_role():
+    # return whether guardian handling is needed,
+    # i.e., whether the actual user has meaningful roles
+    from univention.management.console.modules.udm.udm_ldap import get_bind_user
+    if not ucr.is_true("umc/udm/delegation"):
+        return False
     user = get_bind_user()
     if user != "uid=karl,ou=Berlin,ou=People,ou=univention-demo-data,dc=intranet,dc=wiesenthal110,dc=de":
+        return False
+    return True
+
+def user_may_create(obj):
+    if not _check_user_role():
+        return
+    if "ou=Berlin" not in obj._ldap_dn():
+        raise permissionDenied()
+
+def user_may_read(objs):
+    if not _check_user_role():
         return objs
     readable = []
     for obj in objs:
         if hasattr(obj, "dn") and "ou=Berlin" in obj.dn:
+            # "real" udm obj
             readable.append(obj)
         if isinstance(obj, dict) and "ou=Berlin" in obj["id"]:
+            # from syntax choices ({"id": dn, "label": name})
             readable.append(obj)
         if isinstance(obj, str) and "ou=Berlin" in obj:
+            # straight dn strings
             readable.append(obj)
     return readable
+
+def user_may_update(obj):
+    if not _check_user_role():
+        return
+    if "ou=Berlin" not in obj.dn:
+        raise permissionDenied()
+
+def user_may_delete(obj):
+    if not _check_user_role():
+        return
+    if "ou=Berlin" not in obj.dn:
+        raise permissionDenied()
