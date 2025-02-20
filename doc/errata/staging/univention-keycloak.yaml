@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issues:
  * Fixed the link to the 5.2 changelog in
    `univention-keycloak-migration-status`.
-bug: [57973]
+bug: [57975]
