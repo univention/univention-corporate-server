@@ -9,3 +9,6 @@ desc: |
  * Improve performance of `_ldap_modlist()` in `groups/group`
    handler to speed up modifications of very large groups.
 bug: [57960]
+erratum: 1214
+announced: 2025-02-20
+support: core
