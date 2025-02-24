@@ -34,12 +34,26 @@
 # <https://www.gnu.org/licenses/>.
 
 
-from univention.admin.uexceptions import permissionDenied
-from univention.management.console.config import ucr
+import json
 import requests
 
-token = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJTSXA0T3VTUlNyeS1wMkFzV0lpd1IzUnBnMEg2dlRUaW5fLXFrQWJNcXFFIn0.eyJleHAiOjE3NDAxMDg3NTQsImlhdCI6MTc0MDA3Mjc1NCwianRpIjoiYzk5YmUxOTctMDk3Yi00ZGEwLWE1ZDEtMzJkZjkwOWRiMDE1IiwiaXNzIjoiaHR0cHM6Ly91Y3Mtc3NvLW5nLnVjcy50ZXN0L3JlYWxtcy91Y3MiLCJhdWQiOlsiZ3VhcmRpYW4iLCJndWFyZGlhbi1zY3JpcHRzIiwiYWNjb3VudCJdLCJzdWIiOiJmOmVkZjJjYmI0LWExMTQtNGM1OC04ODU2LWM5ZDI4MWY1ZDFjNDpBZG1pbmlzdHJhdG9yIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiZ3VhcmRpYW4tc2NyaXB0cyIsInNpZCI6IjUyMzdiOTQ4LTQzZTAtNDY0Ni05N2YzLWUyM2Y4OGY5MTExZiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cHM6Ly9tYXN0ZXIudWNzLnRlc3QiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtdWNzIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInVpZCI6IkFkbWluaXN0cmF0b3IiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJBZG1pbmlzdHJhdG9yIiwiZG4iOiJ1aWQ9QWRtaW5pc3RyYXRvcixjbj11c2VycyxkYz11Y3MsZGM9dGVzdCIsInByZWZlcnJlZF91c2VybmFtZSI6ImFkbWluaXN0cmF0b3IiLCJmYW1pbHlfbmFtZSI6IkFkbWluaXN0cmF0b3IifQ.mLaBYPK7ZrMpWVZWynwJGW-jdRifM0ocIYipavTZV7e-kvwHOHkaqMYZvbAr7rrwge-XGCxXMnZ8nzKqT9rBTXqji93qUGl3t-EcOXYMmORTWYT_c9xa32QxQ7y9tHJ5-4kIUfgSka4SiSoyKbQW-wRm7WPmZMudLz7iRYWmas1MK6W7O40tP_xVIkSo8_-L4VTVqflMCixgJYlo57FbDGHHEJZ1aznjAZzIINl8ZSALH0G0HADYNDtzWAMQe0WdzTAn_WlKAZWER1yjk9eCopf9l0hQTtMBx1vg54ljeX341Qx3UU6M4Coqb_MQ-pypIcPnjkE7hVTF-seAde_ZUw'
-authz_server = 'https://master.ucs.test/guardian/authorization'
+from univention.admin.uexceptions import permissionDenied
+from univention.management.console.config import ucr
+
+guardian_user = "Administrator"
+guardian_user_password = "univention"
+
+keycloak_url = 'https://%s/realms/ucs/protocol/openid-connect/token' % ucr.get("keycloak/server/sso/fqdn")
+authz_server = 'https://%s.%s/guardian/authorization' % (ucr.get("hostname"), ucr.get("domainname"))
+
+_response = requests.post(keycloak_url, data={"password": guardian_user_password, "username": guardian_user, "client_id": "guardian-scripts", "grant_type": "password"})
+
+token = _response.json()["access_token"]
+
+guardian_app_name = "udm-umc"
+guardian_namespace = "users_user"
+guardian_context = "berlin"
+
 
 def get_guardian_permissions(actor_dn, target_id, target_context):
     body = {
@@ -48,15 +62,15 @@ def get_guardian_permissions(actor_dn, target_id, target_context):
             'id': actor_dn,
             'roles': [
                 {
-                    'app_name': 'umc',
-                    'namespace_name': 'umc',
+                    'app_name': guardian_app_name,
+                    'namespace_name': guardian_namespace,
                     # here the role of user role would go, just hardcode admin for now
                     'name': 'admin',
                     'context': {
-                        'app_name': 'umc',
-                        'namespace_name': 'umc',
+                        'app_name': guardian_app_name,
+                        'namespace_name': guardian_namespace,
                         # this is the context, this could be for example an ou or an department within an org
-                        'name': 'berlin'
+                        'name': guardian_context
                     }
                 }
             ],
@@ -87,8 +101,7 @@ def get_guardian_permissions(actor_dn, target_id, target_context):
         'include_general_permissions': False,
         'extra_request_data': {}
     }
-    import json
-    headers={'accept': 'application/json', 'content-type': 'application/json', 'authorization': 'Bearer ' + token}
+    headers = {'accept': 'application/json', 'content-type': 'application/json', 'authorization': 'Bearer ' + token}
     res = requests.post(authz_server + '/permissions', headers=headers, data=json.dumps(body))
 
     res_body = res.json()
@@ -114,6 +127,7 @@ def check_guardian_permissions(actor_dn, target_id, target_context, action):
 
     return a
 
+
 def get_first_ou(dn_string):
     ou_start_index = dn_string.find("ou=")
     if ou_start_index == -1:
@@ -129,16 +143,21 @@ def get_first_ou(dn_string):
 
     return ou_value
 
+
 def _check_user_role():
     # return whether guardian handling is needed,
     # i.e., whether the actual user has meaningful roles
     from univention.management.console.modules.udm.udm_ldap import get_bind_user
     if not ucr.is_true("umc/udm/delegation"):
+        print("FEATURE DISABLED")
         return False
     user = get_bind_user()
-    if user != "uid=karl,ou=Berlin,ou=People,ou=univention-demo-data,dc=ucs,dc=test":
+    if user != "uid=karl,ou=Berlin,ou=People,ou=univention-demo-data,%s" % ucr.get("ldap/base"):
+        print("CARL!!!!!!")
+        print(user)
         return False
     return True
+
 
 def user_may_create(obj):
     if not _check_user_role():
@@ -155,6 +174,7 @@ def user_may_create(obj):
     if not authz_result:
         raise permissionDenied()
     print('""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""')
+
 
 def user_may_read(objs):
     if not _check_user_role():
@@ -184,11 +204,13 @@ def user_may_read(objs):
         print('""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""')
     return readable
 
+
 def user_may_update(obj):
     if not _check_user_role():
         return
     if "ou=Berlin" not in obj.dn:
         raise permissionDenied()
+
 
 def user_may_delete(obj):
     if not _check_user_role():
