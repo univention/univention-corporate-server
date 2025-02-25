@@ -324,6 +324,9 @@ class Instance(umcm.Base, ProgressMixin):
         return ret
 
     def _run_local(self, app, action, settings, auto_installed, progress):
+        for setting in app.get_settings():
+            if isinstance(setting, FileSetting) and not isinstance(setting, PasswordFileSetting) and settings.get(app.id, {}).get(setting.name):
+                settings[app.id][setting.name] = b64decode(settings[app.id][setting.name]).decode('utf-8')
         kwargs = {
             'noninteractive': True,
             'auto_installed': auto_installed,

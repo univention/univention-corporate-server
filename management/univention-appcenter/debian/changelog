@@ -1,3 +1,10 @@
+univention-appcenter (9.0.13-4) unstable; urgency=medium
+
+  * Bug #57996: fix app installation with a file settings was saving
+    the file in base64.
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 25 Feb 2025 12:54:36 +0100
+
 univention-appcenter (9.0.13-3) unstable; urgency=medium
 
   * Bug #57802: univention-app update-check did not report all missing apps
