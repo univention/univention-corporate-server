@@ -100,7 +100,7 @@ _fix_dns46993 () {  # Bug #46993: Use AmazonProvidedDNS/dnsmasq4kvm and remove O
 
 _disable_apt () {
 	ucr set update/check/cron/enabled=false update/check/boot/enabled=false mail/antispam/rules/autoupdate?yes server/password/cron='#0 1 * * *'
-	systemctl reload cron.service || true
+	systemctl restart cron.service || true
 
 	# Disable apt-daily.service running /usr/lib/apt/apt.systemd.daily
 	echo 'APT::Periodic::Enable 0;' >/etc/apt/apt.conf.d/90no-apt-daily.conf
