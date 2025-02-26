@@ -6,6 +6,6 @@ src: univention-appcenter
 fix: 9.0.13-4
 desc: |
  This update addresses the following issues:
- * Fixed and issue that causes saving files, uploaded during app installation,
-   in the wrong format.
+ * Files uploaded as an App Setting were saved with the wrong content if
+   uploaded during App installation.
 bug: [57996]
