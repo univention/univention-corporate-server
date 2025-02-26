@@ -9,3 +9,6 @@ desc: |
  * Files uploaded as an App Setting were saved with the wrong content if
    uploaded during App installation.
 bug: [57996]
+erratum: 1220
+announced: 2025-02-26
+support: core
