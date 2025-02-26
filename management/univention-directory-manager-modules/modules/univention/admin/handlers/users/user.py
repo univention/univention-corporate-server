@@ -856,7 +856,8 @@ def unmapPasswordExpiry(oldattr):  # type: (dict[str, list[bytes]]) -> str
             shadow_last_change = int(oldattr['shadowLastChange'][0])
         except ValueError:
             log.warning('users/user: failed to calculate password expiration correctly, use only shadowMax instead')
-        return posixDaysToDate(shadow_last_change + shadow_max)
+        # Bug 57681, see '_modlist_password_expiry' for explanation of +1
+        return posixDaysToDate(shadow_last_change + shadow_max + 1)
 
 
 def unmapDisabled(oldattr):  # type: (dict[str, list[bytes]]) -> str
@@ -1680,7 +1681,15 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         unset_pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '0'
 
         now = (int(time.time()) / 3600 / 24)
-        shadowLastChange = str(int(now))
+
+        # Bug 57681
+        # setting shadowLastChange to now - 1 makes password expiry checking between pam_unix and pam_krb5 consistent
+        # pam_krb5 sees the password as expired at 00:01 on the day of password expiry
+        # pam_unix (and related code we have that checks shadowPassword expiry code like the ldap overlay shadowbind) sees
+        # the password as still valid on the day of expiry.
+        # We want uniform handling for this. The password should be invalid at 00:01 at the day of password expiry.
+        shadowLastChange = str(int(now - 1))
+
         shadowMax = str(pwhistoryPolicy.expiryInterval or '')  # FIXME: is pwhistoryPolicy.expiryInterval a unicode or bytestring?
         if pwd_change_next_login:
             # force user to change password on next login

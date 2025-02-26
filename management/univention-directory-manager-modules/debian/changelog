@@ -1,3 +1,10 @@
+univention-directory-manager-modules (17.0.29) unstable; urgency=medium
+
+  * Bug #57681: set shadowLastChange to one day in the past to align password
+    expiry with kerberos5
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 26 Feb 2025 18:35:47 +0100
+
 univention-directory-manager-modules (17.0.28) unstable; urgency=low
 
   * univention/ucs#2653: improve performance of _ldap_modlist() in
