@@ -822,7 +822,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
             old_shadowLastChange = ucs_object_attributes.get('shadowLastChange', [None])[0]
             new_shadowLastChange = old_shadowLastChange
 
-            # shadowMax (set to value of univentionPWExpiryInterval, otherwise delete)
+            # shadowMax (set to value of (univentionPWExpiryInterval - 1), otherwise delete)
             # krb5PasswordEnd (set to today + univentionPWExpiryInterval, otherwise delete)
             old_shadowMax = ucs_object_attributes.get('shadowMax', [None])[0]
             new_shadowMax = old_shadowMax
@@ -833,10 +833,10 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
             newSambaPwdLastSet = str(pwdLastSet_unix).encode('ASCII')
 
             if pwdLastSet == 0:  # pwd change on next login
-                new_shadowMax = b'1'
+                new_shadowMax = b'0'
                 expiry = int(time.time())
                 new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime(expiry)).encode('ASCII')
-                # we need to expire the password. Since shadowMax=1 is its minimum value, we need to set shadowLastChange = today-2days
+                # we need to expire the password. Since shadowMax=0 is its minimum value, we need to set shadowLastChange = today-2days ## FIXME -1day should be enough
                 two_days_ago = int(time.time()) - 86400 * 2
                 new_shadowLastChange = str(two_days_ago // 3600 // 24).encode('ASCII')
             else:                # not pwd change on next login
@@ -859,7 +859,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
                     new_shadowMax = b''
                     new_krb5end = b''
                 else:
-                    new_shadowMax = str(expiryInterval).encode('ASCII')
+                    new_shadowMax = str(expiryInterval - 1).encode('ASCII')
                     new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime(pwdLastSet_unix + (int(expiryInterval) * 3600 * 24))).encode('ASCII')
 
             if new_shadowLastChange != old_shadowLastChange:
