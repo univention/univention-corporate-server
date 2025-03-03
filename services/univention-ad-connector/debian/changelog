@@ -1,3 +1,11 @@
+univention-ad-connector (14.0.20-4) unstable; urgency=medium
+
+  * Bug #57681: set shadowMax to (pwhistoryPolicy.expiryInterval -1) to align
+    password expiry behavior of pam_unix (and the OpenLDAP overlay shadowbind)
+    with that of Heimdal Kerberos.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 03 Mar 2025 19:12:48 +0100
+
 univention-ad-connector (14.0.20-3) unstable; urgency=medium
 
   * Bug #57737: Remove rejects in case AD object is not "readable"
