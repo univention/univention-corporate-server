@@ -4,11 +4,19 @@ univention-s4-connector (14.0.20-1) UNRELEASED; urgency=medium
 
  -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 04 Mar 2025 07:58:54 +0100
 
+univention-s4-connector (14.0.19-2) unstable; urgency=medium
+
+  * Bug #57681: set shadowMax to (pwhistoryPolicy.expiryInterval -1) to align
+    password expiry behavior of pam_unix (and the OpenLDAP overlay shadowbind)
+    with that of Heimdal Kerberos.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 03 Mar 2025 16:50:55 +0100
+
 univention-s4-connector (14.0.19-1) UNRELEASED; urgency=medium
 
   * Bug #57581 UCS 5.0-9 version bump
 
- -- Arvid <requate@univention.de>  Thu, 12 Sep 2024 13:18:32 +0200
+ -- Arvid Requate <requate@univention.de>  Thu, 12 Sep 2024 13:18:32 +0200
 
 univention-s4-connector (14.0.18-6) unstable; urgency=medium
 

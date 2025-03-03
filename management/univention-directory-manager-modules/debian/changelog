@@ -4,6 +4,14 @@ univention-directory-manager-modules (15.0.29-1) UNRELEASED; urgency=medium
 
  -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 04 Mar 2025 07:58:50 +0100
 
+univention-directory-manager-modules (15.0.28-9) unstable; urgency=medium
+
+  * Bug #57681: set shadowMax to (pwhistoryPolicy.expiryInterval -1) to align
+    password expiry behavior of pam_unix (and the OpenLDAP overlay shadowbind)
+    with that of Heimdal Kerberos.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 03 Mar 2025 16:50:55 +0100
+
 univention-directory-manager-modules (15.0.28-8) unstable; urgency=low
 
   * univention/ucs#2653: improve performance of _ldap_modlist() in
