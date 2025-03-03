@@ -1,0 +1,22 @@
+product: ucs
+release: "5.0"
+version: [9]
+scope: ucs_5.0-0-errata5.0-9
+src: univention-directory-manager-modules
+fix: 15.0.28-9
+desc: |
+ This update addresses the following issues:
+ * The PAM module `pam_unix` interprets `(shadowLastChange + shadowMax)` as
+   a date where the password is still valid. I.e. with `shadowMax=1` this
+   PAM module considers a password valid during the day after the change.
+   That causes inconsistent behavior when compared to Kerberos, where
+   `krb5PasswordEnd` defines definite point in time, where the password
+   is considered invalid and UDM sets `krb5PasswordEnd` to beginning of
+   the day of expiry.
+   `shadowMax` is an LDAP attribute that is added to user accounts during
+   password change and the value is determined by the UDM Password History
+   Policy applied to the user.
+   UDM now sets `shadowMax` to `(pwhistoryPolicy.expiryInterval -1)` to
+   compensate for the behavior of `pam_unix` and make it more consistent
+   with the behavior of Kerberos.
+bug: [57681]
