@@ -1,0 +1,21 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: xorg-server
+fix: 2:1.19.2-1+deb9u21
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.8 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2025-26601, CVE-2025-26600, CVE-2025-26599, CVE-2025-26598,
+   CVE-2025-26597, CVE-2025-26596, CVE-2025-26595, CVE-2025-26594)
+bug: [58038]
+cve:
+- CVE-2025-26594
+- CVE-2025-26595
+- CVE-2025-26596
+- CVE-2025-26597
+- CVE-2025-26598
+- CVE-2025-26599
+- CVE-2025-26600
+- CVE-2025-26601
