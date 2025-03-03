@@ -1,0 +1,28 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: ruby2.3
+fix: 2.3.3-1+deb9u13
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2024-49761)
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N).
+   (CVE-2021-28965)
+ * CVSS score 5.9 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2024-43398)
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2024-35176)
+ * CVSS score 4.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:L).
+   (CVE-2024-39908)
+ * CVSS score 3.3 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:L).
+   (CVE-2024-41946)
+bug: [58037]
+cve:
+- CVE-2021-28965
+- CVE-2024-35176
+- CVE-2024-39908
+- CVE-2024-41946
+- CVE-2024-43398
+- CVE-2024-49761
