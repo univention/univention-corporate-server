@@ -608,7 +608,7 @@ def password_sync(connector, key, ucs_object):
                 ud.debug(ud.LDAP, ud.INFO, "password_sync: password expiry for %s is %s" % (ucs_object['dn'], policy))
                 policy_value = policy.get('value', [None])[0]
                 if policy_value:
-                    new_shadowMax = policy_value
+                    new_shadowMax = str(int(policy_value) - 1).encode('ASCII')
                     new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime(int(time.time()) + (int(policy_value) * 3600 * 24))).encode('ASCII')
 
             # update shadowMax (set to value of univentionPWExpiryInterval, otherwise delete) and
@@ -643,11 +643,11 @@ def password_sync(connector, key, ucs_object):
                 modlist.append(('krb5PasswordEnd', b'', new_krb5end))
             if old_shadowMax:
                 ud.debug(ud.LDAP, ud.INFO, "password_sync: shadowMax in modlist (replace): 0")
-                modlist.append(('shadowMax', old_shadowMax, b'1'))
+                modlist.append(('shadowMax', old_shadowMax, b'0'))
             else:
                 ud.debug(ud.LDAP, ud.INFO, "password_sync: shadowMax in modlist (set): 0")
-                modlist.append(('shadowMax', b'', b'1'))
-            two_days_ago = int(time.time()) - (86400 * 2)
+                modlist.append(('shadowMax', b'', b'0'))
+            two_days_ago = int(time.time()) - (86400 * 2)  # FIXME -1day should be enough
             new_shadowLastChange = str(two_days_ago // 3600 // 24).encode('ASCII')
             if old_shadowLastChange:
                 ud.debug(ud.LDAP, ud.INFO, "password_sync: shadowLastChange in modlist (replace): %s" % new_shadowLastChange)
