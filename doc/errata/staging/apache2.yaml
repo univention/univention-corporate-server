@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: apache2
+fix: 2.4.25-3+deb9u20A~4.4.9.202503030940
+desc: |
+ This update addresses the following issue:
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N).
+   (CVE-2024-38473)
+bug: [58036]
+cve:
+- CVE-2024-38473
