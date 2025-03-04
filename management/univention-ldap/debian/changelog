@@ -1,3 +1,9 @@
+univention-ldap (16.0.18-1) UNRELEASED; urgency=medium
+
+  * Bug #58002 UCS 5.0-10 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 04 Mar 2025 07:58:48 +0100
+
 univention-ldap (16.0.17-6) unstable; urgency=medium
 
   * Bug #52175: Update description for `ldap/server/sortvals`

@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.21-1) UNRELEASED; urgency=medium
+
+  * Bug #58002 UCS 5.0-10 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 04 Mar 2025 07:58:52 +0100
+
 univention-ad-connector (14.0.20-3) unstable; urgency=medium
 
   * Bug #57737: Remove rejects in case AD object is not "readable"

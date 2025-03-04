@@ -1,3 +1,9 @@
+ucs-test (12.0.24-1) UNRELEASED; urgency=medium
+
+  * Bug #58002 UCS 5.0-10 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 04 Mar 2025 07:59:01 +0100
+
 ucs-test (12.0.23-40) unstable; urgency=medium
 
   * Issue univention/ucs#2338: fix 86_browser/191_app_suggestions_category.py

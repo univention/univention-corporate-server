@@ -1,3 +1,9 @@
+univention-keycloak (1.0.14-1) UNRELEASED; urgency=medium
+
+  * Bug #58002 UCS 5.0-10 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 04 Mar 2025 07:58:53 +0100
+
 univention-keycloak (1.0.13-5) unstable; urgency=medium
 
   * Bug 57973 adjust link to 5.2 changelog in

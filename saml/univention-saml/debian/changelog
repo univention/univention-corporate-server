@@ -1,3 +1,9 @@
+univention-saml (7.0.13-1) UNRELEASED; urgency=medium
+
+  * Bug #58002 UCS 5.0-10 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 04 Mar 2025 07:58:52 +0100
+
 univention-saml (7.0.12-2) unstable; urgency=medium
 
   * Bug #57839: skip 91univention-saml.inst is primary is on 5.2

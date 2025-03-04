@@ -1,3 +1,9 @@
+univention-directory-reports (12.0.8-1) UNRELEASED; urgency=medium
+
+  * Bug #58002 UCS 5.0-10 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 04 Mar 2025 07:58:51 +0100
+
 univention-directory-reports (12.0.7-3) unstable; urgency=medium
 
   * Bug #57431: Support single-value properties with complex syntax too
