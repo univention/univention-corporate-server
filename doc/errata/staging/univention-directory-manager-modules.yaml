@@ -3,7 +3,7 @@ release: "5.0"
 version: [9]
 scope: ucs_5.0-0-errata5.0-9
 src: univention-directory-manager-modules
-fix: 15.0.28-9
+fix: 15.0.28-10
 desc: |
  This update addresses the following issues:
  * The PAM module `pam_unix` interprets `(shadowLastChange + shadowMax)` as

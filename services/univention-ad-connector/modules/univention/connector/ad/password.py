@@ -608,7 +608,7 @@ def password_sync(connector, key, ucs_object):
                 ud.debug(ud.LDAP, ud.INFO, "password_sync: password expiry for %s is %s" % (ucs_object['dn'], policy))
                 policy_value = policy.get('value', [None])[0]
                 if policy_value:
-                    new_shadowMax = str(int(policy_value) - 1).encode('ASCII')
+                    new_shadowMax = '' if int(policy_value) == 0 else str(int(policy_value) - 1).encode('ASCII')
                     new_krb5end = time.strftime("%Y%m%d000000Z", time.gmtime(int(time.time()) + (int(policy_value) * 3600 * 24))).encode('ASCII')
 
             # update shadowMax (set to value of univentionPWExpiryInterval, otherwise delete) and
