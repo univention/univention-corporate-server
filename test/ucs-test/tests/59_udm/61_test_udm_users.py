@@ -125,7 +125,7 @@ class Test_UserModification:
         user = udm.create_user()[0]
         udm.modify_object('users/user', dn=user, pwdChangeNextLogin='1')
 
-        utils.verify_ldap_object(user, {'shadowMax': ['1']})
+        utils.verify_ldap_object(user, {'shadowMax': ['0']})
 
     @pytest.mark.tags('apptest')
     def test_user_modification_set_pwdChangeNextLogin_kerberos_option(self, udm):
@@ -554,7 +554,7 @@ def test_pwdChangeNextLogin_and_password_set(udm):
     # bugs: [42015]
 
     userdn = udm.create_user(pwdChangeNextLogin=1)[0]
-    utils.verify_ldap_object(userdn, {'shadowMax': ['1']})
+    utils.verify_ldap_object(userdn, {'shadowMax': ['0']})
     udm.modify_object('users/user', dn=userdn, pwdChangeNextLogin='0', password=uts.random_string())
     utils.verify_ldap_object(userdn, {'shadowMax': [], 'krb5PasswordEnd': []})
 
