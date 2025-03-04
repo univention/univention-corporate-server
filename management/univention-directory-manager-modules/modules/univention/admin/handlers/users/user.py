@@ -1726,7 +1726,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         # * pam_unix (and related code we have that checks userPassword expiry like the LDAP overlay `shadowbind`) sees
         #  the password as still valid on the day shadowLastChange + shadowMax, as it calculates: `expired := (now - shadowLastChange > shadowMax)`
         # * We want uniform handling for this. The password should be invalid at 00:01 at the day of password expiry.
-        shadowMax = str(pwhistoryPolicy.expiryInterval - 1) or ''
+        shadowMax = '' if pwhistoryPolicy.expiryInterval == 0 else str(pwhistoryPolicy.expiryInterval - 1)
         if pwd_change_next_login:
             # force user to change password on next login
             shadowMax = shadowMax or '0'

@@ -3,7 +3,7 @@ release: "5.0"
 version: [9]
 scope: ucs_5.0-0-errata5.0-9
 src: univention-ad-connector
-fix: 14.0.20-4
+fix: 14.0.20-5
 desc: |
  This update addresses the following issues:
  * The PAM module `pam_unix` interprets `(shadowLastChange + shadowMax)` as
