@@ -46,14 +46,15 @@ class TestUsers:
 
     @pytest.mark.parametrize('shadowLastChange,shadowMax,pwd_change_next_login,password_expiry', [
         ('0', '', '1', []),
-        ('0', '0', '1', ['1970-01-01']),
-        ('0', '1', '1', ['1970-01-02']),
-        ('0', utc_days_since_epoch(2), '1', (datetime.utcnow() + timedelta(days=2)).strftime('%Y-%m-%d')),
+        ('0', '0', '1', ['1970-01-02']),
+        ('0', '1', '1', ['1970-01-03']),
+        ('0', utc_days_since_epoch(2), '1', (datetime.utcnow() + timedelta(days=3)).strftime('%Y-%m-%d')),
         ('', utc_days_since_epoch(2), '0', []),
         ('', '', '0', []),
         ('', utc_days_since_epoch(-2), '0', []),
-        ('1', utc_days_since_epoch(-2), '1', (datetime.utcnow() - timedelta(days=1)).strftime('%Y-%m-%d')),
-        ('0', utc_days_since_epoch(-2), '1', (datetime.utcnow() - timedelta(days=2)).strftime('%Y-%m-%d')),
+        ('1', utc_days_since_epoch(-2), '1', datetime.utcnow().strftime('%Y-%m-%d')),
+        ('0', utc_days_since_epoch(-2), '1', (datetime.utcnow() - timedelta(days=1)).strftime('%Y-%m-%d')),
+
     ])
     def test_unmap_pwd_change_next_login_and_password_expiry(self, udm, lo, shadowLastChange, shadowMax, pwd_change_next_login, password_expiry):
         user = udm.create_user()[0]
@@ -380,8 +381,8 @@ class TestUsers:
         kw = {"expiryInterval": expiry_interval} if expiry_interval is not None else {}
         pwhistory = udm.create_object('policies/pwhistory', name='pw-test', **kw)
         cn = udm.create_object('container/cn', name='testusers', policy_reference=pwhistory)
-        shadow_max_expiry = [str(expiry_interval)] if expiry_interval is not None else []
-        shadow_max_expiry_1 = [str(expiry_interval)] if expiry_interval is not None else ['1']
+        shadow_max_expiry = [str(expiry_interval - 1)] if expiry_interval is not None else []
+        shadow_max_expiry_1 = [str(expiry_interval - 1)] if expiry_interval is not None else ['0']
 
         user1 = udm.create_user(position=cn)[0]
         udm.verify_ldap_object(user1, {'shadowMax': shadow_max_expiry, 'shadowLastChange': [str(today)] if expiry_interval else []})
@@ -391,13 +392,13 @@ class TestUsers:
         # udm.verify_ldap_object(user2, {'shadowMax': shadow_max_expiry, 'shadowLastChange': [str(today)]})
 
         user3 = udm.create_user(position=cn, pwdChangeNextLogin='1')[0]
-        udm.verify_ldap_object(user3, {'shadowMax': shadow_max_expiry_1, 'shadowLastChange': [str(today - expiry_interval - 1) if expiry_interval else str(today - 2)]})
+        udm.verify_ldap_object(user3, {'shadowMax': shadow_max_expiry_1, 'shadowLastChange': [str(today - expiry_interval) if expiry_interval else str(today - 1)]})
 
         udm.modify_object('users/user', dn=user1, password='univention2')
         udm.verify_ldap_object(user1, {'shadowMax': shadow_max_expiry, 'shadowLastChange': [str(today)] if expiry_interval else []})
 
         udm.modify_object('users/user', dn=user2, password='univention2', pwdChangeNextLogin='1')
-        udm.verify_ldap_object(user2, {'shadowMax': shadow_max_expiry_1, 'shadowLastChange': [str(today - expiry_interval - 1) if expiry_interval else str(today - 2)]})
+        udm.verify_ldap_object(user2, {'shadowMax': shadow_max_expiry_1, 'shadowLastChange': [str(today - expiry_interval) if expiry_interval else str(today - 1)]})
 
         # Bug #46067:
         udm.modify_object('users/user', dn=user3, password='univention2', pwdChangeNextLogin='1')
