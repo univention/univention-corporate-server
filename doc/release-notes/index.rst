@@ -14,7 +14,7 @@ Publication date of UCS |release|: 2024-09-24
 Release highlights
 ******************
 
-With |UCSUCS| 5.0-9, the ninth patch level release for |UCSUCS| (UCS) 5.0 is available.
+With |UCSUCS| 5.0-10, the ninth patch level release for |UCSUCS| (UCS) 5.0 is available.
 It provides several feature improvements and extensions, new properties,
 as well as, various improvements and bug fixes.
 Here is an overview of the most important changes:
@@ -22,16 +22,16 @@ Here is an overview of the most important changes:
 * Single sign-on (SSO) is a central element of integrated identity and access
   management (IAM). The Nubus Identity Provider already supports the most
   important protocols, SAML and OpenID Connect (OIDC). With Univention
-  Corporate Server 5.0-9, OIDC is now also available for the UCS web
+  Corporate Server 5.0-10, OIDC is now also available for the UCS web
   interfaces, in particular the portal and the Univention Management Console
   (UMC). In addition to the migration to the newer SSO mechanism, OIDC in UCS
-  5.0-9 enables new functions such as the “Back-channel Logout”, which supports
+  5.0-10 enables new functions such as the “Back-channel Logout”, which supports
   a Single Logout (SLO) without user interaction. To improve the user
   experience, an automatic update of the portal content in all open tabs after
   a logout ensures that the logged out state is displayed correctly everywhere.
 
 * The Active Directory Connection synchronizes users, groups, and computer
-  objects between Nubus and Active Directory (AD). With UCS 5.0-9, selective
+  objects between Nubus and Active Directory (AD). With UCS 5.0-10, selective
   synchronization has been fundamentally revised. It now enables flexible
   control of the synchronized objects on the basis of allow and deny filters,
   both at the level of entire sub trees and individual object types.
@@ -40,7 +40,7 @@ Here is an overview of the most important changes:
   which avoids unwanted entries on both sides and minimizes
   manual effort.
 
-* UCS 5.0-9 includes various security updates, for example for
+* UCS 5.0-10 includes various security updates, for example for
   :program:`apache2`, :program:`BIND9`, :program:`OpenJDK-11`,
   :program:`dovecot`, :program:`postgresql`, :program:`systemd`
   and the :program:`Linux-5.10` kernel.
@@ -190,10 +190,10 @@ You can download the script before the update and run it on the UCS system.
 .. code-block:: console
 
    # download
-   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-9{.gpg,}
+   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.0-10{.gpg,}
 
    # verify and run script
-   $ apt-key verify pre-update-checks-5.0-9{.gpg,} && bash pre-update-checks-5.0-9
+   $ apt-key verify pre-update-checks-5.0-10{.gpg,} && bash pre-update-checks-5.0-10
 
    ...
 
@@ -273,7 +273,7 @@ Users running older browsers may experience display or performance issues.
 Changelog
 *********
 
-You find the changes since UCS 5.0-8 in :external+uv-changelog-5.0-9:doc:`index`.
+You find the changes since UCS 5.0-8 in :external+uv-changelog-5.0-10:doc:`index`.
 
 .. _biblio:
 
