@@ -342,7 +342,63 @@ General
 
 * UCS 5.0-10 includes the following updated packages from Debian ELTS:
 
-  :program:`FIXME`
+  :program:`emacs`
+  :program:`krb5`
+  :program:`libtasn1-6`
+  :program:`libxml2`
+  :program:`xorg-server`
+  :program:`ca-certificates-java`
+  :program:`distro-info-data`
+  :program:`ruby2.5`
+  :program:`tzdata`
+  :program:`ucf`
+  :program:`activemq`
+  :program:`ark`
+  :program:`asterisk`
+  :program:`astropy`
+  :program:`c-icap-modules`
+  :program:`context`
+  :program:`cyrus-imapd`
+  :program:`dcmtk`
+  :program:`dnsmasq`
+  :program:`editorconfig-core`
+  :program:`fastnetmon`
+  :program:`frr`
+  :program:`git-lfs`
+  :program:`gst-plugins-base1.0`
+  :program:`gstreamer1.0`
+  :program:`havp`
+  :program:`icinga2`
+  :program:`iperf3`
+  :program:`lemonldap-ng`
+  :program:`libapache-mod-jk`
+  :program:`libcpan-reporter-smoker-perl`
+  :program:`libgsf`
+  :program:`libmodule-scandeps-perl`
+  :program:`libpam-tacplus`
+  :program:`libpgjava`
+  :program:`libreoffice`
+  :program:`libtar`
+  :program:`linux-6.1`
+  :program:`linux-signed-6.1-amd64`
+  :program:`mpg123`
+  :program:`needrestart`
+  :program:`nodejs`
+  :program:`pg-snakeoil`
+  :program:`pypy`
+  :program:`python-clamav`
+  :program:`qtbase-opensource-src`
+  :program:`redis`
+  :program:`smarty3`
+  :program:`sssd`
+  :program:`sympa`
+  :program:`texlive-bin`
+  :program:`tomcat9`
+  :program:`twisted`
+  :program:`vlc`
+  :program:`waitress`
+  :program:`wireshark`
+  :program:`zeromq3`
 
 .. _changelog-basic:
 
