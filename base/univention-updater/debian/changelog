@@ -1,6 +1,7 @@
-univention-updater (15.0.19-1) UNRELEASED; urgency=medium
+univention-updater (15.0.19-1) unstable; urgency=medium
 
   * Bug #58002 UCS 5.0-10 version bump
+  * Bug #58003: Adapt links and components for 5.0-10
 
  -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 04 Mar 2025 07:58:59 +0100
 
