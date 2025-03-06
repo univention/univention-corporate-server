@@ -1,34 +1,34 @@
-ucs-test (12.0.23-41) unstable; urgency=medium
+ucs-test (10.0.23-41) unstable; urgency=medium
 
   * Bug #57681: adjust tests to work with shadowMax - 1
 
  -- Marius Meschter <marius.meschter@univention.de>  Tue, 04 Mar 2025 16:27:56 +0100
 
-ucs-test (12.0.23-40) unstable; urgency=medium
+ucs-test (10.0.23-40) unstable; urgency=medium
 
   * Issue univention/ucs#2338: fix 86_browser/191_app_suggestions_category.py
 
  -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Thu, 20 Feb 2025 09:09:03 +0100
 
-ucs-test (12.0.23-39) unstable; urgency=medium
+ucs-test (10.0.23-39) unstable; urgency=medium
 
   * Issue univention/ucs#2653: added test
 
  -- Felix Botner <botner@univention.de>  Tue, 18 Feb 2025 11:18:19 +0100
 
-ucs-test (12.0.23-38) unstable; urgency=medium
+ucs-test (10.0.23-38) unstable; urgency=medium
 
   * Issue univention/ucs#2653): more test in big env
 
  -- Felix Botner <botner@univention.de>  Fri, 14 Feb 2025 16:07:06 +0100
 
-ucs-test (12.0.23-37) unstable; urgency=medium
+ucs-test (10.0.23-37) unstable; urgency=medium
 
   * fix goto_portal do not raise an exception when the change language is not show.
 
  -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 12 Feb 2025 08:09:03 +0100
 
-ucs-test (12.0.23-36) unstable; urgency=medium
+ucs-test (10.0.23-36) unstable; urgency=medium
 
   * Issue univention/ucs!1348: fix the test for checking the execution time of
     a UDM move command in big environments. The time package was not installed
@@ -37,33 +37,33 @@ ucs-test (12.0.23-36) unstable; urgency=medium
 
  -- Mika Westphal <westphal@univention.de>  Thu, 06 Feb 2025 09:54:50 +0100
 
-ucs-test (12.0.23-35) unstable; urgency=medium
+ucs-test (10.0.23-35) unstable; urgency=medium
 
   * Issue univention/ucs!1348: add test for checking the execution time of a
     UDM move command in big environments
 
  -- Mika Westphal <westphal@univention.de>  Mon, 03 Feb 2025 14:21:20 +0100
 
-ucs-test (12.0.23-34) unstable; urgency=medium
+ucs-test (10.0.23-34) unstable; urgency=medium
 
   * Issue univention/ucs#1701: partial revert and migrate 500, 30000 and 65000
     scenario to the new way.
 
  -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 17 Jan 2025 08:04:38 +0100
 
-ucs-test (12.0.23-33) unstable; urgency=medium
+ucs-test (10.0.23-33) unstable; urgency=medium
 
   * univention/ucsschool#1258: Add python2 template exception
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 13 Dec 2024 13:08:41 +0100
 
-ucs-test (12.0.23-32) unstable; urgency=medium
+ucs-test (10.0.23-32) unstable; urgency=medium
 
   * univention/ucs#2338: Add tracing to keycloak playwright tests
 
  -- Marius Meschter <marius.meschter@univention.de>  Wed, 27 Nov 2024 17:40:40 +0100
 
-ucs-test (12.0.23-31) unstable; urgency=medium
+ucs-test (10.0.23-31) unstable; urgency=medium
 
   * Issue univention/ucs#2488: The CLI ucs-test now handles tags mentioned
     multiple times in `-g`, `-p` or `-r` so that the last occurrence of a tag
