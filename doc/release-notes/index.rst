@@ -6,7 +6,7 @@
 Release notes for the installation and update of Univention Corporate Server (UCS) |release|
 ############################################################################################
 
-Publication date of UCS |release|: 2024-09-24
+Publication date of UCS |release|: 2025-03-11
 
 .. _relnotes-highlights:
 
@@ -14,36 +14,29 @@ Publication date of UCS |release|: 2024-09-24
 Release highlights
 ******************
 
-With |UCSUCS| 5.0-10, the ninth patch level release for |UCSUCS| (UCS) 5.0 is available.
+With |UCSUCS| 5.0-10, the tenth patch level release for |UCSUCS| (UCS) 5.0 is available.
 It provides several feature improvements and extensions, new properties,
 as well as, various improvements and bug fixes.
 Here is an overview of the most important changes:
 
-* Single sign-on (SSO) is a central element of integrated identity and access
-  management (IAM). The Nubus Identity Provider already supports the most
-  important protocols, SAML and OpenID Connect (OIDC). With Univention
-  Corporate Server 5.0-10, OIDC is now also available for the UCS web
-  interfaces, in particular the portal and the Univention Management Console
-  (UMC). In addition to the migration to the newer SSO mechanism, OIDC in UCS
-  5.0-10 enables new functions such as the “Back-channel Logout”, which supports
-  a Single Logout (SLO) without user interaction. To improve the user
-  experience, an automatic update of the portal content in all open tabs after
-  a logout ensures that the logged out state is displayed correctly everywhere.
+* SecureBoot ``shim`` has been updated to include the ``Freexian`` public certificate.
+  This certificate is used to sign the ELTS Linux kernel and other packages,
+  ensuring seamless support for Secure Boot on Debian 10 (``Buster``) ELTS systems.
 
-* The Active Directory Connection synchronizes users, groups, and computer
-  objects between Nubus and Active Directory (AD). With UCS 5.0-10, selective
-  synchronization has been fundamentally revised. It now enables flexible
-  control of the synchronized objects on the basis of allow and deny filters,
-  both at the level of entire sub trees and individual object types.
-  The improved selection ensures
-  that the AD Connection synchronizes only the needed objects,
-  which avoids unwanted entries on both sides and minimizes
-  manual effort.
+* The performance of the UDM module for groups has been improved to speed up
+  modifications of very large groups.
+
+* OpenID Connect support in UMC (front-channel logout, session handling) has been improved.
+
+* OpenLDAP is now configured to use the ``sortvals`` option for the attributes
+  ``uniqueMember`` and ``memberUid``. This improves the performance when modifying user or
+  groups in environments with groups with several thousand members. The attributes for the
+  ``sortvals`` option can be configured via the |UCSUCRV| :envvar:`ldap/server/sortvals`.
 
 * UCS 5.0-10 includes various security updates, for example for
-  :program:`apache2`, :program:`BIND9`, :program:`OpenJDK-11`,
-  :program:`dovecot`, :program:`postgresql`, :program:`systemd`
-  and the :program:`Linux-5.10` kernel.
+  :program:`xorg-server`, :program:`krb5`, :program:`libxml2`,
+  :program:`emacs` and the :program:`libtasn1-6`
+
 
 .. _relnotes-update:
 
