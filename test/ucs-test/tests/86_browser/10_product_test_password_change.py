@@ -18,6 +18,7 @@ from enum import Enum
 import pytest
 from ldap.filter import filter_format
 from playwright.sync_api import Locator, Page, expect
+from retrying import retry
 
 import univention.admin.modules as udm_modules
 import univention.testing.strings as uts
@@ -237,20 +238,27 @@ def test_usability_of_a_module_after_password_change(admin_user: User, random_pa
     logout(umc_browser_test)
 
 
+@retry(retry_on_exception=lambda e: isinstance(e, AssertionError), stop_max_attempt_number=3, wait_fixed=30000)
+def attempt_login(umc_browser_test, admin_user, favorite_button):
+    umc_browser_test.login(admin_user.username, admin_user.password, '/univention/management')
+    expect(favorite_button).to_be_visible(timeout=15 * 1000)
+
+
 def test_login_while_changing_password(admin_user: User, random_password: str, umc_browser_test: UMCBrowserTest):
+    time.sleep(60)
     set_change_password_on_login_flag(admin_user, umc_browser_test)
     umc_browser_test.end_umc_session()
 
     umc_browser_test.login(admin_user.username, admin_user.password, '/univention/management', expect_password_change_prompt=True)
     password_expired_text: Locator = umc_browser_test.page.get_by_text(_('The password has expired and must be renewed.'))
     expect(password_expired_text).to_be_visible()
-
+    time.sleep(10)
     umc_browser_test.page.get_by_label(_('New password'), exact=True).type(random_password)
-    time.sleep(0.5)
+    time.sleep(3)
 
     retype_input = umc_browser_test.page.get_by_label(_('New Password (retype)'))
     retype_input.fill(random_password)
-    time.sleep(0.5)
+    time.sleep(3)
 
     retype_input.press('Enter')
 
@@ -261,17 +269,7 @@ def test_login_while_changing_password(admin_user: User, random_password: str, u
 
     favorite_button: Locator = umc_browser_test.page.get_by_role('button', name=_('Favorites'))
 
-    # retrying logging in three times here because sometimes when logging immediately after chaning the password at login
-    # the password expiry prompt is still there
-    for i in range(3):
-        umc_browser_test.login(admin_user.username, admin_user.password, '/univention/management')
-        expect(favorite_button.or_(password_expired_text)).to_be_visible(timeout=15 * 1000)
-        if favorite_button.is_visible():
-            return
-
-        time.sleep(10)
-
-    pytest.fail("'Pasword expired' notice still displayed after three login attempts")
+    attempt_login(umc_browser_test, admin_user, favorite_button)
 
 
 def set_change_password_on_login_flag(user: User, tester: UMCBrowserTest):

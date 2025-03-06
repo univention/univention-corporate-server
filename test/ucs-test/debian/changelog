@@ -1,3 +1,10 @@
+ucs-test (10.0.24-5) unstable; urgency=medium
+
+  * Bug #57681: reduce flakiness of playwright password change during plain
+    login test
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 07 Mar 2025 15:05:05 +0100
+
 ucs-test (10.0.24-4) unstable; urgency=medium
 
   * Bug #58002: fix 86_browser/191_app_suggestions_category.py
