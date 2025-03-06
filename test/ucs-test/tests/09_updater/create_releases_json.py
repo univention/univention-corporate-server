@@ -43,6 +43,10 @@ def main() -> None:
     parser.add_argument('versions', nargs='*', help='a UCS version to be added to the ucs-releases.json. If omitted, the  automatic UCS version detection is activated!')
     args = parser.parse_args()
 
+    dirname2version = {
+        "ucs5010": (5, 0, 10),
+    }
+
     releases = []
     if args.versions:
         for version in args.versions:
@@ -55,9 +59,9 @@ def main() -> None:
                 continue
             if not dirname.startswith('ucs'):
                 continue
-            if len(dirname) != 6:
+            if len(dirname) != 6 and dirname not in dirname2version:
                 raise Exception(f'unexpected dirname length: {dirname}')
-            major, minor, patchlevel = (int(x) for x in dirname[3:])
+            major, minor, patchlevel = dirname2version[dirname] if dirname in dirname2version else (int(x) for x in dirname[3:])
             releases.append((major, minor, patchlevel))
 
     gen_releases(args.repodir, releases)
