@@ -105,9 +105,9 @@ class UCSSetup(VNCInstallation):
         #     self.type('\n')
         #     sleep(60, "net.gateway")
 
-        # if self.text_is_visible('continue without access'):
-        #     self.type('\n')
-        #     sleep(60, "net.unconnected")
+        if self.text_is_visible('continue without access'):
+            self.type('\n')
+            sleep(60, "net.unconnected")
 
         # sleep(120, "net.finish")
 
