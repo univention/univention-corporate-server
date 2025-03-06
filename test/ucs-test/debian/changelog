@@ -1,3 +1,9 @@
+ucs-test (12.0.248) unstable; urgency=medium
+
+  * Issue univention/ucs#2317: let jenkins check the junit file
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 06 Mar 2025 17:49:14 +0100
+
 ucs-test (12.0.247) unstable; urgency=medium
 
   * Issue univention/ucsschool#1347: exception for SID check in school
