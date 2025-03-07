@@ -23,7 +23,7 @@ def test_suggestion_category_is_shown(umc_browser_test: UMCBrowserTest, app_cent
     "v1": [{
         "condition": [],
         "candidates": [{
-            "id": "univention-demo-data",
+            "id": "pkgdb",
             "mayNotBeInstalled": []
         }]
     }]

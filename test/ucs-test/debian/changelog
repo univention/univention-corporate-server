@@ -1,3 +1,9 @@
+ucs-test (10.0.24-4) unstable; urgency=medium
+
+  * Bug #58002: fix 86_browser/191_app_suggestions_category.py
+
+ -- Felix Botner <botner@univention.de>  Fri, 07 Mar 2025 08:58:15 +0100
+
 ucs-test (10.0.24-3) unstable; urgency=medium
 
   * Bug #58002: Fix updater test to supports 2 digits patchlevel version numbers
