@@ -1,12 +1,12 @@
 product: ucs
 release: "5.0"
-version: [9]
-scope: ucs_5.0-0-errata5.0-9
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
 src: openldap
-fix: 2.4.47+dfsg-3+deb10u7A~5.0.9.202503051037
+fix: 2.4.47+dfsg-3+deb10u7A~5.0.10.202503071652
 desc: |
  This update addresses the following issues:
- * When checking for password expiry the OpenLDAP overlay module `shdowbind`
+ * When checking for password expiry the OpenLDAP overlay module `shadowbind`
    looks at the LDAP attribute `shadowMax`, which is stored at the accounts.
    It treated a value of 0 specially as "no expiry check needed".
    We improved input value validation for that, because a value of 0 was
