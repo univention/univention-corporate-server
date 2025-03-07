@@ -125,14 +125,9 @@ disable_wuauserv  () {
 }
 
 prepare_windows () {
-	local pids client
-	pids=()
+	local client
 	for client in $UCS_ENV_WINDOWS_CLIENTS; do
-		disable_wuauserv "$client" &
-		pids+=($!)
-	done
-	for pid in "${pids[@]}"; do
-		wait -n "$pid"
+		disable_wuauserv "$client"
 	done
 }
 
@@ -145,24 +140,14 @@ setup_windows () {
 	local name_counter=1 name my_ip pids
 	# rename and join windows clients
 	my_ip="$(ucr get interfaces/"$(ucr get interfaces/primary)"/address)"
-	pids=()
 	for client in $UCS_ENV_WINDOWS_CLIENTS; do
 		name="win${name_counter}"
-		rename_and_join "$client" "$name" "$my_ip" "$domain_user" "$domain_password" "$school" &
-		pids+=($!)
+		rename_and_join "$client" "$name" "$my_ip" "$domain_user" "$domain_password" "$school"
 		((name_counter=name_counter+1))
 	done
-	for pid in "${pids[@]}"; do
-		wait -n "$pid"
-	done
 	# install and setup veyon
-	pids=()
 	for client in $UCS_ENV_WINDOWS_CLIENTS; do
-		install_veyon "$client" "$(hostname)" &
-		pids+=($!)
-	done
-	for pid in "${pids[@]}"; do
-		wait -n "$pid"
+		install_veyon "$client" "$(hostname)"
 	done
 }
 
