@@ -14,6 +14,7 @@ from playwright.sync_api import expect
 from univention.testing.browser.appcenter import AppCenter
 from univention.testing.browser.lib import UMCBrowserTest
 from univention.testing.browser.suggestion import AppCenterCacheTest
+from univention.testing.utils import package_installed
 
 
 def test_suggestion_category_is_shown(umc_browser_test: UMCBrowserTest, app_center_cache: AppCenterCacheTest):
@@ -30,7 +31,8 @@ def test_suggestion_category_is_shown(umc_browser_test: UMCBrowserTest, app_cent
 }
 """,
     )
-
+    if package_installed('univention-pkgdb'):
+        return
     app_center = AppCenter(umc_browser_test)
     app_center.navigate()
 
