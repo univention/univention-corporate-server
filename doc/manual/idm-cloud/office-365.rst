@@ -7,20 +7,34 @@
 Microsoft 365 Connector
 =======================
 
-The synchronization of users and groups and teams to an Azure Directory Domain,
-which will then be used by Microsoft 365, is made possible by the
-:program:`Microsoft Office Connector`. The connector makes it possible to
-control which of the users created in UCS can use Microsoft 365. The selected
-users will be provisioned accordingly into the Azure Active Directory domain. It
-is configurable which user attributes are synchronized and which are anonymized
-during synchronization.
+The :program:`Microsoft 365 Connector` provides
+synchronization of users, groups, and teams to an Azure Directory Domain.
+Through the connector, administrators can control
+which user accounts in UCS can use Microsoft 365.
+The connector provisions the selected user accounts
+into the Azure Active Directory domain.
+Administrators can configure
+which user account attributes the connector synchronizes,
+and which attributes the connector anonymizes during synchronization.
 
-The single sign-on login to Microsoft 365 is done via the UCS integrated SAML
-implementation. Authentication takes place against the UCS server, and no
-password hashes are transmitted to Microsoft Azure Cloud. The user's
-authentication is done exclusively via the client's web browser. The web browser
-should however be able to resolve the DNS records of the UCS domain, this is a
-particularly important point to note for mobile devices.
+The connector sets up single sign-on through the open standard SAML.
+In this constellation, UCS is the identity provider,
+and Microsoft 365 is the service provider.
+Users can access Microsoft 365 through single sign-on in their web browser
+through sign in to UCS.
+
+The authentication procedure doesn't transmit password hashes to Microsoft Azure Cloud.
+Users authenticate exclusively through their web browser.
+The web browser must be able to resolve the DNS records of the UCS domain,
+this is a particularly important point to note for mobile devices.
+
+.. important::
+
+   The single sign-on setup between UCS and Microsoft 365
+   uses the open standard Security Assertion Markup Language (SAML).
+   The users' web browser is the central element for the authentication communication.
+   Therefore, UCS and the :program:`Microsoft 365 Connector` only support single sign-on
+   to Microsoft 365 through the user's web browser.
 
 .. _idmcloud-o365-setup:
 
