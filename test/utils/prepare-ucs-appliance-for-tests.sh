@@ -5,14 +5,14 @@
 set -e -u -x
 
 [ -n "${KVM_BUILD_SERVER:-}" ] &&
-	exec ssh -o BatchMode=yes "${KVM_BUILD_SERVER:?}" "bash -s" <"$0"
+  exec ssh -o BatchMode=yes "${KVM_BUILD_SERVER:?}" "GIT_BRANCH=${GIT_BRANCH:?} bash -s" < "$0"
 
 die () {
 	echo "ERROR: $*" >&2
 	exit 1
 }
 
-UCS_VERSION=$(echo $JOB_NAME | cut -d'/' -f2 | cut -d'-' -f2-)
+UCS_VERSION=${GIT_BRANCH#origin/}
 src_template="/var/univention/buildsystem2/temp/build/appliance${UCS_VERSION}/UCS-KVM-Image.qcow2"
 kvm_template_dir="/var/lib/libvirt/templates/single/Others/appliance_ucsappliance_amd64"
 kvm_template="$kvm_template_dir/${src_template##*/}"
