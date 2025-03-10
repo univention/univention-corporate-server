@@ -12,8 +12,8 @@ die () {
 	exit 1
 }
 
-# update the image on the kvm server and exit
-src_template="/var/univention/buildsystem2/temp/build/appliance/UCS-KVM-Image.qcow2"
+UCS_VERSION=$(echo $JOB_NAME | cut -d'/' -f2 | cut -d'-' -f2-)
+src_template="/var/univention/buildsystem2/temp/build/appliance${UCS_VERSION}/UCS-KVM-Image.qcow2"
 kvm_template_dir="/var/lib/libvirt/templates/single/Others/appliance_ucsappliance_amd64"
 kvm_template="$kvm_template_dir/${src_template##*/}"
 

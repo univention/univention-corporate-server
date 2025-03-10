@@ -109,7 +109,7 @@ create_app_images () {
 create_ucs_images () {
 	SRC_IMAGE="${1:?}"
 	IMG_ID="${2:?}"
-	_setup_dir "/var/univention/buildsystem2/temp/build/appliance"
+	_setup_dir "/var/univention/buildsystem2/temp/build/appliance${UCS_VERSION}"
 	IMAGE_VERSION="${UCS_VERSION}"
 	MEMORY=2048
 
