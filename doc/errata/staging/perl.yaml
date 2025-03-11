@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: perl
+fix: 5.24.1-3+deb9u8
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.8 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2020-16156)
+ * CVSS score 7.4 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N).
+   (CVE-2023-31484)
+bug: [58063]
+cve:
+- CVE-2020-16156
+- CVE-2023-31484
