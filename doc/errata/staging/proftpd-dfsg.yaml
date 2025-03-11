@@ -1,0 +1,20 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: proftpd-dfsg
+fix: 1.3.5e+r1.3.5b-4+deb9u4
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2024-57392, CVE-2023-51713)
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N).
+   (CVE-2024-48651)
+ * CVSS score 5.9 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N).
+   (CVE-2023-48795)
+bug: [58058]
+cve:
+- CVE-2023-48795
+- CVE-2023-51713
+- CVE-2024-48651
+- CVE-2024-57392
