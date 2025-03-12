@@ -16,3 +16,6 @@ desc: |
    more consistent on the day of expiry between `pam_unix`, OpenLDAP
    and Kerberos.
 bug: [57681]
+erratum: 1221
+announced: 2025-03-12
+support: core
