@@ -20,3 +20,6 @@ desc: |
    compensate for the behavior of `pam_unix` and make it more consistent
    with the behavior of Kerberos.
 bug: [57681]
+erratum: 1224
+announced: 2025-03-12
+support: core
