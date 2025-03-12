@@ -164,6 +164,19 @@ update_check_ldap_connection () {
 	return 1
 }
 
+
+# Bug #58045 Loading the database from the LDIF dump failed - could not parse entry (line=xxx)
+update_check_verify_translog_schema () {
+  [ "$server_role" != "domaincontroller_master" ] && [ "$server_role" != "domaincontroller_backup" ] || return 0
+  if slapcat -f /etc/ldap/slapd.conf  -n 3 | slapadd -f /etc/ldap/slapd.conf -n 3 -u 2>&1; then
+    return 0
+  fi
+  echo "	There is a problem with the translog schema on this system."
+  echo "	Please check $UPDATER_LOG or run 'slapcat -f /etc/ldap/slapd.conf  -n 3 | slapadd -f /etc/ldap/slapd.conf -n 3 -u' manually."
+  return 1
+}
+
+
 _migrate_openldap_bdb_failed () {
 	local msg="$1"
 	local revert="${2:-false}"
