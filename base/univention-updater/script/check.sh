@@ -189,6 +189,26 @@ update_check_openldap_bdb () {
 	return 0
 }
 
+
+# Bug #58045 Loading the database from the LDIF dump failed - could not parse entry (line=xxx)
+# Note: This check should be enabled only for major and minor updates
+update_check_verify_translog_schema () {
+  local var="update$VERSION/verify_translog_schema"
+  ignore_check "$var" && return 100
+  if [ "$server_role" != "domaincontroller_master" ] && [ "$server_role" != "domaincontroller_backup" ];
+  then
+    return 0
+  fi
+  if slapcat -f /etc/ldap/slapd.conf  -n 3 | slapadd -f /etc/ldap/slapd.conf -n 3 -u; then
+    return 0
+  fi
+  echo "	There is a problem with the translog schema on this system."
+  echo "	Please check $UPDATER_LOG or run 'slapcat -f /etc/ldap/slapd.conf  -n 3 | slapadd -f /etc/ldap/slapd.conf -n 3 -u' manually."
+  echo "	Please see <https://help.univention.com/t/23981> for more information."
+  return 1
+}
+
+
 _migrate_openldap_bdb_failed () {
 	local msg="$1"
 	local revert="${2:-false}"
