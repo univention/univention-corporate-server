@@ -3398,6 +3398,11 @@ linux-headers-6.1.0-28-cloud-amd64
 linux-headers-6.1.0-28-common
 linux-headers-6.1.0-28-common-rt
 linux-headers-6.1.0-28-rt-amd64
+linux-headers-6.1.0-31-amd64
+linux-headers-6.1.0-31-cloud-amd64
+linux-headers-6.1.0-31-common
+linux-headers-6.1.0-31-common-rt
+linux-headers-6.1.0-31-rt-amd64
 linux-headers-amd64
 linux-headers-cloud-amd64
 linux-headers-rt-amd64
@@ -3437,6 +3442,12 @@ linux-image-6.1.0-28-cloud-amd64
 linux-image-6.1.0-28-cloud-amd64-unsigned
 linux-image-6.1.0-28-rt-amd64
 linux-image-6.1.0-28-rt-amd64-unsigned
+linux-image-6.1.0-31-amd64
+linux-image-6.1.0-31-amd64-unsigned
+linux-image-6.1.0-31-cloud-amd64
+linux-image-6.1.0-31-cloud-amd64-unsigned
+linux-image-6.1.0-31-rt-amd64
+linux-image-6.1.0-31-rt-amd64-unsigned
 linux-image-amd64
 linux-image-amd64-signed-template
 linux-image-cloud-amd64
@@ -3452,6 +3463,7 @@ linux-support-6.1.0-23
 linux-support-6.1.0-25
 linux-support-6.1.0-27
 linux-support-6.1.0-28
+linux-support-6.1.0-31
 lld-14
 lld-15
 lldb-14
