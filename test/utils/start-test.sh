@@ -219,10 +219,22 @@ if [ -z "$DIMAGE" ]; then
 	[ -n "$i" ] && image="$i"
 fi
 
+openstack_cfg () {
+	for os_cfg in ${OS_CLIENT_CONFIG_FILE:+"$OS_CLIENT_CONFIG_FILE"} "${PWD}/clouds.yaml" "${HOME}/.config/openstack/clouds.yaml" /etc/openstack/clouds.yaml
+	do
+		[ -r "$os_cfg" ] && return
+	done
+	die "Missing clouds.yaml file for OS access!"
+}
+
 
 # build server can be overwritten per cfg file `build_server`
 build_server="$(awk -F ": " '/^\w*build_server:/{print $2}' "$CFG")"
 [ -n "$build_server" ] && KVM_BUILD_SERVER="$build_server"
+
+# some jobs start KVM instances but need access to openstack
+needs_openstack="$(awk -F ": " '/^\w*needs_openstack:/{print $2}' "$CFG")"
+[ "$needs_openstack" = "true" ] && openstack_cfg
 
 case "$KVM_BUILD_SERVER" in
 EC2)
@@ -231,14 +243,7 @@ EC2)
 	exe="ucs-ec2-create"
 	;;
 Openstack|OpenStack|OS)
-	cfg () {
-		for os_cfg in ${OS_CLIENT_CONFIG_FILE:+"$OS_CLIENT_CONFIG_FILE"} "${PWD}/clouds.yaml" "${HOME}/.config/openstack/clouds.yaml" /etc/openstack/clouds.yaml
-		do
-			[ -r "$os_cfg" ] && return
-		done
-		die "Missing clouds.yaml file for OS access!"
-	}
-	cfg
+	openstack_cfg
 	exe="ucs-openstack-create"
 	;;
 KVM|*)
