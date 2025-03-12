@@ -21,3 +21,6 @@ desc: |
    with the behavior of Kerberos.
    The AD-Connector has been adjusted accordingly.
 bug: [57681]
+erratum: 1223
+announced: 2025-03-12
+support: core
