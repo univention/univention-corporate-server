@@ -71,6 +71,7 @@ from univention.management.console.modules.sanitizers import (
     SearchSanitizer, StringSanitizer,
 )
 
+from .guardian import user_may_read
 from .tools import LicenseError, LicenseImport, check_license, dump_license, install_opener, urlopen
 from .udm_ldap import (
     LDAP_AuthenticationFailed, LDAP_Connection, NoIpLeft, ObjectDoesNotExist, SuperordinateDoesNotExist, UDM_Error,
@@ -78,7 +79,6 @@ from .udm_ldap import (
     get_obj_module, info_syntax_choices, ldap_dn2path, list_objects, read_syntax_choices, search_syntax_choices_by_key,
     set_bind_function, set_bind_hash, set_bind_user,
 )
-from .guardian import user_may_read
 
 
 USE_ASTERISKS = ucr.is_true('directory/manager/web/allow_wildcard_search', True)
