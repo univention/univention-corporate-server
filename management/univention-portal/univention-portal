@@ -77,7 +77,11 @@ def cli():
 
 @cli.command("add-default")
 @click.option("--update/--dont-update", default=False)
-def add_default(update: bool):
+@click.option("--authenticator",
+              help="The authenticator to be used when authenticating to the portal",
+              type=click.Choice(['umc', 'oidc']),
+              default='umc')
+def add_default(update: bool, authenticator: str):
     changed = False
     json_content = read_portals_json()
 
@@ -86,12 +90,12 @@ def add_default(update: bool):
     if default_name in json_content:
         if update:
             warn(f"Overwriting existing {default_name}")
-            _add_default(default_name, json_content)
+            _add_default(default_name, json_content, authenticator)
             changed = True
         else:
             info(f"{default_name} already exists")
     else:
-        _add_default(default_name, json_content)
+        _add_default(default_name, json_content, authenticator)
         changed = True
 
     if changed:
@@ -147,12 +151,74 @@ def add_selfservice_default(update: bool):
         success(f"{portals_json} written")
 
 
-def _add_default(name: str, json_content: dict):
-    portal_def = {
+def _add_default(name: str, json_content: dict, authenticator: str = 'umc'):
+
+    portal_def_oidc_authenticator = {
         "class": "Portal",
         "kwargs": {
             "authenticator": {
                 "class": "OIDCAuthenticator",
+                "kwargs": {
+                    "group_cache": {
+                        "class": "GroupFileCache",
+                        "kwargs": {
+                            "cache_file": {
+                                "type": "static",
+                                "value": "/var/cache/univention-portal/groups.json",
+                            },
+                            "reloader": {
+                                "class": "GroupsReloaderLDAP",
+                                "kwargs": {
+                                    "binddn": {"key": "hostdn", "type": "config"},
+                                    "cache_file": {
+                                        "type": "static",
+                                        "value": "/var/cache/univention-portal/groups.json",
+                                    },
+                                    "ldap_base": {"key": "ldap_base", "type": "config"},
+                                    "ldap_uri": {"key": "ldap_uri", "type": "config"},
+                                    "password_file": {
+                                        "type": "static",
+                                        "value": "/etc/machine.secret",
+                                    },
+                                },
+                                "type": "class",
+                            },
+                        },
+                        "type": "class",
+                    },
+                },
+                "type": "class",
+            },
+            "portal_cache": {
+                "class": "PortalFileCache",
+                "kwargs": {
+                    "cache_file": {
+                        "type": "static",
+                        "value": "/var/cache/univention-portal/portal.json",
+                    },
+                    "reloader": {
+                        "class": "PortalReloaderUDM",
+                        "kwargs": {
+                            "cache_file": {
+                                "type": "static",
+                                "value": "/var/cache/univention-portal/portal.json",
+                            },
+                            "portal_dn": {"key": "default_domain_dn", "type": "config"},
+                        },
+                        "type": "class",
+                    },
+                },
+                "type": "class",
+            },
+            "scorer": {"class": "Scorer", "type": "class"},
+        },
+        "type": "class",
+    }
+    portal_def_umc_authenticator = {
+        "class": "Portal",
+        "kwargs": {
+            "authenticator": {
+                "class": "UMCAuthenticator",
                 "kwargs": {
                     "group_cache": {
                         "class": "GroupFileCache",
@@ -210,7 +276,7 @@ def _add_default(name: str, json_content: dict):
         },
         "type": "class",
     }
-    json_content[name] = portal_def
+    json_content[name] = portal_def_umc_authenticator if authenticator == 'umc' else portal_def_oidc_authenticator
 
 
 def _add_umc(name: str, json_content: dict):

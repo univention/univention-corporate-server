@@ -35,7 +35,7 @@ function login(user: User): void {
   if (user.authMode === 'saml') {
     window.location.href = `/univention/saml/?location=${window.location.pathname}`;
   } else if (user.authMode === 'oidc') {
-    window.location.href = `/univention/portal/?location=${window.location.pathname}`;
+    window.location.href = `/univention/portal/login/?location=${window.location.pathname}`;
   } else if (user.authMode === 'oidc-umc') {
     window.location.href = `/univention/oidc/?location=${window.location.pathname}`;
   } else {

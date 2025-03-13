@@ -39,9 +39,14 @@ interface Choice {
 }
 
 function umc(path: string, options?: any, flavor?: string): Promise<AxiosResponse<any>> {
+  const accessToken = getCookie('PortalAccessToken');
   const umcSessionId = getCookie('UMCSessionId');
   const umcLang = getCookie('UMCLang');
   const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+  if (accessToken) {
+    // eslint-disable-next-line dot-notation
+    headers['Authorization'] = `Bearer ${accessToken}`;
+  }
   if (umcLang) {
     headers['Accept-Language'] = umcLang;
   }

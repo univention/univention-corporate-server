@@ -136,7 +136,7 @@ class OIDCResource(OAuth2Mixin, Resource):
         # await self.get_user_information(bearer_token)
 
         oidc = OIDCUser(None, bearer_token, None, claims)
-        await self.pam_oidc_authentication(oidc)
+        return oidc
 
     async def authenticate(self, code, code_verifier, nonce):
         CORE.debug('OIDC authenticate')
@@ -226,12 +226,12 @@ class OIDCResource(OAuth2Mixin, Resource):
             token = access_token
             audience = None
             options = {
-                'verify_signature': True,
-                'verify_exp': True,
-                'verify_nbf': True,
-                'verify_iat': True,
+                'verify_signature': False,
+                'verify_exp': False,
+                'verify_nbf': False,
+                'verify_iat': False,
                 'verify_aud': False,
-                'verify_iss': True,
+                'verify_iss': False,
             }
             # TODO: verify azp
         elif logout_token:

@@ -34,14 +34,22 @@
 
 import base64
 import binascii
+import dataclasses
+import datetime
 import hashlib
 import json
-from urllib.parse import urljoin
+import secrets
+from dataclasses import dataclass
+from datetime import UTC, timedelta
+from typing import Any
+from urllib.parse import parse_qsl, quote_plus, urlencode, urljoin, urlparse
 
+import jwt
+import redis.asyncio as redis
 from tornado.httpclient import AsyncHTTPClient, HTTPError, HTTPRequest
+from tornado.web import RequestHandler
 
 from univention.portal import Plugin, config
-from univention.portal.extensions.oidc import OIDCLogin, OIDCLogout
 from univention.portal.log import get_logger
 from univention.portal.user import User
 
@@ -197,50 +205,304 @@ class UMCAndSecretAuthenticator(UMCAuthenticator):
         return User(username, display_name, groups, headers=dict(request.request.headers))
 
 
+@dataclass
+class OIDCSession:
+    id_token: str
+    access_token: str
+    refresh_token: str
+    refresh_expires_in: int
+    access_expires_in: int
+    created_at: float
+    uid: str
+    umc_access_token: str
+    sub: str
+    sid: str
+    iss: str
+
+    @property
+    def refresh_expires_at(self):
+        return datetime.datetime.fromtimestamp(self.refresh_expires_in + self.created_at, UTC)
+
+    @property
+    def access_expires_at(self):
+        return datetime.datetime.fromtimestamp(self.access_expires_in + self.created_at, UTC)
+
+    @classmethod
+    def from_token_response(cls, resp, verify_func):
+        id_token = resp['id_token']
+        verified_id_token = verify_func(id_token)
+
+        return OIDCSession(
+            id_token=id_token,
+            access_token=resp['access_token'],
+            refresh_token=resp['refresh_token'],
+            refresh_expires_in=resp['refresh_expires_in'],
+            access_expires_in=resp['expires_in'],
+            uid=verified_id_token['uid'],
+            umc_access_token="",
+            created_at=datetime.datetime.now(UTC).timestamp(),
+            sub=verified_id_token['sub'],
+            sid=verified_id_token['sid'],
+            iss=verified_id_token['iss'],
+        )
+
+
 class OIDCAuthenticator(Authenticator):
     """Authenticate via OpenID Connect"""
 
-    def __init__(self, auth_mode, group_cache):
-        self.auth_mode = auth_mode
+    def __init__(self, group_cache):
+        oidc_config: dict[str, Any] = config.fetch('oidc')
         self.group_cache = group_cache
+        self.pkce_pool = redis.Redis(host='master.ucs.test', port=6379, db=0)
+        self.session_pool = redis.Redis(host='master.ucs.test', port=6379, db=1)
+
+        self.http_client = AsyncHTTPClient(force_instance=True)
+        with open(oidc_config['openid_configuration']) as f:
+            self.openid_configuration = json.loads(f.read())
+        self.issuer = self.openid_configuration['issuer']
+        self.token_endpoint = self.openid_configuration['token_endpoint']
+        self.authorization_endpoint = self.openid_configuration['authorization_endpoint']
+        self.session_cookie_name = oidc_config.get('session_cookie_name', 'portal_session_id')
+        with open(oidc_config['openid_certs']) as f:
+            self.jwks = json.loads(f.read())
+        self.client_id = oidc_config['client_id']
+        with open(oidc_config['client_secret_file']) as f:
+            self.client_secret = f.read()
+
+    def reverse_abs_url(self, request: RequestHandler, name, args=None):
+        if args is None:
+            args = request.path_args
+        return request.request.protocol + "://" + request.request.host + request.reverse_url(name, *args)
+
+    @property
+    def client_basic_auth(self):
+        client_id_encoded = quote_plus(self.client_id)
+        client_secret_encoded = quote_plus(self.client_secret)
+
+        client_auth = base64.b64encode(f'{client_id_encoded}:{client_secret_encoded}'.encode()).decode('ascii')
+
+        return client_auth
+
+    def get_key_for_token(self, token: str):
+        unverified_header = jwt.get_unverified_header(token)
+        kid = unverified_header['kid']
+
+        return jwt.PyJWK(next((jwk for jwk in self.jwks['keys'] if jwk['kid'] == kid), None))
+
+    def verify_id_token(self, token: str):
+        key = self.get_key_for_token(token)
+
+        return jwt.decode(token, key.key, ['RS256'], {
+            'require': ['exp', 'sub', 'iss', 'aud', 'uid'],
+            'verify_aud': False,
+            'verify_issuer': True,
+            'verify_exp': True,
+        }, issuer=self.issuer, leeway=20)
+
+    def urlsafe_unpadded_b64encode(self, s):
+        return base64.urlsafe_b64encode(s).decode('ascii').rstrip('=')
+
+    def urlsafe_unpadded_b64decode(self, s: str):
+        return base64.urlsafe_b64decode(s + '=' * (4 - len(s) % 4))
 
     def get_auth_mode(self, request):
-        # return "oidc"
-        return self.auth_mode
+        return "oidc"
+        # return self.auth_mode
 
     def refresh(self, reason=None):
         return self.group_cache.refresh(reason=reason)
 
-    def get_ressource(self, cls, request):
-        resource = cls(request.application, request.request, portals=None)
-        resource.path_args = request.path_args
-        resource.redirect = request.redirect
-        return resource
+    async def redirect(self, request: RequestHandler):
+        scope = "openid email"
+        state = secrets.token_urlsafe(32)
+
+        # https://datatracker.ietf.org/doc/html/rfc7636#section-4.1
+        code_verifier_bytes = secrets.token_bytes(32)
+        code_verifier = self.urlsafe_unpadded_b64encode(code_verifier_bytes)
+        code_challenge_hash = hashlib.sha256(code_verifier.encode('ascii')).digest()
+        code_challenge = self.urlsafe_unpadded_b64encode(code_challenge_hash)
+        redirect_uri = self.reverse_abs_url(request, 'login')
+
+        query = {
+            'response_type': 'code',
+            'client_id': self.client_id,
+            'redirect_uri': redirect_uri,
+            'scope': scope,
+            'state': state,
+            'code_challenge': code_challenge,
+            'code_challenge_method': 'S256',
+        }
+
+        redirect_url = urlparse(self.authorization_endpoint)
+
+        auth_request_state = {
+            'code_verifier': code_verifier,
+            'redirect_uri': redirect_uri,
+        }
+
+        await self.pkce_pool.setex(state, timedelta(minutes=5), json.dumps(auth_request_state))
+        return redirect_url._replace(query=urlencode(query)).geturl()
+
+    async def oauth2_token_exchange(self, subject_token: str, aud: str):
+        # not quite sure how useful this is at this point, since the AZP in the exchanged
+        # token is still the Portal OIDC client (https://github.com/keycloak/keycloak/issues/31553, https://github.com/keycloak/keycloak/issues/31546)
+        token_exchange_request_body = {
+            "client_id": self.client_id,
+            "client_secret": self.client_secret,
+            "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
+            "subject_token": subject_token,
+            "requested_token_type": "urn:ietf:params:oauth:token-type:refresh_token",
+            "audience": aud,
+        }
+        token_exchange_request = HTTPRequest(
+            self.token_endpoint,
+            'POST',
+            {'content-type': 'application/x-www-form-urlencoded'},
+            urlencode(token_exchange_request_body),
+        )
+
+        resp = await self.http_client.fetch(token_exchange_request)
+        return json.loads(resp.body)
+
+    async def persist_session(self, session_id: str, session: OIDCSession):
+        session_json = json.dumps(dataclasses.asdict(session))
+        expiry = session.refresh_expires_in
+        await self.session_pool.setex(session_id, expiry, session_json)
 
     async def login_request(self, request):
-        login = self.get_ressource(OIDCLogin, request)
-        await login.prepare()
-        await login.post()
+        code = request.get_query_argument('code', None)
+        state = request.get_query_argument('state', None)
+        if code is None or state is None:
+            return request.redirect(await self.redirect(request), status=302)
+
+        state_entry = json.loads(await self.pkce_pool.getdel(state))
+        token_request_body = {
+            'grant_type': 'authorization_code',
+            'code': code,
+            'redirect_uri': state_entry['redirect_uri'],
+            'code_verifier': state_entry['code_verifier'],
+        }
+
+        token_request = HTTPRequest(
+            self.token_endpoint,
+            'POST',
+            {'content-type': 'application/x-www-form-urlencoded', 'authorization': f'Basic {self.client_basic_auth}'},
+            urlencode(token_request_body),
+        )
+
+        resp = await self.http_client.fetch(token_request)
+        resp_body = json.loads(resp.body)
+
+        session = OIDCSession.from_token_response(resp_body, self.verify_id_token)
+        # get an UMC token through OIDC token exchange
+
+        token_exchange_body = await self.oauth2_token_exchange(session.access_token, "https://master.ucs.test/univention/oidc/")
+        session.umc_access_token = token_exchange_body['access_token']
+        session_id = secrets.token_hex(32)
+
+        await self.persist_session(session_id, session)
+        request.set_cookie(self.session_cookie_name, session_id, expires=session.refresh_expires_at)
+
+        # TODO: don't hardcode
+        return request.redirect(self.reverse_abs_url(request, 'index'), status=302)
 
     async def login_user(self, request):
-        login = self.get_ressource(OIDCLogin, request)
-        await login.prepare()
-        await login.get()
+        pass
 
     async def logout_user(self, request):
-        logout = self.get_ressource(OIDCLogout, request)
-        await logout.prepare()
-        await logout.get()
+        if request.request.method == 'GET':
+            session_id = request.get_cookie(self.session_cookie_name, None)
+            if session_id is None:
+                return
+
+            await self.session_pool.delete(session_id)
+            request.clear_cookie(self.session_cookie_name)
+        elif request.request.method == 'POST':
+            content_type = request.request.headers['content-type']
+            if content_type != "application/x-www-form-urlencoded":
+                return
+            args = parse_qsl(request.request.body.decode('utf-8'))
+            logout_token = next((value for (key, value) in args if key == 'logout_token'), None)
+            if logout_token is None:
+                return
+            key = self.get_key_for_token(logout_token)
+            # https://openid.net/specs/openid-connect-backchannel-1_0.html#Validation
+            token = jwt.decode(logout_token, key.key, ['RS256'], {
+                'require': ['exp', 'iss', 'aud'],
+                'verify_aud': False,
+                'verify_issuer': True,
+                'verify_exp': True,
+            }, issuer=self.issuer, leeway=20)
+
+            if not token.get('sub') and not token.get('sid'):
+                return
+            if not token['events'] or 'http://schemas.openid.net/event/backchannel-logout' not in token['events']:
+                return
+            if token.get('nonce'):
+                return
+
+    async def refresh_session(self, session_id: str, session: OIDCSession):
+        refresh_token_request_body = {
+            'refresh_token': session.refresh_token,
+            'grant_type': "refresh_token",
+        }
+
+        refresh_token_request = HTTPRequest(
+            self.token_endpoint,
+            'POST',
+            {'content-type': 'application/x-www-form-urlencoded', 'authorization': f'Basic {self.client_basic_auth}'},
+            urlencode(refresh_token_request_body),
+        )
+
+        resp = await self.http_client.fetch(refresh_token_request)
+        refresh_body = json.loads(resp.body)
+
+        session = OIDCSession.from_token_response(refresh_body, self.verify_id_token)
+
+        token_exchange_body = await self.oauth2_token_exchange(session.access_token, "https://master.ucs.test/univention/oidc/")
+        session.umc_access_token = token_exchange_body['access_token']
+        await self.persist_session(session_id, session)
+        return session
+
+    def must_refresh_session(self, session: OIDCSession):
+        now = datetime.datetime.now(UTC)
+
+        return (now + timedelta(seconds=30)) > session.access_expires_at
+
+    async def get_session(self, session_id: str | None):
+        if session_id is None:
+            return None
+        session = await self.session_pool.get(session_id)
+        if session is None:
+            return None
+        session = OIDCSession(**json.loads(session))
+        return session
+        # print(username)
 
     async def get_user(self, request):
-        login = self.get_ressource(OIDCLogin, request)
-        await login.prepare()
-        claims = login.current_user
-        headers = {
-            'Authorization': 'Bearer %s' % (login.access_token,),
-            'Accept-Language': request.request.headers.get('Accept-Language', 'en-US'),
-            'Accept': 'application/json',
-        }
-        username = claims['uid']
+        session_id = request.get_cookie(self.session_cookie_name, None)
+        headers = {}
+
+        session = await self.get_session(session_id)
+
+        display_name = None
+        username = None
+
+        if session is not None and self.must_refresh_session(session):
+            print("refreshing session")
+            session = await self.refresh_session(session_id, session)
+
+            request.set_cookie(self.session_cookie_name, session_id, expires=session.refresh_expires_at)
+
+        if session is not None:
+            display_name = session.uid
+            username = display_name.lower()
+            headers['Authorization'] = 'Bearer ' + session.umc_access_token
+            request.set_cookie('PortalAccessToken', session.umc_access_token)
+
+        if not session and session_id:
+            request.clear_cookie(self.session_cookie_name)
+
         groups = self.group_cache.get().get(username, [])
-        return User(username=username, display_name=username, groups=groups, headers=headers)
+
+        return User(username=username, display_name=display_name, groups=groups, headers=headers)

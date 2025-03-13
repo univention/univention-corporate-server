@@ -247,7 +247,11 @@ class Resource(RequestHandler):
         oidc = OIDCResource(self.application, self.request)
         oidc.path_args = self.path_args
         oidc.set_settings(self.application.settings['default_authorization_server'])
-        await oidc.bearer_authorization(bearer_token)
+        oidc_user = await oidc.bearer_authorization(bearer_token)
+        if not oidc_user:
+            return
+        self.current_user.oidc = oidc_user
+        self.current_user.set_credentials(oidc_user.username, oidc_user.access_token, 'OIDC')
 
     async def refresh_oidc_session(self):
         session = self.current_user

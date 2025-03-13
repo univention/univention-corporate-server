@@ -71,7 +71,7 @@ class OIDCResource(OAuth2Mixin, PortalResource):
             pass
 
     async def prepare(self):
-        super(OIDCResource, self).prepare()
+        super(OIDCResource, self).prepare()  # noqa: UP008
         self._ = self.locale.translate
         settings = self.settings['oidc']
         self.client_id = settings['client_id']
