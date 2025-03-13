@@ -49,11 +49,13 @@ def _check_user_role():
         return False
     return True
 
+
 def user_may_create(obj):
     if not _check_user_role():
         return
     if "ou=Berlin" not in obj._ldap_dn():
         raise permissionDenied()
+
 
 def user_may_read(objs):
     if not _check_user_role():
@@ -71,11 +73,13 @@ def user_may_read(objs):
             readable.append(obj)
     return readable
 
+
 def user_may_update(obj):
     if not _check_user_role():
         return
     if "ou=Berlin" not in obj.dn:
         raise permissionDenied()
+
 
 def user_may_delete(obj):
     if not _check_user_role():
