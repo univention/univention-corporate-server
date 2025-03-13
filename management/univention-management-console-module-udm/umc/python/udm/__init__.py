@@ -71,7 +71,7 @@ from univention.management.console.modules.sanitizers import (
     SearchSanitizer, StringSanitizer,
 )
 
-from .guardian import user_may_read
+from .authorization import user_may_read
 from .tools import LicenseError, LicenseImport, check_license, dump_license, install_opener, urlopen
 from .udm_ldap import (
     LDAP_AuthenticationFailed, LDAP_Connection, NoIpLeft, ObjectDoesNotExist, SuperordinateDoesNotExist, UDM_Error,

@@ -62,7 +62,7 @@ from univention.management.console.config import ucr
 from univention.management.console.error import UMC_Error
 from univention.management.console.ldap import get_user_connection, user_connection
 from univention.management.console.log import MODULE
-from univention.management.console.modules.udm.guardian import (
+from univention.management.console.modules.udm.authorization import (
     user_may_create, user_may_delete, user_may_read, user_may_update,
 )
 
