@@ -1,11 +1,11 @@
 product: ucs
 release: "5.0"
-version: [9]
-scope: ucs_5.0-0-errata5.0-9
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
 src: postgresql-15
-fix: 15.10-0+deb10u1A~5.2.0.202412161512
+fix: 15.10-0+deb10u1A~5.0.0.202503141123
 desc: |
  This update addresses the following issues:
  * Since Keycloak 26 dropped support for `postgresql-11`, we backported
-   `postgresql-15` to UCS 5.0-9.
+   `postgresql-15` to UCS 5.0-10.
 bug: [57779]
