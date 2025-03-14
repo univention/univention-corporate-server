@@ -1,9 +1,9 @@
 product: ucs
 release: "5.0"
-version: [9]
-scope: ucs_5.0-0-errata5.0-9
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
 src: univention-pkgdb
-fix: 13.0.8-2
+fix: 13.0.9-1
 desc: |
  This update addresses the following issues:
  * Since Keycloak 26 dropped support for `postgresql-11`, we backported
