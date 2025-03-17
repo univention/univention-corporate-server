@@ -103,24 +103,26 @@ def set_bind_user(user_dn):
     __bind_user_dn = user_dn
 
 
-def get_actor_roles(user_dn: str) -> set[str]:
+def set_user_roles(user_dn: str) -> None:
+    global __user_roles
     # FIXME: This is a workaround to get the roles of the user
     ldap_connection, _po = get_user_connection(bind=get_bind_function(), bindhash=get_bind_hash())
     mod = UDM_Module('users/user', ldap_connection=ldap_connection, ldap_position=user_dn)
     obj = mod.module.object(None, ldap_connection, None, user_dn, None)
     obj.open_guardian()
-    return set(obj["guardianInheritedRoles"] + obj["guardianRoles"])
-
-
-def set_user_roles(user_dn: str) -> None:
-    global __user_role
-    roles = get_actor_roles(user_dn)
-    MODULE.info('Setting user roles to %s' % roles)
-    __user_role = roles
+    __user_roles = [
+        role.split(':')[2] for role in set(obj["guardianInheritedRoles"] + obj["guardianRoles"])
+        if role.startswith('umc:udm:')
+    ]
+    MODULE.info('Setting user roles to %s' % __user_roles)
 
 
 def get_bind_user():
     return __bind_user_dn
+
+
+def get_user_roles():
+    return __user_roles
 
 
 def LDAP_Connection(func):
@@ -605,7 +607,7 @@ class UDM_Module:
 
             self._map_properties(obj, ldap_object)
 
-            user_may_create(obj)
+            user_may_create(obj, get_bind_user(), get_user_roles())
             obj.create()
         except udm_errors.base as e:
             MODULE.warn('Failed to create LDAP object: %s: %s' % (e.__class__.__name__, str(e)))

@@ -214,6 +214,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         set_bind_user(request.user_dn)
         set_bind_function(bind_user_connection)
         set_bind_hash(calculate_bind_hash(request))
+
         if ucr.is_true("umc/udm/delegation"):
             set_user_roles(request.user_dn)
 

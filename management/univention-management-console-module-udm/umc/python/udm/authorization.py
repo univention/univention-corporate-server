@@ -36,6 +36,7 @@
 
 from univention.admin.uexceptions import permissionDenied
 from univention.management.console.config import ucr
+from univention.management.console.error import Forbidden
 
 
 # https://docs.software-univention.de/guardian-manual/3.0/what-is-the-guardian.html#terminology-guardian-permission
@@ -80,7 +81,7 @@ from univention.management.console.config import ucr
 # ]
 
 
-roles = {
+ROLES = {
     "domainadmin": [
         # domainadmin can read and write all attributes of all udm modules
         {
@@ -122,27 +123,55 @@ roles = {
 ldap_base = ucr.get("ldap/base")
 
 
-def _check_user_role():
-    # return whether guardian handling is needed,
-    # i.e., whether the actual user has meaningful roles
-    from univention.management.console.modules.udm.udm_ldap import get_bind_user
+def _check_authorization():
     if not ucr.is_true("umc/udm/delegation"):
-        return False
-    user = get_bind_user()
-    if user != f"uid=karl,ou=Berlin,ou=People,ou=univention-demo-data,${ldap_base}":
         return False
     return True
 
 
-def user_may_create(obj):
-    if not _check_user_role():
+def _get_capablities(actor_roles):
+    cap = []
+    for role in actor_roles:
+        cap += ROLES.get(role, [])
+    return cap
+
+
+def _check_permission_action(module: str, action: str, permissions: dict) -> bool:
+    allowed = False
+    if '*' in permissions:
+        allowed = permissions['*'].get(action, False)
+    if module in permissions:
+        allowed = permissions[module].get(action, False)
+    return allowed
+
+
+def _check_permissions_create(obj, caps):
+
+    dn = obj._ldap_dn()
+    module = obj.module
+    allowed = False
+
+    for cap in caps:
+        # FIXME, how to get the best matching position
+        if dn.endswith(cap['target']['position']):
+            allowed = _check_permission_action(module, 'create', cap['permissions'])
+        if cap['target']['position'] == '*':
+            allowed = _check_permission_action(module, 'create', cap['permissions'])
+
+    return allowed
+
+
+def user_may_create(obj, actor_dn, actor_roles):
+    if not _check_authorization():
         return
-    if "ou=Berlin" not in obj._ldap_dn():
-        raise permissionDenied()
+    cap = _get_capablities(actor_roles)
+    allowed = _check_permissions_create(obj, cap)
+    if not allowed:
+        raise Forbidden()
 
 
 def user_may_read(objs):
-    if not _check_user_role():
+    if not _check_authorization():
         return objs
     readable = []
     for obj in objs:
@@ -159,14 +188,14 @@ def user_may_read(objs):
 
 
 def user_may_update(obj):
-    if not _check_user_role():
+    if not _check_authorization():
         return
     if "ou=Berlin" not in obj.dn:
         raise permissionDenied()
 
 
 def user_may_delete(obj):
-    if not _check_user_role():
+    if not _check_authorization():
         return
     if "ou=Berlin" not in obj.dn:
         raise permissionDenied()
