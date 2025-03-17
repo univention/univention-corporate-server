@@ -38,6 +38,90 @@ from univention.admin.uexceptions import permissionDenied
 from univention.management.console.config import ucr
 
 
+# https://docs.software-univention.de/guardian-manual/3.0/what-is-the-guardian.html#terminology-guardian-permission
+# example of how to define capabilities and permissions of a role
+# [
+# #  Capability
+#   {
+#     "target": {
+#       "position": "$CONTEXT",  # ldap_position without $ldap_base, $CONTEXT on the role, "*", self
+# #      "scope": "subtree"  # subtree, base, one, children
+#     },
+#     "permissions": {
+#       "users/users": {   # udm module, "*"
+#         "attributes": {
+#           "username": "write",
+#           "*": "read"
+#         },
+#         "create": true,
+#         "delete": false
+# #      "filter": "(objectClass=inetOrgPerson)"
+#       },
+#       "groups/groups": {
+#         "attributes": {
+#           "*": "read"
+#         },
+#         "create": true
+#       }
+#     }
+#   },
+#   {
+#     "target": {
+#       "position": "*"
+#     },
+#     "permissions": {
+#       "mail/domain": {
+#         "attributes": {
+#           "*": "read"
+#         }
+#       }
+#     }
+#   }
+# ]
+
+
+roles = {
+    "domainadmin": [
+        # domainadmin can read and write all attributes of all udm modules
+        {
+            "target": {
+                "position": "*",
+            },
+            "permissions": {
+                "*": {
+                    "attributes": {
+                        "*": "write",
+                    },
+                    "create": True,
+                    "delete": True,
+                },
+            },
+        },
+    ],
+    "ouadmin": [
+        # ouadmin can read and write all attributes of all udm modules in the ou
+        {
+            "target": {
+                "position": "$CONTEXT",
+            },
+            "permissions": {
+                "*": {
+                    "attributes": {
+                        "*": "write",
+                    },
+                    "create": True,
+                    "delete": True,
+                },
+            },
+        },
+    ],
+
+}
+
+
+ldap_base = ucr.get("ldap/base")
+
+
 def _check_user_role():
     # return whether guardian handling is needed,
     # i.e., whether the actual user has meaningful roles
@@ -45,7 +129,7 @@ def _check_user_role():
     if not ucr.is_true("umc/udm/delegation"):
         return False
     user = get_bind_user()
-    if user != "uid=karl,ou=Berlin,ou=People,ou=univention-demo-data,dc=intranet,dc=wiesenthal110,dc=de":
+    if user != f"uid=karl,ou=Berlin,ou=People,ou=univention-demo-data,${ldap_base}":
         return False
     return True
 
