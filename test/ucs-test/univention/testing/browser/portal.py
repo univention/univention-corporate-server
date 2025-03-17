@@ -55,8 +55,8 @@ class UCSPortalEditMode:
         self.tester: UMCBrowserTest = tester
         self.page: Page = tester.page
 
-    def navigate(self):
-        UCSPortal(self.tester).navigate()
+    def navigate(self, do_login=False):
+        UCSPortal(self.tester).navigate(do_login=do_login)
         UCSSideMenu(self.tester).navigate()
         self.page.locator('[data-test="openEditmodeButton"]').click()
 
@@ -178,6 +178,20 @@ class UCSSideMenu:
 
     def logout(self) -> None:
         self.page.get_by_role("button", name=_("Logout")).click()
+
+    def login(self) -> None:
+        self.page.get_by_role("button", name="Login").click()
+
+
+class KeycloakLoginPage:
+    def __init__(self, tester: UMCBrowserTest):
+        self.tester: UMCBrowserTest = tester
+        self.page: Page = tester.page
+
+    def login(self, username: str = 'Administrator', password: str = 'univention'):
+        self.page.get_by_label('Username or email').fill(username)
+        self.page.get_by_label('Password').fill(password)
+        self.page.get_by_role('button', name='Sign In').click()
 
 
 class UCSPortal:
