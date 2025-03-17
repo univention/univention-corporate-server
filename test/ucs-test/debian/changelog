@@ -1,3 +1,9 @@
+ucs-test (12.0.249-6) unstable; urgency=medium
+
+  * Issue univention/ucs#2657: added 60_umc.25_authorization.py
+
+ -- Felix Botner <botner@univention.de>  Tue, 18 Mar 2025 08:04:56 +0100
+
 ucs-test (12.0.249-5) unstable; urgency=medium
 
   * Issue univention/ucs#2317: external_junit -> external-junit
