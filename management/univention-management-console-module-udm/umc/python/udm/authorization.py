@@ -100,7 +100,7 @@ ROLES = {
         },
     ],
     "ouadmin": [
-        # ouadmin can read and write all attributes of all udm modules in the ou
+        # ouadmin can read and write all attributes of all udm modules in the ou except guardianRole attributes
         {
             "target": {
                 "position": "$CONTEXT",
@@ -109,14 +109,26 @@ ROLES = {
                 "*": {
                     "attributes": {
                         "*": "write",
+                        "guardianRole": "read",
+                        "guardianMemberRoles": "read",
                     },
                     "create": True,
                     "delete": True,
                 },
             },
         },
+        {
+            "target": {
+                "position": "cn=domain,cn=mail",
+            },
+            "permissions": {
+                "mail/domain": {
+                    # FIXME just for testing, should be False or unset
+                    "create": True,
+                },
+            },
+        },
     ],
-
 }
 
 
@@ -145,18 +157,31 @@ def _check_permission_action(module: str, action: str, permissions: dict) -> boo
     return allowed
 
 
-def _check_permissions_create(obj, caps):
+def _check_permissions_create(dn, module, caps):
 
-    dn = obj._ldap_dn()
-    module = obj.module
     allowed = False
+    allowed_per_context = None
+    allowed_per_wildcard = None
+    allowed_per_position = None
 
     for cap in caps:
-        # FIXME, how to get the best matching position
-        if dn.endswith(cap['target']['position']):
-            allowed = _check_permission_action(module, 'create', cap['permissions'])
-        if cap['target']['position'] == '*':
-            allowed = _check_permission_action(module, 'create', cap['permissions'])
+        if cap['target']['position'] == '$CONTEXT':
+            # TODO replace context with context of role
+            if dn == "CONTEXT":
+                allowed_per_context = _check_permission_action(module, 'create', cap['permissions'])
+        elif cap['target']['position'] == '*':
+            allowed_per_wildcard = _check_permission_action(module, 'create', cap['permissions'])
+        else:
+            # FIXME, how to get the best matching position
+            if cap['target']['position'] + ',' + ldap_base == dn:
+                allowed_per_position = _check_permission_action(module, 'create', cap['permissions'])
+
+    if allowed_per_position is not None:
+        allowed = allowed_per_position
+    elif allowed_per_context is not None:
+        allowed = allowed_per_context
+    elif allowed_per_wildcard is not None:
+        allowed = allowed_per_wildcard
 
     return allowed
 
@@ -165,7 +190,9 @@ def user_may_create(obj, actor_dn, actor_roles):
     if not _check_authorization():
         return
     cap = _get_capablities(actor_roles)
-    allowed = _check_permissions_create(obj, cap)
+    # allowed = _check_permissions_create(obj._ldap_dn, obj.module, cap)
+    # FIXME is obj.position.getDn reliable?
+    allowed = _check_permissions_create(obj.position.getDn(), obj.module, cap)
     if not allowed:
         raise Forbidden()
 

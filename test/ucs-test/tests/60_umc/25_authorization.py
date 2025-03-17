@@ -30,7 +30,6 @@ def bremen_ou(udm):
 
 
 def test_ouadmin_user_create_in_different_ou(bremen_ou):
-    help(Client)
     client = Client()
     client.authenticate(bremen_ou.ouadmin_username, 'univention')
 
@@ -62,3 +61,19 @@ def test_domainadmin_create_user_everywhere():
         },
     }]
     client.umc_command('udm/add', options, 'users/user')
+
+
+def test_check_permissions_create():
+    from univention.management.console.modules.udm.authorization import _check_permissions_create, _get_capablities
+
+    caps = _get_capablities(['domainadmin'])
+    assert caps
+    assert _check_permissions_create('ou=hans', 'users/user', caps)
+    assert _check_permissions_create('CONTEXT', 'users/user', caps)
+    assert _check_permissions_create('xyz', 'users/user', caps)
+
+    caps = _get_capablities(['ouadmin'])
+    assert caps
+    assert not _check_permissions_create(f'cn=users,{_ucr["ldap/base"]}', 'users/user', caps)
+    assert _check_permissions_create('CONTEXT', 'users/user', caps)
+    assert _check_permissions_create(f'cn=domain,cn=mail,{_ucr["ldap/base"]}', 'mail/domain', caps)
