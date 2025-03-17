@@ -118,19 +118,105 @@ roles = {
 
 }
 
+### code from components/authorization-engine/guardian/authorization-api/guardian_authorization_api/models/policies.py
+from dataclasses import dataclass, field
+from typing import Any, Optional
+
+@dataclass(frozen=True)
+class NamespacedValue:
+    app_name: str
+    namespace_name: str
+    name: str
+
+    def __str__(self):
+        return f"{self.app_name}:{self.namespace_name}:{self.name}"
+
+
+@dataclass(frozen=True)
+class Permission(NamespacedValue): ...
+
+
+@dataclass(frozen=True)
+class Context(NamespacedValue): ...
+
+
+@dataclass(frozen=True)
+class Role(NamespacedValue):
+    context: Optional[Context] = None
+
+    def __str__(self):
+        if self.context:
+            return f"{super().__str__()}&{self.context}"
+        else:
+            return f"{super().__str__()}"
+
+### end code from components/authorization-engine/guardian/authorization-api/guardian_authorization_api/models/policies.py
+
+### code from components/authorization-engine/guardian/authorization-api/guardian_authorization_api/adapters/persistence.py
+import re
+
+re_split_roles_and_contexts = re.compile(
+    r"^((?P<role_app>[a-z0-9-_]+):(?P<role_namespace>[a-z0-9-_]+):(?P<role_name>[a-z0-9-_]+))(&(?P<context_app>[a-z0-9-_]+):(?P<context_namespace>[a-z0-9-_]+):(?P<context_name>[a-z0-9-_]+))?$"
+)
+
+def _to_policy_role(role: str):
+    if res := re.search(re_split_roles_and_contexts, role):
+        groups = res.groupdict()
+        role_app = groups["role_app"]
+        role_namespace = groups["role_namespace"]
+        role_name = groups["role_name"]
+        context = None
+        if groups["context_name"] is not None:
+            context = Context(
+                name=groups["context_name"],
+                app_name=groups["context_app"],
+                namespace_name=groups["context_namespace"],
+            )
+
+        return Role(
+            app_name=role_app,
+            namespace_name=role_namespace,
+            name=role_name,
+            context=context,
+        )
+        raise Exception(f"Role {role} is malformed.")
+
+#def parse_role(role):
+#    if res := re.search(re_split_roles_and_contexts, role):
+#        groups = res.groupdict()
+#        role_app = groups["role_app"]
+#        role_namespace = groups["role_namespace"]
+#        role_name = groups["role_name"]
+#        context = None
+#        if groups["context_name"] is not None:
+#            name=groups["context_name"]
+#            app_name=groups["context_app"]
+#            namespace_name=groups["context_namespace"]
+#    return (
+
+
+
+### end code from components/authorization-engine/guardian/authorization-api/guardian_authorization_api/adapters/persistence.py
 
 ldap_base = ucr.get("ldap/base")
-
 
 def _check_user_role():
     # return whether guardian handling is needed,
     # i.e., whether the actual user has meaningful roles
-    from univention.management.console.modules.udm.udm_ldap import get_bind_user
     if not ucr.is_true("umc/udm/delegation"):
         return False
-    user = get_bind_user()
-    if user != f"uid=karl,ou=Berlin,ou=People,ou=univention-demo-data,${ldap_base}":
+    from univention.management.console.modules.udm.udm_ldap import get_user_roles  ## FIXME: circular import
+    user_roles = get_user_roles()
+    policies_roles = []
+    for role in user_roles:
+        policies_roles.append(_to_policy_role(role))
+    if not [ parsed_role for parsed_role in policies_roles if parsed_role.name in ("domainadmins", "ouadmins") ]:
         return False
+    ## Maybe retun here the context extracted from the role, sth like:
+    # ctx = [ parsed_role.context for parsed_role in policies_roles if parsed_role.name in ("ouadmins") ]
+    # if not ctx:  ## FIXME: pretty silly
+    #      ctx = [ '*' for parsed_role in policies_roles if parsed_role.name in ("domainadmins") ]
+    # return ctx
     return True
 
 

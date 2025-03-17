@@ -119,6 +119,11 @@ def set_user_roles(user_dn: str) -> None:
     __user_role = roles
 
 
+def get_user_roles() -> str:
+    global __user_role
+    return __user_role
+
+
 def get_bind_user():
     return __bind_user_dn
 
