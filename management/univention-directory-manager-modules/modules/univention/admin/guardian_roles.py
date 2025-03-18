@@ -47,7 +47,7 @@ _ = translation.translate
 # TODO move to univention.admin.syntax
 class GuardianRole(simple):
     regex = re.compile(
-        r"^([a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_]+)(&[a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_=,]+)?$",  # FIXME: why don't we allow LDAP DNs in the last part of context? That would be mixed case and case sensitive. https://datatracker.ietf.org/doc/html/rfc2252#section-6.9
+        r"^([a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_]+)(&[a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_=,]+)?$",  # FIXME: why don't we allow LDAP DNs in the last part of context? That would be case insensitive UTF-8 see https://ldapwiki.com/wiki/Wiki.jsp?page=Distinguished%20Name%20Case%20Sensitivity and https://ldapwiki.com/wiki/Wiki.jsp?page=Ou
     )
     error_message = _(
         "Guardian role strings must be lowercase ASCII alphanumeric with hyphens and underscores, "
