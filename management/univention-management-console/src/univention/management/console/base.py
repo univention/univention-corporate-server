@@ -386,6 +386,7 @@ class Base(Translation):
             if isinstance(error['command'], bytes):  # Python 2
                 error['command'] = error['command'].decode('utf-8', 'replace')
             message = self._('Internal server error during "%(command)s".') % error
+            MODULE.error(tb_str)
         MODULE.process(str(message))
         self.finished(request.id, result, message, status=status, headers=headers, error=error, reason=reason)
 

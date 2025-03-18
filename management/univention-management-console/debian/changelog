@@ -1,3 +1,10 @@
+univention-management-console (14.0.47-1) unstable; urgency=low
+
+  * Issue univention/ucs#2739: log exceptions that are thrown in UMC
+    module methods
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Mar 2025 17:16:27 +0100
+
 univention-management-console (14.0.46-1) UNRELEASED; urgency=medium
 
   * Bug #58015 UCS 5.2-1 version bump
