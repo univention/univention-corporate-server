@@ -35,6 +35,7 @@
 
 import datetime
 import os
+from functools import wraps
 
 import psycopg2
 import psycopg2.extras
@@ -53,12 +54,36 @@ class MultipleTokensInDB(Exception):
     pass
 
 
+def auto_reopen_and_retry(func):
+    """
+    Close and reestablish connection to database only once in case an exception has been caught
+    thrown by the wrapped method.
+    """
+    @wraps(func)
+    def _decorator(self, *args, **kwargs):
+        try:
+            return func(self, *args, **kwargs)
+        except (psycopg2.InterfaceError, psycopg2.OperationalError, psycopg2.InternalError) as exc:
+            self.logger.process("TokenDB: caught database error - reopening database and retrying transaction")
+            self.logger.debug('TokenDB: database error was: %s', exc)
+            # try to close database but ignore errors
+            try:
+                self.close_db()
+            except psycopg2.Error:
+                pass
+            # reconnect and retry last action
+            self.conn = self.open_db()
+            return func(self, *args, **kwargs)
+    return _decorator
+
+
 class TokenDB:
 
     def __init__(self, logger):
         self.logger = logger
         self.conn = self.open_db()
 
+    @auto_reopen_and_retry
     def insert_token(self, username, method, token):
         sql = "INSERT INTO tokens (username, method, timestamp, token) VALUES (%(username)s, %(method)s, %(ts)s, %(token)s);"
         data = {"username": username, "method": method, "ts": datetime.datetime.utcnow(), "token": token}
@@ -67,6 +92,7 @@ class TokenDB:
         self.conn.commit()
         cur.close()
 
+    @auto_reopen_and_retry
     def update_token(self, username, method, token):
         sql = "UPDATE tokens SET method=%(method)s, timestamp=%(ts)s, token=%(token)s WHERE username=%(username)s;"
         data = {"username": username, "method": method, "ts": datetime.datetime.utcnow(), "token": token}
@@ -75,6 +101,7 @@ class TokenDB:
         self.conn.commit()
         cur.close()
 
+    @auto_reopen_and_retry
     def delete_tokens(self, **kwargs):
         sql = "DELETE FROM tokens WHERE "
         sql += " AND ".join([f"{key}=%({key})s" for key in kwargs.keys()])
@@ -83,6 +110,7 @@ class TokenDB:
         self.conn.commit()
         cur.close()
 
+    @auto_reopen_and_retry
     def get_all(self, **kwargs):
         sql = "SELECT * FROM tokens WHERE "
         sql += " AND ".join([f"{key}=%({key})s" for key in kwargs.keys()])
@@ -92,6 +120,7 @@ class TokenDB:
         cur.close()
         return rows
 
+    @auto_reopen_and_retry
     def get_one(self, **kwargs):
         rows = self.get_all(**kwargs)
         if len(rows) == 1:
@@ -101,8 +130,9 @@ class TokenDB:
         else:
             return None
 
+    @auto_reopen_and_retry
     def create_table(self):
-        self.logger.info("db_create_table(): Creating table 'tokens' and constraints...")
+        self.logger.info("TokenDB: create_table(): Creating table 'tokens' and constraints...")
         cur = self.conn.cursor()
         cur.execute("""CREATE TABLE tokens
 (id SERIAL PRIMARY KEY NOT NULL,
@@ -122,20 +152,22 @@ token VARCHAR(255) NOT NULL);""")
                 with open(DB_SECRETS_FILE) as pw_file:
                     password = pw_file.readline().strip()
             except OSError as e:
-                self.logger.error("db_open(): Could not read %s: %s", DB_SECRETS_FILE, e)
+                self.logger.error("TokenDB: open_db(): Could not read %s: %s", DB_SECRETS_FILE, e)
                 raise
         try:
+            self.logger.debug("TokenDB: open_db(): Connecting to database %r", DB_NAME)
             conn = psycopg2.connect(database=DB_NAME, user=DB_USER, password=password, host=DB_HOST, port=DB_PORT)
-            self.logger.info("db_open(): Connected to database %r on server with version %r using protocol version %r.", DB_NAME, conn.server_version, conn.protocol_version)
+            self.logger.info("TokenDB: open_db(): Connected to database %r on server with version %r using protocol version %r", DB_NAME, conn.server_version, conn.protocol_version)
             return conn
         except Exception:
-            self.logger.exception("db_open(): Error connecting to database %r:", DB_NAME)
+            self.logger.exception("TokenDB: open_db(): Error connecting to database %r:", DB_NAME)
             raise
 
     def close_db(self):
         self.conn.close()
-        self.logger.info("close_database(): closed database connection.")
+        self.logger.info("TokenDB: close_db(): closed database connection.")
 
+    @auto_reopen_and_retry
     def table_exists(self):
         cur = self.conn.cursor()
         cur.execute("SELECT * FROM pg_catalog.pg_tables WHERE tablename='tokens'")

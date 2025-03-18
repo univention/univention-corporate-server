@@ -1,3 +1,10 @@
+univention-self-service (7.0.7-2) unstable; urgency=low
+
+  * Issue univention/ucs#2738: reconnect automatically in case database
+    connection got lost
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 18 Mar 2025 17:33:18 +0100
+
 univention-self-service (7.0.7-1) UNRELEASED; urgency=medium
 
   * Bug #58015 UCS 5.2-1 version bump
