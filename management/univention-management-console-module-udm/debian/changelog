@@ -1,4 +1,11 @@
-univention-management-console-module-udm (12.0.5-2) unstable; urgency=medium
+univention-management-console-module-udm (12.0.6-2) unstable; urgency=medium
+
+  * Issue univention/ucs#2727: relax GuardianRole syntax pattern to at least
+    allow some characters found in a DN in the context.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 18 Mar 2025 13:30:59 +0100
+
+univention-management-console-module-udm (12.0.6-1) unstable; urgency=medium
 
   * Issue univention/ucs#2727: first test with delegated administration
 

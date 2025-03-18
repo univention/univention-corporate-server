@@ -47,11 +47,12 @@ _ = translation.translate
 # TODO move to univention.admin.syntax
 class GuardianRole(simple):
     regex = re.compile(
-        r"^([a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_]+)(&[a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_]+)?$",
+        r"^([a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_]+)(&[a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_=,]+)?$",  # FIXME: why don't we allow LDAP DNs in the last part of context? That would be mixed case and case sensitive. https://datatracker.ietf.org/doc/html/rfc2252#section-6.9
     )
     error_message = _(
         "Guardian role strings must be lowercase ASCII alphanumeric with hyphens and underscores, "
-        "in the format 'app:namespace:role' or 'app:namespace:role&app:namespace:context'!",
+        "in the format 'app:namespace:role' or 'app:namespace:role&app:namespace:context'."
+        "The final part of context additionally allows equal and comma.",
     )
 
 

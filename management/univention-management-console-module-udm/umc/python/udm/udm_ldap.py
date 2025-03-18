@@ -77,8 +77,8 @@ _licenseCheck = 0
 
 # code from components/authorization-engine/guardian/authorization-api/guardian_authorization_api/adapters/persistence.py
 re_split_roles_and_contexts = re.compile(
-    r"^((?P<role_app>[a-z0-9-_]+):(?P<role_namespace>[a-z0-9-_]+):(?P<role_name>[a-z0-9-_]+))(&(?P<context_app>[a-z0-9-_]+):(?P<context_namespace>[a-z0-9-_]+):(?P<context_name>[a-z0-9-_]+))?$"  # noqa: COM812
-)
+    r"^((?P<role_app>[a-z0-9-_]+):(?P<role_namespace>[a-z0-9-_]+):(?P<role_name>[a-z0-9-_]+))(&(?P<context_app>[a-z0-9-_]+):(?P<context_namespace>[a-z0-9-_]+):(?P<context_name>[a-z0-9-_=,]+))?$",
+)  # FIXME: Why doesn't this allow at least "=" and "," at least in "context_name"? Basically it should allow everything valid in an LDAP DN!? I.e. mixed case and case sensitive. https://datatracker.ietf.org/doc/html/rfc2252#section-6.9
 
 
 def calculate_bind_hash(request):
