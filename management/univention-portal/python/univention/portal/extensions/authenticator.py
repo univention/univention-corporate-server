@@ -32,13 +32,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import asyncio
 import base64
 import binascii
-import dataclasses
 import datetime
 import hashlib
 import json
 import secrets
+from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from datetime import UTC, timedelta
 from typing import Any
@@ -46,6 +47,9 @@ from urllib.parse import parse_qsl, quote_plus, urlencode, urljoin, urlparse
 
 import jwt
 import redis.asyncio as redis
+from psycopg import AsyncConnection
+from psycopg.rows import dict_row
+from psycopg_pool import AsyncConnectionPool
 from tornado.httpclient import AsyncHTTPClient, HTTPError, HTTPRequest
 from tornado.web import RequestHandler
 
@@ -246,6 +250,85 @@ class OIDCSession:
             iss=verified_id_token['iss'],
         )
 
+    async def persist(self, session_id, conn: AsyncConnection):
+        async with conn.transaction(), conn.cursor() as cur:
+            await cur.execute(INSERT_SESSION, {
+                'session_id': session_id,
+                'id_token': self.id_token,
+                'access_token': self.access_token,
+                'refresh_token': self.refresh_token,
+                'refresh_expires_in': self.refresh_expires_in,
+                'access_expires_in': self.access_expires_in,
+                'uid': self.uid,
+                'umc_access_token': self.umc_access_token,
+                'sub': self.sub,
+                'sid': self.sid,
+                'iss': self.iss,
+            })
+
+    @classmethod
+    async def delete(cls, sessiond_id: str, conn: AsyncConnection):
+        async with conn.transaction(), conn.cursor() as cur:
+            await cur.execute(DELETE_SESSION_BY_SESSION_ID, (sessiond_id,))
+
+    @classmethod
+    async def get_session_by_session_id(cls, session_id: str, conn: AsyncConnection):
+        async with conn.transaction(), conn.cursor(row_factory=dict_row) as cur:
+            res = await cur.execute(SELECT_SESSION_BY_SESSION_ID, (session_id,))
+            row = await res.fetchone()
+
+        if row is None:
+            return None
+
+        return cls(**row)
+
+
+CREATE_TABLE = """CREATE TABLE IF NOT EXISTS sessions (
+    session_id varchar PRIMARY KEY,
+    id_token varchar NOT NULL,
+    access_token varchar NOT NULL,
+    refresh_token varchar NOT NULL,
+    refresh_expires_in integer NOT NULL,
+    access_expires_in integer NOT NULL,
+    uid varchar NOT NULL,
+    umc_access_token varchar NOT NULL,
+    sub varchar NOT NULL,
+    sid varchar NOT NULL,
+    iss varchar NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS sessions_iss ON sessions USING hash (iss);
+CREATE INDEX IF NOT EXISTS sessions_sub ON sessions USING hash (sub);
+CREATE INDEX IF NOT EXISTS sessions_sid ON sessions USING hash (sid);
+CREATE INDEX IF NOT EXISTS sessions_session_id ON sessions USING hash (session_id);"""
+
+INSERT_SESSION = """INSERT INTO sessions
+    (session_id, id_token, access_token, refresh_token, refresh_expires_in, access_expires_in, uid, umc_access_token, sub, sid, iss)
+VALUES
+    (%(session_id)s, %(id_token)s, %(access_token)s, %(refresh_token)s, %(refresh_expires_in)s, %(access_expires_in)s, %(uid)s, %(umc_access_token)s, %(sub)s, %(sid)s, %(iss)s)
+ON CONFLICT (session_id)
+DO UPDATE SET
+id_token = %(id_token)s,
+access_token = %(access_token)s,
+refresh_token = %(refresh_token)s,
+refresh_expires_in = %(refresh_expires_in)s,
+access_expires_in = %(access_expires_in)s,
+uid = %(uid)s,
+umc_access_token = %(umc_access_token)s,
+sub = %(sub)s,
+sid = %(sid)s,
+iss = %(iss)s;
+"""
+
+SELECT_SESSION_BY_SESSION_ID = """SELECT
+    id_token, access_token, refresh_token, refresh_expires_in, access_expires_in,
+    uid, umc_access_token, extract(epoch from created_at)::float as created_at, sub, sid, iss
+FROM sessions WHERE session_id = %s"""
+DELETE_SESSION_BY_SESSION_ID = "DELETE FROM sessions WHERE session_id = %s"
+DELETE_SESSIONS_BY_ISS_AND_SUB = "DELETE FROM sessions WHERE sub = %(sub)s AND iss = %(iss)s"
+DELETE_SESSIONS_BY_SID = "DELETE FROM sessions WHERE sid = %s"
+
 
 class OIDCAuthenticator(Authenticator):
     """Authenticate via OpenID Connect"""
@@ -254,7 +337,9 @@ class OIDCAuthenticator(Authenticator):
         oidc_config: dict[str, Any] = config.fetch('oidc')
         self.group_cache = group_cache
         self.pkce_pool = redis.Redis(host='master.ucs.test', port=6379, db=0)
-        self.session_pool = redis.Redis(host='master.ucs.test', port=6379, db=1)
+        self.session_pool = AsyncConnectionPool('postgresql://postgres:postgres@master.ucs.test:5433/postgres', open=False)
+        self.__pool_opened = False
+        self.__init_lock = asyncio.Lock()
 
         self.http_client = AsyncHTTPClient(force_instance=True)
         with open(oidc_config['openid_configuration']) as f:
@@ -273,6 +358,20 @@ class OIDCAuthenticator(Authenticator):
         if args is None:
             args = request.path_args
         return request.request.protocol + "://" + request.request.host + request.reverse_url(name, *args)
+
+    @asynccontextmanager
+    async def get_db_connection(self):
+        if not self.__pool_opened:
+            async with self.__init_lock:
+                if not self.__pool_opened:
+                    await self.session_pool.open()
+                    async with self.session_pool.connection() as conn:
+                        await conn.execute(CREATE_TABLE)
+                    self.__pool_opened = True
+
+        async with self.session_pool.connection() as conn:
+            await conn.set_autocommit(True)
+            yield conn
 
     @property
     def client_basic_auth(self):
@@ -365,9 +464,8 @@ class OIDCAuthenticator(Authenticator):
         return json.loads(resp.body)
 
     async def persist_session(self, session_id: str, session: OIDCSession):
-        session_json = json.dumps(dataclasses.asdict(session))
-        expiry = session.refresh_expires_in
-        await self.session_pool.setex(session_id, expiry, session_json)
+        async with self.get_db_connection() as conn:
+            await session.persist(session_id, conn)
 
     async def login_request(self, request):
         code = request.get_query_argument('code', None)
@@ -415,7 +513,9 @@ class OIDCAuthenticator(Authenticator):
             if session_id is None:
                 return
 
-            await self.session_pool.delete(session_id)
+            async with self.get_db_connection() as conn:
+                await OIDCSession.delete(session_id, conn)
+
             request.clear_cookie(self.session_cookie_name)
         elif request.request.method == 'POST':
             content_type = request.request.headers['content-type']
@@ -427,19 +527,39 @@ class OIDCAuthenticator(Authenticator):
                 return
             key = self.get_key_for_token(logout_token)
             # https://openid.net/specs/openid-connect-backchannel-1_0.html#Validation
-            token = jwt.decode(logout_token, key.key, ['RS256'], {
-                'require': ['exp', 'iss', 'aud'],
-                'verify_aud': False,
-                'verify_issuer': True,
-                'verify_exp': True,
-            }, issuer=self.issuer, leeway=20)
+            # TODO: validate aud
+            get_logger('user').debug('got logout token')
+            try:
+                token = jwt.decode(logout_token, key.key, ['RS256'], {
+                    'require': ['exp', 'iss', 'aud'],
+                    'verify_aud': False,
+                    'verify_issuer': True,
+                    'verify_exp': True,
+                }, issuer=self.issuer, leeway=20)
+            except jwt.InvalidTokenError as e:
+                get_logger('user').warning('logout token failed verification: %s', e)
 
             if not token.get('sub') and not token.get('sid'):
+                get_logger('user').warning('logout token does not container either sub or sid claim')
                 return
             if not token['events'] or 'http://schemas.openid.net/event/backchannel-logout' not in token['events']:
+                get_logger('user').warning('logout token does not contain an events claim with correct event')
                 return
             if token.get('nonce'):
+                get_logger('user').warning('logou token does contain a nonce claim')
                 return
+
+            iss = token.get('iss')
+            sub = token.get('sub')
+            sid = token.get('sid')
+
+            async with self.get_db_connection() as conn, conn.transaction(), conn.cursor() as cur:
+                if iss and sub:
+                    get_logger('user').debug('deleting sessions by iss and sub')
+                    await cur.execute(DELETE_SESSIONS_BY_ISS_AND_SUB, {'sub': sub, 'iss': iss})
+                if sid:
+                    get_logger('user').debug('deleting session by sid')
+                    await cur.execute(DELETE_SESSIONS_BY_SID, (sid,))
 
     async def refresh_session(self, session_id: str, session: OIDCSession):
         refresh_token_request_body = {
@@ -472,12 +592,16 @@ class OIDCAuthenticator(Authenticator):
     async def get_session(self, session_id: str | None):
         if session_id is None:
             return None
-        session = await self.session_pool.get(session_id)
-        if session is None:
-            return None
-        session = OIDCSession(**json.loads(session))
+        async with self.get_db_connection() as conn:
+            session = await OIDCSession.get_session_by_session_id(session_id, conn)
+
+            if session is None:
+                return None
+            if session.refresh_expires_at < datetime.datetime.now(UTC):
+                await OIDCSession.delete(session_id, conn)
+                return None
+
         return session
-        # print(username)
 
     async def get_user(self, request):
         session_id = request.get_cookie(self.session_cookie_name, None)

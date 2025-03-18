@@ -48,3 +48,7 @@ class LogoutHandler(PortalResource):
     async def get(self, portal_name):
         portal = self.find_portal()
         await portal.logout_user(self)
+
+    async def post(self, portal_name):
+        portal = self.find_portal()
+        await portal.logout_user(self)
