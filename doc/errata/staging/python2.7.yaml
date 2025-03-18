@@ -1,0 +1,37 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: python2.7
+fix: 2.7.13-2+deb9u10
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2024-6232)
+ * CVSS score 6.8 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:N/I:H/A:N).
+   (CVE-2025-0938)
+ * CVSS score 6.8 (CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:N).
+   (CVE-2024-6923)
+ * CVSS score 5.9 (CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2024-5535)
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N).
+   (CVE-2023-27043)
+ * CVSS score 5.0 (CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:L/I:L/A:L).
+   (CVE-2024-0397)
+ * CVSS score 4.8 (CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:U/C:N/I:N/A:H).
+   (CVE-2024-7592)
+ * CVSS score 3.7 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N).
+   (CVE-2024-11168)
+ * CVSS score 2.7 (CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2024-5642)
+bug: [58079]
+cve:
+- CVE-2023-27043
+- CVE-2024-6232
+- CVE-2024-6923
+- CVE-2024-7592
+- CVE-2024-0397
+- CVE-2024-5642
+- CVE-2024-5535
+- CVE-2024-11168
+- CVE-2025-0938
