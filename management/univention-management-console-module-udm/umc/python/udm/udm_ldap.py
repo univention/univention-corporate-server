@@ -75,6 +75,11 @@ __bind_function = None
 __bind_hash = None
 _licenseCheck = 0
 
+# code from components/authorization-engine/guardian/authorization-api/guardian_authorization_api/adapters/persistence.py
+re_split_roles_and_contexts = re.compile(
+    r"^((?P<role_app>[a-z0-9-_]+):(?P<role_namespace>[a-z0-9-_]+):(?P<role_name>[a-z0-9-_]+))(&(?P<context_app>[a-z0-9-_]+):(?P<context_namespace>[a-z0-9-_]+):(?P<context_name>[a-z0-9-_]+))?$"  # noqa: COM812
+)
+
 
 def calculate_bind_hash(request):
     return hash((request.username, request.password, request.auth_type))
@@ -110,10 +115,16 @@ def set_user_roles(user_dn: str) -> None:
     mod = UDM_Module('users/user', ldap_connection=ldap_connection, ldap_position=user_dn)
     obj = mod.module.object(None, ldap_connection, None, user_dn, None)
     obj.open_guardian()
-    __user_roles = [
-        role.split(':')[2] for role in set(obj["guardianInheritedRoles"] + obj["guardianRoles"])
-        if role.startswith('umc:udm:')
-    ]
+    role_set = set(obj["guardianInheritedRoles"] + obj["guardianRoles"])
+
+    __user_roles = {}
+    # simulating guardian_authorization_api.adapters.persistence.UDMPersistenceAdapter._to_policy_role()
+    for role in role_set:
+        if role.startswith("umc:udm:"):
+            res = re.search(re_split_roles_and_contexts, role)
+            if res:
+                res.groupdict()
+                __user_roles[res["role_name"]] = res["context_namespace"]
     MODULE.info('Setting user roles to %s' % __user_roles)
 
 
