@@ -149,69 +149,148 @@ def _get_capablities(actor_roles):
 
 
 def _check_permission_action(module: str, action: str, permissions: dict) -> bool:
-    allowed = False
-    if '*' in permissions:
-        allowed = permissions['*'].get(action, False)
-    if module in permissions:
-        allowed = permissions[module].get(action, False)
-    return allowed
+    """Checks if a given action is allowed for a module in permissions."""
+    return permissions.get(module, {}).get(action, False) or permissions.get('*', {}).get(action, False)
 
 
-def _check_permissions_create(dn, module, caps):
-
-    allowed = False
-    allowed_per_context = None
-    allowed_per_wildcard = None
-    allowed_per_position = None
-
+def _check_permissions_create(obj: object, caps: list[dict]) -> bool:
+    allowed = None
+    position = obj2position(obj)
+    module_name = obj2module(obj)
+    caps.sort(key=get_cap_priority)
     for cap in caps:
-        if cap['target']['position'] == '$CONTEXT':
+        target_position = cap['target']['position']
+        permissions = cap['permissions']
+
+        if target_position == '$CONTEXT' and position == 'CONTEXT':
             # TODO replace context with context of role
-            if dn == "CONTEXT":
-                allowed_per_context = _check_permission_action(module, 'create', cap['permissions'])
-        elif cap['target']['position'] == '*':
-            allowed_per_wildcard = _check_permission_action(module, 'create', cap['permissions'])
-        else:
+            allowed = _check_permission_action(module_name, 'create', permissions)
+        elif target_position == '*':
+            allowed = _check_permission_action(module_name, 'create', permissions)
+        elif f"{target_position},{ldap_base}" == position:
             # FIXME, how to get the best matching position
-            if cap['target']['position'] + ',' + ldap_base == dn:
-                allowed_per_position = _check_permission_action(module, 'create', cap['permissions'])
+            allowed = _check_permission_action(module_name, 'create', permissions)
 
-    if allowed_per_position is not None:
-        allowed = allowed_per_position
-    elif allowed_per_context is not None:
-        allowed = allowed_per_context
-    elif allowed_per_wildcard is not None:
-        allowed = allowed_per_wildcard
-
-    return allowed
+        if allowed is not None and allowed:
+            return True
+    return False
 
 
-def user_may_create(obj, actor_dn, actor_roles):
+def user_may_create(obj, actor_roles_func):
     if not _check_authorization():
         return
+    actor_roles = actor_roles_func()
     cap = _get_capablities(actor_roles)
     # allowed = _check_permissions_create(obj._ldap_dn, obj.module, cap)
     # FIXME is obj.position.getDn reliable?
-    allowed = _check_permissions_create(obj.position.getDn(), obj.module, cap)
+    allowed = _check_permissions_create(obj, cap)
     if not allowed:
         raise Forbidden()
 
 
-def user_may_read(objs):
+def obj2dn(obj: object | dict | str) -> str:
+    """Extracts the distinguished name (DN) from an object."""
+    try:
+        if hasattr(obj, "dn"):
+            return obj.dn
+        if isinstance(obj, dict):
+            return obj["id"]
+        if isinstance(obj, str):
+            return obj
+    except (AttributeError, KeyError):
+        pass
+    raise ValueError("Invalid object format for extracting DN")
+
+
+def obj2position(obj: object | dict | str) -> str:
+    """Extracts the position from an object's distinguished name (DN)."""
+    try:
+        if hasattr(obj, "position"):
+            return obj.position.getDn()
+        return obj2dn(obj).split(',', 1)[1]
+    except (AttributeError, KeyError, IndexError):
+        pass
+    raise ValueError("Invalid object format for extracting position")
+
+
+def obj2module(obj: object | dict | str) -> str:
+    if hasattr(obj, "module"):
+        return obj.module
+    if isinstance(obj, dict):
+        # from syntax choices ({"id": dn, "label": name})
+        # FIXME
+        raise NotImplementedError("obj2module for dict")
+    if isinstance(obj, str):
+        # straight dn strings
+        # FIXME
+        raise NotImplementedError("obj2module for str")
+
+
+def get_cap_priority(cap: dict) -> int:
+    """Returns the priority of a capability."""
+    if cap['target']['position'] == '*':
+        return 2
+    if cap['target']['position'] == '$CONTEXT':
+        return 1
+    return 0
+
+
+def _check_permission_attr_read(module_name: str, permissions: dict) -> list[str]:
+    """Retrieves allowed attributes for a given module from permissions."""
+    return permissions.get(module_name, {}).get('attributes', []) or permissions.get('*', {}).get('attributes', [])
+
+
+def _check_permission_read(objs: list[object | dict | str], caps: list[dict]) -> list[object | dict | str]:
+    """Filters readable objects based on permissions."""
+    readables = []
+    attrs_readble = {}
+    objs_processed = {}
+    # TODO filter objs here
+
+    for obj in objs:
+        try:
+            position = obj2position(obj)
+            module_name = obj2module(obj)
+            objs_processed.setdefault((position, module_name), []).append(obj)
+        except ValueError:
+            continue
+
+    caps.sort(key=get_cap_priority)
+
+    for (position, module_name), _objs in objs_processed.items():
+        allowed_attrs = None
+        for cap in caps:
+            target_position = cap['target']['position']
+            permissions = cap['permissions']
+
+            if target_position == '$CONTEXT' and position == 'CONTEXT':
+                # TODO replace context with context of role
+                allowed_attrs = _check_permission_attr_read(module_name, permissions)
+            elif target_position == '*':
+                allowed_attrs = _check_permission_attr_read(module_name, permissions)
+            elif f"{target_position},{ldap_base}" == position:
+                # FIXME, how to get the best matching position
+                allowed_attrs = _check_permission_attr_read(module_name, permissions)
+
+            if allowed_attrs:
+                attrs_readble[(position, module_name)] = allowed_attrs
+                break
+
+    for k, _objs in objs_processed.items():  # k = (position, module_name)
+        if k in attrs_readble:
+            # TODO remove unreadable attributes from objects
+            readables.extend(_objs)
+
+    return readables
+
+
+def user_may_read(objs: list[object | dict | str], actor_roles_func) -> list[object | dict | str]:
     if not _check_authorization():
         return objs
-    readable = []
-    for obj in objs:
-        if hasattr(obj, "dn") and "ou=Berlin" in obj.dn:
-            # "real" udm obj
-            readable.append(obj)
-        if isinstance(obj, dict) and "ou=Berlin" in obj["id"]:
-            # from syntax choices ({"id": dn, "label": name})
-            readable.append(obj)
-        if isinstance(obj, str) and "ou=Berlin" in obj:
-            # straight dn strings
-            readable.append(obj)
-    return readable
+    actor_roles = actor_roles_func()
+    cap = _get_capablities(actor_roles)
+
+    return _check_permission_read(objs, cap)
 
 
 def user_may_update(obj):

@@ -607,7 +607,7 @@ class UDM_Module:
 
             self._map_properties(obj, ldap_object)
 
-            user_may_create(obj, get_bind_user(), get_user_roles())
+            user_may_create(obj, get_user_roles)
             obj.create()
         except udm_errors.base as e:
             MODULE.warn('Failed to create LDAP object: %s: %s' % (e.__class__.__name__, str(e)))
@@ -750,7 +750,7 @@ class UDM_Module:
         MODULE.info('Triggering garbage collection')
         gc.collect()
 
-        result = user_may_read(result)
+        result = user_may_read(result, get_user_roles)
         return result
 
     def get(self, ldap_dn=None, superordinate=None, attributes=[]):
@@ -1429,7 +1429,7 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
                 raise ObjectDoesNotExist(container)
         UDM_Error(e).reraise()
 
-    choices = user_may_read(choices)
+    choices = user_may_read(choices, get_user_roles)
     return choices
 
 
