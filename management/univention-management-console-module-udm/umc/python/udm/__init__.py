@@ -781,7 +781,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
 
         return: [ { 'id' : <LDAP DN of container>, 'label' : <name> }, ... ]
         """
-        containers = [{'id': x, 'label': ldap_dn2path(x, ldap_base=module.ldap_base)} for x in module.get_default_containers()]
+        containers = [{'id': x, 'label': ldap_dn2path(x, ldap_base=module.ldap_base), "module_name": module.name} for x in module.get_default_containers()]
         containers = user_may_read(containers, get_user_roles)
         return sorted(containers, key=lambda x: x['label'].lower())
 

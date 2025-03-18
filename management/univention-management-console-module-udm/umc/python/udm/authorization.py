@@ -216,6 +216,8 @@ def obj2position(obj: object | dict | str) -> str:
 def obj2module(obj: object | dict | str) -> str:
     if hasattr(obj, "module"):
         return obj.module
+    if isinstance(obj, dict) and "module_name" in obj:
+        return obj["module_name"]
     if isinstance(obj, dict | str):
         dn = obj2dn(obj)
         # FIXME extract module name using dn
@@ -224,7 +226,7 @@ def obj2module(obj: object | dict | str) -> str:
         if "cn=groups" in dn:
             return "groups/group"
         else:
-            raise NotImplementedError("Module extraction from DN not implemented")
+            raise NotImplementedError(f"Module extraction from DN not implemented {dn}: {obj} ")
 
 
 def get_cap_priority(cap: dict) -> int:

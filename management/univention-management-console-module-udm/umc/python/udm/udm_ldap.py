@@ -730,7 +730,9 @@ class UDM_Module:
                     if simple_attrs is not None:
                         result = ldap_connection.search(filter=str(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, attr=simple_attrs, serverctrls=serverctrls, response=response)
                     else:
-                        result = ldap_connection.searchDn(filter=str(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, serverctrls=serverctrls, response=response)
+                        # result = ldap_connection.searchDn(filter=str(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, serverctrls=serverctrls, response=response)
+                        result = ldap_connection.search(filter=str(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, attr=['univentionObjectType'], serverctrls=serverctrls, response=response)
+                        result = [{'id': x[0], "module_name": x[1]["univentionObjectType"][0].decode("utf8")} for x in result]
             else:
                 if self.module:
                     kwargs = {}
@@ -760,8 +762,10 @@ class UDM_Module:
         # process to use too much memory
         MODULE.info('Triggering garbage collection')
         gc.collect()
-
-        result = user_may_read(result, get_user_roles)
+        if result:
+            result = user_may_read(result, get_user_roles)
+            if result and isinstance(result[0], dict):
+                result = [x['id'] for x in result]
         return result
 
     def get(self, ldap_dn=None, superordinate=None, attributes=[]):
@@ -1426,7 +1430,11 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
                 choices.append(choice)
         else:
             choices = syn.get_choices(ldap_connection, options)
-            choices = [{'id': x[0], 'label': x[1]} for x in choices]
+            if len(syn.udm_modules) == 1:
+                module_name = syn.udm_modules[0]
+            else:
+                raise ValueError('Syntax %r: More than one UDM module' % syn.udm_modules)
+            choices = [{'id': x[0], 'label': x[1], "module_name": module_name} for x in choices]
     except udm_errors.ldapTimeout:
         raise SearchTimeoutError()
     except udm_errors.ldapSizelimitExceeded:
@@ -1439,7 +1447,6 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
             if container and not ldap_connection.get(container):
                 raise ObjectDoesNotExist(container)
         UDM_Error(e).reraise()
-
     choices = user_may_read(choices, get_user_roles)
     return choices
 
