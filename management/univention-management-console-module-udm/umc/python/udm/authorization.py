@@ -216,14 +216,15 @@ def obj2position(obj: object | dict | str) -> str:
 def obj2module(obj: object | dict | str) -> str:
     if hasattr(obj, "module"):
         return obj.module
-    if isinstance(obj, dict):
-        # from syntax choices ({"id": dn, "label": name})
-        # FIXME
-        raise NotImplementedError("obj2module for dict")
-    if isinstance(obj, str):
-        # straight dn strings
-        # FIXME
-        raise NotImplementedError("obj2module for str")
+    if isinstance(obj, dict | str):
+        dn = obj2dn(obj)
+        # FIXME extract module name using dn
+        if "cn=users" in dn:
+            return "users/user"
+        if "cn=groups" in dn:
+            return "groups/group"
+        else:
+            raise NotImplementedError("Module extraction from DN not implemented")
 
 
 def get_cap_priority(cap: dict) -> int:
@@ -240,7 +241,7 @@ def _check_permission_attr_read(module_name: str, permissions: dict) -> list[str
     return permissions.get(module_name, {}).get('attributes', []) or permissions.get('*', {}).get('attributes', [])
 
 
-def _check_permission_read(objs: list[object | dict | str], caps: list[dict]) -> list[object | dict | str]:
+def _check_permissions_read(objs: list[object | dict | str], caps: list[dict]) -> list[object | dict | str]:
     """Filters readable objects based on permissions."""
     readables = []
     attrs_readble = {}
@@ -275,7 +276,6 @@ def _check_permission_read(objs: list[object | dict | str], caps: list[dict]) ->
             if allowed_attrs:
                 attrs_readble[(position, module_name)] = allowed_attrs
                 break
-
     for k, _objs in objs_processed.items():  # k = (position, module_name)
         if k in attrs_readble:
             # TODO remove unreadable attributes from objects
@@ -290,7 +290,7 @@ def user_may_read(objs: list[object | dict | str], actor_roles_func) -> list[obj
     actor_roles = actor_roles_func()
     cap = _get_capablities(actor_roles)
 
-    return _check_permission_read(objs, cap)
+    return _check_permissions_read(objs, cap)
 
 
 def user_may_update(obj):
