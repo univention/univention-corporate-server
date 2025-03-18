@@ -7,6 +7,7 @@
 ## exposure: dangerous
 
 from types import SimpleNamespace
+from unittest import mock
 
 import pytest
 
@@ -63,19 +64,26 @@ def test_domainadmin_create_user_everywhere():
     client.umc_command('udm/add', options, 'users/user')
 
 
+def create_mock_object(position, module):
+    obj = mock.MagicMock()
+    obj.position.getDn.return_value = position
+    obj.module = module
+    return obj
+
+
 def test_check_permissions_create():
     from univention.management.console.modules.udm.authorization import _check_permissions_create, _get_capablities
 
     caps = _get_capablities(['domainadmin'])
     assert caps
-    assert _check_permissions_create('ou=hans', 'users/user', caps)
-    assert _check_permissions_create('CONTEXT', 'users/user', caps)
-    assert _check_permissions_create('xyz', 'users/user', caps)
-    assert _check_permissions_create('dc=bla', 'whatever', caps)
+    assert _check_permissions_create(create_mock_object('ou=hans', 'users/user'), caps)
+    assert _check_permissions_create(create_mock_object('CONTEXT', 'users/user'), caps)
+    assert _check_permissions_create(create_mock_object('xyz', 'users/user'), caps)
+    assert _check_permissions_create(create_mock_object('dc=bla', 'whatever'), caps)
 
     caps = _get_capablities(['ouadmin'])
     assert caps
-    assert not _check_permissions_create(f'cn=users,{_ucr["ldap/base"]}', 'users/user', caps)
-    assert _check_permissions_create('CONTEXT', 'users/user', caps)
-    assert _check_permissions_create(f'cn=domain,cn=mail,{_ucr["ldap/base"]}', 'mail/domain', caps)
-    assert not _check_permissions_create('dc=bla', 'whatever', caps)
+    assert not _check_permissions_create(create_mock_object(f'cn=users,{_ucr["ldap/base"]}', 'users/user'), caps)
+    assert _check_permissions_create(create_mock_object('CONTEXT', 'users/user'), caps)
+    assert _check_permissions_create(create_mock_object(f'cn=domain,cn=mail,{_ucr["ldap/base"]}', 'mail/domain'), caps)
+    assert not _check_permissions_create(create_mock_object('dc=bla', 'whatever'), caps)
