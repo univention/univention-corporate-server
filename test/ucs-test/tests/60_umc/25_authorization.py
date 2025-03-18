@@ -71,9 +71,11 @@ def test_check_permissions_create():
     assert _check_permissions_create('ou=hans', 'users/user', caps)
     assert _check_permissions_create('CONTEXT', 'users/user', caps)
     assert _check_permissions_create('xyz', 'users/user', caps)
+    assert _check_permissions_create('dc=bla', 'whatever', caps)
 
     caps = _get_capablities(['ouadmin'])
     assert caps
     assert not _check_permissions_create(f'cn=users,{_ucr["ldap/base"]}', 'users/user', caps)
     assert _check_permissions_create('CONTEXT', 'users/user', caps)
     assert _check_permissions_create(f'cn=domain,cn=mail,{_ucr["ldap/base"]}', 'mail/domain', caps)
+    assert not _check_permissions_create('dc=bla', 'whatever', caps)
