@@ -12,6 +12,8 @@ from unittest import mock
 import pytest
 
 from univention.config_registry import ucr as _ucr
+from univention.lib.umc import Forbidden
+from univention.testing.udm import UCSTestUDM_RemoveUDMObjectFailed
 from univention.testing.umc import Client
 
 
@@ -20,22 +22,59 @@ if not _ucr.is_true('umc/udm/delegation'):
 
 
 @pytest.fixture()
-def bremen_ou(udm):
+def bremen_ou(udm, random_username):
     dn_ou = udm.create_object('container/ou', name='bremen')
-    dn_user = udm.create_object('users/user', username='bremen_admin', guardianRoles=['umc:udm:ouadmin&umc:udm:ou=bremen'], lastname='bremen_admin', password='univention')
-    yield SimpleNamespace(ou_dn=dn_ou, ouadmin_dn=dn_user, ouadmin_username='bremen_admin')
-    udm.remove_object('users/user', dn=dn_user)
-    udm.remove_object('container/ou', dn=dn_ou)
+    ouadmin_username = random_username()
+    dn_admin = udm.create_object('users/user', username=ouadmin_username, guardianRoles=['umc:udm:ouadmin&umc:udm:ou=bremen'], lastname='bremen_admin', password='univention')
+    dn_user = udm.create_object('users/user', username=random_username(), position=dn_ou, lastname='lastname', password='univention')
+    yield SimpleNamespace(
+        ou_dn=dn_ou,
+        ouadmin_dn=dn_admin,
+        ouadmin_username=ouadmin_username,
+        user_dn=dn_user,
+    )
+    try:
+        udm.remove_object('users/user', dn=dn_user)
+        udm.remove_object('users/user', dn=dn_admin)
+        udm.remove_object('container/ou', dn=dn_ou)
+    except UCSTestUDM_RemoveUDMObjectFailed:
+        pass
 
 
-def test_ouadmin_user_create_in_different_ou(bremen_ou):
+def test_ouadmin_can_delete_user(bremen_ou):
     client = Client()
     client.authenticate(bremen_ou.ouadmin_username, 'univention')
+    options = [{
+        'object': bremen_ou.user_dn,
+        "options": {
+            "cleanup": True,
+            "recursive": True,
+        },
+    }]
+    client.umc_command('udm/remove', options, 'users/user')
 
+
+def test_ouadmin_can_not_delete_user(bremen_ou):
+    client = Client()
+    client.authenticate(bremen_ou.ouadmin_username, 'univention')
+    options = [{
+        'object': bremen_ou.ouadmin_dn,
+        "options": {
+            "cleanup": True,
+            "recursive": True,
+        },
+    }]
+    with pytest.raises(Forbidden):
+        client.umc_command('udm/remove', options, 'users/user')
+
+
+def test_ouadmin_can_create_user(bremen_ou, random_username):
+    client = Client()
+    client.authenticate(bremen_ou.ouadmin_username, 'univention')
     options = [{
         'object': {
-            'lastname': 'testou1',
-            'username': 'testou1',
+            'lastname': 'lastname',
+            'username': random_username(),
             'password': 'univention',
         },
         "options": {
@@ -46,26 +85,79 @@ def test_ouadmin_user_create_in_different_ou(bremen_ou):
     client.umc_command('udm/add', options, 'users/user')
 
 
-def test_domainadmin_create_user_everywhere():
-    client = Client.get_test_connection()
+def test_ouadmin_can_not_create_user(bremen_ou, ldap_base, random_username):
+    client = Client()
+    client.authenticate(bremen_ou.ouadmin_username, 'univention')
     options = [{
         'object': {
-            'lastname': 'test1',
-            'username': 'test1',
+            'lastname': 'lastname',
+            'username': random_username(),
             'password': 'univention',
         },
         "options": {
-            "container": "cn=users," + _ucr['ldap/base'],
+            "container": ldap_base,
+            "objectType": "users/user",
+        },
+    }]
+    with pytest.raises(Forbidden):
+        client.umc_command('udm/add', options, 'users/user')
+
+
+def test_ouadmin_can_modify_user(bremen_ou):
+    client = Client()
+    client.authenticate(bremen_ou.ouadmin_username, 'univention')
+    options = [{
+        'object': {
+            'description': 'dsfdsf',
+            '$dn$': bremen_ou.user_dn,
+        },
+    }]
+    client.umc_command('udm/put', options, 'users/user')
+
+
+def test_ouadmin_can_not_modify_user(bremen_ou, ldap_base):
+    client = Client()
+    client.authenticate(bremen_ou.ouadmin_username, 'univention')
+    options = [{
+        'object': {
+            'description': 'dsfdsf',
+            '$dn$': f'uid=Administrator,cn=users,{ldap_base}',
+        },
+    }]
+    with pytest.raises(Forbidden):
+        client.umc_command('udm/put', options, 'users/user')
+
+
+def test_domainadmin_can_create_user(random_username, ldap_base):
+    client = Client.get_test_connection()
+    options = [{
+        'object': {
+            'lastname': random_username(),
+            'username': random_username(),
+            'password': 'univention',
+        },
+        "options": {
+            "container": f"cn=users,{ldap_base}",
             "objectType": "users/user",
         },
     }]
     client.umc_command('udm/add', options, 'users/user')
+    options = [{
+        'object': {
+            'lastname': random_username(),
+            'username': random_username(),
+            'password': 'univention',
+        },
+        "options": {
+            "container": ldap_base,
+            "objectType": "users/user",
+        },
+    }]
 
 
 def create_mock_object(dn, position, module):
     obj = mock.MagicMock()
-    if dn:
-        obj.dn = dn
+    obj.dn = dn
     if position:
         obj.position.getDn.return_value = position
     else:
@@ -74,7 +166,7 @@ def create_mock_object(dn, position, module):
     return obj
 
 
-def test_check_permissions_create_for_defaul_roles():
+def test_check_permissions_create_default_roles(ldap_base):
     from univention.management.console.modules.udm.authorization import _check_permissions_create, _get_capablities
 
     caps = _get_capablities({'domainadmin': []})
@@ -85,25 +177,41 @@ def test_check_permissions_create_for_defaul_roles():
 
     caps = _get_capablities({'ouadmin': ['ou=ou1', 'ou=ou2']})
     assert caps
-    assert not _check_permissions_create(create_mock_object(None, f'cn=users,{_ucr["ldap/base"]}', 'users/user'), caps)
-    assert _check_permissions_create(create_mock_object(None, f'ou=ou1,{_ucr["ldap/base"]}', 'users/user'), caps)
-    assert _check_permissions_create(create_mock_object(None, f'ou=ou1,{_ucr["ldap/base"]}', 'whatever'), caps)
-    assert _check_permissions_create(create_mock_object(None, f'ou=ou2,{_ucr["ldap/base"]}', 'users/user'), caps)
-    assert not _check_permissions_create(create_mock_object(None, f'ou=ou3,{_ucr["ldap/base"]}', 'users/user'), caps)
-    assert _check_permissions_create(create_mock_object(None, f'cn=domain,cn=mail,{_ucr["ldap/base"]}', 'mail/domain'), caps)
+    assert not _check_permissions_create(create_mock_object(None, f'cn=users,{ldap_base}', 'users/user'), caps)
+    assert _check_permissions_create(create_mock_object(None, f'ou=ou1,{ldap_base}', 'users/user'), caps)
+    assert _check_permissions_create(create_mock_object(None, f'ou=ou1,{ldap_base}', 'whatever'), caps)
+    assert _check_permissions_create(create_mock_object(None, f'ou=ou2,{ldap_base}', 'users/user'), caps)
+    assert not _check_permissions_create(create_mock_object(None, f'ou=ou3,{ldap_base}', 'users/user'), caps)
+    assert _check_permissions_create(create_mock_object(None, f'cn=domain,cn=mail,{ldap_base}', 'mail/domain'), caps)
     assert not _check_permissions_create(create_mock_object(None, 'dc=bla', 'whatever'), caps)
-
     # does not work currently but should work
-    assert not _check_permissions_create(create_mock_object(None, f'cn=users,ou=ou2,{_ucr["ldap/base"]}', 'users/user'), caps)
+    assert not _check_permissions_create(create_mock_object(None, f'cn=users,ou=ou2,{ldap_base}', 'users/user'), caps)
 
 
-def test_check_permissions_read():
-    ldap_base = _ucr["ldap/base"]
+def test_check_permissions_modify_default_roles(ldap_base):
+    from univention.management.console.modules.udm.authorization import _check_permissions_modify, _get_capablities
+
+    caps = _get_capablities({'domainadmin': []})
+    assert caps
+    assert _check_permissions_modify(create_mock_object(None, 'ou=hans', 'users/user'), caps)
+    assert _check_permissions_modify(create_mock_object(None, 'xyz', 'users/user'), caps)
+    assert _check_permissions_modify(create_mock_object(None, 'dc=bla', 'whatever'), caps)
+
+    caps = _get_capablities({'ouadmin': ['ou=ou1', 'ou=ou2']})
+    assert _check_permissions_modify(create_mock_object(None, f'ou=ou1,{ldap_base}', 'users/user'), caps)
+    assert not _check_permissions_modify(create_mock_object(None, 'xyz', 'users/user'), caps)
+    assert _check_permissions_modify(create_mock_object(None, f'ou=ou2,{ldap_base}', 'users/user'), caps)
+    assert not _check_permissions_modify(create_mock_object(None, f'ou=ou3,{ldap_base}', 'users/user'), caps)
+    assert _check_permissions_modify(create_mock_object(None, f'ou=ou2,{ldap_base}', 'whatever'), caps)
+    assert not _check_permissions_modify(create_mock_object(None, 'ou=aada', 'whatever'), caps)
+
+
+def test_check_permissions_read(ldap_base):
     from univention.management.console.modules.udm.authorization import ROLES, _check_permissions_read, _get_capablities
     ROLES["test_ouadmin"] = [
         # ouadmin can read and write all attributes of all udm modules in the ou except guardianRole attributes
         {
-            "target": {
+            "condition": {
                 "position": "cn=users,ou=ou1",
             },
             "permissions": {
