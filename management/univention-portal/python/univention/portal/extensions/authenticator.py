@@ -39,6 +39,7 @@ import datetime
 import hashlib
 import json
 import secrets
+import time
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from datetime import UTC, timedelta
@@ -216,35 +217,35 @@ class OIDCSession:
     refresh_token: str
     refresh_expires_in: int
     access_expires_in: int
-    created_at: float
+    created_at: datetime.datetime
     uid: str
     umc_access_token: str
     sub: str
     sid: str
     iss: str
-
-    @property
-    def refresh_expires_at(self):
-        return datetime.datetime.fromtimestamp(self.refresh_expires_in + self.created_at, UTC)
-
-    @property
-    def access_expires_at(self):
-        return datetime.datetime.fromtimestamp(self.access_expires_in + self.created_at, UTC)
+    refresh_expires_at: datetime.datetime
+    access_expires_at: datetime.datetime
 
     @classmethod
     def from_token_response(cls, resp, verify_func):
         id_token = resp['id_token']
         verified_id_token = verify_func(id_token)
 
+        created_at = datetime.datetime.now(UTC)
+
+        refresh_expires_in = resp['refresh_expires_in']
+        access_expires_in = resp['expires_in']
         return OIDCSession(
             id_token=id_token,
             access_token=resp['access_token'],
             refresh_token=resp['refresh_token'],
-            refresh_expires_in=resp['refresh_expires_in'],
-            access_expires_in=resp['expires_in'],
+            refresh_expires_in=refresh_expires_in,
+            access_expires_in=access_expires_in,
             uid=verified_id_token['uid'],
             umc_access_token="",
-            created_at=datetime.datetime.now(UTC).timestamp(),
+            created_at=created_at,
+            refresh_expires_at=created_at + datetime.timedelta(seconds=refresh_expires_in),
+            access_expires_at=created_at + datetime.timedelta(seconds=access_expires_in),
             sub=verified_id_token['sub'],
             sid=verified_id_token['sid'],
             iss=verified_id_token['iss'],
@@ -264,6 +265,9 @@ class OIDCSession:
                 'sub': self.sub,
                 'sid': self.sid,
                 'iss': self.iss,
+                'created_at': self.created_at,
+                'refresh_expires_at': self.refresh_expires_at,
+                'access_expires_at': self.access_expires_at,
             })
 
     @classmethod
@@ -295,18 +299,21 @@ CREATE_TABLE = """CREATE TABLE IF NOT EXISTS sessions (
     sub varchar NOT NULL,
     sid varchar NOT NULL,
     iss varchar NOT NULL,
-    created_at timestamptz NOT NULL DEFAULT now()
+    created_at timestamptz NOT NULL,
+    refresh_expires_at timestamptz NOT NULL,
+    access_expires_at timestamptz NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS sessions_iss ON sessions USING hash (iss);
 CREATE INDEX IF NOT EXISTS sessions_sub ON sessions USING hash (sub);
 CREATE INDEX IF NOT EXISTS sessions_sid ON sessions USING hash (sid);
-CREATE INDEX IF NOT EXISTS sessions_session_id ON sessions USING hash (session_id);"""
+CREATE INDEX IF NOT EXISTS sessions_session_id ON sessions USING hash (session_id);
+CREATE INDEX IF NOT EXISTS sessions_refresh_expires_at ON sessions (refresh_expires_at);"""
 
 INSERT_SESSION = """INSERT INTO sessions
-    (session_id, id_token, access_token, refresh_token, refresh_expires_in, access_expires_in, uid, umc_access_token, sub, sid, iss)
+    (session_id, id_token, access_token, refresh_token, refresh_expires_in, access_expires_in, uid, umc_access_token, sub, sid, iss, created_at, refresh_expires_at, access_expires_at)
 VALUES
-    (%(session_id)s, %(id_token)s, %(access_token)s, %(refresh_token)s, %(refresh_expires_in)s, %(access_expires_in)s, %(uid)s, %(umc_access_token)s, %(sub)s, %(sid)s, %(iss)s)
+    (%(session_id)s, %(id_token)s, %(access_token)s, %(refresh_token)s, %(refresh_expires_in)s, %(access_expires_in)s, %(uid)s, %(umc_access_token)s, %(sub)s, %(sid)s, %(iss)s, %(created_at)s, %(refresh_expires_at)s, %(access_expires_at)s)
 ON CONFLICT (session_id)
 DO UPDATE SET
 id_token = %(id_token)s,
@@ -318,13 +325,15 @@ uid = %(uid)s,
 umc_access_token = %(umc_access_token)s,
 sub = %(sub)s,
 sid = %(sid)s,
-iss = %(iss)s;
-"""
+iss = %(iss)s,
+created_at = %(created_at)s,
+refresh_expires_at = %(refresh_expires_at)s,
+access_expires_at = %(access_expires_at)s;"""
 
 SELECT_SESSION_BY_SESSION_ID = """SELECT
     id_token, access_token, refresh_token, refresh_expires_in, access_expires_in,
-    uid, umc_access_token, extract(epoch from created_at)::float as created_at, sub, sid, iss
-FROM sessions WHERE session_id = %s"""
+    uid, umc_access_token, created_at, sub, sid, iss, refresh_expires_at, access_expires_at
+FROM sessions WHERE session_id = %s AND refresh_expires_at > now()"""
 DELETE_SESSION_BY_SESSION_ID = "DELETE FROM sessions WHERE session_id = %s"
 DELETE_SESSIONS_BY_ISS_AND_SUB = "DELETE FROM sessions WHERE sub = %(sub)s AND iss = %(iss)s"
 DELETE_SESSIONS_BY_SID = "DELETE FROM sessions WHERE sid = %s"
@@ -348,6 +357,7 @@ class OIDCAuthenticator(Authenticator):
         self.token_endpoint = self.openid_configuration['token_endpoint']
         self.authorization_endpoint = self.openid_configuration['authorization_endpoint']
         self.session_cookie_name = oidc_config.get('session_cookie_name', 'portal_session_id')
+        self.end_session_endpoint = self.openid_configuration['end_session_endpoint']
         with open(oidc_config['openid_certs']) as f:
             self.jwks = json.loads(f.read())
         self.client_id = oidc_config['client_id']
@@ -358,6 +368,9 @@ class OIDCAuthenticator(Authenticator):
         if args is None:
             args = request.path_args
         return request.request.protocol + "://" + request.request.host + request.reverse_url(name, *args)
+
+    def get_abs_url(self, request: RequestHandler):
+        return request.request.protocol + "://" + request.request.host
 
     @asynccontextmanager
     async def get_db_connection(self):
@@ -511,12 +524,26 @@ class OIDCAuthenticator(Authenticator):
         if request.request.method == 'GET':
             session_id = request.get_cookie(self.session_cookie_name, None)
             if session_id is None:
-                return
+                return request.redirect('/', status=302)
 
-            async with self.get_db_connection() as conn:
-                await OIDCSession.delete(session_id, conn)
+            session = await self.get_session(session_id)
+            if session is None:
+                request.clear_cookie(self.session_cookie_name)
+                return request.redirect('/', status=302)
 
-            request.clear_cookie(self.session_cookie_name)
+            post_logout_redirect_location = request.get_query_argument('location', '/univention/portal/')
+            post_logout_redirect_uri = urlparse(self.get_abs_url(request))._replace(path=post_logout_redirect_location).geturl()
+            url = urlparse(self.end_session_endpoint)
+            params = {
+                'id_token_hint': session.id_token,
+                'client_id': self.client_id,
+                'post_logout_redirect_uri': post_logout_redirect_uri,
+            }
+
+            url = url._replace(query=urlencode(params)).geturl()
+
+            return request.redirect(url, status=302)
+
         elif request.request.method == 'POST':
             content_type = request.request.headers['content-type']
             if content_type != "application/x-www-form-urlencoded":
@@ -604,6 +631,7 @@ class OIDCAuthenticator(Authenticator):
         return session
 
     async def get_user(self, request):
+        start = time.time()
         session_id = request.get_cookie(self.session_cookie_name, None)
         headers = {}
 
@@ -628,5 +656,6 @@ class OIDCAuthenticator(Authenticator):
             request.clear_cookie(self.session_cookie_name)
 
         groups = self.group_cache.get().get(username, [])
+        print(f'get_user took {time.time() - start} seconds')
 
         return User(username=username, display_name=display_name, groups=groups, headers=headers)

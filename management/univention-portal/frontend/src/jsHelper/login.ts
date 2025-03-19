@@ -43,8 +43,12 @@ function login(user: User): void {
   }
 }
 
-function logout(): void {
-  window.location.href = `/univention/logout/?location=${window.location.pathname}`;
+function logout(user: User): void {
+  if (user.authMode === 'oidc') {
+    window.location.href = `/univention/portal/logout/?location=${window.location.pathname}`;
+  } else {
+    window.location.href = `/univention/logout/?location=${window.location.pathname}`;
+  }
 }
 
 export { login, logout };
