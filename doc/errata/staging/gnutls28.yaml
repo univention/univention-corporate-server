@@ -5,9 +5,9 @@ scope: ucs_4.4-0-errata4.4-9
 src: gnutls28
 fix: 3.5.8-5+deb9u8
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
    (CVE-2024-12243)
-bug: [58080]
+bug: [58080, 58089]
 cve:
 - CVE-2024-12243
