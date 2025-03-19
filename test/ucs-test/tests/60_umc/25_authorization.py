@@ -74,22 +74,27 @@ def create_mock_object(dn, position, module):
     return obj
 
 
-def test_check_permissions_create():
+def test_check_permissions_create_for_defaul_roles():
     from univention.management.console.modules.udm.authorization import _check_permissions_create, _get_capablities
 
     caps = _get_capablities({'domainadmin': []})
     assert caps
     assert _check_permissions_create(create_mock_object(None, 'ou=hans', 'users/user'), caps)
-    # assert _check_permissions_create(create_mock_object(None, 'CONTEXT', 'users/user'), caps)
     assert _check_permissions_create(create_mock_object(None, 'xyz', 'users/user'), caps)
     assert _check_permissions_create(create_mock_object(None, 'dc=bla', 'whatever'), caps)
 
-    caps = _get_capablities({'ouadmin': []})
+    caps = _get_capablities({'ouadmin': ['ou=ou1', 'ou=ou2']})
     assert caps
     assert not _check_permissions_create(create_mock_object(None, f'cn=users,{_ucr["ldap/base"]}', 'users/user'), caps)
-    # assert _check_permissions_create(create_mock_object(None, 'CONTEXT', 'users/user'), caps)
+    assert _check_permissions_create(create_mock_object(None, f'ou=ou1,{_ucr["ldap/base"]}', 'users/user'), caps)
+    assert _check_permissions_create(create_mock_object(None, f'ou=ou1,{_ucr["ldap/base"]}', 'whatever'), caps)
+    assert _check_permissions_create(create_mock_object(None, f'ou=ou2,{_ucr["ldap/base"]}', 'users/user'), caps)
+    assert not _check_permissions_create(create_mock_object(None, f'ou=ou3,{_ucr["ldap/base"]}', 'users/user'), caps)
     assert _check_permissions_create(create_mock_object(None, f'cn=domain,cn=mail,{_ucr["ldap/base"]}', 'mail/domain'), caps)
     assert not _check_permissions_create(create_mock_object(None, 'dc=bla', 'whatever'), caps)
+
+    # does not work currently but should work
+    assert not _check_permissions_create(create_mock_object(None, f'cn=users,ou=ou2,{_ucr["ldap/base"]}', 'users/user'), caps)
 
 
 def test_check_permissions_read():
