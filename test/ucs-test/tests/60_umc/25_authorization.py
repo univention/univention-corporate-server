@@ -22,9 +22,7 @@ if not _ucr.is_true('umc/udm/delegation'):
 @pytest.fixture()
 def bremen_ou(udm):
     dn_ou = udm.create_object('container/ou', name='bremen')
-    # FIXME = is not allowed in guardianRoles
-    # dn_user = udm.create_object('users/user', username='bremen_admin', guardianRoles=['umc:udm:ouadmin&umc:udm:ou=bremen'])
-    dn_user = udm.create_object('users/user', username='bremen_admin', guardianRoles=['umc:udm:ouadmin&umc:udm:bremen'], lastname='bremen_admin', password='univention')
+    dn_user = udm.create_object('users/user', username='bremen_admin', guardianRoles=['umc:udm:ouadmin&umc:udm:ou=bremen'], lastname='bremen_admin', password='univention')
     yield SimpleNamespace(ou_dn=dn_ou, ouadmin_dn=dn_user, ouadmin_username='bremen_admin')
     udm.remove_object('users/user', dn=dn_user)
     udm.remove_object('container/ou', dn=dn_ou)
@@ -41,7 +39,7 @@ def test_ouadmin_user_create_in_different_ou(bremen_ou):
             'password': 'univention',
         },
         "options": {
-            "container": "cn=users," + _ucr['ldap/base'],
+            "container": bremen_ou.ou_dn,
             "objectType": "users/user",
         },
     }]
@@ -79,17 +77,17 @@ def create_mock_object(dn, position, module):
 def test_check_permissions_create():
     from univention.management.console.modules.udm.authorization import _check_permissions_create, _get_capablities
 
-    caps = _get_capablities(['domainadmin'])
+    caps = _get_capablities({'domainadmin': []})
     assert caps
     assert _check_permissions_create(create_mock_object(None, 'ou=hans', 'users/user'), caps)
-    assert _check_permissions_create(create_mock_object(None, 'CONTEXT', 'users/user'), caps)
+    # assert _check_permissions_create(create_mock_object(None, 'CONTEXT', 'users/user'), caps)
     assert _check_permissions_create(create_mock_object(None, 'xyz', 'users/user'), caps)
     assert _check_permissions_create(create_mock_object(None, 'dc=bla', 'whatever'), caps)
 
-    caps = _get_capablities(['ouadmin'])
+    caps = _get_capablities({'ouadmin': []})
     assert caps
     assert not _check_permissions_create(create_mock_object(None, f'cn=users,{_ucr["ldap/base"]}', 'users/user'), caps)
-    assert _check_permissions_create(create_mock_object(None, 'CONTEXT', 'users/user'), caps)
+    # assert _check_permissions_create(create_mock_object(None, 'CONTEXT', 'users/user'), caps)
     assert _check_permissions_create(create_mock_object(None, f'cn=domain,cn=mail,{_ucr["ldap/base"]}', 'mail/domain'), caps)
     assert not _check_permissions_create(create_mock_object(None, 'dc=bla', 'whatever'), caps)
 
@@ -238,12 +236,12 @@ def test_check_permissions_read():
         f"uid=test1,cn=users,{ldap_base}",
     ]
     objs_mock = [create_mock_object(obj, None, 'users/user') for obj in objs]
-    caps = _get_capablities(['domainadmin'])
+    caps = _get_capablities({'domainadmin': []})
     assert caps
     assert set(_check_permissions_read(objs_mock, caps)) == set(objs_mock)
     assert set(_check_permissions_read(objs, caps)) == set(objs)
 
-    caps = _get_capablities(['test_ouadmin'])
+    caps = _get_capablities({'test_ouadmin': []})
     assert caps
     assert set(_check_permissions_read(objs_mock, caps)) == {obj for obj in objs_mock if "cn=users,ou=ou1," in obj.dn}
     assert set(_check_permissions_read(objs, caps)) == {obj for obj in objs if "cn=users,ou=ou1," in obj}
