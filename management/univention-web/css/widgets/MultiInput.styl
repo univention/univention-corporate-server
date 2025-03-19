@@ -39,3 +39,17 @@
 	margin-left: -($labelpane-padding-left)
 	margin-right: -($labelpane-padding-right)
 	box-shadow: none
+
+/* Improved alignment of umcLabelPane elements in umcMultiInput containers when more than two are present */
+.umc .umcMultiInput > .umcMultiInputContainer:has(.umcLabelPane:nth-of-type(3))
+		display: flex
+		flex-wrap: wrap
+		align-items: end
+		justify-content: space-between
+		margin: calc(2 * var(--layout-spacing-unit)) 0
+
+		.umcLabelPane:has(.umcMultiInputRemoveButton)
+			align-self: end
+
+		.umcLabelPane:has(.dijitCheckBox)
+			align-self: center
