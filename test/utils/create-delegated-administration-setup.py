@@ -76,7 +76,7 @@ for i in range(1, number_of_ous + 1):
     user.props.lastname = f'ou{i}admin'
     user.props.password = 'univention'
     user.props.overridePWHistory = '1'
-    user.props.guardianRoles = [f'umc:udm:ouadmin&umc:udm:ou{i}']
+    user.props.guardianRoles = [f'umc:udm:ouadmin&umc:udm:ou=ou{i}']
     user.save()
 
     # user objects in ou
