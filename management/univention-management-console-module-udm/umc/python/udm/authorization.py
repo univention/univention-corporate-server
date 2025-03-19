@@ -6,7 +6,7 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright 2011-2024 Univention GmbH
+# Copyright 2025 Univention GmbH
 #
 # https://www.univention.de/
 #
@@ -147,9 +147,7 @@ ldap_base = ucr.get("ldap/base")
 
 
 def _check_authorization():
-    if not ucr.is_true("umc/udm/delegation"):
-        return False
-    return True
+    return ucr.is_true("umc/udm/delegation"):
 
 
 def _get_capablities(actor_roles):
@@ -217,7 +215,7 @@ def obj2position(obj: object | dict | str) -> str:
             return obj.position.getDn().lower()
         if isinstance(obj, dict) and 'position' in obj:
             return obj['position'].lower()
-        return obj2dn(obj).split(',', 1)[1].lower()
+        return univention.uldap.parentDn(obj2dn(obj)).lower()
     except (AttributeError, KeyError, IndexError):
         pass
     raise ValueError("Invalid object format for extracting position")

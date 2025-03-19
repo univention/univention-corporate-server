@@ -462,8 +462,8 @@ class UDM_Module:
 
     def get_ldap_connection(self, base=None):
         if ucr.is_true("umc/udm/delegation"):
-            from univention.admin.uldap import getAdminConnection
-            self.ldap_connection, _po = getAdminConnection()
+            from univention.management.console.ldap import get_admin_connection
+            self.ldap_connection, _po = get_admin_connection()
         elif get_bind_function():
             try:
                 self.ldap_connection, _po = get_user_connection(bind=get_bind_function(), write=True, bindhash=get_bind_hash())
