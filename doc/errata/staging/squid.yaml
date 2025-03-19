@@ -1,0 +1,23 @@
+product: ucs
+release: "5.0"
+version: [9, 10]
+scope: ucs_5.0-0-errata5.0-10
+src: squid
+fix: 4.6-1+deb10u11A~5.0.10.202503190817
+desc: |
+ This update addresses the following issues:
+ * CVSS score 8.6 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:N/I:N/A:H).
+   (CVE-2024-25617, CVE-2024-25111)
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2024-45802)
+ * CVSS score 6.5 (CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2024-23638)
+ * CVSS score 6.3 (CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:N/I:N/A:H).
+   (CVE-2024-37894)
+bug: [58088]
+cve:
+- CVE-2024-23638
+- CVE-2024-25111
+- CVE-2024-25617
+- CVE-2024-37894
+- CVE-2024-45802
