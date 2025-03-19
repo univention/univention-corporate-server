@@ -119,6 +119,18 @@ ROLES = {
         },
         {
             "target": {
+                "position": "cn=groups",
+            },
+            "permissions": {
+                "groups/group": {
+                    "attributes": {
+                        "*": "read",
+                    },
+                },
+            },
+        },
+        {
+            "target": {
                 "position": "cn=domain,cn=mail",
             },
             "permissions": {
@@ -156,7 +168,7 @@ def _check_permission_action(module: str, action: str, permissions: dict) -> boo
     return permissions.get(module, {}).get(action, False) or permissions.get('*', {}).get(action, False)
 
 
-def _check_permissions_create(obj: object, caps: list[dict]) -> bool:
+def _check_permissions(obj: object, caps: list[dict], action: str) -> bool:
     allowed = None
     position = obj2position(obj)
     module_name = obj2module(obj)
@@ -167,28 +179,24 @@ def _check_permissions_create(obj: object, caps: list[dict]) -> bool:
 
         if target_position == '$CONTEXT' and cap['target']['contexts'] and position in cap['target']['contexts']:
             # TODO replace context with context of role
-            allowed = _check_permission_action(module_name, 'create', permissions)
+            allowed = _check_permission_action(module_name, action, permissions)
         elif target_position == '*':
-            allowed = _check_permission_action(module_name, 'create', permissions)
+            allowed = _check_permission_action(module_name, action, permissions)
         elif f"{target_position},{ldap_base}" == position:
             # FIXME, how to get the best matching position
-            allowed = _check_permission_action(module_name, 'create', permissions)
+            allowed = _check_permission_action(module_name, action, permissions)
 
         if allowed is not None and allowed:
             return True
     return False
 
 
-def user_may_create(obj, actor_roles_func):
-    if not _check_authorization():
-        return
-    actor_roles = actor_roles_func()
-    cap = _get_capablities(actor_roles)
-    # allowed = _check_permissions_create(obj._ldap_dn, obj.module, cap)
-    # FIXME is obj.position.getDn reliable?
-    allowed = _check_permissions_create(obj, cap)
-    if not allowed:
-        raise Forbidden()
+def _check_permissions_create(obj: object, caps: list[dict]) -> bool:
+    return _check_permissions(obj, caps, "create")
+
+
+def _check_permissions_delete(obj: object, caps: list[dict]) -> bool:
+    return _check_permissions(obj, caps, "delete")
 
 
 def obj2dn(obj: object | dict | str) -> str:
@@ -208,7 +216,7 @@ def obj2dn(obj: object | dict | str) -> str:
 def obj2position(obj: object | dict | str) -> str:
     """Extracts the position from an object's distinguished name (DN)."""
     try:
-        if hasattr(obj, "position"):
+        if hasattr(obj, "position") and (not hasattr(obj, "dn") or obj.dn != obj.position.getDn()):
             return obj.position.getDn().lower()
         return obj2dn(obj).split(',', 1)[1].lower()
     except (AttributeError, KeyError, IndexError):
@@ -262,7 +270,6 @@ def _check_permissions_read(objs: list[object | dict | str], caps: list[dict]) -
             continue
 
     caps.sort(key=get_cap_priority)
-
     for (position, module_name), _objs in objs_processed.items():
         allowed_attrs = None
         for cap in caps:
@@ -289,6 +296,22 @@ def _check_permissions_read(objs: list[object | dict | str], caps: list[dict]) -
     return readables
 
 
+def _check_permissions_modify(obj: object | dict | str, caps: list[dict]) -> bool:
+    return True
+
+
+def user_may_create(obj, actor_roles_func):
+    if not _check_authorization():
+        return
+    actor_roles = actor_roles_func()
+    cap = _get_capablities(actor_roles)
+    # allowed = _check_permissions_create(obj._ldap_dn, obj.module, cap)
+    # FIXME is obj.position.getDn reliable?
+    allowed = _check_permissions_create(obj, cap)
+    if not allowed:
+        raise Forbidden()
+
+
 def user_may_read(objs: list[object | dict | str], actor_roles_func) -> list[object | dict | str]:
     if not _check_authorization():
         return objs
@@ -298,15 +321,23 @@ def user_may_read(objs: list[object | dict | str], actor_roles_func) -> list[obj
     return _check_permissions_read(objs, cap)
 
 
-def user_may_update(obj):
+def user_may_update(obj: list[object | dict | str], actor_roles_func) -> list[object | dict | str]:
     if not _check_authorization():
         return
-    if "ou=Berlin" not in obj.dn:
+    actor_roles = actor_roles_func()
+    cap = _get_capablities(actor_roles)
+    if _check_permissions_modify(obj, cap):
+        return
+    else:
         raise permissionDenied()
 
 
-def user_may_delete(obj):
+def user_may_delete(obj: list[object | dict | str], actor_roles_func) -> list[object | dict | str]:
     if not _check_authorization():
         return
-    if "ou=Berlin" not in obj.dn:
+    actor_roles = actor_roles_func()
+    cap = _get_capablities(actor_roles)
+    if _check_permissions_delete(obj, cap):
+        return
+    else:
         raise permissionDenied()

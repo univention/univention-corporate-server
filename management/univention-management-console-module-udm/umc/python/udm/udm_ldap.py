@@ -641,7 +641,7 @@ class UDM_Module:
             rdn = udm.uldap.explodeDn(ldap_dn)[0]
             dest = '%s,%s' % (rdn, container)
             MODULE.info('Moving LDAP object %s to %s' % (ldap_dn, dest))
-            user_may_update(obj)
+            user_may_update(obj, get_user_roles)
             obj.move(dest)
             return dest
         except udm_errors.base as e:
@@ -704,7 +704,7 @@ class UDM_Module:
 
             self._map_properties(obj, ldap_object)
 
-            user_may_update(obj)
+            user_may_update(obj, get_user_roles)
             obj.modify()
         except udm_errors.base as e:
             MODULE.warn('Failed to modify LDAP object %s: %s: %s' % (obj.dn, e.__class__.__name__, str(e)))
