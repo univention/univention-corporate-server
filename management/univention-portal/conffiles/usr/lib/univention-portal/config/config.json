@@ -29,9 +29,9 @@ config = {
         "client_id": configRegistry.get('portal/oidc/client-id'),
         "issuer": configRegistry.get('portal/oidc/issuer'),
         "extra_parameters": configRegistry.get('portal/oidc/exta-parameters', ''),
-        "access-token-cookie-name": configRegistry.get('portal/oidc/access-token-cookie-name', "portal-access-token"),
-        "id-token-cookie-name": configRegistry.get('portal/oidc/id-token-cookie-name', "portal-id-token"),
-        "state-cookie-name": configRegistry.get('portal/oidc/state-cookie-name', "portal-state"),
+        "session_cookie_name": configRegistry.get('portal/oidc/session-cookie-name', 'portal_session_id'),
+        "postgres_url": configRegistry.get('portal/oidc/postgres-url'),
+        "redis_url": configRegistry.get('portal/oidc/redis-url'),
     },
 }
 if not config['oidc']['client_id']:

@@ -345,8 +345,10 @@ class OIDCAuthenticator(Authenticator):
     def __init__(self, group_cache):
         oidc_config: dict[str, Any] = config.fetch('oidc')
         self.group_cache = group_cache
-        self.pkce_pool = redis.Redis(host='master.ucs.test', port=6379, db=0)
-        self.session_pool = AsyncConnectionPool('postgresql://postgres:postgres@master.ucs.test:5433/postgres', open=False)
+        # self.pkce_pool = redis.Redis(host='master.ucs.test', port=6379, db=0)
+        self.pkce_pool = redis.from_url(oidc_config['redis_url'])
+        # self.session_pool = AsyncConnectionPool('postgresql://postgres:postgres@master.ucs.test:5433/postgres', open=False)
+        self.session_pool = AsyncConnectionPool(oidc_config['postgres_url'])
         self.__pool_opened = False
         self.__init_lock = asyncio.Lock()
 
