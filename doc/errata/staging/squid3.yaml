@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: squid3
+fix: 3.5.23-5+deb9u11A~4.4.9.202503190821
+desc: |
+ This update addresses the following issues:
+ * CVSS score 8.6 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:N/I:N/A:H).
+   (CVE-2024-25617)
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2024-45802)
+ * CVSS score 6.3 (CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:N/I:N/A:H).
+   (CVE-2024-37894)
+bug: [58092]
+cve:
+- CVE-2024-25617
+- CVE-2024-37894
+- CVE-2024-45802
