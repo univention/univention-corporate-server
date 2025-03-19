@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: dnsmasq
+fix: 2.76-5+deb9u5
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2023-50868, CVE-2023-50387)
+bug: [58091]
+cve:
+- CVE-2023-50387
+- CVE-2023-50868
