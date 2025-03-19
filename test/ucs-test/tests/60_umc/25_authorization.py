@@ -13,7 +13,6 @@ import pytest
 
 from univention.config_registry import ucr as _ucr
 from univention.lib.umc import Forbidden
-from univention.testing.udm import UCSTestUDM_RemoveUDMObjectFailed
 from univention.testing.umc import Client
 
 
@@ -27,18 +26,28 @@ def bremen_ou(udm, random_username):
     ouadmin_username = random_username()
     dn_admin = udm.create_object('users/user', username=ouadmin_username, guardianRoles=['umc:udm:ouadmin&umc:udm:ou=bremen'], lastname='bremen_admin', password='univention')
     dn_user = udm.create_object('users/user', username=random_username(), position=dn_ou, lastname='lastname', password='univention')
+    # set user default container
+    udm.modify_object('container/ou', dn=dn_ou, userPath='1')
+    udm.modify_object('container/ou', dn=dn_ou, groupPath='1')
     yield SimpleNamespace(
         ou_dn=dn_ou,
         ouadmin_dn=dn_admin,
         ouadmin_username=ouadmin_username,
         user_dn=dn_user,
+        user_default_container=dn_ou,
+        group_default_container=dn_ou,
     )
-    try:
-        udm.remove_object('users/user', dn=dn_user)
-        udm.remove_object('users/user', dn=dn_admin)
-        udm.remove_object('container/ou', dn=dn_ou)
-    except UCSTestUDM_RemoveUDMObjectFailed:
-        pass
+    udm.remove_object('container/ou', dn=dn_ou)
+    udm.remove_object('users/user', dn=dn_admin)
+
+
+def test_ouadmin_default_containers(bremen_ou, ldap_base):
+    client = Client()
+    client.authenticate(bremen_ou.ouadmin_username, 'univention')
+    res = client.umc_command('udm/containers', {"objectType": "users/user"}, 'users/user').result
+    assert {x['id'] for x in res} == {bremen_ou.user_default_container}
+    res = client.umc_command('udm/containers', {"objectType": "groups/group"}, 'groups/group').result
+    assert {x['id'] for x in res} == {bremen_ou.group_default_container, f'cn=groups,{ldap_base}'}
 
 
 def test_ouadmin_can_delete_user(bremen_ou):
