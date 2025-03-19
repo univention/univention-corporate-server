@@ -656,7 +656,7 @@ class UDM_Module:
         try:
             obj.open()
             MODULE.info('Removing LDAP object %s' % ldap_dn)
-            user_may_delete(obj)
+            user_may_delete(obj, get_user_roles)
             obj.remove(remove_childs=recursive)
             if cleanup:
                 udm_objects.performCleanup(obj)
