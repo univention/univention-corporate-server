@@ -47,10 +47,12 @@ number_of_ous = 10
 number_of_users = 10
 for i in range(1, number_of_ous + 1):
 
-    # ou and users container
+    # ou and users, groups container
     ou = ous.new()
     ou.position = ucr['ldap/base']
     ou.props.name = f'ou{i}'
+    ou.props.userPath = "1"
+    ou.props.groupPath = "1"
     try:
         ou.save()
     except CreateError:
@@ -58,6 +60,15 @@ for i in range(1, number_of_ous + 1):
     cn = cns.new()
     cn.position = f'ou=ou{i},{ucr["ldap/base"]}'
     cn.props.name = 'users'
+    cn.props.userPath = "1"
+    try:
+        cn.save()
+    except CreateError:
+        pass
+    cn = cns.new()
+    cn.position = f'ou=ou{i},{ucr["ldap/base"]}'
+    cn.props.name = 'groups'
+    cn.props.groupPath = "1"
     try:
         cn.save()
     except CreateError:
