@@ -24,7 +24,7 @@ desc: |
    (CVE-2024-11168)
  * CVSS score 2.7 (CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:L).
    (CVE-2024-5642)
-bug: [58079]
+bug: [58079, 58090]
 cve:
 - CVE-2023-27043
 - CVE-2024-6232
