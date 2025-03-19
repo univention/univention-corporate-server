@@ -44,7 +44,7 @@ from univention.management.console.error import Forbidden
 # [
 # #  Capability
 #   {
-#     "target": {
+#     "condition": {
 #       "position": "$CONTEXT",  # ldap_position without $ldap_base, $CONTEXT on the role, "*", self
 # #      "scope": "subtree"  # subtree, base, one, children
 #     },
@@ -67,7 +67,7 @@ from univention.management.console.error import Forbidden
 #     }
 #   },
 #   {
-#     "target": {
+#     "condition": {
 #       "position": "*"
 #     },
 #     "permissions": {
@@ -85,7 +85,7 @@ ROLES = {
     "domainadmin": [
         # domainadmin can read and write all attributes of all udm modules
         {
-            "target": {
+            "condition": {
                 "position": "*",
             },
             "permissions": {
@@ -102,7 +102,7 @@ ROLES = {
     "ouadmin": [
         # ouadmin can read and write all attributes of all udm modules in the ou except guardianRole attributes
         {
-            "target": {
+            "condition": {
                 "position": "$CONTEXT",
             },
             "permissions": {
@@ -118,7 +118,7 @@ ROLES = {
             },
         },
         {
-            "target": {
+            "condition": {
                 "position": "cn=groups",
             },
             "permissions": {
@@ -130,7 +130,7 @@ ROLES = {
             },
         },
         {
-            "target": {
+            "condition": {
                 "position": "cn=domain,cn=mail",
             },
             "permissions": {
@@ -158,7 +158,7 @@ def _get_capablities(actor_roles):
     for role, contexts in actor_roles.items():
         roles_caps = ROLES.get(role, [])
         for role_cap in roles_caps:
-            role_cap['target']['contexts'] = [f'{context},{ldap_base}'.lower() for context in contexts]
+            role_cap['condition']['contexts'] = [f'{context},{ldap_base}'.lower() for context in contexts]
         cap += roles_caps
     return cap
 
@@ -174,15 +174,15 @@ def _check_permissions(obj: object, caps: list[dict], action: str) -> bool:
     module_name = obj2module(obj)
     caps.sort(key=get_cap_priority)
     for cap in caps:
-        target_position = cap['target']['position']
+        condition_position = cap['condition']['position']
         permissions = cap['permissions']
 
-        if target_position == '$CONTEXT' and cap['target']['contexts'] and position in cap['target']['contexts']:
+        if condition_position == '$CONTEXT' and cap['condition']['contexts'] and position in cap['condition']['contexts']:
             # TODO replace context with context of role
             allowed = _check_permission_action(module_name, action, permissions)
-        elif target_position == '*':
+        elif condition_position == '*':
             allowed = _check_permission_action(module_name, action, permissions)
-        elif f"{target_position},{ldap_base}" == position:
+        elif f"{condition_position},{ldap_base}" == position:
             # FIXME, how to get the best matching position
             allowed = _check_permission_action(module_name, action, permissions)
 
@@ -244,9 +244,9 @@ def obj2module(obj: object | dict | str) -> str:
 
 def get_cap_priority(cap: dict) -> int:
     """Returns the priority of a capability."""
-    if cap['target']['position'] == '*':
+    if cap['condition']['position'] == '*':
         return 2
-    if cap['target']['position'] == '$CONTEXT':
+    if cap['condition']['position'] == '$CONTEXT':
         return 1
     return 0
 
@@ -275,15 +275,15 @@ def _check_permissions_read(objs: list[object | dict | str], caps: list[dict]) -
     for (position, module_name), _objs in objs_processed.items():
         allowed_attrs = None
         for cap in caps:
-            target_position = cap['target']['position']
+            condition_position = cap['condition']['position']
             permissions = cap['permissions']
 
-            if target_position == '$CONTEXT' and cap['target']['contexts'] and position in cap['target']['contexts']:
+            if condition_position == '$CONTEXT' and cap['condition']['contexts'] and position in cap['condition']['contexts']:
                 # TODO replace context with context of role
                 allowed_attrs = _check_permission_attr_read(module_name, permissions)
-            elif target_position == '*':
+            elif condition_position == '*':
                 allowed_attrs = _check_permission_attr_read(module_name, permissions)
-            elif f"{target_position},{ldap_base}" == position:
+            elif f"{condition_position},{ldap_base}" == position:
                 # FIXME, how to get the best matching position
                 allowed_attrs = _check_permission_attr_read(module_name, permissions)
 
