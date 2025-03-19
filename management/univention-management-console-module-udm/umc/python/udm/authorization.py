@@ -216,8 +216,10 @@ def obj2dn(obj: object | dict | str) -> str:
 def obj2position(obj: object | dict | str) -> str:
     """Extracts the position from an object's distinguished name (DN)."""
     try:
-        if hasattr(obj, "position") and (not hasattr(obj, "dn") or obj.dn != obj.position.getDn()):
+        if hasattr(obj, "position") and (not hasattr(obj, "dn") or not obj.dn):
             return obj.position.getDn().lower()
+        if isinstance(obj, dict) and 'position' in obj:
+            return obj['position'].lower()
         return obj2dn(obj).split(',', 1)[1].lower()
     except (AttributeError, KeyError, IndexError):
         pass

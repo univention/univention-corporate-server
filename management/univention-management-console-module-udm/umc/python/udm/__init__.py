@@ -71,13 +71,12 @@ from univention.management.console.modules.sanitizers import (
     SearchSanitizer, StringSanitizer,
 )
 
-from .authorization import user_may_read
 from .tools import LicenseError, LicenseImport, check_license, dump_license, install_opener, urlopen
 from .udm_ldap import (
     LDAP_AuthenticationFailed, LDAP_Connection, NoIpLeft, ObjectDoesNotExist, SuperordinateDoesNotExist, UDM_Error,
     UDM_Module, UserWithoutDN, _get_syntax, calculate_bind_hash, container_modules, get_bind_hash, get_module,
-    get_obj_module, get_user_roles, info_syntax_choices, ldap_dn2path, list_objects, read_syntax_choices,
-    search_syntax_choices_by_key, set_bind_function, set_bind_hash, set_bind_user, set_user_roles,
+    get_obj_module, info_syntax_choices, ldap_dn2path, list_objects, read_syntax_choices, search_syntax_choices_by_key,
+    set_bind_function, set_bind_hash, set_bind_user, set_user_roles,
 )
 
 
@@ -781,8 +780,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
 
         return: [ { 'id' : <LDAP DN of container>, 'label' : <name> }, ... ]
         """
-        containers = [{'id': x, 'label': ldap_dn2path(x, ldap_base=module.ldap_base), "module_name": module.name} for x in module.get_default_containers()]
-        containers = user_may_read(containers, get_user_roles)
+        containers = [{'id': x, 'label': ldap_dn2path(x, ldap_base=module.ldap_base)} for x in module.get_default_containers()]
         return sorted(containers, key=lambda x: x['label'].lower())
 
     @module_from_request

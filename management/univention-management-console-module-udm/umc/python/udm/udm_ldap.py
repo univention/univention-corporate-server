@@ -1129,7 +1129,11 @@ class UDM_Module:
     def get_default_containers(self):
         """List of LDAP DNs of default containers"""
         ldap_connection, _ldap_position = self.get_ldap_connection()
-        return self.module.object.get_default_containers(ldap_connection)
+        containers = self.module.object.get_default_containers(ldap_connection)
+        containers = [{'id': x, 'module_name': self.module.module, 'position': x} for x in containers]
+        containers = user_may_read(containers, get_user_roles)
+        containers = [x['id'] for x in containers]
+        return containers
 
     @property
     def superordinate_names(self):
