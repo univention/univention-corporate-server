@@ -36,6 +36,7 @@
 
 from univention.management.console.config import ucr
 from univention.management.console.error import Forbidden
+from univention.uldap import parentDn
 
 
 # https://docs.software-univention.de/guardian-manual/3.0/what-is-the-guardian.html#terminology-guardian-permission
@@ -147,7 +148,7 @@ ldap_base = ucr.get("ldap/base")
 
 
 def _check_authorization():
-    return ucr.is_true("umc/udm/delegation"):
+    return ucr.is_true("umc/udm/delegation")
 
 
 def _get_capablities(actor_roles):
@@ -215,7 +216,7 @@ def obj2position(obj: object | dict | str) -> str:
             return obj.position.getDn().lower()
         if isinstance(obj, dict) and 'position' in obj:
             return obj['position'].lower()
-        return univention.uldap.parentDn(obj2dn(obj)).lower()
+        return parentDn(obj2dn(obj)).lower()
     except (AttributeError, KeyError, IndexError):
         pass
     raise ValueError("Invalid object format for extracting position")
