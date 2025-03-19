@@ -34,7 +34,6 @@
 # <https://www.gnu.org/licenses/>.
 
 
-from univention.admin.uexceptions import permissionDenied
 from univention.management.console.config import ucr
 from univention.management.console.error import Forbidden
 
@@ -178,12 +177,10 @@ def _check_permissions(obj: object, caps: list[dict], action: str) -> bool:
         permissions = cap['permissions']
 
         if condition_position == '$CONTEXT' and cap['condition']['contexts'] and position in cap['condition']['contexts']:
-            # TODO replace context with context of role
             allowed = _check_permission_action(module_name, action, permissions)
         elif condition_position == '*':
             allowed = _check_permission_action(module_name, action, permissions)
         elif f"{condition_position},{ldap_base}" == position:
-            # FIXME, how to get the best matching position
             allowed = _check_permission_action(module_name, action, permissions)
 
         if allowed is not None and allowed:
@@ -279,12 +276,10 @@ def _check_permissions_read(objs: list[object | dict | str], caps: list[dict]) -
             permissions = cap['permissions']
 
             if condition_position == '$CONTEXT' and cap['condition']['contexts'] and position in cap['condition']['contexts']:
-                # TODO replace context with context of role
                 allowed_attrs = _check_permission_attr_read(module_name, permissions)
             elif condition_position == '*':
                 allowed_attrs = _check_permission_attr_read(module_name, permissions)
             elif f"{condition_position},{ldap_base}" == position:
-                # FIXME, how to get the best matching position
                 allowed_attrs = _check_permission_attr_read(module_name, permissions)
 
             if allowed_attrs:
@@ -298,8 +293,40 @@ def _check_permissions_read(objs: list[object | dict | str], caps: list[dict]) -
     return readables
 
 
+def _get_writable_attrs_from_permissions(module_name: str, permissions: dict) -> (list[str], list[str]):
+    """Retrieves writable and explicitly readable attributes for a given module from permissions."""
+    attributes = permissions.get(module_name, {}).get('attributes', []) or permissions.get('*', {}).get('attributes', [])
+    readable_attributes = [attr for attr in attributes if attributes[attr] == 'read']
+    writable_attributes = [attr for attr in attributes if attributes[attr] == 'write']
+    return writable_attributes, readable_attributes
+
+
 def _check_permissions_modify(obj: object | dict | str, caps: list[dict]) -> bool:
-    return True
+    """
+    currently only checks if one attribuet is writable
+    in the future we need to get the list of modified attributes
+    and check if they are all writable
+    """
+    writable_attrs = []
+    position = obj2position(obj)
+    module_name = obj2module(obj)
+    caps.sort(key=get_cap_priority)
+    for cap in caps:
+        condition_position = cap['condition']['position']
+        permissions = cap['permissions']
+        if condition_position == '$CONTEXT' and cap['condition']['contexts'] and position in cap['condition']['contexts']:
+            writable_attrs, readonly_attrs = _get_writable_attrs_from_permissions(module_name, permissions)
+        elif condition_position == '*':
+            writable_attrs, readonly_attrs = _get_writable_attrs_from_permissions(module_name, permissions)
+        elif f"{condition_position},{ldap_base}" == position:
+            writable_attrs, readonly_attrs = _get_writable_attrs_from_permissions(module_name, permissions)
+        if writable_attrs:
+            # TODO check that modified attributes are in the list of writable attributes
+            #      and not in the list of readonly attributes
+            if readonly_attrs:
+                pass
+            return True
+    return False
 
 
 def user_may_create(obj, actor_roles_func):
@@ -323,7 +350,7 @@ def user_may_read(objs: list[object | dict | str], actor_roles_func) -> list[obj
     return _check_permissions_read(objs, cap)
 
 
-def user_may_update(obj: list[object | dict | str], actor_roles_func) -> list[object | dict | str]:
+def user_may_modify(obj: list[object | dict | str], actor_roles_func) -> None:
     if not _check_authorization():
         return
     actor_roles = actor_roles_func()
@@ -331,10 +358,10 @@ def user_may_update(obj: list[object | dict | str], actor_roles_func) -> list[ob
     if _check_permissions_modify(obj, cap):
         return
     else:
-        raise permissionDenied()
+        raise Forbidden()
 
 
-def user_may_delete(obj: list[object | dict | str], actor_roles_func) -> list[object | dict | str]:
+def user_may_delete(obj: list[object | dict | str], actor_roles_func) -> None:
     if not _check_authorization():
         return
     actor_roles = actor_roles_func()
@@ -342,4 +369,4 @@ def user_may_delete(obj: list[object | dict | str], actor_roles_func) -> list[ob
     if _check_permissions_delete(obj, cap):
         return
     else:
-        raise permissionDenied()
+        raise Forbidden()

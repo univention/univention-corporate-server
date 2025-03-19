@@ -63,7 +63,7 @@ from univention.management.console.error import UMC_Error
 from univention.management.console.ldap import get_user_connection, user_connection
 from univention.management.console.log import MODULE
 from univention.management.console.modules.udm.authorization import (
-    user_may_create, user_may_delete, user_may_read, user_may_update,
+    user_may_create, user_may_delete, user_may_modify, user_may_read,
 )
 
 
@@ -641,7 +641,7 @@ class UDM_Module:
             rdn = udm.uldap.explodeDn(ldap_dn)[0]
             dest = '%s,%s' % (rdn, container)
             MODULE.info('Moving LDAP object %s to %s' % (ldap_dn, dest))
-            user_may_update(obj, get_user_roles)
+            user_may_modify(obj, get_user_roles)
             obj.move(dest)
             return dest
         except udm_errors.base as e:
@@ -704,7 +704,7 @@ class UDM_Module:
 
             self._map_properties(obj, ldap_object)
 
-            user_may_update(obj, get_user_roles)
+            user_may_modify(obj, get_user_roles)
             obj.modify()
         except udm_errors.base as e:
             MODULE.warn('Failed to modify LDAP object %s: %s: %s' % (obj.dn, e.__class__.__name__, str(e)))
