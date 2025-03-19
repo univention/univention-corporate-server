@@ -111,7 +111,9 @@ def set_bind_user(user_dn):
 def set_user_roles(user_dn: str) -> None:
     global __user_roles
     # FIXME: This is a workaround to get the roles of the user
-    ldap_connection, _po = get_user_connection(bind=get_bind_function(), bindhash=get_bind_hash())
+    # ldap_connection, _po = get_user_connection(bind=get_bind_function(), bindhash=get_bind_hash())
+    from univention.admin.uldap import getAdminConnection
+    ldap_connection, _po = getAdminConnection()
     mod = UDM_Module('users/user', ldap_connection=ldap_connection, ldap_position=user_dn)
     obj = mod.module.object(None, ldap_connection, None, user_dn, None)
     obj.open_guardian()
@@ -124,7 +126,9 @@ def set_user_roles(user_dn: str) -> None:
             res = re.search(re_split_roles_and_contexts, role)
             if res:
                 res.groupdict()
-                __user_roles[res["role_name"]] = res["context_namespace"]
+                __user_roles.setdefault(res["role_name"], [])
+                if res["context_name"]:
+                    __user_roles[res["role_name"]].append(res["context_name"])
     MODULE.info('Setting user roles to %s' % __user_roles)
 
 

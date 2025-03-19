@@ -143,8 +143,11 @@ def _check_authorization():
 
 def _get_capablities(actor_roles):
     cap = []
-    for role in actor_roles:
-        cap += ROLES.get(role, [])
+    for role, contexts in actor_roles.items():
+        roles_caps = ROLES.get(role, [])
+        for role_cap in roles_caps:
+            role_cap['target']['contexts'] = [f'{context},{ldap_base}'.lower() for context in contexts]
+        cap += roles_caps
     return cap
 
 
@@ -162,7 +165,7 @@ def _check_permissions_create(obj: object, caps: list[dict]) -> bool:
         target_position = cap['target']['position']
         permissions = cap['permissions']
 
-        if target_position == '$CONTEXT' and position == 'CONTEXT':
+        if target_position == '$CONTEXT' and cap['target']['contexts'] and position in cap['target']['contexts']:
             # TODO replace context with context of role
             allowed = _check_permission_action(module_name, 'create', permissions)
         elif target_position == '*':
@@ -206,8 +209,8 @@ def obj2position(obj: object | dict | str) -> str:
     """Extracts the position from an object's distinguished name (DN)."""
     try:
         if hasattr(obj, "position"):
-            return obj.position.getDn()
-        return obj2dn(obj).split(',', 1)[1]
+            return obj.position.getDn().lower()
+        return obj2dn(obj).split(',', 1)[1].lower()
     except (AttributeError, KeyError, IndexError):
         pass
     raise ValueError("Invalid object format for extracting position")
@@ -266,7 +269,7 @@ def _check_permissions_read(objs: list[object | dict | str], caps: list[dict]) -
             target_position = cap['target']['position']
             permissions = cap['permissions']
 
-            if target_position == '$CONTEXT' and position == 'CONTEXT':
+            if target_position == '$CONTEXT' and cap['target']['contexts'] and position in cap['target']['contexts']:
                 # TODO replace context with context of role
                 allowed_attrs = _check_permission_attr_read(module_name, permissions)
             elif target_position == '*':
