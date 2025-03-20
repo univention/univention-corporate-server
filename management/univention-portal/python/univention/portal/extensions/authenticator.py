@@ -39,7 +39,6 @@ import datetime
 import hashlib
 import json
 import secrets
-import time
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from datetime import UTC, timedelta
@@ -47,9 +46,8 @@ from typing import Any
 from urllib.parse import parse_qsl, quote_plus, urlencode, urljoin, urlparse
 
 import jwt
-from psycopg import AsyncConnection
-from psycopg.rows import dict_row
-from psycopg_pool import AsyncConnectionPool
+from sqlalchemy import Column, DateTime, Integer, MetaData, String, Table, and_, delete, select
+from sqlalchemy.ext.asyncio import create_async_engine
 from tornado.httpclient import AsyncHTTPClient, HTTPError, HTTPRequest
 from tornado.web import RequestHandler
 
@@ -250,35 +248,70 @@ class OIDCSession:
             iss=verified_id_token['iss'],
         )
 
-    async def persist(self, session_id, conn: AsyncConnection):
-        async with conn.transaction(), conn.cursor() as cur:
-            await cur.execute(INSERT_SESSION, {
-                'session_id': session_id,
-                'id_token': self.id_token,
-                'access_token': self.access_token,
-                'refresh_token': self.refresh_token,
-                'refresh_expires_in': self.refresh_expires_in,
-                'access_expires_in': self.access_expires_in,
-                'uid': self.uid,
-                'umc_access_token': self.umc_access_token,
-                'sub': self.sub,
-                'sid': self.sid,
-                'iss': self.iss,
-                'created_at': self.created_at,
-                'refresh_expires_at': self.refresh_expires_at,
-                'access_expires_at': self.access_expires_at,
-            })
+    async def persist(self, session_id, conn):
+        stmt = sessions.insert().values(
+            session_id=session_id,
+            id_token=self.id_token,
+            access_token=self.access_token,
+            refresh_token=self.refresh_token,
+            refresh_expires_in=self.refresh_expires_in,
+            access_expires_in=self.access_expires_in,
+            uid=self.uid,
+            umc_access_token=self.umc_access_token,
+            sub=self.sub,
+            sid=self.sid,
+            iss=self.iss,
+            created_at=self.created_at,
+            refresh_expires_at=self.refresh_expires_at,
+            access_expires_at=self.access_expires_at,
+        )
+        await conn.execute(stmt)
+
+    async def update(self, session_id, conn):
+        stmt = sessions.update().where(sessions.c.session_id == session_id).values(
+            session_id=session_id,
+            id_token=self.id_token,
+            access_token=self.access_token,
+            refresh_token=self.refresh_token,
+            refresh_expires_in=self.refresh_expires_in,
+            access_expires_in=self.access_expires_in,
+            uid=self.uid,
+            umc_access_token=self.umc_access_token,
+            sub=self.sub,
+            sid=self.sid,
+            iss=self.iss,
+            created_at=self.created_at,
+            refresh_expires_at=self.refresh_expires_at,
+            access_expires_at=self.access_expires_at,
+        )
+        await conn.execute(stmt)
 
     @classmethod
-    async def delete(cls, sessiond_id: str, conn: AsyncConnection):
-        async with conn.transaction(), conn.cursor() as cur:
-            await cur.execute(DELETE_SESSION_BY_SESSION_ID, (sessiond_id,))
+    async def delete(cls, session_id: str, conn):
+        async with conn.begin():
+            await conn.execute(delete(sessions).where(sessions.c.session_id == session_id))
 
     @classmethod
-    async def get_session_by_session_id(cls, session_id: str, conn: AsyncConnection):
-        async with conn.transaction(), conn.cursor(row_factory=dict_row) as cur:
-            res = await cur.execute(SELECT_SESSION_BY_SESSION_ID, (session_id,))
-            row = await res.fetchone()
+    async def get_session_by_session_id(cls, session_id: str, conn):
+        async with conn.begin():
+            stmt = select(
+                sessions.c.id_token,
+                sessions.c.access_token,
+                sessions.c.refresh_token,
+                sessions.c.refresh_expires_in,
+                sessions.c.access_expires_in,
+                sessions.c.created_at,
+                sessions.c.uid,
+                sessions.c.umc_access_token,
+                sessions.c.sub,
+                sessions.c.sid,
+                sessions.c.iss,
+                sessions.c.refresh_expires_at,
+                sessions.c.access_expires_at,
+            ).where(sessions.c.session_id == session_id)
+
+            result = await conn.execute(stmt)
+            row = result.fetchone()
 
         if row is None:
             return None
@@ -286,75 +319,35 @@ class OIDCSession:
         return cls(**row)
 
 
-CREATE_TABLE = """CREATE TABLE IF NOT EXISTS sessions (
-    session_id varchar PRIMARY KEY,
-    id_token varchar NOT NULL,
-    access_token varchar NOT NULL,
-    refresh_token varchar NOT NULL,
-    refresh_expires_in integer NOT NULL,
-    access_expires_in integer NOT NULL,
-    uid varchar NOT NULL,
-    umc_access_token varchar NOT NULL,
-    sub varchar NOT NULL,
-    sid varchar NOT NULL,
-    iss varchar NOT NULL,
-    created_at timestamptz NOT NULL,
-    refresh_expires_at timestamptz NOT NULL,
-    access_expires_at timestamptz NOT NULL
-);
+metadata_obj = MetaData()
 
-CREATE INDEX IF NOT EXISTS sessions_iss ON sessions USING hash (iss);
-CREATE INDEX IF NOT EXISTS sessions_sub ON sessions USING hash (sub);
-CREATE INDEX IF NOT EXISTS sessions_sid ON sessions USING hash (sid);
-CREATE INDEX IF NOT EXISTS sessions_session_id ON sessions USING hash (session_id);
-CREATE INDEX IF NOT EXISTS sessions_refresh_expires_at ON sessions (refresh_expires_at);
+sessions = Table(
+    "sessions",
+    metadata_obj,
+    Column('session_id', String(300), primary_key=True, index=True),
+    Column('id_token', String(2048), nullable=False),
+    Column('access_token', String(2048), nullable=False),
+    Column('refresh_token', String(2048), nullable=False),
+    Column('refresh_expires_in', Integer, nullable=False),
+    Column('access_expires_in', Integer, nullable=False),
+    Column('uid', String(255), nullable=False),
+    Column('umc_access_token', String(2048), nullable=False),
+    Column('sub', String(255), nullable=False, index=True),
+    Column('sid', String(255), nullable=False, index=True),
+    Column('iss', String(255), nullable=False, index=True),
+    Column('created_at', DateTime(timezone=True), nullable=False),
+    Column('refresh_expires_at', DateTime(timezone=True), nullable=False, index=True),
+    Column('access_expires_at', DateTime(timezone=True), nullable=False),
+)
 
-CREATE TABLE IF NOT EXISTS state (
-    state varchar PRIMARY KEY,
-    code_verifier VARCHAR NOT NULL,
-    redirect_uri VARCHAR NOT NULL,
-    expires TIMESTAMPTZ NOT NULL DEFAULT now() + '5 minutes'::interval
-);
-
-CREATE INDEX IF NOT EXISTS state_state ON state USING hash (state);
-CREATE INDEX IF NOT EXISTS state_expires ON state (expires);
-"""
-
-INSERT_STATE = """INSERT INTO state
-    (state, code_verifier, redirect_uri)
-VALUES
-    (%s, %s, %s)"""
-
-SELECT_STATE_BY_STATE = "SELECT state, code_verifier, redirect_uri FROM state WHERE state = %s"
-DELETE_STATE_BY_STATE = "DELETE FROM state WHERE state = %s"
-
-INSERT_SESSION = """INSERT INTO sessions
-    (session_id, id_token, access_token, refresh_token, refresh_expires_in, access_expires_in, uid, umc_access_token, sub, sid, iss, created_at, refresh_expires_at, access_expires_at)
-VALUES
-    (%(session_id)s, %(id_token)s, %(access_token)s, %(refresh_token)s, %(refresh_expires_in)s, %(access_expires_in)s, %(uid)s, %(umc_access_token)s, %(sub)s, %(sid)s, %(iss)s, %(created_at)s, %(refresh_expires_at)s, %(access_expires_at)s)
-ON CONFLICT (session_id)
-DO UPDATE SET
-id_token = %(id_token)s,
-access_token = %(access_token)s,
-refresh_token = %(refresh_token)s,
-refresh_expires_in = %(refresh_expires_in)s,
-access_expires_in = %(access_expires_in)s,
-uid = %(uid)s,
-umc_access_token = %(umc_access_token)s,
-sub = %(sub)s,
-sid = %(sid)s,
-iss = %(iss)s,
-created_at = %(created_at)s,
-refresh_expires_at = %(refresh_expires_at)s,
-access_expires_at = %(access_expires_at)s;"""
-
-SELECT_SESSION_BY_SESSION_ID = """SELECT
-    id_token, access_token, refresh_token, refresh_expires_in, access_expires_in,
-    uid, umc_access_token, created_at, sub, sid, iss, refresh_expires_at, access_expires_at
-FROM sessions WHERE session_id = %s AND refresh_expires_at > now()"""
-DELETE_SESSION_BY_SESSION_ID = "DELETE FROM sessions WHERE session_id = %s"
-DELETE_SESSIONS_BY_ISS_AND_SUB = "DELETE FROM sessions WHERE sub = %(sub)s AND iss = %(iss)s"
-DELETE_SESSIONS_BY_SID = "DELETE FROM sessions WHERE sid = %s"
+state_table = Table(
+    "state",
+    metadata_obj,
+    Column('state', String(300), primary_key=True),
+    Column('code_verifier', String(255), nullable=False),
+    Column('redirect_uri', String(2048), nullable=False),
+    Column('expires', DateTime(timezone=True), nullable=False, default=lambda: datetime.datetime.now() + datetime.timedelta(minutes=5), index=True),
+)
 
 
 class OIDCAuthenticator(Authenticator):
@@ -364,11 +357,12 @@ class OIDCAuthenticator(Authenticator):
         oidc_config: dict[str, Any] = config.fetch('oidc')
         self.group_cache = group_cache
         with open(oidc_config['postgres_connection_url']) as fd:
-            self.session_pool = AsyncConnectionPool(fd.read(), open=False)
+            self.session_engine = create_async_engine(fd.read())
         self.__pool_opened = False
         self.__init_lock = asyncio.Lock()
 
-        self.http_client = AsyncHTTPClient(force_instance=True)
+        AsyncHTTPClient.configure("tornado.curl_httpclient.CurlAsyncHTTPClient")
+        self.http_client = AsyncHTTPClient(force_instance=True, defaults={'connect_timeout': 20, 'request_timeout': 60})
         with open(oidc_config['openid_configuration']) as fd:
             self.openid_configuration = json.loads(fd.read())
         self.issuer = self.openid_configuration['issuer']
@@ -392,36 +386,32 @@ class OIDCAuthenticator(Authenticator):
     def get_abs_url(self, request: RequestHandler):
         return request.request.protocol + "://" + request.request.host
 
-    async def cleanup(self, pool: AsyncConnectionPool):
+    async def cleanup(self):
         get_logger('user').debug('starting cleanup task')
-        cancelled = None
-        async with pool.connection() as conn:
-            while cancelled is None:
+        async with self.session_engine.connect() as conn:
+            while True:
                 try:
                     get_logger('user').debug('cleanup task sleeping 30 seconds')
                     await asyncio.sleep(30)
-                    async with conn.transaction(), conn.cursor() as cur:
-                        await cur.execute('DELETE FROM state WHERE expires < now()')
-                        await cur.execute('DELETE FROM sessions WHERE refresh_expires_at < now()')
-                except asyncio.CancelledError as e:
-                    cancelled = e
-
-        raise cancelled
+                    async with conn.begin():
+                        await conn.execute(delete(state_table).where(state_table.c.expires < datetime.datetime.now(UTC)))
+                        await conn.execute(delete(sessions).where(sessions.c.refresh_expires_at < datetime.datetime.now(UTC)))
+                except asyncio.CancelledError:
+                    raise
+                except Exception:
+                    raise
 
     @asynccontextmanager
     async def get_db_connection(self):
         if not self.__pool_opened:
             async with self.__init_lock:
                 if not self.__pool_opened:
-                    await self.session_pool.open()
-                    async with self.session_pool.connection() as conn, conn.transaction():
-                        await conn.execute(CREATE_TABLE)
-
-                    self.cleanup_task = asyncio.create_task(self.cleanup(self.session_pool))
+                    async with self.session_engine.begin() as conn:
+                        await conn.run_sync(metadata_obj.create_all)
+                    self.cleanup_task = asyncio.create_task(self.cleanup())
                     self.__pool_opened = True
 
-        async with self.session_pool.connection() as conn:
-            await conn.set_autocommit(True)
+        async with self.session_engine.connect() as conn:
             yield conn
 
     @property
@@ -485,8 +475,13 @@ class OIDCAuthenticator(Authenticator):
 
         redirect_url = urlparse(self.authorization_endpoint)
 
-        async with self.get_db_connection() as conn, conn.transaction(), conn.cursor() as cur:
-            await cur.execute(INSERT_STATE, (state, code_verifier, redirect_uri))
+        async with self.get_db_connection() as conn, conn.begin():
+            stmt = state_table.insert().values(
+                state=state,
+                code_verifier=code_verifier,
+                redirect_uri=redirect_uri,
+            )
+            await conn.execute(stmt)
 
         return redirect_url._replace(query=urlencode(query)).geturl()
 
@@ -512,15 +507,21 @@ class OIDCAuthenticator(Authenticator):
         return json.loads(resp.body)
 
     async def persist_session(self, session_id: str, session: OIDCSession):
-        async with self.get_db_connection() as conn:
-            await session.persist(session_id, conn)
+
+        async with self.get_db_connection() as conn, conn.begin():
+            exists = (await conn.execute(select(sessions.c.session_id).where(sessions.c.session_id == session_id))).fetchone() is not None
+            if not exists:
+                await session.persist(session_id, conn)
+            else:
+                await session.update(session_id, conn)
 
     async def get_del_state(self, state: str) -> dict[str, Any] | None:
-        async with self.get_db_connection() as conn, conn.transaction(), conn.cursor(row_factory=dict_row) as cur:
-            res = await (await cur.execute(SELECT_STATE_BY_STATE, (state,))).fetchone()
+        async with self.get_db_connection() as conn, conn.begin():
+            stmt = select(state_table).where(state_table.c.state == state)
+            res = (await conn.execute(stmt)).fetchone()
             if res is None:
                 return None
-            await cur.execute(DELETE_STATE_BY_STATE, (state,))
+            await conn.execute(delete(state_table).where(state_table.c.state == state))
         return res
 
     async def login_request(self, request):
@@ -628,13 +629,13 @@ class OIDCAuthenticator(Authenticator):
             sub = token.get('sub')
             sid = token.get('sid')
 
-            async with self.get_db_connection() as conn, conn.transaction(), conn.cursor() as cur:
+            async with self.get_db_connection() as conn, conn.begin():
                 if iss and sub:
                     get_logger('user').debug('deleting sessions by iss and sub')
-                    await cur.execute(DELETE_SESSIONS_BY_ISS_AND_SUB, {'sub': sub, 'iss': iss})
+                    await conn.execute(delete(sessions).where(and_(sessions.c.sub == sub, sessions.c.iss == iss)))
                 if sid:
                     get_logger('user').debug('deleting session by sid')
-                    await cur.execute(DELETE_SESSIONS_BY_SID, (sid,))
+                    await conn.execute(delete(sessions).where(sessions.c.sid == sid))
 
     async def refresh_session(self, session_id: str, session: OIDCSession):
         refresh_token_request_body = {
@@ -679,7 +680,6 @@ class OIDCAuthenticator(Authenticator):
         return session
 
     async def get_user(self, request):
-        start = time.time()
         session_id = request.get_cookie(self.session_cookie_name, None)
         headers = {}
 
@@ -689,7 +689,6 @@ class OIDCAuthenticator(Authenticator):
         username = None
 
         if session is not None and self.must_refresh_session(session):
-            print("refreshing session")
             session = await self.refresh_session(session_id, session)
 
             request.set_cookie(self.session_cookie_name, session_id, expires=session.refresh_expires_at)
@@ -704,6 +703,5 @@ class OIDCAuthenticator(Authenticator):
             request.clear_cookie(self.session_cookie_name)
 
         groups = self.group_cache.get().get(username, [])
-        print(f'get_user took {time.time() - start} seconds')
 
         return User(username=username, display_name=display_name, groups=groups, headers=headers)
