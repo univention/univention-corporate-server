@@ -47,7 +47,6 @@ from typing import Any
 from urllib.parse import parse_qsl, quote_plus, urlencode, urljoin, urlparse
 
 import jwt
-import redis.asyncio as redis
 from psycopg import AsyncConnection
 from psycopg.rows import dict_row
 from psycopg_pool import AsyncConnectionPool
@@ -308,7 +307,26 @@ CREATE INDEX IF NOT EXISTS sessions_iss ON sessions USING hash (iss);
 CREATE INDEX IF NOT EXISTS sessions_sub ON sessions USING hash (sub);
 CREATE INDEX IF NOT EXISTS sessions_sid ON sessions USING hash (sid);
 CREATE INDEX IF NOT EXISTS sessions_session_id ON sessions USING hash (session_id);
-CREATE INDEX IF NOT EXISTS sessions_refresh_expires_at ON sessions (refresh_expires_at);"""
+CREATE INDEX IF NOT EXISTS sessions_refresh_expires_at ON sessions (refresh_expires_at);
+
+CREATE TABLE IF NOT EXISTS state (
+    state varchar PRIMARY KEY,
+    code_verifier VARCHAR NOT NULL,
+    redirect_uri VARCHAR NOT NULL,
+    expires TIMESTAMPTZ NOT NULL DEFAULT now() + '5 minutes'::interval
+);
+
+CREATE INDEX IF NOT EXISTS state_state ON state USING hash (state);
+CREATE INDEX IF NOT EXISTS state_expires ON state (expires);
+"""
+
+INSERT_STATE = """INSERT INTO state
+    (state, code_verifier, redirect_uri)
+VALUES
+    (%s, %s, %s)"""
+
+SELECT_STATE_BY_STATE = "SELECT state, code_verifier, redirect_uri FROM state WHERE state = %s"
+DELETE_STATE_BY_STATE = "DELETE FROM state WHERE state = %s"
 
 INSERT_SESSION = """INSERT INTO sessions
     (session_id, id_token, access_token, refresh_token, refresh_expires_in, access_expires_in, uid, umc_access_token, sub, sid, iss, created_at, refresh_expires_at, access_expires_at)
@@ -345,26 +363,26 @@ class OIDCAuthenticator(Authenticator):
     def __init__(self, group_cache):
         oidc_config: dict[str, Any] = config.fetch('oidc')
         self.group_cache = group_cache
-        # self.pkce_pool = redis.Redis(host='master.ucs.test', port=6379, db=0)
-        self.pkce_pool = redis.from_url(oidc_config['redis_url'])
-        # self.session_pool = AsyncConnectionPool('postgresql://postgres:postgres@master.ucs.test:5433/postgres', open=False)
-        self.session_pool = AsyncConnectionPool(oidc_config['postgres_url'])
+        with open(oidc_config['postgres_connection_url']) as fd:
+            self.session_pool = AsyncConnectionPool(fd.read(), open=False)
         self.__pool_opened = False
         self.__init_lock = asyncio.Lock()
 
         self.http_client = AsyncHTTPClient(force_instance=True)
-        with open(oidc_config['openid_configuration']) as f:
-            self.openid_configuration = json.loads(f.read())
+        with open(oidc_config['openid_configuration']) as fd:
+            self.openid_configuration = json.loads(fd.read())
         self.issuer = self.openid_configuration['issuer']
         self.token_endpoint = self.openid_configuration['token_endpoint']
         self.authorization_endpoint = self.openid_configuration['authorization_endpoint']
         self.session_cookie_name = oidc_config.get('session_cookie_name', 'portal_session_id')
         self.end_session_endpoint = self.openid_configuration['end_session_endpoint']
-        with open(oidc_config['openid_certs']) as f:
-            self.jwks = json.loads(f.read())
+        with open(oidc_config['openid_certs']) as fd:
+            self.jwks = json.loads(fd.read())
         self.client_id = oidc_config['client_id']
-        with open(oidc_config['client_secret_file']) as f:
-            self.client_secret = f.read()
+        with open(oidc_config['client_secret_file']) as fd:
+            self.client_secret = fd.read()
+
+        self.cleanup_task = None
 
     def reverse_abs_url(self, request: RequestHandler, name, args=None):
         if args is None:
@@ -374,14 +392,32 @@ class OIDCAuthenticator(Authenticator):
     def get_abs_url(self, request: RequestHandler):
         return request.request.protocol + "://" + request.request.host
 
+    async def cleanup(self, pool: AsyncConnectionPool):
+        get_logger('user').debug('starting cleanup task')
+        cancelled = None
+        async with pool.connection() as conn:
+            while cancelled is None:
+                try:
+                    get_logger('user').debug('cleanup task sleeping 30 seconds')
+                    await asyncio.sleep(30)
+                    async with conn.transaction(), conn.cursor() as cur:
+                        await cur.execute('DELETE FROM state WHERE expires < now()')
+                        await cur.execute('DELETE FROM sessions WHERE refresh_expires_at < now()')
+                except asyncio.CancelledError as e:
+                    cancelled = e
+
+        raise cancelled
+
     @asynccontextmanager
     async def get_db_connection(self):
         if not self.__pool_opened:
             async with self.__init_lock:
                 if not self.__pool_opened:
                     await self.session_pool.open()
-                    async with self.session_pool.connection() as conn:
+                    async with self.session_pool.connection() as conn, conn.transaction():
                         await conn.execute(CREATE_TABLE)
+
+                    self.cleanup_task = asyncio.create_task(self.cleanup(self.session_pool))
                     self.__pool_opened = True
 
         async with self.session_pool.connection() as conn:
@@ -449,12 +485,9 @@ class OIDCAuthenticator(Authenticator):
 
         redirect_url = urlparse(self.authorization_endpoint)
 
-        auth_request_state = {
-            'code_verifier': code_verifier,
-            'redirect_uri': redirect_uri,
-        }
+        async with self.get_db_connection() as conn, conn.transaction(), conn.cursor() as cur:
+            await cur.execute(INSERT_STATE, (state, code_verifier, redirect_uri))
 
-        await self.pkce_pool.setex(state, timedelta(minutes=5), json.dumps(auth_request_state))
         return redirect_url._replace(query=urlencode(query)).geturl()
 
     async def oauth2_token_exchange(self, subject_token: str, aud: str):
@@ -482,13 +515,26 @@ class OIDCAuthenticator(Authenticator):
         async with self.get_db_connection() as conn:
             await session.persist(session_id, conn)
 
+    async def get_del_state(self, state: str) -> dict[str, Any] | None:
+        async with self.get_db_connection() as conn, conn.transaction(), conn.cursor(row_factory=dict_row) as cur:
+            res = await (await cur.execute(SELECT_STATE_BY_STATE, (state,))).fetchone()
+            if res is None:
+                return None
+            await cur.execute(DELETE_STATE_BY_STATE, (state,))
+        return res
+
     async def login_request(self, request):
         code = request.get_query_argument('code', None)
         state = request.get_query_argument('state', None)
         if code is None or state is None:
+            get_logger('user').debug('oidc login redirect to OP')
             return request.redirect(await self.redirect(request), status=302)
+        get_logger('user').debug('oidc login request with state')
+        state_entry = await self.get_del_state(state)
+        if state_entry is None:
+            get_logger('user').warning('state %s not found', state)
+            return
 
-        state_entry = json.loads(await self.pkce_pool.getdel(state))
         token_request_body = {
             'grant_type': 'authorization_code',
             'code': code,

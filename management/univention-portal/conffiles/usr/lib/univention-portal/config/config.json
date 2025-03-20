@@ -30,11 +30,10 @@ config = {
         "issuer": configRegistry.get('portal/oidc/issuer'),
         "extra_parameters": configRegistry.get('portal/oidc/exta-parameters', ''),
         "session_cookie_name": configRegistry.get('portal/oidc/session-cookie-name', 'portal_session_id'),
-        "postgres_url": configRegistry.get('portal/oidc/postgres-url'),
-        "redis_url": configRegistry.get('portal/oidc/redis-url'),
+        "postgres_connection_url": configRegistry.get('portal/oidc/postgres-url-file'),
     },
 }
 if not config['oidc']['client_id']:
     config['oidc'] = None
-print(json.dumps(config, sort_keys=True, indent=2))
+print(json.dumps(config, sort_keys=True, indent=2), end='')
 @!@
