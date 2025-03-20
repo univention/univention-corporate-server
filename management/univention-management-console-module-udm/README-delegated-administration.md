@@ -50,14 +50,43 @@ for testing but is NOT production ready.
 ## Preparation for testing the ouadmin default role
 - ...
 
-# Roles and permissions
+# Roles, role contexts  and permissions
 
-Roles and capabilities, permissions define what an account can do with UMC UDM.
+Roles, capabilities and permissions define what an account can do with UMC UDM.
+
+Roles are stored on user accounts as `guardianRoles` or groups as `guardianMemberRoles`.
+User accounts inherit roles from the groups that they are member of (not
+nested group!).
+
+## Role context
+
+Roles can have an optional context. This context is an LDAP DN (without the
+LDAP base) and defines the position in the LDAP tree where the permissions for
+this role applies.
+
+And example would be `ouadmins`. We have one definition for
+what this role can do, but we may need to differentiate between different
+`ouadmins` for different organizational units.
+
+This can be achieved by setting a context:
+```
+user1 -> role -> umc:udm:ouadmin&um:udm:ou=bremen
+user2 -> role -> umc:udm:ouadmin&um:udm:ou=berlin
+```
+- `umc:udm:` is just a prefix,
+- `ouadmin` is the role
+- `&` is the separator
+- `ou=bremen` is a position in the LDAP tree (without the LDAP base)
+
+So `user1` and `user2` have the same permissions - derived from the `ouadmin`
+role - but for different positions in the LDAP tree - derived from the
+context.
+
+## Roles
 
 Currently a simple python data structure defines the available roles and permissions
 
 ```
-
 {
     ROLE_NAME: [
         { # this is a capability
@@ -82,8 +111,14 @@ Currently a simple python data structure defines the available roles and permiss
    ],
    ROLE_NAME: [ ...
 }
-
 ```
+- `ROLE_NAME` - can be any string
+- `LDAP_DN` - can be any position in the LDAP tree without the LDAP base
+- `$CONTEXT` - is a keyword, that is replaced by the context of a role
+- `UDM_MODULE` - can be any UDM module name (users/user)
+- `ATTRIBUTE` - is the name of a UDM module attribute
+- `True,False` - enable or disable the action
+- `*` - wildcard, stand for everything
 
 A concrete example for the role `domainadmin` is:
 ```
@@ -104,5 +139,5 @@ A concrete example for the role `domainadmin` is:
         },
     ],
 ```
-This gives accounts with the role `umc:udm:domainadmin` to read, modify, create
-and delete all UDM objects on every position in the LDAP tree.
+This gives accounts with the role `umc:udm:domainadmin` the right to  read,
+modify, create and delete all UDM objects in every position in the LDAP tree.
