@@ -33,7 +33,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 import copy
-
 import json
 import os
 
@@ -105,7 +104,7 @@ def _check_authorization():
     return ucr.is_true("umc/udm/delegation")
 
 
-def _get_capablities(actor_roles):
+def _get_capabilities(actor_roles):
     cap = []
     for role, contexts in actor_roles.items():
         roles_caps = copy.deepcopy(ROLES.get(role, []))
@@ -115,60 +114,6 @@ def _get_capablities(actor_roles):
             role_cap['condition']['contexts'] = [f'{context},{ldap_base}'.lower() for context in contexts]
         cap += roles_caps
     return cap
-
-
-def _check_permission_action(module: str, action: str, permissions: dict) -> bool:
-    """Checks if a given action is allowed for a module in permissions."""
-    return permissions.get(module, {}).get(action, False) or permissions.get('*', {}).get(action, False)
-
-
-def _check_subtree(position: str, condition_positions: list[str]) -> bool:
-    """Checks if the position is in the subtree of the condition."""
-    return any(position.endswith(condition_position) for condition_position in condition_positions)
-
-
-def _check_base(position: str, condition_positions: list[str]) -> bool:
-    """Checks if the position is in the base of the condition."""
-    return position in condition_positions
-
-
-def _check_scope(position: str, condition: dict) -> bool:
-    """Checks if the position is in the scope of the condition."""
-    scope = condition.get('scope', 'base')
-    condition_positions = condition.get('contexts', []) if condition['position'] == '$CONTEXT' else [condition['position']]
-    if scope == "subtree":
-        return _check_subtree(position, condition_positions)
-    if scope == "base":
-        return _check_base(position, condition_positions)
-    raise NotImplementedError(f"Scope {scope} not implemented")
-
-
-def _check_condition(position: str, condition: dict) -> bool:
-    """Checks if the position matches the condition."""
-    if condition['position'] == '*':
-        return True
-    return _check_scope(position, condition)
-
-
-def _check_permissions(obj: object, caps: list[dict], action: str) -> bool:
-    allowed = None
-    position = obj2position(obj)
-    module_name = obj2module(obj)
-    caps.sort(key=get_cap_priority)
-    for cap in caps:
-        if _check_condition(position, cap['condition']):
-            allowed = _check_permission_action(module_name, action, cap['permissions'])
-        if allowed is not None and allowed:
-            return True
-    return False
-
-
-def _check_permissions_create(obj: object, caps: list[dict]) -> bool:
-    return _check_permissions(obj, caps, "create")
-
-
-def _check_permissions_delete(obj: object, caps: list[dict]) -> bool:
-    return _check_permissions(obj, caps, "delete")
 
 
 def obj2dn(obj: object | dict | str) -> str:
@@ -221,6 +166,60 @@ def get_cap_priority(cap: dict) -> int:
     if cap['condition']['position'] == '$CONTEXT':
         return 1
     return 0
+
+
+def _check_permission_action(module: str, action: str, permissions: dict) -> bool:
+    """Checks if a given action is allowed for a module in permissions."""
+    return permissions.get(module, {}).get(action, False) or permissions.get('*', {}).get(action, False)
+
+
+def _check_scope_subtree(position: str, condition_positions: list[str]) -> bool:
+    """Checks if the position is in the subtree of the condition."""
+    return any(position.endswith(condition_position) for condition_position in condition_positions)
+
+
+def _check_scope_base(position: str, condition_positions: list[str]) -> bool:
+    """Checks if the position is in the base of the condition."""
+    return position in condition_positions
+
+
+def _check_scope(position: str, condition: dict) -> bool:
+    """Checks if the position is in the scope of the condition."""
+    scope = condition.get('scope', 'base')
+    condition_positions = condition.get('contexts', []) if condition['position'] == '$CONTEXT' else [condition['position']]
+    if scope == "subtree":
+        return _check_scope_subtree(position, condition_positions)
+    if scope == "base":
+        return _check_scope_base(position, condition_positions)
+    raise NotImplementedError(f"Scope {scope} not implemented")
+
+
+def _check_condition(position: str, condition: dict) -> bool:
+    """Checks if the position matches the condition."""
+    if condition['position'] == '*':
+        return True
+    return _check_scope(position, condition)
+
+
+def _check_permissions(obj: object, caps: list[dict], action: str) -> bool:
+    allowed = None
+    position = obj2position(obj)
+    module_name = obj2module(obj)
+    caps.sort(key=get_cap_priority)
+    for cap in caps:
+        if _check_condition(position, cap['condition']):
+            allowed = _check_permission_action(module_name, action, cap['permissions'])
+        if allowed is not None and allowed:
+            return True
+    return False
+
+
+def _check_permissions_create(obj: object, caps: list[dict]) -> bool:
+    return _check_permissions(obj, caps, "create")
+
+
+def _check_permissions_delete(obj: object, caps: list[dict]) -> bool:
+    return _check_permissions(obj, caps, "delete")
 
 
 def _check_permission_attr_read(module_name: str, permissions: dict) -> list[str]:
@@ -295,7 +294,7 @@ def user_may_create(obj, actor_roles_func):
     if not _check_authorization():
         return
     actor_roles = actor_roles_func()
-    cap = _get_capablities(actor_roles)
+    cap = _get_capabilities(actor_roles)
     # allowed = _check_permissions_create(obj._ldap_dn, obj.module, cap)
     # FIXME is obj.position.getDn reliable?
     allowed = _check_permissions_create(obj, cap)
@@ -307,7 +306,7 @@ def user_may_read(objs: list[object | dict | str], actor_roles_func) -> list[obj
     if not _check_authorization():
         return objs
     actor_roles = actor_roles_func()
-    cap = _get_capablities(actor_roles)
+    cap = _get_capabilities(actor_roles)
 
     return _check_permissions_read(objs, cap)
 
@@ -316,7 +315,7 @@ def user_may_modify(obj: list[object | dict | str], actor_roles_func) -> None:
     if not _check_authorization():
         return
     actor_roles = actor_roles_func()
-    cap = _get_capablities(actor_roles)
+    cap = _get_capabilities(actor_roles)
     if _check_permissions_modify(obj, cap):
         return
     else:
@@ -327,7 +326,7 @@ def user_may_delete(obj: list[object | dict | str], actor_roles_func) -> None:
     if not _check_authorization():
         return
     actor_roles = actor_roles_func()
-    cap = _get_capablities(actor_roles)
+    cap = _get_capabilities(actor_roles)
     if _check_permissions_delete(obj, cap):
         return
     else:
