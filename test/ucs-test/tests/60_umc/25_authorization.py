@@ -176,15 +176,15 @@ def create_mock_object(dn, position, module):
 
 
 def test_check_permissions_create_default_roles(ldap_base):
-    from univention.management.console.modules.udm.authorization import _check_permissions_create, _get_capablities
+    from univention.management.console.modules.udm.authorization import _check_permissions_create, _get_capabilities
 
-    caps = _get_capablities({'domainadmin': []})
+    caps = _get_capabilities({'domainadmin': []})
     assert caps
     assert _check_permissions_create(create_mock_object(None, 'ou=hans', 'users/user'), caps)
     assert _check_permissions_create(create_mock_object(None, 'xyz', 'users/user'), caps)
     assert _check_permissions_create(create_mock_object(None, 'dc=bla', 'whatever'), caps)
 
-    caps = _get_capablities({'ouadmin': ['ou=ou1', 'ou=ou2']})
+    caps = _get_capabilities({'ouadmin': ['ou=ou1', 'ou=ou2']})
     assert caps
     assert not _check_permissions_create(create_mock_object(None, f'cn=users,{ldap_base}', 'users/user'), caps)
     assert _check_permissions_create(create_mock_object(None, f'ou=ou1,{ldap_base}', 'users/user'), caps)
@@ -198,15 +198,15 @@ def test_check_permissions_create_default_roles(ldap_base):
 
 
 def test_check_permissions_modify_default_roles(ldap_base):
-    from univention.management.console.modules.udm.authorization import _check_permissions_modify, _get_capablities
+    from univention.management.console.modules.udm.authorization import _check_permissions_modify, _get_capabilities
 
-    caps = _get_capablities({'domainadmin': []})
+    caps = _get_capabilities({'domainadmin': []})
     assert caps
     assert _check_permissions_modify(create_mock_object(None, 'ou=hans', 'users/user'), caps)
     assert _check_permissions_modify(create_mock_object(None, 'xyz', 'users/user'), caps)
     assert _check_permissions_modify(create_mock_object(None, 'dc=bla', 'whatever'), caps)
 
-    caps = _get_capablities({'ouadmin': ['ou=ou1', 'ou=ou2']})
+    caps = _get_capabilities({'ouadmin': ['ou=ou1', 'ou=ou2']})
     assert _check_permissions_modify(create_mock_object(None, f'ou=ou1,{ldap_base}', 'users/user'), caps)
     assert not _check_permissions_modify(create_mock_object(None, 'xyz', 'users/user'), caps)
     assert _check_permissions_modify(create_mock_object(None, f'ou=ou2,{ldap_base}', 'users/user'), caps)
@@ -216,7 +216,9 @@ def test_check_permissions_modify_default_roles(ldap_base):
 
 
 def test_check_permissions_read(ldap_base):
-    from univention.management.console.modules.udm.authorization import ROLES, _check_permissions_read, _get_capablities
+    from univention.management.console.modules.udm.authorization import (
+        ROLES, _check_permissions_read, _get_capabilities,
+    )
     ROLES["test_ouadmin"] = [
         # ouadmin can read and write all attributes of all udm modules in the ou except guardianRole attributes
         {
@@ -358,12 +360,12 @@ def test_check_permissions_read(ldap_base):
         f"uid=test1,cn=users,{ldap_base}",
     ]
     objs_mock = [create_mock_object(obj, None, 'users/user') for obj in objs]
-    caps = _get_capablities({'domainadmin': []})
+    caps = _get_capabilities({'domainadmin': []})
     assert caps
     assert set(_check_permissions_read(objs_mock, caps)) == set(objs_mock)
     assert set(_check_permissions_read(objs, caps)) == set(objs)
 
-    caps = _get_capablities({'test_ouadmin': []})
+    caps = _get_capabilities({'test_ouadmin': []})
     assert caps
     assert set(_check_permissions_read(objs_mock, caps)) == {obj for obj in objs_mock if "cn=users,ou=ou1," in obj.dn}
     assert set(_check_permissions_read(objs, caps)) == {obj for obj in objs if "cn=users,ou=ou1," in obj}
