@@ -92,32 +92,31 @@ context.
 
 ## Definition of roles capabilities and permissions
 
-Currently a simple python data structure defines the available roles and permissions
+Currently a simple json data structure defines the roles and permissions:
 
 ```
 {
-    ROLE_NAME: [
-        { # this is a capability
-            "condition": {
-                "position": *|LDAP_DN|$CONTEXT
-            }
-            "permission": {
-                UDM_MODULE|*: {
-                    "attributes": {
-                        ATTRIBUTE|*: read|write
-                    }
-                    "create": True|False,
-                    "delete": True|False,
-                 }
-                )
-            )
-            "permission": { ...
-        },
-        { # another capability
-        ...
+  ROLE_NAME: [
+    {
+      "condition": {
+        "position": LDAP_DN|$CONTEXT|*
+      },
+      "permissions": {
+        UDM_MODULE_NAME|*: {
+          "attributes": {
+            ATTRIBUTE|*: read|write
+          },
+          "create": true,
+          "delete": true
         }
-   ],
-   ROLE_NAME: [ ...
+      },
+      "permission": ...
+    },
+    {
+        "condition": ...
+    }
+  ],
+  ROLE_NAME:...
 }
 ```
 - `ROLE_NAME` - can be any string
@@ -128,27 +127,38 @@ Currently a simple python data structure defines the available roles and permiss
 - `True,False` - enable or disable the action
 - `*` - wildcard, stand for everything
 
-A concrete example for the role `domainadmin` is:
+A concrete example for the role `domainadmin`:
 ```
-    "domainadmin": [
-        {
-            "condition": {
-                "position": "*",
-            },
-            "permissions": {
-                "*": {
-                    "attributes": {
-                        "*": "write",
-                    },
-                    "create": True,
-                    "delete": True,
-                },
-            },
-        },
-    ],
+  "domainadmin": [
+    {
+      "condition": {
+        "position": "*"
+      },
+      "permissions": {
+        "*": {
+          "attributes": {
+            "*": "write"
+          },
+          "create": true,
+          "delete": true
+        }
+      }
+    }
+  ],
 ```
-This gives accounts with the role `umc:udm:domainadmin` the right to  read,
+This gives accounts with the role `umc:udm:domainadmin` the right to read,
 modify, create and delete all UDM objects in every position in the LDAP tree.
+
+## Custom roles
+
+The default roles for `domainadmin` and `ouadmin` are stored in the file
+`/usr/share/univention-management-console-module-udm/umc-udm-roles.json`.
+
+You can define your own rules in json format in the file `/etc/umc-udm-roles.json`.
+
+Keep in mind that the format and location of this configuration can change
+in the future and that the custom role configuration file is not synced
+between UCS servers.
 
 ## Priorities within permission
 
