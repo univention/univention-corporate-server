@@ -24,7 +24,7 @@ TODO introduction
 # Know issues
 
 * Only available on primary and backup nodes
-* Roles names and and the format of the configuration of role, capabilities and
+* Roles names and the format of the configuration of role, capabilities and
   permissions can and will change in the future
 
 # Setup of test environment with ouadmin
@@ -58,6 +58,14 @@ Roles are stored on user accounts as `guardianRoles` or groups as `guardianMembe
 User accounts inherit roles from the groups that they are member of (not
 nested group!).
 
+Roles have a prefix, currently `umc:udm`, and a name, which is just a string.
+There are two default roles:
+- `umc:udm:domainadmin`
+  - can do everything
+- `umc:udm:ouadmin`
+  - can do everything on its context (see next chapter)
+  - can read global groups
+
 ## Role context
 
 Roles can have an optional context. This context is an LDAP DN (without the
@@ -82,7 +90,7 @@ So `user1` and `user2` have the same permissions - derived from the `ouadmin`
 role - but for different positions in the LDAP tree - derived from the
 context.
 
-## Roles
+## Definition of roles capabilities and permissions
 
 Currently a simple python data structure defines the available roles and permissions
 
@@ -141,3 +149,26 @@ A concrete example for the role `domainadmin` is:
 ```
 This gives accounts with the role `umc:udm:domainadmin` the right to  read,
 modify, create and delete all UDM objects in every position in the LDAP tree.
+
+## Priorities within permission
+
+## Position condition
+
+Every capability is bound to a position. In this position a LDAP DN, the
+keyword `$CONTEXT` and a wildcard `*` can be used. These different kind of
+position definitions have priorities, from lower to higher priority
+- `*`
+- `$CONTEXT`
+- `LDAP DN`
+The match of a capability position with the target object position by a real
+LDAP DN has the highest priority (and `*` the lowest).
+
+## UDM modules in permissions
+
+In permissions you can define an UDM module names or a wildcard `*`.
+If there is a permission for the UDM module of the target object
+it will be used, otherwise the `*` permission (if existing).
+
+## Everything else
+
+What comes first wins.
