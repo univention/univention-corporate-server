@@ -1,3 +1,4 @@
+umc-udm-roles.json /usr/share/univention-management-console-module-udm/
 umc/js/udm.css	usr/share/univention-management-console-frontend/js/umc/modules/
 umc/js/udm/*svg	usr/share/univention-management-console-frontend/js/umc/modules/udm/
 univention-directory-reports-cleanup	usr/sbin/

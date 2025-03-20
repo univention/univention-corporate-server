@@ -34,8 +34,12 @@
 # <https://www.gnu.org/licenses/>.
 
 
+import json
+import os
+
 from univention.management.console.config import ucr
 from univention.management.console.error import Forbidden
+from univention.management.console.log import MODULE
 from univention.uldap import parentDn
 
 
@@ -80,69 +84,19 @@ from univention.uldap import parentDn
 #   }
 # ]
 
-
-ROLES = {
-    "domainadmin": [
-        # domainadmin can read and write all attributes of all udm modules
-        {
-            "condition": {
-                "position": "*",
-            },
-            "permissions": {
-                "*": {
-                    "attributes": {
-                        "*": "write",
-                    },
-                    "create": True,
-                    "delete": True,
-                },
-            },
-        },
-    ],
-    "ouadmin": [
-        # ouadmin can read and write all attributes of all udm modules in the ou except guardianRole attributes
-        {
-            "condition": {
-                "position": "$CONTEXT",
-            },
-            "permissions": {
-                "*": {
-                    "attributes": {
-                        "*": "write",
-                        "guardianRole": "read",
-                        "guardianMemberRoles": "read",
-                    },
-                    "create": True,
-                    "delete": True,
-                },
-            },
-        },
-        {
-            "condition": {
-                "position": "cn=groups",
-            },
-            "permissions": {
-                "groups/group": {
-                    "attributes": {
-                        "*": "read",
-                    },
-                },
-            },
-        },
-        {
-            "condition": {
-                "position": "cn=domain,cn=mail",
-            },
-            "permissions": {
-                "mail/domain": {
-                    # FIXME just for testing, should be False or unset
-                    "create": True,
-                },
-            },
-        },
-    ],
-}
-
+# load roles, TODO move to some other place
+ROLES = {}
+DEFAULT_ROLES = '/usr/share/univention-management-console-module-udm/umc-udm-roles.json'
+CUSTOM_ROLES = '/etc/umc-udm-roles.json'
+if ucr.is_true('umc/udm/delegation'):
+    try:
+        for file in [DEFAULT_ROLES, CUSTOM_ROLES]:
+            if os.path.isfile(file):
+                with open(file) as roles:
+                    ROLES.update(json.load(roles))
+    except Exception as exc:
+        MODULE.error(f'Loading role failed with {exc}')
+    MODULE.info(f'Loaded roles: {ROLES}')
 
 ldap_base = ucr.get("ldap/base")
 
