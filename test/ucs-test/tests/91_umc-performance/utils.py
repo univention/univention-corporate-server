@@ -31,10 +31,10 @@ def get_credentials():
     current_user += 1
     if current_user > final_user:
         current_user = start_user
-    return 'testuser%d' % current_user, 'univention'
+    return 'Administrator', 'univention'
 
 
-def login_via_oidc(client, username=None, password=None, prefix=''):
+def login_via_oidc(client, username=None, password=None, prefix='', oidc_entry=oidc_entry, session_cookie_name=session_cookie_name):
     # breakpoint()
     with client.get(oidc_entry, allow_redirects=True, timeout=TIMEOUT, catch_response=True, name=f'{prefix} oidc login 1 {oidc_entry}') as req1:
         if req1.status_code != 401 and not (200 <= req1.status_code <= 399):
