@@ -194,7 +194,7 @@ def test_check_permissions_create_default_roles(ldap_base):
     assert _check_permissions_create(create_mock_object(None, f'cn=domain,cn=mail,{ldap_base}', 'mail/domain'), caps)
     assert not _check_permissions_create(create_mock_object(None, 'dc=bla', 'whatever'), caps)
     # does not work currently but should work
-    assert not _check_permissions_create(create_mock_object(None, f'cn=users,ou=ou2,{ldap_base}', 'users/user'), caps)
+    assert _check_permissions_create(create_mock_object(None, f'cn=users,ou=ou2,{ldap_base}', 'users/user'), caps)
 
 
 def test_check_permissions_modify_default_roles(ldap_base):

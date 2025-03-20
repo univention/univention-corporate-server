@@ -18,7 +18,8 @@
   "ouadmin": [
     {
       "condition": {
-        "position": "$CONTEXT"
+        "position": "$CONTEXT",
+        "scope": "subtree"
       },
       "permissions": {
         "*": {
@@ -34,7 +35,8 @@
     },
     {
       "condition": {
-        "position": "cn=groups"
+        "position": "cn=groups",
+        "scope": "base"
       },
       "permissions": {
         "groups/group": {
@@ -46,7 +48,8 @@
     },
     {
       "condition": {
-        "position": "cn=domain,cn=mail"
+        "position": "cn=domain,cn=mail",
+        "scope": "base"
       },
       "permissions": {
         "mail/domain": {

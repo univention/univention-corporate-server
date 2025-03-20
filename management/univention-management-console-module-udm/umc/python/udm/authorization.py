@@ -32,7 +32,7 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-
+import copy
 
 import json
 import os
@@ -108,8 +108,10 @@ def _check_authorization():
 def _get_capablities(actor_roles):
     cap = []
     for role, contexts in actor_roles.items():
-        roles_caps = ROLES.get(role, [])
+        roles_caps = copy.deepcopy(ROLES.get(role, []))
         for role_cap in roles_caps:
+            position = role_cap['condition']['position']
+            role_cap['condition']['position'] = position if position in ['*', '$CONTEXT'] else f"{position},{ldap_base}".lower()
             role_cap['condition']['contexts'] = [f'{context},{ldap_base}'.lower() for context in contexts]
         cap += roles_caps
     return cap
@@ -120,22 +122,42 @@ def _check_permission_action(module: str, action: str, permissions: dict) -> boo
     return permissions.get(module, {}).get(action, False) or permissions.get('*', {}).get(action, False)
 
 
+def _check_subtree(position: str, condition_positions: list[str]) -> bool:
+    """Checks if the position is in the subtree of the condition."""
+    return any(position.endswith(condition_position) for condition_position in condition_positions)
+
+
+def _check_base(position: str, condition_positions: list[str]) -> bool:
+    """Checks if the position is in the base of the condition."""
+    return position in condition_positions
+
+
+def _check_scope(position: str, condition: dict) -> bool:
+    """Checks if the position is in the scope of the condition."""
+    scope = condition.get('scope', 'base')
+    condition_positions = condition.get('contexts', []) if condition['position'] == '$CONTEXT' else [condition['position']]
+    if scope == "subtree":
+        return _check_subtree(position, condition_positions)
+    if scope == "base":
+        return _check_base(position, condition_positions)
+    raise NotImplementedError(f"Scope {scope} not implemented")
+
+
+def _check_condition(position: str, condition: dict) -> bool:
+    """Checks if the position matches the condition."""
+    if condition['position'] == '*':
+        return True
+    return _check_scope(position, condition)
+
+
 def _check_permissions(obj: object, caps: list[dict], action: str) -> bool:
     allowed = None
     position = obj2position(obj)
     module_name = obj2module(obj)
     caps.sort(key=get_cap_priority)
     for cap in caps:
-        condition_position = cap['condition']['position']
-        permissions = cap['permissions']
-
-        if condition_position == '$CONTEXT' and cap['condition']['contexts'] and position in cap['condition']['contexts']:
-            allowed = _check_permission_action(module_name, action, permissions)
-        elif condition_position == '*':
-            allowed = _check_permission_action(module_name, action, permissions)
-        elif f"{condition_position},{ldap_base}" == position:
-            allowed = _check_permission_action(module_name, action, permissions)
-
+        if _check_condition(position, cap['condition']):
+            allowed = _check_permission_action(module_name, action, cap['permissions'])
         if allowed is not None and allowed:
             return True
     return False
@@ -223,21 +245,14 @@ def _check_permissions_read(objs: list[object | dict | str], caps: list[dict]) -
 
     caps.sort(key=get_cap_priority)
     for (position, module_name), _objs in objs_processed.items():
-        allowed_attrs = None
         for cap in caps:
-            condition_position = cap['condition']['position']
-            permissions = cap['permissions']
+            if _check_condition(position, cap['condition']):
+                allowed_attrs = _check_permission_attr_read(module_name, cap['permissions'])
 
-            if condition_position == '$CONTEXT' and cap['condition']['contexts'] and position in cap['condition']['contexts']:
-                allowed_attrs = _check_permission_attr_read(module_name, permissions)
-            elif condition_position == '*':
-                allowed_attrs = _check_permission_attr_read(module_name, permissions)
-            elif f"{condition_position},{ldap_base}" == position:
-                allowed_attrs = _check_permission_attr_read(module_name, permissions)
+                if allowed_attrs:
+                    attrs_readble[(position, module_name)] = allowed_attrs
+                    break
 
-            if allowed_attrs:
-                attrs_readble[(position, module_name)] = allowed_attrs
-                break
     for k, _objs in objs_processed.items():  # k = (position, module_name)
         if k in attrs_readble:
             # TODO remove unreadable attributes from objects
@@ -265,20 +280,14 @@ def _check_permissions_modify(obj: object | dict | str, caps: list[dict]) -> boo
     module_name = obj2module(obj)
     caps.sort(key=get_cap_priority)
     for cap in caps:
-        condition_position = cap['condition']['position']
-        permissions = cap['permissions']
-        if condition_position == '$CONTEXT' and cap['condition']['contexts'] and position in cap['condition']['contexts']:
-            writable_attrs, readonly_attrs = _get_writable_attrs_from_permissions(module_name, permissions)
-        elif condition_position == '*':
-            writable_attrs, readonly_attrs = _get_writable_attrs_from_permissions(module_name, permissions)
-        elif f"{condition_position},{ldap_base}" == position:
-            writable_attrs, readonly_attrs = _get_writable_attrs_from_permissions(module_name, permissions)
-        if writable_attrs:
-            # TODO check that modified attributes are in the list of writable attributes
-            #      and not in the list of readonly attributes
-            if readonly_attrs:
-                pass
-            return True
+        if _check_condition(position, cap['condition']):
+            writable_attrs, readonly_attrs = _get_writable_attrs_from_permissions(module_name, cap['permissions'])
+            if writable_attrs:
+                # TODO check that modified attributes are in the list of writable attributes
+                #      and not in the list of readonly attributes
+                if readonly_attrs:
+                    pass
+                return True
     return False
 
 
