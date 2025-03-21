@@ -197,15 +197,13 @@ def _check_condition(position: str, condition: dict) -> bool:
 
 
 def _check_permissions(obj: object, caps: list[dict], action: str) -> bool:
-    allowed = None
     position = obj2position(obj)
     module_name = obj2module(obj)
     caps.sort(key=get_cap_priority)
     for cap in caps:
         if _check_condition(position, cap['condition']):
-            allowed = _check_permission_action(module_name, action, cap['permissions'])
-        if allowed is not None and allowed:
-            return True
+            if _check_permission_action(module_name, action, cap['permissions']):
+                return True
     return False
 
 
@@ -216,11 +214,6 @@ def _check_permissions_create(obj: object, caps: list[dict]) -> bool:
 def _check_permissions_delete(obj: object, caps: list[dict]) -> bool:
     return _check_permissions(obj, caps, "delete")
 
-
-# def _check_permission_attr_read(module_name: str, permissions: dict) -> list[str]:
-#     """Retrieves allowed attributes for a given module from permissions."""
-#     return list(permissions.get(module_name, {}).get('attributes', {}).keys() or permissions.get('*', {}).get('attributes', {}).keys())
-#
 
 def _check_permissions_read(objs: list[object | dict | str], caps: list[dict]) -> list[object | dict | str]:
     """Filters readable objects based on permissions."""
@@ -241,14 +234,14 @@ def _check_permissions_read(objs: list[object | dict | str], caps: list[dict]) -
     for (position, module_name), _objs in objs_processed.items():
         for cap in caps:
             if _check_condition(position, cap['condition']):
-                allowed_attrs = _get_readable_attrs_from_permissions(module_name, cap['permissions'])
+                readble_attrs = _get_readable_attrs_from_permissions(module_name, cap['permissions'])
 
-                if allowed_attrs:
-                    attrs_readble[(position, module_name)] = allowed_attrs
+                if readble_attrs:
+                    attrs_readble[(position, module_name)] = readble_attrs
                     break
 
-    for k, _objs in objs_processed.items():  # k = (position, module_name)
-        if k in attrs_readble:
+    for (position, module_name), _objs in objs_processed.items():
+        if (position, module_name) in attrs_readble:
             # TODO remove unreadable attributes from objects
             readables.extend(_objs)
 
@@ -263,11 +256,6 @@ def _get_attrs_from_permissions(module_name: str, permissions: dict) -> (list[st
     return writable_attributes, readable_attributes
 
 
-def _get_writable_attrs_from_permissions(module_name: str, permissions: dict) -> (list[str], list[str]):
-    """Retrieves writable attributes for a given module from permissions."""
-    return _get_attrs_from_permissions(module_name, permissions)[0]
-
-
 def _get_readable_attrs_from_permissions(module_name: str, permissions: dict) -> (list[str], list[str]):
     """Retrieves readable attributes for a given module from permissions."""
     writable_attrs, readable_attrs = _get_attrs_from_permissions(module_name, permissions)
@@ -280,16 +268,16 @@ def _check_permissions_modify(obj: object | dict | str, caps: list[dict]) -> boo
     in the future we need to get the list of modified attributes
     and check if they are all writable
     """
-    writable_attrs = []
     position = obj2position(obj)
     module_name = obj2module(obj)
     caps.sort(key=get_cap_priority)
     for cap in caps:
         if _check_condition(position, cap['condition']):
-            writable_attrs = _get_writable_attrs_from_permissions(module_name, cap['permissions'])
+            writable_attrs, readable_attrs = _get_attrs_from_permissions(module_name, cap['permissions'])
             if writable_attrs:
-                # TODO check that modified attributes are in the list of writable attributes
-                #      and not in the list of readonly attributes
+                if "*" in writable_attrs and readable_attrs:
+                    # TODO check that modified attributes are not in the list of readable attributes
+                    return True
                 return True
     return False
 
