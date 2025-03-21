@@ -218,7 +218,7 @@ def _check_permissions_delete(obj: object, caps: list[dict]) -> bool:
 def _check_permissions_read(objs: list[object | dict | str], caps: list[dict]) -> list[object | dict | str]:
     """Filters readable objects based on permissions."""
     readables = []
-    attrs_readble = {}
+    attrs_readable = {}
     objs_processed = {}
     # TODO filter objs here
 
@@ -234,14 +234,14 @@ def _check_permissions_read(objs: list[object | dict | str], caps: list[dict]) -
     for (position, module_name), _objs in objs_processed.items():
         for cap in caps:
             if _check_condition(position, cap['condition']):
-                readble_attrs = _get_readable_attrs_from_permissions(module_name, cap['permissions'])
+                readable_attrs = _get_readable_attrs_from_permissions(module_name, cap['permissions'])
 
-                if readble_attrs:
-                    attrs_readble[(position, module_name)] = readble_attrs
+                if readable_attrs:
+                    attrs_readable[(position, module_name)] = readable_attrs
                     break
 
     for (position, module_name), _objs in objs_processed.items():
-        if (position, module_name) in attrs_readble:
+        if (position, module_name) in attrs_readable:
             # TODO remove unreadable attributes from objects
             readables.extend(_objs)
 
