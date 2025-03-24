@@ -1,3 +1,9 @@
+univention-postgresql (12.0.10-2) unstable; urgency=medium
+
+  * Bug #57779: make postgresql-15 the default
+
+ -- Felix Botner <botner@univention.de>  Mon, 24 Mar 2025 14:45:53 +0100
+
 univention-postgresql (12.0.10-1) UNRELEASED; urgency=medium
 
   * Bug #58002 UCS 5.0-10 version bump
