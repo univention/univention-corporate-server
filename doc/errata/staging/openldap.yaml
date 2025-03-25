@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: openldap
+fix: 2.4.47+dfsg-3+deb10u7A~5.0.10.202503251748
+desc: |
+ This update addresses the following issues:
+ * The tool `slapschema` returned an exit status of zero if the last object
+   checked was ok, even if it found problems with previous objects. So it
+   behaved a bit like the `-c` option was given. Now the tool stops on
+   first error unless `-c` is given and returns a non-zero exit code
+   in case a problem is detected on any of the objects checked.
+bug: [58072]
