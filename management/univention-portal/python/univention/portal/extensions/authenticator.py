@@ -40,20 +40,21 @@ import functools
 import hashlib
 import json
 import secrets
+import traceback
 from collections.abc import Awaitable, Callable
 from contextlib import asynccontextmanager
 from datetime import UTC, timedelta
 from typing import Any
 from urllib.parse import parse_qsl, urljoin, urlparse
 
-from python.univention.portal.extensions.oidc_flow import OIDCFlow, TokenResponse
 from sqlalchemy.ext.asyncio import create_async_engine
 from tornado.httpclient import AsyncHTTPClient, HTTPError, HTTPRequest
 from tornado.web import RequestHandler
 
 from univention.portal import Plugin, config
-from univention.portal.extensions.oidc_db import OIDCSession, SessionRepository, StateRepository, cleanup
-from univention.portal.extensions.oidc_schema import metadata_obj
+from univention.portal.extensions.oidc.auth import OIDCAuth, OIDCAuthError, TokenResponse
+from univention.portal.extensions.oidc.db import DatabaseError, OIDCSession, SessionRepository, StateRepository, cleanup
+from univention.portal.extensions.oidc.schema import metadata_obj
 from univention.portal.log import get_logger
 from univention.portal.user import User
 
@@ -217,7 +218,7 @@ class OIDCAuthenticator(Authenticator):
         self.group_cache = group_cache
 
         with open(oidc_config['postgres_connection_url']) as fd:
-            self.session_engine = create_async_engine(fd.read())
+            self.engine = create_async_engine(fd.read())
         self.__pool_opened = False
         self.__init_lock = asyncio.Lock()
 
@@ -232,7 +233,7 @@ class OIDCAuthenticator(Authenticator):
         self.client_id = oidc_config['client_id']
         with open(oidc_config['client_secret_file']) as fd:
             self.client_secret = fd.read()
-        self.oidc_flow = OIDCFlow(self.openid_configuration, self.jwks, self.client_id, self.client_secret)
+        self.oidc_flow = OIDCAuth(self.openid_configuration, self.jwks, self.client_id, self.client_secret)
 
         self.session_cookie_name = oidc_config.get('session_cookie_name', 'portal_session_id')
 
@@ -259,7 +260,7 @@ class OIDCAuthenticator(Authenticator):
     async def get_db_connection(self):
         if not self.__pool_opened:
             await self.__ensure_db_init()
-        async with self.session_engine.connect() as conn:
+        async with self.engine.connect() as conn:
             yield conn
 
     def get_auth_mode(self, request):
@@ -269,16 +270,27 @@ class OIDCAuthenticator(Authenticator):
     def refresh(self, reason=None):
         return self.group_cache.refresh(reason=reason)
 
-    async def new_session(self, get_token_response: Callable[[], Awaitable[TokenResponse]], persist_function: Callable[[str, OIDCSession], Awaitable[None]], session_id: str | None = None) -> tuple[str, OIDCSession]:
-        token_response = await get_token_response()
+    async def new_session(self, get_token_response: Callable[[], Awaitable[TokenResponse]], persist_function: Callable[[str, OIDCSession], Awaitable[None]], session_id: str | None = None) -> tuple[str, OIDCSession] | None:
+        try:
+            token_response = await get_token_response()
+        except OIDCAuthError:
+            get_logger("user").warning("failed exchange token: %s", traceback.format_exc())
+            return None
         session = OIDCSession.from_token_response(token_response, self.oidc_flow.verify_id_token)
 
-        token_exchange_response = await self.oidc_flow.token_exchange(session.access_token, "https://master.ucs.test/univention/oidc/")
+        try:
+            token_exchange_response = await self.oidc_flow.token_exchange(session.access_token, "https://master.ucs.test/univention/oidc/")
+        except OIDCAuthError:
+            get_logger("user").warning("token exchange failed: %s", traceback.format_exc())
+            return None
         session.umc_access_token = token_exchange_response.access_token
 
         session_id = session_id or secrets.token_hex(32)
 
-        await persist_function(session_id, session)
+        try:
+            await persist_function(session_id, session)
+        except DatabaseError:
+            get_logger("error").error("failed to persist session: %s", traceback.format_exc())
 
         return (session_id, session)
 
@@ -289,18 +301,32 @@ class OIDCAuthenticator(Authenticator):
             redirect_uri = self.reverse_abs_url(request, 'login')
             get_logger('user').debug('oidc login redirect to OP')
             authorization_request = self.oidc_flow.generate_authorization_request(redirect_uri)
-            await self.state_repository.create(authorization_request.state, authorization_request.code_verifier, redirect_uri)
+            try:
+                await self.state_repository.create(authorization_request.state, authorization_request.code_verifier, redirect_uri)
+            except DatabaseError:
+                get_logger("error").error("failed to persist state: %s", traceback.format_exc())
+                return request.redirect('/', status=302)
             return request.redirect(authorization_request.authorization_url, status=302)
 
         get_logger('user').debug('oidc login request with state')
 
-        state_entry = await self.state_repository.get_delete_by_state(state)
+        try:
+            state_entry = await self.state_repository.get_delete_by_state(state)
+        except DatabaseError:
+            get_logger("user").error("failed to retrieve state: %s", traceback.format_exc())
+            return request.redirect("/", status=302)
+
         if state_entry is None:
             get_logger('user').warning('state %s not found', state)
             return
 
         token_response_fn = functools.partial(self.oidc_flow.exchange_code_for_tokens, code, state_entry['redirect_uri'], state_entry['code_verifier'])
-        session_id, session = await self.new_session(token_response_fn, self.session_repository.insert_session)
+        new_session = await self.new_session(token_response_fn, self.session_repository.insert_session)
+        if new_session is None:
+            # TODO: somehow display an error to the user?
+            return request.redirect('/')
+
+        session_id, session = new_session
         request.set_cookie(self.session_cookie_name, session_id, expires=session.refresh_expires_at)
 
         # TODO: don't hardcode
@@ -312,7 +338,10 @@ class OIDCAuthenticator(Authenticator):
     async def refresh_session(self, session_id: str, session: OIDCSession):
         token_response_fn = functools.partial(self.oidc_flow.refresh_tokens, session.refresh_token)
 
-        _, session = await self.new_session(token_response_fn, self.session_repository.update_session, session_id)
+        new_session = await self.new_session(token_response_fn, self.session_repository.update_session, session_id)
+        if new_session is None:
+            return None
+        _, session = new_session
         return session
 
     def must_refresh_session(self, session: OIDCSession):
@@ -321,14 +350,18 @@ class OIDCAuthenticator(Authenticator):
         return (now + timedelta(seconds=30)) > session.access_expires_at
 
     async def get_session(self, session_id: str | None):
-        if session_id is None:
-            return None
-        session = await self.session_repository.find_by_session_id(session_id)
+        try:
+            if session_id is None:
+                return None
+            session = await self.session_repository.find_by_session_id(session_id)
 
-        if session is None:
-            return None
-        if session.refresh_expires_at < datetime.datetime.now(UTC):
-            await self.session_repository.delete(session_id)
+            if session is None:
+                return None
+            if session.refresh_expires_at < datetime.datetime.now(UTC):
+                await self.session_repository.delete(session_id)
+                return None
+        except DatabaseError:
+            get_logger("user").error("failed to get session: %s", traceback.format_exc())
             return None
 
         return session
@@ -337,13 +370,16 @@ class OIDCAuthenticator(Authenticator):
         session_id = request.get_cookie(self.session_cookie_name, None)
         headers = {}
 
-        session = await self.get_session(session_id)
-
         display_name = None
         username = None
 
+        session = await self.get_session(session_id)
+
         if session is not None and self.must_refresh_session(session):
             session = await self.refresh_session(session_id, session)
+            if session is None:
+                request.clear_cookie(self.session_cookie_name)
+                request.redirect('/', status=302)
 
             request.set_cookie(self.session_cookie_name, session_id, expires=session.refresh_expires_at)
 
@@ -366,7 +402,8 @@ class OIDCAuthenticator(Authenticator):
             if session_id is None:
                 return request.redirect('/', status=302)
 
-            session = await self.session_repository.find_by_session_id(session_id)
+            session = await self.get_session(session_id)
+
             if session is None:
                 request.clear_cookie(self.session_cookie_name)
                 return request.redirect('/', status=302)

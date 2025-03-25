@@ -31,14 +31,17 @@
 # <https://www.gnu.org/licenses/>.
 import asyncio
 import datetime
-from collections.abc import Callable
+from collections.abc import AsyncGenerator, Callable
+from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from typing import Any
 
-from python.univention.portal.extensions.oidc_flow import TokenResponse
 from sqlalchemy import and_, delete, select
+from sqlalchemy.exc import InterfaceError
+from sqlalchemy.ext.asyncio import AsyncConnection
 
-from univention.portal.extensions.oidc_schema import session_table, state_table
+from univention.portal.extensions.oidc.auth import TokenResponse
+from univention.portal.extensions.oidc.schema import session_table, state_table
 from univention.portal.log import get_logger
 
 
@@ -49,8 +52,9 @@ async def cleanup(engine_provider):
         await asyncio.sleep(30)
         async with engine_provider() as conn, conn.begin():
             try:
-                await conn.execute(delete(state_table).where(state_table.c.expires < datetime.datetime.now(datetime.UTC)))
-                await conn.execute(delete(session_table).where(session_table.c.refresh_expires_at < datetime.datetime.now(datetime.UTC)))
+                now = datetime.datetime.now(datetime.UTC)
+                await conn.execute(delete(state_table).where(state_table.c.expires < now))
+                await conn.execute(delete(session_table).where(session_table.c.refresh_expires_at < now))
             except asyncio.CancelledError:
                 raise
             except Exception:
@@ -99,8 +103,32 @@ class OIDCSession:
         )
 
 
-class SessionRepository:
+class DatabaseError(Exception):
+    msg = "Database operation failed: {0}"
+
+    def __init__(self, error: str) -> None:
+        super().__init__(self.msg.format(error))
+
+
+class BaseRepository:
     def __init__(self, engine_provider) -> None:
+        self.engine_provider = engine_provider
+
+    @asynccontextmanager
+    async def db_transaction(self) -> AsyncGenerator[AsyncConnection, None]:
+        try:
+            async with self.engine_provider() as conn:
+                async with conn.begin():
+                    yield conn
+        except ConnectionRefusedError as err:
+            raise DatabaseError("Failed to connect to database") from err
+        except InterfaceError as err:
+            raise DatabaseError("Database connection error") from err
+
+
+class SessionRepository(BaseRepository):
+    def __init__(self, engine_provider) -> None:
+        super().__init__(engine_provider)
         self.engine_provider = engine_provider
 
     async def insert_session(self, session_id: str, session: OIDCSession):
@@ -120,7 +148,7 @@ class SessionRepository:
             refresh_expires_at=session.refresh_expires_at,
             access_expires_at=session.access_expires_at,
         )
-        async with self.engine_provider() as conn, conn.begin() as conn:
+        async with self.db_transaction() as conn:
             await conn.execute(stmt)
 
     async def update_session(self, session_id: str, session: OIDCSession):
@@ -140,11 +168,11 @@ class SessionRepository:
             refresh_expires_at=session.refresh_expires_at,
             access_expires_at=session.access_expires_at,
         )
-        async with self.engine_provider() as conn, conn.begin() as conn:
+        async with self.db_transaction() as conn:
             await conn.execute(stmt)
 
     async def delete(self, session_id: str):
-        async with self.engine_provider() as conn, conn.begin() as conn:
+        async with self.db_transaction() as conn:
             await conn.execute(delete(session_table).where(session_table.c.session_id == session_id))
 
     async def find_by_session_id(self, session_id: str):
@@ -164,7 +192,7 @@ class SessionRepository:
             session_table.c.access_expires_at,
         ).where(session_table.c.session_id == session_id)
 
-        async with self.engine_provider() as conn, conn.begin() as conn:
+        async with self.db_transaction() as conn:
             result = await conn.execute(stmt)
             row = result.fetchone()
 
@@ -174,29 +202,30 @@ class SessionRepository:
         return OIDCSession(**row)
 
     async def delte_by_iss_and_sub(self, iss: str, sub: str):
-        async with self.engine_provider() as conn, conn.begin() as conn:
+        async with self.db_transaction() as conn:
             await conn.execute(delete(session_table).where(and_(session_table.c.sub == sub, session_table.c.iss == iss)))
 
     async def delete_by_sid(self, sid: str):
-        async with self.engine_provider() as conn, conn.begin() as conn:
+        async with self.db_transaction() as conn:
             await conn.execute(delete(session_table).where(session_table.c.sid == sid))
 
 
-class StateRepository:
+class StateRepository(BaseRepository):
     def __init__(self, engine_provider) -> None:
+        super().__init__(engine_provider)
         self.engine_provider = engine_provider
 
     async def create(self, state: str, code_verifier: str, redirect_uri: str):
-        async with self.engine_provider() as conn, conn.begin() as conn:
-            stmt = state_table.insert().values(
-                state=state,
-                code_verifier=code_verifier,
-                redirect_uri=redirect_uri,
-            )
+        stmt = state_table.insert().values(
+            state=state,
+            code_verifier=code_verifier,
+            redirect_uri=redirect_uri,
+        )
+        async with self.db_transaction() as conn:
             await conn.execute(stmt)
 
     async def get_delete_by_state(self, state: str) -> dict[str, Any] | None:
-        async with self.engine_provider() as conn, conn.begin() as conn:
+        async with self.db_transaction() as conn:
             stmt = select(state_table).where(state_table.c.state == state)
             res = (await conn.execute(stmt)).fetchone()
             if res is None:
