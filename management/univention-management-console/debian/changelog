@@ -1,3 +1,10 @@
+univention-management-console (12.0.36-2) unstable; urgency=medium
+
+  * Bug #58199: enhance log message when retrieving OIDC access token
+    failed
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Mon, 14 Apr 2025 10:29:23 +0200
+
 univention-management-console (12.0.36-1) UNRELEASED; urgency=medium
 
   * Bug #58002 UCS 5.0-10 version bump
