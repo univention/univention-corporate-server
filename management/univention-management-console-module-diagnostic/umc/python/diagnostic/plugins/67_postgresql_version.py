@@ -84,7 +84,7 @@ def run(_umc_instance: Instance) -> None:
         raise warning(_("No PostgreSQL version found."))
 
     psql_version = max(versions)
-    if psql_version != POSTGRESQL_VERSION:
+    if psql_version < POSTGRESQL_VERSION:
         raise warning(_("PostgreSQL version is {current}, should be {desired}.").format(current=version_tuple_to_str(psql_version), desired=version_tuple_to_str(POSTGRESQL_VERSION)))
 
 

@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.11-2) unstable; urgency=medium
+
+  * Bug #57779: fix 67_postgresql_version.py
+
+ -- Felix Botner <botner@univention.de>  Tue, 25 Mar 2025 14:49:10 +0100
+
 univention-management-console-module-diagnostic (6.0.11-1) UNRELEASED; urgency=medium
 
   * Bug #58002 UCS 5.0-10 version bump

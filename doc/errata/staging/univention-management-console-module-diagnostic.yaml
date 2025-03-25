@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-management-console-module-diagnostic
+fix: 6.0.11-2
+desc: |
+ This update addresses the following issues:
+ * The diagnostic check `postgresql version` now correctly
+   checks that the installed postgresql version is not lower
+   than postgresql 11.
+bug: [57779]
