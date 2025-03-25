@@ -1,8 +1,13 @@
-univention-management-console (14.0.46-1) UNRELEASED; urgency=medium
+univention-management-console (14.0.46-1) unstable; urgency=medium
 
+  [ Florian Best ]
+  * Bug #58114: enhance log message when retrieving OIDC access token
+    failed
+
+  [ Christian Castens ]
   * Bug #58015 UCS 5.2-1 version bump
 
- -- Christian Castens <castens@univention.de>  Mon, 03 Mar 2025 10:45:34 +0100
+ -- Florian Best <best@univention.de>  Tue, 25 Mar 2025 08:08:10 +0100
 
 univention-management-console (14.0.45) unstable; urgency=medium
 

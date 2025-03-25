@@ -147,7 +147,7 @@ class OIDCResource(OAuth2Mixin, Resource):
                 code_verifier=code_verifier,
             )
         except HTTPClientError as exc:
-            CORE.error('Could not get access token: %s' % (exc.response.body,))
+            CORE.error('Could not get access token: %s' % (exc.response and exc.response.body or exc,))
             raise OpenIDProvideUnavailable(self._('Could not receive token from authorization server.'))
 
         try:
