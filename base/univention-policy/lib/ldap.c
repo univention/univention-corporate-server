@@ -110,7 +110,7 @@ static int sasl_interact(LDAP *ld, unsigned flags, void *defaults, void *in)
 	return LDAP_SUCCESS;
 }
 
-#define _UNIVENTION_LDAP_SECRET_LEN_MAX 27
+#define _UNIVENTION_LDAP_SECRET_LEN_MAX 120
 int univention_ldap_set_admin_connection( univention_ldap_parameters_t *lp )
 {
 	FILE *secret;

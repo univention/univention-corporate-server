@@ -1,3 +1,9 @@
+univention-policy (13.0.7-2) UNRELEASED; urgency=medium
+
+  * Increase password length
+
+ -- Johannes Bornhold <johannes.bornhold.extern@univention.de>  Wed, 26 Mar 2025 07:06:18 +0000
+
 univention-policy (13.0.7-1) UNRELEASED; urgency=medium
 
   * Bug #58015 UCS 5.2-1 version bump
