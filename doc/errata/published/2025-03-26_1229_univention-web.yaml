@@ -9,3 +9,6 @@ desc: |
  * Improved the styling of the `MultiInput` widget when displaying more
    than two input fields to enhance UI appearance in the UMC.
 bug: [58118]
+erratum: 1229
+announced: 2025-03-26
+support: core
