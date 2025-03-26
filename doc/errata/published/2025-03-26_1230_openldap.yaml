@@ -12,3 +12,6 @@ desc: |
    first error unless `-c` is given and returns a non-zero exit code
    in case a problem is detected on any of the objects checked.
 bug: [58072]
+erratum: 1230
+announced: 2025-03-26
+support: core
