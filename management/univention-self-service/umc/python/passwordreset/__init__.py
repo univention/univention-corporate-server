@@ -441,7 +441,7 @@ class Instance(Base):
                 'syntax': prop.syntax.name,
                 'size': prop.size or prop.syntax.size,
                 'required': bool(prop.required),
-                'editable': bool(prop.may_change),
+                'editable': bool(prop.may_change and not ucr.is_true(f'self-service/udm_attributes/{propname}/readonly')),
                 'readonly': not bool(prop.editable) or propname in read_only_attributes,
                 'multivalue': bool(prop.multivalue),
             }
