@@ -47,7 +47,7 @@ from datetime import UTC, timedelta
 from typing import Any
 from urllib.parse import parse_qsl, urljoin, urlparse
 
-from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 from tornado.httpclient import AsyncHTTPClient, HTTPError, HTTPRequest
 from tornado.web import RequestHandler
 
@@ -218,7 +218,7 @@ class OIDCAuthenticator(Authenticator):
         self.group_cache = group_cache
 
         with open(oidc_config['postgres_connection_url']) as fd:
-            self.engine = create_async_engine(fd.read())
+            self.engine: AsyncEngine = create_async_engine(fd.read())
         self.__pool_opened = False
         self.__init_lock = asyncio.Lock()
 
@@ -311,7 +311,7 @@ class OIDCAuthenticator(Authenticator):
         get_logger('user').debug('oidc login request with state')
 
         try:
-            state_entry = await self.state_repository.get_delete_by_state(state)
+            state_entry = await self.state_repository.get_and_delete(state)
         except DatabaseError:
             get_logger("user").error("failed to retrieve state: %s", traceback.format_exc())
             return request.redirect("/", status=302)
@@ -321,7 +321,7 @@ class OIDCAuthenticator(Authenticator):
             return
 
         token_response_fn = functools.partial(self.oidc_flow.exchange_code_for_tokens, code, state_entry['redirect_uri'], state_entry['code_verifier'])
-        new_session = await self.new_session(token_response_fn, self.session_repository.insert_session)
+        new_session = await self.new_session(token_response_fn, self.session_repository.create)
         if new_session is None:
             # TODO: somehow display an error to the user?
             return request.redirect('/')
@@ -338,7 +338,7 @@ class OIDCAuthenticator(Authenticator):
     async def refresh_session(self, session_id: str, session: OIDCSession):
         token_response_fn = functools.partial(self.oidc_flow.refresh_tokens, session.refresh_token)
 
-        new_session = await self.new_session(token_response_fn, self.session_repository.update_session, session_id)
+        new_session = await self.new_session(token_response_fn, self.session_repository.update, session_id)
         if new_session is None:
             return None
         _, session = new_session

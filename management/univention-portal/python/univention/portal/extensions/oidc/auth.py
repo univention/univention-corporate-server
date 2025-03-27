@@ -219,15 +219,9 @@ class OIDCAuth:
 
         if not token.get('sub') and not token.get('sid'):
             raise OIDCAuthError('failed to verify logout token, does not contain sub or sid')
-            get_logger('user').warning('logout token does not container either sub or sid claim')
-            return
         if not token['events'] or 'http://schemas.openid.net/event/backchannel-logout' not in token['events']:
             raise OIDCAuthError('failed to verify logout token, does not contain a logout event')
-            get_logger('user').warning('logout token does not contain an events claim with correct event')
-            return
         if token.get('nonce'):
             raise OIDCAuthError('failed to verify logout token, contains a nonce')
-            get_logger('user').warning('logou token does contain a nonce claim')
-            return
 
         return token

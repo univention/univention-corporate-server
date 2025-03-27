@@ -131,7 +131,7 @@ class SessionRepository(BaseRepository):
         super().__init__(engine_provider)
         self.engine_provider = engine_provider
 
-    async def insert_session(self, session_id: str, session: OIDCSession):
+    async def create(self, session_id: str, session: OIDCSession):
         stmt = session_table.insert().values(
             session_id=session_id,
             id_token=session.id_token,
@@ -151,7 +151,7 @@ class SessionRepository(BaseRepository):
         async with self.db_transaction() as conn:
             await conn.execute(stmt)
 
-    async def update_session(self, session_id: str, session: OIDCSession):
+    async def update(self, session_id: str, session: OIDCSession):
         stmt = session_table.update().where(session_table.c.session_id == session_id).values(
             session_id=session_id,
             id_token=session.id_token,
@@ -224,7 +224,7 @@ class StateRepository(BaseRepository):
         async with self.db_transaction() as conn:
             await conn.execute(stmt)
 
-    async def get_delete_by_state(self, state: str) -> dict[str, Any] | None:
+    async def get_and_delete(self, state: str) -> dict[str, Any] | None:
         async with self.db_transaction() as conn:
             stmt = select(state_table).where(state_table.c.state == state)
             res = (await conn.execute(stmt)).fetchone()
