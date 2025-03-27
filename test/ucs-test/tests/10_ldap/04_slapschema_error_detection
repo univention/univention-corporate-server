@@ -1,0 +1,39 @@
+#!/usr/share/ucs-test/runner bash
+# shellcheck shell=bash
+## desc: Test that slapschema actually returns an error
+## tags:
+##  - basic
+## roles:
+##  - domaincontroller_master
+## packages:
+##  - slapd
+## exposure: dangerous
+
+# shellcheck source=../../lib/base.sh
+. "$TESTLIBPATH/base.sh" || exit 137
+# shellcheck source=../../lib/undo.sh
+. "$TESTLIBPATH/undo.sh" || exit 137
+
+RETVAL=100
+
+undo ucr commit /etc/ldap/slapd.conf
+
+sed -i '/^include *\/usr\/share\/univention-ldap\/schema\/custom-attribute.schema/s/^/#/' /etc/ldap/slapd.conf
+sed -i '/^index\tuniventionUDMOptionModule/s/^/#/' /etc/ldap/slapd.conf
+sed -i '/^index\tuniventionUDMProperty/s/^/#/' /etc/ldap/slapd.conf
+
+output=$(slaptest -f /etc/ldap/slapd.conf 2>/dev/null)
+if [ $? != 0 ]; then
+	fail_test 1 "Test preparation failed: slaptest didn't return ok, please fix the test."
+	echo "INFO: slaptest output was:"
+	echo "$output"
+fi
+
+output=$(slapschema -f /etc/ldap/slapd.conf -c 2>&1)
+if [ $? == 0 ]; then
+	fail_test 1 "slapschema didn't return a non-zero error code"
+	echo "INFO: slapschema output was:"
+	echo "$output"
+fi
+
+exit "$RETVAL"
