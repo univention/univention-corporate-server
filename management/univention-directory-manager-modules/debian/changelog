@@ -1,4 +1,4 @@
-univention-directory-manager-modules (15.0.29-1) unstable; urgency=medium
+univention-directory-manager-modules (15.0.29-2) unstable; urgency=medium
 
   * Bug #58119: fix performance problem during computer removal in
     environment with many host records
