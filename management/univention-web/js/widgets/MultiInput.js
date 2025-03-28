@@ -389,7 +389,7 @@ define([
 					hasContent = hasContent || this._hasContent(ival);
 				}));
 			} else {
-				hasContent = hasContent || val !== '';
+				hasContent = hasContent || !!val;
 			}
 			return hasContent;
 		},
