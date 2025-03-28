@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-web
+fix: 4.0.10-3
+desc: |
+ This update addresses the following issues:
+ * Certain widgets, e.g., in the `Users Module`, were not considered as empty
+   by the frontend although they were. This led to values being sent to
+   backend that should have been ignored. This has been fixed.
+bug: [58129]
