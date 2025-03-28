@@ -1,3 +1,10 @@
+univention-directory-manager-modules (17.0.31) unstable; urgency=medium
+
+  * Bug #58119: fix performance problem during computer removal in
+    environment with many host records
+
+ -- Florian Best <best@univention.de>  Fri, 28 Mar 2025 13:35:55 +0100
+
 univention-directory-manager-modules (17.0.30-1) unstable; urgency=medium
 
   * Issue univention/ucs#2727: relax GuardianRole syntax pattern to at least

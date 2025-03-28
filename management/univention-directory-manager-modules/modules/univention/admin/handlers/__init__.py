@@ -3335,14 +3335,13 @@ class simpleComputer(simpleLdap):
                     zoneObj['nameserver'].remove(fqdnDot)
                     zoneObj.modify()
 
-        # iterate over all forward zones
+        # iterate over all forward zones (again, as we are doing it already above!)
         for zone in self['dnsEntryZoneForward'] or []:
             # load zone object
             log.debug('clean up entries for zone: %s', zone)
             if not zone:
                 continue
-            zoneObj = univention.admin.objects.get(
-                univention.admin.modules.get('dns/forward_zone'), self.co, self.lo, self.position, dn=zone[0])
+            zoneObj = univention.admin.objects.get(univention.admin.modules.get('dns/forward_zone'), self.co, self.lo, self.position, dn=zone[0])
             assert zoneObj is not None
             zoneObj.open()
             log.debug('zone aRecords: %s', zoneObj['a'])
@@ -3375,8 +3374,9 @@ class simpleComputer(simpleLdap):
                     irecord['location'] = new_entries
                     irecord.modify()
 
-            # clean up host records (that should probably be done correctly by Samba4)
-            for irecord in univention.admin.modules.lookup('dns/host_record', self.co, self.lo, base=self.lo.base, scope='sub', superordinate=zoneObj):
+            # clean up host records again (that should probably be done correctly by Samba4); note: this will usually not find anything as this is already done above
+            host_filter = univention.admin.filter.conjunction('|', [univention.admin.filter.expression('a', _ip, escape=True) for _ip in ips])
+            for irecord in univention.admin.modules.lookup('dns/host_record', self.co, self.lo, str(host_filter), base=self.lo.base, scope='sub', superordinate=zoneObj):
                 irecord.open()
                 new_entries = list(set(irecord['a']) - ips)
                 if len(new_entries) != len(irecord['a']):

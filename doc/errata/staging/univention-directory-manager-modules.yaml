@@ -3,9 +3,11 @@ release: "5.2"
 version: [1]
 scope: ucs_5.2-0-errata5.2-1
 src: univention-directory-manager-modules
-fix: 17.0.30-1
+fix: 17.0.31
 desc: |
  This update addresses the following issues:
  * First incremental release for new experimental feature delegative
    administration.
-bug: [58113]
+ * Improved performance when removing computers in environments with
+   many DNS host records significantly.
+bug: [58113, 58119]
