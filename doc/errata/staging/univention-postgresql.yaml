@@ -10,4 +10,6 @@ desc: |
    `postgresql-15` to UCS 5.0-10. To provide suitable UCR templates we
    added the new metapackage `univention-postgresql-15`. `postgresql-15`
    is now the default for UCS 5.0-10.
+   For migration of data from `postgresql-11` to `postgresql-15` please
+   follow the steps described in https://help.univention.com/t/22162 .
 bug: [57779]
