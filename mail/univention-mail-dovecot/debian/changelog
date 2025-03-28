@@ -1,8 +1,13 @@
-univention-mail-dovecot (8.0.8-1) UNRELEASED; urgency=medium
+univention-mail-dovecot (8.1.0) unstable; urgency=medium
 
+  [ Florian Best ]
+  * Bug #58127: prevent dovecot PAM stack from resetting pwdChangeNextLogin=1
+    state during authentication
+
+  [ Christian Castens ]
   * Bug #58015 UCS 5.2-1 version bump
 
- -- Christian Castens <castens@univention.de>  Mon, 03 Mar 2025 10:45:34 +0100
+ -- Florian Best <best@univention.de>  Fri, 28 Mar 2025 17:12:51 +0100
 
 univention-mail-dovecot (8.0.7) unstable; urgency=medium
 
