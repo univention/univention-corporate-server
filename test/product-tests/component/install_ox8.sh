@@ -9,7 +9,7 @@ kind create cluster
 kubectl create namespace as8
 apt update
 apt install --yes jq
-apt install  --yes git
+apt install --yes git
 helm plugin install https://github.com/databus23/helm-diff
 helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
 helm repo update
@@ -113,10 +113,6 @@ sed -i 's/doveadm_api_key:.*$/doveadm_api_key: "secret"/g' values.dovecot-ce.sec
 sed -i 's/    com.openexchange.filestore.s3client.s3.accessKey: /    com.openexchange.dovecot.doveadm.apiSecret: "secret"\n    com.openexchange.filestore.s3client.s3.accessKey: /g' values.secret.yaml
 
 ./install.sh
-
-# TODO FIXME: service dovecot-ce needs port 8080
-# verify
-# kubectl get all -n as8
 
 cluster_ip="$(kubectl get nodes -o wide | awk '/kind-control-plane/ {print $6}')"
 ucr set "hosts/static/$cluster_ip=as8.lab.test"
