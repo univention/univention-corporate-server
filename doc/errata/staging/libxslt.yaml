@@ -1,0 +1,14 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libxslt
+fix: 1.1.29-2.1+deb9u4
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.8 (CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:N/I:H/A:H).
+   (CVE-2025-24855, CVE-2024-55549)
+bug: [58151]
+cve:
+- CVE-2024-55549
+- CVE-2025-24855
