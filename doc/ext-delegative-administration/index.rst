@@ -4,14 +4,14 @@
 
 .. _da-intro:
 
-####################################################################
+#####################################################################
 Univention Corporate Server - Delegative administration documentation
-####################################################################
+#####################################################################
 
 .. warning::
 
    This is an experimental feature not meant to be used in production
-   environments. There are still many shortcommings and in particular things
+   environments. There are still many shortcomings and in particular things
    like configuration can and will change in the future.
 
 This article describes the concepts, setup and configuration of delegative
@@ -128,7 +128,7 @@ Preparation
 .. _da-setup-test-env-activate:
 
 Activate delegative administration
-=================================
+==================================
 
 You can activate delegative administration with the following commands on every
 UCS server in your test environment:
@@ -141,7 +141,7 @@ UCS server in your test environment:
 .. _da-setup-test-env-test:
 
 Test delegative administration
-=============================
+==============================
 
 Now log in as ``Administrator`` to the UMC. You should notice no difference.
 You can still see all user or group objects and should be able to create and
@@ -181,7 +181,8 @@ can:
 
 In order to test this role, we have to prepare our test environment.
 The following script will create and configure 10 organizational units, an user
-object with the role ``ouadmin`` for each ou and 10 user objects within each ou:
+object with the role ``ouadmin`` for each organizational unit and 10 user
+objects within each organizational unit:
 
 .. code-block:: bash
 
@@ -218,8 +219,8 @@ object with the role ``ouadmin`` for each ou and 10 user objects within each ou:
    done
 
 Now you can login to UMC with the user ``ou1-admin``, password ``univention``,
-and open the users module. You should see only the users of the ou ``ou1``,
-nothing else.
+and open the users module. You should see only the users of the organizational
+unit ``ou1``, nothing else.
 
 You can also manually add the role ``umc:udm:ouadmin&umc:udm:ou=ou2`` to the
 ``guardianRoles`` property of the user ``ou1-admin``. The user will now have
@@ -228,7 +229,7 @@ You can also manually add the role ``umc:udm:ouadmin&umc:udm:ou=ou2`` to the
 .. _da-setup-test-env-deactivate:
 
 Deactivate delegative administration
-===================================
+====================================
 
 You can deactivate delegative administration with the following commands on every
 UCS server in your test environment:
@@ -365,9 +366,9 @@ context.
 
 .. warning::
 
-   Not every role evalutes the context. Whether or not a context is
+   Not every role evaluates the context. Whether or not a context is
    meaningful for a role depends on the configuration of the role. For example
-   the role ``domainadmin`` does not evalute the context, a context for this
+   the role ``domainadmin`` does not evaluate the context, a context for this
    role has no effect. On the other hand ``ouadmin`` without a context is
    basically useless.
 
