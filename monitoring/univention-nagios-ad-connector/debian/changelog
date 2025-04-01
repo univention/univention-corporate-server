@@ -1,4 +1,4 @@
-univention-nagios-ad-connector (11.0.2-1) UNRELEASED; urgency=medium
+univention-nagios-ad-connector (11.1.0) UNRELEASED; urgency=medium
 
   * Bug #58015 UCS 5.2-1 version bump
 

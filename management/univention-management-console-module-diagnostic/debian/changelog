@@ -1,4 +1,4 @@
-univention-management-console-module-diagnostic (8.0.20-1) UNRELEASED; urgency=medium
+univention-management-console-module-diagnostic (8.1.0) UNRELEASED; urgency=medium
 
   * Bug #58015 UCS 5.2-1 version bump
 

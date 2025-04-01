@@ -24,7 +24,7 @@ univention-management-console-module-udm (12.0.6-1) unstable; urgency=medium
 
  -- Felix Botner <botner@univention.de>  Thu, 13 Mar 2025 14:24:46 +0100
 
-univention-management-console-module-udm (12.0.5-1) UNRELEASED; urgency=medium
+univention-management-console-module-udm (12.0.5) UNRELEASED; urgency=medium
 
   * Bug #58015 UCS 5.2-1 version bump
 

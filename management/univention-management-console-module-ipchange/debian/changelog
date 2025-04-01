@@ -1,4 +1,4 @@
-univention-management-console-module-ipchange (10.0.7-1) UNRELEASED; urgency=medium
+univention-management-console-module-ipchange (10.1.0) UNRELEASED; urgency=medium
 
   * Bug #58015 UCS 5.2-1 version bump
 

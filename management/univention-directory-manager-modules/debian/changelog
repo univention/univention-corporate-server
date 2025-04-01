@@ -35,7 +35,7 @@ univention-directory-manager-modules (17.0.29-2) unstable; urgency=medium
 
  -- Arvid Requate <requate@univention.de>  Mon, 03 Mar 2025 16:50:55 +0100
 
-univention-directory-manager-modules (17.0.29-1) UNRELEASED; urgency=medium
+univention-directory-manager-modules (17.0.29) UNRELEASED; urgency=medium
 
   * Bug #58015 UCS 5.2-1 version bump
 

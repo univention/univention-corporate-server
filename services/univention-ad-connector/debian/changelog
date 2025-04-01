@@ -12,7 +12,7 @@ univention-ad-connector (16.0.14-2) unstable; urgency=medium
 
  -- Arvid Requate <requate@univention.de>  Mon, 03 Mar 2025 19:12:48 +0100
 
-univention-ad-connector (16.0.14-1) UNRELEASED; urgency=medium
+univention-ad-connector (16.0.14) UNRELEASED; urgency=medium
 
   * Bug #58015 UCS 5.2-1 version bump
 

@@ -6,7 +6,7 @@ univention-s4-connector (16.0.7-2) unstable; urgency=medium
 
  -- Arvid Requate <requate@univention.de>  Mon, 03 Mar 2025 16:50:55 +0100
 
-univention-s4-connector (16.0.7-1) UNRELEASED; urgency=medium
+univention-s4-connector (16.0.7) UNRELEASED; urgency=medium
 
   * Bug #58015 UCS 5.2-1 version bump
 

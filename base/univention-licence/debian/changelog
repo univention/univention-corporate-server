@@ -38,7 +38,7 @@ univention-licence (12.0.1) unstable; urgency=medium
 
  -- Florian Best <best@univention.de>  Thu, 07 Mar 2024 22:19:40 +0100
 
-univention-licence (11.0.2-1) UNRELEASED; urgency=medium
+univention-licence (11.0.2) UNRELEASED; urgency=medium
 
   * Bug #57118 UCS 5.0-7 version bump
 

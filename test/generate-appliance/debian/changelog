@@ -1,4 +1,4 @@
-generate-appliance (8.0.6-1) UNRELEASED; urgency=medium
+generate-appliance (8.1.0) UNRELEASED; urgency=medium
 
   * Bug #58015 UCS 5.2-1 version bump
 
