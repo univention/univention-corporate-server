@@ -183,7 +183,7 @@ fi
 
 [ -f /etc/apt/preferences.d/99ucs510.pref ] ||
 cat >/etc/apt/preferences.d/99ucs510.pref <<__PREF__
-Package: postgresql-15
+Package: postgresql-15 libzstd1
 Pin: release l=Univention Corporate Server, v=5.1.0
 Pin-Priority: 1001
 __PREF__
