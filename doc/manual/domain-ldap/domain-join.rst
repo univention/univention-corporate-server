@@ -154,12 +154,14 @@ can be performed on the |UCSPRIMARYDN| via the ``--ask-pass`` option.
 Windows domain joins
 --------------------
 
-The procedure for joining a Windows system to a UCS domain made available via
-Samba is now described as an example for Windows 11, Windows 10 and Windows 2012
-/ 2016 / 2019 / 2022. The process is similar for other Windows versions. In addition to
-the client versions, Windows server systems can also join the domain. Windows
-servers join the domain as member servers; joining a Windows systems as a domain
-controller is not supported. For more information about Windows in a UCS domain,
+Samba enables UCS to allow Microsoft Windows to join a UCS domain.
+This section describes the join procedure on the example of Windows 11.
+The process is similar for other Windows versions.
+In addition to the client versions,
+Windows server systems can also join the domain.
+Windows servers join the domain as member servers.
+UCS doesn't support the join of a Windows system as a domain controller.
+For more information about Windows in a UCS domain,
 refer to :ref:`windows-services-for-windows`.
 
 Only domain-compatible Windows versions can join the UCS domain, i.e.,
@@ -187,6 +189,17 @@ configuration of the client must be set up in such a way that DNS entries from
 the DNS zone of the UCS domain can also be resolved. In addition, the time on
 the client system must also be synchronized with the time on the domain
 controller.
+
+.. _domain-ldap-supported-windows-versions:
+
+Supported Windows versions
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+UCS supports the following Microsoft Windows versions to join a UCS domain:
+
+* Windows 10
+* Windows 11
+* Windows Server in the versions 2012, 2016, 2019 and 2022
 
 .. _domain-ldap-windows-11:
 

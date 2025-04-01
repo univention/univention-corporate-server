@@ -23,7 +23,7 @@ The two modes are:
 
 In both modes, the :program:`Active Directory Connection` service is used in UCS
 (UCS AD Connector for short), which can synchronize the directory service
-objects between a Windows 2012/2016/2019/2022 server with Active Directory (AD) and
+objects between a Microsoft Windows Server with Active Directory (AD) and
 the OpenLDAP directory of |UCSUCS|.
 
 In the first case, the configuration of a UCS server system as a member of an AD
@@ -42,6 +42,13 @@ access between the two domains. In this mode, the authentication of a user in
 the UCS domain occurs directly within the UCS domain and as such is not directly
 dependent on the AD domain. The setup of this operating mode is described in
 detail in :ref:`ad-connector-ad-connector-setup`.
+
+.. _ad-connector-ad-member-supported-versions:
+
+Supported Windows versions in AD Connection
+-------------------------------------------
+
+:program:`Active Directory Connection` supports Microsoft Windows Server in the versions 2012, 2016, 2019 and 2022.
 
 .. _ad-connector-ad-member-setup:
 
@@ -369,8 +376,8 @@ data.
 
 .. _windows-adconn-win2012:
 
-Exporting the certificate on Windows 2012 / 2016 / 2019 / 2022
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Exporting the certificate on Microsoft Windows Server
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 If the certificate service isn't installed yet, add it to your domain with the
 following steps before you proceed:
