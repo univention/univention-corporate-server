@@ -1,0 +1,17 @@
+product: ucs
+release: "5.0"
+version: [9, 10]
+scope: ucs_5.0-0-errata5.0-10
+src: ruby2.5
+fix: 2.5.5-3+deb10u10
+desc: |
+ This update addresses the following issues:
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2025-27220, CVE-2025-27219)
+ * CVSS score 3.2 (CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:L/I:N/A:N).
+   (CVE-2025-27221)
+bug: [58142]
+cve:
+- CVE-2025-27219
+- CVE-2025-27220
+- CVE-2025-27221
