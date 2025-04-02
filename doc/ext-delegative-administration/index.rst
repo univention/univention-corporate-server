@@ -241,12 +241,10 @@ UCS server in your test environment:
 Concepts
 ********
 
-Roles, capabilities and permissions define what an actor can do to a target object.
-
-..
-  TODO make this :cite:t: work
-  For more background information about concepts and ideas behind this new
-  concept you can consult the :cite:t:`guardian-doc`.
+This section describes the roles, capabilities, and permissions
+and what an actor can do to a target object.
+For more background information about concepts and ideas behind this concept,
+refer to :cite:t:`guardian-doc`.
 
 ``Actor``
   Is the person or entity that wants to perform an operation.
@@ -539,3 +537,11 @@ administration.
 
    Possible values:
       ``true`` or ``false``
+
+.. only:: html or linkcheck or spelling
+
+   ************
+   Bibliography
+   ************
+
+.. bibliography::
