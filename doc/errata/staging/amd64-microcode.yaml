@@ -8,6 +8,6 @@ desc: |
  This update addresses the following issues:
  * CVSS score 7.2 (CVSS:3.1/AV:L/AC:H/PR:H/UI:N/S:C/C:H/I:H/A:N).
    (CVE-2024-56161)
-bug: [58135, 58152]
+bug: [58135]
 cve:
 - CVE-2024-56161
