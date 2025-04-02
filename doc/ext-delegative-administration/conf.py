@@ -175,6 +175,7 @@ univention_use_doc_base = True
 
 intersphinx_mapping = {
     "uv-manual": ref("manual"),
+    "guardian-doc": ('https://docs.software-univention.de/guardian-manual/latest/', None),
 }
 
 # See Univention Sphinx Extension for its options.
