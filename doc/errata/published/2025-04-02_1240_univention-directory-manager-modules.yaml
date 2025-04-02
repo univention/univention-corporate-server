@@ -9,3 +9,6 @@ desc: |
  * Improved performance when removing computers in environments with
    many DNS host records significantly.
 bug: [58128]
+erratum: 1240
+announced: 2025-04-02
+support: core
