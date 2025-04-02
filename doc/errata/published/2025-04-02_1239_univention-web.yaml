@@ -10,3 +10,6 @@ desc: |
    by the frontend although they were. This led to values being sent to
    backend that should have been ignored. This has been fixed.
 bug: [58129]
+erratum: 1239
+announced: 2025-04-02
+support: core
