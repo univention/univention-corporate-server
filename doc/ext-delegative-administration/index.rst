@@ -64,8 +64,6 @@ things are still missing or not fully implemented:
   and use in UMC, just what they can do with these modules.
   You have to separately configure which user is allowed to see and use which
   UMC module.
-* It is currently undefined if you have a multiple roles with different
-  permissions for the same target objects.
 
 .. _da-features:
 
@@ -456,8 +454,9 @@ priority.
   wildcard ``*``.
 
 ``Roles``
-  It is currently undefined if an actor has multiple and these roles have
-  capabilities with the same position condition.
+  It is currently undefined if an actor has multiple roles and these roles
+  have capabilities with the same position condition. On of these capabilities
+  will match, but it is undefined which.
 
 .. _da-concepts-custom-roles:
 
