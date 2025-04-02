@@ -11,3 +11,6 @@ desc: |
 bug: [58135]
 cve:
 - CVE-2024-56161
+erratum: 1692
+announced: 2025-04-02
+support: lts
