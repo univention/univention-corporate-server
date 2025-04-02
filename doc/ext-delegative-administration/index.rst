@@ -22,7 +22,7 @@ With delegative administration we want to provide a mechanism whereby
 organizations are enabled to implement a decentralized model of managing the
 LDAP directory via UMC.
 
-It will be possible to assign roles to user objects. These role define what
+It will be possible to assign roles to user objects. These roles define what
 an user object can do to the LDAP directory, which objects the user can
 read, modify, create or delete.
 
@@ -73,8 +73,9 @@ things are still missing or not fully implemented:
 Features
 ********
 
-* Roles can be defined and added to user and group objects (members will
-  inherit the group roles).
+* Roles can be defined and added to user and group objects. Group members will
+  inherit the roles from the group. So you will still be able to implement
+  authorization based on group membership.
 * Every role defines a list of permissions and these permissions define
   what this role can do in the directory.
 * The back-end of the UMC UDM modules checks the authorization for the roles
@@ -147,10 +148,7 @@ Now log in as ``Administrator`` to the UMC. You should notice no difference.
 You can still see all user or group objects and should be able to create and
 modify every objects.
 
-But this is now not because of LDAP ACL's for the ``Administrator``, but
-because of his new role ``umc:udm:domainadmin``.
-
-Create a new test user account without this role:
+Create a new test user account without a role:
 
 .. code-block:: console
 
@@ -246,6 +244,9 @@ Concepts
 ********
 
 Roles, capabilities and permissions define what an actor can do to a target object.
+
+For more background information about concepts and ideas behind this new
+concept you can consult the :cite:t:`guardian-doc`.
 
 ``Actor``
   Is the person or entity that wants to perform an operation.
