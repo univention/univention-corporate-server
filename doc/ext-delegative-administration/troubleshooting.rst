@@ -9,7 +9,7 @@ Troubleshooting
 ***************
 
 When you encounter problems or errors,
-consule the following files:
+consult the following files:
 
 :file:`/var/log/univention/management-console-server.log`
    Contains log information for the UMC server.
