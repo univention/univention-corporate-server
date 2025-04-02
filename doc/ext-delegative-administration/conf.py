@@ -95,6 +95,11 @@ extensions = [
 # Warnings may come up by sphinx-last-updated-by-git. Suppress such warnings for all jobs.
 suppress_warnings = ['git.too_shallow']
 
+bibtex_bibfiles = ["../bibliography.bib"]
+bibtex_encoding = "utf-8"
+bibtex_default_style = "unsrt"
+bibtex_reference_style = "label"
+
 copybutton_prompt_text = r"\$ |> |.+# "
 copybutton_prompt_is_regexp = True
 
