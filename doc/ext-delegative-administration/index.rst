@@ -283,12 +283,12 @@ Deactivate delegative administration
 ====================================
 
 To deactivate delegative administration,
-you need to run the commands in :numref:``
+you need to run the commands in :numref:`da-setup-test-env-deactivate-listing`
 on every UCS system in your test environment.
 
 .. code-block:: console
    :caption: Deactivate delegative administration on one UCS system
-   :name: da-setup-test-env-deactivate
+   :name: da-setup-test-env-deactivate-listing
 
    $ ucr unset umc/udm/delegation
    $ service univention-management-console-server restart
@@ -496,22 +496,22 @@ The default role ``domainadmin`` has configuration in :numref:`da-concepts-examp
    :caption: Default configuration for ``domainadmin`` role
    :name: da-concepts-example-domainadmin-listing
 
-  "domainadmin": [
-    {
-      "condition": {
-        "position": "*"
-      },
-      "permissions": {
-        "*": {
-          "attributes": {
-            "*": "write"
-          },
-          "create": true,
-          "delete": true
-        }
-      }
-    }
-  ]
+     "domainadmin": [
+       {
+         "condition": {
+           "position": "*"
+         },
+         "permissions": {
+           "*": {
+             "attributes": {
+               "*": "write"
+             },
+             "create": true,
+             "delete": true
+           }
+         }
+       }
+     ]
 
 The ``domainadmin`` role has one capability,
 
@@ -563,21 +563,21 @@ as shown in :numref:`da-concepts-custom-roles-listing`.
    :caption: Define custom roles in JSON format data structure
    :name: da-concepts-custom-roles-listing
 
-  {
-    "myadmin": [
-      "condition": {
-        "position": "..."
-      }
-      "permissions": {
-        "users/user": {
-          "attributes": {
-             "username": "write",
-             "*": "read"
-          }
-        }
-      }
-    ]
-  }
+   {
+     "myadmin": [
+       "condition": {
+         "position": "..."
+       }
+       "permissions": {
+         "users/user": {
+           "attributes": {
+              "username": "write",
+              "*": "read"
+           }
+         }
+       }
+     ]
+   }
 
 You can set the role ``umc:udm:myadmin`` to user or group objects.
 
