@@ -245,93 +245,41 @@ UCS server in your test environment:
 Concepts
 ********
 
-Roles, capabilities and permissions define what an ``actor`` can do to a
-``target object``.
+Roles, capabilities and permissions define what an actor can do to a target object.
 
-* ``actor`` is the person who wants to perform an operation.
-* ``target object`` is the object on which the operation is performed.
+``Actor``
+  Is the person or entity that wants to perform an operation.
 
-.. _da-concepts-roles:
+``Target object``
+  Is the object in the LDAP directory on which the operation is performed.
 
-Roles
-=====
+``Permissions``
+  Permissions define what the actor can do to an UDM object. Which properties
+  the actor can seen or modify and if the actor can create or remove objects.
 
-A role is basically a container for a list of capabilities. Roles have a name
-that must consist only of letters and numbers. Every role has a
-configuration in the form of a ``json`` data structure.
+``Capabilities``
+  A capability is a condition and a list of permissions that apply if the
+  condition is met. The only condition in the current implementation is
+  a position in the LDAP directory. The condition is met if the position of
+  the target object and the position of capability match. In this case all
+  the permissions of the capability apply for the actor.
 
-.. code-block:: json
+``Roles``
+  A role is basically a container for a list of capabilities. Roles have a name
+  that must consist only of letters and numbers. Every role has a
+  configuration in the form of a ``json`` data structure.
 
-   {
-     "ROLENAME": [
-       "CAPABILITY",
-       "CAPABILITY"
-     ]
-     "ROLENAME": [
-       "CAPABILITY",
-       "..."
-     ]
-   }
+  Roles can be assigned to user objects as ``guardianRoles`` or to group
+  objects as ``guardianMemberRoles``, in this case all members of a group will
+  inherit the role of the group.
 
-Roles can be assigned to user objects as ``guardianRoles`` or to group objects
-as ``guardianMemberRoles``, in this case all members of a group will inherit
-the role of the group.
+  When setting the roles on user or group objects, you need to add the
+  prefix ``umc:udm:`` to the role. Adding the role ``domainadmin`` to a
+  user object on the command line looks like this:
 
-When setting the roles on user or group objects, you need to add the
-prefix ``umc:udm:`` to the role. Adding the role ``domainadmin`` to a
-user object on the command line looks like this:
+  .. code-block:: console
 
-.. code-block:: console
-
-   $ udm users/user modify --dn ... --append guardianRoles="umc:udm:domainadmin"
-
-.. _da-concepts-capabilities:
-
-Capabilities
-============
-
-A capability is part of the configuration of a role with a condition and a
-list of permissions that apply if the condition is met.
-
-.. code-block:: json
-
-   {
-     "condition": {
-       "position": "some position",
-       "scope": "scope"
-     },
-     "permissions": "..."
-   }
-
-The only condition in the current implementation is ``position``. The
-condition is met if the position of the target object in the LDAP directory
-and the position of capability match. In this case all the permissions of the
-capability apply for the actor.
-
-.. _da-concepts-permissions:
-
-Permissions
-===========
-
-Permissions define what the actor can do to  an UDM object. Which properties the actor can
-seen or modify and if the actor can create or remove these objects.
-
-.. code-block:: json
-
-   "permissions": {
-     "UDM_MODULE": {
-       "attributes": {
-         "ATTRIBUTE1": "read",
-         "ATTRIBUTE2": "write",
-         "ATTRIBUTE3": "none",
-       },
-       "create": "true|false",
-       "delete": "true|false"
-     },
-     "UDM_MODULE": {
-       "attributes": "..."
-     }
-   }
+     $ udm users/user modify --dn ... --append guardianRoles="umc:udm:domainadmin"
 
 .. _da-concepts-context:
 
@@ -374,8 +322,8 @@ context.
 
 .. _da-concepts-example:
 
-Example configuration and explanation
-=====================================
+Configuration of roles
+======================
 
 If we bring all this together, a generic form of this configuration looks like
 this:
@@ -426,23 +374,31 @@ this:
 
   * ``base`` permissions apply for this position only
 
-* ``permissions -> UDM_MODULE`` permissions for UDM object, can be
+* ``permissions -> UDM_MODULE_NAME`` permissions for UDM object, can be
 
   * the name of an UDM object, like ``users/user``
 
   * or the wildcard ``*``, which matches every UDM object
 
-* ``permissions -> UDM_MODULE -> ATTRIBUTE`` permissions for properties of an
+* ``permissions -> UDM_MODULE_NAME -> attributes -> ATTRIBUTE_NAME`` permissions for properties of an
   UDM object, can be
 
   * the name of an UDM object property, like ``username``
 
   * or the wildcard ``*``, which matches every property
 
-* ``permissions -> UDM_MODULE -> create`` defines whether objects can be
+  * as value you can set
+
+    * ``none`` for not readable
+
+    * ``read`` for not writable
+
+    * ``write`` for writable
+
+* ``permissions -> UDM_MODULE_NAME -> create`` defines whether objects can be
   created, can be ``true`` or ``false``
 
-* ``permissions -> UDM_MODULE -> delete`` defines whether objects can be
+* ``permissions -> UDM_MODULE_NAME -> delete`` defines whether objects can be
   removed, can be ``true`` or ``false``
 
 For the default role ``domainadmin`` we have this configuration:
@@ -472,7 +428,35 @@ This role has one capability
 * gives write permissions to all UDM properties of all UDM objects and
 * permission to create and remove every UDM object.
 
-.. _da-concepts-custome-roles:
+.. _da-concepts-priorities:
+
+Priorities
+==========
+
+The more specific position condition or permission configuration has higher
+priority.
+
+``Position condition``
+  Every capability is bound to a position. In this position a LDAP DN, the
+  keyword ``$CONTEXT`` and a wildcard ``*`` can be used. If a role has
+  multiple capabilities the match of a capability position with the target
+  object position by the most specific LDAP DN has the highest priority.
+  Then ``$CONTEXT`` and the wildcard ``*`` has the lowest priority.
+
+``UDM modules in permissions``
+  In permissions you can define UDM module names or a wildcard ``*``.
+  If there is a permission for the UDM module of the target object
+  it will be used, otherwise the ``*`` permission.
+
+``Properties in permissions``
+  Definitions of real property names have higher priority than the
+  wildcard ``*``.
+
+``Roles``
+  It is currently undefined if an actor has multiple and these roles have
+  capabilities with the same position condition.
+
+.. _da-concepts-custom-roles:
 
 Custom roles
 ============
@@ -490,18 +474,13 @@ You can define your own roles in a ``json`` data structure in the file
       "permissions": {
         "users/user": {
           "attributes": {
-             "*": "..."
+             "username": "write",
+             "*": "read"
           }
         }
       }
     ]
   }
-
-After restarting UMC with:
-
-.. code-block::
-
-   $ service univention-management-console-server restart
 
 You can set the role ``umc:udm:myadmin`` to user or group objects.
 
