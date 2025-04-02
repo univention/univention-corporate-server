@@ -158,10 +158,6 @@ rst_epilog = """
 .. include:: /../substitutions.txt
 """
 
-html_sidebars = {
-    "**": ["navbar-logo.html", "icon-links.html", "sections/sidebar-links.html"],
-}
-
 latex_engine = 'lualatex'
 latex_show_pagerefs = True
 latex_show_urls = "footnote"
