@@ -22,21 +22,22 @@ to test this experimental feature.
 
 With delegative administration Univention Nubus provides a mechanism
 that enables organizations to implement a decentralized model of managing the LDAP directory through UMC.
-
 It's possible to assign roles to user objects.
-The roles define what an user object can do to the LDAP directory,
+The roles define what a user can do to the LDAP directory through their user object,
 which objects the user can read, modify, create, or delete.
-
 A common use case is a manager or administrator for an organizational unit within the directory.
-Users with such an assigned role are able to manage other user and group objects of a specific position in the directory,
-such as ``ou=bremen,dc=ldap,dc=base``.
+Users with such an assigned role can manage other user objects and group objects of a specific position in the directory,
+for example ``ou=bremen,dc=ldap,dc=base``.
 However, depending on the exact configuration,
 users with such a role can't manage or even see objects from other positions.
 
 The Univention development team is happy to receive feedback
-to improve the experimental version of delegative administration
-and to make it a useful and supported addition to the Nubus product.
+to improve the experimental version of the delegative administration feature
+and to make it a helpful and supported addition to the Nubus product.
 For general feedback, use the `feedback form <https://www.univention.com/feedback/?ext-delegative-administration=generic>`_.
+For feedback on explicit sections,
+use the section feedback
+that appears to the right of the section heading when you mouse over it.
 
 .. _da-technical-requirements:
 
