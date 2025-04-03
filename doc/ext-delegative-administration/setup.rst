@@ -25,7 +25,7 @@ use the following steps:
 
 #. Assign the role ``umc:udm:domainadmin`` as ``guardianMemberRoles`` to the group ``Domain Admins``.
    ``umc:udm:domainadmin`` is a default role to allow access to the directory for ``Administrators``.
-   Use the command in :numref:`da-setup-test-env-preparation-add-role-listing`.
+   Run the command in :numref:`da-setup-test-env-preparation-add-role-listing` on the |UCSPRIMARYDN|.
    For information about roles, see :term:`Roles`.
 
    .. code-block:: console
@@ -40,9 +40,9 @@ use the following steps:
    only members of the user group ``Domain Admins`` can see and use the user and group modules in UMC.
    To properly test the delegative administration feature,
    you need to assign the right
-   to see and use the users and group module in UMC
+   to see and use the user and group module in UMC
    to every user object.
-   Run the command in :numref:`da-setup-test-env-preparation-assign-rights-listing`.
+   Run the command in :numref:`da-setup-test-env-preparation-assign-rights-listing` on the |UCSPRIMARYDN|.
 
    .. code-block:: console
       :caption: Assign the right to see the users and group modules in UMC to every user object
@@ -133,7 +133,7 @@ To test this role, you need to prepare your test environment.
 The following shell script creates and configures 10 organizational units,
 one user object with the role ``ouadmin`` for each organizational unit
 and 10 user objects within each organizational unit.
-Run the commands in :numref:`da-setup-test-env-ouadmin-listing`.
+Run the commands in :numref:`da-setup-test-env-ouadmin-listing` on the |UCSPRIMARYDN|.
 
 .. code-block:: console
    :caption: Create 10 organizational units with 10 user objects each

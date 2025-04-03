@@ -31,6 +31,12 @@ for example ``ou=bremen,dc=ldap,dc=base``.
 However, depending on the exact configuration,
 users with such a role can't manage or even see objects from other positions.
 
+..
+  TODO: After the section introduction, we need some more short sections:
+
+  Although it's in the lines in the second paragraph, we should have an
+  explicit section about the audience and the required knowledge and skills.
+
 .. _da-feedback:
 
 Feedback
