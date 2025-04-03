@@ -15,7 +15,7 @@ consult the following files:
    Contains log information for the UMC server.
 
 :file:`/var/log/univention/management-console-module-udm.log`
-   Contains log information for the UDM UMC module.
+   Contains log information for the UMC user and group management modules.
 
 You may also want to increase the log level for the UMC server and module process
 as shown in :numref:`da-troubleshooting-log-level-listing`.

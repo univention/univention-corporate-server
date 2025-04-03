@@ -32,7 +32,7 @@ The following references show the available settings for delegative administrati
 
 .. envvar:: umc/udm/delegation
 
-   Activate or deactivate delegative administration for UMC and UDM.
+   Activate or deactivate delegative administration for UMC.
 
    Possible values:
       ``true`` or ``false``.

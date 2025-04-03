@@ -23,12 +23,12 @@ use the following steps:
 #. Set up a new UCS 5.2-1 |UCSPRIMARYDN| test system
    and upgrade to the latest errata updates.
 
-#. Add the role ``umc:udm:domainadmin`` as ``guardianMemberRoles`` to the group ``Domain Admins``.
+#. Assign the role ``umc:udm:domainadmin`` as ``guardianMemberRoles`` to the group ``Domain Admins``.
    ``umc:udm:domainadmin`` is a default role to allow access to the directory for ``Administrators``.
    Use the command in :numref:`da-setup-test-env-preparation-add-role-listing`.
 
    .. code-block:: console
-      :caption: Add ``umc:udm:domainadmin`` as default role for domain administrators
+      :caption: Assign ``umc:udm:domainadmin`` as default role for the Domain Admins group
       :name: da-setup-test-env-preparation-add-role-listing
 
       $ udm groups/group modify \
@@ -37,10 +37,6 @@ use the following steps:
 
 #. By default,
    only members of the user group ``Domain Admins`` can see and use the user and group modules in UMC.
-
-   .. TODO: Remove, because it's duplicate content from the limitiation:
-
-      Delegative administration is currently only implemented for what can be done with these modules, not which modules a user can see in UMC.
 
    To properly test the delegative administration feature,
    you need to assign the right
@@ -115,7 +111,7 @@ A more interesting example is the role ``ouadmin``.
 This role gives the user the ability to manage a position of the directory.
 User objects with this role have the following permissions:
 
-* They can see, create, modify, and delete user objects in their organizational unit.
+* They can see, create, modify, and delete user objects in their organizational unit and below.
 
 * They can't see or modify user objects or group objects in any other position.
 
@@ -124,6 +120,9 @@ User objects with this role have the following permissions:
 
 * They can see user group objects in the container :samp:`cn=groups,{LDAP_BASE}`.
 
+* They can create ``mail/domain`` objects in the container :samp:`cn=domain,cn=mail,{LDAP_BASE}`.
+
+* They can read ``policies/desktop``, ``policies/pwhistory`` and ``policies/umc`` object in any other position.
 To test this role, you need to prepare your test environment.
 The following script creates and configures 10 organizational units,
 one user object with the role ``ouadmin`` for each organizational unit

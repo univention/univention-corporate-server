@@ -17,18 +17,20 @@ Actor
   Is the person or entity that wants to perform an operation.
 
 Target object
-  Is the object in the LDAP directory on which delegative administration performs the operation.
+  Is the object in the LDAP directory on which an actor performs the operation.
 
 Permissions
-  Permissions define what the actor can do to an UDM object.
+  Permissions define what the actor can do to an object.
   Which properties the actor can seen or modify
   and if the actor can create or remove objects.
 
+Position condition
+  Permissions apply if a condition is met.
+  The only condition in the current implementation is the position of the target object in the LDAP directory.
+  The condition is met if the position of the target object matches the position of the condition.
+
 Capabilities
-  A capability is a condition and a list of permissions
-  that apply if the condition is true.
-  The only condition in the current implementation is a position in the LDAP directory.
-  The condition applies if the position of the target object and the position of capability match.
+  A capability is a condition and a list of permissions that apply if the condition is met.
   In this case all the permissions of the capability apply for the actor.
 
 Roles

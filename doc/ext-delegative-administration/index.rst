@@ -24,44 +24,42 @@ Limits and known issues
 =======================
 
 As already said,
-delegative administration is in an early development stages
-and many things are still missing or not fully implemented.
+delegative administration is in an early development stage
+and many things are still missing or not fully implemented,
+with several missing or incomplete features.
 Beware the following limitations:
 
-* This is a minimal viable product without an update path, just for testing.
+* This is a minimal viable product intended for testing purposes only,
+  without a stable update path for setup or configuration.
   Don't use it in production, yet.
 
 * Use it only in UCS environments with up to 2,000 directory objects.
 
 * The configuration and customization may break any time.
 
-* Delegative administration is only available for the UDM modules in UMC.
-  In particularly, this has no effect
-  on what modules users can see and use in UMC,
+* Delegative administration is currently only implemented for authorization between UMC and the LDAP directory.
+  In particularly, this has no effect on what modules a users can see and use in UMC,
+  like the user or group management modules,
   just what they can do with these modules.
   You have to separately configure
-  which user can see and use which UMC module.
-
-  .. FIXME: This item has a mixture of UDM modules, UMC modules, and UDM modules in the UDM module for UMC. It's confusing. We need to be more specific here.
-
-  .. TODO: Refer to reader to content about how they configure which user sees which UMC module. Otherwise, we leave them alone here.
+  which module a user can see and use in UMC, see :external+uv-manual:ref:`delegated-administration`.
 
 .. _da-features:
 
 Features
 ========
 
-* Administrators can define roles
-  and added to user objects and group objects to them.
-  Group members inherit the roles from the group object.
-  Therefore, you can implement authorization based on group membership.
+* Role-based authorization checks when accessing the LDAP directory through the UMC user and group management modules.
 
-  .. FIXME: Is it really about authorization?
+* Administrators can define roles
+  and assign them to user and group objects.
+  Group members inherit the roles assigned to their group.
+  Therefore, you can implement authorization based on group membership.
 
 * Every role defines a list of permissions.
   Permissions define what a role can do in the directory.
 
-* The backend of the UMC UDM modules checks the authorization for the roles of the signed-in user
+* The backend of the UMC modules checks the authorization for the roles of the signed-in user
   before accessing the directory database
   or returning directory objects from the database.
 
