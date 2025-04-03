@@ -114,7 +114,9 @@ class Server:
 
     def run_server(self, socks):
         from univention.admin.rest.module import Application, request_context
-        application = Application(serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True))
+        application = Application(
+            serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True),
+        )
 
         server = HTTPServer(application)
         server.add_sockets(socks)

@@ -212,6 +212,7 @@ class Gateway(tornado.web.RequestHandler):
         app = tornado.web.Application(
             [(r'.*', cls)],
             serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True),
+            log_function=cls.log_function,
         )
         server = tornado.httpserver.HTTPServer(app)
         server.add_sockets(socks)
@@ -221,6 +222,23 @@ class Gateway(tornado.web.RequestHandler):
         except Exception:
             cls.signal_handler_stop(signal.SIGTERM, None)
             raise
+
+    @classmethod
+    def log_function(cls, handler):
+        if handler.get_status() < 400:
+            return  # ignore successfull requests here, they are logged in the other process
+            log_method = logging.getLogger('tornado.access').info
+        elif handler.get_status() < 500:
+            log_method = logging.getLogger('tornado.access').warning
+        else:
+            log_method = logging.getLogger('tornado.access').error
+        request_time = 1000.0 * handler.request.request_time()
+        log_method(
+            "[GATEWAY] %d %s %.2fms",
+            handler.get_status(),
+            handler._request_summary(),
+            request_time,
+        )
 
     @classmethod
     def get_locale(cls, language):
