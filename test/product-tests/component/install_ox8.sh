@@ -77,7 +77,7 @@ patch install.sh <install.sh.patch
 sed -i '/--for=create/d' install.sh
 sed -i 's/cpu: 100/cpu: 50/g' install.sh
 # bump version https://www.oxpedia.org/wiki/index.php?title=AppSuite:Versioning_and_Numbering#2025
-# FIX OXv8.34 cause 35 is corrupt 
+# FIX OXv8.34 cause 35 is corrupt
 sed -i -E 's|oci://registry.open-xchange.com/appsuite/charts/appsuite --version [0-9]\.[0-9]{1,2}\.[0-9]{1,3} |oci://registry.open-xchange.com/appsuite/charts/appsuite --version 8.34.247 |g' install.sh
 # Bug in OX templating. Workaround is to disable wopi-server
 sed -i "s/^istio:/wopi-server:\n   enabled: false\nistio:/" values.yaml
