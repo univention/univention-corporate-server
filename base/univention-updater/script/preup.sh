@@ -181,9 +181,15 @@ if dpkg -l univention-appcenter-docker 2>&3 | grep ^ii  >&3 ; then
 	ucr set update/510/univention-appcenter-docker=true
 fi
 
+# src postgres-15
+pin_packages="libecpg-compat3 libecpg-compat3-dbgsym libecpg-dev libecpg-dev-dbgsym libecpg6 libecpg6-dbgsym libpgtypes3 libpgtypes3-dbgsym libpq-dev libpq5 libpq5-dbgsym postgresql-15 postgresql-15-dbgsym postgresql-client-15 postgresql-client-15-dbgsym postgresql-doc-15 postgresql-plperl-15 postgresql-plperl-15-dbgsym postgresql-plpython3-15 postgresql-plpython3-15-dbgsym postgresql-pltcl-15 postgresql-pltcl-15-dbgsym postgresql-server-dev-15"
+
+# src libzstd
+pin_packages+=" libzstd-dev libzstd1 libzstd1-dbgsym libzstd1-udeb zstd zstd-dbgsym"
+
 [ -f /etc/apt/preferences.d/99ucs510.pref ] ||
 cat >/etc/apt/preferences.d/99ucs510.pref <<__PREF__
-Package: postgresql-15 libzstd1
+Package: $pin_packages
 Pin: release l=Univention Corporate Server, v=5.1.0
 Pin-Priority: 1001
 __PREF__
