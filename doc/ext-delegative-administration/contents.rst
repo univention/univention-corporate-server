@@ -13,8 +13,8 @@ Univention Corporate Server - Delegative administration documentation
    :caption: Contents
 
    index
-   setup
    concepts
-   troubleshooting
+   setup
    configuration
+   troubleshooting
    bibliography
