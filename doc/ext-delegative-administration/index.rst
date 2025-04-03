@@ -40,8 +40,9 @@ For general feedback, use the `feedback form <https://www.univention.com/feedbac
 
 .. toctree::
    :numbered: 4
+   :caption: Contents
 
-   index
+   intro
    setup
    concepts
    troubleshooting
