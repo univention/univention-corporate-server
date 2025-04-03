@@ -74,7 +74,8 @@ Beware the following limitations:
 * The configuration and customization may break any time.
 
 * Delegative administration is currently only implemented for authorization between UMC and the LDAP directory.
-  In particularly, this has no effect on what modules a users can see and use in UMC,
+  In particularly, this has no effect on what modules
+  that users can see and use in UMC,
   like the user or group management modules,
   just what they can do with these modules.
   You have to separately configure
@@ -84,6 +85,8 @@ Beware the following limitations:
 
 Features
 ========
+
+Delegative administration offers the following features:
 
 * Role-based authorization checks when accessing the LDAP directory through the UMC user and group management modules.
 

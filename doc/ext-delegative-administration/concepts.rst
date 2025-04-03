@@ -13,46 +13,48 @@ and what an actor can do to a target object.
 For more background information about concepts and ideas behind this concept,
 refer to :cite:t:`guardian-doc`.
 
-Actor
-  Is the person or entity that wants to perform an operation.
+.. glossary::
 
-Target object
-  Is the object in the LDAP directory on which an actor performs the operation.
+   Actor
+     Is the person or entity that wants to perform an operation.
 
-Permissions
-  Permissions define what the actor can do to an object.
-  Which properties the actor can seen or modify
-  and if the actor can create or remove objects.
+   Target object
+     Is the object in the LDAP directory on which an actor performs the operation.
 
-Position condition
-  Permissions apply if a condition is met.
-  The only condition in the current implementation is the position of the target object in the LDAP directory.
-  The condition is met if the position of the target object matches the position of the condition.
+   Permissions
+     Permissions define what the actor can do to an object.
+     Which properties the actor can seen or modify
+     and if the actor can create or remove objects.
 
-Capabilities
-  A capability is a condition and a list of permissions that apply if the condition is met.
-  In this case all the permissions of the capability apply for the actor.
+   Position condition
+     Permissions apply if a condition is met.
+     The only condition in the current implementation is the position of the target object in the LDAP directory.
+     The condition is met if the position of the target object matches the position of the condition.
 
-Roles
-  A role is basically a container for a list of capabilities.
-  Roles have a name
-  that must consist only of letters and numbers.
-  Every role has a configuration in a JSON format data structure.
+   Capabilities
+     A capability is a condition and a list of permissions that apply if the condition is met.
+     In this case all the permissions of the capability apply for the actor.
 
-  Administrators can assign roles to user objects as ``guardianRoles``,
-  or to group objects as ``guardianMemberRoles``.
-  In case of an assignment to a group object,
-  all members of a group inherit the role of the group.
+   Roles
+     A role is basically a container for a list of capabilities.
+     Roles have a name
+     that must consist only of letters and numbers.
+     Every role has a configuration in a JSON format data structure.
 
-  When setting the roles on user or group objects,
-  you need to add the prefix ``umc:udm:`` to the role.
-  Adding the role ``domainadmin`` to a user object on the command line looks like :numref:`da-concepts-listing`.
+     Administrators can assign roles to user objects as ``guardianRoles``,
+     or to group objects as ``guardianMemberRoles``.
+     In case of an assignment to a group object,
+     all members of a group inherit the role of the group.
 
-  .. code-block:: console
-     :caption: Add role ``domainadmin`` to a user object
-     :name: da-concepts-listing
+     When setting the roles on user or group objects,
+     you need to add the prefix ``umc:udm:`` to the role.
+     Adding the role ``domainadmin`` to a user object on the command line looks like :numref:`da-concepts-listing`.
 
-     $ udm users/user modify --dn … --append guardianRoles="umc:udm:domainadmin"
+     .. code-block:: console
+        :caption: Add role ``domainadmin`` to a user object
+        :name: da-concepts-listing
+
+        $ udm users/user modify --dn … --append guardianRoles="umc:udm:domainadmin"
 
 .. _da-concepts-context:
 

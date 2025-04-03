@@ -26,6 +26,7 @@ use the following steps:
 #. Assign the role ``umc:udm:domainadmin`` as ``guardianMemberRoles`` to the group ``Domain Admins``.
    ``umc:udm:domainadmin`` is a default role to allow access to the directory for ``Administrators``.
    Use the command in :numref:`da-setup-test-env-preparation-add-role-listing`.
+   For information about roles, see :term:`Roles`.
 
    .. code-block:: console
       :caption: Assign ``umc:udm:domainadmin`` as default role for the Domain Admins group
