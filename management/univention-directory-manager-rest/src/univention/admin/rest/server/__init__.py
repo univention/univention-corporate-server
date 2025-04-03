@@ -56,7 +56,6 @@ import tornado.web
 from setproctitle import getproctitle, setproctitle
 from tornado.netutil import bind_sockets, bind_unix_socket
 
-import univention.debug as ud
 import univention.lib.i18n
 import univention.logging
 from univention.admin.rest.shared_memory import shared_memory
@@ -120,7 +119,7 @@ class Gateway(tornado.web.RequestHandler):
         try:
             response = yield client.fetch(request, raise_error=True)
         except tornado.curl_httpclient.CurlError as exc:
-            ud.debug(ud.MAIN, ud.WARN, f'Reaching service failed: {exc}')
+            logger.warning('Reaching service failed: %s', exc)
             # happens during starting the service and subprocesses when the UNIX sockets aren't available yet
             self.set_status(503)
             self.add_header('Retry-After', '3')  # Tell clients, we are ready in 3 seconds
@@ -189,8 +188,8 @@ class Gateway(tornado.web.RequestHandler):
         os.umask(0o077)  # FIXME: should probably be changed, this is what UMC sets
 
         channel = logging.StreamHandler()
-        channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)8s      (%(process)9d) :%(end_color)s%(message)s', datefmt='%d.%m.%y %H:%M:%S'))
-        logger = logging.getLogger('')
+        channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S'))
+        logger = logging.getLogger()
         logger.setLevel(logging.INFO)
         logger.addHandler(channel)
 
@@ -240,9 +239,10 @@ class Gateway(tornado.web.RequestHandler):
 
     @classmethod
     def start_server(cls, socks):
-        app = tornado.web.Application([
-            (r'.*', cls),
-        ], serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True),
+        app = tornado.web.Application(
+            [(r'.*', cls)],
+            serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True),
+            log_function=cls.log_function,
         )
         server = tornado.httpserver.HTTPServer(app)
         server.add_sockets(socks)
@@ -252,6 +252,23 @@ class Gateway(tornado.web.RequestHandler):
         except Exception:
             cls.signal_handler_stop(signal.SIGTERM, None)
             raise
+
+    @classmethod
+    def log_function(cls, handler):
+        if handler.get_status() < 400:
+            log_method = logging.getLogger('tornado.access').info
+        elif handler.get_status() < 500:
+            log_method = logging.getLogger('tornado.access').warning
+        else:
+            log_method = logging.getLogger('tornado.access').error
+        request_time = 1000.0 * handler.request.request_time()
+        log_method(
+            "[%s] %d %s %.2fms",
+            handler.request.x_request_id[:12],
+            handler.get_status(),
+            handler._request_summary(),
+            request_time,
+        )
 
     @classmethod
     def get_locale(cls, language):
@@ -292,7 +309,7 @@ class Gateway(tornado.web.RequestHandler):
 
     @classmethod
     def signal_handler_reload(cls, sig, frame):
-        ud.debug(ud.MAIN, ud.ALL, 'Reloading service.')
+        logger.debug('Reloading service.')
         if cls.child_id is None:
             for process in cls.PROCESSES.values():
                 cls.safe_kill(process.pid, sig)
