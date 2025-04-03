@@ -25,6 +25,7 @@ that enables organizations to implement a decentralized model of managing the LD
 It's possible to assign roles to user objects.
 The roles define what a user can do to the LDAP directory through their user object,
 which objects the user can read, modify, create, or delete.
+
 A common use case is a manager or administrator for an organizational unit within the directory.
 Users with such an assigned role can manage other user objects and group objects of a specific position in the directory,
 for example ``ou=bremen,dc=ldap,dc=base``.
