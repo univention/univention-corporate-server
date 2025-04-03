@@ -28,6 +28,28 @@ The following files in JSON format define the default roles and custom roles:
    If you have multiple servers in your test environment,
    you have to manually keep this file in synchronization between servers.
 
+   For the data structure, see :numref:`da-concepts-custom-roles-listing`.
+
+   .. code-block:: json
+      :caption: Define custom roles in JSON format data structure
+      :name: da-concepts-custom-roles-listing
+
+      {
+        "myadmin": [
+          "condition": {
+            "position": "..."
+          }
+          "permissions": {
+            "users/user": {
+              "attributes": {
+                 "username": "write",
+                 "*": "read"
+              }
+            }
+          }
+        ]
+      }
+
 The following references show the available settings for delegative administration:
 
 .. envvar:: umc/udm/delegation

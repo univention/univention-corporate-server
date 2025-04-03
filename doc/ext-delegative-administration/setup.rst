@@ -38,7 +38,6 @@ use the following steps:
 
 #. By default,
    only members of the user group ``Domain Admins`` can see and use the user and group modules in UMC.
-
    To properly test the delegative administration feature,
    you need to assign the right
    to see and use the users and group module in UMC
@@ -80,11 +79,13 @@ To test delegative administration, use the following steps:
 
 #. Sign in as ``Administrator`` to the UMC.
 
-   You notice no difference.
-   You can still see all user objects or group objects
+   You notice no difference,
+   because the user ``Administrator`` is in the ``Domain Admins`` user group.
+   Due to this group membership,
+   you can still see all user objects or group objects
    and are able to create and modify every object.
 
-#. Create a new test user account without a role.
+#. Create a test user account without a role.
    Use the command in :numref:`da-setup-test-env-test-listing`.
 
    .. code-block:: console
@@ -99,7 +100,9 @@ To test delegative administration, use the following steps:
 
 #. To test with the created user object, open a private browser window or sign out.
 
-#. Sign in to the UMC as ``test1`` and open the users module.
+#. Sign in to the UMC with the ``test1`` user account
+   that you just created.
+   Open the *Users* module.
    The result list is empty,
    because the user object ``test1`` has no permission to read objects from the LDAP directory.
 
@@ -112,12 +115,8 @@ A more interesting example is the role ``ouadmin``.
 This role gives the user the ability to manage a position of the directory.
 User objects with this role have the following permissions:
 
-* They can see, create, modify, and delete user objects in their organizational unit and below.
-
-* They can't see or modify user objects or group objects in any other position.
-
-* They can't modify the attribute ``guardianRoles`` of users.
-  This role can't manage roles.
+* They can see, create, modify, and delete user objects in their organizational unit
+  and below in the directory structure.
 
 * They can see user group objects in the container :samp:`cn=groups,{LDAP_BASE}`.
 
@@ -125,8 +124,13 @@ User objects with this role have the following permissions:
 
 * They can read ``policies/desktop``, ``policies/pwhistory`` and ``policies/umc`` object in any other position.
 
+* They can't see or modify user objects or group objects in any other position.
+
+* They can't modify the attribute ``guardianRoles`` of users.
+  This role can't manage roles.
+
 To test this role, you need to prepare your test environment.
-The following script creates and configures 10 organizational units,
+The following shell script creates and configures 10 organizational units,
 one user object with the role ``ouadmin`` for each organizational unit
 and 10 user objects within each organizational unit.
 Run the commands in :numref:`da-setup-test-env-ouadmin-listing`.
@@ -167,8 +171,8 @@ Run the commands in :numref:`da-setup-test-env-ouadmin-listing`.
      done
    done
 
-Now you can sign in to UMC with the user ``ou1-admin``, the password ``univention``,
-and open the users module.
+Now you can sign in to UMC with the ``ou1-admin`` user, the password ``univention``,
+and open the *Users* module.
 You see only the users of the organizational unit ``ou1``, nothing else.
 
 You can also manually add the role ``umc:udm:ouadmin&umc:udm:ou=ou2`` to the ``guardianRoles`` property of the user ``ou1-admin``.

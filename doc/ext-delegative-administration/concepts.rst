@@ -10,8 +10,6 @@ Concepts
 
 This section describes the roles, capabilities, and permissions
 and what an actor can do to a target object.
-For more background information about concepts and ideas behind this concept,
-refer to :cite:t:`guardian-doc`.
 
 .. glossary::
 
@@ -23,16 +21,16 @@ refer to :cite:t:`guardian-doc`.
 
    Permissions
      Permissions define what the actor can do to an object.
-     Which properties the actor can seen or modify
+     Which properties the actor can see or modify
      and if the actor can create or remove objects.
 
    Position condition
-     Permissions apply if a condition is met.
+     Permissions apply if a position condition matches.
      The only condition in the current implementation is the position of the target object in the LDAP directory.
-     The condition is met if the position of the target object matches the position of the condition.
+     The condition applies if the position of the target object matches the position of the condition.
 
    Capabilities
-     A capability is a condition and a list of permissions that apply if the condition is met.
+     A capability is a condition and a list of permissions that apply if the condition matches.
      In this case all the permissions of the capability apply for the actor.
 
    Roles
@@ -43,18 +41,25 @@ refer to :cite:t:`guardian-doc`.
 
      Administrators can assign roles to user objects as ``guardianRoles``,
      or to group objects as ``guardianMemberRoles``.
-     In case of an assignment to a group object,
-     all members of a group inherit the role of the group.
+     In group objects with a role assignment,
+     all group member objects inherit the role of the group.
 
-     When setting the roles on user or group objects,
+     When you assign the roles to user objects or group objects,
      you need to add the prefix ``umc:udm:`` to the role.
-     Adding the role ``domainadmin`` to a user object on the command line looks like :numref:`da-concepts-listing`.
+     To add the role ``domainadmin`` to a user object,
+     the command looks like :numref:`da-concepts-listing`.
 
      .. code-block:: console
         :caption: Add role ``domainadmin`` to a user object
         :name: da-concepts-listing
 
-        $ udm users/user modify --dn … --append guardianRoles="umc:udm:domainadmin"
+        $ udm users/user modify --dn "$LDAP_DN" --append guardianRoles="umc:udm:domainadmin"
+
+.. seealso::
+
+   :external+guardian-doc:ref:`guardian-terminology`
+      in :cite:t:`guardian-doc`
+      for more background information about concepts and ideas behind this concept.
 
 .. _da-concepts-context:
 
@@ -69,18 +74,22 @@ One example is the role ``ouadmins``.
 This role has one definition for what it can do.
 However, you may want to differentiate between different ``ouadmins`` for different organizational units.
 
-You can differentiate by setting a context when you assign the role to a user object as shown in
-:numref:`da-concepts-context-listing`.
+When you assign the role to the user object,
+as shown in :numref:`da-concepts-context-listing`,
+you can assign different contexts.
 
 .. code-block::
    :caption: Schema for setting a context when assigning the role
    :name: da-concepts-context-listing
 
-   user1 -> guardianRoles -> umc:udm:ouadmin&um:udm:ou=bremen
-   user2 -> guardianRoles -> umc:udm:ouadmin&um:udm:ou=berlin
+   user1 → guardianRoles → umc:udm:ouadmin&um:udm:ou=bremen
+   user2 → guardianRoles → umc:udm:ouadmin&um:udm:ou=berlin
+
+A role context definition has the following elements:
 
 ``umc:udm:``
-   is a prefix, that we have to set before the role and the context.
+   is a prefix
+   that you need to put before the role and the context.
 
 ``ouadmin``
    is the role.
@@ -89,17 +98,18 @@ You can differentiate by setting a context when you assign the role to a user ob
    is the separator between the role and the context.
 
 ``ou=bremen``
-   is a position in the LDAP directory in form of an LDAP DN,
+   is a position in the directory structure in form of an LDAP DN,
    without the LDAP base, for which the role applies.
 
 The ``user1`` and ``user2`` user objects have the same permissions.
 The permissions derive from the role ``ouadmin``.
 And the different positions in the LDAP directory derive from the context.
 
-.. warning::
+.. important::
 
    Not every role evaluates the context.
    Whether a context is meaningful for a role depends on the configuration of the role.
+
    For example the role ``domainadmin`` doesn't evaluate the context,
    wherefore a context for this role has no effect.
    On the other hand ``ouadmin`` without a context is basically useless.
@@ -110,7 +120,8 @@ Configuration of roles
 ======================
 
 Bringing all this together,
-a generic form of this configuration looks like the example in :numref:`da-concepts-example-listing`.
+:numref:`da-concepts-example-listing`
+shows an example for a generic form of this configuration in JSON format.
 
 .. code-block:: json
    :caption: Example for role configuration
@@ -147,63 +158,59 @@ a generic form of this configuration looks like the example in :numref:`da-conce
    name of the role.
    Can be any string.
 
-``condition → position``
+``condition.position``
    the condition position of the capability.
    It can have one of the following values:
 
-   ``LDAP_DN``
-     any position of your LDAP directory in form of a DN, without the LDAP base
+   :``LDAP_DN``: Any position of your LDAP directory in form of a DN, without the LDAP base
 
-   ``$CONTEXT``
-     a placeholder.
-     UCS replaces this keyword with the context of a role.
+   :``$CONTEXT``: A placeholder.
+        UCS replaces this keyword with the context of a role.
 
-   ``*``
-     wildcard to match anything.
+   :``*``: Wildcard to match anything.
 
-``condition → scope``
+``condition.scope``
    the scope of this capability.
    It can have one of the following values:
 
-   ``subtree``
-     permissions apply for this position and everything below this position.
+   :``subtree``: Permissions apply for this position and everything below this position.
 
-   ``base``
-     permissions apply for this position only.
+   :``base``: Permissions apply for this position only.
 
-``permissions → UDM_MODULE_NAME``
+:samp:`permissions.{UDM_MODULE_NAME}`
    permissions for UDM object.
    It can have one of the following values:
 
-   * The name of a UDM object, like ``users/user``.
+   :``UDM_MODULE_NAME``: The name of a UDM object, like ``users/user``.
+   :``*``: The wildcard ``*`` that matches every UDM object.
 
-   * The wildcard ``*``, which matches every UDM object.
-
-``permissions → UDM_MODULE_NAME → attributes → ATTRIBUTE_NAME``
+:samp:`permissions.{UDM_MODULE_NAME}.attributes.{ATTRIBUTE_NAME}`
    permissions for properties of a UDM object.
    It can have one of the following values:
 
-   * The name of a UDM object property, like ``username``.
-
-   * The wildcard ``*``, which matches every property.
+   :``ATTRIBUTE_NAME``: The name of a UDM object property, like ``username``.
+   :``*``: The wildcard ``*``, which matches every property.
 
    * As value you can set one of the following:
 
-     * ``none`` for not readable.
+     :``none``: not readable.
+     :``read``: not writable.
+     :``write``: writable.
 
-     * ``read`` for not writable.
-
-     * ``write`` for writable.
-
-``permissions → UDM_MODULE_NAME → create``
+:samp:`permissions.{UDM_MODULE_NAME}.create`
    defines whether users can create objects.
    It can have either the value ``true`` or ``false``.
 
-``permissions → UDM_MODULE_NAME → delete``
+:samp:`permissions.{UDM_MODULE_NAME}.delete`
    defines whether users can remove objects.
    It can have either the value ``true`` or ``false``.
 
-The default role ``domainadmin`` has configuration in :numref:`da-concepts-example-domainadmin-listing`.
+The default role ``domainadmin`` has the configuration in :numref:`da-concepts-example-domainadmin-listing`.
+The configuration defines one capability,
+
+* that matches for all positions of target objects
+* and gives write permissions to all UDM properties of all UDM objects
+* and permission to create and remove every UDM object.
 
 .. code-block:: json
    :caption: Default configuration for ``domainadmin`` role
@@ -226,23 +233,18 @@ The default role ``domainadmin`` has configuration in :numref:`da-concepts-examp
      }
    ]
 
-The ``domainadmin`` role has one capability,
-
-* that matches for all positions of target objects
-* and gives write permissions to all UDM properties of all UDM objects
-* and permission to create and remove every UDM object.
-
 .. _da-concepts-priorities:
 
 Priorities
 ==========
 
-The more specific position condition or permission configuration has higher
-priority.
+The more specific a position condition or a permission configuration is,
+the higher its priority.
+The following priority rules exist in the delegative administration:
 
 ``Position condition``
   Every capability binds to a position.
-  In this position, you can use a LDAP DN,
+  In this position, you can use an LDAP DN,
   the keyword ``$CONTEXT`` and a wildcard ``*``.
   If a role has multiple capabilities,
   the match of a capability position with the target object position
@@ -251,8 +253,8 @@ priority.
 
 ``UDM modules in permissions``
   In permissions you can define UDM module names or a wildcard ``*``.
-  If there is a permission for the UDM module of the target object
-  UCS uses it, otherwise the ``*`` permission.
+  If there is a permission for the UDM module of the target object,
+  UCS uses it, otherwise it uses the ``*`` permission.
 
 ``Properties in permissions``
   Definitions of real property names have higher priority
@@ -269,27 +271,8 @@ Custom roles
 ============
 
 You can define your own roles in a JSON format data structure in the file
-:file:`/etc/umc-udm-roles.json`
-as shown in :numref:`da-concepts-custom-roles-listing`.
-
-.. code-block:: json
-   :caption: Define custom roles in JSON format data structure
-   :name: da-concepts-custom-roles-listing
-
-   {
-     "myadmin": [
-       "condition": {
-         "position": "..."
-       }
-       "permissions": {
-         "users/user": {
-           "attributes": {
-              "username": "write",
-              "*": "read"
-           }
-         }
-       }
-     ]
-   }
-
+:file:`/etc/umc-udm-roles.json`.
+For more information,
+see :ref:`da-config-reference`
+and :numref:`da-concepts-custom-roles-listing`.
 You can set the role ``umc:udm:myadmin`` to user or group objects.
