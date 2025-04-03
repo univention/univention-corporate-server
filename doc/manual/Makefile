@@ -40,32 +40,32 @@ livehtml:
 
 .PHONY: docker-gettext
 docker-gettext:
-	${Q}$(DOCKER_CMD) $(SPHINX_DOCKER) /bin/sh -c '$(MAKE) -C $(CURDIR) gettext'
+	${Q}$(DOCKER_CMD) $(SPHINX_DOCKER) /bin/sh -c '$(MAKE) -C "$(CURDIR)" gettext'
 
 .PHONY: docker-html
 docker-html:
-	${Q}$(DOCKER_CMD) $(SPHINX_DOCKER) /bin/sh -c '$(MAKE) -C $(CURDIR) html'
+	${Q}$(DOCKER_CMD) $(SPHINX_DOCKER) /bin/sh -c '$(MAKE) -C "$(CURDIR)" html'
 
 .PHONY: docker-latexpdf
 docker-latexpdf: SPHINX_DOCKER=$(SPHINX_DOCKER_FULL)
 docker-latexpdf:
-	${Q}$(DOCKER_CMD) $(SPHINX_DOCKER) /bin/sh -c '$(MAKE) -C $(CURDIR) latexpdf'
+	${Q}$(DOCKER_CMD) $(SPHINX_DOCKER) /bin/sh -c '$(MAKE) -C "$(CURDIR)" latexpdf'
 
 .PHONY: docker-linkcheck
 docker-linkcheck:
-	${Q}$(DOCKER_CMD) $(SPHINX_DOCKER) /bin/sh -c '$(MAKE) -C $(CURDIR) linkcheck'
+	${Q}$(DOCKER_CMD) $(SPHINX_DOCKER) /bin/sh -c '$(MAKE) -C "$(CURDIR)" linkcheck'
 
 .PHONY: docker-livehtml
 docker-livehtml:
-	${Q}$(DOCKER_CMD) $(SPHINX_DOCKER) /bin/sh -c '$(MAKE) -C $(CURDIR) livehtml'
+	${Q}$(DOCKER_CMD) $(SPHINX_DOCKER) /bin/sh -c '$(MAKE) -C "$(CURDIR)" livehtml'
 
 .PHONY: docker-spelling
 docker-spelling:
-	${Q}$(DOCKER_CMD) $(SPHINX_DOCKER) /bin/sh -c '$(MAKE) -C $(CURDIR) spelling'
+	${Q}$(DOCKER_CMD) $(SPHINX_DOCKER) /bin/sh -c '$(MAKE) -C "$(CURDIR)" spelling'
 
 .PHONY: docker-update-po
 docker-update-po:
-	${Q}$(DOCKER_CMD) $(SPHINX_DOCKER) /bin/sh -c 'cd $(CURDIR) && sphinx-intl update -l $(SPHINXINTL_LANGUAGE)'
+	${Q}$(DOCKER_CMD) $(SPHINX_DOCKER) /bin/sh -c 'cd "$(CURDIR)" && sphinx-intl update -l $(SPHINXINTL_LANGUAGE)'
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
