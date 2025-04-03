@@ -28,7 +28,7 @@ The roles define what an user object can do to the LDAP directory,
 which objects the user can read, modify, create, or delete.
 
 A common use case is a manager or administrator for an organizational unit within the directory.
-Users with such an assigned role are able to manage other user objects and group objects of a specific position in the directory,
+Users with such an assigned role are able to manage other user and group objects of a specific position in the directory,
 such as ``ou=bremen,dc=ldap,dc=base``.
 However, depending on the exact configuration,
 users with such a role can't manage or even see objects from other positions.
