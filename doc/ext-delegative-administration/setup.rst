@@ -123,6 +123,7 @@ User objects with this role have the following permissions:
 * They can create ``mail/domain`` objects in the container :samp:`cn=domain,cn=mail,{LDAP_BASE}`.
 
 * They can read ``policies/desktop``, ``policies/pwhistory`` and ``policies/umc`` object in any other position.
+
 To test this role, you need to prepare your test environment.
 The following script creates and configures 10 organizational units,
 one user object with the role ``ouadmin`` for each organizational unit
