@@ -120,7 +120,7 @@ User objects with this role have the following permissions:
 
 * They can see user group objects in the container :samp:`cn=groups,{LDAP_BASE}`.
 
-* They can create ``mail/domain`` objects in the container :samp:`cn=domain,cn=mail,{LDAP_BASE}`.
+* They can read ``mail/domain`` objects in the container :samp:`cn=domain,cn=mail,{LDAP_BASE}`.
 
 * They can read ``policies/desktop``, ``policies/pwhistory`` and ``policies/umc`` object in any other position.
 
