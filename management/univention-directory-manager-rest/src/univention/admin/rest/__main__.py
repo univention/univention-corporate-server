@@ -118,7 +118,10 @@ class Server:
 
     def run_server(self, socks):
         from univention.admin.rest.module import Application, request_context
-        application = Application(serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True))
+        application = Application(
+            serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True),
+            log_function=self.log_function,
+        )
 
         server = HTTPServer(application)
         server.add_sockets(socks)
@@ -136,6 +139,23 @@ class Server:
             log.exception('Could not start main loop')
             self.signal_handler_stop(server, signal.SIGTERM, None)
             raise
+
+    @classmethod
+    def log_function(cls, handler):
+        if handler.get_status() < 400:
+            return  # ignore successfull requests here, they are logged in the other process
+            log_method = logging.getLogger('tornado.access').info
+        elif handler.get_status() < 500:
+            log_method = logging.getLogger('tornado.access').warning
+        else:
+            log_method = logging.getLogger('tornado.access').error
+        request_time = 1000.0 * handler.request.request_time()
+        log_method(
+            "[GATEWAY] %d %s %.2fms",
+            handler.get_status(),
+            handler._request_summary(),
+            request_time,
+        )
 
     def signal_handler_stop(self, server, sig, frame):
         if self.child_id is None:
