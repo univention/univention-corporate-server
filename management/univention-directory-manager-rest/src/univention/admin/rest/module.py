@@ -160,9 +160,6 @@ class ResourceBase(SanitizerBase, HAL, HTML):
             self.request.content_negotiation_lang = self.check_acceptable()
             self.decode_request_arguments()
 
-    def _request_summary(self):
-        return '[%s] %s' % (self.request.x_request_id[:12], super()._request_summary())
-
     def parse_authorization(self, authorization):
         if authorization in shared_memory.authenticated:  # cache for the userdn, which eliminates a search / request
             auth_type, username, userdn, password = shared_memory.authenticated[authorization]
