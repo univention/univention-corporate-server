@@ -424,7 +424,7 @@ installed:
 
 .. code-block:: console
 
-   root@primary211:~# univention-radius-check-access --username=stefan
+   root@primary211:~# univention-radius-check-access --username=stefan --station-id none
    DENY 'uid=stefan,cn=users,dc=ucs,dc=example'
    'uid=stefan,cn=users,dc=ucs,dc=example'
    -> DENY 'cn=Domain Users,cn=groups,dc=ucs,dc=example'
@@ -435,7 +435,7 @@ installed:
 
 .. code-block:: console
 
-   root@primary211:~# univention-radius-check-access --username=janek
+   root@primary211:~# univention-radius-check-access --username=janek --station-id none
    DENY 'uid=janek,cn=users,dc=ucs,dc=example'
    'uid=janek,cn=users,dc=ucs,dc=example'
    -> DENY 'cn=Domain Users,cn=groups,dc=ucs,dc=example'
