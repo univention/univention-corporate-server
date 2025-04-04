@@ -1,8 +1,9 @@
-univention-appcenter (9.0.14-1) UNRELEASED; urgency=medium
+univention-appcenter (9.0.14-1) unstable; urgency=medium
 
   * Bug #58002 UCS 5.0-10 version bump
+  * Bug #57779: change default password encryption for postgresql-15 to md5
 
- -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 04 Mar 2025 07:58:48 +0100
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 04 Apr 2025 12:30:57 +0200
 
 univention-appcenter (9.0.13-4) unstable; urgency=medium
 

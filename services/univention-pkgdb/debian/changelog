@@ -1,3 +1,10 @@
+univention-pkgdb (13.0.9-2) unstable; urgency=medium
+
+  * Bug #58002 UCS 5.0-10 version bump
+  * Bug #57779: change default password encryption for postgresql-15 to md5
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 04 Apr 2025 12:33:07 +0200
+
 univention-pkgdb (13.0.9-1) UNRELEASED; urgency=medium
 
   * Bug #58002 UCS 5.0-10 version bump

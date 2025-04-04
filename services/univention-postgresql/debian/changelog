@@ -1,3 +1,9 @@
+univention-postgresql (12.0.10-3) unstable; urgency=medium
+
+  * Bug #57779: change default password encryption for postgresql-15 to md5
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Fri, 04 Apr 2025 11:49:28 +0200
+
 univention-postgresql (12.0.10-2) unstable; urgency=medium
 
   * Bug #57779: make postgresql-15 the default
