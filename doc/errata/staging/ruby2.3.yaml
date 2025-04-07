@@ -10,7 +10,7 @@ desc: |
    (CVE-2025-27220, CVE-2025-27219)
  * CVSS score 3.2 (CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:L/I:N/A:N).
    (CVE-2025-27221)
-bug: [58173]
+bug: [58173, 58179]
 cve:
 - CVE-2025-27219
 - CVE-2025-27220
