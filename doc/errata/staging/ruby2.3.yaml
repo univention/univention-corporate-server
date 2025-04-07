@@ -1,0 +1,17 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: ruby2.3
+fix: 2.3.3-1+deb9u14
+desc: |
+ This update addresses the following issues:
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2025-27220, CVE-2025-27219)
+ * CVSS score 3.2 (CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:L/I:N/A:N).
+   (CVE-2025-27221)
+bug: [58173]
+cve:
+- CVE-2025-27219
+- CVE-2025-27220
+- CVE-2025-27221
