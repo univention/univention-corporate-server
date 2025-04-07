@@ -2990,7 +2990,7 @@ def init_keycloak_ucs(opt):
             "pagination": ["true"],
             "fullSyncPeriod": ["-1"],
             "startTls": ["false" if opt.no_starttls else "true"],
-            "connectionPooling": ["true"],
+            "connectionPooling": ["false" if not opt.no_starttls else "true"],
             "usersDn": [opt.ldap_base],
             "cachePolicy": ["MAX_LIFESPAN"],
             "maxLifespan": ["300000"],

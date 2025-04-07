@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-keycloak
+fix: 1.0.14-2
+desc: |
+ This update addresses the following issues:
+ * The options `startTls` and `connectionPooling` are incompatible in
+   Keycloak 26. As of this version, `connectionPooling` will only be enabled
+   if `startTls` is disabled. This is due to underlying limitations with
+   pooling secure (TLS) connections.
+bug: [58182]
