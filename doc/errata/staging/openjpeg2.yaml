@@ -12,7 +12,7 @@ desc: |
    (CVE-2024-56827, CVE-2024-56826)
  * CVSS score 4.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:L).
    (CVE-2023-39327)
-bug: [58172]
+bug: [58172, 58181]
 cve:
 - CVE-2021-3575
 - CVE-2024-56826
