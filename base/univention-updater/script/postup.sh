@@ -188,6 +188,24 @@ if is_joined; then
 fi
 
 
+# Bug #57795: Postgres warning after update from 5.0 to 5.2 with postgresql-15
+refresh_collations() {
+  echo "Checking if collations need to be refreshed" >&3
+
+  while IFS='|' read -r db_name oid; do
+    needs_collation_refresh="$(su postgres -c "psql --tuples-only --no-align --command 'SELECT pg_database_collation_actual_version(oid) <> datcollversion FROM pg_database WHERE oid = $oid'" 2>&3)"
+    if [ "$needs_collation_refresh" = "t" ]; then
+      echo "Reindexing database: $db_name" >&3
+      su postgres -c "psql --dbname=\"$db_name\" --command 'REINDEX DATABASE \"$db_name\";' --command 'REINDEX SYSTEM \"$db_name\";' --command 'ALTER DATABASE \"$db_name\" REFRESH COLLATION VERSION;'" >&3 2>&3
+    fi
+  done <<< "$(su postgres -c 'psql --tuples-only --no-align --command "SELECT datname,oid FROM pg_database WHERE datallowconn IS true;"' 2>&3)"
+}
+
+POSTGRES_PACKAGE_NAME=univention-postgresql-15
+if [ "$(LANG=c dpkg-query -W -f '${db:Status-Status}' $POSTGRES_PACKAGE_NAME 2>&3)" = 'installed' ]; then
+  refresh_collations
+fi
+
 echo "
 
 
