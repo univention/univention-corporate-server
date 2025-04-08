@@ -1,3 +1,11 @@
+univention-postgresql (12.0.10-4) unstable; urgency=medium
+
+  * Bug #57779: Don't support adjusting the password-encryption to scram-sha-256
+    i.e. don't backport the UCR variables postgres15/pg_hba/password-encryption
+    and postgres15/password-encryption
+
+ -- Arvid Requate <requate@univention.de>  Tue, 08 Apr 2025 13:03:11 +0200
+
 univention-postgresql (12.0.10-3) unstable; urgency=medium
 
   * Bug #57779: change default password encryption for postgresql-15 to md5

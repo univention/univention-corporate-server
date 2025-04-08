@@ -1,3 +1,11 @@
+univention-pkgdb (13.0.9-3) unstable; urgency=medium
+
+  * Bug #57779: Don't support adjusting the password-encryption to scram-sha-256
+    i.e. don't backport the UCR variables postgres15/pg_hba/password-encryption
+    and postgres15/password-encryption
+
+ -- Arvid Requate <requate@univention.de>  Tue, 08 Apr 2025 13:02:04 +0200
+
 univention-pkgdb (13.0.9-2) unstable; urgency=medium
 
   * Bug #58002 UCS 5.0-10 version bump
