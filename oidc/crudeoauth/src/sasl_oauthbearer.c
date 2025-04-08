@@ -402,15 +402,6 @@ static int oauth_server_mech_step(
 		return SASL_BADPARAM;
 	}
 
-	/* Check if the connection is over TLS */
-	if (sasl_getprop(params->utils->conn, SASL_SSF_EXTERNAL, (const void **)&ssfp) != SASL_OK) {
-		params->utils->seterror(params->utils->conn, 0, "could not get SASL_SSF_EXTERNAL");
-		return SASL_BADPARAM;
-	}
-	if (!((ssfp ? *ssfp : 0) >= 256)) {
-		params->utils->seterror(params->utils->conn, 0, "TLS required!");
-		return SASL_ENCRYPT;
-	}
 
 	/* Limit */
 	if (clientinlen > MAX_CLIENTIN_LEN) {
