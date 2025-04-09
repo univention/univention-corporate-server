@@ -74,11 +74,32 @@ if [ "$1" = "configure" ] && [ -n "$2" ]; then
 		fi
 	fi
 	# remove duplicate UID mappers Bug #57420
-	if dpkg --compare-versions "$2" lt-nl "10.0.12-4"; then
+	if dpkg --compare-versions "$2" lt-nl "1.0.12-4"; then
 		if [ -e /var/univention-join/joined ] ; then
 			if univention-app info | grep 'Installed:' | grep -q -w keycloak; then
 				if [ -e "/etc/keycloak.secret" ]; then
 					/usr/share/univention-keycloak/fix-duplicate-uid-mappers || true
+				fi
+			fi
+		fi
+	fi
+	# startTLS and connectionPooling are incompatible #58182
+	if dpkg --compare-versions "$2" lt-nl "1.0.14-2"; then
+		if [ -e /var/univention-join/joined ] ; then
+			if univention-app info | grep 'Installed:' | grep -q -w keycloak; then
+				if [ -e "/etc/keycloak.secret" ]; then
+					config_realm_master=$(univention-keycloak --realm master ldap-federation get --name ldap-master-admin)
+					start_tls_master=$(echo "$config_realm_master" | python3 -c "import sys, ast; print(ast.literal_eval(sys.stdin.read())['config']['startTls'][0])")
+					if [ "$start_tls_master" = "true" ]; then
+						echo "startTLS is enabled for realm 'master', disabling connectionPooling..."
+						univention-keycloak --realm master ldap-federation set --name ldap-master-admin --config connectionPooling=false
+					fi
+					config_realm_ucs=$(univention-keycloak --realm ucs ldap-federation get)
+					start_tls_ucs=$(echo "$config_realm_ucs" | python3 -c "import sys, ast; print(ast.literal_eval(sys.stdin.read())['config']['startTls'][0])")
+					if [ "$start_tls_ucs" = "true" ]; then
+						echo "startTLS is enabled for realm 'ucs', disabling connectionPooling..."
+						univention-keycloak --realm ucs ldap-federation set --config connectionPooling=false
+					fi
 				fi
 			fi
 		fi
