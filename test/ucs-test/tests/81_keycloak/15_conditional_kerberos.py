@@ -35,7 +35,10 @@ def test_univention_keycloak_legacy_flow_config(keycloak_administrator_connectio
         assert sorted_executions == sorted_expected_executions
 
 
-KERBEROS_FLOWS = {"allowed": ['univention-keycloak', 'conditional-krb-authentication-flow', 'create', '--name=allowed', '--allowed-ip=0.0.0.0/0'], "notallowed": ['univention-keycloak', 'conditional-krb-authentication-flow', 'create', '--name=notallowed', '--allowed-ip=300.0.0.0/24']}
+KERBEROS_FLOWS = {
+    "allowed": ['univention-keycloak', 'conditional-krb-authentication-flow', 'create', '--name=allowed', '--allowed-ip=0.0.0.0/0'],
+    "notallowed": ['univention-keycloak', 'conditional-krb-authentication-flow', 'create', '--name=notallowed', '--allowed-ip=300.0.0.0/24'],
+}
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')

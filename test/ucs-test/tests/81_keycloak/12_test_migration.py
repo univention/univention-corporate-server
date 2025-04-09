@@ -30,7 +30,7 @@ def compare_client(old, new, substitutes, client_id):
             pytest.fail("Old client contains more protocolMappers than the new one")
 
     for key in old.keys():
-        print(f"assert {key} expected value: {old[key]}, given value {new[key]}")
+        print(f"assert {key} expected value: {old[key]}, given value {new.get(key)}")
         if key == 'id':
             continue
         if isinstance(old[key], dict):
@@ -38,11 +38,11 @@ def compare_client(old, new, substitutes, client_id):
         elif isinstance(old[key], list):
             assert old[key].sort() == new[key].sort()
         else:
-            if new[key] != 'ignore':
-                if isinstance(new[key], str):
-                    assert old[key] == new[key].format(**substitutes), f'mismatch for {key} in {client_id}'
+            if new.get(key) != 'ignore':
+                if isinstance(new.get(key), str):
+                    assert old[key] == new.get(key).format(**substitutes), f'mismatch for {key} in {client_id}'
                 else:
-                    assert old[key] == new[key], f'mismatch for {key} in {client_id}'
+                    assert old[key] == new.get(key), f'mismatch for {key} in {client_id}'
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')

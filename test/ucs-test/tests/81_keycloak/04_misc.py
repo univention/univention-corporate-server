@@ -142,6 +142,7 @@ def test_master_realm_config(keycloak_config, ucr):
     components = keycloak_get_request(keycloak_config, f"realms/master/components?parent={ldap_federation['id']}")
     components = [c['name'] for c in components]
     assert set(components) == {
+        'Kerberos principal attribute mapper',
         'admin-role',
         'last name',
         'modify date',
@@ -178,6 +179,7 @@ def test_ucs_realm_config(keycloak_config, ucr):
     components = keycloak_get_request(keycloak_config, f"realms/ucs/components?parent={ldap_federation['id']}")
     components = [c['name'] for c in components]
     assert set(components) == {
+        'Kerberos principal attribute mapper',
         'uid',
         'creation date',
         'username',
