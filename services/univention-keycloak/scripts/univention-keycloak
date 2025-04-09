@@ -1913,7 +1913,7 @@ def create_conditional_krb_subflows(session, opt, payload, flow_level, level, fl
     session.create_and_update_authentication_flow_execution(krb_execution, flow_alias=alias)
 
     payload = {
-        "alias": "ipaddressconfig",
+        "alias": f"ipaddressconfig-{flow_name}",
         "config": {
             "ip-subnets": "##".join(opt.allowed_ip) if opt.allowed_ip else "0.0.0.0/0##::/0"
         }
@@ -1937,7 +1937,7 @@ def create_conditional_krb_authentication_flow(opt):
         "providerId": "basic-flow",
         "builtIn": False,
         "topLevel": True,
-        "description": f"{opt.flow}r based authentication with conditional kerberos authentication",
+        "description": f"{opt.flow} based authentication with conditional kerberos authentication",
     }
     session.create_authentication_flow(payload=json.dumps(payload))
     # create all executions and sub-flows in the correct level
