@@ -1,0 +1,11 @@
+[package]
+name = "crudeoauth_r"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+base64 = "0.22.1"
+sasl2-sys = { version = "0.1.22", features = ["vendored"] }
+
+[lib]
+crate-type = ["rlib", "cdylib"]
