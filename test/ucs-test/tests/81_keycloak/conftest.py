@@ -465,6 +465,7 @@ def legacy_authorization_setup_oidc(
     user_dn, user_name = udm.create_user(password='univention')
     client = f'testclient-{user_name}'
     client_secret = 'abc'
+    client_id = None
     groups = {group_name: client}
 
     try:
@@ -493,9 +494,10 @@ def legacy_authorization_setup_oidc(
         )
     finally:
         # cleanup
-        run_command(['univention-keycloak', 'legacy-authentication-flow', 'delete', '--flow', 'direct grant'])
         legacy_auth_config_remove(keycloak_administrator_connection, groups)
-        keycloak_administrator_connection.delete_client(client_id)
+        if client_id:
+            keycloak_administrator_connection.delete_client(client_id)
+        run_command(['univention-keycloak', 'legacy-authentication-flow', 'delete', '--flow', 'direct grant'])
 
 
 @pytest.fixture()
