@@ -274,9 +274,9 @@ def browser_context_args(browser_context_args):
 
 @pytest.fixture(scope='session')
 def browser_type_launch_args(browser_type_launch_args):
+    del browser_type_launch_args['executable_path']
     return {
         **browser_type_launch_args,
-        'executable_path': '/usr/bin/chromium',
         'args': [
             '--disable-gpu',
         ],

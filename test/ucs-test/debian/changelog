@@ -1,3 +1,13 @@
+ucs-test (10.0.24-10) unstable; urgency=medium
+
+  * Issue univention/ucs#2788: Install playwright browsers
+    Since Keycloak 26, the Administrator dashboard uses the crypto
+    randomUUID() method which is not available on Chromium 90, installed
+    with Debian 10. At least for the Keycloak tests we now want to use the
+    playwright provided browsers.
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 09 Apr 2025 12:16:08 +0000
+
 ucs-test (10.0.24-9) unstable; urgency=medium
 
   * Bug #58072: Make test script executable
