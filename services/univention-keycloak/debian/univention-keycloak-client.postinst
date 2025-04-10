@@ -88,13 +88,13 @@ if [ "$1" = "configure" ] && [ -n "$2" ]; then
 		if [ -e /var/univention-join/joined ] ; then
 			if univention-app info | grep 'Installed:' | grep -q -w keycloak; then
 				if [ -e "/etc/keycloak.secret" ]; then
-					config_realm_master=$(univention-keycloak --realm master ldap-federation get --name ldap-master-admin)
+					config_realm_master=$(univention-keycloak --realm master ldap-federation get --name ldap-master-admin --json)
 					start_tls_master=$(echo "$config_realm_master" | python3 -c "import sys, ast; print(ast.literal_eval(sys.stdin.read())['config']['startTls'][0])")
 					if [ "$start_tls_master" = "true" ]; then
 						echo "startTLS is enabled for realm 'master', disabling connectionPooling..."
 						univention-keycloak --realm master ldap-federation set --name ldap-master-admin --config connectionPooling=false
 					fi
-					config_realm_ucs=$(univention-keycloak --realm ucs ldap-federation get)
+					config_realm_ucs=$(univention-keycloak --realm ucs ldap-federation get --json)
 					start_tls_ucs=$(echo "$config_realm_ucs" | python3 -c "import sys, ast; print(ast.literal_eval(sys.stdin.read())['config']['startTls'][0])")
 					if [ "$start_tls_ucs" = "true" ]; then
 						echo "startTLS is enabled for realm 'ucs', disabling connectionPooling..."

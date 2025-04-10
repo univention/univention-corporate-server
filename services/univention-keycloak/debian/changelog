@@ -1,4 +1,4 @@
-univention-keycloak (1.0.14-4) unstable; urgency=medium
+univention-keycloak (1.0.14-5) unstable; urgency=medium
 
   * Bug #58182: deactivate connectionPooling while startTls is active (for upgrades)
 
@@ -6,7 +6,7 @@ univention-keycloak (1.0.14-4) unstable; urgency=medium
 
 univention-keycloak (1.0.14-3) unstable; urgency=medium
 
-  * Bug #58183: fix alias ip-subnets config in conditional kerberos authentication flow
+  * Bug #58182: fix alias ip-subnets config in conditional kerberos authentication flow
 
  -- Felix Botner <botner@univention.de>  Wed, 09 Apr 2025 13:55:53 +0200
 
