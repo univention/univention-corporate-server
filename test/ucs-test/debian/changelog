@@ -1,3 +1,9 @@
+ucs-test (10.0.24-13) unstable; urgency=medium
+
+  * Bug #58183: fix tests for keycloak 26
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Apr 2025 09:08:00 +0200
+
 ucs-test (10.0.24-12) unstable; urgency=medium
 
   * Bug #58183: fix tests for keycloak 26
