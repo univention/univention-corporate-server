@@ -274,6 +274,7 @@ def browser_context_args(browser_context_args):
 
 @pytest.fixture(scope='session')
 def browser_type_launch_args(browser_type_launch_args):
+    os.environ['LANG'] = 'en_US.UTF-8'
     del browser_type_launch_args['executable_path']
     return {
         **browser_type_launch_args,

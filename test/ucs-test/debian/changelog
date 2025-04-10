@@ -1,3 +1,9 @@
+ucs-test (10.0.24-14) unstable; urgency=medium
+
+  * Bug #58183: fix tests for keycloak 26
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 10 Apr 2025 11:22:07 +0000
+
 ucs-test (10.0.24-13) unstable; urgency=medium
 
   * Bug #58183: fix tests for keycloak 26
