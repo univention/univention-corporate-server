@@ -56,7 +56,7 @@ EXPECTED_EXECUTIONS = [
         'configurable': False,
         'authenticationFlow': True,
         'level': 0,
-        'index': 3,
+        'index': 4,
         'priority': 30,
     },
     {
@@ -113,14 +113,52 @@ EXPECTED_EXECUTIONS = [
         'index': 2,
         'priority': 25,
     },
+    {
+        'authenticationFlow': True,
+        'configurable': False,
+        'displayName': 'Browser - Conditional Organization (foo)',
+        'index': 0,
+        'level': 1,
+        'priority': 10,
+        'requirement': 'CONDITIONAL',
+    },
+    {
+        'configurable': True,
+        'displayName': 'Organization Identity-First Login',
+        'index': 1,
+        'level': 2,
+        'priority': 20,
+        'providerId': 'organization',
+        'requirement': 'ALTERNATIVE',
+    },
+    {
+        'configurable': False,
+        'displayName': 'Condition - user configured',
+        'index': 0,
+        'level': 2,
+        'priority': 10,
+        'providerId': 'conditional-user-configured',
+        'requirement': 'REQUIRED',
+    },
+    {
+        'authenticationFlow': True,
+        'configurable': False,
+        'displayName': 'Organization (foo)',
+        'index': 3,
+        'level': 0,
+        'priority': 26,
+        'requirement': 'ALTERNATIVE',
+    },
 ]
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
 def test_univention_keycloak_legacy_flow_config(keycloak_administrator_connection, ucr):
-    flows = keycloak_administrator_connection.get_authentication_flows()
-    if not any(x['alias'] == CONDITION_KERBEROS_FLOW_NAME for x in flows):
-        run_command(['univention-keycloak', 'conditional-krb-authentication-flow', 'create', '--allowed-ip=10.205.0.0/16', '--name=foo'])
+    flow_alias = CONDITION_KERBEROS_FLOW_NAME
+    flow_id = None
+    try:
+        run_command(['univention-keycloak', 'conditional-krb-authentication-flow', 'create', '--allowed-ip=10.205.0.0/16', f'--name={flow_alias}'])
+        flow_id = next(iter([flow['id'] for flow in keycloak_administrator_connection.get_authentication_flows() if flow['alias'] == flow_alias]))
         executions = keycloak_administrator_connection.get_authentication_flow_executions(CONDITION_KERBEROS_FLOW_NAME)
         for e in executions:
             del e['id']
@@ -135,6 +173,9 @@ def test_univention_keycloak_legacy_flow_config(keycloak_administrator_connectio
         sorted_expected_executions = sorted(EXPECTED_EXECUTIONS, key=lambda ele: sorted(ele.items()))
         print(sorted_executions)
         assert sorted_executions == sorted_expected_executions
+    finally:
+        if flow_id:
+            keycloak_administrator_connection.delete_authentication_flow(flow_id)
 
 
 KERBEROS_FLOWS = {
@@ -145,19 +186,17 @@ KERBEROS_FLOWS = {
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
 @pytest.mark.parametrize('protocol', ['saml', 'oidc'])
-@pytest.mark.parametrize('allowed', ['allowed', 'notallowed'])
-def test_kerberos_authentication(keycloak_administrator_connection, portal_login_via_keycloak, ucr, protocol, portal_config, allowed):
-    flow = KERBEROS_FLOWS['allowed'] if allowed == 'allowed' else KERBEROS_FLOWS['notallowed']
-    flows = keycloak_administrator_connection.get_authentication_flows()
-    if not any(x['alias'] == allowed for x in flows):
-        run_command(flow)
-
-    oidc_client = f'https://{portal_config.fqdn}/univention/oidc/'
-    saml_client = f'https://{portal_config.fqdn}/univention/saml/metadata'
+@pytest.mark.parametrize('flow_alias', ['allowed', 'notallowed'])
+def test_kerberos_authentication(keycloak_administrator_connection, portal_login_via_keycloak, ucr, protocol, portal_config, flow_alias):
     try:
-        run_command(['univention-keycloak', 'client-auth-flow', '--clientid', saml_client, '--auth-flow', allowed])
-        run_command(['univention-keycloak', 'client-auth-flow', '--clientid', oidc_client, '--auth-flow', allowed])
-        if allowed == 'allowed':
+        flow_id = None
+        oidc_client = f'https://{portal_config.fqdn}/univention/oidc/'
+        saml_client = f'https://{portal_config.fqdn}/univention/saml/metadata'
+        run_command(KERBEROS_FLOWS[flow_alias])
+        flow_id = next(iter([flow['id'] for flow in keycloak_administrator_connection.get_authentication_flows() if flow['alias'] == flow_alias]))
+        run_command(['univention-keycloak', 'client-auth-flow', '--clientid', saml_client, '--auth-flow', flow_alias])
+        run_command(['univention-keycloak', 'client-auth-flow', '--clientid', oidc_client, '--auth-flow', flow_alias])
+        if flow_alias == 'allowed':
             kerberos_auth(portal_login_via_keycloak, ucr, protocol, portal_config)
         else:
             with pytest.raises((AttributeError, KeyError)):
@@ -165,3 +204,5 @@ def test_kerberos_authentication(keycloak_administrator_connection, portal_login
     finally:
         run_command(['univention-keycloak', 'client-auth-flow', '--clientid', saml_client, '--auth-flow', 'browser'])
         run_command(['univention-keycloak', 'client-auth-flow', '--clientid', oidc_client, '--auth-flow', 'browser'])
+        if flow_id:
+            keycloak_administrator_connection.delete_authentication_flow(flow_id)
