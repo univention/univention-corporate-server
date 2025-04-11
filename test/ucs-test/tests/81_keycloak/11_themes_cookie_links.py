@@ -201,6 +201,8 @@ def test_login_page_all_elements_are_tabbable(portal_login_via_keycloak, keycloa
     page.keyboard.press("Tab")
     assert page.evaluate("() => document.activeElement.name") == 'password'
     page.keyboard.press("Tab")
+    assert page.evaluate("() => document.activeElement.name") == ''  # switch password
+    page.keyboard.press("Tab")
     assert page.evaluate("() => document.activeElement.name") == 'login'
     # some browser fields
     page.keyboard.press("Tab")
