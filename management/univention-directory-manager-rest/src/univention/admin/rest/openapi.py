@@ -43,10 +43,10 @@ from univention.admin.rest.sanitizer import (
     BooleanSanitizer, BoolSanitizer, ChoicesSanitizer, DictSanitizer, DNSanitizer, IntegerSanitizer, ListSanitizer,
     Param, StringSanitizer,
 )
+from univention.admin.rest.udm import UDM_Module
 from univention.admin.rest.utils import NotFound, superordinate_names
 from univention.config_registry import ucr
 from univention.lib.i18n import Translation
-from univention.management.console.modules.udm.udm_ldap import UDM_Module
 
 
 _ = Translation('univention-directory-manager-rest').translate

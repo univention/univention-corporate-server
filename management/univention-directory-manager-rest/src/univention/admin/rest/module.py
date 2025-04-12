@@ -87,6 +87,10 @@ from univention.admin.rest.sanitizer import (
     StringSanitizer, ValidationError, sanitize,
 )
 from univention.admin.rest.shared_memory import JsonEncoder, shared_memory
+from univention.admin.rest.udm import (
+    NoIpLeft, ObjectDoesNotExist, SuperordinateDoesNotExist, UDM_Error, UDM_Module, container_modules, get_module,
+    ldap_dn2path, list_objects,
+)
 from univention.admin.rest.utils import (
     RE_UUID, NotFound, _get_post_read_entry_uuid, _map_normalized_dn, decode_properties, parse_content_type, quote_dn,
     superordinate_names, unquote_dn,
@@ -97,10 +101,6 @@ from univention.management.console.config import ucr
 from univention.management.console.error import LDAP_ConnectionFailed, LDAP_ServerDown, UMC_Error, UnprocessableEntity
 from univention.management.console.modules.udm.tools import (
     LicenseError, LicenseImport as LicenseImporter, check_license, dump_license,
-)
-from univention.management.console.modules.udm.udm_ldap import (
-    NoIpLeft, ObjectDoesNotExist, SuperordinateDoesNotExist, UDM_Error, UDM_Module, container_modules, get_module,
-    ldap_dn2path, list_objects,
 )
 from univention.password import generate_password, password_config
 
