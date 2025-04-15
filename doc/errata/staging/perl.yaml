@@ -6,7 +6,8 @@ src: perl
 fix: 5.36.0-7+deb12u2
 desc: |
  This update addresses the following issue:
- * CVSS score unknown. (CVE-2024-56406)
+ * CVSS score 8.4 (CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2024-56406)
 bug: [58194]
 cve:
 - CVE-2024-56406
