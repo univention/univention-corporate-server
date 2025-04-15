@@ -2,9 +2,8 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright (C) Copyright 2005-2025 Univention GmbH
-# This file is distributed under the same license as the univention-directory-manager-module-example package.
-#
+# SPDX-FileCopyrightText: 2005-2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-module-example 2.0.9\n"

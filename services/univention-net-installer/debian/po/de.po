@@ -1,8 +1,8 @@
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
-# Copyright (C) 2015-2025 Univention GmbH
-# Philipp Hahn <hahn@univention.de>, 2015.
+# SPDX-FileCopyrightText: 2015-2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
 #
 msgid ""
 msgstr ""

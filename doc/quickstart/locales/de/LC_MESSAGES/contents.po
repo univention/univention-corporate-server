@@ -1,8 +1,5 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2021-2022, Univention GmbH.
-# This file is distributed under the same license as the Quick start guide
-# for Univention Corporate Server package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+# SPDX-FileCopyrightText: 2021-2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
 #
 msgid ""
 msgstr ""

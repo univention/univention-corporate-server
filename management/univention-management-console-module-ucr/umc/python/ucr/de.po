@@ -1,8 +1,5 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Univention GmbH
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# SPDX-FileCopyrightText: 2020-2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-ucr\n"

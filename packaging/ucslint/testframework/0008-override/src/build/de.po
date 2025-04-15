@@ -1,5 +1,5 @@
-# Copyright (C) 2006-2025 Univention GmbH
-# Univention GmbH <packages@univention.de>
+# SPDX-FileCopyrightText: 2006-2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
 # This file is distributed under the same license as this package.
 #
 msgid ""
