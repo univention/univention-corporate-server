@@ -119,6 +119,7 @@ class OIDCAuth:
             resp = await self.http_client.fetch(token_request)
         except HTTPClientError as err:
             raise OIDCAuthError('failed to exchange code for tokens') from err
+
         return TokenResponse.from_dict(json.loads(resp.body))
 
     async def token_exchange(self, subject_token: str, aud: str) -> TokenResponse:
@@ -219,7 +220,7 @@ class OIDCAuth:
 
         if not token.get('sub') and not token.get('sid'):
             raise OIDCAuthError('failed to verify logout token, does not contain sub or sid')
-        if not token['events'] or 'http://schemas.openid.net/event/backchannel-logout' not in token['events']:
+        if 'events' not in token or 'http://schemas.openid.net/event/backchannel-logout' not in token['events']:
             raise OIDCAuthError('failed to verify logout token, does not contain a logout event')
         if token.get('nonce'):
             raise OIDCAuthError('failed to verify logout token, contains a nonce')

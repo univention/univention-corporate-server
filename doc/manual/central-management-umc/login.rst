@@ -466,27 +466,28 @@ In these cases, you must consider the following aspects:
    In both cases, the refresh of the portal tabs isn't supported and won't work, as it requires
    a :program:`PostgreSQL` database.
 
-Configuring the Portal as an OIDC Relying Party
+Configuring the portal as an OIDC relying party
 -----------------------------------------------
 
-By default, the Portal relies on the Univention Management Console (UMC) for authentication. However, it can be configured to handle authentication independently using the OpenID Connect (OIDC) protocol. This setup configures the Portal as an OIDC Relying Party (RP), enabling it to authenticate users against an OIDC Identity Provider (IdP) such as Keycloak.
+By default, the Portal relies on the UMC for authentication. However, Administrators can configure it to handle authentication independently using the OIDC protocol. This setup configures the Portal as an OIDC Relying Party, enabling it to authenticate users against an OIDC Identity Provider such as Keycloak.
 
 Activation
 ~~~~~~~~~~
 
 Follow these steps to enable OIDC authentication for the Portal:
 
-#. **Ensure Keycloak is installed:**
-   Verify that Keycloak is installed and configured within your UCS domain.
+#. **Ensure Keycloak installation:**
+   Verify the Keycloak instllation and configuration within your UCS domain.
 
 #. **Verify Database Configuration:**
-   An SQL database is required for OIDC session management.
+   OIDC session management requires an SQL database.
    By default, the :program:`PostgreSQL` database included with UCS is automatically configured and used.
-   If you wish to use a different SQL database, ensure that a compatible *asynchronous* database driver is installed. The Portal's OIDC implementation uses async :program:`SQLAlchemy`.
+   If you want to use a different SQL database, install a compatible *asynchronous* database driver.
+   The Portal's OIDC implementation uses async :program:`SQLAlchemy`.
    Consult the `SQLAlchemy documentation on supported dialects and drivers <https://docs.sqlalchemy.org/en/14/dialects/index.html>`_ for compatibility details.
 
 #. **Enable the OIDC Feature:**
-   Set the necessary Univention Configuration Registry (UCR) variables and run the join script to configure the Keycloak client.
+   Set the necessary UCR variables and run the join script to configure the Keycloak client.
 
    .. code-block:: console
       :caption: Enable OIDC, set auth mode, and run join script
@@ -494,7 +495,7 @@ Follow these steps to enable OIDC authentication for the Portal:
 
       # Enable OIDC authentication for the portal
       $ ucr set portal/oidc/enabled=true
-      # Set the portal authentication mode (verify if still needed alongside portal/oidc/enabled)
+      # Set the portal authentication mode
       $ ucr set portal/auth-mode=true
       # Run the portal join script to create/update the Keycloak client
       # and configure required UCR variables (e.g., client ID, secret)
@@ -514,42 +515,43 @@ Follow these steps to enable OIDC authentication for the Portal:
    Update existing links or create new ones pointing to the Portal's OIDC login endpoint: ``https://$portal_hostname/univention/portal/login``.
    Alternatively, the login button found in the side-menu automatically use the correct login endpoint after the configuration change.
 
-Session Timeout Configuration
+Session timeout configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The Portal's user session duration is directly controlled by the token lifetime settings configured in Keycloak, specifically relating to the refresh token.
-To adjust how long a user's Portal session remains active, you need to modify the session settings within Keycloak.
+To adjust how long a user's Portal session is active, you need to modify the session settings within Keycloak.
 
-These settings can be configured at two levels:
+The Administrator can configure the setting at two levels:
 
-1.  **Realm Level:** Applies globally to all clients within the realm unless overridden by client-specific settings.
+1. **Realm Level:** Applies globally to all clients within the realm unless overridden by client-specific settings.
 
-    * Navigate to **Realm settings** > **Sessions** tab.
-    * Adjust **Client Session Idle** and **Client Session Max**.
+   * Navigate to **Realm settings** > **Sessions** tab.
+   * Adjust **Client Session Idle** and **Client Session Max**.
 
-2.  **Client Level:** Overrides the realm settings specifically for the Portal client application.
+2. **Client Level:** Overrides the realm settings specifically for the Portal client application.
 
-    * Navigate to **Clients** > Select your Portal client ID.
-    * Go to the **Advanced** tab > **Advanced Settings** section.
-    * Adjust **Client Session Idle** and **Client Session Max**.
+   * Navigate to **Clients** > Select your Portal client ID.
+   * Go to the **Advanced** tab > **Advanced Settings** section.
+   * Adjust **Client Session Idle** and **Client Session Max**.
 
 **Key Settings Explained:**
 
-* **Client Session Idle:** Defines the maximum time a user's session can remain inactive (no user activity triggering authentication checks or token refreshes via the RP) before it expires.
+* **Client Session Idle:** Defines the maximum time a user's session can remain inactive
+  A session is inactive when the user does't perform any activity triggering authentication checks or token refreshes by the RP.
   The refresh token's initial validity often corresponds to this setting.
 * **Client Session Max:** Defines the absolute maximum time a session can exist, regardless of activity or token refreshes.
   After this time elapses, the user *must* re-authenticate.
 
 **Session Lifecycle:**
 
-* Upon login, Keycloak issues tokens (e.g., access token, refresh token) to the Portal (RP).
-* The Portal uses the refresh token to silently obtain new access and refresh tokens as needed, allowing the user session to continue as long as activity occurs within the **Client Session Idle** limit and the session has not reached **Client Session Max**.
-* If the refresh token expires (due to inactivity exceeding **Client Session Idle** or the session reaching **Client Session Max**), the user's Portal session ends, and they will be prompted to log in again upon the next interaction.
+* Upon login, Keycloak issues tokens to the Portal.
+* The Portal uses the refresh token to silently obtain new Access- and Refreshtokens as needed, allowing the user session to continue as long as activity occurs within the **Client Session Idle** limit and the session hasn't reached **Client Session Max**.
+* If the refresh token expires, due to inactivity exceeding **Client Session Idle** or the session reaching **Client Session Max**, the user's Portal session ends, and they're prompted to login again upon the next interaction.
 
 Caveats
 ~~~~~~~
 
-* **UMC Access:** Even when the Portal uses OIDC authentication, accessing the Univention Management Console (UMC) itself still requires a separate UMC session.
-* **Single Sign-On (SSO):** It is strongly recommended to configure both the Portal and the UMC to use the same OIDC Identity Provider (e.g. the same Keycloak realm, *not* the same client configuration).
-  If SSO for the Portal and UMC is correctly set up, navigating to a UMC module from the Portal automatically establishes the necessary UMC session without requiring separate login steps.
-  For details on configuring UMC for SSO, refer to the :ref:`Single Sign-On <central-management-umc-login-single-sign-on>` section.
+* **UMC Access:** Even when the Portal uses OIDC authentication, accessing the UMC itself still requires a separate UMC session.
+* **Single sign-on:** It's strongly recommended to configure both the Portal and the UMC to use the same OIDC Identity Provider.
+  If single sign-on for the Portal and UMC is correctly set up, navigating to a UMC module from the Portal automatically establishes the necessary UMC session without requiring separate login steps.
+  For details on configuring UMC for single sign-on, refer to the :ref:`single sign-on <central-management-umc-login-single-sign-on>` section.
