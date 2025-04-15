@@ -524,6 +524,23 @@ if blocking_computers or blocking_objects:
     exit(1)'
 }
 
+
+# Bug 58164: Upgrade to UCS 5.2: LDAP Database is empty - Loading the domain database from the LDIF dump failed - attribute type undefined
+disabled_update_check_cool_solutions () {
+  ! is_ucr_true repository/online/component/cool-solutions && return 0
+  if [ "$repository_online_component_cool-solutions_version" = "current" ]; then
+    return 0
+  fi
+  echo "	Cool Solutions component is not correctly setup"
+  echo "	Setting repository/online/component/cool-solutions/version to current."
+  ucr set repository/online/component/cool-solutions/version=current 2>>"$UPDATER_LOG" 3>>"$UPDATER_LOG" 1>>"$UPDATER_LOG"
+  ucr unset " repository/online/component/cool-solutions/version" 2>>"$UPDATER_LOG" 3>>"$UPDATER_LOG" 1>>"$UPDATER_LOG"
+  echo "	Setting repository/online/component/cool-solutions/unmaintained to yes."
+  ucr set repository/online/component/cool-solutions/unmaintained=yes 2>>"$UPDATER_LOG" 3>>"$UPDATER_LOG" 1>>"$UPDATER_LOG"
+  ucr unset " repository/online/component/cool-solutions/unmaintained" 2>>"$UPDATER_LOG" 3>>"$UPDATER_LOG" 1>>"$UPDATER_LOG"
+  return 1
+}
+
 checks () {
 	# stderr to log
 	exec 2>>"$UPDATER_LOG"
