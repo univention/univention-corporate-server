@@ -9,3 +9,6 @@ desc: |
  * In the experimental feature "delegative administation" one can now define
    writable attributes for UDM objects.
 bug: [58201]
+erratum: 73
+announced: 2025-04-16
+support: core
