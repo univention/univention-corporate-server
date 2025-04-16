@@ -134,7 +134,7 @@ The following API clients implemented in Python exist for the |UCSREST|:
 
 * Python |UCSREST| Client:
 
-  * `Package at PyPI <https://pypi.org/project/udm-rest-client/>`_
+  * `Package at PyPI <https://pypi.org/project/udm-rest-api-client/>`_
   * :external+python-udm-rest-client:doc:`Documentation <index>`
 
 .. spelling:word-list::
