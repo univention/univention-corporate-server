@@ -10,3 +10,6 @@ desc: |
    checks that the installed postgresql version is not lower
    than postgresql 11.
 bug: [57779]
+erratum: 1253
+announced: 2025-04-16
+support: core
