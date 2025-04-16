@@ -9,3 +9,6 @@ desc: |
  * Logging of failure reasons when retrieving the OIDC access token has been
    improved.
 bug: [58199]
+erratum: 1247
+announced: 2025-04-16
+support: core
