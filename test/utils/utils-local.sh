@@ -74,13 +74,15 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'/var/log/apt/term.log'
 		'/var/log/daemon.log*'=
 		'/var/log/dpkg.log'
+		'/var/log/heimdal-kdc.log'
 		'/var/log/kern.log'
 		'/var/log/dovecot.log*'=
 		'/var/log/journalctl.log'
 		'/var/log/mail.log*'=
 		'/var/log/samba/*'=
-		'/var/log/univention/sysvol-sync.log'
+		'/var/log/sssd/*'=
 		'/var/log/syslog*'=
+		'/var/log/univention/sysvol-sync.log'
 		'/var/log/univention/actualise.log'
 		'/var/log/univention/admindiary.log'
 		'/var/log/univention/appcenter.log'
