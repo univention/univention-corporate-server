@@ -13,3 +13,6 @@ desc: |
    For migration of data from `postgresql-11` to `postgresql-15` please
    follow the steps described in https://help.univention.com/t/22162 .
 bug: [57779]
+erratum: 1250
+announced: 2025-04-16
+support: core
