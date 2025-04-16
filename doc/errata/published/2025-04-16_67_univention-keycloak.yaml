@@ -11,3 +11,6 @@ desc: |
    if `startTls` is disabled. This is due to underlying limitations with
    pooling secure (TLS) connections.
 bug: [58183]
+erratum: 67
+announced: 2025-04-16
+support: core
