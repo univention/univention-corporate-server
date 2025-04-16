@@ -528,7 +528,7 @@ if blocking_computers or blocking_objects:
 # Bug 58164: Upgrade to UCS 5.2: LDAP Database is empty - Loading the domain database from the LDIF dump failed - attribute type undefined
 disabled_update_check_cool_solutions () {
   ! is_ucr_true repository/online/component/cool-solutions && return 0
-  if [ "$repository_online_component_cool-solutions_version" = "current" ]; then
+  if [ "$repository_online_component_cool_solutions_version" = "current" ]; then
     return 0
   fi
   echo "	Cool Solutions component is not correctly setup"
