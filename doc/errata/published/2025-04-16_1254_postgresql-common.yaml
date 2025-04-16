@@ -10,3 +10,6 @@ desc: |
    `postgresql-15` to UCS 5.0-10, which depends on a newer version of
    `postgresql-common`.
 bug: [57779]
+erratum: 1254
+announced: 2025-04-16
+support: core
