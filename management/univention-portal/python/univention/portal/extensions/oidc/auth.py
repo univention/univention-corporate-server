@@ -183,11 +183,12 @@ class OIDCAuth:
 
         try:
             return jwt.decode(token, key.key, self.id_token_signing_alg_values_supported, {
-                'require': ['exp', 'sub', 'iss', 'aud', 'uid'],
-                'verify_aud': False,
+                'require': ['exp', 'sub', 'iss', 'aud', 'uid', 'iat'],
+                'verify_aud': True,
                 'verify_issuer': True,
                 'verify_exp': True,
-            }, issuer=self.issuer, leeway=20)
+                'verify_iat': True,
+            }, issuer=self.issuer, leeway=20, audience=self.client_id)
         except jwt.InvalidTokenError as err:
             raise OIDCAuthError('failed to decode ID-Token') from err
 
@@ -206,15 +207,15 @@ class OIDCAuth:
             raise OIDCAuthError('failed to find key for logout token')
 
         # https://openid.net/specs/openid-connect-backchannel-1_0.html#Validation
-        # TODO: validate aud
         get_logger('user').debug('got logout token')
         try:
             token = jwt.decode(logout_token, key.key, self.id_token_signing_alg_values_supported, {
-                'require': ['exp', 'iss', 'aud'],
-                'verify_aud': False,
+                'require': ['exp', 'iss', 'aud', 'iat', 'jti', 'events'],
+                'verify_aud': True,
                 'verify_issuer': True,
                 'verify_exp': True,
-            }, issuer=self.issuer, leeway=20)
+                'verify_iat': True,
+            }, issuer=self.issuer, leeway=20, audience=self.client_id)
         except jwt.InvalidTokenError as err:
             raise OIDCAuthError('failed to decode logout token') from err
 

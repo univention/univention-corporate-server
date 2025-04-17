@@ -224,6 +224,7 @@ class OIDCAuthenticator(Authenticator):
 
         self.session_repository = SessionRepository(self.get_db_connection)
         self.state_repository = StateRepository(self.get_db_connection)
+        self.start_cleanup_task = oidc_config.get('db_cleanup', True)
         self.cleanup_task = None
 
         with open(oidc_config['openid_configuration']) as fd:
@@ -253,7 +254,8 @@ class OIDCAuthenticator(Authenticator):
         async with self.__init_lock:
             if not self.__pool_opened:
                 await self.__create_schema()
-                self.cleanup_task = asyncio.create_task(cleanup(self.get_db_connection))
+                if self.start_cleanup_task:
+                    self.cleanup_task = asyncio.create_task(cleanup(self.get_db_connection))
                 self.__pool_opened = True
 
     @asynccontextmanager
