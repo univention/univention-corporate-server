@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [9, 10]
+scope: ucs_5.0-0-errata5.0-10
+src: postgresql-11
+fix: 11.22-0+deb10u5
+desc: |
+ This update addresses the following issue:
+ * CVSS score 8.1 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2025-1094)
+bug: [58215]
+cve:
+- CVE-2025-1094
