@@ -163,7 +163,7 @@ def _check_permissions(obj: object | str, caps: list[dict], action: str) -> bool
 
 def _get_attrs_from_permissions(module_name: str, permissions: dict) -> (list[str], list[str], list[str]):
     """Retrieves writable and explicitly readable attributes for a given module from permissions."""
-    attributes = permissions.get(module_name, {}).get('attributes', []) or permissions.get('*', {}).get('attributes', [])
+    attributes = permissions.get(module_name, {}).get('attributes', {}).get('access', []) or permissions.get('*', {}).get('attributes', {}).get('access', [])
     readable_attributes = [attr for attr in attributes if attributes[attr] == 'read']
     writable_attributes = [attr for attr in attributes if attributes[attr] == 'write']
     none_attributes = [attr for attr in attributes if attributes[attr] == 'none']
