@@ -194,22 +194,22 @@ class TestUDMPermission:
         assert _check_condition(position, condition) == expected
 
     @pytest.mark.parametrize("module_name, permissions, expected", [
-        ("users/user", {"users/user": {"attributes": {"username": "read", "email": "write"}}}, (['email'], ['username'], [])),
-        ("groups/group", {"users/user": {"attributes": {"username": "read", "email": "write"}}}, ([], [], [])),
-        ("users/user", {"*": {"attributes": {"username": "read", "email": "write"}}}, (['email'], ['username'], [])),
-        ("users/user", {"users/user": {"attributes": {"*": "read"}}}, ([], ["*"], [])),
-        ("groups/group", {"users/user": {"attributes": {"*": "read"}}}, ([], [], [])),
+        ("users/user", {"users/user": {"attributes": {"username": {"access": "read"}, "email": {"access": "write"}}}}, (['email'], ['username'], [])),
+        ("groups/group", {"users/user": {"attributes": {"username": {"access": "read"}, "email": {"access": "write"}}}}, ([], [], [])),
+        ("users/user", {"*": {"attributes": {"username": {"access": "read"}, "email": {"access": "write"}}}}, (['email'], ['username'], [])),
+        ("users/user", {"users/user": {"attributes": {"*": {"access": "read"}}}}, ([], ["*"], [])),
+        ("groups/group", {"users/user": {"attributes": {"*": {"access": "read"}}}}, ([], [], [])),
     ])
     def test_get_attrs_from_permissions(self, module_name, permissions, expected):
         assert _get_attrs_from_permissions(module_name, permissions) == expected
 
     @pytest.mark.parametrize("module_name, permissions, expected", [
-        ("users/user", {"users/user": {"attributes": {"username": "read", "email": "write"}}}, (["username", "email"], [])),
-        ("groups/group", {"users/user": {"attributes": {"username": "read", "email": "write"}}}, ([], [])),
-        ("users/user", {"*": {"attributes": {"username": "read", "email": "write"}}}, (["username", "email"], [])),
-        ("users/user", {"users/user": {"attributes": {"*": "read"}}}, (["*"], [])),
-        ("groups/group", {"users/user": {"attributes": {"*": "read"}}}, ([], [])),
-        ("users/user", {"users/user": {"attributes": {"username": "read", "email": "write", "description": "none"}}}, (["username", "email"], ["description"])),
+        ("users/user", {"users/user": {"attributes": {"username": {"access": "read"}, "email": {"access": "write"}}}}, (["username", "email"], [])),
+        ("groups/group", {"users/user": {"attributes": {"username": {"access": "read"}, "email": {"access": "write"}}}}, ([], [])),
+        ("users/user", {"*": {"attributes": {"username": {"access": "read"}, "email": {"access": "write"}}}}, (["username", "email"], [])),
+        ("users/user", {"users/user": {"attributes": {"*": {"access": "read"}}}}, (["*"], [])),
+        ("groups/group", {"users/user": {"attributes": {"*": {"access": "read"}}}}, ([], [])),
+        ("users/user", {"users/user": {"attributes": {"username": {"access": "read"}, "email": {"access": "write"}, "description": {"access": "none"}}}}, (["username", "email"], ["description"])),
     ])
     def test_get_readable_attrs_from_permissions(self, module_name, permissions, expected):
         readable, non_readable = _get_readable_attrs_from_permissions(module_name, permissions)
