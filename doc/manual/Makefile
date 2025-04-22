@@ -23,8 +23,8 @@ current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
 
 USER_ID := $(shell id -u)
 DOCKER_REGISTRY := gitregistry.knut.univention.de
-SPHINX_DOCKER_BASE = $(DOCKER_REGISTRY)/univention/documentation/sphinx-docker/base:latest
-SPHINX_DOCKER_FULL = $(DOCKER_REGISTRY)/univention/documentation/sphinx-docker/pdf:latest
+SPHINX_DOCKER_BASE = $(DOCKER_REGISTRY)/univention/dev/docs/sphinx-docker/base:latest
+SPHINX_DOCKER_FULL = $(DOCKER_REGISTRY)/univention/dev/docs/sphinx-docker/pdf:latest
 SPHINX_DOCKER = $(SPHINX_DOCKER_BASE)
 DOCKER_CMD := docker run --interactive --tty --rm -v "$(dir_root):$(dir_root)" -v "$(dir_git):$(dir_git):ro" -w $(dir_root) --network=host --pull=always -e SPHINXINTL_LANGUAGE -e SPHINXOPTS -e HOME=/tmp -u "$(USER_ID)"
 Q ?= @
