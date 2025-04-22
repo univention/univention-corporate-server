@@ -1,5 +1,5 @@
 include:
-  - project: 'univention/documentation/sphinx-docker'
+  - project: 'univention/dev/docs/sphinx-docker'
     file: 'pipeline/sphinx.yml'
 
 .sphinx-html:
