@@ -26,7 +26,7 @@ def errors():
     return {
         'The password has expired and must be renewed.': SamlPasswordExpired,
         'The account has expired.': SamlAccountExpired,
-        'Invalid username or password.': SamlAuthenticationFailed,
+        'The authentication has failed, please login again.': SamlAuthenticationFailed,
         'Your account is not verified.': SamlAccountNotVerified,
         'Changing password failed. The password was already used.': SamlPasswordChangeFailed,
         'Changing password failed. The password is too simple.': SamlPasswordChangeFailed,

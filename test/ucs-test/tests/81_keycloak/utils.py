@@ -55,7 +55,7 @@ TRANSLATIONS = {
         'Username or email': 'Benutzername oder E-Mail',
         'password': 'Passwort',
         'Sign In': 'Anmelden',
-        'Invalid username or password.': 'Ungültiger Benutzername oder Passwort.',
+        'The authentication has failed, please login again.': 'Authentisierung ist fehlgeschlagen. Bitte melden Sie sich erneut an.',
         'Login (Single sign-on)': 'Anmelden (Single Sign-on)',
         'Changing password failed. The password was already used.': 'Passwort ändern fehlgeschlagen. Das Passwort wurde bereits genutzt.',
         'Changing password failed. The password is too short.': 'Passwort ändern fehlgeschlagen. Das Passwort ist zu kurz.',

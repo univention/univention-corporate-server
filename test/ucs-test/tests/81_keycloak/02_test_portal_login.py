@@ -33,13 +33,13 @@ def test_login(portal_login_via_keycloak, udm, protocol):
 @pytest.mark.parametrize('protocol', ['saml', 'oidc'])
 def test_login_wrong_password_fails(portal_login_via_keycloak, udm, protocol):
     username = udm.create_user()[1]
-    assert portal_login_via_keycloak(username, 'univentionWrong', fails_with=_('Invalid username or password.'), protocol=protocol)
+    assert portal_login_via_keycloak(username, 'univentionWrong', fails_with=_('The authentication has failed, please login again.'), protocol=protocol)
 
 
 @pytest.mark.parametrize('protocol', ['saml', 'oidc'])
 def test_login_disabled_fails(portal_login_via_keycloak, udm, protocol):
     username = udm.create_user(disabled=1)[1]
-    assert portal_login_via_keycloak(username, 'univention', fails_with=_('Invalid username or password.'), protocol=protocol)
+    assert portal_login_via_keycloak(username, 'univention', fails_with=_('The authentication has failed, please login again.'), protocol=protocol)
 
 
 @pytest.mark.parametrize('protocol', ['saml', 'oidc'])
@@ -57,7 +57,7 @@ def test_password_change_pwdChangeNextLogin(portal_login_via_keycloak, udm, prot
 @pytest.mark.parametrize('protocol', ['saml', 'oidc'])
 def test_password_change_wrong_old_password_fails(portal_login_via_keycloak, udm, protocol):
     username = udm.create_user(pwdChangeNextLogin=1)[1]
-    assert portal_login_via_keycloak(username, 'univentionBAD', fails_with=_('Invalid username or password.'), protocol=protocol)
+    assert portal_login_via_keycloak(username, 'univentionBAD', fails_with=_('The authentication has failed, please login again.'), protocol=protocol)
 
 
 @pytest.mark.skipif(package_installed('univention-samba4'), reason='Univention Samba 4 is and passwordhistory is not active')
@@ -181,7 +181,7 @@ def test_login_not_possible_with_deleted_user(keycloak_config, portal_login_via_
     udm.remove_user(username)
 
     # user has been deleted, login should be denied
-    assert portal_login_via_keycloak(username, 'univention', fails_with=_('Invalid username or password.'), protocol=protocol)
+    assert portal_login_via_keycloak(username, 'univention', fails_with=_('The authentication has failed, please login again.'), protocol=protocol)
 
     # check that user is no longer available in keycloak
     users = keycloak_get_request(keycloak_config, 'realms/ucs/users', params={'search': username})
@@ -192,7 +192,7 @@ def test_login_not_possible_with_deleted_user(keycloak_config, portal_login_via_
 def test_account_expired(portal_login_via_keycloak, udm, protocol):
     yesterday = datetime.now() - timedelta(days=1)
     username = udm.create_user(userexpiry=yesterday.isoformat()[:10])[1]
-    portal_login_via_keycloak(username, 'univentionA', fails_with=_('Invalid username or password.'), protocol=protocol)
+    portal_login_via_keycloak(username, 'univentionA', fails_with=_('The authentication has failed, please login again.'), protocol=protocol)
     portal_login_via_keycloak(username, 'univention', fails_with=_('The account has expired.'), protocol=protocol)
 
 
@@ -203,7 +203,7 @@ def test_account_disabled(portal_login_via_keycloak, udm, protocol):
     changes = [('shadowExpire', [''], [b'1'])]
     ldap.modify(dn, changes)
     wait_for_listener_replication()
-    portal_login_via_keycloak(username, 'univentionA', fails_with=_('Invalid username or password.'), protocol=protocol)
+    portal_login_via_keycloak(username, 'univentionA', fails_with=_('The authentication has failed, please login again.'), protocol=protocol)
     portal_login_via_keycloak(username, 'univention', fails_with=_('The account is disabled.'), protocol=protocol)
 
 

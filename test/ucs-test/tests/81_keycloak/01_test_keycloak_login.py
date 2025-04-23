@@ -16,7 +16,7 @@ def test_login_administrator_with_wrong_password_fails(keycloak_adm_login, admin
     assert keycloak_adm_login(
         admin_account.username,
         f'{admin_account.bindpw}1234',
-        fails_with=_('Invalid username or password.'),
+        fails_with=_('The authentication has failed, please login again.'),
     )
     with pytest.raises(AssertionError):
         keycloak_adm_login(
@@ -33,7 +33,7 @@ def test_login_local_admin(keycloak_adm_login, keycloak_secret, keycloak_admin):
 
 def test_login_non_admin_fails(keycloak_adm_login, udm):
     username = udm.create_user(password='univention')[1]
-    assert keycloak_adm_login(username, 'univention', fails_with=_('Invalid username or password.'))
+    assert keycloak_adm_login(username, 'univention', fails_with=_('The authentication has failed, please login again.'))
 
 
 def test_login_domain_admins(keycloak_adm_login, domain_admins_dn, udm):
@@ -43,10 +43,10 @@ def test_login_domain_admins(keycloak_adm_login, domain_admins_dn, udm):
 
 def test_login_domain_admins_wrong_password_fails(keycloak_adm_login, domain_admins_dn, udm):
     username = udm.create_user(password='univention', primaryGroup=domain_admins_dn)[1]
-    assert keycloak_adm_login(username, 'password', fails_with=_('Invalid username or password.'))
+    assert keycloak_adm_login(username, 'password', fails_with=_('The authentication has failed, please login again.'))
 
 
 def test_login_domain_admins_pwdChangeNextLogin(keycloak_adm_login, domain_admins_dn, udm):
     # password change via admin console is not enabled
     username = udm.create_user(password='univention', primaryGroup=domain_admins_dn, pwdChangeNextLogin=1)[1]
-    assert keycloak_adm_login(username, 'univention', fails_with=_('Invalid username or password.'))
+    assert keycloak_adm_login(username, 'univention', fails_with=_('The authentication has failed, please login again.'))
