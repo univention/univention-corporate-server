@@ -33,6 +33,7 @@ ops = [
     f'cn=udm-groups,cn=operations,cn=UMC,cn=univention,{ucr["ldap/base"]}',
     f'cn=udm-users,cn=operations,cn=UMC,cn=univention,{ucr["ldap/base"]}',
     f'cn=udm-syntax,cn=operations,cn=UMC,cn=univention,{ucr["ldap/base"]}',
+    f'cn=udm-mail,cn=operations,cn=UMC,cn=univention,{ucr["ldap/base"]}',
 ]
 
 for op in ops:
