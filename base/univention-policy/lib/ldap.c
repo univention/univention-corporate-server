@@ -118,14 +118,14 @@ char *univention_ldap_read_secret(const char *filename) {
 	}
 	int count = read(fd, buf, MAX_SECRET_SIZE);
 	close(fd);
-	if (count < 0 || count > MAX_SECRET_SIZE) {
+	if (count < 0) {
 		perror("ldap_read_secret: read failed");
 		return NULL;
 	}
 	buf[count] = '\0';
-	char *c = strstr(buf, "\n");
-	if (c)
-		*c = '\0';
+	if (buf[count - 1] == '\n') {
+		buf[count - 1] = '\0';
+	}
 	return strdup(buf);
 }
 
@@ -164,6 +164,7 @@ err:
 }
 
 static int cb_urllist_proc(LDAP *ld, LDAPURLDesc **urllist, LDAPURLDesc **url, void *params) {
+	// What's the purpose of this if it doesn't even look at the passed selected url?
 	univention_ldap_parameters_t *lp = params;
 	return 0;
 }
@@ -216,7 +217,7 @@ int univention_ldap_open(univention_ldap_parameters_t *lp) {
 	}
 	univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "connecting to %s", uri);
 	rv = ldap_initialize(&lp->ld, uri);
-	if (uri != lp->uri)
+	if (uri != lp->uri)  // Neither ldap_initialize nor ldap_set_option indicate that this could happen. Anyway..
 		free(uri);
 	if (rv != LDAP_SUCCESS) {
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_initialize: %s", ldap_err2string(rv));
