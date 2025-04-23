@@ -253,7 +253,7 @@ def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
         'password_id': 'password',
         'login_error_css_selector': "span[class='pf-c-alert__title kc-feedback-text']",
         'password_update_error_css_selector': "span[class='pf-c-alert__title kc-feedback-text']",
-        'wrong_password_msg': 'Invalid username or password.',
+        'wrong_password_msg': 'The authentication has failed, please login again.',
         'wrong_password_msg_de': 'Ungültiger Benutzername oder Passwort.',
         'kc_passwd_update_form_id': 'kc-passwd-update-form',
         'password_confirm_id': 'password-confirm',
