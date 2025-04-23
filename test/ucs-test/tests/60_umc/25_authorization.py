@@ -195,6 +195,48 @@ def wait_for_progress(client, progress_id):
 
 
 @check_delegation
+@pytest.mark.parametrize('login_user, expected', [
+    ('ou_admin', False),
+    ('admin', True),
+])
+def test_mail_maildomain_add(bremen_ou, ldap_base, login_user, expected):
+    """
+    Add mail domain by ou_admin should fail, for admin not.
+
+    Example for json for post request on /univention/command/udm/add via web-ui
+    ```
+    {'flavor': 'mail/mail',
+     'options': [{'object': {'$policies$': {}, 'name': 'stuff.lan'},
+              'options': {'container': 'cn=domain,cn=mail,dc=ucs,dc=test',
+                          'objectTemplate': 'None',
+                          'objectType': 'mail/domain'}}]}
+    ```
+    """
+    client = Client()
+    if login_user == "admin":
+        client = Client.get_test_connection()
+    elif login_user == "ou_admin":
+        client.authenticate(bremen_ou.ouadmin_username, 'univention')
+
+    options = [{
+        'object': {
+            'name': 'my-test-maildomain.local',
+        },
+        "options": {
+            "container": "cn=domain,cn=mail" + ldap_base,
+            "objectType": "mail/domain",
+        },
+    }]
+
+    if not expected:
+        with pytest.raises(Forbidden):
+            client.umc_command('udm/add', options, 'mail/domain')
+    else:
+        client.umc_command('udm/add', options, 'mail/domain')
+        """udm/add -> mail/domain"""
+
+
+@check_delegation
 @pytest.mark.parametrize('login_user, user_dn, target_position, expected', [
     ('admin', '{normal_user}', 'cn=users,{ldap_base}', True),
     ('ou_admin', '{normal_user}', 'cn=users,{ldap_base}', False),

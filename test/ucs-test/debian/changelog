@@ -1,3 +1,10 @@
+ucs-test (12.1.12) unstable; urgency=medium
+
+  * ISSUE #2809: add test case 60_umc/25_authorization.py
+
+ -- Heiko Haase <heiko.haase.extern@univention.de>  Wed, 23 Apr 2025 18:32:00 +0200
+
+
 ucs-test (12.1.9) unstable; urgency=medium
 
   * Issue univention/ucs#2742: update 60_umc.25_authorization.py
