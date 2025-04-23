@@ -40,7 +40,7 @@ export TERMINATE="${TERMINATE:=$(_jenkins)}"
 export OS_CLOUD="${OS_CLOUD:=univention-development}"
 
 # some internal stuff
-image="${DIMAGE:-gitregistry.knut.univention.de/univention/dist/ucs-ec2-tools}"
+image="${DIMAGE:-gitregistry.knut.univention.de/univention/infrastructure/ucs-ec2-tools:latest}"
 : "${DEBUG:=false}"
 : "${DOCKER:=true}"
 
