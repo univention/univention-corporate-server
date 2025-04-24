@@ -1,3 +1,10 @@
+univention-updater (16.0.41) unstable; urgency=medium
+
+  * Issue univention/dev/internal/dev-issues/dev-incidents#140:
+    Raise minimal free space limit for /boot to 300 MB in check.sh
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Apr 2025 15:39:10 +0200
+
 univention-updater (16.0.40) unstable; urgency=medium
 
   * Issue univention/ucs#2663: add upgrade check for pam_tally references in the PAM
