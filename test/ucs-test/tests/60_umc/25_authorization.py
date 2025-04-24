@@ -203,10 +203,10 @@ def test_mail_maildomain_add(bremen_ou, ldap_base, login_user, expected):
     """
     Add mail domain by ou_admin should fail, for admin not.
 
-    Example for json for post request on /univention/command/udm/add via web-ui
+    Example json for post request on /univention/command/udm/add via web-ui.
     ```
     {'flavor': 'mail/mail',
-     'options': [{'object': {'$policies$': {}, 'name': 'stuff.lan'},
+     'options': [{'object': {'$policies$': {}, 'name': 'my-test-mail-domain.local'},
               'options': {'container': 'cn=domain,cn=mail,dc=ucs,dc=test',
                           'objectTemplate': 'None',
                           'objectType': 'mail/domain'}}]}
@@ -220,7 +220,7 @@ def test_mail_maildomain_add(bremen_ou, ldap_base, login_user, expected):
 
     options = [{
         'object': {
-            'name': 'my-test-maildomain.local',
+            'name': 'my-test-mail-domain.local',
         },
         "options": {
             "container": "cn=domain,cn=mail" + ldap_base,
