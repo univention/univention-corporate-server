@@ -42,8 +42,12 @@ The following files in JSON format define the default roles and custom roles:
           "permissions": {
             "users/user": {
               "attributes": {
-                 "username": "write",
-                 "*": "read"
+                 "username": {
+                    "access": "write"
+                  },
+                 "*": {
+                    "access": "read"
+                  },
               }
             }
           }
