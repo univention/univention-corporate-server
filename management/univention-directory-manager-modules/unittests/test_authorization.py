@@ -156,7 +156,7 @@ class TestUDMPermission:
                     "permissions": {
                         "*": {
                             "attributes": {
-                                "*": "read",
+                                "*": {"access": "read"},
                             },
                         },
                     },
@@ -169,8 +169,8 @@ class TestUDMPermission:
                     "permissions": {
                         "*": {
                             "attributes": {
-                                "username": "write",
-                                "last_name": "read",
+                                "username": {"access": "write"},
+                                "last_name": {"access": "read"},
                             },
                         },
                     },
@@ -194,22 +194,22 @@ class TestUDMPermission:
         assert _check_condition(position, condition) == expected
 
     @pytest.mark.parametrize("module_name, permissions, expected", [
-        ("users/user", {"users/user": {"attributes": {"username": "read", "email": "write"}}}, (['email'], ['username'], [])),
-        ("groups/group", {"users/user": {"attributes": {"username": "read", "email": "write"}}}, ([], [], [])),
-        ("users/user", {"*": {"attributes": {"username": "read", "email": "write"}}}, (['email'], ['username'], [])),
-        ("users/user", {"users/user": {"attributes": {"*": "read"}}}, ([], ["*"], [])),
-        ("groups/group", {"users/user": {"attributes": {"*": "read"}}}, ([], [], [])),
+        ("users/user", {"users/user": {"attributes": {"username": {"access": "read"}, "email": {"access": "write"}}}}, (['email'], ['username'], [])),
+        ("groups/group", {"users/user": {"attributes": {"username": {"access": "read"}, "email": {"access": "write"}}}}, ([], [], [])),
+        ("users/user", {"*": {"attributes": {"username": {"access": "read"}, "email": {"access": "write"}}}}, (['email'], ['username'], [])),
+        ("users/user", {"users/user": {"attributes": {"*": {"access": "read"}}}}, ([], ["*"], [])),
+        ("groups/group", {"users/user": {"attributes": {"*": {"access": "read"}}}}, ([], [], [])),
     ])
     def test_get_attrs_from_permissions(self, module_name, permissions, expected):
         assert _get_attrs_from_permissions(module_name, permissions) == expected
 
     @pytest.mark.parametrize("module_name, permissions, expected", [
-        ("users/user", {"users/user": {"attributes": {"username": "read", "email": "write"}}}, (["username", "email"], [])),
-        ("groups/group", {"users/user": {"attributes": {"username": "read", "email": "write"}}}, ([], [])),
-        ("users/user", {"*": {"attributes": {"username": "read", "email": "write"}}}, (["username", "email"], [])),
-        ("users/user", {"users/user": {"attributes": {"*": "read"}}}, (["*"], [])),
-        ("groups/group", {"users/user": {"attributes": {"*": "read"}}}, ([], [])),
-        ("users/user", {"users/user": {"attributes": {"username": "read", "email": "write", "description": "none"}}}, (["username", "email"], ["description"])),
+        ("users/user", {"users/user": {"attributes": {"username": {"access": "read"}, "email": {"access": "write"}}}}, (["username", "email"], [])),
+        ("groups/group", {"users/user": {"attributes": {"username": {"access": "read"}, "email": {"access": "write"}}}}, ([], [])),
+        ("users/user", {"*": {"attributes": {"username": {"access": "read"}, "email": {"access": "write"}}}}, (["username", "email"], [])),
+        ("users/user", {"users/user": {"attributes": {"*": {"access": "read"}}}}, (["*"], [])),
+        ("groups/group", {"users/user": {"attributes": {"*": {"access": "read"}}}}, ([], [])),
+        ("users/user", {"users/user": {"attributes": {"username": {"access": "read"}, "email": {"access": "write"}, "description": {"access": "none"}}}}, (["username", "email"], ["description"])),
     ])
     def test_get_readable_attrs_from_permissions(self, module_name, permissions, expected):
         readable, non_readable = _get_readable_attrs_from_permissions(module_name, permissions)
@@ -218,12 +218,12 @@ class TestUDMPermission:
         assert set(non_readable) == set(non_readable_expected)
 
     @pytest.mark.parametrize("module_name, permissions, expected", [
-        ("users/user", {"users/user": {"attributes": {"username": "read", "email": "write"}}}, (["email"], ["username"])),
-        ("groups/group", {"users/user": {"attributes": {"username": "read", "email": "write"}}}, ([], [])),
-        ("users/user", {"*": {"attributes": {"username": "read", "email": "write"}}}, (["email"], ["username"])),
-        ("users/user", {"users/user": {"attributes": {"*": "write"}}}, (["*"], [])),
-        ("groups/group", {"users/user": {"attributes": {"*": "write"}}}, ([], [])),
-        ("users/user", {"users/user": {"attributes": {"username": "read", "email": "write", "description": "none"}}}, (["email"], ["description", "username"])),
+        ("users/user", {"users/user": {"attributes": {"username": {"access": "read"}, "email": {"access": "write"}}}}, (["email"], ["username"])),
+        ("groups/group", {"users/user": {"attributes": {"username": {"access": "read"}, "email": {"access": "write"}}}}, ([], [])),
+        ("users/user", {"*": {"attributes": {"username": {"access": "read"}, "email": {"access": "write"}}}}, (["email"], ["username"])),
+        ("users/user", {"users/user": {"attributes": {"*": {"access": "write"}}}}, (["*"], [])),
+        ("groups/group", {"users/user": {"attributes": {"*": {"access": "write"}}}}, ([], [])),
+        ("users/user", {"users/user": {"attributes": {"username": {"access": "read"}, "email": {"access": "write"}, "description": {"access": "none"}}}}, (["email"], ["description", "username"])),
     ])
     def test_get_writable_attrs_from_permissions(self, module_name, permissions, expected):
         writable, non_writable = _get_writable_attrs_from_permissions(module_name, permissions)
@@ -243,10 +243,10 @@ class TestUDMPermission:
         assert _check_permissions(obj, cap, action) == expected
 
     @pytest.mark.parametrize("objs, caps, expected", [
-        ([{"id": "cn=test,dc=example,dc=com", "module_name": "users/user"}], [{"condition": {"position": "*"}, "permissions": {"users/user": {"attributes": {"*": "read"}}}}], [{"id": "cn=test,dc=example,dc=com", "module_name": "users/user"}]),
-        ([{"id": "cn=test,dc=example,dc=com", "module_name": "groups/group"}], [{"condition": {"position": "*"}, "permissions": {"users/user": {"attributes": {"*": "read"}}}}], []),
-        ([{"id": "cn=test,dc=example,dc=com", "module_name": "users/user"}, {"id": "cn=test2,dc=example,dc=com", "module_name": "groups/group"}], [{"condition": {"position": "*"}, "permissions": {"users/user": {"attributes": {"*": "read"}}}}], [{"id": "cn=test,dc=example,dc=com", "module_name": "users/user"}]),
-        ([{"id": "cn=test,dc=example,dc=com", "module_name": "users/user"}, {"id": "cn=test2,dc=example,dc=com", "module_name": "groups/group"}], [{"condition": {"position": "*"}, "permissions": {"*": {"attributes": {"*": "read"}}}}], [{"id": "cn=test,dc=example,dc=com", "module_name": "users/user"}, {"id": "cn=test2,dc=example,dc=com", "module_name": "groups/group"}]),
+        ([{"id": "cn=test,dc=example,dc=com", "module_name": "users/user"}], [{"condition": {"position": "*"}, "permissions": {"users/user": {"attributes": {"*": {"access": "read"}}}}}], [{"id": "cn=test,dc=example,dc=com", "module_name": "users/user"}]),
+        ([{"id": "cn=test,dc=example,dc=com", "module_name": "groups/group"}], [{"condition": {"position": "*"}, "permissions": {"users/user": {"attributes": {"*": {"access": "read"}}}}}], []),
+        ([{"id": "cn=test,dc=example,dc=com", "module_name": "users/user"}, {"id": "cn=test2,dc=example,dc=com", "module_name": "groups/group"}], [{"condition": {"position": "*"}, "permissions": {"users/user": {"attributes": {"*": {"access": "read"}}}}}], [{"id": "cn=test,dc=example,dc=com", "module_name": "users/user"}]),
+        ([{"id": "cn=test,dc=example,dc=com", "module_name": "users/user"}, {"id": "cn=test2,dc=example,dc=com", "module_name": "groups/group"}], [{"condition": {"position": "*"}, "permissions": {"*": {"attributes": {"*": {"access": "read"}}}}}], [{"id": "cn=test,dc=example,dc=com", "module_name": "users/user"}, {"id": "cn=test2,dc=example,dc=com", "module_name": "groups/group"}]),
     ])
     def test_check_permissions_read(self, objs, caps, expected):
         assert _check_permissions_read(objs, caps) == expected
@@ -302,12 +302,12 @@ class TestUDMPermission:
         ("groups/group", False),
     ])
     def test_check_permissions_modify(self, module_name, expected):
-        caps = [{"condition": {"position": "*"}, "permissions": {"users/user": {"attributes": {"*": "write"}}}}]
+        caps = [{"condition": {"position": "*"}, "permissions": {"users/user": {"attributes": {"*": {"access": "write"}}}}}]
         obj = mock_obj({"id": "cn=test,dc=example,dc=com", "module_name": module_name, "diff": [("description", None, "new_description")]})
         assert _check_permissions_modify(obj, caps) == expected
 
     def test_check_permissions_modify_not_allowed(self):
-        caps = [{"condition": {"position": "*"}, "permissions": {"users/user": {"attributes": {"*": "write", "guardianRoles": "read"}}}}]
+        caps = [{"condition": {"position": "*"}, "permissions": {"users/user": {"attributes": {"*": {"access": "write"}, "guardianRoles": {"access": "read"}}}}}]
         obj = mock_obj({"id": "cn=test,dc=example,dc=com", "module_name": "users/user", "diff": [("guardianRoles", None, "new_role")]})
         assert not _check_permissions_modify(obj, caps)
 
@@ -328,7 +328,7 @@ class TestUDMPermission:
                 with pytest.raises(TypeError):
                     assert auth.user_may_create(obj, get_user_roles) is None
 
-    @patch("univention.admin.authorization.ROLES", {"test_role": [{"condition": {"position": "*"}, "permissions": {"users/user": {"attributes": {"username": "write", "lastname": "read"}}}}]})
+    @patch("univention.admin.authorization.ROLES", {"test_role": [{"condition": {"position": "*"}, "permissions": {"users/user": {"attributes": {"username": {"access": "write"}, "lastname": {"access": "read"}}}}}]})
     def test_user_may_read(self):
         get_user_roles = mock_fun({"test_role": []})
         objs = [{"id": "cn=test,dc=example,dc=com", "module_name": "users/user"}, {"id": "cn=test2,dc=example,dc=com", "module_name": "groups/group"}]
@@ -346,7 +346,7 @@ class TestUDMPermission:
         default_search_attrs = ["username", "description", "lastname"]
         get_user_roles = mock_fun({"test_role": []})
         with patch("univention.admin.authorization._check_authorization", return_value=True):
-            with patch("univention.admin.authorization.ROLES", {"test_role": [{"condition": {"position": "*"}, "permissions": {"*": {"attributes": {"*": "write", "description": "none"}}}}]}):
+            with patch("univention.admin.authorization.ROLES", {"test_role": [{"condition": {"position": "*"}, "permissions": {"*": {"attributes": {"*": {"access": "write"}, "description": {"access": "none"}}}}}]}):
                 user1 = mock_obj({"id": "cn=user1,dc=example,dc=com", "module_name": "users/user", "info": info})
                 user2 = mock_obj({"id": "cn=user2,dc=example,dc=com", "module_name": "users/user", "info": {"username": "user2-ou2", "description": "test"}})
                 user3 = mock_obj({"id": "cn=user3,dc=example,dc=com", "module_name": "users/user", "info": {"username": "user3-ou2", "description": "test"}})
@@ -369,7 +369,7 @@ class TestUDMPermission:
         ("users/user", [("description", None, "new_description")], False),
         ("groups/group", [("description", None, "new_description")], False),
     ])
-    @patch("univention.admin.authorization.ROLES", {"test_role": [{"condition": {"position": "*"}, "permissions": {"users/user": {"attributes": {"username": "write", "lastname": "read"}}}}]})
+    @patch("univention.admin.authorization.ROLES", {"test_role": [{"condition": {"position": "*"}, "permissions": {"users/user": {"attributes": {"username": {"access": "write"}, "lastname": {"access": "read"}}}}}]})
     def test_user_may_modify(self, module_name, diff, expected):
         get_user_roles = mock_fun({"test_role": []})
         obj = mock_obj({"id": "cn=test,dc=example,dc=com", "module_name": module_name, "diff": diff})
