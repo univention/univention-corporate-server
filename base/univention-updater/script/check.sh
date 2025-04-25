@@ -536,7 +536,7 @@ update_check_disk_space () {
 		fi
 	done <<__PART__
 /var/cache/apt/archives	4000000	4000 MB
-/boot	100000	300 MB
+/boot	300000	300 MB
 /	4000000	4000 MB
 __PART__
 	echo
