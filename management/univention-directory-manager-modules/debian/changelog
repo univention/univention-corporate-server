@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.0.34) unstable; urgency=medium
+
+  * Issue univention/ucs#2803: Change config for attributes
+
+ -- Christian Emmert <christian.emmert.extern@univention.de>  Tue, 22 Apr 2025 14:15:01 +0100
+
 univention-directory-manager-modules (17.0.33) unstable; urgency=medium
 
   * Issue univention/ucs#2781: Improvements for the experimental delegative
