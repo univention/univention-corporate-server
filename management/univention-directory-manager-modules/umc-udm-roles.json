@@ -7,7 +7,9 @@
       "permissions": {
         "*": {
           "attributes": {
-            "*": "write"
+            "*": {
+              "access": "write"
+            }
           },
           "create": true,
           "delete": true
@@ -24,9 +26,15 @@
       "permissions": {
         "*": {
           "attributes": {
-            "*": "write",
-            "guardianMemberRoles": "read",
-            "guardianRoles": "read"
+            "*": {
+              "access": "write"
+            },
+            "guardianMemberRoles": {
+              "access": "read"
+            },
+            "guardianRoles": {
+              "access": "read"
+            }
           },
           "create": true,
           "delete": true
@@ -41,7 +49,9 @@
       "permissions": {
         "groups/group": {
           "attributes": {
-            "*": "read"
+            "*": {
+              "access": "read"
+            }
           }
         }
       }
@@ -54,7 +64,9 @@
       "permissions": {
         "mail/domain": {
           "attributes": {
-            "*": "read"
+            "*": {
+              "access": "read"
+            }
           }
         }
       }
@@ -67,17 +79,23 @@
       "permissions": {
         "policies/desktop": {
           "attributes": {
-            "*": "read"
+            "*": {
+              "access": "read"
+            }
           }
         },
         "policies/pwhistory": {
           "attributes": {
-            "*": "read"
+            "*": {
+              "access": "read"
+            }
           }
         },
         "policies/umc": {
           "attributes": {
-            "*": "read"
+            "*": {
+              "access": "read"
+            }
           }
         },
         "settings/cn": {
