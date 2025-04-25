@@ -137,7 +137,9 @@ shows an example for a generic form of this configuration in JSON format.
          "permissions": {
            "UDM_MODULE_NAME | *": {
              "attributes": {
-               "ATTRIBUTE_NAME | *": "read | write | none"
+               "ATTRIBUTE_NAME | *": {
+                  "access": "read | write | none"
+                },
              },
              "create": "true | false",
              "delete": "true | false"
@@ -224,7 +226,9 @@ The configuration defines one capability,
        "permissions": {
          "*": {
            "attributes": {
-             "*": "write"
+             "*": {
+                "access": "write"
+              },
            },
            "create": true,
            "delete": true
