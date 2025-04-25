@@ -1,3 +1,9 @@
+ucs-test (12.1.11) unstable; urgency=medium
+
+  * Bug #58159: add test case 60_umc/25_authorization.py
+
+ -- Christian Emmert <christian.emmert.extern@univention.de>  Wed, 23 Apr 2025 12:06:00 +0200
+
 ucs-test (12.1.10) unstable; urgency=medium
 
   * Issue univention/components/keycloak-app#233 adjust authentication failed message to keycloack 26
