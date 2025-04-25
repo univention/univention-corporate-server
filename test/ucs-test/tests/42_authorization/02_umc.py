@@ -282,3 +282,34 @@ def test_modify_attr(ldap_base, bremen_ou, login_user, user_dn, changes, expecte
         res = client.umc_command('udm/put', options, 'users/user').result
         assert res
         assert res[0]['$dn$'] == user_dn.format(admin_ou=bremen_ou.ouadmin_dn, normal_user=bremen_ou.user_dn, ldap_base=ldap_base)
+
+
+@check_delegation
+@pytest.mark.parametrize('login_user, expected', [
+    ('admin', True),
+    ('ou_admin', False),
+])
+def test_mail_domain_remove(ldap_base, bremen_ou, random_username, login_user, expected):
+    domain_name = f"{random_username()}.test.com"
+    mail_domain_dn = bremen_ou.udm.create_object('mail/domain', name=domain_name)
+
+    if login_user == "admin":
+        client = Client.get_test_connection()
+    elif login_user == "ou_admin":
+        client = Client()
+        client.authenticate(bremen_ou.ouadmin_username, 'univention')
+
+    options = [{
+        'object': mail_domain_dn,
+        "options": {
+            "cleanup": True,
+            "recursive": True,
+        },
+    }]
+
+    if not expected:
+        with pytest.raises(Forbidden):
+            client.umc_command('udm/remove', options, 'mail/domain')
+        bremen_ou.udm.remove_object('mail/domain', dn=mail_domain_dn)
+    else:
+        client.umc_command('udm/remove', options, 'mail/domain')
