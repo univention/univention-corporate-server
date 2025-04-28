@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: wget
+fix: 1.18-5+deb9u4
+desc: |
+ This update addresses the following issue:
+ * CVSS score 5.5 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N).
+   (CVE-2024-38428)
+bug: [58232]
+cve:
+- CVE-2024-38428
