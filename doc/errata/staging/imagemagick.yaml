@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: imagemagick
+fix: 8:6.9.7.4+dfsg-11+deb9u21
+desc: |
+ This update addresses the following issue:
+ * CVSS score 2.9 (CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2025-43965)
+bug: [58233]
+cve:
+- CVE-2025-43965
