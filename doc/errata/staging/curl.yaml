@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [9, 10]
+scope: ucs_5.0-0-errata5.0-10
+src: curl
+fix: 7.64.0-4+deb10u11
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N).
+   (CVE-2024-2398)
+ * CVSS score 6.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N).
+   (CVE-2024-8096)
+bug: [58219]
+cve:
+- CVE-2024-2398
+- CVE-2024-8096
