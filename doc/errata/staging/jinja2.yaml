@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: jinja2
+fix: 2.8-1+deb9u2
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.3 (CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2025-27516)
+ * CVSS score 6.3 (CVSS:3.1/AV:L/AC:H/PR:H/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2024-56326)
+bug: [58235]
+cve:
+- CVE-2024-56326
+- CVE-2025-27516
