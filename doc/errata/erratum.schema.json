@@ -1,0 +1,123 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "additionalProperties": false,
+  "definitions": {
+    "version": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "startsWith": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "properties": {
+    "announced": {
+      "anyOf": [
+        {
+          "pattern": "^\\d{4}-(0[1-9]|1[0-2])-([012][0-9]|3[01])$",
+          "type": "string"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "bug": {
+      "items": {
+        "minimum": 2,
+        "type": "integer"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "cve": {
+      "items": {
+        "pattern": "^CVE-\\d{4}-\\d{4,}$|^CVE-TMP\\d+$|^TEMP-",
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "desc": {
+      "pattern": "^[^\\n]{0,77}(\\n[^\\n]{0,77})*$",
+      "type": "string"
+    },
+    "erratum": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "extsec": {
+      "type": "boolean"
+    },
+    "fix": {
+      "pattern": "^([0-9]+:)?[-+.0-9:A-Za-z~]+$",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ignore": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "maintained": {
+      "type": "boolean"
+    },
+    "note": {
+      "type": "string"
+    },
+    "product": {
+      "enum": [
+        "ucs",
+        "ucsschool",
+        "oxse4ucs"
+      ],
+      "type": "string"
+    },
+    "release": {
+      "pattern": "^[1-9][0-9]*[.][0-9]+$",
+      "type": "string"
+    },
+    "scope": {
+      "pattern": "^ucs_([1-9][0-9]*)[.]([0-9]+)-0(-(ucs|errata)\\1[.]\\2-[0-9]+|-ucs-school-\\1[.]\\2(r[0-9]+)?|-oxse4ucs|-extsec\\1[.]\\2)?$",
+      "type": "string"
+    },
+    "src": {
+      "pattern": "^[a-z0-9][a-z0-9+.-]+$",
+      "type": "string"
+    },
+    "support": {
+      "enum": [
+        "core",
+        "enterprise",
+        "lts"
+      ],
+      "type": "string"
+    },
+    "version": {
+      "items": {
+        "type": "number"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "product",
+    "release",
+    "version",
+    "scope",
+    "src",
+    "fix",
+    "desc",
+    "bug"
+  ],
+  "type": "object"
+}
