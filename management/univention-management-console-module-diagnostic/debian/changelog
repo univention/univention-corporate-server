@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.11-4) unstable; urgency=medium
+
+  * revert: Bug #57779: Update PostgreSQL version check to version 15
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 30 Apr 2025 11:44:31 +0100
+
 univention-management-console-module-diagnostic (6.0.11-3) unstable; urgency=medium
 
   * Bug #57779: Update PostgreSQL version check to version 15
