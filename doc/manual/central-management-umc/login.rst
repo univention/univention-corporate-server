@@ -259,7 +259,7 @@ Verification and log files
 """"""""""""""""""""""""""
 
 To verify that the setup works,
-open the URL :samp:`https://{FQDN}/univention/oidc` in a web browser, such as Mozilla Firefox,
+open the URL :samp:`https://{FQDN}/univention/oidc/` in a web browser, such as Mozilla Firefox,
 and sign in.
 Open a UMC module, such as *Users*, and perform a search.
 
