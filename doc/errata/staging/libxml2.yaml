@@ -1,0 +1,28 @@
+product: ucs
+release: "5.0"
+version: [9, 10]
+scope: ucs_5.0-0-errata5.0-10
+src: libxml2
+fix: 2.9.4+dfsg1-7+deb10u11
+desc: |
+ This update addresses the following issues:
+ * CVSS score 8.1 (CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:H).
+   (CVE-2024-56171)
+ * CVSS score 7.8 (CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:N).
+   (CVE-2025-24928)
+ * CVSS score 5.9 (CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:N/I:N/A:H).
+   (CVE-2022-49043)
+ * CVSS score 5.6 (CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:L/I:L/A:L).
+   (CVE-2025-32414)
+ * CVSS score 3.1 (CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:N/I:N/A:L).
+   (CVE-2025-27113)
+ * CVSS score 2.9 (CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2025-32415)
+bug: [58243]
+cve:
+- CVE-2022-49043
+- CVE-2024-56171
+- CVE-2025-24928
+- CVE-2025-27113
+- CVE-2025-32414
+- CVE-2025-32415
