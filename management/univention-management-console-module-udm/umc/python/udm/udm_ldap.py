@@ -58,9 +58,7 @@ import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.syntax as udm_syntax
 import univention.admin.uexceptions as udm_errors
-from univention.admin.authorization import (
-    user_may_create, user_may_delete, user_may_modify, user_may_move, user_may_read,
-)
+from univention.admin.authorization import may_create, may_delete, may_modify, may_move, may_read
 from univention.management.console import Translation
 from univention.management.console.config import ucr
 from univention.management.console.error import UMC_Error
@@ -615,7 +613,7 @@ class UDM_Module:
 
             self._map_properties(obj, ldap_object)
 
-            user_may_create(obj, get_user_roles)
+            may_create(obj, get_user_roles)
             obj.create()
         except udm_errors.base as e:
             MODULE.warn('Failed to create LDAP object: %s: %s' % (e.__class__.__name__, str(e)))
@@ -634,7 +632,7 @@ class UDM_Module:
             rdn = udm.uldap.explodeDn(ldap_dn)[0]
             dest = '%s,%s' % (rdn, container)
             MODULE.info('Moving LDAP object %s to %s' % (ldap_dn, dest))
-            user_may_move(obj, dest, get_user_roles)
+            may_move(obj, dest, get_user_roles)
             obj.move(dest)
             return dest
         except udm_errors.base as e:
@@ -649,7 +647,7 @@ class UDM_Module:
         try:
             obj.open()
             MODULE.info('Removing LDAP object %s' % ldap_dn)
-            user_may_delete(obj, get_user_roles)
+            may_delete(obj, get_user_roles)
             obj.remove(remove_childs=recursive)
             if cleanup:
                 udm_objects.performCleanup(obj)
@@ -697,7 +695,7 @@ class UDM_Module:
 
             self._map_properties(obj, ldap_object)
 
-            user_may_modify(obj, get_user_roles)
+            may_modify(obj, get_user_roles)
             obj.modify()
         except udm_errors.base as e:
             MODULE.warn('Failed to modify LDAP object %s: %s: %s' % (obj.dn, e.__class__.__name__, str(e)))
@@ -756,7 +754,7 @@ class UDM_Module:
             UDM_Error(e).reraise()
 
         if result:
-            result = user_may_read(result, get_user_roles, filter_options={'filter': filter, 'attribute': attribute, 'value': value, 'allow_asterisks': allow_asterisks, 'default_attributes': self.default_search_attrs})
+            result = may_read(result, get_user_roles, filter_options={'filter': filter, 'attribute': attribute, 'value': value, 'allow_asterisks': allow_asterisks, 'default_attributes': self.default_search_attrs})
             if result and isinstance(result[0], dict):
                 result = [x['id'] for x in result]
 
@@ -785,7 +783,7 @@ class UDM_Module:
             if isinstance(exc, udm_errors.noObject) and superordinate and not ldap_connection.get(superordinate.dn):
                 raise SuperordinateDoesNotExist(superordinate)
             UDM_Error(exc).reraise()
-        obj = user_may_read(obj, get_user_roles)
+        obj = may_read(obj, get_user_roles)
         return obj
 
     def get_property(self, property_name):
@@ -1130,7 +1128,7 @@ class UDM_Module:
         ldap_connection, _ldap_position = self.get_ldap_connection()
         containers = self.module.object.get_default_containers(ldap_connection)
         containers = [{'id': x, 'module_name': self.module.module, 'position': x} for x in containers]
-        containers = user_may_read(containers, get_user_roles)
+        containers = may_read(containers, get_user_roles)
         containers = [x['id'] for x in containers]
         return containers
 
@@ -1442,10 +1440,9 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
                         'icon': 'udm-%s' % module.name.replace('/', '-'),
                     })
                 choices.append(choice)
-
             all_ids_are_dns = all(is_dn(choice['id']) for choice in choices if 'id' in choice)
             if all_ids_are_dns:
-                choices = user_may_read(choices, get_user_roles)
+                choices = may_read(choices, get_user_roles)
         else:
             choices = syn.get_choices(ldap_connection, options)
             # TODO: how to filter syntax choices for delegative administration?
@@ -1460,7 +1457,7 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
                 all_ids_are_dns = all(is_dn(x[0]) for x in choices if x[0])
                 choices = [{'id': x[0], 'label': x[1], 'module_name': module_name} for x in choices]
                 if all_ids_are_dns:
-                    choices = user_may_read(choices, get_user_roles)
+                    choices = may_read(choices, get_user_roles)
             else:
                 choices = [{'id': x[0], 'label': x[1]} for x in choices]
     except udm_errors.ldapTimeout:
