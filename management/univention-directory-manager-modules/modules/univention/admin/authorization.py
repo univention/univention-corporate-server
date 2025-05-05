@@ -247,7 +247,7 @@ def _check_authorization() -> bool:
     return ucr.is_true("umc/udm/delegation")
 
 
-def user_may_create(obj: object | dict | str, actor_roles_func: callable) -> None:
+def may_create(obj: object | dict | str, actor_roles_func: callable) -> None:
     if not _check_authorization():
         return
     actor_roles = actor_roles_func()
@@ -256,7 +256,7 @@ def user_may_create(obj: object | dict | str, actor_roles_func: callable) -> Non
         raise Forbidden()
 
 
-def user_may_read(objs: list[object | dict | str] | object, actor_roles_func: callable, filter_options: dict | None = None) -> list[object | dict | str] | object:
+def may_read(objs: list[object | dict | str] | object, actor_roles_func: callable, filter_options: dict | None = None) -> list[object | dict | str] | object:
     if not _check_authorization():
         return objs
     result = objs
@@ -281,7 +281,7 @@ def user_may_read(objs: list[object | dict | str] | object, actor_roles_func: ca
     return result
 
 
-def user_may_modify(obj: object, actor_roles_func: callable) -> None:
+def may_modify(obj: object, actor_roles_func: callable) -> None:
     if not _check_authorization():
         return
     actor_roles = actor_roles_func()
@@ -290,7 +290,7 @@ def user_may_modify(obj: object, actor_roles_func: callable) -> None:
         raise Forbidden()
 
 
-def user_may_delete(obj: object, actor_roles_func: callable) -> None:
+def may_delete(obj: object, actor_roles_func: callable) -> None:
     if not _check_authorization():
         return
     actor_roles = actor_roles_func()
@@ -300,10 +300,10 @@ def user_may_delete(obj: object, actor_roles_func: callable) -> None:
 
 
 # TODO: check if we need something special for move/rename
-def user_may_move(obj: object, dest: str, actor_roles_func: callable) -> None:
+def may_move(obj: object, dest: str, actor_roles_func: callable) -> None:
     if not _check_authorization():
         return
-    # user_may_modify(obj, actor_roles_func)  # optional
+    # may_modify(obj, actor_roles_func)  # optional
     actor_roles = actor_roles_func()
     cap = _get_capabilities(actor_roles)
     if not _check_permissions_delete(obj, cap):

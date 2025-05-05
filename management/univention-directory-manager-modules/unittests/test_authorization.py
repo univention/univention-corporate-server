@@ -316,33 +316,33 @@ class TestUDMPermission:
         ("groups/group", False),
     ])
     @patch("univention.admin.authorization.ROLES", {"test_role": [{"condition": {"position": "*"}, "permissions": {"users/user": {"create": True}}}]})
-    def test_user_may_create(self, module_name, expected):
+    def test_may_create(self, module_name, expected):
         get_user_roles = mock_fun({"test_role": []})
         obj = {"id": "cn=test,dc=example,dc=com", "module_name": module_name}
         with patch("univention.admin.authorization._check_authorization", return_value=False):
-            assert auth.user_may_create(obj, get_user_roles) is None
+            assert auth.may_create(obj, get_user_roles) is None
         with patch("univention.admin.authorization._check_authorization", return_value=True):
             if expected:
-                assert auth.user_may_create(obj, get_user_roles) is None
+                assert auth.may_create(obj, get_user_roles) is None
             else:
                 with pytest.raises(TypeError):
-                    assert auth.user_may_create(obj, get_user_roles) is None
+                    assert auth.may_create(obj, get_user_roles) is None
 
     @patch("univention.admin.authorization.ROLES", {"test_role": [{"condition": {"position": "*"}, "permissions": {"users/user": {"attributes": {"username": {"access": "write"}, "lastname": {"access": "read"}}}}}]})
-    def test_user_may_read(self):
+    def test_may_read(self):
         get_user_roles = mock_fun({"test_role": []})
         objs = [{"id": "cn=test,dc=example,dc=com", "module_name": "users/user"}, {"id": "cn=test2,dc=example,dc=com", "module_name": "groups/group"}]
         with patch("univention.admin.authorization._check_authorization", return_value=False):
-            assert auth.user_may_read(objs, get_user_roles) == objs
+            assert auth.may_read(objs, get_user_roles) == objs
         with patch("univention.admin.authorization._check_authorization", return_value=True):
-            assert auth.user_may_read(objs, get_user_roles) == [objs[0]]
+            assert auth.may_read(objs, get_user_roles) == [objs[0]]
 
     @pytest.mark.parametrize("info, attribute, value, objs_name, expected", [
         ({"username": "test", "description": "test"}, "description", "*test*", ["user1", "user2", "user3"], []),
         ({"username": "test", "description": "test"}, "username", "*test*", ["user1"], ["user1"]),
         ({"username": "test", "description": "test"}, None, "*test*", ["user1", "user2", "user3"], ["user1"]),
     ])
-    def test_user_may_read_with_filter(self, info, attribute, value, objs_name, expected):
+    def test_may_read_with_filter(self, info, attribute, value, objs_name, expected):
         default_search_attrs = ["username", "description", "lastname"]
         get_user_roles = mock_fun({"test_role": []})
         with patch("univention.admin.authorization._check_authorization", return_value=True):
@@ -357,7 +357,7 @@ class TestUDMPermission:
                     objs.append(user2)
                 if "user3" in objs_name:
                     objs.append(user3)
-                result = auth.user_may_read(objs, get_user_roles, filter_options={'attribute': attribute, 'value': value, 'default_attributes': default_search_attrs})
+                result = auth.may_read(objs, get_user_roles, filter_options={'attribute': attribute, 'value': value, 'default_attributes': default_search_attrs})
                 result_dn = [u.dn for u in result]
                 assert set(result_dn) == {f"cn={u_e},dc=example,dc=com" for u_e in expected}
                 # for u_e in expected:
@@ -370,34 +370,34 @@ class TestUDMPermission:
         ("groups/group", [("description", None, "new_description")], False),
     ])
     @patch("univention.admin.authorization.ROLES", {"test_role": [{"condition": {"position": "*"}, "permissions": {"users/user": {"attributes": {"username": {"access": "write"}, "lastname": {"access": "read"}}}}}]})
-    def test_user_may_modify(self, module_name, diff, expected):
+    def test_may_modify(self, module_name, diff, expected):
         get_user_roles = mock_fun({"test_role": []})
         obj = mock_obj({"id": "cn=test,dc=example,dc=com", "module_name": module_name, "diff": diff})
         with patch("univention.admin.authorization._check_authorization", return_value=False):
-            assert auth.user_may_modify(obj, get_user_roles) is None
+            assert auth.may_modify(obj, get_user_roles) is None
         with patch("univention.admin.authorization._check_authorization", return_value=True):
             if expected:
-                assert auth.user_may_modify(obj, get_user_roles) is None
+                assert auth.may_modify(obj, get_user_roles) is None
             else:
                 with pytest.raises(TypeError):
-                    assert auth.user_may_modify(obj, get_user_roles) is None
+                    assert auth.may_modify(obj, get_user_roles) is None
 
     @pytest.mark.parametrize("module_name, expected", [
         ("users/user", True),
         ("groups/group", False),
     ])
     @patch("univention.admin.authorization.ROLES", {"test_role": [{"condition": {"position": "*"}, "permissions": {"users/user": {"delete": True}}}]})
-    def test_user_may_delete(self, module_name, expected):
+    def test_may_delete(self, module_name, expected):
         get_user_roles = mock_fun({"test_role": []})
         obj = {"id": "cn=test,dc=example,dc=com", "module_name": module_name}
         with patch("univention.admin.authorization._check_authorization", return_value=False):
-            assert auth.user_may_delete(obj, get_user_roles) is None
+            assert auth.may_delete(obj, get_user_roles) is None
         with patch("univention.admin.authorization._check_authorization", return_value=True):
             if expected:
-                assert auth.user_may_delete(obj, get_user_roles) is None
+                assert auth.may_delete(obj, get_user_roles) is None
             else:
                 with pytest.raises(TypeError):
-                    assert auth.user_may_delete(obj, get_user_roles) is None
+                    assert auth.may_delete(obj, get_user_roles) is None
 
     @pytest.mark.parametrize("obj, dest, role, expected", [
         ({'dn': 'uid=user,ou=ou1,dc=example,dc=com', 'module': 'users/user'}, 'uid=user,cn=users,ou=ou1,dc=example,dc=com', "test_role", True),
@@ -405,17 +405,17 @@ class TestUDMPermission:
     ])
     @patch("univention.admin.authorization.ROLES", {"test_role": [{"condition": {"position": "*"}, "permissions": {"*": {"create": True, "delete": True}}}],
                                                     "test_role2": [{"condition": {"position": "ou=ou1,dc=example,dc=com"}, "permissions": {"*": {"create": True, "delete": True}}}]})
-    def test_user_may_move(self, obj, dest, role, expected):
+    def test_may_move(self, obj, dest, role, expected):
         obj = mock_obj(obj)
         get_user_roles = mock_fun({role: []})
         with patch("univention.admin.authorization._check_authorization", return_value=False):
-            assert auth.user_may_move(obj, dest, get_user_roles) is None
+            assert auth.may_move(obj, dest, get_user_roles) is None
         with patch("univention.admin.authorization._check_authorization", return_value=True):
             if expected:
-                assert auth.user_may_move(obj, dest, get_user_roles) is None
+                assert auth.may_move(obj, dest, get_user_roles) is None
             else:
                 with pytest.raises(TypeError):
-                    assert auth.user_may_move(obj, dest, get_user_roles) is None
+                    assert auth.may_move(obj, dest, get_user_roles) is None
 
     @patch("univention.admin.authorization.ldap_base", "dc=test")
     @patch("univention.admin.authorization.ROLES", get_default_roles())
