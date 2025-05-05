@@ -33,6 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import collections
 import copy
 import functools
 import gc
@@ -77,7 +78,7 @@ _licenseCheck = 0
 
 # code from components/authorization-engine/guardian/authorization-api/guardian_authorization_api/adapters/persistence.py
 re_split_roles_and_contexts = re.compile(
-    r"^((?P<role_app>[a-z0-9-_]+):(?P<role_namespace>[a-z0-9-_]+):(?P<role_name>[a-z0-9-_]+))(&(?P<context_app>[a-z0-9-_]+):(?P<context_namespace>[a-z0-9-_]+):(?P<context_name>[a-z0-9-_=,]+))?$",
+    r'^((?P<role_app>[a-z0-9-_]+):(?P<role_namespace>[a-z0-9-_]+):(?P<role_name>[a-z0-9-_]+))(&(?P<context_app>[a-z0-9-_]+):(?P<context_namespace>[a-z0-9-_]+):(?P<context_name>[a-z0-9-_=,]+))?$',
 )  # FIXME: Why doesn't this allow at least "=" and "," at least in "context_name"? Basically it should allow everything valid in an LDAP DN!? I.e.  case insensitive UTF-8 see https://ldapwiki.com/wiki/Wiki.jsp?page=Distinguished%20Name%20Case%20Sensitivity and https://ldapwiki.com/wiki/Wiki.jsp?page=Ou
 
 
@@ -108,23 +109,24 @@ def set_user_roles(user_dn: str) -> None:
     # FIXME: This is a workaround to get the roles of the user
     # ldap_connection, _po = get_user_connection(bind=get_bind_function(), bindhash=get_bind_hash())
     from univention.udm import UDM
+
     udm = UDM.admin().version(2)
     obj = udm.obj_by_dn(user_dn)
     role_set = {}
     if hasattr(obj._orig_udm_object, 'open_guardian'):
         obj._orig_udm_object.open_guardian()
-        role_set = set(obj._orig_udm_object.get("guardianInheritedRoles", []) + obj._orig_udm_object.get("guardianRoles", []))
+        role_set = set(obj._orig_udm_object.get('guardianInheritedRoles', []) + obj._orig_udm_object.get('guardianRoles', []))
 
     __user_roles = {}
     # simulating guardian_authorization_api.adapters.persistence.UDMPersistenceAdapter._to_policy_role()
     for role in role_set:
-        if role.startswith("umc:udm:"):
+        if role.startswith('umc:udm:'):
             res = re.search(re_split_roles_and_contexts, role)
             if res:
                 res.groupdict()
-                __user_roles.setdefault(res["role_name"], [])
-                if res["context_name"]:
-                    __user_roles[res["role_name"]].append(res["context_name"])
+                __user_roles.setdefault(res['role_name'], [])
+                if res['context_name']:
+                    __user_roles[res['role_name']].append(res['context_name'])
     MODULE.info('Setting user roles to %s' % __user_roles)
 
 
@@ -141,6 +143,7 @@ def LDAP_Connection(func):
             Use something explicit like self.get_ldap_connection() instead.
 
     """
+
     @functools.wraps(func)
     def _decorated(*args, **kwargs):
         method = user_connection(func, bind=get_bind_function(), write=True, bindhash=get_bind_hash())
@@ -148,11 +151,11 @@ def LDAP_Connection(func):
             return method(*args, **kwargs)
         except (LDAPError, udm_errors.ldapError):
             return method(*args, **kwargs)
+
     return _decorated
 
 
 class UMCError(UMC_Error):
-
     def __init__(self, **kwargs):
         ucr.load()
         self._is_master = ucr.get('server/role') == 'domaincontroller_master'
@@ -296,18 +299,20 @@ class AppAttributes:
             if not option_def['attributes']:
                 continue
             layout_index += 1
-            layout.insert(layout_index, {
-                'is_app_tab': True,
-                'description': option_def['label'],
-                'label': option_def['label'],
-                'advanced': False,
-                'layout': option_def['layout'],
-            })
+            layout.insert(
+                layout_index,
+                {
+                    'is_app_tab': True,
+                    'description': option_def['label'],
+                    'label': option_def['label'],
+                    'advanced': False,
+                    'layout': option_def['layout'],
+                },
+            )
         return layout
 
 
 class UserWithoutDN(UMCError):
-
     def __init__(self, username):
         self._username = username
         super().__init__()
@@ -328,7 +333,6 @@ class UserWithoutDN(UMCError):
 
 
 class LDAP_AuthenticationFailed(UMCError):
-
     def __init__(self):
         super().__init__(status=401)
 
@@ -337,7 +341,6 @@ class LDAP_AuthenticationFailed(UMCError):
 
 
 class ObjectDoesNotExist(UMCError):
-
     def __init__(self, ldap_dn):
         self.ldap_dn = ldap_dn
         super().__init__()
@@ -361,7 +364,6 @@ class ObjectDoesNotExist(UMCError):
 
 
 class SuperordinateDoesNotExist(ObjectDoesNotExist):
-
     def _error_msg(self):
         if self._ldap_object_exists():
             yield _('Could not identify the superordinate %s.') % (self.ldap_dn,)
@@ -372,7 +374,6 @@ class SuperordinateDoesNotExist(ObjectDoesNotExist):
 
 
 class NoIpLeft(UMCError):
-
     def __init__(self, ldap_dn):
         try:
             self.network_name = udm.uldap.explodeDn(ldap_dn, True)[0]
@@ -387,19 +388,21 @@ class NoIpLeft(UMCError):
 
 
 class SearchTimeoutError(UMC_Error):
-
     def __init__(self):
         super().__init__(_('The query you have entered timed out. Please narrow down your search by specifying more query parameters'))
 
 
 class SearchLimitReached(UMC_Error):
-
     def __init__(self):
-        super().__init__(_('The query you have entered yields too many matching entries. Please narrow down your search by specifying more query parameters. The current size limit of %s can be configured with the UCR variable directory/manager/web/sizelimit.') % ucr.get('directory/manager/web/sizelimit', '2000'))
+        super().__init__(
+            _(
+                'The query you have entered yields too many matching entries. Please narrow down your search by specifying more query parameters. The current size limit of %s can be configured with the UCR variable directory/manager/web/sizelimit.',
+            )
+            % ucr.get('directory/manager/web/sizelimit', '2000'),
+        )
 
 
 class UDM_Error(Exception):
-
     def __init__(self, exc, dn=None):
         self.exc = exc
         self.dn = dn
@@ -453,8 +456,9 @@ class UDM_Module:
             AppAttributes._cache = None
 
     def get_ldap_connection(self, base=None):
-        if ucr.is_true("umc/udm/delegation"):
+        if ucr.is_true('umc/udm/delegation'):
             from univention.management.console.ldap import get_admin_connection
+
             self.ldap_connection, _po = get_admin_connection()
         elif get_bind_function():
             try:
@@ -515,11 +519,11 @@ class UDM_Module:
         # This workaround has been documented as Bug #25163.
         def _tmp_cmp(i):
             if i[0] == 'mac':  # must be set before network, dhcpEntryZone
-                return ("\x00", i[1])
+                return ('\x00', i[1])
             if i[0] == 'network':  # must be set before ip, dhcpEntryZone, dnsEntryZoneForward, dnsEntryZoneReverse
-                return ("\x01", i[1])
+                return ('\x01', i[1])
             if i[0] in ('ip', 'mac'):  # must be set before dnsEntryZoneReverse, dnsEntryZoneForward
-                return ("\x02", i[1])
+                return ('\x02', i[1])
             return i
 
         password_properties = self.password_properties
@@ -702,7 +706,21 @@ class UDM_Module:
             MODULE.warn('Failed to modify LDAP object %s: %s: %s' % (obj.dn, e.__class__.__name__, str(e)))
             UDM_Error(e).reraise()
 
-    def search(self, container=None, attribute=None, value=None, superordinate=None, scope='sub', filter='', simple=False, simple_attrs=None, hidden=True, serverctrls=None, response=None, allow_asterisks=True):
+    def search(
+        self,
+        container=None,
+        attribute=None,
+        value=None,
+        superordinate=None,
+        scope='sub',
+        filter='',
+        simple=False,
+        simple_attrs=None,
+        hidden=True,
+        serverctrls=None,
+        response=None,
+        allow_asterisks=True,
+    ):
         """Searches for LDAP objects based on a search pattern"""
         ldap_connection, ldap_position = self.get_ldap_connection()
         if container == 'all':
@@ -724,11 +742,27 @@ class UDM_Module:
                     result = []
                 else:
                     if simple_attrs is not None:
-                        result = ldap_connection.search(filter=str(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, attr=simple_attrs, serverctrls=serverctrls, response=response)
+                        result = ldap_connection.search(
+                            filter=str(lookup_filter),
+                            base=container,
+                            scope=scope,
+                            sizelimit=sizelimit,
+                            attr=simple_attrs,
+                            serverctrls=serverctrls,
+                            response=response,
+                        )
                     else:
                         # result = ldap_connection.searchDn(filter=str(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, serverctrls=serverctrls, response=response)
-                        result = ldap_connection.search(filter=str(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, attr=['univentionObjectType'], serverctrls=serverctrls, response=response)
-                        result = [{'id': x[0], "module_name": x[1]["univentionObjectType"][0].decode("utf8")} for x in result]
+                        result = ldap_connection.search(
+                            filter=str(lookup_filter),
+                            base=container,
+                            scope=scope,
+                            sizelimit=sizelimit,
+                            attr=['univentionObjectType'],
+                            serverctrls=serverctrls,
+                            response=response,
+                        )
+                        result = [{'id': x[0], 'module_name': x[1]['univentionObjectType'][0].decode('utf8')} for x in result]
             else:
                 if self.module:
                     kwargs = {}
@@ -755,7 +789,11 @@ class UDM_Module:
             UDM_Error(e).reraise()
 
         if result:
-            result = user_may_read(result, get_user_roles, filter_options={'filter': filter, 'attribute': attribute, 'value': value, 'allow_asterisks': allow_asterisks, 'default_attributes': self.default_search_attrs})
+            result = user_may_read(
+                result,
+                get_user_roles,
+                filter_options={'filter': filter, 'attribute': attribute, 'value': value, 'allow_asterisks': allow_asterisks, 'default_attributes': self.default_search_attrs},
+            )
             if result and isinstance(result[0], dict):
                 result = [x['id'] for x in result]
 
@@ -821,7 +859,7 @@ class UDM_Module:
         descr = getattr(self.module, 'short_description', getattr(self.module, 'module', ''))
         colon = descr.find(':')
         if colon > 0:
-            return descr[colon + 1:].strip()
+            return descr[colon + 1 :].strip()  # noqa: E203
         return descr
 
     @property
@@ -884,20 +922,24 @@ class UDM_Module:
             if not mod.module:
                 continue
             MODULE.info('Found module %s' % str(mod))
-            modules.append({
-                'id': child,
-                'label': mod.title,
-                'object_name': mod.object_name,
-                'object_name_plural': mod.object_name_plural,
-            })
+            modules.append(
+                {
+                    'id': child,
+                    'label': mod.title,
+                    'object_name': mod.object_name,
+                    'object_name_plural': mod.object_name_plural,
+                },
+            )
         if not modules:
             MODULE.info('No child modules were found')
-            return [{
+            return [
+                {
                     'id': self.name,
                     'label': self.title,
                     'object_name': self.object_name,
                     'object_name_plural': self.object_name_plural,
-                    }]
+                },
+            ]
         return modules
 
     @property
@@ -908,10 +950,7 @@ class UDM_Module:
 
     @property
     def default_search_attrs(self):
-        return [
-            key for key, prop in self.module.property_descriptions.items()
-            if prop.include_in_default_search
-        ]
+        return [key for key, prop in self.module.property_descriptions.items() if prop.include_in_default_search]
 
     def obj_description(self, obj):
         description = None
@@ -967,15 +1006,31 @@ class UDM_Module:
         # special case: options and the dn: They are not explicitly specified in the module layout
         inLayout = {'$options$', '$dn$'}
 
-        def _scanLayout(_layout):
-            if isinstance(_layout, list):
-                for ielement in _layout:
-                    _scanLayout(ielement)
-            elif isinstance(_layout, dict) and 'layout' in _layout:
-                _scanLayout(_layout['layout'])
-            elif isinstance(_layout, str):
-                inLayout.add(_layout)
-        _scanLayout(self.get_layout(ldap_dn))
+        # Get the initial layout structure
+        initial_layout = self.get_layout(ldap_dn)
+
+        # Use a deque as a stack for efficient appends and pops from one end
+        # Start the stack with the initial layout structure if it exists
+        stack = collections.deque()
+        if initial_layout:
+            stack.append(initial_layout)
+
+        # Iteratively process the layout structure
+        while stack:
+            current_item = stack.pop()  # Get the next item to process
+
+            if isinstance(current_item, str):
+                # If it's a string, it's a property ID - add it to our set
+                inLayout.add(current_item)
+            elif isinstance(current_item, list):
+                # If it's a list, add its elements to the stack *in reverse order*
+                # so they get processed in the original order (first element first).
+                for element in reversed(current_item):
+                    stack.append(element)
+            elif isinstance(current_item, dict) and 'layout' in current_item:
+                # If it's a dictionary with a 'layout' key, add the nested layout
+                # to the stack for further processing.
+                stack.append(current_item['layout'])
 
         # only return properties that are in the layout
         properties = []
@@ -1055,8 +1110,10 @@ class UDM_Module:
                 # E.g. users/user mailHomeServer; see Bug #33329, Bug #42903
 
                 try:
-                    item['default'] = [x['id'] for x in read_syntax_choices(_get_syntax(prop.syntax.name), ldap_connection=ldap_connection, ldap_position=ldap_position) if x['id']][0]  # noqa: RUF015
-                except IndexError:
+                    item['default'] = next(
+                        x['id'] for x in read_syntax_choices(_get_syntax(prop.syntax.name), ldap_connection=ldap_connection, ldap_position=ldap_position) if x['id']
+                    )
+                except StopIteration:
                     pass
 
             props.append(item)
@@ -1080,16 +1137,18 @@ class UDM_Module:
         options = []
         for name, opt in self.options.items():
             value = bool(opt.default) if obj_options is None else name in obj_options
-            options.append({
-                'id': name,
-                'is_app_option': opt.is_app_option,
-                'type': 'CheckBox',
-                'icon': name if opt.is_app_option else '',
-                'label': opt.short_description,
-                'description': opt.long_description,
-                'value': value,
-                'editable': bool(opt.editable),
-            })
+            options.append(
+                {
+                    'id': name,
+                    'is_app_option': opt.is_app_option,
+                    'type': 'CheckBox',
+                    'icon': name if opt.is_app_option else '',
+                    'label': opt.short_description,
+                    'description': opt.long_description,
+                    'value': value,
+                    'editable': bool(opt.editable),
+                },
+            )
         options.sort(key=lambda x: x['label'].lower())
         return options
 
@@ -1161,20 +1220,22 @@ class UDM_Module:
         ldap_connection, _ldap_position = self.get_ldap_connection()
         references = []
         if self.is_policy_module():  # TODO: move into the handlers/policies/*.py
-            search_filter = filter_format("(&(objectClass=univentionPolicyReference)(univentionPolicyReference=%s))", (dn,))
+            search_filter = filter_format('(&(objectClass=univentionPolicyReference)(univentionPolicyReference=%s))', (dn,))
             for dn in ldap_connection.searchDn(filter=search_filter):
                 obj, module = get_obj_module(None, dn, ldap_connection)
                 if not module or not obj:
                     continue
                 label = '%s: %s' % (module.title, obj.description())
-                references.append({
-                    'module': 'udm',
-                    'flavor': module.flavor or 'navigation',
-                    'objectType': module.name,
-                    'id': dn,
-                    'label': label,
-                    'icon': 'udm-%s' % module.name.replace('/', '-'),
-                })
+                references.append(
+                    {
+                        'module': 'udm',
+                        'flavor': module.flavor or 'navigation',
+                        'objectType': module.name,
+                        'id': dn,
+                        'label': label,
+                        'icon': 'udm-%s' % module.name.replace('/', '-'),
+                    },
+                )
         return references
 
     def get_references(self, obj):
@@ -1190,7 +1251,17 @@ class UDM_Module:
                 if not isinstance(dns, list | tuple):
                     dns = [dns]
                 for dn in dns:
-                    references.append({'module': 'udm', 'property': key, 'flavor': 'navigation', 'objectType': object_type, 'id': dn, 'label': '%s: %s: %s' % (key, object_type, dn), 'icon': 'udm-%s' % object_type.replace('/', '-')})
+                    references.append(
+                        {
+                            'module': 'udm',
+                            'property': key,
+                            'flavor': 'navigation',
+                            'objectType': object_type,
+                            'id': dn,
+                            'label': '%s: %s: %s' % (key, object_type, dn),
+                            'icon': 'udm-%s' % object_type.replace('/', '-'),
+                        },
+                    )
         return references + [dict(ref, property='__policies') for ref in self.get_policy_references(obj.dn)]
 
     @property
@@ -1270,8 +1341,8 @@ def ldap_dn2path(ldap_dn, include_rdn=True, ldap_base=None):
     ldap_base = ldap_base or ucr.get('ldap/base')
     if not ldap_base or not ldap_dn.lower().endswith(ldap_base.lower()):
         return ldap_dn
-    rel_path = ldap_dn[:-(1 + len(ldap_base))]
-    rel_path = explode_dn(rel_path, True)[int(not include_rdn):]
+    rel_path = ldap_dn[: -(1 + len(ldap_base))]
+    rel_path = explode_dn(rel_path, True)[int(not include_rdn) :]  # noqa: E203
     return '%s:/%s' % ('.'.join(explode_dn(ldap_base, True)), '/'.join(reversed(rel_path)))
 
 
@@ -1424,11 +1495,13 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
                 except KeyError:
                     pass
                 else:
-                    choice.update({
-                        'module': 'udm',
-                        'flavor': module.flavor,
-                        'icon': 'udm-%s' % module.name.replace('/', '-'),
-                    })
+                    choice.update(
+                        {
+                            'module': 'udm',
+                            'flavor': module.flavor,
+                            'icon': 'udm-%s' % module.name.replace('/', '-'),
+                        },
+                    )
                 choices.append(choice)
             choices = user_may_read(choices, get_user_roles)
         else:
