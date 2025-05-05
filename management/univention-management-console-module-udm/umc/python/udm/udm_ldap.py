@@ -33,6 +33,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import collections
 import copy
 import functools
 import gc
@@ -965,15 +966,24 @@ class UDM_Module:
         # special case: options and the dn: They are not explicitly specified in the module layout
         inLayout = {'$options$', '$dn$'}
 
-        def _scanLayout(_layout):
-            if isinstance(_layout, list):
-                for ielement in _layout:
-                    _scanLayout(ielement)
-            elif isinstance(_layout, dict) and 'layout' in _layout:
-                _scanLayout(_layout['layout'])
-            elif isinstance(_layout, str):
-                inLayout.add(_layout)
-        _scanLayout(self.get_layout(ldap_dn))
+        initial_layout = self.get_layout(ldap_dn)
+
+        stack = collections.deque()
+        if initial_layout:
+            stack.append(initial_layout)
+
+        while stack:
+            current_item = stack.pop()
+
+            if isinstance(current_item, str):
+                inLayout.add(current_item)  # a single property
+            elif isinstance(current_item, list):
+                # add elements to the stack *in reverse order*
+                # so they get processed in the original order (first element first)
+                for element in reversed(current_item):
+                    stack.append(element)
+            elif isinstance(current_item, dict) and 'layout' in current_item:
+                stack.append(current_item['layout'])
 
         # only return properties that are in the layout
         properties = []
