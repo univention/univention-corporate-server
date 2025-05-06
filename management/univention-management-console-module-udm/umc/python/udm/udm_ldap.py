@@ -48,7 +48,7 @@ from functools import reduce
 from json import load
 
 from ldap import NO_SUCH_OBJECT, LDAPError
-from ldap.dn import explode_dn
+from ldap.dn import explode_dn, is_dn
 from ldap.filter import filter_format
 
 import univention.admin as udm
@@ -1442,7 +1442,10 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
                         'icon': 'udm-%s' % module.name.replace('/', '-'),
                     })
                 choices.append(choice)
-            choices = user_may_read(choices, get_user_roles)
+
+            all_ids_are_dns = all(is_dn(choice['id']) for choice in choices if 'id' in choice)
+            if all_ids_are_dns:
+                choices = user_may_read(choices, get_user_roles)
         else:
             choices = syn.get_choices(ldap_connection, options)
             # TODO: how to filter syntax choices for delegative administration?
@@ -1454,8 +1457,10 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
                 module_name = None
                 MODULE.info('Can not filter choices for delegative administration, because syntax for multiple udm modules: %r' % syn)
             if module_name:
+                all_ids_are_dns = all(is_dn(x[0]) for x in choices if x[0])
                 choices = [{'id': x[0], 'label': x[1], 'module_name': module_name} for x in choices]
-                choices = user_may_read(choices, get_user_roles)
+                if all_ids_are_dns:
+                    choices = user_may_read(choices, get_user_roles)
             else:
                 choices = [{'id': x[0], 'label': x[1]} for x in choices]
     except udm_errors.ldapTimeout:
