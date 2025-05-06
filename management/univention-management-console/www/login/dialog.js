@@ -112,7 +112,6 @@ define([
 			(new CookieBanner()).show();
 			this._addDefaultLinks();
 			this._checkCookiesEnabled();
-			this._watchUsernameField();
 			this._loginDialogRenderedDeferred.resolve();
 		},
 
@@ -121,11 +120,7 @@ define([
 
 			// add "How do I login" link
 			var tooltip = _('Please login with a valid username and password.') + ' ';
-			if (getQuery('username') === 'root') {
-				tooltip += _('Use the %s user for the initial system configuration.', '<b><a href="javascript:void();" onclick="_fillUsernameField(\'root\')">root</a></b>');
-			} else {
-				tooltip += _('The default user to manage the domain is %s which has the same initial password as the <i>root</i> account.', this._administratorLink());
-			}
+
 			this._addLinkFromUcr('how_do_i_login', {
 				text: _('How do I login?'),
 				tooltip: tooltip
@@ -166,23 +161,6 @@ define([
 			if (tools.browserIsOutdated()) {
 				return '<p class="umcLoginLinkWarning">' + entities.encode(tools.browserIsOutdatedMessage()) + '</p>';
 			}
-		},
-
-		_watchUsernameField: function() {
-			var node = dom.byId('umcLoginUsername');
-			if (!node) {
-				return;  // e.g. error page on SAML
-			}
-			on(node, 'keyup', lang.hitch(this, function() {
-				if (node.value === 'root') {
-					Tooltip.show(_('The default user to manage the domain is %s which has the same initial password as the <i>root</i> account.', this._administratorLink()) + ' ' + _('The <i>root</i> user neither has access to the domain administration nor to the App Center.'), node, ['above']);
-				}
-			}));
-		},
-
-		_administratorLink: function() {
-			var username = tools.status('administrator') || 'Administrator';
-			return '<b><a href="javascript:void();" onclick=\'_fillUsernameField(' + json.stringify(username) + ')\'>' + entities.encode(username) + '</a></b>';
 		},
 
 		_cookiesEnabled: function() {

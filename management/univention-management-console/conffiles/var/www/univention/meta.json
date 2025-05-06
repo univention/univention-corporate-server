@@ -7,7 +7,6 @@ import re
 
 import logging
 from univention.config_registry.interfaces import Interfaces
-from univention.lib.misc import custom_username
 
 from urllib.request import urlopen
 from urllib.error import URLError
@@ -176,7 +175,6 @@ data = {
     "sessionTimeout": get_session_timeout(),
     "fqdn": get_fqdn(),
     "has_certificates": has_certificates(),
-    "administrator": custom_username('Administrator'),
     "login_links": get_login_links(),
     "login_texts": get_login_texts(),
     "cookieBanner": get_cookie_banner(),
