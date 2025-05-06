@@ -1,3 +1,9 @@
+ucs-test (12.1.12) unstable; urgency=medium
+
+  * Issue univention/ucs#2815: add test file 60_umc/106_udm_syntax_choices_delegation.py
+
+ -- Christian Emmert <christian.emmert.extern@univention.de>  Wed, 28 Apr 2025 15:40:00 +0100
+
 ucs-test (12.1.11) unstable; urgency=medium
 
   * Bug #58159: add test case 60_umc/25_authorization.py
