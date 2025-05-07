@@ -35,6 +35,8 @@
 import logging
 import random
 import re
+import traceback
+import warnings
 from collections.abc import Callable
 from functools import wraps
 from typing import Any
@@ -264,6 +266,12 @@ class access:
         self.client_connection_attempt = client_retry_count + 1
 
         self.__open(ca_certfile)
+
+    @property
+    def authz_connection(self):
+        log.error('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap! %s', ''.join(traceback.format_stack()))
+        warnings.warn('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap!', DeprecationWarning, stacklevel=3)
+        return self
 
     @_fix_reconnect_handling
     def bind(self, binddn: str, bindpw: str) -> None:

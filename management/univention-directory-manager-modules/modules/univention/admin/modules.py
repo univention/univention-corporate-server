@@ -296,7 +296,8 @@ def update_extended_options(lo: univention.admin.uldap.access, module: UdmModule
             default=default,
             editable=editable,
             objectClasses=classes,
-            is_app_option=is_app_option)
+            is_app_option=is_app_option,
+        )
     module.options = new_options
 
 
