@@ -223,6 +223,7 @@ def portal_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
 
 @pytest.fixture()
 def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
+    udm_fqdn = f"{ucr_proper['hostname']}.{ucr_proper['domainname']}"
     server = ucr_proper.get('keycloak/server/sso/fqdn', f"ucs-sso-ng.{ucr_proper['domainname']}")
     path = ucr_proper['keycloak/server/sso/path'] if ucr_proper['keycloak/server/sso/path'] else ''
     url = f'https://{server}{path}'
@@ -230,6 +231,7 @@ def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
         'server': server,
         'path': path,
         'url': url,
+        'udm_endpoint': f'https://{udm_fqdn}/univention/udm',
         'admin_url': f'{url}/admin',
         'token_url': f'{url}/realms/ucs/protocol/openid-connect/token',
         'logout_url': f'{url}/realms/ucs/protocol/openid-connect/logout',

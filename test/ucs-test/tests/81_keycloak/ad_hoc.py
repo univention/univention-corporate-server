@@ -31,6 +31,7 @@ class AdHocProvisioning:
         udm_password: str,
         existing_realm: str = "nubus",
         dummy_realm: str = "adhoc",
+        path: str = "",
     ):
         """Initialize AdHocProvisioning with configuration parameters."""
         self.keycloak_url = keycloak_url
@@ -41,6 +42,7 @@ class AdHocProvisioning:
         self.udm_password = udm_password
         self.existing_realm = existing_realm
         self.dummy_realm = dummy_realm
+        self.path = path
 
         # Set up logging
         self.logger = logging.getLogger(__name__)
@@ -130,13 +132,13 @@ class AdHocProvisioning:
             "config": {
                 "clientId": "federation-client",
                 "clientSecret": client_secret,
-                "tokenUrl": f"{self.keycloak_url}/realms/{self.dummy_realm}/protocol/openid-connect/token",
-                "authorizationUrl": f"{self.keycloak_url}/realms/{self.dummy_realm}/protocol/openid-connect/auth",
-                "userInfoUrl": f"{self.keycloak_url}/realms/{self.dummy_realm}/protocol/openid-connect/userinfo",
+                "tokenUrl": f"{self.keycloak_url}realms/{self.dummy_realm}/protocol/openid-connect/token",
+                "authorizationUrl": f"{self.keycloak_url}realms/{self.dummy_realm}/protocol/openid-connect/auth",
+                "userInfoUrl": f"{self.keycloak_url}realms/{self.dummy_realm}/protocol/openid-connect/userinfo",
                 "defaultScope": "openid profile email",
                 "validateSignature": "true",
                 "useJwksUrl": "true",
-                "jwksUrl": f"{self.keycloak_url}/realms/{self.dummy_realm}/protocol/openid-connect/certs",
+                "jwksUrl": f"{self.keycloak_url}realms/{self.dummy_realm}/protocol/openid-connect/certs",
             },
         }
 
@@ -236,7 +238,7 @@ class AdHocProvisioning:
         }
         try:
             self.kc_existing.connection.raw_post(
-                f'/admin/realms/{self.existing_realm}/authentication/executions/{ua_execution["id"]}/config',
+                self.path + f'/admin/realms/{self.existing_realm}/authentication/executions/{ua_execution["id"]}/config',
                 data=json.dumps(udm_config),
             )
         except KeycloakPostError as e:
@@ -252,7 +254,7 @@ class AdHocProvisioning:
             raise KeycloakError("Keycloak admin connection not initialized")
 
         try:
-            user_profile = kc.connection.raw_get(f"/admin/realms/{realm}/users/profile").json()
+            user_profile = kc.connection.raw_get(self.path + f"/admin/realms/{realm}/users/profile").json()
         except KeycloakError as e:
             self.logger.error(f"Failed to get user profile for realm {realm}: {e}")
             raise
@@ -306,7 +308,7 @@ class AdHocProvisioning:
 
         user_profile["attributes"] = existing_attributes
         try:
-            kc.connection.raw_put(f"/admin/realms/{realm}/users/profile", data=json.dumps(user_profile))
+            kc.connection.raw_put(self.path + f"/admin/realms/{realm}/users/profile", data=json.dumps(user_profile))
             self.logger.info(f"User profile updated for realm {realm}")
         except KeycloakError as e:
             self.logger.error(f"Failed to update user profile for realm {realm}: {e}")
@@ -548,7 +550,7 @@ class AdHocProvisioning:
             if flow:
                 flow_id = flow["id"]
                 self.kc_existing.connection.raw_delete(
-                    f"/admin/realms/{self.existing_realm}/authentication/flows/{flow_id}",
+                    self.path + f"/admin/realms/{self.existing_realm}/authentication/flows/{flow_id}",
                 )
                 self.logger.info(f"Successfully removed authentication flow: {flow_alias}")
             else:

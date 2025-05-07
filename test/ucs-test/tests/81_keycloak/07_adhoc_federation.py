@@ -74,11 +74,12 @@ def test_adhoc_federation(keycloak_admin_connection: KeycloakAdmin, keycloak_adm
         keycloak_url=keycloak_config.url,
         admin_username=keycloak_admin,
         admin_password=keycloak_secret,
-        udm_url=f'https://{portal_config.fqdn}/univention/udm',
+        udm_url=keycloak_config.udm_endpoint,
         udm_username="Administrator",
         udm_password="univention",
         existing_realm="ucs",
         dummy_realm="test",
+        path=keycloak_config.path,
     )
     try:
         ad_hoc_provisioning.setup()
