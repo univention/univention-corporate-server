@@ -44,11 +44,11 @@ guardian_curl () {
 
 guardian_get_token () {
     # guardian_get_token "$CLIENT_ID" "$BINDUSER" "$BINDPWD" "$KEYCLOAK_URL"
-    curl -d "client_id=$CLIENT_ID" \
-         -d "username=$BINDUSER" \
-         -d "password=$BINDPWD" \
+    curl -d "client_id=$1" \
+         -d "username=$2" \
+         -d "password=$3" \
          -d "grant_type=password" \
-         "$KEYCLOAK_URL" | sed 's/.*"access_token":"\([[:alnum:]\.-_-]*\)".*/\1/'
+         "$4" | sed 's/.*"access_token":"\([[:alnum:]\.-_-]*\)".*/\1/'
 }
 
 # create the configuration in guardian for delegative administration
