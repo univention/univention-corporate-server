@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 #
-# Univention Management Console
-#  module: manages UDM modules
+# Univention Directory Manager
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -32,16 +31,21 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+"""Authorization for UDM access."""
+
 import copy
 import json
 import os
 import re
+from logging import getLogger
 
-from univention.management.console.config import ucr
-from univention.management.console.error import Forbidden
-from univention.management.console.log import MODULE
+import univention.admin.modules
+from univention.admin._ucr import configRegistry as ucr
+from univention.admin.uexceptions import permissionDenied
 from univention.uldap import parentDn
 
+
+log = getLogger('ADMIN')
 
 # load roles
 # TODO: move to some other place
@@ -55,8 +59,8 @@ if ucr.is_true('umc/udm/delegation'):
                 with open(file) as roles:
                     ROLES.update(json.load(roles))
     except Exception as exc:
-        MODULE.error(f'Loading role failed with {exc}')
-    MODULE.info(f'Loaded roles: {ROLES}')
+        log.error('Loading role failed with %s', exc)
+    log.info('Loaded roles: {ROLES}')
 
 ldap_base = ucr.get("ldap/base")
 
@@ -231,13 +235,13 @@ def _check_permissions_read(objs: list[object | dict | str], caps: list[dict]) -
                 readable_attrs, not_readable_attrs = _get_readable_attrs_from_permissions(module_name, cap['permissions'])
 
                 if readable_attrs:
-                    attrs_readable[(position, module_name)] = readable_attrs, not_readable_attrs
+                    attrs_readable[position, module_name] = readable_attrs, not_readable_attrs
                     break
 
     for (position, module_name), _objs in objs_processed.items():
         if (position, module_name) in attrs_readable:
             if not isinstance(_objs[0], dict | str):
-                readable_attrs, not_readable_attrs = attrs_readable[(position, module_name)]
+                readable_attrs, not_readable_attrs = attrs_readable[position, module_name]
                 for obj in _objs:
                     if "*" not in readable_attrs:
                         obj.info = {attr_name: obj.info[attr_name] for attr_name in readable_attrs if attr_name in obj.info}
@@ -267,22 +271,14 @@ def _get_capabilities(actor_roles: dict) -> list[dict]:
     return cap
 
 
-def _check_authorization() -> bool:
-    return ucr.is_true("umc/udm/delegation")
-
-
 def may_create(obj: object | dict | str, actor_roles_func: callable) -> None:
-    if not _check_authorization():
-        return
     actor_roles = actor_roles_func()
     cap = _get_capabilities(actor_roles)
     if not _check_permissions_create(obj, cap):
-        raise Forbidden()
+        raise permissionDenied()
 
 
 def may_read(objs: list[object | dict | str] | object, actor_roles_func: callable, filter_options: dict | None = None) -> list[object | dict | str] | object:
-    if not _check_authorization():
-        return objs
     result = objs
     if not isinstance(objs, list):
         result = [objs]
@@ -291,7 +287,7 @@ def may_read(objs: list[object | dict | str] | object, actor_roles_func: callabl
     result = _check_permissions_read(result, cap)
     if not isinstance(objs, list):
         if not result:
-            raise Forbidden()
+            raise permissionDenied()
         return result[0]
     if filter_options:
         attribute = filter_options.get('attribute')
@@ -306,32 +302,132 @@ def may_read(objs: list[object | dict | str] | object, actor_roles_func: callabl
 
 
 def may_modify(obj: object, actor_roles_func: callable) -> None:
-    if not _check_authorization():
-        return
     actor_roles = actor_roles_func()
     cap = _get_capabilities(actor_roles)
     if not _check_permissions_modify(obj, cap):
-        raise Forbidden()
+        raise permissionDenied()
 
 
 def may_delete(obj: object, actor_roles_func: callable) -> None:
-    if not _check_authorization():
-        return
     actor_roles = actor_roles_func()
     cap = _get_capabilities(actor_roles)
     if not _check_permissions_delete(obj, cap):
-        raise Forbidden()
+        raise permissionDenied()
 
 
 # TODO: check if we need something special for move/rename
 def may_move(obj: object, dest: str, actor_roles_func: callable) -> None:
-    if not _check_authorization():
-        return
     # may_modify(obj, actor_roles_func)  # optional
     actor_roles = actor_roles_func()
     cap = _get_capabilities(actor_roles)
     if not _check_permissions_delete(obj, cap):
-        raise Forbidden()
+        raise permissionDenied()
     if not _check_permissions_create(dest, cap):
-        raise Forbidden()
-    return
+        raise permissionDenied()
+
+
+def get_user_roles(lo, user_dn: str) -> None:
+    # code from components/authorization-engine/guardian/authorization-api/guardian_authorization_api/adapters/persistence.py
+    re_split_roles_and_contexts = re.compile(r"^((?P<role_app>[a-z0-9-_]+):(?P<role_namespace>[a-z0-9-_]+):(?P<role_name>[a-z0-9-_]+))(&(?P<context_app>[a-z0-9-_]+):(?P<context_namespace>[a-z0-9-_]+):(?P<context_name>[a-z0-9-_=,]+))?$")
+    # FIXME: Why doesn't this allow at least "=" and "," at least in "context_name"?
+    # Basically it should allow everything valid in an LDAP DN!? I.e.  case insensitive UTF-8 see https://ldapwiki.com/wiki/Wiki.jsp?page=Distinguished%20Name%20Case%20Sensitivity and https://ldapwiki.com/wiki/Wiki.jsp?page=Ou
+
+    data = lo.get(user_dn, attr=['univentionObjectType'])
+    mod = univention.admin.modules.get(data['univentionObjectType'][0].decode('UTF-8'))
+    obj = mod.object(None, lo, None, user_dn)
+    obj.open()
+    if hasattr(obj, 'open_guardian'):
+        obj.open_guardian()
+    role_set = set(obj.get("guardianInheritedRoles", []) + obj.get("guardianRoles", []))
+
+    __user_roles = {}
+    # simulating guardian_authorization_api.adapters.persistence.UDMPersistenceAdapter._to_policy_role()
+    for role in role_set:
+        if role.startswith("umc:udm:"):
+            res = re.search(re_split_roles_and_contexts, role)
+            if res:
+                res.groupdict()
+                __user_roles.setdefault(res["role_name"], [])
+                if res["context_name"]:
+                    __user_roles[res["role_name"]].append(res["context_name"])
+    log.info('Setting user roles to %s', __user_roles)
+    return __user_roles
+
+
+class Authorization:
+    """Check authorization via access control lists"""
+
+    enabled = False
+    get_privileged_connection = lambda: None  # noqa: E731
+    _cache_user_roles = {}
+
+    @classmethod
+    def enable(cls, get_privileged_connection):
+        """Enables ACL checking globally if the running service supports it"""
+        cls.enabled = True
+        cls.get_privileged_connection = get_privileged_connection
+
+    @classmethod
+    def inject_ldap_connection(cls, user_connection, metadata=None):
+        if cls.enabled:
+            user_connection.set_authz_connection_getter(cls.get_privileged_connection)
+            user_connection.metadata = metadata
+        return user_connection
+
+    @property
+    def lo(self):
+        return self.__class__.get_privileged_connection()
+
+    def _user_roles(self, lo):
+        actor_dn = lo.binddn
+        if self._cache_user_roles.get(actor_dn) is None:
+            self._cache_user_roles[actor_dn] = get_user_roles(self.lo, actor_dn)
+        return lambda: self._cache_user_roles[actor_dn]
+
+    def receive_allowed(self, obj):
+        if not self.enabled:
+            return True
+        try:
+            self.is_receive_allowed(obj)
+        except univention.admin.uexceptions.permissionDenied:
+            return False
+        return True
+
+    def is_receive_allowed(self, obj):
+        if not self.enabled:
+            return
+        return may_read(obj, self._user_roles(obj.lo))
+
+    def filter_search_results(self, lo, results, options=None):
+        if not self.enabled:
+            return results
+        return may_read(results, self._user_roles(lo), filter_options=options)
+
+    def is_create_allowed(self, obj):
+        if not self.enabled:
+            return
+        return may_create(obj, self._user_roles(obj.lo))
+
+    def is_modify_allowed(self, obj):
+        if not self.enabled:
+            return
+        return may_modify(obj, self._user_roles(obj.lo))
+
+    def is_rename_allowed(self, *args, **kwargs):
+        if not self.enabled:
+            return
+        return  # TODO: implement ?
+
+    def is_move_allowed(self, obj, dest):
+        if not self.enabled:
+            return
+        return may_move(obj, dest, self._user_roles(obj.lo))
+
+    def is_remove_allowed(self, obj):
+        if not self.enabled:
+            return
+        return may_delete(obj, self._user_roles(obj.lo))
+
+    def object_exists(self, obj):
+        if not self.receive_allowed(obj):
+            raise univention.admin.uexceptions.noObject(obj.dn)
