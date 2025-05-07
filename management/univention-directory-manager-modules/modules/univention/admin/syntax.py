@@ -856,13 +856,13 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
                                 return []
 
                             if ldap_attr is not None:
-                                return lo.search(filter=str(lookup_filter), attr=ldap_attr, **module_search_options)
+                                return lo.search_filtered({'module': module.module}, filter=str(lookup_filter), attr=ldap_attr, **module_search_options)
                             else:
-                                return lo.searchDn(filter=str(lookup_filter), **module_search_options)
+                                return lo.search_dn_filtered({'module': module.module}, filter=str(lookup_filter), **module_search_options)
                         return module.lookup(None, lo, filter_s, **module_search_options)
 
                     if ldap_attr:
-                        result = _search(module, filter_s, ldap_attr)
+                        result = _search(module, filter_s, [*ldap_attr, 'univentionObjectType'])
                         for dn, ldap_map in result:
                             info = univention.admin.mapping.mapDict(mapping, ldap_map)
                             key, label = extract_key_label(cls, dn, info)
@@ -980,8 +980,12 @@ class UDM_Attribute(ISyntax, _UDMObjectOrAttribute):
 
         log.debug('Found syntax %s with udm_module property', cls.name)
         if cls.udm_filter == 'dn':
-            obj = module.object(None, lo, None, options.get('dependencies', {})[cls.depends])
-            choices = map_choice(obj)
+            target_dn = options.get('dependencies', {})[cls.depends]
+            obj = module.object(None, lo, None, target_dn)
+            objs = lo.filter_lookup_results([obj])
+            if not objs:
+                raise univention.admin.uexceptions.noObject(target_dn)
+            choices = map_choice(objs[0])
         else:
             filter_s = cls._create_ldap_filter(options, module)
             if filter_s is not None:
@@ -6036,6 +6040,8 @@ class LDAP_Search(select):
                 filter_s = univention.admin.pattern_replace(filter_s, eobj)
 
         choices = []
+        results = []
+
         for dn in lo.searchDn(filter=filter_s, base=cls.base):
             # cls.attributes: pass on all display attributes so the frontend has a chance to supoport it some day
             if cls.viewonly:
@@ -6059,18 +6065,23 @@ class LDAP_Search(select):
             obj = module.object(None, lo, None, dn)
             if not obj:
                 continue
-            obj.open()
+            results.append(obj)
 
+        results = lo.filter_lookup_results(results)
+
+        for obj in results:
+            obj.open()
+            module = univention.admin.modules.get(obj.module)
             # find the value to store
-            id = dn
+            id_ = dn
             if not cls.viewonly:
                 _mod_store, store = split_module_attr(store_pattern)
                 if store == 'dn':
-                    id = dn
+                    id_ = dn
                 elif store in obj:
-                    id = obj[store]
+                    id_ = obj[store]
                 elif obj.oldattr.get(store):
-                    id = obj.oldattr[store][0].decode(*module.mapping.getEncoding(store))
+                    id_ = obj.oldattr[store][0].decode(*module.mapping.getEncoding(store))
                 else:
                     # no valid store object, ignore
                     log.warning('LDAP_Search syntax %r: %r is no valid property for object %r - ignoring entry.', cls.name, store, dn)
@@ -6091,8 +6102,8 @@ class LDAP_Search(select):
                     label = 'Unknown attribute %r' % (display,)
 
             # TODO: remove this one day...
-            # choices.append((id, label))
-            choices.append({'objectType': module.module, 'id': id, 'label': label})
+            # choices.append((id_, label))
+            choices.append({'objectType': module.module, 'id': id_, 'label': label})
 
         # sort choices before inserting / appending some special items
         choices = cls.sort_choices(choices)

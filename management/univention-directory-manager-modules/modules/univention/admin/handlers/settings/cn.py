@@ -5,7 +5,7 @@
 # SPDX-FileCopyrightText: 2004-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-"""|UDM| module for container settings"""
+"""|UDM| module for a cn=univention singleton object representiong a container for various settings."""
 
 import univention.admin.filter
 import univention.admin.handlers

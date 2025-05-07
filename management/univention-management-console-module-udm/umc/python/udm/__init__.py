@@ -24,6 +24,7 @@ from urllib.request import Request
 
 from ldap import INVALID_CREDENTIALS, LDAPError
 
+import univention.admin.authorization as udm_auth
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.syntax as udm_syntax
@@ -33,7 +34,8 @@ import univention.directory.reports as udr
 from univention.config_registry import handler_set
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
-from univention.management.console.ldap import get_user_connection
+from univention.management.console.error import Forbidden
+from univention.management.console.ldap import get_admin_connection as get_ldap_admin_connection, get_user_connection
 from univention.management.console.log import MODULE
 from univention.management.console.message import Request as UMCRequest
 from univention.management.console.modules import Base, UMC_Error
@@ -52,7 +54,7 @@ from .udm_ldap import (
     LDAP_AuthenticationFailed, LDAP_Connection, NoIpLeft, ObjectDoesNotExist, SuperordinateDoesNotExist, UDM_Error,
     UDM_Module, UserWithoutDN, _get_syntax, calculate_bind_hash, container_modules, get_bind_hash, get_module,
     get_obj_module, info_syntax_choices, ldap_dn2path, list_objects, read_syntax_choices, search_syntax_choices_by_key,
-    set_bind_function, set_bind_hash, set_user_roles,
+    set_bind_function, set_bind_hash,
 )
 
 
@@ -184,13 +186,14 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
 
         def bind_user_connection(lo):
             request.bind_user_connection(lo)
+            lo = udm_auth.Authorization.inject_ldap_connection(lo)
             self.require_license(lo)
 
         set_bind_function(bind_user_connection)
         set_bind_hash(calculate_bind_hash(request))
 
         if ucr.is_true("umc/udm/delegation"):
-            set_user_roles(request.user_dn)
+            udm_auth.Authorization.enable(lambda: get_ldap_admin_connection()[0])  # noqa: PLW0108
 
         # read user settings and initial UDR
         self.reports_cfg = udr.Config()
@@ -205,6 +208,8 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         if isinstance(exc, udm_errors.authFail | INVALID_CREDENTIALS):
             MODULE.warn('Authentication failed: %s' % (exc,))
             raise LDAP_AuthenticationFailed()
+        if isinstance(exc, udm_errors.permissionDenied) or isinstance(exc, UDM_Error) and isinstance(exc.exc, udm_errors.permissionDenied):
+            raise Forbidden(str(exc))
         if isinstance(exc, udm_errors.base | LDAPError):
             MODULE.error(''.join(traceback.format_exception(etype, exc, etraceback)))
 
@@ -223,13 +228,11 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         lo.requireLicense()
 
     def get_ldap_connection(self):
-        if ucr.is_true("umc/udm/delegation"):
-            from univention.management.console.ldap import get_admin_connection as ldap_get_admin_connection
-            return ldap_get_admin_connection()
         try:
             lo, _po = get_user_connection(bind=self.bind_user_connection, write=True, bindhash=calculate_bind_hash(self._current_request))
         except (LDAPError, udm_errors.ldapError):
             lo, _po = get_user_connection(bind=self.bind_user_connection, write=True, bindhash=calculate_bind_hash(self._current_request))
+        lo = udm_auth.Authorization.inject_ldap_connection(lo)
         return lo, udm_uldap.position(lo.base)
 
     def get_module(self, flavor, ldap_dn):

@@ -66,7 +66,7 @@ class UdmModule(Protocol):
         pass
 
     @staticmethod
-    def lookup(co: None, lo: univention.admin.uldap.access, filter: str = '', base: str = '', superordinate: Any = None, scope: str = 'base+one', unique: bool = False, required: bool = False, timeout: int = -1, sizelimit: int = 0) -> list[Any]:
+    def lookup(co: None, lo: univention.admin.uldap.access, filter: str = '', base: str = '', superordinate: Any = None, scope: str = 'base+one', unique: bool = False, required: bool = False, timeout: int = -1, sizelimit: int = 0, authz: bool = True) -> list[Any]:
         pass
 
     @staticmethod
@@ -272,7 +272,8 @@ def update_extended_options(lo: univention.admin.uldap.access, module: UdmModule
             default=default,
             editable=editable,
             objectClasses=classes,
-            is_app_option=is_app_option)
+            is_app_option=is_app_option,
+        )
     module.options = new_options
 
 
@@ -883,7 +884,7 @@ def virtual(module_name: UdmName) -> bool:
     return getattr(module, 'virtual', False)
 
 
-def lookup(module_name: UdmName, co: None, lo: univention.admin.uldap.access, filter: str = '', base: str = '', superordinate: Any = None, scope: str = 'base+one', unique: bool = False, required: bool = False, timeout: int = -1, sizelimit: int = 0) -> list[Any]:
+def lookup(module_name: UdmName, co: None, lo: univention.admin.uldap.access, filter: str = '', base: str = '', superordinate: Any = None, scope: str = 'base+one', unique: bool = False, required: bool = False, timeout: int = -1, sizelimit: int = 0, authz: bool = True) -> list[Any]:
     """
     Return objects of module that match the given criteria.
 
@@ -893,7 +894,8 @@ def lookup(module_name: UdmName, co: None, lo: univention.admin.uldap.access, fi
     tmpres = []
 
     if hasattr(module, 'lookup'):
-        tmpres = module.lookup(co, lo, filter, base=base, superordinate=superordinate, scope=scope, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit)
+        kw = {} if authz else {'authz': authz}  # TODO: not every UDM module supports the new parameter
+        tmpres = module.lookup(co, lo, filter, base=base, superordinate=superordinate, scope=scope, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit, **kw)
 
     # check for 'None' items just in case...
     return [item for item in tmpres if item]
