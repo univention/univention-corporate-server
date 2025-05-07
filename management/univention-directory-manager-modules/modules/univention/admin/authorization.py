@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 #
-# Univention Management Console
-#  module: manages UDM modules
+# Univention Directory Manager
 #
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
@@ -32,16 +31,21 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
+"""Authorization for UDM access."""
+
 import copy
 import json
 import os
 import re
+from logging import getLogger
 
-from univention.management.console.config import ucr
-from univention.management.console.error import Forbidden
-from univention.management.console.log import MODULE
+import univention.admin.modules
+from univention.admin._ucr import configRegistry as ucr
+from univention.admin.uexceptions import permissionDenied
 from univention.uldap import parentDn
 
+
+log = getLogger('ADMIN')
 
 # load roles
 # TODO: move to some other place
@@ -55,8 +59,8 @@ if ucr.is_true('umc/udm/delegation'):
                 with open(file) as roles:
                     ROLES.update(json.load(roles))
     except Exception as exc:
-        MODULE.error(f'Loading role failed with {exc}')
-    MODULE.info(f'Loaded roles: {ROLES}')
+        log.error('Loading role failed with %s', exc)
+    log.info('Loaded roles: {ROLES}')
 
 ldap_base = ucr.get("ldap/base")
 
@@ -70,19 +74,25 @@ def _obj2dn(obj: object | dict | str) -> str:
             return obj["id"]
         if isinstance(obj, str):
             return obj
+        if isinstance(obj, tuple) and len(obj) == 2:
+            return obj[0]
     except (AttributeError, KeyError):
         pass
-    raise ValueError("Invalid object format for extracting DN")
+    raise ValueError("Invalid object format for extracting DN: ", obj)
 
 
 def _obj2position(obj: object | dict | str) -> str:
     """Extracts the position from an object's distinguished name (DN)."""
     try:
+        if isinstance(obj, tuple):
+            return _obj2position(_obj2dn(obj[0]))
         if hasattr(obj, "position") and (not hasattr(obj, "dn") or not obj.dn):
             return obj.position.getDn().lower()
         if isinstance(obj, dict) and 'position' in obj:
             return obj['position'].lower()
-        return parentDn(_obj2dn(obj)).lower()
+        if parentDn(_obj2dn(obj), ucr['ldap/base']) is None:
+            return _obj2dn(obj).lower()
+        return parentDn(_obj2dn(obj), ucr['ldap/base']).lower()
     except (AttributeError, KeyError, IndexError):
         pass
     raise ValueError("Invalid object format for extracting position")
@@ -91,17 +101,26 @@ def _obj2position(obj: object | dict | str) -> str:
 def _obj2module(obj: object | dict | str) -> str:
     if hasattr(obj, "module"):
         return obj.module
-    if isinstance(obj, dict) and "module_name" in obj:
-        return obj["module_name"]
+    if isinstance(obj, dict) and "univentionObjectType" in obj:
+        return obj["univentionObjectType"][0].decode('UTF-8')
     if isinstance(obj, dict | str):
         dn = _obj2dn(obj)
+        if dn.startswith('dc='):
+            return 'container/dc'
         # FIXME: extract module name using dn
-        if "cn=users" in dn:
+        if dn.lower().startswith('cn=groups,') or dn.lower().startswith('cn=users,'):
+            return 'container/cn'
+        if "cn=users" in dn or 'cn=self registered users' in dn or dn.startswith('uid='):
             return "users/user"
         if "cn=groups" in dn:
             return "groups/group"
+        if dn.lower().startswith('ou='):
+            return "container/ou"
         else:
             raise NotImplementedError(f"Module extraction from DN not implemented {dn}: {obj} ")
+    if isinstance(obj, tuple):
+        return _obj2module(obj[1])
+    raise NotImplementedError(obj)
 
 
 def _get_cap_priority(target_position: str):
@@ -143,7 +162,7 @@ def _check_condition(position: str, condition: dict) -> bool:
         return True
     scope = condition.get('scope', 'base')
     condition_positions = condition.get('contexts', []) if condition['position'] == '$CONTEXT' else [condition['position']]
-    if scope == "subtree":
+    if scope in ('one', "subtree"):
         return _check_scope_subtree(position, condition_positions)
     if scope == "base":
         return _check_scope_base(position, condition_positions)
@@ -231,13 +250,13 @@ def _check_permissions_read(objs: list[object | dict | str], caps: list[dict]) -
                 readable_attrs, not_readable_attrs = _get_readable_attrs_from_permissions(module_name, cap['permissions'])
 
                 if readable_attrs:
-                    attrs_readable[(position, module_name)] = readable_attrs, not_readable_attrs
+                    attrs_readable[position, module_name] = readable_attrs, not_readable_attrs
                     break
 
     for (position, module_name), _objs in objs_processed.items():
         if (position, module_name) in attrs_readable:
-            if not isinstance(_objs[0], dict | str):
-                readable_attrs, not_readable_attrs = attrs_readable[(position, module_name)]
+            if not isinstance(_objs[0], dict | str | tuple):
+                readable_attrs, not_readable_attrs = attrs_readable[position, module_name]
                 for obj in _objs:
                     if "*" not in readable_attrs:
                         obj.info = {attr_name: obj.info[attr_name] for attr_name in readable_attrs if attr_name in obj.info}
@@ -267,22 +286,13 @@ def _get_capabilities(actor_roles: dict) -> list[dict]:
     return cap
 
 
-def _check_authorization() -> bool:
-    return ucr.is_true("umc/udm/delegation")
-
-
 def may_create(obj: object | dict | str, actor_roles_func: callable) -> None:
-    if not _check_authorization():
-        return
     actor_roles = actor_roles_func()
     cap = _get_capabilities(actor_roles)
-    if not _check_permissions_create(obj, cap):
-        raise Forbidden()
+    return _check_permissions_create(obj, cap)
 
 
 def may_read(objs: list[object | dict | str] | object, actor_roles_func: callable, filter_options: dict | None = None) -> list[object | dict | str] | object:
-    if not _check_authorization():
-        return objs
     result = objs
     if not isinstance(objs, list):
         result = [objs]
@@ -291,7 +301,7 @@ def may_read(objs: list[object | dict | str] | object, actor_roles_func: callabl
     result = _check_permissions_read(result, cap)
     if not isinstance(objs, list):
         if not result:
-            raise Forbidden()
+            raise permissionDenied()
         return result[0]
     if filter_options:
         attribute = filter_options.get('attribute')
@@ -306,32 +316,147 @@ def may_read(objs: list[object | dict | str] | object, actor_roles_func: callabl
 
 
 def may_modify(obj: object, actor_roles_func: callable) -> None:
-    if not _check_authorization():
-        return
     actor_roles = actor_roles_func()
     cap = _get_capabilities(actor_roles)
-    if not _check_permissions_modify(obj, cap):
-        raise Forbidden()
+    return _check_permissions_modify(obj, cap)
 
 
 def may_delete(obj: object, actor_roles_func: callable) -> None:
-    if not _check_authorization():
-        return
     actor_roles = actor_roles_func()
     cap = _get_capabilities(actor_roles)
-    if not _check_permissions_delete(obj, cap):
-        raise Forbidden()
+    return _check_permissions_delete(obj, cap)
 
 
 # TODO: check if we need something special for move/rename
 def may_move(obj: object, dest: str, actor_roles_func: callable) -> None:
-    if not _check_authorization():
-        return
     # may_modify(obj, actor_roles_func)  # optional
     actor_roles = actor_roles_func()
     cap = _get_capabilities(actor_roles)
-    if not _check_permissions_delete(obj, cap):
-        raise Forbidden()
-    if not _check_permissions_create(dest, cap):
-        raise Forbidden()
-    return
+    return _check_permissions_delete(obj, cap) and _check_permissions_create(dest, cap)
+
+
+def get_user_roles(lo, user_dn: str) -> None:
+    # code from components/authorization-engine/guardian/authorization-api/guardian_authorization_api/adapters/persistence.py
+    re_split_roles_and_contexts = re.compile(r"^((?P<role_app>[a-z0-9-_]+):(?P<role_namespace>[a-z0-9-_]+):(?P<role_name>[a-z0-9-_]+))(&(?P<context_app>[a-z0-9-_]+):(?P<context_namespace>[a-z0-9-_]+):(?P<context_name>[a-z0-9-_=,]+))?$")
+    # FIXME: Why doesn't this allow at least "=" and "," at least in "context_name"?
+    # Basically it should allow everything valid in an LDAP DN!? I.e.  case insensitive UTF-8 see https://ldapwiki.com/wiki/Wiki.jsp?page=Distinguished%20Name%20Case%20Sensitivity and https://ldapwiki.com/wiki/Wiki.jsp?page=Ou
+
+    data = lo.get(user_dn, attr=['univentionObjectType'])
+    mod = univention.admin.modules.get(data['univentionObjectType'][0].decode('UTF-8'))
+    obj = mod.object(None, lo, None, user_dn)
+    obj.open()
+    if hasattr(obj, 'open_guardian'):
+        obj.open_guardian()
+    role_set = set(obj.get("guardianInheritedRoles", []) + obj.get("guardianRoles", []))
+
+    __user_roles = {}
+    # simulating guardian_authorization_api.adapters.persistence.UDMPersistenceAdapter._to_policy_role()
+    for role in role_set:
+        if role.startswith("umc:udm:"):
+            res = re.search(re_split_roles_and_contexts, role)
+            if res:
+                res.groupdict()
+                __user_roles.setdefault(res["role_name"], [])
+                if res["context_name"]:
+                    __user_roles[res["role_name"]].append(res["context_name"])
+    log.info('Setting user roles to %s', __user_roles)
+    return __user_roles
+
+
+class Authorization:
+    """Check authorization via access control lists"""
+
+    enabled = False
+    get_privileged_connection = lambda: None  # noqa: E731
+    _cache_user_roles = {}
+
+    @classmethod
+    def enable(cls, get_privileged_connection):
+        """Enables ACL checking globally if the running service supports it"""
+        cls.enabled = True
+        cls.get_privileged_connection = get_privileged_connection
+
+    @classmethod
+    def inject_ldap_connection(cls, user_connection, metadata=None):
+        if cls.enabled:
+            user_connection.metadata = metadata
+        return user_connection
+
+    @classmethod
+    def get_authz_connection(cls, lo):
+        if cls.enabled:
+            return cls.get_privileged_connection()
+        return lo
+
+    @property
+    def lo(self):
+        return self.__class__.get_privileged_connection()
+
+    def _user_roles(self, lo):
+        actor_dn = lo.binddn
+        if self._cache_user_roles.get(actor_dn) is None:
+            self._cache_user_roles[actor_dn] = get_user_roles(self.lo, actor_dn)
+        return lambda: self._cache_user_roles[actor_dn]
+
+    def is_receive_allowed(self, obj, raise_exception=True):
+        if not self.enabled:
+            return True
+        try:
+            may_read(obj, self._user_roles(obj.lo))
+        except permissionDenied:
+            if not raise_exception:
+                return False
+            raise
+        return True
+
+    def filter_search_results(self, lo, results, options=None):
+        if not self.enabled:
+            return results
+        return may_read(results, self._user_roles(lo), filter_options=options)
+
+    def is_create_allowed(self, obj, raise_exception=True):
+        if not self.enabled:
+            return True
+        if not may_create(obj, self._user_roles(obj.lo)):
+            if raise_exception:
+                raise permissionDenied()
+            return False
+        return True
+
+    def is_modify_allowed(self, obj, raise_exception=True):
+        if not self.enabled:
+            return True
+        if not may_modify(obj, self._user_roles(obj.lo)):
+            if raise_exception:
+                raise permissionDenied()
+            return False
+        return True
+
+    def is_rename_allowed(self, *args, **kwargs):
+        if not self.enabled:
+            return True
+        return True  # TODO: implement ?
+
+    def is_move_allowed(self, obj, dest, raise_exception=True):
+        if not self.enabled:
+            return True
+        moved_obj = copy.deepcopy(obj)
+        moved_obj.dn = dest
+        if not may_move(obj, moved_obj, self._user_roles(obj.lo)):
+            if raise_exception:
+                raise permissionDenied()
+            return False
+        return True
+
+    def is_remove_allowed(self, obj, raise_exception=True):
+        if not self.enabled:
+            return True
+        if not may_delete(obj, self._user_roles(obj.lo)):
+            if raise_exception:
+                raise permissionDenied()
+            return False
+        return True
+
+    def object_exists(self, obj):
+        if not self.is_receive_allowed(obj, raise_exception=False):
+            raise univention.admin.uexceptions.noObject(obj.dn)
