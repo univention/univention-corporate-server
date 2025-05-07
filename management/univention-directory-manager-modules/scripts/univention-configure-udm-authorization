@@ -1,0 +1,694 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+"""Script to create the necessary Guardian objects for UDM."""
+
+import argparse
+import base64
+import json
+import logging
+import os
+import shutil
+import sys
+from functools import lru_cache
+from pathlib import Path
+from time import sleep
+from urllib.parse import quote
+
+import requests
+
+import univention.admin.modules
+
+
+log = logging.getLogger(__name__)
+ALREADY_EXISTS = object()
+TIMEOUT = 10
+
+
+class TokenInvalidError(Exception):
+    pass
+
+
+class GuardianManagementClient:
+
+    def __init__(self, management_url, username, password, oidc_token_endpoint_url, oidc_client_id):
+        self.management_url = management_url
+        self.username = username
+        self.password = password
+        self.oidc_token_endpoint_url = oidc_token_endpoint_url
+        self.oidc_client_id = oidc_client_id
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_token(token_endpoint_url, client_id, username, password):
+        log.info("Getting token")
+        data = {
+            "client_id": client_id,
+            "username": username,
+            "password": password,
+            "grant_type": "password",
+        }
+
+        headers = {"Content-Type": "application/x-www-form-urlencoded"}
+        attempt = 0
+        while True:
+            attempt += 1
+            try:
+                response = requests.post(token_endpoint_url, data=data, headers=headers, timeout=TIMEOUT)
+                response.raise_for_status()
+            except requests.exceptions.HTTPError:
+                if attempt > 5:
+                    raise
+                else:
+                    sleep(2)
+                    continue
+            break
+        token = response.json()["access_token"]
+        log.info("Token received")
+        return token
+
+    def handle_status_code(self, response):
+        if response.status_code == 400 and response.json().get('detail') == {
+            "message": "An object with the given identifiers already exists.",
+        }:
+            return ALREADY_EXISTS
+
+        if response.status_code == 401:
+            raise TokenInvalidError(response.json())
+
+        if not response.ok:
+            log.debug('response=%r', response.__dict__)
+        response.raise_for_status()
+        return response
+
+    def generate_headers(self):
+        token = self.get_token(self.oidc_token_endpoint_url, self.oidc_client_id, self.username, self.password)
+        headers = {"Content-Type": "application/json", "Authorization": f"Bearer {token}"}
+        return headers
+
+    def post(self, path, data):
+        return self.request('POST', path, data)
+
+    def put(self, path, data):
+        return self.request('PUT', path, data)
+
+    def patch(self, path, data):
+        return self.request('PATCH', path, data)
+
+    def request(self, method, path, data):
+        response = requests.request(method, f"{self.management_url}{path}", headers=self.generate_headers(), json=data, timeout=TIMEOUT)
+        try:
+            return self.handle_status_code(response)
+        except TokenInvalidError:
+            self.get_token.cache_clear()
+            response = requests.request(method, f"{self.management_url}{path}", headers=self.generate_headers(), json=data, timeout=TIMEOUT)
+            return self.handle_status_code(response)
+
+    def create_app(self, app_name, display_name):
+        data = {"name": app_name, "display_name": display_name}
+        response = self.post("/apps/register", data)
+        if response is ALREADY_EXISTS:
+            self.modify_app(app_name, display_name)
+        else:
+            log.info("App %r created: %s", app_name, response.json())
+
+    def modify_app(self, app_name, display_name):
+        data = {"display_name": display_name}
+        response = self.patch(f"/apps/{quote(app_name)}", data)
+        log.info("App %r modified: %s", app_name, response.json())
+
+    def create_namespace(self, app_name, namespace_name, display_name=None):
+        data = {"name": namespace_name, "display_name": display_name}
+        response = self.post(f"/namespaces/{quote(app_name)}", data)
+
+        if response is ALREADY_EXISTS:
+            self.modify_namespace(app_name, namespace_name, display_name)
+        else:
+            log.info("Namespace %r created: %s", namespace_name, response.json())
+
+    def modify_namespace(self, app_name, namespace_name, display_name):
+        data = {"display_name": display_name}
+        response = self.patch(f"/namespaces/{quote(app_name)}/{quote(namespace_name)}", data)
+
+        log.info("Namespace %r modified: %s", namespace_name, response.json())
+
+    def create_role(self, app_name, namespace_name, role_name, display_name):
+        data = {"name": role_name, "display_name": display_name}
+        response = self.post(f"/roles/{quote(app_name)}/{quote(namespace_name)}", data)
+
+        if response is ALREADY_EXISTS:
+            self.modify_role(app_name, namespace_name, role_name, display_name)
+        else:
+            log.info("Role %r created: %s", role_name, response.json())
+
+    def modify_role(self, app_name, namespace_name, role_name, display_name):
+        data = {"display_name": display_name}
+        response = self.patch(f"/roles/{quote(app_name)}/{quote(namespace_name)}/{quote(role_name)}", data)
+
+        log.info("Role %r created: %s", role_name, response.json())
+
+    def create_permission(self, app_name, namespace_name, permission_name, display_name):
+        log.info("Create Permission %r", permission_name)
+        data = {"name": permission_name, "display_name": display_name}
+        response = self.post(f"/permissions/{quote(app_name)}/{quote(namespace_name)}", data)
+
+        if response is ALREADY_EXISTS:
+            self.modify_permission(app_name, namespace_name, permission_name, display_name)
+        else:
+            log.info("Permission %r created: %s", permission_name, response.json())
+
+    def modify_permission(self, app_name, namespace_name, permission_name, display_name):
+        data = {"display_name": display_name}
+        response = self.patch(f"/permissions/{quote(app_name)}/{quote(namespace_name)}/{quote(permission_name)}", data)
+
+        log.info("Permission %r modified: %s", permission_name, response.json())
+
+    def create_context(self, app_name, namespace_name, context_name, display_name):
+        data = {"name": context_name, "display_name": display_name}
+        response = self.post(f"/contexts/{quote(app_name)}/{quote(namespace_name)}", data)
+
+        if response is ALREADY_EXISTS:
+            self.modify_context(app_name, namespace_name, context_name, display_name)
+        else:
+            log.info("Context %r created: %s", context_name, response.json())
+
+    def modify_context(self, app_name, namespace_name, context_name, display_name):
+        data = {"display_name": display_name}
+        response = self.patch(f"/contexts/{quote(app_name)}/{quote(namespace_name)}/{quote(context_name)}", data)
+
+        log.info("Context %r modified: %s", context_name, response.json())
+
+    def create_condition(
+        self, app_name, namespace_name, condition_name, display_name, documentation, code, parameters=None,
+    ):
+        if parameters is None:
+            parameters = []
+        data = {
+            "name": condition_name,
+            "display_name": display_name,
+            "documentation": documentation,
+            "parameters": parameters,
+            "code": code,
+        }
+        response = self.post(f"/conditions/{quote(app_name)}/{quote(namespace_name)}", data)
+
+        if response is ALREADY_EXISTS:
+            self.modify_condition(app_name, namespace_name, condition_name, display_name, documentation, code, parameters)
+        else:
+            log.info("Condition %r created: %s", condition_name, response.json())
+
+    def modify_condition(
+        self, app_name, namespace_name, condition_name, display_name, documentation, code, parameters=None,
+    ):
+        if parameters is None:
+            parameters = []
+        data = {
+            "display_name": display_name,
+            "documentation": documentation,
+            "parameters": parameters,
+            "code": code,
+        }
+        response = self.patch(f"/conditions/{quote(app_name)}/{quote(namespace_name)}/{quote(condition_name)}", data)
+
+        log.info("Condition %r modified: %s", condition_name, response.json())
+
+    def create_role_capability_mapping(
+        self, name, display_name, app_name, namespace_name, role, permissions, conditions=None, relation="AND",
+    ):
+        if conditions is None:
+            conditions = []
+        data = {
+            "name": name,
+            "display_name": display_name,
+            "role": role,
+            "conditions": conditions,
+            "relation": relation,
+            "permissions": [
+                permission if isinstance(permission, dict) else {"app_name": app_name, "namespace_name": namespace_name, "name": permission}
+                for permission in permissions
+            ],
+        }
+        response = self.post(f"/capabilities/{quote(app_name)}/{quote(namespace_name)}", data)
+
+        if response is ALREADY_EXISTS:
+            self.modify_role_capability_mapping(name, display_name, app_name, namespace_name, role, permissions, conditions=None, relation="AND")
+        else:
+            log.info("Role-Capability-Mapping %r created: %s", name, response.json())
+
+    def modify_role_capability_mapping(
+        self, name, display_name, app_name, namespace_name, role, permissions, conditions=None, relation="AND",
+    ):
+        if conditions is None:
+            conditions = []
+        data = {
+            "display_name": display_name,
+            "role": role,
+            "conditions": conditions,
+            "relation": relation,
+            "permissions": [
+                permission if isinstance(permission, dict) else {"app_name": app_name, "namespace_name": namespace_name, "name": permission}
+                for permission in permissions
+            ],
+        }
+        response = self.put(f"/capabilities/{quote(app_name)}/{quote(namespace_name)}/{quote(name)}", data)
+
+        log.info("Role-Capability-Mapping %r modified: %s", name, response.json())
+
+    def prune(self):
+        pass  # not possible, Guardian supports no removal
+
+
+def expand_role(app_name, namespace_name, name):
+    return {
+        "app_name": app_name,
+        "namespace_name": namespace_name,
+        "name": name,
+    }
+
+
+def expand_permission(app_name, namespace_name, name):
+    return expand_role(app_name, namespace_name, name)
+
+
+def expand_string(string):
+    return string.split(':', 2)
+
+
+def expand_condition(condition, parameters=None):
+    app_name, namespace_name, name = expand_string(condition)
+    return {
+        **expand_role(app_name, namespace_name, name),
+        "parameters": parameters or [],
+    }
+
+
+class GuardianManagementClientLocal(GuardianManagementClient):
+
+    LOCAL_PATH = '/etc/univention/directory-manager/guardian'
+
+    def request(self, method, path, data):
+        if method == 'POST':
+            path = f'{path}/{data["name"]}'
+        filepath = f'{self.LOCAL_PATH}/{path}.json'
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        with open(filepath, 'w') as fd:
+            json.dump(data, fd)
+
+        r = requests.Response()
+        r.status_code = 200
+        r._content = b'{}'
+        r.headers['Content-Type'] = 'application/json'
+        return r
+
+    def prune(self):
+        if os.path.exists(self.LOCAL_PATH):
+            shutil.rmtree(self.LOCAL_PATH)
+
+
+APP_NAME = 'udm'
+DEFAULT_ROLES_NAMESPACE = 'default-roles'
+CONDITIONS_NAMESPACE_NAME = 'conditions'
+CONTEXTS_NAMESPACE_NAME = 'contexts'
+
+
+class UniventionDirectoryManagerRoles:
+
+    @classmethod
+    def parse_args(cls):
+        from univention.config_registry import ucr
+        parser = argparse.ArgumentParser(description=__doc__)
+        parser.add_argument('--store-local', action='store_true')
+        parser.add_argument("--management-url", help="Guardian management URL", default=f'https://{ucr["hostname"]}.{ucr["domainname"]}/guardian/management/')
+        parser.add_argument("--username", help="Guardian management username", default='Administrator')
+        parser.add_argument("--password", help="Guardian management password", default='univention')
+        parser.add_argument("--keycloak-url", help="Keycloak token endpoint URL", default=f'https://{ucr["get keycloak/server/sso/fqdn"]}/realms/ucs/protocol/openid-connect/token')
+        parser.add_argument("--keycloak-client", help="Keycloak client ID", default='guardian-scripts')
+        parser.add_argument("--condition-dir", help="Path to the condition directory", default='/usr/share/univention-directory-manager-tools/conditions/')
+        subparsers = parser.add_subparsers(dest='action', title='actions', description='All available actions')
+        subparsers.add_parser('create-permissions')
+        subparsers.add_parser('create-default-roles')
+        subparsers.add_parser('prune')
+        return parser.parse_args()
+
+    @classmethod
+    def main(cls):
+        args = cls.parse_args()
+        univention.admin.modules.update()
+
+        clientclass = GuardianManagementClientLocal if args.store_local else GuardianManagementClient
+        client = clientclass(args.management_url.rstrip('/'), args.username, args.password, args.keycloak_url, args.keycloak_client)
+
+        roles = cls(args, client)
+        if args.action == 'prune':
+            client.prune()
+        if args.action == 'create-permissions':
+            roles.create_app()
+            roles.create_namespaces()
+            roles.create_conditions()
+            roles.create_all_modules_permissions()
+        if args.action == 'create-default-roles':
+            roles.add_users_self_role()
+            roles.add_domain_users_role()
+            roles.add_global_admnistrator_role()
+            roles.add_organizational_unit_administrator_role()
+            roles.add_helpdesk_operator_role()
+            roles.add_computer_clients_in_ou_join_role()
+
+        log.info("All Guardian objects created")
+
+    def __init__(self, args, client):
+        self.args = args
+        self.client = client
+
+    def create_app(self):
+        log.info("Creating App")
+        self.client.create_app(APP_NAME, "Univention Directory Manager")
+
+    def create_namespaces(self):
+        log.info("Creating Namespaces")
+        self.client.create_namespace(APP_NAME, DEFAULT_ROLES_NAMESPACE)
+        self.client.create_namespace(APP_NAME, CONDITIONS_NAMESPACE_NAME)
+        self.client.create_namespace(APP_NAME, CONTEXTS_NAMESPACE_NAME)
+
+    def create_conditions(self):
+        log.info("Creating Conditions")
+        path_list = Path(self.args.condition_dir).glob("*.json")
+        for data_file in path_list:
+            with open(data_file) as fd:
+                cond_info = json.load(fd)
+            cond_name = data_file.stem
+            with open(Path(self.args.condition_dir) / f"{cond_name}.rego", "rb") as fd:
+                code_raw = fd.read()
+            self.client.create_condition(
+                APP_NAME,
+                CONDITIONS_NAMESPACE_NAME,
+                cond_name,
+                cond_info["display_name"],
+                cond_info["documentation"],
+                base64.b64encode(code_raw).decode(),
+                cond_info["parameters"],
+            )
+
+    def create_all_modules_permissions(self):
+        log.info("Creating Permissions")
+        lo, po = univention.admin.uldap.getAdminConnection()
+        for modname, module in univention.admin.modules.modules.items():
+            univention.admin.modules.init(lo, po, module)
+
+            permissions = []
+            if univention.admin.modules.supports(modname, 'add'):
+                permissions.append(("create", f"Allow to create {module.short_description}"))
+            if univention.admin.modules.supports(modname, 'edit'):
+                permissions.append(("modify", f"Allow to modify {module.short_description}"))
+                permissions.append(("rename", f"Allow to rename {module.short_description}"))
+            if univention.admin.modules.supports(modname, 'remove'):
+                permissions.append(("remove", f"Allow to remove {module.short_description}"))
+            if univention.admin.modules.supports(modname, 'move') or univention.admin.modules.supports(modname, 'subtree_move'):
+                permissions.append(("move", f"Allow to move {module.short_description}"))
+            if univention.admin.modules.supports(modname, 'search'):
+                permissions.append(("search", f"Allow to search {module.short_description}"))
+                permissions.append(("read", f"Allow to read {module.short_description}"))
+            all_properties = {self._sanitize_property_name(propname): prop for propname, prop in module.property_descriptions.items()}
+            for propname, prop in all_properties.items():
+                propname = self._sanitize_property_name(propname)
+                permissions.extend([
+                    (f'read-property-{propname}', f'Allow to read {module.short_description}: {prop.short_description}'),
+                    (f'search-property-{propname}', f'Allow to search for {module.short_description}: {prop.short_description}'),
+                    (f'write-property-{propname}', f'Allow to write {module.short_description}: {prop.short_description}'),
+                    (f'readonly-property-{propname}', f'Prevent write permission on {module.short_description}: {prop.short_description}'),
+                    (f'writeonly-property-{propname}', f'Allows write but prevents read permission on {module.short_description}: {prop.short_description}'),
+                    (f'none-property-{propname}', f'Prevent read and write permissions on {module.short_description}: {prop.short_description}'),
+                ])
+            # TODO: UDM REST API namespace?
+            # TODO: only if module provides reports?
+            permissions.append(("reports-type-query", f"Allow to query available report types for {module.short_description}"))
+            permissions.append(("report-create", f"Allow to create report for {module.short_description}"))
+
+            name = modname.replace('/', '-')
+            MOD_NAMESPACE = name
+            self.client.create_namespace(APP_NAME, MOD_NAMESPACE, f'UDM {module.short_description} ({modname})')
+            for permission_name, display_name in permissions:
+                self.client.create_permission(APP_NAME, MOD_NAMESPACE, permission_name, display_name)
+
+    def get_module_permissions_allow_all(self, modname, allow_guardian_roles_write=False, allow_read=True, allow_write=True):
+        module_name = self._sanitize_module_name(modname)
+        MOD_NAMESPACE = module_name
+        permissions = []
+        if allow_write:
+            if univention.admin.modules.supports(modname, 'add'):
+                permissions.append(expand_permission(APP_NAME, MOD_NAMESPACE, "create"))
+            if univention.admin.modules.supports(modname, 'edit'):
+                permissions.extend([
+                    expand_permission(APP_NAME, MOD_NAMESPACE, "modify"),
+                    expand_permission(APP_NAME, MOD_NAMESPACE, "rename"),
+                ])
+            if univention.admin.modules.supports(modname, 'remove'):
+                permissions.append(expand_permission(APP_NAME, MOD_NAMESPACE, "remove"))
+            if univention.admin.modules.supports(modname, 'move') or univention.admin.modules.supports(modname, 'subtree_move'):
+                permissions.append(expand_permission(APP_NAME, MOD_NAMESPACE, "move"))
+        if univention.admin.modules.supports(modname, 'search'):
+            permissions.append(expand_permission(APP_NAME, MOD_NAMESPACE, "read"))
+        all_properties = {self._sanitize_property_name(propname): prop for propname, prop in univention.admin.modules.get(modname).property_descriptions.items()}
+        if allow_read:
+            permissions.extend([
+                expand_permission(APP_NAME, MOD_NAMESPACE, f"read-property-{prop}")
+                for prop in all_properties
+            ])
+        if allow_write:
+            permissions.extend([
+                expand_permission(APP_NAME, MOD_NAMESPACE, f"write-property-{prop}")
+                for prop in all_properties
+                if allow_guardian_roles_write or prop not in {'guardianRoles'.lower(), 'guardianMemberRoles'.lower(), 'guardianInheritedRoles'.lower()}
+            ])
+        return permissions
+
+    def _sanitize_module_name(self, module_name):
+        return module_name.replace('/', '-')
+
+    def _sanitize_property_name(self, property_name):
+        return property_name.lower()
+
+    def add_users_self_role(self):
+        return
+#        for modname, module in univention.admin.modules.modules.items():
+#            name = modname.replace('/', '-')
+#            # MOD_NAMESPACE = name
+#            module_name = name
+#            roles = [
+#                (f"{module_name}-read-all", f"Read permissions for {modname}"),
+#                (f"{module_name}-write-all", f"Administrator for {modname}"),
+#            ]
+#            SELF_MODULES = ('users/user', 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave')
+#            if name in SELF_MODULES:
+#                roles.expand([
+#                    (f"{module_name}-read-self", f"Self Read permissions for {modname}"),
+#                    (f"{module_name}-write-self", f"Self Write permissions for {modname}"),
+#                ])
+#            log.info("Creating Roles")
+#            for role_name, display_name in roles:
+#                self.client.create_role(APP_NAME, MOD_NAMESPACE, role_name, display_name)
+#
+#            log.info("Creating Role-Capability-Mappings")
+#            self.client.create_role_capability_mapping(
+#                f"{module_name}-all",
+#                f"super-admin has all permissions in {APP_NAME}:{module_name}",
+#                APP_NAME,
+#                MOD_NAMESPACE,
+#                expand_role(APP_NAME, MOD_NAMESPACE, f"{module_name}-write-all"),
+#                [permission[0] for permission in permissions],
+#            )
+#            if name in SELF_MODULES:
+#                for what in ('read', 'write'):
+#                    self.client.create_role_capability_mapping(
+#                        f"{what}-self",
+#                        f"{modname} can {what} their own fields",
+#                        APP_NAME,
+#                        MOD_NAMESPACE,
+#                        expand_role(APP_NAME, MOD_NAMESPACE, f"{module_name}-{name}"),
+#                        [
+#                            f"{module_name}-{what}-property-{prop}" for prop in all_properties
+#                        ],
+#                        conditions=[expand_condition('guardian:builtin:target_is_self')],
+#                    )
+
+    def create_capability_mapping_for_module(self, name, module, role, display_name=None, conditions=None, allow_guardian_roles_write=False, allow_read=True, allow_write=True):
+        MOD_NAMESPACE = self._sanitize_module_name(module)
+        self.client.create_role_capability_mapping(
+            f"{role}-capability-{MOD_NAMESPACE}-{name}",
+            display_name,
+            APP_NAME,
+            MOD_NAMESPACE,
+            expand_role(APP_NAME, DEFAULT_ROLES_NAMESPACE, role),
+            self.get_module_permissions_allow_all(module, allow_guardian_roles_write=allow_guardian_roles_write, allow_read=allow_read, allow_write=allow_write),
+            conditions=[
+                expand_condition('udm:conditions:target_object_type_equals', [
+                    {
+                        "name": "objectType",
+                        "value": module,
+                    },
+                ]),
+                *(conditions or []),
+            ],
+        )
+
+    def add_domain_users_role(self):
+        role = 'domain-users'
+        self.client.create_role(APP_NAME, DEFAULT_ROLES_NAMESPACE, role, 'Domain Users')
+        # FIXME: remove a lot of them, can be done with priviledged connection
+        for modname in ('container/cn', 'container/dc', 'settings/license', 'settings/lock', 'settings/prohibited_username', 'settings/usertemplate', 'settings/default', 'settings/directory', 'settings/extended_attribute', 'settings/extended_options', 'settings/cn', 'computers/computer', 'mail/domain', 'shares/share', 'groups/group', 'users/user'):
+            self.create_capability_mapping_for_module('general', modname, role, allow_read=False, allow_write=False)
+            # "Domain Users must be able to see certain objects in the domain to use UDM / UMC",
+
+        self.create_capability_mapping_for_module(
+            'global-cn-users', 'container/cn', role, allow_write=False,
+            display_name=f"{role} can read global users container",
+            conditions=[
+                expand_condition('udm:conditions:target_position_in', [
+                    {
+                        "name": "position",
+                        "value": 'cn=users',
+                    },
+                    {
+                        "name": "scope",
+                        "value": "base",
+                    },
+                ]),
+            ],
+        )
+
+        self.create_capability_mapping_for_module(
+            'global-cn-groups', 'container/cn', role, allow_write=False,
+            display_name=f"{role} can read global groups container",
+            conditions=[
+                expand_condition('udm:conditions:target_position_in', [
+                    {
+                        "name": "position",
+                        "value": 'cn=groups',
+                    },
+                    {
+                        "name": "scope",
+                        "value": "base",
+                    },
+                ]),
+            ],
+        )
+
+    def add_global_admnistrator_role(self):
+        role = 'domain-administrator'
+        self.client.create_role(APP_NAME, DEFAULT_ROLES_NAMESPACE, role, 'Domain Adminstrator')
+        for modname in univention.admin.modules.modules:
+            self.create_capability_mapping_for_module(
+                'domain-administration', modname, role, allow_guardian_roles_write=True,
+                display_name=f"Administration of all {modname} objects in the whole domain",
+            )
+
+    def _role_dc_base_capability(self, role):
+        self.create_capability_mapping_for_module(
+            'dc-base-access-read', 'container/dc', role, display_name=f"{role} can read LDAP base", allow_write=False,
+            conditions=[
+                expand_condition('udm:conditions:target_position_in', [
+                    {
+                        "name": "position",
+                        "value": '',  # LDAP base is automatically appended
+                    },
+                    {
+                        "name": "scope",
+                        "value": "base",
+                    },
+                ]),
+            ],
+        )
+
+    def add_organizational_unit_administrator_role(self):
+        # Role 1: OU Administrator on OU basis
+        # udm:general:organizational-unit-admin&udm:general:ou=OU1
+        role = 'organizational-unit-admin'
+        self.client.create_role(APP_NAME, DEFAULT_ROLES_NAMESPACE, role, 'Organizational Unit Admin')
+        self.client.create_context(APP_NAME, CONTEXTS_NAMESPACE_NAME, 'ou', 'Organizational Unit membership')
+
+        self._role_dc_base_capability(role)
+
+        for modname in ('users/user', 'groups/group', 'container/ou', 'container/cn'):
+            self.create_capability_mapping_for_module(
+                'ou-write', modname, role, allow_write=modname not in ('container/ou', 'container/cn'),
+                display_name=f"Organizational Unit Admins can administrate all {modname} objects in their OU",
+                conditions=[
+                    expand_condition('udm:conditions:target_position_from_context', [
+                        {
+                            "name": "context",
+                            "value": "udm:contexts:ou",
+                        },
+                        {
+                            "name": "scope",
+                            "value": "base" if modname == 'container/ou' else "subtree",
+                        },
+                    ]),
+                ],
+            )
+
+        self.create_capability_mapping_for_module(
+            'groups-read', 'groups/group', role, allow_write=False,
+            conditions=[
+                expand_condition('udm:conditions:target_position_in', [
+                    {
+                        "name": "position",
+                        "value": "cn=groups",
+                    },
+                    {
+                        "name": "scope",
+                        "value": "one",
+                    },
+                ]),
+            ],
+        )
+
+        self.create_capability_mapping_for_module(
+            'mail-domains-read', 'mail/domain', role, allow_write=False,
+            conditions=[
+                expand_condition('udm:conditions:target_position_in', [
+                    {
+                        "name": "position",
+                        "value": "cn=domain,cn=mail",
+                    },
+                    {
+                        "name": "scope",
+                        "value": "one",
+                    },
+                ]),
+            ],
+        )
+
+        for modname in ('policies/desktop', 'policies/pwhistory', 'policies/umc', 'settings/cn', 'settings/directory', 'settings/default'):
+            self.create_capability_mapping_for_module(
+                'global-read', modname, role, allow_write=False,
+                display_name=f"Organizational Unit Admins can administrate all {modname} objects in their OU",
+                conditions=[
+                    # expand_condition('udm:conditions:target_position_in', [
+                    #     {
+                    #         "name": "position",
+                    #         "value": "*",
+                    #     },
+                    #     {
+                    #         "name": "scope",
+                    #         "value": "one",
+                    #     },
+                    # ]),
+                ],
+            )
+
+    def add_computer_clients_in_ou_join_role(self):
+        # Role 2: Join Role for computer client per OU
+        pass
+
+    def add_helpdesk_operator_role(self):
+        # Role 3: Helpdesk Operator
+        pass
+
+
+if __name__ == "__main__":
+    logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+    try:
+        UniventionDirectoryManagerRoles.main()
+    except requests.HTTPError as exc:
+        log.exception('ERROR: %s', exc.response.json())
