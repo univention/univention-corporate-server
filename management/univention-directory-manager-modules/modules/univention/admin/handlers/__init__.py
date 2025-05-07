@@ -68,6 +68,7 @@ import univention.admin.syntax
 import univention.admin.uexceptions
 import univention.admin.uldap
 from univention.admin import configRegistry
+from univention.admin.authorization import Authorization
 from univention.admin.uldap import DN
 from univention.admindiary.client import write_event
 from univention.admindiary.events import DiaryEvent
@@ -194,6 +195,7 @@ class simpleLdap:
     ) -> None:
         self._exists = False
         self.co = None
+        self.authz = Authorization()
         if isinstance(lo, univention.admin.uldap.access):
             self.lo: univention.admin.uldap.access = lo
         elif isinstance(lo, univention.uldap.access):
@@ -581,6 +583,7 @@ class simpleLdap:
 
         :raises: :class:`univention.admin.uexceptions.invalidOperation` if objects of this type do not support to be created.
         :raises: :class:`univention.admin.uexceptions.objectExists` if the object already exists.
+        :raises: :class:`univention.admin.uexceptions.permissionDenied` if no permissions for creation exists
         :raises: :class:`univention.admin.uexceptions.insufficientInformation`
 
         :param serverctrls: a list of :py:class:`ldap.controls.LDAPControl` instances sent to the server along with the LDAP request.
@@ -592,6 +595,8 @@ class simpleLdap:
             # if the licence is exceeded 'add' is removed from the modules operations. Blocklist objects may need to be added anyway.
             if not ignore_license:
                 raise univention.admin.uexceptions.invalidOperation(_('Objects of the "%s" object type can not be created.') % (self.module,))
+
+        self.authz.is_create_allowed(self)
 
         if self.exists():
             raise univention.admin.uexceptions.objectExists(self.dn)
@@ -674,6 +679,8 @@ class simpleLdap:
 
         :raises: :class:`univention.admin.uexceptions.noObject` if the object does not exists.
 
+        :raises: :class:`univention.admin.uexceptions.permissionDenied` if no permissions for modification exists
+
         :raises: :class:`univention.admin.uexceptions.insufficientInformation`
 
         :returns: The DN of the modified object.
@@ -682,6 +689,9 @@ class simpleLdap:
             # if the licence is exceeded 'edit' is removed from the modules operations. Nevertheless we need a way to make modifications then.
             if not ignore_license:
                 raise univention.admin.uexceptions.invalidOperation(_('Objects of the "%s" object type can not be modified.') % (self.module,))
+
+        self.authz.object_exists(self)
+        self.authz.is_modify_allowed(self)
 
         if not self.exists():
             raise univention.admin.uexceptions.noObject(self.dn)
@@ -748,6 +758,7 @@ class simpleLdap:
 
         :raises: :class:`univention.admin.uexceptions.invalidOperation` if objects of this type do not support to be moved.
         :raises: :class:`univention.admin.uexceptions.noObject` if the object does not exists.
+        :raises: :class:`univention.admin.uexceptions.permissionDenied` if no permissions for moving exists
 
         :returns: The new DN of the moved object
         """
@@ -755,6 +766,10 @@ class simpleLdap:
 
         if not (univention.admin.modules.supports(self.module, 'move') or univention.admin.modules.supports(self.module, 'subtree_move')):
             raise univention.admin.uexceptions.invalidOperation(_('Objects of the "%s" object type can not be moved.') % (self.module,))
+
+        self.authz.object_exists(self)
+        # FIXME: check for information leak via specifying arbitrary destinations
+        self.authz.is_move_allowed(self, newdn)
 
         if self.lo.compare_dn(self.dn, self.lo.whoami()):
             raise univention.admin.uexceptions.invalidOperation(_('The own object cannot be moved.'))
@@ -914,10 +929,14 @@ class simpleLdap:
 
         :raises: :class:`univention.admin.uexceptions.ldapError` (Operation not allowed on non-leaf: subordinate objects must be deleted first) if the object contains childrens and *remove_childs* is False.
         :raises: :class:`univention.admin.uexceptions.invalidOperation` if objects of this type do not support to be removed.
+        :raises: :class:`univention.admin.uexceptions.permissionDenied` if no permissions for removal exists
         :raises: :class:`univention.admin.uexceptions.noObject` if the object does not exists.
         """
         if not univention.admin.modules.supports(self.module, 'remove'):
             raise univention.admin.uexceptions.invalidOperation(_('Objects of the "%s" object type can not be removed.') % (self.module,))
+
+        self.authz.object_exists(self)
+        self.authz.is_remove_allowed(self)
 
         if not self.dn or not self.lo.get(self.dn):
             raise univention.admin.uexceptions.noObject(self.dn)
@@ -1423,6 +1442,7 @@ class simpleLdap:
             try:
                 self.dn = self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response, rename_callback=wouldRename.on_rename)
             except wouldRename as exc:
+                self.authz.is_rename_allowed(self)
                 self._ldap_pre_rename(exc.args[1])
                 self.dn = self.lo.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response)
                 self._ldap_post_rename(exc.args[0])
@@ -1842,7 +1862,7 @@ class simpleLdap:
 
         try:
             default_containers = settings_directory.lookup(None, lo, '', required=True)[0]
-        except univention.admin.uexceptions.noObject:
+        except (univention.admin.uexceptions.noObject, IndexError):
             return containers
 
         if cls.default_containers_attribute_name:
@@ -1851,6 +1871,10 @@ class simpleLdap:
             base = cls.module.split('/', 1)[0]
 
         containers.extend(default_containers.info.get(base, []))
+
+        # FIXME: filter default containers for containers allowed to see
+        containers = lo._filter_ldap_search_dns(containers, {'modules': ['container/ou', 'container/cn']})
+
         return containers
 
     @classmethod
@@ -1897,6 +1921,7 @@ class simpleLdap:
                 result.append(cls(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs))
             except univention.admin.uexceptions.base as exc:
                 log.error('lookup() of object %r failed: %s', dn, exc)
+        result = lo.filter_lookup_results(result, {'module': cls.module, 'filter': filter_str, 'base': base or cls.ldap_base, 'scope': scope, 'attr': attr})
         if required and not result:
             raise univention.admin.uexceptions.noObject('lookup(base=%r, filter_s=%r)' % (base, filter_e))
         return result
