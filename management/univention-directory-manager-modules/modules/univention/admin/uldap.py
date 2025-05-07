@@ -38,6 +38,7 @@ from logging import getLogger
 
 import ldap
 
+import univention.admin.authorization
 import univention.admin.license
 import univention.uldap
 from univention.admin import localization
@@ -473,6 +474,23 @@ class access:
         self.allow_modify = True
         self.licensetypes = ['UCS']
 
+        def _get_authz_connection():
+            return self
+        self._authz_connection_getter = _get_authz_connection
+        self.authz = univention.admin.authorization.Authorization()
+
+    @property
+    def authz_connection(self):
+        """
+        A LDAP connection running with cn=admin priviledges (in case authorization engine is enabled, otherwise just self)
+
+        .. warning :: use carefully: only in combination with manual access control checks to prevent information leak or priviledge escalation
+        """
+        return self._authz_connection_getter()
+
+    def set_authz_connection_getter(self, cb):
+        self._authz_connection_getter = cb
+
     def bind(self, binddn, bindpw):
         # type: (str, str) -> None
         """
@@ -892,3 +910,24 @@ class access:
         :return: A list of relative distinguished names.
         """
         return self.lo.explodeDn(dn, notypes)
+
+    def filter_lookup_results(self, results, context):
+        """Evaluate access control rules for filtering of results"""
+        # TODO: check if we are allowed at all to search in the base, with the scope and the given filter for the attrs
+        return self.authz.filter_search_results(self, results, {'result-is-udm': True, **(context or {})})
+
+    def search_filtered(self, context, *args, **kwargs):
+        results = self.authz_connection.search(*args, **kwargs)
+        return self._filter_ldap_search_results(results, dict(kwargs, **(context or {})))
+
+    def search_dn_filtered(self, context, *args, **kwargs):
+        results = self.authz_connection.searchDn(*args, **kwargs)
+        return self._filter_ldap_search_dns(results, dict(kwargs, **(context or {})))
+
+    def _filter_ldap_search_results(self, results, options=None):
+        """Evaluate access control rules for filtering of results"""
+        return self.authz.filter_search_results(self, results, {'result-is-ldap-attr': True, **(options or {})})
+
+    def _filter_ldap_search_dns(self, results, context=None):
+        """Evaluate access control rules for filtering of results"""
+        return self.authz.filter_search_results(self, results, {'result-is-ldap-dn': True, **(context or {})})
