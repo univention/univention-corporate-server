@@ -30,8 +30,26 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-set -x
-set -e
+set -ex
+
+guardian_curl () {
+    # guardian_curl "$TOKEN" ...
+    TOKEN="$1"
+    shift
+    curl -X POST \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer $TOKEN" \
+        "$@"
+}
+
+guardian_get_token () {
+    # guardian_get_token "$CLIENT_ID" "$BINDUSER" "$BINDPWD" "$KEYCLOAK_URL"
+    curl -d "client_id=$CLIENT_ID" \
+         -d "username=$BINDUSER" \
+         -d "password=$BINDPWD" \
+         -d "grant_type=password" \
+         "$KEYCLOAK_URL" | sed 's/.*"access_token":"\([[:alnum:]\.-_-]*\)".*/\1/'
+}
 
 # create the configuration in guardian for delegative administration
 # TODO we need to move this to some join script, this has to be part
@@ -48,37 +66,23 @@ guardian_configuration () {
         KEYCLOAK_URL="https://$KEYCLOAK_URL"
     fi
     MANAGEMENT_SERVER="$(hostname).$(ucr get domainname)/guardian/management"
-    TOKEN=$(curl -d "client_id=$CLIENT_ID" \
-         -d "username=$BINDUSER" \
-         -d "password=$BINDPWD" \
-         -d "grant_type=password" \
-         "$KEYCLOAK_URL" | sed 's/.*"access_token":"\([[:alnum:]\.-_-]*\)".*/\1/')
+    TOKEN=$(guardian_get_token "$CLIENT_ID" "$BINDUSER" "$BINDPWD" "$KEYCLOAK_URL")
     # create app
-    curl -X POST \
-        -H "Content-Type: application/json" \
-        -H "Authorization: Bearer $TOKEN" \
-        -d '{"name":"udm", "display_name":"UDM"}' \
+    guardian_curl "$TOKEN" \
+        -d '{"name":"udm", "display_name":"Univention Directory Manager"}' \
         "$MANAGEMENT_SERVER/apps/register"
     # create namespace
-    curl -X POST \
-        -H "Content-Type: application/json" \
-        -H "Authorization: Bearer $TOKEN" \
+    guardian_curl "$TOKEN" \
         -d '{"name":"default", "display_name":"Default"}' \
         "$MANAGEMENT_SERVER/namespaces/udm"
     # roles
-    curl -X POST \
-        -H "Content-Type: application/json" \
-        -H "Authorization: Bearer $TOKEN" \
-        -d '{"name":"ouadmin", "display_name":"OU admin"}' \
+    guardian_curl "$TOKEN" \
+        -d '{"name":"ouadmin", "display_name":"Organizational Unit (OU) Administrator"}' \
         "$MANAGEMENT_SERVER/roles/udm/default"
-    curl -X POST \
-        -H "Content-Type: application/json" \
-        -H "Authorization: Bearer $TOKEN" \
+    guardian_curl "$TOKEN" \
         -d '{"name":"create_target", "display_name":"Create target object"}' \
         "$MANAGEMENT_SERVER/permissions/udm/default"
-    curl -X POST \
-        -H "Content-Type: application/json" \
-        -H "Authorization: Bearer $TOKEN" \
+    guardian_curl "$TOKEN" \
         -d '{
               "name": "ouadmin_can_create_object",
               "display_name": "OU admin can create object",
@@ -125,16 +129,10 @@ guardian_check_permissions () {
     fi
     AUTHORIZATION_SERVER="$(hostname).$(ucr get domainname)/guardian/authorization"
 
-    token=$(curl -d "client_id=$CLIENT_ID" \
-        -d "username=$BINDUSER" \
-        -d "password=$BINDPWD" \
-        -d "grant_type=password" \
-     "$KEYCLOAK_URL" | sed 's/.*"access_token":"\([[:alnum:]\.-_-]*\)".*/\1/')
+    TOKEN=$(guardian_get_token "$CLIENT_ID" "$BINDUSER" "$BINDPWD" "$KEYCLOAK_URL")
 
     # check permission
-    time curl -X POST \
-        -H "Content-Type: application/json" \
-        -H "Authorization: Bearer $token" \
+    time guardian_curl "$TOKEN" \
         -d '{
               "namespaces": [
                 {
