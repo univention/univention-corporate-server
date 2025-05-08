@@ -848,6 +848,7 @@ define([
 				region: 'main',
 				actions: actions,
 				columns: this._default_columns,
+				allowHTML: false,
 				moduleStore: _store,
 				footerFormatter: _footerFormatter,
 				additionalViews: additionalGridViews,
@@ -1634,7 +1635,9 @@ define([
 
 			if (item === undefined) {
 				item = value;
-				value = lang.replace('{0} (<em>{1}</em>)', [item.name || item.label, item.path || item.id]);
+				value = lang.replace('{0} (<em>{1}</em>)', [entities.encode(item.name || item.label), item.path || item.id]);
+			} else {
+				value = entities.encode(value);
 			}
 			// get the iconName
 			var iconName = item.objectType || '';
@@ -1678,6 +1681,7 @@ define([
 					name: 'name',
 					label: _('Name'),
 					description: _('Name of the LDAP object.'),
+					allowHTML: true,
 					formatter: lang.hitch(this, 'iconFormatter')
 				};
 				var typeColumn = {
