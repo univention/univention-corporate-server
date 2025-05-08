@@ -350,6 +350,9 @@ class OIDCResource(OAuth2Mixin, Resource):
                 refresh_token=user.oidc.refresh_token,
             )
         except HTTPClientError as exc:
+            if exc.response.body is None:
+                CORE.error('OP response was empty or timed out. Could not get new access token: %s' % (exc,))
+                raise OpenIDProvideUnavailable(self._('Could not receive token from authorization server.'))
             json_response = escape.json_decode(exc.response.body)
             if json_response.get('error') == 'invalid_grant':
                 if user.session_id in Session.sessions:
