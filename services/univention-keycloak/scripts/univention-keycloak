@@ -1294,7 +1294,7 @@ def create_oidc_client(opt):
                 },
             },
         ],
-        "defaultClientScopes": ["web-origins", "acr", "profile", "roles", "email", *opt.default_scopes],
+        "defaultClientScopes": ["basic", "web-origins", "acr", "profile", "roles", "email", *opt.default_scopes],
         "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt", *opt.optional_scopes],
         "access": {
             "view": True,

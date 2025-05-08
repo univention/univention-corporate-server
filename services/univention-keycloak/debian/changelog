@@ -1,3 +1,9 @@
+univention-keycloak (3.0.29) unstable; urgency=medium
+
+  * Issue #2852: Add basic scope during OIDC client creation
+
+ -- Michael Sowka <michael.sowka.extern@univention.de>  Fri, 09 May 2025 09:20:53 +0200
+
 univention-keycloak (3.0.28) unstable; urgency=medium
 
   * Bug #58183: make use of guaranteed json output from univention-keycloak script
