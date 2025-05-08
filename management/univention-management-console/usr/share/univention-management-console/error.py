@@ -35,6 +35,7 @@
 
 import cgitb
 import json
+import re
 
 
 cgitb.enable()
@@ -57,11 +58,13 @@ def application(environ, start_response):
         service_name = 'Portal Server'
         if status == 503:
             reason = 'Portal Service Unavailable'
-    elif url.startswith('/univention/'):
+    elif re.match('^/univention/(auth|saml|oidc|get|set|command|upload|logout|logout-sse)($|/.*$)', url):
         service_name = 'Univention Management Console Server'
         service = 'univention-management-console-server'
         if status == 503:
             reason = 'UMC Service Unavailable'
+    elif url.startswith('/univention/'):
+        pass
 
     message = "The %s could not be reached. Please restart %s or try again later." % (service_name, service)
     if status == 502:
