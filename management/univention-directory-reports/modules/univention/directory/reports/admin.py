@@ -32,7 +32,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import csv
 from html import escape
+from io import StringIO
 
 import univention.admin.mapping as ua_mapping
 import univention.admin.modules as ua_modules
@@ -66,7 +68,7 @@ TEX_ESCAPE = {
 }
 
 
-def texClean(str):
+def texClean(value):
     """
     Escape string for use in LaTeX.
 
@@ -77,12 +79,36 @@ def texClean(str):
     >>> texClean('€°´')
     'EUR$^{\\\\circ}$'
     """
-    esc = ''.join([TEX_ESCAPE.get(c, c) for c in str])
-    # str is NOT unicode, so '€°´' are non-ASCII characters, which use multiple bytes. See Bug #16637
+    esc = ''.join([TEX_ESCAPE.get(c, c) for c in value])
+    # value is NOT unicode, so '€°´' are non-ASCII characters, which use multiple bytes. See Bug #16637
     esc = esc.replace('€', 'EUR')
     esc = esc.replace('°', '$^{\\circ}$')
     esc = esc.replace('´', '')
     return esc
+
+
+def excelcsvClean(value):
+    '''
+    Escape string for use in CSV/Excel.
+
+    >>> excelcsvClean('Test')
+    'Test'
+    >>> excelcsvClean('=HYPERLINK("http://adversary.com"; "Sometext")')
+    '"""=HYPERLINK(""""http://adversary.com""""; """"Sometext"""")"""'
+    >>> excelcsvClean("=10+20+cmd|'/ C calc'!A0")
+    '"""=10+20+cmd|\'/ C calc\'!A0"""'
+    '''
+    if value.startswith("="):
+        strio = StringIO()
+        writer = csv.writer(strio, delimiter=' ', quoting=csv.QUOTE_NONNUMERIC)
+        writer.writerow([value])
+        once_quoted = strio.getvalue().strip('\r\n')
+        # Ok , but that doesn't stop excel from evaluating it, so do another round:
+        strio = StringIO()
+        writer = csv.writer(strio, delimiter=' ', quoting=csv.QUOTE_NONNUMERIC)
+        writer.writerow([once_quoted])
+        return strio.getvalue().strip('\r\n')
+    return value
 
 
 class AdminConnection:
@@ -228,6 +254,8 @@ class AdminConnection:
         from univention.directory.reports.document import Document
         if self._format == Document.TYPE_LATEX:
             return texClean(value)
+        elif self._format == Document.TYPE_CSV:
+            return excelcsvClean(value)
         elif self._format == Document.TYPE_RML:
             return escape(value, quote=True)
         return value
