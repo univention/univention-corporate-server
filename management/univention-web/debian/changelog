@@ -1,3 +1,9 @@
+univention-web (6.0.9-4) unstable; urgency=medium
+
+  * Bug #49001: Correctly encode container names in tree view
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 08 May 2025 10:43:12 +0200
+
 univention-web (6.0.9-3) unstable; urgency=medium
 
   * Bug #58122: CSS adjustment for MultiInput widget
