@@ -1,3 +1,9 @@
+univention-keycloak (1.0.14-6) unstable; urgency=medium
+
+  * Issue #2852: Add basic scope during OIDC client creation
+
+ -- Michael Sowka <michael.sowka.extern@univention.de>  Fri, 09 May 2025 16:09:20 +0200
+
 univention-keycloak (1.0.14-5) unstable; urgency=medium
 
   * Bug #58182: deactivate connectionPooling while startTls is active (for upgrades)

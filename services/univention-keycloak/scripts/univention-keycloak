@@ -1146,6 +1146,7 @@ def create_oidc_client(opt):
             },
         ],
         "defaultClientScopes": [
+            "basic",
             "web-origins",
             "acr",
             "profile",
