@@ -39,6 +39,7 @@ define([
 	"dojo/on",
 	"dojo/mouse",
 	"dojo/Evented",
+	"dojox/html/entities",
 	"dijit/Destroyable",
 	"dgrid/OnDemandGrid",
 	"dgrid/Tree",
@@ -53,7 +54,7 @@ define([
 	"./StandbyCircle",
 	"./_RegisterOnShowMixin",
 	"put-selector/put"
-], function(declare, lang, array, domClass, on, mouse, Evented, Destroyable, OnDemandGrid, Tree, Selection,
+], function(declare, lang, array, domClass, on, mouse, Evented, entities, Destroyable, OnDemandGrid, Tree, Selection,
 		DijitRegistry, Memory, Trackable, TreeDstore, tools, ContainerWidget, Icon, StandbyCircle,
 		_RegisterOnShowMixin, put) {
 
@@ -104,7 +105,7 @@ define([
 		},
 
 		columnsFormatter: function(value, object) {
-			return this.getRowIconHTML(object) + value;
+			return this.getRowIconHTML(object) + entities.encode(value);
 		},
 
 		getIconClass: function(object) {
