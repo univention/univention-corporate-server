@@ -313,3 +313,49 @@ def test_mail_domain_remove(ldap_base, bremen_ou, random_username, login_user, e
         bremen_ou.udm.remove_object('mail/domain', dn=mail_domain_dn)
     else:
         client.umc_command('udm/remove', options, 'mail/domain')
+
+
+@check_delegation
+@pytest.mark.parametrize('login_user', [
+    ('admin'),
+    ('ou_admin'),
+])
+def test_create_mail_domain(ldap_base, bremen_ou, random_username, login_user):
+    domain_name = f"{random_username()}.test.com"
+    admin_client = Client.get_test_connection()
+    if login_user == "admin":
+        client = admin_client
+    elif login_user == "ou_admin":
+        client = Client()
+        client.authenticate(bremen_ou.ouadmin_username, 'univention')
+
+    options = [{
+        "object": {
+            "name": domain_name,
+            "$policies$": {},
+        },
+        "options": {
+            "container": "cn=domain,cn=mail,dc=ucs,dc=test",
+            "objectType": "mail/domain",
+            "objectTemplate": None,
+        },
+    }]
+
+    if login_user == 'ou_admin':
+        with pytest.raises(Forbidden):
+            client.umc_command('udm/add', options, 'mail/domain')
+        assert len(bremen_ou.udm.list_objects('mail/domain')) == 0
+    else:
+        client.umc_command('udm/add', options, 'mail/domain')
+        domains = bremen_ou.udm.list_objects('mail/domain')
+        assert len(domains) == 1
+        delete_options = [
+            {
+                'object': f'cn={domain_name},cn=domain,cn=mail,dc=ucs,dc=test',
+                'options': {
+                    'cleanup': True,
+                    'recursive': True,
+                },
+            },
+        ]
+        admin_client.umc_command('udm/remove', delete_options, 'mail/domain')
