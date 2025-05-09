@@ -46,16 +46,25 @@ def get_syntax_buffers():
 
     return {
         "UCSTESTComplexMultiValueKeyValueDict": '''
+from univention.admin.syntax import _, IMAP_Right, UserMailAddress, complex
+
+
 class UCSTESTComplexMultiValueKeyValueDict(complex):
     subsyntaxes = ((_('User'), UserMailAddress), (_('Access right'), IMAP_Right))
     subsyntax_key_value = True
 ''',
         "UCSTESTComplexMultiValueDict": '''
+from univention.admin.syntax import _, complex, dnsHostname, integer
+
+
 class UCSTESTComplexMultiValueDict(complex):
     subsyntaxes = [(_('Priority'), integer), (_('Mail server'), dnsHostname)]
     subsyntax_names = ('priority', 'mailserver',)
 ''',
         "UCSTESTComplexList": '''
+from univention.admin.syntax import complex, integer, string
+
+
 class UCSTESTComplexList(complex):
     subsyntaxes = [('Type-string', string), ('Type-integer', integer)]
 ''',

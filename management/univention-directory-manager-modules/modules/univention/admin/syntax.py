@@ -21,6 +21,7 @@ import uuid
 import zlib
 import zoneinfo
 from io import BytesIO
+from types import SimpleNamespace
 from typing import TYPE_CHECKING
 
 import ldap
@@ -70,8 +71,12 @@ def import_syntax_files() -> None:
             for fn in syntax_files:
                 try:
                     with open(fn, 'rb') as fd:
+                        env = {}
                         byte_code = compile(fd.read(), fn, "exec")
-                        exec(byte_code, sys.modules[__name__].__dict__)  # noqa: S102
+                        exec(byte_code, env)  # noqa: S102
+                        sys.modules[__name__].__dict__.update(
+                            dict(inspect.getmembers(SimpleNamespace(**env), lambda m: inspect.isclass(m) and issubclass(m, ISyntax) and not hasattr(sys.modules[__name__], m.__name__))),
+                        )
                     log.debug('importing syntax', syntax=fn)
                 except Exception:
                     log.exception('importing syntax failed', syntax=fn)
