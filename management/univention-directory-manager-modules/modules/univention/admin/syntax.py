@@ -3924,7 +3924,7 @@ class ldapAttribute(_CachedLdap):
         if cls.depends not in options.get('dependencies', {}):  # pragma: no cover
             return cls.choices
 
-        subschema = lo.get_schema()
+        subschema = lo.authz_connection.get_schema()
         must, may = subschema.attribute_types([options['dependencies'][cls.depends]])
         attrs = set()
         for atype in dict(must, **may).values():
