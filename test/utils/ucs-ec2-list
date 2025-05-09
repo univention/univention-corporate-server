@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e -u
 
-IMAGE='gitregistry.knut.univention.de/univention/dist/ucs-ec2-tools'
+IMAGE='gitregistry.knut.univention.de/univention/infrastructure/ucs-ec2-tools'
 BOTO="$HOME/.boto"
 
 [ -s "$BOTO" ]

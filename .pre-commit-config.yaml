@@ -5,7 +5,7 @@ exclude: "^packaging/ucslint/testframework/\
           |^services/univention-ldb-modules/third_party/
          "
 repos:
-  - repo: https://git.knut.univention.de/univention/dist/pre-commit-ucr
+  - repo: https://git.knut.univention.de/univention/infrastructure/pre-commit-ucr
     rev: '0.1.0'
     hooks:
       - id: ucr-flake8
@@ -78,12 +78,12 @@ repos:
                 |^services/univention-ldb-modules/third_party/\
                 |^packaging/ucslint/testframework/\
                "
-  - repo: https://git.knut.univention.de/univention/dist/pre-commit-debian.git
+  - repo: https://git.knut.univention.de/univention/infrastructure/pre-commit-debian.git
     rev: v1.1.0
     hooks:
       - id: debian-control
       - id: debian-changelog
-  - repo: https://git.knut.univention.de/univention/dist/pre-commit-ucs.git
+  - repo: https://git.knut.univention.de/univention/infrastructure/pre-commit-ucs.git
     rev: v1.4.0
     hooks:
       - id: missing-executable-flag-for-python-file
