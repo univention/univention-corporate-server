@@ -310,7 +310,7 @@ class ObjectDoesNotExist(UMCError):
     @LDAP_Connection
     def _ldap_object_exists(self, ldap_connection=None, ldap_position=None):
         try:
-            ldap_connection.get(self.ldap_dn, required=True)
+            ldap_connection.authz_connection.get(self.ldap_dn, required=True)
         except NO_SUCH_OBJECT:
             return False
         else:
@@ -727,7 +727,7 @@ class UDM_Module:
         try:
             if ldap_dn is not None:
                 if superordinate is None:
-                    superordinate = udm_objects.get_superordinate(self.module, None, ldap_connection.authz_connection, ldap_dn)
+                    superordinate = udm_objects.get_superordinate(self.module, None, ldap_connection, ldap_dn)
                 obj = self.module.object(None, ldap_connection, None, ldap_dn, superordinate, attributes=attributes)
                 MODULE.info('Found LDAP object %s' % obj.dn)
                 obj.open()
@@ -1244,7 +1244,7 @@ def get_module(flavor, ldap_dn, ldap_connection=None, ldap_position=None):
 
 
 def get_obj_module(flavor, ldap_dn, ldap_connection=None, ldap_position=None):
-    attr = ldap_connection.get(ldap_dn, ['*', '+'])  # TODO: we should use module.object._ldap_attributes() here but we don't have the module yet
+    attr = ldap_connection.authz_connection.get(ldap_dn, ['*', '+'])  # TODO: we should use module.object._ldap_attributes() here but we don't have the module yet
     module = _get_module(flavor, ldap_dn, attr, ldap_connection, ldap_position)
     if module is None:
         return None, None
@@ -1411,7 +1411,7 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
     except udm_errors.base as e:
         if isinstance(e, udm_errors.noObject):
             container = options.get('base')
-            if container and not ldap_connection.get(container):
+            if container and not ldap_connection.authz_connection.get(container):
                 raise ObjectDoesNotExist(container)
         UDM_Error(e).reraise()
 
