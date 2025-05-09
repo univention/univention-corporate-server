@@ -188,7 +188,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def refreshNextIp(self):
         start_ip = self['nextIp']
-        while self.lo.search(scope='domain', attr=['aRecord'], filter=filter_format('(&(aRecord=%s))', [self['nextIp']])) or self['nextIp'].split('.')[-1] in ['0', '1', '254']:
+        while self.lo.authz_connection.search(scope='domain', attr=['aRecord'], filter=filter_format('(&(aRecord=%s))', [self['nextIp']])) or self['nextIp'].split('.')[-1] in ['0', '1', '254']:
             self.stepIp()
             if self['nextIp'] == start_ip:
                 raise univention.admin.uexceptions.nextFreeIp()
@@ -199,7 +199,7 @@ class object(univention.admin.handlers.simpleLdap):
         filter_ = univention.admin.filter.expression('univentionNetworkLink', self.dn, escape=True)
         for computer in univention.admin.modules._get('computers/computer').lookup(None, self.lo, filter_s=filter_):
             try:
-                self.lo.modify(computer.dn, [('univentionNetworkLink', self.dn.encode('UTF-8'), b'')])
+                self.lo.authz_connection.modify(computer.dn, [('univentionNetworkLink', self.dn.encode('UTF-8'), b'')])
             except (univention.admin.uexceptions.base, ldap.LDAPError):
                 log.exception('Failed to remove network %s from %s:', self.dn, computer.dn)
 

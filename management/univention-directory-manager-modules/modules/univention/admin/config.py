@@ -96,7 +96,7 @@ def getDefaultValue(lo, name, position=None):
         current_search_dn = parent_dn
         while current_search_dn:
             try:
-                res_list = lo.search(
+                res_list = lo.authz_connection.search(
                     filter='(|(objectClass=univentionDefault)(objectClass=univentionContainerDefault))',
                     base=current_search_dn,
                     attr=[att],
@@ -124,7 +124,7 @@ def getDefaultValue(lo, name, position=None):
 
     try:
         fallback_base = 'cn=univention,%s' % (lo.base,)
-        res_list_fallback = lo.search(
+        res_list_fallback = lo.authz_connection.search(
             filter='(|(objectClass=univentionDefault)(objectClass=univentionContainerDefault))',
             attr=[att],
             base=fallback_base,

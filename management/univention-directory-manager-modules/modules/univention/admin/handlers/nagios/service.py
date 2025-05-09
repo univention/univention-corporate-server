@@ -130,7 +130,7 @@ class object(univention.admin.handlers.simpleLdap):
             if host and _re.match(host) is not None:
                 (relDomainName, zoneName) = _re.match(host).groups()
                 # find correct dNSZone entry
-                res = self.lo.search(filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))', (zoneName, relDomainName)))
+                res = self.lo.authz_connection.search(filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))', (zoneName, relDomainName)))
                 if not res:
                     log.debug('service.py: open: could not find dNSZone of %s', host)
                 else:
@@ -141,7 +141,7 @@ class object(univention.admin.handlers.simpleLdap):
                     filter += filter_format('(cn=%s))', [relDomainName])
 
                     # find dn of host that is related to given aRecords
-                    res = self.lo.search(filter=filter)
+                    res = self.lo.authz_connection.search(filter=filter)
                     if res:
                         hostlist.append(res[0][0])
 
@@ -158,7 +158,7 @@ class object(univention.admin.handlers.simpleLdap):
             hostlist = []
             for hostdn in self.info.get('assignedHosts', []):
                 try:
-                    host = self.lo.get(hostdn, ['associatedDomain', 'cn'], required=True)
+                    host = self.lo.authz_connection.get(hostdn, ['associatedDomain', 'cn'], required=True)
                     cn = host['cn'][0]  # type: bytes
                 except (univention.admin.uexceptions.noObject, ldap.NO_SUCH_OBJECT):
                     raise univention.admin.uexceptions.valueError(_('The host "%s" does not exists.') % (hostdn,), property='assignedHosts')

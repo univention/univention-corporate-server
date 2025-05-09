@@ -267,7 +267,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 
     res = [
         object(co, lo, None, dn, attributes=attrs)
-        for dn, attrs in lo.search(str(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response)
+        for dn, attrs in lo.authz_connection.search(str(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response)
     ]  # type: list[univention.admin.handlers.simpleLdap]
     return res
 

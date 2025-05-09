@@ -124,12 +124,12 @@ class Support:
         oldfqdn = oldfqdn.encode('utf-8')
         newfqdn = newfqdn.encode('utf-8')
         for servicedn in self.oldinfo['nagiosServices']:
-            oldmembers = self.lo.getAttr(servicedn, 'univentionNagiosHostname')
+            oldmembers = self.lo.authz_connection.getAttr(servicedn, 'univentionNagiosHostname')
             if oldfqdn in oldmembers:
                 newmembers = copy.deepcopy(oldmembers)
                 newmembers.remove(oldfqdn)
                 newmembers.append(newfqdn)
-                self.lo.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)])  # TODO: why not simply ('univentionNagiosHostname', oldfqdn, newfqdn) ?
+                self.lo.authz_connection.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)])  # TODO: why not simply ('univentionNagiosHostname', oldfqdn, newfqdn) ?
 
     def nagiosModifyServiceList(self):
         fqdn = ''
@@ -156,9 +156,9 @@ class Support:
         if 'nagios' in self.old_options:
             for servicedn in self.oldinfo.get('nagiosServices', []):
                 if servicedn not in self.info.get('nagiosServices', []):
-                    oldmembers = self.lo.getAttr(servicedn, 'univentionNagiosHostname')
+                    oldmembers = self.lo.authz_connection.getAttr(servicedn, 'univentionNagiosHostname')
                     newmembers = [x for x in oldmembers if x.decode('UTF-8').lower() != fqdn.lower()]
-                    self.lo.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)])
+                    self.lo.authz_connection.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)])
 
         if 'nagios' in self.options:
             # add host to new services
@@ -170,12 +170,12 @@ class Support:
                 if 'nagios' not in self.old_options or servicedn not in self.oldinfo['nagiosServices']:
                     log.debug('nagios.py: NMSL: add')
                     # option nagios was freshly enabled or service has been enabled just now
-                    oldmembers = self.lo.getAttr(servicedn, 'univentionNagiosHostname')
+                    oldmembers = self.lo.authz_connection.getAttr(servicedn, 'univentionNagiosHostname')
                     newmembers = copy.deepcopy(oldmembers)
                     newmembers.append(fqdn.encode('UTF-8'))
                     log.warning('nagios.py: NMSL: oldmembers: %s', oldmembers)
                     log.warning('nagios.py: NMSL: newmembers: %s', newmembers)
-                    self.lo.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)])
+                    self.lo.authz_connection.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)])
 
     def nagiosRemoveHostFromServices(self):
         self.nagiosRemoveFromServices = False
@@ -188,7 +188,7 @@ class Support:
 
             for (dn, attrs) in searchResult:
                 newattrs = [x for x in attrs['univentionNagiosHostname'] if x.decode('UTF-8').lower() != fqdn.lower()]
-                self.lo.modify(dn, [('univentionNagiosHostname', attrs['univentionNagiosHostname'], newattrs)])
+                self.lo.authz_connection.modify(dn, [('univentionNagiosHostname', attrs['univentionNagiosHostname'], newattrs)])
 
     def nagiosRemoveHostFromParent(self):
         self.nagiosRemoveFromParent = False
@@ -202,7 +202,7 @@ class Support:
 
             for (dn, attrs) in searchResult:
                 newattrs = [x for x in attrs['univentionNagiosParent'] if x.decode('UTF-8').lower() != fqdn.lower()]
-                self.lo.modify(dn, [('univentionNagiosParent', attrs['univentionNagiosParent'], newattrs)])
+                self.lo.authz_connection.modify(dn, [('univentionNagiosParent', attrs['univentionNagiosParent'], newattrs)])
 
     def nagios_ldap_post_modify(self):
         if self.nagiosRemoveFromServices:

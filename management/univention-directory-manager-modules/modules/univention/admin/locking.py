@@ -67,16 +67,16 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
         ('cn', [value]),
         ('lockTime', [str(locktime).encode('ascii')]),
     ]
-    if not lo.get(dn, ['lockTime']):
+    if not lo.authz_connection.get(dn, ['lockTime']):
         try:
-            lo.add(dn, al)
+            lo.authz_connection.add(dn, al)
             return locktime
         except ldap.ALREADY_EXISTS:
             pass
         except univention.admin.uexceptions.permissionDenied:
             raise univention.admin.uexceptions.permissionDenied(_('Can not modify lock time of %r.') % (dn,))
 
-    oldlocktime = lo.getAttr(dn, 'lockTime')
+    oldlocktime = lo.authz_connection.getAttr(dn, 'lockTime')
     oldlocktime = int(oldlocktime[0]) if oldlocktime and oldlocktime[0] else 0
 
     # lock is old, try again
@@ -85,7 +85,7 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
             ('lockTime', str(oldlocktime).encode('ascii'), str(locktime).encode('ascii')),
         ]
         try:
-            lo.modify(dn, ml, exceptions=True)
+            lo.authz_connection.modify(dn, ml, exceptions=True)
             return locktime
         except ldap.INSUFFICIENT_ACCESS:
             raise univention.admin.uexceptions.permissionDenied(_('Can not modify lock time of %r.') % (dn,))
@@ -115,7 +115,7 @@ def relock(lo, position, type, value, scope='domain', timeout=300):
         ('lockTime', b'1', str(locktime).encode('ASCII')),
     ]
     try:
-        lo.modify(dn, ml, exceptions=True)
+        lo.authz_connection.modify(dn, ml, exceptions=True)
         return locktime
     except ldap.INSUFFICIENT_ACCESS:
         raise univention.admin.uexceptions.permissionDenied(_('Can not modify lock time of %r.') % (dn,))
@@ -136,7 +136,7 @@ def unlock(lo, position, type, value, scope='domain'):
     """
     dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
     try:
-        lo.delete(dn, exceptions=True)
+        lo.authz_connection.delete(dn, exceptions=True)
     except ldap.NO_SUCH_OBJECT:
         pass
 
@@ -154,6 +154,6 @@ def getLock(lo, position, type, value, scope='domain'):
     """
     dn = lockDn(lo, position, type, value.decode('utf-8'), scope)
     try:
-        return int(lo.getAttr(dn, 'lockTime', exceptions=True)[0])
+        return int(lo.authz_connection.getAttr(dn, 'lockTime', exceptions=True)[0])
     except ldap.NO_SUCH_OBJECT:
         return 0

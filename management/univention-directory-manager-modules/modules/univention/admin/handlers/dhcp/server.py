@@ -68,7 +68,7 @@ class object(DHCPBase):
     def _ldap_addlist(self):
         # type: () -> list[tuple[str, Any]]
         searchBase = self.position.getDomain()
-        if self.lo.searchDn(base=searchBase, filter=filter_format('(&(objectClass=dhcpServer)(cn=%s))', [self.info['server']])):
+        if self.lo.authz_connection.searchDn(base=searchBase, filter=filter_format('(&(objectClass=dhcpServer)(cn=%s))', [self.info['server']])):
             raise univention.admin.uexceptions.dhcpServerAlreadyUsed(self.info['server'])
 
         al = super()._ldap_addlist()
@@ -78,11 +78,11 @@ class object(DHCPBase):
         # type: (str) -> None
         """edit dhcpServiceDN"""
         super()._ldap_post_move(olddn)
-        oldServiceDN = self.lo.getAttr(self.dn, 'dhcpServiceDN')
-        module = univention.admin.modules.identifyOne(self.position.getDn(), self.lo.get(self.position.getDn()))
+        oldServiceDN = self.lo.authz_connection.getAttr(self.dn, 'dhcpServiceDN')
+        module = univention.admin.modules.identifyOne(self.position.getDn(), self.lo.authz_connection.get(self.position.getDn()))
         obj = univention.admin.objects.get(module, None, self.lo, self.position, dn=self.position.getDn())
         _shadow_module, shadow_object = univention.admin.objects.shadow(self.lo, module, obj, self.position)
-        self.lo.modify(self.dn, [('dhcpServiceDN', oldServiceDN[0], shadow_object.dn.encode('UTF-8'))])
+        self.lo.authz_connection.modify(self.dn, [('dhcpServiceDN', oldServiceDN[0], shadow_object.dn.encode('UTF-8'))])
 
     @classmethod
     def lookup_filter_superordinate(cls, filter, superordinate):

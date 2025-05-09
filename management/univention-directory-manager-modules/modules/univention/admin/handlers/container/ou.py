@@ -258,7 +258,7 @@ class object(univention.admin.handlers.simpleLdap):
             # it is possible to have a basedn with cn=foo
             # in this case it is allowed to create a ou
             # under a cn.
-            if any(m and m.module == 'container/cn' for m in univention.admin.modules.identify(self.position.getDn(), self.lo.get(self.position.getDn()))):
+            if any(m and m.module == 'container/cn' for m in univention.admin.modules.identify(self.position.getDn(), self.lo.authz_connection.get(self.position.getDn()))):
                 raise univention.admin.uexceptions.invalidChild(_('It is not allowed to create a container/ou as child object of a container/cn.'))
 
     def _ldap_post_create(self):
@@ -269,7 +269,7 @@ class object(univention.admin.handlers.simpleLdap):
         dn_bytes = self.dn.encode('UTF-8')
         for (prop, attr) in self.PATH_KEYS.items():
             if self.oldinfo.get(prop) != self.info.get(prop):
-                entries = self.lo.getAttr(self.default_dn, attr)
+                entries = self.lo.authz_connection.getAttr(self.default_dn, attr)
                 if self.info[prop] == '0':
                     if dn_bytes in entries:
                         changes.append((attr, self.dn.encode('utf-8'), b''))
@@ -278,7 +278,7 @@ class object(univention.admin.handlers.simpleLdap):
                         changes.append((attr, b'', self.dn.encode('utf-8')))
 
         if changes:
-            self.lo.modify(self.default_dn, changes)
+            self.lo.authz_connection.modify(self.default_dn, changes)
 
     def _ldap_pre_rename(self, newdn):
         # type: (str) -> None
@@ -310,7 +310,7 @@ class object(univention.admin.handlers.simpleLdap):
                 else:
                     changes.append((attr, b'', dn_bytes))
         if changes:
-            self.lo.modify(self.default_dn, changes)
+            self.lo.authz_connection.modify(self.default_dn, changes)
 
     def _ldap_pre_remove(self):
         # type: () -> None
@@ -323,7 +323,7 @@ class object(univention.admin.handlers.simpleLdap):
         for prop, attr in self.PATH_KEYS.items():
             if self.oldinfo.get(prop) == '1':
                 changes.append((attr, dn_bytes, b''))
-        self.lo.modify(self.default_dn, changes)
+        self.lo.authz_connection.modify(self.default_dn, changes)
 
     @classmethod
     def unmapped_lookup_filter(cls):

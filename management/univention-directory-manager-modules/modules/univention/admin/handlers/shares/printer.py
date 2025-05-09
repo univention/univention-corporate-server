@@ -249,7 +249,7 @@ class object(univention.admin.handlers.simpleLdap):
         super()._ldap_pre_remove()
         printergroups_filter = '(&(objectClass=univentionPrinterGroup)(|%s))' % (''.join(filter_format('(univentionPrinterSpoolHost=%s)', [x]) for x in self.info['spoolHost']))
         rm_attrib = []
-        for pg_dn, member_list in self.lo.search(filter=printergroups_filter, attr=['univentionPrinterGroupMember', 'cn']):
+        for pg_dn, member_list in self.lo.authz_connection.search(filter=printergroups_filter, attr=['univentionPrinterGroupMember', 'cn']):
             for member_cn in [x.decode('UTF-8') for x in member_list['univentionPrinterGroupMember']]:
                 if member_cn == self.info['name']:
                     rm_attrib.append(pg_dn)

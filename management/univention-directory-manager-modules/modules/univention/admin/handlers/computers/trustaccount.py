@@ -102,7 +102,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         # type: (univention.admin.uldap.access, univention.admin.uldap.position, str, str | None) -> str
         # if rid is given, use it regardless of s4 connector
         if rid:
-            searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
+            searchResult = self.lo.authz_connection.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
             domainsid = searchResult[0][1]['sambaSID'][0]
             sid = domainsid + '-' + rid
             return self.request_lock('sid', sid)
@@ -184,7 +184,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 
     res = [
         object(co, lo, None, dn, attributes=attrs)
-        for dn, attrs in lo.search(str(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response)
+        for dn, attrs in lo.authz_connection.search(str(filter), base, scope, [], unique, required, timeout, sizelimit, serverctrls, response)
     ]  # type: list[univention.admin.handlers.simpleLdap]
     return res
 

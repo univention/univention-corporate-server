@@ -317,7 +317,7 @@ def get_user_roles(lo, user_dn: str) -> None:
     # FIXME: Why doesn't this allow at least "=" and "," at least in "context_name"?
     # Basically it should allow everything valid in an LDAP DN!? I.e.  case insensitive UTF-8 see https://ldapwiki.com/wiki/Wiki.jsp?page=Distinguished%20Name%20Case%20Sensitivity and https://ldapwiki.com/wiki/Wiki.jsp?page=Ou
 
-    data = lo.get(user_dn, attr=['univentionObjectType'])
+    data = lo.authz_connection.get(user_dn, attr=['univentionObjectType'])
     mod = univention.admin.modules.get(data['univentionObjectType'][0].decode('UTF-8'))
     obj = mod.object(None, lo, None, user_dn)
     obj.open()

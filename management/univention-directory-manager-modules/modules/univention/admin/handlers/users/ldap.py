@@ -316,10 +316,10 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         olddn = self.dn
         tmpdn = 'cn=%s-subtree,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(self['username']), self.lo.base)
         al = [('objectClass', [b'top', b'organizationalRole']), ('cn', [b'%s-subtree' % self['username'].encode('UTF-8')])]
-        subelements = self.lo.search(base=self.dn, scope='one', attr=['objectClass'])  # FIXME: identify may fail, but users will raise decode-exception
+        subelements = self.lo.authz_connection.search(base=self.dn, scope='one', attr=['objectClass'])  # FIXME: identify may fail, but users will raise decode-exception
         if subelements:
             try:
-                self.lo.add(tmpdn, al)
+                self.lo.authz_connection.add(tmpdn, al)
             except Exception:
                 # real errors will be caught later
                 pass

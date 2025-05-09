@@ -343,7 +343,7 @@ class object(univention.admin.handlers.simpleLdap):
         # type: () -> bool
         candidate_dn = self.get_candidate_dn()
         try:
-            self.lo.searchDn(base=candidate_dn, scope='base')
+            self.lo.authz_connection.searchDn(base=candidate_dn, scope='base')
         except univention.admin.uexceptions.noObject:
             return True
         else:
@@ -407,7 +407,7 @@ class object(univention.admin.handlers.simpleLdap):
         newdn = self.acquire_unique_dn()
         self.dn = olddn
 
-        self.lo.rename(self.dn, newdn)
+        self.lo.authz_connection.rename(self.dn, newdn)
         self.dn = newdn
 
         try:
@@ -417,7 +417,7 @@ class object(univention.admin.handlers.simpleLdap):
         except BaseException:
             # move back
             log.warning('simpleLdap._move: self._ldap_post_move failed, move object back to %s', olddn)
-            self.lo.rename(self.dn, olddn)
+            self.lo.authz_connection.rename(self.dn, olddn)
             self.dn = olddn
             raise
         return self.dn

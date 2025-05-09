@@ -190,7 +190,7 @@ class domain:
         """
         self.lo = lo
         self.position = position
-        self.domain = self.lo.get(self.position.getDomain(), attr=['sambaDomain', 'sambaSID', 'krb5RealmName'])
+        self.domain = self.lo.authz_connection.get(self.position.getDomain(), attr=['sambaDomain', 'sambaSID', 'krb5RealmName'])
 
     def getKerberosRealm(self):
         # type: () -> str | None

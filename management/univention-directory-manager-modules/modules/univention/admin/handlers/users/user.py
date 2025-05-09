@@ -656,7 +656,7 @@ layout.append(role_layout())
 
 @univention.admin._ldap_cache(ttl=10, cache_none=False)
 def get_primary_group_dn(lo, gid_number):  # type: (univention.admin.uldap.access, int) -> str | None
-    groups = lo.searchDn(filter=filter_format('(&(|(objectClass=posixGroup)(objectClass=sambaGroupMapping))(gidNumber=%s))', [gid_number]))
+    groups = lo.authz_connection.searchDn(filter=filter_format('(&(|(objectClass=posixGroup)(objectClass=sambaGroupMapping))(gidNumber=%s))', [gid_number]))
     return groups[0] if groups else None
 
 
@@ -1163,7 +1163,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
                 primary_group_candidate,
             )
 
-            if primary_group_candidate and self.lo.get(primary_group_candidate, attr=['objectClass']):
+            if primary_group_candidate and self.lo.authz_connection.get(primary_group_candidate, attr=['objectClass']):
                 self['primaryGroup'] = primary_group_candidate
                 self.__primary_group_set_manually = False
                 log.debug('user._set_default_group (%s, primaryGroup not set): Set primaryGroup to candidate: "%s"', log_context, primary_group_candidate)
@@ -1245,7 +1245,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         if locked_timestamp and locked_timestamp != "0":
             try:
                 locked_unixtime = int(calendar.timegm(time.strptime(locked_timestamp, '%Y%m%d%H%M%SZ')))
-                lockout_duration = int(self.lo.search(filter='objectClass=sambaDomain', attr=['sambaLockoutDuration'])[0][1].get('sambaLockoutDuration', [0])[0])
+                lockout_duration = int(self.lo.authz_connection.search(filter='objectClass=sambaDomain', attr=['sambaLockoutDuration'])[0][1].get('sambaLockoutDuration', [0])[0])
             except (ValueError, KeyError, IndexError, AttributeError):
                 return
 
@@ -1352,21 +1352,21 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
                 grpobj.fast_member_add([self.dn], [new_uid])
 
     def __rewrite_member_uid(self, group, members=[]):
-        uids = self.lo.getAttr(group, 'memberUid')
+        uids = self.lo.authz_connection.getAttr(group, 'memberUid')
         if not members:
-            members = self.lo.getAttr(group, 'uniqueMember')
+            members = self.lo.authz_connection.getAttr(group, 'uniqueMember')
         new_uids = []
         for memberDNstr in members:
             memberDN = ldap.dn.str2dn(memberDNstr)
             if memberDN[0][0][0] == 'uid':  # UID is stored in DN --> use UID directly
                 new_uids.append(memberDN[0][0][1].encode('UTF-8'))
             else:
-                UIDs = self.lo.getAttr(memberDNstr.decode('UTF-8'), 'uid')
+                UIDs = self.lo.authz_connection.getAttr(memberDNstr.decode('UTF-8'), 'uid')
                 if UIDs:
                     new_uids.append(UIDs[0])
                     if len(UIDs) > 1:
                         log.warning('users/user: A groupmember has multiple UIDs (%s %r)', memberDNstr, UIDs)
-        self.lo.modify(group, [('memberUid', uids, new_uids)])  # TODO: check if encoding is correct
+        self.lo.authz_connection.modify(group, [('memberUid', uids, new_uids)])  # TODO: check if encoding is correct
 
     def __primary_group(self):
         # type: () -> None
@@ -1419,7 +1419,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         self._set_default_group()
         if not self.exists() or self.hasChanged('primaryGroup'):
             # Ensure the primary Group has the samba option enabled
-            if self['primaryGroup'] and not self.lo.getAttr(self['primaryGroup'], 'sambaSID'):
+            if self['primaryGroup'] and not self.lo.authz_connection.getAttr(self['primaryGroup'], 'sambaSID'):
                 raise univention.admin.uexceptions.primaryGroupWithoutSamba(self['primaryGroup'])
 
         if not self.exists() or self.hasChanged('username') and self['username'].lower() != self.oldinfo['username'].lower():
@@ -2000,10 +2000,10 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         olddn = self.dn
         tmpdn = 'cn=%s-subtree,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(self['username']), self.lo.base)
         al = [('objectClass', [b'top', b'organizationalRole']), ('cn', [b'%s-subtree' % (self['username'].encode('UTF-8'),)])]
-        subelements = self.lo.search(base=self.dn, scope='one', attr=['objectClass'])  # FIXME: identify may fail, but users will raise decode-exception
+        subelements = self.lo.authz_connection.search(base=self.dn, scope='one', attr=['objectClass'])  # FIXME: identify may fail, but users will raise decode-exception
         if subelements:
             try:
-                self.lo.add(tmpdn, al)
+                self.lo.authz_connection.add(tmpdn, al)
             except ldap.LDAPError:
                 # real errors will be caught later
                 pass
@@ -2034,7 +2034,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
 
     def __allocate_rid(self, rid):
         # type: (str) -> str
-        searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
+        searchResult = self.lo.authz_connection.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
         domainsid = searchResult[0][1]['sambaSID'][0]
         sid = domainsid.decode('ASCII') + '-' + rid
         try:

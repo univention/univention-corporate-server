@@ -68,7 +68,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
                 primaryGroupNumber = self.oldattr.get('gidNumber', [b''])[0].decode('ASCII')
                 log.debug('primary group number = %s', primaryGroupNumber)
                 if primaryGroupNumber:
-                    primaryGroupResult = self.lo.searchDn(filter_format('(&(objectClass=posixGroup)(gidNumber=%s))', [primaryGroupNumber]))
+                    primaryGroupResult = self.lo.authz_connection.searchDn(filter_format('(&(objectClass=posixGroup)(gidNumber=%s))', [primaryGroupNumber]))
                     if primaryGroupResult:
                         self['primaryGroup'] = primaryGroupResult[0]
                         log.debug('Set primary group = %s', self['primaryGroup'])

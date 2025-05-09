@@ -311,7 +311,7 @@ class object(univention.admin.handlers.simpleLdap):
             pass
 
         if self.exists():
-            self['memberOf'] = self.lo.searchDn(filter=filter_format('(&(objectClass=posixGroup)(uniqueMember=%s))', [self.dn]))
+            self['memberOf'] = self.lo.authz_connection.searchDn(filter=filter_format('(&(objectClass=posixGroup)(uniqueMember=%s))', [self.dn]))
 
             time_start = time.time()
 
@@ -331,7 +331,7 @@ class object(univention.admin.handlers.simpleLdap):
                     self['users'].append(i)
                     cache_uniqueMember.set(i, {'type': 'user'})
                 else:
-                    result = self.lo.getAttr(i, 'objectClass')
+                    result = self.lo.authz_connection.getAttr(i, 'objectClass')
                     if result:
                         if b'univentionGroup' in result:
                             self['nestedGroup'].append(i)
@@ -355,7 +355,7 @@ class object(univention.admin.handlers.simpleLdap):
         ml = []
         uids = set()
         members = set()
-        searchResult = self.lo.get(self.dn, attr=['uniqueMember', 'memberUid'])
+        searchResult = self.lo.authz_connection.get(self.dn, attr=['uniqueMember', 'memberUid'])
         if searchResult:
             uids = {x.decode('UTF-8').lower() for x in searchResult.get('memberUid', [])}
             members = {x.decode('UTF-8').lower() for x in searchResult.get('uniqueMember', [])}
@@ -371,7 +371,7 @@ class object(univention.admin.handlers.simpleLdap):
 
         if ml:
             try:
-                return self.lo.modify(self.dn, ml)
+                return self.lo.authz_connection.modify(self.dn, ml)
             except ldap.NO_SUCH_OBJECT:
                 raise univention.admin.uexceptions.noObject(self.dn)
             except ldap.INSUFFICIENT_ACCESS:
@@ -386,7 +386,7 @@ class object(univention.admin.handlers.simpleLdap):
         ml = []
         uids = {}
         members = set()
-        searchResult = self.lo.get(self.dn, attr=['uniqueMember', 'memberUid'])
+        searchResult = self.lo.authz_connection.get(self.dn, attr=['uniqueMember', 'memberUid'])
         if searchResult:
             uids = {x.decode('UTF-8').lower(): x.decode('UTF-8') for x in searchResult.get('memberUid', [])}
             members = {x.decode('UTF-8').lower() for x in searchResult.get('uniqueMember', [])}
@@ -402,7 +402,7 @@ class object(univention.admin.handlers.simpleLdap):
         if ml:
             try:
                 try:
-                    return self.lo.modify(self.dn, ml, exceptions=True, ignore_license=ignore_license)
+                    return self.lo.authz_connection.modify(self.dn, ml, exceptions=True, ignore_license=ignore_license)
                 except ldap.NO_SUCH_ATTRIBUTE:
                     # maybe this is the refint overlay:
                     # uniqueMember has already been removed. lets try again, probably with just memberUid...
@@ -516,7 +516,7 @@ class object(univention.admin.handlers.simpleLdap):
                         result.append([x[1] for x in dn if x[0].lower() == 'uid'][0])  # noqa: RUF015
                     except IndexError:
                         # UID is not stored in DN --> fetch UID by DN
-                        uid_list = self.lo.getAttr(uniqueMember.dn, 'uid')
+                        uid_list = self.lo.authz_connection.getAttr(uniqueMember.dn, 'uid')
                         # a group have no uid attribute, see Bug #12644
                         if uid_list:
                             result.append(uid_list[0].decode('UTF-8'))
@@ -567,8 +567,8 @@ class object(univention.admin.handlers.simpleLdap):
         self.__update_membership()
         old_sid = self.oldattr.get('sambaSID', [b''])[0].decode('ASCII')
         if self._samba_sid and self._samba_sid != old_sid:
-            for dn, attr in self.lo.search(ldap.filter.filter_format('(sambaPrimaryGroupSID=%s)', [old_sid]), attr=['sambaPrimaryGroupSID']):
-                self.lo.modify(dn, [('sambaPrimaryGroupSID', attr.get('sambaPrimaryGroupSID', []), [self._samba_sid.encode('ASCII')])])
+            for dn, attr in self.lo.authz_connection.search(ldap.filter.filter_format('(sambaPrimaryGroupSID=%s)', [old_sid]), attr=['sambaPrimaryGroupSID']):
+                self.lo.authz_connection.modify(dn, [('sambaPrimaryGroupSID', attr.get('sambaPrimaryGroupSID', []), [self._samba_sid.encode('ASCII')])])
 
     def _ldap_pre_remove(self):
         # type: () -> None
@@ -576,7 +576,7 @@ class object(univention.admin.handlers.simpleLdap):
         self.open()
         # is this group in mentioned in settings/default?
         try:
-            _dn, attrs = self.lo.search(filter='objectClass=univentionDefault', base=self.position.getDomain(), scope='domain', unique=True, required=True)[0]
+            _dn, attrs = self.lo.authz_connection.search(filter='objectClass=univentionDefault', base=self.position.getDomain(), scope='domain', unique=True, required=True)[0]
         except ldap.NO_SUCH_OBJECT:
             pass
         else:
@@ -588,11 +588,11 @@ class object(univention.admin.handlers.simpleLdap):
         groupSid = None
         if 'posix' in self.old_options:
             gidNum = self.oldattr['gidNumber'][0].decode('ASCII')
-            if self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(gidNumber=%s))', [gidNum]), scope='domain'):
+            if self.lo.authz_connection.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(gidNumber=%s))', [gidNum]), scope='domain'):
                 raise univention.admin.uexceptions.primaryGroupUsed(gidNum)
         if 'samba' in self.old_options:
             groupSid = self.oldattr['sambaSID'][0].decode('ASCII')
-            if self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(sambaPrimaryGroupSID=%s))', [groupSid]), scope='domain'):
+            if self.lo.authz_connection.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(sambaPrimaryGroupSID=%s))', [groupSid]), scope='domain'):
                 raise univention.admin.uexceptions.primaryGroupUsed(groupSid)
         if gidNum:
             self.alloc.append(('gidNumber', gidNum))
@@ -608,7 +608,7 @@ class object(univention.admin.handlers.simpleLdap):
         for group in self.info.get('memberOf', []):
             if isinstance(group, list):
                 group = group[0]
-            members = [x.decode('UTF-8') for x in self.lo.getAttr(group, 'uniqueMember')]
+            members = [x.decode('UTF-8') for x in self.lo.authz_connection.getAttr(group, 'uniqueMember')]
             if not self.__case_insensitive_in_list(self.dn, members):
                 continue
             newmembers = copy.deepcopy(members)
@@ -630,7 +630,7 @@ class object(univention.admin.handlers.simpleLdap):
         for group in self.info.get('memberOf', []):
             if isinstance(group, list):
                 group = group[0]
-            members = [x.decode('UTF-8') for x in self.lo.getAttr(group, 'uniqueMember')]
+            members = [x.decode('UTF-8') for x in self.lo.authz_connection.getAttr(group, 'uniqueMember')]
             if not self.__case_insensitive_in_list(olddn, members):
                 continue
             newmembers = copy.deepcopy(members)
@@ -656,7 +656,7 @@ class object(univention.admin.handlers.simpleLdap):
             for group in self.info.get('memberOf', []):
                 if isinstance(group, list):
                     group = group[0]
-                members = [x.decode('UTF-8') for x in self.lo.getAttr(group, 'uniqueMember')]
+                members = [x.decode('UTF-8') for x in self.lo.authz_connection.getAttr(group, 'uniqueMember')]
                 newmembers = copy.deepcopy(members)
                 newmembers = self.__case_insensitive_remove_from_list(self.old_dn, newmembers)
                 newmembers.append(self.dn)
@@ -676,7 +676,7 @@ class object(univention.admin.handlers.simpleLdap):
         for group in add_to_group:
             if isinstance(group, list):
                 group = group[0]
-            members = [x.decode('UTF-8') for x in self.lo.getAttr(group, 'uniqueMember')]
+            members = [x.decode('UTF-8') for x in self.lo.authz_connection.getAttr(group, 'uniqueMember')]
             if self.__case_insensitive_in_list(self.dn, members):
                 continue
             newmembers = copy.deepcopy(members)
@@ -687,7 +687,7 @@ class object(univention.admin.handlers.simpleLdap):
         for group in remove_from_group:
             if isinstance(group, list):
                 group = group[0]
-            members = [x.decode('UTF-8') for x in self.lo.getAttr(group, 'uniqueMember')]
+            members = [x.decode('UTF-8') for x in self.lo.authz_connection.getAttr(group, 'uniqueMember')]
             newmembers = copy.deepcopy(members)
             if self.__case_insensitive_in_list(self.dn, members):
                 newmembers = self.__case_insensitive_remove_from_list(self.dn, newmembers)
@@ -700,11 +700,11 @@ class object(univention.admin.handlers.simpleLdap):
     def __set_membership_attributes(self, group, members, newmembers):
         members_bytes = [x.encode('UTF-8') for x in members]
         newmembers_bytes = [x.encode('UTF-8') for x in newmembers]
-        self.lo.modify(group, [('uniqueMember', members_bytes, newmembers_bytes)])
+        self.lo.authz_connection.modify(group, [('uniqueMember', members_bytes, newmembers_bytes)])
         # don't set the memberUid attribute for nested groups, see Bug #11868
-        # uids = self.lo.getAttr( group, 'memberUid' )
+        # uids = self.lo.authz_connection.getAttr( group, 'memberUid' )
         # newuids = map(lambda x: x[x.find('=') + 1: x.find(',')], newmembers)
-        # self.lo.modify( group, [ ( 'memberUid', uids, newuids ) ] )
+        # self.lo.authz_connection.modify( group, [ ( 'memberUid', uids, newuids ) ] )
 
     @staticmethod
     def __case_insensitive_in_list(dn, members):
@@ -815,7 +815,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _is_global_member(self):
         # type: () -> bool
-        searchResult = self.lo.search(base=self.position.getDomain(), filter=filter_format('(uniqueMember=%s)', [self.dn]), attr=['univentionGroupType'])
+        searchResult = self.lo.authz_connection.search(base=self.position.getDomain(), filter=filter_format('(uniqueMember=%s)', [self.dn]), attr=['univentionGroupType'])
         for (_dn, attr) in searchResult:
             groupType = attr.get('univentionGroupType', [None])[0]
             if self.__is_groupType_global(groupType):
@@ -825,7 +825,7 @@ class object(univention.admin.handlers.simpleLdap):
     def _has_domain_local_member(self):
         # type: () -> bool
         for member_dn in [x.decode('UTF-8') for x in self.oldattr.get('uniqueMember', [])]:
-            searchResult = self.lo.getAttr(member_dn, 'univentionGroupType')
+            searchResult = self.lo.authz_connection.getAttr(member_dn, 'univentionGroupType')
             if searchResult and self.__is_groupType_domain_local(searchResult[0]):
                 return True
         return False
@@ -833,7 +833,7 @@ class object(univention.admin.handlers.simpleLdap):
     def _has_universal_member(self):
         # type: () -> bool
         for member_dn in [x.decode('UTF-8') for x in self.oldattr.get('uniqueMember', [])]:
-            searchResult = self.lo.getAttr(member_dn, 'univentionGroupType')
+            searchResult = self.lo.authz_connection.getAttr(member_dn, 'univentionGroupType')
             if searchResult and self.__is_groupType_universal(searchResult[0]):
                 return True
         return False
@@ -885,7 +885,7 @@ class object(univention.admin.handlers.simpleLdap):
                 raise univention.admin.uexceptions.adGroupTypeChangeUniversalToGlobal
 
     def __allocate_rid(self, rid):
-        searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
+        searchResult = self.lo.authz_connection.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
         new_groupType = self.info.get('adGroupType', 0)
         if self.__is_groupType_local(new_groupType):
             sid = 'S-1-5-32-' + self['sambaRID']

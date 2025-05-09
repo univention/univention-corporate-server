@@ -100,7 +100,7 @@ class object(univention.admin.handlers.simpleLdap):
         super()._ldap_pre_remove()
         printergroups_filter = '(&(objectClass=univentionPrinterGroup)(|%s))' % (''.join(filter_format('(univentionPrinterSpoolHost=%s)', [x]) for x in self.info['spoolHost']))
         rm_attrib = []
-        for pg_dn, member_list in self.lo.search(filter=printergroups_filter, attr=['univentionPrinterGroupMember', 'cn']):
+        for pg_dn, member_list in self.lo.authz_connection.search(filter=printergroups_filter, attr=['univentionPrinterGroupMember', 'cn']):
             for member_cn in [x.decode('UTF-8') for x in member_list['univentionPrinterGroupMember']]:
                 if member_cn == self.info['name']:
                     rm_attrib.append(pg_dn)
@@ -117,7 +117,7 @@ class object(univention.admin.handlers.simpleLdap):
     def is_valid_printer_object(self):  # check printer on current spoolhost
         spoolhosts = '(|%s)' % ''.join(filter_format('(univentionPrinterSpoolHost=%s)', [host]) for host in self.info['spoolHost'])
         for member in self.info['groupMember']:
-            if not self.lo.searchDn(filter='(&(objectClass=univentionPrinter)(cn=%s)%s)' % (escape_filter_chars(member), spoolhosts)):
+            if not self.lo.authz_connection.searchDn(filter='(&(objectClass=univentionPrinter)(cn=%s)%s)' % (escape_filter_chars(member), spoolhosts)):
                 raise univention.admin.uexceptions.notValidPrinter(_('%(name)s is not a valid printer on Spoolhost %(host)s.') % {'name': member, 'host': self.info['spoolHost']})
 
 

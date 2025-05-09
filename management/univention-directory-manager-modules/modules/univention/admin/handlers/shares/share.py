@@ -687,7 +687,7 @@ class object(univention.admin.handlers.simpleLdap):
         if not self.options:
             self.open()
         if 'nfs' in self.options:
-            searchResult = self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(automountInformation=*%s:%s*))', [self['host'], self['path']]), scope='domain')
+            searchResult = self.lo.authz_connection.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(automountInformation=*%s:%s*))', [self['host'], self['path']]), scope='domain')
             if searchResult:
                 numstring = ""
                 userstring = ""
