@@ -114,7 +114,7 @@ containers: list[UdmModule] = []
 
 @univention.admin._ldap_cache(ttl=3600)
 def _ldap_operational_attribute_names(lo: univention.admin.uldap.access) -> set[str]:
-    schema = lo.get_schema()
+    schema = lo.authz_connection.get_schema()
     attrs = [schema.get_obj(ldap.schema.models.AttributeType, x) for x in schema.listall(ldap.schema.models.AttributeType)]
     usages = [ldap.schema.models.AttributeUsage[o] for o in ('directoryoperation', 'dsaoperation', 'distributedoperation')]
     return {n.lower() for a in attrs for n in a.names if a.usage in usages}

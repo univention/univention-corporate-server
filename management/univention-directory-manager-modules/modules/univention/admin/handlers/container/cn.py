@@ -211,7 +211,7 @@ class object(univention.admin.handlers.simpleLdap):
         dn_bytes = self.dn.encode('UTF-8')
         for (prop, attr) in self.PATH_KEYS.items():
             if self.oldinfo.get(prop) != self.info.get(prop):
-                entries = self.lo.getAttr(self.default_dn, attr)
+                entries = self.lo.authz_connection.getAttr(self.default_dn, attr)
                 if self.info[prop] == '0':
                     if dn_bytes in entries:
                         changes.append((attr, dn_bytes, b''))
@@ -220,7 +220,7 @@ class object(univention.admin.handlers.simpleLdap):
                         changes.append((attr, b'', dn_bytes))
 
         if changes:
-            self.lo.modify(self.default_dn, changes)
+            self.lo.authz_connection.modify(self.default_dn, changes)
 
     def _ldap_pre_rename(self, newdn):
         # type: (str) -> None
@@ -255,7 +255,7 @@ class object(univention.admin.handlers.simpleLdap):
                 else:
                     changes.append((attr, b'', dn_bytes))
         if changes:
-            self.lo.modify(self.default_dn, changes)
+            self.lo.authz_connection.modify(self.default_dn, changes)
 
     def _ldap_pre_remove(self):
         # type: () -> None
@@ -268,7 +268,7 @@ class object(univention.admin.handlers.simpleLdap):
         for prop, attr in self.PATH_KEYS.items():
             if self.oldinfo.get(prop) == '1':
                 changes.append((attr, dn_bytes, b''))
-        self.lo.modify(self.default_dn, changes)
+        self.lo.authz_connection.modify(self.default_dn, changes)
 
     @classmethod
     def unmapped_lookup_filter(cls):
