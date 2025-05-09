@@ -85,6 +85,9 @@ def get_syntax_buffer(name: str | None = None, identifier: str | None = None) ->
     if identifier is None:
         identifier = name
     return '''# UCS-TEST SYNTAX %(syntax_identifier)s
+import re
+from univention.admin.syntax import simple
+
 class %(syntax_name)s(simple):
         regex = re.compile('^ucstest-[0-9A-Za-z]+$')
         error_message = 'Wrong value given for ucs-test-syntax!'
