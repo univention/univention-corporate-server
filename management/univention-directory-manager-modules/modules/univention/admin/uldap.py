@@ -66,6 +66,16 @@ class DN:
         except ldap.DECODING_ERROR:
             raise ValueError('Malformed DN syntax: %r' % (self.dn,))
 
+    @property
+    def parent(self):
+        if len(self._dn) > 1:
+            return self.__class__(ldap.dn.dn2str(self._dn[1:]))
+
+    def endswith(self, other):
+        if not isinstance(other, DN):
+            other = self.__class__(other)
+        return self[-len(other):] == other
+
     def __str__(self):
         # compute string only once since the object is static
         if self._str is None:
@@ -77,6 +87,15 @@ class DN:
 
     def __repr__(self):
         return '<%s %r>' % (type(self).__name__, str(self))
+
+    def __len__(self):
+        """Return length of DN components"""
+        return len(self._dn)
+
+    def __getitem__(self, key):
+        if isinstance(key, slice):
+            return self.__class__(ldap.dn.dn2str(self._dn[key]))
+        return self.__class__(ldap.dn.dn2str([self._dn[key]]))
 
     def __eq__(self, other):
         """
@@ -911,7 +930,7 @@ class access:
     def filter_lookup_results(self, results, context):
         """Evaluate access control rules for filtering of results"""
         # TODO: check if we are allowed at all to search in the base, with the scope and the given filter for the attrs
-        return self.authz.filter_search_results(self, results, {'result-is-udm': True, **(context or {})})
+        return self.authz.filter_search_results(self, results)
 
     def search_filtered(self, context, filter='(objectClass=*)', base='', *args, **kwargs):
         if not self._verify_search_base(base) or not self._verify_search_filter(filter):
@@ -927,11 +946,11 @@ class access:
 
     def _filter_ldap_search_results(self, results, options=None):
         """Evaluate access control rules for filtering of results"""
-        return self.authz.filter_search_results(self, results, {'result-is-ldap-attr': True, **(options or {})})
+        return self.authz.filter_search_results_attrs(self, results)
 
     def _filter_ldap_search_dns(self, results, context=None):
         """Evaluate access control rules for filtering of results"""
-        return self.authz.filter_search_results(self, results, {'result-is-ldap-dn': True, **(context or {})})
+        return self.authz.filter_search_results_dn(self, results)
 
     def _verify_search_base(self, base):
         return bool(self._filter_ldap_search_dns([base or configRegistry['ldap/base']]))
