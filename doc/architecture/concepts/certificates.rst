@@ -28,7 +28,7 @@ Encrypt <lets-encrypt_>`_.
    links to UCR variables and more information. But the current detail level
    prohibits it at this point. Maybe a later section can refer to this part and
    at the same time also provide the interesting links. It would stay in the
-   scope. See https://git.knut.univention.de/univention/ucs/-/merge_requests/358#note_62484
+   scope. See https://git.knut.univention.de/univention/dev/ucs/-/merge_requests/358#note_62484
 
 The domain systems use the certificates for secure communication between each
 other over the computer network, for example for domain database replication and

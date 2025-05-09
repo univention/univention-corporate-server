@@ -107,7 +107,7 @@ To enable hot reloading, you need to do
 ## Translation
 
 We use the UCS tooling. The configuration is in `debian/phoenixportal.univention-l10n.`
-You need to download the ucs repo to call the following commands: https://git.knut.univention.de/univention/ucs
+You need to download the ucs repo to call the following commands: https://git.knut.univention.de/univention/dev/ucs
 
 ```
 # creates tempprary files for vue and generates/updates de.po

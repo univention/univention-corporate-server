@@ -4,7 +4,7 @@
 A docker image is build by GitLab-CI for every UCS release branch:
 
 ```
-docker run --rm -ti -u "$UID" -v "$PWD:/work" -w /work gitregistry.knut.univention.de/univention/ucs
+docker run --rm -ti -u "$UID" -v "$PWD:/work" -w /work gitregistry.knut.univention.de/univention/dev/ucs
 ```
 
 ## Locally

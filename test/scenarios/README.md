@@ -105,7 +105,7 @@ EC2Tools.addUpdateParameters(ram_kvm, false, false)
 EC2Tools.addUcsGit(ram_kvm, cucs.mmm, '/test/scenarios', '/test/utils')
 ```
 
-and a start wrapper somewhere in univention/ucs>test/utils
+and a start wrapper somewhere in univention/dev/ucs>test/utils
 
 ```
 #!/bin/bash

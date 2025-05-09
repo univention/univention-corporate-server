@@ -30,7 +30,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-// copy pasted from https://git.knut.univention.de/univention/ucs/-/blob/5.0-0/management/univention-web/js/tools.js
+// copy pasted from https://git.knut.univention.de/univention/dev/ucs/-/blob/5.0-0/management/univention-web/js/tools.js
 
 export function isFalse(input: any) {
   if (typeof input === 'string') {

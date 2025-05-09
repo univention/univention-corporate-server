@@ -62,12 +62,12 @@ The `<head>` tag:
 The `<head>` tag contains the usual suspects like the `<title>`, favicon and `<meta>` information but let's
 focus on the setup of the Dojo Toolkit framework for now.
 
-First of, we don't use a Dojo Toolkit version directly. In the `univention/ucs` repository under
-[management/univention-dojo](https://git.knut.univention.de/univention/ucs/-/tree/5.0-6/management/univention-dojo?ref_type=heads)
+First of, we don't use a Dojo Toolkit version directly. In the `univention/dev/ucs` repository under
+[management/univention-dojo](https://git.knut.univention.de/univention/dev/ucs/-/tree/5.0-6/management/univention-dojo?ref_type=heads)
 we take a base Dojo Toolkit version and apply some patches and add some additional libraries.
 
 The resulting package is used as a dependency for
-[univention-web](https://git.knut.univention.de/univention/ucs/-/tree/5.0-6/management/univention-web?ref_type=heads),
+[univention-web](https://git.knut.univention.de/univention/dev/ucs/-/tree/5.0-6/management/univention-web?ref_type=heads),
 our JavaScript library on top of Dojo Toolkit.
 
 `univention-web` produces 5 artifacts that we use in the `<head>` tag to setup the web interface:
@@ -175,7 +175,7 @@ You can see some screenshots of it in the
 [Univention Corporate Server - Manual for users and administrators](https://docs.software-univention.de/manual/5.0/en/installation.html#domain-settings).
 
 The code for the system setup can be found here:
-[univention-system-setup](https://git.knut.univention.de/univention/ucs/-/tree/5.0-6/base/univention-system-setup?ref_type=heads).
+[univention-system-setup](https://git.knut.univention.de/univention/dev/ucs/-/tree/5.0-6/base/univention-system-setup?ref_type=heads).
 
 The directory also defines other frontend-related packages like "univention-managment-console-setup".
 But for the web-based configuration wizard we want to look at the "univention-system-setup" package.
@@ -240,7 +240,7 @@ apt install node-stylus
 The server overview shows all UCS systems of the domain.
 
 The source code for the frontend files can be found here:
-[univention-server-overview](https://git.knut.univention.de/univention/ucs/-/tree/5.0-6/management/univention-server-overview/www?ref_type=heads).
+[univention-server-overview](https://git.knut.univention.de/univention/dev/ucs/-/tree/5.0-6/management/univention-server-overview/www?ref_type=heads).
 
 To develop the server-overview frontend you can just copy changes under
 `univention-server-overview/www/` to
@@ -262,7 +262,7 @@ apt install node-stylus
 A shared login page for multiple web interfaces.
 
 The source code for the frontend files can be found here:
-[univention-management-console](https://git.knut.univention.de/univention/ucs/-/tree/5.0-6/management/univention-management-console/www/login?ref_type=heads).
+[univention-management-console](https://git.knut.univention.de/univention/dev/ucs/-/tree/5.0-6/management/univention-management-console/www/login?ref_type=heads).
 
 To develop the login frontend you can just copy changes under
 `univention-management-console/www/login/` to
@@ -270,7 +270,7 @@ To develop the login frontend you can just copy changes under
 
 An exception is the CSS for the login page.
 The style for the login is not defined in `univention-management-console`.
-It is defined in [univention-web/css/login.styl](https://git.knut.univention.de/univention/ucs/-/blob/5.0-6/management/univention-web/css/login.styl?ref_type=heads).
+It is defined in [univention-web/css/login.styl](https://git.knut.univention.de/univention/dev/ucs/-/blob/5.0-6/management/univention-web/css/login.styl?ref_type=heads).
 
 You can either follow the [Dev setup for univention-web](#dev-setup-for-univention-web) to apply your changes to `login.styl`
 on your UCS system or just compile `login.styl` and copy it to the correct location.
@@ -297,7 +297,7 @@ you can read the [Manual for developers](https://docs.software-univention.de/dev
 ### UMC
 
 The source code for the frontend files of the UMC can be found here:
-[univention-management-console](https://git.knut.univention.de/univention/ucs/-/tree/5.0-6/management/univention-management-console/www/management?ref_type=heads).
+[univention-management-console](https://git.knut.univention.de/univention/dev/ucs/-/tree/5.0-6/management/univention-management-console/www/management?ref_type=heads).
 
 To develop the UMC you can just copy changes under
 `univention-management-console/www/management/` to
