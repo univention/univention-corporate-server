@@ -4,7 +4,7 @@ stages:
 
 include:
   - template: 'Workflows/Branch-Pipelines.gitlab-ci.yml'
-  - project: univention/dist/docker-services
+  - project: univention/infrastructure/docker-services
     file: kaniko.yml
   - local: '/.gitlab-ci/base.yml'
 
