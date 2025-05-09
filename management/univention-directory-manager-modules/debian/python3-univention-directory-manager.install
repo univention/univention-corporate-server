@@ -18,4 +18,3 @@ modules/univention/admin/hooks.d/*.py	usr/lib/python3/dist-packages/univention/a
 modules/univention/admin/syntax.d/*.py	usr/lib/python3/dist-packages/univention/admin/syntax.d/
 modules/univention/udm	usr/lib/python3/dist-packages/univention/
 python-lib/*.py	usr/lib/python3/dist-packages/univention/lib/
-umc-udm-roles.json /usr/share/univention-directory-manager-modules/
