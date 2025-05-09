@@ -727,7 +727,7 @@ class UDM_Module:
         try:
             if ldap_dn is not None:
                 if superordinate is None:
-                    superordinate = udm_objects.get_superordinate(self.module, None, ldap_connection.authz_connection, ldap_dn)
+                    superordinate = udm_objects.get_superordinate(self.module, None, ldap_connection, ldap_dn)
                 obj = self.module.object(None, ldap_connection, None, ldap_dn, superordinate, attributes=attributes)
                 MODULE.info('Found LDAP object %s' % obj.dn)
                 obj.open()
