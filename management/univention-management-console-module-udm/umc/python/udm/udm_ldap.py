@@ -310,7 +310,7 @@ class ObjectDoesNotExist(UMCError):
     @LDAP_Connection
     def _ldap_object_exists(self, ldap_connection=None, ldap_position=None):
         try:
-            ldap_connection.get(self.ldap_dn, required=True)
+            ldap_connection.authz_connection.get(self.ldap_dn, required=True)
         except NO_SUCH_OBJECT:
             return False
         else:
@@ -707,9 +707,9 @@ class UDM_Module:
             raise
         except udm_errors.base as e:
             if isinstance(e, udm_errors.noObject):
-                if superordinate and not ldap_connection.get(superordinate):
+                if superordinate and not ldap_connection.authz_connection.get(superordinate):  # TODO: filter?
                     raise SuperordinateDoesNotExist(superordinate)
-                if container and not ldap_connection.get(container):
+                if container and not ldap_connection.authz_connection.get(container):  # TODO: filter?
                     raise ObjectDoesNotExist(container)
             UDM_Error(e).reraise()
 
@@ -741,7 +741,7 @@ class UDM_Module:
             raise
         except udm_errors.base as exc:
             MODULE.info('Failed to retrieve LDAP object: %s' % (exc,))
-            if isinstance(exc, udm_errors.noObject) and superordinate and not ldap_connection.get(superordinate.dn):
+            if isinstance(exc, udm_errors.noObject) and superordinate and not ldap_connection.authz_connection.get(superordinate.dn):  # TODO: filter?
                 raise SuperordinateDoesNotExist(superordinate)
             UDM_Error(exc).reraise()
 
@@ -1122,7 +1122,7 @@ class UDM_Module:
         references = []
         if self.is_policy_module():  # TODO: move into the handlers/policies/*.py
             search_filter = filter_format("(&(objectClass=univentionPolicyReference)(univentionPolicyReference=%s))", (dn,))
-            for dn in ldap_connection.searchDn(filter=search_filter):
+            for dn in ldap_connection.authz_connection.searchDn(filter=search_filter):  # TODO: filter
                 obj, module = get_obj_module(None, dn, ldap_connection)
                 if not module or not obj:
                     continue
@@ -1248,7 +1248,7 @@ def get_module(flavor, ldap_dn, ldap_connection=None, ldap_position=None):
 
 
 def get_obj_module(flavor, ldap_dn, ldap_connection=None, ldap_position=None):
-    attr = ldap_connection.get(ldap_dn, ['*', '+'])  # TODO: we should use module.object._ldap_attributes() here but we don't have the module yet
+    attr = ldap_connection.authz_connection.get(ldap_dn, ['*', '+'])  # TODO: we should use module.object._ldap_attributes() here but we don't have the module yet
     module = _get_module(flavor, ldap_dn, attr, ldap_connection, ldap_position)
     if module is None:
         return None, None
@@ -1281,7 +1281,7 @@ def _get_module(flavor, ldap_dn, attributes=None, ldap_connection=None, ldap_pos
 def list_objects(container, object_type=None, ldap_connection=None, ldap_position=None):
     """Yields UDM objects"""
     try:
-        result = ldap_connection.search(base=container, scope='one')
+        result = ldap_connection.authz_connection.search(base=container, scope='one')
     except (LDAPError, udm_errors.ldapError):
         raise
     except udm_errors.noObject:
@@ -1422,7 +1422,7 @@ def read_syntax_choices(syn, options=None, ldap_connection=None, ldap_position=N
     except udm_errors.base as e:
         if isinstance(e, udm_errors.noObject):
             container = options.get('base')
-            if container and not ldap_connection.get(container):
+            if container and not ldap_connection.authz_connection.get(container):
                 raise ObjectDoesNotExist(container)
         UDM_Error(e).reraise()
 
