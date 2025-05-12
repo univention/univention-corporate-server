@@ -1,3 +1,9 @@
+univention-system-setup (15.0.16) unstable; urgency=medium
+
+  * Bug #58260: fix warnings not showing up in systemsetup
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 12 May 2025 10:01:33 +0200
+
 univention-system-setup (15.0.15) unstable; urgency=medium
 
   * Bug #56128: Relax hostname length limit from 13 to 15 characters.

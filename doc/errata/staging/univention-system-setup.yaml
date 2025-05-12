@@ -3,8 +3,9 @@ release: "5.2"
 version: [1]
 scope: ucs_5.2-0-errata5.2-1
 src: univention-system-setup
-fix: 15.0.15
+fix: 15.0.16
 desc: |
  This update addresses the following issues:
  * Relax hostname length limit from 13 to 15 characters.
-bug: [56128]
+ * Fix warnings not showing up in systemsetup.
+bug: [56128, 58260]

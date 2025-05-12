@@ -2975,7 +2975,7 @@ define([
 				return (pageName === 'fqdn-nonmaster-all' && this._getRole() === 'domaincontroller_slave');
 			});
 			if ((nextPage === 'schooldomain-slave') && ! shouldShowSchooldomainSlavePage()) {
-				nextPage = this.next(nextPage);
+				nextPage = this.inherited(arguments, [nextPage]);
 			}
 
 			if (pageName == 'fqdn-master' || pageName == 'fqdn-nonmaster-all') {
@@ -3030,6 +3030,8 @@ define([
 					}
 
 					if (pageName === 'fqdn-nonmaster-all') {
+						// need to store arguments for inherited to work in deferred
+						var _arguments = arguments;
 						deferred = deferred.then(lang.hitch(this, function(selectedNextPage) {
 							// callback; will only be called, if previous dialog was not canceled
 							if (this._isRoleNonMaster() && this._wantsToJoin()) {
@@ -3041,7 +3043,9 @@ define([
 									this._isSchoolMultiServerDomain = result.is_school_multiserver_domain;
 								})).then(lang.hitch(this, function() {
 									if (! this._isSchoolMultiServerDomain) {
-										 nextPage = this.next(nextPage);
+										return this.inherited(_arguments, [nextPage]);
+									} else {
+										return nextPage;
 									}
 								}));
 							}
