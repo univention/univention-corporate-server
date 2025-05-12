@@ -6,5 +6,6 @@ src: univention-keycloak
 fix: 1.0.14-6
 desc: |
  This update addresses the following issues:
- * Add basic scope as default scope when creating oidc clients.
+ * Add `basic` scope as default scope when creating OIDC relying party
+   clients.
 bug: [58255]
