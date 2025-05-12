@@ -3,6 +3,7 @@ etc/bash_completion.d/univention-directory-manager	etc/bash_completion.d/
 listener/*.py	usr/lib/univention-directory-listener/system/
 scripts/change_srv_priority.py	usr/share/univention-directory-manager-tools/
 scripts/check_group_recursion	usr/share/univention-directory-manager-tools/
+scripts/conditions	usr/share/univention-directory-manager-tools/conditions/
 scripts/convert-user-base64-photos	usr/share/univention-directory-manager-tools/
 scripts/fix_primary_group_membership	usr/share/univention-directory-manager-tools/
 scripts/listpwexpiry	usr/share/univention-directory-manager-tools/
