@@ -1,0 +1,10 @@
+{
+  "display_name": "Check if target object type equals a given object type",
+  "documentation": "",
+  "parameters": [
+    {
+      "name": "objectType",
+      "value_type": "STRING"
+    }
+  ]
+}

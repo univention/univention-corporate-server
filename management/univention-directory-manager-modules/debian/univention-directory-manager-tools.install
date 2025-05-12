@@ -1,4 +1,5 @@
 18python-univention-directory-manager.inst	usr/lib/univention-install/
+conditions	usr/share/univention-directory-manager-modules/
 etc/bash_completion.d/univention-directory-manager	etc/bash_completion.d/
 listener/*.py	usr/lib/univention-directory-listener/system/
 scripts/change_srv_priority.py	usr/share/univention-directory-manager-tools/

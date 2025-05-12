@@ -1,0 +1,18 @@
+{
+  "display_name": "Only if the target has a property comparable to a value with the given operator",
+  "documentation": "Available operators are: ==, !=, regex-match, regex-nomatch, ==-i, !=-i, regex-match-i, regex-nomatch-i",
+  "parameters": [
+    {
+      "name": "property",
+      "value_type": "STRING"
+    },
+    {
+      "name": "operator",
+      "value_type": "STRING"
+    },
+    {
+      "name": "value",
+      "value_type": "STRING"
+    }
+  ]
+}
