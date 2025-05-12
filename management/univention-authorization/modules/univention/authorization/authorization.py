@@ -7,8 +7,15 @@ import functools
 import json
 import pathlib
 import re
+import time
 
+import requests
+
+from univention.config_registry import ucr
 from univention.dn import DN
+
+
+TIMEOUT = 30
 
 
 class LocalGuardianAuthorizationClient:
@@ -274,9 +281,48 @@ def _check_scope_one(position: str, condition_positions: list[str]) -> bool:
     return position.parent in condition_positions
 
 
+class TokenInvalidError(Exception):
+    pass
+
+
 class GuardianAuthorizationClient:
+
+    def __init__(self):
+        self._base_url = f'https://{ucr["hostname"]}.{ucr["domainname"]}/guardian/authorization/'.rstrip('/')
+        self.username = 'Administrator'
+        self.password = 'univention'
+        self.oidc_token_endpoint_url = f'https://{ucr["keycloak/server/sso/fqdn"]}/realms/ucs/protocol/openid-connect/token'
+        self.oidc_client_id = 'guardian-scripts'
+
     def check_permissions(self, actor, targets, contexts, namespaces, extra_request_data=None, targeted_permissions_to_check=None, general_permissions_to_check=None):
-        return {}
+        data = {
+            "namespaces": [expand_role_string(f'{n}:') for n in namespaces],
+            "actor": {
+                "id": actor['id'],
+                "roles": [expand_role_string(r) for r in actor['roles']],
+                "attributes": actor['attributes'],
+            },
+            "targets": [
+                {
+                    "old_target": {
+                        'id': target['old_target']['id'],
+                        'attributes': target['old_target']['attributes'],
+                        'roles': [expand_role_string(r) for r in target['old_target']['roles']],
+                    } if target['old_target'] else target['old_target'],
+                    "new_target": {
+                        'id': target['new_target']['id'],
+                        'attributes': target['new_target']['attributes'],
+                        'roles': [expand_role_string(r) for r in target['new_target']['roles']],
+                    } if target['new_target'] else target['new_target'],
+                } for target in targets or []
+            ],
+            "contexts": [expand_role_string(c) for c in contexts],
+            "targeted_permissions_to_check": [expand_role_string(t) for t in targeted_permissions_to_check or []],
+            "general_permissions_to_check": [expand_role_string(g) for g in general_permissions_to_check or []],
+            "extra_request_data": extra_request_data,
+        }
+        response = self.post('/permissions/check', data).json()
+        return response
 
     def get_and_check_permissions(self, actor, targets, contexts, namespaces, extra_request_data=None, targeted_permissions_to_check=None, general_permissions_to_check=None):
         permissions = self.get_permissions(actor, targets, contexts, namespaces, extra_request_data)
@@ -285,4 +331,112 @@ class GuardianAuthorizationClient:
         return permissions
 
     def get_permissions(self, actor, targets, contexts, namespaces, extra_request_data=None, include_general_permissions=False):
-        return {}
+        data = {
+            "namespaces": [expand_role_string(f'{n}:') for n in namespaces],
+            "actor": {
+                "id": actor['id'],
+                "roles": [expand_role_string(r) for r in actor['roles']],
+                "attributes": actor['attributes'],
+            },
+            "targets": [
+                {
+                    "old_target": {
+                        'id': target['old_target']['id'],
+                        'attributes': target['old_target']['attributes'],
+                        'roles': [expand_role_string(r) for r in target['old_target']['roles']],
+                    } if target['old_target'] else target['old_target'],
+                    "new_target": {
+                        'id': target['new_target']['id'],
+                        'attributes': target['new_target']['attributes'],
+                        'roles': [expand_role_string(r) for r in target['new_target']['roles']],
+                    } if target['new_target'] else target['new_target'],
+                } for target in targets or []
+            ],
+            "contexts": [expand_role_string(c) for c in contexts],
+            "include_general_permissions": include_general_permissions,
+            "extra_request_data": extra_request_data,
+        }
+        response = self.post('/permissions', data).json()
+        return {
+            'actor_id': response['actor_id'],
+            'general_permissions': {implode_permission(p) for p in response['general_permissions']},
+            'target_permissions': [
+                {'target_id': tp['target_id'], 'permissions': {implode_permission(p) for p in tp['permissions']}}
+                for tp in response['target_permissions']
+            ],
+        }
+
+    @staticmethod
+    @functools.lru_cache(maxsize=1)
+    def get_token(token_endpoint_url, client_id, username, password):
+        data = {
+            "client_id": client_id,
+            "username": username,
+            "password": password,
+            "grant_type": "password",
+        }
+
+        headers = {"Content-Type": "application/x-www-form-urlencoded"}
+        attempt = 0
+        while True:
+            attempt += 1
+            try:
+                response = requests.post(token_endpoint_url, data=data, headers=headers, timeout=TIMEOUT)
+                response.raise_for_status()
+            except requests.exceptions.HTTPError:
+                if attempt > 5:
+                    raise
+                else:
+                    time.sleep(2)
+                    continue
+            break
+        token = response.json()["access_token"]
+        return token
+
+    def handle_status_code(self, response):
+        if response.status_code == 401:
+            raise TokenInvalidError()
+
+        response.raise_for_status()
+        return response
+
+    def generate_headers(self):
+        token = self.get_token(self.oidc_token_endpoint_url, self.oidc_client_id, self.username, self.password)
+        headers = {"Content-Type": "application/json", "Authorization": f"Bearer {token}"}
+        return headers
+
+    def post(self, path, data):
+        return self.request('POST', path, data)
+
+    def request(self, method, path, data):
+        response = requests.request(method, f"{self._base_url}{path}", headers=self.generate_headers(), json=data, timeout=TIMEOUT)
+        try:
+            return self.handle_status_code(response)
+        except TokenInvalidError:
+            self.get_token.cache_clear()
+            response = requests.request(method, f"{self._base_url}{path}", headers=self.generate_headers(), json=data, timeout=TIMEOUT)
+            return self.handle_status_code(response)
+
+
+def expand_role(app_name, namespace_name, name):
+    return {
+        "app_name": app_name,
+        "namespace_name": namespace_name,
+        "name": name,
+    }
+
+
+def _expand_role_string(string):
+    return expand_role(*string.split(':', 2))
+
+
+def expand_role_string(string):
+    role, _, context = string.partition('&')
+    role = _expand_role_string(role)
+    if _ and context:
+        role['context'] = _expand_role_string(context)
+    return role
+
+
+def implode_permission(data):
+    return f'{data["app_name"]}:{data["namespace_name"]}:{data["name"]}'
