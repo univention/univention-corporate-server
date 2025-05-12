@@ -52,6 +52,7 @@ if admin_role not in group.props.guardianMemberRoles:
 # ou's and users
 number_of_ous = 10
 number_of_users = 10
+number_of_groups = 5
 for i in range(1, number_of_ous + 1):
 
     # ou and users, groups container
@@ -99,8 +100,7 @@ for i in range(1, number_of_ous + 1):
 
     # user objects in ou
     for j in range(1, number_of_users + 1):
-        # position = f'cn=users,ou=ou{i},{ucr["ldap/base"]}'
-        position = f'ou=ou{i},{ucr["ldap/base"]}'
+        position = f'cn=users,ou=ou{i},{ucr["ldap/base"]}'
         name = f"user{j}-ou{i}"
         user = users.new()
         user.position = position
@@ -109,6 +109,17 @@ for i in range(1, number_of_ous + 1):
         user.props.password = 'univention'
         try:
             user.save()
-            print(f'creat user {name} in {position}')
+            print(f'create user {name} in {position}')
+        except CreateError:
+            pass
+
+    # group objects in ou
+    for j in range(1, number_of_users + 1):
+        group = groups.new()
+        group.position = f'cn=groups,ou=ou{i},{ucr["ldap/base"]}'
+        group.props.name = f"group{j}-ou{i}"
+        try:
+            group.save()
+            print(f'create group {name}')
         except CreateError:
             pass
