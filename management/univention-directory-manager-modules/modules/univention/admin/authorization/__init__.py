@@ -12,7 +12,8 @@ from univention.admin import configRegistry
 from univention.admin.guardian_roles import get_roles_from_ldap
 from univention.admin.log import log
 from univention.admin.uexceptions import permissionDenied
-from univention.authorization.authorization import LocalGuardianAuthorizationClient
+from univention.authorization.authorization import GuardianAuthorizationClient, LocalGuardianAuthorizationClient
+from univention.config_registry import ucr
 
 
 __all__ = ('Authorization',)
@@ -95,7 +96,15 @@ class Authorization:
     def __init__(self):
         self.enabled = False
         if self.engine is None:
-            self.__class__.engine = LocalGuardianAuthorizationClient('/var/lib/univention-directory-manager-modules/guardian/')
+            if ucr.is_true('directory/manager/delegative-administration/guardian/enabled'):
+                fqdn = ucr.get('directory/manager/delegative-administration/guardian/host', f'{ucr["hostname"]}.{ucr["domainname"]}')
+                keycloak_fqdn = ucr.get('directory/manager/delegative-administration/guardian/keycloak', ucr.get("keycloak/server/sso/fqdn", ''))
+                assert keycloak_fqdn
+                username = ucr.get('directory/manager/delegative-administration/guardian/user', 'Administrator')
+                password = ucr.get('directory/manager/delegative-administration/guardian/password', 'univention')  # FIXME: replace with password file
+                self.__class__.engine = GuardianAuthorizationClient(fqdn, keycloak_fqdn, username=username, password=password)
+            else:
+                self.__class__.engine = LocalGuardianAuthorizationClient('/var/lib/univention-directory-manager-modules/guardian/')
 
     @classmethod
     def clear_caches(cls):
