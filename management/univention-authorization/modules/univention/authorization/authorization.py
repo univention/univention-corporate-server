@@ -11,6 +11,7 @@ import time
 
 import requests
 
+from univention.config_registry import ucr
 from univention.dn import DN
 
 
