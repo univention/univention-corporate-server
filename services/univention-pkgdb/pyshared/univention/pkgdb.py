@@ -43,6 +43,7 @@ import os
 import os.path
 import sys
 import time
+from io import StringIO
 
 import apt_pkg
 import dns.exception
@@ -366,6 +367,18 @@ def sql_get_packages_in_systems_by_query(cursor, query, join_systems, limit=None
     return sql_select(cursor, sqlcmd)
 
 
+def excel_escape(val):
+    strio = StringIO()
+    writer = csv.writer(strio, delimiter=' ', quoting=csv.QUOTE_NONNUMERIC)
+    writer.writerow([val])
+    once_quoted = strio.getvalue().strip('\r\n')
+    # Ok , but that doesn't stop excel from evaluating it, so do another round:
+    strio = StringIO()
+    writer = csv.writer(strio, delimiter=' ', quoting=csv.QUOTE_NONNUMERIC)
+    writer.writerow([once_quoted])
+    return strio.getvalue().strip('\r\n')
+
+
 def dump_systems(cursor):
     """writes CSV with all systems and their system-specific information to stdout"""
     cursor.execute("SET datestyle = 'ISO'")
@@ -378,6 +391,7 @@ def dump_systems(cursor):
     writer = csv.writer(sys.stdout, delimiter=' ')
     writer.writerow(('hostname', 'UCS version', 'server role', 'last scan', 'LDAP host DN'))
     for row in cursor:
+        row = [excel_escape(val) if val.startswith('=') else val for val in row]
         writer.writerow(row)
     return 0
 
@@ -389,6 +403,7 @@ def dump_packages(cursor):
     writer = csv.writer(sys.stdout, delimiter=' ')
     writer.writerow(('package', 'version', 'installed'))
     for row in cursor:
+        row = [excel_escape(val) if val.startswith('=') else val for val in row]
         writer.writerow(row)
     return 0
 
@@ -404,6 +419,7 @@ def dump_systems_packages(cursor):
     writer = csv.writer(sys.stdout, delimiter=' ')
     writer.writerow(('system', 'package', 'version', 'last scan', 'installed', 'selected state', 'installation state', 'current state'))
     for row in cursor:
+        row = [excel_escape(val) if val.startswith('=') else val for val in row]
         writer.writerow(row)
     return 0
 
