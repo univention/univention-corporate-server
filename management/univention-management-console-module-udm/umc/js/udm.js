@@ -1670,7 +1670,7 @@ define([
 				var defaultFormatter = function(value) {
 					if (value instanceof Array) {
 						var tooMuch = value.length > 3;
-						value = array.map(value.slice(0, 3), function(v) { return entities.encode(String(v)); }).join('<br>');
+						value = array.map(value.slice(0, 3), function(v) { return entities.encode(String(v)); }).join(', ');
 						if (tooMuch) {
 							value += ', …';
 						}
