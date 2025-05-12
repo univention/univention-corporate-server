@@ -209,7 +209,11 @@ class GuardianManagementClient:
             "parameters": parameters,
             "code": code,
         }
-        response = self.patch(f"/conditions/{quote(app_name)}/{quote(namespace_name)}/{quote(condition_name)}", data)
+        try:
+            response = self.patch(f"/conditions/{quote(app_name)}/{quote(namespace_name)}/{quote(condition_name)}", data)
+        except requests.HTTPError as exc:
+            log.exception('Impossible to modify condition: %s', exc)
+            return
 
         log.info("Condition %r modified: %s", condition_name, response.json())
 
