@@ -1,0 +1,18 @@
+{
+  "display_name": "Only if the target has a property comparable to a DN with the given operator",
+  "documentation": "Available operators are: ==, !=, ==-i, !=-i, subtree, onelevel, subtree-i, onelevel-i.",
+  "parameters": [
+    {
+      "name": "property",
+      "value_type": "STRING"
+    },
+    {
+      "name": "operator",
+      "value_type": "STRING"
+    },
+    {
+      "name": "dn",
+      "value_type": "STRING"
+    }
+  ]
+}
