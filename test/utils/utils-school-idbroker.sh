@@ -45,7 +45,7 @@ ansible_preperation () {
 	#wget "http://service.knut.univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz" && tar -xf ansible_playbook.tar.gz
 	#wget --user "$repo_user" --password="$(< "$repo_password_file")" \
 	#	"https://service.software-univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz" && tar -xf ansible_playbook.tar.gz || return $?
-    wget "https://git.knut.univention.de/univention/id-broker/keycloak/-/archive/juern/idbroker_appcenter_keycloak/keycloak-juern-idbroker_appcenter_keycloak.tar.gz?path=deployment" --output-document=deployment.tar.gz && tar -xf deployment.tar.gz --strip-components=1
+    wget "https://git.knut.univention.de/univention/dev/education/id-broker/keycloak-id-broker/-/archive/main/keycloak-id-broker-main.tar.gz?path=deployment" --output-document=deployment.tar.gz && tar -xf deployment.tar.gz --strip-components=1
 	cd deployment || return $?
 	# check the jenkins-data repo for the following files
 	openssl x509 -req -in /root/id-broker-TESTING.csr -signkey /root/id-broker-TESTING.key -out id-broker.cert -days 365
