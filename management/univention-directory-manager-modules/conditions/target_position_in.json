@@ -1,0 +1,14 @@
+{
+  "display_name": "Only if the target has position in the given LDAP base and scope",
+  "documentation": "True if the target has the specified position in the given LDAP base and scope.",
+  "parameters": [
+    {
+      "name": "position",
+      "value_type": "STRING"
+    },
+    {
+      "name": "scope",
+      "value_type": "STRING"
+    }
+  ]
+}
