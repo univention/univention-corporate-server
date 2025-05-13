@@ -7,9 +7,7 @@
 ## exposure: dangerous
 import locale
 import re
-import subprocess
 import time
-from types import SimpleNamespace
 
 import pytest
 
@@ -19,7 +17,6 @@ from univention.testing.umc import Client
 
 
 check_delegation = pytest.mark.skipif(not _ucr.is_true('umc/udm/delegation'), reason='umc/udm/delegation not activated')
-
 
 TRANSLATIONS = {
     'de_DE': {
@@ -34,46 +31,30 @@ def _(string: str) -> str:
     return TRANSLATIONS.get(code, {}).get(string, string)
 
 
-@pytest.fixture(autouse=True)
-def restart_umc():
-    yield
-    subprocess.call(['deb-systemd-invoke', 'restart', 'univention-management-console-server.service'])
-
-
-@pytest.fixture
-def ou(ldap_base):
-    return SimpleNamespace(
-        dn=f'ou=ou1,{ldap_base}',
-        admin_username='ou1admin',
-        admin_dn=f'uid=ou1admin,cn=users,{ldap_base}',
-        user_username='user1-ou1',
-        user_dn=f'uid=user1-ou1,cn=users,ou=ou1,{ldap_base}',
-        user_default_container=f'cn=users,ou=ou1,{ldap_base}',
-        group_default_container=f'cn=groups,ou=ou1,{ldap_base}',
-    )
-
-
 @check_delegation
 def test_ouadmin_default_containers(ou, ldap_base):
     client = Client()
     client.authenticate(ou.admin_username, 'univention')
-    res = client.umc_command('udm/containers', {"objectType": "users/user"}, 'users/user').result
+    res = client.umc_command('udm/containers', {'objectType': 'users/user'}, 'users/user').result
     assert {x['id'] for x in res} == {ou.user_default_container}
-    res = client.umc_command('udm/containers', {"objectType": "groups/group"}, 'groups/group').result
+    res = client.umc_command('udm/containers', {'objectType': 'groups/group'}, 'groups/group').result
     assert {x['id'] for x in res} == {ou.group_default_container}
 
 
 @check_delegation
-@pytest.mark.parametrize('login_user, position, expected', [
-    ('admin', 'cn=users,{ldap_base}', True),
-    ('admin', 'cn=users,{ou_dn}', True),
-    ('admin', '{ou_dn}', True),
-    ('admin', '{ldap_base}', True),
-    ('ou_admin', 'cn=users,{ou_dn}', True),
-    ('ou_admin', '{ou_dn}', True),
-    ('ou_admin', 'cn=users,{ldap_base}', False),
-    ('ou_admin', '{ldap_base}', False),
-])
+@pytest.mark.parametrize(
+    'login_user, position, expected',
+    [
+        ('admin', 'cn=users,{ldap_base}', True),
+        ('admin', 'cn=users,{ou_dn}', True),
+        ('admin', '{ou_dn}', True),
+        ('admin', '{ldap_base}', True),
+        ('ou_admin', 'cn=users,{ou_dn}', True),
+        ('ou_admin', '{ou_dn}', True),
+        ('ou_admin', 'cn=users,{ldap_base}', False),
+        ('ou_admin', '{ldap_base}', False),
+    ],
+)
 def test_delete(ou, ldap_base, random_username, login_user, position, expected, udm):
     cn_user = udm.create_object(
         'users/user',
@@ -83,17 +64,19 @@ def test_delete(ou, ldap_base, random_username, login_user, position, expected, 
         position=position.format(ou_dn=ou.dn, ldap_base=ldap_base),
     )
     client = Client()
-    if login_user == "admin":
+    if login_user == 'admin':
         client = Client.get_test_connection()
-    elif login_user == "ou_admin":
+    elif login_user == 'ou_admin':
         client.authenticate(ou.admin_username, 'univention')
-    options = [{
-        'object': cn_user,
-        "options": {
-            "cleanup": True,
-            "recursive": True,
+    options = [
+        {
+            'object': cn_user,
+            'options': {
+                'cleanup': True,
+                'recursive': True,
+            },
         },
-    }]
+    ]
     res = client.umc_command('udm/remove', options, 'users/user').result[0]
     if not expected:
         assert not res['success']
@@ -103,33 +86,38 @@ def test_delete(ou, ldap_base, random_username, login_user, position, expected, 
 
 
 @check_delegation
-@pytest.mark.parametrize('login_user, position, expected', [
-    ('admin', 'cn=users,{ldap_base}', True),
-    ('admin', 'cn=users,{ou_dn}', True),
-    ('admin', '{ou_dn}', True),
-    ('admin', '{ldap_base}', True),
-    ('ou_admin', 'cn=users,{ou_dn}', True),
-    ('ou_admin', '{ou_dn}', True),
-    ('ou_admin', 'cn=users,{ldap_base}', False),
-    ('ou_admin', '{ldap_base}', False),
-])
+@pytest.mark.parametrize(
+    'login_user, position, expected',
+    [
+        ('admin', 'cn=users,{ldap_base}', True),
+        ('admin', 'cn=users,{ou_dn}', True),
+        ('admin', '{ou_dn}', True),
+        ('admin', '{ldap_base}', True),
+        ('ou_admin', 'cn=users,{ou_dn}', True),
+        ('ou_admin', '{ou_dn}', True),
+        ('ou_admin', 'cn=users,{ldap_base}', False),
+        ('ou_admin', '{ldap_base}', False),
+    ],
+)
 def test_create(ou, ldap_base, random_username, login_user, position, expected):
     client = Client()
-    if login_user == "admin":
+    if login_user == 'admin':
         client = Client.get_test_connection()
-    elif login_user == "ou_admin":
+    elif login_user == 'ou_admin':
         client.authenticate(ou.admin_username, 'univention')
-    options = [{
-        'object': {
-            'lastname': random_username(),
-            'username': random_username(),
-            'password': 'univention',
+    options = [
+        {
+            'object': {
+                'lastname': random_username(),
+                'username': random_username(),
+                'password': 'univention',
+            },
+            'options': {
+                'container': position.format(ou_dn=ou.dn, ldap_base=ldap_base),
+                'objectType': 'users/user',
+            },
         },
-        "options": {
-            "container": position.format(ou_dn=ou.dn, ldap_base=ldap_base),
-            "objectType": "users/user",
-        },
-    }]
+    ]
     res = client.umc_command('udm/add', options, 'users/user').result[0]
     if not expected:
         assert not res['success']
@@ -139,68 +127,71 @@ def test_create(ou, ldap_base, random_username, login_user, position, expected):
 
 
 @check_delegation
-@pytest.mark.parametrize('login_user, objectProperty, objectPropertyValue, expected', [
-    ('admin', 'None', '', ["all"]),
-    ('admin', 'None', '*trator', ["admin"]),
-    ('admin', 'description', 'test', ["cn_test"]),
-    ('admin', 'description', 'tes*', ["cn_test"]),
-    ('admin', 'description', '*est', ["cn_test"]),
-    ('ou_admin', 'None', '', ["all", "not-self"]),
-    ('ou_admin', 'description', 'test', ["cn_test"]),
-    ('ou_admin', 'description', 'tes*', ["cn_test"]),
-    ('ou_admin', 'description', '*est', ["cn_test"]),
-])
+@pytest.mark.parametrize(
+    'login_user, objectProperty, objectPropertyValue, expected',
+    [
+        ('admin', 'None', '', ['all']),
+        ('admin', 'None', '*trator', ['admin']),
+        ('admin', 'description', 'test', ['cn_test']),
+        ('admin', 'description', 'tes*', ['cn_test']),
+        ('admin', 'description', '*est', ['cn_test']),
+        ('ou_admin', 'None', '', ['all', 'not-self']),
+        ('ou_admin', 'description', 'test', ['cn_test']),
+        ('ou_admin', 'description', 'tes*', ['cn_test']),
+        ('ou_admin', 'description', '*est', ['cn_test']),
+    ],
+)
 def test_search(random_username, ou, login_user, objectProperty, objectPropertyValue, expected, udm):
     dn_test = None
-    if objectProperty != "None":
+    if objectProperty != 'None':
         config = {
             'username': random_username(),
             'lastname': random_username(),
             'password': 'univention',
-            objectProperty: "test",
+            objectProperty: 'test',
         }
-        if login_user == "ou_admin":
+        if login_user == 'ou_admin':
             config['position'] = ou.dn
         dn_test = udm.create_object('users/user', **config)
-    if login_user == "admin":
+    if login_user == 'admin':
         client = Client.get_test_connection()
-    elif login_user == "ou_admin":
+    elif login_user == 'ou_admin':
         client = Client()
         client.authenticate(ou.admin_username, 'univention')
     options = {
-        "container": "all",
-        "hidden": "all" in expected,
-        "objectType": "users/user",
-        "objectProperty": objectProperty,
-        "objectPropertyValue": objectPropertyValue,
-        "fields": [
-            "name",
-            "path",
-            "displayName",
-            "mailPrimaryAddress",
-            "firstname",
-            "lastname",
+        'container': 'all',
+        'hidden': 'all' in expected,
+        'objectType': 'users/user',
+        'objectProperty': objectProperty,
+        'objectPropertyValue': objectPropertyValue,
+        'fields': [
+            'name',
+            'path',
+            'displayName',
+            'mailPrimaryAddress',
+            'firstname',
+            'lastname',
         ],
     }
     res = client.umc_command('udm/query', options, 'users/user').result
     names = [x['name'] for x in res]
     assert res
-    if "all" in expected:
-        all_objects = udm.list_objects('users/user', properties=["DN"]) if login_user == "admin" else udm.list_objects('users/user', properties=["DN"], position=ou.dn)
+    if 'all' in expected:
+        all_objects = udm.list_objects('users/user', properties=['DN']) if login_user == 'admin' else udm.list_objects('users/user', properties=['DN'], position=ou.dn)
         assert {obj[0] for obj in all_objects} == {x['$dn$'] for x in res}
-    if "admin" in expected:
-        assert "Administrator" in names, "Administrator not found"
-    if objectProperty != "None":
+    if 'admin' in expected:
+        assert 'Administrator' in names, 'Administrator not found'
+    if objectProperty != 'None':
         rex = re.compile(objectPropertyValue.replace('*', '.*'))
         assert all(rex.match(x[objectProperty]) for x in res)
         assert dn_test in [x['$dn$'] for x in res]
-    if "not-self" in expected:
-        assert ou.admin_username not in names, f"{ou.normal_user_username} found"
+    if 'not-self' in expected:
+        assert ou.admin_username not in names, f'{ou.normal_user_username} found'
 
 
 def wait_for_progress(client, progress_id):
     while True:
-        req = client.umc_command('udm/progress', {"progress_id": progress_id}, 'users/user')
+        req = client.umc_command('udm/progress', {'progress_id': progress_id}, 'users/user')
         res = req.result
         if res['finished']:
             return req
@@ -208,14 +199,16 @@ def wait_for_progress(client, progress_id):
 
 
 @check_delegation
-@pytest.mark.parametrize('login_user, user_dn, target_position, expected', [
-    ('admin', '{normal_user}', 'cn=users,{ldap_base}', True),
-    ('ou_admin', '{normal_user}', 'cn=users,{ldap_base}', False),
-    ('admin', '{normal_user}', '{ou_cn_users}', True),
-    ('ou_admin', '{normal_user}', '{ou_cn_users}', True),
-])
+@pytest.mark.parametrize(
+    'login_user, user_dn, target_position, expected',
+    [
+        ('admin', '{normal_user}', 'cn=users,{ldap_base}', True),
+        ('ou_admin', '{normal_user}', 'cn=users,{ldap_base}', False),
+        ('admin', '{normal_user}', '{ou_cn_users}', True),
+        ('ou_admin', '{normal_user}', '{ou_cn_users}', True),
+    ],
+)
 def test_move(ldap_base, ou, login_user, user_dn, target_position, expected, udm, random_username):
-
     dn = udm.create_object(
         'users/user',
         lastname=random_username(),
@@ -224,17 +217,19 @@ def test_move(ldap_base, ou, login_user, user_dn, target_position, expected, udm
         position=ou.dn,
     )
 
-    if login_user == "admin":
+    if login_user == 'admin':
         client = Client.get_test_connection()
-    elif login_user == "ou_admin":
+    elif login_user == 'ou_admin':
         client = Client()
         client.authenticate(ou.admin_username, 'univention')
-    options = [{
-        'object': user_dn.format(admin_ou=ou.admin_dn, normal_user=dn, ldap_base=ldap_base),
-        "options": {
-            "container": target_position.format(ou_dn=ou.dn, ldap_base=ldap_base, ou_cn_users=ou.user_default_container),
+    options = [
+        {
+            'object': user_dn.format(admin_ou=ou.admin_dn, normal_user=dn, ldap_base=ldap_base),
+            'options': {
+                'container': target_position.format(ou_dn=ou.dn, ldap_base=ldap_base, ou_cn_users=ou.user_default_container),
+            },
         },
-    }]
+    ]
     result = client.umc_command('udm/move', options, 'users/user').result
     res = wait_for_progress(client, result['id']).result['intermediate'][0]
     if not expected:
@@ -245,19 +240,22 @@ def test_move(ldap_base, ou, login_user, user_dn, target_position, expected, udm
 
 
 @check_delegation
-@pytest.mark.parametrize('login_user, user_dn, attribute, expected', [
-    ('admin', 'uid=Administrator,cn=users,{ldap_base}', 'guardianInheritedRoles', True),
-    ('ou_admin', 'uid=Administrator,cn=users,{ldap_base}', None, False),
-    ('admin', '{admin_ou}', 'guardianRoles', True),
-    ('ou_admin', '{admin_ou}', None, False),
-    ('admin', '{normal_user}', 'guardianRoles', True),
-    ('ou_admin', '{normal_user}', None, True),
-    ('ou_admin', '{normal_user}', 'guardianRoles', True),
-])
+@pytest.mark.parametrize(
+    'login_user, user_dn, attribute, expected',
+    [
+        ('admin', 'uid=Administrator,cn=users,{ldap_base}', 'guardianInheritedRoles', True),
+        ('ou_admin', 'uid=Administrator,cn=users,{ldap_base}', None, False),
+        ('admin', '{admin_ou}', 'guardianRoles', True),
+        ('ou_admin', '{admin_ou}', None, False),
+        ('admin', '{normal_user}', 'guardianRoles', True),
+        ('ou_admin', '{normal_user}', None, True),
+        ('ou_admin', '{normal_user}', 'guardianRoles', True),
+    ],
+)
 def test_read(ldap_base, ou, login_user, user_dn, attribute, expected):
-    if login_user == "admin":
+    if login_user == 'admin':
         client = Client.get_test_connection()
-    elif login_user == "ou_admin":
+    elif login_user == 'ou_admin':
         client = Client()
         client.authenticate(ou.admin_username, 'univention')
     options = [
@@ -296,14 +294,17 @@ def test_read(ldap_base, ou, login_user, user_dn, attribute, expected):
 
 
 @check_delegation
-@pytest.mark.parametrize('login_user, user, changes, expected', [
-    ('admin', '{normal_user}', {"guardianRoles": ["umc:udm:ouadmin&umc:udm:ou=bremen"]}, True),
-    ('ou_admin', '{normal_user}', {"guardianRoles": ["umc:udm:ouadmin&umc:udm:ou=bremen"]}, False),
-    ('admin', '{normal_user}', {'description': 'dsfdsf'}, True),
-    ('ou_admin', '{normal_user}', {'description': 'dsfdsf'}, True),
-    ('admin', 'uid=Administrator,cn=users,{ldap_base}', {'description': 'dsfdsf'}, True),
-    ('ou_admin', 'uid=Administrator,cn=users,{ldap_base}', {'description': 'dsfdsf'}, False),
-])
+@pytest.mark.parametrize(
+    'login_user, user, changes, expected',
+    [
+        ('admin', '{normal_user}', {'guardianRoles': ['umc:udm:ouadmin&umc:udm:ou=bremen']}, True),
+        ('ou_admin', '{normal_user}', {'guardianRoles': ['umc:udm:ouadmin&umc:udm:ou=bremen']}, False),
+        ('admin', '{normal_user}', {'description': 'dsfdsf'}, True),
+        ('ou_admin', '{normal_user}', {'description': 'dsfdsf'}, True),
+        ('admin', 'uid=Administrator,cn=users,{ldap_base}', {'description': 'dsfdsf'}, True),
+        ('ou_admin', 'uid=Administrator,cn=users,{ldap_base}', {'description': 'dsfdsf'}, False),
+    ],
+)
 def test_modify_attr(ldap_base, ou, login_user, user, changes, expected, udm, random_username):
     dn = udm.create_object(
         'users/user',
@@ -312,9 +313,9 @@ def test_modify_attr(ldap_base, ou, login_user, user, changes, expected, udm, ra
         password='univention',
         position=ou.user_default_container,
     )
-    if login_user == "admin":
+    if login_user == 'admin':
         client = Client.get_test_connection()
-    elif login_user == "ou_admin":
+    elif login_user == 'ou_admin':
         client = Client()
         client.authenticate(ou.admin_username, 'univention')
     user_dn = user.format(normal_user=dn, ldap_base=ldap_base)
@@ -332,27 +333,32 @@ def test_modify_attr(ldap_base, ou, login_user, user, changes, expected, udm, ra
 
 
 @check_delegation
-@pytest.mark.parametrize('login_user, expected', [
-    ('admin', True),
-    ('ou_admin', False),
-])
+@pytest.mark.parametrize(
+    'login_user, expected',
+    [
+        ('admin', True),
+        ('ou_admin', False),
+    ],
+)
 def test_mail_domain_remove(ldap_base, ou, random_username, login_user, expected, udm):
-    domain_name = f"{random_username()}.test.com"
+    domain_name = f'{random_username()}.test.com'
     mail_domain_dn = udm.create_object('mail/domain', name=domain_name)
 
-    if login_user == "admin":
+    if login_user == 'admin':
         client = Client.get_test_connection()
-    elif login_user == "ou_admin":
+    elif login_user == 'ou_admin':
         client = Client()
         client.authenticate(ou.admin_username, 'univention')
 
-    options = [{
-        'object': mail_domain_dn,
-        "options": {
-            "cleanup": True,
-            "recursive": True,
+    options = [
+        {
+            'object': mail_domain_dn,
+            'options': {
+                'cleanup': True,
+                'recursive': True,
+            },
         },
-    }]
+    ]
 
     res = client.umc_command('udm/remove', options, 'mail/domain').result[0]
     if not expected:
@@ -363,30 +369,35 @@ def test_mail_domain_remove(ldap_base, ou, random_username, login_user, expected
 
 
 @check_delegation
-@pytest.mark.parametrize('login_user', [
-    ('admin'),
-    ('ou_admin'),
-])
+@pytest.mark.parametrize(
+    'login_user',
+    [
+        ('admin'),
+        ('ou_admin'),
+    ],
+)
 def test_mail_domain_create(ldap_base, ou, random_username, login_user, udm):
-    domain_name = f"{random_username()}.test.com"
+    domain_name = f'{random_username()}.test.com'
     admin_client = Client.get_test_connection()
-    if login_user == "admin":
+    if login_user == 'admin':
         client = admin_client
-    elif login_user == "ou_admin":
+    elif login_user == 'ou_admin':
         client = Client()
         client.authenticate(ou.admin_username, 'univention')
 
-    options = [{
-        "object": {
-            "name": domain_name,
-            "$policies$": {},
+    options = [
+        {
+            'object': {
+                'name': domain_name,
+                '$policies$': {},
+            },
+            'options': {
+                'container': 'cn=domain,cn=mail,dc=ucs,dc=test',
+                'objectType': 'mail/domain',
+                'objectTemplate': None,
+            },
         },
-        "options": {
-            "container": "cn=domain,cn=mail,dc=ucs,dc=test",
-            "objectType": "mail/domain",
-            "objectTemplate": None,
-        },
-    }]
+    ]
 
     res = client.umc_command('udm/add', options, 'mail/domain').result[0]
     if login_user == 'ou_admin':
@@ -537,28 +548,27 @@ def test_syntax_choices(udm, ou):
     ouadmin_client = Client()
     ouadmin_client.authenticate(ou.admin_username, 'univention')
 
-    res = admin_client.umc_command('udm/syntax/choices', {"syntax": "UserDN"}, 'shares/share').result
-    assert len(res) == len(udm.list_objects('users/user', properties=["DN"]))
+    res = admin_client.umc_command('udm/syntax/choices', {'syntax': 'UserDN'}, 'shares/share').result
+    assert len(res) == len(udm.list_objects('users/user', properties=['DN']))
 
-    res = ouadmin_client.umc_command('udm/syntax/choices', {"syntax": "UserDN"}, 'shares/share').result
-    assert len(res) == len(udm.list_objects('users/user', properties=["DN"], position=ou.dn))
+    res = ouadmin_client.umc_command('udm/syntax/choices', {'syntax': 'UserDN'}, 'shares/share').result
+    assert len(res) == len(udm.list_objects('users/user', properties=['DN'], position=ou.dn))
     assert all(dn['id'].endswith(ou.dn) for dn in res)
 
-    res = admin_client.umc_command('udm/syntax/choices', {"syntax": "UserID"}, 'shares/share').result
+    res = admin_client.umc_command('udm/syntax/choices', {'syntax': 'UserID'}, 'shares/share').result
     # all user + root
-    assert len(res) == len(udm.list_objects('users/user', properties=["DN"])) + 1
+    assert len(res) == len(udm.list_objects('users/user', properties=['DN'])) + 1
 
-    res = ouadmin_client.umc_command('udm/syntax/choices', {"syntax": "UserID"}, 'shares/share').result
+    res = ouadmin_client.umc_command('udm/syntax/choices', {'syntax': 'UserID'}, 'shares/share').result
     # ou user + root
-    assert len(res) == len(udm.list_objects('users/user', properties=["DN"], position=ou.dn)) + 1
+    assert len(res) == len(udm.list_objects('users/user', properties=['DN'], position=ou.dn)) + 1
 
 
 def test_shares_create_admin(ldap_base, random_username):
-
     client = Client.get_test_connection()
 
     # get default container
-    res = client.umc_command('udm/containers', {"objectType": "shares/share"}, 'shares/share').result
+    res = client.umc_command('udm/containers', {'objectType': 'shares/share'}, 'shares/share').result
     assert res
 
     # syntax choices
@@ -566,16 +576,19 @@ def test_shares_create_admin(ldap_base, random_username):
     assert res
 
     # create share
-    options = [{
-        'object': {
-            'name': random_username(),
-            'host': f'{random_username()}.{random_username()}',
-            'path': f'/{random_username()}',
+    options = [
+        {
+            'object': {
+                'name': random_username(),
+                'host': f'{random_username()}.{random_username()}',
+                'path': f'/{random_username()}',
+            },
+            'options': {
+                'container': ldap_base,
+                'objectType': 'shares/share',
+            },
         },
-        "options": {
-            'container': ldap_base,
-            'objectType': 'shares/share',
-        },
-    }]
+    ]
     res = client.umc_command('udm/add', options, 'shares/share').result[0]
+    assert res['success']
     assert res['success']

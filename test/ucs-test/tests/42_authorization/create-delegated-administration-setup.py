@@ -121,6 +121,21 @@ for i in range(1, number_of_ous + 1):
         user.props.groups = [api_access_group.dn]
     user.save()
 
+    # lesser ou admin
+    lesser_name = f'ou{i}lesseradmin'
+    try:
+        lesser_user = users.get(f'uid={lesser_name},{position}')
+    except NoObject:
+        lesser_user = users.new()
+    lesser_user.position = f'cn=users,{ldap_base}'
+    lesser_user.props.username = lesser_name
+    lesser_user.props.lastname = lesser_name
+    lesser_user.props.password = 'univention'
+    lesser_user.props.overridePWHistory = '1'
+    lesser_user.props.guardianRoles = [f'umc:udm:ouadminreadonly&umc:udm:ou=ou{i}']
+    lesser_user.policies['policies/umc'].append(policy.dn)
+    lesser_user.save()
+
     # user objects in ou
     for j in range(1, number_of_users + 1):
         position = f'cn=users,ou=ou{i},{ldap_base}'
