@@ -42,10 +42,7 @@ ansible_preperation () {
 	cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 	ssh -o "StrictHostKeyChecking=accept-new" localhost true
 	# Download ansible scripts
-	wget "http://service.knut.univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz"
-	#wget --user "$repo_user" --password="$(< "$repo_password_file")" \
-	#	"https://service.software-univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz" || return $?
-	tar -xf ansible_playbook.tar.gz
+    wget "https://git.knut.univention.de/univention/dev/education/id-broker/keycloak-id-broker/-/archive/$keycloak_id_broker_BRANCH/keycloak-id-broker-$keycloak_id_broker_BRANCH.tar.gz?path=deployment" --output-document=deployment.tar.gz && tar -xf deployment.tar.gz --strip-components=1
 	cd deployment || return $?
 	# check the jenkins-data repo for the following files
 	openssl x509 -req -in /root/id-broker-TESTING.csr -signkey /root/id-broker-TESTING.key -out id-broker.cert -days 365
