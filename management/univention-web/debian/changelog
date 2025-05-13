@@ -1,6 +1,6 @@
 univention-web (6.0.8-1) unstable; urgency=medium
 
-  * Bug #49001: Correctly encode container names in tree view
+  * Bug #58267: Correctly encode container names in tree view
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 08 May 2025 10:43:12 +0200
 
