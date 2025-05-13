@@ -1651,7 +1651,7 @@ define([
 					height: '16px',
 					width: '16px',
 					value: value,
-					src: require.toUrl(lang.replace('dijit/themes/umc/icons/16x16/udm-{0}.png', [iconName]))
+					src: entities.encode(require.toUrl(lang.replace('dijit/themes/umc/icons/16x16/udm-{0}.png', [iconName])))
 				});
 			}
 			return result;
