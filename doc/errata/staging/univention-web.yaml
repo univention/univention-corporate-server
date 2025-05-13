@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [9, 10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-web
+fix: 4.0.10-4
+desc: |
+ This update addresses the following issues:
+ * The Tree widget now correctly encodes its content, effectively removing an
+   XSS attack vector.
+bug: [58268]
