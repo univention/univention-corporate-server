@@ -1146,15 +1146,30 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         log.error('No primary group was found with gidNumber=%s for %s as %s', primaryGroupNumber, self.dn, self.lo.binddn)
 
     def _set_default_group(self):  # type: () -> None
-        if not self['primaryGroup']:
-            for _dn, attrs in self.lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + self.position.getDomain(), attr=['univentionDefaultGroup']):
-                primary_group = attrs['univentionDefaultGroup'][0].decode('UTF-8')
-                log.debug('user: setting primaryGroup to %s', primary_group)
-                if self.lo.get(primary_group):
-                    self['primaryGroup'] = primary_group
+        # If the object doesn't exist yet (i.e., during creation),
+        # or if primaryGroup is not set (e.g. data inconsistency or error during open/unmap for an existing object),
+        # determine and set the default primary group based on the current position.
+        # This ensures that if self.position is changed after open() but before create(),
+        # the correct default group is applied.
+        if not self.exists() or not self['primaryGroup']:
+            primary_group_candidate = univention.admin.config.getDefaultValue(self.lo, 'group', position=self.position)
+
+            if primary_group_candidate and self.lo.get(primary_group_candidate, attr=['objectClass']):
+                # If a valid candidate is found and it's different from the current primaryGroup (or if current is None), update it.
+                current_primary_group = self.info.get('primaryGroup')
+                if current_primary_group != primary_group_candidate:
+                    log.debug(
+                        'user._set_default_group: Setting/updating primaryGroup to "%s" (was: "%s"). Object exists: %s. Position DN: "%s"',
+                        primary_group_candidate,
+                        current_primary_group,
+                        self.exists(),
+                        self.position.getDn() if self.position else "N/A",
+                    )
+                self['primaryGroup'] = primary_group_candidate
 
         if not self['primaryGroup']:
-            raise univention.admin.uexceptions.primaryGroup(self.dn)
+            error_detail = self.dn or self.info.get('username')
+            raise univention.admin.uexceptions.primaryGroup(error_detail)
 
     def _unmap_pwd_change_next_login(self, info, oldattr):
         info['pwdChangeNextLogin'] = '0'

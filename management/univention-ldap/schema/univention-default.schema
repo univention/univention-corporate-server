@@ -52,10 +52,14 @@ attributetype ( 1.3.6.1.4.1.10176.216 NAME 'univentionDefaultScalixMailnode'
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
 
 objectclass	( 1.3.6.1.4.1.10176.201 NAME 'univentionDefault'
-	DESC 'Default user entries'
+	DESC 'Singleton object for default group settings for UDM objects'
 	SUP top  STRUCTURAL
-	MUST cn
-	MAY ( univentionDefaultGroup $ univentionDefaultComputerGroup $ univentionDefaultDomainControllerGroup $ univentionDefaultKdeProfiles $ univentionDefaultMemberserverGroup $ univentionDefaultClientGroup $ univentionDefaultDomainControllerMasterGroup $ univentionDefaultKolabHomeServer $ univentionDefaultScalixMailnode ) )
+	MAY ( cn $ univentionDefaultGroup $ univentionDefaultComputerGroup $ univentionDefaultDomainControllerGroup $ univentionDefaultKdeProfiles $ univentionDefaultMemberserverGroup $ univentionDefaultClientGroup $ univentionDefaultDomainControllerMasterGroup $ univentionDefaultKolabHomeServer $ univentionDefaultScalixMailnode ) )
+
+objectclass	( 1.3.6.1.4.1.10176.217 NAME 'univentionContainerDefault'
+	DESC 'Settings for default groups of containers (OU, CN, DC) applying to the subtree'
+	SUP top  AUXILIARY
+	MAY ( univentionDefaultGroup $ univentionDefaultComputerGroup $ univentionDefaultDomainControllerGroup $ univentionDefaultMemberserverGroup $ univentionDefaultClientGroup $ univentionDefaultDomainControllerMasterGroup $ univentionDefaultKolabHomeServer $ univentionDefaultScalixMailnode ) )
 
 attributetype ( 1.3.6.1.4.1.10176.1030.3.1.1 NAME 'univentionXResolutionChoices'
 	DESC 'Deprecated: X resolution [client]'
