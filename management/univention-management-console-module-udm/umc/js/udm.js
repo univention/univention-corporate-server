@@ -848,6 +848,7 @@ define([
 				region: 'main',
 				actions: actions,
 				columns: this._default_columns,
+				allowHTML: false,
 				moduleStore: _store,
 				footerFormatter: _footerFormatter,
 				additionalViews: additionalGridViews,
@@ -1568,7 +1569,7 @@ define([
 						array.forEach(result, function(iresult) {
 							allSuccess = allSuccess && iresult.success;
 							if (!iresult.success) {
-								msg += '<li>' + iresult.$dn$ + ': ' + iresult.details + '</li>';
+								msg += lang.replace('<li>{0}: {1}</li>', [entities.encode(iresult.$dn$), entities.encode(iresult.details)]);
 							}
 						}, this);
 						msg += '</ul>';
@@ -1634,7 +1635,9 @@ define([
 
 			if (item === undefined) {
 				item = value;
-				value = lang.replace('{0} (<em>{1}</em>)', [item.name || item.label, item.path || item.id]);
+				value = lang.replace('{0} (<em>{1}</em>)', [entities.encode(item.name || item.label), entities.encode(item.path || item.id)]);
+			} else {
+				value = entities.encode(value);
 			}
 			// get the iconName
 			var iconName = item.objectType || '';
@@ -1648,7 +1651,7 @@ define([
 					height: '16px',
 					width: '16px',
 					value: value,
-					src: require.toUrl(lang.replace('dijit/themes/umc/icons/16x16/udm-{0}.png', [iconName]))
+					src: entities.encode(require.toUrl(lang.replace('dijit/themes/umc/icons/16x16/udm-{0}.png', [iconName])))
 				});
 			}
 			return result;
@@ -1666,8 +1669,9 @@ define([
 				var customColumns = (metaInfo ? metaInfo.columns : []) || [];
 				var defaultFormatter = function(value) {
 					if (value instanceof Array) {
+						value = array.filter(value, function(v) { return v; });
 						var tooMuch = value.length > 3;
-						value = array.map(value.slice(0, 3), function(v) { return entities.encode(String(v)); }).join('<br>');
+						value = value.slice(0, 3).join(', ');
 						if (tooMuch) {
 							value += ', …';
 						}
@@ -1678,6 +1682,7 @@ define([
 					name: 'name',
 					label: _('Name'),
 					description: _('Name of the LDAP object.'),
+					allowHTML: true,
 					formatter: lang.hitch(this, 'iconFormatter')
 				};
 				var typeColumn = {
@@ -1692,10 +1697,12 @@ define([
 				var valueColumn = {
 					name: '$value$',
 					label: _('Value'),
+					allowHTML: true,
 					formatter: function(value) {
 						if (value instanceof Array) {
-							value = array.map(array.filter(value, function(v) { return v; }), function(v) { return defaultFormatter(v).replace(/<br>/g, ', '); });
-							value = array.filter(value, function(v) { return v; }).join('<br>');
+							value = array.filter(
+								array.map(value, function(v) { return entities.encode(defaultFormatter(v)); }),
+								function(v) { return v; }).join('<br>');
 						}
 						return value;
 					},
@@ -1859,7 +1866,7 @@ define([
 					array.forEach(data, function(iresult) {
 						if (!iresult.success) {
 							success = false;
-							message += '<li>' + iresult.$dn$ + ': ' + iresult.details;
+							message += lang.replace('<li>{0}: {1}</li>', [entities.encode(iresult.$dn$), entities.encode(iresult.details)]);
 						}
 					}, this);
 					message += '</ul>';
