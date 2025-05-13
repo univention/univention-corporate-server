@@ -1,0 +1,14 @@
+product: ucs
+release: "5.2"
+version: [1]
+scope: ucs_5.2-0-errata5.2-1
+src: univention-directory-manager-modules
+fix: 17.0.37
+desc: |
+ This update addresses the following issues:
+ * Attributes containing distinguished names as values were encoded in a
+   different format than the distinguished names of LDAP objects. This could
+   lead to errors in the UMC not recognizing the correct item in ComboBox
+   widgets. Now the formats have been aligned, all data is now written in the
+   standard format.
+bug: [58261]

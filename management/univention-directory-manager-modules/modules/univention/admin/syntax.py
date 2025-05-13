@@ -103,6 +103,10 @@ def import_syntax_files():
                     _ = gettext
 
 
+def _normalize_dn(dn: str) -> str:
+    return ldap.dn.dn2str(ldap.dn.str2dn(dn))
+
+
 choice_update_functions = []  # type: list[Callable]
 
 
@@ -768,7 +772,8 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
             text = text.decode('UTF-8')
         if self.key == 'dn':
             try:
-                return ldap.dn.dn2str(ldap.dn.str2dn(text))
+                _normalize_dn(text)
+                return text
             except (ldap.DECODING_ERROR, TypeError):
                 raise univention.admin.uexceptions.valueError(self.error_message)
         elif not text or not self.regex or self.regex.match(text) is not None:
@@ -816,7 +821,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
                 except KeyError:
                     pass
             if syn.label == 'dn':
-                label = dn
+                label = _normalize_dn(dn)
             elif syn.label is None:
                 pass
             else:
@@ -3673,7 +3678,8 @@ class ldapDn(simple):
         if text == '':
             raise univention.admin.uexceptions.valueError(self.error_message)
         try:
-            return ldap.dn.dn2str(ldap.dn.str2dn(text))
+            _normalize_dn(text)
+            return text
         except (ldap.DECODING_ERROR, TypeError):
             raise univention.admin.uexceptions.valueError(self.error_message)
 
@@ -3828,7 +3834,8 @@ class ldapDnOrNone(simple):
         if not text or text == 'None':
             return text
         try:
-            return ldap.dn.dn2str(ldap.dn.str2dn(text))
+            _normalize_dn(text)
+            return text
         except (ldap.DECODING_ERROR, TypeError):
             raise univention.admin.uexceptions.valueError(_("Not a valid LDAP DN"))
 
@@ -6092,7 +6099,7 @@ class LDAP_Search(select):
 
             # find the value to display
             if display == 'dn':
-                label = dn
+                label = _normalize_dn(dn)
             elif display is None:  # if view-only and in case of error
                 label = '%s: %s' % (getattr(module, 'short_description', module.module), obj.description())
             else:

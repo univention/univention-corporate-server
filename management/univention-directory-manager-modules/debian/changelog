@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.0.37) unstable; urgency=medium
+
+  * Bug #58261: Normalize DNs when listing choices
+
+ -- Johannes Königer <koeniger@univention.de>  Tue, 13 May 2025 15:43:56 +0200
+
 univention-directory-manager-modules (17.0.36) unstable; urgency=medium
 
   * Bug #58252: Add the univentionObjectIdentifier property to all UDM Objects
