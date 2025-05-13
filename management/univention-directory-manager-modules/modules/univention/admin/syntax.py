@@ -114,6 +114,11 @@ def import_syntax_files():
                     _ = gettext
 
 
+def normalize_dn(dn):
+    # type: (str) -> str
+    return ldap.dn.dn2str(ldap.dn.str2dn(dn))
+
+
 choice_update_functions = []  # type: list[Callable]
 
 
@@ -821,14 +826,14 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
         def extract_key_label(syn, dn, info):
             key = label = None
             if syn.key == 'dn':
-                key = dn
+                key = normalize_dn(dn)
             else:
                 try:
                     key = syn.key % info
                 except KeyError:
                     pass
             if syn.label == 'dn':
-                label = dn
+                label = normalize_dn(dn)
             elif syn.label is None:
                 pass
             else:
