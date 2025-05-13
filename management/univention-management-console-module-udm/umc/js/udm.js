@@ -1669,8 +1669,9 @@ define([
 				var customColumns = (metaInfo ? metaInfo.columns : []) || [];
 				var defaultFormatter = function(value) {
 					if (value instanceof Array) {
+						value = array.filter(value, function(v) { return v; });
 						var tooMuch = value.length > 3;
-						value = array.map(value.slice(0, 3), function(v) { return entities.encode(String(v)); }).join(', ');
+						value = value.slice(0, 3).join(', ');
 						if (tooMuch) {
 							value += ', …';
 						}
@@ -1696,10 +1697,12 @@ define([
 				var valueColumn = {
 					name: '$value$',
 					label: _('Value'),
+					allowHTML: true,
 					formatter: function(value) {
 						if (value instanceof Array) {
-							value = array.map(array.filter(value, function(v) { return v; }), function(v) { return defaultFormatter(v).replace(/<br>/g, ', '); });
-							value = array.filter(value, function(v) { return v; }).join('<br>');
+							value = array.filter(
+								array.map(value, function(v) { return entities.encode(defaultFormatter(v)); }),
+								function(v) { return v; }).join('<br>');
 						}
 						return value;
 					},
