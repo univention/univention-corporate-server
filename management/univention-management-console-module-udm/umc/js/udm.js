@@ -1569,7 +1569,7 @@ define([
 						array.forEach(result, function(iresult) {
 							allSuccess = allSuccess && iresult.success;
 							if (!iresult.success) {
-								msg += '<li>' + iresult.$dn$ + ': ' + iresult.details + '</li>';
+								msg += lang.replace('<li>{0}: {1}</li>', [entities.encode(iresult.$dn$), entities.encode(iresult.details)]);
 							}
 						}, this);
 						msg += '</ul>';
@@ -1866,7 +1866,7 @@ define([
 					array.forEach(data, function(iresult) {
 						if (!iresult.success) {
 							success = false;
-							message += '<li>' + iresult.$dn$ + ': ' + iresult.details;
+							message += lang.replace('<li>{0}: {1}</li>', [entities.encode(iresult.$dn$), entities.encode(iresult.details)]);
 						}
 					}, this);
 					message += '</ul>';
