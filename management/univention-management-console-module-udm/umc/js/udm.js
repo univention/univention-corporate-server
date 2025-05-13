@@ -1635,7 +1635,7 @@ define([
 
 			if (item === undefined) {
 				item = value;
-				value = lang.replace('{0} (<em>{1}</em>)', [entities.encode(item.name || item.label), item.path || item.id]);
+				value = lang.replace('{0} (<em>{1}</em>)', [entities.encode(item.name || item.label), entities.encode(item.path || item.id)]);
 			} else {
 				value = entities.encode(value);
 			}
