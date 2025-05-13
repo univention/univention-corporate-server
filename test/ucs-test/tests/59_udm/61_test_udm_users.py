@@ -498,7 +498,7 @@ def test_check_univentionDefaultGroup_membership_after_create(udm):
     # from users/user: lookup univentionDefaultGroup
     lo = utils.get_ldap_connection()
     pos = position(lo.base)
-    searchResult = lo.search(filter='(objectClass=univentionDefault)', base='cn=univention,' + pos.getDomain(), attr=['univentionDefaultGroup'])
+    searchResult = lo.search(filter='(|(objectClass=univentionDefault)(objectClass=univentionContainerDefault))', base='cn=univention,' + pos.getDomain(), attr=['univentionDefaultGroup'])
     assert searchResult and searchResult[0][1], 'Test system is broken: univentionDefaultGroup value not found'
     groupdn = searchResult[0][1]['univentionDefaultGroup'][0].decode('utf-8')
 
@@ -508,8 +508,8 @@ def test_check_univentionDefaultGroup_membership_after_create(udm):
     uniqueMember = searchResult[0][1]['uniqueMember']
     memberUid = searchResult[0][1]['memberUid']
 
-    # now create users/user object
-    userdn, uid = udm.create_user(primaryGroup=groupdn)
+    # now create users/user object directly in the root position where the global default applies
+    userdn, uid = udm.create_user(primaryGroup=groupdn, position=pos.getDn())
 
     # and check if the object has been added to univentionDefaultGroup
     uniqueMember.append(userdn.encode('utf-8'))
