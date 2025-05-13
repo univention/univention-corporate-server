@@ -33,6 +33,12 @@ options = {
         default=True,
         objectClasses=['top', 'organizationalUnit'],
     ),
+    'group-settings': univention.admin.option(
+        short_description=_('Default Group Settings'),
+        objectClasses=['univentionContainerDefault'],
+        default=False,
+        editable=True,
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -123,6 +129,54 @@ property_descriptions = {
         include_in_default_search=True,
         readonly_when_synced=True,
     ),
+    'defaultGroup': univention.admin.property(
+        short_description=_('Default Primary Group'),
+        long_description='',
+        syntax=univention.admin.syntax.GroupDNOrEmpty,
+        options=['group-settings'],
+        dontsearch=True,
+        required=False,
+    ),
+    'defaultComputerGroup': univention.admin.property(
+        short_description=_('Default Group for Computers'),
+        long_description='',
+        syntax=univention.admin.syntax.GroupDNOrEmpty,
+        options=['group-settings'],
+        dontsearch=True,
+        required=False,
+    ),
+    'defaultDomainControllerGroup': univention.admin.property(
+        short_description=_('Default Group for Replica Directory Nodes'),
+        long_description='',
+        syntax=univention.admin.syntax.GroupDNOrEmpty,
+        options=['group-settings'],
+        dontsearch=True,
+        required=False,
+    ),
+    'defaultDomainControllerMBGroup': univention.admin.property(
+        short_description=_('Default Group for Primary and Backup Directory Nodes'),
+        long_description='',
+        syntax=univention.admin.syntax.GroupDNOrEmpty,
+        options=['group-settings'],
+        dontsearch=True,
+        required=False,
+    ),
+    'defaultMemberServerGroup': univention.admin.property(
+        short_description=_('Default Group for Managed Nodes'),
+        long_description='',
+        syntax=univention.admin.syntax.GroupDNOrEmpty,
+        options=['group-settings'],
+        dontsearch=True,
+        required=False,
+    ),
+    'defaultClientGroup': univention.admin.property(
+        short_description=_('Default Group for Client Computers'),
+        long_description='',
+        syntax=univention.admin.syntax.GroupDNOrEmpty,
+        options=['group-settings'],
+        dontsearch=True,
+        required=False,
+    ),
 }
 
 layout = [
@@ -139,11 +193,28 @@ layout = [
             ["policyPath", "licensePath"],
         ]),
     ]),
+    Tab(_('Default Primary Groups'), _('Default Primary Groups'), layout=[
+        Group(_('Default Primary Groups'), layout=[
+            "defaultGroup",
+            "defaultComputerGroup",
+            "defaultDomainControllerMBGroup",
+            "defaultDomainControllerGroup",
+            "defaultMemberServerGroup",
+            "defaultClientGroup",
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'ou', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
+
+mapping.register('defaultGroup', 'univentionDefaultGroup', None, univention.admin.mapping.ListToString)
+mapping.register('defaultComputerGroup', 'univentionDefaultComputerGroup', None, univention.admin.mapping.ListToString)
+mapping.register('defaultDomainControllerMBGroup', 'univentionDefaultDomainControllerMasterGroup', None, univention.admin.mapping.ListToString)
+mapping.register('defaultDomainControllerGroup', 'univentionDefaultDomainControllerGroup', None, univention.admin.mapping.ListToString)
+mapping.register('defaultMemberServerGroup', 'univentionDefaultMemberserverGroup', None, univention.admin.mapping.ListToString)
+mapping.register('defaultClientGroup', 'univentionDefaultClientGroup', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):

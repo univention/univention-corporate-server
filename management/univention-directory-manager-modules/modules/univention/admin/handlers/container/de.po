@@ -219,3 +219,54 @@ msgstr "Samba-Einstellungen"
 #: modules/univention/admin/handlers/container/dc.py:100
 msgid "Samba domain name"
 msgstr "Samba-Domänenname"
+
+#: modules/univention/admin/handlers/container/ou.py:209
+#: modules/univention/admin/handlers/container/ou.py:210
+#: modules/univention/admin/handlers/container/cn.py:208
+#: modules/univention/admin/handlers/container/cn.py:209
+#: modules/univention/admin/handlers/container/dc.py:199
+#: modules/univention/admin/handlers/container/dc.py:200
+msgid "Default Primary Groups"
+msgstr "Standard Primärgruppen"
+
+#: modules/univention/admin/handlers/container/ou.py:152
+#: modules/univention/admin/handlers/container/cn.py:151
+#: modules/univention/admin/handlers/container/dc.py:75
+msgid "Default Primary Group"
+msgstr "Standard Primärgruppe"
+
+#: modules/univention/admin/handlers/container/ou.py:152
+#: modules/univention/admin/handlers/container/cn.py:158
+#: modules/univention/admin/handlers/container/dc.py:82
+msgid "Default Group for Computers"
+msgstr "Standard Rechnergruppe"
+
+#: modules/univention/admin/handlers/container/ou.py:173
+#: modules/univention/admin/handlers/container/cn.py:172
+#: modules/univention/admin/handlers/container/dc.py:96
+msgid "Default Group for Primary and Backup Directory Nodes"
+msgstr "Standardgruppe für Primary and Backup Directory Nodes"
+
+#: modules/univention/admin/handlers/container/ou.py:166
+#: modules/univention/admin/handlers/container/cn.py:165
+#: modules/univention/admin/handlers/container/dc.py:89
+msgid "Default Group for Replica Directory Nodes"
+msgstr "Standardgruppe für Replica Directory Nodes"
+
+#: modules/univention/admin/handlers/container/ou.py:180
+#: modules/univention/admin/handlers/container/cn.py:179
+#: modules/univention/admin/handlers/container/dc.py:103
+msgid "Default Group for Managed Nodes"
+msgstr "Standardgruppe für Managed Nodes"
+
+#: modules/univention/admin/handlers/container/ou.py:187
+#: modules/univention/admin/handlers/container/cn.py:186
+#: modules/univention/admin/handlers/container/dc.py:110
+msgid "Default Group for Client Computers"
+msgstr "Standardgruppe für Clients"
+
+#: modules/univention/admin/handlers/container/ou.py:62
+#: modules/univention/admin/handlers/container/cn.py:61
+#: modules/univention/admin/handlers/container/dc.py:75
+msgid "Default Group Settings"
+msgstr "Standardgruppen Einstellungen"

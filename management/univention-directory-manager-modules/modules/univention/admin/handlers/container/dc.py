@@ -46,6 +46,12 @@ options = {
         objectClasses=['sambaDomain'],
         default=True,
     ),
+    'group-settings': univention.admin.option(
+        short_description=_('Default Group Settings'),
+        objectClasses=['univentionContainerDefault'],
+        default=False,
+        editable=True,
+    ),
 }
 property_descriptions = {
     'name': univention.admin.property(
@@ -111,6 +117,54 @@ property_descriptions = {
         may_change=False,
         default=(configRegistry.get('domainname', '').upper(), []),
     ),
+    'defaultGroup': univention.admin.property(
+        short_description=_('Default Primary Group'),
+        long_description='',
+        syntax=univention.admin.syntax.GroupDNOrEmpty,
+        options=['group-settings'],
+        dontsearch=True,
+        required=False,
+    ),
+    'defaultComputerGroup': univention.admin.property(
+        short_description=_('Default Group for Computers'),
+        long_description='',
+        syntax=univention.admin.syntax.GroupDNOrEmpty,
+        options=['group-settings'],
+        dontsearch=True,
+        required=False,
+    ),
+    'defaultDomainControllerGroup': univention.admin.property(
+        short_description=_('Default Group for Replica Directory Nodes'),
+        long_description='',
+        syntax=univention.admin.syntax.GroupDNOrEmpty,
+        options=['group-settings'],
+        dontsearch=True,
+        required=False,
+    ),
+    'defaultDomainControllerMBGroup': univention.admin.property(
+        short_description=_('Default Group for Primary and Backup Directory Nodes'),
+        long_description='',
+        syntax=univention.admin.syntax.GroupDNOrEmpty,
+        options=['group-settings'],
+        dontsearch=True,
+        required=False,
+    ),
+    'defaultMemberServerGroup': univention.admin.property(
+        short_description=_('Default Group for Managed Nodes'),
+        long_description='',
+        syntax=univention.admin.syntax.GroupDNOrEmpty,
+        options=['group-settings'],
+        dontsearch=True,
+        required=False,
+    ),
+    'defaultClientGroup': univention.admin.property(
+        short_description=_('Default Group for Client Computers'),
+        long_description='',
+        syntax=univention.admin.syntax.GroupDNOrEmpty,
+        options=['group-settings'],
+        dontsearch=True,
+        required=False,
+    ),
 }
 
 layout = [
@@ -129,6 +183,16 @@ layout = [
     Tab(_('Kerberos'), _('Kerberos Settings'), advanced=True, layout=[
         'kerberosRealm',
     ]),
+    Tab(_('Default Primary Groups'), _('Default Primary Groups'), layout=[
+        Group(_('Default Primary Groups'), layout=[
+            "defaultGroup",
+            "defaultComputerGroup",
+            "defaultDomainControllerMBGroup",
+            "defaultDomainControllerGroup",
+            "defaultMemberServerGroup",
+            "defaultClientGroup",
+        ]),
+    ]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -138,6 +202,12 @@ mapping.register('sambaSID', 'sambaSID', None, univention.admin.mapping.ListToSt
 mapping.register('sambaNextUserRid', 'sambaNextUserRid', None, univention.admin.mapping.ListToString)
 mapping.register('sambaNextGroupRid', 'sambaNextGroupRid', None, univention.admin.mapping.ListToString)
 mapping.register('kerberosRealm', 'krb5RealmName', None, univention.admin.mapping.ListToString)
+mapping.register('defaultGroup', 'univentionDefaultGroup', None, univention.admin.mapping.ListToString)
+mapping.register('defaultComputerGroup', 'univentionDefaultComputerGroup', None, univention.admin.mapping.ListToString)
+mapping.register('defaultDomainControllerMBGroup', 'univentionDefaultDomainControllerMasterGroup', None, univention.admin.mapping.ListToString)
+mapping.register('defaultDomainControllerGroup', 'univentionDefaultDomainControllerGroup', None, univention.admin.mapping.ListToString)
+mapping.register('defaultMemberServerGroup', 'univentionDefaultMemberserverGroup', None, univention.admin.mapping.ListToString)
+mapping.register('defaultClientGroup', 'univentionDefaultClientGroup', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):
