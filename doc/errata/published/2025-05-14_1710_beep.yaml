@@ -10,3 +10,6 @@ desc: |
 bug: [58259]
 cve:
 - CVE-2018-1000532
+erratum: 1710
+announced: 2025-05-14
+support: lts
