@@ -475,9 +475,10 @@ echo "running version check" >>/var/log/univention/join.log
 
 mystatus="no"
 if [ -n "$master_version" -a -n "$master_patchlevel" ]; then
-	vmaster="$master_version$master_patchlevel"
-	vmyself="$version_version$version_patchlevel"
-	mystatus="$(echo "$vmaster" "$vmyself" | awk '{if ($1 >= $2) print "yes"; else print "no"}')"
+	vmaster="$master_version-$master_patchlevel"
+	vmyself="$version_version-$version_patchlevel"
+	mystatus=$(dpkg --compare-versions "$vmaster" ge "$vmyself" && echo -n yes || echo -n no)
+
 fi
 
 if [ "no" = "$mystatus" ]; then
