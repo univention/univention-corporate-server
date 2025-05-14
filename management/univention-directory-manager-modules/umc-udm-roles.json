@@ -79,6 +79,20 @@
           "attributes": {
             "*": "read"
           }
+        },
+        "settings/cn": {
+          "attributes": {
+            "*": {
+              "access": "read"
+            }
+          }
+        },
+        "settings/directory": {
+          "attributes": {
+            "*": {
+              "access": "read"
+            }
+          }
         }
       }
     }
