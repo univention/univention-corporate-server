@@ -9,3 +9,6 @@ desc: |
  * The Tree widget now correctly encodes its content, effectively removing an
    XSS attack vector.
 bug: [58267]
+erratum: 84
+announced: 2025-05-14
+support: core
