@@ -1,3 +1,9 @@
+univention-directory-manager-rest (12.1.2) unstable; urgency=medium
+
+  * Buf #58252: Fix the openapi spec by filtering out dangling references
+
+ -- Johannes Lohmer <lohmer@univention.de>  Wed, 14 May 2025 12:34:56 +0200
+
 univention-directory-manager-rest (12.1.1) unstable; urgency=medium
 
   * Bug #58252: Improved openapi.json generation

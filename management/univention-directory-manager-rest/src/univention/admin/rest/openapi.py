@@ -1008,12 +1008,16 @@ class _OpenAPIBase:
             openapi_schemas[model_name] = {
                 'allOf': [
                     {
-                        '$ref': f'#/components/schemas/{_openapi_quote(model_name)}.request',
-                    }, {
                         '$ref': f'#/components/schemas/{_openapi_quote(model_name)}.response-mixin',
                     },
                 ],
             }
+            if set(module.operations) & {'add', 'edit', 'move', 'move_subtree'}:
+                openapi_schemas[model_name]['allOf'].append(
+                    {
+                        '$ref': f'#/components/schemas/{_openapi_quote(model_name)}.request',
+                    },
+                )
             openapi_schemas[f'{model_name}.list'] = {
                 "type": "object",
                 "properties": {
