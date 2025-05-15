@@ -37,7 +37,7 @@ install_upgrade_keycloak () {
 	echo "univention" > /tmp/pwdfile
 	local app location image_name
 	local project=600
-	local repo_id=68
+	local repo_id=44
 	local gitlab="git.knut.univention.de"
 	# TODO add versio parameter to ./update-appcenter-test.sh and appcenter-change-compose-image.py
 	#      (currently only "latest" is supported)
@@ -51,10 +51,10 @@ install_upgrade_keycloak () {
 		./update-appcenter-test.sh -l
 		# gitlab doesn't like underscore and dots
 		image_name="${KEYCLOAK_BRANCH//_/}"
-		image_name="${image_name//./}"
+		#image_name="${KEYCLOAK_BRANCH//./}"
 		# change image in local cache
-		image_name="branch-$(slugify "$image_name")"
-		location="$(curl "https://$gitlab/api/v4/projects/$project/registry/repositories/$repo_id/tags/$image_name" | jq -r '.location')"
+		image_name="$(slugify "$image_name")"
+		location="$( curl "https://$gitlab/api/v4/projects/$project/registry/repositories/$repo_id/tags" | jq '.[] |  select(.name | contains("'"$image_name"'")) | .location' )"
 		if [ -n "$location" ] && [ ! "$location" = "null" ]; then
 			python3 /root/appcenter-change-compose-image.py -a keycloak -i "$location"
 		fi
