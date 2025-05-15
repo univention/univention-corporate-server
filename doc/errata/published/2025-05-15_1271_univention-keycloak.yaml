@@ -9,3 +9,6 @@ desc: |
  * Add `basic` scope as default scope when creating OIDC relying party
    clients.
 bug: [58255]
+erratum: 1271
+announced: 2025-05-15
+support: core
