@@ -741,3 +741,21 @@ Provides:
  ucs-test-module,
 Description: Test scripts for the Keycloak app
  This package includes test-cases for the Keycloak app.
+
+Package: ucs-test-authorization
+Architecture: all
+Recommends:
+ ucs-test-framework,
+Depends:
+ curl,
+ python3-pytest,
+ python3-pytest-asyncio,
+ python3-univention-directory-manager-rest-async-client,
+ python3-univention-directory-manager-rest-client,
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
+Description: Test scripts for authorization in UMC, UMC REST and UDM
+ This package includes some scripts for testing Authorization
+ in different layers.
