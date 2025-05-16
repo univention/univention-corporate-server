@@ -43,6 +43,8 @@ import time
 from argparse import ArgumentParser
 from glob import glob
 
+import ldap
+
 from univention.admin.types import TypeHint
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.listener import LISTENER_DUMP_DIR
@@ -140,7 +142,7 @@ def convert(app, dumped, filename, lo, pos):
             'id': entry_uuid,
             'object': attrs,
             'options': options,
-            'dn': dn,
+            'dn': ldap.dn.dn2str(ldap.dn.str2dn(dn)),
             'udm_object_type': udm_type,
         }
         json.dump(attrs, fd, sort_keys=True, indent=4)
