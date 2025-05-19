@@ -255,7 +255,7 @@ def _check_permissions_create(obj: object | str, caps: list[dict]) -> bool:
     return _check_permissions(obj, caps, "create")
 
 
-def _get_capabilities(actor_roles: dict) -> list[dict]:
+def _get_caps(actor_roles: dict) -> list[dict]:
     cap = []
     for role, contexts in actor_roles.items():
         roles_caps = copy.deepcopy(ROLES.get(role, []))
@@ -275,7 +275,7 @@ def may_create(obj: object | dict | str, actor_roles_func: callable) -> None:
     if not _check_authorization():
         return
     actor_roles = actor_roles_func()
-    cap = _get_capabilities(actor_roles)
+    cap = _get_caps(actor_roles)
     if not _check_permissions_create(obj, cap):
         raise Forbidden()
 
@@ -287,7 +287,7 @@ def may_read(objs: list[object | dict | str] | object, actor_roles_func: callabl
     if not isinstance(objs, list):
         result = [objs]
     actor_roles = actor_roles_func()
-    cap = _get_capabilities(actor_roles)
+    cap = _get_caps(actor_roles)
     result = _check_permissions_read(result, cap)
     if not isinstance(objs, list):
         if not result:
@@ -309,7 +309,7 @@ def may_modify(obj: object, actor_roles_func: callable) -> None:
     if not _check_authorization():
         return
     actor_roles = actor_roles_func()
-    cap = _get_capabilities(actor_roles)
+    cap = _get_caps(actor_roles)
     if not _check_permissions_modify(obj, cap):
         raise Forbidden()
 
@@ -318,7 +318,7 @@ def may_delete(obj: object, actor_roles_func: callable) -> None:
     if not _check_authorization():
         return
     actor_roles = actor_roles_func()
-    cap = _get_capabilities(actor_roles)
+    cap = _get_caps(actor_roles)
     if not _check_permissions_delete(obj, cap):
         raise Forbidden()
 
@@ -329,7 +329,7 @@ def may_move(obj: object, dest: str, actor_roles_func: callable) -> None:
         return
     # may_modify(obj, actor_roles_func)  # optional
     actor_roles = actor_roles_func()
-    cap = _get_capabilities(actor_roles)
+    cap = _get_caps(actor_roles)
     if not _check_permissions_delete(obj, cap):
         raise Forbidden()
     if not _check_permissions_create(dest, cap):

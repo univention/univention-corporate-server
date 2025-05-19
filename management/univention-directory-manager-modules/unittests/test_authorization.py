@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: 2014-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
+
 import json
 import os
 import sys
@@ -43,7 +44,7 @@ try:
     from univention.admin.authorization import (
         _check_authorization, _check_condition, _check_permission_action, _check_permissions, _check_permissions_create,
         _check_permissions_delete, _check_permissions_modify, _check_permissions_read, _check_scope_base,
-        _check_scope_subtree, _get_attrs_from_permissions, _get_cap_priority, _get_capabilities,
+        _check_scope_subtree, _get_attrs_from_permissions, _get_cap_priority, _get_caps,
         _get_readable_attrs_from_permissions, _get_writable_attrs_from_permissions, _obj2dn, _obj2module, _obj2position,
     )
 except ImportError:
@@ -127,8 +128,8 @@ class TestUDMPermission:
     ])
     @patch("univention.admin.authorization.ldap_base", "dc=example,dc=com")
     @patch("univention.admin.authorization.ROLES", {"test_role": [{"condition": {"position": "*"}}], "test_role2": [{"condition": {"position": "$CONTEXT"}}], "test_role3": [{"condition": {"position": "cn=group"}}]})
-    def test_get_capabilities(self, actor_roles, expected):
-        assert _get_capabilities(actor_roles) == expected
+    def test_get_caps(self, actor_roles, expected):
+        assert _get_caps(actor_roles) == expected
 
     @pytest.mark.parametrize("target_position, condition, expected", [
         ("cn=users,dc=example,dc=com", {"condition": {"position": "*"}}, 3),
@@ -178,7 +179,7 @@ class TestUDMPermission:
             ],
         }
         with patch("univention.admin.authorization.ROLES", test):
-            caps = _get_capabilities({"test_role": []})
+            caps = _get_caps({"test_role": []})
             caps.sort(key=_get_cap_priority(target_position))
             assert [cap["condition"]["position"] for cap in caps] == ["cn=users,cn=outest,dc=example,dc=com", "cn=outest,dc=example,dc=com"]
 
@@ -420,13 +421,13 @@ class TestUDMPermission:
     @patch("univention.admin.authorization.ldap_base", "dc=test")
     @patch("univention.admin.authorization.ROLES", get_default_roles())
     def test_check_permissions_modify_default_roles(self):
-        caps = _get_capabilities({'domainadmin': []})
+        caps = _get_caps({'domainadmin': []})
         assert caps
         assert _check_permissions_modify(mock_obj({'position': 'ou=hans', 'module_name': 'users/user', 'diff': []}), caps)
         assert _check_permissions_modify(mock_obj({'position': 'ou=hans', 'module_name': 'users/user', 'diff': []}), caps)
         assert _check_permissions_modify(mock_obj({'position': 'xyz', 'module_name': 'users/user', 'diff': []}), caps)
         assert _check_permissions_modify(mock_obj({'position': 'dc=bla', 'module_name': 'whatever', 'diff': []}), caps)
-        caps = _get_capabilities({'ouadmin': ['ou=ou1', 'ou=ou2']})
+        caps = _get_caps({'ouadmin': ['ou=ou1', 'ou=ou2']})
         assert _check_permissions_modify(mock_obj({'position': 'ou=ou1,dc=test', 'module_name': 'users/user', 'diff': []}), caps)
         assert not _check_permissions_modify(mock_obj({'position': 'xyz', 'module_name': 'users/user', 'diff': []}), caps)
         assert _check_permissions_modify(mock_obj({'position': 'ou=ou2,dc=test', 'module_name': 'users/user', 'diff': []}), caps)
@@ -437,12 +438,12 @@ class TestUDMPermission:
     @patch("univention.admin.authorization.ldap_base", "dc=test")
     @patch("univention.admin.authorization.ROLES", get_default_roles())
     def test_check_permissions_create_default_roles(self):
-        caps = _get_capabilities({'domainadmin': []})
+        caps = _get_caps({'domainadmin': []})
         assert caps
         assert _check_permissions_create({'position': 'ou=hans', 'module_name': 'users/user'}, caps)
         assert _check_permissions_create({'position': 'xyz', 'module_name': 'users/user'}, caps)
         assert _check_permissions_create({'position': 'dc=bla', 'module_name': 'whatever'}, caps)
-        caps = _get_capabilities({'ouadmin': ['ou=ou1', 'ou=ou2']})
+        caps = _get_caps({'ouadmin': ['ou=ou1', 'ou=ou2']})
         assert caps
         assert not _check_permissions_create({'position': 'cn=users,dc=test', 'module_name': 'users/user'}, caps)
         assert _check_permissions_create({'position': 'ou=ou1,dc=test', 'module_name': 'users/user'}, caps)
@@ -577,11 +578,11 @@ class TestUDMPermission:
             f"uid=user10-ou10,cn=users,ou=ou10,{ldap_base}",
             f"uid=test1,cn=users,{ldap_base}",
         ]
-        caps = _get_capabilities({'domainadmin': []})
+        caps = _get_caps({'domainadmin': []})
         assert caps
         assert set(_check_permissions_read(objs, caps)) == set(objs)
 
-        caps = _get_capabilities({'ouadmin': ['ou=ou1']})
+        caps = _get_caps({'ouadmin': ['ou=ou1']})
         assert caps
         assert set(_check_permissions_read(objs, caps)) == {obj for obj in objs if "cn=users,ou=ou1," in obj}
         print(_check_permissions_read(objs, caps))
