@@ -73,6 +73,21 @@
     },
     {
       "condition": {
+        "position": "",
+        "scope": "base"
+      },
+      "permissions": {
+        "container/cn": {
+          "attributes": {
+            "*": {
+              "access": "read"
+            }
+          }
+        }
+      }
+    },
+    {
+      "condition": {
         "position": "*",
         "scope": "base"
       },
@@ -92,6 +107,20 @@
           }
         },
         "policies/umc": {
+          "attributes": {
+            "*": {
+              "access": "read"
+            }
+          }
+        },
+        "settings/cn": {
+          "attributes": {
+            "*": {
+              "access": "read"
+            }
+          }
+        },
+        "settings/directory": {
           "attributes": {
             "*": {
               "access": "read"
