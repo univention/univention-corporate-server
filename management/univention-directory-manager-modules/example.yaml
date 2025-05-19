@@ -1,0 +1,32 @@
+capabilities:
+  users-user-ou-write:
+   displayname: "Organizational Unit Admins can administrate all users/user objects in their OU"
+   conditions:
+     AND:
+      udm:conditions:target_object_type_equals:
+        objectType: "users/user"
+      udm:conditions:target_position_in:
+        scope: "subtree"
+        position: "$CONTEXT"
+   grants-permissions:
+    - "read-property-*"
+    - "write-property-*"
+    - "none-property-password"
+    - "none-property-serviceSpecificPassword"
+  groups-group-ou-write:
+   displayname: "Organizational Unit Admins can administrate all users/user objects in their OU"
+   conditions:
+     AND:
+      udm:conditions:target_object_type_equals:
+       objectType: "groups/group"
+      udm:conditions:target_position_in:
+        scope: "subtree"
+        position: "$CONTEXT"
+   grants-permissions:
+    - "read-property-*"
+    - "write-property-*"
+
+role-capability-mapping:
+  udm:default-roles:organizational-unit-admin:
+   - users-user-ou-write
+   - groups-group-ou-write
