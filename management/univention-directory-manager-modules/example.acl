@@ -1,0 +1,36 @@
+named-condition "same-ou"
+  condition="udm:conditions:target_position_from_context"
+  parameters context="udm:contexts:ou" scope="subtree"
+
+named-condition "in-global-users-container"  # unused example
+  condition="udm:conditions:target_position_in"
+  parameters position="cn=users" scope="subtree"
+
+named-condition "is-self"
+  condition="guardian:builtin:target_is_self"
+
+access by role="udm:default-roles:organizational-unit-administrator" context="udm:contexts:ou"
+  description="Organizational Unit Admins can administrate users and groups objects in their OU"
+
+  # user permissions on OU
+  to objecttype="users/user" actions="search,read,create,modify,rename,remove,move" if="same-ou"
+  to objecttype="users/user" properties="username,lastname,firstname,…" if="same-ou" grant-access=write
+  to objecttype="users/user" properties="password,serviceSpecificPassword" if="same-ou" grant-access=writeonly
+  to objecttype="users/user" properties="guardianRoles" if="same-ou" grant-access=none
+  to objecttype="users/user" properties="*" if="same-ou" grant-access=write
+
+  # group permissions in OU
+  to objecttype="groups/group" actions="search,read,create,modify,rename,remove,move" if="same-ou"
+  to objecttype="groups/group" properties="name,…" if="same-ou" grant-access=write
+  to objecttype="groups/group" properties="password,serviceSpecificPassword" if="same-ou" grant-access=writeonly
+  to objecttype="groups/group" properties="guardianMemberRoles" if="same-ou" grant-access=none
+  to objecttype="groups/group" properties="guardianMemberRoles" if="same-ou" values=["udm:default-roles:domain-users", …] grant-access=write
+  to objecttype="groups/group" properties="*" if="same-ou" grant-access=write
+
+access by role="udm:default-roles:domain-administrator"
+  to objecttype="*" actions="*" properties="*" grant-access="write"
+
+access
+  by role="udm:default-roles:domain-users"
+  by role="udm:default-roles:self-service-profile"
+  to objecttype="*" actions="modify" properties="jpegPhoto,e-mail,phone,roomnumber,departmentNumber,country,homeTelephoneNumber,mobileTelephoneNumber,homePostalAddress" if="is-self" grant-access="write"
