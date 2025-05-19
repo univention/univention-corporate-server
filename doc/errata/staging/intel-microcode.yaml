@@ -1,0 +1,23 @@
+product: ucs
+release: "5.0"
+version: [9, 10]
+scope: ucs_5.0-0-errata5.0-10
+src: intel-microcode
+fix: 3.20250512.1~deb10u1
+desc: |
+ This update addresses the following issues:
+ * CVSS score 6.5 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:N/I:N/A:H).
+   (CVE-2025-20103, CVE-2025-20054)
+ * CVSS score 5.6 (CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:H/I:N/A:N).
+   (CVE-2025-24495, CVE-2025-20623, CVE-2025-20012, CVE-2024-45332,
+   CVE-2024-43420, CVE-2024-28956)
+bug: [58302]
+cve:
+- CVE-2024-28956
+- CVE-2025-20103
+- CVE-2025-20054
+- CVE-2024-43420
+- CVE-2025-20623
+- CVE-2024-45332
+- CVE-2025-24495
+- CVE-2025-20012
