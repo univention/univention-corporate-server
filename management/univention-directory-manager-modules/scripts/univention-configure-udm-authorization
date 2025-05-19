@@ -90,7 +90,7 @@ class UniventionDirectoryManagerRoles:
 
         args = parser.parse_args(args)
 
-        args.username = ldap.dn.str2dn(args.binddn)[0][0][0]
+        args.username = ldap.dn.str2dn(args.binddn)[0][0][1]
         args.password = None
         if args.bindpwdfile:
             with open(args.bindpwdfile) as fd:
