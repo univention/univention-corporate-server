@@ -623,7 +623,7 @@ Description: Test scripts to test the SAML integration
 Package: ucs-test-radius
 Architecture: all
 Depends:
- eapol,
+ eapoltest,
  python3-pyrad,
  ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
