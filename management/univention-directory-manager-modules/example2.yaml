@@ -1,0 +1,109 @@
+conditions:  # named reusable conditions
+  users-user-objects:
+   udm:conditions:target_object_type_equals:
+     objectType: "users/user"
+  groups-group-objects:
+   udm:conditions:target_object_type_equals:
+     objectType: "groups/group"
+  object-access-underneath-own-ou:
+    udm:conditions:target_position_from_context:
+      scope: "subtree"
+      context: "udm:contexts:ou"
+  target-is-self:
+    guardian:builtin:target-is-actor:
+
+permission-sets:  # named permission bundles (can be emulated or actually implemented in Guardian)
+  # FYI: YAML allows references itself, which we can additionally use of permission sets wants to reference the contents of other permission sets
+  allow-sensitive-users-user-write:
+    - "udm:users/user:read-property-*"
+    - "udm:users/user:write-property-*"
+    - "udm:users/user:none-property-password"
+    - "udm:users/user:none-property-serviceSpecificPassword"
+  allow-sensitive-groups-group-write:
+    - "udm:groups/group:read-property-*"
+    - "udm:groups/group:write-property-*"
+    # TODO: restrict on sensitive defaults
+  allow-all-read:
+    - "udm:users/user:read-property-*"  # my lazyness to not list all permissions here
+    - "udm:groups/group:read-property-*"  # my lazyness to not list all permissions here
+    - …  # further lazyness for the object types
+  allow-all-write:
+    - "udm:users/user:read-property-*"
+    - "udm:users/user:write-property-*"
+    - "udm:groups/group:read-property-*"
+    - "udm:groups/group:write-property-*"
+    - …  # further lazyness for the object types
+
+capabilities:  # raw capabilities suitable for re-use/reference, suitable as API for customers
+  udm:generic:  # namespace
+    users-user-ou-write:
+     displayname: "Organizational Unit Admins can administrate all users/user objects in their OU"
+     grants-permissions:
+       - allow-sensitive-users-user-write
+     conditions:
+       AND:
+         - users-user-objects
+         - object-access-underneath-own-ou
+
+    groups-group-ou-write:
+     displayname: "Organizational Unit Admins can administrate all groups/group objects in their OU"
+     grants-permissions:
+       - allow-sensitive-groups-group-write
+     conditions:
+       AND:
+         - groups-group-objects
+         - object-access-underneath-own-ou
+
+    allow-everything:
+      displayname: "Allow everyting! Use carefully, only for domain admins!"
+      grants-permissions:
+        - allow-all-write
+
+    allow-self-service-profile-write:
+      displayname: ""
+      grants-permissions:
+        - allow-sensitive-users-user-write
+      conditions:
+        AND:
+          - target-is-self
+
+capability-bundles:  # re-useable capability bundles realizing one use case
+  udm:generic:  # namespace
+    organizational-unit-administration:
+      - udm:generic:users-user-ou-write
+      - udm:generic:groups-group-ou-write
+    domain-administration:
+      - udm:generic:allow-everything
+    domain-user:
+      - udm:generic:yet-to-be-defined-allow-something
+    self-service-profile-administration:
+      - udm:generic:allow-self-service-profile-write
+
+role-capability-mapping:
+  udm:default-roles:  # namespace
+    domain-users:
+      displayname: ""
+      capability-bundles:
+        - udm:generic:domain-user
+    domain-administrator:
+      displayname: ""
+      capability-bundles:
+        - udm:generic:domain-administration
+    self-service-profile:
+      displayname: ""
+      capability-bundles:
+        - udm:generic:self-service-profile-administration
+    organizational-unit-admin:
+      displayname: ""
+      capability-bundles:
+        - udm:generic:organizational-unit-administration
+      capabilities: []  # no further ones
+    helpdesk-operator:
+      displayname: ""
+      capability-bundles: []  # TODO
+      capabilities: []  # TODO
+    linux-client-join:
+      displayname: ""
+      capability-bundles: []  # TODO
+      capabilities: []  # TODO
+      permissions: []  # TODO: idea to allow permissions without a capability (auto-create capability), as it doesn't require any condition
