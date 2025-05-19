@@ -1,0 +1,16 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libraw
+fix: 0.17.2-6+deb9u6
+desc: |
+ This update addresses the following issues:
+ * CVSS score 2.9 (CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2025-43964, CVE-2025-43963, CVE-2025-43962, CVE-2025-43961)
+bug: [58305]
+cve:
+- CVE-2025-43961
+- CVE-2025-43962
+- CVE-2025-43963
+- CVE-2025-43964
