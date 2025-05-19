@@ -19,10 +19,12 @@ import pytest
 from univention.testing.strings import random_username
 
 
-current_date = datetime.now().strftime("%Y%m%d")
+def calc_backup_paths():
+    current_date = datetime.now().strftime("%Y%m%d")
 
-ldap_backup_path = Path(f"/var/univention-backup/ldap-backup_{current_date}.ldif.gz")
-ldap_backup_log_path = Path(f"/var/univention-backup/ldap-backup_{current_date}.log.gz")
+    ldap_backup_path = Path(f"/var/univention-backup/ldap-backup_{current_date}.ldif.gz")
+    ldap_backup_log_path = Path(f"/var/univention-backup/ldap-backup_{current_date}.log.gz")
+    return [ldap_backup_path, ldap_backup_log_path]
 
 
 @pytest.fixture()
@@ -30,8 +32,10 @@ def cleanup():
     """Remove backup files"""
     yield
     print("** Cleaning up")
-    os.remove(ldap_backup_path)
-    os.remove(ldap_backup_log_path)
+    for dirpath, dirs, filenames in os.walk('/var/univention-backup/'):
+        for f in filenames:
+            if f.startswith('ldap-backup'):
+                os.remove(os.path.join(dirpath, f))
 
 
 def create_owner(udm):
@@ -64,31 +68,31 @@ def create_backup():
     return subprocess.call(["/usr/sbin/univention-ldap-backup"])
 
 
-def check_backup_exists():
+def check_backup_exists(ldap_backup_paths):
     """Check the backup files exist"""
     print("** Checking that the backup exists")
-    assert exists(ldap_backup_path)
-    assert exists(ldap_backup_log_path)
+    assert exists(ldap_backup_paths[0])
+    assert exists(ldap_backup_paths[1])
 
 
-def check_ldap_backup_owner(owner="root"):
+def check_ldap_backup_owner(ldap_backup_paths, owner="root"):
     """Check backup file owner is the expected"""
     print(f"** Checking expected owner ({owner})")
-    assert owner == ldap_backup_path.owner()
-    assert owner == ldap_backup_log_path.owner()
+    assert owner == ldap_backup_paths[0].owner()
+    assert owner == ldap_backup_paths[1].owner()
 
 
-def check_ldap_backup_group(group="root"):
+def check_ldap_backup_group(ldap_backup_paths, group="root"):
     """Check backup file group is the expected"""
     print(f"** Checking expected group ({group})")
-    assert group == ldap_backup_path.group()
-    assert group == ldap_backup_log_path.group()
+    assert group == ldap_backup_paths[0].group()
+    assert group == ldap_backup_paths[1].group()
 
 
-def check_ldap_backup_permissions(permissions=0o600):
+def check_ldap_backup_permissions(ldap_backup_paths, permissions=0o600):
     """Check backup file permissions are the expected"""
     print(f"** Checking expected permissions ({permissions})")
-    for path in [ldap_backup_path, ldap_backup_log_path]:
+    for path in ldap_backup_paths:
         stat = os.stat(path)
         assert S_IMODE(stat.st_mode) == permissions
 
@@ -107,10 +111,11 @@ def test_run_default_backup(udm, ucr, cleanup):
     permissions = 0o600
     print(f"** Creating default backup with {owner}:{group} {permissions:04o}")
     exit_code = create_backup()
-    check_backup_exists()
-    check_ldap_backup_owner(owner)
-    check_ldap_backup_group(group)
-    check_ldap_backup_permissions(permissions)
+    backup_paths = calc_backup_paths()
+    check_backup_exists(backup_paths)
+    check_ldap_backup_owner(backup_paths, owner)
+    check_ldap_backup_group(backup_paths, group)
+    check_ldap_backup_permissions(backup_paths, permissions)
     assert exit_code == 0
 
 
@@ -138,15 +143,16 @@ def test_run_custom_backup(owner, group, permissions, udm, ucr, cleanup):
     ])
     print(f"** Creating custom backup with {owner}:{group} {permissions:04o}")
     exit_code = create_backup()
-    check_backup_exists()
+    backup_paths = calc_backup_paths()
+    check_backup_exists(backup_paths)
     if are_valid_permissions(permissions):
-        check_ldap_backup_permissions(permissions)
-        check_ldap_backup_owner(owner)
-        check_ldap_backup_group(group)
+        check_ldap_backup_permissions(backup_paths, permissions)
+        check_ldap_backup_owner(backup_paths, owner)
+        check_ldap_backup_group(backup_paths, group)
     else:
-        check_ldap_backup_permissions()
-        check_ldap_backup_owner("root")
-        check_ldap_backup_group("root")
+        check_ldap_backup_permissions(backup_paths)
+        check_ldap_backup_owner(backup_paths, "root")
+        check_ldap_backup_group(backup_paths, "root")
     assert exit_code == 0
 
 
@@ -176,8 +182,9 @@ def test_non_existing_owner_group(owner, group, permissions, udm, ucr, cleanup):
         f"slapd/backup/permissions={permissions:o}",
     ])
     exit_code = create_backup()
-    check_backup_exists()
-    check_ldap_backup_owner("root")
-    check_ldap_backup_group("root")
-    check_ldap_backup_permissions(0o600)
+    backup_paths = calc_backup_paths()
+    check_backup_exists(backup_paths)
+    check_ldap_backup_owner(backup_paths, "root")
+    check_ldap_backup_group(backup_paths, "root")
+    check_ldap_backup_permissions(backup_paths, 0o600)
     assert exit_code == 0
