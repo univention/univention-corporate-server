@@ -496,6 +496,24 @@ So it is not possible to create a capability which grants permissions for more t
 
 The problem realizing this, is that the Guardian Authorization Engine cannot just search for all capabilities in a certain namespace anymore but must inspect all capabilities, which include permissions of a given namespace.
 
+## Unnecessary namespaces for roles and contexts
+While namespacing makes sense for `apps`, `capabilities` and `permissions` they don't make sense for `roles` and `context` as arbitrary things can be attached to it.
+Each namespace makes the string longer and prevents them from combining different apps or namespaces.
+
+E.g. one has to deal with several issues:
+
+* in which namespaces should roles be put? We chose `udm:default-roles:` and `umc:default-roles`.
+* in which namespace should contexts be put? We chose `udm:contexts:`
+* how to design role vs capability assignment? Should one have `udm:default-roles:domain-administrator` and `umc:default-roles:domain-administrator` and attach it to the `Domain Admins` group. Or should there be a `ucs:default-roles:domain-administrator` where all the required capabilities are assigned to?
+
+Best fit IMHO:
+
+* For admininstrators it's easier to add few roles to users and groups and assign the capabilities to these roles instead of assigning a dozen of roles
+* Example roles: `domain-administrator`, `organizational-unit-administrator&position=ou=bremen,dc=example,dc=org`
+* Example capabilities: `udm:bundles:administrate-ou`, `udm:bundles:administrator-everything`
+
+**Change request:** Remove the namespaces for `roles`, `capabilities` and `contexts`. They should be a free choseable label/token.
+
 ### No dynamic contexts allowed
 While we would benefit from dynamic permissions, because UDM properties and modules can be added dynamically, having such functionality is crucial for `Contexts`.
 If we want to use the `context` Guardian concept we want to extend permissions so operations are e.g. restricted to targets underneath of a certain OU.
