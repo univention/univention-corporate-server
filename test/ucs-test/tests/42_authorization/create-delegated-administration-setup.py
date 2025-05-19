@@ -108,6 +108,7 @@ for i in range(1, number_of_ous + 1):
         user.props.username = name
         user.props.lastname = name
         user.props.password = 'univention'
+        user.props.guardianRoles = ['umc:udm:dummyrole']
         try:
             user.save()
             print(f'create user {name} in {position}')
