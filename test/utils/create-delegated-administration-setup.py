@@ -31,7 +31,7 @@ policies = udm.get('policies/umc')
 # enable umc udm for ouadmins (Domain Users)
 policy = policies.new()
 policy.position = f'cn=UMC,cn=policies,{ldap_base}'
-policy.name = 'organizational-unit-amdins'
+policy.props.name = 'organizational-unit-amdins'
 policy.props.allow.extend([
     # f'cn=udm-groups,cn=operations,cn=UMC,cn=univention,{ldap_base}',
     # f'cn=udm-users,cn=operations,cn=UMC,cn=univention,{ldap_base}',
