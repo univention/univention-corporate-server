@@ -250,6 +250,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         except LicenseError:
             lo.allow_modify = False
         lo.requireLicense()
+        lo.authz_connection.requireLicense()
 
     def get_ldap_connection(self):
         try:

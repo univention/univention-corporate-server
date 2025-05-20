@@ -46,8 +46,8 @@ def get_user_ldap_read_connection(auth_type, binddn, bindpw):
 
 
 def get_machine_ldap_connection(type_):
-    binddn = ucr.get(f'directory/manager/rest/ldap-connection/{type_}/binddn', ucr['ldap/hostdn'])
-    with open(ucr.get(f'directory/manager/rest/ldap-connection/{type_}/password-file', '/etc/machine.secret')) as fd:
+    binddn = ucr.get(f'directory/manager/rest/ldap-connection/{type_}/binddn', ucr['ldap/hostdn'] if type_.startswith('machine-') else f'cn=admin,{ucr["ldap/base"]}')
+    with open(ucr.get(f'directory/manager/rest/ldap-connection/{type_}/password-file', '/etc/machine.secret' if type_.startswith('machine-') else '/etc/ldap.secret')) as fd:
         password = fd.read().strip()
     return get_ldap_connection(type_, None, binddn, password)
 
@@ -58,6 +58,14 @@ def get_machine_ldap_write_connection():
 
 def get_machine_ldap_read_connection():
     return get_machine_ldap_connection('machine-read')
+
+
+def get_admin_ldap_write_connection():
+    return get_machine_ldap_connection('admin-write')
+
+
+def get_admin_ldap_read_connection():
+    return get_machine_ldap_connection('admin-read')
 
 
 def get_ldap_connection(type_, auth_type, binddn, bindpw):

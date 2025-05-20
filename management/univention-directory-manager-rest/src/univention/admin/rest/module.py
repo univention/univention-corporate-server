@@ -68,6 +68,7 @@ from tornado.concurrent import run_on_executor
 from tornado.web import Finish, HTTPError, RequestHandler
 
 import univention
+import univention.admin.authorization as udm_auth
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import univention.admin.types as udm_types
@@ -77,7 +78,8 @@ from univention.admin.rest.hal import HAL
 from univention.admin.rest.html_ui import HTML
 from univention.admin.rest.http_conditional import ConditionalResource, last_modified
 from univention.admin.rest.ldap_connection import (
-    get_machine_ldap_read_connection, get_user_ldap_read_connection, get_user_ldap_write_connection, reset_cache,
+    get_admin_ldap_write_connection, get_machine_ldap_read_connection, get_user_ldap_read_connection,
+    get_user_ldap_write_connection, reset_cache,
 )
 from univention.admin.rest.openapi import OpenAPIBase, RelationsBase, _OpenAPIBase
 from univention.admin.rest.sanitizer import (
@@ -199,6 +201,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
             if already_authenticated and not self.ldap_connection.whoami():  # the ldap connection is not bound anymore
                 reset_cache(self.ldap_connection)
                 self.ldap_connection, self.ldap_position = get_user_ldap_read_connection(auth_type, userdn, password)
+            self.ldap_connection = udm_auth.Authorization.inject_ldap_connection(self.ldap_connection)
             if auth_type == 'Bearer':
                 userdn = self.ldap_connection.whoami()
                 username = '+'.join(explode_rdn(userdn, True))
@@ -220,13 +223,15 @@ class ResourceBase(SanitizerBase, HAL, HTML):
     @property
     def ldap_write_connection(self):
         auth_type, _username, userdn, password = shared_memory.authenticated[self.request.headers.get('Authorization')]
-        return get_user_ldap_write_connection(auth_type, userdn, password)[0]
+        conn = get_user_ldap_write_connection(auth_type, userdn, password)[0]
+        conn = udm_auth.Authorization.inject_ldap_connection(conn)
+        return conn
 
     def _auth_check_allowed_groups(self):
         if self.request.username in ('cn=admin',):
             return
         allowed_groups = [value for key, value in ucr.items() if key.startswith('directory/manager/rest/authorized-groups/')]
-        memberof = self.ldap_connection.getAttr(self.request.user_dn, 'memberOf')
+        memberof = self.ldap_connection.authz_connection.getAttr(self.request.user_dn, 'memberOf')
         if not set(_map_normalized_dn(memberof)) & set(_map_normalized_dn(allowed_groups)):
             raise HTTPError(403, 'Not in allowed groups.')
 
@@ -822,7 +827,7 @@ class ObjectLink(Resource):
 
     def get(self, dn):
         dn = unquote_dn(dn)
-        attrs = self.ldap_connection.get(dn)
+        attrs = self.ldap_connection.authz_connection.get(dn)  # TODO: restrict visibility
         modules = udm_modules.objectType(None, self.ldap_connection, dn, attrs) or []
         if not modules:
             raise NotFound(None, dn)
@@ -847,7 +852,7 @@ class ObjectByUiid(ObjectLink):
 
     def get(self, uuid):
         try:
-            dn = self.ldap_connection.searchDn(filter_format('entryUUID=%s', [uuid]))[0]
+            dn = self.ldap_connection.authz_connection.searchDn(filter_format('entryUUID=%s', [uuid]))[0]  # TODO: restrict visibility
         except IndexError:
             raise NotFound()
         return super().get(dn)
@@ -1747,7 +1752,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
             module, obj = await self.pool_submit(self.get_module_object, object_type, dn)
         except NotFound:
             # FIXME: return HTTP 410 Gone for removed objects
-            # if self.ldap_connection.searchDn(filter_format('(&(reqDN=%s)(reqType=d))', [dn]), base='cn=translog'):
+            # if self.ldap_connection.authz_connection.searchDn(filter_format('(&(reqDN=%s)(reqType=d))', [dn]), base='cn=translog'):
             #     raise Gone(object_type, dn)
             raise
         if object_type not in ('users/self', 'users/passwd') and not univention.admin.modules.recognize(object_type, obj.dn, obj.oldattr):
@@ -2380,7 +2385,7 @@ class UserPhoto(ConditionalResource, Resource):
             raise NotFound(object_type, dn)
 
         data = base64.b64decode(obj.info.get('jpegPhoto', '').encode('ASCII'))
-        modified = self.modified_from_timestamp(self.ldap_connection.getAttr(obj.dn, 'modifyTimestamp')[0].decode('utf-8'))
+        modified = self.modified_from_timestamp(self.ldap_connection.authz_connection.getAttr(obj.dn, 'modifyTimestamp')[0].decode('utf-8'))  # TODO: restrict visibility
         if modified:
             self.add_header('Last-Modified', last_modified(modified))
         self.set_header('Content-Type', 'image/jpeg')
@@ -3081,7 +3086,7 @@ univentionObjectType: settings/license
             # check license and write it to LDAP
             importer = LicenseImporter(fd)
             importer.check(ucr.get('ldap/base', ''))
-            importer.write(self.ldap_write_connection)
+            importer.write(self.ldap_write_connection.authz_connection)  # TODO: restrict visibility
         except ldap.LDAPError as exc:
             # LDAPError e.g. LDIF contained non existing attributes
             raise HTTPError(400, _('Importing the license failed: LDAP error: %s.') % exc.args[0].get('info'))
@@ -3132,6 +3137,9 @@ class Application(tornado.web.Application):
         object_type = '([A-Za-z0-9_-]+/[A-Za-z0-9_-]+)'
         policies_object_type = '(policies/[A-Za-z0-9_-]+)'
         dn = '((?:[^/]+%s.+%s)?(?:%s|%s))' % (self.multi_regex('='), self.multi_regex(','), self.multi_regex(ucr['ldap/base']), self.multi_regex('cn=internal'))
+
+        if ucr.is_true('directory/manager/rest/enable-delegative-administration'):
+            udm_auth.Authorization.enable(lambda: get_admin_ldap_write_connection()[0])
 
         # FIXME: with that dn regex, it is not possible to have urls like (/udm/$dn/foo/$dn/) because ldap-base at the end matches the last dn
         # Note: the ldap base is part of the url to support "/" as part of the DN. otherwise we can use: '([^/]+(?:=|%3d|%3D)[^/]+)'
