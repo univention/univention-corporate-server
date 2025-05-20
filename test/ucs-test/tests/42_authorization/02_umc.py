@@ -39,7 +39,7 @@ def test_ouadmin_default_containers(ou, ldap_base):
     res = client.umc_command('udm/containers', {"objectType": "users/user"}, 'users/user').result
     assert {x['id'] for x in res} == {ou.user_default_container}
     res = client.umc_command('udm/containers', {"objectType": "groups/group"}, 'groups/group').result
-    assert {x['id'] for x in res} == {ou.group_default_container, f'cn=groups,{ldap_base}'}
+    assert {x['id'] for x in res} == {ou.group_default_container}
 
 
 @check_delegation
