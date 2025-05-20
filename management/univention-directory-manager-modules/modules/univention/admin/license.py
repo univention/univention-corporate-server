@@ -169,7 +169,7 @@ class License:
 
     def _load_license_via_python(self, module, lo):
         # Try to set the version even if the license load was not successful
-        self.searchResult = lo.search(filter=filter_format('(&(objectClass=univentionLicense)(univentionLicenseModule=%s))', [module]))
+        self.searchResult = lo.authz_connection.search(filter=filter_format('(&(objectClass=univentionLicense)(univentionLicenseModule=%s))', [module]))
         if self.searchResult:
             self.version = self.searchResult[0][1].get('univentionLicenseVersion', [b'1'])[0].decode('ASCII')
 
@@ -376,7 +376,7 @@ class License:
             univention.admin.filter.conjunction('|', userfilter),
             self.filters[version][License.USERS]])
         try:
-            self.sysAccountsFound = len(lo.searchDn(filter=str(filter)))
+            self.sysAccountsFound = len(lo.authz_connection.searchDn(filter=str(filter)))
         except univention.admin.uexceptions.noObject:
             pass
         log.debug('LICENSE: Univention sysAccountsFound: %d', self.sysAccountsFound)
@@ -386,7 +386,7 @@ class License:
         if version not in self.licenses:
             version = '2'
         if self.licenses[version][obj] and self.licenses[version][obj] != "unlimited":
-            result = lo.searchDn(filter=self.filters[version][obj])
+            result = lo.authz_connection.searchDn(filter=self.filters[version][obj])
             if result is None:
                 self.real[version][obj] = 0
             else:

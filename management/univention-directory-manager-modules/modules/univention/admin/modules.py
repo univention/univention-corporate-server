@@ -257,7 +257,7 @@ def update_extended_options(lo: univention.admin.uldap.access, module: UdmModule
 
     # append UDM extended options
     new_options = copy.copy(module.options) if hasattr(module, 'options') else {}
-    for _dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMOption)%s)' % (module_filter,)):
+    for _dn, attrs in lo.authz_connection.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMOption)%s)' % (module_filter,)):
         oname = attrs['cn'][0].decode('UTF-8', 'replace')
         shortdesc = _get_translation(lang, attrs, 'univentionUDMOptionTranslationShortDescription;entry-%s', 'univentionUDMOptionShortDescription')
         longdesc = _get_translation(lang, attrs, 'univentionUDMOptionTranslationLongDescription;entry-%s', 'univentionUDMOptionLongDescription')
@@ -353,7 +353,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
         module_filter = '(|(univentionUDMPropertyModule=users/user)%s)' % (module_filter,)
 
     new_property_descriptions = copy.copy(module.property_descriptions)
-    for _dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,)):
+    for _dn, attrs in lo.authz_connection.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,)):
         # get CLI name
         pname = attrs['univentionUDMPropertyCLIName'][0].decode('UTF-8', 'replace')
         object_class = attrs.get('univentionUDMPropertyObjectClass', [])[0].decode('UTF-8', 'replace')
@@ -366,7 +366,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
         if propertySyntaxString and hasattr(univention.admin.syntax, propertySyntaxString):
             propertySyntax = getattr(univention.admin.syntax, propertySyntaxString)
         else:
-            if lo.searchDn(filter=filter_format(univention.admin.syntax.LDAP_Search.FILTER_PATTERN, [propertySyntaxString])):
+            if lo.authz_connection.searchDn(filter=filter_format(univention.admin.syntax.LDAP_Search.FILTER_PATTERN, [propertySyntaxString])):
                 propertySyntax = univention.admin.syntax.LDAP_Search(propertySyntaxString)
             else:
                 propertySyntax = univention.admin.syntax.string()
@@ -743,7 +743,7 @@ def find_superordinate(dn: str, co: None, lo: univention.admin.uldap.access) -> 
     """
     # walk up the ldap path and stop if we find an object type that is a superordinate
     while dn:
-        attr = lo.get(dn)
+        attr = lo.authz_connection.get(dn)  # TODO: restrict visibility
         module = identifyOne(dn, attr)
         if module and isSuperordinate(module):
             return get(module)
@@ -967,7 +967,7 @@ def objectType(co: None, lo: univention.admin.uldap.access, dn: str, attr: _Attr
     if not dn:
         return []
     if attr is None:
-        attr = lo.get(dn)
+        attr = lo.authz_connection.get(dn)  # TODO: restrict visibility
         if not attr:
             return []
     ot = attr.get('univentionObjectType')
@@ -990,7 +990,7 @@ def objectShadowType(co: None, lo: univention.admin.uldap.access, dn: str, attr:
 
 def findObject(co: None, lo: univention.admin.uldap.access, dn: str, type: UdmModule, attr: _Attributes | None = None, module_base: str | None = None) -> Any | None:
     if attr is None:
-        attr = lo.get(dn)
+        attr = lo.authz_connection.get(dn)  # TODO: restrict visibility
         if not attr:
             return None
     ndn = dn
@@ -1004,7 +1004,7 @@ def findObject(co: None, lo: univention.admin.uldap.access, dn: str, type: UdmMo
         ndn = lo.parentDn(ndn)
         if not ndn:
             break
-        nattr = lo.get(ndn)
+        nattr = lo.authz_connection.get(ndn)  # TODO: restrict visibility
     return None
 
 

@@ -2805,7 +2805,8 @@ class emailAddressValidDomain(UDM_Objects, emailAddress):
                 domain = mailaddress.rsplit('@', 1)[-1]
                 if domain not in domainCache:
                     ldapfilter = ldap.filter.filter_format('(&(objectClass=univentionMailDomainname)(cn=%s))', [domain])
-                    result = lo.searchDn(filter=ldapfilter)
+                    result = lo.authz_connection.searchDn(filter=ldapfilter)
+                    # TODO: information disclosure?
                     domainCache[domain] = bool(result)
                     log.debug('admin.syntax.%s: address=%r   domain=%r   result=%r', self.name, mailaddress, domain, result)
                 if not domainCache[domain]:
@@ -3645,7 +3646,8 @@ class ldapDn(simple):
             return simple.get_choices(lo, options)
 
         try:
-            result = lo.searchDn(filter=cls.searchFilter)
+            result = lo.authz_connection.searchDn(filter=cls.searchFilter)
+            # FIXME: information disclosure
         except univention.admin.uexceptions.base:
             log.info('Failed to initialize syntax class %s', cls.name)
             return []
@@ -5990,7 +5992,7 @@ class LDAP_Search(select):
         # get values from UDM settings/syntax
         try:
             filter = filter_format(LDAP_Search.FILTER_PATTERN, [self.syntax])
-            dn, attrs = lo.search(filter=filter)[0]
+            dn, attrs = lo.authz_connection.search(filter=filter)[0]
         except Exception:
             return
 
@@ -6032,7 +6034,8 @@ class LDAP_Search(select):
 
         filter_s = cls.filter
         if 'dn' in options:
-            filter_mod = univention.admin.modules.identifyOne(options['dn'], lo.get(options['dn']))
+            # FIXME: information disclosure
+            filter_mod = univention.admin.modules.identifyOne(options['dn'], lo.authz_connection.get(options['dn']))
             if filter_mod:
                 obj = univention.admin.objects.get(filter_mod, None, lo, None, options['dn'])
                 eobj = _EscapedDict(obj)
@@ -6042,7 +6045,8 @@ class LDAP_Search(select):
         choices = []
         results = []
 
-        for dn in lo.searchDn(filter=filter_s, base=cls.base):
+        # FIXME: information disclosure
+        for dn in lo.authz_connection.searchDn(filter=filter_s, base=cls.base):
             # cls.attributes: pass on all display attributes so the frontend has a chance to supoport it some day
             if cls.viewonly:
                 display_attr = cls.attributes

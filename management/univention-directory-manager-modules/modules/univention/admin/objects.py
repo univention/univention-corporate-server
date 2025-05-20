@@ -44,7 +44,7 @@ def get_superordinate(module, co, lo, dn):
     super_modules = set(univention.admin.modules.superordinate_names(module))
     if super_modules:
         while dn:
-            attr = lo.get(dn)
+            attr = lo.authz_connection.get(dn)  # TODO: restrict visibility
             modules = {univention.admin.modules.name(x) for x in univention.admin.modules.identify(dn, attr)} & super_modules
             if modules:
                 super_module = univention.admin.modules._get(list(modules)[0])  # noqa: RUF015
@@ -78,7 +78,7 @@ def get(module, co, lo, position, dn='', attr=None, superordinate=None, attribut
             obj.position.setDn(position.getDn() if position else dn)
             return obj
         except (ldap.NO_SUCH_OBJECT, univention.admin.uexceptions.noObject):
-            if not lo.get(dn, attr=['objectClass']):
+            if not lo.authz_connection.get(dn, attr=['objectClass']):  # TODO: restrict visibility
                 raise univention.admin.uexceptions.noObject(dn)
             if not univention.admin.modules.virtual(module.module):
                 raise univention.admin.uexceptions.wrongObjectType('The object %s is not a %s.' % (dn, module.module))
@@ -150,7 +150,7 @@ def shadow(lo, module, object, position):
         dn = lo.parentDn(dn)
         if not dn:
             return (None, None)
-        attr = lo.get(dn)
+        attr = lo.authz_connection.get(dn)  # TODO: restrict visibility
         for m in univention.admin.modules.identify(dn, attr):
             if not univention.admin.modules.isContainer(m):
                 o = get(m, None, lo, position=position, dn=dn)
@@ -227,7 +227,7 @@ def getPolicyReference(object, policy_type):
 
     policyReference = None
     for policy_dn in object.policies:
-        for m in univention.admin.modules.identify(policy_dn, object.lo.get(policy_dn)):
+        for m in univention.admin.modules.identify(policy_dn, object.lo.authz_connection.get(policy_dn)):
             if univention.admin.modules.name(m) == policy_type:
                 policyReference = policy_dn
     log.debug('getPolicyReference: returning: %s', policyReference)
@@ -246,7 +246,7 @@ def removePolicyReference(object, policy_type):
 
     remove = None
     for policy_dn in object.policies:
-        for m in univention.admin.modules.identify(policy_dn, object.lo.get(policy_dn)):
+        for m in univention.admin.modules.identify(policy_dn, object.lo.authz_connection.get(policy_dn)):
             if univention.admin.modules.name(m) == policy_type:
                 remove = policy_dn
     if remove:
@@ -265,7 +265,7 @@ def replacePolicyReference(object, policy_type, new_reference):
     # FIXME: Move this to handlers.simpleLdap?
 
     module = univention.admin.modules._get(policy_type)
-    if not univention.admin.modules.recognize(module, new_reference, object.lo.get(new_reference)):
+    if not univention.admin.modules.recognize(module, new_reference, object.lo.authz_connection.get(new_reference)):
         log.debug('replacePolicyReference: error.')
         return
 
@@ -293,7 +293,7 @@ def restorePolicyReference(object, policy_type):
 
     restore = None
     for policy_dn in object.oldpolicies:
-        if univention.admin.modules.recognize(module, policy_dn, object.lo.get(policy_dn)):
+        if univention.admin.modules.recognize(module, policy_dn, object.lo.authz_connection.get(policy_dn)):
             restore = policy_dn
     if restore:
         object.policies.append(restore)

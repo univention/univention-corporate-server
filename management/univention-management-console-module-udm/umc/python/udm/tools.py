@@ -84,7 +84,7 @@ class LicenseImport(ldif.LDIFParser):
         #     self.mod_list.insert( 0, ( ldap.MOD_REPLACE, atr, entry[ atr ] ) )
 
     def write(self, ldap_connection):
-        ldap_con = ldap_connection.lo.lo
+        ldap_con = ldap_connection.authz_connection.lo.lo
         try:
             ldap_con.add_s(self.dn, self.addlist)
         except ldap.ALREADY_EXISTS:
@@ -148,7 +148,7 @@ def _check_license(ldap_connection):
         11: udm_errors.licenseDVSClients,
     }
     code = univention.admin.license.init_select(ldap_connection, 'admin')
-    ldap_connection._validateLicense()  # throws more exceptions in case the license could not be found
+    ldap_connection.authz_connection._validateLicense()  # throws more exceptions in case the license could not be found
     if code in mapping:
         raise mapping[code]
 
