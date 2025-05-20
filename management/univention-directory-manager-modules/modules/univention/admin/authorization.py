@@ -104,10 +104,14 @@ def _obj2module(obj: object | dict | str) -> str:
     if isinstance(obj, dict | str):
         dn = _obj2dn(obj)
         # FIXME: extract module name using dn
-        if "cn=users" in dn:
+        if dn.lower().startswith('cn=groups,') or dn.lower().startswith('cn=users,'):
+            return 'container/cn'
+        if "cn=users" in dn or 'cn=self registered users' in dn or dn.startswith('uid='):
             return "users/user"
         if "cn=groups" in dn:
             return "groups/group"
+        if dn.lower().startswith('ou='):
+            return "container/ou"
         else:
             raise NotImplementedError(f"Module extraction from DN not implemented {dn}: {obj} ")
     if isinstance(obj, tuple):
