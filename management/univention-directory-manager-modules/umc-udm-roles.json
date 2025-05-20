@@ -73,21 +73,6 @@
     },
     {
       "condition": {
-        "position": "",
-        "scope": "base"
-      },
-      "permissions": {
-        "container/cn": {
-          "attributes": {
-            "*": {
-              "access": "read"
-            }
-          }
-        }
-      }
-    },
-    {
-      "condition": {
         "position": "*",
         "scope": "base"
       },
