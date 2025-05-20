@@ -15,10 +15,13 @@ from univention.udm.exceptions import CreateError, NoObject
 
 
 # activate delegated administration
-handler_set(['umc/udm/delegation=true'])
-check_call(['service', 'univention-management-console-server', 'restart'])
+handler_set(['umc/udm/delegation=true', 'directory/manager/rest/enable-delegative-administration=true'])
+check_call(['systemctl', 'restart', 'univention-management-console-server'])
+check_call(['systemctl', 'restart', 'univention-directory-manager-rest'])
 
-udm = UDM.admin().version(2)
+ldap_base = ucr["ldap/base"]
+
+udm = UDM.admin().version(3)
 ous = udm.get('container/ou')
 cns = udm.get('container/cn')
 users = udm.get('users/user')
@@ -26,19 +29,16 @@ groups = udm.get('groups/group')
 policies = udm.get('policies/umc')
 
 # enable umc udm for ouadmins (Domain Users)
-# FIXME: not for everybody, just for ouadmins
-r = policies.search('name=default-umc-users')
-policy = next(iter(r))
-ops = [
-    f'cn=udm-groups,cn=operations,cn=UMC,cn=univention,{ucr["ldap/base"]}',
-    f'cn=udm-users,cn=operations,cn=UMC,cn=univention,{ucr["ldap/base"]}',
-    f'cn=udm-syntax,cn=operations,cn=UMC,cn=univention,{ucr["ldap/base"]}',
-    f'cn=udm-mail,cn=operations,cn=UMC,cn=univention,{ucr["ldap/base"]}',
-]
-
-for op in ops:
-    if op not in policy.props.allow:
-        policy.props.allow.append(op)
+policy = policies.new()
+policy.position = f'cn=UMC,cn=policies,{ldap_base}'
+policy.props.name = 'organizational-unit-amdins'
+policy.props.allow.extend([
+    # f'cn=udm-groups,cn=operations,cn=UMC,cn=univention,{ldap_base}',
+    # f'cn=udm-users,cn=operations,cn=UMC,cn=univention,{ldap_base}',
+    # f'cn=udm-syntax,cn=operations,cn=UMC,cn=univention,{ldap_base}',
+    # f'cn=udm-mail,cn=operations,cn=UMC,cn=univention,{ldap_base}',
+    f'cn=udm-all,cn=operations,cn=UMC,cn=univention,{ldap_base}',
+])
 policy.save()
 
 # domainadmins role for Domain Admins group
@@ -66,7 +66,7 @@ for i in range(1, number_of_ous + 1):
     except CreateError:
         pass
     cn = cns.new()
-    cn.position = f'ou=ou{i},{ucr["ldap/base"]}'
+    cn.position = f'ou=ou{i},{ldap_base}'
     cn.props.name = 'users'
     cn.props.userPath = "1"
     try:
@@ -74,7 +74,7 @@ for i in range(1, number_of_ous + 1):
     except CreateError:
         pass
     cn = cns.new()
-    cn.position = f'ou=ou{i},{ucr["ldap/base"]}'
+    cn.position = f'ou=ou{i},{ldap_base}'
     cn.props.name = 'groups'
     cn.props.groupPath = "1"
     try:
@@ -85,22 +85,23 @@ for i in range(1, number_of_ous + 1):
     # ou admin
     user = users.new()
     name = f'ou{i}admin'
-    position = f'cn=users,{ucr["ldap/base"]}'
+    position = f'cn=users,{ldap_base}'
     try:
         user = users.get(f'uid={name},{position}')
     except NoObject:
         user = users.new()
-    user.position = f'cn=users,{ucr["ldap/base"]}'
+    user.position = f'cn=users,{ldap_base}'
     user.props.username = f'ou{i}admin'
     user.props.lastname = f'ou{i}admin'
     user.props.password = 'univention'
     user.props.overridePWHistory = '1'
     user.props.guardianRoles = [f'umc:udm:ouadmin&umc:udm:ou=ou{i}']
+    user.policies['policies/umc'].append(policy.dn)
     user.save()
 
     # user objects in ou
     for j in range(1, number_of_users + 1):
-        position = f'cn=users,ou=ou{i},{ucr["ldap/base"]}'
+        position = f'cn=users,ou=ou{i},{ldap_base}'
         name = f"user{j}-ou{i}"
         user = users.new()
         user.position = position
@@ -116,7 +117,7 @@ for i in range(1, number_of_ous + 1):
     # group objects in ou
     for j in range(1, number_of_users + 1):
         group = groups.new()
-        group.position = f'cn=groups,ou=ou{i},{ucr["ldap/base"]}'
+        group.position = f'cn=groups,ou=ou{i},{ldap_base}'
         group.props.name = f"group{j}-ou{i}"
         try:
             group.save()
