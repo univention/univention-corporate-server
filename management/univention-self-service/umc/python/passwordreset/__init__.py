@@ -161,24 +161,20 @@ def prevent_denial_of_service(func):
     def _decorated(self, *args, **kwargs):
         request = self._current_request
 
-        try:
-            client_host_str = None
-            # Determine the client host. Respect X-Forwarded-Host if configured and present.
-            if self.trust_x_forwarded_hosts:
-                x_forwarded_host = request.headers.get('X-Forwarded-Host')
-                if x_forwarded_host:
-                    # Take the first Host in the list (closest client)
-                    client_host_str = x_forwarded_host.split(',')[0].strip()
-                    MODULE.debug(f"Rate limit check: Using X-Forwarded-Host: {client_host_str}")
-                else:
-                    MODULE.debug("Rate limit check: Cannot determine remote Host from request object.")
+        client_host_str = None
+        # Determine the client host. Respect X-Forwarded-Host if configured and present.
+        if self.trust_x_forwarded_hosts:
+            x_forwarded_host = request.headers.get('X-Forwarded-Host')
+            if x_forwarded_host:
+                # Take the first Host in the list (closest client)
+                client_host_str = x_forwarded_host.split(',')[0].strip()
+                MODULE.debug("Rate limit check: Using X-Forwarded-Host: %s", client_host_str)
+            else:
+                MODULE.debug("Rate limit check: Cannot determine remote Host from request object.")
 
-            if client_host_str and client_host_str in self.trusted_hosts:
-                MODULE.debug(f"Rate limit bypassed for trusted host {client_host_str} in trusted hosts {self.trusted_hosts}")
-                return func(self, *args, **kwargs)
-
-        except UMC_Error:
-            raise
+        if client_host_str and client_host_str in self.trusted_hosts:
+            MODULE.debug("Rate limit bypassed for trusted host %s in trusted hosts %s", (client_host_str, self.trusted_hosts))
+            return func(self, *args, **kwargs)
 
         # check total request limits
         total_limit_reached, total_max_wait = _check_limits(self.memcache, self.total_limits)
@@ -261,14 +257,13 @@ class Instance(Base):
         self._usersmod = None
         self.groupmod = None
 
-        self.trusted_hosts = []
         self.trust_x_forwarded_hosts = ucr.is_true('umc/self-service/rate-limit/trust-x-forwarded-host', False)
         self.trusted_hosts = [
             h.strip()
             for h in ucr.get('umc/self-service/rate-limit/trusted-hosts', '').split(',')
             if h.strip()
         ]
-        MODULE.info("Added trusted host for rate limit bypass: %r". self.trusted_hosts)
+        MODULE.info("Added trusted host for rate limit bypass: %r", self.trusted_hosts)
 
         self.token_validity_period = ucr.get_int("umc/self-service/passwordreset/token_validity_period", 3600)
         limit_total_minute = ucr.get_int("umc/self-service/passwordreset/limit/total/minute", 0)

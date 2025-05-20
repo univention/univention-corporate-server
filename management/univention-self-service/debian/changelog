@@ -1,3 +1,9 @@
+univention-self-service (7.1.2) unstable; urgency=medium
+
+  * Bug #58214: Allow trusting hosts for UMC self-service rate limit
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Tue, 20 May 2025 15:27:54 +0200
+
 univention-self-service (7.1.1) unstable; urgency=medium
 
   * Bug #58159: reconnect automatically to postgresql in case of
