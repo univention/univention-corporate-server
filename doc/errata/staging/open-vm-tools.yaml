@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: open-vm-tools
+fix: 2:10.1.5-5055683-4+deb9u7
+desc: |
+ This update addresses the following issue:
+ * CVSS score 6.1 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:L/I:H/A:N).
+   (CVE-2025-22247)
+bug: [58309]
+cve:
+- CVE-2025-22247
