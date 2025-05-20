@@ -414,7 +414,8 @@ class UDM_Module:
         if module is None:
             module = self._initialized_with_module
         try:
-            self.module = _module_cache.get(module, None, force_reload, *self.get_ldap_connection())  # FIXME: template_object not used?!
+            lo, po = self.get_ldap_connection()
+            self.module = _module_cache.get(module, None, force_reload, lo, po)  # FIXME: template_object not used?!
         except udm_errors.noObject:
             # can happen if the ldap connection is not bound to any user
             # e.g. due to a rename of the current logged in user
@@ -702,7 +703,7 @@ class UDM_Module:
         try:
             if ldap_dn is not None:
                 if superordinate is None:
-                    superordinate = udm_objects.get_superordinate(self.module, None, ldap_connection, ldap_dn)
+                    superordinate = udm_objects.get_superordinate(self.module, None, ldap_connection.authz_connection, ldap_dn)
                 obj = self.module.object(None, ldap_connection, None, ldap_dn, superordinate, attributes=attributes)
                 MODULE.info('Found LDAP object %s' % obj.dn)
                 obj.open()
