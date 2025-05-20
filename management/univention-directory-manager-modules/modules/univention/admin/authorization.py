@@ -38,6 +38,7 @@ import json
 import os
 import re
 from logging import getLogger
+from typing import Any
 
 import univention.admin.modules
 from univention.admin._ucr import configRegistry as ucr
@@ -379,9 +380,12 @@ class Authorization:
         cls.get_privileged_connection = get_privileged_connection
 
     @classmethod
-    def inject_ldap_connection(cls, user_connection, metadata=None):
+    def inject_ldap_connection(cls, user_connection, metadata: dict[str, Any] = {}):
+        """Injects authorization into the LDAP connection"""
+        if metadata:
+            user_connection.set_metadata(metadata)
         if cls.enabled:
-            user_connection.metadata = metadata
+            user_connection.set_authz_connection_getter(cls.get_privileged_connection)
         return user_connection
 
     @classmethod

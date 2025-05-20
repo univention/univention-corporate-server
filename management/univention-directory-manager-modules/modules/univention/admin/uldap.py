@@ -35,6 +35,7 @@
 import time
 from collections.abc import Callable  # noqa: F401
 from logging import getLogger
+from typing import Any
 
 import ldap
 
@@ -488,8 +489,14 @@ class access:
         """
         return self.authz.get_authz_connection(self)
 
-    def bind(self, binddn, bindpw):
-        # type: (str, str) -> None
+    def set_metadata(self, metadata: dict[str, Any]) -> None:
+        """Set the metadata like user_id and client_ip for the LDAP connection."""
+        self.lo.set_metadata(metadata)
+
+    def set_authz_connection_getter(self, cb):
+        self._authz_connection_getter = cb
+
+    def bind(self, binddn: str, bindpw: str) -> None:
         """
         Do simple LDAP bind using DN and password.
 

@@ -199,6 +199,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         self.reports_cfg = None
         self.modules_with_childs = []
         self.__license_checks = set()
+        self.__metadata = None
         install_opener(ucr)
 
     def prepare(self, request):
@@ -210,7 +211,11 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
 
         def bind_user_connection(lo):
             request.bind_user_connection(lo)
-            lo = udm_auth.Authorization.inject_ldap_connection(lo)
+            if not self.__metadata:
+                user_attrs = self.lo.get(request.user_dn, ['univentionObjectIdentifier'])
+                univention_object_identifier = user_attrs.get('univentionObjectIdentifier', [None])[0]
+                self.__metadata = {'univention_object_identifier': univention_object_identifier}
+            lo = udm_auth.Authorization.inject_ldap_connection(lo, metadata=self.__metadata)
             self.require_license(lo)
 
         set_bind_function(bind_user_connection)
@@ -257,7 +262,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
             lo, _po = get_user_connection(bind=self.bind_user_connection, write=True, bindhash=calculate_bind_hash(self._current_request))
         except (LDAPError, udm_errors.ldapError):
             lo, _po = get_user_connection(bind=self.bind_user_connection, write=True, bindhash=calculate_bind_hash(self._current_request))
-        lo = udm_auth.Authorization.inject_ldap_connection(lo)
+        lo = udm_auth.Authorization.inject_ldap_connection(lo, metadata=self.__metadata)
         return lo, udm_uldap.position(lo.base)
 
     def get_module(self, flavor, ldap_dn):

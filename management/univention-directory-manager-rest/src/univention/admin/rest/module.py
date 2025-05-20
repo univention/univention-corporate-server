@@ -172,7 +172,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
 
     def parse_authorization(self, authorization):
         if authorization in shared_memory.authenticated:  # cache for the userdn, which eliminates a search / request
-            auth_type, username, userdn, password = shared_memory.authenticated[authorization]
+            auth_type, username, userdn, password, univention_object_identifier = shared_memory.authenticated[authorization]
             already_authenticated = True
         else:
             already_authenticated = False
@@ -196,12 +196,18 @@ class ResourceBase(SanitizerBase, HAL, HTML):
                 if not userdn:
                     return self.force_authorization(auth_type)
 
+            user_attrs = self.ldap_connection.get(userdn, ['univentionObjectIdentifier'])
+            univention_object_identifier = user_attrs.get('univentionObjectIdentifier', [None])[0]
+
         try:
             self.ldap_connection, self.ldap_position = get_user_ldap_read_connection(auth_type, userdn, password)
             if already_authenticated and not self.ldap_connection.whoami():  # the ldap connection is not bound anymore
                 reset_cache(self.ldap_connection)
                 self.ldap_connection, self.ldap_position = get_user_ldap_read_connection(auth_type, userdn, password)
-            self.ldap_connection = udm_auth.Authorization.inject_ldap_connection(self.ldap_connection)
+
+            metadata = {'univention_object_identifier': univention_object_identifier}
+            self.ldap_connection = udm_auth.Authorization.inject_ldap_connection(self.ldap_connection, metadata=metadata)
+
             if auth_type == 'Bearer':
                 userdn = self.ldap_connection.whoami()
                 username = '+'.join(explode_rdn(userdn, True))
@@ -218,13 +224,14 @@ class ResourceBase(SanitizerBase, HAL, HTML):
         if not already_authenticated:
             self._auth_check_allowed_groups()
 
-        shared_memory.authenticated[authorization] = (auth_type, username, userdn, password)
+        shared_memory.authenticated[authorization] = (auth_type, username, userdn, password, univention_object_identifier)
 
     @property
     def ldap_write_connection(self):
-        auth_type, _username, userdn, password = shared_memory.authenticated[self.request.headers.get('Authorization')]
+        auth_type, _username, userdn, password, univention_object_identifier = shared_memory.authenticated[self.request.headers.get('Authorization')]
         conn = get_user_ldap_write_connection(auth_type, userdn, password)[0]
-        conn = udm_auth.Authorization.inject_ldap_connection(conn)
+        metadata = {'univention_object_identifier': univention_object_identifier}
+        conn = udm_auth.Authorization.inject_ldap_connection(conn, metadata=metadata)
         return conn
 
     def _auth_check_allowed_groups(self):
@@ -933,7 +940,7 @@ class Tree(ContainerQueryBase):
         container: str = Query(DNSanitizer(default=None)),
         level: str = Query(IntegerSanitizer(default=0)),
     ):
-        # TODO: add appropriate 404 errors
+        # TODO: add the appropriate 404 errors
         ldap_base = ucr['ldap/base']
 
         modules = container_modules()

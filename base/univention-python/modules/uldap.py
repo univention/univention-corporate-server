@@ -32,6 +32,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
+import copy
 import logging
 import random
 import re
@@ -221,6 +222,7 @@ class access:
     :param str uri: LDAP connection string.
     :param bool follow_referral: Follow referrals and return result from other servers instead of returning the referral itself.
     :param bool reconnect: Automatically re-establish connection to LDAP server if connection breaks.
+    :param user_id: (optional, recommended) UDM user object ID (should provide a univentionObjectIdentifier). If not set, audit attributes will not be filled. Deprecated: not setting this will be disallowed in a future version.
     """
 
     def __init__(self, host: str = 'localhost', port: int | None = None, base: str = '', binddn: str | None = '', bindpw: str = '', start_tls: int | None = None, ca_certfile: str | None = None, decode_ignorelist: None = None, use_ldaps: bool = False, uri: str | None = None, follow_referral: bool = False, reconnect: bool = True) -> None:
@@ -231,6 +233,7 @@ class access:
         self.start_tls = start_tls
         self.ca_certfile = ca_certfile
         self.reconnect = reconnect
+        self.metadata = {}
 
         self.port = int(port) if port else None
 
@@ -272,6 +275,10 @@ class access:
         log.error('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap! %s', ''.join(traceback.format_stack()))
         warnings.warn('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap!', DeprecationWarning, stacklevel=3)
         return self
+
+    def set_metadata(self, metadata: dict[str, Any]) -> None:
+        """Set metadata for the connection."""
+        self.metadata = copy.deepcopy(metadata)
 
     @_fix_reconnect_handling
     def bind(self, binddn: str, bindpw: str) -> None:
@@ -651,6 +658,10 @@ class access:
             vals = nal.setdefault(key, set())
             vals |= set(val)
 
+        nal['univentionObjectCreatorsID'] = {
+            self.metadata.get('univention_object_identifier', '00000000-0000-0000-0000-000000000000').encode('ASCII'),
+        }
+
         nal = [(k, list(v)) for k, v in nal.items()]
 
         try:
@@ -712,6 +723,8 @@ class access:
             else:
                 continue
             ml.append((op, key, val))
+
+        ml.append((ldap.MOD_REPLACE, 'univentionObjectModifiersID', [self.metadata.get('univention_object_identifier', '00000000-0000-0000-0000-000000000000').encode('ASCII')]))
 
         # check if we need to rename the object
         new_dn, new_rdn = self.__get_new_dn(dn, ml)
