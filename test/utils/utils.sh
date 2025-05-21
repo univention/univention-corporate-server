@@ -195,6 +195,18 @@ jenkins_updates () {
 	echo "Finished at ${version_version}-${version_patchlevel}+${version_erratalevel}"
 
 	if [ -e /etc/apt/sources.list.d/99_extra_scope.list.disabled ]; then
+
+		# TODO: remove, do not merge to 5.2-1
+		# pre-update to ucs-dev/delegated-administration before updating
+		# to branch repo
+		if [ "$SCOPE" != "ucs-dev/delegated-administration" ]; then
+			echo "deb [trusted=yes] http://omar.knut.univention.de/build2/git/ucs-dev-delegated-administration git main" > /etc/apt/sources.list.d/99_extra_scope.list
+			apt-get update -qq
+			eval "$(ucr shell update/commands/distupgrade)"
+			# shellcheck disable=SC2154
+			$update_commands_distupgrade
+		fi
+
 		# We update to the gitlab repo here and not with the updater.
 		# Why: If the package has the same version in the gitlab and ucs repo
 		#      we get a nasty endless loop because apt-get thinks the package
