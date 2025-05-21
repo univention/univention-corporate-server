@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.29-3) unstable; urgency=medium
+
+  * Bug #58312: Dont normalize DNs when listing choices
+
+ -- Johannes Königer <koeniger@univention.de>  Tue, 13 May 2025 15:43:56 +0200
+
 univention-directory-manager-modules (15.0.29-2) unstable; urgency=medium
 
   * Bug #58119: fix performance problem during computer removal in

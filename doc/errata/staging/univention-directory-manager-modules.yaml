@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-directory-manager-modules
+fix: 15.0.29-3
+desc: |
+ This update addresses the following issues:
+ * Attributes containing distinguished names as values were normalized and
+   thus may have differed in string representation from the the distinguished
+   names of LDAP objects itself. This could lead to errors in the UMC not
+   recognizing the correct item in ComboBox widgets. This has been aligned,
+   all data is now written unnormalized.
+bug: [58312]
