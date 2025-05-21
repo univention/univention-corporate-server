@@ -110,6 +110,12 @@ def get(module, co, lo, position, dn='', attr=None, superordinate=None, attribut
     return module.object(co, lo, position, dn, superordinate=superordinate, attributes=attributes)
 
 
+def get_object(lo, dn):
+    attr = lo.authz_connection.get(dn, ['*', '+'])
+    for module in univention.admin.modules.objectType(None, lo, dn, attr):
+        return univention.admin.modules.get(module).object(None, lo, None, dn, None, attr)
+
+
 def open(object):
     # type: (univention.admin.handlers.simpleLdap) -> None
     """
