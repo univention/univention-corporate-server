@@ -412,7 +412,20 @@ class Authorization:
     def filter_search_results(self, lo, results, options=None):
         if not self.enabled:
             return results
-        return may_read(results, self._user_roles(lo), filter_options=options)
+
+        # FIXME: remove this performance intensive search!!!
+        options = options or {}
+        result_is_dn = options.pop('result-is-ldap-dn', None)
+        if result_is_dn:
+            options['result-is-udm'] = True
+            results = [univention.admin.objects.get_object(lo, dn) for dn in results]
+
+        data = may_read(results, self._user_roles(lo), filter_options=options)
+
+        if result_is_dn:
+            data = [obj.dn for obj in data]
+
+        return data
 
     def is_create_allowed(self, obj, raise_exception=True):
         if not self.enabled:
