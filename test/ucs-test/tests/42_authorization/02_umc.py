@@ -531,23 +531,19 @@ def test_syntax_choices(udm, ou):
     ouadmin_client.authenticate(ou.admin_username, 'univention')
 
     res = admin_client.umc_command('udm/syntax/choices', {"syntax": "UserDN"}, 'shares/share').result
-    assert res
     assert len(res) == len(udm.list_objects('users/user', properties=["DN"]))
 
     res = ouadmin_client.umc_command('udm/syntax/choices', {"syntax": "UserDN"}, 'shares/share').result
-    assert res
     assert len(res) == len(udm.list_objects('users/user', properties=["DN"], position=ou.dn))
     assert all(dn['id'].endswith(ou.dn) for dn in res)
 
-    # TODO: should see all users
     res = admin_client.umc_command('udm/syntax/choices', {"syntax": "UserID"}, 'shares/share').result
-    assert res
-    assert len(res) == len(udm.list_objects('users/user', properties=["DN"]))
+    # all user + root
+    assert len(res) == len(udm.list_objects('users/user', properties=["DN"])) + 1
 
-    # TODO: should see all users of his ou
-    res = ouadmin_client.umc_command('udm/syntax/choices', {"syntax": "UserID"}, 'shares/share')
-    assert res['success']
-    assert len(res) == len(udm.list_objects('users/user', properties=["DN"], position=ou.dn))
+    res = ouadmin_client.umc_command('udm/syntax/choices', {"syntax": "UserID"}, 'shares/share').result
+    # ou user + root
+    assert len(res) == len(udm.list_objects('users/user', properties=["DN"], position=ou.dn)) + 1
 
 
 def test_shares_create_admin(ldap_base, random_username):
@@ -555,11 +551,11 @@ def test_shares_create_admin(ldap_base, random_username):
     client = Client.get_test_connection()
 
     # get default container
-    res = client.umc_command('udm/containers', {'objectType': 'shares/share'}, 'shares/share').result
+    res = client.umc_command('udm/containers', {"objectType": "shares/share"}, 'shares/share').result
     assert res
 
     # syntax choices
-    res = client.umc_command('/udm/syntax/choices', {'syntax': 'UCS_Server'}, 'shares/share').result
+    res = client.umc_command('udm/syntax/choices', {'syntax': 'UCS_Server'}, 'shares/share').result
     assert res
 
     # create share
