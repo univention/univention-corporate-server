@@ -6,9 +6,9 @@ src: univention-directory-manager-modules
 fix: 17.0.37
 desc: |
  This update addresses the following issues:
- * Attributes containing distinguished names as values were encoded in a
-   different format than the distinguished names of LDAP objects. This could
-   lead to errors in the UMC not recognizing the correct item in ComboBox
-   widgets. Now the formats have been aligned, all data is now written in the
-   standard format.
+ * Attributes containing distinguished names as values were normalized and
+   thus may have differed in string representation from the the distinguished
+   names of LDAP objects itself. This could lead to errors in the UMC not
+   recognizing the correct item in ComboBox widgets. This has been aligned,
+   all data is now written unnormalized.
 bug: [58261]
