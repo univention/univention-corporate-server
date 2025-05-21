@@ -177,6 +177,12 @@ jenkins_updates () {
 		#      installed is the version from the ucs repo and always wants
 		#      to downgrade to the gitlab repo version.
 		mv /etc/apt/sources.list.d/99_extra_scope.list.disabled /etc/apt/sources.list.d/99_extra_scope.list
+
+		# TODO: remove, do not merge to 5.2-1
+		if [ "$SCOPE" != "ucs-dev/delegated-administration" ]; then
+			echo "deb [trusted=yes] http://omar.knut.univention.de/build2/git/ucs-dev-delegated-administration git main" >> /etc/apt/sources.list.d/99_extra_scope.list
+		fi
+
 		apt-get update -qq
 		eval "$(ucr shell update/commands/distupgrade)"
 		$update_commands_distupgrade
