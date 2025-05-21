@@ -7,6 +7,7 @@
 ## exposure: dangerous
 import locale
 import re
+import subprocess
 import time
 from types import SimpleNamespace
 
@@ -31,6 +32,12 @@ TRANSLATIONS = {
 def _(string: str) -> str:
     code, _ = locale.getlocale()
     return TRANSLATIONS.get(code, {}).get(string, string)
+
+
+@pytest.fixture(autouse=True)
+def restart_umc():
+    yield
+    subprocess.call(['deb-systemd-invoke', 'restart', 'univention-management-console-server.service'])
 
 
 @pytest.fixture
