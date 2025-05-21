@@ -114,7 +114,7 @@ def import_syntax_files():
                     _ = gettext
 
 
-def _normalize_dn(dn: str) -> str:
+def _normalize_dn(dn):
     return ldap.dn.dn2str(ldap.dn.str2dn(dn))
 
 

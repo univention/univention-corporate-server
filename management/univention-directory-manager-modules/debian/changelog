@@ -1,3 +1,9 @@
+univention-directory-manager-modules (15.0.29-4) unstable; urgency=medium
+
+  * Bug #58312: Fix py2 incompatible code from cherry-pick
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 21 May 2025 19:04:43 +0200
+
 univention-directory-manager-modules (15.0.29-3) unstable; urgency=medium
 
   * Bug #58312: Dont normalize DNs when listing choices
