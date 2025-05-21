@@ -510,3 +510,34 @@ def test_query_and_read_mail_domain_folder(udm, ldap_base, ou, login_user: str, 
         # TODO: why HTTPError
         with pytest.raises(HTTPError):
             client.umc_command('udm/get', get_option, scope)  # type: ignore[call-arg]
+
+
+@check_delegation
+def test_syntax_choices(udm, ou):
+    """
+    Test that UserDN filtering works differently based on user roles.
+    OU admin should only see users from their own OU.
+    Domain admin should see all users.
+    """
+    admin_client = Client.get_test_connection()
+    ouadmin_client = Client()
+    ouadmin_client.authenticate(ou.admin_username, 'univention')
+
+    res = admin_client.umc_command('udm/syntax/choices', {"syntax": "UserDN"}, 'shares/share').result
+    assert res
+    assert len(res) == len(udm.list_objects('users/user', properties=["DN"]))
+
+    res = ouadmin_client.umc_command('udm/syntax/choices', {"syntax": "UserDN"}, 'shares/share').result
+    assert res
+    assert len(res) == len(udm.list_objects('users/user', properties=["DN"], position=ou.dn))
+    assert all(dn['id'].endswith(ou.dn) for dn in res)
+
+    # TODO: should see all users
+    res = admin_client.umc_command('udm/syntax/choices', {"syntax": "UserID"}, 'shares/share').result
+    assert res
+    assert len(res) == len(udm.list_objects('users/user', properties=["DN"]))
+
+    # TODO: should see all users of his ou
+    res = ouadmin_client.umc_command('udm/syntax/choices', {"syntax": "UserID"}, 'shares/share')
+    assert res['success']
+    assert len(res) == len(udm.list_objects('users/user', properties=["DN"], position=ou.dn))
