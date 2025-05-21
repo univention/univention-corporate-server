@@ -12,7 +12,7 @@ from types import SimpleNamespace
 import pytest
 
 from univention.config_registry import ucr as _ucr
-from univention.lib.umc import Forbidden, HTTPError
+from univention.lib.umc import BadRequest, Forbidden, HTTPError
 from univention.testing.umc import Client
 
 
@@ -243,7 +243,6 @@ def test_read(ldap_base, ou, login_user, user_dn, attribute, expected):
         user_dn.format(admin_ou=ou.admin_dn, normal_user=ou.user_dn, ldap_base=ldap_base),
     ]
     if not expected:
-
         # TODO: why do we get HTTPError, should this return permissionDenied?
         #  File "/usr/lib/python3/dist-packages/univention/management/console/modules/udm/__init__.py", line 265, in get_obj_module
         #    return get_obj_module(flavor, ldap_dn, self.get_ldap_connection()[0])
@@ -383,3 +382,113 @@ def test_mail_domain_create(ldap_base, ou, random_username, login_user, udm):
             },
         ]
         admin_client.umc_command('udm/remove', delete_options, 'mail/domain')
+
+
+# checking if admins can read mail/domain or mail/folder cross-OU
+@check_delegation
+@pytest.mark.parametrize(
+    'login_user, scope, position, has_access',
+    [
+        ('admin', 'mail/domain', '{ou_dn}', True),
+        ('admin', 'mail/domain', '{ldap_base}', True),
+        ('ou_admin', 'mail/domain', '{ou_dn}', True),
+        ('ou_admin', 'mail/domain', '{ldap_base}', False),
+        ('admin', 'mail/folder', '{ou_dn}', True),
+        ('admin', 'mail/folder', '{ldap_base}', True),
+        ('ou_admin', 'mail/folder', '{ou_dn}', True),
+        ('ou_admin', 'mail/folder', '{ldap_base}', False),
+    ],
+)
+def test_query_and_read_mail_domain_folder(udm, ldap_base, ou, login_user: str, scope: str, position: str, has_access: bool) -> None:
+    if login_user == 'admin':
+        client = Client.get_test_connection()
+    elif login_user == 'ou_admin':
+        client = Client()
+        client.authenticate(ou.admin_username, 'univention')
+
+    position = position.format(ou_dn=ou.dn, ldap_base=ldap_base)
+
+    domain_name = f'test-{ou.user_username}.com'
+    object_dn = f'cn={domain_name},{position}'
+
+    query_options = {
+        'container': 'all',
+        'hidden': False,
+        'objectType': 'mail/mail',
+        'objectProperty': 'None',
+        'objectPropertyValue': '',
+        'fields': [
+            'name',
+            'labelObjectType',
+            'path',
+        ],
+    }
+    get_option = [
+        object_dn,
+    ]
+
+    # query all should be empty
+    res = client.umc_command('udm/query', query_options, 'mail/mail').result  # type: ignore[call-arg]
+    assert res == []
+
+    # get (should be impossible, as not created yet)
+    with pytest.raises(BadRequest):
+        client.umc_command('udm/get', get_option, scope)  # type: ignore[call-arg]
+
+    # create
+    udm.create_object(
+        'mail/domain',
+        name=domain_name,
+        position=position,
+    )
+
+    # query
+    res = client.umc_command('udm/query', query_options, 'mail/mail').result  # type: ignore[call-arg]
+    if has_access:
+        assert res
+        assert res[0]['$dn$'] == object_dn
+        assert len(res) == 1
+    else:
+        assert res == []
+
+    # get (should be possible)
+    if has_access:
+        res = client.umc_command('udm/get', get_option, scope).result  # type: ignore[call-arg]
+        assert res
+        assert res[0]['$dn$'] == object_dn
+        assert len(res) == 1
+    else:
+        # TODO: why HTTPError
+        with pytest.raises(HTTPError):
+            client.umc_command('udm/get', get_option, scope)  # type: ignore[call-arg]
+
+    # delete
+    remove_option = [
+        {
+            'object': object_dn,
+            'options': {
+                'cleanup': True,
+                'recursive': True,
+            },
+        },
+    ]
+    res = client.umc_command('udm/remove', remove_option, scope).result[0]  # type: ignore[call-arg]
+    if has_access:
+        assert res
+        assert res['$dn$'] == object_dn
+        assert res['success']
+    else:
+        assert not res['success']
+
+    # query all should be empty
+    res = client.umc_command('udm/query', query_options, 'mail/mail').result  # type: ignore[call-arg]
+    assert res == []
+
+    # get (should not be possible)
+    if has_access:
+        with pytest.raises(BadRequest):
+            client.umc_command('udm/get', get_option, scope)  # type: ignore[call-arg]
+    else:
+        # TODO: why HTTPError
+        with pytest.raises(HTTPError):
+            client.umc_command('udm/get', get_option, scope)  # type: ignore[call-arg]
