@@ -15,7 +15,7 @@ from univention.udm.exceptions import CreateError, NoObject
 
 
 # activate delegated administration
-handler_set(['umc/udm/delegation=true', 'directory/manager/rest/enable-delegative-administration=true'])
+handler_set(['umc/udm/delegation=true', 'directory/manager/rest/enable-delegative-administration=true', 'directory/manager/rest/authorized-groups/test-api-access=cn=test-api-access,cn=groups,dc=ucs,dc=test'])
 check_call(['systemctl', 'restart', 'univention-management-console-server'])
 check_call(['systemctl', 'restart', 'univention-directory-manager-rest'])
 
@@ -29,21 +29,33 @@ groups = udm.get('groups/group')
 policies = udm.get('policies/umc')
 
 # enable umc udm for ouadmins (Domain Users)
-policy = policies.new()
-policy.position = f'cn=UMC,cn=policies,{ldap_base}'
-policy.props.name = 'organizational-unit-amdins'
-policy.props.allow.extend([
-    # f'cn=udm-groups,cn=operations,cn=UMC,cn=univention,{ldap_base}',
-    # f'cn=udm-users,cn=operations,cn=UMC,cn=univention,{ldap_base}',
-    # f'cn=udm-syntax,cn=operations,cn=UMC,cn=univention,{ldap_base}',
-    # f'cn=udm-mail,cn=operations,cn=UMC,cn=univention,{ldap_base}',
-    f'cn=udm-all,cn=operations,cn=UMC,cn=univention,{ldap_base}',
-])
-policy.save()
+if list(policies.search('name=organizational-unit-amdins')) == []:
+    policy = policies.new()
+    policy.position = f'cn=UMC,cn=policies,{ldap_base}'
+    policy.props.name = 'organizational-unit-amdins'
+    policy.props.allow.extend([
+        # f'cn=udm-groups,cn=operations,cn=UMC,cn=univention,{ldap_base}',
+        # f'cn=udm-users,cn=operations,cn=UMC,cn=univention,{ldap_base}',
+        # f'cn=udm-syntax,cn=operations,cn=UMC,cn=univention,{ldap_base}',
+        # f'cn=udm-mail,cn=operations,cn=UMC,cn=univention,{ldap_base}',
+        f'cn=udm-all,cn=operations,cn=UMC,cn=univention,{ldap_base}',
+    ])
+    policy.save()
+else:
+    policy = next(policies.search('name=organizational-unit-amdins'))
 
 # domainadmins role for Domain Admins group
 r = groups.search('name=Domain Admins')
 group = next(iter(r))
+
+# api access group
+if api_access_grouplist := list(groups.search('name=test-api-access')):
+    api_access_group = api_access_grouplist[0]
+else:
+    api_access_group = groups.new()
+    api_access_group.props.name = 'test-api-access'
+    api_access_group.save()
+
 admin_role = 'umc:udm:domainadmin'
 if admin_role not in group.props.guardianMemberRoles:
     group.props.guardianMemberRoles.append(admin_role)
@@ -97,6 +109,10 @@ for i in range(1, number_of_ous + 1):
     user.props.overridePWHistory = '1'
     user.props.guardianRoles = [f'umc:udm:ouadmin&umc:udm:ou=ou{i}']
     user.policies['policies/umc'].append(policy.dn)
+    if user.props.groups:
+        user.props.groups.append(api_access_group.dn)
+    else:
+        user.props.groups = [api_access_group.dn]
     user.save()
 
     # user objects in ou
