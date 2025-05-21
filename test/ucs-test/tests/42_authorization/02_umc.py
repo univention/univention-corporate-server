@@ -512,6 +512,13 @@ def test_query_and_read_mail_domain_folder(udm, ldap_base, ou, login_user: str, 
             client.umc_command('udm/get', get_option, scope)  # type: ignore[call-arg]
 
 
+def test_syntax_choices_admin():
+    client = Client.get_test_connection()
+    for syntax in ['UserDN', 'GroupDN', 'UserID', 'GroupID']:
+        res = client.umc_command('udm/syntax/choices', {'syntax': syntax}, 'shares/share')
+        assert res.result
+
+
 @check_delegation
 def test_syntax_choices(udm, ou):
     """
@@ -541,3 +548,31 @@ def test_syntax_choices(udm, ou):
     res = ouadmin_client.umc_command('udm/syntax/choices', {"syntax": "UserID"}, 'shares/share')
     assert res['success']
     assert len(res) == len(udm.list_objects('users/user', properties=["DN"], position=ou.dn))
+
+
+def test_shares_create_admin(ldap_base, random_username):
+
+    client = Client.get_test_connection()
+
+    # get default container
+    res = client.umc_command('udm/containers', {'objectType': 'shares/share'}, 'shares/share').result
+    assert res
+
+    # syntax choices
+    res = client.umc_command('/udm/syntax/choices', {'syntax': 'UCS_Server'}, 'shares/share').result
+    assert res
+
+    # create share
+    options = [{
+        'object': {
+            'name': random_username(),
+            'host': f'{random_username()}.{random_username()}',
+            'path': f'/{random_username()}',
+        },
+        "options": {
+            'container': ldap_base,
+            'objectType': 'shares/share',
+        },
+    }]
+    res = client.umc_command('udm/add', options, 'shares/share').result[0]
+    assert res['success']
