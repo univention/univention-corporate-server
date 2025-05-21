@@ -178,7 +178,7 @@ jenkins_updates () {
 		#      installed is the version from the ucs repo and always wants
 		#      to downgrade to the gitlab repo version.
 		mv /etc/apt/sources.list.d/99_extra_scope.list.disabled /etc/apt/sources.list.d/99_extra_scope.list
-		apt-get update -qq
+		apt-get update
 		eval "$(ucr shell update/commands/distupgrade)"
 		$update_commands_distupgrade
 	fi
@@ -1536,6 +1536,7 @@ ucs-winrm () {
 
 add_extra_apt_scope () {
 	local repo_name REPO_SERVER="http://omar.knut.univention.de/build2/git"
+	local apt_file="/etc/apt/sources.list.d/99_extra_scope.list.disabled"
 	case "$SCOPE" in
 	'')
 		return 0
@@ -1552,13 +1553,32 @@ add_extra_apt_scope () {
 		# pin repo
 		echo 'Package: *' > "/etc/apt/preferences.d/99$repo_name.pref"
 		echo "Pin: release o=Univention,n=git,l=$repo_name" >> "/etc/apt/preferences.d/99$repo_name.pref"
-		echo "Pin-Priority: ${SCOPE_PIN_PRIORITY:-1001}" >> "/etc/apt/preferences.d/99$repo_name.pref"
+		echo "Pin-Priority: ${SCOPE_PIN_PRIORITY:-1005}" >> "/etc/apt/preferences.d/99$repo_name.pref"
 		;;
 	*)
 		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/all/"
 		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/\$(ARCH)/"
 		;;
-	esac >/etc/apt/sources.list.d/99_extra_scope.list.disabled
+	esac >"$apt_file"
+
+	# add yet another repo, with a lower apt pinning prio
+	# the idea is: we work on MR for a feature branch and we want all the
+	# changes from the feature branch (BASE_SCOPE) and all the changes from the MR's to that
+	# feature branch (SCOPE).
+	if [ -n "$BASE_SCOPE" ] && [ "$BASE_SCOPE" != "$SCOPE" ]; then
+		repo_name="$(echo "$BASE_SCOPE" | slugify)"
+		# add as first entry
+		echo -e "deb [trusted=yes] $REPO_SERVER/$repo_name git main\n$(cat "$apt_file" 2>/dev/null)" >"$apt_file"
+		# allow downgrade
+		echo 'APT::Get::allow-downgrades "true";' > /etc/apt/apt.conf.d/99allow-downgrade
+		# pin repo prio 1001 (lower than SCOPE)
+		cat >"/etc/apt/preferences.d/99$repo_name.pref" <<__PREF__
+Package: *
+Pin: release o=Univention,n=git,l=$repo_name
+Pin-Priority: 1001
+__PREF__
+	fi
+
 	# create sources list, but disabled, you are supposed to call "jenkins_updates" in your cfg to do the
 	# actual upgrade see "jenkins_updates" why
 }
