@@ -7,10 +7,11 @@
 ##   - univention-directory-manager-tools
 
 from univention.testing import utils
-
 from univention.udm import UDM
 
+
 class Test_ContainerOUWithSpecialChars:
+
     def test_create_plus1_container(self, udm):
         ou = udm.create_object('container/ou', name='+1')
         utils.verify_ldap_object(ou)
@@ -32,4 +33,6 @@ class Test_ContainerOUWithSpecialChars:
         user_dn, user_name = udm.create_user(position=ou, primaryGroup=group_dn)
         _udm = UDM.admin().version(2)
         user_obj = _udm.get("users/user").get(user_dn)
+        group_obj = _udm.get("groups/group").get(group_dn)
         assert user_obj.props.primaryGroup == "cn=%s,ou=\\2B1,%s" % (group_name, udm.LDAP_BASE)
+        assert "uid=%s,ou=\\2B1,%s" % (user_name, udm.LDAP_BASE) in group_obj.props.users
