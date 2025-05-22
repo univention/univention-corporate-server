@@ -3,7 +3,7 @@ release: "5.0"
 version: [10]
 scope: ucs_5.0-0-errata5.0-10
 src: univention-directory-manager-modules
-fix: 15.0.29-3
+fix: 15.0.29-4
 desc: |
  This update addresses the following issues:
  * Attributes containing distinguished names as values were normalized and
