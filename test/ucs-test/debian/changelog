@@ -1,3 +1,9 @@
+ucs-test (12.1.15) unstable; urgency=medium
+
+  * Bug #58252: Move import into fixture to avoid import errors in some school tests
+
+ -- Johannes Lohmer <lohmer@univention.de>  Thu, 22 May 2025 12:59:05 +0200
+
 ucs-test (12.1.14) unstable; urgency=medium
 
   * Bug #58261: Add tests for DN normalization problems: ou=+1

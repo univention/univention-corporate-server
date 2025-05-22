@@ -12,7 +12,6 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from univention.admin.rest.client import UDM as UDM_REST
 from univention.appcenter.actions import get_action
 from univention.appcenter.app_cache import Apps
 from univention.testing import selenium as _sel, strings, ucr as _ucr, udm as _udm, umc, utils
@@ -85,6 +84,8 @@ def udm_rest_base_url(ucr_session):
 
 @pytest.fixture(scope="session")
 def udm_rest_client(ucr_session, account, udm_rest_base_url):
+    from univention.admin.rest.client import UDM as UDM_REST
+
     udm_rest = UDM_REST(
         uri=udm_rest_base_url,
         username=account.username,
