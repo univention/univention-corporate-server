@@ -12,3 +12,6 @@ desc: |
    recognizing the correct item in ComboBox widgets. This has been aligned,
    all data is now written unnormalized.
 bug: [58312]
+erratum: 1277
+announced: 2025-05-22
+support: core
