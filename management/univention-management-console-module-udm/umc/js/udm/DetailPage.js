@@ -204,14 +204,33 @@ define([
 			// for the detail page, we first need to query property data from the server
 			// for the layout of the selected object type, then we can render the page
 			var objectDN = this._multiEdit || this.moduleFlavor == 'users/self' || this.ldapName instanceof Deferred ? null : this.ldapName || null;
+
+			var effectiveObjectDN = objectDN;
+			var anObjectIsBeingCreated = !effectiveObjectDN && this.newObjectOptions;
+			if (anObjectIsBeingCreated) {
+				var containerDN = lang.getObject('container', false, this.newObjectOptions);
+				if (containerDN) {
+					effectiveObjectDN = containerDN;
+				}
+			}
+
 			// prepare parallel queries
 			var moduleCache = cache.get(this.moduleFlavor);
-			this.propertyQuery = moduleCache.getProperties(this.objectType, objectDN);
+
+			// Use effectiveObjectDN for fetching properties and layout
+			// For new objects with a determined container, force load to ensure OU-specific defaults are fresh.
+			if (anObjectIsBeingCreated && effectiveObjectDN) {
+				this.propertyQuery = moduleCache.getProperties(this.objectType, effectiveObjectDN, true); // forceLoad = true
+			} else {
+				this.propertyQuery = moduleCache.getProperties(this.objectType, effectiveObjectDN);
+			}
+
 			var commands = {
 				properties: this.propertyQuery,
 				layout: moduleCache.getLayout(this.objectType, objectDN),
 				metaInfo: moduleCache.getMetaInfo(this.objectType)
 			};
+
 			if (!this._multiEdit) {
 				// query policies for normal edit
 				commands.policies = moduleCache.getPolicies(this.objectType);
