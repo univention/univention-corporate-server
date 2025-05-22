@@ -769,7 +769,9 @@ class simpleLdap:
 
         self.authz.object_exists(self)
         # FIXME: check for information leak via specifying arbitrary destinations
-        self.authz.is_move_allowed(self, newdn)
+        new_self = copy.deepcopy(self)
+        new_self.dn = newdn
+        self.authz.is_move_allowed(self, new_self)
 
         if self.lo.compare_dn(self.dn, self.lo.whoami()):
             raise univention.admin.uexceptions.invalidOperation(_('The own object cannot be moved.'))
