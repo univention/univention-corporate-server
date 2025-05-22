@@ -1112,6 +1112,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         self.password_length = 8
 
         univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
+        self.__primary_group_set_manually = True
 
     def _simulate_legacy_options(self):  # type: () -> None
         """simulate old options behavior to provide backward compatibility for udm extensions"""
@@ -1169,31 +1170,40 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
 
         log.error('No primary group was found with gidNumber=%s for %s as %s', primaryGroupNumber, self.dn, self.lo.binddn)
 
+    def __setitem__(self, key: str, value) -> None:
+        if key == 'primaryGroup':
+            self.__primary_group_set_manually = True
+        return super().__setitem__(key, value)
+
     def _set_default_group(self):  # type: () -> None
-        # If the object doesn't exist yet (i.e., during creation),
-        # or if primaryGroup is not set (e.g. data inconsistency or error during open/unmap for an existing object),
-        # determine and set the default primary group based on the current position.
-        # This ensures that if self.position is changed after open() but before create(),
-        # the correct default group is applied.
-        if not self.exists() or not self['primaryGroup']:
+        if not self.info.get('primaryGroup') or not self.__primary_group_set_manually:
             primary_group_candidate = univention.admin.config.getDefaultValue(self.lo, 'group', position=self.position)
+            log_context = "new object" if not self.exists() else f"existing object {self.dn}"
+
+            log.debug(
+                'user._set_default_group (%s, primaryGroup not set): self.position="%s", determined primary_group_candidate="%s"',
+                log_context,
+                self.position.getDn() if self.position else "N/A",
+                primary_group_candidate,
+            )
 
             if primary_group_candidate and self.lo.get(primary_group_candidate, attr=['objectClass']):
-                # If a valid candidate is found and it's different from the current primaryGroup (or if current is None), update it.
-                current_primary_group = self.info.get('primaryGroup')
-                if current_primary_group != primary_group_candidate:
-                    log.debug(
-                        'user._set_default_group: Setting/updating primaryGroup to "%s" (was: "%s"). Object exists: %s. Position DN: "%s"',
-                        primary_group_candidate,
-                        current_primary_group,
-                        self.exists(),
-                        self.position.getDn() if self.position else "N/A",
-                    )
                 self['primaryGroup'] = primary_group_candidate
+                self.__primary_group_set_manually = False
+                log.debug('user._set_default_group (%s, primaryGroup not set): Set primaryGroup to candidate: "%s"', log_context, primary_group_candidate)
+            else:
+                log.debug('user._set_default_group (%s, primaryGroup not set): No valid primary_group_candidate found or candidate group invalid. primaryGroup remains unset by this function.', log_context)
+        else:
+            log.debug('user._set_default_group: primaryGroup already set to "%s". No default determination needed.', self.info.get('primaryGroup'))
 
-        if not self['primaryGroup']:
-            error_detail = self.dn or self.info.get('username')
-            raise univention.admin.uexceptions.primaryGroup(error_detail)
+        if not self.info.get('primaryGroup'):
+            username_context = self.info.get('username', 'N/A')
+            identifier_for_error = self.dn or username_context
+            log.error(
+                'user._set_default_group: FATAL - primaryGroup is still not set for object identified as [%s]. Raising primaryGroup exception. This indicates no default was found at any level and none was provided by client.',
+                identifier_for_error,
+            )
+            raise univention.admin.uexceptions.primaryGroup(identifier_for_error)
 
     def _unmap_pwd_change_next_login(self, info, oldattr):
         info['pwdChangeNextLogin'] = '0'
