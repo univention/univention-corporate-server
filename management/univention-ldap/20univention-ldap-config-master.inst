@@ -35,7 +35,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION=2
+VERSION=3
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/all.sh
 
@@ -60,6 +60,8 @@ udm settings/extended_attribute create "$@" \
 	--set mayChange=1 || die
 
 if [ "$server_role" = "domaincontroller_master" ]; then
+	/usr/share/univention-ldap/univention-update-univention-object-identifier
+
 	ucs_registerLDAPExtension "$@" \
 		--ucsversionstart "4.4-0" --ucsversionend "5.99-0" \
 		--packagename "univention-ldap-master-config" \

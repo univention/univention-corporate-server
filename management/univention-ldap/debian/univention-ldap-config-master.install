@@ -1,3 +1,4 @@
 20univention-ldap-config-master.inst	usr/lib/univention-install/
 acl/61guardian.acl	usr/share/univention-ldap/
+scripts/univention-update-univention-object-identifier	usr/share/univention-ldap/
 scripts/univention_lastbind.py	usr/share/univention-ldap/
