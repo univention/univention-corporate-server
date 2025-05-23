@@ -65,7 +65,7 @@ ansible_preperation () {
 }
 
 create_certificate_kc_vhost () {
-    univention-certificate new -name "kc.$(hostname -d)" -id 658b0aaf-48dc-4a32-991f-db46648b22a5 -days 365
+    univention-certificate new -name "kc.$(hostname -d)" -days 365
 }
 
 wait_for_certificate_replication () {
@@ -357,7 +357,7 @@ kvm_setup_dns_entries_in_broker () {
 	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=ucs-sso --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,${lb}" || return 1
 	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=ucs-sso-ng --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,${lb}" || return 1
 	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=traeger2 --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,${lb}" || return 1
-    udm dns/host_record create --append a="${KEYCLOAK1_IP}" --append a="${KEYCLOAK2_IP}" --set name=kc --position zoneName="$(hostname -d),cn=dns,${lb}" || return 1
+    udm dns/host_record create --append a="${PRIMARY_IP}" --set name=kc --position zoneName="$(hostname -d),cn=dns,${lb}" || return 1
 }
 
 # add entry to ssh environment to pass variables via env
@@ -621,6 +621,43 @@ install_test_app () {
 	docker run -d -p 5000:5000 --name univention-test-app --env-file /etc/univention-test-app.conf -v /etc/univention/ssl/ucsCA/CAcert.pem:/CAcert.pem -e REQUESTS_CA_BUNDLE=/CAcert.pem --restart always artifacts.software-univention.de/id-broker/oidc/univention-test-app:latest
 	echo "ProxyPass /univention-test-app http://127.0.0.1:5000/univention-test-app retry=0" > /etc/apache2/ucs-sites.conf.d/univention-test-app.conf
 	systemctl reload apache2
+}
+
+apache_loadbalancer () {
+    cat << EOF > /etc/apache2/sites-available/loadbalancer_idbroker.conf
+<IfModule mod_ssl.c>
+<VirtualHost *:443>
+    ServerName kc.$(hostname -d)
+
+    SSLEngine on
+    SSLProxyEngine on
+    SSLCertificateFile /etc/univention/ssl/kc.$(hostname -d)/cert.pem
+    SSLCertificateKeyFile /etc/univention/ssl/kc.$(hostname -d)/private.key
+    SSLCACertificateFile /etc/univention/ssl/ucsCA/CAcert.pem
+
+    ProxyPreserveHost On
+    RequestHeader set X-Forwarded-Proto "https"
+    RequestHeader set X-Forwarded-Port "443"
+
+    <Proxy "balancer://mycluster">
+        BalancerMember http://kc1.$(hostname -d):8180
+        BalancerMember http://kc2.$(hostname -d):8180
+        ProxySet lbmethod=byrequests
+    </Proxy>
+    ProxyPass "/" "balancer://mycluster/"
+    ProxyPassReverse "/" "balancer://mycluster/"
+
+</VirtualHost>
+<VirtualHost *:80>
+   ServerName kc.$(hostname -d)
+   Redirect permanent / https://kc.$(hostname -d)/
+</VirtualHost>
+</IfModule>
+EOF
+
+    a2enmod lbmethod_byrequests
+    a2ensite loadbalancer_idbroker.conf
+    systemctl restart apache2
 }
 
 # vim:set filetype=sh ts=4:
