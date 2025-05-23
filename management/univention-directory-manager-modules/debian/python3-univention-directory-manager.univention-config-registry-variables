@@ -140,7 +140,7 @@ Categories=management-udm
 Description[de]=Ist diese Option aktiviert, wird bei der Erstellung von neuen Objekten für die univentionObjectIdentifier Eigenschaft ein automatisch generierter Wert gesetzt, wenn kein explizierter Wert angebeben wurde.
 Description[en]=If this option is activated, when a new object is created and no value for the univentionObjectIdentifier property was specified, an automatic generated value will be set.
 Type=bool
-Default=false
+Default=true
 Categories=management-udm
 
 [directory/manager/group/enable-legacy-cn-format]

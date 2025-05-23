@@ -1,8 +1,10 @@
-univention-directory-manager-modules (17.2.0) UNRELEASED; urgency=medium
+univention-directory-manager-modules (17.1.0) unstable; urgency=medium
 
+  * Bug #58318: Set default for directory/manager/object-identifier/autogeneration
+    to true
   * Bug #58344 UCS 5.2-2 version bump
 
- -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 28 May 2025 16:49:48 +0200
+ -- Arvid Requate <requate@univention.de>  Fri, 23 May 2025 16:00:47 +0200
 
 univention-directory-manager-modules (17.0.37) unstable; urgency=medium
 
