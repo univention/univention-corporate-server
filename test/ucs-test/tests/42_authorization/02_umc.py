@@ -139,6 +139,147 @@ def test_user_create(ou, ldap_base, random_username, login_user, position, expec
 
 
 @check_delegation
+@pytest.mark.parametrize('login_user, position, expected', [
+    ('admin', 'cn=groups,{ldap_base}', True),
+    ('admin', 'cn=groups,{ou_dn}', True),
+    ('admin', '{ou_dn}', True),
+    ('admin', '{ldap_base}', True),
+    ('ou_admin', 'cn=groups,{ou_dn}', True),
+    ('ou_admin', '{ou_dn}', True),
+    ('ou_admin', '{ldap_base}', False),
+])
+def test_create_group(ou, ldap_base, random_username, login_user, position, expected):
+    client = Client()
+    if login_user == "admin":
+        client = Client.get_test_connection()
+    elif login_user == "ou_admin":
+        client.authenticate(ou.admin_username, 'univention')
+    options = [{
+        'object': {
+            "name": random_username(),
+            "description": random_username(),
+        },
+        "options": {
+            "container": position.format(ou_dn=ou.dn, ldap_base=ldap_base),
+            "objectType": "groups/group",
+        },
+    }]
+    res = client.umc_command('udm/add', options, 'groups/group').result[0]
+    if not expected:
+        assert not res['success']
+        assert res['details'] == _('Permission denied.')
+    else:
+        assert res['success']
+
+
+@check_delegation
+@pytest.mark.parametrize('login_user, position, expected', [
+    ('admin', 'cn=groups,{ldap_base}', True),
+    ('admin', 'cn=groups,{ou_dn}', True),
+    ('admin', '{ou_dn}', True),
+    ('admin', '{ldap_base}', True),
+    ('ou_admin', 'cn=groups,{ou_dn}', True),
+    ('ou_admin', '{ou_dn}', True),
+    ('ou_admin', '{ldap_base}', False),
+])
+def test_delete_group(ou, ldap_base, random_username, login_user, position, expected, udm):
+    cn_group = udm.create_object(
+        'groups/group',
+        name=random_username(),
+        description=random_username(),
+        password='univention',
+        position=position.format(ou_dn=ou.dn, ldap_base=ldap_base),
+    )
+    client = Client()
+    if login_user == "admin":
+        client = Client.get_test_connection()
+    elif login_user == "ou_admin":
+        client.authenticate(ou.admin_username, 'univention')
+    options = [{
+        'object': cn_group,
+        "options": {
+            "cleanup": True,
+            "recursive": True,
+        },
+    }]
+    res = client.umc_command('udm/remove', options, 'groups/group').result[0]
+    if not expected:
+        assert not res['success']
+        assert res['details'] == f'{_("No such object:")} {cn_group}.'
+    else:
+        assert res['success']
+
+
+@check_delegation
+@pytest.mark.parametrize('login_user, group_position, group_target_position, expected', [
+    ('admin', 'cn=groups,{ou_dn}', 'cn=groups,{ldap_base}', True),
+    ('admin', 'cn=groups,{ldap_base}', '{ou_cn_groups}', True),
+    ('ou_admin', 'cn=groups,{ldap_base}', '{ou_cn_groups}', False),
+    ('ou_admin', 'cn=groups,{ou_dn}', 'cn=groups,{ldap_base}', False),
+])
+def test_move_group(ldap_base, ou, login_user, group_position, group_target_position, expected, udm, random_username):
+    dn = udm.create_object(
+        'groups/group',
+        name=random_username(),
+        description=random_username(),
+        password='univention',
+        position=group_position.format(ou_dn=ou.dn, ldap_base=ldap_base),
+    )
+    if login_user == "admin":
+        client = Client.get_test_connection()
+    elif login_user == "ou_admin":
+        client = Client()
+        client.authenticate(ou.admin_username, 'univention')
+    options = [{
+        'object': dn,
+        "options": {
+            "container": group_target_position.format(ou_dn=ou.dn, ldap_base=ldap_base, ou_cn_groups=ou.group_default_container),
+        },
+    }]
+    result = client.umc_command('udm/move', options, 'groups/group').result
+    res = wait_for_progress(client, result['id']).result['intermediate'][0]
+    if not expected:
+        assert not res['success']
+        assert res['details'] == _('Permission denied.')
+    else:
+        assert res['success']
+
+
+@check_delegation
+@pytest.mark.parametrize('login_user, group_position, changes, expected', [
+    ('admin', 'cn=groups,{ldap_base}', {'description': 'dsfdsf'}, True),
+    ('admin', 'cn=groups,{ou_dn}', {'guardianMemberRoles': 'app:namespace:role'}, True),
+    ('admin', '{ou_dn}', {'description': 'dsfdsf'}, True),
+    ('admin', '{ldap_base}', {'guardianMemberRoles': 'app:namespace:role'}, True),
+    ('ou_admin', 'cn=groups,{ldap_base}', {'description': 'dsfdsf'}, False),
+    ('ou_admin', 'cn=groups,{ou_dn}', {'guardianMemberRoles': 'app:namespace:role'}, False),
+    ('ou_admin', 'cn=groups,{ou_dn}', {'description': 'dsfdsf'}, True),
+    ('ou_admin', '{ou_dn}', {'description': 'dsfdsf'}, True),
+    ('ou_admin', '{ldap_base}', {'description': 'dsfdsf'}, False),
+])
+def test_modify_group(ou, ldap_base, random_username, login_user, udm, group_position, changes, expected):
+    dn = udm.create_object(
+        'groups/group',
+        name=random_username(),
+        description=random_username(),
+        password='univention',
+        position=group_position.format(ou_dn=ou.dn, ldap_base=ldap_base),
+    )
+    client = Client()
+    if login_user == "admin":
+        client = Client.get_test_connection()
+    elif login_user == "ou_admin":
+        client.authenticate(ou.admin_username, 'univention')
+    changes['$dn$'] = dn
+    res = client.umc_command('udm/put', [{'object': changes}], 'groups/group').result[0]
+    if not expected:
+        assert not res['success']
+        assert res['details'] == _('Permission denied.') or res['details'].startswith(_('No such object:'))
+    else:
+        assert res['success']
+
+
+@check_delegation
 @pytest.mark.parametrize('login_user, objectProperty, objectPropertyValue, expected', [
     ('admin', 'None', '', ["all"]),
     ('admin', 'None', '*trator', ["admin"]),
