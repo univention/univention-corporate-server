@@ -1,8 +1,9 @@
-univention-ldap (18.2.0) UNRELEASED; urgency=medium
+univention-ldap (18.2.0) unstable; urgency=medium
 
+  * Bug #57393: Configure eq index for univentionObjectIdentifier by default
   * Bug #58344 UCS 5.2-2 version bump
 
- -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 28 May 2025 16:49:46 +0200
+ -- Arvid Requate <requate@univention.de>  Fri, 23 May 2025 15:26:28 +0200
 
 univention-ldap (18.1.0) unstable; urgency=medium
 

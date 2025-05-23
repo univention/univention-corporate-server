@@ -304,6 +304,7 @@ RECOMMENDED_LDAP_INDEX = {
         'univentionMailHomeServer',
         'univentionNagiosHostname',
         'univentionObjectFlag',
+        'univentionObjectIdentifier',
         'univentionObjectType',
         'univentionPolicyReference',
         'univentionServerRole',

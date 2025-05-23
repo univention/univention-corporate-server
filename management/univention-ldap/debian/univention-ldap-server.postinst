@@ -124,6 +124,7 @@ ucr set \
 eval "$(univention-config-registry shell)"
 
 stop_slapd
+## careful, if slapd is not running the following command will re-index everything in case there are changes
 /usr/share/univention-ldap/ldap_setup_index --add-defaults
 start_slapd
 
@@ -216,7 +217,6 @@ if [ "$1" = "configure" ]; then
 			fi
 		fi
 	fi
-
 fi
 
 
