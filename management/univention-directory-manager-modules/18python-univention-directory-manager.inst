@@ -36,7 +36,7 @@
 ## joinscript api: bindpwdfile
 
 # shellcheck disable=SC2034
-VERSION=4
+VERSION=5
 # shellcheck disable=SC1091
 . /usr/share/univention-join/joinscripthelper.lib
 # shellcheck disable=SC1091
@@ -96,6 +96,18 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position="cn=univention,$ldap_base" \
 	--set name="data" \
 	--set description="LDAP data storage." || die
+
+if [ "$server_role" = "domaincontroller_master" ]; then
+	univention-directory-manager policies/registry create "$@" \
+		--position="cn=config-registry,cn=policies,$ldap_base" \
+		--ignore_exists \
+		--set name=activate-univention-object-identifier \
+		--set registry="directory/manager/object-identifier/autogeneration \"true\""
+
+	univention-directory-manager container/dc modify "$@" \
+		--dn "$ldap_base" \
+		--policy-reference "cn=activate-univention-object-identifier,cn=config-registry,cn=policies,$ldap_base"
+fi
 
 stop_udm_cli_server
 

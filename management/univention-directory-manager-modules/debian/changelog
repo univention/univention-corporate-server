@@ -1,7 +1,7 @@
 univention-directory-manager-modules (17.1.0) unstable; urgency=medium
 
   * Bug #58318: Set default for directory/manager/object-identifier/autogeneration
-    to true
+    to true and set a udm policy to set the new default also on all other UCS systems
   * Bug #58344 UCS 5.2-2 version bump
 
  -- Arvid Requate <requate@univention.de>  Fri, 23 May 2025 16:00:47 +0200
