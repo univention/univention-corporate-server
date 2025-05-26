@@ -1,8 +1,9 @@
-univention-management-console-module-diagnostic (8.2.0) UNRELEASED; urgency=medium
+univention-management-console-module-diagnostic (8.1.0) unstable; urgency=medium
 
+  * Bug #58318: Diagnostic module for univentionObjectIdentifier
   * Bug #58344 UCS 5.2-2 version bump
 
- -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 28 May 2025 16:49:47 +0200
+ -- Arvid Requate <requate@univention.de>  Mon, 26 May 2025 19:50:45 +0200
 
 univention-management-console-module-diagnostic (8.0.20) unstable; urgency=medium
 

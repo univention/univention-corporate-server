@@ -1175,6 +1175,20 @@ msgstr ""
 "Anzahl unspezifischer Windows-Computer-Objekte mit inkonsistentem "
 "univentionObjectType: %d (Lässt sich nicht automatisiert korrigieren)"
 
+#: plugins/58_univentionObjectIdentifier.py:45
+msgid "All objects of class \"univentionObject\" should have the attribute \"univentionObjectIdentifier\" in OpenLDAP."
+msgstr "Alle Objekte der Klasse \"univentionObject\" sollten das Attribut \"univentionObjectIdentifier\" tragen in OpenLDAP."
+
+#: plugins/58_univentionObjectIdentifier.py:64
+#, python-format
+msgid "Number of objects that should be fixed: %d"
+msgstr "Anzahl an Objekten die aktualisiert werden sollten: %d"
+
+#: plugins/58_univentionObjectIdentifier.py:67
+#, python-format
+msgid "Update %d LDAP objects"
+msgstr "%d LDAP-Objekte aktualisieren"
+
 #: plugins/59_ldap_server_name.py:43
 msgid "Check primary LDAP server"
 msgstr "Überprüfung des primären LDAP-Servers"
