@@ -82,16 +82,20 @@ def test_delete(username, position, random_username):
     assert users == []
 
 
-@pytest.mark.parametrize('username, expected_count', [
-    ("Administrator", 113),
-    ("ou1admin", 10),
+@pytest.mark.parametrize('username', [
+    ("Administrator"),
+    ("ou1admin"),
 ])
-def test_search(username, expected_count):
+def test_search(username, udm):
     udm_rest = create_udm_rest_client(username)
     user_module = udm_rest.get('users/user')
     user_list = list(user_module.search('uid=*'))
-    assert len(user_list) == expected_count
+
+    if username == "Administrator":
+        assert len(user_list) == len(udm.list_objects('users/user', properties=['DN']))
     if username == "ou1admin":
+        assert len(user_list) < len(udm.list_objects('users/user', properties=['DN']))
+        assert len(user_list) == len(udm.list_objects('users/user', properties=['DN'], position="ou=ou1"))
         user_list_ou1 = list(user_module.search('uid=*ou1*'))
         assert len(user_list) == len(user_list_ou1)
 
