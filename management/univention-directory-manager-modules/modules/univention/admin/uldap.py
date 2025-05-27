@@ -38,7 +38,6 @@ from logging import getLogger
 
 import ldap
 
-import univention.admin.authorization
 import univention.admin.license
 import univention.uldap
 from univention.admin import localization
@@ -474,10 +473,12 @@ class access:
         self.allow_modify = True
         self.licensetypes = ['UCS']
 
-        def _get_authz_connection():
-            return self
-        self._authz_connection_getter = _get_authz_connection
-        self.authz = univention.admin.authorization.Authorization()
+        self._authz_connection_getter = self.__get_authz_connection
+        from univention.admin.authorization import Authorization
+        self.authz = Authorization()
+
+    def __get_authz_connection(self):
+        return self
 
     @property
     def authz_connection(self):
