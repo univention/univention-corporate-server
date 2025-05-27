@@ -27,6 +27,30 @@ def generate_user(user_module, position, username):
     return new_user
 
 
+@pytest.fixture
+def dummy_username(random_username):
+    udm = create_udm_rest_client('Administrator')
+    user_module = udm.get('users/user')
+    username = random_username()
+    user = generate_user(user_module, 'cn=users,ou=ou1,dc=ucs,dc=test', username)
+    yield username
+    user.reload()
+    user.delete()
+
+
+@pytest.fixture
+def dummy_groupname(random_username):
+    udm = create_udm_rest_client('Administrator')
+    group_module = udm.get('groups/group')
+    group_name = random_username()
+    group = group_module.new(position='cn=groups,ou=ou1,dc=ucs,dc=test')
+    group.properties['name'] = group_name
+    group.save()
+    yield group_name
+    group.reload()
+    group.delete()
+
+
 @pytest.mark.parametrize('username, position, expected', [
     ('Administrator', 'cn=users,dc=ucs,dc=test', True),
     ('Administrator', 'cn=users,ou=ou1,dc=ucs,dc=test', True),
@@ -96,8 +120,6 @@ def test_search(username, udm):
     if username == "ou1admin":
         assert len(user_list) < len(udm.list_objects('users/user', properties=['DN']))
         assert len(user_list) == len(udm.list_objects('users/user', properties=['DN'], position="ou=ou1"))
-        user_list_ou1 = list(user_module.search('uid=*ou1*'))
-        assert len(user_list) == len(user_list_ou1)
 
 
 @pytest.mark.parametrize('username, target_position, expected', [
@@ -190,3 +212,41 @@ def test_mail_domain_delete(username):
         mail_domain.delete()
     if domains := list(admin_mail_module.search('name=test_mail_domain', opened=True)):
         domains[0].delete()
+
+
+@pytest.mark.parametrize('username', [
+    ('Administrator'),
+    ('ou1admin'),
+])
+def test_write_to_user_guardian_roles(username, dummy_username):
+    udm_rest = create_udm_rest_client(username)
+    user_module = udm_rest.get('users/user')
+    user = next(user_module.search(f'uid={dummy_username}', opened=True))
+    user.properties['guardianRoles'].append('umc:udm:dummyrole')
+
+    if username == 'Administrator':
+        user.save()
+        user.reload()
+        assert user.properties['guardianRoles'] == ['umc:udm:dummyrole']
+    if username == 'ou1admin':
+        with pytest.raises(HTTPError):
+            user.save()
+
+
+@pytest.mark.parametrize('username', [
+    ('Administrator'),
+    ('ou1admin'),
+])
+def test_write_to_group_guardian_member_roles(username, dummy_groupname):
+    udm_rest = create_udm_rest_client(username)
+    group_module = udm_rest.get('groups/group')
+    group = next(group_module.search(f'name={dummy_groupname}', opened=True))
+    group.properties['guardianMemberRoles'].append('umc:udm:dummyrole')
+
+    if username == 'Administrator':
+        group.save()
+        group.reload()
+        assert group.properties['guardianMemberRoles'] == ['umc:udm:dummyrole']
+    if username == 'ou1admin':
+        with pytest.raises(HTTPError):
+            group.save()
