@@ -1,3 +1,10 @@
+ucs-test (12.1.16) unstable; urgency=medium
+
+  * Issue #2295: revert "do not make the tests fail that grep for
+    tracebacks in various log files"
+
+ -- Florian Best <best@univention.de>  Tue, 27 May 2025 09:23:22 +0200
+
 ucs-test (12.1.15) unstable; urgency=medium
 
   * Bug #58252: Move import into fixture to avoid import errors in some school tests
