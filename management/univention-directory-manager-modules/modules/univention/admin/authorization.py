@@ -381,9 +381,14 @@ class Authorization:
     @classmethod
     def inject_ldap_connection(cls, user_connection, metadata=None):
         if cls.enabled:
-            user_connection.set_authz_connection_getter(cls.get_privileged_connection)
             user_connection.metadata = metadata
         return user_connection
+
+    @classmethod
+    def get_authz_connection(cls, lo):
+        if cls.enabled:
+            return cls.get_privileged_connection()
+        return lo
 
     @property
     def lo(self):

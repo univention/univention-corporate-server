@@ -380,6 +380,8 @@ class position:
 class access:
     """A |UDM| class to access a |LDAP| server."""
 
+    authz = None
+
     @property
     def binddn(self):
         # type: () -> str | None
@@ -473,12 +475,9 @@ class access:
         self.allow_modify = True
         self.licensetypes = ['UCS']
 
-        self._authz_connection_getter = self.__get_authz_connection
-        from univention.admin.authorization import Authorization
-        self.authz = Authorization()
-
-    def __get_authz_connection(self):
-        return self
+        if self.authz is None:
+            from univention.admin.authorization import Authorization
+            self.__class__.authz = Authorization()
 
     @property
     def authz_connection(self):
@@ -487,10 +486,7 @@ class access:
 
         .. warning :: use carefully: only in combination with manual access control checks to prevent information leak or priviledge escalation
         """
-        return self._authz_connection_getter()
-
-    def set_authz_connection_getter(self, cb):
-        self._authz_connection_getter = cb
+        return self.authz.get_authz_connection(self)
 
     def bind(self, binddn, bindpw):
         # type: (str, str) -> None
