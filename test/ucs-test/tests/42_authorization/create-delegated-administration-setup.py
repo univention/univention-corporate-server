@@ -14,8 +14,14 @@ from univention.udm import UDM
 from univention.udm.exceptions import CreateError, NoObject
 
 
-# activate delegated administration
-handler_set(['umc/udm/delegation=true', 'directory/manager/rest/enable-delegative-administration=true', 'directory/manager/rest/authorized-groups/test-api-access=cn=test-api-access,cn=groups,dc=ucs,dc=test'])
+# TODO: add to documentation
+# activate autorization in UMC and UDM-REST
+handler_set(['umc/udm/delegation=true', 'directory/manager/rest/enable-delegative-administration=true'])
+
+# TODO: add to documentation
+# enable UDM-REST for group used in tests
+handler_set(['directory/manager/rest/authorized-groups/test-api-access=cn=test-api-access,cn=groups,dc=ucs,dc=test'])
+
 check_call(['systemctl', 'restart', 'univention-management-console-server'])
 check_call(['systemctl', 'restart', 'univention-directory-manager-rest'])
 
