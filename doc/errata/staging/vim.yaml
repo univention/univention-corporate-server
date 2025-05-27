@@ -1,0 +1,25 @@
+product: ucs
+release: "5.0"
+version: [9, 10]
+scope: ucs_5.0-0-errata5.0-10
+src: vim
+fix: 2:8.1.0875-5+deb10u7
+desc: |
+ This update addresses the following issues:
+ * CVSS score 8.4 (CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2024-22667)
+ * CVSS score 7.8 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2023-4738)
+ * CVSS score 5.3 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:L).
+   (CVE-2023-5344)
+ * CVSS score 4.5 (CVSS:3.1/AV:L/AC:H/PR:N/UI:R/S:U/C:L/I:L/A:L).
+   (CVE-2024-43802)
+ * CVSS score 3.9 (CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:N/I:L/A:L).
+   (CVE-2024-47814)
+bug: [58334]
+cve:
+- CVE-2023-4738
+- CVE-2023-5344
+- CVE-2024-22667
+- CVE-2024-43802
+- CVE-2024-47814
