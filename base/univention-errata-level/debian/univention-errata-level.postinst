@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-ucr set version/erratalevel=34
+ucr set version/erratalevel=118
 
 #DEBHELPER#
 

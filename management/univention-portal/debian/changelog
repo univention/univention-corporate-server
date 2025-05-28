@@ -1,3 +1,9 @@
+univention-portal (6.2.0) UNRELEASED; urgency=medium
+
+  * Bug #58344 UCS 5.2-2 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 28 May 2025 16:49:48 +0200
+
 univention-portal (6.1.2) unstable; urgency=medium
 
   * Bug #58280: make hiding of FQDN and server address in meta.json configurable

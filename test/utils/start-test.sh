@@ -4,7 +4,7 @@
 #
 
 # defaults for release
-release='5.2-1'  #
+release='5.2-2'  #
 export CURRENT_AMI="${CURRENT_AMI:=ami-0c5d8b348ec0d0b99}"  # AMI: Univention Corporate Server (UCS) 5.2 (official image) rev. 2
 old_release='5.0-10'  #
 export OLD_AMI="${OLD_AMI:=ami-0d29832308bf979df}"  # AMI: Univention Corporate Server (UCS) 5.0 (official image) rev. 10
