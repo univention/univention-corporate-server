@@ -1,8 +1,12 @@
-ucs-test (12.2.0) UNRELEASED; urgency=medium
+ucs-test (12.2.0) unstable; urgency=medium
 
+  [ Ivan Barbecho Delgado ]
   * Bug #58344 UCS 5.2-2 version bump
 
- -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 28 May 2025 16:49:57 +0200
+  [ Florian Best ]
+  * Issue #2295: ignore tracebacks which occur in UCS 5.2 again
+
+ -- Florian Best <best@univention.de>  Mon, 02 Jun 2025 08:45:39 +0200
 
 ucs-test (12.1.17) unstable; urgency=medium
 
