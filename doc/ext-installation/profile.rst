@@ -601,7 +601,7 @@ the correct location in :file:`/var/lib/univention-client-boot/installer/`.
 Instead of mounting the DVD a downloaded ISO image can also be mounted by using
 :command:`mount -o loop,ro /path/to/UCS.iso /media/cdrom0`. Alternatively the
 files can be downloaded from
-`<http://updates.software-univention.de/pxe/5.2-1/amd64/gtk/debian-installer/amd64/>`_:
+`<http://updates.software-univention.de/pxe/5.2-2/amd64/gtk/debian-installer/amd64/>`_:
 
 .. code-block:: console
 
