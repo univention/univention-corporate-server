@@ -8,14 +8,15 @@
 import pytest
 
 from univention.admin.rest.client import UDM as UDM_REST, HTTPError
-from univention.config_registry import ConfigRegistry
+from univention.config_registry import ucr as _ucr
 from univention.testing import utils
 
 
+pytestmark = pytest.mark.skipif(not _ucr.is_true('umc/udm/delegation'), reason='umc/udm/delegation not activated')
+
+
 def create_udm_rest_client(username):
-    ucr = ConfigRegistry()
-    ucr.load()
-    return UDM_REST('https://%(hostname)s.%(domainname)s/univention/udm/' % ucr, username=username, password=utils.UCSTestDomainAdminCredentials().bindpw)
+    return UDM_REST('https://%(hostname)s.%(domainname)s/univention/udm/' % _ucr, username=username, password=utils.UCSTestDomainAdminCredentials().bindpw)
 
 
 def generate_user(user_module, position, username):
