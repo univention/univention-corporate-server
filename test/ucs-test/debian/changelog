@@ -1,3 +1,9 @@
+ucs-test (12.1.18) unstable; urgency=medium
+
+  * Issue #2295: ignore tracebacks which occur in UCS 5.2 again
+
+ -- Florian Best <best@univention.de>  Wed, 28 May 2025 16:44:35 +0200
+
 ucs-test (12.1.17) unstable; urgency=medium
 
   * Bug #58214: Test allow trusting hosts for UMC self-service rate limit

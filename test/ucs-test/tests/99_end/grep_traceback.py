@@ -179,7 +179,7 @@ COMMON_EXCEPTIONS = (
     # E('univention.admin.uexceptions.permissionDenied: Can not modify lock time of .*', ['in sync_to_ucs']),
     E(r'^(univention\.admin\.uexceptions\.)?noObject:.*', ['__update_membership', 'sync_to_ucs', 'get_ucs_object']),
     # E('^ldapError: No such object', ['in _create']),
-    # E(r"^PAM.error: \('Authentication failure', 7\)", [re.escape('<string>')]),
+    E(r"^PAM.error: \('Authentication failure', 7\)", [re.escape('<string>')]),
     # E(r'^univention.lib.umc.Forbidden: 403 on .* \(command/join/scripts/query\):.*', [re.escape('<string>')]),
     # E('^ldapError: Invalid syntax: univentionLDAPACLActive: value #0 invalid per syntax', ['_create']),
     # E('^ldapError: Invalid syntax: univentionLDAPSchemaActive: value #0 invalid per syntax', ['_create']),
@@ -210,7 +210,7 @@ COMMON_EXCEPTIONS = (
     # E("AttributeError: 'ConfigRegistry' object has no attribute '_walk'", ['univention-directory-listener/system/nfs-shares.py'], (53291, 53862)),
     # E("AttributeError: 'module' object has no attribute 'localization'", ['univention-directory-listener/system/app_attributes.py', 'system/portal_groups.py'], 53862),
     # E("ImportError: cannot import name localization", ['univention-directory-listener/system/app_attributes.py'], 53862),
-    E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention-self-service-invitation'], 53670),
+    E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention-self-service-invitation', 'urllib/request.py'], 53670),
     E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention/lib/umc.py.*in send'], 53670),
     E("univention.lib.umc.ConnectionError: .*Could not send request.*Connection refused", ['univention-self-service-invitation'], 53670),
     E("ssl.SSLCertVerificationError.*self.signed certificate in certificate chain", ['univention/lib/umc.py.*in send'], 53670),
@@ -221,8 +221,13 @@ COMMON_EXCEPTIONS = (
     # # during UCS 5.0-x-errata updates
     # E(r"TypeError: __init__\(\) got an unexpected keyword argument 'cli_enabled'", ['_register_app'], 54584),
     # E(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/usr/share/univention-management-console/oidc/oidc.json'", ['server.py'], 49006),
+    E(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/usr/share/univention-portal/portals.json'", ['/usr/sbin/univention-portal-server']),
+    E('ImportError: No module named univention.debug', ['/usr/sbin/univention-management-console-module']),
+    E('pkg_resources.VersionConflict:.*univention-management-console'),
+    E('pkg_resources.DistributionNotFound:.*univention-management-console'),
 
     # # updater test cases:
+    E('EOFError: EOF when reading a line', ['scripts/upgrade.py']),
     E('urllib.error.URLError: .*', ['updater/tools.py.*in access']),
     E('urllib.error.HTTPError: .*', ['updater/tools.py.*in access']),
     E('ConfigurationError: Configuration error: host is unresolvable'),
@@ -234,14 +239,16 @@ COMMON_EXCEPTIONS = (
     E('socket.timeout: timed out'),
     E('TimeoutError: timed out'),
     E(r'socket.gaierror: \[Errno \-2\] Name or service not known'),
-    # E('ConfigurationError: Configuration error: Temporary failure in name resolution', ['in access']),
-    # E(r'socket.gaierror: \[Errno \-3\] Temporary failure in name resolution', ['urllib/request.py']),
+    E('ConfigurationError: Configuration error: Temporary failure in name resolution', ['in access']),
+    E(r"socket.gaierror: \[Errno \-3\] Temporary failure in name resolution", ['urllib/request.py']),
     # # 10_ldap/listener_module_testpy
     E('MyTestException: .*'),
     E('univention.management.console.modules.ucstest.ThreadedError'),  # 60_umc/17_traceback_handling.py
     # # various test cases:
     E('psycopg2.OperationalError: connection to server at "localhost".* failed: Connection refused', ['passwordreset/tokendb.py']),  # 83_self_service/13_test_postgresql_connection_loss.py
     E('psycopg2.OperationalError: SSL connection has been closed unexpectedly', ['passwordreset/tokendb.py']),  # 83_self_service/13_test_postgresql_connection_loss.py
+    E('psycopg2.OperationalError: SSL-Verbindung wurde unerwartet geschlossen', ['passwordreset/tokendb.py']),  # 83_self_service/13_test_postgresql_connection_loss.py
+    E('psycopg2.OperationalError: Verbindung zum Server auf ,*localhost.* fehlgeschlagen: Verbindungsaufbau abgelehnt', ['passwordreset/tokendb.py']),  # 83_self_service/13_test_postgresql_connection_loss.py
     # E('AssertionError: .*contain.*traceback.*', ['01_var_log_tracebacks']),
     E('^(univention.management.console.modules.ucstest.)?NonThreadedError$'),
     E(r'^(ldap\.)?INVALID_SYNTAX: .*ABCDEFGHIJKLMNOPQRSTUVWXYZ.*', ['sync_from_ucs']),
@@ -347,6 +354,10 @@ COMMON_EXCEPTIONS = (
     E('ldap.ALREADY_EXISTS.*already set via primaryGroupID', ['in sync_from_ucs'], 53278),
     # E('ldap.NOT_ALLOWED_ON_NONLEAF:.*Unable to delete a non-leaf node .*it has .* child', ['in delete_in_s4'], 53278),
     # E('univention.admin.uexceptions.valueError: The domain part of the primary mail address is not in list of configured mail domains:', ['in sync_to_ucs'], 53277),
+    E('univention.admin.uexceptions.mailAddressUsed: The mail address is already in use:', ['in sync_to_ucs']),
+    E("univention.admin.uexceptions.noLock: Could not acquire lock: The attribute 'mailPrimaryAddress' could not get locked.", ['in _ldap_pre_ready']),
+    E('univention.admin.uexceptions.groupNameAlreadyUsed: The groupname is already in use as groupname or as username: Users.', ['in sync_to_ucs']),
+    E("univention.admin.uexceptions.noLock: Could not acquire lock: The attribute 'groupName' could not get locked.", ['in _ldap_pre_ready']),
     # E(r"subprocess.CalledProcessError: Command '\('rndc', 'reconfig'\)' returned non-zero exit status 1", ['univention-fix-ucr-dns'], 53332),
     # E(r"ldap.NO_SUCH_OBJECT: .*objectclass: Cannot add cn=(user|machine),cn=\{[0-9a-f-]+\},cn=policies,cn=system,DC=.*parent does not exist", ['in sync_from_ucs'], 53334),
     # E("TypeError: 'NoneType' object is not subscriptable", ['primary_group_sync_to_ucs', 'add_primary_group_to_addlist'], 53276),
