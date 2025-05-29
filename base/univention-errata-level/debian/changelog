@@ -1,3 +1,10 @@
+univention-errata-level (5.2.2-118) unstable; urgency=medium
+
+  * Bug #58344 UCS 5.2-2 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Thu, 29 May 2025 07:20:44 +0200
+
+
 univention-errata-level (5.2.1-34) unstable; urgency=medium
 
   * Bug #58015 UCS 5.2-1 version bump
