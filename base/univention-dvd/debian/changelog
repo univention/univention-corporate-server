@@ -1,6 +1,7 @@
-univention-dvd (7.2.0) UNRELEASED; urgency=medium
+univention-dvd (7.2.0) unstable; urgency=medium
 
   * Bug #58344 UCS 5.2-2 version bump
+  * Bug #58351: UCS-5.2-2 ISO
 
  -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 28 May 2025 16:49:56 +0200
 
