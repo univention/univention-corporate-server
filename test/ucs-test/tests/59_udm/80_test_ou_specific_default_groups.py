@@ -36,7 +36,6 @@ def primary_group_setup(udm, random_string, ldap_base):
 
 @pytest.fixture
 def create_user():
-
     users_created = []
     lo = utils.get_ldap_connection(admin_uldap=True)
     pos = position(lo.base)
