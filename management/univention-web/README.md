@@ -1,4 +1,4 @@
-=== Build ===
+# Build
 
 In order to build the UMC application, call 'make build'. This will start the
 Dojo build process and will create a compressed JavaScript file that contains
@@ -7,7 +7,7 @@ exist as separate module files which are also compressed. The build process
 will create a new subdirectory 'build' to which all necessary files are store.
 
 
-=== Development ===
+# Development
 
 The Dojo build process takes some time. In order to develop, call "make
 build-dev" to shorten the build process. The directory tmp is then created and
@@ -20,7 +20,7 @@ Stylus files need to compiled to CSS files, nevertheless. Simply run "make
 build-dev" to recompile only CSS files.
 
 
-=== Debugging ===
+# Debugging
 
 Debugging in JavaScript can be somewhat cumbersome since modules are loaded
 dynamically by Dojo. Error messages thus do not have useful tracebacks (they
