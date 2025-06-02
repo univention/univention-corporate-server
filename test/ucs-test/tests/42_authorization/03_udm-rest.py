@@ -5,6 +5,7 @@
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
 ## exposure: dangerous
+
 import pytest
 
 from univention.admin.rest.client import UDM as UDM_REST, HTTPError
@@ -12,7 +13,7 @@ from univention.config_registry import ucr as _ucr
 from univention.testing import utils
 
 
-pytestmark = pytest.mark.skipif(not _ucr.is_true('umc/udm/delegation'), reason='umc/udm/delegation not activated')
+pytestmark = pytest.mark.skipif(not _ucr.is_true('directory/manager/rest/enable-delegative-administration'), reason='authz not activated')
 
 
 def create_udm_rest_client(username):
@@ -192,7 +193,6 @@ def test_mail_domain_create(username):
     ('ou1admin'),
 ])
 def test_mail_domain_delete(username):
-
     #  Create domain to be deleted and admin udm_rest client for
     #  test cleanup
     admin_udm_rest = create_udm_rest_client('Administrator')
