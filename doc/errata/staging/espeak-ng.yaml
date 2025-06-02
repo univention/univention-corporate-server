@@ -1,0 +1,19 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: espeak-ng
+fix: 1.49.0+dfsg-11+deb9u1
+desc: |
+ This update addresses the following issues:
+ * CVSS score 5.5 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+   (CVE-2023-49994)
+ * CVSS score 5.3 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:L).
+   (CVE-2023-49993, CVE-2023-49992, CVE-2023-49991, CVE-2023-49990)
+bug: [58364]
+cve:
+- CVE-2023-49990
+- CVE-2023-49991
+- CVE-2023-49992
+- CVE-2023-49993
+- CVE-2023-49994
