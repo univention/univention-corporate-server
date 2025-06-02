@@ -1,0 +1,19 @@
+product: ucs
+release: "5.0"
+version: [9, 10]
+scope: ucs_5.0-0-errata5.0-10
+src: espeak-ng
+fix: 1.49.2+dfsg-8+deb10u2
+desc: |
+ This update addresses the following issues:
+ * CVSS score 5.5 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+   (CVE-2023-49994)
+ * CVSS score 5.3 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:L).
+   (CVE-2023-49993, CVE-2023-49992, CVE-2023-49991, CVE-2023-49990)
+bug: [58362]
+cve:
+- CVE-2023-49990
+- CVE-2023-49991
+- CVE-2023-49992
+- CVE-2023-49993
+- CVE-2023-49994
