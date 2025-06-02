@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: net-tools
+fix: 1.60+git20161116.90da8a0-1+deb9u1
+desc: |
+ This update addresses the following issue:
+ * CVSS score 6.6 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:H).
+   (CVE-2025-46836)
+bug: [58365]
+cve:
+- CVE-2025-46836
