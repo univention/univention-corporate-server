@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [9, 10]
+scope: ucs_5.0-0-errata5.0-10
+src: libvpx
+fix: 1.7.0-3+deb10u4
+desc: |
+ This update addresses the following issue:
+ * CVSS score 5.4 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:N).
+   (CVE-2025-5283)
+bug: [58360]
+cve:
+- CVE-2025-5283
