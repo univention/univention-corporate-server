@@ -16,6 +16,7 @@ import pytest
 import grep_traceback
 
 
+@pytest.mark.xfail(reason='If one test case fails this will also fail. Curently the information are not so relevant.')
 @pytest.mark.exposure('safe')
 def test_ucs_test_logfile():
     """Find traceback in ucs-test logfile"""
