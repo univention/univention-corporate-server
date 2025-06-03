@@ -41,7 +41,8 @@ from univention.admin.authorization import Authorization
 
 def init_the_service()
     base = ucr.get('ldap/base')
-    admin_connection_getter = lambda: univention.admin.uldap.getAdminConnection()
+    lo_admin = univention.admin.uldap.getAdminConnection()  # cache somehwere
+    admin_connection_getter = lambda: lo_admin
     Authorization.enable(admin_connection_getter)
 
     # get user connection
