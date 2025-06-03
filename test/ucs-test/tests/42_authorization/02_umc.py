@@ -74,7 +74,7 @@ def test_ouadmin_default_containers(ou, ldap_base):
     ('ou_admin', 'cn=users,{ldap_base}', False),
     ('ou_admin', '{ldap_base}', False),
 ])
-def test_delete(ou, ldap_base, random_username, login_user, position, expected, udm):
+def test_user_delete(ou, ldap_base, random_username, login_user, position, expected, udm):
     cn_user = udm.create_object(
         'users/user',
         lastname=random_username(),
@@ -113,7 +113,7 @@ def test_delete(ou, ldap_base, random_username, login_user, position, expected, 
     ('ou_admin', 'cn=users,{ldap_base}', False),
     ('ou_admin', '{ldap_base}', False),
 ])
-def test_create(ou, ldap_base, random_username, login_user, position, expected):
+def test_user_create(ou, ldap_base, random_username, login_user, position, expected):
     client = Client()
     if login_user == "admin":
         client = Client.get_test_connection()
@@ -150,7 +150,7 @@ def test_create(ou, ldap_base, random_username, login_user, position, expected):
     ('ou_admin', 'description', 'tes*', ["cn_test"]),
     ('ou_admin', 'description', '*est', ["cn_test"]),
 ])
-def test_search(random_username, ou, login_user, objectProperty, objectPropertyValue, expected, udm):
+def test_user_search(random_username, ou, login_user, objectProperty, objectPropertyValue, expected, udm):
     dn_test = None
     if objectProperty != "None":
         config = {
@@ -214,8 +214,7 @@ def wait_for_progress(client, progress_id):
     ('admin', '{normal_user}', '{ou_cn_users}', True),
     ('ou_admin', '{normal_user}', '{ou_cn_users}', True),
 ])
-def test_move(ldap_base, ou, login_user, user_dn, target_position, expected, udm, random_username):
-
+def test_user_move(ldap_base, ou, login_user, user_dn, target_position, expected, udm, random_username):
     dn = udm.create_object(
         'users/user',
         lastname=random_username(),
@@ -254,7 +253,7 @@ def test_move(ldap_base, ou, login_user, user_dn, target_position, expected, udm
     ('ou_admin', '{normal_user}', None, True),
     ('ou_admin', '{normal_user}', 'guardianRoles', True),
 ])
-def test_read(ldap_base, ou, login_user, user_dn, attribute, expected):
+def test_user_read(ldap_base, ou, login_user, user_dn, attribute, expected):
     if login_user == "admin":
         client = Client.get_test_connection()
     elif login_user == "ou_admin":
@@ -304,7 +303,7 @@ def test_read(ldap_base, ou, login_user, user_dn, attribute, expected):
     ('admin', 'uid=Administrator,cn=users,{ldap_base}', {'description': 'dsfdsf'}, True),
     ('ou_admin', 'uid=Administrator,cn=users,{ldap_base}', {'description': 'dsfdsf'}, False),
 ])
-def test_modify_attr(ldap_base, ou, login_user, user, changes, expected, udm, random_username):
+def test_user_modify_attr(ldap_base, ou, login_user, user, changes, expected, udm, random_username):
     dn = udm.create_object(
         'users/user',
         lastname=random_username(),
