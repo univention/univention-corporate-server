@@ -306,8 +306,149 @@ def user_may_move(obj: object, dest: str, actor_roles_func: callable) -> None:
     # user_may_modify(obj, actor_roles_func)  # optional
     actor_roles = actor_roles_func()
     cap = _get_capabilities(actor_roles)
-    if not _check_permissions_delete(obj, cap):
-        raise Forbidden()
-    if not _check_permissions_create(dest, cap):
-        raise Forbidden()
-    return
+    return _check_permissions_delete(obj, cap) and _check_permissions_create(dest, cap)
+
+
+def get_user_roles(lo, user_dn: str) -> None:
+    # code from components/authorization-engine/guardian/authorization-api/guardian_authorization_api/adapters/persistence.py
+    re_split_roles_and_contexts = re.compile(r"^((?P<role_app>[a-z0-9-_]+):(?P<role_namespace>[a-z0-9-_]+):(?P<role_name>[a-z0-9-_]+))(&(?P<context_app>[a-z0-9-_]+):(?P<context_namespace>[a-z0-9-_]+):(?P<context_name>[a-z0-9-_=,]+))?$")
+    # FIXME: Why doesn't this allow at least "=" and "," at least in "context_name"?
+    # Basically it should allow everything valid in an LDAP DN!? I.e.  case insensitive UTF-8 see https://ldapwiki.com/wiki/Wiki.jsp?page=Distinguished%20Name%20Case%20Sensitivity and https://ldapwiki.com/wiki/Wiki.jsp?page=Ou
+
+    data = lo.authz_connection.get(user_dn, attr=['univentionObjectType'])
+    mod = univention.admin.modules.get(data['univentionObjectType'][0].decode('UTF-8'))
+    obj = mod.object(None, lo, None, user_dn)
+    obj.open()
+    if hasattr(obj, 'open_guardian'):
+        obj.open_guardian()
+    role_set = set(obj.get("guardianInheritedRoles", []) + obj.get("guardianRoles", []))
+
+    __user_roles = {}
+    # simulating guardian_authorization_api.adapters.persistence.UDMPersistenceAdapter._to_policy_role()
+    for role in role_set:
+        if role.startswith("umc:udm:"):
+            res = re.search(re_split_roles_and_contexts, role)
+            if res:
+                res.groupdict()
+                __user_roles.setdefault(res["role_name"], [])
+                if res["context_name"]:
+                    __user_roles[res["role_name"]].append(res["context_name"])
+    log.info('Setting user roles to %s', __user_roles)
+    return __user_roles
+
+
+class Authorization:
+    """Check authorization via access control lists"""
+
+    enabled = False
+    get_privileged_connection = lambda: None  # noqa: E731
+    _cache_user_roles = {}
+    _cache_univention_object_identifier = {}
+
+    @classmethod
+    def enable(cls, get_privileged_connection):
+        """Enables ACL checking globally if the running service supports it"""
+        cls.enabled = True
+        cls.get_privileged_connection = get_privileged_connection
+
+    @classmethod
+    def inject_ldap_connection(cls, user_connection, metadata=None):
+        if cls.enabled:
+            user_connection.metadata = metadata
+        return user_connection
+
+    @classmethod
+    def get_authz_connection(cls, lo):
+        if cls.enabled:
+            lo_admin = cls.get_privileged_connection()
+            if cls._cache_univention_object_identifier.get(lo.binddn) is None:
+                cls._cache_univention_object_identifier[lo.binddn] = lo_admin.lo.get_univention_object_identifier(lo.binddn)
+            lo_admin.lo.set_univention_object_identifier(cls._cache_univention_object_identifier[lo.binddn])
+            return lo_admin
+        return lo
+
+    @property
+    def lo(self):
+        return self.__class__.get_privileged_connection()
+
+    def _user_roles(self, lo):
+        actor_dn = lo.binddn
+        if self._cache_user_roles.get(actor_dn) is None:
+            self._cache_user_roles[actor_dn] = get_user_roles(self.lo, actor_dn)
+        return lambda: self._cache_user_roles[actor_dn]
+
+    def is_receive_allowed(self, obj, raise_exception=True):
+        if not self.enabled:
+            return True
+        try:
+            may_read(obj, self._user_roles(obj.lo))
+        except permissionDenied:
+            if not raise_exception:
+                return False
+            raise
+        return True
+
+    def filter_search_results(self, lo, results, options=None):
+        if not self.enabled:
+            return results
+
+        # FIXME: remove this performance intensive search!!!
+        options = options or {}
+        result_is_dn = options.pop('result-is-ldap-dn', None)
+        if result_is_dn:
+            options['result-is-udm'] = True
+            results = [univention.admin.objects.get_object(lo, dn) for dn in results]
+
+        data = may_read(results, self._user_roles(lo), filter_options=options)
+
+        if result_is_dn:
+            data = [obj.dn for obj in data]
+
+        return data
+
+    def is_create_allowed(self, obj, raise_exception=True):
+        if not self.enabled:
+            return True
+        if not may_create(obj, self._user_roles(obj.lo)):
+            if raise_exception:
+                raise permissionDenied()
+            return False
+        return True
+
+    def is_modify_allowed(self, obj, raise_exception=True):
+        if not self.enabled:
+            return True
+        if not may_modify(obj, self._user_roles(obj.lo)):
+            if raise_exception:
+                raise permissionDenied()
+            return False
+        return True
+
+    def is_rename_allowed(self, *args, **kwargs):
+        if not self.enabled:
+            return True
+        return True  # TODO: implement ?
+
+    def is_move_allowed(self, obj, dest, raise_exception=True):
+        if not self.enabled:
+            return True
+        moved_obj = copy.deepcopy(obj)
+        moved_obj.dn = dest
+        if not may_move(obj, moved_obj, self._user_roles(obj.lo)):
+            if raise_exception:
+                raise permissionDenied()
+            return False
+        return True
+
+    def is_remove_allowed(self, obj, raise_exception=True):
+        if not self.enabled:
+            return True
+        if not may_delete(obj, self._user_roles(obj.lo)):
+            if raise_exception:
+                raise permissionDenied()
+            return False
+        return True
+
+    def object_exists(self, obj):
+        if not self.is_receive_allowed(obj, raise_exception=False):
+            raise univention.admin.uexceptions.noObject(obj.dn)
