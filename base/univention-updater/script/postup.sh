@@ -139,14 +139,14 @@ find /usr/lib/python3/dist-packages/ -type d -not -perm 755 -name __pycache__ -e
 
 
 # Bug #52923 #57296: switch back to old fetchmail/autostart status
-if [ -n "$(ucr search "^fetchmail/autostart/update521$")" ] ; then
-	eval "$(ucr shell fetchmail/autostart/update521)"
-	if [ -z "$fetchmail_autostart_update521" ] ; then
+if [ -n "$(ucr search "^fetchmail/autostart/update522$")" ] ; then
+	eval "$(ucr shell fetchmail/autostart/update522)"
+	if [ -z "$fetchmail_autostart_update522" ] ; then
 		ucr unset fetchmail/autostart >&3 2>&3
 	else
-		ucr set fetchmail/autostart="$fetchmail_autostart_update521" >&3 2>&3
+		ucr set fetchmail/autostart="$fetchmail_autostart_update522" >&3 2>&3
 	fi
-	ucr unset fetchmail/autostart/update521 >&3 2>&3
+	ucr unset fetchmail/autostart/update522 >&3 2>&3
 	echo "Please note:" >&3
 	echo "The following fetchmail restart might fail if fetchmail is unconfigured." >&3
 	echo "This is usually no error." >&3
@@ -154,8 +154,8 @@ if [ -n "$(ucr search "^fetchmail/autostart/update521$")" ] ; then
 fi
 
 # remove backup packages sources
-rm -f /etc/apt/sources.list.d/15_ucs-online-version.list.upgrade521.bak
-rm -f /etc/apt/sources.list.d/20_ucs-online-component.list.upgrade521.bak
+rm -f /etc/apt/sources.list.d/15_ucs-online-version.list.upgrade522.bak
+rm -f /etc/apt/sources.list.d/20_ucs-online-component.list.upgrade522.bak
 
 echo "
 

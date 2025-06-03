@@ -133,8 +133,8 @@ mv /boot/*.bak "$initrd_backup" >/dev/null 2>&1
 
 # Bug #52923 #57296: disable fetchmail during update to prevent aborting update
 if dpkg -l univention-fetchmail 2>&3 | grep ^ii  >&3 ; then
-	if [ -z "$(ucr search "^fetchmail/autostart/update521$")" ] ; then
-		ucr set fetchmail/autostart/update521="$(ucr get fetchmail/autostart)" >&3
+	if [ -z "$(ucr search "^fetchmail/autostart/update522$")" ] ; then
+		ucr set fetchmail/autostart/update522="$(ucr get fetchmail/autostart)" >&3
 	fi
 	ucr set fetchmail/autostart=no >&3 2>&3
 	systemctl stop fetchmail >&3 2>&3 || :
@@ -161,7 +161,7 @@ deactivate_old_package_sources () {
 	local sources_lists
 	sources_lists=("/etc/apt/sources.list.d/15_ucs-online-version.list" "/etc/apt/sources.list.d/20_ucs-online-component.list")
 	for sources_list in "${sources_lists[@]}"; do
-		mv "$sources_list" "${sources_list}.upgrade521.bak"
+		mv "$sources_list" "${sources_list}.upgrade522.bak"
 	done
 }
 deactivate_old_package_sources
