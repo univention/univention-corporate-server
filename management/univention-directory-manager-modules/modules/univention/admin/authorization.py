@@ -375,6 +375,7 @@ class Authorization:
     enabled = False
     get_privileged_connection = lambda: None  # noqa: E731
     _cache_user_roles = {}
+    _cache_univention_object_identifier = {}
 
     @classmethod
     def enable(cls, get_privileged_connection):
@@ -391,7 +392,11 @@ class Authorization:
     @classmethod
     def get_authz_connection(cls, lo):
         if cls.enabled:
-            return cls.get_privileged_connection()
+            lo_admin = cls.get_privileged_connection()
+            if cls._cache_univention_object_identifier.get(lo.binddn) is None:
+                cls._cache_univention_object_identifier[lo.binddn] = lo_admin.lo.get_univention_object_identifier(lo.binddn)
+            lo_admin.lo.set_univention_object_identifier(cls._cache_univention_object_identifier[lo.binddn])
+            return lo_admin
         return lo
 
     @property
