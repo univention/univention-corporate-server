@@ -2,6 +2,10 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # SPDX-FileCopyrightText: 2025 Univention GmbH
 
+# Note:
+# When changing this script please also consider changing (via gitlab):
+# https://github.com/univention/container-udm-rest/blob/main/docker/ldap-update-univention-object-identifier/ldap-update-univention-object-identifier.py
+
 import logging
 from pprint import pformat
 from sys import stderr
