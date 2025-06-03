@@ -232,7 +232,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         if isinstance(exc, udm_errors.authFail | INVALID_CREDENTIALS):
             MODULE.warn('Authentication failed: %s' % (exc,))
             raise LDAP_AuthenticationFailed()
-        if isinstance(exc, udm_errors.permissionDenied):
+        if isinstance(exc, udm_errors.permissionDenied) or isinstance(exc, UDM_Error) and isinstance(exc.exc, udm_errors.permissionDenied):
             raise Forbidden(str(exc))
         if isinstance(exc, udm_errors.base | LDAPError):
             MODULE.error(''.join(traceback.format_exception(etype, exc, etraceback)))
