@@ -1,4 +1,10 @@
-univention-directory-manager-modules (17.1.0) unstable; urgency=medium
+univention-directory-manager-modules (17.2.1) unstable; urgency=medium
+
+  * Bug #58318: Fix UDM for activated univentionObjectIdentifier
+
+ -- Arvid Requate <requate@univention.de>  Tue, 03 Jun 2025 14:35:27 +0200
+
+univention-directory-manager-modules (17.2.0) unstable; urgency=medium
 
   * Bug #58318: Set default for directory/manager/object-identifier/autogeneration
     to true and set a udm policy to set the new default also on all other UCS systems
