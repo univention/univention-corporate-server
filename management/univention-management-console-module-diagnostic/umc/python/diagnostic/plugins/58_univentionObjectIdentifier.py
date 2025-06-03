@@ -47,7 +47,7 @@ description = '\n'.join([
 
 
 def univentionObject_without_univentionObjectIdentifier(lo: access) -> list[str]:
-    return lo.searchDn('(&(objectClass=univentionObject)(!(univentionObjectIdentifier=*)))')
+    return lo.searchDn('(&(objectClass=univentionObject)(!(objectClass=univentionLicense))(!(univentionObjectIdentifier=*)))')
 
 
 def run(_umc_instance: Instance) -> None:

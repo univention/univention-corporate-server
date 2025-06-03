@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (8.1.1) unstable; urgency=medium
+
+  * Bug #58318: Let Diagnostic module for univentionObjectIdentifier ignore objectClass=univentionLicense
+
+ -- Arvid Requate <requate@univention.de>  Tue, 03 Jun 2025 14:11:48 +0200
+
 univention-management-console-module-diagnostic (8.1.0) unstable; urgency=medium
 
   * Bug #58318: Diagnostic module for univentionObjectIdentifier
