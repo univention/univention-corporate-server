@@ -15,6 +15,16 @@ from univention.udm.exceptions import CreateError, NoObject
 # activate autorization in UMC and UDM-REST
 handler_set(['umc/udm/delegation=true', 'directory/manager/rest/enable-delegative-administration=true'])
 
+# TODO: remove once we are on 5.2-2
+handler_set(['directory/manager/object-identifier/autogeneration=true'])
+from univention.uldap import getRootDnConnection  # noqa: E402
+
+
+lo = getRootDnConnection()
+result = lo.search(filter='(&(objectClass=univentionObject)(!(univentionObjectIdentifier=*)))', attr=['entryUUID'])
+for dn, attrs in result:
+    lo.modify(dn, [('univentionObjectIdentifier', None, attrs.get('entryUUID'))])
+
 # TODO: add to documentation
 # enable UDM-REST for group used in tests
 handler_set(['directory/manager/rest/authorized-groups/test-api-access=cn=test-api-access,cn=groups,dc=ucs,dc=test'])
