@@ -171,6 +171,7 @@ COMMON_EXCEPTIONS = (
     # # Errors from UCS Jenkins runs:
     E(r'^(ldap\.)?SERVER_DOWN: .*'),
     E(r'^(ldap\.)?NO_SUCH_OBJECT: .*'),
+    E('^keycloak.exceptions.KeycloakAuthenticationError:.*invalid_grant', ['/usr/sbin/univention-keycloak'], 58369),
     # E(r'^(univention\.admin\.uexceptions\.)?objectExists: .*', [re.compile('_create.*self.lo.add', re.M | re.S)]),
     # E('^%s.*logo' % re.escape("IOError: [Errno 2] No such file or directory: u'/var/cache/univention-appcenter/"), [re.compile('%s.*shutil' % re.escape('<stdin>'), re.M | re.S)]),
     # E("INSUFFICIENT_ACCESS: {'desc': 'Insufficient access'}$", ['uldap.py.* in modify'], 53721),
@@ -225,6 +226,7 @@ COMMON_EXCEPTIONS = (
     E('ImportError: No module named univention.debug', ['/usr/sbin/univention-management-console-module']),
     E('pkg_resources.VersionConflict:.*univention-management-console'),
     E('pkg_resources.DistributionNotFound:.*univention-management-console'),
+    E(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/tmp/.*", ['/tempfile.py.*in __del__']),
 
     # # updater test cases:
     E('EOFError: EOF when reading a line', ['scripts/upgrade.py']),
@@ -248,7 +250,7 @@ COMMON_EXCEPTIONS = (
     E('psycopg2.OperationalError: connection to server at "localhost".* failed: Connection refused', ['passwordreset/tokendb.py']),  # 83_self_service/13_test_postgresql_connection_loss.py
     E('psycopg2.OperationalError: SSL connection has been closed unexpectedly', ['passwordreset/tokendb.py']),  # 83_self_service/13_test_postgresql_connection_loss.py
     E('psycopg2.OperationalError: SSL-Verbindung wurde unerwartet geschlossen', ['passwordreset/tokendb.py']),  # 83_self_service/13_test_postgresql_connection_loss.py
-    E('psycopg2.OperationalError: Verbindung zum Server auf ,*localhost.* fehlgeschlagen: Verbindungsaufbau abgelehnt', ['passwordreset/tokendb.py']),  # 83_self_service/13_test_postgresql_connection_loss.py
+    E('psycopg2.OperationalError: Verbindung zum Server auf .*localhost.* fehlgeschlagen: Verbindungsaufbau abgelehnt', ['passwordreset/tokendb.py']),  # 83_self_service/13_test_postgresql_connection_loss.py
     # E('AssertionError: .*contain.*traceback.*', ['01_var_log_tracebacks']),
     E('^(univention.management.console.modules.ucstest.)?NonThreadedError$'),
     E(r'^(ldap\.)?INVALID_SYNTAX: .*ABCDEFGHIJKLMNOPQRSTUVWXYZ.*', ['sync_from_ucs']),
@@ -335,7 +337,7 @@ COMMON_EXCEPTIONS = (
     # E('^NoObject: No object found at DN .*', ['univention-portal-server.*in refresh']),
     # E(r"^OSError\: \[Errno 2\].*\/var\/run\/univention-management-console\/.*\.socket"),
     # E(r'ldapError\:\ Type\ or\ value\ exists\:\ univentionPortalEntryLink\:\ value\ \#0\ provided\ more\ than\ once', None, 51808),
-    # E(r"noLock\: .*The attribute \'sid\' could not get locked\.", ['getMachineSid', '__generate_group_sid'], 44294),
+    E(r"noLock\: .*The attribute \'sid\' could not get locked\.", ['getMachineSid', '__generate_group_sid', 'groups/group.*in __allocate_rid'], 44294),
     # E(r'^ImportError\: No module named debhelper', [r'univention\/config_registry\/handler\.py'], 51815),
     # E(r'^NO\_SUCH\_OBJECT\:.*users.*', ['password_sync_s4_to_ucs'], 50279),
     # E(re.escape("Exception: Modifying blog entry failed: 1: E: Daemon died."), [], 45787),
@@ -357,25 +359,32 @@ COMMON_EXCEPTIONS = (
     E('univention.admin.uexceptions.mailAddressUsed: The mail address is already in use:', ['in sync_to_ucs']),
     E("univention.admin.uexceptions.noLock: Could not acquire lock: The attribute 'mailPrimaryAddress' could not get locked.", ['in _ldap_pre_ready']),
     E('univention.admin.uexceptions.groupNameAlreadyUsed: The groupname is already in use as groupname or as username: Users.', ['in sync_to_ucs']),
+    E('univention.admin.uexceptions.groupNameAlreadyUsed: The groupname is already in use as groupname or as username: Domain Controllers.', ['in sync_to_ucs']),
+    E('univention.admin.uexceptions.groupNameAlreadyUsed: The groupname is already in use as groupname or as username: IIS_IUSRS.', ['in sync_to_ucs']),
     E("univention.admin.uexceptions.noLock: Could not acquire lock: The attribute 'groupName' could not get locked.", ['in _ldap_pre_ready']),
     # E(r"subprocess.CalledProcessError: Command '\('rndc', 'reconfig'\)' returned non-zero exit status 1", ['univention-fix-ucr-dns'], 53332),
     # E(r"ldap.NO_SUCH_OBJECT: .*objectclass: Cannot add cn=(user|machine),cn=\{[0-9a-f-]+\},cn=policies,cn=system,DC=.*parent does not exist", ['in sync_from_ucs'], 53334),
     # E("TypeError: 'NoneType' object is not subscriptable", ['primary_group_sync_to_ucs', 'add_primary_group_to_addlist'], 53276),
     # E("CONSTRAINT_VIOLATION: .*Failed to re-index objectSid in .*unique index violation on objectSid", ['sync_from_ucs'], (53720, 53752)),
     # E('ldap.REFERRAL:.*', ['uldap.py'], 53721),
-    # E('INSUFFICIENT_ACCESS:.*', ['in password_sync_s4_to_ucs'], 53721),
+    E('INSUFFICIENT_ACCESS:.*', ['in password_sync_s4_to_ucs'], 53721),
     # E("ModuleNotFoundError: No module named 'univention.config_registry'", ['/usr/sbin/univention-config-registry'], 53765),
     # E("AttributeError: module 'univention.admin.syntax' has no attribute 'UMCMessageCatalogFilename_and_GNUMessageCatalog'", ['_unregister_app', 'import_hook_files', 'pupilgroups.py'], 53754),
     # E("AttributeError: module 'univention.admin.syntax' has no attribute 'emailAddressThatMayEndWithADot'", ['_update_modules', '/usr/sbin/univention-management-console-server', 'forward_zone.py'], 55590),
     # E('univention.admin.uexceptions.noObject: uid=.*', ['connector/ad/.*set_userPrincipalName_from_ucr'], 53769),
     E('ldap.TYPE_OR_VALUE_EXISTS:.*SINGLE-VALUE attribute description.*specified more than once', ['sync_from_ucs'], 52801),
     E('univention.admin.uexceptions.wrongObjectType: .*relativeDomainName=.* is not recognized as dns/txt_record.', ['ucs_txt_record_create'], 53425),
-    # E(r"ldap.TYPE_OR_VALUE_EXISTS: \{'desc': 'Type or value exists', 'info': 'modify\/add: uniqueMember: value \#\d already exists'\}", ['object_memberships_sync_to_ucs'], 54590),
+    E(r"univention.admin.uexceptions.ldapError: LDAP Error: Type or value exists: modify/add: uniqueMember: value \#\d already exists.", ['group_members_sync_to_ucs'], 54590),
+    E(r"ldap.TYPE_OR_VALUE_EXISTS: \{'desc': 'Type or value exists', 'info': 'modify\/add: uniqueMember: value \#\d already exists'\}", ['object_memberships_sync_to_ucs'], 54590),
+    E('^ldap.TYPE_OR_VALUE_EXISTS:.*modify/add: uniqueMember: value', ['univention/admin/uldap.py.*in modify']),
+    E('^ldap.INSUFFICIENT_ACCESS:.*Insufficient access', ['univention/admin/uldap.py.*in modify']),
+    E('^AssertionError: Authentisierung ist fehlgeschlagen. Bitte melden Sie sich erneut an. == Ungültiger Benutzername oder Passwort.'),
     # # Tracebacks caused by specific UCS@school bugs:
     # E(r"_ldb.LdbError: \(1, 'LDAP client internal error: NT_STATUS_INVALID_PARAMETER'\)", ['univention-samba4-site-tool.py'], 54592),
     # E(r"AssertionError: Attribute \(username\) is parsed wrong as.*", ['103_ucsschool_smbstatus_parser.py'], 54591),
     # E(r"optparse.OptionConflictError: option.*authentication-file", ['univention-samba4-site-tool.py'], 55082),
     E(r"univention.office365.microsoft.exceptions.core_exceptions.MSGraphError"),  # office365 product tests deliberately creates these errors
+    # E(r'.*', ['File "/usr/share/ucs-test/']),
 )
 
 
