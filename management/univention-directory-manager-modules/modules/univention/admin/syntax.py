@@ -1073,18 +1073,21 @@ class string64(simple):
         return text
 
 
-class UUID4(string):
-    """Syntax for a string which represents a UUID 4"""
+class UUID(string):
+    """
+    Syntax for a string which represents a UUID1 or UUID4
+
+    entryUUID seems to be UUID1
+    objectGUID seems to be UUID4
+    UDM creates UUID4 for univentionObjectIdentifier
+    """
 
     type_class = univention.admin.types.UUID
 
     @classmethod
     def parse(cls, text):
-        try:
-            if str(uuid.UUID(text, version=4)) != text:
-                raise ValueError()
-        except ValueError:
-            raise univention.admin.uexceptions.valueError(_('The value must be a valid UUID 4 string.'))
+        if str(uuid.UUID(text, version=4)) != text and str(uuid.UUID(text, version=1)) != text:
+            raise univention.admin.uexceptions.valueError(_('The value must be a valid UUID1 or UUID4 string.'))
         return text
 
 

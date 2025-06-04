@@ -279,7 +279,7 @@ class simpleLdap:
             'univentionObjectIdentifier': univention.admin.property(
                 short_description=_('Immutable Object Identifier'),
                 long_description=_('Immutable attribute to track the identity of an object in UDM'),
-                syntax=univention.admin.syntax.UUID4,
+                syntax=univention.admin.syntax.UUID,
                 may_change=False,
                 dontsearch=True,
             ),

@@ -1513,6 +1513,10 @@ msgstr ""
 msgid "The value must not be longer than %d characters."
 msgstr "Der Wert darf nicht länger als %d Zeichen sein."
 
+#: modules/univention/admin/syntax.py:1086
+msgid "The value must be a valid UUID1 or UUID4 string."
+msgstr "Der Wert muss eine gültige UUID1 oder UUID4 sein."
+
 #: modules/univention/admin/uldap.py:244
 msgid "There was no LDAP base specified."
 msgstr "Es wurde keine LDAP Basis angegeben."
