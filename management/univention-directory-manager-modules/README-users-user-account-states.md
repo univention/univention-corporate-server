@@ -1,21 +1,29 @@
-# Account status flags in UDM users/user
+[TOC]
 
-This document describes various states related to user account disabling, locking, and password expiry, along with their corresponding UDM and LDAP representations for POSIX, Samba, and Kerberos systems.
+# Account status flags in UDM `users/user`
+
+This document describes various states related to user account disabling, locking, and password expiry, along with their corresponding UDM and LDAP representations for POSIX, Samba, Kerberos and Active Directory systems.
+
+## Date formats
+
+- Windows Filetime: 100 nanoseconds since January 1, 1601, UTC
+- UNIX timestamp: number of seconds since January 1, 1970, UTC
+- GeneralizedTime: timestamp `YYYYMMDDHHMMSSZ` (ASN.1 / X.680) in UTC/Zulu.
 
 ## `locked`: Account locked due to authentication failures
 
 Indicates the account has been locked because of too many failed authentication attempts.
 
-- **LDAP attributes** (any of):
+- **UCS OpenLDAP attributes** (any of):
 
   - `sambaAcctFlags` contains `L`
   - `krb5KDCFlags` bitmask includes the `???` bit (aka: `1 << 17`, `0x20000`).
   - \~\~`pwdAccountLockedTime` (not in use) \~\~
-- **Related properties**:
+- **Related UDM properties**:
 
-  - `lockedTime`: timestamp when account lockout happened
+  - `lockedTime`: Windows Filetime timestamp when account lockout happened
 
-    - **LDAP attribute:** `sambaBadPasswordTime`: Windows Filetime (100 nanoseconds since January 1, 1601) of last bad password event.
+    - **LDAP attribute:** `sambaBadPasswordTime`: Windows Filetime of last bad password event.
   - `unlock=True`: Unlocks the account (sets `locked=0`, no corresponding LDAP attribute). Note: it’s not possible to set `locked=1` directly without additional procedures.
   - `unlockTime`: Calculated timestamp when the account will be automatically unlocked, based on policy and `lockedTime`.
 - **Property UDM search filter**:
@@ -24,11 +32,52 @@ Indicates the account has been locked because of too many failed authentication 
 
 **Note**: `locked` is distinct from `disabled` – a locked user can still perform certain operations like changing their password.
 
+- **Active Directory (and Samba) attributes**:
+
+  - `lockoutTime`: (read only if != 0!) Windows Filetime, when the account was locked out.
+  - `badPasswordTime`: (read only!) Windows Filetime, of last entered wrong password.
+  - (`userAccountControl` bitmask includes `ADS_UF_LOCKOUT` (`0x10`))
+
+## `passwordexpiry`: Password expiration time
+
+Defines the point in time after which the password is considered expired.
+After this time, the user can still attempt to log in, but must change the password to gain full access.
+
+- **UCS OpenLDAP attributes**:
+
+  - `shadowLastChange`: Number of days from January 1, 1970, up to the day the password was last modified.
+  - `shadowMax`: The maximum number of days a password is valid (i.e., the password lifespan minus one day, depending on policy).
+  - `krb5PasswordEnd`: GeneralizedTime, Kerberos considers this timestamp as the exact moment (beginning of that day) when the password becomes invalid.
+- **Related UCS OpenLDAP attributes**:
+
+  - `sambaPwdLastSet`: Unix timestamp, last date the password was set
+  - `sambaPwdMustChange`: (unused in UDM since [Bug #13199](https://forge.univention.org/bugzilla/show_bug.cgi?id=13199))
+  - `sambaBadPasswordTime`: Unix timestamp, the last time an incorrect password attempt was made.
+  - `sambaBadPasswordCount`: Number of consecutive failed login attempts with an incorrect password.
+- **Property UDM search filter**: Currently not possible to search for password expired accounts.
+- **Related UDM properties**:
+
+  - `pwdChangeNextLogin`: Boolean, indicating that the password has expired.
+
+In POSIX, the date on which the password becomes expired is calculated as:
+```text
+Expiry Date = (January 1, 1970) + shadowLastChange + shadowMax + 1 (day)
+```
+
+**Note**: The Unix `shadow` mechanism regards the day of expiry (`shadowLastChange + shadowMax`) as the last valid day. The password becomes invalid the following day at 00:00.
+
+**Note:**: If `krb5PasswordEnd` is set to `20241021000000Z`, Kerberos will treat October 21, 2024 as already expired starting at 00:00 UTC.
+
+- **Active Directory (and Samba) attributes**:
+
+  - `pwdLastSet`: Windows Filetime, the time when the user's password was last set (`0` means password must be changed at next login).
+  - `badPwdCount`: Number of consecutive failed login attempts with an incorrect password.
+
 ## `disabled`: Account deactivated
 
 Indicates the user account is deactivated. This affects authentication for Windows (Samba), Kerberos, and POSIX systems.
 
-- **LDAP attributes** (any of):
+- **UCS OpenLDAP attributes** (any of):
 
   - `sambaAcctFlags` contains `D`
   - `krb5KDCFlags` bitmask includes the `KRB5_KDB_REQUIRES_PRE_AUTH` bit (aka: `1 << 7`, `0x80`).
@@ -39,15 +88,19 @@ Indicates the user account is deactivated. This affects authentication for Windo
 
 **Note**: This may not disable login via LDAP (depending on configuration).
 
+- **Active Directory (and Samba) attributes**:
+
+  - `userAccountControl` bitmask includes `ADS_UF_ACCOUNT_DISABLE` (`0x02`)
+
 ## `userexpiry`: Account expiration time
 
 Defines a point in time after which the account is considered expired (i.e., disabled).
 
-- **LDAP attributes**:
+- **UCS OpenLDAP attributes**:
 
   - `sambaKickoffTime`: UNIX timestamp
-  - `krb5ValidEnd`: GeneralizedTime (ASN.1 / X.680) (currently when stored via UDM time is set to `00:00:00` o'clock: `YYYYMMDD000000Z`)
-  - `shadowExpire`: UNIX timestamp (number of days since January 1, 1970 when the account is considered expired)
+  - `krb5ValidEnd`: GeneralizedTime (currently when stored via UDM time is set to `00:00:00` o'clock: `YYYYMMDD000000Z`)
+  - `shadowExpire`: UNIX timestamp when the account is considered expired
 - **Property UDM search filter**:
 
   - `userexpiry=` `2025-06-20` | `*`
@@ -55,12 +108,16 @@ Defines a point in time after which the account is considered expired (i.e., dis
 
 **Note**: This value does not automatically set `disabled=True` in the account when the expiration time is reached.
 
+- **Active Directory (and Samba) attributes**:
+
+  - `accountExpires` Windows Filetime
+
 ## `accountActivationDate`: Future account activation
 
 Allows defining a future date when the account becomes active.
 
 - **LDAP Attribute**:
-  - `krb5ValidStart` GeneralizedTime (ASN.1 / X.680) in UTC/Zulu.
+  - `krb5ValidStart` GeneralizedTime
 - **Behavior**:
   - Until this date, the account is created with `disabled=True`.
   - Requires a [cron job](scripts/univention-delayed-account-activation) to reactivate the user by setting `disabled=False` once the date is reached.
@@ -77,27 +134,7 @@ However, a UDM search with a filter that groups these conditions can list all in
 univention.admin.modules.get('users/user').lookup(None, lo, "(|(disabled=1)(locked=1)(userexpiry<=$(date -I))")
 ```
 
-## Password Expiry Semantics (shadow vs. Kerberos)
-
-The following details outline how password expiry is calculated from POSIX (via shadow attributes) and Kerberos attributes, the observed inconsistency, and the recommended configuration to achieve uniform behavior across connected services.
-
-### Shadow (Unix) Attributes
-
-- `shadowLastChange`: Number of days from January 1, 1970, up to the day the password was last modified.
-- `shadowMax`: The maximum number of days a password is valid (i.e., the password lifespan minus one day, depending on policy).
-- The date on which the password becomes expired is calculated as:
-
-  ```text
-  Expiry Date = (January 1, 1970) + shadowLastChange + shadowMax + 1 (day)
-  ```
-* The Unix `shadow` mechanism regards the day of expiry (`shadowLastChange + shadowMax`) as the last valid day. The password becomes invalid the following day at 00:00.
-
-### Kerberos Attributes
-
-* `krb5PasswordEnd`: Stored as `YYYYMMDDHHMMSSZ` (GeneralizedTime) in UTC. Kerberos considers this timestamp as the exact moment (beginning of that day) when the password becomes invalid.
-* If `krb5PasswordEnd` is set to `20241021000000Z`, Kerberos will treat October 21, 2024 as already expired starting at 00:00 UTC.
-
-### Observed Inconsistency (Bug 57681)
+## Inconsistency in handling of password expiry semantics (Shadow vs Kerberos) ([Bug #57681](https://forge.univention.org/bugzilla/show_bug.cgi?id=57681))
 
 * When both `shadowLastChange + shadowMax` and `krb5PasswordEnd` point to the same calendar day (e.g., `2024-10-21`), Kerberos regards the password as expired at 00:00 on that day, while Unix regards that day as still valid until 23:59:59.
 * As a result, on the day of expiry:
@@ -105,8 +142,6 @@ The following details outline how password expiry is calculated from POSIX (via 
   1. Some services (e.g., `pam_krb5`) consider the password expired immediately after midnight and trigger a password change.
   2. Other services (e.g., `pam_unix` and LDAP overlays like `shadowbind`) still consider the password valid until the next day.
 * This discrepancy can cause user-flow issues. For example, Single Sign-On (SSO) integrations such as SimpleSAMLphp will see Kerberos marking the password as expired (thus prompting a change), while Unix still allows login. After a user changes their password through the SSO flow, the Unix side continues to accept the old password until the end of that calendar day, leading to repeated prompts.
-
-#### Specific Case Demonstration
 
 * For a user with:
 
@@ -118,9 +153,7 @@ The following details outline how password expiry is calculated from POSIX (via 
   * Unix (shadow): Treats `2024-10-21` as the last valid day; password expires at `2024-10-22 00:00:00` local time.
 * Consequently, depending on which attribute is checked first, the system may inconsistently require a password change (Kerberos) or allow login (Unix).
 
-### Recommended Configuration for Uniform Handling
-
-To align both mechanisms so that “expiration date” consistently means “the first moment of the expiry day,” it is recommended to configure `shadowMax` to one day less than the interval used in the Kerberos policy:
+To align both mechanisms so that "expiration date" consistently means "the first moment of the expiry day," it is recommended to configure `shadowMax` to one day less than the interval used in the Kerberos policy:
 
 * If `pwhistoryPolicy.expiryInterval` is defined (e.g., 90 days), set:
 
@@ -132,7 +165,7 @@ To align both mechanisms so that “expiration date” consistently means “the
   * Unix password expiry (`shadowLastChange + shadowMax + 1`) occurs at 00:00 on the same day as Kerberos (`krb5PasswordEnd`).
   * Both POSIX and Kerberos will mark the password as expired at 00:00 on the configured expiry date (e.g., if the policy says “expires on 2024-10-21,” neither system will allow the user to log in at any time on that date).
 
-#### Clarifying “Expiry Date” Semantics
+#### Clarifying "Expiry Date" semantics
 
 * Ambiguity exists in the term “expiry date.” Two interpretations are:
 
@@ -140,7 +173,7 @@ To align both mechanisms so that “expiration date” consistently means “the
   2. The last valid day (i.e., the user may log in on 2024-10-21 until 23:59:59; at 2024-10-22 00:00, login is disallowed).
 * We recommend adopting interpretation 1, treating the configured expiry date as the first moment when login is disallowed.
 
-### Verification of Shadow and Kerberos Behaviors
+### Verification of Shadow and Kerberos behaviors
 
 * Verified against `man 5 shadow` and the Unix shadow implementation: `shadowLastChange` is indeed days since epoch, and `shadowMax` + 1 defines expiry days count. Unix checks `(now - shadowLastChange) > shadowMax` (i.e., if number of days since last change strictly exceeds `shadowMax`, the day of `shadowLastChange + shadowMax` is still valid).
 * Verified Kerberos behavior from RFC 4120 and MIT Kerberos implementation: `krb5PasswordEnd` is interpreted as the moment after which the password is no longer valid (i.e., a strict `>=` comparison against current time).
@@ -189,3 +222,9 @@ To align both mechanisms so that “expiration date” consistently means “the
 * [Bug 36486 - Users which are both expired and deactivated are rejected](https://forge.univention.org/bugzilla/show_bug.cgi?id=36486)
 * [Bug 36330 - Failed to create user with expired password - invalid date format](https://forge.univention.org/bugzilla/show_bug.cgi?id=36330)
 * TBC
+
+## Ressources
+* [Active Directory Technical Specification](https://winprotocoldoc.z19.web.core.windows.net/MS-ADTS/%5bMS-ADTS%5d.pdf)
+* [Active Directory Technical Specification: all versions](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/)
+* https://learn.microsoft.com/en-us/windows/win32/adsi/winnt-account-lockout#resetting-the-account-lockout-status
+* https://learn.microsoft.com/en-us/answers/questions/1129755/active-directory-not-able-to-update-lockouttime-at
