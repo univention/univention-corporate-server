@@ -95,6 +95,9 @@ lastmod		on
 
 add_content_acl on
 
+overlay unique
+unique_uri "ldap:///@%@ldap/base@%@?univentionObjectIdentifier?sub?(objectClass=univentionObject)"
+
 overlay constraint
 constraint_attribute uidNumber regex ^[^0]+[0-9]*$
 constraint_attribute gidNumber regex ^[^0]+[0-9]*$

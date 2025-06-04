@@ -73,6 +73,7 @@ if configRegistry.is_true('ldap/syncprov', True):
         print('moduleload\tsyncprov.so')
 
 print('moduleload\tconstraint.so')
+print('moduleload\tunique.so')
 print('moduleload\taccesslog.so')
 if configRegistry.is_true('ldap/overlay/sock', False):
     print('moduleload\tback_sock.so')
