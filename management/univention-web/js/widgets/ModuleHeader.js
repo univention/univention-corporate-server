@@ -35,12 +35,13 @@ define([
 	"dojo/_base/declare",
 	"dojo/dom-class",
 	"dojo/dom-style",
+	"dojox/html/entities",
 	"put-selector/put",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
 	"umc/tools",
 	"umc/i18n!"
-], function(declare, domClass, domStyle, put, ContainerWidget, Text, tools, _) {
+], function(declare, domClass, domStyle, entities, put, ContainerWidget, Text, tools, _) {
 	return declare('umc.widgets.ModuleHeader', [ContainerWidget], {
 		baseClass: 'umcModuleHeader',
 
@@ -103,11 +104,11 @@ define([
 				});
 			}
 			this._title = new Text({
-				content: this.get('title'),
+				content: this.get('titleAllowHTML') ? this.get('title') : entities.encode(this.get('title'))
 				baseClass: 'umcModuleTitle'
 			});
 			this._subTitle = new Text({
-				content: this.get('subTitle'),
+				content: this.get('subTitleAllowHTML') ? this.get('subTitle') : entities.encode(this.get('subTitle'))
 				baseClass: 'umcModuleSubTitle',
 				'class': 'dijitDisplayNone'
 			});

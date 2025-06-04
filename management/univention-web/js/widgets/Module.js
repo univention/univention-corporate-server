@@ -115,6 +115,7 @@ define([
 		},
 
 		subTitle: '',
+		subTitleAllowHTML: true,
 		_setSubTitleAttr: function(subTitle) {
 			this._top.set('subTitle', subTitle);
 			this._set('subTitle', subTitle);
@@ -137,7 +138,7 @@ define([
 				//buttons: render.buttons(this.headerButtons, this),
 				icon: this.icon,
 				iconBackgroundColor: this.iconBackgroundColor,
-				title: this.get('title')
+				title: this.get('titleAllowHTML') ? this.get('title') : entities.encode(this.get('title'))
 			});
 
 			this.own(on(this._bottom.domNode, 'scroll', lang.hitch(this, function(evt) {

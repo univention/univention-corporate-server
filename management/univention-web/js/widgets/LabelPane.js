@@ -114,6 +114,8 @@ define([
 		// 		Whether this LabelPane is in a layout with non CheckBox widgets
 		betweenNonCheckBoxes: true,
 
+		labelAllowHTML: false,
+
 		constructor: function(params) {
 			this._startupDeferred = new Deferred();
 
@@ -284,17 +286,18 @@ define([
 				return;
 			}
 
+			var labelHTML = this.labelAllowHTML ? label : entities.encode(label);
 			// if we have a widget which is required, add the string ' (*)' to the label
 			if (this._isContentAWidget() && this._isContentRequired()) {
-				label = label + '&nbsp;*';
+				labelHTML = labelHTML + '&nbsp;*';
 			}
 			this.label = label;
 
 			// set the label itself and show the corresponding label node
 			var labelNode = null;
-			if (label) {
+			if (labelHTML) {
 				labelNode = this._getLabelNode();
-				attr.set(labelNode, 'innerHTML', label);
+				attr.set(labelNode, 'innerHTML', labelHTML);
 			}
 			this._hideNodes(labelNode);
 

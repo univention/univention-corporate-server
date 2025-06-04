@@ -33,10 +33,11 @@
 
 define([
 	"dojo/_base/declare",
+	"dojox/html/entities",
 	"umc/tools",
 	"umc/dialog",
 	"umc/store"
-], function(declare, tools, dialog, store) {
+], function(declare, entities, tools, dialog, store) {
 
 	return declare("umc.widgets._ModuleMixin", null, {
 		// summary:
@@ -72,6 +73,9 @@ define([
 		//		(Is specified automatically.)
 		title: '',
 
+		titleAllowHTML: true,
+		notificationAllowHTML: true,
+
 		// title: String
 		// 		Specifies the state of a module, e.g., current search parameters or an
 		// 		opened object. Module states can be accessed directly via a URL with hash
@@ -96,10 +100,16 @@ define([
 		},
 
 		addNotification: function(/*innerHTML*/ message, /*function (optional)*/ action, /*String*/ actionLabel) {
+			if (!this.notificationAllowHTML) {
+			    message = entities.encode(message);
+			}
 			dialog.contextNotify(message, action, actionLabel);
 		},
 
 		addWarning: function(/*innerHTML*/ message, /*function (optional)*/ action, /*String*/ actionLabel) {
+			if (!this.notificationAllowHTML) {
+			    message = entities.encode(message);
+			}
 			dialog.contextWarn(message, action, actionLabel);
 		}
 	});
