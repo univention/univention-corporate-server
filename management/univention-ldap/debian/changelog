@@ -1,3 +1,10 @@
+univention-ldap (18.2.1) unstable; urgency=medium
+
+  * Bug #58318: Add ACL to allow memberservers to write univentionObjectIdentifier
+    lock objects for App installation and registration
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 04 Jun 2025 09:14:25 +0200
+
 univention-ldap (18.2.0) unstable; urgency=medium
 
   * Bug #57393: Configure eq index for univentionObjectIdentifier by default
