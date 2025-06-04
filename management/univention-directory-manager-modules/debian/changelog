@@ -1,4 +1,4 @@
-univention-directory-manager-modules (17.2.1) unstable; urgency=medium
+univention-directory-manager-modules (17.2.2) unstable; urgency=medium
 
   * Bug #58318: Fix UDM for activated univentionObjectIdentifier
 

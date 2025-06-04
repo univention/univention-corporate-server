@@ -1323,6 +1323,7 @@ class simpleLdap:
 
     def _set_univentionObjectIdentifier(self, al):
         # ensure univentionObjectIdentifier is set
+        lock_position = univention.admin.uldap.position(configRegistry['ldap/base'])
         obj_identifier = self['univentionObjectIdentifier'] if self.has_property('univentionObjectIdentifier') else None
         if not obj_identifier and configRegistry.is_true('directory/manager/object-identifier/autogeneration'):
             obj_identifier = str(uuid.uuid4())
@@ -1331,7 +1332,7 @@ class simpleLdap:
             log.info("The object will be created with an empty univentionObjectIdentifier value")
 
         if obj_identifier:
-            univention.admin.allocators.acquireUnique(self.lo, self.position, 'univentionObjectIdentifier', obj_identifier, 'univentionObjectIdentifier', scope='scope')
+            univention.admin.allocators.acquireUnique(self.lo, lock_position, 'univentionObjectIdentifier', obj_identifier, 'univentionObjectIdentifier', scope='scope')
             self.alloc.append(('univentionObjectIdentifier', obj_identifier, False))
         if obj_identifier:
             al.append(('univentionObjectIdentifier', [obj_identifier.encode('ascii')]))
