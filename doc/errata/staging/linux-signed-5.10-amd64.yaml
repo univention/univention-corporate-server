@@ -95,7 +95,7 @@ desc: |
    CVE-2024-50280)
  * CVSS score 2.8 (CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:N/I:N/A:L).
    (CVE-2025-21909)
-bug: [58358]
+bug: [58359]
 cve:
 - CVE-2025-21731
 - CVE-2024-58052
@@ -340,3 +340,4 @@ cve:
 - CVE-2025-37808
 - CVE-2025-37881
 - CVE-2025-37803
+note: This is the 2nd of two parts.
