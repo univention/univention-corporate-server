@@ -122,6 +122,13 @@
             }
           }
         },
+        "settings/default": {
+          "attributes": {
+            "*": {
+              "access": "read"
+            }
+          }
+        },
         "settings/directory": {
           "attributes": {
             "*": {
