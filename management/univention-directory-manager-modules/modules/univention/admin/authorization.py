@@ -90,6 +90,8 @@ def _obj2position(obj: object | dict | str) -> str:
             return obj.position.getDn().lower()
         if isinstance(obj, dict) and 'position' in obj:
             return obj['position'].lower()
+        if parentDn(_obj2dn(obj), ucr['ldap_base']) is None:
+            return _obj2dn(obj).lower()
         return parentDn(_obj2dn(obj), ucr['ldap/base']).lower()
     except (AttributeError, KeyError, IndexError):
         pass
