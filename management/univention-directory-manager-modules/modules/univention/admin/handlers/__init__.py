@@ -1933,7 +1933,12 @@ class simpleLdap:
         filter_str = str(filter_e or '')
         attr = cls._ldap_attributes()
         result = []
-        for dn, attrs in lo.authz_connection.search(filter_str, base or cls.ldap_base, scope, attr, unique, required, timeout, sizelimit, serverctrls=serverctrls, response=response):
+        search_base = base or cls.ldap_base
+
+        if not lo._verify_search_base(search_base) or not lo._verify_search_filter(filter_str):
+            return result
+
+        for dn, attrs in lo.authz_connection.search(filter_str, search_base, scope, attr, unique, required, timeout, sizelimit, serverctrls=serverctrls, response=response):
             try:
                 result.append(cls(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs))
             except univention.admin.uexceptions.base as exc:
