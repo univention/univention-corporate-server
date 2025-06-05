@@ -81,7 +81,7 @@ def get_superordinate(module, co, lo, dn):
 def get(module, co, lo, position, dn='', attr=None, superordinate=None, attributes=None):
     # type: (univention.admin.modules.UdmModule, None, univention.admin.uldap.access, univention.admin.uldap.position, str, dict[str, list[Any]] | None, Any | None, Any | None) -> univention.admin.handlers.simpleLdap | None
     """
-    Return object of module while trying to create objects of
+    Return object of module while trying to identify objects of
     superordinate modules as well.
 
     :param module: |UDM| handler.
@@ -111,6 +111,14 @@ def get(module, co, lo, position, dn='', attr=None, superordinate=None, attribut
 
 
 def get_object(lo, dn):
+    # type: (univention.admin.uldap.access, str) -> univention.admin.handlers.simpleLdap
+    """
+    Get a |UDM| object for the specified LDAP DN by automatically detecting the object type.
+    Returns `None` if the object doesn't exists or no |UDM| handler exists for it.
+
+    :param lo: |LDAP| connection.
+    :param dn: |DN| of the object.
+    """
     attr = lo.authz_connection.get(dn, ['*', '+'])
     for module in univention.admin.modules.objectType(None, lo, dn, attr):
         return univention.admin.modules.get(module).object(None, lo, None, dn, None, attr)
