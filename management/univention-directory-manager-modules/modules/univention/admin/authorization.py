@@ -90,7 +90,7 @@ def _obj2position(obj: object | dict | str) -> str:
             return obj.position.getDn().lower()
         if isinstance(obj, dict) and 'position' in obj:
             return obj['position'].lower()
-        return parentDn(_obj2dn(obj)).lower()
+        return parentDn(_obj2dn(obj), ucr['ldap/base']).lower()
     except (AttributeError, KeyError, IndexError):
         pass
     raise ValueError("Invalid object format for extracting position")
@@ -103,6 +103,8 @@ def _obj2module(obj: object | dict | str) -> str:
         return obj["univentionObjectType"][0].decode('UTF-8')
     if isinstance(obj, dict | str):
         dn = _obj2dn(obj)
+        if dn.startswith('dc='):
+            return 'container/dc'
         # FIXME: extract module name using dn
         if dn.lower().startswith('cn=groups,') or dn.lower().startswith('cn=users,'):
             return 'container/cn'
