@@ -54,7 +54,7 @@ restart_slapd ()
 
 if [ "$1" = "configure" ]; then
 	if [ "$server_role" = "domaincontroller_master" ]; then
-		if dpkg --compare-versions "$2" lt-nl 16.0.7-25; then
+		if dpkg --compare-versions "$2" lt-nl 18.2.3; then
 			restart_slapd
 		fi
 	fi

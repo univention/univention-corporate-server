@@ -123,10 +123,23 @@ ucr set \
 
 eval "$(univention-config-registry shell)"
 
-stop_slapd
-## careful, if slapd is not running the following command will re-index everything in case there are changes
-/usr/share/univention-ldap/ldap_setup_index --add-defaults
-start_slapd
+if [ "$1" = "configure" ]; then
+	if [ -z "$2" ]; then
+		stop_slapd
+		## careful, if slapd is not running the following command will re-index everything in case there are changes.
+		## If you want to just add an index precisely for one attribute only, then see Bug #57193#c4 "--only-update-ucr"
+		## and run "slapindex -f /etc/ldap/slapd.conf $ATTRIBUTE" manually after that (and start slapd again)
+		## See block below.
+		/usr/share/univention-ldap/ldap_setup_index --add-defaults
+		start_slapd
+	elif dpkg --compare-versions "$2" lt-nl 18.2.3; then
+		stop_slapd
+		/usr/share/univention-ldap/ldap_setup_index --add-defaults --only-update-ucr
+		output=$(/usr/sbin/slapindex -f /etc/ldap/slapd.conf univentionObjectIdentifier 2>&1) ||
+			echo "$output"
+		start_slapd
+	fi
+fi
 
 upgrade_license () {
 	case "$server_role" in
