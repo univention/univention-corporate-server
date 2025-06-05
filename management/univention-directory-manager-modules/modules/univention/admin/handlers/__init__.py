@@ -47,7 +47,9 @@ import inspect
 import re
 import sys
 import time
+import traceback
 import uuid
+import warnings
 from collections.abc import Iterable
 from ipaddress import IPv4Address, IPv6Address, ip_address, ip_network
 from logging import getLogger
@@ -1927,6 +1929,11 @@ class simpleLdap:
         :param response: An optional dictionary to receive the server controls of the result.
         :return: A list of UDM objects.
         """
+        if isinstance(lo, univention.uldap.access):
+            log.error('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap! %s', ''.join(traceback.format_stack()))
+            warnings.warn('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap!', DeprecationWarning, stacklevel=3)
+            raise TypeError('univention.admin.uldap required!')
+
         filter_e = cls.lookup_filter(filter_s, lo)
         if superordinate:
             filter_e = cls.lookup_filter_superordinate(filter_e, superordinate)
