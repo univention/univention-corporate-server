@@ -656,10 +656,16 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
             entries.append(entry)
         return entries
 
-    def reports_query(self, request):
+    @LDAP_Connection
+    def reports_query(self, request, ldap_connection=None, ldap_position=None):
         """Returns a list of reports for the given object type"""
         # i18n: translattion for univention-directory-reports
         _('PDF Document')
+        try:
+            ldap_connection.authz.is_reports_type_query_allowed(ldap_connection, request.flavor)
+        except udm_errors.permissionDenied:
+            self.finished(request.id, [])
+            return
         self.finished(request.id, [{'id': name, 'label': _(name)} for name in sorted(self.reports_cfg.get_report_names(request.flavor))])
 
     def sanitize_reports_create(self, request):
@@ -674,6 +680,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
     @LDAP_Connection
     def reports_create(self, request, ldap_connection=None, ldap_position=None):
         """Creates a report for the given LDAP DNs and returns the URL to access the file"""
+        ldap_connection.authz.is_report_create_allowed(ldap_connection, request.flavor, request.options['report'])
         report = udr.Report(ldap_connection)
         try:
             report_file = report.create(request.flavor, request.options['report'], request.options['objects'])
