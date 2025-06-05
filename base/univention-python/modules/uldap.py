@@ -39,7 +39,7 @@ def parentDn(dn: str, base: str = '') -> str | None:
     :return: The parent distinguished name or None.
     :rtype: str or None
     """
-    if dn.lower() == base.lower():
+    if access.compare_dn(dn.lower(), base.lower()):
         return None
     dn = ldap.dn.str2dn(dn)
     return ldap.dn.dn2str(dn[1:])
@@ -914,6 +914,8 @@ class access:
         >>> compare_dn(r'foo=\31', r'foo=1')
         True
         """
+        if a == b:
+            return True
         return [sorted((x.lower(), y, z) for x, y, z in rdn) for rdn in ldap.dn.str2dn(a)] == [sorted((x.lower(), y, z) for x, y, z in rdn) for rdn in ldap.dn.str2dn(b)]
 
     def __getstate__(self):
