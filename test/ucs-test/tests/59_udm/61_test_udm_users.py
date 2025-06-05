@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner pytest-3
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vvv
 ## desc: Test users/user
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
@@ -630,8 +630,8 @@ def test_lookup_with_pagination(udm):
     univention.admin.modules.update()
 
     # FIXME: with machine connection I get: ldap.BUSY: {'desc': 'Server is busy', 'info': 'Other sort requests already in progress'}
-    # lo = univention.uldap.getMachineConnection()
-    lo = univention.uldap.getAdminConnection()
+    # lo, _po = univention.admin.uldap.getMachineConnection()
+    lo, _po = univention.admin.uldap.getAdminConnection()
     res = {}
     page_size = 2
     cookie = ''
