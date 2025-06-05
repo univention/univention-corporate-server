@@ -916,13 +916,13 @@ class access:
     def search_filtered(self, context, filter='(objectClass=*)', base='', *args, **kwargs):
         if not self._verify_search_base(base) or not self._verify_search_filter(filter):
             return []
-        results = self.authz_connection.search(*args, **kwargs)
+        results = self.authz_connection.search(filter, base, *args, **kwargs)
         return self._filter_ldap_search_results(results, dict(kwargs, **(context or {})))
 
     def search_dn_filtered(self, context, filter='(objectClass=*)', base='', *args, **kwargs):
         if not self._verify_search_base(base) or not self._verify_search_filter(filter):
             return []
-        results = self.authz_connection.searchDn(*args, **kwargs)
+        results = self.authz_connection.searchDn(filter, base, *args, **kwargs)
         return self._filter_ldap_search_dns(results, dict(kwargs, **(context or {})))
 
     def _filter_ldap_search_results(self, results, options=None):
