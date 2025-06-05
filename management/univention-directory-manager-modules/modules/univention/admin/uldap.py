@@ -934,7 +934,7 @@ class access:
         return self.authz.filter_search_results(self, results, {'result-is-ldap-dn': True, **(context or {})})
 
     def _verify_search_base(self, base):
-        return bool(self._filter_ldap_search_dns([base]))
+        return bool(self._filter_ldap_search_dns([base or configRegistry['ldap/base']]))
 
     def _verify_search_filter(self, filter_s):
         return True
