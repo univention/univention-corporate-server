@@ -1153,6 +1153,59 @@ def check_uid_mapper_exists(protocol_mappers):
     )
 
 
+def create_client_scope(opt):
+    print("CREATING KEYCLOAK OIDC CLIENT SCOPE.....")
+
+    # log into default realm in case UCS realm doesn't exist yet
+    kc_admin = UniventionKeycloakAdmin(opt)
+
+    client_scope_payload = {
+        "name": opt.scope_name,
+        "protocol": "openid-connect",
+    }
+
+    kc_admin.create_client_scope(payload=client_scope_payload, skip_exists=True)
+
+    scopes = kc_admin.get_client_scopes()
+    scope_id = next((s['id'] for s in scopes if s['name'] == opt.scope_name), None)
+
+    if opt.add_user_id_mapper:
+        sub_mapper_payload = {
+            "name": "user_id",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-sub-mapper",
+            "config": {
+                "access.token.claim": "true",
+                "introspection.token.claim": "true",
+                "lightweight.claim": "false",
+            },
+        }
+        kc_admin.raw_post(
+            f"admin/realms/{opt.realm}/client-scopes/{scope_id}/protocol-mappers/models",
+            data=json.dumps(sub_mapper_payload),
+        )
+        print("Added user-id attribute mapper")
+
+    if opt.add_groups_mapper:
+        group_mapper_payload = {
+            "name": "groups-mapper",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-group-membership-mapper",
+            "config": {
+                "claim.name": opt.add_groups_mapper,
+                "full.path": "false",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "userinfo.token.claim": "true",
+            },
+        }
+        kc_admin.raw_post(
+            f"admin/realms/{opt.realm}/client-scopes/{scope_id}/protocol-mappers/models",
+            data=json.dumps(group_mapper_payload),
+        )
+        print("Added group membership mapper")
+
+
 def create_oidc_client(opt):
     print("CREATING KEYCLOAK OIDC CLIENT.....")
 
@@ -1683,7 +1736,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
             "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
         ],
     )
-    parser_create_saml_nameid_mapper.add_argument("--base64", help="return the base64 encoded value of the attribut in the mapper", default=False, action="store_true")
+    parser_create_saml_nameid_mapper.add_argument("--base64", help="return the base64 encoded value of the attribute in the mapper", default=False, action="store_true")
     parser_create_saml_nameid_mapper.set_defaults(func=create_saml_nameid_mapper)
     parser_delete_saml_nameid_mapper = parser_saml_nameid_mapper_subparser.add_parser("delete", help="Delete a saml-client-user-attribute-mapper")
     parser_delete_saml_nameid_mapper.add_argument("clientid", help="Client ID of the saml client")
@@ -1759,6 +1812,15 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     remove_oidc_parser = operation_subparsers.add_parser("remove", help="remove OIDC RP client")
     remove_oidc_parser.add_argument("clientid", help="the client ID of the OIDC RP in keycloak")
     remove_oidc_parser.set_defaults(func=remove_client)
+
+    # client scope for OIDC
+    parser_scope = subparsers.add_parser("scope", help="configure a client scope for OIDC")
+    operation_subparsers = parser_scope.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
+    create_scope_parser = operation_subparsers.add_parser("create", help="create a new client scope in Keycloak")
+    create_scope_parser.add_argument("scope_name", metavar='SCOPE_NAME')
+    create_scope_parser.add_argument("--add-user-id-mapper", action='store_true', default=False, help="Add subject mapper to the client scope. This sends the user id as a claim in the OIDC token.")
+    create_scope_parser.add_argument("--add-groups-mapper", default="", help="Add a group membership mapper that sends the groups of the user as a claim in the OIDC token.")
+    create_scope_parser.set_defaults(func=create_client_scope)
 
     # saml cert
     parser_saml_idp_cert = subparsers.add_parser("saml/idp/cert", help="SAML IdP certificate")
