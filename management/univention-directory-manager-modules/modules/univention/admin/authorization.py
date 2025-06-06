@@ -373,6 +373,10 @@ class Authorization:
             for prop in obj.descriptions
             if obj.has_property(prop) and obj.hasChanged(prop)
         ]
+
+        if not changed_properties:
+            return  # TODO: decode carefully: if nothing changed, allow it?
+
         # required_modify_permissions = [
         #     f'udm:{mod}:write-property-{_san_property(prop)}'
         #     for prop in changed_properties
