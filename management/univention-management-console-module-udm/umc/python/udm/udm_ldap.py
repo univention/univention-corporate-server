@@ -733,7 +733,6 @@ class UDM_Module:
                 obj.open()
             else:
                 obj = self.module.object(None, ldap_connection, None, '', superordinate, attributes=attributes)
-            obj.authz.is_receive_allowed(obj)
         except (LDAPError, udm_errors.ldapError):
             raise
         except udm_errors.base as exc:
@@ -741,6 +740,12 @@ class UDM_Module:
             if isinstance(exc, udm_errors.noObject) and superordinate and not ldap_connection.authz_connection.get(superordinate.dn):  # TODO: filter?
                 raise SuperordinateDoesNotExist(superordinate)
             UDM_Error(exc).reraise()
+
+        # TODO: this is done here, but maybe also later on again.
+        # prevent doing it twice but reliably and safe
+        if ldap_dn:
+            obj.authz.object_exists(obj)
+
         return obj
 
     def get_property(self, property_name):
@@ -1305,14 +1310,16 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
         try:
             obj = module.get(dn, attributes=attrs)
         except BaseException:
+            # we gave specific attributes above from the search result but some UDM modules need more attributes than that
+            # therefore (as we don't know the Python exceptions which can occur due to missing attributes, we do it again
+            # and let the module perform a search again!
             try:
                 obj = module.get(dn)
+            except udm_errors.noObject:  # when authorization is enabled the object might not be visible
+                continue
             except (UDM_Error, udm_errors.base):
                 MODULE.error('Could not load object %r (%r) exception: %s' % (dn, module.module, traceback.format_exc()))
                 continue
-
-        if not obj.authz.receive_allowed(obj):
-            continue
 
         yield module, obj
 
