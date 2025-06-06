@@ -8,53 +8,64 @@
 Configuration options
 *********************
 
-The following files in JSON format define the default roles and custom roles:
+This section describes configuration files and options
+for the delegative administration of the *Directory Service* through UDM.
 
-:file:`/usr/share/univention-directory-manager-modules/umc-udm-roles.json`
-   Contains the default roles ``domainadmin`` and ``ouadmin``:
+Default roles
+=============
+
+The following file defines the default UDM roles and their rights.
+
+:file:`/usr/share/univention-directory-manager-modules/udm-default-authorization-roles.policy`
+   Contains the default roles, like ``udm:default-roles:domain-administrator`` or ``udm:default-roles:organizational-unit-admin``.
 
    .. important::
 
       Don't change this file.
       UCS updates overwrite it.
 
-:file:`/etc/umc-udm-roles.json`
-   Can contain custom role definitions.
+Custom roles
+============
 
-   This file doesn't exist by default.
-   However, you can create this file
-   and add custom role definitions.
-   The structure of the file may change at any time.
-   If you have multiple servers in your test environment,
-   you have to manually keep this file in synchronization between servers.
+You can define your own roles in the configuration file :file:`/etc/custom-udm-roles.policy`.
+The file doesn't exist by default.
+However, you can create this file and add custom role definitions.
+The structure of the file may change at any time.
+If you have multiple servers in your test environment,
+you have to manually keep this file in synchronization between servers.
+For details about the format of this file, see :ref:`da-concepts-role-definition`.
 
-   For the data structure, see :numref:`da-concepts-custom-roles-listing`.
+After creating or modifying this file,
+you have to run the command
+:numref:`da-concepts-custom-roles-activate`
+to update the rules.
+You can use the roles
+that you defined in this file,
+as value for the ``guardianRoles`` property of user objects.
 
-   .. code-block:: json
-      :caption: Define custom roles in JSON format data structure
-      :name: da-concepts-custom-roles-listing
+.. code-block::
+   :caption: Activate custom role and rules
+   :name: da-concepts-custom-roles-activate
 
-      {
-        "myadmin": [
-          "condition": {
-            "position": "..."
-          }
-          "permissions": {
-            "users/user": {
-              "attributes": {
-                 "username": "write",
-                 "*": "read"
-              }
-            }
-          }
-        ]
-      }
+   $ /usr/share/univention-directory-manager-tools/univention-configure-udm-authorization \
+       --store-local create-roles \
+       --config /etc/udm-roles.policy
+
+Options
+=======
 
 The following references show the available settings for delegative administration:
 
-.. envvar:: umc/udm/delegation
+.. envvar:: directory/manager/web/delegative-administration/enabled
 
    Activate or deactivate delegative administration for UMC.
+
+   Possible values:
+      ``true`` or ``false``.
+
+.. envvar:: directory/manager/rest/delegative-administration/enabled
+
+   Activate or deactivate delegative administration for UDM REST API.
 
    Possible values:
       ``true`` or ``false``.
