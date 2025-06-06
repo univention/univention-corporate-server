@@ -11,7 +11,7 @@ Configuration options
 The following files in JSON format define the default roles and custom roles:
 
 :file:`/usr/share/univention-directory-manager-modules/umc-udm-roles.json`
-   Contains the default roles ``domainadmin`` and ``ouadmin``:
+   Contains the default roles ``udm:default-roles:domain-administrator`` and ``udm:default-roles:organizational-unit-admin``:
 
    .. important::
 
@@ -59,6 +59,13 @@ The following references show the available settings for delegative administrati
 .. envvar:: umc/udm/delegation
 
    Activate or deactivate delegative administration for UMC.
+
+   Possible values:
+      ``true`` or ``false``.
+
+.. envvar:: directory/manager/rest/enable-delegative-administration
+
+   Activate or deactivate delegative administration for UDM REST API.
 
    Possible values:
       ``true`` or ``false``.

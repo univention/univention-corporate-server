@@ -12,7 +12,7 @@ Introduction
 
    Delegative administration is an experimental feature.
    Don't use it in production yet.
-   There are still many shortcomings
+   There are still many shortcomings, security issues
    and in particular things like configuration can and will change in the future.
 
 This document describes the concepts, setup, and configuration
@@ -58,7 +58,7 @@ Technical requirements
 
 The current implementation has the following technical requirements:
 
-* You need a UCS system with version 5.2-1 and the latest errata updates.
+* You need a UCS system with version 5.2-2 and the latest errata updates.
 * Delegative administration only supports the UCS system roles |UCSPRIMARYDN| and |UCSBACKUPDN|.
 
 .. _da-limits:
@@ -80,9 +80,9 @@ Beware the following limitations:
 
 * The configuration and customization may break any time.
 
-* Delegative administration is currently only implemented for authorization between UMC and the LDAP directory.
+* Delegative administration is currently only implemented for authorization between UMC as well as UDM REST API and the LDAP directory.
   In particularly, this has no effect on what modules
-  that users can see and use in UMC,
+  that users can see and use in UMC / UDM REST API,
   like the user or group management modules,
   just what they can do with these modules.
   You have to separately configure
@@ -105,14 +105,14 @@ Delegative administration offers the following features:
 * Every role defines a list of permissions.
   Permissions define what a role can do in the directory.
 
-* The backend of the UMC modules checks the authorization for the roles of the signed-in user
+* The UDM library checks the authorization for the roles of the signed-in user
   before accessing the directory database
   or returning directory objects from the database.
 
 * Delegative administration provides the following default roles:
 
-  ``domainadmins``
+  ``udm:default-roles:domain-administrator``
     Can manage every object.
 
-  ``ouadmins``
+  ``udm:default-roles:organizational-unit-admin``
     Can manage a particular position in the directory.

@@ -8,7 +8,7 @@
 Setup of an test environment
 ****************************
 
-Univention released the preview for the delegative administration as a normal errata update for UCS 5.2-1.
+Univention released the preview for the delegative administration as a normal errata update for UCS 5.2-2.
 However, you as an administrator need to explicitly activate the feature
 and perform some additional steps to test its functionality.
 
@@ -23,18 +23,18 @@ use the following steps:
 #. Set up a new UCS 5.2-1 |UCSPRIMARYDN| test system
    and upgrade to the latest errata updates.
 
-#. Assign the role ``umc:udm:domainadmin`` as ``guardianMemberRoles`` to the group ``Domain Admins``.
-   ``umc:udm:domainadmin`` is a default role to allow access to the directory for ``Administrators``.
+#. Assign the role ``udm:default-roles:domain-administrator`` as ``guardianMemberRoles`` to the group ``Domain Admins``.
+   ``udm:default-roles:domain-administrator`` is a default role to allow access to the directory for ``Administrators``.
    Run the command in :numref:`da-setup-test-env-preparation-add-role-listing` on the |UCSPRIMARYDN|.
    For information about roles, see :term:`Roles`.
 
    .. code-block:: console
-      :caption: Assign ``umc:udm:domainadmin`` as default role for the Domain Admins group
+      :caption: Assign ``udm:default-roles:domain-administrator`` as default role for the Domain Admins group
       :name: da-setup-test-env-preparation-add-role-listing
 
       $ udm groups/group modify \
          --dn "cn=Domain Admins,cn=groups,$(ucr get ldap/base)" \
-         --append guardianMemberRoles="umc:udm:domainadmin"
+         --append guardianMemberRoles="udm:default-roles:domain-administrator"
 
 #. By default,
    only members of the user group ``Domain Admins`` can see and use the user and group modules in UMC.
@@ -67,8 +67,8 @@ on every system.
    :caption: Activate delegative administration on a UCS system
    :name: da-setup-test-env-activate-listing
 
-   $ ucr set umc/udm/delegation='true'
-   $ service univention-management-console-server restart
+   $ ucr set umc/udm/delegation='true' directory/manager/rest/enable-delegative-administration=true
+   $ systemctl restart univention-management-console-server univention-directory-manager-rest
 
 .. _da-setup-test-env-test:
 
@@ -108,21 +108,23 @@ To test delegative administration, use the following steps:
 
 .. _da-setup-test-env-ouadmin:
 
-Preparation for testing the ``ouadmin`` default role
-====================================================
+Preparation for testing the ``udm:default-roles:organizational-unit-admin`` default role
+========================================================================================
 
-A more interesting example is the role ``ouadmin``.
+A more interesting example is the role ``udm:default-roles:organizational-unit-admin``.
 This role gives the user the ability to manage a position of the directory.
 User objects with this role have the following permissions:
 
 * They can see, create, modify, and delete user objects in their organizational unit
   and below in the directory structure.
 
+* They can read the LDAP BASE object ``container/dc``.
+
 * They can see user group objects in the container :samp:`cn=groups,{LDAP_BASE}`.
 
 * They can read ``mail/domain`` objects in the container :samp:`cn=domain,cn=mail,{LDAP_BASE}`.
 
-* They can read ``policies/desktop``, ``policies/pwhistory`` and ``policies/umc`` object in any other position.
+* They can read ``policies/desktop``, ``policies/pwhistory``, ``policies/umc``, ``settings/cn`` and ``settings/directory`` object in any other position.
 
 * They can't see or modify user objects or group objects in any other position.
 
@@ -131,7 +133,7 @@ User objects with this role have the following permissions:
 
 To test this role, you need to prepare your test environment.
 The following shell script creates and configures 10 organizational units,
-one user object with the role ``ouadmin`` for each organizational unit
+one user object with the role ``udm:default-roles:organizational-unit-admin`` for each organizational unit
 and 10 user objects within each organizational unit.
 Run the commands in :numref:`da-setup-test-env-ouadmin-listing` on the |UCSPRIMARYDN|.
 
@@ -159,7 +161,7 @@ Run the commands in :numref:`da-setup-test-env-ouadmin-listing` on the |UCSPRIMA
        --set username="${ou}-admin" \
        --set password=univention \
        --set lastname="${ou}-admin" \
-       --append guardianRoles="umc:udm:ouadmin&umc:udm:ou=${ou}"
+       --append guardianRoles="udm:default-roles:organizational-unit-admin&udm:contexts:ou=ou=${ou}"
      # create some users
      for j in $(seq 1 10); do
        username="user${j}-${ou}"
@@ -175,7 +177,7 @@ Now you can sign in to UMC with the ``ou1-admin`` user, the password ``univentio
 and open the *Users* module.
 You see only the users of the organizational unit ``ou1``, nothing else.
 
-You can also manually add the role ``umc:udm:ouadmin&umc:udm:ou=ou2`` to the ``guardianRoles`` property of the user ``ou1-admin``.
+You can also manually add the role ``udm:default-roles:organizational-unit-admin&udm:contexts:ou=ou=ou2`` to the ``guardianRoles`` property of the user ``ou1-admin``.
 The user then has ``ouadmin`` rights for two the organizational units ``ou=ou1`` and ``ou=ou2``.
 
 .. _da-setup-test-env-deactivate:
@@ -191,5 +193,5 @@ on every UCS system in your test environment.
    :caption: Deactivate delegative administration on one UCS system
    :name: da-setup-test-env-deactivate-listing
 
-   $ ucr unset umc/udm/delegation
-   $ service univention-management-console-server restart
+   $ ucr unset umc/udm/delegation directory/manager/rest/enable-delegative-administration
+   $ systemctl restart univention-management-console-server univention-directory-manager-rest

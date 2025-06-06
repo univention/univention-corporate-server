@@ -45,15 +45,15 @@ and what an actor can do to a target object.
      all group member objects inherit the role of the group.
 
      When you assign the roles to user objects or group objects,
-     you need to add the prefix ``umc:udm:`` to the role.
-     To add the role ``domainadmin`` to a user object,
+     you need to add the namespace prefix ``udm:default-roles:`` to the role.
+     To add the role ``domain-administrator`` to a user object,
      the command looks like :numref:`da-concepts-listing`.
 
      .. code-block:: console
-        :caption: Add role ``domainadmin`` to a user object
+        :caption: Add role ``domain-administrator`` to a user object
         :name: da-concepts-listing
 
-        $ udm users/user modify --dn "$LDAP_DN" --append guardianRoles="umc:udm:domainadmin"
+        $ udm users/user modify --dn "$LDAP_DN" --append guardianRoles="udm:default-roles:domain-administrator"
 
 .. seealso::
 
@@ -70,9 +70,9 @@ Roles can have an optional context.
 This context is an LDAP DN, without the LDAP base.
 It defines the position in the LDAP directory for which this role applies.
 
-One example is the role ``ouadmins``.
+One example is the role ``udm:default-roles:organizational-unit-admin``.
 This role has one definition for what it can do.
-However, you may want to differentiate between different ``ouadmins`` for different organizational units.
+However, you may want to differentiate between different ``udm:default-roles:organizational-unit-admin`` for different organizational units.
 
 When you assign the role to the user object,
 as shown in :numref:`da-concepts-context-listing`,
@@ -82,27 +82,33 @@ you can assign different contexts.
    :caption: Schema for setting a context when assigning the role
    :name: da-concepts-context-listing
 
-   user1 → guardianRoles → umc:udm:ouadmin&um:udm:ou=bremen
-   user2 → guardianRoles → umc:udm:ouadmin&um:udm:ou=berlin
+   user1 → guardianRoles → udm:default-roles:organizational-unit-admin&udm:contexts:ou=ou=bremen
+   user2 → guardianRoles → udm:default-roles:organizational-unit-admin&udm:contexts:ou=ou=berlin
 
 A role context definition has the following elements:
 
-``umc:udm:``
+``udm:default-roles:``
    is a prefix
    that you need to put before the role and the context.
 
-``ouadmin``
+``organizational-unit-admin``
    is the role.
 
 ``&``
    is the separator between the role and the context.
+
+``udm:contexts:ou``
+   is the context name
+
+``=``
+   is the separator between the context name and the context value.
 
 ``ou=bremen``
    is a position in the directory structure in form of an LDAP DN,
    without the LDAP base, for which the role applies.
 
 The ``user1`` and ``user2`` user objects have the same permissions.
-The permissions derive from the role ``ouadmin``.
+The permissions derive from the role ``udm:default-roles:organizational-unit-admin``.
 And the different positions in the LDAP directory derive from the context.
 
 .. important::
@@ -110,9 +116,9 @@ And the different positions in the LDAP directory derive from the context.
    Not every role evaluates the context.
    Whether a context is meaningful for a role depends on the configuration of the role.
 
-   For example the role ``domainadmin`` doesn't evaluate the context,
+   For example the role ``udm:default-roles:domain-administrator`` doesn't evaluate the context,
    wherefore a context for this role has no effect.
-   On the other hand ``ouadmin`` without a context is basically useless.
+   On the other hand ``udm:default-roles:organizational-unit-admin`` without a context is basically useless.
 
 .. _da-concepts-example:
 
@@ -207,7 +213,7 @@ shows an example for a generic form of this configuration in JSON format.
    defines whether users can remove objects.
    It can have either the value ``true`` or ``false``.
 
-The default role ``domainadmin`` has the configuration in :numref:`da-concepts-example-domainadmin-listing`.
+The default role ``udm:default-roles:domain-administrator`` has the configuration in :numref:`da-concepts-example-domainadmin-listing`.
 The configuration defines one capability,
 
 * that matches for all positions of target objects
@@ -215,7 +221,7 @@ The configuration defines one capability,
 * and permission to create and remove every UDM object.
 
 .. code-block:: json
-   :caption: Default configuration for ``domainadmin`` role
+   :caption: Default configuration for ``udm:default-roles:domain-administrator`` role
    :name: da-concepts-example-domainadmin-listing
 
    "domainadmin": [
@@ -279,4 +285,4 @@ You can define your own roles in a JSON format data structure in the file
 For more information,
 see :ref:`da-config-reference`
 and :numref:`da-concepts-custom-roles-listing`.
-You can set the role ``umc:udm:myadmin`` to user or group objects.
+You can set the role ``udm:default-roles:my-administrator`` to user or group objects.
