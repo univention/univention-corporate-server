@@ -138,7 +138,7 @@ Categories=management-udm
 
 [directory/manager/object-identifier/autogeneration]
 Description[de]=Diese Variable darf nicht ohne Rücksprache und Bestätigung des Univention Support teams gesetzt werden. Wenn diese Variable auf false gesetzt ist, wird die UDM-Eigenschaft univentionObjectIdentifier nicht automatisch auf eine generierte UUID gesetzt, wenn ein neues Objekt erstellt wird.
-Description[en]=Setting this variable is deprecated. It must not be changed without confirmation of the Univention Support team. If this variable is is set to false, the UDM property univentionObjectIdentifier will not automatically be set to a generated UUID when a new object is created.
+Description[en]=Setting this variable is deprecated. It must not be changed without confirmation of the Univention Support team. If this variable is set to false, the UDM property univentionObjectIdentifier will not automatically be set to a generated UUID when a new object is created.
 Type=bool
 Default=true
 Categories=management-udm
