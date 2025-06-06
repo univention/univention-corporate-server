@@ -1796,7 +1796,8 @@ class simpleLdap:
             # "False" ==> do not update univentionLastUsedValue in LDAP if a specific value has been specified
             self.alloc.append((name, self[name], False))
         else:
-            self[name] = self.request_lock(name)
+            if name != "univentionObjectIdentifier" or configRegistry.is_true('directory/manager/object-identifier/autogeneration'):
+                self[name] = self.request_lock(name)
 
     def _call_checkLdap_on_all_property_syntaxes(self) -> None:
         """
