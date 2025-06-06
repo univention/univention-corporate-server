@@ -284,7 +284,7 @@ class simpleLdap:
                 syntax=univention.admin.syntax.UUID,
                 may_change=False,
                 dontsearch=True,
-                default=(lambda o, p: str(uuid.uuid4()), [], []),
+                default=(lambda o, p: str(uuid.uuid4()) if configRegistry.is_true('directory/manager/object-identifier/autogeneration') else None, [], []),
             ),
         }
         if hasattr(module, 'property_descriptions') and 'univentionObjectIdentifier' not in module.property_descriptions:
