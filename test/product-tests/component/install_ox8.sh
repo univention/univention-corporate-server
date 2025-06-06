@@ -93,6 +93,108 @@ update-ca-certificates
 wget https://github.com/derailed/k9s/releases/download/v0.32.7/k9s_linux_amd64.deb && apt install ./k9s_linux_amd64.deb && rm k9s_linux_amd64.deb
 
 echo "DONE" >>/root/ox8_deployed
+
+# configure apache2
+a2enmod proxy proxy_http proxy_balancer expires deflate headers rewrite mime setenvif lbmethod_byrequests
+cat > /etc/apache2/conf-available/proxy_http.conf <<- EOF
+<IfModule mod_proxy_http.c>
+   ProxyRequests Off
+   ProxyStatus On
+   # When enabled, this option will pass the Host: line from the incoming request to the proxied host.
+   ProxyPreserveHost On
+   # Please note that the servlet path to the soap API has changed:
+   <Location /webservices>
+       # restrict access to the soap provisioning API
+       Order Allow,Deny
+       Allow from all
+   </Location>
+
+   <Location /appsuite>
+       # restrict access to the soap provisioning API
+       Order Allow,Deny
+       Allow from all
+   </Location>
+
+   # The old path is kept for compatibility reasons
+   <Location /servlet/axis2/services>
+       Order Deny,Allow
+       Deny from all
+       Allow from 127.0.0.1
+   </Location>
+
+   # Enable the balancer manager mentioned in
+   # https://oxpedia.org/wiki/index.php?title=AppSuite:Running_a_cluster#Updating_a_Cluster
+   <IfModule mod_status.c>
+     <Location /balancer-manager>
+       SetHandler balancer-manager
+       Order Allow,Deny
+       Allow from all
+     </Location>
+   </IfModule>
+
+   <Proxy balancer://oxcluster>
+       Order allow,deny
+       # multiple server setups need to have the hostname inserted instead localhost
+       BalancerMember https://as8.lab.test:30443 timeout=100 smax=0 ttl=60 retry=60 loadfactor=50 route=APP1
+       # Enable and maybe add additional hosts running OX here
+       # BalancerMember http://oxhost2:8009 timeout=100 smax=0 ttl=60 retry=60 loadfactor=50 route=APP2
+      ProxySet stickysession=JSESSIONID|jsessionid scolonpathdelim=On
+      SetEnv proxy-initial-not-pooled
+      SetEnv proxy-sendchunked
+   </Proxy>
+
+  # Alternatively select one or more hosts of your cluster to be restricted to handle only eas/usm requests
+  <Proxy balancer://eas_oxcluster>
+     Order allow,deny
+     Allow from all
+     # multiple server setups need to have the hostname inserted instead localhost
+     BalancerMember https://as8.lab.test_sync:30443 timeout=1900 smax=0 ttl=60 retry=60 loadfactor=50 route=APP1
+     # Enable and maybe add additional hosts running OX here
+     # BalancerMember http://oxhost2:8009 timeout=1900  smax=0 ttl=60 retry=60 loadfactor=50 route=APP2
+     ProxySet stickysession=JSESSIONID|jsessionid scolonpathdelim=On
+     SetEnv proxy-initial-not-pooled
+     SetEnv proxy-sendchunked
+  </Proxy>
+
+  ProxyPass /ajax balancer://oxcluster/ajax
+  ProxyPass /appsuite balancer://oxcluster/appsuite
+  ProxyPass /drive balancer://oxcluster/drive
+  ProxyPass /infostore balancer://oxcluster/infostore
+  ProxyPass /realtime balancer://oxcluster/realtime
+  ProxyPass /servlet balancer://oxcluster/servlet
+  ProxyPass /webservices balancer://oxcluster/webservices
+
+  ProxyPass /usm-json balancer://eas_oxcluster/usm-json
+  ProxyPass /Microsoft-Server-ActiveSync balancer://eas_oxcluster/Microsoft-Server-ActiveSync
+
+</IfModule>
+EOF
+
+cat > /etc/apache2/sites-available/000-default.conf <<- EOF
+<VirtualHost *:80>
+       IncludeOptional /etc/apache2/ucs-sites.conf.d/*.conf
+
+       ServerAdmin webmaster@localhost
+
+       DocumentRoot /var/www/html
+       <Directory /var/www/html>
+               Options -Indexes +FollowSymLinks +MultiViews
+               AllowOverride None
+               Order allow,deny
+               allow from all
+               RedirectMatch ^/$ /appsuite/
+       </Directory>
+       <Directory /var/www/html/appsuite>
+               Options None +SymLinksIfOwnerMatch
+               AllowOverride Indexes FileInfo
+       </Directory>
+</VirtualHost>
+EOF
+
+a2enmod proxy proxy_http proxy_balancer expires deflate headers rewrite mime setenvif lbmethod_byrequests
+a2enconf proxy_http.conf
+systemctl restart apache2.service
+
 # test doveadm connection
 # echo "secret"|base64  # -> c2VjcmV0
 kubectl exec -n as8 "$(kubectl get pods -n as8 | grep mw-default | awk '{print $1}' | head -n1)" -it -- bash -c 'curl -v -H "Authorization: X-Dovecot-API c2VjcmV0" http://dovecot-ce:8080/doveadm/v1'
