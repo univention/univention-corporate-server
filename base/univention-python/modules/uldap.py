@@ -243,6 +243,12 @@ class access:
         self.client_connection_attempt = client_retry_count + 1
 
         self.__open(ca_certfile)
+        if not self.base:
+            raise TypeError('base must at least be set to LDAP base')
+        if not self.base:
+            log.error('No LDAP base given to uldap.access()! Can lead to mysterious errors! %s', ''.join(traceback.format_stack()))
+            warnings.warn('No LDAP base given to uldap.access()! Can lead to mysterious errors!', DeprecationWarning, stacklevel=3)
+            self.base = ucr['ldap/base']
 
     @property
     def authz_connection(self):
