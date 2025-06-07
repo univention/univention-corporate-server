@@ -6060,10 +6060,7 @@ class LDAP_Search(select):
             else:
                 modules = univention.admin.modules.objectType(None, lo, dn)
                 display = None
-            try:
-                module = next(univention.admin.modules.get(m) for m in modules)
-            except StopIteration:
-                module = None
+            module = next((univention.admin.modules.get(m) for m in modules), None)
             if not module:
                 continue
             obj = module.object(None, lo, None, dn)
