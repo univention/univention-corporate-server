@@ -271,10 +271,10 @@ class Session:
             yield link
 
     def get_relation(self, entry: dict, relation: str, name: str | None = None, template: dict[str, Any] | None = None) -> dict[str, str]:
-        try:
-            return next(self.get_relations(entry, relation, name, template))
-        except StopIteration:  # pragma: no cover
+        rel = next(self.get_relations(entry, relation, name, template), None)
+        if rel is None:  # pragma: no cover
             raise _NoRelation(relation)
+        return rel
 
     async def resolve_relations(self, entry: dict, relation: str, name: str | None = None, template: dict[str, Any] | None = None) -> AsyncIterator[Any]:
         embedded = entry.get('_embedded', {})
@@ -288,10 +288,10 @@ class Session:
             yield (await self.make_request('GET', rel['href'])).data
 
     async def resolve_relation(self, entry: dict, relation: str, name: str | None = None, template: dict[str, Any] | None = None) -> Any:
-        try:
-            return await anext(self.resolve_relations(entry, relation, name, template))
-        except StopAsyncIteration:  # pragma: no cover
+        rel = await anext(self.resolve_relations(entry, relation, name, template), None)
+        if rel is None:
             raise _NoRelation(relation)
+        return rel
 
 
 class Client:  # noqa: B903
