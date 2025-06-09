@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libfile-find-rule-perl
+fix: 0.34-1+deb11u1~deb9u1
+desc: |
+ This update addresses the following issue:
+ * CVSS score 8.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2011-10007)
+bug: [58377]
+cve:
+- CVE-2011-10007
