@@ -475,7 +475,7 @@ install_apps () {
 				univention-app upgrade "$app" --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
 			fi
 		else
-			univention-app install --noninteractive "$app" || rv=$?
+			univention-app install --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)" "$app" || rv=$?
 			univention-run-join-scripts -dcaccount "$username" -dcpwd "$(ucr get tests/domainadmin/pwdfile)"
 		fi
 	done
