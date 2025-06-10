@@ -175,7 +175,8 @@ class LocalGuardianRuleEvaluation:
         scope = params.get('scope', 'base')
         pos = params['position']
         if not isinstance(pos, list):
-            pos = [f'{pos},{ldap_base}' if pos else ldap_base]
+            # pos = [f'{pos},{ldap_base}' if pos else ldap_base]
+            pos = [pos]
         try:
             func = {
                 "subtree": _check_scope_subtree,

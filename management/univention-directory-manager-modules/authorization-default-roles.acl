@@ -1,0 +1,149 @@
+# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# Default configuration file for access granting to roles in UDM
+# realized with a (DSL domain specific language) using extended BNF grammar and a LALR (Look-Ahead Left <- Right) parser.
+# comments (#) are everywhere allowed
+# this rule file must be converted into guardian rules via the script "/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization"
+
+# It allows `access by` roles `to` certain UDM "object types",
+#  by `grant`ing common `actions` allowed by the UDM module
+#  and `grant`ing `permission`s to certain `properties`
+#  optionally further restricted by conditions.
+# 1. `access by` clauses describe the actor roles which permissions are granted to. Multiple can be specified.
+#  and a optional `description` can describe the achievement of the rule for a human operator
+# 2. `to` clauses describe the target object and the the granted permissions based on UDM object types and is effectively transformed into a capability.
+# `condition`s can be specified via `if=`"NAMED_CONDITION", `position=`"DN", `position-from-context=`"CONTEXT_NAME" and `scope=`"base|one|subtree"
+# a given `position` condition can use `{ldap_base}` as placeholder, which is replaced with the real LDAP base DN.
+# an optional `description` and `name` for the `to` clause can be given, which indicate the metadata of the capability
+# 3. `grant` clauses are the actually granted permissions for the capability
+# `properties` can be any UDM property for the given UDM object type (or the wildcard "*" placeholder to allow access to every property)
+# `permission` can by any of read|search|write|readonly|writeonly|none (or the wildcard "*")
+# `actions` can be any of search|read|create|modify|rename|remove|move|reports-type-query|report-create (or the wildcard "*")
+
+named-condition "is-self"
+  condition="guardian:builtin:target_is_self"
+
+# unused examples for "named conditions", which can be used as if="$name"
+# these allow every possible guardian condition
+# we abstracted commonly used conditions away, like position="cn=users,{ldap_base}"
+
+#named-condition "in-global-users-container"  # unused example
+#  condition="udm:conditions:target_position_in"  # the guardian condition name
+#  parameters position="cn=users" scope="subtree"  # any key value pair which the guardian condition requires
+
+# Domain Administrators
+access by role="udm:default-roles:domain-administrator"
+  description="Domain Admins are allowed to do anything in the whole domain"
+  to objecttype="*"
+    grant actions="*"
+    grant properties="*" permission="write"
+
+# Domain Users
+access by role="udm:default-roles:domain-users"
+  description="Domain Users are allowed to read everything non-sensible"
+
+  to objecttype="users/user" if="is-self"
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+# Every role
+access
+  by role="udm:default-roles:organizational-unit-admin"
+  # by role="udm:default-roles:domain-administrator"
+  by role="udm:default-roles:domain-users"
+  by role="udm:default-roles:self-service-profile"
+  by role="udm:default-roles:helpdesk-operator"
+  by role="udm:default-roles:linux-ou-client-manager"
+  description="Everyone is allowed to read the LDAP base and certain internal objects"
+
+  # LDAP Base
+  to objecttype="container/dc" position="{ldap_base}" scope="base"
+    grant actions=["search", "read"]
+    grant properties="*" permission="read"
+
+  # due to UDM internas we must currently grant permissions for these objects
+  to objecttype="policies/desktop"
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+  to objecttype="policies/pwhistory"
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+  to objecttype="policies/umc"
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+  to objecttype="settings/cn"
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+  to objecttype="settings/default"
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+  to objecttype="settings/directory"
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+# Organizational Unit Administrators
+access by role="udm:default-roles:organizational-unit-admin"
+  description="Organizational Unit Adminstrators can administrate users and groups in their OU"
+
+  to objecttype="container/cn" position-from-context="udm:contexts:ou" scope="subtree"
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+  to objecttype="container/ou" position-from-context="udm:contexts:ou" scope="subtree"
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+  # user permissions in OU
+  to objecttype="users/user" position-from-context="udm:contexts:ou" scope="subtree"
+    description="Write user object in own OU" name="users-user-ou-write"
+    grant actions="search,read,create,modify,rename,remove,move"
+    grant properties="username,lastname,firstname" permission="write"
+    grant properties="password,serviceSpecificPassword" permission="writeonly"
+    grant properties="guardianRoles" permission="none"
+    grant properties="*" permission="write"
+
+  # group permissions in OU
+  to objecttype="groups/group" position-from-context="udm:contexts:ou" scope="subtree"
+    grant actions="search,read,create,modify,rename,remove,move"
+    grant properties="name" permission="write"
+    grant properties="password,serviceSpecificPassword" permission="writeonly"
+    grant properties="guardianMemberRoles" permission="none"
+    grant properties="guardianMemberRoles" values="udm:default-roles:domain-users,udm:default-roles:ou-users" permission="write"
+    grant properties="*" permission="write"
+
+access by role="udm:default-roles:self-service-profile"
+  description="Self service users are allowed to modify the properties of the own user object specified in UCR variable `self-service/udm_attributes`"
+  to objecttype="*" if="is-self"
+    grant actions="modify"
+    grant properties="jpegPhoto,e-mail,phone,roomnumber,departmentNumber,country,homeTelephoneNumber,mobileTelephoneNumber,homePostalAddress" permission="write"
+
+access by role="udm:default-roles:helpdesk-operator"
+  description="Helpdesk Operators are only allowed to set passwords of users underneath of a certain OU specified in the context udm:contexts:ou"
+
+  to objecttype="container/ou" position-from-context="udm:contexts:ou" scope="subtree"
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+  # user permissions in OU
+  to objecttype="users/user" position-from-context="udm:contexts:ou" scope="subtree"
+    grant actions="search,read,create,modify"  # rename,remove,move
+    grant properties="overridePWHistory,overridePWLength,unlock,password" permission="write"
+    grant properties="password" permission="writeonly"
+
+access by role="udm:default-roles:linux-ou-client-manager"
+  description="Join Clients Administrators are allowed to create/join linux computers into the domain, and set their corresponding password."
+
+  to objecttype="container/ou" position-from-context="udm:contexts:ou" scope="subtree"
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+  # linux computer permissions in context OU
+  to objecttype="computers/linux" position-from-context="udm:contexts:ou" scope="subtree"
+    grant actions="search,read,create,modify,rename,remove,move"
+    grant properties="*" permission=write  # FIXME: can put the client into Domain Administrators
