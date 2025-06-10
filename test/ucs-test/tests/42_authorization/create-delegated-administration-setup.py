@@ -84,12 +84,12 @@ for i in range(1, number_of_ous + 1):
     ou = ous.new()
     ou.position = ucr['ldap/base']
     ou.props.name = f'ou{i}'
-    ou.props.userPath = "1"
-    ou.props.groupPath = "1"
     try:
         ou.save()
     except CreateError:
         pass
+
+    # user container
     cn = cns.new()
     cn.position = f'ou=ou{i},{ldap_base}'
     cn.props.name = 'users'
@@ -98,6 +98,8 @@ for i in range(1, number_of_ous + 1):
         cn.save()
     except CreateError:
         pass
+
+    # groups conainer
     cn = cns.new()
     cn.position = f'ou=ou{i},{ldap_base}'
     cn.props.name = 'groups'
@@ -106,6 +108,8 @@ for i in range(1, number_of_ous + 1):
         cn.save()
     except CreateError:
         pass
+
+    # computers container
     cn = cns.new()
     cn.position = f'ou=ou{i},{ldap_base}'
     cn.props.name = 'computers'
@@ -114,6 +118,22 @@ for i in range(1, number_of_ous + 1):
         cn.save()
     except CreateError:
         pass
+
+    # primary group for ou
+    group = groups.new()
+    group.position = f'cn=groups,ou=ou{i},{ldap_base}'
+    group.props.name = f"ou{i}-users"
+    try:
+        group.save()
+        print('create group ou?-users')
+    except CreateError:
+        pass
+
+    # ou container with primary group setting
+    ou = ous.get(f'ou=ou{i},{ldap_base}')
+    ou.options.append('group-settings')
+    ou.props.defaultGroup = f'cn=ou{i}-users,cn=groups,ou=ou{i},{ldap_base}'
+    ou.save()
 
     # ou admin
     user = users.new()
