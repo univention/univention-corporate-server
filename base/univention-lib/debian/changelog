@@ -1,3 +1,9 @@
+univention-lib (11.6.1) unstable; urgency=medium
+
+  * Bug #58380: fix authentication retry-forever loop
+
+ -- Florian Best <best@univention.de>  Fri, 26 Jun 2026 13:33:18 +0200
+
 univention-lib (11.6.0) unstable; urgency=medium
 
   [ Marius Meschter ]

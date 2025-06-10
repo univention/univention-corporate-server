@@ -1,0 +1,14 @@
+product: ucs
+release: "5.2"
+version: [6]
+scope: ucs_5.2-0-errata5.2-6
+src: univention-lib
+fix: 11.6.1
+desc: |
+ This update addresses the following issue:
+ * Authentication retry handling in the UMC client has been corrected.
+   Previously, under certain authentication failures, the client could
+   repeatedly retry authentication until the Python recursion limit was
+   reached. The retry logic now performs a limited number of authentication
+   attempts before reporting the authentication failure to the caller.
+bug: [58380]
