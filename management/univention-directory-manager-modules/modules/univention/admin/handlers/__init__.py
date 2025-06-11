@@ -1,4 +1,3 @@
-#
 # Like what you see? Join us!
 # https://www.univention.com/about-us/careers/vacancies/
 #
