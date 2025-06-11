@@ -381,7 +381,6 @@ GUARDIAN_ROLES_SECURITY_CASES = [
 
 
 @check_delegation
-@pytest.mark.xfail(reason="Bug: OU admin can set guardian roles on users during creation")
 @pytest.mark.parametrize("admin_dn,admin_password,container_dn,operation", GUARDIAN_ROLES_SECURITY_CASES)
 def test_ou_admin_cannot_set_guardian_roles_on_users(
     ou_admin_connection,
@@ -412,8 +411,6 @@ def test_ou_admin_cannot_set_guardian_roles_on_users(
         user_obj["lastname"] = f"GuardianTest{operation.capitalize()}"
         user_obj["password"] = TEST_PASSWORD
         user_obj["guardianRoles"] = privileged_role
-
-        # This should fail but currently doesn't due to bug
         with pytest.raises(permissionDenied):
             user_obj.create()
     elif operation == "modify":
@@ -441,7 +438,6 @@ GUARDIAN_MEMBER_ROLES_SECURITY_CASES = [
 
 
 @check_delegation
-@pytest.mark.xfail(reason="Bug: OU admin can set guardian member roles on groups")
 @pytest.mark.parametrize("admin_dn,admin_password,container_dn,operation", GUARDIAN_MEMBER_ROLES_SECURITY_CASES)
 def test_ou_admin_cannot_set_guardian_member_roles_on_groups(
     ou_admin_connection,
@@ -470,8 +466,6 @@ def test_ou_admin_cannot_set_guardian_member_roles_on_groups(
         group_obj.position = position_obj
         group_obj["name"] = group_name
         group_obj["guardianMemberRoles"] = privileged_role
-
-        # This should fail but currently doesn't due to bug
         with pytest.raises(permissionDenied):
             group_obj.create()
 
