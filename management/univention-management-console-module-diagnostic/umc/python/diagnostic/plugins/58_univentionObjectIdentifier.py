@@ -40,7 +40,7 @@ from univention.management.console.modules.diagnostic import Instance, ProblemFi
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
-title = 'Unviention Object Identifier'
+title = 'Univention Object Identifier'
 description = '\n'.join([
     _('All objects of class "univentionObject" should have the attribute "univentionObjectIdentifier" in OpenLDAP.'),
 ])
