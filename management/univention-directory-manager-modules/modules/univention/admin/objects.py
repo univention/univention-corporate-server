@@ -77,7 +77,7 @@ def get(module, co, lo, position, dn='', attr=None, superordinate=None, attribut
             obj = univention.admin.modules.lookup(module.module, co, lo, base=dn, superordinate=superordinate, scope='base', unique=True, required=True, authz=authz)[0]
             obj.position.setDn(position.getDn() if position else dn)
             return obj
-        except (ldap.NO_SUCH_OBJECT, univention.admin.uexceptions.noObject):
+        except (ldap.NO_SUCH_OBJECT, univention.admin.uexceptions.noObject, IndexError):
             if not lo.authz_connection.get(dn, attr=['objectClass']):  # TODO: restrict visibility
                 raise univention.admin.uexceptions.noObject(dn)
             if not univention.admin.modules.virtual(module.module):
