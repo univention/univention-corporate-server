@@ -61,8 +61,8 @@ publish () {
         'ForceOverwrite:=true'
 }
 
-#upload "$1"
+upload "$1"
 list
 delete
-#replace
+replace
 publish
