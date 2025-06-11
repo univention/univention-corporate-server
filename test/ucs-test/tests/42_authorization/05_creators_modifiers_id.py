@@ -116,14 +116,16 @@ def create_group_udm_rest(ucr, random_username):
 
 
 @pytest.fixture
-def create_container_cn_udm(random_username, ucr):
+def create_user_udm(random_username, ucr):
 
     dns = []
 
     def _func(module, lo, pos, position_dn, cleanup=True):
         pos.setDn(position_dn)
         obj = module.object(None, lo, pos)
-        obj['name'] = random_username()
+        obj['username'] = random_username()
+        obj['lastname'] = random_username()
+        obj['password'] = 'univention'
         dn = obj.create()
         if cleanup:
             dns.append(dn)
@@ -131,7 +133,7 @@ def create_container_cn_udm(random_username, ucr):
 
     yield _func
 
-    remove_objects('container/cn', dns)
+    remove_objects('users/user', dns)
 
 
 @pytest.fixture
@@ -272,7 +274,7 @@ def test_udm_rest_move(ou, lo, random_username, ucr, create_group_udm_rest):
     obj.delete()
 
 
-def test_udm(ou, ldap_base, lo, create_container_cn_udm, random_username, lo_domain_admin, lo_ou1_admin, lo_ou2_admin):
+def test_udm(ou, ldap_base, lo, create_user_udm, random_username, lo_domain_admin, lo_ou1_admin, lo_ou2_admin):
     lo_priv = getAdminConnection()[0]
     admin_connection_getter = lambda: lo_priv  # noqa: E731
     Authorization.enable(admin_connection_getter)
@@ -283,17 +285,18 @@ def test_udm(ou, ldap_base, lo, create_container_cn_udm, random_username, lo_dom
 
     pos = position(lo_domain_admin.base)
     modules.update()
-    cns = modules.get('container/cn')
-    modules.init(lo_domain_admin, pos, cns)
+    users = modules.get('users/user')
+    modules.init(lo_domain_admin, pos, users)
 
     # create as domain admin
-    dn = create_container_cn_udm(cns, lo_domain_admin, pos, ou.dn)
+    dn = create_user_udm(users, lo_domain_admin, pos, ou.user_dn)
     attrs = lo.get(dn)
     assert attrs['univentionObjectCreatorsID'] == ou.domain_admin_id
     assert attrs['univentionObjectModifiersID'] == ou.domain_admin_id
     # modify as ou1 admin
-    obj = cns.lookup(None, lo_ou1_admin, filter_s='cn=*', base=dn, scope='base')[0]
+    obj = users.lookup(None, lo_ou1_admin, filter_s='cn=*', base=dn, scope='base')[0]
     obj.open()
+    print(obj.dn)
     obj['description'] = random_username()
     obj.modify()
     attrs = lo.get(dn)
@@ -301,12 +304,12 @@ def test_udm(ou, ldap_base, lo, create_container_cn_udm, random_username, lo_dom
     assert attrs['univentionObjectModifiersID'] == ou.admin_id
 
     # create as ou1 admin
-    dn = create_container_cn_udm(cns, lo_ou1_admin, pos, ou.dn)
+    dn = create_user_udm(users, lo_ou1_admin, pos, ou.dn)
     attrs = lo.get(dn)
     assert attrs['univentionObjectCreatorsID'] == ou.admin_id
     assert attrs['univentionObjectModifiersID'] == ou.admin_id
     # modify as domain admin
-    obj = cns.lookup(None, lo_domain_admin, filter_s='cn=*', base=dn, scope='base')[0]
+    obj = users.lookup(None, lo_domain_admin, filter_s='cn=*', base=dn, scope='base')[0]
     obj.open()
     obj['description'] = random_username()
     obj.modify()
@@ -315,13 +318,13 @@ def test_udm(ou, ldap_base, lo, create_container_cn_udm, random_username, lo_dom
     assert attrs['univentionObjectModifiersID'] == ou.domain_admin_id
 
     # create as ou2 admin
-    dn = create_container_cn_udm(cns, lo_ou2_admin, pos, ou.dn2)
+    dn = create_user_udm(users, lo_ou2_admin, pos, ou.dn2)
     attrs = lo.get(dn)
     assert attrs['univentionObjectCreatorsID'] == ou.admin2_id
     assert attrs['univentionObjectModifiersID'] == ou.admin2_id
 
 
-def test_udm_rename(ou, lo, random_username, lo_domain_admin, lo_ou2_admin, create_container_cn_udm):
+def test_udm_rename(ou, lo, random_username, lo_domain_admin, lo_ou2_admin, create_user_udm):
     lo_priv = getAdminConnection()[0]
     admin_connection_getter = lambda: lo_priv  # noqa: E731
     Authorization.enable(admin_connection_getter)
@@ -331,31 +334,34 @@ def test_udm_rename(ou, lo, random_username, lo_domain_admin, lo_ou2_admin, crea
 
     pos = position(lo_domain_admin.base)
     modules.update()
-    cns = modules.get('container/cn')
-    modules.init(lo_domain_admin, pos, cns)
+    users = modules.get('users/user')
+    modules.init(lo_domain_admin, pos, users)
 
     # create as domain admin
-    dn = create_container_cn_udm(cns, lo_domain_admin, pos, ou.dn2, cleanup=False)
+    dn = create_user_udm(users, lo_domain_admin, pos, ou.dn2, cleanup=False)
     attrs = lo.get(dn)
     assert attrs['univentionObjectCreatorsID'] == ou.domain_admin_id
     assert attrs['univentionObjectModifiersID'] == ou.domain_admin_id
 
     # change rdn as ou2 admin
-    obj = cns.lookup(None, lo_ou2_admin, filter_s='cn=*', base=dn, scope='base')[0]
+    obj = users.lookup(None, lo_ou2_admin, filter_s='cn=*', base=dn, scope='base')[0]
     obj.open()
-    obj['name'] = random_username()
+    obj['username'] = random_username()
     new_dn = obj.modify()
     assert new_dn != dn
     attrs = lo.get(new_dn)
     assert attrs['univentionObjectCreatorsID'] == ou.domain_admin_id
     assert attrs['univentionObjectModifiersID'] == ou.admin2_id
+    # check also the modifiers id for primary group
+    group_attrs = lo.get(obj['primaryGroup'])
+    assert group_attrs['univentionObjectModifiersID'] == ou.admin2_id
 
-    obj = cns.lookup(None, lo_domain_admin, filter_s='cn=*', base=new_dn, scope='base')[0]
+    obj = users.lookup(None, lo_domain_admin, filter_s='cn=*', base=new_dn, scope='base')[0]
     obj.open()
     obj.remove()
 
 
-def test_udm_move(ou, lo, lo_domain_admin, lo_ou1_admin, create_container_cn_udm):
+def test_udm_move(ou, lo, lo_domain_admin, lo_ou1_admin, create_user_udm):
     lo_priv = getAdminConnection()[0]
     admin_connection_getter = lambda: lo_priv  # noqa: E731
     Authorization.enable(admin_connection_getter)
@@ -365,24 +371,48 @@ def test_udm_move(ou, lo, lo_domain_admin, lo_ou1_admin, create_container_cn_udm
 
     pos = position(lo_domain_admin.base)
     modules.update()
-    cns = modules.get('container/cn')
-    modules.init(lo_domain_admin, pos, cns)
+    users = modules.get('users/user')
 
     # create as domain admin
-    dn = create_container_cn_udm(cns, lo_domain_admin, pos, ou.dn, cleanup=False)
+    dn = create_user_udm(users, lo_domain_admin, pos, ou.dn, cleanup=False)
     attrs = lo.get(dn)
     assert attrs['univentionObjectCreatorsID'] == ou.domain_admin_id
     assert attrs['univentionObjectModifiersID'] == ou.domain_admin_id
 
     # move as ou1 admin
-    obj = cns.lookup(None, lo_ou1_admin, filter_s='cn=*', base=dn, scope='base')[0]
+    obj = users.lookup(None, lo_ou1_admin, filter_s='cn=*', base=dn, scope='base')[0]
     obj.open()
     new_dn = dn.replace(ou.dn, ou.user_default_container)
     obj.move(new_dn)
     attrs = lo.get(new_dn)
     assert attrs['univentionObjectCreatorsID'] == ou.domain_admin_id
     assert attrs['univentionObjectModifiersID'] == ou.admin_id
+    # check also the modifiers id for primary group
+    group_attrs = lo.get(obj['primaryGroup'])
+    # FIXME: should be ou.admin_id
+    # i guess this is because the slapd refint overlay updates the uniqueMember
+    # of the groups when moving a user object, we still have this
+    #
+    #  /usr/lib/python3/dist-packages/univention/admin/handlers/__init__.py(893)move()
+    # -> res = n(self._move(newdn, ignore_license=ignore_license))
+    #  /usr/lib/python3/dist-packages/univention/admin/handlers/users/user.py(2038)_move()
+    # -> dn = super()._move(newdn, modify_childs, ignore_license)
+    #  /usr/lib/python3/dist-packages/univention/admin/handlers/__init__.py(1616)_move()
+    # -> self._move_in_groups(olddn)  # can be done always, will do nothing if oldinfo has no attribute 'groups'
+    #  /usr/lib/python3/dist-packages/univention/admin/handlers/__init__.py(1596)_move_in_groups()
+    # -> self.lo.authz_connection.modify(
+    #  /usr/lib/python3/dist-packages/univention/admin/uldap.py(830)modify()
+    # -> return self.lo.modify(dn, changes, serverctrls=serverctrls, response=response, rename_callback=rename_callback)
+    #  /usr/lib/python3/dist-packages/univention/uldap.py(195)_decorated()
+    # -> return func(self, *args, **kwargs)
+    #  /usr/lib/python3/dist-packages/univention/uldap.py(714)modify()
+    #
+    # but this is unnecessary as it wants to remove the old and add the new dn,
+    # which is already done by refint, and gets ldap.NO_SUCH_ATTRIBUTE and ldap.TYPE_OR_VALUE_EXISTS
+    # in this case there is no modification with univention.uldap and the univentionObjectModifiersID
+    # is not updated
+    assert group_attrs['univentionObjectModifiersID'] == ou.domain_admin_id
 
-    obj = cns.lookup(None, lo_domain_admin, filter_s='cn=*', base=new_dn, scope='base')[0]
+    obj = users.lookup(None, lo_domain_admin, filter_s='cn=*', base=new_dn, scope='base')[0]
     obj.open()
     obj.remove()
