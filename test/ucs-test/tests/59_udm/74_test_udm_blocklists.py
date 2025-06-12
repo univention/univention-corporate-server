@@ -14,7 +14,7 @@ import pytest
 
 from univention.admin import modules
 from univention.admin.blocklist import hash_blocklist_value
-from univention.admin.rest.client import NotFound
+from univention.admin.rest.client import UnprocessableEntity
 from univention.admin.uexceptions import noObject
 from univention.admin.uldap import getMachineConnection, position as uldap_position
 from univention.udm import UDM
@@ -251,7 +251,7 @@ def test_udm_rest_list_delete(add_ldap_blocklistentries, random_string, udm_rest
         assert obj.position.endswith(BASE)
         assert obj.properties['value'].startswith(name)
         obj.delete()
-        with pytest.raises(NotFound):
+        with pytest.raises(UnprocessableEntity):
             udm_rest_client_blocklists.get(dn)
 
 
@@ -272,7 +272,7 @@ def test_udm_rest_create_without_position(random_string, udm_rest_client_blockli
     assert obj.properties['originUniventionObjectIdentifier'] == my_uuid
     assert obj.dn == f'cn={hash_blocklist_value(value.encode("UTF-8"))},{blocklist_list.dn}'
     obj.delete()
-    with pytest.raises(NotFound):
+    with pytest.raises(UnprocessableEntity):
         udm_rest_client_blocklists.get(obj.dn)
 
 
@@ -292,5 +292,5 @@ def test_udm_rest_create_with_position(blocklist_list, random_string, udm_rest_c
     assert obj.properties['originUniventionObjectIdentifier'] == my_uuid
     assert obj.dn == f'cn={hash_blocklist_value(value.encode("UTF-8"))},{blocklist_list.dn}'
     obj.delete()
-    with pytest.raises(NotFound):
+    with pytest.raises(UnprocessableEntity):
         udm_rest_client_blocklists.get(obj.dn)
