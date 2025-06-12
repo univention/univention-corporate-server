@@ -78,8 +78,8 @@ def get_superordinate(module, co, lo, dn):
     return None
 
 
-def get(module, co, lo, position, dn='', attr=None, superordinate=None, attributes=None):
-    # type: (univention.admin.modules.UdmModule, None, univention.admin.uldap.access, univention.admin.uldap.position, str, dict[str, list[Any]] | None, Any | None, Any | None) -> univention.admin.handlers.simpleLdap | None
+def get(module, co, lo, position, dn='', attr=None, superordinate=None, attributes=None, authz=True):
+    # type: (univention.admin.modules.UdmModule, None, univention.admin.uldap.access, univention.admin.uldap.position, str, dict[str, list[Any]] | None, Any | None, Any | None, bool) -> univention.admin.handlers.simpleLdap | None
     """
     Return object of module while trying to identify objects of
     superordinate modules as well.
@@ -98,7 +98,7 @@ def get(module, co, lo, position, dn='', attr=None, superordinate=None, attribut
 
     if dn:
         try:
-            obj = univention.admin.modules.lookup(module.module, co, lo, base=dn, superordinate=superordinate, scope='base', unique=True, required=True)[0]
+            obj = univention.admin.modules.lookup(module.module, co, lo, base=dn, superordinate=superordinate, scope='base', unique=True, required=True, authz=authz)[0]
             obj.position.setDn(position.getDn() if position else dn)
             return obj
         except (ldap.NO_SUCH_OBJECT, univention.admin.uexceptions.noObject, IndexError):
