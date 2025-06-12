@@ -16,6 +16,9 @@
 .. _udm-rest-api-usage-examples-delete:
 .. _udm-rest-api-error-codes:
 
+Server
+------
+
 The content about the *UDM HTTP REST API* moved to another document.
 Except for the section about :ref:`udm-rest-api-clients`,
 continue reading at
@@ -30,18 +33,28 @@ in :cite:t:`uv-nubus-kubernetes-customization`.
 
 .. _udm-rest-api-clients:
 
-API clients
------------
+Python API client
+-----------------
 
-The following API clients implemented in Python exist for the |UCSREST|:
+A synchronous and an asynchronous API client implemented in Python exist for the |UCSREST|:
 
-* :program:`python3-univention-directory-mananger-rest-client`:
+* Synchronous Python client
 
-  Every UCS system has it installed by default.
+  The synchronous Python client has been packages for installation by a Python (``pip``) or a Debian package manager (``apt``).
+
+  On UCS the Debian package :program:`python3-univention-directory-mananger-rest-client` is installed by default.
+
+  To install it in other systems or containers, use ``pip``.
+
+  .. code-block:: console
+     :caption: Installing the synchronous Python |UCSREST| client using ``pip``
+
+     pip install udm-rest-api-client[sync]
+
   You can use it the following way:
 
   .. code-block:: python
-     :caption: Example for using Python |UCSREST| client
+     :caption: Example for using the synchronous Python |UCSREST| client
 
      from univention.admin.rest.client import UDM
 
@@ -81,13 +94,30 @@ The following API clients implemented in Python exist for the |UCSREST|:
      # 7. remove
      obj.delete()
 
-* :program:`python3-univention-directory-mananger-rest-async-client`:
+* Asynchronous Python client
 
-  After installing the Debian package on a UCS system,
-  you can use it in the following way:
+  The asynchronous Python client has been packages for installation by a Python (``pip``) or a Debian package manager (``apt``).
+
+  On UCS the Debian package :program:`python3-univention-directory-mananger-rest-async-client` is *not* installed by default.
+
+  To install it on UCS, use ``apt``.
+
+  .. code-block:: console
+     :caption: Installing the asynchronous Python |UCSREST| client using ``apt``
+
+     apt install python3-univention-directory-mananger-rest-async-client
+
+  To install it in other systems or containers, use ``pip``.
+
+  .. code-block:: console
+     :caption: Installing the asynchronous Python |UCSREST| client using ``pip``
+
+     pip install udm-rest-api-client[async]
+
+  You can use it the following way:
 
   .. code-block:: python
-     :caption: Example for using Python asynchronous UDM REST API client
+     :caption: Example for using the asynchronous Python UDM REST API client
 
      import asyncio
      from univention.admin.rest.async_client import UDM
@@ -132,10 +162,20 @@ The following API clients implemented in Python exist for the |UCSREST|:
              # 7. remove
              await obj.delete()
 
-* Python |UCSREST| Client:
+.. warning::
 
-  * `Package at PyPI <https://pypi.org/project/udm-rest-api-client/>`_
-  * :external+python-udm-rest-client:doc:`Documentation <index>`
+   A similarly named Python package exists at PyPI: `udm-rest-client <https://pypi.org/project/udm-rest-client/>`_.
+   Do **not** use it, it is *deprecated* and *unmaintained*.
+
+   Please use only the official and maintained Python client: `udm-rest-api-client <https://pypi.org/project/udm-rest-api-client/>`_
+
+Other programming languages
+---------------------------
+
+Clients for other programming languages can be generated using OpenAPI client generators.
+See `OpenAPI interface <https://github.com/univention/univention-corporate-server/blob/5.0-10//management/univention-directory-manager-rest/README.md#openapi-interface>`_
+on how to find the OpenAPI schema.
+
 
 .. spelling:word-list::
 

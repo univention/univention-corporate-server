@@ -14,4 +14,3 @@
 
 override_dh_python3:
 	dh_python3
-	$(RM) debian/python3-univention-directory-manager-rest/usr/lib/python3/dist-packages/univention/admin/rest/async_client.py

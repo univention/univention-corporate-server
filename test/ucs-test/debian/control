@@ -451,6 +451,7 @@ Depends:
  ucs-test-libs (= ${source:Version}),
  univention-appcenter-dev,
  xvfb,
+ # TODO: python3-udm-rest-api-client ?
  ${misc:Depends},
 Provides:
  ucs-test-module,
@@ -715,6 +716,8 @@ Depends:
  python3-venv,
  ucs-test-libs (= ${source:Version}),
  ucs-test-udm,
+ # TODO: python3-udm-rest-api-client-async ?
+ # TODO: python3-udm-rest-api-client ?
  ${misc:Depends},
 Recommends:
  ucs-test-framework,

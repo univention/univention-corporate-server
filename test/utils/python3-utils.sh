@@ -26,7 +26,7 @@ fake_package_install () {
 		python3-univention-connector-s4 \
 		python3-univention-debug \
 		python3-univention-directory-manager \
-		python3-univention-directory-manager-cli \
+		python3-univention-directory-manager-cli \  # TODO: python3-udm-rest-api-client ?
 		python3-univention-directory-manager-rest \
 		python3-univention-directory-reports \
 		python3-univention-heimdal \
