@@ -289,8 +289,7 @@ def _get_capabilities(actor_roles: dict) -> list[dict]:
 def may_create(obj: object | dict | str, actor_roles_func: callable) -> None:
     actor_roles = actor_roles_func()
     cap = _get_capabilities(actor_roles)
-    if not _check_permissions_create(obj, cap):
-        raise permissionDenied()
+    return _check_permissions_create(obj, cap)
 
 
 def may_read(objs: list[object | dict | str] | object, actor_roles_func: callable, filter_options: dict | None = None) -> list[object | dict | str] | object:
@@ -319,15 +318,13 @@ def may_read(objs: list[object | dict | str] | object, actor_roles_func: callabl
 def may_modify(obj: object, actor_roles_func: callable) -> None:
     actor_roles = actor_roles_func()
     cap = _get_capabilities(actor_roles)
-    if not _check_permissions_modify(obj, cap):
-        raise permissionDenied()
+    return _check_permissions_modify(obj, cap)
 
 
 def may_delete(obj: object, actor_roles_func: callable) -> None:
     actor_roles = actor_roles_func()
     cap = _get_capabilities(actor_roles)
-    if not _check_permissions_delete(obj, cap):
-        raise permissionDenied()
+    return _check_permissions_delete(obj, cap)
 
 
 # TODO: check if we need something special for move/rename
@@ -335,10 +332,7 @@ def may_move(obj: object, dest: str, actor_roles_func: callable) -> None:
     # may_modify(obj, actor_roles_func)  # optional
     actor_roles = actor_roles_func()
     cap = _get_capabilities(actor_roles)
-    if not _check_permissions_delete(obj, cap):
-        raise permissionDenied()
-    if not _check_permissions_create(dest, cap):
-        raise permissionDenied()
+    return _check_permissions_delete(obj, cap) and _check_permissions_create(dest, cap)
 
 
 def get_user_roles(lo, user_dn: str) -> None:
@@ -409,19 +403,16 @@ class Authorization:
             self._cache_user_roles[actor_dn] = get_user_roles(self.lo, actor_dn)
         return lambda: self._cache_user_roles[actor_dn]
 
-    def receive_allowed(self, obj):
+    def is_receive_allowed(self, obj, raise_exception=True):
         if not self.enabled:
             return True
         try:
-            self.is_receive_allowed(obj)
-        except univention.admin.uexceptions.permissionDenied:
-            return False
+            may_read(obj, self._user_roles(obj.lo))
+        except permissionDenied:
+            if not raise_exception:
+                return False
+            raise
         return True
-
-    def is_receive_allowed(self, obj):
-        if not self.enabled:
-            return
-        return may_read(obj, self._user_roles(obj.lo))
 
     def filter_search_results(self, lo, results, options=None):
         if not self.enabled:
@@ -441,33 +432,41 @@ class Authorization:
 
         return data
 
-    def is_create_allowed(self, obj):
+    def is_create_allowed(self, obj, raise_exception=True):
         if not self.enabled:
-            return
-        return may_create(obj, self._user_roles(obj.lo))
+            return True
+        if not may_create(obj, self._user_roles(obj.lo)) and raise_exception:
+            raise permissionDenied()
+        return True
 
-    def is_modify_allowed(self, obj):
+    def is_modify_allowed(self, obj, raise_exception=True):
         if not self.enabled:
-            return
-        return may_modify(obj, self._user_roles(obj.lo))
+            return True
+        if not may_modify(obj, self._user_roles(obj.lo)) and raise_exception:
+            raise permissionDenied()
+        return True
 
     def is_rename_allowed(self, *args, **kwargs):
         if not self.enabled:
-            return
-        return  # TODO: implement ?
+            return True
+        return True  # TODO: implement ?
 
-    def is_move_allowed(self, obj, dest):
+    def is_move_allowed(self, obj, dest, raise_exception=True):
         if not self.enabled:
-            return
+            return True
         moved_obj = copy.deepcopy(obj)
         moved_obj.dn = dest
-        return may_move(obj, moved_obj, self._user_roles(obj.lo))
+        if not may_move(obj, moved_obj, self._user_roles(obj.lo)) and raise_exception:
+            raise permissionDenied()
+        return True
 
-    def is_remove_allowed(self, obj):
+    def is_remove_allowed(self, obj, raise_exception=True):
         if not self.enabled:
-            return
-        return may_delete(obj, self._user_roles(obj.lo))
+            return True
+        if not may_delete(obj, self._user_roles(obj.lo)) and raise_exception:
+            raise permissionDenied()
+        return True
 
     def object_exists(self, obj):
-        if not self.receive_allowed(obj):
+        if not self.is_receive_allowed(obj, raise_exception=False):
             raise univention.admin.uexceptions.noObject(obj.dn)
