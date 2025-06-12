@@ -1912,6 +1912,11 @@ class simpleLdap:
         search_base = base or cls.ldap_base
 
         if authz and (not lo._verify_search_base(search_base) or not lo._verify_search_filter(filter_str)):
+            # mimic ldapsearch behavior with invalid base
+            try:
+                lo.authz_connection.get(search_base, exceptions=True, required=True)
+            except ldap.NO_SUCH_OBJECT:
+                raise univention.admin.uexceptions.noObject()
             return result
 
         for dn, attrs in lo.search(filter_str, base or cls.ldap_base, scope, attr, unique, required, timeout, sizelimit, serverctrls=serverctrls, response=response):
