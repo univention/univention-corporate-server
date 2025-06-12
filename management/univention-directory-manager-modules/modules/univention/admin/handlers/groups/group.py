@@ -644,7 +644,7 @@ class object(univention.admin.handlers.simpleLdap):
         # type: (str) -> None
         super()._ldap_post_move(olddn)
         settings_module = univention.admin.modules._get('settings/default')
-        settings_object = univention.admin.objects.get(settings_module, None, self.lo.authz_connection, position='', dn='cn=default,cn=univention,%s' % self.lo.base, authz=False)
+        settings_object = univention.admin.objects.get(settings_module, None, self.lo, position='', dn='cn=default,cn=univention,%s' % self.lo.base, authz=False)
         settings_object.open()
         changed = False
         for attr in ['defaultGroup', 'defaultMemberServerGroup', 'defaultClientGroup', 'defaultDomainControllerMBGroup', 'defaultDomainControllerGroup', 'defaultComputerGroup']:
