@@ -29,7 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-"""|UDM| module for container settings"""
+"""|UDM| module for a cn=univention singleton object representiong a container for various settings."""
 
 import univention.admin.filter
 import univention.admin.handlers
