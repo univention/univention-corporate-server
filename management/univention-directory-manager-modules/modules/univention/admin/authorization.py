@@ -435,15 +435,19 @@ class Authorization:
     def is_create_allowed(self, obj, raise_exception=True):
         if not self.enabled:
             return True
-        if not may_create(obj, self._user_roles(obj.lo)) and raise_exception:
-            raise permissionDenied()
+        if not may_create(obj, self._user_roles(obj.lo)):
+            if raise_exception:
+                raise permissionDenied()
+            return False
         return True
 
     def is_modify_allowed(self, obj, raise_exception=True):
         if not self.enabled:
             return True
-        if not may_modify(obj, self._user_roles(obj.lo)) and raise_exception:
-            raise permissionDenied()
+        if not may_modify(obj, self._user_roles(obj.lo)):
+            if raise_exception:
+                raise permissionDenied()
+            return False
         return True
 
     def is_rename_allowed(self, *args, **kwargs):
@@ -456,15 +460,19 @@ class Authorization:
             return True
         moved_obj = copy.deepcopy(obj)
         moved_obj.dn = dest
-        if not may_move(obj, moved_obj, self._user_roles(obj.lo)) and raise_exception:
-            raise permissionDenied()
+        if not may_move(obj, moved_obj, self._user_roles(obj.lo)):
+            if raise_exception:
+                raise permissionDenied()
+            return False
         return True
 
     def is_remove_allowed(self, obj, raise_exception=True):
         if not self.enabled:
             return True
-        if not may_delete(obj, self._user_roles(obj.lo)) and raise_exception:
-            raise permissionDenied()
+        if not may_delete(obj, self._user_roles(obj.lo)):
+            if raise_exception:
+                raise permissionDenied()
+            return False
         return True
 
     def object_exists(self, obj):
