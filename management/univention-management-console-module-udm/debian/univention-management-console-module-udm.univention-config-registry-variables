@@ -45,3 +45,17 @@ Description[de]=Definiert, ob das referenzierte Widget im Benutzererstellungsass
 Description[en]=Defines if the referenced widget is shown in the user create wizard by default (placeholder are e.g. invite, overridePWLength or pwdChangeNextLogin).
 Type=bool
 Categories=management-umc
+
+[directory/manager/web/modules/search/global-search]
+Description[de]=Definiert, ob die Suche nach Objekten über alle Container (LDAP Basis) möglich ist (auch modulspezifisch über z.B. 'directory/manager/web/modules/users/user/search/global-search').
+Description[en]=Defines whether searching for objects across all containers (LDAP base) is possible (also module-specific via e.g. directory/manager/web/modules/users/user/search/global-search).
+Type=bool
+Default=true
+Categories=management-umc
+
+[directory/manager/web/modules/search/default-search]
+Description[de]=Definiert, ob die Suche nach Objekten über alle standard Container möglich ist (auch modulspezifisch über z.B. 'directory/manager/web/modules/users/user/search/global-search').
+Description[en]=Defines whether searching for objects across all default containers is possible (also module-specific via e.g. directory/manager/web/modules/users/user/search/global-search).
+Type=bool
+Default=false
+Categories=management-umc

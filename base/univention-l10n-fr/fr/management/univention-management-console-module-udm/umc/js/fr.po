@@ -187,9 +187,13 @@ msgstr "Options avancées"
 msgid "Advanced settings"
 msgstr "Réglages avancés"
 
-#: umc/js/udm.js:904 umc/js/udm.js:921
+#: umc/js/udm.js:934
 msgid "All containers"
 msgstr "Tous les conteneurs"
+
+#: umc/js/udm.js:937
+msgid "Default containers"
+msgstr "Conteneurs par défaut"
 
 #: umc/js/udm.js:903 umc/js/udm.js:906 umc/js/udm.js:918 umc/js/udm.js:933
 msgid "All types"

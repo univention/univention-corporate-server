@@ -208,9 +208,13 @@ msgstr ""
 "Hier verwaltete Alarme werden von der Applikation \"%(name)s\" benutzt, "
 "welche momentan nicht installiert ist."
 
-#: umc/js/udm.js:938 umc/js/udm.js:955
+#: umc/js/udm.js:934
 msgid "All containers"
 msgstr "Alle Container"
+
+#: umc/js/udm.js:937
+msgid "Default containers"
+msgstr "Standardcontainer"
 
 #: umc/js/udm.js:937 umc/js/udm.js:940 umc/js/udm.js:952 umc/js/udm.js:967
 msgid "All types"

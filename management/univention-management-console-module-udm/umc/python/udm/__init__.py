@@ -616,14 +616,23 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
             request.options['container'] = module.ldap_base
 
         container = request.options.get('container')
+        containers = module.get_default_containers() if container == 'default' else [container]
+        # Reduce list of containers to avoid duplicate results
+        if len(containers) > 1:
+            containers = [
+                c1
+                for c1 in containers
+                if not any(c2 for c2 in containers if c1.endswith(c2) and c2 != c1)
+            ]
+
         objectProperty = request.options['objectProperty']
         objectPropertyValue = request.options['objectPropertyValue']
         scope = request.options.get('scope', 'sub')
         hidden = request.options.get('hidden')
         fields = (set(request.options.get('fields', []) or []) | {objectProperty}) - {'name', 'None'}
-        result = module.search(container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden, allow_asterisks=USE_ASTERISKS)
-        if result is None:
-            return []
+        result = []
+        for container in containers:
+            result.extend(module.search(container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden, allow_asterisks=USE_ASTERISKS))
 
         entries = []
         object_type = request.options.get('objectType', request.flavor)

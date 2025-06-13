@@ -897,6 +897,10 @@ define([
 			var _isAdvancedSearch = this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/search/advanced_on_open'] ||
 				this._ucr['directory/manager/web/modules/search/advanced_on_open'];
 			this._isAdvancedSearch = tools.isTrue(_isAdvancedSearch);
+			var _globalSearch = this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/search/global-search'] ||  this._ucr['directory/manager/web/modules/search/global-search'] || 'true';
+			this._globalSearch = tools.isTrue(_globalSearch);
+			var _defaultSearch = this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/search/default-search'] ||  this._ucr['directory/manager/web/modules/search/default-search'] || 'false';
+			this._defaultSearch = tools.isTrue(_defaultSearch)
 
 			var umcpCmd = lang.hitch(this, 'umcpCommand');
 			var widgets = [];
@@ -926,7 +930,12 @@ define([
 				objTypes.push({ id: this.moduleFlavor, label: _('All types') });
 			} else if (containers && containers.length) {
 				// containers...
-				containers.unshift({ id: 'all', label: _('All containers') });
+				if (this._globalSearch) {
+				  containers.unshift({ id: 'all', label: _('All containers') });
+				}
+				if (this._defaultSearch) {
+				  containers.unshift({ id: 'default', label: _('Default containers')})
+				}
 				widgets.push({
 					type: ComboBox,
 					name: 'container',
