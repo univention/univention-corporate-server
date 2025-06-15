@@ -579,7 +579,7 @@ def test_query_and_read_mail_domain_folder(udm, ldap_base, ou, login_user: str, 
     query_options = {
         'container': 'all',
         'hidden': False,
-        'objectType': flavor,
+        'objectType': 'mail/domain',
         'objectProperty': 'None',
         'objectPropertyValue': '',
         'fields': [
