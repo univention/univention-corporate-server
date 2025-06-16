@@ -64,15 +64,15 @@ class TestUdmUsersBasic(TestCase):
             cls.mail_domain = cls.ucr_test['mail/hosteddomains'].split()[0]
         except (AttributeError, IndexError):
             cls.mail_domain = cls.ucr_test['domainname']
-            try:
-                cls.udm_test.create_object(
-                    'mail/domain',
-                    position='cn=domain,cn=mail,{}'.format(cls.ucr_test['ldap/base']),
-                    name=cls.mail_domain,
-                    wait_for_replication=True,
-                )
-            except UCSTestUDM_CreateUDMObjectFailed as exc:
-                print(f'Creating mail domain {cls.mail_domain!r} failed: {exc}')
+        try:
+            cls.udm_test.create_object(
+                'mail/domain',
+                position='cn=domain,cn=mail,{}'.format(cls.ucr_test['ldap/base']),
+                name=cls.mail_domain,
+                wait_for_replication=True,
+            )
+        except UCSTestUDM_CreateUDMObjectFailed as exc:
+            print(f'Creating mail domain {cls.mail_domain!r} failed: {exc}')
 
     @classmethod
     def tearDownClass(cls):
