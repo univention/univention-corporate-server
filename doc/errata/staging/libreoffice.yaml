@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: libreoffice
+fix: 1:6.1.5-3+deb9u7
+desc: |
+ This update addresses the following issues:
+ * CVSS score unknown. (CVE-2025-1080)
+ * CVSS score 9.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2025-2866)
+bug: [58398]
+cve:
+- CVE-2025-1080
+- CVE-2025-2866
