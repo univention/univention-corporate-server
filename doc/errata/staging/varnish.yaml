@@ -1,0 +1,14 @@
+product: ucs
+release: "5.0"
+version: [9, 10]
+scope: ucs_5.0-0-errata5.0-10
+src: varnish
+fix: 6.1.1-1+deb10u5
+desc: |
+ This update addresses the following issues:
+ * CVSS score 5.4 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:L/I:L/A:N).
+   (CVE-2025-47905, CVE-2025-30346)
+bug: [58394]
+cve:
+- CVE-2025-30346
+- CVE-2025-47905
