@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: icu
+fix: 57.1-6+deb9u6
+desc: |
+ This update addresses the following issue:
+ * CVSS score 7.0 (CVSS:3.1/AV:L/AC:H/PR:N/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2025-5222)
+bug: [58396]
+cve:
+- CVE-2025-5222
