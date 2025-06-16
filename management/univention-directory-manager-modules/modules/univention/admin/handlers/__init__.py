@@ -984,8 +984,9 @@ class simpleLdap:
 
         :returns: the distringuised name.
         """
+        # FIXME: DN is required when creating target representation for authz, but property might not be set
         identifier = [
-            (self.mapping.mapName(name), self.mapping.mapValueDecoded(name, self.info[name]), 2)
+            (self.mapping.mapName(name), self.mapping.mapValueDecoded(name, self.info.get(name, 'FIXME-NOT-EXISTS')), 2)
             for name, prop in self.descriptions.items()
             if prop.identifies
         ]
