@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: curl
+fix: 7.52.1-5+deb9u24
+desc: |
+ This update addresses the following issue:
+ * CVSS score 8.8 (CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2023-27534)
+bug: [58397]
+cve:
+- CVE-2023-27534
