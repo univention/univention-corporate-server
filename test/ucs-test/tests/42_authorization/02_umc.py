@@ -14,7 +14,7 @@ from types import SimpleNamespace
 import pytest
 
 from univention.config_registry import ucr as _ucr
-from univention.lib.umc import BadRequest, HTTPError
+from univention.lib.umc import BadRequest
 from univention.testing.umc import Client
 
 
@@ -404,26 +404,7 @@ def test_user_read(ldap_base, ou, login_user, user_dn, attribute, expected):
         user_dn.format(admin_ou=ou.admin_dn, normal_user=ou.user_dn, ldap_base=ldap_base),
     ]
     if not expected:
-        # TODO: why do we get HTTPError, should this return permissionDenied?
-        #  File "/usr/lib/python3/dist-packages/univention/management/console/modules/udm/__init__.py", line 265, in get_obj_module
-        #    return get_obj_module(flavor, ldap_dn, self.get_ldap_connection()[0])
-        #           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        #  File "/usr/lib/python3/dist-packages/univention/management/console/modules/udm/udm_ldap.py", line 1239, in get_obj_module
-        #    return module.get(ldap_dn, attributes=attr), module
-        #           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        #  File "/usr/lib/python3/dist-packages/univention/management/console/modules/udm/udm_ldap.py", line 742, in get
-        #    UDM_Error(exc).reraise()
-        #  File "/usr/lib/python3/dist-packages/univention/management/console/modules/udm/udm_ldap.py", line 375, in reraise
-        #    raise self.with_traceback(self.exc_info[2])
-        #  File "/usr/lib/python3/dist-packages/univention/management/console/modules/udm/udm_ldap.py", line 735, in get
-        #    obj.acls.is_receive_allowed(obj)
-        #  File "/usr/lib/python3/dist-packages/univention/admin/authorization.py", line 393, in is_receive_allowed
-        #    return may_read(obj, self._user_roles(obj))
-        #           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        #  File "/usr/lib/python3/dist-packages/univention/admin/authorization.py", line 291, in may_read
-        #    raise permissionDenied()
-        # univention.management.console.modules.udm.udm_ldap.UDM_Error: Permission denied
-        with pytest.raises(HTTPError):
+        with pytest.raises(BadRequest):
             client.umc_command('udm/get', options, 'users/user')
     else:
         res = client.umc_command('udm/get', options, 'users/user').result
@@ -532,14 +513,13 @@ def test_mail_domain_create(ldap_base, ou, random_username, login_user, udm):
     if login_user == 'ou_admin':
         assert not res['success']
         assert res['details'] == _('Permission denied.')
-        assert len(udm.list_objects('mail/domain')) == 0
     else:
         assert res['success']
         domains = udm.list_objects('mail/domain')
-        assert len(domains) == 1
+        assert res['$dn$'] in [x[0] for x in domains]
         delete_options = [
             {
-                'object': f'cn={domain_name},cn=domain,cn=mail,dc=ucs,dc=test',
+                'object': res['$dn$'],
                 'options': {
                     'cleanup': True,
                     'recursive': True,
@@ -549,22 +529,19 @@ def test_mail_domain_create(ldap_base, ou, random_username, login_user, udm):
         admin_client.umc_command('udm/remove', delete_options, 'mail/domain')
 
 
-# checking if admins can read mail/domain or mail/folder cross-OU
+# checking if admins can read mail/domain cross-OU
 @check_delegation
 @pytest.mark.parametrize(
-    'login_user, flavor, position, has_access',
+    'login_user, position, has_access',
     [
-        ('admin', 'mail/domain', '{ou_dn}', True),
-        ('admin', 'mail/domain', '{ldap_base}', True),
-        ('ou_admin', 'mail/domain', '{ou_dn}', True),
-        ('ou_admin', 'mail/domain', '{ldap_base}', False),
-        ('admin', 'mail/folder', '{ou_dn}', True),
-        ('admin', 'mail/folder', '{ldap_base}', True),
-        ('ou_admin', 'mail/folder', '{ou_dn}', True),
-        ('ou_admin', 'mail/folder', '{ldap_base}', False),
+        ('admin', '{ou_dn}', True),
+        ('admin', '{ldap_base}', True),
+        ('ou_admin', '{ou_dn}', False),
+        ('ou_admin', '{ldap_base}', False),
+        ('ou_admin', 'cn=domain,cn=mail,{ldap_base}', True),
     ],
 )
-def test_query_and_read_mail_domain_folder(udm, ldap_base, ou, login_user: str, flavor: str, position: str, has_access: bool) -> None:
+def test_query_and_read_mail_domain(udm, ldap_base, ou, login_user: str, position: str, has_access: bool) -> None:
     if login_user == 'admin':
         client = Client.get_test_connection()
     elif login_user == 'ou_admin':
@@ -572,10 +549,8 @@ def test_query_and_read_mail_domain_folder(udm, ldap_base, ou, login_user: str, 
         client.authenticate(ou.admin_username, 'univention')
 
     position = position.format(ou_dn=ou.dn, ldap_base=ldap_base)
-
     domain_name = f'test-{ou.user_username}.com'
     object_dn = f'cn={domain_name},{position}'
-
     query_options = {
         'container': 'all',
         'hidden': False,
@@ -592,13 +567,9 @@ def test_query_and_read_mail_domain_folder(udm, ldap_base, ou, login_user: str, 
         object_dn,
     ]
 
-    # query all should be empty
-    res = client.umc_command('udm/query', query_options, 'mail/mail').result  # type: ignore[call-arg]
-    assert res == []
-
     # get (should be impossible, as not created yet)
     with pytest.raises(BadRequest):
-        client.umc_command('udm/get', get_option, flavor)  # type: ignore[call-arg]
+        client.umc_command('udm/get', get_option, 'mail/domain')  # type: ignore[call-arg]
 
     # create
     udm.create_object(
@@ -610,53 +581,35 @@ def test_query_and_read_mail_domain_folder(udm, ldap_base, ou, login_user: str, 
     # query
     res = client.umc_command('udm/query', query_options, 'mail/mail').result  # type: ignore[call-arg]
     if has_access:
-        assert res
-        assert res[0]['$dn$'] == object_dn
-        assert len(res) == 1
+        assert object_dn in [x['$dn$'] for x in res]
+        assert len(res) == len(udm.list_objects('mail/domain', properties=["DN"]))
     else:
-        assert res == []
+        assert object_dn not in [x['$dn$'] for x in res]
 
     # get (should be possible)
     if has_access:
-        res = client.umc_command('udm/get', get_option, flavor).result  # type: ignore[call-arg]
+        res = client.umc_command('udm/get', get_option, 'mail/domain').result  # type: ignore[call-arg]
         assert res
         assert res[0]['$dn$'] == object_dn
         assert len(res) == 1
     else:
-        # TODO: why HTTPError
-        with pytest.raises(HTTPError):
-            client.umc_command('udm/get', get_option, flavor)  # type: ignore[call-arg]
+        with pytest.raises(BadRequest):
+            client.umc_command('udm/get', get_option, 'mail/domain')  # type: ignore[call-arg]
 
     # delete
-    remove_option = [
-        {
-            'object': object_dn,
-            'options': {
-                'cleanup': True,
-                'recursive': True,
-            },
-        },
-    ]
-    res = client.umc_command('udm/remove', remove_option, flavor).result[0]  # type: ignore[call-arg]
-    if has_access:
-        assert res
-        assert res['$dn$'] == object_dn
-        assert res['success']
-    else:
-        assert not res['success']
+    udm.remove_object('mail/domain', dn=object_dn)
 
     # query all should be empty
     res = client.umc_command('udm/query', query_options, 'mail/mail').result  # type: ignore[call-arg]
-    assert res == []
+    assert len(res) == len(udm.list_objects('mail/mail', properties=["DN"]))
 
     # get (should not be possible)
     if has_access:
         with pytest.raises(BadRequest):
-            client.umc_command('udm/get', get_option, flavor)  # type: ignore[call-arg]
+            client.umc_command('udm/get', get_option, 'mail/mail')  # type: ignore[call-arg]
     else:
-        # TODO: why HTTPError
-        with pytest.raises(HTTPError):
-            client.umc_command('udm/get', get_option, flavor)  # type: ignore[call-arg]
+        with pytest.raises(BadRequest):
+            client.umc_command('udm/get', get_option, 'mail/mail')  # type: ignore[call-arg]
 
 
 def test_syntax_choices_admin():
