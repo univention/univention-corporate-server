@@ -80,7 +80,7 @@ number_of_users = 10
 number_of_groups = 5
 for i in range(1, number_of_ous + 1):
 
-    # ou and users, groups container
+    # ou, users, groups and computer container
     ou = ous.new()
     ou.position = ucr['ldap/base']
     ou.props.name = f'ou{i}'
@@ -106,6 +106,14 @@ for i in range(1, number_of_ous + 1):
         cn.save()
     except CreateError:
         pass
+    cn = cns.new()
+    cn.position = f'ou=ou{i},{ldap_base}'
+    cn.props.name = 'computers'
+    cn.props.computerPath = '1'
+    try:
+        cn.save()
+    except CreateError:
+        pass
 
     # ou admin
     user = users.new()
@@ -121,6 +129,27 @@ for i in range(1, number_of_ous + 1):
     user.props.password = 'univention'
     user.props.overridePWHistory = '1'
     user.props.guardianRoles = [f'umc:udm:ouadmin&umc:udm:ou=ou{i}']
+    user.policies['policies/umc'].append(policy.dn)
+    if user.props.groups:
+        user.props.groups.append(api_access_group.dn)
+    else:
+        user.props.groups = [api_access_group.dn]
+    user.save()
+
+    # linux client manager user
+    user = users.new()
+    name = f'ou{i}clientmanager'
+    position = f'cn=users,{ldap_base}'
+    try:
+        user = users.get(f'uid={name},{position}')
+    except NoObject:
+        user = users.new()
+    user.position = f'cn=users,{ldap_base}'
+    user.props.username = f'ou{i}clientmanager'
+    user.props.lastname = f'ou{i}clientmanager'
+    user.props.password = 'univention'
+    user.props.overridePWHistory = '1'
+    user.props.guardianRoles = [f'umc:udm:linux-client-manager&umc:udm:ou=ou{i}']
     user.policies['policies/umc'].append(policy.dn)
     if user.props.groups:
         user.props.groups.append(api_access_group.dn)
