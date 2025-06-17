@@ -45,7 +45,6 @@ generate-config:
       --yaml .gitlab-ci/base.yml
       --yaml .gitlab-ci/base-deb.yml
       --out generated-config-deb.yml
-      --skip src:python-notifier
       */*/debian/control
     - >
       .gitlab-ci/doc-builder
