@@ -10,6 +10,8 @@ dir="$(dirname "$1")"
 base="$(basename "$1" .changes)"
 pkg="${base%%_*}"
 
+# https://www.aptly.info/doc/api/swagger/
+
 aptly () {
     local msg="$1" url
     shift
@@ -24,6 +26,7 @@ aptly () {
         --ignore-stdin \
         --pretty=all \
         --timeout=60s \
+        --check-status \
         "$@"
 }
 
@@ -66,8 +69,11 @@ publish () {
         'ForceOverwrite:=true'
 }
 
-upload "$1"
+rc=0
+upload "$1" || rc=1
 list
-delete
-replace
-publish
+delete || rc=2
+replace || rc=3
+publish || rc=4
+
+exit "$rc"
