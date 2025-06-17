@@ -65,7 +65,7 @@ prepare aptly:
     entrypoint: [""]
   script:
     - "$CI_PROJECT_DIR/.gitlab-ci/aptly-create || :"
-    - $CI_PROJECT_DIR/.gitlab-ci/aptly-publish
+    - "$CI_PROJECT_DIR/.gitlab-ci/aptly-publish || :"
   environment:
     name: $CI_COMMIT_REF_NAME
     url: $APT/$CI_COMMIT_REF_SLUG/

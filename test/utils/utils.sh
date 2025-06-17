@@ -1388,8 +1388,8 @@ add_extra_branch_repository () {
 		echo "deb [trusted=yes] $REPO_SERVER/$repo_name git main" >"/etc/apt/sources.list.d/$repo_name.list"
 		cat >"/etc/apt/preferences.d/99$repo_name.pref" <<__PREF__
 Package: *
-Pin: release o=Univention,a=git,n=git
-Pin-Priority: 1001
+Pin: release o=Univention,n=git
+Pin-Priority: ${UCS_ENV_UCS_BRANCH_PRIORITY:-1002}
 __PREF__
 		echo 'APT::Get::allow-downgrades "true";' > /etc/apt/apt.conf.d/99allow-downgrade
 		apt-get -qq update
@@ -1549,16 +1549,16 @@ add_extra_apt_scope () {
 		echo 'APT::Get::allow-downgrades "true";' > /etc/apt/apt.conf.d/99allow-downgrade
 		# pin repo
 		echo 'Package: *' > "/etc/apt/preferences.d/99$repo_name.pref"
-		echo 'Pin: release o=Univention,a=git,n=git' >> "/etc/apt/preferences.d/99$repo_name.pref"
-		echo 'Pin-Priority: 1001' >> "/etc/apt/preferences.d/99$repo_name.pref"
+		echo "Pin: release o=Univention,n=git,l=$repo_name" >> "/etc/apt/preferences.d/99$repo_name.pref"
+		echo "Pin-Priority: ${SCOPE_PIN_PRIORITY:-1001}" >> "/etc/apt/preferences.d/99$repo_name.pref"
 		;;
 	*)
 		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/all/"
 		echo "deb [trusted=yes] http://192.168.0.10/build2/ ucs_$(ucr get version/version)-0-$SCOPE/\$(ARCH)/"
 		;;
 	esac >/etc/apt/sources.list.d/99_extra_scope.list.disabled
-	# create sources list, but disabled, you are supposed to call "jenkins_update" in your cfg to do the
-	# actual upgrade see "jenkins_update" why
+	# create sources list, but disabled, you are supposed to call "jenkins_updates" in your cfg to do the
+	# actual upgrade see "jenkins_updates" why
 }
 
 create_version_file_tmp_ucsver () {
