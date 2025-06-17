@@ -62,7 +62,6 @@ publish () {
     aptly publish \
         PUT "${APTLY}/publish/${CI_COMMIT_REF_SLUG}/git" \
         'AcquireByHash:=true' \
-        "Label=$CI_COMMIT_REF_SLUG" \
         'ForceOverwrite:=true'
 }
 
