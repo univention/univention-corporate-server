@@ -64,8 +64,7 @@ class ComputersMemberModule(ComputersAllModule):
 
     def _get_default_object_positions(self) -> list[str]:
         ret = super()._get_default_object_positions()
-        if len(ret) == 4 and \
-                f'cn=computers,{self.connection.base}' in ret and \
+        if f'cn=computers,{self.connection.base}' in ret and \
                 f'cn=memberserver,cn=computers,{self.connection.base}' in ret and \
                 f'cn=dc,cn=computers,{self.connection.base}' in ret and \
                 self.connection.base in ret:
