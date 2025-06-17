@@ -1,0 +1,23 @@
+#!/bin/bash
+# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+if ! git cat-file -e "$CI_MERGE_REQUEST_DIFF_BASE_SHA^{commit}"; then
+    echo 'Base commit does not exists: GIT_DEPTH too low!'
+    exit 1;
+fi
+
+echo -e "\e[0Ksection_start:$(date +%s):find\r\e[0KSearch all unchanged packages"
+i=0
+find . -maxdepth 4 -type f -path '*/debian/control' | cut -d/ -f2- | sed 's|/debian/control$||' | while read -r base; do
+    ((i++))
+    if [ -n "$(git diff --name-only "$CI_MERGE_REQUEST_DIFF_BASE_SHA" "$CI_COMMIT_SHA" -- "$base")" ]; then
+        echo -e "\e[0Ksection_start:$(date +%s):leave${i}\r\e[0KLeaving changes in $base"
+        echo "Changes in $base - skip"
+        echo -e "\e[0Ksection_end:$(date +%s):leave${i}\r\e[0K"
+    else
+        echo -e "\e[0Ksection_start:$(date +%s):drop${i}\r\e[0KDropping binary packages for unchanged $base"
+        "${0%/*}"/aptly-remove "${base}"
+        echo -e "\e[0Ksection_end:$(date +%s):drop${i}\r\e[0K"
+    fi
+done

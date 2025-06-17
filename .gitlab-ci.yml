@@ -45,7 +45,6 @@ generate-config:
       --yaml .gitlab-ci/base.yml
       --yaml .gitlab-ci/base-deb.yml
       --out generated-config-deb.yml
-      --skip src:python-notifier
       */*/debian/control
     - >
       .gitlab-ci/doc-builder
@@ -159,6 +158,7 @@ deb-pipeline:
     - job: generate-config
     - job: prepare aptly
     - job: select ucslint
+    - job: drop unused packages
   variables:
     UCSLINT: $UCSLINT
     ORIGINAL_SOURCE: $CI_PIPELINE_SOURCE
@@ -169,6 +169,26 @@ deb-pipeline:
     strategy: depend
     forward:
       pipeline_variables: true
+
+drop unused packages:
+  stage: build
+  image: $DEB
+  before_script:
+    - apt-get -qq update; apt-get --assume-yes --no-install-recommends install git
+  rules:
+  - if: $CI_COMMIT_MESSAGE =~ /skip-build/ || $pipeline =~ /skip-build/
+    when: never
+  - if: $CI_COMMIT_MESSAGE =~ /skip-drop/ || $pipeline =~ /skip-drop/
+    when: never
+  - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BEFORE_SHA == "0000000000000000000000000000000000000000"'
+    when: never
+  - if: '$CI_PIPELINE_SOURCE != "merge_request_event"'
+    when: never
+  - when: always
+  variables:
+    GIT_DEPTH: 1000
+  script:
+    - .gitlab-ci/drop-unused-packages
 
 errata validation:
   stage: prepare
