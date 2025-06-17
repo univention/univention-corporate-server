@@ -1,4 +1,4 @@
-ucs-test (12.1.19) unstable; urgency=medium
+ucs-test (12.1.20) unstable; urgency=medium
 
   * Issue #2295: ignore tracebacks which occur in UCS 5.2 again
 

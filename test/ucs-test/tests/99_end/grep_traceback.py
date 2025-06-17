@@ -81,7 +81,7 @@ def _readline(fd):
     return line
 
 
-def main(files, ignore_exceptions=[], out=sys.stdout):
+def main(files, ignore_exceptions=[], out=sys.stdout, err=sys.stderr):
     tracebacks = {}
     for file_ in files:
         with getfile(file_, 'rb') as (fd, filename):
@@ -118,18 +118,20 @@ def main(files, ignore_exceptions=[], out=sys.stdout):
                     tb.filenames.add(filename)
 
     print('Found %d tracebacks:' % (len(tracebacks),), file=out)
+    ignored = 0
     found = False
     for traceback, exceptions in tracebacks.items():
         ignore = False
         for e in ignore_exceptions:
             ignore = any(e.ignore_exception.search(exc) for exc in exceptions) and (not e.ignore_traceback or any(tb_pattern.search(traceback) for tb_pattern in e.ignore_traceback))
             if ignore:
-                print('', file=out)
+                print('', file=err)
                 for bug in e.bugs:
-                    print('https://forge.univention.org/bugzilla/show_bug.cgi?id=%d' % (bug,), file=out)
-                print('Ignoring %s ' % (e.ignore_exception.pattern,), file=out)
+                    print('https://forge.univention.org/bugzilla/show_bug.cgi?id=%d' % (bug,), file=err)
+                print('Ignoring %s ' % (e.ignore_exception.pattern,), file=err)
                 break
         if ignore:
+            ignored += 1
             continue
         found = True
         print('', file=out)
@@ -142,6 +144,7 @@ def main(files, ignore_exceptions=[], out=sys.stdout):
         for exc in exceptions:
             print(exc.strip(), file=out)
         print('', file=out)
+    print('Show %d tracebacks (%d ignored)' % (len(tracebacks) - ignored, ignored), file=out)
     return not found
 
 
@@ -168,7 +171,7 @@ class E(collections.namedtuple('Exception', ['re_exception', 're_traceback', 'bu
 
 
 COMMON_EXCEPTIONS = (
-    # # Errors from UCS Jenkins runs:
+    # Errors from UCS Jenkins runs:
     E(r'^(ldap\.)?SERVER_DOWN: .*'),
     E(r'^(ldap\.)?NO_SUCH_OBJECT: .*'),
     E('^keycloak.exceptions.KeycloakAuthenticationError:.*invalid_grant', ['/usr/sbin/univention-keycloak'], 58369),
@@ -194,13 +197,15 @@ COMMON_EXCEPTIONS = (
     # E(r"ldap.NO_SUCH_OBJECT: .*matched\'\: \'cn\=users,dc\=.*", ['^  File "/usr/lib/python3/dist-packages/univention/admin/uldap.py", line .*, in search']),  # s4c
     E(r'^univention.admin.uexceptions.noObject: No such object.*', ['^  File "/usr/lib/python3/dist-packages/univention/admin/objects.py", line .*, in get', 'sync_from_ucs']),  # s4c
     # E(r'univention.admin.uexceptions.valueError: Invalid password.', ['add_in_ucs'], (53838,)),
-    # # during upgrade to UCS 5.0-2
+
+    # during upgrade to UCS 5.0-2
     # E("^AttributeError: 'PortalsPortalEntryObjectProperties' object has no attribute 'keywords'", ['reloader.py.*in refresh'], (54295,)),
     # E("ImportError: cannot import name '_ldap_cache' from 'univention.admin'", ['in update'], (54853,)),
     # E(r'ConnectionResetError: \[Errno 104\] Connection reset by peer', ['urllib3']),
     # E(r"urllib3.exceptions.ProtocolError: \('Connection aborted.', ConnectionResetError\(104, 'Connection reset by peer'\)\)", "urllib3"),
     # E(r"requests.exceptions.ConnectionError: \('Connection aborted.', ConnectionResetError\(104, 'Connection reset by peer'\)\)", ['univention-directory-listener/system/monitoring-client.py']),
-    # # during upgrade to UCS 5.0-0
+
+    # AutotestUpgrade
     E("^(apt.cache.FetchFailedException|apt_pkg.Error): E:The repository 'http://localhost/univention-repository.* Release' is not signed."),
     # E('ImportError: No module named client', [
     #     'univention-directory-listener/system/faillog.py',
@@ -209,8 +214,18 @@ COMMON_EXCEPTIONS = (
     #     'univention-directory-listener/system/app_attributes.py',
     # ], (53290, 53862)),
     # E("AttributeError: 'ConfigRegistry' object has no attribute '_walk'", ['univention-directory-listener/system/nfs-shares.py'], (53291, 53862)),
-    # E("AttributeError: 'module' object has no attribute 'localization'", ['univention-directory-listener/system/app_attributes.py', 'system/portal_groups.py'], 53862),
-    # E("ImportError: cannot import name localization", ['univention-directory-listener/system/app_attributes.py'], 53862),
+    E("AttributeError: 'module' object has no attribute 'localization'", ['univention-directory-listener/system/app_attributes.py', 'system/portal_groups.py'], 53862),
+    E("ImportError: cannot import name localization", ['univention-directory-listener/system/app_attributes.py'], 53862),
+    E("AttributeError: partially initialized module 'univention.admin' has no attribute 'localization'", ['univention-directory-listener/system'], 53862),
+    E("AttributeError: partially initialized module 'univention.admin' has no attribute 'handlers'", ['ucsschool/lib/models/']),
+    E("AttributeError: module 'lib' has no attribute 'X509_V_FLAG_CB_ISSUER_CHECK'", ['univention-directory-listener/system'], 53862),
+    E("ImportError: cannot import name '_debug' from 'univention'", ['univention-directory-listener/system/'], 53862),
+    E("ImportError: cannot import name '_psutil_linux' from 'psutil'", ['univention-directory-listener/system/'], 53862),
+    E("ImportError: No module named '_gdbm', please install the python3-gdbm package", ['univention-directory-listener/system/'], 53862),
+    E("ModuleNotFoundError: No module named 'apt_pkg'", ['univention-directory-listener/system/'], 53862),
+    E("ModuleNotFoundError: No module named '_gdbm'", ['univention-directory-listener/system/', 'gnu.py'], 53862),
+    E("ModuleNotFoundError: No module named '_ldap'", ['univention-directory-listener/system/'], 53862),
+    E("ModuleNotFoundError: No module named 'ldb'", ['univention-directory-listener/system/'], 53862),
     E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention-self-service-invitation', 'urllib/request.py'], 53670),
     E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention/lib/umc.py.*in send'], 53670),
     E("univention.lib.umc.ConnectionError: .*Could not send request.*Connection refused", ['univention-self-service-invitation'], 53670),
@@ -219,7 +234,8 @@ COMMON_EXCEPTIONS = (
     E("FileNotFoundError: \\[Errno 2\\] No such file or directory: '/etc/machine.secret'", ['univention/lib/umc.py.*in authenticate_with_machine_account'], 53670),
     # E(r"TypeError: modify\(\) got an unexpected keyword argument 'rename_callback'", ['_register_app'], 54578),
     # E('sqlite3.OperationalError: no such table: S4 rejected', 'stdin', 54586),
-    # # during UCS 5.0-x-errata updates
+
+    # during UCS 5.0-x-errata updates
     # E(r"TypeError: __init__\(\) got an unexpected keyword argument 'cli_enabled'", ['_register_app'], 54584),
     # E(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/usr/share/univention-management-console/oidc/oidc.json'", ['server.py'], 49006),
     E(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/usr/share/univention-portal/portals.json'", ['/usr/sbin/univention-portal-server']),
@@ -227,8 +243,21 @@ COMMON_EXCEPTIONS = (
     E('pkg_resources.VersionConflict:.*univention-management-console'),
     E('pkg_resources.DistributionNotFound:.*univention-management-console'),
     E(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/tmp/.*", ['/tempfile.py.*in __del__']),
+    E(r"univention.lib.umc.ConnectionError: \('Could not send request.', RemoteDisconnected\('Remote end closed connection without response'\)\)", ['univention-self-service-invitation'], 58380),
+    E("http.client.RemoteDisconnected: Remote end closed connection without response", ['/univention/lib/umc.py'], 58380),
+    E(r"...\[truncated \d+ chars\]...", ['univention-self-service-invitation'], 58380),
+    E("KeyError: 'Cookie'", ['univention-self-service-invitation'], 58380),
 
-    # # updater test cases:
+    E(r'ConnectionRefusedError: \[Errno 111\] Connection refused', ['urllib3/connection.py'], 58390),
+    E(r'urllib3.exceptions.NewConnectionError: .*Failed to establish a new connection: \[Errno 111\] Connection refused', ['urllib3/connectionpool.py'], 58390),
+    E(r'urllib3.exceptions.MaxRetryError:.*Max retries exceeded with url: /metrics-prometheus/-/reload', ['requests/adapters.py'], 58390),
+    E(r'requests.exceptions.ConnectionError:.*Max retries exceeded with url: /metrics-prometheus/-/reload', ['system/monitoring-client.py'], 58390),
+
+    # unknown cause
+    E(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/var/cache/univention-config/cache'", ['univention/config_registry/handler.py']),
+    E(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/etc/univention/templates/info/univention-system-setup-boot.info'", ['system/cups-printers.py']),
+
+    # updater test cases:
     E('EOFError: EOF when reading a line', ['scripts/upgrade.py']),
     E('urllib.error.URLError: .*', ['updater/tools.py.*in access']),
     E('urllib.error.HTTPError: .*', ['updater/tools.py.*in access']),
@@ -243,10 +272,12 @@ COMMON_EXCEPTIONS = (
     E(r'socket.gaierror: \[Errno \-2\] Name or service not known'),
     E('ConfigurationError: Configuration error: Temporary failure in name resolution', ['in access']),
     E(r"socket.gaierror: \[Errno \-3\] Temporary failure in name resolution", ['urllib/request.py']),
-    # # 10_ldap/listener_module_testpy
+
+    # 10_ldap/listener_module_testpy
     E('MyTestException: .*'),
     E('univention.management.console.modules.ucstest.ThreadedError'),  # 60_umc/17_traceback_handling.py
-    # # various test cases:
+
+    # various test cases:
     E('psycopg2.OperationalError: connection to server at "localhost".* failed: Connection refused', ['passwordreset/tokendb.py']),  # 83_self_service/13_test_postgresql_connection_loss.py
     E('psycopg2.OperationalError: SSL connection has been closed unexpectedly', ['passwordreset/tokendb.py']),  # 83_self_service/13_test_postgresql_connection_loss.py
     E('psycopg2.OperationalError: SSL-Verbindung wurde unerwartet geschlossen', ['passwordreset/tokendb.py']),  # 83_self_service/13_test_postgresql_connection_loss.py
@@ -269,7 +300,100 @@ COMMON_EXCEPTIONS = (
     # E('univention.testing.utils.LDAPObjectNotFound: DN:', ['test_container_cn_rename_uppercase_rollback_with_special_characters'], 53776),
     # E('dns.resolver.NoAnswer: The DNS response does not contain an answer to the question:', ['test__dns_reverse_zone_check_resolve', 'test_dns_reverse_zone_check_resolve'], 53775),
     # E('^KeyError$', ['in find_rrset'], 53775),
-    # # UCS@school test cases:
+
+    # Tracebacks caused by specific UCS bugs:
+    # E(r'^ldap\.NO_SUCH_OBJECT: .*', [r'quota\.py'], 52765),
+    E(r'.*OperationalError.*FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py', '_wrap_pool_connect'], 51671),
+    E(r"(OSError|FileNotFoundError): \[Errno 2\] .*: '/var/lib/samba/sysvol/.*/Policies/'", [r'sysvol-cleanup\.py'], 51670),
+    # E("AttributeError: 'NoneType' object has no attribute 'lower'", ['_remove_subtree_in_s4'], 50282),
+    E("AttributeError: 'NoneType' object has no attribute 'get'", ['primary_group_sync_from_ucs', 'group_members_sync_to_ucs'], 49879),
+    # E('^ImportError: No module named __base', [r'app_attributes\.py', '_update_modules', 'univention-management-console-server.*in run'], 50338),
+    # E('^ImportError: No module named s4', ['_update_modules'], 50338),
+    # E(r"^TypeError\:\ \_\_init\_\_\(\)\ got\ an\ unexpected\ keyword\ argument\ \'help\_text\'", ['_update_modules'], 50338),
+    # E('^ImportError: No module named directory', [r'app_attributes\.py'], 50338),
+    # E('^ImportError: No module named admindiary.client', [r'faillog\.py', 'File.*uvmm', r'create_portal_entries\.py'], 49866),
+    # E('^ImportError: No module named types', [r'import univention\.admin\.types'], 50381),
+    # E('^ImportError: No module named docker_upgrade', ['univention-app'], 50381),
+    # E('^ImportError: No module named docker_base', ['univention-app'], 50381),
+    # E('^ImportError: No module named service', ['univention-app'], 50381),
+    # E('^ImportError: No module named ldap_extension', ['get_action'], 50381),
+    # E('^AttributeError: __exit__', ['with Server'], 50583),
+    E(r'^(univention\.admin\.uexceptions\.)?primaryGroupWithoutSamba: .*', ['primary_group_sync_to_ucs', 'sync_to_ucs'], 49881),
+    # E(r"^(OS|IO)Error: \[Errno 2\] .*: '/usr/lib/pymodules/python2.7/univention/admin/syntax.d/.*", ['import_syntax_files']),  # package upgrade before dh-python  # Bug #52958
+    # E(r"^(OS|IO)Error: \[Errno 2\] .*: '/usr/lib/pymodules/python2.7/univention/admin/hooks.d/.*", ['import_hook_files']),  # package upgrade before dh-python  # Bug #52958
+    E(r'^(univention\.admin\.uexceptions\.)?(insufficientInformation|noSuperordinate):.*No superordinate object given.?', ['sync_to_ucs'], 49880),
+    # E("^AttributeError: type object 'object' has no attribute 'identify'", [r'faillog\.py']),
+    # E(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/var/cache/univention-appcenter/.*\.logo'", ['File "<stdin>"']),  # 55_app_modproxy
+    # E('^IndexError: list index out of range', ['_read_from_ldap', 'get_user_groups'], (46932, 48943)),
+    # E(r"AttributeError\: \'NoneType\' object has no attribute \'searchDn\'", ['get_user_groups'], 48943),
+    # E("^KeyError: 'gidNumber'", ['_ldap_pre_remove'], 51669),
+    # E(r'^(BrokenPipeError|IOError): \[Errno 32\] Broken pipe', ['process_output'], 32532),
+    E(r'^(ldap\.)?NOT_ALLOWED_ON_NONLEAF: .*subtree_delete:.*', ['s4_zone_delete'], (43722, 47343)),
+    # E('^NoObject: No object found at DN .*', ['univention-portal-server.*in refresh']),
+    # E(r"^OSError\: \[Errno 2\].*\/var\/run\/univention-management-console\/.*\.socket"),
+    # E(r'ldapError\:\ Type\ or\ value\ exists\:\ univentionPortalEntryLink\:\ value\ \#0\ provided\ more\ than\ once', None, 51808),
+    E(r"noLock\: .*The attribute \'sid\' could not get locked\.", ['getMachineSid', '__generate_group_sid'], 44294),
+    E(r"noLock\: .*The attribute \'sid\' could not get locked\.", ['groups/group.*in __allocate_rid'], 58399),
+    E(r'univention.admin.uexceptions.sidAlreadyUsed: The relative ID \(SAMBA\) is already in use: 1107.', ['in sync_to_ucs'], 58399),
+    # E(r'^ImportError\: No module named debhelper', [r'univention\/config_registry\/handler\.py'], 51815),
+    # E(r'^NO\_SUCH\_OBJECT\:.*users.*', ['password_sync_s4_to_ucs'], 50279),
+    # E(re.escape("Exception: Modifying blog entry failed: 1: E: Daemon died."), [], 45787),
+    # E(r'pg.InternalError: FATAL:\s*PAM-Authentifizierung für Benutzer ».*$« fehlgeschlagen', ['univention-pkgdb-scan'], 50937),
+    # E('pg.InternalError: FATAL:.*kein pg_hba.conf-Eintrag für Host', ['univention-pkgdb-scan'], 52790),
+    # E('pg.InternalError: FATAL:.*Datenbank .*pkgdb.* existiert nicht', ['univention-pkgdb-scan'], 52791),
+    # E('pg.InternalError: could not connect to server: No such file or directory', ['univention-pkgdb-scan'], 52795),
+    # E("TypeError: 'NoneType' object has no attribute '__getitem__'", ['add_primary_group_to_addlist'], 47440),
+    E("TypeError: argument of type 'NoneType' is not iterable", ['disable_user_from_ucs', 'primary_group_sync_from_ucs'], (52788, 51809)),
+    E(r"FileNotFoundError\: \[Errno 2\] No such file or directory\: \'\/etc\/machine\.secret\'", [r'bind\.py.*_ldap_auth_string'], 52789),
+    # E('dbm.error: db type could not be determined', ['univention-management-console-web-server'], 52764),
+    # E('at least one delete handler failed', ['_add_all_shares_below_this_container_to_dn_list', 'cleanup_python_moduledir'], 43171),
+    # E('ldap.NO_SUCH_OBJECT', ['_add_all_shares_below_this_container_to_dn_list'], 43171),
+    # E(re.escape('LISTENER    ( PROCESS ) : updating') + '.*command a', ['cleanup_python_moduledir']),  # ...
+    # E('ldap.ALREADY_EXISTS.*as it is still the primaryGroupID', ['in sync_from_ucs'], 53278),
+    E('ldap.ALREADY_EXISTS.*already set via primaryGroupID', ['in sync_from_ucs'], 53278),
+    # E('ldap.NOT_ALLOWED_ON_NONLEAF:.*Unable to delete a non-leaf node .*it has .* child', ['in delete_in_s4'], 53278),
+    # E('univention.admin.uexceptions.valueError: The domain part of the primary mail address is not in list of configured mail domains:', ['in sync_to_ucs'], 53277),
+    E('univention.admin.uexceptions.mailAddressUsed: The mail address is already in use:', ['in sync_to_ucs']),
+    E("univention.admin.uexceptions.noLock: Could not acquire lock: The attribute 'mailPrimaryAddress' could not get locked.", ['in _ldap_pre_ready']),
+    E('univention.admin.uexceptions.groupNameAlreadyUsed: The groupname is already in use as groupname or as username: Users.', ['in sync_to_ucs']),
+    E('univention.admin.uexceptions.groupNameAlreadyUsed: The groupname is already in use as groupname or as username: Domain Controllers.', ['in sync_to_ucs']),
+    E('univention.admin.uexceptions.groupNameAlreadyUsed: The groupname is already in use as groupname or as username: IIS_IUSRS.', ['in sync_to_ucs']),
+    E('univention.admin.uexceptions.groupNameAlreadyUsed: The groupname is already in use as groupname or as username: Windows Authorization Access Group.', ['in sync_to_ucs']),
+    E('univention.admin.uexceptions.groupNameAlreadyUsed: The groupname is already in use as groupname or as username: Denied RODC Password Replication Group.', ['in sync_to_ucs']),
+    E("univention.admin.uexceptions.noLock: Could not acquire lock: The attribute 'groupName' could not get locked.", ['in _ldap_pre_ready']),
+    # E(r"subprocess.CalledProcessError: Command '\('rndc', 'reconfig'\)' returned non-zero exit status 1", ['univention-fix-ucr-dns'], 53332),
+    # E(r"ldap.NO_SUCH_OBJECT: .*objectclass: Cannot add cn=(user|machine),cn=\{[0-9a-f-]+\},cn=policies,cn=system,DC=.*parent does not exist", ['in sync_from_ucs'], 53334),
+    E("TypeError: 'NoneType' object is not subscriptable", ['primary_group_sync_to_ucs', 'add_primary_group_to_addlist'], 53276),
+    # E("CONSTRAINT_VIOLATION: .*Failed to re-index objectSid in .*unique index violation on objectSid", ['sync_from_ucs'], (53720, 53752)),
+    # E('ldap.REFERRAL:.*', ['uldap.py'], 53721),
+    E('INSUFFICIENT_ACCESS:.*', ['in password_sync_s4_to_ucs'], 53721),
+    # E("ModuleNotFoundError: No module named 'univention.config_registry'", ['/usr/sbin/univention-config-registry'], 53765),
+    # E("AttributeError: module 'univention.admin.syntax' has no attribute 'UMCMessageCatalogFilename_and_GNUMessageCatalog'", ['_unregister_app', 'import_hook_files', 'pupilgroups.py'], 53754),
+    # E("AttributeError: module 'univention.admin.syntax' has no attribute 'emailAddressThatMayEndWithADot'", ['_update_modules', '/usr/sbin/univention-management-console-server', 'forward_zone.py'], 55590),
+    # E('univention.admin.uexceptions.noObject: uid=.*', ['connector/ad/.*set_userPrincipalName_from_ucr'], 53769),
+    E('ldap.TYPE_OR_VALUE_EXISTS:.*SINGLE-VALUE attribute description.*specified more than once', ['sync_from_ucs'], 52801),
+    E('univention.admin.uexceptions.wrongObjectType: .*relativeDomainName=.* is not recognized as dns/txt_record.', ['ucs_txt_record_create'], 53425),
+    E(r"univention.admin.uexceptions.ldapError: LDAP Error: Type or value exists: modify/add: uniqueMember: value \#\d already exists.", ['group_members_sync_to_ucs'], 54590),
+    E(r"ldap.TYPE_OR_VALUE_EXISTS: \{'desc': 'Type or value exists', 'info': 'modify\/add: uniqueMember: value \#\d already exists'\}", ['object_memberships_sync_to_ucs'], 54590),
+    E('^ldap.TYPE_OR_VALUE_EXISTS:.*modify/add: uniqueMember: value', ['univention/admin/uldap.py.*in modify']),
+    E('^ldap.INSUFFICIENT_ACCESS:.*Insufficient access', ['univention/admin/uldap.py.*in modify']),
+    E('^AssertionError: Authentisierung ist fehlgeschlagen. Bitte melden Sie sich erneut an. == Ungültiger Benutzername oder Passwort.'),
+    E('modify/delete: uniqueMember: no such attribute.', ['__set_membership_attributes', 'ldap/ldapobject.py'], 58400),
+
+    # Tracebacks caused by specific UCS@school bugs:
+    # E(r"_ldb.LdbError: \(1, 'LDAP client internal error: NT_STATUS_INVALID_PARAMETER'\)", ['univention-samba4-site-tool.py'], 54592),
+    # E(r"AssertionError: Attribute \(username\) is parsed wrong as.*", ['103_ucsschool_smbstatus_parser.py'], 54591),
+    # E(r"optparse.OptionConflictError: option.*authentication-file", ['univention-samba4-site-tool.py'], 55082),
+    E(r"univention.office365.microsoft.exceptions.core_exceptions.MSGraphError"),  # office365 product tests deliberately creates these errors
+    E(r"ImportError: cannot import name '_debug' from 'univention' \(unknown location\)", ['ucsschool/http_api/app/wsgi.py']),
+    E(r"ModuleNotFoundError: No module named 'heimdal'", ['ucsschool/http_api/app/wsgi.py']),
+    E(r"ModuleNotFoundError: No module named 'univention.license'", ['ucsschool/http_api/app/wsgi.py']),
+    E(r"TypeError: __init__\(\) missing 1 required positional argument: 'on_delete'", ['ucsschool/http_api/app/wsgi.py']),
+    E('^StopIteration$', ['gunicorn/arbiter.py']),
+    E(r'ProcessLookupError: \[Errno 3\] No such process', ['gunicorn/arbiter.py']),
+    E(r"AttributeError: gunicorn: worker \[ucsschool.http_api.app.wsgi:application\]: undefined symbol: magic_open", ['ucsschool/http_api/app/wsgi.py']),
+
+    # UCS@school test cases:
     # ("ucsschool.importer.exceptions.InitialisationError: Value of 'scheme:description' must be a string.", ['in prepare_import'], 53564),
     E("ucsschool.importer.exceptions.ConfigurationError: Columns configured in csv:mapping missing:", ['in read_input'], 53564),
     E("ValueError: time data '.*' does not match format '%Y-%m-%d'", ['import_user.py.* in validate'], 53564),
@@ -306,84 +430,7 @@ COMMON_EXCEPTIONS = (
     E("ucsschool.importer.exceptions.UnknownRole: Unknown role 'triggererror' found in 'Typ' column.", ['csv_reader.py']),
     E("KeyError: 'triggererror'", ['csv_reader.py']),
     E(r"ucsschool.importer.reader.csv_reader.UnsupportedEncodingError: Unsupported encoding 'binary' detected, please check the manual for supported encodings.", ['csv_reader.py'], 56846),  # ucs-test-ucsschool/90_ucsschool/252_import_works_with_encodings and 252a_csv_reader_correct_encodings expect this traceback
-    # # Tracebacks caused by specific UCS bugs:
-    # E(r'^ldap\.NO_SUCH_OBJECT: .*', [r'quota\.py'], 52765),
-    E(r'.*OperationalError.*FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py', '_wrap_pool_connect'], 51671),
-    E(r"(OSError|FileNotFoundError): \[Errno 2\] .*: '/var/lib/samba/sysvol/.*/Policies/'", [r'sysvol-cleanup\.py'], 51670),
-    # E("AttributeError: 'NoneType' object has no attribute 'lower'", ['_remove_subtree_in_s4'], 50282),
-    E("AttributeError: 'NoneType' object has no attribute 'get'", ['primary_group_sync_from_ucs', 'group_members_sync_to_ucs'], 49879),
-    # E('^ImportError: No module named __base', [r'app_attributes\.py', '_update_modules', 'univention-management-console-server.*in run'], 50338),
-    # E('^ImportError: No module named s4', ['_update_modules'], 50338),
-    # E(r"^TypeError\:\ \_\_init\_\_\(\)\ got\ an\ unexpected\ keyword\ argument\ \'help\_text\'", ['_update_modules'], 50338),
-    # E('^ImportError: No module named directory', [r'app_attributes\.py'], 50338),
-    # E('^ImportError: No module named admindiary.client', [r'faillog\.py', 'File.*uvmm', r'create_portal_entries\.py'], 49866),
-    # E('^ImportError: No module named types', [r'import univention\.admin\.types'], 50381),
-    # E('^ImportError: No module named docker_upgrade', ['univention-app'], 50381),
-    # E('^ImportError: No module named docker_base', ['univention-app'], 50381),
-    # E('^ImportError: No module named service', ['univention-app'], 50381),
-    # E('^ImportError: No module named ldap_extension', ['get_action'], 50381),
-    # E('^AttributeError: __exit__', ['with Server'], 50583),
-    E(r'^(univention\.admin\.uexceptions\.)?primaryGroupWithoutSamba: .*', ['primary_group_sync_to_ucs', 'sync_to_ucs'], 49881),
-    # E(r"^(OS|IO)Error: \[Errno 2\] .*: '/usr/lib/pymodules/python2.7/univention/admin/syntax.d/.*", ['import_syntax_files']),  # package upgrade before dh-python  # Bug #52958
-    # E(r"^(OS|IO)Error: \[Errno 2\] .*: '/usr/lib/pymodules/python2.7/univention/admin/hooks.d/.*", ['import_hook_files']),  # package upgrade before dh-python  # Bug #52958
-    E(r'^(univention\.admin\.uexceptions\.)?(insufficientInformation|noSuperordinate):.*No superordinate object given.?', ['sync_to_ucs'], 49880),
-    # E("^AttributeError: type object 'object' has no attribute 'identify'", [r'faillog\.py']),
-    # E(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/var/cache/univention-appcenter/.*\.logo'", ['File "<stdin>"']),  # 55_app_modproxy
-    # E('^IndexError: list index out of range', ['_read_from_ldap', 'get_user_groups'], (46932, 48943)),
-    # E(r"AttributeError\: \'NoneType\' object has no attribute \'searchDn\'", ['get_user_groups'], 48943),
-    # E("^KeyError: 'gidNumber'", ['_ldap_pre_remove'], 51669),
-    # E(r'^(BrokenPipeError|IOError): \[Errno 32\] Broken pipe', ['process_output'], 32532),
-    E(r'^(ldap\.)?NOT_ALLOWED_ON_NONLEAF: .*subtree_delete:.*', ['s4_zone_delete'], (43722, 47343)),
-    # E('^NoObject: No object found at DN .*', ['univention-portal-server.*in refresh']),
-    # E(r"^OSError\: \[Errno 2\].*\/var\/run\/univention-management-console\/.*\.socket"),
-    # E(r'ldapError\:\ Type\ or\ value\ exists\:\ univentionPortalEntryLink\:\ value\ \#0\ provided\ more\ than\ once', None, 51808),
-    E(r"noLock\: .*The attribute \'sid\' could not get locked\.", ['getMachineSid', '__generate_group_sid', 'groups/group.*in __allocate_rid'], 44294),
-    # E(r'^ImportError\: No module named debhelper', [r'univention\/config_registry\/handler\.py'], 51815),
-    # E(r'^NO\_SUCH\_OBJECT\:.*users.*', ['password_sync_s4_to_ucs'], 50279),
-    # E(re.escape("Exception: Modifying blog entry failed: 1: E: Daemon died."), [], 45787),
-    # E(r'pg.InternalError: FATAL:\s*PAM-Authentifizierung für Benutzer ».*$« fehlgeschlagen', ['univention-pkgdb-scan'], 50937),
-    # E('pg.InternalError: FATAL:.*kein pg_hba.conf-Eintrag für Host', ['univention-pkgdb-scan'], 52790),
-    # E('pg.InternalError: FATAL:.*Datenbank .*pkgdb.* existiert nicht', ['univention-pkgdb-scan'], 52791),
-    # E('pg.InternalError: could not connect to server: No such file or directory', ['univention-pkgdb-scan'], 52795),
-    # E("TypeError: 'NoneType' object has no attribute '__getitem__'", ['add_primary_group_to_addlist'], 47440),
-    E("TypeError: argument of type 'NoneType' is not iterable", ['disable_user_from_ucs', 'primary_group_sync_from_ucs'], (52788, 51809)),
-    E(r"FileNotFoundError\: \[Errno 2\] No such file or directory\: \'\/etc\/machine\.secret\'", [r'bind\.py.*_ldap_auth_string'], 52789),
-    # E('dbm.error: db type could not be determined', ['univention-management-console-web-server'], 52764),
-    # E('at least one delete handler failed', ['_add_all_shares_below_this_container_to_dn_list', 'cleanup_python_moduledir'], 43171),
-    # E('ldap.NO_SUCH_OBJECT', ['_add_all_shares_below_this_container_to_dn_list'], 43171),
-    # E(re.escape('LISTENER    ( PROCESS ) : updating') + '.*command a', ['cleanup_python_moduledir']),  # ...
-    # E('ldap.ALREADY_EXISTS.*as it is still the primaryGroupID', ['in sync_from_ucs'], 53278),
-    E('ldap.ALREADY_EXISTS.*already set via primaryGroupID', ['in sync_from_ucs'], 53278),
-    # E('ldap.NOT_ALLOWED_ON_NONLEAF:.*Unable to delete a non-leaf node .*it has .* child', ['in delete_in_s4'], 53278),
-    # E('univention.admin.uexceptions.valueError: The domain part of the primary mail address is not in list of configured mail domains:', ['in sync_to_ucs'], 53277),
-    E('univention.admin.uexceptions.mailAddressUsed: The mail address is already in use:', ['in sync_to_ucs']),
-    E("univention.admin.uexceptions.noLock: Could not acquire lock: The attribute 'mailPrimaryAddress' could not get locked.", ['in _ldap_pre_ready']),
-    E('univention.admin.uexceptions.groupNameAlreadyUsed: The groupname is already in use as groupname or as username: Users.', ['in sync_to_ucs']),
-    E('univention.admin.uexceptions.groupNameAlreadyUsed: The groupname is already in use as groupname or as username: Domain Controllers.', ['in sync_to_ucs']),
-    E('univention.admin.uexceptions.groupNameAlreadyUsed: The groupname is already in use as groupname or as username: IIS_IUSRS.', ['in sync_to_ucs']),
-    E("univention.admin.uexceptions.noLock: Could not acquire lock: The attribute 'groupName' could not get locked.", ['in _ldap_pre_ready']),
-    # E(r"subprocess.CalledProcessError: Command '\('rndc', 'reconfig'\)' returned non-zero exit status 1", ['univention-fix-ucr-dns'], 53332),
-    # E(r"ldap.NO_SUCH_OBJECT: .*objectclass: Cannot add cn=(user|machine),cn=\{[0-9a-f-]+\},cn=policies,cn=system,DC=.*parent does not exist", ['in sync_from_ucs'], 53334),
-    # E("TypeError: 'NoneType' object is not subscriptable", ['primary_group_sync_to_ucs', 'add_primary_group_to_addlist'], 53276),
-    # E("CONSTRAINT_VIOLATION: .*Failed to re-index objectSid in .*unique index violation on objectSid", ['sync_from_ucs'], (53720, 53752)),
-    # E('ldap.REFERRAL:.*', ['uldap.py'], 53721),
-    E('INSUFFICIENT_ACCESS:.*', ['in password_sync_s4_to_ucs'], 53721),
-    # E("ModuleNotFoundError: No module named 'univention.config_registry'", ['/usr/sbin/univention-config-registry'], 53765),
-    # E("AttributeError: module 'univention.admin.syntax' has no attribute 'UMCMessageCatalogFilename_and_GNUMessageCatalog'", ['_unregister_app', 'import_hook_files', 'pupilgroups.py'], 53754),
-    # E("AttributeError: module 'univention.admin.syntax' has no attribute 'emailAddressThatMayEndWithADot'", ['_update_modules', '/usr/sbin/univention-management-console-server', 'forward_zone.py'], 55590),
-    # E('univention.admin.uexceptions.noObject: uid=.*', ['connector/ad/.*set_userPrincipalName_from_ucr'], 53769),
-    E('ldap.TYPE_OR_VALUE_EXISTS:.*SINGLE-VALUE attribute description.*specified more than once', ['sync_from_ucs'], 52801),
-    E('univention.admin.uexceptions.wrongObjectType: .*relativeDomainName=.* is not recognized as dns/txt_record.', ['ucs_txt_record_create'], 53425),
-    E(r"univention.admin.uexceptions.ldapError: LDAP Error: Type or value exists: modify/add: uniqueMember: value \#\d already exists.", ['group_members_sync_to_ucs'], 54590),
-    E(r"ldap.TYPE_OR_VALUE_EXISTS: \{'desc': 'Type or value exists', 'info': 'modify\/add: uniqueMember: value \#\d already exists'\}", ['object_memberships_sync_to_ucs'], 54590),
-    E('^ldap.TYPE_OR_VALUE_EXISTS:.*modify/add: uniqueMember: value', ['univention/admin/uldap.py.*in modify']),
-    E('^ldap.INSUFFICIENT_ACCESS:.*Insufficient access', ['univention/admin/uldap.py.*in modify']),
-    E('^AssertionError: Authentisierung ist fehlgeschlagen. Bitte melden Sie sich erneut an. == Ungültiger Benutzername oder Passwort.'),
-    # # Tracebacks caused by specific UCS@school bugs:
-    # E(r"_ldb.LdbError: \(1, 'LDAP client internal error: NT_STATUS_INVALID_PARAMETER'\)", ['univention-samba4-site-tool.py'], 54592),
-    # E(r"AssertionError: Attribute \(username\) is parsed wrong as.*", ['103_ucsschool_smbstatus_parser.py'], 54591),
-    # E(r"optparse.OptionConflictError: option.*authentication-file", ['univention-samba4-site-tool.py'], 55082),
-    E(r"univention.office365.microsoft.exceptions.core_exceptions.MSGraphError"),  # office365 product tests deliberately creates these errors
+
     # E(r'.*', ['File "/usr/share/ucs-test/']),
 )
 
@@ -399,7 +446,7 @@ def test_appcenter():
 """)
     fd.name = '/var/log/univention/appcenter.log'
     out = io.StringIO('w')
-    assert not main([fd], out=out)
+    assert not main([fd], out=out, err=out)
     assert '''Traceback (most recent call last):
   File "/usr/sbin/univention-pkgdb-scan", line 37, in <module>
     univention.pkgdb.main()
@@ -417,7 +464,7 @@ foo = bar
 Exception: foo
 bar""")
     out = io.StringIO('w')
-    assert not main([fd], out=out)
+    assert not main([fd], out=out, err=out)
     assert """Traceback (most recent call last):
   File "<stdin>", line 8, in <module>
   File "xyz", line 8, in bar
@@ -434,7 +481,7 @@ def test_journald_indented():
     Exception: foo
 bar""")
     out = io.StringIO('w')
-    assert not main([fd], out=out)
+    assert not main([fd], out=out, err=out)
     assert """Traceback (most recent call last):
   File "<stdin>", line 8, in <module>
   File "xyz", line 8, in bar
