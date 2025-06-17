@@ -1,0 +1,56 @@
+#!/bin/sh
+set -e -u
+
+[ -s "$1" ]
+pkg="$(basename "$1")"
+
+# https://www.aptly.info/doc/api/swagger/
+
+aptly () {
+    local msg="$1" url
+    shift
+    for url in "$@"
+    do
+        case "$url" in
+        *://*) break
+        esac
+    done
+    printf '\n=== %s === %s ===\n' "$msg" "$url" >&2
+    "${0%/*}/ht" \
+        --ignore-stdin \
+        --pretty=all \
+        --timeout=60s \
+        --check-status \
+        "$@"
+}
+
+list () {
+    pkgs="$(
+    aptly list \
+        --pretty=none \
+        GET "${APTLY}/repos/${CI_COMMIT_REF_SLUG}/packages" \
+        "q==\$Source ($pkg)"
+    )"
+    echo "$pkgs"
+}
+
+delete () {
+    aptly delete \
+        DELETE "${APTLY}/repos/${CI_COMMIT_REF_SLUG}/packages" \
+        "PackageRefs:=$pkgs"
+}
+
+publish () {
+    aptly publish \
+        PUT "${APTLY}/publish/${CI_COMMIT_REF_SLUG}/git" \
+        'AcquireByHash:=true' \
+        "Label=$CI_COMMIT_REF_SLUG" \
+        'ForceOverwrite:=true'
+}
+
+rc=0
+list
+delete || rc=2
+publish || rc=4
+
+exit "$rc"

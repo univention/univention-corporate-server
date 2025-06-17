@@ -38,3 +38,33 @@ stages:
     - echo -e "\e[0Ksection_end:$(date +%s):build\r\e[0K"
     - cd $CI_PROJECT_DIR
     - .gitlab-ci/aptly-upload ${base}_*.changes
+
+drop unused:
+  stage: build
+  image: $DEB
+  before_script:
+    - apt-get -qq update; apt-get --assume-yes --no-install-recommends install git
+  rules:
+  - if: $CI_COMMIT_MESSAGE =~ /skip-build/ || $pipeline =~ /skip-build/
+    when: never
+  - when: always
+  variables:
+    GIT_DEPTH: 100
+  script:
+    - echo -e "\e[0Ksection_start:$(date +%s):find\r\e[0KSearch all unchanged packages"
+    - echo "$CI_MERGE_REQUEST_TARGET_BRANCH_SHA"
+    - echo "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+    - echo "$CI_COMMIT_REF_NAME"
+    - echo "$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
+    - echo "$CI_MERGE_REQUEST_DIFF_BASE_SHA"
+    - echo -e "\e[0Ksection_end:$(date +%s):find\r\e[0K"
+    - |
+      find . -maxdepth 4 -type f -path '*/debian/control' | cut -d/ -f2- | sed 's|/debian/control$||' | while read base; do
+        if [ -n "$(git diff --name-only "$CI_MERGE_REQUEST_DIFF_BASE_SHA" "$CI_COMMIT_SHA" -- "$base")" ]; then
+          echo "Changes in $base - skip"
+        else
+          echo -e "\e[0Ksection_start:$(date +%s):drop\r\e[0KDropping binary packages for $base"
+          .gitlab-ci/aptly-remove ${base}
+          echo -e "\e[0Ksection_end:$(date +%s):drop\r\e[0K"
+        fi
+      done
