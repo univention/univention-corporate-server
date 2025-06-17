@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e -u
 
-exec "${0%/*}/ht" --ignore-stdin --pretty=all \
+exec "${0%/*}/ht" --ignore-stdin --check-status --pretty=all \
     POST "$APTLY/repos" \
     "Name=$CI_COMMIT_REF_SLUG" \
     "Comment=$CI_COMMIT_REF_NAME" \

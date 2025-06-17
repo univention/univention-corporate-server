@@ -1,12 +1,13 @@
 #!/bin/sh
 set -e -u
 
-exec "${0%/*}/ht" --ignore-stdin --pretty=all \
+exec "${0%/*}/ht" --ignore-stdin --check-status --pretty=all \
     POST "$APTLY/publish/$CI_COMMIT_REF_SLUG" \
     'SourceKind=local' \
     "Sources:=[{\"Name\":\"$CI_COMMIT_REF_SLUG\",\"Component\":\"main\"}]" \
     'Distribution=git' \
-    'Label=Univention Corporate Server' \
+    "Label=$CI_COMMIT_REF_SLUG" \
+    "Suite=$CI_COMMIT_REF_SLUG" \
     'Origin=Univention' \
     'ForceOverwrite:=true' \
     'AcquireByHash:=true' \
