@@ -83,6 +83,7 @@ bindpw_ucr="${CONFIGBASENAME//-/_}/ad/ldap/bindpw"
 host_env="${CONFIGBASENAME//-/_}_ad_ldap_host"
 port_env="${CONFIGBASENAME//-/_}_ad_ldap_port"
 base_env="${CONFIGBASENAME//-/_}_ad_ldap_base"
+cert_env="${CONFIGBASENAME//-/_}_ad_ldap_certificate"
 ldaps_ucr="${CONFIGBASENAME//-/_}/ad/ldap/ldaps"
 kerberos_ucr="${CONFIGBASENAME//-/_}/ad/ldap/kerberos"
 
