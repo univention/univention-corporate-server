@@ -59,6 +59,7 @@ bindpw_ucr="${CONFIGBASENAME//-/_}/ad/ldap/bindpw"
 host_env="${CONFIGBASENAME//-/_}_ad_ldap_host"
 port_env="${CONFIGBASENAME//-/_}_ad_ldap_port"
 base_env="${CONFIGBASENAME//-/_}_ad_ldap_base"
+cert_env="${CONFIGBASENAME//-/_}_ad_ldap_certificate"
 ldaps_ucr="${CONFIGBASENAME//-/_}/ad/ldap/ldaps"
 kerberos_ucr="${CONFIGBASENAME//-/_}/ad/ldap/kerberos"
 
@@ -112,6 +113,8 @@ fi
 
 if is_ucr_true "$ldaps_ucr"; then
 	protocol='ldaps'
+	options+=("--option" "tls cafile = ${!cert_env}")
+	options+=("--option" "tls verify peer = ca_and_name")
 else
 	protocol='ldap'
 fi
