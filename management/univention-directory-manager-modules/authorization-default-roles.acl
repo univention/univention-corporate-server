@@ -47,6 +47,13 @@ access by role="udm:default-roles:domain-users"
     grant actions="search,read"
     grant properties="*" permission="read"
 
+# Self service permissions
+access by role="udm:default-roles:self-service-profile"
+  description="Self service users are allowed to modify the properties of the own user object specified in UCR variable `self-service/udm_attributes`"
+  to objecttype="users/user" if="is-self"
+    grant actions="modify"
+    grant properties="jpegPhoto,e-mail,phone,roomnumber,departmentNumber,country,homeTelephoneNumber,mobileTelephoneNumber,homePostalAddress" permission="write"
+
 # Every role
 access
   by role="udm:default-roles:organizational-unit-admin"
@@ -116,12 +123,6 @@ access by role="udm:default-roles:organizational-unit-admin"
     grant properties="guardianMemberRoles" permission="none"
     grant properties="guardianMemberRoles" values="udm:default-roles:domain-users,udm:default-roles:ou-users" permission="write"
     grant properties="*" permission="write"
-
-access by role="udm:default-roles:self-service-profile"
-  description="Self service users are allowed to modify the properties of the own user object specified in UCR variable `self-service/udm_attributes`"
-  to objecttype="*" if="is-self"
-    grant actions="modify"
-    grant properties="jpegPhoto,e-mail,phone,roomnumber,departmentNumber,country,homeTelephoneNumber,mobileTelephoneNumber,homePostalAddress" permission="write"
 
 access by role="udm:default-roles:helpdesk-operator"
   description="Helpdesk Operators are only allowed to set passwords of users underneath of a certain OU specified in the context udm:contexts:ou"

@@ -18,11 +18,15 @@ from univention.authorization.config_parser import AuthorizationConfig
 
 
 try:
+    import univention.admin.modules
     from univention.config_registry import ucr
+    univention.admin.modules.update()
+    all_modules = list(univention.admin.modules.modules)
 except ImportError:
     ucr = {
         'ldap/base': 'dc=example,dc=org',
     }
+    all_modules = ('users/user', 'groups/group', 'computers/linux')
 
 
 log = logging.getLogger('ACL').getChild(__name__)
@@ -280,7 +284,18 @@ class UDMAuthorizationConfig:
                 })
                 role_cap_map['displayname'] = rule.get('description', '')
 
+                more_tos = []
                 for to_clause in to:
+                    object_type = to_clause["objecttype"]
+                    if object_type == '*':
+                        for oc in all_modules:
+                            new_to_clase = copy.deepcopy(to_clause)
+                            new_to_clase['objecttype'] = oc
+                            more_tos.append(new_to_clase)
+                    else:
+                        more_tos.append(to_clause)
+
+                for to_clause in more_tos:
                     object_type = to_clause["objecttype"]
                     grants = to_clause.get('grant', [])
 
