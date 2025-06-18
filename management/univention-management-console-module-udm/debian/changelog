@@ -1,4 +1,4 @@
-univention-management-console-module-udm (12.2.0) UNRELEASED; urgency=medium
+univention-management-console-module-udm (12.2.1-0) UNRELEASED; urgency=medium
 
   * Bug #58344 UCS 5.2-2 version bump
 
