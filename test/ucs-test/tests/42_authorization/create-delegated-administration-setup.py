@@ -156,6 +156,27 @@ for i in range(1, number_of_ous + 1):
         user.props.groups = [api_access_group.dn]
     user.save()
 
+    # Helpdesk Operator (helpdesk-operator)
+    user = users.new()
+    name = f'ou{i}helpdesk-operator'
+    position = f'cn=users,{ldap_base}'
+    try:
+        user = users.get(f'uid={name},{position}')
+    except NoObject:
+        user = users.new()
+    user.position = f'cn=users,{ldap_base}'
+    user.props.username = f'ou{i}helpdesk-operator'
+    user.props.lastname = f'ou{i}helpdesk-operator'
+    user.props.password = 'univention'
+    user.props.overridePWHistory = '1'
+    user.props.guardianRoles = [f'umc:udm:helpdesk-operator&umc:udm:ou=ou{i}']
+    user.policies['policies/umc'].append(policy.dn)
+    if user.props.groups:
+        user.props.groups.append(api_access_group.dn)
+    else:
+        user.props.groups = [api_access_group.dn]
+    user.save()
+
     # linux client manager user
     user = users.new()
     name = f'ou{i}clientmanager'
