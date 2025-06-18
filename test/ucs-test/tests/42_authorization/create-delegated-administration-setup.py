@@ -11,7 +11,6 @@ from univention.udm import UDM
 from univention.udm.exceptions import CreateError, NoObject
 
 
-# TODO: add to documentation
 # activate autorization in UMC and UDM-REST
 handler_set(['umc/udm/delegation=true', 'directory/manager/rest/enable-delegative-administration=true'])
 
@@ -24,6 +23,25 @@ lo = getRootDnConnection()
 result = lo.search(filter='(&(objectClass=univentionObject)(!(univentionObjectIdentifier=*)))', attr=['entryUUID'])
 for dn, attrs in result:
     lo.modify(dn, [('univentionObjectIdentifier', None, attrs.get('entryUUID'))])
+
+# TODO: how long do we need this? Do we need documentation?
+# special LDAP ACL's to deny access for ouadmins
+aclfile = '/tmp/59-authz-udm-test-acl'
+with open(aclfile, 'w') as fh:
+    fh.write('''@!@
+ldap_base = configRegistry['ldap/base']
+
+print('access to *')
+print('     by sockname="PATH=/var/run/slapd/ldapi" write')
+print('     by dn.base="uid=Administrator,cn=users,%s" write' % ldap_base)
+print('     by dn.base="uid=ou1admin,cn=users,%s" none stop' % ldap_base)
+print('     by dn.base="uid=ou2admin,cn=users,%s" none stop' % ldap_base)
+print('     by * none break')
+
+@!@''')
+
+cmd = [f'. /usr/share/univention-lib/ldap.sh && ucs_registerLDAPExtension --packagename ucs-test --packageversion 1 --ucsversionstart 5.2-2 --ucsversionend 5.99-0 --acl {aclfile}']
+check_call(cmd, shell=True)
 
 # TODO: add to documentation
 # enable UDM-REST for group used in tests
