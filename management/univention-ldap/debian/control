@@ -32,7 +32,7 @@ Depends:
 Conflicts:
  univention-5250 (<< 0.5),
 Description: UCS - LDAP server configuration
- This package contains the configuration for the OpenLDAP
+ This package contains the configuration for the OpenLDAPs
  server.
  .
  It is part of Univention Corporate Server (UCS), an
