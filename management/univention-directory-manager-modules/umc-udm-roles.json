@@ -17,6 +17,136 @@
       }
     }
   ],
+  "helpdesk-operator": [
+    {
+      "condition": {
+        "position": "",
+        "scope": "base"
+      },
+      "permissions": {
+        "container/dc": {
+          "attributes": {
+            "*": {
+              "access": "read"
+            }
+          },
+          "create": false,
+          "delete": false
+        }
+      }
+    },
+    {
+      "condition": {
+        "position": "$CONTEXT",
+        "scope": "subtree"
+      },
+      "permissions": {
+        "users/user": {
+          "attributes": {
+            "*": {
+              "access": "read"
+            },
+            "guardianMemberRoles": {
+              "access": "read"
+            },
+            "guardianRoles": {
+              "access": "read"
+            },
+            "homeSharePath": {
+              "access": "write"
+            },
+            "overridePWHistory": {
+              "access": "write"
+            },
+            "overridePWLength": {
+              "access": "write"
+            },
+            "password": {
+              "access": "write"
+            },
+            "unlock": {
+              "access": "write"
+            }
+          },
+          "create": false,
+          "delete": false
+        }
+      }
+    },
+    {
+      "condition": {
+        "position": "cn=groups",
+        "scope": "base"
+      },
+      "permissions": {
+        "groups/group": {
+          "attributes": {
+            "*": {
+              "access": "read"
+            }
+          }
+        }
+      }
+    },
+    {
+      "condition": {
+        "position": "cn=domain,cn=mail",
+        "scope": "base"
+      },
+      "permissions": {
+        "mail/domain": {
+          "attributes": {
+            "*": {
+              "access": "read"
+            }
+          }
+        }
+      }
+    },
+    {
+      "condition": {
+        "position": "*",
+        "scope": "base"
+      },
+      "permissions": {
+        "policies/desktop": {
+          "attributes": {
+            "*": {
+              "access": "read"
+            }
+          }
+        },
+        "policies/pwhistory": {
+          "attributes": {
+            "*": {
+              "access": "read"
+            }
+          }
+        },
+        "policies/umc": {
+          "attributes": {
+            "*": {
+              "access": "read"
+            }
+          }
+        },
+        "settings/cn": {
+          "attributes": {
+            "*": {
+              "access": "read"
+            }
+          }
+        },
+        "settings/default": {
+          "attributes": {
+            "*": {
+              "access": "read"
+            }
+          }
+        }
+      }
+    }
+  ],
   "linux-client-manager": [
     {
       "condition": {
@@ -189,7 +319,7 @@
         "policies/desktop": {
           "attributes": {
             "*": {
-              "access": "read"
+              "access": "write"
             }
           }
         },
@@ -215,6 +345,13 @@
           }
         },
         "settings/default": {
+          "attributes": {
+            "*": {
+              "access": "read"
+            }
+          }
+        },
+        "settings/directory": {
           "attributes": {
             "*": {
               "access": "read"
