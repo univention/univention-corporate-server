@@ -389,6 +389,9 @@ class Authorization:
             app_name, mod, perm = permission.split(':', 2)
             if app_name != 'udm' or not mod:
                 continue
+            if perm.startswith('write-property-'):
+                _, _, prop = perm.partition('write-property-')
+                readable.setdefault(mod.replace('-', '/'), set()).add(prop)
             if perm.startswith('read-property-'):
                 _, _, prop = perm.partition('read-property-')
                 readable.setdefault(mod.replace('-', '/'), set()).add(prop)
@@ -401,7 +404,7 @@ class Authorization:
 
         for modname, mod in readable.items():
             if '*' in mod:
-                mod |= all_properties
+                mod |= {_san_property(p) for p in all_properties}
             mod -= unreadable.get(modname, set())
         return readable
 
@@ -424,7 +427,7 @@ class Authorization:
 
         for modname, mod in writeable.items():
             if '*' in mod:
-                mod |= all_properties
+                mod |= {_san_property(p) for p in all_properties}
             mod -= unwriteable.get(modname, set())
         return writeable
 
