@@ -177,7 +177,7 @@ def test_user_search(random_username, ou, objectProperty, objectPropertyValue, e
     assert res
     if 'all' in expected:
         all_objects = udm.list_objects('users/user', properties=['DN'], position=ou.dn)
-        assert {obj[0] for obj in all_objects} == {x['$dn$'] for x in res}
+        assert sorted([obj[0] for obj in all_objects]) == sorted([x['$dn$'] for x in res])
     if objectProperty != 'None':
         rex = re.compile(objectPropertyValue.replace('*', '.*'))
         assert all(rex.match(x[objectProperty]) for x in res)

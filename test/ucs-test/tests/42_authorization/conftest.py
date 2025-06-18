@@ -199,8 +199,8 @@ def ouadmin_rest_client(ucr, ou):
 
 
 @pytest.fixture
-def ou(ldap_base):
-    return SimpleNamespace(
+def ou(ldap_base, udm):
+    ou = SimpleNamespace(
         dn=f'ou=ou1,{ldap_base}',
         dn2=f'ou=ou2,{ldap_base}',
         admin_username='ou1admin',
@@ -210,3 +210,18 @@ def ou(ldap_base):
         user_default_container=f'cn=users,ou=ou1,{ldap_base}',
         group_default_container=f'cn=groups,ou=ou1,{ldap_base}',
     )
+    container_dn = udm.create_object(
+        'container/cn',
+        name=random_username(),
+        userPath=1,
+        position=ou.dn,
+    )
+    udm.create_object(
+        'users/user',
+        username=random_username(),
+        lastname=random_username(),
+        password='univention',
+        position=container_dn,
+    )
+    yield ou
+    udm.cleanup()
