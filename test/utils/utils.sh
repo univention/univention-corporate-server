@@ -202,11 +202,6 @@ jenkins_updates () {
 		#      to downgrade to the gitlab repo version.
 		mv /etc/apt/sources.list.d/99_extra_scope.list.disabled /etc/apt/sources.list.d/99_extra_scope.list
 
-		# TODO: remove, do not merge to 5.2-1
-		if [ "$SCOPE" != "ucs-dev/delegated-administration" ]; then
-			UCS_ENV_UCS_BRANCH=ucs-dev/delegated-administration UCS_ENV_UCS_BRANCH_PRIORITY=999 add_extra_branch_repository
-		fi
-
 		apt-get update -qq
 		eval "$(ucr shell update/commands/distupgrade)"
 		$update_commands_distupgrade
