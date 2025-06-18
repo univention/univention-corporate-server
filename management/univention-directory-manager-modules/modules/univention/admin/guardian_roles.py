@@ -28,14 +28,13 @@
 """|UDM| guardian roles handling"""
 
 import itertools
-import re
 from logging import getLogger
 
 import univention.admin
 import univention.admin.localization
 import univention.admin.mapping
+import univention.admin.syntax
 from univention.admin.layout import Tab
-from univention.admin.syntax import simple
 
 
 log = getLogger('ADMIN')
@@ -44,24 +43,13 @@ translation = univention.admin.localization.translation('univention.admin')
 _ = translation.translate
 
 
-# TODO: move to univention.admin.syntax
-class GuardianRole(simple):
-    regex = re.compile(
-        r"^([a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_]+)(&[a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_=,]+)?$",  # FIXME: why don't we allow LDAP DNs in the last part of context? That would be case insensitive UTF-8 see https://ldapwiki.com/wiki/Wiki.jsp?page=Distinguished%20Name%20Case%20Sensitivity and https://ldapwiki.com/wiki/Wiki.jsp?page=Ou
-    )
-    error_message = _(
-        "Guardian role strings must be lowercase ASCII alphanumeric with hyphens and underscores, "
-        "in the format 'app:namespace:role' or 'app:namespace:role&app:namespace:context'."
-        "The final part of context additionally allows equal and comma.",
-    )
-
-
 def member_role_properties():
     return {
         'guardianMemberRoles': univention.admin.property(
             short_description=_('Roles used by Guardian for access permissions, these roles are passed to the members of this group'),
             long_description=_("Lowercase ASCII alphanumeric string with underscores or dashes, in the format 'app:namespace:role' or 'app:namespace:role&app:namespace:context'"),
-            syntax=GuardianRole,
+            syntax=univention.admin.syntax.GuardianRole,
+            size='Two',
             multivalue=True,
         ),
     }
@@ -72,7 +60,7 @@ def role_properties():
         'guardianRoles': univention.admin.property(
             short_description=_('Roles used by Guardian for access permissions'),
             long_description=_("Lowercase ASCII alphanumeric string with underscores or dashes, in the format 'app:namespace:role' or 'app:namespace:role&app:namespace:context'"),
-            syntax=GuardianRole,
+            syntax=univention.admin.syntax.GuardianRole,
             size='Two',
             multivalue=True,
         ),
@@ -80,8 +68,8 @@ def role_properties():
             short_description=_('Roles used by Guardian for access permissions. Inherited by group membership'),
             long_description=_('Roles used by Guardian for access permissions. Inherited by group membership'),
             prevent_umc_default_popup=True,
+            syntax=univention.admin.syntax.GuardianRole,
             size='Two',
-            syntax=GuardianRole,
             may_change=False,
             multivalue=True,
             dontsearch=True,
