@@ -100,7 +100,7 @@ def test_mail_domain_create(random_string, ouadmin_rest_client):
 
 def test_mail_domain_delete(random_string, udm, ldap_base, ouadmin_rest_client):
     dn = udm.create_object('mail/domain', name=random_string(), position=f'cn=domain,cn=mail,{ldap_base}')
-    with pytest.raises(BadRequest):
+    with pytest.raises(NotFound):
         ouadmin_rest_client.delete_mail_domain(dn)
 
 
@@ -122,5 +122,9 @@ def test_modify_group(position, changes, expected, ou, ldap_base, ouadmin_rest_c
         for prop, value in changes.items():
             assert group.properties[prop] == value
     else:
-        with pytest.raises(Forbidden):
-            ouadmin_rest_client.modify_group(dn, changes)
+        if dn.endswith(ou.dn):
+            with pytest.raises(Forbidden):
+                ouadmin_rest_client.modify_group(dn, changes)
+        else:
+            with pytest.raises(NotFound):
+                ouadmin_rest_client.modify_group(dn, changes)

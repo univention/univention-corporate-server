@@ -111,7 +111,10 @@ def test_move_group(ldap_base, ou, group_position, group_target_position, expect
     res = ouadmin_umc_client.move_object(dn, position, 'groups/group')
     if not expected:
         assert not res['success']
-        assert res['details'] == translate('Permission denied.')
+        if dn.endswith(ou.dn):
+            assert res['details'] == translate('Permission denied.')
+        else:
+            assert res['details'] == f'{translate("No such object:")} {dn}.'
     else:
         assert res['success']
 
