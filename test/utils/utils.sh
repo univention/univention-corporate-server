@@ -180,7 +180,7 @@ jenkins_updates () {
 
 		# TODO: remove, do not merge to 5.2-1
 		if [ "$SCOPE" != "ucs-dev/delegated-administration" ]; then
-			echo "deb [trusted=yes] http://omar.knut.univention.de/build2/git/ucs-dev-delegated-administration git main" >> /etc/apt/sources.list.d/99_extra_scope.list
+			UCS_ENV_UCS_BRANCH=ucs-dev/delegated-administration UCS_ENV_UCS_BRANCH_PRIORITY=999 add_extra_branch_repository
 		fi
 
 		apt-get update -qq
