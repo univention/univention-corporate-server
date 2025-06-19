@@ -8,7 +8,6 @@ import argparse
 import base64
 import json
 import logging
-import tempfile
 from pathlib import Path
 
 import requests
@@ -71,7 +70,7 @@ class UniventionDirectoryManagerRoles:
 
         subparser = subparsers.add_parser('create-default-roles')
         subparser.set_defaults(func=self.create_default_roles)
-        subparser.add_argument('--config', default='/etc/univention/directory-manager/authorization-default-roles.acl')
+        subparser.add_argument('--config', default='/usr/share/univention-directory-manager-modules/authorization-default-roles.acl')
 
         subparser = subparsers.add_parser('prune')
         subparser.set_defaults(func=self.prune)
@@ -91,15 +90,15 @@ class UniventionDirectoryManagerRoles:
         self.create_all_modules_permissions()
 
     def create_roles_from_acl(self):
-        with tempfile.NamedTemporaryFile(mode="w+") as fd:
+        cfg = Path('/var/lib/univention-directory-manager-modules') / f'temp-{Path(self.args.config).stem}.yaml'
+        with open(cfg, 'w') as fd:
             conf = UDMAuthorizationConfig(self.args.config)
             conf.parse()
             yaml_content = conf.to_yaml()
-            log.info('YAML:\n%s', yaml_content)
             fd.write(yaml_content)
-            fd.flush()
-            self.args.config = fd.name
-            self.create_roles_from_yaml()
+        log.info('Wrote temporary YAML to %s:\n%s', cfg, yaml_content)
+        self.args.config = fd.name
+        self.create_roles_from_yaml()
 
     def create_roles_from_yaml(self):
         conf = AuthorizationConfig(self.args.config)

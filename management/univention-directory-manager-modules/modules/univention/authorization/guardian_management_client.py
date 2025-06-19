@@ -287,7 +287,7 @@ def expand_condition(condition, parameters=None):
 
 class GuardianManagementClientLocal(GuardianManagementClient):
 
-    LOCAL_PATH = '/etc/univention/directory-manager/guardian'
+    LOCAL_PATH = '/var/lib/univention-directory-manager-modules/guardian'
 
     def request(self, method, path, data):
         if method == 'POST':
