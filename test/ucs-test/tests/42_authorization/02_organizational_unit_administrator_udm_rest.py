@@ -57,7 +57,7 @@ def test_search(udm, ouadmin_rest_client, ou):
     assert len(user_list) == len(udm.list_objects('users/user', properties=['DN'], position=ou.dn))
     # ldap base
     user_list = ouadmin_rest_client.search_user('uid=*')
-    assert len(user_list) == 0
+    assert len(user_list) == len(udm.list_objects('users/user', properties=['DN'], position=ou.dn))
     # another ou
     user_list = ouadmin_rest_client.search_user('uid=*', position=ou.dn2)
     assert len(user_list) == 0
@@ -111,7 +111,7 @@ def test_mail_domain_create(random_string, ouadmin_rest_client):
 
 def test_mail_domain_delete(random_string, udm, ldap_base, ouadmin_rest_client):
     dn = udm.create_object('mail/domain', name=random_string(), position=f'cn=domain,cn=mail,{ldap_base}')
-    with pytest.raises(NotFound):
+    with pytest.raises(BadRequest):
         ouadmin_rest_client.delete_mail_domain(dn)
 
 
