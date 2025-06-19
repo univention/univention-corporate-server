@@ -138,10 +138,15 @@ access by role="udm:default-roles:helpdesk-operator" context="udm:contexts:ou"
 
   # user permissions in OU
   to objecttype="users/user" position="{context}" scope="subtree"
-    grant actions="search,read,create"  # modify,rename,remove,move
+    grant actions="search,read,modify"  # modify,rename,remove,move
     grant properties="overridePWHistory,overridePWLength,unlock,password" permission="write"
     grant properties="password" permission="writeonly"
     grant properties="homeSharePath" permission="write"  # UDM in UMC always set a default value from the template
+
+  # group permissions in OU
+  to objecttype="groups/group" position="{context}" scope="subtree"
+    grant actions="search,read"
+    grant properties="name" permission="read"
 
 access by role="udm:default-roles:linux-ou-client-manager" context="udm:contexts:ou"
   description="Join Clients Administrators are allowed to create/join linux computers into the domain, and set their corresponding password."
