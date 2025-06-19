@@ -25,6 +25,7 @@ Build-Depends:
  python3-univention-heimdal,
  python3-univention-lib,
  python3-univention-license,
+ python3-yaml,
  univention-config-dev (>= 15.0.7-16),
  univention-l10n-dev (>= 7.0.1),
 
