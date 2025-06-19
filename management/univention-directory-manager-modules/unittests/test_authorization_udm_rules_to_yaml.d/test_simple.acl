@@ -1,0 +1,4 @@
+access by role="udm:default-roles:role"
+  to objecttype="container/dc" position="{ldap_base}" scope="base"
+    grant actions="search,read"
+    grant properties="*" permission="read"

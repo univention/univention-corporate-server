@@ -10,6 +10,8 @@ Build-Depends:
  python3-bcrypt,
  python3-dateutil,
  python3-email-validator,
+ python3-jsondiff,
+ python3-lark,
  python3-ldap,
  python3-m2crypto,
  python3-passlib,

@@ -1,0 +1,73 @@
+capabilities:
+  udm:con/dc:
+    role:
+      conditions:
+        AND:
+        - object-type-is-con-dc
+        - position-43af9cce
+      displayname: ''
+      grants-permissions:
+      - con-dc-role-all
+    role-1:
+      conditions:
+        AND:
+        - object-type-is-con-dc
+        - position-03371e52
+      displayname: ''
+      grants-permissions:
+      - con-dc-role-1-all
+  udm:container/dc:
+    role:
+      conditions:
+        AND:
+        - object-type-is-container-dc
+        - position-424c6609
+      displayname: ''
+      grants-permissions:
+      - container-dc-role-all
+capability-bundles:
+  udm:default-roles:
+    role:
+    - udm:container/dc:role
+    - udm:con/dc:role
+    - udm:con/dc:role-1
+conditions:
+  object-type-is-con-dc:
+    udm:conditions:target_object_type_equals:
+      objectType: con/dc
+  object-type-is-container-dc:
+    udm:conditions:target_object_type_equals:
+      objectType: container/dc
+  position-03371e52:
+    udm:conditions:target_position_in:
+      position: ou=bla,dc=example,dc=org
+      scope: subtree
+  position-424c6609:
+    udm:conditions:target_position_in:
+      position: dc=example,dc=org
+      scope: base
+  position-43af9cce:
+    udm:conditions:target_position_in:
+      position: cn=bla,dc=example,dc=org
+      scope: one
+permission-sets:
+  con-dc-role-1-all:
+  - udm:con/dc:read
+  - udm:con/dc:search
+  - udm:con/dc:read-property-*
+  con-dc-role-all:
+  - udm:con/dc:read
+  - udm:con/dc:search
+  - udm:con/dc:read-property-*
+  container-dc-role-all:
+  - udm:container/dc:read
+  - udm:container/dc:search
+  - udm:container/dc:read-property-*
+role-capability-mapping:
+  udm:default-roles:
+    role:
+      capabilities: []
+      capability-bundles:
+      - udm:default-roles:role
+      displayname: ''
+      permissions: []
