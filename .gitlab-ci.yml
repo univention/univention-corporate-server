@@ -161,6 +161,7 @@ deb-pipeline:
     - job: select ucslint
   variables:
     UCSLINT: $UCSLINT
+    ORIGINAL_SOURCE: $CI_PIPELINE_SOURCE
   trigger:
     include:
       - artifact: generated-config-deb.yml

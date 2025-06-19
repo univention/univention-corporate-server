@@ -31,6 +31,13 @@ stages:
     - echo -e "\e[0Ksection_start:$(date +%s):build_dep[collapsed=true]\r\e[0KInstalling build dependencies"
     - apt-get -q --assume-yes build-dep .
     - echo -e "\e[0Ksection_end:$(date +%s):build_dep\r\e[0K"
+    - |
+      if [ "$ORIGINAL_SOURCE" = "merge_request_event" ]; then
+        apt-get --assume-yes --no-install-recommends install devscripts
+        current_date=$(dpkg-parsechangelog -SDate)
+        dch -D unstable -v "$(dpkg-parsechangelog -SVersion)A~${CHANGELOG_TARGET_VERSION//-/.}.$(date +%Y%m%d%H%M)" "pipeline version bump"
+        sed -i "0,/^ -- /s/^ -- .*$/ -- Univention GmbH <packages@univention.de>  $current_date/" debian/changelog
+      fi
     - find -exec touch -m -h -c -d "@${SOURCE_DATE_EPOCH:-$(dpkg-parsechangelog -STimestamp)}" {} +
   script:
     - echo -e "\e[0Ksection_start:$(date +%s):build\r\e[0KBuilding binary package"
