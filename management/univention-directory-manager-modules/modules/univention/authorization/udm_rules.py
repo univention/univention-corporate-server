@@ -49,7 +49,7 @@ BY_KEY: "role" | "description"
 by_line: "by" by_kvpair+
 by_kvpair: NAME "=" value -> by_kvpair
 
-TO_KEY: "objecttype" | "if" | "position" | "scope" | "position-from-context" | "name" | "description"
+TO_KEY: "objecttype" | "if" | "position" | "scope" | "name" | "description"
 to_line: "to" to_kvlistpair+ grant_line*
 to_kvlistpair: NAME "=" valuelist -> to_kvlistpair
 
@@ -141,9 +141,9 @@ class _DSLTransformer(Transformer):
 
     def by_line(self, items):
         meta = dict(items)
-        by = {'role': meta.pop('role')}
+        by = {'role': meta.pop('role'), 'context': meta.pop('context', None)}
         assert not set(meta) - {'description'}, set(meta)
-        assert not set(by) - {'role'}, set(by)
+        assert not set(by) - {'role', 'context'}, set(by)
 
         return {
             "type": "by",
@@ -161,7 +161,7 @@ class _DSLTransformer(Transformer):
                 if current_with['grant'] is None:
                     raise ValueError("'to' without preceding 'grant'")
                 current_with["grant"].append(item)
-        assert not set(current_with) - {'grant', 'objecttype', 'if', 'position', 'scope', 'position-from-context', 'name', 'description'}, set(current_with)
+        assert not set(current_with) - {'grant', 'objecttype', 'if', 'position', 'scope', 'name', 'description'}, set(current_with)
         assert current_with.get('objecttype') and '/' in current_with['objecttype'] or current_with['objecttype'] == '*'
         return {
             "type": "to",
@@ -221,7 +221,7 @@ class _DSLTransformer(Transformer):
     @staticmethod
     def compose(parsed):
         result = io.StringIO()
-        to_items = {'grant', 'objecttype', 'if', 'position', 'scope', 'position-from-context'}
+        to_items = {'grant', 'objecttype', 'if', 'position', 'scope'}
 
         def _kv(items, restricted=None):
             return ' '.join(f'{k}="{",".join(v)}"' if isinstance(v, list) else f'{k}="{v}"' for k, v in items.items() if v is not None and (not restricted or k in restricted))
@@ -267,8 +267,8 @@ class UDMAuthorizationConfig:
             conf.conditions[cond['name']] = {cond['condition']: cond['parameters']}
 
         for rule in self.parsed['rules']:
-            by = rule.pop('by')
-            to = rule.pop('to')
+            by = rule.get('by')
+            to = rule.get('to')
             for role in by:
                 role_namespace, role_name = role['role'].rsplit(':', 1)
 
@@ -370,27 +370,29 @@ class UDMAuthorizationConfig:
                             },
                         }
 
-                    if to_clause.get('position'):
-                        name = hashlib.sha1(f"{to_clause.get('scope', 'base')}-{to_clause['position']}".encode()).hexdigest()[:8]
-                        pos_condition = f"position-{name}"
-                        # pos_condition = f'{capability_name}-position'
-                        conditions.append(pos_condition)
-                        conf.conditions[pos_condition] = {
-                            "udm:conditions:target_position_in": {
-                                "position": to_clause['position'].format(ldap_base=ucr['ldap/base']),
-                                "scope": to_clause.get('scope', 'base'),
-                            },
-                        }
-
-                    if to_clause.get('position-from-context'):
-                        name = hashlib.sha1(f"{to_clause.get('scope', 'base')}-{to_clause['position-from-context']}".encode()).hexdigest()[:8]
+                    position = to_clause.get('position')
+                    scope = to_clause.get('scope', 'base')
+                    if position and position == '{context}':
+                        context = role['context']
+                        assert context, to_clause
+                        name = self._unique(f"{scope}-{context}")
                         pos_condition = f"position-from-context-{name}"
-                        # pos_condition = f'{capability_name}-position-from-context'
                         conditions.append(pos_condition)
                         conf.conditions[pos_condition] = {
                             "udm:conditions:target_position_from_context": {
-                                "context": to_clause['position-from-context'],
-                                "scope": to_clause.get('scope', 'base'),
+                                "context": context,
+                                "scope": scope,
+                            },
+                        }
+                    elif position:
+                        position = position.format(ldap_base=ucr['ldap/base'])
+                        name = self._unique(f"{scope}-{position}")
+                        pos_condition = f"position-{name}"
+                        conditions.append(pos_condition)
+                        conf.conditions[pos_condition] = {
+                            "udm:conditions:target_position_in": {
+                                "position": position,
+                                "scope": scope,
                             },
                         }
 
@@ -401,6 +403,9 @@ class UDMAuthorizationConfig:
                         conditions.append(to_clause['if'])
 
         return yaml.dump(conf.compose())
+
+    def _unique(self, string):
+        return hashlib.sha1(string.encode()).hexdigest()[:8]
 
 
 if __name__ == '__main__':
