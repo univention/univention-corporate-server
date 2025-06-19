@@ -171,7 +171,7 @@ def test_ou_admin_user_read_permissions(
     users_module = modules.get('users/user')
     modules.init(ou_admin_conn, position_obj, users_module)
 
-    users = users_module.lookup(None, ou_admin_conn, f"(uid={username})")
+    users = users_module.lookup(None, ou_admin_conn, f"(uid={username})", base=user_container)
 
     if expect_success:
         assert users[0]['username'] == username
@@ -211,7 +211,7 @@ def test_ou_admin_user_modification_permissions(
     modules.init(ou_admin_conn, position_obj, users_module)
 
     if expect_success:
-        users = users_module.lookup(None, ou_admin_conn, f"(uid={username})")
+        users = users_module.lookup(None, ou_admin_conn, f"(uid={username})", base=user_container)
         assert len(users) == 1
         user_obj = users[0]
 
@@ -259,14 +259,14 @@ def test_ou_admin_user_deletion_permissions(
     modules.init(ou_admin_conn, position_obj, users_module)
 
     if expect_success:
-        users = users_module.lookup(None, ou_admin_conn, f"(uid={username})")
+        users = users_module.lookup(None, ou_admin_conn, f"(uid={username})", base=user_container)
         assert len(users) == 1
         user_obj = users[0]
 
         user_obj.open()
         user_obj.remove()
 
-        users = users_module.lookup(None, ou_admin_conn, f"(uid={username})")
+        users = users_module.lookup(None, ou_admin_conn, f"(uid={username})", base=user_container)
         assert len(users) == 0
     else:
         user_obj = get_object(ou_admin_conn, test_user_dn)
@@ -343,7 +343,7 @@ def test_ou_admin_user_move_permissions(
         modules.init(ou_admin_conn, position_obj, users_module)
 
         if expect_success:
-            users = users_module.lookup(None, ou_admin_conn, f"(uid={username})")
+            users = users_module.lookup(None, ou_admin_conn, f"(uid={username})", base=initial_container)
             assert len(users) == 1
             user_obj = users[0]
 
