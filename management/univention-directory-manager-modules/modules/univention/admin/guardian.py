@@ -211,9 +211,9 @@ class LocalGuardianRuleEvaluation:
 
 @functools.lru_cache(maxsize=1)
 def load_local_roles():
-    capabilities = pathlib.Path('/etc/univention/directory-manager/guardian/capabilities/').glob('**/*.json')
-    permissions = pathlib.Path('/etc/univention/directory-manager/guardian/permissions/').glob('**/*.json')
-    roles = pathlib.Path('/etc/univention/directory-manager/guardian/roles/').glob('**/*.json')
+    capabilities = pathlib.Path('/var/lib/univention-directory-manager-modules/guardian/capabilities/').glob('**/*.json')
+    permissions = pathlib.Path('/var/lib/univention-directory-manager-modules/guardian/permissions/').glob('**/*.json')
+    roles = pathlib.Path('/var/lib/univention-directory-manager-modules/guardian/roles/').glob('**/*.json')
 
     def _cap(x, d):
         return {
