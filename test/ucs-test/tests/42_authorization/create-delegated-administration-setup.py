@@ -177,10 +177,7 @@ for i in range(1, number_of_ous + 1):
     user.props.lastname = f'ou{i}admin'
     user.props.password = 'univention'
     user.props.overridePWHistory = '1'
-    user.props.guardianRoles = [
-        f'umc:udm:ouadmin&umc:udm:ou=ou{i}',
-        f'udm:default-roles:organizational-unit-admin&udm:contexts:ou=ou=ou{i}',
-    ]
+    user.props.guardianRoles = [f'udm:default-roles:organizational-unit-admin&udm:contexts:ou=ou=ou{i}']
     user.policies['policies/umc'].append(policy.dn)
     if user.props.groups:
         user.props.groups.append(api_access_group.dn)
@@ -201,7 +198,7 @@ for i in range(1, number_of_ous + 1):
     user.props.lastname = f'ou{i}helpdesk-operator'
     user.props.password = 'univention'
     user.props.overridePWHistory = '1'
-    user.props.guardianRoles = [f'umc:udm:helpdesk-operator&umc:udm:ou=ou{i}']
+    user.props.guardianRoles = [f'udm:default-roles:helpdesk-operator&udm:contexts:ou=ou{i}']
     user.policies['policies/umc'].append(policy.dn)
     if user.props.groups:
         user.props.groups.append(api_access_group.dn)
@@ -222,7 +219,7 @@ for i in range(1, number_of_ous + 1):
     user.props.lastname = f'ou{i}clientmanager'
     user.props.password = 'univention'
     user.props.overridePWHistory = '1'
-    user.props.guardianRoles = [f'umc:udm:linux-client-manager&umc:udm:ou=ou{i}']
+    user.props.guardianRoles = [f'udm:default-roles:linux-ou-client-manager&udm:contexts:ou=ou=ou{i}']
     user.policies['policies/umc'].append(policy.dn)
     if user.props.groups:
         user.props.groups.append(api_access_group.dn)
