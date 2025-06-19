@@ -46,10 +46,21 @@ def test_delete(position, expected, ouadmin_rest_client, ou, ldap_base, udm):
 
 
 def test_search(udm, ouadmin_rest_client, ou):
-    user_list = ouadmin_rest_client.search_user('uid=*')
+    # cn users, ou position
+    user_list = ouadmin_rest_client.search_user('uid=*', position=ou.user_default_container)
+    assert len(user_list) == len(udm.list_objects('users/user', properties=['DN'], position=ou.user_default_container))
+    # ou position with one extra user
+    udm.create_user(position=ou.dn)
+    user_list = ouadmin_rest_client.search_user('uid=*', position=ou.dn)
     assert len(user_list) > 0
     assert len(user_list) < len(udm.list_objects('users/user', properties=['DN']))
     assert len(user_list) == len(udm.list_objects('users/user', properties=['DN'], position=ou.dn))
+    # ldap base
+    user_list = ouadmin_rest_client.search_user('uid=*')
+    assert len(user_list) == 0
+    # another ou
+    user_list = ouadmin_rest_client.search_user('uid=*', position=ou.dn2)
+    assert len(user_list) == 0
 
 
 @pytest.mark.parametrize('position, target_position, expected', [

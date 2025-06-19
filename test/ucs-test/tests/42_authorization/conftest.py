@@ -75,8 +75,8 @@ class RestClientHelper(UDM_REST):
         with pytest.raises(UnprocessableEntity):
             self.user_module.get(dn)
 
-    def search_user(self, filter_s: str):
-        return list(self.user_module.search(filter_s))
+    def search_user(self, filter_s: str, position: str | None = None):
+        return list(self.user_module.search(filter_s, position=position))
 
     def move_user(self, dn: str, position: str):
         obj = self.user_module.get(dn)
@@ -226,6 +226,7 @@ def ouadmin_rest_client(ucr, ou):
 def ou(ldap_base):
     return SimpleNamespace(
         dn=f'ou=ou1,{ldap_base}',
+        dn2=f'ou=ou2,{ldap_base}',
         admin_username='ou1admin',
         admin_dn=f'uid=ou1admin,cn=users,{ldap_base}',
         user_username='user1-ou1',
