@@ -11,6 +11,17 @@ from univention.udm import UDM
 from univention.udm.exceptions import CreateError, NoObject
 
 
+# create permissions and privileges
+check_call(
+    ['bash', '-c', '''
+set -eux
+date
+/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local prune
+/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local create-permissions
+/usr/share/univention-directory-manager-tools/univention-configure-udm-authorization --store-local create-default-roles
+date
+'''])
+
 # activate autorization in UMC and UDM-REST
 handler_set(['umc/udm/delegation=true', 'directory/manager/rest/enable-delegative-administration=true'])
 
