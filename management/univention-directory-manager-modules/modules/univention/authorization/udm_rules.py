@@ -8,6 +8,7 @@ realized with extended BNF grammar and a LALR (Look-Ahead Left <- Right) Parser.
 """
 
 import copy
+import hashlib
 import io
 import logging
 
@@ -370,7 +371,9 @@ class UDMAuthorizationConfig:
                         }
 
                     if to_clause.get('position'):
-                        pos_condition = f'{capability_name}-position'
+                        name = hashlib.sha1(f"{to_clause.get('scope', 'base')}-{to_clause['position']}".encode()).hexdigest()[:8]
+                        pos_condition = f"position-{name}"
+                        # pos_condition = f'{capability_name}-position'
                         conditions.append(pos_condition)
                         conf.conditions[pos_condition] = {
                             "udm:conditions:target_position_in": {
@@ -380,7 +383,9 @@ class UDMAuthorizationConfig:
                         }
 
                     if to_clause.get('position-from-context'):
-                        pos_condition = f'{capability_name}-position-from-context'
+                        name = hashlib.sha1(f"{to_clause.get('scope', 'base')}-{to_clause['position-from-context']}".encode()).hexdigest()[:8]
+                        pos_condition = f"position-from-context-{name}"
+                        # pos_condition = f'{capability_name}-position-from-context'
                         conditions.append(pos_condition)
                         conf.conditions[pos_condition] = {
                             "udm:conditions:target_position_from_context": {
