@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [9, 10]
+scope: ucs_5.0-0-errata5.0-10
+src: python2.7
+fix: 2.7.16-2+deb10u6
+desc: |
+ This update addresses the following issue:
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N).
+   (CVE-2023-27043)
+bug: [58411]
+cve:
+- CVE-2023-27043
