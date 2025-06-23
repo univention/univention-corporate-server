@@ -32,7 +32,7 @@ stages:
     - apt-get -q --assume-yes build-dep .
     - echo -e "\e[0Ksection_end:$(date +%s):build_dep\r\e[0K"
     - |
-      if [ "$CI_PIPELINE_SOURCE" = "merge_request_event" ]; then
+      if true; then
         apt-get --assume-yes --no-install-recommends install devscripts
         current_date=$(dpkg-parsechangelog -SDate)
         dch -D unstable -v "$(dpkg-parsechangelog -SVersion)A~$(date +%Y%m%d%H%M)" "pipeline version bump"
