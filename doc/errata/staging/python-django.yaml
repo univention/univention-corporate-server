@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: python-django
+fix: 1:1.10.7-2+deb9u26
+desc: |
+ This update addresses the following issue:
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2025-32873)
+bug: [58413]
+cve:
+- CVE-2025-32873
