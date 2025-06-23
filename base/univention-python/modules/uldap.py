@@ -632,9 +632,9 @@ class access:
             vals = nal.setdefault(key, set())
             vals |= set(val)
 
-        if b'univentionObject' in nal.get('objectClass'):
-            nal['univentionObjectCreatorsID'] = [self.univention_object_identifier.encode('ASCII')]
-            nal['univentionObjectModifiersID'] = [self.univention_object_identifier.encode('ASCII')]
+        # if b'univentionObject' in nal.get('objectClass'):
+        #    nal['univentionObjectCreatorsID'] = [self.univention_object_identifier.encode('ASCII')]
+        #    nal['univentionObjectModifiersID'] = [self.univention_object_identifier.encode('ASCII')]
 
         nal = [(k, list(v)) for k, v in nal.items()]
 
@@ -700,7 +700,7 @@ class access:
 
         # check if we need to rename the object
         new_dn, new_rdn = self.__get_new_dn(dn, ml)
-        modifier_id_ml = [(ldap.MOD_REPLACE, 'univentionObjectModifiersID', [self.univention_object_identifier.encode('ASCII')])]
+        # modifier_id_ml = [(ldap.MOD_REPLACE, 'univentionObjectModifiersID', [self.univention_object_identifier.encode('ASCII')])]
         if not self.compare_dn(dn, new_dn):
             if rename_callback:
                 rename_callback(dn, new_dn, ml)
@@ -708,12 +708,13 @@ class access:
             self.rename_ext_s(dn, new_rdn, serverctrls=serverctrls, response=response)
             dn = new_dn
         if ml:
-            # we don't know if the object has univentionObject objectClass and supports univentionObjectModifiersID
-            # so try it once with univentionObjectModifiersID and once without
-            try:
-                self.modify_ext_s(dn, ml + modifier_id_ml, serverctrls=serverctrls, response=response)
-            except ldap.OBJECT_CLASS_VIOLATION:
-                self.modify_ext_s(dn, ml, serverctrls=serverctrls, response=response)
+            self.modify_ext_s(dn, ml, serverctrls=serverctrls, response=response)
+            # # we don't know if the object has univentionObject objectClass and supports univentionObjectModifiersID
+            # # so try it once with univentionObjectModifiersID and once without
+            # try:
+            #    self.modify_ext_s(dn, ml + modifier_id_ml, serverctrls=serverctrls, response=response)
+            # except ldap.OBJECT_CLASS_VIOLATION:
+            #    self.modify_ext_s(dn, ml, serverctrls=serverctrls, response=response)
 
         return dn
 
@@ -840,16 +841,16 @@ class access:
         if serverctrls and isinstance(response, dict):
             response['ctrls'] = resp_ctrls
 
-        # update univentionObjectModifiersID
-        if newsuperior:
-            newdn = ldap.dn.dn2str(ldap.dn.str2dn(newrdn) + ldap.dn.str2dn(newsuperior))
-        else:
-            newdn = ldap.dn.dn2str(ldap.dn.str2dn(newrdn) + ldap.dn.str2dn(dn)[1:])
-        ml = [(ldap.MOD_REPLACE, 'univentionObjectModifiersID', [self.univention_object_identifier.encode('ASCII')])]
-        try:
-            self.modify_ext_s(newdn, ml, serverctrls=serverctrls, response=response)
-        except ldap.OBJECT_CLASS_VIOLATION:
-            pass
+        # # update univentionObjectModifiersID
+        # if newsuperior:
+        #     newdn = ldap.dn.dn2str(ldap.dn.str2dn(newrdn) + ldap.dn.str2dn(newsuperior))
+        # else:
+        #     newdn = ldap.dn.dn2str(ldap.dn.str2dn(newrdn) + ldap.dn.str2dn(dn)[1:])
+        # ml = [(ldap.MOD_REPLACE, 'univentionObjectModifiersID', [self.univention_object_identifier.encode('ASCII')])]
+        # try:
+        #     self.modify_ext_s(newdn, ml, serverctrls=serverctrls, response=response)
+        # except ldap.OBJECT_CLASS_VIOLATION:
+        #     pass
 
     @_fix_reconnect_handling
     def delete(self, dn, serverctrls=None, response=None) -> None:
