@@ -20,7 +20,7 @@ from univention.testing.utils import UCSTestDomainAdminCredentials
 
 
 pytestmark = pytest.mark.skipif(not _ucr.is_true('directory/manager/rest/enable-delegative-administration'), reason='authz not activated')
-pytestmark = pytest.mark.skipif(not _ucr.is_true('umc/udm/delegation'), reason='authz not activated')
+pytestmark = pytest.mark.skipif(not _ucr.is_true('directory/manager/web/enable-delegative-administration'), reason='authz not activated')
 
 
 def remove_objects(object_type, dns):
