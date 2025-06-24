@@ -6,7 +6,7 @@ src: gst-plugins-bad1.0
 fix: 1.10.4-1+deb9u6
 desc: |
  This update addresses the following issue:
- * CVSS score unknown. (CVE-2025-3887)
+ * CVSS score 8.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H) (CVE-2025-3887)
 bug: [58415]
 cve:
 - CVE-2025-3887
