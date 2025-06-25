@@ -501,7 +501,7 @@ if blocking_computers or blocking_objects:
 }
 
 update_check_ucsschool () {
-  local ucs_school_umc_exam_master_version="$(dpkg-query -W -f='${db:Status-Status} ${Version}' ucs-school-umc-exam-master 2>/dev/null | grep 'installed' | awk '{print $2}')"
+  local ucs_school_umc_exam_master_version="$(dpkg-query -W -f='${Version}' ucs-school-umc-exam-master 2>/dev/null)"
   if [ -n "$ucs_school_umc_exam_master_version" ] && dpkg --compare-versions "$ucs_school_umc_exam_master_version" le "12.0.4"; then
     echo "	You have the package ucs-school-umc-exam-master version $ucs_school_umc_exam_master_version installed."
     echo "	This package is provided by the app 'UCS@school' version 5.2 v2 or older and currently is incompatible with UCS 5.2-2."
