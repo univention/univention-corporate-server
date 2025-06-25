@@ -1,0 +1,310 @@
+#!/usr/bin/python3
+# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+"""Parses changelog/advisory files and transforms the content into a conventional commit message"""
+
+from __future__ import annotations
+
+import argparse
+import os
+import re
+import subprocess
+import sys
+import traceback
+from pathlib import Path
+
+import yaml
+
+
+SHOW_HINTS = os.getenv('PRE_COMMIT_SHOW_HINTS') not in ('no', '0', 'false')
+HINT = '''
+
+# Conventional commit message <https://www.conventionalcommits.org/en/v1.0.0/>
+# Format of the first line: {type}({scope})[!]: {subject}
+# `type` can be one of:
+# * `build`: Changes that affect only the build system or external dependencies.
+# * `chore`: Routine tasks like bumping changelogs / advisories.
+# * `ci`: Changes to the CI configuration files and scripts.
+# * `docs`: Changes to the documentation / README only.
+# * `feat`: An added feature for the user. Not a new feature for build script.
+# * `fix`: A bug fix for the user. Not a fix to a build script.
+# * `perf`: A code change that improves performance.
+# * `refactor`: A code change that neither fixes a bug nor adds a feature, for example renaming a variable.
+# * `revert`: Reverting a previous commit.
+# * `style`: Changes that don't affect the meaning of the code, for example whitespace, formatting, missing semi-colons and so on.
+# * `test`: Adding missing tests or correcting or refactoring existing tests.
+# `scope` is optional. Use a noun which specifies a component of the product, for example `udm`, `portal` or `gitlab`.
+# Append `!` to the `type` or `scope` to indicate a breaking change.
+'''
+
+
+mapping = {
+    'crudeoauth': 'crudeoauth',
+    'crudesaml': 'crudesaml',
+    'generate-appliance': 'generate-appliance',
+    'pam-runasroot': 'pam',
+    'pam-univentionmailcyrus': 'pam',
+    'ucslint': 'ucslint',
+    'ucs-test': 'ucs-test',
+    'ucs-test-tools': 'ucs-test-tools',
+    'univention-ad-connector': 'ad-connector',
+    'univention-admin-diary': 'admin-diary',
+    'univention-admingrp-user-passwordreset': 'admingrp-user-passwordreset',
+    'univention-antivir-mail': 'antivir-mail',
+    'univention-apache': 'apache',
+    'univention-appcenter': 'appcenter',
+    'univention-appliance-docker-container': 'appliance-docker-container',
+    'univention-archive-key': 'archive-key',
+    'univention-authorization': 'authorization',
+    'univention-base-files': 'base-files',
+    'univention-bind': 'bind',
+    'univention-bootsplash': 'bootsplash',
+    'univention-config-registry': 'config-registry',
+    'univention-debhelper': 'debhelper',
+    'univention-debmirror': 'debmirror',
+    'univention-debug': 'debug',
+    'univention-debug-python': 'debug',
+    'univention-demo-configuration': 'demo-configuration',
+    'univention-dhcp': 'dhcp',
+    'univention-directory-listener': 'listener',
+    'univention-directory-logger': 'logger',
+    'univention-directory-manager-module-example': 'udm',
+    'univention-directory-manager-modules': 'udm',
+    'univention-directory-manager-rest': 'udm-rest',
+    'univention-directory-notifier': 'notifier',
+    'univention-directory-policy': 'policy',
+    'univention-directory-replication': 'replication',
+    'univention-directory-reports': 'reports',
+    'univention-docker': 'docker',
+    'univention-docker-container-mode': 'docker-container-mode',
+    'univention-dojo': 'dojo',
+    'univention-dvd': 'dvd',
+    'univention-errata-level': 'errata-level',
+    'univention-fetchmail': 'fetchmail',
+    'univention-firewall': 'firewall',
+    'univention-group-membership-cache': 'group-membership-cache',
+    'univention-grub': 'grub',
+    'univention-heimdal': 'heimdal',
+    'univention-home-mounter': 'home-mounter',
+    'univention-initrd': 'initrd',
+    'univention-ipcalc': 'ipcalc',
+    'univention-join': 'join',
+    'univention-keycloak': 'keycloak',
+    'univention-l10n': 'l10n',
+    'univention-l10n-fr': 'l10n-fr',
+    'univention-ldap': 'ldap',
+    'univention-ldap-overlay-memberof': 'ldap-overlay-memberof',
+    'univention-ldb-modules': 'ldb-modules',
+    'univention-lib': 'lib',
+    'univention-licence': 'licence',
+    'univention-licence-python': 'licence-python',
+    'univention-mail-canonical-maps': 'mail-canonical-maps',
+    'univention-mail-dovecot': 'mail-dovecot',
+    'univention-mail-postfix': 'mail-postfix',
+    'univention-maintenance': 'maintenance',
+    'univention-maintenance-mode': 'maintenance-mode',
+    'univention-management-console': 'umc',
+    'univention-management-console-module-adtakeover': 'adtakeover',
+    'univention-management-console-module-diagnostic': 'diagnostic',
+    'univention-management-console-module-ipchange': 'ipchange',
+    'univention-management-console-module-join': 'join',
+    'univention-management-console-module-lib': 'lib',
+    'univention-management-console-module-passwordchange': 'passwordchange',
+    'univention-management-console-module-reboot': 'reboot',
+    'univention-management-console-module-services': 'services',
+    'univention-management-console-module-top': 'top',
+    'univention-management-console-module-ucr': 'ucr',
+    'univention-management-console-module-udm': 'udm',
+    'univention-management-console-module-welcome': 'welcome',
+    'univention-mariadb': 'mariadb',
+    'univention-monitoring-client': 'monitoring',
+    'univention-nagios': 'nagios',
+    'univention-nagios-ad-connector': 'nagios',
+    'univention-nagios-raid': 'nagios',
+    'univention-nagios-s4-connector': 'nagios',
+    'univention-nagios-samba': 'nagios',
+    'univention-nagios-servicechecks': 'nagios',
+    'univention-nagios-smart': 'nagios',
+    'univention-net-installer': 'net-installer',
+    'univention-network-manager': 'network-manager',
+    'univention-newsid': 'newsid',
+    'univention-nfs': 'nfs',
+    'univention-package-template': 'package-template',
+    'univention-package-template-python': 'package-template',
+    'univention-pam': 'pam',
+    'univention-pkgdb': 'pkgdb',
+    'univention-policy': 'policy',
+    'univention-portal': 'portal',
+    'univention-postgresql': 'postgresql',
+    'univention-postgrey': 'postgrey',
+    'univention-printclient': 'printclient',
+    'univention-printserver': 'printserver',
+    'univention-python': 'python',
+    'univention-python-heimdal': 'heimdal',
+    'univention-quota': 'quota',
+    'univention-radius': 'radius',
+    'univention-s4-connector': 's4-connector',
+    'univention-samba': 'samba',
+    'univention-samba4': 'samba4',
+    'univention-sasl': 'sasl',
+    'univention-self-service': 'self-service',
+    'univention-server': 'server',
+    'univention-server-overview': 'server-overview',
+    'univention-skel': 'skel',
+    'univention-spamassassin': 'spamassassin',
+    'univention-squid': 'squid',
+    'univention-squid-kerberos': 'squid-kerberos',
+    'univention-ssh': 'ssh',
+    'univention-ssl': 'ssl',
+    'univention-sudo': 'sudo',
+    'univention-system-activation': 'system-activation',
+    'univention-system-info': 'system-info',
+    'univention-system-setup': 'system-setup',
+    'univention-tftp': 'tftp',
+    'univention-unittests': 'unittests',
+    'univention-updater': 'updater',
+    'univention-web': 'web',
+}
+type_package_mapping = {
+    'ucs-test': 'test',
+    'ucs-test-tools': 'test',
+    'ucslint': 'ci',
+}
+type_path_mapping = {
+    'doc': 'docs',
+    'LICENCES': 'chore',
+    '.pre-commit': 'ci',
+    '.reuse': 'chore',
+    'test': 'ci',
+}
+scope_path_mapping = {
+    'LICENCES': 'REUSE',
+    '.pre-commit': 'pre-commit',
+    '.reuse': 'REUSE',
+}
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers(dest='action', title='actions', description='All available actions')
+
+    changelog = subparsers.add_parser('debian-changelog', help=parse_changelog.__doc__)
+    changelog.add_argument("changelog", help="Path to debian/changelog")
+    changelog.add_argument("--show-hint", action='store_true', default=SHOW_HINTS, help="Print hints")
+    changelog.set_defaults(func=parse_changelog)
+
+    advisory = subparsers.add_parser('errata-advisory', help=parse_advisory.__doc__)
+    advisory.add_argument("advisory", help="Path to doc/errata/{staging,published}/*.yaml")
+    advisory.set_defaults(func=parse_advisory)
+
+    from_git = subparsers.add_parser('git', help=parse_git.__doc__)
+    from_git.add_argument("original_message")
+    from_git.add_argument("--show-hint", action='store_true', default=SHOW_HINTS, help="Print hints")
+    from_git.set_defaults(func=parse_git)
+
+    args = parser.parse_args()
+    args.func(args)
+
+
+def parse_changelog(args):
+    """Take message from parsing debian/changelog"""
+    # dpkg-parsechangelog -c1 -l"$f" --format dpkg | sed -e '/^Changes:/,+2 d;/^ /!d'
+    changelog = subprocess.check_output([
+        'dpkg-parsechangelog', '-c1', '-l', args.changelog, '--format', 'dpkg', '-SChanges',
+    ]).decode('UTF-8', 'replace')
+    changelog, _, all_changes = changelog.partition('\n.\n')
+    for changes in reversed(all_changes.split('\n.\n')):
+        _author, changes = changes.split('* ', 1)
+        changes = changes.strip().replace('\n', '')
+        while '  ' in changes:
+            changes = changes.replace('  ', ' ')
+        package = changelog.strip().split(None, 1)[0]
+
+        if re.search(r'UCS \d+\.\d+-\d+ version bump', changes):
+            continue
+
+        issue, changes = changes.split(': ', 1)
+        scope = mapping.get(package, package)
+        type_ = type_package_mapping.get(package, 'feat')
+        print(f'{type_}({scope}): {changes}\n\n{issue}')
+
+    if args.show_hint:
+        print(HINT)
+
+
+def parse_advisory(args):
+    """Take message from parsing errata advisory"""
+    with open(args.advisory) as fd:
+        erratum = yaml.safe_load(fd)
+    bug = erratum['bug'][-1]
+    src = erratum['src']
+    src = mapping.get(src, src)
+
+    print(f'chore({src}): update advisory\n\nBug #{bug}')
+
+
+def parse_git(args):
+    """Detect changes from git staging area"""
+    try:
+        from git import Repo
+    except ImportError:
+        print('Install python3-git!', file=sys.stderr)
+        print(traceback.format_exc(), file=sys.stderr)
+        return
+
+    repo = Repo(".")
+    assert not repo.bare
+    repo_root = Path(repo.working_tree_dir)
+
+    packages = list(repo_root.rglob("debian/changelog"))
+    staged_files = [repo_root / (item.a_path or item.b_path) for item in repo.index.diff("HEAD")]
+
+    changed_packages = {
+        find_matching_root(p.parent.parent, staged_files)
+        for p in packages
+    }
+    changed_packages.discard(None)
+
+    if len(changed_packages) > 1:
+        print('# Please consider splitting into multiple commits!')
+
+    changes = ''  # TODO: heuristic title
+
+    for package_path in changed_packages:
+        package = package_path.stem
+        scope = mapping.get(package, package)
+        type_ = type_package_mapping.get(package, 'feat')
+        print(f'{type_}({scope}): {changes}')
+
+    prefix = '#' if changed_packages else ''
+    for root, type_ in type_path_mapping.items():
+        section = repo_root / root
+        if find_matching_root(section, staged_files):
+            scope = scope_path_mapping.get(root, '')
+            scopes = [scope] if scope else []
+            if not scopes:
+                if root in ('doc', 'tests'):
+                    scopes = {st.relative_to(section).parts[0] for st in staged_files if st.is_relative_to(section)}
+            for scope in scopes:
+                print(f'{prefix}{type_}({scope}): {changes}')
+
+    issue = 'Bug #\n#Issue univention/dev/ucs#'
+    print(f'\n{issue}')
+    if args.show_hint:
+        print(HINT)
+
+
+def find_matching_root(root: Path, file_pathes: list[Path]) -> Path | None:
+    root = root.resolve()
+    for file_path in file_pathes:
+        file_path = file_path.resolve()
+        try:
+            file_path.relative_to(root)
+            return root
+        except ValueError:
+            continue
+    return None
+
+
+if __name__ == '__main__':
+    main()

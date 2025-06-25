@@ -1,0 +1,30 @@
+#!/bin/bash
+# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+case "$2,$3" in
+	,|template,)
+		matched=false
+		while read -r f
+		do
+			case "$f" in
+			debian/changelog|*/debian/changelog)
+				python3 "${0%/*}/conventional-commit-message" debian-changelog "$f" >"$1.$$"
+				matched="true"
+				;;
+			doc/errata/staging/*.yaml|doc/errata/published/*.yaml)
+				python3 "${0%/*}/conventional-commit-message" errata-advisory "$f" >"$1.$$"
+				git log -1 --pretty=format:'%n# Fixes: %H' -- "$f" >>"$1.$$"
+				matched="true"
+				;;
+			*) continue ;;
+			esac
+		done < <(git diff --cached --name-only -r)
+		if [ "$matched" = "false" ]; then
+			python3 "${0%/*}/conventional-commit-message" git "$1" >"$1.$$"
+		fi
+		cat "$1" >>"$1.$$"
+		mv "$1.$$" "$1"
+	;;
+  *) ;;
+esac
