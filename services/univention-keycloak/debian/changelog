@@ -1,3 +1,10 @@
+univention-keycloak (3.2.1) unstable; urgency=medium
+
+  * univention/dev/internal/team-nubus#1314: add --force flag to oidc/rp and
+    saml/sp creation commands
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 16 Jul 2025 13:24:50 +0200
+
 univention-keycloak (3.2.0) UNRELEASED; urgency=medium
 
   * Bug #58344: UCS 5.2-2 version bump
