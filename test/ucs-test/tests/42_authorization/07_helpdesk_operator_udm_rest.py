@@ -1,0 +1,56 @@
+#!/usr/share/ucs-test/runner pytest-3 -s -l -vvv
+## desc: Check delegated administration in UMC
+## bugs: [58113]
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+## exposure: dangerous
+
+import pytest
+
+from univention.admin.rest.client import BadRequest, Forbidden
+from univention.config_registry import ucr as _ucr
+
+
+pytestmark = pytest.mark.skipif(not _ucr.is_true('directory/manager/rest/delegative-administration/enabled'), reason='authz not activated')
+
+
+@pytest.mark.parametrize('position, expected', [
+    ('cn=users,{ldap_base}', False),
+    ('cn=users,{ou_dn}', False),
+    ('{ou_dn}', False),
+    ('{ldap_base}', False),
+])
+def test_helpdesk_operator_cant_create(position, expected, ouhelpdeskoperator_rest_client, ou, ldap_base):
+    position = position.format(ou_dn=ou.dn, ldap_base=ldap_base)
+    if expected:
+        user = ouhelpdeskoperator_rest_client.create_user(position)
+        user.delete()
+    else:
+        with pytest.raises(Forbidden):
+            ouhelpdeskoperator_rest_client.create_user(position)
+
+
+@pytest.mark.parametrize('position, expected', [
+    ('cn=users,{ou_dn}', True),
+    ('{ldap_base}', False),
+])
+def test_helpdesk_operator_can_reset_password(position, expected, ouhelpdeskoperator_rest_client, udm, ou, ldap_base):
+    dn, _ = udm.create_user(position=position.format(ou_dn=ou.dn, ldap_base=ldap_base))
+    changes = {
+        'homeSharePath': '/home/ou',
+        'overridePWHistory': True,
+        'overridePWLength': True,
+        'password': 'univention',
+        'unlock': '0',
+    }
+    if expected:
+        ouhelpdeskoperator_rest_client.modify_user(dn, changes)
+    else:
+        if dn.endswith(ou.dn):
+            with pytest.raises(Forbidden):
+                ouhelpdeskoperator_rest_client.modify_user(dn, changes)
+        else:
+            with pytest.raises(BadRequest):
+                ouhelpdeskoperator_rest_client.modify_user(dn, changes)
+                raise AssertionError("f'User {dn} should not modify password in the LDAP database.'")

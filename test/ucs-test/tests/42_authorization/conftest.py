@@ -189,6 +189,13 @@ def ouadmin_umc_client(ou):
 
 
 @pytest.fixture
+def ouhelpdeskoperator_umc_client_umc_client(ou):
+    client = ClientHelper()
+    client.authenticate(ou.helpdeskoperator_username, 'univention')
+    return client
+
+
+@pytest.fixture
 def admin_rest_client(ucr):
     return RestClientHelper(
         'https://%(hostname)s.%(domainname)s/univention/udm/' % ucr,
@@ -207,6 +214,15 @@ def ouadmin_rest_client(ucr, ou):
 
 
 @pytest.fixture
+def ouhelpdeskoperator_rest_client_rest_client(ucr, ou):
+    return RestClientHelper(
+        'https://%(hostname)s.%(domainname)s/univention/udm/' % ucr,
+        username=ou.helpdeskoperator_username,
+        password='univention',
+    )
+
+
+@pytest.fixture
 def ou(ldap_base, udm):
     return SimpleNamespace(
         dn=f'ou=ou1,{ldap_base}',
@@ -216,6 +232,8 @@ def ou(ldap_base, udm):
         admin_dn2=f'uid=ou2-admin,cn=users,{ldap_base}',
         user_username='user1-ou1',
         user_dn=f'uid=user1-ou1,cn=users,ou=ou1,{ldap_base}',
+        helpdeskoperator_username='ou1-helpdesk-operator',
+        helpdesk_operator_dn=f'uid=ou1-helpdesk-operator,cn=users,{ldap_base}',
         user_default_container=f'cn=users,ou=ou1,{ldap_base}',
         group_default_container=f'cn=groups,ou=ou1,{ldap_base}',
     )
