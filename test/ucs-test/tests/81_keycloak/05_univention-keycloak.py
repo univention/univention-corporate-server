@@ -9,12 +9,28 @@ import os
 from subprocess import CalledProcessError
 
 import pytest
-from keycloak.exceptions import KeycloakGetError
+from keycloak.exceptions import KeycloakDeleteError, KeycloakGetError
 from utils import run_command
 
 from univention.testing.strings import random_int, random_string
 from univention.testing.utils import wait_for_listener_replication
 from univention.udm.binary_props import Base64Bzip2BinaryProperty
+
+
+@pytest.fixture
+def keycloak_client_id(keycloak_administrator_connection, random_string):
+    """Will return the name of a keycloak client which is not created but will be deleted at the end of the test"""
+    name = random_string()
+
+    yield name
+
+    try:
+        keycloak_administrator_connection.delete_client(name)
+    except KeycloakDeleteError as e:
+        if e.response_code == 404:
+            pass
+    except Exception as e:
+        print(f"Failed to delete client {e}")
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
@@ -28,6 +44,133 @@ def test_create_oidc_client(keycloak_administrator_connection):
         raise RuntimeError(f'Failed to create {client_id} OIDC client')
     keycloak_administrator_connection.delete_client(keycloak_client_id)
     assert not keycloak_administrator_connection.get_client_id(client_id)
+
+
+@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+def test_create_and_update_oidc_client(keycloak_administrator_connection, keycloak_client_id: str):
+    """Creates and updates an OIDC client in Keycloak."""
+    client_id = keycloak_client_id
+    redirect_uri_a = 'https://a.example.com'
+    redirect_uri_b = 'https://b.example.com'
+    audience_mapper_name = 'audiencemap'
+    description_initial = 'test-description'
+    description_updated = 'updated-description'
+
+    keycloak_cmd = ['univention-keycloak', 'oidc/rp', 'create', '--app-url=', client_id]
+
+    # Create the original client
+    run_command([
+        *keycloak_cmd,
+        '--description', description_initial,
+        '--redirect-uri', redirect_uri_a,
+        '--add-audience-mapper',
+        '--redirect-uri', redirect_uri_b,
+    ])
+
+    keycloak_client_id = keycloak_administrator_connection.get_client_id(client_id)
+    assert keycloak_client_id, f'Failed to create {client_id} OIDC client'
+
+    client_original = keycloak_administrator_connection.get_client(keycloak_client_id)
+
+    # Assertions for the created client
+    assert redirect_uri_a in client_original['redirectUris']
+    assert redirect_uri_b in client_original['redirectUris']
+    assert any(m['name'] == audience_mapper_name for m in client_original['protocolMappers'])
+    assert client_original['description'] == description_initial
+
+    # Update the client
+    run_command([
+        *keycloak_cmd,
+        '--description', description_updated,
+        '--redirect-uri', redirect_uri_a,
+        '--force',
+    ])
+
+    client_updated = keycloak_administrator_connection.get_client(keycloak_client_id)
+
+    # Assertions for the updated client
+    assert redirect_uri_a in client_updated['redirectUris']
+    assert redirect_uri_b not in client_updated['redirectUris']
+    assert not any(m['name'] == audience_mapper_name for m in client_updated['protocolMappers'])
+    assert client_updated['description'] == description_updated
+
+
+@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+def test_create_and_update_saml_client(keycloak_administrator_connection, keycloak_client_id):
+    """Creates and updates an OIDC client in Keycloak."""
+    client_id = keycloak_client_id
+    redirect_uri_a = 'https://a.example.com'
+    redirect_uri_b = 'https://b.example.com'
+    description_initial = 'test-description'
+    description_updated = 'updated-description'
+
+    keycloak_cmd = ['univention-keycloak', 'saml/sp', 'create', '--client-id', client_id]
+
+    # Create the original client
+    run_command([
+        *keycloak_cmd,
+        '--description', description_initial,
+        '--frontchannel-logout-off',
+        '--single-logout-service-url-redirect', redirect_uri_a,
+    ])
+
+    keycloak_client_id = keycloak_administrator_connection.get_client_id(client_id)
+    assert keycloak_client_id, f'Failed to create {client_id} OIDC client'
+
+    client_original = keycloak_administrator_connection.get_client(keycloak_client_id)
+
+    # Assertions for the created client
+    assert client_original['attributes']['saml_single_logout_service_url_redirect'] == redirect_uri_a
+    assert client_original['description'] == description_initial
+    assert not client_original['frontchannelLogout']
+
+    # Update the client
+    run_command([
+        *keycloak_cmd,
+        '--description', description_updated,
+        '--single-logout-service-url-redirect', redirect_uri_b,
+        '--force',
+    ])
+
+    client_updated = keycloak_administrator_connection.get_client(keycloak_client_id)
+
+    # Assertions for the updated client
+    assert client_updated['attributes']['saml_single_logout_service_url_redirect'] == redirect_uri_b
+    assert client_updated['description'] == description_updated
+    assert client_updated['frontchannelLogout']
+
+
+@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+def test_init_with_force(random_string, keycloak_admin_connection):
+    realm_name = random_string()
+    try:
+        cmd = ['univention-keycloak', '--realm', realm_name, 'init', '--no-kerberos', '--no-starttls', '--frontchannel-logout-off']
+        run_command(cmd)
+        cmd = ['univention-keycloak', 'realms', 'get', '--all', '--json']
+        realms = json.loads(run_command(cmd))
+        realm = next(x for x in realms if x['id'] == realm_name)
+        assert realm['realm'] == realm_name
+        keycloak_admin_connection.realm_name = realm_name
+
+        cmd = ['univention-keycloak', '--realm', realm_name, 'saml/sp', 'get', '--all', '--json']
+        clients = json.loads(run_command(cmd))
+        client = clients[0]
+
+        assert not client['frontchannelLogout']
+
+        cmd = ['univention-keycloak', '--realm', realm_name, 'init', '--no-kerberos', '--no-starttls', '--force']
+        run_command(cmd)
+
+        cmd = ['univention-keycloak', '--realm', realm_name, 'saml/sp', 'get', '--all', '--json']
+        clients = json.loads(run_command(cmd))
+        client = clients[0]
+
+        assert client['frontchannelLogout']
+    finally:
+        try:
+            keycloak_admin_connection.delete_realm(realm_name=realm_name)
+        except KeycloakGetError:
+            pass
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')

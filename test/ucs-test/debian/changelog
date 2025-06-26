@@ -1,3 +1,9 @@
+ucs-test (12.2.27) unstable; urgency=medium
+
+  * Bug #58426: add tests for univention-keycloak --force flag
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 16 Jul 2025 13:25:52 +0200
+
 ucs-test (12.2.26) unstable; urgency=medium
 
   * Bug #58183: use correct username for Administrator in AD membermode
