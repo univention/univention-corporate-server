@@ -1,0 +1,215 @@
+#!/usr/bin/python3
+# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+"""Script to create the necessary Guardian objects for UMC."""
+
+import argparse
+import logging
+
+import ldap.dn
+import ldap.filter
+import requests
+
+import univention.admin.modules
+import univention.logging
+from univention.authorization.management import (
+    GuardianManagementClient, GuardianManagementClientLocal, expand_permission, expand_role,
+)
+from univention.config_registry import ucr
+
+
+log = logging.getLogger('ACL').getChild(__name__)
+
+APP_NAME = 'umc'
+OPERATIONS_NAMESPACE = 'operations'
+DEFAULT_ROLES_NAMESPACE = 'default-roles'
+LOCAL_PATH = '/var/lib/univention-management-console/guardian/'
+LDAP_BASE = ucr['ldap/base']
+
+
+class UniventionManagementConsoleRoles:
+    """Management of roles, permissions, etc for UMC"""
+
+    @classmethod
+    def main(cls, args=None):
+        univention.admin.modules.update()
+
+        roles = cls(args)
+        roles.execute()
+
+    def __init__(self, args):
+        self.args = args = self.parse_args(args)
+        if args.store_local:
+            self.client = GuardianManagementClientLocal(LOCAL_PATH, args.management_url.rstrip('/'), args.username, args.password, args.keycloak_url, args.keycloak_client)
+        else:
+            self.client = GuardianManagementClient(args.management_url.rstrip('/'), args.username, args.password, args.keycloak_url, args.keycloak_client)
+
+    def execute(self):
+        self.args.func()
+
+    def parse_args(self, args=None):
+        parser = argparse.ArgumentParser(description=__doc__)
+        parser.add_argument('--store-local', action='store_true')
+        parser.add_argument("--management-url", help="Guardian management URL", default=f'https://{ucr["hostname"]}.{ucr["domainname"]}/guardian/management/')
+        parser.add_argument("--binddn", help="Guardian management username", default=ucr['ldap/hostdn'])
+        parser.add_argument("--bindpwdfile", help="Guardian management password")
+        parser.add_argument("--keycloak-url", help="Keycloak token endpoint URL", default=f'https://{ucr["keycloak/server/sso/fqdn"]}/realms/ucs/protocol/openid-connect/token')
+        parser.add_argument("--keycloak-client", help="Keycloak client ID", default='guardian-scripts')
+        subparsers = parser.add_subparsers(dest='action', title='actions', description='All available actions', required=True)
+
+        subparser = subparsers.add_parser('init', help='Create necessary apps, namespace, default roles')
+        subparser.set_defaults(func=self.init)
+
+        subparser = subparsers.add_parser('create-operation-set', help='Create permission from operation set')
+        subparser.set_defaults(func=self.create_operation_set)
+        subparser.add_argument('name')
+        subparser.add_argument('description')
+
+        subparser = subparsers.add_parser('create-policy', help='Create a policy')
+        subparser.set_defaults(func=self.set_policy)
+        subparser.add_argument('name')
+        subparser.add_argument('permissions', nargs='*')
+
+        subparser = subparsers.add_parser('append-to-policy', help='Append permissions to a policy')
+        subparser.set_defaults(func=self.set_policy)
+        subparser.add_argument('name')
+        subparser.add_argument('permissions', nargs='+')
+
+        subparser = subparsers.add_parser('assign-policy', help='Assign a policy to a given user, group or computer')
+        subparser.set_defaults(func=self.assign_policy)
+        subparser.add_argument('dn')
+        subparser.add_argument('policy')
+
+        # Guardian misconceptions. In a ideal world we would it do it like this.
+        subparser = subparsers.add_parser('assign-role', help='Assign a role to a given user, group or computer. Not compatible with Guardian.')
+        subparser.set_defaults(func=self.assign_role)
+        subparser.add_argument('dn')
+        subparser.add_argument('role')
+
+        # Guardian misconceptions. In a ideal world we would it do it like this.
+        subparser = subparsers.add_parser('map-policy-to-role', help='Map policies to a given role. Not compatible with Guardian.')
+        subparser.set_defaults(func=self.map_policies_to_role)
+        subparser.add_argument('role')
+        subparser.add_argument('policy')
+
+        subparser = subparsers.add_parser('migrate-umc-operation-sets', help='Migrate all existing UMC operation sets to permissions.')
+        subparser.set_defaults(func=self.migrate_umc_operation_sets)
+
+        subparser = subparsers.add_parser('migrate-umc-policies', help='Migrate all existing UMC policies to roles/capabilities.')
+        subparser.set_defaults(func=self.migrate_umc_policies)
+
+        subparser = subparsers.add_parser('migrate-assigned-policies', help='Assign all assigned UMC policies ro users, groups or computers by creating roles/capabilites from it.')
+        subparser.set_defaults(func=self.migrate_assigned_policies)
+
+        args = parser.parse_args(args)
+
+        args.username = ldap.dn.str2dn(args.binddn)[0][0][0]
+        args.password = None
+        if args.bindpwdfile:
+            with open(args.bindpwdfile) as fd:
+                args.password = fd.read().strip()
+
+        return args
+
+    def init(self):
+        self.create_app()
+        self.create_namespaces()
+        self.create_default_roles()
+
+    def create_app(self):
+        log.info("Creating App")
+        self.client.create_app(APP_NAME, "Univention Management Console")
+
+    def create_namespaces(self):
+        log.info("Creating Namespaces")
+        self.client.create_namespace(APP_NAME, OPERATIONS_NAMESPACE)
+        self.client.create_namespace(APP_NAME, DEFAULT_ROLES_NAMESPACE)
+
+    def create_default_roles(self):
+        self.client.create_role(APP_NAME, DEFAULT_ROLES_NAMESPACE, 'domain-user', 'UMC Domain Users')
+        self.client.create_role(APP_NAME, DEFAULT_ROLES_NAMESPACE, 'domain-administrator', 'UMC Domain Administrators')
+
+    def create_operation_set(self):
+        self.create_permission(self.args.name, self.args.description)
+
+    def set_policy(self):
+        self.assign_capabilities(self.args.name, self.args.permissions)
+
+    def migrate_umc_operation_sets(self):
+        """Create everything required for make UDM permissions available"""
+        lo, _po = univention.admin.uldap.getAdminConnection()
+        base = f'cn=operations,cn=UMC,cn=univention,{LDAP_BASE}'
+        for op in univention.admin.modules.lookup('settings/umc_operationset', None, lo, scope='one', base=base):
+            self.create_permission(op['name'], op['description'])
+
+    def migrate_umc_policies(self):
+        lo, _po = univention.admin.uldap.getAdminConnection()
+        base = f'cn=UMC,cn=policies,{LDAP_BASE}'
+        for pol in univention.admin.modules.lookup('policies/umc', None, lo, scope='one', base=base):
+            perms = [ldap.dn.str2dn(allow)[0][0][1] for allow in pol['allow']]
+            self.assign_capabilities(pol['name'], perms)
+            # TODO: conditions for operation_set['hosts']?
+
+    def create_permission(self, name, description):
+        log.info("Creating Permission %s", name)
+        self.client.create_permission(APP_NAME, OPERATIONS_NAMESPACE, name, description)
+        # Guardian misconception: we should be able to create a capability here as well but it must be bound to a role, which we don't have yet.
+
+    def assign_capabilities(self, name, permissions, conditions=None):
+        # TODO: nicer would be to create only one capabiliy and assign all permissions to it
+        # but then we need to receive the current capability and extend it.
+        role = name
+        # Guardian misconception: we create a throw away fake capability
+        self.client.create_role(APP_NAME, DEFAULT_ROLES_NAMESPACE, role, role)
+        for perm in permissions:
+            capability = f'role-{role}-permission-{perm}'
+            self.client.create_role_capability_mapping(
+                APP_NAME,
+                OPERATIONS_NAMESPACE,
+                capability,
+                f'Grant {perm} for {role}',
+                expand_role(APP_NAME, DEFAULT_ROLES_NAMESPACE, role),
+                [expand_permission(APP_NAME, OPERATIONS_NAMESPACE, perm)],
+                conditions,
+            )
+
+    def assign_policy(self):
+        name = self.args.policy
+        role = f'{APP_NAME}:{DEFAULT_ROLES_NAMESPACE}:{name}'
+        self.assign_role_to_actor(self.args.dn, role)
+
+    def assign_role(self):
+        self.assign_role_to_actor(self.args.dn, self.args.role)
+
+    def map_policies_to_role(self):
+        raise NotImplementedError('Not possible.')
+
+    def assign_role_to_actor(self, dn, role):
+        obj = univention.admin.objects.get_object(self.lo, dn)
+        obj.open()
+        if obj.module in ('users/user', 'users/ldap') or obj.module.startswith('computers/*'):
+            obj['guardianRoles'].append(role)
+        elif obj.module == 'groups/group':
+            obj['guardianMemberRoles'].append(role)
+        else:
+            raise NotImplementedError('Cannot handle %s: %s' % (dn, obj.module))
+
+        log.info('Assigning %s to %s %s', role, obj.module, obj.dn)
+        obj.modify()
+
+    def migrate_assigned_policies(self):
+        lo, _po = univention.admin.uldap.getAdminConnection()
+        base = f'cn=UMC,cn=policies,{LDAP_BASE}'
+        for pol in univention.admin.modules.lookup('policies/umc', None, lo, scope='one', base=base):
+            role = pol['name']
+            for dn in lo.searchDn(ldap.filter.filter_format('univentionPolicyReference=%s', [pol.dn])):
+                self.assign_role_to_actor(dn, f'{APP_NAME}:{DEFAULT_ROLES_NAMESPACE}:{role}')
+
+
+if __name__ == "__main__":
+    univention.logging.basicConfig(level=logging.INFO)
+    try:
+        UniventionManagementConsoleRoles.main()
+    except requests.HTTPError as exc:
+        log.exception('ERROR: %s', exc.response.json())

@@ -45,13 +45,16 @@ import os
 from fnmatch import fnmatch
 
 import ldap
+from ldap.dn import escape_dn_chars
 from ldap.filter import filter_format
 
 import univention.admin.handlers.computers.domaincontroller_backup as dc_backup
 import univention.admin.handlers.computers.domaincontroller_master as dc_master
 import univention.admin.handlers.computers.domaincontroller_slave as dc_slave
+import univention.admin.modules
 import univention.admin.uexceptions as udm_errors
 from univention.admin.handlers.computers import memberserver
+from univention.authorization.authorization import LocalGuardianAuthorizationClient
 
 from .config import ucr
 from .log import ACL
@@ -328,6 +331,7 @@ class LDAP_ACLs(ACLs):
     def __init__(self, username, userdn, ldap_base):
         self.username = username
         self.userdn = userdn
+        self.engine = LocalGuardianAuthorizationClient('/var/lib/univention-management-console/guardian/')
         ACLs.__init__(self, ldap_base)
 
     def reload(self, lo=None):
@@ -335,6 +339,7 @@ class LDAP_ACLs(ACLs):
 
         if lo:
             self._read_from_ldap(lo)
+            self._read_from_guardian(lo)
             self._write_to_file(self.username)
         else:
             # read ACLs from file
@@ -381,3 +386,73 @@ class LDAP_ACLs(ACLs):
             result.append(next(g))
 
         self.acls[:] = result
+
+    def _read_from_guardian(self, lo):
+        actor = self._get_actor(lo)
+
+        role = univention.admin.modules.get('computers/{server/role}'.format(**ucr))
+        try:
+            obj = role.object(None, lo, None, ucr['ldap/hostdn'])
+            obj.open()
+        except (udm_errors.base, ldap.LDAPError):
+            ACL.warning('Error reading server object from LDAP', username=self.username, dn=self.userdn, exc_info=True)
+            # read ACLs from file
+            self._read_from_file(self.username)
+            return
+        attributes = obj.info
+
+        permissions = self.engine.get_permissions(
+            actor,
+            [{'old_target': {'id': obj.dn, 'roles': [], 'attributes': attributes}, 'new_target': {'id': '', 'roles': [], 'attributes': {}}}],
+            [],
+            ['umc:operations'],
+            {
+                'server_role': ucr['server/role'].lower(),
+                'ldap_hostdn': ucr['ldap/hostdn'],
+            },
+        )[1][0]['permissions']
+
+        for permission in permissions:
+            _app, _namespace, permission = permission.partition(':')
+            data = lo.get('cn=%s,cn=operations,cn=UMC,cn=univention,%s' % (escape_dn_chars(permission), ucr['ldap/base']))
+            if data:
+                self._append(lo, LDAP_ACLs.FROM_GROUP, data)
+
+    def _get_actor(self, lo):
+        actor, actor_roles = self._get_cached_actor(lo)()
+        return {
+            'id': actor.dn,
+            'roles': actor_roles,
+            'attributes': self._get_representation(actor),
+        }
+
+    def _get_representation(self, obj):
+        return obj.info
+
+    _user_roles_cache = {}
+
+    def _get_cached_actor(self, lo):
+        actor_dn = self.userdn
+        actor = get_user(lo, actor_dn)
+        if self._user_roles_cache.get(actor_dn) is None:
+            self._user_roles_cache[actor_dn] = (actor, get_user_roles(actor))
+        return lambda: self._user_roles_cache[actor_dn]
+
+
+def get_user(lo, user_dn: str):
+    data = lo.get(user_dn, attr=['univentionObjectType'])
+    modname = data.get('univentionObjectType')
+    if not modname:
+        return
+
+    mod = univention.admin.modules.get(modname[0].decode('UTF-8'))
+    obj = mod.object(None, lo, None, user_dn)
+    obj.open()
+    return obj
+
+
+def get_user_roles(obj) -> list[str]:
+    if hasattr(obj, 'open_guardian'):
+        obj.open_guardian()
+    role_set = set(obj.get("guardianInheritedRoles", []) + obj.get("guardianRoles", []))
+    return role_set

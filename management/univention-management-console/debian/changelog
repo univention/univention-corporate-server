@@ -1,3 +1,9 @@
+univention-management-console (14.3.4) UNRELEASED; urgency=medium
+
+  * Bug #12345: allow reading UMC policies from Guardian
+
+ -- Florian Best <best@univention.de>  Mon, 29 Sep 2025 13:10:00 +0200
+
 univention-management-console (14.3.3) unstable; urgency=medium
 
   * Bug #58652: federated account for OIDC auth

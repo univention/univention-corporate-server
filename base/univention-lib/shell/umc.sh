@@ -39,6 +39,14 @@ umc_udm () {
 		"$@"
 }
 
+configure_umc_authorization () {
+    /usr/share/univention-management-console/univention-configure-umc-authorization \
+		${UMC_UDM_BIND_DN:+--binddn "$UMC_UDM_BIND_DN"} \
+		${UMC_UDM_BIND_PWD:+--bindpwd "$UMC_UDM_BIND_PWD"} \
+		${UMC_UDM_BIND_PWDFILE:+--bindpwdfile "$UMC_UDM_BIND_PWDFILE"} \
+		"$@"
+}
+
 umc_frontend_new_hash () {
 	if [ -n "$DPKG_MAINTSCRIPT_PACKAGE" ]; then
 		# touch all html, js, css files from the package to prevent the mtime to be the package build time.
@@ -60,23 +68,33 @@ umc_init () {
 	umc_udm container/cn create --ignore_exists --position "cn=policies,$ldap_base" --set name=UMC --set policyPath=1 || exit $?
 	umc_udm container/cn create --ignore_exists --position "cn=UMC,cn=univention,$ldap_base" --set name=operations || exit $?
 
+	configure_umc_authorization init || exit $?
+
 	# default admin policy
 	umc_udm policies/umc create --ignore_exists --set name=default-umc-all \
 		--position "cn=UMC,cn=policies,$ldap_base" || exit $?
+	configure_umc_authorization create-policy "default-umc-all" || exit $?
 
 	# link default admin policy to the group "Domain Admins"
 	group_admins_dn="$(umc_udm groups/group list --filter name="$(custom_groupname "Domain Admins")" | sed -ne 's/^DN: //p')"
 	umc_udm groups/group modify --ignore_exists --dn "$group_admins_dn" \
 		--policy-reference="cn=default-umc-all,cn=UMC,cn=policies,$ldap_base" || exit $?
+	configure_umc_authorization assign-policy "$group_admins_dn" "default-umc-all" || exit $?
+	# configure_umc_authorization map-role-to-policy "umc:default-roles:domain-administrator" "default-umc-all" || exit $?
+	# configure_umc_authorization assign-role "$group_admins_dn" "umc:default-roles:domain-administrator" || exit $?
 
 	# default user policy
 	umc_udm policies/umc create --ignore_exists --set name=default-umc-users \
 		--position "cn=UMC,cn=policies,$ldap_base" || exit $?
+	configure_umc_authorization create-policy "default-umc-users" || exit $?
 
 	# link default user policy to the group "Domain Users"
 	group_users_dn="$(umc_udm groups/group list --filter name="$(custom_groupname "Domain Users")" | sed -ne 's/^DN: //p')"
 	umc_udm groups/group modify --ignore_exists --dn "$group_users_dn" \
 		--policy-reference="cn=default-umc-users,cn=UMC,cn=policies,$ldap_base" || exit $?
+	configure_umc_authorization assign-policy "$group_admins_dn" "default-umc-users" || exit $?
+	# configure_umc_authorization map-role-to-policy "umc:default-roles:domain-user" "default-umc-users" || exit $?
+	# configure_umc_authorization assign-role "$group_admins_dn" "umc:default-roles:domain-user" || exit $?
 }
 
 _umc_remove_old () {
@@ -100,6 +118,7 @@ umc_operation_create () {
 		--set name="$name" \
 		--set description="$description" \
 		--set flavor="$flavor" "$@" || exit $?
+	configure_umc_authorization create-operation-set "$name" "$description" || exit $?
 }
 
 umc_policy_append () {
@@ -107,6 +126,7 @@ umc_policy_append () {
 	local policy="$1" nargs arg
 	shift || return $?
 	nargs=$#
+	permissions=("$@")
 	for arg in "$@"
 	do
 		set -- "$@" --append allow="cn=$arg,cn=operations,cn=UMC,cn=univention,$ldap_base"
@@ -114,4 +134,5 @@ umc_policy_append () {
 	shift $nargs || return $?
 	umc_udm policies/umc modify --ignore_exists \
 		--dn "cn=$policy,cn=UMC,cn=policies,$ldap_base" "$@" || exit $?
+	configure_umc_authorization append-to-policy "$policy" "${permissions[@]}" || exit $?
 }
