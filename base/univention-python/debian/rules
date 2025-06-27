@@ -37,6 +37,7 @@ export PYBUILD_NAME=univention
 
 override_dh_auto_test:
 	pytest-3 unittests/
+	pytest-3 --doctest-modules  --doctest-ignore-import-errors modules/
 
 %:
 	dh $@ --with python2,python3,ucr --buildsystem=pybuild
