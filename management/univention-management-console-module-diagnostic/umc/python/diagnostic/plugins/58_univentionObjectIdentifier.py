@@ -8,7 +8,6 @@
 
 import subprocess
 
-from univention.admin.uldap import access, getAdminConnection
 from univention.config_registry import ucr_live as ucr
 from univention.lib.i18n import Translation
 from univention.management.console.modules.diagnostic import Instance, ProblemFixed, Warning  # noqa: A004
@@ -16,37 +15,32 @@ from univention.management.console.modules.diagnostic import Instance, ProblemFi
 
 _ = Translation('univention-management-console-module-diagnostic').translate
 
-title = 'Unviention Object Identifier'
+title = _('Validate all objects have Univention Object Identifier set')
 description = '\n'.join([
     _('All objects of class "univentionObject" should have the attribute "univentionObjectIdentifier" in OpenLDAP.'),
 ])
-
-
-def univentionObject_without_univentionObjectIdentifier(lo: access) -> list[str]:
-    return lo.searchDn('(&(objectClass=univentionObject)(!(objectClass=univentionLicense))(!(univentionObjectIdentifier=*)))')
 
 
 def run(_umc_instance: Instance) -> None:
     if ucr.get('server/role') != 'domaincontroller_master':
         return
 
-    lo, _pos = getAdminConnection()
-    objs = univentionObject_without_univentionObjectIdentifier(lo)
-    num_objs = len(objs)
-    if num_objs:
-        details = '\n\n' + _('Number of objects that should be fixed: %d') % num_objs
-        raise Warning(description + details, buttons=[{
+    process = subprocess.Popen(['/usr/share/univention-ldap/univention-update-univention-object-identifier'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env={'LANG': 'C'})
+    stdout, _stderr = process.communicate()
+    stdout = stdout.decode('UTF-8', 'replace')
+    if process.returncode == 2:
+        raise Warning(description + stdout, buttons=[{
             'action': 'update_objects',
-            'label': _('Update %d LDAP objects') % num_objs,
+            'label': _('Update LDAP objects'),
         }])
 
 
 def update_objects(_umc_instance: Instance) -> None:
     cmd = "/usr/share/univention-ldap/univention-update-univention-object-identifier"
     try:
-        output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
-    except subprocess.CalledProcessError:
-        raise Warning(output, links=[])
+        subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as exc:
+        raise Warning(exc.output, links=[])
     raise ProblemFixed(buttons=[])
 
 

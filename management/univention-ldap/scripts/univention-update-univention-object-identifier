@@ -6,12 +6,13 @@
 # When changing this script please also consider changing (via gitlab):
 # https://github.com/univention/container-udm-rest/blob/main/docker/ldap-update-univention-object-identifier/ldap-update-univention-object-identifier.py
 
+import argparse
 import logging
 from pprint import pformat
-from sys import stderr
+from sys import exit, stderr
 
-import univention.config_registry
 import univention.uldap
+from univention.config_registry import ucr
 
 
 logger = logging.getLogger(__name__)
@@ -24,53 +25,50 @@ def setup_logging(level: str | int):
     logger = logging.getLogger(__name__)
 
 
-def update_univention_object_identifier(lo: univention.uldap.access):
-
+def update_univention_object_identifier(args: argparse.Namespace, lo: univention.uldap.access):
     result = lo.search(
-        filter="(&(objectClass=univentionObject)(!(univentionObjectIdentifier=*)))",
+        filter="(&(objectClass=univentionObject)(!(objectClass=univentionLicense))(!(univentionObjectIdentifier=*)))",
         attr=["univentionObjectIdentifier", "entryUUID"],
     )
 
     updated_count = 0
     failed_count = 0
-    for entry in result:
-        logger.debug("Processing %s", entry[0])
-        logger.debug("Values:\n%s", pformat(entry[1], indent=4))
+    for dn, attr in result:
+        logger.debug("Processing %s", dn)
+        logger.debug("Values:\n%s", pformat(attr, indent=4))
 
-        if entry[1].get(
-                "univentionObjectIdentifier") or not entry[1].get("entryUUID"):
+        if attr.get("univentionObjectIdentifier") or not attr.get("entryUUID"):
             logger.warning(
                 "Wrong ldap search condition! univentionObjectIdentifier: %s entryUUID: %s",
-                entry[1].get("univentionObjectIdentifier"),
-                entry[1].get("entryUUID"),
+                attr.get("univentionObjectIdentifier"),
+                attr.get("entryUUID"),
             )
             continue
 
         try:
-            lo.modify(
-                entry[0],
-                [(
-                    "univentionObjectIdentifier",
-                    None,
-                    entry[1].get("entryUUID"),
-                )],
-            )
-        except Exception as e:
-            logger.error(e)
+            logger.info('Update %r | %r', dn, attr['entryUUID'][0].decode('ASCII'))
+            if not args.dry_run:
+                lo.modify(dn, [("univentionObjectIdentifier", None, attr["entryUUID"])])
+        except Exception as exc:
+            logger.error('Error: %s', exc)
             failed_count += 1
             continue
 
         updated_count += 1
 
-    logger.info("Updated %s records. Failed to update %s records.",
-                updated_count, failed_count)
+    if args.dry_run:
+        if updated_count:
+            return 2
+
+    logger.info("Updated %s records. Failed to update %s records.", updated_count, failed_count)
+    return 1 if failed_count else 0
 
 
-def main():
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("-n", "--dry-run", action="store_true", help="perform dry run without changes")
+    args = parser.parse_args()
     setup_logging(logging.INFO)
-
-    ucr = univention.config_registry.ConfigRegistry()
-    ucr.load()
 
     if ucr.get("server/role") != "domaincontroller_master":
         logger.info("Script can only be run on a Primary Directory Node")
@@ -85,12 +83,8 @@ def main():
 
     logger.info("Updating univentionObjectIdentifier with entryUUID values.")
 
-    update_univention_object_identifier(lo)
+    return update_univention_object_identifier(args, lo)
 
-
-# ###########################################################################
-# # Main
-# ###########################################################################
 
 if __name__ == "__main__":
-    main()
+    exit(main())
