@@ -741,3 +741,15 @@ Provides:
  ucs-test-module,
 Description: Test scripts for the Keycloak app
  This package includes test-cases for the Keycloak app.
+
+Package: ucs-test-provisioning
+Architecture: all
+Depends:
+ python3-requests,
+ ${misc:Depends},
+Recommends:
+ ucs-test-framework,
+Provides:
+ ucs-test-module,
+Description: Test scripts for the Keycloak app
+ This package includes test-cases for the Keycloak app.
