@@ -14,10 +14,10 @@ ansible_preperation () {
 	cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 	ssh -o "StrictHostKeyChecking=accept-new" localhost true
 	# Download ansible scripts
-	wget "http://service.knut.univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz"
+	#wget "http://service.knut.univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz" && tar -xf ansible_playbook.tar.gz
 	#wget --user "$repo_user" --password="$(< "$repo_password_file")" \
-	#	"https://service.software-univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz" || return $?
-	tar -xf ansible_playbook.tar.gz
+	#	"https://service.software-univention.de/apt/00342/deployment/keycloak/ansible_playbook.tar.gz" && tar -xf ansible_playbook.tar.gz || return $?
+    wget "https://git.knut.univention.de/univention/dev/education/id-broker/keycloak-id-broker/-/archive/main/keycloak-id-broker-main.tar.gz?path=deployment" --output-document=deployment.tar.gz && tar -xf deployment.tar.gz --strip-components=1
 	cd deployment || return $?
 	# check the jenkins-data repo for the following files
 	openssl x509 -req -in /root/id-broker-TESTING.csr -signkey /root/id-broker-TESTING.key -out id-broker.cert -days 365
@@ -37,43 +37,42 @@ ansible_preperation () {
 }
 
 create_certificate_kc_vhost () {
-	univention-certificate new -name kc.broker.test -id 658b0aaf-48dc-4a32-991f-db46648b22a5 -days 365
+    univention-certificate new -name "kc.$(hostname -d)" -days 365
 }
 
 wait_for_certificate_replication () {
 	local end=$(($(date +%s)+1500))
 	while [ "$(date +%s)" -lt "$end" ]
 	do
-		[ -d "/etc/univention/ssl/kc.broker.test/" ] &&
+        [ -d "/etc/univention/ssl/kc.$(hostname -d)/" ] &&
 			return 0
 		sleep 5
 	done
 	return 1
 }
 
-apache_custom_vhosts () {
-	local keycloak2_ip="${1:?missing keycloak2_ip}"
-	local domain="${2:?missing domain}"
-	univention-add-vhost --conffile /var/lib/keycloak/keycloak_ProxyPass.conf kc.broker.test 443
-	cd /etc/apache2/sites-available/ || return 1
-	cp /root/univention-vhosts.conf.example univention-vhosts.conf
-	sed -i "s/KEYCLOAK2_IP/$keycloak2_ip/g" univention-vhosts.conf
-	sed -i "s/DOMAIN/$domain/g" univention-vhosts.conf
-	cp /root/keycloak_ProxyPass.conf.example /var/lib/keycloak/keycloak_ProxyPass.conf
-	sed -i "s/DOMAIN/$domain/g" /var/lib/keycloak/keycloak_ProxyPass.conf
-	service apache2 restart
-}
-
 ansible_run_keycloak_configuration () {
 	docker run --rm -v ~/.ssh:/root/.ssh -v /root/deployment/:/apps -w /apps \
 		artifacts.software-univention.de/id-broker/alpine/ansible:2.17.0 \
-		bash -c "ansible-galaxy collection install --requirements-file requirements.yml --upgrade && ANSIBLE_LOG_PATH=ansible.log ansible-playbook -i inventories/jenkins/hosts --vault-password-file idbroker_jenkins_ansible.password --skip-tags partner_provisioning site.yml"
+		bash -c "ansible-galaxy collection install --requirements-file requirements.yml --upgrade && \
+            ANSIBLE_LOG_PATH=ansible.log ansible-playbook \
+            --limit ${LIMIT:-\*} \
+            --inventory inventories/jenkins/hosts \
+            --vault-password-file idbroker_jenkins_ansible.password \
+            --skip-tags partner_provisioning \
+            site.yml"
 }
 
 ansible_run_keycloak_partner_provisioning () {
 	docker run --rm -v ~/.ssh:/root/.ssh -v /root/deployment/:/apps -w /apps \
 		artifacts.software-univention.de/id-broker/alpine/ansible:2.17.0 \
-		bash -c "ansible-galaxy collection install --requirements-file requirements.yml --upgrade && ANSIBLE_LOG_PATH=ansible.log ansible-playbook -i inventories/jenkins/hosts --vault-password-file idbroker_jenkins_ansible.password --tags partner_provisioning site.yml"
+		bash -c "ansible-galaxy collection install --requirements-file requirements.yml --upgrade && \
+            ANSIBLE_LOG_PATH=ansible.log ansible-playbook \
+            --limit ${LIMIT:-\*} \
+            --inventory inventories/jenkins/hosts \
+            --vault-password-file idbroker_jenkins_ansible.password \
+            --tags partner_provisioning \
+            site.yml"
 }
 
 register_idbroker_as_sp_in_ucs_simpleSAML () {
@@ -330,6 +329,7 @@ kvm_setup_dns_entries_in_broker () {
 	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=ucs-sso --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,${lb}" || return 1
 	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=ucs-sso-ng --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,${lb}" || return 1
 	udm dns/host_record create --set a="${TRAEGER2_IP}" --set name=traeger2 --position zoneName="${UCS_ENV_TRAEGER2_DOMAIN},cn=dns,${lb}" || return 1
+    udm dns/host_record create --append a="${PRIMARY_IP}" --set name=kc --position zoneName="$(hostname -d),cn=dns,${lb}" || return 1
 }
 
 # add entry to ssh environment to pass variables via env
@@ -483,18 +483,23 @@ add_broker_ca_to_host_and_idconnector () {
 	update-ca-certificates
 }
 
+wait_for_keycloak () {
+	while [ ! "$(curl --location --write-out '%{http_code}' "localhost:8180$(ucr get keycloak/server/sso/path)" -o /dev/null 2> /dev/null)" -eq 200 ]; do
+		echo "Waiting for keycloak"
+		sleep 1
+	done
+}
+
 add_traeger_ca_to_id_broker () {
 	local traeger="${1:?missing traeger}"
 	local traeger_ip="${2:?missing traeger ip}"
 	curl -k "https://$traeger_ip/ucs-root-ca.crt" > /usr/local/share/ca-certificates/"$traeger".crt
 	update-ca-certificates
-	docker cp /usr/local/share/ca-certificates/"$traeger".crt keycloak:/"$traeger".crt
-	docker exec --user root keycloak keytool -keystore /opt/jboss/keycloak/standalone/configuration/truststore.jks -import -alias "$traeger" -file /"$traeger".crt -storepass "keycloak" -noprompt
-	docker restart keycloak
-	while [ ! "$(curl --write-out '%{http_code}' localhost:8080/auth/ -o /dev/null 2> /dev/null)" -eq 200 ]; do
-		echo "Waiting for keycloak"
-		sleep 1
-	done
+    mkdir -p /var/lib/univention-appcenter/apps/keycloak/conf/ca-certificates/
+    cp /usr/local/share/ca-certificates/"$traeger".crt /var/lib/univention-appcenter/apps/keycloak/conf/ca-certificates/"$traeger".pem
+    univention-app configure keycloak
+    wait_for_keycloak
+    run-parts /var/lib/univention-appcenter/apps/keycloak/local/hooks/post-install.d/
 }
 
 wait_for_sddb_provisioning () {
@@ -588,6 +593,43 @@ install_test_app () {
 	docker run -d -p 5000:5000 --name univention-test-app --env-file /etc/univention-test-app.conf -v /etc/univention/ssl/ucsCA/CAcert.pem:/CAcert.pem -e REQUESTS_CA_BUNDLE=/CAcert.pem --restart always artifacts.software-univention.de/id-broker/oidc/univention-test-app:latest
 	echo "ProxyPass /univention-test-app http://127.0.0.1:5000/univention-test-app retry=0" > /etc/apache2/ucs-sites.conf.d/univention-test-app.conf
 	systemctl reload apache2
+}
+
+apache_loadbalancer () {
+    cat << EOF > /etc/apache2/sites-available/loadbalancer_idbroker.conf
+<IfModule mod_ssl.c>
+<VirtualHost *:443>
+    ServerName kc.$(hostname -d)
+
+    SSLEngine on
+    SSLProxyEngine on
+    SSLCertificateFile /etc/univention/ssl/kc.$(hostname -d)/cert.pem
+    SSLCertificateKeyFile /etc/univention/ssl/kc.$(hostname -d)/private.key
+    SSLCACertificateFile /etc/univention/ssl/ucsCA/CAcert.pem
+
+    ProxyPreserveHost On
+    RequestHeader set X-Forwarded-Proto "https"
+    RequestHeader set X-Forwarded-Port "443"
+
+    <Proxy "balancer://mycluster">
+        BalancerMember http://kc1.$(hostname -d):8180
+        BalancerMember http://kc2.$(hostname -d):8180
+        ProxySet lbmethod=byrequests
+    </Proxy>
+    ProxyPass "/" "balancer://mycluster/"
+    ProxyPassReverse "/" "balancer://mycluster/"
+
+</VirtualHost>
+<VirtualHost *:80>
+   ServerName kc.$(hostname -d)
+   Redirect permanent / https://kc.$(hostname -d)/
+</VirtualHost>
+</IfModule>
+EOF
+
+    a2enmod lbmethod_byrequests
+    a2ensite loadbalancer_idbroker.conf
+    systemctl restart apache2
 }
 
 # vim:set filetype=sh ts=4:
