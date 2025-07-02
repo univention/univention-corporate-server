@@ -183,7 +183,7 @@ create_id_connector_school_authority_config () {
 		-H 'Content-Type:application/x-www-form-urlencoded' \
 		-d 'username=Administrator' \
 		-d "password=$domain_admin_password" |
-		python -c "import json, sys; print(json.loads(sys.stdin.read())['access_token'])")"
+		python3 -c "import json, sys; print(json.loads(sys.stdin.read())['access_token'])")"
 	curl -X POST "https://$(hostname -f)/ucsschool-id-connector/api/v1/school_authorities" \
 		-H 'accept: application/json' \
 		-H "Authorization: Bearer $token" \
@@ -215,37 +215,37 @@ create_school_users_classes () {
 
 	/usr/share/ucs-school-import/scripts/create_ou "$ou1"
 	/usr/share/ucs-school-import/scripts/create_ou "$ou2"
-	i=1; python -m ucsschool.lib.models create --name "stud${i}"  --set firstname "$traeger" --set lastname "Student${i}" --set password univention --school DEMOSCHOOL Student
-	i=1; python -m ucsschool.lib.models create --name "teach${i}" --set firstname "$traeger" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL Teacher
-	i=2; python -m ucsschool.lib.models create --name "stud${i}"  --set firstname "$traeger" --set lastname "Student${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Student
-	i=2; python -m ucsschool.lib.models create --name "teach${i}" --set firstname "$traeger" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Teacher
-	i=3; python -m ucsschool.lib.models create --name "stud${i}"  --set firstname "$traeger" --set lastname "Student${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Student
-	i=3; python -m ucsschool.lib.models create --name "teach${i}" --set firstname "$traeger" --set lastname "Teacher${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Teacher
-	python -m ucsschool.lib.models modify --dn "cn=DEMOSCHOOL-Democlass,cn=klassen,cn=schueler,cn=groups,ou=DEMOSCHOOL,${lb}" \
+	i=1; python3 -m ucsschool.lib.models create --name "stud${i}"  --set firstname "$traeger" --set lastname "Student${i}" --set password univention --school DEMOSCHOOL Student
+	i=1; python3 -m ucsschool.lib.models create --name "teach${i}" --set firstname "$traeger" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL Teacher
+	i=2; python3 -m ucsschool.lib.models create --name "stud${i}"  --set firstname "$traeger" --set lastname "Student${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Student
+	i=2; python3 -m ucsschool.lib.models create --name "teach${i}" --set firstname "$traeger" --set lastname "Teacher${i}" --set password univention --school DEMOSCHOOL --append schools DEMOSCHOOL --append schools "$ou1" Teacher
+	i=3; python3 -m ucsschool.lib.models create --name "stud${i}"  --set firstname "$traeger" --set lastname "Student${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Student
+	i=3; python3 -m ucsschool.lib.models create --name "teach${i}" --set firstname "$traeger" --set lastname "Teacher${i}" --set password univention --school "$ou1"     --append schools "$ou1"     --append schools "$ou2" Teacher
+	python3 -m ucsschool.lib.models modify --dn "cn=DEMOSCHOOL-Democlass,cn=klassen,cn=schueler,cn=groups,ou=DEMOSCHOOL,${lb}" \
 		--append users "uid=stud1,cn=schueler,cn=users,ou=DEMOSCHOOL,${lb}" \
 		--append users "uid=stud2,cn=schueler,cn=users,ou=DEMOSCHOOL,${lb}" \
 		--append users "uid=teach1,cn=lehrer,cn=users,ou=DEMOSCHOOL,${lb}" \
 		--append users "uid=teach2,cn=lehrer,cn=users,ou=DEMOSCHOOL,${lb}" SchoolClass
-	python -m ucsschool.lib.models create SchoolClass \
+	python3 -m ucsschool.lib.models create SchoolClass \
 		--name "${ou1}-1a" \
 		--school "$ou1" \
 		--append users "uid=stud2,cn=schueler,cn=users,ou=DEMOSCHOOL,${lb}" \
 		--append users "uid=stud3,cn=schueler,cn=users,ou=${ou1},${lb}" \
 		--append users "uid=teach2,cn=lehrer,cn=users,ou=DEMOSCHOOL,${lb}" \
 		--append users "uid=teach3,cn=lehrer,cn=users,ou=${ou1},${lb}"
-	python -m ucsschool.lib.models create SchoolClass \
+	python3 -m ucsschool.lib.models create SchoolClass \
 		--name "${ou2}-1a" \
 		--school "$ou2" \
 		--append users "uid=stud3,cn=schueler,cn=users,ou=${ou1},${lb}" \
 		--append users "uid=teach3,cn=lehrer,cn=users,ou=${ou1},${lb}"
-	python -m ucsschool.lib.models create Workgroup \
+	python3 -m ucsschool.lib.models create Workgroup \
 		--name "${ou1}-wg1" \
 		--school "$ou1" \
 		--append users "uid=stud2,cn=schueler,cn=users,ou=DEMOSCHOOL,${lb}" \
 		--append users "uid=stud3,cn=schueler,cn=users,ou=${ou1},${lb}" \
 		--append users "uid=teach2,cn=lehrer,cn=users,ou=DEMOSCHOOL,${lb}" \
 		--append users "uid=teach3,cn=lehrer,cn=users,ou=${ou1},${lb}"
-	python -m ucsschool.lib.models create Workgroup \
+	python3 -m ucsschool.lib.models create Workgroup \
 		--name "${ou2}-wg1" \
 		--school "$ou2" \
 		--append users "uid=stud3,cn=schueler,cn=users,ou=${ou1},${lb}" \
@@ -570,7 +570,7 @@ configure_self_disclosure () {
 	sddb_host="sddb.$(hostname -d)"
 	API_CONFIG="/etc/ucsschool/apis/id-broker/self-disclosure-api.json"
 	mkdir -p "$(dirname $API_CONFIG)"
-	python -c "
+	python3 -c "
 import json
 try:
   conf = json.load(open('$API_CONFIG'))
