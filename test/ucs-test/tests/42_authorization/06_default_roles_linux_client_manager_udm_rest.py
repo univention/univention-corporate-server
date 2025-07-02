@@ -79,11 +79,11 @@ def make_udm_rest_request(method, object_type, object_dn, username, body=None):
 def ou(ldap_base):
     return SimpleNamespace(
         dn=f'ou=ou1,{ldap_base}',
-        client_manager_username='ou1clientmanager',
-        client_manager_dn=f'uid=ou1clientmanager,cn=users,{ldap_base}',
+        client_manager_username='ou1-clientmanager',
+        client_manager_dn=f'uid=ou1-clientmanager,cn=users,{ldap_base}',
         computer_default_container=f'cn=computers,ou=ou1,{ldap_base}',
-        admin_username='ou1admin',
-        admin_dn=f'uid=ou1admin,cn=users,{ldap_base}',
+        admin_username='ou1-admin',
+        admin_dn=f'uid=ou1-admin,cn=users,{ldap_base}',
     )
 
 

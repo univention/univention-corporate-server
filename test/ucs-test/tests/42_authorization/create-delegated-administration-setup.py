@@ -78,7 +78,6 @@ else:
 # domain-user role for Domain Users group
 r = groups.search('name=Domain Users')
 group = next(iter(r))
-
 admin_role = 'udm:default-roles:domain-user'
 if admin_role not in group.props.guardianMemberRoles:
     group.props.guardianMemberRoles.append(admin_role)
@@ -87,7 +86,6 @@ if admin_role not in group.props.guardianMemberRoles:
 # domainadmins role for Domain Admins group
 r = groups.search('name=Domain Admins')
 group = next(iter(r))
-
 admin_role = 'udm:default-roles:domain-administrator'
 if admin_role not in group.props.guardianMemberRoles:
     group.props.guardianMemberRoles.append(admin_role)
@@ -105,161 +103,115 @@ else:
 number_of_ous = 10
 number_of_users = 10
 number_of_groups = 5
-for i in range(1, number_of_ous + 1):
 
-    # ou, users, groups and computer container
+
+def create_cn(name, position, **props):
+    cn = cns.new()
+    cn.position = position
+    cn.props.name = name
+    cn.props.__dict__.update(**props)
+    try:
+        cn.save()
+    except CreateError:
+        cn = cns.get(f'cn={name},{position}')
+    return cn
+
+
+def create_group(name, position, **props):
+    obj = groups.new()
+    obj.position = position
+    obj.props.name = name
+    obj.props.__dict__.update(**props)
+    try:
+        obj.save()
+    except CreateError:
+        obj = groups.get(f'cn={name},{position}')
+    return obj
+
+
+def create_user(name, position, policy=None, **props):
+    user = users.new()
+    try:
+        user = users.get(f'uid={name},{position}')
+    except NoObject:
+        user = users.new()
+    user.position = position
+    user.props.username = name
+    user.props.lastname = name
+    user.props.password = 'univention'
+    user.props.overridePWHistory = '1'
+    user.props.__dict__.update(**props)
+    if policy:
+        user.policies['policies/umc'].append(policy.dn)
+    user.save()
+    return user
+
+
+def create_ou_structure(position, ouname):
     ou = ous.new()
-    ou.position = ucr['ldap/base']
-    ou.props.name = f'ou{i}'
+    ou.position = position
+    ou.props.name = ouname
     try:
         ou.save()
     except CreateError:
-        pass
-
+        ou = ous.get(f'ou={ouname},{position}')
     # user container
-    cn = cns.new()
-    cn.position = f'ou=ou{i},{ldap_base}'
-    cn.props.name = 'users'
-    cn.props.userPath = "1"
-    try:
-        cn.save()
-    except CreateError:
-        pass
-
+    cn_users = create_cn('users', ou.dn, userPath='1')
     # groups conainer
-    cn = cns.new()
-    cn.position = f'ou=ou{i},{ldap_base}'
-    cn.props.name = 'groups'
-    cn.props.groupPath = "1"
-    try:
-        cn.save()
-    except CreateError:
-        pass
-
+    cn_groups = create_cn('groups', ou.dn, groupPath='1')
     # computers container
-    cn = cns.new()
-    cn.position = f'ou=ou{i},{ldap_base}'
-    cn.props.name = 'computers'
-    cn.props.computerPath = '1'
-    try:
-        cn.save()
-    except CreateError:
-        pass
-
-    # primary group for ou
-    group = groups.new()
-    group.position = f'cn=groups,ou=ou{i},{ldap_base}'
-    group.props.name = f"ou{i}-users"
-    try:
-        group.save()
-        print('create group ou?-users')
-    except CreateError:
-        pass
-
-    # computer group for ou
-    computer_group = groups.new()
-    computer_group.position = f'cn=groups,ou=ou{i},{ldap_base}'
-    computer_group.props.name = f"ou{i}-computers"
-    computer_group.props.description = f"Default group for computers in ou{i}"
-    try:
-        computer_group.save()
-        print(f'create computer group ou{i}-computers')
-    except CreateError:
-        pass
-
+    cn_computers = create_cn('computers', ou.dn, computerPath='1')
+    # primary user group for ou
+    primary_group = create_group(f'{ouname}-users', cn_groups.dn)
+    # primary computer group for ou
+    computers_group = create_group(f'{ouname}-computers', cn_computers.dn)
     # ou container with primary group setting
-    ou = ous.get(f'ou=ou{i},{ldap_base}')
     ou.options.append('group-settings')
-    ou.props.defaultGroup = f'cn=ou{i}-users,cn=groups,ou=ou{i},{ldap_base}'
-    ou.props.defaultClientGroup = f'cn=ou{i}-computers,cn=groups,ou=ou{i},{ldap_base}'
+    ou.props.defaultGroup = primary_group.dn
+    ou.props.defaultClientGroup = computers_group.dn
     ou.save()
 
     # ou admin
-    user = users.new()
-    name = f'ou{i}admin'
-    position = f'cn=users,{ldap_base}'
-    try:
-        user = users.get(f'uid={name},{position}')
-    except NoObject:
-        user = users.new()
-    user.position = f'cn=users,{ldap_base}'
-    user.props.username = f'ou{i}admin'
-    user.props.lastname = f'ou{i}admin'
-    user.props.password = 'univention'
-    user.props.overridePWHistory = '1'
-    user.props.guardianRoles = [f'udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=ou{i}']
-    user.policies['policies/umc'].append(policy.dn)
-    if user.props.groups:
-        user.props.groups.append(api_access_group.dn)
-    else:
-        user.props.groups = [api_access_group.dn]
-    user.save()
-
+    create_user(
+        f'{ouname}-admin',
+        f'cn=users,{ldap_base}',
+        policy=policy,
+        groups=[api_access_group.dn],
+        guardianRoles=[f'udm:default-roles:organizational-unit-admin&udm:contexts:position={ou.dn.rstrip(ldap_base)}'],
+    )
     # Helpdesk Operator (helpdesk-operator)
-    user = users.new()
-    name = f'ou{i}helpdesk-operator'
-    position = f'cn=users,{ldap_base}'
-    try:
-        user = users.get(f'uid={name},{position}')
-    except NoObject:
-        user = users.new()
-    user.position = f'cn=users,{ldap_base}'
-    user.props.username = f'ou{i}helpdesk-operator'
-    user.props.lastname = f'ou{i}helpdesk-operator'
-    user.props.password = 'univention'
-    user.props.overridePWHistory = '1'
-    user.props.guardianRoles = [f'udm:default-roles:helpdesk-operator&udm:contexts:position=ou=ou{i}']
-    user.policies['policies/umc'].append(policy.dn)
-    if user.props.groups:
-        user.props.groups.append(api_access_group.dn)
-    else:
-        user.props.groups = [api_access_group.dn]
-    user.save()
-
+    create_user(
+        f'{ouname}-helpdesk-operator',
+        f'cn=users,{ldap_base}',
+        policy=policy,
+        groups=[api_access_group.dn],
+        guardianRoles=[f'udm:default-roles:helpdesk-operator&udm:contexts:position={ou.dn.rstrip(ldap_base)}'],
+    )
     # linux client manager user
-    user = users.new()
-    name = f'ou{i}clientmanager'
-    position = f'cn=users,{ldap_base}'
-    try:
-        user = users.get(f'uid={name},{position}')
-    except NoObject:
-        user = users.new()
-    user.position = f'cn=users,{ldap_base}'
-    user.props.username = f'ou{i}clientmanager'
-    user.props.lastname = f'ou{i}clientmanager'
-    user.props.password = 'univention'
-    user.props.overridePWHistory = '1'
-    user.props.guardianRoles = [f'udm:default-roles:linux-ou-client-manager&udm:contexts:position=ou=ou{i}']
-    user.policies['policies/umc'].append(policy.dn)
-    if user.props.groups:
-        user.props.groups.append(api_access_group.dn)
-    else:
-        user.props.groups = [api_access_group.dn]
-    user.save()
+    create_user(
+        f'{ouname}-clientmanager',
+        f'cn=users,{ldap_base}',
+        policy=policy,
+        groups=[api_access_group.dn],
+        guardianRoles=[f'udm:default-roles:linux-ou-client-manager&udm:contexts:position={ou.dn.rstrip(ldap_base)}'],
+    )
 
     # user objects in ou
-    for j in range(1, number_of_users + 1):
-        position = f'cn=users,ou=ou{i},{ldap_base}'
-        name = f"user{j}-ou{i}"
-        user = users.new()
-        user.position = position
-        user.props.username = name
-        user.props.lastname = name
-        user.props.password = 'univention'
-        user.props.guardianRoles = ['umc:udm:dummyrole']
-        try:
-            user.save()
-            print(f'create user {name} in {position}')
-        except CreateError:
-            pass
+    user_dns = []
+    for i in range(1, number_of_users + 1):
+        user = create_user(f'user{i}-{ouname}', cn_users.dn, guardianRoles=['umc:udm:dummyrole'])
+        user_dns.append(user.dn)
+    # group objects
+    for i in range(1, number_of_groups + 1):
+        create_group(f'group{i}-{ouname}', cn_groups.dn, users=user_dns)
 
-    # group objects in ou
-    for j in range(1, number_of_users + 1):
-        group = groups.new()
-        group.position = f'cn=groups,ou=ou{i},{ldap_base}'
-        group.props.name = f"group{j}-ou{i}"
-        try:
-            group.save()
-            print(f'create group {name}')
-        except CreateError:
-            pass
+
+# create flat ou structure
+for i in range(1, number_of_ous + 1):
+    create_ou_structure(ldap_base, f'ou{i}')
+
+# create hierarchical ou structure
+create_ou_structure(ldap_base, 'bremen')
+create_ou_structure(f'ou=bremen,{ldap_base}', 'steintor')
+create_ou_structure(f'ou=steintor,ou=bremen,{ldap_base}', 'education')
+create_ou_structure(f'ou=education,ou=steintor,ou=bremen,{ldap_base}', 'hr')

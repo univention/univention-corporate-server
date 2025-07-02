@@ -40,8 +40,8 @@ OU1 = OUConfig(
     dn=f"ou=ou1,{LDAP_BASE}",
     users_dn=f"cn=users,ou=ou1,{LDAP_BASE}",
     groups_dn=f"cn=groups,ou=ou1,{LDAP_BASE}",
-    admin_username="ou1admin",
-    admin_dn=f"uid=ou1admin,{DEFAULT_USERS_CN_DN}",
+    admin_username="ou1-admin",
+    admin_dn=f"uid=ou1-admin,{DEFAULT_USERS_CN_DN}",
 )
 
 OU2 = OUConfig(
@@ -49,8 +49,8 @@ OU2 = OUConfig(
     dn=f"ou=ou2,{LDAP_BASE}",
     users_dn=f"cn=users,ou=ou2,{LDAP_BASE}",
     groups_dn=f"cn=groups,ou=ou2,{LDAP_BASE}",
-    admin_username="ou2admin",
-    admin_dn=f"uid=ou2admin,{DEFAULT_USERS_CN_DN}",
+    admin_username="ou2-admin",
+    admin_dn=f"uid=ou2-admin,{DEFAULT_USERS_CN_DN}",
 )
 
 

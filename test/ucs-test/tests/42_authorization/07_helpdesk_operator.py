@@ -42,14 +42,14 @@ def restart_umc():
 def ou(ldap_base):
     return SimpleNamespace(
         dn=f'ou=ou1,{ldap_base}',
-        admin_username='ou1admin',
-        admin_dn=f'uid=ou1admin,cn=users,{ldap_base}',
+        admin_username='ou1-admin',
+        admin_dn=f'uid=ou1-admin,cn=users,{ldap_base}',
         user_username='user1-ou1',
         user_dn=f'uid=user1-ou1,cn=users,ou=ou1,{ldap_base}',
         user_default_container=f'cn=users,ou=ou1,{ldap_base}',
         group_default_container=f'cn=groups,ou=ou1,{ldap_base}',
-        helpdesk_operator_username='ou1helpdesk-operator',
-        helpdesk_operator_dn=f'uid=ou1helpdesk-operator,cn=users,{ldap_base}',
+        helpdesk_operator_username='ou1-helpdesk-operator',
+        helpdesk_operator_dn=f'uid=ou1-helpdesk-operator,cn=users,{ldap_base}',
     )
 
 

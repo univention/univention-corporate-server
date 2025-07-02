@@ -211,9 +211,8 @@ def ou(ldap_base, udm):
     return SimpleNamespace(
         dn=f'ou=ou1,{ldap_base}',
         dn2=f'ou=ou2,{ldap_base}',
-        admin_username='ou1admin',
-        admin_dn=f'uid=ou1admin,cn=users,{ldap_base}',
-        admin_dn2=f'uid=ou2admin,cn=users,{ldap_base}',
+        admin_username='ou1-admin',
+        admin_dn=f'uid=ou1-admin,cn=users,{ldap_base}',
         user_username='user1-ou1',
         user_dn=f'uid=user1-ou1,cn=users,ou=ou1,{ldap_base}',
         user_default_container=f'cn=users,ou=ou1,{ldap_base}',
