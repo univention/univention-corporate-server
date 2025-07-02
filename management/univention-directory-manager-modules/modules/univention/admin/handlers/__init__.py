@@ -1856,7 +1856,9 @@ class simpleLdap:
             pass
 
         try:
-            default_containers = settings_directory.lookup(None, lo, '', required=True, authz=False)[0]
+            # no authz here, this is a "management" operation to get the settings object,
+            # we filter the defaut containers in the next step
+            default_containers = settings_directory.lookup(None, lo.authz_connection, '', required=True)[0]
         except (univention.admin.uexceptions.noObject, IndexError):
             return containers
 

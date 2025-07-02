@@ -93,22 +93,9 @@ access
     grant actions="search,read"
     grant properties="*" permission="read"
 
-  # due to UDM internas we must currently grant permissions for these objects
-  to objecttype="settings/cn"
-    grant actions="search,read"
-    grant properties="*" permission="read"
-
-  to objecttype="settings/default"
-    grant actions="search,read"
-    grant properties="*" permission="read"
-
 access
   by role="udm:default-roles:organizational-unit-admin" context="udm:contexts:position"
   by role="udm:default-roles:helpdesk-operator" context="udm:contexts:position"
-
-  to objecttype="settings/directory"
-    grant actions="search,read"
-    grant properties="*" permission="read"
 
   # for handling of users and groups we need to grant permissions on policies applying to them
   to objecttype="policies/desktop"
