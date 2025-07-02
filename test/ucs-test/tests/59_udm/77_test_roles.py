@@ -13,6 +13,7 @@ import pytest
 import requests
 
 from univention.admin import modules
+from univention.lib.misc import custom_groupname
 
 
 @pytest.fixture
@@ -21,7 +22,17 @@ def udm_rest_client_users(udm_rest_client):
 
 
 @pytest.fixture
-def user_with_roles(udm, random_string):
+def default_group_roles(udm, ucr, ldap_base, lo):
+    if ucr.is_true('directory/manager/web/delegative-administration/enabled', False):
+        primary_group = f'cn={custom_groupname("Domain Users", ucr)},cn=groups,{ldap_base}'
+        res = lo.get(primary_group, attr=['univentionGuardianMemberRoles'])
+        return [role.decode('UTF-8') for role in res.get('univentionGuardianMemberRoles', [])]
+    else:
+        return []
+
+
+@pytest.fixture
+def user_with_roles(udm, random_string, default_group_roles):
     role = random_string()
     g_roles = [f'app:group:{role}{i}' for i in range(3)]
     u_roles = [f'app:user:{role}{i}' for i in range(3)]
@@ -30,7 +41,7 @@ def user_with_roles(udm, random_string):
     return SimpleNamespace(
         dn=user_dn,
         username=username,
-        guardianInheritedRoles=g_roles,
+        guardianInheritedRoles=g_roles + default_group_roles,
         guardianRoles=u_roles,
     )
 
@@ -64,7 +75,7 @@ def REST_get(account, ucr):
 #     assert set(all_groups) == set(expected_groups)
 
 
-def test_CLI_roles_from_groups(udm, random_string):
+def test_CLI_roles_from_groups(udm, random_string, default_group_roles):
     role = random_string()
     roles1 = [f'app:ns1:{role}{i}' for i in range(3)]
     roles2 = [f'app:ns2:{role}{i}' for i in range(3)]
@@ -74,10 +85,10 @@ def test_CLI_roles_from_groups(udm, random_string):
     udm.create_group(users=user_dn, guardianMemberRoles=roles2)
     udm.create_group(users=user_dn, guardianMemberRoles=roles3)
     _dn, attr = udm.list_objects('users/user', filter=f'username={username}', properties=['*', 'guardianInheritedRoles'])[0]
-    assert set(roles1 + roles2 + roles3) == set(attr.get('guardianInheritedRoles', []))
+    assert set(roles1 + roles2 + roles3 + default_group_roles) == set(attr.get('guardianInheritedRoles', []))
 
 
-def test_CLI_list_roles(udm, user_with_roles):
+def test_CLI_list_roles(udm, user_with_roles, default_group_roles):
     # with guardianInheritedRoles
     _dn, attr = udm.list_objects('users/user', filter=f'username={user_with_roles.username}', properties=['*', 'guardianInheritedRoles'])[0]
     assert attr['username'] == [user_with_roles.username]
@@ -96,7 +107,7 @@ def test_CLI_list_roles(udm, user_with_roles):
 
 @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup')
 @pytest.mark.parametrize('opened', [True, False], ids=lambda d: f'opened={d}')
-def test_REST_search_with_guardianInheritedRoles(udm, udm_rest_client_users, random_string, opened):
+def test_REST_search_with_guardianInheritedRoles(udm, udm_rest_client_users, random_string, opened, default_group_roles):
     roles = ['qwe:asd:zxc', 'poi:lkj:mnb&rty:fgh:vbn', 'qwe:asd:mnbvcxz', 'poi:lkj:qwerty&rty:fgh:vbn']
     group_name = random_string()
     groups = [
@@ -109,15 +120,7 @@ def test_REST_search_with_guardianInheritedRoles(udm, udm_rest_client_users, ran
     for user in udm_rest_client_users.search('uid=%s' % user[1], opened=opened, properties=['*', 'guardianInheritedRoles']):
         if not opened:
             user = user.open()
-        gIR = user.properties.get('guardianInheritedRoles')
-        # check first if we got the guardianInheritedRoles
-        assert gIR
-        # Check for the existence of the InheritedRoles on the original list of roles
-        for inheritedRole in gIR:
-            assert inheritedRole in roles
-            roles.remove(inheritedRole)
-        # Check to ensure all roles are present in the user
-        assert not roles
+        assert set(user.properties.get('guardianInheritedRoles', [])) == set(roles + default_group_roles)
 
 
 @pytest.mark.roles('domaincontroller_master', 'domaincontroller_backup')
