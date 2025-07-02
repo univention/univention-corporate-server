@@ -25,7 +25,10 @@ def run(_umc_instance: Instance) -> None:
     if ucr.get('server/role') != 'domaincontroller_master':
         return
 
-    process = subprocess.Popen(['/usr/share/univention-ldap/univention-update-univention-object-identifier'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env={'LANG': 'C'})
+    process = subprocess.Popen(
+        ['/usr/share/univention-ldap/univention-update-univention-object-identifier', '--dry-run'],
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env={'LANG': 'C'},
+    )
     stdout, _stderr = process.communicate()
     stdout = stdout.decode('UTF-8', 'replace')
     if process.returncode == 2:
