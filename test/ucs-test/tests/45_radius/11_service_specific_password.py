@@ -12,7 +12,7 @@ import subprocess
 import ldap
 import pytest
 
-from univention.admin.rest.client import UDM, BadRequest
+from univention.admin.rest.client import UDM, UnprocessableEntity
 from univention.config_registry import handler_set as ucr_set
 
 
@@ -47,7 +47,7 @@ def test_udm_rest(ucr, udm_session, rad_user):
 
 def test_udm_rest_invalid_service(ucr, udm_session, rad_user):
     dn, _name, _password = rad_user
-    with pytest.raises(BadRequest):
+    with pytest.raises(UnprocessableEntity):
         request_new_password(ucr, dn, service="testtest")
 
 
