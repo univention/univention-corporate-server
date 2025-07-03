@@ -33,7 +33,7 @@ ansible_preperation () {
 	echo "EXTERNAL_ROOT_URL=https://$(hostname -f)/univention-test-app/" >> /etc/univention-test-app.conf
 	curl -k "https://ucs-sso.$traeger1_domain/simplesamlphp/saml2/idp/metadata.php" > files/jenkins/univention_id_broker/idp_metadata/traeger1-simple-saml_metadata.xml
 	curl -k "https://ucs-sso-ng.$traeger1_domain/realms/ucs/protocol/saml/descriptor" > files/jenkins/univention_id_broker/idp_metadata/traeger1-kc-saml_metadata.xml
-	curl -k "https://ucs-sso.$traeger2_domain/simplesamlphp/saml2/idp/metadata.php" > files/jenkins/univention_id_broker/idp_metadata/traeger2_metadata.xml
+    mv inventories/jenkins/group_vars/partner_provisioning_5.2.yml inventories/jenkins/group_vars/partner_provisioning.yml
 }
 
 create_certificate_kc_vhost () {
