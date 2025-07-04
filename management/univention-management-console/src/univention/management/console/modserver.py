@@ -316,6 +316,8 @@ class Handler(RequestHandler):
             # 'requester_ip': '',
             # 'requester_hostname': '',
         })
+        msg.roles = json.loads(self.request.headers.get('X-UMC-Roles', '[]'))
+        msg.federated_account = bool(self.request.headers.get('X-UMC-Federated-Account'))
         msg.username = username
         msg.user_dn = user_dn
         msg.password = password
@@ -348,9 +350,9 @@ class Handler(RequestHandler):
         if self.handler:
             last_request = self.handler._current_request
             if not last_request or last_request.user_dn != user_dn:
-                MODULE.process('Setting user LDAP DN: %r', user_dn)
+                MODULE.process('Setting user LDAP DN', dn=user_dn, username=username)
             if not last_request or last_request.auth_type != auth_type:
-                MODULE.process('Setting auth type: %r', auth_type)
+                MODULE.process('Setting auth type', auth_type=auth_type)
             self.handler._current_request = msg
 
         method = self.request.headers['X-UMC-Method']  # TODO: error handling if unset
