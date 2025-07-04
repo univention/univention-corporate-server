@@ -25,6 +25,7 @@ from tornado.httpclient import HTTPClientError, HTTPRequest
 
 from univention.management.console.config import ucr
 from univention.management.console.error import BadRequest, NotFound, OpenIDProvideUnavailable, UMC_Error, Unauthorized
+from univention.management.console.ldap import get_machine_connection
 from univention.management.console.log import CORE
 from univention.management.console.resource import Resource
 from univention.management.console.session import Session
@@ -32,17 +33,47 @@ from univention.management.console.session_db import DBDisabledException, get_se
 from univention.management.console.shared_memory import shared_memory
 
 
+def create_federated_account(uuid):
+    import ldap
+
+    from univention.admin import modules, objects
+    from univention.admin.uexceptions import noObject
+
+    lo, position = get_machine_connection(write=True)
+    ldap_base = ucr['ldap/base']
+    modules.update()
+    exts = modules.get('users/federated_account')
+    modules.init(lo, position, exts)
+    position_string = f'cn=federated_accounts,cn=univention,{ldap_base}'
+    try:
+        dn = f'univentionObjectIdentifier={ldap.dn.escape_dn_chars(uuid)},{position_string}'
+        ext = objects.get(exts, None, lo, position, dn=dn, authz=False)
+    except noObject:
+        position.setDn(position_string)
+        ext = exts.object(None, lo, position)
+        ext.open()
+        ext['univentionObjectIdentifier'] = uuid
+        ext.create()
+    CORE.process(f'federated account {ext.dn}')
+
+
 class OIDCUser:
     """OIDC tokens of the authenticated user."""
 
-    __slots__ = ('access_token', 'claims', 'id_token', 'refresh_token', 'session_refresh_future', 'username')
+    __slots__ = ('access_token', 'claims', 'federated_account', 'id_token', 'refresh_token', 'roles', 'session_refresh_future', 'username', 'uuid')
 
     def __init__(self, id_token, access_token, refresh_token, claims):
         self.id_token = id_token
         self.access_token = access_token
         self.refresh_token = refresh_token
         self.claims = claims
-        self.username = claims['uid']
+        self.roles = None
+        self.uuid = None
+        self.federated_account = False
+        if claims.get('nubus_federated_account', False):
+            self.federated_account = True
+        else:
+            self.username = claims['uid']
         self.session_refresh_future = None
 
     @property
@@ -137,22 +168,36 @@ class OIDCResource(OAuth2Mixin, Resource):
         CORE.log(1, 'Refresh token: %s', refresh_token)
         claims = self.verify_id_token(id_token, nonce)
         oidc = OIDCUser(id_token, access_token, refresh_token, claims)
+        if oidc.federated_account:
+            await self.handle_federated_account(oidc)
+            CORE.process(f'OIDC login federated user {oidc.uuid} with roles {oidc.roles}')
         await self.pam_oidc_authentication(oidc)
+
+    async def handle_federated_account(self, oidc):
+        info = await self.get_user_information(oidc.access_token)
+        oidc.uuid = info['nubus_id']
+        oidc.roles = info.get('nubus_roles', [])
+        oidc.username = info.get('preferred_username') or oidc.uuid
+        # FIXME: Where to create the federated account?
+        create_federated_account(oidc.uuid)
 
     async def pam_oidc_authentication(self, oidc):
         # important: must be called before the auth, to preserve session id in case of re-auth and that a user cannot choose his own session ID by providing a cookie
         sessionid = self.create_sessionid()
 
-        # TODO: drop in the future to gain performance
-        result = await self.current_user.authenticate({
-            'locale': self.locale.code,
-            'username': oidc.username,
-            'password': oidc.access_token,
-            'auth_type': 'OIDC',
-        })
-        if not self.current_user.user.authenticated:
-            CORE.error('SECURITY WARNING: PAM OIDC Authentication failed while JWT verification succeeded!')
-            raise UMC_Error(result.message, result.status, result.result)
+        if not oidc.federated_account:
+            # TODO: drop in the future to gain performance
+            result = await self.current_user.authenticate({
+                'locale': self.locale.code,
+                'username': oidc.username,
+                'password': oidc.access_token,
+                'auth_type': 'OIDC',
+            })
+            if not self.current_user.user.authenticated:
+                CORE.error('SECURITY WARNING: PAM OIDC Authentication failed while JWT verification succeeded!')
+                raise UMC_Error(result.message, result.status, result.result)
+        else:
+            self.current_user.set_credentials(oidc.username, oidc.access_token, 'OIDC', object_id=oidc.uuid, roles=oidc.roles, federated_account=oidc.federated_account)
 
         # as an alternative to PAM we could just set the user as authenticated because jwt.decode() already ensured this.
         # but we keep the behavior for now because this is what happened prior to the UMC-Web-Server and UMC-Sever unification
@@ -350,6 +395,9 @@ class OIDCResource(OAuth2Mixin, Resource):
         # TODO: do we need to re-authenticate?
         claims = self.verify_id_token(id_token, None)
         oidc = OIDCUser(id_token, access_token, refresh_token, claims)
+        if oidc.federated_account:
+            await self.handle_federated_account(oidc)
+            CORE.process(f'OIDC refresh session for external user {oidc.uuid} with roles {oidc.roles}')
         await self.pam_oidc_authentication(oidc)
 
     def _logout_success(self):

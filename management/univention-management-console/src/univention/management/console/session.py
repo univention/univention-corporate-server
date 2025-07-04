@@ -42,7 +42,7 @@ _session_timeout = ucr.get_int('umc/http/session/timeout', 300)
 class User:
     """Information about the authenticated user"""
 
-    __slots__ = ('_locale', 'auth_type', 'authenticated', 'ip', 'password', 'session_end_time', 'user_dn', 'username')
+    __slots__ = ('_locale', 'auth_type', 'authenticated', 'federated_account', 'ip', 'object_id', 'password', 'roles', 'session_end_time', 'user_dn', 'username')
 
     def __init__(self):
         self.ip = None
@@ -51,8 +51,11 @@ class User:
         self.password = None
         self.auth_type = None
         self.user_dn = None
+        self.object_id = None
         self.session_end_time = None
         self._locale = None  # don't use!
+        self.roles = None
+        self.federated_account = False
 
     def __repr__(self):
         return '<User(authenticated=%r name=%r ip=%r dn=%r auth_type=%r session_end_time=%r password="keep dreaming :-P")>' % (self.authenticated, self.username, self.ip, self.user_dn, self.auth_type, self.session_end_time)
@@ -139,10 +142,14 @@ class Session:
         pam.end()
         self.set_credentials(username, new_password, None)
 
-    def set_credentials(self, username, password, auth_type):
+    def set_credentials(self, username, password, auth_type, object_id=None, roles=None, federated_account=False):
         self.user.authenticated = True
         self.user.username = username
+        self.user.object_id = object_id
         self.user.auth_type = auth_type
+        self.user.federated_account = federated_account
+        if roles is not None:
+            self.user.roles = roles
         if self.user.auth_type is None:
             # important! there might be a password already. in case of SAML we must not set/overwrite the password.
             self.user.password = password
@@ -158,17 +165,24 @@ class Session:
 
     def _search_user_dn(self):
         lo = get_machine_connection(write=False)[0]
-        if lo and self.user.username:
+        if self.user.federated_account:
+            username = self.user.object_id
+            s_filter = filter_format('(&(univentionObjectIdentifier=%s)(objectClass=univentionFederatedAccount))', (self.user.object_id,))
+        else:
+            username = self.user.username
+            s_filter = filter_format('(&(uid=%s)(objectClass=person))', (username,))
+
+        if lo and username:
             # get the LDAP DN of the authorized user
             try:
-                ldap_dn = lo.searchDn(filter_format('(&(uid=%s)(objectClass=person))', (self.user.username,)))
+                ldap_dn = lo.searchDn(s_filter)
             except (ldap.LDAPError, udm_errors.base):
                 reset_ldap_connection_cache(lo)
                 ldap_dn = None
-                CORE.exception('Could not get uid for %r', self.user.username)
+                CORE.exception('Could not get uid for %r', username)
             if ldap_dn:
                 self.user.user_dn = ldap_dn[0]
-                CORE.info('The LDAP DN for user %s is %s', self.user.username, self.user.user_dn)
+                CORE.info('The LDAP DN for user %s is %s', username, self.user.user_dn)
 
         if not self.user.user_dn and self.user.username not in ('root', '__systemsetup__', None):
             CORE.error('The LDAP DN for user %s could not be found (lo=%r)', self.user.username, lo)
@@ -305,6 +319,10 @@ class IACLs:
             # We need to set empty ACL's for unauthenticated requests
             return ACLs()
         else:
+            if sess.user.federated_account:
+                # FIXME: return UMC_ACLS_FROM GUARDIAN
+                # return ROLES_ACLS(...)
+                pass
             return LDAP_ACLs(sess.user.username, sess.user.user_dn, ucr['ldap/base'])
 
     def is_command_allowed(self, command, options, flavor):

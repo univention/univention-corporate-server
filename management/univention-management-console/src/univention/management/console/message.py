@@ -147,6 +147,8 @@ class Request(Message):
         self.auth_type = None
         self.locale = None
         self._request_handler = None
+        self.roles = None
+        self.federated_account = False
 
     def require_password(self):
         if self.auth_type is not None:
@@ -165,13 +167,18 @@ class Request(Message):
             CORE.warning('Failed to open LDAP connection for user %s: %s', self.user_dn, exc)
 
     def bind_user_connection(self, lo):
-        CORE.process('LDAP bind for user %r.', self.user_dn)
+        CORE.process('LDAP bind for user %r on behalf of %r.' % (self.user_dn, self.username))
         try:
             if self.auth_type == 'OIDC':
                 lo.lo.bind_oauthbearer(None, self.password)
                 if not lo.lo.compare_dn(lo.binddn, self.user_dn):
                     CORE.warning('OIDC binddn does not match: %r != %r', lo.binddn, self.user_dn)
-                    self.user_dn = lo.binddn
+                    # FIXME: how to avoid this?
+                    if self.federated_account:
+                        CORE.warning('OIDC federated account, use session user DN as binddn and actor dn')
+                        lo.lo.binddn = self.user_dn
+                    else:
+                        self.user_dn = lo.binddn
             elif self.auth_type == 'SAML':
                 lo.lo.bind_saml(self.password)
                 if not lo.lo.compare_dn(lo.binddn, self.user_dn):

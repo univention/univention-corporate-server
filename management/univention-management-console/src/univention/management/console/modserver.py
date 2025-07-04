@@ -316,6 +316,10 @@ class Handler(RequestHandler):
             # 'requester_ip': '',
             # 'requester_hostname': '',
         })
+        if self.request.headers.get('X-UMC-Roles'):
+            msg.roles = json.loads(self.request.headers['X-UMC-Roles'])
+        if self.request.headers.get('X-UMC-Federated-Account'):
+            msg.federated_account = True
         msg.username = username
         msg.user_dn = user_dn
         msg.password = password
@@ -348,7 +352,7 @@ class Handler(RequestHandler):
         if self.handler:
             last_request = self.handler._current_request
             if not last_request or last_request.user_dn != user_dn:
-                MODULE.process('Setting user LDAP DN: %r', user_dn)
+                MODULE.process('Setting user LDAP DN: %r on behalf of %r', user_dn, username)
             if not last_request or last_request.auth_type != auth_type:
                 MODULE.process('Setting auth type: %r', auth_type)
             self.handler._current_request = msg
