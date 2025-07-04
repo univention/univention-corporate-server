@@ -1,0 +1,107 @@
+[
+  {
+    "external-group-name": "/nubus_manager_all",
+    "internal-group-name": "master_nubus_manager_all",
+    "internal-group-nubus-roles": "udm:default-roles:domain-administrator"
+  },
+  {
+    "external-group-name": "/nubus_manager_ou1",
+    "internal-group-name": "master_nubus_manager_ou1",
+    "internal-group-nubus-roles": "udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=ou1,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_manager_ou2",
+    "internal-group-name": "master_nubus_manager_ou2",
+    "internal-group-nubus-roles": "udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=ou2,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_manager_ou3",
+    "internal-group-name": "master_nubus_manager_ou3",
+    "internal-group-nubus-roles": "udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=ou3,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_manager_ou4",
+    "internal-group-name": "master_nubus_manager_ou4",
+    "internal-group-nubus-roles": "udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=ou4,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_manager_ou5",
+    "internal-group-name": "master_nubus_manager_ou5",
+    "internal-group-nubus-roles": "udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=ou5,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_manager_ou6",
+    "internal-group-name": "master_nubus_manager_ou6",
+    "internal-group-nubus-roles": "udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=ou6,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_manager_ou7",
+    "internal-group-name": "master_nubus_manager_ou7",
+    "internal-group-nubus-roles": "udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=ou7,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_manager_ou8",
+    "internal-group-name": "master_nubus_manager_ou8",
+    "internal-group-nubus-roles": "udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=ou8,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_manager_ou9",
+    "internal-group-name": "master_nubus_manager_ou9",
+    "internal-group-nubus-roles": "udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=ou9,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_manager_ou10",
+    "internal-group-name": "master_nubus_manager_ou10",
+    "internal-group-nubus-roles": "udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=ou10,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_helpdesk_ou1",
+    "internal-group-name": "master_nubus_helpdesk_ou1",
+    "internal-group-nubus-roles": "udm:default-roles:helpdesk-operator&udm:contexts:position=ou=ou1,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_helpdesk_ou2",
+    "internal-group-name": "master_nubus_helpdesk_ou2",
+    "internal-group-nubus-roles": "udm:default-roles:helpdesk-operator&udm:contexts:position=ou=ou2,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_helpdesk_ou3",
+    "internal-group-name": "master_nubus_helpdesk_ou3",
+    "internal-group-nubus-roles": "udm:default-roles:helpdesk-operator&udm:contexts:position=ou=ou3,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_helpdesk_ou4",
+    "internal-group-name": "master_nubus_helpdesk_ou4",
+    "internal-group-nubus-roles": "udm:default-roles:helpdesk-operator&udm:contexts:position=ou=ou4,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_helpdesk_ou5",
+    "internal-group-name": "master_nubus_helpdesk_ou5",
+    "internal-group-nubus-roles": "udm:default-roles:helpdesk-operator&udm:contexts:position=ou=ou5,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_helpdesk_ou6",
+    "internal-group-name": "master_nubus_helpdesk_ou6",
+    "internal-group-nubus-roles": "udm:default-roles:helpdesk-operator&udm:contexts:position=ou=ou6,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_helpdesk_ou7",
+    "internal-group-name": "master_nubus_helpdesk_ou7",
+    "internal-group-nubus-roles": "udm:default-roles:helpdesk-operator&udm:contexts:position=ou=ou7,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_helpdesk_ou8",
+    "internal-group-name": "master_nubus_helpdesk_ou8",
+    "internal-group-nubus-roles": "udm:default-roles:helpdesk-operator&udm:contexts:position=ou=ou8,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_helpdesk_ou9",
+    "internal-group-name": "master_nubus_helpdesk_ou9",
+    "internal-group-nubus-roles": "udm:default-roles:helpdesk-operator&udm:contexts:position=ou=ou9,dc=ucs,dc=test"
+  },
+  {
+    "external-group-name": "/nubus_helpdesk_ou10",
+    "internal-group-name": "master_nubus_helpdesk_ou10",
+    "internal-group-nubus-roles": "udm:default-roles:helpdesk-operator&udm:contexts:position=ou=ou10,dc=ucs,dc=test"
+  }
+]

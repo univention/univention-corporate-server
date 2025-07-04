@@ -1,0 +1,33 @@
+# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# Configuration for the Keycloak mapping tool.
+
+#
+# Username and password of the Keycloak account
+# which creates the objects
+#
+username: Administrator
+password: univention
+
+#
+# Keycloak server URI
+# Defaults to Univention config registry entry 'ucs/server/sso/uri'
+#
+# server_url: null
+
+#
+# The realm in which the objects will be created.
+#
+realm_name: ucs
+
+#
+# The realm of the user
+#
+user_realm: master
+
+#
+# The alias of the IDP client in which
+# the mapping will be created.
+#
+idp_alias: oidc
