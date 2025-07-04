@@ -1,3 +1,9 @@
+univention-management-console (14.3.3) unstable; urgency=medium
+
+  * Bug #58652: federated account for OIDC auth
+
+ -- Felix Botner <botner@univention.de>  Mon, 29 Sep 2025 12:13:42 +0200
+
 univention-management-console (14.3.2) unstable; urgency=medium
 
   * Bug #58644: make logging compatible to structured logging

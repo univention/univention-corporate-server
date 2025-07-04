@@ -147,6 +147,8 @@ class Request(Message):
         self.auth_type = None
         self.locale = None
         self._request_handler = None
+        self.roles = None
+        self.federated_account = False
 
     def require_password(self):
         if self.auth_type is not None:
@@ -165,7 +167,7 @@ class Request(Message):
             CORE.warning('Failed to open LDAP connection for user %s: %s', self.user_dn, exc)
 
     def bind_user_connection(self, lo):
-        CORE.process('LDAP bind for user %r.', self.user_dn)
+        CORE.process('LDAP bind', dn=self.user_dn, username=self.username)
         try:
             if self.auth_type == 'OIDC':
                 lo.lo.bind_oauthbearer(None, self.password)
