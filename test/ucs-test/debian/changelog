@@ -1,3 +1,9 @@
+ucs-test (12.3.14) unstable; urgency=medium
+
+  * Bug #58652: test setup for external management domain
+
+ -- Felix Botner <botner@univention.de>  Mon, 29 Sep 2025 12:18:03 +0200
+
 ucs-test (12.3.13) unstable; urgency=low
 
   * Bug #58634: deactivate test case in 90_test_diagnostic_modules_srv_record_references

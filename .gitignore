@@ -30,3 +30,6 @@ generated-config-*.yml
 COMMAND_SUCCESS
 test/*.log
 test/screenshots/
+.vscode/
+.env
+!.env.example
