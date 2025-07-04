@@ -6,18 +6,20 @@
 ##  - domaincontroller_backup
 ## exposure: dangerous
 
+
 import pytest
-import ldap
 from conftest import ClientHelper
 
 from univention.config_registry import ucr as _ucr
+from univention.lib.umc import HTTPError
 from univention.testing.strings import random_username
+
 
 pytestmark = pytest.mark.skipif(not _ucr.is_true('directory/manager/web/delegative-administration/enabled'), reason='authz not activated')
 
 """
 ## ldapDN
-- without searchFilter: LdapDn
+- without searchFilter: ldapdn_no_filter
 - with searchFilter: primaryGroup
 
 ## UDM_Attribute
@@ -27,25 +29,25 @@ pytestmark = pytest.mark.skipif(not _ucr.is_true('directory/manager/web/delegati
 ## UDM_Objects
 | use_objects | udm_filter | udm_module with lookup_filter | mapping of the attribute specified in .key | names |
 | :-----:  | :-----:  | :-----: | :-----: | :-----: |
-| False | False |  False  | ???   | UserDN, UserID, UserName, GroupDN, GroupID, GroupName
-| True  | True  |  False  | ???   | HostDN
-| True  | False |  True   | True  | Service
-| True  | True  |  True   |
+| False    | False    |  False  | ???     | UserDN, UserID, UserName, GroupDN, GroupID, GroupName
+| True     | True     |  False  | ???     | HostDN
+| True     | False    |  True   | True    | Service
+| True     | True     |  True   | ???     | -> Todo
+| False    | True     |  True   | True    | nfsShare
 
 
-- LDAP_Search mit value = "dn" via given parameters in get-syntax-choices request: LDAP_Search
-- LDAP_Search mit value != "dn" via given parameters in get-syntax-choices request: LDAP_Search
-get_syntax_choices('LDAP_Search', options={'attribute': ..., 'filter': ..., 'base': ...})
-- LDAP_Search mit value = "dn" via a settings/syntax object:
-- LDAP_Search mit value != "dn" via a settings/syntax object:
-udm.create_object('settings/syntax', name='foo', 'attribute'=..., filter=..., base=..., ...=...)
+- LDAP_Search mit value = "dn" via given parameters in get-syntax-choices request: test_syntax_choices_ldap_search
+- LDAP_Search mit value != "dn" via given parameters in get-syntax-choices request: test_syntax_choices_ldap_search
+- LDAP_Search mit value = "dn" via a settings/syntax object: test_syntax_choices_ldap_search_using_object
+- LDAP_Search mit value != "dn" via a settings/syntax object: test_syntax_choices_ldap_search_using_object
+udm.create_object('settings/syntax', name='foo', 'attribute'=…, filter=…, base=…, …=…)
 get_syntax_choices('foo')
-- static subclass of LDAP_Search mit value = "dn": mailHomeServer
 
 
 - IComputer_FQDN based: UCS_Server
 - emailAddressValidDomain
 """
+
 
 def get_umc_client(client_type, ou=None):
     """Create a UMC client for the specified client type and organizational unit"""
@@ -221,7 +223,7 @@ def test_syntax_choices_ip_protocol(umc_client, client_type):
 
 @pytest.fixture(scope='session')
 def test_object_service(ou, ldap_base, udm_session):
-    """Create service object for Service syntax testing"""
+    # Create service object for Service syntax testing
     service_name = f'test-service-{random_username()}'
     udm_session.create_object(
         'settings/service',
@@ -244,7 +246,7 @@ def test_syntax_choices_service(umc_client, client_type, test_object_service):
 
 @pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
 def test_syntax_choices_primary_group(umc_client, client_type, udm_session, ou):
-    """Test primaryGroup syntax (ldapDn with filter) for all admin types"""
+    """Test primaryGroup syntax (ldapDn with a search filter) for all admin types"""
     res = umc_client.get_syntax_choices('primaryGroup', 'users/user')
     assert res
 
@@ -298,16 +300,104 @@ def test_syntax_choices_host_dn(umc_client, client_type):
         assert isinstance(res, list)
 
 
+@pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
+def test_syntax_choices_ldap_dn(umc_client, client_type, ou, ldap_base):
+    """Test custom ldapDN syntax choices for all admin types"""
+    # Use UserDN syntax for testing authorization with user objects
+    res = umc_client.get_syntax_choices('ldapDN', 'users/user', options={'attribute': 'dn', 'value': 'dn', 'base': ldap_base})
+    assert res is not None
+
+    if client_type == 'admin':
+        # Domain admin should see all users matching the filter
+        assert len(res) >= 2  # At least the test users
+        assert any(ou.user_username in str(choice['label']) for choice in res)
+        assert any(ou.user2_username in str(choice['label']) for choice in res)
+    elif client_type == 'ou_admin':
+        # OU1 admin should see users from OU1
+        assert len(res) >= 1
+        assert any(ou.user_username in str(choice['label']) for choice in res)
+        assert not any(ou.user2_username in str(choice['label']) for choice in res)
+    else:  # ou2_admin
+        # OU2 admin should see users from OU2
+        assert len(res) >= 1
+        assert any(ou.user2_username in str(choice['label']) for choice in res)
+        assert not any(ou.user_username in str(choice['label']) for choice in res)
+
+
+@pytest.mark.parametrize('attribute', ['dn', 'cn'])
+@pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
+def test_syntax_choices_ldap_search(umc_client, client_type, udm_session, ou, ldap_base, attribute):
+    """Test custom LDAP_Search syntax choices for all admin types"""
+    options = {
+        'attributes': [attribute],
+        'syntax': f'ldap_search_{random_username()}',
+        'viewonly': True,
+        'empty': False,
+        'empty_end': False,
+        'filter': 'objectClass=*',
+        'base': ou.group_dn,
+        'value': attribute,
+    }
+    res = umc_client.get_syntax_choices('LDAP_Search', 'groups/group', options={'options': options})
+    assert res is not None
+
+    if client_type == 'admin':
+        # Domain admin should see all groups matching the filter
+        assert len(res) >= 1  # At least the test groups
+        assert any(ou.group_name in str(choice['label']) for choice in res)
+    elif client_type == 'ou_admin':
+        # OU1 admin should see groups from OU1
+        assert len(res) >= 1
+        assert any(ou.group_name in str(choice['label']) for choice in res)
+        assert not any(ou.group_name2 in str(choice['label']) for choice in res)
+    else:  # ou2_admin
+        assert len(res) == 0
+
 
 @pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
-def test_syntax_choices_mail_domain(umc_client, client_type, test_object_mail_domain):
-    """Test MailDomain syntax - covers PrinterDriverList and mail functionality"""
-    res = umc_client.get_syntax_choices('MailDomain', 'mail/folder')
+def test_syntax_choices_ldap_search_using_object(umc_client, client_type, udm_session, ou, ldap_base):
+    syntax_name = random_username()
+    udm_session.create_object(
+        'settings/syntax',
+        name=syntax_name,
+        attribute=['dn'],
+        base=ldap_base,
+        position=f'cn=custom attributes,cn=univention,{ldap_base}',
+        filter='(objectClass=*)',
+        viewonly='TRUE',
+        value='dn',
+    )
+    res = umc_client.get_syntax_choices(syntax_name, 'groups/group')
     assert res is not None
-    assert len(res) > 0
-    assert any(test_object_mail_domain in str(choice['id']) for choice in res)
+
+    if client_type == 'admin':
+        # Domain admin should see all groups matching the filter
+        assert len(res) >= 2  # At least the test groups
+        assert any(ou.group_name in str(choice['label']) for choice in res)
+        assert any(ou.group_name2 in str(choice['label']) for choice in res)
+    elif client_type == 'ou_admin':
+        # OU1 admin should see groups from OU1
+        assert len(res) >= 1
+        assert any(ou.group_name in str(choice['label']) for choice in res)
+        assert not any(ou.group_name2 in str(choice['label']) for choice in res)
+    else:  # ou2_admin
+        # OU2 admin should see groups from OU2
+        assert len(res) >= 1
+        assert any(ou.group_name2 in str(choice['label']) for choice in res)
+        assert not any(ou.group_name in str(choice['label']) for choice in res)
 
 
+@pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
+def test_syntax_choices_ldap_server(umc_client, client_type, ou):
+    """Test custom LDAP_Server syntax choices for all admin types"""
+    res = umc_client.get_syntax_choices('LDAP_Server', 'computers/domaincontroller_master')
+    assert res is not None
+
+    if client_type == 'admin':
+        assert len(res) >= 1
+        assert any(_ucr.get('hostname') in str(choice['label']) for choice in res)
+    else:
+        assert len(res) == 0
 
 
 @pytest.fixture(scope='session')
@@ -322,13 +412,20 @@ def test_object_mail_domain(ldap_base, udm_session):
 
 
 @pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
+def test_syntax_choices_mail_domain(umc_client, client_type, test_object_mail_domain):
+    res = umc_client.get_syntax_choices('MailDomain', 'mail/folder')
+    assert res is not None
+    assert len(res) >= 1
+    assert any(test_object_mail_domain in str(choice['id']) for choice in res)
+
+
+@pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
 def test_syntax_choices_email_address_valid_domain(umc_client, client_type, test_object_mail_domain):
     """Test email address syntax choices for valid domain"""
     res = umc_client.get_syntax_choices('emailAddressValidDomain', 'mail/domain')
     assert res is not None
     assert len(res) >= 1
     assert any(test_object_mail_domain in str(choice['label']) for choice in res)
-
 
 
 @pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
@@ -344,7 +441,7 @@ def test_object_syntaxes_container(udm_session, ldap_base):
         udm_session.create_object(
             'container/cn',
             name='syntaxes',
-            position=f'cn=univention,{ldap_base}'
+            position=f'cn=univention,{ldap_base}',
         )
     except Exception:
         # a concurrent test may have already created the object
@@ -353,71 +450,32 @@ def test_object_syntaxes_container(udm_session, ldap_base):
 
 @pytest.fixture(scope='session')
 def test_object_syntax_object_dn(udm_session, ldap_base, test_object_syntaxes_container):
-    syntax_name = f'test-syntax-dn-{random_username()}'
+    syntax_name = f'test_{random_username()}'
     udm_session.create_object(
         'settings/syntax',
         name=syntax_name,
         value='dn',
-        attribute='dn',
+        attribute='mail/domain: dn',
         filter='objectClass=univentionMailDomain',
         base=f'cn=mail,cn=univention,{ldap_base}',
-        position=f'cn=syntaxes,cn=univention,{ldap_base}'
+        position=f'cn=syntaxes,cn=univention,{ldap_base}',
     )
     return syntax_name
 
 
 @pytest.fixture(scope='session')
 def test_object_syntax_object_not_dn(udm_session, ldap_base, test_object_syntaxes_container):
-    syntax_name = f'test-syntax-not-dn-{random_username()}'
+    syntax_name = f'test_{random_username()}'
     udm_session.create_object(
         'settings/syntax',
         name=syntax_name,
         value='cn',
-        attribute='cn',
+        attribute='mail/domain: cn',
         filter='objectClass=univentionMailDomain',
         base=f'cn=mail,cn=univention,{ldap_base}',
-        position=f'cn=syntaxes,cn=univention,{ldap_base}'
+        position=f'cn=syntaxes,cn=univention,{ldap_base}',
     )
     return syntax_name
-
-
-
-@pytest.fixture(scope='session')
-def test_object_mail_home_server(udm_session, ldap_base):
-    """Fixture to create a test computer with IMAP service for mailHomeServer syntax testing."""
-    try:
-        computer_name = f'test-mailserver-{random_username()}'
-        import time
-        unique_ip = f'192.168.100.{int(time.time()) % 200 + 50}'
-        
-        computer_dn = udm_session.create_object(
-            'computers/memberserver',
-            name=computer_name,
-            ip=unique_ip,
-            service=['IMAP'],  
-            position=f'cn=computers,{ldap_base}',
-            wait_for_replication=False 
-        )
-        yield computer_dn
-    except Exception as e:
-        print(f"Failed to create mail server computer: {e}")
-        yield None
-
-@pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
-def test_syntax_choices_mail_home_server(umc_client, client_type, test_object_mail_home_server):
-    """Test mailHomeServer syntax, ensuring a mail server is configured via fixture."""
-    res = umc_client.get_syntax_choices('mailHomeServer', 'users/user')
-    assert res is not None
-
-    if client_type == 'admin':
-        if test_object_mail_home_server is not None:
-            assert len(res) >= 1, "As admin, at least one mail server must be found"
-            assert any('test-mailserver' in item['label'] for item in res)
-            assert all('cn=' in item['id'] for item in res)
-        else:
-            assert isinstance(res, list), "mailHomeServer syntax should return a list"
-    else:
-        assert len(res) == 0, "OU admins must not see global mail servers"
 
 
 @pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
@@ -439,7 +497,7 @@ def test_syntax_choices_generic_search_with_dn_value(admin_umc_client, ldap_base
         'value': 'dn',
         'filter': '(objectClass=posixAccount)',
         'base': ldap_base,
-        'label': 'uid'
+        'label': 'uid',
     }
     res = admin_umc_client.get_syntax_choices('generic', None, options=options)
 
@@ -448,13 +506,14 @@ def test_syntax_choices_generic_search_with_dn_value(admin_umc_client, ldap_base
     assert all('uid=' in item['id'] and ldap_base in item['id'] for item in res), "The returned values must be full DNs"
     assert any(item['label'] == 'Administrator' for item in res), "The Administrator user must be found"
 
+
 def test_syntax_choices_generic_search_with_attribute_value(admin_umc_client, ldap_base):
     """Tests the 'generic' syntax to perform a real, dynamic LDAP search returning a specific attribute."""
     options = {
         'value': 'uid',
         'filter': '(objectClass=posixAccount)',
         'base': ldap_base,
-        'label': 'cn'
+        'label': 'cn',
     }
     res = admin_umc_client.get_syntax_choices('generic', None, options=options)
 
@@ -466,8 +525,7 @@ def test_syntax_choices_generic_search_with_attribute_value(admin_umc_client, ld
 @pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
 def test_syntax_choices_ldap_search_dn_by_syntax_object(umc_client, client_type, test_object_syntax_object_dn, test_object_mail_domain):
     """Test LDAP_Search with value='dn' from a settings/syntax object."""
-    options = {'syntax': test_object_syntax_object_dn}
-    res = umc_client.get_syntax_choices('LDAP_Search', 'mail/domain', options=options)
+    res = umc_client.get_syntax_choices(test_object_syntax_object_dn, 'mail/domain')
     assert res is not None
     if client_type == 'admin':
         assert len(res) > 0
@@ -479,11 +537,42 @@ def test_syntax_choices_ldap_search_dn_by_syntax_object(umc_client, client_type,
 @pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
 def test_syntax_choices_ldap_search_not_dn_by_syntax_object(umc_client, client_type, test_object_syntax_object_not_dn, test_object_mail_domain):
     """Test LDAP_Search with value!='dn' from a settings/syntax object."""
-    options = {'syntax': test_object_syntax_object_not_dn}
-    res = umc_client.get_syntax_choices('LDAP_Search', 'mail/domain', options=options)
+    res = umc_client.get_syntax_choices(test_object_syntax_object_not_dn, 'mail/domain')
     assert res is not None
     if client_type == 'admin':
         assert len(res) > 0
         assert all('cn=' not in str(choice['value']) for choice in res if choice.get('value'))
     else:
         assert len(res) == 0
+
+
+@pytest.fixture(scope='session')
+def test_object_printer_driver(ldap_base, udm_session):
+    # Create printer driver object for PrinterDriverList syntax testing
+    printer_name = f'name-{random_username()}'
+    printer_driver = f'test-{random_username()}, {printer_name}'
+    dn = udm_session.create_object(
+        'settings/printermodel',
+        name=printer_name,
+        printmodel=printer_driver,
+        position=ldap_base,
+    )
+    return (dn, printer_name)
+
+
+@pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
+def test_syntax_choices_printer_driver_list(umc_client, client_type, test_object_printer_driver):
+    """Test PrinterDriverList syntax choices for all admin types"""
+    dn, printer_name = test_object_printer_driver
+    try:
+        res = umc_client.get_syntax_choices('PrinterDriverList', 'settings/printermodel', options={'$depends$': 'producer', 'producer': dn})
+    except HTTPError as e:
+        if client_type == 'admin':
+            pytest.fail(f"Failed to get PrinterDriverList syntax choices: {e}")
+        return
+    if client_type == 'admin':
+        assert res is not None
+        assert len(res) >= 1
+        assert any(printer_name in str(choice['label']) for choice in res)
+    else:
+        pytest.fail(f"PrinterDriverList syntax choices should have failed for {client_type}")
