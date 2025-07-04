@@ -487,11 +487,15 @@ update_check_package_status () {
 
 # check if apps are available
 # Disable at this point all installed apps 5.1 should be also available in 5.2
-disabled_blocking_apps () {
-	local var="update$VERSION/ignore_blocking_apps"
-	ignore_check "$var" && return 100
-	[ -f /var/univention-join/joined ] || return 0
-	univention-app update-check --ucs-version "${VERSION_NAME}"
+# https://forge.univention.org/bugzilla/show_bug.cgi?id=58240
+update_check_blocking_apps () {
+	if [ "${version_version}" == "5.0" ]
+	then
+		local var="update$VERSION/ignore_blocking_apps"
+		ignore_check "$var" && return 100
+		[ -f /var/univention-join/joined ] || return 0
+		univention-app update-check --ucs-version "${VERSION_NAME}"
+	fi
 }
 
 
