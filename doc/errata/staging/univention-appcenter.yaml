@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [2]
+scope: ucs_5.2-0-errata5.2-2
+src: univention-appcenter
+fix: 11.2.0
+desc: |
+ This update addresses the following issues:
+ * Fix the path directory were the appcenter store the cache for the next
+   release during an upgrade.
+bug: [58240]

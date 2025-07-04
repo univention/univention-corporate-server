@@ -9,6 +9,7 @@
 # SPDX-FileCopyrightText: 2021-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+import os
 from argparse import Action
 from tempfile import TemporaryDirectory
 
@@ -94,7 +95,7 @@ class UpdateCheck(UniventionAppAction):
 
         # get apps in next version
         with TemporaryDirectory() as tempdir:
-            update.call(ucs_version=next_minor, cache_dir=tempdir, just_get_cache=True)
+            update.call(ucs_version=next_minor, cache_dir=os.path.join(tempdir, next_minor), just_get_cache=True)
             next_cache = AppCenterCache.build(ucs_versions=[next_minor], server=default_server(), locale='en', cache_dir=tempdir)
             next_apps = next_cache.get_every_single_app()
 
