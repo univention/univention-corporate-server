@@ -560,6 +560,25 @@ class UCSHttpServer(_UCSServer):
             UCSHttpServer.password_manager.add_password(realm=None, uri=uri, user=self.baseurl.username, passwd=self.baseurl.password)
         req = urllib.request.Request(uri)  # noqa: S310
 
+        # Add preemptive authentication for JFrog Artifactory compatibility
+        has_credentials = False
+        # Try to get credentials from password manager first
+        username_pm, password_pm = UCSHttpServer.password_manager.find_user_password(None, uri)
+
+        credentials_to_use = None
+        if username_pm and password_pm:
+            credentials_to_use = f"{username_pm}:{password_pm}"
+            self.log.debug('Using credentials from password manager for %s', uri)
+        elif self.baseurl.username and self.baseurl.password:
+            credentials_to_use = f"{self.baseurl.username}:{self.baseurl.password}"
+            self.log.debug('Using credentials from baseurl for %s', uri)
+
+        if credentials_to_use:
+            has_credentials = True
+            # Use ISO8859-1 encoding as per HTTP Basic Auth standard
+            encoded_creds = base64.b64encode(credentials_to_use.encode('ISO8859-1')).decode('ASCII')
+            req.add_header("Authorization", f"Basic {encoded_creds}")
+
         def get_host() -> str:
             return req.host
 
@@ -618,6 +637,12 @@ class UCSHttpServer(_UCSServer):
             self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), res, exc_info=True)
             if res.code == httplib.UNAUTHORIZED:  # 401
                 raise ConfigurationError(uri, 'credentials not accepted')
+            if res.code == httplib.FORBIDDEN:  # 403
+                # JFrog Artifactory may return 403 instead of 401 for authentication failures
+                if has_credentials:
+                    raise ConfigurationError(uri, 'authentication failed (forbidden)')
+                else:
+                    raise ConfigurationError(uri, 'access forbidden')
             if res.code == httplib.PROXY_AUTHENTICATION_REQUIRED:  # 407
                 raise ProxyError(uri, 'credentials not accepted')
             if res.code in (httplib.BAD_GATEWAY, httplib.GATEWAY_TIMEOUT):  # 502 504

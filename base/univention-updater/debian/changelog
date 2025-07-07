@@ -1,3 +1,9 @@
+univention-updater (17.2.5) unstable; urgency=medium
+
+  * Bug #58371: Add preemptive authentication for JFrog Artifactory compatibility
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Mon, 07 Jul 2025 09:32:34 +0200
+
 univention-updater (17.2.4) unstable; urgency=medium
 
   * Bug #58318: fix previous version that for systems that has
