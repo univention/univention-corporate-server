@@ -149,6 +149,9 @@ access by role="udm:default-roles:organizational-unit-admin"
 
     grant actions="report-create"
 
+  to objecttype="users/user"
+    grant actions="report-create"
+
   # user permissions in OU
   to objecttype="users/user" position.subtree="context=udm:contexts:position"
     name="allow-context-ou-users-write" description="Write user objects in own OU"
