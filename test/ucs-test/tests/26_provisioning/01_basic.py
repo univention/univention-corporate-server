@@ -23,7 +23,7 @@ def provisioning_admin_username():
 
 @pytest.fixture
 def provisioning_admin_password():
-    return json.load(open("/etc/provisioning-json.secrets"))["ADMIN_NATS_PASSWORD"]
+    return json.load(open("/etc/provisioning-json.secrets"))["PROVISIONING_API_ADMIN_PASSWORD"]
 
 
 @pytest.fixture
