@@ -189,7 +189,7 @@ def ouadmin_umc_client(ou):
 
 
 @pytest.fixture
-def ouhelpdeskoperator_umc_client_umc_client(ou):
+def ouhelpdeskoperator_umc_client(ou):
     client = ClientHelper()
     client.authenticate(ou.helpdeskoperator_username, 'univention')
     return client
@@ -214,7 +214,7 @@ def ouadmin_rest_client(ucr, ou):
 
 
 @pytest.fixture
-def ouhelpdeskoperator_rest_client_rest_client(ucr, ou):
+def ouhelpdeskoperator_rest_client(ucr, ou):
     return RestClientHelper(
         'https://%(hostname)s.%(domainname)s/univention/udm/' % ucr,
         username=ou.helpdeskoperator_username,
