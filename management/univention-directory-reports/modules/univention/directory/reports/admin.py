@@ -105,7 +105,8 @@ class AdminConnection:
             dn = possible_real_DNs[0]
         try:
             return self.get_object_real(module, dn)
-        except ua_exceptions.noObject:
+        # FIXME: get rid of this ua_exceptions.wrongObjectType
+        except (ua_exceptions.noObject, ua_exceptions.wrongObjectType):
             return None
 
     def get_object_real(self, module, dn):
@@ -148,7 +149,7 @@ class AdminConnection:
         return new
 
     def identify(self, dn):
-        res = self._access.search(base=dn, scope='base')
+        res = self._access.authz_connection.search(base=dn, scope='base')
         if res:
             mods = ua_modules.identify(dn, res[0][1])
             if mods:
@@ -210,7 +211,7 @@ class AdminConnection:
 
     def _get_policies(self, obj):
         dict = {}
-        policies = self._access.getPolicies(obj.dn)
+        policies = self._access.authz_connection.getPolicies(obj.dn)
         for policy_oc, attrs in policies.items():
             module_name = ua_objects.ocToType(policy_oc)
             module = ua_modules.get(module_name)
