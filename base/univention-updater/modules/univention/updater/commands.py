@@ -47,5 +47,8 @@ cmd_remove = configRegistry.get('update/commands/remove', 'apt-get --yes remove'
 cmd_config = configRegistry.get('update/commands/configure', 'dpkg --configure -a')
 """Configure all pending packages"""
 
+cmd_clean = configRegistry.get('update/commands/clean', 'apt-get clean')
+"""Remove downloaded package files"""
+
 del ConfigRegistry
 del configRegistry

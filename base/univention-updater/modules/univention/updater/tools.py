@@ -35,7 +35,7 @@ try:
 except ImportError:
     import univention.debug2 as ud  # type: ignore
 
-from .commands import cmd_dist_upgrade, cmd_dist_upgrade_sim, cmd_update
+from .commands import cmd_clean, cmd_dist_upgrade, cmd_dist_upgrade_sim, cmd_update
 from .errors import (
     CannotResolveComponentServerError, ConfigurationError, DownloadError, PreconditionError, ProxyError,
     RequiredComponentError, UnmetDependencyError, VerificationError,
@@ -1354,6 +1354,14 @@ class UniventionUpdater:
         env = dict(os.environ, LC_ALL="C.UTF-8")
 
         proc = subprocess.Popen(("univention-config-registry", "commit", Component.FN_APTSOURCES), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = (data.decode("UTF-8", errors="replace") for data in proc.communicate())
+        if stderr:
+            ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
+        if stdout:
+            ud.debug(ud.NETWORK, ud.INFO, 'stdout=%s' % stdout)
+        # FIXME: error handling
+
+        proc = subprocess.Popen(cmd_clean, shell=True, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = (data.decode("UTF-8", errors="replace") for data in proc.communicate())
         if stderr:
             ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
