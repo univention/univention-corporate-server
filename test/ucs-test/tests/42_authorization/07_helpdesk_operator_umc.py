@@ -5,15 +5,32 @@
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
 ## exposure: dangerous
+import locale
 import subprocess
 
 import pytest
-from conftest import translate
 
 from univention.config_registry import ucr as _ucr
 
 
 pytestmark = pytest.mark.skipif(not _ucr.is_true('directory/manager/web/delegative-administration/enabled'), reason='authz not activated')
+
+
+TRANSLATIONS = {
+    'de_DE': {
+        'Permission denied.': 'Zugriff verweigert.',
+        'No such object:': 'Das Objekt existiert nicht:',
+    },
+    'en_US': {
+        'Permission denied.': 'Permission denied.',
+        'No such object:': 'No such object:',
+    },
+}
+
+
+def translate(string: str) -> str:
+    code, _ = locale.getlocale()
+    return TRANSLATIONS.get(code, {}).get(string, string)
 
 
 @pytest.fixture(autouse=True)
@@ -32,7 +49,7 @@ def test_helpdesk_operator_cant_create(position, expected, ouhelpdeskoperator_um
     res = ouhelpdeskoperator_umc_client.create_user(position.format(ou_dn=ou.dn, ldap_base=ldap_base))
     if not expected:
         assert not res['success']
-#        assert res['details'] == translate('Permission denied.')
+        assert res['details'] == translate('Permission denied.')
     else:
         assert res['success']
         position = position.format(ou_dn=ou.dn, ldap_base=ldap_base)
@@ -68,15 +85,15 @@ def test_helpdesk_operator_can_reset_password(ldap_base, ou, position, expected,
         'overridePWHistory': True,
         'overridePWLength': True,
         'password': 'univention',
-        'unlock': '0',
+        'unlock': False,
     }
     res = ouhelpdeskoperator_umc_client.modify_object(dn, changes, 'users/user')
     if not expected:
         assert not res['success']
         if dn.endswith(ou.dn):
-            assert res['details'] == _('Permission denied.')
+            assert res['details'] == translate('Permission denied.')
         else:
-            assert res['details'] == f'{_("No such object:")} {dn}.'
+            assert res['details'] == f'{translate("No such object:")} {dn}.'
     else:
         assert res['success']
         assert res['$dn$'] == dn
