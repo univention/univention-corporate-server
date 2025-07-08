@@ -159,6 +159,7 @@ deb-pipeline:
     - job: prepare aptly
     - job: select ucslint
     - job: drop unused packages
+      optional: true
   variables:
     UCSLINT: $UCSLINT
     ORIGINAL_SOURCE: $CI_PIPELINE_SOURCE
