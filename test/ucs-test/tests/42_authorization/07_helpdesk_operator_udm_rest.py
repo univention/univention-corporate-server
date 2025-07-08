@@ -21,14 +21,14 @@ pytestmark = pytest.mark.skipif(not _ucr.is_true('directory/manager/rest/delegat
     ('{ou_dn}', False),
     ('{ldap_base}', False),
 ])
-def test_helpdesk_operator_cant_create(position, expected, ouhelpdeskoperator_rest_client, ou, ldap_base):
+def test_helpdesk_operator_cant_create(position, expected, ou_helpdesk_operator_rest_client, ou, ldap_base):
     position = position.format(ou_dn=ou.dn, ldap_base=ldap_base)
     if expected:
-        user = ouhelpdeskoperator_rest_client.create_user(position)
+        user = ou_helpdesk_operator_rest_client.create_user(position)
         user.delete()
     else:
         with pytest.raises(Forbidden):
-            ouhelpdeskoperator_rest_client.create_user(position)
+            ou_helpdesk_operator_rest_client.create_user(position)
 
 
 @pytest.mark.parametrize('position, changes, expected', [
@@ -36,24 +36,24 @@ def test_helpdesk_operator_cant_create(position, expected, ouhelpdeskoperator_re
     ('cn=users,{ou_dn}', {'description': 'dsfdsf'}, False),
     ('uid=Administrator,cn=users,{ldap_base}', {'description': 'dsfdsf'}, False),
 ])
-def test_helpdesk_operator_cant_modify_properties(ldap_base, ou, position, changes, expected, udm, ouhelpdeskoperator_rest_client):
+def test_helpdesk_operator_cant_modify_properties(ldap_base, ou, position, changes, expected, udm, ou_helpdesk_operator_rest_client):
     dn, _ = udm.create_user(position=position.format(ou_dn=ou.dn, ldap_base=ldap_base))
     if not expected:
         if dn.endswith(ou.dn):
             with pytest.raises(Forbidden):
-                ouhelpdeskoperator_rest_client.modify_user(dn, changes)
+                ou_helpdesk_operator_rest_client.modify_user(dn, changes)
         else:
             with pytest.raises(NotFound):
-                ouhelpdeskoperator_rest_client.modify_user(dn, changes)
+                ou_helpdesk_operator_rest_client.modify_user(dn, changes)
     else:
-        ouhelpdeskoperator_rest_client.modify_user(dn, changes)
+        ou_helpdesk_operator_rest_client.modify_user(dn, changes)
 
 
 @pytest.mark.parametrize('position, expected', [
     ('cn=users,{ou_dn}', True),
     ('{ldap_base}', False),
 ])
-def test_helpdesk_operator_can_reset_password(position, expected, ouhelpdeskoperator_rest_client, udm, ou, ldap_base):
+def test_helpdesk_operator_can_reset_password(position, expected, ou_helpdesk_operator_rest_client, udm, ou, ldap_base):
     dn, _ = udm.create_user(position=position.format(ou_dn=ou.dn, ldap_base=ldap_base))
     changes = {
         'homeSharePath': '/home/ou',
@@ -63,11 +63,11 @@ def test_helpdesk_operator_can_reset_password(position, expected, ouhelpdeskoper
         'unlock': False,
     }
     if expected:
-        ouhelpdeskoperator_rest_client.modify_user(dn, changes)
+        ou_helpdesk_operator_rest_client.modify_user(dn, changes)
     else:
         if dn.endswith(ou.dn):
             with pytest.raises(Forbidden):
-                ouhelpdeskoperator_rest_client.modify_user(dn, changes)
+                ou_helpdesk_operator_rest_client.modify_user(dn, changes)
         else:
             with pytest.raises(NotFound):
-                ouhelpdeskoperator_rest_client.modify_user(dn, changes)
+                ou_helpdesk_operator_rest_client.modify_user(dn, changes)

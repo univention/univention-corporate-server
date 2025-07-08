@@ -45,8 +45,8 @@ def restart_umc():
     ('{ou_dn}', False),
     ('{ldap_base}', False),
 ])
-def test_helpdesk_operator_cant_create(position, expected, ouhelpdeskoperator_umc_client, ou, ldap_base):
-    res = ouhelpdeskoperator_umc_client.create_user(position.format(ou_dn=ou.dn, ldap_base=ldap_base))
+def test_helpdesk_operator_cant_create(position, expected, ou_helpdesk_operator_umc_client, ou, ldap_base):
+    res = ou_helpdesk_operator_umc_client.create_user(position.format(ou_dn=ou.dn, ldap_base=ldap_base))
     if not expected:
         assert not res['success']
         assert res['details'] == translate('Permission denied.')
@@ -60,9 +60,9 @@ def test_helpdesk_operator_cant_create(position, expected, ouhelpdeskoperator_um
     ('cn=users,{ou_dn}', {'description': 'dsfdsf'}, False),
     ('uid=Administrator,cn=users,{ldap_base}', {'description': 'dsfdsf'}, False),
 ])
-def test_helpdesk_operator_cant_modify_properties(ldap_base, ou, position, changes, expected, udm, ouhelpdeskoperator_umc_client):
+def test_helpdesk_operator_cant_modify_properties(ldap_base, ou, position, changes, expected, udm, ou_helpdesk_operator_umc_client):
     dn, _ = udm.create_user(position=position.format(ou_dn=ou.dn, ldap_base=ldap_base))
-    res = ouhelpdeskoperator_umc_client.modify_object(dn, changes, 'users/user')
+    res = ou_helpdesk_operator_umc_client.modify_object(dn, changes, 'users/user')
     if not expected:
         assert not res['success']
         if dn.endswith(ou.dn):
@@ -78,7 +78,7 @@ def test_helpdesk_operator_cant_modify_properties(ldap_base, ou, position, chang
     ('{ldap_base}', False),
     ('cn=users,{ou_dn}', True),
 ])
-def test_helpdesk_operator_can_reset_password(ldap_base, ou, position, expected, udm, random_username, ouhelpdeskoperator_umc_client):
+def test_helpdesk_operator_can_reset_password(ldap_base, ou, position, expected, udm, random_username, ou_helpdesk_operator_umc_client):
     dn, _ = udm.create_user(position=position.format(ou_dn=ou.dn, ldap_base=ldap_base))
     changes = {
         '$dn$': dn,
@@ -87,7 +87,7 @@ def test_helpdesk_operator_can_reset_password(ldap_base, ou, position, expected,
         'password': 'univention',
         'unlock': False,
     }
-    res = ouhelpdeskoperator_umc_client.modify_object(dn, changes, 'users/user')
+    res = ou_helpdesk_operator_umc_client.modify_object(dn, changes, 'users/user')
     if not expected:
         assert not res['success']
         if dn.endswith(ou.dn):
