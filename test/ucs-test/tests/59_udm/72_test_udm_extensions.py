@@ -247,7 +247,7 @@ class Test_UDMExtensionsJoinscript:
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
         version_start = random_ucs_version(max_major=2)
-        version_end = random_ucs_version(min_major=5)
+        version_end = random_ucs_version(min_major=6)
         app_id = '%s-%s' % (random_name(), random_version())
         joinscript_buffer = get_join_script_buffer(
             extension_type,
@@ -497,7 +497,7 @@ class Test_UDMExtensionsJoinscript:
             for package_version in (package_version_LOW, package_version_HIGH):
 
                 version_start = random_ucs_version(max_major=2)
-                version_end = random_ucs_version(min_major=5)
+                version_end = random_ucs_version(min_major=6)
 
                 # create unique extension identifier
                 extension_identifier = '%s_%s' % (extension_name, package_version.replace('.', '_'))
@@ -634,7 +634,7 @@ class Test_UDMExtensionsJoinscript:
 
                 package_name = get_package_name()
                 version_start = random_ucs_version(max_major=2)
-                version_end = random_ucs_version(min_major=5)
+                version_end = random_ucs_version(min_major=6)
 
                 # create unique extension identifier
                 extension_identifier = '%s_%s' % (extension_name, package_version.replace('.', '_'))
@@ -810,7 +810,7 @@ class Test_UDMExtensionsJoinscript:
             options=options,
             joinscript_version=1,
             version_start=random_ucs_version(max_major=2),
-            version_end=random_ucs_version(min_major=5),
+            version_end=random_ucs_version(min_major=6),
         )
         unjoinscript_buffer = get_unjoin_script_buffer(extension_type, extension_name, package_name)
         extension_buffer = get_extension_buffer(extension_type, extension_name)
@@ -880,7 +880,7 @@ class Test_UDMExtensions:
             package_version = get_package_version()
             app_id = '%s-%s' % (random_name(), random_version())
             version_start = random_ucs_version(max_major=2)
-            version_end = random_ucs_version(min_major=5)
+            version_end = random_ucs_version(min_major=6)
 
             dn = udm.create_object(
                 'settings/udm_%s' % extension_type,
@@ -972,7 +972,7 @@ class Test_UDMExtensions:
         package_name = get_package_name()
         package_version = get_package_version()
         version_start = random_ucs_version(max_major=2)
-        version_end = random_ucs_version(min_major=5)
+        version_end = random_ucs_version(min_major=6)
 
         # create object
         dn = udm.create_object(
@@ -1043,7 +1043,7 @@ class Test_UDMExtensions:
         package_version = get_package_version()
         app_id = '%s-%s' % (random_name(), random_version())
         version_start = random_ucs_version(max_major=2)
-        version_end = random_ucs_version(min_major=5)
+        version_end = random_ucs_version(min_major=6)
 
         dn = udm.create_object(
             'settings/udm_%s' % extension_type,
@@ -1080,7 +1080,7 @@ class Test_UDMExtensions:
     @pytest.mark.parametrize('extension_type', VALID_EXTENSION_TYPES, indirect=True)
     @pytest.mark.parametrize('version_start,version_end', [
         (random_ucs_version(max_major=2), random_name()),
-        (random_name(), random_ucs_version(min_major=5)),
+        (random_name(), random_ucs_version(min_major=6)),
         (random_name(), random_name()),
     ])
     def test_create_with_invalid_ucsversions(self, udm, extension_type, version_start, version_end):
@@ -1119,7 +1119,7 @@ class Test_UDMExtensions:
         package_version = get_package_version()
         app_id = '%s-%s' % (random_name(), random_version())
         version_start = random_ucs_version(max_major=2)
-        version_end = random_ucs_version(min_major=5)
+        version_end = random_ucs_version(min_major=6)
 
         extension_name = get_extension_name(extension_type)
         extension_filename = get_extension_filename(extension_type, extension_name)
@@ -1183,7 +1183,7 @@ class Test_UDMExtensions:
         package_version = get_package_version()
         app_id = '%s-%s' % (random_name(), random_version())
         version_start = random_ucs_version(max_major=2)
-        version_end = random_ucs_version(min_major=5)
+        version_end = random_ucs_version(min_major=6)
 
         udm.create_object(
             'container/cn',
@@ -1458,7 +1458,7 @@ class Test_UDMExtensions:
         package_version = get_package_version()
         app_id = '%s-%s' % (random_name(), random_version())
         version_start = random_ucs_version(max_major=2)
-        version_end = random_ucs_version(min_major=5)
+        version_end = random_ucs_version(min_major=6)
 
         udm.create_object(
             'container/cn',
@@ -1828,7 +1828,7 @@ class Test_UDMExtensions:
         package_version = get_package_version()
         app_id = '%s-%s' % (random_name(), random_version())
         version_start = random_ucs_version(max_major=2)
-        version_end = random_ucs_version(min_major=5)
+        version_end = random_ucs_version(min_major=6)
 
         udm.create_object(
             'container/cn',
@@ -2215,7 +2215,7 @@ class Test_UDMExtensionSpecial:
         package_version_base = get_package_version()
         app_id = '%s-%s' % (random_name(), random_version())
         version_start = random_ucs_version(max_major=2)
-        version_end = random_ucs_version(min_major=5)
+        version_end = random_ucs_version(min_major=6)
         dn = None
 
         oldversion = 0
@@ -2264,7 +2264,7 @@ class Test_UDMExtensionSpecial:
         """Test liability to a simple filename attack"""
         filename = 'ucs_test_64_filename_attack'
         version_start = random_ucs_version(max_major=2)
-        version_end = random_ucs_version(min_major=5)
+        version_end = random_ucs_version(min_major=6)
 
         print('========================= TESTING EXTENSION %s =============================' % extension_type)
         package_name = get_package_name()

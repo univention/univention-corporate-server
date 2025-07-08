@@ -1,3 +1,9 @@
+ucs-test (12.2.23) unstable; urgency=medium
+
+  * Bug #58432: fix usage of random_ucs_version in 72_test_udm_extensions.py
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Jul 2025 13:43:59 +0200
+
 ucs-test (12.2.22) unstable; urgency=medium
 
   * Bug #58432: fix usage of uldap.access in AD connector tests
