@@ -13,7 +13,7 @@ Introduction
    Delegative administration is an experimental feature.
    Don't use it in production yet.
    There are still many shortcomings
-   and in particular things like configuration can and change in upcoming releases.
+   and in particular things like configuration can and will change in upcoming releases.
 
 This document describes the concepts, setup, and configuration
 of delegative administration for Univention Nubus
@@ -28,7 +28,7 @@ which objects the user can read, modify, create, or delete.
 
 A common use case is a manager or administrator for an organizational unit within the directory.
 Users with such an assigned role can manage other user objects and group objects of a specific position in the directory,
-for example ``ou=bremen,dc=ldap,dc=base``.
+for example ``ou=bremen,dc=example,dc=org``.
 However, depending on the exact configuration,
 users with such a role can't manage or even see objects from other positions.
 

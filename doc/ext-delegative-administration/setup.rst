@@ -251,9 +251,9 @@ The following steps show how you can test this role.
         # set ou primary group as default primary group for users in this
         # organizational unit
         udm container/ou modify \
-          --dn "ou=$ou,dc=ucs,dc=test" \
+          --dn "ou=$ou,$(ucr get ldap/base)" \
           --append-option group-settings \
-          --set defaultGroup="cn=$ou-users,cn=groups,ou=$ou,dc=ucs,dc=test"
+          --set defaultGroup="cn=$ou-users,cn=groups,ou=$ou,$(ucr get ldap/base)"
       done
 
 #. Sign in to UMC with the ``ou1-admin`` user, the password ``univention``, and open the *Users* module.
