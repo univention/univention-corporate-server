@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: sudo
+fix: 1.8.19p1-2.1+deb9u7
+desc: |
+ This update addresses the following issue:
+ * CVSS score 2.8 (CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:N/I:L/A:N).
+   (CVE-2025-32462)
+bug: [58455]
+cve:
+- CVE-2025-32462
