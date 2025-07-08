@@ -111,10 +111,12 @@ if [ -n "${update_custom_preup:-}" ]; then
 	fi
 fi
 
-update_check_kernel () {
+prune_kernel () {
 	is_ucr_true "update${VERSION}/pruneoldkernel" || return 0
 	univention-prune-kernels
 }
+
+prune_kernel  # do this before update_check_disk_space
 
 checks
 
