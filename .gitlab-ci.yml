@@ -215,7 +215,7 @@ errata validation:
 
 sonarqube:
   stage: test
-
+  needs: []
   image:
     name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/sonarsource/sonar-scanner-cli:11
     entrypoint: [""]
