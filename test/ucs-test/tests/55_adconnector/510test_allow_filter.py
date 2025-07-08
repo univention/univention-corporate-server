@@ -205,7 +205,7 @@ def test_create(sync_mode: str) -> None:
             try:
                 for obj in objs:
                     with pytest.raises(NO_SUCH_OBJECT):
-                        udm._primary_lo.search(filter=obj.udm_filter, attr=[], required=True)
+                        udm._primary_lo.lo.search(filter=obj.udm_filter, attr=[], required=True)
             finally:
                 # cleanup
                 for obj in objs:
@@ -479,7 +479,7 @@ def test_allowsubtree_higher_priority_than_allowfilter(sync_mode: str) -> None:
             wait_for_sync()
             try:
                 with pytest.raises(NO_SUCH_OBJECT):
-                    udm._primary_lo.search(filter=f'uid={username}', attr=[], required=True)
+                    udm._primary_lo.lo.search(filter=f'uid={username}', attr=[], required=True)
                 # make allowsubtree match and check sync works
                 ucr_set([
                     f'connector/ad/mapping/allowsubtree/test1/ucs={udm.LDAP_BASE}',
@@ -488,6 +488,6 @@ def test_allowsubtree_higher_priority_than_allowfilter(sync_mode: str) -> None:
                 restart_adconnector()
                 AD.set_attribute(ad_dn, 'description', b'Changed in AD')
                 wait_for_sync()
-                udm._primary_lo.search(filter=f'uid={username}', attr=[], required=True)
+                udm._primary_lo.lo.search(filter=f'uid={username}', attr=[], required=True)
             finally:
                 AD.delete(ad_dn)

@@ -206,7 +206,7 @@ class UCSTestUDM:
         if self._ucr.get('server/role') == 'domaincontroller_master':
             return self._lo
         if self.__primary_lo is None:
-            self.__primary_lo = utils.get_ldap_connection(primary=True)
+            self.__primary_lo = utils.get_ldap_connection(admin_uldap=True, primary=True)
         return self.__primary_lo
 
     @property

@@ -77,7 +77,7 @@ def open_drs_connection():
 
     lo_ad = univention.uldap.access(
         host=ad_ldap_host, port=int(ad_ldap_port),
-        base='', binddn=None, bindpw=None, start_tls=tls_mode,
+        base=ad_ldap_base, binddn=None, bindpw=None, start_tls=tls_mode,
         use_ldaps=ldaps, ca_certfile=ad_ldap_certificate,
     )
 
