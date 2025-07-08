@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [2]
+scope: ucs_5.2-0-errata5.2-2
+src: univention-updater
+fix: 17.2.8
+desc: |
+ This update addresses the following issues:
+ * The pre-update script has been updated to run the prune old kenels,
+   when the UCR variable `update52/pruneoldkernel` is enable, before all
+   the other checks.
+bug: [58386]

@@ -1,3 +1,9 @@
+univention-updater (17.2.8) unstable; urgency=medium
+
+  * Bug #58386: run prune kernels before checks which run the disk space check
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 22 Jul 2025 13:01:58 +0200
+
 univention-updater (17.2.7) unstable; urgency=medium
 
   * Bug #53882: Ensure "Pre-Windows 2000 Compatible Access", "Windows
