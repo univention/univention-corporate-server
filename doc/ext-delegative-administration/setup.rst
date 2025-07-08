@@ -94,20 +94,18 @@ Additionally, you have to configure authorization for the UMC service, see :ref:
 
 By default, only members of the user group ``Domain Admins`` can see and use the user and group modules in UMC.
 To properly test the delegative administration feature,
-you need to assign the permission
-to see and use the user and group module in UMC
-to every user object.
+you need to create a policy that allows all UMC modules.
+You can assign this policy to user objects to allow access to UMC modules.
 Run the command in :numref:`da-setup-test-env-preparation-assign-rights-listing` on the |UCSPRIMARYDN|.
 
 .. code-block:: console
-   :caption: Assign the right to see the users and group modules in UMC to every user object
+   :caption: Create UMC policy for access to UMC modules
    :name: da-setup-test-env-preparation-assign-rights-listing
 
-   $ udm policies/umc modify \
-       --dn "cn=default-umc-users,cn=UMC,cn=policies,$(ucr get ldap/base)" \
-       --append allow="cn=udm-groups,cn=operations,cn=UMC,cn=univention,$(ucr get ldap/base)" \
-       --append allow="cn=udm-users,cn=operations,cn=UMC,cn=univention,$(ucr get ldap/base)" \
-       --append allow="cn=udm-syntax,cn=operations,cn=UMC,cn=univention,$(ucr get ldap/base)"
+   $ udm policies/umc create \
+        --position "cn=UMC,cn=policies,$(ucr get ldap/base)" \
+        --set name="test-policy" \
+        --append allow="cn=udm-all,cn=operations,cn=UMC,cn=univention,$(ucr get ldap/base)"
 
 .. _da-setup-test-env-activate-udm-http-rest:
 
@@ -212,15 +210,16 @@ The following steps show how you can test this role.
    and ten user objects within each organizational unit.
    Run the commands in :numref:`da-setup-test-env-ouadmin-listing` on the |UCSPRIMARYDN|.
 
-   .. code-block:: console
+   .. code-block:: bash
       :caption: Create ten organizational units with ten user objects each
       :name: da-setup-test-env-ouadmin-listing
 
+      umc_policy="cn=test-policy,cn=UMC,cn=policies,$(ucr get ldap/base)"
       for i in $(seq 1 10); do
         # create some structure and a organizational-unit-admin user
         ou="ou${i}"
         udm container/ou create \
-          --set name="$ou" \
+          --set name="$ou"
         udm container/cn create \
           --position="ou=$ou,$(ucr get ldap/base)" \
           --set name=users \
@@ -229,8 +228,10 @@ The following steps show how you can test this role.
           --position="ou=$ou,$(ucr get ldap/base)" \
           --set name=groups \
           --set groupPath=1
+        # organizational unit admin
         udm users/user create \
           --position="cn=users,$(ucr get ldap/base)" \
+          --policy-reference="$umc_policy" \
           --set username="${ou}-admin" \
           --set password=univention \
           --set lastname="${ou}-admin" \
@@ -240,13 +241,14 @@ The following steps show how you can test this role.
           username="user${j}-${ou}"
           udm users/user create \
             --position="cn=users,ou=${ou},$(ucr get ldap/base)" \
+            --policy-reference="$umc_policy" \
             --set username="$username" \
             --set password=univention \
             --set lastname="$username"
         done
         # primary group for each organizational unit
         udm groups/group create \
-          --set position="cn=groups,ou=$ou,$(ucr get ldap/base)"
+          --position="cn=groups,ou=$ou,$(ucr get ldap/base)" \
           --set name="$ou-users"
         # set ou primary group as default primary group for users in this
         # organizational unit

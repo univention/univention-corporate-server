@@ -158,10 +158,10 @@ shows an example for a generic form of a role definition.
    :caption: Example for role configuration
    :name: da-concepts-role-definition-listing
 
-   access by role="ROLE" [context="udm:contexts:position"]
-     to objecttype="UMD_MODULE" [position.subtree|base|one="POSITION"]
-     grant actions="ACTIONS"
-     grant properties="OBJECT_PROPERTY" permission="PERMISSION"
+   access by role="<ROLE>" [context="udm:contexts:position"]
+     to objecttype="<UDM_MODULE>" [position.subtree|base|one="<POSITION>"]
+       grant actions="<ACTIONS>"
+       grant properties="<OBJECT_PROPERTY>" permission="<PERMISSION>"
 
 The following list explains the elements from
 :numref:`da-concepts-role-definition-listing`.
@@ -178,7 +178,7 @@ The following list explains the elements from
    clauses allow actions such as read or write
    and access to properties of UDM objects.
 
-:samp:`role={ROLE}`
+:samp:`role={<ROLE>}`
    Name of the role.
    The value is any string, but must contain two colons, such as
    ``udm:default-roles:organizational-unit-admin``.
@@ -188,12 +188,12 @@ The following list explains the elements from
    You may use it as value for the position condition,
    see :ref:`da-concepts-context`
 
-:samp:`to.objecttype={UDM_MODULE}`
+:samp:`to.objecttype={<UDM_MODULE>}`
    Restrict access rules to this type of UDM module.
    Value is the name of a UDM object,
    such as ``users/user`` or the wildcard ``*`` that matches every UDM object.
 
-:samp:`to.position.subtree|base|one={POSITION}`
+:samp:`to.position.subtree|base|one={<POSITION>}`
    Restrict access rules to this position in the LDAP tree, including the
    scope.
 
@@ -205,18 +205,17 @@ The following list explains the elements from
 
    Position can have to following values:
 
-   :``LDAP_DN``: Any position the *Directory Service* in format of a distinguished name (DN),
-      without the LDAP base.
+   :``LDAP_DN``: Any position the *Directory Service* in format of a distinguished name (DN).
 
    :``{ldap_base}``: A placeholder for the actual LDAP base.
 
    :``{context}``: A placeholder for the current context.
 
-   For example, ``to.position.subtree="cn=users,ou=berlin"``.
+   For example, ``to.position.subtree="cn=users,ou=berlin,{ldap_base}"``.
    The example restricts the access rule to objects in and below the position
-   ``cn=users,ou=berlin,ldap_base`` in the *Directory Service*.
+   ``cn=users,ou=berlin,{ldap_base}`` in the *Directory Service*.
 
-:samp:`grant.actions={ACTIONS}`
+:samp:`grant.actions={<ACTIONS>}`
    You can grant actions to a role
    and define what an actor can do to a target.
    The value is a comma-separated list of the following values:
@@ -228,17 +227,16 @@ The following list explains the elements from
    * ``rename``
    * ``remove``
    * ``move``
-   * ``reports-type-query``
    * ``report-create``
    * or the wildcard ``*``
 
-:samp:`grant.properties={PROPERTIES}`
+:samp:`grant.properties={<PROPERTIES>}`
    Grant access to these UDM properties.
    The value is a comma-separated list of UDM properties.
 
    For example: ``jpegPhoto,e-mail,phone,roomnumber,departmentNumber, or the wildcard "*"``
 
-:samp:`grant.properties.permission={PERMISSION}`
+:samp:`grant.properties.permission={<PERMISSION>}`
    Grant these permissions for the previously defined properties.
    The value is a comma-separated list of the following values:
 
@@ -276,8 +274,8 @@ This role has permission to:
    access by role="udm:default-roles:domain-administrator"
      description="Domain Admins are allowed to do anything in the whole domain"
      to objecttype="*"
-     grant actions="*"
-     grant properties="*" permission="write"
+       grant actions="*"
+       grant properties="*" permission="write"
 
 :numref:`da-concepts-example-helpdesk-listing`
 is a more advanced example is a role that can update the password for user objects
@@ -291,13 +289,10 @@ This role has permission to:
 
 * Modify the password of user objects in the position defined by the role's context.
 
-* Read some UDM settings objects, necessary for UMC to provide meaning defaults values.
-
 .. code-block::
    :caption: Default definition for ``udm:default-roles:helpdesk-operator`` role
    :name: da-concepts-example-helpdesk-listing
 
-   # Every role
    access by role="udm:default-roles:helpdesk-operator" context="udm:contexts:position"
 
      # LDAP Base
