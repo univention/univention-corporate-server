@@ -66,6 +66,21 @@ you need to know the following definitions for some of the used terms in this do
 
 .. _da-concepts-context:
 
+Basic idea
+==========
+
+With delegative administration for UDM we want to enable Administrators to
+easily define roles and policies for what an actor can do in the *Directory Service*.
+
+If activated, LDAP ACLs for actors will no longer apply, instead UDM checks
+the authorization for the actor based on the actors roles and the current UDM
+policy and will access the *Directory Service* with a privileged account.
+
+For testing purposes you could add LDAP ACLs for an actor to deny access to
+the LDAP completely, see :external+uv-developer-reference:ref:`settings-ldapacl`.
+If this actor has roles and if there are UDM policies in
+place that allow certain operations in the *Directory Service* for this role,
+the actor will be able to perform these operations despite the LDAP ACLs.
 
 Roles and context
 =================

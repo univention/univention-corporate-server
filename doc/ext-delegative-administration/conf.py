@@ -173,6 +173,7 @@ intersphinx_mapping = {
     'uv-manual': ref('manual'),
     'guardian-doc': ('https://docs.software-univention.de/guardian-manual/latest/', None),
     'uv-nubus-kubernetes-customization': ('https://docs.software-univention.de/nubus-kubernetes-customization/latest/en/', None),
+    'uv-developer-reference': ('https://docs.software-univention.de/developer-reference/5.2/en/', None),
 }
 
 # See Univention Sphinx Extension for its options.
