@@ -49,7 +49,7 @@ class TestUMCUserAuthentication(UMCBase):
             with pytest.raises(BadRequest):
                 self.request('udm/query', {'objectType': 'users/ldap', 'objectProperty': 'username', 'objectPropertyValue': self.test_username}, 'users/user')
         else:
-            assert self.request('udm/query', {'objectType': 'users/ldap', 'objectProperty': 'username', 'objectPropertyValue': self.test_username}, 'users/user').result
+            assert self.request('udm/query', {'objectType': 'users/ldap', 'objectProperty': 'username', 'objectPropertyValue': self.test_username}, 'users/user')
 
     def authenticate_to_umc(self, username, password):
         """

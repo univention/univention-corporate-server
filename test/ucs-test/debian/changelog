@@ -1,3 +1,9 @@
+ucs-test (12.2.21) unstable; urgency=medium
+
+  * Bug #58432: fix typo in 32_udm_nonposix_user_actions
+
+ -- Florian Best <best@univention.de>  Tue, 08 Jul 2025 11:20:57 +0200
+
 ucs-test (12.2.20) unstable; urgency=medium
 
   * Issue univention/dev/internal/team-nubus#2954: switch to new app version & change pw key
