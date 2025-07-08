@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: catdoc
+fix: 1:0.94.3~git20160113.dbc9ec6+dfsg-1+deb9u2
+desc: |
+ This update addresses the following issues:
+ * CVSS score 8.4 (CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2024-54028, CVE-2024-52035, CVE-2024-48877)
+bug: [58458]
+cve:
+- CVE-2024-48877
+- CVE-2024-52035
+- CVE-2024-54028
