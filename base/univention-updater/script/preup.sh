@@ -87,11 +87,6 @@ if [ -n "${update_custom_preup:-}" ]; then
 	fi
 fi
 
-update_check_kernel () {
-	is_ucr_true "update${VERSION}/pruneoldkernel" || return 0
-	univention-prune-kernels
-}
-
 ## Bug #53882 - not in checks.sh to avoid running in the pre-update-checks-5.2-2
 # Note: at this position it's not executed in "CHECKS_ONLY", i.e. not if preup.sh is called without argument $UPDATE_NEXT_VERSION
 update_check_s4-connector-memberof-pre-windows-2k-compatible-access () {
@@ -114,6 +109,13 @@ update_check_s4-connector-memberof-pre-windows-2k-compatible-access () {
     systemctl restart univention-s4-connector
   fi
 }
+
+prune_kernel () {
+	is_ucr_true "update${VERSION}/pruneoldkernel" || return 0
+	univention-prune-kernels
+}
+
+prune_kernel  # do this before update_check_disk_space
 
 checks
 
