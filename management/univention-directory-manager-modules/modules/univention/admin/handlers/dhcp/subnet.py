@@ -29,6 +29,7 @@ short_description = _('DHCP: Subnet')
 object_name = _('DHCP subnet')
 object_name_plural = _('DHCP subnets')
 long_description = _('The IP address range used in a dedicated (non-shared) physical network.')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -81,6 +82,7 @@ mapping.register('subnet', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('subnetmask', 'dhcpNetMask', None, univention.admin.mapping.ListToString)
 mapping.register('broadcastaddress', 'univentionDhcpBroadcastAddress', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap)
+# fmt: on
 add_dhcp_options(__name__)
 
 

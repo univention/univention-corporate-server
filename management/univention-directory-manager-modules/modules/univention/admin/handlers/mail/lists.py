@@ -23,6 +23,7 @@ object_name = _('Mailing list')
 object_name_plural = _('Mailing lists')
 long_description = ''
 
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -97,6 +98,7 @@ mapping.register('members', 'univentionMailMember')
 mapping.register('mailAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
 mapping.register('allowedEmailUsers', 'univentionAllowedEmailUsers')
 mapping.register('allowedEmailGroups', 'univentionAllowedEmailGroups')
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

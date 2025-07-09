@@ -40,6 +40,7 @@ short_description = _('Group')
 object_name = _('Group')
 object_name_plural = _('Groups')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -229,6 +230,7 @@ layout = [
 ]
 
 layout.append(member_role_layout())
+# fmt: on
 
 
 def unmapSambaRid(oldattr):
@@ -238,6 +240,7 @@ def unmapSambaRid(oldattr):
         return rid
 
 
+# fmt: off
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('gidNumber', 'gidNumber', None, univention.admin.mapping.ListToString, encoding='ASCII')
@@ -251,6 +254,7 @@ mapping.register('allowedEmailGroups', 'univentionAllowedEmailGroups')
 mapping.registerUnmapping('sambaRID', unmapSambaRid)
 mapping.register('univentionSourceIAM', 'univentionSourceIAM', None, univention.admin.mapping.ListToString)
 register_member_role_mapping(mapping)
+# fmt: on
 
 
 class AgingCache:

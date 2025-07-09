@@ -32,6 +32,7 @@ short_description = _('DHCP: Server')
 object_name = _('DHCP server')
 object_name_plural = _('DHCP servers')
 long_description = _('Associate a service with a server.')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -62,6 +63,7 @@ layout = [
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('server', 'cn', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(DHCPBase):

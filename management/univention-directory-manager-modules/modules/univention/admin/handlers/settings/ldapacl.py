@@ -26,6 +26,7 @@ short_description = _('Settings: LDAP ACL Extension')
 object_name = _('LDAP ACL Extension')
 object_name_plural = _('LDAP ACL Extensions')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -121,6 +122,7 @@ mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.m
 mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univention.admin.mapping.ListToString)
 mapping.register('ucsversionstart', 'univentionUCSVersionStart', None, univention.admin.mapping.ListToString)
 mapping.register('ucsversionend', 'univentionUCSVersionEnd', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

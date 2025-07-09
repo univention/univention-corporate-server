@@ -47,6 +47,7 @@ object_name = _('DHCP statements policy')
 object_name_plural = _('DHCP statements policies')
 policy_short_description = _('DHCP statement')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -123,6 +124,7 @@ mapping.register('getLeaseHostnames', 'univentionDhcpGetLeaseHostnames', None, u
 mapping.register('serverIdentifier', 'univentionDhcpServerIdentifier', None, univention.admin.mapping.ListToString)
 mapping.register('serverName', 'univentionDhcpServerName', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

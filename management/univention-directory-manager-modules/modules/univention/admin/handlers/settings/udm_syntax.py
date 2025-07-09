@@ -29,6 +29,7 @@ short_description = _('Settings: UDM Syntax')
 object_name = _('UDM Syntax')
 object_name_plural = _('UDM Syntaxes')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -131,6 +132,7 @@ mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.m
 mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univention.admin.mapping.ListToString)
 mapping.register('ucsversionstart', 'univentionUCSVersionStart', None, univention.admin.mapping.ListToString)
 mapping.register('ucsversionend', 'univentionUCSVersionEnd', None, univention.admin.mapping.ListToString)
+# fmt: on
 # messagecatalog is handled via object._post_map and object._post_unmap defined below
 
 

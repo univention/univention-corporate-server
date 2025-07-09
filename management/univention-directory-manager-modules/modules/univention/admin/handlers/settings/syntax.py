@@ -25,6 +25,7 @@ short_description = _('Settings: Syntax Definition')
 object_name = _('Syntax Definition')
 object_name_plural = _('Syntax Definitions')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -121,6 +122,7 @@ mapping.register('base', 'univentionSyntaxLDAPBase', None, univention.admin.mapp
 mapping.register('viewonly', 'univentionSyntaxViewOnly', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('description', 'univentionSyntaxDescription', None, univention.admin.mapping.ListToString)
 mapping.register('addEmptyValue', 'univentionSyntaxAddEmptyValue', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

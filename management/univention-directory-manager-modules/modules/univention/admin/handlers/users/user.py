@@ -70,6 +70,7 @@ object_name_plural = _('Users')
 long_description = _('POSIX, Samba, Kerberos and mail account')
 
 
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=_('POSIX, Samba, Kerberos and mail account'),
@@ -656,6 +657,7 @@ layout = [
     ]),
     pki_tab(),
 ]
+# fmt: on
 
 layout.append(role_layout())
 
@@ -1007,6 +1009,7 @@ def unmapUTCDateTimeToLocaltime(attribute_value: Sequence[bytes], encoding: Sequ
     return []
 
 
+# fmt: off
 mapping = univention.admin.mapping.mapping()
 mapping.register('username', 'uid', None, univention.admin.mapping.ListToString)
 mapping.register('uidNumber', 'uidNumber', None, univention.admin.mapping.ListToString)
@@ -1071,6 +1074,7 @@ mapping.registerUnmapping('locked', unmapLocked)
 mapping.register('password', 'userPassword', univention.admin.mapping.dontMap(), univention.admin.mapping.ListToString)
 register_pki_mapping(mapping)
 register_role_mapping(mapping)
+# fmt: on
 
 default_property_descriptions = copy.deepcopy(property_descriptions)  # for later reset of descriptions
 

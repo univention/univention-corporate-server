@@ -26,6 +26,7 @@ short_description = _('Settings: Printer URI List')
 object_name = _('Printer URI List')
 object_name_plural = _('Printer URI Lists')
 long_description = _('List of URIs for printers')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -65,6 +66,7 @@ layout = [
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('printeruri', 'printerURI')
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

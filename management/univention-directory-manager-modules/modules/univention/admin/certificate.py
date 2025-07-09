@@ -214,7 +214,7 @@ def pki_tab():
         Group(_('Misc'), '', [
             ['certificateVersion', 'certificateSerial'],
         ]),
-    ])
+    ])  # fmt: skip
 
 
 def register_pki_integration(property_descriptions, mapping, options, layout):

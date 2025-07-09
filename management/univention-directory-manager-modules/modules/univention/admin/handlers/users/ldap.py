@@ -41,6 +41,7 @@ object_name_plural = _('Simple authentication accounts')
 long_description = _('This user object can only simply do an LDAP bind. It is intended for functional purposes and is not counted as user object in the license.')
 
 # {'person': (('sn', 'cn'), ('userPassword', 'telephoneNumber', 'seeAlso', 'description')), 'uidObject': (('uid',), ()), 'univentionPWHistory': ((), ('pwhistory',)), 'simpleSecurityObject': (('userPassword',), ())}
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -146,6 +147,7 @@ layout = [
 ]
 
 layout.append(role_layout())
+# fmt: on
 
 
 def unmapLocked(oldattr: univention.admin.handlers._Attributes) -> str:
@@ -158,6 +160,7 @@ def isLDAPLocked(oldattr: univention.admin.handlers._Attributes) -> bool:
     return bool(oldattr.get('pwdAccountLockedTime', [b''])[0])
 
 
+# fmt: off
 mapping = univention.admin.mapping.mapping()
 mapping.register('username', 'uid', None, univention.admin.mapping.ListToString)
 mapping.register('lastname', 'sn', None, univention.admin.mapping.ListToString)
@@ -167,6 +170,7 @@ mapping.register('password', 'userPassword', univention.admin.mapping.dontMap(),
 mapping.registerUnmapping('locked', unmapLocked)
 register_pki_mapping(mapping)
 register_role_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase):

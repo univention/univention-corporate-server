@@ -43,6 +43,7 @@ object_name = _('DHCP Boot policy')
 object_name_plural = _('DHCP Boot policies')
 policy_short_description = _('Boot parameters')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -94,6 +95,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('boot_server', 'univentionDhcpBootServer', None, univention.admin.mapping.ListToString)
 mapping.register('boot_filename', 'univentionDhcpBootFilename', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

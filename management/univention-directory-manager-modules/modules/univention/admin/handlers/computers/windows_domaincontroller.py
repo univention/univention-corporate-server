@@ -32,6 +32,7 @@ short_description = _('Computer: Windows Domaincontroller')
 object_name = _('Windows Domaincontroller')
 object_name_plural = _('Windows Domaincontrollers')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -268,6 +269,7 @@ register_pki_mapping(mapping)
 register_role_mapping(mapping)
 # add Nagios extension
 nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
+# fmt: on
 
 
 class object(ComputerObject):

@@ -29,6 +29,7 @@ short_description = _('Univention blocklist entries')
 object_name = _('Univention blocklist entry')
 object_name_plural = _('Univention blocklist entries')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -70,6 +71,7 @@ layout = [
         ]),
     ]),
 ]
+# fmt: on
 
 
 mapping = univention.admin.mapping.mapping()
