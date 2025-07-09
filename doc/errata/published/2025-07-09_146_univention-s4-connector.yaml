@@ -9,3 +9,6 @@ desc: |
  * Slight adjustments for the experimental delegative administration feature
    have been done.
 bug: [58432]
+erratum: 146
+announced: 2025-07-09
+support: core
