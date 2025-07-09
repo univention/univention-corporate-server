@@ -24,6 +24,7 @@ Range = tuple[IPv4Address, IPv4Address]
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
 
+# fmt: off
 _properties = {
     'option': univention.admin.property(
         short_description=_('DHCP options'),
@@ -53,6 +54,7 @@ _mappings = (
     ('option', 'dhcpOption', None, None, 'ASCII'),
     ('statements', 'dhcpStatements', None, None, 'ASCII'),
 )
+# fmt: on
 
 
 def rangeMap(value: Iterable[list[str]], encoding: tuple[str, ...] = ()) -> list[bytes]:
@@ -82,7 +84,7 @@ def add_dhcp_options(module_name: str) -> None:
         _('Custom DHCP options'),
         advanced=True,
         layout=['option', 'statements'],
-    ))
+    ))  # fmt: skip
 
 
 def check_range_overlap(ranges: Sequence[Range]) -> None:

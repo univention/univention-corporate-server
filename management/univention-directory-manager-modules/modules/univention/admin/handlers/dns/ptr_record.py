@@ -31,6 +31,7 @@ short_description = _('DNS: Pointer record')
 object_name = _('Pointer record')
 object_name_plural = _('Pointer records')
 long_description = _('Map IP addresses back to hostnames.')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -73,6 +74,7 @@ layout = [
 mapping = univention.admin.mapping.mapping()
 mapping.register('address', 'relativeDomainName', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('ptr_record', 'pTRRecord', encoding='ASCII')
+# fmt: on
 
 
 def ipv6(string: str) -> str:
@@ -193,7 +195,7 @@ class object(DNSBase):
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'dNSZone'),
             univention.admin.filter.expression('pTRRecord', '*', escape=False),
-        ])
+        ])  # fmt: skip
 
 
 def rewrite_rev(filter: conjunction | expression, subnet: str) -> conjunction | expression:
@@ -241,7 +243,7 @@ def rewrite_rev(filter: conjunction | expression, subnet: str) -> conjunction | 
         filter = conjunction('&', [
             expression('zoneName', addr_net + suffix),
             expression('relativeDomainName', addr_host or '*', escape=False),
-        ])
+        ])  # fmt: skip
     return filter
 
 

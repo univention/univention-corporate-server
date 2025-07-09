@@ -28,6 +28,7 @@ short_description = _('DNS: Host Record')
 object_name = _('Host record')
 object_name_plural = _('Host records')
 long_description = _('Resolve the symbolic name to IP addresses.')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -118,6 +119,7 @@ mapping.register('mx', 'mXRecord', mapMX, unmapMX, encoding='ASCII')
 mapping.register('txt', 'tXTRecord', encoding='ASCII')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 mapping.registerUnmapping('a', unmapIPAddresses, encoding='ASCII')
+# fmt: on
 
 
 class object(DNSBase):
@@ -164,7 +166,7 @@ class object(DNSBase):
                 univention.admin.filter.expression('mXRecord', '*', escape=False),
                 univention.admin.filter.expression('univentionObjectType', module, escape=True),  # host record without any record
             ]),
-        ])
+        ])  # fmt: skip
 
     @classmethod
     def rewrite_filter(cls, filter: univention.admin.filter.expression, mapping: univention.admin.mapping.mapping) -> None:
@@ -172,7 +174,7 @@ class object(DNSBase):
             filter.transform_to_conjunction(univention.admin.filter.conjunction('|', [
                 univention.admin.filter.expression('aRecord', filter.value, escape=False),
                 univention.admin.filter.expression('aAAARecord', filter.value, escape=False),
-            ]))
+            ]))  # fmt: skip
         else:
             return super().rewrite_filter(filter, mapping)
 

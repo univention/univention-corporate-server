@@ -31,6 +31,7 @@ object_name = _('Contact')
 object_name_plural = _('Contact information')
 long_description = _('Contact information')
 
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -318,6 +319,7 @@ mapping.register('homeTelephoneNumber', 'homePhone')
 mapping.register('mobileTelephoneNumber', 'mobile')
 mapping.register('pagerTelephoneNumber', 'pager')
 mapping.register('homePostalAddress', 'homePostalAddress', mapHomePostalAddress, unmapHomePostalAddress)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):
@@ -425,7 +427,7 @@ class object(univention.admin.handlers.simpleLdap):
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'simpleSecurityObject')]),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'uidObject')]),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'pkiUser')]),
-        ])
+        ])  # fmt: skip
 
 
 lookup = object.lookup

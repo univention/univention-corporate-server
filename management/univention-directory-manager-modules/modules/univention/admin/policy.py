@@ -30,7 +30,7 @@ def policy_object_tab() -> Tab:
         ['ldapFilter'],
         ['requiredObjectClasses', 'prohibitedObjectClasses'],
         ['fixedAttributes', 'emptyAttributes'],
-    ])
+    ])  # fmt: skip
 
 
 def requiredObjectClassesProperty(**kwargs: Any) -> tuple[str, univention.admin.property]:

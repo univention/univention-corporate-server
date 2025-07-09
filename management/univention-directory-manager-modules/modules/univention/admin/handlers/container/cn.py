@@ -24,6 +24,7 @@ short_description = _('Container: Container')
 object_name = _('Container')
 object_name_plural = _('Containers')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -211,6 +212,7 @@ mapping.register('defaultDomainControllerMBGroup', 'univentionDefaultDomainContr
 mapping.register('defaultDomainControllerGroup', 'univentionDefaultDomainControllerGroup', None, univention.admin.mapping.ListToString)
 mapping.register('defaultMemberServerGroup', 'univentionDefaultMemberserverGroup', None, univention.admin.mapping.ListToString)
 mapping.register('defaultClientGroup', 'univentionDefaultClientGroup', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):
@@ -314,7 +316,7 @@ class object(univention.admin.handlers.simpleLdap):
             univention.admin.filter.expression('objectClass', 'organizationalRole'),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('cn', 'univention')]),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionBase')]),
-        ])
+        ])  # fmt: skip
 
 
 lookup = object.lookup

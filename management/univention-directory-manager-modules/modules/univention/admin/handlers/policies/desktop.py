@@ -38,6 +38,7 @@ object_name = _('Desktop policy')
 object_name_plural = _('Desktop policies')
 policy_short_description = _('Desktop settings')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -107,6 +108,7 @@ mapping.register('profile', 'univentionDesktopProfile')
 mapping.register('logonScripts', 'univentionDesktopLogonScripts')
 mapping.register('logoutScripts', 'univentionDesktopLogoutScripts')
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

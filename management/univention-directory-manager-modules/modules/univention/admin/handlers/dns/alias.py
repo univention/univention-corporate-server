@@ -30,6 +30,7 @@ short_description = _('DNS: Alias record')
 object_name = _('Alias record')
 object_name_plural = _('Alias records')
 long_description = _('Assign additional names to a host.')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -77,6 +78,7 @@ mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'relativeDomainName', stripDot, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('cname', 'cNAMERecord', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
+# fmt: on
 
 
 class object(DNSBase):
@@ -87,7 +89,7 @@ class object(DNSBase):
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'dNSZone'),
             univention.admin.filter.expression('cNAMERecord', '*', escape=False),
-        ])
+        ])  # fmt: skip
 
 
 lookup = object.lookup

@@ -26,6 +26,7 @@ short_description = _('Settings: UDM Module')
 object_name = _('UDM Module')
 object_name_plural = _('UDM Modules')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -151,6 +152,7 @@ mapping.register('ucsversionend', 'univentionUCSVersionEnd', None, univention.ad
 # messagecatalogs and umcmessagecatalogs are handled via object._post_map and object._post_unmap defined below
 mapping.register('icon', 'univentionUMCIcon', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('umcregistration', 'univentionUMCRegistrationData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
+# fmt: on
 
 messagecatalog_mappings = {
     'messagecatalog': 'univentionMessageCatalog;entry-lang-',

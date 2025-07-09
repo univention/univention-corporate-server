@@ -39,6 +39,7 @@ long_description = ''
 operations = ['search', 'edit', 'add', 'remove']
 
 
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -111,6 +112,7 @@ mapping.register('description', 'description', None, univention.admin.mapping.Li
 mapping.register('checkCommand', 'univentionNagiosCheckCommand', None, univention.admin.mapping.ListToString)
 mapping.register('checkArgs', 'univentionNagiosCheckArgs', None, univention.admin.mapping.ListToString)
 mapping.register('useNRPE', 'univentionNagiosUseNRPE', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

@@ -26,6 +26,7 @@ short_description = _('DHCP: Host')
 object_name = _('DHCP host')
 object_name_plural = _('DHCP hosts')
 long_description = _('Configure a host identified by its hardware MAC address.')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -66,6 +67,7 @@ layout = [
         ]),
     ]),
 ]
+# fmt: on
 
 
 def unmapHWAddress(old, encoding=()):
@@ -107,10 +109,12 @@ def mapHWAddress(old, encoding=()):
     return old[0].encode(*encoding)
 
 
+# fmt: off
 mapping = univention.admin.mapping.mapping()
 mapping.register('host', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('hwaddress', 'dhcpHWAddress', mapHWAddress, unmapHWAddress)
 mapping.register('fixedaddress', 'univentionDhcpFixedAddress', encoding='ASCII')
+# fmt: on
 
 add_dhcp_options(__name__)
 

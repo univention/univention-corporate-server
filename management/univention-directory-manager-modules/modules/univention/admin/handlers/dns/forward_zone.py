@@ -30,6 +30,7 @@ short_description = _('DNS: Forward lookup zone')
 object_name = _('Forward lookup zone')
 object_name_plural = _('Forward lookup zones')
 long_description = _('Map names to IP addresses (and other data).')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -172,6 +173,7 @@ mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInter
 mapping.register('nameserver', 'nSRecord', encoding='ASCII')
 mapping.register('mx', 'mXRecord', mapMX, unmapMX, encoding='ASCII')
 mapping.register('txt', 'tXTRecord', encoding='ASCII')
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):
@@ -267,7 +269,7 @@ class object(univention.admin.handlers.simpleLdap):
             univention.admin.filter.expression('sOARecord', '*', escape=False),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP4, escape=False)]),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP6, escape=False)]),
-        ])
+        ])  # fmt: skip
 
 
 lookup = object.lookup

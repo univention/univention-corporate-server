@@ -33,6 +33,7 @@ class MailDomain(univention.admin.syntax.UDM_Attribute):
     attribute = 'name'
 
 
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -113,6 +114,7 @@ mapping = univention.admin.mapping.mapping()
 mapping.register('mailQuota', 'univentionMailUserQuota', None, univention.admin.mapping.ListToString)
 mapping.register('mailHomeServer', 'univentionMailHomeServer', None, univention.admin.mapping.ListToString)
 mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):
@@ -182,7 +184,7 @@ class object(univention.admin.handlers.simpleLdap):
                 'univentionMailSharedFolderDeliveryAddress',
                 self.oldattr.get('univentionMailSharedFolderDeliveryAddress', []),
                 [value.encode('UTF-8')],
-            ))
+            ))  # fmt: skip
 
             address = '%s@%s' % (self['name'], self['mailDomain'])
             if self['mailPrimaryAddress'] != address and self['mailPrimaryAddress'].lower() != self.oldinfo.get('mailPrimaryAddress', '').lower():

@@ -44,6 +44,7 @@ object_name = _('Univention Configuration Registry policy')
 object_name_plural = _('Univention Configuration Registry policies')
 policy_short_description = _('Univention Configuration Registry')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -89,6 +90,7 @@ layout = [
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

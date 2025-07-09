@@ -39,6 +39,7 @@ object_name = _('DHCP DNS policy')
 object_name_plural = _('DHCP DNS policies')
 policy_short_description = _('DNS')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -91,6 +92,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('domain_name', 'univentionDhcpDomainName', None, univention.admin.mapping.ListToString)
 mapping.register('domain_name_servers', 'univentionDhcpDomainNameServers')
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

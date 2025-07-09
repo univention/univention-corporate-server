@@ -22,6 +22,7 @@ short_description = _('Settings: LDAP Schema Extension')
 object_name = _('LDAP Schema Extension')
 object_name_plural = _('LDAP Schema Extensions')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -101,6 +102,7 @@ mapping.register('active', 'univentionLDAPSchemaActive', None, univention.admin.
 mapping.register('appidentifier', 'univentionAppIdentifier')
 mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.mapping.ListToString)
 mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

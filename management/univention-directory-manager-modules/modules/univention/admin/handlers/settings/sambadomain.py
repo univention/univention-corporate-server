@@ -45,6 +45,7 @@ short_description = _('Settings: Samba Domain')
 object_name = _('Samba Domain')
 object_name_plural = _('Samba Domains')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -194,6 +195,7 @@ mapping.register('resetCountMinutes', 'sambaLockoutObservationWindow', None, uni
 mapping.register('disconnectTime', 'sambaForceLogoff', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 mapping.register('refuseMachinePWChange', 'sambaRefuseMachinePwdChange', None, univention.admin.mapping.ListToString)
 mapping.register('domainPwdProperties', 'univentionSamba4pwdProperties', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 DOMAIN_PASSWORD_COMPLEX = 1
 DOMAIN_PASSWORD_NO_ANON_CHANGE = 2
@@ -262,7 +264,7 @@ class object(univention.admin.handlers.simpleLdap):
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'sambaDomain'),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionDomain')]),
-        ])
+        ])  # fmt: skip
 
 
 lookup = object.lookup

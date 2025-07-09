@@ -42,6 +42,7 @@ object_name = _('DHCP Allow/Deny policy')
 object_name_plural = _('DHCP Allow/Deny policies')
 policy_short_description = _('Allow/Deny')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -112,6 +113,7 @@ mapping.register('booting', 'univentionDhcpBooting', None, univention.admin.mapp
 mapping.register('duplicates', 'univentionDhcpDuplicates', None, univention.admin.mapping.ListToString)
 mapping.register('declines', 'univentionDhcpDeclines', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

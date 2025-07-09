@@ -25,6 +25,7 @@ short_description = _('Kerberos: KDC Entry')
 object_name = _('KDC Entry')
 object_name_plural = _('KDC Entries')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -110,6 +111,7 @@ mapping.register('keyVersionNumber', 'krb5KeyVersionNumber', None, univention.ad
 mapping.register('KDCFlags', 'krb5KDCFlags', None, univention.admin.mapping.ListToString)
 mapping.register('maxLife', 'krb5MaxLife', None, univention.admin.mapping.ListToString)
 mapping.register('maxRenew', 'krb5MaxRenew', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

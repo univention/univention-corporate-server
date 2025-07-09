@@ -32,6 +32,7 @@ short_description = _('Computer: Domain trust account')
 object_name = _('Domain trust account')
 object_name_plural = _('Domain trust accounts')
 long_description = ''
+# fmt: off
 options = {
     'pki': pki_option(),
 }
@@ -78,6 +79,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 register_pki_mapping(mapping)
 register_role_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap, PKIIntegration):
@@ -167,7 +169,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
     filter = univention.admin.filter.conjunction('&', [
         univention.admin.filter.expression('objectClass', 'sambaSamAccount'),
         univention.admin.filter.expression('sambaAcctFlags', '[I          ]'),
-    ])
+    ])  # fmt: skip
 
     if filter_s:
         filter_p = univention.admin.filter.parse(filter_s)

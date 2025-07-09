@@ -25,6 +25,7 @@ short_description = _('DNS: Service record')
 object_name = _('Service record')
 object_name_plural = _('Service records')
 long_description = _('Resolve well-known services to servers providing those services.')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -65,6 +66,7 @@ layout = [
         ]),
     ]),
 ]
+# fmt: on
 
 
 def unmapName(old: list[bytes], encoding: univention.admin.handlers._Encoding = ()) -> list[str]:
@@ -96,10 +98,12 @@ def mapLocation(old: list[list[str]], encoding: univention.admin.handlers._Encod
     ]
 
 
+# fmt: off
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'relativeDomainName', mapName, unmapName, encoding='ASCII')
 mapping.register('location', 'sRVRecord', mapLocation, unmapLocation, encoding='ASCII')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
+# fmt: on
 
 
 class object(DNSBase):
@@ -110,7 +114,7 @@ class object(DNSBase):
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'dNSZone'),
             univention.admin.filter.expression('sRVRecord', '*', escape=False),
-        ])
+        ])  # fmt: skip
 
 
 lookup = object.lookup

@@ -37,6 +37,7 @@ short_description = _('Computer: IP client')
 object_name = _('IP client')
 object_name_plural = _('IP clients')
 long_description = ''
+# fmt: off
 options = {
     'pki': pki_option(),
 }
@@ -166,6 +167,7 @@ mapping.register('mac', 'macAddress', encoding='ASCII')
 mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapping.ListToString)
 mapping.register('domain', 'associatedDomain', None, univention.admin.mapping.ListToString, encoding='ASCII')
 register_pki_mapping(mapping)
+# fmt: on
 
 # add Nagios extension
 nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
@@ -245,7 +247,7 @@ def lookup(co: None, lo: univention.admin.uldap.access, filter_s: str, base: str
         univention.admin.filter.expression('objectClass', 'univentionHost'),
         univention.admin.filter.expression('objectClass', 'univentionClient'),
         univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'posixAccount')]),
-    ])
+    ])  # fmt: skip
 
     if filter_s:
         filter_p = univention.admin.filter.parse(filter_s)

@@ -29,6 +29,7 @@ short_description = _('Computer: Ubuntu')
 object_name = _('Ubuntu Computer')
 object_name_plural = _('Ubuntu Computers')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -244,6 +245,7 @@ mapping.register('operatingSystem', 'univentionOperatingSystem', None, univentio
 mapping.register('operatingSystemVersion', 'univentionOperatingSystemVersion', None, univention.admin.mapping.ListToString)
 register_pki_mapping(mapping)
 register_role_mapping(mapping)
+# fmt: on
 
 # add Nagios extension
 nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
@@ -270,7 +272,7 @@ class object(ComputerObject):
                 univention.admin.filter.expression('objectClass', 'krb5KDCEntry'),
                 univention.admin.filter.expression('objectClass', 'krb5Principal'),
             ]),
-        ]))
+        ]))  # fmt: skip
         return con
 
 

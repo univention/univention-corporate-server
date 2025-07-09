@@ -25,6 +25,7 @@ short_description = 'DNS: NS Record'
 object_name = 'Nameserver record'
 object_name_plural = 'Nameserver records'
 long_description = _('Delegate a subzone to other nameservers.')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -71,6 +72,7 @@ mapping = univention.admin.mapping.mapping()
 mapping.register('zone', 'relativeDomainName', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('nameserver', 'nSRecord', encoding='ASCII')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
+# fmt: on
 
 
 class object(DNSBase):
@@ -82,7 +84,7 @@ class object(DNSBase):
             univention.admin.filter.expression('objectClass', 'dNSZone'),
             univention.admin.filter.expression('nSRecord', '*', escape=False),
             univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sOARecord', '*', escape=False)]),
-        ])
+        ])  # fmt: skip
 
 
 lookup = object.lookup

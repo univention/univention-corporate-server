@@ -25,6 +25,7 @@ short_description = _('Computer: Backup Directory Node')
 object_name = _('Backup Directory Node')
 object_name_plural = _('Backup Directory Nodes')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -281,6 +282,7 @@ register_pki_mapping(mapping)
 register_role_mapping(mapping)
 # add Nagios extension
 nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
+# fmt: on
 
 
 class object(ComputerObject):
