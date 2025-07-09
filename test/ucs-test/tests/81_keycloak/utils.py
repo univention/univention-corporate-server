@@ -15,6 +15,7 @@ from bs4 import BeautifulSoup
 from playwright.sync_api import Page, expect
 from requests_kerberos import OPTIONAL, HTTPKerberosAuth
 
+from univention.lib.misc import custom_username
 from univention.testing.utils import wait_for_listener_replication_and_postrun
 
 
@@ -197,6 +198,7 @@ def run_command(cmd: list) -> str:
 
 
 def kerberos_auth(portal_login_via_keycloak, ucr, protocol, portal_config):
+    admin_username = custom_username('Administrator')
     if protocol == 'oidc':
         # login with playwright to get rid of the oidc grant
         # privileges dialog, i don't get it to work with requests
@@ -205,13 +207,13 @@ def kerberos_auth(portal_login_via_keycloak, ucr, protocol, portal_config):
         #   code = soup.find('input', {'name': 'code'}).attrs['value']
         #   data = {'code': code, 'accept': 'Yes'}
         #   page = session.post(f'https://ucs-sso-ng.ucs.test/{uri}', data=data, verify='/etc/univention/ssl/ucsCA/CAcert.pem', headers=headers)
-        page = portal_login_via_keycloak('Administrator', 'univention', protocol='oidc')
+        page = portal_login_via_keycloak(admin_username, 'univention', protocol='oidc')
         portal_logout(page, portal_config)
         page.close()
 
     ucr.handler_set(['kerberos/defaults/rdns=false'])
     subprocess.call(['kdestroy'])
-    subprocess.check_call(['kinit', '--password-file=/var/lib/ucs-test/pwdfile', 'Administrator'])
+    subprocess.check_call(['kinit', '--password-file=/var/lib/ucs-test/pwdfile', admin_username])
     session = requests.Session()
     session.auth = HTTPKerberosAuth(mutual_authentication=OPTIONAL)
 
@@ -234,7 +236,7 @@ def kerberos_auth(portal_login_via_keycloak, ucr, protocol, portal_config):
         assert page.status_code == 200
 
     cookies = session.cookies.get_dict()
-    assert cookies['UMCUsername'] == 'Administrator'
+    assert cookies['UMCUsername'] == admin_username
     assert 'UMCSessionId' in cookies
     assert 'AUTH_SESSION_ID' in cookies
     assert 'KEYCLOAK_IDENTITY' in cookies

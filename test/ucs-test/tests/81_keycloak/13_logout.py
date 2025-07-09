@@ -14,6 +14,7 @@ from utils import run_command
 
 from univention.config_registry.frontend import ucr_update
 from univention.lib.i18n import Translation
+from univention.lib.misc import custom_username
 from univention.testing.browser.lib import UMCBrowserTest
 from univention.testing.browser.portal import UCSPortal, UCSSideMenu
 
@@ -55,7 +56,7 @@ def test_logout_refresh_plain(multi_tab_context: BrowserContext):
 
 
 def login_tabs(tabs: list[UCSPortal], protocol: str, login_func):
-    login_func(tabs[0].page, 'Administrator', 'univention', protocol=protocol)
+    login_func(tabs[0].page, custom_username('Administrator'), 'univention', protocol=protocol)
 
     expect(tabs[0].page.get_by_role('link', name=_('Software update')), message='Initial login not successful').to_be_visible()
     portal_url = urlparse(tabs[0].page.url)

@@ -26,7 +26,7 @@ from utils import (
 from univention.appcenter.actions import get_action
 from univention.appcenter.app_cache import Apps
 from univention.config_registry import ConfigRegistry, handler_set, handler_unset
-from univention.lib.misc import custom_groupname
+from univention.lib.misc import custom_groupname, custom_username
 from univention.testing.pytest_univention_playwright import fixtures
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import (
@@ -201,7 +201,7 @@ def keycloak_config(ucr_proper: ConfigRegistry) -> SimpleNamespace:
         'main_content_page_container_id': 'kc-main-content-page-container',
         'login_data': {
             'client_id': 'admin-cli',
-            'username': 'Administrator',
+            'username': custom_username('Administrator'),
             'password': f'{password}',
             'grant_type': 'password',
         },

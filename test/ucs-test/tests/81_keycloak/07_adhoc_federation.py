@@ -17,6 +17,7 @@ from ad_hoc import AdHocProvisioning
 from playwright.sync_api import Page, expect
 from utils import get_portal_tile
 
+from univention.lib.misc import custom_username
 from univention.udm import UDM
 
 
@@ -75,7 +76,7 @@ def test_adhoc_federation(keycloak_admin_connection: KeycloakAdmin, keycloak_adm
         admin_username=keycloak_admin,
         admin_password=keycloak_secret,
         udm_url=keycloak_config.udm_endpoint,
-        udm_username="Administrator",
+        udm_username=custom_username("Administrator"),
         udm_password="univention",
         existing_realm="ucs",
         dummy_realm="test",

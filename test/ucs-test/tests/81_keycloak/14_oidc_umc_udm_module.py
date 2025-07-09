@@ -13,6 +13,7 @@ import requests
 from utils import run_command
 
 from univention.config_registry.frontend import ucr_update
+from univention.lib.misc import custom_username
 
 
 ACCESS_TOKEN_LIFESPAN = 60
@@ -82,7 +83,7 @@ def test_udm_module_with_new_access_token(umc_base_url: str, client: requests.Se
         next_url = parser.form_action
         assert next_url is not None and next_url != '', f'didn\'t find a redirect URL in HTML\n{resp.text}'
 
-    body = {'username': 'Administrator', 'password': 'univention', 'credentialId': ''}
+    body = {'username': custom_username('Administrator'), 'password': 'univention', 'credentialId': ''}
 
     resp = client.post(next_url, body)
     assert resp.status_code == 200, f"Keycloak login failed: {resp.text}"
