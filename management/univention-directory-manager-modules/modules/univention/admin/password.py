@@ -45,7 +45,7 @@ def crypt(password: str, method_id: str | None = None, salt: str | None = None) 
             'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
             'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5',
             '6', '7', '8', '9']
-        urandom = open("/dev/urandom", "rb")
+        urandom = open('/dev/urandom', 'rb')
         for _i in range(16):  # up to 16 bytes of salt are evaluated by crypt(3), overhead is ignored
             o = ord(urandom.read(1))
             while not o < 256 // len(valid) * len(valid):  # make sure not to skew the distribution when using modulo
@@ -191,8 +191,8 @@ def lock_password(password: str) -> str:
     # cleartext password?
     if not RE_PASSWORD_SCHEME.match(password):
         if configRegistry.is_true('password/hashing/bcrypt'):
-            return "{BCRYPT}!%s" % (bcrypt_hash(password))
-        return "{crypt}!%s" % (crypt(password))
+            return '{BCRYPT}!%s' % (bcrypt_hash(password))
+        return '{crypt}!%s' % (crypt(password))
 
     if not is_locked(password):
         match = RE_PASSWORD_SCHEME.match(password).groups()
@@ -232,7 +232,7 @@ def get_password_history(password: str, pwhistory: str, pwhlen: int) -> str:
     if password.startswith('{NT}'):
         newpwhash = password
     elif configRegistry.is_true('password/hashing/bcrypt'):
-        newpwhash = "{BCRYPT}%s" % (bcrypt_hash(password))
+        newpwhash = '{BCRYPT}%s' % (bcrypt_hash(password))
     else:
         newpwhash = crypt(password)
 
@@ -265,22 +265,22 @@ def password_already_used(password: str, pwhistory: str) -> bool:
     >>> password_already_used('a', 'b ' + crypt('a'))
     True
     """
-    for line in pwhistory.split(" "):
-        linesplit = line.split("$")  # $method_id$salt$password_hash
+    for line in pwhistory.split(' '):
+        linesplit = line.split('$')  # $method_id$salt$password_hash
         try:
             if linesplit[0] == '{BCRYPT}':
-                password_hash = line[len('{BCRYPT}'):]
+                password_hash = line[len('{BCRYPT}') :]
                 if bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('ASCII')):
                     return True
             elif linesplit[0] == '{NT}':
-                password_hash = line[len('{NT}$'):]
+                password_hash = line[len('{NT}$') :]
                 if password_hash == ntlm(password)[0]:
                     return True
             else:
                 password_hash = crypt(password, linesplit[1], linesplit[2])
         except IndexError:  # old style password history entry, no method id/salt in there
-            hash_algorithm = hashlib.new("sha1")
-            hash_algorithm.update(password.encode("utf-8"))
+            hash_algorithm = hashlib.new('sha1')
+            hash_algorithm.update(password.encode('utf-8'))
             password_hash = hash_algorithm.hexdigest().upper()
         if password_hash == line:
             return True

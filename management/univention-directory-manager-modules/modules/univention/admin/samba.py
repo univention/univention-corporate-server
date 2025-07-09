@@ -20,7 +20,7 @@ class acctFlags:
             if fallbackflags is not None:
                 self.__flags = OrderedDict(fallbackflags)
                 return
-            flagstring = "[U          ]"
+            flagstring = '[U          ]'
         flags = {}
         flagstring = flagstring[1:-1]
         for letter in flagstring:
@@ -35,13 +35,13 @@ class acctFlags:
         return self.__flags[key]
 
     def decode(self):
-        flagstring = "["
+        flagstring = '['
         for flag, set in self.__flags.items():
             if set:
                 flagstring = flagstring + flag
         while len(flagstring) < 12:
-            flagstring += " "
-        flagstring += "]"
+            flagstring += ' '
+        flagstring += ']'
         return flagstring
 
     def set(self, flag):

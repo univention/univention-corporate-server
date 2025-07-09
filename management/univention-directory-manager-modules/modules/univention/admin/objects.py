@@ -139,7 +139,9 @@ def description(object: univention.admin.handlers.simpleLdap) -> str:
     return object.description()
 
 
-def shadow(lo: univention.admin.uldap.access, module: univention.admin.modules.UdmModule, object: univention.admin.handlers.simpleLdap, position: univention.admin.uldap.position) -> tuple[univention.admin.handlers.simpleLdap, univention.admin.modules.UdmModule] | tuple[None, None]:
+def shadow(
+    lo: univention.admin.uldap.access, module: univention.admin.modules.UdmModule, object: univention.admin.handlers.simpleLdap, position: univention.admin.uldap.position
+) -> tuple[univention.admin.handlers.simpleLdap, univention.admin.modules.UdmModule] | tuple[None, None]:
     """
     If object is a container, return object and module the container
     shadows (that is usually the one that is subordinate in the LDAP tree).

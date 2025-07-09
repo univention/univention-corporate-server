@@ -122,7 +122,9 @@ def check_blocklistentry(udm_obj: univention.admin.handlers.simpleLdap) -> None:
                 dn = 'cn=%s,%s' % (hashed_value, bl_dn)
                 obj = udm_obj.lo_machine_primary.get(dn)
                 if obj and obj['originUniventionObjectIdentifier'][0].decode('utf-8') != udm_obj.entry_uuid:
-                    raise univention.admin.uexceptions.valueError(_('The value "%(value)s" is blocked for the property "%(prop)s".') % {'value': value, 'prop': prop}, property=prop)
+                    raise univention.admin.uexceptions.valueError(
+                        _('The value "%(value)s" is blocked for the property "%(prop)s".') % {'value': value, 'prop': prop}, property=prop
+                    )
 
 
 def cleanup_blocklistentry(blocklist_entries: Iterable, udm_obj: univention.admin.handlers.simpleLdap) -> None:

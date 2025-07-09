@@ -34,7 +34,7 @@ def pki_option():
 def pki_properties():
     return {
         'userCertificate': univention.admin.property(
-            short_description=_("PKI certificate (DER format)"),
+            short_description=_('PKI certificate (DER format)'),
             long_description=_('Public key infrastructure - certificate'),
             syntax=univention.admin.syntax.Base64Upload,
             dontsearch=True,
@@ -249,8 +249,8 @@ def load_certificate(user_certificate):
         }
         X509.m2.XN_FLAG_SEP_MULTILINE & ~X509.m2.ASN1_STRFLGS_ESC_MSB | X509.m2.ASN1_STRFLGS_UTF8_CONVERT
         for entity, prefix in (
-                (x509.get_issuer(), "certificateIssuer"),
-                (x509.get_subject(), "certificateSubject"),
+            (x509.get_issuer(), 'certificateIssuer'),
+            (x509.get_subject(), 'certificateSubject'),
         ):
             for key, attr in load_certificate.ATTR.items():
                 try:
@@ -266,18 +266,17 @@ def load_certificate(user_certificate):
 
 
 load_certificate.ATTR = {
-    "C": "Country",
-    "ST": "State",
-    "L": "Location",
-    "O": "Organisation",
-    "OU": "OrganisationalUnit",
-    "CN": "CommonName",
-    "emailAddress": "Mail",
+    'C': 'Country',
+    'ST': 'State',
+    'L': 'Location',
+    'O': 'Organisation',
+    'OU': 'OrganisationalUnit',
+    'CN': 'CommonName',
+    'emailAddress': 'Mail',
 }
 
 
 class PKIIntegration:
-
     def pki_open(self):
         if self.exists():
             self.reload_certificate()

@@ -34,10 +34,10 @@ class dhcp_leasetimeFixedAttributes(univention.admin.syntax.select):
 module = 'policies/dhcp_leasetime'
 operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc = "univentionPolicyDhcpLeaseTime"
-policy_apply_to = ["dhcp/host", "dhcp/pool", "dhcp/service", "dhcp/subnet", "dhcp/sharedsubnet", "dhcp/shared"]
-policy_position_dn_prefix = "cn=leasetime,cn=dhcp"
-policies_group = "dhcp"
+policy_oc = 'univentionPolicyDhcpLeaseTime'
+policy_apply_to = ['dhcp/host', 'dhcp/pool', 'dhcp/service', 'dhcp/subnet', 'dhcp/sharedsubnet', 'dhcp/shared']
+policy_position_dn_prefix = 'cn=leasetime,cn=dhcp'
+policies_group = 'dhcp'
 childs = False
 short_description = _('Policy: DHCP lease time')
 object_name = _('DHCP lease time policy')

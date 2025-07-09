@@ -244,10 +244,7 @@ class object(univention.admin.handlers.simpleLdap):
                     if i != j:
                         otherFirstIP = ipaddress.ip_address('%s' % j[0])
                         otherLastIP = ipaddress.ip_address('%s' % j[1])
-                        if firstIP < otherFirstIP < lastIP or \
-                                firstIP < otherLastIP < lastIP or \
-                                otherFirstIP < firstIP < otherLastIP or \
-                                otherFirstIP < lastIP < otherLastIP:
+                        if firstIP < otherFirstIP < lastIP or firstIP < otherLastIP < lastIP or otherFirstIP < firstIP < otherLastIP or otherFirstIP < lastIP < otherLastIP:
                             raise univention.admin.uexceptions.rangesOverlapping('%s-%s; %s-%s' % (i[0], i[1], j[0], j[1]))
                 if firstIP not in network or lastIP not in network:
                     raise univention.admin.uexceptions.rangeNotInNetwork('%s-%s' % (firstIP, lastIP))

@@ -102,7 +102,6 @@ class DSLSyntaxError(SyntaxError):
 
 
 class _DSLTransformer(Transformer):
-
     def __init__(self, filename, *args, **kwargs):
         self.__filename = filename
         super().__init__(*args, **kwargs)
@@ -116,7 +115,7 @@ class _DSLTransformer(Transformer):
                 elif item['type'] == 'access':
                     data['rules'].append(item)
                 else:
-                    raise DSLSyntaxError("unknown type", (self.__filename, 0, 0, item['type']))
+                    raise DSLSyntaxError('unknown type', (self.__filename, 0, 0, item['type']))
                 item.pop('type')
 
         return data
@@ -129,10 +128,10 @@ class _DSLTransformer(Transformer):
         cond = items[1]
         parameters = items[2] if len(items) > 2 else {}
         return {
-            "type": "named-condition",
-            "name": name,
-            "condition": cond,
-            "parameters": parameters,
+            'type': 'named-condition',
+            'name': name,
+            'condition': cond,
+            'parameters': parameters,
         }
 
     def condition_line(self, items):
@@ -146,18 +145,18 @@ class _DSLTransformer(Transformer):
         to_blocks = []
         meta = {}
         for item in items:
-            if item.get("type") == "by":
+            if item.get('type') == 'by':
                 by_blocks.append(item['by'])
                 meta = item['meta']
             elif item['type'] == 'to':
                 to_blocks.append(item['to'])
             else:
-                raise DSLSyntaxError("unknown type", (self.__filename, 0, 0, item['type']))
+                raise DSLSyntaxError('unknown type', (self.__filename, 0, 0, item['type']))
 
         return {
-            "type": "access",
-            "by": by_blocks,
-            "to": to_blocks,
+            'type': 'access',
+            'by': by_blocks,
+            'to': to_blocks,
             **meta,
         }
 
@@ -170,31 +169,31 @@ class _DSLTransformer(Transformer):
             raise DSLSyntaxError('role: must contain two ":"', (self.__filename, 0, 0, by['role']))
 
         return {
-            "type": "by",
+            'type': 'by',
             'by': by,
             'meta': meta,
         }
 
     def to_line(self, items):
         current_with = {}
-        current_with["grant"] = []
+        current_with['grant'] = []
         for item in items:
             if isinstance(item, tuple):
                 current_with[item[0]] = item[1]
             elif isinstance(item, dict):  # grant_line
                 if current_with['grant'] is None:
                     raise ValueError("'to' without preceding 'grant'")
-                current_with["grant"].append(item)
+                current_with['grant'].append(item)
 
         self._assert_names('to', current_with, {'grant', 'objecttype', 'if', 'position', 'name', 'description'})
         if not current_with.get('objecttype'):
-            raise DSLSyntaxError("objecttype required", (self.__filename, 0, 0, repr(items)))
+            raise DSLSyntaxError('objecttype required', (self.__filename, 0, 0, repr(items)))
         if '/' not in current_with['objecttype'] and current_with['objecttype'] != '*':
-            raise DSLSyntaxError("invalid objecttype", (self.__filename, 0, 0, current_with['objecttype']))
+            raise DSLSyntaxError('invalid objecttype', (self.__filename, 0, 0, current_with['objecttype']))
 
         return {
-            "type": "to",
-            "to": current_with,
+            'type': 'to',
+            'to': current_with,
         }
 
     def grant_line(self, items):
@@ -202,7 +201,7 @@ class _DSLTransformer(Transformer):
         self._assert_names('grant', grant, {'actions', 'properties', 'permission', 'values'})
 
         if ('permission' not in grant and 'actions' not in grant) or set(grant) & {'actions', 'permission'} == {'actions', 'permission'}:
-            raise DSLSyntaxError('invalid "grant": requires only one of actions or permission', (self.__filename, 0, 0, ""))
+            raise DSLSyntaxError('invalid "grant": requires only one of actions or permission', (self.__filename, 0, 0, ''))
 
         if 'permission' in grant:
             self._assert_names('permission', {grant['permission']}, {'read', 'search', 'write', 'readonly', 'writeonly', 'none', '*'})
@@ -231,9 +230,9 @@ class _DSLTransformer(Transformer):
                 self._assert_names('position.scope', {operator}, set(_SCOPES))
             elif key == 'values':
                 self._assert_names('values.operator', {operator}, set(_VALUE_OPERATORS))
-        if key in {"actions", "properties"} and isinstance(value, str):
-            value = [v.strip() for v in value.split(",")]
-            if key == "actions":
+        if key in {'actions', 'properties'} and isinstance(value, str):
+            value = [v.strip() for v in value.split(',')]
+            if key == 'actions':
                 self._assert_names('actions', set(value), {'search', 'read', 'create', 'modify', 'rename', 'remove', 'move', 'report-create', '*'})
         return (key, value)
 
@@ -254,13 +253,13 @@ class _DSLTransformer(Transformer):
 
     def __default__(self, data, children, meta):  # noqa: PLW3201
         if not data.startswith('__'):
-            log.error("UNHANDLED RULE: %s", data)
+            log.error('UNHANDLED RULE: %s', data)
         return super().__default__(data, children, meta)
 
     def _assert_names(self, name, obj, names):
         if set(obj) - names:
             invalid = ','.join(set(obj) - names)
-            raise DSLSyntaxError(f"unknown {name!r}: {invalid!r}", (self.__filename, 0, 0, invalid))
+            raise DSLSyntaxError(f'unknown {name!r}: {invalid!r}', (self.__filename, 0, 0, invalid))
 
     @staticmethod
     def compose(parsed):
@@ -309,7 +308,7 @@ class UDMAuthorizationConfig:
 
     def __init__(self, filename):
         self.filename = filename
-        self.parser = Lark(UDM_DSL_GRAMMAR, parser="lalr", transformer=_DSLTransformer(self.filename))
+        self.parser = Lark(UDM_DSL_GRAMMAR, parser='lalr', transformer=_DSLTransformer(self.filename))
 
     def parse(self):
         try:
@@ -349,7 +348,7 @@ class UDMAuthorizationConfig:
 
                 more_tos = []
                 for to_clause in to:
-                    object_type = to_clause["objecttype"]
+                    object_type = to_clause['objecttype']
                     if object_type == '*':
                         for oc in all_modules:
                             new_to_clase = copy.deepcopy(to_clause)
@@ -359,7 +358,7 @@ class UDMAuthorizationConfig:
                         more_tos.append(to_clause)
 
                 for to_clause in more_tos:
-                    object_type = to_clause["objecttype"]
+                    object_type = to_clause['objecttype']
                     grants = to_clause.get('grant', [])
 
                     # create a capability and assign it to the capability budle
@@ -376,7 +375,7 @@ class UDMAuthorizationConfig:
                     conditions = cap['conditions']['AND']
 
                     # create a permission set for each capibility and assign it to the capability
-                    psetname = self._unique(conf.permission_sets, f"{object_type.replace('/', '-')}-{capability_name}-all")
+                    psetname = self._unique(conf.permission_sets, f'{object_type.replace("/", "-")}-{capability_name}-all')
                     # assert psetname not in conf.permission_sets, psetname
                     permissions = set()
                     cap['grants-permissions'].append(psetname)
@@ -423,20 +422,20 @@ class UDMAuthorizationConfig:
                                 continue
 
                             if len(grants) != 1:
-                                raise RuntimeError("Security warning: Value based checks must create exactly only one capability (to block)!")
+                                raise RuntimeError('Security warning: Value based checks must create exactly only one capability (to block)!')
                             if len(prop['properties']) != 1:
-                                raise RuntimeError("Security warning: Value based checks must check only one property!")
+                                raise RuntimeError('Security warning: Value based checks must check only one property!')
                             if prop['permission'] == 'write' or 'write' in perms:
-                                raise RuntimeError("Security warning: Value based checks most likely should not add write permissions, design it the opposite way!")
+                                raise RuntimeError('Security warning: Value based checks most likely should not add write permissions, design it the opposite way!')
 
                             operator = _VALUE_OPERATORS.get(operator, '==')
                             val_condition = self._unique(conf.conditions, f'{object_type.replace("/", "-")}-{propname}-values-{operator}', values='||'.join(sorted(values)))
                             conditions.append(val_condition)
                             conf.conditions[val_condition] = {
-                                "udm:conditions:target_property_value_compares": {
-                                    "property": propname,
-                                    "operator": operator,
-                                    "values": values,
+                                'udm:conditions:target_property_value_compares': {
+                                    'property': propname,
+                                    'operator': operator,
+                                    'values': values,
                                 },
                             }
 
@@ -447,8 +446,8 @@ class UDMAuthorizationConfig:
                         ot_condition = f'object-type-is-{object_type.replace("/", "-")}'
                         cap['conditions'].setdefault('AND', []).append(ot_condition)
                         conf.conditions[ot_condition] = {
-                            "udm:conditions:target_object_type_equals": {
-                                "objectType": object_type,
+                            'udm:conditions:target_object_type_equals': {
+                                'objectType': object_type,
                             },
                         }
 
@@ -457,22 +456,22 @@ class UDMAuthorizationConfig:
                     if position and position == '{context}':
                         context = role['context']
                         assert context, to_clause
-                        pos_condition = self._unique(conf.conditions, "position-from-context", scope=scope, context=context)
+                        pos_condition = self._unique(conf.conditions, 'position-from-context', scope=scope, context=context)
                         conditions.append(pos_condition)
                         conf.conditions[pos_condition] = {
-                            "udm:conditions:target_position_from_context": {
-                                "context": context,
-                                "scope": scope,
+                            'udm:conditions:target_position_from_context': {
+                                'context': context,
+                                'scope': scope,
                             },
                         }
                     elif position:
                         position = position.format(ldap_base=ucr['ldap/base'])
-                        pos_condition = self._unique(conf.conditions, "position", scope=scope, position=position)
+                        pos_condition = self._unique(conf.conditions, 'position', scope=scope, position=position)
                         conditions.append(pos_condition)
                         conf.conditions[pos_condition] = {
-                            "udm:conditions:target_position_in": {
-                                "position": position,
-                                "scope": scope,
+                            'udm:conditions:target_position_in': {
+                                'position': position,
+                                'scope': scope,
                             },
                         }
 
@@ -496,6 +495,7 @@ class UDMAuthorizationConfig:
 
 if __name__ == '__main__':
     import argparse
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--config')
     parser.add_argument('--compose', action='store_true')

@@ -70,7 +70,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_modlist(self):
         ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
-        ml = [(a, b, c.lower()) if a == "cn" else (a, b, c) for (a, b, c) in ml]
+        ml = [(a, b, c.lower()) if a == 'cn' else (a, b, c) for (a, b, c) in ml]
         return ml
 
 

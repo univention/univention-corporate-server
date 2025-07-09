@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from re import Match
 
 
-T = TypeVar("T")
+T = TypeVar('T')
 
 
 class conjunction:
@@ -249,7 +249,12 @@ def parse(filter_s: conjunction | expression | str, begin: int = 0, end: int = -
         raise univention.admin.uexceptions.valueInvalidSyntax(part)
 
 
-def walk(filter_p: conjunction | expression, expression_walk_function: Callable[[expression, T | None], None] | None = None, conjunction_walk_function: Callable[[conjunction, T | None], None] | None = None, arg: T | None = None) -> None:
+def walk(
+    filter_p: conjunction | expression,
+    expression_walk_function: Callable[[expression, T | None], None] | None = None,
+    conjunction_walk_function: Callable[[conjunction, T | None], None] | None = None,
+    arg: T | None = None,
+) -> None:
     """
     Walk LDAP filter expression tree.
 
@@ -305,7 +310,7 @@ def replace_fqdn_filter(filter_s: str) -> str:
 
 
 def _replace_fqdn_filter(match: Match[str]) -> str:
-    value, = match.groups()
+    (value,) = match.groups()
     try:
         host, domain = value.split('.', 1)
         operator = '&'
