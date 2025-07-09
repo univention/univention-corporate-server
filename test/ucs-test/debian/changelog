@@ -1,3 +1,9 @@
+ucs-test (12.2.25) unstable; urgency=medium
+
+  * Bug #58183: Deactivate keycloak misc test for ad member
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 09 Jul 2025 22:06:51 +0200
+
 ucs-test (12.2.24) unstable; urgency=medium
 
   * Bug #58132: Deactivate logrotate test until fixed
