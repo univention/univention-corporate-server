@@ -10,3 +10,6 @@ desc: |
    to create the trust object. The upstream patch for Samba 4.22 has been
    backported to fix this.
 bug: [58299]
+erratum: 138
+announced: 2025-07-09
+support: core
