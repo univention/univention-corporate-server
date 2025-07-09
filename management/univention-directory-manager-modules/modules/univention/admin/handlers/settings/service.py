@@ -21,6 +21,7 @@ short_description = _('Settings: Service')
 object_name = _('Service')
 object_name_plural = _('Services')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -49,6 +50,7 @@ layout = [
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

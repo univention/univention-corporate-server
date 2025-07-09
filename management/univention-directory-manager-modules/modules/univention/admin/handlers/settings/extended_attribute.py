@@ -29,6 +29,7 @@ object_name = _('Extended attribute')
 object_name_plural = _('Extended attributes')
 long_description = ''
 
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -317,6 +318,7 @@ mapping.register('version', 'univentionUDMPropertyVersion', None, univention.adm
 mapping.register('CLIName', 'univentionUDMPropertyCLIName', None, univention.admin.mapping.ListToString)
 mapping.register('options', 'univentionUDMPropertyOptions')
 mapping.register('preventUmcDefaultPopup', 'univentionUDMPropertyPreventUmcDefaultPopup', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

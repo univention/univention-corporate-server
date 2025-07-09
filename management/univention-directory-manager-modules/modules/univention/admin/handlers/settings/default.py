@@ -20,6 +20,7 @@ short_description = _('Preferences: Default')
 object_name = _('Default preference')
 object_name_plural = _('Default preferences')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -120,6 +121,7 @@ mapping.register('defaultDomainControllerGroup', 'univentionDefaultDomainControl
 mapping.register('defaultMemberServerGroup', 'univentionDefaultMemberserverGroup', None, univention.admin.mapping.ListToString)
 mapping.register('defaultClientGroup', 'univentionDefaultClientGroup', None, univention.admin.mapping.ListToString)
 mapping.register('defaultKdeProfiles', 'univentionDefaultKdeProfiles', encoding='ASCII')
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

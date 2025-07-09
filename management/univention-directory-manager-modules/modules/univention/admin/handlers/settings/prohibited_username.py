@@ -22,6 +22,7 @@ short_description = _('Settings: Prohibited user names')
 object_name = _('Prohibited user name')
 object_name_plural = _('Prohibited user names')
 long_description = _('Univention Prohibited user names')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -59,6 +60,7 @@ layout = [
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('usernames', 'prohibitedUsername', None, None)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

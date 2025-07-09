@@ -38,6 +38,7 @@ object_name = _('NFS mounts policy')
 object_name_plural = _('NFS mounts policies')
 policy_short_description = _('NFS mounts')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -79,6 +80,7 @@ layout = [
     ]),
     policy_object_tab(),
 ]
+# fmt: on
 
 
 def unmapMounts(old, encoding=()):
@@ -89,10 +91,12 @@ def mapMounts(old, encoding=()):
     return [' '.join(x).encode(*encoding) for x in old]
 
 
+# fmt: off
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('nfsMounts', 'univentionNFSMounts', mapMounts, unmapMounts)
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

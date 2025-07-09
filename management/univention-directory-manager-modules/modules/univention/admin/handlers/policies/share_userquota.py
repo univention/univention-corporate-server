@@ -42,6 +42,7 @@ object_name = _('User quota policy')
 object_name_plural = _('User quota policies')
 policy_short_description = _('User quota')
 long_description = _('Default quota for each user on a share')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -114,6 +115,7 @@ mapping.register('hardLimitInodes', 'univentionQuotaHardLimitInodes', None, univ
 mapping.register('softLimitInodes', 'univentionQuotaSoftLimitInodes', None, univention.admin.mapping.ListToString)
 mapping.register('reapplyeverylogin', 'univentionQuotaReapplyEveryLogin', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

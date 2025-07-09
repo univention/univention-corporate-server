@@ -32,6 +32,7 @@ short_description = _('Share: Directory')
 object_name = _('Share directory')
 object_name_plural = _('Share directories')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -515,6 +516,7 @@ layout = [
         ]),
     ]),
 ]
+# fmt: on
 
 
 def boolToString(value):

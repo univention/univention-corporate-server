@@ -24,6 +24,7 @@ short_description = _('DHCP: Service')
 object_name = _('DHCP service')
 object_name_plural = _('DHCP services')
 long_description = _('The top-level container for a DHCP configuration.')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -53,6 +54,7 @@ layout = [
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('service', 'cn', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 add_dhcp_options(__name__)
 

@@ -22,6 +22,7 @@ short_description = _('Settings: License')
 object_name = _('License')
 object_name_plural = _('Licenses')
 long_description = _('Univention License')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -251,6 +252,7 @@ mapping.register('virtualdesktopusers', 'univentionLicenseVirtualDesktopUsers', 
 mapping.register('virtualdesktopclients', 'univentionLicenseVirtualDesktopClients', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('corporateclients', 'univentionLicenseCorporateClients', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('version', 'univentionLicenseVersion', None, univention.admin.mapping.ListToString, encoding='ASCII')
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

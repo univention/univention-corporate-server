@@ -39,6 +39,7 @@ object_name = _('Replica Node packages policy')
 object_name_plural = _('Replica Node packages policies')
 policy_short_description = _('Packages for Replica Nodes')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -93,6 +94,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('slavePackages', 'univentionSlavePackages')
 mapping.register('slavePackagesRemove', 'univentionSlavePackagesRemove')
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

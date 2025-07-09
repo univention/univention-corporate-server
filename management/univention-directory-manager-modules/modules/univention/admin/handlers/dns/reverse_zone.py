@@ -31,6 +31,7 @@ short_description = _('DNS: Reverse lookup zone')
 object_name = _('Reverse lookup zone')
 object_name_plural = _('Reverse lookup zones')
 long_description = _('Map IP addresses back to hostnames.')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -124,6 +125,7 @@ layout = [
         ]),
     ]),
 ]
+# fmt: on
 
 
 def mapSubnet(subnet, encoding=()):
@@ -169,10 +171,12 @@ def unmapSubnet(zone, encoding=()):
         raise ValueError('Neither an IPv4 nor an IPv6 reverse address')
 
 
+# fmt: off
 mapping = univention.admin.mapping.mapping()
 mapping.register('subnet', 'zoneName', mapSubnet, unmapSubnet, encoding='ASCII')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 mapping.register('nameserver', 'nSRecord', encoding='ASCII')
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

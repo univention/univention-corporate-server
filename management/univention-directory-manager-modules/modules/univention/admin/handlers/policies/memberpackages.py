@@ -39,6 +39,7 @@ object_name = _('Managed Node packages policy')
 object_name_plural = _('Managed Node packages policies')
 policy_short_description = _('Packages for Managed Nodes')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -93,6 +94,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('memberPackages', 'univentionMemberPackages')
 mapping.register('memberPackagesRemove', 'univentionMemberPackagesRemove')
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):
