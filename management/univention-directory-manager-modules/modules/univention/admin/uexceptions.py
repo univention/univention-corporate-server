@@ -102,6 +102,7 @@ class noProperty(base):
 
 
 class valueError(base):
+    """Value error base class"""
 
     def __init__(self, *args, **kwargs):
         self.property = kwargs.pop('property', None)
