@@ -9,3 +9,6 @@ desc: |
  * Experimental support for delegative administration has been added to the
    UDM REST API.
 bug: [58432]
+erratum: 143
+announced: 2025-07-09
+support: core
