@@ -13,7 +13,7 @@ Introduction
    Delegative administration is an experimental feature.
    Don't use it in production yet.
    There are still many shortcomings
-   and in particular things like configuration can and will change in the future.
+   and in particular things like configuration can and will change in upcoming releases.
 
 This document describes the concepts, setup, and configuration
 of delegative administration for Univention Nubus
@@ -21,14 +21,14 @@ and wants to enable experienced Nubus administrators
 to test this experimental feature.
 
 With delegative administration Univention Nubus provides a mechanism
-that enables organizations to implement a decentralized model of managing the LDAP directory through UMC.
+that enables organizations to implement a decentralized model of managing the LDAP directory through UMC and UDM HTTP REST.
 It's possible to assign roles to user objects.
 The roles define what a user can do to the LDAP directory through their user object,
 which objects the user can read, modify, create, or delete.
 
 A common use case is a manager or administrator for an organizational unit within the directory.
 Users with such an assigned role can manage other user objects and group objects of a specific position in the directory,
-for example ``ou=bremen,dc=ldap,dc=base``.
+for example ``ou=bremen,dc=example,dc=org``.
 However, depending on the exact configuration,
 users with such a role can't manage or even see objects from other positions.
 
@@ -58,7 +58,7 @@ Technical requirements
 
 The current implementation has the following technical requirements:
 
-* You need a UCS system with version 5.2-1 and the latest errata updates.
+* You need a UCS system with version 5.2-2 and the latest errata updates.
 * Delegative administration only supports the UCS system roles |UCSPRIMARYDN| and |UCSBACKUPDN|.
 
 .. _da-limits:
@@ -80,13 +80,17 @@ Beware the following limitations:
 
 * The configuration and customization may break any time.
 
-* Delegative administration is currently only implemented for authorization between UMC and the LDAP directory.
-  In particularly, this has no effect on what modules
-  that users can see and use in UMC,
-  like the user or group management modules,
-  just what they can do with these modules.
-  You have to separately configure
-  which module a user can see and use in UMC, see :external+uv-manual:ref:`delegated-administration`.
+* Delegative administration only supports authorization between the UMC,
+  the UDM HTTP REST API, and the LDAP directory.
+  Specifically, it has no effect on which modules
+  users can see or use in the UMC or UDM HTTP REST API,
+  such as the user or group management modules.
+  Rather, it only affects what users can do with these modules.
+  You must configure which modules users can see and use separately.
+  For information about UMC,
+  see :external+uv-manual:ref:`delegated-administration`.
+  For information about the UDM HTTP REST API,
+  see :external+uv-nubus-kubernetes-customization:ref:`customization-api-udm-rest`.
 
 .. _da-features:
 
@@ -105,14 +109,31 @@ Delegative administration offers the following features:
 * Every role defines a list of permissions.
   Permissions define what a role can do in the directory.
 
-* The backend of the UMC modules checks the authorization for the roles of the signed-in user
+* The UDM library checks the authorization for the roles of the signed-in user
   before accessing the directory database
   or returning directory objects from the database.
 
-* Delegative administration provides the following default roles:
+.. _da-roles:
 
-  ``domainadmins``
-    Can manage every object.
+Roles for delegative administration
+===================================
 
-  ``ouadmins``
-    Can manage a particular position in the directory.
+UCS provides the following default roles for delegative administration:
+
+``udm:default-roles:domain-administrator``
+  Can perform CRUD operations for every object on every position in the directory.
+
+``udm:default-roles:organizational-unit-admin``
+  Can perform CRUD operations on user and group objects
+  on a particular position in the directory.
+
+``udm:default-roles:linux-ou-client-manager``
+  Can perform CRUD operations on objects of type ``computers/linux``
+  on a particular position in the directory.
+
+``udm:default-roles:helpdesk-operator``
+  Can reset the password for user objects
+  in a particular position in the directory.
+
+``udm:default-roles:domain-user``
+  Can read his own object.
