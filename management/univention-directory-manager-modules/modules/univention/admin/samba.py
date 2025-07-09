@@ -11,6 +11,7 @@ from collections import OrderedDict
 
 
 class acctFlags:
+    """Samba Account Flags"""
 
     def __init__(self, flagstring=None, flags=None, fallbackflags=None):
         if flags is not None:
