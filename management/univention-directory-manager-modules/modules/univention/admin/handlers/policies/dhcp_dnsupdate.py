@@ -46,6 +46,7 @@ object_name = _('DHCP Dynamic DNS policy')
 object_name_plural = _('DHCP Dynamic DNS policies')
 policy_short_description = _('Dynamic DNS')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -136,6 +137,7 @@ mapping.register('ddnsDoForwardUpdate', 'univentionDhcpDoForwardUpdates', None, 
 mapping.register('updateStaticLeases', 'univentionDhcpUpdateStaticLeases', None, univention.admin.mapping.ListToString)
 mapping.register('clientUpdates', 'univentionDhcpClientUpdates', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

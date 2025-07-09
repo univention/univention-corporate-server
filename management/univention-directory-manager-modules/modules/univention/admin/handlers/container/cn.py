@@ -25,6 +25,7 @@ short_description = _('Container: Container')
 object_name = _('Container')
 object_name_plural = _('Containers')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -212,6 +213,7 @@ mapping.register('defaultDomainControllerMBGroup', 'univentionDefaultDomainContr
 mapping.register('defaultDomainControllerGroup', 'univentionDefaultDomainControllerGroup', None, univention.admin.mapping.ListToString)
 mapping.register('defaultMemberServerGroup', 'univentionDefaultMemberserverGroup', None, univention.admin.mapping.ListToString)
 mapping.register('defaultClientGroup', 'univentionDefaultClientGroup', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

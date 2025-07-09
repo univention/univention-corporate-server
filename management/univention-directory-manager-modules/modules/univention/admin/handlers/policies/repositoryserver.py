@@ -39,6 +39,7 @@ object_name = _('Repository server policy')
 object_name_plural = _('Repository server policies')
 policy_short_description = _('Repository server')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -85,6 +86,7 @@ mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('repositoryServer', 'univentionRepositoryServer', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

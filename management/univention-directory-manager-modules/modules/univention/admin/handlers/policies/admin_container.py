@@ -39,6 +39,7 @@ object_name = _('Univention Directory Manager container settings policy')
 object_name_plural = _('Univention Directory Manager container settings policies')
 policy_short_description = _('Univention Directory Manager container settings')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -84,6 +85,7 @@ mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('listModules', 'univentionAdminListModules')
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

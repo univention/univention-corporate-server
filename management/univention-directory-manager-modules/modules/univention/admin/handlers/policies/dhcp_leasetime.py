@@ -41,6 +41,7 @@ object_name = _('DHCP lease time policy')
 object_name_plural = _('DHCP lease time policies')
 policy_short_description = _('Lease time')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -100,6 +101,7 @@ mapping.register('lease_time_default', 'univentionDhcpLeaseTimeDefault', univent
 mapping.register('lease_time_max', 'univentionDhcpLeaseTimeMax', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 mapping.register('lease_time_min', 'univentionDhcpLeaseTimeMin', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

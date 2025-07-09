@@ -42,6 +42,7 @@ short_description = _('Settings: Samba Configuration')
 object_name = _('Samba Configuration')
 object_name_plural = _('Samba Configuration settings')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -136,6 +137,7 @@ mapping.register('lockoutDuration', 'univentionSambaLockoutDuration', univention
 mapping.register('resetCountMinutes', 'univentionSambaResetCountMinutes', None, univention.admin.mapping.ListToString)
 mapping.register('disconnectTime', 'univentionSambaDisconnectTime', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 mapping.register('refuseMachinePWChange', 'univentionSambaRefuseMachinePWChange', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

@@ -26,6 +26,7 @@ short_description = _('Computer: Managed Node')
 object_name = _('Managed Node')
 object_name_plural = _('Managed Nodes')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -281,6 +282,7 @@ mapping.register('operatingSystem', 'univentionOperatingSystem', None, univentio
 mapping.register('operatingSystemVersion', 'univentionOperatingSystemVersion', None, univention.admin.mapping.ListToString)
 register_pki_mapping(mapping)
 register_role_mapping(mapping)
+# fmt: on
 
 # add Nagios extension
 nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)

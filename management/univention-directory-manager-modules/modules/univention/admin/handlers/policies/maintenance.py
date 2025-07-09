@@ -43,6 +43,7 @@ object_name = _('Maintenance policy')
 object_name_plural = _('Maintenance policies')
 policy_short_description = _('Maintenance')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -142,6 +143,7 @@ mapping.register('shutdown', 'univentionInstallationShutdown', None, univention.
 mapping.register('reboot', 'univentionInstallationReboot', None, univention.admin.mapping.ListToString)
 mapping.register('cron', 'univentionCronActive', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

@@ -23,6 +23,7 @@ short_description = _('Settings: Lock')
 object_name = _('Lock')
 object_name_plural = _('Locks')
 long_description = _('Lock objects')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -60,6 +61,7 @@ layout = [
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('locktime', 'lockTime', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

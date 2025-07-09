@@ -39,6 +39,7 @@ object_name = _('Automatic updates policy')
 object_name_plural = _('Automatic updates policies')
 policy_short_description = _('Automatic updates')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -91,6 +92,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('releaseVersion', 'univentionUpdateVersion', None, univention.admin.mapping.ListToString)
 mapping.register('activate', 'univentionUpdateActivate', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

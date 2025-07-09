@@ -26,6 +26,7 @@ short_description = _('Settings: UMC operation set')
 object_name = _('UMC operation set')
 object_name_plural = _('UMC operation sets')
 long_description = _('List of Operations for UMC')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -84,6 +85,7 @@ layout = [
         ]),
     ]),
 ]
+# fmt: on
 
 
 def mapUMC_CommandPattern(udm_value: list[list[str]], encoding: univention.admin.handlers._Encoding = ()) -> list[bytes]:
@@ -97,12 +99,14 @@ def unmapUMC_CommandPattern(ldap_value: list[bytes], encoding: univention.admin.
     ]
 
 
+# fmt: off
 mapping = udm_mapping.mapping()
 mapping.register('name', 'cn', None, udm_mapping.ListToString)
 mapping.register('description', 'description', None, udm_mapping.ListToString)
 mapping.register('operation', 'umcOperationSetCommand', mapUMC_CommandPattern, unmapUMC_CommandPattern)
 mapping.register('flavor', 'umcOperationSetFlavor', None, udm_mapping.ListToString)
 mapping.register('hosts', 'umcOperationSetHost')
+# fmt: on
 
 
 class object(simpleLdap):

@@ -21,6 +21,7 @@ short_description = _('Data')
 object_name = _('Data')
 object_name_plural = _('Data')
 long_description = _('Arbitrary data files')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -118,6 +119,7 @@ mapping.register('ucsversionend', 'univentionUCSVersionEnd', None, univention.ad
 mapping.register('meta', 'univentionDataMeta', None)
 mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.mapping.ListToString)
 mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

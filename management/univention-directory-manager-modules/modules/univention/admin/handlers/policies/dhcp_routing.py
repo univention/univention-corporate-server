@@ -39,6 +39,7 @@ object_name = _('DHCP routing policy')
 object_name_plural = _('DHCP routing policies')
 policy_short_description = _('Routing')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -84,6 +85,7 @@ mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('routers', 'univentionDhcpRouters')
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

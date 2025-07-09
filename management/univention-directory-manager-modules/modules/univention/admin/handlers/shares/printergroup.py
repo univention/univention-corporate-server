@@ -24,6 +24,7 @@ short_description = _('Printer share: Printer group')
 object_name = _('Printer share group')
 object_name_plural = _('Printer share groups')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -78,6 +79,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('spoolHost', 'univentionPrinterSpoolHost', encoding='ASCII')
 mapping.register('sambaName', 'univentionPrinterSambaName', None, univention.admin.mapping.ListToString)
 mapping.register('groupMember', 'univentionPrinterGroupMember')
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

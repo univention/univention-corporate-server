@@ -24,6 +24,7 @@ short_description = _('DHCP: Shared network')
 object_name = _('Shared network')
 object_name_plural = _('Shared network')
 long_description = _('A shared physical network, where multiple IP address ranges are used.')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -53,6 +54,7 @@ layout = [
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 add_dhcp_options(__name__)
 

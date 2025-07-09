@@ -28,6 +28,7 @@ object_name = _('Password')
 object_name_plural = _('Passwords')
 long_description = ''
 options: dict[str, univention.admin.option] = {}
+# fmt: off
 property_descriptions = {
     'username': univention.admin.property(
         short_description=_('User name'),
@@ -51,6 +52,7 @@ layout = [
     Tab(_('Change password'), _('Change password'), [
         'password']),
 ]
+# fmt: on
 
 object = univention.admin.handlers.users.user.object
 

@@ -27,6 +27,7 @@ short_description = _('Settings: Printer Driver List')
 object_name = _('Printer Driver List')
 object_name_plural = _('Printer Driver Lists')
 long_description = _('List of drivers for printers')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -60,6 +61,7 @@ layout = [
         ]),
     ]),
 ]
+# fmt: on
 
 
 def unmapDriverList(ldap_value: list[bytes], encoding: univention.admin.handlers._Encoding = ()) -> list[list[str]]:
@@ -76,9 +78,11 @@ def mapDriverList(udm_value: list[str], encoding: univention.admin.handlers._Enc
     return ldap_attr_list
 
 
+# fmt: off
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('printmodel', 'printerModel', mapDriverList, unmapDriverList)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

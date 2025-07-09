@@ -45,6 +45,7 @@ short_description = _('Printer share: Printer')
 object_name = _('Printer')
 object_name_plural = _('Printers')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -144,6 +145,7 @@ layout = [
         ]),
     ]),
 ]
+# fmt: on
 
 
 _AVAILABLE_PRINTER_SCHEMAS: list[str] = []
@@ -168,6 +170,7 @@ def mapPrinterURI(value: list[str], encoding: tuple[str, ...] = ()) -> bytes:
     return ''.join(value).encode(*encoding)
 
 
+# fmt: off
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('location', 'univentionPrinterLocation', None, univention.admin.mapping.ListToString)
@@ -179,6 +182,7 @@ mapping.register('sambaName', 'univentionPrinterSambaName', None, univention.adm
 mapping.register('ACLUsers', 'univentionPrinterACLUsers')
 mapping.register('ACLGroups', 'univentionPrinterACLGroups')
 mapping.register('ACLtype', 'univentionPrinterACLtype', None, univention.admin.mapping.ListToString, encoding='ASCII')
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

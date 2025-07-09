@@ -24,6 +24,7 @@ short_description = _('Preferences: Default Container')
 object_name = _('Default container')
 object_name_plural = _('Default containers')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -174,6 +175,7 @@ mapping.register('shares', 'univentionSharesObject')
 mapping.register('printers', 'univentionPrintersObject')
 mapping.register('mail', 'univentionMailObject')
 mapping.register('license', 'univentionLicenseObject')
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

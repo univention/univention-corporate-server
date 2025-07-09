@@ -39,6 +39,7 @@ object_name_plural = _('UMC policies')
 policy_short_description = _('Defines a set of allowed UMC operations')
 long_description = ''
 
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -84,6 +85,7 @@ mapping = udm_mapping.mapping()
 mapping.register('name', 'cn', None, udm_mapping.ListToString)
 mapping.register('allow', 'umcPolicyGrantedOperationSet')
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(simplePolicy):

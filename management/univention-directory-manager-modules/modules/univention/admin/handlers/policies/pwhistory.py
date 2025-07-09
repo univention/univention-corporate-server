@@ -40,6 +40,7 @@ object_name = _('Passwords policy')
 object_name_plural = _('Passwords policies')
 policy_short_description = _('Passwords')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -106,6 +107,7 @@ mapping.register('expiryInterval', 'univentionPWExpiryInterval', None, univentio
 mapping.register('pwLength', 'univentionPWLength', None, univention.admin.mapping.ListToIntToString)
 mapping.register('pwQualityCheck', 'univentionPWQualityCheck', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

@@ -43,6 +43,7 @@ object_name = _('Repository synchronisation policy')
 object_name_plural = _('Repository synchronisation policies')
 policy_short_description = _('Repository synchronisation')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -114,6 +115,7 @@ layout = [
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

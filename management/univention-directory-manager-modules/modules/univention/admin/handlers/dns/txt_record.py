@@ -28,6 +28,7 @@ short_description = _('DNS: TXT Record')
 object_name = _('TXT record')
 object_name_plural = _('TXT record')
 long_description = _('Resolve the symbolic name to some textual data.')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -75,6 +76,7 @@ mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'relativeDomainName', None, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('txt', 'tXTRecord', encoding='ASCII')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
+# fmt: on
 
 
 class object(DNSBase):
