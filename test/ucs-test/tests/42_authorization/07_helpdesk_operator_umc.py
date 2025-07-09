@@ -55,27 +55,29 @@ def test_helpdesk_operator_cant_create(position, expected, ou_helpdesk_operator_
         position = position.format(ou_dn=ou.dn, ldap_base=ldap_base)
 
 
-@pytest.mark.parametrize('position, changes, expected', [
-    ('cn=users,{ou_dn}', {"guardianRoles": ["umc:udm:helpdesk-operator&umc:udm:ou=bremen"]}, False),
-    ('cn=users,{ou_dn}', {'description': 'dsfdsf'}, False),
+@pytest.mark.parametrize('user, changes, expected', [
+    ('{normal_user}', {"guardianRoles": ["umc:udm:helpdesk-operator&umc:udm:ou=bremen"]}, False),
+    ('{normal_user}', {'description': 'dsfdsf'}, False),
     ('uid=Administrator,cn=users,{ldap_base}', {'description': 'dsfdsf'}, False),
 ])
-def test_helpdesk_operator_cant_modify_properties(ldap_base, ou, position, changes, expected, udm, ou_helpdesk_operator_umc_client):
-    dn, _ = udm.create_user(position=position.format(ou_dn=ou.dn, ldap_base=ldap_base))
-    res = ou_helpdesk_operator_umc_client.modify_object(dn, changes, 'users/user')
+def test_helpdesk_operator_cant_modify_properties(ldap_base, ou, user, changes, expected, udm, ou_helpdesk_operator_umc_client):
+    dn, _ = udm.create_user(position=ou.user_default_container)
+    user_dn = user.format(normal_user=dn, ldap_base=ldap_base)
+
+    res = ou_helpdesk_operator_umc_client.modify_object(user_dn, changes, 'users/user')
     if not expected:
         assert not res['success']
-        if dn.endswith(ou.dn):
+        if user_dn.endswith(ou.dn):
             assert res['details'] == translate('Permission denied.')
         else:
-            assert res['details'] == f'{translate("No such object:")} {dn}.'
+            assert res['details'] == f'{translate("No such object:")} {user_dn}.'
     else:
         assert res['success']
-        assert res['$dn$'] == dn
+        assert res['$dn$'] == user_dn
 
 
 @pytest.mark.parametrize('position, expected', [
-    ('{ldap_base}', False),
+    ('cn=users,{ldap_base}', False),
     ('cn=users,{ou_dn}', True),
 ])
 def test_helpdesk_operator_can_reset_password(ldap_base, ou, position, expected, udm, random_username, ou_helpdesk_operator_umc_client):
