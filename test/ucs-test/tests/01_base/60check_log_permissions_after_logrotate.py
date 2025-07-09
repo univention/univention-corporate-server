@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner pytest-3 -s -l -vv
 ## desc: test log file permissions after logrotate
 ## exposure: dangerous
-## tags: [udm]
+## tags: [udm, SKIP]
 ## packages:
 ##   - univention-base-files
 

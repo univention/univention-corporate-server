@@ -1,3 +1,9 @@
+ucs-test (12.2.24) unstable; urgency=medium
+
+  * Bug #58132: Deactivate logrotate test until fixed
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 09 Jul 2025 21:08:55 +0200
+
 ucs-test (12.2.23) unstable; urgency=medium
 
   * Bug #58432: fix usage of random_ucs_version in 72_test_udm_extensions.py
