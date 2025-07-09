@@ -77,7 +77,7 @@ def test_adhoc_federation(keycloak_admin_connection: KeycloakAdmin, keycloak_adm
         admin_password=keycloak_secret,
         udm_url=keycloak_config.udm_endpoint,
         udm_username=custom_username("Administrator"),
-        udm_password="univention",
+        udm_password=ucr.get("tests/domainadmin/pwd", "univention"),
         existing_realm="ucs",
         dummy_realm="test",
         path=keycloak_config.path,
