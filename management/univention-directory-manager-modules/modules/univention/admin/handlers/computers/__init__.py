@@ -15,5 +15,5 @@ __path__ = __import__('pkgutil').extend_path(__path__, __name__)  # type: ignore
 computers = [
     importlib.import_module('%s.%s' % (__name__, fn[:-3]))
     for fn in os.listdir(os.path.dirname(__file__))
-    if fn.endswith(".py") and not fn.startswith("__") and fn not in ('computer.py',)
+    if fn.endswith('.py') and not fn.startswith('__') and fn not in ('computer.py',)
 ]

@@ -266,13 +266,19 @@ class object(ComputerObject):
     def lookup_filter(cls, filter_s: str | None = None, lo: univention.admin.uldap.access | None = None) -> univention.admin.filter.conjunction:
         con = super().lookup_filter(filter_s, lo)
         con.expressions.append(
-            univention.admin.filter.conjunction('|', [
-                univention.admin.filter.expression('objectClass', 'posixAccount'),
-                univention.admin.filter.conjunction('&', [
-                    univention.admin.filter.expression('objectClass', 'krb5KDCEntry'),
-                    univention.admin.filter.expression('objectClass', 'krb5Principal'),
-                ]),
-            ]),
+            univention.admin.filter.conjunction(
+                '|',
+                [
+                    univention.admin.filter.expression('objectClass', 'posixAccount'),
+                    univention.admin.filter.conjunction(
+                        '&',
+                        [
+                            univention.admin.filter.expression('objectClass', 'krb5KDCEntry'),
+                            univention.admin.filter.expression('objectClass', 'krb5Principal'),
+                        ],
+                    ),
+                ],
+            ),
         )
         return con
 
@@ -282,4 +288,8 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn: str, attr: univention.admin.handlers._Attributes, canonical: bool = False) -> bool:
-    return b'univentionHost' in attr.get('objectClass', []) and b'univentionLinuxClient' in attr.get('objectClass', []) and (b'posixAccount' in attr.get('objectClass', []) or (b'krb5KDCEntry' in attr.get('objectClass', []) and b'krb5Principal' in attr.get('objectClass', [])))
+    return (
+        b'univentionHost' in attr.get('objectClass', [])
+        and b'univentionLinuxClient' in attr.get('objectClass', [])
+        and (b'posixAccount' in attr.get('objectClass', []) or (b'krb5KDCEntry' in attr.get('objectClass', []) and b'krb5Principal' in attr.get('objectClass', [])))
+    )

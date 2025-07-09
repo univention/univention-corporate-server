@@ -83,18 +83,21 @@ class object(DNSBase):
 
     @classmethod
     def unmapped_lookup_filter(cls) -> univention.admin.filter.conjunction:
-        return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'dNSZone'),
-            univention.admin.filter.expression('tXTRecord', '*', escape=False),
-            # negated forward_zone.py
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sOARecord', '*', escape=False)]),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP4, escape=False)]),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP6, escape=False)]),
-            # negated host_record.py
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('aRecord', '*', escape=False)]),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('aAAARecord', '*', escape=False)]),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('mXRecord', '*', escape=False)]),
-        ])
+        return univention.admin.filter.conjunction(
+            '&',
+            [
+                univention.admin.filter.expression('objectClass', 'dNSZone'),
+                univention.admin.filter.expression('tXTRecord', '*', escape=False),
+                # negated forward_zone.py
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sOARecord', '*', escape=False)]),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP4, escape=False)]),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP6, escape=False)]),
+                # negated host_record.py
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('aRecord', '*', escape=False)]),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('aAAARecord', '*', escape=False)]),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('mXRecord', '*', escape=False)]),
+            ],
+        )
 
 
 lookup = object.lookup

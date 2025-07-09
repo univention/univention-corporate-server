@@ -29,8 +29,8 @@ module = 'policies/ldapserver'
 operations = ['add', 'edit', 'remove', 'search']
 
 policy_oc = 'univentionPolicyLDAPServer'
-policy_apply_to = ["computers/memberserver"]
-policy_position_dn_prefix = "cn=ldap"
+policy_apply_to = ['computers/memberserver']
+policy_position_dn_prefix = 'cn=ldap'
 
 childs = False
 short_description = _('Policy: LDAP server')

@@ -23,19 +23,20 @@ def logonToChangePWMap(val: str) -> bytes:
     'User must logon to change PW' behaves like an integer (at least
     to us), but must be stored as either 0 (allow) or 2 (disallow)
     """
-    if (val == "1"):
-        return b"2"
+    if val == '1':
+        return b'2'
     else:
-        return b"0"
+        return b'0'
+
 
 # see also container/dc.py
 
 
 def logonToChangePWUnmap(val: list[bytes]) -> str:
-    if (val[0] == b"2"):
-        return "1"
+    if val[0] == b'2':
+        return '1'
     else:
-        return "2"
+        return '2'
 
 
 module = 'settings/sambadomain'
@@ -256,15 +257,18 @@ class object(univention.admin.handlers.simpleLdap):
             else:
                 props = props & (~DOMAIN_PASSWORD_STORE_CLEARTEXT)
 
-        if props != int(self.get("domainPwdProperties", 0)):
+        if props != int(self.get('domainPwdProperties', 0)):
             self['domainPwdProperties'] = str(props)
 
     @classmethod
     def unmapped_lookup_filter(cls) -> univention.admin.filter.conjunction:
-        return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'sambaDomain'),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionDomain')]),
-        ])
+        return univention.admin.filter.conjunction(
+            '&',
+            [
+                univention.admin.filter.expression('objectClass', 'sambaDomain'),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionDomain')]),
+            ],
+        )
 
 
 lookup = object.lookup

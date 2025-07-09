@@ -33,10 +33,10 @@ class dhcp_statementsFixedAttributes(univention.admin.syntax.select):
 module = 'policies/dhcp_statements'
 operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc = "univentionPolicyDhcpStatements"
-policy_apply_to = ["dhcp/host", "dhcp/pool", "dhcp/service", "dhcp/subnet", "dhcp/sharedsubnet", "dhcp/shared"]
-policy_position_dn_prefix = "cn=statements,cn=dhcp"
-policies_group = "dhcp"
+policy_oc = 'univentionPolicyDhcpStatements'
+policy_apply_to = ['dhcp/host', 'dhcp/pool', 'dhcp/service', 'dhcp/subnet', 'dhcp/sharedsubnet', 'dhcp/shared']
+policy_position_dn_prefix = 'cn=statements,cn=dhcp'
+policies_group = 'dhcp'
 childs = False
 short_description = _('Policy: DHCP statements')
 object_name = _('DHCP statements policy')

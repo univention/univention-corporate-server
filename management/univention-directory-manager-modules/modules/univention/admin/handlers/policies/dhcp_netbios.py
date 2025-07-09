@@ -30,10 +30,10 @@ class dhcp_netbiosFixedAttributes(univention.admin.syntax.select):
 module = 'policies/dhcp_netbios'
 operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc = "univentionPolicyDhcpNetbios"
-policy_apply_to = ["dhcp/host", "dhcp/pool", "dhcp/service", "dhcp/subnet", "dhcp/sharedsubnet", "dhcp/shared"]
-policy_position_dn_prefix = "cn=netbios,cn=dhcp"
-policies_group = "dhcp"
+policy_oc = 'univentionPolicyDhcpNetbios'
+policy_apply_to = ['dhcp/host', 'dhcp/pool', 'dhcp/service', 'dhcp/subnet', 'dhcp/sharedsubnet', 'dhcp/shared']
+policy_position_dn_prefix = 'cn=netbios,cn=dhcp'
+policies_group = 'dhcp'
 childs = False
 short_description = _('Policy: DHCP NetBIOS')
 object_name = _('DHCP NetBIOS policy')

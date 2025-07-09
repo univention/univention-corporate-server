@@ -57,10 +57,13 @@ class object(univention.admin.handlers.simpleLdap):
 
     @classmethod
     def unmapped_lookup_filter(cls) -> univention.admin.filter.conjunction:
-        return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'organizationalRole'),
-            univention.admin.filter.expression('cn', 'univention'),
-        ])
+        return univention.admin.filter.conjunction(
+            '&',
+            [
+                univention.admin.filter.expression('objectClass', 'organizationalRole'),
+                univention.admin.filter.expression('cn', 'univention'),
+            ],
+        )
 
 
 lookup = object.lookup

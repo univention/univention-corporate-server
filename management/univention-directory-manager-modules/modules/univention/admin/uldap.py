@@ -45,7 +45,7 @@ def getBaseDN(host: str = 'localhost', port: int | None = None, uri: str | None 
     if not uri:
         if not port:
             port = int(configRegistry.get('ldap/server/port', 7389))
-        uri = "ldap://%s:%s" % (host, port)
+        uri = 'ldap://%s:%s' % (host, port)
     try:
         lo = ldap.ldapobject.ReconnectLDAPObject(uri, trace_stack_limit=None)
         result = lo.search_s('', ldap.SCOPE_BASE, 'objectClass=*', ['NamingContexts'])
@@ -137,11 +137,11 @@ class position:
         :param str loginDomain: The login domain name.
         """
         if not base:
-            raise univention.admin.uexceptions.insufficientInformation(_("There was no LDAP base specified."))
+            raise univention.admin.uexceptions.insufficientInformation(_('There was no LDAP base specified.'))
 
         self.__loginDomain = loginDomain or base
         self.__base = base
-        self.__pos = ""
+        self.__pos = ''
         self.__indomain = False
 
     def setBase(self, base: str) -> None:
@@ -182,7 +182,7 @@ class position:
         dn = ldap.dn.str2dn(dn)
         base = ldap.dn.str2dn(self.getBase())
         if dn[-len(base):] == base:
-            dn = dn[:-len(base)]
+            dn = dn[: -len(base)]
         self.__setPosition(ldap.dn.dn2str(dn))
 
     def getRdn(self) -> str:
@@ -343,14 +343,15 @@ class access:
             try:
                 self.lo = univention.uldap.access(host, port, base, binddn, bindpw, start_tls, uri=uri, follow_referral=follow_referral)
             except ldap.INVALID_CREDENTIALS:
-                raise univention.admin.uexceptions.authFail(_("Authentication failed"))
+                raise univention.admin.uexceptions.authFail(_('Authentication failed'))
             except ldap.UNWILLING_TO_PERFORM:
-                raise univention.admin.uexceptions.authFail(_("Authentication failed"))
+                raise univention.admin.uexceptions.authFail(_('Authentication failed'))
         self.require_license = False
         self.allow_modify = True
         self.licensetypes = ['UCS']
 
         from univention.admin.authorization import Authorization
+
         self.authz = Authorization()
 
     @property
@@ -372,9 +373,9 @@ class access:
         try:
             self.lo.bind(binddn, bindpw)
         except ldap.INVALID_CREDENTIALS:
-            raise univention.admin.uexceptions.authFail(_("Authentication failed"))
+            raise univention.admin.uexceptions.authFail(_('Authentication failed'))
         except ldap.UNWILLING_TO_PERFORM:
-            raise univention.admin.uexceptions.authFail(_("Authentication failed"))
+            raise univention.admin.uexceptions.authFail(_('Authentication failed'))
         self.__require_licence()
 
     def bind_saml(self, bindpw: str) -> None:
@@ -386,7 +387,7 @@ class access:
         try:
             return self.lo.bind_saml(bindpw)
         except (ldap.INVALID_CREDENTIALS, ldap.UNWILLING_TO_PERFORM):
-            raise univention.admin.uexceptions.authFail(_("Authentication failed"))
+            raise univention.admin.uexceptions.authFail(_('Authentication failed'))
         self.__require_licence()
 
     def bind_oauthbearer(self, authzid: str | None, bindpw: str) -> None:
@@ -400,7 +401,7 @@ class access:
             return self.lo.bind_oauthbearer(authzid, bindpw)
         except (ldap.INVALID_CREDENTIALS, ldap.UNWILLING_TO_PERFORM) as exc:
             log.debug('OAUTHBEARER authentication failed: %r', exc)
-            raise univention.admin.uexceptions.authFail(_("Authentication failed"))
+            raise univention.admin.uexceptions.authFail(_('Authentication failed'))
         self.__require_licence()
 
     def __require_licence(self) -> None:
@@ -690,7 +691,7 @@ class access:
         :param response: An optional dictionary to receive the server controls of the result.
         """
         if move_childs != 0:
-            raise univention.admin.uexceptions.noObject(_("Moving children is not supported."))
+            raise univention.admin.uexceptions.noObject(_('Moving children is not supported.'))
         self._validateLicense()
         if not self.allow_modify and not ignore_license:
             udm_log.warning('move dn: %s', dn)

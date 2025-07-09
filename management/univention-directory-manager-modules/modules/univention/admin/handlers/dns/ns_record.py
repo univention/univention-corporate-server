@@ -80,11 +80,14 @@ class object(DNSBase):
 
     @classmethod
     def unmapped_lookup_filter(cls) -> univention.admin.filter.conjunction:
-        return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'dNSZone'),
-            univention.admin.filter.expression('nSRecord', '*', escape=False),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sOARecord', '*', escape=False)]),
-        ])
+        return univention.admin.filter.conjunction(
+            '&',
+            [
+                univention.admin.filter.expression('objectClass', 'dNSZone'),
+                univention.admin.filter.expression('nSRecord', '*', escape=False),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sOARecord', '*', escape=False)]),
+            ],
+        )
 
 
 lookup = object.lookup
@@ -93,8 +96,5 @@ lookup_filter = object.lookup_filter
 
 def identify(dn: str, attr: univention.admin.handlers._Attributes, canonical: bool = False) -> bool:
     return bool(
-        attr.get('nSRecord')
-        and is_dns(attr)
-        and not is_zone(attr)
-        and is_not_handled_by_other_module_than(attr, module),
+        attr.get('nSRecord') and is_dns(attr) and not is_zone(attr) and is_not_handled_by_other_module_than(attr, module),
     )

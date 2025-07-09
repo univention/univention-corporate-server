@@ -144,7 +144,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         ml = super()._ldap_modlist()
 
         if self.hasChanged('name') and self['name']:
-            requested_uid = "%s$" % self['name']
+            requested_uid = '%s$' % self['name']
             try:
                 ml.append(('uid', self.oldattr.get('uid', []), [self.request_lock('uid', requested_uid).encode('UTF-8')]))
             except univention.admin.uexceptions.noLock:
@@ -166,10 +166,13 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None, response=None):
-    filter = univention.admin.filter.conjunction('&', [
-        univention.admin.filter.expression('objectClass', 'sambaSamAccount'),
-        univention.admin.filter.expression('sambaAcctFlags', '[I          ]'),
-    ])
+    filter = univention.admin.filter.conjunction(
+        '&',
+        [
+            univention.admin.filter.expression('objectClass', 'sambaSamAccount'),
+            univention.admin.filter.expression('sambaAcctFlags', '[I          ]'),
+        ],
+    )
 
     if filter_s:
         filter_p = univention.admin.filter.parse(filter_s)

@@ -19,18 +19,17 @@ def logonToChangePWMap(udm_value):
     'User must logon to change PW' behaves like an integer (at least
     to us), but must be stored as either 0 (allow) or 2 (disallow)
     """
-    if (udm_value == "1"):
-        return b"2"
+    if udm_value == '1':
+        return b'2'
     else:
-        return b"0"
+        return b'0'
 
 
 def logonToChangePWUnmap(ldap_value):
-
-    if (ldap_value[0] == b"2"):
-        return "1"
+    if ldap_value[0] == b'2':
+        return '1'
     else:
-        return "2"
+        return '2'
 
 
 module = 'settings/sambaconfig'
@@ -144,10 +143,13 @@ class object(univention.admin.handlers.simpleLdap):
 
     @classmethod
     def unmapped_lookup_filter(cls):
-        return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'univentionSambaConfig'),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionDomain')]),
-        ])
+        return univention.admin.filter.conjunction(
+            '&',
+            [
+                univention.admin.filter.expression('objectClass', 'univentionSambaConfig'),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionDomain')]),
+            ],
+        )
 
 
 lookup = object.lookup

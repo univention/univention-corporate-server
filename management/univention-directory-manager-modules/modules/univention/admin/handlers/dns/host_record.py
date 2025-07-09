@@ -157,24 +157,35 @@ class object(DNSBase):
 
     @classmethod
     def unmapped_lookup_filter(cls) -> univention.admin.filter.conjunction:
-        return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'dNSZone'),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sOARecord', '*', escape=False)]),
-            univention.admin.filter.conjunction('|', [
-                univention.admin.filter.expression('aRecord', '*', escape=False),
-                univention.admin.filter.expression('aAAARecord', '*', escape=False),
-                univention.admin.filter.expression('mXRecord', '*', escape=False),
-                univention.admin.filter.expression('univentionObjectType', module, escape=True),  # host record without any record
-            ]),
-        ])
+        return univention.admin.filter.conjunction(
+            '&',
+            [
+                univention.admin.filter.expression('objectClass', 'dNSZone'),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('sOARecord', '*', escape=False)]),
+                univention.admin.filter.conjunction(
+                    '|',
+                    [
+                        univention.admin.filter.expression('aRecord', '*', escape=False),
+                        univention.admin.filter.expression('aAAARecord', '*', escape=False),
+                        univention.admin.filter.expression('mXRecord', '*', escape=False),
+                        univention.admin.filter.expression('univentionObjectType', module, escape=True),  # host record without any record
+                    ],
+                ),
+            ],
+        )
 
     @classmethod
     def rewrite_filter(cls, filter: univention.admin.filter.expression, mapping: univention.admin.mapping.mapping) -> None:
         if filter.variable == 'a':
-            filter.transform_to_conjunction(univention.admin.filter.conjunction('|', [
-                univention.admin.filter.expression('aRecord', filter.value, escape=False),
-                univention.admin.filter.expression('aAAARecord', filter.value, escape=False),
-            ]))
+            filter.transform_to_conjunction(
+                univention.admin.filter.conjunction(
+                    '|',
+                    [
+                        univention.admin.filter.expression('aRecord', filter.value, escape=False),
+                        univention.admin.filter.expression('aAAARecord', filter.value, escape=False),
+                    ],
+                ),
+            )
         else:
             return super().rewrite_filter(filter, mapping)
 
@@ -188,5 +199,5 @@ def identify(dn: str, attr: univention.admin.handlers._Attributes, canonical: bo
         is_dns(attr)
         and not is_zone(attr)
         and is_not_handled_by_other_module_than(attr, module)
-        and (has_any(attr, 'aRecord', 'aAAARecord', 'mXRecord') or attr.get("univentionObjectType")),
+        and (has_any(attr, 'aRecord', 'aAAARecord', 'mXRecord') or attr.get('univentionObjectType')),
     )

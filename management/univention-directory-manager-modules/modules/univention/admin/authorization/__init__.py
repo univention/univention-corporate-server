@@ -46,7 +46,7 @@ def get_user(lo, user_dn: str):
 def get_user_roles(obj) -> list[str]:
     if hasattr(obj, 'open_guardian'):
         obj.open_guardian()
-    role_set = set(obj.get("guardianInheritedRoles", []) + obj.get("guardianRoles", []))
+    role_set = set(obj.get('guardianInheritedRoles', []) + obj.get('guardianRoles', []))
     return role_set
 
 
@@ -275,6 +275,7 @@ class Authorization:
 
         # FIXME: deepcopy is expensive
         import copy
+
         moved_obj = copy.deepcopy(obj)
         moved_obj.dn = dest
 
@@ -374,7 +375,9 @@ class Authorization:
             targeted_permissions_to_check=[f'udm:{mod}:{action}'],
         )
 
-        writeable_attributes = self._get_writeable_properties(permissions_result['general_permissions'] | permissions_result['target_permissions'][0]['permissions'], mod, set(obj.descriptions))
+        writeable_attributes = self._get_writeable_properties(
+            permissions_result['general_permissions'] | permissions_result['target_permissions'][0]['permissions'], mod, set(obj.descriptions),
+        )
         all_allowed = allowed and self._is_all_writeable(writeable_attributes, obj.module, changed_properties)
         if not all_allowed:
             auth_log(action, actor, targets[0], general=allowed, changed_properties=changed_properties)

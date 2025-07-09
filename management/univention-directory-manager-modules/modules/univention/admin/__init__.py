@@ -70,7 +70,7 @@ def ucr_overwrite_properties(module: Any, lo: univention.admin.uldap.access) -> 
                         old_prop_val = ''
                     prop_val_type = type(old_prop_val)
                     log.debug('ucr_overwrite_properties: set property attribute %s to %s', attr, new_prop_val)
-                    if attr in ('syntax', ):
+                    if attr in ('syntax',):
                         if hasattr(univention.admin.syntax, new_prop_val):
                             syntax = getattr(univention.admin.syntax, new_prop_val)
                             setattr(prop, attr, syntax())
@@ -179,35 +179,35 @@ class property:
     }
 
     def __init__(
-            self,
-            short_description: str = '',
-            long_description: str = '',
-            syntax: type | Any = None,
-            module_search: None = None,
-            multivalue: bool = False,
-            one_only: bool = False,
-            parent: None = None,
-            options: list[str] = [],
-            license: list[str] = [],
-            required: bool = False,
-            may_change: bool = True,
-            identifies: bool = False,
-            unique: bool = False,
-            default: bool | int | str | list[str] | tuple[Any, list[str]] | tuple[Callable, list[str], Any] | None = None,
-            prevent_umc_default_popup: bool = False,
-            dontsearch: bool = False,
-            show_in_lists: bool = True,
-            cli_enabled: bool = True,
-            editable: bool = True,
-            configObjectPosition: None = None,
-            configAttributeName: None = None,
-            include_in_default_search: bool = False,
-            nonempty_is_default: bool = False,
-            readonly_when_synced: bool = False,
-            size: str | None = None,
-            copyable: bool = False,
-            type_class: type[TypeHint] | None = None,
-            lazy_loading_fn: str | None = None,
+        self,
+        short_description: str = '',
+        long_description: str = '',
+        syntax: type | Any = None,
+        module_search: None = None,
+        multivalue: bool = False,
+        one_only: bool = False,
+        parent: None = None,
+        options: list[str] = [],
+        license: list[str] = [],
+        required: bool = False,
+        may_change: bool = True,
+        identifies: bool = False,
+        unique: bool = False,
+        default: bool | int | str | list[str] | tuple[Any, list[str]] | tuple[Callable, list[str], Any] | None = None,
+        prevent_umc_default_popup: bool = False,
+        dontsearch: bool = False,
+        show_in_lists: bool = True,
+        cli_enabled: bool = True,
+        editable: bool = True,
+        configObjectPosition: None = None,
+        configAttributeName: None = None,
+        include_in_default_search: bool = False,
+        nonempty_is_default: bool = False,
+        readonly_when_synced: bool = False,
+        size: str | None = None,
+        copyable: bool = False,
+        type_class: type[TypeHint] | None = None,
+        lazy_loading_fn: str | None = None,
     ) -> None:
         """
         |UDM| property.
@@ -331,6 +331,7 @@ class property:
                 return True
             except Exception:
                 return False
+
         defaults = self.default(obj)
         if isinstance(defaults, list):
             return [self.syntax.parse(d) for d in defaults if safe_parse(d)]
@@ -363,7 +364,16 @@ class property:
 class option:
     """|UDM| option to make properties conditional."""
 
-    def __init__(self, short_description: str = '', long_description: str = '', default: int = 0, editable: bool = False, disabled: bool = False, objectClasses: Iterable[str] | None = None, is_app_option: bool = False) -> None:
+    def __init__(
+        self,
+        short_description: str = '',
+        long_description: str = '',
+        default: int = 0,
+        editable: bool = False,
+        disabled: bool = False,
+        objectClasses: Iterable[str] | None = None,
+        is_app_option: bool = False,
+    ) -> None:
         self.short_description = short_description
         self.long_description = long_description
         self.default = default
@@ -392,7 +402,7 @@ def ucr_overwrite_layout(module: Any, ucr_property: str, tab: Tab) -> bool | Non
 
 def ucr_overwrite_module_layout(module: Any) -> None:
     """Overwrite the tab layout through |UCR| variables."""
-    log.debug("layout overwrite")
+    log.debug('layout overwrite')
     # there are modules without a layout definition
     if not hasattr(module, 'layout'):
         return
@@ -478,7 +488,14 @@ class extended_attribute:
         hook = None
         if self.hook:
             hook = self.hook.type
-        return " univention.admin.extended_attribute: { name: '%s', oc: '%s', attr: '%s', delOC: '%s', syntax: '%s', hook: '%s' }" % (self.name, self.objClass, self.ldapMapping, self.deleteObjClass, self.syntax, hook)
+        return " univention.admin.extended_attribute: { name: '%s', oc: '%s', attr: '%s', delOC: '%s', syntax: '%s', hook: '%s' }" % (
+            self.name,
+            self.objClass,
+            self.ldapMapping,
+            self.deleteObjClass,
+            self.syntax,
+            hook,
+        )
 
 
 class policiesGroup:
@@ -539,6 +556,13 @@ import univention.admin.handlers  # noqa: E402
 
 if __name__ == '__main__':
     prop = property('_replace')
-    for pattern in ('<firstname>', '<firstname> <lastname>', '<firstname:upper>', '<:trim,upper><firstname> <lastname>     ', '<:lower><firstname> <lastname>', '<:umlauts><firstname> <lastname>'):
+    for pattern in (
+        '<firstname>',
+        '<firstname> <lastname>',
+        '<firstname:upper>',
+        '<:trim,upper><firstname> <lastname>     ',
+        '<:lower><firstname> <lastname>',
+        '<:umlauts><firstname> <lastname>',
+    ):
         print("pattern: '%s'" % pattern)
         print(" -> '%s'" % prop._replace(pattern, {'firstname': 'Andreas', 'lastname': 'Büsching'}))

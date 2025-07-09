@@ -77,17 +77,22 @@ class object(DHCPBase):
 
     @staticmethod
     def unmapped_lookup_filter() -> univention.admin.filter.conjunction:
-        return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.conjunction('|', [
-                univention.admin.filter.expression('objectClass', 'dhcpService'),
-                univention.admin.filter.expression('objectClass', 'univentionDhcpService'),
-            ]),
-        ])
+        return univention.admin.filter.conjunction(
+            '&',
+            [
+                univention.admin.filter.conjunction(
+                    '|',
+                    [
+                        univention.admin.filter.expression('objectClass', 'dhcpService'),
+                        univention.admin.filter.expression('objectClass', 'univentionDhcpService'),
+                    ],
+                ),
+            ],
+        )
 
 
 def identify(dn: str, attr: univention.admin.handlers._Attributes) -> bool:
-    return b'dhcpService' in attr.get('objectClass', []) \
-        or b'univentionDhcpService' in attr.get('objectClass', [])
+    return b'dhcpService' in attr.get('objectClass', []) or b'univentionDhcpService' in attr.get('objectClass', [])
 
 
 lookup_filter = object.lookup_filter
