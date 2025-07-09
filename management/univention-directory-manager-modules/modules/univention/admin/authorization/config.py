@@ -102,6 +102,8 @@ class DSLSyntaxError(SyntaxError):
 
 
 class _DSLTransformer(Transformer):
+    """Transformer for the UDM DSL"""
+
     def __init__(self, filename, *args, **kwargs):
         self.__filename = filename
         super().__init__(*args, **kwargs)

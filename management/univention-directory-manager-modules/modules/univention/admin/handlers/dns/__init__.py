@@ -56,6 +56,8 @@ def is_not_handled_by_other_module_than(attr: udm_handlers._Attributes, module: 
 
 
 class DNSBase(udm_handlers.simpleLdap):
+    """Base class for dns/* modules"""
+
     def __init__(
         self,
         co: None,

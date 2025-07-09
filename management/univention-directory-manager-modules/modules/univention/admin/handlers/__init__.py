@@ -3644,11 +3644,13 @@ class simpleComputer(simpleLdap):
 
 
 class simplePolicy(simpleLdap):
+    """Base class for policies/* UDM modules"""
+
     def __init__(
         self,
-        co,  # None
-        lo,  # univention.admin.uldap.access
-        position,  # univention.admin.uldap.position
+        co: None,
+        lo: univention.admin.uldap.access,
+        position: univention.admin.uldap.position,
         dn: str = '',
         superordinate: simpleLdap | None = None,
         attributes: _Attributes | None = None,

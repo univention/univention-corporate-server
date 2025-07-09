@@ -7079,6 +7079,8 @@ class GuardianRole(simple):
 
 
 class _EscapedDict(dict):
+    """A dictionary wrapper which returns values as LDAP filter escaped values"""
+
     def __init__(self, _dict):
         self._dict = _dict
         super().__init__()

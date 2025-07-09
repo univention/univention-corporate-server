@@ -503,6 +503,7 @@ class extended_attribute:
 
 
 class policiesGroup:
+    """A policies group"""
 
     def __init__(self, id: Any, short_description: str | None = None, long_description: str = '', members: Any = []) -> None:
         self.id = id
