@@ -33,6 +33,7 @@ object_name = _('Extended option')
 object_name_plural = _('Extended options')
 long_description = _('Options for extended attributes')
 
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -129,6 +130,7 @@ mapping.register('editable', 'univentionUDMOptionEditable', None, univention.adm
 mapping.register('module', 'univentionUDMOptionModule')
 mapping.register('objectClass', 'univentionUDMOptionObjectClass')
 mapping.register('isApp', 'univentionUDMOptionIsApp', None, univention.admin.mapping.ListToString, encoding='ASCII')
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

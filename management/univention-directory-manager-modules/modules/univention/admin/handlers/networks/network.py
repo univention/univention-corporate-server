@@ -32,6 +32,7 @@ short_description = _('Networks: Network')
 object_name = _('Network')
 object_name_plural = _('Networks')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -115,6 +116,7 @@ layout = [
         ]),
     ]),
 ]
+# fmt: on
 
 
 def rangeMap(value, encoding=()):
@@ -125,6 +127,7 @@ def rangeUnmap(value, encoding=()):
     return [x.decode(*encoding).split(' ') for x in value]
 
 
+# fmt: off
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('network', 'univentionNetwork', None, univention.admin.mapping.ListToString, encoding='ASCII')
@@ -134,6 +137,7 @@ mapping.register('dnsEntryZoneForward', 'univentionDnsForwardZone', univention.a
 mapping.register('dnsEntryZoneReverse', 'univentionDnsReverseZone', univention.admin.mapping.IgnoreNone, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('dhcpEntryZone', 'univentionDhcpEntry', univention.admin.mapping.IgnoreNone, univention.admin.mapping.ListToString, encoding='ASCII')
 mapping.register('ipRange', 'univentionIpRange', rangeMap, rangeUnmap, encoding='ASCII')
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

@@ -29,6 +29,7 @@ short_description = _('Settings: UDM Hook')
 object_name = _('UDM Hook')
 object_name_plural = _('UDM Hooks')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -132,6 +133,7 @@ mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univ
 mapping.register('ucsversionstart', 'univentionUCSVersionStart', None, univention.admin.mapping.ListToString)
 mapping.register('ucsversionend', 'univentionUCSVersionEnd', None, univention.admin.mapping.ListToString)
 # messagecatalog is handled via object._post_map and object._post_unmap defined below
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

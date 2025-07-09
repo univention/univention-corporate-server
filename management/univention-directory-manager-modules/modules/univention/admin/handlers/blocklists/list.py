@@ -27,6 +27,7 @@ short_description = _('Blocklist')
 object_name = _('Blocklist')
 object_name_plural = _('Blocklists')
 long_description = _('Blocklist for certain UDM properties')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -66,6 +67,7 @@ layout = [
         ]),
     ]),
 ]
+# fmt: on
 
 
 def mapBlockingProperty(vals, encoding=()):

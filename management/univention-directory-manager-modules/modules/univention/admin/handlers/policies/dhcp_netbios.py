@@ -44,6 +44,7 @@ object_name = _('DHCP NetBIOS policy')
 object_name_plural = _('DHCP NetBIOS policies')
 policy_short_description = _('NetBIOS')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -102,6 +103,7 @@ mapping.register('netbios_name_servers', 'univentionDhcpNetbiosNameServers')
 mapping.register('netbios_scope', 'univentionDhcpNetbiosScope', None, univention.admin.mapping.ListToString)
 mapping.register('netbios_node_type', 'univentionDhcpNetbiosNodeType', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
+# fmt: on
 
 
 class object(univention.admin.handlers.simplePolicy):

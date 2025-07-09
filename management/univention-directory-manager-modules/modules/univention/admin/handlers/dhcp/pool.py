@@ -30,6 +30,7 @@ short_description = _('DHCP: Pool')
 object_name = _('DHCP pool')
 object_name_plural = _('DHCP pools')
 long_description = _('A pool of dynamic addresses assignable to hosts.')
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -100,6 +101,7 @@ mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap)
 mapping.register('failover_peer', 'univentionDhcpFailoverPeer', None, univention.admin.mapping.ListToString, encoding='ASCII')
+# fmt: on
 
 add_dhcp_options(__name__)
 

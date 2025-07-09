@@ -38,7 +38,7 @@ nagios_properties = {
 
 nagios_tab_A = Tab(_('Nagios services'), _('Nagios Service Settings'), advanced=True, layout=[
     "nagiosServices",
-])
+])  # fmt: skip
 
 
 nagios_options = {

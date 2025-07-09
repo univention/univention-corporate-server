@@ -24,6 +24,7 @@ short_description = _('Settings: User Template')
 object_name = _('User Template')
 object_name_plural = _('User Templates')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -335,6 +336,7 @@ mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.ad
 # mapping.register('postOfficeBox', 'postOfficeBox')
 mapping.register('mailAlternativeAddress', 'mailAlternativeAddress')
 mapping.register('_options', 'userOptionsPreset', encoding='ASCII')
+# fmt: on
 
 BLACKLISTED_OBJECT_CLASSES = {b'inetOrgPerson'}
 

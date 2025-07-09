@@ -37,6 +37,7 @@ class MailDomain(univention.admin.syntax.UDM_Attribute):
     attribute = 'name'
 
 
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -117,6 +118,7 @@ mapping = univention.admin.mapping.mapping()
 mapping.register('mailQuota', 'univentionMailUserQuota', None, univention.admin.mapping.ListToString)
 mapping.register('mailHomeServer', 'univentionMailHomeServer', None, univention.admin.mapping.ListToString)
 mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):
