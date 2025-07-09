@@ -9,3 +9,6 @@ desc: |
  * The script `univention-update-univention-object-identifier` now provides a
    `--dry-run` option.
 bug: [58446]
+erratum: 140
+announced: 2025-07-09
+support: core
