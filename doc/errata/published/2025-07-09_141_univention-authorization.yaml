@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issue:
  * A new library for delegative administration has been introduced.
 bug: [58432]
+erratum: 141
+announced: 2025-07-09
+support: core
