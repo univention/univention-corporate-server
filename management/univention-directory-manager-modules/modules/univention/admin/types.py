@@ -3,7 +3,6 @@
 
 """|UDM| type definitions."""
 
-
 import datetime
 import inspect
 import time

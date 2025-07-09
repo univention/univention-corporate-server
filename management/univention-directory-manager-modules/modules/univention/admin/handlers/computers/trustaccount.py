@@ -144,7 +144,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration):
         ml = super()._ldap_modlist()
 
         if self.hasChanged('name') and self['name']:
-            requested_uid = "%s$" % self['name']
+            requested_uid = '%s$' % self['name']
             try:
                 ml.append(('uid', self.oldattr.get('uid', []), [self.request_lock('uid', requested_uid).encode('UTF-8')]))
             except univention.admin.uexceptions.noLock:

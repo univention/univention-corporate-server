@@ -93,8 +93,5 @@ lookup_filter = object.lookup_filter
 
 def identify(dn: str, attr: univention.admin.handlers._Attributes, canonical: bool = False) -> bool:
     return bool(
-        attr.get('nSRecord')
-        and is_dns(attr)
-        and not is_zone(attr)
-        and is_not_handled_by_other_module_than(attr, module),
+        attr.get('nSRecord') and is_dns(attr) and not is_zone(attr) and is_not_handled_by_other_module_than(attr, module),
     )

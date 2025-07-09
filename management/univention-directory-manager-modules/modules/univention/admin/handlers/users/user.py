@@ -667,7 +667,7 @@ def get_primary_group_dn(lo: univention.admin.uldap.access, gid_number: int) -> 
 def check_prohibited_username(lo: univention.admin.uldap.access, username: str) -> None:
     """check if the username is allowed"""
     module = univention.admin.modules._get('settings/prohibited_username')
-    for prohibited_object in (module.lookup(None, lo, '') or []):
+    for prohibited_object in module.lookup(None, lo, '') or []:
         if username in prohibited_object['usernames']:
             raise univention.admin.uexceptions.prohibitedUsername(username)
 
@@ -682,11 +682,11 @@ def case_insensitive_in_list(dn: str, list: Sequence[str]) -> bool:
 
 
 def posixSecondsToLocaltimeDate(seconds: int) -> str:
-    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(seconds))
+    return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(seconds))
 
 
 def posixDaysToDate(days: int) -> str:
-    return time.strftime("%Y-%m-%d", time.gmtime(int(days) * 3600 * 24))
+    return time.strftime('%Y-%m-%d', time.gmtime(int(days) * 3600 * 24))
 
 
 def sambaWorkstationsMap(workstations: Sequence[str], encoding: Sequence[str] = ()) -> bytes:
@@ -734,14 +734,16 @@ def logonHoursUnmap(logontimes: list[bytes]) -> list[int]:
     >>> logonHoursUnmap([b"000000000000000000000000000000000000000080"])
     [167]
     """
-    times = logontimes[0].ljust(42, b"0")[:42]
+    times = logontimes[0].ljust(42, b'0')[:42]
     octets = [int(times[i:i + 2], 16) for i in range(0, 42, 2)]
+    # fmt: off
     return [
         idx * 8 + bit
         for idx, value in enumerate(octets)
         for bit in range(8)
         if value & (1 << bit)
     ]
+    # fmt: on
 
 
 def GMTOffset() -> int:
@@ -775,7 +777,7 @@ def unmapHomePostalAddress(old: Sequence[bytes], encoding: Sequence[str] = ()) -
         if b'$' in i:
             new.append(i.decode(*encoding).split('$'))
         else:
-            new.append([i.decode(*encoding), " ", " "])
+            new.append([i.decode(*encoding), ' ', ' '])
     return new
 
 
@@ -797,25 +799,25 @@ def unmapKrb5ValidEndToUserexpiry(oldattr: dict[str, list[bytes]]) -> str | None
     if 'krb5ValidEnd' in oldattr:
         krb5validend = oldattr['krb5ValidEnd'][0].decode('ASCII')
         log.debug('krb5validend is: %s', krb5validend)
-        return "%s-%s-%s" % (krb5validend[0:4], krb5validend[4:6], krb5validend[6:8])
+        return '%s-%s-%s' % (krb5validend[0:4], krb5validend[4:6], krb5validend[6:8])
 
 
 def unmapSambaKickoffTimeToUserexpiry(oldattr: dict[str, list[bytes]]) -> str | None:
     if 'sambaKickoffTime' in oldattr:
         log.debug('sambaKickoffTime is: %s', oldattr['sambaKickoffTime'][0].decode('ASCII'))
-        return time.strftime("%Y-%m-%d", time.gmtime(int(oldattr['sambaKickoffTime'][0]) + (3600 * 24)))
+        return time.strftime('%Y-%m-%d', time.gmtime(int(oldattr['sambaKickoffTime'][0]) + (3600 * 24)))
 
 
 def _mapUserExpiryToShadowExpire(userexpiry: str) -> str:
-    return "%d" % int(calendar.timegm(time.strptime(userexpiry, "%Y-%m-%d")) / 3600 / 24)
+    return '%d' % int(calendar.timegm(time.strptime(userexpiry, '%Y-%m-%d')) / 3600 / 24)
 
 
 def _mapUserExpiryToKrb5ValidEnd(userexpiry: str) -> str:
-    return "%s%s%s000000Z" % (userexpiry[0:4], userexpiry[5:7], userexpiry[8:10])
+    return '%s%s%s000000Z' % (userexpiry[0:4], userexpiry[5:7], userexpiry[8:10])
 
 
 def _mapUserExpiryToSambaKickoffTime(userexpiry: str) -> str:
-    return "%d" % int(time.mktime(time.strptime(userexpiry, "%Y-%m-%d")))
+    return '%d' % int(time.mktime(time.strptime(userexpiry, '%Y-%m-%d')))
 
 
 def unmapPasswordExpiry(oldattr: dict[str, list[bytes]]) -> str:
@@ -840,11 +842,13 @@ def unmapPasswordExpiry(oldattr: dict[str, list[bytes]]) -> str:
 
 
 def unmapDisabled(oldattr: dict[str, list[bytes]]) -> str:
-    if all([
+    if all(
+        [
             unmapSambaDisabled(oldattr),
             unmapKerberosDisabled(oldattr),
             unmapPosixDisabled(oldattr) or isPosixLocked(oldattr),
-    ]):
+        ],
+    ):
         return '1'
     return '0'
 
@@ -953,7 +957,7 @@ def unmapKeyAndValue(old: Sequence[bytes], encoding: Sequence[str] = ()) -> list
 
 def mapWindowsFiletime(old: str, encoding: Sequence[str] = ()) -> list[bytes]:
     if old:
-        if old == "0":
+        if old == '0':
             return [old.encode(*encoding)]
         unixtime = time.strptime(old, '%Y%m%d%H%M%SZ')
         d = 116444736000000000  # difference between 1601 and 1970
@@ -981,14 +985,14 @@ def unmapWindowsFiletime(old: Sequence[bytes], encoding: Sequence[str] = ()) -> 
 def datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple: Sequence[str]) -> datetime:
     d, t, tz = local_datetimetimezone_tuple
     # dttz_str = module.property_descriptions[key].syntax.tostring(local_datetimetimezone_tuple)
-    native_dt = datetime.strptime("%s %s" % (d, t), "%Y-%m-%d %H:%M")
+    native_dt = datetime.strptime('%s %s' % (d, t), '%Y-%m-%d %H:%M')
     return native_dt.replace(tzinfo=zoneinfo.ZoneInfo(tz))
 
 
 def mapDateTimeTimezoneTupleToUTCDateTimeString(local_datetimetimezone_tuple: Sequence[str], encoding: Sequence[str] = ()) -> list[bytes]:
     if local_datetimetimezone_tuple and all(local_datetimetimezone_tuple):
         dt = datetime_from_local_datetimetimezone_tuple(local_datetimetimezone_tuple)
-        return [dt.astimezone(utc).strftime("%Y%m%d%H%M%SZ").encode(*encoding)]
+        return [dt.astimezone(utc).strftime('%Y%m%d%H%M%SZ').encode(*encoding)]
     return []
 
 
@@ -996,11 +1000,11 @@ def unmapUTCDateTimeToLocaltime(attribute_value: Sequence[bytes], encoding: Sequ
     if attribute_value and attribute_value[0]:
         generalizedtime = attribute_value[0].decode(*encoding)
         try:
-            utc_datetime = datetime.strptime(generalizedtime, "%Y%m%d%H%M%SZ")
+            utc_datetime = datetime.strptime(generalizedtime, '%Y%m%d%H%M%SZ')
         except ValueError:
             log.error('Value of krb5ValidStart is not in generalizedTime format: %s', generalizedtime)
             raise
-        local_datetimetimezone_tuple = datetime.strftime(utc_datetime, "%Y-%m-%d %H:%M UTC").split()
+        local_datetimetimezone_tuple = datetime.strftime(utc_datetime, '%Y-%m-%d %H:%M UTC').split()
         return local_datetimetimezone_tuple
     return []
 
@@ -1099,11 +1103,11 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
     def _simulate_legacy_options(self) -> None:
         """simulate old options behavior to provide backward compatibility for udm extensions"""
         options = {
-            "posix": b'posixAccount',
-            "samba": b'sambaSamAccount',
-            "kerberos": b'krb5Principal',
-            "mail": b'univentionMail',
-            "person": b'person',
+            'posix': b'posixAccount',
+            'samba': b'sambaSamAccount',
+            'kerberos': b'krb5Principal',
+            'mail': b'univentionMail',
+            'person': b'person',
         }
         for opt, oc in options.items():
             # existing object
@@ -1219,7 +1223,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
                     univention.admin.filter.expression('univentionSharePath', sharepath.rstrip('/'), escape=True),
                     univention.admin.filter.expression('univentionSharePath', '%s/' % (sharepath.rstrip('/')), escape=True),
                 ]),
-            ])
+            ])  # fmt: skip
             res = univention.admin.modules.lookup(univention.admin.modules._get('shares/share'), None, self.lo, filter=filter_, scope='domain')
             if len(res) == 1:
                 self['homeShare'] = res[0].dn
@@ -1235,7 +1239,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
     def _unmapUnlockTime(self) -> None:
         self.info['unlockTime'] = ''
         locked_timestamp = self['lockedTime']
-        if locked_timestamp and locked_timestamp != "0":
+        if locked_timestamp and locked_timestamp != '0':
             try:
                 locked_unixtime = int(calendar.timegm(time.strptime(locked_timestamp, '%Y%m%d%H%M%SZ')))
                 lockout_duration = int(self.lo.authz_connection.search(filter='objectClass=sambaDomain', attr=['sambaLockoutDuration'])[0][1].get('sambaLockoutDuration', [0])[0])
@@ -1243,7 +1247,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
                 return
 
             if lockout_duration == 0:
-                self.info['unlockTime'] = _("unlimited")
+                self.info['unlockTime'] = _('unlimited')
             else:
                 self.info['unlockTime'] = posixSecondsToLocaltimeDate(lockout_duration + locked_unixtime)
 
@@ -1264,44 +1268,44 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
             return True
         return super().hasChanged(key)
 
-#        if key == 'disabled':
-#            acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [b''])[0].decode('ASCII')).decode()
-#            krb5Flags = self.oldattr.get('krb5KDCFlags', [])
-#            shadowExpire = self.oldattr.get('shadowExpire', [])
-#
-#            if not acctFlags and not krb5Flags and not shadowExpire:
-#                return False
-#            if self['disabled'] == 'all':
-#                return 'D' not in acctFlags or b'126' in krb5Flags or b'1' not in shadowExpire
-#            elif self['disabled'] == 'windows':
-#                return 'D' not in acctFlags or b'254' in krb5Flags or b'1' in shadowExpire
-#            elif self['disabled'] == 'kerberos':
-#                return 'D' in acctFlags or b'126' in krb5Flags or b'1' in shadowExpire
-#            elif self['disabled'] == 'posix':
-#                return 'D' in acctFlags or b'254' in krb5Flags or b'1' not in shadowExpire
-#            elif self['disabled'] == 'windows_kerberos':
-#                return 'D' not in acctFlags or b'126' in krb5Flags or b'1' in shadowExpire
-#            elif self['disabled'] == 'windows_posix':
-#                return 'D' not in acctFlags or b'254' in krb5Flags or b'1' not in shadowExpire
-#            elif self['disabled'] == 'posix_kerberos':
-#                return 'D' in acctFlags or b'126' in krb5Flags or b'1' not in shadowExpire
-#            else:  # enabled
-#                return 'D' in acctFlags or b'254' in krb5Flags or b'1' in shadowExpire
-#        elif key == 'locked':
-#            password = self['password']
-#            acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [b''])[0].decode('ASCII')).decode()
-#            if not password and not acctFlags:
-#                return False
-#            if self['locked'] == 'all':
-#                return not univention.admin.password.is_locked(password) or 'L' not in acctFlags
-#            elif self['locked'] == 'windows':
-#                return univention.admin.password.is_locked(password) or 'L' not in acctFlags
-#            elif self['locked'] == 'posix':
-#                return not univention.admin.password.is_locked(password) or 'L' in acctFlags
-#            else:
-#                return univention.admin.password.is_locked(password) or 'L' in acctFlags
-#
-#        return super(object, self).hasChanged(key)
+        # if key == 'disabled':
+        #     acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [b''])[0].decode('ASCII')).decode()
+        #     krb5Flags = self.oldattr.get('krb5KDCFlags', [])
+        #     shadowExpire = self.oldattr.get('shadowExpire', [])
+        #
+        #     if not acctFlags and not krb5Flags and not shadowExpire:
+        #         return False
+        #     if self['disabled'] == 'all':
+        #         return 'D' not in acctFlags or b'126' in krb5Flags or b'1' not in shadowExpire
+        #     elif self['disabled'] == 'windows':
+        #         return 'D' not in acctFlags or b'254' in krb5Flags or b'1' in shadowExpire
+        #     elif self['disabled'] == 'kerberos':
+        #         return 'D' in acctFlags or b'126' in krb5Flags or b'1' in shadowExpire
+        #     elif self['disabled'] == 'posix':
+        #         return 'D' in acctFlags or b'254' in krb5Flags or b'1' not in shadowExpire
+        #     elif self['disabled'] == 'windows_kerberos':
+        #         return 'D' not in acctFlags or b'126' in krb5Flags or b'1' in shadowExpire
+        #     elif self['disabled'] == 'windows_posix':
+        #         return 'D' not in acctFlags or b'254' in krb5Flags or b'1' not in shadowExpire
+        #     elif self['disabled'] == 'posix_kerberos':
+        #         return 'D' in acctFlags or b'126' in krb5Flags or b'1' not in shadowExpire
+        #     else:  # enabled
+        #         return 'D' in acctFlags or b'254' in krb5Flags or b'1' in shadowExpire
+        # elif key == 'locked':
+        #     password = self['password']
+        #     acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [b''])[0].decode('ASCII')).decode()
+        #     if not password and not acctFlags:
+        #         return False
+        #     if self['locked'] == 'all':
+        #         return not univention.admin.password.is_locked(password) or 'L' not in acctFlags
+        #     elif self['locked'] == 'windows':
+        #         return univention.admin.password.is_locked(password) or 'L' not in acctFlags
+        #     elif self['locked'] == 'posix':
+        #         return not univention.admin.password.is_locked(password) or 'L' in acctFlags
+        #     else:
+        #         return univention.admin.password.is_locked(password) or 'L' in acctFlags
+        #
+        # return super(object, self).hasChanged(key)
 
     def __update_groups(self) -> None:
         if self.exists():
@@ -1309,7 +1313,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
             old_uid = self.oldinfo.get('username', '')
         else:
             old_groups = []
-            old_uid = ""
+            old_uid = ''
         new_uid = self.info.get('username', '')
         new_groups = self.info.get('groups', [])
 
@@ -1337,7 +1341,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
                 grpobj = group_mod.object(None, self.lo, self.position, group)
                 grpobj.fast_member_add([self.dn], [new_uid])
 
-        if configRegistry.is_true("directory/manager/user/primarygroup/update", True):
+        if configRegistry.is_true('directory/manager/user/primarygroup/update', True):
             log.debug('users/user: check primaryGroup')
             if not self.exists() and self.info.get('primaryGroup'):
                 grpobj = group_mod.object(None, self.lo, self.position, self.info.get('primaryGroup'))
@@ -1364,7 +1368,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         if not self.hasChanged('primaryGroup'):
             return
 
-        if configRegistry.is_true("directory/manager/user/primarygroup/update", True):
+        if configRegistry.is_true('directory/manager/user/primarygroup/update', True):
             new_uid = self.info.get('username')
             group_mod = univention.admin.modules._get('groups/group')
             grpobj = group_mod.object(None, self.lo, self.position, self['primaryGroup'])
@@ -1379,13 +1383,13 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         return self['username'] + '@' + realm
 
     def _check_uid_gid_uniqueness(self) -> None:
-        if not configRegistry.is_true("directory/manager/uid_gid/uniqueness", True):
+        if not configRegistry.is_true('directory/manager/uid_gid/uniqueness', True):
             return
         # POSIX, Samba
         fg = univention.admin.filter.expression('gidNumber', self['uidNumber'])
         group_objects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=fg)
         if group_objects:
-            raise univention.admin.uexceptions.uidNumberAlreadyUsedAsGidNumber(repr(self["uidNumber"]))
+            raise univention.admin.uexceptions.uidNumberAlreadyUsedAsGidNumber(repr(self['uidNumber']))
 
     def _ldap_pre_create(self) -> None:
         super()._ldap_pre_create()
@@ -1441,7 +1445,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         # get lock for mailAlternativeAddress
         if (not self.exists() or self.hasChanged('mailAlternativeAddress')) and self['mailAlternativeAddress']:
             old_maas, new_maas = ({addr.lower() for addr in info.get('mailAlternativeAddress', [])} for info in (self.oldinfo, self.info))
-            for added_maa in (new_maas - old_maas):
+            for added_maa in new_maas - old_maas:
                 # do not check address if it was used as mailPrimaryAddress but now no more
                 if configRegistry.is_true('directory/manager/mail-address/uniqueness') and self.hasChanged('mailPrimaryAddress'):
                     if self.oldinfo.get('mailPrimaryAddress', '').lower() == added_maa:
@@ -1456,7 +1460,11 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
             self['locked'] = '0'
         if self.hasChanged('disabled') and self['disabled'] == '0' and not self.hasChanged('accountActivationDate'):
             self['accountActivationDate'] = self.descriptions['accountActivationDate'].default(self)
-        if self['accountActivationDate'] and all(self['accountActivationDate']) and datetime.now(tz=utc) < datetime_from_local_datetimetimezone_tuple(self['accountActivationDate']):
+        if (
+            self['accountActivationDate']
+            and all(self['accountActivationDate'])
+            and datetime.now(tz=utc) < datetime_from_local_datetimetimezone_tuple(self['accountActivationDate'])
+        ):
             self['disabled'] = '1'
         if self['disabled'] == '1':
             self['locked'] = '0'  # Samba/AD behavior
@@ -1496,7 +1504,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         if not self.oldattr.get('mailForwardCopyToSelf') and self['mailForwardCopyToSelf'] == '0' and not self['mailForwardAddress']:
             self['mailForwardCopyToSelf'] = None
 
-        if self.hasChanged("uidNumber"):
+        if self.hasChanged('uidNumber'):
             # this should never happen, as uidNumber is marked as unchangeable
             self._check_uid_gid_uniqueness()
 
@@ -1540,7 +1548,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         return ml
 
     def _modlist_cn(self, ml: list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]:
-        cnAtts = configRegistry.get('directory/manager/usercn/attributes', "<firstname> <lastname>")
+        cnAtts = configRegistry.get('directory/manager/usercn/attributes', '<firstname> <lastname>')
         prop = univention.admin.property()
         old_cn = self.oldattr.get('cn', [b''])[0]
         cn = prop._replace(cnAtts, self)  # TODO: prop._replace() must return unicode
@@ -1564,7 +1572,9 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
 
     def _modlist_display_name(self, ml: list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]:
         # update displayName automatically if no custom value has been entered by the user and the name changed
-        if self.info.get('displayName') == self.oldinfo.get('displayName') and (self.info.get('firstname') != self.oldinfo.get('firstname') or self.info.get('lastname') != self.oldinfo.get('lastname')):
+        if self.info.get('displayName') == self.oldinfo.get('displayName') and (
+            self.info.get('firstname') != self.oldinfo.get('firstname') or self.info.get('lastname') != self.oldinfo.get('lastname')
+        ):
             prop_displayName = self.descriptions['displayName']
             old_default_displayName = prop_displayName._replace(prop_displayName.base_default, self.oldinfo)
             # does old displayName match with old default displayName?
@@ -1639,7 +1649,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '1'
         unset_pwd_change_next_login = self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '0'
 
-        now = (int(time.time()) / 3600 / 24)
+        now = int(time.time()) / 3600 / 24
         shadowLastChange = str(int(now))
         # Bug 57681:
         # * setting shadowMax to (pwhistoryPolicy.expiryInterval - 1) makes password expiry checking between pam_unix and pam_krb5 consistent
@@ -1680,7 +1690,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
             expiry = int(time.time())
             if not pwd_change_next_login:
                 expiry = expiry + (pwhistoryPolicy.expiryInterval * 3600 * 24)
-            krb5PasswordEnd = time.strftime("%Y%m%d000000Z", time.gmtime(expiry))
+            krb5PasswordEnd = time.strftime('%Y%m%d000000Z', time.gmtime(expiry))
 
         log.debug('krb5PasswordEnd: %s', krb5PasswordEnd)
         old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', [b''])[0]
@@ -1725,14 +1735,14 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
             if not self.exists():
                 krb_kdcflags |= 126
             if self['disabled'] == '1':
-                krb_kdcflags |= (1 << 7)
+                krb_kdcflags |= 1 << 7
             else:  # enable kerberos account
                 krb_kdcflags &= ~(1 << 7)
 
             if self['locked'] == '0':  # unlock kerberos password
                 krb_kdcflags &= ~(1 << 17)
-#            elif self['locked'] == '1':  # lock kerberos password
-#                krb_kdcflags |= (1 << 17)
+            # elif self['locked'] == '1':  # lock kerberos password
+            #     krb_kdcflags |= (1 << 17)
 
             ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', []), str(krb_kdcflags).encode('ASCII')))
         return ml
@@ -1768,7 +1778,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
     def _modlist_samba_bad_pw_count(self, ml: list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]:
         if self.hasChanged('locked') and self['locked'] == '0':
             # reset bad pw count
-            ml.append(('sambaBadPasswordCount', self.oldattr.get('sambaBadPasswordCount', [b''])[0], b"0"))
+            ml.append(('sambaBadPasswordCount', self.oldattr.get('sambaBadPasswordCount', [b''])[0], b'0'))
             ml.append(('sambaBadPasswordTime', self.oldattr.get('sambaBadPasswordTime', [b''])[0], b'0'))
         return ml
 
@@ -1776,7 +1786,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         if self.hasChanged('userexpiry'):
             sambaKickoffTime = b''
             if self['userexpiry']:
-                sambaKickoffTime = _mapUserExpiryToSambaKickoffTime(self['userexpiry']).encode("ASCII")
+                sambaKickoffTime = _mapUserExpiryToSambaKickoffTime(self['userexpiry']).encode('ASCII')
                 log.debug('sambaKickoffTime: %s', sambaKickoffTime)
             old_sambaKickoffTime = self.oldattr.get('sambaKickoffTime', [b''])[0]
             if old_sambaKickoffTime != sambaKickoffTime:
@@ -1847,7 +1857,9 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
 
     def _modlist_univention_person(self, ml: list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]:
         # make sure that univentionPerson is set as objectClass when needed
-        if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday', 'serviceSpecificPassword', 'country')) and b'univentionPerson' not in self.oldattr.get('objectClass', []):
+        if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday', 'serviceSpecificPassword', 'country')) and b'univentionPerson' not in self.oldattr.get(
+            'objectClass', [],
+        ):
             ml.append(('objectClass', b'', b'univentionPerson'))  # TODO: check if exists already
         return ml
 
@@ -1867,7 +1879,9 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
 
                     am_host = share['host']
                     if not self['homeSharePath'] or not isinstance(self['homeSharePath'], str):
-                        raise univention.admin.uexceptions.missingInformation(_('%(homeSharePath)s must be given if %(homeShare)s is given.') % {'homeSharePath': _('Home share path'), 'homeShare': _('Home share')})
+                        raise univention.admin.uexceptions.missingInformation(
+                            _('%(homeSharePath)s must be given if %(homeShare)s is given.') % {'homeSharePath': _('Home share path'), 'homeShare': _('Home share')},
+                        )
                     else:
                         am_path = os.path.abspath(os.path.join(share['path'], self['homeSharePath']))
                         if not am_path.startswith(share['path']):
@@ -2046,13 +2060,25 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         elif filter.variable == 'disabled':
             # substring match for userPassword is not possible
             if filter.value == '1':
-                filter.transform_to_conjunction(univention.admin.filter.parse('(&(shadowExpire=1)(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))'))
+                filter.transform_to_conjunction(
+                    univention.admin.filter.parse('(&(shadowExpire=1)(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))'),
+                )
             elif filter.value == '0':
-                filter.transform_to_conjunction(univention.admin.filter.parse('(&(!(shadowExpire=1))(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ]))))'))
+                filter.transform_to_conjunction(
+                    univention.admin.filter.parse(
+                        '(&(!(shadowExpire=1))(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ]))))',
+                    ),
+                )
             elif filter.value == 'none':
-                filter.transform_to_conjunction(univention.admin.filter.parse('(&(!(shadowExpire=1))(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ]))))'))
+                filter.transform_to_conjunction(
+                    univention.admin.filter.parse(
+                        '(&(!(shadowExpire=1))(!(krb5KDCFlags:1.2.840.113556.1.4.803:=128))(!(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ]))))',
+                    ),
+                )
             elif filter.value == 'all':
-                filter.transform_to_conjunction(univention.admin.filter.parse('(&(shadowExpire=1)(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))'))
+                filter.transform_to_conjunction(
+                    univention.admin.filter.parse('(&(shadowExpire=1)(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags=[ULD       ])))'),
+                )
             elif filter.value == 'posix':
                 filter.variable = 'shadowExpire'
                 filter.value = '1'
@@ -2061,7 +2087,9 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
             elif filter.value == 'windows':
                 filter.transform_to_conjunction(univention.admin.filter.parse('(|(sambaAcctFlags=[UD       ])(sambaAcctFlags==[ULD       ]))'))
             elif filter.value == 'windows_kerberos':
-                filter.transform_to_conjunction(univention.admin.filter.parse('(&(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags==[ULD       ])))'))
+                filter.transform_to_conjunction(
+                    univention.admin.filter.parse('(&(krb5KDCFlags:1.2.840.113556.1.4.803:=128)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags==[ULD       ])))'),
+                )
             elif filter.value == 'windows_posix':
                 filter.transform_to_conjunction(univention.admin.filter.parse('(&(shadowExpire=1)(|(sambaAcctFlags=[UD       ])(sambaAcctFlags==[ULD       ])))'))
             elif filter.value == 'posix_kerberos':
@@ -2077,17 +2105,24 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
                 userexpiry_filter = filter_format('(|(shadowExpire=%s)(krb5ValidEnd=%s)(sambaKickoffTime=%s))', [filter.value or '*', filter.value or '*', filter.value or '*'])
                 userexpiry_filter = userexpiry_filter.replace(filter_format('%s', ['*']), '*')
             else:
-                userexpiry_filter = filter_format('(|(shadowExpire=%s)(krb5ValidEnd=%s)(sambaKickoffTime=%s))', [
-                    _mapUserExpiryToShadowExpire(userexpiry),
-                    _mapUserExpiryToKrb5ValidEnd(userexpiry),
-                    _mapUserExpiryToSambaKickoffTime(userexpiry),
-                ])
+                userexpiry_filter = filter_format(
+                    '(|(shadowExpire=%s)(krb5ValidEnd=%s)(sambaKickoffTime=%s))',
+                    [
+                        _mapUserExpiryToShadowExpire(userexpiry),
+                        _mapUserExpiryToKrb5ValidEnd(userexpiry),
+                        _mapUserExpiryToSambaKickoffTime(userexpiry),
+                    ],
+                )
             filter.transform_to_conjunction(univention.admin.filter.parse(userexpiry_filter))
         elif filter.variable == 'locked':
             if filter.value == '1':
-                filter.transform_to_conjunction(univention.admin.filter.parse('(|(krb5KDCFlags:1.2.840.113556.1.4.803:=131072)(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ]))'))
+                filter.transform_to_conjunction(
+                    univention.admin.filter.parse('(|(krb5KDCFlags:1.2.840.113556.1.4.803:=131072)(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ]))'),
+                )
             elif filter.value == '0':
-                filter.transform_to_conjunction(univention.admin.filter.parse('(&(!(krb5KDCFlags:1.2.840.113556.1.4.803:=131072))(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags=[ULD       ])))'))
+                filter.transform_to_conjunction(
+                    univention.admin.filter.parse('(&(!(krb5KDCFlags:1.2.840.113556.1.4.803:=131072))(!(sambaAcctFlags=[UL       ]))(!(sambaAcctFlags=[ULD       ])))'),
+                )
             elif filter.value in ['posix', 'windows', 'all', 'none']:
                 if filter.value == 'all':
                     filter.transform_to_conjunction(univention.admin.filter.parse('(|(sambaAcctFlags=[UL       ])(sambaAcctFlags=[ULD       ]))'))
@@ -2107,7 +2142,12 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
 
     @classmethod
     def identify(cls, dn: str, attr: univention.admin.handlers._Attributes, canonical: bool = False) -> bool:
-        if b'0' in attr.get('uidNumber', []) or b'$' in attr.get('uid', [b''])[0] or b'univentionHost' in attr.get('objectClass', []) or b'functional' in attr.get('univentionObjectFlag', []):
+        if (
+            b'0' in attr.get('uidNumber', [])
+            or b'$' in attr.get('uid', [b''])[0]
+            or b'univentionHost' in attr.get('objectClass', [])
+            or b'functional' in attr.get('univentionObjectFlag', [])
+        ):
             return False
         required_ocs = {b'posixAccount', b'shadowAccount', b'sambaSamAccount', b'person', b'krb5KDCEntry', b'krb5Principal'}
         ocs = set(attr.get('objectClass', []))

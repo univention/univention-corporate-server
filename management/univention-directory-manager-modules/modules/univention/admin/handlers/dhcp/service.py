@@ -86,8 +86,7 @@ class object(DHCPBase):
 
 
 def identify(dn: str, attr: univention.admin.handlers._Attributes) -> bool:
-    return b'dhcpService' in attr.get('objectClass', []) \
-        or b'univentionDhcpService' in attr.get('objectClass', [])
+    return b'dhcpService' in attr.get('objectClass', []) or b'univentionDhcpService' in attr.get('objectClass', [])
 
 
 lookup_filter = object.lookup_filter

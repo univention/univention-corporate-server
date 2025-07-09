@@ -555,6 +555,7 @@ def unmap_samba_user_groups(value, encoding=()):
 
     def unquote(x):
         return x[1:-1].replace('\\"', '"').replace('\\\\', '\\') if x.startswith('"') and x.endswith('"') else x
+
     value = value[0].decode(*encoding)
     pattern = re.compile('[, ](?=(?:[^"]*"[^"]*")*[^"]*$)')
     values = [x.strip() for x in pattern.split(value) if x.strip()]
@@ -573,6 +574,7 @@ def map_samba_user_groups(value, encoding=()):
     >>> map_samba_user_groups(['@"Domain Users"'])
     b'@"Domain Users"'
     """
+
     def quote(x):
         return '"%s"' % x.replace('\\', '\\\\').replace('"', r'\"') if not x.startswith('"') and not x.endswith('"') and (' ' in x or '"' in x or '\\' in x) else x
     return ', '.join(
@@ -660,7 +662,7 @@ class object(univention.admin.handlers.simpleLdap):
                 #   '%(printablename)s' (may be looked up in ldap directly).
                 #   If you change printablename here you probably want to change
                 #   nfsShare.label, too.
-                self['printablename'] = "%s (%s)" % (self['name'], self['host'])
+                self['printablename'] = '%s (%s)' % (self['name'], self['host'])
             except Exception:
                 pass
 
@@ -668,9 +670,9 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _ldap_addlist(self):
         # TODO: move this validation into a syntax class
-        dirBlackList = ["sys", "proc", "dev"]
+        dirBlackList = ['sys', 'proc', 'dev']
         for dir in dirBlackList:
-            if re.match("^/%s$|^/%s/" % (dir, dir), self['path']):
+            if re.match('^/%s$|^/%s/' % (dir, dir), self['path']):
                 raise univention.admin.uexceptions.invalidOperation(_('It is not valid to set %s as a share.') % self['path'])
 
         return super()._ldap_addlist()
@@ -685,30 +687,32 @@ class object(univention.admin.handlers.simpleLdap):
         if not self.options:
             self.open()
         if 'nfs' in self.options:
-            searchResult = self.lo.authz_connection.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(automountInformation=*%s:%s*))', [self['host'], self['path']]), scope='domain')
+            searchResult = self.lo.authz_connection.searchDn(
+                base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(automountInformation=*%s:%s*))', [self['host'], self['path']]), scope='domain',
+            )
             if searchResult:
-                numstring = ""
-                userstring = ""
-                usestring = _("uses")
-                pluralstring = _("user")
+                numstring = ''
+                userstring = ''
+                usestring = _('uses')
+                pluralstring = _('user')
                 if len(searchResult) > 1:
-                    pluralstring = _("users")
-                    usestring = _("use")
+                    pluralstring = _('users')
+                    usestring = _('use')
                     if len(searchResult) > 10:
                         num = len(searchResult)
                         searchResult = searchResult[:9]
-                        numstring = _(" and %s more") % str(num - 10)
+                        numstring = _(' and %s more') % str(num - 10)
                     for i in range(len(searchResult) - 2):
-                        temp = searchResult[i].split(",")
+                        temp = searchResult[i].split(',')
                         temp = temp[0]  # uid=...
                         uid = temp[4:]
-                        userstring += "%s, " % uid
-                temp = searchResult[-1].split(",")
+                        userstring += '%s, ' % uid
+                temp = searchResult[-1].split(',')
                 temp = temp[0]
                 uid = temp[4:]
                 userstring += uid
 
-                exstr = _("The %(plural)s %(user)s%(num)s %(use)s this share as home share!") % {'plural': pluralstring, 'user': userstring, 'num': numstring, 'use': usestring}
+                exstr = _('The %(plural)s %(user)s%(num)s %(use)s this share as home share!') % {'plural': pluralstring, 'user': userstring, 'num': numstring, 'use': usestring}
                 raise univention.admin.uexceptions.homeShareUsed(exstr)
 
     def description(self):
@@ -716,9 +720,9 @@ class object(univention.admin.handlers.simpleLdap):
 
     def check_options_for_validity(self):
         if not set(self.options) & {'samba', 'nfs'}:
-            raise univention.admin.uexceptions.invalidOptions(_('Need %(samba)s or %(nfs)s in options to create a share.') % {
-                'samba': options['samba'].short_description,
-                'nfs': options['nfs'].short_description})
+            raise univention.admin.uexceptions.invalidOptions(
+                _('Need %(samba)s or %(nfs)s in options to create a share.') % {'samba': options['samba'].short_description, 'nfs': options['nfs'].short_description},
+            )
 
 
 lookup = object.lookup

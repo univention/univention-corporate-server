@@ -56,6 +56,23 @@ layout = [
 object = univention.admin.handlers.users.user.object
 
 
-def lookup(co: None, lo: univention.admin.uldap.access, filter_s: str, base: str = '', superordinate: univention.admin.handlers.simpleLdap | None = None, scope: str = 'sub', unique: bool = False, required: bool = False, timeout: int = -1, sizelimit: int = 0) -> list[univention.admin.handlers.simpleLdap]:
+def lookup(
+    co: None,
+    lo: univention.admin.uldap.access,
+    filter_s: str,
+    base: str = '',
+    superordinate: univention.admin.handlers.simpleLdap | None = None,
+    scope: str = 'sub',
+    unique: bool = False,
+    required: bool = False,
+    timeout: int = -1,
+    sizelimit: int = 0,
+) -> list[univention.admin.handlers.simpleLdap]:
     dn = lo.whoami()
-    return [user for user in univention.admin.handlers.users.user.lookup(co, lo, filter_s, base, superordinate, scope=scope, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit) if lo.compare_dn(dn, user.dn)]
+    return [
+        user
+        for user in univention.admin.handlers.users.user.lookup(
+            co, lo, filter_s, base, superordinate, scope=scope, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit,
+        )
+        if lo.compare_dn(dn, user.dn)
+    ]

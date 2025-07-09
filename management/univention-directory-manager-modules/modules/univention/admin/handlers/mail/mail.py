@@ -28,7 +28,7 @@ object_name = _('Mail object')
 object_name_plural = _('Mail objects')
 long_description = ''
 operations = ['search']
-childmodules = ["mail/folder", "mail/domain", "mail/lists"]
+childmodules = ['mail/folder', 'mail/domain', 'mail/lists']
 virtual = True
 options: dict[str, univention.admin.option] = {}
 property_descriptions = {
@@ -41,7 +41,7 @@ property_descriptions = {
         identifies=True,
     ),
 }
-layout = [Tab(_('General'), _('Basic settings'), ["name"])]
+layout = [Tab(_('General'), _('Basic settings'), ['name'])]
 
 mapping = univention.admin.mapping.mapping()
 
@@ -50,7 +50,18 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
 
-def lookup(co: None, lo: univention.admin.uldap.access, filter_s: str, base: str = '', superordinate: univention.admin.handlers.simpleLdap | None = None, scope: str = 'sub', unique: bool = False, required: bool = False, timeout: int = -1, sizelimit: int = 0) -> list[univention.admin.handlers.simpleLdap]:
+def lookup(
+    co: None,
+    lo: univention.admin.uldap.access,
+    filter_s: str,
+    base: str = '',
+    superordinate: univention.admin.handlers.simpleLdap | None = None,
+    scope: str = 'sub',
+    unique: bool = False,
+    required: bool = False,
+    timeout: int = -1,
+    sizelimit: int = 0,
+) -> list[univention.admin.handlers.simpleLdap]:
     res: list[univention.admin.handlers.simpleLdap] = []
     for childmodule in childmodules:
         mod = univention.admin.modules._get(childmodule)

@@ -165,7 +165,7 @@ class object(univention.admin.handlers.simpleLdap):
                 except univention.admin.uexceptions.noLock:
                     raise univention.admin.uexceptions.mailAddressUsed(self['mailPrimaryAddress'])
 
-        value = "%s@%s" % (self.info['name'], self.info['mailDomain'])
+        value = '%s@%s' % (self.info['name'], self.info['mailDomain'])
         al.append(('cn', value.encode('UTF-8')))
 
         return al
@@ -219,7 +219,7 @@ class object(univention.admin.handlers.simpleLdap):
                     new_acls_tmp.append(' '.join(acl))
 
         if rewrite_acl:
-            for (a, b, c) in ml[:]:
+            for a, b, c in ml[:]:
                 if a in ['sharedFolderUserACL', 'sharedFolderGroupACL']:
                     ml.remove((a, b, c))
             new_acls_tmp = [x.encode('UTF-8') for x in new_acls_tmp]

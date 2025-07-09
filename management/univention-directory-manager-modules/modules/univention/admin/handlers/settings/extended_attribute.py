@@ -384,7 +384,7 @@ class object(univention.admin.handlers.simpleLdap):
         return univention.admin.filter.conjunction('&', [
             univention.admin.filter.expression('objectClass', 'univentionUDMProperty'),
             univention.admin.filter.expression('univentionUDMPropertyVersion', '2'),
-        ])
+        ])  # fmt: skip
 
 
 lookup = object.lookup

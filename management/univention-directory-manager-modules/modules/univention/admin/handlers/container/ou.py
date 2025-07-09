@@ -264,7 +264,7 @@ class object(univention.admin.handlers.simpleLdap):
         changes = []
 
         dn_bytes = self.dn.encode('UTF-8')
-        for (prop, attr) in self.PATH_KEYS.items():
+        for prop, attr in self.PATH_KEYS.items():
             if self.oldinfo.get(prop) != self.info.get(prop):
                 entries = self.lo.authz_connection.getAttr(self.default_dn, attr)
                 if self.info[prop] == '0':

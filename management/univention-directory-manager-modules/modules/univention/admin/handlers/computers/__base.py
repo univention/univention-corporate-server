@@ -128,7 +128,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
                 krb_keys = univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
                 al.append(('krb5Key', self.oldattr.get('password', [b'1']), krb_keys))
             if 'posix' in self.options:
-                password_crypt = "{crypt}%s" % (univention.admin.password.crypt(self['password']))
+                password_crypt = '{crypt}%s' % (univention.admin.password.crypt(self['password']))
                 al.append(('userPassword', self.oldattr.get('userPassword', [b''])[0], password_crypt.encode('ASCII')))
             if 'samba' in self.options:
                 password_nt, password_lm = univention.admin.password.ntlm(self['password'])
@@ -214,7 +214,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
 
         if self.hasChanged('name'):
             if 'posix' in self.options:
-                requested_uid = "%s$" % self['name']
+                requested_uid = '%s$' % self['name']
                 try:
                     if not self.exists() or self['name'].lower() != self.oldinfo['name'].lower():
                         requested_uid = self.request_lock('uid', requested_uid)
@@ -236,7 +236,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
                 ml.append(('krb5Key', self.oldattr.get('password', [b'1']), krb_keys))
                 ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version.encode('ASCII')))
             if 'posix' in self.options:
-                password_crypt = "{crypt}%s" % (univention.admin.password.crypt(self['password']))
+                password_crypt = '{crypt}%s' % (univention.admin.password.crypt(self['password']))
                 ml.append(('userPassword', self.oldattr.get('userPassword', [b''])[0], password_crypt.encode('ASCII')))
             if 'samba' in self.options:
                 password_nt, password_lm = univention.admin.password.ntlm(self['password'])
@@ -273,10 +273,12 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
     def link(self) -> list[dict[str, str]] | None:
         result = []
         if self['ip'] and self['ip'] and self['ip'][0]:
-            result = [{
-                'url': 'https://%s/univention-management-console/' % self['ip'][0],
-                'ipaddr': self['ip'][0],
-            }]
+            result = [
+                {
+                    'url': 'https://%s/univention-management-console/' % self['ip'][0],
+                    'ipaddr': self['ip'][0],
+                },
+            ]
         if 'dnsEntryZoneForward' in self and self['dnsEntryZoneForward'] and self['dnsEntryZoneForward']:
             zone = univention.admin.uldap.explodeDn(self['dnsEntryZoneForward'][0], 1)[0]
             if not result:

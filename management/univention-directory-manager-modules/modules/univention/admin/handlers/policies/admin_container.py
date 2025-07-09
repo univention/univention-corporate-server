@@ -30,7 +30,7 @@ operations = ['add', 'edit', 'remove', 'search']
 
 policy_oc = 'univentionPolicyAdminContainerSettings'
 policy_apply_to = []
-policy_position_dn_prefix = "cn=container,cn=admin"
+policy_position_dn_prefix = 'cn=container,cn=admin'
 
 childs = False
 short_description = _('Policy: Univention Directory Manager container settings')

@@ -39,7 +39,7 @@ property_descriptions = {
         identifies=True,
     ),
 }
-layout = [Tab(_('General'), _('Basic settings'), layout=["name"])]
+layout = [Tab(_('General'), _('Basic settings'), layout=['name'])]
 mapping = univention.admin.mapping.mapping()
 
 
@@ -48,13 +48,24 @@ class object(univention.admin.handlers.simpleLdap):
     ldap_base = univention.admin.blocklist.BLOCKLIST_BASE
 
 
-def lookup(co: None, lo: univention.admin.uldap.access, filter_s: str, base: str = '', superordinate: univention.admin.handlers.simpleLdap | None = None, scope: str = 'sub', unique: bool = False, required: bool = False, timeout: int = -1, sizelimit: int = 0) -> list[univention.admin.handlers.simpleLdap]:
+def lookup(
+    co: None,
+    lo: univention.admin.uldap.access,
+    filter_s: str,
+    base: str = '',
+    superordinate: univention.admin.handlers.simpleLdap | None = None,
+    scope: str = 'sub',
+    unique: bool = False,
+    required: bool = False,
+    timeout: int = -1,
+    sizelimit: int = 0,
+) -> list[univention.admin.handlers.simpleLdap]:
     if not superordinate:
-        filter_s = ""
+        filter_s = ''
         base = univention.admin.blocklist.BLOCKLIST_BASE
     sup = univention.admin.modules._get(superordinate.module) if superordinate else None
     res: list[univention.admin.handlers.simpleLdap] = []
-    for childmodule in (sup.childmodules if sup else childmodules):
+    for childmodule in sup.childmodules if sup else childmodules:
         mod = univention.admin.modules._get(childmodule)
         res += mod.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
     return res

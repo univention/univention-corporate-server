@@ -35,8 +35,8 @@ module = 'policies/registry'
 operations = ['add', 'edit', 'remove', 'search']
 
 policy_oc = 'univentionPolicyRegistry'
-policy_apply_to = ["computers/domaincontroller_master", "computers/domaincontroller_backup", "computers/domaincontroller_slave", "computers/memberserver"]
-policy_position_dn_prefix = "cn=config-registry"
+policy_apply_to = ['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver']
+policy_position_dn_prefix = 'cn=config-registry'
 multivalue_policy = True
 childs = False
 short_description = _('Policy: Univention Configuration Registry')
@@ -94,7 +94,7 @@ register_policy_mapping(mapping)
 
 
 class object(univention.admin.handlers.simplePolicy):
-    UCR_HEX = "univentionRegistry;entry-hex-"
+    UCR_HEX = 'univentionRegistry;entry-hex-'
     module = module
 
     def _post_unmap(self, info: univention.admin.handlers._Properties, oldattr: univention.admin.handlers._Attributes) -> univention.admin.handlers._Properties:

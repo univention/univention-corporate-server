@@ -420,13 +420,13 @@ class object(univention.admin.handlers.simpleLdap):
         return bool(ml)
 
     def _check_uid_gid_uniqueness(self) -> None:
-        if not configRegistry.is_true("directory/manager/uid_gid/uniqueness", True):
+        if not configRegistry.is_true('directory/manager/uid_gid/uniqueness', True):
             return
-        if "posix" in self.options or "samba" in self.options:
+        if 'posix' in self.options or 'samba' in self.options:
             fg = univention.admin.filter.expression('uidNumber', self['gidNumber'], escape=True)
             user_objects = univention.admin.handlers.users.user.lookup(self.co, self.lo, filter_s=fg)
             if user_objects:
-                raise univention.admin.uexceptions.gidNumberAlreadyUsedAsUidNumber(repr(self["gidNumber"]))
+                raise univention.admin.uexceptions.gidNumberAlreadyUsedAsUidNumber(repr(self['gidNumber']))
 
     def _ldap_pre_ready(self) -> None:
         super()._ldap_pre_ready()
@@ -584,7 +584,9 @@ class object(univention.admin.handlers.simpleLdap):
                 raise univention.admin.uexceptions.primaryGroupUsed(gidNum)
         if 'samba' in self.old_options:
             groupSid = self.oldattr['sambaSID'][0].decode('ASCII')
-            if self.lo.authz_connection.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(sambaPrimaryGroupSID=%s))', [groupSid]), scope='domain'):
+            if self.lo.authz_connection.searchDn(
+                base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(sambaPrimaryGroupSID=%s))', [groupSid]), scope='domain',
+            ):
                 raise univention.admin.uexceptions.primaryGroupUsed(groupSid)
         if gidNum:
             self.alloc.append(('gidNumber', gidNum))
@@ -636,8 +638,8 @@ class object(univention.admin.handlers.simpleLdap):
             new_name = self.info.get('name', '')
         else:
             old_groups = []
-            old_name = ""
-            new_name = ""
+            old_name = ''
+            new_name = ''
 
         # rewrite membership attributes in "supergroup" if we have a new name (rename)
         if old_name and old_name != new_name:
@@ -737,7 +739,7 @@ class object(univention.admin.handlers.simpleLdap):
             raise univention.admin.uexceptions.circularGroupDependency('%s ==> %s ==> %s' % (childcn, cn, childcn))
 
         # test long dependencies: A -> B -> C -> A
-        if self.info.get('memberOf'):   # TODO: FIXME:  perform extended check only if self.hasChanged('memberOf') is True
+        if self.info.get('memberOf'):  # TODO: FIXME:  perform extended check only if self.hasChanged('memberOf') is True
             # if user added some groups to memberOf, the group objects specified in memberOf do not contain self as
             # uniqueMember (aka nestedGroup) when this test is performed. So this test has to perform the recursion check
             # with each member of memberOf as parent
@@ -799,7 +801,7 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _is_global_member(self) -> bool:
         searchResult = self.lo.authz_connection.search(base=self.position.getDomain(), filter=filter_format('(uniqueMember=%s)', [self.dn]), attr=['univentionGroupType'])
-        for (_dn, attr) in searchResult:
+        for _dn, attr in searchResult:
             groupType = attr.get('univentionGroupType', [None])[0]
             if self.__is_groupType_global(groupType):
                 return True
@@ -906,7 +908,7 @@ class object(univention.admin.handlers.simpleLdap):
                 univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'univentionGroup')]),
                 univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'sambaGroupMapping')]),
             ]),
-        ])
+        ])  # fmt: skip
 
 
 lookup = object.lookup

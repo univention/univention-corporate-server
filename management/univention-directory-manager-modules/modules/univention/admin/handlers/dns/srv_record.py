@@ -123,6 +123,5 @@ lookup_filter = object.lookup_filter
 
 def identify(dn: str, attr: univention.admin.handlers._Attributes, canonical: bool = False) -> bool:
     return bool(
-        attr.get('sRVRecord')
-        and is_dns(attr),
+        attr.get('sRVRecord') and is_dns(attr),
     )

@@ -188,5 +188,5 @@ def identify(dn: str, attr: univention.admin.handlers._Attributes, canonical: bo
         is_dns(attr)
         and not is_zone(attr)
         and is_not_handled_by_other_module_than(attr, module)
-        and (has_any(attr, 'aRecord', 'aAAARecord', 'mXRecord') or attr.get("univentionObjectType")),
+        and (has_any(attr, 'aRecord', 'aAAARecord', 'mXRecord') or attr.get('univentionObjectType')),
     )
