@@ -9,3 +9,6 @@ desc: |
  * The experimental delegative administration feature has been integrated into
    the UDM core library.
 bug: [58432]
+erratum: 147
+announced: 2025-07-09
+support: core
