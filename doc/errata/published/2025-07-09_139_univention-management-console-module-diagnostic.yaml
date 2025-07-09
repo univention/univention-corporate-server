@@ -9,3 +9,6 @@ desc: |
  * The output of the diagnostic module `58_univentionObjectIdentifier` is now
    more verbose and shows the affected objects.
 bug: [58446]
+erratum: 139
+announced: 2025-07-09
+support: core
