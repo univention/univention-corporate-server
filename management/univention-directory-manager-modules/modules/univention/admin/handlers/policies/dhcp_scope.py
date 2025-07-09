@@ -36,10 +36,10 @@ class dhcp_scopeFixedAttributes(univention.admin.syntax.select):
 module = 'policies/dhcp_scope'
 operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc = "univentionPolicyDhcpScope"
-policy_apply_to = ["dhcp/service", "dhcp/subnet", "dhcp/host", "dhcp/sharedsubnet", "dhcp/shared"]
-policy_position_dn_prefix = "cn=scope,cn=dhcp"
-policies_group = "dhcp"
+policy_oc = 'univentionPolicyDhcpScope'
+policy_apply_to = ['dhcp/service', 'dhcp/subnet', 'dhcp/host', 'dhcp/sharedsubnet', 'dhcp/shared']
+policy_position_dn_prefix = 'cn=scope,cn=dhcp'
+policies_group = 'dhcp'
 childs = False
 short_description = _('Policy: DHCP Allow/Deny')
 object_name = _('DHCP Allow/Deny policy')

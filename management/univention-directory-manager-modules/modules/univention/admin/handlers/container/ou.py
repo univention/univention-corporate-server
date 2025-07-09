@@ -268,7 +268,7 @@ class object(univention.admin.handlers.simpleLdap):
         changes = []
 
         dn_bytes = self.dn.encode('UTF-8')
-        for (prop, attr) in self.PATH_KEYS.items():
+        for prop, attr in self.PATH_KEYS.items():
             if self.oldinfo.get(prop) != self.info.get(prop):
                 entries = self.lo.authz_connection.getAttr(self.default_dn, attr)
                 if self.info[prop] == '0':
@@ -324,10 +324,13 @@ class object(univention.admin.handlers.simpleLdap):
 
     @classmethod
     def unmapped_lookup_filter(cls) -> univention.admin.filter.conjunction:
-        return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'organizationalUnit'),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionBase')]),
-        ])
+        return univention.admin.filter.conjunction(
+            '&',
+            [
+                univention.admin.filter.expression('objectClass', 'organizationalUnit'),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionBase')]),
+            ],
+        )
 
 
 lookup = object.lookup

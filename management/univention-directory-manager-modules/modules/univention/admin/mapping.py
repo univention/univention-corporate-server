@@ -311,7 +311,7 @@ def unmapBase64(value: list[bytes] | tuple[bytes, ...] | bytes) -> list[str] | s
             return base64.b64encode(value[0]).decode('ASCII')
         except Exception as e:
             log.error('ERROR in unmapBase64: %s', e)
-    return ""
+    return ''
 
 
 def mapBase64(value: list[str] | str) -> list[bytes] | bytes:
@@ -343,7 +343,7 @@ def mapBase64(value: list[str] | str) -> list[bytes] | bytes:
             return base64.b64decode(value)
         except Exception as e:
             log.error('ERROR in mapBase64: %s', e)
-    return ""
+    return ''
 
 
 def BooleanListToString(list: list[bytes], encoding: _Encoding = ()) -> str:

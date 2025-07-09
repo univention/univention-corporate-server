@@ -373,7 +373,9 @@ class object(univention.admin.handlers.simpleLdap):
 
     def _modlist_display_name(self, ml: list[tuple[str, Any, Any]]) -> list[tuple[str, Any, Any]]:
         # update displayName automatically if no custom value has been entered by the user and the name changed
-        if self.info.get('displayName') == self.oldinfo.get('displayName') and (self.info.get('firstname') != self.oldinfo.get('firstname') or self.info.get('lastname') != self.oldinfo.get('lastname')):
+        if self.info.get('displayName') == self.oldinfo.get('displayName') and (
+            self.info.get('firstname') != self.oldinfo.get('firstname') or self.info.get('lastname') != self.oldinfo.get('lastname')
+        ):
             prop_displayName = self.descriptions['displayName']
             old_default_displayName = prop_displayName._replace(prop_displayName.base_default, self.oldinfo)
             # does old displayName match with old default displayName?
@@ -418,20 +420,23 @@ class object(univention.admin.handlers.simpleLdap):
 
     @classmethod
     def unmapped_lookup_filter(cls) -> univention.admin.filter.conjunction:
-        return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'person'),
-            univention.admin.filter.expression('objectClass', 'inetOrgPerson'),
-            univention.admin.filter.expression('objectClass', 'organizationalPerson'),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'posixAccount')]),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'shadowAccount')]),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'sambaSamAccount')]),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'krb5Principal')]),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'krb5KDCEntry')]),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionMail')]),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'simpleSecurityObject')]),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'uidObject')]),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'pkiUser')]),
-        ])
+        return univention.admin.filter.conjunction(
+            '&',
+            [
+                univention.admin.filter.expression('objectClass', 'person'),
+                univention.admin.filter.expression('objectClass', 'inetOrgPerson'),
+                univention.admin.filter.expression('objectClass', 'organizationalPerson'),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'posixAccount')]),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'shadowAccount')]),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'sambaSamAccount')]),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'krb5Principal')]),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'krb5KDCEntry')]),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionMail')]),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'simpleSecurityObject')]),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'uidObject')]),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'pkiUser')]),
+            ],
+        )
 
 
 lookup = object.lookup
@@ -440,7 +445,12 @@ lookup_filter = object.lookup_filter
 
 def identify(dn: str, attr: univention.admin.handlers._Attributes, canonical: bool = False) -> bool:
     # FIXME: is this if block needed? copy pasted from users/user
-    if b'0' in attr.get('uidNumber', []) or b'$' in attr.get('uid', [b''])[0] or b'univentionHost' in attr.get('objectClass', []) or b'functional' in attr.get('univentionObjectFlag', []):
+    if (
+        b'0' in attr.get('uidNumber', [])
+        or b'$' in attr.get('uid', [b''])[0]
+        or b'univentionHost' in attr.get('objectClass', [])
+        or b'functional' in attr.get('univentionObjectFlag', [])
+    ):
         return False
 
     required_ocs = {b'person', b'inetOrgPerson', b'organizationalPerson'}

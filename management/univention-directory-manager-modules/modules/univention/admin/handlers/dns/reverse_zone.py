@@ -225,7 +225,15 @@ class object(univention.admin.handlers.simpleLdap):
             retry = univention.admin.mapping.mapUNIX_TimeInterval(self['retry'])
             expire = univention.admin.mapping.mapUNIX_TimeInterval(self['expire'])
             ttl = univention.admin.mapping.mapUNIX_TimeInterval(self['ttl'])
-            soa = b'%s %s %s %s %s %s %s' % (self['nameserver'][0].encode('ASCII'), escapeSOAemail(self['contact']).encode('ASCII'), self['serial'].encode('ASCII'), refresh, retry, expire, ttl)
+            soa = b'%s %s %s %s %s %s %s' % (
+                self['nameserver'][0].encode('ASCII'),
+                escapeSOAemail(self['contact']).encode('ASCII'),
+                self['serial'].encode('ASCII'),
+                refresh,
+                retry,
+                expire,
+                ttl,
+            )
             ml.append(('sOARecord', self.oldattr.get('sOARecord', []), soa))
         return ml
 
@@ -248,14 +256,20 @@ class object(univention.admin.handlers.simpleLdap):
 
     @classmethod
     def unmapped_lookup_filter(cls) -> univention.admin.filter.conjunction:
-        return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'dNSZone'),
-            univention.admin.filter.expression('sOARecord', '*', escape=False),
-            univention.admin.filter.conjunction('|', [
-                univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP4, escape=False),
-                univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP6, escape=False),
-            ]),
-        ])
+        return univention.admin.filter.conjunction(
+            '&',
+            [
+                univention.admin.filter.expression('objectClass', 'dNSZone'),
+                univention.admin.filter.expression('sOARecord', '*', escape=False),
+                univention.admin.filter.conjunction(
+                    '|',
+                    [
+                        univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP4, escape=False),
+                        univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP6, escape=False),
+                    ],
+                ),
+            ],
+        )
 
 
 lookup = object.lookup
@@ -264,7 +278,5 @@ lookup_filter = object.lookup_filter
 
 def identify(dn: str, attr: univention.admin.handlers._Attributes) -> bool:
     return bool(
-        is_zone(attr)
-        and is_dns(attr)
-        and is_reverse_zone(attr),
+        is_zone(attr) and is_dns(attr) and is_reverse_zone(attr),
     )

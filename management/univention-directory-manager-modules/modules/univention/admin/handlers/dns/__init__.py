@@ -31,12 +31,12 @@ def is_dns(attr: udm_handlers._Attributes) -> bool:
 
 def is_zone(attr: udm_handlers._Attributes) -> bool:
     """Are the given LDAP attributes a DNS zone entry?"""
-    return bool(attr.get("sOARecord"))
+    return bool(attr.get('sOARecord'))
 
 
 def is_reverse_zone(attr: udm_handlers._Attributes) -> bool:
     """Are the given LDAP attributes a DNS entry in a forward zone?"""
-    return attr["zoneName"][0].decode("ASCII").endswith((ARPA_IP4, ARPA_IP6))
+    return attr['zoneName'][0].decode('ASCII').endswith((ARPA_IP4, ARPA_IP6))
 
 
 def is_forward_zone(attr: udm_handlers._Attributes) -> bool:
@@ -96,7 +96,7 @@ class DNSBase(udm_handlers.simpleLdap):
         dn = superordinate.dn
         for rdn in str2dn(dn):
             for k, v, _t in rdn:
-                if k.lower() == "zonename":
+                if k.lower() == 'zonename':
                     return v
         raise ValueError(dn)
 

@@ -71,12 +71,12 @@ class Support:
         self.nagiosRemoveFromServices = False
 
     def __getFQDN(self):
-        hostname = self.oldattr.get("cn", [b''])[0].decode('UTF-8')
-        domain = self.oldattr.get("associatedDomain", [b''])[0].decode('UTF-8')
+        hostname = self.oldattr.get('cn', [b''])[0].decode('UTF-8')
+        domain = self.oldattr.get('associatedDomain', [b''])[0].decode('UTF-8')
         if not domain:
-            domain = configRegistry.get("domainname", None)
+            domain = configRegistry.get('domainname', None)
         if domain and hostname:
-            return hostname + "." + domain
+            return hostname + '.' + domain
 
         return None
 
@@ -96,7 +96,11 @@ class Support:
             if ('ip' not in self.info) or (not self.info['ip']) or (len(self.info['ip']) == 1 and self.info['ip'][0] == ''):
                 raise univention.admin.uexceptions.nagiosARecordRequired()
             if not self.info.get('domain', None):
-                if ('dnsEntryZoneForward' not in self.info) or (not self.info['dnsEntryZoneForward']) or (len(self.info['dnsEntryZoneForward']) == 1 and self.info['dnsEntryZoneForward'][0] == ''):
+                if (
+                    ('dnsEntryZoneForward' not in self.info)
+                    or (not self.info['dnsEntryZoneForward'])
+                    or (len(self.info['dnsEntryZoneForward']) == 1 and self.info['dnsEntryZoneForward'][0] == '')
+                ):
                     raise univention.admin.uexceptions.nagiosDNSForwardZoneEntryRequired()
 
         # add nagios option
@@ -130,7 +134,9 @@ class Support:
                 newmembers = copy.deepcopy(oldmembers)
                 newmembers.remove(oldfqdn)
                 newmembers.append(newfqdn)
-                self.lo.authz_connection.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)])  # TODO: why not simply ('univentionNagiosHostname', oldfqdn, newfqdn) ?
+                self.lo.authz_connection.modify(
+                    servicedn, [('univentionNagiosHostname', oldmembers, newmembers)],
+                )  # TODO: why not simply ('univentionNagiosHostname', oldfqdn, newfqdn) ?
 
     def nagiosModifyServiceList(self):
         fqdn = ''
@@ -149,7 +155,7 @@ class Support:
                 newfqdn = '%s.%s' % (self['name'], self['domain'])
                 self.__change_fqdn(oldfqdn, newfqdn)
 
-        fqdn = '%s.%s' % (self['name'], configRegistry.get("domainname"))
+        fqdn = '%s.%s' % (self['name'], configRegistry.get('domainname'))
         if self.has_property('domain') and self['domain']:
             fqdn = '%s.%s' % (self['name'], self['domain'])
 
@@ -185,9 +191,11 @@ class Support:
         if fqdn:
             searchResult = self.lo.search(
                 filter=filter_format('(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))', [fqdn]),
-                base=self.position.getDomain(), attr=['univentionNagiosHostname'])
+                base=self.position.getDomain(),
+                attr=['univentionNagiosHostname'],
+            )
 
-            for (dn, attrs) in searchResult:
+            for dn, attrs in searchResult:
                 newattrs = [x for x in attrs['univentionNagiosHostname'] if x.decode('UTF-8').lower() != fqdn.lower()]
                 self.lo.authz_connection.modify(dn, [('univentionNagiosHostname', attrs['univentionNagiosHostname'], newattrs)])
 
@@ -199,9 +207,11 @@ class Support:
         if fqdn:
             searchResult = self.lo.search(
                 filter=filter_format('(&(objectClass=univentionNagiosHostClass)(univentionNagiosParent=%s))', [fqdn]),
-                base=self.position.getDomain(), attr=['univentionNagiosParent'])
+                base=self.position.getDomain(),
+                attr=['univentionNagiosParent'],
+            )
 
-            for (dn, attrs) in searchResult:
+            for dn, attrs in searchResult:
                 newattrs = [x for x in attrs['univentionNagiosParent'] if x.decode('UTF-8').lower() != fqdn.lower()]
                 self.lo.authz_connection.modify(dn, [('univentionNagiosParent', attrs['univentionNagiosParent'], newattrs)])
 

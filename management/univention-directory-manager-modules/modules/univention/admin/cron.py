@@ -196,7 +196,7 @@ def cron_split(cronlist):
                     res[keys[pos]].append(weekday_reverse_map(i))
                 except Exception:
                     res[keys[pos]].append(i)
-        elif keys[pos] == 'day' and "55" in entry.split(','):
+        elif keys[pos] == 'day' and '55' in entry.split(','):
             res[keys[pos]] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31']  # fmt: skip
         else:
             res[keys[pos]] = entry.split(',')

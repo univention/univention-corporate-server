@@ -115,10 +115,13 @@ class object(DNSBase):
 
     @classmethod
     def unmapped_lookup_filter(cls) -> univention.admin.filter.conjunction:
-        return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'dNSZone'),
-            univention.admin.filter.expression('sRVRecord', '*', escape=False),
-        ])
+        return univention.admin.filter.conjunction(
+            '&',
+            [
+                univention.admin.filter.expression('objectClass', 'dNSZone'),
+                univention.admin.filter.expression('sRVRecord', '*', escape=False),
+            ],
+        )
 
 
 lookup = object.lookup
@@ -127,6 +130,5 @@ lookup_filter = object.lookup_filter
 
 def identify(dn: str, attr: univention.admin.handlers._Attributes, canonical: bool = False) -> bool:
     return bool(
-        attr.get('sRVRecord')
-        and is_dns(attr),
+        attr.get('sRVRecord') and is_dns(attr),
     )

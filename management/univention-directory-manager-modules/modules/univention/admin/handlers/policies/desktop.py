@@ -34,8 +34,8 @@ module = 'policies/desktop'
 operations = ['add', 'edit', 'remove', 'search']
 
 policy_oc = 'univentionPolicyDesktop'
-policy_apply_to = ["users/user"]
-policy_position_dn_prefix = "cn=desktop"
+policy_apply_to = ['users/user']
+policy_position_dn_prefix = 'cn=desktop'
 childs = False
 short_description = _('Policy: Desktop')
 object_name = _('Desktop policy')

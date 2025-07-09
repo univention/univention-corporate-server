@@ -34,8 +34,8 @@ module = 'policies/masterpackages'
 operations = ['add', 'edit', 'remove', 'search']
 
 policy_oc = 'univentionPolicyPackagesMaster'
-policy_apply_to = ["computers/domaincontroller_master", "computers/domaincontroller_backup"]
-policy_position_dn_prefix = "cn=packages,cn=update"
+policy_apply_to = ['computers/domaincontroller_master', 'computers/domaincontroller_backup']
+policy_position_dn_prefix = 'cn=packages,cn=update'
 
 childs = False
 short_description = _('Policy: Packages for Primary/Backup Nodes')

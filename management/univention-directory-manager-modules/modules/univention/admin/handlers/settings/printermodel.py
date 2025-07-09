@@ -74,6 +74,7 @@ def unmapDriverList(ldap_value: list[bytes], encoding: univention.admin.handlers
 def mapDriverList(udm_value: list[str], encoding: univention.admin.handlers._Encoding = ()) -> list[bytes]:
     def q(s: str) -> str:
         return s.replace('"', '\\"')
+
     ldap_attr_list = []
     for x in udm_value:
         value = '"%s" "%s"' % (q(x[0]), q(x[1]))

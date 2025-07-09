@@ -22,6 +22,7 @@ from univention.admin import localization
 
 if TYPE_CHECKING:
     import univention.admin.handlers
+
     AddList = list[tuple[str, list[str]]]
     _Mod2 = tuple[str, list[str]]
     _Mod3 = tuple[str, list[str], list[str]]
@@ -48,7 +49,11 @@ def import_hook_files() -> None:
                         }
                         exec(fd.read(), env)  # noqa: S102
                         sys.modules[__name__].__dict__.update(
-                            dict(inspect.getmembers(SimpleNamespace(**env), lambda m: inspect.isclass(m) and issubclass(m, (simpleHook, AttributeHook)) and m not in (simpleHook, AttributeHook))),
+                            dict(
+                                inspect.getmembers(
+                                    SimpleNamespace(**env), lambda m: inspect.isclass(m) and issubclass(m, (simpleHook, AttributeHook)) and m not in (simpleHook, AttributeHook),
+                                ),
+                            ),
                         )
                     log.debug('admin.hook.import_hook_files: importing %r', fn)
                 except Exception:

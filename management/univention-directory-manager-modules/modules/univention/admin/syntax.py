@@ -124,8 +124,8 @@ def _replace_asterisks_in_filter(filter_s, allow_asterisks=True):
 
 
 def _check_legacy_username_format(text):
-    if configRegistry.is_false("directory/manager/user/enable-legacy-username-format") and text.strip().isdigit():
-        raise univention.admin.uexceptions.valueError(_("Usernames must not consist only of numbers!"))
+    if configRegistry.is_false('directory/manager/user/enable-legacy-username-format') and text.strip().isdigit():
+        raise univention.admin.uexceptions.valueError(_('Usernames must not consist only of numbers!'))
 
 
 def is_syntax(syntax_obj: Any, syntax_type: type) -> bool:
@@ -257,24 +257,26 @@ class ISyntax:
             return [subtypes_dict(_) for _ in getattr(self, 'subsyntaxes', [])]
 
         subtypes = subsyntaxes(udm_property)
-        log.debug("Syntax %s has the following choices: %s", self.name, descr)
+        log.debug('Syntax %s has the following choices: %s', self.name, descr)
         if subtypes:
-            log.debug("Syntax %s has the following sub-types: %s", self.name, subtypes)
+            log.debug('Syntax %s has the following sub-types: %s', self.name, subtypes)
             descr['subtypes'] = subtypes
         if descr['type'] == 'LinkList':
             descr['multivalue'] = False
         elif 'MultiObjectSelect' in descr['type']:
             descr['multivalue'] = False
         elif udm_property.multivalue and descr['type'] != 'MultiInput':
-            descr['subtypes'] = [{
-                'type': descr['type'],
-                'dynamicValues': descr.get('dynamicValues'),
-                'dynamicValuesInfo': descr.get('dynamicValuesInfo'),
-                'dynamicOptions': descr.get('dynamicOptions'),
-                'staticValues': descr.get('staticValues'),
-                'size': self.size,
-                'depends': descr.get('depends'),
-            }]
+            descr['subtypes'] = [
+                {
+                    'type': descr['type'],
+                    'dynamicValues': descr.get('dynamicValues'),
+                    'dynamicValuesInfo': descr.get('dynamicValuesInfo'),
+                    'dynamicOptions': descr.get('dynamicOptions'),
+                    'staticValues': descr.get('staticValues'),
+                    'size': self.size,
+                    'depends': descr.get('depends'),
+                },
+            ]
             descr['type'] = 'MultiInput'
 
         return descr
@@ -499,6 +501,7 @@ class complex(ISyntax):
     @classmethod
     def get_widget(cls, prop):
         return cls.widget if prop.multivalue else cls.widget_multivalue
+
     widget = 'MultiInput'
     widget_multivalue = 'ComplexInput'
     widget_default_search_pattern = None
@@ -518,7 +521,7 @@ class complex(ISyntax):
         for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
             log.debug('syntax.py: subsyntax[%s]=%s, texts=%s', i, syn, text)
             if text is None and i + 1 < minn:
-                raise univention.admin.uexceptions.valueInvalidSyntax(_("Missing argument: %s > %s") % (self.name, desc))
+                raise univention.admin.uexceptions.valueInvalidSyntax(_('Missing argument: %s > %s') % (self.name, desc))
             s: simple = syn() if inspect.isclass(syn) else syn  # type: ignore
             p = s.parse(text)
             parsed.append(p)
@@ -557,23 +560,30 @@ class complex(ISyntax):
             class SubTC(TC):
                 def __init__(self, property_, property_name):
                     TC.__init__(self, property_, property_name, syntax=subsyntax)
+
             return SubTC
 
         if cls.subsyntax_key_value:
+
             class ComplexMultiValueKeyValueDictType(univention.admin.types.KeyValueDictionaryType):
                 key_type = _sub_type_class(cls.subsyntaxes[0][1])
                 value_type = _sub_type_class(cls.subsyntaxes[1][1])
+
             return ComplexMultiValueKeyValueDictType
         elif cls.subsyntax_names:
+
             class ComplexMultiValueDictType(univention.admin.types.DictionaryType):
                 properties = {
                     key: _sub_type_class(syn)
                     for key, (desc, syn) in zip(cls.subsyntax_names, cls.subsyntaxes)
                 }
+
             return ComplexMultiValueDictType
         else:
+
             class ComplexListType(univention.admin.types.ListOfItems):
                 item_types = [_sub_type_class(sub[1]) for sub in cls.subsyntaxes]
+
             return ComplexListType
 
     @property
@@ -710,7 +720,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
     """Allow to select no entry."""
     depends: str | None = None
     """The name of another |UDM| property this syntax depends on."""
-    error_message = _("Not a valid LDAP DN")
+    error_message = _('Not a valid LDAP DN')
     """Error message when an invalid item is selected."""
     simple = False  # by default a MultiObjectSelect widget is used; if simple == True a ComboBox is used
     """With `True`, only a single object can be selected using a ComboBox. With `False` multiple entries can be selected using a MultiObjectSelect widget."""
@@ -776,7 +786,9 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
             else:
                 simple = True
             if not simple:
-                log.warning('Syntax %s wants to get optimizations but may not. This is a Bug! We provide a fallback but the syntax will respond much slower than it could!', cls.name)
+                log.warning(
+                    'Syntax %s wants to get optimizations but may not. This is a Bug! We provide a fallback but the syntax will respond much slower than it could!', cls.name,
+                )
 
         def extract_key_label(syn, dn, info):
             key = label = None
@@ -799,6 +811,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
             return key, label
 
         if not simple:
+
             def map_choices(obj_list):
                 result = []
                 for obj in obj_list:
@@ -1163,7 +1176,7 @@ class UCSVersion(string):
         try:
             UCS_Version(value)
         except ValueError:
-            raise univention.admin.uexceptions.valueError(_('Invalid UCS version: %s') % (value, ))
+            raise univention.admin.uexceptions.valueError(_('Invalid UCS version: %s') % (value,))
 
         return value
 
@@ -1220,6 +1233,7 @@ class BaseFilename(string):
             raise univention.admin.uexceptions.valueError(_('Filename must not contain slashes: %s') % str(value))
         else:
             return value
+
 
 # upload classes
 
@@ -1418,6 +1432,7 @@ class jpegPhoto(Upload):
 
                 def _fileno(*a, **k):
                     raise AttributeError()  # workaround for an old PIL lib which can't handle BytesIO
+
                 output.fileno = _fileno
                 image.save(output, format='JPEG')
                 raw = output.getvalue()
@@ -1652,7 +1667,7 @@ class integer(simple):
         if self._re.match(text) is not None:
             return text
         else:
-            raise univention.admin.uexceptions.valueError(_("Value must be a number!"))
+            raise univention.admin.uexceptions.valueError(_('Value must be a number!'))
 
 
 class integerOrEmpty(integer):
@@ -1715,7 +1730,7 @@ class boolean(simple):
     min_length = 1
     max_length = 1
     regex = re.compile('^[01]?$')
-    error_message = _("Value must be 0 or 1")
+    error_message = _('Value must be 0 or 1')
 
     type_class = univention.admin.types.BooleanType
 
@@ -1784,7 +1799,7 @@ class filesize(simple):
     min_length = 1
     max_length = 0
     regex = re.compile('^[0-9]+(|[gGmMkK])(|[bB])$')
-    error_message = _("Value must be an integer followed by one of GB,MB,KB,B or nothing (equals B)!")
+    error_message = _('Value must be an integer followed by one of GB,MB,KB,B or nothing (equals B)!')
 
 
 class mail_folder_name(simple):
@@ -1809,8 +1824,8 @@ class mail_folder_name(simple):
 
     @classmethod
     def parse(self, text):
-        if "!" in text or " " in text or "\t" in text:
-            raise univention.admin.uexceptions.valueError(_("Value may not contain whitespace or exclamation mark !"))
+        if '!' in text or ' ' in text or '\t' in text:
+            raise univention.admin.uexceptions.valueError(_('Value may not contain whitespace or exclamation mark !'))
         else:
             return text
 
@@ -1948,7 +1963,7 @@ class string_numbers_letters_dots_spaces(simple):
     """
 
     regex = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._ -]*([a-zA-Z0-9]$)')
-    error_message = _("Value must not contain anything other than digits, letters, dots or spaces, must be at least 2 characters long, and start and end with a digit or letter!")
+    error_message = _('Value must not contain anything other than digits, letters, dots or spaces, must be at least 2 characters long, and start and end with a digit or letter!')
 
 
 class phone(simple):
@@ -1970,7 +1985,7 @@ class phone(simple):
     min_length = 1
     max_length = 16
     regex = re.compile('(?u)[a-zA-Z0-9._ ()\\\\/+-]*$')
-    error_message = _("Value must not contain anything other than digits, letters, dots, brackets, slash, plus, or minus!")
+    error_message = _('Value must not contain anything other than digits, letters, dots, brackets, slash, plus, or minus!')
 
 
 class IA5string(string):
@@ -1994,7 +2009,7 @@ class IA5string(string):
                 text = text.decode('UTF-8')
             text.encode('ASCII')
         except UnicodeEncodeError:
-            raise univention.admin.uexceptions.valueError(_("Field must only contain ASCII characters!"))
+            raise univention.admin.uexceptions.valueError(_('Field must only contain ASCII characters!'))
         return text
 
 
@@ -2046,11 +2061,13 @@ class uid(simple):
     'Admin'
     """
 
-    min_length = 1   # TODO: not enforced here
+    min_length = 1  # TODO: not enforced here
     max_length = 16  # TODO: not enforced here
     regex = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)')
     # FIXME: (?!admin)
-    error_message = _("Value must not contain anything other than digits, letters, dots, dash or underscore, must be at least 2 characters long, must start and end with a digit or letter, and must not be admin!")
+    error_message = _(
+        'Value must not contain anything other than digits, letters, dots, dash or underscore, must be at least 2 characters long, must start and end with a digit or letter, and must not be admin!',
+    )
 
     @classmethod
     def parse(cls, text):
@@ -2083,7 +2100,7 @@ class uid_umlauts(simple):
     """
 
     name = 'uid'
-    min_length = 1   # TODO: not enforced here
+    min_length = 1  # TODO: not enforced here
     max_length = 16  # TODO: not enforced here
     _re = re.compile(r'(?u)(^\w[\w -.]*\w$)|\w*$')  # TODO: uid() above must be at least 2 chars long
     # FIXME: The " -." in "[\w -.]" matches the ASCII character range(ord(' '),  ord('.')+1) == range(32, 47)
@@ -2092,8 +2109,8 @@ class uid_umlauts(simple):
     def parse(self, text):
         if isinstance(text, bytes):
             text = text.decode('UTF-8')
-        if " " in text:
-            raise univention.admin.uexceptions.valueError(_("Spaces are not allowed in the username!"))
+        if ' ' in text:
+            raise univention.admin.uexceptions.valueError(_('Spaces are not allowed in the username!'))
 
         _check_legacy_username_format(text)
 
@@ -2101,7 +2118,7 @@ class uid_umlauts(simple):
             return text
         else:
             # TODO: Dashes are allowed too
-            raise univention.admin.uexceptions.valueError(_("Username must only contain numbers, letters and dots!"))
+            raise univention.admin.uexceptions.valueError(_('Username must only contain numbers, letters and dots!'))
 
 
 class uid_umlauts_lower_except_first_letter(simple):
@@ -2124,7 +2141,7 @@ class uid_umlauts_lower_except_first_letter(simple):
     valueError:
     """
 
-    min_length = 1   # TODO: not enforced here
+    min_length = 1  # TODO: not enforced here
     max_length = 16  # TODO: not enforced here
     _re = re.compile(r'(?u)(^\w[\w -.]*\w$)|\w*$')  # TODO: uid() above must be at least 2 chars long
     # FIXME: The " -." in "[\w -.]" matches the ASCII character range(ord(' '),  ord('.')+1) == range(32, 47)
@@ -2134,14 +2151,14 @@ class uid_umlauts_lower_except_first_letter(simple):
         if isinstance(text, bytes):
             text = text.decode('UTF-8')
         if any(c.isupper() for c in text[1:]):
-            raise univention.admin.uexceptions.valueError(_("Only the first letter of the username may be uppercase!"))
+            raise univention.admin.uexceptions.valueError(_('Only the first letter of the username may be uppercase!'))
 
         _check_legacy_username_format(text)
 
         if self._re.match(text) is not None:
             return text
         else:
-            raise univention.admin.uexceptions.valueError(_("Username must only contain numbers, letters and dots!"))
+            raise univention.admin.uexceptions.valueError(_('Username must only contain numbers, letters and dots!'))
 
 
 class gid(simple):
@@ -2154,19 +2171,18 @@ class gid(simple):
     u'Groupe d\u2019acc\u00e8s d\u2019autorisation Windows'
     """
 
-    min_length = 1   # TODO: not enforced here
+    min_length = 1  # TODO: not enforced here
     max_length = 32  # TODO: not enforced here
-    regex = re.compile("(?u)^\\w([\\w -.’]*\\w)?$")
+    regex = re.compile('(?u)^\\w([\\w -.’]*\\w)?$')
     # FIXME: The " -." in "[\w -.]" matches the ASCII character range(ord(' '),  ord('.')+1) == range(32, 47)
     error_message = _(
-        "A group name must start and end with a letter, number or underscore. In between additionally spaces, dashes "
-        "and dots are allowed.",
+        'A group name must start and end with a letter, number or underscore. In between additionally spaces, dashes and dots are allowed.',
     )
 
     @classmethod
     def parse(cls, text):
-        if configRegistry.is_false("directory/manager/group/enable-legacy-cn-format") and text.strip().isdigit():
-            raise univention.admin.uexceptions.valueError(_("Group names must not consist only of numbers!"))
+        if configRegistry.is_false('directory/manager/group/enable-legacy-cn-format') and text.strip().isdigit():
+            raise univention.admin.uexceptions.valueError(_('Group names must not consist only of numbers!'))
         return super().parse(text)
 
 
@@ -2200,8 +2216,8 @@ class sharePath(simple):
     def parse(self, text: str) -> str:
         if not text.startswith('/'):
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Path must begin with "/"!'))
-        first, _sep, _tail = text.lstrip("/").partition("/")
-        if first in {"dev", "proc", "root", "sys", "tmp"}:
+        first, _sep, _tail = text.lstrip('/').partition('/')
+        if first in {'dev', 'proc', 'root', 'sys', 'tmp'}:
             raise univention.admin.uexceptions.valueError(_('Path must not start with "/%s" !') % first)
 
         return os.path.normpath(super().parse(text))
@@ -2221,9 +2237,9 @@ class passwd(simple):
 
     min_length = 8
     max_length = 0
-    _re1 = re.compile(r"[A-Z]")
-    _re2 = re.compile(r"[a-z]")
-    _re3 = re.compile(r"[0-9]")
+    _re1 = re.compile(r'[A-Z]')
+    _re2 = re.compile(r'[a-z]')
+    _re3 = re.compile(r'[0-9]')
 
     type_class = univention.admin.types.PasswordType
 
@@ -2295,8 +2311,8 @@ class hostName(simple):
 
     min_length = 1
     max_length = 63
-    regex = re.compile(r"^(?![_-])[a-zA-Z0-9_-]{1,63}(?<![_-])$")
-    error_message = _("This is not a valid hostname.")
+    regex = re.compile(r'^(?![_-])[a-zA-Z0-9_-]{1,63}(?<![_-])$')
+    error_message = _('This is not a valid hostname.')
 
 
 # UNUSED:
@@ -2321,7 +2337,7 @@ class ipv4Address(simple):
         try:
             return str(ipaddress.IPv4Address('%s' % (text,)))
         except ValueError:
-            raise univention.admin.uexceptions.valueError(_("Not a valid IP address!"))
+            raise univention.admin.uexceptions.valueError(_('Not a valid IP address!'))
 
 
 class ipAddress(simple):
@@ -2344,7 +2360,7 @@ class ipAddress(simple):
         try:
             return str(ipaddress.ip_address('%s' % (text,)))
         except ValueError:
-            raise univention.admin.uexceptions.valueError(_("Not a valid IP address!"))
+            raise univention.admin.uexceptions.valueError(_('Not a valid IP address!'))
 
 
 class hostOrIP(simple):
@@ -2418,9 +2434,9 @@ class v4netmask(simple):
     @classmethod
     def parse(self, text):
         try:
-            return "%d" % self.netmaskBits(text)
+            return '%d' % self.netmaskBits(text)
         except ValueError:
-            raise univention.admin.uexceptions.valueError(_("Not a valid netmask!"))
+            raise univention.admin.uexceptions.valueError(_('Not a valid netmask!'))
 
 
 class netmask(simple):
@@ -2449,10 +2465,10 @@ class netmask(simple):
         if text.isdigit() and int(text) > 0 and int(text) < max(ipaddress.IPV4LENGTH, ipaddress.IPV6LENGTH):
             return str(int(text))
         try:
-            return str(ipaddress.IPv4Network('0.0.0.0/%s' % (text, ), strict=False).prefixlen)
+            return str(ipaddress.IPv4Network('0.0.0.0/%s' % (text,), strict=False).prefixlen)
         except ValueError:
             pass
-        raise univention.admin.uexceptions.valueError(_("Not a valid netmask!"))
+        raise univention.admin.uexceptions.valueError(_('Not a valid netmask!'))
 
 
 class ipnetwork(simple):
@@ -2473,7 +2489,7 @@ class ipnetwork(simple):
             # FIXME: missing return
             ipaddress.ip_network('%s' % (text,), strict=False)
         except ValueError:
-            raise univention.admin.uexceptions.valueError(_("Not a valid network!"))
+            raise univention.admin.uexceptions.valueError(_('Not a valid network!'))
 
 
 class IP_AddressRange(complex):
@@ -2518,12 +2534,12 @@ class IP_AddressRange(complex):
             return p
         try:
             if ipaddress.ip_address('%s' % (first,)) > ipaddress.ip_address('%s' % (last,)):
-                raise univention.admin.uexceptions.valueInvalidSyntax(_("Illegal range"))
+                raise univention.admin.uexceptions.valueInvalidSyntax(_('Illegal range'))
         except TypeError:
-            raise univention.admin.uexceptions.valueError(_("Not a valid IP address!"))
+            raise univention.admin.uexceptions.valueError(_('Not a valid IP address!'))
         except ValueError:
             # FIXME: which case is this supposed to catch?
-            raise univention.admin.uexceptions.valueInvalidSyntax(_("Illegal range"))
+            raise univention.admin.uexceptions.valueInvalidSyntax(_('Illegal range'))
         return p
 
 
@@ -2598,7 +2614,7 @@ class absolutePath(simple):
         if self._re.match(text) is not None:
             return text
         else:
-            raise univention.admin.uexceptions.valueError(_("Not an absolute path!"))
+            raise univention.admin.uexceptions.valueError(_('Not an absolute path!'))
 
 
 class emailForwardSetting(select):
@@ -2712,20 +2728,17 @@ class emailAddress(simple):
             try:
                 validate_email(text, allow_smtputf8=False, check_deliverability=False, globally_deliverable=False)
             except EmailNotValidError as exc:
-                raise univention.admin.uexceptions.valueError(_("Not a valid email address!") + " " + str(exc))
-        if not text.startswith('@') and \
-                '@' in text and \
-                not text.endswith('@') and \
-                ' ' not in text:
+                raise univention.admin.uexceptions.valueError(_('Not a valid email address!') + ' ' + str(exc))
+        if not text.startswith('@') and '@' in text and not text.endswith('@') and ' ' not in text:
             return text
-        raise univention.admin.uexceptions.valueError(_("Not a valid email address!"))
+        raise univention.admin.uexceptions.valueError(_('Not a valid email address!'))
 
 
 class emailAddressThatMayEndWithADot(emailAddress):
     @classmethod
     def parse(self, text):
-        if text and text.endswith("."):
-            return emailAddress.parse(text[:-1]) + "."
+        if text and text.endswith('.'):
+            return emailAddress.parse(text[:-1]) + '.'
         else:
             return emailAddress.parse(text)
 
@@ -2752,7 +2765,7 @@ class emailAddressValidDomain(UDM_Objects, emailAddress):
     """
 
     name = 'emailAddressValidDomain'
-    errMsgDomain = _("The domain part of the following mail addresses is not in list of configured mail domains: %s")
+    errMsgDomain = _('The domain part of the following mail addresses is not in list of configured mail domains: %s')
 
     type_class = univention.admin.types.EMailAddressType
 
@@ -2762,7 +2775,7 @@ class emailAddressValidDomain(UDM_Objects, emailAddress):
     simple = True
     empty_value = False
     regex = re.compile('[^ ]+@[^ ]+')
-    error_message = _("Not a valid email address!")
+    error_message = _('Not a valid email address!')
 
     widget_default_search_pattern = '*@*'
     search_widget = 'MailBox'
@@ -2808,7 +2821,7 @@ class primaryEmailAddressValidDomain(emailAddressValidDomain):
     """Syntax class for the primary e-mail address in one of the registered e-mail domains."""
 
     name = 'primaryEmailAddressValidDomain'
-    errMsgDomain = _("The domain part of the primary mail address is not in list of configured mail domains: %s")
+    errMsgDomain = _('The domain part of the primary mail address is not in list of configured mail domains: %s')
 
 
 class MailDomain(UDM_Attribute):
@@ -2848,7 +2861,9 @@ class iso8601Date(simple):
     """
 
     # regexp-source: http://regexlib.com/REDetails.aspx?regexp_id=2092
-    regex = re.compile(r'^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3])(?:\-)?[1-7])?)?)$')
+    regex = re.compile(
+        r'^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3])(?:\-)?[1-7])?)?)$',
+    )
     error_message = _('The given date does not conform to iso8601, example: "2009-01-01".')
 
     widget = 'DateBox'
@@ -2864,15 +2879,15 @@ class iso8601Date(simple):
                 return duparse(value).date()
             except Exception:
                 pass
-            if re.match(r"\d+-\d+$", value):
+            if re.match(r'\d+-\d+$', value):
                 # FIXME: broken: the regex does not allow this format
-                return datetime.datetime.strptime(value, "%Y-%j").date()
-            elif re.match(r"\d+-W\d+-\d+$", value):
+                return datetime.datetime.strptime(value, '%Y-%j').date()
+            elif re.match(r'\d+-W\d+-\d+$', value):
                 # FIXME: broken: the regex allows 1-7 while the function expects 0-6. 7 gives a traceback
-                return datetime.datetime.strptime(value, "%Y-W%U-%w").date()
-            elif re.match(r"\d+-W\d+$", value):
+                return datetime.datetime.strptime(value, '%Y-W%U-%w').date()
+            elif re.match(r'\d+-W\d+$', value):
                 # FIXME: broken: When used with the strptime() method, %U and %W are only used in calculations when the day of the week and the year are specified.
-                return datetime.datetime.strptime(value, "%Y-W%U").date()
+                return datetime.datetime.strptime(value, '%Y-W%U').date()
             return datetime.date(*time.strptime(value, '%Y-%m-%d')[0:3])
 
     @classmethod
@@ -2944,7 +2959,7 @@ class date(simple):
             if 0 <= year <= 99 and 1 <= month <= 12 and 1 <= day <= 31:
                 return text
         if text is not None:
-            raise univention.admin.uexceptions.valueError(_("Not a valid Date"))
+            raise univention.admin.uexceptions.valueError(_('Not a valid Date'))
         return ''
 
     @classmethod
@@ -2995,7 +3010,7 @@ class date2(date):  # fixes the century
                 if year >= 70:  # Epoch 0
                     return '19%02d-%02d-%02d' % (year, month, day)
                 return '20%02d-%02d-%02d' % (year, month, day)
-        raise univention.admin.uexceptions.valueError(_("Not a valid Date"))
+        raise univention.admin.uexceptions.valueError(_('Not a valid Date'))
 
     @classmethod
     def to_datetime(cls, value):
@@ -3021,7 +3036,9 @@ class reverseLookupSubnet(simple):
     # normal IPv6 address without "::" substitution, leading zeroes must be preserved, at most 31 nibbles
     regex_IPv6 = r'(([0-9a-f]{4}:){0,7}[0-9a-f]{1,3})|(([0-9a-f]{4}:){0,6}[0-9a-f]{1,4})'
     regex = re.compile(r'^((%s)|(%s))$' % (regex_IPv4, regex_IPv6))
-    error_message = _('A subnet for reverse lookup consists of the first 1-3 octets of an IPv4 address (example: "192.168.0") or of the first 1 to 31 nibbles of an expanded (with leading zeroes and without ::-substitution) IPv6 address (example: "2001:0db8:010" for "2001:db8:100::/24")')
+    error_message = _(
+        'A subnet for reverse lookup consists of the first 1-3 octets of an IPv4 address (example: "192.168.0") or of the first 1 to 31 nibbles of an expanded (with leading zeroes and without ::-substitution) IPv6 address (example: "2001:0db8:010" for "2001:db8:100::/24")',
+    )
 
 
 class reverseLookupZoneName(simple):
@@ -3037,7 +3054,9 @@ class reverseLookupZoneName(simple):
     #                       <-    IPv6 reverse zone   -> <-                           IPv4 reverse zone                           ->
     #                       nibble dot-separated ...arpa   <-                      0-255                     -> dot-separated .arpa
     regex = re.compile(r'^((([0-9a-f]\.){1,31}ip6\.arpa)|(((([1-9]?[0-9])|(1[0-9]{0,2})|(2([0-4][0-9]|5[0-5])))\.){1,3}in-addr.arpa))$')
-    error_message = _('The name of a reverse zone for IPv4 consists of the reversed subnet address followed by .in-addr.arpa (example: "0.168.192.in-addr.arpa") or for IPv6 in nibble format followed by .ip6.arpa (example: "0.0.0.0.0.0.1.0.8.b.d.0.1.0.0.2.ip6.arpa")')
+    error_message = _(
+        'The name of a reverse zone for IPv4 consists of the reversed subnet address followed by .in-addr.arpa (example: "0.168.192.in-addr.arpa") or for IPv6 in nibble format followed by .ip6.arpa (example: "0.0.0.0.0.0.1.0.8.b.d.0.1.0.0.2.ip6.arpa")',
+    )
 
 
 class dnsName(simple):
@@ -3096,44 +3115,41 @@ class dnsName(simple):
     @classmethod
     def parse(cls, text):
         if not text:
-            raise univention.admin.uexceptions.valueError(_("Missing value!"))
+            raise univention.admin.uexceptions.valueError(_('Missing value!'))
         assert isinstance(text, str)
         labels = list(cls._split(text))
-        rel, root = (labels[:-1], labels) if labels[-1] == "" else (labels, [*labels, ''])
+        rel, root = (labels[:-1], labels) if labels[-1] == '' else (labels, [*labels, ''])
 
-        if not 1 <= len(".".join(root)) <= 254:
-            raise univention.admin.uexceptions.valueError(_("Full domain name must be between 1 and 253 characters long!"))
+        if not 1 <= len('.'.join(root)) <= 254:
+            raise univention.admin.uexceptions.valueError(_('Full domain name must be between 1 and 253 characters long!'))
         if not all(1 <= len(label) <= 63 for label in rel):
-            raise univention.admin.uexceptions.valueError(_("Labels must be between 1 and 63 characters long!"))
-        return ".".join(cls._escape(label) for label in labels)
+            raise univention.admin.uexceptions.valueError(_('Labels must be between 1 and 63 characters long!'))
+        return '.'.join(cls._escape(label) for label in labels)
 
     @classmethod
     def _split(cls, text: str) -> Iterator[str]:
-        label = ""
+        label = ''
         for i, t in enumerate(cls._RE_UNESCAPE.split(text)):
             if i % 2:
                 label += chr(int(t)) if t.isdigit() else t
                 continue
             elif '\\' in t:
-                raise univention.admin.uexceptions.valueError(_("Invalid escape sequence: %r") % (t,))
+                raise univention.admin.uexceptions.valueError(_('Invalid escape sequence: %r') % (t,))
             while True:
-                chunk, sep, t = t.partition(".")
+                chunk, sep, t = t.partition('.')
                 label += chunk
                 if not sep:
                     break
                 yield label
-                label = ""
+                label = ''
         yield label
 
-    _RE_UNESCAPE = re.compile(r"\\([01][0-9][0-9]|2[0-4][0-9]|25[0-5]|[^0-9])")
+    _RE_UNESCAPE = re.compile(r'\\([01][0-9][0-9]|2[0-4][0-9]|25[0-5]|[^0-9])')
 
     # https://gitlab.isc.org/isc-projects/bind9/-/blob/main/lib/dns/name.c /dns_name_totext/
     @classmethod
     def _escape(cls, label: str) -> str:
-        return "".join(
-            "\\" + c if c in cls._ESCAPED else c if "\x20" < c < "\x7f" else "\\%03d" % ord(c)
-            for c in label
-        )
+        return ''.join('\\' + c if c in cls._ESCAPED else c if '\x20' < c < '\x7f' else '\\%03d' % ord(c) for c in label)
 
     _ESCAPED = '"().;\\@$'
 
@@ -3181,13 +3197,15 @@ class dnsHostname(dnsName):
     def parse(self, text):
         text = super().parse(text)
         if self.NUMERIC.match(text):
-            raise univention.admin.uexceptions.valueError(_("Full name must not be all numeric!"))
+            raise univention.admin.uexceptions.valueError(_('Full name must not be all numeric!'))
         labels = (text.removesuffix('.')).split('.')
         if not all(self.LABEL.match(label) for label in labels):
-            raise univention.admin.uexceptions.valueError(_(
-                "A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit. "
-                "In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.",
-            ))
+            raise univention.admin.uexceptions.valueError(
+                _(
+                    'A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit. '
+                    'In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.',
+                ),
+            )
         return text
 
 
@@ -3216,10 +3234,10 @@ class dnsName_umlauts(simple):
 
     min_length = 1
     max_length = 63
-    regex = re.compile(r"^(?![0-9]+$|[_-])[\w_-]{1,63}(?<![_-])$", re.UNICODE)
+    regex = re.compile(r'^(?![0-9]+$|[_-])[\w_-]{1,63}(?<![_-])$', re.UNICODE)
     error_message = _(
-        "A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit. "
-        "In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.",
+        'A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit. '
+        'In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.',
     )
 
 
@@ -3305,14 +3323,17 @@ class dnsPTR(simple):
     """
 
     regexp = re.compile(
-        r'''
+        r"""
         ^    (?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])
         (?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){0,2}$
         |^    [0-9a-f]
         (?:\.[0-9a-f]){0,30}$
-        ''', re.VERBOSE,
+        """,
+        re.VERBOSE,
     )
-    error_message = _('The reversed host name for IPv4 consists of the reversed host address (example: "4.3") or for IPv6 in nibble format (example: "8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0").')
+    error_message = _(
+        'The reversed host name for IPv4 consists of the reversed host address (example: "4.3") or for IPv6 in nibble format (example: "8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0").',
+    )
 
 
 class postalAddress(complex):
@@ -3347,7 +3368,7 @@ class unixTime(simple):
     """Syntax for a UNIX time stamp - seconds since 1970-01-01."""
 
     regex = re.compile('^[0-9]+$')
-    error_message = _("Not a valid time format")
+    error_message = _('Not a valid time format')
 
     type_class = univention.admin.types.DateTimeType
 
@@ -3374,7 +3395,7 @@ class TimeString(simple):
     '23:59:59'
     """
 
-    error_message = _("Not a valid time format")
+    error_message = _('Not a valid time format')
     regex = re.compile('^(?:[01][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?$')
 
     widget = 'TimeBox'
@@ -3433,7 +3454,7 @@ class UNIX_BoundedTimeInterval(UNIX_TimeInterval):
 
     lower_bound = -1  # in seconds, -1 unbounded
     upper_bound = -1  # in seconds, -1 unbounded
-    error_message = _("Value out of bounds (%d - %d seconds)")
+    error_message = _('Value out of bounds (%d - %d seconds)')
 
     @classmethod
     def parse(cls, texts):
@@ -3616,7 +3637,7 @@ class ldapDn(simple):
             Use :py:class:`UDM_Objects`.
     """
 
-    error_message = _("Not a valid LDAP DN")
+    error_message = _('Not a valid LDAP DN')
 
     type_class = univention.admin.types.DistinguishedNameType
 
@@ -3625,6 +3646,7 @@ class ldapDn(simple):
         if cls is ldapDn:
             return 'TextBox'
         return 'umc/modules/udm/MultiObjectSelect' if prop.multivalue else 'ComboBox'
+
     widget_default_search_pattern = ''
 
     @classmethod
@@ -3660,7 +3682,7 @@ class ldapDn(simple):
 class UMC_OperationSet(UDM_Objects):
     """Syntax to select a |UMC| operation set from lists stored in |LDAP| using :py:class:`univention.admin.handlers.settings.umc_operationset`."""
 
-    udm_modules = ('settings/umc_operationset', )
+    udm_modules = ('settings/umc_operationset',)
     label = '%(description)s (%(name)s)'
     simple = True
 
@@ -3714,10 +3736,10 @@ class IMAP_Right(select):
 class UserMailAddress(UDM_Objects):
     """Syntax to select a primary e-mail address of an user name from |LDAP|."""
 
-    udm_modules = ('users/user', )
+    udm_modules = ('users/user',)
     udm_filter = '(mailPrimaryAddress=*)'
     key = '%(mailPrimaryAddress)s'
-    static_values = (('anyone', _('Anyone')), )
+    static_values = (('anyone', _('Anyone')),)
     regex = re.compile(r'^([^\s]+@[^\s]+|anyone)$')
     error_message = _('Not a valid e-mail address')
 
@@ -3725,7 +3747,7 @@ class UserMailAddress(UDM_Objects):
 class GroupName(UDM_Objects):
     """Syntax to select a group name from |LDAP|."""
 
-    udm_modules = ('groups/group', )
+    udm_modules = ('groups/group',)
     key = '%(name)s'
     regex = re.compile('^.+$')
     simple = True
@@ -3735,7 +3757,7 @@ class GroupName(UDM_Objects):
 class UserName(UDM_Objects):
     """Syntax to select an user name from |LDAP|."""
 
-    udm_modules = ('users/user', )
+    udm_modules = ('users/user',)
     key = '%(username)s'
     regex = re.compile('^.+$')
     simple = True
@@ -3807,7 +3829,7 @@ class ldapDnOrNone(simple):
             _normalize_dn(text)
             return text
         except (ldap.DECODING_ERROR, TypeError):
-            raise univention.admin.uexceptions.valueError(_("Not a valid LDAP DN"))
+            raise univention.admin.uexceptions.valueError(_('Not a valid LDAP DN'))
 
     def get_widget_choices_options(self, udm_property):
         return _default_widget_options(self)
@@ -4276,7 +4298,7 @@ class GroupDN(UDM_Objects):
             * :py:class:`GroupDNOrEmpty`
     """
 
-    udm_modules = ('groups/group', )
+    udm_modules = ('groups/group',)
     use_objects = False
 
     search_widget = 'ComboBox'
@@ -4307,7 +4329,7 @@ class UserDN(UDM_Objects):
             * :py:class:`UserID`
     """
 
-    udm_modules = ('users/user', )
+    udm_modules = ('users/user',)
     use_objects = False
 
 
@@ -4319,7 +4341,7 @@ class HostDN(UDM_Objects):
             * :py:class:`IComputer_FQDN`
     """
 
-    udm_modules = ('computers/computer', )
+    udm_modules = ('computers/computer',)
     udm_filter = '!(univentionObjectFlag=docker)'
 
 
@@ -4336,11 +4358,11 @@ class UserID(UDM_Objects):
     '0'
     """
 
-    udm_modules = ('users/user', )
+    udm_modules = ('users/user',)
     key = '%(uidNumber)s'
     label = '%(username)s'
     regex = re.compile('^[0-9]+$')
-    static_values = (('0', 'root'), )
+    static_values = (('0', 'root'),)
     use_objects = False
 
     type_class = univention.admin.types.IntegerType
@@ -4366,11 +4388,11 @@ class GroupID(UDM_Objects):
     '5000'
     """
 
-    udm_modules = ('groups/group', )
+    udm_modules = ('groups/group',)
     key = '%(gidNumber)s'
     label = '%(name)s'
     regex = re.compile('^[0-9]+$')
-    static_values = (('0', 'root'), )
+    static_values = (('0', 'root'),)
     use_objects = False
 
     type_class = univention.admin.types.IntegerType
@@ -4437,11 +4459,13 @@ class IComputer_FQDN(UDM_Objects):
     key = '%(name)s.%(domain)s'  # '%(fqdn)s' optimized for LDAP lookup. Has to be in sync with the computer handlers' info['fqdn']
     label = '%(name)s.%(domain)s'  # '%(fqdn)s'
     regex = re.compile(
-        r'''
+        r"""
         (?=^ .{4,254}$ )
         (?: (?![0-9]+\. | [_-]) [a-zA-Z0-9_-]{1,63} (?<![_-]) \. )+
             (?![0-9]+$  | [_-]) [a-zA-Z0-9_-]{2,63} (?<![_-]) $
-        ''', re.VERBOSE)
+        """,
+        re.VERBOSE,
+    )
     error_message = _('Not a valid FQDN')
     udm_filter = '!(univentionObjectFlag=docker)'
     simple = True
@@ -4487,7 +4511,7 @@ class MailHomeServer(IComputer_FQDN):
             * :py:class:`ServiceMail`
     """
 
-    udm_modules = ('computers/computer', )
+    udm_modules = ('computers/computer',)
     udm_filter = '(&(!(univentionObjectFlag=docker))(objectClass=univentionHost)(service=IMAP))'
     empty_value = True
 
@@ -4576,7 +4600,7 @@ class DNS_ForwardZone(UDM_Objects):
     """
 
     description = _('DNS forward zone')
-    udm_modules = ('dns/forward_zone', )
+    udm_modules = ('dns/forward_zone',)
     empty_value = True
     use_objects = False
 
@@ -4591,7 +4615,7 @@ class DNS_ReverseZone(UDM_Objects):
     """
 
     description = _('DNS reverse zone')
-    udm_modules = ('dns/reverse_zone', )
+    udm_modules = ('dns/reverse_zone',)
     label = '%(subnet)s'
     empty_value = True
     use_objects = False
@@ -4675,7 +4699,7 @@ class dnsEntryAlias(complex):
 class dhcpService(UDM_Objects):
     """Syntax to select a |DHCP| service from |LDAP| using :py:class:`univention.admin.handlers.dhcp.service`."""
 
-    udm_modules = ('dhcp/service', )
+    udm_modules = ('dhcp/service',)
     description = _('DHCP service')
     label = '%(name)s'
     empty_value = True
@@ -4731,12 +4755,13 @@ class WritableShare(UDM_Objects):
             * :py:class:`nfsShare`
     """
 
-    udm_modules = ('shares/share', )
+    udm_modules = ('shares/share',)
     udm_filter = 'writeable=1'
     label = _('%(name)s (%(path)s on %(host)s)')  # ldap-optimized for shares/share.description()
     size = 'OneAndAHalf'
     empty_value = True
     use_objects = False
+
 
 # class share(ldapDnOrNone):
 #     searchFilter='(objectClass=univentionShare)'
@@ -5526,7 +5551,8 @@ class SambaLogonHours(MultiSelect):
             (4, _('Thu')),
             (5, _('Fri')),
             (6, _('Sat')),
-        ) for hour in range(24)
+        )
+        for hour in range(24)
     ]
 
     type_class = univention.admin.types.SambaLogonHours
@@ -5537,6 +5563,7 @@ class SambaLogonHours(MultiSelect):
         if isinstance(value, str):
             if len(value) == 42 and not value.strip('abcdef0123456789'):
                 from univention.admin.handlers.users.user import logonHoursUnmap
+
                 value = logonHoursUnmap([value.encode('ASCII')])
             else:
                 value = [int(x) for x in shlex.split(value)]
@@ -5546,9 +5573,10 @@ class SambaLogonHours(MultiSelect):
     @classmethod
     def tostring(self, value: list[int]) -> str:
         if not value:
-            return ""
+            return ''
         # better show the bit string. See Bug #33703
         from univention.admin.handlers.users.user import logonHoursMap
+
         mapped = logonHoursMap(value)
         assert mapped is not None
         return mapped.decode('ASCII')
@@ -5617,7 +5645,7 @@ class ServicePrint(UDM_Objects):
 class Service(UDM_Objects):
     """Syntax to select a |UCS| service types from |LDAP| using :py:class:`univention.admin.handlers.settings.service`."""
 
-    udm_modules = ('settings/service', )
+    udm_modules = ('settings/service',)
     regex = None
     key = '%(name)s'
     label = '%(name)s'
@@ -5841,14 +5869,14 @@ __register_choice_update_function(allModuleOptions.update_choices)
 class nagiosHostsEnabledDn(UDM_Objects):
     """Syntax to select Nagios enabled hosts from |LDAP|."""
 
-    udm_modules = ('computers/computer', )
+    udm_modules = ('computers/computer',)
     udm_filter = '(&(!(univentionObjectFlag=docker))(objectClass=univentionNagiosHostClass)(univentionNagiosEnabled=1)(aRecord=*))'
 
 
 class nagiosServiceDn(UDM_Objects):
     """Syntax to select a Nagios services from |LDAP| using :py:class:`univention.admin.handlers.nagios.service`."""
 
-    udm_modules = ('nagios/service', )
+    udm_modules = ('nagios/service',)
 
 
 class UCR_Variable(complex):
@@ -5903,6 +5931,7 @@ class LDAP_Search(select):
         if cls is LDAP_Search:
             return 'umc/modules/udm/LinkList' if getattr(cls, 'viewonly', False) else 'ComboBox'
         return select.get_widget(prop)
+
     search_widget = 'ComboBox'
 
     def __init__(self, syntax_name=None, filter=None, attribute=[], base='', value='dn', viewonly=False, addEmptyValue=False, appendEmptyValue=False):
@@ -5941,13 +5970,15 @@ class LDAP_Search(select):
         }
         if filter is not None:
             # programmatically
-            props.update({
-                'syntax': None,
-                'filter': filter,
-                'attributes': attribute,
-                'base': base,
-                'value': value,
-            })
+            props.update(
+                {
+                    'syntax': None,
+                    'filter': filter,
+                    'attributes': attribute,
+                    'base': base,
+                    'value': value,
+                },
+            )
         return super().__new__(type(cls.__name__, (cls,), props))
 
     @classmethod
@@ -5986,8 +6017,8 @@ class LDAP_Search(select):
             if attrs.get('univentionSyntaxViewOnly', [b'FALSE'])[0] == b'TRUE':
                 cls.viewonly = True
                 cls.value = 'dn'
-            cls.addEmptyValue = (attrs.get('univentionSyntaxAddEmptyValue', [b'0'])[0].upper() in [b'TRUE', b'1'])
-            cls.appendEmptyValue = (attrs.get('univentionSyntaxAppendEmptyValue', [b'0'])[0].upper() in [b'TRUE', b'1'])
+            cls.addEmptyValue = attrs.get('univentionSyntaxAddEmptyValue', [b'0'])[0].upper() in [b'TRUE', b'1']
+            cls.appendEmptyValue = attrs.get('univentionSyntaxAppendEmptyValue', [b'0'])[0].upper() in [b'TRUE', b'1']
 
     @classmethod
     def get_choices(cls, lo, options):
@@ -6124,7 +6155,7 @@ class nfsShare(UDM_Objects):
             * :py:class:`WritableShare`
     """
 
-    udm_modules = ('shares/share', )
+    udm_modules = ('shares/share',)
     label = '%(name)s (%(host)s)'  # '%(printablename)s' optimized for performance...
     udm_filter = 'objectClass=univentionShareNFS'
     use_objects = False
@@ -6273,7 +6304,7 @@ class Printers(UDM_Objects):
             * :py:class:`PrinterNames`
     """
 
-    udm_modules = ('shares/printer', )
+    udm_modules = ('shares/printer',)
     depends = 'spoolHost'
     simple = True
     key = '%(name)s'
@@ -6294,7 +6325,7 @@ class PrinterNames(UDM_Objects):
     <class 'univention.admin.types.StringType'>
     """
 
-    udm_modules = ('shares/printer', )
+    udm_modules = ('shares/printer',)
     depends = 'spoolHost'
     simple = True
     key = '%(name)s'
@@ -6391,7 +6422,7 @@ class PrinterDriverList(UDM_Attribute):
 class PrinterProducerList(UDM_Objects):
     """Syntax to select a printer producer from |LDAP| using :py:class:`univention.admin.handlers.settings.printermodel`."""
 
-    udm_modules = ('settings/printermodel', )
+    udm_modules = ('settings/printermodel',)
     label = '%(name)s'
 
 
@@ -6443,7 +6474,7 @@ class PrinterURI(complex):
         for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
             log.debug('syntax.py: subsyntax[%s]=%s, text=%s', i, syn, text)
             if text is None and (self.min_elements is None or (i + 1) < count):
-                raise univention.admin.uexceptions.valueInvalidSyntax(_("Invalid syntax: %s > %s") % (self.name, desc))
+                raise univention.admin.uexceptions.valueInvalidSyntax(_('Invalid syntax: %s > %s') % (self.name, desc))
             s = syn() if inspect.isclass(syn) else syn
             p = s.parse(text)
             if p is not None:
@@ -6459,7 +6490,7 @@ class PrinterURI(complex):
         """
         value = complex.parse_command_line(self, value)
         if len(value) == 1:
-            matches = re.match("(.+?://?)(.+)", value[0])
+            matches = re.match('(.+?://?)(.+)', value[0])
             if matches:
                 return list(matches.groups())
 
@@ -6484,9 +6515,11 @@ class policyName(string):
     def parse(self, text):
         if self._re.match(text):
             return text
-        raise univention.admin.uexceptions.valueError(_(
-            'May only contain letters (except umlauts), digits, space as well as the characters # ! $ % & | ^ . ~ _ -. Has to begin with a letter or digit and must not end with space.',
-        ))
+        raise univention.admin.uexceptions.valueError(
+            _(
+                'May only contain letters (except umlauts), digits, space as well as the characters # ! $ % & | ^ . ~ _ -. Has to begin with a letter or digit and must not end with space.',
+            ),
+        )
 
 
 class AuthRestriction(select):
@@ -6909,13 +6942,11 @@ class RadiusClientType(select):
 
 class mailinglist_name(gid):
     error_message = _(
-        "A mailing list name must start and end with a letter, number or underscore. In between additionally spaces, "
-        "dashes and dots are allowed.",
+        'A mailing list name must start and end with a letter, number or underscore. In between additionally spaces, dashes and dots are allowed.',
     )
 
 
 class TimeZone(select):
-
     @ClassProperty
     def choices(cls):
         return [(x, x) for x in zoneinfo.available_timezones()]
@@ -6938,7 +6969,7 @@ class GeneralizedTimeUTC(simple):
     @classmethod
     def parse(self, text):
         try:
-            datetime.datetime.strptime(text, "%Y%m%d%H%M%SZ")
+            datetime.datetime.strptime(text, '%Y%m%d%H%M%SZ')
             duparse(text)
         except ValueError:
             raise univention.admin.uexceptions.valueError(_('This timestamp needs be in UTC and follow the format YYYYMMDDHHmmssZ.'))
@@ -7036,20 +7067,20 @@ class VFSObjects(combobox):
 
 
 class GuardianRole(simple):
-
     size = 'Two'
 
     # FIXME: why don't we allow LDAP DNs in the last part of context? That would be case insensitive UTF-8,
     # see https://ldapwiki.com/wiki/Wiki.jsp?page=Distinguished%20Name%20Case%20Sensitivity and https://ldapwiki.com/wiki/Wiki.jsp?page=Ou
-    regex = re.compile(r"^([a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_]+)(&[a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_=,]+)?$")
+    regex = re.compile(r'^([a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_]+)(&[a-z0-9-_]+:[a-z0-9-_]+:[a-z0-9-_=,]+)?$')
     error_message = _(
-        "Guardian role strings must be lowercase ASCII alphanumeric with hyphens and underscores, "
+        'Guardian role strings must be lowercase ASCII alphanumeric with hyphens and underscores, '
         "in the format 'app:namespace:role' or 'app:namespace:role&app:namespace:context'."
-        "The final part of context additionally allows equal and comma.",
+        'The final part of context additionally allows equal and comma.',
     )
 
 
 class _EscapedDict(dict):
+    """A dictionary wrapper which returns values as LDAP filter escaped values"""
 
     def __init__(self, _dict):
         self._dict = _dict

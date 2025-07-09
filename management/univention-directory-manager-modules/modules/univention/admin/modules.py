@@ -237,7 +237,7 @@ def init(lo: univention.admin.uldap.access, position: univention.admin.uldap.pos
                 if tmpl not in ([''], []):
                     for option in module.options.keys():
                         module.options[option].default = option in tmpl
-            elif key not in {"name", "description", "univentionObjectIdentifier"}:  # these keys are part of the template itself
+            elif key not in {'name', 'description', 'univentionObjectIdentifier'}:  # these keys are part of the template itself
                 module.property_descriptions[key].base_default = copy.copy(tmpl)
                 module.property_descriptions[key].templates.append(template_object)
         log.debug('modules_init: module.property_description after template: %s', module.property_descriptions)
@@ -361,7 +361,9 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
         module_filter = '(|(univentionUDMPropertyModule=users/user)%s)' % (module_filter,)
 
     new_property_descriptions = copy.copy(module.property_descriptions)
-    for _dn, attrs in lo.authz_connection.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,)):
+    for _dn, attrs in lo.authz_connection.search(
+        base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,),
+    ):
         # get CLI name
         pname = attrs['univentionUDMPropertyCLIName'][0].decode('UTF-8', 'replace')
         object_class = attrs.get('univentionUDMPropertyObjectClass', [])[0].decode('UTF-8', 'replace')
@@ -404,7 +406,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
         copyable = attrs.get('univentionUDMPropertyCopyable', [b'0'])[0] not in [b'1', b'TRUE']
 
         # value is required
-        valueRequired = (attrs.get('univentionUDMPropertyValueRequired', [b'0'])[0].upper() in [b'1', b'TRUE'])
+        valueRequired = attrs.get('univentionUDMPropertyValueRequired', [b'0'])[0].upper() in [b'1', b'TRUE']
 
         # value not available for searching
         try:
@@ -443,7 +445,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
         longdesc = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationLongDescription;entry-%s', 'univentionUDMPropertyLongDescription')
 
         # create property
-        fullWidth = (attrs.get('univentionUDMPropertyLayoutFullWidth', [b'0'])[0].upper() in [b'1', b'TRUE'])
+        fullWidth = attrs.get('univentionUDMPropertyLayoutFullWidth', [b'0'])[0].upper() in [b'1', b'TRUE']
         new_property_descriptions[pname] = univention.admin.property(
             short_description=shortdesc,
             long_description=longdesc,
@@ -468,15 +470,15 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
 
         if hasattr(module, 'layout'):
             tabname = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationTabName;entry-%s', 'univentionUDMPropertyLayoutTabName', _('Custom'))
-            overwriteTab = (attrs.get('univentionUDMPropertyLayoutOverwriteTab', [b'0'])[0].upper() in [b'1', b'TRUE'])
+            overwriteTab = attrs.get('univentionUDMPropertyLayoutOverwriteTab', [b'0'])[0].upper() in [b'1', b'TRUE']
             # in the first generation of extended attributes of version 2
             # this field was a position defining the attribute to
             # overwrite. now it is the name of the attribute to overwrite
             overwriteProp: str | None = attrs.get('univentionUDMPropertyLayoutOverwritePosition', [b''])[0].decode('UTF-8', 'replace')
             if overwriteProp == '0':
                 overwriteProp = None
-            deleteObjectClass = (attrs.get('univentionUDMPropertyDeleteObjectClass', [b'0'])[0].upper() in [b'1', b'TRUE'])
-            tabAdvanced = (attrs.get('univentionUDMPropertyLayoutTabAdvanced', [b'0'])[0].upper() in [b'1', b'TRUE'])
+            deleteObjectClass = attrs.get('univentionUDMPropertyDeleteObjectClass', [b'0'])[0].upper() in [b'1', b'TRUE']
+            tabAdvanced = attrs.get('univentionUDMPropertyLayoutTabAdvanced', [b'0'])[0].upper() in [b'1', b'TRUE']
 
             groupname = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationGroupName;entry-%s', 'univentionUDMPropertyLayoutGroupName')
             try:
@@ -514,29 +516,36 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
                 if priority == -1 and properties4tabs[tabname]:
                     priority = max([-1, min(ea_layout.position for ea_layout in properties4tabs[tabname]) - 1])
 
-                properties4tabs[tabname].append(EA_Layout(
-                    name=pname,
-                    tabName=tabname,
-                    position=priority,
-                    advanced=tabAdvanced,
-                    overwrite=overwriteProp,
-                    fullWidth=fullWidth,
-                    groupName=groupname,
-                    groupPosition=groupPosition,
-                    is_app_tab=any(option in [key for (key, value) in getattr(module, 'options', {}).items() if value.is_app_option] for option in attrs.get('univentionUDMPropertyOptions', [])),
-                ))
+                properties4tabs[tabname].append(
+                    EA_Layout(
+                        name=pname,
+                        tabName=tabname,
+                        position=priority,
+                        advanced=tabAdvanced,
+                        overwrite=overwriteProp,
+                        fullWidth=fullWidth,
+                        groupName=groupname,
+                        groupPosition=groupPosition,
+                        is_app_tab=any(
+                            option in [key for (key, value) in getattr(module, 'options', {}).items() if value.is_app_option]
+                            for option in attrs.get('univentionUDMPropertyOptions', [])
+                        ),
+                    ),
+                )
             else:
                 for tab in getattr(module, 'layout', []):
                     tab.remove(pname)
 
-            module.extended_udm_attributes.append(univention.admin.extended_attribute(
-                name=pname,
-                objClass=object_class,
-                ldapMapping=ldap_attribute_name,
-                deleteObjClass=deleteObjectClass,
-                syntax=propertySyntaxString,
-                hook=propertyHook,
-            ))
+            module.extended_udm_attributes.append(
+                univention.admin.extended_attribute(
+                    name=pname,
+                    objClass=object_class,
+                    ldapMapping=ldap_attribute_name,
+                    deleteObjClass=deleteObjectClass,
+                    syntax=propertySyntaxString,
+                    hook=propertyHook,
+                ),
+            )
 
             if ldap_attribute_name.lower() in _ldap_operational_attribute_names(lo):
                 module.object._static_ldap_attributes.add(ldap_attribute_name)
@@ -644,9 +653,7 @@ def identify(dn: str, attr: dict[str, list[Any]], module_name: str = '', canonic
     :param module_base: Optional string the module names must start with.
     :returns: the list of |UDM| modules.
     """
-    res = [m for m in (
-        modules.get(mt.decode('ASCII', 'replace')) for mt in attr.get('univentionObjectType', [])
-    ) if m]
+    res = [m for m in (modules.get(mt.decode('ASCII', 'replace')) for mt in attr.get('univentionObjectType', [])) if m]
     if not res:
         for name, module in modules.items():
             if module_base is not None and not name.startswith(module_base):
@@ -1043,7 +1050,7 @@ def policies() -> list[univention.admin.policiesGroup]:
     for mod in modules.values():
         if not isPolicy(mod):
             continue
-        if name(mod) != "policies/policy":
+        if name(mod) != 'policies/policy':
             res.setdefault(policiesGroup(mod), []).append(name(mod))
     return [
         univention.admin.policiesGroup(id=groupname, members=sorted(members))
@@ -1078,7 +1085,7 @@ def policyPositionDnPrefix(module_name: UdmName) -> str:
     """
     module = get(module_name)
     if not hasattr(module, 'policy_position_dn_prefix'):
-        return ""
+        return ''
     policy_position_dn_prefix = module.policy_position_dn_prefix
     policy_position_dn_prefix = policy_position_dn_prefix.removesuffix(',')
     return policy_position_dn_prefix

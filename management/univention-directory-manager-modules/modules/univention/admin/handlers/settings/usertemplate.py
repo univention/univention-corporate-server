@@ -365,6 +365,7 @@ class object(univention.admin.handlers.simpleLdap):
         >>> object.filter_object_classes([('objectClass', b'bar', b'inetOrgPerson'), ('objectClass', b'foo', [b'inetOrgPerson', b'baz'])])
         [('objectClass', b'bar', None), ('objectClass', b'foo', [b'baz'])]
         """
+
         def _iter_ml():
             for x in ml:
                 if x[0].lower() != 'objectClass'.lower():

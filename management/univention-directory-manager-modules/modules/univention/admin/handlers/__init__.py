@@ -17,7 +17,6 @@ A UDM handler represents an abstraction of an LDAP object.
 .. seealso:: :mod:`univention.admin.uexceptions`
 """
 
-
 import copy
 import inspect
 import re
@@ -58,16 +57,17 @@ if TYPE_CHECKING:
 
 try:
     from typing import Literal
+
     _HookName = Literal[
-        "hook_open",
-        "hook_ldap_pre_create",
-        "hook_ldap_addlist",
-        "hook_ldap_post_create",
-        "hook_ldap_pre_modify",
-        "hook_ldap_modlist",
-        "hook_ldap_post_modify",
-        "hook_ldap_pre_remove",
-        "hook_ldap_post_remove",
+        'hook_open',
+        'hook_ldap_pre_create',
+        'hook_ldap_addlist',
+        'hook_ldap_post_create',
+        'hook_ldap_pre_modify',
+        'hook_ldap_modlist',
+        'hook_ldap_post_modify',
+        'hook_ldap_pre_remove',
+        'hook_ldap_post_remove',
     ]
 except ImportError:
     pass
@@ -77,9 +77,10 @@ log = getLogger('ADMIN')
 
 try:
     import univention.lib.admember
+
     _prevent_to_change_ad_properties = univention.lib.admember.is_localhost_in_admember_mode()
 except ImportError:
-    log.warning("Failed to import univention.lib.admember")
+    log.warning('Failed to import univention.lib.admember')
     _prevent_to_change_ad_properties = False
 
 _Attributes = dict[str, list[bytes]]
@@ -211,7 +212,9 @@ class simpleLdap:
         global s4connector_present
         if s4connector_present is None:
             s4connector_present = False
-            searchResult = self.lo.authz_connection.searchDn('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector)(|(aRecord=*)(aAAARecord=*)))')
+            searchResult = self.lo.authz_connection.searchDn(
+                '(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector)(|(aRecord=*)(aAAARecord=*)))',
+            )
             s4connector_present = bool(searchResult)
         self.s4connector_present = s4connector_present
 
@@ -342,7 +345,7 @@ class simpleLdap:
             # remove properties which are disabled by options
             if prop.options and not set(prop.options) & set(self.options):
                 if self.oldinfo.get(key, null) not in (null, None):
-                    log.debug("simpleLdap.diff: key %s not valid (option not set)", key)
+                    log.debug('simpleLdap.diff: key %s not valid (option not set)', key)
                     changes.append((key, self.oldinfo[key], null))
                 continue
             if (self.oldinfo.get(key) or self.info.get(key)) and self.oldinfo.get(key, null) != self.info.get(key, null):
@@ -381,7 +384,7 @@ class simpleLdap:
                 continue
 
             if p.required and (not self[name] or (isinstance(self[name], list) and self[name] == [''])):
-                log.debug("property %s is required but not set.", name)
+                log.debug('property %s is required but not set.', name)
                 missing.append(name)
         if missing:
             raise univention.admin.uexceptions.insufficientInformation(_('The following properties are missing:\n%s') % ('\n'.join(missing),), missing_properties=missing)
@@ -420,6 +423,7 @@ class simpleLdap:
         :raises: :class:`univention.admin.uexceptions.valueMayNotChange` if the values cannot be modified.
         :raises: :class:`univention.admin.uexceptions.valueInvalidSyntax` if the value is invalid.
         """
+
         def _changeable():
             yield self.descriptions[key].editable
             if not self.descriptions[key].may_change:
@@ -462,7 +466,7 @@ class simpleLdap:
             for v in value:
                 if not v:
                     continue
-                err = ""
+                err = ''
                 p = None
                 try:
                     s = self.descriptions[key].syntax
@@ -472,9 +476,9 @@ class simpleLdap:
                     err = str(emsg)
                 if not p:
                     if not err:
-                        err = ""
+                        err = ''
                     try:
-                        raise univention.admin.uexceptions.valueInvalidSyntax("%s: %s" % (key, err), property=key)
+                        raise univention.admin.uexceptions.valueInvalidSyntax('%s: %s' % (key, err), property=key)
                     except UnicodeEncodeError:  # raise fails if err contains umlauts or other non-ASCII-characters
                         raise univention.admin.uexceptions.valueInvalidSyntax(self.descriptions[key].short_description, property=key)
                 self.info[key].append(p)
@@ -483,7 +487,7 @@ class simpleLdap:
             del self.info[key]
 
         elif value:
-            err = ""
+            err = ''
             p = None
             try:
                 s = self.descriptions[key].syntax
@@ -492,11 +496,11 @@ class simpleLdap:
                 err = str(e)
             if not p:
                 if not err:
-                    err = ""
+                    err = ''
                 try:
-                    raise univention.admin.uexceptions.valueInvalidSyntax("%s: %s" % (self.descriptions[key].short_description, err), property=key)
+                    raise univention.admin.uexceptions.valueInvalidSyntax('%s: %s' % (self.descriptions[key].short_description, err), property=key)
                 except UnicodeEncodeError:  # raise fails if err contains umlauts or other non-ASCII-characters
-                    raise univention.admin.uexceptions.valueInvalidSyntax("%s" % self.descriptions[key].short_description, property=key)
+                    raise univention.admin.uexceptions.valueInvalidSyntax('%s' % self.descriptions[key].short_description, property=key)
             self.info[key] = p
 
     def __getitem__(self, key: str) -> Any:
@@ -650,7 +654,7 @@ class simpleLdap:
                 username = self._get_admin_diary_username()
                 write_event(event, args, username=username)
         except Exception as exc:
-            log.warning("Failed to write Admin Diary entry: %s", exc)
+            log.warning('Failed to write Admin Diary entry: %s', exc)
 
     def _write_admin_diary_create(self) -> None:
         self._write_admin_diary_event('CREATED')
@@ -810,7 +814,7 @@ class simpleLdap:
                 copyobject.options = self.options[:]
                 copyobject.open()
                 for key in self.keys():
-                    if key == "univentionObjectIdentifier":
+                    if key == 'univentionObjectIdentifier':
                         continue
                     copyobject[key] = self[key]
                 copyobject.policies = self.policies
@@ -836,10 +840,13 @@ class simpleLdap:
                         if not subobject or not (univention.admin.modules.supports(submodule, 'move') or univention.admin.modules.supports(submodule, 'subtree_move')):
                             subold_rdn = '+'.join(explode_rdn(subolddn, 1))
                             type_ = univention.admin.modules.identifyOne(subolddn, suboldattrs)
-                            raise univention.admin.uexceptions.invalidOperation(_('Unable to move object %(name)s (%(type)s) in subtree, trying to revert changes.') % {
-                                'name': subold_rdn,
-                                'type': type_ and type_.module,
-                            })
+                            raise univention.admin.uexceptions.invalidOperation(
+                                _('Unable to move object %(name)s (%(type)s) in subtree, trying to revert changes.')
+                                % {
+                                    'name': subold_rdn,
+                                    'type': type_ and type_.module,
+                                },
+                            )
                         to_be_moved.append((subobject, subolddn, subnewdn))
 
                     for subobject, subolddn, subnewdn in to_be_moved:
@@ -897,7 +904,10 @@ class simpleLdap:
                     subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
                     if not subobject or not (univention.admin.modules.supports(submodule, 'move') or univention.admin.modules.supports(submodule, 'subtree_move')):
                         subold_rdn = '+'.join(explode_rdn(subolddn, 1))
-                        raise univention.admin.uexceptions.invalidOperation(_('Unable to move object %(name)s (%(type)s) in subtree, trying to revert changes.') % {'name': subold_rdn, 'type': univention.admin.modules.identifyOne(subolddn, suboldattrs)})
+                        raise univention.admin.uexceptions.invalidOperation(
+                            _('Unable to move object %(name)s (%(type)s) in subtree, trying to revert changes.')
+                            % {'name': subold_rdn, 'type': univention.admin.modules.identifyOne(subolddn, suboldattrs)},
+                        )
                     subobject.open()
                     subobject._move(subnewdn)
                     moved.append((subolddn, subnewdn))
@@ -981,7 +991,7 @@ class simpleLdap:
             if self.has_property('univentionObjectIdentifier'):
                 self.request_unique('univentionObjectIdentifier', str(uuid.uuid4()))
         except univention.admin.uexceptions.permissionDenied:
-            log.info("acquireUnique univentionObjectIdentifier got permissionDenied, continuing without lock, relying on slapo-unique")
+            log.info('acquireUnique univentionObjectIdentifier got permissionDenied, continuing without lock, relying on slapo-unique')
 
     def _ldap_dn(self) -> str:
         """
@@ -1050,7 +1060,7 @@ class simpleLdap:
         except (KeyboardInterrupt, SystemExit, SyntaxError):
             raise
         except Exception:
-            log.exception("cancel() failed:")
+            log.exception('cancel() failed:')
 
     def _falsy_boolean_extended_attributes(self, info: _Properties) -> _Properties:
         m = univention.admin.modules._get(self.module)
@@ -1091,14 +1101,16 @@ class simpleLdap:
         if not self.superordinate:
             if superordinate_names == {'settings/cn'}:
                 log.warning('No settings/cn superordinate was given.')
-                return   # settings/cn might be misued as superordinate, don't risk currently
+                return  # settings/cn might be misued as superordinate, don't risk currently
             if not must_exists:
                 return
             raise univention.admin.uexceptions.noSuperordinate(_('No superordinate object given'))
 
         # check if the superordinate is of the correct object type
         if not {self.superordinate.module} & superordinate_names:
-            raise univention.admin.uexceptions.insufficientInformation(_('The given %r superordinate is expected to be of type %s.') % (self.superordinate.module, ', '.join(superordinate_names)))
+            raise univention.admin.uexceptions.insufficientInformation(
+                _('The given %r superordinate is expected to be of type %s.') % (self.superordinate.module, ', '.join(superordinate_names)),
+            )
 
         if self.dn and not self._ensure_dn_in_subtree(self.superordinate.dn, self.lo.parentDn(self.dn)):
             raise univention.admin.uexceptions.insufficientInformation(_('The DN must be underneath of the superordinate.'))
@@ -1236,7 +1248,11 @@ class simpleLdap:
 
     def __app_option_enabled(self, name: str, option: univention.admin.option) -> bool:
         if option.is_app_option:
-            return all(self[pname] in ('TRUE', '1', 'OK') for pname, prop in self.descriptions.items() if name in prop.options and prop.syntax.name in ('AppActivatedBoolean', 'AppActivatedTrue', 'AppActivatedOK'))
+            return all(
+                self[pname] in ('TRUE', '1', 'OK')
+                for pname, prop in self.descriptions.items()
+                if name in prop.options and prop.syntax.name in ('AppActivatedBoolean', 'AppActivatedTrue', 'AppActivatedOK')
+            )
         return True
 
     def description(self) -> str:
@@ -1334,7 +1350,7 @@ class simpleLdap:
         al.append(('objectClass', [b'univentionObject']))
         al.append(('univentionObjectType', [self.module.encode('utf-8')]))
 
-        log.debug("create object with dn: %s", self.dn)
+        log.debug('create object with dn: %s', self.dn)
         log.log(1, 'Create dn=%r;\naddlist=%r;', self.dn, al)
 
         # if anything goes wrong we need to remove the already created object, otherwise we run into 'already exists' errors
@@ -1345,18 +1361,18 @@ class simpleLdap:
         except Exception:
             # ensure that there is no lock left
             exc = sys.exc_info()
-            log.info("Creating %r failed: %r", self.dn, exc[1])
+            log.info('Creating %r failed: %r', self.dn, exc[1])
             try:
                 self.cancel()
             except Exception:
-                log.exception("Post-create: cancel() failed:")
+                log.exception('Post-create: cancel() failed:')
             try:
                 if self._exists:  # add succeeded but _ldap_post_create failed!
                     obj = univention.admin.objects.get(univention.admin.modules._get(self.module), None, self.lo, self.position, self.dn)
                     obj.open()
                     obj.remove()
             except Exception:
-                log.exception("Post-create: remove() failed: %s")
+                log.exception('Post-create: remove() failed: %s')
             raise exc[1].with_traceback(exc[2])
 
         self.call_udm_property_hook('hook_ldap_post_create', self)
@@ -1377,7 +1393,7 @@ class simpleLdap:
 
         module_options = univention.admin.modules.options(self.module)
         # add object classes of (especially extended) options
-        for option in ["default", *self.options]:
+        for option in ['default', *self.options]:
             try:
                 opt = module_options[option]
             except KeyError:
@@ -1571,16 +1587,15 @@ class simpleLdap:
             self.lo.authz_connection.modify(subordinate, [('secretary', olddn.encode('utf-8'), self.dn.encode('utf-8'))])
 
     def _move_in_groups(self, olddn: str) -> None:
-        for group in [*self.oldinfo.get("groups", []), self.oldinfo.get("machineAccountGroup", "")]:
+        for group in [*self.oldinfo.get('groups', []), self.oldinfo.get('machineAccountGroup', '')]:
             if group != '':
                 try:
-                    self.lo.authz_connection.modify(
-                        group, [('uniqueMember', [olddn.encode("UTF-8")], None)])
+                    self.lo.authz_connection.modify(group, [('uniqueMember', [olddn.encode('UTF-8')], None)])
                 except univention.admin.uexceptions.ldapError as exc:
                     if not isinstance(exc.original_exception, ldap.NO_SUCH_ATTRIBUTE):
                         raise
                 try:
-                    self.lo.authz_connection.modify(group, [('uniqueMember', None, [self.dn.encode("UTF-8")])])
+                    self.lo.authz_connection.modify(group, [('uniqueMember', None, [self.dn.encode('UTF-8')])])
                 except univention.admin.uexceptions.ldapError as exc:
                     if not isinstance(exc.original_exception, ldap.TYPE_OR_VALUE_EXISTS):
                         raise
@@ -1660,7 +1675,7 @@ class simpleLdap:
     def loadPolicyObject(self, policy_type: str, reset: int = 0) -> 'simplePolicy':
         pathlist = []
 
-        log.debug("loadPolicyObject: policy_type: %s", policy_type)
+        log.debug('loadPolicyObject: policy_type: %s', policy_type)
         policy_module = univention.admin.modules._get(policy_type)
 
         # overwrite property descriptions
@@ -1677,9 +1692,9 @@ class simpleLdap:
             try:
                 self.lo.authz_connection.searchDn(base=i, scope='base')
                 pathlist.append(i)
-                log.debug("loadPolicyObject: added path %s", i)
+                log.debug('loadPolicyObject: added path %s', i)
             except Exception:
-                log.debug("loadPolicyObject: invalid path setting: %s does not exist in LDAP", i)
+                log.debug('loadPolicyObject: invalid path setting: %s does not exist in LDAP', i)
                 continue  # looking for next policy container
             break  # at least one item has been found; so we can stop here since only pathlist[0] is used
 
@@ -1690,13 +1705,18 @@ class simpleLdap:
             policy_path = pathlist[0]
             try:
                 prefix = univention.admin.modules.policyPositionDnPrefix(policy_module)
-                self.lo.authz_connection.searchDn(base="%s,%s" % (prefix, policy_path), scope='base')
-                policy_position.setDn("%s,%s" % (prefix, policy_path))
+                self.lo.authz_connection.searchDn(base='%s,%s' % (prefix, policy_path), scope='base')
+                policy_position.setDn('%s,%s' % (prefix, policy_path))
             except Exception:
                 policy_position.setDn(policy_path)
 
         for dn in self.policies:
-            if univention.admin.modules.recognize(policy_module, dn, self.lo.authz_connection.get(dn)) and self.policyObjects.get(policy_type, None) and self.policyObjects[policy_type].cloned == dn and not reset:
+            if (
+                univention.admin.modules.recognize(policy_module, dn, self.lo.authz_connection.get(dn))
+                and self.policyObjects.get(policy_type, None)
+                and self.policyObjects[policy_type].cloned == dn
+                and not reset
+            ):
                 return self.policyObjects[policy_type]
 
         for dn in self.policies[:]:
@@ -1732,10 +1752,10 @@ class simpleLdap:
 
     def _update_policies(self) -> None:
         for policy_type, policy_object in self.policyObjects.items():
-            log.debug("simpleLdap._update_policies: processing policy of type: %s", policy_type)
+            log.debug('simpleLdap._update_policies: processing policy of type: %s', policy_type)
             if policy_object.changes:
-                log.debug("simpleLdap._update_policies: trying to create policy of type: %s", policy_type)
-                log.debug("simpleLdap._update_policies: policy_object.info=%s", policy_object.info)
+                log.debug('simpleLdap._update_policies: trying to create policy of type: %s', policy_type)
+                log.debug('simpleLdap._update_policies: policy_object.info=%s', policy_object.info)
                 policy_object.create()
                 univention.admin.objects.replacePolicyReference(self, policy_type, policy_object.dn)
 
@@ -1805,7 +1825,7 @@ class simpleLdap:
             # "False" ==> do not update univentionLastUsedValue in LDAP if a specific value has been specified
             self.alloc.append((name, self[name], False))
         else:
-            if name != "univentionObjectIdentifier" or configRegistry.is_true('directory/manager/object-identifier/autogeneration'):
+            if name != 'univentionObjectIdentifier' or configRegistry.is_true('directory/manager/object-identifier/autogeneration'):
                 self[name] = self.request_lock(name)
 
     def _call_checkLdap_on_all_property_syntaxes(self) -> None:
@@ -1976,7 +1996,12 @@ class simpleLdap:
         if cls.use_performant_ldap_search_filter:
             filter_conditions.append(univention.admin.filter.expression('univentionObjectType', cls.module, escape=True))
         else:
-            object_classes = univention.admin.modules.options(cls.module).get('default', univention.admin.option()).objectClasses - {'top', 'univentionPolicy', 'univentionObjectMetadata', 'person'}
+            object_classes = univention.admin.modules.options(cls.module).get('default', univention.admin.option()).objectClasses - {
+                'top',
+                'univentionPolicy',
+                'univentionObjectMetadata',
+                'person',
+            }
             filter_conditions.extend(univention.admin.filter.expression('objectClass', ocs) for ocs in object_classes)
 
         return univention.admin.filter.conjunction('&', filter_conditions)
@@ -2037,7 +2062,12 @@ class simpleLdap:
     @classmethod
     def identify(cls, dn: str, attr: _Attributes, canonical: bool = False) -> bool:
         ocs = {x.decode('utf-8') for x in attr.get('objectClass', [])}
-        required_object_classes = univention.admin.modules.options(cls.module).get('default', univention.admin.option()).objectClasses - {'top', 'univentionPolicy', 'univentionObjectMetadata', 'person'}
+        required_object_classes = univention.admin.modules.options(cls.module).get('default', univention.admin.option()).objectClasses - {
+            'top',
+            'univentionPolicy',
+            'univentionObjectMetadata',
+            'person',
+        }
         return (ocs & required_object_classes) == required_object_classes
 
     _static_ldap_attributes: set[str] = set()
@@ -2128,7 +2158,8 @@ class simpleComputer(simpleLdap):
         """
         return '%s.%s' % (
             '.'.join(reversed(zoneName.replace('.in-addr.arpa', '').split('.'))),
-            '.'.join(reversed(relativeDomainName.split('.'))))
+            '.'.join(reversed(relativeDomainName.split('.'))),
+        )
 
     @staticmethod
     def _ipv6_from_ptr(zoneName: str, relativeDomainName: str) -> str:
@@ -2404,7 +2435,13 @@ class simpleComputer(simpleLdap):
         if ip and mac:
             ethernet = 'ethernet %s' % mac
             log.debug('we only remove the ip "%s" from the dhcp object', ip)
-            results = self.lo.authz_connection.search(base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('(&(dhcpHWAddress=%s)(univentionDhcpFixedAddress=%s))', (ethernet, ip)), unique=False)
+            results = self.lo.authz_connection.search(
+                base=tmppos.getBase(),
+                scope='domain',
+                attr=['univentionDhcpFixedAddress'],
+                filter=filter_format('(&(dhcpHWAddress=%s)(univentionDhcpFixedAddress=%s))', (ethernet, ip)),
+                unique=False,
+            )
             for dn, _attr in results:
                 host = univention.admin.objects.get(univention.admin.modules.get('dhcp/host'), self.co, self.lo, position=self.position, dn=dn)
                 assert host is not None
@@ -2421,7 +2458,9 @@ class simpleComputer(simpleLdap):
         elif mac:
             ethernet = 'ethernet %s' % mac
             log.debug('Remove the following mac: ethernet: "%s"', ethernet)
-            results = self.lo.authz_connection.search(base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('dhcpHWAddress=%s', [ethernet]), unique=False)
+            results = self.lo.authz_connection.search(
+                base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('dhcpHWAddress=%s', [ethernet]), unique=False,
+            )
             for dn, _attr in results:
                 log.debug('... done')
                 host = univention.admin.objects.get(univention.admin.modules.get('dhcp/host'), self.co, self.lo, position=self.position, dn=dn)
@@ -2431,7 +2470,9 @@ class simpleComputer(simpleLdap):
 
         elif ip:
             log.debug('Remove the following ip: "%s"', ip)
-            results = self.lo.authz_connection.search(base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('univentionDhcpFixedAddress=%s', [ip]), unique=False)
+            results = self.lo.authz_connection.search(
+                base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('univentionDhcpFixedAddress=%s', [ip]), unique=False,
+            )
             for dn, _attr in results:
                 log.debug('... done')
                 host = univention.admin.objects.get(univention.admin.modules.get('dhcp/host'), self.co, self.lo, position=self.position, dn=dn)
@@ -2479,11 +2520,18 @@ class simpleComputer(simpleLdap):
     def __remove_dns_reverse_object(self, name: str, dnsEntryZoneReverse: str | None, ip: str) -> None:
         def modify(rdn: str, zoneDN: str) -> None:
             zone_name = explode_rdn(zoneDN, True)[0]
-            for dn, attributes in self.lo.authz_connection.search(scope='domain', attr=['pTRRecord'], filter=filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (rdn, zone_name))):
+            for dn, attributes in self.lo.authz_connection.search(
+                scope='domain', attr=['pTRRecord'], filter=filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (rdn, zone_name)),
+            ):
                 ptr_records = attributes.get('pTRRecord', [])
                 removals = []
                 if len(ptr_records) > 1:
-                    removals = [b'%s.%s.' % (name.encode('UTF-8'), attributes2['zoneName'][0]) for dn2, attributes2 in self.lo.authz_connection.search(scope='domain', attr=['zoneName'], filter=filter_format('(&(relativeDomainName=%s)(objectClass=dNSZone))', [name]), unique=False)]
+                    removals = [
+                        b'%s.%s.' % (name.encode('UTF-8'), attributes2['zoneName'][0])
+                        for dn2, attributes2 in self.lo.authz_connection.search(
+                            scope='domain', attr=['zoneName'], filter=filter_format('(&(relativeDomainName=%s)(objectClass=dNSZone))', [name]), unique=False,
+                        )
+                    ]
 
                 if len(ptr_records) <= 1 or set(ptr_records) == set(removals):
                     self.lo.authz_connection.delete('relativeDomainName=%s,%s' % (escape_dn_chars(rdn), zoneDN))
@@ -2505,7 +2553,13 @@ class simpleComputer(simpleLdap):
 
         elif ip:
             tmppos = univention.admin.uldap.position(self.position.getDomain())
-            results = self.lo.authz_connection.search(base=tmppos.getBase(), scope='domain', attr=['zoneDn'], filter=filter_format('(&(objectClass=dNSZone)(|(pTRRecord=%s)(pTRRecord=%s.*)))', (name, name)), unique=False)
+            results = self.lo.authz_connection.search(
+                base=tmppos.getBase(),
+                scope='domain',
+                attr=['zoneDn'],
+                filter=filter_format('(&(objectClass=dNSZone)(|(pTRRecord=%s)(pTRRecord=%s.*)))', (name, name)),
+                unique=False,
+            )
             for dn, _attr in results:
                 log.debug('DEBUG: dn: "%s"', dn)
                 zone = self.lo.parentDn(dn)
@@ -2540,15 +2594,20 @@ class simpleComputer(simpleLdap):
             log.error('Could not determine host record for name=%r, ip=%r. Not creating pointer record.', name, ip)
             return
 
-        results = self.lo.authz_connection.searchDn(base=tmppos.getBase(), scope='domain', filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', [ipPart, *list(str2dn(zoneDn)[0][0][:2])]), unique=False)
+        results = self.lo.authz_connection.searchDn(
+            base=tmppos.getBase(), scope='domain', filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', [ipPart, *list(str2dn(zoneDn)[0][0][:2])]), unique=False,
+        )
         if not results:
-            self.lo.authz_connection.add('relativeDomainName=%s,%s' % (escape_dn_chars(ipPart), zoneDn), [
-                ('objectClass', [b'top', b'dNSZone', b'univentionObject']),
-                ('univentionObjectType', [b'dns/ptr_record']),
-                ('zoneName', [explode_rdn(zoneDn, True)[0].encode('UTF-8')]),
-                ('relativeDomainName', [ipPart.encode('ASCII')]),
-                ('PTRRecord', [x.encode('UTF-8') for x in hostname_list]),
-            ])
+            self.lo.authz_connection.add(
+                'relativeDomainName=%s,%s' % (escape_dn_chars(ipPart), zoneDn),
+                [
+                    ('objectClass', [b'top', b'dNSZone', b'univentionObject']),
+                    ('univentionObjectType', [b'dns/ptr_record']),
+                    ('zoneName', [explode_rdn(zoneDn, True)[0].encode('UTF-8')]),
+                    ('relativeDomainName', [ipPart.encode('ASCII')]),
+                    ('PTRRecord', [x.encode('UTF-8') for x in hostname_list]),
+                ],
+            )
 
             # update Serial
             zone = univention.admin.handlers.dns.reverse_zone.object(self.co, self.lo, self.position, zoneDn)
@@ -2577,7 +2636,14 @@ class simpleComputer(simpleLdap):
                     (attrEdit, attrOther) = ('aAAARecord', 'aRecord')
                 else:
                     (attrEdit, attrOther) = ('aRecord', 'aAAARecord')
-                results = self.lo.authz_connection.search(base=base, scope='domain', attr=['aRecord', 'aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', (name, attrEdit, ip)), unique=False, required=False)
+                results = self.lo.authz_connection.search(
+                    base=base,
+                    scope='domain',
+                    attr=['aRecord', 'aAAARecord'],
+                    filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', (name, attrEdit, ip)),
+                    unique=False,
+                    required=False,
+                )
                 for dn, attr in results:
                     if [x.decode('ASCII') for x in attr[attrEdit]] == [ip] and not attr.get(attrOther):  # the <ip> to be removed is the last on the object
                         # remove the object
@@ -2639,7 +2705,7 @@ class simpleComputer(simpleLdap):
         >>> simpleComputer._ip2dns('::1')
         (IPv6Address(u'::1'), 'aAAARecord')
         """
-        ip = ip_address('%s' % (addr, ))
+        ip = ip_address('%s' % (addr,))
         return (ip, 'aAAARecord' if isinstance(ip, IPv6Address) else 'aRecord')
 
     def __modify_dns_forward_object(self, name: str, zoneDn: str | None, new_ip: str, old_ip: str) -> None:
@@ -2654,7 +2720,9 @@ class simpleComputer(simpleLdap):
 
             naddr, _nattr = self._ip2dns(new_ip)
             oaddr, oattr = self._ip2dns(old_ip)
-            results = self.lo.authz_connection.search(base=base, scope='domain', attr=['aRecord', 'aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', (name, oattr, old_ip)), unique=False)
+            results = self.lo.authz_connection.search(
+                base=base, scope='domain', attr=['aRecord', 'aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', (name, oattr, old_ip)), unique=False,
+            )
 
             for dn, attr in results:
                 old_aRecord = attr.get('aRecord', [])
@@ -2706,16 +2774,21 @@ class simpleComputer(simpleLdap):
 
     def __add_dns_forward_object_ipv6(self, name: str, zoneDn: str, addr: IPv6Address) -> None:
         ip = addr.exploded.encode('ASCII')
-        results = self.lo.authz_connection.search(base=zoneDn, scope='domain', attr=['aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=False)
+        results = self.lo.authz_connection.search(
+            base=zoneDn, scope='domain', attr=['aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=False,
+        )
         if not results:
             try:
-                self.lo.authz_connection.add('relativeDomainName=%s,%s' % (escape_dn_chars(name), zoneDn), [
-                    ('objectClass', [b'top', b'dNSZone', b'univentionObject']),
-                    ('univentionObjectType', [b'dns/host_record']),
-                    ('zoneName', explode_rdn(zoneDn, True)[0].encode('UTF-8')),
-                    ('aAAARecord', [ip]),
-                    ('relativeDomainName', [name.encode('UTF-8')]),
-                ])
+                self.lo.authz_connection.add(
+                    'relativeDomainName=%s,%s' % (escape_dn_chars(name), zoneDn),
+                    [
+                        ('objectClass', [b'top', b'dNSZone', b'univentionObject']),
+                        ('univentionObjectType', [b'dns/host_record']),
+                        ('zoneName', explode_rdn(zoneDn, True)[0].encode('UTF-8')),
+                        ('aAAARecord', [ip]),
+                        ('relativeDomainName', [name.encode('UTF-8')]),
+                    ],
+                )
             except univention.admin.uexceptions.objectExists as ex:
                 raise univention.admin.uexceptions.dnsAliasRecordExists(ex.dn)
             # TODO: check if zoneDn really a forwardZone, maybe it is a container under a zone
@@ -2734,16 +2807,21 @@ class simpleComputer(simpleLdap):
 
     def __add_dns_forward_object_ipv4(self, name: str, zoneDn: str, addr: IPv4Address) -> None:
         ip = addr.exploded.encode('ASCII')
-        results = self.lo.authz_connection.search(base=zoneDn, scope='domain', attr=['aRecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=False)
+        results = self.lo.authz_connection.search(
+            base=zoneDn, scope='domain', attr=['aRecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=False,
+        )
         if not results:
             try:
-                self.lo.authz_connection.add('relativeDomainName=%s,%s' % (escape_dn_chars(name), zoneDn), [
-                    ('objectClass', [b'top', b'dNSZone', b'univentionObject']),
-                    ('univentionObjectType', [b'dns/host_record']),
-                    ('zoneName', explode_rdn(zoneDn, True)[0].encode('UTF-8')),
-                    ('ARecord', [ip]),
-                    ('relativeDomainName', [name.encode('UTF-8')]),
-                ])
+                self.lo.authz_connection.add(
+                    'relativeDomainName=%s,%s' % (escape_dn_chars(name), zoneDn),
+                    [
+                        ('objectClass', [b'top', b'dNSZone', b'univentionObject']),
+                        ('univentionObjectType', [b'dns/host_record']),
+                        ('zoneName', explode_rdn(zoneDn, True)[0].encode('UTF-8')),
+                        ('ARecord', [ip]),
+                        ('relativeDomainName', [name.encode('UTF-8')]),
+                    ],
+                )
             except univention.admin.uexceptions.objectExists as ex:
                 raise univention.admin.uexceptions.dnsAliasRecordExists(ex.dn)
             # TODO: check if zoneDn really a forwardZone, maybe it is a container under a zone
@@ -2764,15 +2842,20 @@ class simpleComputer(simpleLdap):
         log.debug('add a dns alias object: name="%s", dnsForwardZone="%s", dnsAliasZoneContainer="%s", alias="%s"', name, dnsForwardZone, dnsAliasZoneContainer, alias)
         alias = alias.rstrip('.')
         if name and dnsForwardZone and dnsAliasZoneContainer and alias:
-            results = self.lo.authz_connection.search(base=dnsAliasZoneContainer, scope='domain', attr=['cNAMERecord'], filter=filter_format('relativeDomainName=%s', (alias,)), unique=False)
+            results = self.lo.authz_connection.search(
+                base=dnsAliasZoneContainer, scope='domain', attr=['cNAMERecord'], filter=filter_format('relativeDomainName=%s', (alias,)), unique=False,
+            )
             if not results:
-                self.lo.authz_connection.add('relativeDomainName=%s,%s' % (escape_dn_chars(alias), dnsAliasZoneContainer), [
-                    ('objectClass', [b'top', b'dNSZone', b'univentionObject']),
-                    ('univentionObjectType', [b'dns/alias']),
-                    ('zoneName', explode_rdn(dnsAliasZoneContainer, True)[0].encode('UTF-8')),
-                    ('cNAMERecord', [b"%s.%s." % (name.encode('UTF-8'), dnsForwardZone.encode('UTF-8'))]),
-                    ('relativeDomainName', [alias.encode('UTF-8')]),
-                ])
+                self.lo.authz_connection.add(
+                    'relativeDomainName=%s,%s' % (escape_dn_chars(alias), dnsAliasZoneContainer),
+                    [
+                        ('objectClass', [b'top', b'dNSZone', b'univentionObject']),
+                        ('univentionObjectType', [b'dns/alias']),
+                        ('zoneName', explode_rdn(dnsAliasZoneContainer, True)[0].encode('UTF-8')),
+                        ('cNAMERecord', [b'%s.%s.' % (name.encode('UTF-8'), dnsForwardZone.encode('UTF-8'))]),
+                        ('relativeDomainName', [alias.encode('UTF-8')]),
+                    ],
+                )
 
                 # TODO: check if dnsAliasZoneContainer really is a forwardZone, maybe it is a container under a zone
                 zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, dnsAliasZoneContainer)
@@ -2795,12 +2878,24 @@ class simpleComputer(simpleLdap):
                     tmppos = univention.admin.uldap.position(self.position.getDomain())
                     base = tmppos.getBase()
                     log.debug('search base="%s"', base)
-                    results = self.lo.authz_connection.search(base=base, scope='domain', attr=['zoneName'], filter=filter_format('(&(objectClass=dNSZone)(relativeDomainName=%s)(cNAMERecord=%s.%s.))', (alias, name, dnsForwardZone)), unique=False, required=False)
+                    results = self.lo.authz_connection.search(
+                        base=base,
+                        scope='domain',
+                        attr=['zoneName'],
+                        filter=filter_format('(&(objectClass=dNSZone)(relativeDomainName=%s)(cNAMERecord=%s.%s.))', (alias, name, dnsForwardZone)),
+                        unique=False,
+                        required=False,
+                    )
                     for dn, attr in results:
                         # remove the object
                         self.lo.authz_connection.delete(dn)
                         # and update the SOA version number for the zone
-                        results = self.lo.authz_connection.searchDn(base=tmppos.getBase(), scope='domain', filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(sOARecord=*))', (attr['zoneName'][0].decode('UTF-8'),)), unique=False)
+                        results = self.lo.authz_connection.searchDn(
+                            base=tmppos.getBase(),
+                            scope='domain',
+                            filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(sOARecord=*))', (attr['zoneName'][0].decode('UTF-8'),)),
+                            unique=False,
+                        )
                         for zoneDn in results:
                             zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zoneDn)
                             zone.open()
@@ -2810,12 +2905,24 @@ class simpleComputer(simpleLdap):
                     tmppos = univention.admin.uldap.position(self.position.getDomain())
                     base = tmppos.getBase()
                     log.debug('search base="%s"', base)
-                    results = self.lo.authz_connection.search(base=base, scope='domain', attr=['zoneName'], filter=filter_format('(&(objectClass=dNSZone)(&(cNAMERecord=%s)(cNAMERecord=%s.%s.))', (name, name, dnsForwardZone)), unique=False, required=False)
+                    results = self.lo.authz_connection.search(
+                        base=base,
+                        scope='domain',
+                        attr=['zoneName'],
+                        filter=filter_format('(&(objectClass=dNSZone)(&(cNAMERecord=%s)(cNAMERecord=%s.%s.))', (name, name, dnsForwardZone)),
+                        unique=False,
+                        required=False,
+                    )
                     for dn, attr in results:
                         # remove the object
                         self.lo.authz_connection.delete(dn)
                         # and update the SOA version number for the zone
-                        results = self.lo.authz_connection.searchDn(base=tmppos.getBase(), scope='domain', filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(sOARecord=*))', (attr['zoneName'][0].decode('UTF-8'),)), unique=False)
+                        results = self.lo.authz_connection.searchDn(
+                            base=tmppos.getBase(),
+                            scope='domain',
+                            filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(sOARecord=*))', (attr['zoneName'][0].decode('UTF-8'),)),
+                            unique=False,
+                        )
                         for zoneDn in results:
                             zone = univention.admin.handlers.dns.forward_zone.object(self.co, self.lo, self.position, zoneDn)
                             zone.open()
@@ -3031,7 +3138,7 @@ class simpleComputer(simpleLdap):
 
         if self.hasChanged('name'):
             ml.append(('sn', self.oldattr.get('sn', [None])[0], self['name'].encode('UTF-8')))
-            self.__changes['name'] = (self.oldattr.get('sn', [b''])[0].decode("UTF-8") or None, self['name'])
+            self.__changes['name'] = (self.oldattr.get('sn', [b''])[0].decode('UTF-8') or None, self['name'])
 
         if self.hasChanged('ip') or self.hasChanged('mac'):
             dhcp = [self.__split_dhcp_line(entry) for entry in self.info.get('dhcpEntryZone', [])]
@@ -3107,7 +3214,9 @@ class simpleComputer(simpleLdap):
                     if entry not in self.oldinfo.get('dnsEntryZoneAlias', []):
                         self.__changes['dnsEntryZoneAlias']['add'].append(entry)
                 else:
-                    raise univention.admin.uexceptions.invalidDNSAliasEntry(_('The DNS alias entry for this host should contain the zone name, the alias zone container LDAP-DN and the alias.'))
+                    raise univention.admin.uexceptions.invalidDNSAliasEntry(
+                        _('The DNS alias entry for this host should contain the zone name, the alias zone container LDAP-DN and the alias.'),
+                    )
 
         self.__multiip = len(self['mac']) > 1 or len(self['ip']) > 1
 
@@ -3131,10 +3240,10 @@ class simpleComputer(simpleLdap):
         """
         addr = ip_address('%s' % (sip,))
         rev = addr.reverse_pointer
-        subnet = ".%s" % (explode_rdn(reverseDN, True)[0],)
+        subnet = '.%s' % (explode_rdn(reverseDN, True)[0],)
         if not rev.endswith(subnet):
-            raise ValueError("%s not in %s" % (rev, subnet))
-        return rev[:-len(subnet)]
+            raise ValueError('%s not in %s' % (rev, subnet))
+        return rev[: -len(subnet)]
 
     def _ldap_pre_create(self) -> None:
         super()._ldap_pre_create()
@@ -3260,7 +3369,6 @@ class simpleComputer(simpleLdap):
         new_groups = set(self.info.get('groups', []))
         old_groups = set(self.oldinfo.get('groups', []))
         for group in new_groups | old_groups:
-
             # Using the UDM groups/group object does not work at this point. The computer object has already been renamed.
             # During open() of groups/group each member is checked if it exists. Because the computer object with "olddn" is missing,
             # it won't show up in groupobj['hosts']. That's why the uniqueMember/memberUid updates is done directly via
@@ -3398,8 +3506,7 @@ class simpleComputer(simpleLdap):
             log.debug('clean up entries for zone: %s', zone)
             if not zone:
                 continue
-            zoneObj = univention.admin.objects.get(
-                univention.admin.modules.get('dns/reverse_zone'), self.co, self.lo, self.position, dn=zone[0])
+            zoneObj = univention.admin.objects.get(univention.admin.modules.get('dns/reverse_zone'), self.co, self.lo, self.position, dn=zone[0])
             assert zoneObj is not None
             zoneObj.open()
 
@@ -3473,7 +3580,7 @@ class simpleComputer(simpleLdap):
                 assert isinstance(value, str)
                 network_object = univention.admin.handlers.networks.network.object(self.co, self.lo, self.position, value)
                 network_object.open()
-                subnet = ip_network("%(network)s/%(netmask)s" % network_object, strict=False)
+                subnet = ip_network('%(network)s/%(netmask)s' % network_object, strict=False)
 
                 if not ips or ip_address('%s' % (ip1,)) not in subnet:
                     if self.ip_freshly_set:
@@ -3504,7 +3611,6 @@ class simpleComputer(simpleLdap):
                 self.old_network = value
 
         elif key == 'ip':
-
             ips = [ip for ip in value if ip] if self.has_property('ip') else []
             ip1 = ips[0] if len(ips) >= 1 else ''
 
@@ -3538,12 +3644,13 @@ class simpleComputer(simpleLdap):
 
 
 class simplePolicy(simpleLdap):
+    """Base class for policies/* UDM modules"""
 
     def __init__(
         self,
-        co,  # None
-        lo,  # univention.admin.uldap.access
-        position,  # univention.admin.uldap.position
+        co: None,
+        lo: univention.admin.uldap.access,
+        position: univention.admin.uldap.position,
         dn: str = '',
         superordinate: simpleLdap | None = None,
         attributes: _Attributes | None = None,
@@ -3602,7 +3709,7 @@ class simplePolicy(simpleLdap):
 
     def __makeUnique(self) -> None:
         identifier = self.getIdentifier()
-        components = self.info[identifier].split("_uv")
+        components = self.info[identifier].split('_uv')
         if len(components) > 1:
             try:
                 n = int(components[1])
@@ -3611,7 +3718,7 @@ class simplePolicy(simpleLdap):
                 n = 1
         else:
             n = 0
-        self.info[identifier] = "%s_uv%d" % (components[0], n)
+        self.info[identifier] = '%s_uv%d' % (components[0], n)
         log.debug('simplePolicy.__makeUnique: result: %s', self.info[identifier])
 
     def create(self, serverctrls: list[ldap.controls.LDAPControl] | None = None, response: dict[str, Any] | None = None) -> str:
@@ -3688,7 +3795,9 @@ class simplePolicy(simpleLdap):
 
         self.policy_result()
 
-        if (key in self.polinfo and not (key in self.info or key in self.oldinfo)) or (key in self.polinfo_more and 'fixed' in self.polinfo_more[key] and self.polinfo_more[key]['fixed']):
+        if (key in self.polinfo and not (key in self.info or key in self.oldinfo)) or (
+            key in self.polinfo_more and 'fixed' in self.polinfo_more[key] and self.polinfo_more[key]['fixed']
+        ):
             if self.descriptions[key].multivalue and not isinstance(self.polinfo[key], list):
                 # why isn't this correct in the first place?
                 self.polinfo[key] = [self.polinfo[key]]
@@ -3768,7 +3877,7 @@ class _MergedAttributes:
     def get_attribute(self, attr: str) -> list[bytes]:
         values = set(self.obj.oldattr.get(attr, []))
         # evaluate the modlist and apply all changes to the current values
-        for (att, old, new) in self.modlist:
+        for att, old, new in self.modlist:
             if att.lower() != attr.lower():
                 continue
             new = [] if not new else [new] if isinstance(new, bytes) else new

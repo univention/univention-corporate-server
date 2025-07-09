@@ -214,7 +214,7 @@ class object(univention.admin.handlers.simpleLdap):
         univention.admin.handlers.simpleLdap.open(self)
         if self['model']:
             models = univention.admin.modules._get('settings/printermodel').lookup(None, self.lo, filter_format('printerModel="%s*', [self['model']]))
-            log.debug("printermodel: %s", models)
+            log.debug('printermodel: %s', models)
             if not models or len(models) > 1:
                 self['producer'] = []
             else:
@@ -232,11 +232,11 @@ class object(univention.admin.handlers.simpleLdap):
 
         for schema in _AVAILABLE_PRINTER_SCHEMAS:
             if protocol.startswith(schema):
-                if schema.endswith(":/") and protocol.endswith("://"):
+                if schema.endswith(':/') and protocol.endswith('://'):
                     protocol = protocol[:-1]
                     host = '/' + host
 
-                if protocol.endswith(":/") and host == "/" and schema.endswith("://"):
+                if protocol.endswith(':/') and host == '/' and schema.endswith('://'):
                     raise univention.admin.uexceptions.valueInvalidSyntax(_('Protocol and destination parts can not be parsed.'))
 
         self['uri'] = [protocol, host]
@@ -254,7 +254,9 @@ class object(univention.admin.handlers.simpleLdap):
                 if member_cn == self.info['name']:
                     rm_attrib.append(pg_dn)
                     if len(member_list['univentionPrinterGroupMember']) < 2:
-                        raise univention.admin.uexceptions.emptyPrinterGroup(_('%(name)s is the last member of the printer group %(group)s. ') % {'name': self.info['name'], 'group': member_list['cn'][0].decode('UTF-8')})
+                        raise univention.admin.uexceptions.emptyPrinterGroup(
+                            _('%(name)s is the last member of the printer group %(group)s. ') % {'name': self.info['name'], 'group': member_list['cn'][0].decode('UTF-8')},
+                        )
 
         printergroup_module = univention.admin.modules._get('shares/printergroup')
         for rm_dn in rm_attrib:
