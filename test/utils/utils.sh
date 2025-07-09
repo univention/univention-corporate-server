@@ -290,6 +290,9 @@ _fix_ssh47233 () { # Bug #47233: ssh connection stuck on reboot
 check_keycloak_version() {
 	version="26.2.5-ucs1"
 	# we have a problem with the appcenter installing the wrong keycloak version. This will be removed and is for debugging purposes only
+	univention-ldapsearch -xLLL univentionAppID="keycloak_$version" "univentionAppID" | grep "univentionAppID"
+	echo "Keycloak was not installed in version $version. Trying upgrade"
+	. utils-keycloak.sh && install_upgrade_keycloak --set ucs/self/registration/check_email_verification="True"
 	univention-ldapsearch -xLLL univentionAppID="keycloak_$version" "univentionAppID" | grep "univentionAppID" || exit 1
 }
 
