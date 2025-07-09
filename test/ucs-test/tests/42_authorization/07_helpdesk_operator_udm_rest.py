@@ -8,7 +8,7 @@
 
 import pytest
 
-from univention.admin.rest.client import Forbidden, NotFound
+from univention.admin.rest.client import Forbidden, UnprocessableEntity
 from univention.config_registry import ucr as _ucr
 
 
@@ -31,27 +31,29 @@ def test_helpdesk_operator_cant_create(position, expected, ou_helpdesk_operator_
             ou_helpdesk_operator_rest_client.create_user(position)
 
 
-@pytest.mark.parametrize('position, changes, expected', [
-    ('cn=users,{ou_dn}', {"guardianRoles": ["umc:udm:helpdesk-operator&umc:udm:ou=bremen"]}, False),
-    ('cn=users,{ou_dn}', {'description': 'dsfdsf'}, False),
+@pytest.mark.parametrize('user, changes, expected', [
+    ('{normal_user}', {"guardianRoles": ["umc:udm:helpdesk-operator&umc:udm:ou=bremen"]}, False),
+    ('{normal_user}', {'description': 'dsfdsf'}, False),
     ('uid=Administrator,cn=users,{ldap_base}', {'description': 'dsfdsf'}, False),
 ])
-def test_helpdesk_operator_cant_modify_properties(ldap_base, ou, position, changes, expected, udm, ou_helpdesk_operator_rest_client):
-    dn, _ = udm.create_user(position=position.format(ou_dn=ou.dn, ldap_base=ldap_base))
+def test_helpdesk_operator_cant_modify_properties(ldap_base, ou, user, changes, expected, udm, ou_helpdesk_operator_rest_client):
+    dn, _ = udm.create_user(position=ou.user_default_container)
+    user_dn = user.format(normal_user=dn, ldap_base=ldap_base)
+
     if not expected:
-        if dn.endswith(ou.dn):
+        if user_dn.endswith(ou.dn):
             with pytest.raises(Forbidden):
-                ou_helpdesk_operator_rest_client.modify_user(dn, changes)
+                ou_helpdesk_operator_rest_client.modify_user(user_dn, changes)
         else:
-            with pytest.raises(NotFound):
-                ou_helpdesk_operator_rest_client.modify_user(dn, changes)
+            with pytest.raises(UnprocessableEntity):
+                ou_helpdesk_operator_rest_client.modify_user(user_dn, changes)
     else:
-        ou_helpdesk_operator_rest_client.modify_user(dn, changes)
+        ou_helpdesk_operator_rest_client.modify_user(user_dn, changes)
 
 
 @pytest.mark.parametrize('position, expected', [
     ('cn=users,{ou_dn}', True),
-    ('{ldap_base}', False),
+    ('cn=users,{ldap_base}', False),
 ])
 def test_helpdesk_operator_can_reset_password(position, expected, ou_helpdesk_operator_rest_client, udm, ou, ldap_base):
     dn, _ = udm.create_user(position=position.format(ou_dn=ou.dn, ldap_base=ldap_base))
@@ -69,5 +71,5 @@ def test_helpdesk_operator_can_reset_password(position, expected, ou_helpdesk_op
             with pytest.raises(Forbidden):
                 ou_helpdesk_operator_rest_client.modify_user(dn, changes)
         else:
-            with pytest.raises(NotFound):
+            with pytest.raises(UnprocessableEntity):
                 ou_helpdesk_operator_rest_client.modify_user(dn, changes)
