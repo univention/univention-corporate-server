@@ -379,7 +379,7 @@ class Authorization:
         )
 
         writeable_attributes = self._get_writeable_properties(
-            permissions_result['general_permissions'] | permissions_result['target_permissions'][0]['permissions'], mod, set(obj.descriptions)
+            permissions_result['general_permissions'] | permissions_result['target_permissions'][0]['permissions'], mod, set(obj.descriptions),
         )
         all_allowed = allowed and self._is_all_writeable(writeable_attributes, obj.module, changed_properties)
         if not all_allowed:

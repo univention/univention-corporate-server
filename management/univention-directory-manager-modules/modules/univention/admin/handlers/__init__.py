@@ -213,7 +213,7 @@ class simpleLdap:
         if s4connector_present is None:
             s4connector_present = False
             searchResult = self.lo.authz_connection.searchDn(
-                '(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector)(|(aRecord=*)(aAAARecord=*)))'
+                '(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector)(|(aRecord=*)(aAAARecord=*)))',
             )
             s4connector_present = bool(searchResult)
         self.s4connector_present = s4connector_present
@@ -845,7 +845,7 @@ class simpleLdap:
                                 % {
                                     'name': subold_rdn,
                                     'type': type_ and type_.module,
-                                }
+                                },
                             )
                         to_be_moved.append((subobject, subolddn, subnewdn))
 
@@ -906,7 +906,7 @@ class simpleLdap:
                         subold_rdn = '+'.join(explode_rdn(subolddn, 1))
                         raise univention.admin.uexceptions.invalidOperation(
                             _('Unable to move object %(name)s (%(type)s) in subtree, trying to revert changes.')
-                            % {'name': subold_rdn, 'type': univention.admin.modules.identifyOne(subolddn, suboldattrs)}
+                            % {'name': subold_rdn, 'type': univention.admin.modules.identifyOne(subolddn, suboldattrs)},
                         )
                     subobject.open()
                     subobject._move(subnewdn)
@@ -1109,7 +1109,7 @@ class simpleLdap:
         # check if the superordinate is of the correct object type
         if not {self.superordinate.module} & superordinate_names:
             raise univention.admin.uexceptions.insufficientInformation(
-                _('The given %r superordinate is expected to be of type %s.') % (self.superordinate.module, ', '.join(superordinate_names))
+                _('The given %r superordinate is expected to be of type %s.') % (self.superordinate.module, ', '.join(superordinate_names)),
             )
 
         if self.dn and not self._ensure_dn_in_subtree(self.superordinate.dn, self.lo.parentDn(self.dn)):
@@ -2459,7 +2459,7 @@ class simpleComputer(simpleLdap):
             ethernet = 'ethernet %s' % mac
             log.debug('Remove the following mac: ethernet: "%s"', ethernet)
             results = self.lo.authz_connection.search(
-                base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('dhcpHWAddress=%s', [ethernet]), unique=False
+                base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('dhcpHWAddress=%s', [ethernet]), unique=False,
             )
             for dn, _attr in results:
                 log.debug('... done')
@@ -2471,7 +2471,7 @@ class simpleComputer(simpleLdap):
         elif ip:
             log.debug('Remove the following ip: "%s"', ip)
             results = self.lo.authz_connection.search(
-                base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('univentionDhcpFixedAddress=%s', [ip]), unique=False
+                base=tmppos.getBase(), scope='domain', attr=['univentionDhcpFixedAddress'], filter=filter_format('univentionDhcpFixedAddress=%s', [ip]), unique=False,
             )
             for dn, _attr in results:
                 log.debug('... done')
@@ -2521,7 +2521,7 @@ class simpleComputer(simpleLdap):
         def modify(rdn: str, zoneDN: str) -> None:
             zone_name = explode_rdn(zoneDN, True)[0]
             for dn, attributes in self.lo.authz_connection.search(
-                scope='domain', attr=['pTRRecord'], filter=filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (rdn, zone_name))
+                scope='domain', attr=['pTRRecord'], filter=filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (rdn, zone_name)),
             ):
                 ptr_records = attributes.get('pTRRecord', [])
                 removals = []
@@ -2529,7 +2529,7 @@ class simpleComputer(simpleLdap):
                     removals = [
                         b'%s.%s.' % (name.encode('UTF-8'), attributes2['zoneName'][0])
                         for dn2, attributes2 in self.lo.authz_connection.search(
-                            scope='domain', attr=['zoneName'], filter=filter_format('(&(relativeDomainName=%s)(objectClass=dNSZone))', [name]), unique=False
+                            scope='domain', attr=['zoneName'], filter=filter_format('(&(relativeDomainName=%s)(objectClass=dNSZone))', [name]), unique=False,
                         )
                     ]
 
@@ -2595,7 +2595,7 @@ class simpleComputer(simpleLdap):
             return
 
         results = self.lo.authz_connection.searchDn(
-            base=tmppos.getBase(), scope='domain', filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', [ipPart, *list(str2dn(zoneDn)[0][0][:2])]), unique=False
+            base=tmppos.getBase(), scope='domain', filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', [ipPart, *list(str2dn(zoneDn)[0][0][:2])]), unique=False,
         )
         if not results:
             self.lo.authz_connection.add(
@@ -2721,7 +2721,7 @@ class simpleComputer(simpleLdap):
             naddr, _nattr = self._ip2dns(new_ip)
             oaddr, oattr = self._ip2dns(old_ip)
             results = self.lo.authz_connection.search(
-                base=base, scope='domain', attr=['aRecord', 'aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', (name, oattr, old_ip)), unique=False
+                base=base, scope='domain', attr=['aRecord', 'aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', (name, oattr, old_ip)), unique=False,
             )
 
             for dn, attr in results:
@@ -2775,7 +2775,7 @@ class simpleComputer(simpleLdap):
     def __add_dns_forward_object_ipv6(self, name: str, zoneDn: str, addr: IPv6Address) -> None:
         ip = addr.exploded.encode('ASCII')
         results = self.lo.authz_connection.search(
-            base=zoneDn, scope='domain', attr=['aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=False
+            base=zoneDn, scope='domain', attr=['aAAARecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=False,
         )
         if not results:
             try:
@@ -2808,7 +2808,7 @@ class simpleComputer(simpleLdap):
     def __add_dns_forward_object_ipv4(self, name: str, zoneDn: str, addr: IPv4Address) -> None:
         ip = addr.exploded.encode('ASCII')
         results = self.lo.authz_connection.search(
-            base=zoneDn, scope='domain', attr=['aRecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=False
+            base=zoneDn, scope='domain', attr=['aRecord'], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique=False,
         )
         if not results:
             try:
@@ -2843,7 +2843,7 @@ class simpleComputer(simpleLdap):
         alias = alias.rstrip('.')
         if name and dnsForwardZone and dnsAliasZoneContainer and alias:
             results = self.lo.authz_connection.search(
-                base=dnsAliasZoneContainer, scope='domain', attr=['cNAMERecord'], filter=filter_format('relativeDomainName=%s', (alias,)), unique=False
+                base=dnsAliasZoneContainer, scope='domain', attr=['cNAMERecord'], filter=filter_format('relativeDomainName=%s', (alias,)), unique=False,
             )
             if not results:
                 self.lo.authz_connection.add(
@@ -3215,7 +3215,7 @@ class simpleComputer(simpleLdap):
                         self.__changes['dnsEntryZoneAlias']['add'].append(entry)
                 else:
                     raise univention.admin.uexceptions.invalidDNSAliasEntry(
-                        _('The DNS alias entry for this host should contain the zone name, the alias zone container LDAP-DN and the alias.')
+                        _('The DNS alias entry for this host should contain the zone name, the alias zone container LDAP-DN and the alias.'),
                     )
 
         self.__multiip = len(self['mac']) > 1 or len(self['ip']) > 1

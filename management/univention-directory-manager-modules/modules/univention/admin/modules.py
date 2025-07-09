@@ -362,7 +362,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
 
     new_property_descriptions = copy.copy(module.property_descriptions)
     for _dn, attrs in lo.authz_connection.search(
-        base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,)
+        base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,),
     ):
         # get CLI name
         pname = attrs['univentionUDMPropertyCLIName'][0].decode('UTF-8', 'replace')
@@ -530,7 +530,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
                             option in [key for (key, value) in getattr(module, 'options', {}).items() if value.is_app_option]
                             for option in attrs.get('univentionUDMPropertyOptions', [])
                         ),
-                    )
+                    ),
                 )
             else:
                 for tab in getattr(module, 'layout', []):
@@ -544,7 +544,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
                     deleteObjClass=deleteObjectClass,
                     syntax=propertySyntaxString,
                     hook=propertyHook,
-                )
+                ),
             )
 
             if ldap_attribute_name.lower() in _ldap_operational_attribute_names(lo):

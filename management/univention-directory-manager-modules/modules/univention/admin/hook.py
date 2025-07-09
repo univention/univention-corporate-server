@@ -51,8 +51,8 @@ def import_hook_files() -> None:
                         sys.modules[__name__].__dict__.update(
                             dict(
                                 inspect.getmembers(
-                                    SimpleNamespace(**env), lambda m: inspect.isclass(m) and issubclass(m, (simpleHook, AttributeHook)) and m not in (simpleHook, AttributeHook)
-                                )
+                                    SimpleNamespace(**env), lambda m: inspect.isclass(m) and issubclass(m, (simpleHook, AttributeHook)) and m not in (simpleHook, AttributeHook),
+                                ),
                             ),
                         )
                     log.debug('admin.hook.import_hook_files: importing %r', fn)

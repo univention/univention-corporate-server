@@ -133,7 +133,7 @@ class Support:
                 newmembers.remove(oldfqdn)
                 newmembers.append(newfqdn)
                 self.lo.authz_connection.modify(
-                    servicedn, [('univentionNagiosHostname', oldmembers, newmembers)]
+                    servicedn, [('univentionNagiosHostname', oldmembers, newmembers)],
                 )  # TODO: why not simply ('univentionNagiosHostname', oldfqdn, newfqdn) ?
 
     def nagiosModifyServiceList(self):

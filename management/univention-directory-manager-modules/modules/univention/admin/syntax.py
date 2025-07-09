@@ -275,7 +275,7 @@ class ISyntax:
                     'staticValues': descr.get('staticValues'),
                     'size': self.size,
                     'depends': descr.get('depends'),
-                }
+                },
             ]
             descr['type'] = 'MultiInput'
 
@@ -786,7 +786,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
                 simple = True
             if not simple:
                 log.warning(
-                    'Syntax %s wants to get optimizations but may not. This is a Bug! We provide a fallback but the syntax will respond much slower than it could!', cls.name
+                    'Syntax %s wants to get optimizations but may not. This is a Bug! We provide a fallback but the syntax will respond much slower than it could!', cls.name,
                 )
 
         def extract_key_label(syn, dn, info):
@@ -2065,7 +2065,7 @@ class uid(simple):
     regex = re.compile('(?u)(^[a-zA-Z0-9])[a-zA-Z0-9._-]*([a-zA-Z0-9]$)')
     # FIXME: (?!admin)
     error_message = _(
-        'Value must not contain anything other than digits, letters, dots, dash or underscore, must be at least 2 characters long, must start and end with a digit or letter, and must not be admin!'
+        'Value must not contain anything other than digits, letters, dots, dash or underscore, must be at least 2 characters long, must start and end with a digit or letter, and must not be admin!',
     )
 
     @classmethod
@@ -2861,7 +2861,7 @@ class iso8601Date(simple):
 
     # regexp-source: http://regexlib.com/REDetails.aspx?regexp_id=2092
     regex = re.compile(
-        r'^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3])(?:\-)?[1-7])?)?)$'
+        r'^(\d{4}(?:(?:(?:\-)?(?:00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?|(?:(?:\-)?(?:1[0-2]|0[1-9]))?|(?:(?:\-)?(?:1[0-2]|0[1-9])(?:\-)?(?:0[1-9]|[12][0-9]|3[01]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3]))?|(?:(?:\-)?W(?:0[1-9]|[1-4][0-9]|5[0-3])(?:\-)?[1-7])?)?)$',
     )
     error_message = _('The given date does not conform to iso8601, example: "2009-01-01".')
 
@@ -3036,7 +3036,7 @@ class reverseLookupSubnet(simple):
     regex_IPv6 = r'(([0-9a-f]{4}:){0,7}[0-9a-f]{1,3})|(([0-9a-f]{4}:){0,6}[0-9a-f]{1,4})'
     regex = re.compile(r'^((%s)|(%s))$' % (regex_IPv4, regex_IPv6))
     error_message = _(
-        'A subnet for reverse lookup consists of the first 1-3 octets of an IPv4 address (example: "192.168.0") or of the first 1 to 31 nibbles of an expanded (with leading zeroes and without ::-substitution) IPv6 address (example: "2001:0db8:010" for "2001:db8:100::/24")'
+        'A subnet for reverse lookup consists of the first 1-3 octets of an IPv4 address (example: "192.168.0") or of the first 1 to 31 nibbles of an expanded (with leading zeroes and without ::-substitution) IPv6 address (example: "2001:0db8:010" for "2001:db8:100::/24")',
     )
 
 
@@ -3054,7 +3054,7 @@ class reverseLookupZoneName(simple):
     #                       nibble dot-separated ...arpa   <-                      0-255                     -> dot-separated .arpa
     regex = re.compile(r'^((([0-9a-f]\.){1,31}ip6\.arpa)|(((([1-9]?[0-9])|(1[0-9]{0,2})|(2([0-4][0-9]|5[0-5])))\.){1,3}in-addr.arpa))$')
     error_message = _(
-        'The name of a reverse zone for IPv4 consists of the reversed subnet address followed by .in-addr.arpa (example: "0.168.192.in-addr.arpa") or for IPv6 in nibble format followed by .ip6.arpa (example: "0.0.0.0.0.0.1.0.8.b.d.0.1.0.0.2.ip6.arpa")'
+        'The name of a reverse zone for IPv4 consists of the reversed subnet address followed by .in-addr.arpa (example: "0.168.192.in-addr.arpa") or for IPv6 in nibble format followed by .ip6.arpa (example: "0.0.0.0.0.0.1.0.8.b.d.0.1.0.0.2.ip6.arpa")',
     )
 
 
@@ -3203,7 +3203,7 @@ class dnsHostname(dnsName):
                 _(
                     'A hostname or any part of a FQDN, separated by dots, starts and ends with a letter or a digit. '
                     'In between letters, digits, dashes and underscores are allowed. Only numbers are not allowed.',
-                )
+                ),
             )
         return text
 
@@ -3331,7 +3331,7 @@ class dnsPTR(simple):
         re.VERBOSE,
     )
     error_message = _(
-        'The reversed host name for IPv4 consists of the reversed host address (example: "4.3") or for IPv6 in nibble format (example: "8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0").'
+        'The reversed host name for IPv4 consists of the reversed host address (example: "4.3") or for IPv6 in nibble format (example: "8.0.0.0.7.0.0.0.0.6.0.0.0.0.5.0").',
     )
 
 
@@ -5976,7 +5976,7 @@ class LDAP_Search(select):
                     'attributes': attribute,
                     'base': base,
                     'value': value,
-                }
+                },
             )
         return super().__new__(type(cls.__name__, (cls,), props))
 
@@ -6517,7 +6517,7 @@ class policyName(string):
         raise univention.admin.uexceptions.valueError(
             _(
                 'May only contain letters (except umlauts), digits, space as well as the characters # ! $ % & | ^ . ~ _ -. Has to begin with a letter or digit and must not end with space.',
-            )
+            ),
         )
 
 

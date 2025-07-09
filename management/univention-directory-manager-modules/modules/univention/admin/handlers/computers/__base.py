@@ -281,7 +281,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
                 {
                     'url': 'https://%s/univention-management-console/' % self['ip'][0],
                     'ipaddr': self['ip'][0],
-                }
+                },
             ]
         if 'dnsEntryZoneForward' in self and self['dnsEntryZoneForward'] and self['dnsEntryZoneForward']:
             zone = univention.admin.uldap.explodeDn(self['dnsEntryZoneForward'][0], 1)[0]
@@ -310,7 +310,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
                         univention.admin.filter.expression('aRecord', filter.value, escape=False),
                         univention.admin.filter.expression('aAAARecord', filter.value, escape=False),
                     ],
-                )
+                ),
             )
         elif filter.variable == 'dnsAlias':
             found = univention.admin.filter.parse(univention.admin.handlers.dns.alias.lookup_alias_filter(lo, str(filter)))
