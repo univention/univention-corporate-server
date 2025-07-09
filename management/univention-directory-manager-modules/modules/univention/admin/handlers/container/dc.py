@@ -222,15 +222,22 @@ class object(univention.admin.handlers.simpleLdap):
         univention.admin.handlers.simpleLdap.open(self)
 
         if self.exists():
-            self['dnsForwardZone'] = self.lo.authz_connection.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(sOARecord=*)(!(zoneName=*.in-addr.arpa))(!(zoneName=*.ip6.arpa)))')
-            self['dnsReverseZone'] = self.lo.authz_connection.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(sOARecord=*)(|(zoneName=*.in-addr.arpa)(zoneName=*.ip6.arpa)))')
+            self['dnsForwardZone'] = self.lo.authz_connection.searchDn(
+                base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(sOARecord=*)(!(zoneName=*.in-addr.arpa))(!(zoneName=*.ip6.arpa)))',
+            )
+            self['dnsReverseZone'] = self.lo.authz_connection.searchDn(
+                base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(sOARecord=*)(|(zoneName=*.in-addr.arpa)(zoneName=*.ip6.arpa)))',
+            )
             self.save()
 
     @classmethod
     def unmapped_lookup_filter(cls):
-        return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'univentionBase'),
-        ])
+        return univention.admin.filter.conjunction(
+            '&',
+            [
+                univention.admin.filter.expression('objectClass', 'univentionBase'),
+            ],
+        )
 
 
 lookup = object.lookup

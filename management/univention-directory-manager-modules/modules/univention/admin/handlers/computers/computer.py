@@ -100,7 +100,18 @@ class object(univention.admin.handlers.simpleLdap):
             self.save()
 
 
-def lookup(co: None, lo: univention.admin.uldap.access, filter_s: str, base: str = '', superordinate: univention.admin.handlers.simpleLdap | None = None, scope: str = 'sub', unique: bool = False, required: bool = False, timeout: int = -1, sizelimit: int = 0) -> list[univention.admin.handlers.simpleLdap]:
+def lookup(
+    co: None,
+    lo: univention.admin.uldap.access,
+    filter_s: str,
+    base: str = '',
+    superordinate: univention.admin.handlers.simpleLdap | None = None,
+    scope: str = 'sub',
+    unique: bool = False,
+    required: bool = False,
+    timeout: int = -1,
+    sizelimit: int = 0,
+) -> list[univention.admin.handlers.simpleLdap]:
     res: list[univention.admin.handlers.simpleLdap] = []
     for computer in univention.admin.handlers.computers.computers:
         res += computer.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)

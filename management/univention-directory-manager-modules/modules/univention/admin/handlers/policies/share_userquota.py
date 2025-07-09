@@ -34,8 +34,8 @@ module = 'policies/share_userquota'
 operations = ['add', 'edit', 'remove', 'search']
 
 policy_oc = 'univentionPolicyShareUserQuota'
-policy_apply_to = ["shares/share"]
-policy_position_dn_prefix = "cn=userquota,cn=shares"
+policy_apply_to = ['shares/share']
+policy_position_dn_prefix = 'cn=userquota,cn=shares'
 
 childs = False
 short_description = _('Policy: User quota')

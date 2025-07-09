@@ -29,10 +29,10 @@ class dhcp_routingFixedAttributes(univention.admin.syntax.select):
 module = 'policies/dhcp_routing'
 operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc = "univentionPolicyDhcpRouting"
-policy_apply_to = ["dhcp/host", "dhcp/pool", "dhcp/service", "dhcp/subnet", "dhcp/sharedsubnet", "dhcp/shared"]
-policy_position_dn_prefix = "cn=routing,cn=dhcp"
-policies_group = "dhcp"
+policy_oc = 'univentionPolicyDhcpRouting'
+policy_apply_to = ['dhcp/host', 'dhcp/pool', 'dhcp/service', 'dhcp/subnet', 'dhcp/sharedsubnet', 'dhcp/shared']
+policy_position_dn_prefix = 'cn=routing,cn=dhcp'
+policies_group = 'dhcp'
 childs = False
 short_description = _('Policy: DHCP routing')
 object_name = _('DHCP routing policy')

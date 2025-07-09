@@ -32,8 +32,8 @@ module = 'policies/pwhistory'
 operations = ['add', 'edit', 'remove', 'search']
 
 policy_oc = 'univentionPolicyPWHistory'
-policy_apply_to = ["users/user", "users/ldap"]
-policy_position_dn_prefix = "cn=pwhistory,cn=users"
+policy_apply_to = ['users/user', 'users/ldap']
+policy_position_dn_prefix = 'cn=pwhistory,cn=users'
 childs = False
 short_description = _('Policy: Passwords')
 object_name = _('Passwords policy')

@@ -45,7 +45,7 @@ _properties = {
 _options = {
     'options': univention.admin.option(
         short_description=_('Allow custom DHCP options'),
-        long_description=_("Allow adding custom DHCP options. Experts only!"),
+        long_description=_('Allow adding custom DHCP options. Experts only!'),
         default=False,
         editable=True,
         objectClasses=['dhcpOptions'],

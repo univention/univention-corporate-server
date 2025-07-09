@@ -93,37 +93,49 @@ class License:
         self.licenses = {
             '1': {
                 # Version 1 till UCS 3.1
-                License.ACCOUNT: None, License.CLIENT: None,
-                License.DESKTOP: None, License.GROUPWARE: None,
+                License.ACCOUNT: None,
+                License.CLIENT: None,
+                License.DESKTOP: None,
+                License.GROUPWARE: None,
             },
             '2': {
                 # Version 2 since UCS 3.1
-                License.USERS: None, License.SERVERS: None,
-                License.MANAGEDCLIENTS: None, License.CORPORATECLIENTS: None,
+                License.USERS: None,
+                License.SERVERS: None,
+                License.MANAGEDCLIENTS: None,
+                License.CORPORATECLIENTS: None,
             },
         }
         self.real = {
             '1': {
                 # Version 1 till UCS 3.1
-                License.ACCOUNT: 0, License.CLIENT: 0,
-                License.DESKTOP: 0, License.GROUPWARE: 0,
+                License.ACCOUNT: 0,
+                License.CLIENT: 0,
+                License.DESKTOP: 0,
+                License.GROUPWARE: 0,
             },
             '2': {
                 # Version 2 since UCS 3.1
-                License.USERS: 0, License.SERVERS: 0,
-                License.MANAGEDCLIENTS: 0, License.CORPORATECLIENTS: 0,
+                License.USERS: 0,
+                License.SERVERS: 0,
+                License.MANAGEDCLIENTS: 0,
+                License.CORPORATECLIENTS: 0,
             },
         }
         self.names = {
             '1': {
                 # Version 1 till UCS 3.1
-                License.ACCOUNT: 'Accounts', License.CLIENT: 'Clients',
-                License.DESKTOP: 'Desktops', License.GROUPWARE: 'Groupware Accounts',
+                License.ACCOUNT: 'Accounts',
+                License.CLIENT: 'Clients',
+                License.DESKTOP: 'Desktops',
+                License.GROUPWARE: 'Groupware Accounts',
             },
             '2': {
                 # Version 2 since UCS 3.1
-                License.USERS: 'Users', License.SERVERS: 'Servers',
-                License.MANAGEDCLIENTS: 'Managed Clients', License.CORPORATECLIENTS: 'Corporate Clients',
+                License.USERS: 'Users',
+                License.SERVERS: 'Servers',
+                License.MANAGEDCLIENTS: 'Managed Clients',
+                License.CORPORATECLIENTS: 'Corporate Clients',
             },
         }
         self.keys = {
@@ -282,12 +294,14 @@ class License:
                     self.licenses[self.version][License.ACCOUNT],
                     self.licenses[self.version][License.CLIENT],
                     self.licenses[self.version][License.DESKTOP],
-                    self.licenses[self.version][License.GROUPWARE])
+                    self.licenses[self.version][License.GROUPWARE],
+                )
                 real = (
                     self.real[self.version][License.ACCOUNT],
                     self.real[self.version][License.CLIENT],
                     self.real[self.version][License.DESKTOP],
-                    self.real[self.version][License.GROUPWARE])
+                    self.real[self.version][License.GROUPWARE],
+                )
             elif self.version == '2':
                 self.__countObject(License.USERS, lo)
                 self.__countObject(License.SERVERS, lo)
@@ -298,12 +312,14 @@ class License:
                     self.licenses[self.version][License.USERS],
                     self.licenses[self.version][License.SERVERS],
                     self.licenses[self.version][License.MANAGEDCLIENTS],
-                    self.licenses[self.version][License.CORPORATECLIENTS])
+                    self.licenses[self.version][License.CORPORATECLIENTS],
+                )
                 real = (
                     self.real[self.version][License.USERS],
                     self.real[self.version][License.SERVERS],
                     self.real[self.version][License.MANAGEDCLIENTS],
-                    self.real[self.version][License.CORPORATECLIENTS])
+                    self.real[self.version][License.CORPORATECLIENTS],
+                )
                 self.licenseKeyID = self.__getValue('univentionLicenseKeyID', '')
                 self.licenseSupport = self.__getValue('univentionLicenseSupport', '0')
                 self.licensePremiumSupport = self.__getValue('univentionLicensePremiumSupport', '0')
@@ -350,8 +366,18 @@ class License:
                 log.debug('LICENSE: 4')
                 disable_add = 4
         elif self.version == '2':
-            lic_users, _lic_servers, lic_managedclients, lic_corporateclients, = lic
-            real_users, _real_servers, real_managedclients, real_corporateclients, = real
+            (
+                lic_users,
+                _lic_servers,
+                lic_managedclients,
+                lic_corporateclients,
+            ) = lic
+            (
+                real_users,
+                _real_servers,
+                real_managedclients,
+                real_corporateclients,
+            ) = real
             if lic_users and self.__cmp_gt(int(real_users) - self.sysAccountsFound, lic_users):
                 disable_add = 6
             # The license should be valid even if we have more servers than the license allowed
@@ -369,9 +395,7 @@ class License:
             version = '2'
 
         userfilter = [univention.admin.filter.expression('uid', account) for account in self.sysAccountNames]
-        filter = univention.admin.filter.conjunction('&', [
-            univention.admin.filter.conjunction('|', userfilter),
-            self.filters[version][License.USERS]])
+        filter = univention.admin.filter.conjunction('&', [univention.admin.filter.conjunction('|', userfilter), self.filters[version][License.USERS]])
         try:
             self.sysAccountsFound = len(lo.authz_connection.searchDn(filter=str(filter)))
         except univention.admin.uexceptions.noObject:
@@ -382,7 +406,7 @@ class License:
         version = self.version
         if version not in self.licenses:
             version = '2'
-        if self.licenses[version][obj] and self.licenses[version][obj] != "unlimited":
+        if self.licenses[version][obj] and self.licenses[version][obj] != 'unlimited':
             result = lo.authz_connection.searchDn(filter=self.filters[version][obj])
             if result is None:
                 self.real[version][obj] = 0
@@ -441,8 +465,12 @@ class License:
         elif self.version == '2':
             self.licenses[self.version][License.USERS] = self.__getValue(self.keys[self.version][License.USERS], None, 'Users', 'Users not found')
             self.licenses[self.version][License.SERVERS] = self.__getValue(self.keys[self.version][License.SERVERS], None, 'Servers', 'Servers not found')
-            self.licenses[self.version][License.MANAGEDCLIENTS] = self.__getValue(self.keys[self.version][License.MANAGEDCLIENTS], None, 'Managed Clients', 'Managed Clients not found')
-            self.licenses[self.version][License.CORPORATECLIENTS] = self.__getValue(self.keys[self.version][License.CORPORATECLIENTS], None, 'Corporate Clients', 'Corporate Clients not found')
+            self.licenses[self.version][License.MANAGEDCLIENTS] = self.__getValue(
+                self.keys[self.version][License.MANAGEDCLIENTS], None, 'Managed Clients', 'Managed Clients not found',
+            )
+            self.licenses[self.version][License.CORPORATECLIENTS] = self.__getValue(
+                self.keys[self.version][License.CORPORATECLIENTS], None, 'Corporate Clients', 'Corporate Clients not found',
+            )
             self.types = self.__getValue('univentionLicenseProduct', ['Univention Corporate Server'], 'License Product', 'Product attribute not found')
             if not isinstance(self.types, list | tuple):
                 self.types = [self.types]

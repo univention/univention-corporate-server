@@ -39,7 +39,7 @@ property_descriptions = {
         identifies=True,
     ),
 }
-layout = [Tab(_('General'), _('Basic settings'), layout=["name"])]
+layout = [Tab(_('General'), _('Basic settings'), layout=['name'])]
 mapping = univention.admin.mapping.mapping()
 
 
@@ -59,16 +59,27 @@ def rewrite(filter_s: str, **args: str) -> str:
 
 
 MAP_SEARCH = {
-    "dns/forward_zone": "zone",
-    "dns/reverse_zone": "subnet",
-    "dns/ptr_record.py": "address",
+    'dns/forward_zone': 'zone',
+    'dns/reverse_zone': 'subnet',
+    'dns/ptr_record.py': 'address',
 }
 
 
-def lookup(co: None, lo: univention.admin.uldap.access, filter_s: str, base: str = '', superordinate: univention.admin.handlers.simpleLdap | None = None, scope: str = 'sub', unique: bool = False, required: bool = False, timeout: int = -1, sizelimit: int = 0) -> list[univention.admin.handlers.simpleLdap]:
+def lookup(
+    co: None,
+    lo: univention.admin.uldap.access,
+    filter_s: str,
+    base: str = '',
+    superordinate: univention.admin.handlers.simpleLdap | None = None,
+    scope: str = 'sub',
+    unique: bool = False,
+    required: bool = False,
+    timeout: int = -1,
+    sizelimit: int = 0,
+) -> list[univention.admin.handlers.simpleLdap]:
     sup = univention.admin.modules._get(superordinate.module) if superordinate else None
     res: list[univention.admin.handlers.simpleLdap] = []
-    for childmodule in (sup.childmodules if sup else childmodules):
+    for childmodule in sup.childmodules if sup else childmodules:
         mod = univention.admin.modules._get(childmodule)
         try:
             attr = MAP_SEARCH[childmodule]

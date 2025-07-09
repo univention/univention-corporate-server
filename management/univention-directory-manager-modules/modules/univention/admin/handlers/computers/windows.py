@@ -293,4 +293,8 @@ lookup_filter = object.lookup_filter
 
 
 def identify(dn: str, attr: univention.admin.handlers._Attributes, canonical: bool = False) -> bool:
-    return b'univentionHost' in attr.get('objectClass', []) and b'univentionWindows' in attr.get('objectClass', []) and b'windows_domaincontroller' not in attr.get('univentionServerRole', [])
+    return (
+        b'univentionHost' in attr.get('objectClass', [])
+        and b'univentionWindows' in attr.get('objectClass', [])
+        and b'windows_domaincontroller' not in attr.get('univentionServerRole', [])
+    )

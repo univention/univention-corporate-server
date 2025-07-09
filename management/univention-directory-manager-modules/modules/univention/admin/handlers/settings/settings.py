@@ -39,10 +39,26 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
 
-def lookup(co: None, lo: univention.admin.uldap.access, filter_s: str, base: str = '', superordinate: univention.admin.handlers.simpleLdap | None = None, scope: str = 'sub', unique: bool = False, required: bool = False, timeout: int = -1, sizelimit: int = 0) -> list[univention.admin.handlers.simpleLdap]:
+def lookup(
+    co: None,
+    lo: univention.admin.uldap.access,
+    filter_s: str,
+    base: str = '',
+    superordinate: univention.admin.handlers.simpleLdap | None = None,
+    scope: str = 'sub',
+    unique: bool = False,
+    required: bool = False,
+    timeout: int = -1,
+    sizelimit: int = 0,
+) -> list[univention.admin.handlers.simpleLdap]:
     return [
         obj
-        for mod in (univention.admin.handlers.settings.directory, univention.admin.handlers.settings.default, univention.admin.handlers.settings.usertemplate, univention.admin.handlers.settings.license)
+        for mod in (
+            univention.admin.handlers.settings.directory,
+            univention.admin.handlers.settings.default,
+            univention.admin.handlers.settings.usertemplate,
+            univention.admin.handlers.settings.license,
+        )
         for obj in mod.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
     ]
 

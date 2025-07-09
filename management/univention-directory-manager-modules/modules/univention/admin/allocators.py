@@ -24,9 +24,24 @@ if TYPE_CHECKING:
 
 try:
     from typing import Literal
-    _TypesUidGid = Literal["uidNumber", "gidNumber"]
-    _Types = Literal["uidNumber", "gidNumber", "uid", "gid", "sid", "domainSid", "mailPrimaryAddress", "mailAlternativeAddress", "aRecord", "mac", "groupName", "cn-uid-position", "univentionObjectIdentifier"]
-    _Scopes = Literal["base", "one", "sub", "domain"]
+
+    _TypesUidGid = Literal['uidNumber', 'gidNumber']
+    _Types = Literal[
+        'uidNumber',
+        'gidNumber',
+        'uid',
+        'gid',
+        'sid',
+        'domainSid',
+        'mailPrimaryAddress',
+        'mailAlternativeAddress',
+        'aRecord',
+        'mac',
+        'groupName',
+        'cn-uid-position',
+        'univentionObjectIdentifier',
+    ]
+    _Scopes = Literal['base', 'one', 'sub', 'domain']
 except ImportError:
     pass
 
@@ -182,9 +197,9 @@ def acquireUnique(
     scope: _Scopes = 'base',
 ) -> str:
     log.debug('LOCK acquireUnique scope = %s', scope)
-    searchBase = position.getDomain() if scope == "domain" else position.getBase()
+    searchBase = position.getDomain() if scope == 'domain' else position.getBase()
 
-    if type == "aRecord":  # uniqueness is only relevant among hosts (one or more dns entries having the same aRecord as a host are allowed)
+    if type == 'aRecord':  # uniqueness is only relevant among hosts (one or more dns entries having the same aRecord as a host are allowed)
         univention.admin.locking.lock(lo, position, type, value.encode('utf-8'), scope=scope)
         if not lo.authz_connection.searchDn(base=searchBase, filter=filter_format('(&(objectClass=univentionHost)(%s=%s))', (attr, value))):
             return value
@@ -193,7 +208,7 @@ def acquireUnique(
         if not lo.authz_connection.searchDn(base=searchBase, filter=filter_format('(|(&(cn=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))(uid=%s))', (value, value))):
             log.debug('ALLOCATE return %s', value)
             return value
-    elif type == "groupName":  # search filter is more complex then in general case
+    elif type == 'groupName':  # search filter is more complex then in general case
         univention.admin.locking.lock(lo, position, type, value.encode('utf-8'), scope=scope)
         if not lo.authz_connection.searchDn(base=searchBase, filter=filter_format('(&(%s=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))', (attr, value))):
             log.debug('ALLOCATE return %s', value)
@@ -207,7 +222,10 @@ def acquireUnique(
             return value
 
         assert base is not None
-        if all(ldap.dn.str2dn(x)[0][0][0] not in attrs for x in lo.authz_connection.searchDn(base=base, filter='(|%s)' % ''.join(filter_format('(%s=%s)', (attr, value)) for attr in attrs), scope=scope)):
+        if all(
+            ldap.dn.str2dn(x)[0][0][0] not in attrs
+            for x in lo.authz_connection.searchDn(base=base, filter='(|%s)' % ''.join(filter_format('(%s=%s)', (attr, value)) for attr in attrs), scope=scope)
+        ):
             return value
         raise univention.admin.uexceptions.alreadyUsedInSubtree('name=%r position=%r' % (value, base))
     elif type in ('mailPrimaryAddress', 'mailAlternativeAddress') and configRegistry.is_true('directory/manager/mail-address/uniqueness'):

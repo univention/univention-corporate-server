@@ -241,14 +241,30 @@ def rewrite(filter: univention.admin.filter.expression, mapping: univention.admi
         univention.admin.mapping.mapRewrite(filter, mapping)
 
 
-def lookup(co: None, lo: univention.admin.uldap.access, filter_s: str, base: str = '', superordinate: univention.admin.handlers.simpleLdap | None = None, scope: str = 'sub', unique: bool = False, required: bool = False, timeout: int = -1, sizelimit: int = 0, serverctrls: list[ldap.controls.LDAPControl] | None = None, response: dict | None = None) -> list[univention.admin.handlers.simpleLdap]:
+def lookup(
+    co: None,
+    lo: univention.admin.uldap.access,
+    filter_s: str,
+    base: str = '',
+    superordinate: univention.admin.handlers.simpleLdap | None = None,
+    scope: str = 'sub',
+    unique: bool = False,
+    required: bool = False,
+    timeout: int = -1,
+    sizelimit: int = 0,
+    serverctrls: list[ldap.controls.LDAPControl] | None = None,
+    response: dict | None = None,
+) -> list[univention.admin.handlers.simpleLdap]:
     filter_s = univention.admin.filter.replace_fqdn_filter(filter_s)
     filter_s = univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
-    filter = univention.admin.filter.conjunction('&', [
-        univention.admin.filter.expression('objectClass', 'univentionHost'),
-        univention.admin.filter.expression('objectClass', 'univentionClient'),
-        univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'posixAccount')]),
-    ])
+    filter = univention.admin.filter.conjunction(
+        '&',
+        [
+            univention.admin.filter.expression('objectClass', 'univentionHost'),
+            univention.admin.filter.expression('objectClass', 'univentionClient'),
+            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'posixAccount')]),
+        ],
+    )
 
     if filter_s:
         filter_p = univention.admin.filter.parse(filter_s)

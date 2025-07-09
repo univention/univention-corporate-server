@@ -193,10 +193,13 @@ class object(DNSBase):
 
     @classmethod
     def unmapped_lookup_filter(cls) -> univention.admin.filter.conjunction:
-        return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'dNSZone'),
-            univention.admin.filter.expression('pTRRecord', '*', escape=False),
-        ])
+        return univention.admin.filter.conjunction(
+            '&',
+            [
+                univention.admin.filter.expression('objectClass', 'dNSZone'),
+                univention.admin.filter.expression('pTRRecord', '*', escape=False),
+            ],
+        )
 
 
 def rewrite_rev(filter: conjunction | expression, subnet: str) -> conjunction | expression:
@@ -241,10 +244,13 @@ def rewrite_rev(filter: conjunction | expression, subnet: str) -> conjunction | 
             addr = filter.value.split('.')  # type: ignore[assignment]
             suffix = ARPA_IP4
         addr_net, addr_host = ('.'.join(reversed(_)) for _ in (addr[:prefix], addr[prefix:]))
-        filter = conjunction('&', [
-            expression('zoneName', addr_net + suffix),
-            expression('relativeDomainName', addr_host or '*', escape=False),
-        ])
+        filter = conjunction(
+            '&',
+            [
+                expression('zoneName', addr_net + suffix),
+                expression('relativeDomainName', addr_host or '*', escape=False),
+            ],
+        )
     return filter
 
 
@@ -254,6 +260,5 @@ lookup_filter = object.lookup_filter
 
 def identify(dn: str, attr: univention.admin.handlers._Attributes) -> bool:
     return bool(
-        attr.get('pTRRecord')
-        and is_dns(attr),
+        attr.get('pTRRecord') and is_dns(attr),
     )

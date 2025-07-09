@@ -77,7 +77,24 @@ class object(univention.admin.handlers.users.user.object):
         response: dict | None = None,
     ) -> list[univention.admin.handlers.simpleLdap]:
         dn = lo.whoami()
-        return [user for user in udm_user.lookup(co, lo, filter_s, base, superordinate, scope=scope, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit, serverctrls=serverctrls, response=response) if lo.compare_dn(dn, user.dn)]
+        return [
+            user
+            for user in udm_user.lookup(
+                co,
+                lo,
+                filter_s,
+                base,
+                superordinate,
+                scope=scope,
+                unique=unique,
+                required=required,
+                timeout=timeout,
+                sizelimit=sizelimit,
+                serverctrls=serverctrls,
+                response=response,
+            )
+            if lo.compare_dn(dn, user.dn)
+        ]
 
     @classmethod
     def identify(cls, dn: str, attr: univention.admin.handlers._Attributes, canonical: bool = False) -> bool:

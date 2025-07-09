@@ -341,14 +341,17 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
 
     @classmethod
     def unmapped_lookup_filter(cls) -> univention.admin.filter.conjunction:
-        return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'simpleSecurityObject'),
-            univention.admin.filter.expression('objectClass', 'uidObject'),
-            univention.admin.filter.expression('objectClass', 'person'),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'posixAccount')]),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uidNumber', '0')]),
-            univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
-        ])
+        return univention.admin.filter.conjunction(
+            '&',
+            [
+                univention.admin.filter.expression('objectClass', 'simpleSecurityObject'),
+                univention.admin.filter.expression('objectClass', 'uidObject'),
+                univention.admin.filter.expression('objectClass', 'person'),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'posixAccount')]),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uidNumber', '0')]),
+                univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
+            ],
+        )
 
     @classmethod
     def _ldap_attributes(cls) -> list[str]:

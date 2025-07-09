@@ -31,8 +31,8 @@ module = 'policies/slavepackages'
 operations = ['add', 'edit', 'remove', 'search']
 
 policy_oc = 'univentionPolicyPackagesSlave'
-policy_apply_to = ["computers/domaincontroller_slave"]
-policy_position_dn_prefix = "cn=packages,cn=update"
+policy_apply_to = ['computers/domaincontroller_slave']
+policy_position_dn_prefix = 'cn=packages,cn=update'
 
 childs = False
 short_description = _('Policy: Packages for Replica Nodes')

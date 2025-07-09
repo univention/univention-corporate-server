@@ -52,7 +52,18 @@ class object(univention.admin.handlers.simpleLdap):
     module = module
 
 
-def lookup(co: None, lo: univention.admin.uldap.access, filter_s: str, base: str = '', superordinate: univention.admin.handlers.simpleLdap | None = None, scope: str = 'sub', unique: bool = False, required: bool = False, timeout: int = -1, sizelimit: int = 0) -> list[univention.admin.handlers.simpleLdap]:
+def lookup(
+    co: None,
+    lo: univention.admin.uldap.access,
+    filter_s: str,
+    base: str = '',
+    superordinate: univention.admin.handlers.simpleLdap | None = None,
+    scope: str = 'sub',
+    unique: bool = False,
+    required: bool = False,
+    timeout: int = -1,
+    sizelimit: int = 0,
+) -> list[univention.admin.handlers.simpleLdap]:
     res: list[univention.admin.handlers.simpleLdap] = []
     for childmodule in childmodules:
         mod = univention.admin.modules._get(childmodule)

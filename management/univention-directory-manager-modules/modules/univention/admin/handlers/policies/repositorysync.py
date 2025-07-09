@@ -34,8 +34,8 @@ module = 'policies/repositorysync'
 operations = ['add', 'edit', 'remove', 'search']
 
 policy_oc = 'univentionPolicyRepositorySync'
-policy_apply_to = ["computers/domaincontroller_master", "computers/domaincontroller_backup", "computers/domaincontroller_slave", "computers/memberserver"]
-policy_position_dn_prefix = "cn=repository,cn=update"
+policy_apply_to = ['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver']
+policy_position_dn_prefix = 'cn=repository,cn=update'
 
 childs = False
 short_description = _('Policy: Repository synchronisation')
@@ -147,8 +147,7 @@ class object(univention.admin.handlers.simplePolicy):
     def __getitem__(self, key):
         value = univention.admin.handlers.simplePolicy.__getitem__(self, key)  # need this first to initialize policy-results
         # set cron if we are in resultmode
-        if self.resultmode and hasattr(self, 'policy_attrs') and 'univentionRepositoryCron' in self.policy_attrs \
-                and (not self.cron_parsed):
+        if self.resultmode and hasattr(self, 'policy_attrs') and 'univentionRepositoryCron' in self.policy_attrs and (not self.cron_parsed):
             self.parse_cron(self.policy_attrs['univentionRepositoryCron']['value'][0])
             if not self.cron_parsed:
                 self.save()
@@ -161,7 +160,6 @@ class object(univention.admin.handlers.simplePolicy):
     def _ldap_modlist(self):
         ml = univention.admin.handlers.simplePolicy._ldap_modlist(self)
         if self.hasChanged(['minute', 'hour', 'day', 'month', 'weekday']):
-
             cron = {}
             if self.has_property('minute'):
                 cron['minute'] = self['minute']

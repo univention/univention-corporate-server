@@ -87,10 +87,13 @@ class object(DNSBase):
 
     @classmethod
     def unmapped_lookup_filter(cls) -> univention.admin.filter.conjunction:
-        return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('objectClass', 'dNSZone'),
-            univention.admin.filter.expression('cNAMERecord', '*', escape=False),
-        ])
+        return univention.admin.filter.conjunction(
+            '&',
+            [
+                univention.admin.filter.expression('objectClass', 'dNSZone'),
+                univention.admin.filter.expression('cNAMERecord', '*', escape=False),
+            ],
+        )
 
 
 lookup = object.lookup
@@ -99,8 +102,7 @@ lookup_filter = object.lookup_filter
 
 def identify(dn: str, attr: univention.admin.handlers._Attributes, canonical: bool = False) -> bool:
     return bool(
-        attr.get('cNAMERecord')
-        and is_dns(attr),
+        attr.get('cNAMERecord') and is_dns(attr),
     )
 
 
@@ -112,6 +114,12 @@ def lookup_alias_filter(lo: univention.admin.uldap.access, filter_s: str) -> str
         alias_filter_s = str(alias_filter)
         alias_base = str(lo.base)  # standard dns container might be a better choice
         unmatchable_filter = '(&(objectClass=top)(!(objectClass=top)))'  # if no computers for aliases found, return an impossible filter!
-        alias_replaced = ''.join({filter_format('(cn=%s)', [attrs['cNAMERecord'][0].split('.', 1)[0]]) for dn, attrs in lo.search(base=alias_base, scope='sub', filter=alias_filter_s, attr=['cNAMERecord'])})
+        alias_replaced = ''.join(
+            {
+                filter_format('(cn=%s)', [attrs['cNAMERecord'][0].split('.', 1)[0]])
+                for dn, attrs in lo.search(base=alias_base, scope='sub', filter=alias_filter_s, attr=['cNAMERecord'])
+            },
+        )
         return '(|%s)' % (alias_replaced,) if alias_replaced else unmatchable_filter
+
     return alias_pattern.sub(_replace_alias_filter, str(filter_s))

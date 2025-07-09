@@ -31,8 +31,8 @@ module = 'policies/memberpackages'
 operations = ['add', 'edit', 'remove', 'search']
 
 policy_oc = 'univentionPolicyPackagesMember'
-policy_apply_to = ["computers/memberserver"]
-policy_position_dn_prefix = "cn=packages,cn=update"
+policy_apply_to = ['computers/memberserver']
+policy_position_dn_prefix = 'cn=packages,cn=update'
 
 childs = False
 short_description = _('Policy: Packages for Managed Nodes')
