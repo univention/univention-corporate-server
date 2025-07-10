@@ -6,5 +6,8 @@ src: univention-updater
 fix: 17.2.5
 desc: |
  This update addresses the following issues:
- * Add preemptive authentication for JFrog Artifactory compatibility
+ * The JFrog Artifactory with authentication return a 403 instead of 401 when
+   authentication is missing, this is not correct, to solve that problem a
+   preemptive authentication was added which first tries it with credentials,
+   but then also proceeds if they are url-encoded.
 bug: [58371]
