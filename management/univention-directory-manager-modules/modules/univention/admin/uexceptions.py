@@ -444,3 +444,7 @@ class noKerberosRealm(base):
 
 class alreadyUsedInSubtree(base):
     message = _('An object with the name already exists in the subtree position')
+
+
+class noAction(base):
+    message = _('No such action.')

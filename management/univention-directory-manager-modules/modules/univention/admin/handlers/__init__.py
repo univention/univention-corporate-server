@@ -278,6 +278,15 @@ class simpleLdap:
             module.default_property_descriptions.update(copy.deepcopy(prop))
 
     @property
+    def actions(self):
+        """Actions for all modules"""
+        return {
+            # 'generate-report': univention.admin.action(),
+            # 'property-choices': univention.admin.action(),
+            # 'map-base64-attributes': univention.admin.action(),
+        }
+
+    @property
     def authz(self):
         return self.lo.authz
 

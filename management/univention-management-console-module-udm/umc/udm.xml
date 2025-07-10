@@ -332,5 +332,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<command name="udm/reports/get" function="reports_get" />
 		<command name="udm/request_new_license" function="request_new_license" />
 		<command name="udm/meta_info" function="meta_info" />
+		<command name="udm/action" function="execute_action" />
 	</module>
 </umc>

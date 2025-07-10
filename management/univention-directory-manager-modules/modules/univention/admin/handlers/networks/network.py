@@ -143,6 +143,43 @@ mapping.register('ipRange', 'univentionIpRange', rangeMap, rangeUnmap, encoding=
 class object(univention.admin.handlers.simpleLdap):
     module = module
 
+    @property
+    def actions(self):
+        data = super().actions
+        data.update({
+            'next-free-ip-address': univention.admin.action(
+                short_description=_('Get next free IP address'),
+                long_description=_('Calculate the next free IP address.'),
+                execute_get=self._action_next_free_ip_address,
+            ),
+        })
+        return data
+
+    def _action_next_free_ip_address(self, obj, *, increaseCounter: bool = False):
+        """
+        Returns the next free IP configuration based on the given network object
+
+        'increaseCounter' -- if given and set to True, network object counter for IP addresses is increased
+        """
+        obj.refreshNextIp()
+
+        result = {
+            'ip': obj['nextIp'],
+            'dnsEntryZoneForward': obj['dnsEntryZoneForward'],
+            'dhcpEntryZone': obj['dhcpEntryZone'],
+            'dnsEntryZoneReverse': obj['dnsEntryZoneReverse'],
+        }
+
+        self.add_caching(public=False, must_revalidate=True)
+        self.content_negotiation(result)
+
+        if increaseCounter:
+            # increase the next free IP address
+            obj.stepIp()
+            obj.modify()
+
+        return result
+
     def stepIp(self):
         try:
             network = ipaddress.ip_network('%s/%s' % (self['network'], self['netmask']), strict=False)
@@ -195,7 +232,7 @@ class object(univention.admin.handlers.simpleLdap):
         while self.lo.authz_connection.search(scope='domain', attr=['aRecord'], filter=filter_format('(&(aRecord=%s))', [self['nextIp']])) or self['nextIp'].split('.')[-1] in ['0', '1', '254']:
             self.stepIp()
             if self['nextIp'] == start_ip:
-                raise univention.admin.uexceptions.nextFreeIp()
+                raise univention.admin.uexceptions.nextFreeIp(self.dn)
         self.modify(ignore_license=True)
 
     def _ldap_post_remove(self):

@@ -651,9 +651,13 @@ class Object(Client):
         self.last_modified = obj.last_modified
 
     def generate_service_specific_password(self, service: str) -> Any | None:
-        uri = self.client.get_relation(self.hal, 'udm:service-specific-password')['href']
-        response = self.client.make_request('POST', uri, data={"service": service})
-        return response.data.get('password', None)
+        data = self.execute_action('POST', 'udm:service-specific-password', {"service": service})
+        return data.get('password', None)
+
+    def execute_action(self, relation, method, data):
+        uri = self.client.get_relation(self.hal, relation)['href']
+        response = self.client.make_request(method, uri, data=data)
+        return response.data
 
     def get_layout(self) -> Any | None:
         return self.udm.client.resolve_relation(self.hal, 'udm:layout').get('layout')

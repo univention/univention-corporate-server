@@ -10,6 +10,7 @@
 from __future__ import annotations
 
 import copy
+import inspect
 import re
 import sys
 import time
@@ -184,6 +185,7 @@ class property:
 
     def __init__(
         self,
+        *,
         short_description: str = '',
         long_description: str = '',
         syntax: type | Any = None,
@@ -212,6 +214,7 @@ class property:
         copyable: bool = False,
         type_class: type[TypeHint] | None = None,
         lazy_loading_fn: str | None = None,
+        **future,
     ) -> None:
         """
         |UDM| property.
@@ -278,6 +281,8 @@ class property:
         self.copyable = copyable
         self.type_class = type_class
         self.lazy_loading_fn = lazy_loading_fn
+        if future:
+            log.warning('Specified unused future option capabilities: %s', ','.join(future))
 
     def new(self) -> list[str] | None:
         return [] if self.multivalue else None
@@ -370,6 +375,7 @@ class option:
 
     def __init__(
         self,
+        *,
         short_description: str = '',
         long_description: str = '',
         default: int = 0,
@@ -377,6 +383,7 @@ class option:
         disabled: bool = False,
         objectClasses: Iterable[str] | None = None,
         is_app_option: bool = False,
+        **future,
     ) -> None:
         self.short_description = short_description
         self.long_description = long_description
@@ -387,11 +394,74 @@ class option:
         self.objectClasses = set()
         if objectClasses:
             self.objectClasses = set(objectClasses)
+        if future:
+            log.warning('Specified unused future option capabilities: %s', ','.join(future))
 
     def matches(self, objectClasses: Container[str]) -> bool:
         if not self.objectClasses:
             return True
         return all(not oc not in objectClasses for oc in self.objectClasses)
+
+
+class action:
+    """|UDM| generic action."""
+
+    def __init__(
+        self,
+        *,
+        short_description: str = '',
+        long_description: str = '',
+        execute_get=None,
+        execute_post=None,
+        is_enabled=None,
+        applies_to_object=True,
+        is_context_action=False,
+        is_detail_action=False,
+        relation=None,
+        **future,
+    ) -> None:
+        self.short_description = short_description
+        self.long_description = long_description
+        self.execute_get = execute_get
+        self.execute_post = execute_post
+        self._is_enabled = is_enabled
+        self.is_context_action = is_context_action
+        self.is_detail_action = is_detail_action
+        self.applies_to_object = applies_to_object
+        self.relation = None
+        if future:
+            log.warning('Specified unused future action capabilities: %s', ','.join(future))
+
+    def is_enabled(self, obj):
+        if self._is_enabled is None:
+            return True
+        return self._is_enabled(obj)
+
+    def execute(self, method, obj, params=None):
+        execute = getattr(self, f'execute_{method}', None)
+        allow_all, parameters = self.parameters(method)
+        kwargs = {
+            key: value
+            for key, value in params.items()
+            if allow_all or key in parameters
+        }
+        return execute(obj, **kwargs)
+
+    def parameters(self, method):
+        execute = getattr(self, f'execute_{method}', None)
+        if not execute:
+            return {}
+        args = inspect.getfullargspec(execute)
+        return bool(args.varkw), {name: {'type': args.annotations.get(name)} for name in args.kwonlyargs}
+
+    def get_description(self, method):
+        return {
+            'short_description': self.short_description,
+            'long_description': self.long_description,
+            'is_context_action': self.is_context_action,
+            'is_detail_action': self.is_detail_action,
+            'parameters': self.parameters(method)[-1],
+        }
 
 
 def ucr_overwrite_layout(module: Any, ucr_property: str, tab: Tab) -> bool | None:
@@ -480,7 +550,7 @@ def ucr_overwrite_module_layout(module: Any) -> None:
 class extended_attribute:
     """Extended attributes extend |UDM| and |UMC| with additional properties defined in |LDAP|."""
 
-    def __init__(self, name: str, objClass: str, ldapMapping: Any, deleteObjClass: bool = False, syntax: str = 'string', hook: Any = None) -> None:
+    def __init__(self, *, name: str, objClass: str, ldapMapping: Any, deleteObjClass: bool = False, syntax: str = 'string', hook: Any = None) -> None:
         self.name = name
         self.objClass = objClass
         self.ldapMapping = ldapMapping
@@ -492,7 +562,7 @@ class extended_attribute:
         hook = None
         if self.hook:
             hook = self.hook.type
-        return " univention.admin.extended_attribute: { name: '%s', oc: '%s', attr: '%s', delOC: '%s', syntax: '%s', hook: '%s' }" % (
+        return "univention.admin.extended_attribute: { name: '%s', oc: '%s', attr: '%s', delOC: '%s', syntax: '%s', hook: '%s' }" % (
             self.name,
             self.objClass,
             self.ldapMapping,

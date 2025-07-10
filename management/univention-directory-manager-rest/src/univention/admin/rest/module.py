@@ -80,7 +80,6 @@ from univention.management.console.modules.udm.udm_ldap import (
     NoIpLeft, ObjectDoesNotExist, SuperordinateDoesNotExist, UDM_Error, UDM_Module, container_modules, get_module,
     ldap_dn2path, list_objects,
 )
-from univention.password import generate_password, password_config
 
 
 # FIXME: it seems request.path contains the un-urlencoded path, could be security issue!
@@ -553,6 +552,10 @@ class Resource(ResourceBase, RequestHandler):
             self.raise_sanitization_error(('properties', 'adGroupType'), str(exc))
         except udm_errors.permissionDenied as exc:
             raise HTTPError(403, str(exc))
+        except udm_errors.noAction as exc:
+            raise HTTPError(404, str(exc))
+        except univention.admin.uexceptions.nextFreeIp as exc:
+            raise NoIpLeft(exc.args[0])
         except udm_errors.base as exc:
             UDM_Error(exc).reraise()
 
@@ -1245,38 +1248,6 @@ class Report(ReportingBase, Resource):
         os.remove(report_file)
 
 
-class NextFreeIpAddress(Resource):
-    """Get the next free IP of the specified network (GET udm/networks/network/$DN/next-free-ip-address)"""
-
-    def get(self, object_type, dn):  # TODO: threaded?! (might have caused something in the past in system setup?!)
-        """
-        Returns the next IP configuration based on the given network object
-
-        'increaseCounter' -- if given and set to True, network object counter for IP addresses is increased
-        """
-        dn = unquote_dn(dn)
-        obj = self.get_object(object_type, dn)
-        try:
-            obj.refreshNextIp()
-        except udm_errors.nextFreeIp:
-            raise NoIpLeft(dn)
-
-        result = {
-            'ip': obj['nextIp'],
-            'dnsEntryZoneForward': obj['dnsEntryZoneForward'],
-            'dhcpEntryZone': obj['dhcpEntryZone'],
-            'dnsEntryZoneReverse': obj['dnsEntryZoneReverse'],
-        }
-
-        self.add_caching(public=False, must_revalidate=True)
-        self.content_negotiation(result)
-
-        if self.get_query_argument('increaseCounter', False):
-            # increase the next free IP address
-            obj.stepIp()
-            obj.modify()
-
-
 class FormBase:
     """Base class for form elements"""
 
@@ -1820,14 +1791,14 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
                 rel = {'__policies': 'udm:object/policy/reference'}.get(reference['property'], 'udm:object/property/reference/%s' % (reference['property'],))
                 self.add_link(props, rel, self.abspath(reference['objectType'], quote_dn(dn)), name=dn, title=reference['label'], dont_set_http_header=True)
 
-        if module.name == 'networks/network':
-            self.add_link(props, 'udm:next-free-ip', self.urljoin(quote_dn(obj.dn), 'next-free-ip-address'), title=_('Next free IP address'))
+        for name, action in module.actions:
+            if not action.applies_to_object:
+                continue
+            self.add_link(props, f'udm:{action.relation or name}', self.urljoin(quote_dn(obj.dn), name), title=action.short_description)
 
         if obj.has_property('jpegPhoto'):
             self.add_link(props, 'udm:user-photo', self.urljoin(quote_dn(obj.dn), 'properties/jpegPhoto.jpg'), type='image/jpeg', title=_('User photo'))
 
-        if module.name == 'users/user':
-            self.add_link(props, 'udm:service-specific-password', self.urljoin(quote_dn(obj.dn), 'service-specific-password'), title=_('Generate a new service specific password'))
         self.add_link(props, 'udm:layout', self.urljoin(quote_dn(obj.dn), 'layout'), title=_('Module layout'))
         self.add_link(props, 'udm:properties', self.urljoin(quote_dn(obj.dn), 'properties'), title=_('Module properties'))
         for policy_module in props.get('policies', {}).keys():
@@ -2358,6 +2329,35 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         self.add_caching(public=False, must_revalidate=True)
         self.set_status(204)
         raise Finish()
+
+
+class Actions(Resource):
+    """Generic UDM actions"""
+
+    async def get(self, object_type, dn=None, action=None):
+        self.content_negotiation(action.get_description())
+        return self._execute('get', action, object_type, dn)
+
+    async def post(self, object_type, dn=None, action=None):
+        return self._execute('post', action, object_type, dn)
+
+    async def _execute(self, method, action, object_type, dn=None, payload=None):
+        dn = unquote_dn(dn) if dn else None
+        module = get_module(object_type, dn, self.ldap_connection)
+        if module is None:
+            raise NotFound(object_type, dn)
+
+        obj = None
+        if dn:
+            obj = await self.pool_submit(module.get, dn)
+            if not obj:
+                raise NotFound(object_type, dn)
+
+        action = module.get_action(action)
+        result = await self.pool_submit(self.handle_udm_errors, action.execute, method, obj, payload)
+
+        self.add_caching(public=False, must_revalidate=True)
+        self.content_negotiation(result)
 
 
 class UserPhoto(ConditionalResource, Resource):
@@ -3091,42 +3091,16 @@ univentionObjectType: settings/license
         self.content_negotiation({'message': _('The license was imported successfully.')})
 
 
-class ServiceSpecificPassword(Resource):
-    """Let a new autogenerated service specific password be created"""
-
-    @sanitize
-    async def post(
-        self,
-        object_type,
-        dn,
-        service: str = Body(StringSanitizer(required=True)),
-    ):
-        module = get_module(object_type, dn, self.ldap_write_connection)
-        if module is None:
-            raise NotFound(object_type, dn)
-
-        cfg = password_config(service)
-        new_password = generate_password(**cfg)
-
-        obj = await self.pool_submit(module.get, dn)
-        obj['serviceSpecificPassword'] = {'service': service, 'password': new_password}
-
-        await self.pool_submit(self.handle_udm_errors, obj.modify)
-        # (handled) udm_errors.valueError raised if Service is not supported
-
-        result = {'service': service, 'password': new_password}
-        self.content_negotiation(result)
-
-
 class Application(tornado.web.Application):
     """The main tornado application"""
 
     def __init__(self, **settings):
         # module_type = '([a-z]+)'
         module_type = '(%s)' % '|'.join(re.escape(mod) for mod in Modules.mapping)
-        object_type = '([A-Za-z0-9_-]+/[A-Za-z0-9_-]+)'
-        policies_object_type = '(policies/[A-Za-z0-9_-]+)'
-        dn = '((?:[^/]+%s.+%s)?(?:%s|%s))' % (self.multi_regex('='), self.multi_regex(','), self.multi_regex(ucr['ldap/base']), self.multi_regex('cn=internal'))
+        _object_type = '([A-Za-z0-9_-]+/[A-Za-z0-9_-]+)'
+        object_type = '(?P<object_type>[A-Za-z0-9_-]+/[A-Za-z0-9_-]+)'
+        policies_object_type = '(?P<policy_type>policies/[A-Za-z0-9_-]+)'
+        dn = '(?P<dn>(?:[^/]+%s.+%s)?(?:%s|%s))' % (self.multi_regex('='), self.multi_regex(','), self.multi_regex(ucr['ldap/base']), self.multi_regex('cn=internal'))
 
         if ucr.is_true('directory/manager/rest/delegative-administration/enabled'):
             udm_auth.Authorization.enable(lambda: get_admin_ldap_write_connection()[0])
@@ -3134,7 +3108,8 @@ class Application(tornado.web.Application):
         # FIXME: with that dn regex, it is not possible to have urls like (/udm/$dn/foo/$dn/) because ldap-base at the end matches the last dn
         # Note: the ldap base is part of the url to support "/" as part of the DN. otherwise we can use: '([^/]+(?:=|%3d|%3D)[^/]+)'
         # Note: we cannot use .replace('/', '%2F') for the dn part as url-normalization could replace this and apache doesn't pass URLs with %2F to the ProxyPass without http://httpd.apache.org/docs/current/mod/core.html#allowencodedslashes
-        property_ = '([^/]+)'
+        property_ = '(?P<property_>[^/]+)'
+        action = '(?P<action>[^/]+)'
         super().__init__([
             ("/(?:udm/)?(favicon).ico", Favicon, {"path": "/var/www/favicon.ico"}),
             ("/udm/(?:index.html)?", Modules),
@@ -3150,7 +3125,7 @@ class Application(tornado.web.Application):
             ("/udm/directory/", Directory),
             (f"/udm/{module_type}/", ObjectTypes),
             ("/udm/(directory)/tree", Tree),
-            (f"/udm/(?:{object_type}|directory)/move-destinations", MoveDestinations),
+            (f"/udm/(?:{_object_type}|directory)/move-destinations", MoveDestinations),
             ("/udm/directory/children-types", SubObjectTypes),
             (f"/udm/{object_type}/", Objects),
             (f"/udm/{object_type}/openapi.json", OpenAPI),
@@ -3161,22 +3136,22 @@ class Application(tornado.web.Application):
             (f"/udm/{object_type}/tree", Tree),
             (f"/udm/{object_type}/properties", Properties),
             (f"/udm/{object_type}/default-containers", DefaultContainers),
-            (f"/udm/{object_type}/()properties/{property_}/choices", PropertyChoices),
+            (f"/udm/{object_type}/(?P<dn>)properties/{property_}/choices", PropertyChoices),
             (f"/udm/{object_type}/layout", Layout),
             (f"/udm/{object_type}/favicon.ico", Favicon, {"path": "/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/"}),
             (f"/udm/{object_type}/{dn}", Object),
             (f"/udm/{object_type}/{dn}/edit", ObjectEdit),
             (f"/udm/{object_type}/{dn}/children-types", SubObjectTypes),
-            (f"/udm/{object_type}/report/([^/]+)", Report),
+            (f"/udm/{object_type}/report/(?P<report_type>[^/]+)", Report),
             (f"/udm/{object_type}/{dn}/{policies_object_type}/", PolicyResult),
             (f"/udm/{object_type}/{policies_object_type}/", PolicyResultContainer),
             (f"/udm/{object_type}/{dn}/layout", Layout),
             (f"/udm/{object_type}/{dn}/properties", Properties),
             (f"/udm/{object_type}/{dn}/properties/{property_}/choices", PropertyChoices),
             (f"/udm/{object_type}/{dn}/properties/jpegPhoto.jpg", UserPhoto),
-            (f"/udm/(networks/network)/{dn}/next-free-ip-address", NextFreeIpAddress),
-            (f"/udm/(users/user)/{dn}/service-specific-password", ServiceSpecificPassword),
-            ("/udm/progress/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", Operations),
+            ("/udm/progress/(?P<progress>[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", Operations),
+            (f"/udm/{object_type}/{dn}/{action}", Actions),
+            (f"/udm/{object_type}/{action}", Actions),
             (r"/udm/((?:css|js|img|schema|swaggerui)/.*)", tornado.web.StaticFileHandler, {"path": "/var/www/univention/udm", "default_filename": "index.html"}),
             # TODO: decorator for dn argument, which makes sure no invalid dn syntax is used
         ], default_handler_class=Nothing, **settings)

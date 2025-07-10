@@ -145,17 +145,22 @@ class RelationsBase:
             'tree': 'list of tree content for providing a hierarchical navigation',
             'policy-result': 'policy result by virtual policy object containing the values that the given object or container inherits',
             'report': 'create a report',
-            'next-free-ip': 'next IP configuration based on the given network object',
+            # 'next-free-ip': 'next IP configuration based on the given network object',
             'property-choices': 'determine valid values for a given syntax class',
             'user-photo': 'photo of the object',
             'license': 'information about UCS license',
             'license-request': 'Request a new UCS Core Edition license',
             'license-check': 'Check if the license limits are reached',
             'license-import': 'Import a new license in LDIF format',
-            'service-specific-password': 'Generate a new service specific password',
+            # 'service-specific-password': 'Generate a new service specific password',
             'error': 'Error',
             'warning': 'Warning',
         }
+
+        for mod in udm_modules.modules.values():
+            for name, action in mod.actions.items():
+                univention_relations[action.relation or name] = action.long_description
+
         self.add_caching(public=True, must_revalidate=True)
         result = {}
         self.add_link(result, 'self', self.urljoin(''), title=_('Link relations'))

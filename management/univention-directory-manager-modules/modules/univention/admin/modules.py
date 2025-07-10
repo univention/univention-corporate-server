@@ -766,6 +766,15 @@ def find_superordinate(dn: str, co: None, lo: univention.admin.uldap.access) -> 
     return None
 
 
+def get_action(object_type, action):
+    """Get generic action of module"""
+    mod = univention.admin.modules.get(object_type)
+    try:
+        return mod.actions[action]
+    except KeyError:
+        raise univention.admin.uexceptions.noAction(action) from None
+
+
 def layout(module_name: UdmName, object: Any = None) -> list[Tab]:
     """return layout of properties"""
     module = get(module_name)

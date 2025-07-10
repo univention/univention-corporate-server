@@ -1346,3 +1346,18 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
             if not strerror.strip():
                 strerror = str(exc)
             raise UMC_Error(_('An error occurred while contacting the license server: %s') % (strerror,), status=500)
+
+    @threaded
+    def execute_action(self, request):
+        object_type = request.options.get('objectType')
+        if not object_type:
+            raise UMC_Error('The object type is missing')
+        module = UDM_Module(object_type)
+        if module.module is None:
+            raise UMC_Error('The given object type is not valid')
+        object_dn = request.options.get('objectDN')
+        obj = module.get(object_dn)
+
+        action = request.options['action']
+        action = module.get_action(action)
+        return action.exectue(request.options['method'], obj, request.options.get('parameters', {}))

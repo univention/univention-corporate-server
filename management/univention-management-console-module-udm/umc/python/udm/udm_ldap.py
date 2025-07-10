@@ -1184,6 +1184,13 @@ class UDM_Module:
             return '(&(%s)%s)' % (hidden_filter, ret)
         return hidden_filter
 
+    @property
+    def actions(self):
+        return self.module.actions
+
+    def get_action(self, action):
+        return udm_modules.get_action(self.name, action)
+
 
 def container_modules():
     containers = []

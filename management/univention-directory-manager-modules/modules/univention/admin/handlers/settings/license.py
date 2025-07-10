@@ -36,12 +36,12 @@ options = {
     'Version 1': univention.admin.option(
         short_description=_('Version 1 license'),
         editable=False,
-        default=0,
+        default=False,
     ),
     'Version 2': univention.admin.option(
         short_description=_('Version 2 license'),
         editable=False,
-        default=1,
+        default=True,
     ),
 }
 property_descriptions = {
@@ -204,7 +204,6 @@ property_descriptions = {
         options=['Version 2'],
         may_change=False,
     ),
-
 }
 
 layout = [
