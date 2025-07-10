@@ -1,8 +1,9 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-19 10:56+0100\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-07-10 16:37+0200\n"
 "PO-Revision-Date: 2021-05-11 12:01+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -11,74 +12,96 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: modules/univention/admin/handlers/blocklists/all.py:28
 msgid "All blocklist objects"
 msgstr "Alle Blocklist Objekte"
 
-msgid "Blocklist"
-msgstr "Blockliste"
-
-msgid "Blocklists"
-msgstr "Blocklisten"
-
-msgid "Manage the blocklists"
-msgstr "Verwaltung von Blocklisten"
-
-msgid "Name"
-msgstr "Name"
-
-msgid "General"
-msgstr "Allgemein"
-
+#: modules/univention/admin/handlers/blocklists/all.py:46
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-msgid "Univention blocklist entries"
-msgstr "Univention Blocklist-Einträge"
-
-msgid "Univention blocklist entry"
-msgstr "Univention Blocklist-Eintrag"
-
-msgid "Blocklist entry value"
-msgstr "Zu sperrender Wert"
-
+#: modules/univention/admin/handlers/blocklists/entry.py:51
 msgid "Blocked until"
 msgstr "Gesperrt bis"
 
-msgid ""
-"This blocklist entry is valid until timestamp (generalized time in LDAP-"
-"Syntax -> 21241212000000Z). Expired entries are deleted."
-msgstr ""
-"Dieser Blocklist-Eintrag ist bis zum Zeitstempel gültig "
-"(allgemeine Zeit in LDAP-Syntax -> 21241212000000Z). "
-"Abgelaufene Einträge werden gelöscht."
+#: modules/univention/admin/handlers/blocklists/all.py:29
+#: modules/univention/admin/handlers/blocklists/list.py:26
+#: modules/univention/admin/handlers/blocklists/list.py:27
+msgid "Blocklist"
+msgstr "Blockliste"
 
-msgid "Origin ID"
-msgstr "Ursprungs-ID"
-
-msgid ""
-"The ID of the UDM object that lead to this blocklist entry. The value of "
-"this blocklist entry can still be used on that UDM object."
-msgstr ""
-"Die ID des UDM-Objekts, das zu diesem Sperrlisteneintrag geführt hat. "
-"Der Wert dieses Sperrlisteneintrags kann weiterhin für dieses UDM-Objekt verwendet werden."
-
+#: modules/univention/admin/handlers/blocklists/entry.py:66
 msgid "Blocklist entry settings"
 msgstr "Einstellungen für Blocklisten-Eintrag"
 
-msgid "General settings"
-msgstr "Grundeinstellungen"
+#: modules/univention/admin/handlers/blocklists/entry.py:42
+msgid "Blocklist entry value"
+msgstr "Zu sperrender Wert"
 
+#: modules/univention/admin/handlers/blocklists/list.py:29
 msgid "Blocklist for certain UDM properties"
 msgstr "Blockliste für UDM Eigenschaften"
 
+#: modules/univention/admin/handlers/blocklists/list.py:62
+msgid "Blocklist settings"
+msgstr "Einstellungen für Blockliste"
+
+#: modules/univention/admin/handlers/blocklists/all.py:30
+#: modules/univention/admin/handlers/blocklists/list.py:28
+msgid "Blocklists"
+msgstr "Blocklisten"
+
+#: modules/univention/admin/handlers/blocklists/all.py:46
+#: modules/univention/admin/handlers/blocklists/list.py:62
+#: modules/univention/admin/handlers/blocklists/entry.py:66
+msgid "General"
+msgstr "Allgemein"
+
+#: modules/univention/admin/handlers/blocklists/list.py:63
+#: modules/univention/admin/handlers/blocklists/entry.py:67
+msgid "General settings"
+msgstr "Grundeinstellungen"
+
+#: modules/univention/admin/handlers/blocklists/all.py:31
+msgid "Manage the blocklists"
+msgstr "Verwaltung von Blocklisten"
+
+#: modules/univention/admin/handlers/blocklists/all.py:38
+#: modules/univention/admin/handlers/blocklists/list.py:40
+msgid "Name"
+msgstr "Name"
+
+#: modules/univention/admin/handlers/blocklists/entry.py:57
+msgid "Origin ID"
+msgstr "Ursprungs-ID"
+
+#: modules/univention/admin/handlers/blocklists/list.py:48
 msgid "Properties to block"
 msgstr "Zu blockende Eigenschaften"
 
+#: modules/univention/admin/handlers/blocklists/list.py:56
+msgid ""
+"Property values removed from a UDM object can be automatically blocked for "
+"future use. Each blocklist can be assigned a retention period. Once this "
+"retention period has elapsed, the blocking object is automatically deleted, "
+"and the property value can be reassigned. The retention period is set using "
+"the following schema \"1y6m3d\" (which equals one year, six months and three"
+" days)."
+msgstr ""
+"Von einem UDM-Objekt entfernte Eigenschaften können automatisch für "
+"zukünftige Verwendung blockiert werden. Jeder Blockliste kann eine "
+"Aufbewahrungszeit zugewiesen werden. Wenn diese Aufbewahrungszeit "
+"überschritten wurde, wird das blockierende Objekt automatisch gelöscht und "
+"der Eigenschaftswert kann wieder vergeben werden. Die Aufbewahrungszeit wird"
+" mithilfe des folgenden Schemas festgelegt \"1y6m3d\" (entspricht einem "
+"Jahr, sechs Monaten und 3 Tagen)."
+
+#: modules/univention/admin/handlers/blocklists/list.py:49
 msgid ""
 "Property values removed from a UDM object can be automatically blocked for "
 "future use. This is achieved by adding the properties to a blocklist. The "
-"properties must be specified according to the following schema: \"udm/module "
-"property\". An example configuration would be \"users/user "
+"properties must be specified according to the following schema: \"udm/module"
+" property\". An example configuration would be \"users/user "
 "mailPrimaryAddress\". If multiple properties are assigned to the same "
 "blocklist, the blocking value applies for multiple properties."
 msgstr ""
@@ -87,27 +110,35 @@ msgstr ""
 "Eigenschaften zu einer Blockliste. Die Eigenschaften müssen nach folgendem "
 "Schema festgelegt werden: \"udm/module property\". Ein Beispiel für die "
 "Konfiguration wäre \"users/user mailPrimaryAddress\". Wenn mehrere "
-"Eigenschaften der gleiche Blockliste zugewiesen wurden, gilt die Blockierung "
-"eines Wertes für mehrere Eigenschaften."
+"Eigenschaften der gleiche Blockliste zugewiesen wurden, gilt die Blockierung"
+" eines Wertes für mehrere Eigenschaften."
 
+#: modules/univention/admin/handlers/blocklists/list.py:55
 msgid "Retention time for objects in this blocklist"
 msgstr "Aufbewahrungszeit für Einträge in dieser Blockliste"
 
+#: modules/univention/admin/handlers/blocklists/entry.py:58
 msgid ""
-"Property values removed from a UDM object can be automatically blocked for "
-"future use. Each blocklist can be assigned a retention period. Once this "
-"retention period has elapsed, the blocking object is automatically deleted, "
-"and the property value can be reassigned. The retention period is set using "
-"the following schema \"1y6m3d\" (which equals one year, six months and three "
-"days)."
+"The ID of the UDM object that lead to this blocklist entry. The value of "
+"this blocklist entry can still be used on that UDM object."
 msgstr ""
-"Von einem UDM-Objekt entfernte Eigenschaften können automatisch für "
-"zukünftige Verwendung blockiert werden. Jeder Blockliste kann eine "
-"Aufbewahrungszeit zugewiesen werden. Wenn diese Aufbewahrungszeit "
-"überschritten wurde, wird das blockierende Objekt automatisch gelöscht und "
-"der Eigenschaftswert kann wieder vergeben werden. Die Aufbewahrungszeit wird "
-"mithilfe des folgenden Schemas festgelegt \"1y6m3d\" (entspricht einem Jahr, "
-"sechs Monaten und 3 Tagen)."
+"Die ID des UDM-Objekts, das zu diesem Sperrlisteneintrag geführt hat. Der "
+"Wert dieses Sperrlisteneintrags kann weiterhin für dieses UDM-Objekt "
+"verwendet werden."
 
-msgid "Blocklist settings"
-msgstr "Einstellungen für Blockliste"
+#: modules/univention/admin/handlers/blocklists/entry.py:52
+msgid ""
+"This blocklist entry is valid until timestamp (generalized time in LDAP-"
+"Syntax -> 21241212000000Z). Expired entries are deleted."
+msgstr ""
+"Dieser Blocklist-Eintrag ist bis zum Zeitstempel gültig (allgemeine Zeit in "
+"LDAP-Syntax -> 21241212000000Z). Abgelaufene Einträge werden gelöscht."
+
+#: modules/univention/admin/handlers/blocklists/entry.py:28
+#: modules/univention/admin/handlers/blocklists/entry.py:30
+msgid "Univention blocklist entries"
+msgstr "Univention Blocklist-Einträge"
+
+#: modules/univention/admin/handlers/blocklists/entry.py:29
+msgid "Univention blocklist entry"
+msgstr "Univention Blocklist-Eintrag"
