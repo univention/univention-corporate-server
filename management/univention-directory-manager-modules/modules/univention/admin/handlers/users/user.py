@@ -739,7 +739,7 @@ def logonHoursUnmap(logontimes: list[bytes]) -> list[int]:
     [167]
     """
     times = logontimes[0].ljust(42, b'0')[:42]
-    octets = [int(times[i : i + 2], 16) for i in range(0, 42, 2)]
+    octets = [int(times[i:i + 2], 16) for i in range(0, 42, 2)]
     # fmt: off
     return [
         idx * 8 + bit
