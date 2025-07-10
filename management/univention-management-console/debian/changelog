@@ -1,3 +1,9 @@
+univention-management-console (14.2.2) unstable; urgency=medium
+
+  * Bug #58405: use univention.admin library for UDM usage
+
+ -- Florian Best <best@univention.de>  Mon, 04 Aug 2025 12:03:16 +0200
+
 univention-management-console (14.2.1) unstable; urgency=medium
 
   * Bug #57968: Add `auth pam_faillock authfail` to the

@@ -15,7 +15,17 @@ Global configuration variables and objects for the UMC server.
 This module provides a global :class:`!ConfigRegistry` instance *ucr*
 some constants that are used internally.
 """
+import base64
+import bz2
+import json
+import os
+
+import univention.admin.modules as udm_modules
+import univention.admin.objects as udm_objects
+import univention.admin.objects as udm_errors
+import univention.admin.uldap as udm_ldap
 import univention.config_registry
+from univention.management.console.log import CORE
 
 
 ucr = univention.config_registry.ConfigRegistry()
@@ -53,3 +63,25 @@ env_to_settings = {
     SQL_POOL_TIMEOUT_ENV_VAR: (SQL_POOL_TIMEOUT_SETTINGS_NAME, '30'),
     SQL_POOL_RECYCLE_ENV_VAR: (SQL_POOL_RECYCLE_SETTINGS_NAME, '-1'),
 }
+
+
+def set_environment():
+    try:
+        lo, po = udm_ldap.getMachineConnection()
+    except (udm_errors.base, OSError) as exc:
+        CORE.error('Could not get machine secret, continuing without environment settings: %s', exc)
+        return
+
+    mod = udm_modules.get('settings/data')
+    try:
+        obj = udm_objects.get(mod, None, lo, po, f"cn=umc,cn=data,cn=univention,{ucr['ldap/base']}")
+        obj.open()
+    except udm_errors.noObject:
+        return
+
+    settings = json.loads(base64.b64encode(bz2.compress(obj['data'])))
+
+    for env_var, (name, default_value) in env_to_settings.items():
+        val = settings.get(name, default_value)
+        if val is not None and not os.environ.get(env_var):
+            os.environ[env_var] = val
