@@ -6,6 +6,7 @@ if configRegistry['ldap/server/type'] == "master":
     print('include         /etc/ldap/schema/cosine.schema')
     print('include         /etc/ldap/schema/nis.schema')
     print('include         /etc/ldap/schema/inetorgperson.schema')
+    print('include         /usr/share/univention-ldap/schema/authorization.schema')
     print('include         /usr/share/univention-ldap/schema/samba.schema')
     print('include         /usr/share/univention-ldap/schema/mail.schema')
     print('include         /usr/share/univention-ldap/schema/user.schema')
