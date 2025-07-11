@@ -31,6 +31,9 @@ umc_operation_create "udm-computers" "UDM - Computers" "computers/computer" "udm
 	"udm/query:objectType=groups/group" "udm/properties:objectType=groups/group" "udm/values:objectType=groups/group" \
 	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 
+umc_operation_create "udm-authorization" "UDM - Authorization Policies" "authorization/policy" "udm/*:objectType=authorization/*" "udm/*:!objectType" \
+	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
+
 umc_operation_create "udm-printers" "UDM - Printers" "shares/print" "udm/*:objectType=shares/print*" "udm/*:!objectType" \
 	"udm/properties:objectType=policies/*" "udm/layout:objectType=policies/*" "udm/query:objectType=policies/*"
 

@@ -7094,6 +7094,249 @@ class GuardianRole(simple):
     )
 
 
+class AuthorizationPrivileges(UDM_Objects):
+    label = '%(name)s'
+    udm_modules = ('authorization/privilege',)
+    simple = True
+    empty_value = True
+    key = 'dn'
+
+
+class AuthorizationActions(select):
+    choices = [
+        ('*', _('Everything')),
+        ('search', _('Search')),
+        ('read', _('Read')),
+        ('create', _('Create')),
+        ('modify', _('Modify')),
+        ('rename', _('Rename')),
+        ('remove', _('Remove')),
+        ('move', _('Move')),
+        ('report-create', _('Create report')),
+    ]
+
+
+class AuthorizationRestriction(UDM_Objects):
+    size = 'OneThird'
+    label = '%(name)s'
+    simple = True
+    empty_value = True
+    key = 'dn'
+    udm_modules = ('authorization/comparison',)
+
+
+class AuthorizationPermission(select):
+    size = 'TwoThirds'
+    choices = [
+        ('read', _('Read')),
+        ('search', _('Search')),
+        ('write', _('Write')),
+        ('readonly', _('Readonly')),
+        ('writeonly', _('Writeonly')),
+        ('none', _('None')),
+    ]
+
+
+class AuthorizationProperty(combobox):
+    size = 'TwoThirds'
+    depends = 'objecttype'
+    choices = [
+        ('*', _('All')),
+    ]
+
+    @classmethod
+    def get_choices(cls, lo, options):
+        mods = list(univention.admin.modules.modules)
+        if cls.depends in options.get('dependencies', {}):  # pragma: no cover
+            mods = [options['dependencies'][cls.depends]]
+
+        choices = [
+            (pname, prop.short_description)
+            for mod in mods
+            for pname, prop in univention.admin.modules.get(mod).property_descriptions.items()
+        ]
+        return cls.choices + cls.sort_choices(choices)
+
+
+class AuthorizationProperties(complex):
+    delimiter = ' '
+    depends = 'objecttype'
+    subsyntaxes = ((_('UDM Property'), AuthorizationProperty), (_('Permission'), AuthorizationPermission), (_('Restriction'), AuthorizationRestriction))
+    subsyntax_names = ('property', 'permission', 'restriction')
+
+
+class AuthorizationScope(select):
+    size = 'Half'
+    empty_value = True
+    choices = [
+        ('base', _('Base')),
+        # ('base+one', _('Base + Onelevel')),
+        ('one', _('Onelevel')),
+        ('subtree', _('Subtree')),
+    ]
+
+
+class AuthorizationPositions(UDM_Objects):
+    udm_modules = ('container/dc', 'container/ou', 'container/cn')
+    empty_value = True
+    size = 'OneAndAHalf'
+    label = 'dn'
+    # TODO: make a widget for tree selection
+    choices = [
+        ('cn={context}', _('Get from context')),
+    ]
+
+
+class AuthorizationScopePosition(complex):
+    delimiter = ' '
+    size = 'Two'
+    subsyntaxes = ((_('Scope'), AuthorizationScope), (_('Position'), AuthorizationPositions))
+    subsyntax_names = ('scope', 'position')
+
+
+class AuthorizationPolicy(string):
+    pass
+    # widget = 'LinkList'
+    # widget = 'umc/modules/udm/LinkList'
+
+
+class CMPType(select):
+    size = 'TwoThirds'
+    empty_value = False
+    choices = [
+        ('property', _('Property')),
+        ('dn', _('DN')),
+        ('policy', _('Policy')),
+        ('option', _('App / Option')),
+        ('uuid', _('UUID')),
+    ]
+
+
+class CMPAttribute(combobox):
+    depends = 'type'
+    size = 'FourThirds'
+    empty_value = True
+    choices = [
+        ('', _('')),
+        ('old_dn', _('Current DN')),
+        ('new_dn', _('New DN')),
+    ]
+
+    @classmethod
+    def get_choices(cls, lo, options):
+        choices = []  # super(cls, cls).get_choices(lo, {})
+        type_ = options.get('dependencies', {}).get(cls.depends)
+
+        if not type_ or type_ == 'property':
+            choices.extend([
+                (pname, prop.short_description)
+                for mod in univention.admin.modules.modules.keys()
+                for pname, prop in univention.admin.modules.get(mod).property_descriptions.items()
+            ])
+        if not type_ or type_ == 'option':
+            choices.extend([
+                (optname, option.short_description)
+                for mod in univention.admin.modules.modules.keys()
+                for optname, option in getattr(univention.admin.modules.get(mod), 'options', {}).items()
+                if optname != 'default'
+            ])
+        if not type_ or type_ == 'policy':
+            choices.extend([
+                (name, mod.short_description)
+                for name, mod in univention.admin.modules.modules.items()
+                if hasattr(mod, 'policy_apply_to')
+            ])
+        if type_ == 'dn':
+            choices = [
+                ('old_dn', _('Current DN')),
+                ('new_dn', _('New DN')),
+            ]
+        if type_ == 'uuid':
+            choices = [('', _('UUID'))]
+        return choices
+
+    @classmethod
+    def update_choices(cls) -> None:
+        cls.choices = cls.get_choices(None, {})
+
+
+__register_choice_update_function(CMPAttribute.update_choices)
+
+
+class CMPOperator(select):
+    size = 'Half'
+    depends = 'type'
+    empty_value = False
+    choices = [
+        ('==', _('equals')),
+        ('regex', _('matches')),
+        ('dn', _('DN compare')),
+        ('ip', _('IP compare')),
+        ('mac', _('MAC compare')),
+    ]
+
+    @classmethod
+    def get_choices(cls, lo, options):
+        choices = super(cls, cls).get_choices(lo, {})
+        if cls.depends not in options.get('dependencies', {}):
+            return choices
+
+        type_ = options['dependencies'][cls.depends]
+        if type_ not in ('property', 'dn', 'policy'):
+            choices = [choice for choice in choices if choice[0] != 'dn']
+        if type_ != 'property':
+            choices = [choice for choice in choices if choice[0] not in ('ip', 'mac')]
+        return choices
+
+
+class CMPModifier(select):
+    size = 'OneAndHalf'
+    depends = 'operator'
+    empty_value = True
+    choices = [
+        # ('in', _('List contains')),
+        ('', ''),
+        ('case-insensitive', _('Case insensitive')),
+        ('base', _('Exact (in base scope)')),
+        # ('base+one', _('Exact and direct children (in base + onelevel scope')),
+        ('subtree', _('All children (in subtree scope)')),
+        ('one', _('Only direct children (in onelevel scope)')),
+        ('ip-equals', _('IP equals')),
+        ('ip-range', _('IP is in range')),
+    ]
+
+    @classmethod
+    def get_choices(cls, lo, options):
+        choices = super(cls, cls).get_choices(lo, {})
+        if cls.depends not in options.get('dependencies', {}):
+            return choices
+
+        type_ = options['dependencies'][cls.depends]
+        if type_ == 'dn':
+            choices = [choice for choice in choices if choice[0] in ('base', 'subtree', 'one', 'base+one')]
+        else:
+            choices = [choice for choice in choices if choice[0] not in ('base', 'subtree', 'one', 'base+one')]
+        if type_ == 'ip':
+            choices = [choice for choice in choices if choice[0] in ('ip-range', 'ip-equals')]
+        else:
+            choices = [choice for choice in choices if choice[0] not in ('ip-range', 'ip-equals')]
+        if type_ == 'mac':
+            choices = [('', '')]
+        return choices
+
+
+class CMPNegate(boolean):
+    """Negate"""
+
+    size = 'OneThird'
+
+
+class CMPValue(string):
+    """value"""
+
+    size = 'Two'
+
+
 class _EscapedDict(dict):
     """A dictionary wrapper which returns values as LDAP filter escaped values"""
 

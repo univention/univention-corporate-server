@@ -1,0 +1,190 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-directory-manager-modules\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-08-07 19:25+0200\n"
+"PO-Revision-Date: 2016-11-08 14:59+0100\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language-Team: German <packages@univention.de>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid ""
+"<p>Privileges grant access rights to roles. A priviledge always applies to "
+"one or more UDM properties of a single UDM module, optionally restricted to "
+"objects underneath of a certain position in the directory.</p><p>More "
+"information can be found in the <a href=\"https://docs.software-"
+"univention.de/manual/5.2/en/index.html\" target=\"_blank\">online "
+"documentation for UCS</a>.</p>"
+msgstr ""
+"<p>Berechtigungen gewähren Rollen Zugriffsrechte. Eine Berechtigung bezieht "
+"sich immer auf eine oder mehrere UDM-Eigenschaften eines einzelnen UDM-"
+"Moduls, optional eingeschränkt auf Objekte unterhalb einer bestimmten "
+"Position im Verzeichnis.</p><p>Weitere Informationen finden Sie in der <a "
+"href=\"https://docs.software-univention.de/manual/5.2/de/index.html\" "
+"target=\"_blank\">Online-Dokumentation für UCS</a>.</p>"
+
+msgid ""
+"A human-readable description of what this comparison is intended to check."
+msgstr ""
+"Eine für Menschen verständliche Beschreibung dessen, was dieser Vergleich "
+"prüfen soll."
+
+msgid "A unique identifier for this comparison rule."
+msgstr "Eine eindeutige Kennung für diese Vergleichsregel."
+
+msgid "Access Rights"
+msgstr "Zugriffsrechte"
+
+msgid "Action permissions"
+msgstr "Aktionsberechtigungen"
+
+msgid "All authorization objects"
+msgstr "Alle Authorisations-Objekte"
+
+msgid "All policies which reference this privilege are shown here."
+msgstr "Alle Richtlinien, die sich auf diese Berechtigung beziehen, werden hier angezeigt."
+
+msgid "Authorization"
+msgstr "Authorisation"
+
+msgid "Authorization Policy"
+msgstr "Authorisations-Richtlinie"
+
+msgid "Authorization Privilege"
+msgstr "Authorisations-Berechtigung"
+
+msgid "Authorization: Comparison condition"
+msgstr "Authorisation: Vergleichsbedingung"
+
+msgid "Authorizations"
+msgstr "Authorisierungen"
+
+msgid "Basic settings"
+msgstr "Basiseinstellungen"
+
+msgid "Choose the comparison operator (e.g., equals, greater than, contains)."
+msgstr "Wählen Sie den Vergleichsoperator (z. B. gleich, größer als, enthält)."
+
+msgid "Comparision definition"
+msgstr "Vergleichsdefinition"
+
+msgid "Comparison condition"
+msgstr "Vergleichsbedingung"
+
+msgid "Condition"
+msgstr "Bedingung"
+
+msgid "Conditions"
+msgstr "Bedingungen"
+
+msgid "Description"
+msgstr "Beschreibung"
+
+msgid ""
+"Enable this option to invert the comparison result (i.e., \"not equal\" "
+"instead of \"equal\")"
+msgstr ""
+"Aktivieren Sie diese Option, um das Vergleichsergebnis zu invertieren (d. h. "
+"\"ungleich\" statt \"gleich\")."
+
+msgid "Enter the value that the selected attribute should be compared to."
+msgstr "Geben Sie den Wert ein, mit dem das ausgewählte Attribut verglichen werden soll."
+
+msgid "Expected value"
+msgstr "Erwarteter Wert"
+
+msgid "Further restriction where this policy applies to"
+msgstr "Weitere Einschränkung, wo diese Richtlinie gilt"
+
+msgid "General"
+msgstr "Allgemein"
+
+msgid "Grant access to object type"
+msgstr "Zugriff auf Objekttyp gewähren"
+
+msgid "Grant access to privileges"
+msgstr "Zugriff auf Berechtigungen gewähren"
+
+msgid "Grant actions."
+msgstr "Aktionen gewähren."
+
+msgid "Grant specified permissions to properties under the given restrictions"
+msgstr "Angegebene Berechtigungen für Eigenschaften unter den vorgegebenen Einschränkungen gewähren"
+
+msgid "Manage the authorization objects"
+msgstr "Authorisations-Objekte verwalten"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Name of this authorization policy"
+msgstr "Name dieser Authorisations-Richtlinie"
+
+msgid "Name of this privilege"
+msgstr "Name dieser Berechtigung"
+
+msgid "Negation"
+msgstr "Negation"
+
+msgid "Object Type"
+msgstr "Objekttyp"
+
+msgid "Operator"
+msgstr "Operator"
+
+msgid "Operator modifier"
+msgstr "Operator-Modifikator"
+
+msgid ""
+"Optional: Choose a modifier to alter how the operator behaves (e.g., case-"
+"insensitive, regex)."
+msgstr ""
+"Optional: Wählen Sie einen Modifikator, um das Verhalten des Operators zu "
+"ändern (z. B. Groß-/Kleinschreibung ignorieren, regulärer Ausdruck)."
+
+msgid "Policies"
+msgstr "Richtlinien"
+
+msgid "Position with scope"
+msgstr "Position mit Geltungsbereich"
+
+msgid "Privilege"
+msgstr "Berechtigung"
+
+msgid "Privileges"
+msgstr "Berechtigungen"
+
+msgid "Property permissions"
+msgstr "Eigenschaftsberechtigungen"
+
+msgid "Role selection"
+msgstr "Rollenauswahl"
+
+msgid "Roles"
+msgstr "Rollen"
+
+msgid "Select the type of data to compare (e.g., property, DN, UUID)."
+msgstr "Wählen Sie den Datentyp für den Vergleich (z. B. Eigenschaft, DN, UUID)."
+
+msgid ""
+"Specify the name of the attribute or entity to compare. For example, if the "
+"type is \"Property\", use an attribute like \"username\"."
+msgstr ""
+"Geben Sie den Namen des Attributs oder der Entität an, die verglichen werden "
+"soll. Wenn der Typ z. B. \"Eigenschaft\" ist, verwenden Sie ein Attribut wie "
+"„username“."
+
+msgid "Target attribute"
+msgstr "Zielattribut"
+
+msgid "Target type"
+msgstr "Zieltyp"
+
+msgid "All policies referncing this privilege."
+msgstr "Alle Richtlinien, die diese Berechtigung referenzieren."
+
+msgid "Referencing policies"
+msgstr "Referenzierende Richtlinien"
