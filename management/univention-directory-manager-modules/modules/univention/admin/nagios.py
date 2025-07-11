@@ -65,6 +65,7 @@ def addPropertiesMappingOptionsAndLayout(new_property, new_mapping, new_options,
 
 
 class Support:
+    """Mixin base class indicating Nagios support for computers/* UDM modules"""
 
     def __init__(self):
         self.nagiosRemoveFromServices = False

@@ -278,7 +278,6 @@ class BooleanType(TypeHint):
 
 
 class TriBooleanType(BooleanType):
-
     _encodes_none = True
     _python_types = (bool, type(None))
 
@@ -522,6 +521,7 @@ class SetType(ListType):
 
 
 class ListOfItems(ArrayType):
+    """Array"""
 
     item_types = None  # must be set in subclasses
 
@@ -616,6 +616,7 @@ class KeyValueDictionaryType(DictionaryType):
 
 
 class SambaLogonHours(ListType):
+    """Samba Logon Hours"""
 
     item_type = StringType
     _weekdays = ('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat')
@@ -632,6 +633,7 @@ class SambaLogonHours(ListType):
 
 
 class AppcenterTranslation(KeyValueDictionaryType):
+    """Appcenter Translation"""
 
     key_type = StringType
     value_type = StringType
@@ -646,6 +648,7 @@ class AppcenterTranslation(KeyValueDictionaryType):
 
 
 class UnixTimeinterval(IntegerType):
+    """UNIX Time inerval"""
 
     def decode_value(self, value):
         return self.syntax.to_integer(value)

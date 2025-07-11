@@ -612,6 +612,7 @@ class complex(ISyntax):
 
 
 class _UDMObjectOrAttribute:
+    """Abstract base class for common UDM_Objects and UDM_Attribute functionality"""
 
     @classmethod
     def _append_hidden_filter(cls, module, ret):
