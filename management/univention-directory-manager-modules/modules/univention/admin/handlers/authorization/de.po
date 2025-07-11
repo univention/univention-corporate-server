@@ -1,0 +1,237 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-directory-manager-modules\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-08-07 19:25+0200\n"
+"PO-Revision-Date: 2016-11-08 14:59+0100\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language-Team: German <packages@univention.de>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: modules/univention/admin/handlers/authorization/privilege.py:32
+msgid ""
+"<p>Privileges grant access rights to roles. A priviledge always applies to "
+"one or more UDM properties of a single UDM module, optionally restricted to "
+"objects underneath of a certain position in the directory.</p><p>More "
+"information can be found in the <a href=\"https://docs.software-"
+"univention.de/manual/5.2/en/index.html\" target=\"_blank\">online "
+"documentation for UCS</a>.</p>"
+msgstr ""
+
+#: modules/univention/admin/handlers/authorization/comparison.py:60
+msgid ""
+"A human-readable description of what this comparison is intended to check."
+msgstr ""
+
+#: modules/univention/admin/handlers/authorization/comparison.py:51
+msgid "A unique identifier for this comparison rule."
+msgstr ""
+
+#: modules/univention/admin/handlers/authorization/policy.py:78
+#: modules/univention/admin/handlers/authorization/privilege.py:98
+msgid "Access Rights"
+msgstr "Zugriffsrechte"
+
+#: modules/univention/admin/handlers/authorization/privilege.py:68
+msgid "Action permissions"
+msgstr "Aktions-Berechtigungen"
+
+#: modules/univention/admin/handlers/authorization/all.py:23
+msgid "All authorization objects"
+msgstr ""
+
+#: modules/univention/admin/handlers/authorization/privilege.py:108
+msgid "All policies which reference this privilege are shown here."
+msgstr ""
+
+#: modules/univention/admin/handlers/authorization/all.py:24
+msgid "Authorization"
+msgstr "Authorisation"
+
+#: modules/univention/admin/handlers/authorization/policy.py:23
+#: modules/univention/admin/handlers/authorization/policy.py:24
+#: modules/univention/admin/handlers/authorization/policy.py:25
+msgid "Authorization Policy"
+msgstr "Authorisations-Richtlinie"
+
+#: modules/univention/admin/handlers/authorization/privilege.py:27
+#: modules/univention/admin/handlers/authorization/privilege.py:28
+#: modules/univention/admin/handlers/authorization/privilege.py:29
+msgid "Authorization Privilege"
+msgstr "Authorisations-Berechtigung"
+
+#: modules/univention/admin/handlers/authorization/comparison.py:33
+msgid "Authorization: Comparison condition"
+msgstr "Authorisation: Vergleichsbedingung"
+
+#: modules/univention/admin/handlers/authorization/all.py:25
+msgid "Authorizations"
+msgstr "Authorisierungen"
+
+#: modules/univention/admin/handlers/authorization/policy.py:73
+#: modules/univention/admin/handlers/authorization/all.py:41
+#: modules/univention/admin/handlers/authorization/privilege.py:93
+#: modules/univention/admin/handlers/authorization/comparison.py:103
+msgid "Basic settings"
+msgstr "Basis-Einstellungen"
+
+#: modules/univention/admin/handlers/authorization/comparison.py:84
+msgid "Choose the comparison operator (e.g., equals, greater than, contains)."
+msgstr ""
+
+#: modules/univention/admin/handlers/authorization/comparison.py:104
+msgid "Comparision definition"
+msgstr ""
+
+#: modules/univention/admin/handlers/authorization/comparison.py:34
+#: modules/univention/admin/handlers/authorization/comparison.py:35
+msgid "Comparison condition"
+msgstr "Bedingung"
+
+#: modules/univention/admin/handlers/authorization/privilege.py:86
+msgid "Condition"
+msgstr "Bedingung"
+
+#: modules/univention/admin/handlers/authorization/comparison.py:108
+msgid "Conditions"
+msgstr "Bedingungen"
+
+#: modules/univention/admin/handlers/authorization/policy.py:49
+#: modules/univention/admin/handlers/authorization/privilege.py:56
+#: modules/univention/admin/handlers/authorization/comparison.py:59
+msgid "Description"
+msgstr "Beschreibung"
+
+#: modules/univention/admin/handlers/authorization/comparison.py:78
+msgid ""
+"Enable this option to invert the comparison result (i.e., \"not equal\" "
+"instead of \"equal\")"
+msgstr ""
+
+#: modules/univention/admin/handlers/authorization/comparison.py:96
+msgid "Enter the value that the selected attribute should be compared to."
+msgstr ""
+
+#: modules/univention/admin/handlers/authorization/comparison.py:95
+msgid "Expected value"
+msgstr ""
+
+#: modules/univention/admin/handlers/authorization/privilege.py:87
+msgid "Further restriction where this policy applies to"
+msgstr "Weitere Beschränkungen für diese Berechtigung"
+
+#: modules/univention/admin/handlers/authorization/policy.py:73
+#: modules/univention/admin/handlers/authorization/all.py:41
+#: modules/univention/admin/handlers/authorization/privilege.py:93
+#: modules/univention/admin/handlers/authorization/comparison.py:103
+msgid "General"
+msgstr "Allgemein"
+
+#: modules/univention/admin/handlers/authorization/privilege.py:63
+msgid "Grant access to object type"
+msgstr "Zugriff auf den Objekttyp gewähren"
+
+#: modules/univention/admin/handlers/authorization/policy.py:64
+msgid "Grant access to privileges"
+msgstr "Zugriff auf Berechtigungen gewähren"
+
+#: modules/univention/admin/handlers/authorization/privilege.py:69
+msgid "Grant actions."
+msgstr "Aktionen gewähren."
+
+#: modules/univention/admin/handlers/authorization/privilege.py:76
+msgid "Grant specified permissions to properties under the given restrictions"
+msgstr ""
+"Bestimmte Berechtigungen für Eigenschaften unter den vorgegebenen "
+"Einschränkungen gewähren"
+
+#: modules/univention/admin/handlers/authorization/all.py:26
+msgid "Manage the authorization objects"
+msgstr "Authorisations-Objekte administrieren"
+
+#: modules/univention/admin/handlers/authorization/policy.py:40
+#: modules/univention/admin/handlers/authorization/all.py:33
+#: modules/univention/admin/handlers/authorization/privilege.py:47
+#: modules/univention/admin/handlers/authorization/comparison.py:50
+msgid "Name"
+msgstr "Name"
+
+#: modules/univention/admin/handlers/authorization/policy.py:41
+msgid "Name of this authorization policy"
+msgstr "Name dieser Authorisierungen-Richtlinie"
+
+#: modules/univention/admin/handlers/authorization/privilege.py:48
+msgid "Name of this privilege"
+msgstr "Name dieser Bereichtigung"
+
+#: modules/univention/admin/handlers/authorization/comparison.py:77
+msgid "Negation"
+msgstr ""
+
+#: modules/univention/admin/handlers/authorization/privilege.py:62
+msgid "Object Type"
+msgstr "Objekttyp"
+
+#: modules/univention/admin/handlers/authorization/comparison.py:83
+msgid "Operator"
+msgstr ""
+
+#: modules/univention/admin/handlers/authorization/comparison.py:89
+msgid "Operator modifier"
+msgstr ""
+
+#: modules/univention/admin/handlers/authorization/comparison.py:90
+msgid ""
+"Optional: Choose a modifier to alter how the operator behaves (e.g., case-"
+"insensitive, regex)."
+msgstr ""
+
+#: modules/univention/admin/handlers/authorization/privilege.py:105
+msgid "Policies"
+msgstr "Richtlinien"
+
+#: modules/univention/admin/handlers/authorization/privilege.py:81
+msgid "Position with scope"
+msgstr "Position mit Bereich"
+
+#: modules/univention/admin/handlers/authorization/privilege.py:94
+#: modules/univention/admin/handlers/authorization/privilege.py:106
+msgid "Privilege"
+msgstr "Berechtigung"
+
+#: modules/univention/admin/handlers/authorization/policy.py:63
+msgid "Privileges"
+msgstr "Berechtigungen"
+
+#: modules/univention/admin/handlers/authorization/privilege.py:75
+msgid "Property permissions"
+msgstr "Berechtigungen für Eigenschaft"
+
+#: modules/univention/admin/handlers/authorization/policy.py:74
+msgid "Role selection"
+msgstr "Rollenauswahl"
+
+#: modules/univention/admin/handlers/authorization/policy.py:55
+msgid "Roles"
+msgstr "Rollen"
+
+#: modules/univention/admin/handlers/authorization/comparison.py:66
+msgid "Select the type of data to compare (e.g., property, DN, UUID)."
+msgstr ""
+
+#: modules/univention/admin/handlers/authorization/comparison.py:72
+msgid ""
+"Specify the name of the attribute or entity to compare. For example, if the "
+"type is \"Property\", use an attribute like \"username\"."
+msgstr ""
+
+#: modules/univention/admin/handlers/authorization/comparison.py:71
+msgid "Target attribute"
+msgstr ""
+
+#: modules/univention/admin/handlers/authorization/comparison.py:65
+msgid "Target type"
+msgstr ""
