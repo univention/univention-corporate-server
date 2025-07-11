@@ -1,3 +1,9 @@
+ucs-test (12.2.27) unstable; urgency=medium
+
+  * Issue univention/dev/internal/team-nubus#2954: fix failing tests & improve output 
+
+ -- Yannik Schmidt <yannik.schmidt.extern@univention.de>  Fri, 11 Jul 2025 04:22:25 +0200
+
 ucs-test (12.2.26) unstable; urgency=medium
 
   * Bug #58183: use correct username for Administrator in AD membermode

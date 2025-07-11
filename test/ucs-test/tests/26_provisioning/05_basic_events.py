@@ -10,6 +10,9 @@ import json
 import pytest
 import requests
 
+from univention.testing import utils
+
+
 
 @pytest.fixture
 def provisioning_url():
@@ -58,39 +61,63 @@ def get_messages_and_ack(provisioning_url):
             requests.patch(provisioning_url + "v1/subscriptions/%s/messages/%s/status" % (name, seq_num), json=stat_json, auth=(name, "univention"))
     return f
 
-
 def test_user_creation(udm, subscription, get_messages_and_ack):
     dn, _username = udm.create_user()
-    i = 0
-    for message in get_messages_and_ack(subscription):
-        i += 1
-        assert message["body"]["old"] == {}
-        assert message["body"]["new"]["dn"] == dn
-    assert i == 1
 
+    messages = list(get_messages_and_ack(subscription))
+    if len(messages) != 1:
+        utils.fail(f"Expected 1 message after user creation, got {len(messages)}.")
+
+    message = messages[0]
+    assert message["body"]["old"] == {}, (
+        f"Expected 'old' body to be empty, but got: {message['body']['old']}"
+    )
+    assert message["body"]["new"]["dn"] == dn, (
+        f"Expected 'new.dn' to be '{dn}', but got '{message['body']['new'].get('dn')}'."
+    )
 
 def test_user_modification(udm, subscription, get_messages_and_ack):
     old_dn, _username = udm.create_user()
-    for message in get_messages_and_ack(subscription):
+
+    # drain any creation messages
+    for _ in get_messages_and_ack(subscription):
         pass
+
     new_description = "New description"
     udm.modify_object("users/user", dn=old_dn, description=new_description)
-    i = 0
-    for message in get_messages_and_ack(subscription):
-        i += 1
-        assert message["body"]["old"]["properties"]["description"] is None
-        assert message["body"]["new"]["properties"]["description"] == new_description
-    assert i == 1
 
+    messages = list(get_messages_and_ack(subscription))
+    if len(messages) != 1:
+        utils.fail(f"Expected 1 message after user modification, got {len(messages)}.")
+
+    message = messages[0]
+    assert message["body"]["old"]["properties"]["description"] is None, (
+        f"Expected 'old.properties.description' to be None, but got: "
+        f"{message['body']['old']['properties'].get('description')}"
+    )
+    assert message["body"]["new"]["properties"]["description"] == new_description, (
+        f"Expected 'new.properties.description' to be '{new_description}', but got: "
+        f"{message['body']['new']['properties'].get('description')}"
+    )
 
 def test_user_removal(udm, subscription, get_messages_and_ack):
+
     dn, username = udm.create_user()
-    for message in get_messages_and_ack(subscription):
+
+    # drain initial messages, if any
+    for _ in get_messages_and_ack(subscription):
         pass
+
     udm.remove_user(username)
-    i = 0
-    for message in get_messages_and_ack(subscription):
-        i += 1
-        assert message["body"]["old"]["dn"] == dn
-        assert message["body"]["new"] == {}
-    assert i == 1
+
+    messages = list(get_messages_and_ack(subscription))
+    if len(messages) != 1:
+        utils.fail(f"Expected 1 message after user removal, got {len(messages)}.")
+
+    message = messages[0]
+    assert message["body"]["old"]["dn"] == dn, (
+        f"Expected 'old.dn' to be '{dn}', but got '{message['body']['old'].get('dn')}'."
+    )
+    assert message["body"]["new"] == {}, (
+        f"Expected 'new' body to be empty, but got: {message['body']['new']}"
+    )
