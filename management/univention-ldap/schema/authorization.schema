@@ -1,0 +1,109 @@
+# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+attributetype ( 1.3.6.1.4.1.10176.1337.1.1 NAME 'univentionAuthorizationRole'
+	DESC 'Role string'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	)
+
+attributetype ( 1.3.6.1.4.1.10176.1337.1.2 NAME 'univentionAuthorizationObjectType'
+	DESC 'UDM module name'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1337.1.3 NAME 'univentionAuthorizationGrantsAction'
+	DESC 'UDM action e.g. create, modify, remove, etc'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	)
+
+attributetype ( 1.3.6.1.4.1.10176.1337.1.4 NAME 'univentionAuthorizationGrantsProperties'
+	DESC 'permissions for properties: property $ permission $ restrictions'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	)
+
+attributetype ( 1.3.6.1.4.1.10176.1337.1.5 NAME 'univentionAuthorizationPosition'
+	DESC 'position and scope'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1337.1.6 NAME 'univentionAuthorizationCondition'
+	DESC 'extra condition'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE )
+
+objectclass ( 1.3.6.1.4.1.10176.1337.1 NAME 'univentionAuthorizationPrivilege'
+	SUP 'top' STRUCTURAL
+	DESC 'Univention Authorization Privilege: to <what> [grant <access>]+'
+	MUST ( cn $ univentionAuthorizationObjectType $ univentionAuthorizationGrantsAction )
+	MAY ( description $ univentionAuthorizationPosition $ univentionAuthorizationCondition $ univentionAuthorizationGrantsProperties ))
+
+attributetype ( 1.3.6.1.4.1.10176.1337.2.1 NAME 'univentionAuthorizationTo'
+	DESC 'Allowed privileges for the policy'
+	EQUALITY distinguishedNameMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
+
+objectclass ( 1.3.6.1.4.1.10176.1337.2 NAME 'univentionAuthorizationPolicy'
+	SUP 'top' STRUCTURAL
+	DESC 'Univention Authorization Policy: access by <who>+ <to>+'
+	MUST ( cn $ univentionAuthorizationRole $ univentionAuthorizationTo )
+	MAY ( description ))
+
+attributetype ( 1.3.6.1.4.1.10176.1337.3.1 NAME 'univentionAuthorizationComparisonType'
+	DESC 'The type of data to compare (e.g., property, DN, UUID)'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1337.3.2 NAME 'univentionAuthorizationComparisonAttribute'
+	DESC 'Name of the attribute or entity to compare, e.g. the UDM property name.'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1337.3.3 NAME 'univentionAuthorizationComparisonNegation'
+	DESC 'Option to invert the comparison result (i.e., "not equal" instead of "equal")'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1337.3.4 NAME 'univentionAuthorizationComparisonOperator'
+	DESC 'The comparison operator (e.g., equals, greater than, contains).'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1337.3.5 NAME 'univentionAuthorizationComparisonOperatorModifier'
+	DESC 'A modifier to alter how the operator behaves (e.g., case-insensitive, regex).'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1337.3.6 NAME 'univentionAuthorizationComparisonValue'
+	DESC 'The value that the selected attribute should be compared to.'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE )
+
+objectclass ( 1.3.6.1.4.1.10176.1337.3 NAME 'univentionAuthorizationComparison'
+	SUP 'top' STRUCTURAL
+	DESC 'Univention Authorization Comparison: properties=[attribute] values [operator].[modifier].[negate]=[value]'
+	MUST ( cn $ univentionAuthorizationComparisonType $ univentionAuthorizationComparisonAttribute $ univentionAuthorizationComparisonNegation $ univentionAuthorizationComparisonOperator $ univentionAuthorizationComparisonValue )
+	MAY ( description $ univentionAuthorizationComparisonOperatorModifier ))
