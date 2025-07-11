@@ -14,6 +14,7 @@ Categories=service-apache
 Description[en]=Force use of encrypted connection by re-directing to <https://>.
 Description[de]=Erzwingt eine verschlüsselte Verbindung durch Weiterleitung auf <https://>.
 Type=bool
+Default=True
 Categories=service-apache
 
 [apache2/force_https/exclude/(request_uri|http_host|remote_addr|server_name)/.*]
@@ -26,13 +27,14 @@ Categories=service-apache
 Description[en]=Enable HTTP Strict Transport Security (HSTS) by setting this variable to 'yes'. 'apache2/force_https' should be enabled additionally to take full advantage of HSTS.
 Description[de]=Aktiviert HTTP Strict Transport Security (HSTS), wenn auf 'yes' gesetzt. 'apache2/force_https' sollte zusätzlich aktiviert werden, um den Vorteil von HSTS voll nutzen zu können.
 Type=bool
+Default=On
 Categories=service-apache
 
 [apache2/hsts/max-age]
 Description[en]=Time in seconds of how long web browsers will cache and enforce the HSTS policy on the host.
 Description[de]=Zeit in Sekunden, für die Web-Browser die HSTS Richtlinie für diesen Host zwischenspeichern und anwenden.
 Type=uint
-Default=10886400
+Default=63072000
 Categories=service-apache
 
 [apache2/hsts/includeSubDomains]
@@ -149,18 +151,21 @@ Categories=service-apache
 Description[de]=Ist diese Option aktiviert, wird nur noch TLS 1.1, TLS 1.2 und TLS 1.3 von Apache unterstützt. Ist die Variable nicht gesetzt und keine weitere apache2/ssl/* Variable gesetzt, wird TLS 1.0 bis 1.3 unterstützt.
 Description[en]=If this option is enabled, only TLS 1.1, TLS 1.2 and TLS 1.3 is supported in Apache. If the variable is unset and no further apache2/ssl/* variable is set, TLS 1.0 to TLS 1.3 are supported.
 Type=bool
+Default=Off
 Categories=service-apache
 
 [apache2/ssl/tlsv12]
 Description[de]=Ist diese Option aktiviert, wird nur noch TLS 1.2 und TLS 1.3 von Apache unterstützt. Ist die Variable nicht gesetzt und keine weitere apache2/ssl/* Variable gesetzt, wird TLS 1.0 bis 1.3 unterstützt.
 Description[en]=If this option is enabled, only TLS 1.2 and TLS 1.3 is supported in Apache. If the variable is unset and no further apache2/ssl/* variable is set, TLS 1.0 to TLS 1.3 are supported.
 Type=bool
+Default=Off
 Categories=service-apache
 
 [apache2/ssl/tlsv13]
 Description[de]=Ist diese Option aktiviert, wird nur noch TLS 1.3 von Apache unterstützt. Ist die Variable nicht gesetzt und keine weitere apache2/ssl/* Variable gesetzt, wird TLS 1.0 bis 1.3 unterstützt.
 Description[en]=If this option is enabled, only TLS 1.3 is supported in Apache. If the variable is unset and no further apache2/ssl/* variable is set, TLS 1.0 to TLS 1.3 are supported.
 Type=bool
+Default=On
 Categories=service-apache
 
 [apache2/ssl/compression]
@@ -173,6 +178,7 @@ Categories=service-apache
 Description[de]=Bei der Aushandlung der kryptografischen Verfahren während des Aufbaus einer SSL/TLS-Verbindung wird standardmässig die Präferenz des Clients verwendet. Ist diese Option aktiviert, wird stattdessen die Präferenz des Server verwendet werden. Die Liste der von Apache angebotenen Verfahren kann mit der Variable 'apache2/ssl/ciphersuite' konfiguriert werden.
 Description[en]=During the negotiation of cryptographic algorithms during the setup of a SSL/TLS connection the preference of the client is used by default. If this option is enabled, the preference of the server is used instead. The list of algorithms offered by Apache can be configured with the variable 'apache2/ssl/ciphersuite'.
 Type=bool
+Default=True
 Categories=service-apache
 
 [apache2/ssl/ciphersuite]
@@ -185,6 +191,7 @@ Categories=service-apache
 Description[de]=Ist diese Option aktiviert, wird Nicht-SNI-Clients der Zugriff auf namensbasierte virtuelle Hosts untersagt.
 Description[en]=If this option is enabled, non-SNI clients are forbidden to access name based virtual hosts.
 Type=bool
+Default=True
 Categories=service-apache
 
 [apache2/documentroot]

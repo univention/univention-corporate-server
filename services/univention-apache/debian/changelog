@@ -1,3 +1,9 @@
+univention-apache (14.2.2) UNRELEASED; urgency=low
+
+  * Bug #58320: set stricter UCR variable defaults
+
+ -- Oliver Friedrich <friedrich@univention.de>  Fri, 11 Jul 2025 17:26:24 +0200
+
 univention-apache (14.2.1) UNRELEASED; urgency=low
 
   * Bug #58319: set server-tokens & server-signature secure defaults
