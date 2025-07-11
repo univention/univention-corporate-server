@@ -26,6 +26,14 @@ class DN:
             raise ValueError('Malformed DN syntax: %r' % (self.dn,))
 
     @property
+    def rdn(self) -> Self:
+        """
+        >>> DN('foo=1,bar=2').rdn
+        ('foo', '1')
+        """
+        return tuple(self._dn[0][0][:2])
+
+    @property
     def parent(self) -> Self | None:
         """
         >>> DN('foo=1,bar=2').parent == DN('bar=2')
@@ -56,13 +64,33 @@ class DN:
             other = self.__class__(other)
         return self[:len(other)] == other
 
+    def walk(self, base):
+        """
+        >>> [str(x) for x in DN('foo=1,bar=2,baz=3,blub=4').walk('baz=3,blub=4')]
+        ['baz=3,blub=4', 'bar=2,baz=3,blub=4', 'foo=1,bar=2,baz=3,blub=4']
+        """
+        base = self.__class__(base) if not isinstance(base, DN) else base
+        if not self.endswith(base):
+            raise ValueError('DN must end with given base')
+
+        for i in reversed(range(len(self) - len(base) + 1)):
+            yield self[i:]
+
     def __str__(self) -> str:
+        """
+        >>> str(DN('foo = 1 , bar = 2')) == "foo=1,bar=2"
+        True
+        """
         # compute string only once since the object is static
         if self._str is None:
             self._str = ldap.dn.dn2str(self._dn)
         return self._str
 
     def __repr__(self) -> str:
+        """
+        >>> repr(DN('foo=1,bar=2')) == "<DN 'foo=1,bar=2'>"
+        True
+        """
         return '<%s %r>' % (type(self).__name__, str(self))
 
     def __len__(self) -> int:
