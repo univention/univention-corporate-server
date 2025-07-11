@@ -1,7 +1,7 @@
 stages:
   - prepare
-  - test
   - build
+  - test
 
 workflow:
   rules:
@@ -191,7 +191,8 @@ errata validation:
 
 sonarqube:
   stage: test
-
+  tags:
+    - dm-m
   image:
     name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/sonarsource/sonar-scanner-cli:11
     entrypoint: [""]
