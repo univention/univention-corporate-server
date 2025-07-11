@@ -12,6 +12,7 @@ import hashlib
 import io
 import logging
 import sys
+from pathlib import Path
 
 import lark
 import yaml
@@ -97,6 +98,14 @@ _VALUE_OPERATORS = {
     'dn,children': 'dn-children',
 }
 
+BUNDLE_NAMESPACE = 'udm:bundles'
+ACTIONS = ('search', 'read', 'create', 'modify', 'rename', 'remove', 'move', 'report-create')
+PERMISSIONS = ('search', 'read', 'write', 'readonly', 'writeonly', 'none')
+SORT_PRIO = {
+    'actions': {v: k for k, v in [*list(enumerate(ACTIONS)), [len(ACTIONS), '*']]},
+    'permissions': {v: k for k, v in [*list(enumerate(PERMISSIONS)), [len(PERMISSIONS), '*']]},
+}
+
 
 class DSLSyntaxError(SyntaxError):
     pass
@@ -108,6 +117,7 @@ class _DSLTransformer(Transformer):
     def __init__(self, filename, *args, strict=False, **kwargs):
         self.__filename = filename
         self.__strict = strict
+        self.__unique_names = set()
         super().__init__(*args, **kwargs)
 
     def start(self, items):
@@ -195,6 +205,12 @@ class _DSLTransformer(Transformer):
             raise DSLSyntaxError('objecttype required', (self.__filename, 0, 0, repr(items)))
         if '/' not in object_type and object_type != '*':
             raise DSLSyntaxError('invalid objecttype', (self.__filename, 0, 0, object_type))
+
+        if name := current_to.get('name'):
+            if name in self.__unique_names:
+                raise DSLSyntaxError('duplicated name', (self.__filename, 0, 0, current_to['name']))
+            self.__unique_names.add(name)
+
         mod = univention.admin.modules.get(object_type)
         if object_type != '*' and not mod:
             if self.__strict:
@@ -221,7 +237,7 @@ class _DSLTransformer(Transformer):
             raise DSLSyntaxError('invalid "grant": requires only one of actions or permission', (self.__filename, 0, 0, ''))
 
         if 'permission' in grant:
-            self._assert_names('permission', {grant['permission']}, {'read', 'search', 'write', 'readonly', 'writeonly', 'none', '*'})
+            self._assert_names('permission', set(grant['permission'].split(',')), {*PERMISSIONS, '*'})
 
         return grant
 
@@ -250,7 +266,7 @@ class _DSLTransformer(Transformer):
         if key in {'actions', 'properties'} and isinstance(value, str):
             value = [v.strip() for v in value.split(',')]
             if key == 'actions':
-                self._assert_names('actions', set(value), {'search', 'read', 'create', 'modify', 'rename', 'remove', 'move', 'report-create', '*'})
+                self._assert_names('actions', set(value), {*ACTIONS, '*'})
         return (key, value)
 
     def value(self, items):
@@ -285,7 +301,8 @@ class _DSLTransformer(Transformer):
 
         def _v(k, v):
             if isinstance(v, list):
-                return f'{k}="{",".join(v)}"'
+                sv = sorted(v, key=lambda x: SORT_PRIO.get(k, {}).get(x, x))
+                return f'{k}="{",".join(sv)}"'
             if isinstance(v, str):
                 return f'{k}="{v}"'
             if v[0]:
@@ -305,7 +322,7 @@ class _DSLTransformer(Transformer):
         for rule in parsed['rules']:
             by = rule.pop('by')
             to = rule.pop('to')
-            roles = ' by %s' % _kv(by[0]) if len(by) == 1 else '\n  ' + '\n  '.join('by %s' % _kv(r) for r in by)
+            roles = ' by %s' % _kv(by[0]) if len(by) == 1 else '\n  ' + '\n  '.join('by %s' % _kv(r) for r in sorted(by, key=lambda x: x['role']))
             params = '\n  %s' % _kv(rule) if rule else ''
             print(file=result)
             print(f'access{roles}{params}', file=result)
@@ -324,13 +341,13 @@ class UDMAuthorizationConfig:
     """UDM specific DSL"""
 
     def __init__(self, filename, *, strict=False):
-        self.filename = filename
-        self.parser = Lark(UDM_DSL_GRAMMAR, parser='lalr', transformer=_DSLTransformer(self.filename, strict=strict))
+        self.filename = Path(filename)
+        self.parser = Lark(UDM_DSL_GRAMMAR, parser='lalr', transformer=_DSLTransformer(str(self.filename), strict=strict))
 
     def parse(self):
         univention.admin.modules.update()
         try:
-            self.parsed = self.parser.parse(open(self.filename).read())
+            self.parsed = self.parser.parse(self.filename.read_text())
         except lark.exceptions.LarkError as exc:
             raise DSLSyntaxError(str(exc)) from exc
 
@@ -340,7 +357,7 @@ class UDMAuthorizationConfig:
     def to_yaml(self):
         univention.admin.modules.update()
         all_modules = list(univention.admin.modules.modules)
-        conf = AuthorizationConfig(self.filename.replace('.acl', '') + '.yaml')
+        conf = AuthorizationConfig(self.filename.with_suffix('.yaml'))
 
         for cond in self.parsed['conditions']:
             conf.conditions[cond['name']] = {cond['condition']: cond['parameters']}
@@ -348,156 +365,164 @@ class UDMAuthorizationConfig:
         for rule in self.parsed['rules']:
             by = rule.get('by')
             to = rule.get('to')
+
+            bundle_name = '--'.join(sorted(role['role'].rsplit(':', 1)[-1] for role in by))
+            bundle_name = self._unique(conf.capability_bundles.setdefault(BUNDLE_NAMESPACE, {}), bundle_name)
+
+            cap_bundle_string = f'{BUNDLE_NAMESPACE}:{bundle_name}'
+            bundle = conf.capability_bundles.setdefault(BUNDLE_NAMESPACE, {}).setdefault(bundle_name, [])
+
             for role in by:
-                role_namespace, role_name = role['role'].rsplit(':', 1)
-
-                # create capability bundle (in the namespace of the role) and assign it to the role-capability-mapping
-                bundle_name = role['role'].rsplit(':', 1)[-1]
-                cap_bundle_string = f'{role_namespace}:{bundle_name}'
-                bundle = conf.capability_bundles.setdefault(role_namespace, {}).setdefault(bundle_name, [])
-
+                role_namespace, _, role_name = role['role'].rpartition(':')
                 # create one role capability mapping for each role and assign one capability bundle, where all capabilities are added
                 role_cap_map = conf.role_capability_mapping.setdefault(role_namespace, {}).setdefault(role_name, {
                     'permissions': [],
                     'capabilities': [],
-                    'capability-bundles': [cap_bundle_string],
+                    'capability-bundles': [],
                 })
                 role_cap_map['displayname'] = rule.get('description', '')
+                if cap_bundle_string not in role_cap_map['capability-bundles']:
+                    role_cap_map['capability-bundles'].append(cap_bundle_string)
 
-                more_tos = []
-                for to_clause in to:
-                    object_type = to_clause['objecttype']
-                    if object_type == '*':
-                        for oc in all_modules:
-                            new_to_clase = copy.deepcopy(to_clause)
-                            new_to_clase['objecttype'] = oc
-                            more_tos.append(new_to_clase)
-                    else:
-                        more_tos.append(to_clause)
+            wildcard_object_type = False
+            expanded_to_clauses = []
+            for to_clause in to:
+                object_type = to_clause['objecttype']
+                if object_type == '*':
+                    wildcard_object_type = True
+                    for oc in all_modules:
+                        new_to_clase = copy.deepcopy(to_clause)
+                        new_to_clase['objecttype'] = oc
+                        expanded_to_clauses.append(new_to_clase)
+                else:
+                    expanded_to_clauses.append(to_clause)
 
-                for to_clause in more_tos:
-                    object_type = to_clause['objecttype']
-                    grants = to_clause.get('grant', [])
+            for to_clause in expanded_to_clauses:
+                object_type = to_clause['objecttype']
+                grants = to_clause.get('grant', [])
 
-                    # create a capability and assign it to the capability budle
-                    capability_namespace = f'udm:{object_type}'
-                    capability_name = self._unique(conf.capabilities.get(capability_namespace, {}), bundle_name)
-                    capability_string = f'{capability_namespace}:{capability_name}'
+                # create a capability and assign it to the capability budle
+                capability_namespace = f'udm:{object_type}'
+                capability_name = self._unique(conf.capabilities.get(capability_namespace, {}), bundle_name)
+                capability_string = f'{capability_namespace}:{capability_name}'
 
-                    bundle.append(capability_string)
-                    cap = conf.capabilities.setdefault(capability_namespace, {}).setdefault(capability_name, {
-                        'displayname': to_clause.get('displayname', ''),
-                        'grants-permissions': [],
-                        'conditions': {'AND': []},
-                    })
-                    conditions = cap['conditions']['AND']
+                bundle.append(capability_string)
+                cap = conf.capabilities.setdefault(capability_namespace, {}).setdefault(capability_name, {
+                    'displayname': to_clause.get('displayname', ''),
+                    'grants-permissions': [],
+                    'conditions': {'AND': []},
+                })
+                conditions = cap['conditions']['AND']
 
-                    # create a permission set for each capibility and assign it to the capability
-                    psetname = self._unique(conf.permission_sets, f'{object_type.replace("/", "-")}-{capability_name}-all')
-                    # assert psetname not in conf.permission_sets, psetname
-                    permissions = set()
-                    cap['grants-permissions'].append(psetname)
+                # create a permission set for each capibility and assign it to the capability
+                psetname = to_clause.get('name')
+                if psetname and wildcard_object_type:
+                    psetname = f'{psetname}-{object_type.replace("/", "-")}'
+                psetname = psetname or f'{object_type.replace("/", "-")}-{capability_name}-all'
+                psetname = self._unique(conf.permission_sets, psetname)
+                # assert psetname not in conf.permission_sets, psetname
+                permissions = set()
+                cap['grants-permissions'].append(psetname)
 
-                    for prop in grants:
-                        # grant given actions
-                        if 'properties' not in prop:
-                            all_actions = {'search', 'read', 'create', 'modify', 'rename', 'remove', 'move', 'report-create'}
-                            actions = set(prop.get('actions', []))
-                            if '*' in actions:
-                                actions.update(all_actions)
-                                actions.remove('*')
-                            elif 'read' in actions:
-                                actions.add('search')
-
-                            permissions.update({
-                                f'udm:{object_type}:{action}' for action in sorted(actions)
-                            })
-                            continue
-
-                        # grant given properties
-                        perms = {prop['permission']}
-                        all_perms = {'read', 'search', 'write', 'readonly', 'writeonly', 'none'}
-
-                        if '*' in perms:
-                            perms.update(all_perms)
-                            perms.remove('*')
-                        if 'read' in perms:
-                            perms.add('search')
-                        if 'write' in perms:
-                            perms.add('read')
-                            perms.add('write')
-                            perms.add('search')
+                for prop in grants:
+                    # grant given actions
+                    if 'properties' not in prop:
+                        actions = set(prop.get('actions', []))
+                        if '*' in actions:
+                            actions.update(set(ACTIONS))
+                            actions.remove('*')
+                        elif 'read' in actions:
+                            actions.add('search')
 
                         permissions.update({
-                            f"udm:{object_type}:{perm}-property-{propname}"
-                            for propname in prop['properties']
-                            for perm in perms
+                            f'udm:{object_type}:{action}' for action in sorted(actions)
                         })
+                        continue
 
-                        for propname in sorted(prop['properties']):
-                            operator, values = prop.get('values', [None, None])
-                            if not values:
-                                continue
+                    # grant given properties
+                    perms = set(prop['permission'].split(',')) if isinstance(prop['permission'], str) else set(prop['permission'])
+                    # perms = {prop['permission']}
 
-                            if len(grants) != 1:
-                                raise RuntimeError('Security warning: Value based checks must create exactly only one capability (to block)!')
-                            if len(prop['properties']) != 1:
-                                raise RuntimeError('Security warning: Value based checks must check only one property!')
-                            if prop['permission'] == 'write' or 'write' in perms:
-                                raise RuntimeError('Security warning: Value based checks most likely should not add write permissions, design it the opposite way!')
+                    if '*' in perms:
+                        perms.update(set(PERMISSIONS))
+                        perms.remove('*')
+                    if 'read' in perms:
+                        perms.add('search')
+                    if 'write' in perms:
+                        perms.add('read')
+                        perms.add('write')
+                        perms.add('search')
 
-                            operator = _VALUE_OPERATORS.get(operator, '==')
-                            val_condition = self._unique(conf.conditions, f'{object_type.replace("/", "-")}-{propname}-values-{operator}', values='||'.join(sorted(values)))
-                            conditions.append(val_condition)
-                            conf.conditions[val_condition] = {
-                                'udm:conditions:target_property_value_compares': {
-                                    'property': propname,
-                                    'operator': operator,
-                                    'values': values,
-                                },
-                            }
+                    permissions.update({
+                        f'udm:{object_type}:{perm}-property-{propname}'
+                        for propname in prop['properties']
+                        for perm in perms
+                    })
 
-                    conf.permission_sets.setdefault(psetname, []).extend(sorted(permissions))
+                    for propname in sorted(prop['properties']):
+                        operator, values = prop.get('values', [None, None])
+                        if not values:
+                            continue
 
-                    # restrict capability to conditions
-                    if object_type != '*':
-                        ot_condition = f'object-type-is-{object_type.replace("/", "-")}'
-                        cap['conditions'].setdefault('AND', []).append(ot_condition)
-                        conf.conditions[ot_condition] = {
-                            'udm:conditions:target_object_type_equals': {
-                                'objectType': object_type,
+                        if len(grants) != 1:
+                            raise RuntimeError('Security warning: Value based checks must create exactly only one capability (to block)!')
+                        if len(prop['properties']) != 1:
+                            raise RuntimeError('Security warning: Value based checks must check only one property!')
+                        if prop['permission'] == 'write' or 'write' in perms:
+                            raise RuntimeError('Security warning: Value based checks most likely should not add write permissions, design it the opposite way!')
+
+                        operator = _VALUE_OPERATORS.get(operator, '==')
+                        val_condition = self._unique(conf.conditions, f'{object_type.replace("/", "-")}-{propname}-values-{operator}', values='||'.join(sorted(values)))
+                        conditions.append(val_condition)
+                        conf.conditions[val_condition] = {
+                            'udm:conditions:target_property_value_compares': {
+                                'property': propname,
+                                'operator': operator,
+                                'values': values,
                             },
                         }
 
-                    scope, position = to_clause.get('position', [None, None])
-                    scope = _SCOPES.get(scope, 'base')
-                    if position and position == '{context}':
-                        context = role['context']
-                        assert context, to_clause
-                        pos_condition = self._unique(conf.conditions, 'position-from-context', scope=scope, context=context)
-                        conditions.append(pos_condition)
-                        conf.conditions[pos_condition] = {
-                            'udm:conditions:target_position_from_context': {
-                                'context': context,
-                                'scope': scope,
-                            },
-                        }
-                    elif position:
-                        position = position.format(ldap_base=ucr['ldap/base'])
-                        pos_condition = self._unique(conf.conditions, 'position', scope=scope, position=position)
-                        conditions.append(pos_condition)
-                        conf.conditions[pos_condition] = {
-                            'udm:conditions:target_position_in': {
-                                'position': position,
-                                'scope': scope,
-                            },
-                        }
+                conf.permission_sets.setdefault(psetname, []).extend(sorted(permissions))
 
-                    if not conditions:
-                        cap['conditions'].pop('AND')
+                # restrict capability to conditions
+                if object_type != '*':
+                    ot_condition = f'object-type-is-{object_type.replace("/", "-")}'
+                    cap['conditions'].setdefault('AND', []).append(ot_condition)
+                    conf.conditions[ot_condition] = {
+                        'udm:conditions:target_object_type_equals': {
+                            'objectType': object_type,
+                        },
+                    }
 
-                    if to_clause.get('if'):
-                        conditions.append(to_clause['if'])
+                scope, position = to_clause.get('position', [None, None])
+                scope = _SCOPES.get(scope, 'base')
+                if position and position == '{context}':
+                    context = role['context']
+                    assert context, to_clause
+                    pos_condition = self._unique(conf.conditions, 'position-from-context', scope=scope, context=context)
+                    conditions.append(pos_condition)
+                    conf.conditions[pos_condition] = {
+                        'udm:conditions:target_position_from_context': {
+                            'context': context,
+                            'scope': scope,
+                        },
+                    }
+                elif position:
+                    position = position.format(ldap_base=ucr['ldap/base'])
+                    pos_condition = self._unique(conf.conditions, 'position', scope=scope, position=position)
+                    conditions.append(pos_condition)
+                    conf.conditions[pos_condition] = {
+                        'udm:conditions:target_position_in': {
+                            'position': position,
+                            'scope': scope,
+                        },
+                    }
+
+                if not conditions:
+                    cap['conditions'].pop('AND')
+
+                if to_clause.get('if'):
+                    conditions.append(to_clause['if'])
 
         return yaml.dump(conf.compose())
 

@@ -16,6 +16,7 @@ override_dh_auto_clean:
 override_dh_auto_test:
 	dh_auto_test
 	PYTHONPATH=modules pytest-3
+	# PYTHONPATH=modules:../univention-authorization/modules/ python -m pytest unittests/test_authorization_udm_rules_to_yaml.py
 
 override_dh_install:
 	dh_install

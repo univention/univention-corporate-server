@@ -25,7 +25,7 @@ capabilities:
       grants-permissions:
       - container-dc-role-2-all
 capability-bundles:
-  udm:default-roles:
+  udm:bundles:
     role:
     - udm:container/dc:role
     - udm:container/dc:role-1
@@ -70,6 +70,6 @@ role-capability-mapping:
     role:
       capabilities: []
       capability-bundles:
-      - udm:default-roles:role
+      - udm:bundles:role
       displayname: ''
       permissions: []
