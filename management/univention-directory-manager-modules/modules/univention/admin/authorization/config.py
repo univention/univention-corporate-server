@@ -12,15 +12,18 @@ import hashlib
 import io
 import logging
 import sys
+from collections import defaultdict
 from pathlib import Path
 
 import lark
+import ldap.dn
 import yaml
 from lark import Lark, Transformer
 
 import univention.admin.modules
 from univention.authorization.config import AuthorizationConfig
 from univention.config_registry import ucr
+from univention.dn import DN
 
 
 log = logging.getLogger('ACL').getChild(__name__)
@@ -526,6 +529,306 @@ class UDMAuthorizationConfig:
 
         return yaml.dump(conf.compose())
 
+    def create_container(self, lo, pos):
+        container_cn = univention.admin.modules.get('container/cn')
+        for dn in DN(pos).walk(ucr['ldap/base']):
+            if not univention.admin.objects.get_object(lo, str(dn)):
+                po = univention.admin.uldap.position(ucr['ldap/base'])
+                po.setDn(str(dn.parent))
+                obj = container_cn.object(None, lo, po)
+                obj['name'] = dn.rdn[1]
+                obj.create()
+
+    def to_udm(self):
+        univention.admin.modules.update()
+        lo, po = univention.admin.uldap.getAdminConnection()
+        all_modules = [name for name in univention.admin.modules.modules if not univention.admin.modules.virtual(name)]
+        conf = AuthorizationConfig(self.filename.with_suffix('.yaml'))
+
+        privilege_base = f"cn={ldap.dn.escape_dn_chars(self.filename.stem)},cn=privileges,cn=authz,cn=univention,{ucr['ldap/base']}"
+        policy_base = f"cn={ldap.dn.escape_dn_chars(self.filename.stem)},cn=policies,cn=authz,cn=univention,{ucr['ldap/base']}"
+
+        authz_policy = univention.admin.modules.get('authorization/policy')
+        authz_privilege = univention.admin.modules.get('authorization/privilege')
+        self.create_container(lo, privilege_base)
+        self.create_container(lo, policy_base)
+
+        for cond in self.parsed['conditions']:
+            conf.conditions[cond['name']] = {cond['condition']: cond['parameters']}
+
+        for rule in self.parsed['rules']:
+            by = rule.get('by')
+            to = rule.get('to')
+            privileges = []
+
+            bundle_name = '--'.join(sorted(role['role'].rsplit(':', 1)[-1] for role in by))
+            bundle_name = self._unique(conf.capability_bundles.setdefault(BUNDLE_NAMESPACE, {}), bundle_name)
+
+            cap_bundle_string = f'{BUNDLE_NAMESPACE}:{bundle_name}'
+            bundle = conf.capability_bundles.setdefault(BUNDLE_NAMESPACE, {}).setdefault(bundle_name, [])
+
+            for role in by:
+                role_namespace, _, role_name = role['role'].rpartition(':')
+                # create one role capability mapping for each role and assign one capability bundle, where all capabilities are added
+                role_cap_map = conf.role_capability_mapping.setdefault(role_namespace, {}).setdefault(
+                    role_name,
+                    {
+                        'permissions': [],
+                        'capabilities': [],
+                        'capability-bundles': [],
+                    },
+                )
+                role_cap_map['displayname'] = rule.get('description', '')
+                if cap_bundle_string not in role_cap_map['capability-bundles']:
+                    role_cap_map['capability-bundles'].append(cap_bundle_string)
+
+            expanded_to_clauses = []
+            wildcard_object_type = False
+            for to_clause in to:
+                object_type = to_clause['objecttype']
+                if object_type == '*':
+                    wildcard_object_type = True
+                    for oc in all_modules:
+                        new_to_clase = copy.deepcopy(to_clause)
+                        new_to_clase['objecttype'] = oc
+                        expanded_to_clauses.append(new_to_clase)
+                else:
+                    expanded_to_clauses.append(to_clause)
+
+            for to_clause in expanded_to_clauses:
+                object_type = to_clause['objecttype']
+                grants = to_clause.get('grant', [])
+
+                # create a capability and assign it to the capability budle
+                capability_namespace = f'udm:{object_type}'
+                capability_name = self._unique(conf.capabilities.get(capability_namespace, {}), bundle_name)
+                capability_string = f'{capability_namespace}:{capability_name}'
+
+                bundle.append(capability_string)
+                cap = conf.capabilities.setdefault(capability_namespace, {}).setdefault(
+                    capability_name,
+                    {
+                        'displayname': to_clause.get('displayname', ''),
+                        'grants-permissions': [],
+                        'conditions': {'AND': []},
+                    },
+                )
+                conditions = cap['conditions']['AND']
+
+                # create a permission set for each capibility and assign it to the capability
+                psetname = to_clause.get('name')
+                if psetname and wildcard_object_type:
+                    psetname = f'{psetname}-{object_type.replace("/", "-")}'
+                psetname = psetname or f'{object_type.replace("/", "-")}-{capability_name}-all'
+                psetname = self._unique(conf.permission_sets, psetname)
+                # assert psetname not in conf.permission_sets, psetname
+                permissions = set()
+                cap['grants-permissions'].append(psetname)
+                priv_dn = f'cn={ldap.dn.escape_dn_chars(psetname)},{privilege_base}'
+                try:
+                    priv = authz_privilege.object(None, lo, po, priv_dn)
+                except univention.admin.uexceptions.noObject:
+                    priv = authz_privilege.object(None, lo, po)
+                    po.setDn(privilege_base)
+                priv['objecttype'] = object_type
+                priv['description'] = to_clause.get('description')
+                priv['name'] = psetname  # capability_name
+                priv_actions = set()
+                priv_props = []
+
+                for prop in grants:
+                    # grant given actions
+                    if 'properties' not in prop:
+                        actions = set(prop.get('actions', []))
+                        if '*' in actions:
+                            actions.update(set(ACTIONS))
+                            actions.remove('*')
+                        elif 'read' in actions:
+                            actions.add('search')
+
+                        permissions.update({f'udm:{object_type}:{action}' for action in sorted(actions)})
+                        priv_actions.update(actions)
+                        continue
+
+                    # grant given properties
+                    perms = set(prop['permission'].split(','))
+
+                    if '*' in perms:
+                        perms.update(set(PERMISSIONS))
+                        perms.remove('*')
+                    if 'read' in perms:
+                        perms.add('search')
+                    if 'write' in perms:
+                        perms.add('read')
+                        perms.add('write')
+                        perms.add('search')
+
+                    priv_props.extend([[propname, perm, ''] for propname in prop['properties'] for perm in perms])
+                    permissions.update({f'udm:{object_type}:{perm}-property-{propname}' for propname in prop['properties'] for perm in perms})
+
+                    for propname in sorted(prop['properties']):
+                        operator, values = prop.get('values', [None, None])
+                        if not values:
+                            continue
+
+                        if len(grants) != 1:
+                            raise RuntimeError('Security warning: Value based checks must create exactly only one capability (to block)!')
+                        if len(prop['properties']) != 1:
+                            raise RuntimeError('Security warning: Value based checks must check only one property!')
+                        if prop['permission'] == 'write' or 'write' in perms:
+                            raise RuntimeError('Security warning: Value based checks most likely should not add write permissions, design it the opposite way!')
+
+                        operator = _VALUE_OPERATORS.get(operator, '==')
+                        val_condition = self._unique(conf.conditions, f'{object_type.replace("/", "-")}-{propname}-values-{operator}', values='||'.join(sorted(values)))
+                        conditions.append(val_condition)
+                        conf.conditions[val_condition] = {
+                            'udm:conditions:target_property_value_compares': {
+                                'property': propname,
+                                'operator': operator,
+                                'values': values,
+                            },
+                        }
+
+                conf.permission_sets.setdefault(psetname, []).extend(sorted(permissions))
+
+                # restrict capability to conditions
+                if object_type != '*':
+                    ot_condition = f'object-type-is-{object_type.replace("/", "-")}'
+                    cap['conditions'].setdefault('AND', []).append(ot_condition)
+                    conf.conditions[ot_condition] = {
+                        'udm:conditions:target_object_type_equals': {
+                            'objectType': object_type,
+                        },
+                    }
+
+                scope, position = to_clause.get('position', [None, None])
+                scope = _SCOPES.get(scope, 'base')
+                if position:
+                    priv['position'] = [scope, position.format(context='cn={context}', ldap_base=ucr['ldap/base'])]
+                if position and position == '{context}':
+                    context = role['context']
+                    assert context, to_clause
+                    pos_condition = self._unique(conf.conditions, 'position-from-context', scope=scope, context=context)
+                    conditions.append(pos_condition)
+                    conf.conditions[pos_condition] = {
+                        'udm:conditions:target_position_from_context': {
+                            'context': context,
+                            'scope': scope,
+                        },
+                    }
+                elif position:
+                    position = position.format(ldap_base=ucr['ldap/base'])
+                    pos_condition = self._unique(conf.conditions, 'position', scope=scope, position=position)
+                    conditions.append(pos_condition)
+                    conf.conditions[pos_condition] = {
+                        'udm:conditions:target_position_in': {
+                            'position': position,
+                            'scope': scope,
+                        },
+                    }
+
+                if not conditions:
+                    cap['conditions'].pop('AND')
+
+                if to_clause.get('if'):
+                    conditions.append(to_clause['if'])
+                    priv['condition'] = to_clause['if']
+
+                priv['actions'] = sorted(priv_actions)
+                priv['properties'] = sorted(priv_props)
+                privileges.append(priv.modify() if priv.exists() else priv.create())
+
+            name = '--'.join(role['role'].rsplit(':', 1)[-1] for role in by)
+            pol_dn = f'cn={ldap.dn.escape_dn_chars(name)},{policy_base}'
+            try:
+                pol = authz_policy.object(None, lo, po, pol_dn)
+            except univention.admin.uexceptions.noObject:
+                pol = authz_policy.object(None, lo, po)
+                po.setDn(policy_base)
+            pol['description'] = rule.get('description', '')
+            pol['roles'] = [role['role'] for role in by]
+            pol['name'] = name
+            pol['privileges'] = privileges
+            if pol.exists():
+                pol.modify()
+            else:
+                pol.create()
+
+    def load_from_udm(self):
+        univention.admin.modules.update()
+        lo, _po = univention.admin.uldap.getAdminConnection()
+        all_modules = [name for name in univention.admin.modules.modules if not univention.admin.modules.virtual(name)]
+        rules = []
+        authz_policy = univention.admin.modules.get('authorization/policy')
+        authz_privilege = univention.admin.modules.get('authorization/privilege')
+
+        for policy in authz_policy.lookup(None, lo, ''):
+            policy.open()
+            ocs = {}
+            for privilege in policy['privileges']:
+                privilege = authz_privilege.object(None, lo, None, privilege)
+                data = ocs.setdefault(privilege['objecttype'], {'grants': [], 'actions': set()})
+                data['name'] = privilege['name']
+
+                data['actions'].update(set(privilege['actions']))
+                if privilege['condition']:
+                    data['if'] = privilege['condition']
+
+                context = None
+                position = (None, None)
+                if privilege['position']:
+                    scope, pos = privilege['position']
+                    pos = pos.replace('cn={context}', '{context}').replace(ucr['ldap/base'], '{ldap_base}')
+                    if pos == '{context}':
+                        context = 'udm:contexts:position'
+                    position = (scope, pos)
+                    data['position'] = position
+                else:
+                    data['position'] = None
+                data['description'] = privilege['description']
+
+                perm_to_props = defaultdict(set)
+                for prop, perm, _ in privilege['properties']:
+                    perm_to_props[perm].add(prop)
+
+                propset_to_perms = defaultdict(set)
+                for perm, props in perm_to_props.items():
+                    key = tuple(frozenset(sorted(props)))
+                    propset_to_perms[key].add(perm)
+
+                for propset, permissions in sorted(propset_to_perms.items(), key=lambda x: sorted(x[1])):
+                    data['grants'].append(
+                        {
+                            'properties': list(propset),
+                            'permission': list(permissions),
+                        },
+                    )
+
+            rule = {}
+            rule['to'] = []
+            first = next(iter(ocs.values()))
+            if all(d == first for d in ocs.values()) and set(ocs) == set(all_modules):
+                ocs = {'*': first}
+            for objecttype, data in ocs.items():
+                to_clause = {
+                    'grant': [{'actions': list(data['actions'])}] + data['grants'],
+                    'objecttype': objecttype,
+                    'name': data.get('name'),
+                    'if': data.get('if'),
+                    'position': data['position'],
+                    'description': data['description'],
+                }
+                for k in ('position', 'if', 'name'):
+                    if not to_clause[k]:
+                        to_clause.pop(k)
+                rule['to'].append(to_clause)
+            rule['description'] = policy['description']
+            rule['by'] = [{'role': r, 'context': context} for r in policy['roles']]
+            rules.append(rule)
+
+        self.parsed['rules'] = rules
+        # self.parsed = {'conditions': [{'name': 'is-self', 'condition': 'guardian:builtin:target_is_self', 'parameters': {}}], 'rules': rules}
+
     def _unique(self, parent, string, **unique):
         if unique:
             hash_ = hashlib.sha1('-'.join(sorted(unique.values())).encode()).hexdigest()[:8]
@@ -541,6 +844,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--config')
+    parser.add_argument('--compose-from-udm', action='store_true')
     parser.add_argument('--compose', action='store_true')
     parser.add_argument('--convert', action='store_true')
     parser.add_argument('--unstrict', action='store_true')
@@ -548,6 +852,9 @@ if __name__ == '__main__':
 
     conf = UDMAuthorizationConfig(args.config, strict=not args.unstrict)
     conf.parse()
+    if args.compose_from_udm:
+        conf.load_from_udm()
+        print(conf.compose())
     if args.compose:
         print(conf.compose())
     if args.convert:

@@ -28,6 +28,9 @@ short_description = _('Authorization Privilege')
 object_name = _('Authorization Privilege')
 object_name_plural = _('Authorization Privilege')
 long_description = ''
+help_text = _(
+    '<p>Privileges grant access rights to roles. A priviledge always applies to one or more UDM properties of a single UDM module, optionally restricted to objects underneath of a certain position in the directory.</p><p>More information can be found in the <a href="https://docs.software-univention.de/manual/5.2/en/index.html" target="_blank">online documentation for UCS</a>.</p>',
+)
 
 
 # fmt: off
@@ -88,7 +91,7 @@ property_descriptions = {
 
 layout = [
     Tab(_('General'), _('Basic settings'), layout=[
-        Group(_('Role selection'), layout=[
+        Group(_('Privilege'), layout=[
             ["name"],
             ["description"],
         ]),
@@ -99,6 +102,10 @@ layout = [
             "properties",
         ]),
     ]),
+    Tab(_('Policies'), _('Policies'), layout=[
+        Group(_('Privilege'), layout=[
+        ]),
+    ], help_text=_('All policies which reference this privilege are shown here.')),
 ]
 # fmt: on
 

@@ -69,6 +69,7 @@ class UniventionDirectoryManagerRoles:
         subparser.add_argument('--config', required=True, type=argparse.FileType('r'))
         subparser.add_argument('--remove', action='store_true')
         subparser.add_argument('--strict', action='store_true')
+        subparser.add_argument('--store-global', action='store_true')
 
         subparser = subparsers.add_parser('create-roles-from-yaml', usage=argparse.SUPPRESS)
         subparser.set_defaults(func=self.create_roles_from_yaml)
@@ -80,6 +81,7 @@ class UniventionDirectoryManagerRoles:
         subparser.add_argument('--config', default='/usr/share/univention-directory-manager-modules/udm-default-authorization-roles.policy', type=argparse.FileType('r'))
         subparser.add_argument('--remove', action='store_true')
         subparser.add_argument('--strict', action='store_true')
+        subparser.add_argument('--store-global', action='store_true')
 
         subparser = subparsers.add_parser('prune')
         subparser.set_defaults(func=self.prune)
@@ -117,6 +119,9 @@ class UniventionDirectoryManagerRoles:
         with open(cfg, 'w') as fd:
             conf = UDMAuthorizationConfig(self.args.config.name, strict=self.args.strict)
             conf.parse()
+            if self.args.store_global:
+                conf.to_udm()
+                conf.load_from_udm()
             yaml_content = conf.to_yaml()
             fd.write(yaml_content)
         log.info('Wrote temporary YAML to %s:\n%s', cfg, yaml_content)
