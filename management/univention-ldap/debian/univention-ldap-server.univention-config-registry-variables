@@ -221,7 +221,7 @@ Categories=service-ldap
 [ldap/tls/minprotocol]
 Description[de]=Dies konfiguriert die Mindestversion für das SSL/TLS Protokoll. Für TLS 1.0/1.1/1.2 ist respektive 3.1/3.2/3.3 anzugeben.
 Description[en]=This configures the minimum version for the SSL/TLS protocol. For TLS 1.0/1.1/1.2 the value 3.1/3.2/3.3 must be specified.
-Default=3.1
+Default=3.4
 Type=str
 Categories=service-ldap
 
