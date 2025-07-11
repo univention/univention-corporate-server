@@ -57,6 +57,7 @@ def test_helpdesk_operator_cant_modify_properties(ldap_base, ou, user, changes, 
 ])
 def test_helpdesk_operator_can_reset_password(position, expected, ou_helpdesk_operator_rest_client, udm, ou, ldap_base):
     dn, _ = udm.create_user(position=position.format(ou_dn=ou.dn, ldap_base=ldap_base))
+
     changes = {
         'homeSharePath': '/home/ou',
         'overridePWHistory': True,
