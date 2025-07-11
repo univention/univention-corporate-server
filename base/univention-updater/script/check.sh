@@ -723,6 +723,8 @@ update_check_system_date_too_old() {
 
 update_check_minimum_ucs_version_of_all_systems_in_domain () {  # Bug #51621
 	[ "$server_role" != "domaincontroller_master" ] && return 0
+	local var="update$VERSION/ignore_minimum_ucs_version_of_all_systems_in_domain"  # https://forge.univention.org/bugzilla/show_bug.cgi?id=58444
+	ignore_check "$var" && return 100
 
 	# FIXME: python3-univention-lib is not installed on UCS-4.4-7 by default, so this must remain Python 2 (for now):
 	MIN_VERSION="$MIN_VERSION" /usr/bin/python2.7 -c '
