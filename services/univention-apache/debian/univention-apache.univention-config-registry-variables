@@ -105,12 +105,14 @@ Categories=service-apache
 Description[de]=Definiert den Wert der Apache Konfiguration "ServerSignature".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/mod/core.html#serversignature>.
 Description[en]=Defines the value of the apache configuration "ServerSignature". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/core.html#serversignature>.
 Type=str
+Default=Off
 Categories=service-apache
 
 [apache2/server-tokens]
 Description[de]=Definiert den Wert der Apache Konfiguration "ServerTokens".  Eine detaillierte Beschreibung findet sich unter <https://httpd.apache.org/docs/2.4/mod/core.html#servertokens>.
 Description[en]=Defines the value of the apache configuration "ServerTokens". A detailed description can be found at <https://httpd.apache.org/docs/2.4/mod/core.html#servertokens>.
 Type=str
+Default=Prod
 Categories=service-apache
 
 [apache2/server-admin]
