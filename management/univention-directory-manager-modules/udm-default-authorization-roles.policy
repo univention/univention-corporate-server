@@ -48,7 +48,10 @@ named-condition "is-self"
 # Domain Administrators
 access by role="udm:default-roles:domain-administrator"
   description="Domain Admins are allowed to do anything in the whole domain"
+
   to objecttype="*"
+    description="Allow everything"
+
     grant actions="*"
     grant properties="*" permission="write"
 
@@ -57,82 +60,102 @@ access by role="udm:default-roles:domain-user"
   description="Domain Users are allowed to read everything non-sensible"
 
   to objecttype="users/user" if="is-self"
+    description="Allow reading own object"
+
     grant actions="search,read"
     grant properties="*" permission="read"
 
 # Self service permissions
 access by role="udm:default-roles:self-service-profile"
   description="Self service users are allowed to modify the properties of the own user object specified in UCR variable `self-service/udm_attributes`"
+
   to objecttype="users/user" if="is-self"
+    description="Allow to write self-service attributes"
+
     grant actions="modify"
-    grant properties="jpegPhoto,e-mail,phone,roomNumber,departmentNumber,country,homeTelephoneNumber,mobileTelephoneNumber,homePostalAddress" permission="write"
+    grant properties="country,departmentNumber,e-mail,homePostalAddress,homeTelephoneNumber,jpegPhoto,mobileTelephoneNumber,phone,roomNumber" permission="write"
 
 # Every role
 access
-  by role="udm:default-roles:organizational-unit-admin"
-  # by role="udm:default-roles:domain-administrator"
   by role="udm:default-roles:domain-user"
-  by role="udm:default-roles:self-service-profile"
   by role="udm:default-roles:helpdesk-operator"
   by role="udm:default-roles:linux-ou-client-manager"
+  by role="udm:default-roles:organizational-unit-admin"
+  by role="udm:default-roles:self-service-profile"
+  # by role="udm:default-roles:domain-administrator"
   description="Everyone is allowed to read the LDAP base and certain internal objects"
 
   # LDAP Base
   to objecttype="container/dc" position.base="{ldap_base}"
+    description="Allow reading LDAP base"
+
     grant actions="search,read"
     grant properties="*" permission="read"
 
 # Every context role
 access
-  by role="udm:default-roles:organizational-unit-admin" context="udm:contexts:position"
   by role="udm:default-roles:helpdesk-operator" context="udm:contexts:position"
   by role="udm:default-roles:linux-ou-client-manager" context="udm:contexts:position"
+  by role="udm:default-roles:organizational-unit-admin" context="udm:contexts:position"
+  description="Every context role is allowed to read containers underneath of context position"
+
+  to objecttype="container/ou" position.subtree="{context}"
+    description="Allow to read own OU"
+
+    grant actions="search,read"
+    grant properties="*" permission="read"
 
   to objecttype="container/cn" position.subtree="{context}"
     description="Allow to read the container structure of the OU"
+
     grant actions="search,read"
     grant properties="*" permission="read"
 
 access
-  by role="udm:default-roles:organizational-unit-admin" context="udm:contexts:position"
-  by role="udm:default-roles:helpdesk-operator" context="udm:contexts:position"
+  by role="udm:default-roles:helpdesk-operator"
+  by role="udm:default-roles:organizational-unit-admin"
+  description="User management requires to read user policies"
 
   # for handling of users and groups we need to grant permissions on policies applying to them
   to objecttype="policies/desktop"
+    description="Allow to read Desktop policies"
+
     grant actions="search,read"
     grant properties="*" permission="read"
 
   to objecttype="policies/pwhistory"
+    description="Allow to read Password History policies"
+
     grant actions="search,read"
     grant properties="*" permission="read"
 
   to objecttype="policies/umc"
+    description="Allow to read UMC policies"
+
     grant actions="search,read"
     grant properties="*" permission="read"
-
-
 
 # Organizational Unit Administrators
 access by role="udm:default-roles:organizational-unit-admin" context="udm:contexts:position"
   description="Organizational Unit Adminstrators can administrate users and groups in their OU"
 
-  to objecttype="container/ou" position.subtree="{context}"
-    grant actions="search,read"
-    grant properties="*" permission="read"
-
-  # mail/domain permission in global mail container
   to objecttype="mail/domain" position.subtree="cn=domain,cn=mail,{ldap_base}"
+    description="Allow to read mail/domain in global mail container"
+
     grant actions="search,read"
     grant properties="*" permission="read"
 
   to objecttype="users/user"
+    description="Allow to create users/user reports"
+
     grant actions="report-create"
 
   # user permissions in OU
   to objecttype="users/user" position.subtree="{context}"
-    description="Write user object in own OU" name="users-user-ou-write"
+    description="Write user objects in own OU"
+
     grant actions="search,read,create,modify,rename,remove,move"
-    grant properties="username,lastname,firstname" permission="write"
+    grant properties="firstname,lastname,username" permission="write"
     grant properties="password,serviceSpecificPassword" permission="writeonly"
     grant properties="guardianRoles" permission="none"
     grant properties="guardianInheritedRoles" permission="none"
@@ -140,6 +163,8 @@ access by role="udm:default-roles:organizational-unit-admin" context="udm:contex
 
   # group permissions in OU
   to objecttype="groups/group" position.subtree="{context}"
+    description="Write group objects in own OU"
+
     grant actions="search,read,create,modify,rename,remove,move"
     grant properties="name" permission="write"
     grant properties="guardianMemberRoles" permission="none"
@@ -156,71 +181,93 @@ access by role="udm:default-roles:organizational-unit-admin" context="udm:contex
 access by role="udm:default-roles:helpdesk-operator" context="udm:contexts:position"
   description="Helpdesk Operators are only allowed to set passwords of users underneath of a certain OU specified in the context udm:contexts:position"
 
-  to objecttype="container/ou" position.subtree="{context}"
-    grant actions="search,read"
-    grant properties="*" permission="read"
-
   # user permissions in OU
   to objecttype="users/user" position.subtree="{context}"
-    grant actions="search,read,modify"  # modify,rename,remove,move
-    grant properties="overridePWHistory,overridePWLength,unlock,password" permission="write"
+    description="Allow to write password related properties"
+
+    grant actions="search,read,modify"  # rename,remove,move
+    grant properties="overridePWHistory,overridePWLength,password,unlock" permission="write"
     grant properties="password" permission="writeonly"
     grant properties="homeSharePath" permission="write"  # UDM in UMC always set a default value from the template
 
   # group permissions in OU
   to objecttype="groups/group" position.subtree="{context}"
+    description="Allow to read all group names in own OU"
+
     grant actions="search,read"
     grant properties="name" permission="read"
 
 access by role="udm:default-roles:linux-ou-client-manager" context="udm:contexts:position"
   description="Join Clients Administrators are allowed to create/join linux computers into the domain, and set their corresponding password."
 
-  to objecttype="container/ou" position.subtree="{context}"
-    grant actions="search,read"
-    grant properties="*" permission="read"
-
   # linux computer permissions in context OU
   to objecttype="computers/linux" position.subtree="{context}"
-    grant actions="search,read,create,modify,rename,remove,move"
-    grant properties="*" permission=write  # FIXME: can put the client into Domain Administrators
+    description="Allow management of linux computers in own OU"
 
-  # group permissions in OU-specific groups only
+    grant actions="search,read,create,modify,rename,remove,move"
+    grant properties="*" permission="write"  # FIXME: can put the client into Domain Administrators
+
+  # group read permissions in OU-specific groups only
   to objecttype="groups/group" position.subtree="{context}"
+    description="Allow to read groups in own OU"
+
     grant actions="search,read,create,modify,rename,remove,move"
     grant properties="*" permission="read"
+
+  # group write permissions in OU-specific groups only
+  to objecttype="groups/group" position.subtree="{context}"
+    description="Allow to write groups in own OU"
+
+    grant actions="create,modify,rename,remove,move"
     grant properties="hosts" permission="write"
 
 access by role="udm:default-roles:linux-ou-client-manager"
   description="Join Clients Administrators are allowed to manage networks, DNS records, and DHCP settings for client joining"
 
   to objecttype="container/cn" position.subtree="cn=networks,{ldap_base}"
+    description="Allow to read networks container"
+
     grant actions="search,read"
     grant properties="*" permission="read"
 
   to objecttype="container/cn" position.subtree="cn=dns,{ldap_base}"
+    description="Allow to read dns container"
+
     grant actions="search,read"
     grant properties="*" permission="read"
 
   to objecttype="container/cn" position.subtree="cn=dhcp,{ldap_base}"
+    description="Allow to read dhcp container"
+
     grant actions="search,read"
     grant properties="*" permission="read"
 
   to objecttype="networks/network"
+    description="Allow to write network objects"
+
     grant actions="search,read,create,modify,rename,remove,move"
     grant properties="*" permission="write"
 
   to objecttype="dns/host_record"
+    description="Allow to write DNS host records"
+
     grant actions="search,read,create,modify,rename,remove,move"
     grant properties="*" permission="write"
 
   to objecttype="dns/ptr_record"
+    description="Allow to write DNS pointer records"
+
     grant actions="search,read,create,modify,rename,remove,move"
     grant properties="*" permission="write"
 
   to objecttype="dhcp/service"
+    description="Allow to read DHCP services"
+
     grant actions="search,read"
     grant properties="*" permission="read"
 
   to objecttype="dhcp/subnet"
+    description="Allow to read DHCP subnets"
+
     grant actions="search,read"
     grant properties="*" permission="read"
