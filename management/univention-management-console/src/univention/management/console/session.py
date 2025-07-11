@@ -300,11 +300,12 @@ class IACLs:
         self.get_permitted_commands(moduleManager)
 
     def _get_acls(self):
-        if not self.session().user.authenticated:
+        sess = self.session()
+        if not sess.user.authenticated:
             # We need to set empty ACL's for unauthenticated requests
             return ACLs()
         else:
-            return LDAP_ACLs(self.session().user.username, ucr['ldap/base'])
+            return LDAP_ACLs(sess.user.username, sess.user.user_dn, ucr['ldap/base'])
 
     def is_command_allowed(self, command, options, flavor):
         if not isinstance(options, dict):

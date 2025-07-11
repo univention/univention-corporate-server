@@ -325,8 +325,9 @@ class LDAP_ACLs(ACLs):
     FROM_USER = True
     FROM_GROUP = False
 
-    def __init__(self, username, ldap_base):
+    def __init__(self, username, userdn, ldap_base):
         self.username = username
+        self.userdn = userdn
         ACLs.__init__(self, ldap_base)
 
     def reload(self, lo=None):
@@ -343,17 +344,14 @@ class LDAP_ACLs(ACLs):
 
     def _get_policy_for_dn(self, lo, dn):
         policy = lo.getPolicies(dn, policies=[], attrs={}, result={}, fixedattrs={})
-
         return policy.get('umcPolicy', None)
 
     def _read_from_ldap(self, lo):
         # TODO: check for fixed attributes
         try:
-            userdn = lo.searchDn(filter_format('(&(objectClass=person)(uid=%s))', [self.username]), unique=True)[0]
-            policy = self._get_policy_for_dn(lo, userdn)
-        except (udm_errors.base, ldap.LDAPError, IndexError) as exc:
-            if not isinstance(exc, IndexError):
-                ACL.warning('Error reading credentials from LDAP for user %s: %s', self.username, exc_info=True)
+            policy = self._get_policy_for_dn(lo, self.userdn)
+        except (udm_errors.base, ldap.LDAPError):
+            ACL.warning('Error reading credentials from LDAP for user %s: %s', self.username, exc_info=True)
             # read ACLs from file
             self._read_from_file(self.username)
             return
@@ -363,7 +361,7 @@ class LDAP_ACLs(ACLs):
                 self._append(lo, LDAP_ACLs.FROM_USER, lo.get(value.decode('UTF-8')))
 
         # TODO: check for nested groups
-        groupDNs = lo.searchDn(filter=filter_format('uniqueMember=%s', [userdn]))
+        groupDNs = lo.searchDn(filter=filter_format('uniqueMember=%s', [self.userdn]))
 
         for gDN in groupDNs:
             policy = self._get_policy_for_dn(lo, gDN)
