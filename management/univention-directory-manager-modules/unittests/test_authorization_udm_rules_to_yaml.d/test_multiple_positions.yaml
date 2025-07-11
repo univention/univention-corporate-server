@@ -1,21 +1,21 @@
 capabilities:
   udm:con/dc:
-    role:
+    role-1:
       conditions:
         AND:
         - object-type-is-con-dc
         - position-d42fd735
       displayname: ''
       grants-permissions:
-      - con-dc-role-all
-    role-1:
+      - con-dc-role-1-all
+    role-2:
       conditions:
         AND:
         - object-type-is-con-dc
         - position-cc818ccc
       displayname: ''
       grants-permissions:
-      - con-dc-role-1-all
+      - con-dc-role-2-all
   udm:container/dc:
     role:
       conditions:
@@ -26,11 +26,13 @@ capabilities:
       grants-permissions:
       - container-dc-role-all
 capability-bundles:
-  udm:default-roles:
+  udm:bundles:
     role:
     - udm:container/dc:role
-    - udm:con/dc:role
+    role-1:
     - udm:con/dc:role-1
+    role-2:
+    - udm:con/dc:role-2
 conditions:
   object-type-is-con-dc:
     udm:conditions:target_object_type_equals:
@@ -56,7 +58,7 @@ permission-sets:
   - udm:con/dc:read-property-*
   - udm:con/dc:search
   - udm:con/dc:search-property-*
-  con-dc-role-all:
+  con-dc-role-2-all:
   - udm:con/dc:read
   - udm:con/dc:read-property-*
   - udm:con/dc:search
@@ -71,6 +73,6 @@ role-capability-mapping:
     role:
       capabilities: []
       capability-bundles:
-      - udm:default-roles:role
+      - udm:bundles:role
       displayname: ''
       permissions: []
