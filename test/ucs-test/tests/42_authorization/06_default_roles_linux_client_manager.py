@@ -5,60 +5,23 @@
 ##  - domaincontroller_backup
 ## exposure: dangerous
 
-import locale
 import subprocess
-from types import SimpleNamespace
 
 import pytest
+from conftest import translate
 
 from univention.config_registry import ucr as _ucr
 from univention.lib.umc import BadRequest
 from univention.testing.strings import random_ip
-from univention.testing.umc import Client
 
 
 check_delegation = pytest.mark.skipif(not _ucr.is_true('directory/manager/web/delegative-administration/enabled'), reason='directory/manager/web/delegative-administration/enabled not activated')
-
-
-TRANSLATIONS = {
-    'de_DE': {
-        'Permission denied.': 'Zugriff verweigert.',
-        'No such object:': 'Das Objekt existiert nicht:',
-    },
-    'en_US': {
-        'Permission denied.': 'Permission denied.',
-        'No such object:': 'No such object:',
-    },
-}
-
-
-def _(string: str) -> str:
-    code, _ = locale.getlocale()
-    return TRANSLATIONS.get(code, {}).get(string, string)
 
 
 @pytest.fixture(autouse=True)
 def restart_umc():
     yield
     subprocess.call(['deb-systemd-invoke', 'restart', 'univention-management-console-server.service'])
-
-
-@pytest.fixture
-def ou(ldap_base):
-    return SimpleNamespace(
-        dn=f'ou=ou1,{ldap_base}',
-        client_manager_username='ou1-clientmanager',
-        client_manager_dn=f'uid=ou1-clientmanager,cn=users,{ldap_base}',
-        computer_default_container=f'cn=computers,ou=ou1,{ldap_base}',
-        admin_username='ou1-admin',
-        admin_dn=f'uid=ou1-admin,cn=users,{ldap_base}',
-    )
-
-
-@pytest.fixture
-def linux_client_manager_user(ou, ldap_base, udm):
-    """Get the existing linux client manager user created by setup script."""
-    return f'uid={ou.client_manager_username},cn=users,{ldap_base}'
 
 
 @pytest.fixture
@@ -116,155 +79,94 @@ def test_group_at_base(ldap_base, udm, random_username):
 
 
 @check_delegation
-def test_default_containers(ou):
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-    res = client.umc_command('udm/containers', {"objectType": 'computers/linux'}, 'computers/linux').result
+def test_default_containers(linux_client_manager_umc_client, ou):
+    res = linux_client_manager_umc_client.umc_command('udm/containers', {"objectType": 'computers/linux'}, 'computers/linux').result
     assert {x['id'] for x in res} == {ou.computer_default_container}
 
 
 @check_delegation
-def test_linux_client_read_allowed(ou, ldap_base, linux_client_manager_user, test_computer_in_ou):
+def test_linux_client_read_allowed(linux_client_manager_umc_client, test_computer_in_ou):
     """Test that linux client manager can read computers in their OU."""
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
-    res = client.umc_command('udm/get', [test_computer_in_ou], 'computers/linux').result
+    res = linux_client_manager_umc_client.get_object('computers/linux', test_computer_in_ou)
     assert res
-    assert res[0]['$dn$'] == test_computer_in_ou
-    assert 'name' in res[0]
-    assert 'ip' in res[0]
+    assert res['$dn$'] == test_computer_in_ou
+    assert 'name' in res
+    assert 'ip' in res
 
 
 @check_delegation
-def test_linux_client_read_denied_cross_ou(ou, ldap_base, linux_client_manager_user, test_computer_at_base):
+def test_linux_client_read_denied_cross_ou(linux_client_manager_umc_client, test_computer_at_base):
     """Test that linux client manager cannot read computers outside their OU."""
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
     with pytest.raises(BadRequest):
-        client.umc_command('udm/get', [test_computer_at_base], 'computers/linux')
+        linux_client_manager_umc_client.get_object('computers/linux', test_computer_at_base)
 
 
 @check_delegation
-def test_linux_client_modify_allowed(ou, ldap_base, linux_client_manager_user, test_computer_in_ou):
+def test_linux_client_modify_allowed(linux_client_manager_umc_client, test_computer_in_ou):
     """Test that linux client manager can modify computers in their OU."""
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
-    changes = {
-        '$dn$': test_computer_in_ou,
+    res = linux_client_manager_umc_client.modify_object('computers/linux', test_computer_in_ou, {
         'description': 'Modified by linux client manager',
-    }
-
-    res = client.umc_command('udm/put', [{'object': changes}], 'computers/linux').result[0]
+    })
     assert res['success']
     assert res['$dn$'] == test_computer_in_ou
 
-    read_res = client.umc_command('udm/get', [test_computer_in_ou], 'computers/linux').result[0]
+    read_res = linux_client_manager_umc_client.get_object('computers/linux', test_computer_in_ou)
     assert read_res['description'] == 'Modified by linux client manager'
 
 
 @check_delegation
-def test_linux_client_modify_denied_cross_ou(ou, ldap_base, linux_client_manager_user, test_computer_at_base):
+def test_linux_client_modify_denied_cross_ou(linux_client_manager_umc_client, test_computer_at_base):
     """Test that linux client manager cannot modify computers outside their OU."""
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
-    changes = {
-        '$dn$': test_computer_at_base,
+    res = linux_client_manager_umc_client.modify_object('computers/linux', test_computer_at_base, {
         'description': 'Should not work',
-    }
-
-    res = client.umc_command('udm/put', [{'object': changes}], 'computers/linux').result[0]
+    })
     assert not res['success']
-    assert res['details'] == f'{_("No such object:")} {test_computer_at_base}.'
+    assert res['details'] == f'{translate("No such object:")} {test_computer_at_base}.'
 
 
 @check_delegation
-def test_linux_client_password_reset_allowed(ou, ldap_base, linux_client_manager_user, test_computer_in_ou):
+def test_linux_client_password_reset_allowed(linux_client_manager_umc_client, test_computer_in_ou):
     """Test that linux client manager can reset passwords of computers in their OU."""
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
-    changes = {
-        '$dn$': test_computer_in_ou,
+    res = linux_client_manager_umc_client.modify_object('computers/linux', test_computer_in_ou, {
         'password': 'newpassword123',
-    }
-
-    res = client.umc_command('udm/put', [{'object': changes}], 'computers/linux').result[0]
+    })
     assert res['success']
     assert res['$dn$'] == test_computer_in_ou
 
 
 @check_delegation
-def test_linux_client_password_reset_denied_cross_ou(ou, ldap_base, linux_client_manager_user, test_computer_at_base):
+def test_linux_client_password_reset_denied_cross_ou(linux_client_manager_umc_client, test_computer_at_base):
     """Test that linux client manager cannot reset passwords of computers outside their OU."""
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
-    changes = {
-        '$dn$': test_computer_at_base,
+    res = linux_client_manager_umc_client.modify_object('computers/linux', test_computer_at_base, {
         'password': 'shouldnotwork',
-    }
-
-    res = client.umc_command('udm/put', [{'object': changes}], 'computers/linux').result[0]
+    })
     assert not res['success']
-    assert res['details'] == f'{_("No such object:")} {test_computer_at_base}.'
+    assert res['details'] == f'{translate("No such object:")} {test_computer_at_base}.'
 
 
 @check_delegation
-def test_linux_client_search_scope(ou, ldap_base, linux_client_manager_user, test_computer_in_ou, test_computer_at_base, udm):
+def test_linux_client_search_scope(linux_client_manager_umc_client, ou, ldap_base, test_computer_in_ou, test_computer_at_base, udm):
     """Test that linux client manager can only search computers in their OU."""
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
     # Test 1: Search in the specific OU container should work
-    options_ou = {
-        "container": f"cn=computers,{ou.dn}",
-        "hidden": False,
-        "objectType": "computers/linux",
-        "objectProperty": "None",
-        "objectPropertyValue": "",
-        "fields": ["name", "path", "displayName"],
-    }
-
-    res_ou = client.umc_command('udm/query', options_ou, 'computers/linux').result
+    res_ou = linux_client_manager_umc_client.search_objects('computers/linux', container=f"cn=computers,{ou.dn}")
     found_dns_ou = {x['$dn$'] for x in res_ou}
 
     # Should find the computer in the OU
     assert test_computer_in_ou in found_dns_ou
 
     # Test 2: Global "all containers" search should be restricted
-    options_all = {
-        "container": "all",
-        "hidden": False,
-        "objectType": "computers/linux",
-        "objectProperty": "None",
-        "objectPropertyValue": "",
-        "fields": ["name", "path", "displayName"],
-    }
-    res_all = client.umc_command('udm/query', options_all, 'computers/linux').result
+    res_all = linux_client_manager_umc_client.search_objects('computers/linux', container="all")
     found_dns_all = {x['$dn$'] for x in res_all}
     expected_dns = {x[0] for x in udm.list_objects('computers/linux', properties=["DN"], position=ou.dn)}
     assert found_dns_all == expected_dns
 
     # Test 3: Search in base-level computers container should be restricted
-    options_base = {
-        "container": f"cn=computers,{ldap_base}",
-        "hidden": False,
-        "objectType": "computers/linux",
-        "objectProperty": "None",
-        "objectPropertyValue": "",
-        "fields": ["name", "path", "displayName"],
-    }
-
     with pytest.raises(BadRequest):
-        client.umc_command('udm/query', options_base, 'computers/linux').result  # noqa: B018
+        linux_client_manager_umc_client.search_objects('computers/linux', container=f"cn=computers,{ldap_base}")
 
 
 @check_delegation
-def test_linux_client_delete_allowed(ou, ldap_base, linux_client_manager_user, udm, random_username):
+def test_linux_client_delete_allowed(linux_client_manager_umc_client, ou, udm, random_username):
     """Test that linux client manager can delete computers in their OU."""
     computer_name = f'delete-test-{random_username()}'
     unique_ip = random_ip()
@@ -276,42 +178,20 @@ def test_linux_client_delete_allowed(ou, ldap_base, linux_client_manager_user, u
         position=f'cn=computers,{ou.dn}',
     )
 
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
-    options = [{
-        'object': computer_dn,
-        "options": {
-            "cleanup": True,
-            "recursive": True,
-        },
-    }]
-
-    res = client.umc_command('udm/remove', options, 'computers/computer').result[0]
+    res = linux_client_manager_umc_client.remove_object('computers/linux', computer_dn)
     assert res['success']
 
 
 @check_delegation
-def test_linux_client_delete_denied_cross_ou(ou, ldap_base, linux_client_manager_user, test_computer_at_base):
+def test_linux_client_delete_denied_cross_ou(linux_client_manager_umc_client, test_computer_at_base):
     """Test that linux client manager cannot delete computers outside their OU."""
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
-    options = [{
-        'object': test_computer_at_base,
-        "options": {
-            "cleanup": True,
-            "recursive": True,
-        },
-    }]
-
-    res = client.umc_command('udm/remove', options, 'computers/linux').result[0]
+    res = linux_client_manager_umc_client.remove_object('computers/linux', test_computer_at_base)
     assert not res['success']
-    assert res['details'] == f'{_("No such object:")} {test_computer_at_base}.'
+    assert res['details'] == f'{translate("No such object:")} {test_computer_at_base}.'
 
 
 @check_delegation
-def test_linux_client_manager_cannot_access_users(ou, ldap_base, linux_client_manager_user, udm, random_username):
+def test_linux_client_manager_cannot_access_users(linux_client_manager_umc_client, ou, udm, random_username):
     """Test that linux client manager cannot access user objects."""
     user_dn = udm.create_object(
         'users/user',
@@ -321,54 +201,30 @@ def test_linux_client_manager_cannot_access_users(ou, ldap_base, linux_client_ma
         position=f'cn=users,{ou.dn}',
     )
 
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
     with pytest.raises(BadRequest):
-        client.umc_command('udm/get', [user_dn], 'users/user')
+        linux_client_manager_umc_client.get_object('users/user', user_dn)
 
-    options = [{
-        'object': {
-            'lastname': f'newuser-{random_username()}',
-            'username': f'newuser-{random_username()}',
-            'password': 'univention',
-        },
-        "options": {
-            "container": f'cn=users,{ou.dn}',
-            "objectType": "users/user",
-        },
-    }]
-
-    res = client.umc_command('udm/add', options, 'users/user').result[0]
+    res = linux_client_manager_umc_client.create_object('users/user', f'cn=users,{ou.dn}', {
+        'lastname': f'newuser-{random_username()}',
+        'username': f'newuser-{random_username()}',
+        'password': 'univention',
+    })
     assert not res['success']
-    assert res['details'] == _('Permission denied.')
+    assert res['details'] == translate('Permission denied.')
 
 
 @check_delegation
-def test_linux_client_manager_cannot_access_global_features(ou, ldap_base, linux_client_manager_user):
+def test_linux_client_manager_cannot_access_global_features(linux_client_manager_umc_client):
     """Test that linux client manager cannot access global system administration features."""
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
-    res = client.umc_command('udm/query', {
-        "container": "all",
-        "objectType": "mail/domain",
-        "objectProperty": "None",
-        "objectPropertyValue": "",
-    }, 'mail/domain').result
+    res = linux_client_manager_umc_client.search_objects('mail/domain')
     assert res == []
 
-    res = client.umc_command('udm/query', {
-        "container": "all",
-        "objectType": "dns/forward_zone",
-        "objectProperty": "None",
-        "objectPropertyValue": "",
-    }, 'dns/forward_zone').result
+    res = linux_client_manager_umc_client.search_objects('dns/forward_zone')
     assert res == []
 
 
 @check_delegation
-def test_linux_client_manager_cross_ou_complete_denial(ou, ldap_base, linux_client_manager_user, udm, random_username):
+def test_linux_client_manager_cross_ou_complete_denial(linux_client_manager_umc_client, ou, ldap_base, udm, random_username):
     """Test comprehensive access denial to other OUs."""
     ou2_dn = f'ou=ou2,{ldap_base}'
 
@@ -382,187 +238,118 @@ def test_linux_client_manager_cross_ou_complete_denial(ou, ldap_base, linux_clie
         position=f'cn=computers,{ou2_dn}',
     )
 
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
     with pytest.raises(BadRequest):
-        client.umc_command('udm/get', [computer_in_ou2], 'computers/linux')
+        linux_client_manager_umc_client.get_object('computers/linux', computer_in_ou2)
 
-    changes = {
-        '$dn$': computer_in_ou2,
+    res = linux_client_manager_umc_client.modify_object('computers/linux', computer_in_ou2, {
         'description': 'Should not work',
-    }
-
-    res = client.umc_command('udm/put', [{'object': changes}], 'computers/linux').result[0]
+    })
     assert not res['success']
-    assert res['details'] == f'{_("No such object:")} {computer_in_ou2}.'
+    assert res['details'] == f'{translate("No such object:")} {computer_in_ou2}.'
 
-    options = [{
-        'object': computer_in_ou2,
-        "options": {
-            "cleanup": True,
-            "recursive": True,
-        },
-    }]
-
-    res = client.umc_command('udm/remove', options, 'computers/linux').result[0]
+    res = linux_client_manager_umc_client.remove_object('computers/linux', computer_in_ou2)
     assert not res['success']
-    assert res['details'] == f'{_("No such object:")} {computer_in_ou2}.'
+    assert res['details'] == f'{translate("No such object:")} {computer_in_ou2}.'
 
 
 @check_delegation
-def test_linux_client_create_computer_allowed(ou, ldap_base, linux_client_manager_user, random_username):
+def test_linux_client_create_computer_allowed(linux_client_manager_umc_client, ou, random_username):
     """Test that linux client manager can create new computers in their OU."""
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
     computer_name = f'new-linux-{random_username()}'
     unique_ip = random_ip()
 
-    options = [{
-        'object': {
-            'name': computer_name,
-            'ip': [unique_ip],
-            'unixhome': '/dev/null',
-            'shell': '/bin/bash',
-        },
-        "options": {
-            "container": ou.computer_default_container,
-            "objectType": "computers/linux",
-        },
-    }]
+    res = linux_client_manager_umc_client.create_object('computers/linux', ou.computer_default_container, {
+        'name': computer_name,
+        'ip': [unique_ip],
+        'unixhome': '/dev/null',
+        'shell': '/bin/bash',
+    })
 
     try:
-        res = client.umc_command('udm/add', options, 'computers/linux').result[0]
         assert res['success']
         assert computer_name in res['$dn$']
         assert ou.dn in res['$dn$']
     finally:
-        if res:
-            client.umc_command('udm/remove', [{'object': res['$dn$']}], 'computers/linux')
+        if res.get('success'):
+            linux_client_manager_umc_client.remove_object('computers/linux', res['$dn$'])
 
 
 @check_delegation
-def test_linux_client_create_computer_denied_cross_ou(ou, ldap_base, linux_client_manager_user, udm, random_username):
+def test_linux_client_create_computer_denied_cross_ou(linux_client_manager_umc_client, ldap_base, random_username):
     """Test that linux client manager cannot create computers outside their OU."""
     ou2_dn = f'ou=ou2,{ldap_base}'
-
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
 
     computer_name = f'denied-linux-{random_username()}'
     unique_ip = random_ip()
 
-    options = [{
-        'object': {
-            'name': computer_name,
-            'ip': [unique_ip],
-            'unixhome': '/dev/null',
-            'shell': '/bin/bash',
-        },
-        "options": {
-            "container": f'cn=computers,{ou2_dn}',
-            "objectType": "computers/linux",
-        },
-    }]
-
-    res = client.umc_command('udm/add', options, 'computers/linux').result[0]
+    res = linux_client_manager_umc_client.create_object('computers/linux', f'cn=computers,{ou2_dn}', {
+        'name': computer_name,
+        'ip': [unique_ip],
+        'unixhome': '/dev/null',
+        'shell': '/bin/bash',
+    })
     assert not res['success']
-    assert res['details'] == _('Permission denied.')
+    assert res['details'] == translate('Permission denied.')
 
 
 @check_delegation
-def test_linux_client_create_computer_denied_at_base(ou, ldap_base, linux_client_manager_user, random_username):
+def test_linux_client_create_computer_denied_at_base(linux_client_manager_umc_client, ldap_base, random_username):
     """Test that linux client manager cannot create computers at base level."""
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
     computer_name = f'base-linux-{random_username()}'
     unique_ip = random_ip()
 
-    options = [{
-        'object': {
-            'name': computer_name,
-            'ip': [unique_ip],
-            'unixhome': '/dev/null',
-            'shell': '/bin/bash',
-        },
-        "options": {
-            "container": f'cn=computers,{ldap_base}',
-            "objectType": "computers/linux",
-        },
-    }]
-
-    res = client.umc_command('udm/add', options, 'computers/linux').result[0]
+    res = linux_client_manager_umc_client.create_object('computers/linux', f'cn=computers,{ldap_base}', {
+        'name': computer_name,
+        'ip': [unique_ip],
+        'unixhome': '/dev/null',
+        'shell': '/bin/bash',
+    })
     assert not res['success']
-    assert res['details'] == _('Permission denied.')
+    assert res['details'] == translate('Permission denied.')
 
 
 @check_delegation
-def test_linux_client_manager_can_access_groups_in_ou(ou, ldap_base, linux_client_manager_user, test_group_in_ou):
+def test_linux_client_manager_can_access_groups_in_ou(linux_client_manager_umc_client, test_group_in_ou):
     """Test that linux client manager can access group objects within their OU (OU-specific security model)."""
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
-    res = client.umc_command('udm/get', [test_group_in_ou], 'groups/group').result[0]
+    res = linux_client_manager_umc_client.get_object('groups/group', test_group_in_ou)
     assert res['$dn$'] == test_group_in_ou
     assert 'name' in res
 
 
 @check_delegation
-def test_linux_client_manager_cannot_access_base_level_groups(ou, ldap_base, linux_client_manager_user, test_group_at_base):
+def test_linux_client_manager_cannot_access_base_level_groups(linux_client_manager_umc_client, test_group_at_base):
     """Test that linux client manager cannot access base-level groups (security improvement)."""
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
     with pytest.raises(BadRequest):
-        client.umc_command('udm/get', [test_group_at_base], 'groups/group')
+        linux_client_manager_umc_client.get_object('groups/group', test_group_at_base)
 
 
 @check_delegation
-def test_linux_client_manager_can_modify_group_memberships_in_ou(ou, ldap_base, linux_client_manager_user, test_computer_in_ou, test_group_in_ou):
+def test_linux_client_manager_can_modify_group_memberships_in_ou(linux_client_manager_umc_client, test_computer_in_ou, test_group_in_ou):
     """Test that linux client manager can modify group memberships within their OU."""
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
-    current_res = client.umc_command('udm/get', [test_group_in_ou], 'groups/group').result[0]
+    current_res = linux_client_manager_umc_client.get_object('groups/group', test_group_in_ou)
     current_hosts = current_res.get('hosts', [])
 
-    changes = {
-        '$dn$': test_group_in_ou,
+    res = linux_client_manager_umc_client.modify_object('groups/group', test_group_in_ou, {
         'hosts': [*current_hosts, test_computer_in_ou],
-    }
-
-    res = client.umc_command('udm/put', [{'object': changes}], 'groups/group').result[0]
+    })
     assert res['success']
     assert res['$dn$'] == test_group_in_ou
 
 
 @check_delegation
-def test_linux_client_manager_cannot_access_policies(ou, ldap_base, linux_client_manager_user):
+def test_linux_client_manager_cannot_access_policies(linux_client_manager_umc_client):
     """Test that linux client manager cannot access policy objects."""
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
     policy_types = ['policies/desktop', 'policies/pwhistory', 'policies/umc']
 
     for policy_type in policy_types:
-        res = client.umc_command('udm/query', {
-            "container": "all",
-            "objectType": policy_type,
-            "objectProperty": "None",
-            "objectPropertyValue": "",
-        }, policy_type).result
+        res = linux_client_manager_umc_client.search_objects(policy_type)
         assert res == []
 
 
 @check_delegation
-def test_linux_client_manager_container_restrictions(ou, ldap_base, linux_client_manager_user):
+def test_linux_client_manager_container_restrictions(linux_client_manager_umc_client, ou):
     """Test that linux client manager can only access containers within their OU context."""
-    client = Client()
-    client.authenticate(ou.client_manager_username, 'univention')
-
-    res = client.umc_command('udm/containers', {"objectType": "computers/linux"}, 'computers/linux').result
+    res = linux_client_manager_umc_client.umc_command('udm/containers', {"objectType": "computers/linux"}, 'computers/linux').result
     container_ids = {x['id'] for x in res}
 
     for container_id in container_ids:

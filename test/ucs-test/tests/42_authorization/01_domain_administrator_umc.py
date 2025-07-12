@@ -41,7 +41,7 @@ def test_default_containers(admin_umc_client, udm):
 ])
 def test_user_delete(ou, ldap_base, random_username, position, udm, admin_umc_client):
     dn, _ = udm.create_user(position=position.format(ou_dn=ou.dn, ldap_base=ldap_base))
-    res = admin_umc_client.delete_object(dn, 'users/user')
+    res = admin_umc_client.delete_object('users/user', dn)
     assert res['success']
 
 
@@ -54,7 +54,7 @@ def test_user_delete(ou, ldap_base, random_username, position, udm, admin_umc_cl
 def test_user_create(ou, ldap_base, random_username, position, admin_umc_client):
     res = admin_umc_client.create_user(position.format(ou_dn=ou.dn, ldap_base=ldap_base))
     assert res['success']
-    admin_umc_client.delete_object(res['$dn$'], 'users/user')
+    admin_umc_client.delete_object('users/user', res['$dn$'])
 
 
 @pytest.mark.parametrize('position', [
@@ -66,7 +66,7 @@ def test_user_create(ou, ldap_base, random_username, position, admin_umc_client)
 def test_group_create(ou, ldap_base, position, admin_umc_client):
     res = admin_umc_client.create_group(position.format(ou_dn=ou.dn, ldap_base=ldap_base))
     assert res['success']
-    admin_umc_client.delete_object(res['$dn$'], 'groups/group')
+    admin_umc_client.delete_object('groups/group', res['$dn$'])
 
 
 @pytest.mark.parametrize('position', [
@@ -81,7 +81,7 @@ def test_delete_group(ou, ldap_base, position, udm, random_username, admin_umc_c
         name=random_username(),
         position=position.format(ou_dn=ou.dn, ldap_base=ldap_base),
     )
-    res = admin_umc_client.delete_object(dn, 'groups/group')
+    res = admin_umc_client.delete_object('groups/group', dn)
     assert res['success']
 
 
@@ -96,7 +96,7 @@ def test_move_group(ldap_base, ou, group_position, group_target_position, udm, r
         position=group_position.format(ou_dn=ou.dn, ldap_base=ldap_base),
     )
     position = group_target_position.format(ou_dn=ou.dn, ldap_base=ldap_base, ou_cn_groups=ou.group_default_container)
-    res = admin_umc_client.move_object(dn, position, 'groups/group')
+    res = admin_umc_client.move_object('groups/group', dn, position)
     assert res['success']
 
 
@@ -112,7 +112,7 @@ def test_modify_group(ou, ldap_base, random_username, udm, group_position, chang
         name=random_username(),
         position=group_position.format(ou_dn=ou.dn, ldap_base=ldap_base),
     )
-    res = admin_umc_client.modify_object(dn, changes, 'groups/group')
+    res = admin_umc_client.modify_object('groups/group', dn, changes)
     assert res['success']
 
 
@@ -171,7 +171,7 @@ def test_user_search(random_username, ou, objectProperty, objectPropertyValue, e
 def test_user_move(ldap_base, ou, position, target_position, udm, admin_umc_client):
     dn, _ = udm.create_user(position=position.format(ou_dn=ou.dn, ldap_base=ldap_base))
     position = target_position.format(ou_dn=ou.dn, ldap_base=ldap_base, ou_cn_users=ou.user_default_container)
-    res = admin_umc_client.move_object(dn, position, 'users/user')
+    res = admin_umc_client.move_object('users/user', dn, position)
     assert res['success']
 
 
@@ -182,7 +182,7 @@ def test_user_move(ldap_base, ou, position, target_position, udm, admin_umc_clie
 ])
 def test_user_read(ldap_base, ou, user_dn, attribute, admin_umc_client):
     dn = user_dn.format(admin_ou=ou.admin_dn, normal_user=ou.user_dn, ldap_base=ldap_base)
-    res = admin_umc_client.get_object(dn, 'users/user')
+    res = admin_umc_client.get_object('users/user', dn)
     assert res['$dn$'] == dn
     if attribute:
         assert attribute in res
@@ -196,7 +196,7 @@ def test_user_read(ldap_base, ou, user_dn, attribute, admin_umc_client):
 ])
 def test_user_modify(ldap_base, ou, position, changes, udm, admin_umc_client):
     dn, _ = udm.create_user(position=position.format(ou_dn=ou.dn, ldap_base=ldap_base))
-    res = admin_umc_client.modify_object(dn, changes, 'users/user')
+    res = admin_umc_client.modify_object('users/user', dn, changes)
     assert res['success']
     assert res['$dn$'] == dn
 
@@ -204,7 +204,7 @@ def test_user_modify(ldap_base, ou, position, changes, udm, admin_umc_client):
 def test_mail_domain_remove(ldap_base, udm, admin_umc_client, random_username):
     domain_name = f'{random_username()}.test.com'
     mail_domain_dn = udm.create_object('mail/domain', name=domain_name, position=f'cn=domain,cn=mail,{ldap_base}')
-    res = admin_umc_client.delete_object(mail_domain_dn, 'mail/domain')
+    res = admin_umc_client.delete_object('mail/domain', mail_domain_dn)
     assert res['success']
 
 
@@ -215,7 +215,7 @@ def test_mail_domain_create(ldap_base, random_username, udm, admin_umc_client):
     assert res['success']
     domains = udm.list_objects('mail/domain')
     assert res['$dn$'] in [x[0] for x in domains]
-    admin_umc_client.delete_object(res['$dn$'], 'mail/domain')
+    admin_umc_client.delete_object('mail/domain', res['$dn$'])
 
 
 @pytest.mark.parametrize('position', [
@@ -317,4 +317,4 @@ def test_shares_create_admin(ldap_base, random_username, admin_umc_client):
     }]
     res = admin_umc_client.umc_command('udm/add', options, 'shares/share').result[0]
     assert res['success']
-    admin_umc_client.delete_object(res['$dn$'], 'shares/share')
+    admin_umc_client.delete_object('shares/share', res['$dn$'])
