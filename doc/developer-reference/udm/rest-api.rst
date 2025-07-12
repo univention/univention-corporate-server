@@ -35,7 +35,7 @@ API clients
 
 The following API clients implemented in Python exist for the |UCSREST|:
 
-* :program:`python3-univention-directory-mananger-rest-client`:
+* :program:`python3-univention-directory-manager-rest-client`:
 
   Every UCS system has it installed by default.
   You can use it the following way:
@@ -81,7 +81,7 @@ The following API clients implemented in Python exist for the |UCSREST|:
      # 7. remove
      obj.delete()
 
-* :program:`python3-univention-directory-mananger-rest-async-client`:
+* :program:`python3-univention-directory-manager-rest-async-client`:
 
   After installing the Debian package on a UCS system,
   you can use it in the following way:
