@@ -190,7 +190,7 @@ def init(lo: univention.admin.uldap.access, position: univention.admin.uldap.pos
     if isinstance(lo, univention.uldap.access):
         log.error('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap! %s', ''.join(traceback.format_stack()))
         warnings.warn('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap!', DeprecationWarning, stacklevel=3)
-        if configRegistry.is_true('directory/mananger/type-checking/strict'):
+        if configRegistry.is_true('directory/manager/type-checking/strict'):
             raise TypeError('Expect univention.admin.uldap.access!')
 
     # you better do a reload if init is called a second time
