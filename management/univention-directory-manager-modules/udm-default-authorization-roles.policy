@@ -50,7 +50,7 @@ access by role="udm:default-roles:domain-administrator"
   description="Domain Admins are allowed to do anything in the whole domain"
 
   to objecttype="*"
-    description="Allow everything"
+    name="allow-everything" description="Allow everything"
 
     grant actions="*"
     grant properties="*" permission="write"
@@ -60,7 +60,7 @@ access by role="udm:default-roles:domain-user"
   description="Domain Users are allowed to read everything non-sensible"
 
   to objecttype="users/user" if="is-self"
-    description="Allow reading own object"
+    name="allow-user-self-read" description="Allow reading own object"
 
     grant actions="search,read"
     grant properties="*" permission="read"
@@ -70,7 +70,7 @@ access by role="udm:default-roles:self-service-profile"
   description="Self service users are allowed to modify the properties of the own user object specified in UCR variable `self-service/udm_attributes`"
 
   to objecttype="users/user" if="is-self"
-    description="Allow to write self-service attributes"
+    name="allow-users-self-service-write" description="Allow to write self-service attributes"
 
     grant actions="modify"
     grant properties="country,departmentNumber,e-mail,homePostalAddress,homeTelephoneNumber,jpegPhoto,mobileTelephoneNumber,phone,roomNumber" permission="write"
@@ -87,7 +87,7 @@ access
 
   # LDAP Base
   to objecttype="container/dc" position.base="{ldap_base}"
-    description="Allow reading LDAP base"
+    name="allow-ldap-base-read" description="Allow reading LDAP base"
 
     grant actions="search,read"
     grant properties="*" permission="read"
@@ -100,13 +100,13 @@ access
   description="Every context role is allowed to read containers underneath of context position"
 
   to objecttype="container/ou" position.subtree="{context}"
-    description="Allow to read own OU"
+    name="allow-read-context-ou" description="Allow to read own OU"
 
     grant actions="search,read"
     grant properties="*" permission="read"
 
   to objecttype="container/cn" position.subtree="{context}"
-    description="Allow to read the container structure of the OU"
+    name="allow-read-context-containers" description="Allow to read the container structure of the OU"
 
     grant actions="search,read"
     grant properties="*" permission="read"
@@ -118,19 +118,19 @@ access
 
   # for handling of users and groups we need to grant permissions on policies applying to them
   to objecttype="policies/desktop"
-    description="Allow to read Desktop policies"
+    name="read-desktop-policies" description="Allow to read Desktop policies"
 
     grant actions="search,read"
     grant properties="*" permission="read"
 
   to objecttype="policies/pwhistory"
-    description="Allow to read Password History policies"
+    name="read-pw-history-policies" description="Allow to read Password History policies"
 
     grant actions="search,read"
     grant properties="*" permission="read"
 
   to objecttype="policies/umc"
-    description="Allow to read UMC policies"
+    name="read-umc-policies" description="Allow to read UMC policies"
 
     grant actions="search,read"
     grant properties="*" permission="read"
@@ -140,19 +140,19 @@ access by role="udm:default-roles:organizational-unit-admin" context="udm:contex
   description="Organizational Unit Adminstrators can administrate users and groups in their OU"
 
   to objecttype="mail/domain" position.subtree="cn=domain,cn=mail,{ldap_base}"
-    description="Allow to read mail/domain in global mail container"
+    name="allow-global-mail-domain-read" description="Allow to read mail/domain in global mail container"
 
     grant actions="search,read"
     grant properties="*" permission="read"
 
   to objecttype="users/user"
-    description="Allow to create users/user reports"
+    name="allow-user-reports-creation" description="Allow to create users/user reports"
 
     grant actions="report-create"
 
   # user permissions in OU
   to objecttype="users/user" position.subtree="{context}"
-    description="Write user objects in own OU"
+    name="allow-context-ou-users-write" description="Write user objects in own OU"
 
     grant actions="search,read,create,modify,rename,remove,move"
     grant properties="firstname,lastname,username" permission="write"
@@ -163,7 +163,7 @@ access by role="udm:default-roles:organizational-unit-admin" context="udm:contex
 
   # group permissions in OU
   to objecttype="groups/group" position.subtree="{context}"
-    description="Write group objects in own OU"
+    name="allow-context-ou-groups-write" description="Write group objects in own OU"
 
     grant actions="search,read,create,modify,rename,remove,move"
     grant properties="name" permission="write"
@@ -183,7 +183,7 @@ access by role="udm:default-roles:helpdesk-operator" context="udm:contexts:posit
 
   # user permissions in OU
   to objecttype="users/user" position.subtree="{context}"
-    description="Allow to write password related properties"
+    name="allow-user-password-attributes-write" description="Allow to write password related properties"
 
     grant actions="search,read,modify"  # rename,remove,move
     grant properties="overridePWHistory,overridePWLength,password,unlock" permission="write"
@@ -192,7 +192,7 @@ access by role="udm:default-roles:helpdesk-operator" context="udm:contexts:posit
 
   # group permissions in OU
   to objecttype="groups/group" position.subtree="{context}"
-    description="Allow to read all group names in own OU"
+    name="allow-context-ou-group-read-name" description="Allow to read all group names in own OU"
 
     grant actions="search,read"
     grant properties="name" permission="read"
@@ -202,21 +202,21 @@ access by role="udm:default-roles:linux-ou-client-manager" context="udm:contexts
 
   # linux computer permissions in context OU
   to objecttype="computers/linux" position.subtree="{context}"
-    description="Allow management of linux computers in own OU"
+    name="allow-context-ou-linux-computer-write" description="Allow management of linux computers in own OU"
 
     grant actions="search,read,create,modify,rename,remove,move"
     grant properties="*" permission="write"  # FIXME: can put the client into Domain Administrators
 
   # group read permissions in OU-specific groups only
   to objecttype="groups/group" position.subtree="{context}"
-    description="Allow to read groups in own OU"
+    name="allow-context-ou-group-read" description="Allow to read groups in own OU"
 
     grant actions="search,read,create,modify,rename,remove,move"
     grant properties="*" permission="read"
 
   # group write permissions in OU-specific groups only
   to objecttype="groups/group" position.subtree="{context}"
-    description="Allow to write groups in own OU"
+    name="allow-context-ou-group-host-write" description="Allow to write groups in own OU"
 
     grant actions="create,modify,rename,remove,move"
     grant properties="hosts" permission="write"
