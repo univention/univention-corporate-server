@@ -201,6 +201,10 @@ class property:
         copyable: bool = False,
         type_class: type[TypeHint] | None = None,
         lazy_loading_fn: str | None = None,
+        ldap_attribute: str | None = None,
+        encoding: str = 'UTF-8',
+        map: Callable | None = None,
+        unmap: Callable | None = None,
     ) -> None:
         """
         |UDM| property.
@@ -233,6 +237,7 @@ class property:
         :param copyable: With `True` the property is copied when the object is cloned; with `False` the new object will use the default value.
         :param type_class: An optional Typing class which overwrites the syntax class specific type.
         :param lazy_loading_fn: An optional function name that implements loading additional expensive properties if requested.
+        :param ldap_attribute: An optional LDAP attribute name, where this property maps to
         """
         self.short_description = short_description
         self.long_description = long_description
@@ -267,6 +272,10 @@ class property:
         self.copyable = copyable
         self.type_class = type_class
         self.lazy_loading_fn = lazy_loading_fn
+        self.ldap_attribute = ldap_attribute
+        self.encoding = encoding
+        self.map = map
+        self.unmap = unmap
 
     def new(self) -> list[str] | None:
         return [] if self.multivalue else None
@@ -352,6 +361,16 @@ class property:
     def lazy_load(self, obj):
         if self.lazy_loading_fn:
             getattr(obj, self.lazy_loading_fn)()
+
+    def map_callback(self):
+        return self.map
+
+    def unmap_callback(self):
+        if self.unmap:
+            return self.unmap
+        if not self.multivalue:
+            return univention.admin.mapping.ListToString
+        return None
 
 
 class option:

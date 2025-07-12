@@ -390,6 +390,12 @@ class mapping:
         self._map_encoding: dict[str, tuple[str, str]] = {}
         self._unmap_encoding: dict[str, tuple[str, str]] = {}
 
+    def from_properties(self, descriptions):
+        for key, prop in descriptions.items():
+            if not prop.ldap_attribute:
+                continue
+            self.register(key, prop.ldap_attribute, prop.map_callback(), prop.unmap_callback(), prop.encoding)
+
     def register(
         self,
         map_name: str,
