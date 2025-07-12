@@ -246,14 +246,14 @@ class access:
             # a empty base is valid in one scenario: when wanting to detect the base via a certain search.
             # but this can set any random base and set it to empty afterwards
             # note: search(base='') will fallback to self.base
-            if ucr.is_true('directory/mananger/type-checking/strict'):
+            if ucr.is_true('directory/manager/type-checking/strict'):
                 raise TypeError('base must at least be set to LDAP base')
 
     @property
     def authz_connection(self):
         log.error('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap! %s', ''.join(traceback.format_stack()))
         warnings.warn('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap!', DeprecationWarning, stacklevel=3)
-        if ucr.is_true('directory/mananger/type-checking/strict'):
+        if ucr.is_true('directory/manager/type-checking/strict'):
             raise TypeError('univention.admin.uldap required!')
         return self
 
@@ -939,7 +939,7 @@ class access:
 
     def _handle_referral(self, exception: ldap.REFERRAL) -> ldap.ldapobject.ReconnectLDAPObject:
         """
-        Follow LDAP rederral.
+        Follow LDAP referral.
 
         :param ldap.REFERRAL exception: The LDAP referral exception.
         :returns: LDAP connection object for the referred LDAP server.

@@ -91,7 +91,7 @@ basic_setup () {
 
 	# set strict mode for UDM so that the tests detect broken occurrences
 	# but customers / PS scripts aren't affected immediately
-	ucr set 'directory/mananger/type-checking/strict=true'
+	ucr set 'directory/manager/type-checking/strict=true'
 }
 
 stop_uss_and_restore_profile () {
