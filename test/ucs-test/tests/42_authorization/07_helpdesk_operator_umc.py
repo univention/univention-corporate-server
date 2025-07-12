@@ -64,7 +64,7 @@ def test_helpdesk_operator_cant_modify_properties(ldap_base, ou, user, changes, 
     dn, _ = udm.create_user(position=ou.user_default_container)
     user_dn = user.format(normal_user=dn, ldap_base=ldap_base)
 
-    res = ou_helpdesk_operator_umc_client.modify_object(user_dn, changes, 'users/user')
+    res = ou_helpdesk_operator_umc_client.modify_object('users/user', user_dn, changes)
     if not expected:
         assert not res['success']
         if user_dn.endswith(ou.dn):
@@ -89,7 +89,7 @@ def test_helpdesk_operator_can_reset_password(ldap_base, ou, position, expected,
         'password': 'univention',
         'unlock': False,
     }
-    res = ou_helpdesk_operator_umc_client.modify_object(dn, changes, 'users/user')
+    res = ou_helpdesk_operator_umc_client.modify_object('users/user', dn, changes)
     if not expected:
         assert not res['success']
         if dn.endswith(ou.dn):

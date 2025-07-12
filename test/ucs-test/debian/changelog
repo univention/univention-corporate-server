@@ -1,3 +1,9 @@
+ucs-test (12.2.34) unstable; urgency=medium
+
+  * Bug #58432: refactor UMC client fixture
+
+ -- Florian Best <best@univention.de>  Tue, 29 Jul 2025 22:35:14 +0200
+
 ucs-test (12.2.33) unstable; urgency=medium
 
   * Bug #57979: add tests for allow-subtree-ancestors feature

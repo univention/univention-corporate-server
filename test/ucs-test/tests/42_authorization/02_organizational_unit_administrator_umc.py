@@ -39,7 +39,7 @@ def test_default_containers(ou, ldap_base, ouadmin_umc_client):
 ])
 def test_user_delete(ou, ldap_base, position, expected, udm, ouadmin_umc_client):
     dn, _ = udm.create_user(position=position.format(ou_dn=ou.dn, ldap_base=ldap_base))
-    res = ouadmin_umc_client.delete_object(dn, 'users/user')
+    res = ouadmin_umc_client.delete_object('users/user', dn)
     if not expected:
         assert not res['success']
         assert res['details'] == f'{translate("No such object:")} {dn}.'
@@ -74,7 +74,7 @@ def test_create_group(ou, ldap_base, position, expected, ouadmin_umc_client):
         assert res['details'] == translate('Permission denied.')
     else:
         assert res['success']
-        ouadmin_umc_client.delete_object(res['$dn$'], 'groups/group')
+        ouadmin_umc_client.delete_object('groups/group', res['$dn$'])
 
 
 @pytest.mark.parametrize('position, expected', [
@@ -88,7 +88,7 @@ def test_delete_group(ou, ldap_base, random_username, position, expected, udm, o
         name=random_username(),
         position=position.format(ou_dn=ou.dn, ldap_base=ldap_base),
     )
-    res = ouadmin_umc_client.delete_object(dn, 'groups/group')
+    res = ouadmin_umc_client.delete_object('groups/group', dn)
     if not expected:
         assert not res['success']
         assert res['details'] == f'{translate("No such object:")} {dn}.'
@@ -108,7 +108,7 @@ def test_move_group(ldap_base, ou, group_position, group_target_position, expect
         position=group_position.format(ou_dn=ou.dn, ldap_base=ldap_base),
     )
     position = group_target_position.format(ou_dn=ou.dn, ldap_base=ldap_base, ou_cn_groups=ou.group_default_container)
-    res = ouadmin_umc_client.move_object(dn, position, 'groups/group')
+    res = ouadmin_umc_client.move_object('groups/group', dn, position)
     if not expected:
         assert not res['success']
         if dn.endswith(ou.dn):
@@ -132,7 +132,7 @@ def test_modify_group(ou, ldap_base, random_username, udm, group_position, chang
         name=random_username(),
         position=group_position.format(ou_dn=ou.dn, ldap_base=ldap_base),
     )
-    res = ouadmin_umc_client.modify_object(dn, changes, 'groups/group')
+    res = ouadmin_umc_client.modify_object('groups/group', dn, changes)
     if not expected:
         assert not res['success']
         assert res['details'] == translate('Permission denied.') or res['details'].startswith(translate('No such object:'))
@@ -198,7 +198,7 @@ def test_user_search(random_username, ou, objectProperty, objectPropertyValue, c
 def test_user_move(ldap_base, ou, position, target_position, expected, udm, ouadmin_umc_client):
     dn, _ = udm.create_user(position=position.format(ou_dn=ou.dn, ldap_base=ldap_base))
     position = target_position.format(ou_dn=ou.dn, ldap_base=ldap_base)
-    res = ouadmin_umc_client.move_object(dn, position, 'users/user')
+    res = ouadmin_umc_client.move_object('users/user', dn, position)
     if not expected:
         assert not res['success']
         if dn.endswith(ou.dn):
@@ -220,9 +220,9 @@ def test_user_read(ldap_base, ou, user_dn, attribute, expected, ouadmin_umc_clie
     dn = user_dn.format(admin_ou=ou.admin_dn, admin2_ou=ou.admin_dn2, normal_user=ou.user_dn, ldap_base=ldap_base)
     if not expected:
         with pytest.raises(BadRequest):
-            ouadmin_umc_client.get_object(dn, 'users/user')
+            ouadmin_umc_client.get_object('users/user', dn)
     else:
-        res = ouadmin_umc_client.get_object(dn, 'users/user')
+        res = ouadmin_umc_client.get_object('users/user', dn)
         assert res['$dn$'] == dn
         if attribute:
             assert attribute in res
@@ -236,7 +236,7 @@ def test_user_read(ldap_base, ou, user_dn, attribute, expected, ouadmin_umc_clie
 ])
 def test_user_modify(ldap_base, ou, position, changes, expected, udm, ouadmin_umc_client):
     dn, _ = udm.create_user(position=position.format(ou_dn=ou.dn, ldap_base=ldap_base))
-    res = ouadmin_umc_client.modify_object(dn, changes, 'users/user')
+    res = ouadmin_umc_client.modify_object('users/user', dn, changes)
     if not expected:
         assert not res['success']
         if dn.endswith(ou.dn):
@@ -251,7 +251,7 @@ def test_user_modify(ldap_base, ou, position, changes, expected, udm, ouadmin_um
 def test_mail_domain_remove(ldap_base, random_username, udm, ouadmin_umc_client):
     domain_name = f'{random_username()}.test.com'
     mail_domain_dn = udm.create_object('mail/domain', name=domain_name)
-    res = ouadmin_umc_client.delete_object(mail_domain_dn, 'mail/domain')
+    res = ouadmin_umc_client.delete_object('mail/domain', mail_domain_dn)
     assert not res['success']
     assert res['details'] == f'{translate("No such object:")} {mail_domain_dn}.'
 

@@ -39,6 +39,35 @@ class RestClientHelper(UDM_REST):
         self.mail_domain_module = self.get('mail/domain')
         self.group_module = self.get('groups/group')
 
+    def get_object(self, object_type: str, dn: str, properties: list[str] | None = None):
+        module = self.get(object_type)
+        return module.get(dn, properties=properties)
+
+    def remove_object(self, object_type: str, dn: str):
+        module = self.get(object_type)
+        obj = module.get(dn)
+        obj.delete()
+
+    def search_objects(self, object_type: str, filter_s: str = '', position: str | None = None):
+        module = self.get(object_type)
+        return list(module.search(filter_s, position=position))
+
+    def modify_object(self, object_type: str, dn: str, properties: dict):
+        module = self.get(object_type)
+        obj = module.get(dn)
+        for prop, value in properties.items():
+            obj.properties[prop] = value
+        obj.save()
+        return obj
+
+    def create_object(self, object_type: str, container: str, properties: dict):
+        module = self.get(object_type)
+        obj = module.new(position=container)
+        for prop, value in properties.items():
+            obj.properties[prop] = value
+        obj.save()
+        return obj
+
     def create_user(self, position: str):
         obj = self.user_module.new(position=position)
         obj.properties['username'] = random_username()
@@ -93,7 +122,7 @@ class RestClientHelper(UDM_REST):
 
 class ClientHelper(Client):
 
-    def wait_for_progress(self, progress_id: str, object_type: str):
+    def wait_for_progress(self, object_type: str, progress_id: str):
         while True:
             req = self.umc_command('udm/progress', {'progress_id': progress_id}, object_type)
             res = req.result
@@ -101,7 +130,40 @@ class ClientHelper(Client):
                 return req
             time.sleep(1)
 
-    def delete_object(self, dn: str, object_type: str) -> None:
+    def remove_object(self, object_type: str, dn: str, cleanup: bool = True, recursive: bool = True):
+        options = [{
+            'object': dn,
+            'options': {
+                'cleanup': cleanup,
+                'recursive': recursive,
+            },
+        }]
+        return self.umc_command('udm/remove', options, object_type).result[0]
+
+    def search_objects(self, object_type: str, filter_value: str = '', container: str = 'all', flavor: str | None = None):
+        search_options = {
+            "container": container,
+            "hidden": False,
+            "objectType": object_type,
+            "objectProperty": "None",
+            "objectPropertyValue": filter_value,
+            "fields": ["name", "path", "displayName"],
+        }
+        if flavor:
+            search_options['flavor'] = flavor
+        return self.umc_command('udm/query', search_options, object_type).result
+
+    def create_object(self, object_type: str, container: str, properties: dict):
+        options = [{
+            'object': properties,
+            'options': {
+                'container': container,
+                'objectType': object_type,
+            },
+        }]
+        return self.umc_command('udm/add', options, object_type).result[0]
+
+    def delete_object(self, object_type: str, dn: str) -> None:
         options = [{
             'object': dn,
             'options': {
@@ -111,7 +173,7 @@ class ClientHelper(Client):
         }]
         return self.umc_command('udm/remove', options, object_type).result[0]
 
-    def move_object(self, dn: str, position: str, object_type: str):
+    def move_object(self, object_type: str, dn: str, position: str):
         options = [{
             'object': dn,
             'options': {
@@ -119,13 +181,13 @@ class ClientHelper(Client):
             },
         }]
         result = self.umc_command('udm/move', options, object_type).result
-        return self.wait_for_progress(result['id'], object_type).result['intermediate'][0]
+        return self.wait_for_progress(object_type, result['id']).result['intermediate'][0]
 
-    def modify_object(self, dn: str, changes: dict, object_type: str):
+    def modify_object(self, object_type: str, dn: str, changes: dict):
         changes['$dn$'] = dn
         return self.umc_command('udm/put', [{'object': changes}], object_type).result[0]
 
-    def get_object(self, dn: str, object_type: str):
+    def get_object(self, object_type: str, dn: str):
         options = [dn]
         res = self.umc_command('udm/get', options, object_type)
         return res.result[0]
@@ -220,6 +282,22 @@ def ou_helpdesk_operator_rest_client(ucr, ou):
 
 
 @pytest.fixture
+def linux_client_manager_umc_client(ou):
+    client = ClientHelper()
+    client.authenticate(ou.client_manager_username, 'univention')
+    return client
+
+
+@pytest.fixture
+def linux_client_manager_rest_client(ucr, ou):
+    return RestClientHelper(
+        'https://%(hostname)s.%(domainname)s/univention/udm/' % ucr,
+        username=ou.client_manager_username,
+        password='univention',
+    )
+
+
+@pytest.fixture
 def ou(ldap_base, udm):
     return SimpleNamespace(
         dn=f'ou=ou1,{ldap_base}',
@@ -231,8 +309,11 @@ def ou(ldap_base, udm):
         user_dn=f'uid=user1-ou1,cn=users,ou=ou1,{ldap_base}',
         helpdesk_operator_username='ou1-helpdesk-operator',
         helpdesk_operator_dn=f'uid=ou1-helpdesk-operator,cn=users,{ldap_base}',
+        client_manager_username='ou1-clientmanager',
+        client_manager_dn=f'uid=ou1-clientmanager,cn=users,{ldap_base}',
         user_default_container=f'cn=users,ou=ou1,{ldap_base}',
         group_default_container=f'cn=groups,ou=ou1,{ldap_base}',
+        computer_default_container=f'cn=computers,ou=ou1,{ldap_base}',
     )
 
 

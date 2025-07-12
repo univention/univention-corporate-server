@@ -36,7 +36,7 @@ access by role="%s"
     group_dn, _ = udm.create_group(guardianMemberRoles=['foo:bar:grouprole'])
     dn, _ = udm.create_user(guardianRoles=['foo:bar:test'], groups=[group_dn])
     # umc
-    obj = umc.get_object(dn, 'users/user')
+    obj = umc.get_object('users/user', dn)
     assert 'guardianRoles' not in obj
     assert 'guardianInheritedRoles' not in obj
     assert 'primaryGroup' not in obj
