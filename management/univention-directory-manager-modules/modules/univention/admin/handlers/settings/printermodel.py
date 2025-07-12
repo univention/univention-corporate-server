@@ -42,6 +42,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'printmodel': univention.admin.property(
         short_description=_('Printer Model'),
@@ -49,6 +50,9 @@ property_descriptions = {
         syntax=univention.admin.syntax.printerModel,
         multivalue=True,
         include_in_default_search=True,
+        ldap_attribute='printerModel',
+        map=mapDriverList,
+        unmap=unmapDriverList,
     ),
 }
 
@@ -80,8 +84,7 @@ def mapDriverList(udm_value: list[str], encoding: univention.admin.handlers._Enc
 
 # fmt: off
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('printmodel', 'printerModel', mapDriverList, unmapDriverList)
+mapping.from_properties(property_descriptions)
 # fmt: on
 
 

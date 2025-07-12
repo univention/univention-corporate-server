@@ -39,6 +39,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'hwaddress': univention.admin.property(
         short_description=_('Hardware address'),
@@ -46,6 +47,9 @@ property_descriptions = {
 The hardware-address should be a set of hexadecimal octets (numbers from 0 through ff) separated by colons.'),
         syntax=univention.admin.syntax.DHCP_HardwareAddress,
         required=True,
+        ldap_attribute='dhcpHWAddress',
+        map=mapHWAddress,
+        unmap=unmapHWAddress,
     ),
     'fixedaddress': univention.admin.property(
         short_description=_('Fixed IP addresses'),
@@ -53,6 +57,8 @@ The hardware-address should be a set of hexadecimal octets (numbers from 0 throu
 Each address should be either an IP address or a domain name that resolves to one or more IP addresses.'),
         syntax=univention.admin.syntax.hostOrIP,
         multivalue=True,
+        ldap_attribute='univentionDhcpFixedAddress',
+        encoding='ASCII',
     ),
 }
 layout = [
@@ -108,9 +114,7 @@ def mapHWAddress(old, encoding=()):
 
 # fmt: off
 mapping = univention.admin.mapping.mapping()
-mapping.register('host', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('hwaddress', 'dhcpHWAddress', mapHWAddress, unmapHWAddress)
-mapping.register('fixedaddress', 'univentionDhcpFixedAddress', encoding='ASCII')
+mapping.from_properties(property_descriptions)
 # fmt: on
 
 add_dhcp_options(__name__)

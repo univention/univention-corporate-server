@@ -57,22 +57,26 @@ property_descriptions = dict({
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'netbios_name_servers': univention.admin.property(
         short_description=_('NetBIOS name servers'),
         long_description=_('List of WINS servers listed in order of preference'),
         syntax=univention.admin.syntax.string,
         multivalue=True,
+        ldap_attribute='univentionDhcpNetbiosNameServers',
     ),
     'netbios_scope': univention.admin.property(
         short_description=_('NetBIOS scope'),
         long_description=_('NetBIOS over TCP/IP scope parameter'),
         syntax=univention.admin.syntax.string,
+        ldap_attribute='univentionDhcpNetbiosScope',
     ),
     'netbios_node_type': univention.admin.property(
         short_description=_('NetBIOS node type'),
         long_description=_('The node type of clients for NetBIOS over TCP/IP'),
         syntax=univention.admin.syntax.netbiosNodeType,
+        ldap_attribute='univentionDhcpNetbiosNodeType',
     ),
 }, **dict([
     requiredObjectClassesProperty(),
@@ -94,10 +98,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('netbios_name_servers', 'univentionDhcpNetbiosNameServers')
-mapping.register('netbios_scope', 'univentionDhcpNetbiosScope', None, univention.admin.mapping.ListToString)
-mapping.register('netbios_node_type', 'univentionDhcpNetbiosNodeType', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 register_policy_mapping(mapping)
 # fmt: on
 

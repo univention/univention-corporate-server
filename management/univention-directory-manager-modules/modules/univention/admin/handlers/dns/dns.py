@@ -40,6 +40,7 @@ property_descriptions = {
 }
 layout = [Tab(_('General'), _('Basic settings'), layout=['name'])]
 mapping = univention.admin.mapping.mapping()
+mapping.from_properties(property_descriptions)
 
 
 class object(univention.admin.handlers.simpleLdap):

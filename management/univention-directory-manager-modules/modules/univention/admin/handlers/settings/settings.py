@@ -31,6 +31,7 @@ options: dict[str, univention.admin.option] = {}
 property_descriptions: dict[str, univention.admin.property] = {}
 
 mapping = univention.admin.mapping.mapping()
+mapping.from_properties(property_descriptions)
 
 
 class object(univention.admin.handlers.simpleLdap):

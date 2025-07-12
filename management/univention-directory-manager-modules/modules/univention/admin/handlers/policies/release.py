@@ -55,16 +55,19 @@ property_descriptions = dict({
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'activate': univention.admin.property(
         short_description=_('Activate release updates (Errata updates are activated by default).'),
         long_description='',
         syntax=univention.admin.syntax.TrueFalseUp,
+        ldap_attribute='univentionUpdateActivate',
     ),
     'releaseVersion': univention.admin.property(
         short_description=_('Update to this UCS version'),
         long_description=_('Without specifying the most recent version will be used'),
         syntax=univention.admin.syntax.string,
+        ldap_attribute='univentionUpdateVersion',
     ),
 
 }, **dict([
@@ -87,9 +90,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('releaseVersion', 'univentionUpdateVersion', None, univention.admin.mapping.ListToString)
-mapping.register('activate', 'univentionUpdateActivate', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 register_policy_mapping(mapping)
 # fmt: on
 

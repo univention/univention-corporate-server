@@ -37,6 +37,7 @@ property_descriptions = {
         may_change=False,
         identifies=True,
         default=('univention', []),
+        ldap_attribute='cn',
     ),
     'defaultGroup': univention.admin.property(
         short_description=_('Default Primary Group'),
@@ -44,6 +45,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.GroupDN,
         dontsearch=True,
         required=True,
+        ldap_attribute='univentionDefaultGroup',
     ),
     'defaultComputerGroup': univention.admin.property(
         short_description=_('Default Group for Computers'),
@@ -51,6 +53,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.GroupDN,
         dontsearch=True,
         required=True,
+        ldap_attribute='univentionDefaultComputerGroup',
     ),
     'defaultDomainControllerGroup': univention.admin.property(
         short_description=_('Default Group for Replica Directory Nodes'),
@@ -58,6 +61,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.GroupDN,
         dontsearch=True,
         required=True,
+        ldap_attribute='univentionDefaultDomainControllerGroup',
     ),
     'defaultDomainControllerMBGroup': univention.admin.property(
         short_description=_('Default Group for Primary and Backup Directory Nodes'),
@@ -65,6 +69,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.GroupDN,
         dontsearch=True,
         required=True,
+        ldap_attribute='univentionDefaultDomainControllerMasterGroup',
     ),
     'defaultMemberServerGroup': univention.admin.property(
         short_description=_('Default Group for Managed Nodes'),
@@ -72,6 +77,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.GroupDN,
         dontsearch=True,
         required=True,
+        ldap_attribute='univentionDefaultMemberserverGroup',
     ),
     'defaultClientGroup': univention.admin.property(
         short_description=_('Default Group for Client Computers'),
@@ -79,12 +85,15 @@ property_descriptions = {
         syntax=univention.admin.syntax.GroupDN,
         dontsearch=True,
         required=True,
+        ldap_attribute='univentionDefaultClientGroup',
     ),
     'defaultKdeProfiles': univention.admin.property(
         short_description=_('Default KDE Profiles'),
         long_description='',
         syntax=univention.admin.syntax.string,
         multivalue=True,
+        ldap_attribute='univentionDefaultKdeProfiles',
+        encoding='ASCII',
     ),
 }
 
@@ -112,14 +121,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('defaultGroup', 'univentionDefaultGroup', None, univention.admin.mapping.ListToString)
-mapping.register('defaultComputerGroup', 'univentionDefaultComputerGroup', None, univention.admin.mapping.ListToString)
-mapping.register('defaultDomainControllerMBGroup', 'univentionDefaultDomainControllerMasterGroup', None, univention.admin.mapping.ListToString)
-mapping.register('defaultDomainControllerGroup', 'univentionDefaultDomainControllerGroup', None, univention.admin.mapping.ListToString)
-mapping.register('defaultMemberServerGroup', 'univentionDefaultMemberserverGroup', None, univention.admin.mapping.ListToString)
-mapping.register('defaultClientGroup', 'univentionDefaultClientGroup', None, univention.admin.mapping.ListToString)
-mapping.register('defaultKdeProfiles', 'univentionDefaultKdeProfiles', encoding='ASCII')
+mapping.from_properties(property_descriptions)
 # fmt: on
 
 

@@ -43,6 +43,7 @@ property_descriptions = {
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'range': univention.admin.property(
         short_description=_('IP range for dynamic assignment'),
@@ -50,11 +51,16 @@ property_descriptions = {
         syntax=univention.admin.syntax.IPv4_AddressRange,
         multivalue=True,
         required=True,
+        ldap_attribute='dhcpRange',
+        map=rangeMap,
+        unmap=rangeUnmap,
     ),
     'failover_peer': univention.admin.property(
         short_description=_('Failover peer configuration'),
         long_description=_('The name of the "failover peer" configuration to use.'),
         syntax=univention.admin.syntax.string,
+        ldap_attribute='univentionDhcpFailoverPeer',
+        encoding='ASCII',
     ),
     'known_clients': univention.admin.property(
         short_description=_('Allow known clients'),
@@ -94,9 +100,7 @@ layout = [
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap)
-mapping.register('failover_peer', 'univentionDhcpFailoverPeer', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.from_properties(property_descriptions)
 # fmt: on
 
 add_dhcp_options(__name__)

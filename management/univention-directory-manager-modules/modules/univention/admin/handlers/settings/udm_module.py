@@ -41,6 +41,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'filename': univention.admin.property(
         short_description=_('UDM module file name'),
@@ -48,44 +49,54 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,  # relative path, may contain directories
         required=True,
         default='',
+        ldap_attribute='univentionUDMModuleFilename',
     ),
     'data': univention.admin.property(
         short_description=_('UDM module data'),
         long_description='UDM module data (syntax: Base64 encoded Bzip2)',
         syntax=univention.admin.syntax.Base64Bzip2Text,
         required=True,
+        ldap_attribute='univentionUDMModuleData',
+        map=mapBase64,
+        unmap=unmapBase64,
     ),
     'active': univention.admin.property(
         short_description=_('Active'),
         long_description='',
         syntax=univention.admin.syntax.TrueFalseUp,
         default='FALSE',
+        ldap_attribute='univentionUDMModuleActive',
     ),
     'appidentifier': univention.admin.property(
         short_description=_('App identifier'),
         long_description='',
         syntax=univention.admin.syntax.TextArea,
         multivalue=True,
+        ldap_attribute='univentionAppIdentifier',
     ),
     'package': univention.admin.property(
         short_description=_('Software package'),
         long_description='',
         syntax=univention.admin.syntax.string,
+        ldap_attribute='univentionOwnedByPackage',
     ),
     'packageversion': univention.admin.property(
         short_description=_('Software package version'),
         long_description='',
         syntax=univention.admin.syntax.DebianPackageVersion,
+        ldap_attribute='univentionOwnedByPackageVersion',
     ),
     'ucsversionstart': univention.admin.property(
         short_description=_('Minimal UCS version'),
         long_description='',
         syntax=univention.admin.syntax.UCSVersion,
+        ldap_attribute='univentionUCSVersionStart',
     ),
     'ucsversionend': univention.admin.property(
         short_description=_('Maximal UCS version'),
         long_description='',
         syntax=univention.admin.syntax.UCSVersion,
+        ldap_attribute='univentionUCSVersionEnd',
     ),
     'messagecatalog': univention.admin.property(
         short_description=_('GNU message catalog for translations'),
@@ -103,12 +114,18 @@ property_descriptions = {
         short_description=_('UMC registration data'),
         long_description='UMC registration data (syntax: Bzip2 compressed and Base64 encoded XML)',
         syntax=univention.admin.syntax.Base64Bzip2XML,
+        ldap_attribute='univentionUMCRegistrationData',
+        map=mapBase64,
+        unmap=unmapBase64,
     ),
     'icon': univention.admin.property(
         short_description=_('UMC icon'),
         long_description='UMC icon (syntax: Base64 encoded jpeg, png or svgz)',
         syntax=univention.admin.syntax.Base64UMCIcon,
         multivalue=True,
+        ldap_attribute='univentionUMCIcon',
+        map=mapBase64,
+        unmap=unmapBase64,
     ),
 }
 
@@ -139,18 +156,8 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('filename', 'univentionUDMModuleFilename', None, univention.admin.mapping.ListToString)
-mapping.register('data', 'univentionUDMModuleData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
-mapping.register('active', 'univentionUDMModuleActive', None, univention.admin.mapping.ListToString)
-mapping.register('appidentifier', 'univentionAppIdentifier')
-mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.mapping.ListToString)
-mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univention.admin.mapping.ListToString)
-mapping.register('ucsversionstart', 'univentionUCSVersionStart', None, univention.admin.mapping.ListToString)
-mapping.register('ucsversionend', 'univentionUCSVersionEnd', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 # messagecatalogs and umcmessagecatalogs are handled via object._post_map and object._post_unmap defined below
-mapping.register('icon', 'univentionUMCIcon', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
-mapping.register('umcregistration', 'univentionUMCRegistrationData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 # fmt: on
 
 messagecatalog_mappings = {

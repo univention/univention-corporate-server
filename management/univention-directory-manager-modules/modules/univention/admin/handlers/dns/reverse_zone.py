@@ -48,6 +48,10 @@ property_descriptions = {
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='zoneName',
+        map=mapSubnet,
+        unmap=unmapSubnet,
+        encoding='ASCII',
     ),
     'zonettl': univention.admin.property(
         short_description=_('Zone time to live'),
@@ -56,6 +60,9 @@ property_descriptions = {
         required=True,
         default=(('3', 'hours'), []),
         dontsearch=True,
+        ldap_attribute='dNSTTL',
+        map=mapUNIX_TimeInterval,
+        unmap=unmapUNIX_TimeInterval,
     ),
     'contact': univention.admin.property(
         short_description=_('Contact person'),
@@ -105,6 +112,8 @@ property_descriptions = {
         syntax=univention.admin.syntax.dnsHostname,
         multivalue=True,
         required=True,
+        ldap_attribute='nSRecord',
+        encoding='ASCII',
     ),
 }
 
@@ -173,9 +182,7 @@ def unmapSubnet(zone, encoding=()):
 
 # fmt: off
 mapping = univention.admin.mapping.mapping()
-mapping.register('subnet', 'zoneName', mapSubnet, unmapSubnet, encoding='ASCII')
-mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
-mapping.register('nameserver', 'nSRecord', encoding='ASCII')
+mapping.from_properties(property_descriptions)
 # fmt: on
 
 

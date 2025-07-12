@@ -54,12 +54,14 @@ property_descriptions = dict({
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'printServer': univention.admin.property(
         short_description=_('Print server'),
         long_description='',
         syntax=univention.admin.syntax.ServicePrint_FQDN,
         include_in_default_search=True,
+        ldap_attribute='univentionPrintServer',
     ),
 
 }, **dict([
@@ -81,8 +83,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('printServer', 'univentionPrintServer', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 register_policy_mapping(mapping)
 # fmt: on
 

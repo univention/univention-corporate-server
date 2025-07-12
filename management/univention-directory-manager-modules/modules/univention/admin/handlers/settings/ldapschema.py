@@ -38,6 +38,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'filename': univention.admin.property(
         short_description=_('Schema file name'),
@@ -45,34 +46,42 @@ property_descriptions = {
         syntax=univention.admin.syntax.BaseFilename,
         required=True,
         default='',
+        ldap_attribute='univentionLDAPSchemaFilename',
     ),
     'data': univention.admin.property(
         short_description=_('Schema data'),
         long_description='',
         syntax=univention.admin.syntax.Base64Bzip2Text,
         required=True,
+        ldap_attribute='univentionLDAPSchemaData',
+        map=mapBase64,
+        unmap=unmapBase64,
     ),
     'active': univention.admin.property(
         short_description=_('Active'),
         long_description='',
         syntax=univention.admin.syntax.TrueFalseUp,
         default='FALSE',
+        ldap_attribute='univentionLDAPSchemaActive',
     ),
     'appidentifier': univention.admin.property(
         short_description=_('App identifier'),
         long_description='',
         syntax=univention.admin.syntax.TextArea,
         multivalue=True,
+        ldap_attribute='univentionAppIdentifier',
     ),
     'package': univention.admin.property(
         short_description=_('Software package'),
         long_description='',
         syntax=univention.admin.syntax.string,
+        ldap_attribute='univentionOwnedByPackage',
     ),
     'packageversion': univention.admin.property(
         short_description=_('Software package version'),
         long_description='',
         syntax=univention.admin.syntax.DebianPackageVersion,
+        ldap_attribute='univentionOwnedByPackageVersion',
     ),
 }
 
@@ -95,13 +104,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('filename', 'univentionLDAPSchemaFilename', None, univention.admin.mapping.ListToString)
-mapping.register('data', 'univentionLDAPSchemaData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
-mapping.register('active', 'univentionLDAPSchemaActive', None, univention.admin.mapping.ListToString)
-mapping.register('appidentifier', 'univentionAppIdentifier')
-mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.mapping.ListToString)
-mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 # fmt: on
 
 

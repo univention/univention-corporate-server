@@ -56,6 +56,7 @@ property_descriptions = {
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='dc',
     ),
     'dnsForwardZone': univention.admin.property(
         short_description=_('DNS forward lookup zone'),
@@ -79,6 +80,7 @@ property_descriptions = {
         options=['samba'],
         required=True,
         default=(configRegistry.get('domainname', '').upper(), []),
+        ldap_attribute='sambaDomainName',
     ),
     'sambaSID': univention.admin.property(
         short_description=_('Samba SID'),
@@ -87,6 +89,8 @@ property_descriptions = {
         options=['samba'],
         required=True,
         may_change=False,
+        ldap_attribute='sambaSID',
+        encoding='ASCII',
     ),
     'sambaNextUserRid': univention.admin.property(
         short_description=_('Samba Next User RID'),
@@ -94,6 +98,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         options=['samba'],
         default=('1000', []),
+        ldap_attribute='sambaNextUserRid',
     ),
     'sambaNextGroupRid': univention.admin.property(
         short_description=_('Samba Next Group RID'),
@@ -101,6 +106,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         options=['samba'],
         default=('1000', []),
+        ldap_attribute='sambaNextGroupRid',
     ),
     'kerberosRealm': univention.admin.property(
         short_description=_('Kerberos realm'),
@@ -110,6 +116,7 @@ property_descriptions = {
         required=True,
         may_change=False,
         default=(configRegistry.get('domainname', '').upper(), []),
+        ldap_attribute='krb5RealmName',
     ),
     'defaultGroup': univention.admin.property(
         short_description=_('Default Primary Group'),
@@ -118,6 +125,7 @@ property_descriptions = {
         options=['group-settings'],
         dontsearch=True,
         required=False,
+        ldap_attribute='univentionDefaultGroup',
     ),
     'defaultComputerGroup': univention.admin.property(
         short_description=_('Default Group for Computers'),
@@ -126,6 +134,7 @@ property_descriptions = {
         options=['group-settings'],
         dontsearch=True,
         required=False,
+        ldap_attribute='univentionDefaultComputerGroup',
     ),
     'defaultDomainControllerGroup': univention.admin.property(
         short_description=_('Default Group for Replica Directory Nodes'),
@@ -134,6 +143,7 @@ property_descriptions = {
         options=['group-settings'],
         dontsearch=True,
         required=False,
+        ldap_attribute='univentionDefaultDomainControllerGroup',
     ),
     'defaultDomainControllerMBGroup': univention.admin.property(
         short_description=_('Default Group for Primary and Backup Directory Nodes'),
@@ -142,6 +152,7 @@ property_descriptions = {
         options=['group-settings'],
         dontsearch=True,
         required=False,
+        ldap_attribute='univentionDefaultDomainControllerMasterGroup',
     ),
     'defaultMemberServerGroup': univention.admin.property(
         short_description=_('Default Group for Managed Nodes'),
@@ -150,6 +161,7 @@ property_descriptions = {
         options=['group-settings'],
         dontsearch=True,
         required=False,
+        ldap_attribute='univentionDefaultMemberserverGroup',
     ),
     'defaultClientGroup': univention.admin.property(
         short_description=_('Default Group for Client Computers'),
@@ -158,6 +170,7 @@ property_descriptions = {
         options=['group-settings'],
         dontsearch=True,
         required=False,
+        ldap_attribute='univentionDefaultClientGroup',
     ),
 }
 
@@ -190,18 +203,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'dc', None, univention.admin.mapping.ListToString)
-mapping.register('sambaDomainName', 'sambaDomainName')
-mapping.register('sambaSID', 'sambaSID', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaNextUserRid', 'sambaNextUserRid', None, univention.admin.mapping.ListToString)
-mapping.register('sambaNextGroupRid', 'sambaNextGroupRid', None, univention.admin.mapping.ListToString)
-mapping.register('kerberosRealm', 'krb5RealmName', None, univention.admin.mapping.ListToString)
-mapping.register('defaultGroup', 'univentionDefaultGroup', None, univention.admin.mapping.ListToString)
-mapping.register('defaultComputerGroup', 'univentionDefaultComputerGroup', None, univention.admin.mapping.ListToString)
-mapping.register('defaultDomainControllerMBGroup', 'univentionDefaultDomainControllerMasterGroup', None, univention.admin.mapping.ListToString)
-mapping.register('defaultDomainControllerGroup', 'univentionDefaultDomainControllerGroup', None, univention.admin.mapping.ListToString)
-mapping.register('defaultMemberServerGroup', 'univentionDefaultMemberserverGroup', None, univention.admin.mapping.ListToString)
-mapping.register('defaultClientGroup', 'univentionDefaultClientGroup', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 # fmt: on
 
 

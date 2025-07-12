@@ -42,6 +42,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'description': univention.admin.property(
         short_description=_('Description'),
@@ -50,6 +51,7 @@ property_descriptions = {
         include_in_default_search=True,
         dontsearch=True,
         required=True,
+        ldap_attribute='description',
     ),
     'operation': univention.admin.property(
         short_description=_('UMC commands'),
@@ -57,6 +59,9 @@ property_descriptions = {
         syntax=udm_syntax.UMC_CommandPattern,
         multivalue=True,
         dontsearch=True,
+        ldap_attribute='umcOperationSetCommand',
+        map=mapUMC_CommandPattern,
+        unmap=unmapUMC_CommandPattern,
     ),
     'flavor': univention.admin.property(
         short_description=_('Flavor'),
@@ -64,6 +69,7 @@ property_descriptions = {
         syntax=udm_syntax.string,
         include_in_default_search=True,
         dontsearch=True,
+        ldap_attribute='umcOperationSetFlavor',
     ),
     'hosts': univention.admin.property(
         short_description=_('Restrict to host'),
@@ -71,6 +77,7 @@ property_descriptions = {
         syntax=udm_syntax.string,
         multivalue=True,
         dontsearch=True,
+        ldap_attribute='umcOperationSetHost',
     ),
 }
 
@@ -100,11 +107,6 @@ def unmapUMC_CommandPattern(ldap_value: list[bytes], encoding: univention.admin.
 
 # fmt: off
 mapping = udm_mapping.mapping()
-mapping.register('name', 'cn', None, udm_mapping.ListToString)
-mapping.register('description', 'description', None, udm_mapping.ListToString)
-mapping.register('operation', 'umcOperationSetCommand', mapUMC_CommandPattern, unmapUMC_CommandPattern)
-mapping.register('flavor', 'umcOperationSetFlavor', None, udm_mapping.ListToString)
-mapping.register('hosts', 'umcOperationSetHost')
 # fmt: on
 
 

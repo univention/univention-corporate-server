@@ -45,6 +45,7 @@ property_descriptions = {
         identifies=True,
         readonly_when_synced=True,
         copyable=True,
+        ldap_attribute='cn',
     ),
     'lastname': univention.admin.property(
         short_description=_('Last name'),
@@ -54,6 +55,7 @@ property_descriptions = {
         required=True,
         readonly_when_synced=True,
         copyable=True,
+        ldap_attribute='sn',
     ),
     'firstname': univention.admin.property(
         short_description=_('First name'),
@@ -62,6 +64,7 @@ property_descriptions = {
         include_in_default_search=True,
         readonly_when_synced=True,
         copyable=True,
+        ldap_attribute='givenName',
     ),
     'title': univention.admin.property(
         short_description=_('Title'),
@@ -69,6 +72,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.OneThirdString,
         readonly_when_synced=True,
         copyable=True,
+        ldap_attribute='title',
     ),
     'initials': univention.admin.property(
         short_description=_('Initials'),
@@ -84,6 +88,7 @@ property_descriptions = {
         include_in_default_search=True,
         readonly_when_synced=True,
         copyable=True,
+        ldap_attribute='description',
     ),
     'displayName': univention.admin.property(
         short_description=_('Display name'),
@@ -92,12 +97,14 @@ property_descriptions = {
         default='<firstname> <lastname><:strip>',
         readonly_when_synced=True,
         copyable=True,
+        ldap_attribute='displayName',
     ),
     'birthday': univention.admin.property(
         short_description=_('Birthdate'),
         long_description='',
         syntax=univention.admin.syntax.iso8601Date,
         copyable=True,
+        ldap_attribute='univentionBirthday',
     ),
     'jpegPhoto': univention.admin.property(
         short_description=_("Picture of the user (JPEG format)"),
@@ -105,6 +112,9 @@ property_descriptions = {
         syntax=univention.admin.syntax.jpegPhoto,
         dontsearch=True,
         copyable=True,
+        ldap_attribute='jpegPhoto',
+        map=mapBase64,
+        unmap=unmapBase64,
     ),
     'organisation': univention.admin.property(
         short_description=_('Organisation'),
@@ -112,18 +122,21 @@ property_descriptions = {
         syntax=univention.admin.syntax.string64,
         readonly_when_synced=True,
         copyable=True,
+        ldap_attribute='o',
     ),
     'employeeNumber': univention.admin.property(
         short_description=_('Employee number'),
         long_description='',
         syntax=univention.admin.syntax.string,
         copyable=True,
+        ldap_attribute='employeeNumber',
     ),
     'employeeType': univention.admin.property(
         short_description=_('Employee type'),
         long_description='',
         syntax=univention.admin.syntax.string,
         copyable=True,
+        ldap_attribute='employeeType',
     ),
     'secretary': univention.admin.property(
         short_description=_('Superior'),
@@ -131,12 +144,15 @@ property_descriptions = {
         syntax=univention.admin.syntax.UserDN,
         multivalue=True,
         copyable=True,
+        ldap_attribute='secretary',
     ),
     'e-mail': univention.admin.property(
         short_description=_('E-mail address'),
         long_description='',
         syntax=univention.admin.syntax.emailAddress,
         multivalue=True,
+        ldap_attribute='mail',
+        encoding='ASCII',
     ),
     'phone': univention.admin.property(
         short_description=_('Telephone number'),
@@ -145,6 +161,7 @@ property_descriptions = {
         multivalue=True,
         readonly_when_synced=True,
         copyable=True,
+        ldap_attribute='telephoneNumber',
     ),
     'roomNumber': univention.admin.property(
         short_description=_('Room number'),
@@ -152,6 +169,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.OneThirdString,
         multivalue=True,
         copyable=True,
+        ldap_attribute='roomNumber',
     ),
     'departmentNumber': univention.admin.property(
         short_description=_('Department number'),
@@ -159,6 +177,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.OneThirdString,
         multivalue=True,
         copyable=True,
+        ldap_attribute='departmentNumber',
     ),
     'street': univention.admin.property(
         short_description=_('Street'),
@@ -166,6 +185,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         readonly_when_synced=True,
         copyable=True,
+        ldap_attribute='street',
     ),
     'postcode': univention.admin.property(
         short_description=_('Postal code'),
@@ -173,6 +193,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.OneThirdString,
         readonly_when_synced=True,
         copyable=True,
+        ldap_attribute='postalCode',
     ),
     'postOfficeBox': univention.admin.property(
         short_description=_('Post office box'),
@@ -180,12 +201,14 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         multivalue=True,
         copyable=True,
+        ldap_attribute='postOfficeBox',
     ),
     'preferredLanguage': univention.admin.property(
         short_description=_('Preferred language'),
         long_description='',
         syntax=univention.admin.syntax.string,
         copyable=True,
+        ldap_attribute='preferredLanguage',
     ),
     'city': univention.admin.property(
         short_description=_('City'),
@@ -193,6 +216,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.TwoThirdsString,
         readonly_when_synced=True,
         copyable=True,
+        ldap_attribute='l',
     ),
     'country': univention.admin.property(
         short_description=_('Country'),
@@ -200,6 +224,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.Country,
         readonly_when_synced=True,
         copyable=True,
+        ldap_attribute='c',
     ),
     'state': univention.admin.property(
         short_description=_('State'),
@@ -207,6 +232,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         readonly_when_synced=True,
         copyable=True,
+        ldap_attribute='st',
     ),
     'homeTelephoneNumber': univention.admin.property(
         short_description=_('Private telephone number'),
@@ -215,6 +241,7 @@ property_descriptions = {
         multivalue=True,
         readonly_when_synced=True,
         copyable=True,
+        ldap_attribute='homePhone',
     ),
     'mobileTelephoneNumber': univention.admin.property(
         short_description=_('Mobile phone number'),
@@ -223,6 +250,7 @@ property_descriptions = {
         multivalue=True,
         readonly_when_synced=True,
         copyable=True,
+        ldap_attribute='mobile',
     ),
     'pagerTelephoneNumber': univention.admin.property(
         short_description=_('Pager telephone number'),
@@ -231,6 +259,7 @@ property_descriptions = {
         multivalue=True,
         readonly_when_synced=True,
         copyable=True,
+        ldap_attribute='pager',
     ),
     'homePostalAddress': univention.admin.property(
         short_description=_('Private postal address'),
@@ -238,17 +267,22 @@ property_descriptions = {
         syntax=univention.admin.syntax.postalAddress,
         multivalue=True,
         copyable=True,
+        ldap_attribute='homePostalAddress',
+        map=mapHomePostalAddress,
+        unmap=unmapHomePostalAddress,
     ),
     'preferredDeliveryMethod': univention.admin.property(
         short_description=_('Preferred delivery method'),
         long_description='',
         syntax=univention.admin.syntax.string,
+        ldap_attribute='preferredDeliveryMethod',
     ),
     'physicalDeliveryOfficeName': univention.admin.property(
         short_description=_('Delivery office name'),
         long_description='',
         syntax=univention.admin.syntax.string,
         copyable=True,
+        ldap_attribute='physicalDeliveryOfficeName',
     ),
 }
 
@@ -287,35 +321,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('cn', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('lastname', 'sn', None, univention.admin.mapping.ListToString)
-mapping.register('firstname', 'givenName', None, univention.admin.mapping.ListToString)
-mapping.register('title', 'title', None, univention.admin.mapping.ListToString)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
-mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString)
-mapping.register('birthday', 'univentionBirthday', None, univention.admin.mapping.ListToString)
-mapping.register('jpegPhoto', 'jpegPhoto', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
-mapping.register('organisation', 'o', None, univention.admin.mapping.ListToString)
-mapping.register('employeeNumber', 'employeeNumber', None, univention.admin.mapping.ListToString)
-mapping.register('employeeType', 'employeeType', None, univention.admin.mapping.ListToString)
-mapping.register('secretary', 'secretary')
-mapping.register('e-mail', 'mail', encoding='ASCII')
-mapping.register('preferredLanguage', 'preferredLanguage', None, univention.admin.mapping.ListToString)
-mapping.register('preferredDeliveryMethod', 'preferredDeliveryMethod', None, univention.admin.mapping.ListToString)
-mapping.register('phone', 'telephoneNumber')
-mapping.register('roomNumber', 'roomNumber')
-mapping.register('departmentNumber', 'departmentNumber')
-mapping.register('physicalDeliveryOfficeName', 'physicalDeliveryOfficeName', None, univention.admin.mapping.ListToString)
-mapping.register('street', 'street', None, univention.admin.mapping.ListToString)
-mapping.register('postcode', 'postalCode', None, univention.admin.mapping.ListToString)
-mapping.register('postOfficeBox', 'postOfficeBox')
-mapping.register('city', 'l', None, univention.admin.mapping.ListToString)
-mapping.register('country', 'c', None, univention.admin.mapping.ListToString)
-mapping.register('state', 'st', None, univention.admin.mapping.ListToString)
-mapping.register('homeTelephoneNumber', 'homePhone')
-mapping.register('mobileTelephoneNumber', 'mobile')
-mapping.register('pagerTelephoneNumber', 'pager')
-mapping.register('homePostalAddress', 'homePostalAddress', mapHomePostalAddress, unmapHomePostalAddress)
+mapping.from_properties(property_descriptions)
 # fmt: on
 
 

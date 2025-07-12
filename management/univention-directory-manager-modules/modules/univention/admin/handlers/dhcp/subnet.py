@@ -42,23 +42,30 @@ property_descriptions = {
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'subnetmask': univention.admin.property(
         short_description=_('Address prefix length (or Netmask)'),
         long_description=_('The number of leading bits of the IP address used to identify the network.'),
         syntax=univention.admin.syntax.v4netmask,
         required=True,
+        ldap_attribute='dhcpNetMask',
     ),
     'broadcastaddress': univention.admin.property(
         short_description=_('Broadcast address'),
         long_description=_('The IP addresses used to send data to all hosts inside the network.'),
         syntax=univention.admin.syntax.ipv4Address,
+        ldap_attribute='univentionDhcpBroadcastAddress',
+        encoding='ASCII',
     ),
     'range': univention.admin.property(
         short_description=_('Dynamic address assignment'),
         long_description=_('Define a pool of addresses available for dynamic address assignment.'),
         syntax=univention.admin.syntax.IPv4_AddressRange,
         multivalue=True,
+        ldap_attribute='dhcpRange',
+        map=rangeMap,
+        unmap=rangeUnmap,
     ),
 }
 
@@ -74,10 +81,7 @@ layout = [
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('subnet', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('subnetmask', 'dhcpNetMask', None, univention.admin.mapping.ListToString)
-mapping.register('broadcastaddress', 'univentionDhcpBroadcastAddress', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap)
+mapping.from_properties(property_descriptions)
 # fmt: on
 add_dhcp_options(__name__)
 

@@ -43,6 +43,8 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         identifies=True,
+        ldap_attribute='relativeDomainName',
+        encoding='ASCII',
     ),
     'zonettl': univention.admin.property(
         short_description=_('Time to live'),
@@ -50,6 +52,9 @@ property_descriptions = {
         syntax=univention.admin.syntax.UNIX_TimeInterval,
         default=(('3', 'hours'), []),
         dontsearch=True,
+        ldap_attribute='dNSTTL',
+        map=mapUNIX_TimeInterval,
+        unmap=unmapUNIX_TimeInterval,
     ),
     'a': univention.admin.property(
         short_description=_('IP addresses'),
@@ -63,12 +68,18 @@ property_descriptions = {
         syntax=univention.admin.syntax.dnsMX,
         multivalue=True,
         dontsearch=True,
+        ldap_attribute='mXRecord',
+        map=mapMX,
+        unmap=unmapMX,
+        encoding='ASCII',
     ),
     'txt': univention.admin.property(
         short_description=_('Text Record'),
         long_description=_('One or more arbitrary text strings.'),
         syntax=univention.admin.syntax.string,
         multivalue=True,
+        ldap_attribute='tXTRecord',
+        encoding='ASCII',
     ),
 }
 
@@ -113,10 +124,7 @@ def unmapIPAddresses(values: dict[str, list[bytes]], encoding: univention.admin.
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'relativeDomainName', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('mx', 'mXRecord', mapMX, unmapMX, encoding='ASCII')
-mapping.register('txt', 'tXTRecord', encoding='ASCII')
-mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
+mapping.from_properties(property_descriptions)
 mapping.registerUnmapping('a', unmapIPAddresses, encoding='ASCII')
 # fmt: on
 

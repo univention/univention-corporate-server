@@ -56,18 +56,21 @@ property_descriptions = dict({
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'masterPackages': univention.admin.property(
         short_description=_('Package installation list'),
         long_description='',
         syntax=univention.admin.syntax.Packages,
         multivalue=True,
+        ldap_attribute='univentionMasterPackages',
     ),
     'masterPackagesRemove': univention.admin.property(
         short_description=_('Package removal list'),
         long_description='',
         syntax=univention.admin.syntax.PackagesRemove,
         multivalue=True,
+        ldap_attribute='univentionMasterPackagesRemove',
     ),
 
 }, **dict([
@@ -90,9 +93,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('masterPackages', 'univentionMasterPackages')
-mapping.register('masterPackagesRemove', 'univentionMasterPackagesRemove')
+mapping.from_properties(property_descriptions)
 register_policy_mapping(mapping)
 # fmt: on
 

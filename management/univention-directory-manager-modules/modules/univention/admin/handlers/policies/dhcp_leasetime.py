@@ -57,21 +57,31 @@ property_descriptions = dict({
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'lease_time_default': univention.admin.property(
         short_description=_('Default lease time'),
         long_description=_('Lease time used if the client does not request a specific expiration time'),
         syntax=univention.admin.syntax.UNIX_TimeInterval,
+        ldap_attribute='univentionDhcpLeaseTimeDefault',
+        map=mapUNIX_TimeInterval,
+        unmap=unmapUNIX_TimeInterval,
     ),
     'lease_time_max': univention.admin.property(
         short_description=_('Maximum lease time'),
         long_description=_('Maximum lease time that the server will accept if asked for'),
         syntax=univention.admin.syntax.UNIX_TimeInterval,
+        ldap_attribute='univentionDhcpLeaseTimeMax',
+        map=mapUNIX_TimeInterval,
+        unmap=unmapUNIX_TimeInterval,
     ),
     'lease_time_min': univention.admin.property(
         short_description=_('Minimum lease time'),
         long_description=_('Minimum granted lease time'),
         syntax=univention.admin.syntax.UNIX_TimeInterval,
+        ldap_attribute='univentionDhcpLeaseTimeMin',
+        map=mapUNIX_TimeInterval,
+        unmap=unmapUNIX_TimeInterval,
     ),
 }, **dict([
     requiredObjectClassesProperty(),
@@ -95,10 +105,7 @@ layout = [
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('lease_time_default', 'univentionDhcpLeaseTimeDefault', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
-mapping.register('lease_time_max', 'univentionDhcpLeaseTimeMax', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
-mapping.register('lease_time_min', 'univentionDhcpLeaseTimeMin', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
+mapping.from_properties(property_descriptions)
 register_policy_mapping(mapping)
 # fmt: on
 

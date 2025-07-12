@@ -42,12 +42,14 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
+        ldap_attribute='description',
     ),
     'password': univention.admin.property(
         short_description=_('Machine Password'),
@@ -73,8 +75,7 @@ layout = [
 layout.append(role_layout())
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 register_pki_mapping(mapping)
 register_role_mapping(mapping)
 # fmt: on

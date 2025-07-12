@@ -40,78 +40,91 @@ property_descriptions = {
         may_change=False,
         identifies=True,
         default=('directory', []),
+        ldap_attribute='cn',
     ),
     'policies': univention.admin.property(
         short_description=_('Policy Link'),
         long_description='',
         syntax=univention.admin.syntax.ldapDn,
         multivalue=True,
+        ldap_attribute='univentionPolicyObject',
     ),
     'dns': univention.admin.property(
         short_description=_('DNS Link'),
         long_description='',
         syntax=univention.admin.syntax.ldapDn,
         multivalue=True,
+        ldap_attribute='univentionDnsObject',
     ),
     'dhcp': univention.admin.property(
         short_description=_('DHCP Link'),
         long_description='',
         syntax=univention.admin.syntax.ldapDn,
         multivalue=True,
+        ldap_attribute='univentionDhcpObject',
     ),
     'users': univention.admin.property(
         short_description=_('User Link'),
         long_description='',
         syntax=univention.admin.syntax.ldapDn,
         multivalue=True,
+        ldap_attribute='univentionUsersObject',
     ),
     'groups': univention.admin.property(
         short_description=_('Group Link'),
         long_description='',
         syntax=univention.admin.syntax.ldapDn,
         multivalue=True,
+        ldap_attribute='univentionGroupsObject',
     ),
     'computers': univention.admin.property(
         short_description=_('Computer Link'),
         long_description='',
         syntax=univention.admin.syntax.ldapDn,
         multivalue=True,
+        ldap_attribute='univentionComputersObject',
     ),
     'domaincontroller': univention.admin.property(
         short_description=_('Directory Node Computer Link'),
         long_description='',
         syntax=univention.admin.syntax.ldapDn,
         multivalue=True,
+        ldap_attribute='univentionDomainControllerComputersObject',
     ),
     'networks': univention.admin.property(
         short_description=_('Network Link'),
         long_description='',
         syntax=univention.admin.syntax.ldapDn,
         multivalue=True,
+        ldap_attribute='univentionNetworksObject',
     ),
     'shares': univention.admin.property(
         short_description=_('Share Link'),
         long_description='',
         syntax=univention.admin.syntax.ldapDn,
         multivalue=True,
+        ldap_attribute='univentionSharesObject',
     ),
     'printers': univention.admin.property(
         short_description=_('Printer Link'),
         long_description='',
         syntax=univention.admin.syntax.ldapDn,
         multivalue=True,
+        ldap_attribute='univentionPrintersObject',
     ),
     'mail': univention.admin.property(
         short_description=_('Mail Link'),
         long_description='',
         syntax=univention.admin.syntax.ldapDn,
         multivalue=True,
+        ldap_attribute='univentionMailObject',
     ),
     'license': univention.admin.property(
         short_description=_('License Link'),
         long_description='',
         syntax=univention.admin.syntax.ldapDn,
         multivalue=True,
+        ldap_attribute='univentionLicenseObject',
     ),
 }
 
@@ -160,19 +173,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('policies', 'univentionPolicyObject')
-mapping.register('dns', 'univentionDnsObject')
-mapping.register('dhcp', 'univentionDhcpObject')
-mapping.register('users', 'univentionUsersObject')
-mapping.register('groups', 'univentionGroupsObject')
-mapping.register('computers', 'univentionComputersObject')
-mapping.register('domaincontroller', 'univentionDomainControllerComputersObject')
-mapping.register('networks', 'univentionNetworksObject')
-mapping.register('shares', 'univentionSharesObject')
-mapping.register('printers', 'univentionPrintersObject')
-mapping.register('mail', 'univentionMailObject')
-mapping.register('license', 'univentionLicenseObject')
+mapping.from_properties(property_descriptions)
 # fmt: on
 
 

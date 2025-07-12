@@ -56,26 +56,31 @@ property_descriptions = dict({
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'startup': univention.admin.property(
         short_description=_('Perform maintenance after system startup'),
         long_description='',
         syntax=univention.admin.syntax.boolean,
+        ldap_attribute='univentionInstallationStartup',
     ),
     'shutdown': univention.admin.property(
         short_description=_('Perform maintenance before system shutdown'),
         long_description='',
         syntax=univention.admin.syntax.boolean,
+        ldap_attribute='univentionInstallationShutdown',
     ),
     'reboot': univention.admin.property(
         short_description=_('Reboot after maintenance'),
         long_description='',
         syntax=univention.admin.syntax.timeSpec,
+        ldap_attribute='univentionInstallationReboot',
     ),
     'cron': univention.admin.property(
         short_description=_('Use Cron settings'),
         long_description='',
         syntax=univention.admin.syntax.boolean,
+        ldap_attribute='univentionCronActive',
     ),
     'month': univention.admin.property(
         short_description=_('Month'),
@@ -133,11 +138,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('startup', 'univentionInstallationStartup', None, univention.admin.mapping.ListToString)
-mapping.register('shutdown', 'univentionInstallationShutdown', None, univention.admin.mapping.ListToString)
-mapping.register('reboot', 'univentionInstallationReboot', None, univention.admin.mapping.ListToString)
-mapping.register('cron', 'univentionCronActive', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 register_policy_mapping(mapping)
 # fmt: on
 

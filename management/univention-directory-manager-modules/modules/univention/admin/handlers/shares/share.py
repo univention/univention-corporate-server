@@ -59,11 +59,13 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'description': univention.admin.property(
         short_description=_('Comment'),
         long_description=_('A comment e.g. shown in the file browser.'),
         syntax=univention.admin.syntax.string,
+        ldap_attribute='description',
     ),
     'printablename': univention.admin.property(
         short_description=_('Printable name'),
@@ -77,24 +79,29 @@ property_descriptions = {
         syntax=univention.admin.syntax.UCS_Server,
         include_in_default_search=True,
         required=True,
+        ldap_attribute='univentionShareHost',
+        encoding='ASCII',
     ),
     'path': univention.admin.property(
         short_description=_('Directory'),
         long_description=_('Directory that is exported.'),
         syntax=univention.admin.syntax.sharePath,
         required=True,
+        ldap_attribute='univentionSharePath',
     ),
     'owner': univention.admin.property(
         short_description=_("Directory owner of the share's root directory"),
         long_description=_('The owner of the exported root directory. If none is given root will be owner.'),
         syntax=univention.admin.syntax.UserID,
         default="0",
+        ldap_attribute='univentionShareUid',
     ),
     'group': univention.admin.property(
         short_description=_("Directory owner group of the share's root directory"),
         long_description=_('The primary group of the exported root directory, if none is given group 0 will be used.'),
         syntax=univention.admin.syntax.GroupID,
         default="0",
+        ldap_attribute='univentionShareGid',
     ),
     'directorymode': univention.admin.property(
         short_description=_("Permissions for the share's root directory"),
@@ -103,6 +110,8 @@ property_descriptions = {
         dontsearch=True,
         default="00755",
         size='OneAndHalf',
+        ldap_attribute='univentionShareDirectoryMode',
+        encoding='ASCII',
     ),
     'writeable': univention.admin.property(
         short_description=_('NFS write access'),
@@ -111,6 +120,10 @@ property_descriptions = {
         options=['nfs'],
         default='1',
         size='Half',
+        ldap_attribute='univentionShareWriteable',
+        map=boolToString,
+        unmap=stringToBool,
+        encoding='ASCII',
     ),
     'sync': univention.admin.property(
         short_description=_('NFS synchronisation'),
@@ -119,6 +132,8 @@ property_descriptions = {
         options=['nfs'],
         default='sync',
         size='Half',
+        ldap_attribute='univentionShareNFSSync',
+        encoding='ASCII',
     ),
     'subtree_checking': univention.admin.property(
         short_description=_('Subtree checking'),
@@ -127,6 +142,10 @@ property_descriptions = {
         options=['nfs'],
         default='1',
         size='Two',
+        ldap_attribute='univentionShareNFSSubTree',
+        map=boolToString,
+        unmap=stringToBool,
+        encoding='ASCII',
     ),
     'root_squash': univention.admin.property(
         short_description=_('Modify user ID for root user (root squashing)'),
@@ -135,6 +154,10 @@ property_descriptions = {
         options=['nfs'],
         default='1',
         size='Two',
+        ldap_attribute='univentionShareNFSRootSquash',
+        map=boolToString,
+        unmap=stringToBool,
+        encoding='ASCII',
     ),
     'nfs_hosts': univention.admin.property(
         short_description=_('Only allow access for this host, IP address or network'),
@@ -150,6 +173,10 @@ property_descriptions = {
         options=['samba'],
         default='1',
         size='One',
+        ldap_attribute='univentionShareSambaWriteable',
+        map=boolToString,
+        unmap=stringToBool,
+        encoding='ASCII',
     ),
     'sambaName': univention.admin.property(
         short_description=_('Windows name'),
@@ -157,6 +184,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.string_numbers_letters_dots_spaces,
         options=['samba'],
         default='<name>',
+        ldap_attribute='univentionShareSambaName',
     ),
     'sambaBrowseable': univention.admin.property(
         short_description=_('Show share in Windows network environment'),
@@ -165,6 +193,10 @@ property_descriptions = {
         options=['samba'],
         default='1',
         size='Two',
+        ldap_attribute='univentionShareSambaBrowseable',
+        map=boolToString,
+        unmap=stringToBool,
+        encoding='ASCII',
     ),
     'sambaPublic': univention.admin.property(
         short_description=_('Allow anonymous read-only access with a guest user'),
@@ -173,6 +205,10 @@ property_descriptions = {
         options=['samba'],
         default='0',
         size='Two',
+        ldap_attribute='univentionShareSambaPublic',
+        map=boolToString,
+        unmap=stringToBool,
+        encoding='ASCII',
     ),
     'sambaDosFilemode': univention.admin.property(
         short_description=_('Users with write access may modify permissions'),
@@ -181,6 +217,10 @@ property_descriptions = {
         options=['samba'],
         default='0',
         size='Two',
+        ldap_attribute='univentionShareSambaDosFilemode',
+        map=boolToString,
+        unmap=stringToBool,
+        encoding='ASCII',
     ),
     'sambaHideUnreadable': univention.admin.property(
         short_description=_('Hide unreadable files/directories'),
@@ -189,6 +229,10 @@ property_descriptions = {
         options=['samba'],
         default='0',
         size='Two',
+        ldap_attribute='univentionShareSambaHideUnreadable',
+        map=boolToString,
+        unmap=stringToBool,
+        encoding='ASCII',
     ),
     'sambaCreateMode': univention.admin.property(
         short_description=_('File mode'),
@@ -197,6 +241,8 @@ property_descriptions = {
         options=['samba'],
         dontsearch=True,
         default='0744',
+        ldap_attribute='univentionShareSambaCreateMode',
+        encoding='ASCII',
     ),
     'sambaDirectoryMode': univention.admin.property(
         short_description=_('Directory mode'),
@@ -205,6 +251,8 @@ property_descriptions = {
         options=['samba'],
         dontsearch=True,
         default='0755',
+        ldap_attribute='univentionShareSambaDirectoryMode',
+        encoding='ASCII',
     ),
     'sambaForceCreateMode': univention.admin.property(
         short_description=_('Force file mode'),
@@ -213,6 +261,8 @@ property_descriptions = {
         options=['samba'],
         dontsearch=True,
         default='0',
+        ldap_attribute='univentionShareSambaForceCreateMode',
+        encoding='ASCII',
     ),
     'sambaForceDirectoryMode': univention.admin.property(
         short_description=_('Force directory mode'),
@@ -221,6 +271,8 @@ property_descriptions = {
         options=['samba'],
         dontsearch=True,
         default='0',
+        ldap_attribute='univentionShareSambaForceDirectoryMode',
+        encoding='ASCII',
     ),
     'sambaSecurityMode': univention.admin.property(
         short_description=_('Security mode'),
@@ -229,6 +281,8 @@ property_descriptions = {
         options=['samba'],
         dontsearch=True,
         default='0777',
+        ldap_attribute='univentionShareSambaSecurityMode',
+        encoding='ASCII',
     ),
     'sambaDirectorySecurityMode': univention.admin.property(
         short_description=_('Directory security mode'),
@@ -237,6 +291,8 @@ property_descriptions = {
         options=['samba'],
         dontsearch=True,
         default='0777',
+        ldap_attribute='univentionShareSambaDirectorySecurityMode',
+        encoding='ASCII',
     ),
     'sambaForceSecurityMode': univention.admin.property(
         short_description=_('Force security mode'),
@@ -245,6 +301,8 @@ property_descriptions = {
         options=['samba'],
         dontsearch=True,
         default='0',
+        ldap_attribute='univentionShareSambaForceSecurityMode',
+        encoding='ASCII',
     ),
     'sambaForceDirectorySecurityMode': univention.admin.property(
         short_description=_('Force directory security mode'),
@@ -253,6 +311,8 @@ property_descriptions = {
         options=['samba'],
         dontsearch=True,
         default='0',
+        ldap_attribute='univentionShareSambaForceDirectorySecurityMode',
+        encoding='ASCII',
     ),
     'sambaLocking': univention.admin.property(
         short_description=_('Locking'),
@@ -261,6 +321,8 @@ property_descriptions = {
         options=['samba'],
         default='1',
         size='Half',
+        ldap_attribute='univentionShareSambaLocking',
+        encoding='ASCII',
     ),
     'sambaBlockingLocks': univention.admin.property(
         short_description=_('Blocking locks'),
@@ -269,6 +331,8 @@ property_descriptions = {
         options=['samba'],
         default='1',
         size='Half',
+        ldap_attribute='univentionShareSambaBlockingLocks',
+        encoding='ASCII',
     ),
     'sambaStrictLocking': univention.admin.property(
         short_description=_('Strict locking'),
@@ -276,6 +340,8 @@ property_descriptions = {
         syntax=univention.admin.syntax.auto_one_zero,
         options=['samba'],
         default='Auto',
+        ldap_attribute='univentionShareSambaStrictLocking',
+        encoding='ASCII',
     ),
     'sambaOplocks': univention.admin.property(
         short_description=_('Oplocks'),
@@ -284,6 +350,8 @@ property_descriptions = {
         options=['samba'],
         default='1',
         size='Half',
+        ldap_attribute='univentionShareSambaOplocks',
+        encoding='ASCII',
     ),
     'sambaLevel2Oplocks': univention.admin.property(
         short_description=_('Level 2 oplocks'),
@@ -292,6 +360,8 @@ property_descriptions = {
         options=['samba'],
         default='1',
         size='Half',
+        ldap_attribute='univentionShareSambaLevel2Oplocks',
+        encoding='ASCII',
     ),
     'sambaFakeOplocks': univention.admin.property(
         short_description=_('Fake oplocks'),
@@ -300,12 +370,16 @@ property_descriptions = {
         options=['samba'],
         default='0',
         size='Half',
+        ldap_attribute='univentionShareSambaFakeOplocks',
+        encoding='ASCII',
     ),
     'sambaBlockSize': univention.admin.property(
         short_description=_('Block size'),
         long_description='',
         syntax=univention.admin.syntax.integer,
         options=['samba'],
+        ldap_attribute='univentionShareSambaBlockSize',
+        encoding='ASCII',
     ),
     'sambaCscPolicy': univention.admin.property(
         short_description=_('Client-side caching policy'),
@@ -313,6 +387,7 @@ property_descriptions = {
         syntax=cscPolicy,
         options=['samba'],
         default='manual',
+        ldap_attribute='univentionShareSambaCscPolicy',
     ),
     'sambaHostsAllow': univention.admin.property(
         short_description=_('Allowed host/network'),
@@ -320,6 +395,8 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         multivalue=True,
         options=['samba'],
+        ldap_attribute='univentionShareSambaHostsAllow',
+        encoding='ASCII',
     ),
     'sambaHostsDeny': univention.admin.property(
         short_description=_('Denied host/network'),
@@ -327,6 +404,8 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         multivalue=True,
         options=['samba'],
+        ldap_attribute='univentionShareSambaHostsDeny',
+        encoding='ASCII',
     ),
     'sambaValidUsers': univention.admin.property(
         short_description=_('Valid users or groups'),
@@ -340,6 +419,9 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         options=['samba'],
         multivalue=True,
+        ldap_attribute='univentionShareSambaValidUsers',
+        map=map_samba_user_groups,
+        unmap=unmap_samba_user_groups,
     ),
     'sambaInvalidUsers': univention.admin.property(
         short_description=_('Invalid users or groups'),
@@ -347,24 +429,30 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         options=['samba'],
         multivalue=True,
+        ldap_attribute='univentionShareSambaInvalidUsers',
+        map=map_samba_user_groups,
+        unmap=unmap_samba_user_groups,
     ),
     'sambaForceUser': univention.admin.property(
         short_description=_('Force user'),
         long_description=_('This specifies a UNIX user name that will be assigned as the default user for all users connecting to this service. This is useful for sharing files. You should also use it carefully as using it incorrectly can cause security problems.'),
         syntax=univention.admin.syntax.string,
         options=['samba'],
+        ldap_attribute='univentionShareSambaForceUser',
     ),
     'sambaForceGroup': univention.admin.property(
         short_description=_('Force group'),
         long_description=_('This specifies a UNIX group name that will be assigned as the default primary group for all users connecting to this service. This is useful for sharing files by ensuring that all access to files on the service will use the named group for their permissions checking. Thus, by assigning permissions for this group to the files and directories within this service the Samba administrator can restrict or allow sharing of these files.'),
         syntax=univention.admin.syntax.string,
         options=['samba'],
+        ldap_attribute='univentionShareSambaForceGroup',
     ),
     'sambaHideFiles': univention.admin.property(
         short_description=_('Hidden files'),
         long_description=_('List of files or directories that are not visible but are accessible. Entries must be separated by "/" (e.g. /.*/DesktopFolderDB/TrashFor%m/resource.frk/).'),
         syntax=univention.admin.syntax.string,
         options=['samba'],
+        ldap_attribute='univentionShareSambaHideFiles',
     ),
     'sambaNtAclSupport': univention.admin.property(
         short_description=_('NT ACL support'),
@@ -373,6 +461,8 @@ property_descriptions = {
         options=['samba'],
         default='1',
         size='Half',
+        ldap_attribute='univentionShareSambaNtAclSupport',
+        encoding='ASCII',
     ),
     'sambaInheritAcls': univention.admin.property(
         short_description=_('Inherit ACLs'),
@@ -381,18 +471,24 @@ property_descriptions = {
         options=['samba'],
         default='1',
         size='Half',
+        ldap_attribute='univentionShareSambaInheritAcls',
+        encoding='ASCII',
     ),
     'sambaPostexec': univention.admin.property(
         short_description=_('Postexec script'),
         long_description=_('This option specifies a command to be run whenever the service is disconnected. It takes the usual substitutions.'),
         syntax=univention.admin.syntax.string,
         options=['samba'],
+        ldap_attribute='univentionShareSambaPostexec',
+        encoding='ASCII',
     ),
     'sambaPreexec': univention.admin.property(
         short_description=_('Preexec script'),
         long_description=_('This option specifies a command to be run whenever the service is connected to. It takes the usual substitutions.'),
         syntax=univention.admin.syntax.string,
         options=['samba'],
+        ldap_attribute='univentionShareSambaPreexec',
+        encoding='ASCII',
     ),
     'sambaReadList': univention.admin.property(
         short_description=_('Restrict read access to these users/groups'),
@@ -400,6 +496,9 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         options=['samba'],
         multivalue=True,
+        ldap_attribute='univentionShareSambaReadList',
+        map=map_samba_user_groups,
+        unmap=unmap_samba_user_groups,
     ),
     'sambaWriteList': univention.admin.property(
         short_description=_('Restrict write access to these users/groups'),
@@ -407,6 +506,9 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         options=['samba'],
         multivalue=True,
+        ldap_attribute='univentionShareSambaWriteList',
+        map=map_samba_user_groups,
+        unmap=unmap_samba_user_groups,
     ),
     'sambaVFSObjects': univention.admin.property(
         short_description=_('VFS objects'),
@@ -414,6 +516,10 @@ property_descriptions = {
         syntax=getattr(univention.admin.syntax, 'VFSObjects', univention.admin.syntax.string),
         multivalue=True,
         options=['samba'],
+        ldap_attribute='univentionShareSambaVFSObjects',
+        map=map_vfs_objects,
+        unmap=unmap_vfs_objects,
+        encoding='ASCII',
     ),
     'sambaMSDFSRoot': univention.admin.property(
         short_description=_('Export share as MSDFS root'),
@@ -422,6 +528,10 @@ property_descriptions = {
         options=['samba'],
         default='0',
         size='Two',
+        ldap_attribute='univentionShareSambaMSDFS',
+        map=boolToString,
+        unmap=stringToBool,
+        encoding='ASCII',
     ),
     'sambaInheritOwner': univention.admin.property(
         short_description=_('Create files/directories with the owner of the parent directory'),
@@ -430,6 +540,10 @@ property_descriptions = {
         options=['samba'],
         default='0',
         size='Two',
+        ldap_attribute='univentionShareSambaInheritOwner',
+        map=boolToString,
+        unmap=stringToBool,
+        encoding='ASCII',
     ),
     'sambaInheritPermissions': univention.admin.property(
         short_description=_('Create files/directories with permissions of the parent directory'),
@@ -438,6 +552,10 @@ property_descriptions = {
         options=['samba'],
         default='0',
         size='Two',
+        ldap_attribute='univentionShareSambaInheritPermissions',
+        map=boolToString,
+        unmap=stringToBool,
+        encoding='ASCII',
     ),
     'sambaCustomSettings': univention.admin.property(
         short_description=_('Option name in smb.conf and its value'),
@@ -445,6 +563,9 @@ property_descriptions = {
         syntax=univention.admin.syntax.keyAndValue,
         multivalue=True,
         options=['samba'],
+        ldap_attribute='univentionShareSambaCustomSetting',
+        map=mapKeyAndValue,
+        unmap=unmapKeyAndValue,
     ),
     'nfsCustomSettings': univention.admin.property(
         short_description=_('Option name in exports file'),
@@ -452,6 +573,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         multivalue=True,
         options=['nfs'],
+        ldap_attribute='univentionShareNFSCustomSetting',
     ),
     'appendACL': univention.admin.property(
         short_description=_('Append NTACLs for Samba file shares'),
@@ -459,6 +581,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         multivalue=True,
         options=['samba'],
+        ldap_attribute='univentionShareSambaBaseDirAppendACL',
     ),
 }
 
@@ -592,60 +715,8 @@ def map_vfs_objects(value, encoding=()):
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
-mapping.register('host', 'univentionShareHost', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('path', 'univentionSharePath', None, univention.admin.mapping.ListToString)
-mapping.register('owner', 'univentionShareUid', None, univention.admin.mapping.ListToString)
-mapping.register('group', 'univentionShareGid', None, univention.admin.mapping.ListToString)
-mapping.register('directorymode', 'univentionShareDirectoryMode', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('writeable', 'univentionShareWriteable', boolToString, stringToBool, encoding='ASCII')
-mapping.register('sync', 'univentionShareNFSSync', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.from_properties(property_descriptions)
 mapping.register('nfs_hosts', 'univentionShareNFSAllowed', encoding='ASCII')
-mapping.register('root_squash', 'univentionShareNFSRootSquash', boolToString, stringToBool, encoding='ASCII')
-mapping.register('subtree_checking', 'univentionShareNFSSubTree', boolToString, stringToBool, encoding='ASCII')
-mapping.register('sambaName', 'univentionShareSambaName', None, univention.admin.mapping.ListToString)
-mapping.register('sambaBrowseable', 'univentionShareSambaBrowseable', boolToString, stringToBool, encoding='ASCII')
-mapping.register('sambaPublic', 'univentionShareSambaPublic', boolToString, stringToBool, encoding='ASCII')
-mapping.register('sambaDosFilemode', 'univentionShareSambaDosFilemode', boolToString, stringToBool, encoding='ASCII')
-mapping.register('sambaHideUnreadable', 'univentionShareSambaHideUnreadable', boolToString, stringToBool, encoding='ASCII')
-mapping.register('sambaCreateMode', 'univentionShareSambaCreateMode', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaDirectoryMode', 'univentionShareSambaDirectoryMode', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaForceCreateMode', 'univentionShareSambaForceCreateMode', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaForceDirectoryMode', 'univentionShareSambaForceDirectoryMode', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaSecurityMode', 'univentionShareSambaSecurityMode', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaDirectorySecurityMode', 'univentionShareSambaDirectorySecurityMode', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaForceSecurityMode', 'univentionShareSambaForceSecurityMode', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaForceDirectorySecurityMode', 'univentionShareSambaForceDirectorySecurityMode', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaLocking', 'univentionShareSambaLocking', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaBlockingLocks', 'univentionShareSambaBlockingLocks', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaStrictLocking', 'univentionShareSambaStrictLocking', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaOplocks', 'univentionShareSambaOplocks', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaLevel2Oplocks', 'univentionShareSambaLevel2Oplocks', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaFakeOplocks', 'univentionShareSambaFakeOplocks', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaBlockSize', 'univentionShareSambaBlockSize', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaCscPolicy', 'univentionShareSambaCscPolicy', None, univention.admin.mapping.ListToString)
-mapping.register('sambaValidUsers', 'univentionShareSambaValidUsers', map_samba_user_groups, unmap_samba_user_groups)
-mapping.register('sambaInvalidUsers', 'univentionShareSambaInvalidUsers', map_samba_user_groups, unmap_samba_user_groups)
-mapping.register('sambaHostsAllow', 'univentionShareSambaHostsAllow', encoding='ASCII')
-mapping.register('sambaHostsDeny', 'univentionShareSambaHostsDeny', encoding='ASCII')
-mapping.register('sambaForceUser', 'univentionShareSambaForceUser', None, univention.admin.mapping.ListToString)
-mapping.register('sambaForceGroup', 'univentionShareSambaForceGroup', None, univention.admin.mapping.ListToString)
-mapping.register('sambaHideFiles', 'univentionShareSambaHideFiles', None, univention.admin.mapping.ListToString)
-mapping.register('sambaNtAclSupport', 'univentionShareSambaNtAclSupport', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaInheritAcls', 'univentionShareSambaInheritAcls', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaPostexec', 'univentionShareSambaPostexec', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaPreexec', 'univentionShareSambaPreexec', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaWriteable', 'univentionShareSambaWriteable', boolToString, stringToBool, encoding='ASCII')
-mapping.register('sambaReadList', 'univentionShareSambaReadList', map_samba_user_groups, unmap_samba_user_groups)
-mapping.register('sambaWriteList', 'univentionShareSambaWriteList', map_samba_user_groups, unmap_samba_user_groups)
-mapping.register('sambaVFSObjects', 'univentionShareSambaVFSObjects', map_vfs_objects, unmap_vfs_objects, encoding='ASCII')
-mapping.register('sambaMSDFSRoot', 'univentionShareSambaMSDFS', boolToString, stringToBool, encoding='ASCII')
-mapping.register('sambaInheritOwner', 'univentionShareSambaInheritOwner', boolToString, stringToBool, encoding='ASCII')
-mapping.register('sambaInheritPermissions', 'univentionShareSambaInheritPermissions', boolToString, stringToBool, encoding='ASCII')
-mapping.register('sambaCustomSettings', 'univentionShareSambaCustomSetting', mapKeyAndValue, unmapKeyAndValue)
-mapping.register('nfsCustomSettings', 'univentionShareNFSCustomSetting')
-mapping.register('appendACL', 'univentionShareSambaBaseDirAppendACL')
 
 
 class object(univention.admin.handlers.simpleLdap):

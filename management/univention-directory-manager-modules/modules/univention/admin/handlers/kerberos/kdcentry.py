@@ -41,12 +41,14 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         identifies=True,
+        ldap_attribute='uid',
     ),
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
+        ldap_attribute='description',
     ),
     'password': univention.admin.property(
         short_description=_('Password'),
@@ -66,6 +68,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.integer,
         dontsearch=True,
         default='1',
+        ldap_attribute='krb5KeyVersionNumber',
     ),
     'KDCFlags': univention.admin.property(
         short_description=_('KDC Flags'),
@@ -73,6 +76,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.integer,
         dontsearch=True,
         default='126',
+        ldap_attribute='krb5KDCFlags',
     ),
     'maxLife': univention.admin.property(
         short_description=_('Maximum life time'),
@@ -80,6 +84,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.integer,
         dontsearch=True,
         default='86400',
+        ldap_attribute='krb5MaxLife',
     ),
     'maxRenew': univention.admin.property(
         short_description=_('Maximum renew time'),
@@ -87,6 +92,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.integer,
         dontsearch=True,
         default='604800',
+        ldap_attribute='krb5MaxRenew',
     ),
 }
 
@@ -105,12 +111,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'uid', None, univention.admin.mapping.ListToString)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
-mapping.register('keyVersionNumber', 'krb5KeyVersionNumber', None, univention.admin.mapping.ListToString)
-mapping.register('KDCFlags', 'krb5KDCFlags', None, univention.admin.mapping.ListToString)
-mapping.register('maxLife', 'krb5MaxLife', None, univention.admin.mapping.ListToString)
-mapping.register('maxRenew', 'krb5MaxRenew', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 # fmt: on
 
 

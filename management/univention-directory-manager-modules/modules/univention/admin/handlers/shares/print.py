@@ -51,6 +51,7 @@ property_descriptions = {
 }
 
 mapping = univention.admin.mapping.mapping()
+mapping.from_properties(property_descriptions)
 
 
 class object(univention.admin.handlers.simpleLdap):

@@ -55,11 +55,13 @@ property_descriptions = dict({
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'language': univention.admin.property(
         short_description=_('Desktop language'),
         long_description='',
         syntax=univention.admin.syntax.language,
+        ldap_attribute='univentionDesktopLanguage',
     ),
     'profile': univention.admin.property(
         short_description=_('Desktop profile'),
@@ -67,18 +69,21 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.KDE_Profile,
         multivalue=True,
         include_in_default_search=True,
+        ldap_attribute='univentionDesktopProfile',
     ),
     'logonScripts': univention.admin.property(
         short_description=_('Logon scripts'),
         long_description='',
         syntax=univention.admin.syntax.string,
         multivalue=True,
+        ldap_attribute='univentionDesktopLogonScripts',
     ),
     'logoutScripts': univention.admin.property(
         short_description=_('Logout scripts'),
         long_description='',
         syntax=univention.admin.syntax.string,
         multivalue=True,
+        ldap_attribute='univentionDesktopLogoutScripts',
     ),
 
 }, **dict([
@@ -102,11 +107,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('language', 'univentionDesktopLanguage', None, univention.admin.mapping.ListToString)
-mapping.register('profile', 'univentionDesktopProfile')
-mapping.register('logonScripts', 'univentionDesktopLogonScripts')
-mapping.register('logoutScripts', 'univentionDesktopLogoutScripts')
+mapping.from_properties(property_descriptions)
 register_policy_mapping(mapping)
 # fmt: on
 

@@ -73,6 +73,7 @@ property_descriptions = {
         short_description=_('Quota in MB'),
         long_description=_('How many MB of emails can be stored in the shared folder (independent of the users that stored them).'),
         syntax=univention.admin.syntax.integer,
+        ldap_attribute='univentionMailUserQuota',
     ),
     'mailHomeServer': univention.admin.property(
         short_description=_('Mail home server'),
@@ -80,12 +81,14 @@ property_descriptions = {
         syntax=univention.admin.syntax.MailHomeServer,
         nonempty_is_default=True,
         required=True,
+        ldap_attribute='univentionMailHomeServer',
     ),
     'mailPrimaryAddress': univention.admin.property(
         short_description=_('E-Mail address'),
         long_description='',
         syntax=univention.admin.syntax.emailAddressValidDomain,
         include_in_default_search=True,
+        ldap_attribute='mailPrimaryAddress',
     ),
 }
 
@@ -107,9 +110,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('mailQuota', 'univentionMailUserQuota', None, univention.admin.mapping.ListToString)
-mapping.register('mailHomeServer', 'univentionMailHomeServer', None, univention.admin.mapping.ListToString)
-mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 # fmt: on
 
 

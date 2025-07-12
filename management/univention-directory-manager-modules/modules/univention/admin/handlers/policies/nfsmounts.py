@@ -55,12 +55,16 @@ property_descriptions = dict({
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'nfsMounts': univention.admin.property(
         short_description=_('NFS shares to mount'),
         long_description='',
         syntax=univention.admin.syntax.nfsMounts,
         multivalue=True,
+        ldap_attribute='univentionNFSMounts',
+        map=mapMounts,
+        unmap=unmapMounts,
     ),
 
 }, **dict([
@@ -93,8 +97,7 @@ def mapMounts(old, encoding=()):
 
 # fmt: off
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('nfsMounts', 'univentionNFSMounts', mapMounts, unmapMounts)
+mapping.from_properties(property_descriptions)
 register_policy_mapping(mapping)
 # fmt: on
 

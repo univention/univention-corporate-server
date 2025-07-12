@@ -36,11 +36,13 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'title': univention.admin.property(
         short_description=_('Title'),
         long_description='',
         syntax=univention.admin.syntax.string,
+        ldap_attribute='title',
     ),
     'initials': univention.admin.property(
         short_description=_('Initials'),
@@ -57,99 +59,124 @@ property_descriptions = {
         long_description='',
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
+        ldap_attribute='description',
     ),
     'displayName': univention.admin.property(
         short_description=_('Display name'),
         long_description='',
         syntax=univention.admin.syntax.string,
         default='<firstname> <lastname><:strip>',
+        ldap_attribute='displayName',
     ),
     'organisation': univention.admin.property(
         short_description=_('Organisation'),
         long_description='',
         syntax=univention.admin.syntax.string,
+        ldap_attribute='o',
     ),
     'pwdChangeNextLogin': univention.admin.property(
         short_description=_('Change password on next login'),
         long_description=_('Change password on next login'),
         syntax=univention.admin.syntax.boolean,
         dontsearch=True,
+        ldap_attribute='userPwdMustChangePreset',
+        encoding='ASCII',
     ),
     'disabled': univention.admin.property(
         short_description=_('Account deactivation'),
         long_description='',
         syntax=univention.admin.syntax.boolean,
         show_in_lists=True,
+        ldap_attribute='userDisabledPreset',
+        encoding='ASCII',
     ),
     'e-mail': univention.admin.property(
         short_description=_('E-mail address'),
         long_description=_('This e-mail address serves only as contact information. This address has no effect on the UCS mail stack and is not related to a local mailbox.'),
         syntax=univention.admin.syntax.string,
         multivalue=True,
+        ldap_attribute='mail',
+        encoding='ASCII',
     ),
     'unixhome': univention.admin.property(
         short_description=_('Unix home directory'),
         long_description='',
         syntax=univention.admin.syntax.absolutePath,
         default='/home/<username>',
+        ldap_attribute='homeDirectory',
     ),
     'homeShare': univention.admin.property(
         short_description=_('Home share'),
         long_description=_("Share, the user's home directory resides on"),
         syntax=univention.admin.syntax.WritableShare,
         dontsearch=True,
+        ldap_attribute='userHomeSharePreset',
+        encoding='ASCII',
     ),
     'homeSharePath': univention.admin.property(
         short_description=_('Home share path'),
         long_description=_('Path to the home directory on the home share'),
         syntax=univention.admin.syntax.string,
         dontsearch=True,
+        ldap_attribute='userHomeSharePathPreset',
+        encoding='ASCII',
     ),
     'shell': univention.admin.property(
         short_description=_('Login shell'),
         long_description='',
         syntax=univention.admin.syntax.string,
         default='/bin/bash',
+        ldap_attribute='loginShell',
+        encoding='ASCII',
     ),
     'sambahome': univention.admin.property(
         short_description=_('Windows home path'),
         long_description='',
         syntax=univention.admin.syntax.string,
+        ldap_attribute='sambaHomePath',
     ),
     'scriptpath': univention.admin.property(
         short_description=_('Windows logon path'),
         long_description='',
         syntax=univention.admin.syntax.string,
+        ldap_attribute='sambaLogonScript',
     ),
     'profilepath': univention.admin.property(
         short_description=_('Windows profile directory'),
         long_description='',
         syntax=univention.admin.syntax.string,
+        ldap_attribute='sambaProfilePath',
     ),
     'homedrive': univention.admin.property(
         short_description=_('Windows home drive'),
         long_description='',
         syntax=univention.admin.syntax.string,
+        ldap_attribute='sambaHomeDrive',
+        encoding='ASCII',
     ),
     'street': univention.admin.property(
         short_description=_('Street'),
         long_description='',
         syntax=univention.admin.syntax.string,
+        ldap_attribute='street',
     ),
     'postcode': univention.admin.property(
         short_description=_('Postal code'),
         long_description='',
         syntax=univention.admin.syntax.OneThirdString,
+        ldap_attribute='postalCode',
     ),
     'city': univention.admin.property(
         short_description=_('City'),
         long_description='',
         syntax=univention.admin.syntax.TwoThirdsString,
+        ldap_attribute='l',
     ),
     'country': univention.admin.property(
         short_description=_('Country'),
         long_description='',
         syntax=univention.admin.syntax.Country,
+        ldap_attribute='c',
     ),
     'state': univention.admin.property(
         short_description=_('State'),
@@ -157,45 +184,54 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         readonly_when_synced=True,
         copyable=True,
+        ldap_attribute='st',
     ),
     'phone': univention.admin.property(
         short_description=_('Telephone number'),
         long_description='',
         syntax=univention.admin.syntax.phone,
         multivalue=True,
+        ldap_attribute='telephoneNumber',
     ),
     'employeeNumber': univention.admin.property(
         short_description=_('Employee number'),
         long_description='',
         syntax=univention.admin.syntax.string,
+        ldap_attribute='employeeNumber',
     ),
     'roomNumber': univention.admin.property(
         short_description=_('Room number'),
         long_description='',
         syntax=univention.admin.syntax.OneThirdString,
+        ldap_attribute='roomNumber',
     ),
     'secretary': univention.admin.property(
         short_description=_('Superior'),
         long_description='',
         syntax=univention.admin.syntax.UserDN,
         multivalue=True,
+        ldap_attribute='secretary',
     ),
     'departmentNumber': univention.admin.property(
         short_description=_('Department number'),
         long_description='',
         syntax=univention.admin.syntax.OneThirdString,
         multivalue=True,
+        ldap_attribute='departmentNumber',
     ),
     'employeeType': univention.admin.property(
         short_description=_('Employee type'),
         long_description='',
         syntax=univention.admin.syntax.string,
+        ldap_attribute='employeeType',
     ),
     'groups': univention.admin.property(
         short_description=_('Groups'),
         long_description='',
         syntax=univention.admin.syntax.GroupDN,
         multivalue=True,
+        ldap_attribute='userGroupsPreset',
+        encoding='ASCII',
     ),
     'primaryGroup': univention.admin.property(
         short_description=_('Primary group'),
@@ -204,17 +240,22 @@ property_descriptions = {
         one_only=True,
         parent='groups',
         dontsearch=True,
+        ldap_attribute='userPrimaryGroupPreset',
     ),
     'mailPrimaryAddress': univention.admin.property(
         short_description=_('Primary e-mail address (mailbox)'),
         long_description=_('E-mail address that will be used to create the IMAP/POP3 mailbox and that can be used as login for SMTP/IMAP/POP3 connections. The domain must be one of the UCS hosted e-mail domains.'),
         syntax=univention.admin.syntax.emailAddressTemplate,
+        ldap_attribute='mailPrimaryAddress',
+        unmap=ListToLowerString,
+        encoding='ASCII',
     ),
     'mailAlternativeAddress': univention.admin.property(
         short_description=_('E-mail alias address'),
         long_description=_('Additional e-mail addresses for which e-mails will be delivered to the "Primary e-mail address". The domain must be one of the UCS hosted e-mail domains.'),
         syntax=univention.admin.syntax.emailAddressTemplate,
         multivalue=True,
+        ldap_attribute='mailAlternativeAddress',
     ),
     'physicalDeliveryOfficeName': univention.admin.property(
         short_description=_('Delivery office name'),
@@ -240,6 +281,8 @@ property_descriptions = {
         syntax=univention.admin.syntax.optionsUsersUser,
         multivalue=True,
         dontsearch=True,
+        ldap_attribute='userOptionsPreset',
+        encoding='ASCII',
     ),
 }
 
@@ -294,44 +337,13 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('title', 'title', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 # mapping.register('initials', 'initials', None, univention.admin.mapping.ListToString)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
-mapping.register('organisation', 'o', None, univention.admin.mapping.ListToString)
-mapping.register('displayName', 'displayName', None, univention.admin.mapping.ListToString)
-mapping.register('postcode', 'postalCode', None, univention.admin.mapping.ListToString)
 mapping.register('userexpiry', 'shadowMax', None, univention.admin.mapping.ListToString)
 mapping.register('passwordexpiry', 'shadowExpire', None, univention.admin.mapping.ListToString)
-mapping.register('e-mail', 'mail', encoding='ASCII')
-mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.ListToString)
-mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambahome', 'sambaHomePath', None, univention.admin.mapping.ListToString)
-mapping.register('scriptpath', 'sambaLogonScript', None, univention.admin.mapping.ListToString)
-mapping.register('profilepath', 'sambaProfilePath', None, univention.admin.mapping.ListToString)
-mapping.register('homedrive', 'sambaHomeDrive', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('country', 'c', None, univention.admin.mapping.ListToString)
-mapping.register('state', 'st', None, univention.admin.mapping.ListToString)
-mapping.register('phone', 'telephoneNumber')
-mapping.register('roomNumber', 'roomNumber')
-mapping.register('employeeNumber', 'employeeNumber', None, univention.admin.mapping.ListToString)
-mapping.register('employeeType', 'employeeType', None, univention.admin.mapping.ListToString)
-mapping.register('secretary', 'secretary')
-mapping.register('departmentNumber', 'departmentNumber')
-mapping.register('street', 'street', None, univention.admin.mapping.ListToString)
-mapping.register('city', 'l', None, univention.admin.mapping.ListToString)
-mapping.register('disabled', 'userDisabledPreset', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('pwdChangeNextLogin', 'userPwdMustChangePreset', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('homeShare', 'userHomeSharePreset', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('homeSharePath', 'userHomeSharePathPreset', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('primaryGroup', 'userPrimaryGroupPreset', None, univention.admin.mapping.ListToString)
-mapping.register('groups', 'userGroupsPreset', encoding='ASCII')
-mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToLowerString, encoding='ASCII')
 # mapping.register('physicalDeliveryOfficeName', 'physicalDeliveryOfficeName', None, univention.admin.mapping.ListToString)
 # mapping.register('preferredLanguage', 'preferredLanguage', None, univention.admin.mapping.ListToString)
 # mapping.register('postOfficeBox', 'postOfficeBox')
-mapping.register('mailAlternativeAddress', 'mailAlternativeAddress')
-mapping.register('_options', 'userOptionsPreset', encoding='ASCII')
 # fmt: on
 
 BLACKLISTED_OBJECT_CLASSES = {b'inetOrgPerson'}

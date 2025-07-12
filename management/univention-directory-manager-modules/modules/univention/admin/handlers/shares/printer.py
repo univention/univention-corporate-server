@@ -58,18 +58,21 @@ property_descriptions = {
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'location': univention.admin.property(
         short_description=_('Location'),
         long_description='',
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
+        ldap_attribute='univentionPrinterLocation',
     ),
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
+        ldap_attribute='description',
     ),
     'spoolHost': univention.admin.property(
         short_description=_('Print server'),
@@ -77,6 +80,8 @@ property_descriptions = {
         syntax=univention.admin.syntax.ServicePrint_FQDN,
         multivalue=True,
         required=True,
+        ldap_attribute='univentionPrinterSpoolHost',
+        encoding='ASCII',
     ),
     'uri': univention.admin.property(
         short_description=_('Connection'),
@@ -84,6 +89,10 @@ property_descriptions = {
         syntax=univention.admin.syntax.PrinterURI,
         include_in_default_search=True,
         required=True,
+        ldap_attribute='univentionPrinterURI',
+        map=mapPrinterURI,
+        unmap=unmapPrinterURI,
+        encoding='ASCII',
     ),
     'model': univention.admin.property(
         short_description=_('Printer model'),
@@ -91,6 +100,8 @@ property_descriptions = {
         syntax=univention.admin.syntax.PrinterDriverList,
         include_in_default_search=True,
         required=True,
+        ldap_attribute='univentionPrinterModel',
+        encoding='ASCII',
     ),
     'producer': univention.admin.property(
         short_description=_('Printer producer'),
@@ -102,24 +113,29 @@ property_descriptions = {
         long_description='',
         syntax=univention.admin.syntax.string_numbers_letters_dots_spaces,
         unique=True,
+        ldap_attribute='univentionPrinterSambaName',
     ),
     'ACLtype': univention.admin.property(
         short_description=_('Access control'),
         long_description=_('Access list can allow or deny listed users and groups.'),
         syntax=printerACLTypes,
         default="allow all",
+        ldap_attribute='univentionPrinterACLtype',
+        encoding='ASCII',
     ),
     'ACLUsers': univention.admin.property(
         short_description=_('Allowed/denied users'),
         long_description=_('For the given users printing is explicitly allowed or denied.'),
         syntax=univention.admin.syntax.UserDN,
         multivalue=True,
+        ldap_attribute='univentionPrinterACLUsers',
     ),
     'ACLGroups': univention.admin.property(
         short_description=_('Allowed/denied groups'),
         long_description=_('For the given groups printing is explicitly allowed or denied.'),
         syntax=univention.admin.syntax.GroupDN,
         multivalue=True,
+        ldap_attribute='univentionPrinterACLGroups',
     ),
 }
 
@@ -168,16 +184,7 @@ def mapPrinterURI(value: list[str], encoding: tuple[str, ...] = ()) -> bytes:
 
 # fmt: off
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('location', 'univentionPrinterLocation', None, univention.admin.mapping.ListToString)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
-mapping.register('spoolHost', 'univentionPrinterSpoolHost', encoding='ASCII')
-mapping.register('uri', 'univentionPrinterURI', mapPrinterURI, unmapPrinterURI, encoding='ASCII')
-mapping.register('model', 'univentionPrinterModel', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('sambaName', 'univentionPrinterSambaName', None, univention.admin.mapping.ListToString)
-mapping.register('ACLUsers', 'univentionPrinterACLUsers')
-mapping.register('ACLGroups', 'univentionPrinterACLGroups')
-mapping.register('ACLtype', 'univentionPrinterACLtype', None, univention.admin.mapping.ListToString, encoding='ASCII')
+mapping.from_properties(property_descriptions)
 # fmt: on
 
 

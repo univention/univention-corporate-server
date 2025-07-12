@@ -38,6 +38,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'blockingProperties': univention.admin.property(
         short_description=_('Properties to block'),
@@ -45,11 +46,15 @@ property_descriptions = {
         syntax=univention.admin.syntax.UDM_PropertySelect,
         required=True,
         multivalue=True,
+        ldap_attribute='univentionBlockingProperties',
+        map=mapBlockingProperty,
+        unmap=unmapBlockingProperty,
     ),
     'retentionTime': univention.admin.property(
         short_description=_('Retention time for objects in this blocklist'),
         long_description=_('Property values removed from a UDM object can be automatically blocked for future use. Each blocklist can be assigned a retention period. Once this retention period has elapsed, the blocking object is automatically deleted, and the property value can be reassigned. The retention period is set using the following schema "1y6m3d" (which equals one year, six months and three days).'),
         syntax=univention.admin.syntax.string,
+        ldap_attribute='univentionBlocklistRetentionTime',
     ),
 }
 
@@ -74,9 +79,7 @@ def unmapBlockingProperty(vals, encoding=()):
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('blockingProperties', 'univentionBlockingProperties', mapBlockingProperty, unmapBlockingProperty)
-mapping.register('retentionTime', 'univentionBlocklistRetentionTime', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 
 
 class object(univention.admin.handlers.simpleLdap):

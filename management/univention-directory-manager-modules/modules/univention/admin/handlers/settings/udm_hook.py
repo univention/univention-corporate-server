@@ -40,6 +40,7 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'filename': univention.admin.property(
         short_description=_('UDM hook file name'),
@@ -47,44 +48,54 @@ property_descriptions = {
         syntax=univention.admin.syntax.BaseFilename,
         required=True,
         default='',
+        ldap_attribute='univentionUDMHookFilename',
     ),
     'data': univention.admin.property(
         short_description=_('UDM hook data'),
         long_description='',
         syntax=univention.admin.syntax.Base64Bzip2Text,
         required=True,
+        ldap_attribute='univentionUDMHookData',
+        map=mapBase64,
+        unmap=unmapBase64,
     ),
     'active': univention.admin.property(
         short_description=_('Active'),
         long_description='',
         syntax=univention.admin.syntax.TrueFalseUp,
         default='FALSE',
+        ldap_attribute='univentionUDMHookActive',
     ),
     'appidentifier': univention.admin.property(
         short_description=_('App identifier'),
         long_description='',
         syntax=univention.admin.syntax.TextArea,
         multivalue=True,
+        ldap_attribute='univentionAppIdentifier',
     ),
     'package': univention.admin.property(
         short_description=_('Software package'),
         long_description='',
         syntax=univention.admin.syntax.string,
+        ldap_attribute='univentionOwnedByPackage',
     ),
     'packageversion': univention.admin.property(
         short_description=_('Software package version'),
         long_description='',
         syntax=univention.admin.syntax.DebianPackageVersion,
+        ldap_attribute='univentionOwnedByPackageVersion',
     ),
     'ucsversionstart': univention.admin.property(
         short_description=_('Minimal UCS version'),
         long_description='',
         syntax=univention.admin.syntax.UCSVersion,
+        ldap_attribute='univentionUCSVersionStart',
     ),
     'ucsversionend': univention.admin.property(
         short_description=_('Maximal UCS version'),
         long_description='',
         syntax=univention.admin.syntax.UCSVersion,
+        ldap_attribute='univentionUCSVersionEnd',
     ),
     'messagecatalog': univention.admin.property(
         short_description=_('GNU message catalog for translations'),
@@ -118,15 +129,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('filename', 'univentionUDMHookFilename', None, univention.admin.mapping.ListToString)
-mapping.register('data', 'univentionUDMHookData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
-mapping.register('active', 'univentionUDMHookActive', None, univention.admin.mapping.ListToString)
-mapping.register('appidentifier', 'univentionAppIdentifier')
-mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.mapping.ListToString)
-mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univention.admin.mapping.ListToString)
-mapping.register('ucsversionstart', 'univentionUCSVersionStart', None, univention.admin.mapping.ListToString)
-mapping.register('ucsversionend', 'univentionUCSVersionEnd', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 # messagecatalog is handled via object._post_map and object._post_unmap defined below
 # fmt: on
 

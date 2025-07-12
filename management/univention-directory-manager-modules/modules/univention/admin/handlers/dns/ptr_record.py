@@ -43,6 +43,8 @@ property_descriptions = {
         syntax=univention.admin.syntax.dnsPTR,
         required=True,
         identifies=True,
+        ldap_attribute='relativeDomainName',
+        encoding='ASCII',
     ),
     'ip': univention.admin.property(
         short_description=_('IP Address'),
@@ -57,6 +59,8 @@ property_descriptions = {
         multivalue=True,
         include_in_default_search=True,
         required=True,
+        ldap_attribute='pTRRecord',
+        encoding='ASCII',
     ),
 }
 
@@ -69,8 +73,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('address', 'relativeDomainName', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('ptr_record', 'pTRRecord', encoding='ASCII')
+mapping.from_properties(property_descriptions)
 # fmt: on
 
 

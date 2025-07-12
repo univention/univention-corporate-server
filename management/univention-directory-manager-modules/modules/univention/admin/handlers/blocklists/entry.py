@@ -41,12 +41,14 @@ property_descriptions = {
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'blockedUntil': univention.admin.property(
         short_description=_('Blocked until'),
         long_description=_('This blocklist entry is valid until timestamp (generalized time in LDAP-Syntax -> 21241212000000Z). Expired entries are deleted.'),
         syntax=univention.admin.syntax.GeneralizedTimeUTC,
         required=True,
+        ldap_attribute='blockedUntil',
     ),
     'originUniventionObjectIdentifier': univention.admin.property(
         short_description=_('Origin ID'),
@@ -54,6 +56,7 @@ property_descriptions = {
         syntax=univention.admin.syntax.string,
         required=True,
         may_change=False,
+        ldap_attribute='originUniventionObjectIdentifier',
     ),
 }
 
@@ -70,9 +73,7 @@ layout = [
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('value', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('blockedUntil', 'blockedUntil', None, univention.admin.mapping.ListToString)
-mapping.register('originUniventionObjectIdentifier', 'originUniventionObjectIdentifier', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 
 
 class object(univention.admin.handlers.simpleLdap):

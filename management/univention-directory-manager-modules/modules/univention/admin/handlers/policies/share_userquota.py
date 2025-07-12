@@ -59,32 +59,38 @@ property_descriptions = dict({
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'softLimitSpace': univention.admin.property(
         short_description=_('Soft limit'),
         long_description=_('Soft limit. If exceeded users can be warned. Values may be entered with one of the following units as postfix: B (default), kB, MB, GB'),
         syntax=univention.admin.syntax.filesize,
+        ldap_attribute='univentionQuotaSoftLimitSpace',
     ),
     'hardLimitSpace': univention.admin.property(
         short_description=_('Hard limit'),
         long_description=_('Hard limit. Can not be exceeded. Values may be entered with one of the following units as postfix: B (default), kB, MB, GB'),
         syntax=univention.admin.syntax.filesize,
+        ldap_attribute='univentionQuotaHardLimitSpace',
     ),
     'softLimitInodes': univention.admin.property(
         short_description=_('Soft limit (Files)'),
         long_description=_('Soft limit. If exceeded users can be warned.'),
         syntax=univention.admin.syntax.integer,
+        ldap_attribute='univentionQuotaSoftLimitInodes',
     ),
     'hardLimitInodes': univention.admin.property(
         short_description=_('Hard limit (Files)'),
         long_description=_('Hard limit. Can not be exceeded.'),
         syntax=univention.admin.syntax.integer,
+        ldap_attribute='univentionQuotaHardLimitInodes',
     ),
     'reapplyeverylogin': univention.admin.property(
         short_description=_('Reapply settings on every login'),
         long_description=_('Reapply the mountpoint specific user quota policies on each user login. If not set, the initially configured quota settings will not be overwritten.'),
         syntax=univention.admin.syntax.TrueFalseUp,
         default="FALSE",
+        ldap_attribute='univentionQuotaReapplyEveryLogin',
     ),
 
 }, **dict([
@@ -108,12 +114,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('hardLimitSpace', 'univentionQuotaHardLimitSpace', None, univention.admin.mapping.ListToString)
-mapping.register('softLimitSpace', 'univentionQuotaSoftLimitSpace', None, univention.admin.mapping.ListToString)
-mapping.register('hardLimitInodes', 'univentionQuotaHardLimitInodes', None, univention.admin.mapping.ListToString)
-mapping.register('softLimitInodes', 'univentionQuotaSoftLimitInodes', None, univention.admin.mapping.ListToString)
-mapping.register('reapplyeverylogin', 'univentionQuotaReapplyEveryLogin', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 register_policy_mapping(mapping)
 # fmt: on
 

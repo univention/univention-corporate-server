@@ -62,29 +62,35 @@ property_descriptions = dict({
         include_in_default_search=True,
         required=True,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description='',
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
+        ldap_attribute='description',
     ),
     'operatingSystem': univention.admin.property(
         short_description=_('Operating system'),
         long_description='',
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
+        ldap_attribute='univentionOperatingSystem',
     ),
     'operatingSystemVersion': univention.admin.property(
         short_description=_('Operating system version'),
         long_description='',
         syntax=univention.admin.syntax.string,
+        ldap_attribute='univentionOperatingSystemVersion',
     ),
     'domain': univention.admin.property(
         short_description=_('Domain'),
         long_description='',
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
+        ldap_attribute='associatedDomain',
+        encoding='ASCII',
     ),
     'mac': univention.admin.property(
         short_description=_('MAC address'),
@@ -92,11 +98,14 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.MAC_Address,
         multivalue=True,
         include_in_default_search=True,
+        ldap_attribute='macAddress',
+        encoding='ASCII',
     ),
     'network': univention.admin.property(
         short_description=_('Network'),
         long_description='',
         syntax=univention.admin.syntax.network,
+        ldap_attribute='univentionNetworkLink',
     ),
     'ip': univention.admin.property(
         short_description=_('IP address'),
@@ -153,6 +162,7 @@ property_descriptions = dict({
         options=['posix'],
         required=True,
         default=('/dev/null', []),
+        ldap_attribute='homeDirectory',
     ),
     'shell': univention.admin.property(
         short_description=_('Login shell'),
@@ -160,6 +170,8 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.string,
         options=['posix'],
         default=('/bin/bash', []),
+        ldap_attribute='loginShell',
+        encoding='ASCII',
     ),
     'primaryGroup': univention.admin.property(
         short_description=_('Primary group'),
@@ -175,6 +187,7 @@ property_descriptions = dict({
         syntax=univention.admin.syntax.string,
         multivalue=True,
         include_in_default_search=True,
+        ldap_attribute='univentionInventoryNumber',
     ),
     'groups': univention.admin.property(
         short_description=_('Groups'),
@@ -233,16 +246,7 @@ layout = [
 layout.append(role_layout())
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
-mapping.register('domain', 'associatedDomain', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('inventoryNumber', 'univentionInventoryNumber')
-mapping.register('mac', 'macAddress', encoding='ASCII')
-mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapping.ListToString)
-mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.ListToString)
-mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('operatingSystem', 'univentionOperatingSystem', None, univention.admin.mapping.ListToString)
-mapping.register('operatingSystemVersion', 'univentionOperatingSystemVersion', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 register_pki_mapping(mapping)
 register_role_mapping(mapping)
 # fmt: on

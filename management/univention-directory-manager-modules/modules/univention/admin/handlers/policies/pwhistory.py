@@ -56,26 +56,34 @@ property_descriptions = dict({
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'length': univention.admin.property(
         short_description=_('History length'),
         long_description=_('This number indicates after how many changes the user may reuse the old password again'),
         syntax=univention.admin.syntax.integer,
+        ldap_attribute='univentionPWHistoryLen',
+        unmap=ListToIntToString,
     ),
     'expiryInterval': univention.admin.property(
         short_description=_('Password expiry interval'),
         long_description=_('Number of days after which the password has to be changed'),
         syntax=univention.admin.syntax.integer,
+        ldap_attribute='univentionPWExpiryInterval',
+        unmap=ListToIntToString,
     ),
     'pwLength': univention.admin.property(
         short_description=_('Password length'),
         long_description=_('Minimal amount of characters'),
         syntax=univention.admin.syntax.integer,
+        ldap_attribute='univentionPWLength',
+        unmap=ListToIntToString,
     ),
     'pwQualityCheck': univention.admin.property(
         short_description=_('Password quality check'),
         long_description=_('Enables/disables password quality checks for example dictionary entries'),
         syntax=univention.admin.syntax.TrueFalseUp,
+        ldap_attribute='univentionPWQualityCheck',
     ),
 
 }, **dict([
@@ -100,11 +108,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('length', 'univentionPWHistoryLen', None, univention.admin.mapping.ListToIntToString)
-mapping.register('expiryInterval', 'univentionPWExpiryInterval', None, univention.admin.mapping.ListToIntToString)
-mapping.register('pwLength', 'univentionPWLength', None, univention.admin.mapping.ListToIntToString)
-mapping.register('pwQualityCheck', 'univentionPWQualityCheck', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 register_policy_mapping(mapping)
 # fmt: on
 

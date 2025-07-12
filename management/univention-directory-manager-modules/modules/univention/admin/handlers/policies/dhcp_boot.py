@@ -56,17 +56,20 @@ property_descriptions = dict({
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'boot_server': univention.admin.property(
         short_description=_('Boot server'),
         long_description=_('Numeric IP address or name of the \
 server from which the initial boot file is retrieved.'),
         syntax=univention.admin.syntax.string,
+        ldap_attribute='univentionDhcpBootServer',
     ),
     'boot_filename': univention.admin.property(
         short_description=_('Boot filename'),
         long_description=_('Initial boot file to be loaded by a client'),
         syntax=univention.admin.syntax.string,
+        ldap_attribute='univentionDhcpBootFilename',
     ),
 }, **dict([
     requiredObjectClassesProperty(),
@@ -87,9 +90,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('boot_server', 'univentionDhcpBootServer', None, univention.admin.mapping.ListToString)
-mapping.register('boot_filename', 'univentionDhcpBootFilename', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 register_policy_mapping(mapping)
 # fmt: on
 

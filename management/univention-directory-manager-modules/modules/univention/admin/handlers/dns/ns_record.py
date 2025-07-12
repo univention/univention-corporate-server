@@ -40,6 +40,8 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         identifies=True,
+        ldap_attribute='relativeDomainName',
+        encoding='ASCII',
     ),
     'zonettl': univention.admin.property(
         short_description=_('Time to live'),
@@ -47,6 +49,9 @@ property_descriptions = {
         syntax=univention.admin.syntax.UNIX_TimeInterval,
         default=(('22', 'hours'), []),
         dontsearch=True,
+        ldap_attribute='dNSTTL',
+        map=mapUNIX_TimeInterval,
+        unmap=unmapUNIX_TimeInterval,
     ),
     'nameserver': univention.admin.property(
         short_description=_('Name servers'),
@@ -54,6 +59,8 @@ property_descriptions = {
         syntax=univention.admin.syntax.dnsHostname,
         multivalue=True,
         required=True,
+        ldap_attribute='nSRecord',
+        encoding='ASCII',
     ),
 }
 
@@ -68,9 +75,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('zone', 'relativeDomainName', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('nameserver', 'nSRecord', encoding='ASCII')
-mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
+mapping.from_properties(property_descriptions)
 # fmt: on
 
 

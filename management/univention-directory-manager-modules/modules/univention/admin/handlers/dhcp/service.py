@@ -41,6 +41,7 @@ property_descriptions = {
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
 }
 
@@ -53,7 +54,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('service', 'cn', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 # fmt: on
 
 add_dhcp_options(__name__)

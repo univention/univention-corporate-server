@@ -54,28 +54,33 @@ property_descriptions = {
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'description': univention.admin.property(
         short_description=_('Description'),
         long_description=_('Service description'),
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
+        ldap_attribute='description',
     ),
     'checkCommand': univention.admin.property(
         short_description=_('Plugin command'),
         long_description=_('Command name of Nagios plugin'),
         syntax=univention.admin.syntax.string,
         required=True,
+        ldap_attribute='univentionNagiosCheckCommand',
     ),
     'checkArgs': univention.admin.property(
         short_description=_('Plugin command arguments'),
         long_description=_('Arguments of used Nagios plugin'),
         syntax=univention.admin.syntax.string,
+        ldap_attribute='univentionNagiosCheckArgs',
     ),
     'useNRPE': univention.admin.property(
         short_description=_('Use NRPE'),
         long_description=_('Use NRPE to check remote services'),
         syntax=univention.admin.syntax.boolean,
+        ldap_attribute='univentionNagiosUseNRPE',
     ),
     'assignedHosts': univention.admin.property(
         short_description=_('Assigned hosts'),
@@ -103,12 +108,8 @@ layout = [
 
 
 mapping = univention.admin.mapping.mapping()
+mapping.from_properties(property_descriptions)
 
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
-mapping.register('checkCommand', 'univentionNagiosCheckCommand', None, univention.admin.mapping.ListToString)
-mapping.register('checkArgs', 'univentionNagiosCheckArgs', None, univention.admin.mapping.ListToString)
-mapping.register('useNRPE', 'univentionNagiosUseNRPE', None, univention.admin.mapping.ListToString)
 # fmt: on
 
 

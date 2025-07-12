@@ -55,12 +55,14 @@ property_descriptions = dict({
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'ldapServer': univention.admin.property(
         short_description=_('LDAP server'),
         long_description='',
         syntax=univention.admin.syntax.DomainController,
         multivalue=True,
+        ldap_attribute='univentionLDAPServer',
     ),
 
 }, **dict([
@@ -82,8 +84,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('ldapServer', 'univentionLDAPServer')
+mapping.from_properties(property_descriptions)
 register_policy_mapping(mapping)
 # fmt: on
 

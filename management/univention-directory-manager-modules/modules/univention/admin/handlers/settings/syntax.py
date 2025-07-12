@@ -36,23 +36,29 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'description': univention.admin.property(
         short_description=_('Syntax Description'),
         long_description='',
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
+        ldap_attribute='univentionSyntaxDescription',
     ),
     'filter': univention.admin.property(
         short_description=_('LDAP Search Filter'),
         long_description='',
         syntax=univention.admin.syntax.string,
         required=True,
+        ldap_attribute='univentionSyntaxLDAPFilter',
+        encoding='ASCII',
     ),
     'base': univention.admin.property(
         short_description=_('LDAP Base'),
         long_description='',
         syntax=univention.admin.syntax.ldapDn,
+        ldap_attribute='univentionSyntaxLDAPBase',
+        encoding='ASCII',
     ),
     'attribute': univention.admin.property(
         short_description=_('Displayed Attributes'),
@@ -72,11 +78,14 @@ property_descriptions = {
         short_description=_('Show Only'),
         long_description='',
         syntax=univention.admin.syntax.TrueFalseUp,
+        ldap_attribute='univentionSyntaxViewOnly',
+        encoding='ASCII',
     ),
     'addEmptyValue': univention.admin.property(
         short_description=_('Add an empty value to choice list'),
         long_description='',
         syntax=univention.admin.syntax.TrueFalseUp,
+        ldap_attribute='univentionSyntaxAddEmptyValue',
     ),
     'value': univention.admin.property(
         short_description=_('Stored Attribute'),
@@ -111,12 +120,7 @@ layout = [
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('filter', 'univentionSyntaxLDAPFilter', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('base', 'univentionSyntaxLDAPBase', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('viewonly', 'univentionSyntaxViewOnly', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('description', 'univentionSyntaxDescription', None, univention.admin.mapping.ListToString)
-mapping.register('addEmptyValue', 'univentionSyntaxAddEmptyValue', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 # fmt: on
 
 

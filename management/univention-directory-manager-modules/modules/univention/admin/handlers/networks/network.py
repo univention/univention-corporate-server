@@ -44,6 +44,7 @@ property_descriptions = {
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'network': univention.admin.property(
         short_description=_('Networks'),
@@ -52,6 +53,8 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
+        ldap_attribute='univentionNetwork',
+        encoding='ASCII',
     ),
     'netmask': univention.admin.property(
         short_description=_('Netmask'),
@@ -60,12 +63,16 @@ property_descriptions = {
         include_in_default_search=True,
         required=True,
         may_change=False,
+        ldap_attribute='univentionNetmask',
+        encoding='ASCII',
     ),
     'nextIp': univention.admin.property(
         short_description=_('Next IP address'),
         long_description='',
         syntax=univention.admin.syntax.string,
         dontsearch=True,
+        ldap_attribute='univentionNextIp',
+        encoding='ASCII',
     ),
     'ipRange': univention.admin.property(
         short_description=_('IP address range'),
@@ -73,24 +80,37 @@ property_descriptions = {
         syntax=univention.admin.syntax.IP_AddressRange,
         multivalue=True,
         dontsearch=True,
+        ldap_attribute='univentionIpRange',
+        map=rangeMap,
+        unmap=rangeUnmap,
+        encoding='ASCII',
     ),
     'dnsEntryZoneForward': univention.admin.property(
         short_description=_('DNS forward lookup zone'),
         long_description='',
         syntax=univention.admin.syntax.DNS_ForwardZone,
         dontsearch=True,
+        ldap_attribute='univentionDnsForwardZone',
+        map=IgnoreNone,
+        encoding='ASCII',
     ),
     'dnsEntryZoneReverse': univention.admin.property(
         short_description=_('DNS reverse lookup zone'),
         long_description='',
         syntax=univention.admin.syntax.DNS_ReverseZone,
         dontsearch=True,
+        ldap_attribute='univentionDnsReverseZone',
+        map=IgnoreNone,
+        encoding='ASCII',
     ),
     'dhcpEntryZone': univention.admin.property(
         short_description=_('DHCP service'),
         long_description='',
         syntax=univention.admin.syntax.dhcpService,
         dontsearch=True,
+        ldap_attribute='univentionDhcpEntry',
+        map=IgnoreNone,
+        encoding='ASCII',
     ),
 }
 
@@ -123,14 +143,7 @@ def rangeUnmap(value, encoding=()):
 
 # fmt: off
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('network', 'univentionNetwork', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('netmask', 'univentionNetmask', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('nextIp', 'univentionNextIp', None, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('dnsEntryZoneForward', 'univentionDnsForwardZone', univention.admin.mapping.IgnoreNone, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('dnsEntryZoneReverse', 'univentionDnsReverseZone', univention.admin.mapping.IgnoreNone, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('dhcpEntryZone', 'univentionDhcpEntry', univention.admin.mapping.IgnoreNone, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('ipRange', 'univentionIpRange', rangeMap, rangeUnmap, encoding='ASCII')
+mapping.from_properties(property_descriptions)
 # fmt: on
 
 

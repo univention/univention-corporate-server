@@ -56,18 +56,21 @@ property_descriptions = dict({
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'domain_name': univention.admin.property(
         short_description=_('Domain name'),
         long_description='',
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
+        ldap_attribute='univentionDhcpDomainName',
     ),
     'domain_name_servers': univention.admin.property(
         short_description=_('Domain name servers'),
         long_description='',
         syntax=univention.admin.syntax.string,
         multivalue=True,
+        ldap_attribute='univentionDhcpDomainNameServers',
     ),
 }, **dict([
     requiredObjectClassesProperty(),
@@ -88,9 +91,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('domain_name', 'univentionDhcpDomainName', None, univention.admin.mapping.ListToString)
-mapping.register('domain_name_servers', 'univentionDhcpDomainNameServers')
+mapping.from_properties(property_descriptions)
 register_policy_mapping(mapping)
 # fmt: on
 

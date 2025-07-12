@@ -47,6 +47,9 @@ property_descriptions = {
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='zoneName',
+        map=stripDot,
+        encoding='ASCII',
     ),
     'zonettl': univention.admin.property(
         short_description=_('Zone time to live'),
@@ -55,6 +58,9 @@ property_descriptions = {
         required=True,
         default=(('3', 'hours'), []),
         dontsearch=True,
+        ldap_attribute='dNSTTL',
+        map=mapUNIX_TimeInterval,
+        unmap=unmapUNIX_TimeInterval,
     ),
     'contact': univention.admin.property(
         short_description=_('Contact person'),
@@ -104,18 +110,26 @@ property_descriptions = {
         syntax=univention.admin.syntax.dnsHostname,
         multivalue=True,
         required=True,
+        ldap_attribute='nSRecord',
+        encoding='ASCII',
     ),
     'mx': univention.admin.property(
         short_description=_('Mail exchanger host'),
         long_description=_('The FQDNs of the hosts responsible for receiving mail for this DNS name.'),
         syntax=univention.admin.syntax.dnsMX,
         multivalue=True,
+        ldap_attribute='mXRecord',
+        map=mapMX,
+        unmap=unmapMX,
+        encoding='ASCII',
     ),
     'txt': univention.admin.property(
         short_description=_('Text Record'),
         long_description=_('One or more arbitrary text strings.'),
         syntax=univention.admin.syntax.string,
         multivalue=True,
+        ldap_attribute='tXTRecord',
+        encoding='ASCII',
     ),
     'a': univention.admin.property(
         short_description=_('IP addresses'),
@@ -168,11 +182,7 @@ def unmapMX(old: list[bytes], encoding: univention.admin.handlers._Encoding = ()
 
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('zone', 'zoneName', stripDot, univention.admin.mapping.ListToString, encoding='ASCII')
-mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
-mapping.register('nameserver', 'nSRecord', encoding='ASCII')
-mapping.register('mx', 'mXRecord', mapMX, unmapMX, encoding='ASCII')
-mapping.register('txt', 'tXTRecord', encoding='ASCII')
+mapping.from_properties(property_descriptions)
 # fmt: on
 
 

@@ -62,47 +62,56 @@ property_descriptions = dict({
         required=True,
         may_change=False,
         identifies=True,
+        ldap_attribute='cn',
     ),
     'ddnsHostname': univention.admin.property(
         short_description=_('DDNS hostname'),
         long_description=_("Hostname that will be used for the client's A and PTR records"),
         syntax=univention.admin.syntax.string,
         include_in_default_search=True,
+        ldap_attribute='univentionDhcpDdnsHostname',
     ),
     'ddnsDomainname': univention.admin.property(
         short_description=_('DDNS domain name'),
         long_description=_("Domain name that will be appended to the client's hostname to form a fully-qualified domain-name (FQDN)"),
         syntax=univention.admin.syntax.string,
+        ldap_attribute='univentionDhcpDdnsDomainname',
     ),
     'ddnsRevDomainname': univention.admin.property(
         short_description=_('DDNS reverse domain name'),
         long_description=_("Domain name that will be appended to the client's hostname to produce a name for use in the client's PTR record"),
         syntax=univention.admin.syntax.string,
+        ldap_attribute='univentionDhcpDdnsRevDomainname',
     ),
     'ddnsUpdates': univention.admin.property(
         short_description=_('DDNS updates'),
         long_description=_("Attempt to do a DNS update when a DHCP lease is confirmed"),
         syntax=univention.admin.syntax.ddnsUpdates,
+        ldap_attribute='univentionDhcpDdnsUpdates',
     ),
     'ddnsUpdateStyle': univention.admin.property(
         short_description=_('DDNS update style'),
         long_description=_("Specify the DDNS Update Style to use for a DHCP Service"),
         syntax=univention.admin.syntax.ddnsUpdateStyle,
+        ldap_attribute='univentionDhcpDdnsUpdateStyle',
     ),
     'ddnsDoForwardUpdate': univention.admin.property(
         short_description=_('DDNS forward update'),
         long_description=_("Attempt to update a DHCP client's A record when the client acquires or renews a lease"),
         syntax=univention.admin.syntax.TrueFalse,
+        ldap_attribute='univentionDhcpDoForwardUpdates',
     ),
     'updateStaticLeases': univention.admin.property(
         short_description=_('Update static leases'),
         long_description=_("Do DNS updates for clients even if their IP addresses are assigned using fixed addresses"),
         syntax=univention.admin.syntax.TrueFalse,
+        ldap_attribute='univentionDhcpUpdateStaticLeases',
     ),
     'clientUpdates': univention.admin.property(
         short_description=_('Client updates'),
         long_description=_("Honor the client's intention to do its own update of its A record"),
         syntax=univention.admin.syntax.AllowDeny,
+        ldap_attribute='univentionDhcpClientUpdates',
     ),
 }, **dict([
     requiredObjectClassesProperty(),
@@ -126,15 +135,7 @@ layout = [
 ]
 
 mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('ddnsHostname', 'univentionDhcpDdnsHostname', None, univention.admin.mapping.ListToString)
-mapping.register('ddnsDomainname', 'univentionDhcpDdnsDomainname', None, univention.admin.mapping.ListToString)
-mapping.register('ddnsRevDomainname', 'univentionDhcpDdnsRevDomainname', None, univention.admin.mapping.ListToString)
-mapping.register('ddnsUpdates', 'univentionDhcpDdnsUpdates', None, univention.admin.mapping.ListToString)
-mapping.register('ddnsUpdateStyle', 'univentionDhcpDdnsUpdateStyle', None, univention.admin.mapping.ListToString)
-mapping.register('ddnsDoForwardUpdate', 'univentionDhcpDoForwardUpdates', None, univention.admin.mapping.ListToString)
-mapping.register('updateStaticLeases', 'univentionDhcpUpdateStaticLeases', None, univention.admin.mapping.ListToString)
-mapping.register('clientUpdates', 'univentionDhcpClientUpdates', None, univention.admin.mapping.ListToString)
+mapping.from_properties(property_descriptions)
 register_policy_mapping(mapping)
 # fmt: on
 
