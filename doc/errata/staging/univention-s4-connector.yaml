@@ -1,0 +1,18 @@
+product: ucs
+release: "5.2"
+version: [2]
+scope: ucs_5.2-0-errata5.2-2
+src: univention-s4-connector
+fix: 16.2.2
+desc: |
+ This update addresses the following issues:
+ * Add the AD builtin groups `Pre-Windows 2000 Compatible Access`,
+   `Windows Authorization Access Group` and `IIS_IUSRS` to the
+   UCR variable `connector/s4/mapping/group/ignorelist`.
+   The first of these groups is relevant to control access to the
+   attribute `memberOf` in Active Directory (e.g. for `univention-s4search`).
+   By default it contains the virtual group `Authenticated Users`, but
+   may be configured differently in Samba/AD for security reasons.
+   This errata update is a followup to the knowledge base article
+   https://help.univention.com/t/18673 .
+bug: [53882]
