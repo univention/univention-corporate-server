@@ -641,8 +641,6 @@ class UCSHttpServer(_UCSServer):
                 # JFrog Artifactory may return 403 instead of 401 for authentication failures
                 if has_credentials:
                     raise ConfigurationError(uri, 'authentication failed (forbidden)')
-                else:
-                    raise ConfigurationError(uri, 'access forbidden')
             if res.code == httplib.PROXY_AUTHENTICATION_REQUIRED:  # 407
                 raise ProxyError(uri, 'credentials not accepted')
             if res.code in (httplib.BAD_GATEWAY, httplib.GATEWAY_TIMEOUT):  # 502 504

@@ -3,7 +3,7 @@ release: "5.2"
 version: [2]
 scope: ucs_5.2-0-errata5.2-2
 src: univention-updater
-fix: 17.2.5
+fix: 17.2.6
 desc: |
  This update addresses the following issues:
  * The JFrog Artifactory with authentication return a 403 instead of 401 when
