@@ -1,0 +1,137 @@
+# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+condition "is-self"
+  condition="guardian:builtin:target_is_self"
+
+privilege "allow-everything"
+  to objecttype="*"
+    description="Allow everything"
+
+    grant actions="*"
+    grant properties="*" permission="write"
+
+privilege "allow-user-self-read"
+  to objecttype="users/user" if="is-self"
+    description="Allow reading own object"
+
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+privilege "allow-users-self-service-write"
+  to objecttype="users/user" if="is-self"
+    description="Allow to write self-service attributes"
+
+    grant actions="modify"
+    grant properties="country,departmentNumber,e-mail,homePostalAddress,homeTelephoneNumber,jpegPhoto,mobileTelephoneNumber,phone,roomNumber" permission="write"
+
+privilege "allow-ldap-base-read"
+  to objecttype="container/dc" position.base="{ldap_base}"
+    description="Allow reading LDAP base"
+
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+privilege "allow-read-context-ou"
+  to objecttype="container/ou" position.subtree="context=udm:contexts:position"
+    description="Allow to read own OU"
+
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+privilege "allow-read-context-containers"
+  to objecttype="container/cn" position.subtree="context=udm:contexts:position"
+    description="Allow to read the container structure of the OU"
+
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+privilege "allow-read-desktop-policies"
+  to objecttype="policies/desktop"
+    description="Allow to read Desktop policies"
+
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+privilege "allow-read-pw-history-policies"
+  to objecttype="policies/pwhistory"
+    description="Allow to read Password History policies"
+
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+privilege "allow-read-umc-policies"
+  to objecttype="policies/umc"
+    description="Allow to read UMC policies"
+
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+privilege "allow-global-mail-domain-read"
+  to objecttype="mail/domain" position.subtree="cn=domain,cn=mail,{ldap_base}"
+    name="allow-global-mail-domain-read" description="Allow to read mail/domain in global mail container"
+
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+privilege "allow-user-reports-creation"
+  to objecttype="users/user"
+    name="allow-user-reports-creation" description="Allow to create users/user reports"
+
+    grant actions="report-create"
+
+privilege "allow-read-global-networks-container"
+  to objecttype="container/cn" position.subtree="cn=networks,{ldap_base}"
+    description="Allow to read networks container"
+
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+privilege "allow-read-global-dns-container"
+  to objecttype="container/cn" position.subtree="cn=dns,{ldap_base}"
+    description="Allow to read dns container"
+
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+privilege "allow-read-global-dhcp-container"
+  to objecttype="container/cn" position.subtree="cn=dhcp,{ldap_base}"
+    description="Allow to read dhcp container"
+
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+privilege "allow-read-global-networks"
+  to objecttype="networks/network"
+    description="Allow to write network objects"
+
+    grant actions="search,read,create,modify,rename,remove,move"
+    grant properties="*" permission="write"
+
+privilege "allow-read-global-dns-host-records"
+  to objecttype="dns/host_record"
+    description="Allow to write DNS host records"
+
+    grant actions="search,read,create,modify,rename,remove,move"
+    grant properties="*" permission="write"
+
+privilege "allow-read-global-dns-ptr-records"
+  to objecttype="dns/ptr_record"
+    description="Allow to write DNS pointer records"
+
+    grant actions="search,read,create,modify,rename,remove,move"
+    grant properties="*" permission="write"
+
+privilege "allow-read-global-dhcp-services"
+  to objecttype="dhcp/service"
+    description="Allow to read DHCP services"
+
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+privilege "allow-read-global-dhcp-subnets"
+  to objecttype="dhcp/subnet"
+    description="Allow to read DHCP subnets"
+
+    grant actions="search,read"
+    grant properties="*" permission="read"

@@ -32,12 +32,14 @@ log = logging.getLogger('ACL').getChild(__name__)
 UDM_DSL_GRAMMAR = r"""
 start: statement+
 
-statement: named_condition | access_block
+statement: condition | access_block | privilege
 
-named_condition: "named-condition" QUOTED_STRING condition_line param_line?
+condition: "condition" QUOTED_STRING condition_line param_line?
 
 condition_line: "condition=" QUOTED_STRING
 param_line: "parameters" kvpair+
+
+privilege: "privilege" QUOTED_STRING to_line
 
 access_block: "access" by_line+ to_line*
 
@@ -124,11 +126,13 @@ class _DSLTransformer(Transformer):
         super().__init__(*args, **kwargs)
 
     def start(self, items):
-        data = {'conditions': [], 'rules': []}
+        data = {'conditions': [], 'rules': [], 'privileges': []}
         for all_items in items:
             for item in all_items:
-                if item['type'] == 'named-condition':
+                if item['type'] == 'condition':
                     data['conditions'].append(item)
+                elif item['type'] == 'privilege':
+                    data['privileges'].append(item)
                 elif item['type'] == 'access':
                     data['rules'].append(item)
                 else:
@@ -140,15 +144,25 @@ class _DSLTransformer(Transformer):
     def statement(self, items):
         return items
 
-    def named_condition(self, items):
+    def condition(self, items):
         name = items[0]
         cond = items[1]
         parameters = items[2] if len(items) > 2 else {}
         return {
-            'type': 'named-condition',
+            'type': 'condition',
             'name': name,
             'condition': cond,
             'parameters': parameters,
+            'filename': self.__filename,
+        }
+
+    def privilege(self, items):
+        name, to_line = items
+        return {
+            'type': 'privilege',
+            'name': name,
+            'to': to_line,
+            'filename': self.__filename,
         }
 
     def condition_line(self, items):
@@ -172,6 +186,7 @@ class _DSLTransformer(Transformer):
 
         return {
             'type': 'access',
+            'filename': self.__filename,
             'by': by_blocks,
             'to': to_blocks,
             **meta,
@@ -321,7 +336,7 @@ class _DSLTransformer(Transformer):
 
         for cond in parsed['conditions']:
             params = '  parameters %s' % _kv(cond['parameters']) if cond.get('parameters') else ''
-            print(f'named-condition "{cond["name"]}"\n  condition="{cond["condition"]}"\n{params}\n', file=result)
+            print(f'condition "{cond["name"]}"\n  condition="{cond["condition"]}"\n{params}\n', file=result)
         for rule in parsed['rules']:
             by = rule.pop('by')
             to = rule.pop('to')
