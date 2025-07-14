@@ -1,3 +1,11 @@
+univention-s4-connector (14.0.21) unstable; urgency=medium
+
+  * Bug #58471: Add "Pre-Windows 2000 Compatible Access", "Windows
+    Authorization Access Group" and "IIS_IUSRS" to
+    connector/s4/mapping/group/ignorelist.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 14 Jul 2025 19:10:00 +0200
+
 univention-s4-connector (14.0.20-1) UNRELEASED; urgency=medium
 
   * Bug #58002 UCS 5.0-10 version bump
