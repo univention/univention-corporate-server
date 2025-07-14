@@ -270,7 +270,7 @@ def setup_role(ou, udm, ucr, ldap_base):
         _, username = udm.create_user(
             guardianRoles=[role],
             groups=[ucr['directory/manager/rest/authorized-groups/test-api-access']],
-            policy_reference=[f'cn=organizational-unit-amdins,cn=UMC,cn=policies,{ldap_base}'],
+            policy_reference=[f'cn=organizational-unit-admins,cn=UMC,cn=policies,{ldap_base}'],
         )
         check_call(['systemctl', 'restart', 'univention-management-console-server.service', 'univention-directory-manager-rest.service'])
         rest = RestClientHelper(
