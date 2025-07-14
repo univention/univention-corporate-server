@@ -191,3 +191,38 @@ access by role="udm:default-roles:linux-ou-client-manager" context="udm:contexts
     grant actions="search,read,create,modify,rename,remove,move"
     grant properties="*" permission="read"
     grant properties="hosts" permission="write"
+
+access by role="udm:default-roles:linux-ou-client-manager"
+  description="Join Clients Administrators are allowed to manage networks, DNS records, and DHCP settings for client joining"
+
+  to objecttype="container/cn" position.subtree="cn=networks,{ldap_base}"
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+  to objecttype="container/cn" position.subtree="cn=dns,{ldap_base}"
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+  to objecttype="container/cn" position.subtree="cn=dhcp,{ldap_base}"
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+  to objecttype="networks/network"
+    grant actions="search,read,create,modify,rename,remove,move"
+    grant properties="*" permission="write"
+
+  to objecttype="dns/host_record"
+    grant actions="search,read,create,modify,rename,remove,move"
+    grant properties="*" permission="write"
+
+  to objecttype="dns/ptr_record"
+    grant actions="search,read,create,modify,rename,remove,move"
+    grant properties="*" permission="write"
+
+  to objecttype="dhcp/service"
+    grant actions="search,read"
+    grant properties="*" permission="read"
+
+  to objecttype="dhcp/subnet"
+    grant actions="search,read"
+    grant properties="*" permission="read"
