@@ -38,7 +38,7 @@ def main():
     create_or_modify_obj(groups, name=custom_groupname('Domain Users', ucr), position=GLOBAL_GROUPS, guardianMemberRoles=[USER_ROLE])
     umc_policy = create_or_modify_obj(
         umc_policies,
-        name='organizational-unit-amdins',
+        name='organizational-unit-admins',
         position=f'cn=UMC,cn=policies,{LDAP_BASE}',
         allow=[f'cn=udm-all,cn=operations,cn=UMC,cn=univention,{LDAP_BASE}'],
     )
