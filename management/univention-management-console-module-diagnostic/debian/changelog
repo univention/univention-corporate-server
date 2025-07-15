@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (6.0.12) unstable; urgency=medium
+
+  * Bug #58471: Diagnostic module for memberOf in Samba/AD
+
+ -- Arvid Requate <requate@univention.de>  Tue, 15 Jul 2025 20:52:10 +0200
+
 univention-management-console-module-diagnostic (6.0.11-4) unstable; urgency=medium
 
   * revert: Bug #57779: Update PostgreSQL version check to version 15
