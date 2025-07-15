@@ -300,6 +300,7 @@ keycloak_migration() {
 	domainname="$(ucr get domainname)"
 	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
 		# Install keycloak
+		rm /var/cache/univention-appcenter/$(ucr get repository/app_center/server)/$(ucr get version/version)/.etags
 		univention-app update
 		# shellcheck source=/dev/null
 		. utils-keycloak.sh && install_upgrade_keycloak --set ucs/self/registration/check_email_verification="True"
