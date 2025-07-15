@@ -92,6 +92,29 @@ update_check_kernel () {
 	univention-prune-kernels
 }
 
+## Bug #53882 - not in checks.sh to avoid running in the pre-update-checks-5.2-2
+# Note: at this position it's not executed in "CHECKS_ONLY", i.e. not if preup.sh is called without argument $UPDATE_NEXT_VERSION
+update_check_s4-connector-memberof-pre-windows-2k-compatible-access () {
+  if ! dpkg -l univention-s4-connector 2>/dev/null | grep -q ^ii; then
+    return 0
+  fi
+  eval "$(ucr shell connector/s4/mapping/group/ignorelist)"
+  if [ -n "$connector_s4_mapping_group_ignorelist" ]; then
+    if ! grep -q "Pre-Windows 2000 Compatible Access" <<<"$connector_s4_mapping_group_ignorelist"; then
+      connector_s4_mapping_group_ignorelist="$connector_s4_mapping_group_ignorelist,Pre-Windows 2000 Compatible Access"
+    fi
+    if ! grep -q "Windows Authorization Access Group" <<<"$connector_s4_mapping_group_ignorelist"; then
+      connector_s4_mapping_group_ignorelist="$connector_s4_mapping_group_ignorelist,Windows Authorization Access Group"
+    fi
+    if ! grep -q "IIS_IUSRS" <<<"$connector_s4_mapping_group_ignorelist"; then
+      connector_s4_mapping_group_ignorelist="$connector_s4_mapping_group_ignorelist,IIS_IUSRS"
+    fi
+    ucr set connector/s4/mapping/group/ignorelist="$connector_s4_mapping_group_ignorelist"
+    is_ucr_true connector/s4/autostart || return 0
+    systemctl restart univention-s4-connector
+  fi
+}
+
 checks
 
 # save ucr settings

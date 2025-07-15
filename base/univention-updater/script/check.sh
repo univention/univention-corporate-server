@@ -510,27 +510,6 @@ update_check_ucsschool () {
   fi
 }
 
-update_check_s4-connector-memberof-pre-windows-2k-compatible-access () {
-  if ! dpkg -l univention-s4-connector 2>/dev/null | grep -q ^ii; then
-    return 0
-  fi
-  eval "$(ucr shell connector/s4/mapping/group/ignorelist)"
-  if [ -n "$connector_s4_mapping_group_ignorelist" ]; then
-    if ! grep -q "Pre-Windows 2000 Compatible Access" <<<"$connector_s4_mapping_group_ignorelist"; then
-      connector_s4_mapping_group_ignorelist="$connector_s4_mapping_group_ignorelist,Pre-Windows 2000 Compatible Access"
-    fi
-    if ! grep -q "Windows Authorization Access Group" <<<"$connector_s4_mapping_group_ignorelist"; then
-      connector_s4_mapping_group_ignorelist="$connector_s4_mapping_group_ignorelist,Windows Authorization Access Group"
-    fi
-    if ! grep -q "IIS_IUSRS" <<<"$connector_s4_mapping_group_ignorelist"; then
-      connector_s4_mapping_group_ignorelist="$connector_s4_mapping_group_ignorelist,IIS_IUSRS"
-    fi
-    ucr set connector/s4/mapping/group/ignorelist="$connector_s4_mapping_group_ignorelist"
-    is_ucr_true connector/s4/autostart || return 0
-    systemctl restart univention-s4-connector
-  fi
-}
-
 # Bug 58164: Upgrade to UCS 5.2: LDAP Database is empty - Loading the domain database from the LDIF dump failed - attribute type undefined
 _disabled_cool_solutions () {
   ! is_ucr_true repository/online/component/cool-solutions && return 0
