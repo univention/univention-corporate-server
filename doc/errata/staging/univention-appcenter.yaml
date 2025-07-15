@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issues:
  * Fix the path directory were the appcenter store the cache for the next
    release during an upgrade.
-bug: [58240]
+ * The App center cache is invalidated if the download fails due to network
+   issues to avoid inconsistency in the App center cache.
+bug: [58240, 58469]

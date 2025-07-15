@@ -23,11 +23,14 @@ from urllib.request import Request
 from univention.appcenter.actions import UniventionAppAction, possible_network_error
 from univention.appcenter.app import LOCAL_ARCHIVE_DIR
 from univention.appcenter.app_cache import AppCenterCache, Apps
-from univention.appcenter.exceptions import UpdateSignatureVerificationFailed, UpdateUnpackArchiveFailed
+from univention.appcenter.exceptions import NetworkError, UpdateSignatureVerificationFailed, UpdateUnpackArchiveFailed
 from univention.appcenter.log import catch_stdout
 from univention.appcenter.ucr import ucr_is_false, ucr_save
 from univention.appcenter.utils import gpg_verify, mkdir, urlopen
 from univention.config_registry import handler_commit
+
+
+ETAGS_NAME = '.etags'
 
 
 class Update(UniventionAppAction):
@@ -116,7 +119,7 @@ class Update(UniventionAppAction):
 
     def _save_etags(self, cache, etags):
         # type: (AppCenterCache, Mapping[str, str]) -> None
-        etags_file = os.path.join(cache.get_cache_dir(), '.etags')
+        etags_file = os.path.join(cache.get_cache_dir(), ETAGS_NAME)
         with open(etags_file, 'w') as f:
             f.writelines('%s\t%s\n' % (fname, etag) for fname, etag in etags.items())
 
@@ -129,7 +132,7 @@ class Update(UniventionAppAction):
         updated = False
         server = cache.get_server()
         cache_dir = cache.get_cache_dir()
-        etags_file = os.path.join(cache_dir, '.etags')
+        etags_file = os.path.join(cache_dir, ETAGS_NAME)
         present_etags = self._get_etags(etags_file)
         ucs_version = None
         if hasattr(cache, 'get_ucs_version'):
@@ -192,7 +195,14 @@ class Update(UniventionAppAction):
             #   * HTTP requests are altered
             self.warn('Downloading the App archive via zsync failed. Falling back to download it directly.')
             self.warn('For better performance, try to make zsync work for "%s". The error may be caused by a proxy altering HTTP requests' % all_tar_url)
-            self._download_files(app_cache, ['all.tar.gz'])
+            try:
+                self._download_files(app_cache, ['all.tar.gz'])
+            except NetworkError as exc:
+                # if we cannot download all.tar.gz, the .etags file is not valid anymore
+                # https://forge.univention.org/bugzilla/show_bug.cgi?id=58469
+                self.fatal('Failed to download all.tar.gz: %s' % exc)
+                os.unlink(os.path.join(cache_dir, ETAGS_NAME))
+                raise
             # files are always downloaded with their filename prepended by '.'
             tgz_file = os.path.join(cache_dir, '.all.tar.gz')
             self._uncompress_archive(app_cache, tgz_file)
