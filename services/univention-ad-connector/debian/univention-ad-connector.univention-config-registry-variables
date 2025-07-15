@@ -345,6 +345,12 @@ Description[en]=The DN of an Active Directory subtree which is synchronized from
 Type=str
 Categories=service-adcon
 
+[con.*/ad/mapping/allow-subtree-ancestors]
+Description[de]=Erlaube die Synchronisierung von allen Vorfahren der Wurzel der Teilbäume, die in den UCR-Variablen con.*/ad/mapping/allowsubtree/.*/[ad|ucs] gesetzt sind. Wenn zum Beispiel ou=ouA,ou=ouB,ou=ouC,dc=ucs,dc=test als ein Teilbaum gesetzt ist, werden zusätzlich zu ouA und dessen Nachfahren auch ouB und ouC synchronisiert. Per Voreinstellung nicht aktiviert.
+Description[en]=Allow the synchronization of all ancestors of the root of subtrees that are set in the UCR-Variables con.*/ad/mapping/allowsubtree/.*/[ad|ucs]. For example, when ou=ouA,ou=ouB,ou=ouC,dc=ucs,dc=test is set as an allowed subtree ouB and ouC will be synchronized, in addition to ouA and all descendants of ouA. By default not enabled.
+Type=bool
+Categories=service-adcon
+
 [con.*/ad/mapping/user/allowfilter]
 Description[de]=Nur die Benutzerobjekte, die diesem LDAP Filter entsprechen, werden durch den Connector synchronisiert.
 Description[en]=Only those user objects that match this LDAP filter are synchronised by the connector.
