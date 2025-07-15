@@ -32,6 +32,71 @@ msgid "Unable to fix machine password on {}"
 msgstr ""
 "Nicht im Stande das Password für das Rechnerkonto für {} zu korrigieren."
 
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:17
+msgid "Check visibility of the memberOf attribute in Samba/AD"
+msgstr "Überprüfe die Sichtbarkeit des memberOf-Attributs in Samba/AD"
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:81
+msgid "Deactivate test permanently"
+msgstr "Test dauerhaft deaktivieren"
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:85
+msgid "Add \"Authenticated Users\" to \"Pre-Windows 2000 Compatible Access\""
+msgstr "\"Authenticated Users\" hinzufügen zu \"Pre-Windows 2000 Compatible Access\""
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:89
+msgid ""
+"Add \"Enterprise Domain Controllers\" to \"Pre-Windows 2000 Compatible "
+"Access\""
+msgstr "\"Enterprise Domain Controllers\" hinzufügen zu \"Pre-Windows 2000 Compatible Access\""
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:96
+#, python-format
+msgid "univention-s4search did not show any memberOf values for sAMAccountName=%s."
+msgstr "univention-s4search zeigt keine memberOf-Werte für sAMAccountName=%s."
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:102
+msgid ""
+"Typically either \"Authenticated Users\" or \"Enterprise Domain "
+"Controllers\" are member of \"Pre-Windows 2000 Compatible Access\"."
+msgstr "Typischerweise sind entweder \"Authenticated Users\" oder \"Enterprise Domain "
+"Controllers\" Mitglied von \"Pre-Windows 2000 Compatible Access\"."
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:104
+msgid ""
+"But here neither of these groups is member of \"Pre-Windows 2000 Compatible "
+"Access\". This is probably the cause of this behavior."
+msgstr "Aber hier ist keine dieser Gruppen Mitglied von \"Pre-Windows 2000 Compatible "
+"Access\". Das ist wahrscheinlich die Ursache dieses Verhaltens."
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:106
+msgid ""
+"By default Active Directory has \"Authenticated Users\" (S-1-5-11) in \"Pre-Windows 2000 "
+"Compatible Access\", but this can also pose some security issue."
+msgstr "Active Directory hat per Voreinstellung \"Authenticated Users\" in \"Pre-Windows 2000 "
+"Compatible Access\", aber das kann auch ein Sicherheitsproblem darstellen."
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:109
+msgid ""
+"As an alternative, depending on the use case, one can make \"Enterprise Domain Controllers\" (S-1-5-9) member of "
+"\"Pre-Windows 2000 Compatible Access\", which makes the \"memberOf\" "
+"attribute only visible for domain controllers (e.g. for univention-s4search)."
+msgstr "Als Alternative kann man \"Enterprise Domain Controllers\" Mitglied von "
+"\"Pre-Windows 2000 Compatible Access\" machen, was das \"memberOf\"-Attribut "
+"nur für Domain Controller sichtbar macht (z.B. für univention-s4search)."
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:114
+msgid "Please chose an action."
+msgstr "Bitte wählen Sie eine Aktion."
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:119
+#, python-format
+msgid ""
+"OK, fix worked, \"univention-s4search sAMAccountName=%s memberOf\" shows group "
+"memberships."
+msgstr "OK, die Maßnahme hat funktioniert, \"univention-s4search sAMAccountName=%s memberOf\" zeigt die "
+"Gruppenmitgliedschaften."
+
 #: plugins/00_check_server_password.py:111
 msgid "Calling /usr/lib/univention-server/server_password_change failed."
 msgstr ""
@@ -709,10 +774,13 @@ msgid "Check local AD database for errors"
 msgstr "Teste die lokale AD Datenbank auf Fehler"
 
 #: plugins/40_samba_tool_dbcheck.py:40 plugins/41_samba_tool_showrepl.py:56
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:18
 msgid "No errors found."
 msgstr "Keine Fehler gefunden."
 
 #: plugins/40_samba_tool_dbcheck.py:53 plugins/63_proof_uniqueMembers.py:54
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:38
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:53
 #, python-brace-format
 msgid "Output of `{cmd}`:"
 msgstr "Ausgabe von `{cmd}`:"

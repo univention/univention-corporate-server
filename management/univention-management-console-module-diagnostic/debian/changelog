@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (8.0.21) unstable; urgency=medium
+
+  * Bug #58470: Diagnostic module for memberOf in Samba/AD
+
+ -- Arvid Requate <requate@univention.de>  Tue, 15 Jul 2025 20:52:20 +0200
+
 univention-management-console-module-diagnostic (8.0.20) unstable; urgency=medium
 
   * Bug #58047: Diagnostic plugin for LMDB fragmentation
