@@ -35,3 +35,6 @@ The [Code of Conduct contains guidelines](./CONTRIBUTING.md#code-of-conduct) we 
 Univention Corporate Server is built on top of many existing open source projects which use their own licenses.
 The source code of all parts written by Univention like the management system is licensed under the AGPLv3 if not stated otherwise directly in the source code.
 Please see the [license file](./LICENSE) for more information.
+
+[![REUSE status](https://api.reuse.software/badge/github.com/univention/univention-corporate-server)](https://api.reuse.software/info/github.com/univention/univention-corporate-server)
+This repository is [REUSE 3.3](https://reuse.software/spec-3.3/) compliant.
