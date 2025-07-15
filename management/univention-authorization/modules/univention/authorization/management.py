@@ -32,6 +32,13 @@ class GuardianManagementClient:
         self.password = password
         self.oidc_token_endpoint_url = oidc_token_endpoint_url
         self.oidc_client_id = oidc_client_id
+        self.session = requests.Session()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, etype, exc, etraceback):
+        self.session.close()
 
     @staticmethod
     @lru_cache(maxsize=1)
@@ -91,12 +98,12 @@ class GuardianManagementClient:
         return self.request('PATCH', path, data)
 
     def request(self, method, path, data):
-        response = requests.request(method, f"{self.management_url}{path}", headers=self.generate_headers(), json=data, timeout=TIMEOUT)
+        response = self.session.request(method, f"{self.management_url}{path}", headers=self.generate_headers(), json=data, timeout=TIMEOUT)
         try:
             return self.handle_status_code(response)
         except TokenInvalidError:
             self.get_token.cache_clear()
-            response = requests.request(method, f"{self.management_url}{path}", headers=self.generate_headers(), json=data, timeout=TIMEOUT)
+            response = self.session.request(method, f"{self.management_url}{path}", headers=self.generate_headers(), json=data, timeout=TIMEOUT)
             return self.handle_status_code(response)
 
     def create_app(self, app_name, display_name):
