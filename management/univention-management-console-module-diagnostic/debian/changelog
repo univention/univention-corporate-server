@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (8.2.3) unstable; urgency=medium
+
+  * Bug #53882: Diagnostic module for memberOf in Samba/AD
+
+ -- Arvid Requate <requate@univention.de>  Tue, 15 Jul 2025 20:52:30 +0200
+
 univention-management-console-module-diagnostic (8.2.2) unstable; urgency=medium
 
   * Bug #58446: add verbose information in 58_univentionObjectIdentifier
