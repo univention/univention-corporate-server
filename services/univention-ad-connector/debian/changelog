@@ -1,3 +1,12 @@
+univention-ad-connector (14.0.25) unstable; urgency=medium
+
+  * Bug #58735: Allow synchronization of parents of allowed subtrees
+  * Bug #58735: When resynchronizing with the resync_* scripts,
+    automatically add ancestors of allowed subtrees to the
+    resynchronization list.
+
+ -- Arvid Requate <requate@univention.de>  Sat, 25 Oct 2025 19:15:07 +0200
+
 univention-ad-connector (14.0.24) unstable; urgency=medium
 
   * Bug #58737: Update object['dn'] in modify_in_ucs because udm

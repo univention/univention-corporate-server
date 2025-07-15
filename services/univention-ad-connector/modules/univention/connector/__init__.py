@@ -60,6 +60,7 @@ import univention.debug as ud_c
 import univention.debug2 as ud
 import univention.uldap
 from univention.connector.adcache import ADCache
+from univention.dn import DN
 
 
 term_signal_caught = False
@@ -514,6 +515,7 @@ class ucs(object):
 
         irrelevant_attributes = self.configRegistry.get('%s/ad/mapping/attributes/irrelevant' % (self.CONFIGBASENAME,), '')
         self.irrelevant_attributes = set(irrelevant_attributes.split(','))
+        self.allow_subtree_ancestors = self.configRegistry.is_true('%s/ad/mapping/allow-subtree-ancestors' % (self.CONFIGBASENAME,), False)
 
         # TODO just for testing, remove before merge
         # specific debug levels
@@ -1635,10 +1637,10 @@ class ucs(object):
             ud.debug(ud.LDAP, dl, f"_ignore_object: ignore object without DN (key: {key})")
             return True  # ignore not existing object
 
-        if self.property[key].allow_subtree:
-            if not any(self._subtree_match(object['dn'], dn) for dn in self.property[key].allow_subtree):
-                ud.debug(ud.LDAP, dl, "_ignore_object: ignore object because it is not in one of the allowed subtrees: [%r:%r]" % (key, object['dn']))
-                return True
+        if self.property[key].allow_subtree and not any(self._subtree_match(object['dn'], dn) for dn in self.property[key].allow_subtree) and (
+                not self.allow_subtree_ancestors or not any(DN(subtree_dn).endswith(object['dn']) for subtree_dn in self.property[key].allow_subtree)):
+            ud.debug(ud.LDAP, dl, '_ignore_object: ignore object because it is not in one of the allowed subtrees: [%r:%r]' % (key, object['dn']))
+            return True
 
         if self.property[key].allow_filter:
             if not self._filter_match(self.property[key].allow_filter, object['attributes']):

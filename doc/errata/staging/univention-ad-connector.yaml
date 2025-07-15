@@ -3,7 +3,7 @@ release: "5.0"
 version: [10]
 scope: ucs_5.0-0-errata5.0-10
 src: univention-ad-connector
-fix: 14.0.24
+fix: 14.0.25
 desc: |
  This update addresses the following issues:
  * Changing the `sAMAccountName` of a user in AD
@@ -12,4 +12,13 @@ desc: |
    use the re-rename DN. This could also cause
    additional issues when later changing the `CN`
    of the object. This update fixes these issues.
-bug: [58737]
+ * Introduced a new UCR-Variable,
+   `connector/ad/mapping/allow-subtree-ancestors`,
+   which, if enabled, allows the synchronization of ancestors of subtrees
+   allowed with the UCR-Vs `connector/ad/mapping/allowsubtree/.*/[ad|ucs]`.
+   This can make the management of the selective synchronization of
+   more complex LDAP DIT structures simpler. Additionally, when this new
+   variable is enabled, a resynchronization with one of the
+   `resync_object_from_*` scripts will handle the resynchronization of
+   ancestors automatically if necessary.
+bug: [58737,57979]
