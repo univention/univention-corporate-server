@@ -9,3 +9,6 @@ desc: |
  * Fixed the directory where the appcenter stores the cache for the next
    release during `univention-app update-check`.
 bug: [58240]
+erratum: 149
+announced: 2025-07-16
+support: core
