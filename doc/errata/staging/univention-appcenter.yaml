@@ -6,6 +6,6 @@ src: univention-appcenter
 fix: 11.2.2
 desc: |
  This update addresses the following issues:
- * Fix the path directory were the appcenter store the cache for the next
-   release during an upgrade.
+ * Fixed the directory where the appcenter stores the cache for the next
+   release during `univention-app update-check`.
 bug: [58240]
