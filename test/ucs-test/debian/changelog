@@ -1,3 +1,9 @@
+ucs-test (12.2.33) unstable; urgency=medium
+
+  * Bug #57979: add tests for allow-subtree-ancestors feature
+
+ -- Johannes Königer <koeniger@univention.de>  Mon, 28 Jul 2025 13:03:47 +0200
+
 ucs-test (12.2.32) unstable; urgency=medium
 
   * Issue univention/dev/projects/keycloak/keycloak-app#243: Test keycloak version match
