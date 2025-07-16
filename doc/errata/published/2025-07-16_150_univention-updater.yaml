@@ -11,3 +11,6 @@ desc: |
    preemptive authentication was added which first tries it with credentials,
    but then also proceeds if they are url-encoded.
 bug: [58371]
+erratum: 150
+announced: 2025-07-16
+support: core
