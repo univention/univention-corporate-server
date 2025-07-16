@@ -68,6 +68,7 @@ class DomObject:
 @contextlib.contextmanager
 def allow_subtree_setup(
     sync_mode: str,
+    allow_subtree_ancestors: bool = False,
     pre_create_objects: bool = False,
     only_ucs: bool = False,
 ) -> Generator[Tuple[List, List, UCSTestUDM], None, None]:
@@ -94,29 +95,40 @@ def allow_subtree_setup(
                 not_allowed1.ad_dn = f'ou={not_allowed1.name},{not_allowed1.ad_position}'
 
                 allowed2 = SubTree(name='ou2-allowed')
-                allowed2.udm_position = not_allowed1.udm_dn  # position below not explicitly allowed OU
-                allowed2.ad_position = not_allowed1.ad_dn    # position below not explicitly allowed OU
+                # position below not explicitly allowed OU
+                allowed2.udm_position = not_allowed1.udm_dn
+                # position below not explicitly allowed OU
+                allowed2.ad_position = not_allowed1.ad_dn
                 allowed2.udm_dn = f'ou={allowed2.name},{allowed2.udm_position}'
                 allowed2.ad_dn = f'ou={allowed2.name},{allowed2.ad_position}'
 
-                not_allowed2 = SubTree(name='users')        # test not allowing the standard cn=users container
+                # test not allowing the standard cn=users container
+                not_allowed2 = SubTree(name='users')
                 not_allowed2.udm_position = ucr['ldap/base']
                 not_allowed2.ad_position = ucr['connector/ad/ldap/base']
                 not_allowed2.udm_dn = f'cn={not_allowed2.name},{not_allowed2.udm_position}'
                 not_allowed2.ad_dn = f'cn={not_allowed2.name},{not_allowed2.ad_position}'
 
                 not_allowed3 = SubTree(name='ou3')
-                not_allowed3.udm_position = allowed2.udm_dn  # position below explicitly allowed OU
-                not_allowed3.ad_position = allowed2.ad_dn    # position below explicitly allowed OU
+                # position below explicitly allowed OU
+                not_allowed3.udm_position = allowed2.udm_dn
+                # position below explicitly allowed OU
+                not_allowed3.ad_position = allowed2.ad_dn
                 not_allowed3.udm_dn = f'ou={not_allowed3.name},{not_allowed3.udm_position}'
                 not_allowed3.ad_dn = f'ou={not_allowed3.name},{not_allowed3.ad_position}'
+
+                if allow_subtree_ancestors:
+                    ucr.handler_set(['connector/ad/mapping/allow-subtree-ancestors=yes'])
+                else:
+                    ucr.handler_set(['connector/ad/mapping/allow-subtree-ancestors=no'])
+
                 # create container and optionally some objects in the containers
                 if ucr['connector/ad/mapping/syncmode'] not in ('sync', 'write'):
                     # configure connector for sync
                     ucr_set(
                         [
-                            "connector/ad/mapping/syncmode=sync",
-                        ]
+                            'connector/ad/mapping/syncmode=sync',
+                        ],
                     )
                     restart_adconnector()
                 udm.create_object('container/cn', name=allowed1.name, position=allowed1.udm_position)
@@ -139,14 +151,14 @@ def allow_subtree_setup(
                 # configure connector
                 ucr_set(
                     [
-                        f"connector/ad/mapping/allowsubtree/test1/ucs={allowed1.udm_dn}",
-                        f"connector/ad/mapping/allowsubtree/test1/ad={allowed1.ad_dn}",
-                        f"connector/ad/mapping/allowsubtree/test2/ucs={allowed2.udm_dn}",
-                        f"connector/ad/mapping/allowsubtree/test2/ad={allowed2.ad_dn}",
-                        f"connector/ad/mapping/ignoresubtree/test3-ucs={not_allowed3.udm_dn}",
-                        f"connector/ad/mapping/ignoresubtree/test3-ad={not_allowed3.ad_dn}",
-                        f"connector/ad/mapping/syncmode={sync_mode}",
-                    ]
+                        f'connector/ad/mapping/allowsubtree/test1/ucs={allowed1.udm_dn}',
+                        f'connector/ad/mapping/allowsubtree/test1/ad={allowed1.ad_dn}',
+                        f'connector/ad/mapping/allowsubtree/test2/ucs={allowed2.udm_dn}',
+                        f'connector/ad/mapping/allowsubtree/test2/ad={allowed2.ad_dn}',
+                        f'connector/ad/mapping/ignoresubtree/test3-ucs={not_allowed3.udm_dn}',
+                        f'connector/ad/mapping/ignoresubtree/test3-ad={not_allowed3.ad_dn}',
+                        f'connector/ad/mapping/syncmode={sync_mode}',
+                    ],
                 )
                 restart_adconnector()
             yield ([allowed1, allowed2], [not_allowed1, not_allowed2, not_allowed3], udm)
@@ -211,10 +223,11 @@ def move_to_subtree_in_ad(ad: ADConnection, obj: DomObject, tree: SubTree) -> No
 
 
 # @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.parametrize("sync_mode", ["sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
-def test_create(sync_mode: str) -> None:
-    with allow_subtree_setup(sync_mode) as (allowed, denied, udm):
+@pytest.mark.parametrize('sync_mode', ['sync'])
+@pytest.mark.parametrize('allow_subtree_ancestors', [True, False])
+@pytest.mark.skipif(not connector_running_on_this_host(), reason='Univention AD Connector not configured.')
+def test_create(sync_mode: str, allow_subtree_ancestors: bool) -> None:
+    with allow_subtree_setup(sync_mode, allow_subtree_ancestors=allow_subtree_ancestors) as (allowed, denied, udm):
         # check denied for other subtrees
         for tree in denied:
             if sync_mode in ('sync', 'write'):
@@ -241,10 +254,11 @@ def test_create(sync_mode: str) -> None:
 
 
 # @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.parametrize("sync_mode", ["sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
-def test_modify(sync_mode: str) -> None:
-    with allow_subtree_setup(sync_mode, pre_create_objects=True) as (allowed, denied, udm):
+@pytest.mark.parametrize('sync_mode', ['sync'])
+@pytest.mark.parametrize('allow_subtree_ancestors', [True, False])
+@pytest.mark.skipif(not connector_running_on_this_host(), reason='Univention AD Connector not configured.')
+def test_modify(sync_mode: str, allow_subtree_ancestors: bool) -> None:
+    with allow_subtree_setup(sync_mode, allow_subtree_ancestors=allow_subtree_ancestors, pre_create_objects=True) as (allowed, denied, udm):
         for tree in denied:
             if sync_mode in ('sync', 'write'):
                 for obj in tree.objects:
@@ -281,10 +295,11 @@ def test_modify(sync_mode: str) -> None:
 
 
 # @pytest.mark.parametrize("sync_mode", ["read", "sync"])
-@pytest.mark.parametrize("sync_mode", ["sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
-def test_move_into_allowed_subtree(sync_mode: str) -> None:
-    with allow_subtree_setup(sync_mode) as (allowed, denied, udm):
+@pytest.mark.parametrize('sync_mode', ['sync'])
+@pytest.mark.parametrize('allow_subtree_ancestors', [True, False])
+@pytest.mark.skipif(not connector_running_on_this_host(), reason='Univention AD Connector not configured.')
+def test_move_into_allowed_subtree(sync_mode: str, allow_subtree_ancestors: bool) -> None:
+    with allow_subtree_setup(sync_mode, allow_subtree_ancestors=allow_subtree_ancestors) as (allowed, denied, udm):
         # create objects in denied subtree in UCS/AD
         # and move to allowed subtree, check object is created
         allowed_subtree = allowed[0]
@@ -316,10 +331,11 @@ def test_move_into_allowed_subtree(sync_mode: str) -> None:
 
 
 # @pytest.mark.parametrize("sync_mode", ["read", "sync", "write"])
-@pytest.mark.parametrize("sync_mode", ["sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
-def test_move_out_of_allowed_subtree(sync_mode: str) -> None:
-    with allow_subtree_setup(sync_mode) as (allowed, denied, udm):
+@pytest.mark.parametrize('sync_mode', ['sync'])
+@pytest.mark.parametrize('allow_subtree_ancestors', [True, False])
+@pytest.mark.skipif(not connector_running_on_this_host(), reason='Univention AD Connector not configured.')
+def test_move_out_of_allowed_subtree(sync_mode: str, allow_subtree_ancestors: bool) -> None:
+    with allow_subtree_setup(sync_mode, allow_subtree_ancestors=allow_subtree_ancestors) as (allowed, denied, udm):
         # create object in allowed subtree in UCS/AD
         # move out of allowed subtree and check that object is removed
         allowed_subtree = allowed[0]
@@ -352,10 +368,11 @@ def test_move_out_of_allowed_subtree(sync_mode: str) -> None:
                     udm.verify_ldap_object(obj.old_udm_dn, retry_count=3, delay=1)
 
 
-@pytest.mark.parametrize("sync_mode", ["sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
-def test_ignored_object_is_not_moved(sync_mode: str, ucr) -> None:
-    with allow_subtree_setup(sync_mode, pre_create_objects=True) as (allowed, denied, udm):  # noqa: F841
+@pytest.mark.parametrize('sync_mode', ['sync'])
+@pytest.mark.parametrize('allow_subtree_ancestors', [True, False])
+@pytest.mark.skipif(not connector_running_on_this_host(), reason='Univention AD Connector not configured.')
+def test_ignored_object_is_not_moved(sync_mode: str, allow_subtree_ancestors: bool, ucr) -> None:
+    with allow_subtree_setup(sync_mode, allow_subtree_ancestors=allow_subtree_ancestors, pre_create_objects=True) as (allowed, _denied, udm):  # noqa: F841
         username = allowed[0].objects[0].name
         udm_dn = allowed[0].objects[0].udm_dn
         ad_dn = allowed[0].objects[0].ad_dn
@@ -372,10 +389,11 @@ def test_ignored_object_is_not_moved(sync_mode: str, ucr) -> None:
         delete_con_user(AD, ad_dn, udm_dn, wait_for_sync)
 
 
-@pytest.mark.parametrize("sync_mode", ["sync"])
-@pytest.mark.skipif(not connector_running_on_this_host(), reason="Univention AD Connector not configured.")
-def test_ignored_object_is_not_removed(sync_mode: str, ucr) -> None:
-    with allow_subtree_setup(sync_mode, pre_create_objects=True) as (allowed, denied, udm):  # noqa: F841
+@pytest.mark.parametrize('sync_mode', ['sync'])
+@pytest.mark.parametrize('allow_subtree_ancestors', [True, False])
+@pytest.mark.skipif(not connector_running_on_this_host(), reason='Univention AD Connector not configured.')
+def test_ignored_object_is_not_removed(sync_mode: str, allow_subtree_ancestors: bool, ucr) -> None:
+    with allow_subtree_setup(sync_mode, allow_subtree_ancestors=allow_subtree_ancestors, pre_create_objects=True) as (allowed, _denied, udm):  # noqa: F841
         username = allowed[0].objects[0].name
         udm_dn = allowed[0].objects[0].udm_dn
         ad_dn = allowed[0].objects[0].ad_dn

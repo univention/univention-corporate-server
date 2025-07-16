@@ -1,3 +1,9 @@
+ucs-test (10.0.24-27) unstable; urgency=medium
+
+  * Bug #58735: add tests for allow-subtree-ancestors feature
+
+ -- Arvid Requate <requate@univention.de>  Sat, 25 Oct 2025 19:16:04 +0200
+
 ucs-test (10.0.24-26) unstable; urgency=medium
 
   * Bug #58737: AD-Connector cache 'DN Mapping CON' update on uid change
