@@ -1,0 +1,15 @@
+product: ucs
+release: "5.2"
+version: [2]
+scope: ucs_5.2-0-errata5.2-2
+src: univention-ad-connector
+fix: 16.2.2
+desc: |
+ This update addresses the following issues:
+ * In cases where customers chose LDAPS to bind to Active Directory
+   (by setting `connector/ad/ldap/port=636` and `connector/ad/ldap/ldaps=yes`
+   in UCR) the script `univention-adsearch` aborted with
+   `NT_STATUS_INVALID_PARAMETER_MIX`.
+   Now it passes the parameters `tls cafile` and `tls crlfile` to `ldbsearch`
+   to avoid that error message.
+bug: [56139]
