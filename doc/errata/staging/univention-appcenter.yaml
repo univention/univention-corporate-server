@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [2]
+scope: ucs_5.2-0-errata5.2-2
+src: univention-appcenter
+fix: 11.2.2
+desc: |
+ This update addresses the following issues:
+ * The App center cache is invalidated if the download fails due to network
+   issues to avoid inconsistency in the App center cache.
+bug: [58469]
