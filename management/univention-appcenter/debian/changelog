@@ -1,3 +1,9 @@
+univention-appcenter (11.2.2) unstable; urgency=medium
+
+  * Bug #58469: revert! remove .etag file if the download of the .all.tar.gz fail.
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 15 Jul 2025 11:04:45 +0200
+
 univention-appcenter (11.2.1) unstable; urgency=medium
 
   * Bug #58469: remove .etag file if the download of the .all.tar.gz fail.
