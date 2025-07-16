@@ -1001,7 +1001,7 @@ def create_or_update_client(kc_admin: KeycloakAdmin, payload: dict[str, Any], cl
     try:
         kc_admin.create_client(payload=payload)
     except KeycloakPostError as exc:
-        if exc.response_code != HTTPStatus.CONFLICT:
+        if not force or exc.response_code != HTTPStatus.CONFLICT:
             raise
 
         if force:

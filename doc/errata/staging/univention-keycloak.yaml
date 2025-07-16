@@ -3,7 +3,7 @@ release: "5.2"
 version: [2]
 scope: ucs_5.2-0-errata5.2-2
 src: univention-keycloak
-fix: 3.2.1
+fix: 3.2.2
 desc: |
  This update addresses the following issues:
  * Add a `--force` flag to `oidc/rp create` and `saml/sp create`

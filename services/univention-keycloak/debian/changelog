@@ -1,3 +1,10 @@
+univention-keycloak (3.2.2) unstable; urgency=medium
+
+  * univention/dev/internal/team-nubus#1314: don't silently ignore HTTP
+    conflict if force is False
+
+ -- Marius Meschter <marius.meschter@univention.de>  Wed, 16 Jul 2025 15:45:11 +0200
+
 univention-keycloak (3.2.1) unstable; urgency=medium
 
   * univention/dev/internal/team-nubus#1314: add --force flag to oidc/rp and
