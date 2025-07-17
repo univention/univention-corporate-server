@@ -4,12 +4,17 @@
 """Parses changelog/advisory files and transforms the content into a conventional commit message"""
 
 import argparse
+import os
 import subprocess
+import sys
+import traceback
+from pathlib import Path
 
 import yaml
 
 
-comments = '''
+SHOW_HINTS = os.getenv('PRE_COMMIT_SHOW_HINTS') not in ('no', '0', 'false')
+HINT = '''
 
 # Conventional commit message <https://www.conventionalcommits.org/en/v1.0.0/>
 # Format of the first line: {type}({scope})[!]: {subject}
@@ -157,22 +162,43 @@ mapping = {
     'univention-updater': 'updater',
     'univention-web': 'web',
 }
-type_mapping = {
+type_package_mapping = {
     'ucs-test': 'test',
     'ucs-test-tools': 'test',
     'ucslint': 'ci',
+}
+type_path_mapping = {
+    'doc': 'docs',
+    'LICENCES': 'chore',
+    '.pre-commit': 'ci',
+    '.reuse': 'chore',
+    'test': 'ci',
+}
+scope_path_mapping = {
+    'LICENCES': 'REUSE',
+    '.pre-commit': 'pre-commit',
+    '.reuse': 'REUSE',
 }
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest='action', title='actions', description='All available actions')
+
     changelog = subparsers.add_parser('debian-changelog', help=parse_changelog.__doc__)
     changelog.add_argument("changelog", help="Path to debian/changelog")
+    changelog.add_argument("--show-hint", action='store_true', default=SHOW_HINTS, help="Print hints")
     changelog.set_defaults(func=parse_changelog)
+
     advisory = subparsers.add_parser('errata-advisory', help=parse_advisory.__doc__)
     advisory.add_argument("advisory", help="Path to doc/errata/{staging,published}/*.yaml")
     advisory.set_defaults(func=parse_advisory)
+
+    from_git = subparsers.add_parser('git', help=parse_git.__doc__)
+    from_git.add_argument("original_message")
+    from_git.add_argument("--show-hint", action='store_true', default=SHOW_HINTS, help="Print hints")
+    from_git.set_defaults(func=parse_git)
+
     args = parser.parse_args()
     args.func(args)
 
@@ -193,9 +219,11 @@ def parse_changelog(args):
 
         issue, changes = changes.split(': ', 1)
         scope = mapping.get(package, package)
-        type_ = type_mapping.get(package, 'feat')
+        type_ = type_package_mapping.get(package, 'feat')
         print(f'{type_}({scope}): {changes}\n\n{issue}')
-        print(comments)
+
+    if args.show_hint:
+        print(HINT)
 
 
 def parse_advisory(args):
@@ -209,4 +237,68 @@ def parse_advisory(args):
     print(f'chore({src}): update advisory\n\nBug #{bug}')
 
 
-main()
+def parse_git(args):
+    """Detect changes from git staging area"""
+    try:
+        from git import Repo
+    except ImportError:
+        print('Install python3-git!', file=sys.stderr)
+        print(traceback.format_exc(), file=sys.stderr)
+        return
+
+    repo = Repo(".")
+    assert not repo.bare
+    repo_root = Path(repo.working_tree_dir)
+
+    packages = list(repo_root.rglob("debian/changelog"))
+    staged_files = [repo_root / (item.a_path or item.b_path) for item in repo.index.diff("HEAD")]
+
+    changed_packages = {
+        find_matching_root(p.parent.parent, staged_files)
+        for p in packages
+    }
+    changed_packages.discard(None)
+
+    if len(changed_packages) > 1:
+        print('# Please consider splitting into multiple commits!')
+
+    changes = ''  # TODO: heuristic title
+
+    for package_path in changed_packages:
+        package = package_path.stem
+        scope = mapping.get(package, package)
+        type_ = type_package_mapping.get(package, 'feat')
+        print(f'{type_}({scope}): {changes}')
+
+    prefix = '#' if changed_packages else ''
+    for root, type_ in type_path_mapping.items():
+        section = repo_root / root
+        if find_matching_root(section, staged_files):
+            scope = scope_path_mapping.get(root, '')
+            scopes = [scope] if scope else []
+            if not scopes:
+                if root in ('doc', 'tests'):
+                    scopes = {st.relative_to(section).parts[0] for st in staged_files if st.is_relative_to(section)}
+            for scope in scopes:
+                print(f'{prefix}{type_}({scope}): {changes}')
+
+    issue = 'Bug #\n#Issue univention/dev/ucs#'
+    print(f'\n{issue}')
+    if args.show_hint:
+        print(HINT)
+
+
+def find_matching_root(root: Path, file_pathes: list[Path]) -> Path | None:
+    root = root.resolve()
+    for file_path in file_pathes:
+        file_path = file_path.resolve()
+        try:
+            file_path.relative_to(root)
+            return root
+        except ValueError:
+            continue
+    return None
+
+
+if __name__ == '__main__':
+    main()
