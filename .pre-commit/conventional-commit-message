@@ -9,6 +9,27 @@ import subprocess
 import yaml
 
 
+comments = '''
+
+# Conventional commit message <https://www.conventionalcommits.org/en/v1.0.0/>
+# Format of the first line: {type}({scope})[!]: {subject}
+# `type` can be one of:
+# * `build`: Changes that affect only the build system or external dependencies.
+# * `chore`: Routine tasks like bumping changelogs / advisories.
+# * `ci`: Changes to the CI configuration files and scripts.
+# * `docs`: Changes to the documentation / README only.
+# * `feat`: An added feature for the user. Not a new feature for build script.
+# * `fix`: A bug fix for the user. Not a fix to a build script.
+# * `perf`: A code change that improves performance.
+# * `refactor`: A code change that neither fixes a bug nor adds a feature, for example renaming a variable.
+# * `revert`: Reverting a previous commit.
+# * `style`: Changes that don't affect the meaning of the code, for example whitespace, formatting, missing semi-colons and so on.
+# * `test`: Adding missing tests or correcting or refactoring existing tests.
+# `scope` is optional. Use a noun which specifies a component of the product, for example `udm`, `portal` or `gitlab`.
+# Append `!` to the `type` or `scope` to indicate a breaking change.
+'''
+
+
 mapping = {
     'crudeoauth': 'crudeoauth',
     'crudesaml': 'crudesaml',
@@ -174,6 +195,7 @@ def parse_changelog(args):
         scope = mapping.get(package, package)
         type_ = type_mapping.get(package, 'feat')
         print(f'{type_}({scope}): {changes}\n\n{issue}')
+        print(comments)
 
 
 def parse_advisory(args):
