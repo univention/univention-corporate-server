@@ -16,5 +16,6 @@ Univention Corporate Server - Delegative administration documentation
    concepts
    setup
    configuration
+   object-dependencies
    troubleshooting
    bibliography
