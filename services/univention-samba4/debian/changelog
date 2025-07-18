@@ -1,3 +1,10 @@
+univention-samba4 (9.0.20) unstable; urgency=medium
+
+  * Bug #58471: Create "Pre-Windows 2000 Compatible Access", "Windows
+    Authorization Access Group" and "IIS_IUSRS" in UDM via joinscript
+
+ -- Arvid Requate <requate@univention.de>  Fri, 18 Jul 2025 15:19:40 +0200
+
 univention-samba4 (9.0.19-1) UNRELEASED; urgency=medium
 
   * Bug #58002 UCS 5.0-10 version bump
