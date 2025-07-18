@@ -1,0 +1,19 @@
+product: ucs
+release: "5.2"
+version: [2]
+scope: ucs_5.2-0-errata5.2-2
+src: univention-samba4
+fix: 11.2.1
+desc: |
+ This update addresses the following issues:
+ * Pre-create the AD builtin groups `Pre-Windows 2000 Compatible Access`,
+   `Windows Authorization Access Group` and `IIS_IUSRS` via UDM in
+   the joinscript. This is required because we put those groups on the
+   `connector/s4/mapping/group/ignorelist`, but we want them to be
+   defined with static POSIX IDs across the UCS domain. As a result
+   these groups are created with the `hidden` flag now, so they don't
+   show up in UMC for new UCS domains. That is okay, because they are
+   not to be administrated in any way, they just allocate a POSIX ID.
+   This errata update is a followup to the knowledge base article
+   https://help.univention.com/t/18673 .
+bug: [53882]
