@@ -49,4 +49,15 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl "15.0.25-25"; th
 	systemctl is-active ucs-school-import-celery-worker.service && deb-systemd-invoke restart ucs-school-import-celery-worker.service || true
 fi
 
+if [ "$1" = "configure" ]; then
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		univention-directory-manager container/cn create \
+			--ignore_exists \
+			--position "cn=internal" \
+			--set name="recyclebin" \
+			--set description="Container for deleted LDAP objects (recycle bin)" \
+			2>/dev/null || true
+	fi
+fi
+
 exit 0

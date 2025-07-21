@@ -1620,6 +1620,73 @@ class simpleLdap:
     def _write_admin_diary_move(self, position: str) -> None:
         self._write_admin_diary_event('MOVED', {'position': position})
 
+    def _find_references_to_object(self, target_dn: str) -> list[str]:
+        referenced_by = []
+        log.debug("Searching for references to %s using property-based reference detection", target_dn)
+
+        try:
+            univention.admin.modules.update()
+
+            for module_name in univention.admin.modules.modules.keys():
+                try:
+                    module = univention.admin.modules.get(module_name)
+                    if not module or not hasattr(module, 'property_descriptions'):
+                        continue
+
+                    for key, prop in module.property_descriptions.items():
+                        try:
+                            prop_references = prop.get_references(target_dn, self.lo.authz_connection)
+                            for dn in prop_references:
+                                if dn not in referenced_by:
+                                    referenced_by.append(dn)
+                                    log.debug("Found reference: %s -> %s (via %s.%s)", dn, target_dn, module_name, key)
+
+                        except (AttributeError, TypeError) as e:
+                            log.debug("Skipping property %s.%s due to error: %s", module_name, key, e)
+                            continue
+
+                except (AttributeError, KeyError) as e:
+                    log.debug("Skipping module %s due to structure error: %s", module_name, e)
+                    continue
+
+        except (ldap.LDAPError, univention.admin.uexceptions.base, AttributeError) as e:
+            log.warning("Error in property-based reference detection: %s", e)
+            # Fallback to basic search for critical reference types
+            return self._find_references_fallback(target_dn)
+
+        log.debug("Found %d references to %s using property-based reference detection", len(referenced_by), target_dn)
+        return referenced_by
+
+    def _find_references_fallback(self, target_dn: str) -> list[str]:
+        referenced_by = []
+        critical_attributes = ['member', 'uniqueMember', 'memberOf', 'manager']
+
+        log.debug("Using fallback reference detection for %s", target_dn)
+
+        for attr in critical_attributes:
+            try:
+                search_filter = f"({attr}={target_dn})"
+                results = self.lo.authz_connection.search(
+                    base=self.lo.base,
+                    scope='subtree',
+                    filter=search_filter,
+                    attr=[],
+                    unique=False,
+                    required=False,
+                )
+
+                for dn, attrs in results:
+                    if dn != target_dn and dn not in referenced_by:
+                        referenced_by.append(dn)
+                        log.debug("Found reference (fallback): %s -> %s (via %s)", dn, target_dn, attr)
+
+            except ldap.LDAPError as e:
+                log.debug("LDAP error in fallback reference search with %s: %s", attr, e)
+                continue
+
+        log.debug("Found %d references to %s using fallback", len(referenced_by), target_dn)
+        return referenced_by
+
     def _remove(self, remove_childs: bool = False) -> None:
         """Removes this object. Should only be called by :func:`univention.admin.handlers.simpleLdap.remove`."""
         log.debug('Removing object', dn=self.dn, remove_childs=remove_childs)
@@ -1650,21 +1717,127 @@ class simpleLdap:
                 else:
                     log.warning('Could not remove child: could not identify UDM module', dn=subolddn)
 
-        self._exists = False
-        blocklist_entries = univention.admin.blocklist.create_blocklistentry(self)
-        try:
-            self.lo.authz_connection.delete(self.dn)
-        except Exception:
-            univention.admin.blocklist.cleanup_blocklistentry(blocklist_entries, self)
-            self._exists = True
-            raise
+        if self._should_recycle_object():
+            log.info("Moving object to recycle bin: %s", self.dn)
+            self._move_to_recycle_bin()
+        else:
+            log.info("Permanently deleting object: %s", self.dn)
+            self._permanent_delete()
 
         self._ldap_post_remove()
-
         self.call_udm_property_hook('hook_ldap_post_remove', self)
         self.oldattr = {}
         self._write_admin_diary_remove()
         self.save()
+
+    def _should_recycle_object(self):
+        try:
+            policies = self.lo.authz_connection.getPolicies(self.dn)
+            recycle_policy_attrs = policies.get('univentionRecycleBinPolicy', {})
+
+            if not recycle_policy_attrs:
+                log.debug("No recycle bin policy found for %s", self.dn)
+                return False
+
+            # getPolicies returns nested dict with 'value' key
+            enabled_dict = recycle_policy_attrs.get('univentionRecycleBinEnabled', {})
+            enabled_values = enabled_dict.get('value', [])
+            if not enabled_values or enabled_values[0].decode('utf-8').upper() != 'TRUE':
+                log.debug("Recycle bin disabled for %s", self.dn)
+                return False
+
+            udm_modules_dict = recycle_policy_attrs.get('univentionRecycleBinUDMModules', {})
+            udm_modules_values = udm_modules_dict.get('value', [])
+            udm_modules = [m.decode('utf-8') for m in udm_modules_values]
+
+            if not udm_modules:
+                log.debug("Recycle bin enabled for all modules at %s", self.dn)
+                return True
+
+            current_module = self.module
+
+            for module_pattern in udm_modules:
+                if module_pattern == current_module:
+                    log.debug("Module %s matches pattern %s for %s", current_module, module_pattern, self.dn)
+                    return True
+                if module_pattern.endswith('/*'):
+                    prefix = module_pattern[:-2]
+                    if current_module.startswith(prefix + '/'):
+                        log.debug("Module %s matches wildcard %s for %s", current_module, module_pattern, self.dn)
+                        return True
+
+            log.debug("Module %s not in recycle patterns %s for %s", current_module, udm_modules, self.dn)
+            return False
+
+        except (ldap.LDAPError, univention.admin.uexceptions.base) as e:
+            log.warning("LDAP error checking recycle bin policy for %s: %s", self.dn, e)
+            return False
+
+    def _move_to_recycle_bin(self):
+        try:
+            current_attrs = self.lo.authz_connection.get(self.dn, attr=['*', '+'], required=True)
+        except (ldap.LDAPError, univention.admin.uexceptions.noObject) as e:
+            log.error("Failed to retrieve object attributes before recycle bin move: %s", e)
+            raise
+
+        try:
+            referenced_by = self._find_references_to_object(self.dn)
+            if referenced_by:
+                log.info("Object %s is referenced by %d other objects", self.dn, len(referenced_by))
+        except ldap.LDAPError as e:
+            log.warning("LDAP error finding references for %s: %s", self.dn, e)
+            referenced_by = []
+
+        self._exists = False
+        blocklist_entries = univention.admin.blocklist.create_blocklistentry(self)
+        deleted_obj = None
+
+        try:
+            deleted_object_module = univention.admin.modules.get('recyclebin/deletedobject')
+            univention.admin.modules.init(self.lo, self.position, deleted_object_module)
+
+            position = univention.admin.uldap.position('cn=recyclebin,cn=internal')
+
+            deleted_obj = deleted_object_module.object.move_to_trashbin(
+                lo=self.lo,
+                position=position,
+                original_dn=self.dn,
+                original_attrs=current_attrs,
+                original_type=self.module,
+                referenced_by=referenced_by,
+            )
+
+            log.debug("Created deleted object: %s", deleted_obj.dn)
+
+            self.lo.authz_connection.delete(self.dn)
+            log.info("Successfully moved object to recycle bin: %s -> %s", self.dn, deleted_obj.dn)
+
+        except (ldap.LDAPError, univention.admin.uexceptions.base, ImportError) as e:
+            try:
+                if deleted_obj is not None:
+                    deleted_obj.remove()
+                    log.info("Rollback: removed deleted object %s", deleted_obj.dn)
+            except (ldap.LDAPError, univention.admin.uexceptions.base) as cleanup_error:
+                log.error("Rollback failed: could not remove deleted object %s: %s", deleted_obj.dn, cleanup_error)
+
+            univention.admin.blocklist.cleanup_blocklistentry(blocklist_entries, self)
+            self._exists = True
+            log.error("Failed to move object to recycle bin: %s", e)
+            raise
+
+    def _permanent_delete(self):
+        self._exists = False
+        blocklist_entries = univention.admin.blocklist.create_blocklistentry(self)
+
+        try:
+            self.lo.authz_connection.delete(self.dn)
+            log.info("Successfully deleted object: %s", self.dn)
+
+        except ldap.LDAPError as e:
+            univention.admin.blocklist.cleanup_blocklistentry(blocklist_entries, self)
+            self._exists = True
+            log.error("Failed to delete object: %s", e)
+            raise
 
     def _write_admin_diary_remove(self) -> None:
         self._write_admin_diary_event('REMOVED')

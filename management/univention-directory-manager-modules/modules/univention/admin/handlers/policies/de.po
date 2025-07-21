@@ -105,6 +105,7 @@ msgstr "Allgemeine DNS-Einstellungen"
 #: modules/univention/admin/handlers/policies/printserver.py:104
 #: modules/univention/admin/handlers/policies/ldapserver.py:105
 #: modules/univention/admin/handlers/policies/umc.py:105
+#: modules/univention/admin/handlers/policies/recyclebin.py:101
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
@@ -426,6 +427,7 @@ msgstr ""
 #: modules/univention/admin/handlers/policies/slavepackages.py:112
 #: modules/univention/admin/handlers/policies/umc.py:105
 #: modules/univention/admin/handlers/policies/repositoryserver.py:105
+#: modules/univention/admin/handlers/policies/recyclebin.py:101
 msgid "General"
 msgstr "Allgemein"
 
@@ -759,6 +761,7 @@ msgstr "NFS-Freigaben einbinden"
 #: modules/univention/admin/handlers/policies/slavepackages.py:81
 #: modules/univention/admin/handlers/policies/umc.py:81
 #: modules/univention/admin/handlers/policies/repositoryserver.py:80
+#: modules/univention/admin/handlers/policies/recyclebin.py:69
 msgid "Name"
 msgstr "Name"
 
@@ -1240,3 +1243,81 @@ msgstr "Ohne Angabe wird die aktuellste Version verwendet"
 msgid "https://docs.software-univention.de/manual-5.2.html#central:policies"
 msgstr ""
 "https://docs.software-univention.de/handbuch-5.2.html#central:policies"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:23
+msgid "Recycle bin enabled"
+msgstr "Papierkorb aktiviert"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:24
+msgid "UDM modules to recycle"
+msgstr "UDM-Module für Papierkorb"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:25
+msgid "Properties to store"
+msgstr "Zu speichernde Eigenschaften"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:26
+msgid "Retention time (days)"
+msgstr "Aufbewahrungszeit (Tage)"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:32
+msgid "Enabled"
+msgstr "Aktiviert"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:33
+msgid "Disabled"
+msgstr "Deaktiviert"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:52
+msgid "Policy: Recycle Bin Configuration"
+msgstr "Richtlinie: Papierkorb-Konfiguration"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:53
+msgid "Recycle bin policy"
+msgstr "Papierkorb-Richtlinie"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:54
+msgid "Recycle bin policies"
+msgstr "Papierkorb-Richtlinien"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:55
+msgid "Defines recycle bin behavior for UDM objects"
+msgstr "Definiert das Papierkorb-Verhalten für UDM-Objekte"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:56
+msgid "This policy controls which UDM objects are moved to the recycle bin when deleted, which properties are stored, and how long they are retained."
+msgstr "Diese Richtlinie steuert, welche UDM-Objekte beim Löschen in den Papierkorb verschoben werden, welche Eigenschaften gespeichert werden und wie lange sie aufbewahrt werden."
+
+
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:70
+msgid "Name of the recycle bin policy"
+msgstr "Name der Papierkorb-Richtlinie"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:76
+msgid "Enable or disable recycle bin for objects in this scope"
+msgstr "Papierkorb für Objekte in diesem Bereich aktivieren oder deaktivieren"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:81
+msgid "List of UDM module names whose objects should be recycled when deleted"
+msgstr "Liste der UDM-Modulnamen, deren Objekte beim Löschen in den Papierkorb verschoben werden sollen"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:87
+msgid "List of property names to store in recycled objects (empty = all properties)"
+msgstr "Liste der Eigenschaftsnamen, die in gelöschten Objekten gespeichert werden sollen (leer = alle Eigenschaften)"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:92
+msgid "Number of days to keep objects in recycle bin (0 = indefinite)"
+msgstr "Anzahl der Tage, die Objekte im Papierkorb aufbewahrt werden (0 = unbegrenzt)"
+
+
+
+
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:102
+msgid "General recycle bin settings"
+msgstr "Allgemeine Papierkorb-Einstellungen"
+
+#: modules/univention/admin/handlers/policies/recyclebin.py:107
+msgid "UDM configuration"
+msgstr "UDM-Konfiguration"
