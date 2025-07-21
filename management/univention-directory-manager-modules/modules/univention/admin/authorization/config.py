@@ -99,7 +99,7 @@ _VALUE_OPERATORS = {
 }
 
 BUNDLE_NAMESPACE = 'udm:bundles'
-ACTIONS = ('search', 'read', 'create', 'modify', 'rename', 'remove', 'move', 'report-create')
+ACTIONS = ('search', 'read', 'create', 'modify', 'rename', 'remove', 'move', 'report-create', 'restore')
 PERMISSIONS = ('search', 'read', 'write', 'readonly', 'writeonly', 'none')
 SORT_PRIO = {
     'actions': {v: k for k, v in [*list(enumerate(ACTIONS)), [len(ACTIONS), '*']]},

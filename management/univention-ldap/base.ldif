@@ -133,6 +133,7 @@ univentionPolicyObject: cn=scope,cn=dhcp,cn=policies,{ldap_base}
 univentionPolicyObject: cn=statements,cn=dhcp,cn=policies,{ldap_base}
 univentionPolicyObject: cn=sound,cn=policies,{ldap_base}
 univentionPolicyObject: cn=config-registry,cn=policies,{ldap_base}
+univentionPolicyObject: cn=recyclebin,cn=policies,{ldap_base}
 univentionPolicyObject: cn=xfree,cn=policies,{ldap_base}
 univentionPolicyObject: cn=mail,cn=policies,{ldap_base}
 univentionPolicyObject: cn=users,cn=policies,{ldap_base}
@@ -598,6 +599,14 @@ objectClass: univentionObject
 univentionObjectType: container/cn
 univentionObjectIdentifier: {uuid.uuid4()}
 cn: config-registry
+
+dn: cn=recyclebin,cn=policies,{ldap_base}
+objectClass: top
+objectClass: organizationalRole
+objectClass: univentionObject
+univentionObjectType: container/cn
+univentionObjectIdentifier: {uuid.uuid4()}
+cn: recyclebin
 
 dn: cn=xfree,cn=policies,{ldap_base}
 objectClass: top

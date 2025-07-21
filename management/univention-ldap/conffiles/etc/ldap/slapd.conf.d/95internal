@@ -45,20 +45,30 @@ limits group/univentionGroup/uniqueMember="cn=DC Backup Hosts,cn=groups,%(ldap/b
     """ % configRegistry)
 
     # acl
+    print('')
+    print('# ACLs for cn=recyclebin,cn=internal')
+    recyclebin_acls = []
+    recyclebin_acls.append('by sockname="PATH=/var/run/slapd/ldapi" write')
+    recyclebin_acls.append('by group/univentionGroup/uniqueMember="%s" write' % groups_default_domainadmins_dn)
+    recyclebin_acls.append('by set="user/univentionObjectType & ([computers/domaincontroller_master] | [computers/domaincontroller_backup])" write')
+    recyclebin_acls.append('by * none')
+    print('access to dn.subtree=cn=recyclebin,cn=internal')
+    for acl in recyclebin_acls:
+        print('    %s' % acl)
+
+    print('')
+    print('# ACLs for cn=internal')
     acls = []
     acls.append('by sockname="PATH=/var/run/slapd/ldapi" write')
     acls.append('by group/univentionGroup/uniqueMember="%s" write' % groups_default_domainadmins_dn)
-    acls.append('by set="user/univentionObjectType & [computers/domaincontroller_master]" write')
-    acls.append('by set="user/univentionObjectType & [computers/domaincontroller_backup]" write')
-    acls.append('by set="user/univentionObjectType & [computers/domaincontroller_slave]" write')
-    acls.append('by set="user/univentionObjectType & [computers/memberserver]" write')
-    acls.append('by * none break\n')
-    print('# ACLs for cn=internal')
+    acls.append('by set="user/univentionObjectType & ([computers/domaincontroller_master] | [computers/domaincontroller_backup] | [computers/domaincontroller_slave] | [computers/memberserver])" write')
+    acls.append('by * none break')
     print('access to *')
     for acl in acls:
         print('    %s' % acl)
 
-    print('\n# ACLs for cn=blocklists,cn=internal')
+    print('')
+    print('# ACLs for cn=blocklists,cn=internal')
     blocklist_acls = []
     for group in configRegistry.get('ldap/database/internal/acl/blocklists/groups/write', '').split('|'):
         if group:
@@ -93,17 +103,29 @@ syncrepl rid=1
         print('credentials="%s"\n' % machine_secret)
 
     # acl
+    print('')
+    print('# ACLs for cn=recyclebin,cn=internal')
+    recyclebin_acls = []
+    recyclebin_acls.append('by sockname="PATH=/var/run/slapd/ldapi" write')
+    recyclebin_acls.append('by group/univentionGroup/uniqueMember="%s" write' % groups_default_domainadmins_dn)
+    recyclebin_acls.append('by set="user/univentionObjectType & ([computers/domaincontroller_master] | [computers/domaincontroller_backup])" read')
+    recyclebin_acls.append('by * none')
+    print('access to dn.subtree=cn=recyclebin,cn=internal')
+    for acl in recyclebin_acls:
+        print('    %s' % acl)
+
+    print('')
+    print('# ACLs for cn=internal')
     acls = []
     acls.append('by sockname="PATH=/var/run/slapd/ldapi" write')
     acls.append('by group/univentionGroup/uniqueMember="%s" write' % groups_default_domainadmins_dn)
-    acls.append('by set="user/univentionObjectType & [computers/domaincontroller_master]" read')
-    acls.append('by set="user/univentionObjectType & [computers/domaincontroller_backup]" read')
-    acls.append('by * none break\n')
-    print('# ACLs for cn=internal')
+    acls.append('by set="user/univentionObjectType & ([computers/domaincontroller_master] | [computers/domaincontroller_backup]" read')
+    acls.append('by * none break')
     print('access to *')
     for acl in acls:
         print('    %s' % acl)
 
+    print('')
     print('# ACLs for cn=blocklists,cn=internal')
     blocklist_acls = []
     read_groups = configRegistry.get('ldap/database/internal/acl/blocklists/groups/read', '')
