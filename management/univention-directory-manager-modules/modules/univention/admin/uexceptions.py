@@ -379,6 +379,10 @@ class invalidOperation(base):
     message = _('This operation is not allowed on this object.')
 
 
+class restoreFailed(base):
+    message = _('Restore operation failed.')
+
+
 class emptyPrinterGroup(base):
     message = _('Empty printer groups are not possible.')
 

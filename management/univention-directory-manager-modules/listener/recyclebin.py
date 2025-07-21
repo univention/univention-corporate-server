@@ -1,0 +1,207 @@
+#!/usr/bin/python3
+# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+"""Listener module for creating recyclebin objects and keep references updated."""
+
+import datetime
+
+import ldap.dn
+from ldap.filter import filter_format
+
+import univention.admin.modules
+import univention.dn
+from univention.admin.recyclebin import RECYCLEBIN_BASE, create_references
+from univention.admin.uexceptions import noObject
+from univention.config_registry import ucr
+from univention.listener import ListenerModuleHandler
+
+
+class RecycleBinListener(ListenerModuleHandler):
+    """Listener module to move removed objects into the recyclebin and keep references in sync."""
+
+    class Configuration:
+        name = 'recyclebin'
+        description = 'Recyclebin listener'
+        ldap_filter = '(|(univentionObjectType=users/user)(univentionObjectType=groups/group))'  # TODO: automatically add all supported modules
+        attributes = []
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.deleted_objects_cache = set()
+        self._admin_lo = None
+        self._cache_initialized = False
+        univention.admin.modules.update()
+
+    @property
+    def admin_lo(self):
+        """LDAP connection with admin privileges for recyclebin operations."""
+        if not self._admin_lo:
+            with self.as_root():
+                self._admin_lo, _ = univention.admin.uldap.getAdminConnection()
+        return self._admin_lo
+
+    def _populate_cache(self):
+        """Populate the deleted objects cache from LDAP."""
+        if ucr.get('server/role') != 'domaincontroller_master':
+            return
+
+        self.deleted_objects_cache = {
+            univention.dn.DN(dn)
+            for dn in self.admin_lo.searchDn(
+                base=RECYCLEBIN_BASE,
+                scope='one',
+                filter='(objectClass=univentionRecycleBinObject)',
+            )
+        }
+        self.logger.debug('Cache populated: %d deleted objects', len(self.deleted_objects_cache))
+
+    def _should_process_object(self, dn, attrs):
+        """Check if the object should be processed by the recyclebin."""
+        if ucr.get('server/role') != 'domaincontroller_master':
+            return False, None
+
+        if not attrs:
+            return False, None
+
+        object_types = univention.admin.modules.identify(dn, attrs)
+        if not object_types:
+            return False, None
+
+        object_type = object_types[0].module
+
+        return True, object_type
+
+    def remove(self, dn: str, old: dict[str, list[bytes]]) -> None:
+        """Handle object removal - move to recyclebin."""
+        should_process, object_type = self._should_process_object(dn, old)
+        if not should_process:
+            return
+
+        if not self._cache_initialized:
+            self._populate_cache()
+            self._cache_initialized = True
+
+        recyclebin_dn = self._move_deleted_object_to_recyclebin(dn, old, object_type)
+        if recyclebin_dn:
+            self.deleted_objects_cache.add(univention.dn.DN(recyclebin_dn))
+
+    def _move_deleted_object_to_recyclebin(self, original_dn, original_attrs, original_type):
+        """
+        Move deleted object to recyclebin.
+
+        Returns:
+            dn: DN of deleted object or False
+        """
+        retention_days = self._get_recyclebin_retention_days(original_dn, original_type, original_attrs)
+        if retention_days is None:
+            self.logger.debug('Object not moved to recyclebin (no policy): %s', original_dn)
+            return False
+
+        now = datetime.datetime.now(datetime.UTC)
+        deletion_time = now.strftime('%Y%m%d%H%M%SZ')
+        delete_at = now + datetime.timedelta(days=retention_days)
+        delete_at_time = delete_at.strftime('%Y%m%d%H%M%SZ')
+
+        mod = univention.admin.modules.get('recyclebin/removedobject')
+        position = univention.admin.uldap.position(RECYCLEBIN_BASE)
+        obj = mod.object(None, self.admin_lo, position)
+        obj.open()
+        obj['originalDN'] = original_dn
+        obj['purgeAt'] = delete_at_time
+        obj['removalDate'] = deletion_time
+        obj['originalObjectType'] = original_type
+        obj['originalUniventionObjectIdentifier'] = original_attrs['univentionObjectIdentifier'][0].decode('UTF-8')
+        obj['originalEntryUUID'] = original_attrs['entryUUID'][0].decode('UTF-8')
+        obj['originalObjectClasses'] = [x.decode('UTF-8') for x in original_attrs['objectClass']]
+        obj.oldattr = original_attrs
+        dn = obj.create(ignore_license=True)
+
+        self.logger.info('Created deleted object: %s (retention: %d days)', dn, retention_days)
+
+        return dn
+
+    def _get_recyclebin_retention_days(self, original_dn, original_type, old_attrs=None):
+        """Get retention time in days from recyclebin policy, or None if no policy applies or policy is disabled."""
+        if old_attrs and 'univentionPolicyReference' in old_attrs:
+            for policy_ref in old_attrs['univentionPolicyReference']:
+                policy_dn = policy_ref.decode('utf-8')
+                retention_days = self._check_policy_for_retention(policy_dn, original_type)
+                if retention_days is not None:
+                    return retention_days
+
+        current_dn = original_dn
+        while current_dn:
+            attrs = self.admin_lo.get(current_dn)
+
+            if attrs and 'univentionPolicyReference' in attrs:
+                for policy_ref in attrs['univentionPolicyReference']:
+                    policy_dn = policy_ref.decode('utf-8')
+                    retention_days = self._check_policy_for_retention(policy_dn, original_type)
+                    if retention_days is not None:
+                        return retention_days
+
+            current_dn = self.admin_lo.parentDn(current_dn)
+
+        default_policy_dn = f'cn=default-recyclebin-policy,cn=recyclebin,cn=policies,{ucr["ldap/base"]}'
+        retention_days = self._check_policy_for_retention(default_policy_dn, original_type)
+        if retention_days is not None:
+            return retention_days
+
+        return None
+
+    def _check_policy_for_retention(self, policy_dn, original_type):
+        """Check a single policy for retention settings. Returns retention days or None."""
+        policy_filter = filter_format('(&(objectClass=univentionRecycleBinPolicy)(univentionRecycleBinEnabled=TRUE)(univentionRecycleBinUDMModules=%s))', [original_type])
+        try:
+            for _dn, attr in self.admin_lo.search(policy_filter, base=policy_dn, scope='base', attr=['univentionRecycleBinRetentionDays']):
+                return int(attr.get('univentionRecycleBinRetentionDays', [b'180'])[0].decode('ASCII'))
+        except noObject:
+            return None
+
+    def modify(self, dn: str, old: dict[str, list[bytes]], new: dict[str, list[bytes]], old_dn: str | None) -> None:
+        """Handle object modification - check for group membership changes."""
+        should_process, object_type = self._should_process_object(dn, new or old)
+        if not should_process:
+            return
+
+        if object_type == 'groups/group':
+            self._handle_group_membership_changes(dn, new, old)
+
+    def _handle_group_membership_changes(self, group_dn, new_attrs, old_attrs):
+        """
+        Handle group membership changes for deleted objects.
+
+        When a group is modified:
+        1. Check if this is a group (already validated by caller)
+        2. Get the users/groups that are removed from the group
+        3. Check if there are deleted objects for these users or groups
+        4. If yes, add the group reference to the deleted object
+        """
+        # Step 2: Get users/groups that are removed from the group
+        old_members = {x.decode('utf-8') for x in old_attrs.get('uniqueMember', [])}
+        new_members = {x.decode('utf-8') for x in new_attrs.get('uniqueMember', [])}
+        removed_member_dns = old_members - new_members
+        if not removed_member_dns:
+            return
+
+        # Step 3 & 4: Check if there are deleted objects and add group reference
+        for member_dn in removed_member_dns:
+            deleted_object_dn = self._get_recyclebin_dn_for_original(member_dn)
+            deleted_object_attrs = self.admin_lo.get(deleted_object_dn, attr=['univentionRecycleBinOriginalType', 'univentionRecycleBinReference'])
+            if deleted_object_attrs and 'univentionRecycleBinOriginalType' in deleted_object_attrs:
+                object_type = deleted_object_attrs['univentionRecycleBinOriginalType'][0].decode('UTF-8')
+                refs = [
+                    bytes(ref) for ref in create_references(self.admin_lo, object_type, None, {'memberOf': [group_dn.encode('UTF-8')]})
+                    if bytes(ref) not in deleted_object_attrs.get('univentionRecycleBinReference', [])
+                ]
+                if refs:
+                    self.admin_lo.modify(deleted_object_dn, [('univentionRecycleBinReference', None, refs)])
+                    self.logger.info('Added group reference to deleted object: %s', deleted_object_dn)
+
+    def _get_recyclebin_dn_for_original(self, dn):
+        """Generate recyclebin DN for original object."""
+        return f'univentionRecycleBinOriginalDN={ldap.dn.escape_dn_chars(dn)},{RECYCLEBIN_BASE}'
+
+
+listener_module = RecycleBinListener

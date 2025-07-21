@@ -126,5 +126,13 @@
 		"po_subdir": "modules/univention/admin/handlers/blocklists",
 		"target_type": "mo",
 		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-blocklists.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/recyclebin/[^/]*\\.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/recyclebin",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-recyclebin.mo"
 	}
 ]

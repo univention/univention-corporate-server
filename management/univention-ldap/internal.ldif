@@ -6,3 +6,10 @@ cn: blocklists
 objectClass: organizationalRole
 objectClass: univentionObject
 univentionObjectType: container/cn
+
+dn: cn=recyclebin,cn=internal
+cn: recyclebin
+objectClass: organizationalRole
+objectClass: univentionObject
+univentionObjectType: container/cn
+description: Container for removed LDAP objects (recyclebin)

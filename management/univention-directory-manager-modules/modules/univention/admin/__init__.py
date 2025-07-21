@@ -172,6 +172,7 @@ class property:
 
     def __init__(
         self,
+        *,
         short_description: str = '',
         long_description: str = '',
         syntax: type | Any = None,
@@ -358,6 +359,7 @@ class option:
 
     def __init__(
         self,
+        *,
         short_description: str = '',
         long_description: str = '',
         default: int = 0,

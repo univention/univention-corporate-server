@@ -42,6 +42,7 @@ if configRegistry['ldap/server/type'] == "master":
     print('include         /usr/share/univention-ldap/schema/univention-data.schema')
     print('include         /usr/share/univention-ldap/schema/blocklist.schema')
     print('include         /usr/share/univention-ldap/schema/federated_account.schema')
+    print('include         /usr/share/univention-ldap/schema/recyclebin.schema')
 else:
     print('include         /var/lib/univention-ldap/schema.conf')
 @!@
