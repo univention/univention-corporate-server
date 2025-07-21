@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 import copy
+import inspect
 import re
 import sys
 import time
@@ -13,8 +14,8 @@ from logging import getLogger
 from re import Match
 from typing import TYPE_CHECKING, Any
 
+import ldap.filter
 import unidecode
-from ldap.filter import filter_format
 
 import univention.admin.localization
 import univention.config_registry
@@ -33,7 +34,7 @@ if TYPE_CHECKING:
 log = getLogger('ADMIN')
 
 
-__all__ = ('configRegistry', 'extended_attribute', 'hook', 'mapping', 'modules', 'objects', 'option', 'pattern_replace', 'policiesGroup', 'property', 'syntax', 'ucr_overwrite_layout', 'ucr_overwrite_module_layout', 'ucr_overwrite_properties')
+__all__ = ('configRegistry', 'extended_attribute', 'hook', 'mapping', 'modules', 'objects', 'option', 'pattern_replace', 'policiesGroup', 'property', 'reference', 'syntax', 'ucr_overwrite_layout', 'ucr_overwrite_module_layout', 'ucr_overwrite_properties')
 
 ucr_property_prefix = 'directory/manager/web/modules/%s/properties/'
 
@@ -75,7 +76,7 @@ def ucr_overwrite_properties(module: Any, lo: univention.admin.uldap.access) -> 
                             syntax = getattr(univention.admin.syntax, new_prop_val)
                             setattr(prop, attr, syntax())
                         else:
-                            if lo.authz_connection.searchDn(filter=filter_format(univention.admin.syntax.LDAP_Search.FILTER_PATTERN, [new_prop_val])):
+                            if lo.authz_connection.searchDn(filter=ldap.filter.filter_format(univention.admin.syntax.LDAP_Search.FILTER_PATTERN, [new_prop_val])):
                                 syntax = univention.admin.syntax.LDAP_Search(new_prop_val)
                                 syntax._load(lo)
                                 setattr(prop, attr, syntax)
@@ -165,6 +166,33 @@ def pattern_replace(pattern: str, obj: dict | simpleLdap) -> str:
     return value
 
 
+class reference:
+    """Represents a reference relationship between UDM properties and other objects."""
+
+    def __init__(
+        self,
+        module: str,
+        property_name: str,
+        ldap_attribute: str | None = None,
+        syntax_class: type | None = None,
+        search_base: str | None = None,
+    ) -> None:
+        """
+        Create a reference definition.
+
+        :param module: The UDM module name that this reference points to
+        :param property_name: The property name in the target module
+        :param ldap_attribute: The LDAP attribute used for the reference (defaults to property_name)
+        :param syntax_class: Optional syntax class for validation
+        :param search_base: Optional LDAP search base for finding references
+        """
+        self.module = module
+        self.property_name = property_name
+        self.ldap_attribute = ldap_attribute or property_name
+        self.syntax_class = syntax_class
+        self.search_base = search_base
+
+
 class property:
     UMLAUTS = {
         'Ä': 'Ae',
@@ -208,6 +236,7 @@ class property:
         copyable: bool = False,
         type_class: type[TypeHint] | None = None,
         lazy_loading_fn: str | None = None,
+        references: list[reference] | None = None,
     ) -> None:
         """
         |UDM| property.
@@ -240,6 +269,7 @@ class property:
         :param copyable: With `True` the property is copied when the object is cloned; with `False` the new object will use the default value.
         :param type_class: An optional Typing class which overwrites the syntax class specific type.
         :param lazy_loading_fn: An optional function name that implements loading additional expensive properties if requested.
+        :param references: List of reference definitions that this property establishes to other UDM objects.
         """
         self.short_description = short_description
         self.long_description = long_description
@@ -274,6 +304,7 @@ class property:
         self.copyable = copyable
         self.type_class = type_class
         self.lazy_loading_fn = lazy_loading_fn
+        self.references = references or []
 
     def new(self) -> list[str] | None:
         return [] if self.multivalue else None
@@ -359,6 +390,68 @@ class property:
     def lazy_load(self, obj):
         if self.lazy_loading_fn:
             getattr(obj, self.lazy_loading_fn)()
+
+    def get_references(self, target_dn: str, lo) -> list[str]:
+        """
+        Find references to the target DN based on this property's reference definitions.
+
+        :param target_dn: The DN to search references for
+        :param lo: LDAP connection object
+        :return: List of DNs that reference the target DN through this property
+        """
+        referenced_by = []
+
+        if self.references:
+            for ref in self.references:
+                try:
+                    escaped_dn = ldap.filter.escape_filter_chars(target_dn)
+                    search_filter = f"({ref.ldap_attribute}={escaped_dn})"
+
+                    search_base = ref.search_base or lo.base
+
+                    results = lo.search(
+                        base=search_base,
+                        scope='subtree',
+                        filter=search_filter,
+                        attr=[],
+                        unique=False,
+                        required=False,
+                    )
+
+                    for dn, attrs in results:
+                        if dn != target_dn and dn not in referenced_by:
+                            referenced_by.append(dn)
+
+                except ldap.LDAPError:
+                    continue
+
+        elif self.syntax:
+            try:
+                syntax = self.syntax() if inspect.isclass(self.syntax) else self.syntax
+
+                if hasattr(syntax, 'key') and syntax.key == 'dn':
+                    ldap_attribute = getattr(self, 'ldap_name', None)
+                    if ldap_attribute:
+                        escaped_dn = ldap.filter.escape_filter_chars(target_dn)
+                        search_filter = f"({ldap_attribute}={escaped_dn})"
+
+                        results = lo.search(
+                            base=lo.base,
+                            scope='subtree',
+                            filter=search_filter,
+                            attr=[],
+                            unique=False,
+                            required=False,
+                        )
+
+                        for dn, attrs in results:
+                            if dn != target_dn and dn not in referenced_by:
+                                referenced_by.append(dn)
+
+            except (AttributeError, TypeError, ldap.LDAPError):
+                pass
+
+        return referenced_by
 
 
 class option:

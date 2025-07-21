@@ -1,0 +1,103 @@
+# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+#
+# Recycle Bin Policy Attributes
+#
+attributetype ( 1.3.6.1.4.1.10176.4221.1.1 NAME 'univentionRecycleBinEnabled'
+	DESC 'Enable or disable recycle bin functionality'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.4221.1.2 NAME 'univentionRecycleBinUDMModules'
+	DESC 'List of UDM modules to recycle when deleted'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.4221.1.3 NAME 'univentionRecycleBinProperties'
+	DESC 'List of properties to store in recycled objects'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.4221.1.4 NAME 'univentionRecycleBinRetentionTime'
+	DESC 'Number of days to keep objects in recycle bin'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+	SINGLE-VALUE )
+
+#
+# Deleted Object Attributes
+#
+attributetype ( 1.3.6.1.4.1.10176.4221.1.5 NAME 'univentionRecycleBinOriginalDN'
+	DESC 'Original DN of the deleted object'
+	EQUALITY distinguishedNameMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+	SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.4221.1.6 NAME 'univentionRecycleBinDeletionDate'
+	DESC 'Timestamp when the object was deleted'
+	EQUALITY generalizedTimeMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+	SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.4221.1.7 NAME 'univentionRecycleBinDeletedBy'
+	DESC 'DN of the user who deleted the object'
+	EQUALITY distinguishedNameMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+	SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.4221.1.8 NAME 'univentionRecycleBinData'
+	DESC 'Serialized original object data'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5
+	SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.4221.1.9 NAME 'univentionRecycleBinReferencedBy'
+	DESC 'List of objects that referenced this object at deletion time'
+	EQUALITY distinguishedNameMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
+
+attributetype ( 1.3.6.1.4.1.10176.4221.1.10 NAME 'univentionRecycleBinOriginalType'
+	DESC 'UDM module type of the original object'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.4221.1.11 NAME 'univentionRecycleBinOriginalObjectClass'
+	DESC 'Original objectClass values of the deleted object'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.4221.1.12 NAME 'univentionRecycleBinOriginalEntryUUID'
+	DESC 'Original entryUUID of the deleted object'
+	EQUALITY octetStringMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40
+	SINGLE-VALUE )
+
+#
+# Object Classes
+#
+objectclass ( 1.3.6.1.4.1.10176.4221.2.1 NAME 'univentionRecycleBinPolicy'
+	DESC 'Policy for recycle bin configuration'
+	SUP univentionPolicy STRUCTURAL
+	MAY ( univentionRecycleBinEnabled $
+	      univentionRecycleBinUDMModules $
+	      univentionRecycleBinProperties $
+	      univentionRecycleBinRetentionTime ) )
+
+objectclass ( 1.3.6.1.4.1.10176.4221.2.2 NAME 'univentionRecycleBinObject'
+	DESC 'Object stored in the recycle bin'
+	SUP top STRUCTURAL
+	MUST ( cn $ univentionRecycleBinOriginalDN $
+	       univentionRecycleBinDeletionDate $
+	       univentionRecycleBinDeletedBy $
+	       univentionRecycleBinOriginalType )
+	MAY ( univentionObjectIdentifier $ univentionObjectType $
+	      univentionRecycleBinData $
+	      univentionRecycleBinReferencedBy $
+	      univentionRecycleBinOriginalObjectClass ) )

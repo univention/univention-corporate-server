@@ -70,6 +70,18 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 	--set name="data" \
 	--set description="LDAP data storage." || die
 
+univention-directory-manager container/cn create "$@" \
+	--ignore_exists \
+	--position "cn=internal" \
+	--set name="recyclebin" \
+	--set description="Container for deleted LDAP objects (recycle bin)" || true
+
+univention-directory-manager container/cn create "$@" \
+	--ignore_exists \
+	--position "cn=policies,$ldap_base" \
+	--set name="recyclebin" \
+	--set description="Container for recycle bin policies" || true
+
 stop_udm_cli_server
 
 joinscript_save_current_version
