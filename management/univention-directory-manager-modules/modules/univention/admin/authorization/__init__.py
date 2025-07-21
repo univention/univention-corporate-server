@@ -276,6 +276,9 @@ class Authorization:
             obj.dn = obj._ldap_dn()
         return self._is_write_action_allowed('create', obj, raise_exception=raise_exception)
 
+    def is_restore_allowed(self, obj, raise_exception=True):
+        return self._is_write_action_allowed('restore', obj, raise_exception=raise_exception)
+
     def is_modify_allowed(self, obj, raise_exception=True):
         return self._is_write_action_allowed('modify', obj, raise_exception=raise_exception)
 

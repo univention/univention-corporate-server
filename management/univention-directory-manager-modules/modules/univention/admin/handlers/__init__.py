@@ -28,6 +28,7 @@ from typing import TYPE_CHECKING, Any, Self, overload
 
 import ldap
 from ldap.controls.readentry import PostReadControl
+from ldap.controls.simple import RelaxRulesControl
 from ldap.dn import dn2str, escape_dn_chars, explode_rdn, str2dn
 from ldap.filter import filter_format
 
@@ -37,6 +38,7 @@ import univention.admin.filter
 import univention.admin.localization
 import univention.admin.mapping
 import univention.admin.modules
+import univention.admin.recyclebin
 import univention.admin.syntax
 import univention.admin.uexceptions
 import univention.admin.uldap
@@ -308,6 +310,12 @@ class simpleLdap:
         """The entry UUID of the object (if object exists)"""
         if 'entryUUID' in self.oldattr:
             return self.oldattr['entryUUID'][0].decode('ASCII')
+
+    @property
+    def object_identifier(self) -> str | None:
+        """The univentionObjectIdentifier of the object (if object exists)"""
+        if 'univentionObjectIdentifier' in self.oldattr:
+            return self.oldattr['univentionObjectIdentifier'][0].decode('ASCII')
 
     def save(self) -> None:
         """
@@ -925,6 +933,111 @@ class simpleLdap:
                 raise
 
         return None  # FIXME:
+
+    def restore(self) -> None:  # TODO: support destination: str
+        """
+        Restore LDAP object from recyclebin with all the LDAP attributes from the deleted object
+        (excluding operational and recyclebin attributes)
+
+        :raises: :class:`univention.admin.uexceptions.restoreFailed` if e.g. parent DN doesn't exists.
+        :raises: :class:`univention.admin.uexceptions.invalidOperation` if objects of this type do not support to be restored.
+        :raises: :class:`univention.admin.uexceptions.noObject` if the object does not exist.
+        :raises: :class:`univention.admin.uexceptions.permissionDenied` if no permissions for restore exists.
+        """
+        if not univention.admin.modules.supports(self.module, 'restore'):
+            raise univention.admin.uexceptions.invalidOperation(_('Objects of the "%s" object type can not be restored.') % (self.module,))
+
+        self.authz.is_restore_allowed(self)
+
+        if not self.exists():
+            raise univention.admin.uexceptions.noObject(self.dn)
+
+        original_dn = self.info['originalDN']
+
+        operational_attributes = univention.admin.modules._ldap_operational_attribute_names(self.lo) | univention.admin.recyclebin.IGNORE_ATTRS
+        restore = {
+            attr: value
+            for attr, value in self.oldattr.items()
+            if attr.lower() not in operational_attributes and not attr.startswith('univentionRecycleBin')
+        }
+
+        if 'univentionRecycleBinOriginalObjectClass' in self.oldattr:
+            restore['objectClass'] = self.oldattr['univentionRecycleBinOriginalObjectClass']
+        if 'univentionRecycleBinOriginalType' in self.oldattr:
+            restore['univentionObjectType'] = self.oldattr['univentionRecycleBinOriginalType']
+        if 'univentionRecycleBinOriginalEntryUUID' in self.oldattr:
+            restore['entryUUID'] = self.oldattr['univentionRecycleBinOriginalEntryUUID']
+        if 'univentionRecycleBinOriginalUniventionObjectIdentifier' in self.oldattr:
+            restore['univentionObjectIdentifier'] = self.oldattr['univentionRecycleBinOriginalUniventionObjectIdentifier']
+        ml = list(restore.items())
+
+        self.log.trace('Restoring object', original_dn=original_dn, modlist=ml)
+
+        # check parent
+        parent_dn = self.lo.parentDn(original_dn)
+        try:
+            self.lo.authz_connection.get(parent_dn, required=True)
+        except ldap.NO_SUCH_OBJECT:
+            raise univention.admin.uexceptions.restoreFailed(
+                _('Cannot restore object to %s: Parent container %s does not exist.') % (original_dn, parent_dn),
+            )
+
+        mod = univention.admin.modules.get(self.info['originalObjectType'])
+        position = univention.admin.uldap.position(configRegistry['ldap/base'])
+        position.setDn(parent_dn)
+        obj = mod.object(None, self.lo, position, attributes=restore)
+
+        # FIXME:
+        # for setting entryUUID we need relax controls and the manage permissions
+        # we have manage currently only for the root_dn
+        # so for now restore only on primary and backup?
+        from univention.admin.uldap import getAdminConnection
+        try:
+            loa, pos = getAdminConnection()  # noqa: RUF059
+        except Exception:
+            raise univention.admin.uexceptions.permissionDenied(_('Restore not allowed on this machine.'))
+
+        # NOTE: Running validation/hooks during restore:
+        # Ensures restored objects meet current validation rules, allocates missing auto-generated
+        # attributes (e.g., uidNumber if policy changed), runs extended attribute hooks, checks blocklist
+        # May prevent restoring objects that were valid when deleted but violate current rules
+        # (e.g., new password policy, changed syntax rules, blocklist additions)
+        try:
+            obj.open()
+            obj._exists = False
+            obj.oldinfo = {}
+            univention.admin.blocklist.check_blocklistentry(obj)  # Check for conflicts with blocklisted attributes
+            obj._ldap_pre_ready()  # Module-specific pre-validation
+            obj.ready()  # Allocate auto-generated attributes (uidNumber, gidNumber, etc.)
+            obj._ldap_pre_create()  # Final pre-create validation and hooks
+            obj.call_udm_property_hook('hook_ldap_pre_create', obj)  # Extended attribute hooks
+            self._update_policies()  # Update policy references
+            relax_rules_control = RelaxRulesControl(criticality=True)
+            # self.lo.authz_connection.add(original_dn, ml, serverctrls=[relax_rules_control])
+            loa.authz_connection.add(original_dn, ml, serverctrls=[relax_rules_control])
+        except Exception:
+            obj.cancel()
+            raise
+
+        obj._ldap_post_create()  # Post-create hooks (e.g., group cache updates)
+
+        self.log.info('Restored %s: %r', self.info.get('originalObjectType', 'unknown'), original_dn)
+
+        self.restore_references()
+
+        self.lo.authz_connection.delete(self.dn)
+
+        self._write_admin_diary_restore()
+        # TODO: self.call_udm_property_hook('hook_ldap_post_remove', self)
+
+        return original_dn
+
+    def restore_references(self):
+        """Restore references"""
+        # implemented in subclass
+
+    def _write_admin_diary_restore(self) -> None:
+        self._write_admin_diary_event('RESTORED')
 
     def remove(self, remove_childs: bool = False) -> None:
         """
