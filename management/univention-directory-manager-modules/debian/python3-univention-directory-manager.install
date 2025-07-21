@@ -12,6 +12,7 @@ modules/univention/admin/handlers/mail/*.py	usr/lib/python3/dist-packages/univen
 modules/univention/admin/handlers/nagios/*.py	usr/lib/python3/dist-packages/univention/admin/handlers/nagios/
 modules/univention/admin/handlers/networks/*.py	usr/lib/python3/dist-packages/univention/admin/handlers/networks/
 modules/univention/admin/handlers/policies/*.py	usr/lib/python3/dist-packages/univention/admin/handlers/policies/
+modules/univention/admin/handlers/recyclebin/*.py	usr/lib/python3/dist-packages/univention/admin/handlers/recyclebin/
 modules/univention/admin/handlers/settings/*.py	usr/lib/python3/dist-packages/univention/admin/handlers/settings/
 modules/univention/admin/handlers/shares/*.py	usr/lib/python3/dist-packages/univention/admin/handlers/shares/
 modules/univention/admin/handlers/users/*.py	usr/lib/python3/dist-packages/univention/admin/handlers/users/

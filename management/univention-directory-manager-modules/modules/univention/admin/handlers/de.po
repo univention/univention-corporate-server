@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-admin-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2022-04-22 22:53+0200\n"
+"POT-Creation-Date: 2025-11-13 17:34+0100\n"
 "PO-Revision-Date: 2005-10-18 13:52+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -14,75 +14,89 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: modules/univention/admin/handlers/__init__.py:2599
+#: modules/univention/admin/handlers/__init__.py:982
+#, python-format
+msgid "Cannot restore object to %s: Parent container %s does not exist."
+msgstr "Konnte Objekt nicht nach %s wiederherstellen: Eltern-Container %s existiert nicht."
+
+#: modules/univention/admin/handlers/__init__.py:2982
 msgid "DNS alias is already in use."
 msgstr "DNS-Alias ist bereits verwendet."
 
-#: modules/univention/admin/handlers/__init__.py:720
+#: modules/univention/admin/handlers/__init__.py:797
 msgid "Destination object can't have sub objects."
 msgstr "Zielobjekt kann keine Unterobjekte haben."
 
-#: modules/univention/admin/handlers/__init__.py:1210
+#: modules/univention/admin/handlers/__init__.py:258
 msgid "Immutable Object Identifier"
 msgstr "Unveränderlicher Objekt-Identifikator"
 
-#: modules/univention/admin/handlers/__init__.py:1211
+#: modules/univention/admin/handlers/__init__.py:259
 msgid "Immutable attribute to track the identity of an object in UDM"
 msgstr ""
 "Unveränderliches Attribut, um die Identität eines Objekts in UDM zu "
 "verfolgen"
 
-#: modules/univention/admin/handlers/__init__.py:732
+#: modules/univention/admin/handlers/__init__.py:810
 msgid "Moving into one's own sub container not allowed."
 msgstr ""
 "Verschieben in einen Container innerhalb des zu verschiebenden Objektes "
 "nicht erlaubt."
 
-#: modules/univention/admin/handlers/__init__.py:724
+#: modules/univention/admin/handlers/__init__.py:801
 msgid "Moving not possible: old and new DN are identical."
 msgstr "Verschieben ist nicht möglich: Alter und neuer DN sind identisch."
 
-#: modules/univention/admin/handlers/__init__.py:1017
+#: modules/univention/admin/handlers/__init__.py:1212
 msgid "Neither DN nor position given."
 msgstr "Weder ein DN noch eine Position wurde angegeben."
 
-#: modules/univention/admin/handlers/__init__.py:1028
+#: modules/univention/admin/handlers/__init__.py:1223
 msgid "No superordinate object given"
 msgstr "Kein übergeordnetes Objekt angegeben."
 
-#: modules/univention/admin/handlers/__init__.py:708
+#: modules/univention/admin/handlers/__init__.py:783
 msgid "Objects from Active Directory can not be moved."
 msgstr "Objekte aus Active-Directory-Domänen können nicht verschoben werden."
 
-#: modules/univention/admin/handlers/__init__.py:1535
+#: modules/univention/admin/handlers/__init__.py:1753
 msgid "Objects from Active Directory can not be removed."
 msgstr "Objekte aus Active-Directory-Domänen können nicht gelöscht werden."
 
-#: modules/univention/admin/handlers/__init__.py:533
+#: modules/univention/admin/handlers/__init__.py:596
 #, python-format
 msgid "Objects of the \"%s\" object type can not be created."
 msgstr "Objekte des Objekttyps \"%s\" können nicht erstellt werden."
 
-#: modules/univention/admin/handlers/__init__.py:626
+#: modules/univention/admin/handlers/__init__.py:690
 #, python-format
 msgid "Objects of the \"%s\" object type can not be modified."
 msgstr "Objekte des Objekttyps \"%s\" können nicht bearbeitet werden."
 
-#: modules/univention/admin/handlers/__init__.py:699
+#: modules/univention/admin/handlers/__init__.py:767
 #, python-format
 msgid "Objects of the \"%s\" object type can not be moved."
 msgstr "Objekte des Objekttyps \"%s\" können nicht verschoben werden."
 
-#: modules/univention/admin/handlers/__init__.py:863
+#: modules/univention/admin/handlers/__init__.py:1054
 #, python-format
 msgid "Objects of the \"%s\" object type can not be removed."
 msgstr "Objekte des Objekttyps \"%s\" können nicht gelöscht werden."
 
-#: modules/univention/admin/handlers/__init__.py:2347
+#: modules/univention/admin/handlers/__init__.py:948
+#, python-format
+msgid "Objects of the \"%s\" object type can not be restored."
+msgstr "Objekte des Objekttyps \"%s\" können nicht wiederhergestellt werden."
+
+#: modules/univention/admin/handlers/__init__.py:998
+msgid "Restore not allowed on this machine."
+msgstr "Wiederherstellung auf diesem System nicht erlaubt."
+
+#: modules/univention/admin/handlers/__init__.py:2701
 msgid "Reverse zone and IP address are incompatible."
 msgstr "Reverse Zone und IP-Adresse sind inkompatibel."
 
-#: modules/univention/admin/handlers/__init__.py:2896
+#: modules/univention/admin/handlers/__init__.py:3298
 msgid ""
 "The DHCP entry for this host should contain the zone LDAP-DN, the IP address"
 " and the MAC address."
@@ -90,11 +104,11 @@ msgstr ""
 "Der DHCP-Eintrag für diesen Rechner sollte die Zonen LDAP-DN, die IP- und "
 "MAC-Adresse enthalten."
 
-#: modules/univention/admin/handlers/__init__.py:1035
+#: modules/univention/admin/handlers/__init__.py:1232
 msgid "The DN must be underneath of the superordinate."
 msgstr ""
 
-#: modules/univention/admin/handlers/__init__.py:2929
+#: modules/univention/admin/handlers/__init__.py:3332
 msgid ""
 "The DNS alias entry for this host should contain the zone name, the alias "
 "zone container LDAP-DN and the alias."
@@ -102,7 +116,7 @@ msgstr ""
 "Der DNS-Alias Eintrag für diesen Rechner sollte den Zonennamen, die LDAP-DN "
 "des Alias-Zonencontainers und den Alias-Namen enthalten."
 
-#: modules/univention/admin/handlers/__init__.py:315
+#: modules/univention/admin/handlers/__init__.py:391
 #, python-format
 msgid ""
 "The following properties are missing:\n"
@@ -111,35 +125,37 @@ msgstr ""
 "Die folgenden Eigenschaften fehlen:\n"
 "%s"
 
-#: modules/univention/admin/handlers/__init__.py:1032
+#: modules/univention/admin/handlers/__init__.py:1228
 #, python-format
 msgid "The given %r superordinate is expected to be of type %s."
 msgstr "Das angegebene %r übergeordnete Objekt ist muss vom Typ %s sein."
 
-#: modules/univention/admin/handlers/__init__.py:702
+#: modules/univention/admin/handlers/__init__.py:774
+#: modules/univention/admin/handlers/__init__.py:777
 msgid "The own object cannot be moved."
 msgstr "Das eigene Objekt kann nicht verschoben werden."
 
-#: modules/univention/admin/handlers/__init__.py:869
+#: modules/univention/admin/handlers/__init__.py:1063
+#: modules/univention/admin/handlers/__init__.py:1066
 msgid "The own object cannot be removed."
 msgstr "Das eigene Objekt kann nicht gelöscht werden."
 
-#: modules/univention/admin/handlers/__init__.py:320
+#: modules/univention/admin/handlers/__init__.py:395
 msgid "The position must be in the subtree of the superordinate."
 msgstr ""
 
-#: modules/univention/admin/handlers/__init__.py:390
+#: modules/univention/admin/handlers/__init__.py:450
 #, python-format
 msgid "The property %s is required"
 msgstr "Die Eigenschaft %s wird benötigt."
 
-#: modules/univention/admin/handlers/__init__.py:405
+#: modules/univention/admin/handlers/__init__.py:464
 #, python-format
 msgid "The property %s must be a list"
 msgstr "Die Eigenschaft %s wird benötigt."
 
-#: modules/univention/admin/handlers/__init__.py:772
-#: modules/univention/admin/handlers/__init__.py:835
+#: modules/univention/admin/handlers/__init__.py:853
+#: modules/univention/admin/handlers/__init__.py:918
 #, python-format
 msgid ""
 "Unable to move object %(name)s (%(type)s) in subtree, trying to revert "
@@ -148,12 +164,12 @@ msgstr ""
 "Das Objekt %(name)s (%(type)s) im Teilbaum kann nicht verschoben werden, "
 "versuche den Ausgangzustand wiederherzustellen."
 
-#: modules/univention/admin/handlers/__init__.py:387
-#: modules/univention/admin/handlers/__init__.py:1724
+#: modules/univention/admin/handlers/__init__.py:447
+#: modules/univention/admin/handlers/__init__.py:1979
 #, python-format
 msgid "key=%(key)s old=%(old)s new=%(new)s"
 msgstr "Attribut=%(key)s alter Wert=%(old)s neuer Wert=%(new)s"
 
-# __init__.py:chen"024
-#~ msgid "delete"
-#~ msgstr "Löschen"
+#, python-format
+#~ msgid "Parent DN %s does not exist."
+#~ msgstr "Übergeordneter DN %s existiert nicht."

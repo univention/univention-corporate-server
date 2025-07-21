@@ -185,6 +185,8 @@ class UniventionDirectoryManagerRoles:
             if univention.admin.modules.supports(modname, 'search'):
                 permissions.append(("search", f"Allow to search {module.short_description}"))
                 permissions.append(("read", f"Allow to read {module.short_description}"))
+            if univention.admin.modules.supports(modname, 'restore'):
+                permissions.append(("restore", f"Allow to restore {module.short_description}"))
             # TODO: only if module provides reports?
             permissions.append(("report-create", f"Allow to create report for {module.short_description}"))
 

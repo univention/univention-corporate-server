@@ -28,6 +28,7 @@ _ = translation.translate
 module = 'groups/group'
 operations = ['add', 'edit', 'remove', 'search', 'move', 'copy']
 childs = False
+supports_recyclebin = True
 short_description = _('Group')
 object_name = _('Group')
 object_name_plural = _('Groups')
