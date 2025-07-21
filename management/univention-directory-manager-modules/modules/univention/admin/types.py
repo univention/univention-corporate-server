@@ -442,7 +442,7 @@ class DateTimeType(StringType):
     >>> import datetime
     >>> now = datetime.datetime(2020, 1, 1)
     >>> x.to_json_type(now)  # doctest: +ALLOW_UNICODE
-    '2020-01-01 00:00:00'
+    '2020-01-01T00:00:00'
     """
 
     _python_types = datetime.datetime
@@ -458,7 +458,7 @@ class DateTimeType(StringType):
         return self.syntax.from_datetime(value)
 
     def _to_json_type(self, value: datetime.datetime) -> str:
-        return ' '.join((value.date().isoformat(), value.time().replace(microsecond=0).isoformat()))
+        return value.replace(microsecond=0).isoformat()
 
     def _from_json_type(self, value: str) -> datetime.datetime:
         try:

@@ -58,6 +58,7 @@ operations = ['add', 'edit', 'remove', 'search', 'move', 'copy']
 template = 'settings/usertemplate'
 
 childs = False
+supports_recyclebin = True
 short_description = _('User')
 object_name = _('User')
 object_name_plural = _('Users')

@@ -9,8 +9,8 @@
 import univention.admin.modules
 import univention.admin.types
 from univention.admin import configRegistry
-from univention.admin.log import log
 from univention.admin.guardian_roles import get_roles_from_ldap
+from univention.admin.log import log
 from univention.admin.uexceptions import permissionDenied
 from univention.authorization.authorization import LocalGuardianAuthorizationClient
 
@@ -275,6 +275,9 @@ class Authorization:
             obj.ready()  # all required properties / DN identifying property must be set
             obj.dn = obj._ldap_dn()
         return self._is_write_action_allowed('create', obj, raise_exception=raise_exception)
+
+    def is_restore_allowed(self, obj, raise_exception=True):
+        return self._is_write_action_allowed('restore', obj, raise_exception=raise_exception)
 
     def is_modify_allowed(self, obj, raise_exception=True):
         return self._is_write_action_allowed('modify', obj, raise_exception=raise_exception)

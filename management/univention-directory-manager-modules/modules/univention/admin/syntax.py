@@ -621,7 +621,7 @@ class _UDMObjectOrAttribute:
     def _append_hidden_filter(cls, module, ret):
         if module is None or module.property_descriptions.get('objectFlag') is None:
             return ret
-        hidden_filter = '!(objectFlag=hidden)'
+        hidden_filter = '!(univentionObjectFlag=hidden)'
         if ret:
             return '(&(%s)%s)' % (hidden_filter, cls.wrap_filter(ret))
         return hidden_filter
@@ -5669,6 +5669,58 @@ class nfssync(select):
     ]
 
 
+class RecycleBinSupportedModules(select):
+    """
+    Syntax for selecting an |UDM| module for the recyclebin
+
+    >>> RecycleBinSupportedModules.parse('users/user')
+    'users/user'
+    >>> RecycleBinSupportedModules.parse('nonexistant') #doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+    ...
+    valueInvalidSyntax:
+    """
+
+    choices = [
+        ('groups/group', _('Group: Group')),
+        ('users/user', _('User')),
+    ]
+
+    @classmethod
+    def parse(self, text):
+        for choice in self.choices:
+            if choice[0] == text:
+                return text
+        raise univention.admin.uexceptions.valueInvalidSyntax(_('"%s" is not supported for recyclebin/deletedobject.') % text)
+
+    @classmethod
+    def update_choices(cls):
+        """Update internal list of |UDM| modules in :py:class:`univentionAdminModules`."""
+        cls.choices = cls.sort_choices((
+            (name, univention.admin.modules.short_description(mod))
+            for name, mod in univention.admin.modules.modules.items()
+            if getattr(mod, 'supports_recyclebin', False)
+        ))
+
+
+__register_choice_update_function(RecycleBinSupportedModules.update_choices)
+
+
+class RecycleBinReference(complex):
+    """Syntax for recyclebin references (objects that referenced the deleted object)."""
+
+    description = _('Reference')
+    subsyntaxes = [
+        (_('Source attribute'), string),
+        (_('Target module'), string),
+        (_('Target property'), string),
+        (_('Lookup attribute'), string),
+        (_('Lookup value'), string),
+    ]
+    subsyntax_names = ('source_attr', 'target_module', 'target_property', 'lookup_attribute', 'lookup_value')
+    all_required = True
+
+
 class univentionAdminModules(select):
     """
     Syntax for selecting an |UDM| module.
@@ -6984,11 +7036,19 @@ class GeneralizedTimeUTC(simple):
     @classmethod
     def parse(self, text):
         try:
-            datetime.datetime.strptime(text, '%Y%m%d%H%M%SZ')
+            self.to_datetime(text)
             duparse(text)
         except ValueError:
             raise univention.admin.uexceptions.valueError(_('This timestamp needs be in UTC and follow the format YYYYMMDDHHmmssZ.'))
         return text
+
+    @classmethod
+    def to_datetime(cls, value):
+        return datetime.datetime.strptime(value, '%Y%m%d%H%M%SZ')
+
+    @classmethod
+    def from_datetime(cls, value):
+        return value.strftime('%Y%m%d%H%M%SZ')
 
 
 class ActivationDateTimeTimezone(DateTimeTimezone):

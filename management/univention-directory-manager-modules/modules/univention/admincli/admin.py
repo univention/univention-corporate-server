@@ -3,16 +3,17 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """command line frontend to univention-directory-manager (module)"""
 
-from __future__ import annotations
 
 import base64
+import builtins
 import getopt
 import os
 import subprocess
 import sys
+from collections.abc import Sequence
 from ipaddress import IPv4Address, IPv4Network
 from logging import getLogger
-from typing import IO, TYPE_CHECKING, Any, Literal, TypeVar, overload
+from typing import IO, Any, Literal, TypeVar, overload
 
 import ldap
 
@@ -23,12 +24,9 @@ import univention.admin.uldap
 import univention.config_registry
 import univention.logging
 from univention.admin.layout import Group
+from univention.admin.log import log as admin_log
 from univention.admin.syntax import ldapFilter
-
-
-if TYPE_CHECKING:
-    import builtins
-    from collections.abc import Sequence
+from univention.dn import DN
 
 
 log = getLogger('ADMIN')
@@ -59,6 +57,7 @@ def usage(stream: IO[str]) -> None:
     print('  %-32s %s' % ('remove:', 'Remove an existing object'), file=stream)
     print('  %-32s %s' % ('list:', 'List objects'), file=stream)
     print('  %-32s %s' % ('move:', 'Move object in directory tree'), file=stream)
+    print('  %-32s %s' % ('restore:', 'Restore object from recyclebin'), file=stream)
     print('', file=stream)
     print('  %-32s %s' % ('-h | --help | -?:', 'print this usage message'), file=stream)
     print('  %-32s %s' % ('--version:', 'print version information'), file=stream)
@@ -109,6 +108,9 @@ def usage(stream: IO[str]) -> None:
     print('move options:', file=stream)
     print('  --%-30s %s' % ('dn', 'Move object with DN'), file=stream)
     print('  --%-30s %s' % ('position', 'Move to position in tree'), file=stream)
+    print('', file=stream)
+    print('restore options:', file=stream)
+    print('  --%-30s %s' % ('dn', 'Restore object with DN'), file=stream)
     print('', file=stream)
     print('Description:', file=stream)
     print('  univention-directory-manager is a tool to handle the configuration for UCS', file=stream)
@@ -534,16 +536,20 @@ def _doit(
     elif not position_dn:
         position_dn = module.object.ldap_base
 
+    ldap_base_position = univention.admin.uldap.position(configRegistry['ldap/base'])
+    if module_name == 'settings/usertemplate':
+        univention.admin.modules.init(lo, ldap_base_position, univention.admin.modules._get('users/user'))
+    univention.admin.modules.init(lo, ldap_base_position, module)
+
+    base_dn = module.object.ldap_base
+    if DN(position_dn).endswith(DN('cn=internal')):
+        base_dn = 'cn=internal'
+
     try:
-        position = univention.admin.uldap.position(module.object.ldap_base)
+        position = univention.admin.uldap.position(base_dn)
         position.setDn(position_dn)
     except univention.admin.uexceptions.noObject:
         raise OperationFailed('E: Invalid position')
-
-    # initialise modules
-    if module_name == 'settings/usertemplate':
-        univention.admin.modules.init(lo, position, univention.admin.modules._get('users/user'))
-    univention.admin.modules.init(lo, position, module)
 
     information = module_information(module)
 
@@ -637,6 +643,11 @@ def _doit(
         cli.remove(remove_referring=remove_referring, recursive=recursive, ignore_not_exists=ignore_not_exists, filter=filter)
     elif action in ('list', 'lookup'):
         cli.list(list_policies, filter, superordinate_dn, policyOptions, policies_with_DN, properties)
+    elif action == 'restore':
+        # FIXME: most likly we want to restore to the default database, so we need a connection to this base, not the module base
+        lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=configRegistry['ldap/base'], binddn=binddn, start_tls=tls, bindpw=bindpwd)
+        cli = CLI(module_name, module, dn, lo, position, superordinate, stdout=stdout, stderr=stderr)
+        cli.restore()
     else:
         print("Unknown or no action defined", file=stderr)
         print('', file=stderr)
@@ -679,6 +690,9 @@ class CLI:
 
     def list(self, *args: Any, **kwargs: Any) -> Any:
         return self._list(self.module_name, self.module, self.dn, self.lo, self.position, self.superordinate, *args, **kwargs)
+
+    def restore(self, *args: Any, **kwargs: Any) -> Any:
+        return self._restore(self.module_name, self.module, self.dn, self.lo, self.position, self.superordinate, *args, **kwargs)
 
     def _create(
         self,
@@ -759,6 +773,39 @@ class CLI:
             print('Object exists: %s' % exists_msg, file=self.stdout)
         elif created:
             print('Object created: %s' % dn, file=self.stdout)
+
+    def _restore(
+        self,
+        module_name: str,
+        module: univention.admin.modules.UdmModule,
+        dn: str,
+        lo: univention.admin.uldap.access,
+        position: univention.admin.uldap.position,
+        superordinate: univention.admin.handlers.simpleLdap | None,
+    ) -> None:
+        if not dn:
+            raise OperationFailed('E: DN is missing')
+
+        if not univention.admin.modules.supports(module_name, 'restore'):
+            raise OperationFailed('Restore %s not allowed' % module_name)
+
+        try:
+            object = univention.admin.objects.get(module, None, lo, position='', dn=dn)
+        except univention.admin.uexceptions.noObject:
+            raise OperationFailed('E: object not found')
+
+        object.open()
+
+        try:
+            object.restore()
+        except univention.admin.uexceptions.ldapError as msg:
+            admin_log.error(
+                'CLI restore operation failed',
+                event_type='restore', status='error',
+                recyclebin_dn=dn, error=str(msg),
+            )
+            raise OperationFailed(str(msg))
+        print('Object restored: %s' % (dn or object.dn,), file=self.stdout)
 
     def _move(
         self,

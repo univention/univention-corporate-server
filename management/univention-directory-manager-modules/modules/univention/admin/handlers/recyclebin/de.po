@@ -1,0 +1,138 @@
+# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-admin-handlers-recyclebin\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2025-10-24 23:37+0200\n"
+"PO-Revision-Date: 2025-07-30 14:00+0000\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language-Team: German <packages@univention.de>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: unicode\n"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:248
+#, python-format
+msgid "%s objects need to be created in %s: %s"
+msgstr "%s Objekte müssen in %s erstellt werden: %s"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:120
+msgid "Basic information"
+msgstr "Grundlegende Informationen"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:67
+msgid "Delete At"
+msgstr "Endgültiges Löschen"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:32
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:120
+msgid "Deleted Object"
+msgstr "Gelöschtes Objekt"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:33
+msgid "Deleted Objects"
+msgstr "Gelöschte Objekte"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:74
+msgid "Deletion Date"
+msgstr "Löschdatum"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:59
+msgid "Distinguished name of the original object before deletion."
+msgstr "Distinguished Name des ursprünglichen Objekts vor dem Löschen."
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:111
+msgid "EntryUUID of the deleted object."
+msgstr "EntryUUID des gelöschten Objekts."
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:82
+msgid "List of objects that referenced this object at deletion time."
+msgstr ""
+"Liste der Objekte, die dieses Objekt zum Zeitpunkt der Löschung referenziert"
+" haben."
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:103
+msgid "Object classes of the deleted object."
+msgstr "Objektklassen des gelöschten Objekts."
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:121
+msgid "Object information"
+msgstr "Objektinformationen"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:130
+msgid "Objects referencing this deleted object"
+msgstr "Objekte, die dieses gelöschte Objekt referenzieren"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:34
+msgid "Objects that have been moved to the recyclebin"
+msgstr "Objekte, die in den Papierkorb verschoben wurden"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:58
+msgid "Original DN"
+msgstr "Ursprünglicher DN"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:110
+msgid "Original EntryUUID"
+msgstr "Ursprüngliche EntryUUID"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:95
+msgid "Original Name"
+msgstr "Ursprünglicher Name"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:88
+msgid "Original Object Identifier"
+msgstr "Ursprüngliche Objektkennung"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:51
+msgid "Original Object Type"
+msgstr "Ursprünglicher Objekttyp"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:96
+msgid "Original name of the deleted object (uid for users, cn for groups)."
+msgstr ""
+"Ursprünglicher Name des gelöschten Objekts (uid für Benutzer, cn für "
+"Gruppen)."
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:102
+msgid "Original object classes"
+msgstr "Ursprüngliche Objektklassen"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:31
+msgid "Recyclebin: Deleted Object"
+msgstr "Papierkorb: Gelöschtes Objekt"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:81
+msgid "Referenced By"
+msgstr "Referenziert von"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:130
+msgid "Referencing objects"
+msgstr "Referenzierende Objekte"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:68
+msgid ""
+"Timestamp when the object should be permanently deleted based on retention "
+"policy. Note: Actual deletion is handled by OpenLDAP DDS and may occur "
+"slightly later."
+msgstr ""
+"Zeitstempel, wann das Objekt endgültig gelöscht wird basierend auf der "
+"Aufbewahrungsrichtlinie. Hinweis: Die tatsächliche Löschung erfolgt durch "
+"OpenLDAP DDS und kann etwas später erfolgen."
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:75
+msgid "Timestamp when the object was deleted."
+msgstr "Zeitstempel, an dem das Objekt gelöscht wurde."
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:52
+msgid "UDM module type of the original object."
+msgstr "UDM-Modultyp des ursprünglichen Objekts."
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:89
+msgid "UniventionObjectIdentifier of the deleted object."
+msgstr "UniventionObjectIdentifier des gelöschten Objekts."
+
+#~ msgid "General"
+#~ msgstr "Allgemein"

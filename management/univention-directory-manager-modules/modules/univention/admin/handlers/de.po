@@ -78,6 +78,10 @@ msgstr "Objekte des Objekttyps \"%s\" können nicht verschoben werden."
 msgid "Objects of the \"%s\" object type can not be removed."
 msgstr "Objekte des Objekttyps \"%s\" können nicht gelöscht werden."
 
+#: modules/univention/admin/handlers/__init__.py:945
+msgid "Objects of the \"%s\" object type can not be restored."
+msgstr "Objekte des Objekttyps \"%s\" können nicht wiederhergestellt werden."
+
 #: modules/univention/admin/handlers/__init__.py:2347
 msgid "Reverse zone and IP address are incompatible."
 msgstr "Reverse Zone und IP-Adresse sind inkompatibel."
@@ -154,6 +158,11 @@ msgstr ""
 msgid "key=%(key)s old=%(old)s new=%(new)s"
 msgstr "Attribut=%(key)s alter Wert=%(old)s neuer Wert=%(new)s"
 
-# __init__.py:chen"024
-#~ msgid "delete"
-#~ msgstr "Löschen"
+#: modules/univention/admin/handlers/__init__.py:977
+#, python-format
+msgid "Parent DN %s does not exist."
+msgstr "Übergeordneter DN %s existiert nicht."
+
+#: modules/univention/admin/handlers/__init__.py:991
+msgid "Restore not allowed on this machine."
+msgstr "Wiederherstellung auf diesem System nicht erlaubt."

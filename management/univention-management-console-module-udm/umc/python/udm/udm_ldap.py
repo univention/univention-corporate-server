@@ -1167,7 +1167,7 @@ class UDM_Module:
     def _append_hidden_filter(self, ret):
         if self.module is None or self.module.property_descriptions.get('objectFlag') is None:
             return ret
-        hidden_filter = '!(objectFlag=hidden)'
+        hidden_filter = '!(univentionObjectFlag=hidden)'
         if ret:
             if not ret.startswith('('):
                 ret = '(%s)' % ret
