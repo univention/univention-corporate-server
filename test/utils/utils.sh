@@ -1382,7 +1382,8 @@ add_branch_repository () {
 
 slugify () {
 	iconv -t ascii//TRANSLIT |
-		sed "s/'//g;s/[^a-zA-Z0-9]\\+/-/g;s/^-//;s/-\$//;s/.*/\\L&/"
+		sed "s/'//g;s/[^a-zA-Z0-9]\\+/-/g;s/^-//;s/-\$//;s/.*/\\L&/" |
+		cut -c -63
 }
 
 # configure branch repository and apt prefs
