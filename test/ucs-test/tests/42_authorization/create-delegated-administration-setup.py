@@ -140,7 +140,7 @@ def create_user(name, position, policy=None, **props):
         **props,
     )
     if policy:
-        user.policies['policies/umc'].append(policy.dn)
+        user.policies.setdefault('policies/umc', []).append(policy.dn)
     user.save()
     return user
 

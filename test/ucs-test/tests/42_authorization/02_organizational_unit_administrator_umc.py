@@ -16,12 +16,21 @@ from univention.lib.umc import BadRequest
 
 
 pytestmark = pytest.mark.skipif(not _ucr.is_true('directory/manager/web/delegative-administration/enabled'), reason='authz not activated')
+pytest_plugins = ('univention.testing.fixtures_recyclebin')
 
 
 @pytest.fixture(autouse=True)
 def restart_umc():
     yield
     subprocess.call(['deb-systemd-invoke', 'restart', 'univention-management-console-server.service'])
+
+
+def test_can_not_restore(deleted_user_object, ouadmin_umc_client, lo):
+    _, deleted_dn = deleted_user_object
+    options = [{'object': deleted_dn}]
+    res = ouadmin_umc_client.umc_command('udm/restore', options, 'recyclebin/deletedobject').result
+    assert res[0]['success'] is False
+    assert res[0]['details'] == translate('Permission denied.')
 
 
 def test_default_containers(ou, ldap_base, ouadmin_umc_client):
