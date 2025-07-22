@@ -1,3 +1,9 @@
+ucs-test (12.3.37) unstable; urgency=medium
+
+  * Bug #52202: add tests for recyclebin
+
+ -- Florian Best <best@univention.de>  Thu, 20 Nov 2025 14:15:47 +0100
+
 ucs-test (12.3.36) unstable; urgency=medium
 
   * Bug #58792: Add tests for new UDM REST API endpoint

@@ -7,6 +7,7 @@
 import base64
 import random
 import traceback
+import uuid
 
 import univention.admin.uexceptions
 
@@ -19,6 +20,7 @@ mapping = {
         'userPassword': base64.b64decode('e2NyeXB0fSQ2JDVZcjNsMGxReHN5d2Z1Ni8kQnR3bjRsL3BPcFNmUFJBYnllME1heTdWemVwUFFZRHJNWTBuUU1NZUhneHBmZUdybWJjVmdKaU1EY3hvQk0venRvZXFNWTlORWFoWUwybkwwMlVRWC4='),
         'objectClass': [b'person', b'univentionObject'],
         'univentionObjectType': 'users/user',
+        'univentionObjectIdentifier': '%(uoid)s',
     },
     'person': {
         'title': 'foo',
@@ -72,12 +74,14 @@ def test_invalid_users_do_not_break_udm(random_username, lo, wait_for_replicatio
     try:
         for options in constellations:
             uid = random_username()
+            uoid = str(uuid.uuid4())
             defaults = {
                 'uid': uid,
                 'sid': sid,
                 'rid': rid,
                 'domain': ucr['domainname'].upper(),
                 'base': ucr['ldap/base'],
+                'uoid': uoid,
             }
             ocs = []
             al = []
