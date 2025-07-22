@@ -1,3 +1,9 @@
+univention-appcenter (11.2.3) unstable; urgency=medium
+
+  * Issue univention/dev/projects/provisioning#83: support full docker-compose 'ports' config key syntax
+
+ -- Christian Castens <castens@univention.de>  Mon, 21 Jul 2025 22:40:01 +0200
+
 univention-appcenter (11.2.2) unstable; urgency=medium
 
   * Bug #58469: revert! remove .etag file if the download of the .all.tar.gz fail.

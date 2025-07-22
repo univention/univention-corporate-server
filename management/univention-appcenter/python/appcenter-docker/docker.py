@@ -11,6 +11,7 @@
 #
 
 import http.client
+import ipaddress
 import os
 import os.path
 import shlex
@@ -485,6 +486,27 @@ class MultiDocker(Docker):
             volumes.append(cert_volume)
         return unique(volumes)
 
+    def _is_ipv4(self, ip_str):
+        try:
+            return isinstance(ipaddress.ip_address(ip_str), ipaddress.IPv4Address)
+        except ValueError:
+            return False
+
+    def _parse_port_mapping(self, port_str):
+        parts = port_str.split(':')
+        parts_len = len(parts)
+        # expected formats: 'port:port' || 'ip:port:port'
+        # 'ip:port' pairs are returned as string, a single 'port' is still returned as int
+        if parts_len == 2:
+            return int(parts[0]), int(parts[1])
+        elif parts_len == 3:
+            if self._is_ipv4(parts[0]):
+                return f"{parts[0]}:{parts[1]}", int(parts[2])
+            else:
+                raise ValueError("Not a valid IPv4 address")
+        else:
+            raise ValueError("Wrong number of segments in port mapping; Only up to 'hostIPv4:hostPort:containerPort' supported.")
+
     def _setup_yml(self, recreate, env=None):
         env = env or {}
         yml_file = self.app.get_compose_file('docker-compose.yml')
@@ -539,7 +561,7 @@ class MultiDocker(Docker):
                 try:
                     _port = int(port)
                 except ValueError:
-                    host_port, container_port = (int(_port) for _port in port.split(':'))
+                    host_port, container_port = self._parse_port_mapping(port)
                     used_ports[service_name][container_port] = host_port
                     if prot:
                         prots[container_port] = prot
