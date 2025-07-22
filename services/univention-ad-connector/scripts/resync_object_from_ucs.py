@@ -20,6 +20,7 @@ import ldap
 
 import univention.uldap
 from univention.config_registry import ConfigRegistry
+from univention.dn import DN
 
 
 class UCSResync:
@@ -48,8 +49,13 @@ class UCSResync:
         return self.lo.get(ucs_dn, attr=['*', '+'], required=True)
 
     def resync(self, ucs_dns=None, ldapfilter=None, ldapbase=None):
+        search_result = self.search_ldap(ucs_dns, ldapfilter, ldapbase)
+
+        # If a DN to resync happens to be a subtree DN, we might also want to resync the ancestors
+        self.prepend_ancestors_of_allowed_subtrees(search_result, ldapfilter, ldapbase)
+
         treated_dns = []
-        for dn, new in self.search_ldap(ucs_dns, ldapfilter, ldapbase):
+        for dn, new in search_result:
             object_data = (dn, new, {}, None)
             self._dump_object_to_file(object_data)
             treated_dns.append(dn)
@@ -83,6 +89,43 @@ class UCSResync:
             ldap_result = self.lo.search(base=ldapbase, filter=ldapfilter, attr=attr)
 
         return ldap_result
+
+    def _get_allowed_subtrees(self) -> list[DN]:
+        allowed_subtrees = []
+        for key in self.configRegistry:
+            if key.startswith(f'{options.configbasename}/ad/mapping/allowsubtree') and key.endswith('/ucs'):
+                allowed_subtrees.append(DN(self.configRegistry[key]))
+
+        return allowed_subtrees
+
+    def prepend_ancestors_of_allowed_subtrees(self, ucs_search_result: list[tuple] | None, ldapfilter, ldapbase):
+        if self.configRegistry.is_false(f"{options.configbasename}/ad/mapping/allow-subtree-ancestors", False) or ucs_search_result is None:
+            return
+
+        ucs_ldap_base = DN(self.configRegistry.get("ldap/base"))
+
+        allowed_subtrees: list[DN] = self._get_allowed_subtrees()
+
+        ancestor_list = []
+        for object_dn, _ in ucs_search_result:
+            object_dn = DN(object_dn)
+            if object_dn not in allowed_subtrees:
+                continue
+
+            subtree_dn = object_dn
+            parent_dn = object_dn.parent
+            while parent_dn and parent_dn != ucs_ldap_base:
+                parent = str(parent_dn)
+                print(f"{subtree_dn} is an allowed subtree. Adding ancestor DN {parent} to resync list.")
+                if parent not in ancestor_list:
+                    ancestor_list.insert(0, parent)
+                parent_dn = parent_dn.parent
+        if not ancestor_list:
+            return
+
+        ancestor_ucs_search_result = self.search_ldap(ancestor_list, ldapfilter, ldapbase)
+        ancestor_ucs_search_result.sort(key=lambda x: len(x[0]))
+        ucs_search_result[:0] = ancestor_ucs_search_result
 
 
 if __name__ == '__main__':

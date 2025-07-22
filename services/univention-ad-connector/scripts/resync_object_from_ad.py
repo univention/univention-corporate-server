@@ -22,6 +22,7 @@ from samba.ndr import ndr_unpack
 
 import univention.connector.ad
 from univention.config_registry import ConfigRegistry
+from univention.dn import DN
 
 
 class GUIDNotFound(BaseException):
@@ -60,8 +61,13 @@ class ad(univention.connector.ad.ad):
         os.chmod(state_filename, 640)
 
     def resync(self, ad_dns=None, ldapfilter=None, ldapbase=None):
+        result = self.search_ad(ad_dns, ldapfilter, ldapbase)
+
+        # If a DN to resync happens to be a subtree DN, we might also want to resync the ancestors
+        self.prepend_ancestors_of_allowed_subtrees(result, ldapfilter, ldapbase)
+
         treated_dns = []
-        for ad_dn, guid, usn in self.search_ad(ad_dns, ldapfilter, ldapbase):
+        for ad_dn, guid, usn in result:
             self._remove_cache_entries(guid)
             self._add_object_to_rejected(ad_dn, usn)
             treated_dns.append(ad_dn)
@@ -123,6 +129,45 @@ class ad(univention.connector.ad.ad):
                 raise GUIDNotFound(2, "No match")
 
         return search_result
+
+    def _get_allowed_subtrees(self) -> list[DN]:
+        allowed_subtrees: list[DN] = []
+
+        for key in self.configRegistry:
+            if key.startswith(f'{CONFIGBASENAME}/ad/mapping/allowsubtree') and key.endswith('/ad'):
+                allowed_subtrees.append(DN(self.configRegistry[key]))
+
+        return allowed_subtrees
+
+    def prepend_ancestors_of_allowed_subtrees(self, ad_search_result: list[tuple] | None, ldapfilter, ldapbase):
+        if self.configRegistry.is_false(f"{CONFIGBASENAME}/ad/mapping/allow-subtree-ancestors", False) or ad_search_result is None:
+            return
+
+        ad_ldap_base = DN(self.configRegistry.get("connector/ad/ldap/base"))
+
+        allowed_subtrees = self._get_allowed_subtrees()
+
+        ancestor_list = []
+        for object_dn, _, _ in ad_search_result:
+            object_dn = DN(object_dn)
+            if object_dn not in allowed_subtrees:
+                continue
+
+            subtree_dn = object_dn
+            parent_dn = object_dn.parent
+            while parent_dn and parent_dn != ad_ldap_base:
+                parent = str(parent_dn)
+                if parent not in ancestor_list:
+                    print(f"{subtree_dn} is an allowed subtree. Adding ancestor DN {parent} to resync list.")
+                    ancestor_list.insert(0, parent)
+                parent_dn = parent_dn.parent
+
+        if not ancestor_list:
+            return
+
+        ancestor_ad_search_result = self.search_ad(ancestor_list, ldapfilter, ldapbase)
+        ancestor_ad_search_result.sort(key=lambda x: len(x[0]))
+        ad_search_result[:0] = ancestor_ad_search_result
 
 
 if __name__ == '__main__':
