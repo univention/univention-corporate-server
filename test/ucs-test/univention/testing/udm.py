@@ -77,6 +77,10 @@ class UCSTestUDM_ModifyUDMObjectFailed(UCSTestUDM_Exception):
     pass
 
 
+class UCSTestUDM_RestoreUDMObjectFailed(UCSTestUDM_Exception):
+    pass
+
+
 class UCSTestUDM_MoveUDMObjectFailed(UCSTestUDM_Exception):
     pass
 
@@ -86,6 +90,10 @@ class UCSTestUDM_NoModification(UCSTestUDM_Exception):
 
 
 class UCSTestUDM_ModifyUDMUnknownDN(UCSTestUDM_Exception):
+    pass
+
+
+class UCSTestUDM_RestoreUDMUnknownDN(UCSTestUDM_Exception):
     pass
 
 
@@ -102,6 +110,10 @@ class UCSTestUDM_CannotModifyExistingObject(UCSTestUDM_Exception):
 
 
 class UCSTestUDM_ListUDMObjectFailed(UCSTestUDM_Exception):
+    pass
+
+
+class UCSTestUDM_GetUDMObjectFailed(UCSTestUDM_Exception):
     pass
 
 
@@ -814,6 +826,27 @@ class UCSTestUDM:
         self.wait_for(modulename, dn, wait_for_replication, everything=wait_for)
         return dn
 
+    def restore_object(self, modulename: str, wait_for_replication: bool = True, check_for_drs_replication: bool = False, wait_for: bool = False, **kwargs: Any) -> str:
+        if not modulename:
+            raise UCSTestUDM_MissingModulename()
+        dn = kwargs.get('dn')
+        if not dn:
+            raise UCSTestUDM_MissingDn()
+        cmd = self._build_udm_cmdline(modulename, 'restore', kwargs)
+        print(f'Restoring {modulename} object {_prettify_cmd(cmd)}')
+        returncode, stdout, stderr = self._execute_udm(cmd)
+        if returncode:
+            raise UCSTestUDM_RestoreUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': returncode, 'stdout': stdout, 'stderr': stderr})
+        for line in stdout.splitlines():  # :pylint: disable-msg=E1103
+            if line.startswith('Object restored: '):
+                restored_dn = ldap.dn.str2dn(line.partition('Object restored: ')[2])[0][0][1]
+                break
+        else:
+            raise UCSTestUDM_RestoreUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
+
+        self.wait_for(modulename, restored_dn, wait_for_replication, everything=wait_for)
+        return restored_dn
+
     def move_object(self, modulename: str, wait_for_replication: bool = True, check_for_drs_replication: bool = False, wait_for: bool = False, **kwargs: Any) -> str:
         if not modulename:
             raise UCSTestUDM_MissingModulename()
@@ -969,6 +1002,13 @@ class UCSTestUDM:
         ad_ldap_search_args = self.ad_object_identifying_filter(modulename, dn)
         if ad_ldap_search_args:
             wait_for_drs_replication(should_exist=False, verbose=verbose, timeout=20, **ad_ldap_search_args)
+
+    def get_object(self, modulename: str, dn: str, **kwargs: Any) -> dict[str, Any]:
+        kwargs['position'] = dn
+        result = self.list_objects(modulename, **kwargs)
+        if result and len(result) == 1:
+            return result[0][1]
+        raise UCSTestUDM_GetUDMObjectFailed(result)
 
     def list_objects(self, modulename: str, **kwargs: Any) -> list[tuple[str, dict[str, Any]]]:
         cmd = self._build_udm_cmdline(modulename, 'list', kwargs)
