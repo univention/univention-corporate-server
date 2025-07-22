@@ -6,7 +6,7 @@ src: univention-updater
 fix: 17.2.8
 desc: |
  This update addresses the following issues:
- * The pre-update script has been updated to run the prune old kenels,
-   when the UCR variable `update52/pruneoldkernel` is enable, before all
+ * The pre-update script has been updated to run `univention-prune-kernels`,
+   in case the UCR variable `update52/pruneoldkernel` is enabled, before all
    the other checks.
 bug: [58386]
