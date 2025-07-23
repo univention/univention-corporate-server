@@ -10,3 +10,6 @@ desc: |
    in case the UCR variable `update52/pruneoldkernel` is enabled, before all
    the other checks.
 bug: [58386]
+erratum: 157
+announced: 2025-07-23
+support: core
