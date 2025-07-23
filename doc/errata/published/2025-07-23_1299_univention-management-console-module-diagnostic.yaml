@@ -13,3 +13,6 @@ desc: |
    This errata update is a followup to the knowledge base article
    https://help.univention.com/t/18673 .
 bug: [58471]
+erratum: 1299
+announced: 2025-07-23
+support: core
