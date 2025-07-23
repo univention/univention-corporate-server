@@ -10,3 +10,6 @@ desc: |
    which updates existing Keycloak clients to the configuration
    given by the command.
 bug: [58426]
+erratum: 156
+announced: 2025-07-23
+support: core
