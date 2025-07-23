@@ -13,3 +13,6 @@ desc: |
    Now it passes the parameters `tls cafile` and `tls crlfile` to `ldbsearch`
    to avoid that error message.
 bug: [56139]
+erratum: 155
+announced: 2025-07-23
+support: core
