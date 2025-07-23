@@ -18,3 +18,6 @@ desc: |
    This backport aims to protect non-primary systems running the
    S4-Connector (e.g. UCS@school replicas).
 bug: [58470]
+erratum: 158
+announced: 2025-07-23
+support: core
