@@ -406,6 +406,11 @@ COMMON_EXCEPTIONS = (
     E("KeyError: 'triggererror'", ['csv_reader.py']),
     E(r"ucsschool.importer.reader.csv_reader.UnsupportedEncodingError: Unsupported encoding 'binary' detected, please check the manual for supported encodings.", ['csv_reader.py'], 56846),  # ucs-test-ucsschool/90_ucsschool/252_import_works_with_encodings and 252a_csv_reader_correct_encodings expect this traceback
 
+    # errors during keycloak reconfiguration
+    E(r'OSError: \[Errno 113\] No route to host', ['keycloak']),
+    E(r'urllib3.exceptions.NewConnectionError:.*\[Errno 113\] No route to host', ['keycloak']),
+    E('urllib3.exceptions.MaxRetryError:.*Max retries exceeded.* /univention/saml/metadata.*', ['keycloak']),
+    E('requests.exceptions.ConnectionError:.*Max retries exceeded.* /univention/saml/metadata.*', ['keycloak']),
     # E(r'.*', ['File "/usr/share/ucs-test/']),
 )
 
