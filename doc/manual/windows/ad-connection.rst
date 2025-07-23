@@ -725,6 +725,21 @@ Placeholder ``.*``
 For each LDAP subtree that you want to allow for synchronization,
 you have to configure a separate |UCSUCRV|.
 
+
+.. envvar:: connector/ad/mapping/allow-subtree-ancestors
+
+   To include the ancestors of the root of an allowed subtree defined in
+   :envvar:`connector/ad/mapping/allowsubtree/.*/[ad|ucs]`, enable this variable:
+
+   .. code-block:: console
+
+      $ ucr set connector/ad/mapping/allow-subtree-ancestors=yes
+
+   In complex structures this can make the configuration of the selective
+   synchronization easier. This variable will apply for all subtrees listed in
+   :envvar:`connector/ad/mapping/allowsubtree/.*/[ad|ucs]`.
+
+
 After you have defined or changed the UCR variables,
 you must restart the :program:`Active Directory Connection`.
 
@@ -913,7 +928,7 @@ The connector evaluates the rules for each object in the following order:
 
 1. **Allow subtree**:
 
-   :UCR variables: :envvar:`connector/ad/mapping/allowsubtree/.*/ucs` and :envvar:`connector/ad/mapping/allowsubtree/.*/ad`
+   :UCR variables: :envvar:`connector/ad/mapping/allowsubtree/.*/ucs`, :envvar:`connector/ad/mapping/allowsubtree/.*/ad` and :envvar:`connector/ad/mapping/allow-subtree-ancestors`
    :No match: No synchronization. Stop.
    :Match: Continue.
 
