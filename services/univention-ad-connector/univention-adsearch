@@ -137,6 +137,8 @@ fi
 
 if is_ucr_true "$ldaps_ucr"; then
 	protocol='ldaps'
+	options+=("--option" "tls cafile = ${!cert_env}")
+	options+=("--option" "tls crlfile = /etc/univention/ssl/ucsCA/crl/crl.pem") ## we could add a cert from the AD domain into our CRL
 else
 	protocol='ldap'
 fi
