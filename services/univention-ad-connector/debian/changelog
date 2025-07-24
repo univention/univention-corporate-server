@@ -1,3 +1,9 @@
+univention-ad-connector (14.0.22) unstable; urgency=medium
+
+  * Bug #58487: Make univention-adsearch usable with LDAPS
+
+ -- Johannes Königer <koeniger@univention.de>  Thu, 24 Jul 2025 14:52:28 +0200
+
 univention-ad-connector (14.0.21-1) UNRELEASED; urgency=medium
 
   * Bug #58002 UCS 5.0-10 version bump
