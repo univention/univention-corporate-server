@@ -10,10 +10,12 @@ import json
 import pytest
 import requests
 
+from univention.config_registry import ucr
+
 
 @pytest.fixture
 def provisioning_url():
-    return "http://localhost:7778/"
+    return f"https://{ucr.get('hostname')}.{ucr.get('domainname')}/univention/provisioning/"
 
 
 @pytest.fixture
@@ -38,6 +40,26 @@ def subscription(provisioning_url, provisioning_admin_username, provisioning_adm
             },
         ],
         "request_prefill": False,
+        "password": "univention",
+    }
+    requests.delete(provisioning_url + "v1/subscriptions/%s" % name, auth=(provisioning_admin_username, provisioning_admin_password))
+    resp = requests.post(provisioning_url + "v1/subscriptions", json=create_sub_json, auth=(provisioning_admin_username, provisioning_admin_password))
+    assert resp.status_code == 201
+    return name
+
+
+@pytest.fixture
+def prefill_subscription(provisioning_url, provisioning_admin_username, provisioning_admin_password):
+    name = "01_prefill"
+    create_sub_json = {
+        "name": name,
+        "realms_topics": [
+            {
+                "realm": "udm",
+                "topic": "groups/group",
+            },
+        ],
+        "request_prefill": True,
         "password": "univention",
     }
     requests.delete(provisioning_url + "v1/subscriptions/%s" % name, auth=(provisioning_admin_username, provisioning_admin_password))
@@ -94,3 +116,12 @@ def test_user_removal(udm, subscription, get_messages_and_ack):
         assert message["body"]["old"]["dn"] == dn
         assert message["body"]["new"] == {}
     assert i == 1
+
+
+def test_prefill(udm, prefill_subscription, get_messages_and_ack):
+    udm.create_user()
+    num_objects = len(udm.list_objects('groups/group'))
+    i = 0
+    for message in get_messages_and_ack(prefill_subscription):
+        i += 1
+    assert i == num_objects
