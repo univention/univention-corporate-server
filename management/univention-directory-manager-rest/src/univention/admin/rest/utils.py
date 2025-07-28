@@ -16,30 +16,39 @@ from tornado.web import HTTPError
 
 import univention.admin.types as udm_types
 from univention.config_registry import ucr
+from univention.management.console.log import add_filter
 
 
 RE_UUID = re.compile('[^A-Fa-f0-9-]')
 
 
-def init_request_id_logging(request_id_context):
-    if not ucr.is_true('directory/manager/rest/debug/prefix-with-request-id', True):
+def init_request_context_logging(request_context):
+    structured = ucr.is_true('directory/manager/rest/debug/structured-logging', False)
+    if not structured and not ucr.is_true('directory/manager/rest/debug/prefix-with-request-id', True):
         return
 
-    context_id_filter = ContextIdFilter(request_id_context)
-    for comp in ('MAIN', 'ADMIN', 'LDAP', 'MODULE', 'tornado.access', 'tornado.application', 'tornado.general'):
-        for handler in logging.getLogger(comp).handlers:
-            handler.addFilter(context_id_filter)
+    add_filter(RequestContextFilter(request_context, structured))
 
 
-class ContextIdFilter(logging.Filter):
-    def __init__(self, request_id_context):
-        self.request_id_context = request_id_context
+class RequestContextFilter(logging.Filter):
+    def __init__(self, request_context, structured_logging=False):
+        self.request_context = request_context
+        self.structured_logging = structured_logging
 
     def filter(self, record):
         try:
-            record.prefix = '[%s] ' % (self.request_id_context.get())[:12]
+            request_context = self.request_context.get()
         except LookupError:
-            record.prefix = '[no requestID] '  # no context exists yet
+            request_context = {}
+        record.request_id = request_context.get('request_id', '-')
+        if not self.structured_logging:
+            record.prefix = f"[{(record.request_id or '')[:10]}] "  # backwards compatibility
+        if dn := request_context.get('requester_dn'):
+            record.requester_dn = dn
+        if ip := request_context.get('requester_ip'):
+            record.requester_ip = ip
+        if hostname := request_context.get('requester_hostname'):
+            record.requester_hostname = hostname
         return True
 
 
