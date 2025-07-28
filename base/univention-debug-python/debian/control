@@ -9,12 +9,14 @@ Build-Depends:
  libunivention-debug-dev (>= 11.0.0-2),
  python3-all-dev,
  python3-debian,
+ python3-logfmter,
  python3-pytest,
  python3-setuptools,
 
 Package: python3-univention-debug
 Architecture: any
 Depends:
+ python3-logfmter,
  ${misc:Depends},
  ${python3:Depends},
  ${shlibs:Depends},
