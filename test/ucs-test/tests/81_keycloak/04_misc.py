@@ -223,3 +223,10 @@ def test_additional_ca_certifiates_issue_223():
     run_command(['univention-app', 'configure', 'keycloak'])
     stdout = run_command(['docker', 'exec', '-u', 'root', 'keycloak', 'keytool', '-cacerts', '-list', '-storepass', 'changeit', '-noprompt'])
     assert 'my-new-certificate.pem' in stdout, f'certificate not found in {stdout}'
+
+
+@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+def test_keycloak_version(ucr):
+    kc_app_version = ucr.get('appcenter/apps/keycloak/version')
+    kc_image_version = run_command(['docker', 'exec', 'keycloak', '/opt/keycloak/bin/kc.sh', '-V']).splitlines()[0].strip('Keycloak ')
+    assert kc_image_version in kc_app_version, f'Docker image kc version {kc_image_version} does not match appcenter version {kc_app_version}'

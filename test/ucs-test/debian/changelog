@@ -1,3 +1,9 @@
+ucs-test (12.2.32) unstable; urgency=medium
+
+  * Issue univention/dev/projects/keycloak/keycloak-app#243: Test keycloak version match
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 28 Jul 2025 12:44:02 +0200
+
 ucs-test (12.2.31) unstable; urgency=medium
 
   * Issue univention/dev/internal/team-nubus#2954: Add basic prefill test
