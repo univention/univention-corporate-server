@@ -1,3 +1,9 @@
+univention-keycloak (1.0.15) unstable; urgency=medium
+
+  * Bug #58515: Update univention-keycloak to 26.3.1
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 29 Jul 2025 10:31:09 +0200
+
 univention-keycloak (1.0.14-6) unstable; urgency=medium
 
   * Issue #2852: Add basic scope during OIDC client creation

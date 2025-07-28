@@ -1,3 +1,9 @@
+ucs-test (10.0.24-24) unstable; urgency=medium
+
+  * Bug #58515: Update tests to 26.3.1
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 05 Aug 2025 15:00:00 +0200
+
 ucs-test (10.0.24-23) unstable; urgency=medium
 
   * Bug #58312: Add tests for DN normalization problems: ou=+1
