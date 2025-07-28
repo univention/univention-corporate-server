@@ -747,13 +747,15 @@ def test_oidc_client_options(random_string, keycloak_admin_connection):
     client_id = random_string()
     admin_url = random_string()
     app_url = f'https://{random_string()}'
-    args = ['univention-keycloak', 'oidc/rp', 'create', client_id]
     args = [
         'univention-keycloak', 'oidc/rp', 'create',
         '--app-url', app_url,
         '--admin-url', admin_url,
         '--public-client',
         '--backchannel-logout-revoke-session',
+        '--token-exchange-enabled',
+        '--use-refresh-tokens',
+        '--backchannel-logout-session-required',
         client_id,
     ]
     run_command(args)
@@ -767,7 +769,9 @@ def test_oidc_client_options(random_string, keycloak_admin_connection):
         assert app_url in client['webOrigins']
         assert client['publicClient'] is True
         assert client['attributes']['backchannel.logout.revoke.offline.tokens'] == 'true'
-        # TODO: test more options
+        assert client['attributes']['standard.token.exchange.enabled'] == 'true'
+        assert client['attributes']['use.refresh.tokens'] == 'true'
+        assert client['attributes']['backchannel.logout.session.required'] == 'true'
     finally:
         if keycloak_id:
             keycloak_admin_connection.delete_client(keycloak_id)
