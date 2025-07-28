@@ -12,11 +12,14 @@ A python-logging interface compatible wrapper for logging with :py:mod:`univenti
 """
 
 import logging
+import traceback
+
+from logfmter import Logfmter
 
 import univention.debug as ud
 
 
-__all__ = ['DebugHandler', 'LevelDependentFormatter', 'Logger', 'basicConfig', 'extendLogger', 'getLogger']
+__all__ = ['DebugHandler', 'LevelDependentFormatter', 'Logger', 'StructuredFormatter', 'basicConfig', 'extendLogger', 'getLogger']
 for name in logging.__all__:
     if name not in __all__:
         globals()[name] = getattr(logging, name)
@@ -38,13 +41,13 @@ _LEVEL_MAPPING = {
 _UD_LEVEL_MAPPING = {v: k for k, v in _LEVEL_MAPPING.items()}
 
 _LEVEL_TO_FORMAT_MAPPING = {
-    logging.NOTSET: "%(pid)s%(prefix)s%(module)s.%(funcName)s:%(lineno)d: %(message)s",
-    logging.DEBUG: "%(pid)s%(prefix)s%(message)s",
-    logging.INFO: "%(pid)s%(prefix)s%(message)s",
-    logging.PROCESS: "%(pid)s%(prefix)s%(message)s",
-    logging.WARNING: "%(pid)s%(prefix)s%(message)s",
-    logging.ERROR: "%(pid)s%(prefix)s%(message)s",
-    logging.CRITICAL: "%(pid)s%(prefix)s%(message)s",
+    logging.NOTSET: '%(pid)s%(prefix)s%(module)s.%(funcName)s:%(lineno)d: %(message)s',
+    logging.DEBUG: '%(pid)s%(prefix)s%(message)s',
+    logging.INFO: '%(pid)s%(prefix)s%(message)s',
+    logging.PROCESS: '%(pid)s%(prefix)s%(message)s',
+    logging.WARNING: '%(pid)s%(prefix)s%(message)s',
+    logging.ERROR: '%(pid)s%(prefix)s%(message)s',
+    logging.CRITICAL: '%(pid)s%(prefix)s%(message)s',
 }
 
 _UD_CATEGORIES = {
@@ -85,6 +88,8 @@ def _map_level_to_ud(level):  # type: (int) -> int
         return 0
     if 0 < level < logging.DEBUG - 1:
         return 100 - ((level - 1) * 10) - 1
+    if logging.PROCESS <= level < logging.WARNING:
+        return ud.PROCESS
     level = level if level in _LEVEL_MAPPING else (level // 10) * 10
     return _LEVEL_MAPPING.get(level, level)
 
@@ -114,7 +119,7 @@ def _map_ud_to_level(level):  # type: (int) -> int
         return 0
     if level > ud.ALL:
         base = 100 if level <= 10 else 110
-        return (max((10, (base - level))) // 10)
+        return max((10, (base - level))) // 10
     return _UD_LEVEL_MAPPING.get(level)
 
 
@@ -123,7 +128,7 @@ def _map_category_name(category):  # type: (int) -> str
     >>> _map_category_name(10)
     "ADMIN"
     """
-    return _UD_CATEGORIES.get(category, "<unknown>")
+    return _UD_CATEGORIES.get(category, '<unknown>')
 
 
 def getLogger(name, **kwargs):  # type: (str) -> Logger
@@ -194,9 +199,9 @@ def extendLogger(name, **kwargs):  # type: (str) -> None
 
 
 def basicConfig(
-    # *  # keywords-only!
     filename='stdout',
     level=None,
+    *,
     univention_debug_level=None,
     log_pid=False,
     univention_debug_flush=ud.FLUSH,
@@ -204,7 +209,8 @@ def basicConfig(
     univention_debug_categories=None,
     do_exit=True,
     delay_init=False,  # until first use
-    **kwargs,  # ,
+    use_structured_logging=False,
+    **kwargs,
 ):
     """
     Do basic configuration for the logging system.
@@ -224,9 +230,11 @@ def basicConfig(
 
     if not delay_init:
         logger = getLogger(categories[0])
+        logger.univention_debug_handler.set_structured(use_structured_logging)
         logger.univention_debug_handler.init(filename, univention_debug_flush, univention_debug_function)
     for category in categories:
         logger = getLogger(category)
+        logger.univention_debug_handler.set_structured(use_structured_logging)
         if level is not None:
             logger.setLevel(level)
         elif univention_debug_level is not None:
@@ -237,6 +245,76 @@ def basicConfig(
             logger.univention_debug_handler.auto_init = True
             logger.univention_debug_handler.delay_init = delay_init
             logger.univention_debug_handler._init_args = (filename, univention_debug_flush, univention_debug_function)
+        if use_structured_logging:
+            formatter = StructuredFormatter()
+            for handler in logger.handlers:
+                handler.setFormatter(formatter)
+
+
+class StructuredFormatter(logging.Formatter):
+    """
+    A formatter combining prefixed content and structured data from logfmt.
+
+    Producing log lines like:
+    2025-01-01T00:00:00.000 +0000 INFO    [         -] module.function:1 the message\t| pid=12345 logname=ADMIN
+    """
+
+    default_time_format = '%Y-%m-%dT%H:%M:%S %z'
+
+    def __init__(
+        self,
+        fmt=None,
+        datefmt=None,
+        *,
+        defaults=None,
+        data_fields=None,
+        data_mapping=None,
+        data_defaults=None,
+        data_ignored_keys=None,
+        add_full_tracebacks=True,
+        with_date_prefix=False,
+        key='logfmt',
+    ):
+        # fmt = fmt or '[{request_id:>10}] {module}.{funcName}:{lineno} {message}\t| {logfmt}'
+        fmt = fmt or '[{request_id:>10}] {message}\t| {logfmt}'
+        if with_date_prefix:
+            fmt = f'{{asctime}}.{{msecs:03.0f}} {{levelname:>7}} |{fmt}'
+        style = '{'
+        self.key = key
+        self.add_full_tracebacks = add_full_tracebacks
+        self.logfmter = Logfmter(
+            keys=data_fields or ['pid', 'umcmodule', 'logname', 'func'],
+            mapping=data_mapping or {'at': 'levelname', 'pid': 'process', 'time': 'asctime', 'logname': 'name'},
+            defaults=data_defaults or {'func': '{module}.{funcName}:{lineno}'},
+            ignore_keys=data_ignored_keys or ['msg', 'request_id'],
+            datefmt=datefmt or self.default_time_format,
+        )
+        super().__init__(fmt=fmt, datefmt=datefmt, defaults=defaults or {'request_id': '-', key: ''}, style=style)
+
+    def formatMessage(self, record):
+        setattr(record, self.key, self.logfmter.format(record))
+        return super().formatMessage(record)
+
+    def format(self, record):
+        msg = record.msg
+        if isinstance(record.msg, dict):
+            record.msg = msg.get('msg')
+        try:
+            record.message = record.getMessage()
+            if self.usesTime():
+                record.asctime = self.formatTime(record, self.datefmt)
+            s = self.formatMessage(record).rstrip('\n')
+        finally:
+            record.msg = msg
+        if not self.add_full_tracebacks:
+            return s
+        if record.exc_info and not record.exc_text:
+            record.exc_text = ''.join(traceback.format_exception(*record.exc_info)).rstrip('\n')
+        if record.exc_text:
+            s = f'{s}\n{record.exc_text}'
+        if record.stack_info:
+            s = f'{s}\n{self.formatStack(record.stack_info)}'
+        return s
 
 
 class Logger(logging.Logger):
@@ -299,7 +377,14 @@ class Logger(logging.Logger):
 
 
 class LevelDependentFormatter(logging.Formatter):
-    """A formatter which logs different formats depending on the log level"""
+    """
+    A formatter which logs different formats depending on the log level.
+
+    .. deprecated:: 5.2-3
+       unstructured logging with different formats will be removed in UCS 5.2-5.
+    """
+
+    RESERVED = ('args', 'asctime', 'created', 'exc_info', 'exc_text', 'filename', 'funcName', 'levelname', 'levelno', 'lineno', 'message', 'module', 'msecs', 'msg', 'name', 'pathname', 'process', 'processName', 'relativeCreated', 'stack_info', 'taskName', 'thread', 'threadName', 'prefix', 'request_id', 'pid')
 
     def __init__(self, datefmt=None, log_pid=False):
         self._style = None
@@ -323,13 +408,20 @@ class LevelDependentFormatter(logging.Formatter):
         if self.log_pid:
             record.pid = '%s: ' % (record.process,)
 
-        if not hasattr(record, 'prefix'):
-            record.prefix = ''
+        record.__dict__.setdefault('prefix', '')
+
+        extra = record.__dict__.copy()
+        msg = record.msg
+        if isinstance(record.msg, dict):
+            record.msg = msg.pop('msg', '')
+            extra.update(msg)
+        extra = {k: v for k, v in extra.items() if k not in self.RESERVED}
+        extra_str = (' | ' + ' '.join('='.join((str(k), str(v))) for k, v in extra.items())) if extra else ''
 
         self._fmt = fmt
         if self._style is not None:
             self._style._fmt = self._fmt
-        return super().format(record)
+        return super().format(record) + extra_str
 
 
 class DebugHandler(logging.Handler):
@@ -341,6 +433,7 @@ class DebugHandler(logging.Handler):
         self.auto_init = auto_init
         self.do_exit = do_exit
         self._init_args = ('stderr', ud.NO_FLUSH, ud.NO_FUNCTION)
+        self.fd = None
         if auto_init and not delay_init:
             self.init(*self._init_args)
         super().__init__(level)
@@ -352,16 +445,19 @@ class DebugHandler(logging.Handler):
         msg = self.format(record)
         level = _map_level_to_ud(record.levelno)
 
-        _name, _, prefix = record.name.partition('.')
-        message = "%s: %s" % (prefix, msg) if prefix else msg
+        if isinstance(self.formatter, StructuredFormatter):
+            message = msg
+        else:
+            _name, _, prefix = record.name.partition('.')
+            message = '%s: %s' % (prefix, msg) if prefix else msg
         try:
             ud.debug(self._category, level, message)
         except ValueError:  # embedded null character
-            ud.debug(self._category, level, repr(message))
+            ud.debug(self._category, level, message.replace('\x00', repr('\x00')))
 
     def init(self, filename='stderr', flush=ud.NO_FLUSH, function=ud.NO_FUNCTION):
         """Initialize :py:mod:`univention.debug`. Must only be called once. returns the file descriptor on success"""
-        return ud.init(filename, flush, function)
+        self.fd = ud.init(filename, flush, function)
 
     def reopen(self):
         """reopen the :py:mod:`univention.debug` logfile. must be called e.g. after log rotation."""
@@ -378,6 +474,9 @@ class DebugHandler(logging.Handler):
 
     def get_ud_level(self):
         return ud.get_level(self._category)
+
+    def set_structured(self, use_structured_logging):
+        ud.set_structured(use_structured_logging)
 
     def getLevel(self):
         return _map_ud_to_level(self.get_ud_level())

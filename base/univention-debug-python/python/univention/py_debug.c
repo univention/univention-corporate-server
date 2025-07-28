@@ -209,6 +209,24 @@ PyDoc_STRVAR(py_univention_debug_reopen__doc__,
         "\n"
         "Close and re-open the debug logfile.");
 
+static PyObject *
+py_univention_debug_set_structured(PyObject *self, PyObject *args)
+{
+    int use_structured;
+
+    if (!PyArg_ParseTuple(args, "i", &use_structured)) {
+        return NULL;
+    }
+
+    univention_debug_set_structured(use_structured);
+
+    Py_RETURN_NONE;
+}
+PyDoc_STRVAR(py_univention_debug_set_structured__doc__,
+        "set_structured(activate) - Define weather to use structured logging formats.\n"
+        "\n"
+        "activate - enable (True) or disable (False) structured logging format..");
+
 
 static struct PyMethodDef debug_methods[] = {
     {"debug", (PyCFunction)py_univention_debug_debug, METH_VARARGS, py_univention_debug_debug__doc__},
@@ -220,6 +238,7 @@ static struct PyMethodDef debug_methods[] = {
     {"end", (PyCFunction)py_univention_debug_end, METH_VARARGS, py_univention_debug_end__doc__},
     {"exit", (PyCFunction)py_univention_debug_exit, METH_NOARGS, py_univention_debug_exit__doc__},
     {"reopen", (PyCFunction)py_univention_debug_reopen, METH_NOARGS, py_univention_debug_reopen__doc__},
+    {"set_structured", (PyCFunction)py_univention_debug_set_structured, METH_VARARGS, py_univention_debug_set_structured__doc__},
     { NULL, NULL, 0, NULL}
 };
 
