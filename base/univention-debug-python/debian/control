@@ -6,9 +6,10 @@ Standards-Version: 3.7.2
 Build-Depends:
  debhelper-compat (=13),
  dh-python,
- libunivention-debug-dev (>= 11.0.0-2),
+ libunivention-debug-dev (>= 14.3.0),
  python3-all-dev,
  python3-debian,
+ python3-logfmter,
  python3-pytest,
  python3-pytest-cov,
  python3-setuptools,
@@ -16,6 +17,8 @@ Build-Depends:
 Package: python3-univention-debug
 Architecture: any
 Depends:
+ libunivention-debug1 (>= 14.3.0),
+ python3-logfmter,
  ${misc:Depends},
  ${python3:Depends},
  ${shlibs:Depends},

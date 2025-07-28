@@ -1,8 +1,12 @@
-univention-debug-python (14.3.0) UNRELEASED; urgency=medium
+univention-debug-python (14.3.0) unstable; urgency=medium
 
+  [ Ivan Barbecho Delgado ]
   * Bug #58568: UCS 5.2-3 version bump
 
- -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 02 Sep 2025 16:18:26 +0200
+  [ Florian Best ]
+  * Bug #58627: add structured logging option to univention.logging
+
+ -- Florian Best <best@univention.de>  Thu, 18 Sep 2025 12:00:50 +0200
 
 univention-debug-python (14.2.0) UNRELEASED; urgency=medium
 

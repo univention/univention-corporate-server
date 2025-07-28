@@ -21,7 +21,8 @@ ERROR = 0
 WARN = 1
 PROCESS = 2
 INFO = 3
-ALL = 4
+ALL = DEBUG = 4
+TRACE = 5
 DEFAULT = WARN
 
 # The default levels provided are DEBUG(10), INFO(20), WARNING(30), ERROR(40) and CRITICAL(50).
@@ -31,7 +32,8 @@ _map_lvl_old2new = {
     1: logging.WARNING,  # 30
     2: 25,               # 25
     3: logging.INFO,     # 20
-    4: 15,               # 15
+    4: logging.DEBUG + 5,  # 15
+    5: 5,                # 5
 }
 
 MAIN = 0x00
@@ -112,6 +114,7 @@ _do_flush = False
 _enable_function = False
 _enable_syslog = False
 _logger_level = {key: DEFAULT for key in _map_id_old2new.values()}  # noqa: C420
+_use_structured = False
 
 
 def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
@@ -132,16 +135,20 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
     null_handler = logging.NullHandler()
 
     ud2_base_logger = logging.getLogger('ud2')
-    ud2_base_logger.setLevel(logging.DEBUG)
+    ud2_base_logger.setLevel(_map_lvl_old2new[TRACE])
     ud2_base_logger.handlers = [null_handler]
     ud2_base_logger.propagate = False
 
-    formatter = _Formatter(_outfmt, _datefmt)
+    if _use_structured:
+        from univention.logging import StructuredFormatter
+        formatter = StructuredFormatter(with_date_prefix=True)
+    else:
+        formatter = _Formatter(_outfmt, _datefmt)
     exit()
     if logfile in ('stderr', '/dev/stderr', 'stdout', '/dev/stdout'):
         # add stderr or stdout handler
         _handler_console = logging.StreamHandler(sys.stdout if logfile in ('stdout', '/dev/stdout') else sys.stderr)
-        _handler_console.setLevel(logging.DEBUG)
+        _handler_console.setLevel(_map_lvl_old2new[TRACE])
         _handler_console.setFormatter(formatter)
         logging.getLogger('ud2').addHandler(_handler_console)
         logging.getLogger('ud2').removeHandler(null_handler)
@@ -150,7 +157,7 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
         try:
             # add file handler
             _handler_file = logging.FileHandler(logfile, 'a+')
-            _handler_file.setLevel(logging.DEBUG)
+            _handler_file.setLevel(_map_lvl_old2new[TRACE])
             _handler_file.setFormatter(formatter)
             logging.getLogger('ud2').addHandler(_handler_file)
             logging.getLogger('ud2').removeHandler(null_handler)
@@ -171,6 +178,7 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
 
     logging.addLevelName(25, 'PROCESS')
     logging.addLevelName(15, 'ALL')
+    logging.addLevelName(5, 'TRACE')
     logging.addLevelName(100, '------')
 
     logging.getLogger('ud2').getChild('MAIN').log(100, 'DEBUG_INIT')
@@ -206,12 +214,12 @@ def set_level(category, level):
     Set minimum required severity 'level' for facility 'category'.
 
     :param int category: ID of the category, e.g. MAIN, LDAP, USERS, ...
-    :param int level: Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL
+    :param int level: Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL, TRACE
     """
     new_id = _map_id_old2new.get(category, 'MAIN')
-    if level > ALL:
-        level = ALL
-    elif level < ERROR:
+    if level > TRACE:  # pragma: no cover
+        level = TRACE
+    elif level < ERROR:  # pragma: no cover
         level = ERROR
     _logger_level[new_id] = level
 
@@ -246,7 +254,7 @@ def debug(category, level, message, utf8=True):
     Log message 'message' of severity 'level' to facility 'category'.
 
     :param int category: ID of the category, e.g. MAIN, LDAP, USERS, ...
-    :param int level: Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL
+    :param int level: Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL, TRACE
     :param str message: The message to log.
     :param bool utf8: Assume the message is UTF-8 encoded.
     """
@@ -286,6 +294,11 @@ class function:
         if _enable_function:
             logging.getLogger('ud2').getChild('MAIN').log(100, 'UNIVENTION_DEBUG_END   : ' + self.fname)
             _flush()
+
+
+def set_structured(use_structured=False):
+    global _use_structured
+    _use_structured = use_structured
 
 
 def trace(with_args=True, with_return=False, repr=object.__repr__):

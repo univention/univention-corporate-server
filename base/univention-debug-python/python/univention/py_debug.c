@@ -51,13 +51,17 @@ py_univention_debug_init(PyObject *self, PyObject *args)
 {
     char *logfile;
     int flush, function;
+    int structured = -1;
     FILE * fd;
     PyObject * file;
 
-    if (!PyArg_ParseTuple(args, "sii", &logfile, &flush, &function)) {
+    if (!PyArg_ParseTuple(args, "sii|i", &logfile, &flush, &function, &structured)) {
         Py_RETURN_NONE;
     }
 
+    if (structured != -1) {
+        univention_debug_set_structured(structured);
+    }
     fd = univention_debug_init(logfile, (char)flush, (char)function);
 
     if ( fd == NULL ) {
@@ -80,12 +84,13 @@ py_univention_debug_init(PyObject *self, PyObject *args)
     return file;
 }
 PyDoc_STRVAR(py_univention_debug_init__doc__,
-        "init(logfile, force_flush, trace_function) - Initialize debugging library.\n"
+        "init(logfile, force_flush, trace_function, structured) - Initialize debugging library.\n"
         "\n"
         "Initialize debugging library for logging to 'logfile'.\n"
         "logfile - name of the logfile, or 'stderr', or 'stdout'.\n"
         "force_flush - force flushing of messages (True).\n"
-        "trace_function - enable (True) or disable (False) function tracing.");
+        "trace_function - enable (True) or disable (False) function tracing.\n"
+        "structured - enable (True) or disable (False) structured logging.");
 
 static PyObject *
 py_univention_debug_set_level(PyObject *self, PyObject *args)
@@ -209,6 +214,24 @@ PyDoc_STRVAR(py_univention_debug_reopen__doc__,
         "\n"
         "Close and re-open the debug logfile.");
 
+static PyObject *
+py_univention_debug_set_structured(PyObject *self, PyObject *args)
+{
+    int use_structured;
+
+    if (!PyArg_ParseTuple(args, "i", &use_structured)) {
+        return NULL;
+    }
+
+    univention_debug_set_structured(use_structured);
+
+    Py_RETURN_NONE;
+}
+PyDoc_STRVAR(py_univention_debug_set_structured__doc__,
+        "set_structured(activate) - Define weather to use structured logging formats.\n"
+        "\n"
+        "activate - enable (True) or disable (False) structured logging format..");
+
 
 static struct PyMethodDef debug_methods[] = {
     {"debug", (PyCFunction)py_univention_debug_debug, METH_VARARGS, py_univention_debug_debug__doc__},
@@ -220,6 +243,7 @@ static struct PyMethodDef debug_methods[] = {
     {"end", (PyCFunction)py_univention_debug_end, METH_VARARGS, py_univention_debug_end__doc__},
     {"exit", (PyCFunction)py_univention_debug_exit, METH_NOARGS, py_univention_debug_exit__doc__},
     {"reopen", (PyCFunction)py_univention_debug_reopen, METH_NOARGS, py_univention_debug_reopen__doc__},
+    {"set_structured", (PyCFunction)py_univention_debug_set_structured, METH_VARARGS, py_univention_debug_set_structured__doc__},
     { NULL, NULL, 0, NULL}
 };
 
@@ -256,6 +280,8 @@ PyMODINIT_FUNC init_debug(void)
     PyDict_SetItemString(dict, "PROCESS", PyInt_FromLong(UV_DEBUG_PROCESS));
     PyDict_SetItemString(dict, "INFO", PyInt_FromLong(UV_DEBUG_INFO));
     PyDict_SetItemString(dict, "ALL", PyInt_FromLong(UV_DEBUG_ALL));
+    PyDict_SetItemString(dict, "DEBUG", PyInt_FromLong(UV_DEBUG_ALL));
+    PyDict_SetItemString(dict, "TRACE", PyInt_FromLong(UV_DEBUG_TRACE));
 
     PyDict_SetItemString(dict, "MAIN", PyInt_FromLong(UV_DEBUG_MAIN));
     PyDict_SetItemString(dict, "LDAP", PyInt_FromLong(UV_DEBUG_LDAP));
