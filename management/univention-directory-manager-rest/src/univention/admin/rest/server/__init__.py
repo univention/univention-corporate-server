@@ -33,7 +33,7 @@ import univention.debug as ud
 import univention.lib.i18n
 import univention.logging
 from univention.admin.rest.shared_memory import shared_memory
-from univention.admin.rest.utils import RE_UUID, init_request_id_logging
+from univention.admin.rest.utils import RE_UUID, init_request_context_logging
 from univention.config_registry import ucr
 
 
@@ -167,7 +167,7 @@ class Gateway(tornado.web.RequestHandler):
         logger.setLevel(logging.INFO)
         logger.addHandler(channel)
 
-        init_request_id_logging(request_id_context)
+        init_request_context_logging(request_id_context)
 
         # bind sockets
         socks = []

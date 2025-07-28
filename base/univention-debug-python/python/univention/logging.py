@@ -13,6 +13,10 @@ A python-logging interface compatible wrapper for logging with :py:mod:`univenti
 """
 
 import logging
+import uuid
+
+from loguru import logger as loguru_logger
+from systemd.journal import JournalHandler
 
 import univention.debug as ud
 
@@ -201,6 +205,9 @@ def basicConfig(
     univention_debug_categories=None,
     do_exit=True,
     delay_init=False,  # until first use
+    use_journald_logging=False,
+    use_structured_logging=False,
+    use_message_ids=False,
     **kwargs,  # ,
 ):
     """
@@ -234,6 +241,14 @@ def basicConfig(
             logger.univention_debug_handler.auto_init = True
             logger.univention_debug_handler.delay_init = delay_init
             logger.univention_debug_handler._init_args = (filename, univention_debug_flush, univention_debug_function)
+        if use_structured_logging:
+            for handler in logger.handlers:
+                if use_message_ids:
+                    loguru_logger.add(handler, format=loguru_format, filter=message_id_filter)
+        if use_journald_logging:
+            journal_handler = JournalHandler(SYSLOG_IDENTIFIER=category)
+            if use_message_ids:
+                loguru_logger.add(journal_handler, format=loguru_format, filter=message_id_filter)
 
 
 class Logger(logging.Logger):
@@ -324,6 +339,21 @@ class LevelDependentFormatter(logging.Formatter):
         if self._style is not None:
             self._style._fmt = self._fmt
         return super().format(record)
+
+
+def loguru_format(record):
+    base_format = "{time} | {level} | {message}"
+    if any(record.get('extra', [])):
+        base_format += " |"
+        for key in record.get('extra').keys():
+            base_format += " {}={}".format(key, "{extra[key]}".replace('key', key))
+    return base_format
+
+
+def message_id_filter(record):
+    if not record['extra'].get('log_id', False):
+        record['extra']['log_id'] = uuid.uuid4().hex[:8]
+    return True
 
 
 class DebugHandler(logging.Handler):

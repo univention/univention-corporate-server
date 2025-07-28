@@ -24,7 +24,7 @@ from tornado.httpserver import HTTPServer
 from tornado.netutil import bind_sockets, bind_unix_socket
 
 from univention.admin.rest.shared_memory import shared_memory
-from univention.admin.rest.utils import init_request_id_logging
+from univention.admin.rest.utils import init_request_context_logging
 from univention.config_registry import ucr
 from univention.lib.i18n import Locale, Translation
 # IMPORTANT NOTICE: we must import as few modules as possible, so that univention.admin is not yet imported
@@ -124,7 +124,7 @@ class Server:
         signal.signal(signal.SIGINT, partial(self.signal_handler_stop, server))
         signal.signal(signal.SIGHUP, partial(self.signal_handler_reload, application))
 
-        init_request_id_logging(request_id_context)
+        init_request_context_logging(request_id_context)
 
         try:
             tornado.ioloop.IOLoop.current().start()

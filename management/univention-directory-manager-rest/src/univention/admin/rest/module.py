@@ -17,6 +17,7 @@ import logging
 import operator
 import os
 import re
+import socket
 import traceback
 import uuid
 import xml.etree.ElementTree as ET  # noqa: S405
@@ -37,6 +38,7 @@ from ldap.controls.readentry import PostReadControl
 from ldap.controls.sss import SSSRequestControl
 from ldap.dn import explode_rdn
 from ldap.filter import filter_format
+from loguru import logger as loguru_logger
 from tornado.concurrent import run_on_executor
 from tornado.web import Finish, HTTPError, RequestHandler
 
@@ -99,7 +101,16 @@ class ResourceBase(SanitizerBase, HAL, HTML):
 
     @tornado.gen.coroutine
     def pool_submit(self, *args, **kwargs):
-        future = self.pool.submit(*args, **kwargs)
+        def context_wrapper(func, *a, **k):
+            request_id_context.set(self.request.x_request_id)
+            with loguru_logger.contextualize(
+                request_id=self.request.x_request_id,
+                requester_dn=self.request.user_dn,
+                requester_ip=self.request.client_ip,
+                requester_hostname=self.request.client_host,
+            ):
+                return func(*a, **k)
+        future = self.pool.submit(context_wrapper, *args, **kwargs)
         return (yield future)
 
     requires_authentication = True
@@ -129,6 +140,8 @@ class ResourceBase(SanitizerBase, HAL, HTML):
         self.request.content_negotiation_lang = 'html'
         self.request.path_decoded = unquote(self.request.path)
         self.request.decoded_query_arguments = self.request.query_arguments.copy()
+        self.request.client_ip = self.request.headers.get('X-Forwarded-For')
+        self.request.client_host = socket.gethostbyaddr(self.request.client_ip)[0]
         authorization = self.request.headers.get('Authorization')
         if not authorization and self.requires_authentication:
             return self.force_authorization(None)
