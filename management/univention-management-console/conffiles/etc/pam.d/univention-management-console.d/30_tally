@@ -6,10 +6,11 @@ auth     [success=1 user_unknown=1 \\
          default=bad]      pam_faillock.so preauth'''.strip())
         print('auth     [default=die]     pam_runasroot.so program=/usr/lib/univention-pam/lock-user')
     else:
-        print('auth     required          pam_faillock.so preauth')
+        print('auth     requisite         pam_faillock.so preauth')
 @!@
 
 @!@
 if configRegistry.is_true('auth/faillog', False):
-    print('account  required              pam_faillock.so')
+    print('auth     required          pam_faillock.so authfail')
+    print('account  required          pam_faillock.so')
 @!@

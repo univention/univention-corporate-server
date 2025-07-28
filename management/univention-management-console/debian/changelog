@@ -1,3 +1,10 @@
+univention-management-console (14.2.1) unstable; urgency=medium
+
+  * Bug #57968: Add `auth pam_faillock authfail` to the
+    univention-management-console PAM stack
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 28 Jul 2025 16:16:45 +0200
+
 univention-management-console (14.2.0) unstable; urgency=medium
 
   [ Ivan Barbecho Delgado ]
