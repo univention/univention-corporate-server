@@ -24,12 +24,12 @@ from tornado.httpserver import HTTPServer
 from tornado.netutil import bind_sockets, bind_unix_socket
 
 from univention.admin.rest.shared_memory import shared_memory
-from univention.admin.rest.utils import init_request_id_logging
+from univention.admin.rest.utils import init_request_context_logging
 from univention.config_registry import ucr
 from univention.lib.i18n import Locale, Translation
 # IMPORTANT NOTICE: we must import as few modules as possible, so that univention.admin is not yet imported
 # because importing the UDM handlers would cause that the gettext translation gets applied before we set a locale
-from univention.management.console.log import log_init, log_reopen
+from univention.management.console.log import log_init, log_reopen, prepare_handler
 
 
 log = logging.getLogger('ADMIN')
@@ -51,7 +51,7 @@ class Server:
         self.child_id = None
         setproctitle(proctitle + '   # server')
         # locale must be set before importing UDM!
-        log_init('/dev/stdout', args.debug, args.processes != 1)
+        log_init('/dev/stdout', args.debug, args.processes != 1, use_structured_logging=ucr.is_true('directory/manager/rest/debug/structured-logging'))
         language = str(Locale(args.language))
         locale.setlocale(locale.LC_MESSAGES, language)
         os.umask(0o077)  # FIXME: should probably be changed, this is what UMC sets
@@ -65,7 +65,11 @@ class Server:
 
         # tornado logging
         channel = logging.StreamHandler()
-        channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S'))
+        import univention.logging
+        univention.logging.extendLogger('tornado.access', univention_debug_category='NETWORK')
+        univention.logging.extendLogger('tornado.application', univention_debug_category='NETWORK')
+        univention.logging.extendLogger('tornado.general', univention_debug_category='NETWORK')
+        prepare_handler(channel, ucr.is_true('directory/manager/rest/debug/structured-logging'))
         logger = logging.getLogger()
         logger.setLevel(logging.INFO)
         logger.addHandler(channel)
@@ -113,7 +117,7 @@ class Server:
         self.run_server(self.socks)
 
     def run_server(self, socks):
-        from univention.admin.rest.module import Application, request_id_context
+        from univention.admin.rest.module import Application, request_context
         application = Application(serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True))
 
         server = HTTPServer(application)
@@ -124,7 +128,7 @@ class Server:
         signal.signal(signal.SIGINT, partial(self.signal_handler_stop, server))
         signal.signal(signal.SIGHUP, partial(self.signal_handler_reload, application))
 
-        init_request_id_logging(request_id_context)
+        init_request_context_logging(request_context)
 
         try:
             tornado.ioloop.IOLoop.current().start()
@@ -152,7 +156,7 @@ class Server:
 
         def stop_loop(deadline):
             now = time.time()
-            if now < deadline:  # and (io_loop.callbacks or io_loop.timeouts):  # FIXME: neither _UnixSelectorEventLoop nor AsyncIOMainLoop have callbacks
+            if now < deadline:
                 io_loop.add_timeout(now + 1, stop_loop, deadline)
             else:
                 loop.stop()
