@@ -21,7 +21,8 @@ ERROR = 0
 WARN = 1
 PROCESS = 2
 INFO = 3
-ALL = 4
+ALL = DEBUG = 4
+TRACE = 5
 DEFAULT = WARN
 
 # The default levels provided are DEBUG(10), INFO(20), WARNING(30), ERROR(40) and CRITICAL(50).
@@ -31,7 +32,8 @@ _map_lvl_old2new = {
     1: logging.WARNING,  # 30
     2: 25,               # 25
     3: logging.INFO,     # 20
-    4: 15,               # 15
+    4: logging.DEBUG + 5,  # 15
+    5: 5,                # 5
 }
 
 MAIN = 0x00
@@ -93,8 +95,10 @@ _map_id_old2new = {
 # 13.08.2008 13:13:57.123  LISTENER    ( WARN    ) : received signal 2
 # 13.08.2008 13:14:02.123  DEBUG_INIT
 _outfmt = '%(asctime)s.%(msecs)03d %(name)-11s (%(levelname)-7s): %(message)s'
+_outfmt_structured = '%(asctime)s.%(msecs)03d  %(levelname)-7s/t| %(message)s'
 _outfmt_syslog = '%(name)-11s (%(levelname)-7s): %(message)s'
 _datefmt = '%d.%m.%Y %H:%M:%S'
+_datefmt_structured = '%Y-%m-%dT%H:%M:%S'
 
 
 class _Formatter(logging.Formatter):
@@ -112,6 +116,7 @@ _do_flush = False
 _enable_function = False
 _enable_syslog = False
 _logger_level = {key: DEFAULT for key in _map_id_old2new.values()}  # noqa: C420
+_use_structured = False
 
 
 def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
@@ -136,7 +141,10 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
     ud2_base_logger.handlers = [null_handler]
     ud2_base_logger.propagate = False
 
-    formatter = _Formatter(_outfmt, _datefmt)
+    if _use_structured:
+        formatter = _Formatter(_outfmt_structured, _datefmt_structured)
+    else:
+        formatter = _Formatter(_outfmt, _datefmt)
     exit()
     if logfile in ('stderr', '/dev/stderr', 'stdout', '/dev/stdout'):
         # add stderr or stdout handler
@@ -286,6 +294,11 @@ class function:
         if _enable_function:
             logging.getLogger('ud2').getChild('MAIN').log(100, 'UNIVENTION_DEBUG_END   : ' + self.fname)
             _flush()
+
+
+def set_structured(use_structured=False):
+    global _use_structured
+    _use_structured = use_structured
 
 
 def trace(with_args=True, with_return=False, repr=object.__repr__):

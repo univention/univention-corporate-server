@@ -22,13 +22,13 @@ from warnings import warn
 
 from univention import _debug
 from univention._debug import (
-    ACL, ADMIN, ALL, AUTH, CONFIG, DHCP, ERROR, FLUSH, FUNCTION, INFO, KERBEROS, LDAP, LICENSE, LISTENER, LOCALE, MAIN,
-    MODULE, NETWORK, NO_FLUSH, NO_FUNCTION, PARSER, POLICY, PROCESS, PROTOCOL, RESOURCES, SEARCH, SLAPD, SSL, TRANSFILE,
-    USERS, WARN, begin, end, exit, get_level, init, reopen, set_function, set_level,
+    ACL, ADMIN, ALL, AUTH, CONFIG, DEBUG, DHCP, ERROR, FLUSH, FUNCTION, INFO, KERBEROS, LDAP, LICENSE, LISTENER, LOCALE,
+    MAIN, MODULE, NETWORK, NO_FLUSH, NO_FUNCTION, PARSER, POLICY, PROCESS, PROTOCOL, RESOURCES, SEARCH, SLAPD, SSL,
+    TRACE, TRANSFILE, USERS, WARN, begin, end, exit, get_level, init, reopen, set_function, set_level, set_structured,
 )
 
 
-__all__ = ('ACL', 'ADMIN', 'ALL', 'AUTH', 'CONFIG', 'DHCP', 'ERROR', 'FLUSH', 'FUNCTION', 'INFO', 'KERBEROS', 'LDAP', 'LICENSE', 'LISTENER', 'LOCALE', 'MAIN', 'MODULE', 'NETWORK', 'NO_FLUSH', 'NO_FUNCTION', 'PARSER', 'POLICY', 'PROCESS', 'PROTOCOL', 'RESOURCES', 'SEARCH', 'SLAPD', 'SSL', 'TRANSFILE', 'USERS', 'WARN', 'begin', 'debug', 'debug', 'end', 'exit', 'function', 'get_level', 'init', 'reopen', 'set_function', 'set_level', 'trace')
+__all__ = ('ACL', 'ADMIN', 'ALL', 'AUTH', 'CONFIG', 'DEBUG', 'DHCP', 'ERROR', 'FLUSH', 'FUNCTION', 'INFO', 'KERBEROS', 'LDAP', 'LICENSE', 'LISTENER', 'LOCALE', 'MAIN', 'MODULE', 'NETWORK', 'NO_FLUSH', 'NO_FUNCTION', 'PARSER', 'POLICY', 'PROCESS', 'PROTOCOL', 'RESOURCES', 'SEARCH', 'SLAPD', 'SSL', 'TRACE', 'TRANSFILE', 'USERS', 'WARN', 'begin', 'debug', 'debug', 'end', 'exit', 'function', 'get_level', 'init', 'reopen', 'set_function', 'set_level', 'set_structured', 'trace')
 
 
 def debug(category, level, message, utf8=True):
