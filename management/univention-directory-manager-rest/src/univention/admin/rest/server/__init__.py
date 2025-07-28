@@ -33,7 +33,7 @@ import univention.debug as ud
 import univention.lib.i18n
 import univention.logging
 from univention.admin.rest.shared_memory import shared_memory
-from univention.admin.rest.utils import RE_UUID, init_request_id_logging
+from univention.admin.rest.utils import RE_UUID, init_request_context_logging
 from univention.config_registry import ucr
 
 
@@ -43,7 +43,7 @@ except ImportError:
     _exit_function = None
 
 proctitle = getproctitle()
-request_id_context = contextvars.ContextVar("request_id")
+request_context = contextvars.ContextVar("request_context")
 logger = logging.getLogger('ADMIN')
 
 
@@ -67,7 +67,7 @@ class Gateway(tornado.web.RequestHandler):
     def prepare(self):
         request_id = self.request.headers.setdefault('X-Request-Id', str(uuid.uuid4()))
         self.request.x_request_id = RE_UUID.sub('', request_id)[:36]
-        request_id_context.set(self.request.x_request_id)
+        request_context.set({"request_id": self.request.x_request_id})
 
     @tornado.gen.coroutine
     def get(self):
@@ -154,7 +154,7 @@ class Gateway(tornado.web.RequestHandler):
         args = parser.parse_args()
 
         setproctitle(proctitle + '   # gateway main')
-        univention.logging.basicConfig(filename='stdout', univention_debug_level=args.debug)
+        univention.logging.basicConfig(filename='stdout', univention_debug_level=args.debug, use_structured_logging=ucr.is_true('directory/manager/rest/debug/structured-logging'))
 
         tornado.httpclient.AsyncHTTPClient.configure('tornado.curl_httpclient.CurlAsyncHTTPClient')
         tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-directory-manager-rest')
@@ -167,7 +167,7 @@ class Gateway(tornado.web.RequestHandler):
         logger.setLevel(logging.INFO)
         logger.addHandler(channel)
 
-        init_request_id_logging(request_id_context)
+        init_request_context_logging(request_context)
 
         # bind sockets
         socks = []

@@ -24,7 +24,7 @@ from tornado.httpserver import HTTPServer
 from tornado.netutil import bind_sockets, bind_unix_socket
 
 from univention.admin.rest.shared_memory import shared_memory
-from univention.admin.rest.utils import init_request_id_logging
+from univention.admin.rest.utils import init_request_context_logging
 from univention.config_registry import ucr
 from univention.lib.i18n import Locale, Translation
 # IMPORTANT NOTICE: we must import as few modules as possible, so that univention.admin is not yet imported
@@ -51,7 +51,7 @@ class Server:
         self.child_id = None
         setproctitle(proctitle + '   # server')
         # locale must be set before importing UDM!
-        log_init('/dev/stdout', args.debug, args.processes != 1)
+        log_init('/dev/stdout', args.debug, args.processes != 1, use_structured_logging=ucr.is_true('directory/manager/rest/debug/structured-logging'))
         language = str(Locale(args.language))
         locale.setlocale(locale.LC_MESSAGES, language)
         os.umask(0o077)  # FIXME: should probably be changed, this is what UMC sets
@@ -113,7 +113,7 @@ class Server:
         self.run_server(self.socks)
 
     def run_server(self, socks):
-        from univention.admin.rest.module import Application, request_id_context
+        from univention.admin.rest.module import Application, request_context
         application = Application(serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True))
 
         server = HTTPServer(application)
@@ -124,7 +124,7 @@ class Server:
         signal.signal(signal.SIGINT, partial(self.signal_handler_stop, server))
         signal.signal(signal.SIGHUP, partial(self.signal_handler_reload, application))
 
-        init_request_id_logging(request_id_context)
+        init_request_context_logging(request_context)
 
         try:
             tornado.ioloop.IOLoop.current().start()
