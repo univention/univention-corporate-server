@@ -17,6 +17,7 @@ import logging
 import operator
 import os
 import re
+import socket
 import traceback
 import uuid
 import xml.etree.ElementTree as ET  # noqa: S405
@@ -87,7 +88,7 @@ from univention.password import generate_password, password_config
 _ = Translation('univention-directory-manager-rest').translate
 
 MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35)
-request_id_context = contextvars.ContextVar("request_id")
+request_context = contextvars.ContextVar("request_context")
 
 log = logging.getLogger('MODULE')
 
@@ -98,9 +99,18 @@ class ResourceBase(SanitizerBase, HAL, HTML):
     pool = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
     @tornado.gen.coroutine
-    def pool_submit(self, *args, **kwargs):
-        future = self.pool.submit(*args, **kwargs)
+    def pool_submit(self, cb, *args, **kwargs):
+        future = self.pool.submit(self.pool_wrapper, cb, *args, **kwargs)
         return (yield future)
+
+    def pool_wrapper(self, func, *a, **kw):
+        request_context.set({
+            "request_id": self.request.x_request_id,
+            "requester_dn": self.request.user_dn,
+            "requester_ip": self.request.client_ip,
+            "requester_hostname": self.request.client_host,
+        })
+        return func(*a, **kw)
 
     requires_authentication = True
 
@@ -124,11 +134,21 @@ class ResourceBase(SanitizerBase, HAL, HTML):
 
     def prepare(self):
         self.request.x_request_id = RE_UUID.sub('', self.request.headers.get('X-Request-Id', str(uuid.uuid4())))[:36]
-        request_id_context.set(self.request.x_request_id)
         self.set_header('X-Request-Id', self.request.x_request_id)
         self.request.content_negotiation_lang = 'html'
         self.request.path_decoded = unquote(self.request.path)
         self.request.decoded_query_arguments = self.request.query_arguments.copy()
+        if request_forwarded_for := self.request.headers.get('X-Forwarded-For'):
+            if not isinstance(request_forwarded_for, list):
+                request_forwarded_for = str(request_forwarded_for).replace(', ', ',').split(',')
+            self.request.client_ip = request_forwarded_for[0]
+        else:
+            self.request.client_ip = self.request.remote_ip
+        try:
+            self.request.client_host = socket.gethostbyaddr(self.request.client_ip)[0]
+        except OSError:
+            self.request.client_host = ''
+
         authorization = self.request.headers.get('Authorization')
         if not authorization and self.requires_authentication:
             return self.force_authorization(None)
