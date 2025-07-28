@@ -1,0 +1,15 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: djvulibre
+fix: 3.5.27.1-7+deb9u3
+desc: |
+ This update addresses the following issues:
+ * CVSS score unknown. (CVE-2025-53367)
+ * CVSS score 6.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+   (CVE-2021-46312)
+bug: [58490]
+cve:
+- CVE-2021-46312
+- CVE-2025-53367
