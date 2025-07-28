@@ -1,3 +1,10 @@
+univention-keycloak (3.2.2) unstable; urgency=medium
+
+  * Issue univention/dev/projects/keycloak/keycloak-app#243:
+    Update univention-keycloak to 26.3.1
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 29 Jul 2025 10:31:09 +0200
+
 univention-keycloak (3.2.1) unstable; urgency=medium
 
   * univention/dev/internal/team-nubus#1314: add --force flag to oidc/rp and

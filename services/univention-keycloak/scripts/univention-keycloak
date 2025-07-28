@@ -2702,7 +2702,7 @@ def enable_2fa(opt):
     kc_admin.update_realm(opt.realm, {"browserFlow": "browser"})
 
     # create browser flow
-    create_conditional_2fa_flow(kc_admin, opt.realm, realm_2fa_role, flow_name)
+    create_conditional_2fa_flow(opt, kc_admin, opt.realm, realm_2fa_role, flow_name)
 
     # change authentication binding to conditional 2fa flow
     kc_admin.update_realm(opt.realm, {"browserFlow": flow_name})
@@ -2909,7 +2909,7 @@ def add_or_replace_mapper(kc_admin, component):
     return kc_admin.create_component(payload=component)
 
 
-def create_conditional_2fa_flow(kc_admin, realm, conditional_role, flow_name):
+def create_conditional_2fa_flow(opt, kc_admin, realm, conditional_role, flow_name):
     """
     Create a conditional 2FA-require authentication flow for a given role
     :param kc_admin: Keycloak client
@@ -2929,7 +2929,13 @@ def create_conditional_2fa_flow(kc_admin, realm, conditional_role, flow_name):
     kc_admin.copy_authentication_flow(payload={"newName": flow_name}, flow_alias="browser")
 
     # create role condition
-    master_subflow = f"{flow_name} Browser - Conditional OTP"
+
+    # Needed before upgrade to 26.3.1. Can be removed for the next version upgrade
+    master_subflow = f"{flow_name} Browser - Conditional 2FA"
+    kdc_version = KeycloakDomainConfig(opt.binddn, opt.bindpwd).current_version
+    if LooseVersion(kdc_version) < LooseVersion("26.3.1-ucs1"):
+        master_subflow = f"{flow_name} Browser - Conditional OTP"
+
     payload = {"provider": "conditional-user-role", "requirement": "REQUIRED"}
     kc_admin.create_authentication_flow_execution(payload=payload, flow_alias=master_subflow)
 
@@ -2940,15 +2946,28 @@ def create_conditional_2fa_flow(kc_admin, realm, conditional_role, flow_name):
             continue
         if exe["providerId"] == "conditional-user-role":
             condition_user_role_id = exe["id"]
+        if exe["providerId"] == "auth-otp-form":
+            auth_otp_form = exe["id"]
 
     # raise role condition prio (twice)
     execution_raise_priority(kc_admin, condition_user_role_id)
     execution_raise_priority(kc_admin, condition_user_role_id)
+    execution_raise_priority(kc_admin, auth_otp_form)
 
     # FIXME: bug in keycloak API means requirement = REQUIRED can not be set at creation
     # if this bug is fixed the following lines may be deleted
     payload_update_required_state = {
         "id": condition_user_role_id,
+        "requirement": "REQUIRED",
+    }
+    try:
+        kc_admin.update_authentication_flow_executions(payload=payload_update_required_state, flow_alias=flow_name)
+    except KeycloakGetError as exc:
+        if exc.response_code != 202:
+            raise
+
+    payload_update_required_state = {
+        "id": auth_otp_form,
         "requirement": "REQUIRED",
     }
     try:

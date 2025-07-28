@@ -53,6 +53,15 @@ EXPECTED_EXECUTIONS = [
         'priority': 25,
     },
     {
+        'configurable': False,
+        'displayName': 'WebAuthn Authenticator',
+        'index': 2,
+        'level': 3,
+        'priority': 30,
+        'providerId': 'webauthn-authenticator',
+        'requirement': 'DISABLED',
+    },
+    {
         'requirement': 'ALTERNATIVE',
         'displayName': 'forms (browser flow with legacy app authorization)',
         'configurable': False,
@@ -72,7 +81,7 @@ EXPECTED_EXECUTIONS = [
     },
     {
         'requirement': 'CONDITIONAL',
-        'displayName': 'Browser - Conditional OTP (browser flow with legacy app authorization)',
+        'displayName': 'Browser - Conditional 2FA (browser flow with legacy app authorization)',
         'configurable': False,
         'authenticationFlow': True,
         'level': 2,
@@ -89,13 +98,22 @@ EXPECTED_EXECUTIONS = [
         'priority': 10,
     },
     {
-        'requirement': 'REQUIRED',
+        'requirement': 'ALTERNATIVE',
         'displayName': 'OTP Form',
         'configurable': False,
         'providerId': 'auth-otp-form',
         'level': 3,
         'index': 1,
         'priority': 20,
+    },
+    {
+        'configurable': False,
+        'displayName': 'Recovery Authentication Code Form',
+        'index': 3,
+        'level': 3,
+        'priority': 40,
+        'providerId': 'auth-recovery-authn-code-form',
+        'requirement': 'DISABLED',
     },
     {
         'requirement': 'ALTERNATIVE',
