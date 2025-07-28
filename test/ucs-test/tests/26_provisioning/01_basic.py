@@ -119,9 +119,11 @@ def test_user_removal(udm, subscription, get_messages_and_ack):
 
 
 def test_prefill(udm, prefill_subscription, get_messages_and_ack):
-    udm.create_user()
     num_objects = len(udm.list_objects('groups/group'))
+    objects = [ob[0] for ob in udm.list_objects('groups/group')]
     i = 0
     for message in get_messages_and_ack(prefill_subscription):
-        i += 1
+        if message["publisher_name"] == "udm-pre-fill":
+            assert message["body"]["new"]["dn"] == objects[i]
+            i += 1
     assert i == num_objects

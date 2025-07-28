@@ -1,4 +1,4 @@
-ucs-test (12.2.30) unstable; urgency=medium
+ucs-test (12.2.31) unstable; urgency=medium
 
   * Issue univention/dev/internal/team-nubus#2954: Add basic prefill test
 
