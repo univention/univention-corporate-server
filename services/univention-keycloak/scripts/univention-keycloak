@@ -1899,10 +1899,11 @@ def parse_args(args: list[str] | None = None) -> Namespace:
 
     fa_parser = subparsers.add_parser("2fa", help="configure 2FA on a group given by --group-2fa (default: \"2FA group\")")
     operation_subparsers = fa_parser.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
-    adhoc_parser_opp = operation_subparsers.add_parser("enable", help="create a login flow that uses 2FA and activate it")
-    adhoc_parser_opp.add_argument("--group-2fa", default="2FA group")
-    adhoc_parser_opp.add_argument("--ldap-base", required=no_ucr_available, default=ldap_base)
-    adhoc_parser_opp.set_defaults(func=enable_2fa)
+    fa_parser_opp = operation_subparsers.add_parser("enable", help="create a login flow that uses 2FA and activate it")
+    fa_parser_opp.add_argument("--group-2fa", default="2FA group")
+    fa_parser_opp.add_argument("--ldap-base", required=no_ucr_available, default=ldap_base)
+    fa_parser_opp.add_argument("--legacy", help="Flag for compatibility with version older than Keycloak 26.3", default=False, action="store_true")
+    fa_parser_opp.set_defaults(func=enable_2fa)
 
     parser_ext = subparsers.add_parser("extension", help="manage extensions")
     operation_subparsers = parser_ext.add_subparsers(title="operation", description="valid subcommands", required=True, dest="operation")
@@ -2767,7 +2768,7 @@ def enable_2fa(opt):
     kc_admin.update_realm(opt.realm, {"browserFlow": "browser"})
 
     # create browser flow
-    create_conditional_2fa_flow(kc_admin, opt.realm, realm_2fa_role, flow_name)
+    create_conditional_2fa_flow(kc_admin, opt.realm, realm_2fa_role, flow_name, opt.legacy)
 
     # change authentication binding to conditional 2fa flow
     kc_admin.update_realm(opt.realm, {"browserFlow": flow_name})
@@ -2974,13 +2975,14 @@ def add_or_replace_mapper(kc_admin, component):
     return kc_admin.create_component(payload=component)
 
 
-def create_conditional_2fa_flow(kc_admin, realm, conditional_role, flow_name):
+def create_conditional_2fa_flow(kc_admin, realm, conditional_role, flow_name, legacy=True):
     """
     Create a conditional 2FA-require authentication flow for a given role
     :param kc_admin: Keycloak client
     :param realm: String
     :param conditional_role: String
     :param flow_name: String
+    :param legacy: Boolean
     :return: None
     """
     # delete old flow/subflows
@@ -2994,26 +2996,42 @@ def create_conditional_2fa_flow(kc_admin, realm, conditional_role, flow_name):
     kc_admin.copy_authentication_flow(payload={"newName": flow_name}, flow_alias="browser")
 
     # create role condition
-    master_subflow = f"{flow_name} Browser - Conditional OTP"
+    master_subflow = f"{flow_name} Browser - Conditional 2FA"
+    if legacy:
+        master_subflow = f"{flow_name} Browser - Conditional OTP"
+    print("Master subflow: ", master_subflow)
     payload = {"provider": "conditional-user-role", "requirement": "REQUIRED"}
     kc_admin.create_authentication_flow_execution(payload=payload, flow_alias=master_subflow)
 
-    # determine user role execution id
+    # determine user role execution id and auth-otp-form id
     condition_user_role_id = None
+    auth_otp_form = None
     for exe in kc_admin.get_authentication_flow_executions(flow_name):
         if exe.get("authenticationFlow"):
             continue
         if exe["providerId"] == "conditional-user-role":
             condition_user_role_id = exe["id"]
+        if exe["providerId"] == "auth-otp-form":
+            auth_otp_form = exe["id"]
 
     # raise role condition prio (twice)
     execution_raise_priority(kc_admin, condition_user_role_id)
     execution_raise_priority(kc_admin, condition_user_role_id)
+    execution_raise_priority(kc_admin, auth_otp_form)
 
     # FIXME: bug in keycloak API means requirement = REQUIRED can not be set at creation
     # if this bug is fixed the following lines may be deleted
     payload_update_required_state = {
         "id": condition_user_role_id,
+        "requirement": "REQUIRED",
+    }
+    try:
+        kc_admin.update_authentication_flow_executions(payload=payload_update_required_state, flow_alias=flow_name)
+    except KeycloakGetError as exc:
+        if exc.response_code != 202:
+            raise
+    payload_update_required_state = {
+        "id": auth_otp_form,
         "requirement": "REQUIRED",
     }
     try:
