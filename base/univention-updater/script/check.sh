@@ -127,14 +127,17 @@ update_check_slapd_on_member () {
 }
 
 update_check_ldap_schema () {
+	local output
 	[ -x /usr/sbin/slapschema ] ||
 		return 0
-	/usr/sbin/slapschema -f /etc/ldap/slapd.conf -c 1>&2 &&
-		return 0
 
-	echo "	There is a problem with the LDAP schema on this system."
-	echo "	Please check $UPDATER_LOG or run 'slapschema' manually."
-	return 1
+	output=$(/usr/sbin/slapschema -f /etc/ldap/slapd.conf -c 1>&2)
+	if echo "$output" | grep -q UNKNOWN; then
+		echo "$output"
+		echo "	There is a problem with the LDAP schema on this system."
+		echo "	Please check $UPDATER_LOG or run 'slapschema' manually."
+		return 1
+	fi
 }
 
 update_check_valid_machine_credentials () {
