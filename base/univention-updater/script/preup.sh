@@ -152,6 +152,15 @@ if dpkg -l univention-fetchmail 2>&3 | grep ^ii  >&3 ; then
 	systemctl stop fetchmail >&3 2>&3 || :
 fi
 
+# Bug #58248: univention-ldap-usercert is a dependency of univention-usercert
+# if univention-usercert was installed (cool-solution), it gets uninstalled
+# during the update to 5.2-0. If the customer didn't follow the instructions
+# exactly this autoremoves univention-ldap-usercert, causing schema problems.
+# apt-mark manual always returns 0. even if not installed
+if dpkg -l univention-ldap-usercert | grep ^ii; then
+	apt-mark manual univention-ldap-usercert
+fi
+
 # set KillMode of atd service to process to save the children from getting killed
 # up to this point the updater process is a child of atd as well
 install -m 0755 -o root -g root -d /etc/systemd/system/atd.service.d
