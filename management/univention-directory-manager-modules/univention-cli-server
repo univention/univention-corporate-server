@@ -11,7 +11,6 @@
 
 import array
 import errno
-import json
 import os
 import signal
 import socket
@@ -23,6 +22,8 @@ from io import StringIO
 from logging import getLogger
 from select import select
 from typing import IO
+
+import orjson
 
 import univention.admincli.adduser
 import univention.admincli.admin
@@ -154,12 +155,12 @@ def doit(sarglist: bytes, conn: socket.socket, stdout: IO[str] | None = None, st
 
     def send_message(output) -> None:
         """Send answer back."""
-        back = json.dumps(output, ensure_ascii=True).encode('ASCII')
+        back = orjson.dumps(output)
         conn.send(back + b'\0')
         conn.close()
 
     global logfile
-    arglist = json.loads(sarglist.decode('ASCII'))
+    arglist = orjson.loads(sarglist.decode('ASCII'))
 
     next_is_logfile = False
     secret = False

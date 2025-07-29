@@ -42,6 +42,7 @@ Depends:
  python3-lark,
  python3-lazy-object-proxy,
  python3-m2crypto,
+ python3-orjson,
  python3-passlib,
  python3-pil,
  python3-pyasn1-modules,

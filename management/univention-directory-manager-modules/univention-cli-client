@@ -10,13 +10,14 @@
 
 
 import array
-import json
 import os
 import socket
 import stat
 import sys
 import time
 from collections.abc import Sequence
+
+import orjson
 
 from univention.config_registry import ucr
 
@@ -159,12 +160,12 @@ def main() -> None:
         password = get_password()
         sys.argv += ['--pwd', password]
 
-    data = json.dumps(sys.argv, ensure_ascii=True).encode('ASCII')
+    data = orjson.dumps(sys.argv)
     send_fds(sock, data + b'\0', [sys.stdout.fileno(), sys.stderr.fileno()])
     data = receive_answer(sock)
     sock.close()
 
-    output = json.loads(data.decode('ASCII'))
+    output = orjson.loads(data)
     result = process_output(output, cmdfile)
     sys.exit(result)
 
