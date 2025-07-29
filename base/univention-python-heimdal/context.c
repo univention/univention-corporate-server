@@ -2,9 +2,6 @@
  * Python Heimdal
  *	Bindings for the context object of heimdal
  *
- * Like what you see? Join us!
- * https://www.univention.com/about-us/careers/vacancies/
- *
  * SPDX-FileCopyrightText: 2003-2025 Univention GmbH
  * SPDX-License-Identifier: AGPL-3.0-only
  */

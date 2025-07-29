@@ -2,9 +2,6 @@
 # Univention AD Connector
 #  this baseconfig script automatically generates the SSL certificate for the AD host
 #
-# Like what you see? Join us!
-# https://www.univention.com/about-us/careers/vacancies/
-#
 # SPDX-FileCopyrightText: 2004-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 

@@ -3,9 +3,6 @@
 # Univention App Center
 #  univention-app module for running an app specific test file
 #
-# Like what you see? Join us!
-# https://www.univention.com/about-us/careers/vacancies/
-#
 # SPDX-FileCopyrightText: 2017-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 #

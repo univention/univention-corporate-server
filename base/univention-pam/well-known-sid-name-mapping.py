@@ -3,9 +3,6 @@
 # Univention custom user and group name mapping
 #  listener module: mapping custom user and group names for well known sids
 #
-# Like what you see? Join us!
-# https://www.univention.com/about-us/careers/vacancies/
-#
 # SPDX-FileCopyrightText: 2014-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 

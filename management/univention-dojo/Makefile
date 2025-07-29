@@ -3,9 +3,6 @@
 # Univention Dojo Package
 #  Makefile for building/installing the package
 #
-# Like what you see? Join us!
-# https://www.univention.com/about-us/careers/vacancies/
-#
 # SPDX-FileCopyrightText: 2008-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 

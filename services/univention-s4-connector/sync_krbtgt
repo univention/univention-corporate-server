@@ -3,9 +3,6 @@
 # sync_krbtgt
 #  sync the password of krbtgt from Samba4 to UCS
 #
-# Like what you see? Join us!
-# https://www.univention.com/about-us/careers/vacancies/
-#
 # SPDX-FileCopyrightText: 2010-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 

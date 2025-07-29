@@ -3,9 +3,6 @@
 # Univention helper script
 #  migrate Samba database from tdb to mdb
 #
-# Like what you see? Join us!
-# https://www.univention.com/about-us/careers/vacancies/
-#
 # SPDX-FileCopyrightText: 2024-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 

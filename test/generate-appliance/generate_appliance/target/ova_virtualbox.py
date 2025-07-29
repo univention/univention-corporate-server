@@ -1,9 +1,6 @@
 
 # SPDX-FileCopyrightText: 2014-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
-#
-# Like what you see? Join us!
-# https://www.univention.com/about-us/careers/vacancies/
 
 import uuid
 from argparse import Namespace

@@ -1,7 +1,4 @@
 #!/usr/bin/python3
-# Like what you see? Join us!
-# https://www.univention.com/about-us/careers/vacancies/
-#
 # SPDX-FileCopyrightText: 2010-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 

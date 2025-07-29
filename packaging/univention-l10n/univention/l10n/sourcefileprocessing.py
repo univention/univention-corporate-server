@@ -4,9 +4,6 @@ Generate gettext Portable Objects and message catalogs (gettext MO and a
 Univention specific JSON-based format) from multiple source files by file type.
 """
 #
-# Like what you see? Join us!
-# https://www.univention.com/about-us/careers/vacancies/
-#
 # SPDX-FileCopyrightText: 2013-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 

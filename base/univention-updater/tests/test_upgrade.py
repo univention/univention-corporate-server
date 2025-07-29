@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 # pylint: disable-msg=C0301,W0212,C0103,R0904
 #
-# Like what you see? Join us!
-# https://www.univention.com/about-us/careers/vacancies/
-#
 # SPDX-FileCopyrightText: 2024-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
