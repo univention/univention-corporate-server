@@ -28,6 +28,7 @@ from http.client import responses
 from urllib.parse import parse_qs, quote, unquote, urlencode, urljoin, urlparse, urlunparse
 
 import ldap
+import orjson
 import tornado.gen
 import tornado.httpclient
 import tornado.httputil
@@ -292,7 +293,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
 
         if content_type in ('application/json', 'application/json-patch+json'):
             try:
-                self.request.body_arguments = json.loads(self.request.body)
+                self.request.body_arguments = orjson.loads(self.request.body)
             except ValueError as exc:
                 raise HTTPError(400, _('Invalid JSON document: %r') % (exc,))
         elif content_type in ('application/x-www-form-urlencoded', 'multipart/form-data'):
@@ -321,8 +322,8 @@ class ResourceBase(SanitizerBase, HAL, HTML):
     def content_negotiation_json(self, response, data):
         self.set_header('Content-Type', 'application/json')
         try:
-            return json.dumps(response, cls=JsonEncoder)
-        except TypeError:
+            return orjson.dumps(response, default=JsonEncoder().default)
+        except orjson.JSONDecodeError:
             log.error('Cannot JSON serialize: %r', response)
             raise
 

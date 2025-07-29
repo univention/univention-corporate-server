@@ -34,6 +34,7 @@ Depends:
  python3-genshi,
  python3-jinja2,
  python3-mimeparse,
+ python3-orjson,
  python3-pycurl,
  python3-setproctitle,
  python3-tornado,
