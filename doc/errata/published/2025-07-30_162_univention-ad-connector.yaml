@@ -15,3 +15,6 @@ desc: |
    `resync_object_from_*` scripts will handle the resynchronization of
    ancestors automatically if necessary.
 bug: [57979]
+erratum: 162
+announced: 2025-07-30
+support: core
