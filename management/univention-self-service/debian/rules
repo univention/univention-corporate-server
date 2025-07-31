@@ -8,3 +8,7 @@
 
 %:
 	dh $@ --with python3,ucr,univention-l10n,univention-join,umc
+
+override_dh_installsystemd:
+	dh_installsystemd --package=univention-self-service-passwordreset-umc --no-enable --no-start univention-self-service-passwordreset-umc.service
+	dh_installsystemd --no-package=univention-self-service-passwordreset-umc

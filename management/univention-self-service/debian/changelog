@@ -1,8 +1,13 @@
-univention-self-service (7.2.0) UNRELEASED; urgency=medium
+univention-self-service (7.2.0) unstable; urgency=medium
 
+  [ Ivan Barbecho Delgado ]
   * Bug #58344: UCS 5.2-2 version bump
 
- -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 28 May 2025 16:49:49 +0200
+  [ Marius Meschter ]
+  * Bug #51256: Disable the systemd service univention-self-service-passwordreset-umc.service
+    on replicas
+
+ -- Marius Meschter <marius.meschter@univention.de>  Thu, 31 Jul 2025 14:40:15 +0200
 
 univention-self-service (7.1.2) unstable; urgency=medium
 
