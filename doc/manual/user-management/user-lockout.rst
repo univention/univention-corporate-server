@@ -102,7 +102,7 @@ by entering the command:
 
 .. code-block::
 
-   $ faillog -r -u USERNAME
+   $ faillock --reset --user USERNAME
 
 If the lock occurs globally in the LDAP directory, the user can be reset in the
 |UCSUMC| module :guilabel:`Users` on the tab *Account* via the checkbox *Unlock

@@ -2495,8 +2495,8 @@ msgstr ""
 "Benutzerkonto durch Eingabe des folgenden Befehls entsperren:"
 
 #: ../../user-management/user-lockout.rst:103
-msgid "$ faillog -r -u USERNAME"
-msgstr "$ faillog -r -u USERNAME"
+msgid "$ faillock --reset --user USERNAME"
+msgstr "$ faillock --reset --user USERNAME"
 
 #: ../../user-management/user-lockout.rst:107
 msgid ""
