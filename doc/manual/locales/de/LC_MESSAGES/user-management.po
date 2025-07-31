@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-03 12:57+0200\n"
+"POT-Creation-Date: 2025-07-31 17:11+0000\n"
 "PO-Revision-Date: 2024-06-03 13:22+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -15,7 +15,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: ../../user-management/index.rst:78
 msgid "Chapter contents:"
@@ -162,6 +162,7 @@ msgstr ""
 "Zeichen."
 
 #: ../../user-management/index.rst:70
+#, python-brace-format
 msgid ""
 "The recommendation results in the following regular expression: "
 ":regexp:`^[a-z][a-z0-9-]{2,18}[a-z0-9]$`."
@@ -2500,13 +2501,14 @@ msgstr "$ faillock --reset --user USERNAME"
 
 #: ../../user-management/user-lockout.rst:107
 msgid ""
-"If the lock occurs globally in the LDAP directory, the user can be reset "
-"in the |UCSUMC| module :guilabel:`Users` on the tab *Account* via the "
-"checkbox *Unlock account*."
+"If the lock occurs globally in the LDAP directory, the user will be "
+"deactivated. The user can be activated again in the |UCSUMC| module "
+":guilabel:`Users` on the tab *Account* via the checkbox *Account is "
+"deactivated*."
 msgstr ""
-"Erfolgt die Sperrung global im LDAP, kann der Benutzer im UMC-Modul "
-":guilabel:`Benutzer` unter dem Reiter *Konto* mit der Optionen "
-"*Aussperrung zurücksetzen* zurückgesetzt werden."
+"Erfolgt die Sperrung global im LDAP, wird der Benutzer deaktiviert."
+"Der Benutzer kann im UMC-Modul :guilabel:`Benutzer` unter dem Reiter "
+"*Konto* mit der Option *Konto ist deaktiviert* zurückgesetzt werden."
 
 #: ../../user-management/user-lockout.rst:114
 msgid "OpenLDAP"
@@ -2532,9 +2534,8 @@ msgid ""
 "``yes`` and the OpenLDAP server must be restarted:"
 msgstr ""
 "Die Aktivierung der automatischen Kontosperrung muss pro UCS Directory "
-"Node erfolgen. Dazu müssen die |UCSUCRV| "
-":envvar:`ldap/ppolicy/enabled` auf ``yes`` gesetzt und der "
-"OpenLDAP Server neu gestartet werden:"
+"Node erfolgen. Dazu müssen die |UCSUCRV| :envvar:`ldap/ppolicy/enabled` "
+"auf ``yes`` gesetzt und der OpenLDAP Server neu gestartet werden:"
 
 #: ../../user-management/user-lockout.rst:125
 msgid ""
@@ -2883,6 +2884,7 @@ msgstr ""
 "Attribute und deren Zuordnung kann man über folgenden Aufruf erhalten:"
 
 #: ../../user-management/user-self-service.rst:144
+#, python-brace-format
 msgid ""
 "$ python3 -c 'from univention.admin.handlers.users.user import mapping;\\"
 "\n"
@@ -3041,6 +3043,7 @@ msgstr ""
 "Backend` verwendet, da diese |UCSUCRV| dort ausgewertet wird."
 
 #: ../../user-management/user-self-service.rst:242
+#, python-brace-format
 msgid ""
 "Defines the sender address of the verification email. Default is "
 ":samp:`Account Verification Service <noreply@{FQDN}>`."
@@ -3054,6 +3057,7 @@ msgid "Server name or IP address of the mail server to use."
 msgstr "Servername oder IP-Adresse des zu verwendenden Mail-Servers."
 
 #: ../../user-management/user-self-service.rst:251
+#, python-brace-format
 msgid ""
 "A path to a text file whose content will be used for the body of the "
 "verification email. The text can contain the following strings which will"
@@ -3124,6 +3128,7 @@ msgstr ""
 "wurden, hat diese Einstellung keine Auswirkung."
 
 #: ../../user-management/user-self-service.rst:298
+#, python-brace-format
 msgid ""
 "The message on the SSO login page for unverified, self registered "
 "accounts, can be set with the |UCSUCRVs| :envvar:`saml/idp/selfservice"
@@ -3191,6 +3196,7 @@ msgstr ""
 " folgenden |UCSUCRVs| konfiguriert werden kann."
 
 #: ../../user-management/user-self-service.rst:331
+#, python-brace-format
 msgid ""
 "Defines the sender address of the email. Default is :samp:`Password Reset"
 " Service <noreply@{FQDN}>`."
@@ -3199,6 +3205,7 @@ msgstr ""
 "Voreinstellung ist :samp:`Password Reset Service <noreply@{FQDN}>`."
 
 #: ../../user-management/user-self-service.rst:340
+#, python-brace-format
 msgid ""
 "A path to a text file whose content will be used for the body of the "
 "email. The text can contain the following strings which will be "

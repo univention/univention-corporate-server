@@ -104,9 +104,9 @@ by entering the command:
 
    $ faillock --reset --user USERNAME
 
-If the lock occurs globally in the LDAP directory, the user can be reset in the
-|UCSUMC| module :guilabel:`Users` on the tab *Account* via the checkbox *Unlock
-account*.
+If the lock occurs globally in the LDAP directory, the user will be deactivated.
+The user can be activated again in the |UCSUMC| module :guilabel:`Users`
+on the tab *Account* via the checkbox *Account is deactivated*.
 
 .. _users-faillog-openldap:
 
