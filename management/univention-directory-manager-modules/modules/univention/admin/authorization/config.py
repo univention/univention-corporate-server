@@ -11,6 +11,7 @@ import copy
 import hashlib
 import io
 import logging
+import sys
 
 import lark
 import yaml
@@ -104,8 +105,9 @@ class DSLSyntaxError(SyntaxError):
 class _DSLTransformer(Transformer):
     """Transformer for the UDM DSL"""
 
-    def __init__(self, filename, *args, **kwargs):
+    def __init__(self, filename, *args, strict=False, **kwargs):
         self.__filename = filename
+        self.__strict = strict
         super().__init__(*args, **kwargs)
 
     def start(self, items):
@@ -177,25 +179,38 @@ class _DSLTransformer(Transformer):
         }
 
     def to_line(self, items):
-        current_with = {}
-        current_with['grant'] = []
+        current_to = {}
+        current_to['grant'] = []
         for item in items:
             if isinstance(item, tuple):
-                current_with[item[0]] = item[1]
+                current_to[item[0]] = item[1]
             elif isinstance(item, dict):  # grant_line
-                if current_with['grant'] is None:
+                if current_to['grant'] is None:
                     raise ValueError("'to' without preceding 'grant'")
-                current_with['grant'].append(item)
+                current_to['grant'].append(item)
 
-        self._assert_names('to', current_with, {'grant', 'objecttype', 'if', 'position', 'name', 'description'})
-        if not current_with.get('objecttype'):
+        self._assert_names('to', current_to, {'grant', 'objecttype', 'if', 'position', 'name', 'description'})
+        object_type = current_to.get('objecttype')
+        if not object_type:
             raise DSLSyntaxError('objecttype required', (self.__filename, 0, 0, repr(items)))
-        if '/' not in current_with['objecttype'] and current_with['objecttype'] != '*':
-            raise DSLSyntaxError('invalid objecttype', (self.__filename, 0, 0, current_with['objecttype']))
+        if '/' not in object_type and object_type != '*':
+            raise DSLSyntaxError('invalid objecttype', (self.__filename, 0, 0, object_type))
+        mod = univention.admin.modules.get(object_type)
+        if object_type != '*' and not mod:
+            if self.__strict:
+                raise DSLSyntaxError(f'Object type {object_type} unknown!', (self.__filename, 0, 0, object_type))
+            print(f'Warning: No object type {object_type!r} exists.', file=sys.stderr)
+
+        for grant in current_to.get('grant', []):
+            for prop in grant.get('properties', []):
+                if prop != '*' and (not mod or not mod.property_descriptions.get(prop)):
+                    if self.__strict:
+                        raise DSLSyntaxError(f'Property {object_type}:{prop} unknown!', (self.__filename, 0, 0, f'{object_type}:{prop}'))
+                    print(f'Warning: No property {prop!r} for {object_type!r} exists. Assuming it is an extended attribute.', file=sys.stderr)
 
         return {
             'type': 'to',
-            'to': current_with,
+            'to': current_to,
         }
 
     def grant_line(self, items):
@@ -308,11 +323,12 @@ class _DSLTransformer(Transformer):
 class UDMAuthorizationConfig:
     """UDM specific DSL"""
 
-    def __init__(self, filename):
+    def __init__(self, filename, *, strict=False):
         self.filename = filename
-        self.parser = Lark(UDM_DSL_GRAMMAR, parser='lalr', transformer=_DSLTransformer(self.filename))
+        self.parser = Lark(UDM_DSL_GRAMMAR, parser='lalr', transformer=_DSLTransformer(self.filename, strict=strict))
 
     def parse(self):
+        univention.admin.modules.update()
         try:
             self.parsed = self.parser.parse(open(self.filename).read())
         except lark.exceptions.LarkError as exc:
@@ -502,9 +518,10 @@ if __name__ == '__main__':
     parser.add_argument('--config')
     parser.add_argument('--compose', action='store_true')
     parser.add_argument('--convert', action='store_true')
+    parser.add_argument('--unstrict', action='store_true')
     args = parser.parse_args()
 
-    conf = UDMAuthorizationConfig(args.config)
+    conf = UDMAuthorizationConfig(args.config, strict=not args.unstrict)
     conf.parse()
     if args.compose:
         print(conf.compose())
