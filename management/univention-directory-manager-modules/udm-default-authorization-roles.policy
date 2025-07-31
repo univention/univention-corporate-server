@@ -65,7 +65,7 @@ access by role="udm:default-roles:self-service-profile"
   description="Self service users are allowed to modify the properties of the own user object specified in UCR variable `self-service/udm_attributes`"
   to objecttype="users/user" if="is-self"
     grant actions="modify"
-    grant properties="jpegPhoto,e-mail,phone,roomnumber,departmentNumber,country,homeTelephoneNumber,mobileTelephoneNumber,homePostalAddress" permission="write"
+    grant properties="jpegPhoto,e-mail,phone,roomNumber,departmentNumber,country,homeTelephoneNumber,mobileTelephoneNumber,homePostalAddress" permission="write"
 
 # Every role
 access
@@ -142,9 +142,7 @@ access by role="udm:default-roles:organizational-unit-admin" context="udm:contex
   to objecttype="groups/group" position.subtree="{context}"
     grant actions="search,read,create,modify,rename,remove,move"
     grant properties="name" permission="write"
-    grant properties="password,serviceSpecificPassword" permission="writeonly"
     grant properties="guardianMemberRoles" permission="none"
-    grant properties="guardianInheritedRoles" permission="none"
     grant properties="*" permission="write"
 
   # example to allow only write to certain property values (must remove the above rule=none):
