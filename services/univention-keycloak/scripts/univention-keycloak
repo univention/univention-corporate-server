@@ -1908,7 +1908,6 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     fa_parser_opp = operation_subparsers.add_parser("enable", help="create a login flow that uses 2FA and activate it")
     fa_parser_opp.add_argument("--group-2fa", default="2FA group")
     fa_parser_opp.add_argument("--ldap-base", required=no_ucr_available, default=ldap_base)
-    fa_parser_opp.add_argument("--legacy", help="Flag for compatibility with version older than Keycloak 26.3", default=False, action="store_true")
     fa_parser_opp.set_defaults(func=enable_2fa)
 
     parser_ext = subparsers.add_parser("extension", help="manage extensions")
@@ -2774,7 +2773,7 @@ def enable_2fa(opt):
     kc_admin.update_realm(opt.realm, {"browserFlow": "browser"})
 
     # create browser flow
-    create_conditional_2fa_flow(kc_admin, opt.realm, realm_2fa_role, flow_name, opt.legacy)
+    create_conditional_2fa_flow(kc_admin, opt.realm, realm_2fa_role, flow_name)
 
     # change authentication binding to conditional 2fa flow
     kc_admin.update_realm(opt.realm, {"browserFlow": flow_name})
@@ -2981,7 +2980,7 @@ def add_or_replace_mapper(kc_admin, component):
     return kc_admin.create_component(payload=component)
 
 
-def create_conditional_2fa_flow(kc_admin, realm, conditional_role, flow_name, legacy=True):
+def create_conditional_2fa_flow(kc_admin, realm, conditional_role, flow_name):
     """
     Create a conditional 2FA-require authentication flow for a given role
     :param kc_admin: Keycloak client
@@ -3002,9 +3001,14 @@ def create_conditional_2fa_flow(kc_admin, realm, conditional_role, flow_name, le
     kc_admin.copy_authentication_flow(payload={"newName": flow_name}, flow_alias="browser")
 
     # create role condition
-    master_subflow = f"{flow_name} Browser - Conditional 2FA"
-    if legacy:
-        master_subflow = f"{flow_name} Browser - Conditional OTP"
+    # For compatibility, fetch all executions, filter on possible flows
+    url = f"admin/realms/{kc_admin.realm_name}/authentication/flows/{flow_name}/executions"
+    flows = kc_admin.raw_get(url).json()
+
+    possible_flows = [f"{flow_name} Browser - Conditional 2FA", f"{flow_name} Browser - Conditional OTP"]
+    filter_flows = [flow for flow in flows if flow["displayName"] in possible_flows]
+    master_subflow = filter_flows[0]["displayName"]
+
     print("Master subflow: ", master_subflow)
     payload = {"provider": "conditional-user-role", "requirement": "REQUIRED"}
     kc_admin.create_authentication_flow_execution(payload=payload, flow_alias=master_subflow)
