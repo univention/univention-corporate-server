@@ -1,8 +1,16 @@
+#!/usr/share/ucs-test/runner pytest-3 -s -vvv --tb=native
+# desc: Test auth/faillog for the univention-management-console pam stack
+# exposure: dangerous
+# bugs: [57968]
+# packages: [univention-management-console-server]
+# roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
+
 import subprocess
 
 import pytest
 from retrying import retry
 
+from univention.config_registry import ucr as _ucr
 from univention.lib.umc import HTTPError
 from univention.testing.umc import Client
 
@@ -20,6 +28,9 @@ def enable_faillog_global(ucr):
 @pytest.fixture
 def faillog_attempts(ucr):
     return ucr.get_int('auth/faillog/limit')
+
+
+run_on_primary_and_backup = pytest.mark.skipif(_ucr.get('server/role') not in ['domaincontroller_master', 'domaincontroller_backup'], reason='Test can only run primary and backup')
 
 
 def assert_successful_authentication(username, password, client):
@@ -60,6 +71,7 @@ def test_successful_login_resets_faillock(udm, faillog_attempts):
 
 
 @pytest.mark.usefixtures('enable_faillog_global')
+@run_on_primary_and_backup
 def test_faillog_global_umc_login(udm, faillog_attempts):
     username = udm.create_user()[1]
     client = Client(language='en-US')
