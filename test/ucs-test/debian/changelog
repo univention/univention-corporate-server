@@ -1,3 +1,11 @@
+ucs-test (12.2.40) unstable; urgency=medium
+
+  * Bug 51256: add test to ensure the
+    univention-self-service-passwordreset-umc service is disabled and
+    not in a failed state
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 07 Aug 2025 09:33:20 +0200
+
 ucs-test (12.2.39) unstable; urgency=medium
 
   * Issue univention/dev/projects/keycloak/keycloak-app#243: Fix expeted_executions for
