@@ -1,3 +1,10 @@
+ucs-test (12.2.37) unstable; urgency=medium
+
+  * Bug #57968: use `pytest.mark.roles` to run test_faillog_global_umc_login
+    only on primary and backup
+
+ -- Marius Meschter <marius.meschter@univention.de>  Mon, 04 Aug 2025 11:47:35 +0200
+
 ucs-test (12.2.36) unstable; urgency=medium
 
   * Bug #57968: add ucs-test header to 106_pam_faillock_umc_login.py
