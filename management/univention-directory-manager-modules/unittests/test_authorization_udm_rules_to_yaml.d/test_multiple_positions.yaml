@@ -74,5 +74,7 @@ role-capability-mapping:
       capabilities: []
       capability-bundles:
       - udm:bundles:role
+      - udm:bundles:role-1
+      - udm:bundles:role-2
       displayname: ''
       permissions: []

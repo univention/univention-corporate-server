@@ -5,12 +5,28 @@
 
 import argparse
 import pathlib
+import sys
+from unittest.mock import MagicMock
 
 import jsondiff
 import pytest
 import yaml
 
-from univention.admin.authorization.config import UDMAuthorizationConfig
+
+sys.modules['univention.config_registry'] = MagicMock()
+sys.modules['univention.logging'] = MagicMock()
+sys.modules['univention.admin._ucr'] = MagicMock()
+sys.modules['univention.license'] = MagicMock()
+sys.modules['univention.admin.modules'] = MagicMock()
+sys.modules['univention.admin.syntax'] = MagicMock()
+sys.modules['univention.admin.blocklist'] = MagicMock()
+sys.modules['univention.admin.uldap'] = MagicMock()
+sys.modules['univention.admin.handlers'] = MagicMock()
+sys.modules['univention.dn'] = MagicMock()
+sys.modules['univention.lib.i18n'] = MagicMock()
+
+
+from univention.admin.authorization.config import UDMAuthorizationConfig  # noqa: E402
 
 
 TEST_FILES = './unittests/test_authorization_udm_rules_to_yaml.d/'
