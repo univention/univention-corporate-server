@@ -165,9 +165,8 @@ shows an example for a generic form of a role definition.
 
 .. note::
 
-   Values for ``objecttype`` and ``properties`` are names of UDM objects and
-   UDM properties, like ``users/user`` or ``username``, not LDAP object classes or
-   LDAP attributes.
+   The values for ``objecttype`` and ``properties`` refer to UDM object types and property names, such as ``users/user`` or ``username``.
+   These are not LDAP object classes or LDAP attribute names.
 
 The following list explains the elements from
 :numref:`da-concepts-role-definition-listing`.

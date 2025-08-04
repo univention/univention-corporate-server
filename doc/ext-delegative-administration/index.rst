@@ -68,8 +68,8 @@ Limits and known issues
 
 .. note::
 
-   Delegative administration is available for the services UMC and UDM HTTP REST API,
-   but currently not for the UDM command line interface.
+   Delegated administration is supported for the UMC and UDM HTTP REST API services.
+   However, it is currently not available for the UDM command-line interface.
 
 
 As already said,
