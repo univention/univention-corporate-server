@@ -163,6 +163,12 @@ shows an example for a generic form of a role definition.
        grant actions="<ACTIONS>"
        grant properties="<OBJECT_PROPERTY>" permission="<PERMISSION>"
 
+.. note::
+
+   Values for ``objecttype`` and ``properties`` are names of UDM objects and
+   UDM properties, like ``users/user`` or ``username``, not LDAP object classes or
+   LDAP attributes.
+
 The following list explains the elements from
 :numref:`da-concepts-role-definition-listing`.
 

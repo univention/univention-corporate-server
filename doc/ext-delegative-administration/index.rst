@@ -66,6 +66,12 @@ The current implementation has the following technical requirements:
 Limits and known issues
 =======================
 
+.. note::
+
+   Delegative administration is available for the services UMC and UDM HTTP REST API,
+   but currently not for the UDM command line interface.
+
+
 As already said,
 delegative administration is in an early development stage
 and many things are still missing or not fully implemented,
