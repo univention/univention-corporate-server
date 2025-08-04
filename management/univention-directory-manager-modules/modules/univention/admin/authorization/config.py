@@ -100,7 +100,7 @@ _VALUE_OPERATORS = {
 
 BUNDLE_NAMESPACE = 'udm:bundles'
 ACTIONS = ('search', 'read', 'create', 'modify', 'rename', 'remove', 'move', 'report-create')
-PERMISSIONS = ('search', 'read', 'write', 'readonly', 'writeonly', 'none', '*')
+PERMISSIONS = ('search', 'read', 'write', 'readonly', 'writeonly', 'none')
 SORT_PRIO = {
     'actions': {v: k for k, v in [*list(enumerate(ACTIONS)), [len(ACTIONS), '*']]},
     'permissions': {v: k for k, v in [*list(enumerate(PERMISSIONS)), [len(PERMISSIONS), '*']]},
@@ -442,10 +442,9 @@ class UDMAuthorizationConfig:
                     # grant given properties
                     perms = set(prop['permission'].split(',')) if isinstance(prop['permission'], str) else set(prop['permission'])
                     # perms = {prop['permission']}
-                    all_perms = {'read', 'search', 'write', 'readonly', 'writeonly', 'none'}
 
                     if '*' in perms:
-                        perms.update(all_perms)
+                        perms.update(set(PERMISSIONS))
                         perms.remove('*')
                     if 'read' in perms:
                         perms.add('search')
