@@ -99,6 +99,12 @@ _VALUE_OPERATORS = {
 }
 
 BUNDLE_NAMESPACE = 'udm:bundles'
+ACTIONS = ('search', 'read', 'create', 'modify', 'rename', 'remove', 'move', 'report-create')
+PERMISSIONS = ('search', 'read', 'write', 'readonly', 'writeonly', 'none', '*')
+SORT_PRIO = {
+    'actions': {v: k for k, v in [*list(enumerate(ACTIONS)), [len(ACTIONS), '*']]},
+    'permissions': {v: k for k, v in [*list(enumerate(PERMISSIONS)), [len(PERMISSIONS), '*']]},
+}
 
 
 class DSLSyntaxError(SyntaxError):
@@ -231,7 +237,7 @@ class _DSLTransformer(Transformer):
             raise DSLSyntaxError('invalid "grant": requires only one of actions or permission', (self.__filename, 0, 0, ''))
 
         if 'permission' in grant:
-            self._assert_names('permission', set(grant['permission'].split(',')), {'read', 'search', 'write', 'readonly', 'writeonly', 'none', '*'})
+            self._assert_names('permission', set(grant['permission'].split(',')), {*PERMISSIONS, '*'})
 
         return grant
 
@@ -260,7 +266,7 @@ class _DSLTransformer(Transformer):
         if key in {'actions', 'properties'} and isinstance(value, str):
             value = [v.strip() for v in value.split(',')]
             if key == 'actions':
-                self._assert_names('actions', set(value), {'search', 'read', 'create', 'modify', 'rename', 'remove', 'move', 'report-create', '*'})
+                self._assert_names('actions', set(value), {*ACTIONS, '*'})
         return (key, value)
 
     def value(self, items):
@@ -295,7 +301,8 @@ class _DSLTransformer(Transformer):
 
         def _v(k, v):
             if isinstance(v, list):
-                return f'{k}="{",".join(sorted(v))}"'
+                sv = sorted(v, key=lambda x: SORT_PRIO.get(k, {}).get(x, x))
+                return f'{k}="{",".join(sv)}"'
             if isinstance(v, str):
                 return f'{k}="{v}"'
             if v[0]:
@@ -420,10 +427,9 @@ class UDMAuthorizationConfig:
                 for prop in grants:
                     # grant given actions
                     if 'properties' not in prop:
-                        all_actions = {'search', 'read', 'create', 'modify', 'rename', 'remove', 'move', 'report-create'}
                         actions = set(prop.get('actions', []))
                         if '*' in actions:
-                            actions.update(all_actions)
+                            actions.update(set(ACTIONS))
                             actions.remove('*')
                         elif 'read' in actions:
                             actions.add('search')
