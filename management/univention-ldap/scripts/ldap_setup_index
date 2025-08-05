@@ -18,6 +18,8 @@ RE_UNDEFINED = re.compile(
     r'/etc/ldap/slapd\.conf: line [0-9]+: index attribute "([^"]+)" undefined',
 )
 
+MDB_INDICES = 256
+
 
 class LdapIndex:
 
@@ -25,6 +27,7 @@ class LdapIndex:
         with ConfigRegistry() as ucr:
             self.load_ucr(ucr)
             self.add_defaults()
+            self.validate_index()
             self.modify_index()
             self.save_ucr(ucr)
             self.validate_config(ucr)
@@ -123,6 +126,13 @@ class LdapIndex:
             LOG.debug('Adding defaults...')
             for typ, attributes in self.index.items():
                 attributes |= RECOMMENDED_LDAP_INDEX[typ]
+
+    def validate_index(self):
+        indexed_attributes = list(set().union(*[attributes for typ, attributes in self.index.items()]) - {'default'})
+        num_sub_dbs = len(indexed_attributes) + len(['ad2i', 'dn2i', 'id2e', 'id2v'])
+        if num_sub_dbs > MDB_INDICES:
+            LOG.error('Too many attributes to be indexed: %s (MDB_INDICES=%s)', num_sub_dbs, MDB_INDICES)
+            sys.exit(1)
 
     def modify_index(self):
         for typ, attributes in self.index.items():
