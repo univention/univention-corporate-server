@@ -10,3 +10,6 @@ desc: |
    Univention Management Console to properly track and enforce
    login attempt limits.
 bug: [57968]
+erratum: 164
+announced: 2025-08-06
+support: core
