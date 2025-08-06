@@ -9,6 +9,7 @@ Build-Depends:
  libunivention-debug-dev (>= 11.0.0-2),
  python3-all-dev,
  python3-debian,
+ python3-loguru,
  python3-pytest,
  python3-setuptools,
 
