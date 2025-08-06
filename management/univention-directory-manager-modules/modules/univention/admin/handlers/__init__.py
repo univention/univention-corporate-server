@@ -1350,10 +1350,11 @@ class simpleLdap:
 
         log.debug('create object with dn: %s', self.dn)
         log.log(1, 'Create dn=%r;\naddlist=%r;', self.dn, al)
-        loguru_logger.info("Created Object.",
-                           type=self.module.encode('utf-8'),
-                           dn=self.dn,
-                           )
+        loguru_logger.info(
+            "Created Object.",
+            type=self.module,
+            target_dn=self.dn,
+        )
         # if anything goes wrong we need to remove the already created object, otherwise we run into 'already exists' errors
         try:
             self.lo.authz_connection.add(self.dn, al, serverctrls=serverctrls, response=response, ignore_license=ignore_license)
@@ -1445,7 +1446,7 @@ class simpleLdap:
             if self.hasChanged(prop_name):
                 modifications[f'property.{prop_name}.old'] = prop_old
                 modifications[f'property.{prop_name}.new'] = prop_new
-        loguru_logger.info("Modified object.", type=self.module.encode('utf-8'), dn=self.dn, **modifications)
+        loguru_logger.info("Modified object.", type=self.module, target_dn=self.dn, **modifications)
         blocklist_entries = univention.admin.blocklist.create_blocklistentry(self)
         try:
             try:
