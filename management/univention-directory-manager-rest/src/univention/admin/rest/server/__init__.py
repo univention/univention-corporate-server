@@ -154,7 +154,16 @@ class Gateway(tornado.web.RequestHandler):
         args = parser.parse_args()
 
         setproctitle(proctitle + '   # gateway main')
-        univention.logging.basicConfig(filename='stdout', univention_debug_level=args.debug)
+        # This line has been changed for the sake of ease of setting up
+        # a personal testenvironment to check the results of the PR
+        import logging
+        univention.logging.basicConfig(filename='stdout',
+                                       level=logging.INFO,
+                                       univention_debug_level=args.debug,
+                                       use_journald_logging=True,
+                                       use_structured_logging=True,
+                                       use_message_ids=True,
+                                       )
 
         tornado.httpclient.AsyncHTTPClient.configure('tornado.curl_httpclient.CurlAsyncHTTPClient')
         tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-directory-manager-rest')
