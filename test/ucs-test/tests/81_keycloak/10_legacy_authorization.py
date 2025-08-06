@@ -8,6 +8,7 @@ import os
 
 import pytest
 import requests
+from debian.debian_support import Version
 from playwright.sync_api import expect
 from utils import run_command
 
@@ -15,6 +16,134 @@ from univention.udm import UDM
 
 
 LEGACY_APP_AUTHORIZATION_NAME = 'browser flow with legacy app authorization'
+OLD_EXPECTED_EXECUTIONS = [
+    {
+        'requirement': 'REQUIRED',
+        'displayName': 'Normal Login (browser legacy app authorization)',
+        'configurable': False,
+        'authenticationFlow': True,
+        'level': 0,
+        'index': 0,
+        'priority': 1,
+    },
+    {
+        'requirement': 'ALTERNATIVE',
+        'displayName': 'Cookie',
+        'configurable': False,
+        'providerId': 'auth-cookie',
+        'level': 1,
+        'index': 0,
+        'priority': 10,
+    },
+    {
+        'requirement': 'ALTERNATIVE',
+        'displayName': 'Kerberos',
+        'configurable': False,
+        'providerId': 'auth-spnego',
+        'level': 1,
+        'index': 1,
+        'priority': 20,
+    },
+    {
+        'requirement': 'ALTERNATIVE',
+        'displayName': 'Identity Provider Redirector',
+        'configurable': True,
+        'providerId': 'identity-provider-redirector',
+        'level': 1,
+        'index': 2,
+        'priority': 25,
+    },
+    {
+        'requirement': 'ALTERNATIVE',
+        'displayName': 'forms (browser flow with legacy app authorization)',
+        'configurable': False,
+        'authenticationFlow': True,
+        'level': 1,
+        'index': 4,
+        'priority': 30,
+    },
+    {
+        'requirement': 'REQUIRED',
+        'displayName': 'Username Password Form',
+        'configurable': False,
+        'providerId': 'auth-username-password-form',
+        'level': 2,
+        'index': 0,
+        'priority': 10,
+    },
+    {
+        'requirement': 'CONDITIONAL',
+        'displayName': 'Browser - Conditional OTP (browser flow with legacy app authorization)',
+        'configurable': False,
+        'authenticationFlow': True,
+        'level': 2,
+        'index': 1,
+        'priority': 20,
+    },
+    {
+        'requirement': 'REQUIRED',
+        'displayName': 'Condition - user configured',
+        'configurable': False,
+        'providerId': 'conditional-user-configured',
+        'level': 3,
+        'index': 0,
+        'priority': 10,
+    },
+    {
+        'requirement': 'REQUIRED',
+        'displayName': 'OTP Form',
+        'configurable': False,
+        'providerId': 'auth-otp-form',
+        'level': 3,
+        'index': 1,
+        'priority': 20,
+    },
+    {
+        'requirement': 'ALTERNATIVE',
+        'displayName': 'Organization Identity-First Login',
+        'index': 1,
+        'level': 3,
+        'priority': 20,
+        'providerId': 'organization',
+        'configurable': True,
+    },
+    {
+        'configurable': False,
+        'displayName': 'Condition - user configured',
+        'index': 0,
+        'level': 3,
+        'priority': 10,
+        'providerId': 'conditional-user-configured',
+        'requirement': 'REQUIRED',
+    },
+    {
+        'authenticationFlow': True,
+        'configurable': False,
+        'displayName': 'Organization (browser flow with legacy app authorization)',
+        'index': 3,
+        'level': 1,
+        'priority': 26,
+        'requirement': 'ALTERNATIVE',
+    },
+    {
+        'authenticationFlow': True,
+        'configurable': False,
+        'displayName': 'Browser - Conditional Organization (browser flow with legacy app authorization)',
+        'index': 0,
+        'level': 2,
+        'priority': 10,
+        'requirement': 'CONDITIONAL',
+    },
+    {
+        'requirement': 'REQUIRED',
+        'displayName': 'Univention App Authenticator',
+        'configurable': True,
+        'providerId': 'univention-app-authenticator',
+        'level': 0,
+        'index': 1,
+        'priority': 2,
+    },
+]
 EXPECTED_EXECUTIONS = [
     {
         'requirement': 'REQUIRED',
@@ -164,7 +293,8 @@ EXPECTED_EXECUTIONS = [
 
 
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
-def test_univention_keycloak_legacy_flow_config(keycloak_administrator_connection):
+def test_univention_keycloak_legacy_flow_config(keycloak_administrator_connection, ucr):
+    kc_app_version = ucr.get('appcenter/apps/keycloak/version')
     flows = keycloak_administrator_connection.get_authentication_flows()
     remove = False
     if not any(x['alias'] == LEGACY_APP_AUTHORIZATION_NAME for x in flows):
@@ -181,7 +311,7 @@ def test_univention_keycloak_legacy_flow_config(keycloak_administrator_connectio
             if 'flowId' in e:
                 del e['flowId']
         sorted_executions = sorted(executions, key=lambda ele: sorted(ele.items()))
-        sorted_expected_executions = sorted(EXPECTED_EXECUTIONS, key=lambda ele: sorted(ele.items()))
+        sorted_expected_executions = sorted(EXPECTED_EXECUTIONS if Version(kc_app_version) >= Version("26.3.1") else OLD_EXPECTED_EXECUTIONS, key=lambda ele: sorted(ele.items()))
         assert sorted_executions == sorted_expected_executions
     finally:
         if remove:

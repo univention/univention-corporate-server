@@ -1,3 +1,9 @@
+ucs-test (10.0.24-25) unstable; urgency=medium
+
+  * Bug #58515: Fix expected_executions for older versions of keycloak
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 06 Aug 2025 13:25:10 +0200
+
 ucs-test (10.0.24-24) unstable; urgency=medium
 
   * Bug #58515: Update tests to 26.3.1
