@@ -1,3 +1,10 @@
+ucs-test (12.2.39) unstable; urgency=medium
+
+  * Issue univention/dev/projects/keycloak/keycloak-app#243: Fix expeted_executions for
+    olders versions of keycloak
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 06 Aug 2025 13:25:10 +0200
+
 ucs-test (12.2.38) unstable; urgency=medium
 
   * Issue univention/dev/projects/keycloak/keycloak-app#243: Update tests to 26.3.1
