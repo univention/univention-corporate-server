@@ -12,6 +12,7 @@ Build-Depends:
  python3-loguru,
  python3-pytest,
  python3-setuptools,
+ python3-systemd,
 
 Package: python3-univention-debug
 Architecture: any
