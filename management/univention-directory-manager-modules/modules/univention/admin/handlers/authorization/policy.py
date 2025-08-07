@@ -20,6 +20,7 @@ _ = translation.translate
 module = 'authorization/policy'
 operations = ['add', 'edit', 'remove', 'search']
 childs = False
+default_containers = ['cn=authz,cn=univention']
 short_description = _('Authorization Policy')
 object_name = _('Authorization Policy')
 object_name_plural = _('Authorization Policy')

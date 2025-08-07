@@ -30,6 +30,7 @@ _ = translation.translate
 module = 'authorization/comparison'
 operations = ['add', 'edit', 'remove', 'search']
 childs = False
+default_containers = ['cn=authz,cn=univention']
 short_description = _('Authorization: Comparison condition')
 object_name = _('Comparison condition')
 object_name_plural = _('Comparison condition')

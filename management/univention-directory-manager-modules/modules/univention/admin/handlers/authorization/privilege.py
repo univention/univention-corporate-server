@@ -8,6 +8,8 @@ from __future__ import annotations
 from logging import getLogger
 from typing import TYPE_CHECKING
 
+import ldap.filter
+
 import univention.admin.handlers
 import univention.admin.localization
 from univention.admin.layout import Group, Tab
@@ -24,6 +26,7 @@ _ = translation.translate
 module = 'authorization/privilege'
 operations = ['add', 'edit', 'remove', 'search']
 childs = False
+default_containers = ['cn=authz,cn=univention']
 short_description = _('Authorization Privilege')
 object_name = _('Authorization Privilege')
 object_name_plural = _('Authorization Privilege')
@@ -85,7 +88,14 @@ property_descriptions = {
     'condition': univention.admin.property(
         short_description=_('Condition'),
         long_description=_('Further restriction where this policy applies to'),
-        syntax=univention.admin.syntax.string,
+        syntax=univention.admin.syntax.AuthorizationRestriction,
+    ),
+    'policies': univention.admin.property(
+        short_description=_('Referencing policies'),
+        long_description=_('All policies referncing this privilege.'),
+        multivalue=True,
+        may_change=False,
+        syntax=univention.admin.syntax.AuthorizationPolicy,
     ),
 }
 
@@ -104,6 +114,7 @@ layout = [
     ]),
     Tab(_('Policies'), _('Policies'), layout=[
         Group(_('Privilege'), layout=[
+            'policies',
         ]),
     ], help_text=_('All policies which reference this privilege are shown here.')),
 ]
@@ -186,6 +197,12 @@ mapping.register('condition', 'univentionAuthorizationCondition', None, univenti
 
 class object(univention.admin.handlers.simpleLdap):
     module = module
+
+    def open(self):
+        super().open()
+        if self.exists():
+            self['policies'] = self.lo.searchDn(ldap.filter.filter_format('univentionAuthorizationTo=%s', [self.dn]))
+            self.save()
 
 
 lookup = object.lookup

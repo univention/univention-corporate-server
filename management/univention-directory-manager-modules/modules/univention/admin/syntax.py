@@ -7077,7 +7077,10 @@ class GuardianRole(simple):
 
 class AuthorizationPrivileges(UDM_Objects):
     label = '%(name)s'
-    udm_modules = ('authorization/privilege')
+    udm_modules = ('authorization/privilege',)
+    simple = True
+    empty_value = True
+    key = 'dn'
 
 
 class AuthorizationActions(select):
@@ -7094,8 +7097,13 @@ class AuthorizationActions(select):
     ]
 
 
-class AuthorizationRestriction(string):
+class AuthorizationRestriction(UDM_Objects):
     size = 'OneThird'
+    label = '%(name)s'
+    simple = True
+    empty_value = True
+    key = 'dn'
+    udm_modules = ('authorization/comparison',)
 
 
 class AuthorizationPermission(select):
@@ -7165,6 +7173,12 @@ class AuthorizationScopePosition(complex):
     size = 'Two'
     subsyntaxes = ((_('Scope'), AuthorizationScope), (_('Position'), AuthorizationPositions))
     subsyntax_names = ('scope', 'position')
+
+
+class AuthorizationPolicy(string):
+    pass
+    # widget = 'LinkList'
+    # widget = 'umc/modules/udm/LinkList'
 
 
 class CMPType(select):
