@@ -382,7 +382,7 @@ Alernative concept to wildcard permissions would be something like a "permission
 
 The conflicting issue: We have to offer security by default and usability and maintainability of rules for the customers.
 
-## Define the role of the tree structure / Comparision with LDAP ACLs
+## Define the role of the tree structure / Comparison with LDAP ACLs
 
 In the whole concept we ignore that a directory service is a tree-based directory.
 In LDAP, in order to be able to read an object, you need `read` or `search` rights to the `entry` attribute on all parent objects and if you want to modify the object, you need read rights to the `children` attribute on the parent object.
@@ -917,7 +917,7 @@ For large environments doing a search with a base underneath of an object which 
 
 ### OPA/Rego doesn't know LDAP DNs
 
-In UDM we use the C library `_ldap` for LDAP DN comparisions to make correct comparisions, as our customer environments use special characters like `+`, `=`, `(`, etc.
+In UDM we use the C library `_ldap` for LDAP DN comparisons to make correct comparisons, as our customer environments use special characters like `+`, `=`, `(`, etc.
 Depending on the request and where data origins from we have different DN formats. e.g. `uid = foo \+ bar,cn=users` is equal to `uid=foo \2b bar,cn=user`.
 
 So our checks in OPA need to know these normalization rules when comparing DNs.
@@ -925,7 +925,7 @@ This is not only from a functional point of view important but also from the sec
 See the above paragraph; it is required to prevent that actors can enumerate valid LDAP DNs to check if an object exists, they could just give a different DN representation and get different permission results just because LDAP supports both but guardian wouldn't.
 
 We can normalize actor and target DN's before sending them to Guardian, still it must be able to handle special chars.
-And when it comes to value based comparisions this will break, as we don't have enough Code introspection possibilities in UDM to know if something is a DN or another value.
+And when it comes to value based comparisons this will break, as we don't have enough Code introspection possibilities in UDM to know if something is a DN or another value.
 E.g. in OX some values are stored like `$DN || foo || bar`.
 
 ### Guardian as Policy Information endpoint doesn't add security to the whole system architecture automatically
