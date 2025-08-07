@@ -315,7 +315,7 @@ class attribute:
     :type single_value: bool
 
     :param compare_function:
-    A comparision function which compares raw ldap attribute values.
+    A comparison function which compares raw ldap attribute values.
     :type compare_function: callable
 
     :param mapping:
