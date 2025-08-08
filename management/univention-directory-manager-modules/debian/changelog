@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.3.2) unstable; urgency=medium
+
+  * #58652: new udm type users/federated_account
+
+ -- Felix Botner <botner@univention.de>  Mon, 29 Sep 2025 12:10:35 +0200
+
 univention-directory-manager-modules (17.3.1) unstable; urgency=medium
 
   * Bug #58649: adjust for ABAC policy format changes
