@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issues:
  * Further improvments for the delegative administration feature have been
    implemented.
-bug: [58517]
+ * Clean up references to apps installed on a Domaincontroller
+   or memberserver when the computer is removed.
+bug: [58517, 54892]

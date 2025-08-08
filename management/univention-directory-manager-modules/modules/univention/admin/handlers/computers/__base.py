@@ -25,7 +25,7 @@ import univention.admin.password
 import univention.admin.samba
 import univention.admin.uexceptions
 import univention.admin.uldap
-from univention.admin import nagios
+from univention.admin import appcenter, nagios
 from univention.admin.certificate import PKIIntegration
 from univention.admin.guardian_roles import GuardianBase
 
@@ -36,7 +36,7 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 
-class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, PKIIntegration, GuardianBase):
+class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, PKIIntegration, GuardianBase, appcenter.AppHost):
     """|UDM| module for generic computer objects."""
 
     CONFIG_NAME: str = None
@@ -175,6 +175,10 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
         #        group.modify(ignore_license=True)
 
         self.nagios_ldap_post_remove()
+
+        if self.SERVER_ROLE:
+            self.app_host_ldap_post_remove()
+
         # Need to clean up oldinfo. If remove was invoked, because the
         # creation of the object has failed, the next try will result in
         # a 'object class violation' (Bug #19343)

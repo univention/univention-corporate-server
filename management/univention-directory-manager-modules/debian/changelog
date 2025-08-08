@@ -1,3 +1,10 @@
+univention-directory-manager-modules (17.2.13) unstable; urgency=medium
+
+  * Bug #54892: clean up univentionAppInstalledOnServer on an appcenter/app
+    module if a DC or memberserver is deleted
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 14 Aug 2025 09:03:04 +0200
+
 univention-directory-manager-modules (17.2.12) unstable; urgency=medium
 
   * Bug #58517: add further improvements for delegated administration
