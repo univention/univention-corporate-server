@@ -10,6 +10,8 @@ Variables: ldap/acl/.*
 Variables: users/default/.*
 Variables: groups/default/.*
 Variables: kerberos/realm
+Variables: ldap/authz-regexp/federated-accounts
+Variables: ldap/authz-regexp/users
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
@@ -18,6 +20,8 @@ Variables: ldap/server/type
 Variables: ldap/master
 Variables: ldap/hostdn
 Variables: slapd/port
+Variables: ldap/authz-regexp/federated-accounts
+Variables: ldap/authz-regexp/users
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf

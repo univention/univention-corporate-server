@@ -15,3 +15,17 @@ Description[de]=Diese Variable konfiguriert den Detailgrad der Logmeldungen des 
 Description[en]=This variable configures the verbosity of the log messages of the LDAP server. A description of the possible options can be found in 'man slapd.conf' under 'loglevel'.
 Type=str
 Categories=service-ldap
+
+[ldap/authz-regexp/users]
+Description[de]=Legt fest, ob der authz-regexp hinzugefügt werden soll, um SASL-Benutzernamen LDAP-DNs zuzuordnen.
+Description[en]=Defines whether to add the authz-regexp to map SASL usernames to LDAP DN's.
+Type=bool
+Default=yes
+Categories=service-ldap
+
+[ldap/authz-regexp/federated-accounts]
+Description[de]=Legt fest, ob der Authz-Regexp hinzugefügt werden soll, um bei "federated accounts" SASL-Benutzernamen LDAP-DNs zuzuordnen. Achtung: Bei Aktivierung funktioniert die Anmeldung mit einem normalen Benutzer mit einer UUID als Benutzername nicht mehr.
+Description[en]=Defines whether to add the authz-regexp to map SASL usernames to LDAP DN's for federated accounts. Caution: If activated a login with a normal user with a UUID as username will no longer work.
+Type=bool
+Default=no
+Categories=service-ldap

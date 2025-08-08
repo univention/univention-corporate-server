@@ -184,7 +184,7 @@ print('   by dn.children="cn=memberserver,cn=computers,%s" write' % (ldap_base))
 print('   by * none')
 
 if configRegistry.is_false('ldap/acl/read/anonymous'):
-    print('access to dn.subtree="%s" attrs=entry,uid' % (ldap_base,))
+    print('access to dn.subtree="%s" attrs=entry,uid,univentionObjectIdentifier' % (ldap_base,))
     ldap_acl_read_anonymous_ips = configRegistry.get('ldap/acl/read/ips')
     if ldap_acl_read_anonymous_ips:
         for ip in ldap_acl_read_anonymous_ips.split(','):
