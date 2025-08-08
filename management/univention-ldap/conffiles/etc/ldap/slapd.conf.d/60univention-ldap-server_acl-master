@@ -84,6 +84,13 @@ print('    by set="user/objectClass & ([univentionDomainController] | [univentio
 print('    by * none')
 print('')
 
+# access to cn=federated_accounts,cn=univention for server roles
+print('access to dn.exact="cn=federated_accounts,cn=univention,%s" attrs=children' % (ldap_base))
+print('    by set="user/univentionObjectType & ([computers/domaincontroller_master] | [computers/domaincontroller_backup] | [computers/domaincontroller_slave] | [computers/memberserver])" write')
+print('    by * +0 break')
+print('access to dn.children="cn=federated_accounts,cn=univention,%s" attrs=entry,children,@univentionObject,@univentionFederatedAccount' % (ldap_base))
+print('    by set="user/univentionObjectType & ([computers/domaincontroller_master] | [computers/domaincontroller_backup] | [computers/domaincontroller_slave] | [computers/memberserver])" write')
+print('    by * +0 break')
 @!@
 
 access to attrs=univentionRadiusPassword

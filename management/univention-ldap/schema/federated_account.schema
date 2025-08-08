@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# TODO: add to OID list
+attributetype ( 1.3.6.1.4.1.10176.1442.5.2 NAME 'univentionPreferredUsername'
+	SUBSTR caseIgnoreSubstringsMatch
+	DESC 'Preferred username for federated accounts'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+
+# TODO: add to OID list
+objectClass ( 1.3.6.1.4.1.10176.1442.5.1 NAME 'univentionFederatedAccount'
+	DESC 'Federated account object'
+	SUP top STRUCTURAL
+	MUST ( univentionObjectIdentifier )
+	MAY ( description $ univentionPreferredUsername )
+	)
