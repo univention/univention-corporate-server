@@ -756,3 +756,32 @@ msgstr "Profilverzeichnis"
 #: modules/univention/admin/handlers/users/user.py:1294
 msgid "unlimited"
 msgstr "unbegrenzt"
+
+#: modules/univention/admin/handlers/users/federated_account.py:27
+#: modules/univention/admin/handlers/users/federated_account.py:28
+#: modules/univention/admin/handlers/users/federated_account.py:68
+msgid "Federated account"
+msgstr "Föderiertes Konto"
+
+#: modules/univention/admin/handlers/users/federated_account.py:29
+msgid "Federated accounts"
+msgstr "Föderierte Konten"
+
+#: modules/univention/admin/handlers/users/federated_account.py:30
+msgid ""
+"This object represents a federated account. It is intended for "
+"functional purposes and is not counted as user object in the license."
+msgstr ""
+"Dieses Objekt stellt ein föderiertes Benutzerkonto dar. Es ist für "
+"funktionelle Zwecke gedacht und wird nicht als Benutzerobjekt in der Lizenz "
+"gezählt."
+
+#: modules/univention/admin/handlers/users/federated_account.py:56
+msgid "Immutable Object Identifier"
+msgstr "Unveränderlicher Objekt-Identifikator"
+
+#: modules/univention/admin/handlers/users/federated_account.py:57
+msgid "Immutable attribute to track the identity of an object in UDM"
+msgstr ""
+"Unveränderliches Attribut, um die Identität eines Objekts in UDM zu "
+"verfolgen"
