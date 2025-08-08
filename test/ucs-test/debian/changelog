@@ -1,3 +1,10 @@
+ucs-test (12.2.42) unstable; urgency=medium
+
+  * Bug #54892: add test for cleaning up appcenter/app server atrribute on DC
+    removal
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 14 Aug 2025 09:03:50 +0200
+
 ucs-test (12.2.41) unstable; urgency=medium
 
   * Bug #58517: add directory reports tests
