@@ -5,6 +5,8 @@ Variables: ldap/master
 Variables: ldap/base
 Variables: ldap/hostdn
 Variables: groups/default/.*
+Variables: ldap/authz-regexp/federated-accounts
+Variables: ldap/authz-regexp/users
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
@@ -12,6 +14,8 @@ Subfile: etc/ldap/slapd.conf.d/60univention-ldap-server_acl-slave
 Variables: ldap/base
 Variables: ldap/hostdn
 Variables: groups/default/.*
+Variables: ldap/authz-regexp/federated-accounts
+Variables: ldap/authz-regexp/users
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf

@@ -1,6 +1,17 @@
-authz-regexp
-    uid=([^,]*),cn=(gssapi|saml|oauthbearer),cn=auth
-    ldap:///@%@ldap/base@%@??sub?uid=$1
+@!@
+ldap_base = configRegistry['ldap/base']
+
+if configRegistry.is_true('ldap/authz-regexp/federated-accounts', False):
+    print('authz-regexp')
+    print('    uid=([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}),cn=(gssapi|saml|oauthbearer),cn=auth')
+    print('    ldap:///%s??sub?univentionObjectIdentifier=$1' % (ldap_base,))
+    print('')
+if configRegistry.is_true('ldap/authz-regexp/users', True):
+    print('authz-regexp')
+    print('    uid=([^,]*),cn=(gssapi|saml|oauthbearer),cn=auth')
+    print('    ldap:///%s??sub?uid=$1' % (ldap_base,))
+    print('')
+@!@
 
 # allow authentication
 access to attrs=userPassword

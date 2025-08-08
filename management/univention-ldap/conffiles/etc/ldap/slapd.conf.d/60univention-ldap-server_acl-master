@@ -8,10 +8,18 @@ usr = 'write' if configRegistry.get('ldap/server/type') == "master" else 'read'
 groups_default_domainadmins = custom_groupname('Domain Admins')
 users_default_administrator = custom_username('Administrator')
 
-print('authz-regexp')
-print('    uid=([^,]*),cn=(gssapi|saml|oauthbearer),cn=auth')
-print('    ldap:///%s??sub?uid=$1' % (ldap_base,))
-print('')
+# match uuid for federated accounts
+if configRegistry.is_true('ldap/authz-regexp/federated-accounts', False):
+    print('authz-regexp')
+    print('    uid=([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}),cn=(gssapi|saml|oauthbearer),cn=auth')
+    print('    ldap:///%s??sub?univentionObjectIdentifier=$1' % (ldap_base,))
+    print('')
+
+if configRegistry.is_true('ldap/authz-regexp/users', True):
+    print('authz-regexp')
+    print('    uid=([^,]*),cn=(gssapi|saml|oauthbearer),cn=auth')
+    print('    ldap:///%s??sub?uid=$1' % (ldap_base,))
+    print('')
 
 print('access to attrs=uid value=root by * none stop')
 
@@ -84,6 +92,13 @@ print('    by set="user/objectClass & ([univentionDomainController] | [univentio
 print('    by * none')
 print('')
 
+# access to cn=federated_accounts,cn=univention for server roles
+print('access to dn.exact="cn=federated_accounts,cn=univention,%s" attrs=children' % (ldap_base,))
+print('    by set="user/univentionObjectType & ([computers/domaincontroller_master] | [computers/domaincontroller_backup] | [computers/domaincontroller_slave] | [computers/memberserver])" write')
+print('    by * +0 break')
+print('access to dn.children="cn=federated_accounts,cn=univention,%s" attrs=entry,children,@univentionObject,@univentionFederatedAccount' % (ldap_base,))
+print('    by set="user/univentionObjectType & ([computers/domaincontroller_master] | [computers/domaincontroller_backup] | [computers/domaincontroller_slave] | [computers/memberserver])" write')
+print('    by * +0 break')
 @!@
 
 access to attrs=univentionRadiusPassword

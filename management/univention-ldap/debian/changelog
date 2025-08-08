@@ -1,8 +1,12 @@
-univention-ldap (18.3.0) UNRELEASED; urgency=medium
+univention-ldap (18.3.0) unstable; urgency=medium
 
+  [ Ivan Barbecho Delgado ]
   * Bug #58568: UCS 5.2-3 version bump
 
- -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 02 Sep 2025 16:18:18 +0200
+  [ Felix Botner ]
+  * Bug #58652: LDAP schema/acl for federated accounts
+
+ -- Felix Botner <botner@univention.de>  Mon, 29 Sep 2025 12:06:19 +0200
 
 univention-ldap (18.2.6) unstable; urgency=medium
 

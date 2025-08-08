@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+attributetype ( 1.3.6.1.4.1.10176.1442.5.2 NAME 'univentionPreferredUsername'
+	DESC 'Preferred username for federated accounts'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+objectClass ( 1.3.6.1.4.1.10176.1442.5.1 NAME 'univentionFederatedAccount'
+	DESC 'Federated account object'
+	SUP top STRUCTURAL
+	MUST ( univentionObjectIdentifier )
+	MAY ( description $ univentionPreferredUsername )
+	)
