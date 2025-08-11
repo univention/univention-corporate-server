@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [9, 10]
+scope: ucs_5.0-0-errata5.0-10
+src: openjpeg2
+fix: 2.3.0-2+deb10u4
+desc: |
+ This update addresses the following issues:
+ * CVSS score 6.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N).
+   (CVE-2025-50952)
+ * CVSS score 5.5 (CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+   (CVE-2019-12973)
+bug: [58511]
+cve:
+- CVE-2019-12973
+- CVE-2025-50952
