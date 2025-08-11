@@ -29,10 +29,10 @@ pytestmark = pytest.mark.skipif(not _ucr.is_true('directory/manager/web/delegati
 ## UDM_Objects
 | use_objects | udm_filter | udm_module with lookup_filter | mapping of the attribute specified in .key | names |
 | :-----:  | :-----:  | :-----: | :-----: | :-----: |
-| False    | False    |  False  | ???     | UserDN, UserID, UserName, GroupDN, GroupID, GroupName
-| True     | True     |  False  | ???     | HostDN
+| False    | False    |  False  | False   | UserDN, UserID, UserName, GroupDN, GroupID, GroupName
+| True     | True     |  False  | False   | HostDN
 | True     | False    |  True   | True    | Service
-| True     | True     |  True   | ???     | -> Todo
+| True     | True     |  True   | False   | primaryGroup, UCS_Server
 | False    | True     |  True   | True    | nfsShare
 
 
