@@ -353,7 +353,9 @@ class UDMAuthorizationConfig:
         try:
             for filename in self.filenames:
                 parser = Lark(UDM_DSL_GRAMMAR, parser='lalr', transformer=_DSLTransformer(str(filename), strict=self.strict))
-                self.parsed.extend(parser.parse(self.filename.read_text()))
+                result = parser.parse(self.filename.read_text())
+                for k, v in result.items():
+                    self.parsed.setdefault(k, []).extend(v)
         except lark.exceptions.LarkError as exc:
             raise DSLSyntaxError(str(exc)) from exc
 
