@@ -353,7 +353,7 @@ class UDMAuthorizationConfig:
         try:
             for filename in self.filenames:
                 parser = Lark(UDM_DSL_GRAMMAR, parser='lalr', transformer=_DSLTransformer(str(filename), strict=self.strict))
-                result = parser.parse(self.filename.read_text())
+                result = parser.parse(filename.read_text())
                 for k, v in result.items():
                     self.parsed.setdefault(k, []).extend(v)
         except lark.exceptions.LarkError as exc:
@@ -365,7 +365,7 @@ class UDMAuthorizationConfig:
     def to_yaml(self):
         univention.admin.modules.update()
         all_modules = [name for name in univention.admin.modules.modules if not univention.admin.modules.virtual(name)]
-        conf = AuthorizationConfig(self.filename.with_suffix('.yaml'))
+        conf = AuthorizationConfig(self.filenames[0].with_suffix('.yaml'))
 
         for cond in self.parsed['conditions']:
             conf.conditions[cond['name']] = {cond['condition']: cond['parameters']}
