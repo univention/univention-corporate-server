@@ -66,7 +66,7 @@ class UniventionDirectoryManagerRoles:
 
         subparser = subparsers.add_parser('create-roles')
         subparser.set_defaults(func=self.create_roles_from_acl)
-        subparser.add_argument('--config', required=True, type=argparse.FileType('r'))
+        subparser.add_argument('--config', required=True, type=argparse.FileType('r'), action='append')
         subparser.add_argument('--remove', action='store_true')
         subparser.add_argument('--strict', action='store_true')
         subparser.add_argument('--store-global', action='store_true')
@@ -78,7 +78,7 @@ class UniventionDirectoryManagerRoles:
 
         subparser = subparsers.add_parser('create-default-roles')
         subparser.set_defaults(func=self.create_default_roles)
-        subparser.add_argument('--config', default='/usr/share/univention-directory-manager-modules/udm-default-authorization-roles.policy', type=argparse.FileType('r'))
+        subparser.add_argument('--config', default=[Path('/usr/share/univention-directory-manager-modules/udm-default-authorization-roles.policy')], type=argparse.FileType('r'), action='append')
         subparser.add_argument('--remove', action='store_true')
         subparser.add_argument('--strict', action='store_true')
         subparser.add_argument('--store-global', action='store_true')
@@ -115,9 +115,9 @@ class UniventionDirectoryManagerRoles:
         self.create_all_modules_permissions()
 
     def create_roles_from_acl(self):
-        cfg = Path(LOCAL_PATH) / f'temp-{Path(self.args.config.name).stem}.yaml'
+        cfg = Path(LOCAL_PATH) / f'temp-{Path(self.args.config[0].name).stem}.yaml'
         with open(cfg, 'w') as fd:
-            conf = UDMAuthorizationConfig(self.args.config.name, strict=self.args.strict)
+            conf = UDMAuthorizationConfig(self.args.config, strict=self.args.strict)
             conf.parse()
             if self.args.store_global:
                 conf.to_udm()
