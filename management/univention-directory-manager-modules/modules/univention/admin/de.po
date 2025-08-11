@@ -926,9 +926,8 @@ msgstr "Netzwerk und IP-Adressbereich passen nicht zusammen."
 
 #: modules/univention/admin/syntax.py:7190
 #: modules/univention/admin/syntax.py:7220
-#, fuzzy
 msgid "New DN"
-msgstr "Neuer Tab"
+msgstr "Neue DN"
 
 #: modules/univention/admin/syntax.py:6544
 #: modules/univention/admin/syntax.py:6552
@@ -1117,9 +1116,8 @@ msgid "Only the first letter of the username may be uppercase!"
 msgstr "Nur der erste Buchstabe des Benutzernames darf groß geschrieben sein!"
 
 #: modules/univention/admin/syntax.py:7178
-#, fuzzy
 msgid "Option"
-msgstr "Optionenmuster"
+msgstr "Optionen"
 
 #: modules/univention/admin/syntax.py:3690
 msgid "Option Pattern"
@@ -1213,7 +1211,6 @@ msgid "Prohibited username."
 msgstr "Verbotener Benutzername."
 
 #: modules/univention/admin/syntax.py:7175
-#, fuzzy
 msgid "Property"
 msgstr "Eigenschaft"
 
