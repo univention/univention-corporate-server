@@ -13,7 +13,6 @@
 # Description:       Init script for dovecot services
 ### END INIT INFO
 # pidfile: /var/run/dovecot/master.pid
-
 # SPDX-FileCopyrightText: 2015-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 

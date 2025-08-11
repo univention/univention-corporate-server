@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2013-2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
 """
 This script walks over all po files in a given directory and its subfolders.
 It fills all msgid strings with the same content as the corresponding msgid,
@@ -6,10 +8,8 @@ prepeding it with the character sequence '!TR!'.
 It is useful for visual quick testing of translation coverage and po file
 generation.
 """
+
 import argparse
-#
-# SPDX-FileCopyrightText: 2013-2025 Univention GmbH
-# SPDX-License-Identifier: AGPL-3.0-only
 import os
 
 import polib
