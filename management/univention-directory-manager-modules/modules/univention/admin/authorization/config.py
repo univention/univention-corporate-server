@@ -550,8 +550,8 @@ class UDMAuthorizationConfig:
         all_modules = [name for name in univention.admin.modules.modules if not univention.admin.modules.virtual(name)]
         conf = AuthorizationConfig(self.filenames[0].with_suffix('.yaml'))
 
-        privilege_base = f"cn={ldap.dn.escape_dn_chars(self.filename.stem)},cn=privileges,cn=authz,cn=univention,{ucr['ldap/base']}"
-        policy_base = f"cn={ldap.dn.escape_dn_chars(self.filename.stem)},cn=policies,cn=authz,cn=univention,{ucr['ldap/base']}"
+        privilege_base = f"cn={ldap.dn.escape_dn_chars(self.filenames[0].stem)},cn=privileges,cn=authz,cn=univention,{ucr['ldap/base']}"
+        policy_base = f"cn={ldap.dn.escape_dn_chars(self.filenames[0].stem)},cn=policies,cn=authz,cn=univention,{ucr['ldap/base']}"
 
         authz_policy = univention.admin.modules.get('authorization/policy')
         authz_privilege = univention.admin.modules.get('authorization/privilege')
