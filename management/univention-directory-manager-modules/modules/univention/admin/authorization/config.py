@@ -343,14 +343,17 @@ class _DSLTransformer(Transformer):
 class UDMAuthorizationConfig:
     """UDM specific DSL"""
 
-    def __init__(self, filename, *, strict=False):
-        self.filename = Path(filename)
-        self.parser = Lark(UDM_DSL_GRAMMAR, parser='lalr', transformer=_DSLTransformer(str(self.filename), strict=strict))
+    def __init__(self, filenames, *, strict=False):
+        self.filenames = filenames
+        self.strict = strict
+        self.parsed = {}
 
     def parse(self):
         univention.admin.modules.update()
         try:
-            self.parsed = self.parser.parse(self.filename.read_text())
+            for filename in self.filenames:
+                parser = Lark(UDM_DSL_GRAMMAR, parser='lalr', transformer=_DSLTransformer(str(filename), strict=self.strict))
+                self.parsed.extend(parser.parse(self.filename.read_text()))
         except lark.exceptions.LarkError as exc:
             raise DSLSyntaxError(str(exc)) from exc
 
@@ -843,7 +846,7 @@ if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--config')
+    parser.add_argument('--config', action='append', type=Path)
     parser.add_argument('--compose-from-udm', action='store_true')
     parser.add_argument('--compose', action='store_true')
     parser.add_argument('--convert', action='store_true')

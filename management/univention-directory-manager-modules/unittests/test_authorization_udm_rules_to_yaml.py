@@ -36,7 +36,7 @@ TEST_FILES = './unittests/test_authorization_udm_rules_to_yaml.d/'
     for path in pathlib.Path(TEST_FILES).glob('*.policy')
 ], ids=[path.name for path in pathlib.Path(TEST_FILES).glob('*.policy')])
 def test_to_yaml(acl_file, expected_yaml_file):
-    rules = UDMAuthorizationConfig(filename=str(acl_file))
+    rules = UDMAuthorizationConfig([acl_file])
     rules.parse()
     rules_yaml = rules.to_yaml()
     expected_rules = expected_yaml_file.read_text().rstrip()
@@ -45,7 +45,7 @@ def test_to_yaml(acl_file, expected_yaml_file):
 
 def update_yaml_files():
     for acl_file in pathlib.Path(TEST_FILES).glob('*.policy'):
-        rules = UDMAuthorizationConfig(filename=str(acl_file))
+        rules = UDMAuthorizationConfig([acl_file])
         rules.parse()
         acl_file.with_name(f'{acl_file.stem}.yaml').write_text(rules.to_yaml())
 
