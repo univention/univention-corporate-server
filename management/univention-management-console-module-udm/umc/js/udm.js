@@ -911,7 +911,7 @@ define([
 				// add the types 'None'  and '$containers$' to objTypes
 				objTypes.push({ id: 'None', label: _('All types') });
 				objTypes.push({ id: '$containers$', label: _('All containers') });
-			} else if ('portals/all' === this.moduleFlavor) {
+			} else if ('portals/all' === this.moduleFlavor || 'authorization/all' == this.moduleFlavor) {
 				objTypes.push({ id: this.moduleFlavor, label: _('All types') });
 			} else if (hasSuperordinates) {
 				// superordinates...
