@@ -354,18 +354,19 @@ def test_syntax_choices_ldap_search(umc_client, client_type, udm_session, ou, ld
         assert len(res) == 0
 
 
+@pytest.mark.parametrize('attribute', ['dn', 'cn'])
 @pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
-def test_syntax_choices_ldap_search_using_object(umc_client, client_type, udm_session, ou, ldap_base):
+def test_syntax_choices_ldap_search_using_object(umc_client, client_type, udm_session, ou, ldap_base, attribute):
     syntax_name = random_username()
     udm_session.create_object(
         'settings/syntax',
         name=syntax_name,
-        attribute=['dn'],
-        base=ldap_base,
+        attribute=[attribute],
+        base=ou.group_base,
         position=f'cn=custom attributes,cn=univention,{ldap_base}',
-        filter='(objectClass=*)',
+        filter='objectClass=*',
         viewonly='TRUE',
-        value='dn',
+        value=attribute,
     )
     res = umc_client.get_syntax_choices(syntax_name, 'groups/group')
     assert res is not None
@@ -490,7 +491,8 @@ def test_syntax_choices_udm_attributes_no_dn_filter(umc_client, client_type, tes
         assert len(res) == 0
 
 
-def test_syntax_choices_generic_search_with_dn_value(admin_umc_client, ldap_base):
+@pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
+def test_syntax_choices_generic_search_with_dn_value(umc_client, client_type, ldap_base):
     """Tests the 'generic' syntax to perform a real, dynamic LDAP search returning DNs."""
     # The 'options' variable defines the dynamic search.
     options = {
@@ -499,7 +501,7 @@ def test_syntax_choices_generic_search_with_dn_value(admin_umc_client, ldap_base
         'base': ldap_base,
         'label': 'uid',
     }
-    res = admin_umc_client.get_syntax_choices('generic', None, options=options)
+    res = umc_client.get_syntax_choices('generic', None, options=options)
 
     assert res, "The dynamic search with 'generic' syntax must return results"
 
@@ -507,7 +509,8 @@ def test_syntax_choices_generic_search_with_dn_value(admin_umc_client, ldap_base
     assert any(item['label'] == 'Administrator' for item in res), "The Administrator user must be found"
 
 
-def test_syntax_choices_generic_search_with_attribute_value(admin_umc_client, ldap_base):
+@pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
+def test_syntax_choices_generic_search_with_attribute_value(umc_client, client_type, ldap_base):
     """Tests the 'generic' syntax to perform a real, dynamic LDAP search returning a specific attribute."""
     options = {
         'value': 'uid',
@@ -515,7 +518,7 @@ def test_syntax_choices_generic_search_with_attribute_value(admin_umc_client, ld
         'base': ldap_base,
         'label': 'cn',
     }
-    res = admin_umc_client.get_syntax_choices('generic', None, options=options)
+    res = umc_client.get_syntax_choices('generic', None, options=options)
 
     assert res, "The dynamic search with 'generic' syntax must return results"
     assert all('=' not in item['id'] for item in res), "The returned values must be plain attributes, not DNs"
@@ -523,25 +526,13 @@ def test_syntax_choices_generic_search_with_attribute_value(admin_umc_client, ld
 
 
 @pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
-def test_syntax_choices_ldap_search_dn_by_syntax_object(umc_client, client_type, test_object_syntax_object_dn, test_object_mail_domain):
-    """Test LDAP_Search with value='dn' from a settings/syntax object."""
+def test_syntax_choices_ldap_search_by_syntax_object(umc_client, client_type, test_object_syntax_object_dn, test_object_mail_domain):
+    """Test LDAP_Search from a settings/syntax object."""
     res = umc_client.get_syntax_choices(test_object_syntax_object_dn, 'mail/domain')
     assert res is not None
     if client_type == 'admin':
         assert len(res) > 0
         assert all('cn=' in str(choice['value']) for choice in res if choice.get('value'))
-    else:
-        assert len(res) == 0
-
-
-@pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
-def test_syntax_choices_ldap_search_not_dn_by_syntax_object(umc_client, client_type, test_object_syntax_object_not_dn, test_object_mail_domain):
-    """Test LDAP_Search with value!='dn' from a settings/syntax object."""
-    res = umc_client.get_syntax_choices(test_object_syntax_object_not_dn, 'mail/domain')
-    assert res is not None
-    if client_type == 'admin':
-        assert len(res) > 0
-        assert all('cn=' not in str(choice['value']) for choice in res if choice.get('value'))
     else:
         assert len(res) == 0
 
