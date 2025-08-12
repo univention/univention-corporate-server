@@ -2044,3 +2044,10 @@ msgstr ""
 #: modules/univention/admin/handlers/settings/udm_syntax.py:171
 msgid "packageversion: Version must not be lower than the current one."
 msgstr "Paketversion: Der Wert darf nicht geringer sein als der aktuelle."
+
+msgid "Prevent default popup"
+msgstr "Standard-Popup verhindern"
+
+msgid "This setting will prevent a pop-up dialog in the UMC when the default value of a property is not set."
+msgstr "Diese Einstellung verhindert, dass im UMC ein Popup-Dialogfeld angezeigt wird, wenn der Standardwert einer Eigenschaft nicht festgelegt ist."
+

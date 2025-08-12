@@ -1136,3 +1136,6 @@ msgstr "Benutzer"
 #: modules/univention/admin/handlers/shares/share.py:719
 msgid "uses"
 msgstr "benutzt"
+
+msgid "Protocol and destination parts can not be parsed."
+msgstr "Protokoll- und Zielteile können nicht analysiert werden."
