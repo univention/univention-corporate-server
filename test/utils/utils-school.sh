@@ -12,20 +12,22 @@ install_kelvin_api () {
 
 install_kelvin_in_version() {
   # Either install kelvin in a specified version or use a branch image or use the latest version
+  local -i rv=0
   printf '%s' univention > /tmp/univention
   if [ -n "$KELVIN_VERSION" ]; then
     univention-app install ucsschool-kelvin-rest-api="$KELVIN_VERSION" --set ucsschool/kelvin/processes=0 ucsschool/kelvin/log_level=DEBUG --username Administrator --pwdfile /tmp/univention || rv=$?
-    return "$rv"
+    return $rv
   else
     install_kelvin_api
   fi
 }
 
 upgrade_kelvin () {
+  local -i rv=0
   printf '%s' univention > /tmp/univention
   univention-app upgrade ucsschool-kelvin-rest-api --noninteractive --username Administrator --pwdfile /tmp/univention || rv=$?
   univention-app info
-  return "$rv"
+  return $rv
 }
 
 install_ucsschool_id_connector () {
@@ -33,10 +35,11 @@ install_ucsschool_id_connector () {
 }
 
 install_ucsschool_id_connector_in_version() {
+  local -i rv=0
   printf '%s' univention > /tmp/univention
   if [ -n "$ID_CONNECTOR_VERSION" ]; then
     univention-app install ucsschool-id-connector="$ID_CONNECTOR_VERSION" --set ucsschool-id-connector/log_level=DEBUG --username Administrator --pwdfile /tmp/univention || rv=$?
-    return "$rv"
+    return $rv
   else
     install_ucsschool_id_connector
   fi
@@ -44,6 +47,7 @@ install_ucsschool_id_connector_in_version() {
 
 upgrade_id_connector () {
   local latest_version
+  local -i rv=0
   printf '%s' univention > /tmp/univention
   if [ -n "$UCS_ENV_ID_CONNECTOR_IMAGE" ]; then
     latest_version=$(univention-app list ucsschool-id-connector | tail -n 1 | tr -d '[:space:]')
@@ -51,7 +55,7 @@ upgrade_id_connector () {
   fi
   univention-app upgrade ucsschool-id-connector --noninteractive --username Administrator --pwdfile /tmp/univention || rv=$?
   univention-app info
-  return "$rv"
+  return $rv
 }
 
 add_ca_to_host () {
