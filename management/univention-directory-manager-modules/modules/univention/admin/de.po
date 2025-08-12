@@ -2044,3 +2044,6 @@ msgstr "nicht definiert"
 #: modules/univention/admin/syntax.py:6898
 msgid "usrhiper"
 msgstr ""
+
+msgid "This timestamp needs be in UTC and follow the format YYYYMMDDHHmmssZ."
+msgstr "Dieser Zeitstempel muss im UTC-Format vorliegen und dem Format YYYYMMDDHHmmssZ entsprechen."
