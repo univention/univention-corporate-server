@@ -255,7 +255,7 @@ def test_extensible_object_direct_attribute_storage(udm):
 
     assert 'univentionRecycleBinOriginalDN' in deleted_attrs
     assert 'univentionRecycleBinOriginalType' in deleted_attrs
-    assert 'univentionRecycleBinDeletionDate' in deleted_attrs
+    assert 'univentionRecycleBinDeleteAt' in deleted_attrs
     assert 'univentionRecycleBinDeletedBy' in deleted_attrs
 
     assert 'uid' in deleted_attrs
@@ -417,3 +417,81 @@ def test_entryuuid_preservation_across_delete_restore(udm):
 
     # Cleanup
     lo.delete(user_dn)
+
+
+def test_univention_object_identifier_preservation(udm):
+    """Test that univentionObjectIdentifier is preserved during delete and restore."""
+    lo = get_admin_connection()
+    setup_udm()
+
+    user_dn = udm.create_user()[0]
+    original_attrs = lo.get(user_dn)
+    original_obj_id = original_attrs.get('univentionObjectIdentifier', [b''])[0].decode('utf-8')
+
+    assert original_obj_id, "User should have univentionObjectIdentifier"
+
+    udm.remove_object('users/user', dn=user_dn)
+
+    deleted_objects = _find_deleted_objects(lo, user_dn)
+    assert len(deleted_objects) > 0
+
+    deleted_dn = deleted_objects[0]['dn']
+    deleted_attrs = lo.get(deleted_dn)
+
+    recyclebin_module = udm_modules.modules['recyclebin/deletedobject']
+    deleted_udm_obj = recyclebin_module.object(None, lo, None, dn=deleted_dn)
+    deleted_udm_obj.open()
+
+    stored_obj_id = deleted_udm_obj['originalUniventionObjectIdentifier']
+    assert stored_obj_id == original_obj_id
+
+    ldap_stored_obj_id = deleted_attrs.get('univentionRecycleBinOriginalUniventionObjectIdentifier', [])
+    if ldap_stored_obj_id:
+        ldap_stored_obj_id_str = ldap_stored_obj_id[0].decode('utf-8')
+        assert ldap_stored_obj_id_str == original_obj_id
+
+    restored_dn = deleted_udm_obj.restore()
+    assert restored_dn == user_dn
+
+    restored_attrs = lo.get(user_dn)
+    restored_obj_id = restored_attrs.get('univentionObjectIdentifier', [b''])[0].decode('utf-8')
+
+    assert restored_obj_id == original_obj_id
+
+    # Cleanup
+    lo.delete(user_dn)
+
+
+def test_delete_at_timestamp_based_on_retention_policy(udm):
+    """Test that deleteAt timestamp is calculated based on retention policy."""
+    lo = get_admin_connection()
+    setup_udm()
+
+    user_dn = udm.create_user()[0]
+    udm.remove_object('users/user', dn=user_dn)
+
+    deleted_objects = _find_deleted_objects(lo, user_dn)
+    assert len(deleted_objects) > 0
+
+    deleted_dn = deleted_objects[0]['dn']
+
+    recyclebin_module = udm_modules.modules['recyclebin/deletedobject']
+    deleted_udm_obj = recyclebin_module.object(None, lo, None, dn=deleted_dn)
+    deleted_udm_obj.open()
+
+    delete_at = deleted_udm_obj['deleteAt']
+    assert delete_at
+
+    import re
+    timestamp_pattern = r'^\d{14}Z$'
+    assert re.match(timestamp_pattern, delete_at)
+
+    deleted_attrs = lo.get(deleted_dn)
+    ldap_delete_at = deleted_attrs.get('univentionRecycleBinDeleteAt', [])
+    assert ldap_delete_at
+
+    ldap_delete_at_str = ldap_delete_at[0].decode('utf-8')
+    assert ldap_delete_at_str == delete_at
+
+    # Cleanup
+    lo.delete(deleted_dn)
