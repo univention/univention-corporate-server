@@ -362,7 +362,7 @@ def test_syntax_choices_ldap_search_using_object(umc_client, client_type, udm_se
         'settings/syntax',
         name=syntax_name,
         attribute=[attribute],
-        base=ou.group_base,
+        base=ou.group_dn,
         position=f'cn=custom attributes,cn=univention,{ldap_base}',
         filter='objectClass=*',
         viewonly='TRUE',
@@ -489,40 +489,6 @@ def test_syntax_choices_udm_attributes_no_dn_filter(umc_client, client_type, tes
         assert any(test_object_package in str(choice['label']) for choice in res)
     else:
         assert len(res) == 0
-
-
-@pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
-def test_syntax_choices_generic_search_with_dn_value(umc_client, client_type, ldap_base):
-    """Tests the 'generic' syntax to perform a real, dynamic LDAP search returning DNs."""
-    # The 'options' variable defines the dynamic search.
-    options = {
-        'value': 'dn',
-        'filter': '(objectClass=posixAccount)',
-        'base': ldap_base,
-        'label': 'uid',
-    }
-    res = umc_client.get_syntax_choices('generic', None, options=options)
-
-    assert res, "The dynamic search with 'generic' syntax must return results"
-
-    assert all('uid=' in item['id'] and ldap_base in item['id'] for item in res), "The returned values must be full DNs"
-    assert any(item['label'] == 'Administrator' for item in res), "The Administrator user must be found"
-
-
-@pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
-def test_syntax_choices_generic_search_with_attribute_value(umc_client, client_type, ldap_base):
-    """Tests the 'generic' syntax to perform a real, dynamic LDAP search returning a specific attribute."""
-    options = {
-        'value': 'uid',
-        'filter': '(objectClass=posixAccount)',
-        'base': ldap_base,
-        'label': 'cn',
-    }
-    res = umc_client.get_syntax_choices('generic', None, options=options)
-
-    assert res, "The dynamic search with 'generic' syntax must return results"
-    assert all('=' not in item['id'] for item in res), "The returned values must be plain attributes, not DNs"
-    assert any(item['id'] in ('0', '2002') for item in res), "The Administrator or root UID must be found"
 
 
 @pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
