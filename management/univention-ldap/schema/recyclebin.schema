@@ -44,6 +44,12 @@ attributetype ( 1.3.6.1.4.1.10176.4221.1.6 NAME 'univentionRecycleBinDeletionDat
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
 	SINGLE-VALUE )
 
+attributetype ( 1.3.6.1.4.1.10176.4221.1.14 NAME 'univentionRecycleBinDeleteAt'
+	DESC 'Timestamp when the object should be permanently deleted based on retention policy'
+	EQUALITY generalizedTimeMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+	SINGLE-VALUE )
+
 attributetype ( 1.3.6.1.4.1.10176.4221.1.7 NAME 'univentionRecycleBinDeletedBy'
 	DESC 'DN of the user who deleted the object'
 	EQUALITY distinguishedNameMatch
@@ -79,6 +85,13 @@ attributetype ( 1.3.6.1.4.1.10176.4221.1.12 NAME 'univentionRecycleBinOriginalEn
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40
 	SINGLE-VALUE )
 
+attributetype ( 1.3.6.1.4.1.10176.4221.1.13 NAME 'univentionRecycleBinOriginalUniventionObjectIdentifier'
+	DESC 'Original univentionObjectIdentifier of the deleted object'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE )
+
 #
 # Object Classes
 #
@@ -94,10 +107,12 @@ objectclass ( 1.3.6.1.4.1.10176.4221.2.2 NAME 'univentionRecycleBinObject'
 	DESC 'Object stored in the recycle bin'
 	SUP top STRUCTURAL
 	MUST ( cn $ univentionRecycleBinOriginalDN $
-	       univentionRecycleBinDeletionDate $
+	       univentionRecycleBinDeleteAt $
 	       univentionRecycleBinDeletedBy $
 	       univentionRecycleBinOriginalType )
 	MAY ( univentionObjectIdentifier $ univentionObjectType $
 	      univentionRecycleBinData $
 	      univentionRecycleBinReferencedBy $
-	      univentionRecycleBinOriginalObjectClass ) )
+	      univentionRecycleBinOriginalObjectClass $
+	      univentionRecycleBinOriginalEntryUUID $
+	      univentionRecycleBinOriginalUniventionObjectIdentifier ) )

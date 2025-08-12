@@ -55,12 +55,12 @@ msgid "Distinguished name of the original object before deletion"
 msgstr "Distinguished Name des ursprünglichen Objekts vor dem Löschen"
 
 #: modules/univention/admin/handlers/recyclebin/deletedobject.py:68
-msgid "Deletion Date"
+msgid "Delete At"
 msgstr "Löschdatum"
 
 #: modules/univention/admin/handlers/recyclebin/deletedobject.py:69
-msgid "Timestamp when the object was deleted"
-msgstr "Zeitstempel, wann das Objekt gelöscht wurde"
+msgid "Timestamp when the object should be permanently deleted based on retention policy"
+msgstr "Zeitstempel, wann das Objekt endgültig gelöscht wird basierend auf der Aufbewahrungsrichtlinie"
 
 #: modules/univention/admin/handlers/recyclebin/deletedobject.py:74
 msgid "Deleted By"
@@ -77,6 +77,14 @@ msgstr "Referenziert von"
 #: modules/univention/admin/handlers/recyclebin/deletedobject.py:87
 msgid "List of objects that referenced this object at deletion time"
 msgstr "Liste der Objekte, die dieses Objekt zum Zeitpunkt der Löschung referenziert haben"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:90
+msgid "Original Object Identifier"
+msgstr "Ursprüngliche Objektkennung"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:91
+msgid "Original univentionObjectIdentifier of the deleted object"
+msgstr "Ursprüngliche univentionObjectIdentifier des gelöschten Objekts"
 
 #: modules/univention/admin/handlers/recyclebin/deletedobject.py:95
 msgid "General"

@@ -15,6 +15,7 @@ from typing import TYPE_CHECKING, Any
 
 import ldap.filter
 import unidecode
+from ldap.filter import filter_format
 
 import univention.admin.localization
 import univention.config_registry
@@ -74,7 +75,7 @@ def ucr_overwrite_properties(module: Any, lo: univention.admin.uldap.access) -> 
                             syntax = getattr(univention.admin.syntax, new_prop_val)
                             setattr(prop, attr, syntax())
                         else:
-                            if lo.authz_connection.searchDn(filter=ldap.filter.filter_format(univention.admin.syntax.LDAP_Search.FILTER_PATTERN, [new_prop_val])):
+                            if lo.authz_connection.searchDn(filter=filter_format(univention.admin.syntax.LDAP_Search.FILTER_PATTERN, [new_prop_val])):
                                 syntax = univention.admin.syntax.LDAP_Search(new_prop_val)
                                 syntax._load(lo)
                                 setattr(prop, attr, syntax)
@@ -418,30 +419,26 @@ class property:
                     continue
 
         elif self.syntax:
-            try:
-                syntax = self.syntax() if inspect.isclass(self.syntax) else self.syntax
+            syntax = self.syntax() if inspect.isclass(self.syntax) else self.syntax
 
-                if hasattr(syntax, 'key') and syntax.key == 'dn':
-                    ldap_attribute = getattr(self, 'ldap_name', None)
-                    if ldap_attribute:
-                        escaped_dn = ldap.filter.escape_filter_chars(target_dn)
-                        search_filter = f"({ldap_attribute}={escaped_dn})"
+            if isinstance(syntax, univention.admin.syntax.UDM_Objects) and syntax.key == 'dn':
+                ldap_attribute = getattr(self, 'ldap_name', None)
+                if ldap_attribute:
+                    escaped_dn = ldap.filter.escape_filter_chars(target_dn)
+                    search_filter = f"({ldap_attribute}={escaped_dn})"
 
-                        results = lo.search(
-                            base=lo.base,
-                            scope='subtree',
-                            filter=search_filter,
-                            attr=[],
-                            unique=False,
-                            required=False,
-                        )
+                    results = lo.search(
+                        base=lo.base,
+                        scope='subtree',
+                        filter=search_filter,
+                        attr=[],
+                        unique=False,
+                        required=False,
+                    )
 
-                        for dn, attrs in results:
-                            if dn != target_dn and dn not in referenced_by:
-                                referenced_by.append(dn)
-
-            except (AttributeError, TypeError, ldap.LDAPError):
-                pass
+                    for dn, attrs in results:
+                        if dn != target_dn and dn not in referenced_by:
+                            referenced_by.append(dn)
 
         return referenced_by
 

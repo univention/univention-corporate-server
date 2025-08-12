@@ -1625,29 +1625,19 @@ class simpleLdap:
         log.debug("Searching for references to %s using property-based reference detection", target_dn)
 
         try:
-            univention.admin.modules.update()
-
             for module_name in univention.admin.modules.modules.keys():
-                try:
-                    module = univention.admin.modules.get(module_name)
-                    if not module or not hasattr(module, 'property_descriptions'):
-                        continue
-
-                    for key, prop in module.property_descriptions.items():
-                        try:
-                            prop_references = prop.get_references(target_dn, self.lo.authz_connection)
-                            for dn in prop_references:
-                                if dn not in referenced_by:
-                                    referenced_by.append(dn)
-                                    log.debug("Found reference: %s -> %s (via %s.%s)", dn, target_dn, module_name, key)
-
-                        except (AttributeError, TypeError) as e:
-                            log.debug("Skipping property %s.%s due to error: %s", module_name, key, e)
-                            continue
-
-                except (AttributeError, KeyError) as e:
-                    log.debug("Skipping module %s due to structure error: %s", module_name, e)
+                module = univention.admin.modules.get(module_name)
+                if not module or not hasattr(module, 'property_descriptions'):
                     continue
+
+                for key, prop in module.property_descriptions.items():
+                    prop_references = prop.get_references(target_dn, self.lo.authz_connection)
+                    for dn in prop_references:
+                        if dn not in [ref.split('|')[0] if '|' in ref else ref for ref in referenced_by]:
+                            ldap_attribute = getattr(prop, 'ldap_name', key)
+                            reference_info = f"{dn}|{module_name}|{key}|{ldap_attribute}"
+                            referenced_by.append(reference_info)
+                            log.debug("Found reference: %s -> %s (via %s.%s)", dn, target_dn, module_name, key)
 
         except (ldap.LDAPError, univention.admin.uexceptions.base, AttributeError) as e:
             log.warning("Error in property-based reference detection: %s", e)
@@ -1676,8 +1666,10 @@ class simpleLdap:
                 )
 
                 for dn, attrs in results:
-                    if dn != target_dn and dn not in referenced_by:
-                        referenced_by.append(dn)
+                    if dn != target_dn and dn not in [ref.split('|')[0] if '|' in ref else ref for ref in referenced_by]:
+                        # Store in fallback format: "referencing_dn|unknown|unknown|ldap_attribute"
+                        reference_info = f"{dn}|unknown|unknown|{attr}"
+                        referenced_by.append(reference_info)
                         log.debug("Found reference (fallback): %s -> %s (via %s)", dn, target_dn, attr)
 
             except ldap.LDAPError as e:
