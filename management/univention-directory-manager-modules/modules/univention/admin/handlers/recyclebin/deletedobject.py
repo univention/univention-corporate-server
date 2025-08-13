@@ -4,7 +4,7 @@
 """UDM module for recyclebin deleted objects"""
 
 import datetime
-import uuid
+import json
 from logging import getLogger
 
 import ldap
@@ -113,7 +113,6 @@ layout = [
 mapping = udm_mapping.mapping()
 mapping.register('name', 'cn', None, udm_mapping.ListToString)
 mapping.register('originalObjectType', 'univentionRecycleBinOriginalType', None, udm_mapping.ListToString)
-mapping.register('originalDN', 'univentionRecycleBinOriginalDN', None, udm_mapping.ListToString)
 mapping.register('deleteAt', 'univentionRecycleBinDeleteAt', None, udm_mapping.ListToString)
 mapping.register('deletedBy', 'univentionRecycleBinDeletedBy', None, udm_mapping.ListToString)
 mapping.register('referencedBy', 'univentionRecycleBinReferencedBy')
@@ -123,6 +122,21 @@ mapping.register('originalUniventionObjectIdentifier', 'univentionRecycleBinOrig
 
 class object(simpleLdap):
     module = module
+
+    def get_original_dn(self):
+        rdn = ldap.dn.str2dn(self.dn)[0][0]
+        assert rdn[0] == 'univentionRecycleBinOriginalDN', f"Expected univentionRecycleBinOriginalDN RDN, got {rdn[0]}"
+
+        object_id = rdn[1]
+        if '#' in object_id:
+            return object_id.split('#')[0]
+        else:
+            return object_id
+
+    def __getitem__(self, key):
+        if key == 'originalDN':
+            return self.get_original_dn()
+        return super().__getitem__(key)
 
     @classmethod
     def _calculate_delete_at_timestamp(cls, lo, original_type):
@@ -166,29 +180,13 @@ class object(simpleLdap):
         parsed_refs = []
 
         for ref in referenced_by:
-            if '|' in ref:
-                parts = ref.split('|', 3)
-                if len(parts) == 4:
-                    parsed_refs.append({
-                        'dn': parts[0],
-                        'module': parts[1],
-                        'property': parts[2],
-                        'ldap_attribute': parts[3],
-                    })
-                else:
-                    parsed_refs.append({
-                        'dn': ref,
-                        'module': 'unknown',
-                        'property': 'unknown',
-                        'ldap_attribute': 'unknown',
-                    })
-            else:
-                parsed_refs.append({
-                    'dn': ref,
-                    'module': 'unknown',
-                    'property': 'unknown',
-                    'ldap_attribute': 'unknown',
-                })
+            ref_data = json.loads(ref)
+            parsed_refs.append({
+                'dn': ref_data.get('dn', ''),
+                'module': ref_data.get('module', 'unknown'),
+                'property': ref_data.get('property', 'unknown'),
+                'ldap_attribute': ref_data.get('ldap_attribute', 'unknown'),
+            })
 
         return parsed_refs
 
@@ -196,7 +194,11 @@ class object(simpleLdap):
         if not self.exists():
             raise univention.admin.uexceptions.noObject(self.dn)
 
-        original_dn = self['originalDN']
+        original_dn = self.get_original_dn()
+        if not original_dn:
+            raise univention.admin.uexceptions.valueInvalidSyntax(
+                'Cannot extract original DN from deleted object',
+            )
 
         try:
             existing = self.lo.authz_connection.get(original_dn, ['1.1'])
@@ -280,7 +282,7 @@ class object(simpleLdap):
         if referenced_by is None:
             referenced_by = []
 
-        object_id = str(uuid.uuid4())
+        object_id = ldap.dn.dn2str(ldap.dn.str2dn(original_dn))
 
         # Filter out LDAP meta/operational attributes
         operational_attributes = {
@@ -293,10 +295,11 @@ class object(simpleLdap):
             'memberOf',
         }
 
+        escaped_object_id = ldap.dn.escape_dn_chars(object_id)
+        deleted_dn = f'univentionRecycleBinOriginalDN={escaped_object_id},cn=recyclebin,cn=internal'
+
         ldap_attrs = [
             ('objectClass', [b'top', b'extensibleObject', b'univentionRecycleBinObject']),
-            ('cn', [object_id.encode('utf-8')]),
-            ('univentionRecycleBinOriginalDN', [original_dn.encode('utf-8')]),
             ('univentionRecycleBinOriginalType', [original_type.encode('utf-8')]),
             ('univentionRecycleBinDeleteAt', [cls._calculate_delete_at_timestamp(lo, original_type).encode('utf-8')]),
             ('univentionRecycleBinDeletedBy', [lo.binddn.encode('utf-8')]),
@@ -317,16 +320,29 @@ class object(simpleLdap):
             elif attr_name not in operational_attributes and attr_values:
                 if attr_name == 'objectClass':
                     ldap_attrs.append(('univentionRecycleBinOriginalObjectClass', attr_values))
-                elif attr_name != 'cn':
+                else:
                     ldap_attrs.append((attr_name, attr_values))
 
         log.debug("Final LDAP attributes for deleted object: %s", [attr[0] for attr in ldap_attrs])
 
-        escaped_object_id = ldap.dn.escape_dn_chars(object_id)
-        deleted_dn = f'cn={escaped_object_id},cn=recyclebin,cn=internal'
-
-        lo.authz_connection.add(deleted_dn, ldap_attrs)
-        log.debug("Created deleted object with extensibleObject: %s", deleted_dn)
+        try:
+            lo.authz_connection.add(deleted_dn, ldap_attrs)
+            log.debug("Created deleted object with extensibleObject: %s", deleted_dn)
+        except Exception as e:
+            error_str = str(e).lower()
+            if 'already exists' in error_str or 'object exists' in error_str or isinstance(e, ldap.ALREADY_EXISTS):
+                log.debug("DN conflict detected for %s: %s", deleted_dn, e)
+                import uuid
+                unique_suffix = str(uuid.uuid4())[:8]
+                conflict_object_id = f"{object_id}#{unique_suffix}"
+                escaped_conflict_id = ldap.dn.escape_dn_chars(conflict_object_id)
+                deleted_dn = f'univentionRecycleBinOriginalDN={escaped_conflict_id},cn=recyclebin,cn=internal'
+                log.debug("Retrying with conflict resolution DN: %s", deleted_dn)
+                lo.authz_connection.add(deleted_dn, ldap_attrs)
+                log.debug("Created deleted object with conflict resolution: %s", deleted_dn)
+            else:
+                # Re-raise non-conflict errors
+                raise
 
         # Return a minimal object for compatibility
         deleted_obj = cls(None, lo, position, dn=deleted_dn)

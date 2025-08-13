@@ -15,6 +15,7 @@ A UDM handler represents an abstraction of an LDAP object.
 
 import copy
 import inspect
+import json
 import re
 import sys
 import time
@@ -1633,9 +1634,22 @@ class simpleLdap:
                 for key, prop in module.property_descriptions.items():
                     prop_references = prop.get_references(target_dn, self.lo.authz_connection)
                     for dn in prop_references:
-                        if dn not in [ref.split('|')[0] if '|' in ref else ref for ref in referenced_by]:
+                        existing_dns = []
+                        for ref in referenced_by:
+                            try:
+                                ref_data = json.loads(ref)
+                                existing_dns.append(ref_data['dn'])
+                            except (json.JSONDecodeError, KeyError):
+                                continue
+
+                        if dn not in existing_dns:
                             ldap_attribute = getattr(prop, 'ldap_name', key)
-                            reference_info = f"{dn}|{module_name}|{key}|{ldap_attribute}"
+                            reference_info = json.dumps({
+                                'dn': dn,
+                                'module': module_name,
+                                'property': key,
+                                'ldap_attribute': ldap_attribute,
+                            })
                             referenced_by.append(reference_info)
                             log.debug("Found reference: %s -> %s (via %s.%s)", dn, target_dn, module_name, key)
 
@@ -1655,7 +1669,7 @@ class simpleLdap:
 
         for attr in critical_attributes:
             try:
-                search_filter = f"({attr}={target_dn})"
+                search_filter = f"({attr}={ldap.filter.escape_filter_chars(target_dn)})"
                 results = self.lo.authz_connection.search(
                     base=self.lo.base,
                     scope='subtree',
@@ -1666,9 +1680,21 @@ class simpleLdap:
                 )
 
                 for dn, attrs in results:
-                    if dn != target_dn and dn not in [ref.split('|')[0] if '|' in ref else ref for ref in referenced_by]:
-                        # Store in fallback format: "referencing_dn|unknown|unknown|ldap_attribute"
-                        reference_info = f"{dn}|unknown|unknown|{attr}"
+                    existing_dns = []
+                    for ref in referenced_by:
+                        try:
+                            ref_data = json.loads(ref)
+                            existing_dns.append(ref_data['dn'])
+                        except (json.JSONDecodeError, KeyError):
+                            continue
+
+                    if dn != target_dn and dn not in existing_dns:
+                        reference_info = json.dumps({
+                            'dn': dn,
+                            'module': 'unknown',
+                            'property': 'unknown',
+                            'ldap_attribute': attr,
+                        })
                         referenced_by.append(reference_info)
                         log.debug("Found reference (fallback): %s -> %s (via %s)", dn, target_dn, attr)
 
