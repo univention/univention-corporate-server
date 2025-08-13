@@ -9,3 +9,6 @@ desc: |
  * `ldap_setup_index` now checks if number of indexed attributes
    would exceed maximum number of lmdb sub-databases.
 bug: [58443]
+erratum: 167
+announced: 2025-08-13
+support: core
