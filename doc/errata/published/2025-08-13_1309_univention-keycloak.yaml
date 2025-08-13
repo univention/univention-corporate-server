@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * Implement compatibility with Keycloak 26.3.1 authentication flows.
 bug: [58515]
+erratum: 1309
+announced: 2025-08-13
+support: core
