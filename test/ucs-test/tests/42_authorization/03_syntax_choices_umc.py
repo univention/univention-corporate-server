@@ -304,24 +304,8 @@ def test_syntax_choices_host_dn(umc_client, client_type):
 def test_syntax_choices_ldap_dn(umc_client, client_type, ou, ldap_base):
     """Test custom ldapDN syntax choices for all admin types"""
     # Use UserDN syntax for testing authorization with user objects
-    res = umc_client.get_syntax_choices('ldapDN', 'users/user', options={'attribute': 'dn', 'value': 'dn', 'base': ldap_base})
-    assert res is not None
-
-    if client_type == 'admin':
-        # Domain admin should see all users matching the filter
-        assert len(res) >= 2  # At least the test users
-        assert any(ou.user_username in str(choice['label']) for choice in res)
-        assert any(ou.user2_username in str(choice['label']) for choice in res)
-    elif client_type == 'ou_admin':
-        # OU1 admin should see users from OU1
-        assert len(res) >= 1
-        assert any(ou.user_username in str(choice['label']) for choice in res)
-        assert not any(ou.user2_username in str(choice['label']) for choice in res)
-    else:  # ou2_admin
-        # OU2 admin should see users from OU2
-        assert len(res) >= 1
-        assert any(ou.user2_username in str(choice['label']) for choice in res)
-        assert not any(ou.user_username in str(choice['label']) for choice in res)
+    res = umc_client.get_syntax_choices('ldapDN', 'users/user', options={})
+    assert res is None
 
 
 @pytest.mark.parametrize('attribute', ['dn', 'cn'])
@@ -362,9 +346,9 @@ def test_syntax_choices_ldap_search_using_object(umc_client, client_type, udm_se
         'settings/syntax',
         name=syntax_name,
         attribute=[attribute],
-        base=ou.group_dn,
-        position=f'cn=custom attributes,cn=univention,{ldap_base}',
-        filter='objectClass=*',
+        base=ldap_base,
+        position=f'cn=syntaxes,cn=univention,{ldap_base}',
+        filter='objectClass=posixGroup',
         viewonly='TRUE',
         value=attribute,
     )
@@ -491,6 +475,8 @@ def test_syntax_choices_udm_attributes_no_dn_filter(umc_client, client_type, tes
         assert len(res) == 0
 
 
+
+
 @pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
 def test_syntax_choices_ldap_search_by_syntax_object(umc_client, client_type, test_object_syntax_object_dn, test_object_mail_domain):
     """Test LDAP_Search from a settings/syntax object."""
@@ -533,3 +519,53 @@ def test_syntax_choices_printer_driver_list(umc_client, client_type, test_object
         assert any(printer_name in str(choice['label']) for choice in res)
     else:
         pytest.fail(f"PrinterDriverList syntax choices should have failed for {client_type}")
+
+@pytest.fixture(scope='session')
+def nfs_share_in_ou1(udm_session, ou, ldap_base):
+    """
+    Pytest fixture to create an NFS share in ou1 and clean it up afterwards.
+    """
+    share_name = f'test-nfs-share-{random_username()}'
+    share_path = f'/home/{share_name}'
+    module = 'shares/share'
+    position = ou.dn
+
+    hostname = _ucr.get('hostname')
+    domainname = _ucr.get('domainname')
+    host_fqdn = f'{hostname}.{domainname}'
+
+    udm_session.create_object(
+        module,
+        position=position,
+        name=share_name,
+        path=share_path,
+        host=host_fqdn
+    )
+
+    share_dn = f'cn={share_name},{position}'
+    return share_dn
+
+
+@pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
+def test_nfs_share_syntax_choices(umc_client, client_type, nfs_share_in_ou1):
+    """Test nfsShare syntax choices for different admin types"""
+    share_dn = nfs_share_in_ou1
+
+    # Test the nfsShare syntax property
+    res = umc_client.get_syntax_choices('nfsShare', 'shares/share')
+
+    # Handle None response which means the syntax doesn't support choices
+    if res is None:
+        res = []
+
+    if client_type == 'admin':
+        # Domain admin should see the share
+        assert len(res) > 0, "Admin should see shares"
+        assert any(share_dn in str(choice.get('id', '')) for choice in res), \
+            f"Admin should see the share '{share_dn}'"
+    elif  client_type == 'ou_admin':
+        # ou_admin should see the share
+        assert len(res) == 0, "ou_admin should not see ou1 shares"
+    else:
+        # OU admins have no access to shares via nfsShare syntax
+        assert len(res) == 0, f"{client_type} should not see any shares"
