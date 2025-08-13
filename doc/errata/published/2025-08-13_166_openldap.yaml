@@ -9,3 +9,6 @@ desc: |
  * OpenLDAP increased the maximum number of indexed attributes
    from 128 to 256.
 bug: [58443]
+erratum: 166
+announced: 2025-08-13
+support: core
