@@ -9,3 +9,6 @@ desc: |
  * Disable an unnecessary Systemd service when installing the
    Self Service App on a Replica Directory Node.
 bug: [51256]
+erratum: 165
+announced: 2025-08-13
+support: core
