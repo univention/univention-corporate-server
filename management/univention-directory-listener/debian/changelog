@@ -1,8 +1,9 @@
-univention-directory-listener (16.2.0) UNRELEASED; urgency=medium
+univention-directory-listener (16.2.0) unstable; urgency=medium
 
   * Bug #58344: UCS 5.2-2 version bump
+  * Bug #56247: Break long lines in schema.conf
 
- -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 28 May 2025 16:49:48 +0200
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 13 Aug 2025 12:51:06 +0200
 
 univention-directory-listener (16.0.6-1) UNRELEASED; urgency=medium
 
