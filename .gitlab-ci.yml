@@ -172,6 +172,10 @@ deb-pipeline:
       pipeline_variables: true
 
 drop unused packages:
+  cache:
+   key: "$CI_COMMIT_REF_SLUG"
+   paths:
+     - .git/
   stage: build
   image: $DEB
   before_script:
