@@ -188,6 +188,9 @@ drop unused packages:
   - when: always
   variables:
     GIT_DEPTH: 1000
+    GIT_STRATEGY: fetch
+    GIT_CLEAN_FLAGS: none
+    GIT_FETCH_EXTRA_FLAGS: --prune
   script:
     - .gitlab-ci/drop-unused-packages
 
