@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-02 12:34+0000\n"
-"PO-Revision-Date: 2024-06-03 13:49+0200\n"
+"POT-Creation-Date: 2025-08-14 15:02+0000\n"
+"PO-Revision-Date: 2025-08-14 17:03+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -765,14 +765,14 @@ msgid ""
 "of a Windows system as a domain controller. For more information about "
 "Windows in a UCS domain, refer to :ref:`windows-services-for-windows`."
 msgstr ""
-"Samba ermöglicht es UCS, dass Microsoft Windows einer UCS-Domäne beitreten kann. Dieser "
-"Abschnitt beschreibt den Join-Vorgang am Beispiel von Windows 11, der "
-"für andere Windows-Versionen ähnlich ist. Zusätzlich zu den Client "
-"Versionen können auch Windows Server-Systeme der Domäne beitreten. Windows "
-"Server treten der Domäne als Memberserver bei. UCS unterstützt nicht den Beitritt "
-"eines Windows Server-Systems als Domänencontroller. Für weitere Informationen über "
-"Windows in einer UCS-Domäne finden Sie unter :ref:`windows-services-for-windows`."
-
+"Samba ermöglicht es UCS, dass Microsoft Windows einer UCS-Domäne "
+"beitreten kann. Dieser Abschnitt beschreibt den Join-Vorgang am Beispiel "
+"von Windows 11, der für andere Windows-Versionen ähnlich ist. Zusätzlich "
+"zu den Client Versionen können auch Windows Server-Systeme der Domäne "
+"beitreten. Windows Server treten der Domäne als Memberserver bei. UCS "
+"unterstützt nicht den Beitritt eines Windows Server-Systems als "
+"Domänencontroller. Für weitere Informationen über Windows in einer UCS-"
+"Domäne finden Sie unter :ref:`windows-services-for-windows`."
 
 #: ../../domain-ldap/domain-join.rst:167
 msgid ""
@@ -848,7 +848,9 @@ msgstr "Unterstütze Windows Versionen"
 msgid ""
 "UCS supports the following Microsoft Windows versions to join a UCS "
 "domain:"
-msgstr "UCS unterstützt die folgenden Microsoft Windows-Versionen, um einer UCS-Domäne beizutreten:"
+msgstr ""
+"UCS unterstützt die folgenden Microsoft Windows-Versionen, um einer UCS-"
+"Domäne beizutreten:"
 
 #: ../../domain-ldap/domain-join.rst:200 ../../domain-ldap/domain-join.rst:235
 msgid "Windows 10"
@@ -2023,28 +2025,10 @@ msgstr ""
 "beschleunigen."
 
 #: ../../domain-ldap/ldap-directory.rst:318
-msgid "Syncrepl for synchronization with non-UCS OpenLDAP servers"
-msgstr "Syncrepl zur Anbindung von Nicht-UCS OpenLDAP-Servern"
-
-#: ../../domain-ldap/ldap-directory.rst:320
-msgid ""
-"The syncrepl replication service can also be activated parallel to the "
-"notifier service for the synchronization of OpenLDAP servers not "
-"installed on UCS systems. Syncrepl is a component of OpenLDAP, monitors "
-"changes in the local directory service and transmits them to other "
-"OpenLDAP servers."
-msgstr ""
-"Für die Anbindung von nicht auf UCS-Systemen installierten OpenLDAP-"
-"Servern an das UCS-Managementsystem kann parallel zum Notifier-Dienst der"
-" Syncrepl-Replikationsdienst aktiviert werden. Dieser ist Bestandteil von"
-" OpenLDAP, registriert Veränderungen im lokalen Verzeichnisdienst und "
-"überträgt diese auf weitere OpenLDAP-Server."
-
-#: ../../domain-ldap/ldap-directory.rst:329
 msgid "Configuration of the directory service when using Samba/AD"
 msgstr "Konfiguration des Verzeichnis-Dienstes bei Verwendung von Samba/AD"
 
-#: ../../domain-ldap/ldap-directory.rst:331
+#: ../../domain-ldap/ldap-directory.rst:320
 msgid ""
 "As standard, the OpenLDAP server is configured in such a way that it also"
 " accepts requests from ports ``7389`` and ``7636`` in addition to the "
@@ -2054,27 +2038,24 @@ msgstr ""
 " zu den Standard-Ports ``389`` und ``636`` auch auf den Ports ``7389`` "
 "und ``7636`` Anfragen entgegen nimmt."
 
-#: ../../domain-ldap/ldap-directory.rst:335
+#: ../../domain-ldap/ldap-directory.rst:324
 msgid ""
 "If Samba/AD is used, the Samba/AD domain controller service occupies the "
 "ports ``389`` and ``636``. In this case, OpenLDAP is automatically "
-"reconfigured so that only ports ``7389`` and ``7636`` are used. This must"
-" be taken into account during the configuration of syncrepl in particular"
-" (see :ref:`domain-ldap-syncrepl`). :command:`univention-ldapsearch` uses"
-" the standard port automatically."
+"reconfigured so that only ports ``7389`` and ``7636`` are used. :command"
+":`univention-ldapsearch` uses the standard port automatically."
 msgstr ""
 "Wird Samba/AD eingesetzt, belegt der Dienst Samba/AD-Domänencontroller "
 "die Ports ``389`` und ``636``. In diesem Fall wird OpenLDAP automatisch "
 "umkonfiguriert, so dass nur noch die Ports ``7389`` und ``7636`` "
-"eingesetzt werden. Dies ist insbesondere bei der Konfiguration von "
-"syncrepl zu beachten (siehe :ref:`domain-ldap-syncrepl`). :command"
+"eingesetzt werden. :command"
 ":`univention-ldapsearch` verwendet automatisch den Standard-Port."
 
-#: ../../domain-ldap/ldap-directory.rst:345
+#: ../../domain-ldap/ldap-directory.rst:332
 msgid "Daily backup of LDAP data"
 msgstr "Tägliche Sicherung der LDAP-Daten"
 
-#: ../../domain-ldap/ldap-directory.rst:347
+#: ../../domain-ldap/ldap-directory.rst:334
 msgid ""
 "The content of the LDAP directory is backed up daily on the "
 "|UCSPRIMARYDN| and all |UCSBACKUPDN| systems via a Cron job. If Samba 4 "
@@ -2084,7 +2065,7 @@ msgstr ""
 "LDAP-Verzeichnisses durch einen Cron-Job täglich gesichert. Falls Samba 4"
 " eingesetzt wird, werden auch dessen Daten-Verzeichnis gesichert."
 
-#: ../../domain-ldap/ldap-directory.rst:351
+#: ../../domain-ldap/ldap-directory.rst:338
 msgid ""
 "The LDAP data are stored in the :file:`/var/univention-backup/` directory"
 " in the naming scheme :file:`ldap-backup_DATE.ldif.gz` in LDIF format. "
@@ -2097,7 +2078,7 @@ msgstr ""
 "Backup-Dateien werden im Verzeichnis :file:`/var/univention-"
 "backup/samba/` gesichert."
 
-#: ../../domain-ldap/ldap-directory.rst:356
+#: ../../domain-ldap/ldap-directory.rst:343
 msgid ""
 "The |UCSUCRV| :envvar:`backup/clean/max_age` can be used to define how "
 "long old backup files are kept (e.g. :envvar:`backup/clean/max_age`\\ "
@@ -2829,4 +2810,3 @@ msgid ""
 msgstr ""
 "Windows-Clients und Windows-Memberserver werden mit dieser Systemrolle "
 "verwaltet."
-
