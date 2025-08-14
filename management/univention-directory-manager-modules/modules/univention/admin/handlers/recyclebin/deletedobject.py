@@ -9,6 +9,7 @@ from logging import getLogger
 
 import ldap
 import ldap.dn
+import ldap.filter
 from ldap.controls.simple import RelaxRulesControl
 
 import univention.admin.filter
@@ -127,11 +128,7 @@ class object(simpleLdap):
         rdn = ldap.dn.str2dn(self.dn)[0][0]
         assert rdn[0] == 'univentionRecycleBinOriginalDN', f"Expected univentionRecycleBinOriginalDN RDN, got {rdn[0]}"
 
-        object_id = rdn[1]
-        if '#' in object_id:
-            return object_id.split('#')[0]
-        else:
-            return object_id
+        return rdn[1]
 
     def __getitem__(self, key):
         if key == 'originalDN':
@@ -300,6 +297,7 @@ class object(simpleLdap):
 
         ldap_attrs = [
             ('objectClass', [b'top', b'extensibleObject', b'univentionRecycleBinObject']),
+            ('univentionRecycleBinOriginalDN', [original_dn.encode('utf-8')]),
             ('univentionRecycleBinOriginalType', [original_type.encode('utf-8')]),
             ('univentionRecycleBinDeleteAt', [cls._calculate_delete_at_timestamp(lo, original_type).encode('utf-8')]),
             ('univentionRecycleBinDeletedBy', [lo.binddn.encode('utf-8')]),
@@ -328,20 +326,34 @@ class object(simpleLdap):
         try:
             lo.authz_connection.add(deleted_dn, ldap_attrs)
             log.debug("Created deleted object with extensibleObject: %s", deleted_dn)
-        except Exception as e:
-            error_str = str(e).lower()
-            if 'already exists' in error_str or 'object exists' in error_str or isinstance(e, ldap.ALREADY_EXISTS):
-                log.debug("DN conflict detected for %s: %s", deleted_dn, e)
-                import uuid
-                unique_suffix = str(uuid.uuid4())[:8]
-                conflict_object_id = f"{object_id}#{unique_suffix}"
-                escaped_conflict_id = ldap.dn.escape_dn_chars(conflict_object_id)
-                deleted_dn = f'univentionRecycleBinOriginalDN={escaped_conflict_id},cn=recyclebin,cn=internal'
-                log.debug("Retrying with conflict resolution DN: %s", deleted_dn)
-                lo.authz_connection.add(deleted_dn, ldap_attrs)
-                log.debug("Created deleted object with conflict resolution: %s", deleted_dn)
+        except (ldap.ALREADY_EXISTS, univention.admin.uexceptions.objectExists):
+            log.debug("Trash entry already exists for %s, updating existing entry", original_dn)
+
+            search_filter = f"(univentionRecycleBinOriginalDN={ldap.filter.escape_filter_chars(original_dn)})"
+            existing_entries = lo.authz_connection.search(
+                base='cn=recyclebin,cn=internal',
+                scope='subtree',
+                filter=search_filter,
+                attr=[],
+                unique=False,
+                required=False,
+            )
+
+            if existing_entries:
+                existing_dn = existing_entries[0][0]
+
+                modlist = []
+                for attr_name, attr_values in ldap_attrs:
+                    if attr_name not in ['objectClass', 'univentionRecycleBinOriginalDN']:
+                        modlist.append((ldap.MOD_REPLACE, attr_name, attr_values))
+
+                if modlist:
+                    lo.authz_connection.modify(existing_dn, modlist)
+                    log.debug("Updated existing trash entry: %s", existing_dn)
+
+                deleted_dn = existing_dn
             else:
-                # Re-raise non-conflict errors
+                log.error("LDAP says entry exists but we can't find it for %s", original_dn)
                 raise
 
         # Return a minimal object for compatibility

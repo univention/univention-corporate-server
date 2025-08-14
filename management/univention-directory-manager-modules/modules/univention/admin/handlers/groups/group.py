@@ -18,7 +18,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.uldap
-from univention.admin import configRegistry, reference
+from univention.admin import configRegistry
 from univention.admin.guardian_roles import member_role_layout, member_role_properties, register_member_role_mapping
 from univention.admin.layout import Group, Tab
 from univention.dn import DN
@@ -123,9 +123,6 @@ property_descriptions = {
         dontsearch=True,
         readonly_when_synced=True,
         copyable=True,
-        references=[
-            reference('users/user', 'groups', 'uniqueMember', search_base='cn=users'),
-        ],
     ),
     'hosts': univention.admin.property(
         short_description=_('Hosts'),
@@ -137,9 +134,6 @@ property_descriptions = {
         dontsearch=True,
         readonly_when_synced=True,
         copyable=True,
-        references=[
-            reference('computers/computer', 'groups', 'uniqueMember', search_base='cn=computers'),
-        ],
     ),
     'mailAddress': univention.admin.property(
         short_description=_('Mail address'),
@@ -168,9 +162,6 @@ property_descriptions = {
         dontsearch=True,
         readonly_when_synced=True,
         copyable=True,
-        references=[
-            reference('groups/group', 'memberOf', 'uniqueMember', search_base='cn=groups'),
-        ],
     ),
     'allowedEmailUsers': univention.admin.property(
         short_description=_('Users that are allowed to send e-mails to the group'),
@@ -911,13 +902,19 @@ class object(univention.admin.handlers.simpleLdap):
 
     @classmethod
     def unmapped_lookup_filter(cls):
-        return univention.admin.filter.conjunction('&', [
-            univention.admin.filter.expression('cn', '*', escape=False),
-            univention.admin.filter.conjunction('|', [
-                univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'univentionGroup')]),
-                univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'sambaGroupMapping')]),
-            ]),
-        ])  # fmt: skip
+        return univention.admin.filter.conjunction(
+            '&',
+            [
+                univention.admin.filter.expression('cn', '*', escape=False),
+                univention.admin.filter.conjunction(
+                    '|',
+                    [
+                        univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'univentionGroup')]),
+                        univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'sambaGroupMapping')]),
+                    ],
+                ),
+            ],
+        )
 
 
 lookup = object.lookup
