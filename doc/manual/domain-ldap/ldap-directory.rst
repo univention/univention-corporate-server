@@ -312,17 +312,6 @@ set to ``soft``, then no new attempt is made to connect. This can considerably
 accelerate the boot of a system if the LDAP server cannot be reached, e.g., in
 an isolated test environment.
 
-.. _domain-ldap-syncrepl:
-
-Syncrepl for synchronization with non-UCS OpenLDAP servers
-----------------------------------------------------------
-
-The syncrepl replication service can also be activated parallel to the
-notifier service for the synchronization of OpenLDAP servers not
-installed on UCS systems. Syncrepl is a component of OpenLDAP, monitors
-changes in the local directory service and transmits them to other
-OpenLDAP servers.
-
 .. _domain-ldap-configuration-of-the-directory-service-when-using-samba-4:
 
 Configuration of the directory service when using Samba/AD
@@ -334,9 +323,7 @@ ports ``389`` and ``636``.
 
 If Samba/AD is used, the Samba/AD domain controller service occupies the ports
 ``389`` and ``636``. In this case, OpenLDAP is automatically reconfigured so
-that only ports ``7389`` and ``7636`` are used. This must be taken into account
-during the configuration of syncrepl in particular (see
-:ref:`domain-ldap-syncrepl`). :command:`univention-ldapsearch` uses the
+that only ports ``7389`` and ``7636`` are used. :command:`univention-ldapsearch` uses the
 standard port automatically.
 
 .. _domain-ldap-nightly-backup:
