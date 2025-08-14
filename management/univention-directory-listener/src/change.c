@@ -163,10 +163,18 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 					cache_free_entry(NULL, &cache_entry);
 					abort_init = true;
 					goto cleanup;
+				/*
+				Ignore LDAP_NO_SUCH_OBJECT. An object can be
+				deleted after we do the ldapsearch. We
+				shouldn't need to care here.
+
+				However we should reset the return value to 0
+				Otherwise, if LDAP_NO_SUCH_OBJECT occurs in the last iteration of this loop
+				it becomes the return value of the function.
+				*/
+				} else if (rv == LDAP_NO_SUCH_OBJECT) {
+					rv = LDAP_SUCCESS;
 				}
-				/* Ignore LDAP_NO_SUCH_OBJECT. An object can be
-				   deleted after we do the ldapsearch. We
-				   shouldn't need to care here. */
 			} else if (rv != 0) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while reading from database");
 				rv = LDAP_OTHER;
