@@ -25,6 +25,7 @@ from typing import TYPE_CHECKING
 
 import ldap
 import ldap.dn
+import ldap.filter
 import PIL
 from dateutil.parser import parse as duparse
 from email_validator import SPECIAL_USE_DOMAIN_NAMES, EmailNotValidError, validate_email
@@ -4301,6 +4302,32 @@ class GroupDN(UDM_Objects):
         opts.update(super().get_widget_choices_options(udm_property))
         return opts
 
+    def get_references(self, target_dn: str, lo, ldap_attribute: str) -> list[str]:
+        """Find references to target DN from groups that reference this group."""
+        referenced_by = []
+        if ldap_attribute and self.key == 'dn':
+            try:
+                import ldap.filter
+                escaped_dn = ldap.filter.escape_filter_chars(target_dn)
+                search_filter = f"({ldap_attribute}={escaped_dn})"
+
+                results = lo.search(
+                    base=lo.base,
+                    scope='subtree',
+                    filter=search_filter,
+                    attr=[],
+                    unique=False,
+                    required=False,
+                )
+
+                for dn, attrs in results:
+                    if dn != target_dn and dn not in referenced_by:
+                        referenced_by.append(dn)
+
+            except Exception:
+                pass
+        return referenced_by
+
 
 class GroupDNOrEmpty(GroupDN):
     """
@@ -4325,6 +4352,32 @@ class UserDN(UDM_Objects):
     udm_modules = ('users/user',)
     use_objects = False
 
+    def get_references(self, target_dn: str, lo, ldap_attribute: str) -> list[str]:
+        """Find references to target DN from objects that reference this user."""
+        referenced_by = []
+        if ldap_attribute and self.key == 'dn':
+            try:
+                import ldap.filter
+                escaped_dn = ldap.filter.escape_filter_chars(target_dn)
+                search_filter = f"({ldap_attribute}={escaped_dn})"
+
+                results = lo.search(
+                    base=lo.base,
+                    scope='subtree',
+                    filter=search_filter,
+                    attr=[],
+                    unique=False,
+                    required=False,
+                )
+
+                for dn, attrs in results:
+                    if dn != target_dn and dn not in referenced_by:
+                        referenced_by.append(dn)
+
+            except Exception:
+                pass
+        return referenced_by
+
 
 class HostDN(UDM_Objects):
     """
@@ -4336,6 +4389,31 @@ class HostDN(UDM_Objects):
 
     udm_modules = ('computers/computer',)
     udm_filter = '!(univentionObjectFlag=docker)'
+
+    def get_references(self, target_dn: str, lo, ldap_attribute: str) -> list[str]:
+        """Find references to target DN from objects that reference this host."""
+        referenced_by = []
+        if ldap_attribute and self.key == 'dn':
+            try:
+                escaped_dn = ldap.filter.escape_filter_chars(target_dn)
+                search_filter = f"({ldap_attribute}={escaped_dn})"
+
+                results = lo.search(
+                    base=lo.base,
+                    scope='subtree',
+                    filter=search_filter,
+                    attr=[],
+                    unique=False,
+                    required=False,
+                )
+
+                for dn, attrs in results:
+                    if dn != target_dn and dn not in referenced_by:
+                        referenced_by.append(dn)
+
+            except Exception:
+                pass
+        return referenced_by
 
 
 class UserID(UDM_Objects):
