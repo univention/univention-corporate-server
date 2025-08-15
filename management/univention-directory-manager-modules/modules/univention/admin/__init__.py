@@ -34,7 +34,7 @@ if TYPE_CHECKING:
 from univention.admin.log import log
 
 
-__all__ = ('configRegistry', 'extended_attribute', 'hook', 'mapping', 'modules', 'objects', 'option', 'pattern_replace', 'policiesGroup', 'property', 'syntax', 'ucr_overwrite_layout', 'ucr_overwrite_module_layout', 'ucr_overwrite_properties')
+__all__ = ('attribute_reference', 'configRegistry', 'dn_reference', 'extended_attribute', 'hook', 'mapping', 'modules', 'objects', 'option', 'pattern_replace', 'policiesGroup', 'property', 'reference', 'syntax', 'ucr_overwrite_layout', 'ucr_overwrite_module_layout', 'ucr_overwrite_properties')
 
 ucr_property_prefix = 'directory/manager/web/modules/%s/properties/'
 
@@ -159,6 +159,123 @@ def pattern_replace(pattern: str, obj: dict | simpleLdap) -> str:
     return value
 
 
+class reference:
+    """
+    Base class for UDM object references.
+
+    Represents a relationship between UDM properties and other objects.
+    """
+
+    def __init__(self, modules: list[str], ldap_attribute: str):
+        """
+        Create a reference definition.
+
+        :param modules: List of UDM module names that this reference points to
+        :param ldap_attribute: The LDAP attribute used for the reference
+        """
+        self.modules = modules if isinstance(modules, list) else [modules]
+        self.ldap_attribute = ldap_attribute
+
+    def get_references(self, target_dn: str, lo) -> list[str]:
+        """
+        Get list of DNs that reference the target DN through this reference.
+
+        :param target_dn: DN of the target object
+        :param lo: LDAP connection object
+        :return: List of DNs that reference the target DN
+        """
+        raise NotImplementedError("Subclasses should implement get_references()")
+
+
+class dn_reference(reference):
+    """
+    Reference type for DN-based relationships.
+
+    Handles cases where one object references another via its DN in an LDAP attribute.
+    Example: Groups referencing users via 'uniqueMember' or 'member' attributes.
+    """
+
+    def get_references(self, target_dn: str, lo) -> list[str]:
+        """Get DNs that reference the target DN via the specified LDAP attribute."""
+        referenced_by = []
+
+        try:
+            escaped_dn = ldap.filter.escape_filter_chars(target_dn)
+            search_filter = f"({self.ldap_attribute}={escaped_dn})"
+
+            results = lo.search(
+                base=lo.base,
+                scope='subtree',
+                filter=search_filter,
+                attr=[],
+                unique=False,
+                required=False,
+            )
+
+            for dn, attrs in results:
+                if dn != target_dn and dn not in referenced_by:
+                    referenced_by.append(dn)
+
+        except ldap.LDAPError:
+            pass
+
+        return referenced_by
+
+
+class attribute_reference(reference):
+    """
+    Reference type for attribute-based relationships.
+
+    Handles cases where objects are related through shared attribute values
+    rather than direct DN references.
+    Example: Objects sharing the same 'univentionObjectIdentifier' or 'sambaSID'.
+    """
+
+    def __init__(self, modules: list[str], ldap_attribute: str,
+                 source_attribute: str | None = None, target_attribute: str | None = None):
+        """
+        Initialize attribute reference.
+
+        :param source_attribute: Attribute in the source object
+        :param target_attribute: Attribute in target objects to match against
+        """
+        super().__init__(modules, ldap_attribute)
+        self.source_attribute = source_attribute or ldap_attribute
+        self.target_attribute = target_attribute or ldap_attribute
+
+    def get_references(self, target_dn: str, lo) -> list[str]:
+        """Get DNs that reference the target DN via shared attribute values."""
+        referenced_by = []
+
+        target_attrs = lo.get(target_dn, attr=[self.source_attribute])
+        target_values = target_attrs.get(self.source_attribute, [])
+
+        if not target_values:
+            return referenced_by
+
+        for value in target_values:
+            if isinstance(value, bytes):
+                value = value.decode('utf-8')
+
+            escaped_value = ldap.filter.escape_filter_chars(value)
+            search_filter = f"({self.target_attribute}={escaped_value})"
+
+            results = lo.search(
+                base=lo.base,
+                scope='subtree',
+                filter=search_filter,
+                attr=[],
+                unique=False,
+                required=False,
+            )
+
+            for dn, attrs in results:
+                if dn != target_dn and dn not in referenced_by:
+                    referenced_by.append(dn)
+
+        return referenced_by
+
+
 class property:
     UMLAUTS = {
         'Ä': 'Ae',
@@ -202,6 +319,7 @@ class property:
         copyable: bool = False,
         type_class: type[TypeHint] | None = None,
         lazy_loading_fn: str | None = None,
+        references: list | None = None,
     ) -> None:
         """
         |UDM| property.
@@ -234,6 +352,7 @@ class property:
         :param copyable: With `True` the property is copied when the object is cloned; with `False` the new object will use the default value.
         :param type_class: An optional Typing class which overwrites the syntax class specific type.
         :param lazy_loading_fn: An optional function name that implements loading additional expensive properties if requested.
+        :param references: List of reference definitions. If None, will be automatically populated from syntax class.
         """
         self.short_description = short_description
         self.long_description = long_description
@@ -268,6 +387,17 @@ class property:
         self.copyable = copyable
         self.type_class = type_class
         self.lazy_loading_fn = lazy_loading_fn
+
+        if references is not None:
+            self.references = references
+        else:
+            if self.syntax and hasattr(self.syntax, 'get_references'):
+                try:
+                    self.references = self.syntax.get_references()
+                except Exception:
+                    self.references = []
+            else:
+                self.references = []
 
     def new(self) -> list[str] | None:
         return [] if self.multivalue else None
@@ -356,7 +486,7 @@ class property:
 
     def get_references(self, target_dn: str, lo) -> list[str]:
         """
-        Find references to the target DN based on this property's syntax.
+        Find references to the target DN based on this property's reference definitions.
 
         :param target_dn: The DN to search references for
         :param lo: LDAP connection object
@@ -364,7 +494,18 @@ class property:
         """
         referenced_by = []
 
-        if self.syntax:
+        if self.references:
+            for ref in self.references:
+                try:
+                    ref_results = ref.get_references(target_dn, lo)
+                    for dn in ref_results:
+                        if dn != target_dn and dn not in referenced_by:
+                            referenced_by.append(dn)
+                except Exception as exc:
+                    log.warning("Failed to get references from %s: %s", ref, exc)
+                    continue
+
+        elif self.syntax:
             syntax = self.syntax() if inspect.isclass(self.syntax) else self.syntax
 
             if hasattr(syntax, 'get_references'):
@@ -375,7 +516,7 @@ class property:
                         if dn != target_dn and dn not in referenced_by:
                             referenced_by.append(dn)
                 except Exception:
-                    pass
+                    pass  # Fall back to legacy behavior
 
             # Legacy fallback for UDM_Objects
             elif hasattr(syntax, 'udm_modules') and getattr(syntax, 'key', None) == 'dn':
