@@ -774,3 +774,15 @@ Provides:
 Description: Test scripts for authorization in UMC, UMC REST and UDM
  This package includes some scripts for testing Authorization
  in different layers.
+
+Package: ucs-test-udm-performance
+Architecture: all
+Depends:
+ ucs-test-libs (= ${source:Version}),
+ ${misc:Depends},
+Provides:
+ ucs-test-module,
+Recommends:
+ ucs-test-framework,
+Description: Test scripts for testing UDM performance
+ This package includes test-cases for UDM performance tests.

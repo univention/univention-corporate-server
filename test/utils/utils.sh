@@ -792,6 +792,10 @@ run_umc_performance_tests () {
 	_run_tests -s umc-performance "$@"
 }
 
+run_udm_performance_tests () {
+	_run_tests -s udm-rest-performance "$@"
+}
+
 run_admember_tests () {
 	ad_member_fix_udm_rest_api
 	run_tests -p skip_admember -p docker "$@"

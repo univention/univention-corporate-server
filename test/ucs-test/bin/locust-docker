@@ -20,12 +20,5 @@ export LOCUST_USER_CLASSES="${@: -1}"
 export LOCUST_HOST="$host"
 export LOCUST_EXPECT_WORKERS="${locust_workers:-5}"
 
-ip="$(dig +short "@$ldap_master" "$ldap_master" | head -1)"
-export HOST1="${ldap_master}"
-export IP1="$ip"
-
-ip3="$(dig +short "@$ldap_master" "$kc_server_sso_fqdn" | head -1)"
-export HOST3="$kc_server_sso_fqdn"
-export IP3="$ip3"
-
+env | grep LOCUST_
 exec docker-compose -f /usr/share/ucs-test-locust/docker-compose.yml up --build --scale worker="${locust_workers:-5}" --exit-code-from master
