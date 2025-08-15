@@ -36,6 +36,7 @@ import univention.debug2 as ud
 import univention.uldap
 from univention.s4connector.lockingdb import LockingDB
 from univention.s4connector.s4cache import S4Cache
+from univention.s4connector.prometheus_metrics import get_metrics
 
 
 term_signal_caught = False
@@ -488,6 +489,9 @@ class ucs:
         for section in ['DN Mapping UCS', 'DN Mapping CON', 'UCS rejected', 'UCS deleted', 'UCS added', 'UCS entryCSN']:
             if not self.config.has_section(section):
                 self.config.add_section(section)
+        
+        # Initialize metrics collector
+        self.metrics_collector = get_metrics()
 
     def init_ldap_connections(self):
         self.open_ucs()
@@ -957,6 +961,10 @@ class ucs:
 
     def poll_ucs(self):
         """poll changes from UCS: iterates over files exported by directory-listener module"""
+        # Start timing for metrics
+        import time
+        start_time = time.time()
+        
         # check for changes from ucs ldap directory
 
         ud.debug(ud.LDAP, ud.INFO, "sync UCS > AD: polling")
@@ -1043,6 +1051,27 @@ class ucs:
             print("Changes from UCS: %s (%s saved rejected)" % (change_counter, '0'))
         print("--------------------------------------")
         sys.stdout.flush()
+        
+        # Update metrics
+        if self.metrics_collector:
+            duration = time.time() - start_time
+            if change_counter > 0:
+                self.metrics_collector.increment_counter(
+                    's4_connector_changes_total',
+                    {'direction': 'ucs_to_s4'},
+                    change_counter
+                )
+            self.metrics_collector.set_gauge(
+                's4_connector_last_sync_timestamp',
+                {'direction': 'ucs_to_s4'},
+                time.time()
+            )
+            self.metrics_collector.set_gauge(
+                's4_connector_sync_duration_seconds',
+                {'direction': 'ucs_to_s4'},
+                duration
+            )
+        
         return change_counter
 
     def poll(self, show_deleted=True):

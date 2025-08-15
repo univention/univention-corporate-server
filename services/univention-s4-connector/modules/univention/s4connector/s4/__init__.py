@@ -29,6 +29,7 @@ import univention.debug2 as ud
 import univention.s4connector
 import univention.uldap
 from univention.config_registry import ConfigRegistry
+from univention.s4connector.prometheus_metrics import get_metrics
 
 
 LDAP_SERVER_SHOW_DELETED_OID = "1.2.840.113556.1.4.417"
@@ -669,6 +670,9 @@ class s4(univention.s4connector.ucs):
             self.s4_ldap_partitions = (self.s4_ldap_base,)
         else:
             self.s4_ldap_partitions = (self.s4_ldap_base, "DC=DomainDnsZones,%s" % self.s4_ldap_base, "DC=ForestDnsZones,%s" % self.s4_ldap_base)
+        
+        # Initialize metrics collector
+        self.metrics_collector = get_metrics()
 
     def _get_lastUSN(self):
         return max(self.__lastUSN, int(self._get_config_option('S4', 'lastUSN')))
@@ -1776,6 +1780,9 @@ class s4(univention.s4connector.ucs):
 
     def poll(self, show_deleted=True):
         """poll for changes in AD"""
+        # Start timing for metrics
+        start_time = time.time()
+        
         # search from last_usn for changes
         ud.debug(ud.LDAP, ud.INFO, "sync AD > UCS: polling")
         change_count = 0
@@ -1890,6 +1897,27 @@ class s4(univention.s4connector.ucs):
         print("Changes from S4:  %s (%s saved rejected)" % (change_count, len(rejected)))
         print("--------------------------------------")
         sys.stdout.flush()
+        
+        # Update metrics
+        if self.metrics_collector:
+            duration = time.time() - start_time
+            if change_count > 0:
+                self.metrics_collector.increment_counter(
+                    's4_connector_changes_total',
+                    {'direction': 's4_to_ucs'},
+                    change_count
+                )
+            self.metrics_collector.set_gauge(
+                's4_connector_last_sync_timestamp',
+                {'direction': 's4_to_ucs'},
+                time.time()
+            )
+            self.metrics_collector.set_gauge(
+                's4_connector_sync_duration_seconds',
+                {'direction': 's4_to_ucs'},
+                duration
+            )
+        
         return change_count
 
     def __has_attribute_value_changed(self, attribute, old_ucs_object, new_ucs_object):
