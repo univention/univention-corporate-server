@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [9, 10]
+scope: ucs_5.0-0-errata5.0-10
+src: mariadb-10.3
+fix: 1:10.3.39-0+deb10u4
+desc: |
+ This update addresses the following issues:
+ * CVSS score 4.9 (CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2023-52970, CVE-2023-52969, CVE-2023-52968)
+bug: [58527]
+cve:
+- CVE-2023-52970
+- CVE-2023-52969
+- CVE-2023-52968
