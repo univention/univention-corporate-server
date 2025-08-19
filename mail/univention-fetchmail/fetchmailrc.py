@@ -37,6 +37,7 @@ import json
 import os
 import re
 import shutil
+import time
 from functools import reduce
 from tempfile import NamedTemporaryFile
 from typing import Dict, Iterable, List
@@ -55,7 +56,6 @@ attributes = ['univentionFetchmailSingle', 'univentionFetchmailMulti', 'uid', 'm
 modrdn = "1"
 
 fn_fetchmailrc = '/etc/fetchmailrc'
-__initscript = '/etc/init.d/fetchmail'
 FETCHMAIL_OLD_PICKLE = "/var/spool/univention-fetchmail/fetchmail_old_dn"
 
 UID_REGEX = re.compile("#UID='(.+)'[ \t]*$")
@@ -248,10 +248,11 @@ def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], c
 
 
 def postrun() -> None:
-    initscript = __initscript
     ud.debug(ud.LISTENER, ud.INFO, 'Restarting fetchmail-daemon')
     listener.setuid(0)
     try:
-        listener.run(initscript, ['fetchmail', 'restart'], uid=0)
+        listener.run('systemctl', ['stop', 'fetchmail'], uid=0)
+        time.sleep(2)
+        listener.run('systemctl', ['start', 'fetchmail'], uid=0)
     finally:
         listener.unsetuid()

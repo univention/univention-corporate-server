@@ -1,0 +1,11 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-fetchmail
+fix: 13.0.12-2
+desc: |
+ This update addresses the following issue:
+  * The fetchmail listener module now uses `systemd` instead of the SysV
+    init script (/etc/init.d/fetchmail).
+bug: [56585]
