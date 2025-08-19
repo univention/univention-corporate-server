@@ -282,15 +282,6 @@ _fix_ssh47233 () { # Bug #47233: ssh connection stuck on reboot
 	ucr commit "$G"
 }
 
-
-check_keycloak_version() {
-	version="26.2.5-ucs1"
-	# we have a problem with the appcenter installing the wrong keycloak version. This will be removed and is for debugging purposes only
-	univention-ldapsearch -xLLL univentionAppID="keycloak_$version" "univentionAppID" | grep "univentionAppID" || exit 1
-}
-
-
-
 keycloak_migration() {
 	# migration to keycloak before 5.2 update
 	domainname="$(ucr get domainname)"
