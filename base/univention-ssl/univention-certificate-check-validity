@@ -6,14 +6,14 @@
 # SPDX-FileCopyrightText: 2006-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-import calendar
-import time
+import datetime
 
-from M2Crypto import X509
+from cryptography import x509
 
 from univention.config_registry import ConfigRegistry
 
 
+_CRYPT_HAS_UTC = hasattr(x509.Certificate, 'not_valid_after_utc')  # > Debian bookworm
 _bc = ConfigRegistry()
 _bc.load()
 
@@ -21,8 +21,11 @@ _bc.load()
 def get_validity_date(certFile):
     """returns the validity date fo the locale SSL certificate or None on failure"""
     try:
-        x509 = X509.load_cert(certFile)
-        return str(x509.get_not_after())
+        with open(certFile, 'rb') as fd:
+            cert = x509.load_pem_x509_certificate(fd.read())
+        if _CRYPT_HAS_UTC:
+            return cert.not_valid_after_utc
+        return cert.not_valid_after.replace(tzinfo=datetime.UTC)
     except Exception:
         return None
 
@@ -34,8 +37,7 @@ def get_validity_days(certFile):
     """
     after = get_validity_date(certFile)
     if after:
-        time_after = time.strptime(after, "%b %d %H:%M:%S %Y %Z")
-        return calendar.timegm(time_after) // 60 // 60 // 24
+        return int(after.timestamp()) // 60 // 60 // 24
 
     return 0
 

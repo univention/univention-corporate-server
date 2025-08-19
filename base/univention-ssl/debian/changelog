@@ -1,3 +1,13 @@
+univention-ssl (17.0.2) unstable; urgency=medium
+
+  [ Marius Meschter ]
+  * Bug #59082: UCS 5.2-5 version bump
+
+  [ Florian Best ]
+  * Bug #55411: replace M2Crypto with python3-cryptography
+
+ -- Florian Best <best@univention.de>  Fri, 22 May 2026 23:41:41 +0200
+
 univention-ssl (17.0.1) unstable; urgency=medium
 
   * Bug #55706: UCS 5.3-0 version bump
