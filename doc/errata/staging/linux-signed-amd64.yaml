@@ -19,7 +19,7 @@ desc: |
    (CVE-2024-36357, CVE-2024-36350)
  * CVSS score 5.5 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
    (CVE-2024-56758)
-bug: [58395]
+bug: [58528]
 cve:
 - CVE-2025-38000
 - CVE-2025-21816
