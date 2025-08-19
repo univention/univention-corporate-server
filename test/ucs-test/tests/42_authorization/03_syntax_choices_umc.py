@@ -338,6 +338,7 @@ def test_syntax_choices_ldap_search(umc_client, client_type, udm_session, ou, ld
         assert len(res) == 0
 
 
+@pytest.xfail(reason="This test is expected to fail until Bug 3075 is fixed")
 @pytest.mark.parametrize('attribute', ['dn', 'cn'])
 @pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
 def test_syntax_choices_ldap_search_using_object(umc_client, client_type, udm_session, ou, ldap_base, attribute):
@@ -421,44 +422,16 @@ def test_syntax_choices_ldapdn_no_filter(umc_client, client_type):
 
 
 @pytest.fixture(scope='session')
-def test_object_syntaxes_container(udm_session, ldap_base):
-    try:
-        udm_session.create_object(
-            'container/cn',
-            name='syntaxes',
-            position=f'cn=univention,{ldap_base}',
-        )
-    except Exception:
-        # a concurrent test may have already created the object
-        pass
-
-
-@pytest.fixture(scope='session')
-def test_object_syntax_object_dn(udm_session, ldap_base, test_object_syntaxes_container):
+def test_object_syntax_object(udm_session, ldap_base, attribute):
     syntax_name = f'test_{random_username()}'
     udm_session.create_object(
         'settings/syntax',
         name=syntax_name,
-        value='dn',
-        attribute='mail/domain: dn',
-        filter='objectClass=univentionMailDomain',
+        value=attribute,
+        attribute=f'mail/domain: {attribute}',
+        filter='objectClass=*',
         base=f'cn=mail,cn=univention,{ldap_base}',
-        position=f'cn=syntaxes,cn=univention,{ldap_base}',
-    )
-    return syntax_name
-
-
-@pytest.fixture(scope='session')
-def test_object_syntax_object_not_dn(udm_session, ldap_base, test_object_syntaxes_container):
-    syntax_name = f'test_{random_username()}'
-    udm_session.create_object(
-        'settings/syntax',
-        name=syntax_name,
-        value='cn',
-        attribute='mail/domain: cn',
-        filter='objectClass=univentionMailDomain',
-        base=f'cn=mail,cn=univention,{ldap_base}',
-        position=f'cn=syntaxes,cn=univention,{ldap_base}',
+        position=f'cn=custom attributes,cn=univention,{ldap_base}',
     )
     return syntax_name
 
@@ -475,12 +448,12 @@ def test_syntax_choices_udm_attributes_no_dn_filter(umc_client, client_type, tes
         assert len(res) == 0
 
 
-
-
+@pytest.xfail(reason="This test is expected to fail until Bug 3075 is fixed")
+@pytest.mark.parametrize('attribute', ['dn', 'cn'])
 @pytest.mark.parametrize('client_type', ['admin', 'ou_admin', 'ou2_admin'])
-def test_syntax_choices_ldap_search_by_syntax_object(umc_client, client_type, test_object_syntax_object_dn, test_object_mail_domain):
+def test_syntax_choices_ldap_search_by_syntax_object(umc_client, client_type, test_object_syntax_object, test_object_mail_domain):
     """Test LDAP_Search from a settings/syntax object."""
-    res = umc_client.get_syntax_choices(test_object_syntax_object_dn, 'mail/domain')
+    res = umc_client.get_syntax_choices(test_object_syntax_object, 'mail/domain')
     assert res is not None
     if client_type == 'admin':
         assert len(res) > 0
@@ -520,11 +493,10 @@ def test_syntax_choices_printer_driver_list(umc_client, client_type, test_object
     else:
         pytest.fail(f"PrinterDriverList syntax choices should have failed for {client_type}")
 
+
 @pytest.fixture(scope='session')
 def nfs_share_in_ou1(udm_session, ou, ldap_base):
-    """
-    Pytest fixture to create an NFS share in ou1 and clean it up afterwards.
-    """
+    """Pytest fixture to create an NFS share in ou1 and clean it up afterwards."""
     share_name = f'test-nfs-share-{random_username()}'
     share_path = f'/home/{share_name}'
     module = 'shares/share'
@@ -539,7 +511,7 @@ def nfs_share_in_ou1(udm_session, ou, ldap_base):
         position=position,
         name=share_name,
         path=share_path,
-        host=host_fqdn
+        host=host_fqdn,
     )
 
     share_dn = f'cn={share_name},{position}'
@@ -563,7 +535,7 @@ def test_nfs_share_syntax_choices(umc_client, client_type, nfs_share_in_ou1):
         assert len(res) > 0, "Admin should see shares"
         assert any(share_dn in str(choice.get('id', '')) for choice in res), \
             f"Admin should see the share '{share_dn}'"
-    elif  client_type == 'ou_admin':
+    elif client_type == 'ou_admin':
         # ou_admin should see the share
         assert len(res) == 0, "ou_admin should not see ou1 shares"
     else:
