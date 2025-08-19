@@ -13,7 +13,7 @@ import time
 from datetime import datetime, timedelta
 
 import pytest
-from M2Crypto import X509
+from cryptography import x509
 
 from univention.config_registry import handler_set
 from univention.testing.strings import random_domain_name, random_username
@@ -95,8 +95,8 @@ class TestUsers:
     ])
     def test_unmap_user_certificate(self, udm, ucr, module, random_name):
         certificate_binary = subprocess.check_output(['openssl', 'x509', '-inform', 'pem', '-in', '/etc/univention/ssl/%(hostname)s/cert.pem' % ucr, '-outform', 'der', '-out', '-'])
-        x509 = X509.load_cert_string(certificate_binary, X509.FORMAT_DER)
-        certificateSerial = x509.get_serial_number()
+        cert = x509.load_der_x509_certificate(certificate_binary)
+        certificateSerial = cert.serial_number
         certificate = base64.b64encode(certificate_binary).decode('ASCII')
         certificate_ldap = {
             'userCertificate': certificate,

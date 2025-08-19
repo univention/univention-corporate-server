@@ -4,7 +4,8 @@
 ## exposure: dangerous
 ## bugs: [44469]
 
-from M2Crypto import X509
+from cryptography import x509
+from cryptography.x509.oid import ExtensionOID
 
 from univention.testing import strings
 
@@ -22,10 +23,12 @@ def test_san(udm, ucr):
         },
     )
 
-    x509 = X509.load_cert('/etc/univention/ssl/%s/cert.pem' % membername)
-    san = x509.get_ext('subjectAltName').get_value()
+    with open('/etc/univention/ssl/%s/cert.pem' % membername, 'rb') as fd:
+        cert = x509.load_pem_x509_certificate(fd.read())
+    san_ext = cert.extensions.get_extension_for_oid(ExtensionOID.SUBJECT_ALTERNATIVE_NAME)
+    san_names = [name.value for name in san_ext.value]
 
-    assert "www.%(domainname)s" % ucr in san
+    assert "www.%(domainname)s" % ucr in san_names
 
 
 def test_san_different_network(udm, ucr):
@@ -52,7 +55,9 @@ def test_san_different_network(udm, ucr):
         },
     )
 
-    x509 = X509.load_cert('/etc/univention/ssl/%s/cert.pem' % membername)
-    san = x509.get_ext('subjectAltName').get_value()
+    with open('/etc/univention/ssl/%s/cert.pem' % membername, 'rb') as fd:
+        cert = x509.load_pem_x509_certificate(fd.read())
+    san_ext = cert.extensions.get_extension_for_oid(ExtensionOID.SUBJECT_ALTERNATIVE_NAME)
+    san_names = [name.value for name in san_ext.value]
 
-    assert "www.%s" % (zonename,) in san
+    assert "www.%s" % (zonename,) in san_names
