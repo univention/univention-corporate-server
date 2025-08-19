@@ -453,7 +453,7 @@ revoke_cert_id () {
 
 getcnreq () {
 	local request="${1:?Missing argument: request}"
-	if ! openssl req -noout -verify -in "$request" 2>/dev/null
+	if ! openssl req -noout -verify -in "$request" >/dev/null 2>&1
 	then
 		echo "FATAL: could not verify request '$request'" >&2
 		return 1
