@@ -29,7 +29,6 @@ attributes = ['univentionFetchmailSingle', 'univentionFetchmailMulti', 'uid', 'm
 modrdn = "1"
 
 fn_fetchmailrc = '/etc/fetchmailrc'
-__initscript = '/etc/init.d/fetchmail'
 FETCHMAIL_OLD_PICKLE = "/var/spool/univention-fetchmail/fetchmail_old_dn"
 
 UID_REGEX = re.compile("#UID='(.+)'[ \t]*$")
@@ -222,10 +221,9 @@ def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]], c
 
 
 def postrun() -> None:
-    initscript = __initscript
     ud.debug(ud.LISTENER, ud.INFO, 'Restarting fetchmail-daemon')
     listener.setuid(0)
     try:
-        listener.run(initscript, ['fetchmail', 'restart'], uid=0)
+        listener.run('systemctl', ['restart', 'fetchmail'], uid=0)
     finally:
         listener.unsetuid()
