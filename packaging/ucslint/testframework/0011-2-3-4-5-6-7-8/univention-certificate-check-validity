@@ -3,10 +3,7 @@
 # SPDX-FileCopyrightText: Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-import time
-import calendar
-
-from M2Crypto import X509
+from cryptography import x509
 
 import univention_baseconfig
 
@@ -14,31 +11,32 @@ _bc = univention_baseconfig.baseConfig()
 _bc.load()
 
 
-def get_validity_date():
-    """ returns the validity date fo the locale SSL certificate or None on failure"""
-    global _bc
+def get_validity_date(certFile):
+    """returns the validity date fo the locale SSL certificate or None on failure"""
     try:
-        fqdn = '.'.join([_bc['hostname'], _bc['domainname']])
-
-        x509 = X509.load_cert('/etc/univention/ssl/%s/cert.pem' % fqdn)
-        return str(x509.get_not_after())
+        with open(certFile, 'rb') as f:
+            cert = x509.load_pem_x509_certificate(f.read())
+        return cert.not_valid_after
     except Exception:
         return None
 
 
-def get_validity_days():
-    """returns the validity of the local SSL certificate in days. If the
-    validity could not be determined 0 is returned"""
-    after = get_validity_date()
+def get_validity_days(certFile):
+    """
+    returns the validity of the local SSL certificate in days. If the
+    validity could not be determined 0 is returned
+    """
+    after = get_validity_date(certFile)
     if after:
-        time_after = time.strptime(after, "%b %d %H:%M:%S %Y %Z")
-        return calendar.timegm(time_after) / 60 / 60 / 24
+        return int(after.timestamp()) // 60 // 60 // 24
 
     return 0
 
 
 if __name__ == '__main__':
-    days = get_validity_days()
+    fqdn = '.'.join([_bc['hostname'], _bc['domainname']])
+    certFile = '/etc/univention/ssl/%s/cert.pem' % fqdn
+    days = get_validity_days(certFile)
     if days and days != _bc.get('ssl/validity/days', -1):
         _bc['ssl/validity/days'] = str(days)
         _bc.save()

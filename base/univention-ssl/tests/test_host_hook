@@ -15,14 +15,14 @@ list_cert_names | grep -F -e "${fqdn}"
 univention-certificate dump -name "${fqdn}"
 
 python3 -c '
-from M2Crypto import X509
+from cryptography import x509
+from cryptography.x509.oid import ExtensionOID
 from sys import argv, exit
 f = argv[1]
-c = X509.load_cert(f)
-e = c.get_ext("subjectAltName")
-v = e.get_value()
-a = v.split(", ")
-a = [_[len("DNS:"):] for _ in a if _.startswith("DNS:")]
+with open(f, "rb") as cert_file:
+    c = x509.load_pem_x509_certificate(cert_file.read())
+e = c.extensions.get_extension_for_oid(ExtensionOID.SUBJECT_ALTERNATIVE_NAME)
+a = [name.value for name in e.value if hasattr(name, "value")]
 print("\n".join(a))
 exit(0 if set(a) == set(argv[2:]) else 1)
 ' "${SSLBASE}/${fqdn}/cert.pem" "$name" "$fqdn"
