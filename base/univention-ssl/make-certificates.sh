@@ -463,17 +463,19 @@ getcnreq () {
 	# Corporate Server/CN=dummy.bla.bla/emailAddress=ssl@w2k12.test
 	# Corporate Server/CN=dummy.bla.bla
 python3 -c '
+import sys
 try:
-	import sys
-	import M2Crypto
+	from cryptography import x509
+	from cryptography.x509.oid import NameOID
 	name = sys.argv[1]
-	req = M2Crypto.X509.load_request(name)
-	subject = req.get_subject()
-	cn = subject.CN
+	with open(name, "rb") as fd:
+		req = x509.load_pem_x509_csr(fd.read())
+	cn_attrs = req.subject.get_attributes_for_oid(NameOID.COMMON_NAME)
+	cn = cn_attrs[0].value if cn_attrs else None
 	if cn:
 		print(cn.replace("/", "."))
-except Exception as err:
-	sys.stderr.write("FATAL: could not get CN from request %s (%s)\n" % (name, err))
+except Exception as exc:
+	print("FATAL: could not get CN from request %s (%s)" % (name, exc), file=sys.stderr)
 	sys.exit(1)
 ' "$request"
 }

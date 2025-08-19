@@ -3979,7 +3979,7 @@ python-jsonschema-doc
 python-lark-doc
 python-ldap-doc
 python-lxml-doc
-python-m2crypto-doc
+python-cryptography-doc
 python-mako-doc
 python-markdown-doc
 python-nacl-doc
@@ -4119,7 +4119,7 @@ python3-lmdb
 python3-logfmter
 python3-louis
 python3-lxml
-python3-m2crypto
+python3-cryptography
 python3-magic
 python3-mailutils
 python3-mako

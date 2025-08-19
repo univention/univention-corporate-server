@@ -4,8 +4,10 @@
 """|UDM| pki X.509 DER certificate handling"""
 
 import base64
+import datetime
 
-from M2Crypto import X509
+from cryptography import x509
+from cryptography.x509.oid import NameOID
 
 import univention.admin
 import univention.admin.localization
@@ -17,6 +19,8 @@ from univention.admin.log import log
 
 translation = univention.admin.localization.translation('univention.admin')
 _ = translation.translate
+
+_CRYPT_HAS_UTC = hasattr(x509.Certificate, 'not_valid_after_utc')  # > Debian bookworm
 
 
 def pki_option():
@@ -228,7 +232,7 @@ def register_pki_integration(property_descriptions, mapping, options, layout):
 
 
 def load_certificate(user_certificate):
-    """Import a certificate in DER format"""
+    """Import a certificate in DER format."""
     if not user_certificate:
         return {}
     try:
@@ -236,40 +240,42 @@ def load_certificate(user_certificate):
     except base64.binascii.Error:
         return {}
     try:
-        x509 = X509.load_cert_string(certificate, X509.FORMAT_DER)
+        cert = x509.load_der_x509_certificate(certificate)
 
+        not_before = cert.not_valid_before_utc if _CRYPT_HAS_UTC else cert.not_valid_before.replace(tzinfo=datetime.UTC)
+        not_after = cert.not_valid_after_utc if _CRYPT_HAS_UTC else cert.not_valid_after.replace(tzinfo=datetime.UTC)
         values = {
-            'certificateDateNotBefore': x509.get_not_before().get_datetime().date().isoformat(),
-            'certificateDateNotAfter': x509.get_not_after().get_datetime().date().isoformat(),
-            'certificateVersion': str(x509.get_version()),
-            'certificateSerial': str(x509.get_serial_number()),
+            'certificateDateNotBefore': not_before.date().isoformat(),
+            'certificateDateNotAfter': not_after.date().isoformat(),
+            'certificateVersion': str(cert.version.value),
+            'certificateSerial': str(cert.serial_number),
         }
-        X509.m2.XN_FLAG_SEP_MULTILINE & ~X509.m2.ASN1_STRFLGS_ESC_MSB | X509.m2.ASN1_STRFLGS_UTF8_CONVERT
         for entity, prefix in (
-            (x509.get_issuer(), 'certificateIssuer'),
-            (x509.get_subject(), 'certificateSubject'),
+            (cert.issuer, 'certificateIssuer'),
+            (cert.subject, 'certificateSubject'),
         ):
-            for key, attr in load_certificate.ATTR.items():
+            for oid, attr in load_certificate.ATTR_MAP.items():
                 try:
-                    value = getattr(entity, key)
-                except TypeError:  # not expecting type '<class 'NoneType'>'
+                    attrs = entity.get_attributes_for_oid(oid)
+                    value = attrs[0].value if attrs else None
+                except (IndexError, AttributeError, ValueError):
                     value = None
                 values[prefix + attr] = value
-    except (X509.X509Error, AttributeError):
+    except (ValueError, TypeError, AttributeError):
         return {}
 
     log.trace('certificate', value=values)
     return values
 
 
-load_certificate.ATTR = {
-    'C': 'Country',
-    'ST': 'State',
-    'L': 'Location',
-    'O': 'Organisation',
-    'OU': 'OrganisationalUnit',
-    'CN': 'CommonName',
-    'emailAddress': 'Mail',
+load_certificate.ATTR_MAP = {
+    NameOID.COUNTRY_NAME: 'Country',
+    NameOID.STATE_OR_PROVINCE_NAME: 'State',
+    NameOID.LOCALITY_NAME: 'Location',
+    NameOID.ORGANIZATION_NAME: 'Organisation',
+    NameOID.ORGANIZATIONAL_UNIT_NAME: 'OrganisationalUnit',
+    NameOID.COMMON_NAME: 'CommonName',
+    NameOID.EMAIL_ADDRESS: 'Mail',
 }
 
 

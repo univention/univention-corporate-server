@@ -1,6 +1,10 @@
-univention-directory-manager-modules (17.6.0) UNRELEASED; urgency=medium
+univention-directory-manager-modules (17.6.0) unstable; urgency=medium
 
+  [ Marius Meschter ]
   * Bug #59324: UCS 5.2-6 version bump
+
+  [ Florian Best ]
+  * Bug #55411: replace M2Crypto with python3-cryptography
 
  -- Marius Meschter <marius.meschter@univention.de>  Thu, 04 Jun 2026 11:13:00 +0200
 
