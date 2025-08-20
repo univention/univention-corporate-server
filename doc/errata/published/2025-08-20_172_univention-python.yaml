@@ -9,3 +9,6 @@ desc: |
  * Further improvments for the delegative administration feature have been
    implemented.
 bug: [58517]
+erratum: 172
+announced: 2025-08-20
+support: core
