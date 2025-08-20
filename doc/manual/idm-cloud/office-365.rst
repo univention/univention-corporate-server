@@ -193,7 +193,7 @@ The following visibility options are available:
 
 :``Private``: Nubus default value.
 :``Public``: Azure default value.
-:``None``: Azure decides the default. None means for example the value is unset.
+:``None``: Azure decides the default.
 
 For more information about the meaning of these options,
 see the `Group visibility options in Microsoft Graph REST API v1.0
