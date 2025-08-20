@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * The creation of reports now evaluates the authorization rules.
 bug: [58517]
+erratum: 174
+announced: 2025-08-20
+support: core
