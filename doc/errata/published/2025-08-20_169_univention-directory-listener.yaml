@@ -10,3 +10,6 @@ desc: |
    exceed 2000 bytes. The issue is resolved by wrapping long attributeType and
    objectClass lines at 1500 characters to prevent this failure.
 bug: [56247]
+erratum: 169
+announced: 2025-08-20
+support: core
