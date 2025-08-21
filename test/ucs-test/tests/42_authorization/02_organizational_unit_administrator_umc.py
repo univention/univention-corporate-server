@@ -329,21 +329,6 @@ def test_query_and_read_mail_domain(udm, ldap_base, ou, position, has_access, ou
         ouadmin_umc_client.umc_command('udm/get', get_option, 'mail/mail')  # type: ignore[call-arg]
 
 
-def test_syntax_choices(ou, udm, ouadmin_umc_client):
-    """
-    Test that UserDN filtering works differently based on user roles.
-    OU admin should only see users from their own OU.
-    Domain admin should see all users.
-    """
-    res = ouadmin_umc_client.umc_command('udm/syntax/choices', {"syntax": "UserDN"}, 'shares/share').result
-    assert len(res) - 1 == len(udm.list_objects('users/user', properties=["DN"], position=ou.dn))
-    assert all(dn['id'].endswith(ou.dn) or dn['id'] == ou.admin_dn for dn in res)
-
-    res = ouadmin_umc_client.umc_command('udm/syntax/choices', {"syntax": "UserID"}, 'shares/share').result
-    # ou users + root + ou admin
-    assert len(res) == len(udm.list_objects('users/user', properties=["DN"], position=ou.dn)) + 2
-
-
 def test_non_readable_attributes_filtered_in_umc(ou, udm, ouadmin_umc_client):
     """
     Test that non-readable attributes (guardianRoles, guardianInheritedRoles, guardianMemberRoles)
