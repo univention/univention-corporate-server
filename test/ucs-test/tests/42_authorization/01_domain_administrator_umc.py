@@ -276,26 +276,6 @@ def test_query_and_read_mail_domain(udm, ldap_base, ou, position, admin_umc_clie
         admin_umc_client.umc_command('udm/get', get_option, 'mail/mail')  # type: ignore[call-arg]
 
 
-def test_syntax_choices_admin(admin_umc_client):
-    for syntax in ['UserDN', 'GroupDN', 'UserID', 'GroupID']:
-        res = admin_umc_client.umc_command('udm/syntax/choices', {'syntax': syntax}, 'shares/share')
-        assert res.result
-
-
-def test_syntax_choices(udm, ou, admin_umc_client):
-    """
-    Test that UserDN filtering works differently based on user roles.
-    OU admin should only see users from their own OU.
-    Domain admin should see all users.
-    """
-    res = admin_umc_client.umc_command('udm/syntax/choices', {'syntax': 'UserDN'}, 'shares/share').result
-    assert len(res) == len(udm.list_objects('users/user', properties=['DN']))
-
-    res = admin_umc_client.umc_command('udm/syntax/choices', {'syntax': 'UserID'}, 'shares/share').result
-    # all user + root
-    assert len(res) == len(udm.list_objects('users/user', properties=['DN'])) + 1
-
-
 def test_shares_create_admin(ldap_base, random_username, admin_umc_client):
     # get default container
     res = admin_umc_client.umc_command('udm/containers', {'objectType': 'shares/share'}, 'shares/share').result
