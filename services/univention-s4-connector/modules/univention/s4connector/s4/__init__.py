@@ -670,8 +670,6 @@ class s4(univention.s4connector.ucs):
             self.s4_ldap_partitions = (self.s4_ldap_base,)
         else:
             self.s4_ldap_partitions = (self.s4_ldap_base, "DC=DomainDnsZones,%s" % self.s4_ldap_base, "DC=ForestDnsZones,%s" % self.s4_ldap_base)
-        
-        # Initialize metrics collector
         self.metrics_collector = get_metrics()
 
     def _get_lastUSN(self):
@@ -1719,7 +1717,8 @@ class s4(univention.s4connector.ucs):
             highestCommittedUSN = self.__get_highestCommittedUSN()
 
             # poll for all objects without deleted objects
-            self.poll(show_deleted=False)
+            _change_counter, _duration = self.poll(show_deleted=False)
+            # Note: Metrics could be added here if needed during initialization
 
             # compare highest USN from poll with highest before poll, if the last changes deletes
             # the highest USN from poll is to low
@@ -1729,7 +1728,8 @@ class s4(univention.s4connector.ucs):
             ud.debug(ud.LDAP, ud.INFO, "initialize S4: sync of all objects finished, lastUSN is %d", self.__get_highestCommittedUSN())
         else:
             self.resync_rejected()
-            self.poll()
+            _change_counter, _duration = self.poll()
+            # Note: Metrics could be added here if needed during initialization
             self._commit_lastUSN()
         print("--------------------------------------")
 
@@ -1781,8 +1781,8 @@ class s4(univention.s4connector.ucs):
     def poll(self, show_deleted=True):
         """poll for changes in AD"""
         # Start timing for metrics
-        start_time = time.time()
-        
+        start_time = time.perf_counter()
+
         # search from last_usn for changes
         ud.debug(ud.LDAP, ud.INFO, "sync AD > UCS: polling")
         change_count = 0
@@ -1897,28 +1897,9 @@ class s4(univention.s4connector.ucs):
         print("Changes from S4:  %s (%s saved rejected)" % (change_count, len(rejected)))
         print("--------------------------------------")
         sys.stdout.flush()
-        
-        # Update metrics
-        if self.metrics_collector:
-            duration = time.time() - start_time
-            if change_count > 0:
-                self.metrics_collector.increment_counter(
-                    's4_connector_changes_total',
-                    {'direction': 's4_to_ucs'},
-                    change_count
-                )
-            self.metrics_collector.set_gauge(
-                's4_connector_last_sync_timestamp',
-                {'direction': 's4_to_ucs'},
-                time.time()
-            )
-            self.metrics_collector.set_gauge(
-                's4_connector_sync_duration_seconds',
-                {'direction': 's4_to_ucs'},
-                duration
-            )
-        
-        return change_count
+
+        duration = time.perf_counter() - start_time
+        return change_count, duration
 
     def __has_attribute_value_changed(self, attribute, old_ucs_object, new_ucs_object):
         return old_ucs_object.get(attribute) != new_ucs_object.get(attribute)

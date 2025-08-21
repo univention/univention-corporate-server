@@ -20,6 +20,7 @@ import re
 import sqlite3 as lite
 import string
 import sys
+import time
 import traceback
 from types import FunctionType
 
@@ -35,8 +36,8 @@ import univention.debug as ud_c
 import univention.debug2 as ud
 import univention.uldap
 from univention.s4connector.lockingdb import LockingDB
-from univention.s4connector.s4cache import S4Cache
 from univention.s4connector.prometheus_metrics import get_metrics
+from univention.s4connector.s4cache import S4Cache
 
 
 term_signal_caught = False
@@ -68,18 +69,18 @@ def generate_strong_password(length=24):
 
 
 def set_ucs_passwd_user(connector, key, ucs_object):
-    """set random password to fulfill required values"""
+    """Set random password to fulfill required values."""
     ucs_object['password'] = generate_strong_password()
 
 
 def check_ucs_lastname_user(connector, key, ucs_object):
-    """check if required values for lastname are set"""
+    """Check if required values for lastname are set."""
     if not ucs_object.has_property('lastname') or not ucs_object['lastname']:
         ucs_object['lastname'] = 'none'
 
 
 def set_primary_group_user(connector, key, ucs_object):
-    """check if correct primary group is set"""
+    """Check if correct primary group is set."""
     connector.set_primary_group_to_ucs_user(key, ucs_object)
 
 # compare functions
@@ -250,12 +251,12 @@ class RFC4514_dn:
 
     @classmethod
     def to_ad(cls, dn):
-        """Currently just for documentation purposes"""
+        """Currently just for documentation purposes."""
         return ldap.dn.dn2str(ldap.dn.str2dn(dn))
 
     @classmethod
     def to_openldap(cls, dn):
-        """Doing the inverse of RFC4514_dn.to_ad"""
+        """Doing the inverse of RFC4514_dn.to_ad."""
         return cls.match.sub(cls.replace, dn)
 
 
@@ -489,8 +490,7 @@ class ucs:
         for section in ['DN Mapping UCS', 'DN Mapping CON', 'UCS rejected', 'UCS deleted', 'UCS added', 'UCS entryCSN']:
             if not self.config.has_section(section):
                 self.config.add_section(section)
-        
-        # Initialize metrics collector
+
         self.metrics_collector = get_metrics()
 
     def init_ldap_connections(self):
@@ -503,7 +503,7 @@ class ucs:
         self.close_debug()
 
     def dn_mapped_to_base(self, dn, base):
-        """Introduced for Bug #33110: Fix case of base part of DN"""
+        """Introduced for Bug #33110: Fix case of base part of DN."""
         if dn.endswith(base):
             return dn
         return self._subtree_replace(dn, base.lower(), base)
@@ -613,7 +613,7 @@ class ucs:
                 self._remove_config_option('DN Mapping UCS', ucs.lower())
 
     def _remember_entryCSN_commited_by_connector(self, entryUUID, entryCSN):
-        """Remember the entryCSN of a change committed by the AD-Connector itself"""
+        """Remember the entryCSN of a change committed by the AD-Connector itself."""
         value = self._get_config_option('UCS entryCSN', entryUUID)
         if value:
             entryCSN_set = set(value.split(','))
@@ -667,7 +667,7 @@ class ucs:
             self._set_dn_mapping(dn_ucs.lower(), dn_con.lower())
 
     def _debug_traceback(self, level, text):
-        """print traceback with ud.debug, level is i.e. ud.INFO"""
+        """Print traceback with ud.debug, level is i.e. ud.INFO."""
         ud.debug(ud.LDAP, level, text)
         ud.debug(ud.LDAP, level, traceback.format_exc())
 
@@ -677,7 +677,7 @@ class ucs:
         ud.debug(ud.LDAP, level, '%s: %s%s' % (direction, prefix, ': %s' % message if message else ''))
 
     def __sync_file_from_ucs(self, filename, append_error='', traceback_level=ud.WARN):
-        """sync changes from UCS stored in given file"""
+        """Sync changes from UCS stored in given file."""
         try:
             with open(filename, 'rb') as fob:
                 (dn, new, old, old_dn) = pickle.load(fob, encoding='bytes')
@@ -918,7 +918,8 @@ class ucs:
         # try to resync rejected changes
         self.resync_rejected_ucs()
         # call poll_ucs to sync
-        self.poll_ucs()
+        _change_counter, _duration = self.poll_ucs()
+        # Note: Metrics could be added here if needed during initialization
         print("--------------------------------------")
         sys.stdout.flush()
 
@@ -927,7 +928,7 @@ class ucs:
         pass
 
     def resync_rejected_ucs(self):
-        """tries to resync rejected changes from UCS"""
+        """Tries to resync rejected changes from UCS."""
         rejected = self._list_rejected_ucs()
         change_counter = 0
         print("--------------------------------------")
@@ -960,11 +961,9 @@ class ucs:
         pass
 
     def poll_ucs(self):
-        """poll changes from UCS: iterates over files exported by directory-listener module"""
-        # Start timing for metrics
-        import time
-        start_time = time.time()
-        
+        """Poll changes from UCS: iterates over files exported by directory-listener module."""
+        start_time = time.perf_counter()
+
         # check for changes from ucs ldap directory
 
         ud.debug(ud.LDAP, ud.INFO, "sync UCS > AD: polling")
@@ -1051,28 +1050,9 @@ class ucs:
             print("Changes from UCS: %s (%s saved rejected)" % (change_counter, '0'))
         print("--------------------------------------")
         sys.stdout.flush()
-        
-        # Update metrics
-        if self.metrics_collector:
-            duration = time.time() - start_time
-            if change_counter > 0:
-                self.metrics_collector.increment_counter(
-                    's4_connector_changes_total',
-                    {'direction': 'ucs_to_s4'},
-                    change_counter
-                )
-            self.metrics_collector.set_gauge(
-                's4_connector_last_sync_timestamp',
-                {'direction': 'ucs_to_s4'},
-                time.time()
-            )
-            self.metrics_collector.set_gauge(
-                's4_connector_sync_duration_seconds',
-                {'direction': 'ucs_to_s4'},
-                duration
-            )
-        
-        return change_counter
+
+        duration = time.perf_counter() - start_time
+        return change_counter, duration
 
     def poll(self, show_deleted=True):
         # dummy
@@ -1305,7 +1285,7 @@ class ucs:
         return False
 
     def delete_in_ucs(self, property_type, object, module, position):
-        """Removes an AD object in UCS-LDAP"""
+        """Removes an AD object in UCS-LDAP."""
         if self.property[property_type].disable_delete_in_ucs:
             ud.debug(ud.LDAP, ud.PROCESS, "Delete of %s was disabled in mapping" % object['dn'])
             return True
@@ -1500,7 +1480,6 @@ class ucs:
                     result = self.move_in_ucs(property_type, object, module, position)
                     self._remove_dn_mapping(object['olddn'], '')  # we don't know the old s4-dn here anymore, will be checked by remove_dn_mapping
                     self._check_dn_mapping(object['dn'], pre_mapped_s4_dn)
-                    # Check S4cache
 
                 if object['modtype'] == 'modify':
                     result = self.modify_in_ucs(property_type, object, module, position)
@@ -1908,7 +1887,7 @@ class ucs:
         return object_out
 
     def identify_udm_object(self, dn, attrs):
-        """Get the type of the specified UCS object"""
+        """Get the type of the specified UCS object."""
         for k in self.property.keys():
             if self.modules[k].identify(dn, attrs):
                 return self.modules[k], k

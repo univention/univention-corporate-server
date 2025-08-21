@@ -140,7 +140,26 @@ def _connect(s4, poll_sleep, baseconfig_retry_rejected):
         while True:
             # Read changes from OpenLDAP
             try:
-                change_counter = s4.poll_ucs()
+                change_counter, duration = s4.poll_ucs()
+
+                if s4.metrics_collector:
+                    if change_counter > 0:
+                        s4.metrics_collector.increment_counter(
+                            's4_connector_changes_total',
+                            {'direction': 'ucs_to_s4', 'object_type': 'mixed'},
+                            change_counter,
+                        )
+                    s4.metrics_collector.set_gauge(
+                        's4_connector_last_sync_timestamp',
+                        {'direction': 'ucs_to_s4'},
+                        time.time(),
+                    )
+                    s4.metrics_collector.set_gauge(
+                        's4_connector_sync_duration_seconds',
+                        {'direction': 'ucs_to_s4', 'operation': 'poll'},
+                        duration,
+                    )
+
                 if change_counter > 0:
                     # UCS changes, read again from UCS
                     retry_rejected = 0
@@ -156,7 +175,26 @@ def _connect(s4, poll_sleep, baseconfig_retry_rejected):
 
         while True:
             try:
-                change_counter = s4.poll()
+                change_counter, duration = s4.poll()
+
+                if s4.metrics_collector:
+                    if change_counter > 0:
+                        s4.metrics_collector.increment_counter(
+                            's4_connector_changes_total',
+                            {'direction': 's4_to_ucs', 'object_type': 'mixed'},
+                            change_counter,
+                        )
+                    s4.metrics_collector.set_gauge(
+                        's4_connector_last_sync_timestamp',
+                        {'direction': 's4_to_ucs'},
+                        time.time(),
+                    )
+                    s4.metrics_collector.set_gauge(
+                        's4_connector_sync_duration_seconds',
+                        {'direction': 's4_to_ucs', 'operation': 'poll'},
+                        duration,
+                    )
+
                 if change_counter > 0:
                     # S4 changes, read again from S4
                     retry_rejected = 0
