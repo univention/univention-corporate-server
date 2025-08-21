@@ -34,5 +34,3 @@ as shown in :numref:`da-troubleshooting-log-level-listing`.
    $ systemctl restart \
      univention-management-console-server \
      univention-directory-manager-rest
-
-
