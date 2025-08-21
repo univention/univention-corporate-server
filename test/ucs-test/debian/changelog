@@ -1,3 +1,9 @@
+ucs-test (12.2.43) unstable; urgency=low
+
+  * Bug #58536: fix verification of extended attributes in verify_udm_object()
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 21 Aug 2025 17:34:17 +0200
+
 ucs-test (12.2.42) unstable; urgency=medium
 
   * Bug #54892: add test for cleaning up appcenter/app server atrribute on DC

@@ -1179,6 +1179,8 @@ def verify_udm_object(module: Any, dn: str, expected_properties: Mapping[str, by
         if not udm_module:
             univention.admin.modules.update()
             udm_module = univention.admin.modules.get(module)
+        if not udm_module.initialized:
+            univention.admin.modules.init(lo, position, udm_module)
         udm_object = univention.admin.objects.get(udm_module, None, lo, position, dn)
         udm_object.open()
     except univention.admin.uexceptions.noObject:
