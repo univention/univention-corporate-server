@@ -3,6 +3,7 @@
 
 import locale
 import time
+from copy import deepcopy
 from subprocess import check_call, check_output
 from tempfile import NamedTemporaryFile
 from types import SimpleNamespace
@@ -233,6 +234,14 @@ class ClientHelper(Client):
         }]
         return self.umc_command('udm/add', options, 'mail/domain').result[0]
 
+    def get_syntax_choices(self, syntax: str, module: str, base: str | None = None, options={}):
+        options = deepcopy(options)
+        options['syntax'] = syntax
+        if base:
+            options['base'] = base
+        result = self.umc_command('udm/syntax/choices', options, module)
+        return result.result
+
 
 @pytest.fixture
 def admin_umc_client():
@@ -251,6 +260,13 @@ def ouadmin_umc_client(ou):
 def ou_helpdesk_operator_umc_client(ou):
     client = ClientHelper()
     client.authenticate(ou.helpdesk_operator_username, 'univention')
+    return client
+
+
+@pytest.fixture
+def ou2_admin_umc_client():
+    client = ClientHelper()
+    client.authenticate('ou2-admin', 'univention')
     return client
 
 
@@ -308,6 +324,8 @@ def ou(ldap_base):
         admin_dn2=f'uid=ou2-admin,cn=users,{ldap_base}',
         user_username='user1-ou1',
         user_dn=f'uid=user1-ou1,cn=users,ou=ou1,{ldap_base}',
+        user2_username='user1-ou2',
+        user2_dn=f'uid=user1-ou2,cn=users,ou=ou2,{ldap_base}',
         helpdesk_operator_username='ou1-helpdesk-operator',
         helpdesk_operator_dn=f'uid=ou1-helpdesk-operator,cn=users,{ldap_base}',
         client_manager_username='ou1-clientmanager',
@@ -315,7 +333,10 @@ def ou(ldap_base):
         user_default_container=f'cn=users,ou=ou1,{ldap_base}',
         group_default_container=f'cn=groups,ou=ou1,{ldap_base}',
         computer_default_container=f'cn=computers,ou=ou1,{ldap_base}',
+        group_dn=f'cn=group1-ou1,cn=groups,ou=ou1,{ldap_base}',
         group_name='group1-ou1',
+        group2_dn=f'cn=group1-ou2,cn=groups,ou=ou2,{ldap_base}',
+        group_name2='group1-ou2',
     )
 
 
