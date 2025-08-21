@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.2.14) unstable; urgency=medium
+
+  * Bug #32192: remove DNS zones when the only nameserver computer is removed
+
+ -- Carlos García-Mauriño <garcia-maurino@univention.de>  Thu, 21 Aug 2025 08:38:09 +0200
+
 univention-directory-manager-modules (17.2.13) unstable; urgency=medium
 
   * Bug #54892: clean up univentionAppInstalledOnServer on an appcenter/app

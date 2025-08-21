@@ -25,7 +25,7 @@ import univention.admin.password
 import univention.admin.samba
 import univention.admin.uexceptions
 import univention.admin.uldap
-from univention.admin import appcenter, nagios
+from univention.admin import appcenter, configRegistry, nagios
 from univention.admin.certificate import PKIIntegration
 from univention.admin.guardian_roles import GuardianBase
 
@@ -168,11 +168,42 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support, P
     def _ldap_post_remove(self) -> None:
         super()._ldap_post_remove()
 
-        # for group in univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn])):
-        #    group.open()
-        #    if self.dn in group['users']:
-        #        group['users'].remove(self.dn)
-        #        group.modify(ignore_license=True)
+        # Get the name of the removed object
+        removed_name = self.oldinfo.get('name')
+
+        if removed_name:
+            domain_name = configRegistry.get('domainname')
+            if not domain_name:
+                log.warning("Could not get domainname from UCR, skipping DNS cleanup")
+                return
+
+            # Create FQDN with trailing dot (standard DNS format)
+            fqdn_to_cleanup = f"{removed_name}.{domain_name}."
+
+            for zone_module_name in ('dns/forward_zone', 'dns/reverse_zone'):
+                zone_module = univention.admin.modules.get(zone_module_name)
+                zones = zone_module.lookup(self.co, self.lo, '', base=self.lo.base)
+                for zone in zones:
+                    zone.open()
+                    nameservers = zone.get('nameserver', [])
+
+                    if fqdn_to_cleanup in nameservers:
+                        if len(nameservers) == 1:
+                            # Remove the entire zone if it only has this nameserver
+                            try:
+                                zone.remove()
+                                log.info("Removed DNS zone %s", zone.dn)
+                            except Exception as e:
+                                log.warning("Failed to remove DNS zone %s: %s", zone.dn, e)
+                        else:
+                            # Remove this nameserver from the list
+                            updated_nameservers = [ns for ns in nameservers if ns != fqdn_to_cleanup]
+                            zone['nameserver'] = updated_nameservers
+                            try:
+                                zone.modify()
+                                log.info("Removed nameserver %s from DNS zone %s", fqdn_to_cleanup, zone.dn)
+                            except Exception as e:
+                                log.warning("Failed to modify DNS zone %s: %s", zone.dn, e)
 
         self.nagios_ldap_post_remove()
 
