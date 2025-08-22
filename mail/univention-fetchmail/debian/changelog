@@ -1,4 +1,4 @@
-univention-fetchmail (15.2.1) unstable; urgency=medium
+univention-fetchmail (15.2.2) unstable; urgency=medium
 
   * Bug #58532: use systemd instead of SysV init script in listener module
 
