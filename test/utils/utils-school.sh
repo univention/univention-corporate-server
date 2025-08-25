@@ -15,7 +15,7 @@ install_kelvin_in_version() {
   local -i rv=0
   printf '%s' univention > /tmp/univention
   if [ -n "$KELVIN_VERSION" ]; then
-    univention-app install ucsschool-kelvin-rest-api="$KELVIN_VERSION" --set ucsschool/kelvin/processes=0 ucsschool/kelvin/log_level=DEBUG --username Administrator --pwdfile /tmp/univention || rv=$?
+    univention-app install ucsschool-kelvin-rest-api="$KELVIN_VERSION" --noninteractive --set ucsschool/kelvin/processes=0 ucsschool/kelvin/log_level=DEBUG --username Administrator --pwdfile /tmp/univention || rv=$?
     return $rv
   else
     install_kelvin_api
@@ -27,7 +27,7 @@ install_ucsschool_in_version() {
   local -i rv=0
   printf '%s' univention > /tmp/univention
   if [ -n "$UCSSCHOOL_VERSION" ]; then
-    univention-app install ucsschool="$UCSSCHOOL_VERSION" --username Administrator --pwdfile /tmp/univention || rv=$?
+    univention-app install ucsschool="$UCSSCHOOL_VERSION" --noninteractive --username Administrator --pwdfile /tmp/univention || rv=$?
     return $rv
   else
     install_ucsschool
@@ -40,7 +40,7 @@ upgrade_ucsschool_to_version() {
   printf '%s' univention > /tmp/univention
   if [ -n "$UCSSCHOOL_UPGRADE_VERSION" ]; then
     univention-app dev-set ucsschool="$UCSSCHOOL_UPGRADE_VERSION" Version="1000-$UCSSCHOOL_UPGRADE_VERSION"
-    univention-app upgrade ucsschool="1000-$UCSSCHOOL_UPGRADE_VERSION" --username Administrator --pwdfile /tmp/univention || rv=$?
+    univention-app upgrade ucsschool="1000-$UCSSCHOOL_UPGRADE_VERSION" --noninteractive --username Administrator --pwdfile /tmp/univention || rv=$?
     return $rv
   fi
 }
