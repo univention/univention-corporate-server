@@ -260,6 +260,12 @@ _upgrade_to_latest () {
 		*) delay=$remain ;;  # all other errors
 		esac
 		echo "ERROR: univention-upgrade failed exitcode $rv"
+		if [ $rv -ne 0 ]; then
+			route -n
+			iptables -L -n -v
+			eval "$(ucr shell repository/online/server)"
+			ping -4 "${repository_online_server#*:\/\/}"
+		fi
 		ps faxwww
 		ucr search --brief --non-empty update/check
 		[ $remain -gt 0 ] || return "$rv"
@@ -284,6 +290,7 @@ _fix_ssh47233 () { # Bug #47233: ssh connection stuck on reboot
 
 keycloak_migration() {
 	# migration to keycloak before 5.2 update
+	local rv
 	domainname="$(ucr get domainname)"
 	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
 		# Install keycloak
@@ -291,6 +298,10 @@ keycloak_migration() {
 		univention-app update
 		# shellcheck source=/dev/null
 		. utils-keycloak.sh && install_upgrade_keycloak --set ucs/self/registration/check_email_verification="True"
+		rv=$?
+		if [ $rv -ne 0 ]; then
+			dpkg -l | grep  univention-postgresql | grep ^ii || apt-get -s -o Debug::pkgProblemResolver=yes install univention-postgresql
+		fi
 		configure_umc_keycloak
 		# migration
 		univention-keycloak-migration-status -f -d -c
@@ -313,6 +324,12 @@ run_setup_join () {
 	patch_setup_join # temp. remove me
 	set -o pipefail
 	/usr/lib/univention-system-setup/scripts/setup-join.sh ${1:+"$@"} | tee -a /var/log/univention/setup.log || rv=$?
+	if [ $rv -ne 0 ]; then
+		route -n
+		iptables -L -n -v
+		eval "$(ucr shell repository/online/server)"
+		ping -4 "${repository_online_server#*:\/\/}"
+	fi
 	set +o pipefail
 	ucr set apache2/startsite='univention/' # Bug #31682
 	deb-systemd-invoke try-reload-or-restart univention-management-console-server apache2
