@@ -55,6 +55,7 @@ from univention.admin.rest.ldap_connection import (
     get_user_ldap_write_connection, reset_cache,
 )
 from univention.admin.rest.openapi import OpenAPIBase, RelationsBase, _OpenAPIBase
+from univention.admin.rest.recyclebin import RecycleBinPurge
 from univention.admin.rest.sanitizer import (
     Body, BooleanSanitizer, BoolSanitizer, ChoicesSanitizer, DictSanitizer, DNSanitizer, EmailSanitizer,
     IntegerSanitizer, JSONPayload, LDAPFilterSanitizer, LDAPSearchSanitizer, ListSanitizer, MultiValidationError,
@@ -3141,6 +3142,7 @@ class Application(tornado.web.Application):
             ("/udm/license/import", LicenseImport),
             ("/udm/license/check", LicenseCheck),
             ("/udm/license/request", LicenseRequest),
+            ("/udm/recyclebin/purge", RecycleBinPurge),
             ("/udm/ldap/base/", LdapBase),
             (f"/udm/object/{dn}", ObjectLink),
             ("/udm/object/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", ObjectByUiid),
