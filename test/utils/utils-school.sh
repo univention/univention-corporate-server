@@ -34,6 +34,17 @@ install_ucsschool_in_version() {
   fi
 }
 
+upgrade_ucsschool_to_version() {
+  # Upgrade UCS@School to a specified version
+  local -i rv=0
+  printf '%s' univention > /tmp/univention
+  if [ -n "$UCSSCHOOL_UPGRADE_VERSION" ]; then
+    univention-app dev-set ucsschool="$UCSSCHOOL_UPGRADE_VERSION" Version="1000-$UCSSCHOOL_UPGRADE_VERSION"
+    univention-app upgrade ucsschool="1000-$UCSSCHOOL_UPGRADE_VERSION" --username Administrator --pwdfile /tmp/univention || rv=$?
+    return $rv
+  fi
+}
+
 upgrade_kelvin () {
   local -i rv=0
   printf '%s' univention > /tmp/univention
