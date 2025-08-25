@@ -1,0 +1,24 @@
+@%@UCRWARNING=# @%@
+
+# Automatic cleanup of expired recycle bin entries
+# This cron job runs nightly to purge objects that have exceeded their retention period
+
+@!@
+import os
+
+# Check if automatic purging is enabled (default: yes)
+enabled = configRegistry.get('directory/manager/recyclebin/auto-purge', 'yes').lower()
+if enabled in ('yes', 'true', '1'):
+    # Get the schedule (default: 2:30 AM daily)
+    hour = configRegistry.get('directory/manager/recyclebin/auto-purge/hour', '2')
+    minute = configRegistry.get('directory/manager/recyclebin/auto-purge/minute', '30')
+    
+    # Path to the cleanup script
+    script = "/usr/share/univention-directory-manager-tools/univention-recycle-bin-clean-expired-entries"
+    
+    # Output the cron entry with --scheduled flag for proper logging
+    print(f"{minute} {hour} * * * root {script} --remove-expired --scheduled")
+else:
+    print("# Automatic recycle bin purging is disabled")
+    print("# Set directory/manager/recyclebin/auto-purge=yes to enable")
+@!@

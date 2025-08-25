@@ -8,3 +8,10 @@ File: etc/cron.d/univention-blocklist-clean-expired-entries
 Variables: directory/manager/blocklist/cleanup/cron
 Variables: directory/manager/blocklist/enabled
 Variables: server/role
+
+Type: file
+File: etc/cron.d/univention-recycle-bin-clean-expired-entries
+Variables: directory/manager/recyclebin/auto-purge
+Variables: directory/manager/recyclebin/auto-purge/hour
+Variables: directory/manager/recyclebin/auto-purge/minute
+Variables: server/role

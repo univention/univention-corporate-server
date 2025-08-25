@@ -1,0 +1,90 @@
+#!/usr/bin/python3
+# SPDX-FileCopyrightText: 2024-2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+"""This tool lists expired recycle bin entries."""
+
+from argparse import ArgumentParser
+from datetime import datetime
+from logging import DEBUG, INFO, ERROR, getLogger
+
+import univention.logging
+from univention.admin.uldap import getAdminConnection
+from univention.udm import UDM
+
+
+log = getLogger('MAIN')
+
+
+def is_expired(deleteAt):
+    try:
+        expired_time = datetime.strptime(deleteAt, "%Y%m%d%H%M%SZ")
+        current_time = datetime.utcnow()
+        return current_time > expired_time
+    except (ValueError, TypeError) as e:
+        log.warning(f"Invalid timestamp format '{deleteAt}': {e}")
+        return False
+
+
+if __name__ == '__main__':
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--remove-expired",
+        help="Remove expired entries from the recycle bin.",
+        action='store_true',
+        default=False,
+        required=False,
+    )
+    parser.add_argument(
+        "--scheduled",
+        help="Indicates script is run from cron (for logging purposes).",
+        action='store_true',
+        default=False,
+        required=False,
+    )
+    options = parser.parse_args()
+    
+    # Set up logging like other UCS scripts
+    univention.logging.basicConfig(
+        filename='/var/log/univention/recycle-bin-cleanup.log',
+        level=DEBUG
+    )
+    
+    # Determine actor for logging
+    if options.scheduled:
+        actor = "Scheduled Process"
+        suffix = " (auto)"
+    else:
+        # Use LDAP bind DN for manual runs
+        try:
+            lo, _ = getAdminConnection()
+            actor = lo.binddn
+        except Exception:
+            actor = "Manual Process"
+        suffix = ""
+    
+    try:
+        recyclebin_mod = UDM.admin().version(3).get('recyclebin/deletedobject')
+    except Exception as e:
+        log.error(f"Failed to initialize UDM module: {e}")
+        exit(1)
+    
+    log.debug("Searching for expired entries")
+    
+    for entry in recyclebin_mod.search():
+        if entry.props.deleteAt and is_expired(entry.props.deleteAt):
+            # Get original DN from UDM properties
+            try:
+                original_dn = entry.props.originalDN if hasattr(entry.props, 'originalDN') else entry.dn
+            except:
+                original_dn = entry.dn
+            
+            if options.remove_expired:
+                try:
+                    entry.delete()
+                    log.info(f"Item permanently deleted{suffix} - Original DN: {original_dn}, Actor: {actor}")
+                except Exception as e:
+                    log.error(f"Failed to delete {entry.dn} - Original DN: {original_dn}, Error: {e}")
+            else:
+                # In list mode, just log at INFO level what would be deleted
+                log.info(f"Expired entry found: {entry.dn} - Original DN: {original_dn}")
