@@ -11,7 +11,7 @@ install_kelvin_api () {
 }
 
 install_kelvin_in_version() {
-  # Either install kelvin in a specified version or use a branch image or use the latest version
+  # Install kelvin in a specified version
   local -i rv=0
   printf '%s' univention > /tmp/univention
   if [ -n "$KELVIN_VERSION" ]; then
@@ -19,6 +19,18 @@ install_kelvin_in_version() {
     return $rv
   else
     install_kelvin_api
+  fi
+}
+
+install_ucsschool_in_version() {
+  # Install UCS@School in a specified version
+  local -i rv=0
+  printf '%s' univention > /tmp/univention
+  if [ -n "$UCSSCHOOL_VERSION" ]; then
+    univention-app install ucsschool="$UCSSCHOOL_VERSION" --username Administrator --pwdfile /tmp/univention || rv=$?
+    return $rv
+  else
+    install_ucsschool
   fi
 }
 
