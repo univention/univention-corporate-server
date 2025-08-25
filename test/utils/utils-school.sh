@@ -22,6 +22,17 @@ install_kelvin_in_version() {
   fi
 }
 
+upgrade_kelvin_to_version() {
+  # Upgrade Kelvin to a specified version
+  local -i rv=0
+  printf '%s' univention > /tmp/univention
+  if [ -n "$KELVIN_UPGRADE_VERSION" ]; then
+    univention-app dev-set ucsschool-kelvin-rest-api="$KELVIN_UPGRADE_VERSION" Version="1000-$KELVIN_UPGRADE_VERSION"
+    univention-app upgrade ucsschool-kelvin-rest-api="1000-$KELVIN_UPGRADE_VERSION" --noninteractive --username Administrator --pwdfile /tmp/univention || rv=$?
+    return $rv
+  fi
+}
+
 install_ucsschool_in_version() {
   # Install UCS@School in a specified version
   local -i rv=0
