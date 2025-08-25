@@ -4,217 +4,283 @@
 .. _da-object-dependencies:
 
 *******************
-Object Dependencies
+Object dependencies
 *******************
 
-This section documents the dependencies between UDM objects and the minimal permissions required to make these relationships functional.
-Understanding these dependencies is crucial when creating or modifying UDM roles, where object permissions alone are insufficient unless related object types are also accessible.
+This section documents the dependencies between UDM objects and the minimal permissions required
+to make these relationships functional.
+Understanding these dependencies is crucial when creating or modifying UDM roles,
+where object permissions alone are insufficient unless related object types are also accessible.
 
-.. note::
+This section is for administrators who want to create their own roles.
+You need to know the concept for delegative administration
+and the Univention Directory Manager (UDM):
 
-   When defining new roles or modifying existing ones, it's easy to overlook that object permissions on their own (e.g., for computer objects) are insufficient unless related object types (like network, DNS, etc.) are also accessible.
-   These dependencies are often not explicitly documented, which leads to roles being incomplete or functionally limited despite appearing correct.
+* :ref:`da-concepts`
+* :external+uv-ucs-architecture:ref:`services-udm` in :cite:t:`ucs-architecture`
 
-Object reference patterns
-=========================
+This section provides the following information:
 
-UDM uses several mechanisms to establish references between objects:
+* :ref:`da-object-dependencies-reference-map`:
+  A comprehensive table mapping UDM object types to their dependencies and required permissions.
 
-#. **Direct DN References**: Properties that store DNs of other objects (e.g., ``primaryGroup``, ``groups``)
-#. **Syntax-Based References**: Properties using UDM syntax classes like ``GroupDN``, ``UserDN``, ``UDM_Objects``
-#. **Service Dependencies**: Objects that require access to related service objects (DNS, DHCP, etc.)
+* :ref:`da-object-dependencies-permissions-by-type`:
+  Permission requirements organized by operation type, such as create, modify, and search.
+
+* :ref:`da-object-dependencies-examples`:
+  Examples showing how dependencies affect existing UDM roles
+  like domain administrator, organizational unit administrator,
+  helpdesk operator, Linux OU client manager, and Self Service profile.
+
+.. important::
+
+   When creating or modifying roles,
+   it happens to overlook object permissions.
+   For example, for computer objects,
+   these permissions are insufficient
+   unless related object types are also accessible, such as network objects or DNS objects.
+   Documentation often doesn't cover these dependencies explicitly.
+   This can lead to roles appearing correct,
+   but being incomplete or functionally limited.
+
+UDM objects can have several references to other UDM objects.
+When you design policies,
+you need to ensure that Nubus can resolve these references to create or modify objects.
+For example, when you create a user object, they must have a primary group.
+To create a user object, the actor needs access to at last some user group objects
+for being able to assign them as primary group.
+Another example are computer objects.
+Creating computer objects requires access to related objects such as DNS or DHCP objects.
+
+.. _da-object-dependencies-reference-map:
 
 Object reference map
 ====================
 
-The following table lists all UDM object types that hold references to other object types, along with the minimal permissions required on the referenced objects to make the relations usable.
+:numref:`da-object-dependencies-reference-map-table`
+lists all UDM object types
+that hold references to other object types.
+They all require ``read`` permission
+on the referenced objects to make the relations usable.
+While most object references require **read** permission on the referenced object,
+some specific use cases, such as updating relationship, may require **modify** permission.
 
-.. note::
+.. _da-object-dependencies-reference-map-table:
 
-   While most object references require **read** permission on the referenced object, some specific use cases may require additional permissions:
-
-   - **search** permission may be needed for drop-down or selection widgets
-   - **modify** permission may be required when the relationship itself needs to be changed
-   - Context-specific permissions may apply based on the role and operation being performed
-
-.. list-table:: Object Reference Map
+.. list-table:: Object reference map for ``read`` permissions
    :header-rows: 1
-   :widths: 20 20 15 45
+   :widths: 2 2 7
 
-   * - Primary Object
-     - Refers To
-     - Required Permission
+   * - Primary object
+     - Refers to
      - Description
-   * - ``users/user``
-     - ``groups/group``
-     - read
-     - To assign user to groups and for primary group assignment
-   * - ``users/user``
-     - ``mail/domain``
-     - read
-     - Email domain assignment and configuration
-   * - ``users/user``
-     - ``users/user``
-     - read
-     - Secretary and delegation relationships
-   * - ``users/user``
-     - ``policies/*``
-     - read
-     - Policy application to users
-   * - ``groups/group``
-     - ``users/user``
-     - read
-     - Required for managing group memberships
-   * - ``groups/group``
-     - ``computers/*``
-     - read
-     - Required for managing group memberships
-   * - ``groups/group``
-     - ``groups/group``
-     - read
-     - Group hierarchy management (nested groups)
-   * - ``groups/group``
-     - ``policies/*``
-     - read
-     - Policy application to groups
+
    * - ``computers/*``
      - ``networks/network``
-     - read
-     - Needed to select a network during creation/modification
+     - To select a network during create and modify.
+
    * - ``computers/*``
      - ``dns/*``
-     - read
-     - DNS configuration for clients
+     - DNS configuration for clients.
+
    * - ``computers/*``
      - ``dhcp/*``
-     - read
-     - DHCP configuration for clients
+     - DHCP configuration for clients.
+
    * - ``computers/*``
      - ``policies/*``
-     - read
-     - Policy application overview
-   * - ``shares/share``
-     - ``computers/*``
-     - read
-     - Share location and access
-   * - ``nagios/service``
-     - ``computers/*``
-     - read
-     - Monitoring service targets
-   * - ``mail/folder``
-     - ``mail/domain``
-     - read
-     - Mail folder domain association
-   * - ``shares/printer``
-     - ``computers/*``
-     - read
-     - Printer host connection
-   * - ``container/ou``
-     - ``policies/*``
-     - read
-     - Policy application to organizational units
+     - Policy application overview.
+
    * - ``container/cn``
      - ``policies/*``
-     - read
-     - Policy application to organizational units
+     - Policy application to containers.
 
+   * - ``container/ou``
+     - ``policies/*``
+     - Policy application to organizational units.
+
+   * - ``groups/group``
+     - ``users/user``
+     - Required for managing group memberships.
+
+   * - ``groups/group``
+     - ``computers/*``
+     - Required for managing group memberships.
+
+   * - ``groups/group``
+     - ``groups/group``
+     - Group hierarchy management including nested groups.
+
+   * - ``groups/group``
+     - ``policies/*``
+     - Policy application to groups.
+
+   * - ``mail/folder``
+     - ``mail/domain``
+     - Mail folder domain association.
+
+   * - ``nagios/service``
+     - ``computers/*``
+     - Monitoring service targets.
+
+   * - ``shares/printer``
+     - ``computers/*``
+     - Printer host connection.
+
+   * - ``shares/share``
+     - ``computers/*``
+     - Share location and access.
+
+   * - ``users/user``
+     - ``groups/group``
+     - To assign user to groups and for primary group assignment.
+
+   * - ``users/user``
+     - ``mail/domain``
+     - Email domain assignment and configuration.
+
+   * - ``users/user``
+     - ``users/user``
+     - Secretary and delegation relationships.
+
+   * - ``users/user``
+     - ``policies/*``
+     - Policy application to users.
+
+.. _da-object-dependencies-permissions-by-type:
 
 Permission requirements by operation type
 =========================================
 
-Create operations
------------------
+This section lists the permission requirements grouped by operation type.
+It covers the operations *read*, *create*, *modify*, and *search*.
+Keep the following definitions for the terms used in this section in mind:
 
-When creating objects, the following permissions are typically required:
+Primary object type
+   Refers to the object that the actor wants to change, for example a user object.
 
-- **Write** permission on the primary object type
-- **Read** permission on all referenced object types
-- **Search** permission on referenced object types (for drop-down population)
-- **Read** permission on container objects in the target location
+Referenced object type
+   Refers to all objects that the primary object has references to.
+   To access referenced objects, the actor needs at least read operation.
 
-Modify operations
------------------
+Container object type
+   Is a container in the LDAP directory,
+   such as a container (``cn``), or organizational unit (``ou``).
 
-When modifying objects that change references:
+For a list of available permissions,
+see :ref:`da-concepts-role-definition-grant-properties-permission`.
 
-- **Modify** permission on the primary object
-- **Read** permission on newly referenced objects
-- **Search** permission for drop-down/selection widgets
+Create
+   For creating objects, you typically need the following permissions:
 
-Search operations
------------------
+   * ``write`` permission on the primary object type.
+   * ``read`` permission on all referenced object types.
+   * ``read`` permission on container objects in a container.
 
-When searching and displaying objects:
+Modify
+   For modifying objects, you typically need the following permissions:
 
-- **Search** permission on the primary object type
-- **Read** permission on referenced objects (for display purposes)
-- May require **search** permission on referenced types for proper filtering
+   * ``modify`` permission on the primary object.
+   * ``read`` permission on the referenced objects.
+
+Search
+   For searching objects, you typically need the following permissions:
+
+   * ``read`` permission on the primary object type.
+   * ``read`` permission on referenced objects for display purposes.
+   * ``search`` permission—optionally—on referenced object types for proper filtering.
+
+.. _da-object-dependencies-examples:
 
 Examples: Current UDM roles and their dependencies
 ==================================================
 
 The following examples illustrate how object dependencies affect the default UDM roles defined in the system.
 
-Domain Administrator role
--------------------------
+For a list of defined roles for delegative administration,
+see :ref:`da-roles`.
 
-The ``udm:default-roles:domain-administrator`` role has access to all objects and properties, so it doesn't face dependency issues.
+.. _da-object-dependencies-examples-domain-admin:
 
-Organizational Unit Admin role
-------------------------------
+*Domain Administrator* role
+---------------------------
 
-The ``udm:default-roles:organizational-unit-admin`` role manages users and groups within specific OUs.
+The :ref:`da-roles-domain-administrator` role has access to all objects and properties, so it doesn't face dependency issues.
 
-**Key dependencies for this role:**
+.. _da-object-dependencies-examples-ou-admin:
 
-- **Users** require access to **groups** for group assignments
-- **Users** require access to **mail/domain** for email configuration
-- **Users** and **groups** require access to **policies** for policy application
-- **Container** access is needed for organizational structure navigation
+*Organizational Unit Admin* role
+--------------------------------
+
+The :ref:`da-roles-organization-unit-admin` role manages users and groups within specific organizational units (OUs).
+
+Key dependencies for this role:
+   * *Users* require access to *user groups* for group assignments.
+
+   * *Users* require access to ``mail/domain`` objects for email configuration.
+
+   * *Users* and *user groups* require access to *policies* for policy enforcement.
+
+   * *Container* access allows for organizational structure navigation.
 
 Without proper dependency permissions:
 
-- User group assignments would fail
-- Email domain selection would be unavailable
-- Policy application would not work
-- Navigation within the OU structure would be limited
+* User group assignments would fail.
+* Email domain selection would be unavailable.
+* Policy enforcement wouldn't work.
+* The OU structure limits navigation.
 
-Helpdesk Operator role
-----------------------
+.. _da-object-dependencies-examples-helpdesk-operator:
 
-The ``udm:default-roles:helpdesk-operator`` role focuses on password management and basic user support.
+*Helpdesk Operator* role
+------------------------
 
-**Key dependencies for this role:**
+The :ref:`da-roles-helpdesk-operator` role focuses on password management and basic user support.
 
-- **Users** require access to **groups** for context and verification
-- **Container** access is needed for OU navigation
+Key dependencies for this role:
+   * *Users* require access to *user groups* for context and verification.
+   * *Container* access allows for organizational structure navigation.
 
-Linux OU Client Manager role
-----------------------------
+.. _da-object-dependencies-examples-linux-ou-client-manager:
 
-The ``udm:default-roles:linux-ou-client-manager`` role manages Linux computers and related infrastructure.
+*Linux OU Client Manager* role
+------------------------------
 
-**Key dependencies for this role:**
+The :ref:`da-roles-linux-ou-client-manager` role manages Linux computers and related infrastructure.
 
-- **Computers** require access to **networks** for network selection
-- **Computers** require access to **DNS records** for name resolution
-- **Computers** require access to **DHCP services** for IP configuration
-- **Computers** require access to **groups** for computer group memberships
-- **Container** access is needed for placement in organizational structure
+Key dependencies for this role:
+   * *Computers* require access to *networks* for network selection.
+
+   * *Computers* require access to *DNS records* for name resolution.
+     The allowed DNS and DHCP records are the following:
+
+     * *DNS Host*
+     * *DNS Pointer*
+     * *DHCP Service*
+     * *DHCP Subnet*
+     * Network objects
+     * Containers for Network, DHCP, and DNS
+
+   * *Computers* require access to *DHCP services* for IP configuration.
+
+   * *Computers* require access to *groups* for computer group memberships.
+
+   * *Container* access allows for organizational structure navigation.
 
 Without these dependency permissions:
 
-- Network drop-downs would be empty
-- DNS configuration options would not be available
-- Computer group assignments would fail
-- Placement in organizational units might not work properly
+* Network drop-downs would be empty.
+* DNS configuration options wouldn't be available.
+* Computer group assignments would fail.
+* Placement in organizational units might not work properly.
 
-Self-Service Profile role
--------------------------
+.. _da-object-dependencies-examples-self-service-profile:
+
+*Self-Service Profile* role
+---------------------------
 
 The ``udm:default-roles:self-service-profile`` role allows users to modify their own profile information.
 
-**Key dependencies for this role:**
-
-- Primarily operates on the user's own object (using ``is-self`` condition)
-- Minimal external dependencies due to restricted scope
+Key dependencies for this role:
+   * Primarily operates on the user's own object using the ``is-self`` condition.
+   * Minimal external dependencies due to restricted scope.
