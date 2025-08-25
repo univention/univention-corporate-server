@@ -42,7 +42,7 @@ options = {
     'default': univention.admin.option(
         short_description=short_description,
         default=True,
-        objectClasses=['top', 'extensibleObject', 'univentionRecycleBinObject'],
+        objectClasses=['top', 'organizationalRole', 'univentionRecycleBinObject'],
     ),
 }
 
@@ -124,11 +124,22 @@ mapping.register('originalUniventionObjectIdentifier', 'univentionRecycleBinOrig
 class object(simpleLdap):
     module = module
 
-    def get_original_dn(self):
-        rdn = ldap.dn.str2dn(self.dn)[0][0]
-        assert rdn[0] == 'univentionRecycleBinOriginalDN', f"Expected univentionRecycleBinOriginalDN RDN, got {rdn[0]}"
+    @classmethod
+    def get_default_containers(cls, lo):
+        import univention.config_registry
+        ucr = univention.config_registry.ConfigRegistry()
+        ucr.load()
+        base = ucr.get("ldap/base", "")
+        return ["cn=recyclebin,cn=internal,%s" % base] if base else []
 
-        return rdn[1]
+    def get_original_dn(self):
+        original_dn_attr = self.oldattr.get('univentionRecycleBinOriginalDN')
+        if original_dn_attr:
+            original_dn = original_dn_attr[0]
+            if isinstance(original_dn, bytes):
+                original_dn = original_dn.decode('utf-8')
+            return original_dn
+        return None
 
     def __getitem__(self, key):
         if key == 'originalDN':
@@ -265,7 +276,6 @@ class object(simpleLdap):
                 self.lo.authz_connection.add(original_dn, restore_attrs_no_uuid)
                 log.info("Restored object without original entryUUID: %s", original_dn)
         else:
-            # No original entryUUID to restore
             restore_attrs_no_uuid = [(attr, vals) for attr, vals in restore_attrs if attr != 'entryUUID']
             self.lo.authz_connection.add(original_dn, restore_attrs_no_uuid)
             log.info("Restored object from recycle bin: %s", original_dn)
@@ -281,7 +291,6 @@ class object(simpleLdap):
 
         object_id = ldap.dn.dn2str(ldap.dn.str2dn(original_dn))
 
-        # Filter out LDAP meta/operational attributes
         operational_attributes = {
             'entryUUID', 'entryCSN', 'entryDN',
             'createTimestamp', 'modifyTimestamp',
