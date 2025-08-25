@@ -68,17 +68,18 @@ you need to know the following definitions for some of the used terms in this do
 Basic idea
 ==========
 
-With delegative administration for UDM we want to enable Administrators to
-easily define roles and policies for what an actor can do in the *Directory Service*.
+With delegative administration for UDM
+administrators can define roles and policies
+for what an actor can do in the *Directory Service*.
 
-If activated, LDAP ACLs for actors will no longer apply, instead UDM checks
-the authorization for the actor based on the actors roles and the current UDM
-policy and will access the *Directory Service* with a privileged account.
+If activated, LDAP ACLs for actors no longer apply.
+Instead, UDM validates the authorization for the actor based on the actor's roles,
+the current UDM policy and accesses the *Directory Service* with a privileged account.
 
 For testing purposes you could add LDAP ACLs for an actor to deny access to
 the LDAP completely, see :external+uv-developer-reference:ref:`settings-ldapacl`.
-If this actor has roles and if there are UDM policies in
-place that allow certain operations in the *Directory Service* for this role,
+If this actor has roles and if there are UDM policies in place
+that allow certain operations in the *Directory Service* for this role,
 the actor will be able to perform these operations despite the LDAP ACLs.
 
 Roles and context
@@ -116,7 +117,7 @@ One example is the role ``udm:default-roles:organizational-unit-admin``.
 This role has one definition for what it can do.
 However, you may want to differentiate between different organizational units.
 
-When you assign the role to an user object,
+When you assign the role to a user object,
 as shown in :numref:`da-concepts-context-listing`,
 you can assign different contexts of position.
 
@@ -162,7 +163,7 @@ shows an example for a generic form of a role definition.
        grant actions="<ACTIONS>"
        grant properties="<OBJECT_PROPERTY>" permission="<PERMISSION>"
 
-.. note::
+.. important::
 
    The values for ``objecttype`` and ``properties`` refer to UDM object types and property names, such as ``users/user`` or ``username``.
    These are not LDAP object classes or LDAP attribute names.
@@ -171,12 +172,12 @@ The following list explains the elements from
 :numref:`da-concepts-role-definition-listing`.
 
 ``access by``
-   clauses describe the actor roles and which permissions are granted.
-   You can specify multiple ``acces by`` clauses.
+   clauses describe the actor roles and which permissions the technical administrator grants.
+   You can specify multiple ``access by`` clauses.
 
 ``to``
    clauses describe the target objects based on conditions like UDM object type and position.
-   You can specify multiple ``to`` clauses within on ``access by`` clause.
+   You can specify multiple ``to`` clauses within one ``access by`` clause.
 
 ``grant``
    clauses allow actions such as read or write
@@ -190,7 +191,7 @@ The following list explains the elements from
 :samp:`context="udm:contexts:position"`
    Defines a context of a position.
    You may use it as value for the position condition,
-   see :ref:`da-concepts-context`
+   see :ref:`da-concepts-context`.
 
 :samp:`to.objecttype={<UDM_MODULE>}`
    Restrict access rules to this type of UDM module.
@@ -239,6 +240,8 @@ The following list explains the elements from
    The value is a comma-separated list of UDM properties.
 
    For example: ``jpegPhoto,e-mail,phone,roomnumber,departmentNumber, or the wildcard "*"``
+
+.. _da-concepts-role-definition-grant-properties-permission:
 
 :samp:`grant.properties.permission={<PERMISSION>}`
    Grant these permissions for the previously defined properties.
