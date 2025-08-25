@@ -7,10 +7,16 @@
 Set up a test environment
 *************************
 
-Univention released the preview for the delegative administration as a normal errata update for UCS 5.2-2.
+Univention released the preview for the delegative administration as an errata update for UCS 5.2-2.
 To test its functionality,
 you as an administrator need to explicitly activate the feature
-and run some additional steps.
+and run some additional steps:
+
+#. :ref:`da-setup-test-env-preparation`
+#. :ref:`da-setup-test-env-activate`
+#. :ref:`da-setup-test-env-test`
+#. :ref:`da-setup-test-env-ouadmin`
+#. :ref:`da-setup-test-env-deactivate`
 
 .. _da-setup-test-env-preparation:
 
@@ -25,7 +31,7 @@ use the following steps:
 
 #. To allow the ``Administrator`` user access to the directory,
    you need to assign the default role ``udm:default-roles:domain-administrator`` as ``guardianMemberRoles``
-   to the group ``Domain Admins``.
+   to the user group ``Domain Admins``.
    Run the command in :numref:`da-setup-test-env-preparation-add-role-listing` on the |UCSPRIMARYDN|.
    For information about roles, see :term:`Role`.
 
@@ -68,17 +74,18 @@ Activate delegative administration
 ==================================
 
 You have to activate delegative administration
-separately for the components
-:ref:`da-setup-test-env-activate-umc`
-and :ref:`da-setup-test-env-activate-udm-http-rest`.
-This section covers the necessary steps.
+separately for the components *UMC* and *UDM HTTP REST API*.
+This section covers the necessary steps:
+
+#. :ref:`da-setup-test-env-activate-umc`
+#. :ref:`da-setup-test-env-activate-udm-http-rest`
 
 .. _da-setup-test-env-activate-umc:
 
 UMC
 ---
 
-To activate delegative administration for the UMC service on every UCS system in your test environment,
+To activate delegative administration for the *UMC* service on every UCS system in your test environment,
 you need to run the commands in :numref:`da-setup-test-env-activate-listing-umc`
 on every system.
 
@@ -89,9 +96,9 @@ on every system.
    $ ucr set directory/manager/web/delegative-administration/enabled=true
    $ systemctl restart univention-management-console-server
 
-Additionally, you have to configure authorization for the UMC service, see :ref:`da-limits`.
+Additionally, you have to configure authorization for the *UMC* service, see :ref:`da-limits`.
 
-By default, only members of the user group ``Domain Admins`` can see and use the user and group modules in UMC.
+By default, only members of the user group ``Domain Admins`` can see and use the user and group modules in *UMC*.
 To properly test the delegative administration feature,
 you need to create a policy that allows all UMC modules.
 You can assign this policy to user objects to allow access to UMC modules.
@@ -111,7 +118,7 @@ Run the command in :numref:`da-setup-test-env-preparation-assign-rights-listing`
 UDM HTTP REST API
 -----------------
 
-To activate delegative administration for the UDM REST service on every UCS system in your test environment,
+To activate delegative administration for the *UDM HTTP REST API* service on every UCS system in your test environment,
 you need to run the commands in :numref:`da-setup-test-env-activate-listing-udm-rest`
 on every system.
 
@@ -125,9 +132,9 @@ on every system.
 
 Additionally, you have to configure authorization for the UDM HTTP REST API service, see :ref:`da-limits`.
 
-Create a group and allow the UDM HTTP REST API service for every member of this group on the |UCSPRIMARYDN|.
+Create a group and allow the *UDM HTTP REST API* service for every member of this group on the |UCSPRIMARYDN|.
 Run the commands in :numref:`da-setup-test-env-preparation-udm-rest-authz`.
-Then, add every user object to this group that needs access to the UDM HTTP REST API service.
+Then, add every user object to this group that needs access to the *UDM HTTP REST API* service.
 
 .. code-block:: console
    :caption: UDM REST authorization setup
@@ -146,14 +153,14 @@ Test delegative administration
 
 To test delegative administration, use the following steps:
 
-#. Sign in as ``Administrator`` to the UMC.
+#. Sign in as ``Administrator`` to the *UMC*.
 
    You notice no difference,
    because the user ``Administrator`` has the role ``udm:default-roles:domain-administrator``.
    This role allows users to perform every operation to every object in the *Directory Service*.
    The user group ``Domain Admins`` has the role assigned and
    the user object ``Administrator`` is member in the user group ``Domain Admins``.
-   See step two in :ref:`da-setup-test-env-preparation`.
+   Remember step two in :ref:`da-setup-test-env-preparation`.
 
 #. Create a test user account without a role.
    Use the command in :numref:`da-setup-test-env-test-listing`.
@@ -170,7 +177,7 @@ To test delegative administration, use the following steps:
 
 #. To test with the created user object, open a private browser window or sign out.
 
-#. Sign in to the UMC with the ``test1`` user account
+#. Sign in to the *UMC* with the ``test1`` user account
    that you just created.
    Open the *Users* module.
    The result list is empty,
@@ -257,7 +264,7 @@ The following steps show how you can test this role.
           --set defaultGroup="cn=$ou-users,cn=groups,ou=$ou,$(ucr get ldap/base)"
       done
 
-#. Sign in to UMC with the ``ou1-admin`` user, the password ``univention``, and open the *Users* module.
+#. Sign in to *UMC* with the ``ou1-admin`` user, the password ``univention``, and open the *Users* module.
    You only see the users of the organizational unit ``ou1``, nothing else.
 
    You can also manually add the role
