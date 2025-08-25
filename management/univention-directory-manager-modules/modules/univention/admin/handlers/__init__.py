@@ -1735,12 +1735,14 @@ class simpleLdap:
                 else:
                     log.warning('Could not remove child: could not identify UDM module', dn=subolddn)
 
-        if self._should_recycle_object():
-            log.info("Moving object to recycle bin: %s", self.dn)
-            self._move_to_recycle_bin()
-        else:
-            log.info("Permanently deleting object: %s", self.dn)
-            self._permanent_delete()
+        # if self._should_recycle_object():
+        #     log.info("Moving object to recycle bin: %s", self.dn)
+        #     self._move_to_recycle_bin()
+        # else:
+        #     log.info("Permanently deleting object: %s", self.dn)
+        #     self._permanent_delete()
+
+        self._permanent_delete()
 
         self._ldap_post_remove()
         self.call_udm_property_hook('hook_ldap_post_remove', self)
