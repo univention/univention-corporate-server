@@ -130,6 +130,7 @@ html_theme_options = {
     'typesense_document_version': version,
     'univention_matomo_tracking': True,
     'univention_docs_deployment': True,
+    'announcement': "Delegative administration is an experimental feature. Don't use it in production yet.",
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
