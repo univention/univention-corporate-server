@@ -349,7 +349,7 @@ class UniventionKeycloakAdmin(KeycloakAdmin):
         _id = self.get_client_id(client_id)
         try:
             self.add_mapper_to_client(_id, payload)
-        except KeycloakGetError as exc:
+        except KeycloakPostError as exc:
             # ignore conflict "Protocol mapper exists with same name"
             if exc.response_code != HTTPStatus.CONFLICT:
                 raise
