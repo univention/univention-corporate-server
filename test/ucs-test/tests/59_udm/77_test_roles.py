@@ -5,7 +5,6 @@
 ## packages:
 ##   - univention-directory-manager-tools
 
-from __future__ import annotations
 
 from types import SimpleNamespace
 

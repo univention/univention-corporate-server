@@ -14,19 +14,15 @@ break routing from/to the test system. Especially if the test script does
 not clean up in error cases!
 """
 
-from __future__ import annotations
 
 import copy
 import re
 import subprocess
-from typing import TYPE_CHECKING, Literal
+from collections.abc import Mapping
+from types import TracebackType
+from typing import Literal, Self
 
 import univention.config_registry
-
-
-if TYPE_CHECKING:
-    from collections.abc import Mapping
-    from types import TracebackType
 
 
 class UCSTestNetwork(Exception):
@@ -108,7 +104,7 @@ class NetworkRedirector:
         self.cleanup_rules: list[tuple[Literal["loop"], str, str] | tuple[Literal["redirection"], str, int, int, str]] = []
         # [ ('loop', 'addr1', 'addr2'), ('redirection', 'remoteaddr', remoteport, localport), ... ]
 
-    def __enter__(self) -> NetworkRedirector:  # FIXME: Py3.9: Self
+    def __enter__(self) -> Self:
         print('*** Entering with-statement of NetworkRedirector()')
         self.used_by_with_statement = True
         return self

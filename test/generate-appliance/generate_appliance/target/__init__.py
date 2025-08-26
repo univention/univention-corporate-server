@@ -75,7 +75,7 @@ class TargetFile(Target, metaclass=ABCMeta):
     SUFFIX = ""
 
     def archive_name(self) -> Path:
-        path = self.options.filename  # type: Path
+        path: Path = self.options.filename
         if not self.options.no_target_specific_filename:
             path = path.with_name("%s-%s" % (path.name, self.SUFFIX))
 

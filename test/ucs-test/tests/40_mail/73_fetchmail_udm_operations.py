@@ -5,12 +5,11 @@
 ## packages:
 ##  - univention-fetchmail
 
-from __future__ import annotations
 
 import re
 import time
+from collections.abc import Iterable
 from functools import reduce
-from typing import TYPE_CHECKING
 
 import ldap
 import pytest
@@ -21,10 +20,6 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 
 from essential.mail import random_email
-
-
-if TYPE_CHECKING:
-    from collections.abc import Iterable
 
 
 @pytest.fixture

@@ -6,7 +6,6 @@
 ##  - univention-directory-listener (>= 9.0.2-6)
 ## exposure: dangerous
 
-from __future__ import annotations
 
 from os import chown, mkdir
 from os.path import join
@@ -17,16 +16,13 @@ from subprocess import Popen
 from sys import exit
 from tempfile import mkdtemp
 from time import sleep
-from typing import TYPE_CHECKING
+from types import TracebackType
+from typing import Self
 
 from univention.config_registry.frontend import handler_set
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.udm import UCSTestUDM
 from univention.testing.utils import verify_ldap_object
-
-
-if TYPE_CHECKING:
-    from types import TracebackType
 
 
 MODULE = 'container/ou'
@@ -45,7 +41,7 @@ class Environment:
         ent = getpwnam(USERID)
         self.uid = ent.pw_uid
 
-    def __enter__(self) -> Environment:
+    def __enter__(self) -> Self:
         self.tmpdir = mkdtemp(prefix='ucs-test', dir=TMPDIR)
         print('I: tmpdir=%r' % (self.tmpdir,))
         chown(self.tmpdir, self.uid, -1)
@@ -91,7 +87,7 @@ class Listener:
             '-y', '/etc/machine.secret',
         ]
 
-    def __enter__(self) -> Listener:
+    def __enter__(self) -> Self:
         self.init_listener()
         self.run_listener()
         return self
@@ -105,7 +101,7 @@ class Listener:
         if ret:
             exit(ret)
 
-    def run_listener(self) -> Listener:
+    def run_listener(self) -> Self:
         cmd = [*self.cmd, '-d', '4', '-F']
         self.proc = Popen(cmd, close_fds=True)
         print('I: %d = %r' % (self.proc.pid, cmd))

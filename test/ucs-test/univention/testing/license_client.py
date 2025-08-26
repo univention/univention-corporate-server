@@ -4,22 +4,18 @@
 
 """A tool to obtain licenses for the UCS test environments."""
 
-from __future__ import annotations
 
 import cgi
 import logging
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
+from collections.abc import Iterable
 from datetime import datetime
 from html.parser import HTMLParser
 from http.client import HTTPException, HTTPResponse, HTTPSConnection
 from os import path
 from sys import exit
-from typing import TYPE_CHECKING, Any
+from typing import Any
 from urllib.parse import urlencode
-
-
-if TYPE_CHECKING:
-    from collections.abc import Iterable
 
 
 class CredentialsMissing(Exception):

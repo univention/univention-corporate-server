@@ -5,7 +5,6 @@
 # SPDX-FileCopyrightText: 2013-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from __future__ import annotations
 
 import datetime
 import json
@@ -13,7 +12,8 @@ import logging
 import os
 import subprocess
 import time
-from typing import TYPE_CHECKING
+from types import TracebackType
+from typing import Self
 
 import selenium.common.exceptions as selenium_exceptions
 from PIL import Image
@@ -28,10 +28,6 @@ from univention.testing import utils
 from univention.testing.selenium.checks_and_waits import ChecksAndWaits
 from univention.testing.selenium.interactions import Interactions
 from univention.testing.selenium.utils import expand_path
-
-
-if TYPE_CHECKING:
-    from types import TracebackType
 
 
 logger = logging.getLogger(__name__)
@@ -69,7 +65,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         translator.set_language(self.language)
         logging.basicConfig(level=logging.INFO)
 
-    def __enter__(self) -> UMCSeleniumTest:  # FIXME: Py3.9: Self
+    def __enter__(self) -> Self:
         self.restart_umc()
         self._ucr.__enter__()
         if self.selenium_grid:

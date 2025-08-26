@@ -15,17 +15,13 @@ file.
 .. warning:: The API is currently under development and may change before next UCS release!
 """
 
-from __future__ import annotations
 
 import copy
-from typing import TYPE_CHECKING, Any
+from types import TracebackType
+from typing import Any, Self
 
 import univention.config_registry
 from univention.config_registry import ConfigRegistry
-
-
-if TYPE_CHECKING:
-    from types import TracebackType
 
 
 class UCSTestConfigRegistry(ConfigRegistry):
@@ -84,7 +80,7 @@ class UCSTestConfigRegistry(ConfigRegistry):
         # load new/original values
         self.load()
 
-    def __enter__(self) -> UCSTestConfigRegistry:  # FIXME: Py3.9: Self
+    def __enter__(self) -> Self:
         self.load()
         return self
 

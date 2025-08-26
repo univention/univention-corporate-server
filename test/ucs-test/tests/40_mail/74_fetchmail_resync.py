@@ -5,7 +5,6 @@
 ## packages:
 ##  - univention-fetchmail
 
-from __future__ import annotations
 
 import subprocess
 import time

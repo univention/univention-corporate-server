@@ -1,11 +1,7 @@
 #!/usr/bin/python3
-#
-# -*- coding: utf-8 -*-
-#
 # SPDX-FileCopyrightText: 2023-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from __future__ import annotations
 
 import locale
 import logging
@@ -52,7 +48,7 @@ class UCSLanguage(Enum):
 
 
 class Interactions:
-    def __init__(self, tester: UMCBrowserTest) -> None:
+    def __init__(self, tester: 'UMCBrowserTest') -> None:
         self.tester: UMCBrowserTest = tester
         self.page: Page = tester.page
 

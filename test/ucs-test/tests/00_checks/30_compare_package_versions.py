@@ -19,17 +19,17 @@ Broken for UCS 5.0:
 - no architecture `i386`
 """
 
-from __future__ import annotations
 
 import re
 from argparse import ArgumentParser, Namespace
+from collections.abc import Iterable
 from contextlib import closing
 from dataclasses import dataclass
 from gzip import open as gzip_open
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from time import sleep
-from typing import TYPE_CHECKING
+from typing import Self
 from urllib.error import ContentTooShortError
 from urllib.request import urlopen, urlretrieve
 
@@ -37,10 +37,6 @@ from debian.debian_support import Version
 from lxml.html import fromstring
 
 from univention.testing import utils
-
-
-if TYPE_CHECKING:
-    from collections.abc import Iterable
 
 
 RE_MAJOR_MINOR = re.compile(r'^([1-9][0-9]*.[0-9]+)/?$')
@@ -62,7 +58,7 @@ class PackageEntry:
     ucs_version: str
 
     @classmethod
-    def parse(cls, entry: str, ucs_version: str) -> PackageEntry:
+    def parse(cls, entry: str, ucs_version: str) -> Self:
         package = version = filename = sourcepkg = ""
         for line in entry.splitlines():
             k, _, v = line.partition(": ")

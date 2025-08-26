@@ -2,7 +2,6 @@
 .. module:: mailclient
 .. moduleauthor:: Ammar Najjar <najjar@univention.de>
 """
-from __future__ import annotations
 
 import email
 import imaplib

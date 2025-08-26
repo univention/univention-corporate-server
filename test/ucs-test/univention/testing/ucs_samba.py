@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2024-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from __future__ import annotations
 
 import contextlib
 import re
@@ -9,7 +8,8 @@ import socket
 import sqlite3
 import subprocess
 import time
-from typing import TYPE_CHECKING, Any
+from collections.abc import Iterator
+from typing import Any
 
 import ldap
 import ldb
@@ -19,10 +19,6 @@ from samba.samdb import SamDB
 
 from univention import config_registry
 from univention.testing.utils import package_installed
-
-
-if TYPE_CHECKING:
-    from collections.abc import Iterator
 
 
 class DRSReplicationFailed(Exception):

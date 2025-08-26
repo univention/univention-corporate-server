@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-from __future__ import annotations
 
 import json
 import os.path
@@ -19,17 +18,13 @@ try:
 except ImportError:
     pass
 
-from typing import TYPE_CHECKING
+from collections.abc import Callable
 
 import univention.testing.strings as uts
 import univention.testing.udm as udm_test
 import univention.uldap
 from ucsschool.importer.mass_import import user_import
 from univention.config_registry import ucr
-
-
-if TYPE_CHECKING:
-    from collections.abc import Callable
 
 
 CONNECTOR_WAIT_INTERVAL = 12

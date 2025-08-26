@@ -2,7 +2,6 @@
 # SPDX-FileCopyrightText: 2024-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from __future__ import annotations
 
 import datetime
 import importlib
@@ -15,21 +14,18 @@ import subprocess
 import sys
 import tempfile
 import time
+from collections.abc import Callable, Iterator, Sequence
 from contextlib import contextmanager
 from http.client import HTTPConnection
 from shlex import quote
-from typing import TYPE_CHECKING
+from types import TracebackType
+from typing import Self
 from urllib.parse import urlparse
 
 import requests
 from selenium.webdriver.common.by import By
 
 from univention.testing import ucr as _ucr
-
-
-if TYPE_CHECKING:
-    from collections.abc import Callable, Iterator, Sequence
-    from types import TracebackType
 
 
 logger = logging.getLogger(__name__)
@@ -318,7 +314,7 @@ class Session:
         return filename
 
     @classmethod
-    def chrome(cls, display_num: str, base_url: str, screenshot_path: str) -> Session:
+    def chrome(cls, display_num: str, base_url: str, screenshot_path: str) -> Self:
         from selenium import webdriver
         options = webdriver.ChromeOptions()
         options.add_argument('--no-sandbox')  # chrome complains about being executed as root
@@ -332,7 +328,7 @@ class Session:
 
     @classmethod
     @contextmanager
-    def running_chrome(cls, base_url: str, screenshot_path: str) -> Iterator[Session]:
+    def running_chrome(cls, base_url: str, screenshot_path: str) -> Iterator[Self]:
         with xserver() as display:
             obj = cls.chrome(display, base_url, screenshot_path)
             obj.driver.maximize_window()

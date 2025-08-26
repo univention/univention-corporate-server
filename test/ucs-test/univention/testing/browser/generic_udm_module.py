@@ -5,19 +5,14 @@
 # SPDX-FileCopyrightText: 2023-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
 
 from playwright.sync_api import Locator, Page, expect
 
 from univention.config_registry import ucr
 from univention.lib.i18n import Translation
-
-
-if TYPE_CHECKING:
-    from univention.testing.browser.lib import UMCBrowserTest
+from univention.testing.browser.lib import UMCBrowserTest
 
 
 _ = Translation('ucs-test-framework').translate

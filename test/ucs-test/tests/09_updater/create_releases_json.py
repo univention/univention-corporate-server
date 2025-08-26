@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """Generates a valid ucs-releases.json."""
 
-from __future__ import annotations
 
 import argparse
 import json

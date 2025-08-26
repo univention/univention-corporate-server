@@ -3,10 +3,10 @@
 
 """Public interface for test resultes."""
 
-from __future__ import annotations
 
 import warnings
 from enum import Enum
+from typing import Self
 
 
 __all__ = ['Reason']
@@ -52,7 +52,7 @@ class Reason(Enum):
         return self.value[3]
 
     @classmethod
-    def lookup(cls, code: int) -> Reason:
+    def lookup(cls, code: int) -> Self:
         return next(obj for obj in cls.__members__.values() if int(obj) == code)
 
 

@@ -2,7 +2,6 @@
 # SPDX-FileCopyrightText: 2013-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from __future__ import annotations
 
 import os
 import shutil
@@ -58,8 +57,7 @@ class DebianPackage:
         deb_package = os.path.join(self._package_tempdir, deb_file)
         return deb_package
 
-    def __create_file_from_buffer(self, path, file_buffer, write_mode='w'):
-        # type: (str, str, str) -> None
+    def __create_file_from_buffer(self, path: str, file_buffer: str, write_mode: str = 'w') -> None:
         with open(path, write_mode) as f:
             f.write(file_buffer)
 
@@ -73,8 +71,7 @@ class DebianPackage:
         self.__create_file_from_buffer(self.__unjoin_file, unjoinscript_buffer)
         os.chmod(self.__unjoin_file, 0o755)
 
-    def create_usr_share_file_from_buffer(self, share_filename, schema_buffer, write_mode='w'):
-        # type: (str, str, str) -> None
+    def create_usr_share_file_from_buffer(self, share_filename: str, schema_buffer: str, write_mode: str = 'w') -> None:
         share_file = os.path.join(self._package_path, 'usr/share/%s' % self._package_name, share_filename)
         dirpath = os.path.dirname(share_file)
         if not os.path.exists(dirpath):

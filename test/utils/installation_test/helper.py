@@ -11,7 +11,10 @@ from functools import wraps
 from os.path import samefile
 from string import Formatter
 from types import FrameType
-from typing import Any
+from typing import Any, TypeVar
+
+
+T = TypeVar("T", bound=Callable[..., object])
 
 
 COLORS = {
@@ -37,12 +40,12 @@ class VerboseFormatter(Formatter):
         pass
 
 
-def verbose(msg, fmt="", formatter=VerboseFormatter()):  # type: (str, str, Formatter) -> Callabble[[T], T]
+def verbose(msg: str, fmt: str = "", formatter: Formatter = VerboseFormatter()) -> Callable[[T], T]:
     log = logging.getLogger(__name__)
 
-    def decorator(f):  # type: (Callable) -> Callable
+    def decorator(f: Callable) -> Callable:
         @wraps(f)
-        def wrapper(*args, **kwargs):  # type: (*Any, **Any) -> Any
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             start = time.time()
             log.info(
                 "%(MAGENTA)s%(msg)s%(CYAN)s:%(GREEN)sBEGIN%(RESET)s %(args)s",

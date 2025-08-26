@@ -7,6 +7,7 @@ from collections.abc import Sequence
 from io import BytesIO
 from logging import getLogger
 from pathlib import Path
+from typing import IO
 
 from . import File
 from .archive import Archive
@@ -33,7 +34,7 @@ class Tar(Archive):
                 info.mode = stat.S_IRUSR | stat.S_IWUSR
                 if isinstance(source_file, bytes):
                     info.size = len(source_file)
-                    handle = BytesIO(source_file)  # type: IO[bytes]
+                    handle: IO[bytes] = BytesIO(source_file)
                 else:
                     info.size = source_file.file_size()
                     handle = source_file.path().open("rb")

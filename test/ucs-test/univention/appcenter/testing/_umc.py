@@ -12,21 +12,17 @@ Univention common Python library to manage connections to remote |UMC| servers.
 >>> umc.umc_logout()
 """
 
-from __future__ import annotations
 
 import base64
+import http.client
 import json
 import locale
 import ssl
 from http.client import HTTPException, HTTPSConnection
 from http.cookies import SimpleCookie
-from typing import TYPE_CHECKING, Any, TypeVar, overload
+from typing import Any, Self, TypeVar, overload
 
 from univention.config_registry import ConfigRegistry
-
-
-if TYPE_CHECKING:
-    import http.client
 
 
 _T = TypeVar("_T")
@@ -86,7 +82,7 @@ class HTTPError(Exception):
     """
 
     __metaclass__ = _HTTPType
-    codes: dict[int, type[HTTPError]] = {}
+    codes: dict[int, type[Self]] = {}
     """Specialized sub-classes for individual |HTTP| error codes."""
 
     @property
@@ -332,7 +328,7 @@ class Response:
         return data
 
     @classmethod
-    def _from_httplib_response(cls, response: http.client.HTTPResponse) -> Response:
+    def _from_httplib_response(cls, response: http.client.HTTPResponse) -> Self:
         """
         Create class instance from |HTTP| response.
 

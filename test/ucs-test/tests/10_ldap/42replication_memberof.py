@@ -30,7 +30,6 @@ and the ucs-test framework to wait on all systems until all sync steps are done,
 test will be skipped for now on all system with samba4 installed but deactivated s4-connector.
 Otherwise the test would be flaky.
 """
-from __future__ import annotations
 
 import pytest
 

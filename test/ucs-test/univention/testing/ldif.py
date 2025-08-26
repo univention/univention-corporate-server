@@ -7,7 +7,6 @@ This program compares LDAP host entries with a local comparative ldif file.
 All differences will be displayed at the console.
 """
 
-from __future__ import annotations
 
 import base64
 import errno
@@ -19,12 +18,9 @@ import subprocess
 import sys
 import time
 import unicodedata
+from collections.abc import Iterable, Iterator
 from optparse import SUPPRESS_HELP, OptionGroup, OptionParser, Values
-from typing import TYPE_CHECKING, Any, Literal, NoReturn
-
-
-if TYPE_CHECKING:
-    from collections.abc import Iterable, Iterator
+from typing import Any, Literal, NoReturn, Self
 
 
 Entry = dict[str, list[str]]
@@ -160,7 +156,7 @@ class Ldif:
 
 class LdifSource:
     @classmethod
-    def create(cls, arg: str, options: Values) -> LdifFile:
+    def create(cls, arg: str, options: Values) -> 'LdifFile':
         raise NotImplementedError()
 
     def start_reading(self) -> Ldif:
@@ -172,7 +168,7 @@ class LdifFile:
     """LDIF source from local file."""
 
     @classmethod
-    def create(cls, arg: str, options: Values) -> LdifFile:
+    def create(cls, arg: str, options: Values) -> Self:
         return cls(arg)
 
     def __init__(self, filename: str) -> None:
@@ -191,7 +187,7 @@ class LdifSlapcat:
     """LDIF source from local LDAP."""
 
     @classmethod
-    def create(cls, arg: Any, options: Values) -> LdifSlapcat:
+    def create(cls, arg: Any, options: Values) -> Self:
         return cls()
 
     def __init__(self) -> None:
@@ -240,7 +236,7 @@ class LdifSsh(LdifSlapcat):
     """LDIF source from remote LDAP."""
 
     @classmethod
-    def create(cls, hostname: str, options: Values) -> LdifSsh:
+    def create(cls, hostname: str, options: Values) -> Self:
         return cls(hostname, options.ssh)
 
     def __init__(self, hostname: str, ssh: str = 'ssh') -> None:

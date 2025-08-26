@@ -1,15 +1,15 @@
 # SPDX-FileCopyrightText: 2013-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from __future__ import annotations
 
 import copy
 import functools
 import json
 import os
 import socket
+from collections.abc import Callable, Generator, Iterator
 from types import SimpleNamespace
-from typing import TYPE_CHECKING, Any
+from typing import Any
 from urllib.parse import urlparse
 
 import pytest
@@ -31,12 +31,7 @@ from univention.testing.utils import (
 )
 from univention.udm import UDM
 from univention.udm.binary_props import Base64Bzip2BinaryProperty
-
-
-if TYPE_CHECKING:
-    from collections.abc import Callable, Generator, Iterator
-
-    from univention.udm.modules.settings_data import SettingsDataObject
+from univention.udm.modules.settings_data import SettingsDataObject
 
 
 # don't use the ucs-test ucr fixture (UCSTestConfigRegistry)

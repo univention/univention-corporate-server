@@ -3,18 +3,14 @@
 
 """Internal functions for test finding and setup."""
 
-from __future__ import annotations
 
 import logging
 import operator
 import os
 import re
 import sys
-from typing import TYPE_CHECKING, Any
-
-
-if TYPE_CHECKING:
-    from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable
+from typing import Any, Self
 
 
 __all__ = [
@@ -270,7 +266,7 @@ class UCSVersion:  # pylint: disable-msg=R0903  # noqa: PLW1641
     def __gt__(self, other: object) -> object:
         return self.ver > other.ver if isinstance(other, UCSVersion) else NotImplemented
 
-    def match(self, other: UCSVersion) -> bool:
+    def match(self, other: Self) -> bool:
         """
         Check if other matches the criterion.
         >>> UCSVersion('>1.2-3').match(UCSVersion('1.2-4'))

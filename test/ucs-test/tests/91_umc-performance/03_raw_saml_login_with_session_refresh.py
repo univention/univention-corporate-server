@@ -12,7 +12,6 @@
 ##   USE_KEYCLOAK: "1"
 ##   WAIT_MAX: "180"
 ##   REQUEST_TIMEOUT: "120"
-from __future__ import annotations
 
 import logging
 import os

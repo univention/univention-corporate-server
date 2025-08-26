@@ -5,21 +5,17 @@
 # SPDX-FileCopyrightText: 2016-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from __future__ import annotations
 
 import pprint
 import sys
+from collections.abc import Iterable
 from html.parser import HTMLParser
-from typing import TYPE_CHECKING, Any
+from typing import Any, Self
 
 import requests
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.umc import Client as _Client
-
-
-if TYPE_CHECKING:
-    from collections.abc import Iterable
 
 
 class Client(_Client):
@@ -28,7 +24,7 @@ class Client(_Client):
     print_request_data = True
 
     @classmethod
-    def get_test_connection(cls, hostname: str | None = None, *args: Any, **kwargs: Any) -> Client:
+    def get_test_connection(cls, hostname: str | None = None, *args: Any, **kwargs: Any) -> Self:
         ucr = ConfigRegistry()
         ucr.load()
         username = ucr.get('tests/domainadmin/account')
@@ -36,7 +32,7 @@ class Client(_Client):
         password = ucr.get('tests/domainadmin/pwd')
         return cls(hostname, username, password, *args, **kwargs)
 
-    def umc_command(self, *args: Any, **kwargs: Any) -> Client:
+    def umc_command(self, *args: Any, **kwargs: Any) -> Self:
         self.print_request_data = kwargs.pop('print_request_data', True)
         self.print_response = kwargs.pop('print_response', True)
         try:

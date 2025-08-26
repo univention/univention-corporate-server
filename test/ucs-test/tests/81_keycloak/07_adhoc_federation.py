@@ -4,30 +4,23 @@
 ## roles: [domaincontroller_master, domaincontroller_backup]
 ## exposure: dangerous
 
-from __future__ import annotations
 
 import base64
 import os
 import time
 import uuid
-from typing import TYPE_CHECKING
+from types import SimpleNamespace
 
 import pytest
 from ad_hoc import AdHocProvisioning
+from keycloak import KeycloakAdmin
 from playwright.sync_api import Page, expect
 from utils import get_portal_tile
 
+from univention.config_registry.backend import ConfigRegistry
 from univention.lib.misc import custom_username
 from univention.udm import UDM
-
-
-if TYPE_CHECKING:
-    from types import SimpleNamespace
-
-    from keycloak import KeycloakAdmin
-
-    from univention.config_registry.backend import ConfigRegistry
-    from univention.udm.modules.users_user import UsersUserObject
+from univention.udm.modules.users_user import UsersUserObject
 
 
 def _test_sso_login(page, portal_config: SimpleNamespace, keycloak_config: SimpleNamespace) -> None:

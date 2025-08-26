@@ -4,18 +4,14 @@
 # SPDX-FileCopyrightText: 2013-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from __future__ import annotations
 
 import os
 import pwd
 import subprocess
 import sys
 import time
-from typing import TYPE_CHECKING
-
-
-if TYPE_CHECKING:
-    from types import TracebackType
+from types import TracebackType
+from typing import Self
 
 
 class MailSinkGuard:
@@ -32,10 +28,10 @@ class MailSinkGuard:
     def __init__(self) -> None:
         self.mail_sinks: set[MailSink] = set()
 
-    def add(self, sink: MailSink) -> None:
+    def add(self, sink: 'MailSink') -> None:
         self.mail_sinks.add(sink)
 
-    def __enter__(self) -> MailSinkGuard:  # FIXME: Py3.9: Self
+    def __enter__(self) -> Self:
         return self
 
     def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, etraceback: TracebackType | None) -> None:
@@ -71,7 +67,7 @@ class MailSink:
         self.process: subprocess.Popen | None = None
         self.fqdn = fqdn
 
-    def __enter__(self) -> MailSink:  # FIXME: Py3.9: Self
+    def __enter__(self) -> Self:
         self.start()
         return self
 

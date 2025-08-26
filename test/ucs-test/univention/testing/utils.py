@@ -3,7 +3,6 @@
 
 """Common functions used by tests."""
 
-from __future__ import annotations
 
 import functools
 import os
@@ -12,19 +11,16 @@ import subprocess
 import sys
 import time
 import traceback
+from collections.abc import Callable, Iterable, Mapping, Sequence
 from enum import IntEnum
 from itertools import chain
-from typing import IO, TYPE_CHECKING, Any, NoReturn, TypeVar
+from types import TracebackType
+from typing import IO, Any, NoReturn, Self, TypeVar
 
 import ldap
 
 from univention import uldap
 from univention.config_registry import ConfigRegistry
-
-
-if TYPE_CHECKING:
-    from collections.abc import Callable, Iterable, Mapping, Sequence
-    from types import TracebackType
 
 
 try:
@@ -338,7 +334,7 @@ class AutomaticListenerRestart:
                 univention.config_registry.handler_set(['foo/bar=ding/dong'])
     """
 
-    def __enter__(self) -> AutomaticListenerRestart:  # FIXME: Py3.9: Self
+    def __enter__(self) -> Self:
         return self
 
     def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
@@ -377,7 +373,7 @@ class AutoCallCommand:
         self.pipe_stdout = stdout
         self.pipe_stderr = stderr
 
-    def __enter__(self) -> AutoCallCommand:  # FIXME: Py3.9: Self
+    def __enter__(self) -> Self:
         if self.enter_cmd:
             subprocess.call(self.enter_cmd, stdout=self.pipe_stdout, stderr=self.pipe_stderr)
         return self
@@ -414,7 +410,7 @@ class FollowLogfile:
         self.always = always
         self.logfile_pos: dict[str, int] = dict.fromkeys(logfiles, 0)
 
-    def __enter__(self) -> FollowLogfile:  # FIXME: Py3.9: Self
+    def __enter__(self) -> Self:
         self.logfile_pos.update((logfile, os.path.getsize(logfile)) for logfile in self.logfile_pos)
         return self
 

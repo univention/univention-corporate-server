@@ -5,7 +5,6 @@
 
 # pylint: disable-msg=R0902,W0201,R0903,E1101,E0611
 
-from __future__ import annotations
 
 import errno
 import logging
@@ -14,12 +13,13 @@ import re
 import select
 import signal
 import sys
+from collections.abc import Iterable, Iterator, Sequence
 from datetime import datetime
 from functools import reduce
 from operator import and_, or_
 from subprocess import PIPE, Popen, call
 from time import monotonic
-from typing import IO, TYPE_CHECKING, Any, TypeVar, cast
+from typing import IO, Any, Self, TypeVar, cast
 
 import apt
 import retrying
@@ -31,10 +31,6 @@ from univention.testing.codes import Reason
 from univention.testing.errors import TestError
 from univention.testing.internal import UCSVersion
 from univention.testing.pytest import PytestRunner
-
-
-if TYPE_CHECKING:
-    from collections.abc import Iterable, Iterator, Sequence
 
 
 __all__ = ['TestCase', 'TestEnvironment', 'TestFormatInterface', 'TestResult']
@@ -526,7 +522,7 @@ class TestCase:
         self.external_junit: str | None = None
         self.environment: dict = {}
 
-    def load(self) -> TestCase:
+    def load(self) -> Self:
         """Load test case from stream."""
         try:
             header = self.load_meta()
@@ -628,7 +624,7 @@ class TestCase:
         args += self.exposure.pytest_args(environment)
         return args
 
-    def _run_tee(self, proc: Popen, result: TestResult, stdout: IO[str] = sys.stdout, stderr: IO[str] = sys.stderr) -> None:
+    def _run_tee(self, proc: Popen, result: 'TestResult', stdout: IO[str] = sys.stdout, stderr: IO[str] = sys.stderr) -> None:
         """Run test collecting and passing through stdout, stderr:"""
         assert proc.stdout is not None
         assert proc.stderr is not None
@@ -744,7 +740,7 @@ class TestCase:
         if clean:
             result.attach(part, 'text/plain', clean)
 
-    def _translate_result(self, result: TestResult) -> Reason:
+    def _translate_result(self, result: 'TestResult') -> Reason:
         """Translate exit code into result."""
         if result.result == int(Reason.SKIP):
             return Reason.SKIP
@@ -765,7 +761,7 @@ class TestCase:
                 'run': Reason.FAIL,
             }.get(self.versions.state, Reason.FAIL)
 
-    def run(self, result: TestResult) -> None:
+    def run(self, result: 'TestResult') -> None:
         """Run the test case and fill in result."""
         base = os.path.basename(self.filename)
         dirname = os.path.dirname(self.filename)
@@ -879,7 +875,7 @@ class TestResult:
         self.reason = reasons[0]
         return self.condition
 
-    def run(self) -> TestResult:
+    def run(self) -> Self:
         """Return test."""
         if self.condition is None:
             self.check()

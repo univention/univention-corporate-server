@@ -1,25 +1,19 @@
 # SPDX-FileCopyrightText: 2013-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from __future__ import annotations
 
 import locale
 import subprocess
-from typing import TYPE_CHECKING
+from types import SimpleNamespace
 
 import requests
 from bs4 import BeautifulSoup
+from keycloak import KeycloakAdmin
 from playwright.sync_api import Page, expect
 from requests_kerberos import OPTIONAL, HTTPKerberosAuth
 
 from univention.lib.misc import custom_username
 from univention.testing.utils import wait_for_listener_replication_and_postrun
-
-
-if TYPE_CHECKING:
-    from types import SimpleNamespace
-
-    from keycloak import KeycloakAdmin
 
 
 TRANSLATIONS = {

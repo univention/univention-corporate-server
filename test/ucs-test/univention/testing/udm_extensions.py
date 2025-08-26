@@ -1,19 +1,14 @@
 # SPDX-FileCopyrightText: 2013-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from __future__ import annotations
 
 import subprocess
 import sys
-from typing import TYPE_CHECKING
+from collections.abc import Iterable, Mapping, Sequence
 
 from univention.config_registry import ConfigRegistry
 from univention.testing.strings import random_name, random_version
 from univention.testing.utils import fail, get_ldap_connection
-
-
-if TYPE_CHECKING:
-    from collections.abc import Iterable, Mapping, Sequence
 
 
 VALID_EXTENSION_TYPES = ('hook', 'syntax', 'module')

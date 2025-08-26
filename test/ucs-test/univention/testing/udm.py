@@ -18,7 +18,6 @@ WARNING2:
 The API is currently under heavy development and may/will change before next UCS release!
 """
 
-from __future__ import annotations
 
 import base64
 import copy
@@ -30,8 +29,9 @@ import shlex
 import subprocess
 import sys
 import time
+from collections.abc import Iterable, Mapping, Sequence
 from inspect import getfullargspec
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 import ldap
 import ldap.filter
@@ -45,10 +45,6 @@ import univention.testing.strings as uts
 import univention.testing.ucr
 from univention.testing import utils
 from univention.testing.ucs_samba import DRSReplicationFailed, wait_for_drs_replication
-
-
-if TYPE_CHECKING:
-    from collections.abc import Iterable, Mapping, Sequence
 
 
 class UCSTestUDM_Exception(Exception):

@@ -5,10 +5,10 @@
 # SPDX-FileCopyrightText: 2017-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from __future__ import annotations
 
 import time
-from typing import TYPE_CHECKING, Any
+from collections.abc import Mapping
+from typing import Any
 
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
@@ -18,10 +18,6 @@ from selenium.webdriver.common.keys import Keys
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 from univention.admin import localization
-
-
-if TYPE_CHECKING:
-    from collections.abc import Mapping
 
 
 translator = localization.translation('ucs-test-framework')

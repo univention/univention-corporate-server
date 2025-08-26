@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """install/remove/update apps via UMC"""
 
-from __future__ import annotations
 
 import os
 from argparse import ArgumentParser

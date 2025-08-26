@@ -1,23 +1,17 @@
 # SPDX-FileCopyrightText: 2024-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from __future__ import annotations
 
 import subprocess
 import time
-from typing import TYPE_CHECKING
+from collections.abc import Callable, Iterator
 
 import pytest
 
+import univention.lib.umc
 from univention.appcenter.actions import get_action
 from univention.appcenter.app_cache import Apps
 from univention.testing import selenium as _sel, strings, ucr as _ucr, udm as _udm, umc, utils
-
-
-if TYPE_CHECKING:
-    from collections.abc import Callable, Iterator
-
-    import univention.lib.umc
 
 
 pytest_plugins = ["univention.testing.conftest"]
