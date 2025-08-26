@@ -264,7 +264,8 @@ _upgrade_to_latest () {
 			route -n
 			iptables -L -n -v
 			eval "$(ucr shell repository/online/server)"
-			ping -4 "${repository_online_server#*:\/\/}"
+			repository_online_server="${repository_online_server%%/*}"
+			ping -4 -c 3 "${repository_online_server#*:\/\/}"
 		fi
 		ps faxwww
 		ucr search --brief --non-empty update/check
@@ -328,7 +329,8 @@ run_setup_join () {
 		route -n
 		iptables -L -n -v
 		eval "$(ucr shell repository/online/server)"
-		ping -4 "${repository_online_server#*:\/\/}"
+		repository_online_server="${repository_online_server%%/*}"
+		ping -4 -c 3 "${repository_online_server#*:\/\/}"
 	fi
 	set +o pipefail
 	ucr set apache2/startsite='univention/' # Bug #31682
