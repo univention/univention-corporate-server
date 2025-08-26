@@ -1,5 +1,4 @@
 .. SPDX-FileCopyrightText: 2021-2025 Univention GmbH
-..
 .. SPDX-License-Identifier: AGPL-3.0-only
 
 .. _listener-details:
@@ -361,25 +360,22 @@ While in UCS 4 :py:func:`handler() <low_level.handler>` typically looked like:
 
    def handler(
        dn:  # type: str,
-       new,  # type: Dict[str, List[str]]
-       old,  # type: Dict[str, List[str]]
+       new,  # type: dict[str, list[str]]
+       old,  # type: dict[str, list[str]]
    ):  # type: (...) -> None
        if new and 'myObjectClass' in new.get('objectClass', []):
            value = new['myAttribute'][0]
            ...
 
 
-In UCS 5 it would look like:
+In UCS 5.2 it would look like:
 
 .. code:: python
 
-   from typing import Dict, List
-
-
    def handler(
        dn: str,
-       new: Dict[str, List[bytes]],
-       old: Dict[str, List[bytes]],
+       new: dict[str, list[bytes]],
+       old: dict[str, list[bytes]],
    ) -> None:
        if new and b'myObjectClass' in new.get('objectClass', []):
            value = new['myAttribute'][0].decode('UTF-8')

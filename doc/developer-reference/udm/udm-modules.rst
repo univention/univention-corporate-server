@@ -1,5 +1,4 @@
 .. SPDX-FileCopyrightText: 2021-2025 Univention GmbH
-..
 .. SPDX-License-Identifier: AGPL-3.0-only
 
 .. _udm-modules:
@@ -245,7 +244,7 @@ Mandatory variables
       |UCSUMC|.
 
    .. py:data:: property_descriptions.options
-      :type: List[str]
+      :type: list[str]
 
       A list of keywords identifying options with which this property can be
       shown or hidden.

@@ -1,5 +1,4 @@
 .. SPDX-FileCopyrightText: 2021-2025 Univention GmbH
-..
 .. SPDX-License-Identifier: AGPL-3.0-only
 
 .. _listener-handler:
@@ -77,7 +76,7 @@ required by the |UCSUDL| to handle each module.
    For description, see :py:data:`filter`.
 
 .. py:data:: attributes
-   :type: List[str]
+   :type: list[str]
 
    (optional)
 
@@ -89,7 +88,7 @@ required by the |UCSUDL| to handle each module.
 
 .. py:function:: get_attributes()
 
-   :rtype: List[str]
+   :rtype: list[str]
 
    For description, see :py:data:`attributes`.
 

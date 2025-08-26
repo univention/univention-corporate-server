@@ -1,5 +1,4 @@
 .. SPDX-FileCopyrightText: 2021-2025 Univention GmbH
-..
 .. SPDX-License-Identifier: AGPL-3.0-only
 
 .. _listener-handler-low:
@@ -14,7 +13,7 @@ variables and functions must be declared at the module level.
 
    description : str = "Module description"
    filter : str = "(!(objectClass=lock))"
-   attributes : List[str] = ["objectClass"]
+   attributes : list[str] = ["objectClass"]
    modrdn : str = "1"
 
 
@@ -44,8 +43,8 @@ They are called in different situations of the lifecycle of the module.
      pass
    def handler(
      dn: str,
-     new: Dict[str, List[bytes]],
-     old: Dict[str, List[bytes]],
+     new: dict[str, list[bytes]],
+     old: dict[str, list[bytes]],
      command: str = '',
    ) -> None:
      pass
@@ -58,11 +57,11 @@ They are called in different situations of the lifecycle of the module.
    def setdata(key: str, value: str) -> None:
      pass
 
-.. py:function:: handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]], command: str = '')
+.. py:function:: handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]], command: str = '')
 
    :param str dn:
-   :param Dict[str, List[bytes]] new:
-   :param Dict[str, List[bytes]] old:
+   :param dict[str, list[bytes]] new:
+   :param dict[str, list[bytes]] old:
    :param str command:
 
    :rtype: None

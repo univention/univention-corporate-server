@@ -1,5 +1,4 @@
 .. SPDX-FileCopyrightText: 2021-2025 Univention GmbH
-..
 .. SPDX-License-Identifier: AGPL-3.0-only
 
 .. _ucr-conf:
@@ -147,12 +146,12 @@ The following keys can be used:
 
       def preinst(
           config_registry: ConfigRegistry,
-          changes: Dict[str, Tuple[Optional[str], Optional[str]]],
+          changes: dict[str, tuple[str | None, str | None]],
       ) -> None:
           pass
       def postinst(
           config_registry: ConfigRegistry,
-          changes: Dict[str, Tuple[Optional[str], Optional[str]]],
+          changes: dict[str, tuple[str | None, str | None]],
       ) -> None:
           pass
 
@@ -304,7 +303,7 @@ The following keys can be used:
 
       def handler(
           config_registry: ConfigRegistry,
-          changes: Dict[str, Tuple[Optional[str], Optional[str]]],
+          changes: dict[str, tuple[str | None, str | None]],
       ) -> None:
           pass
 

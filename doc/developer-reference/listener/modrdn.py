@@ -1,8 +1,5 @@
 # SPDX-FileCopyrightText: 2021-2025 Univention GmbH
-#
 # SPDX-License-Identifier: AGPL-3.0-only
-
-from typing import Dict, List
 
 
 modrdn = '1'
@@ -12,8 +9,8 @@ _delay = None
 
 def handler(
     dn: str,
-    new: Dict[str, List[bytes]],
-    old: Dict[str, List[bytes]],
+    new: dict[str, list[bytes]],
+    old: dict[str, list[bytes]],
     command: str = '',
 ) -> None:
     global _delay
@@ -40,38 +37,38 @@ def handler(
         pass  # ignore, reserved for future use
 
 
-def handler_add(dn: str, new: Dict[str, List[bytes]]) -> None:
+def handler_add(dn: str, new: dict[str, list[bytes]]) -> None:
     """Handle creation of object."""
     # replace this
 
 
 def handler_modify(
     dn: str,
-    old: Dict[str, List[bytes]],
-    new: Dict[str, List[bytes]],
+    old: dict[str, list[bytes]],
+    new: dict[str, list[bytes]],
 ) -> None:
     """Handle modification of object."""
     # replace this
 
 
-def handler_remove(dn: str, old: Dict[str, List[bytes]]) -> None:
+def handler_remove(dn: str, old: dict[str, list[bytes]]) -> None:
     """Handle removal of object."""
     # replace this
 
 
 def handler_move(
     old_dn: str,
-    old: Dict[str, List[bytes]],
+    old: dict[str, list[bytes]],
     new_dn: str,
-    new: Dict[str, List[bytes]],
+    new: dict[str, list[bytes]],
 ) -> None:
     """Handle rename or move of object."""
     # replace this
 
 
 def handler_schema(
-    old: Dict[str, List[bytes]],
-    new: Dict[str, List[bytes]],
+    old: dict[str, list[bytes]],
+    new: dict[str, list[bytes]],
 ) -> None:
     """Handle change in LDAP schema."""
     # replace this

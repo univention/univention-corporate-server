@@ -1,5 +1,4 @@
 .. SPDX-FileCopyrightText: 2021-2025 Univention GmbH
-..
 .. SPDX-License-Identifier: AGPL-3.0-only
 
 .. _listener-example:
@@ -29,8 +28,6 @@ Source code:
    # SPDX-FileCopyrightText: 2017-2025 Univention GmbH
    # SPDX-License-Identifier: AGPL-3.0-only
 
-   from typing import Dict, Optional, List
-
    from univention.listener import ListenerModuleHandler
 
 
@@ -42,22 +39,22 @@ Source code:
            ldap_filter = '(&(objectClass=inetOrgPerson)(uid=example))'
            attributes = ['sn', 'givenName']
 
-       def create(self, dn: str, new: Dict[str, List[bytes]]) -> None:
+       def create(self, dn: str, new: dict[str, list[bytes]]) -> None:
            self.logger.debug('dn: %r', dn)
 
        def modify(
            self,
            dn: str,
-           old: Dict[str, List[bytes]],
-           new: Dict[str, List[bytes]],
-           old_dn: Optional[str],
+           old: dict[str, list[bytes]],
+           new: dict[str, list[bytes]],
+           old_dn: str | None,
        ) -> None:
            self.logger.debug('dn: %r', dn)
            if old_dn:
                self.logger.debug('it is (also) a move! old_dn: %r', old_dn)
            self.logger.debug('changed attributes: %r', self.diff(old, new))
 
-       def remove(self, dn: str, old: Dict[str, List[bytes]]) -> None:
+       def remove(self, dn: str, old: dict[str, list[bytes]]) -> None:
            self.logger.debug('dn: %r', dn)
 
 .. _listener-example-simple:
@@ -75,13 +72,10 @@ Source code:
 
 .. code:: python
 
-   from typing import Dict, List
-
-
    def handler(
        dn: str,
-       new: Dict[str, List[bytes]],
-       old: Dict[str, List[bytes]],
+       new: dict[str, list[bytes]],
+       old: dict[str, list[bytes]],
    ) -> None:
        if new and not old:
            handler_add(dn, new)
@@ -93,21 +87,21 @@ Source code:
            pass  # ignore
 
 
-   def handler_add(dn: str, new: Dict[str, List[bytes]]) -> None:
+   def handler_add(dn: str, new: dict[str, list[bytes]]) -> None:
        """Handle addition of object."""
        pass  # replace this
 
 
    def handler_modify(
        dn: str,
-       old: Dict[str, List[bytes]],
-       new: Dict[str, List[bytes]],
+       old: dict[str, list[bytes]],
+       new: dict[str, list[bytes]],
    ) -> None:
        """Handle modification of object."""
        pass  # replace this
 
 
-   def handler_remove(dn: str, old: Dict[str, List[bytes]]) -> None:
+   def handler_remove(dn: str, old: dict[str, list[bytes]]) -> None:
        """Handle removal of object."""
        pass  # replace this
 
@@ -127,8 +121,6 @@ Source code:
 
 .. code:: python
 
-   from typing import Dict, List
-
    modrdn = "1"
 
    _delay = None
@@ -136,8 +128,8 @@ Source code:
 
    def handler(
        dn: str,
-       new: Dict[str, List[bytes]],
-       old: Dict[str, List[bytes]],
+       new: dict[str, list[bytes]],
+       old: dict[str, list[bytes]],
        command: str = "",
    ) -> None:
        global _delay
@@ -164,38 +156,38 @@ Source code:
            pass  # ignore, reserved for future use
 
 
-   def handler_add(dn: str, new: Dict[str, List[bytes]]) -> None:
+   def handler_add(dn: str, new: dict[str, list[bytes]]) -> None:
        """Handle creation of object."""
        pass  # replace this
 
 
    def handler_modify(
        dn: str,
-       old: Dict[str, List[bytes]],
-       new: Dict[str, List[bytes]],
+       old: dict[str, list[bytes]],
+       new: dict[str, list[bytes]],
    ) -> None:
        """Handle modification of object."""
        pass  # replace this
 
 
-   def handler_remove(dn: str, old: Dict[str, List[bytes]]) -> None:
+   def handler_remove(dn: str, old: dict[str, list[bytes]]) -> None:
        """Handle removal of object."""
        pass  # replace this
 
 
    def handler_move(
        old_dn: str,
-       old: Dict[str, List[bytes]],
+       old: dict[str, list[bytes]],
        new_dn: str,
-       new: Dict[str, List[bytes]],
+       new: dict[str, list[bytes]],
    ) -> None:
        """Handle rename or move of object."""
        pass  # replace this
 
 
    def handler_schema(
-       old: Dict[str, List[bytes]],
-       new: Dict[str, List[bytes]],
+       old: dict[str, list[bytes]],
+       new: dict[str, list[bytes]],
    ) -> None:
        """Handle change in LDAP schema."""
        pass  # replace this
@@ -227,7 +219,6 @@ Source code:
    import errno
    import os
    from collections import namedtuple
-   from typing import Dict, List
 
    import univention.debug as ud
    from listener import SetUID
@@ -256,7 +247,7 @@ Source code:
    USER_LIST = '/root/UserList.txt'
 
 
-   def handler(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+   def handler(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
        """
        Write all changes into a text file.
        This function is called on each change.
@@ -269,7 +260,7 @@ Source code:
            _handle_remove(dn, old)
 
 
-   def _handle_change(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[bytes]]) -> None:
+   def _handle_change(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]]) -> None:
        """
        Called when an object is modified.
        """
@@ -280,7 +271,7 @@ Source code:
        _writeit(n_rec, u'')
 
 
-   def _handle_add(dn: str, new: Dict[str, List[bytes]]) -> None:
+   def _handle_add(dn: str, new: dict[str, list[bytes]]) -> None:
        """
        Called when an object is newly created.
        """
@@ -289,7 +280,7 @@ Source code:
        _writeit(n_rec, u'added')
 
 
-   def _handle_remove(dn: str, old: Dict[str, List[bytes]]) -> None:
+   def _handle_remove(dn: str, old: dict[str, list[bytes]]) -> None:
        """
        Called when an previously existing object is removed.
        """
@@ -298,16 +289,14 @@ Source code:
        _writeit(o_rec, u'removed')
 
 
-   def _rec(data):
-       # type: (Dict[str, List[str]]) -> _Rec
+   def _rec(data: dict[str, list[str]]) -> _Rec:
        """
        Retrieve symbolic, numeric ID and name from user data.
        """
        return _Rec(*(data.get(attr, (None,))[0] for attr in attributes))
 
 
-   def _writeit(rec, comment):
-       # type: (_Rec, str) -> None
+   def _writeit(rec: _Rec, comment: str) -> None:
        """
        Append CommonName, symbolic and numeric User-IDentifier, and comment to file.
        """
@@ -327,8 +316,7 @@ Source code:
                'Failed to write "%s": %s' % (USER_LIST, ex))
 
 
-   def initialize():
-       # type: () -> None
+   def initialize() -> None:
        """
        Remove the log file.
        This function is called when the module is forcefully reset.
@@ -435,7 +423,6 @@ Source code: :uv:src:`doc/developer-reference/listener/obj.py`
 
    import os
    from pwd import getpwnam
-   from typing import Dict, List, Optional, Tuple
 
    import ldap
    import univention.debug as ud
@@ -452,8 +439,8 @@ Source code: :uv:src:`doc/developer-reference/listener/obj.py`
        PORT = 7636
 
        def __init__(self) -> None:
-           self.data: Dict[str, str] = {}
-           self.con: Optional[ldap.ldapobject.LDAPObject] = None
+           self.data: dict[str, str] = {}
+           self.con: ldap.ldapobject.LDAPObject | None = None
 
        def setdata(self, key: str, value: str):
            self.data[key] = value
@@ -511,13 +498,13 @@ Source code: :uv:src:`doc/developer-reference/listener/obj.py`
 
        def __init__(self) -> None:
            super(ReferentialIntegrityCheck, self).__init__()
-           self._delay: Optional[Tuple[str, Dict[str, List[bytes]]]] = None
+           self._delay: tuple[str, dict[str, list[bytes]]] | None = None
 
        def handler(
            self,
            dn: str,
-           new: Dict[str, List[bytes]],
-           old: Dict[str, List[bytes]],
+           new: dict[str, list[bytes]],
+           old: dict[str, list[bytes]],
            command: str = '',
        ) -> None:
            if self._delay:
@@ -542,30 +529,30 @@ Source code: :uv:src:`doc/developer-reference/listener/obj.py`
            else:
                pass  # ignore, reserved for future use
 
-       def handler_add(self, dn: str, new: Dict[str, List[bytes]]) -> None:
+       def handler_add(self, dn: str, new: dict[str, list[bytes]]) -> None:
            if not self._validate(new):
                self.log("New invalid object: " + dn)
 
        def handler_modify(
            self,
            dn: str,
-           old: Dict[str, List[bytes]],
-           new: Dict[str, List[bytes]],
+           old: dict[str, list[bytes]],
+           new: dict[str, list[bytes]],
        ) -> None:
            valid = (self._validate(old), self._validate(new))
            msg = self.MESSAGES[valid]
            self.log(msg + dn)
 
-       def handler_remove(self, dn: str, old: Dict[str, List[bytes]]) -> None:
+       def handler_remove(self, dn: str, old: dict[str, list[bytes]]) -> None:
            if not self._validate(old):
                self.log("Removed invalid: " + dn)
 
        def handler_move(
            self,
            old_dn: str,
-           old: Dict[str, List[bytes]],
+           old: dict[str, list[bytes]],
            new_dn: str,
-           new: Dict[str, List[bytes]],
+           new: dict[str, list[bytes]],
        ) -> None:
            valid = (self._validate(old), self._validate(new))
            msg = self.MESSAGES[valid]
@@ -573,12 +560,12 @@ Source code: :uv:src:`doc/developer-reference/listener/obj.py`
 
        def handler_schema(
            self,
-           old: Dict[str, List[bytes]],
-           new: Dict[str, List[bytes]],
+           old: dict[str, list[bytes]],
+           new: dict[str, list[bytes]],
        ) -> None:
            self.log("Schema change")
 
-       def _validate(self, data: Dict[str, List[bytes]]) -> bool:
+       def _validate(self, data: dict[str, list[bytes]]) -> bool:
            assert self.con
            try:
                for dn in data["uniqueMember"]:

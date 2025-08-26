@@ -1,10 +1,8 @@
 # SPDX-FileCopyrightText: 2021-2025 Univention GmbH
-#
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import os
 from pwd import getpwnam
-from typing import Dict, List, Optional, Tuple
 
 import ldap
 
@@ -19,19 +17,19 @@ attribute = ['uniqueMember']
 modrdn = '1'
 
 
-class LocalLdap(object):
+class LocalLdap:
     PORT = 7636
 
     def __init__(self) -> None:
-        self.data: Dict[str, str] = {}
-        self.con: Optional[ldap.ldapobject.LDAPObject] = None
+        self.data: dict[str, str] = {}
+        self.con: ldap.ldapobject.LDAPObject | None = None
 
     def setdata(self, key: str, value: str):
         self.data[key] = value
 
     def prerun(self) -> None:
         try:
-            self.con = ldap.initialize('ldaps://%s:%d' % (self.data['ldapserver'], self.PORT))
+            self.con = ldap.initialize(f'ldaps://{self.data["ldapserver"]}:{self.PORT}')
             self.con.simple_bind_s(self.data['binddn'], self.data['bindpw'])
         except ldap.LDAPError as ex:
             ud.debug(ud.LISTENER, ud.ERROR, str(ex))
@@ -46,7 +44,7 @@ class LocalLdap(object):
             ud.debug(ud.LISTENER, ud.ERROR, str(ex))
 
 
-class LocalFile(object):
+class LocalFile:
     USER = 'listener'
     LOG = '/var/log/univention/refcheck.log'
 
@@ -81,14 +79,14 @@ class ReferentialIntegrityCheck(LocalLdap, LocalFile):
     }
 
     def __init__(self) -> None:
-        super(ReferentialIntegrityCheck, self).__init__()
-        self._delay: Optional[Tuple[str, Dict[str, List[bytes]]]] = None
+        super().__init__()
+        self._delay: tuple[str, dict[str, list[bytes]]] | None = None
 
     def handler(
         self,
         dn: str,
-        new: Dict[str, List[bytes]],
-        old: Dict[str, List[bytes]],
+        new: dict[str, list[bytes]],
+        old: dict[str, list[bytes]],
         command: str = '',
     ) -> None:
         if self._delay:
@@ -113,43 +111,43 @@ class ReferentialIntegrityCheck(LocalLdap, LocalFile):
         else:
             pass  # ignore, reserved for future use
 
-    def handler_add(self, dn: str, new: Dict[str, List[bytes]]) -> None:
+    def handler_add(self, dn: str, new: dict[str, list[bytes]]) -> None:
         if not self._validate(new):
             self.log('New invalid object: ' + dn)
 
     def handler_modify(
         self,
         dn: str,
-        old: Dict[str, List[bytes]],
-        new: Dict[str, List[bytes]],
+        old: dict[str, list[bytes]],
+        new: dict[str, list[bytes]],
     ) -> None:
         valid = (self._validate(old), self._validate(new))
         msg = self.MESSAGES[valid]
         self.log(msg + dn)
 
-    def handler_remove(self, dn: str, old: Dict[str, List[bytes]]) -> None:
+    def handler_remove(self, dn: str, old: dict[str, list[bytes]]) -> None:
         if not self._validate(old):
             self.log('Removed invalid: ' + dn)
 
     def handler_move(
         self,
         old_dn: str,
-        old: Dict[str, List[bytes]],
+        old: dict[str, list[bytes]],
         new_dn: str,
-        new: Dict[str, List[bytes]],
+        new: dict[str, list[bytes]],
     ) -> None:
         valid = (self._validate(old), self._validate(new))
         msg = self.MESSAGES[valid]
-        self.log('%s %s -> %s' % (msg, old_dn, new_dn))
+        self.log(f'{msg} {old_dn} -> {new_dn}')
 
     def handler_schema(
         self,
-        old: Dict[str, List[bytes]],
-        new: Dict[str, List[bytes]],
+        old: dict[str, list[bytes]],
+        new: dict[str, list[bytes]],
     ) -> None:
         self.log('Schema change')
 
-    def _validate(self, data: Dict[str, List[bytes]]) -> bool:
+    def _validate(self, data: dict[str, list[bytes]]) -> bool:
         assert self.con
         try:
             for dn in data['uniqueMember']:

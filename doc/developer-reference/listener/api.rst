@@ -1,5 +1,4 @@
 .. SPDX-FileCopyrightText: 2021-2025 Univention GmbH
-..
 .. SPDX-License-Identifier: AGPL-3.0-only
 
 .. _listener-handler-42:
@@ -89,7 +88,7 @@ overwritten if values should be computed once on module load.
 
 .. py:function:: get_listener_module_class
 
-   :rtype: typing.List[ListenerModuleHandler]
+   :rtype: list[ListenerModuleHandler]
 
    (optional)
 
@@ -97,7 +96,7 @@ overwritten if values should be computed once on module load.
    meta-class.
 
 .. py:data:: listener_module_class
-   :type: typing.List[ListenerModuleHandler]
+   :type: list[ListenerModuleHandler]
 
 .. py:function:: get_active
 
@@ -117,31 +116,31 @@ The handler itself should inherit from
 :py:class:`univention.listener.ListenerModuleHandler` and then overwrite some
 methods to provide its own implementation:
 
-.. py:function:: create(dn: str, new: typing.Dict[str, typing.List[bytes]])
+.. py:function:: create(dn: str, new: dict[str, list[bytes]])
 
    :param str dn:
-   :param typing.Dict[str, typing.List[bytes]]) new:
+   :param dict[str, list[bytes]]) new:
 
    :rtype: None
 
    Called when a new object was created.
 
-.. py:function:: modify(dn: str, new: typing.Dict[str, typing.List[bytes]], old: typing.Dict[str, typing.List[bytes]], old_dn: typing.Optional[str])
+.. py:function:: modify(dn: str, new: dict[str, list[bytes]], old: dict[str, list[bytes]], old_dn: str | None)
 
    :param str dn:
-   :param typing.Dict[str, typing.List[bytes]] new:
-   :param typing.Dict[str, typing.List[bytes]] old:
-   :param typing.Optional[str]) old_dn:
+   :param dict[str, list[bytes]] new:
+   :param dict[str, list[bytes]] old:
+   :param str | None) old_dn:
 
    :rtype: None
 
    Called when a new object was modified or moved. In case of a move ``old_dn``
    is set. During a move attributes may be modified, too.
 
-.. py:function:: remove(dn: str, old: typing.Dict[str, typing.List[bytes]])
+.. py:function:: remove(dn: str, old: dict[str, list[bytes]])
 
    :param str dn:
-   :param typing.Dict[str, typing.List[bytes]] old:
+   :param dict[str, list[bytes]] old:
 
    :rtype: None
 
@@ -182,29 +181,29 @@ convenience functions:
    ``0``. Also see :py:func:`listener.SetUID` described in
    :ref:`listener-details-credentials`.
 
-.. py:function:: diff(old: typing.Dict[str, typing.List[bytes]], new: typing.Dict[str, typing.List[bytes]], keys: typing.Optional[typing.Iterable[str]], ignore_metadata: bool)
+.. py:function:: diff(old: dict[str, list[bytes]], new: dict[str, list[bytes]], keys: typing.Iterable[str] | None, ignore_metadata: bool)
 
-   :param typing.Dict[str, typing.List[bytes]] old:
-   :param typing.Dict[str, typing.List[bytes]] new:
-   :param typing.Optional[typing.Iterable[str]]keys:
+   :param dict[str, list[bytes]] old:
+   :param dict[str, list[bytes]] new:
+   :param typing.Iterable[str] | None keys:
    :param bool ignore_metadata:
 
-   :rtype: typing.Dict[str, typing.Tuple[typing.Optional[typing.List[bytes]], typing.Optional[typing.List[bytes]]]]
+   :rtype: dict[str, tuple[list[bytes] | None], list[bytes] | None]]]
 
    Calculate difference between old and new LDAP attributes. By default all
    attributes are compared, but this can be limited by naming them via ``keys``.
    By default *operational attributes* are excluded unless ``ignore_metadata``
    is enabled.
 
-.. py:function:: error_handler(dn: str, old: typing.Dict[str, typing.List[bytes]], new: typing.Dict[str, typing.List[bytes]], command: str, exc_type: typing.Optional[typing.Type[BaseException]], exc_value: typing.Optional[BaseException], exc_traceback: typing.Optional[types.TracebackType])
+.. py:function:: error_handler(dn: str, old: dict[str, list[bytes]], new: dict[str, list[bytes]], command: str, exc_type: typing.Type[BaseException] | None, exc_value: BaseException | None, exc_traceback: types.TracebackType | None)
 
    :param str dn:
-   :param typing.Dict[str, typing.List[bytes]] old:
-   :param typing.Dict[str, typing.List[bytes]] new:
+   :param dict[str, list[bytes]] old:
+   :param dict[str, list[bytes]] new:
    :param str command:
-   :param typing.Optional[typing.Type[BaseException]] exc_type:
-   :param typing.Optional[BaseException] exc_value:
-   :param typing.Optional[types.TracebackType] exc_traceback:
+   :param typing.Type[BaseException] | None exc_type:
+   :param BaseException | None exc_value:
+   :param types.TracebackType | None exc_traceback:
 
    :rtype: None
 

@@ -1,5 +1,4 @@
 # SPDX-FileCopyrightText: 2021-2025 Univention GmbH
-#
 # SPDX-License-Identifier: AGPL-3.0-only
 
 # Configuration file for the Sphinx documentation builder.
@@ -20,8 +19,12 @@ import os
 import re
 import sys
 from datetime import date
-from typing import Iterator
+from typing import TYPE_CHECKING
 from urllib.parse import urlparse
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 def _slugify(s: str) -> str:
@@ -62,7 +65,7 @@ def ref(name: str, *, lang: str = 'en', ver: str = '') -> tuple[str, tuple[str |
 # -- Project information -----------------------------------------------------
 
 project = 'Univention Corporate Server - Manual for developers'
-copyright = '2023-{}, Univention GmbH'.format(date.today().year)
+copyright = f'2023-{date.today().year}, Univention GmbH'
 author = ''
 
 version = '5.2'

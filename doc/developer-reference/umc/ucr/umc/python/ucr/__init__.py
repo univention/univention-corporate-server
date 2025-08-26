@@ -16,7 +16,7 @@ _ = Translation('univention-management-console-modules-udm').translate
 class Instance(Base):
     def init(self):
         """Initialize the module with some values"""
-        super(Instance, self).init()
+        super().init()
         self.data = [int(x) for x in ucr.get('some/examle/ucr/variable', '1,2,3').split(',')]
 
     def query(self, request):
