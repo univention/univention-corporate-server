@@ -25,33 +25,33 @@ from urllib.parse import urlparse
 
 
 def _slugify(s: str) -> str:
-    return re.sub(r"[^0-9a-z]", "-", s.lower())[:63].strip("-")
+    return re.sub(r'[^0-9a-z]', '-', s.lower())[:63].strip('-')
 
 
 def _inventory(name: str, language: str) -> Iterator[str | None]:
     env = os.environ
     # Local build
-    yield f"../{name}/_build/{language}/html/objects.inv"
-    yield f"../{name}/_build/html/objects.inv"
+    yield f'../{name}/_build/{language}/html/objects.inv'
+    yield f'../{name}/_build/html/objects.inv'
     # Previous build: current branch, merge target, default branch
     for var in ('CI_COMMIT_REF_NAME', 'CI_MERGE_REQUEST_TARGET_BRANCH_NAME', 'CI_DEFAULT_BRANCH'):
         try:
             branch = env[var]
             slug = _slugify(branch)
-            url = f"{env['CI_API_V4_URL']}/projects/{env['CI_PROJECT_ID']}/packages/generic/{name}.{language}/{slug}/objects.inv"
+            url = f'{env["CI_API_V4_URL"]}/projects/{env["CI_PROJECT_ID"]}/packages/generic/{name}.{language}/{slug}/objects.inv'
         except LookupError:
             continue
         o = urlparse(url)
-        o = o._replace(netloc=f"job:{os.environ['CI_JOB_TOKEN']}@{o.netloc}")
+        o = o._replace(netloc=f'job:{os.environ["CI_JOB_TOKEN"]}@{o.netloc}')
         yield o.geturl()
     # Public build
     yield None
 
 
-def ref(name: str, *, lang: str = "en", ver: str = "") -> tuple[str, tuple[str | None, ...]]:
+def ref(name: str, *, lang: str = 'en', ver: str = '') -> tuple[str, tuple[str | None, ...]]:
     ver = ver or version
     return (
-        f"https://docs.software-univention.de/{name}/{ver}/{lang}",
+        f'https://docs.software-univention.de/{name}/{ver}/{lang}',
         tuple(_inventory(name, language)),
     )
 
@@ -81,38 +81,38 @@ html_title = project
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    "univention_sphinx_extension",
-    "sphinxcontrib.spelling",
-    "sphinx_last_updated_by_git",
-    "sphinx_sitemap",
-    "sphinx_copybutton",
-    "sphinxcontrib.bibtex",
-    "sphinx.ext.intersphinx",
-    "sphinxcontrib.inkscapeconverter",
+    'univention_sphinx_extension',
+    'sphinxcontrib.spelling',
+    'sphinx_last_updated_by_git',
+    'sphinx_sitemap',
+    'sphinx_copybutton',
+    'sphinxcontrib.bibtex',
+    'sphinx.ext.intersphinx',
+    'sphinxcontrib.inkscapeconverter',
 ]
 
 # Warnings may come up by sphinx-last-updated-by-git. Suppress such warnings for all jobs.
 suppress_warnings = ['git.too_shallow']
 
-bibtex_bibfiles = ["../bibliography.bib", "bibliography.bib"]
-bibtex_encoding = "utf-8"
-bibtex_default_style = "unsrt"
-bibtex_reference_style = "label"
+bibtex_bibfiles = ['../bibliography.bib', 'bibliography.bib']
+bibtex_encoding = 'utf-8'
+bibtex_default_style = 'unsrt'
+bibtex_reference_style = 'label'
 
 intersphinx_mapping = {
-    "uv-architecture": ref("architecture"),
-    "uv-manual": ref("manual"),
-    "uv-nubus-kubernetes-customization": ("https://docs.software-univention.de/nubus-kubernetes-customization/latest/en/", None),
-    "uv-app-center": ref("app-center"),
-    "python": ("https://docs.python.org/3.11/", ("/usr/share/doc/python3/html/objects.inv", None)),
-    "python-general": ("https://docs.python.org/3/", ("/usr/share/doc/python3/html/objects.inv", None)),
-    "python-udm-rest-client": ("https://udm-rest-client.readthedocs.io/en/latest/", None),
+    'uv-architecture': ref('architecture'),
+    'uv-manual': ref('manual'),
+    'uv-nubus-kubernetes-customization': ('https://docs.software-univention.de/nubus-kubernetes-customization/latest/en/', None),
+    'uv-app-center': ref('app-center'),
+    'python': ('https://docs.python.org/3.11/', ('/usr/share/doc/python3/html/objects.inv', None)),
+    'python-general': ('https://docs.python.org/3/', ('/usr/share/doc/python3/html/objects.inv', None)),
+    'python-udm-rest-client': ('https://udm-rest-client.readthedocs.io/en/latest/', None),
 }
 
-copybutton_prompt_text = r"\$ |.+# "
+copybutton_prompt_text = r'\$ |.+# '
 copybutton_prompt_is_regexp = True
-copybutton_line_continuation_character = "\\"
-copybutton_here_doc_delimiter = "EOT"
+copybutton_line_continuation_character = '\\'
+copybutton_here_doc_delimiter = 'EOT'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -132,13 +132,13 @@ pdf_doc_base = os.path.basename(os.path.dirname(__file__))
 
 html_theme = 'univention_sphinx_book_theme'
 html_theme_options = {
-    "pdf_download_filename": f"{pdf_doc_base}.pdf",
-    "show_source_license": True,
-    "typesense_search": True,
-    "typesense_document": pdf_doc_base,
-    "typesense_document_version": version,
-    "univention_matomo_tracking": True,
-    "univention_docs_deployment": True,
+    'pdf_download_filename': f'{pdf_doc_base}.pdf',
+    'show_source_license': True,
+    'typesense_search': True,
+    'typesense_document': pdf_doc_base,
+    'typesense_document_version': version,
+    'univention_matomo_tracking': True,
+    'univention_docs_deployment': True,
 }
 
 html_style = 'custom.css'
@@ -153,30 +153,28 @@ git_last_updated_timezone = 'Europe/Berlin'
 
 numfig = True
 
-if "spelling" in sys.argv:
-    spelling_lang = "en_US"
+if 'spelling' in sys.argv:
+    spelling_lang = 'en_US'
     spelling_show_suggestions = True
     spelling_warning = True
     spelling_word_list_filename = []
     # Don't load extension to speed up the job
-    extensions.remove("sphinx_last_updated_by_git")
-    extensions.remove("sphinx_sitemap")
-    suppress_warnings.append("bibtex")
+    extensions.remove('sphinx_last_updated_by_git')
+    extensions.remove('sphinx_sitemap')
+    suppress_warnings.append('bibtex')
 
 linkcheck_ignore = [
-    r"https://errata\.software-univention\.de/#/\?erratum=\d\.\dx\d{1,3}",
+    r'https://errata\.software-univention\.de/#/\?erratum=\d\.\dx\d{1,3}',
     # FIXME : Reactivate, once the expired certificate is replaced and works.
-    r"https://www\.zytrax\.com/books/ldap/",
+    r'https://www\.zytrax\.com/books/ldap/',
 ]
 
 linkcheck_allowed_redirects = {
-    r"https://help\.univention\.com/c/knowledge-base/supported/":
-        r"https://help\.univention\.com/c/knowledge-base/supported/48",
-    r"https://help\.univention\.com/t/13149":
-        r"https://help\.univention\.com/t/howto-update-listener-cachemasterentry/13149",
+    r'https://help\.univention\.com/c/knowledge-base/supported/': r'https://help\.univention\.com/c/knowledge-base/supported/48',
+    r'https://help\.univention\.com/t/13149': r'https://help\.univention\.com/t/howto-update-listener-cachemasterentry/13149',
 }
 
-root_doc = "contents"
+root_doc = 'contents'
 
 rst_epilog = """
 .. include:: /../substitutions.txt
@@ -185,17 +183,16 @@ rst_epilog = """
 
 latex_engine = 'lualatex'
 latex_show_pagerefs = True
-latex_show_urls = "footnote"
-latex_documents = [
-    (root_doc, f'{pdf_doc_base}.tex', "", author, "manual", False)]
+latex_show_urls = 'footnote'
+latex_documents = [(root_doc, f'{pdf_doc_base}.tex', '', author, 'manual', False)]
 latex_elements = {
-    "papersize": "a4paper",
-    "babel": "\\usepackage{babel}",
+    'papersize': 'a4paper',
+    'babel': '\\usepackage{babel}',
 }
 
 univention_use_doc_base = True
 
-manpages_url = "https://manpages.debian.org/{path}"
+manpages_url = 'https://manpages.debian.org/{path}'
 
 # See Univention Sphinx Extension for its options.
 # https://git.knut.univention.de/univention/documentation/univention_sphinx_extension

@@ -29,7 +29,7 @@ filter = ''.join("""\
     (!(objectClass=univentionHost))
     (!(uidNumber=0))
     (!(uid=*$))
-)""".split())
+)""".split())  # noqa: SIM905
 attributes = ['uid', 'uidNumber', 'cn']
 _Rec = namedtuple('_Rec', 'uid uidNumber cn')
 
@@ -54,22 +54,22 @@ def _handle_change(dn: str, new: Dict[str, List[bytes]], old: Dict[str, List[byt
     o_rec = _rec(old)
     n_rec = _rec(new)
     ud.debug(ud.LISTENER, ud.INFO, 'Edited user "%s"' % (o_rec.uid,))
-    _writeit(o_rec, u'edited. Is now:')
-    _writeit(n_rec, u'')
+    _writeit(o_rec, 'edited. Is now:')
+    _writeit(n_rec, '')
 
 
 def _handle_add(dn: str, new: Dict[str, List[bytes]]) -> None:
     """Called when an object is newly created."""
     n_rec = _rec(new)
     ud.debug(ud.LISTENER, ud.INFO, 'Added user "%s"' % (n_rec.uid,))
-    _writeit(n_rec, u'added')
+    _writeit(n_rec, 'added')
 
 
 def _handle_remove(dn: str, old: Dict[str, List[bytes]]) -> None:
     """Called when an previously existing object is removed."""
     o_rec = _rec(old)
     ud.debug(ud.LISTENER, ud.INFO, 'Removed user "%s"' % (o_rec.uid,))
-    _writeit(o_rec, u'removed')
+    _writeit(o_rec, 'removed')
 
 
 def _rec(data: Dict[str, List[bytes]]) -> _Rec:
@@ -79,19 +79,17 @@ def _rec(data: Dict[str, List[bytes]]) -> _Rec:
 
 def _writeit(rec: _Rec, comment: str) -> None:
     """Append CommonName, symbolic and numeric User-IDentifier, and comment to file."""
-    nuid = u'*****' if rec.uid in ('root', 'spam') else rec.uidNumber
+    nuid = '*****' if rec.uid in ('root', 'spam') else rec.uidNumber
     indent = '\t' if comment is None else ''
     try:
         with SetUID(), open(USER_LIST, 'a') as out:
-            print(u'%sName: "%s"' % (indent, rec.cn), file=out)
-            print(u'%sUser: "%s"' % (indent, rec.uid), file=out)
-            print(u'%sUID: "%s"' % (indent, nuid), file=out)
+            print('%sName: "%s"' % (indent, rec.cn), file=out)
+            print('%sUser: "%s"' % (indent, rec.uid), file=out)
+            print('%sUID: "%s"' % (indent, nuid), file=out)
             if comment:
-                print(u'%s%s' % (indent, comment), file=out)
+                print('%s%s' % (indent, comment), file=out)
     except IOError as ex:
-        ud.debug(
-            ud.LISTENER, ud.ERROR,
-            'Failed to write "%s": %s' % (USER_LIST, ex))
+        ud.debug(ud.LISTENER, ud.ERROR, 'Failed to write "%s": %s' % (USER_LIST, ex))
 
 
 def initialize() -> None:
@@ -102,15 +100,9 @@ def initialize() -> None:
     try:
         with SetUID():
             os.remove(USER_LIST)
-        ud.debug(
-            ud.LISTENER, ud.INFO,
-            'Successfully deleted "%s"' % (USER_LIST,))
+        ud.debug(ud.LISTENER, ud.INFO, 'Successfully deleted "%s"' % (USER_LIST,))
     except OSError as ex:
         if ex.errno == errno.ENOENT:
-            ud.debug(
-                ud.LISTENER, ud.INFO,
-                'File "%s" does not exist, will be created' % (USER_LIST,))
+            ud.debug(ud.LISTENER, ud.INFO, 'File "%s" does not exist, will be created' % (USER_LIST,))
         else:
-            ud.debug(
-                ud.LISTENER, ud.WARN,
-                'Failed to delete file "%s": %s' % (USER_LIST, ex))
+            ud.debug(ud.LISTENER, ud.WARN, 'Failed to delete file "%s": %s' % (USER_LIST, ex))

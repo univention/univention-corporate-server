@@ -6,9 +6,9 @@ from typing import Dict, List
 
 
 def handler(
-        dn: str,
-        new: Dict[str, List[bytes]],
-        old: Dict[str, List[bytes]],
+    dn: str,
+    new: Dict[str, List[bytes]],
+    old: Dict[str, List[bytes]],
 ) -> None:
     if new and not old:
         handler_add(dn, new)
@@ -26,9 +26,9 @@ def handler_add(dn: str, new: Dict[str, List[bytes]]) -> None:
 
 
 def handler_modify(
-        dn: str,
-        old: Dict[str, List[bytes]],
-        new: Dict[str, List[bytes]],
+    dn: str,
+    old: Dict[str, List[bytes]],
+    new: Dict[str, List[bytes]],
 ) -> None:
     """Handle modification of object."""
     # replace this

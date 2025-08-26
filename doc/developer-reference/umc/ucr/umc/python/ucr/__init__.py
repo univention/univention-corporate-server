@@ -14,7 +14,6 @@ _ = Translation('univention-management-console-modules-udm').translate
 
 
 class Instance(Base):
-
     def init(self):
         """Initialize the module with some values"""
         super(Instance, self).init()
