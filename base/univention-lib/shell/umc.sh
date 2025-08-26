@@ -1,5 +1,4 @@
 #!/bin/sh
-# -*- coding: utf-8 -*-
 #
 # Univention Lib
 #  shell function for creating UMC operation and acl objects

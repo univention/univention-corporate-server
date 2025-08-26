@@ -72,7 +72,6 @@ def create_diagnostics_plugin() -> PluginData:
 def create_plugin(plugin_path: Path, plugin_data: PluginData):
     plugin = f"""
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 
 from univention.management.console.modules.diagnostic import Critical
 

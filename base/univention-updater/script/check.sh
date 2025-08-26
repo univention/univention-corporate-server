@@ -458,7 +458,6 @@ update_check_minimum_ucs_version_of_all_systems_in_domain () {  # Bug #51621
 	[ "$server_role" != "domaincontroller_master" ] && return 0
 
 	MIN_VERSION="$MIN_VERSION" /usr/bin/python3 -c '
-# -*- coding: utf-8 -*-
 from packaging.version import Version
 from os import environ
 from univention.uldap import getMachineConnection

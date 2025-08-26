@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 # Tool to embed file into objects
 
 __author__ = __maintainer__ = "Jérôme Carretero <cJ-waf@zougloub.eu>"
