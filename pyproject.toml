@@ -1,5 +1,5 @@
 [tool.isort]
-py_version = "37"
+py_version = "311"
 combine_as_imports = true
 filter_files = true
 force_grid_wrap = false
