@@ -9,3 +9,6 @@ desc: |
  * The App center cache is invalidated if the download fails due to network
    issues to avoid inconsistency in the App center cache.
 bug: [58469]
+erratum: 179
+announced: 2025-08-27
+support: core
