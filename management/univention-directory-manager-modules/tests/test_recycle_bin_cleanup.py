@@ -84,7 +84,7 @@ class TestRecycleBinIntegration:
         except ldap.ALREADY_EXISTS:
             self.test_entries.append(dn)
             return dn
-        except Exception:
+        except (ldap.LDAPError, AttributeError):
             return None
 
     def cleanup_test_entries(self):
@@ -94,7 +94,7 @@ class TestRecycleBinIntegration:
                 self.lo.delete(dn)
             except ldap.NO_SUCH_OBJECT:
                 pass
-            except Exception:
+            except ldap.LDAPError:
                 pass
 
     def run_cleanup_script(self, remove=False, scheduled=False):
@@ -117,7 +117,7 @@ class TestRecycleBinIntegration:
                 results = self.lo.search(base=f'{self.recyclebin_base},{self.lo.base}', filter=search_filter)
                 if results:
                     count += 1
-            except Exception:
+            except ldap.LDAPError:
                 pass
         return count
 

@@ -4,8 +4,7 @@
 # This cron job runs nightly to purge objects that have exceeded their retention period
 
 @!@
-enabled = configRegistry.get('directory/manager/recyclebin/auto-purge', 'yes').lower()
-if enabled in ('yes', 'true', '1'):
+if configRegistry.is_true('directory/manager/recyclebin/auto-purge', True):
     hour = configRegistry.get('directory/manager/recyclebin/auto-purge/hour', '2')
     minute = configRegistry.get('directory/manager/recyclebin/auto-purge/minute', '30')
 

@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# SPDX-FileCopyrightText: 2024-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 """This tool lists expired recycle bin entries."""
@@ -11,8 +11,10 @@ from argparse import ArgumentParser
 from datetime import datetime
 from logging import DEBUG, getLogger
 
+import ldap
 from ldap.filter import escape_filter_chars
 
+import univention.admin.uexceptions as udm_errors
 import univention.logging
 from univention.admin.uldap import getAdminConnection
 from univention.udm import UDM
@@ -75,10 +77,14 @@ def purge_specific_entries(dns_list, remove=False, actor="Manual Process"):
             else:
                 result["failed"].append(dn)
                 result["errors"].append({"dn": dn, "error": "Not found in recycle bin"})
-        except Exception as e:
+        except (ldap.INVALID_DN_SYNTAX, ldap.LDAPError) as e:
             result["failed"].append(dn)
-            result["errors"].append({"dn": dn, "error": str(e)})
-            log.error("Failed to delete %s: %s", dn, e)
+            result["errors"].append({"dn": dn, "error": f"LDAP error: {e}"})
+            log.error("LDAP error while processing %s: %s", dn, e)
+        except udm_errors.base as e:
+            result["failed"].append(dn)
+            result["errors"].append({"dn": dn, "error": f"UDM error: {e}"})
+            log.error("UDM error while deleting %s: %s", dn, e)
 
     result["success"] = len(result["failed"]) == 0
     return result
@@ -135,7 +141,7 @@ if __name__ == '__main__':
             try:
                 lo, _ = getAdminConnection()
                 actor = lo.binddn
-            except Exception:
+            except (ldap.LDAPError, OSError):
                 actor = "Manual Process"
         suffix = ""
 
@@ -161,7 +167,7 @@ if __name__ == '__main__':
 
     try:
         recyclebin_mod = UDM.admin().version(3).get('recyclebin/deletedobject')
-    except Exception as e:
+    except (udm_errors.base, ImportError, AttributeError) as e:
         log.error("Failed to initialize UDM module: %s", e)
         sys.exit(1)
 
@@ -178,7 +184,7 @@ if __name__ == '__main__':
                 try:
                     entry.delete()
                     log.info("Item permanently deleted%s - Original DN: %s, Actor: %s", suffix, original_dn, actor)
-                except Exception as e:
+                except udm_errors.base as e:
                     log.error("Failed to delete %s - Original DN: %s, Error: %s", entry.dn, original_dn, e)
             else:
                 log.info("Expired entry found: %s - Original DN: %s", entry.dn, original_dn)

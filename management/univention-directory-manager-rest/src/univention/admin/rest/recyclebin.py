@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# SPDX-FileCopyrightText: 2024-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
 """REST API endpoint for manual recycle bin purging."""
@@ -99,7 +99,7 @@ class RecycleBinPurge(tornado.web.RequestHandler):
             else:
                 try:
                     error_data = json.loads(stdout)
-                except Exception:
+                except (json.JSONDecodeError, TypeError):
                     error_data = {"errors": [{"error": stderr or "Unknown error"}]}
 
                 self.set_status(400)
@@ -111,7 +111,7 @@ class RecycleBinPurge(tornado.web.RequestHandler):
                     "errors": error_data.get("errors", []),
                 }))
 
-        except Exception as e:
+        except (OSError, TimeoutError) as e:
             self.set_status(500)
             self.set_header("Content-Type", "application/json")
             self.write(json.dumps({

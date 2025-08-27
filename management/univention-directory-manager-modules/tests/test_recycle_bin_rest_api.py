@@ -6,6 +6,7 @@ import sys
 from datetime import datetime, timedelta
 from unittest import TestCase
 
+import ldap
 import requests
 from requests.auth import HTTPBasicAuth
 
@@ -42,7 +43,6 @@ class TestRecycleBinRESTAPI(TestCase):
 
     def create_test_entry(self, name, delete_at_timestamp):
         """Create a test recycle bin entry."""
-        import ldap
         original_dn = f'uid={name},cn=users,dc=test'
         dn = f'cn={name},{self.recyclebin_base},{self.lo.base}'
 
@@ -62,18 +62,17 @@ class TestRecycleBinRESTAPI(TestCase):
         except ldap.ALREADY_EXISTS:
             self.test_entries.append(dn)
             return dn
-        except Exception:
+        except (ldap.LDAPError, AttributeError):
             return None
 
     def cleanup_test_entries(self):
         """Remove all test entries."""
-        import ldap
         for dn in self.test_entries:
             try:
                 self.lo.delete(dn)
             except ldap.NO_SUCH_OBJECT:
                 pass
-            except Exception:
+            except ldap.LDAPError:
                 pass
 
     def count_entries(self, entry_names):
@@ -85,7 +84,7 @@ class TestRecycleBinRESTAPI(TestCase):
                 results = self.lo.search(base=f'{self.recyclebin_base},{self.lo.base}', filter=search_filter)
                 if results:
                     count += 1
-            except Exception:
+            except ldap.LDAPError:
                 pass
         return count
 
