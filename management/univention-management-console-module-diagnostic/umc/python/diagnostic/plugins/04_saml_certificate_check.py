@@ -274,9 +274,9 @@ def test_identity_provider_certificate(sso_fqdn: str) -> Iterator[Problem]:
 
     backend = default_backend()
 
-    # download from all ip addresses of ucs-sso the IDP certificate (/etc/simplesamlphp/*-idp-certificate.crt)
+    # download from FQDN and all ip addresses of ucs-sso the IDP certificate (/etc/simplesamlphp/*-idp-certificate.crt)
     _name, _aliaslist, addresslist = socket.gethostbyname_ex(sso_fqdn)
-    for i, host in enumerate(addresslist):
+    for i, host in enumerate([sso_fqdn] + addresslist):
         url = "https://%s/simplesamlphp/saml2/idp/certificate" % (host,)
         link = "addr%d" % (i,)
         links = {
@@ -285,7 +285,7 @@ def test_identity_provider_certificate(sso_fqdn: str) -> Iterator[Problem]:
             "label": url,
         }
         try:
-            res = requests.get(url, headers={'host': sso_fqdn}, verify=False)  # required for SNI since Python 2.7.9 / 3.4  # noqa: S501
+            res = requests.get(url, verify=False)  # noqa: S501
             data = res.content
         except requests.exceptions.ConnectionError as exc:
             yield Critical(

@@ -1,0 +1,15 @@
+product: ucs
+release: "5.0"
+version: [9, 10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-management-console-module-diagnostic
+fix: 6.0.13
+desc: |
+ This update addresses the following issues:
+ * The upstream patch for CVE-2025-23048 caused `04_saml_certificate_check`
+   to fail, as the check sends `ucs-sso` as host header, which doesn't match
+   the default hostname used by apache when connecting via IP. The check now
+   doesn't send this host header and also verifies that the download works
+   via `ucs-sso` FQDN, additionally to downloading the SAML certificate via
+   IP.
+bug: [58538]

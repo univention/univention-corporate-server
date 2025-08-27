@@ -1,3 +1,11 @@
+univention-management-console-module-diagnostic (6.0.13) unstable; urgency=medium
+
+  * Bug #58538: Adjust 04_saml_certificate_check to fix for CVE-2025-23048.
+    We don't need to send a `host` header as we disabled automatic SSL verification
+    in the check anyway. But we should also check downloading from the FQDN.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 27 Aug 2025 14:24:00 +0200
+
 univention-management-console-module-diagnostic (6.0.12) unstable; urgency=medium
 
   * Bug #58471: Diagnostic module for memberOf in Samba/AD
