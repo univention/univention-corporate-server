@@ -703,7 +703,14 @@ define([
 				iconClass: 'plus',
 				isContextAction: false,
 				isStandardAction: true,
-				callback: lang.hitch(this, 'showNewObjectDialog')
+				callback: lang.hitch(this, 'showNewObjectDialog'),
+				showAction: lang.hitch(this, function() {
+					// Don't show Add button in recyclebin
+					// Check both possible module flavors and the object type
+					return this.moduleFlavor !== 'recyclebin/deletedobject' &&
+					       this.moduleFlavor !== 'recyclebin/all' &&
+					       !this.moduleFlavor.startsWith('recyclebin/');
+				})
 			}, {
 				name: 'edit',
 				label: _('Edit'),
@@ -762,6 +769,19 @@ define([
 				canExecute: lang.hitch(this, '_canDelete'),
 				callback: lang.hitch(this, function(ids, objects) {
 					this.removeObjects(objects);
+				})
+			}, {
+				name: 'restore',
+				label: _('Restore'),
+				description: _('Restore deleted objects from recyclebin'),
+				isStandardAction: true,
+				isMultiAction: true,
+				showAction: lang.hitch(this, function() {
+					// Only show restore action in recyclebin module
+					return this.moduleFlavor === 'recyclebin/deletedobject';
+				}),
+				callback: lang.hitch(this, function(ids, objects) {
+					this.restoreObjects(objects);
 				})
 			}, {
 				name: 'move',
@@ -1896,6 +1916,69 @@ define([
 				content: form
 			});
 			_dialog.show();
+		},
+
+		restoreObjects: function(/*String|String[]*/ _ids) {
+			// Restore objects from recyclebin
+			var ids = array.map(lang.isArray(_ids) ? _ids : [_ids], function(iid) {
+				return lang.isString(iid) ? iid : iid.id;
+			});
+
+			if (!ids.length) {
+				return;
+			}
+
+			var msg = '';
+			if (ids.length === 1) {
+				msg = _('Please confirm the restoration of the selected object from the recyclebin.');
+			} else {
+				msg = _('Please confirm the restoration of %s objects from the recyclebin.', ids.length);
+			}
+
+			dialog.confirm(msg, [{
+				label: _('Cancel'),
+				'default': true
+			}, {
+				label: _('Restore'),
+				callback: lang.hitch(this, function() {
+					// enable standby animation
+					this.standby(true);
+
+					// Restore the objects via UDM REST API
+					var transaction = this.moduleStore.transaction();
+					array.forEach(ids, function(id) {
+						// For recyclebin objects, we need to call a restore method
+						// This would need backend support via UDM
+						this.moduleStore.put({
+							$dn$: id,
+							$options$: {
+								operation: 'restore'
+							}
+						});
+					}, this);
+
+					// Commit the transaction
+					transaction.commit().then(
+						lang.hitch(this, function(data) {
+							// disable standby animation
+							this.standby(false);
+
+							// Show success message
+							dialog.notify(_('The selected object(s) have been restored.'));
+
+							// Reload the grid
+							this._grid.filter(this._grid.query);
+						}),
+						lang.hitch(this, function(error) {
+							// disable standby animation
+							this.standby(false);
+
+							// Show error
+							dialog.alert(_('The restoration could not be completed: ') + error.message);
+						})
+					);
+				})
+			}]);
 		},
 
 		showNewObjectDialog: function() {
