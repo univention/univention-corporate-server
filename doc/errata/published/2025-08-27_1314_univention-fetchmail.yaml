@@ -9,3 +9,6 @@ desc: |
   * The fetchmail listener module now uses `systemd` instead of the SysV
     init script (/etc/init.d/fetchmail).
 bug: [56585]
+erratum: 1314
+announced: 2025-08-27
+support: core
