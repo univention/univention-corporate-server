@@ -11,3 +11,6 @@ desc: |
    existed, making it unsuitable for the use in joinscripts. This
    has been fixed.
 bug: [58544]
+erratum: 180
+announced: 2025-08-27
+support: core
