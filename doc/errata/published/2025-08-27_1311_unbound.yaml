@@ -37,3 +37,6 @@ cve:
 - CVE-2019-25041
 - CVE-2019-25042
 - CVE-2024-43167
+erratum: 1311
+announced: 2025-08-27
+support: core
