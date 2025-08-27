@@ -183,6 +183,10 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         def bind_user_connection(lo):
             request.bind_user_connection(lo)
             lo = udm_auth.Authorization.inject_ldap_connection(lo)
+            if request.federated_account:
+                lo.federated_account = True
+                if request.roles is not None:
+                    lo.actor_roles = request.roles
             self.require_license(lo)
 
         set_bind_function(bind_user_connection)
@@ -230,6 +234,10 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         except (LDAPError, udm_errors.ldapError):
             lo, _po = get_user_connection(bind=self.bind_user_connection, write=True, bindhash=calculate_bind_hash(self._current_request))
         lo = udm_auth.Authorization.inject_ldap_connection(lo)
+        if self._current_request.federated_account:
+            lo.federated_account = True
+            if self._current_request.roles is not None:
+                lo.actor_roles = self._current_request.roles
         return lo, udm_uldap.position(lo.base)
 
     def get_module(self, flavor, ldap_dn):
