@@ -106,6 +106,8 @@ class Authorization:
         actor_dn = lo.binddn
         # FIXME: memory leak, use weakref.ref() ?
         actor = get_user(cls.get_privileged_connection(), actor_dn)
+        if getattr(lo, 'actor_roles', None) is not None:
+            return lambda: (actor, lo.actor_roles)
         return lambda: (actor, get_user_roles(actor))
         # FIXME: don't cache actor roles as we don't know when to invalidate the cache. Roles of groups can be changed at any time.
         if cls._user_roles_cache.get(actor_dn) is None:
