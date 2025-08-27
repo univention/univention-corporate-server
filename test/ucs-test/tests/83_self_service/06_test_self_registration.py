@@ -4,9 +4,7 @@
 ## packages:
 ##  - univention-self-service
 ##  - univention-self-service-passwordreset-umc
-## roles-not:
-##  - memberserver
-##  - basesystem
+## roles: [domaincontroller_master]
 ## join: true
 ## exposure: dangerous
 

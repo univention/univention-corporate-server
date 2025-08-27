@@ -1,3 +1,9 @@
+ucs-test (12.2.44) unstable; urgency=medium
+
+  * Bug #51256: the capture_mails method only works on the primary
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 27 Aug 2025 18:05:12 +0200
+
 ucs-test (12.2.43) unstable; urgency=low
 
   * Bug #58536: fix verification of extended attributes in verify_udm_object()
