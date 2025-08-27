@@ -14,6 +14,7 @@ Univention Corporate Server - Operation Manual
 
    index
    management-interface/index
+   user-selfservice
 
 .. toctree::
 
