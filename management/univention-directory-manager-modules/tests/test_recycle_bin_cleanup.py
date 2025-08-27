@@ -123,7 +123,6 @@ class TestRecycleBinIntegration:
 
     def test_expired_entries_detection(self):
         """Test that expired entries are correctly identified."""
-
         yesterday = datetime.utcnow() - timedelta(days=1)
         tomorrow = datetime.utcnow() + timedelta(days=1)
 
@@ -142,7 +141,6 @@ class TestRecycleBinIntegration:
 
     def test_expired_entries_removal(self):
         """Test that expired entries are actually removed."""
-
         yesterday = datetime.utcnow() - timedelta(days=1)
         tomorrow = datetime.utcnow() + timedelta(days=1)
 
@@ -161,7 +159,6 @@ class TestRecycleBinIntegration:
 
     def test_script_with_no_expired_entries(self):
         """Test script behavior when no entries are expired."""
-
         name1 = 'test-future-1'
         name2 = 'test-future-2'
 
@@ -179,7 +176,6 @@ class TestRecycleBinIntegration:
 
     def test_scheduled_vs_manual_logging(self):
         """Test that scheduled flag affects logging."""
-
         yesterday = datetime.utcnow() - timedelta(days=1)
         name = 'test-scheduled-logging'
 
