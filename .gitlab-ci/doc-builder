@@ -20,56 +20,57 @@ BASE = Path(__file__).parent  # .gilab-ci/
 ROOT = BASE.parent
 
 
-TARGETS = ["html", "pdf", "linkcheck", "spelling"]
+TARGETS = ['html', 'pdf', 'linkcheck', 'spelling']
 DEPENDS = {
-    "app-center": {"manual", "developer-reference cycle"},
-    "architecture": {"manual", "developer-reference cycle", "app-center"},
-    "changelog": {"manual"},
-    "debian-admins": {"manual", "architecture"},
-    "developer-reference": {"app-center", "architecture", "manual"},
-    "ext-domain": {"manual"},
-    "ext-networks": {"manual"},
-    "ext-performance": {"manual", "developer-reference cycle"},
-    "ext-windows": {"manual"},
-    "manual": {"developer-reference cycle", "ext-windows cycle"},
-    "quickstart": {"manual", "ext-domain", "ext-installation"},
-    "release-notes": {"manual", "changelog", "ext-windows"},
-    "scenarios": {"manual"},
+    'app-center': {'manual', 'developer-reference cycle'},
+    'architecture': {'manual', 'developer-reference cycle', 'app-center'},
+    'changelog': {'manual'},
+    'debian-admins': {'manual', 'architecture'},
+    'developer-reference': {'app-center', 'architecture', 'manual'},
+    'ext-domain': {'manual'},
+    'ext-networks': {'manual'},
+    'ext-performance': {'manual', 'developer-reference cycle'},
+    'ext-windows': {'manual'},
+    'manual': {'developer-reference cycle', 'ext-windows cycle'},
+    'quickstart': {'manual', 'ext-domain', 'ext-installation'},
+    'release-notes': {'manual', 'changelog', 'ext-windows'},
+    'scenarios': {'manual'},
     'ext-delegative-administration': {'manual', 'developer-reference', 'architecture'},
+    'ucs-operation': ('manual'),
 }  # FIXME: extract this from ../doc/*/conf.py intersphinx_mapping
 SPECIAL: dict[str, dict[str, object]] = {
-    "changelog": {"DOC_TARGET_PATH": "$DOC_TARGET_NAME/$CHANGELOG_TARGET_VERSION/$language"},
-    "release-notes": {"DOC_TARGET_PATH": "$DOC_TARGET_NAME/$CHANGELOG_TARGET_VERSION/$language"},
-    "developer-reference cycle": {"SPHINXOPTS": "--keep-going"},
-    "ext-windows cycle": {"SPHINXOPTS": "--keep-going"},
+    'changelog': {'DOC_TARGET_PATH': '$DOC_TARGET_NAME/$CHANGELOG_TARGET_VERSION/$language'},
+    'release-notes': {'DOC_TARGET_PATH': '$DOC_TARGET_NAME/$CHANGELOG_TARGET_VERSION/$language'},
+    'developer-reference cycle': {'SPHINXOPTS': '--keep-going'},
+    'ext-windows cycle': {'SPHINXOPTS': '--keep-going'},
 }
 
 
 all_paths: list[str] = []
 pipeline: dict[str, object] = {
-    "docs-merge-to-one-artifact": {
-        "extends": ".sphinx-merge-template",
-        "rules": [
+    'docs-merge-to-one-artifact': {
+        'extends': '.sphinx-merge-template',
+        'rules': [
             {
-                "if": '$CI_COMMIT_REF_PROTECTED == "true" || $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "webide"',
-                "changes": all_paths,
-                "when": "manual",
+                'if': '$CI_COMMIT_REF_PROTECTED == "true" || $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "webide"',
+                'changes': all_paths,
+                'when': 'manual',
             },
             {
-                "if": '$CI_COMMIT_REF_PROTECTED == "false" || $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "webide"',
-                "changes": all_paths,
+                'if': '$CI_COMMIT_REF_PROTECTED == "false" || $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "webide"',
+                'changes': all_paths,
             },
         ],
     },
-    "docs-create-production-merge-request": {
-        "extends": ".sphinx-docs-merge-request-template",
-        "needs": [
-            {"job": "docs-merge-to-one-artifact"},
+    'docs-create-production-merge-request': {
+        'extends': '.sphinx-docs-merge-request-template',
+        'needs': [
+            {'job': 'docs-merge-to-one-artifact'},
         ],
-        "rules": [
+        'rules': [
             {
-                "if": '$CI_COMMIT_REF_PROTECTED == "true" || $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "webide"',
-                "changes": all_paths,
+                'if': '$CI_COMMIT_REF_PROTECTED == "true" || $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "webide"',
+                'changes': all_paths,
             },
         ],
     },
@@ -79,7 +80,7 @@ pipeline: dict[str, object] = {
 def main() -> None:
     args = parse_args()
 
-    yaml = YAML(typ="rt")
+    yaml = YAML(typ='rt')
     for head in args.yaml:
         with head.open() as fd:
             data = yaml.load(fd)
@@ -87,19 +88,19 @@ def main() -> None:
 
     add_jobs(pipeline)
 
-    with args.out.open("w") as fd:
+    with args.out.open('w') as fd:
         yaml.dump(pipeline, fd)
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--yaml", action="append", type=Path, default=[])
-    parser.add_argument("--out", type=Path, default=ROOT / "generated-config-doc.yml")
+    parser.add_argument('--yaml', action='append', type=Path, default=[])
+    parser.add_argument('--out', type=Path, default=ROOT / 'generated-config-doc.yml')
     return parser.parse_args()
 
 
-def job_name(pkg: str, target: str = "") -> str:
-    return f"build {pkg}{f' {target}' if target else ''}"
+def job_name(pkg: str, target: str = '') -> str:
+    return f'build {pkg}{f" {target}" if target else ""}'
 
 
 def job_desc(pkg: str, path: Path, extends: str, languages: list[str], depends: set[str]) -> dict[str, object]:
@@ -108,36 +109,36 @@ def job_desc(pkg: str, path: Path, extends: str, languages: list[str], depends: 
         DOCS_DIR=path.relative_to(ROOT).as_posix(),
         DOC_TARGET_NAME=path.name,
         # For special documents we need to overwrite the default DOC_TARGET_PATH and pull the value from the SPECIAL dict.
-        DOC_TARGET_PATH=SPECIAL.get(pkg, {}).get("DOC_TARGET_PATH", None) or "$DOC_TARGET_NAME/$DOC_TARGET_VERSION/$language",
+        DOC_TARGET_PATH=SPECIAL.get(pkg, {}).get('DOC_TARGET_PATH', None) or '$DOC_TARGET_NAME/$DOC_TARGET_VERSION/$language',
     )
     job: dict[str, object] = {
-        "variables": variables,
-        "extends": extends,
-        "rules": [
+        'variables': variables,
+        'extends': extends,
+        'rules': [
             {
-                "if": "$CI_COMMIT_MESSAGE =~ /skip-doc/ || $pipeline =~ /skip-doc/",
-                "when": "never",
+                'if': '$CI_COMMIT_MESSAGE =~ /skip-doc/ || $pipeline =~ /skip-doc/',
+                'when': 'never',
             },
             {
-                "if": "$CI_COMMIT_MESSAGE =~ /force-doc/ || $pipeline =~ /force-doc/",
+                'if': '$CI_COMMIT_MESSAGE =~ /force-doc/ || $pipeline =~ /force-doc/',
             },
             {
-                "changes": [
+                'changes': [
                     job_path(path),
                 ],
             },
         ],
-        "parallel": {
-            "matrix": [
-                {"language": languages},
+        'parallel': {
+            'matrix': [
+                {'language': languages},
             ],
         },
     }
     if depends:
-        job["needs"] = [
+        job['needs'] = [
             {
-                "job": job_name(dep, "html"),
-                "optional": True,
+                'job': job_name(dep, 'html'),
+                'optional': True,
             }
             for dep in depends
         ]
@@ -146,14 +147,11 @@ def job_desc(pkg: str, path: Path, extends: str, languages: list[str], depends: 
 
 
 def job_path(path: Path) -> str:
-    return f"{path.relative_to(ROOT).as_posix()}/**/*"
+    return f'{path.relative_to(ROOT).as_posix()}/**/*'
 
 
 def find_docs() -> dict[Path, list[str]]:
-    return {
-        path.parent: list({lang.name for lang in path.parent.glob("locales/*")} | {"en"})
-        for path in ROOT.glob("doc/*/conf.py")
-    }
+    return {path.parent: list({lang.name for lang in path.parent.glob('locales/*')} | {'en'}) for path in ROOT.glob('doc/*/conf.py')}
 
 
 def add_jobs(pipeline: dict[str, object]) -> None:
@@ -163,16 +161,16 @@ def add_jobs(pipeline: dict[str, object]) -> None:
         for target in TARGETS:
             pkg = path.name
             name = job_name(pkg, target)
-            job = job_desc(pkg, path, f".sphinx-{target}", languages, DEPENDS.get(pkg, set()))
+            job = job_desc(pkg, path, f'.sphinx-{target}', languages, DEPENDS.get(pkg, set()))
             pipeline.update({name: job})
 
     # FIXME: cycle
-    path = ROOT / "doc" / "developer-reference"
-    pkg = f"{path.name} cycle"
-    name = job_name(pkg, "html")
-    job = job_desc(pkg, path, ".sphinx-html", ["en"], set())
+    path = ROOT / 'doc' / 'developer-reference'
+    pkg = f'{path.name} cycle'
+    name = job_name(pkg, 'html')
+    job = job_desc(pkg, path, '.sphinx-html', ['en'], set())
     pipeline.update({name: job})
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
