@@ -1,3 +1,9 @@
+univention-management-console-module-udm (12.3.1) unstable; urgency=medium
+
+  * Bug #58652: get guardian roles from request
+
+ -- Felix Botner <botner@univention.de>  Mon, 29 Sep 2025 12:15:46 +0200
+
 univention-management-console-module-udm (12.3.0) unstable; urgency=medium
 
   [ Ivan Barbecho Delgado ]
