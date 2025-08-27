@@ -13,3 +13,6 @@ desc: |
    via `ucs-sso` FQDN, additionally to downloading the SAML certificate via
    IP.
 bug: [58538]
+erratum: 1312
+announced: 2025-08-27
+support: core
