@@ -23,6 +23,15 @@
   the change to OpenLDAP. If possible it uses the Python UDM API to write changes to OpenLDAP. If object modification
   fails, e.g. with a Python traceback, its DN is stored into a table `UCS rejected` in `internal.sqlite`.
 
+## Ports
+
+* In addition to plain LDAP/LDAP+TLS/LDAPS the AD-Connector uses DRS to sync password hashes. Even if the connector is
+  configured to "write" mode only, it currrently still needs DRS to find out if a password hash is in sync.
+  DRS uses Remote Procedure Calls (RPC) for Active Directory data replication, which primarily involves the RPC Endpoint Mapper (Port 135)
+  for initial communication and then dynamically assigned high-port TCP ports (typically 49152-65535 in modern Windows Server versions)
+  for the actual data transfer. To allow DRS communication through a firewall, both Port 135 and the dynamic range must be open.
+  It's matter of research if a static range of ports can be configured for DRS and other RPC-dependent services.
+
 ## Developer Information
 
 ### Extending AD-Connector to synchronize additional attributes
@@ -148,3 +157,7 @@ Improvement Suggestions:
   and don't need to search stuff over and over again.
 * Maybe replace "object" by a "obj_replication_state", which holds "ldap_obj_ol" and "ldap_obj_ad"
 * Differenciate between "ldap_obj_ol_from_listener" and "ldap_obj_ol_current"
+* We first do "dn_mappin_function" (which is "samaccountname_dn_mapping" for most account type objects,
+  but not for all kinds of objects) and after that "position_mapping". That results in "Frankenstein DNs"
+  in case you have a position_mapping = ('dc=foo,dc=bar', 'dc=sub,dc=foo,dc=bar') and the target object
+  in AD is found. Maybe see also related S4-C Bug #48440.
