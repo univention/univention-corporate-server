@@ -10,13 +10,15 @@
 #define __DEBUG_H__
 
 #include <stdio.h>
+#include <stdbool.h>
 
 enum uv_debug_level {
 	UV_DEBUG_ERROR = 0,
 	UV_DEBUG_WARN = 1,
 	UV_DEBUG_PROCESS = 2,
 	UV_DEBUG_INFO = 3,
-	UV_DEBUG_ALL = 4
+	UV_DEBUG_ALL = 4,  // i.e. DEBUG
+	UV_DEBUG_TRACE = 5
 };
 
 enum uv_debug_category {
@@ -56,6 +58,11 @@ enum uv_debug_flag_function {
 	UV_DEBUG_FUNCTION = 0x01
 };
 
+enum uv_debug_flag_structured {
+	UV_DEBUG_UNSTRUCTURED = 0x00,
+	UV_DEBUG_STRUCTURED = 0x01
+};
+
 /**
  * Log message of level and category id.
  */
@@ -69,6 +76,10 @@ void univention_debug_begin(const char *s);
  * Log end of function s.
  */
 void univention_debug_end(const char *s);
+/**
+ * Set use of structured timestamp.
+ */
+void univention_debug_set_structured(enum uv_debug_flag_structured);
 /**
  * Set debug level of category id to specified level.
  */

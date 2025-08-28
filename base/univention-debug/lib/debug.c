@@ -26,6 +26,7 @@ static enum uv_debug_flag_flush univention_debug_flush;
 static enum uv_debug_flag_function univention_debug_function;
 
 static bool univention_debug_ready = false;
+static enum uv_debug_flag_structured univention_debug_structured = UV_DEBUG_UNSTRUCTURED;
 
 static const char *const univention_debug_id_text[] = {
 	"MAIN",
@@ -57,7 +58,17 @@ static const char *const univention_debug_level_text[] = {
 	"WARN",
 	"PROCESS",
 	"INFO",
-	"ALL"
+	"ALL",
+	"TRACE"
+};
+
+static const char *const univention_debug_level_structured_text[] = {
+	"ERROR",
+	"WARNING",
+	"PROCESS",
+	"INFO",
+	"DEBUG",
+	"TRACE"
 };
 
 #define LOG(fmt, ...) do { \
@@ -65,8 +76,23 @@ static const char *const univention_debug_level_text[] = {
 	struct tm tm; \
 	gettimeofday(&tv, NULL); \
 	localtime_r(&tv.tv_sec, &tm); \
-	fprintf(univention_debug_file, "%02d.%02d.%02d %02d:%02d:%02d.%03d  " fmt, tm.tm_mday, tm.tm_mon + 1, tm.tm_year - 100, tm.tm_hour,tm.tm_min, tm.tm_sec, (int)(tv.tv_usec / 1000), ##__VA_ARGS__); \
-	} while (0)
+	if (!univention_debug_structured) { \
+		fprintf(univention_debug_file, "%02d.%02d.%02d %02d:%02d:%02d.%03d  " fmt, tm.tm_mday, tm.tm_mon + 1, tm.tm_year - 100, tm.tm_hour,tm.tm_min, tm.tm_sec, (int)(tv.tv_usec / 1000), ##__VA_ARGS__); \
+	} else { \
+		fprintf(univention_debug_file, "%04d-%02d-%02dT%02d:%02d:%02d.%06d%c%02ld:%02ld " fmt, \
+			tm.tm_year + 1900,\
+			tm.tm_mon + 1,\
+			tm.tm_mday,\
+			tm.tm_hour,\
+			tm.tm_min,\
+			tm.tm_sec,\
+			(int)(tv.tv_usec / 1000),\
+			(tm.tm_gmtoff >= 0 ? '+' : '-'),\
+			labs(tm.tm_gmtoff) / 3600,\
+			(labs(tm.tm_gmtoff) % 3600) / 60, \
+			##__VA_ARGS__);\
+	} \
+} while (0)
 
 
 FILE * univention_debug_init(const char *logfile, enum uv_debug_flag_flush flush, enum uv_debug_flag_function function)
@@ -97,7 +123,11 @@ FILE * univention_debug_init(const char *logfile, enum uv_debug_flag_flush flush
 	univention_debug_flush = flush;
 	univention_debug_function = function;
 
-	LOG("DEBUG_INIT\n");
+	if (univention_debug_structured) {
+		LOG("%8s \n", "INIT");
+	} else {
+		LOG("DEBUG_INIT\n");
+	}
 	fflush(univention_debug_file);
 
 	univention_debug_ready = true;
@@ -120,11 +150,19 @@ void univention_debug(enum uv_debug_category id, enum uv_debug_level level, cons
 	if (level > univention_debug_level[id])
 		return;
 
-	if (level >= UV_DEBUG_ERROR && level <= UV_DEBUG_ALL)
-		LOG("%-11s ( %-7s ) : ", univention_debug_id_text[id], univention_debug_level_text[level]);
-	else
-		LOG("%-11s ( %-7d ) : ", univention_debug_id_text[id], level);
-
+	if (univention_debug_structured) {
+	    if (level >= UV_DEBUG_ERROR && level <= UV_DEBUG_TRACE) {
+			LOG("%8s ", univention_debug_level_structured_text[level]);
+		} else {
+			LOG("%8d ", level);
+		}
+	} else {
+		if (level >= UV_DEBUG_ERROR && level <= UV_DEBUG_TRACE) {
+			LOG("%-11s ( %-7s ) : ", univention_debug_id_text[id], univention_debug_level_text[level]);
+		} else {
+			LOG("%-11s ( %-7d ) : ", univention_debug_id_text[id], level);
+		}
+	}
 	{
 		va_start(ap, fmt);
 		vfprintf(univention_debug_file, fmt, ap);
@@ -195,7 +233,11 @@ void univention_debug_exit(void)
 	if (!univention_debug_ready)
 		return;
 
-	LOG("DEBUG_EXIT\n");
+	if (univention_debug_structured) {
+		LOG("%8s \n", "EXIT");
+	} else {
+		LOG("DEBUG_EXIT\n");
+	}
 	if (univention_debug_file) {
 		fflush(univention_debug_file);
 		if (univention_debug_file != stderr && univention_debug_file != stdout)
@@ -217,6 +259,11 @@ void univention_debug_set_level(enum uv_debug_category id, enum uv_debug_level l
 		return;
 
 	univention_debug_level[id] = level;
+}
+
+void univention_debug_set_structured(enum uv_debug_flag_structured use_structured)
+{
+	univention_debug_structured = use_structured;
 }
 
 enum uv_debug_level univention_debug_get_level(enum uv_debug_category id)
