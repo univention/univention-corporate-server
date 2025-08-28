@@ -8,3 +8,4 @@ libuniventiondebug.so.1 libunivention-debug1 #MINVER#
  univention_debug_reopen@Base 5.0.0
  univention_debug_set_function@Base 5.0.0
  univention_debug_set_level@Base 5.0.0
+ univention_debug_set_structured@Base 14.3.0
