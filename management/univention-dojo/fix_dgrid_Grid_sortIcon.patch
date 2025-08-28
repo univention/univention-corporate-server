@@ -23,12 +23,13 @@ Exchange sort icon node with umc/widgets/Icon
  
  			this.inherited(arguments);
  		},
-@@ -400,9 +405,9 @@
- 			// Clean up UI from any previous sort
+@@ -411,10 +411,10 @@
  			if (this._lastSortedArrow) {
  				// Remove the sort classes from the parent node
--				domClass.remove(this._lastSortedArrow.parentNode, 'dgrid-sort-up dgrid-sort-down');
-+				domClass.remove(this._lastSortedArrow.$parentNode, 'dgrid-sort-up dgrid-sort-down');
+ 				if (this._lastSortedArrow.parentNode) {
+-					domClass.remove(this._lastSortedArrow.parentNode, 'dgrid-sort-up dgrid-sort-down');
++					domClass.remove(this._lastSortedArrow.$parentNode, 'dgrid-sort-up dgrid-sort-down');
+ 				}
  				// Destroy the lastSortedArrow node
 -				domConstruct.destroy(this._lastSortedArrow);
 +				this._lastSortedArrow.destroyRecursive();

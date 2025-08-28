@@ -1,6 +1,11 @@
 dojo/
-dojo-release-*/
-dojo1-*/
-dgrid/
 libs/
 dojo-release-*-src.tar.gz
+dijit-release-*-src.tar.gz
+dijit-themes-release-*-src.tar.gz
+dojox-release-*-src.tar.gz
+dgrid-*.tar.gz
+dstore-*.tar.gz
+dompurify-*.tar.gz
+util-release-*-src.tar.gz
+xstyle-*.tar.gz

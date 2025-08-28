@@ -30,7 +30,7 @@ build: $(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css $(BUILD_DIR)/config.
 $(BUILD_DIR)/dojo/dojo.js $(BUILD_THEME_DIR)/umc.css: build_profile.js tmp-build
 	# main dojo build process
 	mkdir -p $(BUILD_DIR)
-	/usr/share/univention-dojo/util/buildscripts/build.sh profile=build_profile.js version="$(VERSION)"
+	/usr/share/univention-dojo/util/buildscripts/build.sh profile=build_profile.js version="$(VERSION)" || { tail -200 build/build-report.txt; exit 1; }
 
 JS_INSTALL_DIR := usr/share/univention-web/js
 THEME_INSTALL_DIR=$(JS_INSTALL_DIR)/dijit/themes/umc
