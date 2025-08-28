@@ -1416,12 +1416,11 @@ msgstr[0] "Bitte bestätigen Sie das Löschen des ausgewählten Benutzers:"
 msgstr[1] "Bitte bestätigen Sie das Löschen der %d ausgewählten Benutzer:"
 
 #: umc/js/udm.js:1935
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Please confirm the restoration of %s objects from the recyclebin."
 msgstr "Bitte bestätigen Sie die Wiederherstellung von %s Objekten aus dem Papierkorb."
 
 #: umc/js/udm.js:1933
-#, fuzzy
 msgid ""
 "Please confirm the restoration of the selected object from the recyclebin."
 msgstr "Bitte bestätigen Sie die Wiederherstellung des ausgewählten Objekts aus dem Papierkorb."
@@ -1993,12 +1992,10 @@ msgid "The report template that should be used for the report."
 msgstr "Die zuverwendende Reportvorlage"
 
 #: umc/js/udm.js:1977
-#, fuzzy
 msgid "The restoration could not be completed: "
 msgstr "Die Wiederherstellung konnte nicht abgeschlossen werden: "
 
 #: umc/js/udm.js:1967
-#, fuzzy
 msgid "The selected object(s) have been restored."
 msgstr "Die ausgewählten Objekte wurden wiederhergestellt."
 
