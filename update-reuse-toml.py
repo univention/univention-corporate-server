@@ -83,7 +83,7 @@ def main():
 
 
 def find_dep5_files():
-    for path in REPO_ROOT.glob("**/debian/copyright"):
+    for path in sorted(REPO_ROOT.glob("**/debian/copyright")):
         try:
             with open(path, encoding="utf-8") as fd:
                 dep5 = Copyright(fd.read())
