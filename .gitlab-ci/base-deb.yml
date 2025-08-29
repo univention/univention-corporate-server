@@ -25,6 +25,7 @@ stages:
     - echo 'path-exclude /etc/univention/templates/info/*.info' > /etc/dpkg/dpkg.cfg.d/no-ucr
     - install -m644 .gitlab-ci/git.pref /etc/apt/preferences.d/10git.pref
     - echo "deb [trusted=yes] $APT/$CI_COMMIT_REF_SLUG git main" >"/etc/apt/sources.list.d/$CI_COMMIT_REF_SLUG.list"
+    - echo "deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.2-0-errata5.2-2/all/" >"/etc/apt/sources.list.d/errata.list"
     - apt-get -qq update
     - echo -e "\e[0Ksection_end:$(date +%s):prep\r\e[0K"
     - cd $base
