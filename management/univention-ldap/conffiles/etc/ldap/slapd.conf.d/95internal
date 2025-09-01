@@ -38,6 +38,15 @@ syncprov-checkpoint %(ldap/database/internal/syncprov/checkpoint)s
 syncprov-sessionlog %(ldap/database/internal/syncprov/sessionlog)s
 """ % configRegistry)
 
+    if configRegistry.is_true('ldap/database/internal/overlay/dds', False):
+        print('overlay dds')
+        print('dds-state TRUE')
+        print('dds-max-ttl %s' % configRegistry.get('ldap/database/internal/dds/max_ttl', '31536000'))
+        print('dds-min-ttl %s' % configRegistry.get('ldap/database/internal/dds/min_ttl', '86400'))
+        print('dds-default-ttl %s' % configRegistry.get('ldap/database/internal/dds/default_ttl', '172800'))
+        print('dds-interval 3600')
+        print('')
+
     # limits
     print("""
 limits dn.children=cn=peercred,cn=external,cn=auth time=unlimited size=unlimited size.prtotal=unlimited size.pr=unlimited

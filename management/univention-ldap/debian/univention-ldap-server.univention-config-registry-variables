@@ -420,6 +420,33 @@ Type=list
 Separator=|
 Categories=service-ldap
 
+[ldap/database/internal/overlay/dds]
+Description[de]=DDS Overlay für interne Datenbank aktivieren
+Description[en]=Enable DDS overlay for internal database
+Type=bool
+Categories=service-ldap
+
+[ldap/database/internal/dds/max_ttl]
+Description[de]=Maximale TTL für dynamische Objekte in interner Datenbank (Standard: 365d)
+Description[en]=Maximum TTL for dynamic objects in internal database (Default: 365d)
+Type=pint
+Default=31536000
+Categories=service-ldap
+
+[ldap/database/internal/dds/min_ttl]
+Description[de]=Minimale TTL für dynamische Objekte in interner Datenbank (Standard: 1d)
+Description[en]=Minimum TTL for dynamic objects in internal database (Default: 1d)
+Type=pint
+Default=86400
+Categories=service-ldap
+
+[ldap/database/internal/dds/default_ttl]
+Description[de]=Standard TTL für dynamische Objekte in interner Datenbank (Standard: 2d)
+Description[en]=Default TTL for dynamic objects in internal database (Default: 2d)
+Type=pint
+Default=172800
+Categories=service-ldap
+
 [ldap/overlay/sock]
 Description[de]=Aktiviert/Deaktiviert das LDAP-Overlay slapd-sock. Als `socketpath` wird `/var/lib/univention-ldap/slapd-sock/sock` verwendet (siehe `man slapd-sock`).
 Description[en]=To enable/disable the LDAP overlay slapd-sock. `/var/lib/univention-ldap/slapd-sock/sock` will be used as `socketpath` (see `man slapd-sock).
@@ -431,4 +458,37 @@ Categories=service-ldap
 Description[de]=Konfiguriert die Option `sockops` für das LDAP-Overlay slapd-sock. Aktuell ist nur der Wert `CRUD` unterstützt, der `sockops add delete modify modrdn` setzt. Nach aktivieren des Overlays mit dieser Option schreibt der slapd-Prozess LDAP operation requests und responses in den Unix Domain Socket `/var/lib/univention-ldap/slapd-sock/sock` und erwartet, dass dort ein Prozess diese Daten liest und jeden request mit `CONTINUE` beantwortet (siehe `man slapd-sock). Jede dieser LDAP-Operationen wird solange blockiert, bis der slapd über den socket die Antwort `CONTINUE` erhält.
 Description[en]=Configures the option `sockops` for the LDAP overlay slapd-sock. Currently only the value `CRUD` is suported, which sets 'sockops add delete modify modrdn`. After activating ths overlay and this option, the slapd process process will write these LDAP operation requests and responses to a Unix domain socket `/var/lib/univention-ldap/slapd-sock/sock` and expects that some process reads that data and responds with `CONTINUE` to each operation request (see `man slapd-sock`). Each of the specified LDAP operations will be blocked until slapd receives the response `CONTINUE`.
 Type=str
+Categories=service-ldap
+
+[ldap/overlay/dds]
+Description[de]=Aktiviert/Deaktiviert das DDS (Dynamic Directory Services) LDAP-Overlay für automatische Objektlöschung nach TTL-Ablauf. Objekte mit der objectClass 'dynamicObject' und dem Attribut 'entryTtl' werden automatisch gelöscht.
+Description[en]=Enables/Disables the DDS (Dynamic Directory Services) LDAP overlay for automatic object deletion after TTL expiry. Objects with objectClass 'dynamicObject' and attribute 'entryTtl' are automatically deleted.
+Type=bool
+Default=false
+Categories=service-ldap
+
+[ldap/overlay/dds/max_ttl]
+Description[de]=Maximale TTL (Time-To-Live) in Sekunden für dynamische Objekte im DDS-Overlay. Standardwert ist 31536000 (1 Jahr).
+Description[en]=Maximum TTL (Time-To-Live) in seconds for dynamic objects in DDS overlay. Default is 31536000 (1 year).
+Type=pint
+Default=31536000
+Categories=service-ldap
+
+[ldap/overlay/dds/min_ttl]
+Description[de]=Minimale TTL (Time-To-Live) in Sekunden für dynamische Objekte im DDS-Overlay. Standardwert ist 86400 (1 Tag).
+Description[en]=Minimum TTL (Time-To-Live) in seconds for dynamic objects in DDS overlay. Default is 86400 (1 day).
+Type=pint
+Default=86400
+Categories=service-ldap
+
+# [ldap/overlay/dds/default_ttl] - REMOVED
+# This configuration was removed because dds-default-ttl doesn't work as expected.
+# Objects must explicitly set the entryTtl attribute for automatic expiration.
+# The DDS overlay doesn't apply default TTL values to existing objects.
+
+[ldap/overlay/dds/interval]
+Description[de]=Aufräumintervall in Sekunden für das DDS-Overlay. Bestimmt, wie oft abgelaufene Objekte geprüft und gelöscht werden. Standardwert ist 3600 (1 Stunde).
+Description[en]=Cleanup interval in seconds for DDS overlay. Determines how often expired objects are checked and deleted. Default is 3600 (1 hour).
+Type=pint
+Default=3600
 Categories=service-ldap
