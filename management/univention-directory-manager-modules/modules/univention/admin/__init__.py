@@ -106,18 +106,12 @@ def pattern_replace(pattern: str, obj: dict | simpleLdap) -> str:
             elif iCmd == 'upper':
                 text = text.upper()
             elif iCmd == 'umlauts':
-                if isinstance(text, bytes):  # Python 2
-                    text = text.decode('UTF-8')
                 # We need this to handle german umlauts, e.g. ä -> ae
                 for umlaut, code in property.UMLAUTS.items():
                     text = text.replace(umlaut, code)
                 text = unidecode.unidecode(text)
             elif iCmd == 'alphanum':
                 whitelist = configRegistry.get('directory/manager/templates/alphanum/whitelist', '')
-                if isinstance(whitelist, bytes):  # Python 2
-                    whitelist = whitelist.decode('UTF-8')
-                if isinstance(text, bytes):
-                    text = text.decode('UTF-8')
                 text = ''.join([c for c in text if (c.isalnum() or c in whitelist)])
             elif iCmd in ('trim', 'strip'):
                 text = text.strip()
