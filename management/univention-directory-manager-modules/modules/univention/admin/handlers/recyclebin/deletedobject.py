@@ -270,9 +270,54 @@ class object(simpleLdap):
             self.lo.authz_connection.add(original_dn, restore_attrs_no_uuid)
             log.info("Restored object from recycle bin: %s", original_dn)
 
+        self._restore_group_memberships(original_dn)
         self.remove()
 
         return original_dn
+
+    def _restore_group_memberships(self, restored_dn):
+        preserved_member_of = self.oldattr.get('seeAlso', [])
+
+        if not preserved_member_of:
+            log.debug("No preserved memberOf information found for %s", restored_dn)
+            return
+
+        log.info("Restoring group memberships for %s", restored_dn)
+
+        for group_dn_bytes in preserved_member_of:
+            group_dn = group_dn_bytes.decode('utf-8') if isinstance(group_dn_bytes, bytes) else group_dn_bytes
+
+            group_attrs = self.lo.authz_connection.get(group_dn, ['objectClass', 'uniqueMember', 'memberUid'])
+            if not group_attrs:
+                log.warning("Group %s no longer exists, skipping membership restoration", group_dn)
+                continue
+
+            object_classes = [cls.decode('utf-8') if isinstance(cls, bytes) else cls for cls in group_attrs.get('objectClass', [])]
+
+            modlist = []
+
+            if 'groupOfUniqueNames' in object_classes or 'univentionGroup' in object_classes:
+                current_unique_members = group_attrs.get('uniqueMember', [])
+                restored_dn_bytes = restored_dn.encode('utf-8')
+
+                if restored_dn_bytes not in current_unique_members:
+                    modlist.append((ldap.MOD_ADD, 'uniqueMember', [restored_dn_bytes]))
+                    log.debug("Adding %s to uniqueMember of %s", restored_dn, group_dn)
+
+            if 'posixGroup' in object_classes:
+                current_member_uids = group_attrs.get('memberUid', [])
+                try:
+                    uid = ldap.dn.str2dn(restored_dn)[0][0][1]  # First RDN, first AVA, value
+                    uid_bytes = uid.encode('utf-8')
+
+                    if uid_bytes not in current_member_uids:
+                        modlist.append((ldap.MOD_ADD, 'memberUid', [uid_bytes]))
+                        log.debug("Adding %s to memberUid of %s", uid, group_dn)
+                except (IndexError, ldap.LDAPError) as e:
+                    log.warning("Could not extract username from DN %s: %s", restored_dn, e)
+
+            if modlist:
+                self.lo.authz_connection.modify(group_dn, modlist)
 
     @classmethod
     def move_to_trashbin(cls, lo, position, original_dn, original_attrs, original_type, referenced_by=None):
