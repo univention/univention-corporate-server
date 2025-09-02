@@ -5,7 +5,6 @@
 
 from __future__ import annotations
 
-from logging import getLogger
 from typing import TYPE_CHECKING, overload
 
 import ldap
@@ -15,6 +14,7 @@ import univention.admin.localization
 import univention.admin.locking
 import univention.admin.uexceptions
 from univention.admin._ucr import configRegistry
+from univention.admin.log import log
 
 
 if TYPE_CHECKING:
@@ -45,7 +45,7 @@ except ImportError:
     pass
 
 
-log = getLogger('ADMIN')
+log = log.getChild('ALLOCATE')
 translation = univention.admin.localization.translation('univention/admin')
 _ = translation.translate
 
@@ -94,7 +94,7 @@ def requestUserSid(
     domainsid = searchResult[0][1]['sambaSID'][0].decode('ASCII')
     sid = domainsid + '-' + rid
 
-    log.debug('ALLOCATE: request user sid. SID = %s-%s', domainsid, rid)
+    log.trace('request user sid', SID=f'{domainsid}-{rid}')
 
     return request(lo, position, 'sid', sid)
 
@@ -127,14 +127,12 @@ def acquireRange(
     ranges: Sequence[dict[str, int]],
     scope: _Scopes = 'base',
 ) -> str:
-    log.debug('ALLOCATE: Start allocation for type = %r', atype)
     start_id = lo.authz_connection.getAttr('cn=%s,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(atype), position.getBase()), 'univentionLastUsedValue')
-
-    log.debug('ALLOCATE: Start ID = %r', start_id)
+    log.trace('Start allocating range', type=atype, start=start_id)
 
     if not start_id:
         startID = ranges[0]['first']
-        log.debug('ALLOCATE: Set Start ID to first %r', startID)
+        log.trace('Restart Start ID', start=startID)
     else:
         startID = int(start_id[0])
 
@@ -146,40 +144,40 @@ def acquireRange(
 
         while startID < last:
             startID += 1
-            log.debug('ALLOCATE: Set Start ID %r', startID)
+            log.trace('Set Start ID', start=startID)
             try:
                 if other:
                     # exception occurred while locking other, so atype was successfully locked and must be released
                     univention.admin.locking.unlock(lo, position, atype, str(startID - 1).encode('utf-8'), scope=scope)
                     other = None
-                log.debug('ALLOCATE: Lock ID %r for %r', startID, atype)
+                log.trace('Get lock', value=startID, type=atype)
                 univention.admin.locking.lock(lo, position, atype, str(startID).encode('utf-8'), scope=scope)
                 if atype in ('uidNumber', 'gidNumber'):
                     # reserve the same ID for both
                     other = 'uidNumber' if atype == 'gidNumber' else 'gidNumber'
-                    log.debug('ALLOCATE: Lock ID %r for %r', startID, other)
+                    log.trace('Get lock', value=startID, type=other)
                     univention.admin.locking.lock(lo, position, other, str(startID).encode('utf-8'), scope=scope)
             except univention.admin.uexceptions.noLock:
-                log.debug('ALLOCATE: Cannot Lock ID %r', startID)
+                log.trace('Cannot get lock', value=startID)
                 continue
             except univention.admin.uexceptions.objectExists:
-                log.debug('ALLOCATE: Cannot Lock existing ID %r', startID)
+                log.trace('Cannot get lock (already existing)', value=startID)
                 continue
 
             if atype in ('uidNumber', 'gidNumber'):
                 _filter = filter_format('(|(uidNumber=%s)(gidNumber=%s))', (str(startID), str(startID)))
             else:
                 _filter = '(%s=%d)' % (attr, startID)
-            log.debug('ALLOCATE: searchfor %r', _filter)
+            log.trace('lock searchfor', filter=_filter)
             if lo.authz_connection.searchDn(base=position.getBase(), filter=_filter):
-                log.debug('ALLOCATE: Already used ID %r', startID)
+                log.trace('lock already used ID', value=startID)
                 univention.admin.locking.unlock(lo, position, atype, str(startID).encode('utf-8'), scope=scope)
                 if other:
                     univention.admin.locking.unlock(lo, position, other, str(startID).encode('utf-8'), scope=scope)
                     other = None
                 continue
 
-            log.debug('ALLOCATE: Return ID %r', startID)
+            log.trace('Got lock', value=startID)
             if other:
                 univention.admin.locking.unlock(lo, position, other, str(startID).encode('utf-8'), scope=scope)
             return str(startID)
@@ -195,7 +193,7 @@ def acquireUnique(
     attr: str,
     scope: _Scopes = 'base',
 ) -> str:
-    log.debug('LOCK acquireUnique scope = %s', scope)
+    log.trace('acquire unique lock', scope=scope)
     searchBase = position.getDomain() if scope == 'domain' else position.getBase()
 
     if type == 'aRecord':  # uniqueness is only relevant among hosts (one or more dns entries having the same aRecord as a host are allowed)
@@ -205,12 +203,12 @@ def acquireUnique(
     elif type in ['groupName', 'uid'] and configRegistry.is_true('directory/manager/user_group/uniqueness', True):
         univention.admin.locking.lock(lo, position, type, value.encode('utf-8'), scope=scope)
         if not lo.authz_connection.searchDn(base=searchBase, filter=filter_format('(|(&(cn=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))(uid=%s))', (value, value))):
-            log.debug('ALLOCATE return %s', value)
+            log.trace('aquired unique', value=value)
             return value
     elif type == 'groupName':  # search filter is more complex then in general case
         univention.admin.locking.lock(lo, position, type, value.encode('utf-8'), scope=scope)
         if not lo.authz_connection.searchDn(base=searchBase, filter=filter_format('(&(%s=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))', (attr, value))):
-            log.debug('ALLOCATE return %s', value)
+            log.trace('aquired unique', value=value)
             return value
     elif type == 'cn-uid-position':
         base = lo.parentDn(value)
@@ -225,22 +223,21 @@ def acquireUnique(
             ldap.dn.str2dn(x)[0][0][0] not in attrs
             for x in lo.authz_connection.searchDn(base=base, filter='(|%s)' % ''.join(filter_format('(%s=%s)', (attr, value)) for attr in attrs), scope=scope)
         ):
+            log.trace('aquired unique', value=value)
             return value
         raise univention.admin.uexceptions.alreadyUsedInSubtree('name=%r position=%r' % (value, base))
     elif type in ('mailPrimaryAddress', 'mailAlternativeAddress') and configRegistry.is_true('directory/manager/mail-address/uniqueness'):
-        log.debug('LOCK univention.admin.locking.lock scope = %s', scope)
         univention.admin.locking.lock(lo, position, 'mailPrimaryAddress', value.encode('utf-8'), scope=scope)
         other = 'mailPrimaryAddress' if type == 'mailAlternativeAddress' else 'mailAlternativeAddress'
         if not lo.authz_connection.searchDn(base=searchBase, filter=filter_format('(|(%s=%s)(%s=%s))', (attr, value, other, value))):
-            log.debug('ALLOCATE return %s', value)
+            log.trace('aquired unique', value=value)
             return value
     elif type == 'mailAlternativeAddress':
         return value  # lock for mailAlternativeAddress exists only if above UCR variable is enabled
     else:
-        log.debug('LOCK univention.admin.locking.lock scope = %s', scope)
         univention.admin.locking.lock(lo, position, type, value.encode('utf-8'), scope=scope)
         if not lo.authz_connection.searchDn(base=searchBase, filter=filter_format('%s=%s', (attr, value))):
-            log.debug('ALLOCATE return %s', value)
+            log.trace('aquired unique', value=value)
             return value
 
     raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked.') % (type,))

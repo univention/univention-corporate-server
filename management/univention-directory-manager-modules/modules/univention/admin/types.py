@@ -7,15 +7,13 @@ import datetime
 import inspect
 import time
 from collections.abc import Sequence
-from logging import getLogger
 
 import ldap.dn
 
 import univention.admin.uexceptions
 from univention.admin import localization
+from univention.admin.log import log
 
-
-log = getLogger('ADMIN')
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
@@ -142,7 +140,7 @@ class TypeHint:
         try:
             return self.syntax.parse(value)
         except univention.admin.uexceptions.valueError as exc:
-            log.warning('ignoring invalid property %s value=%r is invalid: %s', self.property_name, value, exc)
+            log.warning('ignoring invalid property', property=self.property_name, value=repr(value), error=exc)
             return value
 
     def encode_value(self, value):
@@ -164,7 +162,7 @@ class TypeHint:
         if not isinstance(value, types or self._python_types):
             must = '%s (%s)' % (self._openapi_type, self._openapi_format) if self._openapi_format else '%s' % (self._openapi_type,)
             actual = type(value).__name__
-            log.warning('%r: Value=%r %r', self.property_name, value, type(self).__name__)
+            log.warning('invalid type for property', property=self.property_name, value=repr(value), type=type(self).__name__)
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Value must be of type %s not %s.') % (must, actual))
 
     def type_check_json(self, value):
@@ -231,7 +229,7 @@ class TypeHint:
         syntax = property.syntax() if inspect.isclass(property.syntax) else property.syntax
         type_class = syntax.type_class
         if not type_class:
-            log.warning('Unknown type for property %r: %s', name, syntax.name)
+            log.warning('Unknown type for property', property=name, syntax=syntax.name)
             type_class = cls
 
         if not property.multivalue:
@@ -268,7 +266,7 @@ class BooleanType(TypeHint):
                 return None
         except univention.admin.uexceptions.valueError:
             pass
-        log.warning('%s: %s: not a boolean: %r', self.property_name, self.syntax.name, value)
+        log.warning('invalid boolean', property=self.property_name, syntax=self.syntax.name, value=repr(value))
         return value
 
 
@@ -286,7 +284,7 @@ class IntegerType(TypeHint):
         try:
             value = int(value)
         except ValueError:
-            log.warning('%s: %s: not a integer: %r', self.property_name, self.syntax.name, value)
+            log.warning('invalid integer', property=self.property_name, syntax=self.syntax.name, value=repr(value))
         return value
 
 
@@ -398,7 +396,7 @@ class DateType(StringType):
         try:
             return datetime.date(*time.strptime(value, '%Y-%m-%d')[0:3])
         except ValueError:
-            log.debug('Wrong date format: %r', value)
+            log.debug('Wrong date format', date=repr(value))
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Date does not match format "%Y-%m-%d".'))
 
 
@@ -430,7 +428,7 @@ class TimeType(StringType):
         try:
             return datetime.time(*time.strptime(value, '%H:%M:%S')[3:6])
         except ValueError:
-            log.debug('Wrong time format: %r', value)
+            log.debug('invalid time format', time=repr(value))
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Time does not match format "%H:%M:%S".'))
 
 
@@ -465,7 +463,7 @@ class DateTimeType(StringType):
         try:
             return datetime.datetime(*time.strptime(value, '%Y-%m-%dT%H:%M:%S')[:6])  # FIXME: parse Z at the end
         except ValueError:
-            log.debug('Wrong datetime format: %r', value)
+            log.debug('invalid datetime format', datetime=repr(value))
             raise univention.admin.uexceptions.valueInvalidSyntax(_('Datetime does not match format "%Y-%m-%dT%H:%M:%S".'))
 
 

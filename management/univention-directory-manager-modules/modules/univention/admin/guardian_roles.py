@@ -4,7 +4,6 @@
 """|UDM| guardian roles handling"""
 
 import itertools
-from logging import getLogger
 
 import univention.admin
 import univention.admin.localization
@@ -18,8 +17,6 @@ try:
 except ImportError:  # just during errata updates. Can be removed in UCS 5.2-3
     GuardianRole = univention.admin.syntax.simple
 
-
-log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention.admin')
 _ = translation.translate
