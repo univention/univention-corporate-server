@@ -3,7 +3,6 @@
 
 """|UDM| module for the client maintenance policies"""
 
-from logging import getLogger
 
 import univention.admin.cron
 import univention.admin.filter
@@ -11,13 +10,13 @@ import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.syntax
 from univention.admin.layout import Group, Tab
+from univention.admin.log import log
 from univention.admin.policy import (
     emptyAttributesProperty, fixedAttributesProperty, ldapFilterProperty, policy_object_tab,
     prohibitedObjectClassesProperty, register_policy_mapping, requiredObjectClassesProperty,
 )
 
 
-log = getLogger('ADMIN')
 translation = univention.admin.localization.translation('univention.admin.handlers.policies')
 _ = translation.translate
 
@@ -160,7 +159,7 @@ class object(univention.admin.handlers.simplePolicy):
 
     def parse_cron(self, cronstring):
         # don't use self[key] inside here - it will be recursive call(ed by) __getitem__
-        log.debug('maintenance cron: %s', cronstring)
+        log.debug('parse cron', value=cronstring)
         cron = univention.admin.cron.cron_split(cronstring)
         keys = ['minute', 'hour', 'day', 'month', 'weekday']
         for key in keys:

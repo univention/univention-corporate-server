@@ -5,16 +5,14 @@
 
 from __future__ import annotations
 
-from logging import getLogger
 from typing import Any
 
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 from univention.admin.layout import Group, Tab
+from univention.admin.log import log
 
-
-log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
 _ = translation.translate
@@ -343,7 +341,7 @@ class object(univention.admin.handlers.simpleLdap):
                 if key.startswith('univentionUDMPropertyTranslation%s;entry-' % transKey)
             ]
 
-            log.debug('extended_attribute: added translations for %s: %s', transKey, translations)
+            log.debug('open: added translations', msgid=transKey, msgstrs=translations)
             self['translation%s' % transKey] = translations
 
         self.save()

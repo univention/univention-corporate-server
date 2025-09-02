@@ -4,7 +4,6 @@
 """|UDM| wrapper around :py:mod:`univention.license` that translates error codes to exceptions"""
 
 import collections
-from logging import getLogger
 
 from ldap.filter import filter_format
 
@@ -15,10 +14,9 @@ import univention.admin.modules
 import univention.admin.uexceptions
 import univention.license
 from univention.admin._ucr import configRegistry
+from univention.admin.log import log
 from univention.lib.misc import custom_username
 
-
-log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention/admin')
 _ = translation.translate
