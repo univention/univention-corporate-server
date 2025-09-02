@@ -301,7 +301,7 @@ class object(simpleLdap):
                 restored_dn_bytes = restored_dn.encode('utf-8')
 
                 if restored_dn_bytes not in current_unique_members:
-                    modlist.append((ldap.MOD_ADD, 'uniqueMember', [restored_dn_bytes]))
+                    modlist.append(('uniqueMember', ldap.MOD_ADD, [restored_dn_bytes]))
                     log.debug("Adding %s to uniqueMember of %s", restored_dn, group_dn)
 
             if 'posixGroup' in object_classes:
@@ -311,7 +311,7 @@ class object(simpleLdap):
                     uid_bytes = uid.encode('utf-8')
 
                     if uid_bytes not in current_member_uids:
-                        modlist.append((ldap.MOD_ADD, 'memberUid', [uid_bytes]))
+                        modlist.append(('memberUid', ldap.MOD_ADD, [uid_bytes]))
                         log.debug("Adding %s to memberUid of %s", uid, group_dn)
                 except (IndexError, ldap.LDAPError) as e:
                     log.warning("Could not extract username from DN %s: %s", restored_dn, e)
