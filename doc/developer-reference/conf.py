@@ -71,7 +71,7 @@ author = ''
 version = '5.2'
 # The full version, including alpha/beta/rc tags
 # Used for source reference in :uv:src: role
-release = '5.2-2'
+release = '5.2-3'
 
 html_show_copyright = True
 language = 'en'
