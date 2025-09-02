@@ -7,7 +7,6 @@
 from __future__ import annotations
 
 import re
-from logging import getLogger
 from typing import Any
 
 import ldap
@@ -20,9 +19,8 @@ import univention.admin.syntax
 import univention.admin.uexceptions
 from univention.admin import configRegistry
 from univention.admin.layout import Group, Tab
+from univention.admin.log import log
 
-
-log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention.admin.handlers.nagios')
 _ = translation.translate
@@ -131,7 +129,7 @@ class object(univention.admin.handlers.simpleLdap):
                 # find correct dNSZone entry
                 res = self.lo.authz_connection.search(filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))', (zoneName, relDomainName)))
                 if not res:
-                    log.debug('service.py: open: could not find dNSZone of %s', host)
+                    log.debug('open: could not find dNSZone', host=host)
                 else:
                     # found dNSZone
                     filter = '(&(objectClass=univentionHost)'

@@ -5,15 +5,12 @@
 
 from __future__ import annotations
 
-from logging import getLogger
 from typing import Any
 
 import ldap
 
 import univention.admin.modules
-
-
-log = getLogger('ADMIN')
+from univention.admin.log import log
 
 
 def module(object: univention.admin.handlers.simpleLdap) -> str | None:
@@ -231,7 +228,7 @@ def getPolicyReference(object: univention.admin.handlers.simpleLdap, policy_type
         for m in univention.admin.modules.identify(policy_dn, object.lo.authz_connection.get(policy_dn)):
             if univention.admin.modules.name(m) == policy_type:
                 policyReference = policy_dn
-    log.debug('getPolicyReference: returning: %s', policyReference)
+    log.trace('get policy reference', policy=policyReference, dn=object.dn, type=object.module)
     return policyReference
 
 
@@ -250,11 +247,11 @@ def removePolicyReference(object: univention.admin.handlers.simpleLdap, policy_t
             if univention.admin.modules.name(m) == policy_type:
                 remove = policy_dn
     if remove:
-        log.debug('removePolicyReference: removing reference: %s', remove)
+        log.debug('removing policy reference', policy=remove, dn=object.dn, type=object.module)
         object.policies.remove(remove)
 
 
-def replacePolicyReference(object: univention.admin.handlers.simpleLdap, policy_type: str, new_reference: univention.admin.handlers.simplePolicy) -> None:
+def replacePolicyReference(object: univention.admin.handlers.simpleLdap, policy_type: str, new_reference: str) -> None:
     """
     Replace the policy of the requested type with a new instance.
 
@@ -265,12 +262,12 @@ def replacePolicyReference(object: univention.admin.handlers.simpleLdap, policy_
 
     module = univention.admin.modules._get(policy_type)
     if not univention.admin.modules.recognize(module, new_reference, object.lo.authz_connection.get(new_reference)):
-        log.debug('replacePolicyReference: error.')
+        log.debug('error replacing policy reference', policy=new_reference, dn=object.dn, type=object.module)
         return
 
     removePolicyReference(object, policy_type)
 
-    log.debug('replacePolicyReference: appending reference: %s', new_reference)
+    log.debug('appending policy reference', policy=new_reference, dn=object.dn, type=object.module)
     object.policies.append(new_reference)
 
 

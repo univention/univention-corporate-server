@@ -9,7 +9,6 @@ import inspect
 import os
 import sys
 import warnings
-from logging import getLogger
 from types import SimpleNamespace
 from typing import TYPE_CHECKING, Any
 
@@ -24,7 +23,8 @@ if TYPE_CHECKING:
     _Mod3 = tuple[str, list[str], list[str]]
     ModList = list[_Mod2 | _Mod3]
 
-log = getLogger('ADMIN')
+from univention.admin.log import log
+
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
@@ -51,9 +51,9 @@ def import_hook_files() -> None:
                                 ),
                             ),
                         )
-                    log.debug('admin.hook.import_hook_files: importing %r', fn)
+                    log.debug('importing hook', hook=fn)
                 except Exception:
-                    log.exception('admin.hook.import_hook_files: loading %r failed', fn)
+                    log.exception('loading hook failed', hook=fn)
 
 
 class simpleHook:
@@ -72,7 +72,7 @@ class simpleHook:
 
         :param obj: The |UDM| object instance.
         """
-        log.debug('admin.syntax.hook.simpleHook: _open called')
+        log.debug('hook_open called')
 
     def hook_ldap_pre_create(self, obj: univention.admin.handlers.simpleLdap) -> None:
         """
@@ -81,7 +81,7 @@ class simpleHook:
 
         :param obj: The |UDM| object instance.
         """
-        log.debug('admin.syntax.hook.simpleHook: _ldap_pre_create called')
+        log.debug('hook_ldap_pre_create called')
 
     def hook_ldap_addlist(self, obj: univention.admin.handlers.simpleLdap, al: AddList = []) -> AddList:
         """
@@ -93,7 +93,7 @@ class simpleHook:
         :param al: A list of two-tuples (ldap-attribute-name, list-of-values) which will be used to create the LDAP object.
         :returns: The (modified) add-list.
         """
-        log.debug('admin.syntax.hook.simpleHook: _ldap_addlist called')
+        log.debug('hook_ldap_addlist called')
         return al
 
     def hook_ldap_post_create(self, obj: univention.admin.handlers.simpleLdap) -> None:
@@ -102,7 +102,7 @@ class simpleHook:
 
         :param obj: The |UDM| object instance.
         """
-        log.debug('admin.syntax.hook.simpleHook: _ldap_post_create called')
+        log.debug('hook_ldap_post_create called')
 
     def hook_ldap_pre_modify(self, obj: univention.admin.handlers.simpleLdap) -> None:
         """
@@ -111,7 +111,7 @@ class simpleHook:
 
         :param obj: The |UDM| object instance.
         """
-        log.debug('admin.syntax.hook.simpleHook: _ldap_pre_modify called')
+        log.debug('hook_ldap_pre_modify called')
 
     def hook_ldap_modlist(self, obj: univention.admin.handlers.simpleLdap, ml: ModList = []) -> ModList:
         """
@@ -121,7 +121,7 @@ class simpleHook:
         :param ml: A list of tuples, which are either two-tuples (ldap-attribute-name, list-of-new-values) or three-tuples (ldap-attribute-name, list-of-old-values, list-of-new-values). It will be used to create or modify the |LDAP| object.
         :returns: The (modified) modification-list.
         """
-        log.debug('admin.syntax.hook.simpleHook: _ldap_modlist called')
+        log.debug('hook_ldap_modlist called')
         return ml
 
     def hook_ldap_post_modify(self, obj: univention.admin.handlers.simpleLdap) -> None:
@@ -130,7 +130,7 @@ class simpleHook:
 
         :param obj: The |UDM| object instance.
         """
-        log.debug('admin.syntax.hook.simpleHook: _ldap_post_modify called')
+        log.debug('hook_ldap_post_modify called')
 
     def hook_ldap_pre_remove(self, obj: univention.admin.handlers.simpleLdap) -> None:
         """
@@ -138,7 +138,7 @@ class simpleHook:
 
         :param obj: The |UDM| object instance.
         """
-        log.debug('admin.syntax.hook.simpleHook: _ldap_pre_remove called')
+        log.debug('hook_ldap_pre_remove called')
 
     def hook_ldap_post_remove(self, obj: univention.admin.handlers.simpleLdap) -> None:
         """
@@ -146,7 +146,7 @@ class simpleHook:
 
         :param obj: The |UDM| object instance.
         """
-        log.debug('admin.syntax.hook.simpleHook: _ldap_post_remove called')
+        log.debug('hook_ldap_post_remove called')
 
 
 class AttributeHook(simpleHook):
@@ -176,13 +176,13 @@ class AttributeHook(simpleHook):
 
         :param obj: The |UDM| object instance.
         """
-        log.debug('admin.syntax.hook.AttributeHook: Mapping %s (LDAP) -> %s (UDM)', self.ldap_attribute_name, self.udm_attribute_name)
+        log.debug('AttributeHook open: Mapping LDAP -> UDM', ldap=self.ldap_attribute_name, udm=self.udm_attribute_name)
         old_value = obj.oldattr.get(self.ldap_attribute_name, [])
         if self.version < 2:  # TODO: remove in UCS 5.1
             warnings.warn('Still using deprecated AttributeHook.version == 1', DeprecationWarning, stacklevel=2)
             old_value = obj[self.udm_attribute_name]
         new_value = self.map_attribute_value_to_udm(old_value)
-        log.debug('admin.syntax.hook.AttributeHook: Setting UDM value from %r to %r', old_value, new_value)
+        log.debug('AttributeHook: Setting UDM value', old=old_value, new=new_value)
         obj[self.udm_attribute_name] = new_value
 
     def hook_ldap_addlist(self, obj: univention.admin.handlers.simpleLdap, al: AddList) -> AddList:
@@ -212,10 +212,10 @@ class AttributeHook(simpleHook):
                 else:
                     key, old_value, new_value = ml_value
                 if key == self.ldap_attribute_name:
-                    log.debug('admin.syntax.hook.AttributeHook: Mapping %s (UDM) -> %s (LDAP)', self.udm_attribute_name, self.ldap_attribute_name)
+                    log.debug('AttributeHook modlist: Mapping UDM -> LDAP', ldap=self.ldap_attribute_name, udm=self.udm_attribute_name)
                     old_value = self.map_attribute_value_to_ldap(old_value)
                     new_new_value = self.map_attribute_value_to_ldap(new_value)
-                    log.debug('admin.syntax.hook.AttributeHook: Setting LDAP value from %r to %r', new_value, new_new_value)
+                    log.debug('AttributeHook: Setting LDAP value', old=new_value, new=new_new_value)
                     new_value = new_new_value
                 new_ml.append((key, old_value, new_value))
             return new_ml
