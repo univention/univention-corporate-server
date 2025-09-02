@@ -96,7 +96,30 @@ General
 
 * |UCSUCS| |release| includes the following updated packages from Debian 12:
 
-  :program:`FIXME`
+  :program:`djvulibre`
+  :program:`ffmpeg`
+  :program:`libxml2`
+  :program:`unbound`
+  :program:`qemu`
+  :program:`aide`
+  :program:`catdoc`
+  :program:`chromium`
+  :program:`gst-plugins-bad1.0`
+  :program:`konsole`
+  :program:`libblockdev`
+  :program:`mediawiki`
+  :program:`node-cipher-base`
+  :program:`nodejs`
+  :program:`pgpool2`
+  :program:`php8.2`
+  :program:`redis`
+  :program:`ring`
+  :program:`slurm-wlm`
+  :program:`sope`
+  :program:`thunderbird`
+  :program:`trafficserver`
+  :program:`udisks2`
+  :program:`webkit2gtk`
 
 .. _maintained:
 
