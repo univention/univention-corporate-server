@@ -49,6 +49,7 @@ find / \
 	! \( \
 		-path "/tmp/.gdm_socket" \
 		-o -path "/tmp/.winbindd/pipe" \
+		-o -path "/run/cloud-init/hook-hotplug-cmd" \
 		-o -path "/run/umc-web-server.pid.lock" \
 		-o -path "/run/umc-server.pid.lock" \
 		-o -path "/run/*.MainThread-*" \

@@ -1,3 +1,10 @@
+ucs-test (12.2.45) unstable; urgency=medium
+
+  * Issue univention/dev/ucs#3085: Ignore OpenStack file in
+    tests/01_base/25check-permissions
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 02 Sep 2025 10:20:54 +0200
+
 ucs-test (12.2.44) unstable; urgency=medium
 
   * Bug #51256: the capture_mails method only works on the primary
