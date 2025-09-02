@@ -13,11 +13,11 @@ Publication date of UCS |release|: 2025-06-12
 Release highlights
 ******************
 
-With |UCSUCS| 5.2-2, the second patch level release for |UCSUCS| 5.2 is available.
+With |UCSUCS| 5.2-3, the second patch level release for |UCSUCS| 5.2 is available.
 It provides several feature improvements and extensions, properties, as well as, bug fixes.
 Here is an overview of the most important changes:
 
-* |UCSUCS| 5.2-2 introduces the ``univentionObjectIdentifier``: a globally unique identifier
+* |UCSUCS| 5.2-3 introduces the ``univentionObjectIdentifier``: a globally unique identifier
   for all objects managed via |UCSUDM|.
   It simplifies object mapping to external systems and ensures consistent tracking across logs.
   The identifier is auto-generated for new objects; existing objects receive it during upgrade.
@@ -27,7 +27,7 @@ Here is an overview of the most important changes:
   This enables seamless Single Sign-On access across connected applications
   for identities logging in via trusted external *IdPs* (e.g., :program:`Active Directory`).
 
-* |UCSUCS| 5.2-2 delivers major performance gains in |UCSUDM|, notably for deleting computer objects and
+* |UCSUCS| 5.2-3 delivers major performance gains in |UCSUDM|, notably for deleting computer objects and
   editing groups in large environments.
   A new diagnostic tool identifies LDAP database fragmentation — a key bottleneck in older,
   large deployments — and provides remediation guidance.
@@ -35,7 +35,7 @@ Here is an overview of the most important changes:
 * Various components of the |UCSUMC| and App Center were hardened against cross-site scripting (XSS) attacks
   through stricter content sanitization and improved HTML encoding.
 
-* |UCSUCS| 5.2-2 includes numerous security updates for packages such as ``curl``, ``glibc``, ``intel-microcode``,
+* |UCSUCS| 5.2-3 includes numerous security updates for packages such as ``curl``, ``glibc``, ``intel-microcode``,
   ``openssl``, ``firefox-esr``, ``Linux kernel``, and many others
   to ensure protection against the latest vulnerabilities.
 
@@ -77,9 +77,9 @@ and for each object of class ``univentionObject``  the value of ``entryUUID`` is
 to initialize the attribute in case it is not yet present. Depending on the amount of
 objects in the LDAP directory and limiting I/O factors this may take some time.
 
-Please note that in Nubus environments with mixed UCS versions prior to |UCSUCS| 5.2-2, the
+Please note that in Nubus environments with mixed UCS versions prior to |UCSUCS| 5.2-3, the
 UDM on the old systems will not know how to properly manage the attribute for all
-kinds of ``univentionObject``. |UCSUCS| 5.2-2 contains a plugin for UMC System Diagnostic
+kinds of ``univentionObject``. |UCSUCS| 5.2-3 contains a plugin for UMC System Diagnostic
 to check if all objects have the attribute and to fix those that don't.
 
 .. _relnotes-bootloader:
@@ -144,10 +144,10 @@ and run it on the UCS system.
 .. code-block:: console
 
    # download
-   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.2-2{.gpg,}
+   $ curl -OOf https://updates.software-univention.de/download/univention-update-checks/pre-update-checks-5.2-3{.gpg,}
 
    # verify and run script
-   $ apt-key verify pre-update-checks-5.2-2{.gpg,} && bash pre-update-checks-5.2-2
+   $ apt-key verify pre-update-checks-5.2-3{.gpg,} && bash pre-update-checks-5.2-3
 
    ...
 
@@ -237,7 +237,7 @@ Changelog
 *********
 
 You find the changes since UCS 5.2-0 in
-:external+uv-changelog-5.2-2:doc:`index`.
+:external+uv-changelog-5.2-3:doc:`index`.
 
 .. _biblio:
 

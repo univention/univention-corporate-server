@@ -28,7 +28,7 @@ the UCS 5.2-3 patch level release version.
 
 1. Update configuration settings in `conf.py`:
 
-   * Set `univention_changelog_previous_release` to `"5.2-1"`.
+   * Set `univention_changelog_previous_release` to `"5.2-2"`.
 
    * Set `release` to `5.2-3`.
 
