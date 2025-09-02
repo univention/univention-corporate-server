@@ -4,7 +4,6 @@
 """|UDM| pki X.509 DER certificate handling"""
 
 import base64
-from logging import getLogger
 
 from M2Crypto import X509
 
@@ -13,9 +12,8 @@ import univention.admin.localization
 import univention.admin.mapping
 import univention.admin.syntax
 from univention.admin.layout import Group, Tab
+from univention.admin.log import log
 
-
-log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention.admin')
 _ = translation.translate

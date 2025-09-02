@@ -1,14 +1,11 @@
 #
 # SPDX-FileCopyrightText: 2004-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
-from logging import getLogger
 
 from ldap.filter import filter_format
 
 from univention.admin import configRegistry, uexceptions
-
-
-log = getLogger('ADMIN')
+from univention.admin.log import log
 
 
 class AppHost:

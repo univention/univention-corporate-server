@@ -7,15 +7,13 @@ import datetime
 import inspect
 import time
 from collections.abc import Sequence
-from logging import getLogger
 
 import ldap.dn
 
 import univention.admin.uexceptions
 from univention.admin import localization
+from univention.admin.log import log
 
-
-log = getLogger('ADMIN')
 
 translation = localization.translation('univention/admin')
 _ = translation.translate

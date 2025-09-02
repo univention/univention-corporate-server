@@ -4,7 +4,6 @@
 """|UDM| module for network objects"""
 
 import ipaddress
-from logging import getLogger
 
 import ldap
 from ldap.filter import filter_format
@@ -15,9 +14,9 @@ import univention.admin.localization
 import univention.admin.modules
 import univention.admin.uexceptions
 from univention.admin.layout import Group, Tab
+from univention.admin.log import log
 
 
-log = getLogger('ADMIN')
 translation = univention.admin.localization.translation('univention.admin.handlers.networks')
 _ = translation.translate
 
@@ -201,7 +200,7 @@ class object(univention.admin.handlers.simpleLdap):
             try:
                 self.lo.authz_connection.modify(computer.dn, [('univentionNetworkLink', self.dn.encode('UTF-8'), b'')])
             except (univention.admin.uexceptions.base, ldap.LDAPError):
-                log.exception('Failed to remove network %s from %s:', self.dn, computer.dn)
+                log.exception('Failed to remove network from computer', dn=self.dn, computer=computer.dn)
 
     def _ldap_addlist(self):
         if not self['nextIp']:

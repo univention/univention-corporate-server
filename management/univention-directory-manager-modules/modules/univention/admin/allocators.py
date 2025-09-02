@@ -5,7 +5,6 @@
 
 from __future__ import annotations
 
-from logging import getLogger
 from typing import TYPE_CHECKING, overload
 
 import ldap
@@ -15,6 +14,7 @@ import univention.admin.localization
 import univention.admin.locking
 import univention.admin.uexceptions
 from univention.admin._ucr import configRegistry
+from univention.admin.log import log
 
 
 if TYPE_CHECKING:
@@ -45,7 +45,7 @@ except ImportError:
     pass
 
 
-log = getLogger('ADMIN')
+log = log.getChild('ALLOCATE')
 translation = univention.admin.localization.translation('univention/admin')
 _ = translation.translate
 
@@ -94,7 +94,7 @@ def requestUserSid(
     domainsid = searchResult[0][1]['sambaSID'][0].decode('ASCII')
     sid = domainsid + '-' + rid
 
-    log.debug('ALLOCATE: request user sid. SID = %s-%s', domainsid, rid)
+    log.debug('request user sid. SID = %s-%s', domainsid, rid)
 
     return request(lo, position, 'sid', sid)
 
@@ -127,14 +127,14 @@ def acquireRange(
     ranges: Sequence[dict[str, int]],
     scope: _Scopes = 'base',
 ) -> str:
-    log.debug('ALLOCATE: Start allocation for type = %r', atype)
+    log.debug('Start allocation for type = %r', atype)
     start_id = lo.authz_connection.getAttr('cn=%s,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(atype), position.getBase()), 'univentionLastUsedValue')
 
-    log.debug('ALLOCATE: Start ID = %r', start_id)
+    log.debug('Start ID = %r', start_id)
 
     if not start_id:
         startID = ranges[0]['first']
-        log.debug('ALLOCATE: Set Start ID to first %r', startID)
+        log.debug('Set Start ID to first %r', startID)
     else:
         startID = int(start_id[0])
 
@@ -146,40 +146,40 @@ def acquireRange(
 
         while startID < last:
             startID += 1
-            log.debug('ALLOCATE: Set Start ID %r', startID)
+            log.debug('Set Start ID %r', startID)
             try:
                 if other:
                     # exception occurred while locking other, so atype was successfully locked and must be released
                     univention.admin.locking.unlock(lo, position, atype, str(startID - 1).encode('utf-8'), scope=scope)
                     other = None
-                log.debug('ALLOCATE: Lock ID %r for %r', startID, atype)
+                log.debug('Lock ID %r for %r', startID, atype)
                 univention.admin.locking.lock(lo, position, atype, str(startID).encode('utf-8'), scope=scope)
                 if atype in ('uidNumber', 'gidNumber'):
                     # reserve the same ID for both
                     other = 'uidNumber' if atype == 'gidNumber' else 'gidNumber'
-                    log.debug('ALLOCATE: Lock ID %r for %r', startID, other)
+                    log.debug('Lock ID %r for %r', startID, other)
                     univention.admin.locking.lock(lo, position, other, str(startID).encode('utf-8'), scope=scope)
             except univention.admin.uexceptions.noLock:
-                log.debug('ALLOCATE: Cannot Lock ID %r', startID)
+                log.debug('Cannot Lock ID %r', startID)
                 continue
             except univention.admin.uexceptions.objectExists:
-                log.debug('ALLOCATE: Cannot Lock existing ID %r', startID)
+                log.debug('Cannot Lock existing ID %r', startID)
                 continue
 
             if atype in ('uidNumber', 'gidNumber'):
                 _filter = filter_format('(|(uidNumber=%s)(gidNumber=%s))', (str(startID), str(startID)))
             else:
                 _filter = '(%s=%d)' % (attr, startID)
-            log.debug('ALLOCATE: searchfor %r', _filter)
+            log.debug('searchfor %r', _filter)
             if lo.authz_connection.searchDn(base=position.getBase(), filter=_filter):
-                log.debug('ALLOCATE: Already used ID %r', startID)
+                log.debug('Already used ID %r', startID)
                 univention.admin.locking.unlock(lo, position, atype, str(startID).encode('utf-8'), scope=scope)
                 if other:
                     univention.admin.locking.unlock(lo, position, other, str(startID).encode('utf-8'), scope=scope)
                     other = None
                 continue
 
-            log.debug('ALLOCATE: Return ID %r', startID)
+            log.debug('Return ID %r', startID)
             if other:
                 univention.admin.locking.unlock(lo, position, other, str(startID).encode('utf-8'), scope=scope)
             return str(startID)

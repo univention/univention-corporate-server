@@ -4,7 +4,6 @@
 """|UDM| methods and defines for Nagios related attributes."""
 
 import copy
-from logging import getLogger
 
 from ldap.filter import filter_format
 
@@ -13,9 +12,8 @@ import univention.admin.localization
 import univention.admin.syntax
 from univention.admin import configRegistry
 from univention.admin.layout import Tab
+from univention.admin.log import log
 
-
-log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention.admin')
 _ = translation.translate

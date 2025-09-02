@@ -9,7 +9,6 @@ import inspect
 import os
 import sys
 import warnings
-from logging import getLogger
 from types import SimpleNamespace
 from typing import TYPE_CHECKING, Any
 
@@ -24,7 +23,8 @@ if TYPE_CHECKING:
     _Mod3 = tuple[str, list[str], list[str]]
     ModList = list[_Mod2 | _Mod3]
 
-log = getLogger('ADMIN')
+from univention.admin.log import log
+
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
@@ -51,9 +51,9 @@ def import_hook_files() -> None:
                                 ),
                             ),
                         )
-                    log.debug('admin.hook.import_hook_files: importing %r', fn)
+                    log.debug('importing hook', hook=fn)
                 except Exception:
-                    log.exception('admin.hook.import_hook_files: loading %r failed', fn)
+                    log.exception('loading hook failed', hook=fn)
 
 
 class simpleHook:

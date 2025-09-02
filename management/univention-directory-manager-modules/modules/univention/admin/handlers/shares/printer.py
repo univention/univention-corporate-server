@@ -6,7 +6,6 @@
 from __future__ import annotations
 
 import re
-from logging import getLogger
 
 from ldap.filter import filter_format
 
@@ -17,9 +16,8 @@ import univention.admin.syntax
 import univention.admin.uexceptions
 import univention.admin.uldap
 from univention.admin.layout import Group, Tab
+from univention.admin.log import log
 
-
-log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention.admin.handlers.shares')
 _ = translation.translate
@@ -210,7 +208,7 @@ class object(univention.admin.handlers.simpleLdap):
         univention.admin.handlers.simpleLdap.open(self)
         if self['model']:
             models = univention.admin.modules._get('settings/printermodel').lookup(None, self.lo, filter_format('printerModel="%s*', [self['model']]))
-            log.debug('printermodel: %s', models)
+            log.debug('open: printermodel', value=models)
             if not models or len(models) > 1:
                 self['producer'] = []
             else:
