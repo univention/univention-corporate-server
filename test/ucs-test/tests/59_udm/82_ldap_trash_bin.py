@@ -8,6 +8,8 @@
 ##  - python3-univention-directory-manager
 
 
+import json
+
 import ldap
 import pytest
 
@@ -495,3 +497,235 @@ def test_delete_at_timestamp_based_on_retention_policy(udm):
 
     # Cleanup
     lo.delete(deleted_dn)
+
+
+def test_security_reference_tracking_safety(udm):
+    """Test that reference tracking doesn't expose sensitive information"""
+    lo = get_admin_connection()
+
+    username = random_username()
+    user_dn, _ = udm.create_user(
+        username=username,
+        firstname='RefTrack',
+        lastname='Security',
+    )
+
+    groupname = random_username()
+    group_dn, _ = udm.create_group(
+        name=groupname,
+        description='Reference tracking security test group',
+    )
+
+    udm.modify_object('groups/group', dn=group_dn, users=[user_dn])
+
+    group_attrs = lo.get(group_dn)
+    has_reference = group_attrs.get('uniqueMember', []) or group_attrs.get('memberUid', [])
+    assert has_reference
+
+    udm.remove_object('users/user', dn=user_dn)
+
+    deleted_objects = _find_deleted_objects(lo, user_dn)
+    assert len(deleted_objects) > 0
+
+    deleted_dn = deleted_objects[0]['dn']
+    deleted_attrs = lo.get(deleted_dn)
+
+    referenced_by = deleted_attrs.get('referencedBy', [])
+    if referenced_by:
+        for ref in referenced_by:
+            ref_data = json.loads(ref.decode('utf-8'))
+            assert 'dn' in ref_data
+            assert 'module' in ref_data
+            assert 'password' not in str(ref_data).lower()
+            assert 'secret' not in str(ref_data).lower()
+
+    # Cleanup
+    udm.remove_object('groups/group', dn=group_dn)
+    group_deleted = _find_deleted_objects(lo, group_dn)
+
+    for obj in deleted_objects:
+        _cleanup_deleted_object(lo, obj['dn'])
+    for obj in group_deleted:
+        _cleanup_deleted_object(lo, obj['dn'])
+
+
+def test_user_group_restoration_comprehensive(udm):
+    """Test restoration of users and groups with preserved relationships"""
+    lo = get_admin_connection()
+
+    groupname = random_username()
+    group_dn, _ = udm.create_group(
+        name=groupname,
+        description='Test group for restoration',
+    )
+
+    username = random_username()
+    user_dn, _ = udm.create_user(
+        username=username,
+        firstname='Restoration',
+        lastname='Test',
+        groups=[group_dn],
+    )
+
+    verify_ldap_object(user_dn, should_exist=True)
+    verify_ldap_object(group_dn, should_exist=True)
+
+    group_attrs = lo.get(group_dn)
+    assert user_dn.encode('utf-8') in group_attrs.get('uniqueMember', [])
+
+    udm.remove_object('users/user', dn=user_dn)
+    verify_ldap_object(user_dn, should_exist=False)
+
+    deleted_users = _find_deleted_objects(lo, user_dn)
+    assert len(deleted_users) > 0
+    user_deleted_obj = deleted_users[0]
+
+    deleted_user_attrs = lo.get(user_deleted_obj['dn'])
+    preserved_memberships = deleted_user_attrs.get('seeAlso', [])
+    if preserved_memberships:
+        preserved_groups = [g.decode('utf-8') for g in preserved_memberships]
+        assert group_dn in preserved_groups
+
+    udm.remove_object('groups/group', dn=group_dn)
+    verify_ldap_object(group_dn, should_exist=False)
+
+    deleted_groups = _find_deleted_objects(lo, group_dn)
+    assert len(deleted_groups) > 0
+    group_deleted_obj = deleted_groups[0]
+
+    setup_udm()
+    recyclebin_module = udm_modules.modules['recyclebin/deletedobject']
+    position = univention.admin.uldap.position(lo.base)
+
+    deleted_group_udm_obj = recyclebin_module.object(None, lo, position, dn=group_deleted_obj['dn'])
+    deleted_group_udm_obj.open()
+    deleted_group_udm_obj.restore()
+
+    verify_ldap_object(group_dn, should_exist=True)
+
+    deleted_user_udm_obj = recyclebin_module.object(None, lo, position, dn=user_deleted_obj['dn'])
+    deleted_user_udm_obj.open()
+    deleted_user_udm_obj.restore()
+
+    verify_ldap_object(user_dn, should_exist=True)
+
+    final_group_attrs = lo.get(group_dn)
+    if preserved_memberships:
+        assert user_dn.encode('utf-8') in final_group_attrs.get('uniqueMember', [])
+
+    remaining_deleted_users = _find_deleted_objects(lo, user_dn)
+    remaining_deleted_groups = _find_deleted_objects(lo, group_dn)
+    assert len(remaining_deleted_users) == 0
+    assert len(remaining_deleted_groups) == 0
+
+    lo.delete(user_dn)
+    lo.delete(group_dn)
+
+
+def test_user_multiple_groups_deletion_restoration(udm):
+    """Test deletion and restoration of user belonging to multiple groups"""
+    lo = get_admin_connection()
+
+    group1_name = random_username()
+    group1_dn, _ = udm.create_group(
+        name=group1_name,
+        description='Test group 1 for multi-group membership',
+    )
+
+    group2_name = random_username()
+    group2_dn, _ = udm.create_group(
+        name=group2_name,
+        description='Test group 2 for multi-group membership',
+    )
+
+    group3_name = random_username()
+    group3_dn, _ = udm.create_group(
+        name=group3_name,
+        description='Test group 3 for multi-group membership',
+    )
+
+    username = random_username()
+    user_dn, _ = udm.create_user(
+        username=username,
+        firstname='MultiGroup',
+        lastname='Test',
+        groups=[group1_dn, group2_dn, group3_dn],
+    )
+
+    verify_ldap_object(user_dn, should_exist=True)
+    verify_ldap_object(group1_dn, should_exist=True)
+    verify_ldap_object(group2_dn, should_exist=True)
+    verify_ldap_object(group3_dn, should_exist=True)
+
+    group1_attrs = lo.get(group1_dn)
+    group2_attrs = lo.get(group2_dn)
+    group3_attrs = lo.get(group3_dn)
+
+    assert user_dn.encode('utf-8') in group1_attrs.get('uniqueMember', [])
+    assert user_dn.encode('utf-8') in group2_attrs.get('uniqueMember', [])
+    assert user_dn.encode('utf-8') in group3_attrs.get('uniqueMember', [])
+
+    udm.remove_object('users/user', dn=user_dn)
+    verify_ldap_object(user_dn, should_exist=False)
+
+    deleted_objects = _find_deleted_objects(lo, user_dn)
+    assert len(deleted_objects) > 0
+    deleted_obj = deleted_objects[0]
+
+    deleted_attrs = lo.get(deleted_obj['dn'])
+    preserved_memberships = deleted_attrs.get('seeAlso', [])
+
+    if preserved_memberships:
+        preserved_groups = [g.decode('utf-8') for g in preserved_memberships]
+        expected_groups = {group1_dn, group2_dn, group3_dn}
+        preserved_groups_set = set(preserved_groups)
+        common_groups = expected_groups.intersection(preserved_groups_set)
+        assert len(common_groups) > 0
+
+    updated_group1_attrs = lo.get(group1_dn)
+    updated_group2_attrs = lo.get(group2_dn)
+    updated_group3_attrs = lo.get(group3_dn)
+
+    assert user_dn.encode('utf-8') not in updated_group1_attrs.get('uniqueMember', [])
+    assert user_dn.encode('utf-8') not in updated_group2_attrs.get('uniqueMember', [])
+    assert user_dn.encode('utf-8') not in updated_group3_attrs.get('uniqueMember', [])
+
+    setup_udm()
+    recyclebin_module = udm_modules.modules['recyclebin/deletedobject']
+    position = univention.admin.uldap.position(lo.base)
+
+    deleted_udm_obj = recyclebin_module.object(None, lo, position, dn=deleted_obj['dn'])
+    deleted_udm_obj.open()
+    deleted_udm_obj.restore()
+
+    verify_ldap_object(user_dn, should_exist=True)
+
+    final_group1_attrs = lo.get(group1_dn)
+    final_group2_attrs = lo.get(group2_dn)
+    final_group3_attrs = lo.get(group3_dn)
+
+    restored_memberships = []
+    if user_dn.encode('utf-8') in final_group1_attrs.get('uniqueMember', []):
+        restored_memberships.append(group1_dn)
+    if user_dn.encode('utf-8') in final_group2_attrs.get('uniqueMember', []):
+        restored_memberships.append(group2_dn)
+    if user_dn.encode('utf-8') in final_group3_attrs.get('uniqueMember', []):
+        restored_memberships.append(group3_dn)
+
+    if preserved_memberships:
+        preserved_groups_set = {g.decode('utf-8') for g in preserved_memberships}
+        expected_groups = {group1_dn, group2_dn, group3_dn}
+        common_preserved = expected_groups.intersection(preserved_groups_set)
+        restored_set = set(restored_memberships)
+        restored_common = common_preserved.intersection(restored_set)
+
+        if len(common_preserved) > 0:
+            assert len(restored_common) > 0
+
+    remaining_deleted = _find_deleted_objects(lo, user_dn)
+    assert len(remaining_deleted) == 0
+
+    lo.delete(user_dn)
+    lo.delete(group1_dn)
+    lo.delete(group2_dn)
+    lo.delete(group3_dn)
