@@ -1,3 +1,9 @@
+univention-portal (6.3.0) UNRELEASED; urgency=medium
+
+  * Bug #58568: UCS 5.2-3 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 02 Sep 2025 16:18:20 +0200
+
 univention-portal (6.2.0) UNRELEASED; urgency=medium
 
   * Bug #58344: UCS 5.2-2 version bump

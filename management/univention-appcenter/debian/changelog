@@ -1,3 +1,9 @@
+univention-appcenter (11.3.0) UNRELEASED; urgency=medium
+
+  * Bug #58568: UCS 5.2-3 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 02 Sep 2025 16:18:18 +0200
+
 univention-appcenter (11.2.3) unstable; urgency=medium
 
   * Bug #58469: remove .etag file if the download of the .all.tar.gz fail.

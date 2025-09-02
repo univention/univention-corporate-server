@@ -1,3 +1,9 @@
+univention-s4-connector (16.3.0) UNRELEASED; urgency=medium
+
+  * Bug #58568: UCS 5.2-3 version bump
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 02 Sep 2025 16:18:23 +0200
+
 univention-s4-connector (16.2.2) unstable; urgency=medium
 
   * Bug #53882: Add "Pre-Windows 2000 Compatible Access", "Windows
