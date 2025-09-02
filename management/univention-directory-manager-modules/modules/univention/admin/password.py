@@ -7,16 +7,14 @@ from __future__ import annotations
 
 import hashlib
 import re
-from logging import getLogger
 
 import bcrypt
 import heimdal
 import passlib.hash
 
 from univention.admin._ucr import configRegistry
+from univention.admin.log import log
 
-
-log = getLogger('ADMIN')
 
 RE_PASSWORD_SCHEME = re.compile(r'^{(\w+)}(!?)(.*)', re.I)
 

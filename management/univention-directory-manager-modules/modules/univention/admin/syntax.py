@@ -21,7 +21,6 @@ import uuid
 import zlib
 import zoneinfo
 from io import BytesIO
-from logging import getLogger
 from typing import TYPE_CHECKING
 
 import ldap
@@ -36,6 +35,7 @@ import univention.admin.modules
 import univention.admin.types
 import univention.admin.uexceptions
 from univention.admin import configRegistry, localization
+from univention.admin.log import log
 from univention.lib.ucs import UCS_Version
 from univention.lib.umc_module import get_mime_description, get_mime_type, image_mime_type_of_buffer
 from univention.uldap import getMachineConnection
@@ -52,7 +52,6 @@ if TYPE_CHECKING:
 
 SPECIAL_USE_DOMAIN_NAMES[:] = []
 
-log = getLogger('ADMIN')
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
@@ -222,10 +221,9 @@ class ISyntax:
     def get_widget_options(self, udm_property):
         widget_name = self.get_widget(udm_property)
         if widget_name is None:
-            log.info('Could not convert UDM syntax %s', self)
+            log.debug('Could not convert UDM syntax %s', self)
             return {}
 
-        log.debug('Find choices for syntax %s', self.name)
         descr = {'type': widget_name}
         descr.update(self.get_widget_choices_options(udm_property))
 
@@ -253,9 +251,8 @@ class ISyntax:
             return [subtypes_dict(_) for _ in getattr(self, 'subsyntaxes', [])]
 
         subtypes = subsyntaxes(udm_property)
-        log.debug('Syntax %s has the following choices: %s', self.name, descr)
+        log.trace('Syntax choices', syntax=self.name, choices=descr, subtypes=subtypes)
         if subtypes:
-            log.debug('Syntax %s has the following sub-types: %s', self.name, subtypes)
             descr['subtypes'] = subtypes
         if descr['type'] == 'LinkList':
             descr['multivalue'] = False

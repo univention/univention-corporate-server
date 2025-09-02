@@ -5,15 +5,12 @@
 
 from __future__ import annotations
 
-from logging import getLogger
 from typing import Any
 
 import ldap
 
 import univention.admin.modules
-
-
-log = getLogger('ADMIN')
+from univention.admin.log import log
 
 
 def module(object: univention.admin.handlers.simpleLdap) -> str | None:

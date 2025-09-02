@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import base64
 import inspect
-from logging import getLogger
 from typing import TYPE_CHECKING, TypeVar
 
 import univention.admin.uexceptions
@@ -18,8 +17,8 @@ if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
     from typing import Any
 
+from univention.admin.log import log
 
-log = getLogger('ADMIN')
 
 translation = localization.translation('univention/admin')
 

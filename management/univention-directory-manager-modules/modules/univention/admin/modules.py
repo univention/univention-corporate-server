@@ -13,7 +13,6 @@ import os
 import traceback
 import warnings
 from importlib import reload as reload_module
-from logging import getLogger
 from typing import TYPE_CHECKING, Any, Protocol, overload
 
 import ldap
@@ -27,6 +26,7 @@ import univention.admin.uldap
 from univention.admin import localization
 from univention.admin._ucr import configRegistry
 from univention.admin.layout import Group, ILayoutElement, Tab
+from univention.admin.log import log
 
 
 if TYPE_CHECKING:
@@ -74,7 +74,7 @@ class UdmModule(Protocol):
 
 UdmName = UdmModule | str
 
-log = getLogger('ADMIN')
+log = log.getChild(__name__)
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
@@ -390,7 +390,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
         try:
             mayChange = bool(int(attrs.get('univentionUDMPropertyValueMayChange', [b'0'])[0]))
         except ValueError:
-            log.error('modules update_extended_attributes: ERROR: processing univentionUDMPropertyValueMayChange threw exception - assuming mayChange=0')
+            log.error('univentionUDMPropertyValueMayChange non numeric- assuming mayChange=0', dn=_dn)
             mayChange = False
 
         # prevent UMC default popup
@@ -408,7 +408,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
         try:
             doNotSearch = bool(int(attrs.get('univentionUDMPropertyDoNotSearch', [b'0'])[0]))
         except ValueError:
-            log.error('modules update_extended_attributes: ERROR: processing univentionUDMPropertyDoNotSearch threw exception - assuming doNotSearch=0')
+            log.error('univentionUDMPropertyDoNotSearch non numeric - assuming doNotSearch=0', dn=_dn)
             doNotSearch = False
 
         # check if CA is multivalue property
@@ -434,7 +434,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
 
         # get current language
         lang = locale.getlocale(locale.LC_MESSAGES)[0]
-        log.debug('modules update_extended_attributes: LANG = %s', str(lang))
+        log.trace('modules update_extended_attributes: LANG = %s', str(lang))
 
         # get descriptions
         shortdesc = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationShortDescription;entry-%s', 'univentionUDMPropertyShortDescription')
@@ -482,7 +482,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
             except TypeError:
                 groupPosition = 0
 
-            log.debug('update_extended_attributes: extended attribute (LDAP): %r', attrs)
+            log.trace('update_extended_attributes: extended attribute (LDAP): %r', attrs)
 
             # only one is possible ==> overwriteTab wins
             if overwriteTab and overwriteProp:
@@ -491,7 +491,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
             # add tab name to list if missing
             if tabname not in properties4tabs and not layoutDisabled:
                 properties4tabs[tabname] = []
-                log.debug('modules update_extended_attributes: custom fields init for tab %s', tabname)
+                log.trace('modules update_extended_attributes: custom fields init for tab %s', tabname)
 
             # remember tab for purging if required
             if overwriteTab and tabname not in overwriteTabList and not layoutDisabled:
