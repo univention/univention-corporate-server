@@ -210,7 +210,7 @@ class object(univention.admin.handlers.simpleLdap):
         univention.admin.handlers.simpleLdap.open(self)
         if self['model']:
             models = univention.admin.modules._get('settings/printermodel').lookup(None, self.lo, filter_format('printerModel="%s*', [self['model']]))
-            log.debug('printermodel: %s', models)
+            log.debug({'msg': 'open: printermodel', 'value': models})
             if not models or len(models) > 1:
                 self['producer'] = []
             else:

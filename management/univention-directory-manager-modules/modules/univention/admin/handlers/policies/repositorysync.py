@@ -133,7 +133,7 @@ class object(univention.admin.handlers.simplePolicy):
 
     def parse_cron(self, cronstring):
         # don't use self[key] inside here - it will be recursive call(ed by) __getitem__
-        log.debug('repositorysync cron: %s', cronstring)
+        log.debug({'msg': 'parse cron', 'value': cronstring})
         cron = univention.admin.cron.cron_split(cronstring)
         keys = ['minute', 'hour', 'day', 'month', 'weekday']
         for key in keys:

@@ -131,7 +131,7 @@ class object(univention.admin.handlers.simpleLdap):
                 # find correct dNSZone entry
                 res = self.lo.authz_connection.search(filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))', (zoneName, relDomainName)))
                 if not res:
-                    log.debug('service.py: open: could not find dNSZone of %s', host)
+                    log.debug({'msg': 'open: could not find dNSZone', 'host': host})
                 else:
                     # found dNSZone
                     filter = '(&(objectClass=univentionHost)'

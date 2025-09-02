@@ -516,7 +516,7 @@ class object(univention.admin.handlers.simpleLdap):
                         if uid_list:
                             result.append(uid_list[0].decode('UTF-8'))
                             if len(uid_list) > 1:
-                                log.warning('groups/group: A groupmember has multiple UIDs (%s %r)', uniqueMember, uid_list)
+                                log.warning({'msg': 'A groupmember has multiple UIDs', 'dn': uniqueMember, 'uid': uid_list})
                 return result
 
             # calling keepCase is not necessary as the LDAP server already handles the case when removing elements
@@ -606,7 +606,7 @@ class object(univention.admin.handlers.simpleLdap):
                 continue
             newmembers = copy.deepcopy(members)
             newmembers = self.__case_insensitive_remove_from_list(self.dn, newmembers)
-            log.debug('groups/group: remove from supergroup %s', group)
+            log.debug({'msg': 'remove from supergroup', 'group': group, 'dn': self.dn})
             self.__set_membership_attributes(group, members, newmembers)
 
     def _ldap_post_move(self, olddn: str) -> None:
@@ -628,7 +628,7 @@ class object(univention.admin.handlers.simpleLdap):
             newmembers = copy.deepcopy(members)
             newmembers = self.__case_insensitive_remove_from_list(olddn, newmembers)
             newmembers.append(self.dn)
-            log.debug('groups/group: updating supergroup %s', group)
+            log.debug({'msg': 'updating supergroup', 'group': group, 'dn': self.dn})
             self.__set_membership_attributes(group, members, newmembers)
 
     def __update_membership(self) -> None:
@@ -672,7 +672,7 @@ class object(univention.admin.handlers.simpleLdap):
                 continue
             newmembers = copy.deepcopy(members)
             newmembers.append(self.dn)
-            log.debug('groups/group: add to supergroup %s', group)
+            log.debug({'msg': 'add to supergroup', 'group': group, 'dn': self.dn})
             self.__set_membership_attributes(group, members, newmembers)
 
         for group in remove_from_group:
@@ -685,7 +685,7 @@ class object(univention.admin.handlers.simpleLdap):
             if self.__case_insensitive_in_list(self.old_dn, newmembers):
                 newmembers = self.__case_insensitive_remove_from_list(self.old_dn, newmembers)
             if members != newmembers:
-                log.debug('groups/group: remove from supergroup %s', group)
+                log.debug({'msg': 'remove from supergroup', 'group': group, 'dn': self.dn})
                 self.__set_membership_attributes(group, members, newmembers)
 
     def __set_membership_attributes(self, group, members, newmembers):
@@ -828,8 +828,7 @@ class object(univention.admin.handlers.simpleLdap):
         old_groupType = self.oldinfo.get('adGroupType', 0)
         new_groupType = self.info.get('adGroupType', 0)
 
-        log.debug('groups/group: old_groupType: %s', old_groupType)
-        log.debug('groups/group: new_groupType: %s', new_groupType)
+        log.debug({'msg': 'Changing groupType', 'old': old_groupType, 'new': new_groupType})
 
         if not old_groupType or not new_groupType:
             return
@@ -882,7 +881,7 @@ class object(univention.admin.handlers.simpleLdap):
     def __generate_group_sid(self, gidNum):
         new_groupType = self.info.get('adGroupType', 0)
 
-        log.debug('groups/group: new_groupType: %s', new_groupType)
+        log.debug({'msg': 'Setting groupType', 'value': new_groupType})
         if self['sambaRID']:
             return self.__allocate_rid(self['sambaRID'])
         elif self.s4connector_present and not self.__is_groupType_local(new_groupType):

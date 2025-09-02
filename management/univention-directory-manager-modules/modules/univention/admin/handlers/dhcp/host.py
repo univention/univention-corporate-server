@@ -78,7 +78,7 @@ def unmapHWAddress(old, encoding=()):
     >>> unmapHWAddress([])
     ['', '']
     """
-    log.debug('host.py: unmapHWAddress: old: %s', old)
+    log.debug({'msg': 'unmapHWAddress', 'value': old})
     if not old:
         return ['', '']
     return old[0].decode(*encoding).split(' ')
@@ -96,7 +96,7 @@ def mapHWAddress(old, encoding=()):
     >>> mapHWAddress('11:11:11:11:11:11')
     b'11:11:11:11:11:11'
     """
-    log.debug('host.py: mapHWAddress: old: %s', old)
+    log.debug({'msg': 'mapHWAddress', 'value': old})
     if not isinstance(old, list):
         old = [old]
     if not old[0]:

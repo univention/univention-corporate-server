@@ -146,7 +146,7 @@ class object(DNSBase):
             if self.superordinate:
                 return calc_ip(self.info['address'] or '', self.superordinate.info['subnet'] or '').compressed
         except (LookupError, ValueError, AssertionError) as ex:
-            log.warning('Failed to parse dn=%s: (%s)', self.dn, ex)
+            log.warning({'msg': 'Failed to parse address/subnet', 'dn': self.dn, 'error': ex})
         return super().description()
 
     def open(self) -> None:
@@ -155,7 +155,7 @@ class object(DNSBase):
             self.info['ip'] = calc_ip(self.info['address'], self.superordinate.info['subnet']).compressed
             self.save()
         except (LookupError, ValueError, AssertionError) as ex:
-            log.warning('Failed to parse dn=%s: (%s)', self.dn, ex)
+            log.warning({'msg': 'Failed to parse address/subnet', 'dn': self.dn, 'error': ex})
 
     def ready(self) -> None:
         old_ip = self.oldinfo.get('ip')
@@ -164,7 +164,7 @@ class object(DNSBase):
             try:
                 self.info['address'] = calc_rev(new_ip, self.superordinate.info['subnet'])
             except (LookupError, ValueError, AssertionError) as ex:
-                log.warning('Failed to handle address: dn=%s addr=%r (%s)', self.dn, new_ip, ex)
+                log.warning({'msg': 'Failed to handle address', 'dn': self.dn, 'ip': new_ip, 'error': ex})
                 raise univention.admin.uexceptions.InvalidDNS_Information(_('Reverse zone and IP address are incompatible.'))
         super().ready()
 

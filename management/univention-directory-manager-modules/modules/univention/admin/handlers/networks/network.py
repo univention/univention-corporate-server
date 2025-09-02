@@ -201,7 +201,7 @@ class object(univention.admin.handlers.simpleLdap):
             try:
                 self.lo.authz_connection.modify(computer.dn, [('univentionNetworkLink', self.dn.encode('UTF-8'), b'')])
             except (univention.admin.uexceptions.base, ldap.LDAPError):
-                log.exception('Failed to remove network %s from %s:', self.dn, computer.dn)
+                log.exception({'msg': 'Failed to remove network from computer', 'dn': self.dn, 'computer': computer.dn})
 
     def _ldap_addlist(self):
         if not self['nextIp']:

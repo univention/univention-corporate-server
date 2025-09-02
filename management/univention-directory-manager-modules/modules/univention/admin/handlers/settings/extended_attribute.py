@@ -343,7 +343,7 @@ class object(univention.admin.handlers.simpleLdap):
                 if key.startswith('univentionUDMPropertyTranslation%s;entry-' % transKey)
             ]
 
-            log.debug('extended_attribute: added translations for %s: %s', transKey, translations)
+            log.debug({'msg': 'open: added translations', 'msgid': transKey, 'msgstrs': translations})
             self['translation%s' % transKey] = translations
 
         self.save()

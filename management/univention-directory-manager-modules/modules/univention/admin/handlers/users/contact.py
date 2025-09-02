@@ -408,7 +408,7 @@ class object(univention.admin.handlers.simpleLdap):
             self._ldap_post_move(olddn)
         except BaseException:
             # move back
-            log.warning('simpleLdap._move: self._ldap_post_move failed, move object back to %s', olddn)
+            log.warning({'msg': 'ldap_post_move failed, move object back', 'dn': newdn, 'old_dn': olddn})
             self.lo.authz_connection.rename(self.dn, olddn)
             self.dn = olddn
             raise
