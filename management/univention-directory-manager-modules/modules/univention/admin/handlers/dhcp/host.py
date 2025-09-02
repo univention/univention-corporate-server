@@ -3,17 +3,15 @@
 
 """|UDM| module for |DHCP| hosts"""
 
-from logging import getLogger
 
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 from univention.admin.layout import Group, Tab
+from univention.admin.log import log
 
 from .__common import DHCPBase, add_dhcp_options
 
-
-log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
@@ -78,7 +76,7 @@ def unmapHWAddress(old, encoding=()):
     >>> unmapHWAddress([])
     ['', '']
     """
-    log.debug('host.py: unmapHWAddress: old: %s', old)
+    log.debug('unmapHWAddress', value=old)
     if not old:
         return ['', '']
     return old[0].decode(*encoding).split(' ')
@@ -96,7 +94,7 @@ def mapHWAddress(old, encoding=()):
     >>> mapHWAddress('11:11:11:11:11:11')
     b'11:11:11:11:11:11'
     """
-    log.debug('host.py: mapHWAddress: old: %s', old)
+    log.debug('mapHWAddress', value=old)
     if not isinstance(old, list):
         old = [old]
     if not old[0]:

@@ -4,7 +4,6 @@
 """|UDM| methods and defines for Nagios related attributes."""
 
 import copy
-from logging import getLogger
 
 from ldap.filter import filter_format
 
@@ -14,8 +13,6 @@ import univention.admin.syntax
 from univention.admin import configRegistry
 from univention.admin.layout import Tab
 
-
-log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention.admin')
 _ = translation.translate
@@ -101,13 +98,13 @@ class Support:
 
         # add nagios option
         if self.option_toggled('nagios') and 'nagios' in self.options:
-            log.debug('added nagios option')
+            self.log.debug('added nagios option')
             if b'univentionNagiosHostClass' not in self.oldattr.get('objectClass', []):
                 ml.insert(0, ('univentionNagiosEnabled', b'', b'1'))
 
         # remove nagios option
         if self.option_toggled('nagios') and 'nagios' not in self.options:
-            log.debug('remove nagios option')
+            self.log.debug('remove nagios option')
             for key in ['univentionNagiosParent', 'univentionNagiosEmail', 'univentionNagiosEnabled']:
                 if self.oldattr.get(key, []):
                     ml.insert(0, (key, self.oldattr.get(key, []), b''))
@@ -165,19 +162,18 @@ class Support:
 
         if 'nagios' in self.options:
             # add host to new services
-            log.debug('nagios.py: NMSL: nagios in options')
+            self.log.debug('NMSL: nagios in options')
             for servicedn in self.info.get('nagiosServices', []):
                 if not servicedn:
                     continue
-                log.debug('nagios.py: NMSL: servicedn %s', servicedn)
+                self.log.trace('NMSL: servicedn', service=servicedn)
                 if 'nagios' not in self.old_options or servicedn not in self.oldinfo['nagiosServices']:
-                    log.debug('nagios.py: NMSL: add')
+                    self.log.trace('NMSL: add')
                     # option nagios was freshly enabled or service has been enabled just now
                     oldmembers = self.lo.authz_connection.getAttr(servicedn, 'univentionNagiosHostname')
                     newmembers = copy.deepcopy(oldmembers)
                     newmembers.append(fqdn.encode('UTF-8'))
-                    log.warning('nagios.py: NMSL: oldmembers: %s', oldmembers)
-                    log.warning('nagios.py: NMSL: newmembers: %s', newmembers)
+                    self.log.trace('NMSL: members', old=oldmembers, new=newmembers)
                     self.lo.authz_connection.modify(servicedn, [('univentionNagiosHostname', oldmembers, newmembers)])
 
     def nagiosRemoveHostFromServices(self):

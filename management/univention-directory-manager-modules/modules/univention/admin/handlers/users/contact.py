@@ -5,7 +5,6 @@
 
 from __future__ import annotations
 
-from logging import getLogger
 from typing import Any
 
 import univention.admin
@@ -16,8 +15,6 @@ import univention.admin.uexceptions
 from univention.admin.handlers.users.user import mapHomePostalAddress, unmapHomePostalAddress
 from univention.admin.layout import Group, Tab
 
-
-log = getLogger('ADMIN')
 
 translation = univention.admin.localization.translation('univention.admin.handlers.users')
 _ = translation.translate
@@ -408,7 +405,7 @@ class object(univention.admin.handlers.simpleLdap):
             self._ldap_post_move(olddn)
         except BaseException:
             # move back
-            log.warning('simpleLdap._move: self._ldap_post_move failed, move object back to %s', olddn)
+            self.log.warning('ldap_post_move failed, move object back', dn=newdn, old_dn=olddn)
             self.lo.authz_connection.rename(self.dn, olddn)
             self.dn = olddn
             raise
