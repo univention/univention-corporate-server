@@ -9,3 +9,6 @@ desc: |
  * Fixed a race condition that could prevent listener
    modules from initializing properly.
 bug: [58522]
+erratum: 181
+announced: 2025-09-02
+support: core
