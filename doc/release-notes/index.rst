@@ -17,24 +17,22 @@ With |UCSUCS| 5.2-3, the third patch level release for |UCSUCS| 5.2 is available
 It provides several feature improvements and extensions, properties, as well as bug fixes.
 Here is an overview of the most important changes:
 
-* The Active Directory Connector now knows the new |UCSUCRV|
-  :envvar:`connector/ad/mapping/allow-subtree-ancestors` which can make the
-  management of selective synchronization of more complex LDAP DIT structures
-  much simpler.
+* The Active Directory Connector now knows the |UCSUCRV|
+  :envvar:`connector/ad/mapping/allow-subtree-ancestors`
+  which simplifies the management of selective synchronization of more complex LDAP DIT structures.
 
-* |UCSUDM| has seen a number of updates that will ultimately add the delegative
-  administration feature. While currently still experimental, it already enables the
-  ``Primary Group`` to not be global anymore, but be derived from on the parent
-  container of a newly create user or computer object.
+* |UCSUDM| has seen a number of updates that will ultimately add the delegative administration feature.
+  Although still experimental, it already enables the ``Primary Group`` to not be global anymore,
+  but derives the primary group from the parent container of a created user or computer object.
 
-* A new Listener plugin has been added which fuels the new :program:`Provisioning Service` that can
-  now be installed in a preview version via the App Center. The App will receive further updates throughout
-  |UCSUCS| 5.2-3.
+* Added a listener plugin which fuels the :program:`Provisioning Service`
+  that you can install in a preview version through the App Center.
+  The App receives further updates throughout |UCSUCS| 5.2-3.
 
-* |UCSUCS| 5.2-3 includes numerous security updates for packages such as ``sudo``, ``squid``, ``GnuTLS``,
-  ``firefox-esr``, ``Linux kernel``, and many others to ensure protection
-  against the latest vulnerabilities. In another update, ``OpenLDAP`` increased
-  the maximum number of indexed attributes from 128 to 256.
+* |UCSUCS| 5.2-3 includes numerous security updates for packages,
+  such as ``sudo``, ``squid``, ``GnuTLS``, ``firefox-esr``, ``Linux kernel``, and many others
+  to ensure protection against the latest vulnerabilities.
+  In another update, ``OpenLDAP`` increased the maximum number of indexed attributes from 128 to 256.
 
 .. _relnotes-update:
 
