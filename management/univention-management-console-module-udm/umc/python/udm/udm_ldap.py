@@ -9,7 +9,6 @@
 import collections
 import copy
 import functools
-import gc
 import inspect
 import locale
 import operator
@@ -684,11 +683,6 @@ class UDM_Module:
             raise ObjectDoesNotExist(container or ucr['ldap/base'])
         except udm_errors.base as e:
             UDM_Error(e).reraise()
-
-        # call the garbage collector manually as many parallel request may cause the
-        # process to use too much memory
-        MODULE.info('Triggering garbage collection')
-        gc.collect()
 
         return result
 
