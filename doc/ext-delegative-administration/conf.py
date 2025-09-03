@@ -171,10 +171,11 @@ latex_elements = {
 univention_use_doc_base = True
 
 intersphinx_mapping = {
-    'uv-manual': ref('manual'),
+    'uv-manual': ref('manual', ver=version),
     'guardian-doc': ('https://docs.software-univention.de/guardian-manual/latest/', None),
     'uv-nubus-kubernetes-customization': ('https://docs.software-univention.de/nubus-kubernetes-customization/latest/en/', None),
-    'uv-developer-reference': ('https://docs.software-univention.de/developer-reference/5.2/en/', None),
+    'uv-developer-reference': ref('developer-reference', ver=version),
+    'uv-ucs-architecture': ref('architecture', ver=version),
 }
 
 # See Univention Sphinx Extension for its options.
