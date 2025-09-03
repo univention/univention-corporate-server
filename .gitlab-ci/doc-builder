@@ -35,6 +35,7 @@ DEPENDS = {
     "quickstart": {"manual", "ext-domain", "ext-installation"},
     "release-notes": {"manual", "changelog", "ext-windows"},
     "scenarios": {"manual"},
+    'ext-delegative-administration': {'manual', 'developer-reference', 'architecture'},
 }  # FIXME: extract this from ../doc/*/conf.py intersphinx_mapping
 SPECIAL: dict[str, dict[str, object]] = {
     "changelog": {"DOC_TARGET_PATH": "$DOC_TARGET_NAME/$CHANGELOG_TARGET_VERSION/$language"},
