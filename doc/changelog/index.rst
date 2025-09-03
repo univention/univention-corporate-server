@@ -96,22 +96,21 @@ General
 
 * |UCSUCS| |release| includes the following updated packages from Debian 12:
 
-  :program:`djvulibre`
-  :program:`ffmpeg`
-  :program:`libxml2`
-  :program:`unbound`
-  :program:`qemu`
   :program:`aide`
   :program:`catdoc`
   :program:`chromium`
+  :program:`djvulibre`
+  :program:`ffmpeg`
   :program:`gst-plugins-bad1.0`
   :program:`konsole`
   :program:`libblockdev`
+  :program:`libxml2`
   :program:`mediawiki`
   :program:`node-cipher-base`
   :program:`nodejs`
   :program:`pgpool2`
   :program:`php8.2`
+  :program:`qemu`
   :program:`redis`
   :program:`ring`
   :program:`slurm-wlm`
@@ -119,6 +118,7 @@ General
   :program:`thunderbird`
   :program:`trafficserver`
   :program:`udisks2`
+  :program:`unbound`
   :program:`webkit2gtk`
 
 .. _maintained:
