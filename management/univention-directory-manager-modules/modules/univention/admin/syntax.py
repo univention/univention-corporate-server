@@ -9,6 +9,7 @@ import base64
 import bz2
 import copy
 import datetime
+import functools
 import inspect
 import ipaddress
 import os
@@ -6939,9 +6940,16 @@ class mailinglist_name(gid):
 
 
 class TimeZone(select):
+    @staticmethod
+    @functools.lru_cache
+    def available_timezones():
+        # calling zoneinfo.available_timezones() is quite slow
+        # cache it here to increase performance
+        return zoneinfo.available_timezones()
+
     @ClassProperty
     def choices(cls):
-        return [(x, x) for x in zoneinfo.available_timezones()]
+        return [(x, x) for x in cls.available_timezones()]
 
 
 class DateTimeTimezone(complex):
