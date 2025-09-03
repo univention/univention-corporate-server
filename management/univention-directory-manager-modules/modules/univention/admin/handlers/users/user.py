@@ -1953,7 +1953,8 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         return ml
 
     def _ldap_post_remove(self) -> None:
-        self.alloc.append(('sid', self.oldattr['sambaSID'][0].decode('ASCII')))
+        if 'sambaSID' in self.oldattr:
+            self.alloc.append(('sid', self.oldattr['sambaSID'][0].decode('ASCII')))
         self.alloc.append(('uid', self.oldattr['uid'][0].decode('UTF-8')))
         self.alloc.append(('uidNumber', self.oldattr['uidNumber'][0].decode('ASCII')))
         if self['mailPrimaryAddress']:
