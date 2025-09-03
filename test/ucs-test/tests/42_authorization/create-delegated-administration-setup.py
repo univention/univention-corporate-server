@@ -140,6 +140,8 @@ def create_user(name, position, policy=None, **props):
         **props,
     )
     if policy:
+        if 'policies/umc' not in user.policies:
+            user.policies['policies/umc'] = []
         user.policies['policies/umc'].append(policy.dn)
     user.save()
     return user
