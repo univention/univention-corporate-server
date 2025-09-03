@@ -23,14 +23,17 @@ for name in logging.__all__:
 __all__ += logging.__all__
 
 
+logging.PROCESS = 25
+logging.addLevelName(logging.PROCESS, 'PROCESS')
 _LEVEL_MAPPING = {
     logging.NOTSET: 100,
-    logging.DEBUG - 1: ud.ALL,  # 4
-    logging.DEBUG: ud.INFO,  # 3
-    logging.INFO: ud.PROCESS,  # 2
-    logging.WARNING: ud.WARN,  # 1
-    logging.ERROR: ud.ERROR,  # 0
-    # logging.CRITICAL: ud.ERROR,
+    logging.DEBUG - 1: ud.ALL,  # 9 -> 4
+    logging.DEBUG: ud.ALL,  # 10 -> 4
+    logging.INFO: ud.INFO,  # 20 -> 3
+    logging.PROCESS: ud.PROCESS,  # 25 -> 2
+    logging.WARNING: ud.WARN,  # 30 -> 1
+    logging.ERROR: ud.ERROR,  # 40 -> 0
+    # logging.CRITICAL: ud.ERROR,  50 -> 0
 }
 _UD_LEVEL_MAPPING = {v: k for k, v in _LEVEL_MAPPING.items()}
 
@@ -38,6 +41,7 @@ _LEVEL_TO_FORMAT_MAPPING = {
     logging.NOTSET: "%(pid)s%(prefix)s%(module)s.%(funcName)s:%(lineno)d: %(message)s",
     logging.DEBUG: "%(pid)s%(prefix)s%(message)s",
     logging.INFO: "%(pid)s%(prefix)s%(message)s",
+    logging.PROCESS: "%(pid)s%(prefix)s%(message)s",
     logging.WARNING: "%(pid)s%(prefix)s%(message)s",
     logging.ERROR: "%(pid)s%(prefix)s%(message)s",
     logging.CRITICAL: "%(pid)s%(prefix)s%(message)s",
@@ -289,6 +293,9 @@ class Logger(logging.Logger):
     def __repr__(self):
         msg = super().__repr__()
         return '<univention.logging.%s' % (msg[1:],)
+
+    def process(self, msg, *args, **kwargs):
+        self.log(logging.PROCESS, msg, *args, **kwargs)
 
 
 class LevelDependentFormatter(logging.Formatter):
