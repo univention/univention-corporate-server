@@ -5,7 +5,7 @@
 Release notes for the installation and update of Univention Corporate Server (UCS) |release|
 ############################################################################################
 
-Publication date of UCS |release|: 2025-06-12
+Publication date of UCS |release|: 2025-09-09
 
 .. _relnotes-highlights:
 
@@ -13,31 +13,28 @@ Publication date of UCS |release|: 2025-06-12
 Release highlights
 ******************
 
-With |UCSUCS| 5.2-3, the second patch level release for |UCSUCS| 5.2 is available.
-It provides several feature improvements and extensions, properties, as well as, bug fixes.
+With |UCSUCS| 5.2-3, the third patch level release for |UCSUCS| 5.2 is available.
+It provides several feature improvements and extensions, properties, as well as bug fixes.
 Here is an overview of the most important changes:
 
-* |UCSUCS| 5.2-3 introduces the ``univentionObjectIdentifier``: a globally unique identifier
-  for all objects managed via |UCSUDM|.
-  It simplifies object mapping to external systems and ensures consistent tracking across logs.
-  The identifier is auto-generated for new objects; existing objects receive it during upgrade.
+* The Active Directory Connector now knows the new |UCSUCRV|
+  :envvar:`connector/ad/mapping/allow-subtree-ancestors` which can make the
+  management of selective synchronization of more complex LDAP DIT structures
+  much simpler.
 
-* :program:`Keycloak` *26* is now available in the App Center with enhanced security and new features.
-  It comes with a new ``Ad Hoc Provisioning`` plugin which automatically creates Nubus user accounts.
-  This enables seamless Single Sign-On access across connected applications
-  for identities logging in via trusted external *IdPs* (e.g., :program:`Active Directory`).
+* |UCSUDM| has seen a number of updates that will ultimately add the delegative
+  administration feature. While currently still experimental, it already enables the
+  ``Primary Group`` to not be global anymore, but be derived from on the parent
+  container of a newly create user or computer object.
 
-* |UCSUCS| 5.2-3 delivers major performance gains in |UCSUDM|, notably for deleting computer objects and
-  editing groups in large environments.
-  A new diagnostic tool identifies LDAP database fragmentation — a key bottleneck in older,
-  large deployments — and provides remediation guidance.
+* A new Listener plugin has been added which fuels the new :program:`Provisioning Service` that can
+  now be installed in a preview version via the App Center. The App will receive further updates throughout
+  |UCSUCS| 5.2-3.
 
-* Various components of the |UCSUMC| and App Center were hardened against cross-site scripting (XSS) attacks
-  through stricter content sanitization and improved HTML encoding.
-
-* |UCSUCS| 5.2-3 includes numerous security updates for packages such as ``curl``, ``glibc``, ``intel-microcode``,
-  ``openssl``, ``firefox-esr``, ``Linux kernel``, and many others
-  to ensure protection against the latest vulnerabilities.
+* |UCSUCS| 5.2-3 includes numerous security updates for packages such as ``sudo``, ``squid``, ``GnuTLS``,
+  ``firefox-esr``, ``Linux kernel``, and many others to ensure protection
+  against the latest vulnerabilities. In another update, ``OpenLDAP`` increased
+  the maximum number of indexed attributes from 128 to 256.
 
 .. _relnotes-update:
 
@@ -66,21 +63,6 @@ The authoritative version of the LDAP directory service operates on the |UCSPRIM
 and replicates to all the remaining LDAP servers of the UCS domain. As changes to the
 LDAP schema can occur during release updates, the |UCSPRIMARYDN| must always be the
 first system in the update order during a release update.
-
-.. _relnotes-univention-object-identifier:
-
-Initialization and indexing of the ``univentionObjectIdentifier``
-=================================================================
-
-During update an LDAP equality index is created for the ``univentionObjectIdentifier``
-and for each object of class ``univentionObject``  the value of ``entryUUID`` is used
-to initialize the attribute in case it is not yet present. Depending on the amount of
-objects in the LDAP directory and limiting I/O factors this may take some time.
-
-Please note that in Nubus environments with mixed UCS versions prior to |UCSUCS| 5.2-3, the
-UDM on the old systems will not know how to properly manage the attribute for all
-kinds of ``univentionObject``. |UCSUCS| 5.2-3 contains a plugin for UMC System Diagnostic
-to check if all objects have the attribute and to fix those that don't.
 
 .. _relnotes-bootloader:
 
