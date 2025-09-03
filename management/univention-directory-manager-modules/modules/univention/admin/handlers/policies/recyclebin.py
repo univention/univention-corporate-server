@@ -18,6 +18,16 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 
+class recycleBinFixedAttributes(univention.admin.syntax.select):
+    name = 'recycleBinFixedAttributes'
+    choices = [
+        ('univentionRecycleBinEnabled', _('Recycle bin enabled')),
+        ('univentionRecycleBinUDMModules', _('UDM modules to recycle')),
+        ('univentionRecycleBinProperties', _('Properties to store')),
+        ('univentionRecycleBinRetentionTime', _('Retention time (days)')),
+    ]
+
+
 module = 'policies/recyclebin'
 operations = ('add', 'edit', 'remove', 'search')
 
@@ -92,8 +102,8 @@ property_descriptions = dict({
 }, **dict([
     requiredObjectClassesProperty(),
     prohibitedObjectClassesProperty(),
-    fixedAttributesProperty(),
-    emptyAttributesProperty(),
+    fixedAttributesProperty(syntax=recycleBinFixedAttributes),
+    emptyAttributesProperty(syntax=recycleBinFixedAttributes),
     ldapFilterProperty(),
 ]))
 
