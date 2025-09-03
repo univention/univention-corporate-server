@@ -11,6 +11,9 @@ import pytest
 import univention.debug as ud
 
 
+PROCESS = 25
+
+
 def test_logging_handler_changed():
     m = logging.getLogger('MAIN')
     f = logging.getLogger('foo')
@@ -40,6 +43,7 @@ def test_logging_basic_config(tmplog, parse):
     logger.warning('test_warn')
     logger.set_log_pid(True)
     child = logger.getChild('foo')
+    logger.process('test_process')
     child.error('test_error')
     logger.critical('test_critical')
     logger.set_ud_level(ud.ERROR)
@@ -50,20 +54,23 @@ def test_logging_basic_config(tmplog, parse):
     logger.reopen()
     logger.debug('test_debug')
     logger.setLevel(logging.NOTSET + 1)
-    logger.log(9, 'test ultra debug')
-    logger.log(1, 'test ultra debug')
+    logger.log(9, 'test ultra debug_9')
+    logger.log(1, 'test ultra debug_1')
+    logger.log(100, 'test debug_100')
 
     output = tmplog.read()
     logs = list(parse(output))
     assert logs[0][0] == 'init'
     assert [(y['category'], y['level'], re.sub(r':\d+:', ':', y['msg'])) for x, y in logs[1:]] == [
-        ('LDAP', 'PROCESS', '%d: test_info' % pid),
+        ('LDAP', 'INFO', '%d: test_info' % pid),
         ('LDAP', 'WARN', '%d: test_warn' % pid),
+        ('LDAP', 'PROCESS', '%d: test_process' % pid),
         ('LDAP', 'ERROR', 'foo: %d: test_error' % pid),
         ('LDAP', 'ERROR', '%d: test_critical' % pid),
-        ('LDAP', 'INFO', 'test_debug'),
-        ('LDAP', 'ALL', 'test_logging.test_logging_basic_config: test ultra debug'),
-        ('LDAP', '99', 'test_logging.test_logging_basic_config: test ultra debug'),
+        ('LDAP', 'ALL', 'test_debug'),
+        ('LDAP', 'ALL', 'test ultra debug_9'),
+        ('LDAP', '99', 'test_logging.test_logging_basic_config: test ultra debug_1'),
+        ('LDAP', 'ERROR', 'test debug_100'),
     ]
 
 
@@ -72,10 +79,12 @@ def test_logging_basic_config(tmplog, parse):
     [
         (ud.ERROR, logging.ERROR),
         (ud.WARN, logging.WARNING),
-        (ud.PROCESS, logging.INFO),
-        (ud.INFO, logging.DEBUG),
-        (ud.ALL, 9),
+        (ud.PROCESS, PROCESS),
+        (ud.INFO, logging.INFO),
+        (ud.ALL, logging.DEBUG),
         (100, logging.NOTSET),
+        (99, 1),
+        (89, 2),
     ],
 )
 def test_loglevel_mapping_exact(ud_level, log_level):
@@ -135,9 +144,10 @@ def test_loglevel_mapping_ud(ud_level, log_level):
     + [
         (x, y)
         for z, y in [
-            (range(logging.DEBUG + 1, logging.INFO), ud.INFO),
-            (range(logging.INFO + 1, logging.WARNING), ud.PROCESS),
-            (range(logging.WARNING + 1, logging.ERROR), ud.WARN),
+            (range(logging.DEBUG, logging.INFO), ud.ALL),
+            (range(logging.INFO, PROCESS), ud.INFO),
+            (range(PROCESS, logging.WARNING), ud.PROCESS),
+            (range(logging.WARNING, logging.ERROR), ud.WARN),
             ([100], ud.ERROR),
         ]
         for x in z
