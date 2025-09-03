@@ -12,7 +12,6 @@ Logging
 This module provides a wrapper for univention.debug
 """
 
-import functools
 import grp
 import logging
 import os
@@ -97,11 +96,6 @@ LOCALE = logging.getLogger('LOCALE')
 ACL = logging.getLogger('ACL')
 RESOURCES = logging.getLogger('RESOURCES')
 PROTOCOL = logging.getLogger('PROTOCOL')
-
-for _logger in (CORE, NETWORK, CRYPT, UDM, MODULE, AUTH, PARSER, LOCALE, ACL, RESOURCES, PROTOCOL):
-    _logger.process = _logger.info
-    _logger.info = _logger.debug
-    _logger.debug = functools.partial(_logger.log, logging.DEBUG - 1)
 
 fallbackLoggingHandler = logging.StreamHandler()
 fallbackLoggingHandler.setFormatter(logging.Formatter('%(asctime)s.%(msecs)03d ( %(levelname)-7s ) : %(message)s', '%d.%m.%y %H:%M:%S'))
