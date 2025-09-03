@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: UCS 5.2 Release Notes 5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-11 11:15+0000\n"
-"PO-Revision-Date: 2024-12-16 17:27+0100\n"
+"POT-Creation-Date: 2025-09-03 14:32+0000\n"
+"PO-Revision-Date: 2025-09-03 16:40+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: ../../index.rst:7
+#: ../../index.rst:6
 msgid ""
 "Release notes for the installation and update of Univention Corporate "
 "Server (UCS) |release|"
@@ -24,99 +24,80 @@ msgstr ""
 "Release Notes für die Inbetriebnahme und Aktualisierung von Univention "
 "Corporate Server (UCS) |release|"
 
-#: ../../index.rst:9
-msgid "Publication date of UCS |release|: 2025-06-12"
-msgstr "Veröffentlichungsdatum von UCS |release|: 2025-06-12"
+#: ../../index.rst:8
+msgid "Publication date of UCS |release|: 2025-09-09"
+msgstr "Veröffentlichungsdatum von UCS |release|: 2025-09-09"
 
-#: ../../index.rst:15
+#: ../../index.rst:14
 msgid "Release highlights"
 msgstr "Release-Highlights"
 
-#: ../../index.rst:17
+#: ../../index.rst:16
 msgid ""
-"With |UCSUCS| 5.2-3, the second patch level release for |UCSUCS| 5.2 is "
+"With |UCSUCS| 5.2-3, the third patch level release for |UCSUCS| 5.2 is "
 "available. It provides several feature improvements and extensions, "
-"properties, as well as, bug fixes. Here is an overview of the most "
+"properties, as well as bug fixes. Here is an overview of the most "
 "important changes:"
 msgstr ""
-"Mit |UCSUCS| 5.2-3 steht das zweite Patchlevel-Update für |UCSUCS| 5.2 "
+"Mit |UCSUCS| 5.2-3 steht das dritte Patchlevel-Update für |UCSUCS| 5.2 "
 "zur Verfügung. Es umfasst Funktionserweiterungen und Verbesserungen, neue"
 " Eigenschaften sowie diverse Detailverbesserungen und Fehlerkorrekturen. "
 "Die wichtigsten Änderungen im Überblick:"
 
-#: ../../index.rst:21
+#: ../../index.rst:20
 msgid ""
-"|UCSUCS| 5.2-3 introduces the ``univentionObjectIdentifier``: a globally "
-"unique identifier for all objects managed via |UCSUDM|. It simplifies "
-"object mapping to external systems and ensures consistent tracking across "
-"logs. The identifier is auto-generated for new objects; existing objects "
-"receive it during upgrade."
+"The Active Directory Connector now knows the |UCSUCRV| "
+":envvar:`connector/ad/mapping/allow-subtree-ancestors` which simplifies "
+"the management of selective synchronization of more complex LDAP DIT "
+"structures."
 msgstr ""
-"|UCSUCS| 5.2-3 führt den ``univentionObjectIdentifier`` ein: Dabei "
-"handelt es sich um eine global eindeutige Kennung für alle Objekte, die "
-"über |UCSUDM| verwaltet werden. Dieser vereinfacht die Zuordnung von "
-"Objekten auf externen Systemen und gewährleistet eine konsistente "
-"Nachverfolgung in Log-Dateien. Die Kennung wird für neue Objekte "
-"automatisch generiert; bestehende Objekte erhalten sie während des "
-"Upgrades."
+"Der Active Directory Connector kennt nun die |UCSUCRV| "
+":envvar:`connector/ad/mapping/allow-subtree-ancestors`, welche die "
+"Verwaltung der selektiven Synchronisation von komplexeren LDAP-DIT-"
+"Strukturen vereinfacht."
 
-#: ../../index.rst:26
+#: ../../index.rst:24
 msgid ""
-":program:`Keycloak` *26* is now available in the App Center with enhanced"
-" security and new features. It comes with a new ``Ad Hoc Provisioning`` "
-"plugin which automatically creates Nubus user accounts. This enables "
-"seamless Single Sign-On access across connected applications for "
-"identities logging in via trusted external *IdPs* (e.g., :program:`Active"
-" Directory`)."
+"|UCSUDM| has seen a number of updates that will ultimately add the "
+"delegative administration feature. Although still experimental, it "
+"already enables the ``Primary Group`` to not be global anymore, but "
+"derives the primary group from the parent container of a created user or "
+"computer object."
 msgstr ""
-":program:`Keycloak` *26* ist jetzt im App Center verfügbar und bietet "
-"erweiterte Sicherheitsfunktionen und neue Features. Diese Version kommt "
-"mit einem neuen ``Ad Hoc Provisioning``-Plugin, das automatisch Nubus-"
-"Benutzerkonten erstellt. Dies ermöglicht nahtlosen Single Sign-On Zugriff"
-" auf angeschlossene Anwendungen für Identitäten, die sich über  externe "
-"*IdPs* (z.B. :program:`Active Directory`) anmelden."
+"|UCSUDM| erhielt eine Reihe von Updates, die letztendlich die delegative "
+"Administration ermöglichen. Obwohl noch experimentell, ermöglicht sie "
+"bereits, dass die ``Primary Group`` nicht mehr global ist, sondern die "
+"primäre Gruppe vom übergeordneten Container eines erstellten Benutzer- oder "
+"Computerobjekts abgeleitet wird."
 
-#: ../../index.rst:31
+#: ../../index.rst:28
 msgid ""
-"|UCSUCS| 5.2-3 delivers major performance gains in |UCSUDM|, notably for "
-"deleting computer objects and editing groups in large environments. A new"
-" diagnostic tool identifies LDAP database fragmentation — a key "
-"bottleneck in older, large deployments — and provides remediation "
-"guidance."
+"Added a listener plugin which fuels the :program:`Provisioning Service` "
+"that you can install in a preview version through the App Center. The App"
+" receives further updates throughout |UCSUCS| 5.2-3."
 msgstr ""
-"|UCSUCS| 5.2-3 liefert verbesserte Performance in |UCSUDM|, insbesondere "
-"beim Löschen von Computerobjekten und Bearbeiten von Gruppen in großen "
-"Umgebungen. Ein neues Diagnosetool identifiziert die Fragmentierung der "
-"LDAP-Datenbank — ein wichtiger Engpass in älteren, großen Installationen "
-"— und bietet Anleitungen zur Behebung."
+"Ein Listener-Plugin wurde hinzugefügt, das den :program:`Provisioning Service` "
+"befüllt, welcher in einer Vorschauversion über das App Center installiert werden "
+"kann. Die App erhält weitere Updates im Verlauf von |UCSUCS| 5.2-3."
 
-#: ../../index.rst:36
+#: ../../index.rst:32
 msgid ""
-"Various components of the |UCSUMC| and App Center were hardened against "
-"cross-site scripting (XSS) attacks through stricter content sanitization "
-"and improved HTML encoding."
-msgstr ""
-"Verschiedene Komponenten von |UCSUMC| und dem App Center wurden durch "
-"verschärfte Eingabevalidierung und -säuberung sowie durch HTML-Kodierung "
-"gegen Cross-Site-Scripting-Angriffe (XSS) gehärtet."
-
-#: ../../index.rst:39
-msgid ""
-"|UCSUCS| 5.2-3 includes numerous security updates for packages such as "
-"``curl``, ``glibc``, ``intel-microcode``, ``openssl``, ``firefox-esr``, "
-"``Linux kernel``, and many others to ensure protection against the latest"
-" vulnerabilities."
+"|UCSUCS| 5.2-3 includes numerous security updates for packages, such as "
+"``sudo``, ``squid``, ``GnuTLS``, ``firefox-esr``, ``Linux kernel``, and "
+"many others to ensure protection against the latest vulnerabilities. In "
+"another update, ``OpenLDAP`` increased the maximum number of indexed "
+"attributes from 128 to 256."
 msgstr ""
 "|UCSUCS| 5.2-3 enthält zahlreiche Sicherheitsupdates für Pakete wie "
 "``curl``, ``glibc``, ``intel-microcode``, ``openssl``, ``firefox-esr``, "
 "``Linux kernel`` und viele andere, um Schutz vor den neuesten "
 "Sicherheitsanfälligkeiten zu gewährleisten."
 
-#: ../../index.rst:47
+#: ../../index.rst:41
 msgid "Notes about the update"
 msgstr "Hinweise zum Update"
 
-#: ../../index.rst:49
+#: ../../index.rst:43
 msgid ""
 "Run the update in a maintenance window, because some services in the "
 "domain may not be available temporarily. It's recommended that you test "
@@ -129,7 +110,7 @@ msgstr ""
 "bevor Sie die eigentliche Aktualisierung durchführen. Die Testumgebung "
 "muss mit der Produktionsumgebung identisch sein."
 
-#: ../../index.rst:54
+#: ../../index.rst:48
 msgid ""
 "Depending on the system performance, network connection, and installed "
 "software, the update can take anywhere from 30 minutes to several hours. "
@@ -140,11 +121,11 @@ msgstr ""
 "Für große Umgebungen konsultieren Sie bitte den :cite:t:`ucs-performance-"
 "guide`."
 
-#: ../../index.rst:61
+#: ../../index.rst:55
 msgid "Recommended update sequence for environments with more than one UCS system"
 msgstr "Empfohlene Update-Reihenfolge für Umgebungen mit mehr als einem UCS System"
 
-#: ../../index.rst:63
+#: ../../index.rst:57
 msgid ""
 "In environments with more than one UCS system, take the update sequence "
 "of the UCS systems into account."
@@ -152,7 +133,7 @@ msgstr ""
 "Beachten Sie in Umgebungen mit mehr als einem UCS-System die Update-"
 "Reihenfolge der UCS-Systeme."
 
-#: ../../index.rst:66
+#: ../../index.rst:60
 msgid ""
 "The authoritative version of the LDAP directory service operates on the "
 "|UCSPRIMARYDN| and replicates to all the remaining LDAP servers of the "
@@ -166,45 +147,11 @@ msgstr ""
 "Schemata auftreten können, muss der |UCSPRIMARYDN| bei einem Release-"
 "Update immer das erste System sein, auf dem das Update durchgeführt wird."
 
-#: ../../index.rst:74
-msgid "Initialization and indexing of the ``univentionObjectIdentifier``"
-msgstr "Initialisierung und Indizierung für den ``univentionObjectIdentifier``"
-
-#: ../../index.rst:76
-msgid ""
-"During update an LDAP equality index is created for the "
-"``univentionObjectIdentifier`` and for each object of class "
-"``univentionObject``  the value of ``entryUUID`` is used to initialize "
-"the attribute in case it is not yet present. Depending on the amount of "
-"objects in the LDAP directory and limiting I/O factors this may take some"
-" time."
-msgstr ""
-"Während des Updates wird ein LDAP-Equality-Index angelegt für den "
-"``univentionObjectIdentifier`` und für jedes Objekt der Klasse "
-"``univentionObject``  wird der Wert von ``entryUUID`` verwendet,  um "
-"das Attribute zu initialisieren, wo es noch nicht vorhanden ist. Abhängig "
-"von der Anzahl der Objekte im LDAP-Verzeichnis und von limitierenden "
-"I/O-Faktoren kann das etwas Zeit beanspruchen."
-
-#: ../../index.rst:81
-msgid ""
-"Please note that in Nubus environments with mixed UCS versions prior to "
-"|UCSUCS| 5.2-3, the UDM on the old systems will not know how to properly "
-"manage the attribute for all kinds of ``univentionObject``. |UCSUCS| "
-"5.2-3 contains a plugin for UMC System Diagnostic to check if all objects "
-"have the attribute and to fix those that don't."
-msgstr ""
-"In Nubus-Umgebungen mit gemischten UCS-Versionen vor |UCSUCS| 5.2-3, ist "
-"der UDM auf den älteren Systemen noch nicht in der Lage, das Attribut für "
-"alle Arten von ``univentionObject`` zu managen. |UCSUCS| 5.2-3 enthält "
-"ein Plugin für das UMC-Modul Systemdiagnose, um zu prüfen, ob all Objekte "
-"das Attribut haben und es an Objekten hinzuzufügen, wo es fehlt."
-
-#: ../../index.rst:90
+#: ../../index.rst:69
 msgid "Simultaneous operation of UCS and Debian on UEFI systems"
 msgstr "Gleichzeitiger Betrieb von UCS und Debian auf UEFI Systemen"
 
-#: ../../index.rst:92
+#: ../../index.rst:71
 msgid ""
 "Please note that simultaneous operation of UCS and Debian GNU/Linux on a "
 "UEFI system starting with UCS 5.0 isn't supported."
@@ -212,7 +159,7 @@ msgstr ""
 "Beginnend mit UCS 5.0 wird ein gleichzeitiger Betrieb von UCS und Debian "
 "GNU/Linux auf einem UEFI System nicht unterstützt."
 
-#: ../../index.rst:95
+#: ../../index.rst:74
 msgid ""
 "The reason for this is the GRUB boot loader of |UCSUCS|, which partly "
 "uses the same configuration files as Debian. An already installed Debian "
@@ -228,11 +175,11 @@ msgstr ""
 "Installation von Debian wird ebenfalls dazu führen, dass UCS 5.0 nicht "
 "mehr startet. Mehr Informationen finden Sie unter :uv:kb:`17768`."
 
-#: ../../index.rst:105
+#: ../../index.rst:84
 msgid "Preparation of update"
 msgstr "Vorbereitung des Updates"
 
-#: ../../index.rst:107
+#: ../../index.rst:86
 msgid ""
 "This section provides more information you need to consider before you "
 "update."
@@ -240,11 +187,11 @@ msgstr ""
 "In diesem Abschnitt finden Sie weitere Informationen, die Sie vor der "
 "Aktualisierung beachten müssen."
 
-#: ../../index.rst:112
+#: ../../index.rst:91
 msgid "Sufficient disk space"
 msgstr "Ausreichender Festplattenplatz"
 
-#: ../../index.rst:114
+#: ../../index.rst:93
 msgid ""
 "Also verify that you have sufficient disk space available for the update."
 " A standard installation requires a minimum of 6-10 GB of disk space. The"
@@ -258,11 +205,11 @@ msgstr ""
 "GB zusätzlichen Speicherplatz zum Herunterladen und Installieren der "
 "Pakete."
 
-#: ../../index.rst:122
+#: ../../index.rst:101
 msgid "Console usage for update"
 msgstr "Nutzung der Konsole für das Update"
 
-#: ../../index.rst:124
+#: ../../index.rst:103
 msgid ""
 "For the update, sign in on the system's local console as user ``root``, "
 "and initiate the update there. Alternatively, you can conduct the update "
@@ -272,7 +219,7 @@ msgstr ""
 "dem Benutzer ``root`` an und starten Sie das Update dort. Alternativ "
 "können Sie das Update über |UCSUMC| durchführen."
 
-#: ../../index.rst:128
+#: ../../index.rst:107
 msgid ""
 "If you want or have to run the update over a network connection, ensure "
 "that the update continues in case of network disconnection. Network "
@@ -294,11 +241,11 @@ msgstr ""
 ":command:`screen` oder :command:`at`. Sie sind auf allen UCS Systemrollen"
 " installiert."
 
-#: ../../index.rst:139
+#: ../../index.rst:118
 msgid "Script to check for known update issues"
 msgstr "Skript zur Prüfung auf bekannte Update-Probleme"
 
-#: ../../index.rst:141
+#: ../../index.rst:120
 msgid ""
 "Univention provides a script that checks for problems which would prevent"
 " the successful update of the system. You can download the script before "
@@ -309,7 +256,7 @@ msgstr ""
 "Sie können das Skript vor dem Update manuell auf das System herunterladen"
 " und ausführen:"
 
-#: ../../index.rst:145
+#: ../../index.rst:124
 #, python-brace-format
 msgid ""
 "# download\n"
@@ -354,11 +301,11 @@ msgstr ""
 "Checking ldap_schema ...                          OK\n"
 "..."
 
-#: ../../index.rst:171
+#: ../../index.rst:150
 msgid "Post processing of the update"
 msgstr "Nachbereitung des Updates"
 
-#: ../../index.rst:173
+#: ../../index.rst:152
 msgid ""
 "Following the update, you need to run new or updated join scripts. You "
 "can either use the UMC module *Domain join* or run the command :command"
@@ -369,11 +316,11 @@ msgstr ""
 "verwenden oder durch Befehl :command:`univention-run-join-scripts` als "
 "Benutzer ``root`` aufrufen."
 
-#: ../../index.rst:177
+#: ../../index.rst:156
 msgid "Subsequently, you need to restart the UCS system."
 msgstr "Anschließend müssen Sie das UCS-System neu starten."
 
-#: ../../index.rst:179
+#: ../../index.rst:158
 msgid ""
 "Please verify the PostgreSQL version on all UCS systems that updated to "
 "UCS 5.2. As UCS 5.2 ships Version 15 of PostgreSQL, updated systems may "
@@ -385,11 +332,11 @@ msgstr ""
 " müssen aktualisierte Systeme möglicherweise von PostgreSQL-11 migriert "
 "werden. Der :uv:kb:`22162` erläutert die empfohlenen Schritte."
 
-#: ../../index.rst:189
+#: ../../index.rst:168
 msgid "Notes on selected packages"
 msgstr "Hinweise zum Einsatz einzelner Pakete"
 
-#: ../../index.rst:191
+#: ../../index.rst:170
 msgid ""
 "The following sections inform about some selected packages regarding the "
 "update."
@@ -397,11 +344,11 @@ msgstr ""
 "Die folgenden Abschnitte informieren über einige ausgewählte Pakete im "
 "Zusammenhang mit dem Update."
 
-#: ../../index.rst:196
+#: ../../index.rst:175
 msgid "Collection of usage statistics"
 msgstr "Erfassung von Nutzungsstatistiken"
 
-#: ../../index.rst:198
+#: ../../index.rst:177
 msgid ""
 "When using the *UCS Core Edition*, UCS collects anonymous statistics on "
 "the use of |UCSUMC|. The modules opened get logged to an instance of the "
@@ -416,7 +363,7 @@ msgstr ""
 " besser auf das Kundeninteresse zuzuschneiden und Usability-"
 "Verbesserungen vorzunehmen."
 
-#: ../../index.rst:203
+#: ../../index.rst:182
 msgid ""
 "You can verify the license status through the menu entry "
 ":menuselection:`License --> License information` of the user menu in the "
@@ -430,7 +377,7 @@ msgstr ""
 "wenn unter *Lizenzinformationen* unter *Lizenztyp* ``UCS Core Edition`` "
 "aufgeführt ist."
 
-#: ../../index.rst:208
+#: ../../index.rst:187
 msgid ""
 "UCS doesn't collect usage statistics, when you use an `Enterprise "
 "Subscription <https://www.univention.com/products/prices-and-"
@@ -442,7 +389,7 @@ msgstr ""
 "subscriptions/>`_ wie *UCS Base Subscription* oder *UCS Standard "
 "Subscription* verwenden."
 
-#: ../../index.rst:212
+#: ../../index.rst:191
 msgid ""
 "Independent of the license used, you can deactivate the usage statistics "
 "collection by setting the |UCSUCRV| :envvar:`umc/web/piwik` to ``false``."
@@ -451,11 +398,11 @@ msgstr ""
 "Nutzungsstatistiken durch Setzen der |UCSUCRV| :envvar:`umc/web/piwik` "
 "auf ``false`` deaktivieren."
 
-#: ../../index.rst:218
+#: ../../index.rst:197
 msgid "Recommended browsers for the access to |UCSUMC|"
 msgstr "Empfohlene Browser für den Zugriff auf |UCSUMC|"
 
-#: ../../index.rst:220
+#: ../../index.rst:199
 msgid ""
 "|UCSUMC| uses numerous JavaScript and CSS functions to display the web "
 "interface. Your web browser needs to permit cookies. |UCSUMC| requires "
@@ -465,33 +412,33 @@ msgstr ""
 "JavaScript- und CSS-Funktionen. Ihr Browser muss dafür Cookies zulassen. "
 "|UCSUMC| benötigt dafür einen der folgenden Browser:"
 
-#: ../../index.rst:224
+#: ../../index.rst:203
 msgid "Chrome as of version 131"
 msgstr "Chrome ab Version 131"
 
-#: ../../index.rst:226
+#: ../../index.rst:205
 msgid "Firefox as of version 128"
 msgstr "Firefox ab Version 128"
 
-#: ../../index.rst:228
+#: ../../index.rst:207
 msgid "Safari and Safari Mobile as of version 18"
 msgstr "Safari und Safari Mobile ab Version 18"
 
-#: ../../index.rst:230
+#: ../../index.rst:209
 msgid "Microsoft Edge as of version 128"
 msgstr "Microsoft Edge ab Version 128"
 
-#: ../../index.rst:232
+#: ../../index.rst:211
 msgid "Users running older browsers may experience display or performance issues."
 msgstr ""
 "Mit älteren Browsern können Darstellungs- oder Performanceprobleme "
 "auftreten."
 
-#: ../../index.rst:238
+#: ../../index.rst:217
 msgid "Changelog"
 msgstr "Changelog"
 
-#: ../../index.rst:240
+#: ../../index.rst:219
 msgid ""
 "You find the changes since UCS 5.2-0 in :external+uv-"
 "changelog-5.2-3:doc:`index`."
@@ -499,7 +446,6 @@ msgstr ""
 "Die Änderungen seit UCS 5.2-0 finden Sie in :external+uv-"
 "changelog-5.2-3:doc:`index`."
 
-#: ../../index.rst:247
+#: ../../index.rst:226
 msgid "Bibliography"
 msgstr "Literaturverzeichnis"
-
