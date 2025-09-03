@@ -20,7 +20,7 @@ export RANDOM_UCS_ROOT_PASSWORD="${RANDOM_UCS_ROOT_PASSWORD:=$(shuf -zern32 {A..
 export TARGET_VERSION="${TARGET_VERSION:=$release}"
 export UCS_VERSION="${UCS_VERSION:=$release}"
 export OLD_VERSION="${OLD_VERSION:=$old_release}"
-export KVM_OPERATING_SYSTEM="${KVM_OPERATING_SYSTEM:=UCS}"
+export KVM_OPERATING_SYSTEM="${KVM_OPERATING_SYSTEM:=Others}"
 export KVM_TEMPLATE="${KVM_TEMPLATE:=generic-unsafe}"
 export KVM_OLDUCSVERSION="${KVM_OLDUCSVERSION:=$old_release}"
 export KVM_BUILD_SERVER="${KVM_BUILD_SERVER:=tross.knut.univention.de}"
