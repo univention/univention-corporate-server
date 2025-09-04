@@ -426,21 +426,21 @@ Description[en]=Enable DDS overlay for internal database
 Type=bool
 Categories=service-ldap
 
-[ldap/database/internal/dds/max_ttl]
+[ldap/database/internal/dds/max-ttl]
 Description[de]=Maximale TTL für dynamische Objekte in interner Datenbank (Standard: 365d)
 Description[en]=Maximum TTL for dynamic objects in internal database (Default: 365d)
 Type=pint
 Default=31536000
 Categories=service-ldap
 
-[ldap/database/internal/dds/min_ttl]
+[ldap/database/internal/dds/min-ttl]
 Description[de]=Minimale TTL für dynamische Objekte in interner Datenbank (Standard: 1d)
 Description[en]=Minimum TTL for dynamic objects in internal database (Default: 1d)
 Type=pint
 Default=86400
 Categories=service-ldap
 
-[ldap/database/internal/dds/default_ttl]
+[ldap/database/internal/dds/default-ttl]
 Description[de]=Standard TTL für dynamische Objekte in interner Datenbank (Standard: 2d)
 Description[en]=Default TTL for dynamic objects in internal database (Default: 2d)
 Type=pint
@@ -467,14 +467,14 @@ Type=bool
 Default=false
 Categories=service-ldap
 
-[ldap/overlay/dds/max_ttl]
+[ldap/overlay/dds/max-ttl]
 Description[de]=Maximale TTL (Time-To-Live) in Sekunden für dynamische Objekte im DDS-Overlay. Standardwert ist 31536000 (1 Jahr).
 Description[en]=Maximum TTL (Time-To-Live) in seconds for dynamic objects in DDS overlay. Default is 31536000 (1 year).
 Type=pint
 Default=31536000
 Categories=service-ldap
 
-[ldap/overlay/dds/min_ttl]
+[ldap/overlay/dds/min-ttl]
 Description[de]=Minimale TTL (Time-To-Live) in Sekunden für dynamische Objekte im DDS-Overlay. Standardwert ist 86400 (1 Tag).
 Description[en]=Minimum TTL (Time-To-Live) in seconds for dynamic objects in DDS overlay. Default is 86400 (1 day).
 Type=pint

@@ -1,8 +1,8 @@
 @!@
 if configRegistry.is_true('ldap/overlay/dds', False):
     print('overlay dds')
-    print('dds-max-ttl %s' % configRegistry.get('ldap/overlay/dds/max_ttl', '31536000'))
-    print('dds-min-ttl %s' % configRegistry.get('ldap/overlay/dds/min_ttl', '86400'))
+    print('dds-max-ttl %s' % configRegistry.get('ldap/overlay/dds/max-ttl', '31536000'))
+    print('dds-min-ttl %s' % configRegistry.get('ldap/overlay/dds/min-ttl', '86400'))
     print('dds-interval %s' % configRegistry.get('ldap/overlay/dds/interval', '3600'))
     print('')
 @!@
