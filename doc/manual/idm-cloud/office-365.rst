@@ -178,6 +178,41 @@ of the extended attribute ``UniventionMicrosoft365GroupType`` to one of the avai
          --dn "cn=UniventionMicrosoft365GroupType,cn=custom attributes,cn=univention,$(ucr get ldap/base)" \
          --set default="Microsoft 365 Group"
 
+.. versionadded:: 6.3
+
+   Starting with version ``6.3``,
+   you can change the visibility of ``Microsoft 365 Group`` objects
+   in the UMC on the *Microsoft 365* tab. The new default is ``Private``.
+
+   If the *Microsoft 365 Connector* installed on the UCS system
+   doesn't have at least version ``6.3``,
+   you can't change the group visibility.
+
+You can change the default visibility of a Microsoft 365 group.
+The following visibility options are available:
+
+:``Private``: Nubus default value.
+:``Public``: Azure default value.
+:``None``: Azure decides the default.
+
+For more information about the meaning of these options,
+see the `Group visibility options in Microsoft Graph REST API v1.0
+<https://learn.microsoft.com/en-us/graph/api/resources/group?view=graph-rest-1.0#group-visibility-options>`_.
+
+To change the default group visibility,
+you need to modify the default value
+of the extended attribute ``UniventionMicrosoft365GroupVisibility`` to one of the available options.
+Run the command in :numref:`idmcloud-o365-groups-extended-attribute-default-listing`
+to change the default value.
+
+.. code-block:: console
+   :caption: Change default value of the extended attribute ``UniventionMicrosoft365GroupVisibility``
+   :name: idmcloud-o365-groups-extended-attribute-default-listing
+
+    $ udm settings/extended_attribute modify \
+         --dn "cn=UniventionMicrosoft365GroupVisibility,cn=custom attributes,cn=univention,$(ucr get ldap/base)" \
+         --set default=""  # or --remove default
+
 .. _idmcloud-o365-teams:
 
 Teams
