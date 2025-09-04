@@ -649,21 +649,21 @@ msgstr ""
 
 #: ../../idm-cloud/office-365.rst:184
 msgid ""
-"With :program:`univention-office365` version ``5.0.2``, you can change "
+"Starting with version ``6.3``, you can change "
 "the visibility of ``Microsoft 365 Group`` objects in the UMC on the "
 "*Microsoft 365* tab. The new default is ``Private``."
 msgstr ""
-"Mit :program:`univention-office365` können Sie die Sichtbarkeit von "
+"Beginnend mit Version ``6.3`` können Sie die Sichtbarkeit von "
 "``Microsoft365 Gruppen`` in der UMC auf der Registerkarte *Microsoft 365* "
 "ändern. Die neue Voreinstellung ist ``Private``."
 
 #: ../../idm-cloud/office-365.rst:188
 msgid ""
 "If the *Microsoft 365 Connector* installed on the UCS system doesn't have"
-" at least version ``5.0.2``, you can't change the group visibility."
+" at least version ``6.3``, you can't change the group visibility."
 msgstr ""
 "Wenn der *Microsoft 365 Connector* auf dem UCS-System nicht mindestens "
-"Version ``5.0.2`` hat, können Sie die Gruppensichtbarkeit nicht ändern."
+"Version ``6.3`` hat, können Sie die Gruppensichtbarkeit nicht ändern."
 
 #: ../../idm-cloud/office-365.rst:192
 msgid ""

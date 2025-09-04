@@ -178,14 +178,14 @@ of the extended attribute ``UniventionMicrosoft365GroupType`` to one of the avai
          --dn "cn=UniventionMicrosoft365GroupType,cn=custom attributes,cn=univention,$(ucr get ldap/base)" \
          --set default="Microsoft 365 Group"
 
-.. versionadded:: 5.0.2
+.. versionadded:: 6.3
 
-   With :program:`univention-office365` version ``5.0.2``,
+   Starting with version ``6.3``,
    you can change the visibility of ``Microsoft 365 Group`` objects
    in the UMC on the *Microsoft 365* tab. The new default is ``Private``.
 
    If the *Microsoft 365 Connector* installed on the UCS system
-   doesn't have at least version ``5.0.2``,
+   doesn't have at least version ``6.3``,
    you can't change the group visibility.
 
 You can change the default visibility of a Microsoft 365 group.
