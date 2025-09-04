@@ -46,7 +46,8 @@ def test_function(function, expected, parse, tmplog):
         _d  # noqa: B018
 
     ud.set_function(function)
-    f()
+    with pytest.warns(PendingDeprecationWarning):
+        f()
     ud.exit()
 
     output = tmplog.read()
