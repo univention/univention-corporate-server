@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Univention Corporate Server - Manual for users and "
 "administrators\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-11 16:18+0000\n"
-"PO-Revision-Date: 2025-03-11 17:18+0100\n"
+"POT-Creation-Date: 2025-08-18 11:52+0000\n"
+"PO-Revision-Date: 2025-08-21 14:53+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "MIME-Version: 1.0\n"
@@ -205,7 +205,7 @@ msgstr ""
 "Änderungen an |UCSUCRVs| werden erst nach dem Neustart des |UCSUDL| "
 "umgesetzt."
 
-#: ../../idm-cloud/google.rst:97 ../../idm-cloud/office-365.rst:258
+#: ../../idm-cloud/google.rst:97 ../../idm-cloud/office-365.rst:293
 msgid "Troubleshooting/Debugging"
 msgstr "Fehlersuche"
 
@@ -647,11 +647,107 @@ msgstr ""
 "attributes,cn=univention,$(ucr get ldap/base)\" \\\n"
 "     --set default=\"Microsoft 365 Group\""
 
-#: ../../idm-cloud/office-365.rst:185
+#: ../../idm-cloud/office-365.rst:184
+msgid ""
+"Starting with version ``6.3``, you can change "
+"the visibility of ``Microsoft 365 Group`` objects in the UMC on the "
+"*Microsoft 365* tab. The new default is ``Private``."
+msgstr ""
+"Beginnend mit Version ``6.3`` können Sie die Sichtbarkeit von "
+"``Microsoft365 Gruppen`` in der UMC auf der Registerkarte *Microsoft 365* "
+"ändern. Die neue Voreinstellung ist ``Private``."
+
+#: ../../idm-cloud/office-365.rst:188
+msgid ""
+"If the *Microsoft 365 Connector* installed on the UCS system doesn't have"
+" at least version ``6.3``, you can't change the group visibility."
+msgstr ""
+"Wenn der *Microsoft 365 Connector* auf dem UCS-System nicht mindestens "
+"Version ``6.3`` hat, können Sie die Gruppensichtbarkeit nicht ändern."
+
+#: ../../idm-cloud/office-365.rst:192
+msgid ""
+"You can change the default visibility of a Microsoft 365 group. The "
+"following visibility options are available:"
+msgstr ""
+"Sie können den Standard-Gruppentyp einer Microsoft 365-Gruppe ändern. Die "
+"folgenden Gruppentypen sind verfügbar:"
+
+#: ../../idm-cloud/office-365.rst
+msgid "``Private``"
+msgstr "``Private``"
+
+#: ../../idm-cloud/office-365.rst:195
+msgid "Nubus default value."
+msgstr "Voreinstellung bei Nubus"
+
+#: ../../idm-cloud/office-365.rst
+msgid "``Public``"
+msgstr "``Public``"
+
+#: ../../idm-cloud/office-365.rst:196
+msgid "Azure default value."
+msgstr "Voreinstellung bei Azure"
+
+#: ../../idm-cloud/office-365.rst
+msgid "``None``"
+msgstr "``None``"
+
+#: ../../idm-cloud/office-365.rst:197
+msgid "Azure decides the default."
+msgstr "Azure legt die Standardeinstellung fest."
+
+#: ../../idm-cloud/office-365.rst:199
+msgid ""
+"For more information about the meaning of these options, see the `Group "
+"visibility options in Microsoft Graph REST API v1.0 "
+"<https://learn.microsoft.com/en-us/graph/api/resources/group?view=graph-"
+"rest-1.0#group-visibility-options>`_."
+msgstr "Weitere Informationen zur Bedeutung dieser Optionen finden Sie unter "
+"`Sichtbarkeitsoptionen für Gruppen in Microsoft Graph REST API v1.0 "
+"<https://learn.microsoft.com/de-de/graph/api/resources/group?view=graph-"
+"rest-1.0#group-visibility-options>`_."
+
+#: ../../idm-cloud/office-365.rst:203
+msgid ""
+"To change the default group visibility, you need to modify the default "
+"value of the extended attribute ``UniventionMicrosoft365GroupVisibility``"
+" to one of the available options. Run the command in "
+":numref:`idmcloud-o365-groups-extended-attribute-default-listing` to "
+"change the default value."
+msgstr ""
+"Um die Standard-Gruppensichtbarkeit zu ändern, müssen Sie den Standardwert "
+"des erweiterten Attributs ``UniventionMicrosoft365GroupVisibility`` auf eine "
+"der verfügbaren Optionen ändern. "
+"Führen Sie den Befehl in "
+":numref:`idmcloud-o365-groups-extended-attribute-default-listing` aus, "
+"um den Standardwert zu ändern."
+
+#: ../../idm-cloud/office-365.rst:209
+msgid ""
+"Change default value of the extended attribute "
+"``UniventionMicrosoft365GroupVisibility``"
+msgstr ""
+"Ändern der Voreinstellung des erweiterten Attributs "
+"``UniventionMicrosoft365GroupVisibility``"
+
+#: ../../idm-cloud/office-365.rst:209
+msgid ""
+" $ udm settings/extended_attribute modify \\\n"
+"      --dn \"cn=UniventionMicrosoft365GroupVisibility,cn=custom "
+"attributes,cn=univention,$(ucr get ldap/base)\" \\\n"
+"      --set default=\"\"  # or --remove default"
+msgstr ""
+"$ udm settings/extended_attribute modify \\\n"
+"     --dn \"cn=UniventionMicrosoft365GroupVisibility,cn=custom "
+"attributes,cn=univention,$(ucr get ldap/base)\" \\\n"
+"      --set default=\"\"  # oder --remove default"
+
+#: ../../idm-cloud/office-365.rst:220
 msgid "Teams"
 msgstr "Teams"
 
-#: ../../idm-cloud/office-365.rst:187
+#: ../../idm-cloud/office-365.rst:222
 msgid ""
 "To use Teams, synchronization of groups must be enabled in the |UCSUCRV| "
 ":envvar:`office365/groups/sync` with the value ``yes``, and then the "
@@ -677,7 +773,7 @@ msgstr ""
 " Das Einrichten eines neuen Teams in Microsoft 365 kann einige Minuten in"
 " Anspruch nehmen."
 
-#: ../../idm-cloud/office-365.rst:197
+#: ../../idm-cloud/office-365.rst:232
 msgid ""
 "Ensure that users of a team in Azure are provided with a license that "
 "includes the use of Teams."
@@ -685,11 +781,11 @@ msgstr ""
 "Es muss sichergestellt sein, dass die Benutzer eines Teams in Azure eine "
 "Lizenz erhalten, in der die Nutzung von Teams enthalten ist."
 
-#: ../../idm-cloud/office-365.rst:203
+#: ../../idm-cloud/office-365.rst:238
 msgid "Synchronization of Users in multiple Azure Active Directories"
 msgstr "Synchronisation von Benutzern in mehrere Azure Active Directories"
 
-#: ../../idm-cloud/office-365.rst:205
+#: ../../idm-cloud/office-365.rst:240
 msgid ""
 "The Microsoft 365 Connector is able to synchronize users to multiple "
 "Azure Active Directories. For each user account, multiple Azure AD "
@@ -704,7 +800,7 @@ msgstr ""
 "in jedem der seinem UCS Konto zugewiesenen Azure AD ein separates Konto "
 "mit eindeutigem Benutzernamen (*Userprincipalname*, UPN)."
 
-#: ../../idm-cloud/office-365.rst:210
+#: ../../idm-cloud/office-365.rst:245
 #, python-brace-format
 msgid ""
 "An alias is assigned to each additional Azure AD connection by the "
@@ -727,7 +823,7 @@ msgstr ""
 "Der Wert dieser |UCSUCRV| bestimmt, welche Azure Verbindung durch den "
 "Microsoft 365 Einrichtungswizard konfiguriert wird."
 
-#: ../../idm-cloud/office-365.rst:220
+#: ../../idm-cloud/office-365.rst:255
 msgid ""
 "After creating the alias, the new connection must be configured through "
 "the Microsoft 365 Configuration Wizard, as well."
@@ -736,7 +832,7 @@ msgstr ""
 "Einrichtungswizard eingerichtet werden, damit Benutzer synchronisiert "
 "werden können."
 
-#: ../../idm-cloud/office-365.rst:223
+#: ../../idm-cloud/office-365.rst:258
 msgid ""
 "To use single sign-on with multiple Azure AD connections, a new logical "
 "SAML Identity Provider is needed for each connection. This is done "
@@ -746,7 +842,7 @@ msgstr ""
 " für jede weitere Verbindung ein neuer logischer SAML Identity Provider "
 "erstellt werden. Der Wizard übernimmt diese Aufgabe automatisch."
 
-#: ../../idm-cloud/office-365.rst:227
+#: ../../idm-cloud/office-365.rst:262
 #, python-brace-format
 msgid ""
 "The Identity Provider should get the same name as the alias. If another "
@@ -762,7 +858,7 @@ msgstr ""
 " Domaincontrollern muss also beispielsweise die |UCSUCRV| in der Form "
 ":samp:`saml/idp/entityID/supplement/{Aliasname}=true` gesetzt werden."
 
-#: ../../idm-cloud/office-365.rst:233
+#: ../../idm-cloud/office-365.rst:268
 msgid ""
 "IdP initiated logins can be done via the Univention Portal tile that the "
 "App creates during the configuration of the first connection. All "
@@ -794,7 +890,7 @@ msgstr ""
 "ist. Bitte beachten Sie, dass das bedeutet, dass die Kachel dann nur "
 "gesehen werden kann, wenn sich der Benutzer bereits eingeloggt hat."
 
-#: ../../idm-cloud/office-365.rst:246
+#: ../../idm-cloud/office-365.rst:281
 msgid ""
 "A UCS user can only use one Microsoft 365 account in one browser session "
 "at a time. To change the connection, a logout from Microsoft 365 is "
@@ -804,7 +900,7 @@ msgstr ""
 "gleichzeitig verbunden sein. Um die Verbindung zu wechseln, ist ein "
 "Abmelden an Microsoft 365 notwendig."
 
-#: ../../idm-cloud/office-365.rst:250
+#: ../../idm-cloud/office-365.rst:285
 msgid ""
 "A default alias for Microsoft 365 enabled users and groups can be set in "
 "the |UCSUCRV| :envvar:`office365/defaultalias`. To synchronize them into "
@@ -819,7 +915,7 @@ msgstr ""
 "Microsoft 365 das entsprechende Azure AD Verbindungsalias als Ziel "
 "ausgewählt werden."
 
-#: ../../idm-cloud/office-365.rst:260
+#: ../../idm-cloud/office-365.rst:295
 msgid ""
 "Messages during the setup are logged in :file:`/var/log/univention"
 "/management-console-module-office365.log`."
@@ -828,7 +924,7 @@ msgstr ""
 ":file:`/var/log/univention/management-console-module-office365.log` "
 "protokolliert."
 
-#: ../../idm-cloud/office-365.rst:263
+#: ../../idm-cloud/office-365.rst:298
 msgid ""
 "In case of synchronization problems, the log file of the |UCSUDL| should "
 "be examined: :file:`/var/log/univention/listener.log`."
@@ -836,7 +932,7 @@ msgstr ""
 "Bei Synchronisationsproblemen sollte die Logdatei des |UCSUDL| geprüft "
 "werden: :file:`/var/log/univention/listener.log`."
 
-#: ../../idm-cloud/office-365.rst:266
+#: ../../idm-cloud/office-365.rst:301
 msgid ""
 "Some actions of the Connector use long-running Azure Cloud operations, "
 "especially when using Teams. These operations are logged in the log file "
