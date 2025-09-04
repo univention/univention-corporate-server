@@ -5,6 +5,7 @@
 
 import argparse
 import os
+import re
 import subprocess
 import sys
 import traceback
@@ -216,6 +217,9 @@ def parse_changelog(args):
         while '  ' in changes:
             changes = changes.replace('  ', ' ')
         package = changelog.strip().split(None, 1)[0]
+
+        if re.search(r'UCS \d+\.\d+-\d+ version bump', changes):
+            continue
 
         issue, changes = changes.split(': ', 1)
         scope = mapping.get(package, package)
