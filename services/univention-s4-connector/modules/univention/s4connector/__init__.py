@@ -9,6 +9,7 @@
 
 import collections
 import copy
+import logging
 import os
 import pickle  # noqa: S403
 import pprint
@@ -28,8 +29,8 @@ from samba.ndr import ndr_unpack
 import univention.admin.modules
 import univention.admin.objects
 import univention.admin.uldap
-import univention.debug as ud_c
 import univention.debug2 as ud
+import univention.logging
 import univention.uldap
 from univention.s4connector.lockingdb import LockingDB
 from univention.s4connector.s4cache import S4Cache
@@ -531,25 +532,12 @@ class ucs:
                 raise search_exception
 
     def init_debug(self):
-        try:
-            function_level = int(self.configRegistry.get('%s/debug/function' % self.CONFIGBASENAME, ud.NO_FUNCTION))
-        except ValueError:
-            function_level = ud.NO_FUNCTION
-        ud.init(self._logfile, ud.WARN, function_level)
-        ud.set_level(ud.LDAP, self._debug_level)
-
-        try:
-            udm_function_level = int(self.configRegistry.get('%s/debug/udm/function' % self.CONFIGBASENAME, ud.NO_FUNCTION))
-        except ValueError:
-            udm_function_level = ud.NO_FUNCTION
-        ud_c.init(self._logfile, ud.WARN, udm_function_level)
-
-        try:
-            udm_debug_level = int(self.configRegistry.get('%s/debug/udm/level' % self.CONFIGBASENAME, ud.WARN))
-        except ValueError:
-            udm_debug_level = ud.WARN
-        for category in (ud.ADMIN, ud.LDAP):
-            ud_c.set_level(category, udm_debug_level)
+        udm_debug_level = self.configRegistry.get_int('%s/debug/udm/level' % self.CONFIGBASENAME, ud.WARN)
+        structured = self.configRegistry.is_true('%s/debug/structured-logging' % self.CONFIGBASENAME, False)
+        univention.logging.basicConfig(filename=self._logfile, univention_debug_level=self._debug_level, use_structured_logging=structured)
+        if udm_debug_level != self._debug_level:
+            for category in ('ADMIN', 'LDAP'):
+                logging.getLogger(category).set_ud_level(udm_debug_level)
 
     def close_debug(self):
         ud.debug(ud.LDAP, ud.INFO, "close debug")
