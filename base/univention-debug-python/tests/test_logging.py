@@ -2,13 +2,16 @@
 # SPDX-FileCopyrightText: 2024-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+import importlib
 import logging
 import os
 import re
+import sys
 
 import pytest
 
 import univention.debug as ud
+import univention.debug2 as ud2
 
 
 PROCESS = 25
@@ -26,52 +29,108 @@ def test_logging_handler_changed():
     assert type(f) is univention.logging.Logger
 
 
-@pytest.fixture
-def tmplog(tmpdir):
-    """Setup temporary logging."""
-    return tmpdir.ensure('log')
+with open('tests/legacy.log') as fd:
+    EXPECTED_LEGACY = fd.read()
+
+with open('tests/structured.log') as fd:
+    EXPECTED_STRUCTURED = fd.read()
+
+EXPECTED = {
+    'ud': (EXPECTED_LEGACY, EXPECTED_STRUCTURED),
+    'ud2': (EXPECTED_LEGACY, EXPECTED_STRUCTURED),
+}
 
 
-def test_logging_basic_config(tmplog, parse):
-    import univention.logging
-
-    pid = os.getpid()
-    univention.logging.basicConfig(filename=str(tmplog), level=logging.INFO, log_pid=True, univention_debug_flush=True, univention_debug_function=False, do_exit=True)
+@pytest.mark.parametrize('strucutured', [True, False])
+@pytest.mark.parametrize('debug_backend', ['ud', 'ud2'])
+def test_logging(tmp_path, debug_backend, strucutured):
+    if debug_backend == 'ud2':
+        sys.modules.pop('univention.logging')
+        sys.modules['univention.debug'] = ud2
+    else:
+        sys.modules.pop('univention.logging', None)
+    import univention.logging as ul
+    ul = importlib.reload(ul)
+    tmplog = tmp_path / 'log'
+    tmplog.touch()
+    ul.basicConfig(filename=str(tmplog), level=logging.INFO, log_pid=True, univention_debug_flush=True, univention_debug_function=False, do_exit=True, use_structured_logging=strucutured)
     logger = logging.getLogger('LDAP')
-    logger.debug('test_debug')
-    logger.info('test_info')
-    logger.warning('test_warn')
+    logger.univention_debug_handler.set_structured(strucutured)
+    logger.error('logger.error()')
+    logger.warning('logger.warning()')
+    logger.process('logger.process()')
+    logger.info('logger.info()')
+    logger.debug('logger.debug()')  # not shown
     logger.set_log_pid(True)
     child = logger.getChild('foo')
-    logger.process('test_process')
-    child.error('test_error')
-    logger.critical('test_critical')
+    child.error('logger.getChild("foo").error()')
+    child.getChild('bar').error('logger.getChild("foo").getChild("bar").error()')
+    logger.critical('logger.critical()')
     logger.set_ud_level(ud.ERROR)
-    logger.warning('no warning displayed')
-    child.warning('no warning displayed')
+    logger.warning('no warning displayed')  # not shown
+    child.warning('no warning displayed')  # not shown
     logger.set_log_pid(False)
     logger.setLevel(logging.DEBUG)
     logger.reopen()
-    logger.debug('test_debug')
+    logger.debug('logger.debug( after reopen with some spaces )')
+    ud.debug(ud.LDAP, ud.ERROR, 'ud.debug(ud.LDAP, ud.ERROR, "msg")')
+    ud.debug(ud.LDAP, ud.WARN, 'ud.debug(ud.LDAP, ud.WARN, "msg")')
+    ud.debug(ud.LDAP, ud.PROCESS, 'ud.debug(ud.LDAP, ud.PROCESS, "msg")')
+    ud.debug(ud.LDAP, ud.INFO, 'ud.debug(ud.LDAP, ud.INFO, "msg")')
+    ud.debug(ud.LDAP, ud.ALL, 'ud.debug(ud.LDAP, ud.ALL, "msg")')
+    ud.debug(ud.LDAP, 5, 'ud.debug(ud.LDAP, 5, "msg")')
+    ud.debug(ud.LDAP, 99, 'ud.debug(ud.LDAP, 99, "msg")')
+    ud.debug(ud.LDAP, -1, 'ud.debug(ud.LDAP, -1, "msg")')  # not shown
     logger.setLevel(logging.NOTSET + 1)
-    logger.log(9, 'test ultra debug_9')
-    logger.log(1, 'test ultra debug_1')
-    logger.log(100, 'test debug_100')
+    logger.log(9, 'logger.log(9)')
+    logger.log(1, 'logger.log(1)')
+    logger.log(100, 'logger.log(100)')
+    logger.info({'msg': 'logger.info({"msg": ""})'})
+    logger.info({'msg': 'logger.info({"msg": "%s"}, "addition")'}, '%s')
+    logger.info({'msg': 'logger.info({"msg": ""}, "foo": "bar")', 'foo': 'bar'})
+    logger.info('logger.info("", extra={"foo": "bar"})', extra={'foo': 'bar'})
+    logger.info('logger.info("%s", "addition", extra={"foo": "bar"})', '%s', extra={'foo': 'bar'})
+    logger.info('contains null (\x00) byte')
+    logger.univention_debug_handler.formatter.add_full_tracebacks = True
+    for i in [False, True]:
+        logger.univention_debug_handler.formatter.add_full_tracebacks = i
+        try:
+            foobar()
+        except NameError:
+            logger.exception('logger.exception("full_tb=%s")', i)
+            child.exception('child.exception("full_tb=%s")', i)
+        logger.info('logger.info("full_tb=%s", stack_info=True)', i, stack_info=True)
 
-    output = tmplog.read()
-    logs = list(parse(output))
-    assert logs[0][0] == 'init'
-    assert [(y['category'], y['level'], re.sub(r':\d+:', ':', y['msg'])) for x, y in logs[1:]] == [
-        ('LDAP', 'INFO', '%d: test_info' % pid),
-        ('LDAP', 'WARN', '%d: test_warn' % pid),
-        ('LDAP', 'PROCESS', '%d: test_process' % pid),
-        ('LDAP', 'ERROR', 'foo: %d: test_error' % pid),
-        ('LDAP', 'ERROR', '%d: test_critical' % pid),
-        ('LDAP', 'ALL', 'test_debug'),
-        ('LDAP', 'ALL', 'test ultra debug_9'),
-        ('LDAP', '99', 'test_logging.test_logging_basic_config: test ultra debug_1'),
-        ('LDAP', 'ERROR', 'test debug_100'),
-    ]
+    logger.univention_debug_handler.close()
+
+    log = tmplog.read_text()
+    replacements = {
+        # structured date
+        re.compile(r'^20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3} \+\d{4}', re.M): '2025-01-01T00:00:00.000 +0000',
+        re.compile(r'logging.process:\d+'): 'logging.process:1',
+        re.compile(f'pid={os.getpid()}'): 'pid=12345',
+        re.compile(r'Traceback \(most recent call last\):(.|\n)*?NameError: name .+ is not defined'): '<TRACEBACK>',
+        re.compile(r'Stack \(most recent call last\):(.|\n)*?, i, stack_info=True\)'): '<STACK>',
+        re.compile(rf'{re.escape(test_logging.__name__)}:\d+'): 'test_logging:1',
+        # legacy
+        re.compile(r'^\d{2}.\d{2}.\d{2} \d{2}:\d{2}:\d{2}\.\d{3}', re.M): '01.01.25 00:00:00.000',
+        re.compile(f': {os.getpid()}:'): ': 12345:',
+    }
+
+    def replace_all(line):
+        for pattern, replacement in replacements.items():
+            line = pattern.sub(replacement, line)
+        return line
+    actual = replace_all(log)
+    expected = EXPECTED[debug_backend][int(strucutured)].lstrip()
+    print('\n' + repr(actual).replace(r'\n', '\n').strip("'"))
+
+    # uncomment to update!
+    # if strucutured:
+    #     open('tests/structured.log', 'w').write(actual)
+    # else:
+    #     open('tests/legacy.log', 'w').write(actual)
+    assert actual == expected
 
 
 @pytest.mark.parametrize(
