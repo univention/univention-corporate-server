@@ -25,7 +25,7 @@ _ = translation.translate
 log = getLogger('ADMIN')
 
 module = 'recyclebin/deletedobject'
-operations = ['add', 'edit', 'remove', 'search', 'move']
+operations = ['edit', 'remove', 'search', 'move']
 childs = False
 short_description = _('Recyclebin: Deleted Object')
 object_name = _('Deleted Object')
