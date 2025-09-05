@@ -17,7 +17,7 @@ from argparse import ArgumentParser
 import univention.debug as ud
 from univention.lib.i18n import Locale, Translation
 from univention.management.console.config import MODULE_DEBUG_LEVEL, MODULE_INACTIVITY_TIMER, ucr
-from univention.management.console.log import MODULE, log_init
+from univention.management.console.log import MODULE, UMCModuleFilter, log_init, prepare_handler
 
 
 if __name__ == '__main__':
@@ -48,20 +48,25 @@ if __name__ == '__main__':
             os.set_inheritable(fd, True)
 
     # init logging
-    import tornado.log
     logfile = options.logfile % {'module': options.module}
-    log_init(logfile, options.debug)
+    log_init(logfile, options.debug, use_structured_logging=ucr.is_true('umc/server/debug/structured-logging'))
+    log_level = {ud.INFO: logging.INFO, ud.WARN: logging.WARNING, ud.ERROR: logging.ERROR, ud.ALL: logging.DEBUG, ud.PROCESS: logging.INFO}.get(ucr.get_int('umc/module/tornado-debug/level', 0), logging.ERROR)
     if logfile in {'stdout', 'stderr', '/dev/stdout', '/dev/stderr'}:
         channel = logging.StreamHandler(sys.stdout if logfile in {'stdout', '/dev/stdout'} else sys.stderr)
     else:
         if not os.path.isabs(logfile):
             logfile = '/var/log/univention/%s.log' % (logfile,)
         channel = logging.FileHandler(logfile, 'a+')
-    channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S'))
+        prepare_handler(channel, log_level, ucr.is_true('umc/server/debug/structured-logging'))
     for logname in ('tornado.access', 'tornado.application', 'tornado.general'):
         logger = logging.getLogger(logname)
-        logger.setLevel({ud.INFO: logging.INFO, ud.WARN: logging.WARNING, ud.ERROR: logging.ERROR, ud.ALL: logging.DEBUG, ud.PROCESS: logging.INFO}.get(ucr.get_int('umc/module/tornado-debug/level', 0), logging.ERROR))
+        logger.setLevel(log_level)
         logger.addHandler(channel)
+
+    umc_module_filter = UMCModuleFilter(options.module)
+    for comp in ('MAIN', 'ADMIN', 'LDAP', 'MODULE', 'tornado.access', 'tornado.application', 'tornado.general'):
+        for handler in logging.getLogger(comp).handlers:
+            handler.addFilter(umc_module_filter)
 
     try:
         locale_obj = Locale(options.language)
