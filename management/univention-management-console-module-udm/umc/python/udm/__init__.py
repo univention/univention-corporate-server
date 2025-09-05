@@ -613,8 +613,10 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
             else:
                 raise SuperordinateDoesNotExist(superordinate)
 
-        # overwrite base, blocklists are always in its module defined base
+        # overwrite base, blocklists and recyclebin are always in their module defined base
         if module.name == 'blocklists/list':
+            request.options['container'] = module.ldap_base
+        elif module.name == 'recyclebin/deletedobject':
             request.options['container'] = module.ldap_base
 
         container = request.options.get('container')

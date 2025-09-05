@@ -3,6 +3,9 @@
 # Univention Management Console
 #  module: manages UDM modules
 #
+# Like what you see? Join us!
+# https://www.univention.com/about-us/careers/vacancies/
+#
 # SPDX-FileCopyrightText: 2011-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
@@ -667,7 +670,9 @@ class UDM_Module:
                     if serverctrls and 'serverctrls' in inspect.getfullargspec(self.module.lookup).args:  # not every UDM handler supports serverctrls
                         kwargs['serverctrls'] = serverctrls
                         kwargs['response'] = response
+                    MODULE.warning("RECYCLEBIN DEBUG: Calling module.lookup for %s with filter_s=%s", self.name, filter_s)
                     result = self.module.lookup(None, ldap_connection, filter_s, base=container, superordinate=superordinate, scope=scope, sizelimit=sizelimit, **kwargs)
+                    MODULE.warning("RECYCLEBIN DEBUG: module.lookup returned %d results", len(result) if result else 0)
                 else:
                     result = None
         except udm_errors.insufficientInformation:
@@ -1234,6 +1239,11 @@ def get_obj_module(flavor, ldap_dn, ldap_connection=None, ldap_position=None):
 
 
 def _get_module(flavor, ldap_dn, attributes=None, ldap_connection=None, ldap_position=None):
+    if 'cn=recyclebin,cn=internal' in ldap_dn and flavor and 'recyclebin' in flavor:
+        module = UDM_Module('recyclebin/deletedobject', ldap_connection=ldap_connection, ldap_position=ldap_position)
+        if module.module is not None:
+            return module
+
     if flavor is None or flavor == 'navigation':
         base = None
     else:

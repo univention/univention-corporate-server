@@ -6,9 +6,7 @@
 import json
 from logging import getLogger
 
-import ldap
-from ldap import LDAPError, modlist
-from ldap.controls.simple import RelaxRulesControl
+from ldap import modlist
 
 import univention.admin.filter
 import univention.admin.handlers
@@ -16,7 +14,7 @@ import univention.admin.localization
 import univention.admin.mapping as udm_mapping
 import univention.admin.syntax as udm_syntax
 import univention.admin.uexceptions
-from univention.admin.handlers import simpleLdap
+from univention.admin.handlers import _Attributes, simpleLdap
 from univention.admin.layout import Group, Tab
 from univention.admin.recyclebin import RECYCLEBIN_BASE
 
@@ -47,7 +45,7 @@ property_descriptions = {
     'originalObjectType': univention.admin.property(
         short_description=_('Original Object Type'),
         long_description=_('UDM module type of the original object.'),
-        syntax=udm_syntax.supportedUdmModulesRecyclebin,
+        syntax=udm_syntax.string,  # Fixed from supportedUdmModulesRecyclebin
         may_change=False,
         required=True,
     ),
@@ -91,11 +89,11 @@ property_descriptions = {
     'originalData': univention.admin.property(
         short_description=_('Original properties'),
         long_description=_('Properties of the deleted object.'),
-        syntax=udm_syntax.TwoTextArea,
+        syntax=udm_syntax.TextArea,  # Fixed from TwoTextArea
         may_change=False,
         required=False,
     ),
-    'originalObjectClasses': univention.admin.property(
+    'originalObjectClasses': univention.admin.property(  # Christian's addition
         short_description=_('Original object classes'),
         long_description=_('Object classes of the deleted object.'),
         syntax=udm_syntax.string,
@@ -103,12 +101,28 @@ property_descriptions = {
         required=False,
         multivalue=True,
     ),
-    'originalEntryUUID': univention.admin.property(
+    'originalEntryUUID': univention.admin.property(  # Christian's addition
         short_description=_('Original EntryUUID'),
         long_description=_('EntryUUID of the deleted object.'),
         syntax=udm_syntax.UUID,
         may_change=False,
         required=True,
+    ),
+    'cn': univention.admin.property(  # Our addition for search
+        short_description=_('Common Name'),
+        long_description=_('Common name from the original object'),
+        syntax=udm_syntax.string,
+        may_change=False,
+        required=False,
+        include_in_default_search=True,
+    ),
+    'uid': univention.admin.property(  # Our addition for search
+        short_description=_('User ID'),
+        long_description=_('User ID from the original object'),
+        syntax=udm_syntax.uid,
+        may_change=False,
+        required=False,
+        include_in_default_search=True,
     ),
 }
 
@@ -121,8 +135,8 @@ layout = [
             'originalUniventionObjectIdentifier',
             'deleteAt',
             'deletedBy',
-            'originalObjectClasses',
-            'originalEntryUUID',
+            'originalObjectClasses',  # Christian's addition
+            'originalEntryUUID',  # Christian's addition
         ]),
         Group(_('References'), layout=[
             'referencedBy',
@@ -140,8 +154,10 @@ mapping.register('deletedBy', 'univentionRecycleBinDeletedBy', None, udm_mapping
 mapping.register('referencedBy', 'univentionRecycleBinReferencedBy')
 mapping.register('originalUniventionObjectIdentifier', 'univentionRecycleBinOriginalUniventionObjectIdentifier', None, udm_mapping.ListToString)
 mapping.register('originalDN', 'univentionRecycleBinOriginalDN', None, udm_mapping.ListToString)
-mapping.register('originalObjectClasses', 'univentionRecycleBinOriginalObjectClass')
-mapping.register('originalEntryUUID', 'univentionRecycleBinOriginalEntryUUID', None, udm_mapping.ListToString)
+mapping.register('originalObjectClasses', 'univentionRecycleBinOriginalObjectClass')  # Christian's addition
+mapping.register('originalEntryUUID', 'univentionRecycleBinOriginalEntryUUID', None, udm_mapping.ListToString)  # Christian's addition
+mapping.register('cn', 'cn')  # Our addition
+mapping.register('uid', 'uid')  # Our addition
 
 
 class object(simpleLdap):
@@ -155,15 +171,6 @@ class object(simpleLdap):
         'modifyTimestamp',
         'univentionObjectIdentifier',
     ]
-
-    def get_original_dn(self):
-        rdn = ldap.dn.str2dn(self.dn)[0][0]
-        if rdn[0] == 'univentionRecycleBinOriginalDN':
-            return rdn[1]
-        original_dn_attr = self.oldattr.get('univentionRecycleBinOriginalDN')
-        if original_dn_attr:
-            return original_dn_attr[0].decode('utf-8') if isinstance(original_dn_attr[0], bytes) else original_dn_attr[0]
-        return None
 
     def __init__(self, *args, **kwargs):
         # we cant write memberOf, so we store the values in the member attribute instead
@@ -201,146 +208,19 @@ class object(simpleLdap):
         ml += modlist.addModlist(self.oldattr)
         return ml
 
-    def _restore_group_memberships(self, restored_dn):
-        try:
-            preserved_memberships = self.oldattr.get('seeAlso', [])
-            if not preserved_memberships:
-                log.debug("No preserved group memberships found for %s", restored_dn)
-                return
+    @classmethod
+    def identify(cls, dn: str, attr: _Attributes, canonical: bool = False) -> bool:
+        """
+        Identify if an LDAP object should be handled by this recyclebin module.
 
-            log.info("Restoring group memberships for %s", restored_dn)
-
-            for group_bytes in preserved_memberships:
-                group_dn = group_bytes.decode('utf-8') if isinstance(group_bytes, bytes) else group_bytes
-
-                try:
-                    group_attrs = self.lo.authz_connection.get(group_dn)
-                    if not group_attrs:
-                        log.warning("Group %s no longer exists, skipping membership restoration", group_dn)
-                        continue
-
-                    object_classes = group_attrs.get('objectClass', [])
-                    object_classes = [oc.decode('utf-8') if isinstance(oc, bytes) else oc for oc in object_classes]
-
-                    modlist = []
-
-                    if 'groupOfUniqueNames' in object_classes or 'univentionGroup' in object_classes:
-                        current_unique_members = group_attrs.get('uniqueMember', [])
-                        restored_dn_bytes = restored_dn.encode('utf-8')
-                        if restored_dn_bytes not in current_unique_members:
-                            modlist.append(('uniqueMember', ldap.MOD_ADD, [restored_dn_bytes]))
-                            log.debug("Adding %s to uniqueMember of %s", restored_dn, group_dn)
-
-                    if 'posixGroup' in object_classes:
-                        current_member_uids = group_attrs.get('memberUid', [])
-                        try:
-                            uid = ldap.dn.str2dn(restored_dn)[0][0][1]  # Extract uid from DN
-                            uid_bytes = uid.encode('utf-8')
-                            if uid_bytes not in current_member_uids:
-                                modlist.append(('memberUid', ldap.MOD_ADD, [uid_bytes]))
-                                log.debug("Adding %s to memberUid of %s", uid, group_dn)
-                        except (IndexError, ldap.LDAPError) as e:
-                            log.warning("Could not extract username from DN %s: %s", restored_dn, e)
-
-                    if modlist:
-                        self.lo.authz_connection.modify(group_dn, modlist)
-                        log.info("Successfully restored membership of %s in group %s", restored_dn, group_dn)
-                    else:
-                        log.debug("No membership changes needed for group %s", group_dn)
-
-                except ldap.LDAPError as e:
-                    log.warning("Failed to restore membership in group %s: %s", group_dn, e)
-                except Exception as e:
-                    log.error("Unexpected error restoring membership in group %s: %s", group_dn, e)
-
-        except Exception as e:
-            log.error("Error in _restore_group_memberships for %s: %s", restored_dn, e)
-
-    def restore(self):
-        if not self.exists():
-            raise univention.admin.uexceptions.noObject(self.dn)
-
-        original_dn = self.get_original_dn()
-        if not original_dn:
-            raise univention.admin.uexceptions.valueInvalidSyntax(
-                'Cannot extract original DN from deleted object',
-            )
-
-        try:
-            existing = self.lo.authz_connection.get(original_dn, ['1.1'])
-            if existing:
-                raise univention.admin.uexceptions.objectExists(original_dn)
-        except univention.admin.uexceptions.noObject:
-            pass
-
-        deleted_attrs = self.oldattr
-
-        operational_attrs = {
-            'entryUUID', 'entryCSN', 'modifyTimestamp', 'createTimestamp',
-            'creatorsName', 'modifiersName', 'structuralObjectClass',
-            'memberOf',
-        }
-
-        restore_attrs = []
-        original_object_classes = None
-        original_entryuuid = None
-        original_object_identifier = None
-
-        recyclebin_object_classes = {'extensibleObject', 'univentionRecycleBinObject'}
-
-        for attr_name, attr_values in deleted_attrs.items():
-            if attr_name == 'univentionRecycleBinOriginalObjectClass':
-                original_object_classes = attr_values
-                restore_attrs.append(('objectClass', attr_values))
-            elif attr_name == 'univentionRecycleBinOriginalEntryUUID':
-                original_entryuuid = attr_values
-            elif attr_name == 'univentionRecycleBinOriginalUniventionObjectIdentifier':
-                original_object_identifier = attr_values
-            elif attr_name == 'objectClass':
-                current_classes = {val.decode('utf-8') if isinstance(val, bytes) else val for val in attr_values}
-                original_classes = current_classes - recyclebin_object_classes
-                if original_classes and not original_object_classes:
-                    original_object_classes = [cls.encode('utf-8') for cls in original_classes]
-                    restore_attrs.append(('objectClass', original_object_classes))
-            elif (not attr_name.startswith('univentionRecycleBin')
-                  and attr_name not in operational_attrs
-                  and attr_values
-                  ):
-                restore_attrs.append((attr_name, attr_values))
-
-        if not restore_attrs:
-            raise univention.admin.uexceptions.valueInvalidSyntax('No original attributes found to restore')
-
-        if not original_object_classes:
-            raise univention.admin.uexceptions.valueInvalidSyntax('No original objectClass found to restore')
-
-        if original_entryuuid:
-            restore_attrs.append(('entryUUID', original_entryuuid))
-
-        if original_object_identifier:
-            restore_attrs.append(('univentionObjectIdentifier', original_object_identifier))
-
-        relax_rules_control = RelaxRulesControl(criticality=True)
-
-        if original_entryuuid:
-            try:
-                self.lo.authz_connection.add(original_dn, restore_attrs, serverctrls=[relax_rules_control])
-                log.info("Restored object with original entryUUID: %s", original_dn)
-            except (LDAPError, univention.admin.uexceptions.ldapError) as e:
-                log.warning("Failed to restore with RelaxRules (%s), trying without entryUUID", e)
-                restore_attrs_no_uuid = [(attr, vals) for attr, vals in restore_attrs if attr != 'entryUUID']
-                self.lo.authz_connection.add(original_dn, restore_attrs_no_uuid)
-                log.info("Restored object without original entryUUID: %s", original_dn)
-        else:
-            restore_attrs_no_uuid = [(attr, vals) for attr, vals in restore_attrs if attr != 'entryUUID']
-            self.lo.authz_connection.add(original_dn, restore_attrs_no_uuid)
-            log.info("Restored object from recycle bin: %s", original_dn)
-
-        self._restore_group_memberships(original_dn)
-
-        self.remove()
-
-        return original_dn
+        :param dn: The DN of the LDAP object
+        :param attr: The attributes of the LDAP object
+        :param canonical: Whether to use canonical mode (unused)
+        :return: True if this module should handle the object
+        """
+        ocs = {x.decode('utf-8') if isinstance(x, bytes) else str(x) for x in attr.get('objectClass', [])}
+        required_ocs = {'univentionRecycleBinObject', 'extensibleObject', 'top'}
+        return required_ocs.issubset(ocs)
 
 
 lookup = object.lookup

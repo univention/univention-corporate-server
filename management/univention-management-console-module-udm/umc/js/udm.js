@@ -703,9 +703,13 @@ define([
 				iconClass: 'plus',
 				isContextAction: false,
 				isStandardAction: true,
+				showAction: lang.hitch(this, function() {
+					return this.moduleFlavor !== 'recyclebin/deletedobject' &&
+					       this.moduleFlavor !== 'recyclebin/all' &&
+					       !this.moduleFlavor.startsWith('recyclebin/');
+				}),
 				callback: lang.hitch(this, 'showNewObjectDialog'),
 				showAction: lang.hitch(this, function() {
-					// Don't show Add button in recyclebin
 					// Check both possible module flavors and the object type
 					return this.moduleFlavor !== 'recyclebin/deletedobject' &&
 					       this.moduleFlavor !== 'recyclebin/all' &&
@@ -716,10 +720,18 @@ define([
 				label: _('Edit'),
 				description: _editDescriptionText(),
 				iconClass: 'edit-2',
-				isStandardAction: true,
+				isStandardAction: lang.hitch(this, function() {
+					return (!this.moduleFlavor || !this.moduleFlavor.startsWith('recyclebin/'));
+				}),
 				isMultiAction: true,
 				canExecute: lang.hitch(this, '_canEdit'),
+				showAction: lang.hitch(this, function() {
+					return !this.moduleFlavor || !this.moduleFlavor.startsWith('recyclebin/');
+				}),
 				callback: lang.hitch(this, function(ids, items) {
+					if (this.moduleFlavor && this.moduleFlavor.startsWith('recyclebin/')) {
+						return;
+					}
 					if (items.length == 1 && items[0].objectType) {
 						this.createDetailPage('edit', items[0].objectType, ids[0]);
 					} else if (items.length >= 1 && items[0].objectType) {
@@ -771,11 +783,29 @@ define([
 					this.removeObjects(objects);
 				})
 			}, {
+				name: 'restore',
+				label: _('Restore'),
+				description: _('Restore deleted objects from recyclebin'),
+				isStandardAction: true,
+				isMultiAction: true,
+				showAction: lang.hitch(this, function() {
+					return this.moduleFlavor === 'recyclebin/deletedobject';
+				}),
+				callback: lang.hitch(this, function(ids, objects) {
+					this.restoreObjects(objects);
+				})
+			}, {
 				name: 'move',
 				label: _('Move to...'),
 				description: _('Move objects to a different LDAP position.'),
 				isMultiAction: true,
+				visible: lang.hitch(this, function() {
+					return (!this.moduleFlavor || !this.moduleFlavor.startsWith('recyclebin/'));
+				}),
 				canExecute: lang.hitch(this, '_canMove'),
+				showAction: lang.hitch(this, function() {
+					return !this.moduleFlavor || !this.moduleFlavor.startsWith('recyclebin/');
+				}),
 				callback: lang.hitch(this, function(ids, objects) {
 					this.moveObjects(objects);
 				})
@@ -784,6 +814,9 @@ define([
 				label: _('Copy'),
 				description: _('Create a copy of the LDAP object.'),
 				isMultiAction: false,
+				visible: lang.hitch(this, function() {
+					return (!this.moduleFlavor || !this.moduleFlavor.startsWith('recyclebin/'));
+				}),
 				canExecute: lang.hitch(this, '_canCopy'),
 				callback: lang.hitch(this, function(ids, items) {
 					this._showNewObjectDialog({
@@ -791,8 +824,10 @@ define([
 							wizardsDisabled: true,
 							defaultObjectType: items[0].objectType,
 							showObjectType: false,
-							showObjectTemplate: false
-						},
+							showObjectTemplate: false,
+				showAction: lang.hitch(this, function() {
+					return !this.moduleFlavor || !this.moduleFlavor.startsWith('recyclebin/');
+				})},
 						callback: lang.hitch(this, function(options) {
 							this.createDetailPage('copy', items[0].objectType, ids[0], lang.mixin(options, {objectTemplate: null}));
 						})
@@ -823,16 +858,24 @@ define([
 				additionalGridViews = {tile: new TileView()};
 			}
 
-			// generate the data grid
+			var filteredActions = actions;
+			if (this.moduleFlavor && this.moduleFlavor.startsWith('recyclebin/')) {
+				filteredActions = array.filter(actions, function(action) {
+					return action.name === 'delete' || action.name === 'restore' ||
+					       action.name === 'navUp' || action.name === 'add';
+				});
+			}
 			this._grid = new Grid({
 				region: 'main',
-				actions: actions,
+				actions: filteredActions,
 				columns: this._default_columns,
 				allowHTML: false,
 				moduleStore: _store,
 				footerFormatter: _footerFormatter,
 				additionalViews: additionalGridViews,
 				defaultAction: lang.hitch(this, function(keys, items) {
+					if (this.moduleFlavor && this.moduleFlavor.startsWith('recyclebin/')) {
+						return; }
 					if ('navigation' == this.moduleFlavor && (this._searchForm._widgets.objectType.get('value') == '$containers$' || items[0].$childs$ === true)) {
 						return 'workaround';
 					}
@@ -1290,10 +1333,18 @@ define([
 		},
 
 		_canEdit: function(item) {
+			// Disable edit for recyclebin objects
+			if (this.moduleFlavor && this.moduleFlavor.startsWith('recyclebin/')) {
+				return false;
+			}
 			return item.$operations$.indexOf('edit') !== -1;
 		},
 
 		_canMove: function(item) {
+			// Disable move for recyclebin objects
+			if (this.moduleFlavor && this.moduleFlavor.startsWith('recyclebin/')) {
+				return false;
+			}
 			if (tools.isTrue(this._ucr['ad/member'])) {
 				return -1 === array.indexOf(item.$flags$, 'synced');
 			}
@@ -1301,7 +1352,11 @@ define([
 		},
 
 		_canCopy: function(item) {
-			return item.$operations$.indexOf('copy') !== -1;
+			// Disable copy for recyclebin objects
+			if (this.moduleFlavor && this.moduleFlavor.startsWith('recyclebin/')) {
+				return false;
+			}
+			return -1 === array.indexOf(item.$flags$, 'synced') && item.$operations$.indexOf('add') !== -1;
 		},
 
 		_canDelete: function(item) {
@@ -1905,6 +1960,69 @@ define([
 			_dialog.show();
 		},
 
+		restoreObjects: function(/*String|String[]*/ _ids) {
+			// Restore objects from recyclebin
+			var ids = array.map(lang.isArray(_ids) ? _ids : [_ids], function(iid) {
+				return lang.isString(iid) ? iid : iid.id;
+			});
+
+			if (!ids.length) {
+				return;
+			}
+
+			var msg = '';
+			if (ids.length === 1) {
+				msg = _('Please confirm the restoration of the selected object from the recyclebin.');
+			} else {
+				msg = _('Please confirm the restoration of %s objects from the recyclebin.', ids.length);
+			}
+
+			dialog.confirm(msg, [{
+				label: _('Cancel'),
+				'default': true
+			}, {
+				label: _('Restore'),
+				callback: lang.hitch(this, function() {
+					// enable standby animation
+					this.standby(true);
+
+					// Restore the objects via UDM REST API
+					var transaction = this.moduleStore.transaction();
+					array.forEach(ids, function(id) {
+						// For recyclebin objects, we need to call a restore method
+						// This would need backend support via UDM
+						this.moduleStore.put({
+							$dn$: id,
+							$options$: {
+								operation: 'restore'
+							}
+						});
+					}, this);
+
+					// Commit the transaction
+					transaction.commit().then(
+						lang.hitch(this, function(data) {
+							// disable standby animation
+							this.standby(false);
+
+							// Show success message
+							dialog.notify(_('The selected object(s) have been restored.'));
+
+							// Reload the grid
+							this._grid.filter(this._grid.query);
+						}),
+						lang.hitch(this, function(error) {
+							// disable standby animation
+							this.standby(false);
+
+							// Show error
+							dialog.alert(_('The restoration could not be completed: ') + error.message);
+						})
+					);
+				})
+			}]);
+		},
+
 		showNewObjectDialog: function() {
 			this._showNewObjectDialog({
 				args: {},
@@ -2174,3 +2292,4 @@ _('User Account');
 _('User Contact');
 _('Windows');
 ****** END ******/
+
