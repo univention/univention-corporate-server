@@ -11,6 +11,7 @@ define([
 	"dojo/Deferred",
 	"dojo/dom-class",
 	"dojox/grid/EnhancedGrid",
+	"put-selector/put",
 	"../tools",
 	"./_SelectMixin",
 	"./_FormWidgetMixin",
@@ -20,7 +21,7 @@ define([
 	"umc/i18n!",
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/cells"
-], function(declare, lang, array, Deferred, domClass, EnhancedGrid, tools, _SelectMixin, _FormWidgetMixin, StandbyMixin, _RegisterOnShowMixin, _) {
+], function(declare, lang, array, Deferred, domClass, EnhancedGrid, put, tools, _SelectMixin, _FormWidgetMixin, StandbyMixin, _RegisterOnShowMixin, _) {
 	return declare("umc.widgets.MultiSelect", [ EnhancedGrid, _FormWidgetMixin, _SelectMixin, StandbyMixin, _RegisterOnShowMixin ], {
 		// summary:
 		//		This class represents a MultiSelect widget. Essentially, it adapts a DataGrid
@@ -82,7 +83,7 @@ define([
 			this.inherited(arguments);
 
 			// hide header if showHeader is false
-			domClass.toggle(this.domNode, 'umcMultiSelectNoHeader', !this.showHeader);
+			domClass.toggle(this.domNode, 'umcMultiSelectNoHeader', !this.showHeader || this.disabled);
 
 			// send an onChange event when the selection has changed
 			this.on('selectionChanged', lang.hitch(this, function() {
@@ -157,7 +158,18 @@ define([
 						}
 					})
 				});
+				if (this.disabled) {
+					this._disableAllItems();
+				}
 			}));
+		},
+
+		_setStaticValues: function() {
+			// for MultiObjectSelect
+			this.inherited(arguments);
+			if (this.disabled) {
+				this._disableAllItems();
+			}
 		},
 
 		_getValueAttr: function() {
@@ -213,6 +225,26 @@ define([
 				this._loadingDeferred.resolve();
 			}
 
+			this.render();
+		},
+
+		_setDisabledAttr: function(disabled) {
+			domClass.toggle(this.domNode, 'umcMultiSelectDisabled', disabled);
+			this._set('disabled', disabled);
+
+			this._disableAllItems(disabled);
+		},
+
+		_disableAllItems: function(disable) {
+			var items = this.store._getItemsArray();
+			disable = undefined === disable ? true : disable;
+			array.forEach(items, lang.hitch(this, function(iitem) {
+				var idx = this.getItemIndex(iitem);
+				if (idx >= 0) {
+					this.rowSelectCell.setDisabled(idx, disable);
+				}
+			}));
+			domClass.toggle(this.domNode, 'umcMultiSelectNoHeader', !this.showHeader || this.disabled);
 			this.render();
 		},
 

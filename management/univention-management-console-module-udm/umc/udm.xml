@@ -295,6 +295,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<requiredCommand name="udm/request_new_license"/>
 			</requiredCommands>
 		</flavor>
+		<flavor priority="50" icon="recyclebin" id="recyclebin/removedobject">
+			<name>Recyclebin</name>
+			<description>Management of deleted objects in the domain</description>
+			<keywords>recyclebin,trash,deleted,restore</keywords>
+			<categories>
+				<category name="domain"/>
+			</categories>
+			<requiredCommands>
+				<requiredCommand name="udm/meta_info"/>
+				<requiredCommand name="udm/containers"/>
+				<requiredCommand name="udm/types"/>
+				<requiredCommand name="udm/properties"/>
+				<requiredCommand name="udm/layout"/>
+				<requiredCommand name="udm/values"/>
+				<requiredCommand name="udm/query"/>
+				<requiredCommand name="udm/nav/container/query"/>
+				<requiredCommand name="udm/restore"/>
+			</requiredCommands>
+		</flavor>
 		<categories>
 			<category name="domain"/>
 		</categories>
@@ -332,5 +351,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<command name="udm/reports/get" function="reports_get" />
 		<command name="udm/request_new_license" function="request_new_license" />
 		<command name="udm/meta_info" function="meta_info" />
+		<command name="udm/restore" function="restore" />
 	</module>
 </umc>
