@@ -12,22 +12,50 @@ Logging
 This module provides a wrapper for univention.debug
 """
 
-import functools
+import contextvars
 import grp
 import logging
 import os
 
 import univention.debug as ud
 import univention.logging
+from univention.logging import Structured
 from univention.management.console.config import ucr
 
 
+ALL_LOGGERS = ('MAIN', 'NETWORK', 'SSL', 'ADMIN', 'LDAP', 'MODULE', 'AUTH', 'PARSER', 'LOCALE', 'ACL', 'RESOURCES', 'PROTOCOL', 'tornado')
+
+# TODO: still required with new logging?
 # no exceptions from logging
 # otherwise shutdown the server will raise an exception that the logging stream could not be closed
 logging.raiseExceptions = False
 
-_debug_ready = False
 _debug_loglevel = 2
+
+
+class RequestFilter(logging.Filter):
+
+    request_context = contextvars.ContextVar("request")
+
+    def __init__(self, umcmodule):
+        self.umcmodule = umcmodule
+        super().__init__()
+
+    def filter(self, record):
+        record.umcmodule = self.umcmodule
+        try:
+            request_context = self.request_context.get()
+        except LookupError:
+            request_context = {}
+        record.request_id = request_context.get('request_id', '-')
+        if dn := request_context.get('requester_dn'):
+            record.requester_dn = dn
+        if ip := request_context.get('requester_ip'):
+            record.requester_ip = ip
+        if hostname := request_context.get('requester_hostname'):
+            record.requester_hostname = hostname
+
+        return True
 
 
 def _reset_debug_loglevel():
@@ -39,7 +67,7 @@ def _reset_debug_loglevel():
 _reset_debug_loglevel()
 
 
-def log_init(filename, log_level=2, log_pid=None):
+def log_init(filename, log_level=2, log_pid=None, **kwargs):
     """
     Initializes Univention debug.
 
@@ -59,6 +87,7 @@ def log_init(filename, log_level=2, log_pid=None):
         univention_debug_flush=True,
         univention_debug_function=False,
         univention_debug_categories=('MAIN', 'LDAP', 'NETWORK', 'SSL', 'ADMIN', 'MODULE', 'AUTH', 'PARSER', 'LOCALE', 'ACL', 'RESOURCES', 'PROTOCOL'),
+        **kwargs,
     )
     if filename not in ('stdout', 'stderr', '/dev/stdout', '/dev/stderr'):
         adm = grp.getgrnam('adm')
@@ -86,24 +115,31 @@ def log_reopen():
     log_set_level(_debug_loglevel)
 
 
-CORE = logging.getLogger('MAIN')
-NETWORK = logging.getLogger('NETWORK')
-CRYPT = logging.getLogger('SSL')
-UDM = logging.getLogger('ADMIN')
-MODULE = logging.getLogger('MODULE')
-AUTH = logging.getLogger('AUTH')
-PARSER = logging.getLogger('PARSER')
-LOCALE = logging.getLogger('LOCALE')
-ACL = logging.getLogger('ACL')
-RESOURCES = logging.getLogger('RESOURCES')
-PROTOCOL = logging.getLogger('PROTOCOL')
+def init_request_context_logging(umc_module):
+    request_filter = RequestFilter(umc_module)
+    add_filter(request_filter)
 
-for _logger in (CORE, NETWORK, CRYPT, UDM, MODULE, AUTH, PARSER, LOCALE, ACL, RESOURCES, PROTOCOL):
-    _logger.process = _logger.info
-    _logger.info = _logger.debug
-    _logger.debug = functools.partial(_logger.log, logging.DEBUG - 1)
+
+def add_filter(filter_, logger_names=ALL_LOGGERS):
+    for name in logger_names:
+        for handler in logging.getLogger(name).handlers:
+            if filter_ not in handler.filters:
+                handler.addFilter(filter_)
+
+
+CORE = Structured(logging.getLogger('MAIN'))
+NETWORK = Structured(logging.getLogger('NETWORK'))
+CRYPT = Structured(logging.getLogger('SSL'))
+UDM = Structured(logging.getLogger('ADMIN'))
+MODULE = Structured(logging.getLogger('MODULE'))
+AUTH = Structured(logging.getLogger('AUTH'))
+PARSER = Structured(logging.getLogger('PARSER'))
+LOCALE = Structured(logging.getLogger('LOCALE'))
+ACL = Structured(logging.getLogger('ACL'))
+RESOURCES = Structured(logging.getLogger('RESOURCES'))
+PROTOCOL = Structured(logging.getLogger('PROTOCOL'))
 
 fallbackLoggingHandler = logging.StreamHandler()
-fallbackLoggingHandler.setFormatter(logging.Formatter('%(asctime)s.%(msecs)03d ( %(levelname)-7s ) : %(message)s', '%d.%m.%y %H:%M:%S'))
+fallbackLoggingHandler.setFormatter(univention.logging.StructuredFormatter(with_date_prefix=True))
 CORE.root.setLevel(logging.DEBUG)
 CORE.root.addHandler(fallbackLoggingHandler)

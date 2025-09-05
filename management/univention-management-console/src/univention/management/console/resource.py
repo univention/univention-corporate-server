@@ -23,7 +23,7 @@ import univention.debug as ud
 from univention.management.console.config import ucr
 from univention.management.console.error import BadRequest, Forbidden, UMC_Error, Unauthorized
 from univention.management.console.ldap import get_machine_connection
-from univention.management.console.log import CORE
+from univention.management.console.log import CORE, RequestFilter
 from univention.management.console.session import Session
 
 
@@ -55,6 +55,7 @@ class Resource(RequestHandler):
         self.request.content_negotiation_lang = 'json'
         self.decode_request_arguments()
         await self.parse_authorization()
+        self._set_request_context()
         if not self.ignore_session_timeout_reset:
             self.current_user.reset_timeout()  # FIXME: order correct?
         await self.refresh_oidc_session()
@@ -62,6 +63,18 @@ class Resource(RequestHandler):
         self.bind_session_to_ip()
         if self.requires_authentication and not self.current_user.user.authenticated:
             raise Forbidden(self._("For using this request a login is required."))
+
+    def _set_request_context(self):
+        RequestFilter.request_context.set(self._request_context())
+
+    def _request_context(self):
+        session = self.current_user
+        return {
+            'request_id': '',
+            'requester_dn': session.user.user_dn,
+            'requester_ip': session.user.ip,
+            # 'requester_hostname': '',
+        }
 
     def check_session_validity(self):
         if not self.requires_authentication:  # TODO: or do we just want to disable this during auth?

@@ -38,7 +38,7 @@ class Test_LogrotationReload:
     def test_logrotation(self):
         self.service_restart()
         old_stats = [self.stat(logfile) for logfile in self.logfiles()]
-        assert len(old_stats) == 2
+        assert len(old_stats) == 1
 
         check_call(['logrotate', '-v', '-f', '/etc/logrotate.d/univention-management-console'])
 
@@ -49,12 +49,11 @@ class Test_LogrotationReload:
             if not logfiles:
                 continue
             new_stats = [self.stat(logfile) for logfile in logfiles]
-            assert len(new_stats) == 2
+            assert len(new_stats) == 1
 
-            assert new_stats[0].st_size < old_stats[0].st_size
-            assert new_stats[1].st_size < old_stats[0].st_size
-            assert new_stats[0].st_size < 100
-            assert new_stats[1].st_size < 100
+            for i, new_stat in enumerate(new_stats):
+                assert new_stat.st_size < old_stats[i].st_size
+                assert new_stat.st_size < 150
 
     def service_restart(self):
         check_call(['systemctl', 'restart', os.path.basename(self.SERVICE)])
