@@ -5,7 +5,7 @@
 
 from logging import getLogger
 
-import ldap as modlist
+from ldap import modlist
 
 import univention.admin.filter
 import univention.admin.handlers
@@ -44,7 +44,7 @@ property_descriptions = {
     'originalObjectType': univention.admin.property(
         short_description=_('Original Object Type'),
         long_description=_('UDM module type of the original object'),
-        syntax=udm_syntax.univentionAdminModules,
+        syntax=udm_syntax.supportedUdmModulesRecyclebin,
         may_change=False,
         required=True,
     ),

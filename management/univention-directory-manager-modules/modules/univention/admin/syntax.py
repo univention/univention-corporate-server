@@ -5677,6 +5677,32 @@ class nfssync(select):
     ]
 
 
+class supportedUdmModulesRecyclebin(select):
+    """
+    Syntax for selecting an |UDM| module for the recyclebin
+
+    >>> supportedUdmModulesRecyclebin.parse('users/user')
+    'users/user'
+    >>> supportedUdmModulesRecyclebin.parse('nonexistant') #doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+    ...
+    valueInvalidSyntax:
+    """
+
+    # we need a fallback
+    choices = [
+        ('groups/group', 'Group: Group'),
+        ('users/user', 'User'),
+    ]
+
+    @classmethod
+    def parse(self, text):
+        for choice in self.choices:
+            if choice[0] == text:
+                return text
+        raise univention.admin.uexceptions.valueInvalidSyntax(_('"%s" is not supported for recyclebin/deletedobject.') % text)
+
+
 class univentionAdminModules(select):
     """
     Syntax for selecting an |UDM| module.
