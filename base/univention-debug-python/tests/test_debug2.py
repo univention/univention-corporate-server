@@ -2,16 +2,19 @@
 # SPDX-FileCopyrightText: 2024-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-
+import os
 import re
 import sys
 from collections.abc import Callable, Iterator
 from datetime import datetime
-from logging import DEBUG
+from logging import DEBUG, getLogger
 
 import pytest
 
 import univention.debug2 as ud
+
+
+TRACE = DEBUG - 5
 
 
 RE = re.compile(
@@ -22,7 +25,7 @@ RE = re.compile(
         |(?P<msg>.*)
     ))$
     ''', re.VERBOSE)
-LEVEL = ['ERROR', 'WARNING', 'PROCESS', 'INFO', 'ALL']
+LEVEL = ['ERROR', 'WARNING', 'PROCESS', 'INFO', 'ALL', 'TRACE']
 CATEGORY = [
     'MAIN',
     'LDAP',
@@ -119,6 +122,19 @@ def test_file(parse, tmplog):
     assert [typ for typ, groups in parse(output)] == ['init', 'exit']
 
 
+def test_flush(parse, tmpdir):
+    ud.exit()
+    tmp = tmpdir.ensure('log')
+    fd = ud.init(str(tmp), ud.FLUSH, ud.FUNCTION)
+    assert hasattr(fd, 'write')
+
+    ud.debug(ud.MAIN, ud.ERROR, "flush")
+    ud.exit()
+
+    output = tmp.read()
+    assert [typ for typ, groups in parse(output)] == ['init', 'msg', 'exit']
+
+
 @pytest.mark.parametrize('function,expected', [(ud.FUNCTION, ['init', 'begin', 'end', 'exit']), (ud.NO_FUNCTION, ['init', 'exit'])])
 def test_function(function, expected, parse, tmplog):
     def f():
@@ -149,7 +165,7 @@ def test_debug_closed():
 
 @pytest.mark.parametrize('name', LEVEL)
 def test_level(name, parse, tmplog, caplog):
-    caplog.set_level(DEBUG)
+    caplog.set_level(TRACE)
     level = getattr(ud, 'WARN' if name == 'WARNING' else name)
     ud.set_level(ud.MAIN, level)
     assert level == ud.get_level(ud.MAIN)
@@ -159,6 +175,7 @@ def test_level(name, parse, tmplog, caplog):
     ud.debug(ud.MAIN, ud.PROCESS, "Process in main: %%%")
     ud.debug(ud.MAIN, ud.INFO, "Information in main: %%%")
     ud.debug(ud.MAIN, ud.ALL, "All in main: %%%")
+    ud.debug(ud.MAIN, ud.TRACE, "Trace in main: %%%")
     ud.exit()
 
     output = tmplog.read()
@@ -173,6 +190,7 @@ def test_category(name, parse, tmplog):
     ud.debug(category, ud.PROCESS, "Process in main: %%%")
     ud.debug(category, ud.INFO, "Information in main: %%%")
     ud.debug(category, ud.ALL, "All in main: %%%")
+    ud.debug(category, ud.TRACE, "Trace in main: %%%")
     ud.exit()
 
     output = tmplog.read()
@@ -201,7 +219,7 @@ def test_unicode(parse, tmplog):
     output = tmplog.read()
     for ((c_type, c_groups), (e_type, e_groups)) in zip(parse(output), [
             ('init', {}),
-            ('msg', {'msg': '\xe2\x98\x83' if sys.version_info.major < 3 else '\u2603'}),
+            ('msg', {'msg': '\u2603'}),
             ('exit', {}),
     ]):
         assert c_type == e_type
@@ -271,3 +289,33 @@ def test_trace_exception(parse, tmplog):
         assert c_type == e_type
         for key, val in e_groups.items():
             assert c_groups[key] == val
+
+
+def test_error_handling():
+    # the error handling is bad!
+    ud.exit()
+    filename = '/tmp/test-not-existing/foo.log'
+    ud.init(filename, ud.FLUSH, ud.NO_FUNCTION)
+    ud.debug(ud.MAIN, ud.ERROR, 'test')
+    ud.exit()
+    assert not os.path.exists(filename)
+
+
+# Important! Must be the last test, and must cleanup for test_logging
+def test_structured(tmpdir):
+    ud.exit()
+    ud.set_structured(True)
+    tmp = tmpdir.ensure('log')
+    fd = ud.init(str(tmp), ud.FLUSH, ud.FUNCTION)
+    assert hasattr(fd, 'write')
+
+    ud.debug(ud.MAIN, ud.ERROR, "test")
+    ud.exit()
+
+    for cat in CATEGORY:
+        if hasattr(getLogger(cat), 'destroy'):
+            getLogger(cat).destroy()
+
+    sys.modules.pop('univention.logging')
+    output = [line[32:].split('|', 1)[0] for line in tmp.read().splitlines()]
+    assert output == ['   ------ [         -] DEBUG_INIT\t', '    ERROR [         -] test\t', '   ------ [         -] DEBUG_EXIT\t']

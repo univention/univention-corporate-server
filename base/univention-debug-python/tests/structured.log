@@ -1,0 +1,37 @@
+2025-01-01T00:00:00.000000+00:00 DEBUG_INIT
+2025-01-01T00:00:00.000000+00:00    ERROR [         -] logger.error("msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000000+00:00  WARNING [         -] logger.warning("msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000000+00:00  PROCESS [         -] logger.process("msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000000+00:00     INFO [         -] logger.info("msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000000+00:00    ERROR [         -] logger.getChild("foo").error("msg")	| pid=12345 logname=LDAP.foo func=test_module.test_function:1
+2025-01-01T00:00:00.000000+00:00    ERROR [         -] logger.getChild("foo").getChild("bar").error("msg")	| pid=12345 logname=LDAP.foo.bar func=test_module.test_function:1
+2025-01-01T00:00:00.000000+00:00    ERROR [         -] logger.critical("msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000000+00:00    DEBUG [         -] logger.debug(" after reopen with some spaces ")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000000+00:00    ERROR ud.debug(ud.LDAP, ud.ERROR, "msg")
+2025-01-01T00:00:00.000000+00:00  WARNING ud.debug(ud.LDAP, ud.WARN, "msg")
+2025-01-01T00:00:00.000000+00:00  PROCESS ud.debug(ud.LDAP, ud.PROCESS, "msg")
+2025-01-01T00:00:00.000000+00:00     INFO ud.debug(ud.LDAP, ud.INFO, "msg")
+2025-01-01T00:00:00.000000+00:00    DEBUG ud.debug(ud.LDAP, ud.ALL, "msg")
+2025-01-01T00:00:00.000000+00:00    TRACE [         -] logger.log(9, "msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000000+00:00    TRACE [         -] logger.log(5, "msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000000+00:00       19 [         -] logger.log(4, "msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000000+00:00       39 [         -] logger.log(3, "msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000000+00:00       59 [         -] logger.log(2, "msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000000+00:00       79 [         -] logger.log(1, "msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000000+00:00    ERROR [         -] logger.log(100, "msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000000+00:00     INFO [         -] logger.info({"msg": "msg"})	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000000+00:00     INFO [         -] logger.info({"msg": "msg %s"}, "addition")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000000+00:00     INFO [         -] logger.info({"msg": "msg"}, "foo": "bar")	| pid=12345 logname=LDAP func=test_module.test_function:1 foo=bar
+2025-01-01T00:00:00.000000+00:00     INFO [         -] logger.info("msg", extra={"foo": "bar"})	| pid=12345 logname=LDAP func=test_module.test_function:1 foo=bar
+2025-01-01T00:00:00.000000+00:00     INFO [         -] logger.info("msg %s", "addition", extra={"foo": "bar"})	| pid=12345 logname=LDAP func=test_module.test_function:1 foo=bar
+2025-01-01T00:00:00.000000+00:00     INFO [         -] contains null ('\x00') byte	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000000+00:00    ERROR [         -] logger.exception("full_tb=False")	| pid=12345 logname=LDAP func=test_module.test_function:1 exc_info="<TRACEBACK>"
+2025-01-01T00:00:00.000000+00:00    ERROR [         -] child.exception("full_tb=False")	| pid=12345 logname=LDAP.foo func=test_module.test_function:1 exc_info="<TRACEBACK>"
+2025-01-01T00:00:00.000000+00:00     INFO [         -] logger.info("full_tb=False", stack_info=True)	| pid=12345 logname=LDAP func=test_module.test_function:1 stack_info="<STACK>"
+2025-01-01T00:00:00.000000+00:00    ERROR [         -] logger.exception("full_tb=True")	| pid=12345 logname=LDAP func=test_module.test_function:1 exc_info="<TRACEBACK>"
+<TRACEBACK>
+2025-01-01T00:00:00.000000+00:00    ERROR [         -] child.exception("full_tb=True")	| pid=12345 logname=LDAP.foo func=test_module.test_function:1 exc_info="<TRACEBACK>"
+<TRACEBACK>
+2025-01-01T00:00:00.000000+00:00     INFO [         -] logger.info("full_tb=True", stack_info=True)	| pid=12345 logname=LDAP func=test_module.test_function:1 stack_info="<STACK>"
+<STACK>
+2025-01-01T00:00:00.000000+00:00 DEBUG_EXIT
