@@ -16,6 +16,8 @@ import grp
 import logging
 import os
 
+import tornado
+
 import univention.debug as ud
 import univention.logging
 from univention.management.console.config import ucr
@@ -29,6 +31,17 @@ _debug_ready = False
 _debug_loglevel = 2
 
 
+class UMCModuleFilter(logging.Filter):
+
+    def __init__(self, umcmodule):
+        self.umcmodule = umcmodule
+        super().__init__()
+
+    def filter(self, record):
+        record.umcmodule = self.umcmodule
+        return True
+
+
 def _reset_debug_loglevel():
     global _debug_loglevel
     ucr.load()
@@ -38,7 +51,7 @@ def _reset_debug_loglevel():
 _reset_debug_loglevel()
 
 
-def log_init(filename, log_level=2, log_pid=None):
+def log_init(filename, log_level=2, log_pid=None, **kwargs):
     """
     Initializes Univention debug.
 
@@ -58,6 +71,7 @@ def log_init(filename, log_level=2, log_pid=None):
         univention_debug_flush=True,
         univention_debug_function=False,
         univention_debug_categories=('MAIN', 'LDAP', 'NETWORK', 'SSL', 'ADMIN', 'MODULE', 'AUTH', 'PARSER', 'LOCALE', 'ACL', 'RESOURCES', 'PROTOCOL'),
+        **kwargs,
     )
     if filename not in ('stdout', 'stderr', '/dev/stdout', '/dev/stderr'):
         adm = grp.getgrnam('adm')
@@ -76,6 +90,13 @@ def log_set_level(level=0):
     """
     for _component in (CORE, NETWORK, CRYPT, UDM, MODULE, AUTH, PARSER, LOCALE, ACL, RESOURCES, PROTOCOL):
         CORE.set_ud_level(level)
+
+
+def prepare_handler(handler: logging.Handler, structured_logging=False):
+    if structured_logging:
+        handler.setFormatter(univention.logging.StructuredFormatter())
+    else:
+        handler.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S'))
 
 
 def log_reopen():
