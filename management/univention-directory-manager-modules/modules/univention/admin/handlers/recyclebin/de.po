@@ -43,8 +43,8 @@ msgid "Original Object Type"
 msgstr "Ursprünglicher Objekttyp"
 
 #: modules/univention/admin/handlers/recyclebin/deletedobject.py:57
-msgid "UDM module type of the original object"
-msgstr "UDM-Modultyp des ursprünglichen Objekts"
+msgid "UDM module type of the original object."
+msgstr "UDM-Modultyp des ursprünglichen Objekts."
 
 #: modules/univention/admin/handlers/recyclebin/deletedobject.py:62
 msgid "Original DN"
@@ -83,8 +83,8 @@ msgid "Original Object Identifier"
 msgstr "Ursprüngliche Objektkennung"
 
 #: modules/univention/admin/handlers/recyclebin/deletedobject.py:91
-msgid "univentionObjectIdentifier of the deleted object."
-msgstr "univentionObjectIdentifier des gelöschten Objekts."
+msgid "UniventionObjectIdentifier of the deleted object."
+msgstr "UniventionObjectIdentifier des gelöschten Objekts."
 
 #: modules/univention/admin/handlers/recyclebin/deletedobject.py:95
 msgid "General"
@@ -105,8 +105,8 @@ msgstr "Referenzen"
 msgid "Original properties"
 msgstr "Ursprüngliche Properties"
 
-msgid "Original properties of the deleted object."
-msgstr "Ursprüngliche Properties des gelöschten Objekts."
+msgid "Properties of the deleted object."
+msgstr "Properties des gelöschten Objekts."
 
 msgid "Original object classes"
 msgstr "Ursprüngliche Objektklassen"
