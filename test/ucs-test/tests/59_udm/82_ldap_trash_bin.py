@@ -121,7 +121,7 @@ def test_create_deleted_object():
     obj['originalUniventionObjectIdentifier'] = original_univention_object_identifier
     obj.oldattr = copy.deepcopy(ldap_attrs)
     try:
-        obj.create()
+        obj.create(ignore_license=True)
         obj = mod.lookup(None, lo, f'originalUniventionObjectIdentifier={original_univention_object_identifier}')[0]
         obj.open()
         assert obj['originalDN'] == original_dn
