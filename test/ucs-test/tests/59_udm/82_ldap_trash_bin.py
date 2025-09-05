@@ -8,6 +8,7 @@
 ##  - python3-univention-directory-manager
 
 
+import copy
 import json
 
 import ldap
@@ -16,6 +17,7 @@ import pytest
 import univention.admin.modules as udm_modules
 import univention.admin.uexceptions
 import univention.admin.uldap
+from univention.admin.uldap import getMachineConnection
 from univention.config_registry import ucr as _ucr
 from univention.testing.strings import random_username
 from univention.testing.udm import UCSTestUDM
@@ -67,6 +69,75 @@ def _cleanup_deleted_object(lo, deleted_dn):
         lo.delete(deleted_dn)
     except (ldap.LDAPError, univention.admin.uexceptions.noObject) as e:
         print(f"Warning: Could not clean up deleted object {deleted_dn}: {e}")
+
+
+def test_create_deleted_object():
+    setup_udm()
+    lo, position = getMachineConnection(ldap_master=True)
+    position.setBase(RECYCLEBIN_DN)
+    mod = udm_modules.get('recyclebin/deletedobject')
+    obj = mod.object(None, lo, position)
+    obj.open()
+    original_dn = 'uid=ou1-admin,cn=users,dc=ucs,dc=test'
+    delete_at = '20261212085050Z'
+    delete_by = lo.binddn
+    original_object_type = 'users/user'
+    original_univention_object_identifier = 'f2b2e6ff-ad41-47ce-87ea-9d2ac33aaaca'
+    ldap_attrs = {
+        'cn': [b'lastname'],
+        'displayName': [b'lastname'],
+        'gecos': [b'lastname'],
+        'gidNumber': [b'5001'],
+        'homeDirectory': [b'/home/test1'],
+        'krb5KDCFlags': [b'126'],
+        'krb5Key': [
+            b'07\xa1\x1b0\x19\xa0\x03\x02\x01\x11\xa1\x12\x04\x10\xa7\x86\xdc\x0f\xdcn0c\x91\x98Z\xa0\xd2Y\xc7t\xa2\x180\x16\xa0\x03\x02\x01\x03\xa1\x0f\x04\rUCS.TESTtest1',
+            b'07\xa1\x1b0\x19\xa0\x03\x02\x01\x17\xa1\x12\x04\x10\xca\xa1#\x9dD\xda~\xdf\x92k\xce9\xf5\xc6]\x0f\xa2\x180\x16\xa0\x03\x02\x01\x03\xa1\x0f\x04\rUCS.TESTtest1',
+        ],
+        'krb5KeyVersionNumber': [b'1'],
+        'krb5MaxLife': [b'86400'],
+        'krb5MaxRenew': [b'604800'],
+        'krb5PrincipalName': [b'test1@UCS.TEST'],
+        'loginShell': [b'/bin/bash'],
+        'mailForwardCopyToSelf': [b'0'],
+        'memberOf': [b'cn=Domain Users,cn=groups,dc=ucs,dc=test'],
+        'pwhistory': [b' $6$znLCTmtimN7H0T92$2iuAyLCkTT/hjoSqTVzMy7U7Fh5OGHaHc6fGupy4KvYoSA2V4FCsfcw3qfQyKA5goXFclV6hvZNCk.xx3B4/u/'],
+        'sambaAcctFlags': [b'[U          ]'],
+        'sambaBadPasswordCount': [b'0'],
+        'sambaBadPasswordTime': [b'0'],
+        'sambaNTPassword': [b'CAA1239D44DA7EDF926BCE39F5C65D0F'],
+        'sambaPrimaryGroupSID': [b'S-1-5-21-4050189495-1942909977-1471735533-513'],
+        'sambaPwdLastSet': [b'1756909087'],
+        'sambaSID': [b'S-1-5-21-4050189495-1942909977-1471735533-5386'],
+        'sn': [b'lastname'],
+        'uid': [b'test1'],
+        'uidNumber': [b'2193'],
+        'userPassword': [b'{crypt}$6$Si5dxjbGT8wI147P$AazXJ3prqclvVvCuIiou97V0XkzcuUoRiHqN.bqidlcg8kruJe23IIq6lZCJ00WuSPYbuE6IfTyFmPA3EipgA1'],
+    }
+    obj['originalDN'] = original_dn
+    obj['deleteAt'] = delete_at
+    obj['deletedBy'] = delete_by
+    obj['originalObjectType'] = original_object_type
+    obj['originalUniventionObjectIdentifier'] = original_univention_object_identifier
+    obj.oldattr = copy.deepcopy(ldap_attrs)
+    try:
+        obj.create()
+        obj = mod.lookup(None, lo, f'originalUniventionObjectIdentifier={original_univention_object_identifier}')[0]
+        obj.open()
+        assert obj['originalDN'] == original_dn
+        assert obj['deleteAt'] == delete_at
+        assert obj['deletedBy'] == delete_by
+        assert obj['originalObjectType'] == original_object_type
+        assert obj['originalUniventionObjectIdentifier'] == original_univention_object_identifier
+        assert obj['groups'] == ['cn=Domain Users,cn=groups,dc=ucs,dc=test']
+        assert obj['displayName'] == 'lastname'
+        assert obj['sambaRID'] == '5386'
+        assert obj['username'] == 'test1'
+        for key, values in ldap_attrs.items():
+            assert set(obj.oldattr[key]) == set(values)
+        assert set(obj.oldattr['objectClass']) == {b'top', b'univentionRecycleBinObject', b'univentionObject', b'extensibleObject'}
+    finally:
+        obj.remove()
 
 
 def test_recyclebin_container_exists():
