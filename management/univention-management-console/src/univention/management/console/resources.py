@@ -609,11 +609,17 @@ class Command(Resource):
     requires_authentication = False
 
     async def prepare(self, *args, **kwargs):
-        await super().prepare(*args, **kwargs)
+        self._request_id = Message.generate_id()
         self.future = None
         self.process = None
-        self._request_id = Message.generate_id()
         self._request_url = None
+        await super().prepare(*args, **kwargs)
+
+    def _request_context(self):
+        return {
+            **super()._request_context(),
+            'request_id': self._request_id[-10:],
+        }
 
     def forbidden_or_unauthenticated(self, message):
         # make sure that the UMC login dialog is shown if e.g. restarting the UMC-Server during active sessions

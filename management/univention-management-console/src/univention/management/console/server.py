@@ -14,7 +14,6 @@ import logging.handlers
 import os
 import resource
 import signal
-import sys
 from argparse import ArgumentParser
 
 import atexit
@@ -25,10 +24,10 @@ from tornado.httpserver import HTTPServer
 from tornado.netutil import bind_sockets
 from tornado.web import Application as TApplication, url
 
-import univention.debug as ud
+import univention.logging as ul
 from univention.management.console import saml
 from univention.management.console.config import env_to_settings, ucr
-from univention.management.console.log import CORE, log_init, log_reopen
+from univention.management.console.log import CORE, init_request_context_logging, log_init, log_reopen, prepare_handler
 from univention.management.console.oidc import (
     OIDCBackchannelLogout, OIDCFrontchannelLogout, OIDCLogin, OIDCLogout, OIDCLogoutFinished, OIDCMetadata,
 )
@@ -134,7 +133,7 @@ class Server:
         # os.environ['LANG'] = locale.normalize(self.options.language)
 
         # init logging
-        log_init(self.options.log_file, self.options.debug, self.options.processes > 1)
+        log_init(self.options.log_file, self.options.debug, self.options.processes > 1, use_structured_logging=ucr.is_true('umc/server/debug/structured-logging'))
 
     def signal_handler_hup(self, signo, frame):
         """Handler for the postrotate action"""
@@ -270,16 +269,14 @@ class Server:
         self.server = server
         server.add_sockets(sockets)
 
-        if self.options.log_file in {'stdout', 'stderr', '/dev/stdout', '/dev/stderr'}:
-            channel = logging.StreamHandler(sys.stdout if self.options.log_file in {'stdout', '/dev/stdout'} else sys.stderr)
-        else:
-            channel = logging.handlers.RotatingFileHandler(self.options.log_file, 'a+')
+        ul.extendLogger('tornado.access', univention_debug_category='NETWORK')
+        ul.extendLogger('tornado.application', univention_debug_category='NETWORK')
+        ul.extendLogger('tornado.general', univention_debug_category='NETWORK')
 
-        channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S'))
-        for logname in ('tornado.access', 'tornado.application', 'tornado.general'):
-            logger = logging.getLogger(logname)
-            logger.setLevel({ud.INFO: logging.INFO, ud.WARN: logging.WARNING, ud.ERROR: logging.ERROR, ud.ALL: logging.DEBUG, ud.PROCESS: logging.INFO}.get(ucr.get_int('umc/server/tornado-debug/level', 0), logging.ERROR))
-            logger.addHandler(channel)
+        handler = logging.getLogger('NETWORK')
+        handler.set_ud_level(ucr.get_int('umc/server/tornado-debug/level', 0))
+        prepare_handler(handler.univention_debug_handler, ucr.is_true('umc/server/debug/structured-logging'))
+        init_request_context_logging('server')
 
         self.reload()
 
