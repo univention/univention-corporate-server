@@ -83,6 +83,22 @@ def test_create_deleted_object():
     delete_by = lo.binddn
     original_object_type = 'users/user'
     original_univention_object_identifier = 'f2b2e6ff-ad41-47ce-87ea-9d2ac33aaaca'
+    original_object_classes = [
+        'automount',
+        'univentionMail',
+        'univentionPWHistory',
+        'inetOrgPerson',
+        'person',
+        'organizationalPerson',
+        'sambaSamAccount',
+        'top',
+        'shadowAccount',
+        'univentionPerson',
+        'krb5Principal',
+        'krb5KDCEntry',
+        'univentionObject',
+        'posixAccount',
+    ]
     ldap_attrs = {
         'cn': [b'lastname'],
         'displayName': [b'lastname'],
@@ -119,6 +135,8 @@ def test_create_deleted_object():
     obj['deletedBy'] = delete_by
     obj['originalObjectType'] = original_object_type
     obj['originalUniventionObjectIdentifier'] = original_univention_object_identifier
+    obj['originalEntryUUID'] = original_univention_object_identifier
+    obj['originalObjectClasses'] = original_object_classes
     obj.oldattr = copy.deepcopy(ldap_attrs)
     try:
         obj.create(ignore_license=True)
@@ -129,6 +147,8 @@ def test_create_deleted_object():
         assert obj['deletedBy'] == delete_by
         assert obj['originalObjectType'] == original_object_type
         assert obj['originalUniventionObjectIdentifier'] == original_univention_object_identifier
+        assert obj['originalEntryUUID'] == original_univention_object_identifier
+        assert set(obj['originalObjectClasses']) == set(original_object_classes)
         original_info = json.loads(obj['originalData'])
         assert original_info['groups'] == ['cn=Domain Users,cn=groups,dc=ucs,dc=test']
         assert original_info['displayName'] == 'lastname'
