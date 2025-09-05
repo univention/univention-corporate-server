@@ -58,17 +58,12 @@ msgstr ""
 
 #: ../../index.rst:24
 msgid ""
-"|UCSUDM| has seen a number of updates that will ultimately add the "
-"delegative administration feature. Although still experimental, it "
-"already enables the ``Primary Group`` to not be global anymore, but "
-"derives the primary group from the parent container of a created user or "
-"computer object."
+"|UCSUDM| has seen an update that allows user and computer objects to get their "
+"``Primary Group`` from their parent container during creation."
 msgstr ""
-"|UCSUDM| erhielt eine Reihe von Updates, die letztendlich die delegative "
-"Administration ermöglichen. Obwohl noch experimentell, ermöglicht sie "
-"bereits, dass die ``Primary Group`` nicht mehr global ist, sondern die "
-"primäre Gruppe vom übergeordneten Container eines erstellten Benutzer- oder "
-"Computerobjekts abgeleitet wird."
+"|UCSUDM| erhielt ein Update, mit dem Beim Anlegen von Benutzer- und "
+"Computerobjekten deren ``Primary Group`` durch den Elterncontainer bestimmt "
+"werden kann."
 
 #: ../../index.rst:28
 msgid ""

@@ -21,9 +21,8 @@ Here is an overview of the most important changes:
   :envvar:`connector/ad/mapping/allow-subtree-ancestors`
   which simplifies the management of selective synchronization of more complex LDAP DIT structures.
 
-* |UCSUDM| has seen a number of updates that will ultimately add the delegative administration feature.
-  Although still experimental, it already enables the ``Primary Group`` to not be global anymore,
-  but derives the primary group from the parent container of a created user or computer object.
+* |UCSUDM| has seen an update that allows user and computer objects to get
+  their ``Primary Group`` from their parent container during creation.
 
 * Added a listener plugin which fuels the :program:`Provisioning Service`
   that you can install in a preview version through the App Center.
