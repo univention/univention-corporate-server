@@ -1,3 +1,9 @@
+univention-management-console-module-udm (12.3.3) unstable; urgency=medium
+
+  * Bug #52202: add UMC module for recyclebin
+
+ -- Florian Best <best@univention.de>  Thu, 20 Nov 2025 14:12:05 +0100
+
 univention-management-console-module-udm (12.3.2) unstable; urgency=medium
 
   * Bug #58697: performance improvements to UDM

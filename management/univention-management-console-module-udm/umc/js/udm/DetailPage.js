@@ -216,15 +216,13 @@ define([
 
 			// Use effectiveObjectDN for fetching properties and layout
 			// For new objects with a determined container, force load to ensure OU-specific defaults are fresh.
-			if (anObjectIsBeingCreated && effectiveObjectDN) {
-				this.propertyQuery = moduleCache.getProperties(this.objectType, effectiveObjectDN, true); // forceLoad = true
-			} else {
-				this.propertyQuery = moduleCache.getProperties(this.objectType, effectiveObjectDN);
-			}
+			var forceReload = (anObjectIsBeingCreated && effectiveObjectDN) || this.moduleFlavor == 'recyclebin/removedobject';
+			this.propertyQuery = moduleCache.getProperties(this.objectType, effectiveObjectDN, forceReload);
+			var forceLayoutReload = this.moduleFlavor == 'recyclebin/removedobject';
 
 			var commands = {
 				properties: this.propertyQuery,
-				layout: moduleCache.getLayout(this.objectType, objectDN),
+				layout: moduleCache.getLayout(this.objectType, objectDN, forceLayoutReload),
 				metaInfo: moduleCache.getMetaInfo(this.objectType)
 			};
 
@@ -1393,15 +1391,19 @@ define([
 				closeLabel = _('Cancel');
 			}
 
-			var buttonDefinitions = [
-			{
+			var buttonDefinitions = []
+			buttonDefinitions.push({
 				name: 'submit',
 				iconClass: 'save',
 				label: createLabel,
 				callback: lang.hitch(this, function() {
 					this._form.onSubmit();
 				})
-			}, {
+			});
+			if (this.operation === 'view') {
+				buttonDefinitions[0]['class'] = 'dijitDisplayNone';
+			}
+			buttonDefinitions.push({
 				name: 'help',
 				// iconClass: 'umcHelpIconWhite',
 				label: _('Help'),
@@ -1409,11 +1411,12 @@ define([
 				callback: lang.hitch(this, function() {
 					window.open(this.helpLink);
 				})
-			}, {
+			});
+			buttonDefinitions.push({
 				name: 'close',
 				label: closeLabel,
 				callback: lang.hitch(this, 'confirmClose')
-			}];
+			});
 
 			var extendableModules = [
 				'users/user',

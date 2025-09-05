@@ -159,7 +159,10 @@ class AppAttributes:
     def options_for_obj(cls, obj):
         ret = []
         if obj:
-            for option_name, option_def in cls.data_for_module(obj.module).items():
+            object_type = obj.module
+            if object_type == 'recyclebin/removedobject':
+                object_type = obj['originalObjectType']
+            for option_name, option_def in cls.data_for_module(object_type).items():
                 if obj[option_def['attribute_name']] == option_def['boolean_values'][0]:
                     ret.append(option_name)
         return ret
@@ -573,6 +576,19 @@ class UDM_Module:
             MODULE.warning('Failed to move LDAP object %s: %s: %s', ldap_dn, e.__class__.__name__, e)
             UDM_Error(e).reraise()
 
+    def restore(self, ldap_dn):
+        """Restores an LDAP object"""
+        ldap_connection, ldap_position = self.get_ldap_connection()
+        superordinate = udm_objects.get_superordinate(self.module, None, ldap_connection, ldap_dn)
+        obj = self.module.object(None, ldap_connection, ldap_position, dn=ldap_dn, superordinate=superordinate)
+        try:
+            obj.open()
+            MODULE.info('Restoring LDAP object %s', ldap_dn)
+            obj.restore()
+        except udm_errors.base as e:
+            MODULE.warning('Failed to restore LDAP object %s: %s: %s', ldap_dn, e.__class__.__name__, e)
+            UDM_Error(e, dn=obj.info.get('originalName')).reraise()
+
     def remove(self, ldap_dn, cleanup=False, recursive=False):
         """Removes an LDAP object"""
         ldap_connection, ldap_position = self.get_ldap_connection()
@@ -868,14 +884,20 @@ class UDM_Module:
         """Layout information"""
         ldap_connection, _ldap_position = self.get_ldap_connection()
         layout = getattr(self.module, 'layout', [])
+        object_type = self.name
         if ldap_dn is not None:
-            mod = get_module(None, ldap_dn, ldap_connection)
+            obj, mod = get_obj_module(None, ldap_dn, ldap_connection)
             if mod is not None and self.name == mod.name and self.is_policy_module():
                 layout = copy.copy(layout)
                 tab = udm_layout.Tab(_('Referencing objects'), _('Objects referencing this policy object'), layout=['$references$'])
                 layout.append(tab)
+            if mod is not None and mod.name == 'recyclebin/removedobject':
+                object_type = obj['originalObjectType']
+                layout = copy.copy(layout)
+                realmod = UDM_Module(object_type, ldap_connection=ldap_connection, ldap_position=_ldap_position)
+                layout.extend(realmod.module.layout)
 
-        layout = AppAttributes.new_layout(self.name, layout)
+        layout = AppAttributes.new_layout(object_type, layout)
         return layout
 
     @property
@@ -1002,13 +1024,18 @@ class UDM_Module:
         """
         if object_dn is None and udm_object is None:
             obj_options = None
+            mod_options = self.options
         else:
             obj = self.get(object_dn) if udm_object is None else udm_object
-            obj_options = getattr(obj, 'options', {})
-            obj_options.extend(AppAttributes.options_for_obj(obj))
+            obj_options = [*obj.options, *AppAttributes.options_for_obj(obj)]
+            mod_options = self.options
+            if self.name == 'recyclebin/removedobject':
+                ldap_connection, ldap_position = self.get_ldap_connection()
+                mod_options = UDM_Module(obj['originalObjectType'], ldap_connection=ldap_connection, ldap_position=ldap_position).options
+                MODULE.error('HIT %s %s', mod_options, obj_options)
 
         options = []
-        for name, opt in self.options.items():
+        for name, opt in mod_options.items():
             value = bool(opt.default) if obj_options is None else name in obj_options
             options.append({
                 'id': name,

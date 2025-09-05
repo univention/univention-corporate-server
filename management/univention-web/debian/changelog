@@ -1,3 +1,9 @@
+univention-web (6.3.2) unstable; urgency=medium
+
+  * Bug #52202: make widgets comptible for recyclebin
+
+ -- Florian Best <best@univention.de>  Thu, 20 Nov 2025 14:14:46 +0100
+
 univention-web (6.3.1) unstable; urgency=medium
 
   [ Ivan Barbecho Delgado ]
