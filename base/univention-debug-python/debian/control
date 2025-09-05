@@ -11,6 +11,7 @@ Build-Depends:
  python3-debian,
  python3-logfmter,
  python3-pytest,
+ python3-pytest-cov,
  python3-setuptools,
 
 Package: python3-univention-debug

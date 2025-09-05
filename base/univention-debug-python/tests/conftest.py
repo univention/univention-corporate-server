@@ -85,3 +85,16 @@ def parse() -> Iterator[Callable[[str], Iterator[tuple[str, dict[str, str]]]]]:
                 raise AssertionError(groups)
 
     return f
+
+
+@pytest.fixture
+def parse_structured_line() -> Callable[[str], tuple[str, dict[str, str]]]:
+    def f(line: str) -> tuple[str, dict[str, str]]:
+        message, _, logfmter_data = line[30:].partition('\t| ')
+        logfmter_data_dict = {}
+        for elem in logfmter_data.split(' '):
+            key, value = elem.split('=', 1)
+            logfmter_data_dict[key] = value
+        return (message, logfmter_data_dict)
+
+    return f
