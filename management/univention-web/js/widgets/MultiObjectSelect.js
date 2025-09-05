@@ -283,10 +283,11 @@ define([
 
 			// add the MultiSelect widget
 			this._multiSelect = new MultiSelect({
+				disabled: this.disabled,
 				showHeader: true
 			});
 			this._attachObjectStore();
-			if ( 'setStore' in this._multiSelect ) {
+			if ('setStore' in this._multiSelect) {
 				this.own(aspect.after(this._multiSelect, 'setStore', lang.hitch(this, '_attachObjectStore')));
 			}
 			var container = new ContainerWidget({});
