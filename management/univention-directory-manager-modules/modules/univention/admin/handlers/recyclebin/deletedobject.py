@@ -3,6 +3,7 @@
 
 """UDM module for recyclebin deleted objects"""
 
+import json
 from logging import getLogger
 
 from ldap import modlist
@@ -54,6 +55,7 @@ property_descriptions = {
         syntax=udm_syntax.ldapDn,
         may_change=False,
         required=True,
+        include_in_default_search=True,
     ),
     'deleteAt': univention.admin.property(
         short_description=_('Delete At'),
@@ -84,7 +86,15 @@ property_descriptions = {
         required=True,
         identifies=True,
     ),
+    'originalData': univention.admin.property(
+        short_description=_('Original data'),
+        long_description=_('Original data of the deleted object.'),
+        syntax=udm_syntax.TwoTextArea,
+        may_change=False,
+        required=False,
+    ),
 }
+
 
 layout = [
     Tab(_('General'), _('Basic information'), layout=[
@@ -98,6 +108,9 @@ layout = [
         Group(_('References'), layout=[
             'referencedBy',
         ]),
+    ]),
+    Tab(_('Original data'), _('Original data'), layout=[
+        'originalData',
     ]),
 ]
 
@@ -129,17 +142,15 @@ class object(simpleLdap):
                 kwargs['attributes']['memberOf'] = kwargs['attributes']['member']
                 del kwargs['attributes']['member']
         super().__init__(*args, **kwargs)
-        # FIXME: this is just attempt to extend this module with the properties
-        # of the original module, works for udm-cli, not sure about UMC
-        # can be removed
-        if 'originalObjectType' in self.info:
+        if self.dn and 'originalObjectType' in self.info:
             try:
                 mod = univention.admin.modules.get(self.info['originalObjectType']).object(None, args[1], None)
-                self.descriptions.update(mod.descriptions)
                 info = mod.mapping.unmapValues(self.oldattr)
                 info = mod._post_unmap(info, self.oldattr)
-                info.update(self.info)
-                self.info = info
+                info['univentionObjectIdentifier'] = self.info['originalUniventionObjectIdentifier']
+                if 'password' in info:
+                    info['password'] = '***'
+                self['originalData'] = json.dumps(info, indent=4)
             except AttributeError:
                 log.error('Original object type for deleted object not found')
 

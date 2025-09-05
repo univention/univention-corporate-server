@@ -1139,6 +1139,12 @@ class TextArea(string):
     widget_default_search_pattern = ''
 
 
+class TwoTextArea(TextArea):
+    """Syntax for a string with an input allowing multi-line input."""
+
+    size = 'Two'
+
+
 class Editor(string):
     widget = 'Editor'
     widget_default_search_pattern = ''
