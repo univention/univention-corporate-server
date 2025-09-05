@@ -46,6 +46,7 @@ repos:
         - --no-ensure-ascii
     - id: trailing-whitespace
       exclude: "^base/univention-config-registry/tests/unwrap/\
+                |^base/univention-debug-python/tests/structured.log\
                 |^base/univention-lib/unittests/fstab$\
                 |^base/univention-system-setup/city-data/.*[.](txt|json)$\
                 |^doc/errata/staging/0.*template[.]yaml$\

@@ -2,11 +2,11 @@
 01.01.25 00:00:00.000  LDAP        ( ERROR   ) : 12345: logger.error("msg")
 01.01.25 00:00:00.000  LDAP        ( WARN    ) : 12345: logger.warning("msg")
 01.01.25 00:00:00.000  LDAP        ( PROCESS ) : 12345: logger.process("msg")
-01.01.25 00:00:00.000  LDAP        ( PROCESS ) : 12345: logger.info("msg")
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : 12345: logger.info("msg")
 01.01.25 00:00:00.000  LDAP        ( ERROR   ) : foo: 12345: logger.getChild("foo").error("msg")
 01.01.25 00:00:00.000  LDAP        ( ERROR   ) : foo.bar: 12345: logger.getChild("foo").getChild("bar").error("msg")
 01.01.25 00:00:00.000  LDAP        ( ERROR   ) : 12345: logger.critical("msg")
-01.01.25 00:00:00.000  LDAP        ( INFO    ) : logger.debug(" after reopen with some spaces ")
+01.01.25 00:00:00.000  LDAP        ( ALL     ) : logger.debug(" after reopen with some spaces ")
 01.01.25 00:00:00.000  LDAP        ( ERROR   ) : ud.debug(ud.LDAP, ud.ERROR, "msg")
 01.01.25 00:00:00.000  LDAP        ( WARN    ) : ud.debug(ud.LDAP, ud.WARN, "msg")
 01.01.25 00:00:00.000  LDAP        ( PROCESS ) : ud.debug(ud.LDAP, ud.PROCESS, "msg")
@@ -14,38 +14,40 @@
 01.01.25 00:00:00.000  LDAP        ( ALL     ) : ud.debug(ud.LDAP, ud.ALL, "msg")
 01.01.25 00:00:00.000  LDAP        ( TRACE   ) : ud.debug(ud.LDAP, ud.TRACE, "msg")
 01.01.25 00:00:00.000  LDAP        ( 99      ) : ud.debug(ud.LDAP, 99, "msg")
-01.01.25 00:00:00.000  LDAP        ( ALL     ) : test_module.test_function:1: logger.log(9, "msg")
-01.01.25 00:00:00.000  LDAP        ( 59      ) : test_module.test_function:1: logger.log(5, "msg")
-01.01.25 00:00:00.000  LDAP        ( 69      ) : test_module.test_function:1: logger.log(4, "msg")
-01.01.25 00:00:00.000  LDAP        ( 79      ) : test_module.test_function:1: logger.log(3, "msg")
-01.01.25 00:00:00.000  LDAP        ( 89      ) : test_module.test_function:1: logger.log(2, "msg")
-01.01.25 00:00:00.000  LDAP        ( 99      ) : test_module.test_function:1: logger.log(1, "msg")
+01.01.25 00:00:00.000  LDAP        ( TRACE   ) : test_module.test_function:1: logger.log(9, "msg")
+01.01.25 00:00:00.000  LDAP        ( TRACE   ) : test_module.test_function:1: logger.log(5, "msg")
+01.01.25 00:00:00.000  LDAP        ( 19      ) : test_module.test_function:1: logger.log(4, "msg")
+01.01.25 00:00:00.000  LDAP        ( 39      ) : test_module.test_function:1: logger.log(3, "msg")
+01.01.25 00:00:00.000  LDAP        ( 59      ) : test_module.test_function:1: logger.log(2, "msg")
+01.01.25 00:00:00.000  LDAP        ( 79      ) : test_module.test_function:1: logger.log(1, "msg")
 01.01.25 00:00:00.000  LDAP        ( ERROR   ) : logger.log(100, "msg")
-01.01.25 00:00:00.000  LDAP        ( PROCESS ) : {'msg': 'logger.info({"msg": "msg"})'}
-01.01.25 00:00:00.000  LDAP        ( PROCESS ) : {'msg': 'logger.info({"msg": "msg %s"}, "addition")'}
-01.01.25 00:00:00.000  LDAP        ( PROCESS ) : {'msg': 'logger.info({"msg": "msg"}, "foo": "bar")', 'foo': 'bar'}
-01.01.25 00:00:00.000  LDAP        ( PROCESS ) : logger.info("msg", extra={"foo": "bar"})
-01.01.25 00:00:00.000  LDAP        ( PROCESS ) : logger.info("msg %s", "addition", extra={"foo": "bar"})
-01.01.25 00:00:00.000  LDAP        ( PROCESS ) : 'contains null (\x00) byte'
-01.01.25 00:00:00.000  LDAP        ( PROCESS ) : contains
-01.01.25 00:00:00.000  LDAP        ( PROCESS ) : contains new (
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : logger.info({"msg": "msg"})
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : logger.info({"msg": "msg %s"}, "addition")
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : logger.info({"msg": "msg"}, "foo": "bar") | foo=bar
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : logger.info("msg", extra={"foo": "bar"}) | foo=bar
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : logger.info("msg %s", "addition", extra={"foo": "bar"}) | foo=bar
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : contains null ('\x00') byte
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : contains | null=('\x00') byte
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : contains new (
 ) line
-01.01.25 00:00:00.000  LDAP        ( PROCESS ) : contains
-01.01.25 00:00:00.000  LDAP        ( PROCESS ) : contains
-01.01.25 00:00:00.000  LDAP        ( PROCESS ) : muha	| foo=bar
-01.01.25 00:00:00.000  LDAP        ( PROCESS ) : muha
-01.01.25 00:00:00.000  LDAP        ( PROCESS ) : muha	| foo=bar
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : contains | new=(
+) line
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : contains | new(
+) =line
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : muha	| foo=bar
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : muha | param=ha	| foo=bar
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : muha	| foo=bar | param=ha	| foo=bar
 01.01.25 00:00:00.000  LDAP        ( ERROR   ) : logger.exception("full_tb=False")
 <TRACEBACK>
 01.01.25 00:00:00.000  LDAP        ( ERROR   ) : foo: child.exception("full_tb=False")
 <TRACEBACK>
-01.01.25 00:00:00.000  LDAP        ( PROCESS ) : logger.info("full_tb=False", stack_info=True)
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : logger.info("full_tb=False", stack_info=True)
 <STACK>
 01.01.25 00:00:00.000  LDAP        ( ERROR   ) : logger.exception("full_tb=True")
 <TRACEBACK>
 01.01.25 00:00:00.000  LDAP        ( ERROR   ) : foo: child.exception("full_tb=True")
 <TRACEBACK>
-01.01.25 00:00:00.000  LDAP        ( PROCESS ) : logger.info("full_tb=True", stack_info=True)
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : logger.info("full_tb=True", stack_info=True)
 <STACK>
-01.01.25 00:00:00.000  LDAP        ( ERROR   ) : logger.error("msg", extra={"traceback": "<TRACEBACK>"})
+01.01.25 00:00:00.000  LDAP        ( ERROR   ) : logger.error("msg", extra={"traceback": "<TRACEBACK>"}) | traceback=<TRACEBACK>
 01.01.25 00:00:00.000  DEBUG_EXIT
