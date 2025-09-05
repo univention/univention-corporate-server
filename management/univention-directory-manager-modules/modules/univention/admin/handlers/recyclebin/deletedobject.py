@@ -87,8 +87,8 @@ property_descriptions = {
         identifies=True,
     ),
     'originalData': univention.admin.property(
-        short_description=_('Original data'),
-        long_description=_('Original data of the deleted object.'),
+        short_description=_('Original properties'),
+        long_description=_('Original properties of the deleted object.'),
         syntax=udm_syntax.TwoTextArea,
         may_change=False,
         required=False,
@@ -109,7 +109,7 @@ layout = [
             'referencedBy',
         ]),
     ]),
-    Tab(_('Original data'), _('Original data'), layout=[
+    Tab(_('Original properties'), _('Original properties'), layout=[
         'originalData',
     ]),
 ]

@@ -101,3 +101,9 @@ msgstr "Objektinformationen"
 #: modules/univention/admin/handlers/recyclebin/deletedobject.py:103
 msgid "References"
 msgstr "Referenzen"
+
+msgid "Original properties"
+msgstr "Ursprüngliche Properties"
+
+msgid "Original properties of the deleted object."
+msgstr "Ursprüngliche Properties des gelöschten Objekts."
