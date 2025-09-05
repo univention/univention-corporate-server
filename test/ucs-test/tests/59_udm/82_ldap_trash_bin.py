@@ -129,10 +129,13 @@ def test_create_deleted_object():
         assert obj['deletedBy'] == delete_by
         assert obj['originalObjectType'] == original_object_type
         assert obj['originalUniventionObjectIdentifier'] == original_univention_object_identifier
-        assert obj['groups'] == ['cn=Domain Users,cn=groups,dc=ucs,dc=test']
-        assert obj['displayName'] == 'lastname'
-        assert obj['sambaRID'] == '5386'
-        assert obj['username'] == 'test1'
+        original_info = json.loads(obj['originalData'])
+        assert original_info['groups'] == ['cn=Domain Users,cn=groups,dc=ucs,dc=test']
+        assert original_info['displayName'] == 'lastname'
+        assert original_info['sambaRID'] == '5386'
+        assert original_info['username'] == 'test1'
+        assert original_info['password'] == '***'
+        assert original_info['univentionObjectIdentifier'] == original_univention_object_identifier
         for key, values in ldap_attrs.items():
             assert set(obj.oldattr[key]) == set(values)
         assert set(obj.oldattr['objectClass']) == {b'top', b'univentionRecycleBinObject', b'univentionObject', b'extensibleObject'}
