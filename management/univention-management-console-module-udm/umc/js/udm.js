@@ -703,7 +703,14 @@ define([
 				iconClass: 'plus',
 				isContextAction: false,
 				isStandardAction: true,
-				callback: lang.hitch(this, 'showNewObjectDialog')
+				callback: lang.hitch(this, 'showNewObjectDialog'),
+				showAction: lang.hitch(this, function() {
+					// Don't show Add button in recyclebin
+					// Check both possible module flavors and the object type
+					return this.moduleFlavor !== 'recyclebin/deletedobject' &&
+					       this.moduleFlavor !== 'recyclebin/all' &&
+					       !this.moduleFlavor.startsWith('recyclebin/');
+				})
 			}, {
 				name: 'edit',
 				label: _('Edit'),
