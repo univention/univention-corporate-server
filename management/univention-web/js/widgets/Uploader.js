@@ -174,6 +174,7 @@ define([
 				multiple: this.multiFile,
 				uploadOnSelect: false,
 				iconClass: this.buttonIconClass,
+				disabled: this.disabled,
 				getForm: function() {
 					// make sure that the Uploader does not find any of our encapsulating forms
 					return null;
@@ -187,6 +188,7 @@ define([
 					'class': this.clearButtonClass,
 					label: this.clearButtonLabel,
 					iconClass: this.clearButtonIconClass,
+					disabled: this.disabled,
 					callback: lang.hitch(this, function() {
 						this.set('data', null);
 					})
@@ -376,6 +378,9 @@ define([
 			}
 			this._uploader.set('disabled', newVal);
 			style.set(this._uploader.domNode, 'display', 'inline-block');
+			if (this._clearButton) {
+			    this._clearButton.set('disabled', newVal);
+			}
 		},
 
 		_getDisabledAttr: function() {

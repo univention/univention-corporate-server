@@ -573,6 +573,19 @@ class UDM_Module:
             MODULE.warning('Failed to move LDAP object %s: %s: %s', ldap_dn, e.__class__.__name__, e)
             UDM_Error(e).reraise()
 
+    def restore(self, ldap_dn):
+        """Restores an LDAP object"""
+        ldap_connection, ldap_position = self.get_ldap_connection()
+        superordinate = udm_objects.get_superordinate(self.module, None, ldap_connection, ldap_dn)
+        obj = self.module.object(None, ldap_connection, ldap_position, dn=ldap_dn, superordinate=superordinate)
+        try:
+            obj.open()
+            MODULE.info('Restoring LDAP object %s', ldap_dn)
+            obj.restore()
+        except udm_errors.base as e:
+            MODULE.warning('Failed to restore LDAP object %s: %s: %s', ldap_dn, e.__class__.__name__, e)
+            UDM_Error(e, dn=obj.info.get('originalName')).reraise()
+
     def remove(self, ldap_dn, cleanup=False, recursive=False):
         """Removes an LDAP object"""
         ldap_connection, ldap_position = self.get_ldap_connection()
@@ -869,11 +882,15 @@ class UDM_Module:
         ldap_connection, _ldap_position = self.get_ldap_connection()
         layout = getattr(self.module, 'layout', [])
         if ldap_dn is not None:
-            mod = get_module(None, ldap_dn, ldap_connection)
+            obj, mod = get_obj_module(None, ldap_dn, ldap_connection)
             if mod is not None and self.name == mod.name and self.is_policy_module():
                 layout = copy.copy(layout)
                 tab = udm_layout.Tab(_('Referencing objects'), _('Objects referencing this policy object'), layout=['$references$'])
                 layout.append(tab)
+            if mod.name == 'recyclebin/deletedobject':
+                layout = copy.copy(layout)
+                realmod = UDM_Module(obj['originalObjectType'], ldap_connection=ldap_connection, ldap_position=_ldap_position)
+                layout.extend(realmod.module.layout)
 
         layout = AppAttributes.new_layout(self.name, layout)
         return layout
