@@ -44,14 +44,14 @@ options = {
 property_descriptions = {
     'originalObjectType': univention.admin.property(
         short_description=_('Original Object Type'),
-        long_description=_('UDM module type of the original object'),
+        long_description=_('UDM module type of the original object.'),
         syntax=udm_syntax.supportedUdmModulesRecyclebin,
         may_change=False,
         required=True,
     ),
     'originalDN': univention.admin.property(
         short_description=_('Original DN'),
-        long_description=_('Distinguished name of the original object before deletion'),
+        long_description=_('Distinguished name of the original object before deletion.'),
         syntax=udm_syntax.ldapDn,
         may_change=False,
         required=True,
@@ -59,28 +59,28 @@ property_descriptions = {
     ),
     'deleteAt': univention.admin.property(
         short_description=_('Delete At'),
-        long_description=_('Timestamp when the object should be permanently deleted based on retention policy'),
+        long_description=_('Timestamp when the object should be permanently deleted based on retention policy.'),
         syntax=udm_syntax.GeneralizedTimeUTC,
         may_change=False,
         required=True,
     ),
     'deletedBy': univention.admin.property(
         short_description=_('Deleted By'),
-        long_description=_('DN of the user who deleted the object'),
+        long_description=_('DN of the user who deleted the object.'),
         syntax=udm_syntax.ldapDn,
         may_change=False,
         required=True,
     ),
     'referencedBy': univention.admin.property(
         short_description=_('Referenced By'),
-        long_description=_('List of objects that referenced this object at deletion time'),
+        long_description=_('List of objects that referenced this object at deletion time.'),
         syntax=udm_syntax.string,
         multivalue=True,
         may_change=False,
     ),
     'originalUniventionObjectIdentifier': univention.admin.property(
         short_description=_('Original Object Identifier'),
-        long_description=_('Original univentionObjectIdentifier of the deleted object'),
+        long_description=_('UniventionObjectIdentifier of the deleted object.'),
         syntax=udm_syntax.UUID,
         may_change=False,
         required=True,
@@ -88,10 +88,25 @@ property_descriptions = {
     ),
     'originalData': univention.admin.property(
         short_description=_('Original properties'),
-        long_description=_('Original properties of the deleted object.'),
+        long_description=_('Properties of the deleted object.'),
         syntax=udm_syntax.TwoTextArea,
         may_change=False,
         required=False,
+    ),
+    'originalObjectClasses': univention.admin.property(
+        short_description=_('Original object classes'),
+        long_description=_('Object classes of the deleted object.'),
+        syntax=udm_syntax.string,
+        may_change=False,
+        required=False,
+        multivalue=True,
+    ),
+    'originalEntryUUID': univention.admin.property(
+        short_description=_('Original EntryUUID'),
+        long_description=_('EntryUUID of the deleted object.'),
+        syntax=udm_syntax.UUID,
+        may_change=False,
+        required=True,
     ),
 }
 
@@ -104,6 +119,8 @@ layout = [
             'originalUniventionObjectIdentifier',
             'deleteAt',
             'deletedBy',
+            'originalObjectClasses',
+            'originalEntryUUID',
         ]),
         Group(_('References'), layout=[
             'referencedBy',
@@ -121,6 +138,8 @@ mapping.register('deletedBy', 'univentionRecycleBinDeletedBy', None, udm_mapping
 mapping.register('referencedBy', 'univentionRecycleBinReferencedBy')
 mapping.register('originalUniventionObjectIdentifier', 'univentionRecycleBinOriginalUniventionObjectIdentifier', None, udm_mapping.ListToString)
 mapping.register('originalDN', 'univentionRecycleBinOriginalDN', None, udm_mapping.ListToString)
+mapping.register('originalObjectClasses', 'univentionRecycleBinOriginalObjectClass')
+mapping.register('originalEntryUUID', 'univentionRecycleBinOriginalEntryUUID', None, udm_mapping.ListToString)
 
 
 class object(simpleLdap):
