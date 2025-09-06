@@ -102,7 +102,7 @@ property_descriptions = {
     'originalData': univention.admin.property(
         short_description=_('Original properties'),
         long_description=_('Properties of the deleted object.'),
-        syntax=udm_syntax.TwoTextArea,
+        syntax=udm_syntax.TextArea,
         may_change=False,
         required=False,
     ),
