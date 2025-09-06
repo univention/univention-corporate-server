@@ -393,7 +393,6 @@ class object(simpleLdap):
 
         object_id = ldap.dn.dn2str(ldap.dn.str2dn(original_dn))
 
-        # Filter out LDAP meta/operational attributes
         operational_attributes = {
             'entryUUID', 'entryCSN', 'entryDN',
             'createTimestamp', 'modifyTimestamp',

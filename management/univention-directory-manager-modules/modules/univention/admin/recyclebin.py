@@ -305,7 +305,6 @@ class fixme_object(simpleLdap):
                 log.error("LDAP says entry exists but we can't find it for %s", original_dn)
                 raise
 
-        # Return a minimal object for compatibility
         deleted_obj = cls(None, lo, position, dn=deleted_dn)
         deleted_obj._exists = True
         return deleted_obj

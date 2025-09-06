@@ -615,7 +615,7 @@ def _get_recyclebin_policy_settings(original_dn, original_type):
     return 180
 
 
-def _refresh_ttl_for_dds(lo, dn):
+def _refresh_ttl_for_dds(lo, dn, ucr):
     """
     Use the DDS refresh extended operation to set TTL on a dynamic object.
 
@@ -623,10 +623,9 @@ def _refresh_ttl_for_dds(lo, dn):
 
     :param lo: LDAP connection object
     :param str dn: Distinguished name of the object to refresh
+    :param ucr: UCR configuration registry object
     """
     try:
-        ucr = univention.config_registry.ConfigRegistry()
-        ucr.load()
 
         default_ttl = int(ucr.get('ldap/database/internal/dds/default-ttl', str(30 * 86400)))
         max_ttl = int(ucr.get('ldap/database/internal/dds/max-ttl', '31536000'))
@@ -658,7 +657,6 @@ def _create_recyclebin_entry(lo, original_dn, original_attrs, original_type, ref
     delete_at = now + datetime.timedelta(days=retention_days)
     delete_at_time = delete_at.strftime('%Y%m%d%H%M%SZ')
 
-    # Check if DDS is enabled
     ucr = univention.config_registry.ConfigRegistry()
     ucr.load()
     dds_enabled = ucr.is_true('ldap/database/internal/overlay/dds', False)
@@ -731,7 +729,7 @@ def _create_recyclebin_entry(lo, original_dn, original_attrs, original_type, ref
 
         # Refresh TTL for DDS if enabled
         if dds_enabled:
-            _refresh_ttl_for_dds(lo, existing_dn)
+            _refresh_ttl_for_dds(lo, existing_dn, ucr)
     else:
         lo.add(deleted_dn, ldap_attrs)
 
@@ -743,4 +741,4 @@ def _create_recyclebin_entry(lo, original_dn, original_attrs, original_type, ref
 
         # Refresh TTL for DDS if enabled
         if dds_enabled:
-            _refresh_ttl_for_dds(lo, deleted_dn))
+            _refresh_ttl_for_dds(lo, deleted_dn, ucr)
