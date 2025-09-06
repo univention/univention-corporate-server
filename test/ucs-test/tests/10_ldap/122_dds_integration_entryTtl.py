@@ -54,13 +54,13 @@ def find_trash_object(lo, original_dn):
 
 
 def test_dds_overlay_enabled():
-    dds_enabled = _ucr.is_true('ldap/overlay/dds', False)
+    dds_enabled = _ucr.is_true('ldap/database/internal/overlay/dds', False)
     if not dds_enabled:
-        pytest.skip("DDS overlay is not enabled (ldap/overlay/dds=false)")
+        pytest.skip("DDS overlay is not enabled (ldap/database/internal/overlay/dds=false)")
 
-    max_ttl = _ucr.get('ldap/overlay/dds/max-ttl', '31536000')
-    min_ttl = _ucr.get('ldap/overlay/dds/min-ttl', '86400')
-    interval = _ucr.get('ldap/overlay/dds/interval', '3600')
+    max_ttl = _ucr.get('ldap/database/internal/dds/max-ttl', '31536000')
+    min_ttl = _ucr.get('ldap/database/internal/dds/min-ttl', '86400')
+    interval = _ucr.get('ldap/database/internal/dds/interval', '3600')
 
     print("\nDDS Configuration:")
     print(f"  max_ttl: {max_ttl} seconds")
@@ -69,7 +69,7 @@ def test_dds_overlay_enabled():
 
 
 def test_trash_object_with_short_ttl_for_testing():
-    dds_enabled = _ucr.is_true('ldap/overlay/dds', False)
+    dds_enabled = _ucr.is_true('ldap/database/internal/overlay/dds', False)
     if not dds_enabled:
         pytest.skip("DDS overlay is not enabled")
 
@@ -130,7 +130,7 @@ def test_trash_object_with_short_ttl_for_testing():
 
 
 def test_manual_dds_object_with_short_ttl():
-    dds_enabled = _ucr.is_true('ldap/overlay/dds', False)
+    dds_enabled = _ucr.is_true('ldap/database/internal/overlay/dds', False)
     if not dds_enabled:
         pytest.skip("DDS overlay is not enabled")
 
@@ -140,7 +140,7 @@ def test_manual_dds_object_with_short_ttl():
     test_dn = f"cn={test_cn},cn=internal"
 
     test_ttl = 60
-    min_ttl = int(_ucr.get('ldap/overlay/dds/min-ttl', '86400'))
+    min_ttl = int(_ucr.get('ldap/database/internal/dds/min-ttl', '86400'))
 
     if test_ttl < min_ttl:
         print(f"Warning: Test TTL {test_ttl} is below configured min_ttl {min_ttl}")
@@ -179,7 +179,7 @@ def test_manual_dds_object_with_short_ttl():
         actual_ttl = int(created_attrs['entryTtl'][0].decode('utf-8'))
         print(f"✓ Object created with entryTtl={actual_ttl} seconds")
 
-        interval = int(_ucr.get('ldap/overlay/dds/interval', '3600'))
+        interval = int(_ucr.get('ldap/database/internal/dds/interval', '3600'))
         expected_purge_time = actual_ttl + interval
 
         print("\nDDS Automatic Purging Information:")

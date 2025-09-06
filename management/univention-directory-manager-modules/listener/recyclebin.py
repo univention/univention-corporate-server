@@ -9,6 +9,7 @@ import datetime
 import ldap
 import ldap.dn
 import ldap.filter
+from ldap.extop.dds import RefreshRequest
 
 import univention.admin.modules
 import univention.admin.uldap
@@ -536,3 +537,210 @@ class RecycleBinListener(ListenerModuleHandler):
                 univention.debug.INFO,
                 f"recyclebin listener: Created new recyclebin entry: {deleted_dn}",
             )
+
+def _get_recyclebin_policy_settings(original_dn, original_type):
+    try:
+        main_lo, _ = univention.admin.uldap.getAdminConnection()
+
+        dn_parts = ldap.dn.str2dn(original_dn)
+
+        for i in range(len(dn_parts)):
+            search_dn = ldap.dn.dn2str(dn_parts[i:])
+
+            try:
+                attrs = main_lo.get(search_dn)
+                if attrs and 'univentionPolicyReference' in attrs:
+                    policy_refs = attrs['univentionPolicyReference']
+
+                    for policy_ref in policy_refs:
+                        policy_dn = policy_ref.decode('utf-8') if isinstance(policy_ref, bytes) else policy_ref
+
+                        try:
+                            policy_attrs = main_lo.get(policy_dn)
+                            if policy_attrs and b'univentionRecycleBinPolicy' in policy_attrs.get('objectClass', []):
+                                covered_modules = policy_attrs.get('univentionRecycleBinUDMModules', [])
+                                covered_modules = [m.decode('utf-8') if isinstance(m, bytes) else m for m in covered_modules]
+
+                                if original_type in covered_modules:
+                                    retention_time = policy_attrs.get('univentionRecycleBinRetentionTime', [b'30'])
+                                    retention_days = int(retention_time[0].decode('utf-8') if isinstance(retention_time[0], bytes) else retention_time[0])
+
+                                    univention.debug.debug(
+                                        univention.debug.LISTENER,
+                                        univention.debug.INFO,
+                                        f"recyclebin listener: Found policy {policy_dn} with retention {retention_days} days for {original_type}",
+                                    )
+                                    return retention_days
+                        except ldap.LDAPError:
+                            continue
+            except ldap.LDAPError:
+                continue
+
+        ucr = univention.config_registry.ConfigRegistry()
+        ucr.load()
+        default_policy_dn = f"cn=default-recyclebin-policy,cn=recyclebin,cn=policies,{ucr.get('ldap/base')}"
+
+        try:
+            policy_attrs = main_lo.get(default_policy_dn)
+            if policy_attrs and b'univentionRecycleBinPolicy' in policy_attrs.get('objectClass', []):
+                covered_modules = policy_attrs.get('univentionRecycleBinUDMModules', [])
+                covered_modules = [m.decode('utf-8') if isinstance(m, bytes) else m for m in covered_modules]
+
+                if original_type in covered_modules:
+                    retention_time = policy_attrs.get('univentionRecycleBinRetentionTime', [b'30'])
+                    retention_days = int(retention_time[0].decode('utf-8') if isinstance(retention_time[0], bytes) else retention_time[0])
+
+                    univention.debug.debug(
+                        univention.debug.LISTENER,
+                        univention.debug.INFO,
+                        f"recyclebin listener: Using default policy with retention {retention_days} days for {original_type}",
+                    )
+                    return retention_days
+        except ldap.LDAPError:
+            pass
+
+    except Exception as e:
+        univention.debug.debug(
+            univention.debug.LISTENER,
+            univention.debug.WARNING,
+            f"recyclebin listener: Error retrieving policy settings: {e}",
+        )
+
+    # Final fallback: 180 days
+    univention.debug.debug(
+        univention.debug.LISTENER,
+        univention.debug.INFO,
+        f"recyclebin listener: Using fallback retention time of 180 days for {original_type}",
+    )
+    return 180
+
+
+def _refresh_ttl_for_dds(lo, dn):
+    """
+    Use the DDS refresh extended operation to set TTL on a dynamic object.
+
+    Required because entryTtl attribute is NO-USER-MODIFICATION per RFC 2589.
+
+    :param lo: LDAP connection object
+    :param str dn: Distinguished name of the object to refresh
+    """
+    try:
+        ucr = univention.config_registry.ConfigRegistry()
+        ucr.load()
+
+        default_ttl = int(ucr.get('ldap/database/internal/dds/default-ttl', str(30 * 86400)))
+        max_ttl = int(ucr.get('ldap/database/internal/dds/max-ttl', '31536000'))
+        min_ttl = int(ucr.get('ldap/database/internal/dds/min-ttl', '86400'))
+
+        ttl = max(min_ttl, min(default_ttl, max_ttl))
+
+        refresh_req = RefreshRequest(entryName=dn, requestTtl=ttl)
+        lo.lo.extop_s(refresh_req, serverctrls=[])
+
+        syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN DDS: Successfully set TTL to {ttl} seconds for {dn} via DDS refresh")
+
+    except ldap.LDAPError as e:
+        syslog.syslog(syslog.LOG_ERR, f"RECYCLEBIN DDS: Failed to refresh TTL for {dn}: {e}")
+    except Exception as e:
+        syslog.syslog(syslog.LOG_ERR, f"RECYCLEBIN DDS: Unexpected error refreshing TTL for {dn}: {e}")
+
+
+def _create_recyclebin_entry(lo, original_dn, original_attrs, original_type, referenced_by, group_memberships=None):
+    object_id = ldap.dn.dn2str(ldap.dn.str2dn(original_dn))
+    escaped_object_id = ldap.dn.escape_dn_chars(object_id)
+    recyclebin_base = 'cn=recyclebin,cn=internal'
+    deleted_dn = f'univentionRecycleBinOriginalDN={escaped_object_id},{recyclebin_base}'
+
+    now = datetime.datetime.now(datetime.UTC)
+    deletion_time = now.strftime('%Y%m%d%H%M%SZ')
+
+    retention_days = _get_recyclebin_policy_settings(original_dn, original_type)
+    delete_at = now + datetime.timedelta(days=retention_days)
+    delete_at_time = delete_at.strftime('%Y%m%d%H%M%SZ')
+
+    # Check if DDS is enabled
+    ucr = univention.config_registry.ConfigRegistry()
+    ucr.load()
+    dds_enabled = ucr.is_true('ldap/database/internal/overlay/dds', False)
+
+    object_classes = [b'top', b'extensibleObject', b'univentionRecycleBinObject']
+    if dds_enabled:
+        object_classes.append(b'dynamicObject')
+        syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN DDS: Adding dynamicObject class for automatic purging of {original_dn}")
+
+    ldap_attrs = [
+        ('objectClass', object_classes),
+        ('univentionRecycleBinOriginalDN', [original_dn.encode('utf-8')]),
+        ('univentionRecycleBinOriginalType', [original_type.encode('utf-8')]),
+        ('univentionRecycleBinDeletionDate', [deletion_time.encode('utf-8')]),
+        ('univentionRecycleBinDeleteAt', [delete_at_time.encode('utf-8')]),
+        ('univentionRecycleBinDeletedBy', [b'cn=admin,dc=ucs,dc=test']),  # TODO: get actual user
+    ]
+
+    excluded_attrs = {
+        'dn', 'entrycsn', 'modifytimestamp',
+        'createtimestamp', 'structuralobjectclass', 'hassubordinates',
+        'subschemasubentry', 'entrydn', 'creatorsname', 'modifiersname',
+        'pwdaccountlockedtime', 'pwdchangedtime', 'pwdfailuretime',
+        'pwdhistory', 'numsubordinates',
+        'memberof',
+    }
+
+    # Attributes that should be stored with the univentionRecycleBinOriginal prefix
+    prefixed_attrs = {'entryuuid', 'univentionobjectidentifier', 'objectclass'}
+
+    for attr, values in original_attrs.items():
+        attr_lower = attr.lower()
+        if attr_lower not in excluded_attrs:
+            if attr_lower in prefixed_attrs:
+                prefixed_attr = f'univentionRecycleBinOriginal{attr}'
+                ldap_attrs.append((prefixed_attr, values))
+            else:
+                ldap_attrs.append((attr, values))
+
+    if referenced_by:
+        for ref_info in referenced_by:
+            reference_json = json.dumps(ref_info).encode('utf-8')
+            ldap_attrs.append(('referencedBy', [reference_json]))
+
+    if group_memberships:
+        group_memberships_encoded = [group_dn.encode('utf-8') for group_dn in group_memberships]
+        ldap_attrs.append(('seeAlso', group_memberships_encoded))
+
+    search_filter = f"(univentionRecycleBinOriginalDN={ldap.filter.escape_filter_chars(original_dn)})"
+
+    existing_entries = lo.search(
+        base=recyclebin_base,
+        filter=search_filter,
+        scope='subtree',
+    )
+
+    if existing_entries:
+        existing_dn = existing_entries[0][0]
+        modlist = []
+        for attr, values in ldap_attrs[1:]:
+            modlist.append((ldap.MOD_REPLACE, attr, values))
+
+        lo.modify(existing_dn, modlist)
+
+        univention.debug.debug(
+            univention.debug.LISTENER,
+            univention.debug.INFO,
+            f"recyclebin listener: Updated existing recyclebin entry: {existing_dn}",
+        )
+
+        # Refresh TTL for DDS if enabled
+        if dds_enabled:
+            _refresh_ttl_for_dds(lo, existing_dn)
+    else:
+        lo.add(deleted_dn, ldap_attrs)
+
+        univention.debug.debug(
+            univention.debug.LISTENER,
+            univention.debug.INFO,
+            f"recyclebin listener: Created new recyclebin entry: {deleted_dn}",
+        )
+
+        # Refresh TTL for DDS if enabled
+        if dds_enabled:
+            _refresh_ttl_for_dds(lo, deleted_dn))

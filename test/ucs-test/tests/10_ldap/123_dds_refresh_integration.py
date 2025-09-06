@@ -49,7 +49,7 @@ class TestDDSRefreshIntegration:
 
     def test_dds_with_refresh_operation(self):
         """Test the core DDS refresh functionality on trash objects."""
-        dds_enabled = _ucr.is_true('ldap/overlay/dds', False)
+        dds_enabled = _ucr.is_true('ldap/database/internal/overlay/dds', False)
         if not dds_enabled:
             pytest.skip("DDS overlay is not enabled")
 
@@ -84,7 +84,7 @@ class TestDDSRefreshIntegration:
             assert 'entryTtl' in trash_attrs, "Missing entryTtl attribute"
 
             # Test refresh operation to modify TTL
-            min_ttl = int(_ucr.get('ldap/overlay/dds/min-ttl', '86400'))
+            min_ttl = int(_ucr.get('ldap/database/internal/dds/min-ttl', '86400'))
             test_ttl = min_ttl
 
             refresh_req = RefreshRequest(entryName=trash_dn, requestTtl=test_ttl)
