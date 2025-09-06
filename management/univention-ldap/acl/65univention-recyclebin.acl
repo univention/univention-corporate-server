@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# ACL for DDS refresh operations on recyclebin objects
+# Admin-only access for security - trash bin management is an administrative function
+access to dn.subtree="cn=recyclebin,cn=internal,@%@ldap/base@%@"
+    attrs=entryTtl
+    by dn.base="cn=admin,@%@ldap/base@%@" manage
+    by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,@%@ldap/base@%@" manage
+    by * none
+
+access to dn.subtree="cn=recyclebin,cn=internal,@%@ldap/base@%@"
+    by dn.base="cn=admin,@%@ldap/base@%@" read
+    by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,@%@ldap/base@%@" read
+    by * none
