@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-admin-handlers-recyclebin\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2025-07-30 14:00+0000\n"
-"PO-Revision-Date: 2025-07-30 14:00+0000\n"
+"POT-Creation-Date: 2025-09-06 10:00+0000\n"
+"PO-Revision-Date: 2025-09-06 10:00+0000\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
 "Language: de\n"
@@ -119,3 +119,19 @@ msgstr "Ursprüngliche EntryUUID"
 
 msgid "EntryUUID of the deleted object."
 msgstr "EntryUUID des gelöschten Objekts."
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:112
+msgid "Common Name"
+msgstr "Common Name"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:113
+msgid "Common name from the original object"
+msgstr "Common Name des ursprünglichen Objekts"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:120
+msgid "User ID"
+msgstr "Benutzer-ID"
+
+#: modules/univention/admin/handlers/recyclebin/deletedobject.py:121
+msgid "User ID from the original object"
+msgstr "Benutzer-ID des ursprünglichen Objekts"
