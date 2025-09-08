@@ -198,6 +198,7 @@ COMMON_EXCEPTIONS = (
     E("ModuleNotFoundError: No module named '_gdbm'", ['univention-directory-listener/system/', 'gnu.py'], 53862),
     E("ModuleNotFoundError: No module named '_ldap'", ['univention-directory-listener/system/'], 53862),
     E("ModuleNotFoundError: No module named 'ldb'", ['univention-directory-listener/system/'], 53862),
+    E("ModuleNotFoundError: No module named 'tdb'", ['univention-directory-listener/system/'], 53862),
     E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention-self-service-invitation', 'urllib/request.py'], 53670),
     E("ConnectionRefusedError: \\[Errno 111\\] Connection refused", ['univention/lib/umc.py.*in send'], 53670),
     E("univention.lib.umc.ConnectionError: .*Could not send request.*Connection refused", ['univention-self-service-invitation'], 53670),
