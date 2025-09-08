@@ -69,24 +69,28 @@ def _map_level_to_ud(level):  # type: (int) -> int
 
     >>> _map_level_to_ud(logging.ERROR)
     0
-    >>> _map_level_to_ud(logging.INFO)
+    >>> _map_level_to_ud(logging.PROCESS)
     2
-    >>> _map_level_to_ud(logging.DEBUG)
+    >>> _map_level_to_ud(logging.INFO)
     3
+    >>> _map_level_to_ud(logging.DEBUG)
+    4
+    >>> _map_level_to_ud(logging.TRACE)
+    5
     >>> _map_level_to_ud(logging.NOTSET)
-    4
+    100
     >>> _map_level_to_ud(logging.INFO - 1)
-    1
-    >>> _map_level_to_ud(logging.DEBUG - 1)
-    10
-    >>> _map_level_to_ud(logging.DEBUG - 9)
-    90
-    >>> _map_level_to_ud(4)
-    69
-    >>> _map_level_to_ud(9)
     4
+    >>> _map_level_to_ud(logging.DEBUG - 1)
+    5
+    >>> _map_level_to_ud(logging.DEBUG - 9)
+    79
+    >>> _map_level_to_ud(4)
+    19
+    >>> _map_level_to_ud(9)
+    5
     >>> _map_level_to_ud(99)
-    90
+    0
     """
     if level <= 0:
         return 100
@@ -121,9 +125,9 @@ def _map_ud_to_level(level):  # type: (int) -> int
     >>> _map_ud_to_level(6)
     4
     >>> _map_ud_to_level(50)
-    5
+    2
     >>> _map_ud_to_level(99)
-    1
+    0
     """
     if level >= 100:
         return 0
@@ -137,7 +141,7 @@ def _map_ud_to_level(level):  # type: (int) -> int
 def _map_category_name(category):  # type: (int) -> str
     """
     >>> _map_category_name(10)
-    "ADMIN"
+    'ADMIN'
     """
     return _UD_CATEGORIES.get(category, '<unknown>')
 
@@ -161,7 +165,7 @@ def getLogger(name, **kwargs):  # type: (str) -> Logger
         If the logger name should differ from the univention-debug category this param can be used
         as initialization call to create the logger once.
 
-    >>> logger = getLogger('ADMIN').getChild(__name__)
+    >>> logger = getLogger('ADMIN')  # .getChild(__name__)
     >>> logger.init('stdout', ud.FLUSH, ud.NO_FUNCTION)
     >>> logger.setLevel(logging.WARNING)
     >>> logger.info('some info')
