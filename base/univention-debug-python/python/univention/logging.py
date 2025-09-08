@@ -81,6 +81,8 @@ def _map_level_to_ud(level):  # type: (int) -> int
     10
     >>> _map_level_to_ud(logging.DEBUG - 9)
     90
+    >>> _map_level_to_ud(4)
+    69
     >>> _map_level_to_ud(9)
     4
     >>> _map_level_to_ud(99)
@@ -88,12 +90,12 @@ def _map_level_to_ud(level):  # type: (int) -> int
     """
     if level <= 0:
         return 100
-    if level >= 100:
-        return 0
     if level >= logging.ERROR:
         return 0
-    if 0 < level < logging.DEBUG - 1:
-        return 100 - ((level - 1) * 10) - 1
+    if 0 < level < logging.TRACE:
+        return 100 - ((level) * 20) - 1
+    if logging.TRACE <= level < logging.DEBUG:
+        return ud.TRACE
     if logging.PROCESS <= level < logging.WARNING:
         return ud.PROCESS
     level = level if level in _LEVEL_MAPPING else (level // 10) * 10
@@ -108,14 +110,16 @@ def _map_ud_to_level(level):  # type: (int) -> int
     True
     >>> _map_ud_to_level(1) == logging.WARNING
     True
-    >>> _map_ud_to_level(2) == logging.INFO
+    >>> _map_ud_to_level(2) == logging.PROCESS
     True
-    >>> _map_ud_to_level(3) == logging.DEBUG
+    >>> _map_ud_to_level(3) == logging.INFO
     True
-    >>> _map_ud_to_level(4) == logging.NOTSET
+    >>> _map_ud_to_level(4) == logging.DEBUG
     True
-    >>> _map_ud_to_level(5)
-    9
+    >>> _map_ud_to_level(5) == logging.TRACE
+    True
+    >>> _map_ud_to_level(6)
+    4
     >>> _map_ud_to_level(50)
     5
     >>> _map_ud_to_level(99)
@@ -123,9 +127,10 @@ def _map_ud_to_level(level):  # type: (int) -> int
     """
     if level >= 100:
         return 0
-    if level > ud.ALL:
+    if level > ud.TRACE:
+        return (99 - level) // 20
         base = 100 if level <= 10 else 110
-        return max((10, (base - level))) // 10
+        return max((10, (base - level))) // 20
     return _UD_LEVEL_MAPPING.get(level)
 
 
