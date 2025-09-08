@@ -17,6 +17,28 @@ import univention.debug2 as ud2
 PROCESS = 25
 
 
+def normalize_logformat(log):
+    replacements = {
+        # structured date
+        re.compile(r'^20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3} \+\d{4}', re.M): '2025-01-01T00:00:00.000 +0000',
+        re.compile(r'logging.process:\d+'): 'logging.process:1',
+        re.compile(f'pid={os.getpid()}'): 'pid=12345',
+        re.compile(r'Traceback \(most recent call last\):(.|\n)*?NameError: name .+ is not defined'): '<TRACEBACK>',
+        re.compile(r'Stack \(most recent call last\):(.|\n)*?, i, stack_info=True\)'): '<STACK>',
+        re.compile(r'test_logging\.[a-z_]+:\d+'): 'test_module.test_function:1',
+        # legacy
+        re.compile(r'^\d{2}.\d{2}.\d{2} \d{2}:\d{2}:\d{2}\.\d{3}', re.M): '01.01.25 00:00:00.000',
+        re.compile(f': {os.getpid()}:'): ': 12345:',
+    }
+
+    def replace_all(line):
+        for pattern, replacement in replacements.items():
+            line = pattern.sub(replacement, line)
+        return line
+    return replace_all(log).strip()
+
+
+# IMPORTANT: order: must be at first
 def test_logging_handler_changed():
     m = logging.getLogger('MAIN')
     f = logging.getLogger('foo')
@@ -29,16 +51,49 @@ def test_logging_handler_changed():
     assert type(f) is univention.logging.Logger
 
 
-with open('tests/legacy.log') as fd:
-    EXPECTED_LEGACY = fd.read()
+# IMPORTANT: order: must be at second
+def test_log_structured_with_time(tmp_path):
+    import univention.logging as ul
+    tmplog = tmp_path / 'log'
+    tmplog.touch()
+    logger = logging.getLogger('bar')
+    handler = logging.FileHandler(str(tmplog))
+    logger.addHandler(handler)
+    handler.setFormatter(ul.StructuredFormatter(with_date_prefix=True))
+    logger.setLevel(logging.TRACE)
 
-with open('tests/structured.log') as fd:
-    EXPECTED_STRUCTURED = fd.read()
+    logger = ul.Structured(logger)
+    logger.critical('message', foo='bar')
+    logger.error('message', foo='bar')
+    logger.exception('message', foo='bar')  # noqa: LOG004
+    logger.warning('message', foo='bar')
+    logger.info('message', foo='bar')
+    logger.process('message', foo='bar')
+    logger.debug('message', foo='bar')
+    logger.trace('message', foo='bar')
+    logger.getChild('blah').error('message', foo='bar')
+    log = normalize_logformat(tmplog.read_text())
+    expected = '''
+2025-01-01T00:00:00.000 +0000 CRITICAL [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
+2025-01-01T00:00:00.000 +0000    ERROR [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
+2025-01-01T00:00:00.000 +0000    ERROR [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
+2025-01-01T00:00:00.000 +0000  WARNING [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
+2025-01-01T00:00:00.000 +0000     INFO [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
+2025-01-01T00:00:00.000 +0000  PROCESS [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
+2025-01-01T00:00:00.000 +0000    DEBUG [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
+2025-01-01T00:00:00.000 +0000    TRACE [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
+2025-01-01T00:00:00.000 +0000    ERROR [         -] message\t| pid=12345 logname=bar.blah func=test_module.test_function:1 foo=bar
+'''.strip()
+    assert log == expected
 
-EXPECTED = {
-    'ud': (EXPECTED_LEGACY, EXPECTED_STRUCTURED),
-    'ud2': (EXPECTED_LEGACY, EXPECTED_STRUCTURED),
-}
+
+with open('tests/legacy.log') as fd, open('tests/structured.log') as fd2:
+    EXPECTED_LEGACY = fd.read().strip()
+    EXPECTED_STRUCTURED = fd2.read().strip()
+    EXPECTED = {
+        'ud': (EXPECTED_LEGACY, EXPECTED_STRUCTURED),
+        'ud2': (EXPECTED_LEGACY, EXPECTED_STRUCTURED),
+    }
 
 
 @pytest.mark.parametrize('strucutured', [True, False])
@@ -58,7 +113,7 @@ def test_logging(tmp_path, debug_backend, strucutured):
     logger.univention_debug_handler.set_structured(strucutured)
     logger.error('logger.error()')
     logger.warning('logger.warning()')
-    logger.process('logger.process()')
+    logger.log(PROCESS, 'logger.process()')
     logger.info('logger.info()')
     logger.debug('logger.debug()')  # not shown
     logger.set_log_pid(True)
@@ -83,6 +138,7 @@ def test_logging(tmp_path, debug_backend, strucutured):
     ud.debug(ud.LDAP, -1, 'ud.debug(ud.LDAP, -1, "msg")')  # not shown
     logger.setLevel(logging.NOTSET + 1)
     logger.log(9, 'logger.log(9)')
+    logger.log(5, 'logger.log(5)')
     logger.log(1, 'logger.log(1)')
     logger.log(100, 'logger.log(100)')
     logger.info({'msg': 'logger.info({"msg": ""})'})
@@ -103,33 +159,15 @@ def test_logging(tmp_path, debug_backend, strucutured):
 
     logger.univention_debug_handler.close()
 
-    log = tmplog.read_text()
-    replacements = {
-        # structured date
-        re.compile(r'^20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3} \+\d{4}', re.M): '2025-01-01T00:00:00.000 +0000',
-        re.compile(r'logging.process:\d+'): 'logging.process:1',
-        re.compile(f'pid={os.getpid()}'): 'pid=12345',
-        re.compile(r'Traceback \(most recent call last\):(.|\n)*?NameError: name .+ is not defined'): '<TRACEBACK>',
-        re.compile(r'Stack \(most recent call last\):(.|\n)*?, i, stack_info=True\)'): '<STACK>',
-        re.compile(rf'{re.escape(test_logging.__name__)}:\d+'): 'test_logging:1',
-        # legacy
-        re.compile(r'^\d{2}.\d{2}.\d{2} \d{2}:\d{2}:\d{2}\.\d{3}', re.M): '01.01.25 00:00:00.000',
-        re.compile(f': {os.getpid()}:'): ': 12345:',
-    }
-
-    def replace_all(line):
-        for pattern, replacement in replacements.items():
-            line = pattern.sub(replacement, line)
-        return line
-    actual = replace_all(log)
+    actual = normalize_logformat(tmplog.read_text())
     expected = EXPECTED[debug_backend][int(strucutured)].lstrip()
     print('\n' + repr(actual).replace(r'\n', '\n').strip("'"))
 
     # uncomment to update!
-    # if strucutured:
-    #     open('tests/structured.log', 'w').write(actual)
-    # else:
-    #     open('tests/legacy.log', 'w').write(actual)
+    if strucutured:
+        open('tests/structured.log', 'w').write(actual)
+    else:
+        open('tests/legacy.log', 'w').write(actual)
     assert actual == expected
 
 
@@ -223,3 +261,11 @@ def test_loglevel_mapping_logging(log_level, ud_level):
     from univention.logging import _map_level_to_ud
 
     assert _map_level_to_ud(log_level) == ud_level
+
+
+@pytest.mark.xfail(reason='setLevel is broken')
+def test_repr():
+    logger = logging.getLogger('ADMIN')
+    logger.setLevel(logging.DEBUG)
+    assert repr(logger.univention_debug_handler) == '<DebugHandler[ADMIN](DEBUG)>'
+    assert repr(logger) == '<univention.logging.Logger ADMIN (DEBUG)>'
