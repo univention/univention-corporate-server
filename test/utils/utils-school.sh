@@ -81,6 +81,19 @@ install_ucsschool_id_connector_in_version() {
   fi
 }
 
+upgrade_ucsschool_id_connector_to_version() {
+  # Upgrade ID Connector to a specified version
+  local -i rv=0
+  printf '%s' univention > /tmp/univention
+  if [ -n "$ID_CONNECTOR_UPGRADE_VERSION" ]; then
+    univention-app dev-set ucsschool-id-connector="$ID_CONNECTOR_UPGRADE_VERSION" Version="1000-$ID_CONNECTOR_UPGRADE_VERSION"
+    univention-app upgrade ucsschool-id-connector="1000-$ID_CONNECTOR_UPGRADE_VERSION" --noninteractive --username Administrator --pwdfile /tmp/univention || rv=$?
+    return $rv
+  else
+    upgrade_id_connector
+  fi
+}
+
 upgrade_id_connector () {
   local latest_version
   local -i rv=0
