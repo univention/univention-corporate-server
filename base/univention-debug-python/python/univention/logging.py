@@ -245,11 +245,11 @@ def basicConfig(
 
     if not delay_init:
         logger = getLogger(categories[0])
-        logger.univention_debug_handler.set_structured(use_structured_logging)
+        logger.set_structured(use_structured_logging)
         logger.univention_debug_handler.init(filename, univention_debug_flush, univention_debug_function)
     for category in categories:
         logger = getLogger(category)
-        logger.univention_debug_handler.set_structured(use_structured_logging)
+        logger.set_structured(use_structured_logging)
         if level is not None:
             logger.setLevel(level)
         elif univention_debug_level is not None:
@@ -260,10 +260,6 @@ def basicConfig(
             logger.univention_debug_handler.auto_init = True
             logger.univention_debug_handler.delay_init = delay_init
             logger.univention_debug_handler._init_args = (filename, univention_debug_flush, univention_debug_function)
-        if use_structured_logging:
-            formatter = StructuredFormatter()
-            for handler in logger.handlers:
-                handler.setFormatter(formatter)
 
 
 class SyslogPrefix(logging.Filter):
@@ -417,6 +413,7 @@ class Logger(logging.Logger):
         return current_level
 
     def set_log_pid(self, log_pid):
+        # deprecated
         self._formatter.log_pid = log_pid
 
     def set_ud_level(self, level):
@@ -431,6 +428,19 @@ class Logger(logging.Logger):
         level = self.getEffectiveLevel()
         self.univention_debug_handler.reopen()
         self.univention_debug_handler.setLevel(level)
+
+    def set_structured(self, /, use_structured_logging):
+        self.univention_debug_handler.set_structured(use_structured_logging)
+        if use_structured_logging:
+            self.univention_debug_handler.setFormatter(StructuredFormatter())
+
+    # def getChild(self, name):
+    #     klass = logging.getLoggerClass()
+    #     logging.setLoggerClass(Logger)
+    #     try:
+    #         return super().getChild(name)
+    #     finally:
+    #         logging.setLoggerClass(klass)
 
     def __repr__(self):
         msg = super().__repr__()
