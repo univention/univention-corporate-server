@@ -61,9 +61,9 @@ msgid ""
 "|UCSUDM| has seen an update that allows user and computer objects to get their "
 "``Primary Group`` from their parent container during creation."
 msgstr ""
-"|UCSUDM| erhielt ein Update, mit dem Beim Anlegen von Benutzer- und "
-"Computerobjekten deren ``Primary Group`` durch den Elterncontainer bestimmt "
-"werden kann."
+"|UCSUDM| erhielt ein Update, so dass die ``Primary Group`` "
+"beim Anlegen von Benutzer- und Computerobjekten durch den "
+"Elterncontainer bestimmt werden kann."
 
 #: ../../index.rst:28
 msgid ""
