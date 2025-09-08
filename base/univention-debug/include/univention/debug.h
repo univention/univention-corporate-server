@@ -17,7 +17,8 @@ enum uv_debug_level {
 	UV_DEBUG_WARN = 1,
 	UV_DEBUG_PROCESS = 2,
 	UV_DEBUG_INFO = 3,
-	UV_DEBUG_ALL = 4
+	UV_DEBUG_ALL = 4,  // i.e. DEBUG
+	UV_DEBUG_TRACE = 5
 };
 
 enum uv_debug_category {
