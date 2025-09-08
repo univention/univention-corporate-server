@@ -147,11 +147,11 @@ void univention_debug(enum uv_debug_category id, enum uv_debug_level level, cons
 
 	if (univention_debug_structured) {
 	    if (level >= UV_DEBUG_ERROR && level <= UV_DEBUG_ALL) {
-			LOG("%7s ", univention_debug_level_structured_text[level]);
+			LOG("%8s ", univention_debug_level_structured_text[level]);
 		} else if (level >= UV_DEBUG_ALL) {
-			LOG("%7s ", univention_debug_level_structured_text[level]);
+			LOG("%8s ", univention_debug_level_structured_text[level]);
 		} else {
-			LOG("%7d ", level);
+			LOG("%8d ", level);
 		}
 	} else {
 		if (level >= UV_DEBUG_ERROR && level <= UV_DEBUG_ALL) {
