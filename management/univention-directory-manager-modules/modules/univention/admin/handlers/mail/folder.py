@@ -5,7 +5,6 @@
 
 from __future__ import annotations
 
-
 import ldap
 
 import univention.admin.handlers
