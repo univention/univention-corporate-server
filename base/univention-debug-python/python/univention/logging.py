@@ -11,7 +11,9 @@ A python-logging interface compatible wrapper for logging with :py:mod:`univenti
 >>> logger.info('test')
 """
 
+import copy
 import logging
+import time
 import traceback
 
 from logfmter import Logfmter
@@ -29,9 +31,11 @@ __all__ += logging.__all__
 logging.PROCESS = 25
 logging.TRACE = logging.DEBUG - 5
 logging.addLevelName(logging.PROCESS, 'PROCESS')
+logging.addLevelName(logging.TRACE, 'TRACE')
 _LEVEL_MAPPING = {
     logging.NOTSET: 100,
-    logging.TRACE: 5,  # 5 -> 4
+    logging.TRACE: 5,  # 5 -> 5
+    logging.DEBUG - 1: ud.ALL,  # 9 -> 4
     logging.DEBUG: ud.ALL,  # 10 -> 4
     logging.INFO: ud.INFO,  # 20 -> 3
     logging.PROCESS: ud.PROCESS,  # 25 -> 2
@@ -43,6 +47,7 @@ _UD_LEVEL_MAPPING = {v: k for k, v in _LEVEL_MAPPING.items()}
 
 _LEVEL_TO_FORMAT_MAPPING = {
     logging.NOTSET: '%(pid)s%(prefix)s%(module)s.%(funcName)s:%(lineno)d: %(message)s',
+    logging.TRACE: '%(pid)s%(prefix)s%(module)s.%(funcName)s:%(lineno)d: %(message)s',
     logging.DEBUG: '%(pid)s%(prefix)s%(message)s',
     logging.INFO: '%(pid)s%(prefix)s%(message)s',
     logging.PROCESS: '%(pid)s%(prefix)s%(message)s',
@@ -260,7 +265,7 @@ class StructuredFormatter(logging.Formatter):
     2025-01-01T00:00:00.000 +0000 INFO    [         -] module.function:1 the message\t| pid=12345 logname=ADMIN
     """
 
-    default_time_format = '%Y-%m-%dT%H:%M:%S %z'
+    default_time_format = '%Y-%m-%dT%H:%M:%S.{msecs:03.0f} %z'
 
     def __init__(
         self,
@@ -279,7 +284,7 @@ class StructuredFormatter(logging.Formatter):
         # fmt = fmt or '[{request_id:>10}] {module}.{funcName}:{lineno} {message}\t| {logfmt}'
         fmt = fmt or '[{request_id:>10}] {message}\t| {logfmt}'
         if with_date_prefix:
-            fmt = f'{{asctime}}.{{msecs:03.0f}} {{levelname:>7}} |{fmt}'
+            fmt = f'{{asctime}} {{levelname:>8}} {fmt}'
         style = '{'
         self.key = key
         self.add_full_tracebacks = add_full_tracebacks
@@ -287,13 +292,13 @@ class StructuredFormatter(logging.Formatter):
             keys=data_fields or ['pid', 'umcmodule', 'logname', 'func'],
             mapping=data_mapping or {'at': 'levelname', 'pid': 'process', 'time': 'asctime', 'logname': 'name'},
             defaults=data_defaults or {'func': '{module}.{funcName}:{lineno}'},
-            ignore_keys=data_ignored_keys or ['msg', 'request_id'],
+            ignore_keys=data_ignored_keys or ['msg', 'request_id'],  # 'stack_info', 'exc_info'
             datefmt=datefmt or self.default_time_format,
         )
         super().__init__(fmt=fmt, datefmt=datefmt, defaults=defaults or {'request_id': '-', key: ''}, style=style)
 
     def formatMessage(self, record):
-        setattr(record, self.key, self.logfmter.format(record))
+        setattr(record, self.key, self.logfmter.format(copy.copy(record)))
         return super().formatMessage(record)
 
     def format(self, record):
@@ -310,6 +315,7 @@ class StructuredFormatter(logging.Formatter):
             s = self.formatMessage(record).rstrip('\n')
         finally:
             record.msg = msg
+
         if not self.add_full_tracebacks:
             return s
         if record.exc_info and not record.exc_text:
@@ -319,6 +325,11 @@ class StructuredFormatter(logging.Formatter):
         if record.stack_info:
             s = f'{s}\n{self.formatStack(record.stack_info)}'
         return s
+
+    def formatTime(self, record, datefmt=None):
+        ct = self.converter(record.created)
+        datefmt = datefmt or self.default_time_format
+        return time.strftime(datefmt, ct).format(msecs=record.msecs)
 
 
 class Logger(logging.Logger):
@@ -435,7 +446,7 @@ class LevelDependentFormatter(logging.Formatter):
         self.log_pid = log_pid
         self._level_to_format_mapping = _LEVEL_TO_FORMAT_MAPPING.copy()
 
-    def setFormat(self, level, fmt):
+    def setFormat(self, level, fmt):  # pragma: no cover
         self._level_to_format_mapping[level] = fmt
 
     def format(self, record):
