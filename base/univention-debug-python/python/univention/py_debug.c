@@ -275,6 +275,8 @@ PyMODINIT_FUNC init_debug(void)
     PyDict_SetItemString(dict, "PROCESS", PyInt_FromLong(UV_DEBUG_PROCESS));
     PyDict_SetItemString(dict, "INFO", PyInt_FromLong(UV_DEBUG_INFO));
     PyDict_SetItemString(dict, "ALL", PyInt_FromLong(UV_DEBUG_ALL));
+    PyDict_SetItemString(dict, "DEBUG", PyInt_FromLong(UV_DEBUG_ALL));
+    PyDict_SetItemString(dict, "TRACE", PyInt_FromLong(UV_DEBUG_TRACE));
 
     PyDict_SetItemString(dict, "MAIN", PyInt_FromLong(UV_DEBUG_MAIN));
     PyDict_SetItemString(dict, "LDAP", PyInt_FromLong(UV_DEBUG_LDAP));
