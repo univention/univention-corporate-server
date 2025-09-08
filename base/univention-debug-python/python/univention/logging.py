@@ -257,6 +257,46 @@ def basicConfig(
                 handler.setFormatter(formatter)
 
 
+class SyslogPrefix(logging.Filter):
+    """Convert Python log level to Syslog priority."""
+
+    def __init__(self, key='syslog_priority'):
+        super().__init__()
+        self.key = key
+
+    def filter(self, record):
+        setattr(record, self.key, f'<{self.get_syslog_prefix(record.levelno)}>')
+        return True
+
+    def get_syslog_prefix(self, level):
+        """
+        Syslog priorities:
+
+           <0>: Emergency
+           <1>: Alert
+           <2>: Critical
+           <3>: Error
+           <4>: Warning
+           <5>: Notice
+           <6>: Info
+           <7>: Debug
+        """
+        if level >= logging.CRITICAL:
+            return 2
+        elif level >= logging.ERROR:
+            return 3
+        elif level >= logging.WARNING:
+            return 4
+        elif level >= logging.PROCESS:
+            return 5
+        elif level >= logging.INFO:
+            return 6
+        elif level >= logging.DEBUG:
+            return 7
+        else:
+            return 7
+
+
 class StructuredFormatter(logging.Formatter):
     """
     A formatter combining prefixed content and structured data from logfmt.
@@ -284,7 +324,7 @@ class StructuredFormatter(logging.Formatter):
         # fmt = fmt or '[{request_id:>10}] {module}.{funcName}:{lineno} {message}\t| {logfmt}'
         fmt = fmt or '[{request_id:>10}] {message}\t| {logfmt}'
         if with_date_prefix:
-            fmt = f'{{asctime}} {{levelname:>8}} {fmt}'
+            fmt = f'{{syslog_priority}}{{asctime}} {{levelname:>8}} {fmt}'
         style = '{'
         self.key = key
         self.add_full_tracebacks = add_full_tracebacks
@@ -292,10 +332,10 @@ class StructuredFormatter(logging.Formatter):
             keys=data_fields or ['pid', 'umcmodule', 'logname', 'func'],
             mapping=data_mapping or {'at': 'levelname', 'pid': 'process', 'time': 'asctime', 'logname': 'name'},
             defaults=data_defaults or {'func': '{module}.{funcName}:{lineno}'},
-            ignore_keys=data_ignored_keys or ['msg', 'request_id'],  # 'stack_info', 'exc_info'
+            ignore_keys=data_ignored_keys or ['msg', 'request_id', 'syslog_priority'],  # 'stack_info', 'exc_info'
             datefmt=datefmt or self.default_time_format,
         )
-        super().__init__(fmt=fmt, datefmt=datefmt, defaults=defaults or {'request_id': '-', key: ''}, style=style)
+        super().__init__(fmt=fmt, datefmt=datefmt, defaults=defaults or {'request_id': '-', key: '', 'syslog_priority': ''}, style=style)
 
     def formatMessage(self, record):
         setattr(record, self.key, self.logfmter.format(copy.copy(record)))
