@@ -15,6 +15,7 @@ import univention.debug2 as ud2
 
 
 PROCESS = 25
+TRACE = 5
 
 
 def normalize_logformat(log):
@@ -134,12 +135,15 @@ def test_logging(tmp_path, debug_backend, strucutured):
     ud.debug(ud.LDAP, ud.PROCESS, 'ud.debug(ud.LDAP, ud.PROCESS, "msg")')
     ud.debug(ud.LDAP, ud.INFO, 'ud.debug(ud.LDAP, ud.INFO, "msg")')
     ud.debug(ud.LDAP, ud.ALL, 'ud.debug(ud.LDAP, ud.ALL, "msg")')
-    ud.debug(ud.LDAP, 5, 'ud.debug(ud.LDAP, 5, "msg")')
+    ud.debug(ud.LDAP, ud.TRACE, 'ud.debug(ud.LDAP, ud.TRACE, "msg")')
     ud.debug(ud.LDAP, 99, 'ud.debug(ud.LDAP, 99, "msg")')
     ud.debug(ud.LDAP, -1, 'ud.debug(ud.LDAP, -1, "msg")')  # not shown
     logger.setLevel(logging.NOTSET + 1)
     logger.log(9, 'logger.log(9, "msg")')
     logger.log(5, 'logger.log(5, "msg")')
+    logger.log(4, 'logger.log(4, "msg")')
+    logger.log(3, 'logger.log(3, "msg")')
+    logger.log(2, 'logger.log(2, "msg")')
     logger.log(1, 'logger.log(1, "msg")')
     logger.log(100, 'logger.log(100, "msg")')
     logger.info({'msg': 'logger.info({"msg": "msg"})'})
@@ -180,9 +184,8 @@ def test_logging(tmp_path, debug_backend, strucutured):
         (ud.PROCESS, PROCESS),
         (ud.INFO, logging.INFO),
         (ud.ALL, logging.DEBUG),
+        (ud.TRACE, TRACE),
         (100, logging.NOTSET),
-        (99, 1),
-        (89, 2),
     ],
 )
 def test_loglevel_mapping_exact(ud_level, log_level):
@@ -197,23 +200,23 @@ def test_loglevel_mapping_exact(ud_level, log_level):
     [
         (x, y)
         for z, y in [
-            (range(5, 20), 9),
-            ([20], 9),
-            (range(21, 30), 8),
-            ([30], 8),
-            (range(31, 40), 7),
-            ([40], 7),
-            (range(41, 50), 6),
-            ([50], 6),
-            (range(51, 60), 5),
-            ([60], 5),
-            (range(61, 70), 4),
-            ([70], 4),
-            (range(71, 80), 3),
-            ([80], 3),
-            (range(81, 90), 2),
-            ([90], 2),
-            (range(91, 100), 1),
+            (range(6, 20), 4),
+            ([20], 3),
+            (range(21, 30), 3),
+            ([30], 3),
+            (range(31, 40), 3),
+            ([40], 2),
+            (range(41, 50), 2),
+            ([50], 2),
+            (range(51, 60), 2),
+            ([60], 1),
+            (range(61, 70), 1),
+            ([70], 1),
+            (range(71, 80), 1),
+            ([80], 0),
+            (range(81, 90), 0),
+            ([90], 0),
+            (range(91, 100), 0),
             ([100], 0),
         ]
         for x in z
@@ -229,19 +232,15 @@ def test_loglevel_mapping_ud(ud_level, log_level):
     'log_level,ud_level',
     [
         (0, 100),
-        (1, 99),
-        (2, 89),
-        (3, 79),
-        (4, 69),
-        (5, 59),
-        (6, 49),
-        (7, 39),
-        (8, 29),
-        (9, 4),
+        (1, 79),
+        (2, 59),
+        (3, 39),
+        (4, 19),
     ]
     + [
         (x, y)
         for z, y in [
+            (range(TRACE, logging.DEBUG), ud.ALL + 1),
             (range(logging.DEBUG, logging.INFO), ud.ALL),
             (range(logging.INFO, PROCESS), ud.INFO),
             (range(PROCESS, logging.WARNING), ud.PROCESS),

@@ -12,9 +12,12 @@
 2025-01-01T00:00:00.000 +0000  PROCESS ud.debug(ud.LDAP, ud.PROCESS, "msg")
 2025-01-01T00:00:00.000 +0000     INFO ud.debug(ud.LDAP, ud.INFO, "msg")
 2025-01-01T00:00:00.000 +0000    DEBUG ud.debug(ud.LDAP, ud.ALL, "msg")
-2025-01-01T00:00:00.000 +0000    DEBUG [         -] logger.log(9, "msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000 +0000    TRACE [         -] logger.log(9, "msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
 2025-01-01T00:00:00.000 +0000    TRACE [         -] logger.log(5, "msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
-2025-01-01T00:00:00.000 +0000    TRACE [         -] logger.log(1, "msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000 +0000       19 [         -] logger.log(4, "msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000 +0000       39 [         -] logger.log(3, "msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000 +0000       59 [         -] logger.log(2, "msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
+2025-01-01T00:00:00.000 +0000       79 [         -] logger.log(1, "msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
 2025-01-01T00:00:00.000 +0000    ERROR [         -] logger.log(100, "msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
 2025-01-01T00:00:00.000 +0000     INFO [         -] logger.info({"msg": "msg"})	| pid=12345 logname=LDAP func=test_module.test_function:1
 2025-01-01T00:00:00.000 +0000     INFO [         -] logger.info({"msg": "msg %s"}, "addition")	| pid=12345 logname=LDAP func=test_module.test_function:1
