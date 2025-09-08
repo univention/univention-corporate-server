@@ -20,7 +20,7 @@ PROCESS = 25
 def normalize_logformat(log):
     replacements = {
         # structured date
-        re.compile(r'^20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3} \+\d{4}', re.M): '2025-01-01T00:00:00.000 +0000',
+        re.compile(r'20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3} \+\d{4}', re.M): '2025-01-01T00:00:00.000 +0000',
         re.compile(r'logging.process:\d+'): 'logging.process:1',
         re.compile(f'pid={os.getpid()}'): 'pid=12345',
         re.compile(r'Traceback \(most recent call last\):(.|\n)*?NameError: name .+ is not defined'): '<TRACEBACK>',
@@ -60,6 +60,7 @@ def test_log_structured_with_time(tmp_path):
     handler = logging.FileHandler(str(tmplog))
     logger.addHandler(handler)
     handler.setFormatter(ul.StructuredFormatter(with_date_prefix=True))
+    handler.addFilter(ul.SyslogPrefix())
     logger.setLevel(logging.TRACE)
 
     logger = ul.Structured(logger)
@@ -67,22 +68,22 @@ def test_log_structured_with_time(tmp_path):
     logger.error('message', foo='bar')
     logger.exception('message', foo='bar')  # noqa: LOG004
     logger.warning('message', foo='bar')
-    logger.info('message', foo='bar')
     logger.process('message', foo='bar')
+    logger.info('message', foo='bar')
     logger.debug('message', foo='bar')
     logger.trace('message', foo='bar')
     logger.getChild('blah').error('message', foo='bar')
     log = normalize_logformat(tmplog.read_text())
     expected = '''
-2025-01-01T00:00:00.000 +0000 CRITICAL [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
-2025-01-01T00:00:00.000 +0000    ERROR [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
-2025-01-01T00:00:00.000 +0000    ERROR [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
-2025-01-01T00:00:00.000 +0000  WARNING [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
-2025-01-01T00:00:00.000 +0000     INFO [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
-2025-01-01T00:00:00.000 +0000  PROCESS [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
-2025-01-01T00:00:00.000 +0000    DEBUG [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
-2025-01-01T00:00:00.000 +0000    TRACE [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
-2025-01-01T00:00:00.000 +0000    ERROR [         -] message\t| pid=12345 logname=bar.blah func=test_module.test_function:1 foo=bar
+<2>2025-01-01T00:00:00.000 +0000 CRITICAL [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
+<3>2025-01-01T00:00:00.000 +0000    ERROR [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
+<3>2025-01-01T00:00:00.000 +0000    ERROR [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
+<4>2025-01-01T00:00:00.000 +0000  WARNING [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
+<5>2025-01-01T00:00:00.000 +0000  PROCESS [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
+<6>2025-01-01T00:00:00.000 +0000     INFO [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
+<7>2025-01-01T00:00:00.000 +0000    DEBUG [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
+<7>2025-01-01T00:00:00.000 +0000    TRACE [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
+<3>2025-01-01T00:00:00.000 +0000    ERROR [         -] message\t| pid=12345 logname=bar.blah func=test_module.test_function:1 foo=bar
 '''.strip()
     assert log == expected
 
