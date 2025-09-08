@@ -85,7 +85,7 @@ property_descriptions = dict({
         long_description=_('List of UDM module names whose objects should be recycled when deleted'),
         syntax=udm_syntax.string,
         multivalue=True,
-        default=['users/user', 'groups/group', 'computers/*'],
+        default=['users/user', 'groups/group'],
     ),
     'properties': univention.admin.property(
         short_description=_('Properties to store'),
