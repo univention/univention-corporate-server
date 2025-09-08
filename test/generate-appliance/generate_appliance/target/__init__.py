@@ -12,7 +12,7 @@ LICENSE = """The complete source code of Univention Corporate Server is provided
 under GNU Affero General Public License (AGPL). This image contains a license key
 of the UCS Core Edition. More details can be found here:
 \x20
-https://www.univention.com/downloads/license-models/licensing-conditions-ucs-core-edition/"""
+https://www.univention.com/products/download/terms-of-use/"""
 
 ANNOTATION = """Univention Corporate Server (UCS) is a complete solution to provide standard
 IT services (like domain management or file services for Microsoft Windows
