@@ -21,7 +21,7 @@ TRACE = 5
 def normalize_logformat(log):
     replacements = {
         # structured date
-        re.compile(r'20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3} \+\d{4}', re.M): '2025-01-01T00:00:00.000 +0000',
+        re.compile(r'20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3} [+-]\d{4}', re.M): '2025-01-01T00:00:00.000 +0000',
         re.compile(r'logging.process:\d+'): 'logging.process:1',
         re.compile(f'pid={os.getpid()}'): 'pid=12345',
         re.compile(r'Traceback \(most recent call last\):(.|\n)*?NameError: name .+ is not defined'): '<TRACEBACK>',
