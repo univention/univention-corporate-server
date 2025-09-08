@@ -207,6 +207,64 @@ def test_loglevel_mapping_exact(ud_level, log_level):
 @pytest.mark.parametrize(
     'ud_level,log_level',
     [
+        (ud.ERROR, logging.ERROR),
+        (ud.WARN, logging.WARNING),
+        (ud.PROCESS, PROCESS),
+        (ud.INFO, logging.INFO),
+        (ud.ALL, logging.DEBUG),
+        (ud.TRACE, TRACE),
+    ],
+)
+@pytest.mark.parametrize('use_ud_level', [True, False])
+def test_logger_set_level_basic_config(tmp_path, ud_level, log_level, use_ud_level):
+    from univention.logging import basicConfig, getLogger
+    ud.exit()  # ensures ud is closed before test starts
+    tmplog = tmp_path / "logfile"
+    tmplog.touch()
+    logger = getLogger('SSL')
+    logger.setLevel(logging.CRITICAL)
+    levels = [logging.CRITICAL, logging.ERROR, logging.WARNING, logging.PROCESS, logging.INFO, logging.DEBUG, logging.TRACE]
+    basicConfig(
+        filename=str(tmplog),
+        level=log_level if not use_ud_level else None,
+        univention_debug_level=ud_level if use_ud_level else None,
+    )
+    assert logger.level == log_level
+    assert logger.univention_debug_handler.get_ud_level() == ud_level
+    should_log = []
+    should_not_log = []
+    for level in levels:
+        message = f"This logs in level {level if level >= 10 else 'TRACE'}"
+        if level >= log_level:
+            should_log.append(message)
+        else:
+            should_not_log.append(message)
+        logger.log(level, message)
+    logged_text = tmplog.read_text()
+    assert all(msg in logged_text for msg in should_log), f"A message that should have been logged wasn't.\n{should_log}\n\n{logged_text}"
+    assert not any(msg in logged_text for msg in should_not_log), f"A message that shouldn't have been logged was.\n{should_not_log}\n\n{logged_text}"
+    logger.univention_debug_handler.close()
+
+
+def test_logger_delayed_auto_init(tmp_path):
+    tmplog = tmp_path / 'logfile'
+    tmplog.touch()
+    from univention.logging import basicConfig, getLogger
+    basicConfig(filename=str(tmplog), level=logging.INFO, delay_init=True)
+    logger = getLogger('ADMIN')
+    assert logger.univention_debug_handler.delay_init
+    assert tmplog.read_text() == ""
+    logger.error('Unimportant Message')
+    assert not logger.univention_debug_handler.delay_init
+    text = [elem for elem in tmplog.read_text().split('\n') if elem]
+    assert len(text) == 2
+    assert "DEBUG_INIT" in text[0] and "Unimportant Message" in text[1]
+    logger.univention_debug_handler.close()
+
+
+@pytest.mark.parametrize(
+    'ud_level,log_level',
+    [
         (x, y)
         for z, y in [
             (range(6, 20), 4),
