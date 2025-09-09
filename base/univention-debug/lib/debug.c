@@ -79,7 +79,7 @@ static const char *const univention_debug_level_structured_text[] = {
 	if (!univention_debug_structured) { \
 		fprintf(univention_debug_file, "%02d.%02d.%02d %02d:%02d:%02d.%03d  " fmt, tm.tm_mday, tm.tm_mon + 1, tm.tm_year - 100, tm.tm_hour,tm.tm_min, tm.tm_sec, (int)(tv.tv_usec / 1000), ##__VA_ARGS__); \
 	} else { \
-		fprintf(univention_debug_file, "%04d-%02d-%02dT%02d:%02d:%02d.%03d %c%02ld%02ld " fmt, \
+		fprintf(univention_debug_file, "%04d-%02d-%02dT%02d:%02d:%02d.%06d%c%02ld:%02ld " fmt, \
 			tm.tm_year + 1900,\
 			tm.tm_mon + 1,\
 			tm.tm_mday,\
