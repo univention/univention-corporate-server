@@ -1,6 +1,11 @@
-univention-ipcalc (13.3.0) UNRELEASED; urgency=medium
+univention-ipcalc (13.3.0) unstable; urgency=medium
 
+  [ Ivan Barbecho Delgado ]
   * Bug #58568: UCS 5.2-3 version bump
+
+  [ Florian Best ]
+  * Bug #58644: remove usr/lib/python3/dist-packages/.coverage from
+    package
 
  -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 02 Sep 2025 16:18:25 +0200
 

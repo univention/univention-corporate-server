@@ -10,6 +10,7 @@ override_dh_python3:
 	dh_python3
 	mv debian/python3-univention-ipcalc/usr/bin debian/univention-ipcalc/usr/
 	rm debian/python3-univention-ipcalc/usr/lib/python3/dist-packages/univention/__init__.py
+	find . -name ".coverage" -delete
 
 %:
 	dh $@ --with python3 --buildsystem=pybuild
