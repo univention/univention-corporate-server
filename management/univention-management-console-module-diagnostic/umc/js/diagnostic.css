@@ -24,7 +24,7 @@
 .umc-diagnostic-buttonrow {
 	margin-top: calc(2 * var(--layout-spacing-unit));
 }
-.ucsButton {
+.umc-diagnostic-buttonrow .ucsButton {
 	margin: 5px;
 }
 .umc-diagnostic .diagnostic-critical span.dijitTitlePaneTextNode::before {
