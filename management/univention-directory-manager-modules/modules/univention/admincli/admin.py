@@ -534,16 +534,18 @@ def _doit(
     elif not position_dn:
         position_dn = module.object.ldap_base
 
+    # initialise modules (standard LDAP base)
+    ldap_base_position = univention.admin.uldap.position(configRegistry['ldap/base'])
+    if module_name == 'settings/usertemplate':
+        univention.admin.modules.init(lo, ldap_base_position, univention.admin.modules._get('users/user'))
+    univention.admin.modules.init(lo, ldap_base_position, module)
+
     try:
-        position = univention.admin.uldap.position(module.object.ldap_base)
+        base = 'cn=internal' if position_dn.endswith(',cn=internal') else module.object.ldap_base
+        position = univention.admin.uldap.position(base)
         position.setDn(position_dn)
     except univention.admin.uexceptions.noObject:
         raise OperationFailed('E: Invalid position')
-
-    # initialise modules
-    if module_name == 'settings/usertemplate':
-        univention.admin.modules.init(lo, position, univention.admin.modules._get('users/user'))
-    univention.admin.modules.init(lo, position, module)
 
     information = module_information(module)
 
