@@ -12,8 +12,8 @@ A python-logging interface compatible wrapper for logging with :py:mod:`univenti
 """
 
 import copy
+import datetime
 import logging
-import time
 import traceback
 
 from logfmter import Logfmter
@@ -307,15 +307,12 @@ class StructuredFormatter(logging.Formatter):
     A formatter combining prefixed content and structured data from logfmt.
 
     Producing log lines like:
-    2025-01-01T00:00:00.000 +0000 INFO    [         -] module.function:1 the message\t| pid=12345 logname=ADMIN
+    2025-01-01T00:00:00.000000+00:00 INFO    [         -] module.function:1 the message\t| pid=12345 logname=ADMIN
     """
-
-    default_time_format = '%Y-%m-%dT%H:%M:%S.{msecs:03.0f} %z'
 
     def __init__(
         self,
         fmt=None,
-        datefmt=None,
         *,
         defaults=None,
         data_fields=None,
@@ -333,14 +330,15 @@ class StructuredFormatter(logging.Formatter):
         style = '{'
         self.key = key
         self.add_full_tracebacks = add_full_tracebacks
+        _datefmt = '%Y-%m-%dT%H:%M:%S.%f+%z'  # broken, see self.formatTime
         self.logfmter = Logfmter(
             keys=data_fields or ['pid', 'umcmodule', 'logname', 'func'],
             mapping=data_mapping or {'at': 'levelname', 'pid': 'process', 'time': 'asctime', 'logname': 'name'},
             defaults=data_defaults or {'func': '{module}.{funcName}:{lineno}'},
             ignore_keys=data_ignored_keys or ['msg', 'request_id', 'syslog_priority'],  # 'stack_info', 'exc_info'
-            datefmt=datefmt or self.default_time_format,
+            datefmt=_datefmt,
         )
-        super().__init__(fmt=fmt, datefmt=datefmt, defaults=defaults or {'request_id': '-', key: '', 'syslog_priority': ''}, style=style)
+        super().__init__(fmt=fmt, datefmt=_datefmt, defaults=defaults or {'request_id': '-', key: '', 'syslog_priority': ''}, style=style)
 
     def formatMessage(self, record):
         setattr(record, self.key, self.logfmter.format(copy.copy(record)))
@@ -372,9 +370,9 @@ class StructuredFormatter(logging.Formatter):
         return s
 
     def formatTime(self, record, datefmt=None):
-        ct = self.converter(record.created)
-        datefmt = datefmt or self.default_time_format
-        return time.strftime(datefmt, ct).format(msecs=record.msecs)
+        dt = datetime.datetime.fromtimestamp(record.created, tz=datetime.UTC)
+        local_dt = dt.astimezone()
+        return local_dt.isoformat(timespec="microseconds")
 
 
 class Logger(logging.Logger):
