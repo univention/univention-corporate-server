@@ -6,7 +6,8 @@
 import json
 from logging import getLogger
 
-from ldap import LDAPError, ldap, modlist
+import ldap
+from ldap import LDAPError, modlist
 from ldap.controls.simple import RelaxRulesControl
 
 import univention.admin.filter
