@@ -488,6 +488,9 @@ class Structured:
     def log(_self, /, _level, _msg, *args, exc_info=None, stack_info=False, stacklevel=3, **extra):
         return _self.__log.log(_level, _msg, *args, exc_info=exc_info, extra=extra, stack_info=stack_info, stacklevel=stacklevel)
 
+    def __getattr__(self, name):
+        return getattr(self.__log, name)
+
 
 class LevelDependentFormatter(logging.Formatter):
     """
