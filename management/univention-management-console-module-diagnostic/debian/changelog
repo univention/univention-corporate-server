@@ -1,3 +1,10 @@
+univention-management-console-module-diagnostic (6.0.14) unstable; urgency=medium
+
+  * Bug #58554: Fix the UMC module's CSS to be specific and to not affect the
+    appearance of the whole of UMC
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 09 Sep 2025 19:34:40 +0200
+
 univention-management-console-module-diagnostic (6.0.13) unstable; urgency=medium
 
   * Bug #58538: Adjust 04_saml_certificate_check to fix for CVE-2025-23048.
