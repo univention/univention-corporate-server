@@ -120,6 +120,6 @@ RESOURCES = Structured(logging.getLogger('RESOURCES'))
 PROTOCOL = Structured(logging.getLogger('PROTOCOL'))
 
 fallbackLoggingHandler = logging.StreamHandler()
-fallbackLoggingHandler.setFormatter(logging.Formatter('%(asctime)s.%(msecs)03d ( %(levelname)-7s ) : %(message)s', '%d.%m.%y %H:%M:%S'))
+fallbackLoggingHandler.setFormatter(univention.logging.StructuredFormatter(with_date_prefix=True))
 CORE.root.setLevel(logging.DEBUG)
 CORE.root.addHandler(fallbackLoggingHandler)
