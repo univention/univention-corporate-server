@@ -20,6 +20,7 @@ import tornado
 
 import univention.debug as ud
 import univention.logging
+from univention.logging import Structured
 from univention.management.console.config import ucr
 
 
@@ -106,17 +107,17 @@ def log_reopen():
     log_set_level(_debug_loglevel)
 
 
-CORE = logging.getLogger('MAIN')
-NETWORK = logging.getLogger('NETWORK')
-CRYPT = logging.getLogger('SSL')
-UDM = logging.getLogger('ADMIN')
-MODULE = logging.getLogger('MODULE')
-AUTH = logging.getLogger('AUTH')
-PARSER = logging.getLogger('PARSER')
-LOCALE = logging.getLogger('LOCALE')
-ACL = logging.getLogger('ACL')
-RESOURCES = logging.getLogger('RESOURCES')
-PROTOCOL = logging.getLogger('PROTOCOL')
+CORE = Structured(logging.getLogger('MAIN'))
+NETWORK = Structured(logging.getLogger('NETWORK'))
+CRYPT = Structured(logging.getLogger('SSL'))
+UDM = Structured(logging.getLogger('ADMIN'))
+MODULE = Structured(logging.getLogger('MODULE'))
+AUTH = Structured(logging.getLogger('AUTH'))
+PARSER = Structured(logging.getLogger('PARSER'))
+LOCALE = Structured(logging.getLogger('LOCALE'))
+ACL = Structured(logging.getLogger('ACL'))
+RESOURCES = Structured(logging.getLogger('RESOURCES'))
+PROTOCOL = Structured(logging.getLogger('PROTOCOL'))
 
 fallbackLoggingHandler = logging.StreamHandler()
 fallbackLoggingHandler.setFormatter(logging.Formatter('%(asctime)s.%(msecs)03d ( %(levelname)-7s ) : %(message)s', '%d.%m.%y %H:%M:%S'))
