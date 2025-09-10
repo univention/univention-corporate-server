@@ -183,7 +183,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         filename = f'{self.screenshot_path}/{name}_{self.language}_browserlog{timestamp}.txt'
         logger.info('Saving browser log %r', filename)
         if os.environ.get('JENKINS_WS'):
-            logger.info('Browser Log URL: {}ws/test/selenium/selenium/{}'.format(os.environ['JENKINS_WS'], os.path.basename(filename)))
+            logger.info('Browser Log URL: %sws/test/selenium/selenium/%s', os.environ['JENKINS_WS'], os.path.basename(filename))
         with open(filename, 'w') as f:
             f.writelines(f'{json.dumps(entry)}\n' for entry in self.driver.get_log('browser'))
 

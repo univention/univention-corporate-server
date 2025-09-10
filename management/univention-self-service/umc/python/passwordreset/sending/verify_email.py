@@ -87,6 +87,6 @@ class VerifyEmail(UniventionSelfServiceTokenEmitter):
         smtp = smtplib.SMTP(self.server)
         smtp.sendmail(msg["From"], self.data["address"], msg.as_string())
         smtp.quit()
-        self.log("Sent mail with token to address {}.".format(self.data["address"]))
+        self.log("Sent mail with token to address %s.", self.data["address"])
 
         return True

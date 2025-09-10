@@ -209,7 +209,7 @@ def call_process2(cmd: Sequence[str], logger: Logger | None = None, env: Mapping
     str_cmd = [str(x) for x in cmd]
     if cwd:
         logger.debug('Running in %s:' % cwd)
-    logger.info('Running command: {}'.format(' '.join(str_cmd)))
+    logger.info('Running command: %s', ' '.join(str_cmd))
     out = ""
     ret = 0
     try:
@@ -226,7 +226,7 @@ def call_process2(cmd: Sequence[str], logger: Logger | None = None, env: Mapping
         out = str(err)
         ret = 1
     if ret:
-        logger.error('Command {} failed with: {} ({})'.format(' '.join(str_cmd), out.strip(), ret))
+        logger.error('Command %s failed with: %s (%s)', ' '.join(str_cmd), out.strip(), ret)
     return ret, out
 
 
