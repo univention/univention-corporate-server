@@ -99,7 +99,7 @@ class Watched_File:
             # only depends on the mtime field.
             if current_size != self._last_size:
                 current_stamp = int(time())
-                MODULE.info("Size of '%s': %s -> %s" % (self._file, self._last_size, current_size))
+                MODULE.info("Size of '%s': %s -> %s", self._file, self._last_size, current_size)
                 self._last_size = current_size
 
         if current_stamp == self._last_stamp:
@@ -116,7 +116,7 @@ class Watched_File:
                         self._last_md5 = hash_
                         self._last_returned_stamp = current_stamp
                     else:
-                        MODULE.info("Hash of '%s' unchanged" % self._file)
+                        MODULE.info("Hash of '%s' unchanged", self._file)
         else:
             self._unchanged_count = 0
             self._last_stamp = current_stamp
@@ -150,7 +150,7 @@ class Watched_Files:
 class Instance(Base):
 
     def init(self) -> None:
-        MODULE.info("Initializing 'updater' module (PID = %d)" % (getpid(),))
+        MODULE.info("Initializing 'updater' module (PID = %d)", getpid())
         self._current_job = ''
         self._logfile_start_line = 0
         self._serial_file = Watched_File(COMPONENTS_SERIAL_FILE)
@@ -158,7 +158,7 @@ class Instance(Base):
             self.uu = UniventionUpdater(False)
         except Exception as exc:  # FIXME: let it raise
             self.uu = None
-            MODULE.error("init() ERROR: %s" % (exc,))
+            MODULE.error("init() ERROR: %s", exc)
 
     @simple_response
     def query_maintenance_information(self) -> dict[str, Any]:
@@ -252,12 +252,12 @@ class Instance(Base):
         result = {}
         hookmanager = HookManager(HOOK_DIRECTORY)  # , raise_exceptions=False
         hooks = request.options['hooks']
-        MODULE.info('requested hooks: %s' % (hooks,))
+        MODULE.info('requested hooks: %s', hooks)
         for hookname in hooks:
-            MODULE.info('calling hook %s' % hookname)
+            MODULE.info('calling hook %s', hookname)
             result[hookname] = hookmanager.call_hook(hookname)
 
-        MODULE.info('result: %r' % (result,))
+        MODULE.info('result: %r', result)
         return result
 
     @simple_response
@@ -490,7 +490,7 @@ class Instance(Base):
                 for 'release' .... the target release number,
                 for all other subjects: detail has no meaning.
         """
-        MODULE.info("Starting function %r" % (job,))
+        MODULE.info("Starting function %r", job)
         self._current_job = job
         spec = INSTALLERS[job]
 
@@ -505,7 +505,7 @@ class Instance(Base):
         command = spec['command']
         if '%' in command:
             command = command % (quote(detail).translate({0: None, 10: None, 13: None}),)
-        MODULE.info("Creating job: %r" % (command,))
+        MODULE.info("Creating job: %r", command)
         command = '''
 %s
 %s < /dev/null
