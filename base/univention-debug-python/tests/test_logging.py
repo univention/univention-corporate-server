@@ -74,6 +74,7 @@ def test_log_structured_with_time(tmp_path):
     logger.debug('message', foo='bar')
     logger.trace('message', foo='bar')
     logger.getChild('blah').error('message', foo='bar')
+    assert logger.root
     log = normalize_logformat(tmplog.read_text())
     expected = '''
 <2>2025-01-01T00:00:00.000000+00:00 CRITICAL [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
