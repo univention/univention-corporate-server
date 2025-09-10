@@ -1263,7 +1263,7 @@ def create_oidc_client(opt):
             "oauth2.device.authorization.grant.enabled": "false",
             "backchannel.logout.revoke.offline.tokens": opt.backchannel_logout_revoke_session,
             "saml.server.signature.keyinfo.ext": "false",
-            "use.refresh.tokens": opt.use_refresh_tokens,
+            "use.refresh.tokens": not opt.disable_refresh_tokens,
             "oidc.ciba.grant.enabled": "false",
             "backchannel.logout.session.required": opt.backchannel_logout_session_required,
             "client_credentials.use_refresh_token": "false",
@@ -1777,7 +1777,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     create_oidc_parser.add_argument("--backchannel-logout-session-required", action='store_true', default=False, help="Include the sid in the backchannel logout request. If this is off then no sid will be included in the request.")
     create_oidc_parser.add_argument("--token-exchange-enabled", help="Enable token exchange for this client.", action='store_true', default=False)
     create_oidc_parser.add_argument("--token-exchange-refresh-token-type", help="Controls if the Standard Token Exchange V2 allows to request a refresh token ", default="SAME_SESSION")
-    create_oidc_parser.add_argument("--use-refresh-tokens", action='store_true', default=False, help="If this is on, a refresh_token will be created and added to the token response. If this is off then no refresh_token will be generated.")
+    create_oidc_parser.add_argument("--disable-refresh-tokens", action='store_true', default=False, help="If this is on, a refresh_token will not be created and added to the token response. If this is off then a refresh_token will be generated.")
     create_oidc_parser.add_argument("--post-logout-redirect-uris", action="append", default=[], help="URL pattern for valid redirections after logout.")
     create_oidc_parser.add_argument("--always-display-in-console", action="store_true", default=False, help="Always list this client in the Account UI, even if the user does not have an active session.")
     create_oidc_parser.add_argument("--policy-url", default="", help="URL that the Relying Party Client provides to the End-User to read about the how the profile data will be used.")
