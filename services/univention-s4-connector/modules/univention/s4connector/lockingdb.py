@@ -10,8 +10,10 @@
 import sqlite3
 from logging import getLogger
 
+from univention.logging import Structured
 
-log = getLogger("LDAP").getChild(__name__)
+
+log = Structured(getLogger("LDAP").getChild(__name__))
 
 
 class LockingDB:
@@ -114,21 +116,21 @@ class LockingDB:
                 cur = self._dbcon.cursor()
                 for sql_command in sql_commands:
                     if isinstance(sql_command, tuple):
-                        log.trace(f"LockingDB: Execute SQL command: {sql_command[0]!r}, {sql_command[1]!r}")
+                        log.trace("LockingDB: Execute SQL command: %r, %r", sql_command[0], sql_command[1])
                         cur.execute(sql_command[0], sql_command[1])
                     else:
-                        log.trace(f"LockingDB: Execute SQL command: {sql_command!r}")
+                        log.trace("LockingDB: Execute SQL command: %r", sql_command)
                         cur.execute(sql_command)
                 self._dbcon.commit()
                 if fetch_result:
                     rows = cur.fetchall()
                 cur.close()
                 if fetch_result:
-                    log.trace(f"LockingDB: Return SQL result: {rows!r}")
+                    log.trace("LockingDB: Return SQL result: %r", rows)
                     return rows
                 return None
             except sqlite3.Error as exp:
-                log.warning(f"LockingDB: sqlite: {exp!r}. SQL command was: {sql_commands!r}")
+                log.warning("LockingDB: sqlite: %r. SQL command was: %r", exp, sql_commands)
                 if self._dbcon:
                     self._dbcon.close()
                 self._dbcon = sqlite3.connect(self.filename)

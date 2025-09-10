@@ -29,11 +29,12 @@ import univention.admin.handlers.dns.srv_record
 import univention.admin.uldap
 import univention.s4connector.s4
 from univention.admin.mapping import unmapUNIX_TimeInterval
+from univention.logging import Structured
 from univention.s4connector.s4 import format_escaped, str2dn
 from univention.s4connector.s4.dc import _unixTimeInverval2seconds
 
 
-log = getLogger("LDAP").getChild(__name__)
+log = Structured(getLogger("LDAP").getChild(__name__))
 
 
 class PTRRecord(dnsp.DnssrvRpcRecord):
@@ -324,7 +325,7 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
                 except (IndexError, TypeError):
                     ucsdn = None
 
-                log.trace(f"dns_dn_mapping: Found ucsdn: {ucsdn}")
+                log.trace("dns_dn_mapping: Found ucsdn: %s", ucsdn)
                 if ucsdn and (dn_key == 'olddn' or (dn_key == 'dn' and 'olddn' not in obj)):
                     # Cases: ("delete") or ("add" but exists already)
                     newdn = ucsdn
@@ -351,9 +352,9 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
                         # Case: "moved" (?)
                         log.debug("dns_dn_mapping: move case newdn=%s", newdn)
 
-            log.debug(f"dns_dn_mapping: mapping for key {dn_key!r}:")
-            log.debug(f"dns_dn_mapping: source DN: {dn!r}")
-            log.debug(f"dns_dn_mapping: mapped DN: {newdn!r}")
+            log.debug("dns_dn_mapping: mapping for key %r:", dn_key)
+            log.debug("dns_dn_mapping: source DN: %r", dn)
+            log.debug("dns_dn_mapping: mapped DN: %r", newdn)
 
             obj[dn_key] = newdn
 
@@ -409,7 +410,7 @@ def __split_ol_dNSZone_dn(dn, objectclasses):
     else:
         zoneName = None
         relativeDomainName = None
-        log.warning(f'Failed to get zone name for object {dn!r}')
+        log.warning("Failed to get zone name for object %r", dn)
     return (zoneName, relativeDomainName)
 
 
@@ -530,7 +531,7 @@ def __pack_mxRecord(object, dnsRecords):
             name = mx[1]
             mx_record = MXRecord(name, int(priority))
             dnsRecords.append(ndr_pack(mx_record))
-            log.debug(f'__pack_mxRecord: {ndr_pack(mx_record)}')
+            log.debug('__pack_mxRecord: %s', ndr_pack(mx_record))
 
 
 def __unpack_mxRecord(object):
@@ -1051,7 +1052,7 @@ def ucs_srv_record_create(s4connector, object):
 
     # ucr set connector/s4/mapping/dns/srv_record/_ldap._tcp.test.example/location='100 0 389 foobar.test.example. 100 0 389 foobar2.test.example.'
     ucr_locations = s4connector.configRegistry.get(f'connector/s4/mapping/dns/srv_record/{relativeDomainName.lower()}.{zoneName.lower()}/location')
-    log.debug(f'ucs_srv_record_create: ucr_locations for connector/s4/mapping/dns/srv_record/{relativeDomainName.lower()}.{zoneName.lower()}/location: {ucr_locations}')
+    log.debug('ucs_srv_record_create: ucr_locations for connector/s4/mapping/dns/srv_record/%s.%s/location: %s', relativeDomainName.lower(), zoneName.lower(), ucr_locations)
 
     if ucr_locations and ucr_locations.lower() == 'ignore':
         return
@@ -1065,7 +1066,7 @@ def ucs_srv_record_create(s4connector, object):
         if ucr_locations:
             log.debug('ucs_srv_record_create: do not write SRV record back from S4 to UCS because location of SRV record have been overwritten by UCR')
         else:
-            log.debug('ucs_srv_record_create: location: {}'.format(newRecord['location']))
+            log.debug('ucs_srv_record_create: location: %s', newRecord['location'])
             log.debug('ucs_srv_record_create: srv     : %s', srv)
             srv.sort()
             newRecord['location'].sort()
@@ -1124,7 +1125,7 @@ def s4_srv_record_create(s4connector, object):
     # ucr set connector/s4/mapping/dns/srv_record/_ldap._tcp.test.example/location='100 0 389 foobar.test.example.'
     # ucr set connector/s4/mapping/dns/srv_record/_ldap._tcp.test.example/location='100 0 389 foobar.test.example. 100 0 389 foobar2.test.example.'
     ucr_locations = s4connector.configRegistry.get(f'connector/s4/mapping/dns/srv_record/{relativeDomainName.lower()}.{zoneName.lower()}/location')
-    log.debug(f's4_srv_record_create: ucr_locations for connector/s4/mapping/dns/srv_record/{relativeDomainName.lower()}.{zoneName.lower()}/location: {ucr_locations}')
+    log.debug('s4_srv_record_create: ucr_locations for connector/s4/mapping/dns/srv_record/%s.%s/location: %s', relativeDomainName.lower(), zoneName.lower(), ucr_locations)
     if ucr_locations:
         if ucr_locations.lower() == 'ignore':
             return
@@ -1144,7 +1145,7 @@ def s4_srv_record_create(s4connector, object):
             elif not target:
                 target = __remove_dot(v.encode('UTF-8')).decode('UTF-8')
             if priority is not None and weight is not None and port is not None and target:
-                log.debug('priority=%d weight=%d port=%d target=%s' % (priority, weight, port, target))
+                log.debug('priority=%d weight=%d port=%d target=%s', priority, weight, port, target)
                 s = SRVRecord(target, port, priority, weight)
                 dnsRecords.append(ndr_pack(s))
                 priority = None
@@ -1490,10 +1491,10 @@ def ucs2con(s4connector, key, object):
 
     if not dns_type:
         # unknown object -> ignore
-        log.debug('dns ucs2con: Ignore unknown dns object: {}'.format(object['dn']))
+        log.debug('dns ucs2con: Ignore unknown dns object: %s', object['dn'])
         return True
 
-    log.debug('dns ucs2con: Object ({}) is of type {}'.format(object['dn'], dns_type))
+    log.debug('dns ucs2con: Object (%s) is of type %s', object['dn'], dns_type)
 
     # We can only get the mapped zone_name from the DN here (see comment above):
     # (In the case of _msdcs the zoneName would be wrong here otherwise)
@@ -1556,7 +1557,7 @@ def ucs2con(s4connector, key, object):
 
 def con2ucs(s4connector, key, object):
 
-    log.debug('dns con2ucs: Object ({}): {}'.format(object['dn'], object))
+    log.debug('dns con2ucs: Object (%s): %s', object['dn'], object)
 
     # At this point dn_mapping_function already has converted object['dn'] from con to ucs
     # But since there is no attribute mapping defined for DNS, the object attributes still
@@ -1565,10 +1566,10 @@ def con2ucs(s4connector, key, object):
 
     if not dns_type:
         # unknown object -> ignore
-        log.debug('dns con2ucs: Ignore unknown dns object: {}'.format(object['dn']))
+        log.debug('dns con2ucs: Ignore unknown dns object: %s', object['dn'])
         return True
 
-    log.debug('dns con2ucs: Object ({}) is of type {}'.format(object['dn'], dns_type))
+    log.debug('dns con2ucs: Object (%s) is of type %s', object['dn'], dns_type)
 
     # We can only get the mapped zone_name from the DN here (see comment above):
 

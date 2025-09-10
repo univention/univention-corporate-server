@@ -15,10 +15,11 @@ from ldap.controls import LDAPControl
 from samba.dcerpc import security
 from samba.ndr import ndr_pack
 
+from univention.logging import Structured
 from univention.s4connector.s4 import decode_sid
 
 
-log = getLogger("LDAP").getChild(__name__)
+log = Structured(getLogger("LDAP").getChild(__name__))
 
 
 def sid_to_s4_mapping(s4connector, key, object):
@@ -80,7 +81,7 @@ def sid_to_s4(s4connector, key, object):
         # http://serverfault.com/questions/53717/how-can-i-change-the-sid-of-a-user-account-in-the-active-directory
         # http://technet.microsoft.com/en-us/library/cc961998.aspx
 
-        log.debug(f'sid_to_s4: changing objectSid from {decoded_s4_sid!r} to {sambaSID!r}')
+        log.debug("sid_to_s4: changing objectSid from %r to %r", decoded_s4_sid, sambaSID)
         new_objectSid_ndr = ndr_pack(security.dom_sid(sambaSID))
         modlist.append((ldap.MOD_REPLACE, 'objectSid', new_objectSid_ndr))
 
@@ -91,8 +92,8 @@ def sid_to_s4(s4connector, key, object):
 
 
 def sid_to_ucs(s4connector, key, s4_object):
-    log.debug(f"sid_to_ucs S4 object: {s4_object!r}")
-    log.debug(f"sid_to_ucs S4 key: {key!r}")
+    log.debug("sid_to_ucs S4 object: %r", s4_object)
+    log.debug("sid_to_ucs S4 key: %r", key)
 
     sidAttribute = 'sambaSID'
     if s4connector.configRegistry.is_false('connector/s4/mapping/sid', False):
@@ -114,7 +115,7 @@ def sid_to_ucs(s4connector, key, s4_object):
     objectSid = s4_object['attributes'].get('objectSid', [None])[0]
     if objectSid:
         objectSid = decode_sid(objectSid)
-        log.debug(f'sid_to_ucs: objectSid found: {objectSid!r}')
+        log.debug("sid_to_ucs: objectSid found: %r", objectSid)
     else:
         log.debug('sid_to_ucs: objectSid not found in attributes!')
         return
@@ -135,5 +136,5 @@ def sid_to_ucs(s4connector, key, s4_object):
         if b'group' in s4_ocs and b'sambaGroupMapping' not in ucs_ocs:
             ml.append(('objectClass', ucs_ocs, [*ucs_ocs, b"sambaGroupMapping"]))
     if ml:
-        log.debug(f'sid_to_ucs: modlist = {ml!r}')
+        log.debug("sid_to_ucs: modlist = %r", ml)
         s4connector.lo.lo.modify(ucs_dn, ml)

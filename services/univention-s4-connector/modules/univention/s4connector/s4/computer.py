@@ -9,9 +9,10 @@
 from logging import getLogger
 
 import univention.s4connector.s4
+from univention.logging import Structured
 
 
-log = getLogger("LDAP").getChild(__name__)
+log = Structured(getLogger("LDAP").getChild(__name__))
 
 
 def _shouldBeMacClient(attributes):
@@ -50,7 +51,7 @@ def _convertWinToMac(s4connector, sync_object):
 
 
 def checkAndConvertToMacOSX(s4connector, key, sync_object):
-    log.debug(f"checkAndConvertToMacOSX: ucs_object: {sync_object!r}")
+    log.debug("checkAndConvertToMacOSX", ucs_object=repr(sync_object))
 
     if _isAlreadyMac(sync_object.get('attributes')):
         log.debug("checkAndConvertToMacOSX: The client is already a mac client, nothing to do")
@@ -79,7 +80,7 @@ def windowscomputer_sync_s4_to_ucs_check_rename(s4connector, key, sync_object):
 
     ucs_object = s4connector.get_ucs_ldap_object(sync_object['dn'])
     if not ucs_object:
-        log.warning("con_check_rename: ucs object not found: {} (maybe already deleted)".format(sync_object['dn']))
+        log.warning("con_check_rename: ucs object not found: %s (maybe already deleted)", sync_object['dn'])
         return
     log.debug("con_check_rename: ucs object: %s", ucs_object)
     ucs_uid = ucs_object.get('uid', [None])[0]

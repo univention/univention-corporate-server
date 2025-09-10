@@ -26,9 +26,10 @@ from samba.ndr import ndr_pack, ndr_unpack
 import univention.s4connector
 import univention.uldap
 from univention.config_registry import ConfigRegistry
+from univention.logging import Structured
 
 
-log = getLogger("LDAP").getChild(__name__)
+log = Structured(getLogger("LDAP").getChild(__name__))
 
 LDAP_SERVER_SHOW_DELETED_OID = "1.2.840.113556.1.4.417"
 LDB_CONTROL_DOMAIN_SCOPE_OID = "1.2.840.113556.1.4.1339"
@@ -98,7 +99,7 @@ def add_primary_group_to_addlist(connector, property_type, object, addlist, serv
         if primary_group_rid == b'513':
             return
 
-        log.debug('add_primary_group_to_addlist: Set primary group to {} (rid) for {}'.format(primary_group_rid, object.get('dn')))
+        log.debug('add_primary_group_to_addlist: Set primary group to %s (rid) for %s', primary_group_rid, object.get('dn'))
         addlist.append(('primaryGroupID', [primary_group_rid]))
         serverctrls.append(LDAPControl(LDB_CONTROL_RELAX_OID, criticality=0))
 
@@ -120,7 +121,7 @@ def check_for_local_group_and_extend_serverctrls_and_sid(connector, property_typ
         serverctrls.append(LDAPControl(LDB_CONTROL_RELAX_OID, criticality=0))
 
         sambaSID = object['attributes']['sambaSID'][0].decode('ASCII')
-        log.debug(f"sambaSID: {sambaSID!r}")
+        log.debug("sambaSID: %r", sambaSID)
         objectSid = ndr_pack(security.dom_sid(sambaSID))
         add_or_modlist.append(('objectSid', [objectSid]))
 
@@ -204,7 +205,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
                 if object.get('attributes'):
                     t_samaccount = object['attributes'].get('sAMAccountName', [b''])[0].decode('UTF-8')
                 if rdn_value.lower() == t_samaccount.lower():
-                    log.trace(f"samaccount_dn_mapping: modtype is delete, use the premapped DN: {object[dn_key]}")
+                    log.trace("samaccount_dn_mapping: modtype is delete, use the premapped DN: %s", object[dn_key])
                     return True
 
         if ucsobject:
@@ -223,7 +224,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
                 return False
 
     for dn_key in ['dn', 'olddn']:
-        log.trace(f"samaccount_dn_mapping: check newdn for key {dn_key}: {object.get(dn_key)}")
+        log.trace("samaccount_dn_mapping: check newdn for key %s: %s", dn_key, object.get(dn_key))
         if dn_key in object and not dn_premapped(object, dn_key, dn_mapping_stored):
 
             dn = object[dn_key]
@@ -251,11 +252,11 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
                         if ucsval == "Printer-Admins":  # Also look for the original name (Bug #42675#c1)
                             alternative_samaccountnames.append(ucsval)
                         value = conval
-                        log.trace(f"samaccount_dn_mapping: map {propertyattrib} according to mapping-table")
+                        log.trace("samaccount_dn_mapping: map %s according to mapping-table", propertyattrib)
                         break
                 else:
                     if propertyattrib in connector.property[propertyname].mapping_table:
-                        log.trace(f"samaccount_dn_mapping: {propertyattrib} not in mapping-table")
+                        log.trace("samaccount_dn_mapping: %s not in mapping-table", propertyattrib)
 
                 if len(alternative_samaccountnames) == 0:
                     filter_parts_ad.append(format_escaped('(samaccountname={0!e})', value))
@@ -268,7 +269,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
                     # also look for dn attr (needed to detect modrdn)
                     filter_parts_ad.append(format_escaped('({0}={1!e})', dn_attr, dn_attr_val))
                 filter_ad = '(&{})'.format(''.join(filter_parts_ad))
-                log.trace(f"samaccount_dn_mapping: search in ad for {filter_ad}")
+                log.trace("samaccount_dn_mapping: search in ad for %s", filter_ad)
                 result = connector.s4_search_ext_s(connector.lo_s4.base, ldap.SCOPE_SUBTREE, filter_ad, ['sAMAccountName'])
 
                 if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
@@ -281,7 +282,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
                         newdn = ldap.dn.dn2str([str2dn(result[0][0])[0], *exploded_dn[1:]])
                 else:
                     newdn = ldap.dn.dn2str([[('cn', fst_rdn_value_utf8, ldap.AVA_STRING)], *exploded_dn[1:]])  # new object, don't need to change
-                log.trace(f"samaccount_dn_mapping: newdn: {newdn}")
+                log.trace("samaccount_dn_mapping: newdn: %s", newdn)
             else:
                 # get the object to read the sAMAccountName in AD and use it as name
                 # we have no fallback here, the given dn must be found in AD or we've got an error
@@ -314,7 +315,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 
                 # search for object with this dn in ucs, needed if it lies in a different container
                 ucsdn = ''
-                log.trace(f"samaccount_dn_mapping: samaccountname is: {samaccountname!r}")
+                log.trace("samaccount_dn_mapping: samaccountname is: %r", samaccountname)
                 ucsdn_filter = format_escaped('(&(objectclass={0!e})({1}={2!e}))', ocucs, ucsattrib, samaccountname)
                 ucsdn_result = connector.search_ucs(filter=ucsdn_filter, base=connector.lo.base, scope='sub', attr=['objectClass'])
                 if ucsdn_result and len(ucsdn_result) > 0 and ucsdn_result[0] and len(ucsdn_result[0]) > 0:
@@ -331,7 +332,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 
                     newdn = ldap.dn.dn2str([newdn_rdn, *exploded_dn[1:]])  # guess the old dn
 
-            log.debug(f"samaccount_dn_mapping: newdn for key {dn_key!r}: olddn={dn!r} newdn={newdn!r}")
+            log.debug("samaccount_dn_mapping: newdn for key %r: olddn=%r newdn=%r", dn_key, dn, newdn)
 
             object[dn_key] = newdn
     return object
@@ -601,7 +602,7 @@ class s4(univention.s4connector.ucs):
     def init_group_cache(self):
         log.info('Building internal group membership cache')
         s4_groups = self.__search_s4(filter='objectClass=group', attrlist=['member'])
-        log.trace(f"__init__: s4_groups: {s4_groups}")
+        log.trace("__init__: s4_groups: %s", s4_groups)
         for s4_group in s4_groups:
             if not s4_group or not s4_group[0]:
                 continue
@@ -613,7 +614,7 @@ class s4(univention.s4connector.ucs):
                 member_cache = self.group_members_cache_con[s4_group_dn.lower()]
                 member_cache.update(m.lower() for m in s4_members)
 
-        log.trace(f"__init__: self.group_members_cache_con: {self.group_members_cache_con}")
+        log.trace("__init__: self.group_members_cache_con: %s", self.group_members_cache_con)
 
         for ucs_group in self.search_ucs(filter='objectClass=univentionGroup', attr=['uniqueMember']):
             group_lower = ucs_group[0].lower()
@@ -621,7 +622,7 @@ class s4(univention.s4connector.ucs):
             if ucs_group[1]:
                 for member in ucs_group[1].get('uniqueMember'):
                     self.group_members_cache_ucs[group_lower].add(member.decode('UTF-8').lower())
-        log.trace(f"__init__: self.group_members_cache_ucs: {self.group_members_cache_ucs}")
+        log.trace("__init__: self.group_members_cache_ucs: %s", self.group_members_cache_ucs)
         log.info('Internal group membership cache was created')
 
     def s4_search_ext_s(self, *args, **kwargs):
@@ -630,7 +631,7 @@ class s4(univention.s4connector.ucs):
     def open_s4(self):
         tls_mode = 2
         if f'{self.CONFIGBASENAME}/s4/ldap/ssl' in self.configRegistry and self.configRegistry[f'{self.CONFIGBASENAME}/s4/ldap/ssl'] == "no":
-            log.debug(f'__init__: The LDAP connection to S4 does not use SSL (switched off by UCR "{self.CONFIGBASENAME}/s4/ldap/ssl").')
+            log.debug('__init__: The LDAP connection to S4 does not use SSL (switched off by UCR "%s/s4/ldap/ssl").', self.CONFIGBASENAME)
             tls_mode = 0
 
         protocol = self.configRegistry.get(f'{self.CONFIGBASENAME}/s4/ldap/protocol', 'ldap').lower()
@@ -733,7 +734,7 @@ class s4(univention.s4connector.ucs):
         for i in [0, 1]:  # do it twice if the LDAP connection was closed
             try:
                 dn, _ad_object = self.s4_search_ext_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ('dn',))[0]
-                log.debug(f"get_object: got object: {dn!r}")
+                log.debug("get_object: got object: %r", dn)
                 return dn
             except (IndexError, ldap.NO_SUCH_OBJECT):
                 return
@@ -797,7 +798,7 @@ class s4(univention.s4connector.ucs):
         for i in [0, 1]:  # do it twice if the LDAP connection was closed
             try:
                 dn, ad_object = self.s4_search_ext_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', attrlist=attrlist)[0]
-                log.debug(f"get_object: got object: {dn!r}")
+                log.debug("get_object: got object: %r", dn)
                 return ad_object
             except (IndexError, ldap.NO_SUCH_OBJECT):
                 return
@@ -841,7 +842,7 @@ class s4(univention.s4connector.ucs):
         if show_deleted:
             ctrls.append(LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1))
 
-        log.trace(f"Search S4 with filter: {filter}")
+        log.trace("Search S4 with filter: %s", filter)
         msgid = self.lo_s4.lo.search_ext(base, scope, filter, attrlist, serverctrls=ctrls, timeout=-1, sizelimit=0)
 
         res = []
@@ -860,7 +861,7 @@ class s4(univention.s4connector.ucs):
                 cookie = pctrls[0].cookie
                 if cookie:
                     if pages > 1:
-                        log.debug(f"S4 search continues, already found {len(res)} objects")
+                        log.debug("S4 search continues, already found %s objects", len(res))
                     ctrls[0].cookie = cookie
                     msgid = self.lo_s4.lo.search_ext(base, scope, filter, attrlist, serverctrls=ctrls, timeout=-1, sizelimit=0)
                 else:
@@ -928,7 +929,7 @@ class s4(univention.s4connector.ucs):
                 if tmpUSN > highestCommittedUSN:
                     tmpUSN = highestCommittedUSN
 
-                log.debug(f"__search_ad_changes: search between USNs {tmp_lastUSN + 1} and {tmpUSN}")
+                log.debug("__search_ad_changes: search between USNs %s and %s", tmp_lastUSN + 1, tmpUSN)
 
                 usn_filter = _ad_changes_filter('uSNCreated', tmp_lastUSN + 1, tmpUSN)
                 if tmp_lastUSN > 0:
@@ -955,7 +956,7 @@ class s4(univention.s4connector.ucs):
             last_known_parent = self.__dn_from_deleted_object({'dn': dn, 'attributes': attr})
 
         if last_known_parent:
-            log.debug(f"__dn_from_deleted_object: get DN from lastKnownParent ({last_known_parent!r}) and rdn ({rdn!r})")
+            log.debug("__dn_from_deleted_object: get DN from lastKnownParent (%r) and rdn (%r)", last_known_parent, rdn)
             return ldap.dn.dn2str(str2dn(rdn) + str2dn(last_known_parent))
         else:
             log.warning('lastKnownParent attribute for deleted object rdn="%s" was not set, so we must ignore the object', rdn)
@@ -997,7 +998,7 @@ class s4(univention.s4connector.ucs):
         if deleted_object:  # dn is in deleted-objects-container, need to parse to original dn
             object['deleted_dn'] = object['dn']
             object['dn'] = self.__dn_from_deleted_object(object)
-            log.debug("object_from_element: DN of removed object: {!r}".format(object['dn']))
+            log.debug("object_from_element: DN of removed object: %r", object['dn'])
             # self._remove_GUID(element[1]['objectGUID'][0]) # cache is not needed anymore?
 
             if not object['dn']:
@@ -1040,7 +1041,7 @@ class s4(univention.s4connector.ucs):
 
             s4_group_rid = s4_group_rid_resultlist[0][1]['primaryGroupID'][0].decode('UTF-8')
 
-            log.debug(f"set_primary_group_to_ucs_user: S4 rid: {s4_group_rid!r}")
+            log.debug("set_primary_group_to_ucs_user: S4 rid: %r", s4_group_rid)
             ldap_group_filter = format_escaped("(objectSid={0!e}-{1!e})", self.s4_sid, s4_group_rid)
             ldap_group_s4 = self.__search_s4(base=self.lo_s4.base, scope=ldap.SCOPE_SUBTREE, filter=ldap_group_filter)
 
@@ -1057,12 +1058,12 @@ class s4(univention.s4connector.ucs):
 
         ldap_object_ucs = self.get_ucs_ldap_object(object_ucs['dn'])
         if not ldap_object_ucs:
-            log.info('primary_group_sync_from_ucs: The UCS object ({}) was not found. The object was removed.'.format(object_ucs['dn']))
+            log.info('primary_group_sync_from_ucs: The UCS object (%s) was not found. The object was removed.', object_ucs['dn'])
             return
 
         ldap_object_s4 = self.get_object(object['dn'])
         if not ldap_object_s4:
-            log.info('primary_group_sync_from_ucs: The S4 object ({}) was not found. The object was removed.'.format(object['dn']))
+            log.info('primary_group_sync_from_ucs: The S4 object (%s) was not found. The object was removed.', object['dn'])
             return
 
         ucs_group_id = ldap_object_ucs['gidNumber'][0].decode('UTF-8')  # FIXME: fails if group does not exists
@@ -1135,7 +1136,7 @@ class s4(univention.s4connector.ucs):
 
         ucs_group = self._object_mapping('group', {'dn': ldap_group_s4[0][0], 'attributes': ldap_group_s4[0][1]})
 
-        log.debug("primary_group_sync_to_ucs: ucs-group: {}".format(ucs_group['dn']))
+        log.debug("primary_group_sync_to_ucs: ucs-group: %s", ucs_group['dn'])
 
         ucs_admin_object = univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object['dn'])
         ucs_admin_object.open()
@@ -1152,7 +1153,7 @@ class s4(univention.s4connector.ucs):
 
     def object_memberships_sync_from_ucs(self, key, object):
         """sync group membership in AD if object was changend in UCS"""
-        log.trace(f"object_memberships_sync_from_ucs: object: {object}")
+        log.trace("object_memberships_sync_from_ucs: object: %s", object)
 
         if 'group' in self.property and getattr(self.property['group'], 'sync_mode', '') in ['read', 'none']:
             log.debug("group memberships sync to s4 ignored, group sync_mode is read")
@@ -1168,10 +1169,10 @@ class s4(univention.s4connector.ucs):
         ucs_groups_ldap = self.search_ucs(filter=ucs_group_filter)
 
         if ucs_groups_ldap == []:
-            log.debug("object_memberships_sync_from_ucs: No group-memberships in UCS for {}".format(object['dn']))
+            log.debug("object_memberships_sync_from_ucs: No group-memberships in UCS for %s", object['dn'])
             return
 
-        log.debug(f"object_memberships_sync_from_ucs: is member in {len(ucs_groups_ldap)} groups ")
+        log.debug("object_memberships_sync_from_ucs: is member in %s groups", len(ucs_groups_ldap))
 
         for groupDN, attributes in ucs_groups_ldap:
             if groupDN not in ['None', '', None]:
@@ -1189,7 +1190,7 @@ class s4(univention.s4connector.ucs):
     def __group_cache_ucs_append_member(self, group, member):
         member_cache = self.group_members_cache_ucs.setdefault(group.lower(), set())
         if member.lower() not in member_cache:
-            log.debug(f"__group_cache_ucs_append_member: Append user {member!r} to UCS group member cache of {group!r}")
+            log.debug("__group_cache_ucs_append_member: Append user %r to UCS group member cache of %r", member, group)
             member_cache.add(member.lower())
 
     def group_members_sync_from_ucs(self, key, object):  # object mit ad-dn
@@ -1200,7 +1201,7 @@ class s4(univention.s4connector.ucs):
         object_ucs = self._object_mapping(object_key, object)
         object_ucs_dn = object_ucs['dn']
 
-        log.debug(f"group_members_sync_from_ucs: dn is: {object_ucs_dn!r}")
+        log.debug("group_members_sync_from_ucs: dn is: %r", object_ucs_dn)
         ldap_object_ucs = self.get_ucs_ldap_object(object_ucs_dn)
 
         if not ldap_object_ucs:
@@ -1226,7 +1227,7 @@ class s4(univention.s4connector.ucs):
         # lookup all current members of S4 group
         ldap_object_s4 = self.get_object(object['dn'])
         if not ldap_object_s4:
-            log.info('group_members_sync_from_ucs:: The S4 object ({}) was not found. The object was removed.'.format(object['dn']))
+            log.info('group_members_sync_from_ucs:: The S4 object (%s) was not found. The object was removed.', object['dn'])
             return
         s4_members = set(self.get_s4_members(object['dn'], ldap_object_s4))
         log.debug("group_members_sync_from_ucs: s4_members %s", s4_members)
@@ -1262,7 +1263,7 @@ class s4(univention.s4connector.ucs):
                 try:
                     if self.lo_s4.get(s4_dn, attr=['cn']):  # search only for cn to suppress coding errors
                         s4_members_from_ucs.add(s4_dn.lower())
-                        log.debug(f"group_members_sync_from_ucs: Adding {member_dn.lower()} to UCS group member cache, value: {s4_dn}")
+                        log.debug("group_members_sync_from_ucs: Adding %s to UCS group member cache, value: %s", member_dn.lower(), s4_dn)
                         self.group_member_mapping_cache_ucs[member_dn.lower()] = s4_dn
                         self.__group_cache_ucs_append_member(object_ucs_dn, member_dn)
                 except ldap.SERVER_DOWN:
@@ -1334,7 +1335,7 @@ class s4(univention.s4connector.ucs):
                 add_members.remove(member_dn_lower)
             else:
                 if object['modtype'] == 'add':
-                    log.info("group_members_sync_from_ucs: {} is newly added. For this case don't remove current S4 members.".format(object['dn'].lower()))
+                    log.info("group_members_sync_from_ucs: %s is newly added. For this case don't remove current S4 members.", object['dn'].lower())
                 elif (member_dn_lower in self.group_members_cache_con.get(object['dn'].lower(), set())) or (self.property.get('group') and self.property['group'].sync_mode in ['write', 'none']):
                     # FIXME: Should this really also be done if sync_mode for group is 'none'?
                     # remove member only if he was in the cache on AD side
@@ -1342,7 +1343,7 @@ class s4(univention.s4connector.ucs):
                     log.debug("group_members_sync_from_ucs: No")
                     del_members.add(member_dn)
                 else:
-                    log.info("group_members_sync_from_ucs: {} was not found in S4 group member cache of {}, don't delete".format(member_dn_lower, object['dn'].lower()))
+                    log.info("group_members_sync_from_ucs: %s was not found in S4 group member cache of %s, don't delete", member_dn_lower, object['dn'].lower())
 
         log.debug("group_members_sync_from_ucs: members to add: %s", add_members)
         log.debug("group_members_sync_from_ucs: members to del: %s", del_members)
@@ -1350,7 +1351,7 @@ class s4(univention.s4connector.ucs):
         if add_members or del_members:
             s4_members |= add_members  # Note: add_members are only lowercase
             s4_members -= del_members  # Note: del_members are case sensitive
-            log.debug(f"group_members_sync_from_ucs: members result: {s4_members!r}")
+            log.debug("group_members_sync_from_ucs: members result: %r", s4_members)
 
             self.lo_s4.lo.modify_s(object['dn'], [(ldap.MOD_REPLACE, 'member', [x.encode('UTF-8') for x in s4_members])])
 
@@ -1388,7 +1389,7 @@ class s4(univention.s4connector.ucs):
                         log.debug("object_memberships_sync_to_ucs: Append user %s to AD group member cache of %s", dn_lower, groupDN_lower)
                         member_cache.add(dn_lower)
                 else:
-                    log.debug("object_memberships_sync_to_ucs: Failed to append user {} to AD group member cache of {}".format(object['dn'].lower(), groupDN.lower()))
+                    log.debug("object_memberships_sync_to_ucs: Failed to append user %s to AD group member cache of %s", object['dn'].lower(), groupDN.lower())
 
     def __compare_lowercase(self, value, value_list):
         """Checks if value is in value_list"""
@@ -1413,14 +1414,14 @@ class s4(univention.s4connector.ucs):
                 ml.append((ldap.MOD_ADD, 'memberUid', [uid]))
 
         if ml:
-            log.trace(f"one_group_member_sync_to_ucs: modlist: {ml}")
+            log.trace("one_group_member_sync_to_ucs: modlist: %s", ml)
             try:
                 self.lo.lo.modify_s(ucs_group_object['dn'], ml)
             except ldap.ALREADY_EXISTS:
                 # The user is already member in this group or it is his primary group
                 # This might happen, if we synchronize a rejected file with old information
                 # See Bug #25709 Comment #17: https://forge.univention.org/bugzilla/show_bug.cgi?id=25709#c17
-                log.debug("one_group_member_sync_to_ucs: User is already member of the group: {} modlist: {}".format(ucs_group_object['dn'], ml))
+                log.debug("one_group_member_sync_to_ucs: User is already member of the group: %s modlist: %s", ucs_group_object['dn'], ml)
 
     def one_group_member_sync_from_ucs(self, s4_group_object, object):
         """sync groupmembers in AD if changend one member in AD"""
@@ -1429,17 +1430,17 @@ class s4(univention.s4connector.ucs):
             ml.append((ldap.MOD_ADD, 'member', [object['dn'].encode('UTF-8')]))
 
         if ml:
-            log.trace(f"one_group_member_sync_from_ucs: modlist: {ml}")
+            log.trace("one_group_member_sync_from_ucs: modlist: %s", ml)
             try:
                 self.lo_s4.lo.modify_s(s4_group_object['dn'], ml)
             except ldap.ALREADY_EXISTS:
                 # The user is already member in this group or it is his primary group
                 # This might happen, if we synchronize a rejected file with old information
                 # See Bug #25709 Comment #17: https://forge.univention.org/bugzilla/show_bug.cgi?id=25709#c17
-                log.debug("one_group_member_sync_from_ucs: User is already member of the group: {} modlist: {}".format(s4_group_object['dn'], ml))
+                log.debug("one_group_member_sync_from_ucs: User is already member of the group: %s modlist: %s", s4_group_object['dn'], ml)
 
         # The user has been removed from the cache. He must be added in any case
-        log.debug("one_group_member_sync_from_ucs: Append user {} to S4 group member cache of {}".format(object['dn'].lower(), s4_group_object['dn'].lower()))
+        log.debug("one_group_member_sync_from_ucs: Append user %s to S4 group member cache of %s", object['dn'].lower(), s4_group_object['dn'].lower())
         self.group_members_cache_con.setdefault(s4_group_object['dn'].lower(), set()).add(object['dn'].lower())
 
     def __group_cache_con_append_member(self, group, member):
@@ -1576,7 +1577,7 @@ class s4(univention.s4connector.ucs):
 
                 if (member_dn_lower in self.group_members_cache_ucs.get(object['dn'].lower(), set())) or (self.property.get('group') and self.property['group'].sync_mode in ['read', 'none']):
                     # FIXME: Should this really also be done if sync_mode for group is 'none'?
-                    log.debug("group_members_sync_to_ucs: {} was found in UCS group member cache of {}".format(member_dn_lower, object['dn'].lower()))
+                    log.debug("group_members_sync_to_ucs: %s was found in UCS group member cache of %s", member_dn_lower, object['dn'].lower())
                     ucs_object_attr = cache.get(member_dn)
                     if not ucs_object_attr:
                         ucs_object_attr = self.lo.get(member_dn)
@@ -1589,7 +1590,7 @@ class s4(univention.s4connector.ucs):
                         if not self._ignore_object(k, ucs_object):
                             del_members[k].append(member_dn)
                 else:
-                    log.debug("group_members_sync_to_ucs: {} was not found in UCS group member cache of {}, don't delete".format(member_dn_lower, object['dn'].lower()))
+                    log.debug("group_members_sync_to_ucs: %s was not found in UCS group member cache of %s, don't delete", member_dn_lower, object['dn'].lower())
 
         log.debug("group_members_sync_to_ucs: members to add: %s", add_members)
         log.debug("group_members_sync_to_ucs: members to del: %s", del_members)
@@ -1633,7 +1634,7 @@ class s4(univention.s4connector.ucs):
 
         modlist = []
 
-        log.debug("Disabled state: {}".format(ucs_admin_object['disabled'].lower()))
+        log.debug("Disabled state: %s", ucs_admin_object['disabled'].lower())
         if ucs_admin_object["disabled"].lower() not in ["none", "0"]:
             # user disabled in UCS
             if 'userAccountControl' in ldap_object_ad and (int(ldap_object_ad['userAccountControl'][0]) & 2) == 0:
@@ -1661,7 +1662,7 @@ class s4(univention.s4connector.ucs):
                 modlist.append((ldap.MOD_REPLACE, 'accountExpires', [str(unix2s4_time(ucs_admin_object['userexpiry'])).encode('ASCII')]))
 
         if modlist:
-            log.trace(f"disable_user_from_ucs: modlist: {modlist}")
+            log.trace("disable_user_from_ucs: modlist: %s", modlist)
             self.lo_s4.lo.modify_s(object['dn'], modlist)
 
     def disable_user_to_ucs(self, key, object):
@@ -1695,7 +1696,7 @@ class s4(univention.s4connector.ucs):
                 modified = 1
         else:
             # ad account expired
-            log.debug("sync account_expire:      s4time: {}    unixtime: {}".format(int(ldap_object_ad['accountExpires'][0]), ucs_admin_object['userexpiry']))
+            log.debug("sync account_expire:      s4time: %s    unixtime: %s", int(ldap_object_ad['accountExpires'][0]), ucs_admin_object['userexpiry'])
 
             if s42unix_time(int(ldap_object_ad['accountExpires'][0])) != ucs_admin_object['userexpiry']:
                 # ucs account not expired -> change
@@ -1737,7 +1738,7 @@ class s4(univention.s4connector.ucs):
         print(f"Sync {len(rejected)} rejected changes from S4 to UCS")
         sys.stdout.flush()
         for change_usn, dn in rejected:
-            log.info(f'sync AD > UCS: Resync rejected dn: {dn!r}')
+            log.info("sync AD > UCS: Resync rejected dn: %r", dn)
             try:
                 sync_successfull = False
                 elements = self.__search_ad_changeUSN(change_usn, show_deleted=True)
@@ -1758,7 +1759,7 @@ class s4(univention.s4connector.ucs):
                     except ldap.SERVER_DOWN:
                         raise
                     except Exception:  # FIXME: which exception is to be caught?
-                        log.exception("sync of rejected object failed \n\t{}".format(ad_object['dn']))
+                        log.exception("sync of rejected object failed \n\t%s", ad_object['dn'])
                         sync_successfull = False
                     if sync_successfull:
                         change_count += 1
@@ -1825,7 +1826,7 @@ class s4(univention.s4connector.ucs):
 
             if self._ignore_object(property_key, ad_object):
                 if ad_object['modtype'] == 'move':
-                    log.debug("object_from_element: Detected a move of an S4 object into a ignored tree: dn: {}".format(ad_object['dn']))
+                    log.debug("object_from_element: Detected a move of an S4 object into a ignored tree: dn: %s", ad_object['dn'])
                     ad_object['deleted_dn'] = ad_object['olddn']
                     ad_object['dn'] = ad_object['olddn']
                     ad_object['modtype'] = 'delete'
@@ -1836,7 +1837,7 @@ class s4(univention.s4connector.ucs):
                     continue
 
             if ad_object['dn'].find('\\0ACNF:') > 0:
-                log.info('Ignore conflicted object: {}'.format(ad_object['dn']))
+                log.info('Ignore conflicted object: %s', ad_object['dn'])
                 self.__update_lastUSN(ad_object)
                 print_progress()
                 continue
@@ -1900,13 +1901,13 @@ class s4(univention.s4connector.ucs):
                 log.debug("sync_from_ucs: Removing %s from S4 group member mapping cache", con_dn)
                 del self.group_member_mapping_cache_con[con_dn.lower()]
             except KeyError:
-                log.trace(f"sync_from_ucs: {con_dn} was not present in S4 group member mapping cache")
+                log.trace("sync_from_ucs: %s was not present in S4 group member mapping cache", con_dn)
         if ucs_dn:
             try:
                 log.debug("sync_from_ucs: Removing %s from UCS group member mapping cache", ucs_dn)
                 del self.group_member_mapping_cache_ucs[ucs_dn.lower()]
             except KeyError:
-                log.trace(f"sync_from_ucs: {ucs_dn} was not present in UCS group member mapping cache")
+                log.trace("sync_from_ucs: %s was not present in UCS group member mapping cache", ucs_dn)
 
     def _update_group_member_cache(self, remove_con_dn=None, remove_ucs_dn=None, add_con_dn=None, add_ucs_dn=None):
         for group in self.group_members_cache_con:
@@ -1929,11 +1930,11 @@ class s4(univention.s4connector.ucs):
         # Diese Methode erhaelt von der UCS Klasse ein Objekt,
         # welches hier bearbeitet wird und in das AD geschrieben wird.
         # object ist brereits vom eingelesenen UCS-Objekt nach AD gemappt, old_dn ist die alte UCS-DN
-        log.debug("sync_from_ucs: sync object: {}".format(object['dn']))
+        log.debug("sync_from_ucs: sync object: %s", object['dn'])
 
         # if sync is read (sync from AD) or none, there is nothing to do
         if self.property[property_type].sync_mode in ['read', 'none']:
-            log.debug(f"sync_from_ucs ignored, sync_mode is {self.property[property_type].sync_mode}")
+            log.debug("sync_from_ucs ignored, sync_mode is %s", self.property[property_type].sync_mode)
             return True
 
         # check for move, if old_object exists, set modtype move
@@ -1949,7 +1950,7 @@ class s4(univention.s4connector.ucs):
                 old_object = None
 
             if old_object:
-                log.debug("move {} from [{}] to [{}]".format(property_type, old_dn, object['dn']))
+                log.debug("move %s from [%s] to [%s]", property_type, old_dn, object['dn'])
                 try:
                     self.lo_s4.rename(old_dn, object['dn'])
                 except ldap.NO_SUCH_OBJECT:  # check if object is already moved (we may resync now)
@@ -1964,7 +1965,7 @@ class s4(univention.s4connector.ucs):
                     remove_ucs_dn=pre_mapped_ucs_old_dn.lower(),
                     add_con_dn=object['dn'].lower(),
                     add_ucs_dn=pre_mapped_ucs_dn.lower())
-                log.debug("sync_from_ucs: Updating UCS and S4 group member mapping cache for {} to {}".format(pre_mapped_ucs_dn, object['dn']))
+                log.debug("sync_from_ucs: Updating UCS and S4 group member mapping cache for %s to %s", pre_mapped_ucs_dn, object['dn'])
                 self.group_member_mapping_cache_ucs[pre_mapped_ucs_dn.lower()] = object['dn']
                 self.group_member_mapping_cache_con[object['dn'].lower()] = pre_mapped_ucs_dn
 
@@ -1986,7 +1987,7 @@ class s4(univention.s4connector.ucs):
         if ad_object:
             objectGUID = univention.s4connector.decode_guid(ad_object.get('objectGUID')[0])
             if self.lockingdb.is_s4_locked(objectGUID):
-                log.info("Unable to sync {} (GUID: {}). The object is currently locked.".format(object['dn'], objectGUID))
+                log.info("Unable to sync %s (GUID: %s). The object is currently locked.", object['dn'], objectGUID)
                 return False
 
         try:
@@ -1998,7 +1999,7 @@ class s4(univention.s4connector.ucs):
         # ADD
         #
         if not ad_object and object['modtype'] in ('add', 'modify', 'move'):
-            log.debug("sync_from_ucs: add object: {}".format(object['dn']))
+            log.debug("sync_from_ucs: add object: %s", object['dn'])
 
             log.debug("sync_from_ucs: lock UCS entryUUID: %s", entryUUID)
             if entryUUID and not self.lockingdb.is_ucs_locked(entryUUID):
@@ -2042,8 +2043,8 @@ class s4(univention.s4connector.ucs):
                             if value:
                                 modlist.append((ldap.MOD_REPLACE, attr, value))
 
-                log.debug("to add: {}".format(object['dn']))
-                log.trace(f"sync_from_ucs: addlist: {addlist}")
+                log.debug("to add: %s", object['dn'])
+                log.trace("sync_from_ucs: addlist: %s", addlist)
                 try:
                     self.lo_s4.lo.add_ext_s(object['dn'], addlist, serverctrls=ctrls)
                 except (ldap.ALREADY_EXISTS, ldap.CONSTRAINT_VIOLATION):
@@ -2059,7 +2060,7 @@ class s4(univention.s4connector.ucs):
                     if not result or len(result) > 1:  # the latter would indicate corruption
                         log.info("sync_from_ucs: no conflicting deleted object found")
                         raise  # unknown situation, raise original traceback
-                    log.info(f"sync_from_ucs: reanimating conflicting object: {result[0][0]}")
+                    log.info("sync_from_ucs: reanimating conflicting object: %s", result[0][0])
                     reanimate_modlist = [
                         (ldap.MOD_DELETE, 'isDeleted', None),
                         (ldap.MOD_REPLACE, 'distinguishedName', object['dn'].encode('UTF-8')),
@@ -2068,7 +2069,7 @@ class s4(univention.s4connector.ucs):
                     # and try the sync again
                     return self.sync_from_ucs(property_type, object, pre_mapped_ucs_dn, old_dn, old_ucs_object, new_ucs_object)
                 except Exception:
-                    log.error("sync_from_ucs: traceback during add object: {}".format(object['dn']))
+                    log.error("sync_from_ucs: traceback during add object: %s", object['dn'])
                     log.error("sync_from_ucs: traceback due to addlist: %s", addlist)
                     raise
 
@@ -2078,20 +2079,20 @@ class s4(univention.s4connector.ucs):
 
                 if property_type == 'group':
                     self.group_members_cache_con[object['dn'].lower()] = set()
-                    log.debug("group_members_cache_con[{}]: {{}}".format(object['dn'].lower()))
+                    log.debug("group_members_cache_con[%s]: {}", object['dn'].lower())
 
                 if hasattr(self.property[property_type], "post_con_create_functions"):
                     for post_con_create_function in self.property[property_type].post_con_create_functions:
                         log.debug("Call post_con_create_functions: %s", post_con_create_function)
                         post_con_create_function(self, property_type, object)
 
-                log.debug("and modify: {}".format(object['dn']))
+                log.debug("and modify: %s", object['dn'])
                 if modlist:
-                    log.trace(f"sync_from_ucs: modlist: {modlist}")
+                    log.trace("sync_from_ucs: modlist: %s", modlist)
                     try:
                         self.lo_s4.lo.modify_ext_s(object['dn'], modlist, serverctrls=ctrls)
                     except Exception:
-                        log.error("sync_from_ucs: traceback during modify object: {}".format(object['dn']))
+                        log.error("sync_from_ucs: traceback during modify object: %s", object['dn'])
                         log.error("sync_from_ucs: traceback due to modlist: %s", modlist)
                         raise
 
@@ -2105,7 +2106,7 @@ class s4(univention.s4connector.ucs):
         # MODIFY
         #
         elif ad_object and object['modtype'] in ('add', 'modify', 'move'):
-            log.debug("sync_from_ucs: modify object: {}".format(object['dn']))
+            log.debug("sync_from_ucs: modify object: %s", object['dn'])
             log.debug("sync_from_ucs: old_object: %s", old_ucs_object)
             log.debug("sync_from_ucs: new_object: %s", new_ucs_object)
             object['old_ucs_object'] = old_ucs_object
@@ -2244,14 +2245,14 @@ class s4(univention.s4connector.ucs):
                                                 modlist.append((ldap.MOD_ADD, s4_attribute, list(a)))
 
                 if not modlist:
-                    log.trace("nothing to modify: {}".format(object['dn']))
+                    log.trace("nothing to modify: %s", object['dn'])
                 else:
-                    log.debug("to modify: {}".format(object['dn']))
-                    log.trace(f"sync_from_ucs: modlist: {modlist}")
+                    log.debug("to modify: %s", object['dn'])
+                    log.trace("sync_from_ucs: modlist: %s", modlist)
                     try:
                         self.lo_s4.lo.modify_ext_s(object['dn'], modlist, serverctrls=self.serverctrls_for_add_and_modify)
                     except Exception:
-                        log.error("sync_from_ucs: traceback during modify object: {}".format(object['dn']))
+                        log.error("sync_from_ucs: traceback during modify object: %s", object['dn'])
                         log.error("sync_from_ucs: traceback due to modlist: %s", modlist)
                         raise
 
@@ -2272,7 +2273,7 @@ class s4(univention.s4connector.ucs):
             self._remove_dn_from_group_cache(con_dn=object['dn'], ucs_dn=pre_mapped_ucs_dn)
             self._update_group_member_cache(remove_con_dn=object['dn'].lower(), remove_ucs_dn=pre_mapped_ucs_dn.lower())
         else:
-            log.warning("unknown modtype ({} : {})".format(object['dn'], object['modtype']))
+            log.warning("unknown modtype (%s : %s)", object['dn'], object['modtype'])
             return False
 
         log.debug("sync_from_ucs: unlock UCS entryUUID: %s", entryUUID)
@@ -2293,8 +2294,8 @@ class s4(univention.s4connector.ucs):
             return ''
 
     def delete_in_s4(self, object, property_type):
-        log.trace("delete: {}".format(object['dn']))
-        log.trace(f"delete_in_s4: {object}")
+        log.trace("delete: %s", object['dn'])
+        log.trace("delete_in_s4: %s", object)
         try:
             objectGUID = self._get_objectGUID(object['dn'])
             self.lo_s4.lo.delete_s(object['dn'])
@@ -2311,7 +2312,7 @@ class s4(univention.s4connector.ucs):
         if entryUUID:
             self.update_deleted_cache_after_removal(entryUUID, objectGUID)
         else:
-            log.debug("delete_in_s4: Object without entryUUID: {}".format(object['dn']))
+            log.debug("delete_in_s4: Object without entryUUID: %s", object['dn'])
         self.remove_add_cache_after_removal(entryUUID)
 
     def _remove_subtree_in_s4(self, parent_ad_object, property_type):
@@ -2321,23 +2322,23 @@ class s4(univention.s4connector.ucs):
             for sub_dn, _ in self.s4_search_ext_s(parent_ad_object['dn'], ldap.SCOPE_SUBTREE, allow_delete_filter):
                 if self.lo.compare_dn(sub_dn.lower(), parent_ad_object['dn'].lower()):  # FIXME: remove and search with scope=children instead
                     continue
-                log.debug(f"delete: {sub_dn!r}")
+                log.debug("delete: %r", sub_dn)
                 self.lo_s4.lo.delete_s(sub_dn)
 
         for subdn, subattr in self.s4_search_ext_s(parent_ad_object['dn'], ldap.SCOPE_SUBTREE, 'objectClass=*'):
             if self.lo.compare_dn(subdn.lower(), parent_ad_object['dn'].lower()):  # FIXME: remove and search with scope=children instead
                 continue
-            log.debug(f"delete: {subdn!r}")
+            log.debug("delete: %r", subdn)
 
             subobject_s4 = {'dn': subdn, 'modtype': 'delete', 'attributes': subattr}
             key = self.__identify_s4_type(subobject_s4)
             back_mapped_subobject = self._object_mapping(key, subobject_s4)
-            log.warning("delete subobject: {!r}".format(back_mapped_subobject['dn']))
+            log.warning("delete subobject: %r", back_mapped_subobject['dn'])
 
             if not self._ignore_object(key, back_mapped_subobject):
                 # FIXME: this call is wrong!: sync_from_ucs() must be called with a ucs_object not with a ad_object!
                 if not self.sync_from_ucs(key, subobject_s4, back_mapped_subobject['dn']):
-                    log.warning(f"delete of subobject failed: {subdn!r}")
+                    log.warning("delete of subobject failed: %r", subdn)
                     return False
 
         return True
