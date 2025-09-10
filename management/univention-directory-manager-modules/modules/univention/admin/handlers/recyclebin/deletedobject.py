@@ -58,6 +58,7 @@ property_descriptions = {
         may_change=False,
         required=True,
         include_in_default_search=True,
+        identifies=True,
     ),
     'deleteAt': univention.admin.property(
         short_description=_('Delete At'),
@@ -86,7 +87,6 @@ property_descriptions = {
         syntax=udm_syntax.UUID,
         may_change=False,
         required=True,
-        identifies=True,
     ),
     'originalData': univention.admin.property(
         short_description=_('Original properties'),
