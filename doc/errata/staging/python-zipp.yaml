@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [2, 3]
+scope: ucs_5.2-0-errata5.2-3
+src: python-zipp
+fix: 1.0.0-6+deb12u1
+desc: |
+ This update addresses the following issue:
+ * CVSS score unknown. (CVE-2024-5569)
+bug: [58609]
+cve:
+- CVE-2024-5569
