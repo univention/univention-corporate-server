@@ -103,6 +103,7 @@ with open('tests/legacy.log') as fd, open('tests/structured.log') as fd2:
 @pytest.mark.parametrize('debug_backend', ['ud', 'ud2'])
 def test_logging(tmp_path, debug_backend, strucutured):
     if debug_backend == 'ud2':
+        logging.getLogger('LDAP').destroy()
         sys.modules.pop('univention.logging')
         sys.modules['univention.debug'] = ud2
     else:
