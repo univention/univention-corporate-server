@@ -55,7 +55,7 @@ try:
     from univention.appcenter.actions import get_action
     from univention.appcenter.app_cache import AppCache, Apps
 except ImportError as exc:
-    MODULE.warn('Ignoring import error: %s' % (exc,))
+    MODULE.warning('Ignoring import error: %s', exc)
 _ = Translation('univention-management-console-module-setup').translate
 
 ucr = univention.config_registry.ConfigRegistry()
@@ -184,13 +184,13 @@ def auto_complete_values_for_join(newValues: dict[str, str], current_locale: Loc
                     pass
                 else:
                     newValues['windows/domain'] = ad_domain_info['Netbios Domain']
-                    MODULE.process('Setting NETBIOS domain to AD value: %s' % newValues['windows/domain'])
+                    MODULE.process('Setting NETBIOS domain to AD value: %s', newValues['windows/domain'])
                     break
 
     domainname = newValues.get("domainname")
     if 'windows/domain' not in newValues and domainname:
         newValues['windows/domain'] = domain2windowdomain(domainname)
-        MODULE.process('Setting NETBIOS domain to default: %s' % newValues['windows/domain'])
+        MODULE.process('Setting NETBIOS domain to default: %s', newValues['windows/domain'])
 
     # make sure that AD connector package is installed if AD member mode is chosen
     selectedComponents = set(newValues.get('components', []))
@@ -299,10 +299,10 @@ def run_networkscrips(demo_mode: bool = False) -> None:
                 # appliance-mode for temporary saving the old ip address
                 # network-only for not restarting all those services (time consuming!)
                 p = subprocess.Popen([scriptpath, *script_parameters], stdout=f, stderr=subprocess.STDOUT)
-                MODULE.info("Running script '%s': pid=%d" % (scriptpath, p.pid))
+                MODULE.info("Running script '%s': pid=%d", scriptpath, p.pid)
                 p.wait()
             except OSError as ex:
-                MODULE.error("Failed to run '%s': %s" % (scriptpath, ex))
+                MODULE.error("Failed to run '%s': %s", scriptpath, ex)
     finally:
         # enable execution of servers again
         subprocess.call(CMD_ENABLE_EXEC, stdout=f, stderr=f)
@@ -403,8 +403,8 @@ class ProgressParser:
                     self.fractions[name] = 0
 
         self.current.max = sum(self.fractions.values())
-        MODULE.info('Calculated a maximum value of %d' % self.current.max)
-        MODULE.info('Dumping all fractions:\n%s' % self.fractions)
+        MODULE.info('Calculated a maximum value of %d', self.current.max)
+        MODULE.info('Dumping all fractions:\n%s', self.fractions)
 
     @property
     def changed(self) -> bool:
@@ -518,9 +518,9 @@ def run_scripts(progressParser: ProgressParser, restartServer: bool = False, all
                 'PATH': '/bin:/sbin:/usr/bin:/usr/sbin',
                 'LANG': lang,
             })
-            MODULE.info("Running script '%s': pid=%d" % (icmd, p.pid))
+            MODULE.info("Running script '%s': pid=%d", icmd, p.pid)
         except OSError as exc:
-            MODULE.error("Failed to run '%s': %s" % (icmd, exc))
+            MODULE.error("Failed to run '%s': %s", icmd, exc)
             continue
         while p.poll() is None:
             fr.seek(0, os.SEEK_END)  # update file handle
@@ -732,14 +732,14 @@ def dhclient(interface: str, timeout: float = 10.0) -> dict[str, str]:
             '-e', 'dhclientscript_outputfile=%s' % (tmp.name,),
             interface,
         )
-        MODULE.info('Launch dhclient query via command: %s' % (cmd, ))
+        MODULE.info('Launch dhclient query via command: %s', cmd)
         subprocess.call(cmd, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
         for line in tmp:
             key, _, value = line.strip().partition('=')
             dhcp[key] = value[1:-1]
 
-    MODULE.info('dhclient returned the following values: %r' % (dhcp,))
+    MODULE.info('dhclient returned the following values: %r', dhcp)
 
     return dhcp
 
@@ -912,11 +912,11 @@ def get_ucs_domaincontroller_master_query(nameserver: str, domain: str) -> dns.r
     try:
         return resolver.query('_domaincontroller_master._tcp.%s.' % domain, 'SRV')
     except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer, dns.resolver.NoNameservers):
-        MODULE.warn('No valid UCS domain (%s) at nameserver %s!' % (domain, nameserver))
+        MODULE.warning('No valid UCS domain (%s) at nameserver %s!', domain, nameserver)
     except dns.exception.Timeout as exc:
-        MODULE.warn('Lookup for Primary Directory Node record at nameserver %s timed out: %s' % (nameserver, exc))
+        MODULE.warning('Lookup for Primary Directory Node record at nameserver %s timed out: %s', nameserver, exc)
     except dns.exception.DNSException:
-        MODULE.error('DNS Exception: %s' % (traceback.format_exc()))
+        MODULE.exception('DNS Exception')
     return None
 
 
@@ -968,7 +968,7 @@ def get_fqdn(nameserver: str) -> str | None:
     # perform a reverse lookup
     try:
         reverse_address = dns.reversename.from_address(nameserver)
-        MODULE.info('Found reverse address: %s' % (reverse_address,))
+        MODULE.info('Found reverse address: %s', reverse_address)
         reverse_lookup = resolver.query(reverse_address, 'PTR')
         if not len(reverse_lookup):
             return None
@@ -979,11 +979,11 @@ def get_fqdn(nameserver: str) -> str | None:
 
         return domain
     except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer, dns.resolver.NoNameservers) as exc:
-        MODULE.warn('Lookup for nameserver %s failed: %s %s' % (nameserver, type(exc).__name__, exc))
+        MODULE.warning('Lookup for nameserver %s failed: %s %s', nameserver, type(exc).__name__, exc)
     except dns.exception.Timeout as exc:
-        MODULE.warn('Lookup for nameserver %s timed out: %s' % (nameserver, exc))
+        MODULE.warning('Lookup for nameserver %s timed out: %s', nameserver, exc)
     except dns.exception.DNSException:
-        MODULE.error('DNS Exception: %s' % (traceback.format_exc()))
+        MODULE.exception('DNS Exception')
     return None
 
 

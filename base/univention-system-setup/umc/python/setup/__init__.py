@@ -41,7 +41,7 @@ from univention.management.console.modules.sanitizers import IntegerSanitizer, P
 try:
     from univention.appcenter.app_cache import AppCache
 except ImportError as exc:
-    MODULE.warn('Ignoring import error: %s' % (exc,))
+    MODULE.warning('Ignoring import error: %s', exc)
 
 
 from univention.management.console.modules.setup import network, util
@@ -111,11 +111,11 @@ class Instance(Base, ProgressMixin):
                 process.kill()
                 return True
         except OSError as exc:
-            MODULE.warn('cannot open browser PID file: %s' % (exc,))
+            MODULE.warning('cannot open browser PID file: %s', exc)
         except ValueError as exc:
-            MODULE.error('browser PID is not a number: %s' % (exc,))
+            MODULE.error('browser PID is not a number: %s', exc)
         except psutil.NoSuchProcess as exc:
-            MODULE.error('cannot kill process with PID: %s' % (exc,))
+            MODULE.error('cannot kill process with PID: %s', exc)
         return False
 
     @simple_response
@@ -196,10 +196,10 @@ class Instance(Base, ProgressMixin):
                         if RE_IPV4.match(ikey) or RE_IPV6_DEFAULT.match(ikey) or RE_SSL.match(ikey):
                             restart = True
                             break
-                    MODULE.info('Restart servers: %s' % restart)
+                    MODULE.info('Restart servers: %s', restart)
 
                 # on a joined system we can run the setup scripts
-                MODULE.info('runnning system setup scripts (flavor %r)' % (request.flavor,))
+                MODULE.info('runnning system setup scripts (flavor %r)', request.flavor)
 
                 util.run_scripts(self._progressParser, restart, subfolders, lang=str(self.locale), args=script_args)
 
@@ -220,7 +220,7 @@ class Instance(Base, ProgressMixin):
 
             if isinstance(result, BaseException):
                 msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
-                MODULE.warn('Exception during saving the settings: %s' % (msg,))
+                MODULE.warning('Exception during saving the settings', traceback=msg)
                 self._progressParser.current.errors.append(_('Encountered unexpected error during setup process: %s') % result)
                 self._progressParser.current.critical = True
                 self._finishedResult = True
@@ -285,7 +285,7 @@ class Instance(Base, ProgressMixin):
 
             if isinstance(result, BaseException):
                 msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
-                MODULE.warn('Exception during saving the settings: %s' % (msg,))
+                MODULE.warning('Exception during saving the settings', traceback=msg)
                 self._progressParser.current.errors.append(_('Encountered unexpected error during setup process: %s') % (result,))
                 self._progressParser.current.critical = True
                 self._finishedResult = True
@@ -310,7 +310,7 @@ class Instance(Base, ProgressMixin):
                 'steps': state.percentage,
             }
             info.update(kwargs)
-            MODULE.info('Progress state: %(steps).1f%% - %(component)s - %(info)s' % info)
+            MODULE.info('Progress state: %(steps).1f%% - %(component)s - %(info)s', info)
             return info
         # acquire the lock in order to wait for the join/setup scripts to finish
         # do this for 30 sec and then return anyway
@@ -369,7 +369,7 @@ class Instance(Base, ProgressMixin):
                 })
 
         def _append(key: str, message: str) -> None:
-            MODULE.warn('Validation failed for key %s: %s' % (key, message))
+            MODULE.warning('Validation failed for key %s: %s', key, message)
             messages.append({
                 'key': key,
                 'valid': False,
@@ -656,12 +656,12 @@ class Instance(Base, ProgressMixin):
     def reset_locale(self, locale):
         locale = Locale(locale)
         locale.codeset = self.locale.codeset
-        MODULE.info('Switching language to: %s' % locale)
+        MODULE.info('Switching language to: %s', locale)
         os.putenv('LANG', str(self.locale))
         try:
             _locale.setlocale(_locale.LC_ALL, str(locale))
         except _locale.Error:
-            MODULE.warn('Locale %s is not supported, using fallback locale "C" instead.' % locale)
+            MODULE.warning('Locale %s is not supported, using fallback locale "C" instead.', locale)
             _locale.setlocale(_locale.LC_ALL, 'C')
         self.locale = locale
 
@@ -675,7 +675,7 @@ class Instance(Base, ProgressMixin):
     @simple_response
     def find_city(self, pattern: str, max_results: int) -> list | None:
         pattern = pattern.lower()
-        MODULE.info('pattern: %s' % pattern)
+        MODULE.info('pattern: %s', pattern)
         if not pattern:
             return []
 
@@ -700,7 +700,7 @@ class Instance(Base, ProgressMixin):
                         match['match_score'] = match_score
             if match:
                 matches.append(match)
-        MODULE.info('Search for pattern "%s" with %s matches' % (pattern, len(matches)))
+        MODULE.info('Search for pattern "%s" with %s matches', pattern, len(matches))
         if not matches:
             return None
 
@@ -713,7 +713,7 @@ class Instance(Base, ProgressMixin):
 
         # sort matches...
         matches.sort(key=lambda x: x['final_score'], reverse=True)
-        MODULE.info('Top 5 matches: %s' % json.dumps(matches[:5], indent=2))
+        MODULE.info('Top 5 matches: %s', json.dumps(matches[:5], indent=2))
         matches = matches[:max_results]
 
         # add additional information about keyboard layout, time zone etc. and
@@ -751,7 +751,7 @@ class Instance(Base, ProgressMixin):
                     result['ucs_master_fqdn'] = ucs_master_fqdn
                     result['ucs_master_reachable'] = util.is_ssh_reachable(ucs_master_fqdn)
             except (failedADConnect, connectionFailed) as exc:
-                MODULE.warn('ADDS DC lookup failed: %s' % (exc,))
+                MODULE.warning('ADDS DC lookup failed: %s', exc)
         elif role == 'nonmaster':
             domain = util.get_ucs_domain(nameserver)
             if domain:
