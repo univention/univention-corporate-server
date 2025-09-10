@@ -73,7 +73,7 @@ class Instance(Base):
             try:
                 getattr(service, action)()
             except ServiceError as exc:
-                MODULE.warn(f'Error during {action} of {srv}: {exc}')
+                MODULE.warning("Error during %s of %s: %s", action, srv, exc)
                 error_messages.append('%s\n%s' % ({
                     'start': _('Starting the service %s failed:'),
                     'stop': _('Stopping the service %s failed:'),
