@@ -76,7 +76,7 @@ class _TestCodes:
     }
 
     def __getattribute__(self, item: str):
-        warnings.warn(f"deprecated use of TestCodes.{item}", DeprecationWarning, stacklevel=2)
+        warnings.warn("deprecated use of TestCodes.%s", item, DeprecationWarning, stacklevel=2)
         if item.startswith("REASON_"):
             return int(getattr(Reason, item[7:]))
         return object.__getattribute__(self, item)

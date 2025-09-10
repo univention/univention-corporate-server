@@ -81,22 +81,22 @@ def get_tests(sections: Iterable[str]) -> dict[str, list[str]]:
 
     for section in sections:
         dirname = all_sections[section]
-        logger.debug(f'Processing directory {dirname}')
+        logger.debug("Processing directory %s", dirname)
         tests = []
 
         files = os.listdir(dirname)
         for filename in sorted(files):
             fname = os.path.join(dirname, filename)
             if not RE_PREFIX.match(filename):
-                logger.debug(f'Skipped file {fname}')
+                logger.debug("Skipped file %s", fname)
                 continue
             if RE_SUFFIX.search(filename):
-                logger.debug(f'Skipped file {fname}')
+                logger.debug("Skipped file %s", fname)
                 continue
             if not os.path.exists(fname):
-                logger.debug(f'Skipped file {fname}')
+                logger.debug("Skipped file %s", fname)
                 continue
-            logger.debug(f'Adding file {fname}')
+            logger.debug("Adding file %s", fname)
             tests.append(fname)
 
         if tests:

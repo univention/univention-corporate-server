@@ -43,7 +43,7 @@ class UniventionConfigurationRegistry:
         self.search(query)
         # the number of rows - 1 since the header row also gets counted here
         rows = self.page.locator('.dgrid-row').get_by_role('row')
-        logger.info("query '%s' returned %d results" % (query, rows.count()))
+        logger.info("query '%s' returned %d results", query, rows.count())
         keys = rows.locator('.field-key').all()
         values = rows.locator('.field-value').all()
 

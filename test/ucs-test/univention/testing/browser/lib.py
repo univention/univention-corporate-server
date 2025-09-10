@@ -88,9 +88,9 @@ class Interactions:
         :param start_at: starts opening
         """
         for module in modules[start_at:limit]:
-            logger.info('Opening module %s' % module)
+            logger.info('Opening module %s', module)
             self.open_and_close_module(module)
-            logger.info('Closed module %s' % module)
+            logger.info('Closed module %s', module)
             time.sleep(1)
 
     def open_all_modules(self, limit: int | None = None, start_at: int | None = None):
@@ -101,7 +101,7 @@ class Interactions:
         :param start_at: starts opening
         """
         modules = self.get_available_modules()
-        logger.info('Found %d modules' % len(modules))
+        logger.info('Found %d modules', len(modules))
         self.open_modules(modules, limit=limit, start_at=start_at)
 
     def open_and_close_module(self, module_name: str, wait_for_network_idle: bool = False):
@@ -133,7 +133,7 @@ class Interactions:
         self.page.locator('.umcModuleSearch input.dijitInputInner').press_sequentially(module_name)
         module_by_title_attrib_locator = self.page.locator(f".umcGalleryName[title='{module_name}']")
         exact_module_name = re.compile(f'^{re.escape(module_name)}$')
-        logger.info('Trying to find button to open module %s' % module_name)
+        logger.info('Trying to find button to open module %s', module_name)
         module_locator = self.page.locator('.umcGalleryName', has_text=exact_module_name)
         expect(module_locator.or_(module_by_title_attrib_locator)).to_be_visible()
         if module_by_title_attrib_locator.is_visible():
@@ -186,7 +186,7 @@ class UMCBrowserTest(Interactions):
         Interactions.__init__(self, self)
 
     def set_language(self, lang: UCSLanguage):
-        logger.info('Setting language to %s' % lang)
+        logger.info('Setting language to %s', lang)
         self.lang = lang
         self.__set_lang(str(lang))
         translator.set_language(str(lang).replace('-', '_'))
@@ -259,7 +259,7 @@ class UMCBrowserTest(Interactions):
         :param do_navigation: Wether to navigate to the login page
         :param expect_password_change_prompt: Expect a password change prompt to be visible after clicking the Login button
         """
-        logger.info("Starting login to '%s' " % location)
+        logger.info("Starting login to '%s' ", location)
         page = self.page
 
         if do_navigation:
@@ -292,7 +292,7 @@ class UMCBrowserTest(Interactions):
 
         # TODO: wait_until networkidle is discouraged by Playwright, replace at some point
         self.page.wait_for_url(re.compile(r'.*univention/(management|portal|selfservice).*'), wait_until=wait_until)
-        logging.info('Login Done')
+        logger.info('Login Done')
 
     def end_umc_session(self):
         """Logs the current logged in user out by navigating to /univention/login"""
@@ -311,7 +311,7 @@ class UMCBrowserTest(Interactions):
         side_menu.logout()
 
     def systemd_restart_service(self, service: str):
-        logger.info('restarting service %s' % service)
+        logger.info('restarting service %s', service)
         subprocess.run(['deb-systemd-invoke', 'restart', service], check=True)
 
     def restart_umc(self):

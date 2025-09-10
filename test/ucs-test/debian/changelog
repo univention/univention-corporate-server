@@ -1,3 +1,9 @@
+ucs-test (12.3.5) unstable; urgency=medium
+
+  * Bug #58644: use lazy log evaluation
+
+ -- Florian Best <best@univention.de>  Tue, 16 Sep 2025 23:48:31 +0200
+
 ucs-test (12.3.4) unstable; urgency=medium
 
   * Bug #58269: parallel umc oidc login test

@@ -24,6 +24,8 @@ from locust_plugins.listeners.jmeter import JmeterListener
 from utils import TIMEOUT, do_saml_iframe_session_refresh, get_credentials, login_via_saml
 
 
+logger = logging.getLogger()
+
 WAIT_MAX = int(os.environ.get('WAIT_MAX', '120'))
 
 
@@ -79,7 +81,7 @@ class SAMLSessionRefresh(FastHttpUser):
         umc_session_id = login_via_saml(self.client, self.username, self.password, prefix='05')
 
         if umc_session_id is None:
-            logging.info('Login failed')
+            logger.info('Login failed')
             return
 
         # 11. GET /univention/portal/
@@ -112,7 +114,7 @@ class SAMLSessionRefresh(FastHttpUser):
         # 15. GET /univention/saml/iframe
         umc_session_id = do_saml_iframe_session_refresh(self.client, prefix='10')
         if umc_session_id is None:
-            logging.info('Session refresh failed')
+            logger.info('Session refresh failed')
             return
 
         # 16. GET /univention/get/session-info

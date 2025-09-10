@@ -101,7 +101,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         try:
             self.driver.execute_script(f'document.cookie = "UMCLang={self.language}; path=/univention/"')
         except selenium_exceptions.WebDriverException as exc:
-            logger.warning(f'Setting language cookie failed: {exc}')
+            logger.warning("Setting language cookie failed: %s", exc)
 
         self.set_viewport_size(1200, 800)
         return self
@@ -109,7 +109,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
     def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         try:
             if exc_type:
-                logger.error(f'Exception: {exc_type} {exc_value}')
+                logger.error("Exception: %s %s", exc_type, exc_value)
                 self.save_screenshot(hide_notifications=False, append_timestamp=True)
                 self.save_browser_log()
             self.driver.quit()
@@ -146,7 +146,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         filename = f'{self.screenshot_path}/{name}_{self.language}{timestamp}.png'
         logger.warning('Saving screenshot %r', filename)
         if os.environ.get('JENKINS_WS'):
-            logger.warning('Screenshot URL: %sws/test/selenium/selenium/%s' % (os.environ['JENKINS_WS'], os.path.basename(filename)))
+            logger.warning('Screenshot URL: %sws/test/selenium/selenium/%s', os.environ['JENKINS_WS'], os.path.basename(filename))
 
         self.driver.save_screenshot(filename)
         screenshot = self.crop_screenshot_to_element(filename, xpath)
@@ -183,7 +183,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         filename = f'{self.screenshot_path}/{name}_{self.language}_browserlog{timestamp}.txt'
         logger.info('Saving browser log %r', filename)
         if os.environ.get('JENKINS_WS'):
-            logger.info('Browser Log URL: {}ws/test/selenium/selenium/{}'.format(os.environ['JENKINS_WS'], os.path.basename(filename)))
+            logger.info('Browser Log URL: %sws/test/selenium/selenium/%s', os.environ['JENKINS_WS'], os.path.basename(filename))
         with open(filename, 'w') as f:
             f.writelines(f'{json.dumps(entry)}\n' for entry in self.driver.get_log('browser'))
 

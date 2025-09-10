@@ -30,7 +30,7 @@ class Interactions:
         self.click_element(f'//*[contains(text(), "{text}")]', **kwargs)
 
     def click_checkbox_of_grid_entry(self, name: str, **kwargs: Any) -> None:
-        logger.info("Clicking the checkbox of the grid entry  %r", name)
+        logger.info("Clicking the checkbox of the grid entry %r", name)
         self.click_element(
             '//*[contains(concat(" ", normalize-space(@class), " "), " dgrid-cell ")][@role="gridcell"]/descendant-or-self::node()[contains(text(), "%s")]/../..//input[@type="checkbox"]/..'
             % (name,),
@@ -38,7 +38,7 @@ class Interactions:
         )
 
     def click_checkbox_of_dojox_grid_entry(self, name: str, **kwargs: Any) -> None:
-        logger.info("Clicking the checkbox of the dojox grid entry  %r", name)
+        logger.info("Clicking the checkbox of the dojox grid entry %r", name)
         self.click_element(
             expand_path('//*[@containsClass="dojoxGridCell"][@role="gridcell"][contains(text(), "%s")]/preceding-sibling::*[1]')
             % (name,),
@@ -143,10 +143,7 @@ class Interactions:
         )
 
         if len(elems) != 1:
-            logger.warning(
-                "Found %d clickable elements instead of 1. Trying to click on "
-                "the first one." % (len(elems),),
-            )
+            logger.warning("Found %d clickable elements instead of 1. Trying to click on the first one.", len(elems))
 
         if scroll_into_view:
             self.driver.execute_script("arguments[0].scrollIntoView();", elems[0])
@@ -188,7 +185,7 @@ class Interactions:
             self.get_all_enabled_elements,
         )
         if len(elems) != 1:
-            logger.warning(f"Found {len(elems):d} input elements instead of one. Try using the first one")
+            logger.warning("Found %d input elements instead of one. Try using the first one", len(elems))
         elems[0].clear()
         elems[0].send_keys(inputvalue)
         if with_click:
@@ -202,13 +199,13 @@ class Interactions:
             self.get_all_enabled_elements,
         )
         if len(elems) != 1:
-            logger.warning(f"Found {len(elems):d} input elements instead of one. Try using the first one")
+            logger.warning("Found %d input elements instead of one. Try using the first one", len(elems))
         elems[0].clear()
         elems[0].send_keys(inputvalue)
 
     def submit_input(self, inputname: str) -> None:
         """Submit the input in an input-element with the tag inputname."""
-        logger.info(f'Submitting input field {inputname!r}.')
+        logger.info("Submitting input field %r.", inputname)
         elem = self.get_input(inputname)
         # elem.submit() -> This doesn't work, when there is an html element
         # named 'submit'.
@@ -222,10 +219,7 @@ class Interactions:
         )
 
         if len(elems) != 1:
-            logger.warning(
-                "Found %d input elements instead of 1. Trying to use the first "
-                "one." % (len(elems),),
-            )
+            logger.warning("Found %d input elements instead of 1. Trying to use the first one.", len(elems))
         return elems[0]
 
     def get_all_enabled_elements(self, xpath: str) -> list[Any]:
@@ -251,7 +245,7 @@ class Interactions:
         uploader_xpath = '//*[contains(@id, "_ImageUploader_")]//input[@type="file"]'
         logger.info("Getting the uploader with xpath: %s%s", xpath_prefix, uploader_xpath)
         uploader = self.driver.find_element(By.XPATH, xpath_prefix + uploader_xpath)
-        logger.info("Uploading the image: %s" % img_path)
+        logger.info("Uploading the image: %s", img_path)
         uploader.send_keys(img_path)
         logger.info("Waiting for upload to finish")
         time.sleep(1)  # wait_for_text('Uploading...') is too inconsistent
