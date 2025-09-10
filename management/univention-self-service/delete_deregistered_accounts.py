@@ -16,6 +16,9 @@ from univention.management.console.modules.passwordreset import DEREGISTRATION_T
 from univention.udm import UDM
 
 
+logger = logging.getLogger(__name__)
+
+
 class ScriptError(Exception):
     pass
 
@@ -72,17 +75,17 @@ def main(args):
         seconds=args.timedelta_seconds,
     )
     deregistration_timestamp_threshold = datetime.datetime.strftime(now - dt, DEREGISTRATION_TIMESTAMP_FORMATTING)
-    logging.info('Deleting users with univentionDeregisteredThroughSelfService=TRUE whose univentionDeregistrationTimestamp is older than %s', dt)
+    logger.info('Deleting users with univentionDeregisteredThroughSelfService=TRUE whose univentionDeregistrationTimestamp is older than %s', dt)
     users_found = False
     for user in get_users(deregistration_timestamp_threshold, args.binddn, args.bindpwdfile):
         users_found = True
         if args.dry_run:
-            logging.info('dry-run: Deleting %s', user)
+            logger.info('dry-run: Deleting %s', user)
         else:
-            logging.info('Deleting %s', user)
+            logger.info('Deleting %s', user)
             user.delete()
     if not users_found:
-        logging.info('No users need to be deleted')
+        logger.info('No users need to be deleted')
 
 
 def parse_args(args=None):
@@ -103,4 +106,4 @@ if __name__ == '__main__':
     try:
         main(parse_args())
     except ScriptError as err:
-        logging.error(err)
+        logger.error(err)
