@@ -78,7 +78,7 @@ class I18N:
         if not os.path.isfile(filename):
             filename = os.path.join(I18N.LOCALE_DIR, '%s_%s' % (self.locale.language, self.locale.territory), '%s.mo' % self.domain)
             if not os.path.isfile(filename):
-                LOCALE.warn('Could not find translation file: %r' % (os.path.basename(filename),))
+                LOCALE.warning('Could not find translation file: %r' % (os.path.basename(filename),))
                 self.mofile = None
                 return
 

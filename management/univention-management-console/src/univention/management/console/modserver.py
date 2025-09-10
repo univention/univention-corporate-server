@@ -182,12 +182,12 @@ class ModuleServer:
     def signal_handler_alarm(self, signo, frame):
         MODULE.info('Received SIGALARM')
         if self.__handler is not None and self.__handler._Base__requests:
-            MODULE.warn('There are still open requests - do not shutdown')
+            MODULE.warning('There are still open requests - do not shutdown')
             signal.alarm(1)
             return
 
         if SimpleThread.running_threads > 0:
-            MODULE.warn('There are still running threads - do not shutdown')
+            MODULE.warning('There are still running threads - do not shutdown')
             signal.alarm(15)
             return
 
@@ -269,7 +269,7 @@ class Handler(RequestHandler):
 
     def on_connection_close(self):
         super().on_connection_close()
-        MODULE.warn('Connection was aborted by the client!')
+        MODULE.warning('Connection was aborted by the client!')
         self._remove_active_request()
 
     def on_finish(self):
@@ -304,7 +304,7 @@ class Handler(RequestHandler):
             if not locale.territory:  # TODO: replace by using the actual provided value
                 locale.territory = {'de': 'DE', 'fr': 'FR', 'en': 'US'}.get(self.locale.code)
         except I18N_Error as exc:
-            MODULE.warn('Invalid locale: %s %s' % (exc, locale))
+            MODULE.warning('Invalid locale: %s %s' % (exc, locale))
         locale = str(locale)
 
         msg = Request(umcp_command, [path], mime_type=mimetype)
@@ -469,7 +469,7 @@ class Handler(RequestHandler):
         st = os.stat(tmpfile)
         max_size = get_int('umc/server/upload/max', 64) * 1024
         if st.st_size > max_size:
-            MODULE.warn('file of size %d could not be uploaded' % (st.st_size))
+            MODULE.warning('file of size %d could not be uploaded' % (st.st_size))
             raise BadRequest('The size of the uploaded file is too large')
 
         filename = store['filename']

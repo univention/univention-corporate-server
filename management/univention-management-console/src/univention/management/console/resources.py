@@ -135,17 +135,17 @@ class _ModuleConnection:
         try:
             response = function()
         except tornado.curl_httpclient.CurlError as exc:
-            CORE.warn('Reaching module failed: %s' % (exc,))
+            CORE.warning('Reaching module failed: %s' % (exc,))
             raise CouldNotConnect(exc)
         except tornado.httpclient.HTTPError as exc:
             response = exc.response
             if response is None:  # (599, 'Timeout while connecting', None)
                 raise CouldNotConnect(exc)
         except ValueError as exc:  # HTTP GET request with body
-            CORE.warn('Reaching module failed: %s' % (exc,))
+            CORE.warning('Reaching module failed: %s' % (exc,))
             raise BadRequest(str(exc))
         except asyncio.exceptions.CancelledError as exc:
-            CORE.warn('Aborted module process request: %s' % (exc,))
+            CORE.warning('Aborted module process request: %s' % (exc,))
             raise CouldNotConnect(exc)
 
         return response
@@ -303,7 +303,7 @@ class ModuleProcess(_ModuleConnection):
                 # or /exit HTTP request?
                 self.__process.proc.send_signal(signal.SIGALRM)
             except ProcessLookupError as exc:
-                CORE.warn('Could not shutdown module: %s' % (exc,))
+                CORE.warning('Could not shutdown module: %s' % (exc,))
 
 
 class ModuleProxy(_ModuleConnection):
@@ -546,7 +546,7 @@ class Modules(Resource):
         try:
             preferences = lo.get(user_dn, ['univentionUMCProperty']).get('univentionUMCProperty', [])
         except (ldap.LDAPError, udm_errors.base) as exc:
-            CORE.warn('Failed to retrieve user preferences: %s' % (exc,))
+            CORE.warning('Failed to retrieve user preferences: %s' % (exc,))
             return {}
         preferences = (val.decode('utf-8', 'replace') for val in preferences)
         return dict(val.split('=', 1) if '=' in val else (val, '') for val in preferences)
@@ -623,7 +623,7 @@ class Command(Resource):
 
     def on_connection_close(self):
         super().on_connection_close()
-        CORE.warn('Connection was aborted by the client!')
+        CORE.warning('Connection was aborted by the client!')
         self._remove_active_request()
         if self.future is not None:
             self.future.cancel()
@@ -671,19 +671,19 @@ class Command(Resource):
         self._request_url = urlparse(self.request.full_url())
         module_name = acls.get_module_providing(moduleManager, command)
         if not module_name:
-            CORE.warn('No module provides %s' % (command))
+            CORE.warning('No module provides %s' % (command))
             raise self.forbidden_or_unauthenticated(self._("No module found for this request."))
 
         CORE.info('Checking ACLs for %s (%s)' % (command, module_name))
         options = self.request.body_arguments
         flavor = self.request.headers.get('X-UMC-Flavor')
         if not acls.is_command_allowed(command, options, flavor):
-            CORE.warn('Command %s is not allowed' % (command))
+            CORE.warning('Command %s is not allowed' % (command))
             raise self.forbidden_or_unauthenticated(self._("Not allowed to perform this request."))
 
         methodname = acls.get_method_name(moduleManager, module_name, command)
         if not methodname:
-            CORE.warn('Command %s does not exists' % (command))
+            CORE.warning('Command %s does not exists' % (command))
             raise self.forbidden_or_unauthenticated(self._("Unknown request."))
 
         headers = self.get_request_header(session, methodname, umcp_command)
@@ -901,7 +901,7 @@ class Hosts(Resource):
             domaincontrollers = lo.search(filter="(objectClass=univentionDomainController)", attr=['cn', 'associatedDomain'])
         except (ldap.LDAPError, udm_errors.base) as exc:
             reset_ldap_connection_cache(lo)
-            CORE.warn('Could not search for domaincontrollers: %s' % (exc))
+            CORE.warning('Could not search for domaincontrollers: %s' % (exc))
             return []
 
         return sorted(
@@ -957,7 +957,7 @@ class SetLocale(Resource):
         try:
             lang = Locale(locale)
         except I18N_Error as exc:
-            CORE.warn('Invalid locale specified: %r -> %s' % (locale, exc))
+            CORE.warning('Invalid locale specified: %r -> %s' % (locale, exc))
             raise BadRequest(self._('Specified locale is not available'))
         self.current_user.user._locale = locale
         self.set_header('Content-Language', '%s-%s' % (lang.language, lang.territory) if lang.territory else lang.language)
@@ -1014,7 +1014,7 @@ class UserPreferences(Resource):
         try:
             preferences = lo.get(user_dn, ['univentionUMCProperty']).get('univentionUMCProperty', [])
         except (ldap.LDAPError, udm_errors.base) as exc:
-            CORE.warn('Failed to retrieve user preferences: %s' % (exc,))
+            CORE.warning('Failed to retrieve user preferences: %s' % (exc,))
             return {}
         preferences = (val.decode('utf-8', 'replace') for val in preferences)
         return dict(val.split('=', 1) if '=' in val else (val, '') for val in preferences)
@@ -1051,7 +1051,7 @@ class SetUserPreferences(UserPreferences):
         new_preferences = []
         for key, value in preferences.items():
             if not isinstance(key, str):
-                CORE.warn('user preferences keys needs to be strings: %r' % (key,))
+                CORE.warning('user preferences keys needs to be strings: %r' % (key,))
                 continue
 
             # we can put strings directly into the dict

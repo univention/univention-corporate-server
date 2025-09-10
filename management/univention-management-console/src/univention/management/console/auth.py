@@ -121,7 +121,7 @@ class AuthHandler:
                 AUTH.info('Canonicalized username: %r' % (username,))
         except (ldap.LDAPError, udm_errors.ldapError) as exc:
             # /etc/machine.secret missing or LDAP server not reachable
-            AUTH.warn('Canonicalization of username was not possible: %s' % (exc,))
+            AUTH.warning('Canonicalization of username was not possible: %s' % (exc,))
             reset_cache()
         except Exception:
             AUTH.error('Canonicalization of username failed: %s' % (traceback.format_exc(),))

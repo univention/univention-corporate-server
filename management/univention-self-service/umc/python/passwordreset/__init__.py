@@ -465,9 +465,9 @@ class Instance(Base):
         self._update_required_attr_of_props_for_registration(properties)
         properties = [properties[id_] for id_ in property_ids if id_ in properties]
         if not_existing:
-            MODULE.warn("get_registration_attributes(): the following attributes defined by umc/self-service/account-registration/udm_attributes do not exist on users/user: {}".format(", ".join(not_existing)))
+            MODULE.warning("get_registration_attributes(): the following attributes defined by umc/self-service/account-registration/udm_attributes do not exist on users/user: {}".format(", ".join(not_existing)))
         if not_supported:
-            MODULE.warn("get_registration_attributes(): the following attributes defined by umc/self-service/account-registration/udm_attributes are not supported: {}".format(", ".join(not_supported)))
+            MODULE.warning("get_registration_attributes(): the following attributes defined by umc/self-service/account-registration/udm_attributes are not supported: {}".format(", ".join(not_supported)))
         return {
             'widget_descriptions': properties,
             'layout': [prop['id'] for prop in properties],

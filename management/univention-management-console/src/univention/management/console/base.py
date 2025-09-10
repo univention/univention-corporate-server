@@ -131,8 +131,8 @@ class Base(Translation):
                         CORE.error('Missing "en_US.UTF-8:UTF-8" in UCR variable "locale"')
                     self.__current_language = language
                     return
-                CORE.warn("Locale %r is not available: %s" % (str(_locale), exc))
-        CORE.warn('Could not set language. Resetting locale.')
+                CORE.warning("Locale %r is not available: %s" % (str(_locale), exc))
+        CORE.warning('Could not set language. Resetting locale.')
         self.set_locale('C')
         self.__current_language = None
         raise NotAcceptable(self._('Specified locale is not available'))

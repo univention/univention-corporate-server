@@ -333,7 +333,7 @@ class IACLs:
             moduleManager[module_name]
         except KeyError:
             # the module has been removed from moduleManager (probably through a reload)
-            CORE.warn('Module %r (command=%r) does not exists anymore' % (module_name, command))
+            CORE.warning('Module %r (command=%r) does not exists anymore' % (module_name, command))
             moduleManager.load()
             self._reload_acls_and_permitted_commands()
             module_name = None

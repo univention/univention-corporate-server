@@ -231,22 +231,22 @@ class OIDCResource(OAuth2Mixin, Resource):
                 leeway=ucr.get_int('umc/oidc/grace-time', 3),  # seconds
             )
         except jwt.ExpiredSignatureError:
-            CORE.warn("Signature expired")
+            CORE.warning("Signature expired")
             raise Unauthorized(self._("The Token signature is expired."))
         except jwt.InvalidSignatureError as exc:
             CORE.error("Invalid signature: %s" % (exc,))
             raise Unauthorized(self._('The Token contains an invalid signature: %s') % (exc,))
         except jwt.InvalidIssuerError as exc:
-            CORE.warn("Invalid issuer: %s" % (exc,))
+            CORE.warning("Invalid issuer: %s" % (exc,))
             raise Unauthorized(self._('The Token contains an invalid issuer: %s') % (exc,))
         except jwt.InvalidAudienceError as exc:
-            CORE.warn("Invalid signature: %s" % (exc,))
+            CORE.warning("Invalid signature: %s" % (exc,))
             raise Unauthorized(self._('The Token contains an invalid audience: %s') % (exc,))
         except jwt.MissingRequiredClaimError as exc:
-            CORE.warn("Missing claim: %s" % (exc,))
+            CORE.warning("Missing claim: %s" % (exc,))
             raise Unauthorized(self._('The Token is missing a required claim: %s') % (exc,))
         except jwt.ImmatureSignatureError as exc:
-            CORE.warn("Immature signature: %s" % (exc,))
+            CORE.warning("Immature signature: %s" % (exc,))
             raise Unauthorized(self._('The Token contains an immature signature: %s') % (exc,))
 
         CORE.debug('OIDC JWK-Payload: %r' % (claims,))
@@ -271,7 +271,7 @@ class OIDCResource(OAuth2Mixin, Resource):
         try:
             user_info_res = await http_client.fetch(user_info_req)
         except HTTPClientError as exc:
-            CORE.warn("Fetching user info failed: %s %s" % (user_info_req.url, exc))
+            CORE.warning("Fetching user info failed: %s %s" % (user_info_req.url, exc))
             raise OpenIDProvideUnavailable(self._("Could not receive user information from OP."))
 
         user_info = json.loads(user_info_res.body.decode('utf-8'))
@@ -285,11 +285,11 @@ class OIDCResource(OAuth2Mixin, Resource):
         try:
             response = await http_client.fetch(request, raise_error=False)
         except HTTPClientError as exc:
-            CORE.warn("Fetching certificate failed: %s %s" % (request.url, exc))
+            CORE.warning("Fetching certificate failed: %s %s" % (request.url, exc))
             raise OpenIDProvideUnavailable(self._("Could not receive certificate from OP."))
 
         if response.code != 200:
-            CORE.warn("Fetching certificate failed")
+            CORE.warning("Fetching certificate failed")
             raise OpenIDProvideUnavailable(self._("Could not receive certificate from OP."))
         return json.loads(response.body.decode('utf-8'))
 

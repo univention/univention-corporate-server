@@ -85,7 +85,7 @@ class XML_Definition(ET.ElementTree):
         try:
             return float(self._root.get('priority', -1))
         except ValueError:
-            RESOURCES.warn('No valid number type for property "priority": %s' % self._root.get('priority'))
+            RESOURCES.warning('No valid number type for property "priority": %s' % self._root.get('priority'))
         return None
 
     def json(self):
@@ -132,5 +132,5 @@ class Manager(dict):
                     self[category.id] = category
                 RESOURCES.info('Loaded categories from %s' % filename)
             except (xml.parsers.expat.ExpatError, ET.ParseError) as exc:
-                RESOURCES.warn('Failed to parse category file %s: %s' % (filename, exc))
+                RESOURCES.warning('Failed to parse category file %s: %s' % (filename, exc))
                 continue
