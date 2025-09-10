@@ -646,10 +646,10 @@ class ucs:
             self._remove_dn_mapping(dn_ucs_mapped.lower(), dn_con.lower())
             self._set_dn_mapping(dn_ucs.lower(), dn_con.lower())
 
-    def context_log(self, property_type, obj, message='', level=ud.PROCESS, to_ucs=True):
+    def context_log(self, property_type, obj, message='', to_ucs=True):
         direction = 'sync AD > UCS' if to_ucs else 'sync UCS > AD'
         prefix = '[%14s] [%10s] %r' % (property_type or '?', obj.get('modtype', '?'), obj.get('dn', '?'))
-        ud.debug(ud.LDAP, level, '{}: {}{}'.format(direction, prefix, f': {message}' if message else ''))
+        return '{}: {}{}'.format(direction, prefix, f': {message}' if message else '')
 
     def __sync_file_from_ucs(self, filename, append_error=''):
         """sync changes from UCS stored in given file"""
@@ -1033,7 +1033,7 @@ class ucs:
                 ucs_key = attributes.ucs_attribute
                 if ucs_key:
                     value = object['attributes'][attributes.ldap_attribute]
-                    self.context_log(property_type, object, f'set attribute {attributes.con_attribute!r} as ucs property {ucs_key!r}: value={value!r}', level=ud.INFO, to_ucs=True)
+                    log.debug(self.context_log(property_type, object, f'set attribute {attributes.con_attribute!r} as ucs property {ucs_key!r}: value={value!r}', to_ucs=True))
 
                     if isinstance(value, list) and len(value) == 1:
                         value = value[0]
@@ -1346,9 +1346,9 @@ class ucs:
         # if sync is write (sync to AD) or none, there is nothing to do
         if not property_type or self.property[property_type].sync_mode in ['write', 'none']:
             if property_type:
-                self.context_log(property_type, object, f"sync ignored: sync_mode is {self.property[property_type].sync_mode}", level=ud.INFO, to_ucs=True)
+                log.debug(self.context_log(property_type, object, f"sync ignored: sync_mode is {self.property[property_type].sync_mode}", to_ucs=True))
             else:
-                self.context_log(property_type, object, "sync ignored: no mapping defined", level=ud.INFO, to_ucs=True)
+                log.debug(self.context_log(property_type, object, "sync ignored: no mapping defined", to_ucs=True))
             return True
 
         guid = decode_guid(original_object.get('attributes').get('objectGUID')[0])
@@ -1359,13 +1359,13 @@ class ucs:
             object['modtype'] = 'modify'
         if not old_object and object['modtype'] == 'modify':
             if self.was_objectGUID_added_by_ucs(guid):
-                self.context_log(property_type, object, 'sync ignored: does not exist in UCS but has already been added in the past')
+                log.info(self.context_log(property_type, object, 'sync ignored: does not exist in UCS but has already been added in the past'))
                 return True
             object['modtype'] = 'add'
         if not old_object and object['modtype'] == 'move':
             object['modtype'] = 'add'
 
-        self.context_log(property_type, object)
+        log.info(self.context_log(property_type, object))
 
         if object['modtype'] in ('delete', 'move'):
             try:
@@ -1435,7 +1435,7 @@ class ucs:
                     self.s4cache.add_entry(guid, original_object.get('attributes'))
                 if object['modtype'] == 'delete':
                     if not old_object:
-                        self.context_log(property_type, object, "ignore, object to delete doesn't exists")
+                        log.info(self.context_log(property_type, object, "ignore, object to delete doesn't exists"))
                         result = True
                     else:
                         result = self.delete_in_ucs(property_type, object, module, position)
