@@ -3,7 +3,6 @@
 
 import shlex
 import subprocess
-import traceback
 from typing import Any
 
 from packaging.version import Version
@@ -102,7 +101,7 @@ def check_domain_is_higher_or_equal_version(address: str, username: str, passwor
         try:
             master_ucs_version = subprocess.check_output(['univention-ssh', password_file, '%s@%s' % (username, address), 'echo $(/usr/sbin/ucr get version/version)-$(/usr/sbin/ucr get version/patchlevel)'], stderr=subprocess.STDOUT).rstrip().decode('UTF-8', 'replace')
         except subprocess.CalledProcessError:
-            MODULE.error('Failed to retrieve UCS version: %s' % (traceback.format_exc(),))
+            MODULE.exception('Failed to retrieve UCS version')
             return
         nonmaster_ucs_version = '{}-{}'.format(UCR.get('version/version'), UCR.get('version/patchlevel'))
         if Version(nonmaster_ucs_version) > Version(master_ucs_version):
@@ -110,18 +109,18 @@ def check_domain_is_higher_or_equal_version(address: str, username: str, passwor
 
 
 def check_for_school_domain(hostname: str, address: str, username: str, password: str) -> dict[str, Any]:
-    MODULE.process('univention-join:school: check_for_school_domain(%r, %r, %r, %r)' % (hostname, address, username, '$PASSWORD'))
+    MODULE.process('univention-join:school: check_for_school_domain(%r, %r, %r, %r)', hostname, address, username, '$PASSWORD')
     is_school_multiserver_domain = check_is_school_multiserver_domain(address, username, password)
     if is_school_multiserver_domain:
         server_school_roles = get_server_school_roles(hostname, address, username, password)
     else:
         server_school_roles = []
-    MODULE.process('univention-join:school: check_for_school_domain = %r' % ({'server_school_roles': server_school_roles, 'is_school_multiserver_domain': is_school_multiserver_domain}, ))
+    MODULE.process('univention-join:school: check_for_school_domain = %r', {'server_school_roles': server_school_roles, 'is_school_multiserver_domain': is_school_multiserver_domain})
     return {'server_school_roles': server_school_roles, 'is_school_multiserver_domain': is_school_multiserver_domain}
 
 
 def check_is_school_multiserver_domain(address: str, username: str, password: str) -> bool:
-    MODULE.process('univention-join:school: check_is_school_multiserver_domain(%r, %r, %r)' % (address, username, '$PASSWORD'))
+    MODULE.process('univention-join:school: check_is_school_multiserver_domain(%r, %r, %r)', address, username, '$PASSWORD')
     is_school_multiserver_domain = False
     with _temporary_password_file(password) as password_file:
         try:
@@ -160,13 +159,13 @@ def check_is_school_multiserver_domain(address: str, username: str, password: st
                 remote_cmd,
             ]).strip().decode('UTF-8').splitlines()
         except subprocess.CalledProcessError as exc:
-            MODULE.error('univention-join:school: Could not query Primary Directory Node if the domain is a multiserver school domain: %s' % (exc,))
-    MODULE.process('univention-join:school: check_is_school_multiserver_domain = %r' % (is_school_multiserver_domain, ))
+            MODULE.error('univention-join:school: Could not query Primary Directory Node if the domain is a multiserver school domain: %s', exc)
+    MODULE.process('univention-join:school: check_is_school_multiserver_domain = %r', is_school_multiserver_domain)
     return is_school_multiserver_domain
 
 
 def get_server_school_roles(hostname: str, address: str, username: str, password: str) -> list[str]:
-    MODULE.process('univention-join:school: get_server_school_roles(%r, %r, %r, %r)' % (hostname, address, username, '$PASSWORD'))
+    MODULE.process('univention-join:school: get_server_school_roles(%r, %r, %r, %r)', hostname, address, username, '$PASSWORD')
     school_roles = []
     with _temporary_password_file(password) as password_file:
         try:
@@ -197,6 +196,6 @@ def get_server_school_roles(hostname: str, address: str, username: str, password
             ]).strip().decode('UTF-8').splitlines()[1:]
             school_roles = [role.split()[-1] for role in school_roles]
         except (subprocess.CalledProcessError, IndexError) as exc:
-            MODULE.error('univention-join:school: Could not query Primary Directory Node for ucsschoolRole: %s' % (exc,))
-    MODULE.process('univention-join:school: get_server_school_roles = %r' % (school_roles, ))
+            MODULE.error('univention-join:school: Could not query Primary Directory Node for ucsschoolRole: %s', exc)
+    MODULE.process('univention-join:school: get_server_school_roles = %r', school_roles)
     return school_roles
