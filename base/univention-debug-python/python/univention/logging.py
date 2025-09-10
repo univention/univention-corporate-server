@@ -449,6 +449,7 @@ class Structured:
     __slots__ = ('__log',)
 
     def __init__(self, log):
+        assert isinstance(log, logging.Logger)
         self.__log = log
 
     def getChild(self, name):
@@ -488,7 +489,7 @@ class Structured:
         return getattr(self.__log, name)
 
     def __setattr__(self, name, value):  # pragma: no cover
-        if name in self.__slots__:
+        if name == '_Structured__log' or name in self.__slots__:
             return super().__setattr__(name, value)
         setattr(self.__log, name, value)
 
