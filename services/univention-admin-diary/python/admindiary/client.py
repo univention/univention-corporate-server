@@ -27,9 +27,7 @@ def exceptionlogging(f):
         try:
             return f(*args, **kwds)
         except Exception as exc:
-            get_logger().error('%s failed! %s' % (f.__name__, exc))
-            import traceback
-            get_logger().error(traceback.format_exc())
+            get_logger().exception('%s failed! %s' % (f.__name__, exc))
             return ''
     return wrapper  # type: ignore
 
