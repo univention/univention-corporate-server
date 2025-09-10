@@ -31,7 +31,7 @@ class SSLCertificateCheck(Alert):
         if certValid > 0:
             diff = certValid - today
             self.write_metric('univention_ssl_certificate_expiry_seconds', diff * 24 * 60 * 60)
-            self.log.debug("%s expires in %d days" % (certType, diff))
+            self.log.debug("%s expires in %d days", certType, diff)
         else:
             self.write_metric('univention_ssl_certificate_expiry_seconds', -1, 'unable to determine expire date - ucr variables ssl/validity/host|root are not set')
 
