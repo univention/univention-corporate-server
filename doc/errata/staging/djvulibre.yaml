@@ -1,0 +1,16 @@
+product: ucs
+release: "5.2"
+version: [1, 2, 3]
+scope: ucs_5.2-0-errata5.2-3
+src: djvulibre
+fix: 3.5.28-2.2~deb12u1
+desc: |
+ This update addresses the following issues:
+ * CVSS score unknown. (CVE-2025-53367)
+ * CVSS score 6.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H).
+   (CVE-2021-46312, CVE-2021-46310)
+bug: [58614]
+cve:
+- CVE-2021-46310
+- CVE-2021-46312
+- CVE-2025-53367
