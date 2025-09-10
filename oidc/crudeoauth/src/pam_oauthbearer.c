@@ -59,6 +59,8 @@ void oauth_log(
 	const char *fmt,
 	...
 ) {
+	UNUSED(utils);
+
 	va_list ap;
 
 	va_start(ap, fmt);
@@ -72,6 +74,8 @@ void oauth_error(
 	const char *fmt,
 	...
 ) {
+	UNUSED(utils);
+
 	va_list ap;
 
 	if (pri == 0)
@@ -88,6 +92,8 @@ int oauth_strdup(
 	char **dst,
 	int *len
 ) {
+	UNUSED(utils);
+
 	*dst = strdup(src);
 	if (*dst == NULL)
 		return -1;
@@ -124,6 +130,9 @@ static void gctx_cleanup(
 	void *data,
 	int error
 ) {
+	UNUSED(pamh);
+	UNUSED(error);
+
 	oauth_glob_context_t *gctx = (oauth_glob_context_t *)data;
 
 	if (gctx != NULL) {
@@ -174,7 +183,7 @@ static oauth_glob_context_t * pam_global_context_init(
 	int ac,
 	const char **av
 ) {
-	int error;
+	int error = 0;
 	const void *data;
 	oauth_glob_context_t *gctx;
 	int i;
@@ -396,6 +405,8 @@ PAM_EXTERN int pam_sm_authenticate(
 	int ac,
 	const char **av
 ) {
+	UNUSED(flags);
+
 	oauth_serv_context_t ctx;
 	struct passwd *pwd;
 	struct passwd pwres;
@@ -538,6 +549,10 @@ PAM_EXTERN int pam_sm_setcred(
 	int ac,
 	const char **av
 ) {
+	UNUSED(pamh);
+	UNUSED(flags);
+	UNUSED(ac);
+	UNUSED(av);
 	return PAM_SUCCESS;
 }
 
@@ -548,6 +563,10 @@ PAM_EXTERN int pam_sm_acct_mgmt(
 	int ac,
 	const char **av
 ) {
+	UNUSED(pamh);
+	UNUSED(flags);
+	UNUSED(ac);
+	UNUSED(av);
 	return PAM_SUCCESS;
 }
 
@@ -558,6 +577,10 @@ PAM_EXTERN int pam_sm_open_session(
 	int ac,
 	const char **av
 ) {
+	UNUSED(pamh);
+	UNUSED(flags);
+	UNUSED(ac);
+	UNUSED(av);
 	return PAM_SUCCESS;
 }
 
@@ -567,6 +590,10 @@ PAM_EXTERN int pam_sm_close_session(
 	int ac,
 	const char **av
 ) {
+	UNUSED(pamh);
+	UNUSED(flags);
+	UNUSED(ac);
+	UNUSED(av);
 	return PAM_SUCCESS;
 }
 
@@ -576,6 +603,10 @@ PAM_EXTERN int pam_sm_chauthtok(
 	int ac,
 	const char **av
 ) {
+	UNUSED(pamh);
+	UNUSED(flags);
+	UNUSED(ac);
+	UNUSED(av);
 	return PAM_SUCCESS;
 }
 

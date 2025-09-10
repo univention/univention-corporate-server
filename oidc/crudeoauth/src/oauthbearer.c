@@ -34,10 +34,10 @@
   }
 #define AUTOPTR(type) \
   __attribute__((cleanup(AUTOPTR_FUNC_NAME(type)))) type *
-DEFINE_AUTOPTR_FUNC(char, r_free);
-DEFINE_AUTOPTR_FUNC(jwks_t, r_jwks_free);
-DEFINE_AUTOPTR_FUNC(jwk_t, r_jwk_free);
-DEFINE_AUTOPTR_FUNC(jwt_t, r_jwt_free);
+DEFINE_AUTOPTR_FUNC(char, r_free)
+DEFINE_AUTOPTR_FUNC(jwks_t, r_jwks_free)
+DEFINE_AUTOPTR_FUNC(jwk_t, r_jwk_free)
+DEFINE_AUTOPTR_FUNC(jwt_t, r_jwt_free)
 
 
 #ifdef HACK
@@ -193,6 +193,7 @@ enum OAuthError oauth_check_required_scopes(
 	const void *utils,
 	jwt_t *jwt
 ) {
+	UNUSED(utils);
 	struct oauth_list *scope;
 
 	SLIST_FOREACH(scope, &ctx->glob_context->required_scope, next) {
@@ -285,7 +286,7 @@ jwks_t * oauth_get_jwks(
 		goto out;
 	}
 
-	for (int i=0; i<r_jwks_size(jwks); i++) {
+	for (size_t i=0; i<r_jwks_size(jwks); i++) {
 		jwk_t *jwk = r_jwks_get_at(jwks, i);
 		if(r_jwk_is_valid(jwk) != RHN_OK) {
 			oauth_error(utils, 0, "Error: JWK is not valid");
