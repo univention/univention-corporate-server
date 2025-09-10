@@ -14,7 +14,6 @@ import os
 import re
 import shutil
 import tempfile
-import traceback
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
 from urllib.request import Request
@@ -179,7 +178,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         if not request.user_dn:
             raise UserWithoutDN(request.username)
 
-        MODULE.info('Initializing module as user %r' % (request.user_dn,))
+        MODULE.info('Initializing module as user %r', request.user_dn)
 
         def bind_user_connection(lo):
             request.bind_user_connection(lo)
@@ -203,12 +202,12 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
     def error_handling(self, etype, exc, etraceback):
         super().error_handling(etype, exc, etraceback)
         if isinstance(exc, udm_errors.authFail | INVALID_CREDENTIALS):
-            MODULE.warn('Authentication failed: %s' % (exc,))
+            MODULE.warning('Authentication failed: %s', exc)
             raise LDAP_AuthenticationFailed()
         if isinstance(exc, udm_errors.permissionDenied) or isinstance(exc, UDM_Error) and isinstance(exc.exc, udm_errors.permissionDenied):
             raise Forbidden(str(exc))
         if isinstance(exc, udm_errors.base | LDAPError):
-            MODULE.error(''.join(traceback.format_exception(etype, exc, etraceback)))
+            MODULE.error('Error:', exc_info=(etype, exc, etraceback))
 
     def require_license(self, lo):
         if id(lo) in self.__license_checks:
@@ -355,7 +354,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
                 importer.check(ucr.get('ldap/base', ''))
                 importer.write(self.get_ldap_connection()[0])
         except (ValueError, AttributeError, LDAPError) as exc:
-            MODULE.error('License import failed (malformed LDIF): %r' % (exc, ))
+            MODULE.error('License import failed (malformed LDIF): %r', exc)
             # AttributeError: missing univentionLicenseBaseDN
             # ValueError raised by ldif.LDIFParser when e.g. dn is duplicated
             # LDAPError e.g. LDIF contained non existing attributes
@@ -365,7 +364,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
                 _error(_('License import failed: malformed LDIF.'))
             return
         except LicenseError as exc:
-            MODULE.error('LicenseImport check failed: %r' % (exc, ))
+            MODULE.error('LicenseImport check failed: %r', exc)
             _error(str(exc))
             return
         finally:
@@ -446,7 +445,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
                     raise ObjectDoesNotExist(ldap_dn)
                 result.append({'$dn$': ldap_dn, 'success': False, 'details': _('LDAP object does not exist.')})
                 continue
-            MODULE.info('Modifying LDAP object %s' % (ldap_dn,))
+            MODULE.info('Modifying LDAP object %s', ldap_dn)
             if '$labelObjectType$' in properties:
                 del properties['$labelObjectType$']
             try:
@@ -568,7 +567,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
 
                     result.append(props)
                 else:
-                    MODULE.process('The LDAP object for the LDAP DN %s could not be found' % ldap_dn)
+                    MODULE.process('The LDAP object for the LDAP DN %s could not be found', ldap_dn)
         return result
 
     @sanitize(
@@ -603,10 +602,10 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         if superordinate == 'None':
             superordinate = None
         elif superordinate is not None:
-            MODULE.info('Query defines a superordinate %s' % superordinate)
+            MODULE.info('Query defines a superordinate %s', superordinate)
             _superordinate, mod = self.get_obj_module(request.flavor, superordinate)
             if mod is not None:
-                MODULE.info('Found UDM module %r for superordinate %s' % (mod.name, superordinate))
+                MODULE.info('Found UDM module %r for superordinate %s', mod.name, superordinate)
                 superordinate = _superordinate
                 if not request.options.get('container'):
                     request.options['container'] = superordinate.dn
@@ -645,7 +644,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
             module = self.get_module(object_type, obj.dn)
             if module is None:
                 # This happens when concurrent a object is removed between the module.search() and self.get_module() call
-                MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
+                MODULE.warning('LDAP object does not exists %s (flavor: %s). The object is ignored.', obj.dn, request.flavor)
                 continue
             entry = {
                 '$dn$': obj.dn,
@@ -842,7 +841,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         superordinate = udm_modules.find_superordinate(container, None, self.get_ldap_connection()[0])
         if superordinate:
             # there is a superordinate... add its subtypes to the list of allowed modules
-            MODULE.info('container has a superordinate: %s' % superordinate)
+            MODULE.info('container has a superordinate: %s', superordinate)
             allowed_modules.update(udm_modules.subordinates(superordinate))
         else:
             # add all types that do not have a superordinate
@@ -851,7 +850,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
 
         # make sure that the object type can be created
         allowed_modules = [mod for mod in allowed_modules if udm_modules.supports(mod, 'add')]
-        MODULE.info('all modules that are allowed: %s' % [udm_modules.name(mod) for mod in allowed_modules])
+        MODULE.info('all modules that are allowed: %s', [udm_modules.name(mod) for mod in allowed_modules])
 
         # return the final list of object types
         self.finished(request.id, [{'id': udm_modules.name(_module), 'label': getattr(_module, 'short_description', udm_modules.name(_module))} for _module in allowed_modules])
