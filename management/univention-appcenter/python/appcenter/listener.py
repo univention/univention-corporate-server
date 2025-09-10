@@ -55,7 +55,7 @@ class AppListener(ListenerModuleHandler):
             filename = self._get_new_file_name()
             with open(filename, 'w') as fd:
                 json.dump(attrs, fd, sort_keys=True, indent=4)
-            self.logger.info('%s of %s (id: %s, file: %s)' % (log_as or command, dn, entry_uuid, filename))
+            self.logger.info('%s of %s (id: %s, file: %s)', log_as or command, dn, entry_uuid, filename)
 
     def create(self, dn, new):
         self._write_json(dn, new, 'modify', log_as='create')

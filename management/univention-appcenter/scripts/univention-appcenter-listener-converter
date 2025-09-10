@@ -102,8 +102,8 @@ def convert(app, dumped, filename, lo, pos):
                 }
             options = objs[0].options
         else:
-            logger.info('EntryUUID %s not found' % entry_uuid)
-            logger.info('Removing corresponding listener file: %s' % filename)
+            logger.info('EntryUUID %s not found', entry_uuid)
+            logger.info('Removing corresponding listener file: %s', filename)
             os.remove(filename)
             return False
     dst_dir = os.path.join(app.get_data_dir(), 'listener')
@@ -121,7 +121,7 @@ def convert(app, dumped, filename, lo, pos):
         }
         json.dump(attrs, fd, sort_keys=True, indent=4)
     shutil.move(tmp, dst)
-    logger.info('%s of %s (id: %s, file: %s)' % ('conversion', dn, entry_uuid, dst))
+    logger.info('conversion of %s (id: %s, file: %s)', dn, entry_uuid, dst)
     return True
 
 
@@ -137,30 +137,30 @@ def find_and_convert_files(app):
             logger.critical('LDAP connection failed')
             sys.exit(3)
         for filename in filenames:
-            logger.debug('Converting %s' % filename)
+            logger.debug('Converting %s', filename)
 
             try:
                 dumped = json.load(open(filename))
             except json.decoder.JSONDecodeError:
-                logger.exception("Fatal error: The following JSON file is broken: %s" % filename)
+                logger.exception("Fatal error: The following JSON file is broken: %s", filename)
                 continue
 
             entry_uuid = dumped['entry_uuid']
             if entry_uuid in used_entry_uuids:
                 obsolete_filename = used_entry_uuids.pop(entry_uuid)
-                logger.debug('%s replaces earlier %s' % (filename, obsolete_filename))
+                logger.debug('%s replaces earlier %s', filename, obsolete_filename)
                 used_filenames.remove(obsolete_filename)
                 obsolete_filenames.append(obsolete_filename)
             used_filenames.append(filename)
             used_entry_uuids[entry_uuid] = filename
             dumped_objects[filename] = dumped
         for filename in obsolete_filenames:
-            logger.debug('Deleting unused %s' % filename)
+            logger.debug('Deleting unused %s', filename)
             os.unlink(filename)
         for filename in used_filenames:
             dumped = dumped_objects[filename]
             if convert(app, dumped, filename, lo, pos):
-                logger.debug('Deleting used %s' % filename)
+                logger.debug('Deleting used %s', filename)
                 os.unlink(filename)
 
 

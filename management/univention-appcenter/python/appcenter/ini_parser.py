@@ -50,7 +50,7 @@ def read_ini_file(filename, parser_class=RawConfigParser):
     except OSError:
         pass
     except (DuplicateSectionError, ParsingError) as exc:
-        ini_logger.warning('Could not parse %s' % filename)
+        ini_logger.warning('Could not parse %s', filename)
         ini_logger.warning(str(exc))
     else:
         return parser
@@ -169,7 +169,7 @@ class IniSectionObject(metaclass=UniventionMetaClass):
             try:
                 obj = cls.from_parser(parser, section, locale)
             except (NoValueError, ParseError) as exc:
-                ini_logger.warning('%s: %s' % (fname, exc))
+                ini_logger.warning('%s: %s', fname, exc)
             else:
                 ret.append(obj)
         return ret

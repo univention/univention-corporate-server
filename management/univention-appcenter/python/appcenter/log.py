@@ -74,7 +74,7 @@ class UMCHandler(logging.Handler):
             elif record.levelno <= logging.INFO:
                 MODULE.process(msg)
             elif record.levelno <= logging.WARNING:
-                MODULE.warn(msg)
+                MODULE.warning(msg)
             else:
                 MODULE.error(msg)
 
@@ -111,26 +111,42 @@ class LogCatcher:
         if self.logger and self._original_name:
             self.logger.name = self._original_name
 
-    def debug(self, msg):
+    def debug(self, msg, *args, **kwargs):
         if self.logger:
-            self.logger.debug(msg)
+            self.logger.debug(msg, *args, **kwargs)
 
-    def info(self, msg):
+    def info(self, msg, *args, **kwargs):
         if self.logger:
-            self.logger.info(msg)
-        self.logs.append(('OUT', msg))
+            self.logger.info(msg, *args, **kwargs)
+        self.logs.append(('OUT', self._format(msg, args, **kwargs)))
 
-    def warning(self, msg):
+    def warning(self, msg, *args, **kwargs):
         if self.logger:
-            self.logger.warning(msg)
-        self.logs.append(('ERR', msg))
+            self.logger.warning(msg, *args, **kwargs)
+        self.logs.append(('ERR', self._format(msg, args, **kwargs)))
 
     warn = warning
 
-    def fatal(self, msg):
+    def fatal(self, msg, *args, **kwargs):
         if self.logger:
-            self.logger.warning(msg)
-        self.logs.append(('ERR', msg))
+            self.logger.warning(msg, *args, **kwargs)
+        self.logs.append(('ERR', self._format(msg, args, **kwargs)))
+
+    def _format(self, msg, args, exc_info=None, extra=None, stack_info=False, stacklevel=1):
+        log = self.logger or logging.getLogger("appcenter._internal")
+        record = log.makeRecord(
+            name=log.name,
+            level=logging.INFO,
+            fn="",
+            lno=0,
+            msg=msg,
+            args=args,
+            exc_info=exc_info,
+            func=None,
+            extra=extra,
+            sinfo=stack_info,
+        )
+        return record.getMessage()
 
     def has_stdout(self):
         return any(self.stdout())

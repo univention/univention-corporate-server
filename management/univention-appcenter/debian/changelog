@@ -1,3 +1,9 @@
+univention-appcenter (11.3.2) unstable; urgency=medium
+
+  * Bug #58644: make logging compatible to structured logging
+
+ -- Florian Best <best@univention.de>  Thu, 18 Sep 2025 13:01:31 +0200
+
 univention-appcenter (11.3.1) unstable; urgency=medium
 
   [ Ivan Barbecho Delgado ]

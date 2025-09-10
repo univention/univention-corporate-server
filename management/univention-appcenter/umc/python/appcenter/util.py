@@ -37,13 +37,13 @@ def get_hosts(module, lo, ucr=None):
         host.open()  # needed for fqdn. it may be enough to return 'name'
         hostname = host.info.get('name')
         if hostname == local_hostname:
-            MODULE.process('%s is me. Skipping' % host.dn)
+            MODULE.process('%s is me. Skipping', host.dn)
             continue
         if 'fqdn' not in host.info:
-            MODULE.warn('%s does not have an FQDN. Skipping' % host.dn)
+            MODULE.warning('%s does not have an FQDN. Skipping', host.dn)
             continue
         hosts.append(host)
-    MODULE.process('Found hosts: %r' % [host.info.get('name') for host in hosts])
+    MODULE.process('Found hosts: %r', [host.info.get('name') for host in hosts])
     return hosts
 
 
@@ -240,11 +240,11 @@ class Changes:
             # the value already found.
             if value == oldval:
                 return
-            MODULE.info('Setting registry variable %r to %r' % (name, value))
+            MODULE.info('Setting registry variable %r to %r', name, value)
 
             self._changes[name] = value
         except Exception as e:
-            MODULE.warn("set_registry_var('%s', '%s') ERROR %s" % (name, value, str(e)))
+            MODULE.warning("set_registry_var('%s', '%s') ERROR %s", name, value, str(e))
 
     def commit(self):
         ucr_update(self.ucr, self._changes)

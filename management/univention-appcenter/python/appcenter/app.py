@@ -392,7 +392,7 @@ class AppFromFileAttribute(AppAttribute):
                 if name == "settings":
                     custom_settings_file = os.path.join(DATA_DIR, _self.id, 'custom.settings')
                     if os.path.isfile(custom_settings_file):
-                        app_logger.debug(f"custom settings {custom_settings_file} file found")
+                        app_logger.debug("custom settings %s file found", custom_settings_file)
                         app_attributes += self.klass.all_from_file(custom_settings_file, _self.get_locale())
                 setattr(_self, cache_name, app_attributes)
             return getattr(_self, cache_name)
@@ -553,7 +553,7 @@ class AppMetaClass(UniventionMetaClass):
                 pass
             else:
                 if not isinstance(explicit_attr, AppAttribute):
-                    app_logger.debug('Removing %s for %r' % (attr.name, explicit_attr))
+                    app_logger.debug('Removing %s for %r', attr.name, explicit_attr)
                     new_cls._attrs.pop(i + offset)
                     offset -= 1
             while True:
@@ -562,7 +562,7 @@ class AppMetaClass(UniventionMetaClass):
                     break
                 if old_attr is None:
                     break
-                app_logger.debug('Removing old %s for new %r' % (old_attr.name, attr))
+                app_logger.debug('Removing old %s for new %r', old_attr.name, attr)
                 new_cls._attrs.remove(old_attr)
         return new_cls
 
@@ -1188,7 +1188,7 @@ class App(metaclass=AppMetaClass):  # noqa: PLW1641
             try:
                 value = attr.get_value(component_id, ini_parser, meta_parser, locale)
             except ValueError as e:
-                app_logger.warning('Ignoring %s because of %s: %s' % (ini_file, attr.name, e))
+                app_logger.warning('Ignoring %s because of %s: %s', ini_file, attr.name, e)
                 return
             attr_values[attr.name] = value
         return cls(attr_values, cache)
@@ -1297,7 +1297,7 @@ class App(metaclass=AppMetaClass):  # noqa: PLW1641
         app = english_cache.find_by_component_id(self.component_id)
         if app is None:
             # somehow the localized cache and the english cache split brains!
-            app_logger.warning('Could not find %r in %r' % (self, english_cache))
+            app_logger.warning('Could not find %r in %r', self, english_cache)
             english_cache.clear_cache()
             app = english_cache.find_by_component_id(self.component_id)
             if app is None:

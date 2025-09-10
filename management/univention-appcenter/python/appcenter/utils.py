@@ -77,7 +77,7 @@ def read_ini_file(filename, parser_class=RawConfigParser):
     except OSError:
         pass
     except ParsingError as exc:
-        utils_logger.warning('Could not parse %s' % filename)
+        utils_logger.warning('Could not parse %s', filename)
         utils_logger.warning(str(exc))
     else:
         return parser
@@ -208,8 +208,8 @@ def call_process2(cmd: Sequence[str], logger: Logger | None = None, env: Mapping
     # make sure we log strings only
     str_cmd = [str(x) for x in cmd]
     if cwd:
-        logger.debug('Running in %s:' % cwd)
-    logger.info('Running command: {}'.format(' '.join(str_cmd)))
+        logger.debug('Running in %s:', cwd)
+    logger.info('Running command: %s', ' '.join(str_cmd))
     out = ""
     ret = 0
     try:
@@ -226,7 +226,7 @@ def call_process2(cmd: Sequence[str], logger: Logger | None = None, env: Mapping
         out = str(err)
         ret = 1
     if ret:
-        logger.error('Command {} failed with: {} ({})'.format(' '.join(str_cmd), out.strip(), ret))
+        logger.error('Command %s failed with: %s (%s)', ' '.join(str_cmd), out.strip(), ret)
     return ret, out
 
 
@@ -234,8 +234,8 @@ def call_process(args: Sequence[str], logger: Logger | None = None, env: Mapping
     process = Popen(args, stdout=PIPE, stderr=PIPE, close_fds=True, env=env, cwd=cwd)
     if logger is not None:
         if cwd:
-            logger.debug('Calling in %s:' % cwd)
-        logger.debug('Calling %s' % ' '.join(quote(arg) for arg in args))
+            logger.debug('Calling in %s:', cwd)
+        logger.debug('Calling %s', ' '.join(quote(arg) for arg in args))
         remove_ansi_escape_sequence_regex = re.compile(r'\x1B\[[0-9;]*[a-zA-Z]')
 
         def _handle_output(out, handler):
@@ -458,7 +458,7 @@ def container_mode() -> bool:
 
 def send_information(action: str, app: App | None = None, status: int = 200, value: str | None = None) -> None:
     app_id = app and app.id
-    utils_logger.debug('send_information: action=%s app=%s value=%s status=%s' % (action, app_id, value, status))
+    utils_logger.debug('send_information: action=%s app=%s value=%s status=%s', action, app_id, value, status)
 
     server = get_server()
     url = '%s/postinst' % server
@@ -485,13 +485,13 @@ def send_information(action: str, app: App | None = None, status: int = 200, val
         values['value'] = value
     if system_uuid:
         values['system-uuid'] = system_uuid
-    utils_logger.debug('tracking information: %s' % str(values))
+    utils_logger.debug('tracking information: %s', str(values))
     try:
         request_data = urlencode(values).encode('utf-8')
         request = urllib.request.Request(url, request_data)  # noqa: S310
         urlopen(request)
     except Exception as exc:
-        utils_logger.info('Error sending app infos to the App Center server: %s' % exc)
+        utils_logger.info('Error sending app infos to the App Center server: %s', exc)
 
 
 def find_hosts_for_master_packages() -> list[tuple[str, bool]]:
@@ -516,7 +516,7 @@ def resolve_dependencies(apps: list[App], action: str) -> list[App]:
     from univention.appcenter.app_cache import Apps
     from univention.appcenter.udm import get_machine_connection
     lo, _pos = get_machine_connection()
-    utils_logger.info('Resolving dependencies for %s' % ', '.join(app.id for app in apps))
+    utils_logger.info('Resolving dependencies for %s', ', '.join(app.id for app in apps))
     apps_with_their_dependencies = []
     depends: dict[int, list[int]] = {}
     checked = []
@@ -549,22 +549,22 @@ def resolve_dependencies(apps: list[App], action: str) -> list[App]:
         for app_id in app.required_apps:
             required_app = Apps().find(app_id)
             if required_app is None:
-                utils_logger.warning('Could not find required App %s' % app_id)
+                utils_logger.warning('Could not find required App %s', app_id)
                 continue
             if not required_app.is_installed():
-                utils_logger.info('Adding %s to the list of Apps' % required_app.id)
+                utils_logger.info('Adding %s to the list of Apps', required_app.id)
                 apps.append(required_app)
                 dependencies.append(app_id)
         for app_id in app.required_apps_in_domain:
             required_app = Apps().find(app_id)
             if required_app is None:
-                utils_logger.warning('Could not find required App %s' % app_id)
+                utils_logger.warning('Could not find required App %s', app_id)
                 continue
             if required_app.is_installed():
                 continue
             if lo.search(filter_format('(&(univentionObjectType=appcenter/app)(univentionAppInstalledOnServer=*)(univentionAppID=%s_*))', [required_app.id])):
                 continue
-            utils_logger.info('Adding %s to the list of Apps' % required_app.id)
+            utils_logger.info('Adding %s to the list of Apps', required_app.id)
             apps.append(required_app)
             dependencies.append(app_id)
     max_loop = len(checked) ** 2
