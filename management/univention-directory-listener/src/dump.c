@@ -16,6 +16,7 @@
 #include <pwd.h>
 #include <sys/types.h>
 
+#include <univention/config.h>
 #include <univention/debug.h>
 
 #include "cache.h"
@@ -47,6 +48,7 @@ int main(int argc, char *argv[]) {
 	CacheEntry entry;
 	char cache_mdb_dir[PATH_MAX];
 
+	univention_debug_set_structured(univention_config_is_true("listener/debug/structured-logging", 0));
 	univention_debug_init("stderr", 1, 1);
 
 	/* parse arguments */

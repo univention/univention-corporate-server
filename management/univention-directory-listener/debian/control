@@ -10,14 +10,14 @@ Build-Depends:
  libldap-dev,
  liblmdb-dev,
  libssl-dev,
- libunivention-config-dev,
+ libunivention-config-dev (>= 17.3.0),
  libunivention-debug-dev (>= 0.8),
  libunivention-policy-dev,
  python3-all,
  python3-all-dev,
  python3-debian,
  python3-setuptools,
- univention-config-dev (>= 15.0.3),
+ univention-config-dev (>= 17.3.0),
 
 Package: univention-directory-listener
 Architecture: any
