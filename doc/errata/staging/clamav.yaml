@@ -1,0 +1,16 @@
+product: ucs
+release: "5.2"
+version: [2, 3]
+scope: ucs_5.2-0-errata5.2-3
+src: clamav
+fix: 1.0.9+dfsg-1~deb12u1A~5.2.3.202509101046
+desc: |
+ This update addresses the following issues:
+ * CVSS score 9.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2025-20260)
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2025-20128)
+bug: [58593]
+cve:
+- CVE-2025-20128
+- CVE-2025-20260
