@@ -178,6 +178,7 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
 
     logging.addLevelName(25, 'PROCESS')
     logging.addLevelName(15, 'ALL')
+    logging.addLevelName(5, 'TRACE')
     logging.addLevelName(100, '------')
 
     logging.getLogger('ud2').getChild('MAIN').log(100, 'DEBUG_INIT')
