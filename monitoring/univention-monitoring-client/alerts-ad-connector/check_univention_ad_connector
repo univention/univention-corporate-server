@@ -57,7 +57,7 @@ class ADConnector(Alert):
 
         self.write_metric('univention_ad_connector_rejects', rejects, connector=connector)
         if rejects:
-            self.log.debug('Found %d reject(s)! Please check output of univention-adconnector-list-rejected.' % (rejects,))
+            self.log.debug('Found %d reject(s)! Please check output of univention-adconnector-list-rejected.', rejects)
 
 
 if __name__ == '__main__':

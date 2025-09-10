@@ -22,12 +22,12 @@ class Printerqueue(Alert):
         rc, output = self.exec_command(['lpq', '-P', printer], env={'LANG': 'C'})
         if rc != 0:
             self.write_metric('univention_printerqueue_jobs', -1, printer=printer)
-            self.log.debug('error while executing lpq: %s' % (output,))
+            self.log.debug('error while executing lpq: %s', output)
             return
 
         if 'is ready' not in output.splitlines()[0]:
             self.write_metric('univention_printerqueue_jobs', -1, printer=printer)
-            self.log.debug('printer is not ready: %s' % (output.splitlines()[0],))
+            self.log.debug('printer is not ready: %s', output.splitlines()[0])
             return
 
         jobs = len(output.splitlines()[2:])

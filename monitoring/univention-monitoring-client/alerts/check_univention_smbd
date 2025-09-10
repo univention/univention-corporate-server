@@ -28,7 +28,7 @@ class SMBD(Alert):
             return
         except subprocess.CalledProcessError as exc:
             self.write_metric('univention_smbd_accessible', 0)
-            self.log.debug('smbclient failed: %s' % (exc.output.decode('UTF-8', 'replace'),))
+            self.log.debug('smbclient failed: %s', exc.output.decode('UTF-8', 'replace'))
             return
         self.write_metric('univention_smbd_accessible', 1)
 
