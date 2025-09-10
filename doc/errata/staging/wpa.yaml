@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [2, 3]
+scope: ucs_5.2-0-errata5.2-3
+src: wpa
+fix: 2:2.10-12+deb12u3A~5.2.3.202509101046
+desc: |
+ This update addresses the following issue:
+ * CVSS score 6.5 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N).
+   (CVE-2022-37660)
+bug: [58602]
+cve:
+- CVE-2022-37660
