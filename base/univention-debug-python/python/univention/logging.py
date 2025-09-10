@@ -539,12 +539,12 @@ class LevelDependentFormatter(logging.Formatter):
 class DebugHandler(logging.Handler):
     """A logging handler which logs to :py:mod:`univention.debug`"""
 
-    def __init__(self, category=ud.MAIN, level=logging.NOTSET, auto_init=False, delay_init=False, do_exit=True):
+    def __init__(self, category=ud.MAIN, level=logging.NOTSET, auto_init=False, delay_init=False, do_exit=True, out_file='stderr'):
         self._category = category
         self.delay_init = delay_init
         self.auto_init = auto_init
         self.do_exit = do_exit
-        self._init_args = ('stderr', ud.NO_FLUSH, ud.NO_FUNCTION)
+        self._init_args = (out_file, ud.NO_FLUSH, ud.NO_FUNCTION)
         if auto_init and not delay_init:
             self.init(*self._init_args)
         super().__init__(level)

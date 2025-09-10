@@ -135,7 +135,7 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
     null_handler = logging.NullHandler()
 
     ud2_base_logger = logging.getLogger('ud2')
-    ud2_base_logger.setLevel(logging.DEBUG)
+    ud2_base_logger.setLevel(_map_lvl_old2new[TRACE])
     ud2_base_logger.handlers = [null_handler]
     ud2_base_logger.propagate = False
 
@@ -148,7 +148,7 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
     if logfile in ('stderr', '/dev/stderr', 'stdout', '/dev/stdout'):
         # add stderr or stdout handler
         _handler_console = logging.StreamHandler(sys.stdout if logfile in ('stdout', '/dev/stdout') else sys.stderr)
-        _handler_console.setLevel(logging.DEBUG)
+        _handler_console.setLevel(_map_lvl_old2new[TRACE])
         _handler_console.setFormatter(formatter)
         logging.getLogger('ud2').addHandler(_handler_console)
         logging.getLogger('ud2').removeHandler(null_handler)
@@ -157,7 +157,7 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
         try:
             # add file handler
             _handler_file = logging.FileHandler(logfile, 'a+')
-            _handler_file.setLevel(logging.DEBUG)
+            _handler_file.setLevel(_map_lvl_old2new[TRACE])
             _handler_file.setFormatter(formatter)
             logging.getLogger('ud2').addHandler(_handler_file)
             logging.getLogger('ud2').removeHandler(null_handler)

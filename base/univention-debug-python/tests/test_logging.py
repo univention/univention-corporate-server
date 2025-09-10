@@ -247,6 +247,17 @@ def test_logger_set_level_basic_config(tmp_path, ud_level, log_level, use_ud_lev
     logger.univention_debug_handler.close()
 
 
+def test_logger_auto_init_after_close(tmp_path):
+    tmplog = tmp_path / 'logfile'
+    from univention.logging import basicConfig, extendLogger, getLogger
+    basicConfig('stdout', level=logging.TRACE)
+    ud.exit()
+    getLogger('ADMIN', extend=True).destroy()
+    extendLogger('ADMIN', out_file=str(tmplog), auto_init=True)
+    assert "DEBUG_INIT" in tmplog.read_text()
+    ud.exit()
+
+
 def test_logger_delayed_auto_init(tmp_path):
     tmplog = tmp_path / 'logfile'
     tmplog.touch()
