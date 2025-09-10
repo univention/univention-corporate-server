@@ -114,12 +114,12 @@ class Progress:
             self.percentage(percentage)
 
     def headline(self, headline):
-        MODULE.process('### %s ###' % headline)
+        MODULE.process('### %s ###', headline)
         self._headline = headline
         self._message = None
 
     def message(self, message):
-        MODULE.process('  %s' % message)
+        MODULE.process('  %s', message)
         self._message = str(message)
 
     def percentage(self, percentage):
@@ -132,7 +132,7 @@ class Progress:
         self._scale = self._scale * (1 - fraction)
 
     def warning(self, error):
-        MODULE.warn(' %s' % error)
+        MODULE.warn(' %s', error)
         self._errors.append(str(error))
 
     def error(self, error):

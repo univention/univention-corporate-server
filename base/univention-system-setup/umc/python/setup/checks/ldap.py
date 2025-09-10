@@ -30,9 +30,9 @@ def check_if_uid_is_available(uid: str, role: str, address: str, username: str, 
             '%s@%s' % (username, address),
             rcmd,
         ]
-        MODULE.info("Running %s" % " ".join(quote(arg) for arg in cmd))
+        MODULE.info("Running %s", " ".join(quote(arg) for arg in cmd))
         process = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
         stdout, stderr = process.communicate()
         if process.wait() or stderr:
-            MODULE.error("Failed checking uid=%s role=%s: %r" % (uid, role, stderr))
+            MODULE.error("Failed checking uid=%s role=%s: %r", uid, role, stderr)
     return not stdout.strip()

@@ -438,7 +438,7 @@ class Device:
         if self.type in ('static', 'manual', 'dhcp', 'dynamic', 'appliance-mode-temporary'):
             vals['interfaces/%s/type' % (name)] = self.type
         else:
-            MODULE.warning('Unknown interfaces/%s/type: %r' % (self.name, self.type))
+            MODULE.warning('Unknown interfaces/%s/type: %r', self.name, self.type)
 
         if isinstance(self.order, int):
             vals['interfaces/%s/order' % (name)] = str(self.order)

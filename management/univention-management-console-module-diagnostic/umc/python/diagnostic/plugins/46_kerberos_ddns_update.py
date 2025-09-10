@@ -53,7 +53,7 @@ class NSUpdateError(UpdateError):
 def kinit(principal: str, keytab: str | None = None, password_file: str | None = None) -> Iterator[None]:
     auth = '--keytab={tab}' if keytab else '--password-file={file}'
     cmd = ('kinit', auth.format(tab=keytab, file=password_file), principal)
-    MODULE.process('Running: %s' % (' '.join(cmd)))
+    MODULE.process('Running: %s', ' '.join(cmd))
     try:
         subprocess.check_call(cmd)
     except subprocess.CalledProcessError:
@@ -67,11 +67,11 @@ def nsupdate(server: str, domainname: str) -> None:
     process = subprocess.Popen(('nsupdate', '-g', '-t', '15'), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     cmd_template = 'server {server}\nprereq yxdomain {domain}\nsend\nquit\n'
     cmd = cmd_template.format(server=server, domain=domainname)
-    MODULE.process("Running: 'echo %s | nsupdate -g -t 15'" % (cmd,))
+    MODULE.process("Running: 'echo %s | nsupdate -g -t 15'", cmd)
 
     process.communicate(cmd.encode("utf-8"))
     if process.poll() != 0:
-        MODULE.error('NS Update Error at %s %s' % (server, domainname))
+        MODULE.error('NS Update Error at %s %s', server, domainname)
         raise NSUpdateError(server, domainname)
 
 

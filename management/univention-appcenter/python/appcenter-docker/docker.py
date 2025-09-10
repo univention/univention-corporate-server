@@ -70,7 +70,7 @@ def inspect_with_retry(container, retries=3):
         try:
             return inspect(container)
         except Exception as e:
-            _logger.warning(f'Inspect for container {container} failed: {e}')
+            _logger.warning("Inspect for container %s failed: %s", container, e)
             exc = e
             time.sleep(5)
     raise DockerInspectCallFailed(f'Inspect for container {container} failed after {retries} retries: {exc}')
@@ -624,14 +624,14 @@ class MultiDocker(Docker):
                     ps = check_output(['docker-compose', '-p', self.app.id, 'ps', '-q'], cwd=self.app.get_compose_dir())
                     break
                 except Exception as e:
-                    _logger.warning(f'docker-compose ps for app {self.app.id} failed: {e}')
+                    _logger.warning("docker-compose ps for app %s failed: %s", self.app.id, e)
                     time.sleep(5)
             for container_id in ps.splitlines():
                 container_id = container_id.decode('utf-8')
                 try:
                     container_inspect = inspect_with_retry(container_id)
                 except DockerInspectCallFailed as e:
-                    _logger.warning(f'Fail: {e}')
+                    _logger.warning("Fail: %s", e)
                     break
                 container_name = container_inspect['Name']
                 if f'_{service_name}_' in container_name:
@@ -644,7 +644,7 @@ class MultiDocker(Docker):
             insp = inspect_with_retry(name)
             return insp['Id']
         except DockerInspectCallFailed as e:
-            _logger.warning(f'Fail: {e}')
+            _logger.warning("Fail: %s", e)
         return None
 
     def _get_main_service_container_id(self):

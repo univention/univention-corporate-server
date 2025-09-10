@@ -211,7 +211,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 elif var not in checks['placeholder']:
                     checks['placeholder'].append(var)
             if checks['placeholder']:
-                self.debug('found UCR placeholder variables in {}\n- {}'.format(fn, '\n- '.join(checks['placeholder'])))
+                self.debug('found UCR placeholder variables in %s\n- %s', fn, '\n- '.join(checks['placeholder']))
 
             match = self.RE_IDENTIFIER.search(content, 0)
             if warning_pos and match:
@@ -234,7 +234,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     if var not in checks['variables']:
                         checks['variables'].append(var)
             if checks['variables']:
-                self.debug('found UCR variables in {}\n- {}'.format(fn, '\n- '.join(checks['variables'])))
+                self.debug('found UCR variables in %s\n- %s', fn, '\n- '.join(checks['variables']))
 
             if checks['headerfound']:
                 #

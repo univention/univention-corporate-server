@@ -58,10 +58,10 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
                 self.sms_username, self.sms_password = pw_file.readline().strip().split(":")
         except ValueError as ve:
             self.log("SendSMS: Format of sms secrets file ({}) is 'username:password'. Error: {}").format(self.password_file, ve)
-            self.log(f"SendSMS: Format error in sms secrets file ({self.password_file}): {ve}")
+            self.log("SendSMS: Format error in sms secrets file (%s): %s", self.password_file, ve)
             raise
         except OSError as e:
-            self.log(f"SendSMS: Error reading sms secrets file ({self.password_file}): {e}")
+            self.log("SendSMS: Error reading sms secrets file (%s): %s", self.password_file, e)
             raise
 
     @staticmethod
@@ -116,9 +116,9 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
         cmd_exit = cmd_proc.wait()
 
         if cmd_out:
-            self.log(f"STDOUT of {self.cmd}: {cmd_out}")
+            self.log("STDOUT of %s: %s", self.cmd, cmd_out)
         if cmd_err:
-            self.log(f"STDERR of {self.cmd}: {cmd_err}")
+            self.log("STDERR of %s: %s", self.cmd, cmd_err)
 
         if cmd_exit == 0:
             return True

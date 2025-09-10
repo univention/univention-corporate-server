@@ -30,7 +30,7 @@ def run(_umc_instance: Instance, url: str = 'http://www.univention.de/', connect
         return
 
     proxy = urlparse(proxy)
-    MODULE.info('The proxy is configured, using host=%r, port=%r' % (proxy.hostname, proxy.port))
+    MODULE.info('The proxy is configured, using host=%r, port=%r', proxy.hostname, proxy.port)
     curl = pycurl.Curl()
     curl.setopt(pycurl.PROXYTYPE, pycurl.PROXYTYPE_HTTP)
     if proxy.hostname:
@@ -75,7 +75,7 @@ def run(_umc_instance: Instance, url: str = 'http://www.univention.de/', connect
         elif code == 0:
             MODULE.error(traceback.format_exc())
 
-        MODULE.error(f'{description}\n{msg}')
+        MODULE.error("%s\n%s", description, msg)
         raise Critical(f'{description}\n{msg}')
     else:
         # page = buf.getvalue()

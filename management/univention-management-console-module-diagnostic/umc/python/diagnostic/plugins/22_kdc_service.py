@@ -239,9 +239,9 @@ def send_and_receive(kdc: str, port: int, protocol: str, as_req: bytes) -> bytes
 def probe_kdc(kdc: str, port: int, protocol: str, target_realm: str, user_name: str) -> bool:
     request = build_kerberos_request(target_realm, user_name)
     if protocol == 'udp':
-        MODULE.process("Trying to contact KDC %s on udp port %d Similar to running: nmap %s -sU -p %d" % (kdc, port, kdc, port))
+        MODULE.process("Trying to contact KDC %s on udp port %d Similar to running: nmap %s -sU -p %d", kdc, port, kdc, port)
     else:
-        MODULE.process("Trying to contact KDC %s on tcp port %d Similar to running: nmap %s -sT -p %d" % (kdc, port, kdc, port))
+        MODULE.process("Trying to contact KDC %s on tcp port %d Similar to running: nmap %s -sT -p %d", kdc, port, kdc, port)
     try:
         received = send_and_receive(kdc, port, protocol, request)
     except KerberosException:

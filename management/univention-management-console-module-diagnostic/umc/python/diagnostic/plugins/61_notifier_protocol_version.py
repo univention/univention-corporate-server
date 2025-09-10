@@ -68,7 +68,7 @@ def run(_umc_instance: Instance) -> None:
 
 
 def set_protocol_version(umc: Instance) -> None:
-    MODULE.process(f"Setting UDN protocol version {UDN}")
+    MODULE.process("Setting UDN protocol version %s", UDN)
     handler_set(["%s=%d" % (UCR, UDN)])
     call(["systemctl", "try-restart", "univention-directory-notifier.service"])
     return run(umc)

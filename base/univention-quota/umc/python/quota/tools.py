@@ -228,7 +228,7 @@ def enable_quota_in_kernel(activate):
         new_grub_append = re.sub(r'rootflags=[^\s]*', flags, grub_append)
 
     if new_grub_append != grub_append:
-        MODULE.info('Replacing grub/append from %s to %s' % (grub_append, new_grub_append))
+        MODULE.info('Replacing grub/append from %s to %s', grub_append, new_grub_append)
         handler_set(['grub/append=%s' % (new_grub_append,)])
         status = _('enable') if activate else _('disable')
         raise QuotaActivationError(_('To %s quota support for the root filesystem the system has to be rebooted.') % (status,))

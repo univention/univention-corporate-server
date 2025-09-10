@@ -155,7 +155,7 @@ class ModuleServer:
             except Exception as exc:
                 error = _('Failed to load module %(module)s: %(error)s\n%(traceback)s') % {'module': modname, 'error': exc, 'traceback': traceback.format_exc()}
                 # TODO: systemctl reload univention-management-console-server
-                MODULE.error('%s', error)
+                MODULE.exception('Failed to load module %s: %s', modname, exc)
                 if isinstance(exc, ImportError) and str(exc).startswith('No module named %s' % (modname,)):
                     error = '\n'.join((
                         _('The requested module %r does not exist.') % (modname,),
@@ -176,7 +176,7 @@ class ModuleServer:
         raise SystemExit(0)
 
     def signal_handler_reload(self, signo, frame):
-        MODULE.process('Received reload signal (%s)' % (signo,))
+        MODULE.process('Received reload signal (%s)', signo)
         log_reopen()
 
     def signal_handler_alarm(self, signo, frame):
@@ -214,10 +214,10 @@ class ModuleServer:
             self.__handler._Base__error_handling(request, method, etype, exc, etraceback)
             return
 
-        trace = ''.join(traceback.format_exception(etype, exc, etraceback))
-        MODULE.error('The init function of the module failed\n%s: %s' % (exc, trace))
+        MODULE.error('The init function of the module failed: %s', exc, exc_info=(etype, exc, etraceback))  # noqa: LOG014
         from .error import UMC_Error
         if not isinstance(exc, UMC_Error):
+            trace = ''.join(traceback.format_exception(etype, exc, etraceback))
             error = _('The initialization of the module failed: %s') % (trace,)
             exc = UMC_Error(error, status=_MODULE_ERR_INIT_FAILED)
             etype = UMC_Error
@@ -304,7 +304,7 @@ class Handler(RequestHandler):
             if not locale.territory:  # TODO: replace by using the actual provided value
                 locale.territory = {'de': 'DE', 'fr': 'FR', 'en': 'US'}.get(self.locale.code)
         except I18N_Error as exc:
-            MODULE.warning('Invalid locale: %s %s' % (exc, locale))
+            MODULE.warning('Invalid locale: %s %s', exc, locale)
         locale = str(locale)
 
         msg = Request(umcp_command, [path], mime_type=mimetype)
@@ -342,13 +342,13 @@ class Handler(RequestHandler):
         if self.handler:
             last_request = self.handler._current_request
             if not last_request or last_request.user_dn != user_dn:
-                MODULE.process('Setting user LDAP DN: %r' % (user_dn,))
+                MODULE.process('Setting user LDAP DN: %r', user_dn)
             if not last_request or last_request.auth_type != auth_type:
-                MODULE.process('Setting auth type: %r' % (auth_type,))
+                MODULE.process('Setting auth type: %r', auth_type)
             self.handler._current_request = msg
 
         method = self.request.headers['X-UMC-Method']  # TODO: error handling if unset
-        MODULE.process('Received request %r: %r' % (' '.join(msg.arguments or [msg.command, method]), (msg.username, msg.flavor, msg.auth_type, msg.locale)))
+        MODULE.process('Received request', method=' '.join(msg.arguments or [msg.command, method]), username=msg.username, flavor=msg.flavor, auth_type=msg.auth_type, locale=msg.locale)
         try:
             self.server.handle_init(msg)
         except _Skip:
@@ -390,14 +390,14 @@ class Handler(RequestHandler):
             try:
                 self.finish(body)
             except Exception:
-                MODULE.error('FATAL ERROR in reply(): %s' % (traceback.format_exc(),))
+                MODULE.exception('FATAL ERROR in reply()')
 
         ioloop = tornado.ioloop.IOLoop.current()
         if ioloop is self.ioloop:  # main thread
             _reply(body)
         else:
             # TODO: remove in UCS 5.1:
-            MODULE.error('called finish() from thread. should be done in main thread! Traceback (most recent call last)\n%s' % (''.join(traceback.format_stack()),))
+            MODULE.error('called finish() from thread. should be done in main thread! ', stack_info=True)
             self.ioloop.add_callback(_reply, body)
 
     def suffixed_cookie_name(self, cookie_name):
@@ -427,7 +427,7 @@ class Handler(RequestHandler):
         return username, password
 
     def write_error(self, status_code, exc_info=(None, None, None), **kwargs):
-        MODULE.error('Fatal error: %s' % (''.join(traceback.format_exception(*exc_info)) if exc_info else status_code,))
+        MODULE.error('Fatal error: %s', status_code, exc_info=exc_info)
         if not hasattr(self.request, 'umcp_message'):
             if status_code >= 500:
                 kwargs['exc_info'] = exc_info
@@ -469,7 +469,7 @@ class Handler(RequestHandler):
         st = os.stat(tmpfile)
         max_size = get_int('umc/server/upload/max', 64) * 1024
         if st.st_size > max_size:
-            MODULE.warning('file of size %d could not be uploaded' % (st.st_size))
+            MODULE.warning('file of size %d could not be uploaded', st.st_size)
             raise BadRequest('The size of the uploaded file is too large')
 
         filename = store['filename']
@@ -498,7 +498,7 @@ class Cancel(RequestHandler):
             body = json.dumps({'status': 400, 'result': None, 'message': _('failed to cancel request.')})
             self.set_status(400)
         else:
-            MODULE.debug('Cancelled request with id %r' % (id_to_cancel,))
+            MODULE.debug('Cancelled request with id %r', id_to_cancel)
             request._request_handler.finish()
             body = None
             self.set_status(204)
@@ -508,7 +508,7 @@ class Cancel(RequestHandler):
 class Exit(RequestHandler):
 
     def post(self):
-        MODULE.process("EXIT: module shutdown in %ds" % _MODULE_SHUTDOWN_TIMEOUT)
+        MODULE.process("EXIT: module shutdown in %ds", _MODULE_SHUTDOWN_TIMEOUT)
         self.set_header('Content-Type', 'application/json')
         body = json.dumps({'status': 200, 'result': None, 'message': 'module %s will shutdown in %ds' % ('TODO', _MODULE_SHUTDOWN_TIMEOUT)}).encode('ASCII')
         self.finish(body)

@@ -142,8 +142,8 @@ class UDM:
 
     def find(self, nameserver: NameServer) -> simpleLdap:
         filter_expression = nameserver.build_filter()
-        MODULE.process("Trying to find nameserver %s in UDM/LDAP" % (nameserver.fqdn()))
-        MODULE.process("Similar to running: univention-ldapsearch '%s'" % (filter_expression))
+        MODULE.process("Trying to find nameserver %s in UDM/LDAP", nameserver.fqdn())
+        MODULE.process("Similar to running: univention-ldapsearch '%s'", filter_expression)
         for (dn, attr) in self.ldap_connection.search(filter_expression):
             if dn:
                 for module in udm_modules.identify(dn, attr):
@@ -183,7 +183,7 @@ def find_all_zone_problems() -> Iterator[ZoneError]:
     udm = UDM()
     for zone in udm.all_zones():
         for error in udm.check_zone(zone):
-            MODULE.process('Found error %s in %s' % (error, udm.check_zone(zone)))
+            MODULE.process('Found error %s in %s', error, udm.check_zone(zone))
             yield error
 
 

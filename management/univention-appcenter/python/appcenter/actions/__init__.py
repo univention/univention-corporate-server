@@ -110,7 +110,7 @@ class UniventionAppAction(metaclass=UniventionAppActionMeta):
 
     @classmethod
     def log_exception(cls, exc, logger=None):
-        cls._log(logger, logging.ERROR, exc, exc_info=1)
+        cls._log(logger, logging.ERROR, exc, exc_info=True)
 
     def setup_parser(self, parser: ArgumentParser) -> None:
         pass

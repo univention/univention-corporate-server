@@ -63,7 +63,7 @@ def pip_modules(modules: list[str]) -> Iterator[None]:
     logger.info(modules)
     if modules:
         logger.info('Installing modules via pip3')
-        logger.info('  {}'.format(' '.join(modules)))
+        logger.info('  %s', ' '.join(modules))
         subprocess.check_output(['pip3', 'install', *modules])
     try:
         yield
