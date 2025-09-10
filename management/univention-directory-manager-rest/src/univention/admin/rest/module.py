@@ -3135,6 +3135,12 @@ class ServiceSpecificPassword(Resource):
         self.content_negotiation(result)
 
 
+def _lazy_import_recyclebin_purge():
+    """Lazy import RecycleBinPurge to avoid circular import issues."""
+    from univention.admin.rest.recyclebin import RecycleBinPurge
+    return RecycleBinPurge
+
+
 class Application(tornado.web.Application):
     """The main tornado application"""
 
@@ -3161,6 +3167,7 @@ class Application(tornado.web.Application):
             ("/udm/license/import", LicenseImport),
             ("/udm/license/check", LicenseCheck),
             ("/udm/license/request", LicenseRequest),
+            ("/udm/recyclebin/purge", _lazy_import_recyclebin_purge()),
             ("/udm/ldap/base/", LdapBase),
             (f"/udm/object/{dn}", ObjectLink),
             ("/udm/object/([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})", ObjectByUiid),

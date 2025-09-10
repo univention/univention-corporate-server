@@ -1,0 +1,154 @@
+#!/usr/share/ucs-test/runner pytest-3 -s
+## desc: Test automatic purging functionality for recycle bin entries
+## tags: [ldap, udm, recyclebin, auto-purge]
+## roles: [domaincontroller_master, domaincontroller_backup]
+## exposure: dangerous
+## packages:
+##  - univention-directory-manager
+##  - python3-univention-directory-manager
+
+import subprocess
+import time
+from datetime import datetime, timedelta
+
+import pytest
+
+import univention.admin.uldap
+from univention.config_registry import ucr as _ucr
+from univention.testing.strings import random_username
+from univention.testing.udm import UCSTestUDM
+
+
+# Constants
+LDAP_BASE = _ucr['ldap/base']
+RECYCLEBIN_DN = f"cn=recyclebin,cn=internal,{LDAP_BASE}"
+CLEANUP_SCRIPT_PATH = '/usr/share/univention-directory-manager-tools/univention-recycle-bin-clean-expired-entries'
+
+
+def get_admin_connection():
+    """Get admin LDAP connection."""
+    result = univention.admin.uldap.getAdminConnection()
+    if isinstance(result, tuple):
+        return result[0]
+    return result
+
+
+def create_expired_recyclebin_entry(lo, expired_days_ago=7):
+    """Create a recyclebin entry that expired days ago."""
+    now = datetime.utcnow()
+    deletion_date = now - timedelta(days=expired_days_ago + 1)
+    delete_at = now - timedelta(days=1)  # Expired yesterday
+
+    deletion_time = deletion_date.strftime('%Y%m%d%H%M%SZ')
+    delete_at_time = delete_at.strftime('%Y%m%d%H%M%SZ')
+
+    original_dn = f"uid=testuser-{random_username()},cn=users,{LDAP_BASE}"
+    recycled_dn = f"univentionRecycleBinOriginalDN={original_dn},{RECYCLEBIN_DN}"
+
+    attrs = [
+        ('objectClass', [b'top', b'extensibleObject', b'univentionRecycleBinObject']),
+        ('univentionRecycleBinOriginalDN', [original_dn.encode('utf-8')]),
+        ('univentionRecycleBinOriginalType', [b'users/user']),
+        ('univentionRecycleBinDeletionDate', [deletion_time.encode('utf-8')]),
+        ('univentionRecycleBinDeleteAt', [delete_at_time.encode('utf-8')]),
+        ('univentionRecycleBinDeletedBy', [b'cn=admin,dc=ucs,dc=test']),
+    ]
+
+    lo.add(recycled_dn, attrs)
+    return recycled_dn
+
+
+def test_auto_purge_expired_entries():
+    """Test that expired entries are correctly purged."""
+    lo = get_admin_connection()
+
+    # Create an expired entry
+    expired_dn = create_expired_recyclebin_entry(lo, expired_days_ago=7)
+
+    # Verify entry exists
+    results = lo.search(base=expired_dn, scope='base')
+    assert len(results) == 1, "Expired entry should exist before purge"
+
+    # Run the cleanup script with --remove-expired
+    result = subprocess.run(
+        [CLEANUP_SCRIPT_PATH, '--remove-expired'],
+        capture_output=True,
+        text=True,
+        timeout=30
+    )
+
+    assert result.returncode == 0, f"Script failed: {result.stderr}"
+
+    # Verify entry was deleted
+    time.sleep(1)  # Brief wait for deletion to complete
+    results = lo.search(base=expired_dn, scope='base', required=False)
+    assert len(results) == 0, "Expired entry should be deleted after purge"
+
+
+def test_dry_run_does_not_delete():
+    """Test that dry run mode does not delete entries."""
+    lo = get_admin_connection()
+
+    # Create an expired entry
+    expired_dn = create_expired_recyclebin_entry(lo, expired_days_ago=7)
+
+    # Run the cleanup script without --remove-expired (dry run)
+    result = subprocess.run(
+        [CLEANUP_SCRIPT_PATH],
+        capture_output=True,
+        text=True,
+        timeout=30
+    )
+
+    assert result.returncode == 0, f"Script failed: {result.stderr}"
+
+    # Verify entry still exists
+    results = lo.search(base=expired_dn, scope='base')
+    assert len(results) == 1, "Entry should not be deleted in dry run mode"
+
+    # Clean up
+    lo.delete(expired_dn)
+
+
+def test_non_expired_entries_not_deleted():
+    """Test that non-expired entries are not deleted."""
+    lo = get_admin_connection()
+
+    # Create a future entry (expires in 30 days)
+    now = datetime.utcnow()
+    deletion_date = now - timedelta(days=1)
+    delete_at = now + timedelta(days=30)  # Expires in 30 days
+
+    deletion_time = deletion_date.strftime('%Y%m%d%H%M%SZ')
+    delete_at_time = delete_at.strftime('%Y%m%d%H%M%SZ')
+
+    original_dn = f"uid=testuser-{random_username()},cn=users,{LDAP_BASE}"
+    recycled_dn = f"univentionRecycleBinOriginalDN={original_dn},{RECYCLEBIN_DN}"
+
+    attrs = [
+        ('objectClass', [b'top', b'extensibleObject', b'univentionRecycleBinObject']),
+        ('univentionRecycleBinOriginalDN', [original_dn.encode('utf-8')]),
+        ('univentionRecycleBinOriginalType', [b'users/user']),
+        ('univentionRecycleBinDeletionDate', [deletion_time.encode('utf-8')]),
+        ('univentionRecycleBinDeleteAt', [delete_at_time.encode('utf-8')]),
+        ('univentionRecycleBinDeletedBy', [b'cn=admin,dc=ucs,dc=test']),
+    ]
+
+    lo.add(recycled_dn, attrs)
+
+    # Run the cleanup script with --remove-expired
+    result = subprocess.run(
+        [CLEANUP_SCRIPT_PATH, '--remove-expired'],
+        capture_output=True,
+        text=True,
+        timeout=30
+    )
+
+    assert result.returncode == 0, f"Script failed: {result.stderr}"
+
+    # Verify entry still exists (not expired)
+    results = lo.search(base=recycled_dn, scope='base')
+    assert len(results) == 1, "Non-expired entry should not be deleted"
+
+    # Clean up
+    lo.delete(recycled_dn)

@@ -1,0 +1,207 @@
+#!/usr/bin/python3
+# SPDX-FileCopyrightText: 2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
+
+"""This tool removes expired recycle bin entries."""
+
+import json
+import os
+import sys
+from argparse import ArgumentParser
+from datetime import datetime
+from logging import DEBUG, getLogger
+
+import ldap
+from ldap.filter import escape_filter_chars
+
+import univention.admin.uexceptions as udm_errors
+import univention.logging
+from univention.admin.uldap import getAdminConnection
+from univention.udm import UDM
+
+
+log = getLogger('MAIN')
+
+
+def is_expired(deleteAt):
+    """
+    Check if a recycle bin entry has expired based on its deletion timestamp.
+
+    :param deleteAt: Deletion timestamp in LDAP format YYYYMMDDHHMMSSZ
+    :type deleteAt: str
+    :return: True if entry has expired and should be purged, False otherwise
+    :rtype: bool
+    """
+    try:
+        expired_time = datetime.strptime(deleteAt, "%Y%m%d%H%M%SZ")
+        current_time = datetime.utcnow()
+        return current_time > expired_time
+    except (ValueError, TypeError) as e:
+        log.warning("Invalid timestamp format '%s': %s", deleteAt, e)
+        return False
+
+
+def purge_specific_entries(dns_list, remove=False, actor="Manual Process"):
+    """
+    Purge specific DNs and return structured result for REST API.
+
+    :param dns_list: List of DNs to purge
+    :type dns_list: list
+    :param remove: If True, actually delete the entries
+    :type remove: bool
+    :param actor: Actor DN for logging
+    :type actor: str
+    :return: Dictionary with purge results
+    :rtype: dict
+    """
+    result = {
+        "success": True,
+        "purged": [],
+        "failed": [],
+        "errors": [],
+    }
+
+    try:
+        recyclebin_mod = UDM.admin().version(3).get('recyclebin/deletedobject')
+    except Exception as e:
+        result["success"] = False
+        result["errors"].append({"error": "Failed to initialize UDM module: %s" % e})
+        result["error"] = {
+            "id": "MODULE_INIT_FAILED",
+            "message": "Failed to initialize UDM module: %s" % e,
+            "affected_items": dns_list,
+        }
+        return result
+
+    for dn in dns_list:
+        try:
+            escaped_dn = escape_filter_chars(dn)
+            entries = list(recyclebin_mod.search(filter_s=f'(entryDN={escaped_dn})'))
+            if entries:
+                entry = entries[0]
+                original_dn = entry.props.originalDN if hasattr(entry.props, 'originalDN') else dn
+
+                if remove:
+                    entry.delete()
+                    result["purged"].append({"dn": dn, "original_dn": original_dn})
+                    log.info("Item permanently deleted - Original DN: %s, Actor: %s", original_dn, actor)
+                else:
+                    result["purged"].append({"dn": dn, "original_dn": original_dn, "dry_run": True})
+            else:
+                result["failed"].append(dn)
+                result["errors"].append({"dn": dn, "error": "Not found in recycle bin"})
+        except ldap.LDAPError as e:
+            result["failed"].append(dn)
+            result["errors"].append({"dn": dn, "error": "LDAP error: %s" % e})
+            log.error("LDAP error while processing %s: %s", dn, e)
+        except udm_errors.base as e:
+            result["failed"].append(dn)
+            result["errors"].append({"dn": dn, "error": "UDM error: %s" % e})
+            log.error("UDM error while deleting %s: %s", dn, e)
+
+    result["success"] = len(result["failed"]) == 0
+
+    if result["failed"]:
+        result["error"] = {
+            "id": "PARTIAL_FAILURE",
+            "message": "Failed to purge %d of %d items" % (len(result["failed"]), len(dns_list)),
+            "affected_items": result["failed"],
+        }
+
+    return result
+
+
+if __name__ == '__main__':
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--remove-expired",
+        help="Remove expired entries from the recycle bin.",
+        action='store_true',
+        default=False,
+        required=False,
+    )
+    parser.add_argument(
+        "--scheduled",
+        help="Indicates script is run from cron (for logging purposes).",
+        action='store_true',
+        default=False,
+        required=False,
+    )
+    parser.add_argument(
+        "--purge-dns-stdin",
+        help="Read DNs from stdin for REST API (internal use only)",
+        action='store_true',
+        default=False,
+    )
+    parser.add_argument(
+        "--json-output",
+        help="Return JSON formatted output for REST API (internal use only)",
+        action='store_true',
+        default=False,
+    )
+    options = parser.parse_args()
+
+    univention.logging.basicConfig(
+        filename='/var/log/univention/recycle-bin-cleanup.log',
+        level=DEBUG,
+    )
+
+    if options.scheduled:
+        actor = "Scheduled Process"
+        suffix = " (auto)"
+    else:
+        if 'MANUAL_ACTOR_DN' in os.environ:
+            actor = os.environ['MANUAL_ACTOR_DN']
+        else:
+            try:
+                lo, _ = getAdminConnection()
+                actor = lo.binddn
+            except (ldap.LDAPError, OSError):
+                actor = "Manual Process"
+        suffix = ""
+
+    # Handle REST API purge requests (internal use only)
+    if options.purge_dns_stdin:
+        dns_list = [dn.strip() for dn in sys.stdin.read().strip().split('\n') if dn.strip()]
+        result = purge_specific_entries(dns_list, remove=options.remove_expired, actor=actor)
+
+        if options.json_output:
+            print(json.dumps(result))
+            sys.exit(0 if result["success"] else 1)
+        else:
+            sys.exit(0 if result["success"] else 1)
+
+    # Handle automatic purge of expired entries
+    try:
+        recyclebin_mod = UDM.admin().version(3).get('recyclebin/deletedobject')
+    except (udm_errors.base, AttributeError) as e:
+        log.error("Failed to initialize UDM module: %s", e)
+        sys.exit(1)
+
+    log.debug("Searching for expired entries")
+
+    expired_count = 0
+    deleted_count = 0
+
+    for entry in recyclebin_mod.search():
+        if entry.props.deleteAt and is_expired(entry.props.deleteAt):
+            expired_count += 1
+            try:
+                original_dn = entry.props.originalDN if hasattr(entry.props, 'originalDN') else entry.dn
+            except AttributeError:
+                original_dn = entry.dn
+
+            if options.remove_expired:
+                try:
+                    entry.delete()
+                    deleted_count += 1
+                    log.info("Item permanently deleted%s - Original DN: %s, Actor: %s", suffix, original_dn, actor)
+                except udm_errors.base as e:
+                    log.error("Failed to delete %s - Original DN: %s, Error: %s", entry.dn, original_dn, e)
+            else:
+                log.info("Expired entry found: %s - Original DN: %s", entry.dn, original_dn)
+
+    if options.remove_expired:
+        log.info("Auto-purge complete: %d of %d expired entries deleted by %s", deleted_count, expired_count, actor)
+    else:
+        log.info("Dry run complete: %d expired entries found", expired_count)
