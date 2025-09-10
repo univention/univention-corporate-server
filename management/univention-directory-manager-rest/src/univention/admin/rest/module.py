@@ -90,7 +90,7 @@ _ = Translation('univention-directory-manager-rest').translate
 MAX_WORKERS = ucr.get('directory/manager/rest/max-worker-threads', 35)
 request_context = contextvars.ContextVar("request_context")
 
-log = logging.getLogger('MODULE')
+log = univention.logging.Structured(logging.getLogger('MODULE'))
 
 
 class ResourceBase(SanitizerBase, HAL, HTML):
@@ -199,7 +199,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
                 userdn = self.ldap_connection.whoami()
                 username = '+'.join(explode_rdn(userdn, True))
         except (ldap.LDAPError, udm_errors.base) as exc:
-            log.debug('Authentication failed: %s', exc)
+            log.debug('Authentication failed.', error=exc)
             return self.force_authorization(auth_type)  # TODO: parse ldap.OTHER / etc for SASL error details?
         except Exception:
             log.exception('Unknown error during authentication:')
@@ -341,7 +341,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
         try:
             return json.dumps(response, cls=JsonEncoder)
         except TypeError:
-            log.error('Cannot JSON serialize: %r', response)
+            log.error('Cannot JSON serialize response.', response=repr(response))
             raise
 
     def get_json(self, response):
@@ -1367,9 +1367,9 @@ class FormBase:
         if superordinate:
             mod = get_module(module.name, superordinate, self.ldap_connection)
             if not mod:
-                log.error('Superordinate module not found: %s', superordinate)
+                log.error('Superordinate module not found', superordinate=superordinate)
                 raise SuperordinateDoesNotExist(superordinate)
-            log.debug('Found UDM module for superordinate')
+            log.trace('Found UDM module for superordinate')
             superordinate = mod.get(superordinate)
         return superordinate
 
@@ -2177,9 +2177,9 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
 
     def set_property(self, obj, property_name, value, result, multi_error, password_properties):
         if property_name in password_properties:
-            log.debug('Setting password property %s', property_name)
+            log.debug('Setting password property', property=property_name)
         else:
-            log.debug('Setting property %s to %r', property_name, value)
+            log.debug('Setting property', property=property_name, value=value)
 
         try:
             try:
@@ -2200,10 +2200,10 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
                     # "password" of users/user: because password is required but on modify() None is send, which must not alter the current password
                     # "unixhome" of users/user: is required, set to None in the request, the default value is set afterwards in create(). Bug #50053
                     if property_name in password_properties:
-                        log.debug('Ignore unsetting password property %s', property_name)
+                        log.debug('Ignore unsetting password property', property=property_name)
                     else:
                         current_value = obj.info.pop(property_name, None)
-                        log.debug('Unsetting property %s value %r', property_name, current_value)
+                        log.debug('Unsetting property', property=property_name, value=current_value)
                     return
                 raise
         except (udm_errors.valueInvalidSyntax, udm_errors.valueError, udm_errors.valueMayNotChange, udm_errors.valueRequired, udm_errors.noProperty) as exc:
@@ -2367,7 +2367,7 @@ class Object(ConditionalResource, FormBase, _OpenAPIBase, Resource):
         self.set_entity_tags(obj, remove_after_check=True)
 
         def remove():
-            log.info('Removing LDAP object %s', dn)
+            log.info('Removing LDAP object', dn=dn)
             obj.remove(remove_childs=recursive)
             if cleanup:  # and udm_objects.wantsCleanup(obj)
                 udm_objects.performCleanup(obj)

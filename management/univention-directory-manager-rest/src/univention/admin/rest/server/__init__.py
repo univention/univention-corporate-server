@@ -29,7 +29,6 @@ import tornado.web
 from setproctitle import getproctitle, setproctitle
 from tornado.netutil import bind_sockets, bind_unix_socket
 
-import univention.debug as ud
 import univention.lib.i18n
 import univention.logging
 from univention.admin.rest.shared_memory import shared_memory
@@ -44,7 +43,7 @@ except ImportError:
 
 proctitle = getproctitle()
 request_context = contextvars.ContextVar("request_context")
-logger = logging.getLogger('ADMIN')
+log = univention.logging.Structured(logging.getLogger('ADMIN'))
 
 
 class Gateway(tornado.web.RequestHandler):
@@ -93,7 +92,7 @@ class Gateway(tornado.web.RequestHandler):
         try:
             response = yield client.fetch(request, raise_error=True)
         except tornado.curl_httpclient.CurlError as exc:
-            ud.debug(ud.MAIN, ud.WARN, f'Reaching service failed: {exc}')
+            log.warning('Reaching service failed', error=exc)
             # happens during starting the service and subprocesses when the UNIX sockets aren't available yet
             self.set_status(503)
             self.add_header('Retry-After', '3')  # Tell clients, we are ready in 3 seconds
@@ -193,7 +192,7 @@ class Gateway(tornado.web.RequestHandler):
             try:
                 child_id = tornado.process.fork_processes(args.processes, 0)
             except RuntimeError as exc:
-                logger.info('Stopped process %s', exc)
+                log.info('Stopped process', error=exc)
                 cls.signal_handler_stop(signal.SIGTERM, None)
             else:
                 cls.start_child(child_id)
@@ -204,15 +203,15 @@ class Gateway(tornado.web.RequestHandler):
     def start_child(cls, child_id):
         setproctitle(proctitle + f'   # gateway proxy {child_id}')
         cls.child_id = child_id
-        logger.info('Started child %s', cls.child_id)
+        log.info('Started child', child=cls.child_id)
         shared_memory.children[cls.child_id] = os.getpid()
         cls.start_server(cls.socks)
 
     @classmethod
     def start_server(cls, socks):
-        app = tornado.web.Application([
-            (r'.*', cls),
-        ], serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True),
+        app = tornado.web.Application(
+            [(r'.*', cls)],
+            serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True),
         )
         server = tornado.httpserver.HTTPServer(app)
         server.add_sockets(socks)
@@ -262,7 +261,7 @@ class Gateway(tornado.web.RequestHandler):
 
     @classmethod
     def signal_handler_reload(cls, sig, frame):
-        ud.debug(ud.MAIN, ud.ALL, 'Reloading service.')
+        log.debug('Reloading service.')
         if cls.child_id is None:
             for process in cls.PROCESSES.values():
                 cls.safe_kill(process.pid, sig)
@@ -280,16 +279,16 @@ class Gateway(tornado.web.RequestHandler):
                 children_pids = list(shared_memory.children.values())
             except Exception:  # multiprocessing failure
                 children_pids = []
-            logger.info('stopping children: %r', children_pids)
+            log.info('stopping children', children=children_pids)
             for pid in children_pids:
                 cls.safe_kill(pid, sig)
-            logger.info('stopping subprocesses: %r', list(cls.PROCESSES.keys()))
+            log.info('stopping subprocesses', subprocesses=list(cls.PROCESSES.keys()))
             for process in cls.PROCESSES.values():
                 cls.safe_kill(process.pid, sig)
 
             shared_memory.shutdown()
         else:
-            logger.info('shutting down')
+            log.info('shutting down')
 
         io_loop = tornado.ioloop.IOLoop.current()
 
@@ -303,6 +302,6 @@ class Gateway(tornado.web.RequestHandler):
         try:
             os.kill(pid, signo)
         except OSError as exc:
-            logger.error('Could not kill(%s) %s: %s', signo, pid, exc)
+            log.error('Could not kill children', signo=signo, pid=pid, error=exc)
         else:
             os.waitpid(pid, os.WNOHANG)

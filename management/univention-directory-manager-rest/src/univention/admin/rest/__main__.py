@@ -27,12 +27,13 @@ from univention.admin.rest.shared_memory import shared_memory
 from univention.admin.rest.utils import init_request_context_logging
 from univention.config_registry import ucr
 from univention.lib.i18n import Locale, Translation
+from univention.logging import Structured
 # IMPORTANT NOTICE: we must import as few modules as possible, so that univention.admin is not yet imported
 # because importing the UDM handlers would cause that the gettext translation gets applied before we set a locale
 from univention.management.console.log import log_init, log_reopen
 
 
-log = logging.getLogger('ADMIN')
+log = Structured(logging.getLogger('ADMIN'))
 
 
 try:
@@ -96,7 +97,7 @@ class Server:
             try:
                 child_id = tornado.process.fork_processes(args.processes, 0)
             except RuntimeError as exc:  # tornados way to exit from multiprocessing on failures
-                log.debug('Stopped process: %s', exc)
+                log.debug('Stopped process.', error=exc)
                 self.signal_handler_stop(None, signal.SIGTERM, None)
             else:
                 self.start_child(child_id)
@@ -107,7 +108,7 @@ class Server:
     def start_child(self, child_id):
         setproctitle(proctitle + f'   # child {child_id}')
         self.child_id = child_id
-        log.debug('Started child %s', self.child_id)
+        log.debug('Started child.', child=self.child_id)
         shared_memory.children[self.child_id] = os.getpid()
         self.run_server(self.socks)
 
@@ -138,7 +139,7 @@ class Server:
                 children_pids = list(shared_memory.children.values())
             except Exception:  # multiprocessing failure
                 children_pids = []
-            log.debug('stopping children: %r', children_pids)
+            log.debug('Stopping children.', children=children_pids)
             for pid in children_pids:
                 self.safe_kill(pid, sig)
 
@@ -183,7 +184,7 @@ class Server:
         try:
             os.kill(pid, signo)
         except OSError as exc:
-            log.error('Could not kill(%s) %s: %s', signo, pid, exc)
+            log.error('Could not kill children', signo=signo, pid=pid, error=exc)
         else:
             os.waitpid(pid, os.WNOHANG)
 
