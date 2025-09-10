@@ -15,10 +15,12 @@ import subprocess
 import time
 from logging import getLogger
 
+from univention.logging import Structured
+
 import listener
 
 
-log = getLogger("LISTENER").getChild(__name__)
+log = Structured(getLogger("LISTENER").getChild(__name__))
 
 description = 'S4 Connector replication'
 filter = '(!(objectClass=lock))'

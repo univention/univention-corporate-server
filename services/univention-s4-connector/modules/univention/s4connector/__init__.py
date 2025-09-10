@@ -32,10 +32,12 @@ import univention.admin.uldap
 import univention.debug as ud
 import univention.logging
 import univention.uldap
+from univention.logging import Structured
 from univention.s4connector.lockingdb import LockingDB
 from univention.s4connector.s4cache import S4Cache
 
-log = getLogger("LDAP").getChild(__name__)
+
+log = Structured(getLogger("LDAP").getChild(__name__))
 
 term_signal_caught = False
 
@@ -790,11 +792,11 @@ class ucs:
                         raise
                     except ldap.NO_SUCH_OBJECT:
                         self._save_rejected_ucs(filename, dn)
-                        log.warning(f"sync failed, saved as rejected\t{filename}", exc_info=True)
+                        log.warning("sync failed, saved as rejected", filename=filename, exc_info=True)
                         return False
                     except Exception:
                         self._save_rejected_ucs(filename, dn)
-                        log.warning(f"sync failed, saved as rejected\t{filename}", exc_info=True)
+                        log.warning("sync failed, saved as rejected", filename=filename, exc_info=True)
                         return False
                 else:
                     return True
@@ -847,7 +849,7 @@ class ucs:
             if not module:
                 module = self.modules[property_type]  # default, determined by mapping filter
                 log.error("get_ucs_object: could not identify UDM object type: %s", searchdn)
-                log.info(f"get_ucs_object: using default: {module.module}")
+                log.info("get_ucs_object: using default", module=module.module)
 
             ucs_object = univention.admin.objects.get(module, co=None, lo=self.lo, position='', dn=searchdn)
             log.debug("get_ucs_object: object found: %s", searchdn)
@@ -923,7 +925,7 @@ class ucs:
                     raise
                 except Exception:  # FIXME: which exception is to be caught?
                     self._save_rejected_ucs(filename, dn)
-                    log.warning(f"sync failed, saved as rejected \n\t{filename}")
+                    log.warning("sync failed, saved as rejected", filename=filename)
 
         print(f"restored {change_counter} rejected changes")
         print("--------------------------------------")
@@ -999,7 +1001,7 @@ class ucs:
                     except Exception:
                         self._save_rejected_ucs(filename, dn)
                         # We may dropped the parent object, so don't show this warning
-                        log.warning(f"sync failed, saved as rejected \t{filename}", exc_info=True)
+                        log.warning("sync failed, saved as rejected", filename=filename, exc_info=True)
                     if sync_successfull:
                         os.remove(os.path.join(self.listener_dir, listener_file))
                         change_counter += 1
@@ -1051,16 +1053,16 @@ class ucs:
                         # as the handling of `con_other_attribute` assumes preserved ordering
                         # (this is not guaranteed by LDAP).
                         # See the MODIFY-case in `sync_from_ucs()` for more.
-                        log.debug(f"set key in ucs-object {ucs_key} to value: {value!r}")
+                        log.debug("set key in ucs-object", property=ucs_key, value=value)
                         if not ucs_object.has_property(ucs_key) and ucs_key in ucs_object and attributes.auto_enable_udm_option:
                             ucs_object.options.extend(ucs_object.descriptions[ucs_key].options)
                         if isinstance(value, list):
                             ucs_object[ucs_key] = list(collections.OrderedDict.fromkeys(value))
                         else:
                             ucs_object[ucs_key] = value
-                        log.debug(f"result key in ucs-object {ucs_key}: {ucs_object[ucs_key]!r}")
+                        log.debug("result key in ucs-object", property=ucs_key, value=ucs_object[ucs_key])
                 else:
-                    log.trace(f'__set_values: no ucs_attribute found in {attributes}')
+                    log.trace("__set_values: no ucs_attribute found in %s", attributes)
             else:
                 # the value isn't set in the AD directory, but it could be set in UCS, so we should delete it on UCS side
 
@@ -1076,14 +1078,14 @@ class ucs:
                             if attributes.con_attribute_encoding:
                                 value = [x.decode(attributes.con_attribute_encoding) for x in value] if isinstance(value, list) else value.decode(attributes.con_attribute_encoding)
                             ucs_object[ucs_key] = value
-                            log.trace('__set_values: no ldap_attribute defined in {!r}, we set the key {!r} in the ucs-object to con_other_attribute {!r}'.format(object['dn'], ucs_key, attributes.con_other_attribute))
+                            log.trace('__set_values: no ldap_attribute defined in %r, we set the key %r in the ucs-object to con_other_attribute %r', object['dn'], ucs_key, attributes.con_other_attribute)
                         elif ucs_key not in mandatory_attrs:
                             ucs_object[ucs_key] = []
-                            log.trace('__set_values: no ldap_attribute defined in {!r}, we unset the key {!r} in the ucs-object'.format(object['dn'], ucs_key))
+                            log.trace('__set_values: no ldap_attribute defined in %r, we unset the key %r in the ucs-object', object['dn'], ucs_key)
                         else:
                             log.warning('__set_values: The attributes for %s have not been removed as it represents a mandatory attribute', ucs_key)
                     else:
-                        log.trace('__set_values: no ldap_attribute defined in {!r}, we unset the key {!r} in the ucs-object'.format(object['dn'], ucs_key))
+                        log.trace('__set_values: no ldap_attribute defined in %r, we unset the key %r in the ucs-object', object['dn'], ucs_key)
 
                         if ucs_key not in mandatory_attrs:
                             ucs_object[ucs_key] = []
@@ -1093,14 +1095,14 @@ class ucs:
         MAPPING = self.property[property_type]
         for attr_key, attributes in MAPPING.attributes.items():
             if attributes.sync_mode not in ['read', 'sync']:
-                log.debug(f'__set_values: Skip {attributes.sync_mode} mode attribute {attr_key} ')
+                log.debug("__set_values: Skip %s mode attribute %s ", attributes.sync_mode, attr_key)
                 continue
 
             con_attribute = attributes.con_attribute
             con_other_attribute = attributes.con_other_attribute
 
             if not object.get('changed_attributes') or con_attribute in object.get('changed_attributes') or (con_other_attribute and con_other_attribute in object.get('changed_attributes')):
-                log.trace(f'__set_values: Set: {con_attribute}')
+                log.trace("__set_values: Set: %s", con_attribute)
                 set_values(attributes)
             else:
                 log.debug('__set_values: Skip: %s', con_attribute)
@@ -1109,16 +1111,16 @@ class ucs:
         if not MAPPING.post_attributes:
             return
         for attr_key, post_attributes in MAPPING.post_attributes.items():
-            log.trace(f'__set_values: mapping for attribute: {attr_key}')
+            log.trace("__set_values: mapping for attribute: %s", attr_key)
             if post_attributes.sync_mode not in ['read', 'sync']:
-                log.trace(f'__set_values: Skip {post_attributes.sync_mode} mode attribute {attr_key} ')
+                log.trace("__set_values: Skip %s mode attribute %s ", post_attributes.sync_mode, attr_key)
                 continue
 
             con_attribute = post_attributes.con_attribute
             con_other_attribute = post_attributes.con_other_attribute
 
             if not object.get('changed_attributes') or con_attribute in object.get('changed_attributes') or (con_other_attribute and con_other_attribute in object.get('changed_attributes')):
-                log.trace(f'__set_values: Set: {con_attribute}')
+                log.trace("__set_values: Set: %s", con_attribute)
                 if post_attributes.reverse_attribute_check:
                     if object['attributes'].get(post_attributes.ldap_attribute):
                         set_values(post_attributes)
@@ -1127,7 +1129,7 @@ class ucs:
                 else:
                     set_values(post_attributes)
             else:
-                log.trace(f'__set_values: Skip: {con_attribute}')
+                log.trace("__set_values: Skip: %s", con_attribute)
 
     def add_in_ucs(self, property_type, object, module, position):
         objectGUID = object['attributes'].get('objectGUID', [None])[0]  # to compensate for __object_from_element
@@ -1136,7 +1138,7 @@ class ucs:
 
         entryUUID = self._get_entryUUID(object['dn'])
         if objectGUID and self.was_objectGUID_deleted_by_ucs(objectGUID):
-            log.info("add_in_ucs: object {} already deleted in UCS, ignoring create".format(object['dn']))
+            log.info("add_in_ucs: object %s already deleted in UCS, ignoring create", object['dn'])
             return True
 
         # reload extended attributes  # FIXME: maybe not necessary
@@ -1145,7 +1147,7 @@ class ucs:
         ucs_object = module.object(None, self.lo, position=position)
         ucs_object.open()
         if property_type == 'group':
-            log.debug("sync_to_ucs: remove {} from ucs group cache".format(object['dn']))
+            log.debug("sync_to_ucs: remove %s from ucs group cache", object['dn'])
             self.group_members_cache_ucs[object['dn'].lower()] = set()
 
         self.__set_values(property_type, object, ucs_object, modtype='add')
@@ -1192,10 +1194,10 @@ class ucs:
 
     def move_in_ucs(self, property_type, object, module, position):
         if self.lo.compare_dn(object['olddn'].lower(), object['dn'].lower()):
-            log.warning("move_in_ucs: cancel move, old and new dn are the same ({!r} to {!r})".format(object['olddn'], object['dn']))
+            log.warning("move_in_ucs: cancel move, old and new dn are the same (%r to %r)", object['olddn'], object['dn'])
             return True
 
-        log.debug("move_in_ucs: move object from {!r} to {!r}".format(object['olddn'], object['dn']))
+        log.debug("move_in_ucs: move object from %r to %r", object['olddn'], object['dn'])
         ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['olddn'], position='')
         ucs_object.open()
         ucs_object.move(object['dn'])
@@ -1216,7 +1218,7 @@ class ucs:
             return
         if not objectGUID:
             objectGUID = 'objectGUID'  # use a dummy value
-        log.debug(f"update_deleted_cache_after_removal: Save entryUUID {entryUUID!r} as deleted to UCS deleted cache. ObjectGUUID: {objectGUID!r}")
+        log.debug("update_deleted_cache_after_removal: Save entryUUID %r as deleted to UCS deleted cache. ObjectGUUID: %r", entryUUID, objectGUID)
         self._set_config_option('UCS deleted', entryUUID, objectGUID)
 
     def was_entryUUID_deleted(self, entryUUID):
@@ -1229,17 +1231,17 @@ class ucs:
             if entryUUID:
                 return True
         except Exception as err:
-            log.error(f"was_objectGUID_deleted_by_ucs: failed to look for objectGUID {objectGUID!r} in 'UCS deleted': {err}")
+            log.error("was_objectGUID_deleted_by_ucs: failed to look for objectGUID %r in 'UCS deleted': %s", objectGUID, err)
         return False
 
     def update_add_cache_after_creation(self, entryUUID, objectGUID):
         if not entryUUID:
             return
-        log.trace(f"update_add_cache_after_creation: Save entryUUID {entryUUID!r} as added in UCS creation cache. ObjectGUUID: {objectGUID!r}")
+        log.trace("update_add_cache_after_creation: Save entryUUID %r as added in UCS creation cache. ObjectGUUID: %r", entryUUID, objectGUID)
         self._set_config_option('UCS added', entryUUID, objectGUID)
 
     def remove_add_cache_after_removal(self, entryUUID):
-        log.trace(f'remove_add_cache_after_removal: remove entryUUID {entryUUID!r} from "UCS added" cache')
+        log.trace('remove_add_cache_after_removal: remove entryUUID %r from "UCS added" cache', entryUUID)
         self._remove_config_option('UCS added', entryUUID)
 
     def was_objectGUID_added_by_ucs(self, objectGUID):
@@ -1248,13 +1250,13 @@ class ucs:
             if entryUUID:
                 return True
         except Exception as err:
-            log.error(f"was_objectGUID_added_by_ucs: failed to look for objectGUID {objectGUID!r} in 'UCS added': {err}")
+            log.error("was_objectGUID_added_by_ucs: failed to look for objectGUID %r in 'UCS added': %s", objectGUID, err)
         return False
 
     def delete_in_ucs(self, property_type, object, module, position):
         """Removes an AD object in UCS-LDAP"""
         if self.property[property_type].disable_delete_in_ucs:
-            log.info("Delete of {} was disabled in mapping".format(object['dn']))
+            log.info("Delete of %s was disabled in mapping", object['dn'])
             return True
 
         objectGUID = object['attributes'].get('objectGUID', [None])[0]  # to compensate for __object_from_element
@@ -1263,7 +1265,7 @@ class ucs:
         entryUUID = self._get_entryUUID(object['dn'])
 
         if objectGUID and self.was_objectGUID_deleted_by_ucs(objectGUID):
-            log.info("delete_in_ucs: object {} already deleted in UCS, ignoring delete".format(object['dn']))
+            log.info("delete_in_ucs: object %s already deleted in UCS, ignoring delete", object['dn'])
             return True
 
         if property_type == 'windowscomputer':
@@ -1275,11 +1277,11 @@ class ucs:
             try:
                 result = self.search_ucs(base=object['dn'], scope='base', attr=['objectClass'], unique=True)
             except univention.admin.uexceptions.noObject:
-                log.info("The object was not found in UCS: {}".format(object['dn']))
+                log.info("The object was not found in UCS: %s", object['dn'])
                 return True
 
             if b'univentionDomainController' in result[0][1].get('objectClass'):
-                log.info("The windows computer {} is a Directory Node in OpenLDAP. The deletion will be skipped.".format(object['dn']))
+                log.info("The windows computer %s is a Directory Node in OpenLDAP. The deletion will be skipped.", object['dn'])
                 return True
 
         try:
@@ -1311,17 +1313,17 @@ class ucs:
             if self.lo.compare_dn(subdn.lower(), parent_ucs_object['dn'].lower()):  # TODO: search with scope=children and remove this check
                 continue
 
-            log.debug(f"delete: {subdn!r}")
+            log.debug("delete: %r", subdn)
 
             _mod, key = self.identify_udm_object(subdn, subattr)
             subobject_ucs = {'dn': subdn, 'modtype': 'delete', 'attributes': subattr}
             back_mapped_subobject = self._object_mapping(key, subobject_ucs, 'ucs')
-            log.warning("delete subobject: {!r}".format(back_mapped_subobject['dn']))
+            log.warning("delete subobject: %r", back_mapped_subobject['dn'])
 
             if not self._ignore_object(key, back_mapped_subobject):
                 # FIXME: this call is wrong!: sync_to_ucs() must be called with a ad_object not with a ucs_object!
                 if not self.sync_to_ucs(key, subobject_ucs, back_mapped_subobject['dn'], parent_ucs_object):
-                    log.warning(f"delete of subobject failed: {subdn!r}")
+                    log.warning("delete of subobject failed: %r", subdn)
                     return False
         return True
 
@@ -1348,7 +1350,7 @@ class ucs:
         # if sync is write (sync to AD) or none, there is nothing to do
         if not property_type or self.property[property_type].sync_mode in ['write', 'none']:
             if property_type:
-                log.debug(self.context_log(property_type, object, f"sync ignored: sync_mode is {self.property[property_type].sync_mode}", to_ucs=True))
+                log.debug(self.context_log(property_type, object, "sync ignored: sync_mode is %s", to_ucs=True), self.property[property_type].sync_mode)
             else:
                 log.debug(self.context_log(property_type, object, "sync ignored: no mapping defined", to_ucs=True))
             return True
@@ -1372,7 +1374,7 @@ class ucs:
         if object['modtype'] in ('delete', 'move'):
             try:
                 del self.group_member_mapping_cache_ucs[object['dn'].lower()]
-                log.debug("sync_to_ucs: {} removed from UCS group member mapping cache".format(object['dn']))
+                log.debug("sync_to_ucs: %s removed from UCS group member mapping cache", object['dn'])
             except KeyError:
                 pass
             try:
@@ -1397,7 +1399,7 @@ class ucs:
             if uuid:
                 uuid = uuid[0].decode('ASCII')
                 if self.lockingdb.is_ucs_locked(uuid):
-                    log.info(f"Unable to sync {old_object.dn!r} (UUID: {uuid!r}). The object is currently locked.")
+                    log.info("Unable to sync %r (UUID: %r). The object is currently locked.", old_object.dn, uuid)
                     return False
 
         try:
@@ -1405,7 +1407,7 @@ class ucs:
             if object['modtype'] == 'modify' and original_object:
                 old_s4_object = self.s4cache.get_entry(guid)
                 log.debug("sync_to_ucs: old_s4_object: %s", old_s4_object)
-                log.debug("sync_to_ucs: new_s4_object: {}".format(original_object['attributes']))
+                log.debug("sync_to_ucs: new_s4_object: %s", original_object['attributes'])
                 if old_s4_object:
                     object['old_s4_object'] = old_s4_object
                     for attr in original_object['attributes']:
@@ -1416,11 +1418,11 @@ class ucs:
                             object['changed_attributes'].append(attr)
                 else:
                     object['changed_attributes'] = list(original_object['attributes'].keys())
-            log.debug("The following attributes have been changed: {}".format(object['changed_attributes']))
+            log.debug("The following attributes have been changed: %s", object['changed_attributes'])
 
             result = False
             if object['modtype'] == 'add':
-                log.debug(f"sync_to_ucs: lock S4 guid: {guid!r}")
+                log.debug("sync_to_ucs: lock S4 guid: %r", guid)
                 if not self.lockingdb.is_s4_locked(guid):
                     self.lockingdb.lock_s4(guid)
 
@@ -1429,7 +1431,7 @@ class ucs:
             else:
                 module = self.modules[property_type]  # default, determined by mapping filter
                 if old_object:
-                    log.debug(f"sync_to_ucs: using existing target object type: {old_object.module}")
+                    log.debug("sync_to_ucs: using existing target object type: %s", old_object.module)
                     module = univention.admin.modules.get(old_object.module)
                 if object['modtype'] == 'add':
                     result = self.add_in_ucs(property_type, object, module, position)
@@ -1455,7 +1457,7 @@ class ucs:
                     self.s4cache.add_entry(guid, original_object.get('attributes'))
 
             if not result:
-                log.warning("Failed to get Result for DN ({!r})".format(object['dn']))
+                log.warning("Failed to get Result for DN (%r)", object['dn'])
                 return False
 
             try:
@@ -1472,17 +1474,17 @@ class ucs:
 
             if result:
                 # Always unlock if the sync was successful
-                log.debug(f"sync_to_ucs: unlock S4 guid: {guid!r}")
+                log.debug("sync_to_ucs: unlock S4 guid: %r", guid)
                 self.lockingdb.unlock_s4(guid)
 
-            log.debug("Return  result for DN ({})".format(object['dn']))
+            log.debug("Return  result for DN (%s)", object['dn'])
             return result
 
         except univention.admin.uexceptions.valueInvalidSyntax as msg:
-            log.error("InvalidSyntax: {} ({!r})".format(msg, object['dn']))
+            log.error("InvalidSyntax: %s (%r)", msg, object['dn'])
             return False
         except univention.admin.uexceptions.valueMayNotChange as msg:
-            log.error("Value may not change: {} ({!r})".format(msg, object['dn']))
+            log.error("Value may not change: %s (%r)", msg, object['dn'])
             return False
         except ldap.SERVER_DOWN:
             raise
@@ -1647,18 +1649,18 @@ class ucs:
         if self.property.get(key):
             for subtree in self.property[key].ignore_subtree:
                 if self._subtree_match(object['dn'], subtree):
-                    log.debug("_ignore_object: ignore object because of subtree match: [{!r}]".format(object['dn']))
+                    log.debug("_ignore_object: ignore object because of subtree match: [%r]", object['dn'])
                     return True
 
             if self.property[key].ignore_filter and self._filter_match(self.property[key].ignore_filter, object['attributes']):
-                log.debug("_ignore_object: ignore object because of ignore_filter: [{!r}]".format(object['dn']))
+                log.debug("_ignore_object: ignore object because of ignore_filter: [%r]", object['dn'])
                 return True
 
             if self.property[key].match_filter and not self._filter_match(self.property[key].match_filter, object['attributes']):
-                log.debug("_ignore_object: ignore object because of match_filter: [{!r}]".format(object['dn']))
+                log.debug("_ignore_object: ignore object because of match_filter: [%r]", object['dn'])
                 return True
 
-        log.debug("_ignore_object: Do not ignore {}".format(object['dn']))
+        log.debug("_ignore_object: Do not ignore %s", object['dn'])
 
         return False
 
@@ -1768,7 +1770,7 @@ class ucs:
                         else:
                             object_out['attributes'][post_attributes.con_attribute] = values
 
-        log.trace(f"_object_mapping_ucs: object_out : {object_out!r}")
+        log.trace("_object_mapping_ucs: object_out : %r", object_out)
         return object_out
 
     def _object_mapping_con(self, key, old_object):
@@ -1851,7 +1853,7 @@ class ucs:
                         else:
                             object_out['attributes'][post_attributes.ldap_attribute] = values
 
-        log.trace(f"_object_mapping_con: object_out : {object_out!r}")
+        log.trace("_object_mapping_con: object_out : %r", object_out)
         return object_out
 
     def identify_udm_object(self, dn, attrs):
