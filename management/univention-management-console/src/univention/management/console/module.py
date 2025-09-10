@@ -213,7 +213,7 @@ class Module(JSON_Object):
             if flavor.id not in [iflavor.id for iflavor in self.flavors] or flavor.deactivated:
                 self.flavors.append(flavor)
             else:
-                RESOURCES.warn('Duplicated flavor for module %s: %s' % (self.id, flavor.id))
+                RESOURCES.warning('Duplicated flavor for module %s: %s' % (self.id, flavor.id))
 
     def merge_flavors(self, other_flavors):
         for other_flavor in other_flavors:
@@ -288,7 +288,7 @@ class XML_Definition(ET.ElementTree):
         try:
             return float(self.root.get('priority', -1))
         except ValueError:
-            RESOURCES.warn('No valid number type for property "priority": %s' % self.root.get('priority'))
+            RESOURCES.warning('No valid number type for property "priority": %s' % self.root.get('priority'))
         return None
 
     @property
@@ -316,7 +316,7 @@ class XML_Definition(ET.ElementTree):
             try:
                 priority = float(elem.get('priority', -1))
             except ValueError:
-                RESOURCES.warn('No valid number type for property "priority": %s' % elem.get('priority'))
+                RESOURCES.warning('No valid number type for property "priority": %s' % elem.get('priority'))
             categories = [cat.get('name') for cat in elem.findall('categories/category')]
             # a empty <categories/> causes the module to be hidden! while a not existing <category> element causes that the categories from the module are used
             hidden = elem.find('categories') is not None and not categories
@@ -422,7 +422,7 @@ class Manager(dict):
                     # save list of definitions
                     modules.setdefault(mod.id, []).append(mod)
             except (xml.parsers.expat.ExpatError, ET.ParseError) as exc:
-                RESOURCES.warn('Failed to load module %s: %s' % (filename, exc))
+                RESOURCES.warning('Failed to load module %s: %s' % (filename, exc))
                 continue
         self.clear()
         self.update(modules)

@@ -232,7 +232,7 @@ class PamAuth:
         try:
             self.pam.chauthtok()
         except PAMError as pam_err:
-            AUTH.warn('Changing password failed (%s). Prompts: %r' % (pam_err, prompts))
+            AUTH.warning('Changing password failed (%s). Prompts: %r' % (pam_err, prompts))
             message = self._parse_error_message_from(pam_err.args, prompts)
             raise PasswordChangeFailed(
                 ('%s %s %s' % (self._('Changing password failed.'), message, self._get_password_complexity_message())).rstrip(),

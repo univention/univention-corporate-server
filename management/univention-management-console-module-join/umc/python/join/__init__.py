@@ -106,7 +106,7 @@ class Progress:
         self.info = info
 
     def error_handler(self, err: str) -> None:
-        MODULE.warn(err)
+        MODULE.warning(err)
         self.errors.append(err)
 
     def component_handler(self, component: str) -> None:
@@ -266,13 +266,13 @@ def run(
         stdout, stderr = process.communicate()
         stdout, stderr = stdout.decode('UTF-8', 'replace'), stderr.decode('UTF-8', 'replace')
         if stderr:
-            MODULE.warn(f'stderr: {stderr}')
+            MODULE.warning(f'stderr: {stderr}')
 
         if process.returncode != 0:
-            MODULE.warn(f'Could not perform system join: {stdout}{stderr}')
+            MODULE.warning(f'Could not perform system join: {stdout}{stderr}')
             error_handler(_('The join process could not be executed. More details can be found in the log file <i>/var/log/univention/join.log</i>.<br/>Please retry to join the system after resolving any conflicting issues.'))
         elif failed_join_scripts:
-            MODULE.warn(f'The following join scripts could not be executed: {failed_join_scripts}')
+            MODULE.warning(f'The following join scripts could not be executed: {failed_join_scripts}')
             error_handler(_('Some join scripts could not be executed. More details can be found in the log file <i>/var/log/univention/join.log</i>.<br/>Please retry to execute the join scripts after resolving any conflicting issues.'))
     finally:
         # make sure that UMC servers and apache can be restarted again
@@ -382,14 +382,14 @@ class Instance(Base):
         try:
             open(LOCKFILE, 'a').close()
         except OSError as ex:
-            MODULE.warn(f'_lock: {ex}')
+            MODULE.warning(f'_lock: {ex}')
 
     def _unlock(self) -> None:
         try:
             if self._running:
                 os.unlink(LOCKFILE)
         except OSError as ex:
-            MODULE.warn(f'_unlock: {ex}')
+            MODULE.warning(f'_unlock: {ex}')
 
     def __del__(self) -> None:
         self._unlock()
@@ -447,7 +447,7 @@ class Instance(Base):
             self.progress_state.finish()
             if isinstance(result, BaseException):
                 msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
-                MODULE.warn(f'Exception during domain join: {msg}')
+                MODULE.warning(f'Exception during domain join: {msg}')
                 self.progress_state.error_handler(_('An unexpected error occurred: %s') % result)
 
         # launch thread
@@ -498,7 +498,7 @@ class Instance(Base):
             self.progress_state.finish()
             if isinstance(result, BaseException):
                 msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
-                MODULE.warn(f'Exception during running join scripts: {msg}')
+                MODULE.warning(f'Exception during running join scripts: {msg}')
                 self.progress_state.error_handler(_('An unexpected error occurred: %s') % result)
 
         # launch thread

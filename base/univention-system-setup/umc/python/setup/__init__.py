@@ -41,7 +41,7 @@ from univention.management.console.modules.sanitizers import IntegerSanitizer, P
 try:
     from univention.appcenter.app_cache import AppCache
 except ImportError as exc:
-    MODULE.warn('Ignoring import error: %s' % (exc,))
+    MODULE.warning('Ignoring import error: %s' % (exc,))
 
 
 from univention.management.console.modules.setup import network, util
@@ -111,7 +111,7 @@ class Instance(Base, ProgressMixin):
                 process.kill()
                 return True
         except OSError as exc:
-            MODULE.warn('cannot open browser PID file: %s' % (exc,))
+            MODULE.warning('cannot open browser PID file: %s' % (exc,))
         except ValueError as exc:
             MODULE.error('browser PID is not a number: %s' % (exc,))
         except psutil.NoSuchProcess as exc:
@@ -220,7 +220,7 @@ class Instance(Base, ProgressMixin):
 
             if isinstance(result, BaseException):
                 msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
-                MODULE.warn('Exception during saving the settings: %s' % (msg,))
+                MODULE.warning('Exception during saving the settings: %s' % (msg,))
                 self._progressParser.current.errors.append(_('Encountered unexpected error during setup process: %s') % result)
                 self._progressParser.current.critical = True
                 self._finishedResult = True
@@ -285,7 +285,7 @@ class Instance(Base, ProgressMixin):
 
             if isinstance(result, BaseException):
                 msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
-                MODULE.warn('Exception during saving the settings: %s' % (msg,))
+                MODULE.warning('Exception during saving the settings: %s' % (msg,))
                 self._progressParser.current.errors.append(_('Encountered unexpected error during setup process: %s') % (result,))
                 self._progressParser.current.critical = True
                 self._finishedResult = True
@@ -369,7 +369,7 @@ class Instance(Base, ProgressMixin):
                 })
 
         def _append(key: str, message: str) -> None:
-            MODULE.warn('Validation failed for key %s: %s' % (key, message))
+            MODULE.warning('Validation failed for key %s: %s' % (key, message))
             messages.append({
                 'key': key,
                 'valid': False,
@@ -661,7 +661,7 @@ class Instance(Base, ProgressMixin):
         try:
             _locale.setlocale(_locale.LC_ALL, str(locale))
         except _locale.Error:
-            MODULE.warn('Locale %s is not supported, using fallback locale "C" instead.' % locale)
+            MODULE.warning('Locale %s is not supported, using fallback locale "C" instead.' % locale)
             _locale.setlocale(_locale.LC_ALL, 'C')
         self.locale = locale
 
@@ -751,7 +751,7 @@ class Instance(Base, ProgressMixin):
                     result['ucs_master_fqdn'] = ucs_master_fqdn
                     result['ucs_master_reachable'] = util.is_ssh_reachable(ucs_master_fqdn)
             except (failedADConnect, connectionFailed) as exc:
-                MODULE.warn('ADDS DC lookup failed: %s' % (exc,))
+                MODULE.warning('ADDS DC lookup failed: %s' % (exc,))
         elif role == 'nonmaster':
             domain = util.get_ucs_domain(nameserver)
             if domain:

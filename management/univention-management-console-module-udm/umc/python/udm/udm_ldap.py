@@ -127,10 +127,10 @@ class AppAttributes:
             with open(cls.FNAME) as fd:
                 cache = load(fd)
         except OSError:
-            MODULE.warn('Error reading %s' % cls.FNAME)
+            MODULE.warning('Error reading %s' % cls.FNAME)
             cache = {}
         except ValueError:
-            MODULE.warn('Error parsing %s' % cls.FNAME)
+            MODULE.warning('Error parsing %s' % cls.FNAME)
             cache = {}
         else:
             cache = cache.get(current_locale) or cache.get('en_US') or {}
@@ -553,7 +553,7 @@ class UDM_Module:
 
             obj.create()
         except udm_errors.base as e:
-            MODULE.warn('Failed to create LDAP object: %s: %s' % (e.__class__.__name__, str(e)))
+            MODULE.warning('Failed to create LDAP object: %s: %s' % (e.__class__.__name__, str(e)))
             UDM_Error(e, obj.dn).reraise()
 
         return obj.dn
@@ -572,7 +572,7 @@ class UDM_Module:
             obj.move(dest)
             return dest
         except udm_errors.base as e:
-            MODULE.warn('Failed to move LDAP object %s: %s: %s' % (ldap_dn, e.__class__.__name__, str(e)))
+            MODULE.warning('Failed to move LDAP object %s: %s: %s' % (ldap_dn, e.__class__.__name__, str(e)))
             UDM_Error(e).reraise()
 
     def remove(self, ldap_dn, cleanup=False, recursive=False):
@@ -587,7 +587,7 @@ class UDM_Module:
             if cleanup:
                 udm_objects.performCleanup(obj)
         except udm_errors.base as e:
-            MODULE.warn('Failed to remove LDAP object %s: %s: %s' % (ldap_dn, e.__class__.__name__, str(e)))
+            MODULE.warning('Failed to remove LDAP object %s: %s: %s' % (ldap_dn, e.__class__.__name__, str(e)))
             UDM_Error(e).reraise()
 
     def modify(self, ldap_object):
@@ -632,7 +632,7 @@ class UDM_Module:
 
             obj.modify()
         except udm_errors.base as e:
-            MODULE.warn('Failed to modify LDAP object %s: %s: %s' % (obj.dn, e.__class__.__name__, str(e)))
+            MODULE.warning('Failed to modify LDAP object %s: %s: %s' % (obj.dn, e.__class__.__name__, str(e)))
             UDM_Error(e).reraise()
 
     def search(self, container=None, attribute=None, value=None, superordinate=None, scope='sub', filter='', simple=False, simple_attrs=None, hidden=True, serverctrls=None, response=None, allow_asterisks=True):
@@ -1268,12 +1268,12 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
     for dn, attrs in result:
         modules = udm_modules.objectType(None, ldap_connection, dn, attrs)
         if not modules:
-            MODULE.warn('Could not identify LDAP object %r' % (dn,))
+            MODULE.warning('Could not identify LDAP object %r' % (dn,))
             continue
         if object_type == '$containers$' and not udm_modules.childs(modules[0]):
             continue
         if len(modules) > 1:
-            MODULE.warn('Found multiple object types for %r: %r' % (dn, modules))
+            MODULE.warning('Found multiple object types for %r: %r' % (dn, modules))
             MODULE.info('dn: %r, attrs: %r' % (dn, attrs))
         for mod in modules:
             module = UDM_Module(mod, ldap_connection=ldap_connection, ldap_position=ldap_position)
@@ -1325,7 +1325,7 @@ def search_syntax_choices_by_key(syn, key, ldap_connection, ldap_position):
                 options = {'objectProperty': attr, 'objectPropertyValue': key, 'allow_asterisks': False}
                 return read_syntax_choices(syn, options, ldap_connection=ldap_connection, ldap_position=ldap_position)
 
-    MODULE.warn('Syntax %r: No fast search function' % syn.name)
+    MODULE.warning('Syntax %r: No fast search function' % syn.name)
     # return them all, as there is no reason to filter after everything has loaded
     # frontend will cache it.
     return read_syntax_choices(syn, ldap_connection=ldap_connection, ldap_position=ldap_position)

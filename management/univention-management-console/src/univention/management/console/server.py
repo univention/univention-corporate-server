@@ -158,7 +158,7 @@ class Server:
         self._inform_childs(signal)
 
     def signal_handler_stop(self, signo, frame):
-        CORE.warn('Shutting down all open connections')
+        CORE.warning('Shutting down all open connections')
         self._inform_childs(signal)
         raise SystemExit(0)
 
@@ -233,7 +233,7 @@ class Server:
             try:
                 self._child_number = tornado.process.fork_processes(self.options.processes, 0)
             except RuntimeError as exc:
-                CORE.warn('Child process died: %s' % (exc,))
+                CORE.warning('Child process died: %s' % (exc,))
                 os.kill(os.getpid(), signal.SIGTERM)
                 raise SystemExit(str(exc))
             except KeyboardInterrupt:
@@ -317,14 +317,14 @@ class Server:
             import objgraph
         except ImportError:
             return
-        CORE.warn('### MEMORY')
+        CORE.warning('### MEMORY')
         s = io.StringIO()
         objgraph.show_most_common_types(30, shortnames=False, file=s, filter=lambda o: type(o).__module__.startswith('univention.'))
-        CORE.warn('%s', s.getvalue())
-        CORE.warn('univention.admin.uldap.access: %d', objgraph.count('univention.admin.uldap.access'))
-        CORE.warn('univention.uldap.access: %d', objgraph.count('univention.uldap.access'))
+        CORE.warning('%s', s.getvalue())
+        CORE.warning('univention.admin.uldap.access: %d', objgraph.count('univention.admin.uldap.access'))
+        CORE.warning('univention.uldap.access: %d', objgraph.count('univention.uldap.access'))
         for component in components:
-            CORE.warn('%s: %d', component, objgraph.count('univention.management.console.%s' % (component,)))
+            CORE.warning('%s: %d', component, objgraph.count('univention.management.console.%s' % (component,)))
 
         # objgraph.show_backrefs(objgraph.by_type('univention.uldap.access')[0])
 

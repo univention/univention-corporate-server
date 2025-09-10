@@ -64,7 +64,7 @@ def test_connection():
     rdn = explode_rdn(base)[0]
     p1, _stdout, stderr = adsearch(rdn)
     if stderr:
-        MODULE.warn(stderr)
+        MODULE.warning(stderr)
     if p1.returncode != 0:
         raise ADNotAvailable()
     return True
@@ -85,7 +85,7 @@ def guess_ad_domain_language():
     '''
     _p1, stdout, stderr = adsearch('sAMAccountName=Domänen-Admins')
     if stderr:
-        MODULE.warn('adsearch "sAMAccountName=Domänen-Admins" stderr: %s' % stderr)
+        MODULE.warning('adsearch "sAMAccountName=Domänen-Admins" stderr: %s' % stderr)
     for line in stdout.split('\n'):
         line = line.lower().strip()
         if line == 'samaccountname: domänen-admins':
@@ -110,7 +110,7 @@ def get_ad_binddn_from_name(base, server, username, password):
         if res.count == 1:
             binddn = res.msgs[0].get('dn', idx=0).extended_str()
     except ldb.LdbError as ex:
-        MODULE.warn('get_dn_from_name() could not get binddn for user %s: %s' % (username, ex))
+        MODULE.warning('get_dn_from_name() could not get binddn for user %s: %s' % (username, ex))
     return binddn
 
 
@@ -234,7 +234,7 @@ class Instance(Base, ProgressMixin):
             MODULE.process('Enabling SSL...')
             admember.enable_ssl()
         else:
-            MODULE.warn('SSL is not supported')
+            MODULE.warning('SSL is not supported')
             admember.disable_ssl()
 
         # UCR variables are set, and now we can try to guess the language of
@@ -362,19 +362,19 @@ class Instance(Base, ProgressMixin):
             admember.check_connection(ad_domain_info, username, password)
             admember.check_ad_account(ad_domain_info, username, password)
         except admember.invalidUCSServerRole as exc:  # check_server_role()
-            MODULE.warn('Failure: %s' % exc)
+            MODULE.warning('Failure: %s' % exc)
             raise UMC_Error(_('The AD member mode can only be configured on a Primary Directory Node.'))
         except admember.failedADConnect as exc:  # lookup_adds_dc()
-            MODULE.warn('Failure: %s' % exc)
+            MODULE.warning('Failure: %s' % exc)
             raise UMC_Error(_('Could not connect to AD Server %s. Please verify that the specified address is correct. (%s)') % (ad_server_address, 'check_domain: %s' % (exc,)))
         except admember.domainnameMismatch as exc:  # check_domain()
-            MODULE.warn('Failure: %s' % exc)
+            MODULE.warning('Failure: %s' % exc)
             raise UMC_Error(_('The domain name of the AD Server (%(ad_domain)s) does not match the local UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % {'ad_domain': ad_domain_info.get("Domain"), 'ucs_domain': ucr['domainname']})
         except admember.connectionFailed as exc:  # check_connection()
-            MODULE.warn('Failure: %s' % exc)
+            MODULE.warning('Failure: %s' % exc)
             raise UMC_Error(_('Could not connect to AD Server %s. Please verify that username and password are correct. (Details:\n%s)') % (ad_domain_info.get('DC DNS Name'), exc))
         except admember.notDomainAdminInAD as exc:  # check_ad_account()
-            MODULE.warn('Failure: %s' % exc)
+            MODULE.warning('Failure: %s' % exc)
             raise UMC_Error(_('The given user is not member of the Domain Admins group in Active Directory. This is a requirement for the Active Directory domain join.'))
 
         # final info dict that is returned... replace spaces in the keys with '_'
@@ -455,7 +455,7 @@ class Instance(Base, ProgressMixin):
                 progress.current = (step / 100.0) * _nsteps + _step_offset
 
             def _err_handler(err):
-                MODULE.warn(err)
+                MODULE.warning(err)
                 progress.warnings.append(err)
 
             success = admember.remove_install_univention_samba(info_handler=MODULE.process, error_handler=_err_handler, step_handler=_step_handler)
@@ -546,7 +546,7 @@ class Instance(Base, ProgressMixin):
                 if not success:
                     raise UMC_Error(_('Could not establish an encrypted connection. Either "%r" is not reachable or does not support encryption.') % server)
             else:
-                MODULE.warn('connector is not configured yet, cannot test connection')
+                MODULE.warning('connector is not configured yet, cannot test connection')
 
     @simple_response
     def enable_ssl(self):

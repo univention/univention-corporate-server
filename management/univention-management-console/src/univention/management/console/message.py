@@ -98,7 +98,7 @@ class Message:
             else:
                 self.body[key] = value
         else:
-            PARSER.warn('Attribute %s just available for MIME type %s' % (key, MIMETYPE_JSON))
+            PARSER.warning('Attribute %s just available for MIME type %s' % (key, MIMETYPE_JSON))
 
     def _get_key(self, key, default=None):
         if isinstance(default, dict):
@@ -162,7 +162,7 @@ class Request(Message):
                 self._user_connections.add(lo)
             return lo
         except (ldap.LDAPError, udm_errors.base) as exc:
-            CORE.warn('Failed to open LDAP connection for user %s: %s' % (self.user_dn, exc))
+            CORE.warning('Failed to open LDAP connection for user %s: %s' % (self.user_dn, exc))
 
     def bind_user_connection(self, lo):
         CORE.process('LDAP bind for user %r.' % (self.user_dn,))
@@ -170,12 +170,12 @@ class Request(Message):
             if self.auth_type == 'OIDC':
                 lo.lo.bind_oauthbearer(None, self.password)
                 if not lo.lo.compare_dn(lo.binddn, self.user_dn):
-                    CORE.warn('OIDC binddn does not match: %r != %r' % (lo.binddn, self.user_dn))
+                    CORE.warning('OIDC binddn does not match: %r != %r' % (lo.binddn, self.user_dn))
                     self.user_dn = lo.binddn
             elif self.auth_type == 'SAML':
                 lo.lo.bind_saml(self.password)
                 if not lo.lo.compare_dn(lo.binddn, self.user_dn):
-                    CORE.warn('SAML binddn does not match: %r != %r' % (lo.binddn, self.user_dn))
+                    CORE.warning('SAML binddn does not match: %r != %r' % (lo.binddn, self.user_dn))
                     self.user_dn = lo.binddn
             else:
                 try:
@@ -185,7 +185,7 @@ class Request(Message):
                     CORE.error('LDAP authentication for %r failed: %s' % (self.user_dn, exc))
                     if len(self.password) < 25:
                         raise
-                    CORE.warn('Trying to authenticate via SAML.')
+                    CORE.warning('Trying to authenticate via SAML.')
                     try:
                         lo.lo.bind_saml(self.password)
                     except ldap.OTHER:

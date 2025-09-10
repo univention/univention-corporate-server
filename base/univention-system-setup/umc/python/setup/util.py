@@ -55,7 +55,7 @@ try:
     from univention.appcenter.actions import get_action
     from univention.appcenter.app_cache import AppCache, Apps
 except ImportError as exc:
-    MODULE.warn('Ignoring import error: %s' % (exc,))
+    MODULE.warning('Ignoring import error: %s' % (exc,))
 _ = Translation('univention-management-console-module-setup').translate
 
 ucr = univention.config_registry.ConfigRegistry()
@@ -912,9 +912,9 @@ def get_ucs_domaincontroller_master_query(nameserver: str, domain: str) -> dns.r
     try:
         return resolver.query('_domaincontroller_master._tcp.%s.' % domain, 'SRV')
     except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer, dns.resolver.NoNameservers):
-        MODULE.warn('No valid UCS domain (%s) at nameserver %s!' % (domain, nameserver))
+        MODULE.warning('No valid UCS domain (%s) at nameserver %s!' % (domain, nameserver))
     except dns.exception.Timeout as exc:
-        MODULE.warn('Lookup for Primary Directory Node record at nameserver %s timed out: %s' % (nameserver, exc))
+        MODULE.warning('Lookup for Primary Directory Node record at nameserver %s timed out: %s' % (nameserver, exc))
     except dns.exception.DNSException:
         MODULE.error('DNS Exception: %s' % (traceback.format_exc()))
     return None
@@ -979,9 +979,9 @@ def get_fqdn(nameserver: str) -> str | None:
 
         return domain
     except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer, dns.resolver.NoNameservers) as exc:
-        MODULE.warn('Lookup for nameserver %s failed: %s %s' % (nameserver, type(exc).__name__, exc))
+        MODULE.warning('Lookup for nameserver %s failed: %s %s' % (nameserver, type(exc).__name__, exc))
     except dns.exception.Timeout as exc:
-        MODULE.warn('Lookup for nameserver %s timed out: %s' % (nameserver, exc))
+        MODULE.warning('Lookup for nameserver %s timed out: %s' % (nameserver, exc))
     except dns.exception.DNSException:
         MODULE.error('DNS Exception: %s' % (traceback.format_exc()))
     return None

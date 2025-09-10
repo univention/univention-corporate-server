@@ -203,7 +203,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
     def error_handling(self, etype, exc, etraceback):
         super().error_handling(etype, exc, etraceback)
         if isinstance(exc, udm_errors.authFail | INVALID_CREDENTIALS):
-            MODULE.warn('Authentication failed: %s' % (exc,))
+            MODULE.warning('Authentication failed: %s' % (exc,))
             raise LDAP_AuthenticationFailed()
         if isinstance(exc, udm_errors.permissionDenied) or isinstance(exc, UDM_Error) and isinstance(exc.exc, udm_errors.permissionDenied):
             raise Forbidden(str(exc))
@@ -645,7 +645,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
             module = self.get_module(object_type, obj.dn)
             if module is None:
                 # This happens when concurrent a object is removed between the module.search() and self.get_module() call
-                MODULE.warn('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
+                MODULE.warning('LDAP object does not exists %s (flavor: %s). The object is ignored.' % (obj.dn, request.flavor))
                 continue
             entry = {
                 '$dn$': obj.dn,
