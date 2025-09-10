@@ -51,7 +51,7 @@ class Instance(umcm.Base):
         for command in (MANUFACTURER_CMD, MODEL_CMD):
             (exitcode, stdout, stderr) = self._call(command)
             if exitcode:
-                MODULE.error('Command %r failed: %s %r %r' % (command, exitcode, stdout, stderr))
+                MODULE.error('Command %r failed: %s %r %r', command, exitcode, stdout, stderr)
                 raise UMC_Error(_('Failed to execute command'))
             else:
                 stdout = stdout[:-1]  # remove newline character
@@ -79,7 +79,7 @@ class Instance(umcm.Base):
 
         (exitcode, stdout, _stderr) = self._call(SYSTEM_INFO_CMD)
         if exitcode:
-            MODULE.error('Execution of univention-system-info failed: %s' % (stdout,))
+            MODULE.error('Execution of univention-system-info failed: %s', stdout)
             raise UMC_Error('Execution of univention-system-info failed')
 
         result = {}
@@ -143,7 +143,7 @@ class Instance(umcm.Base):
         # anonymised id of localhost
         uuid_system = ucr.get('uuid/system', '')
         url = ucr.get('umc/sysinfo/traceback/url', 'https://forge.univention.org/cgi-bin/system-info-traceback.py')
-        MODULE.process('Sending %s to %s' % (traceback, url))
+        MODULE.process('Sending %s to %s', traceback, url)
         request_data = {
             'traceback': traceback,
             'remark': remark,
