@@ -1,0 +1,20 @@
+product: ucs
+release: "5.2"
+version: [2, 3]
+scope: ucs_5.2-0-errata5.2-3
+src: libarchive
+fix: 3.6.2-1+deb12u3
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.3 (CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2025-5914)
+ * CVSS score 3.9 (CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:L/I:N/A:L).
+   (CVE-2025-5916, CVE-2025-5915)
+ * CVSS score 2.8 (CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:N/I:N/A:L).
+   (CVE-2025-5917)
+bug: [58615]
+cve:
+- CVE-2025-5914
+- CVE-2025-5915
+- CVE-2025-5916
+- CVE-2025-5917
