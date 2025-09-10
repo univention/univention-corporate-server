@@ -753,9 +753,8 @@ def test_oidc_client_options(random_string, keycloak_admin_connection):
         '--admin-url', admin_url,
         '--public-client',
         '--backchannel-logout-revoke-session',
-        '--token-exchange-enabled',
-        '--use-refresh-tokens',
         '--backchannel-logout-session-required',
+        '--token-exchange-enabled',
         client_id,
     ]
     run_command(args)
@@ -775,3 +774,24 @@ def test_oidc_client_options(random_string, keycloak_admin_connection):
     finally:
         if keycloak_id:
             keycloak_admin_connection.delete_client(keycloak_id)
+
+
+@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+def test_oidc_client_scope(random_string, keycloak_admin_connection):
+    client_scope = random_string()
+    args = [
+        'univention-keycloak', 'scope', 'create',
+        client_scope,
+        '--add-user-id-mapper',
+        '--add-groups-mapper', "group name",
+    ]
+    run_command(args)
+
+    keycloak_scopes = keycloak_admin_connection.get_client_scopes()
+    test_scope = next(scope for scope in keycloak_scopes if scope["name"] == client_scope)
+    assert test_scope['name'] == client_scope
+    assert len(test_scope['protocolMappers']) == 2
+    user_id_mapper = next(mapper for mapper in test_scope['protocolMappers'] if mapper['name'] == 'user_id')
+    group_mapper = next(mapper for mapper in test_scope['protocolMappers'] if mapper['name'] == 'groups-mapper')
+    assert user_id_mapper['config']['access.token.claim'] == 'true'
+    assert group_mapper['config']['claim.name'] == 'group name'

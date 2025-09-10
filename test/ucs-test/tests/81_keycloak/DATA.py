@@ -255,6 +255,8 @@ OC_CLIENT = {
     'frontchannelLogout': True,
     'protocol': 'openid-connect',
     'attributes': {
+        'standard.token.exchange.enabled': 'true',
+        'standard.token.exchange.enableRefreshRequestedTokenType': 'SAME_SESSION',
         'saml.multivalued.roles': 'false',
         'saml.force.post.binding': 'false',
         'frontchannel.logout.session.required': 'false',
@@ -471,6 +473,8 @@ UMC_OIDC_CLIENT = {
     'frontchannelLogout': False,
     'protocol': 'openid-connect',
     'attributes': {
+        'standard.token.exchange.enabled': 'false',
+        'standard.token.exchange.enableRefreshRequestedTokenType': 'SAME_SESSION',
         'access.token.lifespan': '300',
         'saml.multivalued.roles': 'false',
         'saml.force.post.binding': 'false',

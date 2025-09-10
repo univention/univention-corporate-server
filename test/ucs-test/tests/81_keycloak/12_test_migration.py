@@ -48,7 +48,7 @@ def compare_client(old, new, substitutes, client_id):
 @pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
 @pytest.mark.parametrize("client,client_id,args", [
     (O365CLIENT, 'urn:federation:MicrosoftOnline', ['univention-keycloak', 'saml/sp', 'create', '--metadata-file=ms.xml', '--metadata-url=urn:federation:MicrosoftOnline', '--idp-initiated-sso-url-name=MicrosoftOnline', '--name-id-format=persistent']),
-    (OC_CLIENT, 'owncloudclient', ['univention-keycloak', 'oidc/rp', 'create', '--client-secret=univention', '--app-url=https://backup.ucs.test/owncloud/apps/openidconnect/redirect', 'owncloudclient']),
+    (OC_CLIENT, 'owncloudclient', ['univention-keycloak', 'oidc/rp', 'create', '--client-secret=univention', '--app-url=https://backup.ucs.test/owncloud/apps/openidconnect/redirect', '--token-exchange-enabled', 'owncloudclient']),
     (NC_CLIENT, 'https://backup.ucs.test/nextcloud/apps/user_saml/saml/metadata', ['univention-keycloak', 'saml/sp', 'create', '--metadata-url=https://backup.ucs.test/nextcloud/apps/user_saml/saml/metadata', '--metadata-file=nc.xml', '--role-mapping-single-value']),
     (GOOGLE_CLIENT, 'google.com', ['univention-keycloak', 'saml/sp', 'create', '--client-id=google.com', '--assertion-consumer-url-post=https://www.google.com/a/testdomain.com/acs', '--single-logout-service-url-post=https://www.google.com/a/testdomain.com/acs', '--idp-initiated-sso-url-name=google.com', '--name-id-format=email', '--frontchannel-logout-off']),
     (UMC_CLIENT, 'https://whatever.ucs.test/univention/saml/metadata', ['univention-keycloak', 'saml/sp', 'create', '--metadata-url=https://whatever.ucs.test/univention/saml/metadata', '--metadata-file=umc.xml']),
