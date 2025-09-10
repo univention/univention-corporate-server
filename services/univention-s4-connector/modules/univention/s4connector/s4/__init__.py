@@ -1362,7 +1362,7 @@ class s4(univention.s4connector.ucs):
         # log.debug("object_memberships_sync_to_ucs: object: %s" % object)
 
         if 'group' in self.property and getattr(self.property['group'], 'sync_mode', '') in ['write', 'none']:
-            self.context_log(key, object, "ignored group memberships sync: group sync_mode is write", level=ud.INFO, to_ucs=True)
+            log.debug(self.context_log(key, object, "ignored group memberships sync: group sync_mode is write", to_ucs=True))
             return
 
         if 'memberOf' in object['attributes']:
@@ -1818,7 +1818,7 @@ class s4(univention.s4connector.ucs):
 
             property_key = self.__identify_s4_type(ad_object)
             if not property_key:
-                self.context_log(property_key, ad_object, 'ignoring not identified object', level=ud.INFO)
+                log.debug(self.context_log(property_key, ad_object, 'ignoring not identified object'))
                 newUSN = max(self.__get_change_usn(ad_object), newUSN)
                 print_progress(True)
                 continue
@@ -1872,7 +1872,7 @@ class s4(univention.s4connector.ucs):
                 except Exception:  # FIXME: which exception is to be caught?
                     log.warning("Exception during set_DN_for_GUID", exc_info=True)
             else:
-                self.context_log(property_key, ad_object, 'sync was not successful, save rejected', level=ud.INFO)
+                log.debug(self.context_log(property_key, ad_object, 'sync was not successful, save rejected'))
                 self.save_rejected(ad_object)
                 self.__update_lastUSN(ad_object)
 
@@ -1972,7 +1972,7 @@ class s4(univention.s4connector.ucs):
                 self._remove_dn_mapping(pre_mapped_ucs_old_dn, old_dn)
                 self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
 
-        self.context_log(property_type, object, to_ucs=False)
+        log.info(self.context_log(property_type, object, to_ucs=False))
 
         if 'olddn' in object:
             object.pop('olddn')  # not needed anymore, will fail object_mapping in later functions
