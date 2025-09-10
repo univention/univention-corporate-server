@@ -32,7 +32,7 @@ class UpdateCertificates(UniventionAppAction):
             args.apps = Apps().get_all_locally_installed_apps()
         self.logfile_logger = get_logfile_logger('update-certificates')
         for app in args.apps:
-            self.log(f'updating certificates for {app}')
+            self.log("updating certificates for %s", app)
             self.update_certificates(app)
 
     def _run_update_certificates_script(self, app):
