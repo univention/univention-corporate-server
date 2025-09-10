@@ -35,7 +35,7 @@ def get_s4_connector(configbasename: str = 'connector'):
     try:
         s4 = univention.s4connector.s4.s4.main(configRegistry, configbasename)
     except SystemExit as error:
-        MODULE.error('Missing Configuration key %s' % (error,))
+        MODULE.error('Missing Configuration key %s', error)
         raise MissingConfigurationKey(error.code)
     else:
         s4.init_ldap_connections()

@@ -69,7 +69,7 @@ class Instance(Base, ProgressMixin):
     @simple_response(with_progress=True)
     def run(self, plugin: str, args: Any = None):
         plug = self.get(plugin)
-        MODULE.process('Running %s' % (plug,))
+        MODULE.process('Running %s', plug)
         for line in plug.run_descr:
             MODULE.process(line)
         args = args or {}
@@ -101,7 +101,7 @@ class Instance(Base, ProgressMixin):
             try:
                 self.modules[plugin] = Plugin(plugin)
             except ImportError as exc:
-                MODULE.error('Could not load plugin %r: %r' % (plugin, exc))
+                MODULE.error('Could not load plugin %r: %r', plugin, exc)
                 raise
         self.modules = OrderedDict(sorted(self.modules.items(), key=lambda t: t[0]))
 
