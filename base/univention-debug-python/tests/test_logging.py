@@ -110,7 +110,15 @@ def test_logging(tmp_path, debug_backend, strucutured):
     ul = importlib.reload(ul)
     tmplog = tmp_path / 'log'
     tmplog.touch()
-    ul.basicConfig(filename=str(tmplog), level=logging.INFO, log_pid=True, univention_debug_flush=True, univention_debug_function=False, do_exit=True, use_structured_logging=strucutured)
+    ul.basicConfig(
+        filename=str(tmplog),
+        level=logging.INFO,
+        log_pid=True,
+        univention_debug_flush=True,
+        univention_debug_function=False,
+        do_exit=True,
+        use_structured_logging=strucutured,
+    )
     logger = logging.getLogger('LDAP')
     logger.univention_debug_handler.set_structured(strucutured)
     logger.error('logger.error("msg")')
