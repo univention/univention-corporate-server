@@ -105,6 +105,8 @@ void oauth_error(
 	const char *fmt,
 	...
 ) {
+	UNUSED(pri);
+
 	sasl_utils_t *sasl_utils;
 	char msg[4096];
 	va_list ap;
@@ -248,6 +250,8 @@ static int encode_saslname(
 char * oauthbearer_error_as_json(
 	enum OAuthError code
 ) {
+	UNUSED(code);
+
 	/* RFC 7628: 3.2.2 Server Response to Failed Authentication
 
 	status (REQUIRED)
@@ -270,6 +274,9 @@ static int oauth_server_mech_new(
 	unsigned int challen,
 	void **conn_context
 ) {
+	UNUSED(challen);
+	UNUSED(challenge);
+
 	oauth_serv_context_t *ctx;
 
 	if (conn_context == NULL) {
@@ -532,6 +539,8 @@ static void oauth_server_mech_free(
 	void *glob_context,
 	const sasl_utils_t *utils
 ) {
+	UNUSED(utils);
+
 	struct oauth_list *item;
 	oauth_glob_context_t *gctx;
 
@@ -608,6 +617,8 @@ int sasl_server_plug_init(
 	char propname[1024];
 	int propnum = 0;
 	FILE *jwks_fp;
+
+	UNUSED(jwks_fp);
 
 	if (maxvers < SASL_SERVER_PLUG_VERSION) {
 		utils->log(NULL, SASL_LOG_ERR, "OAUTHBEARER version mismatch");
@@ -854,6 +865,8 @@ static int oauth_client_mech_new(
 	sasl_client_params_t *params,
 	void **conn_context
 ) {
+	UNUSED(glob_context);
+
 	oauth_client_context *text;
 
 	if ((text = params->utils->malloc(sizeof(*text))) == NULL) {

@@ -66,6 +66,7 @@
 #include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
 
 #ifdef HAVE_INTTYPES_H
 #include <inttypes.h>

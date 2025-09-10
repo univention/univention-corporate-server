@@ -34,6 +34,10 @@
 #define MAYBE_COMPRESS 1
 #define JWT_MINLEN 76 /* len(b64encode(b'{"access_token":"eyJhbGciOiJub25lIn0.eyJzdWIiOiJ7fX0.."}')) */
 
+#ifndef UNUSED
+#define UNUSED(x) (void)(x)
+#endif
+
 enum OAuthError {
 	OK,
 	CLAIM_EXPIRED,
