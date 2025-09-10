@@ -14,6 +14,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable, Iterator
+    from typing import Any
 
 
 try:
@@ -187,14 +188,14 @@ class UniventionPackageCheckBase:
         """
         self.debuglevel = level
 
-    def debug(self, msg: str) -> None:
+    def debug(self, msg: str, *args: Any) -> None:
         """
         Print debug message.
 
         :param msg: Text string.
         """
         if self.debuglevel > 0:
-            print(f'{self.name}: {msg}')
+            print(f'{self.name}: {msg % args}')
 
     def postinit(self, path: Path) -> None:
         """

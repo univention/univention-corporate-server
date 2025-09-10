@@ -52,7 +52,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 'uses-remove_ucr_template': False,
                 'uses-remove_ucr_info_file': False,
             }
-            self.debug(f'found {fn}')
+            self.debug("found %s", fn)
 
         #
         # check scripts
@@ -80,7 +80,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 line = line.strip()
                 if not line or line.startswith('#'):
                     continue
-                self.debug(f'line: {line}')
+                self.debug("line: %s", line)
                 for cmd in ['univention-directory-manager ', '/usr/sbin/univention-directory-manager ', 'univention-admin ', '/usr/sbin/univention-admin ']:
                     if line.startswith(cmd):
                         checks['udm_calls'] += 1

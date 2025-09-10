@@ -59,18 +59,18 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         try:
             self.apt = Cache(memonly=True)
         except Exception as ex:
-            self.debug(f'failed to load APT cache: {ex}')
+            self.debug("failed to load APT cache: %s", ex)
 
     def _scan_script(self, fn: Path) -> set[str]:
         """Find calls to 'univention-install-', 'ucr' and use of 'init-autostart.lib' in file 'fn'."""
         need = set()
-        self.debug(f'Reading {fn}')
+        self.debug("Reading %s", fn)
         try:
             with fn.open() as fd:
                 for line in fd:
                     for (key, (regexp, _pkgs)) in self.DEPS.items():
                         if regexp.search(line):
-                            self.debug(f'Found {key.upper()} in {fn}')
+                            self.debug("Found %s in %s", key.upper(), fn)
                             need.add(key)
         except OSError:
             self.addmsg('0014-0', 'failed to open and read file', fn)
@@ -99,7 +99,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def check_package(self, path: Path, section: uub.DebianControlBinary) -> set[str]:
         """Check binary package for dependencies."""
         pkg = section['Package']
-        self.debug(f'Package: {pkg}')
+        self.debug("Package: %s", pkg)
 
         bin_pre_set = section.pre
         bin_deps = bin_pre_set | section.dep
@@ -162,7 +162,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         if self.path == Path('/'):
             return
         fn_control = self.path / 'debian' / 'control'
-        self.debug(f'Reading {fn_control}')
+        self.debug("Reading %s", fn_control)
         try:
             parser = uub.ParserDebianControl(fn_control)
         except uub.FailedToReadFile:
@@ -228,6 +228,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 if not cand:
                     raise LookupError(dep)
             except LookupError as ex:
-                self.debug(f'not found {dep}: {ex}')
+                self.debug("not found %s: %s", dep, ex)
             else:
                 yield cand

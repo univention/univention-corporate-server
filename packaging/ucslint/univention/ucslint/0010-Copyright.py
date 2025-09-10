@@ -87,7 +87,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             except (OSError, UnicodeDecodeError):
                 self.addmsg('0010-1', 'failed to open and read file', fn)
                 continue
-            self.debug(f'testing {fn}')
+            self.debug("testing %s", fn)
 
             if RE_SKIP.search(content):
                 continue
@@ -104,7 +104,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 years = match[1]
                 current_year = str(time.localtime()[0])
                 if current_year not in years:
-                    self.debug(f'Current year={current_year}  years="{years}"')
+                    self.debug('Current year=%s  years="%s"', current_year, years)
                     self.addmsg('0010-3', 'copyright line seems to be outdated', fn)
 
     SPDX = "SPDX-License-Identifier: AGPL-3.0-only"
@@ -123,7 +123,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         for line in self.AGPL:
             if line not in content:
-                self.debug(f'Missing copyright string: {line}')
+                self.debug("Missing copyright string: %s", line)
                 return False
 
         return True

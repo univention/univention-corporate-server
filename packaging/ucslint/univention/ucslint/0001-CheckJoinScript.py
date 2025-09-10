@@ -66,7 +66,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0001-9', 'failed to open and read file', filename)
             return
 
-        self.debug(f'checking {filename}')
+        self.debug("checking %s", filename)
 
         is_uninstall = filename.suffix == '.uinst'
         lines = content.splitlines()
@@ -186,7 +186,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         else:
             match = self.RE_DH_JOIN.search(c_rules)
             if match:
-                self.debug(f'Detected use of {match[0]}')
+                self.debug("Detected use of %s", match[0])
                 is_old = bool(match[1])
                 if is_old:
                     self.addmsg('0001-23', 'Consider switchting to "univention-join" debhelper sequence', fn_rules)
@@ -195,7 +195,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                         package = binary_package['Package']
                         for js in fnlist_joinscripts:
                             if js.stem[2:] == package:
-                                self.debug(f'univention-install-joinscript will take care of {js}')
+                                self.debug("univention-install-joinscript will take care of %s", js)
                                 fnlist_joinscripts[js] = JSS.UNREF
                                 found[js] = found.get(js, 0) + 1
 
@@ -207,7 +207,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 for fn in uub.FilteredDirWalkGenerator(debianpath, suffixes=['.umc-modules']):
                     for js in fnlist_joinscripts:
                         if js.stem[2:] == fn.stem:
-                            self.debug(f'{js} installed by dh-umc-module-install')
+                            self.debug("%s installed by dh-umc-module-install", js)
                             found[js] = found.get(js, 0) + 1
                             fnlist_joinscripts[js] = JSS.UNREF
 
@@ -219,9 +219,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 continue
 
             for js in fnlist_joinscripts:
-                self.debug(f'looking for {js.name} in {fn}')
+                self.debug("looking for %s in %s", js.name, fn)
                 if js.name in content:
-                    self.debug(f'found {js.name} in {fn}')
+                    self.debug("found %s in %s", js.name, fn)
                     found[js] = found.get(js, 0) + 1
 
         for js in fnlist_joinscripts:
@@ -244,7 +244,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             else:
                 continue
 
-            self.debug(f'loading {fn}')
+            self.debug("loading %s", fn)
             try:
                 content = fn.read_text()
             except OSError:
@@ -253,13 +253,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
             set_e = self.RE_LINE_CONTAINS_SET_E.search(content)
             if set_e:
-                self.debug(f'found "set -e" in {fn}')
+                self.debug('found "set -e" in %s', fn)
 
             for js in fnlist_joinscripts:
-                self.debug(f'looking for {js.name} in {fn}')
+                self.debug("looking for %s in %s", js.name, fn)
                 if js.name in content:
                     fnlist_joinscripts[js] &= ~bit
-                    self.debug(f'found {js.name} in {fn}')
+                    self.debug("found %s in %s", js.name, fn)
 
                     if set_e:
                         for row, line in enumerate(content.splitlines(), start=1):
