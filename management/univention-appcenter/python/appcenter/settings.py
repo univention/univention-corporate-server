@@ -75,23 +75,23 @@ class Setting(TypedIniSectionObject):
                 ucr = configure._get_app_ucr(app)
                 value = ucr.get(self.name)
             else:
-                settings_logger.info('Cannot read %s while %s is not running' % (self.name, app))
+                settings_logger.info('Cannot read %s while %s is not running', self.name, app)
                 value = None
         try:
             value = self.sanitize_value(app, value)
         except SettingValueError:
-            settings_logger.info('Cannot use %r for %s' % (value, self.name))
+            settings_logger.info('Cannot use %r for %s', value, self.name)
             value = None
         if value is None and phase == 'Install':
-            settings_logger.info('Falling back to initial value for %s' % self.name)
+            settings_logger.info('Falling back to initial value for %s', self.name)
             value = self.get_initial_value(app)
         return value
 
     def _log_set_value(self, app, value):
         if value is None:
-            settings_logger.info('Unsetting %s' % self.name)
+            settings_logger.info('Unsetting %s', self.name)
         else:
-            settings_logger.info('Setting %s to %r' % (self.name, value))
+            settings_logger.info('Setting %s to %r', self.name, value)
 
     def set_value(self, app, value, together_config_settings, part):
         together_config_settings[part][self.name] = value
@@ -186,16 +186,16 @@ class FileSetting(Setting):
     def _write_file_content(self, filename, content):
         try:
             if content:
-                settings_logger.debug('Writing to %s' % filename)
+                settings_logger.debug('Writing to %s', filename)
                 self._touch_file(filename)
                 with open(filename, 'w') as fd:
                     fd.write(content)
             else:
-                settings_logger.debug('Deleting %s' % filename)
+                settings_logger.debug('Deleting %s', filename)
                 if os.path.exists(filename):
                     os.unlink(filename)
         except OSError as exc:
-            settings_logger.error('Could not set content: %s' % exc)
+            settings_logger.error('Could not set content: %s', exc)
 
     def get_value(self, app, phase='Settings'):
         if self.is_outside(app):
@@ -206,10 +206,10 @@ class FileSetting(Setting):
                 docker = Docker(app)
                 value = self._read_file_content(docker.path(self.filename))
             else:
-                settings_logger.info('Cannot read %s while %s is not running' % (self.name, app))
+                settings_logger.info('Cannot read %s while %s is not running', self.name, app)
                 value = None
         if value is None and phase == 'Install':
-            settings_logger.info('Falling back to initial value for %s' % self.name)
+            settings_logger.info('Falling back to initial value for %s', self.name)
             value = self.get_initial_value(app)
         return value
 
@@ -218,7 +218,7 @@ class FileSetting(Setting):
             return self._write_file_content(self.filename, value)
         else:
             if not app_is_running(app):
-                settings_logger.error('Cannot write %s while %s is not running' % (self.name, app))
+                settings_logger.error('Cannot write %s while %s is not running', self.name, app)
                 return
             from univention.appcenter.docker import Docker
             docker = Docker(app)

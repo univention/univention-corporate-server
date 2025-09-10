@@ -74,7 +74,7 @@ class UMCHandler(logging.Handler):
             elif record.levelno <= logging.INFO:
                 MODULE.process(msg)
             elif record.levelno <= logging.WARNING:
-                MODULE.warn(msg)
+                MODULE.warning(msg)
             else:
                 MODULE.error(msg)
 

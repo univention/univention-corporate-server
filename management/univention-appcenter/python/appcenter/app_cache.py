@@ -220,12 +220,12 @@ class AppCache(_AppCache):
             cache_modified = self._cache_modified()
             archive_modified = self._archive_modified()
             if _cmp_mtimes(cache_modified, archive_modified) == -1:
-                cache_logger.debug('Cannot load cache: mtimes of cache files do not match: %r < %r' % (cache_modified, archive_modified))
+                cache_logger.debug('Cannot load cache: mtimes of cache files do not match: %r < %r', cache_modified, archive_modified)
                 return None
             for master_file in self._relevant_master_files():
                 master_file_modified = os.stat(master_file).st_mtime
                 if _cmp_mtimes(cache_modified, master_file_modified) == -1:
-                    cache_logger.debug('Cannot load cache: %s is newer than cache' % master_file)
+                    cache_logger.debug('Cannot load cache: %s is newer than cache', master_file)
                     return None
             with open(cache_file) as fd:
                 cache = load(fd)
@@ -250,14 +250,14 @@ class AppCache(_AppCache):
         try:
             return os.stat(os.path.join(self.get_cache_dir(), '.all.tar')).st_mtime
         except (OSError, AttributeError) as exc:
-            cache_logger.debug('Unable to get mtime for archive: %s' % exc)
+            cache_logger.debug('Unable to get mtime for archive: %s', exc)
             return None
 
     def _cache_modified(self):
         try:
             return os.stat(self.get_cache_file()).st_mtime
         except (OSError, AttributeError) as exc:
-            cache_logger.debug('Unable to get mtime for cache: %s' % exc)
+            cache_logger.debug('Unable to get mtime for cache: %s', exc)
             return None
 
     def _relevant_master_files(self):
@@ -338,7 +338,7 @@ class AppCache(_AppCache):
                 cached_apps = self._load_cache()
                 if cached_apps is not None:
                     self._cache = cached_apps
-                    cache_logger.debug('Loaded %d apps from cache' % len(self._cache))
+                    cache_logger.debug('Loaded %d apps from cache', len(self._cache))
                 else:
                     for ini in self._relevant_ini_files():
                         app = self._build_app_from_ini(ini)
@@ -346,7 +346,7 @@ class AppCache(_AppCache):
                             self._cache.append(app)
                     self._cache.sort()
                     if self._save_cache():
-                        cache_logger.debug('Saved %d apps into cache' % len(self._cache))
+                        cache_logger.debug('Saved %d apps into cache', len(self._cache))
                     else:
                         cache_logger.warning('Unable to cache apps')
         return self._cache
@@ -397,10 +397,10 @@ class AppCenterCache(_AppCache):
                         elif key == 'next_version':
                             next_version = value.split('-')[0]
                     if still_running and next_version:
-                        cache_logger.debug('Using UCS %s. Apparently an updater is running' % next_version)
+                        cache_logger.debug('Using UCS %s. Apparently an updater is running', next_version)
                         return next_version
         except (OSError, ValueError) as exc:
-            cache_logger.warning('Could not parse univention-updater.status: %s' % exc)
+            cache_logger.warning('Could not parse univention-updater.status: %s', exc)
         return ucr_get('version/version')
 
     def get_app_cache_class(self):

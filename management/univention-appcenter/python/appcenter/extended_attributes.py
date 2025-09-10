@@ -199,7 +199,7 @@ class ExtendedAttribute(SchemaObject):
             if not self.udm_syntax:
                 self.udm_syntax = 'string'
         else:
-            attribute_logger.warning('Ignoring unknown syntax %r' % (self.syntax,))
+            attribute_logger.warning('Ignoring unknown syntax %r', self.syntax)
 
 
 class ExtendedOption(SchemaObject):
@@ -261,7 +261,7 @@ def get_extended_attributes(app):
             if object_class.oid is None:
                 object_class.set_standard_oid(app, object_class_suffix)
                 object_class_suffix += 1
-            attribute_logger.debug('Adding %s to list of classes' % section)
+            attribute_logger.debug('Adding %s to list of classes', section)
             object_classes.append(object_class)
 
             # for backwards compatibility with UCS 4.3 we can't use the new type == ExtendedOption, so this flag is the equivalent
@@ -270,21 +270,21 @@ def get_extended_attributes(app):
                 okwargs['name'] = kwargs.get('option_name', '%sUser' % (app.id,))
                 okwargs.setdefault('object_class', object_class.name)
                 option = ExtendedOption(app, **okwargs)
-                attribute_logger.debug('Adding %s to list of options' % (okwargs['name'],))
+                attribute_logger.debug('Adding %s to list of options', okwargs['name'])
                 extended_options.append(option)
         elif kwargs['type'] == 'ExtendedOption':  # Can't be used if System < UCS 4.4, use add_extended_option instead!
             option = ExtendedOption(app, **kwargs)
-            attribute_logger.debug('Adding %s to list of options' % section)
+            attribute_logger.debug('Adding %s to list of options', section)
             extended_options.append(option)
         elif kwargs['type'] == 'ExtendedAttribute':
             attribute = ExtendedAttribute(app, **kwargs)
-            attribute_logger.debug('Adding %s to list of attributes' % section)
+            attribute_logger.debug('Adding %s to list of attributes', section)
             if attribute.oid is None:
                 attribute.set_standard_oid(app, attribute_suffix)
                 attribute_suffix += 1
             attributes.append(attribute)
         else:  # ignore, so that it is extensible for the future :-)
-            attribute_logger.warning('Unknown attribute type for section %s: %r' % (section, kwargs['type']))
+            attribute_logger.warning('Unknown attribute type for section %s: %r', section, kwargs['type'])
 
     if app.generic_user_activation:
         attribute_name = app.generic_user_activation_attribute
@@ -294,7 +294,7 @@ def get_extended_attributes(app):
             try:
                 attribute = [attr for attr in attributes if attr.name == attribute_name][0]  # noqa: RUF015
             except IndexError:
-                attribute_logger.debug('Adding %s to list of attributes' % attribute_name)
+                attribute_logger.debug('Adding %s to list of attributes', attribute_name)
                 attribute = ExtendedAttribute(
                     app,
                     module='users/user',
@@ -311,7 +311,7 @@ def get_extended_attributes(app):
         if option_name is True:
             option_name = '%sUser' % (app.id,)
         if option_name and option_name not in [opt.name for opt in extended_options]:
-            attribute_logger.debug('Adding %s to list of options' % option_name)
+            attribute_logger.debug('Adding %s to list of options', option_name)
             option = ExtendedOption(
                 app,
                 name=option_name,
@@ -400,14 +400,14 @@ def create_extended_attribute(attribute, app, layout_position, lo, pos):
     attrs['options'] = attribute.options
     attrs['CLIName'] = attribute.cli_name
     attrs = {key: value for key, value in attrs.items() if value is not None}
-    attribute_logger.debug('Creating DN: %s' % attribute.dn)
+    attribute_logger.debug('Creating DN: %s', attribute.dn)
     if not create_object_if_not_exists('settings/extended_attribute', lo, pos, **attrs):
         attribute_logger.debug('... already exists. Overwriting!')
         modify_object('settings/extended_attribute', lo, pos, attribute.dn, **attrs)
 
 
 def remove_extended_attribute(attribute, lo, pos):
-    attribute_logger.debug('Removing DN: %s' % attribute.dn)
+    attribute_logger.debug('Removing DN: %s', attribute.dn)
     remove_object_if_exists('settings/extended_attribute', lo, pos, attribute.dn)
 
 
@@ -429,7 +429,7 @@ def create_extended_option(option, app, lo, pos):
     attrs['module'] = option.module
     attrs['objectClass'] = option.object_class
     attrs['isApp'] = '1'
-    attribute_logger.debug('Creating DN: %s' % option.dn)
+    attribute_logger.debug('Creating DN: %s', option.dn)
     if not create_object_if_not_exists('settings/extended_options', lo, pos, **attrs):
         attribute_logger.debug('... already exists. Overwriting!')
         modify_object('settings/extended_options', lo, pos, option.dn, **attrs)
@@ -446,5 +446,5 @@ def create_option_icon(app):
 
 
 def remove_extended_option(option, lo, pos):
-    attribute_logger.debug('Removing DN: %s' % option.dn)
+    attribute_logger.debug('Removing DN: %s', option.dn)
     remove_object_if_exists('settings/extended_options', lo, pos, option.dn)
