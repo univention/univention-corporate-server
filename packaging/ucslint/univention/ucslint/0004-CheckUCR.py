@@ -211,13 +211,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 elif var not in checks['placeholder']:
                     checks['placeholder'].append(var)
             if checks['placeholder']:
-                self.debug('found UCR placeholder variables in {}\n- {}'.format(fn, '\n- '.join(checks['placeholder'])))
+                self.debug('found UCR placeholder variables in %s\n- %s', fn, '\n- '.join(checks['placeholder']))
 
             match = self.RE_IDENTIFIER.search(content, 0)
             if warning_pos and match:
                 identifier = match[0]
                 pos = match.start()
-                self.debug(f'Identifier "{identifier}" found at {pos}')
+                self.debug('Identifier "%s" found at %s', identifier, pos)
                 if warning_pos < pos:
                     self.addmsg('0004-34', f'UCR warning before file type magic "{identifier}"', fn)
 
@@ -234,7 +234,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     if var not in checks['variables']:
                         checks['variables'].append(var)
             if checks['variables']:
-                self.debug('found UCR variables in {}\n- {}'.format(fn, '\n- '.join(checks['variables'])))
+                self.debug('found UCR variables in %s\n- %s', fn, '\n- '.join(checks['variables']))
 
             if checks['headerfound']:
                 #
@@ -245,12 +245,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     if match[2] != fname:
                         self.addmsg('0004-1', f'Path in UCR header seems to be incorrect.\n      - template filename = /etc/univention/templates/files/{fname}\n      - path in header    = {match[1]}', fn)
 
-        self.debug(f'found conffiles: {conffiles.keys()}')
+        self.debug("found conffiles: %s", conffiles.keys())
 
         return conffiles
 
     def read_ucr(self, fn: Path) -> Iterator[UcrInfo]:
-        self.debug(f'Reading {fn}')
+        self.debug("Reading %s", fn)
         try:
             entry: UcrInfo = {}
             with fn.open() as stream:
@@ -279,7 +279,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0004-27', 'cannot open/read file', fn)
 
     def read_ini(self, fn: Path) -> RawConfigParser:
-        self.debug(f'Reading {fn}')
+        self.debug("Reading %s", fn)
 
         cfg = RawConfigParser(interpolation=None)
         try:
@@ -357,7 +357,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 self.read_ini(fn)
             elif fn.suffix == '.univention-config-registry':
                 ucrvfn = fn.with_suffix(".univention-config-registry-variables")
-                self.debug(f'testing {ucrvfn}')
+                self.debug("testing %s", ucrvfn)
                 if not ucrvfn.exists():
                     self.addmsg('0004-24', f'{fn.name} exists but corresponding {ucrvfn} is missing', ucrvfn)
 
@@ -381,7 +381,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             unique: set[str | tuple[str, str]] = set()
 
             for entry in self.read_ucr(fn):
-                self.debug(f'Entry: {entry}')
+                self.debug("Entry: %s", entry)
 
                 try:
                     typ = entry['Type'][0]
@@ -566,9 +566,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                             self.addmsg('0004-55', f'UCR .info-file may contain globbing pattern instead of regular expression: "{var}"', fn)
                             break
 
-            self.debug(f'Multifiles: {multifiles}')
-            self.debug(f'Subfiles: {subfiles}')
-            self.debug(f'Files: {files}')
+            self.debug("Multifiles: %s", multifiles)
+            self.debug("Subfiles: %s", subfiles)
+            self.debug("Files: %s", files)
             for multifile, subfileentries in subfiles.items():
                 if multifile not in multifiles:
                     self.addmsg('0004-10', f'file contains subfile entry without corresponding multifile entry.\n      - subfile = {subfileentries[0]["Subfile"][0]}\n      - multifile = {multifile}', fn)
@@ -613,7 +613,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     except LookupError:
                         obj = objlist['etc/' + shortconffn][0]
             except LookupError:
-                self.debug(f'"{shortconffn}" not found in {objlist.keys()!r}')
+                self.debug('"%s" not found in %r', shortconffn, objlist.keys())
             else:
                 conffnfound = True
                 notregistered: list[str] = []
@@ -659,8 +659,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     ucrvs = "".join(f"\n\t- {ucrv}" for ucrv in notregistered)
                     if mfn and mfn in all_multifiles:
                         # "Multifile" entry exists ==> obj is a subfile
-                        self.debug(f'cfn = {shortconffn!r}')
-                        self.debug(f'knownvars(mf+sf) = {knownvars!r}')
+                        self.debug("cfn = %r", shortconffn)
+                        self.debug("knownvars(mf+sf) = %r", knownvars)
                         self.addmsg('0004-29', f'template file contains variables that are not registered in multifile or subfile entry:{ucrvs}', fn)
                     else:
                         # no subfile ==> File, Module, Script

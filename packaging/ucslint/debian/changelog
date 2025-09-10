@@ -1,8 +1,12 @@
-ucslint (11.3.0) UNRELEASED; urgency=medium
+ucslint (11.3.0) unstable; urgency=medium
 
+  [ Ivan Barbecho Delgado ]
   * Bug #58568: UCS 5.2-3 version bump
 
- -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 02 Sep 2025 16:18:18 +0200
+  [ Florian Best ]
+  * Bug #58644: use lazy log evaluation
+
+ -- Florian Best <best@univention.de>  Tue, 16 Sep 2025 23:48:55 +0200
 
 ucslint (11.2.0) UNRELEASED; urgency=medium
 
