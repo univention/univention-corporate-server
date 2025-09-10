@@ -73,7 +73,7 @@ class DBRegistry:
 
         url = make_url(connection_uri)
         msg = f"Connecting to database {url.drivername}://{url.host}/{url.database} with parameters {', '.join([f'{k}={v}' for k, v in opts.items()])}"
-        CORE.process(f"Connecting to database: {msg}")
+        CORE.process("Connecting to database: %s", msg)
 
         engine = create_engine(
             connection_uri,
