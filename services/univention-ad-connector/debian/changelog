@@ -1,6 +1,10 @@
-univention-ad-connector (16.4.0) UNRELEASED; urgency=medium
+univention-ad-connector (16.4.0) unstable; urgency=medium
 
+  [ Ivan Barbecho Delgado ]
   * Bug #58568: UCS 5.2-3 version bump
+
+  [ Florian Best ]
+  * Bug #58644: allow setting connector/debug/level=5
 
  -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 02 Sep 2025 16:18:22 +0200
 

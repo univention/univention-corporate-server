@@ -24,7 +24,7 @@ from samba.dcerpc import drsblobs, drsuapi, lsa, misc, security
 from samba.ndr import ndr_unpack
 
 import univention.connector.ad
-import univention.debug2 as ud
+import univention.debug as ud
 
 
 def nt_password_to_arcfour_hmac_md5(nt_password):

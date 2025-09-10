@@ -10,7 +10,7 @@
 import base64
 import sqlite3
 
-import univention.debug2 as ud
+import univention.debug as ud
 
 
 def _encode_base64(val):

@@ -6,7 +6,7 @@
 # SPDX-FileCopyrightText: 2016-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-import univention.debug2 as ud
+import univention.debug as ud
 
 
 def valid_mailaddress(val):

@@ -21,7 +21,7 @@ import univention.admin.modules as udm_modules
 import univention.config_registry
 import univention.connector
 import univention.connector.ad
-import univention.debug2 as ud
+import univention.debug as ud
 import univention.lib.s4
 from univention.admin import uexceptions
 

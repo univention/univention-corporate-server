@@ -37,17 +37,24 @@ Type=str
 Categories=service-adcon
 
 [con.*/debug/function]
-Description[de]=Ist diese Variable auf '1' gesetzt, werden Funktionsaufrufe als zusätzliche Debug-Information protokolliert. Ist die Variable auf '0' gesetzt oder nicht gesetzt, werden die Aufrufe nicht protokolliert.
-Description[en]=If the variable is set to '1', function calls are logged as additional debug information. If the variable is set to '0' or unset no calls are logged.
+Description[de]=Ist diese Variable auf '1' gesetzt, werden Funktionsaufrufe als zusätzliche Debug-Information protokolliert. Ist die Variable auf '0' gesetzt oder nicht gesetzt, werden die Aufrufe nicht protokolliert. Deprecated.
+Description[en]=If the variable is set to '1', function calls are logged as additional debug information. If the variable is set to '0' or unset no calls are logged. Deprecated.
 Type=str
 Categories=service-adcon
 
+[con.*/debug/structured-logging]
+Description[de]=Aktiviert die strukturierte Protokollierung von Lognachrichten. Diese Option ist standardmäßig deaktiviert und wird ab UCS 5.2-4 standardmäßig aktiviert.
+Description[en]=Enables structured logging of log messages. This option is disabled by default and will be enabled by default with UCS 5.2-4.
+Type=bool
+Categories=service-adcon
+Default=false
+
 [con.*/debug/level]
-Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector-ad.log (0-4). Voreingestellt ist 2, so dass der aktuelle Synchronisationsstand in den Logdateien geprüft werden kann.
-Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector-ad.log (0-4). Preset as 2, so that the status of the synchronisation is visible in the log files.
+Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector-ad.log (0-5). Voreingestellt ist 2, so dass der aktuelle Synchronisationsstand in den Logdateien geprüft werden kann.
+Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector-ad.log (0-5). Preset as 2, so that the status of the synchronisation is visible in the log files.
 Type=int
 Min=0
-Max=4
+Max=5
 Default=2
 Categories=service-adcon
 

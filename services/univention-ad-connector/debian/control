@@ -17,6 +17,7 @@ Architecture: all
 Depends:
  python3-cryptography,
  python3-univention (>= 15.2.1),
+ python3-univention-debug (>= 14.3.0),
  python3-univention-directory-manager,
  ${misc:Depends},
  ${python3:Depends},

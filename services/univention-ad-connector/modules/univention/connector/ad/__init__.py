@@ -30,7 +30,7 @@ from samba.param import LoadParm
 
 import univention.connector
 import univention.connector.ad.mapping
-import univention.debug2 as ud
+import univention.debug as ud
 import univention.uldap
 from univention.config_registry import ConfigRegistry
 
