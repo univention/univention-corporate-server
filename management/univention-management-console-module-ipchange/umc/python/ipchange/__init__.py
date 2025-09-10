@@ -67,7 +67,7 @@ class Instance(Base):
 
         # change IP
         server['ip'] = ip
-        MODULE.info(f'Change IP to {ip}')
+        MODULE.info("Change IP to %s", ip)
         server.modify()
 
         # do we have a new reverse zone for this IP address?
