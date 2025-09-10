@@ -22,7 +22,7 @@ def run_proof_uniqueMembers_fix(umc_instance: Instance) -> None:
     (_success, output) = util.run_with_output(cmd)
 
     cmd_string = ' '.join(shlex.quote(x) for x in cmd)
-    MODULE.process('Output of %s:\n%r' % (cmd_string, output))
+    MODULE.process('Output of %s: %r', cmd_string, output)
     fix_log = [_('Output of `{cmd}`:').format(cmd=cmd_string)]
 
     fix_log.append(output)

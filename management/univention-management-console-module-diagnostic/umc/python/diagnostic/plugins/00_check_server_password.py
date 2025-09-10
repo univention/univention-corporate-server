@@ -75,10 +75,10 @@ def change_server_password() -> None:
     try:
         cmd = ['/usr/lib/univention-server/server_password_change']
         output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
-        MODULE.process('Output of server_password_change:\n%s' % (output.decode('UTF-8', 'replace'),))
+        MODULE.process('Output of server_password_change: %s', output.decode('UTF-8', 'replace'))
     except subprocess.CalledProcessError as exc:
         MODULE.error('Error running server_password_change')
-        MODULE.error('Output:\n%s' % (exc.output.decode('UTF-8', 'replace'),))
+        MODULE.error('Output: %s', exc.output.decode('UTF-8', 'replace'))
         error_descriptions = [
             _('Calling /usr/lib/univention-server/server_password_change failed.'),
             _('Please see {sdb} for more information.'),

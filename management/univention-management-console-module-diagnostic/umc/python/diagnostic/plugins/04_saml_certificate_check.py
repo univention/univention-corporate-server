@@ -87,7 +87,7 @@ def test_identity_provider_certificate_keycloak(sso_uri: str) -> Iterator[Proble
 
     Fix: ``univention-run-join-scripts --force --run-scripts 92univention-management-console-web-server``
     """
-    MODULE.process("Checks sso certificate by comparing 'ucr get ucs/server/sso/uri' FQDN with the Location field in %s" % (XML,))
+    MODULE.process("Checks sso certificate by comparing 'ucr get ucs/server/sso/uri' FQDN with the Location field in %s", XML)
 
     backend = default_backend()
     certificate = None
@@ -114,7 +114,7 @@ def test_identity_provider_certificate_keycloak(sso_uri: str) -> Iterator[Proble
             metadata_dom = fromstring(data)
             der_cert = metadata_dom.find(X509CERT).text
             certificate = x509.load_der_x509_certificate(b64decode(der_cert), backend)
-            MODULE.process("Looking for certificate %s" % (certificate.subject,))
+            MODULE.process("Looking for certificate %s", certificate.subject)
         except (ValueError, AttributeError, TypeError) as exc:
             yield Critical(
                 description=_("Failed to load certificate {{idp}}: {exc}").format(exc=exc),
@@ -145,7 +145,7 @@ def test_identity_provider_certificate_keycloak(sso_uri: str) -> Iterator[Proble
                 der = b64decode(text)
                 try:
                     cert = x509.load_der_x509_certificate(der, backend)
-                    MODULE.process("Found certificate %s in %s" % (cert.subject, idp))
+                    MODULE.process("Found certificate %s in %s", cert.subject, idp)
                 except ValueError as exc:
                     yield Critical(
                         description=_("Failed to load certificate {cert!r}: {exc}").format(cert=idp, exc=exc),
@@ -177,7 +177,7 @@ def test_service_provider_certificate() -> Iterator[Problem]:
     backend = default_backend()
 
     path = '/etc/univention/ssl/%(hostname)s.%(domainname)s/cert.pem' % ucr
-    MODULE.process("Checking certificates of %s" % (path,))
+    MODULE.process("Checking certificates of %s", path)
     try:
         with open(path, "rb") as fd:
             data = fd.read()
@@ -189,7 +189,7 @@ def test_service_provider_certificate() -> Iterator[Problem]:
 
     try:
         certificate = x509.load_pem_x509_certificate(data, backend)
-        MODULE.process("Looking for certificate %s" % (certificate.subject,))
+        MODULE.process("Looking for certificate %s", certificate.subject)
     except ValueError as exc:
         yield Critical(
             description=_("Failed to load certificate {cert!r}: {exc}").format(cert=path, exc=exc),
@@ -217,7 +217,7 @@ def test_service_provider_certificate() -> Iterator[Problem]:
             der = b64decode(text)
             try:
                 cert = x509.load_der_x509_certificate(der, backend)
-                MODULE.process("Found certificate %s in %s" % (cert.subject, dn))
+                MODULE.process("Found certificate %s in %s", cert.subject, dn)
             except ValueError as exc:
                 yield Critical(
                     description=_("Failed to load certificate {{{link}}}: {exc}").format(link=link, exc=exc),

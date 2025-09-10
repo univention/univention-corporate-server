@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import io
-import traceback
 from urllib.parse import urlparse
 
 import pycurl
@@ -30,7 +29,7 @@ def run(_umc_instance: Instance, url: str = 'http://www.univention.de/', connect
         return
 
     proxy = urlparse(proxy)
-    MODULE.info('The proxy is configured, using host=%r, port=%r' % (proxy.hostname, proxy.port))
+    MODULE.info('The proxy is configured, using host=%r, port=%r', proxy.hostname, proxy.port)
     curl = pycurl.Curl()
     curl.setopt(pycurl.PROXYTYPE, pycurl.PROXYTYPE_HTTP)
     if proxy.hostname:
@@ -63,7 +62,7 @@ def run(_umc_instance: Instance, url: str = 'http://www.univention.de/', connect
             msg = '%s (code=%s)' % (msg, code)
             MODULE.info(msg)
         except ValueError:
-            MODULE.error(traceback.format_exc())
+            MODULE.exception("Failed status code retrieval")
             code = 0
             msg = str(exc)
         if code == pycurl.E_COULDNT_CONNECT:
@@ -73,9 +72,9 @@ def run(_umc_instance: Instance, url: str = 'http://www.univention.de/', connect
         elif code == pycurl.E_OPERATION_TIMEOUTED:
             msg = _('The server did not respond within %d seconds. Please check your network configuration.') % (timeout,)
         elif code == 0:
-            MODULE.error(traceback.format_exc())
+            MODULE.exception("Connection error")
 
-        MODULE.error(f'{description}\n{msg}')
+        MODULE.error("%s%s", description, msg)
         raise Critical(f'{description}\n{msg}')
     else:
         # page = buf.getvalue()

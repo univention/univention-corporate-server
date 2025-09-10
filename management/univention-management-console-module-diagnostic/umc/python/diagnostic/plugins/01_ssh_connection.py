@@ -114,8 +114,8 @@ def run(_umc_instance: Instance) -> None:
         log_msg = msg.splitlines()
         for line in log_msg:
             if not re.match(r'^\s*$', line):
-                MODULE.error("%s" % line)
-        MODULE.error("%s" % data)
+                MODULE.error("%s", line)
+        MODULE.error("%s", data)
         raise Critical(msg % data)
 
 
