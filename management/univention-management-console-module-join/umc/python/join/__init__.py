@@ -50,15 +50,15 @@ def get_master_dns_lookup() -> dict:
         if result:
             fqdn = result[0].target.canonicalize().split(1)[0].to_text()
     except dns.resolver.NXDOMAIN:
-        MODULE.error(f'No record found for {query}.')
+        MODULE.error("No record found for %s.", query)
         msg = _('No DNS record for the Primary Directory Node was found. This might be a problem with the configured DNS server. Please make sure the DNS settings are correct.')
     except dns.resolver.Timeout:
-        MODULE.error(f'Timeout when looking up {query}.')
+        MODULE.error("Timeout when looking up %s.", query)
         msg = _('The lookup of the Primary Directory Node record timed out. There might be a problem with the configured DNS server. Make sure the DNS server is up and running or check the DNS settings.')
     except dns.resolver.NoAnswer:
-        MODULE.error(f'Non-Authoritative answer during lookup of {query}.')
+        MODULE.error("Non-Authoritative answer during lookup of %s.", query)
     except dns.exception.DNSException as exc:
-        MODULE.error(f'Error during Primary Directory Node lookup: {traceback.format_exc()}')
+        MODULE.exception("Error during Primary Directory Node lookup")
         msg = f'Error during Primary Directory Node lookup: {exc}.'
     return {'master': fqdn, 'error_message': msg}
 
@@ -106,7 +106,7 @@ class Progress:
         self.info = info
 
     def error_handler(self, err: str) -> None:
-        MODULE.warn(err)
+        MODULE.warning(err)
         self.errors.append(err)
 
     def component_handler(self, component: str) -> None:
@@ -186,7 +186,7 @@ def run(
         info_pattern = re.compile(r'^(?P<message>.*?)\s*:?\s*\x1b.*$')
 
         # call to univention-join
-        MODULE.info('calling "%s"' % ' '.join(cmd))
+        MODULE.info('calling "%s"', ' '.join(cmd))
         process = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         failed_join_scripts = set()
@@ -266,13 +266,13 @@ def run(
         stdout, stderr = process.communicate()
         stdout, stderr = stdout.decode('UTF-8', 'replace'), stderr.decode('UTF-8', 'replace')
         if stderr:
-            MODULE.warn(f'stderr: {stderr}')
+            MODULE.warning("stderr: %s", stderr)
 
         if process.returncode != 0:
-            MODULE.warn(f'Could not perform system join: {stdout}{stderr}')
+            MODULE.warning("Could not perform system join: %s%s", stdout, stderr)
             error_handler(_('The join process could not be executed. More details can be found in the log file <i>/var/log/univention/join.log</i>.<br/>Please retry to join the system after resolving any conflicting issues.'))
         elif failed_join_scripts:
-            MODULE.warn(f'The following join scripts could not be executed: {failed_join_scripts}')
+            MODULE.warning("The following join scripts could not be executed: %s", failed_join_scripts)
             error_handler(_('Some join scripts could not be executed. More details can be found in the log file <i>/var/log/univention/join.log</i>.<br/>Please retry to execute the join scripts after resolving any conflicting issues.'))
     finally:
         # make sure that UMC servers and apache can be restarted again
@@ -345,7 +345,7 @@ class Instance(Base):
                 name = match.groups()[0]
                 if name not in files:
                     # The joinscripts does not exists in the filesystem or has a invalid name
-                    MODULE.error('not existing join script or join script with invalid name mentioned in status file: %r' % (name,))
+                    MODULE.error('not existing join script or join script with invalid name mentioned in status file: %r', name)
                     continue
                 files[name]['configured'] = False
                 files[name]['status'] = f'0:{files[name]["prio"]}'
@@ -382,14 +382,14 @@ class Instance(Base):
         try:
             open(LOCKFILE, 'a').close()
         except OSError as ex:
-            MODULE.warn(f'_lock: {ex}')
+            MODULE.warning("_lock: %s", ex)
 
     def _unlock(self) -> None:
         try:
             if self._running:
                 os.unlink(LOCKFILE)
         except OSError as ex:
-            MODULE.warn(f'_unlock: {ex}')
+            MODULE.warning("_unlock: %s", ex)
 
     def __del__(self) -> None:
         self._unlock()
@@ -447,7 +447,7 @@ class Instance(Base):
             self.progress_state.finish()
             if isinstance(result, BaseException):
                 msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
-                MODULE.warn(f'Exception during domain join: {msg}')
+                MODULE.warning("Exception during domain join", traceback=msg)
                 self.progress_state.error_handler(_('An unexpected error occurred: %s') % result)
 
         # launch thread
@@ -498,7 +498,7 @@ class Instance(Base):
             self.progress_state.finish()
             if isinstance(result, BaseException):
                 msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
-                MODULE.warn(f'Exception during running join scripts: {msg}')
+                MODULE.warning("Exception during running join scripts", traceback=msg)
                 self.progress_state.error_handler(_('An unexpected error occurred: %s') % result)
 
         # launch thread
