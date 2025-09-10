@@ -648,17 +648,12 @@ class ucs:
             self._remove_dn_mapping(dn_ucs_mapped.lower(), dn_con.lower())
             self._set_dn_mapping(dn_ucs.lower(), dn_con.lower())
 
-    def _debug_traceback(self, level, text):
-        """print traceback with ud.debug, level is i.e. ud.INFO"""
-        ud.debug(ud.LDAP, level, text)
-        ud.debug(ud.LDAP, level, traceback.format_exc())
-
     def context_log(self, property_type, obj, message='', level=ud.PROCESS, to_ucs=True):
         direction = 'sync AD > UCS' if to_ucs else 'sync UCS > AD'
         prefix = '[%14s] [%10s] %r' % (property_type or '?', obj.get('modtype', '?'), obj.get('dn', '?'))
         ud.debug(ud.LDAP, level, '{}: {}{}'.format(direction, prefix, f': {message}' if message else ''))
 
-    def __sync_file_from_ucs(self, filename, append_error='', traceback_level=ud.WARN):
+    def __sync_file_from_ucs(self, filename, append_error=''):
         """sync changes from UCS stored in given file"""
         try:
             with open(filename, 'rb') as fob:
@@ -795,14 +790,11 @@ class ucs:
                         raise
                     except ldap.NO_SUCH_OBJECT:
                         self._save_rejected_ucs(filename, dn)
-                        if traceback_level == ud.INFO:
-                            self._debug_traceback(traceback_level, "The sync failed. This could be because the parent object does not exist. This object will be synced in next sync step.")
-                        else:
-                            self._debug_traceback(traceback_level, f"sync failed, saved as rejected\n\t{filename}")
+                        log.warning(f"sync failed, saved as rejected\t{filename}", exc_info=True)
                         return False
                     except Exception:
                         self._save_rejected_ucs(filename, dn)
-                        self._debug_traceback(traceback_level, f"sync failed, saved as rejected\n\t{filename}")
+                        log.warning(f"sync failed, saved as rejected\t{filename}", exc_info=True)
                         return False
                 else:
                     return True
@@ -863,7 +855,7 @@ class ucs:
             raise
         except Exception:  # FIXME: which exception is to be caught?
             log.debug("get_ucs_object: object search failed: %s", searchdn)
-            self._debug_traceback(ud.WARN, "get_ucs_object: failure was: \n\t")
+            log.warning("get_ucs_object: failure was", exc_info=True)
             return None
 
         return ucs_object
@@ -931,7 +923,7 @@ class ucs:
                     raise
                 except Exception:  # FIXME: which exception is to be caught?
                     self._save_rejected_ucs(filename, dn)
-                    self._debug_traceback(ud.WARN, f"sync failed, saved as rejected \n\t{filename}")
+                    log.warning(f"sync failed, saved as rejected \n\t{filename}")
 
         print(f"restored {change_counter} rejected changes")
         print("--------------------------------------")
@@ -971,8 +963,6 @@ class ucs:
         files = files[:MAX_SYNC_IN_ONE_INTERVAL]
 
         # We may dropped the parent object, so don't show the traceback in any case
-        traceback_level = ud.WARN
-
         for listener_file in files:
             sync_successfull = False
             filename = os.path.join(self.listener_dir, listener_file)
@@ -999,7 +989,7 @@ class ucs:
                 # but if the object was added or removed, the synchonization is required
                 for i in [0, 1]:  # do it twice if the LDAP connection was closed
                     try:
-                        sync_successfull = self.__sync_file_from_ucs(filename, traceback_level=traceback_level)
+                        sync_successfull = self.__sync_file_from_ucs(filename)
                     except (ldap.SERVER_DOWN, SystemExit):
                         # once again, ldap idletimeout ...
                         if i == 0:
@@ -1009,7 +999,7 @@ class ucs:
                     except Exception:
                         self._save_rejected_ucs(filename, dn)
                         # We may dropped the parent object, so don't show this warning
-                        self._debug_traceback(traceback_level, f"sync failed, saved as rejected \n\t{filename}")
+                        log.warning(f"sync failed, saved as rejected \t{filename}", exc_info=True)
                     if sync_successfull:
                         os.remove(os.path.join(self.listener_dir, listener_file))
                         change_counter += 1
@@ -1477,7 +1467,7 @@ class ucs:
             except ldap.SERVER_DOWN:
                 raise
             except Exception:  # FIXME: which exception is to be caught?
-                self._debug_traceback(ud.ERROR, "failed in post_con_modify_functions")
+                log.exception("failed in post_con_modify_functions")
                 result = False
 
             if result:
@@ -1497,7 +1487,7 @@ class ucs:
         except ldap.SERVER_DOWN:
             raise
         except Exception:  # FIXME: which exception is to be caught?
-            self._debug_traceback(ud.ERROR, "Unknown Exception during sync_to_ucs")
+            log.exception("Unknown Exception during sync_to_ucs")
             return False
 
     @staticmethod
