@@ -73,7 +73,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                 self.addmsg('0008-2', 'failed to open and read file', fn)
                 continue
 
-            self.debug(f'testing {fn}')
+            self.debug("testing %s", fn)
             for row, col, match in uub.line_regexp(content, RE_TRANSLATION):
                 self.addmsg('0008-1', f'substitutes before translation: {match[1]}', fn, row, col)
 
@@ -92,7 +92,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             elif match[1].lower() not in 'utf-8':
                 self.addmsg('0008-6', f'invalid charset ({(match[1])}) defined', fn)
 
-            self.debug(f'testing {fn}')
+            self.debug("testing %s", fn)
             for regex, errid, errtxt in [
                     (RE_FUZZY, '0008-3', 'contains "fuzzy"'),
                     (RE_EMPTY, '0008-4', 'contains empty msgstr'),

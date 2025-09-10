@@ -168,7 +168,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                             found = match[0]
                             if self.RE_WHITEWORD.match(found):
                                 continue
-                            self.debug(f'{fn}:{row}: found="{found}"  origline="{origline}"')
+                            self.debug('%s:%s: found="%s"  origline="%s"', fn, row, found, origline)
                             self.addmsg('0015-2', f'univention is incorrectly spelled: {found}', fn, row)
             except UnicodeDecodeError:
                 # Silently skip binary files

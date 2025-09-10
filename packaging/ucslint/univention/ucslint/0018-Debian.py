@@ -59,7 +59,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             with fn_changelog.open() as fd:
                 changelog = Changelog(fd)
         except (OSError, ChangelogParseError) as ex:
-            self.debug(f'Failed open {fn_changelog!r}: {ex}')
+            self.debug("Failed open %r: %s", fn_changelog, ex)
             return Version('0')
         else:
             return Version(changelog.version.full_version)
@@ -73,10 +73,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
             other_scripts = self.SCRIPTS - {suffix}
             other_actions = {action for actions in self.ACTIONS.values() for action in actions} - self.ACTIONS[suffix]
-            self.debug(f'script={suffix}')
-            self.debug(f'actions={" ".join(sorted(self.ACTIONS[suffix]))}')
-            self.debug(f'other_script={" ".join(sorted(other_scripts))}')
-            self.debug(f'other_actions={" ".join(sorted(other_actions))}')
+            self.debug("script=%s", suffix)
+            self.debug('actions=%s', " ".join(sorted(self.ACTIONS[suffix])))
+            self.debug('other_script=%s', " ".join(sorted(other_scripts)))
+            self.debug('other_actions=%s', " ".join(sorted(other_actions)))
 
             content = script_path.read_text()
 
@@ -97,7 +97,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                     try:
                         actions = self.parse_test(split(match['cond'])) & other_actions
                     except ValueError as ex:
-                        self.debug(f'Failed {script_path}:{row}: {ex} in {line}')
+                        self.debug("Failed %s:%s: %s in %s", script_path, row, ex, line)
                         continue
                     if actions:
                         self.addmsg(
@@ -112,11 +112,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                             continue
                         unquoted = arg[1:-1] if arg[0] == arg[-1] in {"'", '"'} else arg
                         if not RE_DEBIAN_PACKAGE_VERSION.match(unquoted):
-                            self.debug(f'{script_path}:{row}: Unknown argument {arg!r}')
+                            self.debug("%s:%s: Unknown argument %r", script_path, row, arg)
                             continue
 
                         ver = Version(unquoted)
-                        self.debug(f"{ver} << {version}?")
+                        self.debug("%s << %s?", ver, version)
                         if ver.numeric and version.numeric and ver.numeric[0] < version.numeric[0] - 1:
                             self.addmsg(
                                 '0018-5',
@@ -207,7 +207,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             for row, line in self.lines(fp):
                 dst = Path()
                 for src, dst in self.process_install(fp, line):
-                    self.debug(f'{fp}:{row} Installs {src} to {dst}')
+                    self.debug("%s:%s Installs %s to %s", fp, row, src, dst)
                     pkg.add(dst)
 
                 if self.RE_PYTHONPATHS.match(dst.as_posix()):
@@ -223,7 +223,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             pkg = dirs.setdefault(package, Dirs(package))
             for row, line in self.lines(fp):
                 for src, dst in self.process_pyinstall(fp, line):
-                    self.debug(f'{fp}:{row} Installs {src} to {dst}')
+                    self.debug("%s:%s Installs %s to %s", fp, row, src, dst)
                     pkg.add(dst)
 
         for fp in paths:
