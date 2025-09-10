@@ -538,6 +538,7 @@ class RecycleBinListener(ListenerModuleHandler):
                 f"recyclebin listener: Created new recyclebin entry: {deleted_dn}",
             )
 
+
 def _get_recyclebin_policy_settings(original_dn, original_type):
     try:
         main_lo, _ = univention.admin.uldap.getAdminConnection()
