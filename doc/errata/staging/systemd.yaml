@@ -1,0 +1,13 @@
+product: ucs
+release: "5.2"
+version: [0, 1, 2, 3]
+scope: ucs_5.2-0-errata5.2-3
+src: systemd
+fix: 252.39-1~deb12u1A~5.2.3.202509101046
+desc: |
+ This update addresses the following issue:
+ * CVSS score 4.7 (CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:N/A:N).
+   (CVE-2025-4598)
+bug: [58603]
+cve:
+- CVE-2025-4598
