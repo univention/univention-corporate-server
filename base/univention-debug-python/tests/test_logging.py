@@ -253,7 +253,7 @@ def test_logger_auto_init_after_close(tmp_path):
     basicConfig('stdout', level=logging.TRACE)
     ud.exit()
     getLogger('ADMIN', extend=True).destroy()
-    extendLogger('ADMIN', out_file=str(tmplog), auto_init=True)
+    extendLogger('ADMIN', filename=str(tmplog), auto_init=True)
     assert "DEBUG_INIT" in tmplog.read_text()
     ud.exit()
 
