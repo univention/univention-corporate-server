@@ -211,6 +211,7 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 allowed-confusables = ["’", "`", "´"]
 
 task-tags = ["TODO", "FIXME"]
+logger-objects = ["univention.admin.log.log", "univention.management.console.log.CORE", "univention.management.console.log.NETWORK", "univention.management.console.log.CRYPT", "univention.management.console.log.UDM", "univention.management.console.log.MODULE", "univention.management.console.log.AUTH", "univention.management.console.log.PARSER", "univention.management.console.log.LOCALE", "univention.management.console.log.ACL", "univention.management.console.log.RESOURCES", "univention.management.console.log.PROTOCOL"]
 
 [tool.ruff.lint.extend-per-file-ignores]
 "oidc/python-keycloak/keycloak/*" = [
