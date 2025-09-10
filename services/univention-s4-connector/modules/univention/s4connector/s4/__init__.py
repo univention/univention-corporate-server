@@ -652,7 +652,7 @@ class s4(univention.s4connector.ucs):
             self.lo_s4.base = ''
             self.s4_ldap_base = self.s4_search_ext_s('', ldap.SCOPE_BASE, 'objectclass=*', ['defaultNamingContext'])[0][1]['defaultNamingContext'][0].decode('UTF-8')
         except Exception:  # FIXME: which exception is to be caught
-            self._debug_traceback(ud.ERROR, 'Failed to lookup AD LDAP base, using UCR value.')
+            log.exception('Failed to lookup AD LDAP base, using UCR value.')
 
         self.lo_s4 = univention.uldap.access(
             host=self.s4_ldap_host, port=int(self.s4_ldap_port),
@@ -743,7 +743,7 @@ class s4(univention.s4connector.ucs):
                     continue
                 raise
             except Exception:  # FIXME: which exception is to be caught?
-                self._debug_traceback(ud.ERROR, 'Could not get object DN')  # TODO: remove except block
+                log.exception('Could not get object DN')  # TODO: remove except block
 
     def parse_range_retrieval_attrs(self, ad_attrs, attr):
         for k in ad_attrs:
@@ -807,7 +807,7 @@ class s4(univention.s4connector.ucs):
                     continue
                 raise
             except Exception:  # FIXME: which exception is to be caught?
-                self._debug_traceback(ud.ERROR, 'Could not get object')  # TODO: remove except block?
+                log.exception('Could not get object')  # TODO: remove except block?
 
     def __get_change_usn(self, ad_object):
         """get change USN as max(uSNCreated, uSNChanged)"""
@@ -1027,7 +1027,7 @@ class s4(univention.s4connector.ucs):
                 ['highestCommittedUSN'],
             )[0][1]['highestCommittedUSN'][0].decode('ASCII'))
         except ldap.LDAPError:
-            self._debug_traceback(ud.ERROR, "search for highestCommittedUSN failed")
+            log.exception("search for highestCommittedUSN failed")
             print("ERROR: initial search in AD failed, check network and configuration")
             return 0
 
@@ -1268,7 +1268,7 @@ class s4(univention.s4connector.ucs):
                 except ldap.SERVER_DOWN:
                     raise
                 except Exception:  # FIXME: which exception is to be caught?
-                    self._debug_traceback(ud.PROCESS, f"group_members_sync_from_ucs: failed to get S4 dn for UCS group member {member_dn}, assume object doesn't exist")
+                    log.info("group_members_sync_from_ucs: failed to get S4 dn for UCS group member %s, assume object doesn't exist", member_dn, exc_info=True)
 
         log.debug("group_members_sync_from_ucs: UCS-members in s4_members_from_ucs %s", s4_members_from_ucs)
 
@@ -1292,7 +1292,7 @@ class s4(univention.s4connector.ucs):
                 except ldap.SERVER_DOWN:
                     raise
                 except Exception:  # FIXME: which exception is to be caught?
-                    self._debug_traceback(ud.PROCESS, f"group_members_sync_from_ucs: failed to get UCS dn for S4 group member {member_dn}")
+                    log.info("group_members_sync_from_ucs: failed to get UCS dn for S4 group member %s", member_dn, exc_info=True)
 
         log.debug("group_members_sync_from_ucs: UCS-and S4-members in s4_members_from_ucs %s", s4_members_from_ucs)
 
@@ -1522,7 +1522,7 @@ class s4(univention.s4connector.ucs):
                     except ldap.SERVER_DOWN:
                         raise
                     except Exception:  # FIXME: which exception is to be caught?
-                        self._debug_traceback(ud.PROCESS, f"group_members_sync_to_ucs: failed to get UCS dn for S4 group member {member_dn}, assume object doesn't exist")
+                        log.info("group_members_sync_to_ucs: failed to get UCS dn for S4 group member %s, assume object doesn't exist", member_dn, exc_info=True)
 
         # build an internal cache
         cache = {}
@@ -1554,7 +1554,7 @@ class s4(univention.s4connector.ucs):
                 except ldap.SERVER_DOWN:
                     raise
                 except Exception:  # FIXME: which exception is to be caught?
-                    self._debug_traceback(ud.PROCESS, f"group_members_sync_to_ucs: failed to get AD dn for UCS group member {member_dn}")
+                    log.info("group_members_sync_to_ucs: failed to get AD dn for UCS group member %s", member_dn, exc_info=True)
 
         log.debug("group_members_sync_to_ucs: dn_mapping_ucs_member_to_s4=%s", dn_mapping_ucs_member_to_s4)
         add_members = copy.deepcopy(ucs_members_from_s4)
@@ -1758,7 +1758,7 @@ class s4(univention.s4connector.ucs):
                     except ldap.SERVER_DOWN:
                         raise
                     except Exception:  # FIXME: which exception is to be caught?
-                        self._debug_traceback(ud.ERROR, "sync of rejected object failed \n\t{}".format(ad_object['dn']))
+                        log.exception("sync of rejected object failed \n\t{}".format(ad_object['dn']))
                         sync_successfull = False
                     if sync_successfull:
                         change_count += 1
@@ -1768,7 +1768,7 @@ class s4(univention.s4connector.ucs):
             except ldap.SERVER_DOWN:
                 raise
             except Exception:
-                self._debug_traceback(ud.ERROR, "unexpected Error during s4.resync_rejected")
+                log.exception("unexpected Error during s4.resync_rejected")
         print(f"restored {change_count} rejected changes")
         print("--------------------------------------")
         sys.stdout.flush()
@@ -1784,7 +1784,7 @@ class s4(univention.s4connector.ucs):
         except ldap.SERVER_DOWN:
             raise
         except Exception:  # FIXME: which exception is to be caught?
-            self._debug_traceback(ud.WARN, "Exception during search_s4_changes")
+            log.warning("Exception during search_s4_changes", exc_info=True)
 
         print("--------------------------------------")
         print(f"try to sync {len(changes)} changes from S4")
@@ -1859,7 +1859,7 @@ class s4(univention.s4connector.ucs):
                 self.open_ucs()
                 self.open_s4()
             except Exception:  # FIXME: which exception is to be caught?
-                self._debug_traceback(ud.WARN, "Exception during poll/sync_to_ucs")
+                log.warning("Exception during poll/sync_to_ucs", exc_info=True)
 
             if sync_successfull:
                 change_count += 1
@@ -1870,7 +1870,7 @@ class s4(univention.s4connector.ucs):
                 except ldap.SERVER_DOWN:
                     raise
                 except Exception:  # FIXME: which exception is to be caught?
-                    self._debug_traceback(ud.WARN, "Exception during set_DN_for_GUID")
+                    log.warning("Exception during set_DN_for_GUID", exc_info=True)
             else:
                 self.context_log(property_key, ad_object, 'sync was not successful, save rejected', level=ud.INFO)
                 self.save_rejected(ad_object)
