@@ -13,11 +13,12 @@ import pickle  # noqa: S403
 import shutil
 import subprocess
 import time
-
-import univention.debug as ud
+from logging import getLogger
 
 import listener
 
+
+log = getLogger("LISTENER").getChild(__name__)
 
 description = 'S4 Connector replication'
 filter = '(!(objectClass=lock))'
@@ -32,10 +33,10 @@ connector_needs_restart = False
 dirs = [listener.configRegistry.get('connector/s4/listener/dir', '/var/lib/univention-connector/s4')]
 if listener.configRegistry.get('connector/listener/additionalbasenames'):
     for configbasename in listener.configRegistry['connector/listener/additionalbasenames'].split(' '):
-        if '%s/s4/listener/dir' % configbasename in listener.configRegistry and listener.configRegistry['%s/s4/listener/dir' % configbasename]:
-            dirs.append(listener.configRegistry['%s/s4/listener/dir' % configbasename])
+        if listener.configRegistry.get(f'{configbasename}/s4/listener/dir'):
+            dirs.append(listener.configRegistry[f'{configbasename}/s4/listener/dir'])
         else:
-            ud.debug(ud.LISTENER, ud.WARN, "s4-connector: additional config basename %s given, but %s/s4/listener/dir not set; ignore basename." % (configbasename, configbasename))
+            log.warning("s4-connector: additional config basename %s given, but %s/s4/listener/dir not set; ignore basename.", configbasename, configbasename)
 
 
 def _save_old_object(directory: str, dn: str, old: dict[str, list[bytes]] | None) -> None:
@@ -60,7 +61,7 @@ def _dump_changes_to_file_and_check_file(directory: str, dn: str, new: dict[str,
     ob = (dn, new, old, old_dn)
 
     tmpdir = os.path.join(directory, 'tmp')
-    filename = '%f' % (time.time(),)
+    filename = f'{time.time():f}'
     filepath = os.path.join(tmpdir, filename)
 
     with open(filepath, 'wb+') as fd:
@@ -82,9 +83,9 @@ def _restart_connector() -> None:
     listener.setuid(0)
     try:
         if not subprocess.call(['pgrep', '-f', 'python3.*s4connector.s4.main']):
-            ud.debug(ud.LISTENER, ud.PROCESS, "s4-connector: restarting connector ...")
+            log.info("s4-connector: restarting connector ...")
             subprocess.call(('systemctl', 'restart', 'univention-s4-connector'))
-            ud.debug(ud.LISTENER, ud.PROCESS, "s4-connector: ... done")
+            log.info("s4-connector: ... done")
     finally:
         listener.unsetuid()
 
@@ -93,7 +94,7 @@ def handler(dn: str, new: dict[str, list[bytes]] | None, old: dict[str, list[byt
     global connector_needs_restart
 
     if _is_module_disabled():
-        ud.debug(ud.LISTENER, ud.INFO, "s4-connector: UMC module is disabled by UCR variable connector/s4/listener/disabled")
+        log.debug("s4-connector: UMC module is disabled by UCR variable connector/s4/listener/disabled")
         return
 
     # restart connector on extended attribute changes
@@ -122,7 +123,7 @@ def handler(dn: str, new: dict[str, list[bytes]] | None, old: dict[str, list[byt
                 # might only see the first step.
                 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=32542
                 if old_dn and new.get('entryUUID') != old_object.get('entryUUID'):
-                    ud.debug(ud.LISTENER, ud.PROCESS, "The entryUUID attribute of the saved object (%s) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario." % (old_dn, dn))
+                    log.info("The entryUUID attribute of the saved object (%s) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario.", old_dn, dn)
                     _dump_changes_to_file_and_check_file(directory, old_dn, {}, old_object, None)
                     old_dn = None
 
@@ -163,7 +164,7 @@ def postrun() -> None:
             s4_init_mode = False
             for ob in group_objects:
                 for directory in dirs:
-                    filename = os.path.join(directory, "%f" % time.time())
+                    filename = os.path.join(directory, f"{time.time():f}")
                     with open(filename, 'wb+') as fd:
                         os.chmod(filename, 0o600)
                         p = pickle.Pickler(fd)

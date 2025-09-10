@@ -7,8 +7,10 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import base64
+from logging import getLogger
 
-import univention.debug2 as ud
+
+log = getLogger("LDAP").getChild(__name__)
 
 
 map_prefdev = [b'any', b'mhs', b'physical', b'telex', b'teletex', b'g3fax', b'g4fax', b'ia5', b'videotex', b'telephone']
@@ -26,7 +28,7 @@ def prefdev_sync_s4_to_ucs(s4connector, key, s4_object):
         try:
             ucs_pref += map_prefdev[int(pref)].decode('ASCII') + ' $ '
         except (IndexError, ValueError):
-            ud.debug(ud.LDAP, ud.WARN, "Ignoring invalid value %r of attribute preferredDeliveryMethod. Value must be a number between 0 and 10." % (pref,))
+            log.warning(f"Ignoring invalid value {pref!r} of attribute preferredDeliveryMethod. Value must be a number between 0 and 10.")
     ucs_pref = ucs_pref[:-3]
     return [ucs_pref.encode('ASCII')]
 

@@ -8,20 +8,24 @@
 """Helper function to create the SID mapping definition."""
 
 
+from logging import getLogger
+
 import ldap
 from ldap.controls import LDAPControl
 from samba.dcerpc import security
 from samba.ndr import ndr_pack
 
-import univention.debug2 as ud
 from univention.s4connector.s4 import decode_sid
 
 
+log = getLogger("LDAP").getChild(__name__)
+
+
 def sid_to_s4_mapping(s4connector, key, object):
-    ud.debug(ud.LDAP, ud.INFO, "sid_to_s4_mapping")
+    log.debug("sid_to_s4_mapping")
     sidAttribute = 'sambaSID'
     if s4connector.configRegistry.is_false('connector/s4/mapping/sid', False):
-        ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: SID mapping is disabled via UCR: connector/s4/mapping/sid')
+        log.debug('sid_to_s4: SID mapping is disabled via UCR: connector/s4/mapping/sid')
         sidAttribute = 'univentionSamba4SID'
 
     sambaSID = object['attributes'][sidAttribute]
@@ -31,23 +35,23 @@ def sid_to_s4_mapping(s4connector, key, object):
     if sambaSID[0].startswith(b'S-'):
         new_objectSid_ndr = ndr_pack(security.dom_sid(sambaSID[0].decode('ASCII')))
     else:
-        new_objectSid_ndr = ndr_pack(security.dom_sid('%s-%s' % (s4connector.s4_sid, sambaSID[0].decode('ASCII'))))
+        new_objectSid_ndr = ndr_pack(security.dom_sid('{}-{}'.format(s4connector.s4_sid, sambaSID[0].decode('ASCII'))))
 
     return [new_objectSid_ndr]
 
 
 def sid_to_ucs_mapping(s4connector, key, s4_object):
-    ud.debug(ud.LDAP, ud.INFO, "sid_to_ucs_mapping")
+    log.debug("sid_to_ucs_mapping")
     object_sid = decode_sid(s4_object['attributes']['objectSid'][0])
     return [object_sid.split('-')[-1].encode('ASCII')]
 
 
 def sid_to_s4(s4connector, key, object):
-    ud.debug(ud.LDAP, ud.INFO, "sid_to_s4 object: %s" % object)
+    log.debug("sid_to_s4 object: %s", object)
 
     sidAttribute = 'sambaSID'
     if s4connector.configRegistry.is_false('connector/s4/mapping/sid', False):
-        ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: SID mapping is disabled via UCR: connector/s4/mapping/sid')
+        log.debug('sid_to_s4: SID mapping is disabled via UCR: connector/s4/mapping/sid')
         sidAttribute = 'univentionSamba4SID'
     else:
         # This case will be handled by direct mapping
@@ -59,7 +63,7 @@ def sid_to_s4(s4connector, key, object):
 
     # search the ucs object via
     if sidAttribute not in object['attributes']:
-        ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: UCS object does not have a %s' % sidAttribute)
+        log.debug('sid_to_s4: UCS object does not have a %s', sidAttribute)
         return
 
     sambaSID = object['attributes'][sidAttribute][0].decode('ASCII')
@@ -69,14 +73,14 @@ def sid_to_s4(s4connector, key, object):
     if objectSid:
         decoded_s4_sid = decode_sid(objectSid[0])
         if decoded_s4_sid == sambaSID:
-            ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: objectSid and %s are equal' % sidAttribute)
+            log.debug('sid_to_s4: objectSid and %s are equal', sidAttribute)
             return
 
         # change objectSID
         # http://serverfault.com/questions/53717/how-can-i-change-the-sid-of-a-user-account-in-the-active-directory
         # http://technet.microsoft.com/en-us/library/cc961998.aspx
 
-        ud.debug(ud.LDAP, ud.INFO, 'sid_to_s4: changing objectSid from %r to %r' % (decoded_s4_sid, sambaSID))
+        log.debug(f'sid_to_s4: changing objectSid from {decoded_s4_sid!r} to {sambaSID!r}')
         new_objectSid_ndr = ndr_pack(security.dom_sid(sambaSID))
         modlist.append((ldap.MOD_REPLACE, 'objectSid', new_objectSid_ndr))
 
@@ -87,12 +91,12 @@ def sid_to_s4(s4connector, key, object):
 
 
 def sid_to_ucs(s4connector, key, s4_object):
-    ud.debug(ud.LDAP, ud.INFO, "sid_to_ucs S4 object: %r" % s4_object)
-    ud.debug(ud.LDAP, ud.INFO, "sid_to_ucs S4 key: %r" % key)
+    log.debug(f"sid_to_ucs S4 object: {s4_object!r}")
+    log.debug(f"sid_to_ucs S4 key: {key!r}")
 
     sidAttribute = 'sambaSID'
     if s4connector.configRegistry.is_false('connector/s4/mapping/sid', False):
-        ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: SID mapping is disabled via UCR: connector/s4/mapping/sid')
+        log.debug('sid_to_ucs: SID mapping is disabled via UCR: connector/s4/mapping/sid')
         sidAttribute = 'univentionSamba4SID'
     else:
         # This case will be handled by direct mapping
@@ -105,20 +109,20 @@ def sid_to_ucs(s4connector, key, s4_object):
     if not s4_object.get('dn'):
         return  # ignore
     ucs_dn = s4_object['dn']
-    ud.debug(ud.LDAP, ud.INFO, "sid_to_s4: UCS DN %s" % ucs_dn)
+    log.debug("sid_to_s4: UCS DN %s", ucs_dn)
 
     objectSid = s4_object['attributes'].get('objectSid', [None])[0]
     if objectSid:
         objectSid = decode_sid(objectSid)
-        ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: objectSid found: %r' % (objectSid,))
+        log.debug(f'sid_to_ucs: objectSid found: {objectSid!r}')
     else:
-        ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: objectSid not found in attributes!')
+        log.debug('sid_to_ucs: objectSid not found in attributes!')
         return
 
     (ucs_dn, ucs_attributes) = s4connector.lo.lo.search(base=ucs_dn, scope='base', attr=[sidAttribute, 'objectClass'])[0]
 
     if not ucs_dn:
-        ud.debug(ud.LDAP, ud.WARN, 'sid_to_ucs: UCS object (%s) not found' % ucs_dn)
+        log.warning('sid_to_ucs: UCS object (%s) not found', ucs_dn)
         return
 
     sambaSID = ucs_attributes.get(sidAttribute)
@@ -131,5 +135,5 @@ def sid_to_ucs(s4connector, key, s4_object):
         if b'group' in s4_ocs and b'sambaGroupMapping' not in ucs_ocs:
             ml.append(('objectClass', ucs_ocs, [*ucs_ocs, b"sambaGroupMapping"]))
     if ml:
-        ud.debug(ud.LDAP, ud.INFO, 'sid_to_ucs: modlist = %r' % (ml,))
+        log.debug(f'sid_to_ucs: modlist = {ml!r}')
         s4connector.lo.lo.modify(ucs_dn, ml)
