@@ -335,7 +335,7 @@ class StructuredFormatter(logging.Formatter):
             keys=data_fields or ['pid', 'umcmodule', 'logname', 'func'],
             mapping=data_mapping or {'at': 'levelname', 'pid': 'process', 'time': 'asctime', 'logname': 'name'},
             defaults=data_defaults or {'func': '{module}.{funcName}:{lineno}'},
-            ignore_keys=data_ignored_keys or ['msg', 'request_id', 'syslog_priority'],  # 'stack_info', 'exc_info'
+            ignored_keys=data_ignored_keys or ['msg', 'request_id', 'syslog_priority'],  # 'stack_info', 'exc_info'
             datefmt=_datefmt,
         )
         super().__init__(fmt=fmt, datefmt=_datefmt, defaults=defaults or {'request_id': '-', key: '', 'syslog_priority': ''}, style=style)
