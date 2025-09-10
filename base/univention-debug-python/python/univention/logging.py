@@ -432,17 +432,15 @@ class Logger(logging.Logger):
         if use_structured_logging:
             self.univention_debug_handler.setFormatter(StructuredFormatter())
 
-    # def getChild(self, name):
-    #     klass = logging.getLoggerClass()
-    #     logging.setLoggerClass(Logger)
-    #     try:
-    #         return super().getChild(name)
-    #     finally:
-    #         logging.setLoggerClass(klass)
-
     def __repr__(self):
         msg = super().__repr__()
         return '<univention.logging.%s' % (msg[1:],)
+
+    def destroy(self):
+        self.manager.loggerDict.pop(self.name)
+        for key in list(self.manager.loggerDict.keys()):
+            if key.startswith(f'{self.name}.'):
+                self.manager.loggerDict.pop(key)
 
 
 class Structured:

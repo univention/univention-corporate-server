@@ -95,10 +95,8 @@ _map_id_old2new = {
 # 13.08.2008 13:13:57.123  LISTENER    ( WARN    ) : received signal 2
 # 13.08.2008 13:14:02.123  DEBUG_INIT
 _outfmt = '%(asctime)s.%(msecs)03d %(name)-11s (%(levelname)-7s): %(message)s'
-_outfmt_structured = '%(asctime)s.%(msecs)03d  %(levelname)-7s/t| %(message)s'
 _outfmt_syslog = '%(name)-11s (%(levelname)-7s): %(message)s'
 _datefmt = '%d.%m.%Y %H:%M:%S'
-_datefmt_structured = '%Y-%m-%dT%H:%M:%S'
 
 
 class _Formatter(logging.Formatter):
@@ -142,7 +140,8 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
     ud2_base_logger.propagate = False
 
     if _use_structured:
-        formatter = _Formatter(_outfmt_structured, _datefmt_structured)
+        from univention.logging import StructuredFormatter
+        formatter = StructuredFormatter(with_date_prefix=True)
     else:
         formatter = _Formatter(_outfmt, _datefmt)
     exit()
@@ -214,12 +213,12 @@ def set_level(category, level):
     Set minimum required severity 'level' for facility 'category'.
 
     :param int category: ID of the category, e.g. MAIN, LDAP, USERS, ...
-    :param int level: Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL
+    :param int level: Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL, TRACE
     """
     new_id = _map_id_old2new.get(category, 'MAIN')
-    if level > ALL:
-        level = ALL
-    elif level < ERROR:
+    if level > TRACE:  # pragma: no cover
+        level = TRACE
+    elif level < ERROR:  # pragma: no cover
         level = ERROR
     _logger_level[new_id] = level
 
@@ -254,7 +253,7 @@ def debug(category, level, message, utf8=True):
     Log message 'message' of severity 'level' to facility 'category'.
 
     :param int category: ID of the category, e.g. MAIN, LDAP, USERS, ...
-    :param int level: Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL
+    :param int level: Level of logging, e.g. ERROR, WARN, PROCESS, INFO, ALL, TRACE
     :param str message: The message to log.
     :param bool utf8: Assume the message is UTF-8 encoded.
     """

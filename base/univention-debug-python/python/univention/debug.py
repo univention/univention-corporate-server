@@ -130,6 +130,6 @@ def trace(with_args=True, with_return=False, repr=object.__repr__):
     return decorator
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     import doctest
     doctest.testmod()
