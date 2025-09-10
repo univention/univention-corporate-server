@@ -11,8 +11,10 @@ import base64
 import sqlite3
 from logging import getLogger
 
+from univention.logging import Structured
 
-log = getLogger("LDAP").getChild(__name__)
+
+log = Structured(getLogger("LDAP").getChild(__name__))
 
 
 def _encode_base64(val):
@@ -124,17 +126,17 @@ class S4Cache:
                 cur = self._dbcon.cursor()
                 for sql_command in sql_commands:
                     if isinstance(sql_command, tuple):
-                        log.trace(f"S4Cache: Execute SQL command: '{sql_command[0]}', '{sql_command[1]}'")
+                        log.trace("S4Cache: Execute SQL command: '%s', '%s'", sql_command[0], sql_command[1])
                         cur.execute(sql_command[0], sql_command[1])
                     else:
-                        log.trace(f"S4Cache: Execute SQL command: '{sql_command}'")
+                        log.trace("S4Cache: Execute SQL command: '%s'", sql_command)
                         cur.execute(sql_command)
                 self._dbcon.commit()
                 if fetch_result:
                     rows = cur.fetchall()
                 cur.close()
                 if fetch_result:
-                    log.trace(f"S4Cache: Return SQL result: '{rows}'")
+                    log.trace("S4Cache: Return SQL result: '%s'", rows)
                     return rows
                 return None
             except sqlite3.Error as exp:

@@ -17,9 +17,10 @@ import univention.admin.uldap
 import univention.s4connector.s4.password
 import univention.uldap
 from univention.config_registry import ConfigRegistry
+from univention.logging import Structured
 
 
-log = getLogger("LDAP").getChild(__name__)
+log = Structured(getLogger("LDAP").getChild(__name__))
 
 
 class S4:
@@ -41,7 +42,7 @@ class S4:
         try:
             ucs_dn, ucs_attr = self.s4.lo.lo.search(base=self.s4.lo.base, scope='sub', filter=ldap.filter.filter_format('(uid=krbtgt/%s)', (self.ucr.get('kerberos/realm'),)))[0]
         except (ldap.NO_SUCH_OBJECT, IndexError):
-            log.info("The UCS object (uid=krbtgt/%s) was not found" % (self.ucr.get('kerberos/realm')))
+            log.info("The UCS object (uid=krbtgt/%s) was not found", self.ucr.get('kerberos/realm'))
             print("The UCS object (uid=krbtgt/%s) was not found" % self.ucr.get('kerberos/realm'))
             return
 
@@ -74,7 +75,7 @@ class S4:
                     modlist.append(('krb5KeyVersionNumber', krb5KeyVersionNumber, msDS_KeyVersionNumber))
 
         if modlist:
-            log.debug("password_sync_s4_to_ucs: modlist: %s" % modlist)
+            log.debug("password_sync_s4_to_ucs: modlist: %s", modlist)
             self.s4.lo.lo.modify(ucs_dn, modlist)
 
 

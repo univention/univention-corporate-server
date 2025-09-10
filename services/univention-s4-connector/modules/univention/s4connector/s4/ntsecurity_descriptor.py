@@ -14,8 +14,10 @@ from ldap.controls.readentry import PostReadControl
 from samba.dcerpc import security
 from samba.ndr import ndr_pack, ndr_unpack
 
+from univention.logging import Structured
 
-log = getLogger("LDAP").getChild(__name__)
+
+log = Structured(getLogger("LDAP").getChild(__name__))
 
 
 def encode_sddl_to_sd_in_ndr(domain_sid, ntsd_sddl):
