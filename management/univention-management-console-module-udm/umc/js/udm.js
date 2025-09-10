@@ -299,6 +299,7 @@ define([
 					ucr: this._loadUCRVariables()
 				}).then(lang.hitch(this, function(results) {
 					this._ldapBase = results.metaInfo.ldap_base;
+					this._metaInfo = results.metaInfo;
 					this._reports = results.reports;
 					this._default_columns = results.columns;
 					this.renderSearchPage(results.containers, results.metaInfo);
@@ -671,6 +672,7 @@ define([
 				return text;
 			});
 
+
 			// define actions
 			var actions = [{
 				name: 'workaround',
@@ -703,7 +705,9 @@ define([
 				iconClass: 'plus',
 				isContextAction: false,
 				isStandardAction: true,
-				callback: lang.hitch(this, 'showNewObjectDialog')
+				//showAction: lang.hitch(this, '_showAdd'),
+				canExecute: lang.hitch(this, '_canAdd'),
+				callback: lang.hitch(this, 'showNewObjectDialog'),
 			}, {
 				name: 'edit',
 				label: _('Edit'),
@@ -1280,6 +1284,10 @@ define([
 			// to account for this via an offset
 			domClass.remove(this._grid._grid.domNode, 'umcDynamicHeight');
 			domClass.add(this._grid._grid.domNode, 'umcDynamicHeight-55');
+		},
+
+		_canAdd: function(item) {
+			return this._metaInfo.operations.indexOf('add') !== -1;
 		},
 
 		_canEdit: function(item) {

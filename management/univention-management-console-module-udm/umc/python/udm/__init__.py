@@ -491,6 +491,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
                 'columns': module.columns,
                 'has_tree': module.has_tree,
                 'ldap_base': module.ldap_base,
+                'operations': module.operations,
             }
 
     @threaded
