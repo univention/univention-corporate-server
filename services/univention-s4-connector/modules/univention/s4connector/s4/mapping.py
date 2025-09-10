@@ -61,43 +61,43 @@ def ignore_filter_from_attr(attribute, ucr_key, default=''):
 
 
 global_ignore_subtree = [
-    'cn=univention,%(ldap/base)s' % configRegistry,
-    'cn=policies,%(ldap/base)s' % configRegistry,
-    'cn=shares,%(ldap/base)s' % configRegistry,
-    'cn=printers,%(ldap/base)s' % configRegistry,
-    'cn=networks,%(ldap/base)s' % configRegistry,
-    'cn=kerberos,%(ldap/base)s' % configRegistry,
-    'cn=dhcp,%(ldap/base)s' % configRegistry,
-    'cn=mail,%(ldap/base)s' % configRegistry,
-    'cn=nagios,%(ldap/base)s' % configRegistry,
-    'CN=RAS and IAS Servers Access Check,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'CN=FileLinks,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'CN=WinsockServices,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'CN=RID Manager$,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'CN=Dfs-Configuration,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'CN=Server,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'CN=ComPartitionSets,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'CN=ComPartitions,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'CN=IP Security,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'CN=DFSR-GlobalSettings,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'CN=DomainUpdates,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'CN=Password Settings Container,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'DC=RootDNSServers,CN=MicrosoftDNS,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'DC=RootDNSServers,CN=MicrosoftDNS,DC=DomainDnsZones,%(connector/s4/ldap/base)s' % configRegistry,
-    'DC=RootDNSServers,CN=MicrosoftDNS,DC=ForestDnsZones,%(connector/s4/ldap/base)s' % configRegistry,
-    'DC=..TrustAnchors,CN=MicrosoftDNS,DC=ForestDnsZones,%(connector/s4/ldap/base)s' % configRegistry,
-    'CN=File Replication Service,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'CN=RpcServices,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'CN=Meetings,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'CN=AdminSDHolder,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'CN=BCKUPKEY_c490e871-a375-4b76-bd24-711e9e49fe5e Secret,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'CN=BCKUPKEY_PREFERRED Secret,CN=System,%(connector/s4/ldap/base)s' % configRegistry,
-    'ou=Grp Policy Users,%(connector/s4/ldap/base)s' % configRegistry,
-    'cn=ForeignSecurityPrincipals,%(connector/s4/ldap/base)s' % configRegistry,
-    'cn=Program Data,%(connector/s4/ldap/base)s' % configRegistry,
-    'cn=Configuration,%(connector/s4/ldap/base)s' % configRegistry,
-    'cn=opsi,%(ldap/base)s' % configRegistry,
-    'cn=Microsoft Exchange System Objects,%(connector/s4/ldap/base)s' % configRegistry,
+    'cn=univention,{ldap/base}'.format(**configRegistry),
+    'cn=policies,{ldap/base}'.format(**configRegistry),
+    'cn=shares,{ldap/base}'.format(**configRegistry),
+    'cn=printers,{ldap/base}'.format(**configRegistry),
+    'cn=networks,{ldap/base}'.format(**configRegistry),
+    'cn=kerberos,{ldap/base}'.format(**configRegistry),
+    'cn=dhcp,{ldap/base}'.format(**configRegistry),
+    'cn=mail,{ldap/base}'.format(**configRegistry),
+    'cn=nagios,{ldap/base}'.format(**configRegistry),
+    'CN=RAS and IAS Servers Access Check,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'CN=FileLinks,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'CN=WinsockServices,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'CN=RID Manager$,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'CN=Dfs-Configuration,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'CN=Server,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'CN=ComPartitionSets,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'CN=ComPartitions,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'CN=IP Security,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'CN=DFSR-GlobalSettings,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'CN=DomainUpdates,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'CN=Password Settings Container,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'DC=RootDNSServers,CN=MicrosoftDNS,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'DC=RootDNSServers,CN=MicrosoftDNS,DC=DomainDnsZones,{connector/s4/ldap/base}'.format(**configRegistry),
+    'DC=RootDNSServers,CN=MicrosoftDNS,DC=ForestDnsZones,{connector/s4/ldap/base}'.format(**configRegistry),
+    'DC=..TrustAnchors,CN=MicrosoftDNS,DC=ForestDnsZones,{connector/s4/ldap/base}'.format(**configRegistry),
+    'CN=File Replication Service,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'CN=RpcServices,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'CN=Meetings,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'CN=AdminSDHolder,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'CN=BCKUPKEY_c490e871-a375-4b76-bd24-711e9e49fe5e Secret,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'CN=BCKUPKEY_PREFERRED Secret,CN=System,{connector/s4/ldap/base}'.format(**configRegistry),
+    'ou=Grp Policy Users,{connector/s4/ldap/base}'.format(**configRegistry),
+    'cn=ForeignSecurityPrincipals,{connector/s4/ldap/base}'.format(**configRegistry),
+    'cn=Program Data,{connector/s4/ldap/base}'.format(**configRegistry),
+    'cn=Configuration,{connector/s4/ldap/base}'.format(**configRegistry),
+    'cn=opsi,{ldap/base}'.format(**configRegistry),
+    'cn=Microsoft Exchange System Objects,{connector/s4/ldap/base}'.format(**configRegistry),
 ]
 
 for k, v in configRegistry.items():
@@ -105,10 +105,10 @@ for k, v in configRegistry.items():
         global_ignore_subtree.append(v)
 
 if configRegistry.is_false('connector/s4/mapping/wmifilter', True):
-    global_ignore_subtree.append('CN=WMIPolicy,CN=System,%(connector/s4/ldap/base)s' % configRegistry)
+    global_ignore_subtree.append('CN=WMIPolicy,CN=System,{connector/s4/ldap/base}'.format(**configRegistry))
 
 if configRegistry.is_false('connector/s4/mapping/group/grouptype', False):
-    global_ignore_subtree.append('cn=Builtin,%(connector/s4/ldap/base)s' % configRegistry)
+    global_ignore_subtree.append('cn=Builtin,{connector/s4/ldap/base}'.format(**configRegistry))
 
 user_ignore_list = {x.strip(' ') for x in configRegistry.get('connector/s4/mapping/user/attributes/ignorelist', '').split(',')}
 group_ignore_filter = ignore_filter_from_attr('cn', 'connector/s4/mapping/group/ignorelist')
@@ -173,8 +173,8 @@ gpo_ntsd = configRegistry.is_true('connector/s4/mapping/gpo/ntsd', False)
 
 s4_mapping = {
     'user': univention.s4connector.property(
-        ucs_default_dn='cn=users,%(ldap/base)s' % configRegistry,
-        con_default_dn='cn=users,%(connector/s4/ldap/base)s' % configRegistry,
+        ucs_default_dn='cn=users,{ldap/base}'.format(**configRegistry),
+        con_default_dn='cn=users,{connector/s4/ldap/base}'.format(**configRegistry),
         ucs_module='users/user',
         # read, write, sync, none
         sync_mode=configRegistry.get('connector/s4/mapping/user/syncmode', configRegistry.get('connector/s4/mapping/syncmode')),
@@ -461,8 +461,8 @@ s4_mapping = {
         }.items() if key not in user_ignore_list},
     ),
     'group': univention.s4connector.property(
-        ucs_default_dn='cn=groups,%(ldap/base)s' % configRegistry,
-        con_default_dn='cn=Users,%(connector/s4/ldap/base)s' % configRegistry,
+        ucs_default_dn='cn=groups,{ldap/base}'.format(**configRegistry),
+        con_default_dn='cn=Users,{connector/s4/ldap/base}'.format(**configRegistry),
         ucs_module='groups/group',
         sync_mode=configRegistry.get('connector/s4/mapping/group/syncmode', configRegistry.get('connector/s4/mapping/syncmode')),
         scope='sub',
@@ -527,12 +527,12 @@ s4_mapping = {
         mapping_table=group_mapping_table,
     ),
     'dc': univention.s4connector.property(
-        ucs_default_dn='cn=dc,cn=computers,%(ldap/base)s' % configRegistry,
-        con_default_dn='OU=Domain Controllers,%(connector/s4/ldap/base)s' % configRegistry,
+        ucs_default_dn='cn=dc,cn=computers,{ldap/base}'.format(**configRegistry),
+        con_default_dn='OU=Domain Controllers,{connector/s4/ldap/base}'.format(**configRegistry),
         ucs_module='computers/windows_domaincontroller',
         ucs_module_others=['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave'],
         con_search_filter='(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=532480))',
-        position_mapping=[(',cn=dc,cn=computers,%(ldap/base)s' % configRegistry, ',ou=Domain Controllers,%(connector/s4/ldap/base)s' % configRegistry)],
+        position_mapping=[(',cn=dc,cn=computers,{ldap/base}'.format(**configRegistry), ',ou=Domain Controllers,{connector/s4/ldap/base}'.format(**configRegistry))],
         match_filter='(|(&(objectClass=univentionDomainController)(univentionService=Samba 4))(objectClass=computer)(univentionServerRole=windows_domaincontroller))',
         dn_mapping_function=[univention.s4connector.s4.dc_dn_mapping],
         # When a DC joins to the samba 4 domain
@@ -594,8 +594,8 @@ s4_mapping = {
         },
     ),
     'windowscomputer': univention.s4connector.property(
-        ucs_default_dn='cn=computers,%(ldap/base)s' % configRegistry,
-        con_default_dn='cn=computers,%(connector/s4/ldap/base)s' % configRegistry,
+        ucs_default_dn='cn=computers,{ldap/base}'.format(**configRegistry),
+        con_default_dn='cn=computers,{connector/s4/ldap/base}'.format(**configRegistry),
         ucs_module='computers/windows',
         ucs_module_others=['computers/memberserver', 'computers/linux', 'computers/ubuntu', 'computers/macos'],
         sync_mode=configRegistry.get('connector/s4/mapping/computer/syncmode', configRegistry.get('connector/s4/mapping/syncmode')),
@@ -657,8 +657,8 @@ s4_mapping = {
         },
     ),
     'dns': univention.s4connector.property(
-        ucs_default_dn='cn=dns,%(ldap/base)s' % configRegistry,
-        con_default_dn='CN=MicrosoftDNS,%s,%s' % ("CN=System" if configRegistry.get('connector/s4/mapping/dns/position') == 'legacy' else "DC=DomainDnsZones", configRegistry['connector/s4/ldap/base']),
+        ucs_default_dn='cn=dns,{ldap/base}'.format(**configRegistry),
+        con_default_dn='CN=MicrosoftDNS,{},{}'.format("CN=System" if configRegistry.get('connector/s4/mapping/dns/position') == 'legacy' else "DC=DomainDnsZones", configRegistry['connector/s4/ldap/base']),
         ucs_module='dns/dns',
         ucs_module_others=['dns/forward_zone', 'dns/reverse_zone', 'dns/alias', 'dns/host_record', 'dns/srv_record', 'dns/ptr_record', 'dns/txt_record', 'dns/ns_record'],
         sync_mode=configRegistry.get('connector/s4/mapping/dns/syncmode') or configRegistry.get('connector/s4/mapping/syncmode', ''),
@@ -1914,8 +1914,8 @@ s4_mapping = {
     ),
     'container_dc': univention.s4connector.property(
         ucs_module='container/dc',
-        ucs_default_dn='cn=samba,%(ldap/base)s' % configRegistry,
-        con_default_dn='%(connector/s4/ldap/base)s' % configRegistry,
+        ucs_default_dn='cn=samba,{ldap/base}'.format(**configRegistry),
+        con_default_dn='{connector/s4/ldap/base}'.format(**configRegistry),
         sync_mode=configRegistry.get('connector/s4/mapping/dc/syncmode', configRegistry.get('connector/s4/mapping/syncmode')),
         scope='sub',
         identify=univention.s4connector.s4.dc.identify,

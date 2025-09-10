@@ -9,8 +9,10 @@
 
 import base64
 import sqlite3
+from logging import getLogger
 
-import univention.debug2 as ud
+
+log = getLogger("LDAP").getChild(__name__)
 
 
 def _encode_base64(val):
@@ -122,21 +124,21 @@ class S4Cache:
                 cur = self._dbcon.cursor()
                 for sql_command in sql_commands:
                     if isinstance(sql_command, tuple):
-                        ud.debug(ud.LDAP, ud.ALL, "S4Cache: Execute SQL command: '%s', '%s'" % (sql_command[0], sql_command[1]))
+                        log.trace(f"S4Cache: Execute SQL command: '{sql_command[0]}', '{sql_command[1]}'")
                         cur.execute(sql_command[0], sql_command[1])
                     else:
-                        ud.debug(ud.LDAP, ud.ALL, "S4Cache: Execute SQL command: '%s'" % sql_command)
+                        log.trace(f"S4Cache: Execute SQL command: '{sql_command}'")
                         cur.execute(sql_command)
                 self._dbcon.commit()
                 if fetch_result:
                     rows = cur.fetchall()
                 cur.close()
                 if fetch_result:
-                    ud.debug(ud.LDAP, ud.ALL, "S4Cache: Return SQL result: '%s'" % rows)
+                    log.trace(f"S4Cache: Return SQL result: '{rows}'")
                     return rows
                 return None
             except sqlite3.Error as exp:
-                ud.debug(ud.LDAP, ud.WARN, "S4Cache: sqlite: %s. SQL command was: %s" % (exp, sql_commands))
+                log.warning("S4Cache: sqlite: %s. SQL command was: %s", exp, sql_commands)
                 if self._dbcon:
                     self._dbcon.close()
                 self._dbcon = sqlite3.connect(self.filename)
@@ -286,7 +288,7 @@ if __name__ == '__main__':
     entry_old = s4cache.get_entry(guid)
     diff_entry = s4cache.diff_entry(entry_old, entry)
     if diff_entry.get('changed') or diff_entry.get('removed') or diff_entry.get('added'):
-        raise Exception('Test 1 failed: %s' % diff_entry)
+        raise Exception(f'Test 1 failed: {diff_entry}')
     print('.', end=' ')
 
     entry['attr3'] = [b'val2']
@@ -294,14 +296,14 @@ if __name__ == '__main__':
 
     diff_entry = s4cache.diff_entry(entry_old, entry)
     if diff_entry.get('changed') != {'attr2'} or diff_entry.get('removed') or diff_entry.get('added') != {'attr3'}:
-        raise Exception('Test 2 failed: %s' % diff_entry)
+        raise Exception(f'Test 2 failed: {diff_entry}')
     print('.', end=' ')
 
     s4cache.add_entry(guid, entry)
     entry_old = s4cache.get_entry(guid)
     diff_entry = s4cache.diff_entry(entry_old, entry)
     if diff_entry.get('changed') or diff_entry.get('removed') or diff_entry.get('added'):
-        raise Exception('Test 3 failed: %s' % diff_entry)
+        raise Exception(f'Test 3 failed: {diff_entry}')
     print('.', end=' ')
 
     print(' done')
