@@ -5,9 +5,7 @@
 """listener script for recyclebin objects."""
 
 import datetime
-import json
 import syslog
-import time
 
 import ldap
 import ldap.dn
@@ -139,14 +137,17 @@ class RecycleBinListener(ListenerModuleHandler):
 
         syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN: Processing removal for {object_type}: {dn}")
 
-        self._move_deleted_object_to_recyclebin(dn, old)
+        moved_to_recyclebin = self._move_deleted_object_to_recyclebin(dn, old)
 
-        try:
-            recyclebin_dn = self._get_recyclebin_dn_for_original(dn)
-            self.deleted_objects_cache.add(univention.dn.DN(recyclebin_dn))
-            syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN: Added to cache: {recyclebin_dn}")
-        except Exception as e:
-            syslog.syslog(syslog.LOG_ERR, f"RECYCLEBIN: Error adding to cache: {e}")
+        if moved_to_recyclebin:
+            try:
+                recyclebin_dn = self._get_recyclebin_dn_for_original(dn)
+                self.deleted_objects_cache.add(univention.dn.DN(recyclebin_dn))
+                syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN: Added to cache: {recyclebin_dn}")
+            except Exception as e:
+                syslog.syslog(syslog.LOG_ERR, f"RECYCLEBIN: Error adding to cache: {e}")
+        else:
+            syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN: Object {dn} was not moved to recyclebin - not adding to cache")
 
     def _get_recyclebin_dn_for_original(self, original_dn):
         """Generate recyclebin DN for original object."""
@@ -317,7 +318,12 @@ class RecycleBinListener(ListenerModuleHandler):
             syslog.syslog(syslog.LOG_ERR, f"RECYCLEBIN: Error adding group to deleted object for UID {member_uid}: {e}")
 
     def _move_deleted_object_to_recyclebin(self, original_dn, original_attrs):
-        """Move deleted object to recyclebin."""
+        """
+        Move deleted object to recyclebin.
+
+        Returns:
+            bool: True if object was moved to recyclebin, False if skipped due to no policy
+        """
         syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN MOVE: Starting move to recyclebin for {original_dn}")
         listener.setuid(0)
         try:
@@ -337,7 +343,6 @@ class RecycleBinListener(ListenerModuleHandler):
             original_type = self._determine_object_type(original_attrs)
 
             main_lo, _ = univention.admin.uldap.getAdminConnection()
-            referenced_by = self._find_references_with_admin_privileges(original_dn, main_lo)
 
             group_memberships = []
             if 'memberOf' in original_attrs:
@@ -352,12 +357,14 @@ class RecycleBinListener(ListenerModuleHandler):
                 original_dn=original_dn,
                 original_attrs=original_attrs,
                 original_type=original_type,
-                referenced_by=referenced_by,
                 group_memberships=group_memberships,
             )
 
+            return True
+
         except Exception as e:
             syslog.syslog(syslog.LOG_ERR, f"RECYCLEBIN: Error moving {original_dn} to recyclebin: {e}")
+            return False
         finally:
             listener.unsetuid()
 
@@ -367,52 +374,6 @@ class RecycleBinListener(ListenerModuleHandler):
         if object_type:
             return object_type[0].decode('utf-8') if isinstance(object_type[0], bytes) else object_type[0]
         return 'generic/object'
-
-    def _find_references_with_admin_privileges(self, target_dn, lo):
-        """Find references to the target DN."""
-        referenced_by = []
-
-        escaped_dn = ldap.filter.escape_filter_chars(target_dn)
-
-        dn_attributes = [
-            'member', 'uniqueMember', 'memberOf',
-            'manager', 'secretary', 'owner',
-            'seeAlso', 'roleOccupant',
-            'univentionMemberOf', 'univentionGroupMembership',
-        ]
-
-        for attr in dn_attributes:
-            try:
-                search_filter = f"({attr}={escaped_dn})"
-                results = lo.search(
-                    base=lo.base,
-                    scope='subtree',
-                    filter=search_filter,
-                    attr=[],
-                    unique=False,
-                    required=False,
-                )
-
-                for dn, attrs in results:
-                    if dn != target_dn:
-                        reference_info = {
-                            'dn': dn,
-                            'module': self._determine_object_type(attrs),
-                            'property': attr,
-                            'ldap_attribute': attr,
-                            'timestamp': int(time.time()),
-                        }
-                        referenced_by.append(reference_info)
-
-            except ldap.LDAPError as e:
-                univention.debug.debug(
-                    univention.debug.LISTENER,
-                    univention.debug.WARNING,
-                    f"recyclebin listener: Error finding references for {target_dn}: {e}",
-                )
-                continue
-
-        return referenced_by
 
     def _find_user_group_memberships(self, user_dn, lo):
         """Find group memberships for a user."""
@@ -453,8 +414,8 @@ class RecycleBinListener(ListenerModuleHandler):
             syslog.syslog(syslog.LOG_WARNING, f"RECYCLEBIN: Error finding group memberships for {user_dn}: {e}")
             return []
 
-    def _get_recyclebin_policy_settings(self, original_dn, original_type, old_attrs=None):
-        """Get recyclebin policy settings for retention time."""
+    def _get_recyclebin_retention_days(self, original_dn, original_type, old_attrs=None):
+        """Get retention time in days from recyclebin policy, or None if no policy applies."""
         try:
             main_lo, _ = univention.admin.uldap.getAdminConnection()
 
@@ -547,15 +508,15 @@ class RecycleBinListener(ListenerModuleHandler):
                 f"recyclebin listener: Error retrieving policy settings: {e}",
             )
 
-        # Final fallback: 180 days
+        # No recyclebin policy found - do not create deleted object
         univention.debug.debug(
             univention.debug.LISTENER,
             univention.debug.INFO,
-            f"recyclebin listener: Using fallback retention time of 180 days for {original_type}",
+            f"recyclebin listener: No recyclebin policy found for {original_type} - object will not be moved to recyclebin",
         )
-        return 180
+        return None
 
-    def _create_recyclebin_entry(self, lo, original_dn, original_attrs, original_type, referenced_by, group_memberships=None):
+    def _create_recyclebin_entry(self, lo, original_dn, original_attrs, original_type, group_memberships=None):
         """Create recyclebin entry for deleted object."""
         object_id = ldap.dn.dn2str(ldap.dn.str2dn(original_dn))
         escaped_object_id = ldap.dn.escape_dn_chars(object_id)
@@ -565,7 +526,12 @@ class RecycleBinListener(ListenerModuleHandler):
         now = datetime.datetime.now(datetime.UTC)
         deletion_time = now.strftime('%Y%m%d%H%M%SZ')
 
-        retention_days = self._get_recyclebin_policy_settings(original_dn, original_type, original_attrs)
+        retention_days = self._get_recyclebin_retention_days(original_dn, original_type, original_attrs)
+
+        if retention_days is None:
+            syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN: No recyclebin policy found for {original_type} - skipping recyclebin creation for {original_dn}")
+            return False
+
         delete_at = now + datetime.timedelta(days=retention_days)
         delete_at_time = delete_at.strftime('%Y%m%d%H%M%SZ')
 
@@ -598,11 +564,6 @@ class RecycleBinListener(ListenerModuleHandler):
                     ldap_attrs.append((prefixed_attr, values))
                 else:
                     ldap_attrs.append((attr, values))
-
-        if referenced_by:
-            for ref_info in referenced_by:
-                reference_json = json.dumps(ref_info).encode('utf-8')
-                ldap_attrs.append(('referencedBy', [reference_json]))
 
         if group_memberships:
             group_memberships_encoded = [group_dn.encode('utf-8') for group_dn in group_memberships]
