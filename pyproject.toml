@@ -29,6 +29,22 @@ extend-exclude = [
 [tool.ruff.lint]
 preview = true
 external = ["W601", "F812", "E403", "E704"]
+logger-objects = [
+    "univention.admin.log.log",
+    "univention.admin.log.log_ldap",
+    "univention.management.console.log.CORE",
+    "univention.management.console.log.NETWORK",
+    "univention.management.console.log.CRYPT",
+    "univention.management.console.log.UDM",
+    "univention.management.console.log.MODULE",
+    "univention.management.console.log.AUTH",
+    "univention.management.console.log.PARSER",
+    "univention.management.console.log.LOCALE",
+    "univention.management.console.log.ACL",
+    "univention.management.console.log.RESOURCES",
+    "univention.management.console.log.PROTOCOL",
+    "univention.portal.log.get_logger",
+]
 
 select = ["ALL"]
 ignore = [
