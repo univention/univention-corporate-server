@@ -1,0 +1,16 @@
+product: ucs
+release: "5.2"
+version: [2, 3]
+scope: ucs_5.2-0-errata5.2-3
+src: rubygems
+fix: 3.3.15-2+deb12u1
+desc: |
+ This update addresses the following issues:
+ * CVSS score 5.3 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2023-28755)
+ * CVSS score 3.2 (CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:L/I:N/A:N).
+   (CVE-2025-27221)
+bug: [58605]
+cve:
+- CVE-2025-27221
+- CVE-2023-28755
