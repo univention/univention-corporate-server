@@ -1037,7 +1037,7 @@ class ucs:
                 ucs_key = attributes.ucs_attribute
                 if ucs_key:
                     value = object['attributes'][attributes.ldap_attribute]
-                    log.debug(self.context_log(property_type, object, f'set attribute {attributes.con_attribute!r} as ucs property {ucs_key!r}: value={value!r}', to_ucs=True))
+                    log.debug(self.context_log(property_type, object, 'set attribute %r as ucs property %r: value=%r', to_ucs=True), attributes.con_attribute, ucs_key, value)
 
                     if isinstance(value, list) and len(value) == 1:
                         value = value[0]
