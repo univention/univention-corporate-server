@@ -1,0 +1,19 @@
+product: ucs
+release: "5.2"
+version: [1, 2, 3]
+scope: ucs_5.2-0-errata5.2-3
+src: krb5
+fix: 1.20.1-2+deb12u4
+desc: |
+ This update addresses the following issues:
+ * CVSS score 6.5 (CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2025-24528)
+ * CVSS score 5.9 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N).
+   (CVE-2025-3576)
+ * CVSS score 5.5 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2024-26462)
+bug: [58612]
+cve:
+- CVE-2024-26462
+- CVE-2025-24528
+- CVE-2025-3576
