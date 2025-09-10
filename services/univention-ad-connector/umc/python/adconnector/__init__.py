@@ -11,7 +11,6 @@ import os.path
 import re
 import subprocess
 import time
-import traceback
 from contextlib import contextmanager
 
 import ldap.dn
@@ -64,7 +63,7 @@ def test_connection():
     rdn = explode_rdn(base)[0]
     p1, _stdout, stderr = adsearch(rdn)
     if stderr:
-        MODULE.warn(stderr)
+        MODULE.warning(stderr)
     if p1.returncode != 0:
         raise ADNotAvailable()
     return True
@@ -85,7 +84,7 @@ def guess_ad_domain_language():
     '''
     _p1, stdout, stderr = adsearch('sAMAccountName=Domänen-Admins')
     if stderr:
-        MODULE.warn('adsearch "sAMAccountName=Domänen-Admins" stderr: %s' % stderr)
+        MODULE.warning('adsearch "sAMAccountName=Domänen-Admins" stderr: %s', stderr)
     for line in stdout.split('\n'):
         line = line.lower().strip()
         if line == 'samaccountname: domänen-admins':
@@ -110,7 +109,7 @@ def get_ad_binddn_from_name(base, server, username, password):
         if res.count == 1:
             binddn = res.msgs[0].get('dn', idx=0).extended_str()
     except ldb.LdbError as ex:
-        MODULE.warn('get_dn_from_name() could not get binddn for user %s: %s' % (username, ex))
+        MODULE.warning('get_dn_from_name() could not get binddn for user %s: %s', username, ex)
     return binddn
 
 
@@ -197,7 +196,7 @@ class Instance(Base, ProgressMixin):
             if val:
                 if isinstance(val, bool):
                     val = 'yes' if val else 'no'
-                MODULE.info('Setting %s=%s' % (ucrkey, val))
+                MODULE.info('Setting %s=%s', ucrkey, val)
                 univention.config_registry.handler_set(['%s=%s' % (ucrkey, val)])
 
         ucr.load()
@@ -217,7 +216,7 @@ class Instance(Base, ProgressMixin):
                 os.chown(fn, 0, 0)
                 univention.config_registry.handler_set(['connector/ad/ldap/bindpw=%s' % fn])
             except Exception as e:
-                MODULE.info('Saving bind password failed (filename=%(fn)s ; exception=%(exception)s)' % {'fn': fn, 'exception': str(e.__class__)})
+                MODULE.info('Saving bind password failed (filename=%s ; exception=%s)', fn, e.__class__)
                 self.finished(request.id, {'success': False, 'message': _('Saving bind password failed (filename=%(fn)s ; exception=%(exception)s)') % {'fn': fn, 'exception': str(e.__class__)}})
                 return
 
@@ -234,7 +233,7 @@ class Instance(Base, ProgressMixin):
             MODULE.process('Enabling SSL...')
             admember.enable_ssl()
         else:
-            MODULE.warn('SSL is not supported')
+            MODULE.warning('SSL is not supported')
             admember.disable_ssl()
 
         # UCR variables are set, and now we can try to guess the language of
@@ -249,12 +248,12 @@ class Instance(Base, ProgressMixin):
 
         def _return(request, status):
             if not os.path.exists(ssldir):
-                MODULE.error('Creation of certificate failed (%s)' % ssldir)
+                MODULE.error('Creation of certificate failed (%s)', ssldir)
                 self.finished(request.id, {'success': False, 'message': _('Creation of certificate failed (%s)') % ssldir})
             self.finished(request.id, {'success': True, 'message': _('Active Directory connection settings have been saved and a new certificate for the Active Directory server has been created.')})
 
         cmd = ['/usr/sbin/univention-certificate', 'new', '-name', request.options['LDAP_Host']]
-        MODULE.info('Creating new SSL certificate: %s' % cmd)
+        MODULE.info('Creating new SSL certificate: %s', cmd)
         proc = tornado.process.Subprocess(cmd, stdout=subprocess.PIPE)
         proc.set_exit_callback(functools.partial(_return, request))
 
@@ -265,7 +264,7 @@ class Instance(Base, ProgressMixin):
             success = True
             if status == 0:
                 message = _('Certificate has been uploaded successfully.')
-                MODULE.info('Certificate has been uploaded successfully. status=%s\nSTDOUT:\n%s' % (status, bufstdout))
+                MODULE.info('Certificate has been uploaded successfully. status=%s\nSTDOUT:\n%s', status, bufstdout)
                 try:
                     self._enable_ssl_and_test_connection(fn)
                 except UMC_Error:
@@ -274,7 +273,7 @@ class Instance(Base, ProgressMixin):
             else:
                 success = False
                 message = _('Certificate upload or conversion failed.')
-                MODULE.process('Certificate upload or conversion failed. status=%s\nSTDOUT:\n%s' % (status, bufstdout))
+                MODULE.process('Certificate upload or conversion failed. status=%s\nSTDOUT:\n%s', status, bufstdout)
 
             self.finished(request.id, [{'success': success, 'message': message}])
 
@@ -283,7 +282,7 @@ class Instance(Base, ProgressMixin):
         fn = '/etc/univention/connector/ad/ad_cert_%s.pem' % now
         cmd = ['/usr/bin/openssl', 'x509', '-inform', 'der', '-outform', 'pem', '-in', upload, '-out', fn]
 
-        MODULE.info('Converting certificate into correct format: %s' % cmd)
+        MODULE.info('Converting certificate into correct format: %s', cmd)
         proc = tornado.process.Subprocess(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         proc.set_exit_callback(functools.partial(_return, proc.stdout, request, fn))
 
@@ -294,7 +293,7 @@ class Instance(Base, ProgressMixin):
     def service(self, action):
         self.__update_status()
 
-        MODULE.info('State: action=%s  status_running=%s' % (action, self.status_running))
+        MODULE.info('State: action=%s  status_running=%s', action, self.status_running)
 
         message = None
         if self.status_running and action == 'start':
@@ -310,7 +309,7 @@ class Instance(Base, ProgressMixin):
             success = not result
             if result:
                 message = _('Switching running state of Active Directory Connector failed.')
-                MODULE.info('Switching running state of Active Directory Connector failed. exitcode=%s' % (result,))
+                MODULE.info('Switching running state of Active Directory Connector failed. exitcode=%s', result)
             else:
                 if action == 'start':
                     message = _('Active Directory connection service has been started.')
@@ -362,19 +361,19 @@ class Instance(Base, ProgressMixin):
             admember.check_connection(ad_domain_info, username, password)
             admember.check_ad_account(ad_domain_info, username, password)
         except admember.invalidUCSServerRole as exc:  # check_server_role()
-            MODULE.warn('Failure: %s' % exc)
+            MODULE.warning('Failure: %s', exc)
             raise UMC_Error(_('The AD member mode can only be configured on a Primary Directory Node.'))
         except admember.failedADConnect as exc:  # lookup_adds_dc()
-            MODULE.warn('Failure: %s' % exc)
+            MODULE.warning('Failure: %s', exc)
             raise UMC_Error(_('Could not connect to AD Server %s. Please verify that the specified address is correct. (%s)') % (ad_server_address, 'check_domain: %s' % (exc,)))
         except admember.domainnameMismatch as exc:  # check_domain()
-            MODULE.warn('Failure: %s' % exc)
+            MODULE.warning('Failure: %s', exc)
             raise UMC_Error(_('The domain name of the AD Server (%(ad_domain)s) does not match the local UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % {'ad_domain': ad_domain_info.get("Domain"), 'ucs_domain': ucr['domainname']})
         except admember.connectionFailed as exc:  # check_connection()
-            MODULE.warn('Failure: %s' % exc)
+            MODULE.warning('Failure: %s', exc)
             raise UMC_Error(_('Could not connect to AD Server %s. Please verify that username and password are correct. (Details:\n%s)') % (ad_domain_info.get('DC DNS Name'), exc))
         except admember.notDomainAdminInAD as exc:  # check_ad_account()
-            MODULE.warn('Failure: %s' % exc)
+            MODULE.warning('Failure: %s', exc)
             raise UMC_Error(_('The given user is not member of the Domain Admins group in Active Directory. This is a requirement for the Active Directory domain join.'))
 
         # final info dict that is returned... replace spaces in the keys with '_'
@@ -411,7 +410,7 @@ class Instance(Base, ProgressMixin):
             if exc is not None:
                 exc_str = str(exc) or exc.__doc__  # if no message, take the doc string
                 exc_class_name = exc.__class__.__name__
-                MODULE.error('Join process failed [%s]: %s' % (exc_class_name, exc_str))
+                MODULE.error('Join process failed [%s]: %s', exc_class_name, exc_str)
 
             if msg:
                 MODULE.error(msg)
@@ -451,11 +450,11 @@ class Instance(Base, ProgressMixin):
             _nsteps = 35.0
 
             def _step_handler(step):
-                MODULE.process('Package manager progress: %.1f' % step)
+                MODULE.process('Package manager progress: %.1f', step)
                 progress.current = (step / 100.0) * _nsteps + _step_offset
 
             def _err_handler(err):
-                MODULE.warn(err)
+                MODULE.warning(err)
                 progress.warnings.append(err)
 
             success = admember.remove_install_univention_samba(info_handler=MODULE.process, error_handler=_err_handler, step_handler=_step_handler)
@@ -517,7 +516,7 @@ class Instance(Base, ProgressMixin):
         except Exception as exc:
             # catch all other errors that are unlikely to occur
             _err(exc)
-            MODULE.error('Traceback:\n%s' % traceback.format_exc())
+            MODULE.exception('Traceback')
 
         if not overall_success:
             _progress(100, _('Join has been finished with errors.'))
@@ -546,7 +545,7 @@ class Instance(Base, ProgressMixin):
                 if not success:
                     raise UMC_Error(_('Could not establish an encrypted connection. Either "%r" is not reachable or does not support encryption.') % server)
             else:
-                MODULE.warn('connector is not configured yet, cannot test connection')
+                MODULE.warning('connector is not configured yet, cannot test connection')
 
     @simple_response
     def enable_ssl(self):
