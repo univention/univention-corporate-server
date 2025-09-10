@@ -204,7 +204,7 @@ class Instance(Base):
         try:
             self.dbConnection = updb.open_database_connection(self.ucr, pkgdbu=True)
         except pgdb.InternalError as ex:
-            MODULE.error('Could not establish connection to the PostgreSQL server: %s' % (ex,))
+            MODULE.error('Could not establish connection to the PostgreSQL server: %s', ex)
             raise UMC_Error(_('Could not establish connection to the database.\n\n%s') % (_server_not_running_msg(),))
         else:
             self.cursor = self.dbConnection.cursor()
@@ -214,7 +214,7 @@ class Instance(Base):
         try:
             self.cursor.execute('SELECT TRUE')
         except pgdb.OperationalError as ex:
-            MODULE.error('Connection to the PostgreSQL server lost: %s' % (ex,))
+            MODULE.error('Connection to the PostgreSQL server lost: %s', ex)
             self.dbConnection = None
             try:
                 self.connect()

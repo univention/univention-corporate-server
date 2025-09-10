@@ -50,7 +50,7 @@ class Commands:
         there is output to parse that is restructured as UMC Dialog
         """
         if status != 0:
-            MODULE.warn('repquota failed with exit code: %s' % (status,))
+            MODULE.warning('repquota failed with exit code: %s', status)
         # general information
         devs = fstab.File()
         devs.find(spec=partition)
@@ -112,7 +112,7 @@ class Commands:
             fs = fstab.File('/etc/fstab')
             mt = fstab.File('/etc/mtab')
         except OSError as error:
-            MODULE.error('Could not open %s' % error.filename)
+            MODULE.error('Could not open %s', error.filename)
             raise UMC_Error(_('Could not open %s') % error.filename, 500)
 
         partition = fs.find(spec=partition_name)
