@@ -28,6 +28,8 @@ sys.path.append("/usr/lib/univention-directory-listener/system/")
 import replication  # noqa: E402
 
 
+logger = logging.getLogger(__name__)
+
 LDIF = '/var/lib/univention-directory-listener/master.ldif.gz'
 SCHEMA = '/var/lib/univention-ldap/schema.conf'
 OIDS = set(replication.BUILTIN_OIDS) | {'1.3.6.1.4.1.4203.666.11.1.4.2.12.1'}
@@ -36,7 +38,7 @@ OIDS = set(replication.BUILTIN_OIDS) | {'1.3.6.1.4.1.4203.666.11.1.4.2.12.1'}
 def update_schema(lo):
     # type: (uldap.access) -> None
     """update the ldap schema file"""
-    logging.info('Fetching Schema ...')
+    logger.info('Fetching Schema ...')
     res = lo.search(base="cn=Subschema", scope=ldap.SCOPE_BASE, filter='(objectclass=*)', attr=['+', '*'])
     replication.update_schema(res[0][1])
 
@@ -44,7 +46,7 @@ def update_schema(lo):
 def create_ldif_from_master(lo, ldif_file, base, page_size):
     # type: (uldap.access, str, str, int) -> None
     """create ldif file from everything from lo"""
-    logging.info('Fetching LDIF ...')
+    logger.info('Fetching LDIF ...')
     output = sys.stdout if ldif_file == "-" else io.StringIO()
 
     lc = SimplePagedResultsControl(
@@ -59,7 +61,7 @@ def create_ldif_from_master(lo, ldif_file, base, page_size):
         _rtype, rdata, _rmsgid, serverctrls = lo.lo.result3(msgid)
 
         for dn, data in rdata:
-            logging.debug('Processing %s ...', dn)
+            logger.debug('Processing %s ...', dn)
             for attr in replication.EXCLUDE_ATTRIBUTES:
                 data.pop(attr, None)
 
@@ -76,7 +78,7 @@ def create_ldif_from_master(lo, ldif_file, base, page_size):
             if not cookie:
                 break
         else:
-            logging.warning("Server ignores RFC 2696 Simple Paged Results Control.")
+            logger.warning("Server ignores RFC 2696 Simple Paged Results Control.")
             break
 
     if isinstance(output, io.StringIO):
@@ -97,7 +99,7 @@ def main():
     parser.add_argument("-v", "--verbose", action="count", help="Increase verbosity")
     opts = parser.parse_args()
 
-    logging.basicConfig(stream=sys.stderr, level=logging.DEBUG if opts.verbose else logging.WARNING)
+    logging.basicConfig(stream=sys.stderr, level=logging.DEBUG if opts.verbose else logging.WARNING, format='%(levelname)s: %(message)s')
 
     ucr = univention.config_registry.ConfigRegistry()
     ucr.load()
