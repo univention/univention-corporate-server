@@ -538,9 +538,7 @@ class ucs:
         udm_debug_level = self.configRegistry.get_int(f'{self.CONFIGBASENAME}/debug/udm/level', ud.WARN)
         structured = self.configRegistry.is_true(f'{self.CONFIGBASENAME}/debug/structured-logging', False)
         univention.logging.basicConfig(filename=self._logfile, univention_debug_level=self._debug_level, use_structured_logging=structured)
-        if udm_debug_level != self._debug_level:
-            for category in ('ADMIN', 'LDAP'):
-                logging.getLogger(category).set_ud_level(udm_debug_level)
+        logging.getLogger('ADMIN').set_ud_level(udm_debug_level)
 
     def close_debug(self):
         log.debug("close debug")
