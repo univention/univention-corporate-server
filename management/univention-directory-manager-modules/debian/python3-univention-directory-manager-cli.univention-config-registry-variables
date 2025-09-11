@@ -1,9 +1,9 @@
 [directory/manager/cmd/debug/level]
-Description[de]=Diese Variable konfiguriert den Detailgrad der Logausgaben in /var/log/univention/directory-manager-cmd.log. Mögliche Werte: 0-4 (0: nur Fehlermeldungen bis 4: alle Debugausgaben).
-Description[en]=This variable configures the verbosity of log messages in /var/log/univention/directory-manager-cmd.log. Possible values: 0-4 (0: only error messages to 4: all debug statements).
+Description[de]=Diese Variable konfiguriert den Detailgrad der Logausgaben in /var/log/univention/directory-manager-cmd.log. Mögliche Werte: 0-5 (0: nur Fehlermeldungen bis 5: alle Debugausgaben).
+Description[en]=This variable configures the verbosity of log messages in /var/log/univention/directory-manager-cmd.log. Possible values: 0-5 (0: only error messages to 5: all debug statements).
 Type=int
 Min=0
-Max=4
+Max=5
 Categories=management-udm
 
 [directory/manager/cmd/timeout]

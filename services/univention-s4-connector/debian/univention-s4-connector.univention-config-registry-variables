@@ -43,10 +43,10 @@ Categories=service-s4con
 
 [connector/debug/level]
 Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector-s4.log. Mögliche Werte sind 0-4.
-Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector-s4.log. Possible values are 0-4.
+Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector-s5.log. Possible values are 0-5.
 Type=int
 Min=0
-Max=4
+Max=5
 Default=2
 Categories=service-s4con
 
@@ -57,11 +57,11 @@ Type=int
 Categories=service-s4con
 
 [connector/debug/udm/level]
-Description[de]=Debug-Level für UDM-Operationen, protokolliert in /var/log/univention/connector-s4.log. Mögliche Werte sind 0-4.
-Description[en]=Specifies the debug level for UDM operations to be written to /var/log/univention/connector-s4.log. Possible values are 0-4.
+Description[de]=Debug-Level für UDM-Operationen, protokolliert in /var/log/univention/connector-s5.log. Mögliche Werte sind 0-5.
+Description[en]=Specifies the debug level for UDM operations to be written to /var/log/univention/connector-s5.log. Possible values are 0-5.
 Type=int
 Min=0
-Max=4
+Max=5
 Default=1
 Categories=service-s4con
 

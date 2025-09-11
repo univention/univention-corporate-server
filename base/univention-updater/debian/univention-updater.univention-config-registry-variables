@@ -59,11 +59,11 @@ Type=str
 Categories=service-software-management
 
 [update/debug/level]
-Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention-updater.log. Mögliche Werte sind 0-4.
-Description[en]=Specifies the amount of debug information to be written to /var/log/univention/univention-updater.log. Possible values are 0-4.
+Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention-updater.log. Mögliche Werte sind 0-5.
+Description[en]=Specifies the amount of debug information to be written to /var/log/univention/univention-updater.log. Possible values are 0-5.
 Type=int
 Min=0
-Max=4
+Max=5
 Categories=service-software-management
 Default=2
 
