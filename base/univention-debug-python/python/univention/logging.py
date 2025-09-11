@@ -446,14 +446,19 @@ class Logger(logging.Logger):
 class Structured:
     """Wrapper for standard logging to simplify specifying structured data."""
 
-    __slots__ = ('__log',)
+    __slots__ = ('__bound_extra', '__log')
 
-    def __init__(self, log):
+    def __init__(self, log, bound_extra=None):
         assert isinstance(log, logging.Logger)
         self.__log = log
+        self.__bound_extra = bound_extra or {}
 
     def getChild(self, name):
-        return Structured(self.__log.getChild(name))
+        return Structured(self.__log.getChild(name), self.__bound_extra)
+
+    def bind(self, **extra):
+        merged = {**self.__bound_extra, **extra}
+        return Structured(self.__log, merged)
 
     def trace(_self, _message, *_args, **_kwargs):
         _self.log(logging.TRACE, _message, *_args, **_kwargs)
@@ -479,17 +484,34 @@ class Structured:
     def exception(_self, _message, *_args, **_kwargs):
         _self._log(_self.__log.exception, _message, *_args, **_kwargs)
 
-    def _log(_self, /, _func, _msg, *args, exc_info=None, stack_info=False, stacklevel=1, **extra):
-        return _func(_msg, *args, exc_info=exc_info, extra=extra, stack_info=stack_info, stacklevel=stacklevel + 2)
+    def _log(_self, _func, _msg, *args, exc_info=None, stack_info=False, stacklevel=1, **extra):
+        merged = {**_self.__bound_extra, **extra}
+        return _func(
+            _msg,
+            *args,
+            exc_info=exc_info,
+            extra=merged,
+            stack_info=stack_info,
+            stacklevel=stacklevel + 2,
+        )
 
-    def log(_self, /, _level, _msg, *args, exc_info=None, stack_info=False, stacklevel=1, **extra):
-        return _self.__log.log(_level, _msg, *args, exc_info=exc_info, extra=extra, stack_info=stack_info, stacklevel=stacklevel + 2)
+    def log(_self, _level, _msg, *args, exc_info=None, stack_info=False, stacklevel=1, **extra):
+        merged = {**_self.__bound_extra, **extra}
+        return _self.__log.log(
+            _level,
+            _msg,
+            *args,
+            exc_info=exc_info,
+            extra=merged,
+            stack_info=stack_info,
+            stacklevel=stacklevel + 2,
+        )
 
     def __getattr__(self, name):
         return getattr(self.__log, name)
 
     def __setattr__(self, name, value):  # pragma: no cover
-        if name == '_Structured__log' or name in self.__slots__:
+        if name.removeprefix('_Structured') in self.__slots__:
             return super().__setattr__(name, value)
         setattr(self.__log, name, value)
 
