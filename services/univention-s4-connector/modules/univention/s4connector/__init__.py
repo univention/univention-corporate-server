@@ -702,9 +702,9 @@ class ucs:
             if entryUUID:
                 if self.was_entryUUID_deleted(entryUUID):
                     if self._get_entryUUID(dn) == entryUUID:
-                        log.info("__sync_file_from_ucs: Object with entryUUID %s has been removed before but became visible again.", entryUUID)
+                        log.process("__sync_file_from_ucs: Object with entryUUID %s has been removed before but became visible again.", entryUUID)
                     else:
-                        log.info("__sync_file_from_ucs: Object with entryUUID %s has been removed before. Don't re-create.", entryUUID)
+                        log.process("__sync_file_from_ucs: Object with entryUUID %s has been removed before. Don't re-create.", entryUUID)
                         return True
             else:
                 log.error("__sync_file_from_ucs: Object without entryUUID: %s", dn)
@@ -847,7 +847,7 @@ class ucs:
             if not module:
                 module = self.modules[property_type]  # default, determined by mapping filter
                 log.error("get_ucs_object: could not identify UDM object type: %s", searchdn)
-                log.info("get_ucs_object: using default", module=module.module)
+                log.process("get_ucs_object: using default", module=module.module)
 
             ucs_object = univention.admin.objects.get(module, co=None, lo=self.lo, position='', dn=searchdn)
             log.debug("get_ucs_object: object found: %s", searchdn)
@@ -910,7 +910,7 @@ class ucs:
 
         if rejected:
             for filename, dn in rejected:
-                log.info('sync UCS > AD: Resync rejected file: %s', filename)
+                log.process('sync UCS > AD: Resync rejected file: %s', filename)
                 try:
                     if self.__sync_file_from_ucs(filename, append_error=' rejected'):
                         try:
@@ -1136,7 +1136,7 @@ class ucs:
 
         entryUUID = self._get_entryUUID(object['dn'])
         if objectGUID and self.was_objectGUID_deleted_by_ucs(objectGUID):
-            log.info("add_in_ucs: object %s already deleted in UCS, ignoring create", object['dn'])
+            log.process("add_in_ucs: object %s already deleted in UCS, ignoring create", object['dn'])
             return True
 
         # reload extended attributes  # FIXME: maybe not necessary
@@ -1254,7 +1254,7 @@ class ucs:
     def delete_in_ucs(self, property_type, object, module, position):
         """Removes an AD object in UCS-LDAP"""
         if self.property[property_type].disable_delete_in_ucs:
-            log.info("Delete of %s was disabled in mapping", object['dn'])
+            log.process("Delete of %s was disabled in mapping", object['dn'])
             return True
 
         objectGUID = object['attributes'].get('objectGUID', [None])[0]  # to compensate for __object_from_element
@@ -1263,7 +1263,7 @@ class ucs:
         entryUUID = self._get_entryUUID(object['dn'])
 
         if objectGUID and self.was_objectGUID_deleted_by_ucs(objectGUID):
-            log.info("delete_in_ucs: object %s already deleted in UCS, ignoring delete", object['dn'])
+            log.process("delete_in_ucs: object %s already deleted in UCS, ignoring delete", object['dn'])
             return True
 
         if property_type == 'windowscomputer':
@@ -1275,11 +1275,11 @@ class ucs:
             try:
                 result = self.search_ucs(base=object['dn'], scope='base', attr=['objectClass'], unique=True)
             except univention.admin.uexceptions.noObject:
-                log.info("The object was not found in UCS: %s", object['dn'])
+                log.process("The object was not found in UCS: %s", object['dn'])
                 return True
 
             if b'univentionDomainController' in result[0][1].get('objectClass'):
-                log.info("The windows computer %s is a Directory Node in OpenLDAP. The deletion will be skipped.", object['dn'])
+                log.process("The windows computer %s is a Directory Node in OpenLDAP. The deletion will be skipped.", object['dn'])
                 return True
 
         try:
@@ -1361,13 +1361,13 @@ class ucs:
             object['modtype'] = 'modify'
         if not old_object and object['modtype'] == 'modify':
             if self.was_objectGUID_added_by_ucs(guid):
-                log.info(self.context_log(property_type, object, 'sync ignored: does not exist in UCS but has already been added in the past'))
+                log.process(self.context_log(property_type, object, 'sync ignored: does not exist in UCS but has already been added in the past'))
                 return True
             object['modtype'] = 'add'
         if not old_object and object['modtype'] == 'move':
             object['modtype'] = 'add'
 
-        log.info(self.context_log(property_type, object))
+        log.process(self.context_log(property_type, object))
 
         if object['modtype'] in ('delete', 'move'):
             try:
@@ -1397,7 +1397,7 @@ class ucs:
             if uuid:
                 uuid = uuid[0].decode('ASCII')
                 if self.lockingdb.is_ucs_locked(uuid):
-                    log.info("Unable to sync %r (UUID: %r). The object is currently locked.", old_object.dn, uuid)
+                    log.process("Unable to sync %r (UUID: %r). The object is currently locked.", old_object.dn, uuid)
                     return False
 
         try:
@@ -1437,7 +1437,7 @@ class ucs:
                     self.s4cache.add_entry(guid, original_object.get('attributes'))
                 if object['modtype'] == 'delete':
                     if not old_object:
-                        log.info(self.context_log(property_type, object, "ignore, object to delete doesn't exists"))
+                        log.process(self.context_log(property_type, object, "ignore, object to delete doesn't exists"))
                         result = True
                     else:
                         result = self.delete_in_ucs(property_type, object, module, position)
