@@ -400,7 +400,7 @@ class access:
         try:
             return self.lo.bind_oauthbearer(authzid, bindpw)
         except (ldap.INVALID_CREDENTIALS, ldap.UNWILLING_TO_PERFORM) as exc:
-            log.debug('OAUTHBEARER authentication failed: %r', exc)
+            log.debug('OAUTHBEARER authentication failed', error=repr(exc))
             raise univention.admin.uexceptions.authFail(_('Authentication failed'))
         self.__require_licence()
 

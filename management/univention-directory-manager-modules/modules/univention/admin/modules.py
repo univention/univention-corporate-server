@@ -10,7 +10,6 @@ import copy
 import importlib
 import locale
 import os
-import traceback
 import warnings
 from importlib import reload as reload_module
 from typing import TYPE_CHECKING, Any, Protocol, overload
@@ -109,12 +108,12 @@ def update() -> None:
             if not file.endswith('.py') or file.startswith('__'):
                 continue
             package = os.path.join(dir, file)[len(root) + 1:-len('.py')]
-            log.debug('admin.modules.update: importing "%s"', package)
+            log.debug('importing module', module=package)
             modulepackage = '.'.join(package.split(os.path.sep))
             m: Any = importlib.import_module('univention.admin.handlers.%s' % (modulepackage,))
             m.initialized = False
             if not hasattr(m, 'module'):
-                log.error('admin.modules.update: attribute "module" is missing in module %r', modulepackage)
+                log.error('importing module: attribute "module" is missing', module=modulepackage)
                 continue
             _modules[m.module] = m
             if isContainer(m):
@@ -184,7 +183,7 @@ def init(lo: univention.admin.uldap.access, position: univention.admin.uldap.pos
     :param force_reload: With `True` force Python to reload the module from the file system.
     """
     if isinstance(lo, univention.uldap.access):
-        log.error('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap! %s', ''.join(traceback.format_stack()))
+        log.error('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap!', stack_info=True)
         warnings.warn('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap!', DeprecationWarning, stacklevel=3)
         if configRegistry.is_true('directory/manager/type-checking/strict'):
             raise TypeError('Expect univention.admin.uldap.access!')
@@ -201,7 +200,7 @@ def init(lo: univention.admin.uldap.access, position: univention.admin.uldap.pos
     # reset property descriptions to defaults if possible
     if hasattr(module, 'default_property_descriptions'):
         module.property_descriptions = copy.deepcopy(module.default_property_descriptions)
-        # log.debug('modules_init: reset default descriptions')
+        # log.debug('initialize module: reset default descriptions')
 
     # overwrite property descriptions
     univention.admin.ucr_overwrite_properties(module, lo)
@@ -224,7 +223,7 @@ def init(lo: univention.admin.uldap.access, position: univention.admin.uldap.pos
 
     # get defaults from template
     if template_object:
-        log.debug('modules_init: got template object %s', template_object.dn)
+        log.debug('initialize module with template', template=template_object.dn)
         template_object.open()
 
         # add template defaults
@@ -236,9 +235,7 @@ def init(lo: univention.admin.uldap.access, position: univention.admin.uldap.pos
             elif key not in {'name', 'description', 'univentionObjectIdentifier'}:  # these keys are part of the template itself
                 module.property_descriptions[key].base_default = copy.copy(tmpl)
                 module.property_descriptions[key].templates.append(template_object)
-        log.debug('modules_init: module.property_description after template: %s', module.property_descriptions)
-    else:
-        log.debug('modules_init: got no template')
+        log.debug('initialize module: module.property_description after template', properties=module.property_descriptions)
 
     # re-build layout if there any overwrites defined
     univention.admin.ucr_overwrite_module_layout(module)
@@ -253,7 +250,7 @@ def update_extended_options(lo: univention.admin.uldap.access, module: UdmModule
     """Overwrite options defined via |LDAP|."""
     # get current language
     lang = locale.getlocale(locale.LC_MESSAGES)[0]
-    log.debug('modules update_extended_options: LANG=%s', lang)
+    log.trace('update extended_options', lang=lang)
 
     module_filter = filter_format('(univentionUDMOptionModule=%s)', [name(module)])
     if name(module) == 'settings/usertemplate':
@@ -352,19 +349,21 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
     overwriteTabList: list[str] = []
     module.extended_udm_attributes = []
 
-    module_filter = filter_format('(univentionUDMPropertyModule=%s)', [name(module)])
-    if name(module) == 'settings/usertemplate':
+    modname = name(module)
+    module_filter = filter_format('(univentionUDMPropertyModule=%s)', [modname])
+    if modname == 'settings/usertemplate':
         module_filter = '(|(univentionUDMPropertyModule=users/user)%s)' % (module_filter,)
 
     new_property_descriptions = copy.copy(module.property_descriptions)
     for _dn, attrs in lo.authz_connection.search(
         base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,),
     ):
+        _log = log.bind(dn=_dn, type=modname)
         # get CLI name
         pname = attrs['univentionUDMPropertyCLIName'][0].decode('UTF-8', 'replace')
         object_class = attrs.get('univentionUDMPropertyObjectClass', [])[0].decode('UTF-8', 'replace')
         ldap_attribute_name = attrs['univentionUDMPropertyLdapMapping'][0].decode('UTF-8', 'replace')
-        if name(module) == 'settings/usertemplate' and object_class == 'univentionMail' and b'settings/usertemplate' not in attrs.get('univentionUDMPropertyModule', []):
+        if modname == 'settings/usertemplate' and object_class == 'univentionMail' and b'settings/usertemplate' not in attrs.get('univentionUDMPropertyModule', []):
             continue  # since "mail" is a default option, creating a usertemplate with any mail attribute would raise Object class violation: object class 'univentionMail' requires attribute 'uid'
 
         # get syntax
@@ -390,7 +389,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
         try:
             mayChange = bool(int(attrs.get('univentionUDMPropertyValueMayChange', [b'0'])[0]))
         except ValueError:
-            log.error('univentionUDMPropertyValueMayChange non numeric- assuming mayChange=0', dn=_dn)
+            _log.error('univentionUDMPropertyValueMayChange non numeric- assuming mayChange=0')
             mayChange = False
 
         # prevent UMC default popup
@@ -408,7 +407,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
         try:
             doNotSearch = bool(int(attrs.get('univentionUDMPropertyDoNotSearch', [b'0'])[0]))
         except ValueError:
-            log.error('univentionUDMPropertyDoNotSearch non numeric - assuming doNotSearch=0', dn=_dn)
+            _log.error('univentionUDMPropertyDoNotSearch non numeric - assuming doNotSearch=0')
             doNotSearch = False
 
         # check if CA is multivalue property
@@ -434,7 +433,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
 
         # get current language
         lang = locale.getlocale(locale.LC_MESSAGES)[0]
-        log.trace('modules update_extended_attributes: LANG = %s', str(lang))
+        _log.trace('update extended_attributes', lang=str(lang))
 
         # get descriptions
         shortdesc = _get_translation(lang, attrs, 'univentionUDMPropertyTranslationShortDescription;entry-%s', 'univentionUDMPropertyShortDescription')
@@ -482,7 +481,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
             except TypeError:
                 groupPosition = 0
 
-            log.trace('update_extended_attributes: extended attribute (LDAP): %r', attrs)
+            _log.trace('update extended_attributes: extended attribute (LDAP)', attributes=attrs)
 
             # only one is possible ==> overwriteTab wins
             if overwriteTab and overwriteProp:
@@ -491,7 +490,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
             # add tab name to list if missing
             if tabname not in properties4tabs and not layoutDisabled:
                 properties4tabs[tabname] = []
-                log.trace('modules update_extended_attributes: custom fields init for tab %s', tabname)
+                _log.trace('update extended_attributes: custom fields init for tab', tab=tabname)
 
             # remember tab for purging if required
             if overwriteTab and tabname not in overwriteTabList and not layoutDisabled:
@@ -506,7 +505,7 @@ def update_extended_attributes(lo: univention.admin.uldap.access, module: UdmMod
                     if priority < 1:
                         priority = -1
                 except ValueError:
-                    log.warning('modules update_extended_attributes: custom field for tab %s: failed to convert tabNumber to int', tabname)
+                    _log.warning('modules update_extended_attributes: custom field for tab: failed to convert tabNumber to int', tab=tabname)
                     priority = -1
 
                 if priority == -1 and properties4tabs[tabname]:
@@ -655,15 +654,15 @@ def identify(dn: str, attr: dict[str, list[Any]], module_name: str = '', canonic
             if module_base is not None and not name.startswith(module_base):
                 continue
             if not hasattr(module, 'identify'):
-                log.debug('module %s does not provide identify', module)
+                log.warning('module does not provide identify', module=name)
                 continue
 
             if (not module_name or module_name == module.module) and module.identify(dn, attr):
                 res.append(module)
     if not res:
-        log.debug('object could not be identified')
+        log.debug('object could not be identified', dn=dn)
     for r in res:
-        log.debug('identify: found module %s on %s', r.module, dn)
+        log.trace('identifies object', type=r.module, dn=dn)
     return res
 
 

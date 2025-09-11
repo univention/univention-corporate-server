@@ -296,13 +296,13 @@ class PasswortHistoryPolicy:
             try:
                 self.pwhistoryLength = max(0, int(pwhistoryPolicy['length'] or 0))
             except ValueError:
-                log.warning('Corrupt Password history policy (history length): %r', pwhistoryPolicy.dn)
+                log.warning('Corrupt Password history policy (history length)', dn=pwhistoryPolicy.dn)
             try:
                 self.pwhistoryPasswordLength = max(0, int(pwhistoryPolicy['pwLength'] or 0))
             except ValueError:
-                log.warning('Corrupt Password history policy (password length): %r', pwhistoryPolicy.dn)
+                log.warning('Corrupt Password history policy (password length)', dn=pwhistoryPolicy.dn)
             self.pwhistoryPasswordCheck = (pwhistoryPolicy['pwQualityCheck'] or '').lower() in ['true', '1']
             try:
                 self.expiryInterval = max(0, int(pwhistoryPolicy['expiryInterval'] or 0))
             except ValueError:
-                log.warning('Corrupt Password history policy (expiry interval): %r', pwhistoryPolicy.dn)
+                log.warning('Corrupt Password history policy (expiry interval)', dn=pwhistoryPolicy.dn)

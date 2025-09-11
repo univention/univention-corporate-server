@@ -21,6 +21,8 @@ from univention.lib.misc import custom_username
 translation = univention.admin.localization.translation('univention/admin')
 _ = translation.translate
 
+log = log.getChild('LICENSE')
+
 _license = None
 
 LDAP_FILTER_normal_user_account = '(univentionObjectType=users/user)'
@@ -190,10 +192,10 @@ class License:
             self.__selected = True
 
     def isValidFor(self, module):
-        log.debug('LICENSE: check license for module %s, %r', module, self.types)
+        log.debug('check license for module %s, %r', module, self.types)
         if module in licenses.modules:
             mlics = licenses.modules[module]
-            log.debug('LICENSE: module license: %r', mlics)
+            log.debug('module license: %r', mlics)
             # empty list -> valid
             return mlics.valid(self.types)
         # unknown modules are always valid (e.g. customer modules)
@@ -357,10 +359,10 @@ class License:
                 if lic_account and self.__cmp_gt(int(real_account) - max(License.SYSACCOUNTS, self.sysAccountsFound), lic_account):
                     disable_add = 2
             if lic_desktop and real_desktop and self.__cmp_gt(real_desktop, lic_desktop):
-                log.debug('LICENSE: 3')
+                log.trace('Code 3')
                 disable_add = 3
             if lic_groupware and real_groupware and self.__cmp_gt(real_groupware, lic_groupware):
-                log.debug('LICENSE: 4')
+                log.trace('Code 4')
                 disable_add = 4
         elif self.version == '2':
             (
@@ -397,7 +399,7 @@ class License:
             self.sysAccountsFound = len(lo.authz_connection.searchDn(filter=str(filter)))
         except univention.admin.uexceptions.noObject:
             pass
-        log.debug('LICENSE: Univention sysAccountsFound: %d', self.sysAccountsFound)
+        log.debug('Univention sysAccountsFound: %d', self.sysAccountsFound)
 
     def __countObject(self, obj, lo):
         version = self.version
@@ -409,7 +411,7 @@ class License:
                 self.real[version][obj] = 0
             else:
                 self.real[version][obj] = len(result)
-            log.debug('LICENSE: Univention %s real %d', self.names[version][obj], self.real[version][obj])
+            log.debug('Univention %s real %d', self.names[version][obj], self.real[version][obj])
         else:
             self.real[version][obj] = 0
 
@@ -429,7 +431,7 @@ class License:
         try:
             value = univention.license.getValue(key)
             self.new_license = True
-            log.debug('LICENSE: Univention %r allowed %r', name, value)
+            log.debug('Univention %r allowed %r', name, value)
         except (KeyError, Exception):
             if self.searchResult:
                 value = self.searchResult[0][1].get(key, [default])
@@ -438,10 +440,10 @@ class License:
                     value = value[0]
                 self.new_license = True
             else:
-                log.debug('LICENSE: %r: %s', name, errormsg)
+                log.debug('%r: %s', name, errormsg)
                 value = default
 
-        log.debug('LICENSE: %r = %r', name, value)
+        log.debug('%r = %r', name, value)
         return value
 
     def __readLicense(self):

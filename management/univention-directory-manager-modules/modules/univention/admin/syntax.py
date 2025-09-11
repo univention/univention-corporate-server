@@ -221,7 +221,7 @@ class ISyntax:
     def get_widget_options(self, udm_property):
         widget_name = self.get_widget(udm_property)
         if widget_name is None:
-            log.debug('Could not convert UDM syntax %s', self)
+            log.debug('Could not map UDM syntax to widget', syntax=repr(self))
             return {}
 
         descr = {'type': widget_name}
@@ -512,7 +512,7 @@ class complex(ISyntax):
 
         parsed = []
         for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
-            log.debug('syntax.py: subsyntax[%s]=%s, texts=%s', i, syn, text)
+            log.trace('parse complex syntax', subsyntax=f'[{i}]={syn}', value=text)
             if text is None and i + 1 < minn:
                 raise univention.admin.uexceptions.valueInvalidSyntax(_('Missing argument: %s > %s') % (self.name, desc))
             s: simple = syn() if inspect.isclass(syn) else syn  # type: ignore
@@ -780,7 +780,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
                 simple = True
             if not simple:
                 log.warning(
-                    'Syntax %s wants to get optimizations but may not. This is a Bug! We provide a fallback but the syntax will respond much slower than it could!', cls.name,
+                    'Syntax wants to get optimizations but may not. This is a Bug! We provide a fallback but the syntax will respond much slower than it could!', syntax=cls.name,
                 )
 
         def extract_key_label(syn, dn, info):

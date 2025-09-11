@@ -299,13 +299,13 @@ def unmapBase64(value: list[bytes] | tuple[bytes, ...] | bytes) -> list[str] | s
     if len(value) > 1:
         try:
             return [base64.b64encode(x).decode('ASCII') for x in value]
-        except Exception as e:
-            log.error('ERROR in unmapBase64: %s', e)
+        except Exception as exc:
+            log.error('failed unmapBase64', error=exc)
     else:
         try:
             return base64.b64encode(value[0]).decode('ASCII')
-        except Exception as e:
-            log.error('ERROR in unmapBase64: %s', e)
+        except Exception as exc:
+            log.error('failed unmapBase64', error=exc)
     return ''
 
 
@@ -331,13 +331,13 @@ def mapBase64(value: list[str] | str) -> list[bytes] | bytes:
     if isinstance(value, list):
         try:
             return [base64.b64decode(x) for x in value]
-        except Exception as e:
-            log.error('ERROR in mapBase64: %s', e)
+        except Exception as exc:
+            log.error('failed mapBase64', error=exc)
     else:
         try:
             return base64.b64decode(value)
-        except Exception as e:
-            log.error('ERROR in mapBase64: %s', e)
+        except Exception as exc:
+            log.error('failed mapBase64', error=exc)
     return ''
 
 
@@ -530,7 +530,7 @@ class mapping:
         errors = encoding_errors or errors
         value = self.mapValue(map_name, value, encoding_errors=errors)
         if isinstance(value, list | tuple):
-            log.warning('mapValueDecoded returns a list for %s. This is probably not wanted?', map_name)
+            log.warning('mapValueDecoded returned a list. This is probably not wanted?', property=map_name)  # TODO: debug via stack_info = True
             value = [val.decode(encoding, errors) for val in value]
         else:
             value = value.decode(encoding, errors)

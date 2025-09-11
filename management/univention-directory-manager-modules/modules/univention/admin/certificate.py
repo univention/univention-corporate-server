@@ -258,7 +258,7 @@ def load_certificate(user_certificate):
     except (X509.X509Error, AttributeError):
         return {}
 
-    log.debug('value=%s', values)
+    log.trace('certificate', value=values)
     return values
 
 
