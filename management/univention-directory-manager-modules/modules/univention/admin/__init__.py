@@ -85,7 +85,7 @@ def ucr_overwrite_properties(module: Any, lo: univention.admin.uldap.access) -> 
                         setattr(prop, attr, prop_val_type(new_prop_val))
                     log.trace('property overwrite: get property attribute: %s (type %s)', old_prop_val, prop_val_type)
         except Exception:
-            log.exception('ucr_overwrite_properties: failed to set property attribute:')
+            log.exception('property overwrite: failed to set property attribute')
             continue
 
 
@@ -447,7 +447,7 @@ def ucr_overwrite_module_layout(module: Any) -> None:
                     continue
                 if attr in ('__hidden') and configRegistry.is_true(var):
                     removed, layout = tab.remove(prop)
-                    log.debug('ucr_overwrite_module_layout: tried to hide property: %s (found=%s)', prop, removed)
+                    log.debug('layout overwrite: tried to hide property', property=prop, found=removed)
             new_layout.append(tab)
 
     module.layout = new_layout
