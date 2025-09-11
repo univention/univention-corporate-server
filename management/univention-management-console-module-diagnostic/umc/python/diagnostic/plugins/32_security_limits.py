@@ -46,7 +46,7 @@ def run(_umc_instance: Instance) -> None:
         return  # logfile does not exists
 
     max_open_files = ucr.get_int('samba/max_open_files', 32808)
-    MODULE.process("open files: %s , max open files: %s" % (counter, max_open_files))
+    MODULE.process("open files: %s , max open files: %s", counter, max_open_files)
     if counter and max_open_files < suggested_max_open_files:
         raise Critical(umc_modules=[{'module': 'ucr'}])
 

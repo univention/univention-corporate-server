@@ -50,11 +50,11 @@ class Instance(Base):
 
     def colors(self, request):
         """Returns a list of all existing colors."""
-        MODULE.info('MODULEID.colors: options: %r' % (request.options,))
+        MODULE.info('MODULEID.colors: options: %r', request.options)
         allColors = {x['color'] for x in Instance.entries}
         allColors = [{'id': x, 'label': x} for x in allColors]
         allColors.append({'id': 'None', 'label': _('All colors')})
-        MODULE.info('MODULEID.colors: result: %r' % (allColors,))
+        MODULE.info('MODULEID.colors: result: %r', allColors)
         self.finished(request.id, allColors)
 
     def query(self, request):
@@ -67,11 +67,11 @@ class Instance(Base):
 
         return: [ { 'id' : <unique identifier>, 'name' : <display name>, 'color' : <name of favorite color> }, ... ]
         """
-        MODULE.info('MODULEID.query: options: %r' % (request.options,))
+        MODULE.info('MODULEID.query: options: %r', request.options)
         color = request.options.get('color', 'None')
         pattern = request.options.get('name', '')
         result = [x for x in Instance.entries if (color in ('None', x['color'])) and x['name'].find(pattern) >= 0]
-        MODULE.info('MODULEID.query: results: %r' % (result,))
+        MODULE.info('MODULEID.query: results: %r', result)
         self.finished(request.id, result)
 
     @sanitize(StringSanitizer())
@@ -83,8 +83,8 @@ class Instance(Base):
 
         return: [ { 'id' : <unique identifier>, 'name' : <display name>, 'color' : <name of favorite color> }, ... ]
         """
-        MODULE.info('MODULEID.get: options: %r' % (request.options,))
+        MODULE.info('MODULEID.get: options: %r', request.options)
         ids = set(request.options)
         result = [x for x in Instance.entries if x['id'] in ids]
-        MODULE.info('MODULEID.get: results: %r' % (result,))
+        MODULE.info('MODULEID.get: results: %r', result)
         self.finished(request.id, result)

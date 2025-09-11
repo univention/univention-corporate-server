@@ -61,7 +61,7 @@ if IS_SELFSERVICE_MASTER:
         from univention.management.console.modules.udm.udm_ldap import UDM_Error, UDM_Module
         from univention.udm import UDM, NoObject
     except ImportError as exc:
-        MODULE.error('Could not load udm module: %s' % (exc,))
+        MODULE.error('Could not load udm module: %s', exc)
 
 
 def forward_to_master(func):
@@ -144,7 +144,7 @@ def prevent_denial_of_service(func):
             MODULE.debug("Rate limit check: Cannot determine remote Host from request object.")
 
         if client_host_str and client_host_str in self.trusted_hosts:
-            MODULE.debug("Rate limit bypassed for trusted host %s in trusted hosts %r" % (client_host_str, self.trusted_hosts))
+            MODULE.debug("Rate limit bypassed for trusted host %s in trusted hosts %r", client_host_str, self.trusted_hosts)
             return func(self, *args, **kwargs)
 
         # check total request limits
@@ -563,7 +563,7 @@ class Instance(Base):
 
         for attr in attributes:
             if attr in read_only_attributes:
-                MODULE.error('set_user_attributes(): attribute %s is read-only' % (attr,))
+                MODULE.error('set_user_attributes(): attribute %s is read-only', attr)
                 raise UMC_Error(_('The attribute %s is read-only.') % (attr,))
         user = self.usersmod.object(None, lo, po, dn)
         user.open()
@@ -679,7 +679,7 @@ class Instance(Base):
             new_user.create()
         except univention.admin.uexceptions.base as exc:
             password_complexity_message = self._get_password_complexity_message() if isinstance(exc, udm_errors.pwToShort | udm_errors.pwQuality) else ''
-            MODULE.error('create_self_registered_account(): could not create user: %s' % (exc,))
+            MODULE.error('create_self_registered_account(): could not create user: %s', exc)
             return {
                 'success': False,
                 'failType': 'CREATION_FAILED',
@@ -1155,10 +1155,10 @@ class Instance(Base):
         stdouterr = process.communicate()[0].decode('utf-8', 'replace')
 
         if stdouterr:
-            MODULE.process('samba-tool user setpassword: %s' % (stdouterr,))
+            MODULE.process('samba-tool user setpassword: %s', stdouterr)
 
         if process.returncode:
-            MODULE.error("admember_set_password(): failed to set password. Return code: %s" % (process.returncode,))
+            MODULE.error("admember_set_password(): failed to set password. Return code: %s", process.returncode)
             return False
         return True
 

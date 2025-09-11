@@ -31,8 +31,8 @@ def repositories() -> Iterator[str]:
 
 def test_resolve(url: str) -> bool:
     parsed = urlsplit(url if '//' in url else '//' + url)
-    MODULE.process("Trying to resolve address of repository server %s" % (parsed.hostname))
-    MODULE.process("Similar to running: host %s" % (parsed.hostname))
+    MODULE.process("Trying to resolve address of repository server %s", parsed.hostname)
+    MODULE.process("Similar to running: host %s", parsed.hostname)
 
     try:
         socket.getaddrinfo(parsed.hostname, parsed.scheme)

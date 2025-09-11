@@ -190,5 +190,5 @@ def dump_license():
         return data
     except Exception as e:
         # no udm, no ldap, malformed return value, whatever
-        MODULE.error('getting License from LDAP failed: %s' % e)
+        MODULE.error('getting License from LDAP failed: %s', e)
         return None

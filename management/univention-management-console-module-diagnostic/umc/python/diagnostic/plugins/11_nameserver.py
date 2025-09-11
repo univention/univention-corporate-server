@@ -38,8 +38,8 @@ def run(_umc_instance: Instance) -> None:
             if not ucr.get(nameserver):
                 continue
 
-            MODULE.process("Trying %s to resolve %s" % (ucr[nameserver], hostname))
-            MODULE.process("Similar to running: dig +short %s @%s" % (hostname, ucr[nameserver]))
+            MODULE.process("Trying %s to resolve %s", ucr[nameserver], hostname)
+            MODULE.process("Similar to running: dig +short %s @%s", hostname, ucr[nameserver])
             try:
                 query_dns_server(ucr[nameserver], hostname)
             except DNSException as exc:
@@ -52,7 +52,7 @@ def run(_umc_instance: Instance) -> None:
                 failed.append('\n'.join(msgs))
 
     if failed:
-        MODULE.error('%s%s' % (description % (len(failed),), '\n'.join(failed)))
+        MODULE.error('%s%s', description, len(failed), '\n'.join(failed))
         raise Warning('%s%s' % (description % (len(failed),), '\n'.join(failed)))
 
 
