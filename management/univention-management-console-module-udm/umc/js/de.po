@@ -2181,3 +2181,22 @@ msgstr "Benutzer"
 #: umc/js/udm/wizards/FirstPageWizard.js:238
 msgid "users"
 msgstr "Benutzer"
+
+#: umc/js/udm.js:803 umc/js/udm.js:1802
+msgid "Restore"
+msgstr "Wiederherstellen"
+
+#: umc/js/udm.js:804
+msgid "Restore deleted objects from recyclebin."
+msgstr "Objekte aus dem Recyclebin wiederherstellen."
+
+#: umc/js/udm.js:1785
+#, javascript-format
+msgid "Please confirm the restore of the deleted object:"
+msgid_plural "Please confirm the restore of the %d selected deleted objects:"
+msgstr[0] "Bitte bestätigen Sie das Wiederherstellen des ausgewählten Objekts:"
+msgstr[1] "Bitte bestätigen Sie das Wiederherstellen der %d ausgewählten Objekte:"
+
+#: umc/js/udm.js:1824
+msgid "The following object(s) could not be restored:"
+msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht wiederhergestellt werden:"

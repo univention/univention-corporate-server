@@ -373,6 +373,32 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
 
         self.finished(request.id, [{'success': True}])
 
+    @threaded
+    def restore(self, request):
+        """
+        Restore the given list of LDAP objects.
+
+        requests.options = [ { 'object' : <LDAP DN> }, ... ]
+
+        return: [ { '$dn$' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
+        """
+        result = []
+        for item in request.options:
+            ldap_dn = item.get('object')
+            options = item.get('options', {})  # noqa: F841
+            module = self.get_module(request.flavor, ldap_dn)
+            if module is None:
+                result.append({'$dn$': ldap_dn, 'success': False, 'details': _('LDAP object could not be identified')})
+                continue
+            if 'restore' not in module.operations:
+                result.append({'$dn$': ldap_dn, 'success': False, 'details': _('Object does not support restore operation')})
+            try:
+                module.restore(ldap_dn)
+                result.append({'$dn$': ldap_dn, 'success': True})
+            except (UDM_Error) as e:
+                result.append({'$dn$': ldap_dn, 'success': False, 'details': str(e)})
+        return result
+
     @multi_response(progress=[_('Moving %d object(s)'), _('%($dn$)s moved')])
     def move(self, iterator, object, options):
         for object, options in iterator:

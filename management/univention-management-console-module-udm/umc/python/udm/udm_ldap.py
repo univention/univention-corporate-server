@@ -575,6 +575,19 @@ class UDM_Module:
             MODULE.warn('Failed to move LDAP object %s: %s: %s' % (ldap_dn, e.__class__.__name__, str(e)))
             UDM_Error(e).reraise()
 
+    def restore(self, ldap_dn):
+        """Restores an LDAP object"""
+        ldap_connection, ldap_position = self.get_ldap_connection()
+        superordinate = udm_objects.get_superordinate(self.module, None, ldap_connection, ldap_dn)
+        obj = self.module.object(None, ldap_connection, ldap_position, dn=ldap_dn, superordinate=superordinate)
+        try:
+            obj.open()
+            MODULE.info('Restoring LDAP object %s' % ldap_dn)
+            obj.restore()
+        except udm_errors.base as e:
+            MODULE.warn('Failed to restore LDAP object %s: %s: %s' % (ldap_dn, e.__class__.__name__, str(e)))
+            UDM_Error(e).reraise()
+
     def remove(self, ldap_dn, cleanup=False, recursive=False):
         """Removes an LDAP object"""
         ldap_connection, ldap_position = self.get_ldap_connection()

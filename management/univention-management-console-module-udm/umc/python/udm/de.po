@@ -406,3 +406,7 @@ msgstr "https://docs.software-univention.de/handbuch-%s.html#networks:dns"
 #: umc/python/udm/udm_ldap.py:741
 msgid "manual"
 msgstr "handbuch"
+
+#: umc/python/udm/__init__.py:394
+msgid "Object does not support restore operation"
+msgstr "Objekt unterstützt die Restore-Operation nicht"

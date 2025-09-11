@@ -797,6 +797,20 @@ define([
 				})
 			}];
 
+			if ('recyclebin/deletedobject' === this.moduleFlavor ){
+				actions.push({
+					name: 'restore',
+					label: _('Restore'),
+					description: _('Restore deleted objects from recyclebin.'),
+					isStandardAction: true,
+					isMultiAction: true,
+					canExecute: lang.hitch(this, '_canRestore'),
+					callback: lang.hitch(this, function(ids, objects) {
+					        this.restoreObjects(objects);
+					})
+				})
+			}
+
 			if ('navigation' !== this.moduleFlavor && this._reports.length) {
 				actions.push({
 					name: 'report',
@@ -1290,6 +1304,10 @@ define([
 			return this._metaInfo.operations.indexOf('add') !== -1;
 		},
 
+		_canRestore: function(item) {
+			return item.$operations$.indexOf('restore') !== -1;
+		},
+
 		_canEdit: function(item) {
 			return item.$operations$.indexOf('edit') !== -1;
 		},
@@ -1754,6 +1772,69 @@ define([
 					this._grid.filter(vals);
 				}
 				this._grid.set('columns', columns);
+			}));
+		},
+
+		restoreObjects: function(objects) {
+			if (!objects.length) {
+				return;
+			}
+			var ids = array.map(objects, function(object) { return object.id || object.$dn$; });
+			var _msg = lang.hitch(this, function(n) {
+				return _.ngettext(
+					'Please confirm the restore of the deleted object:',
+					'Please confirm the restore of the %d selected deleted objects:', n);
+			})
+			var msg = _msg(objects.length);
+
+
+			array.forEach(objects, function(object) {
+				msg += lang.replace('<div>{0}</div>', [this.iconFormatter(object)]);
+			}, this);
+
+			// let user confirm deletion
+			dialog.confirm(msg, [{
+				name: 'cancel',
+				'default': true,
+				label: _('Cancel')
+			}, {
+				name: 'restore',
+				label: _('Restore')
+			}]).then(lang.hitch(this, function(response) {
+				if (response != 'restore') {
+					return;
+				}
+
+				// FIXME: add to module store
+				this.moduleStore.restore = function(object, options, handleErrors) {
+					return this._genericCmd('restore', {
+						object: object,
+						options: options || null
+					}, handleErrors);
+				}
+
+				// restore objects
+				var transaction = this.moduleStore.transaction();
+				array.forEach(ids, function(id) {
+					this.moduleStore.restore(id, null)
+				}, this);
+
+				// commit and error handling
+				this.standbyDuring(transaction.commit()).then(lang.hitch(this, function(data) {
+					var message = '<p>' + _('The following object(s) could not be restored:') + '</p><ul>';
+					var success = true;
+					array.forEach(data, function(result) {
+						if (!result.success) {
+							success = false;
+							message += lang.replace('<li>{0}: {1}</li>', [entities.encode(result.$dn$), entities.encode(result.details)]);
+						}
+					}, this);
+					message += '</ul>';
+					if (!success) {
+						dialog.alert(message);
+					}
+					this.resetPathAndReloadTreeAndFilter(ids);
+				}));
 			}));
 		},
 
