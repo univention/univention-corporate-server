@@ -460,8 +460,8 @@ class Structured:
         merged = {**self.__bound_extra, **extra}
         return Structured(self.__log, merged)
 
-    def trace(_self, _message, *_args, **_kwargs):
-        _self.log(logging.TRACE, _message, *_args, **_kwargs)
+    def trace(_self, _message, *_args, stacklevel=1, **_kwargs):
+        _self.log(logging.TRACE, _message, *_args, stacklevel=stacklevel + 1, **_kwargs)
 
     def debug(_self, _message, *_args, **_kwargs):
         _self._log(_self.__log.debug, _message, *_args, **_kwargs)
@@ -469,8 +469,8 @@ class Structured:
     def info(_self, _message, *_args, **_kwargs):
         _self._log(_self.__log.info, _message, *_args, **_kwargs)
 
-    def process(_self, _message, *_args, **_kwargs):
-        _self.log(logging.PROCESS, _message, *_args, **_kwargs)
+    def process(_self, _message, *_args, stacklevel=1, **_kwargs):
+        _self.log(logging.PROCESS, _message, *_args, stacklevel=stacklevel + 1, **_kwargs)
 
     def warning(_self, _message, *_args, **_kwargs):
         _self._log(_self.__log.warning, _message, *_args, **_kwargs)
@@ -504,7 +504,7 @@ class Structured:
             exc_info=exc_info,
             extra=merged,
             stack_info=stack_info,
-            stacklevel=stacklevel + 2,
+            stacklevel=stacklevel + 1,
         )
 
     def __getattr__(self, name):
