@@ -1,6 +1,6 @@
 product: ucs
 release: "5.2"
-version: [1, 2, 3]
+version: [2, 3]
 scope: ucs_5.2-0-errata5.2-3
 src: glib2.0
 fix: 2.74.6-2+deb12u7

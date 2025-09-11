@@ -1,6 +1,6 @@
 product: ucs
 release: "5.2"
-version: [1, 2, 3]
+version: [2, 3]
 scope: ucs_5.2-0-errata5.2-3
 src: perl
 fix: 5.36.0-7+deb12u3
