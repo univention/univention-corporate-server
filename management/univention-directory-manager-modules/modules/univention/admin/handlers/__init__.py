@@ -167,6 +167,7 @@ class simpleLdap:
         superordinate: Self | None = None,
         attributes: _Attributes | None = None,
     ) -> None:
+        self.log = None
         self._exists = False
         self.co = None
         if isinstance(lo, univention.admin.uldap.access):
@@ -183,6 +184,7 @@ class simpleLdap:
         self.dn: str | None = dn.decode('utf-8') if isinstance(dn, bytes) else dn
         self.old_dn: str | None = self.dn
         self.superordinate: simpleLdap | None = superordinate
+        self._set_log()
 
         self.set_defaults = not self.dn  # this object is newly created and so we can use the default values
 
@@ -301,6 +303,9 @@ class simpleLdap:
                 #   blocklists can bypass the blocklist check with udm-cli
                 self._lo_machine_primary = self.lo
         return self._lo_machine_primary
+
+    def _set_log(self):
+        self.log = log.getChild('object').bind(type=self.module, dn=self.dn)
 
     @property
     def descriptions(self) -> dict[str, univention.admin.property]:
@@ -777,6 +782,7 @@ class simpleLdap:
         assert self.dn is not None
         newdn = n(newdn)
         self.dn = n(self.dn)
+        self._set_log()
 
         goaldn = self.lo.parentDn(newdn)
         goalmodule = univention.admin.modules.identifyOne(goaldn, self.lo.authz_connection.get(goaldn))
@@ -792,6 +798,7 @@ class simpleLdap:
                 temporary_ou = self._create_temporary_ou()
                 temp_dn = dn2str(str2dn(newdn)[:1] + str2dn(temporary_ou) + str2dn(self.lo.base))
                 self.dn = n(self.move(temp_dn, ignore_license, temporary_ou))
+                self._set_log()
 
         if newdn.lower().endswith(self.dn.lower()):
             raise univention.admin.uexceptions.ldapError(_("Moving into one's own sub container not allowed."))
@@ -866,6 +873,7 @@ class simpleLdap:
                     self._delete_temporary_ou_if_empty(temporary_ou)
                     raise
                 self.dn = newdn
+                self._set_log()
                 return newdn
             else:
                 # normal move, fails on subtrees
@@ -982,6 +990,7 @@ class simpleLdap:
     def _ldap_pre_create(self) -> None:
         """Hook which is called before the object creation."""
         self.dn = self._ldap_dn()
+        self._set_log()
         self.request_lock('cn-uid-position', self.dn)
         try:
             if self.has_property('univentionObjectIdentifier'):
@@ -1440,10 +1449,12 @@ class simpleLdap:
         try:
             try:
                 self.dn = self.lo.authz_connection.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response, rename_callback=wouldRename.on_rename)
+                self._set_log()
             except wouldRename as exc:
                 self.authz.is_rename_allowed(self)
                 self._ldap_pre_rename(exc.args[1])
                 self.dn = self.lo.authz_connection.modify(self.dn, ml, ignore_license=ignore_license, serverctrls=serverctrls, response=response)
+                self._set_log()
                 self._ldap_post_rename(exc.args[0])
         except Exception:
             univention.admin.blocklist.cleanup_blocklistentry(blocklist_entries, self)
@@ -1603,6 +1614,7 @@ class simpleLdap:
         olddn = self.dn
         self.lo.authz_connection.rename(self.dn, newdn)
         self.dn = newdn
+        self._set_log()
 
         try:
             self._move_in_groups(olddn)  # can be done always, will do nothing if oldinfo has no attribute 'groups'
@@ -1613,6 +1625,7 @@ class simpleLdap:
             log.warning('ldap_post_move failed, move object back', dn=newdn, old_dn=olddn)
             self.lo.authz_connection.rename(self.dn, olddn)
             self.dn = olddn
+            self._set_log()
             raise
         self._write_admin_diary_move(newdn)
         return self.dn
@@ -3686,6 +3699,7 @@ class simplePolicy(simpleLdap):
         """
         self.cloned = self.dn
         self.dn = ''
+        self._set_log()
         self.copyIdentifier(referring_object)
 
     def getIdentifier(self) -> str:
