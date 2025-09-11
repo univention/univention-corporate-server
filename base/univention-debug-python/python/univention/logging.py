@@ -479,11 +479,11 @@ class Structured:
     def exception(_self, _message, *_args, **_kwargs):
         _self._log(_self.__log.exception, _message, *_args, **_kwargs)
 
-    def _log(_self, /, _func, _msg, *args, exc_info=None, stack_info=False, stacklevel=3, **extra):
-        return _func(_msg, *args, exc_info=exc_info, extra=extra, stack_info=stack_info, stacklevel=stacklevel)
+    def _log(_self, /, _func, _msg, *args, exc_info=None, stack_info=False, stacklevel=1, **extra):
+        return _func(_msg, *args, exc_info=exc_info, extra=extra, stack_info=stack_info, stacklevel=stacklevel + 2)
 
-    def log(_self, /, _level, _msg, *args, exc_info=None, stack_info=False, stacklevel=3, **extra):
-        return _self.__log.log(_level, _msg, *args, exc_info=exc_info, extra=extra, stack_info=stack_info, stacklevel=stacklevel)
+    def log(_self, /, _level, _msg, *args, exc_info=None, stack_info=False, stacklevel=1, **extra):
+        return _self.__log.log(_level, _msg, *args, exc_info=exc_info, extra=extra, stack_info=stack_info, stacklevel=stacklevel + 2)
 
     def __getattr__(self, name):
         return getattr(self.__log, name)
