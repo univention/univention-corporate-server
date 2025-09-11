@@ -67,6 +67,13 @@ property_descriptions = {
         may_change=False,
         required=True,
     ),
+    'deletionDate': univention.admin.property(
+        short_description=_('Deletion Date'),
+        long_description=_('Timestamp when the object was deleted.'),
+        syntax=udm_syntax.GeneralizedTimeUTC,
+        may_change=False,
+        required=True,
+    ),
     'deletedBy': univention.admin.property(
         short_description=_('Deleted By'),
         long_description=_('DN of the user who deleted the object.'),
@@ -119,6 +126,7 @@ layout = [
             'originalObjectType',
             'originalDN',
             'originalUniventionObjectIdentifier',
+            'deletionDate',
             'deleteAt',
             'deletedBy',
         ]),
@@ -134,6 +142,7 @@ layout = [
 mapping = udm_mapping.mapping()
 mapping.register('originalObjectType', 'univentionRecycleBinOriginalType', None, udm_mapping.ListToString)
 mapping.register('deleteAt', 'univentionRecycleBinDeleteAt', None, udm_mapping.ListToString)
+mapping.register('deletionDate', 'univentionRecycleBinDeletionDate', None, udm_mapping.ListToString)
 mapping.register('deletedBy', 'univentionRecycleBinDeletedBy', None, udm_mapping.ListToString)
 mapping.register('referencedBy', 'univentionRecycleBinReferencedBy')
 mapping.register('originalUniventionObjectIdentifier', 'univentionRecycleBinOriginalUniventionObjectIdentifier', None, udm_mapping.ListToString)

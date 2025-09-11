@@ -5,7 +5,6 @@
 """listener script for recyclebin objects."""
 
 import datetime
-import syslog
 
 import ldap
 import ldap.dn
@@ -15,6 +14,7 @@ import univention.admin.modules
 import univention.admin.uldap
 import univention.config_registry
 import univention.debug
+import univention.debug as ud
 import univention.dn
 import univention.uldap
 from univention.listener import ListenerModuleHandler
@@ -27,7 +27,7 @@ class RecycleBinListener(ListenerModuleHandler):
     class Configuration:
         name = 'recyclebin'
         description = 'Recyclebin listener'
-        ldap_filter = '(objectClass=*)'
+        ldap_filter = '(|(univentionObjectType=users/user)(univentionObjectType=groups/group))'
         attributes = []
 
     def __init__(self, *args, **kwargs):
@@ -38,16 +38,16 @@ class RecycleBinListener(ListenerModuleHandler):
 
     def _initialize_cache(self):
         """Initialize the deleted objects cache."""
-        syslog.syslog(syslog.LOG_INFO, "RECYCLEBIN INIT: Starting initialization")
+        ud.debug(ud.LISTENER, ud.INFO, "RECYCLEBIN INIT: Starting initialization")
 
         ucr = univention.config_registry.ConfigRegistry()
         ucr.load()
 
         server_role = ucr.get('server/role')
-        syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN INIT: Server role is {server_role}")
+        ud.debug(ud.LISTENER, ud.INFO, f"RECYCLEBIN INIT: Server role is {server_role}")
 
         if server_role != 'domaincontroller_master':
-            syslog.syslog(syslog.LOG_INFO, "RECYCLEBIN INIT: Not master, skipping initialization")
+            ud.debug(ud.LISTENER, ud.INFO, "RECYCLEBIN INIT: Not master, skipping initialization")
             return
 
         try:
@@ -64,15 +64,15 @@ class RecycleBinListener(ListenerModuleHandler):
                 try:
                     self.deleted_objects_cache.add(univention.dn.DN(dn))
                 except Exception as e:
-                    syslog.syslog(syslog.LOG_WARNING, f"RECYCLEBIN: Error adding DN to cache: {dn}, {e}")
+                    ud.debug(ud.LISTENER, ud.WARNING, f"RECYCLEBIN: Error adding DN to cache: {dn}, {e}")
 
-            syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN: Initialized cache with {len(self.deleted_objects_cache)} deleted objects")
+            ud.debug(ud.LISTENER, ud.INFO, f"RECYCLEBIN: Initialized cache with {len(self.deleted_objects_cache)} deleted objects")
 
         except Exception as e:
-            syslog.syslog(syslog.LOG_ERR, f"RECYCLEBIN: Error initializing deleted objects cache: {e}")
+            ud.debug(ud.LISTENER, ud.ERROR, f"RECYCLEBIN: Error initializing deleted objects cache: {e}")
             self.deleted_objects_cache.clear()
 
-        syslog.syslog(syslog.LOG_INFO, "RECYCLEBIN INIT: Initialization complete")
+        ud.debug(ud.LISTENER, ud.INFO, "RECYCLEBIN INIT: Initialization complete")
 
         univention.debug.debug(
             univention.debug.LISTENER,
@@ -95,10 +95,10 @@ class RecycleBinListener(ListenerModuleHandler):
         # Determine object type
         obj_type_attr = attrs.get('univentionObjectType')
         if obj_type_attr:
-            object_type = obj_type_attr[0].decode('utf-8') if isinstance(obj_type_attr[0], bytes) else obj_type_attr[0]
+            object_type = obj_type_attr[0].decode('utf-8')
         else:
             object_classes = attrs.get('objectClass', [])
-            object_classes = [oc.decode('utf-8') if isinstance(oc, bytes) else oc for oc in object_classes]
+            object_classes = [oc.decode('utf-8') for oc in object_classes]
 
             if 'inetOrgPerson' in object_classes or 'posixAccount' in object_classes:
                 object_type = 'users/user'
@@ -116,7 +116,7 @@ class RecycleBinListener(ListenerModuleHandler):
         """Handle object creation - no action needed for recyclebin."""
         should_process, object_type = self._should_process_object(new)
         if should_process:
-            syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN: Object created {object_type}: {dn}")
+            ud.debug(ud.LISTENER, ud.INFO, f"RECYCLEBIN: Object created {object_type}: {dn}")
 
     def modify(self, dn: str, old: dict[str, list[bytes]], new: dict[str, list[bytes]], old_dn: str | None) -> None:
         """Handle object modification - check for group membership changes."""
@@ -124,7 +124,7 @@ class RecycleBinListener(ListenerModuleHandler):
         if not should_process:
             return
 
-        syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN: Processing modify for {object_type}: {dn}")
+        ud.debug(ud.LISTENER, ud.INFO, f"RECYCLEBIN: Processing modify for {object_type}: {dn}")
 
         if object_type == 'groups/group':
             self._handle_group_membership_changes(dn, new, old)
@@ -135,7 +135,7 @@ class RecycleBinListener(ListenerModuleHandler):
         if not should_process:
             return
 
-        syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN: Processing removal for {object_type}: {dn}")
+        ud.debug(ud.LISTENER, ud.INFO, f"RECYCLEBIN: Processing removal for {object_type}: {dn}")
 
         moved_to_recyclebin = self._move_deleted_object_to_recyclebin(dn, old)
 
@@ -143,11 +143,11 @@ class RecycleBinListener(ListenerModuleHandler):
             try:
                 recyclebin_dn = self._get_recyclebin_dn_for_original(dn)
                 self.deleted_objects_cache.add(univention.dn.DN(recyclebin_dn))
-                syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN: Added to cache: {recyclebin_dn}")
+                ud.debug(ud.LISTENER, ud.INFO, f"RECYCLEBIN: Added to cache: {recyclebin_dn}")
             except Exception as e:
-                syslog.syslog(syslog.LOG_ERR, f"RECYCLEBIN: Error adding to cache: {e}")
+                ud.debug(ud.LISTENER, ud.ERROR, f"RECYCLEBIN: Error adding to cache: {e}")
         else:
-            syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN: Object {dn} was not moved to recyclebin - not adding to cache")
+            ud.debug(ud.LISTENER, ud.INFO, f"RECYCLEBIN: Object {dn} was not moved to recyclebin - not adding to cache")
 
     def _get_recyclebin_dn_for_original(self, original_dn):
         """Generate recyclebin DN for original object."""
@@ -173,12 +173,12 @@ class RecycleBinListener(ListenerModuleHandler):
             # Handle uniqueMember attribute (for groups)
             if old_attrs and 'uniqueMember' in old_attrs:
                 for member_bytes in old_attrs['uniqueMember']:
-                    member_dn = member_bytes.decode('utf-8') if isinstance(member_bytes, bytes) else member_bytes
+                    member_dn = member_bytes.decode('utf-8')
                     old_members.add(member_dn)
 
             if new_attrs and 'uniqueMember' in new_attrs:
                 for member_bytes in new_attrs['uniqueMember']:
-                    member_dn = member_bytes.decode('utf-8') if isinstance(member_bytes, bytes) else member_bytes
+                    member_dn = member_bytes.decode('utf-8')
                     new_members.add(member_dn)
 
             # Handle memberUid attribute (for POSIX groups)
@@ -187,12 +187,12 @@ class RecycleBinListener(ListenerModuleHandler):
 
             if old_attrs and 'memberUid' in old_attrs:
                 for uid_bytes in old_attrs['memberUid']:
-                    uid = uid_bytes.decode('utf-8') if isinstance(uid_bytes, bytes) else uid_bytes
+                    uid = uid_bytes.decode('utf-8')
                     old_member_uids.add(uid)
 
             if new_attrs and 'memberUid' in new_attrs:
                 for uid_bytes in new_attrs['memberUid']:
-                    uid = uid_bytes.decode('utf-8') if isinstance(uid_bytes, bytes) else uid_bytes
+                    uid = uid_bytes.decode('utf-8')
                     new_member_uids.add(uid)
 
             # Find removed members (both DN-based and UID-based)
@@ -202,13 +202,13 @@ class RecycleBinListener(ListenerModuleHandler):
             if not removed_member_dns and not removed_member_uids:
                 return
 
-            syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN: Group {group_dn} removed {len(removed_member_dns)} DN members and {len(removed_member_uids)} UID members")
+            ud.debug(ud.LISTENER, ud.INFO, f"RECYCLEBIN: Group {group_dn} removed {len(removed_member_dns)} DN members and {len(removed_member_uids)} UID members")
 
             # Step 3 & 4: Check if there are deleted objects and add group as memberOf
             self._update_deleted_objects_with_group_membership(group_dn, removed_member_dns, removed_member_uids)
 
         except Exception as e:
-            syslog.syslog(syslog.LOG_ERR, f"RECYCLEBIN: Error in _handle_group_membership_changes: {e}")
+            ud.debug(ud.LISTENER, ud.ERROR, f"RECYCLEBIN: Error in _handle_group_membership_changes: {e}")
 
     def _update_deleted_objects_with_group_membership(self, group_dn, removed_member_dns, removed_member_uids):
         """Update deleted objects with group membership information."""
@@ -238,7 +238,7 @@ class RecycleBinListener(ListenerModuleHandler):
                 listener.unsetuid()
 
         except Exception as e:
-            syslog.syslog(syslog.LOG_ERR, f"RECYCLEBIN: Error updating deleted objects with group membership: {e}")
+            ud.debug(ud.LISTENER, ud.ERROR, f"RECYCLEBIN: Error updating deleted objects with group membership: {e}")
 
     def _add_group_to_deleted_object_by_dn(self, internal_lo, group_dn, member_dn):
         """Add group as memberOf to deleted object identified by DN."""
@@ -257,24 +257,24 @@ class RecycleBinListener(ListenerModuleHandler):
                         modlist = [('seeAlso', ldap.MOD_ADD, [group_dn.encode('utf-8')])]
                         internal_lo.modify(recyclebin_dn, modlist)
 
-                        syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN: Successfully added group {group_dn} as memberOf to deleted object {recyclebin_dn} (original: {member_dn})")
+                        ud.debug(ud.LISTENER, ud.INFO, f"RECYCLEBIN: Successfully added group {group_dn} as memberOf to deleted object {recyclebin_dn} (original: {member_dn})")
                     else:
-                        syslog.syslog(syslog.LOG_WARNING, f"RECYCLEBIN: Deleted object {recyclebin_dn} exists in cache but not in LDAP")
+                        ud.debug(ud.LISTENER, ud.WARNING, f"RECYCLEBIN: Deleted object {recyclebin_dn} exists in cache but not in LDAP")
                         # Remove from cache if it doesn't exist in LDAP
                         self.deleted_objects_cache.discard(recyclebin_dn_obj)
 
                 except ldap.NO_SUCH_OBJECT:
-                    syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN: Deleted object {recyclebin_dn} no longer exists, removing from cache")
+                    ud.debug(ud.LISTENER, ud.INFO, f"RECYCLEBIN: Deleted object {recyclebin_dn} no longer exists, removing from cache")
                     self.deleted_objects_cache.discard(recyclebin_dn_obj)
 
                 except ldap.TYPE_OR_VALUE_EXISTS:
-                    syslog.syslog(syslog.LOG_DEBUG, f"RECYCLEBIN: Group {group_dn} already exists as memberOf in deleted object {recyclebin_dn}")
+                    ud.debug(ud.LISTENER, ud.ALL, f"RECYCLEBIN: Group {group_dn} already exists as memberOf in deleted object {recyclebin_dn}")
 
             else:
-                syslog.syslog(syslog.LOG_DEBUG, f"RECYCLEBIN: No deleted object found for member {member_dn}")
+                ud.debug(ud.LISTENER, ud.ALL, f"RECYCLEBIN: No deleted object found for member {member_dn}")
 
         except Exception as e:
-            syslog.syslog(syslog.LOG_ERR, f"RECYCLEBIN: Error adding group to deleted object for member {member_dn}: {e}")
+            ud.debug(ud.LISTENER, ud.ERROR, f"RECYCLEBIN: Error adding group to deleted object for member {member_dn}: {e}")
 
     def _add_group_to_deleted_object_by_uid(self, internal_lo, group_dn, member_uid):
         """Add group as memberOf to deleted object identified by UID."""
@@ -303,19 +303,19 @@ class RecycleBinListener(ListenerModuleHandler):
                             modlist = [('seeAlso', ldap.MOD_ADD, [group_dn.encode('utf-8')])]
                             internal_lo.modify(deleted_dn, modlist)
 
-                            syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN: Successfully added group {group_dn} as memberOf to deleted object {deleted_dn} (original: {original_dn}, uid: {member_uid})")
+                            ud.debug(ud.LISTENER, ud.INFO, f"RECYCLEBIN: Successfully added group {group_dn} as memberOf to deleted object {deleted_dn} (original: {original_dn}, uid: {member_uid})")
 
                             # Update cache
                             self.deleted_objects_cache.add(univention.dn.DN(deleted_dn))
 
                         except ldap.TYPE_OR_VALUE_EXISTS:
-                            syslog.syslog(syslog.LOG_DEBUG, f"RECYCLEBIN: Group {group_dn} already exists as memberOf in deleted object {deleted_dn}")
+                            ud.debug(ud.LISTENER, ud.ALL, f"RECYCLEBIN: Group {group_dn} already exists as memberOf in deleted object {deleted_dn}")
 
             except ldap.LDAPError as e:
-                syslog.syslog(syslog.LOG_WARNING, f"RECYCLEBIN: LDAP error searching for deleted objects with UID {member_uid}: {e}")
+                ud.debug(ud.LISTENER, ud.WARNING, f"RECYCLEBIN: LDAP error searching for deleted objects with UID {member_uid}: {e}")
 
         except Exception as e:
-            syslog.syslog(syslog.LOG_ERR, f"RECYCLEBIN: Error adding group to deleted object for UID {member_uid}: {e}")
+            ud.debug(ud.LISTENER, ud.ERROR, f"RECYCLEBIN: Error adding group to deleted object for UID {member_uid}: {e}")
 
     def _move_deleted_object_to_recyclebin(self, original_dn, original_attrs):
         """
@@ -324,46 +324,27 @@ class RecycleBinListener(ListenerModuleHandler):
         Returns:
             bool: True if object was moved to recyclebin, False if skipped due to no policy
         """
-        syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN MOVE: Starting move to recyclebin for {original_dn}")
+        ud.debug(ud.LISTENER, ud.INFO, f"RECYCLEBIN MOVE: Starting move to recyclebin for {original_dn}")
         listener.setuid(0)
         try:
-            ucr = univention.config_registry.ConfigRegistry()
-            ucr.load()
-
-            internal_lo = univention.uldap.access(
-                host=ucr.get('ldap/server/name', 'localhost'),
-                port=int(ucr.get('ldap/server/port', '7389')),
-                base='cn=internal',
-                binddn=f"cn=admin,{ucr.get('ldap/base')}",
-                bindpw=open('/etc/ldap.secret').read().strip(),
-            )
+            lo, position = univention.admin.uldap.getAdminConnection()
+            position.setBase('cn=internal')
 
             univention.admin.modules.update()
 
             original_type = self._determine_object_type(original_attrs)
 
-            main_lo, _ = univention.admin.uldap.getAdminConnection()
-
-            group_memberships = []
-            if 'memberOf' in original_attrs:
-                for group_bytes in original_attrs['memberOf']:
-                    group_dn = group_bytes.decode('utf-8') if isinstance(group_bytes, bytes) else group_bytes
-                    group_memberships.append(group_dn)
-            else:
-                group_memberships = self._find_user_group_memberships(original_dn, main_lo)
-
             self._create_recyclebin_entry(
-                lo=internal_lo,
+                lo=lo,
                 original_dn=original_dn,
                 original_attrs=original_attrs,
                 original_type=original_type,
-                group_memberships=group_memberships,
             )
 
             return True
 
         except Exception as e:
-            syslog.syslog(syslog.LOG_ERR, f"RECYCLEBIN: Error moving {original_dn} to recyclebin: {e}")
+            ud.debug(ud.LISTENER, ud.ERROR, f"RECYCLEBIN: Error moving {original_dn} to recyclebin: {e}")
             return False
         finally:
             listener.unsetuid()
@@ -372,47 +353,8 @@ class RecycleBinListener(ListenerModuleHandler):
         """Determine the object type from attributes."""
         object_type = attrs.get('univentionObjectType')
         if object_type:
-            return object_type[0].decode('utf-8') if isinstance(object_type[0], bytes) else object_type[0]
+            return object_type[0].decode('utf-8')
         return 'generic/object'
-
-    def _find_user_group_memberships(self, user_dn, lo):
-        """Find group memberships for a user."""
-        try:
-            group_dns = []
-
-            escaped_user_dn = ldap.filter.escape_filter_chars(user_dn)
-
-            try:
-                username = ldap.dn.str2dn(user_dn)[0][0][1]  # First RDN, first AVA, value
-                escaped_username = ldap.filter.escape_filter_chars(username)
-            except (IndexError, ldap.LDAPError):
-                username = None
-                escaped_username = None
-
-            search_filters = [f"(uniqueMember={escaped_user_dn})"]
-            if escaped_username:
-                search_filters.append(f"(memberUid={escaped_username})")
-
-            combined_filter = f"(|{''.join(search_filters)})"
-
-            results = lo.search(
-                base=lo.base,
-                scope='subtree',
-                filter=combined_filter,
-                attr=['dn'],
-                unique=False,
-                required=False,
-            )
-
-            for group_dn, group_attrs in results:
-                if group_dn and group_dn != user_dn:  # Avoid self-references
-                    group_dns.append(group_dn)
-
-            return group_dns
-
-        except Exception as e:
-            syslog.syslog(syslog.LOG_WARNING, f"RECYCLEBIN: Error finding group memberships for {user_dn}: {e}")
-            return []
 
     def _get_recyclebin_retention_days(self, original_dn, original_type, old_attrs=None):
         """Get retention time in days from recyclebin policy, or None if no policy applies."""
@@ -423,17 +365,17 @@ class RecycleBinListener(ListenerModuleHandler):
                 policy_refs = old_attrs['univentionPolicyReference']
 
                 for policy_ref in policy_refs:
-                    policy_dn = policy_ref.decode('utf-8') if isinstance(policy_ref, bytes) else policy_ref
+                    policy_dn = policy_ref.decode('utf-8')
 
                     try:
                         policy_attrs = main_lo.get(policy_dn)
                         if policy_attrs and b'univentionRecycleBinPolicy' in policy_attrs.get('objectClass', []):
                             covered_modules = policy_attrs.get('univentionRecycleBinUDMModules', [])
-                            covered_modules = [m.decode('utf-8') if isinstance(m, bytes) else m for m in covered_modules]
+                            covered_modules = [m.decode('utf-8') for m in covered_modules]
 
                             if original_type in covered_modules:
                                 retention_time = policy_attrs.get('univentionRecycleBinRetentionTime', [b'30'])
-                                retention_days = int(retention_time[0].decode('utf-8') if isinstance(retention_time[0], bytes) else retention_time[0])
+                                retention_days = int(retention_time[0].decode('utf-8'))
 
                                 univention.debug.debug(
                                     univention.debug.LISTENER,
@@ -455,17 +397,17 @@ class RecycleBinListener(ListenerModuleHandler):
                         policy_refs = attrs['univentionPolicyReference']
 
                         for policy_ref in policy_refs:
-                            policy_dn = policy_ref.decode('utf-8') if isinstance(policy_ref, bytes) else policy_ref
+                            policy_dn = policy_ref.decode('utf-8')
 
                             try:
                                 policy_attrs = main_lo.get(policy_dn)
                                 if policy_attrs and b'univentionRecycleBinPolicy' in policy_attrs.get('objectClass', []):
                                     covered_modules = policy_attrs.get('univentionRecycleBinUDMModules', [])
-                                    covered_modules = [m.decode('utf-8') if isinstance(m, bytes) else m for m in covered_modules]
+                                    covered_modules = [m.decode('utf-8') for m in covered_modules]
 
                                     if original_type in covered_modules:
                                         retention_time = policy_attrs.get('univentionRecycleBinRetentionTime', [b'30'])
-                                        retention_days = int(retention_time[0].decode('utf-8') if isinstance(retention_time[0], bytes) else retention_time[0])
+                                        retention_days = int(retention_time[0].decode('utf-8'))
 
                                         univention.debug.debug(
                                             univention.debug.LISTENER,
@@ -486,11 +428,11 @@ class RecycleBinListener(ListenerModuleHandler):
                 policy_attrs = main_lo.get(default_policy_dn)
                 if policy_attrs and b'univentionRecycleBinPolicy' in policy_attrs.get('objectClass', []):
                     covered_modules = policy_attrs.get('univentionRecycleBinUDMModules', [])
-                    covered_modules = [m.decode('utf-8') if isinstance(m, bytes) else m for m in covered_modules]
+                    covered_modules = [m.decode('utf-8') for m in covered_modules]
 
                     if original_type in covered_modules:
                         retention_time = policy_attrs.get('univentionRecycleBinRetentionTime', [b'30'])
-                        retention_days = int(retention_time[0].decode('utf-8') if isinstance(retention_time[0], bytes) else retention_time[0])
+                        retention_days = int(retention_time[0].decode('utf-8'))
 
                         univention.debug.debug(
                             univention.debug.LISTENER,
@@ -516,7 +458,7 @@ class RecycleBinListener(ListenerModuleHandler):
         )
         return None
 
-    def _create_recyclebin_entry(self, lo, original_dn, original_attrs, original_type, group_memberships=None):
+    def _create_recyclebin_entry(self, lo, original_dn, original_attrs, original_type):
         """Create recyclebin entry for deleted object."""
         object_id = ldap.dn.dn2str(ldap.dn.str2dn(original_dn))
         escaped_object_id = ldap.dn.escape_dn_chars(object_id)
@@ -529,7 +471,7 @@ class RecycleBinListener(ListenerModuleHandler):
         retention_days = self._get_recyclebin_retention_days(original_dn, original_type, original_attrs)
 
         if retention_days is None:
-            syslog.syslog(syslog.LOG_INFO, f"RECYCLEBIN: No recyclebin policy found for {original_type} - skipping recyclebin creation for {original_dn}")
+            ud.debug(ud.LISTENER, ud.INFO, f"RECYCLEBIN: No recyclebin policy found for {original_type} - skipping recyclebin creation for {original_dn}")
             return False
 
         delete_at = now + datetime.timedelta(days=retention_days)
@@ -564,10 +506,6 @@ class RecycleBinListener(ListenerModuleHandler):
                     ldap_attrs.append((prefixed_attr, values))
                 else:
                     ldap_attrs.append((attr, values))
-
-        if group_memberships:
-            group_memberships_encoded = [group_dn.encode('utf-8') for group_dn in group_memberships]
-            ldap_attrs.append(('seeAlso', group_memberships_encoded))
 
         search_filter = f"(univentionRecycleBinOriginalDN={ldap.filter.escape_filter_chars(original_dn)})"
 
