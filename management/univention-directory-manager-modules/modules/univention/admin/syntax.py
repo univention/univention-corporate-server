@@ -71,9 +71,9 @@ def import_syntax_files() -> None:
                 try:
                     with open(fn, 'rb') as fd:
                         exec(fd.read(), sys.modules[__name__].__dict__)  # noqa: S102
-                    log.debug('admin.syntax.import_syntax_files: importing %r', fn)
+                    log.debug('importing syntax', syntax=fn)
                 except Exception:
-                    log.exception('admin.syntax.import_syntax_files: loading %r failed', fn)
+                    log.exception('importing syntax failed', syntax=fn)
                 finally:
                     _ = gettext
 
