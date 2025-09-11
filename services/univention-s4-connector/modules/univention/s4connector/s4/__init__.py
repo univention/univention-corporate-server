@@ -600,7 +600,7 @@ class s4(univention.s4connector.ucs):
             prop.con_default_dn = self.dn_mapped_to_base(prop.con_default_dn, self.lo_s4.base)
 
     def init_group_cache(self):
-        log.info('Building internal group membership cache')
+        log.process('Building internal group membership cache')
         s4_groups = self.__search_s4(filter='objectClass=group', attrlist=['member'])
         log.trace("__init__: s4_groups: %s", s4_groups)
         for s4_group in s4_groups:
@@ -623,7 +623,7 @@ class s4(univention.s4connector.ucs):
                 for member in ucs_group[1].get('uniqueMember'):
                     self.group_members_cache_ucs[group_lower].add(member.decode('UTF-8').lower())
         log.trace("__init__: self.group_members_cache_ucs: %s", self.group_members_cache_ucs)
-        log.info('Internal group membership cache was created')
+        log.process('Internal group membership cache was created')
 
     def s4_search_ext_s(self, *args, **kwargs):
         return fix_dn_in_search(self.lo_s4.lo.search_ext_s(*args, **kwargs))
@@ -921,7 +921,7 @@ class s4(univention.s4connector.ucs):
             # search.
             highestCommittedUSN = self.__get_highestCommittedUSN()
             tmpUSN = lastUSN
-            log.info("Need to split results. highest USN is %s, lastUSN is %s", highestCommittedUSN, lastUSN)
+            log.process("Need to split results. highest USN is %s, lastUSN is %s", highestCommittedUSN, lastUSN)
             returnObjects = []
             while (tmpUSN != highestCommittedUSN):
                 tmp_lastUSN = tmpUSN
@@ -1058,12 +1058,12 @@ class s4(univention.s4connector.ucs):
 
         ldap_object_ucs = self.get_ucs_ldap_object(object_ucs['dn'])
         if not ldap_object_ucs:
-            log.info('primary_group_sync_from_ucs: The UCS object (%s) was not found. The object was removed.', object_ucs['dn'])
+            log.process('primary_group_sync_from_ucs: The UCS object (%s) was not found. The object was removed.', object_ucs['dn'])
             return
 
         ldap_object_s4 = self.get_object(object['dn'])
         if not ldap_object_s4:
-            log.info('primary_group_sync_from_ucs: The S4 object (%s) was not found. The object was removed.', object['dn'])
+            log.process('primary_group_sync_from_ucs: The S4 object (%s) was not found. The object was removed.', object['dn'])
             return
 
         ucs_group_id = ldap_object_ucs['gidNumber'][0].decode('UTF-8')  # FIXME: fails if group does not exists
@@ -1205,7 +1205,7 @@ class s4(univention.s4connector.ucs):
         ldap_object_ucs = self.get_ucs_ldap_object(object_ucs_dn)
 
         if not ldap_object_ucs:
-            log.info('group_members_sync_from_ucs:: The UCS object (%s) was not found. The object was removed.', object_ucs_dn)
+            log.process('group_members_sync_from_ucs:: The UCS object (%s) was not found. The object was removed.', object_ucs_dn)
             return
 
         ldap_object_ucs_gidNumber = ldap_object_ucs['gidNumber'][0].decode('UTF-8')
@@ -1227,7 +1227,7 @@ class s4(univention.s4connector.ucs):
         # lookup all current members of S4 group
         ldap_object_s4 = self.get_object(object['dn'])
         if not ldap_object_s4:
-            log.info('group_members_sync_from_ucs:: The S4 object (%s) was not found. The object was removed.', object['dn'])
+            log.process('group_members_sync_from_ucs:: The S4 object (%s) was not found. The object was removed.', object['dn'])
             return
         s4_members = set(self.get_s4_members(object['dn'], ldap_object_s4))
         log.debug("group_members_sync_from_ucs: s4_members %s", s4_members)
@@ -1269,7 +1269,7 @@ class s4(univention.s4connector.ucs):
                 except ldap.SERVER_DOWN:
                     raise
                 except Exception:  # FIXME: which exception is to be caught?
-                    log.info("group_members_sync_from_ucs: failed to get S4 dn for UCS group member %s, assume object doesn't exist", member_dn, exc_info=True)
+                    log.process("group_members_sync_from_ucs: failed to get S4 dn for UCS group member %s, assume object doesn't exist", member_dn, exc_info=True)
 
         log.debug("group_members_sync_from_ucs: UCS-members in s4_members_from_ucs %s", s4_members_from_ucs)
 
@@ -1293,7 +1293,7 @@ class s4(univention.s4connector.ucs):
                 except ldap.SERVER_DOWN:
                     raise
                 except Exception:  # FIXME: which exception is to be caught?
-                    log.info("group_members_sync_from_ucs: failed to get UCS dn for S4 group member %s", member_dn, exc_info=True)
+                    log.process("group_members_sync_from_ucs: failed to get UCS dn for S4 group member %s", member_dn, exc_info=True)
 
         log.debug("group_members_sync_from_ucs: UCS-and S4-members in s4_members_from_ucs %s", s4_members_from_ucs)
 
@@ -1335,7 +1335,7 @@ class s4(univention.s4connector.ucs):
                 add_members.remove(member_dn_lower)
             else:
                 if object['modtype'] == 'add':
-                    log.info("group_members_sync_from_ucs: %s is newly added. For this case don't remove current S4 members.", object['dn'].lower())
+                    log.process("group_members_sync_from_ucs: %s is newly added. For this case don't remove current S4 members.", object['dn'].lower())
                 elif (member_dn_lower in self.group_members_cache_con.get(object['dn'].lower(), set())) or (self.property.get('group') and self.property['group'].sync_mode in ['write', 'none']):
                     # FIXME: Should this really also be done if sync_mode for group is 'none'?
                     # remove member only if he was in the cache on AD side
@@ -1343,7 +1343,7 @@ class s4(univention.s4connector.ucs):
                     log.debug("group_members_sync_from_ucs: No")
                     del_members.add(member_dn)
                 else:
-                    log.info("group_members_sync_from_ucs: %s was not found in S4 group member cache of %s, don't delete", member_dn_lower, object['dn'].lower())
+                    log.process("group_members_sync_from_ucs: %s was not found in S4 group member cache of %s, don't delete", member_dn_lower, object['dn'].lower())
 
         log.debug("group_members_sync_from_ucs: members to add: %s", add_members)
         log.debug("group_members_sync_from_ucs: members to del: %s", del_members)
@@ -1463,7 +1463,7 @@ class s4(univention.s4connector.ucs):
         # FIXME: does not use dn-mapping-function
         ldap_object_s4 = self.get_object(ad_object_dn)
         if not ldap_object_s4:
-            log.info('group_members_sync_to_ucs:: The S4 object (%s) was not found. The object was removed.', ad_object_dn)
+            log.process('group_members_sync_to_ucs:: The S4 object (%s) was not found. The object was removed.', ad_object_dn)
             return
 
         s4_members = self.get_s4_members(ad_object_dn, ldap_object_s4)
@@ -1523,7 +1523,7 @@ class s4(univention.s4connector.ucs):
                     except ldap.SERVER_DOWN:
                         raise
                     except Exception:  # FIXME: which exception is to be caught?
-                        log.info("group_members_sync_to_ucs: failed to get UCS dn for S4 group member %s, assume object doesn't exist", member_dn, exc_info=True)
+                        log.process("group_members_sync_to_ucs: failed to get UCS dn for S4 group member %s, assume object doesn't exist", member_dn, exc_info=True)
 
         # build an internal cache
         cache = {}
@@ -1555,7 +1555,7 @@ class s4(univention.s4connector.ucs):
                 except ldap.SERVER_DOWN:
                     raise
                 except Exception:  # FIXME: which exception is to be caught?
-                    log.info("group_members_sync_to_ucs: failed to get AD dn for UCS group member %s", member_dn, exc_info=True)
+                    log.process("group_members_sync_to_ucs: failed to get AD dn for UCS group member %s", member_dn, exc_info=True)
 
         log.debug("group_members_sync_to_ucs: dn_mapping_ucs_member_to_s4=%s", dn_mapping_ucs_member_to_s4)
         add_members = copy.deepcopy(ucs_members_from_s4)
@@ -1710,7 +1710,7 @@ class s4(univention.s4connector.ucs):
         print("--------------------------------------")
         print("Initialize sync from AD")
         if self._get_lastUSN() == 0:  # we startup new
-            log.info("initialize AD: last USN is 0, sync all")
+            log.process("initialize AD: last USN is 0, sync all")
             # query highest USN in LDAP
             highestCommittedUSN = self.__get_highestCommittedUSN()
 
@@ -1738,7 +1738,7 @@ class s4(univention.s4connector.ucs):
         print(f"Sync {len(rejected)} rejected changes from S4 to UCS")
         sys.stdout.flush()
         for change_usn, dn in rejected:
-            log.info("sync AD > UCS: Resync rejected dn: %r", dn)
+            log.process("sync AD > UCS: Resync rejected dn: %r", dn)
             try:
                 sync_successfull = False
                 elements = self.__search_ad_changeUSN(change_usn, show_deleted=True)
@@ -1837,7 +1837,7 @@ class s4(univention.s4connector.ucs):
                     continue
 
             if ad_object['dn'].find('\\0ACNF:') > 0:
-                log.info('Ignore conflicted object: %s', ad_object['dn'])
+                log.process('Ignore conflicted object: %s', ad_object['dn'])
                 self.__update_lastUSN(ad_object)
                 print_progress()
                 continue
@@ -1973,7 +1973,7 @@ class s4(univention.s4connector.ucs):
                 self._remove_dn_mapping(pre_mapped_ucs_old_dn, old_dn)
                 self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
 
-        log.info(self.context_log(property_type, object, to_ucs=False))
+        log.process(self.context_log(property_type, object, to_ucs=False))
 
         if 'olddn' in object:
             object.pop('olddn')  # not needed anymore, will fail object_mapping in later functions
@@ -1987,7 +1987,7 @@ class s4(univention.s4connector.ucs):
         if ad_object:
             objectGUID = univention.s4connector.decode_guid(ad_object.get('objectGUID')[0])
             if self.lockingdb.is_s4_locked(objectGUID):
-                log.info("Unable to sync %s (GUID: %s). The object is currently locked.", object['dn'], objectGUID)
+                log.process("Unable to sync %s (GUID: %s). The object is currently locked.", object['dn'], objectGUID)
                 return False
 
         try:
@@ -2053,14 +2053,14 @@ class s4(univention.s4connector.ucs):
                     if not (sAMAccountName and sambaSID):
                         raise  # unknown situation, raise original traceback
                     filter_s4 = format_escaped('(&(sAMAccountName={0!e})(objectSid={1!e})(isDeleted=TRUE))', sAMAccountName.decode('UTF-8'), sambaSID.decode('UTF-8'))
-                    log.info("sync_from_ucs: error during add, searching for conflicting deleted object in S4")
+                    log.process("sync_from_ucs: error during add, searching for conflicting deleted object in S4")
                     log.debug("sync_from_ucs: search filter: %s", filter_s4)
                     result = self.s4_search_ext_s(self.lo_s4.base, ldap.SCOPE_SUBTREE, filter_s4, ['dn'], serverctrls=[LDAPControl(
                         LDAP_SERVER_SHOW_DELETED_OID, criticality=1), LDAPControl(LDB_CONTROL_DOMAIN_SCOPE_OID, criticality=0)])
                     if not result or len(result) > 1:  # the latter would indicate corruption
-                        log.info("sync_from_ucs: no conflicting deleted object found")
+                        log.process("sync_from_ucs: no conflicting deleted object found")
                         raise  # unknown situation, raise original traceback
-                    log.info("sync_from_ucs: reanimating conflicting object: %s", result[0][0])
+                    log.process("sync_from_ucs: reanimating conflicting object: %s", result[0][0])
                     reanimate_modlist = [
                         (ldap.MOD_DELETE, 'isDeleted', None),
                         (ldap.MOD_REPLACE, 'distinguishedName', object['dn'].encode('UTF-8')),
@@ -2219,7 +2219,7 @@ class s4(univention.s4connector.ucs):
                                             not attribute_type[attribute].compare_function(list(current_s4_values), list(value))
                                         if modified:
                                             if has_mapping_function:
-                                                log.info("Calling value mapping function for attribute %s", attribute)
+                                                log.process("Calling value mapping function for attribute %s", attribute)
                                                 value = attribute_type[attribute].mapping[0](self, None, object)
                                             modlist.append((ldap.MOD_REPLACE, s4_attribute, value))
                                     else:

@@ -45,7 +45,7 @@ def _convertWinToMac(s4connector, sync_object):
     modlist.append(('objectClass', oldObjectClass, newObjectClass))
     modlist.append(('univentionServerRole', ucs_object.get('univentionServerRole'), []))
 
-    log.info("Convert Windows client to macOS: %r", sync_object['dn'])
+    log.process("Convert Windows client to macOS: %r", sync_object['dn'])
 
     s4connector.lo.lo.modify(sync_object['dn'], modlist)
 
@@ -90,7 +90,7 @@ def windowscomputer_sync_s4_to_ucs_check_rename(s4connector, key, sync_object):
     if ucs_uid.lower() == sAMAccountName.lower():
         return
 
-    log.info("con_check_rename: Renaming client from %s to %s", ucs_uid, sAMAccountName)
+    log.process("con_check_rename: Renaming client from %s to %s", ucs_uid, sAMAccountName)
     ucs_admin_object = univention.admin.objects.get(s4connector.modules['windowscomputer'], co='', lo=s4connector.lo, position='', dn=sync_object['dn'])
     ucs_admin_object.open()
     ucs_admin_object['name'] = sAMAccountName.decode('UTF-8').rstrip('$')
