@@ -474,7 +474,7 @@ def parse_args() -> tuple[LdifSource, LdifSource, Values]:
         if args:
             parser.error("More than two LDIFs given.")
     except LdifError as ex:
-        parser.error(f"Failed to parse LDIF: {ex}")
+        parser.error("Failed to parse LDIF: %s", ex)
 
     return ldif1, ldif2, options
 

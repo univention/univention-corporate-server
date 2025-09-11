@@ -89,7 +89,7 @@ class ChecksAndWaits:
         )
 
     def wait_until_element_visible(self, xpath: str, timeout: int = 60) -> None:
-        logger.info(f'Waiting for the element with the xpath {xpath!r} to be visible.')
+        logger.info("Waiting for the element with the xpath %r to be visible.", xpath)
         self.wait_until(
             expected_conditions.visibility_of_element_located(
                 (By.XPATH, xpath),

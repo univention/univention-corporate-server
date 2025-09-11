@@ -147,29 +147,29 @@ def test_guardian_property_filtering_in_browser(page: Page, guardian_setup, ucr,
         page.goto(f'{base_url}/univention/management/#module=udm:users/user:0:')
         page.wait_for_load_state('networkidle', timeout=60000)
         time.sleep(5)
-        log.debug(f'user_property_set: {user_property_set}')
-        log.debug(f'username: {username}')
+        log.debug("user_property_set: %s", user_property_set)
+        log.debug("username: %s", username)
         if 'username' in user_property_set or '*' in user_property_set:
             # If 'username' is permitted, we should be able to see and open the user.
             page.get_by_role('gridcell', name=username).get_by_role('img').click()
             # Wait for the detail view to load
             lastname = page.locator('input[name="lastname"]')
             expect(lastname).to_be_visible(timeout=8000)
-            log.debug(f'{username} found as expected')
+            log.debug("%s found as expected", username)
             # Check if we can edit a permitted property ('lastname')
             if 'lastname' in user_property_set or '*' in user_property_set:
                 lastname.fill(random_username())
                 # Save changes
                 page.get_by_role('button', name='Save').click()
                 time.sleep(3)
-                log.debug(f'{username}\'s lastname editable as expected')
+                log.debug("%s's lastname editable as expected", username)
             else:
                 lastname.fill(random_username())
                 page.get_by_role('button', name='Save').click()
                 time.sleep(3)
                 page.get_by_text('The LDAP object could not be saved: Permission denied.')
                 # FIXME: expect(lastname).to_be_disabled()
-                log.debug(f'{username}\'s lastname disabled as expected')
+                log.debug("%s's lastname disabled as expected", username)
         else:
             # Check if user is visible
             # FIXME: does not work, we see the user
@@ -187,30 +187,30 @@ def test_guardian_property_filtering_in_browser(page: Page, guardian_setup, ucr,
         page.goto(f'{base_url}/univention/management/#module=udm:groups/group:0:')
         page.wait_for_load_state('networkidle', timeout=60000)
         time.sleep(5)
-        log.debug(f'group_property_set: {group_property_set}')
-        log.debug(f'group_name: {group_name}')
-        log.debug(f'username: {username}')
+        log.debug("group_property_set: %s", group_property_set)
+        log.debug("group_name: %s", group_name)
+        log.debug("username: %s", username)
         if 'name' in group_property_set or '*' in group_property_set:
             # If 'name' is permitted, we should be able to see and open the group.
             page.get_by_role('gridcell', name=group_name).get_by_role('img').click()
             # Wait for the detail view to load
             description = page.locator('input[name="description"]')
             expect(description).to_be_visible(timeout=8000)
-            log.debug(f'{group_name} found as expected')
+            log.debug("%s found as expected", group_name)
             # Check if we can edit a permitted property ('description')
             if 'description' in group_property_set or '*' in group_property_set:
                 description.fill(random_username())
                 # Save changes
                 page.get_by_role('button', name='Save').click()
                 time.sleep(3)
-                log.debug(f'{group_name}\'s description editable as expected')
+                log.debug("%s's description editable as expected", group_name)
             else:
                 description.fill(random_username())
                 page.get_by_role('button', name='Save').click()
                 time.sleep(3)
                 page.get_by_text('The LDAP object could not be saved: Permission denied.')
                 # FIXME: expect(description).to_be_disabled()
-                log.debug(f'{group_name}\'s description disabled as expected')
+                log.debug("%s's description disabled as expected", group_name)
         else:
             # Check if user is visible
             # FIXME: does not work, we see the user

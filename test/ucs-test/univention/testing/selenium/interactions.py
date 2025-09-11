@@ -188,7 +188,7 @@ class Interactions:
             self.get_all_enabled_elements,
         )
         if len(elems) != 1:
-            logger.warning(f"Found {len(elems):d} input elements instead of one. Try using the first one")
+            logger.warning("Found %d input elements instead of one. Try using the first one", len(elems))
         elems[0].clear()
         elems[0].send_keys(inputvalue)
         if with_click:
@@ -202,13 +202,13 @@ class Interactions:
             self.get_all_enabled_elements,
         )
         if len(elems) != 1:
-            logger.warning(f"Found {len(elems):d} input elements instead of one. Try using the first one")
+            logger.warning("Found %d input elements instead of one. Try using the first one", len(elems))
         elems[0].clear()
         elems[0].send_keys(inputvalue)
 
     def submit_input(self, inputname: str) -> None:
         """Submit the input in an input-element with the tag inputname."""
-        logger.info(f'Submitting input field {inputname!r}.')
+        logger.info("Submitting input field %r.", inputname)
         elem = self.get_input(inputname)
         # elem.submit() -> This doesn't work, when there is an html element
         # named 'submit'.

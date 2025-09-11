@@ -241,12 +241,12 @@ class AdHocProvisioning:
                 data=json.dumps(udm_config),
             )
         except KeycloakPostError as e:
-            self.logger.error(f"Failed to configure UDM connection: {e}")
+            self.logger.error("Failed to configure UDM connection: %s", e)
             raise
 
     def setup_user_profile_attributes(self, realm: str, is_dummy_realm: bool) -> None:
         """Set up user profile attributes for a realm."""
-        self.logger.info(f"Setting up user profile attributes for realm: {realm}")
+        self.logger.info("Setting up user profile attributes for realm: %s", realm)
         kc = self.kc_dummy if is_dummy_realm else self.kc_existing
 
         if not kc:
@@ -255,7 +255,7 @@ class AdHocProvisioning:
         try:
             user_profile = kc.connection.raw_get(self.path + f"/admin/realms/{realm}/users/profile").json()
         except KeycloakError as e:
-            self.logger.error(f"Failed to get user profile for realm {realm}: {e}")
+            self.logger.error("Failed to get user profile for realm %s: %s", realm, e)
             raise
 
         attributes_to_add = []
@@ -303,14 +303,14 @@ class AdHocProvisioning:
             if not any(existing_attr["name"] == attr["name"] for existing_attr in existing_attributes):
                 existing_attributes.append(attr)
             else:
-                self.logger.info(f"Attribute {attr['name']} already exists in realm {realm}")
+                self.logger.info("Attribute %s already exists in realm %s", attr["name"], realm)
 
         user_profile["attributes"] = existing_attributes
         try:
             kc.connection.raw_put(self.path + f"/admin/realms/{realm}/users/profile", data=json.dumps(user_profile))
-            self.logger.info(f"User profile updated for realm {realm}")
+            self.logger.info("User profile updated for realm %s", realm)
         except KeycloakError as e:
-            self.logger.error(f"Failed to update user profile for realm {realm}: {e}")
+            self.logger.error("Failed to update user profile for realm %s: %s", realm, e)
             raise
 
     def setup_user_attributes(self) -> None:
@@ -333,7 +333,7 @@ class AdHocProvisioning:
                 existing_scope = next((scope for scope in client_scopes if scope["name"] == scope_name), None)
 
                 if existing_scope:
-                    self.logger.info(f"Client scope '{scope_name}' already exists")
+                    self.logger.info("Client scope '%s' already exists", scope_name)
                     scope_id = existing_scope["id"]
                 else:
                     scope_payload = {
@@ -345,7 +345,7 @@ class AdHocProvisioning:
                         },
                     }
                     scope_id = self.kc_existing.create_client_scope(scope_payload)
-                    self.logger.info(f"Created client scope: {scope_name}")
+                    self.logger.info("Created client scope: %s", scope_name)
 
                 existing_mappers = self.kc_existing.get_mappers_from_client_scope(scope_id)
                 mapper_exists = any(m["name"] == attr["name"] for m in existing_mappers)
@@ -366,11 +366,11 @@ class AdHocProvisioning:
                         },
                     }
                     self.kc_existing.add_mapper_to_client_scope(scope_id, mapper_payload)
-                    self.logger.info(f"Added mapper to client scope: {attr['name']}")
+                    self.logger.info("Added mapper to client scope: %s", attr)
                 else:
-                    self.logger.info(f"Mapper '{attr['name']}' already exists for client scope '{scope_name}'")
+                    self.logger.info("Mapper '%s' already exists for client scope '%s'", attr["name"], scope_name)
             except KeycloakError as e:
-                self.logger.error(f"Failed to setup attribute {attr['name']}: {e}")
+                self.logger.error("Failed to setup attribute %s: %s", attr, e)
                 raise
 
     def setup_idp_mappers(self) -> None:
@@ -437,7 +437,7 @@ class AdHocProvisioning:
             existing_mappers = self.kc_existing.get_idp_mappers(idp_alias)
             existing_mapper_names = {mapper["name"] for mapper in existing_mappers}
         except Exception as e:
-            self.logger.warning(f"Could not retrieve existing mappers: {e}")
+            self.logger.warning("Could not retrieve existing mappers: %s", e)
             existing_mapper_names = set()
 
         for mapper in mappers:
@@ -448,11 +448,11 @@ class AdHocProvisioning:
                         idp_alias=idp_alias,
                         payload=mapper,
                     )
-                    self.logger.info(f"Added IDP mapper: {mapper['name']}")
+                    self.logger.info("Added IDP mapper: %s", mapper["name"])
                 except KeycloakError as e:
-                    self.logger.error(f"Failed to add mapper {mapper['name']}: {e}")
+                    self.logger.error("Failed to add mapper %s: %s", mapper["name"], e)
             else:
-                self.logger.info(f"IDP mapper {mapper['name']} already exists, skipping")
+                self.logger.info("IDP mapper %s already exists, skipping", mapper["name"])
 
     def setup_client_mappers(self, client_id: str) -> None:
         """Set up client mappers for the federation client."""
@@ -489,30 +489,30 @@ class AdHocProvisioning:
             existing_mappers = self.kc_dummy.get_mappers_from_client(client_id)
             existing_mapper_names = {mapper["name"] for mapper in existing_mappers}
         except Exception as e:
-            self.logger.warning(f"Could not retrieve existing client mappers: {e}")
+            self.logger.warning("Could not retrieve existing client mappers: %s", e)
             existing_mapper_names = set()
 
         for mapper in mappers:
             if mapper["name"] not in existing_mapper_names:
                 try:
                     self.kc_dummy.add_mapper_to_client(client_id, mapper)
-                    self.logger.info(f"Added client mapper: {mapper['name']}")
+                    self.logger.info("Added client mapper: %s", mapper["name"])
                 except KeycloakError as e:
-                    self.logger.error(f"Failed to add client mapper {mapper['name']}: {e}")
+                    self.logger.error("Failed to add client mapper %s: %s", mapper["name"], e)
             else:
-                self.logger.info(f"Client mapper {mapper['name']} already exists, skipping")
+                self.logger.info("Client mapper %s already exists, skipping", mapper["name"])
 
     def remove_dummy_realm(self) -> None:
         """Remove the dummy realm created during setup."""
-        self.logger.info(f"Removing dummy realm: {self.dummy_realm}")
+        self.logger.info("Removing dummy realm: %s", self.dummy_realm)
         try:
             self.kc_master.delete_realm(self.dummy_realm)
-            self.logger.info(f"Successfully removed dummy realm: {self.dummy_realm}")
+            self.logger.info("Successfully removed dummy realm: %s", self.dummy_realm)
         except KeycloakError as e:
             if e.response_code == 404:
-                self.logger.info(f"Dummy realm '{self.dummy_realm}' doesn't exist, nothing to remove")
+                self.logger.info("Dummy realm '%s' doesn't exist, nothing to remove", self.dummy_realm)
             else:
-                self.logger.error(f"Failed to remove dummy realm '{self.dummy_realm}': {e}")
+                self.logger.error("Failed to remove dummy realm '%s': %s", self.dummy_realm, e)
                 raise
 
     def remove_identity_provider(self) -> None:
@@ -521,16 +521,16 @@ class AdHocProvisioning:
             self.kc_existing = self._create_keycloak_admin(self.existing_realm, "master")
 
         idp_alias = f"oidc-{self.dummy_realm}"
-        self.logger.info(f"Removing identity provider: {idp_alias} from realm: {self.existing_realm}")
+        self.logger.info("Removing identity provider: %s from realm: %s", idp_alias, self.existing_realm)
 
         try:
             self.kc_existing.delete_idp(idp_alias)
-            self.logger.info(f"Successfully removed identity provider: {idp_alias}")
+            self.logger.info("Successfully removed identity provider: %s", idp_alias)
         except KeycloakError as e:
             if e.response_code == 404:
-                self.logger.info(f"Identity provider '{idp_alias}' doesn't exist, nothing to remove")
+                self.logger.info("Identity provider '%s' doesn't exist, nothing to remove", idp_alias)
             else:
-                self.logger.error(f"Failed to remove identity provider '{idp_alias}': {e}")
+                self.logger.error("Failed to remove identity provider '%s': %s", idp_alias, e)
                 raise
 
     def remove_authentication_flow(self) -> None:
@@ -539,7 +539,7 @@ class AdHocProvisioning:
             self.kc_existing = self._create_keycloak_admin(self.existing_realm, "master")
 
         flow_alias = "adhoc"
-        self.logger.info(f"Removing authentication flow: {flow_alias} from realm: {self.existing_realm}")
+        self.logger.info("Removing authentication flow: %s from realm: %s", flow_alias, self.existing_realm)
 
         try:
             # First, get all authentication flows to find the ID
@@ -551,11 +551,11 @@ class AdHocProvisioning:
                 self.kc_existing.connection.raw_delete(
                     self.path + f"/admin/realms/{self.existing_realm}/authentication/flows/{flow_id}",
                 )
-                self.logger.info(f"Successfully removed authentication flow: {flow_alias}")
+                self.logger.info("Successfully removed authentication flow: %s", flow_alias)
             else:
-                self.logger.info(f"Authentication flow '{flow_alias}' doesn't exist, nothing to remove")
+                self.logger.info("Authentication flow '%s' doesn't exist, nothing to remove", flow_alias)
         except KeycloakError as e:
-            self.logger.error(f"Failed to remove authentication flow '{flow_alias}': {e}")
+            self.logger.error("Failed to remove authentication flow '%s': %s", flow_alias, e)
             raise
 
     def setup(self) -> None:
@@ -564,7 +564,7 @@ class AdHocProvisioning:
             self.logger.info("Starting Keycloak federation setup")
 
             # Create dummy realm
-            self.logger.info(f"Creating dummy realm: {self.dummy_realm}")
+            self.logger.info("Creating dummy realm: %s", self.dummy_realm)
             self.kc_master.create_realm(
                 payload=self._get_realm_payload(self.dummy_realm),
                 skip_exists=True,
@@ -622,7 +622,7 @@ class AdHocProvisioning:
             self.setup_univention_auth_flow()
 
             # Set up IDP
-            self.logger.info(f"Setting up Identity Provider in realm: {self.existing_realm}")
+            self.logger.info("Setting up Identity Provider in realm: %s", self.existing_realm)
             idp_payload = self._get_idp_payload(client_secret)
             try:
                 self.kc_existing.create_idp(idp_payload)
@@ -641,7 +641,7 @@ class AdHocProvisioning:
             self.logger.info("Keycloak federation setup completed successfully")
 
         except Exception as e:
-            self.logger.error(f"Setup failed: {e}", exc_info=True)
+            self.logger.exception("Setup failed: %s", e)
             raise
 
     def cleanup(self) -> None:
@@ -653,7 +653,7 @@ class AdHocProvisioning:
             self.remove_dummy_realm()
             self.logger.info("Keycloak federation cleanup completed successfully")
         except Exception as e:
-            self.logger.error(f"Cleanup failed: {e}", exc_info=True)
+            self.logger.exception("Cleanup failed: %s", e)
             raise
 
 
