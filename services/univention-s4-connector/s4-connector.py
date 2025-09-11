@@ -85,9 +85,9 @@ def _restart_connector() -> None:
     listener.setuid(0)
     try:
         if not subprocess.call(['pgrep', '-f', 'python3.*s4connector.s4.main']):
-            log.info("s4-connector: restarting connector ...")
+            log.process("s4-connector: restarting connector ...")
             subprocess.call(('systemctl', 'restart', 'univention-s4-connector'))
-            log.info("s4-connector: ... done")
+            log.process("s4-connector: ... done")
     finally:
         listener.unsetuid()
 
@@ -125,7 +125,7 @@ def handler(dn: str, new: dict[str, list[bytes]] | None, old: dict[str, list[byt
                 # might only see the first step.
                 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=32542
                 if old_dn and new.get('entryUUID') != old_object.get('entryUUID'):
-                    log.info("The entryUUID attribute of the saved object (%s) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario.", old_dn, dn)
+                    log.process("The entryUUID attribute of the saved object (%s) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario.", old_dn, dn)
                     _dump_changes_to_file_and_check_file(directory, old_dn, {}, old_object, None)
                     old_dn = None
 
