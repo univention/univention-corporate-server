@@ -348,7 +348,7 @@ class Handler(RequestHandler):
             self.handler._current_request = msg
 
         method = self.request.headers['X-UMC-Method']  # TODO: error handling if unset
-        MODULE.process('Received request %r: %r', ' '.join(msg.arguments or [msg.command, method]), msg.username, msg.flavor, msg.auth_type, msg.locale)
+        MODULE.process('Received request', method=' '.join(msg.arguments or [msg.command, method]), username=msg.username, flavor=msg.flavor, auth_type=msg.auth_type, locale=msg.locale)
         try:
             self.server.handle_init(msg)
         except _Skip:
