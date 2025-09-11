@@ -61,6 +61,7 @@ def usage(stream):  # type: (IO[str]) -> None
     print('  %-32s %s' % ('remove:', 'Remove an existing object'), file=stream)
     print('  %-32s %s' % ('list:', 'List objects'), file=stream)
     print('  %-32s %s' % ('move:', 'Move object in directory tree'), file=stream)
+    print('  %-32s %s' % ('restore:', 'Restore object from recyclebin'), file=stream)
     print('', file=stream)
     print('  %-32s %s' % ('-h | --help | -?:', 'print this usage message'), file=stream)
     print('  %-32s %s' % ('--version:', 'print version information'), file=stream)
@@ -111,6 +112,9 @@ def usage(stream):  # type: (IO[str]) -> None
     print('move options:', file=stream)
     print('  --%-30s %s' % ('dn', 'Move object with DN'), file=stream)
     print('  --%-30s %s' % ('position', 'Move to position in tree'), file=stream)
+    print('', file=stream)
+    print('restore options:', file=stream)
+    print('  --%-30s %s' % ('dn', 'Restore object with DN'), file=stream)
     print('', file=stream)
     print('Description:', file=stream)
     print('  univention-directory-manager is a tool to handle the configuration for UCS', file=stream)
@@ -639,6 +643,8 @@ def _doit(
         cli.remove(remove_referring=remove_referring, recursive=recursive, ignore_not_exists=ignore_not_exists, filter=filter)
     elif action in ('list', 'lookup'):
         cli.list(list_policies, filter, superordinate_dn, policyOptions, policies_with_DN, properties)
+    elif action == 'restore':
+        cli.restore()
     else:
         print("Unknown or no action defined", file=stderr)
         print('', file=stderr)
@@ -681,6 +687,9 @@ class CLI:
 
     def list(self, *args, **kwargs):  # type: (*Any, **Any) -> Any
         return self._list(self.module_name, self.module, self.dn, self.lo, self.position, self.superordinate, *args, **kwargs)
+
+    def restore(self, *args, **kwargs):  # type: (*Any, **Any) -> Any
+        return self._restore(self.module_name, self.module, self.dn, self.lo, self.position, self.superordinate, *args, **kwargs)
 
     def _create(
         self,
@@ -761,6 +770,34 @@ class CLI:
             print('Object exists: %s' % exists_msg, file=self.stdout)
         elif created:
             print('Object created: %s' % dn, file=self.stdout)
+
+    def _restore(
+        self,
+        module_name,  # type: str
+        module,  # type: univention.admin.modules.UdmModule
+        dn,  # type: str
+        lo,  # type: univention.admin.uldap.access
+        position,  # type: univention.admin.uldap.position
+        superordinate,  # type: Optional[univention.admin.handlers.simpleLdap]
+    ):  # type: (...) -> None
+        if not dn:
+            raise OperationFailed('E: DN is missing')
+
+        if not univention.admin.modules.supports(module_name, 'restore'):
+            raise OperationFailed('Restore %s not allowed' % module_name)
+
+        try:
+            object = univention.admin.objects.get(module, None, lo, position='', dn=dn)
+        except univention.admin.uexceptions.noObject:
+            raise OperationFailed('E: object not found')
+
+        object.open()
+
+        try:
+            object.restore()
+        except univention.admin.uexceptions.ldapError as msg:
+            raise OperationFailed(str(msg))
+        print('Object restored: %s' % (dn or object.dn,), file=self.stdout)
 
     def _move(
         self,
