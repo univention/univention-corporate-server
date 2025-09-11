@@ -45,5 +45,5 @@ class UpdateCertificates(UpdateCertificates, DockerActionMixin):
                     # ucs name
                     self._copy_host_cert(docker, docker_host_cert, docker_host_cert)
             else:
-                self.warn("Could not update certificates for %s, app is not running", app)
+                self.warn(f'Could not update certificates for {app}, app is not running')
         super().update_certificates(app)
