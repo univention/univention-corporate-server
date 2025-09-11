@@ -27,7 +27,7 @@ _ = translation.translate
 log = getLogger('ADMIN')
 
 module = 'recyclebin/deletedobject'
-operations = ['edit', 'remove', 'search', 'move']
+operations = ['edit', 'remove', 'search', 'restore']
 childs = False
 short_description = _('Recyclebin: Deleted Object')
 object_name = _('Deleted Object')
@@ -121,8 +121,6 @@ layout = [
             'originalUniventionObjectIdentifier',
             'deleteAt',
             'deletedBy',
-            'originalObjectClasses',
-            'originalEntryUUID',
         ]),
         Group(_('References'), layout=[
             'referencedBy',
