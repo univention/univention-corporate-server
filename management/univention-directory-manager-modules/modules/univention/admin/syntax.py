@@ -16,7 +16,6 @@ import re
 import shlex
 import sys
 import time
-import traceback
 import uuid
 import zlib
 import zoneinfo
@@ -949,11 +948,11 @@ class UDM_Attribute(ISyntax, _UDMObjectOrAttribute):
 
         def map_choice(obj):
             obj.open()
-            log.debug('Loading choices from %s: %s', obj.dn, obj.info)
+            log.debug('Loading choices from', dn=obj.dn, type=obj.module, properties=obj.info)
             try:
                 values = obj.info[cls.attribute]
             except KeyError:
-                log.warning('Object has no attribute %r', cls.attribute)
+                log.warning('Object is missing property', property=cls.attribute)
                 # this happens for example in PrinterDriverList
                 # if the ldap schema is not installed
                 # and thus no 'printmodel' attribute is known.
@@ -975,7 +974,7 @@ class UDM_Attribute(ISyntax, _UDMObjectOrAttribute):
         except LookupError:
             return []
 
-        log.debug('Found syntax %s with udm_module property', cls.name)
+        log.trace('Found syntax with udm_module property', syntax=cls.name)
         if cls.udm_filter == 'dn':
             target_dn = options.get('dependencies', {})[cls.depends]
             obj = module.object(None, lo, None, target_dn)
@@ -1431,7 +1430,7 @@ class jpegPhoto(Upload):
                 raw = output.getvalue()
                 text = base64.b64encode(raw).decode('UTF-8')
             except (OSError, KeyError, IndexError):
-                log.warning('Failed to convert image to JPEG: %s', traceback.format_exc())
+                log.warning('Failed to convert image to JPEG: %s', exc_info=True)
                 raise univention.admin.uexceptions.valueError(_('Failed to convert file into JPEG format.'))
             return text
         except (base64.binascii.Error, ValueError, TypeError):
@@ -2801,10 +2800,10 @@ class emailAddressValidDomain(UDM_Objects, emailAddress):
                     ldapfilter = ldap.filter.filter_format('(&(objectClass=univentionMailDomainname)(cn=%s))', [domain])
                     result = lo.authz_connection.searchDn(filter=ldapfilter)  # TODO: information disclosure?
                     domainCache[domain] = bool(result)
-                    log.debug('admin.syntax.%s: address=%r   domain=%r   result=%r', self.name, mailaddress, domain, result)
+                    log.debug('check mail address', syntax=self.name, address=repr(mailaddress), domain=repr(domain), result=result)
                 if not domainCache[domain]:
                     faillist.append(mailaddress)
-                    log.debug('admin.syntax.%s: address=%r   domain=%r', self.name, mailaddress, domain)
+                    log.debug('check mail address', syntax=self.name, address=repr(mailaddress), domain=repr(domain))
 
         if faillist:
             raise univention.admin.uexceptions.valueError(self.errMsgDomain % (', '.join(faillist),), property=property)
@@ -3650,7 +3649,7 @@ class ldapDn(simple):
         try:
             result = lo.authz_connection.searchDn(filter=cls.searchFilter)  # FIXME: information disclosure
         except univention.admin.uexceptions.base:
-            log.info('Failed to initialize syntax class %s', cls.name)
+            log.info('Failed to initialize syntax class', syntax=cls.name)
             return []
 
         return cls.sort_choices([
@@ -3858,7 +3857,7 @@ class _CachedLdap(combobox, metaclass=_ClassChoices):
                 finally:
                     conn.unbind()
             except ldap.LDAPError as ex:
-                log.warning('syntax.py: Failed LDAP connection: %s', ex)
+                log.warning('Failed LDAP connection', error=ex)
 
         return cls._cached_choices
 
@@ -6088,7 +6087,7 @@ class LDAP_Search(select):
                     id_ = obj.oldattr[store][0].decode(*module.mapping.getEncoding(store))
                 else:
                     # no valid store object, ignore
-                    log.warning('LDAP_Search syntax %r: %r is no valid property for object %r - ignoring entry.', cls.name, store, dn)
+                    log.warning('invalid property for LDAP_Seearch syntax - ignoring entry', syntax=cls.name, dn=dn, property=store)
                     continue
 
             # find the value to display
@@ -6102,7 +6101,7 @@ class LDAP_Search(select):
                 elif obj.oldattr.get(display):
                     label = obj.oldattr[display][0].decode(*module.mapping.getEncoding(display))
                 else:
-                    log.warning('LDAP_Search syntax %r: defines unknown attribute %r', cls.name, display)
+                    log.warning('unknown label property for LDAP_Seearch syntax', syntax=cls.name, dn=dn, property=repr(display))
                     label = 'Unknown attribute %r' % (display,)
 
             # TODO: remove this one day...
@@ -6465,7 +6464,7 @@ class PrinterURI(complex):
 
         parsed = []
         for i, (text, (desc, syn)) in enumerate(zip(texts, self.subsyntaxes)):
-            log.debug('syntax.py: subsyntax[%s]=%s, text=%s', i, syn, text)
+            log.trace('parse printer URI syntax', subsyntax=f'[{i}]={syn}', value=text)
             if text is None and (self.min_elements is None or (i + 1) < count):
                 raise univention.admin.uexceptions.valueInvalidSyntax(_('Invalid syntax: %s > %s') % (self.name, desc))
             s = syn() if inspect.isclass(syn) else syn

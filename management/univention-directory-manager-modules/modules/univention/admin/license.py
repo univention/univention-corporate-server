@@ -192,10 +192,10 @@ class License:
             self.__selected = True
 
     def isValidFor(self, module):
-        log.debug('check license for module %s, %r', module, self.types)
+        log.debug('check license for module', module=module, types=repr(self.types))
         if module in licenses.modules:
             mlics = licenses.modules[module]
-            log.debug('module license: %r', mlics)
+            log.debug('module for license', module=mlics)
             # empty list -> valid
             return mlics.valid(self.types)
         # unknown modules are always valid (e.g. customer modules)
@@ -207,24 +207,24 @@ class License:
             if opts:
                 module = univention.admin.modules.modules[mod]
                 if module and hasattr(module, 'options'):
-                    log.debug('modifyOptions: %r', opts)
+                    log.debug('modify options for license', options=opts)
                     for opt, val in opts:
                         if callable(val):
                             val = val(self)
                         if isinstance(val, collections.Sequence):
                             module.options[opt].disabled, module.options[opt].default = val
-                        log.debug('modifyOption: %s, %d, %d', opt, module.options[opt].disabled, module.options[opt].default)
+                        log.debug('modify options', name=opt, disabled=module.options[opt].disabled, default=module.options[opt].default)
 
     def checkModules(self):
         deleted_mods = []
         for mod in univention.admin.modules.modules.keys():
             # remove module if valid license is missing
             if self.isValidFor(mod):
-                log.debug('update: License is valid for module %s!!', mod)
+                log.debug('update: License is valid!!', type=mod)
                 # check module options according to given license type
                 self.modifyOptions(mod)
             else:
-                log.debug('update: License is NOT valid for module %s!!', mod)
+                log.debug('update: License is NOT valid!!', type=mod)
                 del univention.admin.modules.modules[mod]
                 deleted_mods.append(mod)
 
@@ -399,7 +399,7 @@ class License:
             self.sysAccountsFound = len(lo.authz_connection.searchDn(filter=str(filter)))
         except univention.admin.uexceptions.noObject:
             pass
-        log.debug('Univention sysAccountsFound: %d', self.sysAccountsFound)
+        log.debug('Univention sysAccountsFound', count=self.sysAccountsFound)
 
     def __countObject(self, obj, lo):
         version = self.version
@@ -411,7 +411,7 @@ class License:
                 self.real[version][obj] = 0
             else:
                 self.real[version][obj] = len(result)
-            log.debug('Univention %s real %d', self.names[version][obj], self.real[version][obj])
+            log.debug('Univention License', name=self.names[version][obj], count=self.real[version][obj])
         else:
             self.real[version][obj] = 0
 
@@ -431,7 +431,7 @@ class License:
         try:
             value = univention.license.getValue(key)
             self.new_license = True
-            log.debug('Univention %r allowed %r', name, value)
+            log.debug('Univention License allowed', name=name, value=value)
         except (KeyError, Exception):
             if self.searchResult:
                 value = self.searchResult[0][1].get(key, [default])
@@ -440,10 +440,10 @@ class License:
                     value = value[0]
                 self.new_license = True
             else:
-                log.debug('%r: %s', name, errormsg)
+                log.debug('get value failed', name=name, error=errormsg)
                 value = default
 
-        log.debug('%r = %r', name, value)
+        log.debug('get license value:', name=name, value=value)
         return value
 
     def __readLicense(self):

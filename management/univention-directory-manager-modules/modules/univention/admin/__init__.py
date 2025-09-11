@@ -49,7 +49,7 @@ def ucr_overwrite_properties(module: Any, lo: univention.admin.uldap.access) -> 
         try:
             prop_name, attr = var[len(ucr_prefix):].split('/', 1)
             # ignore internal attributes
-            log.trace('ucr_overwrite_properties: found variable: %s', var)
+            log.trace('property overwrite: found variable', name=var)
             if attr.startswith('__'):
                 continue
             if attr == 'default':
@@ -67,7 +67,7 @@ def ucr_overwrite_properties(module: Any, lo: univention.admin.uldap.access) -> 
                         #   will fail. best bet is str as type
                         old_prop_val = ''
                     prop_val_type = type(old_prop_val)
-                    log.trace('ucr_overwrite_properties: set property attribute %s to %s', attr, new_prop_val)
+                    log.trace('property overwrite: set property attribute', name=attr, value=new_prop_val)
                     if attr in ('syntax',):
                         if hasattr(univention.admin.syntax, new_prop_val):
                             syntax = getattr(univention.admin.syntax, new_prop_val)
@@ -78,12 +78,12 @@ def ucr_overwrite_properties(module: Any, lo: univention.admin.uldap.access) -> 
                                 syntax._load(lo)
                                 setattr(prop, attr, syntax)
                             else:
-                                log.error("ucr_overwrite_properties: UCR variable %s does not refer to a known UDM syntax: '%s'", var, new_prop_val)
+                                log.error("property overwrite: Unknown UDM syntax", ucr=var, syntax=new_prop_val)
                     elif prop_val_type is bool:
                         setattr(prop, attr, configRegistry.is_true(None, None, new_prop_val))
                     else:
                         setattr(prop, attr, prop_val_type(new_prop_val))
-                    log.trace('ucr_overwrite_properties: get property attribute: %s (type %s)', old_prop_val, prop_val_type)
+                    log.trace('property overwrite: get property attribute: %s (type %s)', old_prop_val, prop_val_type)
         except Exception:
             log.exception('ucr_overwrite_properties: failed to set property attribute:')
             continue
