@@ -23,7 +23,7 @@ def check_for_backtrace(page: Page, page_index: int = 0):
                 'region',
                 name='Hide server error message',
             )
-            logger.info(f'Recorded backtrace on page {page_index}')
+            logger.info("Recorded backtrace on page %s", page_index)
             print(backtrace_container.inner_text())
         else:
             logger.info('An unknown error with status code 502 occurred while connecting to the server.')

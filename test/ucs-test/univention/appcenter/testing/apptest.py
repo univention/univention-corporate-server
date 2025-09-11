@@ -34,7 +34,7 @@ PROVIDER_PORTAL_JSON = 'https://provider-portal.software-univention.de/appcenter
 
 def run_test_file(fname: str) -> None:
     with tempfile.NamedTemporaryFile(suffix='.py') as tmpfile:
-        logger.info(f'Copying file to {tmpfile.name}')
+        logger.info("Copying file to %s", tmpfile.name)
         shutil.copy2(fname, tmpfile.name)
         with pip_modules(['pytest', 'selenium', 'xvfbwrapper', 'uritemplate']):
             importlib.reload(sys.modules[__name__])
@@ -415,7 +415,7 @@ else:
     @pytest.fixture
     def ucs_call(fqdn: str) -> Callable[[Sequence[str]], None]:
         def _run(args):
-            logger.info(f'Running: {args!r}')
+            logger.info("Running: %r", args)
             if is_local():
                 logger.info('... locally')
                 subprocess.run(args, check=True)
@@ -516,7 +516,7 @@ else:
                 return app
 
             def get_published_version(self, app_id: str):
-                logger.info(f'Retrieving published App {app_id}')
+                logger.info("Retrieving published App %s", app_id)
                 r = requests.get(PROVIDER_PORTAL_JSON)
                 for app in r.json():
                     if app_id == app['id']:
@@ -524,7 +524,7 @@ else:
                 return None
 
             def get(self, app_id: str):
-                logger.info(f'Retrieving App {app_id}')
+                logger.info("Retrieving App %s", app_id)
                 response = self.client.umc_command('appcenter/get', {'application': app_id})
                 return response.result
 
@@ -628,7 +628,7 @@ else:
         if ret is None:
             logger.warning('$UCS_TEST_SELENIUM_BASE_URL not set')
             ret = hostname
-            logger.warning(f'  using {ret}')
+            logger.warning("  using %s", ret)
         return ret
 
     @pytest.fixture(scope='session')
@@ -638,7 +638,7 @@ else:
         if ret is None:
             logger.warning('$UCS_TEST_SELENIUM_SCREENSHOT_PATH not set')
             ret = 'selenium'
-            logger.warning(f'  using {ret}')
+            logger.warning("  using %s", ret)
         return os.path.abspath(ret)
 
     @pytest.fixture

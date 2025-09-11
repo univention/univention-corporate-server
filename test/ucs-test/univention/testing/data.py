@@ -168,7 +168,7 @@ class TestEnvironment:
         if self.tags_prohibited is not None:
             self.tags_prohibited -= set(ignore)
             self.tags_prohibited |= set(prohibit)
-        TestEnvironment.logger.debug(f'tags_required={self.tags_required!r} tags_prohibited={self.tags_prohibited!r}')
+        TestEnvironment.logger.debug("tags_required=%r tags_prohibited=%r", self.tags_required, self.tags_prohibited)
 
     def set_exposure(self, exposure: str) -> None:
         """Set maximum allowed exposure level."""
@@ -597,7 +597,7 @@ class TestCase:
 
     def check(self, environment: TestEnvironment) -> list[Verdict]:
         """Check if the test case should run."""
-        TestCase.logger.info(f'Checking test {self.filename}')
+        TestCase.logger.info("Checking test %s", self.filename)
         if self.timeout is None:
             self.timeout = environment.timeout
         conditions = []

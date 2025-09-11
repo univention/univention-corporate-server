@@ -101,7 +101,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
         try:
             self.driver.execute_script(f'document.cookie = "UMCLang={self.language}; path=/univention/"')
         except selenium_exceptions.WebDriverException as exc:
-            logger.warning(f'Setting language cookie failed: {exc}')
+            logger.warning("Setting language cookie failed: %s", exc)
 
         self.set_viewport_size(1200, 800)
         return self
@@ -109,7 +109,7 @@ class UMCSeleniumTest(ChecksAndWaits, Interactions):
     def __exit__(self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: TracebackType | None) -> None:
         try:
             if exc_type:
-                logger.error(f'Exception: {exc_type} {exc_value}')
+                logger.error("Exception: %s %s", exc_type, exc_value)
                 self.save_screenshot(hide_notifications=False, append_timestamp=True)
                 self.save_browser_log()
             self.driver.quit()
