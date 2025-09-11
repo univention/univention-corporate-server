@@ -70,10 +70,12 @@ def test_log_structured_with_time(tmp_path):
     logger.exception('message', foo='bar')  # noqa: LOG004
     logger.warning('message', foo='bar')
     logger.process('message', foo='bar')
-    logger.info('message', foo='bar')
-    logger.debug('message', foo='bar')
-    logger.trace('message', foo='bar')
-    logger.getChild('blah').error('message', foo='bar')
+    logger = logger.bind(foo='bar')
+    logger.info('message')
+    logger.debug('message')
+    logger.trace('message')
+    logger.log(6, 'message')
+    logger.getChild('blah').error('message')
     assert logger.root
     log = normalize_logformat(tmplog.read_text())
     expected = '''
@@ -85,6 +87,7 @@ def test_log_structured_with_time(tmp_path):
 <6>2025-01-01T00:00:00.000000+00:00     INFO [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
 <7>2025-01-01T00:00:00.000000+00:00    DEBUG [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
 <7>2025-01-01T00:00:00.000000+00:00    TRACE [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
+<7>2025-01-01T00:00:00.000000+00:00  Level 6 [         -] message\t| pid=12345 logname=bar func=test_module.test_function:1 foo=bar
 <3>2025-01-01T00:00:00.000000+00:00    ERROR [         -] message\t| pid=12345 logname=bar.blah func=test_module.test_function:1 foo=bar
 '''.strip()
     assert log == expected
