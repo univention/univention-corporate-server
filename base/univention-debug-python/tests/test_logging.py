@@ -5,6 +5,7 @@
 import importlib
 import logging
 import os
+import pickle  # noqa: S403
 import re
 import sys
 
@@ -357,3 +358,26 @@ def test_repr():
     logger.setLevel(logging.DEBUG)
     assert repr(logger.univention_debug_handler) == '<DebugHandler[ADMIN](DEBUG)>'
     assert repr(logger) == '<univention.logging.Logger ADMIN (DEBUG)>'
+
+
+@pytest.mark.xfail(reason='setLevel is broken, after reloading log output is gone')
+def test_pickleable(tmp_path):
+    # for multiprocessing
+    tmplog = tmp_path / 'logfile'
+    tmplog.touch()
+    import univention.logging as ul
+    ul.basicConfig(filename=str(tmplog), level=logging.DEBUG, delay_init=True)
+    logger = logging.getLogger('ADMIN')
+    log = ul.Structured(logger)
+    log.warning('test')
+
+    log.setLevel(logging.INFO)
+    log = pickle.loads(pickle.dumps(log))
+    log.error('test')
+    assert isinstance(log._Structured__log, ul.Logger)
+    logger.univention_debug_handler.close()
+    # assert log.getEffectiveLevel() == logging.INFO  # FIXME: level is not set
+
+    lines = tmplog.read_text()
+    assert 'WARNING' in lines
+    assert 'ERROR' in lines
