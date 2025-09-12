@@ -10,3 +10,4 @@ from univention.logging import Structured
 
 __all__ = ('log',)
 log = Structured(logging.getLogger('ADMIN'))
+log_ldap = Structured(logging.getLogger('LDAP'))

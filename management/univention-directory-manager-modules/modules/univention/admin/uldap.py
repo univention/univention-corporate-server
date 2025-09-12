@@ -6,7 +6,6 @@
 from __future__ import annotations
 
 import time
-from logging import getLogger
 from typing import TYPE_CHECKING
 
 import ldap
@@ -15,6 +14,7 @@ import univention.admin.license
 import univention.uldap
 from univention.admin import localization
 from univention.admin._ucr import configRegistry
+from univention.admin.log import log as udm_log, log_ldap as log
 from univention.dn import DN
 
 
@@ -23,9 +23,6 @@ if TYPE_CHECKING:
     from typing import Any
 
 __all__ = ('DN', 'access', 'domain', 'explodeDn', 'getAdminConnection', 'getBaseDN', 'getMachineConnection', 'position')
-
-udm_log = getLogger('ADMIN')
-log = getLogger('LDAP')
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
