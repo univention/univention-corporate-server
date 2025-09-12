@@ -77,7 +77,7 @@ class Zone:
         return f'{self.zone}.in-addr.arpa'
 
     def nameserver(self) -> Iterator:
-        for nameserver in self.udm_zone.get('nameserver'):
+        for nameserver in self.udm_zone.get('nameserver', []):
             yield NameServer(self, nameserver)
 
     def umc_link(self) -> tuple[str, dict[str, Any]]:
