@@ -109,7 +109,9 @@ class NameServer:
     def fqdn(self) -> str:
         if self.is_qualified():
             return self.nameserver()
-        return f'{self.nameserver()}.{self.zone.base()}'
+        if self.zone.kind == 'dns/forward_zone':
+            return f'{self.nameserver()}.{self.zone.base()}'
+        return self.nameserver()
 
     def is_in_zone(self) -> bool:
         return not self.is_qualified() or \
