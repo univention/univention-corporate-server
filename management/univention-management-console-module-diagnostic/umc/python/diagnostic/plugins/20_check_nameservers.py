@@ -46,14 +46,14 @@ class ZoneError(Exception):
 
 class NoHostRecord(ZoneError):
     def __str__(self) -> str:
-        msg = _('Found no host record (A/AAAA record) for nameserver {ns}.')
-        return msg.format(ns=self.nameserver.nameserver())
+        msg = _('Found no host record (A/AAAA record) for nameserver {ns!r} (resp. {ns_fqdn}).')
+        return msg.format(ns=self.nameserver.nameserver(), ns_fqdn=self.nameserver.fqdn())
 
 
 class CnameAsNameServer(ZoneError):
     def __str__(self) -> str:
-        msg = _('Found illegal alias record (CNAME record) for nameserver {ns}.')
-        return msg.format(ns=self.nameserver.nameserver())
+        msg = _('Found illegal alias record (CNAME record) for nameserver {ns!r} (resp. {ns_fqdn}).')
+        return msg.format(ns=self.nameserver.nameserver(), ns_fqdn=self.nameserver.fqdn())
 
 
 class Zone:
