@@ -352,9 +352,9 @@ def test_loglevel_mapping_logging(log_level, ud_level):
     assert _map_level_to_ud(log_level) == ud_level
 
 
-@pytest.mark.xfail(reason='setLevel is broken')
 def test_repr():
     logger = logging.getLogger('ADMIN')
+    logger.init()
     logger.setLevel(logging.DEBUG)
     assert repr(logger.univention_debug_handler) == '<DebugHandler[ADMIN](DEBUG)>'
     assert repr(logger) == '<univention.logging.Logger ADMIN (DEBUG)>'
