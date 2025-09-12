@@ -192,10 +192,10 @@ class License:
             self.__selected = True
 
     def isValidFor(self, module):
-        log.debug('check license for module', module=module, types=repr(self.types))
+        log.debug('check license for module', type=module, types=repr(self.types))
         if module in licenses.modules:
             mlics = licenses.modules[module]
-            log.debug('module for license', module=mlics)
+            log.debug('module for license', type=mlics)
             # empty list -> valid
             return mlics.valid(self.types)
         # unknown modules are always valid (e.g. customer modules)

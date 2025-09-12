@@ -108,12 +108,12 @@ def update() -> None:
             if not file.endswith('.py') or file.startswith('__'):
                 continue
             package = os.path.join(dir, file)[len(root) + 1:-len('.py')]
-            log.debug('importing module', module=package)
+            log.debug('importing module', type=package)
             modulepackage = '.'.join(package.split(os.path.sep))
             m: Any = importlib.import_module('univention.admin.handlers.%s' % (modulepackage,))
             m.initialized = False
             if not hasattr(m, 'module'):
-                log.error('importing module: attribute "module" is missing', module=modulepackage)
+                log.error('importing module: attribute "module" is missing', type=modulepackage)
                 continue
             _modules[m.module] = m
             if isContainer(m):
@@ -654,7 +654,7 @@ def identify(dn: str, attr: dict[str, list[Any]], module_name: str = '', canonic
             if module_base is not None and not name.startswith(module_base):
                 continue
             if not hasattr(module, 'identify'):
-                log.warning('module does not provide identify', module=name)
+                log.warning('module does not provide identify', type=name)
                 continue
 
             if (not module_name or module_name == module.module) and module.identify(dn, attr):
