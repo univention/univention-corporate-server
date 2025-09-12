@@ -49,7 +49,7 @@ def ucr_overwrite_properties(module: Any, lo: univention.admin.uldap.access) -> 
         try:
             prop_name, attr = var[len(ucr_prefix):].split('/', 1)
             # ignore internal attributes
-            log.trace('property overwrite: found variable', name=var)
+            log.trace('property overwrite: found variable', ucr=var)
             if attr.startswith('__'):
                 continue
             if attr == 'default':
@@ -67,7 +67,7 @@ def ucr_overwrite_properties(module: Any, lo: univention.admin.uldap.access) -> 
                         #   will fail. best bet is str as type
                         old_prop_val = ''
                     prop_val_type = type(old_prop_val)
-                    log.trace('property overwrite: set property attribute', name=attr, value=new_prop_val)
+                    log.trace('property overwrite: set property attribute', attr=attr, value=new_prop_val)
                     if attr in ('syntax',):
                         if hasattr(univention.admin.syntax, new_prop_val):
                             syntax = getattr(univention.admin.syntax, new_prop_val)

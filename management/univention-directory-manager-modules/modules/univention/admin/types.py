@@ -229,7 +229,7 @@ class TypeHint:
         syntax = property.syntax() if inspect.isclass(property.syntax) else property.syntax
         type_class = syntax.type_class
         if not type_class:
-            log.warning('Unknown type for property', property=property, name=name, syntax=syntax.name)
+            log.warning('Unknown type for property', property=name, syntax=syntax.name)
             type_class = cls
 
         if not property.multivalue:

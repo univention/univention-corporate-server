@@ -213,7 +213,7 @@ class License:
                             val = val(self)
                         if isinstance(val, collections.Sequence):
                             module.options[opt].disabled, module.options[opt].default = val
-                        log.debug('modify options', name=opt, disabled=module.options[opt].disabled, default=module.options[opt].default)
+                        log.debug('modify options', options=opt, disabled=module.options[opt].disabled, default=module.options[opt].default)
 
     def checkModules(self):
         deleted_mods = []
@@ -411,7 +411,7 @@ class License:
                 self.real[version][obj] = 0
             else:
                 self.real[version][obj] = len(result)
-            log.debug('Univention License', name=self.names[version][obj], count=self.real[version][obj])
+            log.debug('Univention License', license=self.names[version][obj], count=self.real[version][obj])
         else:
             self.real[version][obj] = 0
 
@@ -431,7 +431,7 @@ class License:
         try:
             value = univention.license.getValue(key)
             self.new_license = True
-            log.debug('Univention License allowed', name=name, value=value)
+            log.debug('Univention License allowed', license=name, value=value)
         except (KeyError, Exception):
             if self.searchResult:
                 value = self.searchResult[0][1].get(key, [default])
@@ -440,10 +440,10 @@ class License:
                     value = value[0]
                 self.new_license = True
             else:
-                log.debug('get value failed', name=name, error=errormsg)
+                log.debug('get value failed', license=name, error=errormsg)
                 value = default
 
-        log.debug('get license value:', name=name, value=value)
+        log.debug('get license value:', license=name, value=value)
         return value
 
     def __readLicense(self):

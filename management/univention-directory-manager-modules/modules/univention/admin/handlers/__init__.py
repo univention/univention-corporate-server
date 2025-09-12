@@ -2323,7 +2323,7 @@ class simpleComputer(simpleLdap):
         # identify the dhcp object with the mac address
 
         name = self['name']
-        log.debug('modify DHCP object', position=position, name=name, mac=mac, ip=ip)
+        log.debug('modify DHCP object', position=position, host=name, mac=mac, ip=ip)
         if not all((name, mac)):
             return
 
@@ -2550,7 +2550,7 @@ class simpleComputer(simpleLdap):
                 zone.open()
                 zone.modify()
 
-        log.debug('we should remove a dns reverse object', dnsEntryZoneReverse=dnsEntryZoneReverse, name=name, ip=ip)
+        log.debug('we should remove a dns reverse object', dnsEntryZoneReverse=dnsEntryZoneReverse, record_name=name, ip=ip)
         if dnsEntryZoneReverse:
             try:
                 rdn = self.calc_dns_reverse_entry_name(ip, dnsEntryZoneReverse)
@@ -2579,7 +2579,7 @@ class simpleComputer(simpleLdap):
                     pass
 
     def __add_dns_reverse_object(self, name: str, zoneDn: str, ip: str) -> None:
-        log.debug('we should create a dns reverse object', zone=zoneDn, name=name, ip=ip)
+        log.debug('we should create a dns reverse object', zone=zoneDn, record_name=name, ip=ip)
         if not all((name, zoneDn, ip)):
             return
 
@@ -2596,7 +2596,7 @@ class simpleComputer(simpleLdap):
             for dn, attr in results
         }
         if not hostname_list:
-            log.error('Could not determine host record. Not creating pointer record.', name=name, ip=ip)
+            log.error('Could not determine host record. Not creating pointer record.', record_name=name, ip=ip)
             return
 
         results = self.lo.authz_connection.searchDn(
@@ -2620,7 +2620,7 @@ class simpleComputer(simpleLdap):
             zone.modify()
 
     def __remove_dns_forward_object(self, name: str, zoneDn: str | None, ip: str | None = None) -> None:
-        log.debug('we should remove a dns forward object', zone=zoneDn, name=name, ip=ip)
+        log.debug('we should remove a dns forward object', zone=zoneDn, record_name=name, ip=ip)
         if name:
             # check if dns forward object has more than one ip address
             if not ip:
@@ -2714,7 +2714,7 @@ class simpleComputer(simpleLdap):
         return (ip, 'aAAARecord' if isinstance(ip, IPv6Address) else 'aRecord')
 
     def __modify_dns_forward_object(self, name: str, zoneDn: str | None, new_ip: str, old_ip: str) -> None:
-        log.debug('we should modify a dns forward object', zone=zoneDn, name=name, new_ip=new_ip, old_ip=old_ip)
+        log.debug('we should modify a dns forward object', zone=zoneDn, record_name=name, new_ip=new_ip, old_ip=old_ip)
         zone: str | None = None
         if old_ip and new_ip:
             if not zoneDn:
@@ -2768,7 +2768,7 @@ class simpleComputer(simpleLdap):
                 fzo.modify()
 
     def __add_dns_forward_object(self, name: str, zoneDn: str, ip: str) -> None:
-        log.debug('we should add a dns forward object', zone=zoneDn, name=name, ip=ip)
+        log.debug('we should add a dns forward object', zone=zoneDn, record_name=name, ip=ip)
         if not all((name, ip, zoneDn)):
             return
         addr = ip_address('%s' % (ip,))
@@ -2844,7 +2844,7 @@ class simpleComputer(simpleLdap):
                     self.lo.authz_connection.modify(dn, [('aRecord', b'', ip)])
 
     def __add_dns_alias_object(self, name: str, dnsForwardZone: str, dnsAliasZoneContainer: str, alias: str) -> None:
-        log.debug('add a dns alias object', name=name, dnsForwardZone=dnsForwardZone, dnsAliasZoneContainer=dnsAliasZoneContainer, alias=alias)
+        log.debug('add a dns alias object', record_name=name, dnsForwardZone=dnsForwardZone, dnsAliasZoneContainer=dnsAliasZoneContainer, alias=alias)
         alias = alias.rstrip('.')
         if name and dnsForwardZone and dnsAliasZoneContainer and alias:
             results = self.lo.authz_connection.search(
@@ -2871,7 +2871,7 @@ class simpleComputer(simpleLdap):
                 raise univention.admin.uexceptions.dnsAliasAlreadyUsed(_('DNS alias is already in use.'))
 
     def __remove_dns_alias_object(self, name: str, dnsForwardZone: str, dnsAliasZoneContainer: str, alias: str | None = None) -> None:
-        log.debug('remove a dns alias object', name=name, dnsForwardZone=dnsForwardZone, dnsAliasZoneContainer=dnsAliasZoneContainer, alias=alias)
+        log.debug('remove a dns alias object', record_name=name, dnsForwardZone=dnsForwardZone, dnsAliasZoneContainer=dnsAliasZoneContainer, alias=alias)
         if name:
             if alias:
                 if dnsAliasZoneContainer:
