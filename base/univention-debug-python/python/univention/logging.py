@@ -27,6 +27,7 @@ for name in logging.__all__:
         globals()[name] = getattr(logging, name)
 __all__ += logging.__all__
 
+RESERVED = ('args', 'asctime', 'created', 'exc_info', 'exc_text', 'filename', 'funcName', 'levelname', 'levelno', 'lineno', 'message', 'module', 'msecs', 'msg', 'name', 'pathname', 'process', 'processName', 'relativeCreated', 'stack_info', 'taskName', 'thread', 'threadName')
 
 logging.PROCESS = 25
 logging.TRACE = logging.DEBUG - 5
@@ -485,27 +486,41 @@ class Structured:
         _self._log(_self.__log.exception, _message, *_args, **_kwargs)
 
     def _log(_self, _func, _msg, *args, exc_info=None, stack_info=False, stacklevel=1, **extra):
-        merged = {**_self.__bound_extra, **extra}
         return _func(
             _msg,
             *args,
             exc_info=exc_info,
-            extra=merged,
+            extra=_self._merge_extras(extra),
             stack_info=stack_info,
             stacklevel=stacklevel + 2,
         )
 
     def log(_self, _level, _msg, *args, exc_info=None, stack_info=False, stacklevel=1, **extra):
-        merged = {**_self.__bound_extra, **extra}
         return _self.__log.log(
             _level,
             _msg,
             *args,
             exc_info=exc_info,
-            extra=merged,
+            extra=_self._merge_extras(extra),
             stack_info=stack_info,
             stacklevel=stacklevel + 1,
         )
+
+    def _merge_extras(self, extra):
+        merged = {**self.__bound_extra, **extra}
+        return {(f'x_{key}' if key in RESERVED else key): value for key, value in merged.items()}
+
+    def __getstate__(self):
+        return {
+            'name': self.__log.name,
+            'extra': self.__bound_extra,
+            'level': self.__log.getEffectiveLevel(),
+        }
+
+    def __setstate__(self, state):
+        self.__bound_extra = state['extra']
+        self.__log = getLogger(state['name'])
+        self.__log.setLevel(state['level'])
 
     def __getattr__(self, name):
         return getattr(self.__log, name)
@@ -524,7 +539,7 @@ class LevelDependentFormatter(logging.Formatter):
        unstructured logging with different formats will be removed in UCS 5.2-5.
     """
 
-    RESERVED = ('args', 'asctime', 'created', 'exc_info', 'exc_text', 'filename', 'funcName', 'levelname', 'levelno', 'lineno', 'message', 'module', 'msecs', 'msg', 'name', 'pathname', 'process', 'processName', 'relativeCreated', 'stack_info', 'taskName', 'thread', 'threadName', 'prefix', 'request_id', 'pid', 'umcmodule')
+    RESERVED = (*RESERVED, 'prefix', 'request_id', 'pid', 'umcmodule')
 
     def __init__(self, datefmt=None, log_pid=False):
         self._style = None
