@@ -1,8 +1,8 @@
 # SPDX-FileCopyrightText: 2024-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
-
-
+import re
 import subprocess
+import tempfile
 import time
 from collections.abc import Callable, Iterator
 
@@ -185,3 +185,40 @@ def change_app_setting():
 
     if data['changes']:
         data['configure'].call(app=data['app'], set_vars=data['changes'])
+
+
+@pytest.fixture(scope='session')
+def test_diagnostic_module() -> Callable[[str, bool], []]:
+    """
+    Runs the given diagnostic module and fails via assert if an unexpected exitcode is returned.
+    It also kills all running diagnostic modules in advance.
+    No matter if this was expected, it also fails if the term "Traceback" is found in the output
+    of the diagnostic module.
+    """
+    DIAGNOSTIC_RE = re.compile(
+        r'(?:^ran ([\d\w]*) successfully.$)|(?:#+ Start ([\d\w]*) #+)\n(.*)\n(?:#+ End (?:\2) #+)',
+        flags=re.M | re.S,
+    )
+
+    def _test_diagnostic_module(module: str, success_expected: bool = False):
+        account = utils.UCSTestDomainAdminCredentials()
+        with tempfile.NamedTemporaryFile() as fd:
+            fd.write(account.bindpw.encode('UTF-8'))
+            fd.flush()
+            # kill existing diagnostic modules to not clog up memory
+            subprocess.call(["pkill", "-f", "/usr/sbin/univention-management-console-module -m diagnostic"])
+            args = ['/usr/bin/univention-run-diagnostic-checks', '--username', account.username, '--bindpwdfile', fd.name, "--test", module]
+            proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            stdout, _ = proc.communicate()
+        params = {
+            success or failed: {
+                'success': bool(success and not failed),
+                'error_message': error_message,
+            } for success, failed, error_message in DIAGNOSTIC_RE.findall(stdout.decode('UTF-8', 'replace'))
+        }
+        for item in params.values():
+            # print(f'\n-----------------\n{item["error_message"]}\n------------------')
+            assert "Traceback" not in item["error_message"], "Unexpectedly a traceback happened in diagnostic module"
+            assert item["success"] == success_expected, f'Diagnostic module unexpectedly {"failed" if success_expected else "passed"}'
+
+    return _test_diagnostic_module
