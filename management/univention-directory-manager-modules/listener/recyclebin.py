@@ -5,6 +5,8 @@
 """listener script for recyclebin objects."""
 
 import datetime
+import json
+import syslog
 
 import ldap
 import ldap.dn
