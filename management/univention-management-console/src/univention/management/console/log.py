@@ -12,6 +12,7 @@ Logging
 This module provides a wrapper for univention.debug
 """
 
+import contextvars
 import grp
 import logging
 import os
@@ -32,7 +33,9 @@ _debug_ready = False
 _debug_loglevel = 2
 
 
-class UMCModuleFilter(logging.Filter):
+class RequestFilter(logging.Filter):
+
+    request_context = contextvars.ContextVar("request")
 
     def __init__(self, umcmodule):
         self.umcmodule = umcmodule
@@ -40,6 +43,18 @@ class UMCModuleFilter(logging.Filter):
 
     def filter(self, record):
         record.umcmodule = self.umcmodule
+        try:
+            request_context = self.request_context.get()
+        except LookupError:
+            request_context = {}
+        record.request_id = request_context.get('request_id', '-')
+        if dn := request_context.get('requester_dn'):
+            record.requester_dn = dn
+        if ip := request_context.get('requester_ip'):
+            record.requester_ip = ip
+        if hostname := request_context.get('requester_hostname'):
+            record.requester_hostname = hostname
+
         return True
 
 
@@ -105,6 +120,13 @@ def log_reopen():
     CORE.reopen()
     _reset_debug_loglevel()
     log_set_level(_debug_loglevel)
+
+
+def init_request_context_logging(umc_module):
+    request_filter = RequestFilter(umc_module)
+    for comp in ('MAIN', 'NETWORK', 'SSL', 'ADMIN', 'LDAP', 'MODULE', 'AUTH', 'PARSER', 'LOCALE', 'ACL', 'RESOURCES', 'PROTOCOL', 'tornado.access', 'tornado.application', 'tornado.general'):
+        for handler in logging.getLogger(comp).handlers:
+            handler.addFilter(request_filter)
 
 
 CORE = Structured(logging.getLogger('MAIN'))

@@ -26,7 +26,7 @@ from tornado.web import Application, HTTPError, RequestHandler
 from univention.lib.i18n import I18N_Error, Locale, Translation
 from univention.management.console.config import get_int, ucr
 from univention.management.console.error import BadRequest, Unauthorized
-from univention.management.console.log import MODULE, log_reopen
+from univention.management.console.log import MODULE, RequestFilter, log_reopen
 from univention.management.console.message import Request, Response
 from univention.management.console.modules.decorators import SimpleThread
 
@@ -310,6 +310,12 @@ class Handler(RequestHandler):
         msg = Request(umcp_command, [path], mime_type=mimetype)
         msg._request_handler = self
         self.request_id = msg.id = self.request.headers.get('X-UMC-Request-ID', msg.id)
+        RequestFilter.request_context.set({
+            'request_id': self.request_id[-10:],
+            'requester_dn': user_dn,
+            # 'requester_ip': '',
+            # 'requester_hostname': '',
+        })
         msg.username = username
         msg.user_dn = user_dn
         msg.password = password

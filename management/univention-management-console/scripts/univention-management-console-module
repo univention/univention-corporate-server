@@ -17,7 +17,7 @@ from argparse import ArgumentParser
 import univention.debug as ud
 from univention.lib.i18n import Locale, Translation
 from univention.management.console.config import MODULE_DEBUG_LEVEL, MODULE_INACTIVITY_TIMER, ucr
-from univention.management.console.log import MODULE, UMCModuleFilter, log_init, prepare_handler
+from univention.management.console.log import MODULE, RequestFilter, log_init, prepare_handler
 
 
 if __name__ == '__main__':
@@ -63,7 +63,7 @@ if __name__ == '__main__':
         logger.setLevel(log_level)
         logger.addHandler(channel)
 
-    umc_module_filter = UMCModuleFilter(options.module)
+    umc_module_filter = RequestFilter(options.module)
     for comp in ('MAIN', 'ADMIN', 'LDAP', 'MODULE', 'tornado.access', 'tornado.application', 'tornado.general'):
         for handler in logging.getLogger(comp).handlers:
             handler.addFilter(umc_module_filter)
