@@ -1,0 +1,17 @@
+product: ucs
+release: "5.2"
+version: [3]
+scope: ucs_5.2-0-errata5.2-3
+src: univention-management-console
+fix: 14.3.2
+desc: |
+ This update addresses the following issues:
+ * The logmessages of Univention Management Console have been adapted to be
+   compatible with structured logging. Structured logging can be enabled via
+   the UCR variable `umc/server/debug/structured-logging`, which will become
+   the default in UCS 5.2-4. The UCR variables `umc/server/debug/level` and
+   `umc/module/debug/level` now allow the value 5 for enabling logging of
+   TRACE log messages. The log messages and severity has been overworked.
+   Additional information like request ID, IP address or LDAP DN of requester
+   have been added to the log information.
+bug: [58627]
