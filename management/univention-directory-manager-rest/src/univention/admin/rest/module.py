@@ -139,9 +139,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
         self.request.path_decoded = unquote(self.request.path)
         self.request.decoded_query_arguments = self.request.query_arguments.copy()
         if request_forwarded_for := self.request.headers.get('X-Forwarded-For'):
-            if not isinstance(request_forwarded_for, list):
-                request_forwarded_for = str(request_forwarded_for).replace(', ', ',').split(',')
-            self.request.client_ip = request_forwarded_for[0]
+            self.request.client_ip = str(request_forwarded_for).replace(', ', ',').rsplit(',', 1)[-1]
         else:
             self.request.client_ip = self.request.remote_ip
         try:

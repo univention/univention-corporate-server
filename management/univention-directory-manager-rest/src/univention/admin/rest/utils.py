@@ -22,10 +22,11 @@ RE_UUID = re.compile('[^A-Fa-f0-9-]')
 
 
 def init_request_context_logging(request_context):
-    if not ucr.is_true('directory/manager/rest/debug/prefix-with-request-id', True):
+    structured = ucr.is_true('directory/manager/rest/debug/structured-logging', False)
+    if not structured and not ucr.is_true('directory/manager/rest/debug/prefix-with-request-id', True):
         return
 
-    context_id_filter = RequestContextFilter(request_context, ucr.is_true('directory/manager/rest/debug/structured-logging', False))
+    context_id_filter = RequestContextFilter(request_context, structured)
     for comp in ('MAIN', 'ADMIN', 'LDAP', 'MODULE', 'tornado.access', 'tornado.application', 'tornado.general'):
         for handler in logging.getLogger(comp).handlers:
             handler.addFilter(context_id_filter)
