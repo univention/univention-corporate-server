@@ -10,4 +10,5 @@ desc: |
    timeouts for HTTP requests, which can lead to delays in operations that
    involve communication with external services. It led particularly to
    failures on concurrent OpenID Connect (OIDC) authentication.
-bug: [58269]
+  * Logging has been adapted to be compatible with structured logging.
+bug: [58269, 58627]
