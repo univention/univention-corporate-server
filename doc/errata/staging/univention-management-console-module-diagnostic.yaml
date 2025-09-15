@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issues:
  * Fix the UMC module's CSS to be specific and to not affect the appearance of
    the whole of UMC
-bug: [58553]
+bug: [58553, 58644]
