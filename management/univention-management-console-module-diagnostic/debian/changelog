@@ -1,3 +1,12 @@
+univention-management-console-module-diagnostic (8.3.3) unstable; urgency=low
+
+  * Bug #58634: add new diagnostic modules 20_check_share_references and
+    20_check_srv_records
+  * Bug #58634: fixes to prevent tracebacks in 20_check_nameservers
+  * Bug #58634: improved warning messages in 20_check_nameservers
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 16 Sep 2025 17:15:24 +0200
+
 univention-management-console-module-diagnostic (8.3.2) unstable; urgency=medium
 
   [ Ivan Barbecho Delgado ]
