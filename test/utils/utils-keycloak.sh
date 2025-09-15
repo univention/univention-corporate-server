@@ -304,7 +304,7 @@ haproxy_config_external_fqdn () {
 	local backup_ip="${1:?missing ip for backup}"; shift
 	local replica_ip="${1:?missing ip for replica}"; shift
 	local member_ip="${1:?missing ip for member}"; shift
-	local idp_dns="${1:?missing ip for member}"; shift
+	local idp_dns="${1:?missing external dns}"; shift
 	service apache2 stop
 	univention-install -y haproxy
 	# cert for ha proxy, we need the key in the cert file, and every cert in one directory
@@ -344,8 +344,9 @@ EOF
 # FIXME
 haproxy_config_external_fqdn_add_second_keycloak () {
 	local backup_ip="${1:?missing ip for backup}"; shift
+	local idp_dns="${1:?missing external dns}"; shift
 	cat <<EOF >> "/etc/haproxy/haproxy.cfg"
-	server backup $backup_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie backup
+	server backup $backup_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie backup sni str($idp_dns)
 EOF
 	service haproxy restart
 }
