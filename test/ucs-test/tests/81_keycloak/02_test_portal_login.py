@@ -30,6 +30,13 @@ def test_login(portal_login_via_keycloak, udm, protocol):
     assert portal_login_via_keycloak(username, 'univention', protocol=protocol)
 
 
+@pytest.mark.repeat(3)
+def test_login_logout_login_issue_2388(portal_login_via_keycloak, portal_config, udm):
+    username = udm.create_user()[1]
+    page = portal_login_via_keycloak(username, 'univention', protocol='oidc')
+    portal_logout(page, portal_config)
+
+
 @pytest.mark.parametrize('protocol', ['saml', 'oidc'])
 def test_login_wrong_password_fails(portal_login_via_keycloak, udm, protocol):
     username = udm.create_user()[1]
