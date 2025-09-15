@@ -304,6 +304,7 @@ haproxy_config_external_fqdn () {
 	local backup_ip="${1:?missing ip for backup}"; shift
 	local replica_ip="${1:?missing ip for replica}"; shift
 	local member_ip="${1:?missing ip for member}"; shift
+	local idp_dns="${1:?missing ip for member}"; shift
 	service apache2 stop
 	univention-install -y haproxy
 	# cert for ha proxy, we need the key in the cert file, and every cert in one directory
@@ -333,7 +334,8 @@ backend keycloaks
 	timeout server 10000
 	# sticky sessions
 	cookie KEYCLOAK insert indirect nocache
-	server master $primary_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie master
+	http-request set-header Host $idp_dns
+	server master $primary_ip:443 ssl ca-file /etc/ssl/certs/ca-certificates.crt check cookie master sni str($idp_dns)
 
 EOF
 	service haproxy restart

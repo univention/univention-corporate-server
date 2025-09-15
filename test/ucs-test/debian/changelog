@@ -1,3 +1,9 @@
+ucs-test (12.3.1) unstable; urgency=medium
+
+  * Bug #58438: fix SNI handling problem in haproxy
+
+ -- Yannik Schmidt <yannik.schmidt.extern@univention.de>  Mon, 15 Sep 2025 12:50:00 +0200
+
 ucs-test (12.3.0) UNRELEASED; urgency=medium
 
   * Bug #58568: UCS 5.2-3 version bump
