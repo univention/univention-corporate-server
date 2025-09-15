@@ -1,9 +1,13 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2025-07-02 01:13+0200\n"
-"PO-Revision-Date: 2024-04-08 13:36+0200\n"
+"POT-Creation-Date: 2025-09-16 15:21+0000\n"
+"PO-Revision-Date: 2025-09-15 14:24+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -11,72 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/diagnostic/plugins/71_samba_memberOf.py:17
-msgid "Check visibility of the memberOf attribute in Samba/AD"
-msgstr "Überprüfe die Sichtbarkeit des memberOf-Attributs in Samba/AD"
-
-#: umc/python/diagnostic/plugins/71_samba_memberOf.py:81
-msgid "Deactivate test permanently"
-msgstr "Test dauerhaft deaktivieren"
-
-#: umc/python/diagnostic/plugins/71_samba_memberOf.py:85
-msgid "Add \"Authenticated Users\" to \"Pre-Windows 2000 Compatible Access\""
-msgstr "\"Authenticated Users\" hinzufügen zu \"Pre-Windows 2000 Compatible Access\""
-
-#: umc/python/diagnostic/plugins/71_samba_memberOf.py:89
-msgid ""
-"Add \"Enterprise Domain Controllers\" to \"Pre-Windows 2000 Compatible "
-"Access\""
-msgstr "\"Enterprise Domain Controllers\" hinzufügen zu \"Pre-Windows 2000 Compatible Access\""
-
-#: umc/python/diagnostic/plugins/71_samba_memberOf.py:96
-#, python-format
-msgid "univention-s4search did not show any memberOf values for sAMAccountName=%s."
-msgstr "univention-s4search zeigt keine memberOf-Werte für sAMAccountName=%s."
-
-#: umc/python/diagnostic/plugins/71_samba_memberOf.py:102
-msgid ""
-"Typically either \"Authenticated Users\" or \"Enterprise Domain "
-"Controllers\" are member of \"Pre-Windows 2000 Compatible Access\"."
-msgstr "Typischerweise sind entweder \"Authenticated Users\" oder \"Enterprise Domain "
-"Controllers\" Mitglied von \"Pre-Windows 2000 Compatible Access\"."
-
-#: umc/python/diagnostic/plugins/71_samba_memberOf.py:104
-msgid ""
-"But here neither of these groups is member of \"Pre-Windows 2000 Compatible "
-"Access\". This is probably the cause of this behavior."
-msgstr "Aber hier ist keine dieser Gruppen Mitglied von \"Pre-Windows 2000 Compatible "
-"Access\". Das ist wahrscheinlich die Ursache dieses Verhaltens."
-
-#: umc/python/diagnostic/plugins/71_samba_memberOf.py:106
-msgid ""
-"By default Active Directory has \"Authenticated Users\" (S-1-5-11) in \"Pre-Windows 2000 "
-"Compatible Access\", but this can also pose some security issue."
-msgstr "Active Directory hat per Voreinstellung \"Authenticated Users\" in \"Pre-Windows 2000 "
-"Compatible Access\", aber das kann auch ein Sicherheitsproblem darstellen."
-
-#: umc/python/diagnostic/plugins/71_samba_memberOf.py:109
-msgid ""
-"As an alternative, depending on the use case, one can make \"Enterprise Domain Controllers\" (S-1-5-9) member of "
-"\"Pre-Windows 2000 Compatible Access\", which makes the \"memberOf\" "
-"attribute only visible for domain controllers (e.g. for univention-s4search)."
-msgstr "Als Alternative kann man \"Enterprise Domain Controllers\" Mitglied von "
-"\"Pre-Windows 2000 Compatible Access\" machen, was das \"memberOf\"-Attribut "
-"nur für Domain Controller sichtbar macht (z.B. für univention-s4search)."
-
-#: umc/python/diagnostic/plugins/71_samba_memberOf.py:114
-msgid "Please chose an action."
-msgstr "Bitte wählen Sie eine Aktion."
-
-#: umc/python/diagnostic/plugins/71_samba_memberOf.py:119
-#, python-format
-msgid ""
-"OK, fix worked, \"univention-s4search sAMAccountName=%s memberOf\" shows group "
-"memberships."
-msgstr "OK, die Maßnahme hat funktioniert, \"univention-s4search sAMAccountName=%s memberOf\" zeigt die "
-"Gruppenmitgliedschaften."
-
-#: umc/python/diagnostic/plugins/70_lmdb_fragmentation.py:21
+#: umc/python/diagnostic/plugins/70_lmdb_fragmentation.py:17
 msgid ""
 "\n"
 "LMDB (https://www.symas.com/mdb) is a key value store with B+-tree structure "
@@ -87,59 +26,72 @@ msgid ""
 "This step has to be performed manually as described in"
 msgstr ""
 
-#: umc/python/diagnostic/plugins/21_check_join_status.py:32
+#: umc/python/diagnostic/plugins/21_check_join_status.py:28
 msgid ""
 "\"univention-check-join-status\" returned a problem with the domain join."
 msgstr ""
 "\"univention-check-join-status\" gab einen Fehler mit dem Domänenbeitritt "
 "zurück."
 
-#: umc/python/diagnostic/plugins/56_univention_types.py:65
+#: umc/python/diagnostic/plugins/56_univention_types.py:61
 #, python-format
 msgid "%(num_objs)d objects should be \"%(module_name)s\""
 msgstr "%(num_objs)d Objekte sollten \"%(module_name)s\" sein"
 
-#: umc/python/diagnostic/plugins/11_nameserver.py:21
+#: umc/python/diagnostic/plugins/11_nameserver.py:17
 #, python-format
 msgid "%d of the configured nameservers are not responding to DNS queries."
 msgstr "%d der konfigurierten Nameserver anworten nicht auf DNS-Anfragen."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:104
+#: umc/python/diagnostic/plugins/30_disk_usage.py:100
 #, python-format
 msgid "- Disk for mountpoint %(mp)s is %(pc)s%% full."
 msgstr "- Festplatte für Moint Point %(mp)s ist %(pc)s%% voll."
 
-#: umc/python/diagnostic/plugins/11_nameserver.py:53
+#: umc/python/diagnostic/plugins/11_nameserver.py:49
 msgid "A timeout occurred while reaching the nameserver (is it online?)."
 msgstr ""
 "Eine Zeitüberschreitung trat beim Erreichen des Nameservers auf (ist er "
 "online?)."
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:74
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:70
 msgid "ACL right for group {id!r} is {udm!r} in UDM, but {imap!r} in IMAP."
 msgstr ""
 "ACL Berechtigung für die Gruppe {id!r} ist {udm!r} in UDM, aber {imap!r} in "
 "IMAP."
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:68
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:64
 msgid "ACL right for user {id!r} is {udm!r} in UDM, but {imap!r} in IMAP."
 msgstr ""
 "ACL Berechtigung für den Nutzer {id!r} ist {udm!r} in UDM, aber {imap!r} in "
 "IMAP."
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:334
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:86
+msgid "Add \"Authenticated Users\" to \"Pre-Windows 2000 Compatible Access\""
+msgstr ""
+"\"Authenticated Users\" hinzufügen zu \"Pre-Windows 2000 Compatible Access\""
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:90
+msgid ""
+"Add \"Enterprise Domain Controllers\" to \"Pre-Windows 2000 Compatible "
+"Access\""
+msgstr ""
+"\"Enterprise Domain Controllers\" hinzufügen zu \"Pre-Windows 2000 "
+"Compatible Access\""
+
+#: umc/python/diagnostic/plugins/22_kdc_service.py:330
 msgid "Add lo to samba/interfaces"
 msgstr "Füge lo zu samba/interfaces hinzu"
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:98
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:97
 msgid "Adjust all components"
 msgstr "Alle Komponenten korrigieren"
 
-#: umc/python/diagnostic/plugins/32_security_limits.py:35
+#: umc/python/diagnostic/plugins/32_security_limits.py:31
 msgid "Adjust to suggested limits"
 msgstr "An vorgeschlagene Limits anpassen"
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:74
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:73
 msgid ""
 "After fixing the problem please use the Repository Settings module to check "
 "the changes made"
@@ -147,20 +99,20 @@ msgstr ""
 "Nach der Korrektur der Variablen prüfen Sie bitte im Repository "
 "Einstellungen Modul welche Änderungen gemacht wurden."
 
-#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:24
+#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:20
 msgid "All SIDs exist and names are consistent."
 msgstr "Alle SIDs existieren und die Namen sind konsistent."
 
-#: umc/python/diagnostic/plugins/02_certificate_check.py:30
+#: umc/python/diagnostic/plugins/02_certificate_check.py:26
 msgid "All SSL certificates valid."
 msgstr "Alle SSL Zertifikate sind gültig."
 
-#: umc/python/diagnostic/plugins/54_sources_list_check.py:21
-#: umc/python/diagnostic/plugins/31_file_permissions.py:28
+#: umc/python/diagnostic/plugins/54_sources_list_check.py:17
+#: umc/python/diagnostic/plugins/31_file_permissions.py:24
 msgid "All files ok."
 msgstr "Alle Dateien in Ordnung."
 
-#: umc/python/diagnostic/plugins/58_univentionObjectIdentifier.py:20
+#: umc/python/diagnostic/plugins/58_univentionObjectIdentifier.py:16
 msgid ""
 "All objects of class \"univentionObject\" should have the attribute "
 "\"univentionObjectIdentifier\" in OpenLDAP."
@@ -168,11 +120,22 @@ msgstr ""
 "Alle Objekte der Klasse \"univentionObject\" sollten das Attribut "
 "\"univentionObjectIdentifier\" tragen in OpenLDAP."
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:27
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:23
 msgid "All shared folder ACLs are in sync with UDM."
 msgstr "Alle ACL Einträge der globalen IMAP Ordner stimmen mit UDM überein."
 
-#: umc/python/diagnostic/plugins/67_postgresql_version.py:23
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:110
+msgid ""
+"As an alternative, depending on the use case, one can make \"Enterprise "
+"Domain Controllers\" (S-1-5-9) member of \"Pre-Windows 2000 Compatible "
+"Access\", which makes the \"memberOf\" attribute only visible for domain "
+"controllers (e.g. for univention-s4search)."
+msgstr ""
+"Als Alternative kann man \"Enterprise Domain Controllers\" Mitglied von "
+"\"Pre-Windows 2000 Compatible Access\" machen, was das \"memberOf\"-Attribut "
+"nur für Domain Controller sichtbar macht (z.B. für univention-s4search)."
+
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:19
 #, python-brace-format
 msgid ""
 "As of UCS {ucs[0]}.{ucs[1]}, PostgreSQL {postgresql_version[0]} should be "
@@ -183,7 +146,7 @@ msgstr ""
 "sein.\n"
 "Dieser Schritt muss manuell durchgeführt werden, wie in"
 
-#: umc/python/diagnostic/plugins/42_samba_tdb_deprecated.py:20
+#: umc/python/diagnostic/plugins/42_samba_tdb_deprecated.py:16
 #, python-brace-format
 msgid ""
 "As of UCS {ucs[0]}.{ucs[1]}, Samba should use mdb as for its database.\n"
@@ -193,7 +156,7 @@ msgstr ""
 "betrieben werden.\n"
 "Die Schritte für die Migration von tdb zu mdb finden Sie hier:"
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:38
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:37
 msgid ""
 "As these variables should be no longer used, this check has been added to "
 "check for the existence of these variables."
@@ -201,260 +164,296 @@ msgstr ""
 "Dieser Check wurde eingeführt, um das Vorhandensein dieser Variablen zu "
 "prüfen, weil diese Variablen nicht mehr benutzt werden sollen."
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:129
+#: umc/python/diagnostic/plugins/00_check_server_password.py:125
 msgid ""
 "Authentication against the Primary LDAP failed with the machine password."
 msgstr ""
 "Authentifizierung gegen das Primary LDAP mit dem Password für das "
 "Rechnerkonto ist fehlgeschlagen."
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:125
+#: umc/python/diagnostic/plugins/00_check_server_password.py:121
 msgid "Authentication against the local LDAP failed with the machine password."
 msgstr ""
 "Authentifizierung gegen das lokale LDAP mit dem Password für das "
 "Rechnerkonto ist fehlgeschlagen."
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:27
+#: umc/python/diagnostic/plugins/00_check_server_password.py:23
 msgid "Authentication with machine password against LDAP successful."
 msgstr "Authentifizierung mit dem Password für das Rechnerkonto erfolgreich."
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:87
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:105
+msgid ""
+"But here neither of these groups is member of \"Pre-Windows 2000 Compatible "
+"Access\". This is probably the cause of this behavior."
+msgstr ""
+"Aber hier ist keine dieser Gruppen Mitglied von \"Pre-Windows 2000 "
+"Compatible Access\". Das ist wahrscheinlich die Ursache dieses Verhaltens."
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:107
+msgid ""
+"By default Active Directory has \"Authenticated Users\" (S-1-5-11) in \"Pre-"
+"Windows 2000 Compatible Access\", but this can also pose some security issue."
+msgstr ""
+"Active Directory hat per Voreinstellung \"Authenticated Users\" in \"Pre-"
+"Windows 2000 Compatible Access\", aber das kann auch ein Sicherheitsproblem "
+"darstellen."
+
+#: umc/python/diagnostic/plugins/00_check_server_password.py:83
 msgid "Calling /usr/lib/univention-server/server_password_change failed."
 msgstr ""
 "Aufruf von /usr/lib/univention-server/server_password_change ist "
 "fehlgeschlagen."
 
-#: umc/python/diagnostic/plugins/02_certificate_check.py:53
+#: umc/python/diagnostic/plugins/02_certificate_check.py:49
 msgid "Certificate {path!r} will expire in {days} days."
 msgstr "Zertifikat {path!r} wird in {days} Tagen ablaufen."
 
-#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:18
+#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:14
 msgid "Check Heimdal KDC on Samba 4 DC"
 msgstr "Überprüfe Heimdal KDC auf Samba 4 DC"
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:26
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:22
 msgid "Check IMAP shared folder ACLs"
 msgstr "Überprüfe ACL Einträge der globalen IMAP Ordner"
 
-#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:19
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:15
 msgid "Check LDAP database for inconsistencies in group memberships."
 msgstr ""
 "Teste die LDAP-Datenbank auf Inkonsistenzen in Gruppen-Mitgliedschaften."
 
-#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:31
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:27
 msgid "Check Samba replication status for errors"
 msgstr "Überprüfe den Samba Replikations Status"
 
-#: umc/python/diagnostic/plugins/64_check_ucr_types.py:25
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:21
 msgid "Check UCR variable values for correctness"
 msgstr "Überprüfe Werte der UCR Variablen auf Korrektheit"
 
-#: umc/python/diagnostic/plugins/67_postgresql_version.py:22
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:18
 msgid "Check currently installed PostgreSQL version"
 msgstr "Überprüfe aktuell installierte PostgreSQL Version"
 
-#: umc/python/diagnostic/plugins/54_sources_list_check.py:20
+#: umc/python/diagnostic/plugins/54_sources_list_check.py:16
 msgid "Check errors in sources.list files"
 msgstr "Überprüfe Fehler in den sources.list Dateien"
 
-#: umc/python/diagnostic/plugins/31_file_permissions.py:27
+#: umc/python/diagnostic/plugins/31_file_permissions.py:23
 msgid "Check file permissions"
 msgstr "Überprüfe Datei Berechtigungen"
 
-#: umc/python/diagnostic/plugins/50_check_ucr_templates.py:18
+#: umc/python/diagnostic/plugins/50_check_ucr_templates.py:14
 msgid "Check for modified UCR templates"
 msgstr "Überprüfe veränderte UCR Vorlagen"
 
-#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:18
+#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:14
 msgid "Check for problems with UDN replication"
 msgstr "Überprüfe Probleme mit der UDN Replikation"
 
-#: umc/python/diagnostic/plugins/70_lmdb_fragmentation.py:20
+#: umc/python/diagnostic/plugins/70_lmdb_fragmentation.py:16
 msgid "Check fragmentation of LMDB databases"
 msgstr ""
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:20
+#: umc/python/diagnostic/plugins/30_disk_usage.py:16
 msgid "Check free disk space"
 msgstr "Überprüfe freien Festplatten Platz"
 
-#: umc/python/diagnostic/plugins/51_hostname_check.py:19
+#: umc/python/diagnostic/plugins/51_hostname_check.py:15
 msgid "Check hostname RFC compliance"
 msgstr "Überprüfe Rechnernamen auf RFC Konformität"
 
-#: umc/python/diagnostic/plugins/21_check_join_status.py:17
+#: umc/python/diagnostic/plugins/21_check_join_status.py:13
 msgid "Check join status"
 msgstr "Überprüfe den Zustand des Domänenbeitritts"
 
-#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:21
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:17
 msgid "Check kerberos authenticated DNS updates"
-msgstr "Überprüfe Kerberos authentifizierte DNS Updates"
+msgstr "Überprüfe Kerberos authentifizierte DNS-Updates"
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:15
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:11
 msgid "Check local AD database for errors"
-msgstr "Teste die lokale AD Datenbank auf Fehler"
+msgstr "Teste die lokale AD-Datenbank auf Fehler"
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:26
+#: umc/python/diagnostic/plugins/00_check_server_password.py:22
 msgid "Check machine password"
 msgstr "Password für das Rechnerkonto testen"
 
-#: umc/python/diagnostic/plugins/20_check_nameservers.py:28
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:24
 msgid "Check nameserver entries on DNS zones"
-msgstr "Überprüfe die Nameserver Einträge der DNS Zonen"
+msgstr "Überprüfe die Nameserver Einträge der DNS-Zonen"
 
-#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:27
+#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:23
 msgid "Check of the protocol version of the Univention Directory Notifier"
 msgstr "Überprüfung der Protokollversion des Univention Directory Notifier"
 
-#: umc/python/diagnostic/plugins/59_ldap_server_name.py:19
+#: umc/python/diagnostic/plugins/59_ldap_server_name.py:15
 msgid "Check primary LDAP server"
 msgstr "Überprüfung des primären LDAP-Servers"
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:35
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:34
 msgid "Check repository configuration for correctness"
 msgstr "Repository Konfiguration auf Korrektheit prüfen"
 
-#: umc/python/diagnostic/plugins/23_check_update_sites.py:20
+#: umc/python/diagnostic/plugins/23_check_update_sites.py:16
 msgid "Check resolving repository servers"
-msgstr "Überprüfe DNS Auflösung der Repository Server"
+msgstr "Überprüfe DNS-Auflösung der Repository-Server"
 
-#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:20
+#: umc/python/diagnostic/plugins/20_check_share_references.py:22
+msgid "Check shares/* objects for dangling host references"
+msgstr "Überprüfe shares/*-Objekte auf ungültige Server-Referenzen"
+
+#: umc/python/diagnostic/plugins/20_check_srv_records.py:21
+msgid "Check target entries in DNS SRV records"
+msgstr "Überprüfe Ziele in DNS-SRV-Einträgen"
+
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:16
 msgid ""
 "Check the LDAP database for inconsistencies in group membership attributes."
 msgstr ""
 "Teste die LDAP-Datenbank auf Inkonsistenzen in Gruppen-Mitgliedschaften."
 
-#: umc/python/diagnostic/plugins/02_certificate_check.py:29
+#: umc/python/diagnostic/plugins/02_certificate_check.py:25
 msgid "Check validity of SSL certificates"
 msgstr "Überprüfe Gültigkeit der SSL Zertifikate"
 
-#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:23
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:18
+msgid "Check visibility of the memberOf attribute in Samba/AD"
+msgstr "Überprüfe die Sichtbarkeit des memberOf-Attributs in Samba/AD"
+
+#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:19
 msgid "Check well known SIDs"
 msgstr "Überprüfe 'Well Known' SIDs"
 
-#: umc/python/diagnostic/plugins/42_samba_tdb_deprecated.py:19
+#: umc/python/diagnostic/plugins/42_samba_tdb_deprecated.py:15
 msgid "Checking Samba database type"
-msgstr "Prüfe Samba-Datenbank Typ"
+msgstr "Prüfe Samba-Datenbank-Typ"
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:56
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:55
 msgid "Cleanup of deprecated variables is executed !"
-msgstr "Die Korrektur der veralteten Variablen wird ausgeführt !"
+msgstr "Die Korrektur der veralteten Variablen wird ausgeführt!"
 
-#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:20
+#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:19
 msgid "Currently, there are unprocessed files in these directories. "
 msgstr "Aktuell existieren unverarbeitete Dateien in diesen Verzeichnissen."
 
-#: umc/python/diagnostic/plugins/05_check_ldap_master.py:60
-#: umc/python/diagnostic/plugins/59_ldap_server_name.py:59
+#: umc/python/diagnostic/plugins/59_ldap_server_name.py:55
+#: umc/python/diagnostic/plugins/05_check_ldap_master.py:56
 msgid "Deactivate test"
 msgstr "Test deaktivieren"
 
-#: umc/python/diagnostic/plugins/70_lmdb_fragmentation.py:31
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:82
+msgid "Deactivate test permanently"
+msgstr "Test dauerhaft deaktivieren"
+
+#: umc/python/diagnostic/plugins/70_lmdb_fragmentation.py:27
 msgid "Defragmentation of LMDB databases"
 msgstr ""
 
-#: umc/python/diagnostic/plugins/42_samba_tdb_deprecated.py:46
+#: umc/python/diagnostic/plugins/42_samba_tdb_deprecated.py:42
 msgid "Deprecated Samba database type tdb."
-msgstr "Veralteter Samba-Datenbank Typ tdb."
+msgstr "Veralteter Samba-Datenbank-Typ tdb."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:21
+#: umc/python/diagnostic/plugins/30_disk_usage.py:17
 msgid "Enough free disk space available."
-msgstr "Außreichend freier Festplatten Platz vorhanden."
+msgstr "Ausreichend freier Festplatten-Platz vorhanden."
 
-#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:46
+#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:42
 msgid "Error retrieving notifier ID from the UDN."
-msgstr "Fehler beim Abrufen der letzten Transaktions ID vom UDN."
+msgstr "Fehler beim Abrufen der letzten Transaktions-ID vom UDN."
 
-#: umc/python/diagnostic/plugins/50_check_ucr_templates.py:29
+#: umc/python/diagnostic/plugins/50_check_ucr_templates.py:25
 msgid "Errors found by `univention-check-templates`."
 msgstr "Es wurden Fehler durch `univention-check-templates` gefunden."
 
-#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:135
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:131
 msgid "Errors occurred while running `kinit` or `nsupdate`."
 msgstr "Fehler traten auf bei der Ausführung von `kinit` oder `nsupdate`."
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:143
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:139
 msgid "Failed to find any certificate in {cert!r}"
 msgstr "Konnte kein Zertifikat in {cert!r} finden"
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:214
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:210
 #, python-brace-format
 msgid "Failed to find any certificate in {{{link}}}"
 msgstr "Konnte kein Zertifikat in {{{link}}} finden"
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:135
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:155
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:190
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:199
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:131
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:151
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:186
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:195
 msgid "Failed to load certificate {cert!r}: {exc}"
 msgstr "Zertifikat {cert!r} konnte nicht geladen werden: {exc}"
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:112
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:124
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:108
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:120
 #, python-brace-format
 msgid "Failed to load certificate {{idp}}: {exc}"
 msgstr "Zertifikat {{idp}} konnte nicht geladen werden: {exc}"
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:227
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:223
 #, python-brace-format
 msgid "Failed to load certificate {{{link}}}: {exc}"
 msgstr "Zertifikat {{{link}}} konnte nicht geladen werden: {exc}"
 
-#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:24
+#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:20
 msgid "Fetchmail attributes were not migrated"
-msgstr "Die Fetchmail Attribute wurden nicht migriert."
+msgstr "Die Fetchmail-Attribute wurden nicht migriert."
 
-#: umc/python/diagnostic/plugins/31_file_permissions.py:39
+#: umc/python/diagnostic/plugins/31_file_permissions.py:35
 msgid "File {path!r} does not exist."
 msgstr "Datei {path!r} existiert nicht."
 
-#: umc/python/diagnostic/plugins/31_file_permissions.py:60
+#: umc/python/diagnostic/plugins/31_file_permissions.py:56
 msgid "File {path!r} has mode {actual:o}, {expected:o} was expected."
 msgstr "Datei {path!r} hat Datei-Modus {actual:o}, {expected:o} war erwartet."
 
-#: umc/python/diagnostic/plugins/31_file_permissions.py:49
+#: umc/python/diagnostic/plugins/31_file_permissions.py:45
 msgid "File {path!r} has owner {actual!r} while {expected!r} was expected."
 msgstr ""
 "Datei {path!r} hat den Besitzer {actual!r}, während {expected!r} erwartet "
 "war."
 
-#: umc/python/diagnostic/plugins/05_check_ldap_master.py:56
+#: umc/python/diagnostic/plugins/05_check_ldap_master.py:52
 msgid "Fix Primary LDAP server configuration"
-msgstr "Korrigier primären LDAP-Server Konfiguration"
+msgstr "Korrigiere primäre LDAP-Server-Konfiguration"
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:120
+#: umc/python/diagnostic/plugins/00_check_server_password.py:116
 msgid "Fix machine password"
 msgstr "Korrigiere Password für das Rechnerkonto"
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:214
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:210
 msgid ""
 "Found differences in the ACLs for IMAP shared folders between UDM and IMAP."
 msgstr ""
-"Es wurde ein Unterschied in den ACL Einträge für die globalen IMAP Ordner "
+"Es wurde ein Unterschied in den ACL-Einträgen für die globalen IMAP-Ordner "
 "zwischen UDM und IMAP gefunden."
 
-#: umc/python/diagnostic/plugins/20_check_nameservers.py:196
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:194
 msgid "Found errors in the nameserver entries of the following zones."
 msgstr ""
-"Es wurden Fehler in den Nameserver Einträgen der folgenden Zonen gefunden."
+"Es wurden Fehler in den Nameserver-Einträgen der folgenden Zonen gefunden."
 
-#: umc/python/diagnostic/plugins/54_sources_list_check.py:52
+#: umc/python/diagnostic/plugins/54_sources_list_check.py:48
 msgid "Found exception in {path!r}: {exception}"
 msgstr "Fehler in {path!r} gefunden: {exception}"
 
-#: umc/python/diagnostic/plugins/02_certificate_check.py:70
+#: umc/python/diagnostic/plugins/02_certificate_check.py:66
 msgid "Found expired certificate {path!r}."
 msgstr "Abgelaufenes Zertifikat {path!r} gefunden."
 
-#: umc/python/diagnostic/plugins/20_check_nameservers.py:59
-#, python-brace-format
-msgid "Found illegal alias record (CNAME record) for nameserver {ns}."
-msgstr "Ungültiger Alias-Record (CNAME record) für Namenserver {ns} gefunden."
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:55
+msgid ""
+"Found illegal alias record (CNAME record) for nameserver {ns!r} (resp. "
+"{ns_fqdn})."
+msgstr ""
+"Ungültiger Alias-Record (CNAME record) für Namenserver {ns} (bzw. {ns_fqdn}) "
+"gefunden."
 
-#: umc/python/diagnostic/plugins/02_certificate_check.py:83
+#: umc/python/diagnostic/plugins/02_certificate_check.py:79
 msgid "Found invalid certificate {path!r}."
 msgstr "Ungültiges Zertifikat {path!r} gefunden."
 
-#: umc/python/diagnostic/plugins/02_certificate_check.py:81
+#: umc/python/diagnostic/plugins/02_certificate_check.py:77
 msgid ""
 "Found invalid certificate {path!r}:\n"
 "{message}"
@@ -462,44 +461,57 @@ msgstr ""
 "Ungültiges Zertifikat {path!r} gefunden:\n"
 "{message}"
 
-#: umc/python/diagnostic/plugins/02_certificate_check.py:92
+#: umc/python/diagnostic/plugins/20_check_share_references.py:108
+msgid "Found invalid host entries in the following share/* objects."
+msgstr ""
+"Es wurden ungültige Host-Einträge in den folgenden Objekten vom Typ shares/* "
+"gefunden."
+
+#: umc/python/diagnostic/plugins/20_check_srv_records.py:83
+msgid "Found invalid target entries in the following SRV records."
+msgstr ""
+"Es wurden ungültige Ziel-Einträge in den folgenden DNS-SRV-Records gefunden."
+
+#: umc/python/diagnostic/plugins/02_certificate_check.py:88
 msgid "Found malformed certificate {path!r}."
 msgstr "Korruptes Zertifikat {path!r} gefunden."
 
-#: umc/python/diagnostic/plugins/20_check_nameservers.py:53
-#, python-brace-format
-msgid "Found no host record (A/AAAA record) for nameserver {ns}."
-msgstr "Kein Host-Record (A/AAAA record) für Namenserver {ns} gefunden."
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:49
+msgid ""
+"Found no host record (A/AAAA record) for nameserver {ns!r} (resp. {ns_fqdn})."
+msgstr ""
+"Kein Host-Record (A/AAAA record) für den Namenserver {ns} (bzw. {ns_fqdn}) "
+"gefunden."
 
-#: umc/python/diagnostic/plugins/02_certificate_check.py:64
+#: umc/python/diagnostic/plugins/02_certificate_check.py:60
 msgid "Found not yet valid certificate {path!r}."
 msgstr "Noch nicht gültiges Zertifikat {path!r} gefunden."
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:83
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:79
 #, python-brace-format
 msgid ""
 "Found {ucs} UCS rejects and {s4} S4 rejects. See {{sdb}} for more "
 "information."
 msgstr ""
-"{ucs} nicht synchronisierte UCS Objekte und {s4} nicht synchronisierte S4 "
+"{ucs} nicht synchronisierte UCS-Objekte und {s4} nicht synchronisierte S4-"
 "Objekte. Weitere Hinweise finden Sie unter {{sdb}}."
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:42
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:41
 msgid ""
 "Furthermore, it is checked if the scheme of the server variable is either "
 "http or https"
 msgstr ""
 "Es wird auch geprüft, ob das Schema der Server-Variablen http oder https ist."
 
-#: umc/python/diagnostic/plugins/10_gateway.py:18
+#: umc/python/diagnostic/plugins/10_gateway.py:14
 msgid "Gateway is not reachable"
 msgstr "Gateway ist nicht erreichbar"
 
-#: umc/python/diagnostic/plugins/01_ssh_connection.py:71
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:67
 msgid "Host key for server does not match"
-msgstr "SSH Host-Key des Servers stimmt nicht überein"
+msgstr "SSH-Host-Key des Servers stimmt nicht überein"
 
-#: umc/python/diagnostic/plugins/11_nameserver.py:23
+#: umc/python/diagnostic/plugins/11_nameserver.py:19
 msgid ""
 "If the problem persists make sure the nameserver is connected to the network "
 "and the forwarders are able to reach the internet (www.univention.de)."
@@ -508,38 +520,46 @@ msgstr ""
 "mit dem Netzwerk verbunden ist und die DNS-Forwarder das Internet erreichen "
 "können (www.univention.de)."
 
-#: umc/python/diagnostic/plugins/10_gateway.py:21
+#: umc/python/diagnostic/plugins/10_gateway.py:17
 msgid "If these settings are correct the problem relies in the gateway itself:"
 msgstr ""
-"Wenn diese Einstellungen richtig sind liegt das Problem im Gateway selbst:"
+"Wenn diese Einstellungen richtig sind, liegt das Problem im Gateway selbst:"
 
-#: umc/python/diagnostic/plugins/20_check_nameservers.py:200
+#: umc/python/diagnostic/plugins/20_check_srv_records.py:89
+#, python-brace-format
+msgid ""
+"In SRV record {name} is an invalid target \"{target}\" (see {{{link}}}):"
+msgstr ""
+"Im SRV-Record {name} ist ein ungültiger Ziel-Eintrag \"{target}\" (siehe "
+"{{{link}}}):"
+
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:198
 #, python-brace-format
 msgid "In forward zone {name} (see {{{link}}}):"
 msgstr "In der Forward-Zone {name} (siehe {{{link}}}):"
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:222
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:218
 #, python-brace-format
 msgid "In mail folder {name} (see {{udm:mail/mail}}):"
-msgstr "Im globalen Mail Ordner {name} (siehe {{udm:mail/mail}}):"
+msgstr "Im globalen Mail-Ordner {name} (siehe {{udm:mail/mail}}):"
 
-#: umc/python/diagnostic/plugins/20_check_nameservers.py:201
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:199
 #, python-brace-format
 msgid "In reverse zone {name} (see {{{link}}}):"
 msgstr "In der Reverse-Zone {name} (siehe {{{link}}}):"
 
-#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:109
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:105
 msgid "Inbound {nc!r}: error during DRS replication from {source} ({estring})"
 msgstr ""
 "In eingehend {nc!r}: Fehler während der DRS Replikation von {source} "
 "({estring})."
 
-#: umc/python/diagnostic/plugins/64_check_ucr_types.py:55
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:51
 #, python-format
 msgid "Invalid type %(type)r defined for variable %(variable)r."
 msgstr "Ungültiger Typ %(type)r für Variable %(variable)r definiert."
 
-#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:30
+#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:26
 msgid ""
 "It is not possible to automatically fix the problem when 'univention-"
 "fetchmail' is running on a non-master server."
@@ -547,7 +567,7 @@ msgstr ""
 "Es ist nicht möglich, das Problem automatisch zu beheben, wenn 'univention-"
 "fetchmail' nicht auf einem Master Server läuft."
 
-#: umc/python/diagnostic/plugins/32_security_limits.py:25
+#: umc/python/diagnostic/plugins/32_security_limits.py:21
 #, python-brace-format
 msgid ""
 "It is suggested to increase the security limits either manually by using "
@@ -557,27 +577,27 @@ msgstr ""
 "{ucr} oder durch automatische Anpassung auf die empfohlenen Limits zu "
 "erhöhen."
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:31
+#: umc/python/diagnostic/plugins/22_kdc_service.py:27
 msgid "KDC service check"
-msgstr "KDC Erreichbarkeit"
+msgstr "KDC-Erreichbarkeit"
 
-#: umc/python/diagnostic/plugins/62_check_slapschema.py:19
+#: umc/python/diagnostic/plugins/62_check_slapschema.py:15
 msgid "LDAP configuration files are valid."
 msgstr "LDAP-Konfigurationsdateien sind ungültig."
 
-#: umc/python/diagnostic/plugins/56_univention_types.py:20
+#: umc/python/diagnostic/plugins/56_univention_types.py:16
 msgid "LDAP objects"
 msgstr "LDAP-Objekte"
 
-#: umc/python/diagnostic/plugins/60_old_schema_registration.py:21
+#: umc/python/diagnostic/plugins/60_old_schema_registration.py:17
 msgid "LDAP schema files are not properly registered"
 msgstr "LDAP-Schemadateien sind nicht ordentlich registriert"
 
-#: umc/python/diagnostic/plugins/70_lmdb_fragmentation.py:56
+#: umc/python/diagnostic/plugins/70_lmdb_fragmentation.py:52
 msgid "LMDB fragmentation above threshold."
-msgstr "LMDB Fragmentierung über Schwellenwert."
+msgstr "LMDB-Fragmentierung über Schwellenwert."
 
-#: umc/python/diagnostic/plugins/01_ssh_connection.py:76
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:72
 #, python-format
 msgid ""
 "Login to the remote server with the uid %(uid)s and the password from /etc/"
@@ -586,50 +606,50 @@ msgstr ""
 "Der Login auf dem entfernten Rechner mit der uid %(uid)s und dem Passwort "
 "aus /etc/machine.secret is fehlgeschlagen. "
 
-#: umc/python/diagnostic/plugins/01_ssh_connection.py:75
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:71
 msgid "Machine authentication failed"
 msgstr "Authentifizierung mit dem Maschinen-Konto ist fehlgeschlagen"
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:43
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:39
 msgid "Mail folder {folder!r} does not exist in IMAP."
-msgstr "Globaler IMAP Order {folder!r} existiert nicht in IMAP."
+msgstr "Globaler IMAP-Order {folder!r} existiert nicht in IMAP."
 
-#: umc/python/diagnostic/plugins/10_gateway.py:22
+#: umc/python/diagnostic/plugins/10_gateway.py:18
 msgid "Make sure the hardware of the gateway device is working properly."
 msgstr ""
 "Stellen Sie sicher, dass die Hardware des Gateway-Geräts korrekt "
 "funktioniert."
 
-#: umc/python/diagnostic/plugins/21_check_join_status.py:22
+#: umc/python/diagnostic/plugins/21_check_join_status.py:18
 msgid "Manual: Analysis of listener/notifier problems"
 msgstr "Handbuch: Analyse von Listener/Notifier-Problemen"
 
-#: umc/python/diagnostic/plugins/56_univention_types.py:68
-#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:72
+#: umc/python/diagnostic/plugins/56_univention_types.py:64
+#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:68
 #, python-format
 msgid "Migrate %d LDAP objects"
 msgstr "Migriere %d LDAP-Objekte"
 
-#: umc/python/diagnostic/plugins/42_samba_tdb_deprecated.py:27
+#: umc/python/diagnostic/plugins/42_samba_tdb_deprecated.py:23
 msgid "Migrate Samba database from tdb to mdb"
 msgstr "Migration der Samba-Datenbank von tdb zu mdb"
 
-#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:73
+#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:69
 msgid "Migrate configurations"
 msgstr "Konfigurationen migrieren"
 
-#: umc/python/diagnostic/plugins/55_user_migration.py:38
+#: umc/python/diagnostic/plugins/55_user_migration.py:34
 msgid "Migrate user objects"
-msgstr "Migriere Nutzer Objekte"
+msgstr "Migriere Nutzer-Objekte"
 
-#: umc/python/diagnostic/plugins/53_package_status.py:21
+#: umc/python/diagnostic/plugins/53_package_status.py:17
 msgid ""
 "More information about the cause can be gained by executing \"dpkg --audit\"."
 msgstr ""
 "Weitere Informationen über die Ursache können durch Ausführen von \"dpkg --"
 "audit\" erhalten werden."
 
-#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:22
+#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:21
 msgid ""
 "More information can be found in the app log files under /var/log/"
 "univention/."
@@ -637,64 +657,64 @@ msgstr ""
 "Mehr Informationen können in den App-Logdateien unter /var/log/univention/ "
 "gefunden werden."
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:55
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:51
 msgid "Multiple ACL entries for {id!r} in UDM."
-msgstr "Mehrere ACL Einträge für {id!r} in UDM."
+msgstr "Mehrere ACL-Einträge für {id!r} in UDM."
 
-#: umc/python/diagnostic/plugins/11_nameserver.py:19
+#: umc/python/diagnostic/plugins/11_nameserver.py:15
 msgid "Nameserver(s) are not responsive"
 msgstr "Nameserver sind nicht ansprechbar"
 
-#: umc/python/diagnostic/plugins/67_postgresql_version.py:59
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:55
 msgid "No PostgreSQL version found."
 msgstr "Keine PostgreSQL-Version gefunden."
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:20
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:16
 msgid "No S4 Connector rejects were found."
-msgstr "Keine nicht synchronisierten S4 Connector Objekte gefunden."
+msgstr "Keine nicht synchronisierten S4-Connector-Objekte gefunden."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:16
-#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:32
-#: umc/python/diagnostic/plugins/71_samba_memberOf.py:18
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:12
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:19
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:28
 msgid "No errors found."
 msgstr "Keine Fehler gefunden."
 
-#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:22
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:18
 msgid "No errors occurred."
 msgstr "Es traten keine Fehler auf."
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:118
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:117
 #, python-format
 msgid "No http/https used as scheme in %(name)r: %(value)r."
 msgstr "Das Schema ist weder http noch https in Variable: %(name)r: %(value)r"
 
-#: umc/python/diagnostic/plugins/51_hostname_check.py:20
+#: umc/python/diagnostic/plugins/51_hostname_check.py:16
 msgid "No non-compliant hostnames found."
 msgstr "Keine nicht konformen Rechnernamen gefunden."
 
-#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:19
+#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:15
 msgid "No problems found with UDN replication."
-msgstr "Keine Prolbleme mit der UDN Replikation gefunden."
+msgstr "Keine Probleme mit der UDN-Replikation gefunden."
 
-#: umc/python/diagnostic/plugins/50_check_ucr_templates.py:19
+#: umc/python/diagnostic/plugins/50_check_ucr_templates.py:15
 msgid "No problems found with modified UCR templates"
-msgstr "Keine Probleme mit modifizierten UCR Vorlagen gefunden."
+msgstr "Keine Probleme mit modifizierten UCR-Vorlagen gefunden."
 
-#: umc/python/diagnostic/plugins/23_check_update_sites.py:21
+#: umc/python/diagnostic/plugins/23_check_update_sites.py:17
 msgid "No problems were found while resolving update repositories."
 msgstr "Es wurden keine Probleme beim Auflösen der Repository-Server gefunden."
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:341
+#: umc/python/diagnostic/plugins/22_kdc_service.py:337
 msgid "No reachable KDCs were found."
 msgstr "Keine erreichbaren KDCs gefunden."
 
-#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:44
+#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:40
 msgid "No user or group with SID {sid} found, expected {expected!r}."
 msgstr ""
 "Kein Nutzer oder keine Gruppe mit SID {sid} gefunden, {expected!r} war "
 "erwartet."
 
-#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:26
+#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:22
 msgid ""
 "Not all old LDAP fetchmail configurations have been migrated or incomplete "
 "configurations remain in some objects."
@@ -702,19 +722,19 @@ msgstr ""
 "Nicht alle alten LDAP Fetchmail Konfigurationen wurden migriert oder "
 "unvollständige Konfigurationen sind noch in einigen Objekten erhalten."
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:135
+#: umc/python/diagnostic/plugins/00_check_server_password.py:131
 msgid ""
 "Note that password rotation is disabled via the UCR variable server/password/"
 "change."
 msgstr ""
-"Beachten Sie, dass die Passwordrotation durch die UCR Variable server/"
+"Beachten Sie, dass die Passwordrotation durch die UCR-Variable server/"
 "password/change deaktiviert ist."
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:136
+#: umc/python/diagnostic/plugins/00_check_server_password.py:132
 msgid "Note that server/password/interval is set to {}."
 msgstr "Beachten Sie, dass server/password/interval auf {} gesetzt ist."
 
-#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:65
+#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:61
 #, python-format
 msgid ""
 "Number of objects that should be marked as \"%(server_role)s\": %(num_objs)d"
@@ -722,7 +742,7 @@ msgstr ""
 "Anzahl an Objekten die als \"%(server_role)s\" markiert sein sollten: "
 "%(num_objs)d"
 
-#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:67
+#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:63
 #, python-format
 msgid ""
 "Number of unspecific Windows computer objects with inconsistent "
@@ -731,7 +751,16 @@ msgstr ""
 "Anzahl unspezifischer Windows-Computer-Objekte mit inkonsistentem "
 "univentionObjectType: %d (Lässt sich nicht automatisiert korrigieren)"
 
-#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:21
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:120
+#, python-format
+msgid ""
+"OK, fix worked, \"univention-s4search sAMAccountName=%s memberOf\" shows "
+"group memberships."
+msgstr ""
+"OK, die Maßnahme hat funktioniert, \"univention-s4search sAMAccountName=%s "
+"memberOf\" zeigt die Gruppenmitgliedschaften."
+
+#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:17
 msgid ""
 "Objects that implicitly satisfy the criteria of a Univention Object but lack "
 "this attribute should be migrated."
@@ -739,7 +768,7 @@ msgstr ""
 "Objekte, die die Anforderungen eines Univention-Objekts implizit erfüllen, "
 "aber dieses Attribut nicht gesetzt haben, sollten migriert werden."
 
-#: umc/python/diagnostic/plugins/56_univention_types.py:23
+#: umc/python/diagnostic/plugins/56_univention_types.py:19
 msgid ""
 "Objects that implicitly satisfy the standards of a Univention Object but "
 "lack this attribute should be migrated."
@@ -747,7 +776,7 @@ msgstr ""
 "Objekte, die die Anforderungen eines Univention-Objekts implizit erfüllen, "
 "aber dieses Attribut nicht gesetzt haben, sollten migriert werden."
 
-#: umc/python/diagnostic/plugins/60_old_schema_registration.py:23
+#: umc/python/diagnostic/plugins/60_old_schema_registration.py:19
 msgid ""
 "Old packages and Apps registered schema files by copying the files locally "
 "into a certain directory."
@@ -755,41 +784,61 @@ msgstr ""
 "Alte Pakete und Apps haben Schemadateien registriert, indem sie sie lokal in "
 "ein bestimmtes Verzeichnis kopierten."
 
-#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:116
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:112
 msgid "Outbound {nc!r}: error during DRS replication to {source} ({estring})"
 msgstr ""
 "In ausgehend {nc!r}: Fehler während der DRS Replikation nach {source} "
 "({estring})."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:29
-#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:30
-#: umc/python/diagnostic/plugins/71_samba_memberOf.py:38
-#: umc/python/diagnostic/plugins/71_samba_memberOf.py:53
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:25
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:39
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:54
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:26
 #, python-brace-format
 msgid "Output of `{cmd}`:"
 msgstr "Ausgabe von `{cmd}`:"
 
-#: umc/python/diagnostic/plugins/53_package_status.py:17
+#: umc/python/diagnostic/plugins/53_package_status.py:13
 msgid "Package status corrupt"
 msgstr "Paketstatus korrupt"
 
-#: umc/python/diagnostic/plugins/01_ssh_connection.py:77
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:73
 msgid ""
 "Please check /var/log/auth.log on the remote server for further information."
 msgstr ""
 "Bitte prüfen Sie /var/log/auth.log auf dem entfernten Rechner für weitere "
 "Informationen."
 
-#: umc/python/diagnostic/plugins/54_sources_list_check.py:78
+#: umc/python/diagnostic/plugins/54_sources_list_check.py:74
 msgid "Please check the files for more details."
 msgstr "Überprüfen Sie die Dateien für mehr Details."
 
-#: umc/python/diagnostic/plugins/64_check_ucr_types.py:29
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:115
+msgid "Please chose an action."
+msgstr "Bitte wählen Sie eine Aktion."
+
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:25
 msgid "Please investigate them if you experience any problems on this system."
 msgstr ""
 "Bitte untersuchen Sie diese wenn Sie auf diesem System Probleme beobachten."
 
-#: umc/python/diagnostic/plugins/11_nameserver.py:22
+#: umc/python/diagnostic/plugins/20_check_srv_records.py:84
+msgid ""
+"Please make sure that only A or AAAA records are present and the given FQDN "
+"has to end with a dot."
+msgstr ""
+"Bitte stellen Sie sicher, dass nur A- oder AAAA-Einträge verwendet werden "
+"und diese mit einem Punkt enden."
+
+#: umc/python/diagnostic/plugins/20_check_share_references.py:110
+msgid ""
+"Please make sure that only hosts are specified that exist as a suitable "
+"computer object in LDAP."
+msgstr ""
+"Bitte stellen Sie sicher, dass nur Rechner angegeben werden, für die auch "
+"ein entsprechendes Computerobjekt im LDAP existiert."
+
+#: umc/python/diagnostic/plugins/11_nameserver.py:18
 msgid ""
 "Please make sure the DNS settings in the {setup:network} are correctly set "
 "up."
@@ -797,17 +846,17 @@ msgstr ""
 "Bitte sicherstellen, dass die DNS-Einstellungen in {setup:network} korrekt "
 "konfiguriert sind."
 
-#: umc/python/diagnostic/plugins/51_hostname_check.py:54
+#: umc/python/diagnostic/plugins/51_hostname_check.py:50
 #, python-brace-format
 msgid "Please refer to {rfc1123} for the syntax of host names."
 msgstr "Siehe {rfc1123} für die Syntax von Rechnernamen."
 
-#: umc/python/diagnostic/plugins/20_check_nameservers.py:197
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:195
 #, python-brace-format
 msgid "Please refer to {sdb} for further information."
 msgstr "Siehe {sdb} für weitere Informationen."
 
-#: umc/python/diagnostic/plugins/01_ssh_connection.py:73
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:69
 #, python-format
 msgid ""
 "Please repair the host key of the remote server in /root/.ssh/known_hosts on "
@@ -816,39 +865,39 @@ msgstr ""
 "Der SSH Host-Key in /root/.ssh/known_hosts des entfernten Rechners muss auf "
 "%(fqdn)s repariert werden."
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:88
+#: umc/python/diagnostic/plugins/00_check_server_password.py:84
 #, python-brace-format
 msgid "Please see {sdb} for more information."
 msgstr "Siehe {sdb} für weitere Informationen."
 
-#: umc/python/diagnostic/plugins/23_check_update_sites.py:59
+#: umc/python/diagnostic/plugins/23_check_update_sites.py:55
 #, python-brace-format
 msgid "Please see {sdb} for troubleshooting DNS problems."
-msgstr "Siehe {sdb} für Problemhilfe bei DNS Problemen."
+msgstr "Siehe {sdb} für Problemhilfe bei DNS-Problemen."
 
-#: umc/python/diagnostic/plugins/02_certificate_check.py:267
+#: umc/python/diagnostic/plugins/02_certificate_check.py:263
 #, python-brace-format
 msgid "Please see {sdb} on how to renew certificates."
 msgstr "Siehe {sdb} für Informationen zum Erneuern von Zertifikaten."
 
-#: umc/python/diagnostic/plugins/67_postgresql_version.py:63
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:59
 #, python-brace-format
 msgid "PostgreSQL version is {current}, should be {desired}."
 msgstr "PostgreSQL Version ist {current}, sollte {desired} sein."
 
-#: umc/python/diagnostic/plugins/05_check_ldap_master.py:19
+#: umc/python/diagnostic/plugins/05_check_ldap_master.py:15
 msgid "Primary LDAP server check"
 msgstr "Überprüfung des primären LDAP-Servers"
 
-#: umc/python/diagnostic/plugins/12_proxy.py:22
+#: umc/python/diagnostic/plugins/12_proxy.py:18
 msgid "Proxy server failure"
 msgstr "Proxy-Server-Fehler"
 
-#: umc/python/diagnostic/plugins/51_hostname_check.py:24
+#: umc/python/diagnostic/plugins/51_hostname_check.py:20
 msgid "RFC 1123 - 2.1 Host Names and Numbers"
 msgstr "RFC 1123 - 2.1 Rechernamen und Nummern"
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:65
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:61
 #, python-brace-format
 msgid ""
 "Re-execute the join-script <tt>92univention-management-console-web-server</"
@@ -861,32 +910,32 @@ msgstr ""
 "92univention-management-console-web-server</tt> auf der Befehlszeile as "
 "Benutzer <i>root</i> aus."
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:70
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:66
 msgid "Re-run join script"
 msgstr "Join-Skript erneut ausführen."
 
-#: umc/python/diagnostic/plugins/54_sources_list_check.py:74
+#: umc/python/diagnostic/plugins/54_sources_list_check.py:70
 msgid "Regenerate sources.list"
 msgstr "Source-Listen neu generieren"
 
-#: umc/python/diagnostic/plugins/60_old_schema_registration.py:90
+#: umc/python/diagnostic/plugins/60_old_schema_registration.py:86
 msgid "Register Schema files"
 msgstr "Schemadateien registrieren"
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:337
+#: umc/python/diagnostic/plugins/22_kdc_service.py:333
 msgid "Reset kerberos/kdc to 127.0.0.1"
 msgstr "Setze kerberos/kdc auf 127.0.0.1 zurück"
 
-#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:50
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:46
 msgid "Run `/usr/share/univention-directory-manager-tools/proof_uniqueMembers`"
 msgstr ""
 "Führe `/usr/share/univention-directory-manager-tools/proof_uniqueMembers` aus"
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:50
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:46
 msgid "Run `samba-tool dbcheck --fix --cross-ncs --yes`"
 msgstr "Führe `samba-tool dbcheck --fix --cross-ncs --yes` aus"
 
-#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:31
+#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:27
 msgid ""
 "Run the script '/usr/share/univention-fetchmail/migrate-fetchmail.py --"
 "binddn $DN --bindpwdfile $PWDFILE' to migrate the complete configurations."
@@ -895,66 +944,66 @@ msgstr ""
 "--binddn $DN --bindpwdfile $PWDFILE' aus, um die vollständigen "
 "Konfigurationen zu migrieren."
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:19
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:15
 msgid "S4 Connector rejects"
-msgstr "Nicht synchronisierte S4 Connector Objekte"
+msgstr "Nicht synchronisierte S4-Connector-Objekte"
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:97
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:93
 #, python-brace-format
 msgid "S4 DN: {s4}, UCS DN: {ucs}"
 msgstr "S4 DN: {s4}, UCS DN: {ucs}"
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:94
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:90
 msgid "S4 rejected:"
-msgstr "Nicht synchronisierte S4 Objekte:"
+msgstr "Nicht synchronisierte S4-Objekte:"
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:32
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:28
 msgid "SAML certificate verification failed!"
 msgstr "Überprüfung der SAML-Zertifikate fehlgeschlagen!"
 
-#: umc/python/diagnostic/plugins/01_ssh_connection.py:23
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:19
 msgid "SSH connection to UCS server failed!"
 msgstr "SSH-Verbindung zu anderem UCS Server fehlgeschlagen!"
 
-#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:19
+#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:15
 msgid "Samba 4 KDC running."
 msgstr "Samba 4 KDC läuft."
 
-#: umc/python/diagnostic/plugins/32_security_limits.py:32
+#: umc/python/diagnostic/plugins/32_security_limits.py:28
 msgid "Samba4 max open files - Univention Help"
 msgstr "Samba4 max open files - Univention Help"
 
-#: umc/python/diagnostic/plugins/32_security_limits.py:20
+#: umc/python/diagnostic/plugins/32_security_limits.py:16
 msgid "Security limits exceeded"
 msgstr "Sicherheitslimits überschritten"
 
-#: umc/python/diagnostic/plugins/21_check_join_status.py:37
+#: umc/python/diagnostic/plugins/21_check_join_status.py:33
 #, python-brace-format
 msgid "See {erroranalysis} or run the join-scripts via {join}."
 msgstr ""
-"Siehe {erroranalysis} oder führen Sie ausstehende JOIN-Skripte via {join} "
+"Siehe {erroranalysis} oder führen Sie ausstehende Join-Skripte via {join} "
 "aus."
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:139
+#: umc/python/diagnostic/plugins/00_check_server_password.py:135
 #, python-brace-format
 msgid "See {sdb} for information on manual server password change."
 msgstr ""
 "Siehe {sdb} für weitere Informationen für einen manuellen Tausch des "
 "Passwords für das Rechnerkonto."
 
-#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:18
+#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:14
 msgid "Server Role Windows"
 msgstr "Server Role Windows"
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:146
+#: umc/python/diagnostic/plugins/00_check_server_password.py:142
 msgid "Set server/password/change=True"
 msgstr "Setze server/password/change=True"
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:152
+#: umc/python/diagnostic/plugins/00_check_server_password.py:148
 msgid "Set server/password/interval=21"
 msgstr "Setze server/password/interval=21"
 
-#: umc/python/diagnostic/plugins/56_univention_types.py:22
+#: umc/python/diagnostic/plugins/56_univention_types.py:18
 msgid ""
 "Several services rely on the attribute \"univentionObjectType\" to search "
 "and identify objects in LDAP."
@@ -962,7 +1011,7 @@ msgstr ""
 "Verschiedene Dienste vertrauen auf das Attribut \"univentionObjectType\", um "
 "nach Objekten im LDAP zu suchen oder diese zu identifizieren."
 
-#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:20
+#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:16
 msgid ""
 "Several services rely on the attribute \"univentionServerRole\" to search "
 "and identify objects in OpenLDAP."
@@ -970,19 +1019,19 @@ msgstr ""
 "Verschiedene Dienste vertrauen auf das Attribut \"univentionServerRole\", um "
 "nach Objekten in OpenLDAP zu suchen oder diese zu identifizieren."
 
-#: umc/python/diagnostic/plugins/64_check_ucr_types.py:27
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:23
 msgid "Some UCR variables currently have invalid values."
 msgstr "Einige UCR-Variablen haben momentan ungültige Werte."
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:37
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:36
 msgid "Some UCR variables for the repository configuration are deprecated."
 msgstr "Einige UCR Variablen für die Repository Konfiguration sind veraltet."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:113
+#: umc/python/diagnostic/plugins/30_disk_usage.py:109
 msgid "Some disks are nearly full:"
 msgstr "Einige Festplatten sind beinahe voll:"
 
-#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:28
+#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:24
 #, python-brace-format
 msgid ""
 "Starting with UCS {ucs[0]}.{ucs[1]}-{ucs[2]} erratum {ucs[3]}, the minimum "
@@ -991,93 +1040,93 @@ msgstr ""
 "Ab UCS {ucs[0]}.{ucs[1]}-{ucs[2]} Erratum {ucs[3]} sollte die minimale "
 "Protokollversion auf {udn} angehoben sein."
 
-#: umc/python/diagnostic/__init__.py:271
+#: umc/python/diagnostic/__init__.py:267
 msgid "Test again"
 msgstr "Erneut testen"
 
-#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:36
+#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:35
 #, python-format
 msgid "The %(name)s Listener Converter has %(length)d unprocessed files."
 msgstr "Der %(name)s Listener-Converter hat %(length)d unverarbeitete Dateien."
 
-#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:41
+#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:40
 #, python-format
 msgid "The %(name)s Listener has %(length)d unprocessed files."
 msgstr "Der %(name)s Listener hat %(length)d unverarbeitete Dateien."
 
-#: umc/python/diagnostic/plugins/62_check_slapschema.py:31
+#: umc/python/diagnostic/plugins/62_check_slapschema.py:27
 msgid ""
 "The LDAP schema validation failed with the following errors or warnings:\n"
 msgstr ""
 "Die LDAP-Schema-Validierung ist mit den folgenden Fehlern oder Warnungen "
 "fehlgeschlagen:\n"
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:163
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:159
 msgid "The SAML identity provider certificate {cert!r} is missing in {{idp}}."
 msgstr "Das SAML Identity Providers Zertifikat {cert!r} fehlt in {{idp}}."
 
-#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:236
+#: umc/python/diagnostic/plugins/04_saml_certificate_check.py:232
 msgid ""
 "The SAML identity provider certificate {{{link}}} does not match the local "
 "certificate {loc!r}."
 msgstr ""
-"Das SAML Identity Provider Zertifikat {{{link}}} entspricht nicht dem "
+"Das SAML-Identity-Provider-Zertifikat {{{link}}} entspricht nicht dem "
 "lokalen Zertifikat {loc!r}."
 
-#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:32
+#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:28
 #, python-brace-format
 msgid "The UCR variable <tt>{ucr}</tt> is not configured or invalid."
 msgstr "Die UCR-Variable <tt>{ucr}</tt> ist nicht konfiguriert oder ungültig."
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:75
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:71
 msgid ""
 "The UCR variable {variable!r} is unset, but necessary for the S4 Connector."
 msgstr ""
 "Die UCR-Variable {variable!r} ist nicht gesetzt, aber notwendig für den S4 "
 "Connector."
 
-#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:17
+#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:16
 msgid "The app listener queues contain unprocessed files"
 msgstr ""
 "Es existieren unverarbeitete Dateien in den App-Listener-Verzeichnissen"
 
-#: umc/python/diagnostic/plugins/21_check_join_status.py:18
+#: umc/python/diagnostic/plugins/21_check_join_status.py:14
 msgid "The check for the join status was succsesful."
 msgstr "Die Überprüfung des Domänenbeitritts war erfolgreich."
 
-#: umc/python/diagnostic/plugins/54_sources_list_check.py:80
+#: umc/python/diagnostic/plugins/54_sources_list_check.py:76
 msgid "The error might be fixable by regenerating the sources.list."
 msgstr ""
 "Dieser Fehler könnte durch eine erneute Generierung der Source-Listen "
 "behoben werden."
 
-#: umc/python/diagnostic/plugins/50_check_ucr_templates.py:32
+#: umc/python/diagnostic/plugins/50_check_ucr_templates.py:28
 msgid "The files should be checked for differences."
 msgstr "Die Dateien sollten auf Unterschiede geprüft werden."
 
-#: umc/python/diagnostic/plugins/23_check_update_sites.py:55
+#: umc/python/diagnostic/plugins/23_check_update_sites.py:51
 msgid "The following FQDNs were not resolvable:"
 msgstr "Die folgenden FQDNs waren nicht auflösbar:"
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:311
+#: umc/python/diagnostic/plugins/22_kdc_service.py:307
 msgid "The following KDCs were unreachable: {}"
 msgstr "Die folgenden KDCs waren nicht erreichbar: {}"
 
-#: umc/python/diagnostic/plugins/50_check_ucr_templates.py:30
+#: umc/python/diagnostic/plugins/50_check_ucr_templates.py:26
 msgid "The following UCR files are modified locally."
-msgstr "Die folgenden UCR Vorlagen wurden lokal verändert."
+msgstr "Die folgenden UCR-Vorlagen wurden lokal verändert."
 
-#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:68
+#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:64
 msgid "The following complete configurations were found: "
 msgstr "Die folgenden vollständigen Konfigurationen wurden gefunden: "
 
-#: umc/python/diagnostic/plugins/60_old_schema_registration.py:88
+#: umc/python/diagnostic/plugins/60_old_schema_registration.py:84
 msgid "The following files seem to be registered in the old way:"
 msgstr ""
 "Die folgenden Dateien scheinen auf dem veralteten Weg registriert worden zu "
 "sein:"
 
-#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:77
+#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:73
 msgid ""
 "The following incomplete configurations have been found. Manual action is "
 "required to fix it. Attributes still present from past configurations can be "
@@ -1087,7 +1136,7 @@ msgstr ""
 "sind manuelle Maßnahmen erforderlich. Attribute, die noch aus früheren "
 "Konfigurationen vorhanden sind, können gelöscht werden."
 
-#: umc/python/diagnostic/plugins/01_ssh_connection.py:69
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:65
 msgid ""
 "The following list shows the affected remote servers and the reason for the "
 "failed ssh connection:"
@@ -1095,13 +1144,13 @@ msgstr ""
 "Die folgende Liste zeigt die betroffenen entfernten Rechner und den Grund "
 "für die fehlgeschlagene SSH-Verbindung."
 
-#: umc/python/diagnostic/plugins/51_hostname_check.py:52
+#: umc/python/diagnostic/plugins/51_hostname_check.py:48
 #, python-brace-format
 msgid "The following non-compliant hostnames have been found: {hostnames}."
 msgstr ""
 "Die folgenden nicht konformen Rechnernamen wurden gefunden: {hostnames}."
 
-#: umc/python/diagnostic/plugins/10_gateway.py:20
+#: umc/python/diagnostic/plugins/10_gateway.py:16
 #, python-format
 msgid ""
 "The gateway %r could not be reached. Please make sure the gateway and "
@@ -1112,7 +1161,7 @@ msgstr ""
 "{setup:network} sicherstellen, dass Gateway- und zusammengehörige "
 "Netzwerkeinstellungen korrekt konfiguriert sind."
 
-#: umc/python/diagnostic/plugins/12_proxy.py:76
+#: umc/python/diagnostic/plugins/12_proxy.py:72
 msgid ""
 "The hostname of the proxy could not be resolved. May check your DNS "
 "configuration."
@@ -1120,31 +1169,31 @@ msgstr ""
 "Der Rechnername des Proxies konnte nicht aufgelöst werden. Bitte DNS-"
 "Konfiguration überprüfen."
 
-#: umc/python/diagnostic/plugins/32_security_limits.py:63
+#: umc/python/diagnostic/plugins/32_security_limits.py:59
 msgid "The limits have been adjusted to the suggested value."
 msgstr "Die Limits wurden auf die empfohlenen Werte erhöht."
 
-#: umc/python/diagnostic/plugins/55_user_migration.py:48
+#: umc/python/diagnostic/plugins/55_user_migration.py:44
 #, python-format
 msgid "The migration failed: %s"
 msgstr "Die Migration schlug fehl: %s"
 
-#: umc/python/diagnostic/plugins/67_postgresql_version.py:35
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:31
 msgid "The migration status can be checked by executing: pg_lsclusters -h."
 msgstr "Der Migrationsstatus kann mit `pg_lsclusters -h` überprüft werden."
 
-#: umc/python/diagnostic/plugins/11_nameserver.py:50
+#: umc/python/diagnostic/plugins/11_nameserver.py:46
 #, python-format
 msgid "The nameserver %(nameserver)s (UCR variable %(var)r) is not responsive:"
 msgstr ""
 "Der Nameserver %(nameserver)s (UCR Variable %(var)r) ist nicht ansprechbar:"
 
-#: umc/python/diagnostic/plugins/53_package_status.py:19
+#: umc/python/diagnostic/plugins/53_package_status.py:15
 #, python-format
 msgid "The package status of %s packages is corrupt."
 msgstr "Der Paketstatus von %s Paketen ist korrupt."
 
-#: umc/python/diagnostic/plugins/60_old_schema_registration.py:24
+#: umc/python/diagnostic/plugins/60_old_schema_registration.py:20
 msgid ""
 "The preferred way now is to register them in LDAP; this is less error prone "
 "in situations like backup2master."
@@ -1152,16 +1201,16 @@ msgstr ""
 "Der bevorzugte Weg ist mittlerweise, sie im LDAP zu registrieren; das ist in "
 "Situationen wie backup2master weniger fehleranfällig."
 
-#: umc/python/diagnostic/plugins/05_check_ldap_master.py:66
+#: umc/python/diagnostic/plugins/05_check_ldap_master.py:62
 #, python-format
 msgid ""
 "The primary LDAP Server of this System (UCR ldap/master) is not set to the "
 "Primary Directory Node of this UCS domain (%s)."
 msgstr ""
 "Der primäre LDAP-Server dieses Systems (UCR ldap/master) ist nicht auf den "
-"Primary Directory Node der UCS Umgebung konfiguriert (%s)."
+"Primary Directory Node der UCS-Umgebung konfiguriert (%s)."
 
-#: umc/python/diagnostic/plugins/59_ldap_server_name.py:61
+#: umc/python/diagnostic/plugins/59_ldap_server_name.py:57
 #, python-format, python-brace-format
 msgid ""
 "The primary LDAP Server of this System (UCR ldap/server/name) is set to the "
@@ -1177,7 +1226,7 @@ msgstr ""
 "zur Entlastung des Primary Directory Node eine andere Konfiguration.\n"
 "Siehe {sdb} für weiter Hinweise zur Konfiguration."
 
-#: umc/python/diagnostic/plugins/12_proxy.py:74
+#: umc/python/diagnostic/plugins/12_proxy.py:70
 #, python-format
 msgid ""
 "The proxy host could not be reached. Make sure that hostname (%(hostname)r) "
@@ -1186,7 +1235,7 @@ msgstr ""
 "Der Proxy-Host konnte nicht erreicht werden. Bitte sicherstellen, dass "
 "Rechnername (%(hostname)r) und Port (%(port)r) korrekt eingestellt sind."
 
-#: umc/python/diagnostic/plugins/12_proxy.py:92
+#: umc/python/diagnostic/plugins/12_proxy.py:88
 #, python-format
 msgid ""
 "The proxy server is reachable but the HTTP response status code (%d) does "
@@ -1195,12 +1244,12 @@ msgstr ""
 "Der Proxy-Server ist erreichbar aber der HTTP-Antwort-Status-Code (%d) "
 "besagt keinen Erfolg."
 
-#: umc/python/diagnostic/plugins/60_old_schema_registration.py:103
+#: umc/python/diagnostic/plugins/60_old_schema_registration.py:99
 #, python-format
 msgid "The registration failed: %s"
 msgstr "Die Registrierung schlug fehl: %s"
 
-#: umc/python/diagnostic/plugins/32_security_limits.py:23
+#: umc/python/diagnostic/plugins/32_security_limits.py:19
 msgid ""
 "The security limits (e.g. for max_open_files) are currently not configured "
 "properly."
@@ -1208,7 +1257,7 @@ msgstr ""
 "Die Sicherheitslimits (z.B. für max_open_files) sind derzeit nicht geeignet "
 "eingestellt."
 
-#: umc/python/diagnostic/plugins/12_proxy.py:78
+#: umc/python/diagnostic/plugins/12_proxy.py:74
 #, python-format
 msgid ""
 "The server did not respond within %d seconds. Please check your network "
@@ -1217,13 +1266,13 @@ msgstr ""
 "Der Server antwortete nicht innerhalb von %d Sekunden. Bitte "
 "Netzwerkeinstellungen überprüfen."
 
-#: umc/python/diagnostic/plugins/01_ssh_connection.py:68
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:64
 msgid "The ssh connection to at least one other UCS server failed. "
 msgstr ""
-"Die SSH-Verbindung zu mindestens einem anderen UCS Server ist "
+"Die SSH-Verbindung zu mindestens einem anderen UCS-Server ist "
 "fehlgeschlagen. "
 
-#: umc/python/diagnostic/plugins/01_ssh_connection.py:72
+#: umc/python/diagnostic/plugins/01_ssh_connection.py:68
 msgid ""
 "The ssh host key of the remote server has changed (maybe the host was "
 "reinstalled). "
@@ -1231,22 +1280,29 @@ msgstr ""
 "Der SSH Host-Key des entfernten Rechners hat sich geändert (vielleicht wurde "
 "der Rechner neu installiert). "
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:111
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:110
 #, python-format
 msgid "The variable %(name)r is deprecated and should no longer be used."
 msgstr ""
 "Die Variable %(name)r ist veraltet und sollte nicht mehr benutzt werden."
 
-#: umc/python/diagnostic/plugins/64_check_ucr_types.py:61
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:57
 #, python-format
 msgid "The variable %(variable)r has the invalid value %(value)r."
 msgstr "Die Variable %(variable)r hat den ungültigen Wert %(value)r."
 
-#: umc/python/diagnostic/plugins/10_gateway.py:37
+#: umc/python/diagnostic/plugins/20_check_share_references.py:117
+#, python-brace-format
+msgid ""
+"The {udm_module} object {dn} contains an invalid \"host\" resp. "
+"\"spoolHost\" entry: \"{host}\" (see {{{link}}}):"
+msgstr "Das {udm_module}-Objekt {dn} enthält einen ungültigen \"Server\"- bzw. \"Druckserver\"-Eintrag: {host} (see {{{link}}}):"
+
+#: umc/python/diagnostic/plugins/10_gateway.py:33
 msgid "There is no gateway configured."
 msgstr "Es ist kein Gateway eingerichtet."
 
-#: umc/python/diagnostic/plugins/12_proxy.py:23
+#: umc/python/diagnostic/plugins/12_proxy.py:19
 msgid ""
 "There was an error using the proxy server. The {setup:network} can be used "
 "to change the proxy configuration.\n"
@@ -1254,20 +1310,20 @@ msgstr ""
 "Es gab einen Fehler beim Benutzen des Proxy-Servers. Das {setup:network} "
 "kann zur Veränderung der Proxy-Konfiguration genutzt werden.\n"
 
-#: umc/python/diagnostic/plugins/56_univention_types.py:58
-#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:55
+#: umc/python/diagnostic/plugins/56_univention_types.py:54
+#: umc/python/diagnostic/plugins/57_univention_server_role_windows.py:51
 msgid "These objects were found:"
 msgstr "Diese Objekte wurden gefunden:"
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:119
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:118
 msgid ""
 "This can be fixed only manually using the Repository Settings module or the "
 "UCR module."
 msgstr ""
-"Dies kann nur manuell im Modul Repository Einstellungen oder im UCR Modul "
+"Dies kann nur manuell im Modul Repository-Einstellungen oder im UCR-Modul "
 "korrigiert werden."
 
-#: umc/python/diagnostic/plugins/32_security_limits.py:24
+#: umc/python/diagnostic/plugins/32_security_limits.py:20
 msgid ""
 "This can cause several different serious problems (e.g. the login at samba "
 "servers may be impossible, file operations (copy, move) on shares can fail, "
@@ -1277,13 +1333,13 @@ msgstr ""
 "an Samba-Servern unmöglich, Dateioperationen (Kopieren, Verschieben) auf "
 "Freigaben kann fehlschlagen, uvm.)"
 
-#: umc/python/diagnostic/plugins/64_check_ucr_types.py:28
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:24
 msgid "This check has been added recently; some warning may be unproblematic."
 msgstr ""
 "Dieser Test wurde erst kürzlich hinzugefügt; einige Warnungen können "
 "unproblematisch sein."
 
-#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:21
+#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:20
 msgid ""
 "This could either mean that the affected app is currently processing these "
 "files or that there is some issue with the app queues. "
@@ -1291,38 +1347,38 @@ msgstr ""
 "Dies könnte entweder bedeuten, dass die betroffene App derzeit diese Dateien "
 "abarbeitet oder es ein Problem in einer der App-Queues gibt."
 
-#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:48
+#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:44
 msgid ""
 "This is a Samba 4 DC, but `samba-tool processes` reports no `kdc_server`."
 msgstr ""
 "Dies ist ein Samba 4 DC, aber `samba-tool processes` zeigt keinen "
 "`kdc_server` an."
 
-#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:215
+#: umc/python/diagnostic/plugins/52_mail_acl_sync.py:211
 msgid "This is not necessarily a problem, if the the ACL got changed via IMAP."
 msgstr ""
-"Dies ist nicht notwendigerweise ein Problem, wenn die ACL Einträge per IMAP "
+"Dies ist nicht notwendigerweise ein Problem, wenn die ACL-Einträge per IMAP "
 "geändert wurden."
 
-#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:49
+#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:45
 msgid "This may be, because Heimdal KDC seems to be running."
 msgstr "Dies mag daher kommen, dass Heimdal KDC läuft."
 
-#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:50
+#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:46
 msgid "This may be, because `kerberos/autostart` is not disabled."
 msgstr ""
 "Dies mag daher kommen, dass `kerberos/autostart` nicht deaktiviert ist."
 
-#: umc/python/diagnostic/plugins/51_hostname_check.py:53
+#: umc/python/diagnostic/plugins/51_hostname_check.py:49
 msgid "This may lead to DNS problems."
-msgstr "Dies kann zu DNS Problemen führen."
+msgstr "Dies kann zu DNS-Problemen führen."
 
-#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:54
+#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:50
 msgid "This might indicate an error or still processing transactions."
 msgstr ""
 "Dies mag auf einen Fehler oder noch ausstehende Transaktionen hinweisen."
 
-#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:19
+#: umc/python/diagnostic/plugins/69_check_app_listener_queue.py:18
 msgid ""
 "This test checks whether there are unprocessed files in the App Listener "
 "directory /var/lib/univention-appcenter/listener/$AppName/ and Listener "
@@ -1334,7 +1390,7 @@ msgstr ""
 "Converter-Verzeichnis /var/lib/univention-appcenter/apps/$AppName/data/ "
 "installierter Apps gibt."
 
-#: umc/python/diagnostic/plugins/12_proxy.py:93
+#: umc/python/diagnostic/plugins/12_proxy.py:89
 #, python-format
 msgid ""
 "This warning might be harmless. Nevertheless make sure the authentication "
@@ -1345,43 +1401,51 @@ msgstr ""
 "dass Authentifikations-Zugangsdaten (falls existierend) korrekt sind und die "
 "ACL's des Proxy-Servers nicht verbieten, Anfragen an %s zu stellen."
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:90
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:103
+msgid ""
+"Typically either \"Authenticated Users\" or \"Enterprise Domain "
+"Controllers\" are member of \"Pre-Windows 2000 Compatible Access\"."
+msgstr ""
+"Typischerweise sind entweder \"Authenticated Users\" oder \"Enterprise "
+"Domain Controllers\" Mitglied von \"Pre-Windows 2000 Compatible Access\"."
+
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:86
 #, python-brace-format
 msgid "UCS DN: {ucs}, S4 DN: {s4}, Filename: {fn}"
 msgstr "UCS DN: {ucs}, S4 DN: {s4}, Dateiname: {fn}"
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:87
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:83
 msgid "UCS rejected:"
-msgstr "Nicht synchronisierte UCS Objekte:"
+msgstr "Nicht synchronisierte UCS-Objekte:"
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:45
+#: umc/python/diagnostic/plugins/00_check_server_password.py:41
 msgid "Unable to fix machine password on {}"
 msgstr ""
 "Nicht im Stande das Password für das Rechnerkonto für {} zu korrigieren."
 
-#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:53
+#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:49
 msgid "Univention Directory Notifier ID and the locally stored version differ."
 msgstr ""
-"Univention Directory Notifier ID und die lokal gespeicherte Version "
+"Univention-Directory-Notifier-ID und die lokal gespeicherte Version "
 "unterscheiden sich."
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:69
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:65
 msgid "Univention S4 Connector is not installed."
 msgstr "Univention S4 Connector ist nicht installiert."
 
-#: umc/python/diagnostic/plugins/20_check_nameservers.py:33
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:29
 msgid "Univention Support Database - Bind: zone transfer failed"
 msgstr "Univention Support Database - Bind: Zonentransfer fehlgeschlagen"
 
-#: umc/python/diagnostic/plugins/59_ldap_server_name.py:27
+#: umc/python/diagnostic/plugins/59_ldap_server_name.py:23
 msgid ""
 "Univention Support Database - Change the primary LDAP Server to redistribute "
 "the server load"
 msgstr ""
 "Univention Support Database - Änderung des primären LDAP-Server zur "
-"Verteilung der Server Last"
+"Verteilung der Serverlast"
 
-#: umc/python/diagnostic/plugins/23_check_update_sites.py:25
+#: umc/python/diagnostic/plugins/23_check_update_sites.py:21
 msgid ""
 "Univention Support Database - DNS Server on Directory Node does not resolve "
 "external names"
@@ -1389,123 +1453,124 @@ msgstr ""
 "Univention Support Database - DNS-Server auf dem Directory Node löst externe "
 "Namen nicht auf"
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:24
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:20
 msgid "Univention Support Database - How to deal with s4-connector rejects"
 msgstr "Univention Support Database - Wie mit S4-Connector Konflikten umgehen"
 
-#: umc/python/diagnostic/plugins/00_check_server_password.py:31
+#: umc/python/diagnostic/plugins/00_check_server_password.py:27
 msgid "Univention Support Database - Manually trigger server password change"
 msgstr "Univention Support Database - Serverpasswortänderung manuell auslösen"
 
-#: umc/python/diagnostic/plugins/02_certificate_check.py:34
+#: umc/python/diagnostic/plugins/02_certificate_check.py:30
 msgid "Univention Support Database - Renewing the TLS/SSL certificates"
 msgstr "Univention Support Database - Erneuern der TLS/SSL-Zertifikate"
 
-#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:24
+#: umc/python/diagnostic/plugins/03_check_notifier_replication.py:20
 msgid "Univention Support Database - Troubleshooting: Listener-/Notifier"
 msgstr "Univention Support Database - Listener-/Notifier-Fehlersuche"
 
-#: umc/python/diagnostic/plugins/58_univentionObjectIdentifier.py:34
+#: umc/python/diagnostic/plugins/58_univentionObjectIdentifier.py:33
 msgid "Update LDAP objects"
 msgstr "LDAP-Objekte aktualisieren"
 
-#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:23
+#: umc/python/diagnostic/plugins/61_notifier_protocol_version.py:19
 msgid "Update protocol version"
 msgstr "Protokollversion anpassen"
 
-#: umc/python/diagnostic/plugins/50_check_ucr_templates.py:31
+#: umc/python/diagnostic/plugins/50_check_ucr_templates.py:27
 msgid "Updated versions will be named FILENAME.dpkg-*."
 msgstr "Aktualisierte Versionen werden DATEINAME.dpkg-* genannt."
 
-#: umc/python/diagnostic/plugins/67_postgresql_version.py:32
+#: umc/python/diagnostic/plugins/67_postgresql_version.py:28
 msgid "Updating from PostgreSQL 11 to PostgreSQL 15"
 msgstr "Aktualisierung von PostgreSQL 11 auf PostgreSQL 15"
 
-#: umc/python/diagnostic/plugins/64_check_ucr_types.py:30
+#: umc/python/diagnostic/plugins/64_check_ucr_types.py:26
 #, python-brace-format
 msgid "Use the module {ucr} to correct their values."
 msgstr "Benutzen Sie das Modul {ucr}, um diese Werte zu korrigieren."
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:39
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:38
 msgid ""
 "Use the {appcenter:components} to correct these values by once saving the "
 "General repository settings "
 msgstr ""
-"Verwenden Sie das {appcenter:components} um dies zu korrigieren, indem Sie "
+"Verwenden Sie das {appcenter:components}, um dies zu korrigieren, indem Sie "
 "die Konfiguration dort für die Allgmeinen Repository-Einstellungen "
 
-#: umc/python/diagnostic/plugins/55_user_migration.py:19
+#: umc/python/diagnostic/plugins/55_user_migration.py:15
 msgid "User objects which are not migrated"
-msgstr "Noch nicht migrierte Nutzer Objekte"
+msgstr "Noch nicht migrierte Nutzerobjekte"
 
-#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:64
+#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:60
 msgid ""
 "User or group with SID {sid} has name {actual!r}, but should be {expected!r}."
 msgstr ""
 "Der Nutzer oder die Gruppe mit der SID {sid} hat den Namen {actual!r}, "
 "sollte aber {expected!r} sein."
 
-#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:54
+#: umc/python/diagnostic/plugins/44_well_known_sid_check.py:50
 msgid ""
 "User or group with name {name!r} has sid {actual_sid}, but should be {sid}."
 msgstr ""
 "Der Nutzer oder die Gruppe mit dem Namen {name!r} hat die SID {actual_sid}, "
 "sollte aber {sid} haben."
 
-#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:58
+#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:54
 #, python-format
 msgid "User: %r\n"
 msgstr "Benutzer: %r\n"
 
-#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:60
+#: umc/python/diagnostic/plugins/68_old_fetchmail_attributes.py:56
 #, python-format
 msgid "User: %r - remaining fetchmail attributes: %s.\n"
-msgstr "Benutzer: %r - verbleibende Fetchmail Attribute: %s.\n"
+msgstr "Benutzer: %r - verbleibende Fetchmail-Attribute: %s.\n"
 
-#: umc/python/diagnostic/plugins/58_univentionObjectIdentifier.py:18
+#: umc/python/diagnostic/plugins/58_univentionObjectIdentifier.py:14
 msgid "Validate all objects have Univention Object Identifier set"
-msgstr "Validierung, dass alle Objekte den Univention Object Identifier gesetzt haben"
+msgstr ""
+"Validierung, dass alle Objekte den Univention Object Identifier gesetzt haben"
 
-#: umc/python/diagnostic/plugins/62_check_slapschema.py:18
+#: umc/python/diagnostic/plugins/62_check_slapschema.py:14
 msgid "Validating the LDAP configuration and schema files."
-msgstr "Validierung der LDAP-Konfigurations und Schema Dateien."
+msgstr "Validierung der LDAP-Konfigurations und Schema-Dateien."
 
-#: umc/python/diagnostic/plugins/55_user_migration.py:22
+#: umc/python/diagnostic/plugins/55_user_migration.py:18
 msgid ""
 "When a user object is created by a system which is not yet on UCS 4.3 it "
 "will have the old format. These user objects need to migrated again."
 msgstr ""
 "Wenn ein Nutzer auf System erstellt wurde, welches noch nicht auf UCS 4.3 "
-"ist, wird dieser im alten Format sein. Diese Nutzer Objekte müssen erneut "
+"ist, wird dieser im alten Format sein. Diese Nutzerobjekte müssen erneut "
 "migriert werden."
 
-#: umc/python/diagnostic/plugins/55_user_migration.py:21
+#: umc/python/diagnostic/plugins/55_user_migration.py:17
 msgid ""
 "With UCS 4.3 the LDAP format of user objects changed. After upgrading the "
 "Primary Directory Node all user objects are migrated into the new format."
 msgstr ""
-"Mit UCS 4.3 hat sich das LDAP format von Nutzer Objekten geändert. Nach "
-"Upgrade des Primary Directory Node werden all Nutzer Objekte in das neue "
+"Mit UCS 4.3 hat sich das LDAP-Format von Nutzerobjekten geändert. Nach "
+"Upgrade des Primary Directory Node werden all Nutzerobjekte in das neue "
 "Format migriert."
 
-#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:60
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:56
 msgid ""
 "You can run `/usr/share/univention-directory-manager-tools/"
 "proof_uniqueMembers` to fix the issue."
 msgstr ""
 "Sie können `/usr/share/univention-directory-manager-tools/"
-"proof_uniqueMembers` ausführen um das Problem zu beheben."
+"proof_uniqueMembers` ausführen, um das Problem zu beheben."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:60
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:56
 msgid "You can run `samba-tool dbcheck --fix` to fix the issue."
 msgstr ""
-"Sie können `samba-tool dbcheck --fix` ausführen um die Probleme zu beheben."
+"Sie können `samba-tool dbcheck --fix` ausführen, um die Probleme zu beheben."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:120
+#: umc/python/diagnostic/plugins/30_disk_usage.py:116
 msgid "You have configured some high log levels."
 msgstr "Sie haben erhöhten Detailgrad für Logmeldungen eingestellt."
 
-#: umc/python/diagnostic/plugins/53_package_status.py:20
+#: umc/python/diagnostic/plugins/53_package_status.py:16
 msgid ""
 "You may log in to the system as root via ssh and run the command \"dpkg --"
 "configure -a\" as an attempt to correct the packages status."
@@ -1513,30 +1578,30 @@ msgstr ""
 "Um den Paketstatus zu korrigieren, loggen Sie sich am System per ssh als "
 "root ein und führen Sie das Kommando \"dpkg --configure -a\" aus."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:97
+#: umc/python/diagnostic/plugins/30_disk_usage.py:93
 msgid "You may want to move /var/log to another disk or storage."
 msgstr ""
 "Sie können /var/log auf eine andere Festplatte oder Speicher verschieben."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:99
+#: umc/python/diagnostic/plugins/30_disk_usage.py:95
 msgid "You may want to move the local repository to another server."
 msgstr "Sie können lokale Repositorys auf einen anderen Server auslagern."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:120
+#: umc/python/diagnostic/plugins/30_disk_usage.py:116
 #, python-brace-format
 msgid "You may want to reset them via {ucr}."
 msgstr "Sie können sie per {ucr} zurück setzen."
 
-#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:51
+#: umc/python/diagnostic/plugins/45_heimdal_on_samba4_dc.py:47
 #, python-brace-format
 msgid "You may want to stop Heimdal KDC and restart Samba via {services}"
 msgstr "Sie können Heimdal KDC per {services} stoppen und Samba neu starten."
 
-#: umc/python/diagnostic/plugins/30_disk_usage.py:95
+#: umc/python/diagnostic/plugins/30_disk_usage.py:91
 msgid "You may want to uninstall software via {appcenter:appcenter}."
 msgstr "Sie können per {appcenter:appcenter} Software entfernen."
 
-#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:56
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:52
 msgid ""
 "`/usr/share/univention-directory-manager-tools/proof_uniqueMembers -c` found "
 "an error with the LDAP database group membership attributes."
@@ -1545,7 +1610,7 @@ msgstr ""
 "einen Fehler in der LDAP-Datenbank mit Gruppenmitgliedschafts-Attributen "
 "gefunden."
 
-#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:65
+#: umc/python/diagnostic/plugins/63_proof_uniqueMembers.py:61
 msgid ""
 "`/usr/share/univention-directory-manager-tools/proof_uniqueMembers -c` found "
 "no errors with the LDAP database group membership attributes."
@@ -1554,40 +1619,40 @@ msgstr ""
 "keine Probleme in der LDAP-Datenbank mit Gruppenmitgliedschafts-Attributen "
 "gefunden."
 
-#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:39
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:35
 #, python-brace-format
 msgid "`kinit` for principal {princ} with keytab {tab} failed."
 msgstr ""
-"`kinit` für den Principal {princ} mit der Password Tabelle {tab} ist "
+"`kinit` für den Principal {princ} mit der Password-Tabelle {tab} ist "
 "fehlgeschlagen."
 
-#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:41
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:37
 #, python-brace-format
 msgid "`kinit` for principal {princ} with password file {file} failed."
 msgstr ""
-"`kinit` für den Principal {princ} mit der Password Datei {file} ist "
+"`kinit` für den Principal {princ} mit der Password-Datei {file} ist "
 "fehlgeschlagen."
 
-#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:52
+#: umc/python/diagnostic/plugins/46_kerberos_ddns_update.py:48
 #, python-brace-format
 msgid "`nsupdate` check for domain {domain} failed ({details})."
 msgstr ""
 "`nsupdate` Prüfung für die Domänne {domain} ist fehlgeschlagen ({details})."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:56
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:52
 msgid "`samba-tool dbcheck` found an error in the local AD database."
-msgstr "`samba-tool dbcheck` fand einen Fehler in der lokalen AD Datenbank."
+msgstr "`samba-tool dbcheck` fand einen Fehler in der lokalen AD-Datenbank."
 
-#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:65
+#: umc/python/diagnostic/plugins/40_samba_tool_dbcheck.py:61
 msgid "`samba-tool dbcheck` found no errors in the local AD database."
 msgstr ""
-"`samba-tool dbcheck` hat keine Fehler in der lokalen AD Datenbank gefunden."
+"`samba-tool dbcheck` hat keine Fehler in der lokalen AD-Datenbank gefunden."
 
-#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:128
+#: umc/python/diagnostic/plugins/41_samba_tool_showrepl.py:124
 msgid "`samba-tool drs showrepl` returned a problem with the replication."
 msgstr "`samba-tool drs showrepl` gibt ein Problem mit der Replikation zurück."
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:40
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:39
 msgid ""
 "as well as saving the settings for all Additional repositories or press the "
 "Button ADJUST ALL COMPONENTS "
@@ -1595,21 +1660,21 @@ msgstr ""
 "und für alle zusätzlichen Repositories neu abspeichern, oder drücken Sie den "
 "Button ALLE KOMPONENTEN KORRIGIEREN "
 
-#: umc/python/diagnostic/plugins/02_certificate_check.py:33
+#: umc/python/diagnostic/plugins/02_certificate_check.py:29
 msgid "http://sdb.univention.de/1183"
 msgstr "http://sdb.univention.de/1000"
 
-#: umc/python/diagnostic/plugins/20_check_nameservers.py:32
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:28
 msgid "http://sdb.univention.de/1273"
 msgstr "https://help.univention.com/t/bind-zone-transfer-failed/6573"
 
-#: umc/python/diagnostic/plugins/23_check_update_sites.py:24
+#: umc/python/diagnostic/plugins/23_check_update_sites.py:20
 msgid "http://sdb.univention.de/1298"
 msgstr ""
 "https://help.univention.com/t/dns-server-on-dc-does-not-resolve-external-"
 "name/6568"
 
-#: umc/python/diagnostic/plugins/21_check_join_status.py:21
+#: umc/python/diagnostic/plugins/21_check_join_status.py:17
 msgid ""
 "https://docs.software-univention.de/manual-5.2.html#domain:listenernotifier:"
 "erroranalysis"
@@ -1617,33 +1682,39 @@ msgstr ""
 "https://docs.software-univention.de/handbuch-5.2.html#domain:"
 "listenernotifier:erroranalysis"
 
-#: umc/python/diagnostic/plugins/32_security_limits.py:31
+#: umc/python/diagnostic/plugins/32_security_limits.py:27
 msgid "https://help.univention.com/t/samba4-max-open-files/1758"
 msgstr "https://help.univention.com/t/samba4-max-open-files/1758"
 
-#: umc/python/diagnostic/plugins/51_hostname_check.py:23
+#: umc/python/diagnostic/plugins/51_hostname_check.py:19
 msgid "https://tools.ietf.org/html/rfc1123#section-2"
 msgstr "https://tools.ietf.org/html/rfc1123#section-2"
 
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:89
-#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:96
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:85
+#: umc/python/diagnostic/plugins/43_connectors4_rejects.py:92
 msgid "not found"
 msgstr "nicht gefunden"
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:76
+#: umc/python/diagnostic/plugins/22_kdc_service.py:72
 msgid "ph "
 msgstr "ph "
 
-#: umc/python/diagnostic/plugins/22_kdc_service.py:328
+#: umc/python/diagnostic/plugins/22_kdc_service.py:324
 msgid "samba/interfaces does not contain lo, 127.0.0.1 or 0.0.0.0."
 msgstr "samba/interfaces enthält weder lo noch 127.0.0.1 noch 0.0.0.0."
 
-#: umc/python/diagnostic/plugins/53_package_status.py:37
+#: umc/python/diagnostic/plugins/53_package_status.py:33
 msgid "some"
 msgstr "einigen"
 
-#: umc/python/diagnostic/plugins/65_check_repository_config.py:41
+#: umc/python/diagnostic/plugins/65_check_repository_config.py:40
 msgid "to correct these settings and delete the obsolete variables."
 msgstr ""
 "um die Konfiguration zu korrigieren und die überflüssigen Variablen zu "
 "löschen."
+
+#: umc/python/diagnostic/plugins/71_samba_memberOf.py:97
+#, python-format
+msgid ""
+"univention-s4search did not show any memberOf values for sAMAccountName=%s."
+msgstr "univention-s4search zeigt keine memberOf-Werte für sAMAccountName=%s."
