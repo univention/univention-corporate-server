@@ -1,0 +1,35 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: imagemagick
+fix: 8:6.9.7.4+dfsg-11+deb9u22
+desc: |
+ This update addresses the following issues:
+ * CVSS score 8.8 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H).
+   (CVE-2025-55154)
+ * CVSS score 7.5 (CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2025-57803, CVE-2025-55298)
+ * CVSS score 7.4 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:H).
+   (CVE-2025-53101)
+ * CVSS score 4.3 (AV:N/AC:M/Au:N/C:N/I:N/A:P). (CVE-2017-11534,
+   CVE-2017-11532, CVE-2017-11531)
+ * CVSS score 3.8 (CVSS:3.1/AV:L/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:L).
+   (CVE-2025-57807)
+ * CVSS score 3.7 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L).
+   (CVE-2025-55212, CVE-2025-53019)
+ * CVSS score 3.7 (CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N).
+   (CVE-2025-53014)
+bug: [58642]
+cve:
+- CVE-2017-11531
+- CVE-2017-11532
+- CVE-2017-11534
+- CVE-2025-53014
+- CVE-2025-53019
+- CVE-2025-53101
+- CVE-2025-55154
+- CVE-2025-55212
+- CVE-2025-55298
+- CVE-2025-57803
+- CVE-2025-57807
