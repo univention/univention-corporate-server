@@ -1,0 +1,10 @@
+product: ucs
+release: "5.2"
+version: [3]
+scope: ucs_5.2-0-errata5.2-3
+src: univention-system-setup
+fix: 15.3.0
+desc: |
+ This update addresses the following issues:
+ * Logging has been adapted to be compatible with structured logging.
+bug: [58644]
