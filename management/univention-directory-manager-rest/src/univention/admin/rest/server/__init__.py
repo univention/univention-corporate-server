@@ -164,11 +164,10 @@ class Gateway(tornado.web.RequestHandler):
         univention.logging.extendLogger('tornado.access', univention_debug_category='NETWORK')
         univention.logging.extendLogger('tornado.application', univention_debug_category='NETWORK')
         univention.logging.extendLogger('tornado.general', univention_debug_category='NETWORK')
-        channel = logging.StreamHandler()
+        channel = logging.getLogger('ADMIN').univention_debug_handler
         prepare_handler(channel, ucr.is_true('directory/manager/rest/debug/structured-logging'))
         logger = logging.getLogger('')
-        logger.setLevel(logging.INFO)
-        logger.addHandler(channel)
+        logger.setLevel(logging.INFO)  # TODO: make tornado loglevel configurable
 
         init_request_context_logging(request_context)
 

@@ -104,13 +104,16 @@ class ResourceBase(SanitizerBase, HAL, HTML):
         return (yield future)
 
     def pool_wrapper(self, func, *a, **kw):
+        self._set_request_context()
+        return func(*a, **kw)
+
+    def _set_request_context(self):
         request_context.set({
             "request_id": self.request.x_request_id,
             "requester_dn": self.request.user_dn,
             "requester_ip": self.request.client_ip,
             "requester_hostname": self.request.client_host,
         })
-        return func(*a, **kw)
 
     requires_authentication = True
 
@@ -146,6 +149,8 @@ class ResourceBase(SanitizerBase, HAL, HTML):
             self.request.client_host = socket.gethostbyaddr(self.request.client_ip)[0]
         except OSError:
             self.request.client_host = ''
+        self.request.user_dn = None
+        self._set_request_context()
 
         authorization = self.request.headers.get('Authorization')
         if not authorization and self.requires_authentication:
@@ -202,6 +207,7 @@ class ResourceBase(SanitizerBase, HAL, HTML):
         else:
             self.request.user_dn = userdn
             self.request.username = username
+            self._set_request_context()
 
         if not already_authenticated:
             self._auth_check_allowed_groups()

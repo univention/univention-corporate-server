@@ -42,11 +42,9 @@ class RequestContextFilter(logging.Filter):
             request_context = self.request_context.get()
         except LookupError:
             request_context = {}
-        request_id = request_context.get('request_id', '')
-        if self.structured_logging:
-            record.request_id = request_id[:10]
-        else:
-            record.prefix = f"[{request_id[:10]}]"  # backwards compatibility
+        record.request_id = request_context.get('request_id', '-')
+        if not self.structured_logging:
+            record.prefix = f"[{(record.request_id or '')[:10]}]"  # backwards compatibility
         if dn := request_context.get('requester_dn'):
             record.requester_dn = dn
         if ip := request_context.get('requester_ip'):

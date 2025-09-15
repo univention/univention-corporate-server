@@ -177,7 +177,7 @@ class Server:
 
         def stop_loop(deadline):
             now = time.time()
-            if now < deadline:  # and (io_loop.callbacks or io_loop.timeouts):  # FIXME: neither _UnixSelectorEventLoop nor AsyncIOMainLoop have callbacks
+            if now < deadline:
                 io_loop.add_timeout(now + 1, stop_loop, deadline)
             else:
                 loop.stop()
