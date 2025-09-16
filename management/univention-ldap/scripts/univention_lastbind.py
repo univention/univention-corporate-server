@@ -67,7 +67,7 @@ def get_users(binddn: str | None = None, bindpwdfile: str | None = None, only_th
 def get_youngest_timestamp(user: univention.udm.modules.users_user.UsersUserObject, connections: list[univention.admin.uldap.access]) -> str | None:
     timestamps = [timestamp.decode('ASCII') for lo in connections for timestamp in lo.getAttr(user.dn, 'authTimestamp')]
     timestamps = sorted(timestamps)
-    return timestamps[-1] if len(timestamps) else None
+    return timestamps[-1] if timestamps else None
 
 
 def save_timestamp(user: univention.udm.modules.users_user.UsersUserObject, timestamp: str | None = None) -> None:
