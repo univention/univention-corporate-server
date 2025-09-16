@@ -234,19 +234,19 @@ class OIDCResource(OAuth2Mixin, Resource):
             CORE.warning("Signature expired")
             raise Unauthorized(self._("The Token signature is expired."))
         except jwt.InvalidSignatureError as exc:
-            CORE.error("Invalid signature: %s" % (exc,))
+            CORE.error("Invalid signature: %s", exc)
             raise Unauthorized(self._('The Token contains an invalid signature: %s') % (exc,))
         except jwt.InvalidIssuerError as exc:
-            CORE.warning("Invalid issuer: %s" % (exc,))
+            CORE.warning("Invalid issuer: %s", exc)
             raise Unauthorized(self._('The Token contains an invalid issuer: %s') % (exc,))
         except jwt.InvalidAudienceError as exc:
-            CORE.warning("Invalid signature: %s" % (exc,))
+            CORE.warning("Invalid signature: %s", exc)
             raise Unauthorized(self._('The Token contains an invalid audience: %s') % (exc,))
         except jwt.MissingRequiredClaimError as exc:
-            CORE.warning("Missing claim: %s" % (exc,))
+            CORE.warning("Missing claim: %s", exc)
             raise Unauthorized(self._('The Token is missing a required claim: %s') % (exc,))
         except jwt.ImmatureSignatureError as exc:
-            CORE.warning("Immature signature: %s" % (exc,))
+            CORE.warning("Immature signature: %s", exc)
             raise Unauthorized(self._('The Token contains an immature signature: %s') % (exc,))
 
         CORE.debug('OIDC JWK-Payload: %r' % (claims,))
@@ -271,11 +271,11 @@ class OIDCResource(OAuth2Mixin, Resource):
         try:
             user_info_res = await http_client.fetch(user_info_req)
         except HTTPClientError as exc:
-            CORE.warning("Fetching user info failed: %s %s" % (user_info_req.url, exc))
+            CORE.warning("Fetching user info failed: %s %s", user_info_req.url, exc)
             raise OpenIDProvideUnavailable(self._("Could not receive user information from OP."))
 
         user_info = json.loads(user_info_res.body.decode('utf-8'))
-        CORE.debug('OIDC User-Info: %r' % (user_info,))
+        CORE.debug('OIDC User-Info: %r', user_info)
         return user_info
 
     async def download_jwks(self):
@@ -285,7 +285,7 @@ class OIDCResource(OAuth2Mixin, Resource):
         try:
             response = await http_client.fetch(request, raise_error=False)
         except HTTPClientError as exc:
-            CORE.warning("Fetching certificate failed: %s %s" % (request.url, exc))
+            CORE.warning("Fetching certificate failed: %s %s", request.url, exc)
             raise OpenIDProvideUnavailable(self._("Could not receive certificate from OP."))
 
         if response.code != 200:
@@ -328,13 +328,13 @@ class OIDCResource(OAuth2Mixin, Resource):
             )
         except HTTPClientError as exc:
             if not exc.response or exc.response.body is None:
-                CORE.error('OP response was empty or timed out. Could not get new access token: %s' % (exc,))
+                CORE.error('OP response was empty or timed out. Could not get new access token: %s', exc)
                 raise OpenIDProvideUnavailable(self._('Could not receive token from authorization server.'))
             json_response = escape.json_decode(exc.response.body)
             if json_response.get('error') == 'invalid_grant':
                 if user.session_id in Session.sessions:
                     Session.sessions[user.session_id].logout(reload=False)
-            CORE.error('Could not get new access token: %s' % (json_response))
+            CORE.error('Could not get new access token: %s', json_response)
             raise OpenIDProvideUnavailable(self._('Could not receive token from authorization server.'))
 
         try:
@@ -528,9 +528,9 @@ class OIDCBackchannelLogout(OIDCResource):
                     with get_session() as db_session:
                         session.delete(db_session, session.session_id, True)
                 except exc.DBAPIError as err:
-                    CORE.error('Deleting the session from the database during OIDC backchannel logout failed\n%s' % (err))
+                    CORE.error('Deleting the session from the database during OIDC backchannel logout failed: %s', err)
                 except exc.TimeoutError as err:
-                    CORE.error('Deleting the session from the database during OIDC backchannel logout timed out\n%s' % (err))
+                    CORE.error('Deleting the session from the database during OIDC backchannel logout timed out: %s', err)
                 except DBDisabledException:
                     pass
 
