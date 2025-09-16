@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.3.3) unstable; urgency=medium
+
+  * Bug #20610: Deprecate udm option --bindpwd, use --bindpwdfile
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 08 Oct 2025 08:13:42 +0200
+
 univention-directory-manager-modules (17.3.2) unstable; urgency=medium
 
   * #58652: new udm type users/federated_account

@@ -67,7 +67,7 @@ def usage(stream):  # type: (IO[str]) -> None
     print('', file=stream)
     print('general options:', file=stream)
     print('  --%-30s %s' % ('binddn', 'bind DN'), file=stream)
-    print('  --%-30s %s' % ('bindpwd', 'bind password'), file=stream)
+    print('  --%-30s %s' % ('bindpwd', 'bind password (deprecated, use --bindpwdfile instead)'), file=stream)
     print('  --%-30s %s' % ('bindpwdfile', 'file containing bind password'), file=stream)
     print('  --%-30s %s' % ('logfile', 'path and name of the logfile to be used'), file=stream)
     print('  --%-30s %s' % ('tls', '0 (no); 1 (try); 2 (must)'), file=stream)
@@ -456,6 +456,7 @@ def _doit(
             binddn = val
         elif opt == '--bindpwd':
             bindpwd = val
+            print("WARNING: option --bindpwd is deprecated, use --bindpwdfile instead", file=stderr)
         elif opt == '--bindpwdfile':
             try:
                 with open(val) as fp:

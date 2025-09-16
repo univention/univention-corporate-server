@@ -503,7 +503,7 @@ Use "univention-directory-manager modules" for a list of available modules.''',
     parser.set_defaults(parser=parser)
     parser.add_argument('--username', help='username to authenticate with')
     parser.add_argument('--binddn', help='binddn where username can be extracted from')
-    parser.add_argument('--bindpwd', help='password to authenticate with')
+    parser.add_argument('--bindpwd', help='password to authenticate with (deprecated, use --bindpwdfile instead)')
     parser.add_argument('--bindpwdfile', help='file containing password', type=argparse.FileType('r'))
     parser.add_argument('--bearertoken', help='bearer token (Access Token) as JWT')
     parser.add_argument('--logfile', help='path and name of the logfile to be used')
