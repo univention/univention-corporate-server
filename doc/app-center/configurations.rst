@@ -35,7 +35,7 @@ your app, for example, to properly prepare it. For more information, refer to
 
 .. _installation-scripts-app-flow-install:
 
-.. figure:: /images/app-flow-install.png
+.. figure:: /images/app-flow-install.*
    :alt: App workflow for installation
 
    App workflow for installation
@@ -268,7 +268,7 @@ found in the following sections.
 
 .. _uninstallation-scripts-app-flow-remove:
 
-.. figure:: /images/app-flow-remove.png
+.. figure:: /images/app-flow-remove.*
    :alt: App workflow for Removal
 
    App workflow for Removal
@@ -357,7 +357,7 @@ your app, for example, to run a data migration. For more information, refer to
 
 .. _upgrade-scripts-app-flow-update:
 
-.. figure:: /images/app-flow-update.png
+.. figure:: /images/app-flow-update.*
    :alt: App workflow for upgrade
 
    App workflow for upgrade

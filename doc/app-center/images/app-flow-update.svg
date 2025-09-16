@@ -490,7 +490,7 @@
            id="tspan3787"
            sodipodi:role="line">./<tspan
    id="tspan4990"
-   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold'">inst</tspan> --binddn uid=Administrator,... --bindpwd /tmp/...</tspan></text>
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold'">inst</tspan> --binddn uid=Administrator,... --bindpwdfile /tmp/...</tspan></text>
     </g>
     <g
        id="g4803"

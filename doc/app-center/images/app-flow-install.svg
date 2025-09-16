@@ -524,7 +524,7 @@
            id="tspan3787"
            sodipodi:role="line">./<tspan
    style="-inkscape-font-specification:'Open Sans Bold';font-family:'Open Sans';font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal"
-   id="tspan13505">inst</tspan> --binddn uid=Administrator,... --bindpwd /tmp/...</tspan></text>
+   id="tspan13505">inst</tspan> --binddn uid=Administrator,... --bindpwdfile /tmp/...</tspan></text>
     </g>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow1Lstart);marker-end:url(#Arrow2Lend)"

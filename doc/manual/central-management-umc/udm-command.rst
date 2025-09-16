@@ -65,7 +65,7 @@ can be output by specifying the operation name, e.g.,
    [...]
    general options:
      --binddn                         bind DN
-     --bindpwd                        bind password
+     --bindpwd                        bind password (deprecated, use --bindpwdfile instead)
      --bindpwdfile                    file containing bind password
    [...]
    create options:

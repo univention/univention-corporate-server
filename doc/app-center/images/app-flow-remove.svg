@@ -449,7 +449,7 @@
            id="tspan3787"
            sodipodi:role="line">./<tspan
    id="tspan4737"
-   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold'">uinst</tspan> --binddn uid=Administrator,... --bindpwd /tmp/...</tspan></text>
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold'">uinst</tspan> --binddn uid=Administrator,... --bindpwdfile /tmp/...</tspan></text>
     </g>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker10824)"

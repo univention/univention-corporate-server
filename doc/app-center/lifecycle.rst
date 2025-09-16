@@ -235,7 +235,7 @@ interface of UDM can be used easily. Here is an example:
 
 For certain tests user credentials for access to the directory service
 are needed. They are passed with the parameters ``binddn`` and
-``bindpwd``. In many cases the user *Administrator* is used. The
+``bindpwdfile``. In many cases the user *Administrator* is used. The
 Administrator credentials are only important for UDM calls on UCS
 systems that are not the |UCSPRIMARYDN|.
 
@@ -251,7 +251,7 @@ The test script can be manually tested.
      --appcenter-server http://appcenter-test.software-univention.de \
      my-app \
      --binddn "$DN" \
-     --bindpwd "$BINDPWD"
+     --bindpwdfile "$BINDPWDFILE"
 
 .. _testing-debugging:
 

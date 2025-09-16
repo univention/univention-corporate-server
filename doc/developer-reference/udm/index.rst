@@ -26,7 +26,7 @@ hashes, or Kerberos tickets in sync.
 The command line client :command:`udm` provides different
 modes of operation.
 
-:command:`udm` :samp:`[--binddn {bind-dn} --bindpwd {bind-password}] [{module}] [{mode}] [{options}]`
+:command:`udm` :samp:`[--binddn {bind-dn} --bindpwdfile {bind-password-file}] [{module}] [{mode}] [{options}]`
 
 Creating object
    :command:`udm` :samp:`{module} create --set {property}={value} …`

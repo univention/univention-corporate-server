@@ -85,6 +85,7 @@ extensions = [
     "sphinx_sitemap",
     "sphinx.ext.intersphinx",
     "sphinx_inline_tabs",
+    "sphinxcontrib.inkscapeconverter",
 ]
 
 # Warnings may come up by sphinx-last-updated-by-git. Suppress such warnings for all jobs.
