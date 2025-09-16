@@ -42,7 +42,6 @@ import itertools
 import json
 import operator
 import os
-import traceback
 from fnmatch import fnmatch
 
 import ldap
@@ -354,7 +353,7 @@ class LDAP_ACLs(ACLs):
             policy = self._get_policy_for_dn(lo, userdn)
         except (udm_errors.base, ldap.LDAPError, IndexError) as exc:
             if not isinstance(exc, IndexError):
-                ACL.warning('Error reading credentials from LDAP for user %s: %s' % (self.username, traceback.format_exc()))
+                ACL.warning('Error reading credentials from LDAP for user %s: %s', self.username, exc_info=True)
             # read ACLs from file
             self._read_from_file(self.username)
             return

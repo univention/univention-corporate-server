@@ -7,7 +7,6 @@ import json
 import os
 import sys
 import time
-import traceback
 import zlib
 from urllib.parse import urlparse, urlunsplit
 
@@ -183,7 +182,7 @@ class SamlACS(SAMLResource):
             cls.SP = Saml2Client(config_file=cls.configfile, identity_cache=None, state_cache=shared_memory.saml_state_cache)
             return True
         except Exception:
-            CORE.warning('Startup of SAML2.0 service provider failed:\n%s', traceback.format_exc())
+            CORE.warning('Startup of SAML2.0 service provider failed', exc_info=True)
         return False
 
     async def get(self):
@@ -409,7 +408,7 @@ class SamlSingleLogout(SamlACS):
                 pass
             is_logout_request = b'LogoutRequest' in data
         except Exception:
-            CORE.error(traceback.format_exc())
+            CORE.exception("Could not parse SAML logout request/response.")
             is_logout_request = False
 
         if is_logout_request:

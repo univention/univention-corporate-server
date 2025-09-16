@@ -220,7 +220,7 @@ class Instance(Base, ProgressMixin):
 
             if isinstance(result, BaseException):
                 msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
-                MODULE.warning('Exception during saving the settings: %s', msg)
+                MODULE.warning('Exception during saving the settings', traceback=msg)
                 self._progressParser.current.errors.append(_('Encountered unexpected error during setup process: %s') % result)
                 self._progressParser.current.critical = True
                 self._finishedResult = True
@@ -285,7 +285,7 @@ class Instance(Base, ProgressMixin):
 
             if isinstance(result, BaseException):
                 msg = ''.join(thread.trace + traceback.format_exception_only(*thread.exc_info[:2]))
-                MODULE.warning('Exception during saving the settings: %s', msg)
+                MODULE.warning('Exception during saving the settings', traceback=msg)
                 self._progressParser.current.errors.append(_('Encountered unexpected error during setup process: %s') % (result,))
                 self._progressParser.current.critical = True
                 self._finishedResult = True

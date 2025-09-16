@@ -92,6 +92,5 @@ if __name__ == '__main__':
     except (SystemExit, KeyboardInterrupt):
         raise
     except BaseException:
-        import traceback
-        MODULE.error(traceback.format_exc())
+        MODULE.exception("Module process crashed.")
         raise

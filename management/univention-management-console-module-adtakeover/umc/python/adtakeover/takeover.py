@@ -18,7 +18,6 @@ import sqlite3
 import subprocess
 import sys
 import time
-import traceback
 from datetime import datetime, timedelta
 from tempfile import NamedTemporaryFile
 
@@ -1641,7 +1640,7 @@ class AD_Takeover_Finalize:
                         self.samdb.delete(backlink_object, ["tree_delete:0"])
                     except Exception:
                         log.debug("Removal of AD %s objects %s from Samba4 SAM database failed. See %s for details." % (backlink_attribute, backlink_object, LOGFILE_NAME))
-                        log.debug(traceback.format_exc())
+                        log.exception("Removal of AD objects from Samba4 SAM database failed.")
 
             # Now delete the AD DC account and sub-objects
             # Cannot use tree_delete on isCriticalSystemObject, perform recursive delete like ldbdel code does it:
@@ -1654,8 +1653,7 @@ class AD_Takeover_Finalize:
                     log.info("Removing %s from SAM database." % (obj_dn,))
                     self.samdb.delete(obj_dn)
                 except Exception:
-                    log.error("Removal of AD DC account object %s from Samba4 SAM database failed. See %s for details." % (obj_dn, LOGFILE_NAME))
-                    log.debug(traceback.format_exc())
+                    log.exception("Removal of AD DC account object %s from Samba4 SAM database failed. See %s for details." % (obj_dn, LOGFILE_NAME))
 
     def remove_AD_server_account_from_UDM(self):
         # Finally, for consistency remove AD DC object from UDM

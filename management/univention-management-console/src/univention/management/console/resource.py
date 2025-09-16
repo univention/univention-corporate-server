@@ -361,7 +361,7 @@ class Resource(RequestHandler):
             index = message.find('Traceback') if 'Traceback' in message else message.find('File')
             message, stacktrace = message[:index].strip(), message[index:].strip()
         if stacktrace:
-            CORE.error('%s', stacktrace)
+            CORE.error('Unexpected exception.', traceback=stacktrace)
         if ucr.is_false('umc/http/show_tracebacks', False):
             stacktrace = None
 

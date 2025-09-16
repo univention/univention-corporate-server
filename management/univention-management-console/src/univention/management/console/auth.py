@@ -6,8 +6,6 @@
 # SPDX-FileCopyrightText: 2014-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-
-import traceback
 from typing import Any
 
 import ldap
@@ -77,7 +75,7 @@ class AuthHandler:
             result = exc
         except BaseException as exc:
             result = exc
-            AUTH.error(traceback.format_exc())
+            AUTH.exception("Unexpected authentication error")
 
         if isinstance(result, tuple):
             username, password = result
@@ -124,5 +122,5 @@ class AuthHandler:
             AUTH.warning('Canonicalization of username was not possible: %s' % (exc,))
             reset_cache()
         except Exception:
-            AUTH.error('Canonicalization of username failed: %s' % (traceback.format_exc(),))
+            AUTH.exception('Canonicalization of username failed')
         return username

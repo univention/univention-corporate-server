@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import io
-import traceback
 from urllib.parse import urlparse
 
 import pycurl
@@ -63,7 +62,7 @@ def run(_umc_instance: Instance, url: str = 'http://www.univention.de/', connect
             msg = '%s (code=%s)' % (msg, code)
             MODULE.info(msg)
         except ValueError:
-            MODULE.error(traceback.format_exc())
+            MODULE.exception("Failed status code retrieval")
             code = 0
             msg = str(exc)
         if code == pycurl.E_COULDNT_CONNECT:
@@ -73,7 +72,7 @@ def run(_umc_instance: Instance, url: str = 'http://www.univention.de/', connect
         elif code == pycurl.E_OPERATION_TIMEOUTED:
             msg = _('The server did not respond within %d seconds. Please check your network configuration.') % (timeout,)
         elif code == 0:
-            MODULE.error(traceback.format_exc())
+            MODULE.exception("Connection error")
 
         MODULE.error("%s\n%s", description, msg)
         raise Critical(f'{description}\n{msg}')

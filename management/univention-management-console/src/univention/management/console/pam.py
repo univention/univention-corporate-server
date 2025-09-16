@@ -6,7 +6,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import re
-import traceback
 from collections.abc import Iterator, Sequence  # noqa: F401
 
 from PAM import (
@@ -257,7 +256,7 @@ class PamAuth:
         try:
             return list(self._conversation(auth, query_list, data))
         except BaseException:
-            AUTH.error('Unexpected error during PAM conversation: %s' % (traceback.format_exc(),))
+            AUTH.exception('Unexpected error during PAM conversation')
             raise
 
     def _conversation(self, auth, query_list, data):  # type: (Any, List[Tuple[Any, Any]], Any) -> Iterator[Tuple[str, int]]

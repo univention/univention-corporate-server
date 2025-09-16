@@ -21,7 +21,6 @@ translations. Components that provide their own translation files:
 """
 
 import os
-import traceback
 from locale import getlocale
 from struct import error as StructError
 
@@ -89,8 +88,7 @@ class I18N:
         except (ValueError, MemoryError) as exc:
             LOCALE.error('Corrupt translation file %r: %s' % (filename, exc))
         except Exception as exc:
-            LOCALE.error('Corrupt translation file %r: %s' % (filename, exc))
-            LOCALE.error(traceback.format_exc())
+            LOCALE.exception('Corrupt translation file %r: %s' % (filename, exc))
 
     def exists(self, message):
         """

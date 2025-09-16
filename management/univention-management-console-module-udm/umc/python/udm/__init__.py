@@ -14,7 +14,6 @@ import os
 import re
 import shutil
 import tempfile
-import traceback
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
 from urllib.request import Request
@@ -208,7 +207,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         if isinstance(exc, udm_errors.permissionDenied) or isinstance(exc, UDM_Error) and isinstance(exc.exc, udm_errors.permissionDenied):
             raise Forbidden(str(exc))
         if isinstance(exc, udm_errors.base | LDAPError):
-            MODULE.error(''.join(traceback.format_exception(etype, exc, etraceback)))
+            MODULE.exception('Error:', exc_info=(etype, exc, etraceback))
 
     def require_license(self, lo):
         if id(lo) in self.__license_checks:

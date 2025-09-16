@@ -9,7 +9,6 @@
 import asyncio
 import errno
 import functools
-import traceback
 import weakref
 
 import ldap
@@ -166,7 +165,7 @@ class Session:
             except (ldap.LDAPError, udm_errors.base):
                 reset_ldap_connection_cache(lo)
                 ldap_dn = None
-                CORE.error('Could not get uid for %r: %s' % (self.user.username, traceback.format_exc()))
+                CORE.exception('Could not get uid for %r' % (self.user.username,))
             if ldap_dn:
                 self.user.user_dn = ldap_dn[0]
                 CORE.info('The LDAP DN for user %s is %s' % (self.user.username, self.user.user_dn))
