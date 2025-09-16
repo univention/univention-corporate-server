@@ -13,6 +13,7 @@ Univention Corporate Server - Operation Manual
    :numbered:
 
    index
+   auth
 
 .. toctree::
 
