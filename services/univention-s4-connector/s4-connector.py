@@ -96,7 +96,7 @@ def handler(dn: str, new: dict[str, list[bytes]] | None, old: dict[str, list[byt
     global connector_needs_restart
 
     if _is_module_disabled():
-        log.debug("s4-connector: UMC module is disabled by UCR variable connector/s4/listener/disabled")
+        log.info("s4-connector: UMC module is disabled by UCR variable connector/s4/listener/disabled")
         return
 
     # restart connector on extended attribute changes

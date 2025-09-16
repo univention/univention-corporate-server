@@ -525,13 +525,13 @@ class ucs:
             result = self.lo.search(filter=filter, base=base, scope=scope, attr=attr, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit)
             return result
         except univention.admin.uexceptions.ldapError as search_exception:
-            log.debug('Lost connection to the LDAP server. Trying to reconnect ...')
+            log.info('Lost connection to the LDAP server. Trying to reconnect ...')
             try:
                 self.open_ucs()
                 result = self.lo.search(filter=filter, base=base, scope=scope, attr=attr, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit)
                 return result
             except ldap.SERVER_DOWN:
-                log.debug('LDAP-Server seems to be down')
+                log.info('LDAP-Server seems to be down')
                 raise search_exception
 
     def init_debug(self):
@@ -541,7 +541,7 @@ class ucs:
         logging.getLogger('ADMIN').set_ud_level(udm_debug_level)
 
     def close_debug(self):
-        log.debug("close debug")
+        log.trace("close debug")
 
     def _get_config_option(self, section, option):
         return self.config.get(section, option)
@@ -692,7 +692,7 @@ class ucs:
 
         if not new:
             change_type = "delete"
-            log.debug("__sync_file_from_ucs: object was deleted")
+            log.info("__sync_file_from_ucs: object was deleted")
             if key == 'msGPO':
                 entryUUID = old.get('entryUUID', [b''])[0].decode('ASCII')
                 entryCSN = old.get('entryCSN', [b''])[0].decode('ASCII')
@@ -713,7 +713,7 @@ class ucs:
             if key == 'msGPO':
                 entryCSN = new.get('entryCSN', [b''])[0].decode('ASCII')
                 if self._forget_entryCSN(entryUUID, entryCSN):
-                    log.debug("__sync_file_from_ucs: Skipping back-sync of %s %s", key, dn)
+                    log.info("__sync_file_from_ucs: Skipping back-sync of %s %s", key, dn)
                     log.debug("__sync_file_from_ucs: because entryCSN %s was written by sync_to_ucs", entryCSN)
                     return True
 
@@ -1647,18 +1647,18 @@ class ucs:
         if self.property.get(key):
             for subtree in self.property[key].ignore_subtree:
                 if self._subtree_match(object['dn'], subtree):
-                    log.debug("_ignore_object: ignore object because of subtree match: [%r]", object['dn'])
+                    log.info("_ignore_object: ignore object because of subtree match: [%r]", object['dn'])
                     return True
 
             if self.property[key].ignore_filter and self._filter_match(self.property[key].ignore_filter, object['attributes']):
-                log.debug("_ignore_object: ignore object because of ignore_filter: [%r]", object['dn'])
+                log.info("_ignore_object: ignore object because of ignore_filter: [%r]", object['dn'])
                 return True
 
             if self.property[key].match_filter and not self._filter_match(self.property[key].match_filter, object['attributes']):
-                log.debug("_ignore_object: ignore object because of match_filter: [%r]", object['dn'])
+                log.info("_ignore_object: ignore object because of match_filter: [%r]", object['dn'])
                 return True
 
-        log.debug("_ignore_object: Do not ignore %s", object['dn'])
+        log.info("_ignore_object: Do not ignore %s", object['dn'])
 
         return False
 

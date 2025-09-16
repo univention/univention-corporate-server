@@ -26,7 +26,7 @@ def sid_to_s4_mapping(s4connector, key, object):
     log.debug("sid_to_s4_mapping")
     sidAttribute = 'sambaSID'
     if s4connector.configRegistry.is_false('connector/s4/mapping/sid', False):
-        log.debug('sid_to_s4: SID mapping is disabled via UCR: connector/s4/mapping/sid')
+        log.info('sid_to_s4: SID mapping is disabled via UCR: connector/s4/mapping/sid')
         sidAttribute = 'univentionSamba4SID'
 
     sambaSID = object['attributes'][sidAttribute]
@@ -52,7 +52,7 @@ def sid_to_s4(s4connector, key, object):
 
     sidAttribute = 'sambaSID'
     if s4connector.configRegistry.is_false('connector/s4/mapping/sid', False):
-        log.debug('sid_to_s4: SID mapping is disabled via UCR: connector/s4/mapping/sid')
+        log.info('sid_to_s4: SID mapping is disabled via UCR: connector/s4/mapping/sid')
         sidAttribute = 'univentionSamba4SID'
     else:
         # This case will be handled by direct mapping
@@ -97,7 +97,7 @@ def sid_to_ucs(s4connector, key, s4_object):
 
     sidAttribute = 'sambaSID'
     if s4connector.configRegistry.is_false('connector/s4/mapping/sid', False):
-        log.debug('sid_to_ucs: SID mapping is disabled via UCR: connector/s4/mapping/sid')
+        log.info('sid_to_ucs: SID mapping is disabled via UCR: connector/s4/mapping/sid')
         sidAttribute = 'univentionSamba4SID'
     else:
         # This case will be handled by direct mapping
@@ -117,7 +117,7 @@ def sid_to_ucs(s4connector, key, s4_object):
         objectSid = decode_sid(objectSid)
         log.debug("sid_to_ucs: objectSid found: %r", objectSid)
     else:
-        log.debug('sid_to_ucs: objectSid not found in attributes!')
+        log.warning('sid_to_ucs: objectSid not found in attributes!')
         return
 
     (ucs_dn, ucs_attributes) = s4connector.lo.lo.search(base=ucs_dn, scope='base', attr=[sidAttribute, 'objectClass'])[0]

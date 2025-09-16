@@ -506,7 +506,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
         ucsNThash = extract_NThash_from_krb5key(krb5Key)
 
     if not ucsNThash:
-        log.debug("password_sync_ucs_to_s4: Failed to get NT Password-Hash from UCS LDAP")
+        log.warning("password_sync_ucs_to_s4: Failed to get NT Password-Hash from UCS LDAP")
 
     # log.debug("password_sync_ucs_to_s4: Password-Hash from UCS: %s" % ucsNThash)
 
@@ -541,13 +541,13 @@ def password_sync_ucs_to_s4(s4connector, key, object):
     if unicodePwd_attr:
         s4NThash = binascii.b2a_hex(unicodePwd_attr).upper()
     else:
-        log.debug("password_sync_ucs_to_s4: Failed to get NT Password-Hash from S4")
+        log.warning("password_sync_ucs_to_s4: Failed to get NT Password-Hash from S4")
 
     s4LMhash = None
     if dBCSPwd_attr:
         s4LMhash = binascii.b2a_hex(dBCSPwd_attr).upper()
     else:
-        log.debug("password_sync_ucs_to_s4: Failed to get LM Password-Hash from S4")
+        log.info("password_sync_ucs_to_s4: Failed to get LM Password-Hash from S4")
 
     modlist = []
     if krb5Principal != userPrincipalName_attr:
