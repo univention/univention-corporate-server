@@ -316,8 +316,6 @@ class OIDCResource(OAuth2Mixin, Resource):
             )
         except HTTPClientError:
             raise  # handled in get()
-        # TODO: why do we need that, see univention/dev/ucs#2388
-        http_client.close()
         return escape.json_decode(response.body)
 
     async def refresh_session_tokens(self, user):
@@ -329,6 +327,9 @@ class OIDCResource(OAuth2Mixin, Resource):
                 refresh_token=user.oidc.refresh_token,
             )
         except HTTPClientError as exc:
+            if not exc.response or exc.response.body is None:
+                CORE.error('OP response was empty or timed out. Could not get new access token: %s' % (exc,))
+                raise OpenIDProvideUnavailable(self._('Could not receive token from authorization server.'))
             json_response = escape.json_decode(exc.response.body)
             if json_response.get('error') == 'invalid_grant':
                 if user.session_id in Session.sessions:
@@ -513,10 +514,10 @@ class OIDCBackchannelLogout(OIDCResource):
         self.add_header('Cache-Control', 'no-store')
         try:
             claims = self.verify_logout_token(logout_token)
-        except Unauthorized as exc:
+        except Unauthorized as exception:
             self.add_header('Content-Type', 'application/json')
             self.set_status(400)
-            self.finish({'error': 'invalid_request', 'error_description': str(exc)})
+            self.finish({'error': 'invalid_request', 'error_description': str(exception)})
             return
 
         for session in Session.sessions.get_oidc_sessions(claims):
@@ -528,6 +529,8 @@ class OIDCBackchannelLogout(OIDCResource):
                         session.delete(db_session, session.session_id, True)
                 except exc.DBAPIError as err:
                     CORE.error('Deleting the session from the database during OIDC backchannel logout failed\n%s' % (err))
+                except exc.TimeoutError as err:
+                    CORE.error('Deleting the session from the database during OIDC backchannel logout timed out\n%s' % (err))
                 except DBDisabledException:
                     pass
 

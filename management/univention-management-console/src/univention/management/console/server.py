@@ -189,6 +189,10 @@ class Server:
         signal.signal(signal.SIGUSR2, self.signal_handler_sigusr2)
         signal.signal(signal.SIGTERM, self.signal_handler_stop)
 
+        tornado.httpclient.AsyncHTTPClient(defaults={
+            "request_timeout": ucr.get_int('umc/server/http-client/request-timeout', 180),
+            "connect_timeout": ucr.get_int('umc/server/http-client/connect-timeout', 180),
+        })
         tornado.httpclient.AsyncHTTPClient.configure('tornado.curl_httpclient.CurlAsyncHTTPClient')
         try:
             fd_limit = ucr.get_int('umc/http/max-open-file-descriptors', 65535)

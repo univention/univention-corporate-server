@@ -1,8 +1,12 @@
-univention-management-console (14.3.0) UNRELEASED; urgency=medium
+univention-management-console (14.3.1) unstable; urgency=medium
 
+  [ Ivan Barbecho Delgado ]
   * Bug #58568: UCS 5.2-3 version bump
 
- -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 02 Sep 2025 16:18:19 +0200
+  [ Dimitri Papoutsis ]
+  * Bug #58269: Concurrent logins not working with OIDC
+
+ -- Dimitri Papoutsis <dimitri.papoutsis.extern@univention.de>  Tue, 16 Sep 2025 12:50:31 +0200
 
 univention-management-console (14.2.1) unstable; urgency=medium
 

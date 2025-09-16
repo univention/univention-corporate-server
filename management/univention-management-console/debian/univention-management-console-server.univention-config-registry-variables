@@ -208,3 +208,21 @@ Description[de]=Entfernt sensible Daten aus der Datei meta.json. Diese Option is
 Type=bool
 Categories=management-umc
 Default=false
+
+[umc/server/http-client/request-timeout]
+Description[de]=Legt das Timeout für HTTP-Anfragen des UMC-Servers in Sekunden fest. Standardwert ist 180 Sekunden.
+Description[en]=Sets the timeout for HTTP requests of the UMC server in seconds. Default value is 180 seconds.
+Type=int
+Min=0
+Max=3600
+Default=180
+Categories=management-umc
+
+[umc/server/http-client/connect-timeout]
+Description[de]=Legt das Verbindungs-Timeout für HTTP-Anfragen des UMC-Servers in Sekunden fest. Standardwert ist 180 Sekunden.
+Description[en]=Sets the connection timeout for HTTP requests of the UMC server in seconds. Default value is 180 seconds.
+Type=int
+Min=0
+Max=3600
+Default=180
+Categories=management-umc
