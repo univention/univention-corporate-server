@@ -20,6 +20,8 @@ from locust import HttpUser, between, task
 from utils import login_via_saml, replay_har
 
 
+logger = logging.getLogger()
+
 USE_TASK = os.environ.get('USE_TASK', '0') == '1'
 WAIT_MIN = int(os.environ.get('WAIT_MIN', '10'))
 WAIT_MAX = int(os.environ.get('WAIT_MAX', '20'))
@@ -54,6 +56,6 @@ class ScenarioManagement(HttpUser):
         if umc_session_id is None:
             return
 
-        logging.info("Created new session with Session: %s", umc_session_id)
+        logger.info("Created new session with Session: %s", umc_session_id)
         # replay_har("hars/second_scenario_step_2.har", self.client, host=host)
         replay_har('hars/second_scenario_step_3.har', self.client, host=host, session_id=umc_session_id)

@@ -24,6 +24,8 @@ from locust_plugins.listeners.jmeter import JmeterListener
 from utils import TIMEOUT, get_credentials, login_via_oidc
 
 
+logger = logging.getLogger()
+
 WAIT_MAX = int(os.environ.get('WAIT_MAX', '120'))
 
 
@@ -82,7 +84,7 @@ class OIDCLogin(FastHttpUser):
         # 5-10. login
         umc_session_id = login_via_oidc(self.client, self.username, self.password, prefix='05')
         if umc_session_id is None:
-            logging.info('Login failed')
+            logger.info('Login failed')
             return
 
         # 12. GET /univention/get/session-info

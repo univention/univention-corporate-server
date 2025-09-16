@@ -17,6 +17,8 @@ from locust.runners import MasterRunner
 from locust_jmeter_listener import JmeterListener
 
 
+logger = logging.getLogger()
+
 LOCUST_EXPECT_WORKERS = int(os.environ.get('EXPECT_WORKERS', '1'))
 stats.MODERN_UI_PERCENTILES_TO_CHART = [0.66, 0.75, 0.80, 0.90, 0.95, 0.99]
 stats.PERCENTILES_TO_STATISTICS = [0.66, 0.75, 0.80, 0.90, 0.95, 0.99]
@@ -58,6 +60,6 @@ def on_test_start(**kwargs) -> None:
     utils.start_user = users_per_worker * (worker_number - 1)
     utils.current_user = utils.start_user
     utils.final_user = users_per_worker * worker_number
-    logging.info(
+    logger.info(
         '%s', f'Worker {worker_number} of {LOCUST_EXPECT_WORKERS} with {users_per_worker} users from {users_per_worker * (worker_number - 1)} to {users_per_worker * worker_number}',
     )
