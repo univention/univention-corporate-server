@@ -6,8 +6,6 @@
 # SPDX-FileCopyrightText: 2014-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-
-import traceback
 from typing import Any
 
 import ldap
@@ -77,7 +75,7 @@ class AuthHandler:
             result = exc
         except BaseException as exc:
             result = exc
-            AUTH.error(traceback.format_exc())
+            AUTH.exception("Unexpected authentication error")
 
         if isinstance(result, tuple):
             username, password = result
@@ -85,12 +83,12 @@ class AuthHandler:
         return AuthenticationResult(result, locale)
 
     def __authenticate_thread(self, pam, username, password, new_password, auth_type=None, **custom_prompts):
-        AUTH.info('Trying to authenticate user %r (auth_type: %r)' % (username, auth_type))
+        AUTH.info('Trying to authenticate user %r (auth_type: %r)', username, auth_type)
         username = self.__canonicalize_username(username)
         try:
             pam.authenticate(username, password, **custom_prompts)
         except AuthenticationFailed as auth_failed:
-            AUTH.error(str(auth_failed))
+            AUTH.error('%s', auth_failed)
             raise
         except PasswordExpired as pass_expired:
             AUTH.info(str(pass_expired))
@@ -100,13 +98,13 @@ class AuthHandler:
             try:
                 pam.change_password(username, password, new_password)
             except PasswordChangeFailed as change_failed:
-                AUTH.error(str(change_failed))
+                AUTH.error('%s', change_failed)
                 raise
             else:
-                AUTH.info('Password change for %r was successful' % (username,))
+                AUTH.info('Password change for %r was successful', username)
                 return (username, new_password)
         else:
-            AUTH.info('Authentication for %r was successful' % (username,))
+            AUTH.info('Authentication for %r was successful', username)
             return (username, password)
 
     def __canonicalize_username(self, username: str) -> str:
@@ -118,11 +116,11 @@ class AuthHandler:
                 result = lo.search(filter_format('(&(%s=%s)(objectClass=person))', (attr, username)), attr=['uid'], unique=True)
             if result and result[0][1].get('uid'):
                 username = result[0][1]['uid'][0].decode('utf-8')
-                AUTH.info('Canonicalized username: %r' % (username,))
+                AUTH.info('Canonicalized username: %r', username)
         except (ldap.LDAPError, udm_errors.ldapError) as exc:
             # /etc/machine.secret missing or LDAP server not reachable
-            AUTH.warn('Canonicalization of username was not possible: %s' % (exc,))
+            AUTH.warning('Canonicalization of username was not possible: %s', exc)
             reset_cache()
         except Exception:
-            AUTH.error('Canonicalization of username failed: %s' % (traceback.format_exc(),))
+            AUTH.exception('Canonicalization of username failed')
         return username

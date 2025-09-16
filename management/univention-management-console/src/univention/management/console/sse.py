@@ -18,7 +18,7 @@ class _LogoutNotifiers:
             event = self.__events.get(session_id, None)
             if event is None:
                 event = asyncio.Event()
-                weakref.finalize(event, lambda: CORE.debug("logout-sse event for session-id %s garbage collected" % session_id))
+                weakref.finalize(event, lambda: CORE.debug("logout-sse event for session-id %s garbage collected", session_id))
                 self.__events[session_id] = event
             return event
 

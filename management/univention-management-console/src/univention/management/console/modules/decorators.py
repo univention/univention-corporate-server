@@ -714,12 +714,12 @@ def log(function=None, sensitives=None, customs=None, single_values=False):
                 if arg_repr:
                     arg_reprs.append(arg_repr)
             if arg_reprs:
-                MODULE.info('%s got: [%s]' % (name, '], ['.join(', '.join(arg_repr) for arg_repr in arg_reprs)))
+                MODULE.info('%s got: [%s]', name, '], ['.join(', '.join(arg_repr) for arg_repr in arg_reprs))
             result = []
             for res in function(self, iterator, *args):
                 result.append(res)
                 yield res
-            MODULE.info('%s returned: %r' % (name, result))
+            MODULE.info('%s returned: %r', name, result)
     else:
         # remove self
         names = names[1:]
@@ -727,9 +727,9 @@ def log(function=None, sensitives=None, customs=None, single_values=False):
         def _response(self, *args):
             arg_repr = _log(names, args)
             if arg_repr:
-                MODULE.info('%s got: %s' % (name, ', '.join(arg_repr)))
+                MODULE.info('%s got: %s', name, ', '.join(arg_repr))
             result = function(self, *args)
-            MODULE.info('%s returned: %r' % (name, result))
+            MODULE.info('%s returned: %r', name, result)
             return result
     copy_function_meta_data(function, _response, copy_arg_inspect=True)
     return _response

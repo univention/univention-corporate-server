@@ -7,7 +7,6 @@ import json
 import os
 import sys
 import time
-import traceback
 import zlib
 from urllib.parse import urlparse, urlunsplit
 
@@ -68,7 +67,7 @@ class SamlError(HTTPError):
                 super().__init__(status, message)
                 if "Passive authentication not supported." not in message:
                     # "Passive authentication not supported." just means an active login is required. That is expected and needs no logging. It still needs to be raised though.
-                    CORE.warn('SamlError: %s %s' % (status, message))
+                    CORE.warning('SamlError: %s %s', status, message)
                 return self
             return _decorated
         if func is None:
@@ -154,7 +153,7 @@ class SAMLResource(Resource):
             try:
                 cls.SP.local_logout(decode_name_id(name_id))
             except Exception as exc:  # e.g. bsddb.DBNotFoundError
-                CORE.warn('Could not remove SAML session: %s' % (exc,))
+                CORE.warning('Could not remove SAML session: %s', exc)
 
 
 class SamlMetadata(SAMLResource):
@@ -183,7 +182,7 @@ class SamlACS(SAMLResource):
             cls.SP = Saml2Client(config_file=cls.configfile, identity_cache=None, state_cache=shared_memory.saml_state_cache)
             return True
         except Exception:
-            CORE.warn('Startup of SAML2.0 service provider failed:\n%s', traceback.format_exc())
+            CORE.warning('Startup of SAML2.0 service provider failed', exc_info=True)
         return False
 
     async def get(self):
@@ -292,7 +291,7 @@ class SamlACS(SAMLResource):
         except (UnknownPrincipal, UnsupportedBinding, VerificationError, UnsolicitedResponse, StatusError, MissingKey, SignatureError):
             raise SamlError(self._).from_exception(*sys.exc_info())
         if response is None:
-            CORE.warn('The SAML message could not be parsed with binding %r: %r' % (binding, message))
+            CORE.warning('The SAML message could not be parsed with binding %r: %r', binding, message)
             raise SamlError(self._).unparsed_saml_response()
         self.outstanding_queries.pop(response.in_response_to, None)
         return response
@@ -366,7 +365,7 @@ class SamlACS(SAMLResource):
                     break
             elif not netloc and p1.netloc == p2.netloc:
                 service_url, reply_binding = _url, _binding
-        CORE.info('SAML: picked %r for %r with binding %r' % (service_url, self.request.full_url(), reply_binding))
+        CORE.info('SAML: picked %r for %r with binding %r', service_url, self.request.full_url(), reply_binding)
         return reply_binding, service_url
 
     def http_response(self, binding, http_args):
@@ -409,7 +408,7 @@ class SamlSingleLogout(SamlACS):
                 pass
             is_logout_request = b'LogoutRequest' in data
         except Exception:
-            CORE.error(traceback.format_exc())
+            CORE.exception("Could not parse SAML logout request/response.")
             is_logout_request = False
 
         if is_logout_request:

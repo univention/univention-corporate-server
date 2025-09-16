@@ -6,7 +6,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import re
-import traceback
 from collections.abc import Iterator, Sequence  # noqa: F401
 
 from PAM import (
@@ -202,7 +201,7 @@ class PamAuth:
             self.pam.authenticate()
             self.pam.acct_mgmt()
         except PAMError as pam_err:
-            AUTH.error("PAM: authentication error: %s" % (pam_err,))
+            AUTH.error("PAM: authentication error: %s", pam_err)
             if pam_err.args[1] == PAM_NEW_AUTHTOK_REQD:  # error: ('Authentication token is no longer valid; new one required', 12)
                 message = self.error_message(pam_err.args)
                 raise PasswordExpired(("%s %s" % (message, self._get_password_complexity_message())).rstrip())
@@ -232,7 +231,7 @@ class PamAuth:
         try:
             self.pam.chauthtok()
         except PAMError as pam_err:
-            AUTH.warn('Changing password failed (%s). Prompts: %r' % (pam_err, prompts))
+            AUTH.warning('Changing password failed (%s). Prompts: %r', pam_err, prompts)
             message = self._parse_error_message_from(pam_err.args, prompts)
             raise PasswordChangeFailed(
                 ('%s %s %s' % (self._('Changing password failed.'), message, self._get_password_complexity_message())).rstrip(),
@@ -257,7 +256,7 @@ class PamAuth:
         try:
             return list(self._conversation(auth, query_list, data))
         except BaseException:
-            AUTH.error('Unexpected error during PAM conversation: %s' % (traceback.format_exc(),))
+            AUTH.exception('Unexpected error during PAM conversation')
             raise
 
     def _conversation(self, auth, query_list, data):  # type: (Any, List[Tuple[Any, Any]], Any) -> Iterator[Tuple[str, int]]
@@ -274,14 +273,14 @@ class PamAuth:
                 if isinstance(response, list):
                     response = response.pop(0)
             except KeyError as exc:
-                AUTH.error('Missing answer for prompt: %r' % (str(exc),))
+                AUTH.error('Missing answer for prompt: %r', str(exc))
                 missing.append(query)
             except IndexError:
-                AUTH.error('Unexpected prompt: %r' % (query,))
+                AUTH.error('Unexpected prompt: %r', query)
 
             if qt in (PAM_TEXT_INFO, PAM_ERROR_MSG):
-                AUTH.info('PAM says: %r' % (query,))
-            # AUTH.error('# PAM(%d) %s: answer=%r' % (qt, repr(query).strip("':\" "), response))
+                AUTH.info('PAM says: %r', query)
+            # AUTH.error('# PAM(%d) %s: answer=%r, qt, repr(query).strip("':\" "), response)
             yield (response, 0)
 
     def _parse_error_message_from(self, pam_err, prompts):  # type: (Tuple[Any, int], Sequence[Tuple[str, int]]) -> str

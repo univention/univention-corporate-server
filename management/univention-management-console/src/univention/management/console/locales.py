@@ -21,7 +21,6 @@ translations. Components that provide their own translation files:
 """
 
 import os
-import traceback
 from locale import getlocale
 from struct import error as StructError
 
@@ -73,24 +72,23 @@ class I18N:
             LOCALE.info('Locale or domain missing. Stopped loading of translation')
             return
 
-        LOCALE.debug('Loading locale %s for domain %s' % (self.locale, self.domain))
+        LOCALE.debug('Loading locale %s for domain %s', self.locale, self.domain)
         filename = os.path.join(I18N.LOCALE_DIR, self.locale.language, '%s.mo' % self.domain)
         if not os.path.isfile(filename):
             filename = os.path.join(I18N.LOCALE_DIR, '%s_%s' % (self.locale.language, self.locale.territory), '%s.mo' % self.domain)
             if not os.path.isfile(filename):
-                LOCALE.warn('Could not find translation file: %r' % (os.path.basename(filename),))
+                LOCALE.warning('Could not find translation file: %r', os.path.basename(filename))
                 self.mofile = None
                 return
 
-        LOCALE.debug('Found translation file %s' % (filename,))
+        LOCALE.debug('Found translation file %s', filename)
         self.mofile = None
         try:
             self.mofile = polib.mofile(filename)
         except (ValueError, MemoryError) as exc:
-            LOCALE.error('Corrupt translation file %r: %s' % (filename, exc))
+            LOCALE.error('Corrupt translation file %r: %s', filename, exc)
         except Exception as exc:
-            LOCALE.error('Corrupt translation file %r: %s' % (filename, exc))
-            LOCALE.error(traceback.format_exc())
+            LOCALE.exception('Corrupt translation file %r: %s', filename, exc)
 
     def exists(self, message):
         """
@@ -139,10 +137,10 @@ class I18N_Manager(dict):
 
         :param str locale: locale to use
         """
-        LOCALE.info('Setting locale to %s' % locale)
+        LOCALE.info('Setting locale to %s', locale)
         self.locale.parse(locale)
         for domain, i18n in self.items():
-            LOCALE.info('Loading translation for domain %s' % domain)
+            LOCALE.info('Loading translation for domain %s', domain)
             i18n.load(locale=self.locale)
 
     def __setitem__(self, key, value):
@@ -158,19 +156,19 @@ class I18N_Manager(dict):
         :param str message: text to translation
         :param str domain: translation domain
         """
-        LOCALE.debug('Searching for %s translation of "%s' % (str(self.locale), message))
+        LOCALE.debug('Searching for %s translation of "%s', str(self.locale), message)
         try:
             if domain is not None:
                 if domain not in self:
                     self[domain] = I18N(self.locale, domain)
                 return self[domain]._(message)
             for domain, i18n in self.items():
-                LOCALE.info('Checking domain %s for translation' % domain)
+                LOCALE.info('Checking domain %s for translation', domain)
                 if i18n.exists(message):
                     return i18n._(message)
         except (OSError, StructError) as exc:
             # StructError: empty .mo file
             # IOError raised by polib if the file is no .mo file
-            LOCALE.error('Corrupted .mo file detected for translation domain %r: %s' % (domain, exc))
+            LOCALE.error('Corrupted .mo file detected for translation domain %r: %s', domain, exc)
 
         return message

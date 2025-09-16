@@ -31,7 +31,7 @@ class SessionDict(MutableMapping):
                 else:
                     DBSession.create(db_session, session_id, umc_session)
         except exc.DBAPIError as err:
-            CORE.error('Adding the session into the database failed\n%s' % (err,))
+            CORE.error('Adding the session into the database failed\n%s', err)
         except DBDisabledException:
             pass
 
@@ -46,7 +46,7 @@ class SessionDict(MutableMapping):
                     del self.sessions[session_id]
                     raise KeyError(session_id)
         except exc.DBAPIError as err:
-            CORE.error('Getting the session from the database failed\n%s' % (err,))
+            CORE.error('Getting the session from the database failed\n%s', err)
         except DBDisabledException:
             pass
 
@@ -64,7 +64,7 @@ class SessionDict(MutableMapping):
                 sessions = DBSession.get_by_oidc(db_session, logout_token_claims)
                 return sessions
         except exc.DBAPIError as err:
-            CORE.error('Getting OIDC sessions from the database failed\n%s' % (err,))
+            CORE.error('Getting OIDC sessions from the database failed\n%s', err)
         except DBDisabledException:
             pass
 
@@ -93,7 +93,7 @@ class SessionDict(MutableMapping):
                     CORE.debug('we have not locally found a logout notifier.')
                 DBSession.delete(db_session, session_id, logout_notifier is None)
         except exc.DBAPIError as err:
-            CORE.debug('Deleting the session from the database failed\n%s' % (err,))
+            CORE.debug('Deleting the session from the database failed\n%s', err)
         except DBDisabledException:
             pass
 

@@ -98,7 +98,7 @@ class Message:
             else:
                 self.body[key] = value
         else:
-            PARSER.warn('Attribute %s just available for MIME type %s' % (key, MIMETYPE_JSON))
+            PARSER.warning('Attribute %s just available for MIME type %s', key, MIMETYPE_JSON)
 
     def _get_key(self, key, default=None):
         if isinstance(default, dict):
@@ -108,7 +108,7 @@ class Message:
                 self.body.setdefault(key, default)
             return self.body.get(key, default)
         else:
-            PARSER.info('Attribute %s just available for MIME type %s' % (key, MIMETYPE_JSON))
+            PARSER.info('Attribute %s just available for MIME type %s', key, MIMETYPE_JSON)
             return default
 
     #: contains a human readable error message
@@ -162,30 +162,30 @@ class Request(Message):
                 self._user_connections.add(lo)
             return lo
         except (ldap.LDAPError, udm_errors.base) as exc:
-            CORE.warn('Failed to open LDAP connection for user %s: %s' % (self.user_dn, exc))
+            CORE.warning('Failed to open LDAP connection for user %s: %s', self.user_dn, exc)
 
     def bind_user_connection(self, lo):
-        CORE.process('LDAP bind for user %r.' % (self.user_dn,))
+        CORE.process('LDAP bind for user %r.', self.user_dn)
         try:
             if self.auth_type == 'OIDC':
                 lo.lo.bind_oauthbearer(None, self.password)
                 if not lo.lo.compare_dn(lo.binddn, self.user_dn):
-                    CORE.warn('OIDC binddn does not match: %r != %r' % (lo.binddn, self.user_dn))
+                    CORE.warning('OIDC binddn does not match: %r != %r', lo.binddn, self.user_dn)
                     self.user_dn = lo.binddn
             elif self.auth_type == 'SAML':
                 lo.lo.bind_saml(self.password)
                 if not lo.lo.compare_dn(lo.binddn, self.user_dn):
-                    CORE.warn('SAML binddn does not match: %r != %r' % (lo.binddn, self.user_dn))
+                    CORE.warning('SAML binddn does not match: %r != %r', lo.binddn, self.user_dn)
                     self.user_dn = lo.binddn
             else:
                 try:
                     lo.lo.bind(self.user_dn, self.password)
                 except ldap.INVALID_CREDENTIALS:  # workaround for Bug #44382: the password might be a SAML message, try to authenticate via SAML
                     etype, exc, etraceback = sys.exc_info()
-                    CORE.error('LDAP authentication for %r failed: %s' % (self.user_dn, exc))
+                    CORE.error('LDAP authentication for %r failed: %s', self.user_dn, exc)
                     if len(self.password) < 25:
                         raise
-                    CORE.warn('Trying to authenticate via SAML.')
+                    CORE.warning('Trying to authenticate via SAML.')
                     try:
                         lo.lo.bind_saml(self.password)
                     except ldap.OTHER:
@@ -230,7 +230,7 @@ class Response(Message):
             self.mimetype = mimetype
 
         if self.mimetype is None:
-            PROTOCOL.process('Failed to guess MIME type of %s' % filename)
+            PROTOCOL.process('Failed to guess MIME type of %s', filename)
             raise TypeError('Unknown mime type')
 
         with open(filename, 'rb') as fd:
