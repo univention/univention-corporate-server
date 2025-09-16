@@ -1,3 +1,9 @@
+univention-system-setup (15.3.1) unstable; urgency=medium
+
+  * Bug #20610: Deprecate udm option --bindpwd, use --bindpwdfile
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 08 Oct 2025 08:32:20 +0200
+
 univention-system-setup (15.3.0) unstable; urgency=medium
 
   [ Ivan Barbecho Delgado ]
