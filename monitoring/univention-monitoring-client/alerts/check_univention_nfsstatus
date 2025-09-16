@@ -23,7 +23,7 @@ class FSMountCheck(Alert):
             mounts = univention.lib.fstab.File('/proc/mounts')
         except (OSError, EOFError) as err:
             self.write_metric('univention_nfsstatus', -1)
-            self.log.debug('error while reading /proc/mounts, error: %s' % (err,))
+            self.log.debug('error while reading /proc/mounts, error: %s', err)
             return
 
         mountlist = {
@@ -36,7 +36,7 @@ class FSMountCheck(Alert):
             fstab = univention.lib.fstab.File('/etc/fstab')
         except (OSError, EOFError) as err:
             self.write_metric('univention_nfsstatus', -1)
-            self.log.debug('error while reading /etc/fstab, EOF error: %s' % (err,))
+            self.log.debug('error while reading /etc/fstab, EOF error: %s', err)
             return
 
         for entry in fstab.get(['nfs']):

@@ -23,7 +23,6 @@ def login_logout(username, password, portal_fqdn):
 
 
 def test_parallel_login_logout(admin_account, portal_config, restart_umc_server):
-
     num_requests = 100
     max_workers = 10
     success_count = 0
@@ -51,17 +50,17 @@ def test_parallel_login_logout(admin_account, portal_config, restart_umc_server)
                         failure_count += 1
                 except Exception as e:
                     failure_count += 1
-                    log.exception(f'Task {task_id} generated an exception: %r', e)
-                log.error(f'Task {task_id} complete')
+                    log.exception('Task %s generated an exception: %r', task_id, e)
+                log.error('Task %s complete', task_id)
 
         elapsed_time = time.time() - start_time
         requests_per_second = num_requests / elapsed_time if elapsed_time > 0 else 0
 
-        log.info(f'Total requests: {num_requests}')
-        log.info(f'Successful: {success_count}')
-        log.info(f'Failed: {failure_count}')
-        log.info(f'Total time: {elapsed_time:.2f} seconds')
-        log.info(f'Requests per second: {requests_per_second:.2f}')
+        log.info('Total requests: %s', num_requests)
+        log.info('Successful: %s', success_count)
+        log.info('Failed: %s', failure_count)
+        log.info('Total time: %.2f seconds', elapsed_time)
+        log.info('Requests per second: %.2f', requests_per_second)
 
         assert failure_count == 0
     finally:

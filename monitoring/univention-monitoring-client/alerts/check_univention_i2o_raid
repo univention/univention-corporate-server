@@ -46,7 +46,7 @@ class I2O_RAIDCheck(Alert):
         try:
             _rc, output = self.exec_command(cmd)
         except OSError as err:
-            self.log.debug('error executing raidutil: %s' % (err,))
+            self.log.debug('error executing raidutil: %s', err)
             for option in options:
                 self.write_metric('univention_i2o_raid_%s' % (option,), -1, device=device)
             return

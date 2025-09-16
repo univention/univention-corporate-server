@@ -272,10 +272,10 @@ class ACLs:
     def _dump(self):
         """Dumps the ACLs for the user"""
         ACL.debug('Allowed UMC operations:')
-        ACL.debug(' %-5s | %-20s | %-15s | %-20s | %-20s' % ('User', 'Host', 'Flavor', 'Command', 'Options'))
+        ACL.debug(' %-5s | %-20s | %-15s | %-20s | %-20s', 'User', 'Host', 'Flavor', 'Command', 'Options')
         ACL.debug('******************************************************************************')
         for rule in self.acls:
-            ACL.debug(' %-5s | %-20s | %-15s | %-20s | %-20s' % (rule.fromUser, rule.host, rule.flavor, rule.command, rule.options))
+            ACL.debug(' %-5s | %-20s | %-15s | %-20s | %-20s', rule.fromUser, rule.host, rule.flavor, rule.command, rule.options)
         ACL.debug('')
 
     def _read_from_file(self, username):
@@ -286,7 +286,7 @@ class ACLs:
                 acls = json.load(fd)
             acls = [Rule(x) for x in acls]
         except OSError as exc:
-            ACL.process('Could not load ACLs of %r: %s' % (username, exc))
+            ACL.process('Could not load ACLs of %r: %s', username, exc)
             return False
 
         self.acls = []
@@ -306,7 +306,7 @@ class ACLs:
             os.write(file, json.dumps(self.acls, ensure_ascii=True).encode('ASCII'))
             os.close(file)
         except OSError as exc:
-            ACL.error('Could not write ACL file: %s' % (exc,))
+            ACL.error('Could not write ACL file: %s', exc)
             return False
 
     def json(self):

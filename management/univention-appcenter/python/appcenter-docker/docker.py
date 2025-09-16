@@ -161,7 +161,7 @@ def create(image, command, hostname=None, ports=None, volumes=None, env_file=Non
 
 
 def rmi(*images):
-    _logger.debug('Removing image: %s' % ', '.join(images))
+    _logger.debug('Removing image: %s', ', '.join(images))
     return call(['docker', 'rmi', *list(images)])
 
 
@@ -210,7 +210,7 @@ def docker_get_existing_subnets():
                 subnets.append(IPv4Network(config['Subnet'], False))
         return subnets
     except docker.errors.APIError as exc:
-        _logger.warning('Could not get existing subnets: %s' % exc)
+        _logger.warning('Could not get existing subnets: %s', exc)
         return []
 
 
@@ -264,7 +264,7 @@ class Docker:
         return False
 
     def pull(self):
-        self.logger.info('Downloading app image %s' % self.image)
+        self.logger.info('Downloading app image %s', self.image)
         try:
             hub, _image_name = self.image.split('/', 1)
         except ValueError:
@@ -273,7 +273,7 @@ class Docker:
             if '.' in hub:
                 retcode = login(hub, with_license=self.app.install_permissions)
                 if retcode != 0:
-                    _logger.warning('Could not login to %s. You may not be able to pull the image from the repository!' % hub)
+                    _logger.warning('Could not login to %s. You may not be able to pull the image from the repository!', hub)
         ret, out = call_process2(['docker', 'pull', self.image], logger=_logger)
         if ret != 0:
             raise DockerImagePullFailed(image=self.image, out=out, code=ret)
@@ -310,7 +310,7 @@ class Docker:
         logger = kwargs.pop('_logger', self.logger)
         logger = logger.getChild('container.%s' % self.container[:4])
         tty = kwargs.pop('_tty', None)
-        logger.debug('Using container.%s for container %s' % (self.container[:4], self.container))
+        logger.debug('Using container.%s for container %s', self.container[:4], self.container)
         for key, value in kwargs.items():
             args.extend(['--%s' % key.replace('_', '-'), value])
         return execute_with_process(self.container, args, logger=logger, tty=tty)
@@ -414,14 +414,14 @@ class Docker:
         return docker_cp(self.container + ':' + src, dest, logger=logger, **kwargs)
 
     def _get_app_network(self):
-        _logger.debug('Getting network for %s' % self.app)
+        _logger.debug('Getting network for %s', self.app)
         network = ucr_get(self.app.ucr_ip_key)
         if network and '/' in network:
-            _logger.debug('Found %s' % network)
+            _logger.debug('Found %s', network)
             try:
                 network = IPv4Network('%s' % (network,), False)
             except ValueError as exc:
-                _logger.warning('Error using the network %s: %s' % (network, exc))
+                _logger.warning('Error using the network %s: %s', network, exc)
                 return None
             else:
                 return network
@@ -445,7 +445,7 @@ class Docker:
             _logger.warning('Cannot get a subnet big enough')  # maybe I could... but currently, I only work with 24-netmasks
             return None
         for network in docker0_net.subnets(prefixlen_diff):  # 172.16.1.1/24, 172.16.2.1/24, ..., 172.16.255.1/24
-            _logger.debug('Testing %s' % network)
+            _logger.debug('Testing %s', network)
             if IPv4Address('%s' % (gateway,)) in network:
                 _logger.debug('Refusing due to "main subnet"')
                 continue
@@ -707,4 +707,4 @@ class MultiDocker(Docker):
             yml_bak_file = '%s.bak' % yml_file
             shutil.copy2(yml_file, yml_bak_file)
         except OSError as exc:
-            _logger.warning('Could not backup docker-compose.yml: %s' % exc)
+            _logger.warning('Could not backup docker-compose.yml: %s', exc)

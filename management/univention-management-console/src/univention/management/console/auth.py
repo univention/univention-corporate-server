@@ -83,7 +83,7 @@ class AuthHandler:
         return AuthenticationResult(result, locale)
 
     def __authenticate_thread(self, pam, username, password, new_password, auth_type=None, **custom_prompts):
-        AUTH.info('Trying to authenticate user %r (auth_type: %r)' % (username, auth_type))
+        AUTH.info('Trying to authenticate user %r (auth_type: %r)', username, auth_type)
         username = self.__canonicalize_username(username)
         try:
             pam.authenticate(username, password, **custom_prompts)
@@ -101,10 +101,10 @@ class AuthHandler:
                 AUTH.error(str(change_failed))
                 raise
             else:
-                AUTH.info('Password change for %r was successful' % (username,))
+                AUTH.info('Password change for %r was successful', username)
                 return (username, new_password)
         else:
-            AUTH.info('Authentication for %r was successful' % (username,))
+            AUTH.info('Authentication for %r was successful', username)
             return (username, password)
 
     def __canonicalize_username(self, username: str) -> str:
@@ -116,10 +116,10 @@ class AuthHandler:
                 result = lo.search(filter_format('(&(%s=%s)(objectClass=person))', (attr, username)), attr=['uid'], unique=True)
             if result and result[0][1].get('uid'):
                 username = result[0][1]['uid'][0].decode('utf-8')
-                AUTH.info('Canonicalized username: %r' % (username,))
+                AUTH.info('Canonicalized username: %r', username)
         except (ldap.LDAPError, udm_errors.ldapError) as exc:
             # /etc/machine.secret missing or LDAP server not reachable
-            AUTH.warning('Canonicalization of username was not possible: %s' % (exc,))
+            AUTH.warning('Canonicalization of username was not possible: %s', exc)
             reset_cache()
         except Exception:
             AUTH.exception('Canonicalization of username failed')

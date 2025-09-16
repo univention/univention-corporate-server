@@ -381,7 +381,7 @@ class Instance(umcm.Base, ProgressMixin):
             msg += _('or disable the docker support in the AppCenter by setting appcenter/docker to false.')
             raise umcm.UMC_Error(msg)
         if not docker_is_running():
-            MODULE.warn('Docker is not running! Trying to start it now...')
+            MODULE.warning('Docker is not running! Trying to start it now...')
             call_process(['invoke-rc.d', 'docker', 'start'])
             if not docker_is_running():
                 return False
@@ -648,7 +648,7 @@ class Instance(umcm.Base, ProgressMixin):
 
                     def _finished(thread, result):
                         if isinstance(result, BaseException):
-                            MODULE.warn('Exception during %s %s: %r', function, packages, str(result))
+                            MODULE.warning('Exception during %s %s: %r', function, packages, str(result))
                     thread = SimpleThread('invoke', _thread, _finished)
                     thread.run(self.package_manager, function, packages)
                 else:
@@ -817,7 +817,7 @@ class Instance(umcm.Base, ProgressMixin):
                         if self.ucr.get(f'{named_component_base}/{deprecated}', ''):
                             super_ucr.set_registry_var(f'{named_component_base}/{deprecated}', None)
                 except Exception as e:
-                    MODULE.warn("   !! Writing UCR failed: %s", str(e))
+                    MODULE.warning("   !! Writing UCR failed: %s", str(e))
                     yield [{'message': str(e), 'status': PUT_WRITE_ERROR}]
                     return
                 yield self.get_component_manager().put(repo, super_ucr)
@@ -875,7 +875,7 @@ class Instance(umcm.Base, ProgressMixin):
                         super_ucr.set_registry_var('%s/%s' % (ONLINE_BASE, key), value)
                 super_ucr.changed()
         except Exception as e:
-            MODULE.warn("   !! Writing UCR failed: %s", str(e))
+            MODULE.warning("   !! Writing UCR failed: %s", str(e))
             return [{'message': str(e), 'status': PUT_WRITE_ERROR}]
 
         # delete deprecated ucr variables if still exist.
@@ -886,7 +886,7 @@ class Instance(umcm.Base, ProgressMixin):
                         super_ucr.set_registry_var(f'{ONLINE_BASE}/{deprecated}', None)
                 super_ucr.changed()
         except Exception as e:
-            MODULE.warn("   !! Writing UCR failed: %s", str(e))
+            MODULE.warning("   !! Writing UCR failed: %s", str(e))
             return [{'message': str(e), 'status': PUT_WRITE_ERROR}]
 
         self.package_manager.update()

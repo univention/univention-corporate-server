@@ -37,16 +37,16 @@ class NMBD(Alert):
 
             output = output.replace('\n', ';')
             if 'failed to find name' in output:
-                self.log.debug('nmblookup for %s at host %s failed (%s): %s' % (wins_host, query_host, ' '.join(shlex.quote(x) for x in cmd), output))
+                self.log.debug('nmblookup for %s at host %s failed (%s): %s', wins_host, query_host, ' '.join(shlex.quote(x) for x in cmd), output)
                 self.write_metric('univention_nmbd_running', 0, query_host=query_host, wins_host=wins_host)
                 continue
 
             # FIXME: IPv6 possible?
             if re.search(r'[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+ %s' % (re.escape(query_host),), output):
-                self.log.debug('nmblookup for %s at host %s ok' % (wins_host, query_host))
+                self.log.debug('nmblookup for %s at host %s ok', wins_host, query_host)
                 self.write_metric('univention_nmbd_running', 1, query_host=query_host, wins_host=wins_host)
             else:
-                self.log.debug('unknown nmblookup for %s at host %s: %s' % (wins_host, query_host, output))
+                self.log.debug('unknown nmblookup for %s at host %s: %s', wins_host, query_host, output)
                 self.write_metric('univention_nmbd_running', 0, query_host=query_host, wins_host=wins_host)
 
 

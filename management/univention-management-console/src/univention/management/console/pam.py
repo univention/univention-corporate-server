@@ -201,7 +201,7 @@ class PamAuth:
             self.pam.authenticate()
             self.pam.acct_mgmt()
         except PAMError as pam_err:
-            AUTH.error("PAM: authentication error: %s" % (pam_err,))
+            AUTH.error("PAM: authentication error: %s", pam_err)
             if pam_err.args[1] == PAM_NEW_AUTHTOK_REQD:  # error: ('Authentication token is no longer valid; new one required', 12)
                 message = self.error_message(pam_err.args)
                 raise PasswordExpired(("%s %s" % (message, self._get_password_complexity_message())).rstrip())
@@ -231,7 +231,7 @@ class PamAuth:
         try:
             self.pam.chauthtok()
         except PAMError as pam_err:
-            AUTH.warning('Changing password failed (%s). Prompts: %r' % (pam_err, prompts))
+            AUTH.warning('Changing password failed (%s). Prompts: %r', pam_err, prompts)
             message = self._parse_error_message_from(pam_err.args, prompts)
             raise PasswordChangeFailed(
                 ('%s %s %s' % (self._('Changing password failed.'), message, self._get_password_complexity_message())).rstrip(),
@@ -273,13 +273,13 @@ class PamAuth:
                 if isinstance(response, list):
                     response = response.pop(0)
             except KeyError as exc:
-                AUTH.error('Missing answer for prompt: %r' % (str(exc),))
+                AUTH.error('Missing answer for prompt: %r', str(exc))
                 missing.append(query)
             except IndexError:
-                AUTH.error('Unexpected prompt: %r' % (query,))
+                AUTH.error('Unexpected prompt: %r', query)
 
             if qt in (PAM_TEXT_INFO, PAM_ERROR_MSG):
-                AUTH.info('PAM says: %r' % (query,))
+                AUTH.info('PAM says: %r', query)
             # AUTH.error('# PAM(%d) %s: answer=%r' % (qt, repr(query).strip("':\" "), response))
             yield (response, 0)
 

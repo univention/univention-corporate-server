@@ -57,7 +57,7 @@ def _handler(ucr, changes):
         if match:
             changed_entries.add(match.group(2))
     changed_entries -= {'umc', 'invalid-certificate-list', 'root-certificate', 'ldap-master'}
-    portal_logger.debug('Changed: %r' % changed_entries)
+    portal_logger.debug('Changed: %r', changed_entries)
     if not changed_entries:
         return
     lo, pos = get_machine_connection()
@@ -76,7 +76,7 @@ def _handler(ucr, changes):
         for iname in iconf.ipv6_names:
             local_hosts.append('[%s]' % (iconf.ipv6_address(iname).ip, ))
 
-    portal_logger.debug('Local hosts are: %r' % local_hosts)
+    portal_logger.debug('Local hosts are: %r', local_hosts)
     attr_entries = {}
     for changed_entry in changed_entries:
         attr_entries[changed_entry] = {}
@@ -89,7 +89,7 @@ def _handler(ucr, changes):
         key = match.group(3)
         value = ucr.get(ucr_key)
         if cn in attr_entries:
-            portal_logger.debug('Matched %r -> %r' % (ucr_key, value))
+            portal_logger.debug('Matched %r -> %r', ucr_key, value)
             entry = attr_entries[cn]
             entry['name'] = cn
             if '_links' not in entry:
@@ -151,7 +151,7 @@ def _handler(ucr, changes):
             elif key == 'background-color':
                 entry['backgroundColor'] = value
             else:
-                portal_logger.info("Don't know how to handle UCR key %s" % ucr_key)
+                portal_logger.info("Don't know how to handle UCR key %s", ucr_key)
     for cn, attrs in attr_entries.items():
         dn = 'cn=%s,%s' % (escape_dn_chars(cn), pos.getDn())
         unprocessed_links = attrs.pop('_links', [])
@@ -173,9 +173,9 @@ def _handler(ucr, changes):
                 if link:
                     my_links.add(('en_US', str(link)))
         my_links = list(my_links)
-        portal_logger.debug('Processing %s' % dn)
-        portal_logger.debug('Attrs: %r' % attrs)
-        portal_logger.debug('Links: %r' % my_links)
+        portal_logger.debug('Processing %s', dn)
+        portal_logger.debug('Attrs: %r', attrs)
+        portal_logger.debug('Links: %r', my_links)
         try:
             obj = init_object('portals/entry', lo, pos, dn)
         except AttributeError:
@@ -190,12 +190,12 @@ def _handler(ucr, changes):
                 try:
                     create_object_if_not_exists('portals/entry', lo, pos, **attrs)
                 except udm_errors.insufficientInformation as exc:
-                    portal_logger.info('Cannot create: %s' % exc)
+                    portal_logger.info('Cannot create: %s', exc)
                 try:
                     category_pos = position(ucr.get('ldap/base'))
                     category_pos.setDn('cn=category,cn=portals,cn=univention')
                     category_dn = 'cn=domain-%s,%s' % (escape_dn_chars(category), category_pos.getDn())
-                    portal_logger.debug('Adding entry to %s' % (category_dn,))
+                    portal_logger.debug('Adding entry to %s', category_dn)
                     obj = init_object('portals/category', lo, category_pos, category_dn)
                     entries = obj['entries']
                     entries.append(dn)
@@ -204,10 +204,10 @@ def _handler(ucr, changes):
                     portal_logger.debug('DN not found...')
             continue
         links = obj['link']
-        portal_logger.debug('Existing links: %r' % links)
+        portal_logger.debug('Existing links: %r', links)
         links = [_link for _link in links if urlsplit(_link[1]).hostname not in local_hosts]
         links.extend(my_links)
-        portal_logger.debug('New links: %r' % links)
+        portal_logger.debug('New links: %r', links)
         if not links:
             portal_logger.debug('Removing DN')
             remove_object_if_exists('portals/entry', lo, pos, dn)

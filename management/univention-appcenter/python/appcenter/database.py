@@ -104,7 +104,7 @@ class DatabaseConnector:
             if packages_are_installed(packages, strict=False):
                 mark_packages_as_manually_installed(packages)
             else:
-                database_logger.info('Installing/upgrading %s' % ', '.join(packages))
+                database_logger.info('Installing/upgrading %s', ', '.join(packages))
                 if wait_for_dpkg_lock():
                     update_packages()
                     if not install_packages(packages):
@@ -120,10 +120,10 @@ class DatabaseConnector:
                 database_logger.warning('No database integration within container')
                 return None
             if value.lower() == 'postgresql':
-                database_logger.debug('%s uses PostgreSQL' % app)
+                database_logger.debug('%s uses PostgreSQL', app)
                 return PostgreSQL(app)
             elif value.lower() == 'mysql':
-                database_logger.debug('%s uses MySQL' % app)
+                database_logger.debug('%s uses MySQL', app)
                 return MySQL(app)
             else:
                 raise DatabaseInfoError('%s wants %r as database. This is unsupported!' % (app, value))
@@ -138,7 +138,7 @@ class DatabaseConnector:
             if attempts > 1:
                 # try again. sometimes, under heavy load, mysql seems to fail to
                 # start although it is just slow
-                database_logger.info('Starting %s failed. Retrying...' % service_name)
+                database_logger.info('Starting %s failed. Retrying...', service_name)
                 return self.start(attempts=attempts - 1)
             catcher = LogCatcher(database_logger)
             call_process(['service', service_name, 'status'], catcher)
@@ -154,7 +154,7 @@ class DatabaseConnector:
         except OSError as exc:
             raise DatabaseCreationFailed(str(exc))
         else:
-            database_logger.info('Password for %s database in %s' % (self.app.id, db_password_file))
+            database_logger.info('Password for %s database in %s', self.app.id, db_password_file)
 
     def _read_password(self):
         try:
@@ -187,12 +187,12 @@ class DatabaseConnector:
                 database_logger.debug('Database and User already exist')
                 exists = True
         if not exists:
-            database_logger.info('Creating database for %s' % self.app)
+            database_logger.info('Creating database for %s', self.app)
             password = password or generate_password()
             self.create_db_and_user(password)
             self._write_password(password)
         else:
-            database_logger.info('%s already has its database' % self.app)
+            database_logger.info('%s already has its database', self.app)
 
 
 class PostgreSQL(DatabaseConnector):
@@ -227,13 +227,13 @@ class PostgreSQL(DatabaseConnector):
         return list(logger.stdout())
 
     def db_exists(self):
-        database_logger.info('Checking if database %s exists (postgresql implementation)' % self.get_db_name())
+        database_logger.info('Checking if database %s exists (postgresql implementation)', self.get_db_name())
         stdout = self.execute('SELECT COUNT(*) FROM pg_database WHERE datname = %s' % self._escape(self.get_db_name()))  # noqa: S608
         if stdout and stdout[0].strip() == '1':
-            database_logger.info('Database %s already exists' % self.get_db_name())
+            database_logger.info('Database %s already exists', self.get_db_name())
             return True
         else:
-            database_logger.info('Database %s does not exist' % self.get_db_name())
+            database_logger.info('Database %s does not exist', self.get_db_name())
             return False
 
     def db_user_exists(self):
@@ -296,7 +296,7 @@ class MySQL(DatabaseConnector):
             return cursor
 
     def db_exists(self):
-        database_logger.info('Checking if database %s exists (mysql implementation)' % self.get_db_name())
+        database_logger.info('Checking if database %s exists (mysql implementation)', self.get_db_name())
         cursor = self.execute("SELECT EXISTS (SELECT schema_name FROM information_schema.schemata WHERE schema_name = %s)", self.get_db_name())
         return cursor.fetchone()[0]
 

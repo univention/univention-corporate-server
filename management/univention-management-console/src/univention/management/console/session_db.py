@@ -119,7 +119,7 @@ class PostgresListener:
             payload = notify.payload
             notifier = logout_notifiers.get(payload)
             if notifier is not None:
-                CORE.debug('Got a logout notifier for session %s' % (payload))
+                CORE.debug('Got a logout notifier for session %s', payload)
                 notifier.set()
 
     @classmethod

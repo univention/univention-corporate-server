@@ -117,7 +117,7 @@ class Base(Translation):
         for _locale in locales:
             language = None
             try:
-                CORE.info("Setting locale %r" % (_locale,))
+                CORE.info("Setting locale %r", _locale)
                 _locale = Locale(_locale)
                 language = '%s-%s' % (_locale.language, _locale.territory) if _locale.territory else '%s' % (_locale.language,)
                 if language != self.__current_language:
@@ -131,7 +131,7 @@ class Base(Translation):
                         CORE.error('Missing "en_US.UTF-8:UTF-8" in UCR variable "locale"')
                     self.__current_language = language
                     return
-                CORE.warning("Locale %r is not available: %s" % (str(_locale), exc))
+                CORE.warning("Locale %r is not available: %s", str(_locale), exc)
         CORE.warning('Could not set language. Resetting locale.')
         self.set_locale('C')
         self.__current_language = None
@@ -299,7 +299,7 @@ class Base(Translation):
             # Ensure the connection cache is empty to prevent the use of expired saml messages
             # Bug #44621
             reset_ldap_connection_cache()
-            CORE.error('Failed to open LDAP connection: %s' % (exc))
+            CORE.error('Failed to open LDAP connection: %s', exc)
             raise Unauthorized
 
     def __error_handling(self, request, method, etype, exc, etraceback):

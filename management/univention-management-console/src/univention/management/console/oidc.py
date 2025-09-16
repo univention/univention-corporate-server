@@ -23,7 +23,6 @@ from tornado import escape
 from tornado.auth import OAuth2Mixin
 from tornado.httpclient import HTTPClientError, HTTPRequest
 
-import univention.debug as ud
 from univention.management.console.config import ucr
 from univention.management.console.error import BadRequest, NotFound, OpenIDProvideUnavailable, UMC_Error, Unauthorized
 from univention.management.console.log import CORE
@@ -123,7 +122,7 @@ class OIDCResource(OAuth2Mixin, Resource):
                 code_verifier=code_verifier,
             )
         except HTTPClientError as exc:
-            CORE.error('Could not get access token: %s' % (exc.response and exc.response.body or exc,))
+            CORE.error('Could not get access token: %s', exc.response and exc.response.body or exc)
             raise OpenIDProvideUnavailable(self._('Could not receive token from authorization server.'))
 
         try:
@@ -133,9 +132,9 @@ class OIDCResource(OAuth2Mixin, Resource):
         except KeyError:
             raise OpenIDProvideUnavailable(self._("Authorization server response did not contain token."))
 
-        ud.debug(ud.MAIN, 99, 'Access token: %s' % (access_token,))
-        ud.debug(ud.MAIN, 99, 'ID token: %s' % (id_token,))
-        ud.debug(ud.MAIN, 99, 'Refresh token: %s' % (refresh_token,))
+        CORE.log(1, 'Access token: %s', access_token)
+        CORE.log(1, 'ID token: %s', id_token)
+        CORE.log(1, 'Refresh token: %s', refresh_token)
         claims = self.verify_id_token(id_token, nonce)
         oidc = OIDCUser(id_token, access_token, refresh_token, claims)
         await self.pam_oidc_authentication(oidc)
@@ -249,7 +248,7 @@ class OIDCResource(OAuth2Mixin, Resource):
             CORE.warning("Immature signature: %s", exc)
             raise Unauthorized(self._('The Token contains an immature signature: %s') % (exc,))
 
-        CORE.debug('OIDC JWK-Payload: %r' % (claims,))
+        CORE.debug('OIDC JWK-Payload: %r', claims)
         return claims
 
     def _get_public_key(self, token):

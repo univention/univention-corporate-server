@@ -29,7 +29,7 @@ def reset_progress(func):
         try:
             return func(self, request)
         except takeover.TakeoverError as exc:
-            MODULE.warn('Error during %s: %s', func.__name__, exc)
+            MODULE.warning('Error during %s: %s', func.__name__, exc)
             message = str(exc)
             self.progress.error(message)
             raise BadRequest(message)

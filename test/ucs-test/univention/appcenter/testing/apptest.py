@@ -403,7 +403,7 @@ else:
         try:
             umc_lib = importlib.import_module(lib_name)
         except ImportError:
-            logger.critical(f'Could not import {umc_lib}. Maybe set $UCS_TEST_UMC_CLIENT_LIB')
+            logger.critical('Could not import %s. Maybe set $UCS_TEST_UMC_CLIENT_LIB', umc_lib)
             raise
         Client = umc_lib.Client
         scheme, _, hostname = hostname.partition("://")
@@ -537,7 +537,7 @@ else:
         try:
             rest_lib = importlib.import_module(lib_name)
         except ImportError:
-            logger.critical(f'Could not import {rest_lib}. Maybe set $UCS_TEST_REST_CLIENT_LIB')
+            logger.critical('Could not import %s. Maybe set $UCS_TEST_REST_CLIENT_LIB', rest_lib)
             raise
         uri = os.environ.get('UCS_TEST_UDM_URI')
         if not uri:

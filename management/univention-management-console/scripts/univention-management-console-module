@@ -74,7 +74,7 @@ if __name__ == '__main__':
         translation = Translation('univention-management-console')
         translation.set_language(options.language)
     except Exception:
-        MODULE.error('The specified locale %r is not available' % (options.language,))
+        MODULE.error('The specified locale %r is not available', options.language)
 
     # this import must be done after the locale is set!
     from univention.management.console.modserver import ModuleServer
