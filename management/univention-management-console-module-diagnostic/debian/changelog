@@ -1,4 +1,4 @@
-univention-management-console-module-diagnostic (8.3.1) unstable; urgency=medium
+univention-management-console-module-diagnostic (8.3.2) unstable; urgency=medium
 
   [ Ivan Barbecho Delgado ]
   * Bug #58568: UCS 5.2-3 version bump
