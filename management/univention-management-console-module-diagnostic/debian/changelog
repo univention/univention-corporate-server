@@ -1,4 +1,4 @@
-univention-management-console-module-diagnostic (6.0.14) unstable; urgency=medium
+univention-management-console-module-diagnostic (6.0.15) unstable; urgency=medium
 
   * Bug #58554: Fix the UMC module's CSS to be specific and to not affect the
     appearance of the whole of UMC
