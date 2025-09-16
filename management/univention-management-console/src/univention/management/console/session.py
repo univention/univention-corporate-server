@@ -9,7 +9,6 @@
 import asyncio
 import errno
 import functools
-import traceback
 import weakref
 
 import ldap
@@ -84,9 +83,9 @@ class Session:
         """Removes a session when the connection to the UMC server has died or the session is expired"""
         try:
             cls.sessions.delete(session_id, reload)
-            CORE.info('Cleaning up session %r' % (session_id,))
+            CORE.info('Cleaning up session %r', session_id)
         except KeyError:
-            CORE.info('Session %r not found' % (session_id,))
+            CORE.info('Session %r not found', session_id)
 
     def __init__(self, session_id):
         self.session_id = session_id
@@ -166,13 +165,13 @@ class Session:
             except (ldap.LDAPError, udm_errors.base):
                 reset_ldap_connection_cache(lo)
                 ldap_dn = None
-                CORE.error('Could not get uid for %r: %s' % (self.user.username, traceback.format_exc()))
+                CORE.exception('Could not get uid for %r', self.user.username)
             if ldap_dn:
                 self.user.user_dn = ldap_dn[0]
-                CORE.info('The LDAP DN for user %s is %s' % (self.user.username, self.user.user_dn))
+                CORE.info('The LDAP DN for user %s is %s', self.user.username, self.user.user_dn)
 
         if not self.user.user_dn and self.user.username not in ('root', '__systemsetup__', None):
-            CORE.error('The LDAP DN for user %s could not be found (lo=%r)' % (self.user.username, lo))
+            CORE.error('The LDAP DN for user %s could not be found (lo=%r)', self.user.username, lo)
 
     def get_user_ldap_connection(self, **kwargs):
         base = Request('')
@@ -213,7 +212,7 @@ class Session:
             return None
 
     def logout(self, reload=True):
-        CORE.info('User %r logged out' % (self.user.username,))
+        CORE.info('User %r logged out', self.user.username)
 
         self.on_logout()
         self.expire(self.session_id, reload=reload)
@@ -226,7 +225,7 @@ class Session:
             self._timeout_id = ioloop.call_later(1, self._session_timeout_timer)
             return
 
-        CORE.info('session %r timed out' % (self.session_id,))
+        CORE.info('session %r timed out', self.session_id)
 
         self.expire(self.session_id, reload=False)
         self.on_logout()
@@ -241,7 +240,7 @@ class Session:
             self.sessions[self.session_id] = self
         ioloop = tornado.ioloop.IOLoop.current()
         when = int(self.session_end_time - monotonic())
-        CORE.debug('reset_timeout(): new session expiration in %s seconds' % (when,))
+        CORE.debug('reset_timeout(): new session expiration in %s seconds', when)
         self._timeout_id = ioloop.call_later(when, self._session_timeout_timer)
 
     def disconnect_timer(self):
@@ -333,7 +332,7 @@ class IACLs:
             moduleManager[module_name]
         except KeyError:
             # the module has been removed from moduleManager (probably through a reload)
-            CORE.warn('Module %r (command=%r) does not exists anymore' % (module_name, command))
+            CORE.warning('Module %r (command=%r) does not exists anymore', module_name, command)
             moduleManager.load()
             self._reload_acls_and_permitted_commands()
             module_name = None
@@ -378,7 +377,7 @@ class Processes:
 
         processes = self.processes(module_name)
         if module_name not in processes:
-            CORE.info('Starting new module process %s' % (module_name,))
+            CORE.info('Starting new module process %s', module_name)
             try:
                 mod_proc = ModuleProcess(module_name, debug=MODULE_DEBUG_LEVEL, locale=accepted_language, no_daemonize_module_processes=no_daemonize_module_processes)
             except OSError as exc:

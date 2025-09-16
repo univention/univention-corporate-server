@@ -73,7 +73,7 @@ class DBRegistry:
 
         url = make_url(connection_uri)
         msg = f"Connecting to database {url.drivername}://{url.host}/{url.database} with parameters {', '.join([f'{k}={v}' for k, v in opts.items()])}"
-        CORE.process(f"Connecting to database: {msg}")
+        CORE.process("Connecting to database: %s", msg)
 
         engine = create_engine(
             connection_uri,
@@ -119,7 +119,7 @@ class PostgresListener:
             payload = notify.payload
             notifier = logout_notifiers.get(payload)
             if notifier is not None:
-                CORE.debug('Got a logout notifier for session %s' % (payload))
+                CORE.debug('Got a logout notifier for session %s', payload)
                 notifier.set()
 
     @classmethod

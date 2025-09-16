@@ -117,7 +117,7 @@ class Base(Translation):
         for _locale in locales:
             language = None
             try:
-                CORE.info("Setting locale %r" % (_locale,))
+                CORE.info("Setting locale %r", _locale)
                 _locale = Locale(_locale)
                 language = '%s-%s' % (_locale.language, _locale.territory) if _locale.territory else '%s' % (_locale.language,)
                 if language != self.__current_language:
@@ -131,8 +131,8 @@ class Base(Translation):
                         CORE.error('Missing "en_US.UTF-8:UTF-8" in UCR variable "locale"')
                     self.__current_language = language
                     return
-                CORE.warn("Locale %r is not available: %s" % (str(_locale), exc))
-        CORE.warn('Could not set language. Resetting locale.')
+                CORE.warning("Locale %r is not available: %s", str(_locale), exc)
+        CORE.warning('Could not set language. Resetting locale.')
         self.set_locale('C')
         self.__current_language = None
         raise NotAcceptable(self._('Specified locale is not available'))
@@ -299,7 +299,7 @@ class Base(Translation):
             # Ensure the connection cache is empty to prevent the use of expired saml messages
             # Bug #44621
             reset_ldap_connection_cache()
-            CORE.error('Failed to open LDAP connection: %s' % (exc))
+            CORE.error('Failed to open LDAP connection: %s', exc)
             raise Unauthorized
 
     def __error_handling(self, request, method, etype, exc, etraceback):
@@ -337,8 +337,7 @@ class Base(Translation):
             message = str(exc)
             if not exc.traceback and exc.include_traceback:
                 exc.traceback = traceback.format_exc()
-                if isinstance(exc.traceback, bytes):   # Python 2
-                    exc.traceback = exc.traceback.decode('utf-8', 'replace')
+            MODULE.error('UMC Error: %s', message, exc_info=bool(exc.include_traceback))
             error = {
                 'command': method,
                 'traceback': exc.traceback,
@@ -346,20 +345,20 @@ class Base(Translation):
         except Exception:
             status = _MODULE_ERR_COMMAND_FAILED
             reason = None
+            method = ('%s %s' % (' '.join(request.arguments), '(%s)' % (request.flavor,) if request.flavor else '')).strip()
             if etraceback is None:  # Bug #47114: thread.exc_info doesn't contain a traceback object anymore
                 tb_str = ''.join(['Traceback (most recent call last):\n', *trace, *traceback.format_exception_only(*sys.exc_info()[:2])])
+                MODULE.error('Internal server error: %s', method, traceback=tb_str.rstrip())
             else:
                 tb_str = traceback.format_exc()
-            if isinstance(tb_str, bytes):  # Python 2
-                tb_str = tb_str.decode('utf-8', 'replace')
+                MODULE.exception('Internal server error: %s', method)
+
             error = {
-                'command': ('%s %s' % (' '.join(request.arguments), '(%s)' % (request.flavor,) if request.flavor else '')).strip(),
+                'command': method,
                 'traceback': tb_str,
             }
-            if isinstance(error['command'], bytes):  # Python 2
-                error['command'] = error['command'].decode('utf-8', 'replace')
             message = self._('Internal server error during "%(command)s".') % error
-        MODULE.error('%s: %s', message, error['traceback'])
+
         self.finished(request.id, result, message, status=status, headers=headers, error=error, reason=reason)
 
     def default_response_headers(self):
