@@ -22,7 +22,7 @@ Sample Client for the UDM REST API.
 from __future__ import annotations
 
 import copy
-import sys
+import http.client
 import time
 from typing import TYPE_CHECKING, Any, Self
 
@@ -33,12 +33,8 @@ import uritemplate
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterator, Mapping
 
-if sys.version_info.major > 2:
-    import http.client
-    http.client._MAXHEADERS = 1000  # type: ignore
-else:
-    import httplib
-    httplib._MAXHEADERS = 1000
+
+http.client._MAXHEADERS = 1000
 
 
 class HTTPError(Exception):
