@@ -152,6 +152,7 @@ int main(int argc, char *argv[]) {
 	struct berval cred;
 	char cache_mdb_dir[PATH_MAX];
 
+	univention_debug_set_structured(1);
 	univention_debug_init("stderr", 1, 1);
 
 	/* parse arguments */
