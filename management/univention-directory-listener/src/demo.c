@@ -36,6 +36,7 @@ int main(int argc, char *argv[]) {
 	while ((c = getopt(argc, argv, "d")) != -1) {
 		switch (c) {
 		case 'd':
+			univention_debug_set_structured(1);
 			univention_debug_init("stderr", 0, 0);
 			univention_debug_set_level(UV_DEBUG_LISTENER, UV_DEBUG_ALL);
 			break;

@@ -342,6 +342,7 @@ int main(int argc, char *argv[]) {
 	struct stat stbuf;
 	char cache_mdb_dir[PATH_MAX];
 
+	univention_debug_set_structured(1);
 	univention_debug_init("stderr", 1, 1);
 
 	{
