@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [3]
+scope: ucs_5.2-0-errata5.2-3
+src: samba
+fix: 2:4.21.1-1A~5.2.0.202509161348
+desc: |
+ This update addresses the following issues:
+ * In some cases, printing was not possible because the rpcd_spoolss
+   process hung. A patch has been backported to fix this issue.
+bug: [58646]
