@@ -14,7 +14,7 @@ skip = "doc/doc-common/,base/univention-system-setup/tests,services/univention-l
 skip_glob = "venv/*"
 
 [tool.ruff]
-# ruff 0.11.2
+# ruff 0.13.0
 target-version = "py311"
 
 line-length = 180
@@ -218,6 +218,12 @@ task-tags = ["TODO", "FIXME"]
 ]
 "services/univention-ldb-modules/buildtools/*" = [
  "ALL",
+]
+"services/univention-s4-connector/scripts/*" = [
+ "RUF064",  # broken in S4-C/AD-C
+]
+"services/univention-ad-connector/scripts/*" = [
+ "RUF064",  # broken in S4-C/AD-C
 ]
 "**/tests/*" = [
  "PLC0415",
