@@ -241,7 +241,7 @@ The following steps show how you can test this role.
           --set username="${ou}-admin" \
           --set password=univention \
           --set lastname="${ou}-admin" \
-          --append guardianRoles="udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=${ou}"
+          --append guardianRoles="udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=${ou},$(ucr get ldap/base)"
         # create some users
         for j in $(seq 1 10); do
           username="user${j}-${ou}"
@@ -268,7 +268,7 @@ The following steps show how you can test this role.
    You only see the users of the organizational unit ``ou1``, nothing else.
 
    You can also manually add the role
-   ``udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=ou2``
+   ``udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=ou2,${ldap_base}``
    to the ``guardianRoles`` property of the user ``ou1-admin``.
    The user then has ``organizational-unit-admin`` permissions for two the organizational units ``ou=ou1`` and ``ou=ou2``.
 
