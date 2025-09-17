@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <string.h>
 
+#include <univention/config.h>
 #include <univention/debug.h>
 
 #include "network.h"
@@ -36,7 +37,7 @@ int main(int argc, char *argv[]) {
 	while ((c = getopt(argc, argv, "d")) != -1) {
 		switch (c) {
 		case 'd':
-			univention_debug_set_structured(1);
+			univention_debug_set_structured(univention_config_is_true("listener/debug/structured-logging", 0));
 			univention_debug_init("stderr", 0, 0);
 			univention_debug_set_level(UV_DEBUG_LISTENER, UV_DEBUG_ALL);
 			break;
