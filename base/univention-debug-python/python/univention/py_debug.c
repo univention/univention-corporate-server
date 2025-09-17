@@ -84,12 +84,13 @@ py_univention_debug_init(PyObject *self, PyObject *args)
     return file;
 }
 PyDoc_STRVAR(py_univention_debug_init__doc__,
-        "init(logfile, force_flush, trace_function) - Initialize debugging library.\n"
+        "init(logfile, force_flush, trace_function, structured) - Initialize debugging library.\n"
         "\n"
         "Initialize debugging library for logging to 'logfile'.\n"
         "logfile - name of the logfile, or 'stderr', or 'stdout'.\n"
         "force_flush - force flushing of messages (True).\n"
-        "trace_function - enable (True) or disable (False) function tracing.");
+        "trace_function - enable (True) or disable (False) function tracing.\n"
+        "structured - enable (True) or disable (False) structured logging.");
 
 static PyObject *
 py_univention_debug_set_level(PyObject *self, PyObject *args)
