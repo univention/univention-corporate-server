@@ -170,7 +170,7 @@ def create_ou_structure(position, ouname, api_access_group, umc_policy):
         f'cn=users,{LDAP_BASE}',
         policy=umc_policy,
         groups=[api_access_group.dn],
-        guardianRoles=[f'udm:default-roles:organizational-unit-admin&udm:contexts:position={ou.dn.rstrip(LDAP_BASE)}'],
+        guardianRoles=[f'udm:default-roles:organizational-unit-admin&udm:contexts:position={ou.dn}'],
     ).dn)
     # Helpdesk Operator (helpdesk-operator)
     register_ldap_deny_user(create_user(
@@ -178,7 +178,7 @@ def create_ou_structure(position, ouname, api_access_group, umc_policy):
         f'cn=users,{LDAP_BASE}',
         policy=umc_policy,
         groups=[api_access_group.dn],
-        guardianRoles=[f'udm:default-roles:helpdesk-operator&udm:contexts:position={ou.dn.rstrip(LDAP_BASE)}'],
+        guardianRoles=[f'udm:default-roles:helpdesk-operator&udm:contexts:position={ou.dn}'],
     ).dn)
     # linux client manager user
     register_ldap_deny_user(create_user(
@@ -186,7 +186,7 @@ def create_ou_structure(position, ouname, api_access_group, umc_policy):
         f'cn=users,{LDAP_BASE}',
         policy=umc_policy,
         groups=[api_access_group.dn],
-        guardianRoles=[f'udm:default-roles:linux-ou-client-manager&udm:contexts:position={ou.dn.rstrip(LDAP_BASE)}'],
+        guardianRoles=[f'udm:default-roles:linux-ou-client-manager&udm:contexts:position={ou.dn}'],
     ).dn)
 
     # user objects in ou

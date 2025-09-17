@@ -24,7 +24,7 @@ def test_get_property_filtering(setup_role, udm, ldap_base):
     role = 'udm:test_roles:test_property_filter'
     acl = '''
 access by role="%s"
-  to objecttype="users/user" position.subtree="{ldap_base}"
+  to objecttype="users/user" position.subtree="{ldap/base}"
     grant actions="search,read"
     grant properties="*" permission="read"
     grant properties="guardianRoles" permission="none"
