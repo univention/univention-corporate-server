@@ -58,9 +58,9 @@ enum uv_debug_flag_function {
 	UV_DEBUG_FUNCTION = 0x01
 };
 
-enum uv_debug_structured_timestamp {
-    UV_DEBUG_UNSTRUCTURED_TIMESTAMP = 0x00,
-    UV_DEBUG_STRUCTURED_TIMESTAMP = 0x01
+enum uv_debug_flag_structured {
+    UV_DEBUG_UNSTRUCTURED = 0x00,
+    UV_DEBUG_STRUCTURED = 0x01
 };
 
 /**
@@ -79,7 +79,7 @@ void univention_debug_end(const char *s);
 /**
  * Set use of structured timestamp.
  */
-void univention_debug_set_structured(bool use_structured);
+void univention_debug_set_structured(enum uv_debug_flag_structured);
 /**
  * Set debug level of category id to specified level.
  */
