@@ -15,6 +15,7 @@
 # define __USE_GNU
 #endif
 #include <string.h>
+#include <stdbool.h>
 #include <sys/wait.h>
 
 #include <univention/config.h>
@@ -189,4 +190,13 @@ int univention_config_set_string(const char *key, const char *value)
 	} while(1);
 
 	return 0;
+}
+
+bool univention_config_is_true(const char *key, bool default_value)
+{
+	char *s = univention_config_get_string(key);
+	if (s == NULL) {
+	    return default_value;
+	}
+	return !strcasecmp(s, "yes") || !strcasecmp(s, "true") || !strcmp(s, "1") || !strcasecmp(s, "enable") || !strcasecmp(s, "enabled") || !strcasecmp(s, "on");
 }
