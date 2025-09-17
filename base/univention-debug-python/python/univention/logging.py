@@ -246,8 +246,7 @@ def basicConfig(
 
     if not delay_init:
         logger = getLogger(categories[0])
-        logger.set_structured(use_structured_logging)
-        logger.univention_debug_handler.init(filename, univention_debug_flush, univention_debug_function)
+        logger.univention_debug_handler.init(filename, univention_debug_flush, univention_debug_function, use_structured_logging)
     for category in categories:
         logger = getLogger(category)
         logger.set_structured(use_structured_logging)
@@ -260,7 +259,7 @@ def basicConfig(
         if delay_init:
             logger.univention_debug_handler.auto_init = True
             logger.univention_debug_handler.delay_init = delay_init
-            logger.univention_debug_handler._init_args = (filename, univention_debug_flush, univention_debug_function)
+            logger.univention_debug_handler._init_args = (filename, univention_debug_flush, univention_debug_function, use_structured_logging)
 
 
 class SyslogPrefix(logging.Filter):
@@ -421,9 +420,9 @@ class Logger(logging.Logger):
     def set_ud_level(self, level):
         self.setLevel(_map_ud_to_level(level))
 
-    def init(self, filename='stderr', flush=ud.NO_FLUSH, function=ud.NO_FUNCTION):
+    def init(self, filename='stderr', flush=ud.NO_FLUSH, function=ud.NO_FUNCTION, structured=False):
         """init :py:mod:`univention.debug`. must only be called once. returns the file descriptor on success"""
-        return self.univention_debug_handler.init(filename, flush, function)
+        return self.univention_debug_handler.init(filename, flush, function, structured)
 
     def exit(self):
         return self.univention_debug_handler.close()
@@ -594,7 +593,7 @@ class DebugHandler(logging.Handler):
         self.delay_init = delay_init
         self.auto_init = auto_init
         self.do_exit = do_exit
-        self._init_args = (filename, ud.NO_FLUSH, ud.NO_FUNCTION)
+        self._init_args = (filename, ud.NO_FLUSH, ud.NO_FUNCTION, False)
         if auto_init and not delay_init:
             self.init(*self._init_args)
         super().__init__(level)
@@ -617,9 +616,9 @@ class DebugHandler(logging.Handler):
         except ValueError:  # embedded null character
             ud.debug(self._category, level, message.replace('\x00', repr('\x00')))
 
-    def init(self, filename='stderr', flush=ud.NO_FLUSH, function=ud.NO_FUNCTION):
+    def init(self, filename='stderr', flush=ud.NO_FLUSH, function=ud.NO_FUNCTION, structured=False):
         """Initialize :py:mod:`univention.debug`. Must only be called once. returns the file descriptor on success"""
-        return ud.init(filename, flush, function)
+        return ud.init(filename, flush, function, structured)
 
     def reopen(self):
         """reopen the :py:mod:`univention.debug` logfile. must be called e.g. after log rotation."""
