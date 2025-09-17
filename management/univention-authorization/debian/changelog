@@ -1,8 +1,12 @@
-univention-authorization (1.1.0) UNRELEASED; urgency=medium
+univention-authorization (1.1.0) unstable; urgency=medium
 
+  [ Ivan Barbecho Delgado ]
   * Bug #58568: UCS 5.2-3 version bump
 
- -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 02 Sep 2025 16:18:19 +0200
+  [ Florian Best ]
+  * Bug #58649: adjust for ABAC policy format changes
+
+ -- Florian Best <best@univention.de>  Mon, 22 Sep 2025 18:11:41 +0200
 
 univention-authorization (1.0.0) unstable; urgency=medium
 

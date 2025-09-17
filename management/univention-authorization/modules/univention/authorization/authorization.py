@@ -8,11 +8,7 @@ import json
 import pathlib
 import re
 
-from univention.config_registry import ucr
 from univention.dn import DN
-
-
-LDAP_BASE = ucr.get("ldap/base")
 
 
 class LocalGuardianAuthorizationClient:
@@ -130,7 +126,7 @@ class LocalGuardianAuthorizationClient:
     def udm_conditions_target_position_from_context(self, params, condition_data):
         context_name = params['context']
         positions = [
-            f"{c[1].split(context_name + '=', 1)[-1]},{LDAP_BASE}"
+            c[1].split(context_name + '=', 1)[-1]
             for c in condition_data['actor_role']
             if len(c) > 1 and c[1].startswith(context_name)
         ]
