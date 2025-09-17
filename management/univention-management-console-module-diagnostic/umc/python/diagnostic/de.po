@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2025-09-16 15:21+0000\n"
-"PO-Revision-Date: 2025-09-15 14:24+0200\n"
+"POT-Creation-Date: 2025-09-17 10:18+0000\n"
+"PO-Revision-Date: 2025-09-17 12:33+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
 "Language: de\n"
@@ -105,12 +105,28 @@ msgstr "Alle SIDs existieren und die Namen sind konsistent."
 
 #: umc/python/diagnostic/plugins/02_certificate_check.py:26
 msgid "All SSL certificates valid."
-msgstr "Alle SSL Zertifikate sind gültig."
+msgstr "Alle SSL-Zertifikate sind gültig."
+
+#: umc/python/diagnostic/plugins/20_check_srv_records.py:22
+msgid "All checked SRV record entries are ok."
+msgstr "Alle geprüften SRV-Records sind okay."
+
+#: umc/python/diagnostic/plugins/24_portal_entries.py:21
+msgid "All checked portals/entry objects are ok."
+msgstr "Alle geprüften portals/entry-Objekte sind okay."
+
+#: umc/python/diagnostic/plugins/20_check_share_references.py:23
+msgid "All checked shares/* objects are ok."
+msgstr "Alle geprüften shares/*-Objekte sind okay."
 
 #: umc/python/diagnostic/plugins/54_sources_list_check.py:17
 #: umc/python/diagnostic/plugins/31_file_permissions.py:24
 msgid "All files ok."
 msgstr "Alle Dateien in Ordnung."
+
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:25
+msgid "All nameserver entries are ok."
+msgstr "Alle Nameserver-Einträge sind okay."
 
 #: umc/python/diagnostic/plugins/58_univentionObjectIdentifier.py:16
 msgid ""
@@ -285,6 +301,10 @@ msgstr "Überprüfe die Nameserver Einträge der DNS-Zonen"
 msgid "Check of the protocol version of the Univention Directory Notifier"
 msgstr "Überprüfung der Protokollversion des Univention Directory Notifier"
 
+#: umc/python/diagnostic/plugins/24_portal_entries.py:20
+msgid "Check portals/entry objects for unresolvable host names"
+msgstr "Überprüfe portals/entry-Objekte auf nicht-auflösbare Rechnernamen"
+
 #: umc/python/diagnostic/plugins/59_ldap_server_name.py:15
 msgid "Check primary LDAP server"
 msgstr "Überprüfung des primären LDAP-Servers"
@@ -326,6 +346,22 @@ msgstr "Überprüfe 'Well Known' SIDs"
 #: umc/python/diagnostic/plugins/42_samba_tdb_deprecated.py:15
 msgid "Checking Samba database type"
 msgstr "Prüfe Samba-Datenbank-Typ"
+
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:31
+msgid "Checks nameserver entries on DNS zones"
+msgstr "Überprüfe die Nameserver-Einträge der DNS-Zonen"
+
+#: umc/python/diagnostic/plugins/24_portal_entries.py:22
+msgid "Checks portals/entry objects for unresolvable host names"
+msgstr "Überprüfe portals/entry-Objekte auf nicht-auflösbare Rechnernamen"
+
+#: umc/python/diagnostic/plugins/20_check_share_references.py:24
+msgid "Checks shares/* objects for dangling host references"
+msgstr "Überprüfe shares/*-Objekte auf ungültige Server-Referenzen"
+
+#: umc/python/diagnostic/plugins/20_check_srv_records.py:23
+msgid "Checks target entries in DNS SRV records"
+msgstr "Überprüfe Ziele in DNS-SRV-Einträgen"
 
 #: umc/python/diagnostic/plugins/65_check_repository_config.py:55
 msgid "Cleanup of deprecated variables is executed !"
@@ -428,7 +464,7 @@ msgstr ""
 "Es wurde ein Unterschied in den ACL-Einträgen für die globalen IMAP-Ordner "
 "zwischen UDM und IMAP gefunden."
 
-#: umc/python/diagnostic/plugins/20_check_nameservers.py:194
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:193
 msgid "Found errors in the nameserver entries of the following zones."
 msgstr ""
 "Es wurden Fehler in den Nameserver-Einträgen der folgenden Zonen gefunden."
@@ -461,7 +497,7 @@ msgstr ""
 "Ungültiges Zertifikat {path!r} gefunden:\n"
 "{message}"
 
-#: umc/python/diagnostic/plugins/20_check_share_references.py:108
+#: umc/python/diagnostic/plugins/20_check_share_references.py:102
 msgid "Found invalid host entries in the following share/* objects."
 msgstr ""
 "Es wurden ungültige Host-Einträge in den folgenden Objekten vom Typ shares/* "
@@ -486,6 +522,10 @@ msgstr ""
 #: umc/python/diagnostic/plugins/02_certificate_check.py:60
 msgid "Found not yet valid certificate {path!r}."
 msgstr "Noch nicht gültiges Zertifikat {path!r} gefunden."
+
+#: umc/python/diagnostic/plugins/24_portal_entries.py:85
+msgid "Found possibly invalid portal entries in the following objects."
+msgstr "Es gibt möglicherweise ungültige Portal-Einträge in den folgenden Objekten."
 
 #: umc/python/diagnostic/plugins/43_connectors4_rejects.py:79
 #, python-brace-format
@@ -533,7 +573,7 @@ msgstr ""
 "Im SRV-Record {name} ist ein ungültiger Ziel-Eintrag \"{target}\" (siehe "
 "{{{link}}}):"
 
-#: umc/python/diagnostic/plugins/20_check_nameservers.py:198
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:197
 #, python-brace-format
 msgid "In forward zone {name} (see {{{link}}}):"
 msgstr "In der Forward-Zone {name} (siehe {{{link}}}):"
@@ -543,7 +583,7 @@ msgstr "In der Forward-Zone {name} (siehe {{{link}}}):"
 msgid "In mail folder {name} (see {{udm:mail/mail}}):"
 msgstr "Im globalen Mail-Ordner {name} (siehe {{udm:mail/mail}}):"
 
-#: umc/python/diagnostic/plugins/20_check_nameservers.py:199
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:198
 #, python-brace-format
 msgid "In reverse zone {name} (see {{{link}}}):"
 msgstr "In der Reverse-Zone {name} (siehe {{{link}}}):"
@@ -830,13 +870,17 @@ msgstr ""
 "Bitte stellen Sie sicher, dass nur A- oder AAAA-Einträge verwendet werden "
 "und diese mit einem Punkt enden."
 
-#: umc/python/diagnostic/plugins/20_check_share_references.py:110
+#: umc/python/diagnostic/plugins/20_check_share_references.py:104
 msgid ""
 "Please make sure that only hosts are specified that exist as a suitable "
 "computer object in LDAP."
 msgstr ""
 "Bitte stellen Sie sicher, dass nur Rechner angegeben werden, für die auch "
 "ein entsprechendes Computerobjekt im LDAP existiert."
+
+#: umc/python/diagnostic/plugins/24_portal_entries.py:86
+msgid "Please make sure that the host part of all URLs is resolvable via DNS."
+msgstr "Bitte stellen Sie sicher, dass der Rechnername in allen URLs über DNS aufgelöst werden kann."
 
 #: umc/python/diagnostic/plugins/11_nameserver.py:18
 msgid ""
@@ -851,7 +895,7 @@ msgstr ""
 msgid "Please refer to {rfc1123} for the syntax of host names."
 msgstr "Siehe {rfc1123} für die Syntax von Rechnernamen."
 
-#: umc/python/diagnostic/plugins/20_check_nameservers.py:195
+#: umc/python/diagnostic/plugins/20_check_nameservers.py:194
 #, python-brace-format
 msgid "Please refer to {sdb} for further information."
 msgstr "Siehe {sdb} für weitere Informationen."
@@ -1188,6 +1232,13 @@ msgid "The nameserver %(nameserver)s (UCR variable %(var)r) is not responsive:"
 msgstr ""
 "Der Nameserver %(nameserver)s (UCR Variable %(var)r) ist nicht ansprechbar:"
 
+#: umc/python/diagnostic/plugins/24_portal_entries.py:92
+#, python-brace-format
+msgid ""
+"The object {dn} contains an unresolvable host in the \"{lang}\" URL: "
+"\"{url}\" (see {{{link}}}):"
+msgstr "Das Objekt {dn} enthält einen nicht-auflösbaren Rechnernamen in der \"{lang}\" URL: {url} (see {{{link}}}):"
+
 #: umc/python/diagnostic/plugins/53_package_status.py:15
 #, python-format
 msgid "The package status of %s packages is corrupt."
@@ -1291,12 +1342,14 @@ msgstr ""
 msgid "The variable %(variable)r has the invalid value %(value)r."
 msgstr "Die Variable %(variable)r hat den ungültigen Wert %(value)r."
 
-#: umc/python/diagnostic/plugins/20_check_share_references.py:117
+#: umc/python/diagnostic/plugins/20_check_share_references.py:111
 #, python-brace-format
 msgid ""
 "The {udm_module} object {dn} contains an invalid \"host\" resp. "
 "\"spoolHost\" entry: \"{host}\" (see {{{link}}}):"
-msgstr "Das {udm_module}-Objekt {dn} enthält einen ungültigen \"Server\"- bzw. \"Druckserver\"-Eintrag: {host} (see {{{link}}}):"
+msgstr ""
+"Das {udm_module}-Objekt {dn} enthält einen ungültigen \"Server\"- bzw. "
+"\"Druckserver\"-Eintrag: {host} (see {{{link}}}):"
 
 #: umc/python/diagnostic/plugins/10_gateway.py:33
 msgid "There is no gateway configured."
