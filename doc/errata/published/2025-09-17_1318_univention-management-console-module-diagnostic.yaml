@@ -9,3 +9,6 @@ desc: |
  * Fix the UMC module's CSS to be specific and to not affect the appearance of
    the whole of UMC
 bug: [58554]
+erratum: 1318
+announced: 2025-09-17
+support: core
