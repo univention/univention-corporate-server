@@ -10,7 +10,6 @@ import ldap
 import univention.admin.handlers
 import univention.admin.localization
 from univention.admin.layout import Group, Tab
-from univention.admin.log import log
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.mail')
@@ -196,7 +195,7 @@ class object(univention.admin.handlers.simpleLdap):
         rewrite_acl = False
         new_acls_tmp = []
         for attr in ['sharedFolderUserACL', 'sharedFolderGroupACL']:
-            log.debug('current ACLs', attr=attr, value=self[attr])
+            self.log.debug('current ACLs', attr=attr, value=self[attr])
             if self.hasChanged(attr):
                 rewrite_acl = True
                 # re-use regular expressions from syntax definitions

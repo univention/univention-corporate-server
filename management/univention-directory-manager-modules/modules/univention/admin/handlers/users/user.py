@@ -1152,7 +1152,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
             self['primaryGroup'] = primary_group
             return
 
-        log.error('No primary group was found with gidNumber', value=primaryGroupNumber, dn=self.dn, binddn=self.lo.binddn)
+        self.log.error('No primary group was found with gidNumber', value=primaryGroupNumber, dn=self.dn, binddn=self.lo.binddn)
 
     def __setitem__(self, key: str, value) -> None:
         if key == 'primaryGroup':
@@ -1171,7 +1171,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
             if primary_group_candidate and self.lo.authz_connection.get(primary_group_candidate, attr=['objectClass']):
                 self['primaryGroup'] = primary_group_candidate
                 self.__primary_group_set_manually = False
-                log.debug('user: setting primaryGroups', value=primary_group_candidate)
+                self.log.debug('user: setting primaryGroups', value=primary_group_candidate)
 
         if not self.info.get('primaryGroup'):
             error_detail = self.dn or self.info.get('username')
@@ -1318,13 +1318,13 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
 
         # change memberUid if we have a new username
         if old_uid and old_uid != new_uid and self.exists():
-            log.debug('users/user: rewrite memberuid after rename')
+            self.log.debug('users/user: rewrite memberuid after rename')
             for group in new_groups:
                 self.__rewrite_member_uid(group)
 
         group_mod = univention.admin.modules._get('groups/group')
 
-        log.debug('users/user: check groups in old_groups')
+        self.log.debug('users/user: check groups in old_groups')
         for group in old_groups:
             if group and not case_insensitive_in_list(group, self.info.get('groups', [])) and group.lower() != self['primaryGroup'].lower():
                 grpobj = group_mod.object(None, self.lo, self.position, group)
@@ -1334,14 +1334,14 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
                     # so if we changed it and if we use refint overlay, it already updated the uniqueMember of the group and we will not catch it with old_dn
                     grpobj.fast_member_remove([self.dn], [old_uid])
 
-        log.debug('users/user: check groups in info[groups]')
+        self.log.debug('users/user: check groups in info[groups]')
         for group in self.info.get('groups', []):
             if group and not case_insensitive_in_list(group, old_groups):
                 grpobj = group_mod.object(None, self.lo, self.position, group)
                 grpobj.fast_member_add([self.dn], [new_uid])
 
         if configRegistry.is_true('directory/manager/user/primarygroup/update', True):
-            log.debug('users/user: check primaryGroup')
+            self.log.debug('users/user: check primaryGroup')
             if not self.exists() and self.info.get('primaryGroup'):
                 grpobj = group_mod.object(None, self.lo, self.position, self.info.get('primaryGroup'))
                 grpobj.fast_member_add([self.dn], [new_uid])
@@ -1360,7 +1360,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
                 if UIDs:
                     new_uids.append(UIDs[0])
                     if len(UIDs) > 1:
-                        log.warning('users/user: A groupmember has multiple UIDs (%s %r)', memberDNstr, UIDs)
+                        self.log.warning('users/user: A groupmember has multiple UIDs (%s %r)', memberDNstr, UIDs)
         self.lo.authz_connection.modify(group, [('memberUid', uids, new_uids)])  # TODO: check if encoding is correct
 
     def __primary_group(self) -> None:
@@ -1372,7 +1372,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
             group_mod = univention.admin.modules._get('groups/group')
             grpobj = group_mod.object(None, self.lo, self.position, self['primaryGroup'])
             grpobj.fast_member_add([self.dn], [new_uid])
-            log.debug('Adding user to new primaryGroup', primary_group=self['primaryGroup'], uid=new_uid, dn=self.dn)
+            self.log.debug('Adding user to new primaryGroup', primary_group=self['primaryGroup'], uid=new_uid, dn=self.dn)
 
     def krb5_principal(self) -> str:
         domain = univention.admin.uldap.domain(self.lo, self.position)
@@ -1392,7 +1392,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
 
     def _ldap_pre_create(self) -> None:
         super()._ldap_pre_create()
-        log.debug('Setting DN', dn=self.dn)
+        self.log.debug('Setting DN', dn=self.dn)
 
         # request a new uidNumber or get lock for manually set uidNumber
         self.request_unique('uidNumber')
@@ -1680,7 +1680,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
         # if pwdChangeNextLogin has been set, set sambaPwdLastSet to 0 (see UCS Bug #17890)
         # OLD behavior was: set sambaPwdLastSet to 1 (see UCS Bug #8292 and Samba Bug #4313)
         sambaPwdLastSetValue = '0' if pwd_change_next_login else str(int(time.time()))
-        log.debug('Setting sambaPwdLastSet', value=sambaPwdLastSetValue)
+        self.log.debug('Setting sambaPwdLastSet', value=sambaPwdLastSetValue)
         sambaPwdLastSetValue = sambaPwdLastSetValue.encode('UTF-8')
         ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [b''])[0], sambaPwdLastSetValue))
 
@@ -1691,7 +1691,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
                 expiry = expiry + (pwhistoryPolicy.expiryInterval * 3600 * 24)
             krb5PasswordEnd = time.strftime('%Y%m%d000000Z', time.gmtime(expiry))
 
-        log.debug('Setting krb5PasswordEnds', value=krb5PasswordEnd)
+        self.log.debug('Setting krb5PasswordEnds', value=krb5PasswordEnd)
         old_krb5PasswordEnd = self.oldattr.get('krb5PasswordEnd', [b''])[0]
         krb5PasswordEnd = krb5PasswordEnd.encode('ASCII')
         if old_krb5PasswordEnd != krb5PasswordEnd:
@@ -1786,7 +1786,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
             sambaKickoffTime = b''
             if self['userexpiry']:
                 sambaKickoffTime = _mapUserExpiryToSambaKickoffTime(self['userexpiry']).encode('ASCII')
-                log.debug('Setting sambaKickoffTime', value=sambaKickoffTime)
+                self.log.debug('Setting sambaKickoffTime', value=sambaKickoffTime)
             old_sambaKickoffTime = self.oldattr.get('sambaKickoffTime', [b''])[0]
             if old_sambaKickoffTime != sambaKickoffTime:
                 ml.append(('sambaKickoffTime', self.oldattr.get('sambaKickoffTime', [b''])[0], sambaKickoffTime))
@@ -1797,7 +1797,7 @@ class object(univention.admin.handlers.simpleLdap, PKIIntegration, GuardianBase)
             krb5ValidEnd = ''
             if self['userexpiry']:
                 krb5ValidEnd = _mapUserExpiryToKrb5ValidEnd(self['userexpiry'])
-                log.debug('Setting krb5ValidEnd', value=krb5ValidEnd)
+                self.log.debug('Setting krb5ValidEnd', value=krb5ValidEnd)
             krb5ValidEnd = krb5ValidEnd.encode('ASCII')
             old_krb5ValidEnd = self.oldattr.get('krb5ValidEnd', [b''])[0]
             if old_krb5ValidEnd != krb5ValidEnd:

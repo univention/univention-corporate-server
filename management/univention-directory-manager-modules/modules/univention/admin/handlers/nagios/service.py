@@ -19,7 +19,6 @@ import univention.admin.syntax
 import univention.admin.uexceptions
 from univention.admin import configRegistry
 from univention.admin.layout import Group, Tab
-from univention.admin.log import log
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.nagios')
@@ -129,7 +128,7 @@ class object(univention.admin.handlers.simpleLdap):
                 # find correct dNSZone entry
                 res = self.lo.authz_connection.search(filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))', (zoneName, relDomainName)))
                 if not res:
-                    log.debug('open: could not find dNSZone', host=host)
+                    self.log.debug('open: could not find dNSZone', host=host)
                 else:
                     # found dNSZone
                     filter = '(&(objectClass=univentionHost)'

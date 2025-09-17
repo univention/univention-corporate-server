@@ -14,7 +14,6 @@ import univention.admin.localization
 import univention.admin.modules
 import univention.admin.uexceptions
 from univention.admin.layout import Group, Tab
-from univention.admin.log import log
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.networks')
@@ -200,7 +199,7 @@ class object(univention.admin.handlers.simpleLdap):
             try:
                 self.lo.authz_connection.modify(computer.dn, [('univentionNetworkLink', self.dn.encode('UTF-8'), b'')])
             except (univention.admin.uexceptions.base, ldap.LDAPError):
-                log.exception('Failed to remove network from computer', dn=self.dn, computer=computer.dn)
+                self.log.exception('Failed to remove network from computer', dn=self.dn, computer=computer.dn)
 
     def _ldap_addlist(self):
         if not self['nextIp']:
@@ -249,7 +248,7 @@ class object(univention.admin.handlers.simpleLdap):
                     raise univention.admin.uexceptions.rangeInBroadcastAddress('%s-%s' % (firstIP, lastIP))
                 ipRange.append(' '.join(i).encode('ASCII'))
 
-            log.debug('old Range: %s', self.oldinfo.get('ipRange'))
+            self.log.debug('old Range: %s', self.oldinfo.get('ipRange'))
             ml = [x for x in ml if x[0] != 'univentionIpRange']
             ml.append(('univentionIpRange', self.oldattr.get('univentionIpRange', [b'']), ipRange))
 

@@ -11,7 +11,6 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 from univention.admin.layout import Group, Tab
-from univention.admin.log import log
 
 
 translation = univention.admin.localization.translation('univention.admin.handlers.settings')
@@ -141,7 +140,7 @@ class object(univention.admin.handlers.simpleLdap):
                 if key.startswith('univentionUDMOptionTranslation%s;entry-' % transKey)
             ]
 
-            log.debug('open: added translations', msgid=transKey, msgstrs=translations)
+            self.log.debug('open: added translations', msgid=transKey, msgstrs=translations)
             self['translation%s' % transKey] = translations
 
         self.save()
