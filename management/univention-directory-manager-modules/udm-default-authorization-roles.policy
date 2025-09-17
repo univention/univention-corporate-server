@@ -15,17 +15,16 @@
 #
 # `access by <who>` clause
 #     `access by` clauses describe the actor roles which permissions are granted to. Multiple can be specified.
-#      A optional context may be given.
 #      A optional `description` can describe the achievement of the rule for a human operator.
 #      Example: `access by role="udm:default-roles:..." context="udm:contexts:..." description="Role may do xyz"`
 #
 # `to <what>` clause
 #     `to` clauses describe the target object and the the granted permissions based on UDM object types and is effectively transformed into a capability.
-#     Optional `condition`s can be specified via `if="<NAMED_CONDITION>"`, or `position[.scope]="<DN>" | "{context}"` where `scope="base|one|subtree|children"`
-#     A given `position` condition can use `{ldap_base}` as placeholder, which is replaced with the real LDAP base DN.
-#     A given `position` condition can use `{context}` as placeholder, which is replaced with the context specified for the role.
+#     Optional `condition`s can be specified via `if="<CONDITION>"`, or `position[.scope]="<DN>" | "context=udm:contexts:position"` where `scope="base|one|subtree|children"`
+#     A given `position` condition can use `{ldap/base}` as placeholder, which is replaced with the real LDAP base DN.
+#     A given `position` condition can be `context=udm:contexts:position`, which is replaced with the context specified for the role.
 #     An optional `description` and `name` for the `to` clause can be given, which indicate the metadata of the capability
-#     Example: `to objecttype="users/user" position="cn=users,{ldap_base}"`
+#     Example: `to objecttype="users/user" position="cn=users,{ldap/base}"`
 #
 # `grant <access>` clauses
 #     `grant` clauses are the actually granted permissions for the capability
@@ -34,14 +33,14 @@
 #     `actions` can be any of search|read|create|modify|rename|remove|move|report-create (or the wildcard "*")
 #     Example: `grant actions="create"` and `grant properties="..." permission="write"`.
 
-named-condition "is-self"
+condition "is-self"
   condition="guardian:builtin:target_is_self"
 
-# unused examples for "named conditions", which can be used as if="$name"
+# unused examples for "conditions", which can be used as if="$name"
 # these allow every possible guardian condition
-# we abstracted commonly used conditions away, like position="cn=users,{ldap_base}"
+# we abstracted commonly used conditions away, like position="cn=users,{ldap/base}"
 
-#named-condition "in-global-users-container"  # unused example
+#condition "in-global-users-container"  # unused example
 #  condition="udm:conditions:target_position_in"  # the guardian condition name
 #  parameters position.subtree="cn=users"  # any key value pair which the guardian condition requires
 
@@ -86,7 +85,7 @@ access
   description="Everyone is allowed to read the LDAP base and certain internal objects"
 
   # LDAP Base
-  to objecttype="container/dc" position.base="{ldap_base}"
+  to objecttype="container/dc" position.base="{ldap/base}"
     name="allow-ldap-base-read" description="Allow reading LDAP base"
 
     grant actions="search,read"
@@ -94,18 +93,18 @@ access
 
 # Every context role
 access
-  by role="udm:default-roles:helpdesk-operator" context="udm:contexts:position"
-  by role="udm:default-roles:linux-ou-client-manager" context="udm:contexts:position"
-  by role="udm:default-roles:organizational-unit-admin" context="udm:contexts:position"
+  by role="udm:default-roles:helpdesk-operator"
+  by role="udm:default-roles:linux-ou-client-manager"
+  by role="udm:default-roles:organizational-unit-admin"
   description="Every context role is allowed to read containers underneath of context position"
 
-  to objecttype="container/ou" position.subtree="{context}"
+  to objecttype="container/ou" position.subtree="context=udm:contexts:position"
     name="allow-read-context-ou" description="Allow to read own OU"
 
     grant actions="search,read"
     grant properties="*" permission="read"
 
-  to objecttype="container/cn" position.subtree="{context}"
+  to objecttype="container/cn" position.subtree="context=udm:contexts:position"
     name="allow-read-context-containers" description="Allow to read the container structure of the OU"
 
     grant actions="search,read"
@@ -136,10 +135,10 @@ access
     grant properties="*" permission="read"
 
 # Organizational Unit Administrators
-access by role="udm:default-roles:organizational-unit-admin" context="udm:contexts:position"
+access by role="udm:default-roles:organizational-unit-admin"
   description="Organizational Unit Adminstrators can administrate users and groups in their OU"
 
-  to objecttype="mail/domain" position.subtree="cn=domain,cn=mail,{ldap_base}"
+  to objecttype="mail/domain" position.subtree="cn=domain,cn=mail,{ldap/base}"
     name="allow-global-mail-domain-read" description="Allow to read mail/domain in global mail container"
 
     grant actions="search,read"
@@ -151,7 +150,7 @@ access by role="udm:default-roles:organizational-unit-admin" context="udm:contex
     grant actions="report-create"
 
   # user permissions in OU
-  to objecttype="users/user" position.subtree="{context}"
+  to objecttype="users/user" position.subtree="context=udm:contexts:position"
     name="allow-context-ou-users-write" description="Write user objects in own OU"
 
     grant actions="search,read,create,modify,rename,remove,move"
@@ -162,7 +161,7 @@ access by role="udm:default-roles:organizational-unit-admin" context="udm:contex
     grant properties="*" permission="write"
 
   # group permissions in OU
-  to objecttype="groups/group" position.subtree="{context}"
+  to objecttype="groups/group" position.subtree="context=udm:contexts:position"
     name="allow-context-ou-groups-write" description="Write group objects in own OU"
 
     grant actions="search,read,create,modify,rename,remove,move"
@@ -171,18 +170,18 @@ access by role="udm:default-roles:organizational-unit-admin" context="udm:contex
     grant properties="*" permission="write"
 
   # example to allow only write to certain property values (must remove the above rule=none):
-  # to objecttype="groups/group" position.subtree="{context}"
+  # to objecttype="groups/group" position.subtree="context=udm:contexts:position"
   #   grant properties="guardianMemberRoles" permission="write"
-  # to objecttype="groups/group" position.subtree="{context}"
+  # to objecttype="groups/group" position.subtree="context=udm:contexts:position"
   #   grant properties="guardianMemberRoles" values.not-equals=["udm:default-roles:domain-user"] permission="none"
-  # to objecttype="groups/group" position.subtree="{context}"
+  # to objecttype="groups/group" position.subtree="context=udm:contexts:position"
   #   grant properties="guardianMemberRoles" values.equals=["udm:default-roles:domain-administrator"] permission="none"
 
-access by role="udm:default-roles:helpdesk-operator" context="udm:contexts:position"
+access by role="udm:default-roles:helpdesk-operator"
   description="Helpdesk Operators are only allowed to set passwords of users underneath of a certain OU specified in the context udm:contexts:position"
 
   # user permissions in OU
-  to objecttype="users/user" position.subtree="{context}"
+  to objecttype="users/user" position.subtree="context=udm:contexts:position"
     name="allow-user-password-attributes-write" description="Allow to write password related properties"
 
     grant actions="search,read,modify"  # rename,remove,move
@@ -191,31 +190,31 @@ access by role="udm:default-roles:helpdesk-operator" context="udm:contexts:posit
     grant properties="homeSharePath" permission="write"  # UDM in UMC always set a default value from the template
 
   # group permissions in OU
-  to objecttype="groups/group" position.subtree="{context}"
+  to objecttype="groups/group" position.subtree="context=udm:contexts:position"
     name="allow-context-ou-group-read-name" description="Allow to read all group names in own OU"
 
     grant actions="search,read"
     grant properties="name" permission="read"
 
-access by role="udm:default-roles:linux-ou-client-manager" context="udm:contexts:position"
+access by role="udm:default-roles:linux-ou-client-manager"
   description="Join Clients Administrators are allowed to create/join linux computers into the domain, and set their corresponding password."
 
   # linux computer permissions in context OU
-  to objecttype="computers/linux" position.subtree="{context}"
+  to objecttype="computers/linux" position.subtree="context=udm:contexts:position"
     name="allow-context-ou-linux-computer-write" description="Allow management of linux computers in own OU"
 
     grant actions="search,read,create,modify,rename,remove,move"
     grant properties="*" permission="write"  # FIXME: can put the client into Domain Administrators
 
   # group read permissions in OU-specific groups only
-  to objecttype="groups/group" position.subtree="{context}"
+  to objecttype="groups/group" position.subtree="context=udm:contexts:position"
     name="allow-context-ou-group-read" description="Allow to read groups in own OU"
 
     grant actions="search,read,create,modify,rename,remove,move"
     grant properties="*" permission="read"
 
   # group write permissions in OU-specific groups only
-  to objecttype="groups/group" position.subtree="{context}"
+  to objecttype="groups/group" position.subtree="context=udm:contexts:position"
     name="allow-context-ou-group-host-write" description="Allow to write groups in own OU"
 
     grant actions="create,modify,rename,remove,move"
@@ -224,19 +223,19 @@ access by role="udm:default-roles:linux-ou-client-manager" context="udm:contexts
 access by role="udm:default-roles:linux-ou-client-manager"
   description="Join Clients Administrators are allowed to manage networks, DNS records, and DHCP settings for client joining"
 
-  to objecttype="container/cn" position.subtree="cn=networks,{ldap_base}"
+  to objecttype="container/cn" position.subtree="cn=networks,{ldap/base}"
     description="Allow to read networks container"
 
     grant actions="search,read"
     grant properties="*" permission="read"
 
-  to objecttype="container/cn" position.subtree="cn=dns,{ldap_base}"
+  to objecttype="container/cn" position.subtree="cn=dns,{ldap/base}"
     description="Allow to read dns container"
 
     grant actions="search,read"
     grant properties="*" permission="read"
 
-  to objecttype="container/cn" position.subtree="cn=dhcp,{ldap_base}"
+  to objecttype="container/cn" position.subtree="cn=dhcp,{ldap/base}"
     description="Allow to read dhcp container"
 
     grant actions="search,read"

@@ -29,9 +29,9 @@ log = logging.getLogger('ACL').getChild(__name__)
 UDM_DSL_GRAMMAR = r"""
 start: statement+
 
-statement: named_condition | access_block
+statement: condition | access_block
 
-named_condition: "named-condition" QUOTED_STRING condition_line param_line?
+condition: "condition" QUOTED_STRING condition_line param_line?
 
 condition_line: "condition=" QUOTED_STRING
 param_line: "parameters" kvpair+
@@ -124,7 +124,7 @@ class _DSLTransformer(Transformer):
         data = {'conditions': [], 'rules': []}
         for all_items in items:
             for item in all_items:
-                if item['type'] == 'named-condition':
+                if item['type'] == 'condition':
                     data['conditions'].append(item)
                 elif item['type'] == 'access':
                     data['rules'].append(item)
@@ -137,12 +137,12 @@ class _DSLTransformer(Transformer):
     def statement(self, items):
         return items
 
-    def named_condition(self, items):
+    def condition(self, items):
         name = items[0]
         cond = items[1]
         parameters = items[2] if len(items) > 2 else {}
         return {
-            'type': 'named-condition',
+            'type': 'condition',
             'name': name,
             'condition': cond,
             'parameters': parameters,
@@ -176,9 +176,9 @@ class _DSLTransformer(Transformer):
 
     def by_line(self, items):
         meta = dict(items)
-        by = {'role': meta.pop('role'), 'context': meta.pop('context', None)}
+        by = {'role': meta.pop('role')}
         self._assert_names('by', meta, {'description'})
-        self._assert_names('by', by, {'role', 'context'})
+        self._assert_names('by', by, {'role'})
         if by['role'].count(':') != 2:
             raise DSLSyntaxError('role: must contain two ":"', (self.__filename, 0, 0, by['role']))
 
@@ -318,7 +318,7 @@ class _DSLTransformer(Transformer):
 
         for cond in parsed['conditions']:
             params = '  parameters %s' % _kv(cond['parameters']) if cond.get('parameters') else ''
-            print(f'named-condition "{cond["name"]}"\n  condition="{cond["condition"]}"\n{params}\n', file=result)
+            print(f'condition "{cond["name"]}"\n  condition="{cond["condition"]}"\n{params}\n', file=result)
         for rule in parsed['rules']:
             by = rule.pop('by')
             to = rule.pop('to')
@@ -496,19 +496,19 @@ class UDMAuthorizationConfig:
 
                 scope, position = to_clause.get('position', [None, None])
                 scope = _SCOPES.get(scope, 'base')
-                if position and position == '{context}':
-                    context = role['context']
-                    assert context, to_clause
-                    pos_condition = self._unique(conf.conditions, 'position-from-context', scope=scope, context=context)
-                    conditions.append(pos_condition)
-                    conf.conditions[pos_condition] = {
-                        'udm:conditions:target_position_from_context': {
-                            'context': context,
-                            'scope': scope,
-                        },
-                    }
+                if position and position.startswith('context='):
+                    _, _, context = position.partition('context=')
+                    if context == 'udm:contexts:position':
+                        pos_condition = self._unique(conf.conditions, 'position-from-context', scope=scope, context=context)
+                        conditions.append(pos_condition)
+                        conf.conditions[pos_condition] = {
+                            'udm:conditions:target_position_from_context': {
+                                'context': context,
+                                'scope': scope,
+                            },
+                        }
                 elif position:
-                    position = position.format(ldap_base=ucr['ldap/base'])
+                    position = position.format(**ucr)
                     pos_condition = self._unique(conf.conditions, 'position', scope=scope, position=position)
                     conditions.append(pos_condition)
                     conf.conditions[pos_condition] = {
