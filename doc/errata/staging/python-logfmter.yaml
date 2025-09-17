@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [3]
+scope: ucs_5.2-0-errata5.2-3
+src: python-logfmter
+fix: 0.0.10A~5.2.0.202509161545
+desc: |
+ This update addresses the following issue:
+ * Introduce a Python library for structured logging in `logfmt` format using
+   the Python stdandard library logging module.
+bug: [58647]
