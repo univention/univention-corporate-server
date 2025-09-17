@@ -94,7 +94,7 @@ separated by colons, for example ``udm:default-roles:domain-admin``.
 * A name.
 
 Roles may have an optional context, such as the context of position.
-This context is an LDAP distinguished name (DN), without the LDAP base.
+This context is an LDAP distinguished name (DN).
 It specifies the position in the *Directory Service* to which the role applies.
 
 A role context definition has the following elements:
@@ -108,10 +108,12 @@ A role context definition has the following elements:
 ``=``
    is the separator between the context name and the context value.
 
-``ou=bremen``
+``ou=bremen,${ldap_base}``
    is a position in the directory structure in form of an LDAP DN,
-   without the LDAP base to which the role applies.
-   The value ``ou=bremen`` is an example.
+   to which the role applies.
+   The value ``ou=bremen,${ldap_base}`` is an example.
+   When setting a role context you have to replace ``${ldap_base}`` with the
+   actual LDAP base of you domain.
 
 One example is the role ``udm:default-roles:organizational-unit-admin``.
 This role has one definition for what it can do.
@@ -125,8 +127,8 @@ you can assign different contexts of position.
    :caption: Schema for setting a context when assigning the role
    :name: da-concepts-context-listing
 
-   user1 → guardianRoles → udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=bremen
-   user2 → guardianRoles → udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=berlin
+   user1 → guardianRoles → udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=bremen,${ldap_base}
+   user2 → guardianRoles → udm:default-roles:organizational-unit-admin&udm:contexts:position=ou=berlin,${ldap_base}
 
 The ``user1`` and ``user2`` user objects have the same permissions.
 The permissions derive from the role ``udm:default-roles:organizational-unit-admin``.
@@ -158,8 +160,8 @@ shows an example for a generic form of a role definition.
    :caption: Example for role configuration
    :name: da-concepts-role-definition-listing
 
-   access by role="<ROLE>" [context="udm:contexts:position"]
-     to objecttype="<UDM_MODULE>" [position.subtree|base|one="<POSITION>"]
+   access by role="<ROLE>"
+     to objecttype="<UDM_MODULE>" [position.subtree|base|one="<POSITION>|context=udm:contexts:position"]
        grant actions="<ACTIONS>"
        grant properties="<OBJECT_PROPERTY>" permission="<PERMISSION>"
 
@@ -188,17 +190,12 @@ The following list explains the elements from
    The value is any string, but must contain two colons, such as
    ``udm:default-roles:organizational-unit-admin``.
 
-:samp:`context="udm:contexts:position"`
-   Defines a context of a position.
-   You may use it as value for the position condition,
-   see :ref:`da-concepts-context`.
-
 :samp:`to.objecttype={<UDM_MODULE>}`
    Restrict access rules to this type of UDM module.
    Value is the name of a UDM object,
    such as ``users/user`` or the wildcard ``*`` that matches every UDM object.
 
-:samp:`to.position.subtree|base|one={<POSITION>}`
+:samp:`to.position.subtree|base|one={<POSITION>|context=udm:contexts:position}`
    Restrict access rules to this position in the LDAP tree, including the
    scope.
 
@@ -212,13 +209,13 @@ The following list explains the elements from
 
    :``LDAP_DN``: Any position the *Directory Service* in format of a distinguished name (DN).
 
-   :``{ldap_base}``: A placeholder for the actual LDAP base.
+   :``LDAP_DN,{ldap/base}``: ``{ldap/base}`` is placeholder for the actual LDAP base you can use in the distinguished name for the position.
 
-   :``{context}``: A placeholder for the current context.
+   :``context=udm:contexts:position``: Defines a context of a position, see :ref:`da-concepts-context`.
 
-   For example, ``to.position.subtree="cn=users,ou=berlin,{ldap_base}"``.
+   For example, ``to.position.subtree="cn=users,ou=berlin,{ldap/base}"``.
    The example restricts the access rule to objects in and below the position
-   ``cn=users,ou=berlin,{ldap_base}`` in the *Directory Service*.
+   ``cn=users,ou=berlin,{ldap/base}`` in the *Directory Service*.
 
 :samp:`grant.actions={<ACTIONS>}`
    You can grant actions to a role
@@ -308,20 +305,20 @@ This role has permission to:
        grant properties="*" permission="read"
 
      # read container ou/cn in context
-     to objecttype="container/ou" position.subtree="{context}"
+     to objecttype="container/ou" position.subtree="context=udm:contexts:position"
        grant actions="search,read"
        grant properties="*" permission="read"
-     to objecttype="container/cn" position.subtree="{context}"
+     to objecttype="container/cn" position.subtree="context=udm:contexts:position"
        grant actions="search,read"
        grant properties="*" permission="read"
 
      # read groups permissions in context
-     to objecttype="groups/group" position.subtree="{context}"
+     to objecttype="groups/group" position.subtree="context=udm:contexts:position"
        grant actions="search,read"
        grant properties="name" permission="read"
 
      # update passwords of users in context
-     to objecttype="users/user" position.subtree="{context}"
+     to objecttype="users/user" position.subtree="context=udm:contexts:position"
        grant actions="search,read,modify"
        grant properties="overridePWHistory,overridePWLength,unlock,password" permission="write"
        grant properties="password" permission="writeonly"
@@ -331,9 +328,9 @@ The *Helpdesk Operator* role in
 uses the ``context`` feature.
 When you assign the role to a user object,
 you also have to set the role's context, such as
-``udm:default-roles:helpdesk-operator&udm:contexts:position=ou=bremen``.
+``udm:default-roles:helpdesk-operator&udm:contexts:position=ou=bremen,${ldap_base}``.
 A user with this role can modify the password property of users in
-``ou=bremen,ldap_base`` of the *Directory Service*.
+``ou=bremen,${ldap_base}`` of the *Directory Service*.
 
 .. _da-concepts-priorities:
 
