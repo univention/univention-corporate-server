@@ -22,13 +22,13 @@ from univention.management.console.modules.diagnostic import Instance, Warning  
 _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('Check nameserver entries on DNS zones')
-description = ['All nameserver entries are ok.']
+description = [_('All nameserver entries are ok.')]
 links = [{
     'name': 'sdb',
     'href': _('http://sdb.univention.de/1273'),
     'label': _('Univention Support Database - Bind: zone transfer failed'),
 }]
-run_descr = ['Checks nameserver entries on DNS zones']
+run_descr = [_('Checks nameserver entries on DNS zones')]
 
 
 class RecordNotFound(Exception):
@@ -130,7 +130,7 @@ class NameServer:
         return '(|{})'.format(''.join(expressions))
 
 
-class UDM:
+class DNSReferenceChecker:
 
     def __init__(self) -> None:
         univention.admin.modules.update()
@@ -144,14 +144,13 @@ class UDM:
 
     def find(self, nameserver: NameServer) -> simpleLdap:
         filter_expression = nameserver.build_filter()
-        MODULE.process("Trying to find nameserver %s in UDM/LDAP" % (nameserver.fqdn()))
-        MODULE.process("Similar to running: univention-ldapsearch '%s'" % (filter_expression))
+        MODULE.process("Trying to find nameserver %s in UDM/LDAP", nameserver.fqdn())
+        MODULE.process("Similar to running: univention-ldapsearch '%s'", filter_expression)
         for (dn, attr) in self.ldap_connection.search(filter_expression):
-            if dn:
-                for module in udm_modules.identify(dn, attr):
-                    record = udm_objects.get(module, None, self.ldap_connection, self.position, dn, attr=attr, attributes=attr)
-                    record.open()
-                    return record
+            for module in udm_modules.identify(dn, attr):
+                record = udm_objects.get(module, None, self.ldap_connection, self.position, dn, attr=attr, attributes=attr)
+                record.open()
+                return record
         raise RecordNotFound()
 
     def all_zones(self) -> Iterator[Zone]:
@@ -182,10 +181,10 @@ class UDM:
 
 
 def find_all_zone_problems() -> Iterator[ZoneError]:
-    udm = UDM()
-    for zone in udm.all_zones():
-        for error in udm.check_zone(zone):
-            MODULE.process('Found error %s in %s' % (error, udm.check_zone(zone)))
+    ref_checker = DNSReferenceChecker()
+    for zone in ref_checker.all_zones():
+        for error in ref_checker.check_zone(zone):
+            MODULE.process('Found error %s in %s', error, ref_checker.check_zone(zone))
             yield error
 
 
