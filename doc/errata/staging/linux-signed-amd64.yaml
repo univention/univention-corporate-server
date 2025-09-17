@@ -11,10 +11,11 @@ desc: |
    (CVE-2025-37925)
  * CVSS score 3.2 (CVSS:3.1/AV:L/AC:L/PR:H/UI:N/S:C/C:N/I:L/A:N).
    (CVE-2024-36331)
-bug: [58608]
+bug: [58621]
 cve:
 - CVE-2025-38335
 - CVE-2025-38500
 - CVE-2025-37925
 - CVE-2025-38501
 - CVE-2024-36331
+note: This is the 2nd of two parts.
