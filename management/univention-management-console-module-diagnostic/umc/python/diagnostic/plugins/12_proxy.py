@@ -74,7 +74,7 @@ def run(_umc_instance: Instance, url: str = 'http://www.univention.de/', connect
         elif code == 0:
             MODULE.exception("Connection error")
 
-        MODULE.error("%s\n%s", description, msg)
+        MODULE.error("%s%s", description, msg)
         raise Critical(f'{description}\n{msg}')
     else:
         # page = buf.getvalue()

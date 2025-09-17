@@ -40,10 +40,10 @@ def migrate_users(_umc_instance: Instance) -> None:
     stdout_, _stderr = process.communicate()
     stdout = stdout_.decode('UTF-8', 'replace')
     if process.returncode:
-        MODULE.error('Error running univention-migrate-users-to-ucs4.3:\n%s', stdout)
+        MODULE.error('Error running univention-migrate-users-to-ucs4.3: %s', stdout)
         raise Critical(_('The migration failed: %s') % (stdout,))
     else:
-        MODULE.process('Output of univention-migrate-users-to-ucs4.3:\n%s', stdout)
+        MODULE.process('Output of univention-migrate-users-to-ucs4.3: %s', stdout)
     raise ProblemFixed(buttons=[])
 
 
