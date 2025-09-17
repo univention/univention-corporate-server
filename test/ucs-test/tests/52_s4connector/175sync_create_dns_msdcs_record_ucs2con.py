@@ -8,6 +8,7 @@
 ##   - bind9-dnsutils
 
 import subprocess
+import tempfile
 
 import univention.testing.strings as uts
 from univention.testing import utils
@@ -28,13 +29,15 @@ if __name__ == '__main__':
     location = "0 100 389 %s." % fqdn
 
     account = utils.UCSTestDomainAdminCredentials()
-
-    cmd = ['/usr/share/univention-directory-manager-tools/univention-dnsedit', '--binddn=%s' % (account.binddn,), '--bindpwd=%s' % (account.bindpw,), '--ignore-exists', domainname, 'add', 'srv', s4_RR_val, 'msdcs', *location.split(' ')]
-    print(" ".join(cmd))
-    p = subprocess.Popen(cmd)
-    p.wait()
-    if p.returncode:
-        print("WARNING: command exited with non-zero return code:\n%s" % (" ".join(cmd),))
+    with tempfile.NamedTemporaryFile(mode='w+') as bindpwfile:
+        bindpwfile.write(account.bindpw)
+        bindpwfile.flush()
+        cmd = ['/usr/share/univention-directory-manager-tools/univention-dnsedit', '--binddn=%s' % (account.binddn,), '--bindpwdfile=%s' % (bindpwfile.name,), '--ignore-exists', domainname, 'add', 'srv', s4_RR_val, 'msdcs', *location.split(' ')]
+        print(" ".join(cmd))
+        p = subprocess.Popen(cmd)
+        p.wait()
+        if p.returncode:
+            print("WARNING: command exited with non-zero return code:\n%s" % (" ".join(cmd),))
     forward_zone_dn = "zoneName=%s,cn=dns,%s" % (domainname, dnstests.ucr["ldap/base"])
 
     test_relativeDomainName = "_%s._msdcs" % s4_RR_val

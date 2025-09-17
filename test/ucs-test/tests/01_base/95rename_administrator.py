@@ -16,6 +16,7 @@ import glob
 import os
 import re
 import subprocess
+import tempfile
 import time
 
 from ldap.dn import escape_dn_chars
@@ -145,7 +146,10 @@ def test_rename_domain_users():
             print('\n##################################################################')
             print('Cleanup')
             print('##################################################################\n')
-            subprocess.call(['udm-test', 'users/user', 'modify', '--dn=%s' % new_admin_dn, '--set', 'username=%s' % old_admin_name, '--binddn=%s' % new_admin_dn, '--bindpwd=univention', *credentials])
+            with tempfile.NamedTemporaryFile(mode='w+') as pwdfile:
+                pwdfile.write('univention\n')
+                pwdfile.flush()
+                subprocess.call(['udm-test', 'users/user', 'modify', '--dn=%s' % new_admin_dn, '--set', 'username=%s' % old_admin_name, '--binddn=%s' % new_admin_dn, '--bindpwdfile=%s' % (pwdfile.name,), *credentials])
 
             # wait until renaming and UCR Variable is set back again
             utils.wait_for_replication_and_postrun()

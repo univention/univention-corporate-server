@@ -1608,6 +1608,9 @@ change_template_hostname () {
 	hostdn="$(ucr get ldap/hostdn | sed "s/^cn=[^,]*/cn=$hostname/")"
 	admin_user="Administrator"
 	admin_userdn="uid=$admin_user,cn=users,$(ucr get ldap/base)"
+	admin_password_file=$(mktemp)
+	echo "$admin_password" > "$admin_password_file"
+	trap "rm -f '$admin_password_file'" EXIT
 
 	# new name
 	ucr set \
@@ -1620,22 +1623,22 @@ change_template_hostname () {
 	# password, services and ucsschool_roles
 	udm "computers/$server_role" create \
 		--binddn "$admin_userdn" \
-		--bindpwd "$admin_password" \
+		--bindpwdfile "$admin_password_file" \
 		--position="${old_hostdn#*,}" \
 		--set name="$hostname" \
 		--set password="$(cat /etc/machine.secret)" \
 		--set domain="$(ucr get domainname)" || rv=1
 	while read -r service; do
-		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwd "$admin_password" --dn "$hostdn" --append service="$service"
+		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwdfile "$admin_password_file" --dn "$hostdn" --append service="$service"
 	done < <(udm "computers/$server_role" list --filter name="$old_hostname" | sed -n 's/^  service: //p')
 	while read -r school_role; do
-		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwd "$admin_password" --dn "$hostdn" --append ucsschoolRole="$school_role"
+		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwdfile "$admin_password_file" --dn "$hostdn" --append ucsschoolRole="$school_role"
 	done < <(udm "computers/$server_role" list --filter name="$old_hostname" | sed -n 's/^  ucsschoolRole: //p')
 	while read -r os; do
-		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwd "$admin_password" --dn "$hostdn" --set operatingSystem="$os"
+		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwdfile "$admin_password_file" --dn "$hostdn" --set operatingSystem="$os"
 	done < <(udm "computers/$server_role" list --filter name="$old_hostname" | sed -n 's/^  operatingSystem: //p')
 	while read -r osversion; do
-		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwd "$admin_password" --dn "$hostdn" --set operatingSystemVersion="$osversion"
+		udm "computers/$server_role" modify --binddn "$admin_userdn" --bindpwdfile "$admin_password_file" --dn "$hostdn" --set operatingSystemVersion="$osversion"
 	done < <(udm "computers/$server_role" list --filter name="$old_hostname" | sed -n 's/^  operatingSystemVersion: //p')
 
 	# get new cert
@@ -1667,7 +1670,7 @@ change_template_hostname () {
 		univention-run-join-scripts -dcaccount "$admin_user" -dcpwd /tmp/join_pwd --force --run-scripts 92univention-management-console-web-server || rv=1
 		systemctl start nscd.service
 		# Create kerberos principal for ldap/hostname.domainname
-		udm kerberos/kdcentry create --binddn "$admin_userdn" --bindpwd "$admin_password" \
+		udm kerberos/kdcentry create --binddn "$admin_userdn" --bindpwdfile "$admin_password_file" \
 			--ignore_exists --position "cn=kerberos,$(ucr get ldap/base)" \
 			--set name="ldap/${new_fqdn}" --set generateRandomPassword=1 || rv=1
 		kadmin -l ext "ldap/${new_fqdn}@$(ucr get kerberos/realm)"
@@ -1707,6 +1710,9 @@ basic_setup_ucs_joined () {
 	local admin_password="${2:-univention}"
 	local rv=0 server_role ldap_base domain old_ip current_ip
 
+	admin_password_file=$(mktemp)
+	echo "$admin_password" > "$admin_password_file"
+	trap "rm -f '$admin_password_file'" EXIT
 	server_role="$(ucr get server/role)"
 	ldap_base="$(ucr get ldap/base)"
 	domain="$(ucr get domainname)"
@@ -1768,19 +1774,19 @@ basic_setup_ucs_joined () {
 		binddn="uid=Administrator,cn=users,$ldap_base"
 
 		if [ -n "$old_ip" ]; then
-			udm dns/host_record modify --binddn "$binddn" --bindpwd "$admin_password" \
+			udm dns/host_record modify --binddn "$binddn" --bindpwdfile "$admin_password_file" \
 				--dn "relativeDomainName=ForestDnsZones,zoneName=$domain,cn=dns,$ldap_base" \
 				--append a="$ip" --remove a="$old_ip"
-			udm dns/host_record modify --binddn "$binddn" --bindpwd "$admin_password" \
+			udm dns/host_record modify --binddn "$binddn" --bindpwdfile "$admin_password_file" \
 				--dn "relativeDomainName=DomainDnsZones,zoneName=$domain,cn=dns,$ldap_base" \
 				--append a="$ip" --remove a="$old_ip"
-			udm dns/host_record modify --binddn "$binddn" --bindpwd "$admin_password" \
+			udm dns/host_record modify --binddn "$binddn" --bindpwdfile "$admin_password_file" \
 				--dn "relativeDomainName=gc._msdcs,zoneName=$domain,cn=dns,$ldap_base" \
 				--append a="$ip" --remove a="$old_ip"
-			udm dns/host_record modify --binddn "$binddn" --bindpwd "$admin_password" \
+			udm dns/host_record modify --binddn "$binddn" --bindpwdfile "$admin_password_file" \
 				--dn "relativeDomainName=ucs-sso,zoneName=$domain,cn=dns,$ldap_base" \
 				--append a="$ip" --remove a="$old_ip"
-			udm dns/forward_zone modify --binddn "$binddn" --bindpwd "$admin_password" \
+			udm dns/forward_zone modify --binddn "$binddn" --bindpwdfile "$admin_password_file" \
 				--dn "zoneName=$domain,cn=dns,$ldap_base" \
 				--remove a="$old_ip" --append a="$ip"
 		fi

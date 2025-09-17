@@ -70,7 +70,7 @@ echo "## change folder unix directorymode"
 SHARE_DN="$(udm-test shares/share list --filter sambaName="$sharename" | DN1)"
 udm-test shares/share modify \
 	--binddn "$tests_domainadmin_account" \
-	--bindpwd "$tests_domainadmin_pwd" \
+	--bindpwdfile "$tests_domainadmin_pwdfile" \
 	--dn "$SHARE_DN" \
 	--set "directorymode=0777"
 

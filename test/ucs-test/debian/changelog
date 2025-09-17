@@ -1,3 +1,9 @@
+ucs-test (12.3.20) unstable; urgency=medium
+
+  * Bug #20610: Deprecate udm option --bindpwd, use --bindpwdfile
+
+ -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Wed, 08 Oct 2025 08:32:22 +0200
+
 ucs-test (12.3.19) unstable; urgency=medium
 
   * Bug #58627: new logging format
