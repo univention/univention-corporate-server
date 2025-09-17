@@ -4081,6 +4081,7 @@ python3-lldb-14
 python3-lldb-15
 python3-lmdb
 python3-louis
+python3-logfmter
 python3-lxml
 python3-m2crypto
 python3-magic
