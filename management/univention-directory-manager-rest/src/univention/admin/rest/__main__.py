@@ -65,15 +65,15 @@ class Server:
         os.environ['LANG'] = language
 
         # tornado logging
-        channel = logging.StreamHandler()
         import univention.logging
-        univention.logging.extendLogger('tornado.access', univention_debug_category='NETWORK')
-        univention.logging.extendLogger('tornado.application', univention_debug_category='NETWORK')
-        univention.logging.extendLogger('tornado.general', univention_debug_category='NETWORK')
+        for logname in ('tornado', 'tornado.access', 'tornado.application', 'tornado.general', 'tornado.curl_httpclient'):
+            univention.logging.extendLogger(logname, univention_debug_category='NETWORK')
+            logger = logging.getLogger(logname)
+            logger.set_ud_level(ucr.get_int('directory/manager/rest/tornado-debug/level', 3))
+
+        channel = logging.getLogger('ADMIN').univention_debug_handler
         prepare_handler(channel, ucr.is_true('directory/manager/rest/debug/structured-logging'))
-        logger = logging.getLogger()
-        logger.setLevel(logging.INFO)
-        logger.addHandler(channel)
+        prepare_handler(channel, ucr.is_true('directory/manager/rest/debug/structured-logging'))
 
         # start sharing memory (before fork, before first usage, after import)
         shared_memory.start()

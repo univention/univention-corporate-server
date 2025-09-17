@@ -161,7 +161,7 @@ class Gateway(tornado.web.RequestHandler):
 
         os.umask(0o077)  # FIXME: should probably be changed, this is what UMC sets
 
-        for logname in ('tornado.access', 'tornado.application', 'tornado.general'):
+        for logname in ('tornado', 'tornado.access', 'tornado.application', 'tornado.general', 'tornado.curl_httpclient'):
             univention.logging.extendLogger(logname, univention_debug_category='NETWORK')
             logger = logging.getLogger(logname)
             logger.set_ud_level(ucr.get_int('directory/manager/rest/tornado-debug/level', 3))
