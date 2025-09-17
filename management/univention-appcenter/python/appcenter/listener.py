@@ -39,7 +39,11 @@ class AppListener(ListenerModuleHandler):
             os.makedirs(dirname)
 
     def _write_json(self, dn, obj, command, log_as=None):
-        entry_uuid = obj.get('entryUUID', [None])[0]
+        app = Apps().find(self.config.get_name())
+        if app.listener_udm_version >= 3:
+            entry_uuid = obj.get('univentionObjectIdentifier', [None])[0]
+        else:
+            entry_uuid = obj.get('entryUUID', [None])[0]
         object_type = obj.get('univentionObjectType', [None])[0]
         attrs = {
             'entry_uuid': entry_uuid.decode('UTF-8') if entry_uuid is not None else entry_uuid,

@@ -1,8 +1,13 @@
-univention-appcenter (11.3.0) UNRELEASED; urgency=medium
+univention-appcenter (11.3.1) unstable; urgency=medium
 
+  [ Ivan Barbecho Delgado ]
   * Bug #58568: UCS 5.2-3 version bump
 
- -- Ivan Barbecho Delgado <ivan.delgado@univention.de>  Tue, 02 Sep 2025 16:18:18 +0200
+  [ Dirk Wiesenthal ]
+  * Bug #58648: With ListenerUdmVersion=3, use UniventionObjectIdentifier
+    instead of entryUUID
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 17 Sep 2025 16:23:34 +0200
 
 univention-appcenter (11.2.3) unstable; urgency=medium
 
