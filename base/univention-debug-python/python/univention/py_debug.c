@@ -51,13 +51,17 @@ py_univention_debug_init(PyObject *self, PyObject *args)
 {
     char *logfile;
     int flush, function;
+    int structured = -1;
     FILE * fd;
     PyObject * file;
 
-    if (!PyArg_ParseTuple(args, "sii", &logfile, &flush, &function)) {
+    if (!PyArg_ParseTuple(args, "sii|i", &logfile, &flush, &function, &structured)) {
         Py_RETURN_NONE;
     }
 
+    if (structured != -1) {
+        univention_debug_set_structured(structured);
+    }
     fd = univention_debug_init(logfile, (char)flush, (char)function);
 
     if ( fd == NULL ) {
