@@ -59,8 +59,8 @@ enum uv_debug_flag_function {
 };
 
 enum uv_debug_flag_structured {
-    UV_DEBUG_UNSTRUCTURED = 0x00,
-    UV_DEBUG_STRUCTURED = 0x01
+	UV_DEBUG_UNSTRUCTURED = 0x00,
+	UV_DEBUG_STRUCTURED = 0x01
 };
 
 /**

@@ -26,7 +26,7 @@ static enum uv_debug_flag_flush univention_debug_flush;
 static enum uv_debug_flag_function univention_debug_function;
 
 static bool univention_debug_ready = false;
-static bool univention_debug_structured = false;
+static enum uv_debug_flag_structured univention_debug_structured = UV_DEBUG_UNSTRUCTURED;
 
 static const char *const univention_debug_id_text[] = {
 	"MAIN",
@@ -123,7 +123,11 @@ FILE * univention_debug_init(const char *logfile, enum uv_debug_flag_flush flush
 	univention_debug_flush = flush;
 	univention_debug_function = function;
 
-	LOG("DEBUG_INIT\n");
+	if (univention_debug_structured) {
+		LOG("%8s \n", "INIT");
+	} else {
+		LOG("DEBUG_INIT\n");
+	}
 	fflush(univention_debug_file);
 
 	univention_debug_ready = true;
@@ -229,7 +233,11 @@ void univention_debug_exit(void)
 	if (!univention_debug_ready)
 		return;
 
-	LOG("DEBUG_EXIT\n");
+	if (univention_debug_structured) {
+		LOG("%8s \n", "EXIT");
+	} else {
+		LOG("DEBUG_EXIT\n");
+	}
 	if (univention_debug_file) {
 		fflush(univention_debug_file);
 		if (univention_debug_file != stderr && univention_debug_file != stdout)
@@ -253,7 +261,7 @@ void univention_debug_set_level(enum uv_debug_category id, enum uv_debug_level l
 	univention_debug_level[id] = level;
 }
 
-void univention_debug_set_structured(bool use_structured)
+void univention_debug_set_structured(enum uv_debug_flag_structured use_structured)
 {
 	univention_debug_structured = use_structured;
 }
