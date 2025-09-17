@@ -1,10 +1,10 @@
-access by role="udm:default-roles:role" context="udm:contexts:position"
+access by role="udm:default-roles:role"
 
   to objecttype="container/dc" position.base="ldap_base"
     grant actions="search,read"
     grant properties="*" permission="read"
 
-  to objecttype="container/dc" position.base="{context}"
+  to objecttype="container/dc" position.base="context=udm:contexts:position"
     grant actions="search,read,create,modify"
     grant properties="*" permission="write"
 
