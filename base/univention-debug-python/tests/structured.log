@@ -1,4 +1,4 @@
-2025-01-01T00:00:00.000000+00:00 DEBUG_INIT
+2025-01-01T00:00:00.000000+00:00     INIT 
 2025-01-01T00:00:00.000000+00:00    ERROR [         -] logger.error("msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
 2025-01-01T00:00:00.000000+00:00  WARNING [         -] logger.warning("msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
 2025-01-01T00:00:00.000000+00:00  PROCESS [         -] logger.process("msg")	| pid=12345 logname=LDAP func=test_module.test_function:1
@@ -43,4 +43,4 @@
 <STACK>
 2025-01-01T00:00:00.000000+00:00    ERROR [         -] logger.error("msg", extra={"traceback": "<TRACEBACK>"})	| pid=12345 logname=LDAP func=test_module.test_function:1 exc_info=<TRACEBACK>
 <TRACEBACK>
-2025-01-01T00:00:00.000000+00:00 DEBUG_EXIT
+2025-01-01T00:00:00.000000+00:00     EXIT
