@@ -11,3 +11,6 @@ desc: |
    involve communication with external services. It led particularly to
    failures on concurrent OpenID Connect (OIDC) authentication.
 bug: [58269]
+erratum: 215
+announced: 2025-09-17
+support: core
