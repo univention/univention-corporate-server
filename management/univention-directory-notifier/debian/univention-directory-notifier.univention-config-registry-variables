@@ -1,7 +1,14 @@
 [notifier/debug/level]
-Description[de]=Diese Variable konfiguriert den Detailgrad der Logausgaben in /var/log/univention/notifier.log. Mögliche Werte: 0-4 (0: nur Fehlermeldungen bis 4: alle Debugausgaben).
-Description[en]=This variable configures the verbosity of log messages in /var/log/univention/notifier.log. Possible values: 0-4 (0: only error messages to 4: all debug statements).
+Description[de]=Diese Variable konfiguriert den Detailgrad der Logausgaben in /var/log/univention/notifier.log. Mögliche Werte: 0-5 (0: nur Fehlermeldungen bis 5: alle Debugausgaben).
+Description[en]=This variable configures the verbosity of log messages in /var/log/univention/notifier.log. Possible values: 0-5 (0: only error messages to 5: all debug statements).
 Type=int
+Categories=service-ln
+
+[notifier/debug/structured-logging]
+Description[de]=Definiert, ob strukturierte Logmeldungen ausgegeben werden. Dieser Wert ist ab UCS 5.2-4 standardmäßig 'true'.
+Description[en]=Defines whether to output structured log messages. This value will default to 'true' with UCS 5.2-4.
+Type=bool
+Default=false
 Categories=service-ln
 
 [notifier/autostart]

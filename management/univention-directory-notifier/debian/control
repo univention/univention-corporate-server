@@ -7,9 +7,9 @@ Build-Depends:
  debhelper-compat (=13),
  libldap-dev,
  libsasl2-dev,
- libunivention-config-dev,
+ libunivention-config-dev (>= 17.3.0),
  libunivention-debug-dev,
- univention-config-dev (>= 15.0.3),
+ univention-config-dev (>= 17.3.0),
 
 Package: univention-directory-notifier
 Architecture: any
