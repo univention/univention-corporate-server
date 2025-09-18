@@ -10,3 +10,4 @@ Identity and Access Management
 .. toctree::
 
    password-management/index
+   group-management
