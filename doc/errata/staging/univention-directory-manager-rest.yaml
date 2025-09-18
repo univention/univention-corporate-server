@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [3]
+scope: ucs_5.2-0-errata5.2-3
+src: univention-directory-manager-rest
+fix: 12.3.1
+desc: |
+ This update addresses the following issues:
+ * The argument `--bindpwd` has been deprecated in UDM commandline,
+   it should be replaced with `--bindpwdfile`.
+bug: [20610]
