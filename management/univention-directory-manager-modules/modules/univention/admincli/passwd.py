@@ -22,7 +22,11 @@ log = getLogger('ADMIN')
 
 
 def doit(arglist):
-    univention.logging.basicConfig(filename='/var/log/univention/directory-manager-cmd.log', level=DEBUG)
+    configRegistry = univention.config_registry.ConfigRegistry()
+    configRegistry.load()
+
+    structured = configRegistry.is_true('directory/manager/cmd/debug/structured-logging', False)
+    univention.logging.basicConfig(filename='/var/log/univention/directory-manager-cmd.log', level=DEBUG, use_structured_logging=structured)
     out = []
     opts, _args = getopt.getopt(arglist[1:], '', ['binddn=', 'pwdfile=', 'user=', 'pwd='])
 
@@ -40,9 +44,6 @@ def doit(arglist):
             user = val
         elif opt == '--pwd':
             pwd = val
-
-    configRegistry = univention.config_registry.ConfigRegistry()
-    configRegistry.load()
 
     baseDN = configRegistry['ldap/base']
 

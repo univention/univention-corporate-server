@@ -61,10 +61,11 @@ def get_user_object(user, position, lo):  # type: (str, univention.admin.uldap.p
 
 
 def doit(arglist):
-    univention.logging.basicConfig(filename='/var/log/univention/directory-manager-cmd.log', univention_debug_level=1)
-    out = []  # type: List[str]
     configRegistry = univention.config_registry.ConfigRegistry()
     configRegistry.load()
+    structured = configRegistry.is_true('directory/manager/cmd/debug/structured-logging', False)
+    univention.logging.basicConfig(filename='/var/log/univention/directory-manager-cmd.log', univention_debug_level=1, use_structured_logging=structured)
+    out = []  # type: List[str]
     op = 'add'
     scope = 'user'
     cmd = os.path.basename(arglist[0])
