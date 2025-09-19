@@ -86,8 +86,6 @@ def parse_log(log_text):
             if current:
                 log_lines.append(current)
             current = match.groupdict()
-        elif line.startswith('['):
-            continue  # FIXME:
         else:
             current.setdefault('extended', []).append(line)
     if current:
