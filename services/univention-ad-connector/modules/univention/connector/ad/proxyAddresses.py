@@ -6,7 +6,12 @@
 # SPDX-FileCopyrightText: 2016-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-import univention.debug as ud
+from logging import getLogger
+
+from univention.logging import Structured
+
+
+log = Structured(getLogger("LDAP").getChild(__name__))
 
 
 def valid_mailaddress(val):
@@ -33,8 +38,8 @@ def equal(values1, values2):
     1. in sync_from_ucs: values1 are mapped ucs and values2 are        con
     2. in __set_values:  values1 are        ucs and values2 are mapped con
     """
-    ud.debug(ud.LDAP, ud.ALL, "proxyAddesses: values1: %r" % (values1,))
-    ud.debug(ud.LDAP, ud.ALL, "proxyAddesses: values2: %r" % (values2,))
+    log.trace("proxyAddesses: values1: %r", values1)
+    log.trace("proxyAddesses: values2: %r", values2)
     values_normalized = []
     for values in (values1, values2):
         if not isinstance(values, list | tuple):

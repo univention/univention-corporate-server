@@ -98,9 +98,9 @@ def get_ad_binddn_from_name(base, server, username, password):
     creds.guess(lp)
     creds.set_username(username)
     creds.set_password(password)
-    binddn = 'cn=%s,cn=users,%s' % (ldap.dn.escape_dn_chars(username), base)
+    binddn = f'cn={ldap.dn.escape_dn_chars(username)},cn=users,{base}'
     try:
-        samdb = SamDB(url='ldap://%s' % server, session_info=system_session(), credentials=creds, lp=lp)
+        samdb = SamDB(url=f'ldap://{server}', session_info=system_session(), credentials=creds, lp=lp)
         res = samdb.search(
             base,
             scope=ldb.SCOPE_SUBTREE,
@@ -197,7 +197,7 @@ class Instance(Base, ProgressMixin):
                 if isinstance(val, bool):
                     val = 'yes' if val else 'no'
                 MODULE.info('Setting %s=%s', ucrkey, val)
-                univention.config_registry.handler_set(['%s=%s' % (ucrkey, val)])
+                univention.config_registry.handler_set([f'{ucrkey}={val}'])
 
         ucr.load()
         if ucr.get('connector/ad/ldap/ldaps'):
@@ -214,19 +214,19 @@ class Instance(Base, ProgressMixin):
                     fd.write(request.options.get('LDAP_Password'))
                 os.chmod(fn, 0o600)
                 os.chown(fn, 0, 0)
-                univention.config_registry.handler_set(['connector/ad/ldap/bindpw=%s' % fn])
+                univention.config_registry.handler_set([f'connector/ad/ldap/bindpw={fn}'])
             except Exception as e:
                 MODULE.info('Saving bind password failed (filename=%s ; exception=%s)', fn, e.__class__)
                 self.finished(request.id, {'success': False, 'message': _('Saving bind password failed (filename=%(fn)s ; exception=%(exception)s)') % {'fn': fn, 'exception': str(e.__class__)}})
                 return
 
-        ssldir = '/etc/univention/ssl/%s' % request.options.get('LDAP_Host')
+        ssldir = '/etc/univention/ssl/{}'.format(request.options.get('LDAP_Host'))
         if not os.path.exists(ssldir):
             self._create_certificate(request)
             return
 
         # enter a static host entry such that the AD server's FQDN can be resolved
-        univention.config_registry.handler_set(['hosts/static/%(Host_IP)s=%(LDAP_Host)s' % request.options])
+        univention.config_registry.handler_set(['hosts/static/{Host_IP}={LDAP_Host}'.format(**request.options)])
 
         # check for SSL support on AD side
         if admember.server_supports_ssl(server=request.options.get('LDAP_Host')):
@@ -239,12 +239,12 @@ class Instance(Base, ProgressMixin):
         # UCR variables are set, and now we can try to guess the language of
         # the AD domain
         ad_lang = guess_ad_domain_language()
-        univention.config_registry.handler_set(['connector/ad/mapping/group/language=%s' % ad_lang])
+        univention.config_registry.handler_set([f'connector/ad/mapping/group/language={ad_lang}'])
 
         self.finished(request.id, {'success': True, 'message': _('Active Directory connection settings have been saved.')})
 
     def _create_certificate(self, request):
-        ssldir = '/etc/univention/ssl/%s' % request.options.get('LDAP_Host')
+        ssldir = '/etc/univention/ssl/{}'.format(request.options.get('LDAP_Host'))
 
         def _return(request, status):
             if not os.path.exists(ssldir):
@@ -279,7 +279,7 @@ class Instance(Base, ProgressMixin):
 
         upload = request.options[0]['tmpfile']
         now = time.strftime('%Y%m%d_%H%M%S', time.localtime())
-        fn = '/etc/univention/connector/ad/ad_cert_%s.pem' % now
+        fn = f'/etc/univention/connector/ad/ad_cert_{now}.pem'
         cmd = ['/usr/bin/openssl', 'x509', '-inform', 'der', '-outform', 'pem', '-in', upload, '-out', fn]
 
         MODULE.info('Converting certificate into correct format: %s', cmd)
@@ -365,7 +365,7 @@ class Instance(Base, ProgressMixin):
             raise UMC_Error(_('The AD member mode can only be configured on a Primary Directory Node.'))
         except admember.failedADConnect as exc:  # lookup_adds_dc()
             MODULE.warning('Failure: %s', exc)
-            raise UMC_Error(_('Could not connect to AD Server %s. Please verify that the specified address is correct. (%s)') % (ad_server_address, 'check_domain: %s' % (exc,)))
+            raise UMC_Error(_('Could not connect to AD Server %s. Please verify that the specified address is correct. (%s)') % (ad_server_address, f'check_domain: {exc}'))
         except admember.domainnameMismatch as exc:  # check_domain()
             MODULE.warning('Failure: %s', exc)
             raise UMC_Error(_('The domain name of the AD Server (%(ad_domain)s) does not match the local UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % {'ad_domain': ad_domain_info.get("Domain"), 'ucs_domain': ucr['domainname']})
@@ -494,7 +494,7 @@ class Instance(Base, ProgressMixin):
         except admember.invalidUCSServerRole as exc:
             _err(exc, _('The AD member mode can only be configured on a Primary Directory Node.'))
         except admember.failedADConnect as exc:
-            _err(exc, _('Could not connect to AD Server %s. Please verify that the specified address is correct. (%s)') % (ad_domain_info.get('DC DNS Name'), 'admember_join: %s' % (exc,)))
+            _err(exc, _('Could not connect to AD Server %s. Please verify that the specified address is correct. (%s)') % (ad_domain_info.get('DC DNS Name'), f'admember_join: {exc}'))
         except admember.domainnameMismatch as exc:
             _err(exc, _('The domain name of the AD Server (%(ad_domain)s) does not match the local UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % {'ad_domain': ad_domain_info["Domain"], 'ucs_domain': ucr['domainname']})
         except admember.connectionFailed as exc:
@@ -532,7 +532,7 @@ class Instance(Base, ProgressMixin):
     def _enable_ssl_and_test_connection(self, certificate_fname=None):
         with ucr_rollback(ucr, ['connector/ad/ldap/ssl', 'connector/ad/ldap/certificate']):
             if certificate_fname:
-                univention.config_registry.handler_set(['connector/ad/ldap/certificate=%s' % certificate_fname])
+                univention.config_registry.handler_set([f'connector/ad/ldap/certificate={certificate_fname}'])
             server = ucr.get('connector/ad/ldap/host')
             if server:
                 success = False
@@ -557,7 +557,7 @@ class Instance(Base, ProgressMixin):
         # kinit=true  -> do not sync passwords, but use Kerberos authentication
         # kinit=false -> sync passwords
         value = str(not enable).lower()
-        univention.config_registry.handler_set(['connector/ad/mapping/user/password/kinit=%s' % value])
+        univention.config_registry.handler_set([f'connector/ad/mapping/user/password/kinit={value}'])
         return subprocess.call(['service', 'univention-ad-connector', 'restart'])
 
     @simple_response

@@ -57,7 +57,7 @@ def ignore_filter_from_attr(attribute, ucr_key, default=''):
 
 def get_mapping(configbasename='connector'):
     ad_mapping = create_mapping(configbasename)
-    return load_localmapping(ad_mapping, '/etc/univention/%s/ad/localmapping.py' % configbasename)
+    return load_localmapping(ad_mapping, f'/etc/univention/{configbasename}/ad/localmapping.py')
 
 
 def create_mapping(configbasename='connector'):
@@ -75,17 +75,17 @@ def create_mapping(configbasename='connector'):
                 global_allow_subtree_ucs.append(configRegistry[key])
 
     global_ignore_subtree = [
-        'cn=univention,%(ldap/base)s' % configRegistry,
-        'cn=policies,%(ldap/base)s' % configRegistry,
-        'cn=shares,%(ldap/base)s' % configRegistry,
-        'cn=printers,%(ldap/base)s' % configRegistry,
-        'cn=networks,%(ldap/base)s' % configRegistry,
-        'cn=kerberos,%(ldap/base)s' % configRegistry,
-        'cn=dhcp,%(ldap/base)s' % configRegistry,
-        'cn=dns,%(ldap/base)s' % configRegistry,
-        'cn=mail,%(ldap/base)s' % configRegistry,
-        'cn=samba,%(ldap/base)s' % configRegistry,
-        'cn=nagios,%(ldap/base)s' % configRegistry,
+        'cn=univention,{ldap/base}'.format(**configRegistry),
+        'cn=policies,{ldap/base}'.format(**configRegistry),
+        'cn=shares,{ldap/base}'.format(**configRegistry),
+        'cn=printers,{ldap/base}'.format(**configRegistry),
+        'cn=networks,{ldap/base}'.format(**configRegistry),
+        'cn=kerberos,{ldap/base}'.format(**configRegistry),
+        'cn=dhcp,{ldap/base}'.format(**configRegistry),
+        'cn=dns,{ldap/base}'.format(**configRegistry),
+        'cn=mail,{ldap/base}'.format(**configRegistry),
+        'cn=samba,{ldap/base}'.format(**configRegistry),
+        'cn=nagios,{ldap/base}'.format(**configRegistry),
         connector('cn=System,%%(%s/ad/ldap/base)s') % configRegistry,
         connector('ou=Grp Policy Users,%%(%s/ad/ldap/base)s') % configRegistry,
         connector('cn=Builtin,%%(%s/ad/ldap/base)s') % configRegistry,
@@ -93,7 +93,7 @@ def create_mapping(configbasename='connector'):
         connector('ou=Domain Controllers,%%(%s/ad/ldap/base)s') % configRegistry,
         connector('cn=Program Data,%%(%s/ad/ldap/base)s') % configRegistry,
         connector('cn=Configuration,%%(%s/ad/ldap/base)s') % configRegistry,
-        'cn=opsi,%(ldap/base)s' % configRegistry,
+        'cn=opsi,{ldap/base}'.format(**configRegistry),
         connector('cn=Microsoft Exchange System Objects,%%(%s/ad/ldap/base)s') % configRegistry,
     ]
 
@@ -136,7 +136,7 @@ def create_mapping(configbasename='connector'):
 
     ad_mapping = {
         'user': univention.connector.property(
-            ucs_default_dn='cn=users,%(ldap/base)s' % configRegistry,
+            ucs_default_dn='cn=users,{ldap/base}'.format(**configRegistry),
             con_default_dn=connector('cn=users,%%(%s/ad/ldap/base)s') % configRegistry,
             ucs_module='users/user',
             # read, write, sync, none
@@ -308,7 +308,7 @@ def create_mapping(configbasename='connector'):
             },
         ),
         'group': univention.connector.property(
-            ucs_default_dn='cn=groups,%(ldap/base)s' % configRegistry,
+            ucs_default_dn='cn=groups,{ldap/base}'.format(**configRegistry),
             con_default_dn=connector('cn=Users,%%(%s/ad/ldap/base)s') % configRegistry,
             ucs_module='groups/group',
             sync_mode=configRegistry.get(connector('%s/ad/mapping/group/syncmode'), configRegistry.get(connector('%s/ad/mapping/syncmode'))),
@@ -390,7 +390,7 @@ def create_mapping(configbasename='connector'):
             },
         ),
         'windowscomputer': univention.connector.property(
-            ucs_default_dn='cn=computers,%(ldap/base)s' % configRegistry,
+            ucs_default_dn='cn=computers,{ldap/base}'.format(**configRegistry),
             con_default_dn=connector('cn=computers,%%(%s/ad/ldap/base)s') % configRegistry,
             ucs_module='computers/windows',
             ucs_module_others=['computers/memberserver', 'computers/linux', 'computers/ubuntu', 'computers/macos'],

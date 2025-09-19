@@ -13,11 +13,14 @@ import pickle  # noqa: S403
 import shutil
 import subprocess
 import time
+from logging import getLogger
 
-import univention.debug as ud
+from univention.logging import Structured
 
 import listener
 
+
+log = Structured(getLogger("LDAP").getChild(__name__))
 
 description = 'AD Connector replication'
 filter = '(!(objectClass=lock))'
@@ -32,10 +35,10 @@ connector_needs_restart = False
 dirs = [listener.configRegistry['connector/ad/listener/dir']]
 if listener.configRegistry.get('connector/listener/additionalbasenames'):
     for configbasename in listener.configRegistry['connector/listener/additionalbasenames'].split(' '):
-        if '%s/ad/listener/dir' % configbasename in listener.configRegistry and listener.configRegistry['%s/ad/listener/dir' % configbasename]:
-            dirs.append(listener.configRegistry['%s/ad/listener/dir' % configbasename])
+        if listener.configRegistry.get(f'{configbasename}/ad/listener/dir'):
+            dirs.append(listener.configRegistry[f'{configbasename}/ad/listener/dir'])
         else:
-            ud.debug(ud.LISTENER, ud.WARN, "ad-connector: additional config basename %s given, but %s/ad/listener/dir not set; ignore basename." % (configbasename, configbasename))
+            log.warning("ad-connector: additional config basename %s given, but %s/ad/listener/dir not set; ignore basename.", configbasename, configbasename)
 dirs = [dir_ for dir_ in dirs if dir_]
 if not dirs:
     raise ImportError('UCR variable connector/ad/listener/dir needs to be set!')
@@ -63,7 +66,7 @@ def _dump_changes_to_file_and_check_file(directory: str, dn: str, new: dict[str,
     ob = (dn, new, old, old_dn)
 
     tmpdir = os.path.join(directory, 'tmp')
-    filename = '%f' % (time.time(),)
+    filename = f'{time.time():f}'
     filepath = os.path.join(tmpdir, filename)
 
     with open(filepath, 'wb+') as fd:
@@ -81,9 +84,9 @@ def _restart_connector() -> None:
     listener.setuid(0)
     try:
         if not subprocess.call(['pgrep', '-f', 'python3.*connector.ad.main']):
-            ud.debug(ud.LISTENER, ud.PROCESS, "ad-connector: restarting connector ...")
+            log.process("ad-connector: restarting connector ...")
             subprocess.call(('service', 'univention-ad-connector', 'restart'))
-            ud.debug(ud.LISTENER, ud.PROCESS, "ad-connector: ... done")
+            log.process("ad-connector: ... done")
     finally:
         listener.unsetuid()
 
@@ -117,7 +120,7 @@ def handler(dn: str, new: dict[str, list[bytes]] | None, old: dict[str, list[byt
                 # might only see the first step.
                 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=32542
                 if old_dn and new.get('entryUUID') != old_object.get('entryUUID'):
-                    ud.debug(ud.LISTENER, ud.PROCESS, "The entryUUID attribute of the saved object (%s) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario." % (old_dn, dn))
+                    log.process("The entryUUID attribute of the saved object (%s) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario.", old_dn, dn)
                     _dump_changes_to_file_and_check_file(directory, old_dn, {}, old_object, None)
                     old_dn = None
 
@@ -155,7 +158,7 @@ def postrun() -> None:
             init_mode = False
             for ob in group_objects:
                 for directory in dirs:
-                    filename = os.path.join(directory, "%f" % time.time())
+                    filename = os.path.join(directory, f"{time.time():f}")
                     with open(filename, 'wb+') as fd:
                         os.chmod(filename, 0o600)
                         p = pickle.Pickler(fd)

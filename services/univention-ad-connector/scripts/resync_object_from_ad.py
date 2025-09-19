@@ -33,7 +33,7 @@ class DNNotFound(BaseException):
 class ad(univention.connector.ad.ad):
 
     def _remove_cache_entries(self, guid):
-        cache_filename = '/etc/univention/%s/adcache.sqlite' % CONFIGBASENAME
+        cache_filename = f'/etc/univention/{CONFIGBASENAME}/adcache.sqlite'
         if not os.path.exists(cache_filename):
             return
         cache_db = sqlite3.connect(cache_filename)
@@ -49,7 +49,7 @@ class ad(univention.connector.ad.ad):
         os.chmod(cache_filename, 640)
 
     def _add_object_to_rejected(self, ad_dn, usn):
-        state_filename = '/etc/univention/%s/internal.sqlite' % CONFIGBASENAME
+        state_filename = f'/etc/univention/{CONFIGBASENAME}/internal.sqlite'
         db = sqlite3.connect(state_filename)
         c = db.cursor()
         c.execute("INSERT OR REPLACE INTO 'AD rejected' (key, value) VALUES (?, ?);", (usn, ad_dn))
@@ -106,7 +106,7 @@ class ad(univention.connector.ad.ad):
                 ldapfilter = '(objectClass=*)'
 
             if not ldapbase:
-                ldapbase = self.configRegistry['%s/ad/ldap/base' % CONFIGBASENAME]
+                ldapbase = self.configRegistry[f'{CONFIGBASENAME}/ad/ldap/base']
 
             guid = None
             try:
@@ -176,9 +176,9 @@ if __name__ == '__main__':
     options = parser.parse_args()
 
     CONFIGBASENAME = options.configbasename
-    state_directory = '/etc/univention/%s' % CONFIGBASENAME
+    state_directory = f'/etc/univention/{CONFIGBASENAME}'
     if not os.path.exists(state_directory):
-        parser.error("Invalid configbasename, directory %s does not exist" % state_directory)
+        parser.error(f"Invalid configbasename, directory {state_directory} does not exist")
 
     if not options.dn and not options.ldapfilter:
         parser.print_help()
@@ -187,7 +187,7 @@ if __name__ == '__main__':
     configRegistry = ConfigRegistry()
     configRegistry.load()
 
-    poll_sleep = int(configRegistry['%s/ad/poll/sleep' % CONFIGBASENAME])
+    poll_sleep = int(configRegistry[f'{CONFIGBASENAME}/ad/poll/sleep'])
     ad_init = None
 
     ad_dns = list(filter(None, [options.dn]))
@@ -203,27 +203,27 @@ if __name__ == '__main__':
         sys.stdout.flush()
         time.sleep(poll_sleep)
     except DNNotFound as ex:
-        print('ERROR: The AD object was not found: %s' % (ex.args[1],))
+        print(f'ERROR: The AD object was not found: {ex.args[1]}')
         if len(ex.args) == 3:
             treated_dns = ex.args[2]
         sys.exit(1)
     except GUIDNotFound as ex:
-        print('ERROR: The AD search for objectGUID failed: %s' % (ex.args[1],))
+        print(f'ERROR: The AD search for objectGUID failed: {ex.args[1]}')
         if len(ex.args) == 3:
             treated_dns = ex.args[2]
         sys.exit(1)
     finally:
         for dn in treated_dns:
-            print('resync triggered for %s' % dn)
+            print(f'resync triggered for {dn}')
 
     if treated_dns:
         estimated_delay = 60
         try:
-            estimated_delay = int(resync.configRegistry.get('%s/ad/retryrejected' % CONFIGBASENAME, 10)) * int(resync.configRegistry.get('%s/ad/poll/sleep' % CONFIGBASENAME, 5))
+            estimated_delay = int(resync.configRegistry.get(f'{CONFIGBASENAME}/ad/retryrejected', 10)) * int(resync.configRegistry.get(f'{CONFIGBASENAME}/ad/poll/sleep', 5))
         except ValueError:
             pass
 
-        print('Estimated sync in %s seconds.' % (estimated_delay,))
+        print(f'Estimated sync in {estimated_delay} seconds.')
     else:
         print('No matching objects.')
 

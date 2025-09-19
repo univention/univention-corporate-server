@@ -6,11 +6,12 @@
 # SPDX-FileCopyrightText: 2014-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-
+import logging
 import subprocess
 import sys
 import time
 from argparse import ArgumentParser
+from logging import getLogger
 
 import ldap
 from ldap.filter import filter_format
@@ -21,26 +22,30 @@ import univention.admin.modules as udm_modules
 import univention.config_registry
 import univention.connector
 import univention.connector.ad
-import univention.debug as ud
 import univention.lib.s4
 from univention.admin import uexceptions
 
+
+log = getLogger("LDAP").getChild(__name__)
 
 # load UDM modules
 udm_modules.update()
 
 
-def log(level, msg):
-    prefix = {
-        ud.ERROR: "Error",
-        ud.WARN: "Warning",
-        ud.PROCESS: "Process",
-        ud.INFO: "Info",
-        ud.ALL: "Debug",
-    }
-    ud.debug(ud.LDAP, level, msg)
-    if level <= ud.get_level(ud.LDAP):
-        print("%s: %s" % (prefix.get(level), msg))
+prefix = {
+    logging.ERROR: "Error",
+    logging.WARNING: "Warning",
+    logging.INFO + 5: "Process",
+    logging.INFO: "Info",
+    logging.DEBUG: "Debug",
+    5: "Trace",
+}
+
+
+class PrefixFormatter(logging.Formatter):
+    def format(self, record):
+        level_name = prefix.get(record.levelno, record.levelname)
+        return f"{level_name}: {record.getMessage()}"
 
 
 class Well_Known_SID_object_renamer:
@@ -63,10 +68,10 @@ class Well_Known_SID_object_renamer:
         if len(ldap_result) == 1:
             self.old_domainsid = ldap_result[0][1]["sambaSID"][0].decode('ASCII')
         elif len(ldap_result) > 0:
-            log(ud.ERROR, 'Found more than one sambaDomain object with sambaDomainName=%s' % self.ucr["windows/domain"])
+            log.error('Found more than one sambaDomain object with sambaDomainName=%s', self.ucr["windows/domain"])
             # FIXME: probably sys.exit()?
         else:
-            log(ud.ERROR, 'Did not find a sambaDomain object with sambaDomainName=%s' % self.ucr["windows/domain"])
+            log.error('Did not find a sambaDomain object with sambaDomainName=%s', self.ucr["windows/domain"])
             # FIXME: probably sys.exit()?
 
     def ad_connect(self):
@@ -100,7 +105,7 @@ class Well_Known_SID_object_renamer:
             if result and len(result) > 0 and result[0] and len(result[0]) > 0 and result[0][0]:  # no referral, so we've got a valid result
                 obj = result[0][1]
             else:
-                log(ud.INFO, "Well known SID %s not found in Samba" % (sid,))
+                log.info("Well known SID %s not found in Samba", sid)
                 continue
 
             ad_object_name = obj.get("sAMAccountName", [b''])[0].decode('UTF-8')
@@ -124,9 +129,9 @@ class Well_Known_SID_object_renamer:
                 elif b"user" in oc:
                     ucsldap_object_name = ldap_result[0][1].get("uid", [b''])[0].decode('UTF-8')
             elif len(ldap_result) > 0:
-                log(ud.ERROR, 'Found more than one object with sambaSID=%s' % (sid,))
+                log.error('Found more than one object with sambaSID=%s', sid)
             else:
-                log(ud.INFO, 'Did not find an object with sambaSID=%s' % (sid,))
+                log.info('Did not find an object with sambaSID=%s', sid)
 
             if not ucsldap_object_name:
                 continue
@@ -156,14 +161,14 @@ class UserRenameHandler:
             user = self.module_users_user.object(None, self.lo, self.position, userdn)
             user.open()
         except uexceptions.ldapError as exc:
-            log(ud.WARN, "Opening user '%s' failed: %s." % (userdn, exc))
+            log.warning("Opening user '%s' failed: %s.", userdn, exc)
 
         try:
-            log(ud.PROCESS, "Renaming '%s' to '%s' in UCS LDAP." % (user.dn, new_name))
+            log.process("Renaming '%s' to '%s' in UCS LDAP.", user.dn, new_name)
             user['username'] = new_name
             return user.modify()
         except uexceptions.ldapError as exc:
-            log(ud.WARN, "Renaming of user '%s' failed: %s." % (userdn, exc))
+            log.warning("Renaming of user '%s' failed: %s.", userdn, exc)
             return
 
     def rename_ucs_user(self, ucsldap_object_name, ad_object_name):
@@ -172,7 +177,7 @@ class UserRenameHandler:
             base=self.lo.base)
 
         if len(userdns) > 1:
-            log(ud.WARN, "Found more than one Samba user with name '%s' in UCS LDAP." % (ucsldap_object_name,))
+            log.warning("Found more than one Samba user with name '%s' in UCS LDAP.", ucsldap_object_name)
 
         for userdn in userdns:
             self.udm_rename_ucs_user(userdn, ad_object_name)
@@ -208,14 +213,14 @@ class GroupRenameHandler:
             group = self.module_groups_group.object(None, self.lo, self.position, groupdn)
             group.open()
         except uexceptions.ldapError as exc:
-            log(ud.WARN, "Opening group '%s' failed: %s." % (groupdn, exc))
+            log.warning("Opening group '%s' failed: %s.", groupdn, exc)
 
         try:
-            log(ud.PROCESS, "Renaming '%s' to '%s' in UCS LDAP." % (group.dn, new_name))
+            log.process("Renaming '%s' to '%s' in UCS LDAP.", group.dn, new_name)
             group['name'] = new_name
             return group.modify()
         except uexceptions.ldapError as exc:
-            log(ud.WARN, "Renaming of group '%s' failed: %s." % (groupdn, exc))
+            log.warning("Renaming of group '%s' failed: %s.", groupdn, exc)
             return
 
     def udm_rename_ucs_defaultGroup(self, groupdn, new_groupdn):
@@ -238,7 +243,7 @@ class GroupRenameHandler:
                     referring_object[propertyname] = new_groupdn
                     changed = True
             if changed:
-                log(ud.PROCESS, "Modifying '%s' in UCS LDAP." % (referring_object.dn,))
+                log.process("Modifying '%s' in UCS LDAP.", referring_object.dn)
                 referring_object.modify()
 
     def rename_ucs_group(self, ucsldap_object_name, ad_object_name):
@@ -247,7 +252,7 @@ class GroupRenameHandler:
             base=self.lo.base)
 
         if len(groupdns) > 1:
-            log(ud.WARN, "Found more than one Samba group with name '%s' in UCS LDAP." % (ucsldap_object_name,))
+            log.warning("Found more than one Samba group with name '%s' in UCS LDAP.", ucsldap_object_name)
 
         for groupdn in groupdns:
             new_groupdn = self.udm_rename_ucs_group(groupdn, ad_object_name)
@@ -269,6 +274,11 @@ if __name__ == "__main__":
 
     ucr = univention.config_registry.ConfigRegistry()
     ucr.load()
+
+    logger = getLogger("LDAP")
+    stdout_handler = logging.StreamHandler(sys.stdout)
+    stdout_handler.setFormatter(PrefixFormatter())
+    logger.addHandler(stdout_handler)
 
     ad = Well_Known_SID_object_renamer(ucr, options.binddn, options.bindpwd)
     ad.rewrite_sambaSIDs_in_OpenLDAP()
