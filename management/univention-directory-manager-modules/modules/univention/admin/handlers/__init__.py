@@ -1522,7 +1522,7 @@ class simpleLdap:
 
         # evaluate extended attributes
         for prop in getattr(m, 'extended_udm_attributes', []):
-            self.log.debug('Modify objec classes for extended attribute', property=prop.name, objectclass=prop.objClass)
+            self.log.debug('Modify object classes for extended attribute', property=prop.name, objectclass=prop.objClass)
 
             if self.has_property(prop.name) and self.info.get(prop.name) and (True if prop.syntax != 'boolean' else self.info.get(prop.name) != '0'):
                 required_ocs |= {prop.objClass}
@@ -1899,8 +1899,7 @@ class simpleLdap:
 
         containers.extend(default_containers.info.get(base, []))
 
-        # FIXME: filter default containers for containers allowed to see
-        containers = lo._filter_ldap_search_dns(containers, {'modules': ['container/ou', 'container/cn']})
+        containers = lo._filter_ldap_search_dns(containers)
 
         return containers
 

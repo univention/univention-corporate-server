@@ -1,3 +1,10 @@
+univention-directory-manager-modules (17.3.6) unstable; urgency=medium
+
+  * Bug #58789: improve performance of searches when searching for only
+    DNs
+
+ -- Florian Best <best@univention.de>  Mon, 10 Nov 2025 12:07:35 +0100
+
 univention-directory-manager-modules (17.3.5) unstable; urgency=medium
 
   * Bug #58756: add logging of authorization operation durations
