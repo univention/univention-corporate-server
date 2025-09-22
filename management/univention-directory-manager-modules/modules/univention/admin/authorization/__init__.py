@@ -10,6 +10,7 @@ import univention.admin.modules
 import univention.admin.types
 from univention.admin import configRegistry
 from univention.admin.log import log
+from univention.admin.guardian_roles import get_roles_from_ldap
 from univention.admin.uexceptions import permissionDenied
 from univention.authorization.authorization import LocalGuardianAuthorizationClient
 
@@ -27,15 +28,22 @@ def auth_log(action, actor, target, **kwargs):
 
 
 def get_user(lo, user_dn: str):
-    data = lo.authz_connection.get(user_dn, attr=['univentionObjectType'])
+    data = lo.authz_connection.get(user_dn, attr=['*', '+'])
     modname = data.get('univentionObjectType')
     if not modname:
         return
 
     mod = univention.admin.modules.get(modname[0].decode('UTF-8'))
-    obj = mod.object(None, lo, None, user_dn)
+    obj = mod.object(None, lo, None, user_dn, None, data)
     obj.open()
     return obj
+
+
+@univention.admin._ldap_cache(ttl=3600)
+def get_object_type(lo, dn: str) -> str:
+    object_type = (lo.authz_connection.getAttr(dn, 'univentionObjectType') or [b''])[0].decode('UTF-8')
+    # TODO: what to do if object_type is empty?
+    return object_type
 
 
 def get_user_roles(obj) -> list[str]:
@@ -111,10 +119,7 @@ class Authorization:
 
     # @functools.lru_cache(maxsize=ROLE_CACHE_SIZE)
     def _get_cached_roles(self, lo, dn):
-        user = get_user(lo, dn)
-        if not user:
-            return []
-        return get_user_roles(user)
+        return get_roles_from_ldap(self.lo, dn)
 
     def is_receive_allowed(self, obj, raise_exception=True):
         if not self.enabled:
@@ -138,18 +143,14 @@ class Authorization:
     def filter_object_properties(self, obj):
         return self.filter_search_results(obj.lo, [obj])[0]
 
-    def filter_search_results_dn(self, lo, results):
+    def filter_search_results_dn(self, lo, results, context=None):
+        # TODO: This breaks ABAC, we just have a DN and create a dummy
+        #       target without properties
         if not self.enabled:
             return results
-
-        # TODO: how could we realize filterting without receiving the object
-        # TODO: skip authorization in get_object() ?
-        # FIXME: remove this performance intensive search!!!
-        results = [univention.admin.objects.get_object(lo, dn) for dn in results]
-        results = [x for x in results if x is not None]  # cn=admin and others is not a UDM object
-
-        filtered = self.filter_search_results(lo, results)
-        return [obj.dn for obj in filtered]
+        context = context or {}
+        context['result_is_ldap_dn'] = True
+        return self.filter_search_results(lo, results, context)
 
     def filter_search_results_attrs(self, lo, results):
         if not self.enabled:
@@ -198,27 +199,41 @@ class Authorization:
 
         return response
 
-    def filter_search_results(self, lo, results):
+    def filter_search_results(self, lo, results, context=None):
         if not self.enabled:
             return results
-        targets = [
-            self._get_targets(lo, None, target_obj)
-            for target_obj in results
-        ]
-        results_ext = [
-            (result.module, result.dn, result, set(result.descriptions))
-            for result in results
-        ]
+        if context and context.get('result_is_ldap_dn'):
+            results = [
+                (dn, context.get('module') or get_object_type(lo, dn)) for dn in results
+            ]
+            targets = [
+                self._get_dn_targets(dn, module, lo)
+                for dn, module in results
+            ]
+            results_ext = [
+                (module, dn, dn, set())
+                for dn, module in results
+            ]
+        else:
+            targets = [
+                self._get_targets(lo, None, target_obj)
+                for target_obj in results
+            ]
+            results_ext = [
+                (result.module, result.dn, result, set(result.descriptions))
+                for result in results
+            ]
         filtered = self._filter_search_results(lo, results_ext, targets)
 
         response = []
         for result, module, readable_attributes in filtered:
-            for prop in list(result.info):
-                if not self._is_readable(readable_attributes, module, prop):
-                    # TODO: remove from oldattr
-                    # FIXME: what if the object is open()ed afterwards?
-                    result.info.pop(prop)
-                    result.oldinfo.pop(prop, None)
+            if not context or not context.get('result_is_ldap_dn'):
+                for prop in list(result.info):
+                    if not self._is_readable(readable_attributes, module, prop):
+                        # TODO: remove from oldattr
+                        # FIXME: what if the object is open()ed afterwards?
+                        result.info.pop(prop)
+                        result.oldinfo.pop(prop, None)
             response.append(result)
 
         return response
@@ -238,7 +253,6 @@ class Authorization:
             auth_log('search', actor, {'id': 'multiple targets'}, general=allowed)
             return []
             # raise permissionDenied()
-
         filtered = []
         for i, (module, dn, result, all_properties) in enumerate(results):
             target_permissions = permissions_result['target_permissions'][i]
@@ -446,6 +460,12 @@ class Authorization:
             'new_target': self._get_target(new_target) if new_target is not None else self._empty_target(),
         }
 
+    def _get_dn_targets(self, dn, module, lo):
+        return {
+            'old_target': self._empty_target(),
+            'new_target': self._get_dn_target(dn, module, lo),
+        }
+
     def _get_actor_and_targets(self, lo, old_target, new_target=None):
         return self._get_actor(lo), [self._get_targets(lo, old_target, new_target)]
 
@@ -470,6 +490,22 @@ class Authorization:
             'id': obj.old_dn if old else obj.dn,
             'roles': self._get_target_roles(obj.module, obj.old_dn),
             'attributes': self._get_representation(obj, old),
+        }
+
+    def _get_dn_target(self, dn, module, lo):
+        return {
+            'id': dn,
+            'roles': self._get_target_roles(module, dn),
+            'attributes': {
+                'dn': dn,
+                'id': None,
+                'objectType': module,
+                'position': lo.parentDn(dn) or LDAP_BASE,
+                'properties': {},
+                'options': {},
+                'policies': None,
+                'uuid': None,
+            },
         }
 
     def _get_target_roles(self, module, dn):
