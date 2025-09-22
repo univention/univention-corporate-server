@@ -102,6 +102,14 @@ def load_roles(lo: univention.admin.uldap.access, groups: list[str]) -> list[str
     return list(set(itertools.chain.from_iterable(get_group_role(lo, group) for group in groups)))
 
 
+def get_roles_from_ldap(lo: univention.admin.uldap.access, dn: str) -> list[str]:
+    res = lo.authz_connection.get(dn, attr=['univentionGuardianRoles', 'memberOf'])
+    roles = {x.decode('UTF-8') for x in res.get('univentionGuardianRoles', [])}
+    if 'memberOf' in res:
+        roles.update(load_roles(lo, [x.decode('UTF-8') for x in res['memberOf']]))
+    return list(roles)
+
+
 class GuardianBase:
     def open_guardian(self) -> None:
         if self.exists() and self.has_property('guardianInheritedRoles'):
