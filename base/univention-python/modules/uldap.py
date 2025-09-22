@@ -1,4 +1,3 @@
-#
 # Univention Python
 #  LDAP access
 #
@@ -8,7 +7,6 @@
 import logging
 import random
 import re
-import traceback
 import warnings
 from collections.abc import Callable
 from functools import wraps
@@ -24,7 +22,7 @@ import univention.logging
 from univention.config_registry import ucr_live as ucr
 
 
-log = logging.getLogger('LDAP')
+log = univention.logging.Structured(logging.getLogger('LDAP'))
 
 
 def parentDn(dn: str, base: str = '') -> str | None:
@@ -240,7 +238,7 @@ class access:
 
         self.__open(ca_certfile)
         if not self.base:
-            log.error('No LDAP base given to uldap.access()! Can lead to mysterious errors! %s', ''.join(traceback.format_stack()))
+            log.error('No LDAP base given to uldap.access()! Can lead to mysterious errors!', stack_info=True)
             warnings.warn('No LDAP base given to uldap.access()! Can lead to mysterious errors!', DeprecationWarning, stacklevel=3)
 
             # a empty base is valid in one scenario: when wanting to detect the base via a certain search.
@@ -251,7 +249,7 @@ class access:
 
     @property
     def authz_connection(self):
-        log.error('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap! %s', ''.join(traceback.format_stack()))
+        log.error('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap!', stack_info=True)
         warnings.warn('Wrong access class in use! Use univention.admin.uldap instead of univention.uldap!', DeprecationWarning, stacklevel=3)
         if ucr.is_true('directory/manager/type-checking/strict'):
             raise TypeError('univention.admin.uldap required!')
@@ -267,7 +265,7 @@ class access:
         """
         self.binddn = binddn
         self.bindpw = bindpw
-        log.debug('bind binddn=%s', self.binddn)
+        log.debug('bind', binddn=self.binddn)
         self.lo.simple_bind_s(self.binddn, self.bindpw)
 
     @_fix_reconnect_handling
@@ -285,7 +283,7 @@ class access:
         }, 'SAML')
         self.lo.sasl_interactive_bind_s('', saml)
         self.binddn = self.whoami()
-        log.debug('SAML bind binddn=%s', self.binddn)
+        log.debug('SAML bind', binddn=self.binddn)
 
     @_fix_reconnect_handling
     def bind_oauthbearer(self, authzid: str | None, bindpw: str) -> None:
@@ -307,7 +305,7 @@ class access:
         }, 'OAUTHBEARER')
         self.lo.sasl_interactive_bind_s('', oauth)
         self.binddn = self.whoami()
-        log.debug('OAUTHBEARER bind binddn=%r', self.binddn)
+        log.debug('OAUTHBEARER bind', binddn=self.binddn)
 
     def unbind(self) -> None:
         """Unauthenticate."""
@@ -330,7 +328,7 @@ class access:
     def __open(self, ca_certfile: str | None) -> None:
 
         if self.reconnect:
-            log.debug('establishing new connection with retry_max=%d', self.client_connection_attempt)
+            log.debug('establishing new connection', retry_max=self.client_connection_attempt)
             self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None, retry_max=self.client_connection_attempt, retry_delay=1)
         else:
             log.debug('establishing new connection')
@@ -434,7 +432,7 @@ class access:
         :raises ldap.NO_SUCH_OBJECT: Indicates the target object cannot be found.
         :raises ldap.INAPPROPRIATE_MATCHING: Indicates that the matching rule specified in the search filter does not match a rule defined for the attribute's syntax.
         """
-        log.debug('uldap.search filter=%s base=%s scope=%s attr=%s unique=%d required=%d timeout=%d sizelimit=%d', filter, base, scope, attr, unique, required, timeout, sizelimit)
+        log.debug('search', filter=filter, base=base, scope=scope, attributes=attr, unique=unique, required=required, timeout=timeout, sizelimit=sizelimit)
 
         if not base:
             base = self.base
@@ -534,9 +532,7 @@ class access:
                     break
                 policies = [x.decode('utf-8') for x in parent.get('univentionPolicyReference', [])]
 
-        univention.debug.debug(
-            univention.debug.LDAP, univention.debug.ALL,
-            "getPolicies: result: %s" % merged)
+        log.trace('getPolicies', result=merged)
         return merged
 
     def _merge_policy(self, policy_dn: str, obj_dn: str, object_classes: set[bytes], result: dict[str, dict[str, Any]]) -> None:
@@ -576,9 +572,7 @@ class access:
         for key in (empty | set(pattrs) | fixed) - SKIP:
             if key not in values or key in fixed:
                 value = [] if key in empty else pattrs.get(key, [])
-                univention.debug.debug(
-                    univention.debug.LDAP, univention.debug.ALL,
-                    "getPolicies: %s sets: %s=%r" % (policy_dn, key, value))
+                log.trace('getPolicies: result', dn=policy_dn, key=key, value=value)
                 values[key] = {
                     'policy': policy_dn,
                     'value': value,
@@ -612,13 +606,13 @@ class access:
         :type serverctrls: list[ldap.controls.LDAPControl]
         :param dict response: An optional dictionary to receive the server controls of the result.
         """
-        log.debug('uldap.add dn=%s', dn)
+        log.debug('add', dn=dn)
 
         if ucr.is_true('directory/manager/feature/prepostread', False):
             if serverctrls:
                 for ctrl in serverctrls:
                     if isinstance(ctrl, PostReadControl):
-                        log.info('uldap.add: overriding PostReadControl (%s)', ctrl.attrList)
+                        log.info('overriding PostReadControl', attributes=ctrl.attrList)
                         ctrl.attrList = ['*', '+']
             else:
                 serverctrls = [PostReadControl(True, ['*', '+'])]
@@ -661,14 +655,14 @@ class access:
         :returns: The distinguished name.
         :rtype: str
         """
-        log.debug('uldap.modify %s', dn)
+        log.debug('modify', dn=dn)
 
         if ucr.is_true('directory/manager/feature/prepostread', False):
             if serverctrls:
                 for ctrl in serverctrls:
                     for ctrl_type in (PreReadControl, PostReadControl):
                         if isinstance(ctrl, ctrl_type):
-                            log.info('uldap.modify: overriding %s (%s)', type(ctrl_type).__name__, ctrl.attrList)
+                            log.info('modify: overriding %s', type(ctrl_type).__name__, attributes=ctrl.attrList)
                             ctrl.attrList = ['*', '+']
             else:
                 serverctrls = [PreReadControl(True, ['*', '+']), PostReadControl(True, ['*', '+'])]
@@ -702,7 +696,7 @@ class access:
         if not self.compare_dn(dn, new_dn):
             if rename_callback:
                 rename_callback(dn, new_dn, ml)
-            log.warning('rename %s', new_rdn)
+            log.warning('rename', dn=new_rdn)
             self.rename_ext_s(dn, new_rdn, serverctrls=serverctrls, response=response)
             dn = new_dn
         if ml:
@@ -783,7 +777,7 @@ class access:
         :type serverctrls: list[ldap.controls.LDAPControl]
         :param dict response: An optional dictionary to receive the server controls of the result.
         """
-        log.debug('uldap.rename %s -> %s', dn, newdn)
+        log.debug('rename', dn=dn, newdn=newdn)
         oldsdn = self.parentDn(dn)
         newrdn = ldap.dn.dn2str([ldap.dn.str2dn(newdn)[0]])
         newsdn = ldap.dn.dn2str(ldap.dn.str2dn(newdn)[1:])
@@ -793,7 +787,7 @@ class access:
                 for ctrl in serverctrls:
                     for ctrl_type in (PreReadControl, PostReadControl):
                         if isinstance(ctrl, ctrl_type):
-                            log.info('uldap.rename: overriding %s (%s)', type(ctrl_type).__name__, ctrl.attrList)
+                            log.info('rename: overriding %s', type(ctrl_type).__name__, attributes=ctrl.attrList)
                             ctrl.attrList = ['*', '+']
             else:
                 serverctrls = [PreReadControl(True, ['*', '+']), PostReadControl(True, ['*', '+'])]
@@ -801,10 +795,10 @@ class access:
             serverctrls = []
 
         if oldsdn and newsdn.lower() == oldsdn.lower():
-            log.debug('uldap.rename: modrdn %s to %s', dn, newrdn)
+            log.debug('rename: modrdn', dn=dn, newrdn=newrdn)
             self.rename_ext_s(dn, newrdn, serverctrls=serverctrls, response=response)
         else:
-            log.debug('uldap.rename: move %s to %s in %s', dn, newrdn, newsdn)
+            log.debug('rename: move', dn=dn, newrdn=newrdn, newsdn=newsdn)
             self.rename_ext_s(dn, newrdn, newsdn, serverctrls=serverctrls, response=response)
 
     @_fix_reconnect_handling
@@ -843,13 +837,13 @@ class access:
         :type serverctrls: list[ldap.controls.LDAPControl]
         :param dict response: An optional dictionary to receive the server controls of the result.
         """
-        log.debug('uldap.delete %s', dn)
+        log.debug('delete', dn=dn)
 
         if ucr.is_true('directory/manager/feature/prepostread', False):
             if serverctrls:
                 for ctrl in serverctrls:
                     if isinstance(ctrl, PreReadControl):
-                        log.info('uldap.delete: overriding PreReadControl (%s)', ctrl.attrList)
+                        log.info('delete: overriding PreReadControl', attributes=ctrl.attrList)
                         ctrl.attrList = ['*', '+']
             else:
                 serverctrls = [PreReadControl(True, ['*', '+'])]
@@ -857,7 +851,6 @@ class access:
             serverctrls = []
 
         if dn:
-            log.debug('delete')
             try:
                 _rtype, _rdata, _rmsgid, resp_ctrls = self.lo.delete_ext_s(dn, serverctrls=serverctrls)
             except ldap.REFERRAL as exc:
