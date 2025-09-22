@@ -831,8 +831,17 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
                     continue
                 filter_s = cls._create_ldap_filter(options, module)
                 if filter_s is not None:
-                    objs = module.lookup(None, lo, filter_s, **module_search_options)
-                    choices.extend(map_choices(objs))
+                    if cls.key == 'dn' and cls.label is None and hasattr(module, 'lookup_filter'):
+                        # simple dn search
+                        lookup_filter = module.lookup_filter(filter_s, lo)
+                        keys = lo.search_dn_filtered({'module': module.module}, filter=str(lookup_filter), **module_search_options)
+                        labels = keys
+                        labels = [ldap.dn.explode_rdn(dn, True)[0] for dn in keys]
+                        choices.extend(zip(keys, labels))
+                    else:
+                        # expensive lookup
+                        objs = module.lookup(None, lo, filter_s, **module_search_options)
+                        choices.extend(map_choices(objs))
         else:
             for udm_module in cls.udm_modules:
                 try:
@@ -856,6 +865,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
                                 return lo.search_filtered({'module': module.module}, filter=str(lookup_filter), attr=ldap_attr, **module_search_options)
                             else:
                                 return lo.search_dn_filtered({'module': module.module}, filter=str(lookup_filter), **module_search_options)
+
                         return module.lookup(None, lo, filter_s, **module_search_options)
 
                     if ldap_attr:

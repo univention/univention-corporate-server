@@ -1899,8 +1899,7 @@ class simpleLdap:
 
         containers.extend(default_containers.info.get(base, []))
 
-        # FIXME: filter default containers for containers allowed to see
-        containers = lo._filter_ldap_search_dns(containers, {'modules': ['container/ou', 'container/cn']})
+        containers = lo._filter_ldap_search_dns(containers)
 
         return containers
 
