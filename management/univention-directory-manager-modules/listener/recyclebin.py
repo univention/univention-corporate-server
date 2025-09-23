@@ -7,6 +7,7 @@
 import datetime
 
 import ldap.dn
+from ldap.extop.dds import RefreshRequest, RefreshResponse
 from ldap.filter import filter_format
 
 import univention.admin.modules
@@ -130,6 +131,11 @@ class RecycleBinListener(ListenerModuleHandler):
         dn = obj.create(ignore_license=True)
 
         self.logger.info('Created deleted object: %s (retention: %d days)', dn, retention_days)
+
+        # Set TTL for DDS automatic purging based on retention policy
+        ttl_seconds = retention_days * 60 * 60 * 24
+        refresh_req = RefreshRequest(entryName=dn, requestTtl=ttl_seconds)
+        self.admin_lo.lo.lo.extop_s(refresh_req, extop_resp_class=RefreshResponse)
 
         return dn
 
