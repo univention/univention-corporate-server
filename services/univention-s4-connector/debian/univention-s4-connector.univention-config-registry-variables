@@ -51,11 +51,11 @@ Default=2
 Categories=service-s4con
 
 [connector/debug/structured-logging]
-Description[de]=Aktiviert die strukturierte Protokollierung von Lognachrichten. Diese Option ist standardmäßig deaktiviert und wird ab UCS 5.2-4 standardmäßig aktiviert.
-Description[en]=Enables structured logging of log messages. This option is disabled by default and will be enabled by default with UCS 5.2-4.
+Description[de]=Aktiviert die strukturierte Protokollierung von Lognachrichten.
+Description[en]=Enables structured logging of log messages.
 Type=bool
 Categories=service-s4con
-Default=false
+Default=true
 
 [connector/debug/udm/function]
 Description[de]=Ist diese Variable auf '1' gesetzt, werden UDM-interne Funktionsaufrufe als zusätzliche Debug-Information protokolliert. Ist die Variable auf '0' gesetzt oder nicht gesetzt, werden die Aufrufe nicht protokolliert. Deprecated.

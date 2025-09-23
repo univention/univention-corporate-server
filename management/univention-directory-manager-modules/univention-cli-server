@@ -80,7 +80,7 @@ def server_main(args: Namespace) -> None:
     global logfile, loglevel
     logfile = args.logfile
     loglevel = args.debug_level
-    univention.logging.basicConfig(filename=logfile, univention_debug_level=args.debug_level, use_structured_logging=ucr.is_true('directory/manager/cmd/debug/structured-logging', False))
+    univention.logging.basicConfig(filename=logfile, univention_debug_level=args.debug_level, use_structured_logging=ucr.is_true('directory/manager/cmd/debug/structured-logging', True))
 
     runfilename = '%s.run' % socket_path
     if os.path.isfile(runfilename):

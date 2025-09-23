@@ -24,7 +24,7 @@ def doit(arglist):
     configRegistry = univention.config_registry.ConfigRegistry()
     configRegistry.load()
 
-    structured = configRegistry.is_true('directory/manager/cmd/debug/structured-logging', False)
+    structured = configRegistry.is_true('directory/manager/cmd/debug/structured-logging', True)
     univention.logging.basicConfig(filename='/var/log/univention/directory-manager-cmd.log', level=DEBUG, use_structured_logging=structured)
     out = []
     opts, _args = getopt.getopt(arglist[1:], '', ['binddn=', 'pwdfile=', 'user=', 'pwd='])

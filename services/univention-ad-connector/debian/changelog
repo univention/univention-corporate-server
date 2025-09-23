@@ -1,3 +1,9 @@
+univention-ad-connector (16.5.1) unstable; urgency=medium
+
+  * Bug #58653: set .*/debug/structured-logging=true by default
+
+ -- Florian Best <best@univention.de>  Fri, 28 Nov 2025 18:03:28 +0100
+
 univention-ad-connector (16.5.0) unstable; urgency=medium
 
   * Bug #58848: UCS 5.2-4 version bump

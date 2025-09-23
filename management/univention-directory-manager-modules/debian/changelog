@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.4.1) unstable; urgency=medium
+
+  * Bug #58653: set .*/debug/structured-logging=true by default
+
+ -- Florian Best <best@univention.de>  Fri, 28 Nov 2025 18:02:54 +0100
+
 univention-directory-manager-modules (17.4.0) unstable; urgency=medium
 
   * Bug #58848: UCS 5.2-4 version bump

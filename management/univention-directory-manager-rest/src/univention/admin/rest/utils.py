@@ -23,7 +23,7 @@ RE_UUID = re.compile('[^A-Fa-f0-9-]')
 
 
 def init_request_context_logging(request_context):
-    structured = ucr.is_true('directory/manager/rest/debug/structured-logging', False)
+    structured = ucr.is_true('directory/manager/rest/debug/structured-logging', True)
     if not structured and not ucr.is_true('directory/manager/rest/debug/prefix-with-request-id', True):
         return
 

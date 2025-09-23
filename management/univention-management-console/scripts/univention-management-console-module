@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
     # init logging
     logfile = options.logfile % {'module': options.module}
-    log_init(logfile, options.debug, use_structured_logging=ucr.is_true('umc/server/debug/structured-logging'))
+    log_init(logfile, options.debug, use_structured_logging=ucr.is_true('umc/server/debug/structured-logging', True))
 
     univention.logging.extendLogger('tornado', univention_debug_category='NETWORK')
     logger = logging.getLogger('tornado')

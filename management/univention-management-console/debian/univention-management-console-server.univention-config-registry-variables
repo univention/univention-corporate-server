@@ -13,11 +13,11 @@ Max=99
 Categories=management-umc
 
 [umc/server/debug/structured-logging]
-Description[de]=Aktiviert die strukturierte Protokollierung von UMC Lognachrichten. Diese Option ist standardmäßig deaktiviert und wird ab UCS 5.2-4 standardmäßig aktiviert.
-Description[en]=Enables structured logging of UMC log messages. This option is disabled by default and will be enabled by default with UCS 5.2-4.
+Description[de]=Aktiviert die strukturierte Protokollierung von UMC Lognachrichten.
+Description[en]=Enables structured logging of UMC log messages.
 Type=bool
 Categories=management-umc
-Default=false
+Default=true
 
 [umc/server/upload/max]
 Description[de]=Diese Variable konfiguriert die maximale Größe von hochladbaren Dateien in Kilobyte.

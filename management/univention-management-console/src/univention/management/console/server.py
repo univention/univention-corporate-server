@@ -133,7 +133,7 @@ class Server:
         # os.environ['LANG'] = locale.normalize(self.options.language)
 
         # init logging
-        log_init(self.options.log_file, self.options.debug, self.options.processes > 1, use_structured_logging=ucr.is_true('umc/server/debug/structured-logging'))
+        log_init(self.options.log_file, self.options.debug, self.options.processes > 1, use_structured_logging=ucr.is_true('umc/server/debug/structured-logging', True))
 
     def signal_handler_hup(self, signo, frame):
         """Handler for the postrotate action"""

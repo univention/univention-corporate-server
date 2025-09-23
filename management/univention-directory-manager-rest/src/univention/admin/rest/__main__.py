@@ -51,7 +51,7 @@ class Server:
         self.child_id = None
         setproctitle(proctitle + '   # server')
         # locale must be set before importing UDM!
-        log_init('/dev/stdout', args.debug, args.processes != 1, use_structured_logging=ucr.is_true('directory/manager/rest/debug/structured-logging'))
+        log_init('/dev/stdout', args.debug, args.processes != 1, use_structured_logging=ucr.is_true('directory/manager/rest/debug/structured-logging', True))
         language = str(Locale(args.language))
         locale.setlocale(locale.LC_MESSAGES, language)
         os.umask(0o077)  # FIXME: should probably be changed, this is what UMC sets
