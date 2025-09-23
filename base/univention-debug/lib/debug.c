@@ -86,7 +86,7 @@ static const char *const univention_debug_level_structured_text[] = {
 			tm.tm_hour,\
 			tm.tm_min,\
 			tm.tm_sec,\
-			(int)(tv.tv_usec / 1000),\
+			tv.tv_usec,\
 			(tm.tm_gmtoff >= 0 ? '+' : '-'),\
 			labs(tm.tm_gmtoff) / 3600,\
 			(labs(tm.tm_gmtoff) % 3600) / 60, \

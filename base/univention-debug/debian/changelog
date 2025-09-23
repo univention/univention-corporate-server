@@ -1,3 +1,9 @@
+univention-debug (14.3.1) unstable; urgency=medium
+
+  * Bug #58627: fix microseconds precision in log format
+
+ -- Florian Best <best@univention.de>  Tue, 23 Sep 2025 18:34:07 +0200
+
 univention-debug (14.3.0) unstable; urgency=medium
 
   [ Ivan Barbecho Delgado ]
