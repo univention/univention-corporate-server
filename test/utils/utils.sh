@@ -92,7 +92,13 @@ basic_setup () {
 	# but customers / PS scripts aren't affected immediately
 	ucr set 'directory/manager/type-checking/strict=true'
 
-	ucr set 'umc/server/debug/structured-logging=true' 'directory/manager/rest/debug/structured-logging=true' 'connector/s4/debug/structured-logging=true' "notifier/debug/structured-logging=true" "listener/debug/structured-logging=true"
+	ucr set 'umc/server/debug/structured-logging=true' \
+		'directory/manager/rest/debug/structured-logging=true' \
+		'directory/manager/cmd/debug/structured-logging=true' \
+		'connector/s4/debug/structured-logging=true' \
+		'connector/debug/structured-logging=true' \
+		'notifier/debug/structured-logging=true' \
+		'listener/debug/structured-logging=true'
 }
 
 stop_uss_and_restore_profile () {
