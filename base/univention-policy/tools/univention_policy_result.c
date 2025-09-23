@@ -162,7 +162,6 @@ int main(int argc, char* argv[])
 		goto err1;
 	}
 
-	univention_debug_set_structured(1);
 	if (opt_debug) {
 		univention_debug_init("stderr", UV_DEBUG_FLUSH, UV_DEBUG_FUNCTION);
 		univention_debug_set_level(UV_DEBUG_POLICY, UV_DEBUG_ALL);

@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 #
 CFLAGS += -Wall -pedantic
-LDADD := -luniventiondebug -luniventionconfig
+LDADD := -luniventiondebug
 NOTIFIER_LDADD = $(LDADD) -lldap
 DUMP_LDADD = $(LDADD)
 

@@ -15,7 +15,6 @@ from ldap.controls.readentry import PostReadControl
 from tornado.web import HTTPError
 
 import univention.admin.types as udm_types
-from univention.config_registry import ucr
 from univention.management.console.log import add_filter
 
 
@@ -23,17 +22,12 @@ RE_UUID = re.compile('[^A-Fa-f0-9-]')
 
 
 def init_request_context_logging(request_context):
-    structured = ucr.is_true('directory/manager/rest/debug/structured-logging', True)
-    if not structured and not ucr.is_true('directory/manager/rest/debug/prefix-with-request-id', True):
-        return
-
-    add_filter(RequestContextFilter(request_context, structured))
+    add_filter(RequestContextFilter(request_context))
 
 
 class RequestContextFilter(logging.Filter):
-    def __init__(self, request_context, structured_logging=False):
+    def __init__(self, request_context):
         self.request_context = request_context
-        self.structured_logging = structured_logging
 
     def filter(self, record):
         try:
@@ -41,8 +35,6 @@ class RequestContextFilter(logging.Filter):
         except LookupError:
             request_context = {}
         record.request_id = request_context.get('request_id', '-')
-        if not self.structured_logging:
-            record.prefix = f"[{(record.request_id or '')[:10]}] "  # backwards compatibility
         if dn := request_context.get('requester_dn'):
             record.requester_dn = dn
         if ip := request_context.get('requester_ip'):
