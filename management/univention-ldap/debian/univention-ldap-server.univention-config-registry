@@ -42,6 +42,10 @@ Variables: ldap/database/internal/syncprov/sessionlog
 Variables: ldap/database/internal/syncrepl
 Variables: ldap/database/internal/syncrepl/retry
 Variables: ldap/syncprov
+Variables: ldap/database/internal/overlay/dds
+Variables: ldap/database/internal/dds/max-ttl
+Variables: ldap/database/internal/dds/min-ttl
+Variables: ldap/database/internal/dds/default-ttl
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
@@ -81,6 +85,7 @@ Variables: ldap/pw-bcrypt
 Variables: ldap/refint
 Variables: server/role
 Variables: ldap/syncprov
+Variables: ldap/database/internal/overlay/dds
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
@@ -151,6 +156,10 @@ Variables: ldap/database/internal/acl/blocklists/groups/write
 Variables: ldap/database/internal/acl/blocklists/groups/read
 Variables: ldap/database/internal/syncrepl
 Variables: ldap/database/internal/syncrepl/retry
+Variables: ldap/database/internal/overlay/dds
+Variables: ldap/database/internal/dds/max-ttl
+Variables: ldap/database/internal/dds/min-ttl
+Variables: ldap/database/internal/dds/default-ttl
 Variables: ldap/hostdn
 Variables: ldap/base
 Variables: server/role
