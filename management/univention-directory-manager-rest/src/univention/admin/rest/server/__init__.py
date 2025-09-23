@@ -153,7 +153,7 @@ class Gateway(tornado.web.RequestHandler):
 
         setproctitle(proctitle + '   # gateway main')
 
-        univention.logging.basicConfig(filename='stdout', univention_debug_level=args.debug, use_structured_logging=ucr.is_true('directory/manager/rest/debug/structured-logging', True))
+        univention.logging.basicConfig(filename='stdout', univention_debug_level=args.debug)
         univention.logging.extendLogger('tornado', univention_debug_category='NETWORK')
         logger = logging.getLogger('tornado')
         logger.set_ud_level(ucr.get_int('directory/manager/rest/tornado-debug/level', 3))

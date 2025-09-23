@@ -49,17 +49,13 @@ py_univention_debug_init(PyObject *self, PyObject *args)
 {
     char *logfile;
     int flush, function;
-    int structured = -1;
     FILE * fd;
     PyObject * file;
 
-    if (!PyArg_ParseTuple(args, "sii|i", &logfile, &flush, &function, &structured)) {
+    if (!PyArg_ParseTuple(args, "sii", &logfile, &flush, &function)) {
         Py_RETURN_NONE;
     }
 
-    if (structured != -1) {
-        univention_debug_set_structured(structured);
-    }
     fd = univention_debug_init(logfile, (char)flush, (char)function);
 
     if ( fd == NULL ) {
@@ -211,20 +207,10 @@ PyDoc_STRVAR(py_univention_debug_reopen__doc__,
 static PyObject *
 py_univention_debug_set_structured(PyObject *self, PyObject *args)
 {
-    int use_structured;
-
-    if (!PyArg_ParseTuple(args, "i", &use_structured)) {
-        return NULL;
-    }
-
-    univention_debug_set_structured(use_structured);
-
     Py_RETURN_NONE;
 }
 PyDoc_STRVAR(py_univention_debug_set_structured__doc__,
-        "set_structured(activate) - Define weather to use structured logging formats.\n"
-        "\n"
-        "activate - enable (True) or disable (False) structured logging format..");
+        "set_structured(activate) - Deprecated.\n");
 
 
 static struct PyMethodDef debug_methods[] = {

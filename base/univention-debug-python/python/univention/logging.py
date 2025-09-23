@@ -24,7 +24,7 @@ from logfmter import Logfmter
 import univention.debug as ud
 
 
-__all__ = ['DebugHandler', 'LevelDependentFormatter', 'Logger', 'StructuredFormatter', 'basicConfig', 'extendLogger', 'getLogger']
+__all__ = ['DebugHandler', 'Logger', 'StructuredFormatter', 'basicConfig', 'extendLogger', 'getLogger']
 for name in logging.__all__:
     if name not in __all__:
         globals()[name] = getattr(logging, name)
@@ -48,17 +48,6 @@ _LEVEL_MAPPING = {
     # logging.CRITICAL: ud.ERROR,  50 -> 0
 }
 _UD_LEVEL_MAPPING = {v: k for k, v in _LEVEL_MAPPING.items()}
-
-_LEVEL_TO_FORMAT_MAPPING = {
-    logging.NOTSET: '%(pid)s%(prefix)s%(module)s.%(funcName)s:%(lineno)d: %(message)s',
-    logging.TRACE: '%(pid)s%(prefix)s%(module)s.%(funcName)s:%(lineno)d: %(message)s',
-    logging.DEBUG: '%(pid)s%(prefix)s%(message)s',
-    logging.INFO: '%(pid)s%(prefix)s%(message)s',
-    logging.PROCESS: '%(pid)s%(prefix)s%(message)s',
-    logging.WARNING: '%(pid)s%(prefix)s%(message)s',
-    logging.ERROR: '%(pid)s%(prefix)s%(message)s',
-    logging.CRITICAL: '%(pid)s%(prefix)s%(message)s',
-}
 
 _UD_CATEGORIES = {
     cat: name
@@ -218,7 +207,6 @@ def basicConfig(
     level=None,
     *,
     univention_debug_level=None,
-    log_pid=False,
     univention_debug_flush=ud.FLUSH,
     univention_debug_function=ud.NO_FUNCTION,
     univention_debug_categories=None,
@@ -245,20 +233,18 @@ def basicConfig(
 
     if not delay_init:
         logger = getLogger(categories[0])
-        logger.univention_debug_handler.init(filename, univention_debug_flush, univention_debug_function, use_structured_logging)
+        logger.univention_debug_handler.init(filename, univention_debug_flush, univention_debug_function)
     for category in categories:
         logger = getLogger(category)
-        logger.set_structured(use_structured_logging)
         if level is not None:
             logger.setLevel(level)
         elif univention_debug_level is not None:
             logger.set_ud_level(univention_debug_level)
-        logger.set_log_pid(log_pid)
         logger.univention_debug_handler.do_exit = do_exit
         if delay_init:
             logger.univention_debug_handler.auto_init = True
             logger.univention_debug_handler.delay_init = delay_init
-            logger.univention_debug_handler._init_args = (filename, univention_debug_flush, univention_debug_function, use_structured_logging)
+            logger.univention_debug_handler._init_args = (filename, univention_debug_flush, univention_debug_function)
 
 
 class SyslogPrefix(logging.Filter):
@@ -388,14 +374,15 @@ class Logger(logging.Logger):
     Can be set as global default logger via ``logging.setLoggerClass(univention.logging.Logger)``.
     """
 
-    def __init__(self, name, level=logging.NOTSET, log_pid=False, **kwargs):
+    def __init__(self, name, level=logging.NOTSET, **kwargs):
+        kwargs.pop('log_pid', None)
         self.univention_debug_category = getattr(ud, kwargs.get('univention_debug_category', name.split('.', 1)[0]))
         self.univention_debug_handler = handler = DebugHandler(self.univention_debug_category, **kwargs)
         if level == logging.NOTSET:
             level = handler.getLevel()
         super().__init__(name, level=level)
         self.propagate = False
-        self._formatter = LevelDependentFormatter(log_pid=log_pid)
+        self._formatter = StructuredFormatter()
         handler.setFormatter(self._formatter)
         handler.setLevel(self.level)
         self.addHandler(handler)
@@ -413,10 +400,6 @@ class Logger(logging.Logger):
     def getEffectiveLevel(self):
         return self.univention_debug_handler.getLevel()
 
-    def set_log_pid(self, log_pid):
-        # deprecated
-        self._formatter.log_pid = log_pid
-
     def set_ud_level(self, level):
         self.setLevel(_map_ud_to_level(level))
 
@@ -433,10 +416,9 @@ class Logger(logging.Logger):
         self.univention_debug_handler.reopen()
         self.univention_debug_handler.setLevel(level)
 
-    def set_structured(self, /, use_structured_logging):
-        self.univention_debug_handler.set_structured(use_structured_logging)
-        if use_structured_logging:
-            self.univention_debug_handler.setFormatter(StructuredFormatter())
+    def set_structured(self, /, use_structured_logging):  # pragma: no cover
+        from warnings import warn
+        warn('set_structured is obsolete', PendingDeprecationWarning, stacklevel=2)
 
     def __repr__(self):
         msg = super().__repr__()
@@ -546,55 +528,6 @@ class Structured:
         setattr(self.__log, name, value)  # pragma: no cover
 
 
-class LevelDependentFormatter(logging.Formatter):
-    """
-    A formatter which logs different formats depending on the log level.
-
-    .. deprecated:: 5.2-3
-
-        unstructured logging with different formats will be removed in UCS 5.2-5.
-    """
-
-    RESERVED = (*RESERVED, 'prefix', 'request_id', 'pid', 'umcmodule')
-
-    def __init__(self, datefmt=None, log_pid=False):
-        self._style = None
-        super().__init__(None, datefmt=datefmt)
-        self.log_pid = log_pid
-        self._level_to_format_mapping = _LEVEL_TO_FORMAT_MAPPING.copy()
-
-    def setFormat(self, level, fmt):  # pragma: no cover
-        self._level_to_format_mapping[level] = fmt
-
-    def format(self, record):
-        try:
-            fmt = self._level_to_format_mapping[record.levelno]
-        except KeyError:
-            try:
-                fmt = self._level_to_format_mapping[_map_ud_to_level(_map_level_to_ud(record.levelno))]
-            except KeyError:
-                fmt = self._level_to_format_mapping[logging.NOTSET]
-
-        record.pid = ''
-        if self.log_pid:
-            record.pid = '%s: ' % (record.process,)
-
-        record.__dict__.setdefault('prefix', '')
-
-        extra = record.__dict__.copy()
-        msg = record.msg
-        if isinstance(record.msg, dict):
-            record.msg = msg.pop('msg', '')
-            extra.update(msg)
-        extra = {k: v for k, v in extra.items() if k not in self.RESERVED}
-        extra_str = (' | ' + ' '.join('='.join((str(k), str(v))) for k, v in extra.items())) if extra else ''
-
-        self._fmt = fmt
-        if self._style is not None:
-            self._style._fmt = self._fmt
-        return super().format(record) + extra_str
-
-
 class DebugHandler(logging.Handler):
     """A logging handler which logs to :py:mod:`univention.debug`"""
 
@@ -613,14 +546,9 @@ class DebugHandler(logging.Handler):
             self.init(*self._init_args)
             self.setLevel(self.level)
             self.delay_init = False
-        msg = self.format(record)
+        message = self.format(record)
         level = _map_level_to_ud(record.levelno)
 
-        if isinstance(self.formatter, StructuredFormatter):
-            message = msg
-        else:
-            _name, _, prefix = record.name.partition('.')
-            message = '%s: %s' % (prefix, msg) if prefix else msg
         try:
             ud.debug(self._category, level, message)
         except ValueError:  # embedded null character
@@ -628,7 +556,7 @@ class DebugHandler(logging.Handler):
 
     def init(self, filename='stderr', flush=ud.NO_FLUSH, function=ud.NO_FUNCTION, structured=False):
         """Initialize :py:mod:`univention.debug`. Must only be called once. returns the file descriptor on success"""
-        return ud.init(filename, flush, function, structured)
+        return ud.init(filename, flush, function)
 
     def reopen(self):
         """reopen the :py:mod:`univention.debug` logfile. must be called e.g. after log rotation."""
@@ -645,9 +573,6 @@ class DebugHandler(logging.Handler):
 
     def get_ud_level(self):
         return ud.get_level(self._category)
-
-    def set_structured(self, use_structured_logging):
-        ud.set_structured(use_structured_logging)
 
     def getLevel(self):
         if self.delay_init:

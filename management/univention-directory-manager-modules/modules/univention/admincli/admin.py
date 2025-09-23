@@ -490,10 +490,9 @@ def _doit(
     configRegistry.load()
 
     debug_level = int(configRegistry.get('directory/manager/cmd/debug/level', 0))
-    structured = configRegistry.is_true('directory/manager/cmd/debug/structured-logging', True)
 
     if logfile:
-        univention.logging.basicConfig(filename=logfile, univention_debug_level=debug_level, use_structured_logging=structured)
+        univention.logging.basicConfig(filename=logfile, univention_debug_level=debug_level)
     else:
         print("WARNING: no logfile specified", file=stderr)
 

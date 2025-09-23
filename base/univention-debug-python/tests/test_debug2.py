@@ -3,8 +3,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 import os
-import sys
-from logging import DEBUG, getLogger
+from logging import DEBUG
 
 import pytest
 from conftest import CATEGORY, LEVEL
@@ -219,23 +218,3 @@ def test_error_handling():
     ud.debug(ud.MAIN, ud.ERROR, 'test')
     ud.exit()
     assert not os.path.exists(filename)
-
-
-# Important! Must be the last test, and must cleanup for test_logging
-def test_unstructured(tmpdir):
-    ud.exit()
-    ud.set_structured(False)
-    tmp = tmpdir.ensure('log')
-    fd = ud.init(str(tmp), ud.FLUSH, ud.FUNCTION)
-    assert hasattr(fd, 'write')
-
-    ud.debug(ud.MAIN, ud.ERROR, "test")
-    ud.exit()
-
-    for cat in CATEGORY:
-        if hasattr(getLogger(cat), 'destroy'):
-            getLogger(cat).destroy()
-
-    sys.modules.pop('univention.logging')
-    output = [line[24:].split('|', 1)[0] for line in tmp.read().splitlines()]
-    assert output == ['MAIN        (INIT   ): ', 'MAIN        (ERROR  ): test', 'MAIN        (EXIT   ): EXIT']

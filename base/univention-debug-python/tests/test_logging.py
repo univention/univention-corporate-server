@@ -13,7 +13,6 @@ import sys
 import pytest
 
 import univention.debug as ud
-import univention.debug2 as ud2
 
 
 PROCESS = 25
@@ -45,10 +44,9 @@ def normalize_logformat(log):
 
 # IMPORTANT: order: must be at first
 def test_logging_handler_changed():
+    import univention.logging
     m = logging.getLogger('MAIN')
     f = logging.getLogger('foo')
-    assert type(m) is logging.Logger
-    import univention.logging
 
     assert type(m) is univention.logging.Logger
     assert type(f) is logging.Logger
@@ -110,21 +108,14 @@ NoneType: None
     assert log == expected
 
 
-with open('tests/legacy.log') as fd, open('tests/structured.log') as fd2:
-    EXPECTED_LEGACY = fd.read().strip()
-    EXPECTED_STRUCTURED = fd2.read().strip()
-    EXPECTED = {
-        'ud': (EXPECTED_LEGACY, EXPECTED_STRUCTURED),
-        'ud2': (EXPECTED_LEGACY, EXPECTED_STRUCTURED),
-    }
-
-
-@pytest.mark.parametrize('strucutured', [True, False])
 @pytest.mark.parametrize('debug_backend', ['ud', 'ud2'])
-def test_logging(tmp_path, debug_backend, strucutured):
+def test_logging(tmp_path, debug_backend):
+    with open('tests/structured.log') as fd:
+        EXPECTED = fd.read().strip()
     if debug_backend == 'ud2':
         logging.getLogger('LDAP').destroy()
         sys.modules.pop('univention.logging')
+        import univention.debug2 as ud2
         sys.modules['univention.debug'] = ud2
     else:
         sys.modules.pop('univention.logging', None)
@@ -140,16 +131,13 @@ def test_logging(tmp_path, debug_backend, strucutured):
         univention_debug_flush=True,
         univention_debug_function=False,
         do_exit=True,
-        use_structured_logging=strucutured,
     )
     logger = logging.getLogger('LDAP')
-    logger.univention_debug_handler.set_structured(strucutured)
     logger.error('logger.error("msg")')
     logger.warning('logger.warning("msg")')
     logger.log(PROCESS, 'logger.process("msg")')
     logger.info('logger.info("msg")')
     logger.debug('logger.debug("msg")')  # not shown
-    logger.set_log_pid(True)
     child = logger.getChild('foo')
     child.error('logger.getChild("foo").error("msg")')
     child.getChild('bar').error('logger.getChild("foo").getChild("bar").error("msg")')
@@ -157,7 +145,6 @@ def test_logging(tmp_path, debug_backend, strucutured):
     logger.set_ud_level(ud.ERROR)
     logger.warning('no warning displayed')  # not shown
     child.warning('no warning displayed')  # not shown
-    logger.set_log_pid(False)
     logger.set_ud_level(100)
     logger.reopen()
     logger.debug('logger.debug(" after reopen with some spaces ")')
@@ -214,15 +201,11 @@ def test_logging(tmp_path, debug_backend, strucutured):
     logger.univention_debug_handler.close()
 
     actual = normalize_logformat(tmplog.read_text())
-    expected = EXPECTED[debug_backend][int(strucutured)].lstrip()
     print('\n' + repr(actual).replace(r'\n', '\n').strip("'"))
 
     # uncomment to update!
-    if strucutured:
-        open('tests/structured.log', 'w').write(actual)
-    else:
-        open('tests/legacy.log', 'w').write(actual)
-    assert actual == expected
+    open('tests/structured.log', 'w').write(actual)
+    assert actual == EXPECTED
 
 
 @pytest.mark.parametrize(

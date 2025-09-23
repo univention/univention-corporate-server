@@ -88,21 +88,6 @@ _map_id_old2new = {
 }
 
 
-# 13.08.2008 13:13:57.123  LISTENER    ( ERROR   ) : listener: 1
-# 13.08.2008 13:13:57.123  LISTENER    ( WARN    ) : received signal 2
-# 13.08.2008 13:14:02.123  DEBUG_INIT
-_outfmt = '%(asctime)s.%(msecs)03d %(name)-11s (%(levelname)-7s): %(message)s'
-_outfmt_syslog = '%(name)-11s (%(levelname)-7s): %(message)s'
-_datefmt = '%d.%m.%Y %H:%M:%S'
-
-
-class _Formatter(logging.Formatter):
-    def format(self, record):
-        if record.name.startswith('ud2.'):
-            record.name = record.name.split('.', 1)[-1]
-        return super().format(record)
-
-
 _logfilename = None
 _handler_console = None
 _handler_file = None
@@ -111,7 +96,6 @@ _do_flush = False
 _enable_function = False
 _enable_syslog = False
 _logger_level = {key: DEFAULT for key in _map_id_old2new.values()}  # noqa: C420
-_use_structured = True
 
 
 def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
@@ -136,11 +120,8 @@ def init(logfile, force_flush=0, enable_function=0, enable_syslog=0):
     ud2_base_logger.handlers = [null_handler]
     ud2_base_logger.propagate = False
 
-    if _use_structured:
-        from univention.logging import StructuredFormatter
-        formatter = StructuredFormatter(with_date_prefix=True)
-    else:
-        formatter = _Formatter(_outfmt, _datefmt)
+    from univention.logging import StructuredFormatter
+    formatter = StructuredFormatter(with_date_prefix=True)
     exit()
     if logfile in ('stderr', '/dev/stderr', 'stdout', '/dev/stdout'):
         # add stderr or stdout handler
@@ -297,9 +278,8 @@ class function:
             _flush()
 
 
-def set_structured(use_structured=False):
-    global _use_structured
-    _use_structured = use_structured
+def set_structured(use_structured=False):  # pragma: no cover
+    warn('set_structured is obsolete', PendingDeprecationWarning, stacklevel=2)
 
 
 def trace(with_args=True, with_return=False, repr=object.__repr__):
