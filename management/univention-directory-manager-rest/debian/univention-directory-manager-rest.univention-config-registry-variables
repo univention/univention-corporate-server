@@ -7,20 +7,6 @@ Max=99
 Default=2
 Categories=service-udm
 
-[directory/manager/rest/debug/structured-logging]
-Description[de]=Definiert, ob strukturierte Logmeldungen ausgegeben werden.
-Description[en]=Defines whether to output structured log messages.
-Type=bool
-Default=true
-Categories=service-udm
-
-[directory/manager/rest/debug/prefix-with-request-id]
-Description[de]=Definiert, ob Logmeldungen die Anfrage-ID vorangestellt wird. Deprecated.
-Description[en]=Defines, whether log messages are prefixed with the request ID. Deprecated.
-Type=bool
-Default=true
-Categories=service-udm
-
 [directory/manager/rest/authorized-groups/.*]
 Description[de]=Spezifiziert die LDAP-DNs der Gruppen, denen Zugriff auf die Univention Directory Manager REST Schnittstelle erlaubt ist.
 Description[en]=Specifies the LDAP DNs of the groups, which are allowed to access the Univention Directory Manager REST interface.

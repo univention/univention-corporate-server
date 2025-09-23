@@ -6,13 +6,6 @@ Min=0
 Max=5
 Categories=management-udm
 
-[directory/manager/cmd/debug/structured-logging]
-Description[de]=Definiert, ob strukturierte Logmeldungen ausgegeben werden.
-Description[en]=Defines whether to output structured log messages.
-Type=bool
-Default=true
-Categories=management-udm
-
 [directory/manager/cmd/timeout]
 Description[de]=Die Zeitspanne in Sekunden, nach der sich der Univention Directory Manager-Server bei Nichtbenutzung automatisch beendet.
 Description[en]=Time span in seconds after which an idle Univention Directory Manager server automatically terminates.

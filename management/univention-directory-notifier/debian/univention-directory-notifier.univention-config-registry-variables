@@ -4,13 +4,6 @@ Description[en]=This variable configures the verbosity of log messages in /var/l
 Type=int
 Categories=service-ln
 
-[notifier/debug/structured-logging]
-Description[de]=Definiert, ob strukturierte Logmeldungen ausgegeben werden.
-Description[en]=Defines whether to output structured log messages.
-Type=bool
-Default=true
-Categories=service-ln
-
 [notifier/autostart]
 Description[de]=Die Variable konfiguriert den Startmodus des Univention Directory Notifier-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
 Description[en]=This variable configures the start mode of the Univention Directory Notifier service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.

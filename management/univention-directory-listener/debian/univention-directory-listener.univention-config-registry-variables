@@ -6,13 +6,6 @@ Min=0
 Max=5
 Categories=service-ln
 
-[listener/debug/structured-logging]
-Description[de]=Definiert, ob strukturierte Logmeldungen ausgegeben werden.
-Description[en]=Defines whether to output structured log messages.
-Type=bool
-Default=true
-Categories=service-ln
-
 [listener/network/protocol]
 Description[de]=Das verwendete Protokoll für die Verbindung zum Univention Directory Notifier. "ipv4" verwendet nur IPv4, "ipv6" nur IPv6 und "all" probiert beides.
 Description[en]=The protocol used for the connection to the Univention Directory Notifier. "ipv4" uses only IPv4, "ipv6" uses only IPv6 and "all" tries both.
