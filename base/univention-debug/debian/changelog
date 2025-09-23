@@ -1,3 +1,9 @@
+univention-debug (14.4.1) unstable; urgency=medium
+
+  * Bug #58653: set default log format to structured
+
+ -- Florian Best <best@univention.de>  Fri, 28 Nov 2025 18:00:42 +0100
+
 univention-debug (14.4.0) unstable; urgency=medium
 
   * Bug #58848: UCS 5.2-4 version bump

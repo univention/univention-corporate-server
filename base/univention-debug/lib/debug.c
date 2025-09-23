@@ -26,7 +26,7 @@ static enum uv_debug_flag_flush univention_debug_flush;
 static enum uv_debug_flag_function univention_debug_function;
 
 static bool univention_debug_ready = false;
-static enum uv_debug_flag_structured univention_debug_structured = UV_DEBUG_UNSTRUCTURED;
+static enum uv_debug_flag_structured univention_debug_structured = UV_DEBUG_STRUCTURED;
 
 static const char *const univention_debug_id_text[] = {
 	"MAIN",

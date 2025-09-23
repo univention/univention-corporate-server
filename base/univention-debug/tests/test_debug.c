@@ -5,7 +5,6 @@
 int main(void) {
 	FILE * f;
 	enum uv_debug_level l;
-	univention_debug_set_structured(1);
 	f = univention_debug_init("stdout", UV_DEBUG_NO_FLUSH, UV_DEBUG_FUNCTION);
 	assert (f != NULL);
 
