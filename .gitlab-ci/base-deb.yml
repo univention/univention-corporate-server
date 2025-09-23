@@ -24,6 +24,8 @@ stages:
     - echo man-db man-db/auto-update boolean false | debconf-set-selections
     - echo 'path-exclude /etc/univention/templates/info/*.info' > /etc/dpkg/dpkg.cfg.d/no-ucr
     - install -m644 .gitlab-ci/git.pref /etc/apt/preferences.d/10git.pref
+    - echo "deb [trusted=yes] $BASE_APT ucs_${UCS_RELEASE}-0-errata${UCS_VERSION}/all/" >"/etc/apt/sources.list.d/errata.list"
+    - echo 'deb [trusted=yes] $BASE_APT ucs_${UCS_RELEASE}-0-errata${UCS_VERSION}/\$(ARCH)/' >>"/etc/apt/sources.list.d/errata.list"
     - echo "deb [trusted=yes] $APT/$CI_COMMIT_REF_SLUG git main" >"/etc/apt/sources.list.d/$CI_COMMIT_REF_SLUG.list"
     - apt-get -qq update
     - echo -e "\e[0Ksection_end:$(date +%s):prep\r\e[0K"
@@ -35,7 +37,7 @@ stages:
       if [ "$ORIGINAL_SOURCE" = "merge_request_event" ]; then
         apt-get --assume-yes --no-install-recommends install devscripts
         current_date=$(dpkg-parsechangelog -SDate)
-        dch -D unstable -v "$(dpkg-parsechangelog -SVersion)A~${CHANGELOG_TARGET_VERSION//-/.}.$(date +%Y%m%d%H%M)" "pipeline version bump"
+        dch -D unstable -v "$(dpkg-parsechangelog -SVersion)A~${UCS_VERSION//-/.}.$(date +%Y%m%d%H%M)" "pipeline version bump"
         sed -i "0,/^ -- /s/^ -- .*$/ -- Univention GmbH <packages@univention.de>  $current_date/" debian/changelog
       fi
     - find -exec touch -m -h -c -d "@${SOURCE_DATE_EPOCH:-$(dpkg-parsechangelog -STimestamp)}" {} +
