@@ -77,7 +77,8 @@ def test_level(name, parse, tmplog):
     ud.debug(ud.MAIN, ud.WARN, "Warning in main: %%%")
     ud.debug(ud.MAIN, ud.PROCESS, "Process in main: %%%")
     ud.debug(ud.MAIN, ud.INFO, "Information in main: %%%")
-    ud.debug(ud.MAIN, ud.ALL, "All in main: %%%")
+    ud.debug(ud.MAIN, ud.ALL, "Debug in main: %%%")
+    ud.debug(ud.MAIN, ud.TRACE, "Trace in main: %%%")
     ud.exit()
 
     output = tmplog.read()
@@ -95,7 +96,7 @@ def test_category(name, parse, tmplog):
     ud.exit()
 
     output = tmplog.read()
-    assert {groups['category'] for typ, groups in parse(output) if typ == 'msg'} == {name}
+    assert {groups['category'] for typ, groups in parse(output) if typ == 'msg'} == {''}  # {name}  # TODO: no possibility to get category anymore with UD
 
 
 def test_reopen(parse, tmplog):

@@ -1,3 +1,9 @@
+univention-debug-python (14.4.1) unstable; urgency=medium
+
+  * Bug #58653: enable structured logging by default
+
+ -- Florian Best <best@univention.de>  Fri, 28 Nov 2025 17:59:49 +0100
+
 univention-debug-python (14.4.0) unstable; urgency=medium
 
   * Bug #58848: UCS 5.2-4 version bump

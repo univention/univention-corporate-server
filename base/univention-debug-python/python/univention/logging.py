@@ -224,7 +224,7 @@ def basicConfig(
     univention_debug_categories=None,
     do_exit=True,
     delay_init=False,  # until first use
-    use_structured_logging=False,
+    use_structured_logging=True,
     **kwargs,
 ):
     """

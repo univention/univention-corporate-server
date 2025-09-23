@@ -283,7 +283,7 @@ def test_logger_set_level_basic_config(tmp_path, ud_level, log_level, use_ud_lev
     logger.univention_debug_handler.close()
 
     output = tmplog.read_text()
-    LEVEL = ['ERROR', 'WARN', 'PROCESS', 'INFO', 'ALL', 'TRACE']
+    LEVEL = ['ERROR', 'WARNING', 'PROCESS', 'INFO', 'DEBUG', 'TRACE']
     assert [groups['level'] for typ, groups in parse(output) if typ == 'msg'] == LEVEL[:1 + ud_level]
 
 
