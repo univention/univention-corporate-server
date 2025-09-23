@@ -12,4 +12,6 @@ desc: |
    logging of TRACE log messages. The log messages and severity has been
    overworked. Additional information like UDM object type and LDAP
    Distinguished Name has been added to the log information.
-bug: [58627]
+ * Minor updates to the UDM policy format for delegative
+   administration.
+bug: [58627,58649]
