@@ -1,0 +1,6 @@
+# ACL for DDS refresh operations on recyclebin objects
+# Specific access to entryTtl attribute for DDS refresh operations
+access to dn.subtree="cn=recyclebin,cn=internal,@%@ldap/base@%@"
+    attrs=entryTtl
+    by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,@%@ldap/base@%@" manage
+    by * none

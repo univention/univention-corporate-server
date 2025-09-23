@@ -38,6 +38,15 @@ syncprov-checkpoint %(ldap/database/internal/syncprov/checkpoint)s
 syncprov-sessionlog %(ldap/database/internal/syncprov/sessionlog)s
 """ % configRegistry)
 
+    # dds overlay for automatic purging of recyclebin objects
+    if configRegistry.is_true('ldap/database/internal/overlay/dds', False):
+        print("""
+overlay dds
+dds-max-ttl %(ldap/database/internal/dds/max-ttl)s
+dds-min-ttl %(ldap/database/internal/dds/min-ttl)s
+dds-default-ttl %(ldap/database/internal/dds/default-ttl)s
+""" % configRegistry)
+
     # limits
     print("""
 limits dn.children=cn=peercred,cn=external,cn=auth time=unlimited size=unlimited size.prtotal=unlimited size.pr=unlimited
