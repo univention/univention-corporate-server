@@ -5,7 +5,7 @@
 
 AM_CPPFLAGS = -I$(top_srcdir)/include
 
-AM_CFLAGS = -Wall -D_FILE_OFFSET_BITS=64
+AM_CFLAGS = -Wall -D_FILE_OFFSET_BITS=64 -Werror
 
 lib_LTLIBRARIES = libuniventiondebug.la
 
