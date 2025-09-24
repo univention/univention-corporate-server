@@ -1494,7 +1494,7 @@ class ad(univention.connector.ucs):
         log.debug("group_members_sync_to_ucs: ucs_members: %s", ucs_members)
 
         # map members from AD to UCS and check if they exist
-        ucs_members_from_ad = {'user': [], 'group': [], 'unknown': []}
+        ucs_members_from_ad = {'user': [], 'group': [], 'windowscomputer': [], 'unknown': []}
         dn_mapping_ucs_member_to_ad = {}
         for member_dn in ad_members:
             ucs_dn = self.group_member_mapping_cache_con.get(member_dn.lower())
