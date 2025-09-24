@@ -24,9 +24,10 @@ import univention.connector
 import univention.connector.ad
 import univention.lib.s4
 from univention.admin import uexceptions
+from univention.logging import Structured
 
 
-log = getLogger("LDAP").getChild(__name__)
+log = Structured(getLogger("LDAP").getChild(__name__))
 
 # load UDM modules
 udm_modules.update()
