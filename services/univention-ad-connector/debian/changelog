@@ -1,3 +1,9 @@
+univention-ad-connector (16.4.1) unstable; urgency=medium
+
+  * Bug #58644: fix logger in well-known-sid-object-rename
+
+ -- Florian Best <best@univention.de>  Wed, 24 Sep 2025 09:21:19 +0200
+
 univention-ad-connector (16.4.0) unstable; urgency=medium
 
   [ Ivan Barbecho Delgado ]
