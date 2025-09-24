@@ -1356,9 +1356,6 @@ class ad(univention.connector.ucs):
         log.debug("group_members_sync_from_ucs: members to add: %s", add_members)
         log.debug("group_members_sync_from_ucs: members to del: %s", del_members)
 
-        log.debug("group_members_sync_from_ucs: members to add: %s", add_members)
-        log.debug("group_members_sync_from_ucs: members to del: %s", del_members)
-
         if add_members:
             self.lo_ad.lo.modify_s(object['dn'], [(ldap.MOD_ADD, 'member', [x.encode('UTF-8') for x in add_members])])
         if del_members:
