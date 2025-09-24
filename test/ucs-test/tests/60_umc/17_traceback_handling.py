@@ -19,7 +19,7 @@ from univention.management.console.modules.ucstest import joinscript, unjoinscri
 
 
 ADR0010_EXT_REGEX = re.compile(
-    r"^(?P<date>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3,6}\+\d{2}:\d{2}) +"
+    r"^(?P<date>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3,6}\+\d{2}:?\d{2}) +"
     r"(?P<level>\w+?) +(?P<raw>[^[].*|\[(?P<request_id>.*?)\] (?P<message>.+?)\t\| (?P<data>.*?))$",
 )
 PREFIX = 'Internal server error during "{request}".\nRequest: {request}\n\n'
@@ -37,7 +37,7 @@ ERRORS = {
 def test_umc_tracebacks(Client, path, expected_trace):
     joinscript()
     try:
-        umc_client = Client.get_test_connection()
+        umc_client = Client.get_test_connection(language='en_US')
         print(f"checking: {path}")
         with open('/var/log/univention/management-console-server.log') as server_log, open('/var/log/univention/management-console-module-ucstest.log') as module_log:
             server_log.seek(0, 2)
@@ -60,9 +60,11 @@ def test_umc_tracebacks(Client, path, expected_trace):
     assert expected_trace.match(raw_traceback), (traceback, expected_trace)
 
     server_error = get_entry(server_log_text, 'Unexpected exception.')
+    assert server_error
     assert server_error['extended'] == traceback
 
     module_error = get_entry(module_log_text, LOGPREFIX.format(request=path))
+    assert module_error
     assert module_error['extended'] == raw_traceback
 
     fields = parse_logfmt(server_error['data'])
@@ -98,11 +100,8 @@ def parse_log(log_text):
 def parse_logfmt(line: str) -> dict[str, str]:
     fields = {}
     for token in shlex.split(line):
-        if "=" in token:
-            k, v = token.split("=", 1)
-            fields[k] = v.replace('\\n', '\n')
-        else:
-            fields[token] = ""
+        key, _, value = token.partition('=')
+        fields[key] = value.replace('\\n', '\n')
     return fields
 
 
