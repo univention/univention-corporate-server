@@ -1,3 +1,9 @@
+ucs-test (12.3.10) unstable; urgency=medium
+
+  * Bug #58627: execute test case with english locale
+
+ -- Florian Best <best@univention.de>  Wed, 24 Sep 2025 13:01:13 +0200
+
 ucs-test (12.3.9) unstable; urgency=medium
 
   * Bug #58586: added standard token exchange test for univention-keycloak
