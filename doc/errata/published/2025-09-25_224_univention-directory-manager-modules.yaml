@@ -15,3 +15,6 @@ desc: |
  * Minor updates to the UDM policy format for delegative
    administration.
 bug: [58627,58649]
+erratum: 224
+announced: 2025-09-25
+support: core
