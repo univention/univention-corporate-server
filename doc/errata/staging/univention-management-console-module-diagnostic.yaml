@@ -9,4 +9,5 @@ desc: |
  * New diagnostic modules `20_check_share_references` and
    `20_check_srv_records` have been added. The module `20_check_nameservers`
    now contains improved warning messages and a fix for a traceback.
-bug: [58634]
+ * Logging has been adapted to be compatible with structured logging.
+bug: [58634,58644]
