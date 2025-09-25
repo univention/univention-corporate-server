@@ -16,3 +16,6 @@ desc: |
  * Debug messages from Tornado are now in structured log format as well. The
    duplicated access log messages for the gateway process have been removed.
 bug: [58627, 57568]
+erratum: 235
+announced: 2025-09-25
+support: core
