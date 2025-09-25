@@ -15,3 +15,6 @@ desc: |
    Additional information like request ID, IP address or LDAP DN of requester
    have been added to the log information.
 bug: [58627]
+erratum: 232
+announced: 2025-09-25
+support: core
