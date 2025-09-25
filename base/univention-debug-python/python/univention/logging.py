@@ -355,7 +355,7 @@ class StructuredFormatter(logging.Formatter):
                     setattr(record, key, val)
         try:
             record.message = record.getMessage().replace('\t|', '\t\\|')
-            if '\n' in record.message:
+            if record.message.strip('\t !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'):
                 record.message = self.logfmter.format_string(record.message)
             if self.usesTime():
                 record.asctime = self.formatTime(record, self.datefmt)

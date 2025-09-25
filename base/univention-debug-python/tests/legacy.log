@@ -26,17 +26,6 @@
 01.01.25 00:00:00.000  LDAP        ( INFO    ) : logger.info({"msg": "msg"}, "foo": "bar") | foo=bar
 01.01.25 00:00:00.000  LDAP        ( INFO    ) : logger.info("msg", extra={"foo": "bar"}) | foo=bar
 01.01.25 00:00:00.000  LDAP        ( INFO    ) : logger.info("msg %s", "addition", extra={"foo": "bar"}) | foo=bar
-01.01.25 00:00:00.000  LDAP        ( INFO    ) : contains null ('\x00') byte
-01.01.25 00:00:00.000  LDAP        ( INFO    ) : contains | null=('\x00') byte
-01.01.25 00:00:00.000  LDAP        ( INFO    ) : contains new (
-) line
-01.01.25 00:00:00.000  LDAP        ( INFO    ) : contains | new=(
-) line
-01.01.25 00:00:00.000  LDAP        ( INFO    ) : contains | new(
-) =line
-01.01.25 00:00:00.000  LDAP        ( INFO    ) : muha	| foo=bar
-01.01.25 00:00:00.000  LDAP        ( INFO    ) : muha | param=ha	| foo=bar
-01.01.25 00:00:00.000  LDAP        ( INFO    ) : muha	| foo=bar | param=ha	| foo=bar
 01.01.25 00:00:00.000  LDAP        ( ERROR   ) : logger.exception("full_tb=False")
 <TRACEBACK>
 01.01.25 00:00:00.000  LDAP        ( ERROR   ) : foo: child.exception("full_tb=False")
@@ -50,4 +39,30 @@
 01.01.25 00:00:00.000  LDAP        ( INFO    ) : logger.info("full_tb=True", stack_info=True)
 <STACK>
 01.01.25 00:00:00.000  LDAP        ( ERROR   ) : logger.error("msg", extra={"traceback": "<TRACEBACK>"}) | traceback=<TRACEBACK>
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : contains null ('\x00') byte
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : contains | null=('\x00') byte
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : contains new (
+) line
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : contains | new=(
+) line
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : contains | new(
+) =line
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : muha	| foo=bar
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : muha | param=ha	| foo=bar
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : muha	| foo=bar | param=ha	| foo=bar
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : 
+01.01.25 00:00:00.000  LDAP        ( INFO    ) :  
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : 
+
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : 
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : 	
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : '\x00'	
+
+ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : x | userinput='\x00'	
+
+ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+01.01.25 00:00:00.000  LDAP        ( INFO    ) : x | '\x00'	
+
+ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~=x
 01.01.25 00:00:00.000  DEBUG_EXIT

@@ -178,14 +178,6 @@ def test_logging(tmp_path, debug_backend, strucutured):
     logger.info({'msg': 'logger.info({"msg": "msg"}, "foo": "bar")', 'foo': 'bar'})
     logger.info('logger.info("msg", extra={"foo": "bar"})', extra={'foo': 'bar'})
     logger.info('logger.info("msg %s", "addition", extra={"foo": "bar"})', '%s', extra={'foo': 'bar'})
-    logger.info('contains null (\x00) byte')
-    logger.info('contains', extra={'null': '(\x00) byte'})
-    logger.info('contains new (\n) line')  # FIXME: new line allowed
-    logger.info('contains', extra={'new': '(\n) line'})
-    logger.info('contains', extra={'new(\n) ': 'line'})
-    logger.info('muha\t| foo=bar')  # FIXME: no escaping
-    logger.info('muha', extra={'param': 'ha\t| foo=bar'})  # FIXME: no escaping
-    logger.info('muha\t| foo=bar', extra={'param': 'ha\t| foo=bar'})  # FIXME: no escaping
     for i in [False, True]:
         logger.univention_debug_handler.formatter.add_full_tracebacks = i
         try:
@@ -195,6 +187,23 @@ def test_logging(tmp_path, debug_backend, strucutured):
             child.exception('child.exception("full_tb=%s")', i)
         logger.info('logger.info("full_tb=%s", stack_info=True)', i, stack_info=True)
     logger.error('logger.error("msg", extra={"traceback": "<TRACEBACK>"})', extra={'traceback': '<TRACEBACK>'})
+    # security
+    logger.info('contains null (\x00) byte')
+    logger.info('contains', extra={'null': '(\x00) byte'})
+    logger.info('contains new (\n) line')  # FIXME: new line allowed
+    logger.info('contains', extra={'new': '(\n) line'})
+    logger.info('contains', extra={'new(\n) ': 'line'})
+    logger.info('muha\t| foo=bar')  # FIXME: no escaping
+    logger.info('muha', extra={'param': 'ha\t| foo=bar'})  # FIXME: no escaping
+    logger.info('muha\t| foo=bar', extra={'param': 'ha\t| foo=bar'})  # FIXME: no escaping
+    logger.info('')
+    logger.info(' ')
+    logger.info('\n')
+    logger.info('\r')
+    logger.info('\t')
+    logger.info(''.join(map(chr, range(0x80))))
+    logger.info('x', extra={'userinput': ''.join(map(chr, range(0x80)))})
+    logger.info('x', extra={''.join(map(chr, range(0x80))): 'x'})
 
     logger.univention_debug_handler.close()
 
