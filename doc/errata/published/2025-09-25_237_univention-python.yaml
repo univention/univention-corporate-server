@@ -8,3 +8,6 @@ desc: |
  This update addresses the following issues:
  * Logging has been adapted to be compatible with structured logging.
 bug: [58627]
+erratum: 237
+announced: 2025-09-25
+support: core
