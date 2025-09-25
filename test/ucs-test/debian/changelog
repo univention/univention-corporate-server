@@ -1,3 +1,9 @@
+ucs-test (12.3.11) unstable; urgency=medium
+
+  * Bug #58627: new logging format
+
+ -- Felix Botner <botner@univention.de>  Thu, 25 Sep 2025 09:47:59 +0200
+
 ucs-test (12.3.10) unstable; urgency=medium
 
   * Bug #58627: execute test case with english locale

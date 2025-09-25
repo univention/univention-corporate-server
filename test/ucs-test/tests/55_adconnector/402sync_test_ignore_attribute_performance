@@ -81,8 +81,7 @@ nTSecurityDescriptor: $ntsd3
 sleep 10 ## Wait for replication attempt
 
 { # Extract replication time from log
-	RE_LOGTIMESTAMP="\([0-9]*\.[0-9]*\.[0-9]* [0-9]*:[0-9]*:[0-9]*\.[0-9]*\)"
-	RE_UNIVENTION_DEBUG="$RE_LOGTIMESTAMP LDAP *([^)]*):"
+	RE_UNIVENTION_DEBUG=".*LDAP.*PROCESS.*univention.connector.ad:"
 	RE_START="^$RE_UNIVENTION_DEBUG POLL FROM CON: Incoming .*"
 	RE_END="^$RE_UNIVENTION_DEBUG POLL FROM CON: Processed .*"
 
