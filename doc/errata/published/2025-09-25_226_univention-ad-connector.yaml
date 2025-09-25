@@ -10,3 +10,6 @@ desc: |
    logging. The UCR variable `connector.*/debug/level` now allows the value 5
    for enabling logging of TRACE log messages.
 bug: [58644]
+erratum: 226
+announced: 2025-09-25
+support: core
