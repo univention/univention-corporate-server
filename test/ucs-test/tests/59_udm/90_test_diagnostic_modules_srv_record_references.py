@@ -57,9 +57,10 @@ def create_srv_record(udm, zone, target):
         ucr.get("hostname"),
         uts.random_name(),
         "%s.%s" % (uts.random_name(), uts.random_dns_record()),
-        "%s.%s" % (ucr.get("hostname"), ucr.get("domainname")),
+        # FQDN without trailing dot is automatically corrected by S4 connector
+        # "%s.%s" % (ucr.get("hostname"), ucr.get("domainname")),
     ],
-    ids=["hostname", "random_hostname", "random_fqdn", "local_fqdn"],
+    ids=["hostname", "random_hostname", "random_fqdn"],
 )
 def test_invalid_target(udm, test_diagnostic_module, create_forward_zone, target) -> None:
     """Check that invalid targets in SRV records are identified."""
