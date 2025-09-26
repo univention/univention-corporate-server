@@ -3,7 +3,7 @@ release: "5.2"
 version: [2,3]
 scope: ucs_5.2-0-errata5.2-3
 src: linux
-fix: 6.1.153-1
+fix: 6.1.153+1
 desc: |
  This update addresses the following issues:
  * CVSS score unknown. (CVE-2025-40300, CVE-2025-38677, CVE-2025-38676,
@@ -29,4 +29,4 @@ cve:
 - CVE-2025-23143
 - CVE-2024-58240
 - CVE-2024-57924
-note: This is the 1st of two parts.
+note: This is the 2nd of two parts.
