@@ -209,7 +209,15 @@ def test_diagnostic_module() -> Callable[[str, bool], []]:
             subprocess.call(["pkill", "-f", "/usr/sbin/univention-management-console-module -m diagnostic"])
             args = ['/usr/bin/univention-run-diagnostic-checks', '--username', account.username, '--bindpwdfile', fd.name, "--test", module]
             proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            stdout, _ = proc.communicate()
+            stdout, stderr = proc.communicate()
+        if stdout:
+            print("--- stdout of diagnostic module ---")
+            print(stdout.decode('UTF-8', 'replace'))
+            print("---")
+        if stderr:
+            print("--- stderr of diagnostic module ---")
+            print(stderr.decode('UTF-8', 'replace'))
+            print("---")
         params = {
             success or failed: {
                 'success': bool(success and not failed),
