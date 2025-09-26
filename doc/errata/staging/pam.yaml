@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [9, 10]
+scope: ucs_5.0-0-errata5.0-10
+src: pam
+fix: 1.3.1-5+deb10u1A~5.0.10.202509260930
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.8 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H).
+   (CVE-2025-6020)
+ * CVSS score 5.5 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H).
+   (CVE-2024-22365)
+bug: [58663]
+cve:
+- CVE-2024-22365
+- CVE-2025-6020
