@@ -6,6 +6,7 @@
 # SPDX-FileCopyrightText: 2011-2026 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+# import base64
 import copy
 import functools
 import inspect
@@ -42,8 +43,8 @@ from univention.management.console.modules.decorators import (
 )
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import (
-    BooleanSanitizer, ChoicesSanitizer, DictSanitizer, DNSanitizer, EmailSanitizer, ListSanitizer, Sanitizer,
-    SearchSanitizer, StringSanitizer,
+    BooleanSanitizer, ChoicesSanitizer, DictSanitizer, DNSanitizer, EmailSanitizer, IntegerSanitizer, ListSanitizer,
+    Sanitizer, SearchSanitizer, StringSanitizer,
 )
 
 from .tools import LicenseError, LicenseImport, check_license, dump_license, install_opener, urlopen
@@ -572,6 +573,12 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
                     MODULE.process('The LDAP object for the LDAP DN %s could not be found', ldap_dn)
         return result
 
+    def thread_finished_callback(self, thread, result, request):
+        if not isinstance(result, BaseException):
+            self.finished(request.id, result, headers=getattr(request, 'response_headers', None))
+            return
+        super().thread_finished_callback(thread, result, request)
+
     @sanitize(
         objectPropertyValue=PropertySearchSanitizer(
             add_asterisks=ADD_ASTERISKS,
@@ -580,6 +587,9 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         ),
         objectProperty=ObjectPropertySanitizer(required=True),
         fields=ListSanitizer(),
+        # page=IntegerSanitizer(minimum=1),
+        # size=IntegerSanitizer(minimum=0, default=0),
+        # context_id=StringSanitizer(default=None),
     )
     @threaded
     def query(self, request):
@@ -598,6 +608,19 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         return: [ { '$dn$' : <LDAP DN>, 'objectType' : <UDM module name>, 'path' : <location of object> }, ... ]
         """
         ucr.load()
+        # size = request.options.get('size', '')
+        # page = request.options.get('page', '')
+        # context_id = request.options.get('context_id')
+        # if context_id is not None:
+        #     context_id = base64.b64encode(context_id)
+        size = 0
+        page = 0
+        if ranges := request.headers.get('X-Range', ''):
+            start, __, end = ranges.split('=', 1)[-1].partition('-')
+            start = int(start or 0)
+            size = int(end or 0) + 1 - start
+            page = start // size + 1
+        MODULE.error('### RG %s %s %s %s', ranges, page, size, request.headers)
         module = self._get_module_by_request(request)
 
         superordinate = request.options.get('superordinate')
@@ -628,6 +651,11 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
                 if not any(c2 for c2 in containers if c1.endswith(c2) and c2 != c1)
             ]
 
+        ctrls = {}
+        if page and size:
+            serverctrls = module.pagination_controls(getattr(self, '_context_id', None), page, size, False, 'username')
+        else:
+            serverctrls = []
         objectProperty = request.options['objectProperty']
         objectPropertyValue = request.options['objectPropertyValue']
         scope = request.options.get('scope', 'sub')
@@ -635,8 +663,15 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         fields = (set(request.options.get('fields', []) or []) | {objectProperty}) - {'name', 'None'}
         result = []
         for container in containers:
-            result.extend(module.search(container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden, allow_asterisks=USE_ASTERISKS) or [])
+            result.extend(module.search(container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden, allow_asterisks=USE_ASTERISKS, serverctrls=serverctrls, response=ctrls) or [])
 
+        length = len(result)
+        if vlv := ctrls.get('vlv'):
+            self._context_id = vlv.context_id
+            length = vlv.content_count
+            request.response_headers = {'Content-Range': f'items {start}-{size + start - 1}/{length - 1}'}
+        else:
+            request.response_headers = {'Content-Range': f'items 0-{length - 1}/{length - 1}'}
         entries = []
         object_type = request.options.get('objectType', request.flavor)
 
@@ -1142,6 +1177,9 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
 
     @sanitize(
         container=StringSanitizer(required=True),
+        page=IntegerSanitizer(minimum=1),
+        size=IntegerSanitizer(minimum=0, default=0),
+        context_id=StringSanitizer(default=None),
     )
     def nav_object_query(self, request):
         """
@@ -1156,6 +1194,9 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
         return: [ { '$dn$' : <LDAP DN>, 'objectType' : <UDM module name>, 'path' : <location of object> }, ... ]
         """
         object_type = request.options.get('objectType', '')
+        size = request.options.get('size', '')
+        page = request.options.get('page', '')
+        context_id = request.options.get('context_id', '')
         ldap_connection, ldap_position = self.get_ldap_connection()
         if object_type not in ('None', '$containers$'):
             # we need to search for a specific objectType, then we should call the standard query
@@ -1173,7 +1214,7 @@ class Instance(Base, ProgressMixin, metaclass=UDMModuleMeta):
 
         def _thread(container):
             entries = []
-            for module, obj in list_objects(container, object_type=object_type, ldap_connection=ldap_connection, ldap_position=ldap_position):
+            for module, obj in list_objects(container, object_type=object_type, ldap_connection=ldap_connection, ldap_position=ldap_position, page=page, size=size, context_id=context_id):
                 if obj is None:
                     continue
                 if object_type != '$containers$' and module.childs:

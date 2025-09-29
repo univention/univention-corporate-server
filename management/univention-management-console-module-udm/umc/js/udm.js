@@ -857,11 +857,17 @@ define([
 				});
 			}
 
+			var pagination = this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/search/pagination/enabled'] || this._ucr['directory/manager/web/modules/pagination/enabled'] || false;
+			var size = parseInt(this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/search/pagination/size'] || this._ucr['directory/manager/web/modules/pagination/size'], 10) || 50;
+			var maxsize = parseInt(this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/search/pagination/maxsize'] || this._ucr['directory/manager/web/modules/pagination/maxsize'], 10) || 250;
+
 			// the navigation needs a slightly modified store that uses the UMC query
 			// function 'udm/nav/object/query'
 			var _store = this.moduleStore;
-			if ('navigation' == this.moduleFlavor) {
-				_store = store(this.idProperty, 'udm/nav/object', this.moduleFlavor);
+			if (pagination) {
+				_store = store(this.idProperty, 'udm', this.moduleFlavor, 'dstore');
+			} else if ('navigation' == this.moduleFlavor) {
+				_store = store(this.idProperty, 'udm/nav/object', this.moduleFlavor, pagination ? 'dstore' : null);
 			}
 
 			var additionalGridViews = {};
@@ -878,6 +884,16 @@ define([
 				moduleStore: _store,
 				footerFormatter: _footerFormatter,
 				additionalViews: additionalGridViews,
+				paginationEnabled: pagination,
+				paginationMethod: 'paged',
+				gridOptions: pagination ? {
+					bufferRows: 10,
+					rowsPerPage: size,
+					minRowsPerPage: size,
+					maxRowsPerPage: maxsize,
+					pagingMethod: 'throttleDelayed', // "debounce": wait until scrolling stops; "throttleDelayed": load even as scrolling continues;
+					keepScrollPosition: true,
+				} : undefined,
 				defaultAction: lang.hitch(this, function(keys, items) {
 					if ('navigation' == this.moduleFlavor && (this._searchForm._widgets.objectType.get('value') == '$containers$' || items[0].$childs$ === true)) {
 						return 'workaround';
@@ -1828,7 +1844,10 @@ define([
 				if ('navigation' != this.moduleFlavor || this._tree.get('path').length) {
 					this._grid.filter(vals);
 				}
-				this._grid.set('columns', columns);
+				// FIXME: dstore make a HTTP request when pagination is enabled
+				if (!this._grid.paginationEnabled) {
+					this._grid.set('columns', columns);
+				}
 			}));
 		},
 

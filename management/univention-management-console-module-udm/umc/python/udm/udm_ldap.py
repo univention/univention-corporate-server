@@ -1366,10 +1366,12 @@ def virtual_list_view(page, items_per_page, context_id=None):
     )
 
 
-def list_objects(container, object_type=None, ldap_connection=None, ldap_position=None):
+def list_objects(container, object_type=None, ldap_connection=None, ldap_position=None, page=None, page_size=0, context_id=None):
     """Yields UDM objects"""
+    response = {}
+    serverctrls = [] if not page_size else [sort_request(['univentionObjectType', None]), virtual_list_view(page, page_size, context_id)]  # TODO: where do we know from, how we can sort?
     try:
-        result = ldap_connection.authz_connection.search(base=container, scope='one')
+        result = ldap_connection.authz_connection.search(base=container, scope='one', serverctrls=serverctrls, response=response)
     except (LDAPError, udm_errors.ldapError):
         raise
     except udm_errors.noObject:

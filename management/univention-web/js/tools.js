@@ -543,9 +543,11 @@ define([
 					withCredentials: args.withCredentials
 				});
 
-				call = call.then(function(data) {
+				call = call.response.then(function(response) {
 					tools._updateSession();
-					return data;
+					var data = response.data;
+					data.response = response;
+					return data
 				});
 
 				// handle XHR errors unless not specified otherwise

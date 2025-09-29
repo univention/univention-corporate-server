@@ -15,6 +15,7 @@ define([
 	"dojo/dom-geometry",
 	"dojo/dom-style",
 	"dojo/dom-class",
+	"dojo/when",
 	"dojo/topic",
 	"dojo/aspect",
 	"dojo/on",
@@ -24,11 +25,14 @@ define([
 	"dijit/MenuItem",
 	"dojox/html/entities",
 	"dgrid/OnDemandGrid",
+	"dgrid/Grid",
 	"dgrid/Selection",
 	"dgrid/extensions/DijitRegistry",
+	"dgrid/extensions/Pagination",
 	"dgrid/Selector",
 	"dstore/legacy/StoreAdapter",
 	"dstore/Memory",
+	"dstore/Cache",
 	"./Button",
 	"./DropDownButton",
 	"./CheckBox",
@@ -40,12 +44,13 @@ define([
 	"../tools",
 	"../render",
 	"../i18n!"
-], function(declare, lang, array, kernel, win, construct, attr, geometry, style, domClass,
+], function(declare, lang, array, kernel, win, construct, attr, geometry, style, domClass, when,
 		topic, aspect, on, dijitRegistry, Destroyable, Menu, MenuItem, entities,
-		OnDemandGrid, Selection, DijitRegistry, Selector, StoreAdapter, Memory, Button, DropDownButton, CheckBox, Text,
+		OnDemandGrid, Grid, Selection, DijitRegistry, Pagination, Selector, StoreAdapter, Memory, Cache, Button, DropDownButton, CheckBox, Text,
 		ContainerWidget, StandbyMixin, Tooltip, _RegisterOnShowMixin, tools, render, _) {
 
-	var _Grid = declare([OnDemandGrid, Selection, Selector, DijitRegistry], {
+	var _GridBase = {
+
 		getItem: function(item) {
 			// For legacy dojox grid compatibility
 			// e.g. formaters that expect to be working with a dojox grid
@@ -68,7 +73,7 @@ define([
 			}));
 		},
 
-		_setSort: function() {
+		_setSort: function() {  // overwritten
 			var selectedIDs = this.getSelectedIDs();
 			this.inherited(arguments);
 			this.selectIDs(selectedIDs);
@@ -93,13 +98,17 @@ define([
 			}
 		},
 
+		_fetchSync: function() {
+			// fetch (only the locally cached results, don't query server again)
+			return this.collection.cachingStore ? this.collection.cachingStore.fetchSync() : this.collection.fetchSync();
+		},
+
 		_updateHeaderCheckboxes: function () {
 			// dgrid bug #292: the header checkbox doesn't work if all entries there selected manually
-			this.allSelected = array.every(this.collection.fetchSync(), function(item) {
+			this.allSelected = array.every(this._fetchSync(), function(item) {
 				return this.isSelected(item);
 			}, this);
 
-			/* jshint eqeqeq: false */
 			var lenCols = this._selectorColumns.length;
 			for (var iCols = 0; iCols < lenCols; iCols++) {
 				var column = this._selectorColumns[iCols];
@@ -135,7 +144,20 @@ define([
 				}
 			}
 		}
-	});
+	};
+	var _OnDemandGrid = declare([OnDemandGrid, Selection, Selector, DijitRegistry], _GridBase);
+	var _PagedGrid = declare([Grid, Pagination, Selection, Selector, DijitRegistry], lang.mixin(_GridBase, {
+		i18nPagination: {
+			status: _('${start} - ${end} of ${total} objects'),
+			gotoFirst: _('Go to first page'),
+			gotoNext: _('Go to next page'),
+			gotoPrev: _('Go to previous page'),
+			gotoLast: _('Go to last page'),
+			gotoPage: _('Go to page'),
+			jumpPage: _('Jump to page'),
+			rowsPerPage: _('Number of rows per page')
+		}
+	}));
 
 	var _DropDownButton = declare([DropDownButton], {
 		_onClick: function(evt) {
@@ -210,6 +232,14 @@ define([
 
 		// turn off gutters by default
 		gutters: false,
+
+		// uses a pagination based store/memory compatibility layer
+		paginationEnabled: false,
+
+		// method of pagination
+		// "demand": load pages during scroll
+		// "paged": show a page footer with selectable pages
+		paginationMethod: 'demand',
 
 		// auto escape all values written into the cells
 		allowHTML: true,
@@ -372,7 +402,7 @@ define([
 		},
 
 		_selectAll: function() {
-			this._grid.collection.fetch().forEach(lang.hitch(this, function(item){
+			this._fetch().forEach(lang.hitch(this, function(item){
 				var row = this._grid.row(item);
 				this._grid.select(row);
 			}));
@@ -385,6 +415,21 @@ define([
 			}
 		},
 
+		_fetch: function() {
+			// fetch (only the locally cached results, don't query server again)
+			return this.collection.cachingStore ? this.collection.cachingStore.fetch() : this.collection.fetch();
+		},
+
+		_fetchSync: function() {
+			// fetchSync (only the locally cached results, don't query server again)
+			if (!this.collection) {
+				var deferred = new dojo.Deferred();
+				deferred.resolve([]);
+				return deferred;
+			}
+			return this.collection.cachingStore ? this.collection.cachingStore.fetchSync() : this.collection.fetchSync();
+		},
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
@@ -392,46 +437,81 @@ define([
 			this._widgetList = [];
 			this._disabledIDs = {};
 			this._views = {};
-			this._store = new StoreAdapter({
-				objectStore: this.moduleStore,
-				isUmcpCommandStore: typeof(this.moduleStore.umcpCommand) === "function",
-				idProperty: this.moduleStore.idProperty
-			});
-			if (this._store.isUmcpCommandStore) {
-				this.own(this.moduleStore.on('Change', lang.hitch(this, function() {
+
+			if (!this.paginationEnabled) {
+				this._store = new StoreAdapter({
+					objectStore: this.moduleStore,
+					isUmcpCommandStore: typeof(this.moduleStore.umcpCommand) === "function",
+					idProperty: this.moduleStore.idProperty
+				});
+				if (this._store.isUmcpCommandStore) {
+					this.own(this.moduleStore.on('Change', lang.hitch(this, function() {
+						this.filter(this.query);
+					})));
+				} else if (this.moduleStore.query().observe) {
+					this.moduleStore.query().observe(lang.hitch(this, function() {
+						this.filter(this.query);
+					}));
+				}
+				this.collection = this.createMemory();
+			} else {
+				// FIXME: reloading doesn't work because 2 different stores are in use by the module
+
+				// dstore/Trackable has 'add', 'update', 'delete'
+				this.own(this.moduleStore.on("add,update,delete", lang.hitch(this, function() {
 					this.filter(this.query);
 				})));
-			} else if (this.moduleStore.query().observe) {
-				this.moduleStore.query().observe(lang.hitch(this, function() {
-					this.filter(this.query);
-				}));
 			}
-			this.collection = new Memory({
-				idProperty: this._store.idProperty
+		},
+		createMemory: function() {
+			var mem = new Memory({
+				idProperty: this.moduleStore.idProperty
 			});
 			if (this.naturalSort) {
-				this.collection._createSortQuerier = lang.hitch(this, '_createSortQuerier');
+				mem._createSortQuerier = lang.hitch(this, '_createSortQuerier');
 			}
+			return mem;
+		},
+
+		createCollection: function(query) {
+			var CachedStore = this.moduleStore.constructor.createSubclass([Cache], {
+				cachingStore: this.createMemory()
+			});
+			return new CachedStore(this.moduleStore.filter(query || {}));
 		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
 
 			this._buildHeader();
+			var _Grid = _OnDemandGrid;
+			if (this.paginationEnabled && this.paginationMethod == 'paged') {
+				_Grid = _PagedGrid;
+			}
 
 			this._grid = new _Grid(lang.mixin({
 				collection: this.collection,
-				bufferRows: 0,
-				_refresh: lang.hitch(this, '_refresh'),
+				bufferRows: this.paginationEnabled ? 10 : 0,
+				minRowsPerPage: 50,
+				maxRowsPerPage: 200,
+				pagingMethod: 'throttleDelayed',  // "debounce": wait until scrolling stops; "throttleDelayed": load even as scrolling continues;
+				keepScrollPosition: true,
+				/**/
+				rowsPerPage: 50,
+				pagingLinks: true,
+				pagingTextBox: true,
+				firstLastArrows: true,
+				/**/
+				_refresh: lang.hitch(this, '_refresh'),  // from old grid, still in use by InterfaceGrid or computerroom
 				selectionMode: 'extended',
 				allowSelectAll: true,
 				allowSelect: lang.hitch(this, 'allowSelect'),
 				_selectAll: lang.hitch(this, '_selectAll'),
-				update: lang.hitch(this, 'update'),
+				update: lang.hitch(this, 'update'),  // from old grid, still in use by InterfaceGrid or computerroom
 				selectAll: function() {
 					if (this.getSelectedIDs().length === 0) {
 						this.inherited(arguments);
-						// TODO check
+						// TODO: check
 						this._selectAll(); // Bug: dgrid only selects visible entries, we want to select everything. See also dgrid #1198
 					} else {
 						this.clearSelection();
@@ -458,25 +538,37 @@ define([
 			// register event handler
 			//
 
-			this._grid.on('dgrid-select', lang.hitch(this, '_selectionChanged'));
-			this._grid.on('dgrid-deselect', lang.hitch(this, '_selectionChanged'));
+			this.own(this._grid.on('dgrid-select', lang.hitch(this, '_selectionChanged')));
+			this.own(this._grid.on('dgrid-deselect', lang.hitch(this, '_selectionChanged')));
 
 			// if the row that is deselected is no longer in the dom (which happens when scrolling due to
 			// 'farOffRemoval' from OnDemandList) the 'dgrid-deselect' event is not fired
 			aspect.after(this._grid, 'clearSelection', lang.hitch(this, '_selectionChanged'));
 
-			this._grid.on(".dgrid-row:contextmenu", lang.hitch(this, '_updateContextItem'));
+			this.own(this._grid.on(".dgrid-row:contextmenu", lang.hitch(this, '_updateContextItem')));
 
-			this.on('filterDone', lang.hitch(this, '_updateGlobalCanExecute'));
+			this.own(this._grid.on('dgrid-refresh-complete, fetch-done', lang.hitch(this, '_updateGlobalCanExecute')));
+			this.own(this._grid.on('dgrid-refresh-complete, fetch-done', lang.hitch(this, '_updateFooterContent')));
+			this.own(this._grid.on('dgrid-refresh-complete, fetch-done', lang.hitch(this, '_cleanupWidgets')));
+			this.own(this._grid.on("dgrid-refresh-start, fetch-start", lang.hitch(this, function() { this.standby(true); })));
+			this.own(this._grid.on("dgrid-refresh-complete, fetch-done", lang.hitch(this, function() {
+				this.standby(false);
+				this.onFilterDone(true);
+			})));
 
-			this._grid.on('dgrid-refresh-complete', lang.hitch(this, '_cleanupWidgets'));
+			this.own(this._grid.on("dgrid-error, fetch-error", lang.hitch(this, function(error) {
+				this.standby(false);
+				error = tools.parseError(error);
+				this._statusMessage.set('content', _('Could not load search results'));
+				this._updateFooterContent();
+			})));
 
 			// aspect.after(this._grid, '_updateHeaderCheckboxes', lang.hitch(this, '_updateHeaderSelectClass'));
 			// aspect.before(this._grid, '_updateHeaderCheckboxes', lang.hitch(this, '_updateAllSelectedStatus'));
 
 			if (this.query) {
 				this.filter(this.query);
-			} else if (!this._store.isUmcpCommandStore) {
+			} else if (!this.paginationEnabled && !this._store.isUmcpCommandStore) {
 				this.filter();
 			}
 
@@ -547,6 +639,9 @@ define([
 				console.warn("unknown grid view selected");
 				return;
 			}
+			if (this.activeViewMode == newView) {
+				return;
+			}
 			domClass.toggle(this._statusMessage.domNode, 'dijitDisplayNone', newView === 'tile');
 			if (newView === 'tile') {
 				this._grid.set('selectionMode', 'single');
@@ -558,8 +653,10 @@ define([
 				return this._views[view].baseClass;
 			}, this);
 			domClass.replace(this.domNode, this._views[newView].baseClass, allBaseClasses);
-			this._grid.refresh();
-			this._grid.resize();
+			if (this.activeViewMode) {  // don't make HTTP request when setting this initially for the first time
+				this._grid.refresh();
+				this._grid.resize();
+			}
 			this.activeViewMode = newView;
 
 			// update header button css class
@@ -1139,7 +1236,7 @@ define([
 			this.disabled = disabled;
 
 			// disable items
-			this._grid.collection.fetch().forEach(lang.hitch(this, function(item) {
+			this._fetch().forEach(lang.hitch(this, function(item) {
 				var id = item[this.moduleStore.idProperty];
 				this.setDisabledItem(id, disabled);
 			}));
@@ -1156,7 +1253,7 @@ define([
 
 		_updateFooterContent: function() {
 			var nItems = this.getSelectedIDs().length;
-			this._grid.collection.fetch().totalLength.then(lang.hitch(this, function(nItemsTotal) {
+			when(this._grid._total).then(lang.hitch(this, function(nItemsTotal) {
 				var msg = '';
 				var showCounter = !this.gridOptions || !this.gridOptions.selectionMode || this.gridOptions.selectionMode !== 'none';
 				if (typeof this.footerFormatter === "function") {
@@ -1234,11 +1331,13 @@ define([
 		},
 
 		filter: function(query, options) {
+			// this._grid.set('collection', this.createCollection(query));
+			// return;
 			style.set(this._grid.headerNode, 'right', ''); // unset 'right' so that the grid resizes correctly
 			domClass.add(this.domNode, this.baseClass + '--filtering');
-			this.standby(true);
+			// this.standby(true);
 			return this._filter(query, options).then(lang.hitch(this, function() {
-				this.standby(false);
+				// this.standby(false);
 				domClass.remove(this.domNode, this.baseClass + '--filtering');
 
 				// Normally dgrid either has always a scrollbar or no scrollbar at all.
@@ -1262,21 +1361,54 @@ define([
 					}
 				});
 			}
+			if (this.paginationEnabled) {
+				this.collection = this._store = this.createCollection(addedFieldsQuery);
+				this._grid.set("collection", this.collection);
+				// this.collection.fetch();
+				// this._grid.set("collection", this.moduleStore.newCollection(addedFieldsQuery));
+				var deferred = new dojo.Deferred();
+				deferred.resolve();
+				return deferred;
+			}
+
 			var onSuccess = lang.hitch(this, function(result) {
-				this.collection.setData(result);
-				this._grid.refresh();
+				// if (this.collection.cachingStore) {
+				// 	// Cache
+				// 	this.collection.cachingStore.setData(result);
+				// 	this._grid.set('collection', this.collection.filter(addedFieldsQuery));
+				// } else if (this.collection.setData) {
+					// Memory
+					this.collection.setData(result);
+					this._grid.refresh();
+				// }
+
 				this._updateFooterContent();
 				this.onFilterDone(true);
+				return result;
 			});
+
 			var onError = lang.hitch(this, function(error) {
 				error = tools.parseError(error);
 				this._statusMessage.set('content', _('Could not load search results'));
-				this.collection.setData([]);
-				this._grid.refresh();
+
+				// if (this.collection.cachingStore) {
+				// 	this.collection.cachingStore.setData([]);
+				// 	this._grid.set('collection', this.collection.filter({}));
+				// } else if (this.collection.setData) {
+					this.collection.setData([]);
+					this._grid.refresh();
+				// }
+
 				this._updateFooterContent();
+				throw error;
 			});
+
 			// store the last query
 			this.query = query;
+
+			// // dstore: filter returns a Collection, fetch() returns a Promise
+			// return this.collection.filter(addedFieldsQuery).fetch().then(onSuccess, onError);
+
 			// umcpCommand doesn't know a range option -> need to cache
 			// StoreAdapter doesn't work with fetchSync -> need to cache
 			return this._store.filter(addedFieldsQuery, options).fetch().then(onSuccess, onError);
@@ -1285,6 +1417,7 @@ define([
 		getAllItems: function() {
 			// summary:
 			//		Returns a list of all items
+			return this._fetchSync();
 			var items = this._grid.collection.fetchSync();
 			return items;
 		},
@@ -1298,7 +1431,7 @@ define([
 			var ids = this.getSelectedIDs();
 			var filter = new this._grid.collection.Filter();
 			var selectedItemsFilter = filter.in(this.moduleStore.idProperty, ids);
-			var items = this._grid.collection.filter(selectedItemsFilter).fetchSync();
+			var items = (this.collection.cachingStore ? this.collection.cachingStore : this._grid.collection).filter(selectedItemsFilter).fetch();
 			return items;
 		},
 
