@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: 2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+import ipaddress
 import socket
 import urllib.parse
 from collections.abc import Iterator
@@ -45,9 +46,15 @@ class PortalChecker:
                 links = [links]
             for lang, link in links:
                 parsed_link = urllib.parse.urlparse(link)
-                host = parsed_link.netloc.strip("0123456789. ")
-                if not host:  # empty host ==> relative URL or IP address but no hostname/fqdn
-                    continue
+                host = parsed_link.hostname if parsed_link.netloc else ""
+                try:
+                    ipaddress.ip_address(host)
+                except ValueError:
+                    if not host.strip(" "):  # Not an IP but empty host ==> relative URL address but no hostname/fqdn
+                        continue
+                else:
+                    continue  # it's an IP address
+
                 if host not in self.checked_hosts:
                     self.checked_hosts[host] = self.is_valid_host(host)
                 if not self.checked_hosts[host]:
