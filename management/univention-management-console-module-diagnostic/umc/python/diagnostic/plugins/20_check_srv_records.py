@@ -53,13 +53,13 @@ class DNSReferenceChecker:
             return False
         target = target.strip(' .')
         try:
-            dns.resolver.resolve(target, 'A')
+            answer = dns.resolver.resolve(target, 'A')
         except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
             try:
-                dns.resolver.resolve(target, 'AAAA')
+                answer = dns.resolver.resolve(target, 'AAAA')
             except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
                 return False
-        return True
+        return answer.qname == answer.canonical_name
 
     def umc_link(self, dn: str) -> tuple[str, dict[str, Any]]:
         text = 'udm:dns/dns'
