@@ -1,3 +1,10 @@
+univention-management-console-module-diagnostic (8.3.5) unstable; urgency=medium
+
+  * Bug #58634: Fix CNAME logic in 20_check_srv_records
+  * Bug #58634: Fix IP address logic in 24_portal_entries
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Sep 2025 16:59:36 +0200
+
 univention-management-console-module-diagnostic (8.3.4) unstable; urgency=medium
 
   * Bug #58644: make logging compatible to structured logging
