@@ -1,0 +1,16 @@
+product: ucs
+release: "5.2"
+version: [3]
+scope: ucs_5.2-0-errata5.2-3
+src: univention-management-console
+fix: 14.3.3
+desc: |
+ This update addresses the following issues:
+ * UMC OIDC now supports the log in with an account
+   from an external Identiy Provider in Keycloak.
+   These "federated accounts" must provide additional
+   information, like a UUID and guardian role strings,
+   to be accepted and useful in UMC. As UDM authorization for
+   these accounts is based on the roles, this feature requires
+   the UDM delegative administration.
+bug: [58652]
