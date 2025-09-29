@@ -152,7 +152,7 @@ class ClientOIDC(Client):
             assert kerberos_redirect_url, res.text
         res = self.session.get(kerberos_redirect_url)
         login_link = self.get_login_link(res)
-        self.auth_server = urlparse(login_link).netloc
+        self.auth_server = login_link.partition('/realms/')[0]
         # login
         params = {'username': username, 'password': password}
         res = self.session.post(login_link, data=params)
@@ -161,11 +161,12 @@ class ClientOIDC(Client):
         self.cookies.update(self.session.cookies.items())
 
     def logout(self) -> None:
-        url = f'https://{self.auth_server}/realms/ucs/protocol/openid-connect/logout'
-        res = self.session.get(url, verify=False)
+        logout_endpoint = f'{self.auth_server}/realms/ucs/protocol/openid-connect/logout'
+        server = urlparse(logout_endpoint)
+        res = self.session.get(logout_endpoint, verify=False)
         assert res.status_code == 200, res.text
         session_code, url = self.get_session_code(res.text)
-        res = self.session.post(f'https://{self.auth_server}{url}', data={'session_code': session_code}, verify=False)
+        res = self.session.post(f'{server.scheme}://{server.netloc}{url}', data={'session_code': session_code}, verify=False)
         assert res.status_code == 200, res.text
 
     def get_session_code(self, text):

@@ -1,3 +1,9 @@
+ucs-test (12.3.16) unstable; urgency=medium
+
+  * Bug #58269: parallel umc oidc login test
+
+ -- Felix Botner <botner@univention.de>  Mon, 29 Sep 2025 14:12:04 +0200
+
 ucs-test (12.3.15) unstable; urgency=medium
 
   * Bug #53564: ignore tracebacks
