@@ -1690,7 +1690,7 @@ class ucs:
                 rdn_store = ldap.dn.explode_dn(dn_mapped)[0]
                 if self.lo_ad.base == dn_mapped[-len(self.lo_ad.base):] and len(self.lo_ad.base) > len(self.lo.base):
                     # avoid additional _subtree_replace in case dn_mapping_function already found an AD DN (can happen for account type objects)
-                    ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the AD base, don't do additional ldap base mapping." % dn_mapped)
+                    ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the AD base, don't do additional ldap base mapping." % (dn_mapped,))
                 else:
                     for mapping in MAPPING.position_mapping:  # note: position_mapping == [] by default
                         replaced_dn_mapped_lower = self._subtree_replace(dn_mapped.lower(), mapping[0].lower(), mapping[1])
@@ -1701,7 +1701,7 @@ class ucs:
                     if dn_mapped == object[dntype]:
                         if self.lo_ad.base == dn_mapped[-len(self.lo_ad.base):] and len(self.lo_ad.base) > len(self.lo.base):
                             # Introduced via Bug #13745#c14 : avoid default _subtree_replace in case position_mapping was applied
-                            ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the AD base, don't do this again." % dn_mapped)
+                            ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the AD base, don't do this again." % (dn_mapped,))
                         else:
                             dn_mapped = self._subtree_replace(object[dntype].lower(), self.lo.base.lower(), self.lo_ad.base)  # FIXME: lo_ad may change with other connectors
                 # write the correct upper and lower case back to the DN
