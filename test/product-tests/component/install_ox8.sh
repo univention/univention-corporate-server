@@ -4,7 +4,7 @@
 
 # install OX 8 (kubernetes)
 # see https://git.knut.univention.de/univention/prof-services/team-enterprise/zit-sh/-/issues/56
-curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.23.0/bin/linux/amd64/kubectl && chmod +x ./kubectl && mv ./kubectl /usr/local/bin/kubectl
+curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.30.0/bin/linux/amd64/kubectl && chmod +x ./kubectl && mv ./kubectl /usr/local/bin/kubectl
 curl -LO https://get.helm.sh/helm-v3.16.2-linux-amd64.tar.gz && tar -zxvf helm-v3.16.2-linux-amd64.tar.gz && mv linux-amd64/helm /usr/local/bin/helm
 curl -Lo ./kind https://github.com/kubernetes-sigs/kind/releases/download/v0.24.0/kind-linux-amd64 && chmod +x ./kind && mv ./kind /usr/local/bin/kind
 apt install --yes docker.io
@@ -72,6 +72,12 @@ sed -i 's|AVERAGE_CONTEXT_SIZE: "200"|AVERAGE_CONTEXT_SIZE: "200"\n    /opt/open
 # activate deputy permission provisioning
 sed -i 's|open-xchange-drive-client-windows: disabled|open-xchange-drive-client-windows: disabled\n      open-xchange-deputy: enabled\n|g' values.yaml
 sed -i 's|com.openexchange.hostname: "as8.lab.test"|com.openexchange.hostname: "as8.lab.test"\n    com.openexchange.dovecot.doveadm.endpoints: "http://dovecot-ce:8080/doveadm/v1"\n    com.openexchange.dovecot.doveadm.endpoints.totalConnections: "100"\n    com.openexchange.dovecot.doveadm.endpoints.readTimeout: "20000"\n    com.openexchange.dovecot.doveadm.endpoints.maxConnectionsPerRoute: "0"\n    com.openexchange.dovecot.doveadm.endpoints.connectTimeout: "5000"\n    com.openexchange.dovecot.doveadm.enabled: "true"\n    com.openexchange.deputy.enabled: "true"\n    com.openexchange.deputy.provider.imap.doveadm.personalNamespace: "inbox/"\n    com.openexchange.deputy.provider.imap.doveadm.sharedNamespace: "shared/"\n    com.openexchange.deputy.provider.imap.doveadm.publicNamespace: "shared/"\n|g' values.yaml
+
+# workaround for bitnami moving their images
+sed -i 's|  usePasswordFiles: false|  usePasswordFiles: false\nimage:\n  repository: bitnamilegacy/redis\n|g' values.bitnami-redis-core-mw-cache.yaml
+sed -i 's|  usePasswordFiles: false|  usePasswordFiles: false\nimage:\n  repository: bitnamilegacy/redis\n|g' values.bitnami-redis-core-mw-session-store.yaml
+sed -i 's|  usePasswordFiles: false|  usePasswordFiles: false\nimage:\n  repository: bitnamilegacy/redis\n|g' values.bitnami-redis-core-ui-mw.yaml
+sed -i 's|  usePasswordFiles: false|  usePasswordFiles: false\nimage:\n  repository: bitnamilegacy/redis\n|g' values.bitnami-redis-switchboard.yaml
 
 sed -i 's/doveadm_api_key:.*$/doveadm_api_key: "secret"/g' values.dovecot-ce.secret.yaml
 sed -i 's/    com.openexchange.filestore.s3client.s3.accessKey: /    com.openexchange.dovecot.doveadm.apiSecret: "secret"\n    com.openexchange.filestore.s3client.s3.accessKey: /g' values.secret.yaml
