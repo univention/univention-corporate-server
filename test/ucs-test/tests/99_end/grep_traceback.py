@@ -215,7 +215,7 @@ COMMON_EXCEPTIONS = (
     E('ImportError: No module named univention.debug', ['/usr/sbin/univention-management-console-module']),
     E('pkg_resources.VersionConflict:.*univention-management-console'),
     E('pkg_resources.DistributionNotFound:.*univention-management-console'),
-    E(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/tmp/.*", ['/tempfile.py.*in __del__']),
+    E(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/tmp/.*", ['/tempfile.py.*in __del__', 'saml2/sigver.py.*in read_cert_from_file']),
     E(r"univention.lib.umc.ConnectionError: \('Could not send request.', RemoteDisconnected\('Remote end closed connection without response'\)\)", ['univention-self-service-invitation'], 58380),
     E("http.client.RemoteDisconnected: Remote end closed connection without response", ['/univention/lib/umc.py'], 58380),
     E(r"...\[truncated \d+ chars\]...", ['univention-self-service-invitation'], 58380),
@@ -225,6 +225,8 @@ COMMON_EXCEPTIONS = (
     E(r'urllib3.exceptions.NewConnectionError: .*Failed to establish a new connection: \[Errno 111\] Connection refused', ['urllib3/connectionpool.py'], 58390),
     E(r'urllib3.exceptions.MaxRetryError:.*Max retries exceeded with url: /metrics-prometheus/-/reload', ['requests/adapters.py'], 58390),
     E(r'requests.exceptions.ConnectionError:.*Max retries exceeded with url: /metrics-prometheus/-/reload', ['system/monitoring-client.py'], 58390),
+    E('TypeError: base must at least be set to LDAP base', ['s4connector/s4/__init__.py".*in open_s4']),
+    E('ImportError: /usr/lib/python3/dist-packages/samba/dcerpc/base.cpython-311-x86_64-linux-gnu.so: undefined symbol: dcerpc_transport_encrypted, version DCERPC_0.0.1'),
 
     # unknown cause
     E(r"FileNotFoundError: \[Errno 2\] No such file or directory: '/var/cache/univention-config/cache'", ['univention/config_registry/handler.py']),
@@ -279,6 +281,7 @@ COMMON_EXCEPTIONS = (
 
     # Tracebacks caused by specific UCS bugs:
     E('ldap.OTHER:.*0000055B: SysErr: DSID-031A1262, problem 22', ['connector/ad/__init__.py.*in disable_user_from_ucs'], 56816),
+    E(r'ldap.ALREADY_EXISTS:.*00000526: UpdErr: DSID-031A119B, problem 6005 \(ENTRY_EXISTS\)', 'connector/__init__.py".*in __sync_file_from_ucs', 58676),
     # E(r'^ldap\.NO_SUCH_OBJECT: .*', [r'quota\.py'], 52765),
     E(r'.*OperationalError.*FATAL:.*admindiary.*', [r'admindiary_backend_wrapper\.py', '_wrap_pool_connect'], 51671),
     E(r"(OSError|FileNotFoundError): \[Errno 2\] .*: '/var/lib/samba/sysvol/.*/Policies/'", [r'sysvol-cleanup\.py'], 51670),
@@ -304,7 +307,7 @@ COMMON_EXCEPTIONS = (
     # E('^IndexError: list index out of range', ['_read_from_ldap', 'get_user_groups'], (46932, 48943)),
     # E(r"AttributeError\: \'NoneType\' object has no attribute \'searchDn\'", ['get_user_groups'], 48943),
     # E("^KeyError: 'gidNumber'", ['_ldap_pre_remove'], 51669),
-    # E(r'^(BrokenPipeError|IOError): \[Errno 32\] Broken pipe', ['process_output'], 32532),
+    E(r'^BrokenPipeError: \[Errno 32\] Broken pipe', ['process_output', 'in process_request'], 32532),
     E(r'^(ldap\.)?NOT_ALLOWED_ON_NONLEAF: .*subtree_delete:.*', ['s4_zone_delete'], (43722, 47343)),
     # E('^NoObject: No object found at DN .*', ['univention-portal-server.*in refresh']),
     # E(r"^OSError\: \[Errno 2\].*\/var\/run\/univention-management-console\/.*\.socket"),
@@ -351,6 +354,8 @@ COMMON_EXCEPTIONS = (
     E('^ldap.INSUFFICIENT_ACCESS:.*Insufficient access', ['univention/admin/uldap.py.*in modify']),
     E('^AssertionError: Authentisierung ist fehlgeschlagen. Bitte melden Sie sich erneut an. == Ungültiger Benutzername oder Passwort.'),
     E('modify/delete: uniqueMember: no such attribute.', ['__set_membership_attributes', 'ldap/ldapobject.py'], 58400),
+    E('tornado.curl_httpclient.CurlError: HTTP 599: Failed to connect to.*', ['management/console/resources.py'], 58675),
+    E('univention.management.console.resources.CouldNotConnect: HTTP 599: Failed to connect to', ['console/resources.py".*in cb'], 58675),
 
     # Tracebacks caused by specific UCS@school bugs:
     # E(r"_ldb.LdbError: \(1, 'LDAP client internal error: NT_STATUS_INVALID_PARAMETER'\)", ['univention-samba4-site-tool.py'], 54592),
@@ -364,6 +369,7 @@ COMMON_EXCEPTIONS = (
     E('^StopIteration$', ['gunicorn/arbiter.py']),
     E(r'ProcessLookupError: \[Errno 3\] No such process', ['gunicorn/arbiter.py']),
     E(r"AttributeError: gunicorn: worker \[ucsschool.http_api.app.wsgi:application\]: undefined symbol: magic_open", ['ucsschool/http_api/app/wsgi.py']),
+    E("RuntimeError: reentrant call inside <_io.BufferedWriter name='/var/log/univention/ucs-school-import/gunicorn_error.log'>"),
 
     # UCS@school test cases:
     # ("ucsschool.importer.exceptions.InitialisationError: Value of 'scheme:description' must be a string.", ['in prepare_import'], 53564),
@@ -372,6 +378,13 @@ COMMON_EXCEPTIONS = (
     E("ucsschool.importer.exceptions.InitialisationError: Recursion detected when resolving formatting dependencies for 'email'.", ['user_import.py.* in read_input'], 53564),
     E("ucsschool.importer.exceptions.InvalidBirthday: Birthday has invalid format: '.*' error: time data '.*' does not match format '%Y-%m-%d'.", ['user_import.py.* in create_and_modify_users'], 53564),
     E("ucsschool.importer.exceptions.UcsSchoolImportSkipImportRecord: Skipping user '.*' with firstname starting with \".\"", ['user_import.py.* in create_and_modify_users'], 53564),
+    E('ucsschool.importer.exceptions.UcsSchoolImportError: Error user .* with firstname starting with "m"', ['create_and_modify_users'], 53564),
+    E('univention.admin.uexceptions.pwalreadyused: Password has been used before. Please choose a different one.', [], 53564),
+    E('ucsschool.importer.exceptions.ModificationError: Password has been used before. Please choose a different one.', [], 53564),
+    E('ucsschool.importer.exceptions.DeletionError: Empty user.input_data', [], 53564),
+    E('ucsschool.importer.exceptions.InvalidLegalGuardian:', [], 53564),
+    E('ucsschool.importer.exceptions.InvalidLegalWard:', [], 53564),
+
     E("ucsschool.importer.exceptions.TooManyErrors: More than 0 errors.", ['cmdline.py.* in main', 'in import_users'], 53564),
     E(
         r"ucsschool.importer.exceptions.InitialisationError: Configuration value of username:max_length:default is .*, "

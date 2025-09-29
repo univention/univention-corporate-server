@@ -1,3 +1,9 @@
+ucs-test (12.3.15) unstable; urgency=medium
+
+  * Bug #53564: ignore tracebacks
+
+ -- Florian Best <best@univention.de>  Mon, 29 Sep 2025 13:00:05 +0200
+
 ucs-test (12.3.14) unstable; urgency=medium
 
   * Bug #58652: test setup for external management domain
