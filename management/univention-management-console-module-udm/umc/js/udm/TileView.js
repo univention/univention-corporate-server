@@ -31,7 +31,7 @@ define([
 			if (this._queryTimer) {
 				this.grid.moduleStore.get(item.$dn$);
 			} else {
-				this._queryCache = this.grid.moduleStore.transaction();
+				// this._queryCache = this.grid.moduleStore.transaction();
 				this._queryTimer = window.setTimeout(lang.hitch(this, "_setPictures"), 100);
 				this.grid.moduleStore.get(item.$dn$);
 			}

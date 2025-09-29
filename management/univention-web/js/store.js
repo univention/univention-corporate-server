@@ -8,12 +8,16 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/json",
 	"dojo/Deferred",
+	"dstore/Store",
+	"dstore/Trackable",
+	"dstore/QueryResults",
 	"dojo/Evented",
 	"dojo/store/util/QueryResults",
 	"umc/tools"
-], function(declare, lang, array, Deferred, Evented, QueryResults, tools) {
-	var _UmcpModuleStore = declare("umc.store.UmcpModuleStore", [ Evented ], {
+], function(declare, lang, array, json, Deferred, Store, Trackable, QueryResults, Evented, DojoQueryResults, tools) {
+	var _LegacyUmcpModuleStore = declare("umc.store.LegacyUmcpModuleStore", [ Evented ], {
 		// idProperty: String
 		//		Indicates the property to use as the identity property.
 		//		The values of this property should be unique.
@@ -172,7 +176,9 @@ define([
 				query[ikey] = (typeof ival == "string" || ival instanceof Array || typeof ival == 'boolean' || null === ival) ? ival : String(ival);
 				++nQueryEl;
 			}, this, true);
+
 			var deferred = new Deferred();
+
 			if (nQueryEl) {
 				// non-empty query
 				deferred = this.umcpCommand(this.storePath + '/query', query);
@@ -191,7 +197,7 @@ define([
 				// this is the query the grid will send automatically at the beginning
 				deferred.resolve([]);
 			}
-			return new QueryResults(deferred);
+			return new DojoQueryResults(deferred);
 		},
 
 		// _doingTransaction: Boolean
@@ -292,10 +298,200 @@ define([
 		}
 	});
 
+	var UMCModuleStore = Store.createSubclass([ Trackable ], {
+		declaredClass: "umc.store.UMCModuleStore",
+
+		// idProperty: String
+		//		Indicates the property to use as the identity property.
+		//		The values of this property should be unique.
+		idProperty: '',
+
+		// storePath: String
+		//		UMC URL of the module where query, set, remove, put, and add
+		//		methods can be found.
+		storePath: '',
+
+		// umcpCommand: Function
+		//		Reference to a particularly flavored umcpCommand.
+		umcpCommand: null,
+
+		//TODO: for the future, it would be nice to work with query engines
+		queryEngine: null,
+
+		constructor: function(params){
+			lang.mixin(this, params);
+			this.umcpCommand = this.umcpCommand || lang.hitch(tools, "umcpCommand");
+			this._groupedTransactions = [];
+		},
+
+		canCacheQuery: function (method, args) {
+		    return true;
+		},
+
+		get: function(id, handleErrors) {
+			//console.log('get: ' + json.stringify(arguments));
+			//	summary:
+			//		Retrieves an object by its identity. This will trigger an UMC request
+			//		calling the module method 'GET'.
+			//	id: Number
+			//		The identity to use to lookup the object
+			//	returns: dojo/Deferred
+			//		The object in the store that matches the given id.
+			return this._genericCmd('get', id, handleErrors);
+		},
+
+		put: function(object, options, handleErrors) {
+			//console.log('put: ' + json.stringify(arguments));
+			// summary:
+			//		Modify an object.
+			// object: Object
+			//		The object to store.
+			// options:
+			//		This parameter is currently ignored.
+			// returns: Deferred
+			return this._genericCmd('put', {
+				object: object,
+				options: options || null
+			}, handleErrors);
+		},
+
+		add: function(object, options, handleErrors) {
+			//console.log('add: ' + json.stringify(arguments));
+			// summary:
+			//		Create an object.
+			// object: Object
+			//		The object to store.
+			// options:
+			//		This parameter is currently ignored.
+			return this._genericCmd('add', {
+				object: object,
+				options: options || null
+			}, handleErrors);
+		},
+
+		remove: function(object, options, handleErrors) {
+			//console.log('remove: ' + json.stringify(arguments));
+			// summary:
+			//		Deletes an object by its identity.
+			// object: Object
+			//		The object to store.
+			// options:
+			//		bla fasel
+			return this._genericCmd('remove', {
+				object: object,
+				options: options || null
+			}, handleErrors );
+		},
+
+		fetch: function (kwArgs) {
+			// dstore expects a fetch returning a promise to array
+			console.log('fetch=' + json.stringify(arguments));
+			var results = this._request(this.getQuery(), {});
+			return new QueryResults(results.data, {
+				response: results.response
+			});
+		},
+
+		fetchRange: function (kwArgs) {
+			console.log('fetchRange=' + json.stringify(arguments));
+
+			var results = this._request(this.getQuery(), {
+				start: kwArgs.start,
+				count: kwArgs.end - kwArgs.start
+			});
+			return new QueryResults(results.data, {
+				totalLength: results.total,
+				response: results.response
+			});
+		},
+
+		getQuery: function() {
+			var query;
+			array.forEach(this.queryLog, function(entry) {
+				if (entry.type === 'filter') {
+					query = entry.arguments[0];
+				}
+			}, this);
+			return query;
+		},
+
+		_request: function(query, options) {
+			// summary:
+			//		Queries the store for objects. This will trigger a GET request to the server, with the
+			//		query added as a query string.
+			// query: Object
+			//		The query to use for retrieving objects from the store.
+			// options:
+			//		Query options, such as 'sort' (see also tools.cmpObjects()).
+			// returns: dstore/QueryResults
+			//		The results of the query, extended with iterative methods.
+			var mapped = {};
+			tools.forIn(query, function(ikey, ival){
+				mapped[ikey] = (typeof ival === "string" || ival instanceof Array || typeof ival === "boolean" || ival === null)
+					? ival : String(ival);
+			});
+
+			//console.log('query:' + json.stringify(arguments))
+			if (Object.keys(mapped).length === 0){
+				// empty query -> return an empty list
+				// this is the query the grid will send automatically at the beginning
+				var results = new Deferred();
+				results.resolve([]);
+				return {data: results, total: 0};
+			}
+
+			// sorting and pagination
+			var headers = {};
+			if (options.start !== undefined && options.start >= 0 || options.count >= 0){
+				headers["X-Range"] = "items=" + (options.start || '0') + '-' + (("count" in options && options.count != Infinity) ? (options.count + (options.start || 0) - 1) : '');
+			}
+			if (options && options.sort){
+				var sortParam = 'sort'
+				mapped.sort = {};
+				for(var i = 0; i<options.sort.length; i++){
+					var sort = options.sort[i];
+					mapped.sort[i] = (sort.descending ? this.descendingPrefix : this.ascendingPrefix) + encodeURIComponent(sort.attribute);
+				}
+			}
+			this.emit("fetch-start");
+			var response = this.umcpCommand(this.storePath + "/query", mapped, undefined, undefined, undefined, {headers: headers});
+
+			var self = this;
+			return {
+				data: response.then(function (data) {
+					self.emit("fetch-done");
+					var results = data.result || [];
+					// if requested, sort the list
+					if(options && options.sort){
+						results.sort(tools.cmpObjects(options.sort));
+					}
+					return results;
+				}, function() {
+					self.emit("fetch-error");
+				}),
+				total: response.then(function (data) {
+					var range = data.response.getHeader("Content-Range");
+					if (!range){
+						// At least Chrome drops the Content-Range header from cached replies.
+						var range = data.response.getHeader("X-Content-Range");
+					}
+					var total = range && (range = range.match(/\/(.*)/)) && +range[1];
+					console.log('Range', range, 'Total', total);
+					return total;
+				}),
+				response: response
+			};
+		},
+
+		_genericCmd: function(type, param, handleErrors) {
+			return this.umcpCommand(this.storePath + "/" + type, param, handleErrors);
+		}
+	});
+
 	// internal dict of static module store references
 	var _moduleStores = {};
 
-	return function(/*String*/ idProperty, /*String*/ storePath, /*String?*/ moduleFlavor) {
+	return function(/*String*/ idProperty, /*String*/ storePath, /*String?*/ moduleFlavor, /*String?*/ storeApi) {
 		// summary:
 		//		Returns (and if necessary creates) a singleton instance of store.UmcpModuleStore
 		//		for the given path to the store and (if specified) the given flavor.
@@ -312,14 +508,14 @@ define([
 
 		// create a singleton for the module store for each flavor; this is to ensure that
 		// the correct flavor of the module is send to the server
-		var key = storePath + '@' + (moduleFlavor || 'default');
+		var key = storePath + '@' + (moduleFlavor || 'default') + (storeApi || 'legacy');
 		if (!_moduleStores[key]) {
 			// the store does not exist, we need to create a new singleton
-			_moduleStores[key] = new _UmcpModuleStore({
+			_moduleStores[key] = new (storeApi === 'dstore' ? UMCModuleStore : _LegacyUmcpModuleStore)({
 				idProperty: idProperty,
 				storePath: storePath,
-				umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor ) {
-					return tools.umcpCommand( commandStr, dataObj, handleErrors, flavor || moduleFlavor );
+				umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor, /*Object?*/ longPollingOptions, /*Object?*/ args, headers) {
+					return tools.umcpCommand(commandStr, dataObj, handleErrors, flavor || moduleFlavor, longPollingOptions, args, headers);
 				}
 			});
 		}

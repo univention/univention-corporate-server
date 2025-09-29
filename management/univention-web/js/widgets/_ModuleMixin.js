@@ -40,6 +40,10 @@ define([
 		//		(Is specified automatically.)
 		moduleStore: null,
 
+		// moduleStoreApi: null || "dstore"
+		//		wheather to use the new dstore API
+		moduleStoreApi: null,
+
 		// title: String
 		//		Title of the page. This option is necessary for tab pages.
 		//		(Is specified automatically.)
@@ -56,7 +60,7 @@ define([
 
 			this.baseClass += ' umcModule';
 			if (this.idProperty && !this.moduleStore) {
-				this.moduleStore = store(this.idProperty, this.moduleID, this.moduleFlavor);
+				this.moduleStore = store(this.idProperty, this.moduleID, this.moduleFlavor, this.moduleStoreApi);
 			}
 		},
 
