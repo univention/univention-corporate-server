@@ -640,7 +640,12 @@ class Command(Resource):
         fut = self.process.request("GET", "%s://%s/cancel" % (self._request_url.scheme, self._request_url.netloc), {'X-UMC-Request-ID': self._request_id})
 
         def cb(response):
-            CORE.process('Cancel request for %s completed with %d', self._request_id, response.result().code)
+            try:
+                status = response.result().code
+            except CouldNotConnect as exc:
+                CORE.warning('Could not cancel request for %s: %s', self._request_id, exc)
+            else:
+                CORE.process('Cancel request for %s completed with %d', self._request_id, status)
 
         tornado.ioloop.IOLoop.current().add_future(fut, cb)
 
