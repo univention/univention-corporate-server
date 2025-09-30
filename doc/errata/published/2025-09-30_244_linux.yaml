@@ -31,3 +31,6 @@ cve:
 - CVE-2024-57924
 - CVE-2024-47704
 note: This is the 1st of two parts.
+erratum: 244
+announced: 2025-09-30
+support: core
