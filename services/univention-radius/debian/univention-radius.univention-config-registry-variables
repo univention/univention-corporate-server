@@ -232,3 +232,16 @@ Description[en]=Regular expression which is used to validate the MAC address and
 Description[de]=Regulärer Ausdruck, der zur Validierung der MAC-Adresse und zur Umwandlung in das : Format verwendet wird. Er sollte sechs Gruppen enthalten, wobei jede Gruppe ein Byte der MAC-Adresse darstellt.
 Type=str
 Categories=service-radius
+
+[freeradius/conf/tls-min-version]
+Description[de]=Spezifiziert die minimale TLS-Version, die von Radius genutzt wird.
+Description[en]=Specifies the minimum TLS version which is used by radius.
+Type=str
+Categories=service-radius
+
+[freeradius/conf/cipher-list]
+Description[de]=Spezifiziert die erlaubten TLS-Verschlüsselungssuiten.
+Description[en]=Specifies the permitted TLS cipher suites.
+Type=str
+Default=DEFAULT
+Categories=service-radius

@@ -360,8 +360,7 @@ else:
 		#
 		# For EAP-FAST, use "ALL:!EXPORT:!eNULL:!SSLv2"
 		#
-		cipher_list = "DEFAULT"
-
+		cipher_list = "@%@freeradius/conf/cipher-list@%@"
 		# Work-arounds for OpenSSL nonsense
 		# OpenSSL 1.0.1f and 1.0.1g do not calculate
 		# the EAP keys correctly.  The fix is to upgrade
@@ -377,7 +376,12 @@ else:
 print('\t\ttls_max_version = %s' % configRegistry.get('freeradius/conf/tls-max-version', '1.3'))
 @!@
 
-		#
+		# enable tls_min_version to support legacy clients
+@!@
+tls_min_version = configRegistry.get('freeradius/conf/tls-min-version', None)
+if tls_min_version:
+    print('\t\ttls_min_version = %s' % tls_min_version)
+@!@
 		#  Elliptical cryptography configuration
 		#
 		#  Only for OpenSSL >= 0.9.8.f
