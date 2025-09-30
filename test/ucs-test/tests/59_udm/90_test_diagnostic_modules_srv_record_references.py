@@ -80,6 +80,9 @@ def test_invalid_cname(udm, test_diagnostic_module, create_forward_zone) -> None
         wait_for=WAIT_FOR,
     )
     create_srv_record(udm, create_forward_zone, alias_fqdn)
+    # FIXME: Flakyness here? Without S4-Connector the wait_for seems not to be enough
+    # for the bind proxy to transfer the new SRV record, rendering the check ineffective.
+    # => time.sleep(5) may be required here to *actually* test the new record.
     test_diagnostic_module(DIAGNOSTIC_MODULE, success_expected=False)
 
 
