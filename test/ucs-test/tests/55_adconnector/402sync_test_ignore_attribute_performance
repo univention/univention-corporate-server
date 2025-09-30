@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 # shellcheck shell=bash
-## desc: "Create and Remove an AD-Object"
+## desc: "test for replication performance for trivial ignored attribute changes"
 ## exposure: dangerous
 ## packages:
 ## - univention-ad-connector
@@ -81,57 +81,40 @@ nTSecurityDescriptor: $ntsd3
 sleep 10 ## Wait for replication attempt
 
 { # Extract replication time from log
-	RE_UNIVENTION_DEBUG=".*LDAP.*PROCESS.*univention.connector.ad:"
-	RE_START="^$RE_UNIVENTION_DEBUG POLL FROM CON: Incoming .*"
-	RE_END="^$RE_UNIVENTION_DEBUG POLL FROM CON: Processed .*"
 
-	lines_replication_cycle_begin=$(grep "$RE_START" /var/log/univention/connector-ad.log)
-	if [ -z "$lines_replication_cycle_begin" ]; then
-		grep "$RE_START" /var/log/univention/connector-ad.log
-		exit 1
-	fi
-
-	lines_replication_cycle1=$(head -1 <<<"$lines_replication_cycle_begin")
-	if [ "$(wc -l <<<"$lines_replication_cycle_begin")" -ne 1 ]; then
-		echo -e "ERROR: too many matching lines:\n$lines_replication_cycle_begin"
-		lines_replication_cycle2=$(tail -1 <<<"$lines_replication_cycle_begin")
-	fi
-	grep -i "sync to ucs:   [          user] [    modify] $UDM_USER_DN$" /var/log/univention/connector-ad.log && fail_test 110
-	lines_replication_cycle_end=$(grep "$RE_END" /var/log/univention/connector-ad.log)
-	if [ -z "$lines_replication_cycle_end" ]; then
-		grep "$RE_END" /var/log/univention/connector-ad.log
-		exit 1
-	fi
-	if [ "$(wc -l <<<"$lines_replication_cycle_end")" -ne 1 ]; then
-		echo -e "ERROR: too many matching lines:\n$lines_replication_cycle_end"
-		lines_replication_cycle_end=$(head -1 <<<"$lines_replication_cycle_end")
-	fi
-	timestamp_change_start=$(sed -n "s/$RE_START/\1/p" <<<"$lines_replication_cycle1")
-	timestamp_change_end=$(sed -n "s/$RE_END/\1/p" <<<"$lines_replication_cycle_end")
-
-	calculate_duration() {
-		python3 -c '
-from datetime import datetime
-from sys import argv
-FMT = "%d.%m.%Y %H:%M:%S.%f"
-start, end = (datetime.strptime(_, FMT) for _ in argv[1:])
-print((end - start).total_seconds())
-' "$@"
-	}
-	DURATION=$(calculate_duration "$timestamp_change_start" "$timestamp_change_end")
-
-	if [ -n "$lines_replication_cycle2" ]; then
-		echo "Initial Replication time: $DURATION"
-
-		timestamp_postchange=$(sed -n "s/$RE_START/\1/p" <<<"$lines_replication_cycle2")
-		DURATION=$(calculate_duration "$timestamp_change_start" "$timestamp_postchange")
-	fi
-	echo "TOTAL   Replication time: $DURATION"
+	RE_START="^.* POLL FROM CON: Incoming .*$"
+	RE_END="^.* POLL FROM CON: Processed .*$"
 	MAX_DURATION=1
-	if [ "$(python3 -c "if $DURATION > $MAX_DURATION: print('fail')")" = 'fail' ]; then
-		echo "ERROR: AD-Connector activity took longer than $MAX_DURATION seconds"
-		fail_test 110
-	fi
+
+	start_timestamp=""
+	end_timestamp=""
+	durations=()
+	while read -r timestamp msg; do
+		if [[ "$msg" =~ $RE_START ]] ; then
+			start_timestamp=$timestamp
+			echo "$timestamp $msg"
+		fi
+		if [[ "$msg" =~ $RE_END ]] ; then
+			end_timestamp=$timestamp
+			echo "$timestamp $msg"
+		fi
+		if [ -n "$start_timestamp" ] && [ -n "$end_timestamp" ]; then
+			epoch_start="$(date -d "$start_timestamp" +"%s")"
+			epoch_end="$(date -d "$end_timestamp" +"%s")"
+			duration=$((epoch_end - epoch_start))
+			echo "$start_timestamp - $end_timestamp -> $duration"
+			durations+=("$duration")
+			start_timestamp=""
+			end_timestamp=""
+		fi
+	done < /var/log/univention/connector-ad.log
+	# check each "ignored attribute" change
+	for duration in "${durations[@]}"; do
+		if [ "$duration" -gt $MAX_DURATION ]; then
+			echo "ERROR: AD-Connector activity took longer ($duration) than $MAX_DURATION seconds."
+			fail_test 110
+		fi
+	done
 }
 
 ucr unset connector/ad/poll/profiling
