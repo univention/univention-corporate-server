@@ -12,3 +12,6 @@ desc: |
    for the configuration of the LDAP servers DN mapping for
    federated accounts.
 bug: [58652]
+erratum: 246
+announced: 2025-09-30
+support: core
