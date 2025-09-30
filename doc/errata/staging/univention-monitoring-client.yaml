@@ -1,0 +1,12 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: univention-monitoring-client
+fix: 1.0.8-1
+desc: |
+ This update addresses the following issues:
+ * This update enhances the alert `check_univention_mdb_maxsize`
+   by ignoring the (possibly) fragmented freelist pages in the
+   caclulation of available pages.
+bug: [58719]

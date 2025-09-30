@@ -3,35 +3,8 @@
 # Univention Monitoring Plugin
 #  check slapd's/udl's mdb maxsize
 #
-# Like what you see? Join us!
-# https://www.univention.com/about-us/careers/vacancies/
-#
-# Copyright 2007-2024 Univention GmbH
-#
-# https://www.univention.de/
-#
-# All rights reserved.
-#
-# The source code of this program is made available
-# under the terms of the GNU Affero General Public License version 3
-# (GNU AGPL V3) as published by the Free Software Foundation.
-#
-# Binary versions of this program provided by Univention to you as
-# well as other copyrighted, protected or trademarked materials like
-# Logos, graphics, fonts, specific documentations and configurations,
-# cryptographic keys etc. are subject to a license agreement between
-# you and Univention and not subject to the GNU AGPL V3.
-#
-# In the case you use this program under the terms of the GNU AGPL V3,
-# the program is provided in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License with the Debian GNU/Linux or Univention distribution in file
-# /usr/share/common-licenses/AGPL-3; if not, see
-# <https://www.gnu.org/licenses/>.
+# SPDX-FileCopyrightText: 2007-2025 Univention GmbH
+# SPDX-License-Identifier: AGPL-3.0-only
 
 import subprocess
 import sys
@@ -45,34 +18,45 @@ class MDBMaxsize(Alert):
     def write_metrics(self):
         if ucr['server/role'] not in ('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'):
             return
-        self.write_metric_for_folder('univention_listener_mdb_size_used_ratio', '/var/lib/univention-directory-listener/cache')
+        self.write_metric_for_folder(
+            'univention_listener_mdb_size_used_ratio',
+            '/var/lib/univention-directory-listener/cache',
+        )
         if ucr.get('ldap/database/type') == 'mdb':
-            self.write_metric_for_folder('univention_slapd_mdb_size_used_ratio', '/var/lib/univention-ldap/ldap')
+            self.write_metric_for_folder(
+                'univention_slapd_mdb_size_used_ratio',
+                '/var/lib/univention-ldap/ldap',
+            )
         if sys.maxsize > 2 ** 32:
-            self.write_metric_for_folder('univention_slapd_translog_mdb_size_used_ratio', '/var/lib/univention-ldap/translog')
+            self.write_metric_for_folder(
+                'univention_slapd_translog_mdb_size_used_ratio',
+                '/var/lib/univention-ldap/translog',
+            )
 
-    def write_metric_for_folder(self, metric_name, mdb_dir):
+    def write_metric_for_folder(self, mdb_stat_metric_name, mdb_dir):
         try:
             output = subprocess.check_output(['/usr/bin/mdb_stat', '-ef', mdb_dir], close_fds=True, env={'LC_ALL': 'C'})
         except FileNotFoundError:
-            self.write_metric(metric_name, -1)
-            self.log.debug('mdb_stat not found, please install lmdb-utils.')
+            self.write_metric(mdb_stat_metric_name, -1)
+            self.log.error('mdb_stat not found, please install lmdb-utils.')
             return
         except subprocess.CalledProcessError:
-            self.write_metric(metric_name, 1)
-            self.log.debug('mdb_stat -ef %s failed' % (mdb_dir,))
+            self.write_metric(mdb_stat_metric_name, 1)
+            self.log.error('mdb_stat -ef %s failed', mdb_dir)
             return
 
         output = output.decode("utf-8", "replace")
         stat = dict(line.strip().lower().split(': ', 1) for line in output.splitlines() if ': ' in line)
+
         try:
-            in_use = (int(stat['number of pages used']) - int(stat['free pages'])) * 100 / int(stat['max pages'])
+            free_pages = int(stat['free pages'])
+            in_use_vs_untouched_pages = (int(stat['number of pages used']) - free_pages) * 100 / (int(stat['max pages']) - free_pages)
         except KeyError:  # API change in the future
-            self.write_metric(metric_name, 1)
-            self.log.debug('output of "mdb_stat -e %s" could not be parsed: %s' % (mdb_dir, output))
+            self.write_metric(mdb_stat_metric_name, 1)
+            self.log.error('output of "mdb_stat -e %s" could not be parsed: %s', mdb_dir, output)
             return
 
-        self.write_metric(metric_name, in_use)
+        self.write_metric(mdb_stat_metric_name, round(in_use_vs_untouched_pages, 2))
         self.log.debug(mdb_dir)
 
 

@@ -1,3 +1,9 @@
+univention-monitoring-client (1.0.8-1) unstable; urgency=medium
+
+  * Bug #58719: Improved metric for check_univention_mdb_maxsize
+
+ -- Johannes Königer <koeniger@univention.de>  Wed, 15 Oct 2025 11:58:51 +0200
+
 univention-monitoring-client (1.0.7-1) UNRELEASED; urgency=medium
 
   * Bug #58002 UCS 5.0-10 version bump
