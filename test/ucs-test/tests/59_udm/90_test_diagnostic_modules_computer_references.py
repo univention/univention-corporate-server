@@ -88,7 +88,7 @@ def test_zones_with_invalid_cname_in_ns_record(udm, test_diagnostic_module, crea
         name=alias_name,
         cname=f"{ucr.get('hostname')}.{ucr.get('domainname')}.",
         superordinate=f"zoneName={ucr.get('domainname')},cn=dns,{ucr.get('ldap/base')}",
-        wait_for=WAIT_FOR,
+        wait_for=False,
     )
     create_zone(udm, [f'{alias_name}.{ucr.get("domainname")}.'])
     test_diagnostic_module(DIAGNOSTIC_MODULE, success_expected=False)

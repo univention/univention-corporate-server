@@ -35,7 +35,7 @@ def create_forward_zone(udm) -> Iterator[str]:
         "dns/forward_zone",
         zone=forward_zone_name,
         nameserver="%(hostname)s.%(domainname)s" % ucr,
-        wait_for=WAIT_FOR,
+        wait_for=False,
     )
     return forward_zone_dn
 

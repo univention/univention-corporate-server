@@ -29,7 +29,7 @@ DIAGNOSTIC_MODULE = "24_portal_entries"
         ["/univention/portal/", True],
         ["/univention/portal/?some=query&but=unused", True],
         ["http://10.20.30.40/univention/portal/", True],
-        ["http://[2001:db8::1]:8080/univention/portal/", True],
+        ["http://[2001:470:71e6:0008::abcd]:8080/univention/portal/", True],
         ["https://123.45.67.89/univention/portal/?some=query&but=unused", True],
         [f"http://{uts.random_name()}/univention/", False],
         [f"http://{uts.random_name()}.{ucr.get('domainname')}", False],

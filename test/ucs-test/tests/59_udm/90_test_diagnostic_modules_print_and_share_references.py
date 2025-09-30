@@ -98,7 +98,7 @@ def test_invalid_shares_printergroup_detection(
         uri="cups-pdf:/",
         producer="cn=Alps,cn=cups,cn=univention,dc=ucs,dc=test",
         model="foomatic-db-compressed-ppds:0/ppd/foomatic-ppd/Alps-MD-1000-md2k.ppd",
-        wait_for=WAIT_FOR,
+        wait_for=False,
     )
     udm.create_object(
         "shares/printergroup",
