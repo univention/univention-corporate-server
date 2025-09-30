@@ -1,3 +1,9 @@
+univention-nagios (13.0.11-1) unstable; urgency=medium
+
+  * Bug #58719: Improve metric in check_univention_slapd_mdb_maxsize
+
+ -- Johannes Königer <koeniger@univention.de>  Thu, 15 Oct 2025 12:00:52 +0200
+
 univention-nagios (13.0.10-1) UNRELEASED; urgency=medium
 
   * Bug #58002 UCS 5.0-10 version bump
