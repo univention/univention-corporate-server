@@ -9,3 +9,6 @@ desc: |
  * Use session roles for UDM delegative administration
    for UMC OIDC login with federated account.
 bug: [58652]
+erratum: 247
+announced: 2025-09-30
+support: core
