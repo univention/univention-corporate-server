@@ -1,3 +1,9 @@
+ucs-test (12.3.17) unstable; urgency=medium
+
+  * Bug #58634: Fix IP fixtures in 90_test_diagnostic_modules_portal_entries
+
+ -- Arvid Requate <requate@univention.de>  Tue, 30 Sep 2025 09:36:18 +0200
+
 ucs-test (12.3.16) unstable; urgency=medium
 
   * Bug #58269: parallel umc oidc login test
