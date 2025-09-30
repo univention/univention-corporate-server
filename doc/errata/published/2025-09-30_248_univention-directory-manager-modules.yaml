@@ -10,3 +10,6 @@ desc: |
    ferderated accounts when logging in via trusted upstream
    Identity Provider with UMC OIDC.
 bug: [58652]
+erratum: 248
+announced: 2025-09-30
+support: core
