@@ -13,3 +13,6 @@ desc: |
  * Fixed a regression that breaks univention-keycloak script on
    kubernetes deployments.
 bug: [58422, 58586, 58588]
+erratum: 241
+announced: 2025-09-30
+support: core
