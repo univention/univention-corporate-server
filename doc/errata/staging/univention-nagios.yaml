@@ -1,0 +1,12 @@
+product: ucs
+release: "5.2"
+version: [3]
+scope: ucs_5.2-0-errata5.2-3
+src: univention-nagios
+fix: 15.3.1
+desc: |
+ This update addresses the following issues:
+ * This update enhances the check `check_univention_slapd_mdb_maxsize`
+   by ignoring the (possibly) fragmented freelist pages in the
+   caclulation of available pages.
+bug: [58668]

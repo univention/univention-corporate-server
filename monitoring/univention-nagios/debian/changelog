@@ -1,4 +1,10 @@
-univention-nagios (15.3.0) UNRELEASED; urgency=medium
+univention-nagios (15.3.1) unstable; urgency=medium
+
+  * Bug #58668: Improve check_univention_slapd_mdb_maxsize
+
+ -- Arvid Requate <requate@univention.de>  Tue, 30 Sep 2025 16:08:55 +0200
+
+univention-nagios (15.3.0) unstable; urgency=medium
 
   * Bug #58568: UCS 5.2-3 version bump
 

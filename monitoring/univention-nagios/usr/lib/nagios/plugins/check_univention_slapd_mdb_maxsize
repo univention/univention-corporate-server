@@ -65,15 +65,16 @@ for mdb_dir in files:
     output = output.decode("utf-8", "replace")
     stat = dict(line.strip().lower().split(': ', 1) for line in output.splitlines() if ': ' in line)
     try:
-        in_use = int((int(stat['number of pages used']) - int(stat['free pages'])) * 100 / int(stat['max pages']))
+        free_pages = int(stat['free pages'])
+        in_use_vs_untouched_pages = round((int(stat['number of pages used']) - free_pages) * 100 / (int(stat['max pages']) - free_pages), 2)
     except KeyError:  # API change in the future
         nagios_exit(STATE_CRITICAL, 'output of "mdb_stat -e %s" could not be parsed: %s' % (mdb_dir, output))
 
-    if in_use >= args.critical:
-        errors.append("More than %s%% (in fact %s%%) of mdb database %s is use, please increase %s (and restart %s)" % (args.critical, in_use, mdb_dir, ucr_variable, service))
-    elif in_use >= args.warn:
-        warnings.append("More than %s%% (in fact %s%%) of mdb database %s is use, consider increasing %s (and restart %s)" % (args.warn, in_use, mdb_dir, ucr_variable, service))
+    if in_use_vs_untouched_pages >= args.critical:
+        errors.append("More than %s%% (in fact %s%%) of mdb database %s pages are used, please increase %s (and restart %s)" % (args.critical, in_use_vs_untouched_pages, mdb_dir, ucr_variable, service))
+    elif in_use_vs_untouched_pages >= args.warn:
+        warnings.append("More than %s%% (in fact %s%%) of mdb database %s pages are used, consider increasing %s (and restart %s)" % (args.warn, in_use_vs_untouched_pages, mdb_dir, ucr_variable, service))
     else:
-        success.append("Database %s operational (in fact %s%%)" % (mdb_dir, in_use))
+        success.append("Database %s operational (in fact %s%% mdb pages used)" % (mdb_dir, in_use_vs_untouched_pages))
 result = STATE_CRITICAL if errors else (STATE_WARNING if warnings else STATE_OK)
 nagios_exit(result, '\n'.join(errors + warnings + success))
