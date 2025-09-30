@@ -7,7 +7,10 @@ fix: 8.3.5
 desc: |
  This update addresses the following issues:
  * New diagnostic modules `20_check_share_references` and
-   `20_check_srv_records` have been added. The module `20_check_nameservers`
-   now contains improved warning messages and a fix for a traceback.
+   `20_check_srv_records` as well as `24_portal_entries` have been added.
+   The UCR variable `diagnostic/check/24_portal_entries/ignore` can be used
+   to specify entry names that don't conform to the check criteria.
+   The module `20_check_nameservers` now contains improved warning messages
+   and a fix for a traceback.
  * Logging has been adapted to be compatible with structured logging.
 bug: [58634,58644]
