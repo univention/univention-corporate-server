@@ -46,6 +46,7 @@ Depends:
  python3-bs4,
  python3-coverage,
  python3-psutil,
+ python3-pydantic,
  python3-pytest,
  python3-pytest-repeat,
  python3-pytest-subtests,
