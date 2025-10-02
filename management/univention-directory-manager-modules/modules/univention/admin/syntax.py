@@ -6942,14 +6942,14 @@ class mailinglist_name(gid):
 # calling zoneinfo.available_timezones() is quite slow
 # Cache it here to increase performance
 @functools.lru_cache
-def __available_timezones():
+def _available_timezones():
     return zoneinfo.available_timezones()
 
 
 class TimeZone(select):
     @ClassProperty
     def choices(cls):
-        return [(x, x) for x in __available_timezones()]
+        return [(x, x) for x in _available_timezones()]
 
 
 class DateTimeTimezone(complex):
