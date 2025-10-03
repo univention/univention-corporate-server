@@ -1722,14 +1722,22 @@ class ucs(object):
                 dn_mapped = object[dntype]
                 # save the old rdn with the correct upper and lower case
                 rdn_store = ldap.dn.explode_dn(dn_mapped)[0]
-                # note: position_mapping == [] by default
-                for mapping in MAPPING.position_mapping:
-                    dn_mapped = self._subtree_replace(dn_mapped.lower(), mapping[0].lower(), mapping[1])
-                if dn_mapped == object[dntype]:
-                    if self.lo_ad.base == dn_mapped[-len(self.lo_ad.base):] and len(self.lo_ad.base) > len(self.lo.base):
-                        ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the S4 base, don't do this again." % dn_mapped)
-                    else:
-                        dn_mapped = self._subtree_replace(object[dntype].lower(), self.lo.base.lower(), self.lo_ad.base)  # FIXME: lo_ad may change with other connectors
+                if self.lo_ad.base == dn_mapped[-len(self.lo_ad.base):] and len(self.lo_ad.base) > len(self.lo.base):
+                    # avoid additional _subtree_replace in case dn_mapping_function already found an AD DN (can happen for account type objects)
+                    ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the AD base, don't do additional ldap base mapping." % (dn_mapped,))
+                else:
+                    for mapping in MAPPING.position_mapping:  # note: position_mapping == [] by default
+                        replaced_dn_mapped_lower = self._subtree_replace(dn_mapped.lower(), mapping[0].lower(), mapping[1])
+                        if replaced_dn_mapped_lower != dn_mapped.lower():
+                            # explanation: only change dn_mapped if _subtree_replace actually changed anything and not only MixedCase.lower()
+                            dn_mapped = replaced_dn_mapped_lower
+
+                    if dn_mapped == object[dntype]:
+                        if self.lo_ad.base == dn_mapped[-len(self.lo_ad.base):] and len(self.lo_ad.base) > len(self.lo.base):
+                            # Introduced via Bug #13745#c14 : avoid default _subtree_replace in case position_mapping was applied
+                            ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the AD base, don't do this again." % (dn_mapped,))
+                        else:
+                            dn_mapped = self._subtree_replace(object[dntype].lower(), self.lo.base.lower(), self.lo_ad.base)  # FIXME: lo_ad may change with other connectors
                 # write the correct upper and lower case back to the DN
                 object[dntype] = dn_mapped.replace(dn_mapped[0:len(rdn_store)], rdn_store, 1)
 
@@ -1799,15 +1807,16 @@ class ucs(object):
                 dn_mapped = object[dntype]
                 # save the old rdn with the correct upper and lower case
                 rdn_store = ldap.dn.explode_dn(dn_mapped)[0]
-                # note: position_mapping == [] by default
-                for mapping in MAPPING.position_mapping:
+                for mapping in MAPPING.position_mapping:  # note: position_mapping == [] by default
                     replaced_dn_mapped_lower = self._subtree_replace(dn_mapped.lower(), mapping[1].lower(), mapping[0])
                     if replaced_dn_mapped_lower != dn_mapped.lower():
+                        # explanation: only change dn_mapped if _subtree_replace actually changed anything and not only MixedCase.lower()
                         dn_mapped = replaced_dn_mapped_lower
 
                 if dn_mapped == object[dntype]:
-                    if self.lo.base == dn_mapped[len(dn_mapped) - len(self.lo.base):] and len(self.lo.base) > len(self.lo_ad.base):
-                        ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the UCS base, don't do this again." % dn_mapped)
+                    if self.lo.base == dn_mapped[-len(self.lo.base):] and len(self.lo.base) > len(self.lo_ad.base):
+                        # Introduced via Bug #13745#c14 : avoid default _subtree_replace in case position_mapping was applied
+                        ud.debug(ud.LDAP, ud.INFO, "The dn %s is already converted to the UCS base, don't do this again." % (dn_mapped,))
                     else:
                         dn_mapped = self._subtree_replace(dn_mapped.lower(), self.lo_ad.base.lower(), self.lo.base)  # FIXME: lo_ad may change with other connectors
                 # write the correct upper and lower case back to the DN
