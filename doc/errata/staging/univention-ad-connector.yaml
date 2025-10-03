@@ -1,0 +1,11 @@
+product: ucs
+release: "5.2"
+version: [3]
+scope: ucs_5.2-0-errata5.2-3
+src: univention-ad-connector
+fix: 16.4.3
+desc: |
+ This update addresses the following issues:
+ * An error where the DN of a synced object multiple times leading to
+   a DN with mixed base was created leading to rejects was fixed
+bug: [58556]
