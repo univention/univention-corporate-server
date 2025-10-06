@@ -10,7 +10,6 @@ Standards-Version: 3.8.2
 Package: univention-mail-postfix
 Architecture: all
 Depends:
- libpam-univentionmailcyrus,
  openssl,
  postfix,
  postfix-ldap,
@@ -21,6 +20,7 @@ Depends:
  shell-univention-lib (>> 1.0.16),
  univention-base-files,
  univention-config (>= 7.0.31-1),
+ univention-pam (>= 15.3.1),
  ${misc:Depends},
 Conflicts:
  exim4,

@@ -1,8 +1,4 @@
-@!@
-print('''
 auth     required      pam_sss.so
 
 account  sufficient      pam_unix.so
 account  required        pam_sss.so
-''')
-@!@
