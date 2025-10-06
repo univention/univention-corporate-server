@@ -13,12 +13,13 @@ This document describes various states related to user account disabling, lockin
 ## `locked`: Account locked due to authentication failures
 
 Indicates the account has been locked because of too many failed authentication attempts.
+Active Directory doesn't allow to set a `locked=True` state, which is why UDM denies this as well.
 
 - **UCS OpenLDAP attributes** (any of):
 
   - `sambaAcctFlags` contains `L`
   - `krb5KDCFlags` bitmask includes the `???` bit (aka: `1 << 17`, `0x20000`).
-  - \~\~`pwdAccountLockedTime` (not in use) \~\~
+  - `pwdAccountLockedTime`: unset by UDM during unlocking. Otherwise unused: Not set by any known components.
 - **Related UDM properties**:
 
   - `lockedTime`: Windows Filetime timestamp when account lockout happened
@@ -116,7 +117,7 @@ Defines a point in time after which the account is considered expired (i.e., dis
 
 Allows defining a future date when the account becomes active.
 
-- **LDAP Attribute**:
+- **UCS OpenLDAP attributes**:
   - `krb5ValidStart` GeneralizedTime
 - **Behavior**:
   - Until this date, the account is created with `disabled=True`.
@@ -124,6 +125,31 @@ Allows defining a future date when the account becomes active.
 - **Property UDM search filter**:
   - `accountActivationDate=` `2025-06-20` | `2025-06-20 15:00`
 
+## `password`: Account password
+
+The password of a user account is stored in different attributes. UDM keeps them consistent.
+
+- **UCS OpenLDAP attributes**:
+  - `userPassword`: POSIX crypt (or bcrypt) hash
+  - `pwhistory`: History of set `userPassword` crypt hashes
+  - `krb5Key` + `krb5KeyVersionNumber`: Kerberos Keys (ASN.1 DER-encoded EncryptionKey structure): multi valued password hash with different encryption types
+  - `sambaNTPassword`: NT hash (16 btes) (can be converted to a `arcfour-hmac-md5` Kerberos Key)
+  - `sambaLMPassword`: LM hash: unsafe, disabled via UCR `password/samba/lmhash=false`
+  - `sambaPasswordHistory`: History of salted `sambaNTPassword` hash as MD5sum-Hexdigest. Not set by UDM anymore, but present in historic environments. ([Bug #52230](https://forge.univention.org/bugzilla/show_bug.cgi?id=52230))
+- **Related UDM properties**:
+  - `overridePWHistory`: Disable password history checks during setting the password via UDM.
+  - `overridePWLength`: Disable password complexity checks during setting the password via UDM.
+- **Property UDM search filter**:
+  - It's not allowed to search for password hashes.
+- **Active Directory (and Samba) attributes**:
+  - `unicodePwd` in AD: quoted UTF-16LE cleartext password, stored encrypted. Write-Only.
+  - `unicodePwd` in Samba: HexDigest of NT hash.
+  - `ntPwdHistory`: Passsword history of NT hashes
+  - `dBCSPwd`: LM hash
+  - `supplementalCredentials`: Stores modern Kerberos keys and other credential material (AES keys, etc.) in AD. This is where AD stores the equivalents of krb5Key. Currently not set by S4-Connector.
+  - \~\~`msDS-KeyVersionNumber`: \~\~
+
+**Note**: `userPassword` may contain `{K5KEY}`, `{KINIT}`, `{LANMAN}`, `{SASL}`. E.g. in cases we can't create a crypt hash when synching password hashes from AD/Samba 4 to UCS. Different components evaluate them differently.
 
 ## Account "active" property which combines all above states
 
@@ -134,7 +160,7 @@ However, a UDM search with a filter that groups these conditions can list all in
 univention.admin.modules.get('users/user').lookup(None, lo, "(|(disabled=1)(locked=1)(userexpiry<=$(date -I))")
 ```
 
-## Inconsistency in handling of password expiry semantics (Shadow vs Kerberos) ([Bug #57681](https://forge.univention.org/bugzilla/show_bug.cgi?id=57681))
+# Inconsistency in handling of password expiry semantics (Shadow vs Kerberos) ([Bug #57681](https://forge.univention.org/bugzilla/show_bug.cgi?id=57681))
 
 * When both `shadowLastChange + shadowMax` and `krb5PasswordEnd` point to the same calendar day (e.g., `2024-10-21`), Kerberos regards the password as expired at 00:00 on that day, while Unix regards that day as still valid until 23:59:59.
 * As a result, on the day of expiry:
@@ -165,7 +191,7 @@ To align both mechanisms so that "expiration date" consistently means "the first
   * Unix password expiry (`shadowLastChange + shadowMax + 1`) occurs at 00:00 on the same day as Kerberos (`krb5PasswordEnd`).
   * Both POSIX and Kerberos will mark the password as expired at 00:00 on the configured expiry date (e.g., if the policy says “expires on 2024-10-21,” neither system will allow the user to log in at any time on that date).
 
-#### Clarifying "Expiry Date" semantics
+## Clarifying "Expiry Date" semantics
 
 * Ambiguity exists in the term “expiry date.” Two interpretations are:
 
@@ -173,13 +199,13 @@ To align both mechanisms so that "expiration date" consistently means "the first
   2. The last valid day (i.e., the user may log in on 2024-10-21 until 23:59:59; at 2024-10-22 00:00, login is disallowed).
 * We recommend adopting interpretation 1, treating the configured expiry date as the first moment when login is disallowed.
 
-### Verification of Shadow and Kerberos behaviors
+## Verification of Shadow and Kerberos behaviors
 
 * Verified against `man 5 shadow` and the Unix shadow implementation: `shadowLastChange` is indeed days since epoch, and `shadowMax` + 1 defines expiry days count. Unix checks `(now - shadowLastChange) > shadowMax` (i.e., if number of days since last change strictly exceeds `shadowMax`, the day of `shadowLastChange + shadowMax` is still valid).
 * Verified Kerberos behavior from RFC 4120 and MIT Kerberos implementation: `krb5PasswordEnd` is interpreted as the moment after which the password is no longer valid (i.e., a strict `>=` comparison against current time).
 * Conclusion: To force both systems to recognize expiry at the same instant (00:00 of the expiry date), configure `shadowMax = krb5ExpiryInterval - 1`.
 
-## Related bugs
+# Related bugs
 * [Bug 54317 - Setting a user account to locked in UDM still allows OpenLDAP bind with that user](https://forge.univention.org/bugzilla/show_bug.cgi?id=54317)
 * [Bug 55633 - Disabled user does not show up in search result for disabled users if a user expiry date is set](https://forge.univention.org/bugzilla/show_bug.cgi?id=55633)
 * [Bug 46351 - Account lockout via LDAP ppolicy not shown in UMC and probably not applied to Kerberos](https://forge.univention.org/bugzilla/show_bug.cgi?id=46351)
@@ -215,7 +241,7 @@ To align both mechanisms so that "expiration date" consistently means "the first
 * [Bug 58060 - Add option to keep disabled users disabled / activate and deactivate users](https://forge.univention.org/bugzilla/show_bug.cgi?id=58060)
 * [Bug 57239 - Import is activating deactivated (disabled) users](https://forge.univention.org/bugzilla/show_bug.cgi?id=57239)
 
-## Related bugs with historic context / knowledge
+# Related bugs with historic context / knowledge
 * [Bug 57681 - Day of password expiry, a passwordchange is prompted but not followed through with sso login](https://forge.univention.org/bugzilla/show_bug.cgi?id=57681)
 * [Bug 46349 - Value of userexpiry derived from shadowExpire depends on timezone](https://forge.univention.org/bugzilla/show_bug.cgi?id=46349#c7)
 * [Bug 39817 - Locked login methods ignored by Samba 4](https://forge.univention.org/bugzilla/show_bug.cgi?id=39817)
@@ -223,7 +249,7 @@ To align both mechanisms so that "expiration date" consistently means "the first
 * [Bug 36330 - Failed to create user with expired password - invalid date format](https://forge.univention.org/bugzilla/show_bug.cgi?id=36330)
 * TBC
 
-## Ressources
+# Ressources
 * [Active Directory Technical Specification](https://winprotocoldoc.z19.web.core.windows.net/MS-ADTS/%5bMS-ADTS%5d.pdf)
 * [Active Directory Technical Specification: all versions](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/)
 * https://learn.microsoft.com/en-us/windows/win32/adsi/winnt-account-lockout#resetting-the-account-lockout-status
