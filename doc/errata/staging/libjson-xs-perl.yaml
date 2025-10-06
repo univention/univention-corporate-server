@@ -1,0 +1,13 @@
+product: ucs
+release: "5.0"
+version: [9, 10]
+scope: ucs_5.0-0-errata5.0-10
+src: libjson-xs-perl
+fix: 3.040-1+deb10u1
+desc: |
+ This update addresses the following issue:
+ * CVSS score 9.1 (CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H).
+   (CVE-2022-48623)
+bug: [58683]
+cve:
+- CVE-2022-48623
