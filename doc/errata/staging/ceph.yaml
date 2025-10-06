@@ -1,0 +1,13 @@
+product: ucs
+release: "4.4"
+version: [9]
+scope: ucs_4.4-0-errata4.4-9
+src: ceph
+fix: 10.2.11-2+deb9u3
+desc: |
+ This update addresses the following issue:
+ * CVSS score 6.5 (CVSS:3.1/AV:A/AC:H/PR:L/UI:N/S:C/C:H/I:L/A:N).
+   (CVE-2025-52555)
+bug: [58686]
+cve:
+- CVE-2025-52555
