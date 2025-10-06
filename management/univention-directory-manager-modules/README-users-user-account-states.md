@@ -1,14 +1,14 @@
-[TOC]
-
-# Account status flags in UDM `users/user`
-
 This document describes various states related to user account disabling, locking, and password expiry, along with their corresponding UDM and LDAP representations for POSIX, Samba, Kerberos and Active Directory systems.
 
-## Date formats
+[TOC]
+
+# Date formats
 
 - Windows Filetime: 100 nanoseconds since January 1, 1601, UTC
 - UNIX timestamp: number of seconds since January 1, 1970, UTC
 - GeneralizedTime: timestamp `YYYYMMDDHHMMSSZ` (ASN.1 / X.680) in UTC/Zulu.
+
+# UDM properties of `users/user` for account status information
 
 ## `locked`: Account locked due to authentication failures
 
@@ -19,7 +19,7 @@ Active Directory doesn't allow to set a `locked=True` state, which is why UDM de
 
   - `sambaAcctFlags` contains `L`
   - `krb5KDCFlags` bitmask includes the `???` bit (aka: `1 << 17`, `0x20000`).
-  - `pwdAccountLockedTime`: unset by UDM during unlocking. Otherwise unused: Not set by any known components.
+  - `pwdAccountLockedTime`: GeneralizedTime. Unset by UDM during unlocking. But only set by ppolicy overlay module.
 - **Related UDM properties**:
 
   - `lockedTime`: Windows Filetime timestamp when account lockout happened
@@ -31,13 +31,17 @@ Active Directory doesn't allow to set a `locked=True` state, which is why UDM de
 
   - `locked=` `1` | `0` | `posix` | `windows` | `all` | `none` | `*`
 
-**Note**: `locked` is distinct from `disabled` – a locked user can still perform certain operations like changing their password.
+**Note**: `locked` is distinct from `disabled` - a locked user can still perform certain operations like changing their password.
 
 - **Active Directory (and Samba) attributes**:
 
   - `lockoutTime`: (read only if != 0!) Windows Filetime, when the account was locked out.
   - `badPasswordTime`: (read only!) Windows Filetime, of last entered wrong password.
   - (`userAccountControl` bitmask includes `ADS_UF_LOCKOUT` (`0x10`))
+
+- **ppolicy attributes**:
+
+  - `pwdAccountLockedTime`: GeneralizedTime: Timestamp when the account was locked (if lockout occurred)
 
 ## `passwordexpiry`: Password expiration time
 
@@ -73,6 +77,11 @@ Expiry Date = (January 1, 1970) + shadowLastChange + shadowMax + 1 (day)
 
   - `pwdLastSet`: Windows Filetime, the time when the user's password was last set (`0` means password must be changed at next login).
   - `badPwdCount`: Number of consecutive failed login attempts with an incorrect password.
+
+- **ppolicy attributes**:
+  - `pwdReset`: Boolean, indicating the user must change password before further login. Currently not managed by UDM.
+  - `pwdChangedTime` GeneralizedTime timestamp when the password was last changed. Currently not managed by UDM.
+  - `pwdFailureTime`: GeneralizedTime timestamp of the most recent failed authentication attempt. Currently not managed by UDM.
 
 ## `disabled`: Account deactivated
 
@@ -133,7 +142,7 @@ The password of a user account is stored in different attributes. UDM keeps them
   - `userPassword`: POSIX crypt (or bcrypt) hash
   - `pwhistory`: History of set `userPassword` crypt hashes
   - `krb5Key` + `krb5KeyVersionNumber`: Kerberos Keys (ASN.1 DER-encoded EncryptionKey structure): multi valued password hash with different encryption types
-  - `sambaNTPassword`: NT hash (16 btes) (can be converted to a `arcfour-hmac-md5` Kerberos Key)
+  - `sambaNTPassword`: NT hash (16 bytes) (can be converted to a `arcfour-hmac-md5` Kerberos Key)
   - `sambaLMPassword`: LM hash: unsafe, disabled via UCR `password/samba/lmhash=false`
   - `sambaPasswordHistory`: History of salted `sambaNTPassword` hash as MD5sum-Hexdigest. Not set by UDM anymore, but present in historic environments. ([Bug #52230](https://forge.univention.org/bugzilla/show_bug.cgi?id=52230))
 - **Related UDM properties**:
@@ -146,19 +155,160 @@ The password of a user account is stored in different attributes. UDM keeps them
   - `unicodePwd` in Samba: HexDigest of NT hash.
   - `ntPwdHistory`: Passsword history of NT hashes
   - `dBCSPwd`: LM hash
-  - `supplementalCredentials`: Stores modern Kerberos keys and other credential material (AES keys, etc.) in AD. This is where AD stores the equivalents of krb5Key. Currently not set by S4-Connector.
-  - \~\~`msDS-KeyVersionNumber`: \~\~
+  - `supplementalCredentials`: Stores modern Kerberos keys and other credential material (AES keys, etc.) in AD. This is where AD stores the equivalents of krb5Key. Currently not set by AD-Connector.
+  - `msDS-KeyVersionNumber`: `krb5KeyVersionNumber` equivalent. Can't be set directly ([Bug #32082](https://forge.univention.org/bugzilla/show_bug.cgi?id=32082)).
 
 **Note**: `userPassword` may contain `{K5KEY}`, `{KINIT}`, `{LANMAN}`, `{SASL}`. E.g. in cases we can't create a crypt hash when synching password hashes from AD/Samba 4 to UCS. Different components evaluate them differently.
 
-## Account "active" property which combines all above states
+## Account "active" property which combines disabled+locked+userexpiry states
 
 There is effectively no pseudo property which combines all the states as an indicator that an account is fully active.
 However, a UDM search with a filter that groups these conditions can list all inactive accounts. For example:
 
 ```shell
-univention.admin.modules.get('users/user').lookup(None, lo, "(|(disabled=1)(locked=1)(userexpiry<=$(date -I))")
+udm users/user list --filter "(|(disabled=1)(locked=1)(userexpiry<=$(date -I))"
 ```
+```python
+univention.admin.modules.get('users/user').lookup(None, lo, filter_format("(|(disabled=1)(locked=1)(userexpiry<=%s))", [datetime.date.today().isoformat()]))
+```
+# Password policies
+UCS has different [ways to achieve password policy enforcement](https://docs.software-univention.de/manual/5.2/en/user-management/user-lockout.html).
+They are not synchronized: [epic 664](https://git.knut.univention.de/groups/univention/-/epics/664).
+
+## Global password policy via UDM
+
+For domains without Samba installed, [UCS provides](https://docs.software-univention.de/manual/5.0/en/user-management/password-management.html#password-policy-settings-in-umc) the `policies/pwhistory` Password History policy module, with the default object `cn=default-settings,cn=pwhistory,cn=users,cn=policies,dc=example,dc=org`.
+
+* `pwLength`: Integer: Minimum password length
+* `expiryInterval`: Integer: Password expiry interval
+* `length`: Integer: Password History length
+* `pwQualityCheck`: Boolean: Enabled password quality checks e.g. complexity and dictionary entries by `cracklib`.
+
+The password quality checks can be defined per system via the UCR variables:
+
+* `password/quality/length/min`
+* `password/quality/credit/digits`
+* `password/quality/credit/upper`
+* `password/quality/credit/lower`
+* `password/quality/credit/other`
+* `password/quality/forbidden/chars`
+* `password/quality/required/chars`
+* `password/quality/mspolicy`
+
+If Samba is installed, these settings must be made in sync manually with the Samba settings.
+
+### Enabling password policies for UMC and SSH
+To enable this behavior for logins via UMC, SSH and other services using PAM (like the mailstack), the `pam_faillock` can be added to the corresponding PAM stacks via UCR:
+* `auth/faillog`=`true`: Enabled automatic locking of users after failed login attempts in the PAM stack.
+* `auth/faillog/lock_global`: Configure on Primary Directory Node and Backup Directory Node to create a failed login account lockout globally and store it in the LDAP directory.
+* `auth/faillog/unlock_time`: Configure a time interval to unlock an account lockout. The value is defined in seconds. The value 0 resets the lock immediately.
+* `auth/faillog/limit`: Configures the upper limit of failed login attempts for a user account lockout.
+* `auth/faillog/root`: Make the local user account `root` subject of the PAM stack account lockout.
+
+## Domain settings for Samba and AD
+
+Active Directory supports two types of password policies:
+
+1. Domain Password Settings - Synchronized by S4-Connector with UDM object `settings/sambadomain` - but intrinsically incompatible with differential UDM policies.
+
+2. Fine Grained Password Policies (FGPP) / Password Settings Objects (PSO)
+
+[Configure fine grained password policies for Active Directory Domain Services](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/adac/fine-grained-password-policies)
+[Step by step guide](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc770842(v=ws.10))
+
+### Domain Password Settings
+For domains with Samba installed, [UCS provides](https://docs.software-univention.de/manual/5.0/en/user-management/password-settings-windows-clients.html) the `settings/sambadomain` Samba Domain modules, with the default object `sambaDomainName=${WINDOWS_DOMAIN},cn=samba,dc=example,dc=org`.
+
+* `passwordLength`: Password length
+* `passwordHistory`: Password history
+* `minPasswordAge`: Minimum password age
+* `maxPasswordAge`: Maximum password age
+* `logonToChangePW`: User must logon to change password
+* `refuseMachinePWChange`: Refuse machine password change
+* `domainPasswordComplex`: Passwords must meet complexity requirements
+* `domainPasswordStoreCleartext`: Store plaintext passwords
+
+TODO: how is it synced between S4 or AD? See `s4connector/s4/dc.py`.
+
+The settings are stored at the DC root object in the attributes:
+* `minPwdAge`
+* `maxPwdAge`
+* `minPwdLength`
+* `pwdHistoryLength`
+* `lockoutThreshold`
+* `lockoutDuration`
+* `lockoutObservationWindow`
+
+Global domain password settings can be shown via:
+* `samba-tool domain passwordsettings show`
+* `Get-ADDefaultDomainPasswordPolicy`
+
+Global domain password settings can be set via:
+* `New-ADFineGrainedPasswordPolicy`
+* `samba-tool domain passwordsettings set`
+```
+--complexity=on | off | default
+--history-length=HISTORY_LENGTH
+--min-pwd-length=MIN_PWD_LENGTH
+--min-pwd-age=MIN_PWD_AGE
+--max-pwd-age=MAX_PWD_AGE
+--account-lockout-duration=ACCOUNT_LOCKOUT_DURATION
+--account-lockout-threshold=ACCOUNT_LOCKOUT_THRESHOLD
+--reset-account-lockout-after=RESET_ACCOUNT_LOCKOUT_AFTER
+```
+
+### Fine Grained Password Policies
+
+TODO: `ldbsearch  -H /var/lib/samba/private/sam.ldb -b "DC=ucs,DC=test" "(objectClass=msDS-PasswordSettings)"`
+
+`msDS-PasswordSettings` object in `CN=Default Password Policy,CN=Password Settings Container,CN=System,DC=example,DC=org` defaulting to `CN=Default Domain Policy,CN=Policies,CN=System,DC=example,DC=org`.
+
+* `msDS-PSOAppliedTo`
+
+* `msDS-PasswordSettingsPrecedence`
+* `msDS-PasswordReversibleEncryptionEnabled`
+* `msDS-PasswordHistoryLength`
+* `msDS-MinimumPasswordLength`
+* `msDS-MinimumPasswordAge`
+* `msDS-MaximumPasswordAge`
+* `msDS-LockoutThreshold`
+* `msDS-LockoutObservationWindow`
+* `msDS-LockoutDuration`
+* `msDS-ComplexityEnabled`
+* `msDS-PasswordSettingsEffective`
+* `msDS-PasswordSettingsReference`
+
+
+> To obtain consistent behavior e.g. for password expiry for Samba/AD on one hand and SSH-Logon on the other, a FGPP/PSO config for a user or group needs to be coordinated with a corresponding UDM policy -- and that's tricky because FGPP/PSO are applied to users or groups (not OUs) but UDM policies are applied to LDAP-branches (and individual users as a special case).
+> As a workaround for MS/AD, Microsoft recommends the creation (and maintenance) of so called "shadow groups", that gather all users located below a corresponding OU. The maintenance of the group memberships of such "shadow groups" can be done via some scripting and task scheduling (cron). That way Microsoft/AD admins can appy FGPP/PSO to all user accounts located "below" a certain OU.
+
+
+## OpenLDAP `ppolicy` overlay module
+
+The `policy` overlay can be activated in OpenLDDAP via the UCR variable `ldap/ppolicy/enabled`.
+See [documentation](https://docs.software-univention.de/manual/5.2/en/user-management/user-lockout.html#openldap).
+
+It allows user object to have the attribute `pwdPolicySubentry`, pointing to a certain policy.
+Otherwise the default `cn=default,cn=ppolicy,cn=univention,dc=example,dc=org` applies.
+
+A `pwdPolicy` policy object may provide the following settings:
+
+* `pwdAttribute`: Attribute name / OID: The attribute the policy applies to (e.g. `userPassword`).
+* `pwdMinAge`: Integer (seconds): Minimum amount of time that must pass between password changes. If not present or `0` → no minimum.
+* `pwdMaxAge`: Integer (seconds): Maximum age of a password before it expires. If `0` or absent → passwords never expire.
+* `pwdExpireWarning`: Integer (seconds): Time before expiration to warn the user (e.g. "password will expire in X seconds").
+* `pwdGraceAuthNLimit`: Integer (count): Number of allowed "grace" logins after a password has expired before completely disallowing authentication.
+* `pwdLockout`: Boolean / `TRUE`: `FALSE`
+* `pwdLockoutDuration`: Integer (seconds): Duration for which an account remains locked (0 → indefinite until admin unlock).
+* `pwdMaxFailure`: Integer (count): Maximum number of consecutive failed bind attempts before account lockout (if locking enabled).
+* `pwdFailureCountInterval`: Integer (seconds): Time window for counting failures. If failures are not within this interval, count resets.
+* `pwdMustChange`: Boolean: If `TRUE`, the user must change the password on next login ("force password change").
+* `pwdAllowUserChange`: Boolean: If `TRUE`, the user may change their own password; otherwise only admins may.
+* `pwdSafeModify`: Boolean: If `TRUE`, user changes must include the old password to guard against unauthorized change.
+* `pwdCheckQuality`: Integer: Controls how strictly new password is checked: e.g. `0` = no check, `1` = check against policy, `2` = reject if client sends pre-hashed or not meeting requirements.
+* `pwdInHistory`: Integer (count): Number of past passwords to keep in history to disallow reuse.
+
+**Note**: UDM does not provide a UDM module to set these settings. It must be set manually via LDAP utilities.
 
 # Inconsistency in handling of password expiry semantics (Shadow vs Kerberos) ([Bug #57681](https://forge.univention.org/bugzilla/show_bug.cgi?id=57681))
 
@@ -189,15 +339,14 @@ To align both mechanisms so that "expiration date" consistently means "the first
 * This ensures that:
 
   * Unix password expiry (`shadowLastChange + shadowMax + 1`) occurs at 00:00 on the same day as Kerberos (`krb5PasswordEnd`).
-  * Both POSIX and Kerberos will mark the password as expired at 00:00 on the configured expiry date (e.g., if the policy says “expires on 2024-10-21,” neither system will allow the user to log in at any time on that date).
+  * Both POSIX and Kerberos will mark the password as expired at 00:00 on the configured expiry date (e.g., if the policy says "expires on 2024-10-21", neither system will allow the user to log in at any time on that date).
 
 ## Clarifying "Expiry Date" semantics
 
-* Ambiguity exists in the term “expiry date.” Two interpretations are:
+* Ambiguity exists in the term "expiry date". Two interpretations are:
 
-  1. The first moment of the expiry day (i.e., 2024-10-21 00:00) – after this moment, login is disallowed.
-  2. The last valid day (i.e., the user may log in on 2024-10-21 until 23:59:59; at 2024-10-22 00:00, login is disallowed).
-* We recommend adopting interpretation 1, treating the configured expiry date as the first moment when login is disallowed.
+  1. The first moment of the expiry day (i.e., `2024-10-21 00:00`) - after this moment, login is disallowed.
+  2. The last valid day (i.e., the user may log in on `2024-10-21` until `23:59:59`; at `2024-10-22 00:00`, login is disallowed).
 
 ## Verification of Shadow and Kerberos behaviors
 
