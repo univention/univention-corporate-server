@@ -1,3 +1,12 @@
+univention-mail-dovecot (8.3.1) unstable; urgency=medium
+
+  * Bug #57976: Remove univentionmailcyrus PAM module from stack
+    sssd is able to auth using the mailAddress
+    remove pam_krb5 from stack it is not necessary sssd can authenticate
+    using kerberos via our LDAP patches
+
+ -- Julia Bremer <bremer@univention.de>  Mon, 06 Oct 2025 19:27:58 +0200
+
 univention-mail-dovecot (8.3.0) UNRELEASED; urgency=medium
 
   * Bug #58568: UCS 5.2-3 version bump

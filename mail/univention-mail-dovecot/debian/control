@@ -18,7 +18,6 @@ Depends:
  dovecot-managesieved (>= 2.2.13) | dovecot-ee-managesieved (>=2.2.13),
  dovecot-pop3d (>= 2.2.13) | dovecot-ee-pop3d (>=2.2.13),
  dovecot-sieve (>= 2.2.13) | dovecot-ee-sieve (>=2.2.13),
- libpam-univentionmailcyrus,
  python3-ldap,
  python3-univention,
  python3-univention-debug,
@@ -31,6 +30,7 @@ Depends:
  univention-directory-listener (>> 6.0.0),
  univention-directory-manager-tools (>> 13.0.21),
  univention-join (>= 5.0.20-1),
+ univention-pam (>= 15.3.1),
  ${misc:Depends},
  ${python3:Depends},
 Conflicts:
