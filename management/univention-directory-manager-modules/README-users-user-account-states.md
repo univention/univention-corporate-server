@@ -1,14 +1,14 @@
-[TOC]
-
-# Account status flags in UDM `users/user`
-
 This document describes various states related to user account disabling, locking, and password expiry, along with their corresponding UDM and LDAP representations for POSIX, Samba, Kerberos and Active Directory systems.
 
-## Date formats
+[TOC]
+
+# Date formats
 
 - Windows Filetime: 100 nanoseconds since January 1, 1601, UTC
 - UNIX timestamp: number of seconds since January 1, 1970, UTC
 - GeneralizedTime: timestamp `YYYYMMDDHHMMSSZ` (ASN.1 / X.680) in UTC/Zulu.
+
+# UDM properties of `users/user` for account status information
 
 ## `locked`: Account locked due to authentication failures
 
@@ -133,7 +133,7 @@ The password of a user account is stored in different attributes. UDM keeps them
   - `userPassword`: POSIX crypt (or bcrypt) hash
   - `pwhistory`: History of set `userPassword` crypt hashes
   - `krb5Key` + `krb5KeyVersionNumber`: Kerberos Keys (ASN.1 DER-encoded EncryptionKey structure): multi valued password hash with different encryption types
-  - `sambaNTPassword`: NT hash (16 btes) (can be converted to a `arcfour-hmac-md5` Kerberos Key)
+  - `sambaNTPassword`: NT hash (16 bytes) (can be converted to a `arcfour-hmac-md5` Kerberos Key)
   - `sambaLMPassword`: LM hash: unsafe, disabled via UCR `password/samba/lmhash=false`
   - `sambaPasswordHistory`: History of salted `sambaNTPassword` hash as MD5sum-Hexdigest. Not set by UDM anymore, but present in historic environments. ([Bug #52230](https://forge.univention.org/bugzilla/show_bug.cgi?id=52230))
 - **Related UDM properties**:
@@ -146,18 +146,21 @@ The password of a user account is stored in different attributes. UDM keeps them
   - `unicodePwd` in Samba: HexDigest of NT hash.
   - `ntPwdHistory`: Passsword history of NT hashes
   - `dBCSPwd`: LM hash
-  - `supplementalCredentials`: Stores modern Kerberos keys and other credential material (AES keys, etc.) in AD. This is where AD stores the equivalents of krb5Key. Currently not set by S4-Connector.
-  - \~\~`msDS-KeyVersionNumber`: \~\~
+  - `supplementalCredentials`: Stores modern Kerberos keys and other credential material (AES keys, etc.) in AD. This is where AD stores the equivalents of krb5Key. Currently not set by AD-Connector.
+  - `msDS-KeyVersionNumber`: `krb5KeyVersionNumber` equivalent. Can't be set directly ([Bug #32082](https://forge.univention.org/bugzilla/show_bug.cgi?id=32082)).
 
 **Note**: `userPassword` may contain `{K5KEY}`, `{KINIT}`, `{LANMAN}`, `{SASL}`. E.g. in cases we can't create a crypt hash when synching password hashes from AD/Samba 4 to UCS. Different components evaluate them differently.
 
-## Account "active" property which combines all above states
+## Account "active" property which combines disabled+locked+userexpiry states
 
 There is effectively no pseudo property which combines all the states as an indicator that an account is fully active.
 However, a UDM search with a filter that groups these conditions can list all inactive accounts. For example:
 
 ```shell
-univention.admin.modules.get('users/user').lookup(None, lo, "(|(disabled=1)(locked=1)(userexpiry<=$(date -I))")
+udm users/user list --filter "(|(disabled=1)(locked=1)(userexpiry<=$(date -I))"
+```
+```python
+univention.admin.modules.get('users/user').lookup(None, lo, filter_format("(|(disabled=1)(locked=1)(userexpiry<=%s))", [datetime.date.today().isoformat()]))
 ```
 
 # Inconsistency in handling of password expiry semantics (Shadow vs Kerberos) ([Bug #57681](https://forge.univention.org/bugzilla/show_bug.cgi?id=57681))
