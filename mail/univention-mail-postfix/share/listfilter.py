@@ -100,10 +100,7 @@ def check_ldap_users_and_groups(sender: str, recipient: str) -> str:
 
     # get dn and groups of sender
     if check_sasl_username:
-        if use_dovecot_sasl:
-            user_filter = filter_format("(uid=%s)", (sender,))
-        else:
-            user_filter = filter_format("(|(uid=%s)(mailPrimaryAddress=%s))", (sender, sender))
+        user_filter = filter_format("(|(uid=%s)(mailPrimaryAddress=%s))", (sender, sender))
     else:
         user_filter = filter_format(
             "(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))",
