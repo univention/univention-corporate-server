@@ -1,3 +1,9 @@
+univention-keycloak (3.3.2) unstable; urgency=medium
+
+  * Bug #58698: add import users flag to univention-keycloak
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 07 Oct 2025 14:21:40 +0200
+
 univention-keycloak (3.3.1) unstable; urgency=medium
 
   * Bug #58588: fix regression on k8s deployments

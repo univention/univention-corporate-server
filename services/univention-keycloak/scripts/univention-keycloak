@@ -1866,6 +1866,7 @@ def parse_args(args: list[str] | None = None) -> Namespace:
     init_parser.add_argument("--frontchannel-logout-off", default=False, action="store_true", help="Switch off frontchannelLogout")
     init_parser.add_argument("--enable-user-events", default=False, action="store_true", help="Enable realm user events")
     init_parser.add_argument("--cors-frame-ancestors", default="", help="String containing the addresses to be added to the default CORS settings in the realm")
+    init_parser.add_argument("--import-users", default=False, action="store_true", help="Enable importing LDAP users into Keycloak")
 
     init_parser.set_defaults(func=init_keycloak_ucs)
 
@@ -3295,7 +3296,7 @@ def init_keycloak_ucs(opt):
             "cachePolicy": ["MAX_LIFESPAN"],
             "maxLifespan": ["300000"],
             "useKerberosForPasswordAuthentication": ["false"],
-            "importEnabled": ["false"],
+            "importEnabled": ["true" if opt.import_users else "false"],
             "enabled": ["true"],
             "bindCredential": [opt.ldap_system_user_pwd],
             "bindDn": [opt.ldap_system_user_dn],
