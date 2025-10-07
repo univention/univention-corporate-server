@@ -12,37 +12,11 @@ from collections.abc import Iterable
 from functools import reduce
 
 import ldap
-import pytest
 
 import univention.debug as ud
 import univention.testing.strings as uts
-import univention.testing.ucr as ucr_test
-import univention.testing.udm as udm_test
 
 from essential.mail import random_email
-
-
-@pytest.fixture
-def udm():
-    with udm_test.UCSTestUDM() as udm:
-        yield udm
-
-
-@pytest.fixture
-def ucr():
-    with ucr_test.UCSTestConfigRegistry() as ucr:
-        yield ucr
-
-
-@pytest.fixture
-def user_addr():
-    return random_email()
-
-
-@pytest.fixture
-def fqdn():
-    with ucr_test.UCSTestConfigRegistry() as ucr:
-        return '%(hostname)s.%(domainname)s' % ucr
 
 
 FETCHMAILRC_FILE = '/etc/fetchmailrc'
