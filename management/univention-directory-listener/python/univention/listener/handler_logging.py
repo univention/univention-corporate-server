@@ -68,6 +68,22 @@ class UniFileHandler(WatchedFileHandler):
             if old_uid != 0:
                 listener.unsetuid()
 
+    def handle(self, record):
+        """
+        If `record.msg` starts with `<LEVEL>`,
+        where `LEVEL` is exactly 8 chars long and enclosed in brackets (e.g., `<    INFO>`),
+        then use `LEVEL` as the log level of the record and remove `<LEVEL>` from `record.msg`.
+        This can be used by Docker Apps to transport the log level to `/var/log/univention/listener_module/<app>.log`.
+        They have to prefix their logs like this: `fmt="<%(levelname)8s>%(message)s"`.
+        """
+        if record.msg and record.msg[0] == "<" and record.msg[9] == ">":
+            record.levelname = record.msg[1:9]
+            record.levelno = 5 if record.levelname == "TRACE" else logging.getLevelName(record.levelname)
+            if not isinstance(record.levelno, int):
+                record.levelno = 10
+            record.msg = record.msg[10:]
+        return super().handle(record)
+
 
 class ModuleHandler(logging.Handler):
     """
