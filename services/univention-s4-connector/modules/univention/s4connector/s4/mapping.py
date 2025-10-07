@@ -230,7 +230,7 @@ s4_mapping = {
         post_con_modify_functions=list(filter(None, [
             univention.s4connector.s4.sid_mapping.sid_to_s4 if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
             univention.s4connector.s4.password.password_sync_ucs_to_s4,
-            univention.s4connector.s4.password.lockout_sync_ucs_to_s4,
+            univention.s4connector.s4.password.lockout_sync_from_ucs,
             univention.s4connector.s4.primary_group_sync_from_ucs,
             univention.s4connector.s4.object_memberships_sync_from_ucs,
             univention.s4connector.s4.disable_user_from_ucs,
@@ -238,7 +238,7 @@ s4_mapping = {
         post_ucs_modify_functions=list(filter(None, [
             univention.s4connector.s4.sid_mapping.sid_to_ucs if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not configRegistry.is_true('connector/s4/mapping/sid', True) else None,
             univention.s4connector.s4.password.password_sync_s4_to_ucs,
-            univention.s4connector.s4.password.lockout_sync_s4_to_ucs,
+            univention.s4connector.s4.password.lockout_sync_to_ucs,
             univention.s4connector.s4.primary_group_sync_to_ucs,
             univention.s4connector.s4.object_memberships_sync_to_ucs if configRegistry.get('connector/s4/mapping/group/syncmode') != 'write' else None,
             univention.s4connector.s4.disable_user_to_ucs,
