@@ -435,7 +435,6 @@ def calculate_supplementalCredentials(ucs_krb5key, old_supplementalCredentials, 
 
 
 def extract_NThash_from_krb5key(ucs_krb5key):
-
     NThash = None
 
     for k in ucs_krb5key:
@@ -817,7 +816,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
                 # we need to expire the password. Since shadowMax=0 is its minimum value, we need to set shadowLastChange = today-2days ## FIXME: -1day should be enough
                 two_days_ago = int(time.time()) - 86400 * 2
                 new_shadowLastChange = str(two_days_ago // 3600 // 24).encode('ASCII')
-            else:                # not pwd change on next login
+            else:  # not pwd change on next login
                 new_shadowLastChange = str(pwdLastSet_unix // 3600 // 24).encode('ASCII')
                 userobject = s4connector.get_ucs_object(key, ucs_object['dn'])
                 if not userobject:

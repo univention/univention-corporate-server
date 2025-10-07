@@ -21,6 +21,7 @@ operations = ['add', 'edit', 'remove', 'search', 'move', 'subtree_move']
 childs = True
 short_description = _('Settings: MS WMI Filter')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -156,6 +157,7 @@ mapping.register('flags2', 'msWMIintFlags2', None, univention.admin.mapping.List
 mapping.register('flags3', 'msWMIintFlags3', None, univention.admin.mapping.ListToString)
 mapping.register('flags4', 'msWMIintFlags4', None, univention.admin.mapping.ListToString)
 mapping.register('sourceOrganization', 'msWMISourceOrganization', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

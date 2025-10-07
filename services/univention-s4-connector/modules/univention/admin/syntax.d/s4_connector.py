@@ -1,4 +1,3 @@
-#
 # Univention S4 Connector
 #  UDM syntax classes
 #

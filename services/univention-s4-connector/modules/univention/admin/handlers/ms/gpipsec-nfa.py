@@ -19,6 +19,7 @@ operations = ['add', 'edit', 'remove', 'search', 'move', 'subtree_move']
 childs = True
 short_description = _('MS IPsec policy: NFA')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -105,6 +106,7 @@ mapping.register('ipsecDataType', 'ipsecDataType', None, univention.admin.mappin
 mapping.register('ipsecData', 'ipsecData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('ipsecNegotiationPolicyReference', 'ipsecNegotiationPolicyReference', None, univention.admin.mapping.ListToString)
 mapping.register('ipsecFilterReference', 'ipsecFilterReference')
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

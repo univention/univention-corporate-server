@@ -81,11 +81,9 @@ def set_primary_group_user(connector, key, ucs_object):
     """check if correct primary group is set"""
     connector.set_primary_group_to_ucs_user(key, ucs_object)
 
+
 # compare functions
-
 # helper
-
-
 def dictonary_lowercase(dict_):
     if isinstance(dict_, dict):
         ndict = {}
@@ -115,6 +113,7 @@ def compare_lowercase(val1, val2):
         return dictonary_lowercase(val1) == dictonary_lowercase(val2)
     except Exception:  # FIXME: which exception is to be caught?
         return False
+
 
 # helper classes
 
@@ -309,7 +308,21 @@ class attribute:
     :ptype sync_mode: str
     """
 
-    def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function=None, mapping=(), reverse_attribute_check=False, sync_mode='sync', con_attribute_encoding='UTF-8', auto_enable_udm_option=False):
+    def __init__(
+        self,
+        ucs_attribute='',
+        ldap_attribute='',
+        con_attribute='',
+        con_other_attribute='',
+        required=0,
+        single_value=False,
+        compare_function=None,
+        mapping=(),
+        reverse_attribute_check=False,
+        sync_mode='sync',
+        con_attribute_encoding='UTF-8',
+        auto_enable_udm_option=False,
+    ):
         self.ucs_attribute = ucs_attribute
         self.ldap_attribute = ldap_attribute
         self.con_attribute = con_attribute
@@ -454,7 +467,6 @@ class property:
 class ucs:
 
     def __init__(self, CONFIGBASENAME, _property, configRegistry, listener_dir, logfilename, debug_level):
-
         self.CONFIGBASENAME = CONFIGBASENAME
 
         self.configRegistry = configRegistry
@@ -794,7 +806,6 @@ class ucs:
             return True
 
     def get_ucs_ldap_object_dn(self, dn):
-
         for _i in [0, 1]:  # do it twice if the LDAP connection was closed
             try:
                 return self.lo.lo.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ('dn',))[0][0]
@@ -809,7 +820,6 @@ class ucs:
                 continue
 
     def get_ucs_ldap_object(self, dn):
-
         for _i in [0, 1]:  # do it twice if the LDAP connection was closed
             try:
                 return self.lo.get(dn, required=1)
@@ -1088,7 +1098,11 @@ class ucs:
             con_attribute = attributes.con_attribute
             con_other_attribute = attributes.con_other_attribute
 
-            if not object.get('changed_attributes') or con_attribute in object.get('changed_attributes') or (con_other_attribute and con_other_attribute in object.get('changed_attributes')):
+            if (
+                not object.get('changed_attributes')
+                or con_attribute in object.get('changed_attributes')
+                or (con_other_attribute and con_other_attribute in object.get('changed_attributes'))
+            ):
                 log.trace("__set_values: Set: %s", con_attribute)
                 set_values(attributes)
             else:
@@ -1106,7 +1120,11 @@ class ucs:
             con_attribute = post_attributes.con_attribute
             con_other_attribute = post_attributes.con_other_attribute
 
-            if not object.get('changed_attributes') or con_attribute in object.get('changed_attributes') or (con_other_attribute and con_other_attribute in object.get('changed_attributes')):
+            if (
+                not object.get('changed_attributes')
+                or con_attribute in object.get('changed_attributes')
+                or (con_other_attribute and con_other_attribute in object.get('changed_attributes'))
+            ):
                 log.trace("__set_values: Set: %s", con_attribute)
                 if post_attributes.reverse_attribute_check:
                     if object['attributes'].get(post_attributes.ldap_attribute):
@@ -1157,7 +1175,6 @@ class ucs:
         return res
 
     def modify_in_ucs(self, property_type, object, module, position):
-
         # reload extended attributes  # FIXME: maybe not necessary
         univention.admin.modules.init(self.lo, univention.admin.uldap.position(self.lo.base), module)
 
@@ -1561,9 +1578,7 @@ class ucs:
                 return False
 
         def connecting_filter(filter, attributes):
-
             def walk(filter, attributes):
-
                 def split(filter):
                     opened = []
                     closed = []
@@ -1607,7 +1622,6 @@ class ucs:
                 return 0 not in walk(filter[1:], attributes)
 
         def subfilter(filter, attributes):
-
             if filter[0] == '(':
                 if not filter[-1] == ')':
                     raise ValueError(f"matching ) missing in filter: {filter}")

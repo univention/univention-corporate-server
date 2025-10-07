@@ -41,6 +41,7 @@ def _unixTimeInverval2seconds(unixTime):
         log.warning('dc _unixTimeInverval2seconds: Not a valid time unit: %s', unixTime)
         return 0
 
+
 # Time interval in S4 / AD is often 100-nanosecond intervals:
 # http://msdn.microsoft.com/en-us/library/windows/desktop/ms676863%28v=vs.85%29.aspx
 
@@ -74,7 +75,7 @@ def ucs2con(s4connector, key, object):
         ml = []
 
         sync_times = [('sambaMaxPwdAge', 'maxPwdAge'), ('sambaMinPwdAge', 'minPwdAge'), ('sambaLockoutDuration', 'lockoutDuration')]
-        for (ucs_attr, s4_attr) in sync_times:
+        for ucs_attr, s4_attr in sync_times:
             ucs_time = int(object['attributes'].get(ucs_attr, [0])[0])
             s4_time = _nano2s(int(s4base_attr.get(s4_attr, [0])[0]) * -1)
 
@@ -86,7 +87,7 @@ def ucs2con(s4connector, key, object):
                 ml.append((ldap.MOD_REPLACE, s4_attr, [s4_time.encode('ASCII')]))
 
         sync_integers = [('sambaPwdHistoryLength', 'pwdHistoryLength'), ('sambaMinPwdLength', 'minPwdLength'), ('univentionSamba4pwdProperties', 'pwdProperties')]
-        for (ucs_attr, s4_attr) in sync_integers:
+        for ucs_attr, s4_attr in sync_integers:
             ucs_val = object['attributes'].get(ucs_attr, b'0')
             s4_val = s4base_attr.get(s4_attr, [b'0'])[0]
             if ucs_val != s4_val:
@@ -100,7 +101,6 @@ def ucs2con(s4connector, key, object):
 
 
 def con2ucs(s4connector, key, object):
-
     log.debug('dc con2ucs: Object (%s): %s', object['dn'], object)
 
     # Search sambaDomainname object via sambaSID
@@ -110,7 +110,6 @@ def con2ucs(s4connector, key, object):
     if len(sambadomainnameObject) > 1:
         log.warning("dc con2ucs: Found more than one sambaDomainname object with sambaSID %r", object_sid)
     elif len(sambadomainnameObject) == 1:
-
         # Use the first sambaDomain
         sambadomainnameObject = sambadomainnameObject[0]
 
@@ -118,7 +117,7 @@ def con2ucs(s4connector, key, object):
         modify = False
 
         sync_times = [('maxPasswordAge', 'maxPwdAge'), ('minPasswordAge', 'minPwdAge'), ('lockoutDuration', 'lockoutDuration')]
-        for (ucs_attr, s4_attr) in sync_times:
+        for ucs_attr, s4_attr in sync_times:
             ucs_time = _unixTimeInverval2seconds(sambadomainnameObject.get(ucs_attr, 0))
             s4_time = _nano2s(int(object['attributes'].get(s4_attr, [0])[0]) * -1)
 
@@ -127,7 +126,7 @@ def con2ucs(s4connector, key, object):
                 modify = True
 
         sync_integers = [('passwordHistory', 'pwdHistoryLength'), ('passwordLength', 'minPwdLength'), ('domainPwdProperties', 'pwdProperties')]
-        for (ucs_attr, s4_attr) in sync_integers:
+        for ucs_attr, s4_attr in sync_integers:
             ucs_val = sambadomainnameObject.get(ucs_attr, 0)
             s4_val = object['attributes'].get(s4_attr, [None])[0]
             if ucs_val != s4_val:

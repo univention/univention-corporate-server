@@ -19,6 +19,7 @@ operations = ['add', 'edit', 'remove', 'search', 'move', 'subtree_move']
 childs = True
 short_description = _('MS Software Installation Group Policy: Category Registration')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -82,6 +83,7 @@ mapping.register('managedBy', 'managedBy', None, univention.admin.mapping.ListTo
 mapping.register('localizedDescription', 'localizedDescription')
 mapping.register('localeID', 'localeID')
 mapping.register('categoryId', 'categoryId', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

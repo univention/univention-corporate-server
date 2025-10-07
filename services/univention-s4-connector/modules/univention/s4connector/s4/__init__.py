@@ -226,7 +226,6 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
     for dn_key in ['dn', 'olddn']:
         log.trace("samaccount_dn_mapping: check newdn for key %s: %s", dn_key, object.get(dn_key))
         if dn_key in object and not dn_premapped(object, dn_key, dn_mapping_stored):
-
             dn = object[dn_key]
 
             # Skip Configuration objects with empty DNs
@@ -470,6 +469,7 @@ class s4(univention.s4connector.ucs):
             ucr.load()
 
         import univention.s4connector.s4.mapping
+
         MAPPING_FILENAME = f'/etc/univention/{configbasename}/s4/localmapping.py'
         s4_mapping = univention.s4connector.s4.mapping.load_localmapping(MAPPING_FILENAME)
 
@@ -505,7 +505,21 @@ class s4(univention.s4connector.ucs):
             **kwargs,
         )
 
-    def __init__(self, CONFIGBASENAME, property, configRegistry, s4_ldap_host, s4_ldap_port, s4_ldap_base, s4_ldap_binddn, s4_ldap_bindpw, s4_ldap_certificate, listener_dir, logfilename=None, debug_level=None):
+    def __init__(
+        self,
+        CONFIGBASENAME,
+        property,
+        configRegistry,
+        s4_ldap_host,
+        s4_ldap_port,
+        s4_ldap_base,
+        s4_ldap_binddn,
+        s4_ldap_bindpw,
+        s4_ldap_certificate,
+        listener_dir,
+        logfilename=None,
+        debug_level=None,
+    ):
         univention.s4connector.ucs.__init__(self, CONFIGBASENAME, property, configRegistry, listener_dir, logfilename, debug_level)
 
         self.s4_ldap_host = s4_ldap_host
@@ -644,11 +658,15 @@ class s4(univention.s4connector.ucs):
         # Determine s4_ldap_base with exact case
         try:
             self.lo_s4 = univention.uldap.access(
-                host=self.s4_ldap_host, port=int(self.s4_ldap_port),
-                base=self.s4_ldap_base or 'DC=unknown', binddn=None,
-                bindpw=None, start_tls=tls_mode,
+                host=self.s4_ldap_host,
+                port=int(self.s4_ldap_port),
+                base=self.s4_ldap_base or 'DC=unknown',
+                binddn=None,
+                bindpw=None,
+                start_tls=tls_mode,
                 ca_certfile=self.s4_ldap_certificate,
-                uri=ldapuri, reconnect=False,
+                uri=ldapuri,
+                reconnect=False,
             )
             self.lo_s4.base = ''
             self.s4_ldap_base = self.s4_search_ext_s('', ldap.SCOPE_BASE, 'objectclass=*', ['defaultNamingContext'])[0][1]['defaultNamingContext'][0].decode('UTF-8')
@@ -656,11 +674,15 @@ class s4(univention.s4connector.ucs):
             log.exception('Failed to lookup AD LDAP base, using UCR value.')
 
         self.lo_s4 = univention.uldap.access(
-            host=self.s4_ldap_host, port=int(self.s4_ldap_port),
-            base=self.s4_ldap_base, binddn=self.s4_ldap_binddn,
-            bindpw=self.s4_ldap_bindpw, start_tls=tls_mode,
+            host=self.s4_ldap_host,
+            port=int(self.s4_ldap_port),
+            base=self.s4_ldap_base,
+            binddn=self.s4_ldap_binddn,
+            bindpw=self.s4_ldap_bindpw,
+            start_tls=tls_mode,
             ca_certfile=self.s4_ldap_certificate,
-            uri=ldapuri, reconnect=False,
+            uri=ldapuri,
+            reconnect=False,
         )
 
         self.lo_s4.lo.set_option(ldap.OPT_REFERRALS, 0)
@@ -923,7 +945,7 @@ class s4(univention.s4connector.ucs):
             tmpUSN = lastUSN
             log.process("Need to split results. highest USN is %s, lastUSN is %s", highestCommittedUSN, lastUSN)
             returnObjects = []
-            while (tmpUSN != highestCommittedUSN):
+            while tmpUSN != highestCommittedUSN:
                 tmp_lastUSN = tmpUSN
                 tmpUSN += 999
                 if tmpUSN > highestCommittedUSN:
@@ -1038,7 +1060,6 @@ class s4(univention.s4connector.ucs):
         s4_group_rid_resultlist = self.__search_s4(base=self.lo_s4.base, scope=ldap.SCOPE_SUBTREE, filter=rid_filter, attrlist=['dn', 'primaryGroupID'])
 
         if s4_group_rid_resultlist[0][0] not in [b"None", b"", None]:
-
             s4_group_rid = s4_group_rid_resultlist[0][1]['primaryGroupID'][0].decode('UTF-8')
 
             log.debug("set_primary_group_to_ucs_user: S4 rid: %r", s4_group_rid)
@@ -1336,7 +1357,9 @@ class s4(univention.s4connector.ucs):
             else:
                 if object['modtype'] == 'add':
                     log.process("group_members_sync_from_ucs: %s is newly added. For this case don't remove current S4 members.", object['dn'].lower())
-                elif (member_dn_lower in self.group_members_cache_con.get(object['dn'].lower(), set())) or (self.property.get('group') and self.property['group'].sync_mode in ['write', 'none']):
+                elif (member_dn_lower in self.group_members_cache_con.get(object['dn'].lower(), set())) or (
+                    self.property.get('group') and self.property['group'].sync_mode in ['write', 'none']
+                ):
                     # FIXME: Should this really also be done if sync_mode for group is 'none'?
                     # remove member only if he was in the cache on AD side
                     # otherwise it is possible that the user was just created on AD and we are on the way back
@@ -1575,7 +1598,9 @@ class s4(univention.s4connector.ucs):
                 # remove member only if he was in the cache
                 # otherwise it is possible that the user was just created on UCS
 
-                if (member_dn_lower in self.group_members_cache_ucs.get(object['dn'].lower(), set())) or (self.property.get('group') and self.property['group'].sync_mode in ['read', 'none']):
+                if (member_dn_lower in self.group_members_cache_ucs.get(object['dn'].lower(), set())) or (
+                    self.property.get('group') and self.property['group'].sync_mode in ['read', 'none']
+                ):
                     # FIXME: Should this really also be done if sync_mode for group is 'none'?
                     log.debug("group_members_sync_to_ucs: %s was found in UCS group member cache of %s", member_dn_lower, object['dn'].lower())
                     ucs_object_attr = cache.get(member_dn)
@@ -2116,7 +2141,10 @@ class s4(univention.s4connector.ucs):
                 self.property[property_type].con_sync_function(self, property_type, object)
             else:
                 # Iterate over attributes and post_attributes
-                for attribute_type_name, attribute_type in [('attributes', self.property[property_type].attributes), ('post_attributes', self.property[property_type].post_attributes)]:
+                for attribute_type_name, attribute_type in [
+                    ('attributes', self.property[property_type].attributes),
+                    ('post_attributes', self.property[property_type].post_attributes),
+                ]:
                     if hasattr(self.property[property_type], attribute_type_name) and attribute_type is not None:
                         for attr in attribute_list:
                             value = new_ucs_object.get(attr)
@@ -2212,11 +2240,12 @@ class s4(univention.s4connector.ucs):
 
                                     log.debug("sync_from_ucs: The current S4 values: %s", current_s4_values)
 
-                                    has_mapping_function = hasattr(attribute_type[attribute], 'mapping') and len(attribute_type[attribute].mapping) > 0 and attribute_type[attribute].mapping[0]
+                                    has_mapping_function = (
+                                        hasattr(attribute_type[attribute], 'mapping') and len(attribute_type[attribute].mapping) > 0 and attribute_type[attribute].mapping[0]
+                                    )
 
                                     if (to_add or to_remove) and (attribute_type[attribute].single_value or has_mapping_function):
-                                        modified = (not current_s4_values or not value) or \
-                                            not attribute_type[attribute].compare_function(list(current_s4_values), list(value))
+                                        modified = (not current_s4_values or not value) or not attribute_type[attribute].compare_function(list(current_s4_values), list(value))
                                         if modified:
                                             if has_mapping_function:
                                                 log.process("Calling value mapping function for attribute %s", attribute)

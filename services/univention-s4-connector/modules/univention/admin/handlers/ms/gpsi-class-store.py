@@ -19,6 +19,7 @@ operations = ['add', 'edit', 'remove', 'search', 'move', 'subtree_move']
 childs = True
 short_description = _('Software Installation Group Policy: Class Store')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -95,6 +96,7 @@ mapping.register('nextLevelStore', 'nextLevelStore', None, univention.admin.mapp
 mapping.register('lastUpdateSequence', 'lastUpdateSequence', None, univention.admin.mapping.ListToString)
 mapping.register('extensionName', 'extensionName')
 mapping.register('appSchemaVersion', 'appSchemaVersion', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

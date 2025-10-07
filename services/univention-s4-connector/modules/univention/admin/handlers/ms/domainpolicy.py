@@ -19,6 +19,7 @@ operations = ['add', 'edit', 'remove', 'search', 'move', 'subtree_move']
 childs = True
 short_description = _('MS Domain Policy')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -224,6 +225,7 @@ mapping.register('domainPolicyReference', 'domainPolicyReference', None, univent
 mapping.register('domainCAs', 'domainCAs')
 mapping.register('defaultLocalPolicyObject', 'defaultLocalPolicyObject', None, univention.admin.mapping.ListToString)
 mapping.register('authenticationOptions', 'authenticationOptions', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

@@ -58,6 +58,7 @@ class MXRecord(dnsp.DnssrvRpcRecord):
         self.data.wPriority = priority
         self.data.nameTarget = name
 
+
 # mapping functions
 
 
@@ -110,7 +111,6 @@ def dns_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
     for dn_key in ['dn', 'olddn']:
         log.debug("dns_dn_mapping: check newdn for key '%s'", dn_key)
         if dn_key in obj and not dn_premapped(obj, dn_key, dn_mapping_stored):
-
             dn = obj[dn_key]
             log.debug("dns_dn_mapping: dn: %s", dn)
 
@@ -660,7 +660,6 @@ def __get_s4_msdcs_soa(s4connector, zoneName):
 
 
 def s4_zone_create(s4connector, object):
-
     soa_dn = object['dn']
     zone_dn = s4connector.lo.parentDn(soa_dn)
 
@@ -716,7 +715,6 @@ def s4_zone_create(s4connector, object):
 
 
 def s4_zone_msdcs_sync(s4connector, object):
-
     # Get the current serial number of the OpenLDAP domainname zone
     domainZoneName = object['attributes']['zoneName'][0].decode('UTF-8')
     soaRecord = object['attributes'].get('sOARecord', [None])[0]
@@ -768,7 +766,11 @@ def s4_zone_create_wrapper(s4connector, object):
     result = s4_zone_create(s4connector, object)
 
     zoneName = object['attributes']['zoneName'][0].decode('UTF-8')
-    if zoneName == s4connector.configRegistry.get('domainname') and s4connector.configRegistry.get('connector/s4/mapping/dns/position') != 'legacy' and object['modtype'] == 'modify':
+    if (
+        zoneName == s4connector.configRegistry.get('domainname')
+        and s4connector.configRegistry.get('connector/s4/mapping/dns/position') != 'legacy'
+        and object['modtype'] == 'modify'
+    ):
         # Additionally sync serialNumber to _msdcs zone
         result = result and s4_zone_msdcs_sync(s4connector, object)
 
@@ -779,7 +781,6 @@ def s4_zone_create_wrapper(s4connector, object):
 
 
 def s4_zone_delete(s4connector, object):
-
     soa_dn = object['dn']
     zone_dn = s4connector.lo.parentDn(soa_dn)
 
@@ -797,7 +798,6 @@ def s4_zone_delete(s4connector, object):
 
 
 def s4_dns_node_base_create(s4connector, object, dnsRecords):
-
     relativeDomainNames = object['attributes'].get('relativeDomainName')
     old_dnsRecords = []
 
@@ -814,7 +814,6 @@ def s4_dns_node_base_create(s4connector, object, dnsRecords):
 
 
 def s4_dns_node_base_delete(s4connector, object):
-
     dnsNodeDn = object['dn']
     try:
         s4connector.lo_s4.lo.delete_s(dnsNodeDn)
@@ -828,7 +827,6 @@ def s4_dns_node_base_delete(s4connector, object):
 
 
 def s4_host_record_create(s4connector, object):
-
     dnsRecords = []
 
     zoneName = object['attributes']['zoneName'][0].decode('UTF-8')
@@ -921,7 +919,6 @@ def ucs_host_record_delete(s4connector, object):
 
 
 def s4_ptr_record_create(s4connector, object):
-
     dnsRecords = []
 
     __pack_ptrRecord(object, dnsRecords)
@@ -1032,7 +1029,6 @@ def ucs_cname_delete(s4connector, object):
 
 
 def s4_cname_create(s4connector, object):
-
     dnsRecords = []
 
     __pack_cName(object, dnsRecords)
@@ -1115,7 +1111,6 @@ def ucs_srv_record_delete(s4connector, object):
 
 
 def s4_srv_record_create(s4connector, object):
-
     dnsRecords = []
 
     zoneName = object['attributes']['zoneName'][0].decode('UTF-8')
@@ -1217,7 +1212,6 @@ def ucs_txt_record_delete(s4connector, object):
 
 
 def s4_txt_record_create(s4connector, object):
-
     dnsRecords = []
 
     __pack_txtRecord(object, dnsRecords)
@@ -1277,7 +1271,6 @@ def ucs_ns_record_delete(s4connector, object):
 
 
 def s4_ns_record_create(s4connector, object):
-
     dnsRecords = []
 
     __pack_nsRecord(object, dnsRecords)
@@ -1286,7 +1279,6 @@ def s4_ns_record_create(s4connector, object):
 
 
 def ucs_zone_create(s4connector, object, dns_type):
-
     zoneName = object['attributes']['zoneName'][0].decode('UTF-8')
     relativeDomainName = object['attributes']['relativeDomainName'][0].decode('UTF-8')
 
@@ -1303,7 +1295,11 @@ def ucs_zone_create(s4connector, object, dns_type):
 
     mx = __unpack_mxRecord(object)
 
-    if zoneName == s4connector.configRegistry.get('domainname') and s4connector.configRegistry.get('connector/s4/mapping/dns/position') != 'legacy' and object['modtype'] == 'modify':
+    if (
+        zoneName == s4connector.configRegistry.get('domainname')
+        and s4connector.configRegistry.get('connector/s4/mapping/dns/position') != 'legacy'
+        and object['modtype'] == 'modify'
+    ):
         # Determine max of serialNumber from _msdcs zone
         msdcs_soa_obj = __get_s4_msdcs_soa(s4connector, zoneName)
         if msdcs_soa_obj:
@@ -1354,8 +1350,10 @@ def ucs_zone_create(s4connector, object, dns_type):
                 zone['a'] = a
                 modify = True
             if mx:
+
                 def mapMX(m):
                     return f'{m[0]} {m[1]}'
+
                 if set(map(mapMX, mx)) != set(map(mapMX, zone['mx'])):
                     zone['mx'] = mx
                     modify = True
@@ -1387,7 +1385,6 @@ def ucs_zone_create(s4connector, object, dns_type):
 
 
 def ucs_zone_delete(s4connector, object, dns_type):
-
     zoneName = object['attributes']['zoneName'][0].decode('UTF-8')
     relativeDomainName = object['attributes']['relativeDomainName'][0].decode('UTF-8')
 
@@ -1482,7 +1479,6 @@ def _identify_dns_con_object(s4connector, object):
 
 
 def ucs2con(s4connector, key, object):
-
     # At this point dn_mapping_function already has converted object['dn'] from ucs to con
     # But since there is no attribute mapping defined for DNS, the object attributes still
     # are the ones from UCS.
@@ -1555,7 +1551,6 @@ def ucs2con(s4connector, key, object):
 
 
 def con2ucs(s4connector, key, object):
-
     log.debug('dns con2ucs: Object (%s): %s', object['dn'], object)
 
     # At this point dn_mapping_function already has converted object['dn'] from con to ucs

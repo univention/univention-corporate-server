@@ -19,6 +19,7 @@ operations = ['add', 'edit', 'remove', 'search', 'move', 'subtree_move']
 childs = True
 short_description = _('Settings: MS Print Connection Policy')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -88,6 +89,7 @@ mapping.register('msPrintAttributes', 'msPrintAttributes', None, univention.admi
 mapping.register('msPrinterName', 'msPrinterName', None, univention.admin.mapping.ListToString)
 mapping.register('msPrintServerName', 'msPrintServerName', None, univention.admin.mapping.ListToString)
 mapping.register('msPrintUNCName', 'msPrintUNCName', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

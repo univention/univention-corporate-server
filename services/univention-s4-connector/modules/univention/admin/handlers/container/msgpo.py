@@ -19,6 +19,7 @@ operations = ['add', 'edit', 'remove', 'search', 'move', 'subtree_move']
 childs = True
 short_description = _('Container: MS Group Policy')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -125,6 +126,7 @@ mapping.register('msGPOWQLFilter', 'msGPOWQLFilter', None, univention.admin.mapp
 mapping.register('msGPOUserExtensionNames', 'msGPOUserExtensionNames', None, univention.admin.mapping.ListToString)
 mapping.register('msGPOMachineExtensionNames', 'msGPOMachineExtensionNames', None, univention.admin.mapping.ListToString)
 mapping.register('msNTSecurityDescriptor', 'msNTSecurityDescriptor', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

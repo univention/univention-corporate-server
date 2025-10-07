@@ -157,12 +157,14 @@ def get_sid_mapping():
 def _map_s4_to_udm_base64(property_name):
     def mapping(connector, key, obj):
         return [base64.b64encode(x) for x in obj['attributes'][property_name]]
+
     return mapping
 
 
 def _map_ldap_to_s4(property_name):
     def mapping(connector, key, obj):
         return obj['attributes'][property_name]
+
     return mapping
 
 
@@ -1510,7 +1512,6 @@ s4_mapping = {
                 con_attribute='appSchemaVersion',
                 single_value=True,
             ),
-
         },
     ),
     'ms/gpsi-package-registration': univention.s4connector.property(
@@ -1925,7 +1926,7 @@ s4_mapping = {
         con_sync_function=univention.s4connector.s4.dc.ucs2con,
         ucs_sync_function=univention.s4connector.s4.dc.con2ucs,
     ),
-}
+}  # fmt: skip
 
 if not configRegistry.is_true('connector/s4/mapping/gpo', True):
     s4_mapping['container'].attributes.pop('gPLink')

@@ -19,6 +19,7 @@ operations = ['add', 'edit', 'remove', 'search', 'move', 'subtree_move']
 childs = True
 short_description = _('MS wireless Group Policy blob')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -76,6 +77,7 @@ mapping.register('description', 'description', None, univention.admin.mapping.Li
 mapping.register('msieee80211-ID', 'msieee80211-ID', None, univention.admin.mapping.ListToString)
 mapping.register('msieee80211-DataType', 'msieee80211-DataType', None, univention.admin.mapping.ListToString)
 mapping.register('msieee80211-Data', 'msieee80211-Data', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

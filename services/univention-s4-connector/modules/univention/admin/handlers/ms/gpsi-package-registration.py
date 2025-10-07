@@ -19,6 +19,7 @@ operations = ['add', 'edit', 'remove', 'search', 'move', 'subtree_move']
 childs = True
 short_description = _('Software Installation Group Policy: Package Registration')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -290,6 +291,7 @@ mapping.register('cOMInterfaceID', 'cOMInterfaceID')
 mapping.register('cOMClassID', 'cOMClassID')
 mapping.register('categories', 'categories')
 mapping.register('canUpgradeScript', 'canUpgradeScript')
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

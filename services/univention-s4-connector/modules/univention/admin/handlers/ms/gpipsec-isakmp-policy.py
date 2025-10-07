@@ -19,6 +19,7 @@ operations = ['add', 'edit', 'remove', 'search', 'move', 'subtree_move']
 childs = True
 short_description = _('MS IPsec policy: ISAKMP Policy')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -90,6 +91,7 @@ mapping.register('ipsecName', 'ipsecName', None, univention.admin.mapping.ListTo
 mapping.register('ipsecID', 'ipsecID', None, univention.admin.mapping.ListToString)
 mapping.register('ipsecDataType', 'ipsecDataType', None, univention.admin.mapping.ListToString)
 mapping.register('ipsecData', 'ipsecData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):

@@ -7,7 +7,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Helper function to create the SID mapping definition."""
 
-
 from logging import getLogger
 
 import ldap

@@ -19,6 +19,7 @@ operations = ['add', 'edit', 'remove', 'search', 'move', 'subtree_move']
 childs = True
 short_description = _('MS wireless Group Policy')
 long_description = ''
+# fmt: off
 options = {
     'default': univention.admin.option(
         short_description=short_description,
@@ -76,6 +77,7 @@ mapping.register('description', 'description', None, univention.admin.mapping.Li
 mapping.register('ms-net-ieee-80211-GP-PolicyReserved', 'ms-net-ieee-80211-GP-PolicyReserved', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('ms-net-ieee-80211-GP-PolicyData', 'ms-net-ieee-80211-GP-PolicyData', None, univention.admin.mapping.ListToString)
 mapping.register('ms-net-ieee-80211-GP-PolicyGUID', 'ms-net-ieee-80211-GP-PolicyGUID', None, univention.admin.mapping.ListToString)
+# fmt: on
 
 
 class object(univention.admin.handlers.simpleLdap):
