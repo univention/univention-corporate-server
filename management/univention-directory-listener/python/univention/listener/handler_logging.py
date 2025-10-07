@@ -13,7 +13,7 @@ additionally to the common `listener.log`.
 # ucs-school-4.2/ucs-school-lib/python/models/utils.py
 #
 
-
+import datetime
 import grp
 import logging
 import os
@@ -97,8 +97,23 @@ class ModuleHandler(logging.Handler):
         ud.debug(self._udebug_facility, udebug_level, msg)
 
 
-__LF_D = '%(asctime)s %(levelname)-7s %(module)s.%(funcName)s:%(lineno)d  %(message)s'
-__LF_I = '%(asctime)s %(levelname)-7s %(message)s'
+class UniFormatter(logging.Formatter):
+    def formatTime(self, record, datefmt=None):
+        """
+        If `%f` is in `datefmt`, like in the default `LOG_DATETIME_FORMAT`,
+        format the time using `datetime.datetime.strftime()` (ignoring `Formatter.default_msec_format`),
+        else use the original function `Formatter.formatTime()`.
+        This is used to add microseconds to the date.
+        """
+        if datefmt and '%f' in datefmt:
+            dt = datetime.datetime.fromtimestamp(record.created).astimezone()
+            return dt.strftime(datefmt)
+        else:
+            return super().formatTime(record, datefmt)
+
+
+__LF_D = '%(asctime)s %(levelname)8s %(message)s | _source=%(module)s.%(funcName)s:%(lineno)d'
+__LF_I = '%(asctime)s %(levelname)8s %(message)s'
 FILE_LOG_FORMATS = {
     "NOTSET": __LF_D,
     "DEBUG": __LF_D,
@@ -109,9 +124,9 @@ FILE_LOG_FORMATS = {
     "CRITICAL": __LF_I,
 }
 
-__LC_D = '%(asctime)s %(levelname)-7s %(module)s.%(funcName)s:%(lineno)d  %(message)s'
+__LC_D = __LF_D
 __LC_I = '%(message)s'
-__LC_W = '%(levelname)-7s  %(message)s'
+__LC_W = '%(levelname)8s %(message)s'
 CMDLINE_LOG_FORMATS = {
     "NOTSET": __LC_D,
     "DEBUG": __LC_D,
@@ -130,7 +145,7 @@ UCR_DEBUG_LEVEL_TO_LOGGING_LEVEL = {
     4: 'DEBUG',
 }
 
-LOG_DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+LOG_DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S.%f%z'
 
 _logger_cache: dict[str, logging.Logger] = {}
 _handler_cache: dict[str, UniFileHandler] = {}
@@ -232,7 +247,7 @@ def get_listener_logger(name: str, filename: str, level: str | None = None, hand
             or :py:class:`UniStreamHandler`. It should be a subclass of one of those!
     :param dict formatter_kwargs: will be passed to the formatters constructor,
             if it has a key `cls` it will be used to create a formatter instead of
-            :py:class`logging.Formatter`.
+            :py:class`UniFormatter`.
     :return: a Python logging object
     :rtype: logging.Logger
     """
@@ -266,7 +281,7 @@ def get_listener_logger(name: str, filename: str, level: str | None = None, hand
         _logger.setLevel(level)
 
     fmt = FILE_LOG_FORMATS[level]
-    fmt_kwargs: dict[str, Any] = {"cls": logging.Formatter, "fmt": fmt, "datefmt": LOG_DATETIME_FORMAT}
+    fmt_kwargs: dict[str, Any] = {"cls": UniFormatter, "fmt": fmt, "datefmt": LOG_DATETIME_FORMAT}
     fmt_kwargs.update(formatter_kwargs)
 
     if cache_key in _handler_cache:
