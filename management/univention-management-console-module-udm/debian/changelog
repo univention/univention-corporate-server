@@ -1,3 +1,9 @@
+univention-management-console-module-udm (12.3.2) unstable; urgency=medium
+
+  * Bug #58697: performance improvements to UDM
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Tue, 07 Oct 2025 11:52:23 +0200
+
 univention-management-console-module-udm (12.3.1) unstable; urgency=medium
 
   * Bug #58652: get guardian roles from request

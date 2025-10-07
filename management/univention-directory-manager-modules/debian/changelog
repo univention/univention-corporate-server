@@ -1,3 +1,9 @@
+univention-directory-manager-modules (17.3.4) unstable; urgency=medium
+
+  * Bug #58697: cache available_timezones call for performance
+
+ -- Juan Pedro Torres Munoz <juan.torres-munoz@univention.de>  Fri, 17 Oct 2025 10:25:50 +0200
+
 univention-directory-manager-modules (17.3.3) unstable; urgency=medium
 
   * Bug #20610: Deprecate udm option --bindpwd, use --bindpwdfile
