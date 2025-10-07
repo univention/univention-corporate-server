@@ -37,14 +37,14 @@ def daemon(lock_file, options):
     except OSError as e:
         print(f'Daemon Mode Error: {e.strerror}')
 
-    if (pid == 0):
+    if pid == 0:
         os.setsid()
         signal.signal(signal.SIGHUP, signal.SIG_IGN)
         try:
             pid = os.fork()
         except OSError as e:
             print(f'Daemon Mode Error: {e.strerror}')
-        if (pid == 0):
+        if pid == 0:
             os.chdir("/")
             os.umask(0o027)
         else:

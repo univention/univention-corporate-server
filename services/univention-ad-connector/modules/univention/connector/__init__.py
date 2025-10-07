@@ -87,11 +87,9 @@ def set_primary_group_user(connector, key, ucs_object):
     """check if correct primary group is set"""
     connector.set_primary_group_to_ucs_user(key, ucs_object)
 
+
 # compare functions
-
 # helper
-
-
 def dictonary_lowercase(dict_):
     if isinstance(dict_, dict):
         ndict = {}
@@ -122,9 +120,8 @@ def compare_lowercase(val1, val2):
     except Exception:  # FIXME: which exception is to be caught?
         return False
 
+
 # helper classes
-
-
 class configdb:
 
     def __init__(self, filename):
@@ -324,7 +321,21 @@ class attribute:
     :ptype sync_mode: str
     """
 
-    def __init__(self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, single_value=False, compare_function='', mapping=(), reverse_attribute_check=False, sync_mode='sync', con_depends='', con_attribute_encoding='UTF-8'):
+    def __init__(
+        self,
+        ucs_attribute='',
+        ldap_attribute='',
+        con_attribute='',
+        con_other_attribute='',
+        required=0,
+        single_value=False,
+        compare_function='',
+        mapping=(),
+        reverse_attribute_check=False,
+        sync_mode='sync',
+        con_depends='',
+        con_attribute_encoding='UTF-8',
+    ):
         self.ucs_attribute = ucs_attribute
         self.ldap_attribute = ldap_attribute
         self.con_attribute = con_attribute
@@ -391,7 +402,6 @@ class property:
         position_mapping=[],
         con_subtree_delete_objects=[],
     ):
-
         self.ucs_default_dn = ucs_default_dn
 
         self.con_default_dn = con_default_dn
@@ -457,7 +467,6 @@ class property:
 class ucs:
 
     def __init__(self, CONFIGBASENAME, _property, configRegistry, listener_dir, logfilename, debug_level):
-
         self.CONFIGBASENAME = CONFIGBASENAME
 
         self.configRegistry = configRegistry
@@ -1092,7 +1101,12 @@ class ucs:
             con_other_attribute = attributes.con_other_attribute
 
             changed_attributes = object.get('changed_attributes')
-            changed = not changed_attributes or con_attribute in changed_attributes or (con_other_attribute and con_other_attribute in changed_attributes) or attributes.con_depends in changed_attributes
+            changed = (
+                not changed_attributes
+                or con_attribute in changed_attributes
+                or (con_other_attribute and con_other_attribute in changed_attributes)
+                or attributes.con_depends in changed_attributes
+            )
 
             if changed or modtype == 'add':
                 log.trace("__set_values: Set: %s", con_attribute)
@@ -1114,7 +1128,12 @@ class ucs:
 
             changed_attributes = object.get('changed_attributes')
 
-            changed = not changed_attributes or con_attribute in changed_attributes or (con_other_attribute and con_other_attribute in changed_attributes) or post_attributes.con_depends in changed_attributes
+            changed = (
+                not changed_attributes
+                or con_attribute in changed_attributes
+                or (con_other_attribute and con_other_attribute in changed_attributes)
+                or post_attributes.con_depends in changed_attributes
+            )
             if changed or modtype == 'add':
                 log.trace("__set_values: Set: %s", con_attribute)
                 if post_attributes.reverse_attribute_check:
@@ -1154,7 +1173,6 @@ class ucs:
         return res
 
     def modify_in_ucs(self, property_type, object, module, position):
-
         ucs_object_dn = object.get('olddn', object['dn'])
         ucs_object = univention.admin.objects.get(module, None, self.lo, dn=ucs_object_dn, position='')
         self.__set_values(property_type, object, ucs_object)
@@ -1318,9 +1336,11 @@ class ucs:
                         if old_ad_object.get(attr) != original_attributes.get(attr) and attr not in object['changed_attributes']:
                             object['changed_attributes'].append(attr)
                     if not (set(object['changed_attributes']) - self.irrelevant_attributes):
-                        if property_type == "user" \
-                           and self.configRegistry.is_false('connector/ad/mapping/user/password/disabled', True) \
-                           and not self.configRegistry.is_true('connector/ad/mapping/user/password/kinit', False):
+                        if (
+                            property_type == "user"
+                            and self.configRegistry.is_false('connector/ad/mapping/user/password/disabled', True)
+                            and not self.configRegistry.is_true('connector/ad/mapping/user/password/kinit', False)
+                        ):
                             if object['attributes'].get('pwdLastSet', [b'1'])[0] == b'0':
                                 log.debug("sync_to_ucs: pwdLastSet is 0. Do not ignore %r", original_object['dn'])
                             else:
@@ -1500,9 +1520,7 @@ class ucs:
                 return False
 
         def connecting_filter(filter, attributes):
-
             def walk(filter, attributes):
-
                 def split(filter):
                     opened = []
                     closed = []
@@ -1546,7 +1564,6 @@ class ucs:
                 return 0 not in walk(filter[1:], attributes)
 
         def subfilter(filter, attributes):
-
             if filter[0] == '(':
                 if not filter[-1] == ')':
                     raise ValueError(f"matching ) missing in filter: {filter}")
@@ -1572,8 +1589,11 @@ class ucs:
             log.debug("_ignore_object: ignore object without DN (key: %s)", key)
             return True  # ignore not existing object
 
-        if self.property[key].allow_subtree and not any(self._subtree_match(object['dn'], dn) for dn in self.property[key].allow_subtree) and (
-                not self.allow_subtree_ancestors or not any(DN(subtree_dn).endswith(object['dn']) for subtree_dn in self.property[key].allow_subtree)):
+        if (
+            self.property[key].allow_subtree
+            and not any(self._subtree_match(object['dn'], dn) for dn in self.property[key].allow_subtree)
+            and (not self.allow_subtree_ancestors or not any(DN(subtree_dn).endswith(object['dn']) for subtree_dn in self.property[key].allow_subtree))
+        ):
             log.debug('_ignore_object: ignore object because it is not in one of the allowed subtrees: [%r:%r]', key, object['dn'])
             return True
 

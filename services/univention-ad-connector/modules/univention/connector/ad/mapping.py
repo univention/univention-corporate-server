@@ -33,6 +33,7 @@ def ignore_filter_from_tmpl(template, ucr_key, default=''):
     '(|(cn=one)(cn=two)(cn=three))'
     """
     from univention.connector.ad import format_escaped
+
     variables = [v for v in configRegistry.get(ucr_key, default).split(',') if v]
     filter_parts = [format_escaped(template, v) for v in variables]
     if filter_parts:
@@ -495,7 +496,7 @@ def create_mapping(configbasename='connector'):
                 ),
             },
         ),
-    }
+    }  # fmt: skip
 
     # allow filter
     for obj_type in ad_mapping.keys():  # noqa: PLC0206

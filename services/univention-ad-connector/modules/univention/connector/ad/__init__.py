@@ -182,7 +182,6 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
     for dn_key in ['dn', 'olddn']:
         log.trace("samaccount_dn_mapping: check newdn for key %s: %s", dn_key, object.get(dn_key))
         if dn_key in object and not dn_premapped(object, dn_key, dn_mapping_stored):
-
             dn = object[dn_key]
 
             # Skip Configuration objects with empty DNs
@@ -410,7 +409,22 @@ class ad(univention.connector.ucs):
             **kwargs,
         )
 
-    def __init__(self, CONFIGBASENAME, property, configRegistry, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate, listener_dir, max_retry_rejected, logfilename=None, debug_level=None):
+    def __init__(
+        self,
+        CONFIGBASENAME,
+        property,
+        configRegistry,
+        ad_ldap_host,
+        ad_ldap_port,
+        ad_ldap_base,
+        ad_ldap_binddn,
+        ad_ldap_bindpw,
+        ad_ldap_certificate,
+        listener_dir,
+        max_retry_rejected,
+        logfilename=None,
+        debug_level=None,
+    ):
         univention.connector.ucs.__init__(self, CONFIGBASENAME, property, configRegistry, listener_dir, logfilename, debug_level)
 
         self.ad_ldap_host = ad_ldap_host
@@ -656,10 +670,14 @@ class ad(univention.connector.ucs):
         # Determine ad_ldap_base with exact case
         try:
             self.lo_ad = univention.uldap.access(
-                host=self.ad_ldap_host, port=int(self.ad_ldap_port),
-                base=self.ad_ldap_base or 'DC=unknown', binddn=None,
-                bindpw=None, start_tls=tls_mode,
-                use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate,
+                host=self.ad_ldap_host,
+                port=int(self.ad_ldap_port),
+                base=self.ad_ldap_base or 'DC=unknown',
+                binddn=None,
+                bindpw=None,
+                start_tls=tls_mode,
+                use_ldaps=ldaps,
+                ca_certfile=self.ad_ldap_certificate,
                 # uri=ldapuri,
             )
             self.lo_ad.base = ''
@@ -672,20 +690,27 @@ class ad(univention.connector.ucs):
             self.get_kerberos_ticket()
             auth = ldap.sasl.gssapi("")
             self.lo_ad = univention.uldap.access(
-                host=self.ad_ldap_host, port=int(self.ad_ldap_port),
-                base=self.ad_ldap_base, binddn=None,
+                host=self.ad_ldap_host,
+                port=int(self.ad_ldap_port),
+                base=self.ad_ldap_base,
+                binddn=None,
                 bindpw=self.ad_ldap_bindpw,
-                start_tls=tls_mode, use_ldaps=ldaps,
+                start_tls=tls_mode,
+                use_ldaps=ldaps,
                 ca_certfile=self.ad_ldap_certificate,
             )
             self.get_kerberos_ticket()
             self.lo_ad.lo.sasl_interactive_bind_s("", auth)
         else:
             self.lo_ad = univention.uldap.access(
-                host=self.ad_ldap_host, port=int(self.ad_ldap_port),
-                base=self.ad_ldap_base, binddn=self.ad_ldap_binddn,
-                bindpw=self.ad_ldap_bindpw, start_tls=tls_mode,
-                use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate,
+                host=self.ad_ldap_host,
+                port=int(self.ad_ldap_port),
+                base=self.ad_ldap_base,
+                binddn=self.ad_ldap_binddn,
+                bindpw=self.ad_ldap_bindpw,
+                start_tls=tls_mode,
+                use_ldaps=ldaps,
+                ca_certfile=self.ad_ldap_certificate,
             )
 
         self.lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
@@ -929,7 +954,7 @@ class ad(univention.connector.ucs):
             tmpUSN = lastUSN
             log.process("Need to split results. highest USN is %s, lastUSN is %s", highestCommittedUSN, lastUSN)
             returnObjects = []
-            while (tmpUSN != highestCommittedUSN):
+            while tmpUSN != highestCommittedUSN:
                 tmp_lastUSN = tmpUSN
                 tmpUSN += 999
                 if tmpUSN > highestCommittedUSN:
@@ -1044,7 +1069,6 @@ class ad(univention.connector.ucs):
         ad_group_rid_resultlist = self.__search_ad(base=self.lo_ad.base, scope=ldap.SCOPE_SUBTREE, filter=rid_filter, attrlist=['dn', 'primaryGroupID'])
 
         if ad_group_rid_resultlist[0][0] not in [b"None", b"", None]:
-
             ad_group_rid = ad_group_rid_resultlist[0][1]['primaryGroupID'][0].decode('UTF-8')
 
             log.debug("set_primary_group_to_ucs_user: AD rid: %r", ad_group_rid)
@@ -1344,7 +1368,9 @@ class ad(univention.connector.ucs):
             else:
                 if object['modtype'] == 'add':
                     log.process("group_members_sync_from_ucs: %s is newly added. For this case don't remove current AD members.", object['dn'].lower())
-                elif (member_dn_lower in self.group_members_cache_con.get(object['dn'].lower(), set())) or (self.property.get('group') and self.property['group'].sync_mode in ['write', 'none']):
+                elif (member_dn_lower in self.group_members_cache_con.get(object['dn'].lower(), set())) or (
+                    self.property.get('group') and self.property['group'].sync_mode in ['write', 'none']
+                ):
                     # FIXME: Should this really also be done if sync_mode for group is 'none'?
                     # remove member only if he was in the cache on AD side
                     # otherwise it is possible that the user was just created on AD and we are on the way back
@@ -1535,7 +1561,12 @@ class ad(univention.connector.ucs):
         # check if members in UCS don't exist in AD, if true they need to be added in UCS
         for member_dn in ucs_members:
             member_dn_lower = member_dn.lower()
-            if not (member_dn_lower in ucs_members_from_ad['user'] or member_dn_lower in ucs_members_from_ad['group'] or member_dn_lower in ucs_members_from_ad['unknown'] or member_dn_lower in ucs_members_from_ad['windowscomputer']):
+            if not (
+                member_dn_lower in ucs_members_from_ad['user']
+                or member_dn_lower in ucs_members_from_ad['group']
+                or member_dn_lower in ucs_members_from_ad['unknown']
+                or member_dn_lower in ucs_members_from_ad['windowscomputer']
+            ):
                 try:
                     cache[member_dn] = self.lo.get(member_dn)
                     ucs_object = {'dn': member_dn, 'modtype': 'modify', 'attributes': cache[member_dn]}
@@ -1581,7 +1612,9 @@ class ad(univention.connector.ucs):
                 # remove member only if he was in the cache
                 # otherwise it is possible that the user was just created on UCS
 
-                if (member_dn_lower in self.group_members_cache_ucs.get(object['dn'].lower(), set())) or (self.property.get('group') and self.property['group'].sync_mode in ['read', 'none']):
+                if (member_dn_lower in self.group_members_cache_ucs.get(object['dn'].lower(), set())) or (
+                    self.property.get('group') and self.property['group'].sync_mode in ['read', 'none']
+                ):
                     # FIXME: Should this really also be done if sync_mode for group is 'none'?
                     log.debug("group_members_sync_to_ucs: %s was found in UCS group member cache of %s", member_dn_lower, object['dn'].lower())
                     ucs_object_attr = cache.get(member_dn)
@@ -1601,7 +1634,15 @@ class ad(univention.connector.ucs):
         log.debug("group_members_sync_to_ucs: members to add: %s", add_members)
         log.debug("group_members_sync_to_ucs: members to del: %s", del_members)
 
-        if add_members['user'] or add_members['group'] or del_members['user'] or del_members['group'] or add_members['unknown'] or add_members['windowscomputer'] or del_members['windowscomputer']:  # noqa: PLR0916
+        if (
+            add_members['user']  # noqa: PLR0916
+            or add_members['group']
+            or del_members['user']
+            or del_members['group']
+            or add_members['unknown']
+            or add_members['windowscomputer']
+            or del_members['windowscomputer']
+        ):
             ucs_admin_object = univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object['dn'])
             ucs_admin_object.open()
 

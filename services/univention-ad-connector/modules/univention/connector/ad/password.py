@@ -56,7 +56,7 @@ def transformKey(InputKey):
     OutputKey.append(chr(((InputKey[5] & 0x3F) << 1) | (InputKey[6] >> 7)))
     OutputKey.append(chr(InputKey[6] & 0x7F))
     for i in range(8):
-        OutputKey[i] = chr((ord(OutputKey[i]) << 1) & 0xfe)
+        OutputKey[i] = chr((ord(OutputKey[i]) << 1) & 0xFE)
     return "".join(OutputKey).encode('ISO8859-1')
 
 
@@ -130,11 +130,11 @@ def calculate_krb5keys(supplementalCredentialsblob):
     keytypes = []
     kvno = 0
     context = heimdal.context()
-#    for i in range(0, spl.sub.num_packages):
-#        pkg = spl.sub.packages[i]
-#        if pkg.name != "Primary:CLEARTEXT":
-#            continue
-#        cleartext_hex = pkg.data
+    #    for i in range(0, spl.sub.num_packages):
+    #        pkg = spl.sub.packages[i]
+    #        if pkg.name != "Primary:CLEARTEXT":
+    #            continue
+    #        cleartext_hex = pkg.data
 
     krb5_old_hex = None
 
@@ -194,7 +194,6 @@ def calculate_krb5keys(supplementalCredentialsblob):
 
 
 def set_password_in_ad(connector, samaccountname, pwd, reconnect=False):
-
     # print "Static Session Key: %s" % (samr.session_key,)
 
     if reconnect:
@@ -249,7 +248,7 @@ def decrypt_supplementalCredentials(connector, spl_crypt):
 
     (crc32_v) = struct.unpack("<L", plain_buffer[0:4])
     attr_val = plain_buffer[4:]
-    crc32_c = binascii.crc32(attr_val) & 0xffffffff
+    crc32_c = binascii.crc32(attr_val) & 0xFFFFFFFF
     assert int(crc32_v[0]) == int(crc32_c), f"CRC32 0x{crc32_v[0]:08X} != 0x{crc32_c:08X}"
 
     return ndr_unpack(drsblobs.supplementalCredentialsBlob, attr_val)
@@ -300,7 +299,9 @@ def get_password_from_ad(connector, user_dn, reconnect=False):
                 for j in i.value_ctr.values:
                     log.debug("get_password_from_ad: Found ntPwdHistory blob")
                     history_blob = j.blob
-            if i.attid == drsuapi.DRSUAPI_ATTID_supplementalCredentials and connector.configRegistry.is_true(f'{connector.CONFIGBASENAME}/ad/mapping/user/password/kerberos/enabled', False):
+            if i.attid == drsuapi.DRSUAPI_ATTID_supplementalCredentials and connector.configRegistry.is_true(
+                f'{connector.CONFIGBASENAME}/ad/mapping/user/password/kerberos/enabled', False,
+            ):
                 if i.value_ctr.values:
                     for j in i.value_ctr.values:
                         log.debug("get_password_from_ad: Found supplementalCredentials blob")
@@ -424,7 +425,6 @@ def password_sync_ucs(connector, key, object):
 
 
 def password_sync_kinit(connector, key, ucs_object):
-
     connector._object_mapping(key, ucs_object, 'ucs')
 
     attr = {'userPassword': b'{KINIT}', 'sambaNTPassword': b'NO PASSWORD*********************', 'sambaLMPassword': b'NO PASSWORD*********************'}

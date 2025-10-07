@@ -405,7 +405,6 @@ class Instance(Base, ProgressMixin):
             time.sleep(0.2)
 
         def _err(exc=None, msg=None):
-
             exc_str = ''
             if exc is not None:
                 exc_str = str(exc) or exc.__doc__  # if no message, take the doc string
