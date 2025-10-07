@@ -429,6 +429,39 @@ def test_init_with_cors_frame_ancestors(random_string, keycloak_admin_connection
             pass
 
 
+@pytest.mark.skipif(not os.path.isfile('/etc/keycloak.secret'), reason='fails on hosts without keycloak.secret')
+@pytest.mark.parametrize("enabled", ["true", "false"])
+def test_init_with_ldap_provider_import_users(random_string, keycloak_admin_connection, enabled):
+    realm_name = random_string()
+    try:
+        cmd = [
+            'univention-keycloak',
+            '--realm', realm_name,
+            'init',
+        ]
+
+        if enabled == 'true':
+            cmd.append('--import-users')
+
+        run_command(cmd)
+
+        cmd = [
+            'univention-keycloak',
+            '--realm', realm_name,
+            'ldap-federation',
+            'get', '--json',
+        ]
+
+        ldap_federation = json.loads(run_command(cmd))
+
+        assert ldap_federation['config']['importEnabled'][0] == enabled
+    finally:
+        try:
+            keycloak_admin_connection.delete_realm(realm_name=realm_name)
+        except KeycloakGetError:
+            pass
+
+
 def test_bindpwd(admin_account):
     cmd = ['univention-keycloak', '--binduser', admin_account.username, '--bindpwd', admin_account.bindpw, 'realms', 'get']
     run_command(cmd)

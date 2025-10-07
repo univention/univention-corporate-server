@@ -1,3 +1,9 @@
+ucs-test (12.3.21) unstable; urgency=medium
+
+  * Bug #58698: test import users flag of univention-keycloak
+
+ -- Marius Meschter <marius.meschter@univention.de>  Tue, 09 Oct 2025 13:26:03 +0200
+
 ucs-test (12.3.20) unstable; urgency=medium
 
   * Bug #20610: Deprecate udm option --bindpwd, use --bindpwdfile
