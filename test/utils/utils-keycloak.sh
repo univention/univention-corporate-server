@@ -19,14 +19,11 @@ install_upgrade_keycloak () {
 		git clone "https://$gitlab/univention/components/keycloak-app.git" /opt/keycloak-app
 		cd /opt/keycloak-app
 		git checkout "$KEYCLOAK_BRANCH"
-		nubus_prefix="$(git describe --tags --abbrev=0)-post"
 		# update local cache files for app
 		./update-appcenter-test.sh -l
-		# gitlab doesn't like underscore and dots
-		image_name="${KEYCLOAK_BRANCH//_/}"
-		image_name="${image_name//./}"
 		# change image in local cache
-		image_name="${nubus_prefix:1}-$(slugify "${image_name::63}")"
+		nubus_prefix="$(git describe --tags --abbrev=0)-post"
+		image_name="${nubus_prefix:1}-$(slugify "${KEYCLOAK_BRANCH::63}")"
 		location="$(curl "https://$gitlab/api/v4/projects/$project/registry/repositories/$repo_id/tags/$image_name" | jq -r '.location')"
 		if [ -n "$location" ] && [ ! "$location" = "null" ]; then
 			python3 /root/appcenter-change-compose-image.py -a keycloak -i "$location"
