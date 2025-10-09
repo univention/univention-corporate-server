@@ -1075,7 +1075,11 @@ class SetUserPreferences(UserPreferences):
                 new_preferences.append((key, json.dumps(value)))
         new_preferences = [b'%s=%s' % (key.encode('utf-8'), value.encode('utf-8')) for key, value in new_preferences]
 
-        lo.modify(user_dn, [['univentionUMCProperty', old_preferences, new_preferences], ['objectClass', user.get('objectClass', []), object_classes]])
+        try:
+            lo.modify(user_dn, [['univentionUMCProperty', old_preferences, new_preferences], ['objectClass', user.get('objectClass', []), object_classes]])
+        except udm_errors.permissionDenied as exc:
+            CORE.error('Could not set user preferences', error=exc)
+            raise Forbidden(str(exc))
 
 
 async def wait_task(event):
