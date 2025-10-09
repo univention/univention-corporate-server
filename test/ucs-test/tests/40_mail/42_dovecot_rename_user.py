@@ -79,7 +79,7 @@ def main():
                     'mail/dovecot/mailbox/delete=%s' % (flag_delete,),
                 ])
                 subprocess.call(['systemctl', 'restart', 'univention-directory-listener'])
-                udm.modify_object('users/user', dn=userbase[i][0], set={'username': '%scopy' % (userbase[i][1],)}, check_for_drs_replication=True)
+                udm.modify_object('users/user', dn=userbase[i][0], set={'username': '%scopy' % (userbase[i][1],)}, wait_for=True)
 
                 if not os.path.exists(old_dir):
                     utils.fail('Test %d: old_dir = %r has been removed unexpectedly! %r' % (i, old_dir, userbase[i]))
