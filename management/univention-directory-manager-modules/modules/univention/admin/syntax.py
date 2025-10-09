@@ -667,7 +667,7 @@ class _UDMObjectOrAttribute:
                 property_filter_s = cls._append_hidden_filter(module, property_filter_s)
 
             filter_s = '(&%s%s)' % (cls.wrap_filter(property_filter_s), cls.wrap_filter(filter_s))
-        return filter_s
+        return cls.wrap_filter(filter_s)
 
     @classmethod
     def wrap_filter(cls, filter_s):
@@ -761,12 +761,52 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
             if opt in options
         }
 
-        # try to avoid using the slow udm interface
+        # try to avoid using the slow UDM interface
+        simple, attr = cls._is_simple()
+
+        for udm_module in cls.udm_modules:
+            try:
+                module = univention.admin.modules._get(udm_module)
+            except LookupError:
+                log.warning('Specified module does not exist', module=udm_module, syntax=cls.name)
+                continue
+
+            filter_s = cls._create_ldap_filter(options, module)
+            if filter_s is None:
+                continue
+
+            ldap_attr = None
+            if simple:
+                mapping = module.mapping
+                ldap_attr = [mapping.mapName(att) for att in attr]
+                if ldap_attr:
+                    ldap_attr = [*ldap_attr, 'univentionObjectType']  # for delegative administration we need the correct module :-/
+
+            results = cls._search(lo, simple, module_search_options, module, filter_s, ldap_attr)
+
+            if ldap_attr:
+                results = [(dn, univention.admin.mapping.mapDict(mapping, ldap_map)) for dn, ldap_map in results]
+
+            choices.extend(cls._map_choice(results))
+
+        # sort choices before inserting / appending some special items
+        choices = cls.sort_choices(choices)
+
+        if isinstance(cls.static_values, tuple | list):
+            for value in cls.static_values:
+                choices.insert(0, value)
+        if cls.empty_value:
+            choices.insert(0, ('', ''))
+        return choices
+
+    @classmethod
+    def _is_simple(cls):
         simple = False
         attr = set()
         if not cls.use_objects:
-            attr.update(re.findall(r'%\(([^)]+)\)', cls.key))
-            if cls.label:
+            if cls.key != 'dn':
+                attr.update(re.findall(r'%\(([^)]+)\)', cls.key))
+            if cls.label and cls.label != 'dn':
                 attr.update(re.findall(r'%\(([^)]+)\)', cls.label))
             for udm_module in cls.udm_modules:
                 module = univention.admin.modules.get(udm_module)
@@ -782,119 +822,84 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
                 log.warning(
                     'Syntax wants to get optimizations but may not. This is a Bug! We provide a fallback but the syntax will respond much slower than it could!', syntax=cls.name,
                 )
-
-        def extract_key_label(syn, dn, info):
-            key = label = None
-            if syn.key == 'dn':
-                key = dn
-            else:
-                try:
-                    key = syn.key % info
-                except KeyError:
-                    pass
-            if syn.label == 'dn':
-                label = _normalize_dn(dn)
-            elif syn.label is None:
-                pass
-            else:
-                try:
-                    label = syn.label % info
-                except KeyError:
-                    pass
-            return key, label
-
-        if not simple:
-
-            def map_choices(obj_list):
-                result = []
-                for obj in obj_list:
-                    # first try it without obj.open() (expensive)
-                    key, label = extract_key_label(cls, obj.dn, obj.info)
-                    if key is None or label is None:
-                        obj.open()
-                        key, label = extract_key_label(cls, obj.dn, obj.info)
-                        if key is None:
-                            # ignore the entry as the key is important for a selection, there
-                            # is no sensible fallback for the key (Bug #26994)
-                            continue
-                        if label is None:
-                            # fallback to the default description as this is just what displayed
-                            # to the user (Bug #26994)
-                            label = univention.admin.objects.description(obj)
-                    result.append((key, label))
-                return result
-
-            for udm_module in cls.udm_modules:
-                try:
-                    module = univention.admin.modules._get(udm_module)
-                except LookupError:
-                    continue
-                filter_s = cls._create_ldap_filter(options, module)
-                if filter_s is not None:
-                    if cls.key == 'dn' and cls.label is None and hasattr(module, 'lookup_filter'):
-                        # simple dn search
-                        lookup_filter = module.lookup_filter(filter_s, lo)
-                        keys = lo.search_dn_filtered({'module': module.module}, filter=str(lookup_filter), **module_search_options)
-                        labels = keys
-                        labels = [ldap.dn.explode_rdn(dn, True)[0] for dn in keys]
-                        choices.extend(zip(keys, labels))
-                    else:
-                        # expensive lookup
-                        objs = module.lookup(None, lo, filter_s, **module_search_options)
-                        choices.extend(map_choices(objs))
         else:
-            for udm_module in cls.udm_modules:
-                try:
-                    module = univention.admin.modules._get(udm_module)
-                except LookupError:
+            # assuming this change is okay, as why should we respect self.use_objects if we can gain performance
+            # it's not required to have use_objects in this case
+            if cls.key == 'dn' and cls.label is None:
+                simple = True
+        return simple, attr
+
+    @classmethod
+    def _extract_key_label(cls, dn, info):
+        key = label = None
+        if cls.key == 'dn':
+            key = dn
+        else:
+            try:
+                key = cls.key % info
+            except KeyError:
+                pass
+
+        if cls.label == 'dn':
+            label = _normalize_dn(dn)
+        elif cls.label is None:
+            pass
+        else:
+            try:
+                label = cls.label % info
+            except KeyError:
+                pass
+        return key, label
+
+    @classmethod
+    def _map_choice(cls, obj_list):
+        for obj in obj_list:
+            if isinstance(obj, str):  # DN
+                key, label = (obj, obj)
+                if cls.label == 'dn':
+                    label = _normalize_dn(label)
+                else:
+                    label = ldap.dn.explode_rdn(label, True)[0]
+                    if cls.label:
+                        log.error('Did not respect label of syntax class', syntax=cls.name)
+            elif isinstance(obj, tuple):  # (DN, LDAP attrs)
+                dn, info = obj
+                key, label = cls._extract_key_label(dn, info)
+                if key is None:
+                    log.debug('Ignored object as possible choice: Missing key property: %s', cls.key, dn=dn, syntax=cls.name)
                     continue
-                filter_s = cls._create_ldap_filter(options, module)
-                if filter_s is not None:
-                    if filter_s and not filter_s.startswith('('):
-                        filter_s = '(%s)' % filter_s
-                    mapping = module.mapping
-                    ldap_attr = [mapping.mapName(att) for att in attr]
+                if label is None:
+                    label = ldap.dn.explode_rdn(dn, True)[0]
+            else:  # UDM object
+                # first try it without obj.open() (expensive)
+                key, label = cls._extract_key_label(obj.dn, obj.info)
+                if key is None or label is None:
+                    obj.open()
+                    key, label = cls._extract_key_label(obj.dn, obj.info)
+                    if key is None:
+                        # ignore the entry as the key is important for a selection, there
+                        # is no sensible fallback for the key (Bug #26994)
+                        log.debug('Ignored object as possible choice: Missing key property: %s', cls.key, dn=dn, syntax=cls.name)
+                        continue
+                    if label is None:
+                        # fallback to the default description as this is just what displayed
+                        # to the user (Bug #26994)
+                        label = univention.admin.objects.description(obj)
+            yield (key, label)
 
-                    def _search(module, filter_s, ldap_attr=None):
-                        if hasattr(module, 'lookup_filter'):
-                            lookup_filter = module.lookup_filter(filter_s, lo)
-                            if lookup_filter is None:
-                                return []
+    @classmethod
+    def _search(cls, lo, simple, module_search_options, module, filter_s, ldap_attr=None):
+        if hasattr(module, 'lookup_filter') and simple:
+            lookup_filter = module.lookup_filter(filter_s, lo)
+            if lookup_filter is None:
+                return []
 
-                            if ldap_attr is not None:
-                                return lo.search_filtered({'module': module.module}, filter=str(lookup_filter), attr=ldap_attr, **module_search_options)
-                            else:
-                                return lo.search_dn_filtered({'module': module.module}, filter=str(lookup_filter), **module_search_options)
+            if ldap_attr:
+                return lo.search_filtered({'module': module.module}, filter=str(lookup_filter), attr=ldap_attr, **module_search_options)
+            else:
+                return lo.search_dn_filtered({'module': module.module}, filter=str(lookup_filter), **module_search_options)
 
-                        return module.lookup(None, lo, filter_s, **module_search_options)
-
-                    if ldap_attr:
-                        result = _search(module, filter_s, [*ldap_attr, 'univentionObjectType'])
-                        for dn, ldap_map in result:
-                            info = univention.admin.mapping.mapDict(mapping, ldap_map)
-                            key, label = extract_key_label(cls, dn, info)
-                            if key is None:
-                                continue
-                            if label is None:
-                                label = ldap.dn.explode_rdn(dn, True)[0]
-                            choices.append((key, label))
-                    else:
-                        keys = _search(module, filter_s)
-                        if cls.label == 'dn':
-                            labels = keys
-                        else:
-                            labels = [ldap.dn.explode_rdn(dn, True)[0] for dn in keys]
-                        choices.extend(zip(keys, labels))
-
-        # sort choices before inserting / appending some special items
-        choices = cls.sort_choices(choices)
-
-        if isinstance(cls.static_values, tuple | list):
-            for value in cls.static_values:
-                choices.insert(0, value)
-        if cls.empty_value:
-            choices.insert(0, ('', ''))
-        return choices
+        return module.lookup(None, lo, filter_s, **module_search_options)
 
     def get_widget_choices_options(self, udm_property):
         if udm_property.multivalue and len(self.udm_modules) == 1 and not self.simple:
