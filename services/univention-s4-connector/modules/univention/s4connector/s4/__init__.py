@@ -478,7 +478,7 @@ class s4(univention.s4connector.ucs):
             ad_ldap_host = _ucr[f'{configbasename}/s4/ldap/host']
             ad_ldap_port = _ucr[f'{configbasename}/s4/ldap/port']
             ad_ldap_base = _ucr[f'{configbasename}/s4/ldap/base']
-            ad_ldap_binddn = _ucr.get(f'{configbasename}/s4/ldap/binddn', None)
+            ad_ldap_binddn = _ucr.get(f'{configbasename}/s4/ldap/binddn')
             ad_ldap_certificate = _ucr.get(f'{configbasename}/s4/ldap/certificate')
             if not ad_ldap_certificate and ucr.is_true(f'{configbasename}/s4/ldap/ssl'):
                 raise KeyError(f'{configbasename}/s4/ldap/certificate')
@@ -1925,7 +1925,7 @@ class s4(univention.s4connector.ucs):
                 log.debug("_update_group_member_cache: add %s to ucs cache for group %s", add_ucs_dn, group)
                 self.group_members_cache_ucs[group].add(add_ucs_dn)
 
-    def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object=None, new_ucs_object=None):
+    def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object=None, new_ucs_object=None, restored=False):
         # NOTE: pre_mapped_ucs_dn means: original ucs_dn (i.e. before _object_mapping)
         # Diese Methode erhaelt von der UCS Klasse ein Objekt,
         # welches hier bearbeitet wird und in das AD geschrieben wird.
@@ -2045,13 +2045,12 @@ class s4(univention.s4connector.ucs):
 
                 log.debug("to add: %s", object['dn'])
                 log.trace("sync_from_ucs: addlist: %s", addlist)
-                try:
-                    self.lo_s4.lo.add_ext_s(object['dn'], addlist, serverctrls=ctrls)
-                except (ldap.ALREADY_EXISTS, ldap.CONSTRAINT_VIOLATION):
+
+                def reanimation(self, object):
                     sAMAccountName = object['attributes'].get('sAMAccountName', [b''])[0]
                     sambaSID = object['attributes'].get('sambaSID', [b''])[0]
                     if not (sAMAccountName and sambaSID):
-                        raise  # unknown situation, raise original traceback
+                        raise  # noqa: PLE0704 unknown situation, raise original traceback
                     filter_s4 = format_escaped('(&(sAMAccountName={0!e})(objectSid={1!e})(isDeleted=TRUE))', sAMAccountName.decode('UTF-8'), sambaSID.decode('UTF-8'))
                     log.process("sync_from_ucs: error during add, searching for conflicting deleted object in S4")
                     log.debug("sync_from_ucs: search filter: %s", filter_s4)
@@ -2059,7 +2058,7 @@ class s4(univention.s4connector.ucs):
                         LDAP_SERVER_SHOW_DELETED_OID, criticality=1), LDAPControl(LDB_CONTROL_DOMAIN_SCOPE_OID, criticality=0)])
                     if not result or len(result) > 1:  # the latter would indicate corruption
                         log.process("sync_from_ucs: no conflicting deleted object found")
-                        raise  # unknown situation, raise original traceback
+                        raise  # noqa: PLE0704 unknown situation, raise original traceback
                     log.process("sync_from_ucs: reanimating conflicting object: %s", result[0][0])
                     reanimate_modlist = [
                         (ldap.MOD_DELETE, 'isDeleted', None),
@@ -2068,6 +2067,19 @@ class s4(univention.s4connector.ucs):
                     self.lo_s4.lo.modify_ext_s(result[0][0], reanimate_modlist, serverctrls=[LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1)])
                     # and try the sync again
                     return self.sync_from_ucs(property_type, object, pre_mapped_ucs_dn, old_dn, old_ucs_object, new_ucs_object)
+
+                if restored:
+                    try:
+                        return reanimation(self, object)
+                    except Exception:
+                        log.exception('reanimation of %r failed', object['dn'])
+                        # TODO: just continue?
+
+                try:
+                    self.lo_s4.lo.add_ext_s(object['dn'], addlist, serverctrls=ctrls)
+                except (ldap.ALREADY_EXISTS, ldap.CONSTRAINT_VIOLATION):
+                    # TODO: not sure if we still need this, needs to be checked with school
+                    return reanimation(self, object)
                 except Exception:
                     log.error("sync_from_ucs: traceback during add object: %s", object['dn'])
                     log.error("sync_from_ucs: traceback due to addlist: %s", addlist)

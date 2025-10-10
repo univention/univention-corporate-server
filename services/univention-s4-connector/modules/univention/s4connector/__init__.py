@@ -682,6 +682,7 @@ class ucs:
         old = recode_attribs(old)
 
         key = None
+        restored = False
 
         # if the object was moved into a ignored tree
         # we should delete this object
@@ -703,6 +704,11 @@ class ucs:
                 if self.was_entryUUID_deleted(entryUUID):
                     if self._get_entryUUID(dn) == entryUUID:
                         log.process("__sync_file_from_ucs: Object with entryUUID %s has been removed before but became visible again.", entryUUID)
+                        guid = self.config.get('UCS deleted', entryUUID)
+                        if guid:
+                            # an object we have seen in UCS (entryUUID) and in samba (guid)
+                            # that was deleted in UCS (was_entryUUID_deleted) indicates a restore
+                            restored = True
                     else:
                         log.process("__sync_file_from_ucs: Object with entryUUID %s has been removed before. Don't re-create.", entryUUID)
                         return True
@@ -781,7 +787,7 @@ class ucs:
                 if not self._ignore_object(key, object) or ignore_subtree_match:
                     log.debug("__sync_file_from_ucs: finished mapping")
                     try:
-                        if not self.sync_from_ucs(key, mapped_object, pre_mapped_ucs_dn, old_dn, old, new):
+                        if not self.sync_from_ucs(key, mapped_object, pre_mapped_ucs_dn, old_dn, old, new, restored=restored):
                             self._save_rejected_ucs(filename, dn)
                             return False
                         else:
