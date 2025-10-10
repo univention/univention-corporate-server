@@ -787,7 +787,7 @@ class UDM_Objects(ISyntax, _UDMObjectOrAttribute):
             if ldap_attr:
                 results = [(dn, univention.admin.mapping.mapDict(mapping, ldap_map)) for dn, ldap_map in results]
 
-            choices.extend(cls._map_choices(results))
+            choices.extend(cls._map_choice(results))
 
         # sort choices before inserting / appending some special items
         choices = cls.sort_choices(choices)
