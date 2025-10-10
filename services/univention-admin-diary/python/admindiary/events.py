@@ -53,6 +53,7 @@ UDM_GENERIC_CREATED = DiaryEvent('UDM_GENERIC_CREATED', {'en': '{module} object 
 UDM_GENERIC_MODIFIED = DiaryEvent('UDM_GENERIC_MODIFIED', {'en': '{module} object {id} modified', 'de': '{module}-Objekt {id} bearbeitet'}, args=['module', 'id'], icon='domain')
 UDM_GENERIC_MOVED = DiaryEvent('UDM_GENERIC_MOVED', {'en': '{module} object {id} moved to {position}', 'de': '{module}-Objekt {id} verschoben nach {position}'}, args=['module', 'id', 'position'], icon='domain')
 UDM_GENERIC_REMOVED = DiaryEvent('UDM_GENERIC_REMOVED', {'en': '{module} object {id} removed', 'de': '{module}-Objekt {id} gelöscht'}, args=['module', 'id'], icon='domain')
+UDM_GENERIC_RESTORED = DiaryEvent('UDM_GENERIC_RESTORED', {'en': '{module} object {id} restored', 'de': '{module}-Objekt {id} wiederhergestellt'}, args=['module', 'id'], icon='domain')
 
 UDM_APPCENTER_APP_CREATED = DiaryEvent('UDM_APPCENTER_APP_CREATED', {'en': 'App Metadata {id} created', 'de': 'App-Metadaten {id} angelegt'}, args=['id'], icon='domain')
 UDM_APPCENTER_APP_MODIFIED = DiaryEvent('UDM_APPCENTER_APP_MODIFIED', {'en': 'App Metadata {id} modified', 'de': 'App-Metadaten {id} bearbeitet'}, args=['id'], icon='domain')
