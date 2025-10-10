@@ -1,3 +1,9 @@
+univention-keycloak (3.3.3) unstable; urgency=medium
+
+  * Bug #58698: bump version
+
+ -- Marius Meschter <marius.meschter@univention.de>  Fri, 10 Oct 2025 09:53:08 +0200
+
 univention-keycloak (3.3.2) unstable; urgency=medium
 
   * Bug #58698: add import users flag to univention-keycloak
