@@ -16,6 +16,7 @@ import sys
 import time
 import urllib.parse
 from logging import getLogger
+from typing import Any
 
 import ldap
 from ldap.controls import LDAPControl, SimplePagedResultsControl
@@ -373,15 +374,15 @@ def dc_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject):
     return samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, isUCSobject, 'dc', 'samAccountName', 'posixAccount', 'uid', 'computer', 'cn')
 
 
-def decode_sid(value):
+def decode_sid(value: bytes) -> str:
     return str(ndr_unpack(security.dom_sid, value))
 
 
-def __is_sid_string(sid):
+def __is_sid_string(sid: str) -> bool:
     return sid.startswith(b'S-')
 
 
-def __is_int(value):
+def __is_int(value: Any) -> bool:
     try:
         int(value)
         return True
@@ -389,7 +390,7 @@ def __is_int(value):
         return False
 
 
-def compare_sid_lists(sid_list1, sid_list2):
+def compare_sid_lists(sid_list1: Any, sid_list2: Any) -> bool:
     """
     Compare the SID / RID attributes. Depending on the sync direction and
     SID sync configuration the function gets two SID lists or two RID values.
@@ -1950,7 +1951,7 @@ class s4(univention.s4connector.ucs):
                 log.debug("_update_group_member_cache: add %s to ucs cache for group %s", add_ucs_dn, group)
                 self.group_members_cache_ucs[group].add(add_ucs_dn)
 
-    def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object=None, new_ucs_object=None):
+    def sync_from_ucs(self, property_type, object, pre_mapped_ucs_dn, old_dn=None, old_ucs_object=None, new_ucs_object=None, restored=False):
         # NOTE: pre_mapped_ucs_dn means: original ucs_dn (i.e. before _object_mapping)
         # Diese Methode erhaelt von der UCS Klasse ein Objekt,
         # welches hier bearbeitet wird und in das AD geschrieben wird.
@@ -1998,8 +1999,6 @@ class s4(univention.s4connector.ucs):
                 self._remove_dn_mapping(pre_mapped_ucs_old_dn, old_dn)
                 self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
 
-        log.process(self.context_log(property_type, object, to_ucs=False))
-
         if 'olddn' in object:
             object.pop('olddn')  # not needed anymore, will fail object_mapping in later functions
         old_dn = None
@@ -2015,10 +2014,57 @@ class s4(univention.s4connector.ucs):
                 log.process("Unable to sync %s (GUID: %s). The object is currently locked.", object['dn'], objectGUID)
                 return False
 
+        # get uoid
+        uoid = object['attributes'].get('univentionObjectIdentifier', [b''])[0].decode('ascii')
+        if not uoid:
+            # we need this fallback here for unmapped objects, e.g.
+            #   the "object was moved and is ignored now, delete" case,
+            #   move something in ucs from an allowed subtree to a not allowed subtree
+            #   (509test_allow_subtree.py::test_move_out_of_allowed_subtree)
+            uoid = self.lo.getAttr(pre_mapped_ucs_dn, attr='univentionObjectIdentifier')
+            if uoid:
+                uoid = uoid[0].decode('ascii')
+            else:
+                log.warning('Object without UniventionObjectIdentifier: %r', object)
+                if object['modtype'] == 'delete':
+                    # if there is no UCS object anymore, we still want to remove the object in AD, even if we don't have a uoid
+                    log.warning('No UCS object found for %r, deleting AD object %r anyway', pre_mapped_ucs_dn, object['dn'])
+                else:
+                    # FIXME: at some point we need to decide if we raise here
+                    # but for now, just accept and continue without mapping
+                    pass
+
         try:
-            entryUUID = object['attributes']['entryUUID'][0].decode('ASCII')
+            entry_uuid = object['attributes']['entryUUID'][0].decode('ASCII')
         except KeyError:
-            entryUUID = None  # may be empty for back_mapped_subobject for leaf object delete_in_s4
+            entry_uuid = None
+
+        #
+        # RESTORE
+        #
+        if restored:
+            if self.restore_in_s4(object, property_type):
+                context_obj = {'modtype': 'restore', 'dn': object['dn']}
+                log.process(self.context_log(property_type, context_obj, to_ucs=False))
+                if uoid:
+                    self.uoid2guid_add_mapping(dn=object["dn"], uoid=uoid)
+                object['modtype'] = 'modify'
+                return self.sync_from_ucs(
+                    property_type,
+                    object,
+                    pre_mapped_ucs_dn,
+                    old_dn,
+                    old_ucs_object,
+                    new_ucs_object,
+                )
+            else:
+                # really delete the mapping, we are getting a new mapping for the uoid
+                if uoid:
+                    self.uoid2guid_remove_mapping(uoid=uoid, lazy_delete=False)
+                log.warning('Restore requested but canceled, add object instead: %r', object['dn'])
+                object['modtype'] = 'add'
+
+        log.process(self.context_log(property_type, object, to_ucs=False))
 
         #
         # ADD
@@ -2026,9 +2072,9 @@ class s4(univention.s4connector.ucs):
         if not ad_object and object['modtype'] in ('add', 'modify', 'move'):
             log.debug("sync_from_ucs: add object: %s", object['dn'])
 
-            log.debug("sync_from_ucs: lock UCS entryUUID: %s", entryUUID)
-            if entryUUID and not self.lockingdb.is_ucs_locked(entryUUID):
-                self.lockingdb.lock_ucs(entryUUID)
+            log.debug("sync_from_ucs: lock UCS entryUUID: %s", entry_uuid)
+            if entry_uuid and not self.lockingdb.is_ucs_locked(entry_uuid):
+                self.lockingdb.lock_ucs(entry_uuid)
 
             self.addToCreationList(object['dn'])
 
@@ -2070,9 +2116,11 @@ class s4(univention.s4connector.ucs):
 
                 log.debug("to add: %s", object['dn'])
                 log.trace("sync_from_ucs: addlist: %s", addlist)
+
                 try:
                     self.lo_s4.lo.add_ext_s(object['dn'], addlist, serverctrls=ctrls)
                 except (ldap.ALREADY_EXISTS, ldap.CONSTRAINT_VIOLATION):
+                    # TODO: we can remove this once we have a fully populated uoid2guid DB
                     sAMAccountName = object['attributes'].get('sAMAccountName', [b''])[0]
                     sambaSID = object['attributes'].get('sambaSID', [b''])[0]
                     if not (sAMAccountName and sambaSID):
@@ -2093,6 +2141,7 @@ class s4(univention.s4connector.ucs):
                     self.lo_s4.lo.modify_ext_s(result[0][0], reanimate_modlist, serverctrls=[LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1)])
                     # and try the sync again
                     return self.sync_from_ucs(property_type, object, pre_mapped_ucs_dn, old_dn, old_ucs_object, new_ucs_object)
+
                 except Exception:
                     log.error("sync_from_ucs: traceback during add object: %s", object['dn'])
                     log.error("sync_from_ucs: traceback due to addlist: %s", addlist)
@@ -2100,7 +2149,7 @@ class s4(univention.s4connector.ucs):
 
                 # TODO: move the following into a PostReadControl
                 objectGUID = self._get_objectGUID(object['dn'])
-                self.update_add_cache_after_creation(entryUUID, objectGUID)
+                self.update_add_cache_after_creation(entry_uuid, objectGUID)
 
                 if property_type == 'group':
                     self.group_members_cache_con[object['dn'].lower()] = set()
@@ -2126,6 +2175,9 @@ class s4(univention.s4connector.ucs):
                         log.debug("Call post_con_modify_functions: %s", post_con_modify_function)
                         post_con_modify_function(self, property_type, object)
                         log.debug("Call post_con_modify_functions: %s (done)", post_con_modify_function)
+
+            if uoid:
+                self.uoid2guid_add_mapping(dn=object["dn"], uoid=uoid)
 
         #
         # MODIFY
@@ -2290,6 +2342,11 @@ class s4(univention.s4connector.ucs):
                         log.debug("Call post_con_modify_functions: %s", post_con_modify_function)
                         post_con_modify_function(self, property_type, object)
                         log.debug("Call post_con_modify_functions: %s (done)", post_con_modify_function)
+
+            # TODO: Remove after 5.2-5, because the DB would be initialized before.
+            if uoid:
+                self.uoid2guid_add_mapping(dn=object['dn'], uoid=uoid)
+
         #
         # DELETE
         #
@@ -2301,13 +2358,18 @@ class s4(univention.s4connector.ucs):
             # update group cache
             self._remove_dn_from_group_cache(con_dn=object['dn'], ucs_dn=pre_mapped_ucs_dn)
             self._update_group_member_cache(remove_con_dn=object['dn'].lower(), remove_ucs_dn=pre_mapped_ucs_dn.lower())
+            if uoid:
+                if not self.uoid2guid_exists(uoid=uoid):
+                    # TODO: Remove after 5.2-5, because the DB would be initialized before.
+                    self.uoid2guid_add_mapping(dn=object['dn'], uoid=uoid)
+                self.uoid2guid_remove_mapping(uoid=uoid)
         else:
             log.warning("unknown modtype (%s : %s)", object['dn'], object['modtype'])
             return False
 
-        log.debug("sync_from_ucs: unlock UCS entryUUID: %s", entryUUID)
-        if entryUUID:
-            self.lockingdb.unlock_ucs(entryUUID)
+        log.debug("sync_from_ucs: unlock UCS entryUUID: %s", entry_uuid)
+        if entry_uuid:
+            self.lockingdb.unlock_ucs(entry_uuid)
 
         self._check_dn_mapping(pre_mapped_ucs_dn, object['dn'])
 
@@ -2316,8 +2378,8 @@ class s4(univention.s4connector.ucs):
 
     def _get_objectGUID(self, dn):
         try:
-            ad_object = self.get_object(dn, ['objectGUID'])
-            return univention.s4connector.decode_guid(ad_object['objectGUID'][0])
+            s4_object = self.get_object(dn, ['objectGUID'])
+            return univention.s4connector.decode_guid(s4_object['objectGUID'][0])
         except (KeyError, Exception):  # FIXME: catch only necessary exceptions
             log.warning("Failed to search objectGUID for %s", dn)
             return ''
@@ -2344,6 +2406,76 @@ class s4(univention.s4connector.ucs):
             log.debug("delete_in_s4: Object without entryUUID: %s", object['dn'])
         self.remove_add_cache_after_removal(entryUUID)
 
+    def restore_in_s4(self, con_object: dict, property_type: str) -> str | None:
+        """
+        Restores an object in Samba.
+
+        :param property_type:
+            the type of the object to be synced.
+        :param con_object:
+            A dictionary describing the AD object.
+
+        :returns:
+            The DN of the restored object or None.
+        """
+        def search_deleted_object(filter_s: str) -> str | None:
+            return self.s4_search_ext_s(
+                self.lo_s4.base,
+                ldap.SCOPE_SUBTREE,
+                filter_s,
+                ['1.1'],  # OID of Distinguished Name (DN)
+                serverctrls=[
+                    LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=True),
+                    LDAPControl(LDB_CONTROL_DOMAIN_SCOPE_OID, criticality=False),
+                ],
+            )
+
+        try:
+            entry_uuid = con_object['attributes']['entryUUID'][0].decode('ASCII')
+        except KeyError:
+            entry_uuid = None
+
+        # Build filter with objectGUID.
+        uoid = con_object['attributes']['univentionObjectIdentifier'][0].decode('ASCII')
+        if not uoid:
+            log.warning('Restore chancelled, object has no univentionObjectIdentifier! (dn: %s)', con_object['dn'])
+            return
+        guid = self.uoid2guid_get_guid(uoid, deleted=True)
+        if not guid:
+            log.warning('Restore chancelled, object is not in ouid2guid! (univentionObjectIdentifier: %s)', uoid)
+            return
+
+        binary_guid = univention.s4connector.encode_guid(guid)
+        binary_guid_escaped = escape_filter_chars(binary_guid.decode('ISO8859-1'), 1)
+        filter_s4 = f'(objectGUID={binary_guid_escaped})'
+
+        # Get the DN where the object should be restored to.
+        result = search_deleted_object(filter_s4)
+        if not result:
+            log.warning('No deleted object found with objectGUID %s (%s)', guid, con_object['dn'])
+            return
+        elif len(result) > 1:
+            log.warning('More then one object found with objectGUID %s (%s)', guid, con_object['dn'], result=result)
+            return
+        restore_dn = result[0][0]
+
+        # Restore object
+        restore_modlist = [
+            (ldap.MOD_DELETE, 'isDeleted', None),
+            (ldap.MOD_REPLACE, 'distinguishedName', con_object['dn'].encode('UTF-8')),
+        ]
+        self.lo_s4.lo.modify_ext_s(
+            restore_dn,
+            restore_modlist,
+            serverctrls=[LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=True)],
+        )
+        if entry_uuid:
+            self.update_deleted_cache_after_restore(entry_uuid)
+
+        log.info('Object %s successfully restored to %s', restore_dn, con_object['dn'])
+
+        return con_object['dn']
+
     def _remove_subtree_in_s4(self, parent_ad_object, property_type):
         if self.property[property_type].con_subtree_delete_objects:
             _l = [f"({x})" for x in self.property[property_type].con_subtree_delete_objects]
@@ -2362,7 +2494,12 @@ class s4(univention.s4connector.ucs):
             subobject_s4 = {'dn': subdn, 'modtype': 'delete', 'attributes': subattr}
             key = self.__identify_s4_type(subobject_s4)
             back_mapped_subobject = self._object_mapping(key, subobject_s4)
-            log.warning("delete subobject: %r", back_mapped_subobject['dn'])
+            # FIXME: this call is wrong!: sync_from_ucs() must be called with a ucs_object not with a ad_object!
+            # ucs_attr = self.lo.get(back_mapped_subobject['dn'])
+            # back_mapped_subobject['attributes'].update(ucs_attr)
+            # subobject_s4 = self._object_mapping(key, back_mapped_subobject, object_type='ucs')
+
+            log.warning("delete subobject: %r", subdn)
 
             if not self._ignore_object(key, back_mapped_subobject):
                 # FIXME: this call is wrong!: sync_from_ucs() must be called with a ucs_object not with a ad_object!
