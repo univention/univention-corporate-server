@@ -20,7 +20,7 @@ BASE_DIR = '/etc/freeradius/3.0'
 BASE_NAME = 'clients.univention.conf'
 
 
-def main():  # type: () -> None
+def main() -> None:
     parser = ArgumentParser()
     parser.parse_args()
 

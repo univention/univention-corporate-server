@@ -227,8 +227,7 @@ class ModuleProcess(_ModuleConnection):
 
         return uri
 
-    def stop(self):
-        # type: () -> None
+    def stop(self) -> None:
         CORE.process('ModuleProcess: stopping %r', self.pid())
         if self.__process:
             tornado.ioloop.IOLoop.current().add_callback(self.stop_process)
@@ -243,8 +242,7 @@ class ModuleProcess(_ModuleConnection):
         CORE.info('ModuleProcess: child stopped')
         self.__process = None
 
-    def _died(self, returncode):
-        # type: (int) -> None
+    def _died(self, returncode: int) -> None:
         pid = self.pid()
         CORE.process('ModuleProcess: child %d (%s) exited with %d%s', pid, self.name, returncode, self.str_returncode(returncode))
         if self._client and not self._client._closed:
@@ -264,8 +262,7 @@ class ModuleProcess(_ModuleConnection):
         except KeyError:
             return ''
 
-    def pid(self):
-        # type: () -> int
+    def pid(self) -> int:
         """Returns process ID of module process"""
         if self.__process is None:
             return 0

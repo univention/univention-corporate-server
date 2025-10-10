@@ -1,10 +1,12 @@
 # SPDX-FileCopyrightText: 2023-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+from __future__ import annotations
+
 import subprocess
 import time
-from collections.abc import Generator, Iterator
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pytest
 from playwright.sync_api import Browser, BrowserContext, BrowserType, Page, expect
@@ -21,6 +23,10 @@ from univention.testing.browser.suggestion import AppCenterCacheTest
 from univention.testing.browser.univentionconfigurationregistry import UniventionConfigurationRegistry
 
 from . import check_for_backtrace, save_screenshot, save_trace
+
+
+if TYPE_CHECKING:
+    from collections.abc import Generator, Iterator
 
 
 @pytest.fixture(scope='session', autouse=True)

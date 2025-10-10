@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 from os import listdir
 from os.path import join
 from shlex import quote
-from typing import IO, Literal  # noqa: F401
+from typing import IO, Literal
 
 from univention.debhelper import binary_packages, doIt, parser_dh_sequence
 
@@ -47,20 +47,17 @@ fi
 
 class JoinDebhelper:
 
-    def __init__(self, package):
-        # type: (str) -> None
+    def __init__(self, package: str) -> None:
         self.package = package
         self.destdir = join('debian', self.package)
 
-    def dh_install(self):
-        # type: () -> None
+    def dh_install(self) -> None:
         """Install existing join and unjoin scripts."""
         joinscript = self.install_joinscript()
         unjoin_script = self.install_unjoinscript()
         self.setup_scripts(joinscript, unjoin_script)
 
-    def install_joinscript(self):
-        # type: () -> str
+    def install_joinscript(self) -> str:
         """
         Install existing join script.
 
@@ -68,8 +65,7 @@ class JoinDebhelper:
         """
         return self.install_script("inst", "usr/lib/univention-install")
 
-    def install_unjoinscript(self):
-        # type: () -> str
+    def install_unjoinscript(self) -> str:
         """
         Install existing unjoin script.
 
@@ -77,8 +73,7 @@ class JoinDebhelper:
         """
         return self.install_script("uinst", "usr/lib/univention-uninstall")
 
-    def install_script(self, suffix, dstdir):
-        # type: (str, str) -> str
+    def install_script(self, suffix: str, dstdir: str) -> str:
         """
         Install existing file with suffix to destination directory.
 
@@ -97,8 +92,7 @@ class JoinDebhelper:
         doIt('install', '-p', '-t', dest, '-m', '755', script)
         return script
 
-    def setup_scripts(self, join_script, unjoin_script):
-        # type: (str, str) -> None
+    def setup_scripts(self, join_script: str, unjoin_script: str) -> None:
         """
         Augment Debian maintainer scripts to hand join and unjoin scripts.
 
@@ -124,8 +118,7 @@ class JoinDebhelper:
 
         self.setup_depends()
 
-    def dh_file(self, phase):
-        # type: (Literal["preinst", "postinst", "prerm", "postrm"]) -> IO[str]
+    def dh_file(self, phase: Literal["preinst", "postinst", "prerm", "postrm"]) -> IO[str]:
         """
         Open Debhelper file for appending.
 
@@ -135,8 +128,7 @@ class JoinDebhelper:
         fn = join("debian", "%s.%s.debhelper" % (self.package, phase))
         return open(fn, "a")
 
-    def setup_depends(self):
-        # type: () -> None
+    def setup_depends(self) -> None:
         """Add inter package dependencies."""
         cmd = [
             'perl', '-e',
@@ -145,8 +137,7 @@ class JoinDebhelper:
         doIt(*cmd)
 
 
-def main():
-    # type: () -> None
+def main() -> None:
     """Run Debian helper sequence."""
     parser = ArgumentParser(description=__doc__)
     parser_dh_sequence(parser)

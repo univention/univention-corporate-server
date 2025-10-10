@@ -138,7 +138,7 @@ class Sanitizer:
         self.may_change_value = kwargs.get('may_change_value', True)
         self.allow_none = kwargs.get('allow_none', False)
 
-    def sanitize(self, name: str, options: Mapping[str, object]) -> Any:
+    def sanitize(self, name: str, options: Mapping[str, Any]) -> Any:
         """
         Sanitize function. Internally calls _sanitize with the
         correct values and returns the new value (together with a flag
@@ -170,7 +170,7 @@ class Sanitizer:
         except UnformattedValidationError as e:
             self.raise_formatted_validation_error(str(e), name, value, **e.kwargs)
 
-    def _sanitize(self, value: Any, name: str, further_arguments: Mapping[str, object]) -> object:
+    def _sanitize(self, value: Any, name: str, further_arguments: Mapping[str, Any]) -> Any:
         """
         The method where the actual sanitizing takes place.
 
@@ -243,7 +243,7 @@ class DictSanitizer(Sanitizer):
         self.default_sanitizer = default_sanitizer
         self.allow_other_keys = allow_other_keys
 
-    def _sanitize(self, value: object, name: str, further_arguments: Mapping[str, object]) -> object:
+    def _sanitize(self, value: Any, name: str, further_arguments: Mapping[str, Any]) -> Any:
         if not isinstance(value, dict):
             self.raise_formatted_validation_error(_('Not a "dict"'), name, type(value).__name__)
 
@@ -292,7 +292,7 @@ class ListSanitizer(Sanitizer):
         self.min_elements = min_elements
         self.max_elements = max_elements
 
-    def _sanitize(self, value: Any, name: str, further_arguments: Mapping[str, object]) -> object:
+    def _sanitize(self, value: Any, name: str, further_arguments: Mapping[str, Any]) -> Any:
         if not isinstance(value, list):
             self.raise_formatted_validation_error(_('Not a "list"'), name, type(value).__name__)
 
@@ -325,7 +325,7 @@ class BooleanSanitizer(Sanitizer):
     It converts other data types if possible.
     """
 
-    def _sanitize(self, value: Any, name: str, further_arguments: Mapping[str, object]) -> bool:
+    def _sanitize(self, value: Any, name: str, further_arguments: Mapping[str, Any]) -> bool:
         try:
             return bool(value)
         except BaseException:
@@ -356,7 +356,7 @@ class IntegerSanitizer(Sanitizer):
         self.minimum_strict = minimum_strict
         self.maximum_strict = maximum_strict
 
-    def _sanitize(self, value: Any, name: str, further_arguments: Mapping[str, object]) -> int:
+    def _sanitize(self, value: Any, name: str, further_arguments: Mapping[str, Any]) -> int:
         try:
             value = int(value)
             if not isinstance(value, int):
@@ -437,7 +437,7 @@ class SearchSanitizer(Sanitizer):
     def _escape_and_return(self, value: str) -> str:
         return value
 
-    def _sanitize(self, value: Any, name: str, further_fields: Mapping[str, object]) -> object:
+    def _sanitize(self, value: Any, name: str, further_fields: Mapping[str, Any]) -> Any:
         if value is None:
             value = ''
         value = str(value)
@@ -569,7 +569,7 @@ class StringSanitizer(Sanitizer):
         )
         return new
 
-    def _sanitize(self, value: Any, name: str, further_args: Mapping[str, object]) -> object:
+    def _sanitize(self, value: Any, name: str, further_args: Mapping[str, Any]) -> Any:
         if not isinstance(value, str):
             self.raise_validation_error(_('Value is not a string'))
 
@@ -591,7 +591,7 @@ class DNSanitizer(StringSanitizer):
     Distinguished Name syntax
     """
 
-    def _sanitize(self, value: Any, name: str, further_args: Mapping[str, object]) -> object:
+    def _sanitize(self, value: Any, name: str, further_args: Mapping[str, Any]) -> Any:
         value = super()._sanitize(value, name, further_args)
         try:
             ldap.dn.str2dn(value)
@@ -625,7 +625,7 @@ class ChoicesSanitizer(Sanitizer):
         # because list has a different representation than tuple
         self.choices = list(choices)
 
-    def _sanitize(self, value: Any, name: str, further_args: Mapping[str, object]) -> object:
+    def _sanitize(self, value: Any, name: str, further_args: Mapping[str, Any]) -> Any:
         for choice in self.choices:
             if choice == value:
                 # return element from choices
@@ -644,7 +644,7 @@ class MappingSanitizer(ChoicesSanitizer):
     :type mapping: {object : object}
     """
 
-    def __init__(self, mapping: Mapping[str, object], **kwargs: Any) -> None:
+    def __init__(self, mapping: Mapping[str, Any], **kwargs: Any) -> None:
         try:
             # sort allowed values to have reproducible error messages
             # sorted works with every base data type, even inter-data type!
@@ -655,7 +655,7 @@ class MappingSanitizer(ChoicesSanitizer):
         super().__init__(choices, **kwargs)
         self.mapping = mapping
 
-    def _sanitize(self, value: Any, name: str, further_args: Mapping[str, object]) -> object:
+    def _sanitize(self, value: Any, name: str, further_args: Mapping[str, Any]) -> Any:
         value = super()._sanitize(value, name, further_args)
         return self.mapping[value]
 

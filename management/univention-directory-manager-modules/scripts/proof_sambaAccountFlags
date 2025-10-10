@@ -29,8 +29,7 @@ def print_usage():
 
 
 # update all if command update is given
-def main():
-    # type: () -> None
+def main() -> None:
     update_all = 0
     query = 0
     if len(sys.argv) > 1:

@@ -14,7 +14,7 @@ import stat
 import subprocess
 import tempfile
 import traceback
-from typing import Any
+from typing import Any, Self
 
 import univention.admin.modules
 from univention.admin.uldap import getMachineConnection
@@ -53,7 +53,7 @@ class DovecotFolderAclEntry:  # noqa: PLW1641
         return f'{self.folder_name} "{self.identifier}" {self.acl}'
 
     @classmethod
-    def from_str(cls, line):  # type: (str) -> DovecotFolderAclEntry
+    def from_str(cls, line: str) -> Self:
         # try with quotation marks first
         m = glocal_acl_pattern1.match(line.strip())
         if m:

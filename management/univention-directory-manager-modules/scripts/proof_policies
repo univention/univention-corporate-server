@@ -21,8 +21,7 @@ def print_usage():
 
 
 # delete all if command delete is given
-def main():
-    # type: () -> None
+def main() -> None:
     ucr = univention.config_registry.ConfigRegistry()
     ucr.load()
 

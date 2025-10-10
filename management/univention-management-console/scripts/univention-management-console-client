@@ -5,24 +5,18 @@
 # SPDX-FileCopyrightText: 2006-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-
 import ast
 import json
 import locale
 import os
 import pprint
 import sys
-from argparse import ArgumentParser, FileType, Namespace  # noqa: F401
+from argparse import ArgumentParser, FileType, Namespace
+from collections.abc import Sequence
 from datetime import datetime
 from getpass import getpass
 
 from univention.lib.umc import Client, ConnectionError, HTTPError, Unauthorized  # noqa: A004
-
-
-try:
-    from collections.abc import Sequence  # noqa: F401
-except ImportError:
-    pass
 
 
 class CLIClient:
@@ -131,7 +125,7 @@ class CLIClient:
 
         return exit_code
 
-    def print_timing(self):  # type: () -> None
+    def print_timing(self) -> None:
         if not self.arguments.timing or self.arguments.quiet:
             return
         finished = datetime.now()
@@ -141,7 +135,7 @@ class CLIClient:
         print(' Elapsed time', diff)
 
 
-def parse_args(argv=sys.argv):  # type: (Sequence[str]) -> Namespace
+def parse_args(argv: Sequence[str] = sys.argv) -> Namespace:
     parser = ArgumentParser()
     group = parser.add_argument_group('General')
     group.add_argument(
@@ -219,7 +213,7 @@ def parse_args(argv=sys.argv):  # type: (Sequence[str]) -> Namespace
     return arguments
 
 
-def main():  # type: () -> None
+def main() -> None:
     arguments = parse_args()
 
     try:

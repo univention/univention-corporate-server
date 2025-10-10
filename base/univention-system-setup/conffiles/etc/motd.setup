@@ -68,7 +68,7 @@ following web browsers are supported:
 '''
 
 
-def query_ec2(key):  # type: (str) -> Optional[str]
+def query_ec2(key: str) -> str | None:
     url = 'http://169.254.169.254/latest/meta-data/' + key
     try:
         result = urlopen(url, timeout=2)  # noqa: S310
@@ -78,7 +78,7 @@ def query_ec2(key):  # type: (str) -> Optional[str]
         return None
 
 
-def get_ip_address(ifname):  # type: (str) -> Optional[str]
+def get_ip_address(ifname: str) -> str | None:
     SIOCGIFADDR = 0x8915
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:

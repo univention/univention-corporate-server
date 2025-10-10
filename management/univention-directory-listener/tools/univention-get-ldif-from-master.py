@@ -14,7 +14,6 @@ import io
 import logging
 import os
 import sys
-from typing import IO  # noqa: F401
 
 import ldap
 import ldif
@@ -35,16 +34,14 @@ SCHEMA = '/var/lib/univention-ldap/schema.conf'
 OIDS = set(replication.BUILTIN_OIDS) | {'1.3.6.1.4.1.4203.666.11.1.4.2.12.1'}
 
 
-def update_schema(lo):
-    # type: (uldap.access) -> None
+def update_schema(lo: uldap.access) -> None:
     """update the ldap schema file"""
     logger.info('Fetching Schema ...')
     res = lo.search(base="cn=Subschema", scope=ldap.SCOPE_BASE, filter='(objectclass=*)', attr=['+', '*'])
     replication.update_schema(res[0][1])
 
 
-def create_ldif_from_master(lo, ldif_file, base, page_size):
-    # type: (uldap.access, str, str, int) -> None
+def create_ldif_from_master(lo: uldap.access, ldif_file: str, base: str, page_size: int) -> None:
     """create ldif file from everything from lo"""
     logger.info('Fetching LDIF ...')
     output = sys.stdout if ldif_file == "-" else io.StringIO()
@@ -89,8 +86,7 @@ def create_ldif_from_master(lo, ldif_file, base, page_size):
     output.close()
 
 
-def main():
-    # type: () -> None
+def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("-l", "--ldif", action="store_true", default=replication.LDIF_FILE, help="Create LDIF file")
     parser.add_argument("-s", "--schema", action="store_true", help="Update LDAP schema [%s]" % replication.SCHEMA_FILE)

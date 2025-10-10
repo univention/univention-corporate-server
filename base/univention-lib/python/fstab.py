@@ -8,10 +8,15 @@ Handle parsing and writing :file:`/etc/fstab`.
 See <http://linux.die.net/include/mntent.h>.
 """
 
+from __future__ import annotations
 
 import os
 import re
-from collections.abc import Container  # noqa: F401
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from collections.abc import Container
 
 
 class InvalidEntry(Exception):
@@ -28,14 +33,12 @@ class File(list):
     _is_comment = re.compile('[ \t]*#').search
     _filesystems = ('ext2', 'xfs', 'nfs', 'proc', 'auto', 'swap')
 
-    def __init__(self, file='/etc/fstab'):
-        # type: (str) -> None
+    def __init__(self, file: str = '/etc/fstab') -> None:
         list.__init__(self)
         self.__file = file
         self.load()
 
-    def load(self):
-        # type: () -> None
+    def load(self) -> None:
         """Load entries from file."""
         with open(self.__file) as fd:
             for _line in fd:
@@ -44,8 +47,7 @@ class File(list):
                     raise InvalidEntry('The following is not a valid fstab entry: %r' % (_line,))  # TODO:
                 self.append(line)
 
-    def find(self, **kargs):
-        # type: (**str) -> Optional[Entry]
+    def find(self, **kargs: str) -> Entry | None:
         """
         Search and return the entry matching the criteria.
 
@@ -63,16 +65,15 @@ class File(list):
                 return entry
         return None
 
-    def get(self, filesystem=[], ignore_root=True):
-        # type: (Container[str], bool) -> List[Entry]
+    def get(self, filesystem: Container[str] = [], ignore_root: bool = True) -> list[Entry]:
         """
         Return list of entries matching a list of file system types.
 
         :param filesystem: A list of file system names.
-        :type filesystem: List[str]
+        :type filesystem: list[str]
         :param bool ignore_root: Skip the root file system if `True`.
         :returns: A list of matching entries.
-        :rtype: List[Entry]
+        :rtype: list[Entry]
         """
         result = []
         for entry in self:
@@ -84,14 +85,12 @@ class File(list):
                 result.append(entry)
         return result
 
-    def save(self, filename=None):
-        # type: (Optional[str]) -> None
+    def save(self, filename: str | None = None) -> None:
         """Save entries to file."""
         with open(filename or self.__file, 'w') as fd:
             fd.writelines('%s\n' % (line,) for line in self)
 
-    def __parse(self, line):
-        # type: (str) -> Union[Entry, str]
+    def __parse(self, line: str) -> Entry | str:
         """
         Parse file system table line.
 
@@ -128,7 +127,7 @@ class Entry:
     :param str mount_point: This field describes the mount point (target) for the filesystem.
     :param str type: The type of the filesystem.
     :param options: The list of mount options associated with the filesystem.
-    :type options: List[str]
+    :type options: list[str]
     :param int dump: Option for :manpage:`dump(8)`.
     :param int passno: Order information for `fsck(8)`.
     :param str comment: Optional comment from end of line.
@@ -139,11 +138,10 @@ class Entry:
     _quote_dict = {c: r'\%s' % oct(ord(c)) for c in ' \t\n\r\\'}
     _quote_re = re.compile(r'\\0([0-7]+)')
 
-    def __init__(self, spec, mount_point, fs_type, options='', dump=None, passno=None, comment=None):
-        # type: (str, str, str, Union[str,list], Optional[str], Optional[str], Optional[str]) -> None
+    def __init__(self, spec: str, mount_point: str, fs_type: str, options: str | list = '', dump: str | None = None, passno: str | None = None, comment: str | None = None) -> None:
         self.spec = self.unquote(spec.strip())
         if self.spec.startswith('UUID='):
-            self.uuid = self.spec[5:]  # type: Optional[str]
+            self.uuid: str | None = self.spec[5:]
             uuid_dev = os.path.join('/dev/disk/by-uuid', self.uuid)
             if os.path.exists(uuid_dev):
                 self.spec = os.path.realpath(uuid_dev)
@@ -156,8 +154,7 @@ class Entry:
         self.passno = int(passno) if passno is not None else None
         self.comment = comment
 
-    def __str__(self, delim='\t'):
-        # type: (str) -> str
+    def __str__(self, delim: str = '\t') -> str:
         """
         Return the canonical string representation of the object.
         >>> str(Entry('proc', '/proc', 'proc', comment="#the comment"))
@@ -178,8 +175,7 @@ class Entry:
         ]
         return delim.join(e for e in h if e is not None)
 
-    def __repr__(self):
-        # type: () -> str
+    def __repr__(self) -> str:
         """
         >>> Entry('proc', '/proc', 'proc', 'defaults', 0, 0)
         univention.lib.fstab.Entry('proc', '/proc', 'proc', options='defaults', freq=0, passno=0)
@@ -197,8 +193,7 @@ class Entry:
         return "univention.lib.fstab.Entry(%s)" % ', '.join(h)
 
     @classmethod
-    def quote(cls, s):
-        # type: (str) -> str
+    def quote(cls, s: str) -> str:
         """
         Quote string to octal.
 
@@ -208,8 +203,7 @@ class Entry:
         return ''.join([cls._quote_dict.get(c, c) for c in s])
 
     @classmethod
-    def unquote(cls, s):
-        # type: (str) -> str
+    def unquote(cls, s: str) -> str:
         """
         Unquote octal to string.
 
@@ -218,8 +212,7 @@ class Entry:
         """
         return cls._quote_re.sub(lambda m: chr(int(m.group(1), 8)), s)
 
-    def hasopt(self, opt):
-        # type: (str) -> List[str]
+    def hasopt(self, opt: str) -> list[str]:
         """
         Search for an option matching OPT.
 

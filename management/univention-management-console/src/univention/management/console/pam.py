@@ -5,8 +5,11 @@
 # SPDX-FileCopyrightText: 2014-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+from __future__ import annotations
+
 import re
-from collections.abc import Iterator, Sequence  # noqa: F401
+from re import Pattern
+from typing import TYPE_CHECKING, Any
 
 from PAM import (
     PAM_ACCT_EXPIRED, PAM_AUTH_ERR, PAM_AUTHTOK_ERR, PAM_AUTHTOK_RECOVER_ERR, PAM_CONV, PAM_ERROR_MSG,
@@ -17,6 +20,10 @@ from PAM import (
 from univention.lib.i18n import I18N_Error, Translation
 from univention.management.console.config import ucr
 from univention.management.console.log import AUTH
+
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator, Sequence
 
 
 _ = Translation('univention.management.console').translate
@@ -47,7 +54,7 @@ class AuthenticationFailed(AuthenticationError):
 
 class AuthenticationInformationMissing(AuthenticationError):
 
-    def __init__(self, message, missing_prompts):  # type: (str, Any) -> None
+    def __init__(self, message: str, missing_prompts: Any) -> None:
         self.missing_prompts = missing_prompts
         super().__init__(message)
 
@@ -66,7 +73,7 @@ class PasswordChangeFailed(AuthenticationError):
 
 class PamAuth:
 
-    _known_errors = {
+    _known_errors: dict[str, list[str | Pattern[str]]] = {
         'Make sure the kerberos service is functioning or inform an Administrator.': [
             'Unable to reach any changepw server  in realm %s',
         ],
@@ -162,16 +169,16 @@ class PamAuth:
         'The password contains parts of the full user name.': [
             'Password contains parts of the full user name.',
         ],
-    }  # type: Dict[str, List[Union[str, Pattern[str]]]]
-    known_errors = {
+    }
+    known_errors: dict[str | Pattern[str], str] = {
         response_message: user_friendly_response
         for user_friendly_response, possible_responses in _known_errors.items()
         for response_message in possible_responses
-    }  # type: Dict[Union[str, Pattern[str]], str]
+    }
 
-    custom_prompts = ('OTP',)  # type: Tuple[str, ...]
+    custom_prompts: tuple[str, ...] = ('OTP',)
 
-    def __init__(self, locale=None):  # type: (Optional[str]) -> None
+    def __init__(self, locale: str | None = None) -> None:
         i18n = Translation('univention-management-console')
         try:
             i18n.set_language(locale or 'C')
@@ -181,20 +188,20 @@ class PamAuth:
         self._language = i18n.locale.language
         self.pam = self.init()
 
-    def _get_password_complexity_message(self):  # type: () -> str
+    def _get_password_complexity_message(self) -> str:
         return ucr.get(
             'umc/login/password-complexity-message/%s' % (self._language,),
             ucr.get('umc/login/password-complexity-message/en', ''),
         )
 
-    def authenticate(self, username, password, **answers):  # type: (str, str, **Any) -> None
+    def authenticate(self, username: str, password: str, **answers: Any) -> None:
         answers.update({
             PAM_TEXT_INFO: '',
             PAM_ERROR_MSG: '',
             PAM_PROMPT_ECHO_ON: username,
             PAM_PROMPT_ECHO_OFF: password,
         })
-        missing = []  # type: List
+        missing: list = []
         self.start(username, (answers, [], missing))
 
         try:
@@ -212,7 +219,7 @@ class PamAuth:
                 raise AuthenticationInformationMissing(message, missing)
             raise AuthenticationFailed(self.error_message(pam_err.args))
 
-    def change_password(self, username, old_password, new_password):  # type: (str, str, str) -> None
+    def change_password(self, username: str, old_password: str, new_password: str) -> None:
         answers = {
             PAM_TEXT_INFO: '',
             PAM_ERROR_MSG: '',
@@ -221,7 +228,7 @@ class PamAuth:
             # pam_kerberos asks for the old password first and then twice for the new password.
             # 'Current Kerberos password: ', 'New password: ', 'Retype new password: '
         }
-        prompts = []  # type: List
+        prompts: list = []
         self.start(username, (answers, prompts, []))
         # we are parsing error messages. Best to get the english version. Unfortionately not all pam modules evaluate these variables
         self.pam.putenv('LC_ALL=en_US.UTF-8')
@@ -237,29 +244,29 @@ class PamAuth:
                 ('%s %s %s' % (self._('Changing password failed.'), message, self._get_password_complexity_message())).rstrip(),
             )
 
-    def init(self):  # type: () -> PAM
+    def init(self) -> PAM:
         pam = PAM()
         pam.start('univention-management-console')
         return pam
 
-    def start(self, username, data):  # type: (str, Any) -> None
+    def start(self, username: str, data: Any) -> None:
         self.pam.set_item(PAM_CONV, self.conversation)
         self.pam.set_item(PAM_USER, username)
         self.pam.setUserData(data)
 
-    def end(self):  # type: () -> None
+    def end(self) -> None:
         # TODO: call pam_end() instead
         self.pam.set_item(PAM_CONV, lambda a, b, c: None)  # free self.conversation leaking
         del self.pam  # causes pam_end() to be called to free ldap connections
 
-    def conversation(self, auth, query_list, data):  # type: (Any, Any, Any) -> List
+    def conversation(self, auth: Any, query_list: Any, data: Any) -> list:
         try:
             return list(self._conversation(auth, query_list, data))
         except BaseException:
             AUTH.exception('Unexpected error during PAM conversation')
             raise
 
-    def _conversation(self, auth, query_list, data):  # type: (Any, List[Tuple[Any, Any]], Any) -> Iterator[Tuple[str, int]]
+    def _conversation(self, auth: Any, query_list: list[tuple[Any, Any]], data: Any) -> Iterator[tuple[str, int]]:
         answers, prompts, missing = data
         prompts.extend(query_list)
         for query, qt in query_list:
@@ -283,7 +290,7 @@ class PamAuth:
             # AUTH.error('# PAM(%d) %s: answer=%r, qt, repr(query).strip("':\" "), response)
             yield (response, 0)
 
-    def _parse_error_message_from(self, pam_err, prompts):  # type: (Tuple[Any, int], Sequence[Tuple[str, int]]) -> str
+    def _parse_error_message_from(self, pam_err: tuple[Any, int], prompts: Sequence[tuple[str, int]]) -> str:
         # okay, check prompts, maybe they have a hint why it failed?
         # most often the last prompt contains a error message
         # prompts are localised, i.e. if the operating system uses German, the prompts are German!
@@ -306,7 +313,7 @@ class PamAuth:
             ' '.join(messages),
         )
 
-    def error_message(self, pam_err):  # type: (Tuple[Any, int]) -> str
+    def error_message(self, pam_err: tuple[Any, int]) -> str:
         errors = {
             PAM_NEW_AUTHTOK_REQD: self._('The password has expired and must be renewed.'),
             PAM_ACCT_EXPIRED: self._('The account is expired and can not be used anymore.'),
@@ -317,7 +324,7 @@ class PamAuth:
         }
         return errors.get(pam_err[1], self._(str(pam_err[0])))
 
-    def _parse_password_change_fail_reason(self, prompt):  # type: (Union[str, bytes]) -> str
+    def _parse_password_change_fail_reason(self, prompt: str | bytes) -> str:
         if prompt in self.known_errors:
             return self._(self.known_errors[prompt])
         for pattern, error_message in self.known_errors.items():

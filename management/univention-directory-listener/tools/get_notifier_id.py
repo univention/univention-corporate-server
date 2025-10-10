@@ -13,8 +13,7 @@ import socket
 import sys
 
 
-def parse_args():
-    # type: () -> argparse.Namespace
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('-m', '--master', help='LDAP Server address')
     parser.add_argument(
@@ -42,8 +41,7 @@ def parse_args():
     return options
 
 
-def main():
-    # type: () -> None
+def main() -> None:
     """Retrieve current Univention Directory Notifier transaction ID."""
     options = parse_args()
     try:

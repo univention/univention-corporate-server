@@ -234,7 +234,7 @@ directory = {directory}
             cover.start()
 
     @classmethod
-    def debug_message(cls, *messages: object) -> None:
+    def debug_message(cls, *messages: Any) -> None:
         if not cls.COVERAGE_DEBUG:
             return
         try:

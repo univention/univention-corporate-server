@@ -31,20 +31,17 @@ Example myhook.py
 =================
 
 ```python
-def my_msg(*args, **kwargs):
-    # type: (*Any, **Any) -> TypedDict["Message", {"valid": bool, "title": str, "message": str}, total=False]
+def my_msg(*args: Any, **kwargs: Any) -> TypedDict["Message", {"valid": bool, "title": str, "message": str}, total=False]:
     return {
         'valid': True,
         'title': 'The Title Of The TitlePane',
         'message': '<p>The content of the <b>TitlePane</b></p>'
     }
 
-def my_block(*args, **kwargs):
-    # type: (*Any, **Any) -> bool
+def my_block(*args: Any, **kwargs: Any) -> bool:
     return True
 
-def register_hooks():
-    # type: () -> List[Tuple[str. Callable[..., object]]]
+def register_hooks() -> list[tuple[str. Callable[..., Any]]]:
     return [
         ('updater_show_message', my_msg),
         ('updater_prohibit_update', my_block),

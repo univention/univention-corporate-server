@@ -56,8 +56,7 @@ def checkChilds(grp_module, dn, parents, verbose=False, exception=False):
         checkChilds(grp_module, childgrp, new_parents, verbose)
 
 
-def main():
-    # type: () -> None
+def main() -> None:
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("-v", "--verbose", help="print debug output", dest="verbose", action="store_true")
     options = parser.parse_args()

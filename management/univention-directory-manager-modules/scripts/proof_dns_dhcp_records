@@ -11,8 +11,7 @@ import univention.config_registry
 import univention.uldap
 
 
-def main():
-    # type: () -> None
+def main() -> None:
     ucr = univention.config_registry.ConfigRegistry()
     ucr.load()
 

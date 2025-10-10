@@ -119,8 +119,7 @@ class MonitoringClient(ListenerModuleHandler):
         except FileNotFoundError:
             ud.debug(ud.LISTENER, ud.WARN, 'alert definition does not exists: %s' % (filename,))
 
-    def post_run(self):
-        # type: () -> None
+    def post_run(self) -> None:
         ud.debug(ud.LISTENER, ud.INFO, 'Reloading prometheus alert manager')
         url = 'http://localhost/metrics-prometheus/-/reload'
         with SetUID(0), open('/etc/machine.secret') as fd:

@@ -9,7 +9,8 @@ import re
 import sys
 from argparse import ArgumentParser, FileType
 from base64 import b64decode
-from collections.abc import Iterable, Iterator  # noqa: F401
+from collections.abc import Iterable, Iterator
+from typing import IO
 
 
 __all__ = [
@@ -21,8 +22,7 @@ __all__ = [
 RE_B64 = re.compile(r'^([a-zA-Z0-9-]+):: (.*)')
 
 
-def ldif_decode(src=sys.stdin, dst=sys.stdout.buffer):
-    # type: (IO[str], IO[bytes]) -> None
+def ldif_decode(src: IO[str] = sys.stdin, dst: IO[bytes] = sys.stdout.buffer) -> None:
     """Decode bas64 in LDIF."""
     try:
         for line in src:
@@ -31,14 +31,12 @@ def ldif_decode(src=sys.stdin, dst=sys.stdout.buffer):
         pass
 
 
-def decode(stream):
-    # type: (Iterable[str]) -> Iterator[bytes]
+def decode(stream: Iterable[str]) -> Iterator[bytes]:
     for line in stream:
         yield decode64(line)
 
 
-def decode64(line):
-    # type: (str) -> bytes
+def decode64(line: str) -> bytes:
     m = RE_B64.search(line)
     if m:
         attr, encoded = m.groups()
@@ -48,8 +46,7 @@ def decode64(line):
         return line.encode("utf-8")
 
 
-def ldif_unwrap(src=sys.stdin, dst=sys.stdout.buffer):
-    # type: (IO[str], IO[bytes]) -> None
+def ldif_unwrap(src: IO[str] = sys.stdin, dst: IO[bytes] = sys.stdout.buffer) -> None:
     """Unwrap LDIF."""
     try:
         for line in unwrap(src):
@@ -58,8 +55,7 @@ def ldif_unwrap(src=sys.stdin, dst=sys.stdout.buffer):
         pass
 
 
-def unwrap(stream):
-    # type: (Iterable[str]) -> Iterator[str]
+def unwrap(stream: Iterable[str]) -> Iterator[str]:
     prev = ""
     for line in stream:
         if line[:1] in (' ', '\t'):
@@ -73,8 +69,7 @@ def unwrap(stream):
         yield prev
 
 
-def ldif_normalize(src=sys.stdin, dst=sys.stdout.buffer):
-    # type: (IO[str], IO[bytes]) -> None
+def ldif_normalize(src: IO[str] = sys.stdin, dst: IO[bytes] = sys.stdout.buffer) -> None:
     """Unwrap and base64 decode LDIF."""
     try:
         for line in unwrap(src):
@@ -83,8 +78,7 @@ def ldif_normalize(src=sys.stdin, dst=sys.stdout.buffer):
         pass
 
 
-def main():
-    # type: () -> None
+def main() -> None:
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--src", "-s", type=FileType("r"), default="-", help="Source input")
     parser.add_argument("--dst", "-d", type=FileType("w"), default="-", help="Destination output")

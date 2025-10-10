@@ -6,8 +6,7 @@
 
 from __future__ import annotations
 
-from argparse import Namespace  # noqa: F401
-from argparse import ArgumentParser, ArgumentTypeError
+from argparse import ArgumentParser, ArgumentTypeError, Namespace
 from contextlib import contextmanager
 from ctypes import Structure, c_bool, c_ulong, sizeof
 from errno import ENOENT
@@ -31,7 +30,7 @@ from univention.config_registry import ConfigRegistry
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
-    from types import TracebackType  # noqa: F401
+    from types import TracebackType
 
 Transaction = NamedTuple("Transaction", [("tid", int), ("dn", str), ("command", str)])
 

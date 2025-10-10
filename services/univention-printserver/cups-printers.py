@@ -373,8 +373,7 @@ def update_samba_printers_conf():
 
 
 @listener.SetUID(0)
-def reload_printer_restrictions():
-    # type: () -> None
+def reload_printer_restrictions() -> None:
     subprocess.call(['python3', '-m', 'univention.lib.share_restrictions'])
 
 

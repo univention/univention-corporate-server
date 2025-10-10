@@ -292,8 +292,7 @@ class Server:
             pool.shutdown(False)
 
     @staticmethod
-    def analyse_memory():
-        # type: () -> None
+    def analyse_memory() -> None:
         """Print the number of living UMC objects. Helpful when analysing memory leaks."""
         components = (
             'session.Session', 'session.User', 'session.IACLs', 'session.Processes',

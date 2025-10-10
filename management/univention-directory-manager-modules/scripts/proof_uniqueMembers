@@ -161,8 +161,7 @@ def check_groups_by_uid(conn, basedn, group_dn, group):
     return count_changes
 
 
-def main():
-    # type: () -> None
+def main() -> None:
     """Check group membership."""
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("-b", "--base-dn", dest="basedn", action="store", help="ldap base DN for user search")

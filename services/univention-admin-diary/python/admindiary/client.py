@@ -2,6 +2,8 @@
 # SPDX-FileCopyrightText: 2019-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+from __future__ import annotations
+
 import logging
 import os
 import uuid
@@ -20,8 +22,7 @@ get_logger = partial(get_logger, 'client')
 F = TypeVar('F', bound=Callable[..., Any])
 
 
-def exceptionlogging(f):
-    # type: (F) -> F
+def exceptionlogging(f: F) -> F:
     @wraps(f)
     def wrapper(*args, **kwds):
         try:
@@ -33,12 +34,10 @@ def exceptionlogging(f):
 
 
 class RsyslogEmitter:
-    def __init__(self):
-        # type: () -> None
-        self.handler = None  # type: Optional[SysLogHandler]
+    def __init__(self) -> None:
+        self.handler: SysLogHandler | None = None
 
-    def emit(self, entry):
-        # type: (object) -> None
+    def emit(self, entry: Any) -> None:
         if self.handler is None:
             if os.path.exists('/dev/log'):
                 self.handler = SysLogHandler(address='/dev/log', facility='user')
@@ -53,22 +52,19 @@ emitter = RsyslogEmitter()
 
 
 @exceptionlogging
-def add_comment(message, context_id, username=None):
-    # type: (str, str, Optional[str]) -> Optional[int]
+def add_comment(message: str, context_id: str, username: str | None = None) -> int | None:
     event = DiaryEvent('COMMENT', {'en': message})
     return write_event(event, username=username, context_id=context_id)
 
 
 @exceptionlogging
-def write_event(event, args=None, username=None, context_id=None):
-    # type: (DiaryEvent, Dict[str, str], Optional[str], Optional[str]) -> Optional[int]
+def write_event(event: DiaryEvent, args: dict[str, str] | None = None, username: str | None = None, context_id: str | None = None) -> int | None:
     args = args or {}
     return write(event.message, args, username, event.tags, context_id, event.name)
 
 
 @exceptionlogging
-def write(message, args=None, username=None, tags=None, context_id=None, event_name=None):
-    # type: (str, Dict[str, str], Optional[str], Optional[List[str]], Optional[str], Optional[str]) -> Optional[int]
+def write(message: str, args: dict[str, str] | None = None, username: str | None = None, tags: list[str] | None = None, context_id: str | None = None, event_name: str | None = None) -> int | None:
     if username is None:
         username = getuser()
     if args is None:
@@ -84,8 +80,7 @@ def write(message, args=None, username=None, tags=None, context_id=None, event_n
 
 
 @exceptionlogging
-def write_entry(entry):
-    # type: (DiaryEntry) -> Optional[int]
+def write_entry(entry: DiaryEntry) -> int | None:
     entry.assert_types()
     blocked_events = get_events_to_reject()
     if entry.event_name in blocked_events:

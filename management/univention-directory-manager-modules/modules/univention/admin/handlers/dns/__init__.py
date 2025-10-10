@@ -108,7 +108,7 @@ class DNSBase(udm_handlers.simpleLdap):
 
 
 # UNUSED:
-def makeContactPerson(obj: udm_handlers.simpleLdap, arg: object) -> str:
+def makeContactPerson(obj: udm_handlers.simpleLdap, arg: Any) -> str:
     """Create contact Email-address for domain."""
     domain = obj.position.getDomain()
     return 'root@%s.' % (domain.replace('dc=', '').replace(',', '.'),)

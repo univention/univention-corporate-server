@@ -37,7 +37,7 @@ class ChecksAndWaits:
             self.get_all_visible_elements, f'waited {timeout} seconds for texts {texts!r}',
         )
 
-    def wait_for_text_to_disappear(self, text: object, timeout: int = 60) -> None:
+    def wait_for_text_to_disappear(self, text: Any, timeout: int = 60) -> None:
         xpath = f'//*[contains(text(), "{text}")]'
         WebDriverWait(xpath, timeout).until(
             self.elements_invisible, f'waited {timeout} seconds for text {text!r} to disappear',

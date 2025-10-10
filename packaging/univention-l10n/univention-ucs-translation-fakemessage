@@ -15,16 +15,14 @@ import os
 import polib
 
 
-def parse_args():
-    # type: () -> argparse.Namespace
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__, usage='%(prog)s [directory]')
     parser.add_argument('directory', help="Base directory for recursive search")
     args = parser.parse_args()
     return args
 
 
-def process(po_dir):
-    # type: (str) -> None
+def process(po_dir: str) -> None:
     for _dir, _dns, fns in os.walk(os.path.abspath(po_dir)):
         for po_file in fns:
             if not po_file.endswith('.po'):
@@ -37,8 +35,7 @@ def process(po_dir):
             po.save(os.path.join(_dir, po_file))
 
 
-def main():
-    # type: () -> None
+def main() -> None:
     args = parse_args()
     process(args.directory)
 

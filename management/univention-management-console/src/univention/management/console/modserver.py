@@ -16,6 +16,7 @@ import signal
 import sys
 import tempfile
 import traceback
+from typing import NoReturn
 
 import tornado.httputil
 import tornado.locale
@@ -30,11 +31,6 @@ from univention.management.console.log import MODULE, RequestFilter, log_reopen
 from univention.management.console.message import Request, Response
 from univention.management.console.modules.decorators import SimpleThread
 
-
-try:
-    from typing import Any, NoReturn, Optional  # noqa: F401
-except ImportError:
-    pass
 
 _ = Translation('univention.management.console').translate
 
@@ -82,8 +78,7 @@ class ModuleServer:
     :param int timeout: If there are no incoming requests for *timeout* seconds the module server shuts down
     """
 
-    def __init__(self, socket, module, logfile, timeout=300):
-        # type: (str, str, str, int) -> None
+    def __init__(self, socket: str, module: str, logfile: str, timeout: int = 300) -> None:
         self.server = None
         self.__socket = socket
         self.__module = module
@@ -140,8 +135,7 @@ class ModuleServer:
         self.ioloop = tornado.ioloop.IOLoop.current()
         self.ioloop.start()
 
-    def _load_module(self):
-        # type: () -> None
+    def _load_module(self) -> None:
         MODULE.debug('Loading Python module.')
         modname = self.__module
         from .error import UMC_Error
@@ -201,8 +195,7 @@ class ModuleServer:
         io_loop.add_callback_from_signal(shutdown)
         self._timed_out()
 
-    def _timed_out(self):
-        # type: () -> NoReturn
+    def _timed_out(self) -> NoReturn:
         MODULE.process('Committing suicide')
         if self.__handler:
             self.__handler.destroy()

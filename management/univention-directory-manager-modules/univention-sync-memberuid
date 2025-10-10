@@ -51,9 +51,9 @@ def main() -> None:
 
 
 def make_searchfilter(
-    groups,  # type: list[str] | None
-    exclude,  # type: list[str] | None
-):  # type: (...) -> univention.admin.filter.conjunction
+    groups: list[str] | None,
+    exclude: list[str] | None,
+) -> univention.admin.filter.conjunction:
     filters = []
     if groups is not None:
         filters = [univention.admin.filter.conjunction('|', [f'(cn={group})' for group in groups])] + filters  # noqa: RUF005
@@ -63,13 +63,13 @@ def make_searchfilter(
 
 
 def process_groups(
-    lo,  # type: univention.admin.uldap.access
-    base_dn,  # type: str
-    groups,  # type: list[str]
-    exclude,  # type: list[str]
-    test=False,  # type: bool
-    cont=False,  # type: bool
-):  # type: (...) -> None
+    lo: univention.admin.uldap.access,
+    base_dn: str,
+    groups: list[str],
+    exclude: list[str],
+    test: bool = False,
+    cont: bool = False,
+) -> None:
     filter = make_searchfilter(groups, exclude)
     groups = lo.search(filter, base_dn, attr=['uniqueMember', 'memberUid'])
 

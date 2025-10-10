@@ -2,8 +2,6 @@
 # SPDX-FileCopyrightText: 2021-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from typing import Optional  # noqa: F401
-
 # choose a backend
 from univention.ldap_cache.cache.backend.gdbm_cache import (  # noqa: F401
     GdbmCache as Cache, GdbmCaches as Caches, GdbmShard as Shard,
@@ -16,8 +14,7 @@ from univention.ldap_cache.log import debug
 
 
 # Singleton pattern
-def get_cache():
-    # type: () -> Caches
+def get_cache() -> Caches:
     global _cache
     if _cache is None:
         debug('Creating the Caches instance')
@@ -28,4 +25,4 @@ def get_cache():
     return _cache
 
 
-_cache = None  # type: Optional[Caches]
+_cache: Caches | None = None

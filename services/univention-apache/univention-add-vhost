@@ -1,13 +1,14 @@
 #!/usr/bin/python3
 # SPDX-FileCopyrightText: 2019-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
-#
 
+from __future__ import annotations
 
 import os
 import subprocess
 import sys
 import time
+from typing import TYPE_CHECKING
 
 import click
 from dns.resolver import NXDOMAIN, Resolver
@@ -16,7 +17,10 @@ from ldap.filter import filter_format
 
 from univention.config_registry import handler_set, handler_unset, ucr
 from univention.udm import UDM, NoObject
-from univention.udm.base import BaseModule, BaseObject  # noqa: F401
+
+
+if TYPE_CHECKING:
+    from univention.udm.base import BaseModule, BaseObject
 
 
 _forward_zones = None

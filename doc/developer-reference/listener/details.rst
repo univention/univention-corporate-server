@@ -359,10 +359,10 @@ While in UCS 4 :py:func:`handler() <low_level.handler>` typically looked like:
 .. code:: python
 
    def handler(
-       dn:  # type: str,
-       new,  # type: dict[str, list[str]]
-       old,  # type: dict[str, list[str]]
-   ):  # type: (...) -> None
+       dn: str,
+       new: dict[str, list[str]],
+       old: dict[str, list[str]],
+   ) -> None:
        if new and 'myObjectClass' in new.get('objectClass', []):
            value = new['myAttribute'][0]
            ...

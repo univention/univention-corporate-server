@@ -24,8 +24,7 @@ import univention.admin.uldap
 from univention.config_registry import ConfigRegistry
 
 
-def main():
-    # type: () -> None
+def main() -> None:
     args = parse_args()
 
     ucr = ConfigRegistry()

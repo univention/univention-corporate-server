@@ -15,6 +15,7 @@ import copy
 import datetime
 import logging
 import traceback
+from typing import Any
 
 from logfmter import Logfmter
 
@@ -64,7 +65,7 @@ _UD_CATEGORIES = {
 }
 
 
-def _map_level_to_ud(level):  # type: (int) -> int
+def _map_level_to_ud(level: int) -> int:
     """
     Map logging level to univention-debug loglevel
 
@@ -107,7 +108,7 @@ def _map_level_to_ud(level):  # type: (int) -> int
     return _LEVEL_MAPPING.get(level, level)
 
 
-def _map_ud_to_level(level):  # type: (int) -> int
+def _map_ud_to_level(level: int) -> int:
     """
     Map univention-debug level to logging loglevel
 
@@ -139,7 +140,7 @@ def _map_ud_to_level(level):  # type: (int) -> int
     return _UD_LEVEL_MAPPING.get(level)
 
 
-def _map_category_name(category):  # type: (int) -> str
+def _map_category_name(category: int) -> str:
     """
     >>> _map_category_name(10)
     'ADMIN'
@@ -147,7 +148,7 @@ def _map_category_name(category):  # type: (int) -> str
     return _UD_CATEGORIES.get(category, '<unknown>')
 
 
-def getLogger(name, **kwargs):  # type: (str) -> Logger
+def getLogger(name: str, **kwargs: Any) -> 'Logger':
     """
     Return a logger with the specified name, creating it if necessary.
 
@@ -184,7 +185,7 @@ def getLogger(name, **kwargs):  # type: (str) -> Logger
     return logger
 
 
-def extendLogger(name, **kwargs):  # type: (str) -> None
+def extendLogger(name: str, **kwargs: Any) -> None:
     """
     Ensure that the logger with the specified name is a univention-debug logger otherwise transform it.
 

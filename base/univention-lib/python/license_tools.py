@@ -3,10 +3,11 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 
+from __future__ import annotations
+
 import datetime
 import sys
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
-from typing import Optional  # noqa: F401
 
 import univention.uldap
 
@@ -23,12 +24,11 @@ class LicenseNotFound(LicenseCheckError):
     """The license cannot be found in LDAP"""
 
 
-def is_CSP_license(lo=None):
-    # type: (Optional[univention.uldap.acceess]) -> bool
+def is_CSP_license(lo: univention.uldap.access | None = None) -> bool:
     """
     Function to detect if installed license is a cloud service provider license (CSP).
 
-    :param univention.uldap.acceess lo: Optional |LDAP| connection to re-use. Otherwise a new |LDAP| connection with machine credentials is created.
+    :param univention.uldap.access lo: Optional |LDAP| connection to re-use. Otherwise a new |LDAP| connection with machine credentials is created.
     :returns: `True` if a valid CSP license has been found or `False` if a valid non-CSP license has been found.
     :raises LicenseNotFound: if no license was found.
     :raises LicenseExpired: if the license has expired.

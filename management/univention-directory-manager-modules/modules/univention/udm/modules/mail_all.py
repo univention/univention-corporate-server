@@ -1,6 +1,5 @@
 # SPDX-FileCopyrightText: 2018-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
-
 r"""
 Module and object specific for all "mail/\*" UDM modules.
 
@@ -16,14 +15,18 @@ The overwritten method :py:meth:`_verify_univention_object_type()` allows both
 `mail/\*` and `oxmail/\*` in `univentionObjectType`.
 """
 
+from __future__ import annotations
 
 import copy
-
-import univention.admin.handlers  # noqa: F401
+from typing import TYPE_CHECKING
 
 from ..encoders import ListOfListOflTextToDictPropertyEncoder, StringIntPropertyEncoder
 from ..exceptions import WrongObjectType
 from .generic import GenericModule, GenericObject, GenericObjectProperties
+
+
+if TYPE_CHECKING:
+    import univention.admin.handlers
 
 
 class MailAllObjectProperties(GenericObjectProperties):
@@ -48,8 +51,7 @@ class MailAllModule(GenericModule):
 
     _udm_object_class = MailAllObject
 
-    def _verify_univention_object_type(self, orig_udm_obj):
-        # type: (univention.admin.handlers.simpleLdap) -> None
+    def _verify_univention_object_type(self, orig_udm_obj: univention.admin.handlers.simpleLdap) -> None:
         r"""Allow both `mail/\*` and `oxmail/\*` in `univentionObjectType`."""
         uni_obj_type = copy.copy(getattr(orig_udm_obj, 'oldinfo', {}).get('univentionObjectType'))
         if uni_obj_type and uni_obj_type[0].startswith('mail/'):

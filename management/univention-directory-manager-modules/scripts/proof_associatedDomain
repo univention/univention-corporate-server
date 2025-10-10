@@ -26,8 +26,7 @@ def parse_args():
     return options
 
 
-def main():
-    # type: () -> None
+def main() -> None:
     options = parse_args()
 
     lo, position = uldap.getAdminConnection()

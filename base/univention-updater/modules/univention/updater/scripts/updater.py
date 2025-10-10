@@ -14,7 +14,7 @@ from datetime import datetime
 from errno import ENOENT
 from subprocess import DEVNULL, call
 from textwrap import dedent, wrap
-from typing import IO, TYPE_CHECKING, Literal, NoReturn
+from typing import IO, TYPE_CHECKING, Any, Literal, NoReturn
 
 
 try:
@@ -31,7 +31,7 @@ from univention.updater.errors import (
     ConfigurationError, DownloadError, PreconditionError, RequiredComponentError, VerificationError,
 )
 from univention.updater.locking import UpdaterLock, apt_lock
-from univention.updater.tools import Component, LocalUpdater, UniventionUpdater  # noqa: F401
+from univention.updater.tools import LocalUpdater, UniventionUpdater
 
 
 if TYPE_CHECKING:
@@ -88,7 +88,7 @@ def log(str: str) -> None:
     fd_log.flush()
 
 
-def dprint(str: object) -> None:
+def dprint(str: Any) -> None:
     """Print message to stdout and LOGNAME."""
     for fd in (stdout_orig, fd_log)[nostdout:]:
         print(str, file=fd)

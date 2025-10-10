@@ -7,6 +7,7 @@ import datetime
 import inspect
 import time
 from collections.abc import Sequence
+from typing import Any
 
 import ldap.dn
 
@@ -18,7 +19,7 @@ from univention.admin.log import log
 translation = localization.translation('univention/admin')
 _ = translation.translate
 
-_Types = type[object] | Sequence[type[object]]
+_Types = type[Any] | Sequence[type[Any]]
 
 
 class TypeHint:

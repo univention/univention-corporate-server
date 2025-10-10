@@ -10,23 +10,19 @@ import passlib.crypto.des
 from samba.crypto import md4_hash_blob
 
 
-def md4(data):
-    # type: (bytes) -> bytes
+def md4(data: bytes) -> bytes:
     return md4_hash_blob(data)
 
 
-def DesEncrypt(data, key):
-    # type: (bytes, bytes) -> bytes
+def DesEncrypt(data: bytes, key: bytes) -> bytes:
     return passlib.crypto.des.des_encrypt_block(key, data)
 
 
-def HashNtPasswordHash(passwordhash):
-    # type: (bytes) -> bytes
+def HashNtPasswordHash(passwordhash: bytes) -> bytes:
     return md4(passwordhash)
 
 
-def ChallengeResponse(challenge, passwordhash):
-    # type: (bytes, bytes) -> bytes
+def ChallengeResponse(challenge: bytes, passwordhash: bytes) -> bytes:
     z_password_hash = passwordhash.ljust(21, b'\0')
     response = DesEncrypt(challenge, z_password_hash[0:7])
     response += DesEncrypt(challenge, z_password_hash[7:14])
