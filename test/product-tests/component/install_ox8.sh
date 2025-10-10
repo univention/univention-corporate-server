@@ -2,6 +2,9 @@
 # SPDX-FileCopyrightText: 2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+# This script is really hard to maintain due to how it works with YAML files.
+# Pined versions, etc.
+
 # install OX 8 (kubernetes)
 # see https://git.knut.univention.de/univention/prof-services/team-enterprise/zit-sh/-/issues/56
 curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.31.0/bin/linux/amd64/kubectl && chmod +x ./kubectl && mv ./kubectl /usr/local/bin/kubectl
@@ -19,8 +22,9 @@ helm repo update
 helm upgrade --install --set args={--kubelet-insecure-tls} metrics-server metrics-server/metrics-server --namespace kube-system
 sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq && sudo chmod +x /usr/bin/yq
 apt install --yes python3-venv
-git clone https://gitlab.open-xchange.com/appsuite/operation-guides.git
-cd operation-guides
+# Use operations-guide mirrored by Nautilus team instead of upstream (breaks a lot)
+git clone https://git.knut.univention.de/univention/dev/projects/open-xchange/ox-operations-guide-mirror.git
+cd ox-operations-guide-mirror
 python3 -mvenv v
 v/bin/pip install --upgrade pip wheel
 v/bin/pip install -r requirements.txt
@@ -47,33 +51,16 @@ v/bin/python render.py --values values.yaml
 # cd rendered/lab
 cd rendered/values
 # JUST_UCS
-cat <<'EOF' >install.sh.patch
---- install.sh.orig     2024-10-19 10:13:37.540000000 +0200
-+++ install.sh.new      2024-10-19 10:14:25.612000000 +0200
-@@ -145 +145,9 @@
--    kubectl wait tenant -n "as8" minio --for='jsonpath={.status.currentState}=Initialized' --timeout=600s || portableExit 1
-+    counter=0
-+    until [ "$(kubectl get tenant -n "as8" minio -o 'jsonpath={.status.currentState}')" == "Initialized" ]; do
-+        sleep 10
-+        let "counter=counter+1"
-+        if [ $counter -gt 60 ]; then
-+            echo "Waiting to long"
-+            exit 1
-+        fi
-+    done
-EOF
-#patch install.sh <install.sh.patch
-#sed -i '/--for=create/d' install.sh
-#sed -i 's/cpu: 100/cpu: 50/g' install.sh
 # bump version https://www.oxpedia.org/wiki/index.php?title=AppSuite:Versioning_and_Numbering#2025
+# This remove the pining of the version for the appsuite, this brings unexpected updates.
 sed -i -E 's|oci://registry.open-xchange.com/appsuite/charts/appsuite --version [0-9]\.[0-9]{1,2}\.[0-9]{1,3} |oci://registry.open-xchange.com/appsuite/charts/appsuite |g' install.sh
 sed -i 's|AVERAGE_CONTEXT_SIZE: "200"|AVERAGE_CONTEXT_SIZE: "200"\n    /opt/open-xchange/etc/AdminUser.properties:\n       USERNAME_CHANGEABLE: "true"|g' values.yaml
 
 # activate deputy permission provisioning
 sed -i 's|open-xchange-drive-client-windows: disabled|open-xchange-drive-client-windows: disabled\n      open-xchange-deputy: enabled\n|g' values.yaml
-sed -i 's|com.openexchange.hostname: "as8.lab.test"|com.openexchange.hostname: "as8.lab.test"\n    com.openexchange.dovecot.doveadm.endpoints: "http://dovecot-ce:8080/doveadm/v1"\n    com.openexchange.dovecot.doveadm.endpoints.totalConnections: "100"\n    com.openexchange.dovecot.doveadm.endpoints.readTimeout: "20000"\n    com.openexchange.dovecot.doveadm.endpoints.maxConnectionsPerRoute: "0"\n    com.openexchange.dovecot.doveadm.endpoints.connectTimeout: "5000"\n    com.openexchange.dovecot.doveadm.enabled: "true"\n    com.openexchange.deputy.enabled: "true"\n    com.openexchange.deputy.provider.imap.doveadm.personalNamespace: "inbox/"\n    com.openexchange.deputy.provider.imap.doveadm.sharedNamespace: "shared/"\n    com.openexchange.deputy.provider.imap.doveadm.publicNamespace: "shared/"\n|g' values.yaml
+sed -i 's|com.openexchange.hostname: "as8.lab.test"|com.openexchange.hostname: "as8.lab.test"\n    com.openexchange.dovecot.doveadm.endpoints: "http://dovecot-ce:8080/doveadm/v1"\n    com.openexchange.dovecot.doveadm.endpoints.totalConnections: "100"\n    com.openexchange.dovecot.doveadm.endpoints.readTimeout: "20000"\n    com.openexchange.dovecot.doveadm.endpoints.maxConnectionsPerRoute: "0"\n    com.openexchange.dovecot.doveadm.endpoints.connectTimeout: "5000"\n    com.openexchange.dovecot.doveadm.enabled: "true"\n    com.openexchange.deputy.enabled: "true"\n    com.openexchange.deputy.provider.imap.doveadm.personalNamespace: "inbox/"\n    com.openexchange.deputy.provider.imap.doveadm.sharedNamespace: "shared/"\n    com.openexchange.deputy.provider.imap.doveadm.publicNamespace: "shared/"\n    com.openexchange.dovecot.doveadm.apiSecret: "secret"\n|g' values.yaml
 
-# workaround for bitnami moving their images
+# workaround for bitnami moving their images, this may break easily.
 sed -i 's|  usePasswordFiles: false|  usePasswordFiles: false\nimage:\n  repository: bitnamilegacy/redis\nglobal:\n  security:\n    allowInsecureImages: true|g' values.bitnami-redis-core-mw-cache.yaml
 sed -i 's|  usePasswordFiles: false|  usePasswordFiles: false\nimage:\n  repository: bitnamilegacy/redis\nglobal:\n  security:\n    allowInsecureImages: true|g' values.bitnami-redis-core-mw-session-store.yaml
 sed -i 's|  usePasswordFiles: false|  usePasswordFiles: false\nimage:\n  repository: bitnamilegacy/redis\nglobal:\n  security:\n    allowInsecureImages: true|g' values.bitnami-redis-core-ui-mw.yaml
@@ -212,3 +199,21 @@ systemctl restart apache2.service
 # echo "secret"|base64  # -> c2VjcmV0
 kubectl exec -n as8 "$(kubectl get pods -n as8 | grep mw-default | awk '{print $1}' | head -n1)" -it -- bash -c 'curl -v -H "Authorization: X-Dovecot-API c2VjcmV0" http://dovecot-ce:8080/doveadm/v1'
 
+# This adds the cluster ip to the ox-core-mw pod. Otherwise it can't resolve as8.lab.test
+kubectl patch deployment as8-core-mw-default \
+  -n as8 \
+  --type merge \
+  -p "{
+    \"spec\": {
+      \"template\": {
+        \"spec\": {
+          \"hostAliases\": [
+            {cluster_ip
+              \"ip\": \"${cluster_ip}\",
+              \"hostnames\": [\"as8.lab.test\"]
+            }
+          ]
+        }
+      }
+    }
+  }"
