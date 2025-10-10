@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: 2022-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
+from __future__ import annotations
 
 import os
 from argparse import ArgumentParser, Namespace
@@ -94,7 +95,7 @@ def create_self_service_entry(args: Namespace, name: str, page: str, ucr_name: s
 
 
 def main(args: Namespace) -> None:
-    categories = [
+    categories: list[str] = [
         create_self_service_category(args, 'self-service-profile', {'en_US': 'User Profile', 'de_DE': 'Benutzerprofil'}, [
             create_self_service_entry(args, 'self-service-my-profile', 'profile', 'umc/self-service/profiledata/enabled', False, display_name={'en_US': 'My Profile', 'de_DE': 'Mein Profil'}, description={'en_US': 'Manage profile', 'de_DE': 'Profil verwalten'}),
         ]),
@@ -108,7 +109,7 @@ def main(args: Namespace) -> None:
             create_self_service_entry(args, 'self-service-create-account', 'createaccount', 'umc/self-service/account-registration/backend/enabled', True, display_name={'en_US': 'Create an account', 'de_DE': 'Konto erstellen'}),
             create_self_service_entry(args, 'self-service-verify-account', 'verifyaccount', 'umc/self-service/account-verification/backend/enabled', True, display_name={'en_US': 'Account verification', 'de_DE': 'Kontoverifizierung'}),
         ]),
-    ]  # type: List[str]
+    ]
 
     create_self_service_portal(args, categories)
 

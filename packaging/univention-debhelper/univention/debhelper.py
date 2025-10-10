@@ -1,17 +1,20 @@
-"""Debhelper compatible routines."""
-#
 # SPDX-FileCopyrightText: 2010-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
+"""Debhelper compatible routines."""
 
+from __future__ import annotations
 
 import os
 import subprocess
-from argparse import ArgumentParser, Namespace  # noqa: F401
-from collections.abc import Sequence  # noqa: F401
+from typing import TYPE_CHECKING
 
 
-def doIt(*argv):
-    # type: (*str) -> int
+if TYPE_CHECKING:
+    from argparse import ArgumentParser, Namespace
+    from collections.abc import Sequence
+
+
+def doIt(*argv: str) -> int:
     """
     Execute argv and wait.
 
@@ -25,8 +28,7 @@ def doIt(*argv):
     return subprocess.check_call(argv)
 
 
-def binary_packages():
-    # type: () -> List[str]
+def binary_packages() -> list[str]:
     """
     Get list of binary packages from debian/control file.
 
@@ -44,8 +46,7 @@ def binary_packages():
     return packages
 
 
-def parseRfc822(f):
-    # type: (str) -> List[Dict[str, List[str]]]
+def parseRfc822(f: str) -> list[dict[str, list[str]]]:
     r"""
     Parses string `f` as a :rfc:`822` conforming file and returns list of sections, each a dict mapping keys to lists of values.
     Splits file into multiple sections separated by blank line.
@@ -66,8 +67,8 @@ def parseRfc822(f):
     >>> parseRfc822('\n\n')
     []
     """
-    res = []  # type: List[Dict[str, List[str]]]
-    ent = {}  # type: Dict[str, List[str]]
+    res: list[dict[str, list[str]]] = []
+    ent: dict[str, list[str]] = {}
     for line in f.splitlines():
         if line:
             try:
@@ -86,8 +87,7 @@ def parseRfc822(f):
     return res
 
 
-def parser_dh_sequence(parser, argv=None):
-    # type: (ArgumentParser, Optional[Sequence[str]]) -> Namespace
+def parser_dh_sequence(parser: ArgumentParser, argv: Sequence[str] | None = None) -> Namespace:
     """
     Add common argument for Debian helper sequence.
 

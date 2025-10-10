@@ -5,18 +5,18 @@
 #
 # SPDX-FileCopyrightText: 2017-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
-#
 
+from __future__ import annotations
 
 import os
 import os.path
 import sys
-from collections.abc import Iterable  # noqa: F401
 from configparser import NoSectionError
 from contextlib import contextmanager
 from glob import glob
 from json import dump, load
 from time import sleep
+from typing import TYPE_CHECKING
 from urllib.parse import urlsplit
 
 from univention.appcenter.app import App, LooseVersion
@@ -28,41 +28,40 @@ from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_load
 from univention.appcenter.utils import get_locale, mkdir
 
 
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+
 CACHE_DIR = '/var/cache/univention-appcenter'
 
 cache_logger = get_base_logger().getChild('cache')
 
 
-def _cmp_mtimes(mtime1, mtime2):
-    # type: (Optional[float], Optional[float]) -> int
+def _cmp_mtimes(mtime1: float | None, mtime2: float | None) -> int:
     mtime1 = float(f'{mtime1:.3f}') if mtime1 is not None else 0.0
     mtime2 = float(f'{mtime2:.3f}') if mtime2 is not None else 0.0
     return 0 if mtime1 == mtime2 else (-1 if mtime1 < mtime2 else 1)
 
 
 class _AppCache:
-    def get_every_single_app(self):
-        # type: () -> Iterable[App]
+    def get_every_single_app(self) -> Iterable[App]:
         raise NotImplementedError()
 
-    def get_all_apps_with_id(self, app_id):
-        # type: (str) -> List[App]
+    def get_all_apps_with_id(self, app_id: str) -> list[App]:
         ret = []
         for app in self.get_every_single_app():
             if app.id == app_id:
                 ret.append(app)
         return ret
 
-    def get_all_locally_installed_apps(self):
-        # type: () -> List[App]
+    def get_all_locally_installed_apps(self) -> list[App]:
         ret = []
         for app in self.get_every_single_app():
             if app.is_installed():
                 ret.append(app)
         return ret
 
-    def find(self, app_id, app_version=None, latest=False):
-        # type: (str, Optional[str], bool) -> Optional[App]
+    def find(self, app_id: str, app_version: str | None = None, latest: bool = False) -> App | None:
         apps = self.get_all_apps_with_id(app_id)
         if app_version:
             for app in apps:
@@ -104,9 +103,8 @@ class _AppCache:
         if not_permitted_app:
             return not_permitted_app
 
-    def get_all_apps(self):
-        # type: () -> List[App]
-        apps = {}  # type: Dict[str, Tuple[App, bool]]
+    def get_all_apps(self) -> list[App]:
+        apps: dict[str, tuple[App, bool]] = {}
         for app in self.get_every_single_app():
             if app.id in apps:
                 old_app, old_is_installed = apps[app.id]
@@ -119,8 +117,7 @@ class _AppCache:
                 apps[app.id] = (app, app.is_installed())
         return sorted(app for (app, is_installed) in apps.values())
 
-    def find_by_component_id(self, component_id):
-        # type: (str) -> Optional[App]
+    def find_by_component_id(self, component_id: str) -> App | None:
         for app in self.get_every_single_app():
             if app.component_id == component_id:
                 return app
@@ -381,8 +378,7 @@ class AppCenterCache(_AppCache):
             cls._appcenter_cache_cache[key] = obj
         return cls._appcenter_cache_cache[key]
 
-    def _get_current_ucs_version(self):
-        # type: () -> str
+    def _get_current_ucs_version(self) -> str:
         try:
             still_running = False
             next_version = None
@@ -408,18 +404,15 @@ class AppCenterCache(_AppCache):
             self._cache_class = AppCache
         return self._cache_class
 
-    def get_server(self):
-        # type: () -> str
+    def get_server(self) -> str:
         if self._server is None:
             self._server = default_server()
         return self._server
 
-    def get_server_netloc(self):
-        # type: () -> str
+    def get_server_netloc(self) -> str:
         return urlsplit(self.get_server()).netloc
 
-    def get_ucs_versions(self):
-        # type: () -> List[str]
+    def get_ucs_versions(self) -> list[str]:
         if self._ucs_versions is None:
             ucs_version = self._get_current_ucs_version()
             cache_file = self.get_cache_file('.ucs.ini')
@@ -431,22 +424,19 @@ class AppCenterCache(_AppCache):
             self._ucs_versions.append("5.0")
         return self._ucs_versions
 
-    def get_locale(self):
-        # type: () -> str
+    def get_locale(self) -> str:
         if self._locale is None:
             self._locale = default_locale()
         return self._locale
 
-    def get_cache_dir(self):
-        # type: () -> str
+    def get_cache_dir(self) -> str:
         if self._cache_dir is None:
             server = self.get_server_netloc()
             self._cache_dir = os.path.join(CACHE_DIR, server)
             mkdir(self._cache_dir)
         return self._cache_dir
 
-    def get_cache_file(self, fname):
-        # type: (str) -> str
+    def get_cache_file(self, fname: str) -> str:
         return os.path.join(self.get_cache_dir(), fname)
 
     def get_app_caches(self):
@@ -459,8 +449,7 @@ class AppCenterCache(_AppCache):
         cache_dir = self.get_cache_file(ucs_version)
         return self.get_app_cache_class().build(ucs_version=ucs_version, server=self.get_server(), locale=self.get_locale(), cache_dir=cache_dir)
 
-    def get_license_description(self, license_name):
-        # type: (str) -> Optional[str]
+    def get_license_description(self, license_name: str) -> str | None:
         if self._license_type_cache is None:
             cache_file = self.get_cache_file('.license_types.ini')
             self._license_type_cache = LicenseType.all_from_file(cache_file)
@@ -488,8 +477,7 @@ class AppCenterCache(_AppCache):
             self._app_categories_cache = categories
         return self._app_categories_cache
 
-    def get_every_single_app(self):
-        # type: () -> List[App]
+    def get_every_single_app(self) -> list[App]:
         ret = []
         for app_cache in self.get_app_caches():
             ret.extend(app_cache.get_every_single_app())
@@ -518,14 +506,12 @@ class Apps(_AppCache):
             self._cache_class = AppCenterCache
         return self._cache_class
 
-    def get_locale(self):
-        # type: () -> str
+    def get_locale(self) -> str:
         if self._locale is None:
             self._locale = default_locale()
         return self._locale
 
-    def get_appcenter_caches(self):
-        # type: () -> List[AppCenterCache]
+    def get_appcenter_caches(self) -> list[AppCenterCache]:
         server = default_server()
 
         # get dedicated ucs_versions for self._ucs_version - if set
@@ -550,8 +536,7 @@ class Apps(_AppCache):
     def include_app(self, app):
         return app.supports_ucs_version()
 
-    def clear_cache(self):
-        # type: () -> None
+    def clear_cache(self) -> None:
         for app_cache in self.get_appcenter_caches():
             app_cache.clear_cache()
 
@@ -602,21 +587,18 @@ class Rating(IniSectionObject):
     description = IniSectionAttribute(localisable=True)
 
 
-def default_locale():
-    # type: () -> str
+def default_locale() -> str:
     return get_locale() or 'en'
 
 
-def default_server():
-    # type: () -> str
+def default_server() -> str:
     server = ucr_get('repository/app_center/server', 'https://appcenter.software-univention.de')
     if not server.startswith('http'):
         server = 'https://%s' % server
     return server
 
 
-def default_ucs_version():
-    # type: () -> str
+def default_ucs_version() -> str:
     cache = AppCenterCache.build(server=default_server())
     return cache.get_ucs_versions()[0]
 

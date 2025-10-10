@@ -7,13 +7,19 @@ Univention common Python library with
 helper functions for MIME type handling.
 """
 
+from __future__ import annotations
+
 import bz2
 import io
 import zlib
-from collections.abc import Callable  # noqa: F401
+from typing import TYPE_CHECKING, Any
 
 import magic
 from PIL import Image
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 MIME_TYPE = magic.Magic(magic.MAGIC_MIME_TYPE)
@@ -29,8 +35,7 @@ compression_mime_type_handlers = {
 }
 
 
-def get_mime_type(data):
-    # type: (bytes) -> str
+def get_mime_type(data: bytes) -> str:
     """
     Guess |MIME| type of data.
 
@@ -41,8 +46,7 @@ def get_mime_type(data):
     return MIME_TYPE.from_buffer(data)
 
 
-def get_mime_description(data):
-    # type: (bytes) -> str
+def get_mime_description(data: bytes) -> str:
     """
     Guess type of data silimar to :command:`file`.
 
@@ -53,8 +57,7 @@ def get_mime_description(data):
     return MIME_DESCRIPTION.from_buffer(data)
 
 
-def compression_mime_type_of_buffer(data):
-    # type: (bytes) -> Tuple[str, Callable[[Any], bytes]]
+def compression_mime_type_of_buffer(data: bytes) -> tuple[str, Callable[[Any], bytes]]:
     """
     Guess |MIME| type of compressed data.
 
@@ -71,8 +74,7 @@ def compression_mime_type_of_buffer(data):
         raise univention.admin.uexceptions.valueError("Not a supported compression format: %s" % (mime_type,))
 
 
-def uncompress_buffer(data):
-    # type: (bytes) -> Tuple[Optional[str], bytes]
+def uncompress_buffer(data: bytes) -> tuple[str | None, bytes]:
     """
     Return uncompressed data and its |MIME| type.
 
@@ -88,8 +90,7 @@ def uncompress_buffer(data):
         return (None, data)
 
 
-def uncompress_file(filename):
-    # type: (str) -> Tuple[Optional[str], bytes]
+def uncompress_file(filename: str) -> tuple[str | None, bytes]:
     """
     Return uncompressed file content and its |MIME| type.
 
@@ -101,8 +102,7 @@ def uncompress_file(filename):
         return uncompress_buffer(f.read())
 
 
-def image_mime_type_of_buffer(data):
-    # type: (bytes) -> str
+def image_mime_type_of_buffer(data: bytes) -> str:
     """
     Guess |MIME| type of image.
 
@@ -119,8 +119,7 @@ def image_mime_type_of_buffer(data):
         raise univention.admin.uexceptions.valueError("Not a supported image format: %s" % (mime_type,))
 
 
-def imagedimensions_of_buffer(data):
-    # type: (bytes) -> Tuple[int, int]
+def imagedimensions_of_buffer(data: bytes) -> tuple[int, int]:
     """
     Return image dimension of image.
 
@@ -133,8 +132,7 @@ def imagedimensions_of_buffer(data):
     return im.size
 
 
-def imagecategory_of_buffer(data):
-    # type: (bytes) -> Optional[Tuple[str, Optional[str], str]]
+def imagecategory_of_buffer(data: bytes) -> tuple[str, str | None, str] | None:
     """
     Return |MIME| types and size information for image.
 
@@ -151,8 +149,7 @@ def imagecategory_of_buffer(data):
     return None
 
 
-def default_filename_suffix_for_mime_type(mime_type, compression_mime_type):
-    # type: (str, str) -> Optional[str]
+def default_filename_suffix_for_mime_type(mime_type: str, compression_mime_type: str) -> str | None:
     """
     Return default file name suffix for image.
 

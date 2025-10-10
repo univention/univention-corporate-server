@@ -7,15 +7,21 @@
 Checks validity of type definitions and type compatibility of values to be set.
 """
 
+from __future__ import annotations
+
 import ipaddress
 import json
 import re
-from collections.abc import Container, Iterator  # noqa: F401
-from typing import cast
+from re import Pattern
+from typing import TYPE_CHECKING, cast
 from urllib.parse import urlsplit
 
 import univention.config_registry_info as cri
 from univention.config_registry.backend import BooleanConfigRegistry
+
+
+if TYPE_CHECKING:
+    from collections.abc import Container, Iterator
 
 
 class BaseValidator:
@@ -23,11 +29,10 @@ class BaseValidator:
 
     NAME = ""
 
-    def __init__(self, attrs):  # type: (Dict[str, str]) -> None
+    def __init__(self, attrs: dict[str, str]) -> None:
         pass
 
-    def is_valid(self, value):
-        # type: (str) -> bool
+    def is_valid(self, value: str) -> bool:
         """
         Check if value is valid.
 
@@ -38,8 +43,7 @@ class BaseValidator:
         except Exception:
             return False
 
-    def validate(self, value):
-        # type: (str) -> object
+    def validate(self, value: str) -> object:
         """
         Check is value is valid.
 
@@ -48,13 +52,11 @@ class BaseValidator:
         """
         raise NotImplementedError()
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return self.NAME
 
     @classmethod
-    def _recurse_subclasses(cls):
-        # type: () -> Iterator[_Type[BaseValidator]]
+    def _recurse_subclasses(cls) -> Iterator[type[BaseValidator]]:
         for clazz in cls.__subclasses__():
             if clazz.NAME:
                 yield clazz
@@ -70,19 +72,17 @@ class String(BaseValidator):
     """
 
     NAME = "str"
-    REGEX = None  # type: Optional[Pattern]
+    REGEX: Pattern | None = None
 
-    def __init__(self, attrs):  # type: (Dict[str, str]) -> None
+    def __init__(self, attrs: dict[str, str]) -> None:
         self.regex = attrs.get('regex', self.REGEX)  # type: ignore
 
     @property
-    def regex(self):
-        # type: () -> Optional[str]
+    def regex(self) -> str | None:
         return self._rxc.pattern if self._rxc else None
 
     @regex.setter
-    def regex(self, regex):
-        # type: (Union[None, str, Pattern]) -> None
+    def regex(self, regex: str | Pattern | None) -> None:
         rxc = None
         if regex is not None:
             try:
@@ -91,15 +91,13 @@ class String(BaseValidator):
                 raise ValueError('error compiling regex: %s' % regex)
         self._rxc = rxc
 
-    def validate(self, value):
-        # type: (str) -> object
+    def validate(self, value: str) -> object:
         if self._rxc:
             return self._rxc.match(value)
         else:
             return isinstance(value, str)
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return "%s(regex=%r)" % (self.NAME, self.regex) if self.regex else self.NAME
 
 
@@ -108,8 +106,7 @@ class URLHttp(BaseValidator):
 
     NAME = "url_http"
 
-    def validate(self, value):
-        # type: (str) -> object
+    def validate(self, value: str) -> object:
         o = urlsplit(value)
         o.port  # may raise ValueError  # noqa: B018
         return o.scheme in {"http", "https"}
@@ -120,8 +117,7 @@ class URLProxy(BaseValidator):
 
     NAME = "url_proxy"
 
-    def validate(self, value):
-        # type: (str) -> object
+    def validate(self, value: str) -> object:
         o = urlsplit(value)
         o.port  # may raise ValueError  # noqa: B018
         return o.scheme in {"http", "https"} and not o.path and not o.query and not o.fragment
@@ -132,8 +128,7 @@ class IPv4Address(BaseValidator):
 
     NAME = "ipv4address"
 
-    def validate(self, value):
-        # type: (str) -> object
+    def validate(self, value: str) -> object:
         return ipaddress.IPv4Address("%s" % value)  # FIXME: remove Python 2.7 unicoding
 
 
@@ -142,8 +137,7 @@ class IPv6Address(BaseValidator):
 
     NAME = "ipv6address"
 
-    def validate(self, value):
-        # type: (str) -> object
+    def validate(self, value: str) -> object:
         return ipaddress.IPv6Address("%s" % value)  # FIXME: remove Python 2.7 unicoding
 
 
@@ -152,8 +146,7 @@ class IPAddress(BaseValidator):
 
     NAME = "ipaddress"
 
-    def validate(self, value):
-        # type: (str) -> object
+    def validate(self, value: str) -> object:
         return ipaddress.ip_address("%s" % value)  # FIXME: remove Python 2.7 unicoding
 
 
@@ -166,24 +159,21 @@ class Integer(BaseValidator):
 
     NAME = "int"
 
-    MIN = None  # type: Optional[int]
-    MAX = None  # type: Optional[int]
+    MIN: int | None = None
+    MAX: int | None = None
 
-    def __init__(self, attrs):
-        # type: (Dict[str, str]) -> None
-        self._min = None  # type: Optional[int]
-        self._max = None  # type: Optional[int]
+    def __init__(self, attrs: dict[str, str]) -> None:
+        self._min: int | None = None
+        self._max: int | None = None
         self.min = cast(int | None, attrs.get('min', self.MIN))
         self.max = cast(int | None, attrs.get('max', self.MAX))
 
     @property
-    def min(self):
-        # type: () -> Optional[int]
+    def min(self) -> int | None:
         return self._min
 
     @min.setter
-    def min(self, value):
-        # type: (Optional[str]) -> None
+    def min(self, value: str | None) -> None:
         if value is None:
             self._min = None
             return
@@ -195,13 +185,11 @@ class Integer(BaseValidator):
         self._min = val
 
     @property
-    def max(self):
-        # type: () -> Optional[int]
+    def max(self) -> int | None:
         return self._max
 
     @max.setter
-    def max(self, value):
-        # type: (Optional[str]) -> None
+    def max(self, value: str | None) -> None:
         if value is None:
             self._max = None
             return
@@ -212,15 +200,13 @@ class Integer(BaseValidator):
 
         self._max = val
 
-    def validate(self, value):
-        # type: (str) -> object
+    def validate(self, value: str) -> object:
         val = int(value)
         if self._min is not None and val < self._min:
             return False
         return not (self._max is not None and val > self._max)
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return '%s(min=%r, max=%r)' % (self.NAME, self._min, self._max) if self._min or self._max else self.NAME
 
 
@@ -230,8 +216,7 @@ class UnsignedNumber(Integer):
     NAME = "uint"
     MIN = 0
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return '%s(max=%r)' % (self.NAME, self._max) if self._max else self.NAME
 
 
@@ -241,8 +226,7 @@ class PositiveNumber(Integer):
     NAME = "pint"
     MIN = 1
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return '%s(max=%r)' % (self.NAME, self._max) if self._max else self.NAME
 
 
@@ -253,8 +237,7 @@ class PortNumber(Integer):
     MIN = 0
     MAX = 65535
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return self.NAME
 
 
@@ -264,8 +247,7 @@ class Bool(BaseValidator):
     NAME = "bool"
     _BCR = BooleanConfigRegistry()
 
-    def validate(self, value):
-        # type: (str) -> object
+    def validate(self, value: str) -> object:
         return self._BCR.is_true(value=value) or self._BCR.is_false(value=value)
 
 
@@ -274,8 +256,7 @@ class Json(BaseValidator):
 
     NAME = "json"
 
-    def validate(self, value):
-        # type: (str) -> object
+    def validate(self, value: str) -> object:
         return json.loads(value) or True
 
 
@@ -285,8 +266,7 @@ class List(BaseValidator):
     NAME = "list"
     DEFAULT_SEPARATOR = ','
 
-    def __init__(self, attrs):
-        # type: (Dict[str, str]) -> None
+    def __init__(self, attrs: dict[str, str]) -> None:
         self.element_type = attrs.get('elementtype', "str")
         regex = attrs.get('separator', self.DEFAULT_SEPARATOR)
         try:
@@ -296,8 +276,7 @@ class List(BaseValidator):
         typ = Type.TYPE_CLASSES.get(self.element_type, String)
         self.checker = typ(attrs)
 
-    def validate(self, value):
-        # type: (str) -> object
+    def validate(self, value: str) -> object:
         if self.element_type is None:
             return False
         vinfo = cri.Variable()
@@ -305,8 +284,7 @@ class List(BaseValidator):
         val = Type(vinfo)
         return all(val.check(element.strip()) for element in self.separator.split(value))
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return '%s[%s%s]' % (self.NAME, self.element_type, self.separator.pattern)
 
 
@@ -318,8 +296,7 @@ class Cron(BaseValidator):
     MONTHS = frozenset(["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"])
     DAYS = frozenset(["sun", "mon", "tue", "wed", "thu", "fri", "sat"])
 
-    def validate(self, value):
-        # type: (str) -> object
+    def validate(self, value: str) -> object:
         if value.startswith("#"):
             pass
         elif value in self.PREDEFINED:
@@ -334,8 +311,7 @@ class Cron(BaseValidator):
         return True
 
     @staticmethod
-    def _check(text, low, high, extra={}):
-        # type: (str, int, int, Container[str]) -> None
+    def _check(text: str, low: int, high: int, extra: Container[str] = {}) -> None:
         if text.lower() in extra:
             return
 
@@ -386,22 +362,19 @@ class Type:
                             # value is not compatible with type definition
     """
 
-    TYPE_CLASSES = {
+    TYPE_CLASSES: dict[str | None, type[BaseValidator]] = {
         clazz.NAME: clazz
         for clazz in BaseValidator._recurse_subclasses()
-    }  # type: Dict[Optional[str], _Type[BaseValidator]]
+    }
 
-    def __init__(self, vinfo):
-        # type: (cri.Variable) -> None
+    def __init__(self, vinfo: cri.Variable) -> None:
         self.vinfo = vinfo
-        self.vtype = self.vinfo.get('type')  # type: Optional[str]
+        self.vtype: str | None = self.vinfo.get('type')
         typ = self.TYPE_CLASSES.get(self.vtype, String)
         self.checker = typ(self.vinfo)
 
-    def check(self, value):
-        # type: (str) -> bool
+    def check(self, value: str) -> bool:
         return self.checker.is_valid(value)
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return str(self.checker)
