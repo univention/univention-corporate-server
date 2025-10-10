@@ -1,8 +1,8 @@
 # SPDX-FileCopyrightText: 2018-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
-
 """Classes for holding binary UDM  object properties."""
 
+from __future__ import annotations
 
 import base64
 import bz2
@@ -16,8 +16,7 @@ import magic
 FileType = NamedTuple('FileType', [('mime_type', str), ('encoding', str), ('text', str)])
 
 
-def get_file_type(filename_or_file):
-    # type: (Union[str, BinaryIO]) -> FileType
+def get_file_type(filename_or_file: str | BinaryIO) -> FileType:
     """
     Get mime_type and encoding of file `filename_or_file`.
 
@@ -67,8 +66,7 @@ class BaseBinaryProperty:
     saved to LDAP).
     """
 
-    def __init__(self, name, encoded_value=None, raw_value=None):
-        # type: (str, Optional[bytes], Optional[bytes]) -> None
+    def __init__(self, name: str, encoded_value: bytes | None = None, raw_value: bytes | None = None) -> None:
         assert not (encoded_value and raw_value), 'Only one of "encoded_value" and "raw_value" must be set.'
         assert (encoded_value or raw_value), 'One of "encoded_value" or "raw_value" must be set.'
         self._name = name
@@ -78,33 +76,27 @@ class BaseBinaryProperty:
         elif raw_value:
             self.raw = raw_value
 
-    def __repr__(self):
-        # type: () -> str
+    def __repr__(self) -> str:
         return f'{self.__class__.__name__}({self._name})'
 
     @property
-    def encoded(self):
-        # type: () -> bytes
+    def encoded(self) -> bytes:
         return self._value
 
     @encoded.setter
-    def encoded(self, value):
-        # type: (bytes) -> None
+    def encoded(self, value: bytes) -> None:
         self._value = value
 
     @property
-    def raw(self):
-        # type: () -> bytes
+    def raw(self) -> bytes:
         raise NotImplementedError()
 
     @raw.setter
-    def raw(self, value):
-        # type: (bytes) -> None
+    def raw(self, value: bytes) -> None:
         raise NotImplementedError()
 
     @property
-    def content_type(self):
-        # type: () -> FileType
+    def content_type(self) -> FileType:
         return get_file_type(BytesIO(self.raw))
 
 
@@ -123,13 +115,11 @@ class Base64BinaryProperty(BaseBinaryProperty):
     """
 
     @property
-    def raw(self):
-        # type: () -> bytes
+    def raw(self) -> bytes:
         return base64.b64decode(self._value)
 
     @raw.setter
-    def raw(self, value):
-        # type: (bytes) -> None
+    def raw(self, value: bytes) -> None:
         self._value = base64.b64encode(value)
 
 
@@ -148,11 +138,9 @@ class Base64Bzip2BinaryProperty(BaseBinaryProperty):
     """
 
     @property
-    def raw(self):
-        # type: () -> bytes
+    def raw(self) -> bytes:
         return bz2.decompress(base64.b64decode(self._value))
 
     @raw.setter
-    def raw(self, value):
-        # type: (bytes) -> None
+    def raw(self, value: bytes) -> None:
         self._value = base64.b64encode(bz2.compress(value))

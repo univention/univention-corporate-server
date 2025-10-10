@@ -1,7 +1,13 @@
 # SPDX-FileCopyrightText: 2018-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
 
-from collections.abc import Collection  # noqa: F401
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from collections.abc import Collection
 
 
 class UdmError(Exception):
@@ -9,8 +15,7 @@ class UdmError(Exception):
 
     msg = ''
 
-    def __init__(self, msg=None, dn=None, module_name=None):
-        # type: (Optional[str], Optional[str], Optional[str]) -> None
+    def __init__(self, msg: str | None = None, dn: str | None = None, module_name: str | None = None) -> None:
         msg = msg or self.msg
         super().__init__(msg)
         self.dn = dn
@@ -30,10 +35,10 @@ class ConnectionError(UdmError):
 class ApiVersionNotSupported(UdmError):
     def __init__(
         self,
-        msg=None,  # type: Optional[str]
-        module_name=None,  # type: Optional[str]
-        requested_version=None,  # type: Optional[int]
-    ):  # type: (...) -> None
+        msg: str | None = None,
+        module_name: str | None = None,
+        requested_version: int | None = None,
+    ) -> None:
         self.requested_version = requested_version
         msg = msg or f'Module {module_name!r} is not supported in API version {requested_version!r}.'
         super().__init__(msg, module_name=module_name)
@@ -44,8 +49,7 @@ class CreateError(UdmError):
 
 
 class DeletedError(UdmError):
-    def __init__(self, msg=None, dn=None, module_name=None):
-        # type: (Optional[str], Optional[str], Optional[str]) -> None
+    def __init__(self, msg: str | None = None, dn: str | None = None, module_name: str | None = None) -> None:
         msg = msg or 'Object{} has already been deleted.'.format(f' {dn!r}' if dn else '')
         super().__init__(msg, dn, module_name)
 
@@ -53,8 +57,7 @@ class DeletedError(UdmError):
 class DeleteError(UdmError):
     """Raised when a client tries to delete a UDM object but fails."""
 
-    def __init__(self, msg=None, dn=None, module_name=None):
-        # type: (Optional[str], Optional[str], Optional[str]) -> None
+    def __init__(self, msg: str | None = None, dn: str | None = None, module_name: str | None = None) -> None:
         msg = msg or 'Object{} could not be deleted.'.format(f' {dn!r}' if dn else '')
         super().__init__(msg, dn, module_name)
 
@@ -88,8 +91,7 @@ class NoApiVersionSet(UdmError):
 class NoObject(UdmError):
     """Raised when a UDM object could not be found at a DN."""
 
-    def __init__(self, msg=None, dn=None, module_name=None):
-        # type: (Optional[str], Optional[str], Optional[str]) -> None
+    def __init__(self, msg: str | None = None, dn: str | None = None, module_name: str | None = None) -> None:
         msg = msg or f'No object found at DN {dn!r}.'
         super().__init__(msg, dn, module_name)
 
@@ -97,8 +99,7 @@ class NoObject(UdmError):
 class NoSuperordinate(UdmError):
     """Raised when no superordinate was supplied but one is needed."""
 
-    def __init__(self, msg=None, dn=None, module_name=None, superordinate_types=None):
-        # type: (Optional[str], Optional[str], Optional[str], Optional[Collection[str]]) -> None
+    def __init__(self, msg: str | None = None, dn: str | None = None, module_name: str | None = None, superordinate_types: Collection[str] | None = None) -> None:
         msg = msg or 'No superordinate was supplied, but one of type{} {} is required to create/save a {} object.'.format(
             's' if len(superordinate_types or ()) > 1 else '', ', '.join(superordinate_types or ()), module_name)
         super().__init__(msg, dn, module_name)
@@ -107,8 +108,7 @@ class NoSuperordinate(UdmError):
 class SearchLimitReached(UdmError):
     """Raised when the search results in more objects than specified by the sizelimit."""
 
-    def __init__(self, msg=None, dn=None, module_name=None, search_filter=None, sizelimit=None):
-        # type: (Optional[str], Optional[str], Optional[str], Optional[str], Optional[int]) -> None
+    def __init__(self, msg: str | None = None, dn: str | None = None, module_name: str | None = None, search_filter: str | None = None, sizelimit: int | None = None) -> None:
         msg = msg or 'The search_filter {} resulted in more objects than the specified sizelimit of {} allowed.'.format(
             search_filter or "''", sizelimit or "/",
         )
@@ -127,8 +127,7 @@ class MultipleObjects(UdmError):
 class UnknownModuleType(UdmError):
     """Raised when an LDAP object has no or empty attribute univentionObjectType."""
 
-    def __init__(self, msg=None, dn=None, module_name=None):
-        # type: (Optional[str], Optional[str], Optional[str]) -> None
+    def __init__(self, msg: str | None = None, dn: str | None = None, module_name: str | None = None) -> None:
         msg = msg or f'No or empty attribute "univentionObjectType" found at DN {dn!r}.'
         super().__init__(msg, dn, module_name)
 
@@ -146,7 +145,6 @@ class WrongObjectType(UdmError):
     (:py:attr:`BaseModule.name`).
     """
 
-    def __init__(self, msg=None, dn=None, module_name=None, univention_object_type=None):
-        # type: (Optional[str], Optional[str], Optional[str], Optional[str]) -> None
+    def __init__(self, msg: str | None = None, dn: str | None = None, module_name: str | None = None, univention_object_type: str | None = None) -> None:
         msg = msg or f'Wrong UDM module: {dn!r} is not a {module_name!r}, but a {univention_object_type!r}.'
         super().__init__(msg, dn, module_name)

@@ -2,9 +2,10 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 
 
+from __future__ import annotations
+
 import sys
-from collections.abc import Callable  # noqa: F401
-from typing import TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 import ldap
 from ldap.filter import filter_format
@@ -16,27 +17,29 @@ import univention.config_registry
 from .exceptions import ConnectionError  # noqa: A004
 
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+
 _T = TypeVar("_T")  # noqa: PYI018
 
 
 class LDAP_connection:
     """Caching LDAP connection factory."""
 
-    _ucr = None  # type: univention.config_registry.ConfigRegistry
-    _connection_admin = None  # type: Optional[univention.admin.uldap.access]
-    _connection_account = {}  # type: Dict[Tuple[str, str, Optional[str], Optional[int], Optional[str]], univention.admin.uldap.access]
+    _ucr: univention.config_registry.ConfigRegistry = None
+    _connection_admin: univention.admin.uldap.access | None = None
+    _connection_account: dict[tuple[str, str, str | None, int | None, str | None], univention.admin.uldap.access] = {}
 
     @classmethod
-    def _clear(cls):
-        # type: () -> None
+    def _clear(cls) -> None:
         # used in tests
         cls._ucr = None
         cls._connection_admin = None
         cls._connection_account.clear()
 
     @classmethod
-    def _wrap_connection(cls, func, **kwargs):
-        # type: (Callable[..., _T], **Any) -> _T
+    def _wrap_connection(cls, func: Callable[..., _T], **kwargs: Any) -> _T:
         try:
             return func(**kwargs)
         except OSError:
@@ -51,15 +54,13 @@ class LDAP_connection:
             raise ConnectionError('The LDAP Server is not running').with_traceback(sys.exc_info()[2])
 
     @classmethod
-    def get_admin_connection(cls):
-        # type: () -> univention.admin.uldap.access
+    def get_admin_connection(cls) -> univention.admin.uldap.access:
         if not cls._connection_admin:
             cls._connection_admin, _po = cls._wrap_connection(univention.admin.uldap.getAdminConnection)
         return cls._connection_admin
 
     @classmethod
-    def get_machine_connection(cls, ldap_master=True):
-        # type: (bool) -> univention.admin.uldap.access
+    def get_machine_connection(cls, ldap_master: bool = True) -> univention.admin.uldap.access:
         # do not cache the machine connection as this breaks on server-password-change
         co, _po = cls._wrap_connection(univention.admin.uldap.getMachineConnection, ldap_master=ldap_master)
         return co
@@ -67,12 +68,12 @@ class LDAP_connection:
     @classmethod
     def get_credentials_connection(
             cls,
-            identity,  # type: str
-            password,  # type: str
-            base=None,  # type: Optional[str]
-            server=None,  # type: Optional[str]
-            port=None,  # type: Optional[int]
-    ):  # type: (...) -> univention.admin.uldap.access
+            identity: str,
+            password: str,
+            base: str | None = None,
+            server: str | None = None,
+            port: int | None = None,
+    ) -> univention.admin.uldap.access:
         if not cls._ucr:
             cls._ucr = univention.config_registry.ConfigRegistry()
             cls._ucr.load()

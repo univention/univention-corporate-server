@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 # SPDX-FileCopyrightText: 2004-2025 Univention GmbH
 # SPDX-License-Identifier: AGPL-3.0-only
-
 """adduser part for the command line interface"""
+
+from __future__ import annotations
 
 import getopt
 import os
@@ -25,7 +26,7 @@ import univention.logging
 log = getLogger('ADMIN')
 
 
-def status(msg):  # type: (str) -> str
+def status(msg: str) -> str:
     # univention-adduser is called by Samba when doing "vampire." Since
     # vampire produces a lot of output, and we'd like to print a moderate
     # log, we prepend UNIVENTION to our output. That way we can identify
@@ -34,7 +35,7 @@ def status(msg):  # type: (str) -> str
     return out
 
 
-def nscd_invalidate(table):  # type: (str) -> None
+def nscd_invalidate(table: str) -> None:
     if table:
         log.debug('NSCD: --invalidate %s', table)
         try:
@@ -45,7 +46,7 @@ def nscd_invalidate(table):  # type: (str) -> None
             log.debug('NSCD: ok')
 
 
-def get_user_object(user, position, lo):  # type: (str, univention.admin.uldap.position, univention.admin.uldap.access) -> Union[univention.admin.modules.UdmModule, str]
+def get_user_object(user: str, position: univention.admin.uldap.position, lo: univention.admin.uldap.access) -> univention.admin.modules.UdmModule | str:
     try:
         # user Account
         return univention.admin.modules.lookup(univention.admin.handlers.users.user, None, lo, scope='domain', base=position.getDn(), filter=filter_format('(username=%s)', [user]), required=True, unique=True)[0]
@@ -64,7 +65,7 @@ def doit(arglist):
     configRegistry.load()
     structured = configRegistry.is_true('directory/manager/cmd/debug/structured-logging', False)
     univention.logging.basicConfig(filename='/var/log/univention/directory-manager-cmd.log', univention_debug_level=1, use_structured_logging=structured)
-    out = []  # type: List[str]
+    out: list[str] = []
     op = 'add'
     scope = 'user'
     cmd = os.path.basename(arglist[0])
