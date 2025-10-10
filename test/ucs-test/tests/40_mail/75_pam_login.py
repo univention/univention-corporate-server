@@ -15,11 +15,11 @@ from essential.mail import random_email, send_mail
 from essential.mailclient import MailClient_SSL
 
 
-def test_populate_file_and_resync(udm, ucr, fqdn):
+def test_send_mail_before_login(udm, ucr, fqdn):
 
     username = uts.random_string()
     password = 'univention'
-    user_addr = random_email()
+    user_addr = random_email().lower()
     msgid = uts.random_name()
     udm.create_user(
         set={

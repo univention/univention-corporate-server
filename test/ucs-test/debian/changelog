@@ -1,4 +1,4 @@
-ucs-test (12.3.22) unstable; urgency=medium
+ucs-test (12.3.23) unstable; urgency=medium
 
   * Bug #57976: Create test for dovecot additional mail directories
 
