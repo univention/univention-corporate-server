@@ -15,6 +15,7 @@ from univention.testing import selenium as _sel, strings, ucr as _ucr, udm as _u
 
 
 pytest_plugins = ["univention.testing.conftest"]
+pytest.register_assert_rewrite('univention.testing')
 
 
 @pytest.fixture
@@ -88,6 +89,13 @@ def udm_rest_client(ucr_session, account, udm_rest_base_url):
 
 @pytest.fixture
 def udm() -> Iterator[_udm.UCSTestUDM]:
+    """Auto-reverting UDM wrapper."""
+    with _udm.UCSTestUDM() as udm:
+        yield udm
+
+
+@pytest.fixture(scope='module')
+def udm_module() -> Iterator[_udm.UCSTestUDM]:
     """Auto-reverting UDM wrapper."""
     with _udm.UCSTestUDM() as udm:
         yield udm

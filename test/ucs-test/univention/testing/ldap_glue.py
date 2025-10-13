@@ -412,6 +412,56 @@ class ADConnection(LDAPConnection):
         self.create(dn, attrs)
         return dn
 
+    def verify_object_con(self, dn, expected_attributes):
+        """
+        Verify an object exists with the given `dn` and attributes in the
+        AD LDAP. Setting `expected_attributes` to `None` requires the object to
+        not exist. `expected_attributes` is a dictionary of connector attributes.
+
+        This will throw an `AssertionError` in case of a mismatch.
+        """
+        if expected_attributes is None:
+            assert not self.exists(dn), f"AD object {dn} should not exist"
+        else:
+            attributes = self.get(dn, attr=['+', '*'])
+
+            # Filter attributes that are not given
+            for key in list(attributes.keys()):
+                if not expected_attributes.get(key):
+                    attributes.pop(key)
+
+            # Filter attributes that could be changed.
+            ignored = [
+                'whenChanged',
+                'lastKnownParent',
+                'uSNChanged',
+                'dSCorePropagationData',
+                'msDS-LastKnownRDN',
+                'pwdLastSet',
+                'adminCount',
+                'operatorCount',
+            ]
+            for attr in ignored:
+                if attributes.get(attr):
+                    attributes.pop(attr)
+                if expected_attributes.get(attr):
+                    expected_attributes.pop(attr)
+
+            def _normalize_dn(dn):
+                dn = dn.casefold()
+                return ldap.dn.dn2str(ldap.dn.str2dn(dn))
+
+            # normalize some DN attributes
+            dn_normalize = ['distinguishedName']
+            for attr in dn_normalize:
+                if attr in attributes:
+                    attributes[attr][0] = _normalize_dn(attributes[attr][0].decode('UTF-8')).encode('UTF-8')
+                if attr in expected_attributes:
+                    expected_attributes[attr][0] = _normalize_dn(expected_attributes[attr][0].decode('UTF-8')).encode('UTF-8')
+
+            # check attributes
+            assert {k: set(v) for k, v in attributes.items()} == {k: set(v) for k, v in expected_attributes.items()}
+
     def verify_object(self, dn, expected_attributes):
         """
         Verify an object exists with the given `dn` and attributes in the

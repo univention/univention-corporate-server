@@ -10,7 +10,7 @@ import univention.config_registry
 import univention.testing.connector_common as tcommon
 import univention.testing.ucr as testing_ucr
 from univention.config_registry import handler_set as ucr_set
-from univention.s4connector import s4
+from univention.s4connector import configdb, decode_guid, s4
 from univention.testing import ldap_glue, utils
 
 
@@ -21,9 +21,22 @@ configRegistry.load()
 class S4Connection(ldap_glue.ADConnection):
     """helper functions to modify AD-objects"""
 
+    LDAP_SERVER_SHOW_DELETED_OID = "1.2.840.113556.1.4.417"
+    LDB_CONTROL_DOMAIN_SCOPE_OID = "1.2.840.113556.1.4.1339"
+
     @classmethod
     def decode_sid(cls, sid):
         return s4.decode_sid(sid)
+
+    @classmethod
+    def decode_guid(cls, guid):
+        return decode_guid(guid)
+
+    def wait_for_sync(self):
+        return wait_for_sync()
+
+    def get_uoid2guid_mapping(self, uoid):
+        return self.cache_internal.get('uoid2guid', uoid)
 
     def __init__(self, configbase='connector'):
         self.configbase = configbase
@@ -37,6 +50,7 @@ class S4Connection(ldap_glue.ADConnection):
         self.protocol = configRegistry.get('%s/s4/ldap/protocol' % self.configbase, 'ldap').lower()
         self.kerberos = False
         self.socket = configRegistry.get('%s/s4/ldap/socket' % self.configbase, '')
+        self.cache_internal = configdb('/etc/univention/connector/s4internal.sqlite')
 
         self.serverctrls_for_add_and_modify = []
         if 'univention_samaccountname_ldap_check' in configRegistry.get('samba4/ldb/sam/module/prepend', '').split():
@@ -46,6 +60,56 @@ class S4Connection(ldap_glue.ADConnection):
             self.serverctrls_for_add_and_modify.append(ldb_ctrl_bypass_samaccountname_ldap_check)
 
         self.connect(configRegistry.is_false('%s/s4/ldap/ssl' % self.configbase, True))
+
+    def restore_object(self, dn: str, position=None) -> str:
+        """
+        Restores an object in Samba.
+
+        :param dn: The original DN in Samba that should be restored.
+
+        :returns: The new DN of the restored object in Samba.
+        """
+        cn, *parent_dn = ldap.dn.str2dn(dn)
+        if not (cn and parent_dn):
+            return
+        parent_dn_string = ldap.dn.dn2str(parent_dn)
+        filter_con = ldap.filter.filter_format('(&(cn=%s\nDEL:*)(lastKnownParent=%s)(isDeleted=TRUE))', [cn[0][1], parent_dn_string])
+
+        result = self.lo.search_ext_s(
+            self.adldapbase,
+            ldap.SCOPE_SUBTREE,
+            filter_con,
+            ['dn'],
+            serverctrls=[
+                LDAPControl(self.LDAP_SERVER_SHOW_DELETED_OID, criticality=1),
+                LDAPControl(self.LDB_CONTROL_DOMAIN_SCOPE_OID, criticality=0),
+            ],
+        )
+        if not result or len(result) > 1:
+            return
+        restore_dn = result[0][0]
+        if position:
+            position_dn = ldap.dn.str2dn(position)
+            dn = ldap.dn.dn2str([cn, *position_dn])
+
+        reanimate_modlist = [
+            (ldap.MOD_DELETE, 'isDeleted', None),
+            (ldap.MOD_REPLACE, 'distinguishedName', dn.encode('UTF-8')),
+        ]
+
+        self.lo.modify_ext_s(
+            restore_dn,
+            reanimate_modlist,
+            serverctrls=[LDAPControl(self.LDAP_SERVER_SHOW_DELETED_OID, criticality=1)],
+        )
+
+        return restore_dn
+
+    def get_dn(self, sid):
+        result = self.lo.search_ext_s(self.adldapbase, ldap.SCOPE_SUBTREE, f'objectSid={sid}')
+        if not result:
+            raise ValueError(f'No object for this sid {sid}.')
+        return result[0][0]
 
 
 def check_object(object_dn, sid=None, old_object_dn=None):
