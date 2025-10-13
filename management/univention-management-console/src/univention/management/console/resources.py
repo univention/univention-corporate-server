@@ -184,7 +184,7 @@ class ModuleProcess(_ModuleConnection):
         self.__process.set_exit_callback(callback)
 
     async def connect(self, connect_retries=0):
-        if os.path.exists(self.socket) and stat.S_ISSOCK(os.stat(self.socket).st_mode):
+        if os.path.exists(self.socket) and stat.S_ISSOCK(os.stat(self.socket).st_mode):  # noqa: ASYNC240
             return True
         elif connect_retries > 200:
             raise CouldNotConnect('timeout exceeded')
@@ -312,7 +312,7 @@ class ModuleProxy(_ModuleConnection):
         self.unix_socket = None
 
     async def connect(self, connect_retries=0):
-        return not self.unix_socket or os.path.exists(self.unix_socket)
+        return not self.unix_socket or os.path.exists(self.unix_socket)  # noqa: ASYNC240
 
     def request(self, method, uri, headers=None, body=None):
         return self.do_request(method, uri, headers, body, self.unix_socket)
