@@ -208,7 +208,7 @@ kubectl patch deployment as8-core-mw-default \
       \"template\": {
         \"spec\": {
           \"hostAliases\": [
-            {cluster_ip
+            {
               \"ip\": \"${cluster_ip}\",
               \"hostnames\": [\"as8.lab.test\"]
             }
