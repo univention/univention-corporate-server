@@ -3,7 +3,7 @@ release: "5.2"
 version: [2,3]
 scope: ucs_5.2-0-errata5.2-3
 src: samba
-fix: 2:4.21.1-1A~5.2.0.202510131051
+fix: 2:4.21.1-1A~5.2.0.202510131304
 desc: |
  This update addresses the following issues:
  * TODO
