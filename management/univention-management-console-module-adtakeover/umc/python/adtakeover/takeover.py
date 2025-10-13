@@ -25,7 +25,6 @@ import chardet
 import ldap
 import ldb
 import samba
-import samba.getopt
 from ldap.dn import dn2str, escape_dn_chars, str2dn
 from ldap.filter import filter_format
 from samba import Ldb
@@ -43,7 +42,6 @@ import univention.admin.modules as udm_modules
 import univention.admin.objects
 import univention.admin.uldap
 import univention.config_registry
-import univention.lib
 import univention.lib.admember
 import univention.lib.s4
 from univention.admin import uexceptions

@@ -7,7 +7,6 @@
 from __future__ import annotations
 
 import univention.admin
-import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.uldap

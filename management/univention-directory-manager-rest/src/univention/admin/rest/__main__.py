@@ -18,7 +18,6 @@ from functools import partial
 import atexit
 import tornado.ioloop
 import tornado.locale
-import tornado.log
 from setproctitle import getproctitle, setproctitle
 from tornado.httpserver import HTTPServer
 from tornado.netutil import bind_sockets, bind_unix_socket

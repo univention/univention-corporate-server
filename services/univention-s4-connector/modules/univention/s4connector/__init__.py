@@ -31,7 +31,6 @@ import univention.admin.objects
 import univention.admin.uldap
 import univention.debug as ud
 import univention.logging
-import univention.uldap
 from univention.logging import Structured
 from univention.s4connector.lockingdb import LockingDB
 from univention.s4connector.s4cache import S4Cache

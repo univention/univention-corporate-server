@@ -6,14 +6,10 @@
 from __future__ import annotations
 
 import univention.admin
-import univention.admin.allocators
-import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.mapping
-import univention.admin.password
 import univention.admin.syntax
-import univention.admin.uexceptions
 from univention.admin.layout import Group, Tab
 
 

@@ -10,7 +10,6 @@ from logging import DEBUG, getLogger
 
 from ldap.filter import filter_format
 
-import univention.admin.handlers.users.user
 import univention.admin.modules
 import univention.admin.objects
 import univention.admin.uldap

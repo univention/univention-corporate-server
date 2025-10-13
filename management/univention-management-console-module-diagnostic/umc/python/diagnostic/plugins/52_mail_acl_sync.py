@@ -9,7 +9,6 @@ from typing import Any, TypeVar
 
 import univention.admin.modules as udm_modules
 import univention.admin.uldap
-import univention.uldap
 from univention.admin.handlers import simpleLdap
 from univention.config_registry import ucr_live as configRegistry
 from univention.lib.i18n import Translation

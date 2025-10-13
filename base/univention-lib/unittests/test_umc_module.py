@@ -21,7 +21,7 @@ except ImportError:
     import argparse
     import sys
 
-    import univention
+    import univention  # noqa: F401
     univention.admin = argparse.Namespace()
     univention.admin.uexceptions = argparse.Namespace()
     univention.admin.uexceptions.valueError = ValueError

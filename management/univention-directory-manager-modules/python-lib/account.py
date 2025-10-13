@@ -10,9 +10,7 @@
 import argparse
 from logging import getLogger
 
-import univention.admin.handlers.users.user
 import univention.admin.modules
-import univention.admin.objects
 import univention.admin.uldap
 import univention.debug as ud
 

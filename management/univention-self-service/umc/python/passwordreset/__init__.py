@@ -22,9 +22,10 @@ import atexit
 import pylibmc
 from ldap.filter import filter_format
 
-import univention.admin.objects
-import univention.admin.syntax
+import univention.admin.modules
+import univention.admin.uexceptions
 import univention.admin.uexceptions as udm_errors
+import univention.admin.uldap
 from univention.admin.uldap import getMachineConnection
 from univention.lib.i18n import Translation
 from univention.lib.umc import Client, ConnectionError, HTTPError, Unauthorized  # noqa: A004

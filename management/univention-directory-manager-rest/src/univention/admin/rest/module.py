@@ -28,9 +28,6 @@ from urllib.parse import parse_qs, quote, unquote, urlencode, urljoin, urlparse,
 import ldap
 import tornado.gen
 import tornado.httpclient
-import tornado.httputil
-import tornado.ioloop
-import tornado.log
 import tornado.web
 from concurrent.futures import ThreadPoolExecutor
 from ldap.controls import SimplePagedResultsControl

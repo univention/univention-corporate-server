@@ -7,7 +7,6 @@
 #
 
 import pytest
-import tornado.ioloop
 import tornado.testing
 import tornado.web
 

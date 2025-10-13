@@ -11,7 +11,6 @@ from typing import Any
 
 import univention.config_registry as ucr
 import univention.debug as ud
-import univention.pkgdb
 import univention.uldap
 
 from listener import SetUID

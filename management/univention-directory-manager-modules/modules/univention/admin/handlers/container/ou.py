@@ -9,7 +9,6 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.syntax
-import univention.admin.uldap
 from univention.admin import configRegistry
 from univention.admin.handlers.container import default_container_for_objects
 from univention.admin.layout import Group, Tab

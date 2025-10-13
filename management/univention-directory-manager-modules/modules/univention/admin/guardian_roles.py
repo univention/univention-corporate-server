@@ -7,7 +7,6 @@ import itertools
 
 import univention.admin
 import univention.admin.localization
-import univention.admin.mapping
 import univention.admin.syntax
 from univention.admin.layout import Tab
 

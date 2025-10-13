@@ -20,7 +20,6 @@ import univention
 import univention.admin.filter as udm_filter
 import univention.admin.modules as udm_modules
 import univention.config_registry
-import univention.connector
 import univention.connector.ad
 import univention.lib.s4
 from univention.admin import uexceptions

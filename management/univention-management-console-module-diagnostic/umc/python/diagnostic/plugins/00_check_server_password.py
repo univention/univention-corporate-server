@@ -9,7 +9,6 @@ import ldap
 
 import univention.admin.modules as udm_modules
 import univention.admin.uldap
-import univention.config_registry
 import univention.lib.misc
 import univention.uldap
 from univention.config_registry import handler_set as ucr_set, handler_unset as ucr_unset, ucr_live as configRegistry

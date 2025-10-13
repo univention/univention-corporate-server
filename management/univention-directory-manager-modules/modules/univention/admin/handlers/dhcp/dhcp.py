@@ -6,15 +6,7 @@
 from __future__ import annotations
 
 import univention.admin
-import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.handlers.dhcp.host
-import univention.admin.handlers.dhcp.pool
-import univention.admin.handlers.dhcp.server
-import univention.admin.handlers.dhcp.service
-import univention.admin.handlers.dhcp.shared
-import univention.admin.handlers.dhcp.sharedsubnet
-import univention.admin.handlers.dhcp.subnet
 import univention.admin.localization
 import univention.admin.uldap
 from univention.admin.layout import Tab

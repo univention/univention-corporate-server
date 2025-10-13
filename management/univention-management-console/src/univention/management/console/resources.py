@@ -36,7 +36,6 @@ import tornado
 import tornado.curl_httpclient
 import tornado.gen
 import tornado.httpclient
-import tornado.web
 from tornado.iostream import StreamClosedError
 from tornado.web import HTTPError
 

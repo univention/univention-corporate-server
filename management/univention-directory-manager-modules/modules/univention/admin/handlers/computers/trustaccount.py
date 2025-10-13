@@ -9,8 +9,6 @@ from typing import Any
 
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.handlers.dns.forward_zone
-import univention.admin.handlers.dns.reverse_zone
 import univention.admin.localization
 import univention.admin.mapping
 import univention.admin.password

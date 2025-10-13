@@ -23,7 +23,6 @@ import tornado.httpclient
 import tornado.httpserver
 import tornado.httputil
 import tornado.ioloop
-import tornado.iostream
 import tornado.process
 import tornado.web
 from setproctitle import getproctitle, setproctitle

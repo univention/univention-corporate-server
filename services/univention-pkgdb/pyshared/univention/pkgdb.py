@@ -22,7 +22,6 @@ import dns.resolver
 import pgdb
 
 import univention.config_registry
-import univention.uldap
 
 
 assert pgdb.paramstyle == 'pyformat'

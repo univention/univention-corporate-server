@@ -6,9 +6,6 @@
 
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.handlers.groups.group
-import univention.admin.handlers.settings.directory
-import univention.admin.handlers.users.user
 import univention.admin.localization
 from univention.admin import configRegistry
 from univention.admin.layout import Group, Tab

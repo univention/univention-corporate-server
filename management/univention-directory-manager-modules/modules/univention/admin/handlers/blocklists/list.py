@@ -6,7 +6,6 @@
 from __future__ import annotations
 
 import univention.admin.blocklist
-import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 from univention.admin.layout import Group, Tab

@@ -17,7 +17,6 @@ import weakref
 from typing import Any
 
 import ldap
-import ldap.sasl
 
 import univention.admin.uexceptions as udm_errors
 from univention.management.console.error import PasswordRequired

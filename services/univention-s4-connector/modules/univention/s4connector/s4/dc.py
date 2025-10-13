@@ -10,11 +10,7 @@ from logging import getLogger
 
 import ldap
 
-import univention.admin.handlers
-import univention.admin.handlers.container.dc
 import univention.admin.handlers.settings.sambadomain
-import univention.admin.uldap
-import univention.s4connector.s4
 from univention.logging import Structured
 from univention.s4connector.s4 import decode_sid, format_escaped
 

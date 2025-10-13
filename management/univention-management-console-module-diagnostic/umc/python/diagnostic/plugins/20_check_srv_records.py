@@ -5,7 +5,6 @@
 from collections.abc import Iterator
 from typing import Any
 
-import dns.exception
 import dns.resolver
 
 import univention.admin.modules as udm_modules

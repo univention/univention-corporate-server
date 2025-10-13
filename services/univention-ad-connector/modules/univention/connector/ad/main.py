@@ -17,7 +17,6 @@ from argparse import ArgumentParser
 
 import ldap
 
-import univention
 import univention.connector
 import univention.connector.ad
 from univention.config_registry import ConfigRegistry

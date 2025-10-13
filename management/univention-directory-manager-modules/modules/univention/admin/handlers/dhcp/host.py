@@ -5,7 +5,6 @@
 
 
 import univention.admin.filter
-import univention.admin.handlers
 import univention.admin.localization
 from univention.admin.layout import Group, Tab
 from univention.admin.log import log

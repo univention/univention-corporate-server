@@ -59,7 +59,7 @@ def run(_umc_instance: Instance) -> None:
         return
 
     try:
-        import univention.s4connector
+        import univention.s4connector  # noqa: F401
         import univention.s4connector.s4  # noqa: F401
     except ImportError:
         error_description = _('Univention S4 Connector is not installed.')

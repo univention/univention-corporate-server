@@ -31,7 +31,6 @@ import univention.admin.objects
 import univention.admin.uldap
 import univention.debug as ud
 import univention.logging
-import univention.uldap
 from univention.connector.adcache import ADCache
 from univention.dn import DN
 from univention.logging import Structured

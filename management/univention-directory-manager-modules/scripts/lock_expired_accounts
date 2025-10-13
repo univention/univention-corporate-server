@@ -22,7 +22,6 @@ import univention.admin.modules as udm_modules
 import univention.admin.uldap
 import univention.config_registry
 import univention.logging
-import univention.uldap
 
 
 log = getLogger('MAIN')

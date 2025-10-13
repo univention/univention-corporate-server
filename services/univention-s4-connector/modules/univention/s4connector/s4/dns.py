@@ -27,7 +27,6 @@ import univention.admin.handlers.dns.ptr_record
 import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.dns.srv_record
 import univention.admin.uldap
-import univention.s4connector.s4
 from univention.admin.mapping import unmapUNIX_TimeInterval
 from univention.logging import Structured
 from univention.s4connector.s4 import format_escaped, str2dn

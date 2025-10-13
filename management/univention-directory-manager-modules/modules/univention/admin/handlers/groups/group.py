@@ -16,7 +16,6 @@ import univention.admin.allocators
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-import univention.admin.uldap
 from univention.admin import configRegistry
 from univention.admin.guardian_roles import member_role_layout, member_role_properties, register_member_role_mapping
 from univention.admin.layout import Group, Tab

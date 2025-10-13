@@ -4,7 +4,6 @@
 """|UDM| module for the |DHCP| shared networks"""
 
 import univention.admin.filter
-import univention.admin.handlers
 import univention.admin.localization
 from univention.admin.layout import Group, Tab
 

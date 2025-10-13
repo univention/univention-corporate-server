@@ -10,7 +10,6 @@ import ldap
 
 import univention.config_registry
 import univention.debug as ud
-import univention.lib.policy_result
 import univention.uldap
 
 

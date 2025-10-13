@@ -17,7 +17,6 @@ import univention.admin.handlers.computers.windows
 import univention.admin.handlers.groups.group
 import univention.admin.handlers.users.user
 import univention.admin.modules
-import univention.admin.objects
 import univention.admin.uldap
 import univention.config_registry
 import univention.logging

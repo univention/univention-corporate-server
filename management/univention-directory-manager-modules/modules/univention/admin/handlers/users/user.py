@@ -25,7 +25,6 @@ import univention.admin
 import univention.admin.allocators
 import univention.admin.filter
 import univention.admin.handlers
-import univention.admin.handlers.settings.prohibited_username
 import univention.admin.localization
 import univention.admin.mapping
 import univention.admin.modules

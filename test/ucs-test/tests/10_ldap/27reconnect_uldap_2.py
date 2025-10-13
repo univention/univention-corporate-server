@@ -18,7 +18,6 @@ from ldap.filter import filter_format
 import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.testing.strings as uts
-import univention.testing.ucr
 import univention.testing.ucr as ucr_test
 import univention.testing.udm
 import univention.uldap

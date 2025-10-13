@@ -5,7 +5,6 @@
 
 
 import univention.admin.cron
-import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.syntax

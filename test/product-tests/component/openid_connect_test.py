@@ -5,7 +5,6 @@
 
 import importlib
 import os
-import os.path
 import random
 import string
 import sys

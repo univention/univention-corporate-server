@@ -17,9 +17,7 @@ from ldap.filter import filter_format
 from samba.dcerpc import security
 from samba.ndr import ndr_pack, ndr_unpack
 
-import univention
 import univention.config_registry
-import univention.connector
 import univention.connector.ad
 
 

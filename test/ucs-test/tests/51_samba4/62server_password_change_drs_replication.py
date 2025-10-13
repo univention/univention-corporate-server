@@ -13,7 +13,6 @@ import subprocess
 import time
 
 import univention.config_registry
-import univention.uldap
 from univention.testing.ucr import UCSTestConfigRegistry
 from univention.testing.udm import UCSTestUDM
 from univention.testing.umc import Client
