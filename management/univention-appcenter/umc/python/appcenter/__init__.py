@@ -817,7 +817,7 @@ class Instance(umcm.Base, ProgressMixin):
                         if self.ucr.get(f'{named_component_base}/{deprecated}', ''):
                             super_ucr.set_registry_var(f'{named_component_base}/{deprecated}', None)
                 except Exception as e:
-                    MODULE.warning("   !! Writing UCR failed: %s", str(e))
+                    MODULE.warning("   !! Writing UCR failed: %s", e)
                     yield [{'message': str(e), 'status': PUT_WRITE_ERROR}]
                     return
                 yield self.get_component_manager().put(repo, super_ucr)
@@ -875,7 +875,7 @@ class Instance(umcm.Base, ProgressMixin):
                         super_ucr.set_registry_var('%s/%s' % (ONLINE_BASE, key), value)
                 super_ucr.changed()
         except Exception as e:
-            MODULE.warning("   !! Writing UCR failed: %s", str(e))
+            MODULE.warning("   !! Writing UCR failed: %s", e)
             return [{'message': str(e), 'status': PUT_WRITE_ERROR}]
 
         # delete deprecated ucr variables if still exist.
@@ -886,7 +886,7 @@ class Instance(umcm.Base, ProgressMixin):
                         super_ucr.set_registry_var(f'{ONLINE_BASE}/{deprecated}', None)
                 super_ucr.changed()
         except Exception as e:
-            MODULE.warning("   !! Writing UCR failed: %s", str(e))
+            MODULE.warning("   !! Writing UCR failed: %s", e)
             return [{'message': str(e), 'status': PUT_WRITE_ERROR}]
 
         self.package_manager.update()

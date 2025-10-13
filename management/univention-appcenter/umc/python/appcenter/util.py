@@ -244,7 +244,7 @@ class Changes:
 
             self._changes[name] = value
         except Exception as e:
-            MODULE.warning("set_registry_var('%s', '%s') ERROR %s", name, value, str(e))
+            MODULE.warning("set_registry_var('%s', '%s') ERROR %s", name, value, e)
 
     def commit(self):
         ucr_update(self.ucr, self._changes)

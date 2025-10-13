@@ -1395,7 +1395,7 @@ class AD_Takeover:
                     if os.path.isfile(filename):
                         os.unlink(filename)
                 except Exception as e:
-                    log.error("Error removing file: %s", str(e))
+                    log.error("Error removing file: %s", e)
 
         returncode = run_and_output_to_log(["systemctl", "start", "univention-directory-listener"], log.debug)
         if returncode != 0:

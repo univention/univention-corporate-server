@@ -485,7 +485,7 @@ def send_information(action: str, app: App | None = None, status: int = 200, val
         values['value'] = value
     if system_uuid:
         values['system-uuid'] = system_uuid
-    utils_logger.debug('tracking information: %s', str(values))
+    utils_logger.debug('tracking information: %s', values)
     try:
         request_data = urlencode(values).encode('utf-8')
         request = urllib.request.Request(url, request_data)  # noqa: S310

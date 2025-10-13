@@ -552,7 +552,7 @@ class UDM_Module:
 
             obj.create()
         except udm_errors.base as e:
-            MODULE.warning('Failed to create LDAP object: %s: %s', e.__class__.__name__, str(e))
+            MODULE.warning('Failed to create LDAP object: %s: %s', e.__class__.__name__, e)
             UDM_Error(e, obj.dn).reraise()
 
         return obj.dn
@@ -571,7 +571,7 @@ class UDM_Module:
             obj.move(dest)
             return dest
         except udm_errors.base as e:
-            MODULE.warning('Failed to move LDAP object %s: %s: %s', ldap_dn, e.__class__.__name__, str(e))
+            MODULE.warning('Failed to move LDAP object %s: %s: %s', ldap_dn, e.__class__.__name__, e)
             UDM_Error(e).reraise()
 
     def remove(self, ldap_dn, cleanup=False, recursive=False):
@@ -586,7 +586,7 @@ class UDM_Module:
             if cleanup:
                 udm_objects.performCleanup(obj)
         except udm_errors.base as e:
-            MODULE.warning('Failed to remove LDAP object %s: %s: %s', ldap_dn, e.__class__.__name__, str(e))
+            MODULE.warning('Failed to remove LDAP object %s: %s: %s', ldap_dn, e.__class__.__name__, e)
             UDM_Error(e).reraise()
 
     def modify(self, ldap_object):
@@ -620,7 +620,7 @@ class UDM_Module:
                         except ValueError:
                             pass
                 obj.options = options
-                MODULE.info('Setting new options to %s', str(obj.options))
+                MODULE.info('Setting new options to %s', obj.options)
                 del ldap_object['$options$']
             MODULE.info('Modifying LDAP object %s', obj.dn)
             if '$policies$' in ldap_object:
@@ -631,7 +631,7 @@ class UDM_Module:
 
             obj.modify()
         except udm_errors.base as e:
-            MODULE.warning('Failed to modify LDAP object %s: %s: %s', obj.dn, e.__class__.__name__, str(e))
+            MODULE.warning('Failed to modify LDAP object %s: %s: %s', obj.dn, e.__class__.__name__, e)
             UDM_Error(e).reraise()
 
     def search(self, container=None, attribute=None, value=None, superordinate=None, scope='sub', filter='', simple=False, simple_attrs=None, hidden=True, serverctrls=None, response=None, allow_asterisks=True):
@@ -815,7 +815,7 @@ class UDM_Module:
             mod = UDM_Module(child, ldap_connection=ldap_connection, ldap_position=ldap_position)
             if not mod.module:
                 continue
-            MODULE.info('Found module %s', str(mod))
+            MODULE.info('Found module %s', mod)
             modules.append({
                 'id': child,
                 'label': mod.title,
