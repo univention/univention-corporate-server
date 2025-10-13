@@ -20,7 +20,7 @@ import re
 import subprocess
 from collections.abc import Mapping
 from types import TracebackType
-from typing import Literal, Self
+from typing import Any, Literal, Self
 
 import univention.config_registry
 
@@ -121,7 +121,7 @@ class NetworkRedirector:
             elif entry[0] == 'redirection':
                 self.remove_redirection(entry[1], entry[2], entry[3], entry[4], ignore_errors=True)
 
-    def run_commands(self, cmdlist: list[list[str]], argdict: Mapping[str, object], ignore_errors: bool = False) -> None:
+    def run_commands(self, cmdlist: list[list[str]], argdict: Mapping[str, Any], ignore_errors: bool = False) -> None:
         """
         Start all commands in cmdlist and replace formatstrings with arguments in argdict.
 

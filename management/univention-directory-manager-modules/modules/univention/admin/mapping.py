@@ -179,7 +179,7 @@ def ListToLowerListUniq(list: list[str]) -> list[str]:
     return ListUniq(ListToLowerList(list))
 
 
-def nothing(a: object) -> None:
+def nothing(a: Any) -> None:
     """'Do nothing' mapping returning `None`."""
 
 

@@ -70,10 +70,10 @@ class File(list):
         Return list of entries matching a list of file system types.
 
         :param filesystem: A list of file system names.
-        :type filesystem: List[str]
+        :type filesystem: list[str]
         :param bool ignore_root: Skip the root file system if `True`.
         :returns: A list of matching entries.
-        :rtype: List[Entry]
+        :rtype: list[Entry]
         """
         result = []
         for entry in self:
@@ -127,7 +127,7 @@ class Entry:
     :param str mount_point: This field describes the mount point (target) for the filesystem.
     :param str type: The type of the filesystem.
     :param options: The list of mount options associated with the filesystem.
-    :type options: List[str]
+    :type options: list[str]
     :param int dump: Option for :manpage:`dump(8)`.
     :param int passno: Order information for `fsck(8)`.
     :param str comment: Optional comment from end of line.

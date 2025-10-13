@@ -309,7 +309,7 @@ class DnListPropertyEncoder(BaseEncoder):
 
     class MyProxy(lazy_object_proxy.Proxy):
         # overwrite __repr__ for better navigation in ipython
-        def __repr__(self, __getattr__: Callable[[object, str], object] = object.__getattribute__) -> str:
+        def __repr__(self, __getattr__: Callable[[Any, str], Any] = object.__getattribute__) -> str:
             return super(DnListPropertyEncoder.MyProxy, self).__str__()
 
     def __init__(self, property_name: str | None = None, connection: Any | None = None, api_version: int | None = None, *args: Any, **kwargs: Any) -> None:
@@ -354,7 +354,7 @@ class DnListPropertyEncoder(BaseEncoder):
         return value
 
     @property
-    def udm(self) -> object:
+    def udm(self) -> Any:
         return self._udm
 
 
@@ -507,7 +507,7 @@ class DnPropertyEncoder(BaseEncoder):
 
     class MyProxy(lazy_object_proxy.Proxy):
         # overwrite __repr__ for better navigation in ipython
-        def __repr__(self, __getattr__: Callable[[object, str], object] = object.__getattribute__) -> str:
+        def __repr__(self, __getattr__: Callable[[Any, str], Any] = object.__getattribute__) -> str:
             return super(DnPropertyEncoder.MyProxy, self).__str__()
 
     def __init__(self, property_name: str | None = None, connection: Any = None, api_version: int | None = None, *args: Any, **kwargs: Any) -> None:

@@ -16,7 +16,7 @@ import time
 from collections import namedtuple
 from datetime import datetime, timedelta
 from shlex import quote
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 from urllib.parse import urlparse
 
 import dns.resolver
@@ -640,11 +640,11 @@ def remove_admember_service_from_localhost() -> None:
     _remove_service_from_localhost('AD Member')
 
 
-def info_handler(msg: object) -> None:
+def info_handler(msg: Any) -> None:
     ud.debug(ud.MODULE, ud.PROCESS, msg)
 
 
-def error_handler(msg: object) -> None:
+def error_handler(msg: Any) -> None:
     ud.debug(ud.MODULE, ud.ERROR, msg)
 
 

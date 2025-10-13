@@ -37,7 +37,7 @@ class RsyslogEmitter:
     def __init__(self) -> None:
         self.handler: SysLogHandler | None = None
 
-    def emit(self, entry: object) -> None:
+    def emit(self, entry: Any) -> None:
         if self.handler is None:
             if os.path.exists('/dev/log'):
                 self.handler = SysLogHandler(address='/dev/log', facility='user')
