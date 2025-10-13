@@ -1,0 +1,16 @@
+product: ucs
+release: "5.0"
+version: [10]
+scope: ucs_5.0-0-errata5.0-10
+src: python-django
+fix: 1:1.11.29-1+deb10u16
+desc: |
+ This update addresses the following issues:
+ * CVSS score 7.1 (CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:H/I:L/A:N).
+   (CVE-2025-59681)
+ * CVSS score 3.1 (CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:N).
+   (CVE-2025-59682)
+bug: [58712]
+cve:
+- CVE-2025-59681
+- CVE-2025-59682
